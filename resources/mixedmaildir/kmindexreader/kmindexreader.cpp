@@ -226,7 +226,7 @@ KMIndexDataPtr KMIndexReader::dataByFileName(const QString &fileName) const
 bool KMIndexReader::readHeader(int *version)
 {
     int indexVersion;
-    Q_ASSERT(mFp != 0);
+    Q_ASSERT(mFp != nullptr);
     mIndexSwapByteOrder = false;
     mIndexSizeOfLong = sizeof(long);
 
@@ -314,7 +314,7 @@ bool KMIndexReader::readIndex()
     qint32 len;
     KMIndexData *msg;
 
-    Q_ASSERT(mFp != 0);
+    Q_ASSERT(mFp != nullptr);
     rewind(mFp);
 
     mMsgList.clear();

@@ -54,14 +54,14 @@ extern "C" {
 using namespace KIO;
 
 static const sasl_callback_t callbacks[] = {
-    { SASL_CB_ECHOPROMPT, NULL, NULL },
-    { SASL_CB_NOECHOPROMPT, NULL, NULL },
-    { SASL_CB_GETREALM, NULL, NULL },
-    { SASL_CB_USER, NULL, NULL },
-    { SASL_CB_AUTHNAME, NULL, NULL },
-    { SASL_CB_PASS, NULL, NULL },
-    { SASL_CB_CANON_USER, NULL, NULL },
-    { SASL_CB_LIST_END, NULL, NULL }
+    { SASL_CB_ECHOPROMPT, nullptr, nullptr },
+    { SASL_CB_NOECHOPROMPT, nullptr, nullptr },
+    { SASL_CB_GETREALM, nullptr, nullptr },
+    { SASL_CB_USER, nullptr, nullptr },
+    { SASL_CB_AUTHNAME, nullptr, nullptr },
+    { SASL_CB_PASS, nullptr, nullptr },
+    { SASL_CB_CANON_USER, nullptr, nullptr },
+    { SASL_CB_LIST_END, nullptr, nullptr }
 };
 
 int kdemain(int argc, char **argv)
@@ -169,7 +169,7 @@ ssize_t POP3Protocol::myReadLine(char *data, ssize_t len)
 
 POP3Protocol::Resp POP3Protocol::getResponse(char *r_buf, unsigned int r_len)
 {
-    char *buf = 0;
+    char *buf = nullptr;
     unsigned int recv_len = 0;
     // fd_set FDs;
 
@@ -413,7 +413,7 @@ bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
             interact->len = strlen((const char *) interact->result);
             break;
         default:
-            interact->result = NULL;
+            interact->result = nullptr;
             interact->len = 0;
             break;
         }
@@ -432,16 +432,16 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
     QString sasl_buffer = QStringLiteral("AUTH");
 
     int result;
-    sasl_conn_t *conn = NULL;
-    sasl_interact_t *client_interact = NULL;
-    const char *out = NULL;
+    sasl_conn_t *conn = nullptr;
+    sasl_interact_t *client_interact = nullptr;
+    const char *out = nullptr;
     uint outlen;
-    const char *mechusing = NULL;
+    const char *mechusing = nullptr;
     Resp resp;
 
     result = sasl_client_new("pop",
                              m_sServer.toLatin1(),
-                             0, 0, callbacks, 0, &conn);
+                             nullptr, nullptr, callbacks, 0, &conn);
 
     if (result != SASL_OK) {
         qCDebug(POP3_LOG) << "sasl_client_new failed with: " << result;
@@ -508,7 +508,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
             tmp.resize(tmp.indexOf((char)0));
             msg = QByteArray::fromBase64(tmp);
             do {
-                result = sasl_client_step(conn, msg.isEmpty() ? 0 : msg.data(),
+                result = sasl_client_step(conn, msg.isEmpty() ? nullptr : msg.data(),
                                           msg.size(),
                                           &client_interact,
                                           &out, &outlen);

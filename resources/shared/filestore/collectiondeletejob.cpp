@@ -33,7 +33,7 @@ public:
 FileStore::CollectionDeleteJob::CollectionDeleteJob(const Collection &collection, FileStore::AbstractJobSession *session)
     : FileStore::Job(session), d(new Private())
 {
-    Q_ASSERT(session != 0);
+    Q_ASSERT(session != nullptr);
 
     d->mCollection = collection;
 

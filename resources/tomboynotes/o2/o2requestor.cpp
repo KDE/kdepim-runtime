@@ -9,7 +9,7 @@
 #include "o2/o2.h"
 #include "o2/o0globals.h"
 
-O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent): QObject(parent), reply_(NULL), status_(Idle)
+O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent): QObject(parent), reply_(nullptr), status_(Idle)
 {
     manager_ = manager;
     authenticator_ = authenticator;

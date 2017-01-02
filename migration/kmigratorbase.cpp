@@ -55,7 +55,7 @@ QString messageTypeToString(KMigratorBase::MessageType type)
 
 }
 
-KMigratorBase::KMigratorBase() : m_logFile(0)
+KMigratorBase::KMigratorBase() : m_logFile(nullptr)
 {
 
     const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1String("/migration.log");
@@ -65,7 +65,7 @@ KMigratorBase::KMigratorBase() : m_logFile(0)
     m_logFile = new QFile(logFileName);
     if (!m_logFile->open(QFile::Append)) {
         delete m_logFile;
-        m_logFile = 0;
+        m_logFile = nullptr;
         qWarning() << "Unable to open log file: " << logFileName;
     }
     logMessage(Info, QStringLiteral("Starting migration..."));

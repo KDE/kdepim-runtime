@@ -64,7 +64,7 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
 {
     if (job->error() == 0) {
         Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
-        Q_ASSERT(fetchJob != 0);
+        Q_ASSERT(fetchJob != nullptr);
 
         Q_FOREACH (const Akonadi::Collection &collection, fetchJob->collections()) {
             if (!collection.contentMimeTypes().contains(KolabHelpers::getMimeType(Kolab::ConfigurationType))) {

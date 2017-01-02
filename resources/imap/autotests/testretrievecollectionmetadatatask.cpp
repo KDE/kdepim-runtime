@@ -62,7 +62,7 @@ private Q_SLOTS:
         QMap<QByteArray, QByteArray> expectedAnnotations;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        collection.setRights(0);
+        collection.setRights(nullptr);
 
         capabilities.clear();
         capabilities << QStringLiteral("ANNOTATEMORE") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
@@ -208,7 +208,7 @@ private Q_SLOTS:
                                      << callNames << rights << expectedAnnotations;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        collection.setRights(0);
+        collection.setRights(nullptr);
 
         capabilities.clear();
         capabilities << QStringLiteral("METADATA") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
@@ -243,7 +243,7 @@ private Q_SLOTS:
                                   << callNames << rights << expectedAnnotations;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        collection.setRights(0);
+        collection.setRights(nullptr);
 
         capabilities.clear();
         expectedAnnotations.clear();
@@ -251,7 +251,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("collectionAttributesRetrieved");
 
-        rights = 0;
+        rights = nullptr;
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario();

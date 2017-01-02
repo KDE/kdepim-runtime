@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     app.setQuitOnLastWindowClosed(false);
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("akonadi")));
 
-    if (!Akonadi::ControlGui::start(0)) {
+    if (!Akonadi::ControlGui::start(nullptr)) {
         return 2;
     }
 

@@ -472,7 +472,7 @@ void MixedMaildirResource::retrieveCollectionsResult(KJob *job)
     }
 
     FileStore::CollectionFetchJob *fetchJob = qobject_cast<FileStore::CollectionFetchJob *>(job);
-    Q_ASSERT(fetchJob != 0);
+    Q_ASSERT(fetchJob != nullptr);
 
     Collection topLevelCollection = mStore->topLevelCollection();
     if (!name().isEmpty() && name() != identifier()) {
@@ -495,7 +495,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
     }
 
     RetrieveItemsJob *retrieveJob = qobject_cast<RetrieveItemsJob *>(job);
-    Q_ASSERT(retrieveJob != 0);
+    Q_ASSERT(retrieveJob != nullptr);
 
     // messages marked as deleted have been deleted from mbox files but never got purged
     // TODO FileStore could provide deleteItems() to deleted all filtered items in one go
@@ -562,7 +562,7 @@ void MixedMaildirResource::retrieveItemResult(KJob *job)
     }
 
     FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
-    Q_ASSERT(fetchJob != 0);
+    Q_ASSERT(fetchJob != nullptr);
     Q_ASSERT(!fetchJob->items().isEmpty());
 
     itemsRetrieved(fetchJob->items());
@@ -578,7 +578,7 @@ void MixedMaildirResource::itemAddedResult(KJob *job)
     }
 
     FileStore::ItemCreateJob *itemJob = qobject_cast<FileStore::ItemCreateJob *>(job);
-    Q_ASSERT(itemJob != 0);
+    Q_ASSERT(itemJob != nullptr);
 
     /*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId();*/
     changeCommitted(itemJob->item());
@@ -596,7 +596,7 @@ void MixedMaildirResource::itemChangedResult(KJob *job)
     }
 
     FileStore::ItemModifyJob *itemJob = qobject_cast<FileStore::ItemModifyJob *>(job);
-    Q_ASSERT(itemJob != 0);
+    Q_ASSERT(itemJob != nullptr);
 
     changeCommitted(itemJob->item());
 
@@ -620,7 +620,7 @@ void MixedMaildirResource::itemMovedResult(KJob *job)
     }
 
     FileStore::ItemMoveJob *itemJob = qobject_cast<FileStore::ItemMoveJob *>(job);
-    Q_ASSERT(itemJob != 0);
+    Q_ASSERT(itemJob != nullptr);
 
     changeCommitted(itemJob->item());
 
@@ -646,7 +646,7 @@ void MixedMaildirResource::itemRemovedResult(KJob *job)
     }
 
     FileStore::ItemDeleteJob *itemJob = qobject_cast<FileStore::ItemDeleteJob *>(job);
-    Q_ASSERT(itemJob != 0);
+    Q_ASSERT(itemJob != nullptr);
 
     changeCommitted(itemJob->item());
 
@@ -676,7 +676,7 @@ void MixedMaildirResource::collectionAddedResult(KJob *job)
     }
 
     FileStore::CollectionCreateJob *colJob = qobject_cast<FileStore::CollectionCreateJob *>(job);
-    Q_ASSERT(colJob != 0);
+    Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
 }
@@ -691,7 +691,7 @@ void MixedMaildirResource::collectionChangedResult(KJob *job)
     }
 
     FileStore::CollectionModifyJob *colJob = qobject_cast<FileStore::CollectionModifyJob *>(job);
-    Q_ASSERT(colJob != 0);
+    Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
 
@@ -708,7 +708,7 @@ void MixedMaildirResource::collectionMovedResult(KJob *job)
     }
 
     FileStore::CollectionMoveJob *colJob = qobject_cast<FileStore::CollectionMoveJob *>(job);
-    Q_ASSERT(colJob != 0);
+    Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
 
@@ -725,7 +725,7 @@ void MixedMaildirResource::collectionRemovedResult(KJob *job)
     }
 
     FileStore::CollectionDeleteJob *colJob = qobject_cast<FileStore::CollectionDeleteJob *>(job);
-    Q_ASSERT(colJob != 0);
+    Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
 }
@@ -748,7 +748,7 @@ void MixedMaildirResource::compactStoreResult(KJob *job)
     }
 
     FileStore::StoreCompactJob *compactJob = qobject_cast<FileStore::StoreCompactJob *>(job);
-    Q_ASSERT(compactJob != 0);
+    Q_ASSERT(compactJob != nullptr);
 
     const Item::List items = compactJob->changedItems();
     qCDebug(MIXEDMAILDIR_LOG) << "Compacting store resulted in" << items.count() << "changed items";
@@ -806,7 +806,7 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
     }
 
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
-    Q_ASSERT(fetchJob != 0);
+    Q_ASSERT(fetchJob != nullptr);
 
     Q_ASSERT(!fetchJob->items().isEmpty());
 

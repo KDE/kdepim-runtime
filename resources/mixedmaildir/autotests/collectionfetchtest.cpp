@@ -56,7 +56,7 @@ class CollectionFetchTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionFetchTest() : QObject(), mStore(0), mDir(0)
+    CollectionFetchTest() : QObject(), mStore(nullptr), mDir(nullptr)
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -91,17 +91,17 @@ void CollectionFetchTest::init()
 void CollectionFetchTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void CollectionFetchTest::testEmptyDir()
 {
     mStore->setPath(mDir->path());
 
-    FileStore::CollectionFetchJob *job = 0;
-    QSignalSpy *spy = 0;
+    FileStore::CollectionFetchJob *job = nullptr;
+    QSignalSpy *spy = nullptr;
     Collection::List collections;
 
     // test base fetch of top level collection
@@ -263,8 +263,8 @@ void CollectionFetchTest::testMixedTree()
     mStore->setPath(mDir->path());
     //mDir = 0;
 
-    FileStore::CollectionFetchJob *job = 0;
-    QSignalSpy *spy = 0;
+    FileStore::CollectionFetchJob *job = nullptr;
+    QSignalSpy *spy = nullptr;
     Collection::List collections;
 
     // test base fetch of top level collection

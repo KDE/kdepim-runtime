@@ -247,7 +247,7 @@ void MailDispatcherAgent::Private::itemFetched(const Item &item)
     Q_ASSERT(sendingInProgress);
     Q_ASSERT(!currentItem.isValid());
     currentItem = item;
-    Q_ASSERT(currentJob == 0);
+    Q_ASSERT(currentJob == nullptr);
     Q_EMIT q->itemDispatchStarted();
 
     currentJob = new SendJob(item, q);

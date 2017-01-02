@@ -44,7 +44,7 @@ class ItemCreateTest : public QObject
     Q_OBJECT
 
 public:
-    ItemCreateTest() : QObject(), mStore(0), mDir(0) {}
+    ItemCreateTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
 
     ~ItemCreateTest()
     {
@@ -76,9 +76,9 @@ void ItemCreateTest::init()
 void ItemCreateTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void ItemCreateTest::testExpectedFail()
@@ -100,7 +100,7 @@ void ItemCreateTest::testExpectedFail()
     QVERIFY(topDir.cd(QLatin1String("store")));
     mStore->setPath(topDir.path());
 
-    FileStore::ItemCreateJob *job = 0;
+    FileStore::ItemCreateJob *job = nullptr;
 
     // test failure of adding item to top level collection
     Item item;
@@ -169,8 +169,8 @@ void ItemCreateTest::testMBox()
     Item::List items;
     QMap<QByteArray, int> flagCounts;
 
-    FileStore::ItemCreateJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::ItemCreateJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
 
     // test adding to empty mbox
     Collection collection2;
@@ -368,8 +368,8 @@ void ItemCreateTest::testMaildir()
     QSet<QString> newIdSet;
     QString newId;
 
-    FileStore::ItemCreateJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::ItemCreateJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
 
     // test adding to empty maildir
     Collection collection2;

@@ -42,13 +42,13 @@ class SessionPool;
 class ResourceTask : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(ActionIfNoSession)
 
 public:
     enum ActionIfNoSession {
         CancelIfNoSession,
         DeferIfNoSession
     };
+    Q_ENUM(ActionIfNoSession)
 
     explicit ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = nullptr);
     virtual ~ResourceTask();

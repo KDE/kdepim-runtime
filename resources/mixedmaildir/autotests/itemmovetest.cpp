@@ -70,7 +70,7 @@ class ItemMoveTest : public QObject
 
 public:
     ItemMoveTest()
-        : QObject(), mStore(0), mDir(0) {}
+        : QObject(), mStore(nullptr), mDir(nullptr) {}
 
     ~ItemMoveTest()
     {
@@ -102,9 +102,9 @@ void ItemMoveTest::init()
 void ItemMoveTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void ItemMoveTest::testExpectedFail()
@@ -134,7 +134,7 @@ void ItemMoveTest::testExpectedFail()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemMoveJob *job = 0;
+    FileStore::ItemMoveJob *job = nullptr;
 
     // test failure of moving from a non-existent collection
     Collection collection1;
@@ -282,7 +282,7 @@ void ItemMoveTest::testMaildirItem()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemMoveJob *job = 0;
+    FileStore::ItemMoveJob *job = nullptr;
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
@@ -474,8 +474,8 @@ void ItemMoveTest::testMBoxItem()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemMoveJob *job = 0;
-    FileStore::StoreCompactJob *compactStore = 0;
+    FileStore::ItemMoveJob *job = nullptr;
+    FileStore::StoreCompactJob *compactStore = nullptr;
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;

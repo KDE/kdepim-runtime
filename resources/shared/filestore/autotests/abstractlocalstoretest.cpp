@@ -45,7 +45,7 @@ class TestStore : public AbstractLocalStore
     Q_OBJECT
 
 public:
-    TestStore() : mLastCheckedJob(0), mLastProcessedJob(0), mErrorCode(0) {}
+    TestStore() : mLastCheckedJob(nullptr), mLastProcessedJob(nullptr), mErrorCode(0) {}
 
 public:
     mutable Akonadi::FileStore::Job *mLastCheckedJob;
@@ -164,7 +164,7 @@ class AbstractLocalStoreTest : public QObject
     Q_OBJECT
 
 public:
-    AbstractLocalStoreTest() : QObject(), mStore(0) {}
+    AbstractLocalStoreTest() : QObject(), mStore(nullptr) {}
     ~AbstractLocalStoreTest()
     {
         delete mStore;
@@ -232,294 +232,294 @@ void AbstractLocalStoreTest::testSetPath()
 
 void AbstractLocalStoreTest::testCreateCollection()
 {
-    CollectionCreateJob *job = 0;
+    CollectionCreateJob *job = nullptr;
 
     // test without setPath()
     job = mStore->createCollection(Collection(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid collections
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->createCollection(Collection(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId), but invalid target parent
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->createCollection(collection, Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collections
     Collection targetParent;
     targetParent.setRemoteId(QStringLiteral("/tmp/test2"));
     job = mStore->createCollection(collection, targetParent);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->createCollection(collection, targetParent);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }
 
 void AbstractLocalStoreTest::testDeleteCollection()
 {
-    CollectionDeleteJob *job = 0;
+    CollectionDeleteJob *job = nullptr;
 
     // test without setPath()
     job = mStore->deleteCollection(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid collection
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->deleteCollection(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with ivalid collection (has remoteId, but no parent collection remoteId)
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->deleteCollection(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId and parent collection remoteId)
     Collection parentCollection;
     parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     collection.setParentCollection(parentCollection);
     job = mStore->deleteCollection(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->deleteCollection(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }
 
 void AbstractLocalStoreTest::testFetchCollection()
 {
-    Akonadi::FileStore::CollectionFetchJob *job = 0;
+    Akonadi::FileStore::CollectionFetchJob *job = nullptr;
 
     // test without setPath()
     job = mStore->fetchCollections(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid collection
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->fetchCollections(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId)
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->fetchCollections(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->fetchCollections(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 
     // test fetch of top level collection only
     collection.setRemoteId(mStore->topLevelCollection().remoteId());
     job = mStore->fetchCollections(collection, Akonadi::FileStore::CollectionFetchJob::Base);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);   // job not handed to subclass because it is full processed in base class
+    QVERIFY(mStore->mLastProcessedJob == nullptr);   // job not handed to subclass because it is full processed in base class
     QCOMPARE(job->collections().count(), 1);
     QCOMPARE(job->collections()[ 0 ], mStore->topLevelCollection());
 }
 
 void AbstractLocalStoreTest::testModifyCollection()
 {
-    Akonadi::FileStore::CollectionModifyJob *job = 0;
+    Akonadi::FileStore::CollectionModifyJob *job = nullptr;
 
     // test without setPath()
     job = mStore->modifyCollection(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid item
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->modifyCollection(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId, but no parent remoteId)
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->modifyCollection(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test with potentially valid collection (has remoteId and parent remoteId)
     Collection parentCollection;
     parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     collection.setParentCollection(parentCollection);
     job = mStore->modifyCollection(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->modifyCollection(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 }
 
 void AbstractLocalStoreTest::testMoveCollection()
 {
-    CollectionMoveJob *job = 0;
+    CollectionMoveJob *job = nullptr;
 
     // test without setPath()
     job = mStore->moveCollection(Collection(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid collections
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->moveCollection(Collection(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId and parent remoteId), but invalid target parent
     Collection collection;
@@ -528,345 +528,345 @@ void AbstractLocalStoreTest::testMoveCollection()
     parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     collection.setParentCollection(parentCollection);
     job = mStore->moveCollection(collection, Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with invalid parent collection, but with potentially valid collection and target parent
     collection.setParentCollection(Collection());
     job = mStore->moveCollection(collection, parentCollection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collections
     Collection targetParent;
     targetParent.setRemoteId(QStringLiteral("/tmp/test2"));
     collection.setParentCollection(parentCollection);
     job = mStore->moveCollection(collection, targetParent);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->moveCollection(collection, targetParent);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 }
 
 void AbstractLocalStoreTest::testFetchItems()
 {
-    ItemFetchJob *job = 0;
+    ItemFetchJob *job = nullptr;
 
     // test without setPath()
     job = mStore->fetchItems(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid collection
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->fetchItems(Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId)
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->fetchItems(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->fetchItems(collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }
 
 void AbstractLocalStoreTest::testFetchItem()
 {
-    ItemFetchJob *job = 0;
+    ItemFetchJob *job = nullptr;
 
     // test without setPath()
     job = mStore->fetchItem(Item());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid item
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->fetchItem(Item());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid item (has remoteId)
     Item item;
     item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->fetchItem(item);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->fetchItem(item);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }
 
 void AbstractLocalStoreTest::testCreateItem()
 {
-    Akonadi::FileStore::ItemCreateJob *job = 0;
+    Akonadi::FileStore::ItemCreateJob *job = nullptr;
 
     // test without setPath()
     job = mStore->createItem(Item(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid collection
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->createItem(Item(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid collection (has remoteId)
     Collection collection;
     collection.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->createItem(Item(), collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->createItem(Item(), collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }
 
 void AbstractLocalStoreTest::testDeleteItem()
 {
-    ItemDeleteJob *job = 0;
+    ItemDeleteJob *job = nullptr;
 
     // test without setPath()
     job = mStore->deleteItem(Item());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid item
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->deleteItem(Item());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid item (has remoteId)
     Item item;
     item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->deleteItem(item);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->deleteItem(item);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }
 
 void AbstractLocalStoreTest::testModifyItem()
 {
-    Akonadi::FileStore::ItemModifyJob *job = 0;
+    Akonadi::FileStore::ItemModifyJob *job = nullptr;
 
     // test without setPath()
     job = mStore->modifyItem(Item());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid item
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->modifyItem(Item());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid item (has remoteId)
     Item item;
     item.setRemoteId(QStringLiteral("/tmp/test/foo"));
     job = mStore->modifyItem(item);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->modifyItem(item);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 }
 
 void AbstractLocalStoreTest::testMoveItem()
 {
-    ItemMoveJob *job = 0;
+    ItemMoveJob *job = nullptr;
 
     // test without setPath()
     job = mStore->moveItem(Item(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path but with invalid item and collection
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->moveItem(Item(), Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid item (has remoteId and parent remoteId), but invalid target parent
     Item item;
@@ -875,91 +875,91 @@ void AbstractLocalStoreTest::testMoveItem()
     parentCollection.setRemoteId(QStringLiteral("/tmp/test"));
     item.setParentCollection(parentCollection);
     job = mStore->moveItem(item, Collection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with invalid parent collection, but with potentially valid item and target parent
     item.setParentCollection(Collection());
     job = mStore->moveItem(item, parentCollection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with potentially valid item and collections
     Collection targetParent;
     targetParent.setRemoteId(QStringLiteral("/tmp/test2"));
     item.setParentCollection(parentCollection);
     job = mStore->moveItem(item, targetParent);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->moveItem(item, targetParent);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 }
 
 void AbstractLocalStoreTest::testCompactStore()
 {
-    StoreCompactJob *job = 0;
+    StoreCompactJob *job = nullptr;
 
     // test without setPath()
     job = mStore->compactStore();
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), (int)Akonadi::FileStore::Job::InvalidStoreState);
     QVERIFY(!job->errorText().isEmpty());
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
 
     // test with path
     mStore->setPath(QStringLiteral("/tmp/test"));
     job = mStore->compactStore();
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
     QCOMPARE(mStore->mLastProcessedJob, job);
-    mStore->mLastProcessedJob = 0;
+    mStore->mLastProcessedJob = nullptr;
 
     // test template check method
     mStore->mErrorCode = KRandom::random() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->compactStore();
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(mStore->mLastCheckedJob, job);
     QCOMPARE(job->error(), mStore->mErrorCode);
     QCOMPARE(job->errorText(), mStore->mErrorText);
 
     QVERIFY(!job->exec());
-    QVERIFY(mStore->mLastProcessedJob == 0);
+    QVERIFY(mStore->mLastProcessedJob == nullptr);
     mStore->mErrorCode = 0;
     mStore->mErrorText = QString();
 }

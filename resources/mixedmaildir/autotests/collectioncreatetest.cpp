@@ -39,7 +39,7 @@ class CollectionCreateTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionCreateTest() : QObject(), mStore(0), mDir(0) {}
+    CollectionCreateTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
     ~CollectionCreateTest()
     {
         delete mStore;
@@ -72,21 +72,21 @@ void CollectionCreateTest::init()
 void CollectionCreateTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void CollectionCreateTest::testCollectionProperties()
 {
     mStore->setPath(mDir->path());
 
-    FileStore::CollectionCreateJob *job = 0;
+    FileStore::CollectionCreateJob *job = nullptr;
 
     Collection collection1;
     collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -110,13 +110,13 @@ void CollectionCreateTest::testEmptyDir()
 
     KPIM::Maildir topLevelMd(mStore->path(), true);
 
-    FileStore::CollectionCreateJob *job = 0;
+    FileStore::CollectionCreateJob *job = nullptr;
 
     // test creating first level collections
     Collection collection1;
     collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -132,7 +132,7 @@ void CollectionCreateTest::testEmptyDir()
     Collection collection2;
     collection2.setName(QStringLiteral("collection2"));
     job = mStore->createCollection(collection2, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -149,7 +149,7 @@ void CollectionCreateTest::testEmptyDir()
     Collection collection1_1;
     collection1_1.setName(QStringLiteral("collection1_1"));
     job = mStore->createCollection(collection1_1, collection1);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -165,7 +165,7 @@ void CollectionCreateTest::testEmptyDir()
     Collection collection1_2;
     collection1_2.setName(QStringLiteral("collection1_2"));
     job = mStore->createCollection(collection1_2, collection1);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -192,13 +192,13 @@ void CollectionCreateTest::testMaildirTree()
 
     mStore->setPath(mDir->path());
 
-    FileStore::CollectionCreateJob *job = 0;
+    FileStore::CollectionCreateJob *job = nullptr;
 
     // test creating first level collections
     Collection collection1;
     collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());   // works because it already exists
     QCOMPARE(job->error(), 0);
@@ -210,7 +210,7 @@ void CollectionCreateTest::testMaildirTree()
     Collection collection2;
     collection2.setName(QStringLiteral("collection2"));
     job = mStore->createCollection(collection2, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -227,7 +227,7 @@ void CollectionCreateTest::testMaildirTree()
     Collection collection1_1;
     collection1_1.setName(QStringLiteral("collection1_1"));
     job = mStore->createCollection(collection1_1, collection1);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -243,7 +243,7 @@ void CollectionCreateTest::testMaildirTree()
     Collection collection1_2;
     collection1_2.setName(QStringLiteral("collection1_2"));
     job = mStore->createCollection(collection1_2, collection1);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());   // works because it already exists
     QCOMPARE(job->error(), 0);
@@ -269,13 +269,13 @@ void CollectionCreateTest::testMixedTree()
 
     mStore->setPath(mDir->path());
 
-    FileStore::CollectionCreateJob *job = 0;
+    FileStore::CollectionCreateJob *job = nullptr;
 
     // test creating first level collections
     Collection collection1;
     collection1.setName(QStringLiteral("collection1"));
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(!job->exec());   // fails, there is an MBox with that name
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
@@ -289,7 +289,7 @@ void CollectionCreateTest::testMixedTree()
     Collection collection2;
     collection2.setName(QStringLiteral("collection2"));
     job = mStore->createCollection(collection2, mStore->topLevelCollection());
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -307,7 +307,7 @@ void CollectionCreateTest::testMixedTree()
     Collection collection1_1;
     collection1_1.setName(QStringLiteral("collection1_1"));
     job = mStore->createCollection(collection1_1, collection1);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);

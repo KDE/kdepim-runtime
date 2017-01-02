@@ -48,7 +48,7 @@ void MailSerializerPluginTest::testMailPlugin()
 
     QVERIFY(item.hasPayload<KMime::Message::Ptr>());
     KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-    QVERIFY(msg != 0);
+    QVERIFY(msg != nullptr);
 
     QCOMPARE(msg->to()->asUnicodeString(), QStringLiteral("receiver@test.org"));
     QCOMPARE(msg->body(), QByteArray("Body data."));
@@ -79,7 +79,7 @@ void MailSerializerPluginTest::testMessageIntegrity()
 
     QVERIFY(item.hasPayload<KMime::Message::Ptr>());
     KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
-    QVERIFY(msg != 0);
+    QVERIFY(msg != nullptr);
 
     qDebug() << "original data:" << serialized;
     qDebug() << "message content:" << msg->encodedContent();

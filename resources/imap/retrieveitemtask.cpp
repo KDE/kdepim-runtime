@@ -106,7 +106,7 @@ void RetrieveItemTask::onMessagesReceived(const QString &mailBox,
     Q_UNUSED(mailBox);
 
     KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob *>(sender());
-    Q_ASSERT(fetch != 0);
+    Q_ASSERT(fetch != nullptr);
     Q_ASSERT(uids.size() == 1);
     Q_ASSERT(messages.size() == 1);
 

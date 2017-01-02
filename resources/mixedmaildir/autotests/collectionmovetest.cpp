@@ -40,7 +40,7 @@ class CollectionMoveTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionMoveTest() : QObject(), mStore(0), mDir(0) {}
+    CollectionMoveTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
 
     ~CollectionMoveTest()
     {
@@ -72,9 +72,9 @@ void CollectionMoveTest::init()
 void CollectionMoveTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void CollectionMoveTest::testMoveToTopLevel()
@@ -112,8 +112,8 @@ void CollectionMoveTest::testMoveToTopLevel()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::CollectionMoveJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::CollectionMoveJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
     Collection collection;
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
@@ -359,8 +359,8 @@ void CollectionMoveTest::testMoveToMaildir()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::CollectionMoveJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::CollectionMoveJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
     Collection collection;
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
@@ -1173,8 +1173,8 @@ void CollectionMoveTest::testMoveToMBox()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::CollectionMoveJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::CollectionMoveJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
     Collection collection;
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;

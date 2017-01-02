@@ -127,7 +127,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
     }
 
     ItemFetchJob *itemFetch = qobject_cast<ItemFetchJob *>(job);
-    Q_ASSERT(itemFetch != 0);
+    Q_ASSERT(itemFetch != nullptr);
 
     Item::List items = itemFetch->items();
     itemFetch->clearItems(); // save memory
@@ -156,7 +156,7 @@ void RetrieveItemsJob::Private::storeListResult(KJob *job)
 {
     qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "storeList->error=" << job->error();
     FileStore::ItemFetchJob *storeList = qobject_cast<FileStore::ItemFetchJob *>(job);
-    Q_ASSERT(storeList != 0);
+    Q_ASSERT(storeList != nullptr);
 
     if (storeList->error() != 0) {
         q->setError(storeList->error());
@@ -235,7 +235,7 @@ void RetrieveItemsJob::Private::processNewItem()
 void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 {
     FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
-    Q_ASSERT(fetchJob != 0);
+    Q_ASSERT(fetchJob != nullptr);
 
     if (fetchJob->items().count() != 1) {
         const Item item = fetchJob->item();
@@ -292,7 +292,7 @@ void RetrieveItemsJob::Private::processChangedItem()
 void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
 {
     FileStore::ItemFetchJob *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
-    Q_ASSERT(fetchJob != 0);
+    Q_ASSERT(fetchJob != nullptr);
 
     if (fetchJob->items().count() != 1) {
         const Item item = fetchJob->item();
@@ -333,7 +333,7 @@ RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, MixedM
 {
     Q_ASSERT(d->mCollection.isValid());
     Q_ASSERT(!d->mCollection.remoteId().isEmpty());
-    Q_ASSERT(d->mStore != 0);
+    Q_ASSERT(d->mStore != nullptr);
 }
 
 RetrieveItemsJob::~RetrieveItemsJob()

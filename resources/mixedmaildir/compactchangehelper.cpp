@@ -100,7 +100,7 @@ void CompactChangeHelper::Private::processNextItem()
 void CompactChangeHelper::Private::itemFetchResult(KJob *job)
 {
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
-    Q_ASSERT(fetchJob != 0);
+    Q_ASSERT(fetchJob != nullptr);
 
     const QString oldRemoteId = fetchJob->property("oldRemoteId").toString();
     Q_ASSERT(!oldRemoteId.isEmpty());

@@ -50,7 +50,7 @@ class TestStore : public MixedMaildirStore
     Q_OBJECT
 
 public:
-    TestStore() : mLastCheckedJob(0), mErrorCode(0) {}
+    TestStore() : mLastCheckedJob(nullptr), mErrorCode(0) {}
 
 public:
     Collection mTopLevelCollection;
@@ -88,7 +88,7 @@ class TemplateMethodsTest : public QObject
     Q_OBJECT
 
 public:
-    TemplateMethodsTest() : QObject(), mStore(0) {}
+    TemplateMethodsTest() : QObject(), mStore(nullptr) {}
     ~TemplateMethodsTest()
     {
         delete mStore;
@@ -136,14 +136,14 @@ void TemplateMethodsTest::testMoveCollection()
 {
     mStore->setPath(mDir.path());
 
-    FileStore::CollectionMoveJob *job = 0;
+    FileStore::CollectionMoveJob *job = nullptr;
 
     // test moving into itself
     Collection collection(KRandom::random());
     collection.setParentCollection(mStore->topLevelCollection());
     collection.setRemoteId(QStringLiteral("collection"));
     job = mStore->moveCollection(collection, collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -157,7 +157,7 @@ void TemplateMethodsTest::testMoveCollection()
     childCollection.setParentCollection(collection);
     childCollection.setRemoteId(QStringLiteral("child"));
     job = mStore->moveCollection(collection, childCollection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -171,7 +171,7 @@ void TemplateMethodsTest::testMoveCollection()
     grandChildCollection.setParentCollection(childCollection);
     grandChildCollection.setRemoteId(QStringLiteral("grandchild"));
     job = mStore->moveCollection(collection, grandChildCollection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -185,7 +185,7 @@ void TemplateMethodsTest::testMoveCollection()
     otherCollection.setParentCollection(mStore->topLevelCollection());
     otherCollection.setRemoteId(QStringLiteral("other"));
     job = mStore->moveCollection(collection, otherCollection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -202,12 +202,12 @@ void TemplateMethodsTest::testCreateItem()
     collection.setParentCollection(mStore->topLevelCollection());
     collection.setRemoteId(QStringLiteral("collection"));
 
-    FileStore::ItemCreateJob *job = 0;
+    FileStore::ItemCreateJob *job = nullptr;
 
     // test item without payload
     Item item(KMime::Message::mimeType());
     job = mStore->createItem(item, collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QVERIFY(!job->errorText().isEmpty());
     QCOMPARE(mStore->mLastCheckedJob, job);
@@ -219,7 +219,7 @@ void TemplateMethodsTest::testCreateItem()
     // test item with payload
     item.setPayloadFromData("Subject: dummy payload\n\nwith some content");
     job = mStore->createItem(item, collection);
-    QVERIFY(job != 0);
+    QVERIFY(job != nullptr);
     QCOMPARE(job->error(), 0);
     QVERIFY(job->errorText().isEmpty());
     QCOMPARE(mStore->mLastCheckedJob, job);

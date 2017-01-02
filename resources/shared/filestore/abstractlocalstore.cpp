@@ -783,14 +783,14 @@ FileStore::Job *FileStore::AbstractLocalStore::currentJob() const
 
 void FileStore::AbstractLocalStore::notifyError(int errorCode, const QString &errorText) const
 {
-    Q_ASSERT(d->mCurrentJob != 0);
+    Q_ASSERT(d->mCurrentJob != nullptr);
 
     d->mSession->setError(d->mCurrentJob, errorCode, errorText);
 }
 
 void FileStore::AbstractLocalStore::notifyCollectionsProcessed(const Collection::List &collections) const
 {
-    Q_ASSERT(d->mCurrentJob != 0);
+    Q_ASSERT(d->mCurrentJob != nullptr);
 
     d->mCollectionsProcessedNotifier.setCollections(collections);
     d->mCurrentJob->accept(&(d->mCollectionsProcessedNotifier));
@@ -798,7 +798,7 @@ void FileStore::AbstractLocalStore::notifyCollectionsProcessed(const Collection:
 
 void FileStore::AbstractLocalStore::notifyItemsProcessed(const Item::List &items) const
 {
-    Q_ASSERT(d->mCurrentJob != 0);
+    Q_ASSERT(d->mCurrentJob != nullptr);
 
     d->mItemsProcessedNotifier.setItems(items);
     d->mCurrentJob->accept(&(d->mItemsProcessedNotifier));

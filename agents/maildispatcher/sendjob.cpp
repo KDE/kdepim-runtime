@@ -137,7 +137,7 @@ void SendJob::Private::doTransport()
 void SendJob::Private::doAkonadiTransport()
 {
     Q_ASSERT(!resourceId.isEmpty());
-    Q_ASSERT(interface == 0);
+    Q_ASSERT(interface == nullptr);
 
     interface = new QDBusInterface(
         QLatin1String("org.freedesktop.Akonadi.Resource.") + resourceId,
@@ -171,7 +171,7 @@ void SendJob::Private::doTraditionalTransport()
     TransportJob *job = TransportManager::self()->createTransportJob(transportAttribute->transportId());
 
     Q_ASSERT(job);
-    Q_ASSERT(currentJob == 0);
+    Q_ASSERT(currentJob == nullptr);
 
     currentJob = job;
 
@@ -321,7 +321,7 @@ void SendJob::Private::doPostJob(bool transportSuccess, const QString &transport
 
 bool SendJob::Private::filterItem(int filterset)
 {
-    Q_ASSERT(mailfilterInterface == 0);
+    Q_ASSERT(mailfilterInterface == nullptr);
 
     // TODO: create on stack
     mailfilterInterface = new QDBusInterface(
@@ -413,7 +413,7 @@ void SendJob::Private::storeResult(bool success, const QString &message)
 {
     qCDebug(MAILDISPATCHER_LOG) << "success" << success << "message" << message;
 
-    Q_ASSERT(currentJob == 0);
+    Q_ASSERT(currentJob == nullptr);
     currentJob = new StoreResultJob(item, success, message);
     connect(currentJob, SIGNAL(result(KJob*)), q, SLOT(doEmitResult(KJob*)));
 }

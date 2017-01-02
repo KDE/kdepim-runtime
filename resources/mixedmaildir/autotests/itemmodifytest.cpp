@@ -59,7 +59,7 @@ class ItemModifyTest : public QObject
 
 public:
     ItemModifyTest()
-        : QObject(), mStore(0), mDir(0) {}
+        : QObject(), mStore(nullptr), mDir(nullptr) {}
 
     ~ItemModifyTest()
     {
@@ -94,9 +94,9 @@ void ItemModifyTest::init()
 void ItemModifyTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void ItemModifyTest::testExpectedFail()
@@ -126,7 +126,7 @@ void ItemModifyTest::testExpectedFail()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemModifyJob *job = 0;
+    FileStore::ItemModifyJob *job = nullptr;
 
     // test failure of modifying a non-existent maildir entry
     Collection collection1;
@@ -204,7 +204,7 @@ void ItemModifyTest::testIgnorePayload()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemModifyJob *job = 0;
+    FileStore::ItemModifyJob *job = nullptr;
 
     // test failure of modifying a non-existent maildir entry
     Collection collection1;
@@ -280,7 +280,7 @@ void ItemModifyTest::testModifyPayload()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemModifyJob *job = 0;
+    FileStore::ItemModifyJob *job = nullptr;
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
@@ -418,7 +418,7 @@ void ItemModifyTest::testModifyFlags()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemModifyJob *job = 0;
+    FileStore::ItemModifyJob *job = nullptr;
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;
@@ -574,7 +574,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemModifyJob *job = 0;
+    FileStore::ItemModifyJob *job = nullptr;
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;

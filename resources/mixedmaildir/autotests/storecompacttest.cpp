@@ -95,7 +95,7 @@ class StoreCompactTest : public QObject
     Q_OBJECT
 
 public:
-    StoreCompactTest() : QObject(), mStore(0), mDir(0)
+    StoreCompactTest() : QObject(), mStore(nullptr), mDir(nullptr)
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -130,9 +130,9 @@ void StoreCompactTest::init()
 void StoreCompactTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void StoreCompactTest::testCompact()
@@ -171,19 +171,19 @@ void StoreCompactTest::testCompact()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::CollectionFetchJob *collectionFetch = 0;
-    FileStore::ItemDeleteJob *itemDelete = 0;
-    FileStore::StoreCompactJob *job = 0;
+    FileStore::CollectionFetchJob *collectionFetch = nullptr;
+    FileStore::ItemDeleteJob *itemDelete = nullptr;
+    FileStore::StoreCompactJob *job = nullptr;
 
     Collection::List collections;
     Item::List items;
 
-    QSignalSpy *collectionSpy = 0;
-    QSignalSpy *itemSpy = 0;
+    QSignalSpy *collectionSpy = nullptr;
+    QSignalSpy *itemSpy = nullptr;
 
     MBoxEntry::List entryList;
     Collection collection;
-    FileStore::EntityCompactChangeAttribute *attribute = 0;
+    FileStore::EntityCompactChangeAttribute *attribute = nullptr;
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
     QVariant var;

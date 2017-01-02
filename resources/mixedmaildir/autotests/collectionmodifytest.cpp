@@ -40,7 +40,7 @@ class CollectionModifyTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionModifyTest() : QObject(), mStore(0), mDir(0) {}
+    CollectionModifyTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
 
     ~CollectionModifyTest()
     {
@@ -72,9 +72,9 @@ void CollectionModifyTest::init()
 void CollectionModifyTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void CollectionModifyTest::testRename()
@@ -129,7 +129,7 @@ void CollectionModifyTest::testRename()
 
     mStore->setPath(topDir.path());
 
-    FileStore::CollectionModifyJob *job = 0;
+    FileStore::CollectionModifyJob *job = nullptr;
     Collection collection;
 
     // test renaming top level collection
@@ -374,8 +374,8 @@ void CollectionModifyTest::testIndexPreservation()
     mStore->setPath(mDir->path());
 
     const QVariant colListVar = QVariant::fromValue<Collection::List>(Collection::List());
-    FileStore::CollectionModifyJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::CollectionModifyJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
     QVariant var;
     Collection::List collections;
     Item::List items;
@@ -485,8 +485,8 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     mStore->setPath(mDir->path());
 
-    FileStore::CollectionModifyJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::CollectionModifyJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
     Collection collection;
     Item::List items;
     QMap<QByteArray, int> flagCounts;

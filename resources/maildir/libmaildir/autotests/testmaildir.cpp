@@ -64,7 +64,7 @@ void MaildirTest::cleanup()
     QDir((subFolderPath)).removeRecursively();
 
     delete m_temp;
-    m_temp = 0;
+    m_temp = nullptr;
 }
 
 void MaildirTest::fillDirectory(const QString &name, int limit)

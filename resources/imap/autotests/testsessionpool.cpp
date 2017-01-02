@@ -35,8 +35,8 @@ private Q_SLOTS:
         QTest::addColumn<int>("errorCode");
         QTest::addColumn<QStringList>("capabilities");
 
-        ImapAccount *account = 0;
-        DummyPasswordRequester *requester = 0;
+        ImapAccount *account = nullptr;
+        DummyPasswordRequester *requester = nullptr;
         QList<QByteArray> scenario;
         QString password;
         QStringList capabilities;
@@ -275,7 +275,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.count(), 1);
 
         QCOMPARE(sessionSpy.at(0).at(0).toLongLong(), requestId);
-        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != 0);
+        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != nullptr);
         QCOMPARE(sessionSpy.at(0).at(2).toInt(), 0);
         QCOMPARE(sessionSpy.at(0).at(3).toString(), QString());
 
@@ -289,7 +289,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.count(), 2);
 
         QCOMPARE(sessionSpy.at(1).at(0).toLongLong(), requestId);
-        QVERIFY(sessionSpy.at(1).at(1).value<KIMAP::Session *>() != 0);
+        QVERIFY(sessionSpy.at(1).at(1).value<KIMAP::Session *>() != nullptr);
         // Should be different sessions...
         QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != sessionSpy.at(1).at(1).value<KIMAP::Session *>());
         QCOMPARE(sessionSpy.at(1).at(2).toInt(), 0);
@@ -305,7 +305,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.count(), 3);
 
         QCOMPARE(sessionSpy.at(2).at(0).toLongLong(), requestId);
-        QVERIFY(sessionSpy.at(2).at(1).value<KIMAP::Session *>() == 0);
+        QVERIFY(sessionSpy.at(2).at(1).value<KIMAP::Session *>() == nullptr);
         QCOMPARE(sessionSpy.at(2).at(2).toInt(), (int)SessionPool::NoAvailableSessionError);
         QVERIFY(!sessionSpy.at(2).at(3).toString().isEmpty());
 
@@ -512,7 +512,7 @@ private Q_SLOTS:
         QCOMPARE(lostSpy.count(), 0);   // We're not supposed to know the session pointer, so no connectionLost emitted
 
         // Make the session->deleteLater work, it can't happen in qWait (nested event loop)
-        QCoreApplication::sendPostedEvents(0, QEvent::DeferredDelete);
+        QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 
         QVERIFY(session.isNull());
 
@@ -609,7 +609,7 @@ private Q_SLOTS:
         pool.requestSession();
         QTest::qWait(100);
         QCOMPARE(sessionSpy.count(), 1);
-        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != 0);
+        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != nullptr);
 
         // Still connected obviously
         QVERIFY(pool.isConnected());
@@ -618,7 +618,7 @@ private Q_SLOTS:
         pool.requestSession();
         QTest::qWait(100);
         QCOMPARE(sessionSpy.count(), 2);
-        QVERIFY(sessionSpy.at(1).at(1).value<KIMAP::Session *>() != 0);
+        QVERIFY(sessionSpy.at(1).at(1).value<KIMAP::Session *>() != nullptr);
 
         // Still connected of course
         QVERIFY(pool.isConnected());
@@ -704,7 +704,7 @@ private Q_SLOTS:
         pool.requestSession();
         QTest::qWait(100);
         QCOMPARE(sessionSpy.count(), 1);
-        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != 0);
+        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != nullptr);
 
         KIMAP::Session *session = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
 

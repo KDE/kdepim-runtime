@@ -48,7 +48,7 @@ public:
         Error
     };
 
-    Q_ENUMS(MigrationState)
+    Q_ENUM(MigrationState)
 
     KMigratorBase();
     virtual ~KMigratorBase();

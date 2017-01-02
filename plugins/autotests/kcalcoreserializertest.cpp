@@ -78,7 +78,7 @@ private Q_SLOTS:
 
         QVERIFY(item.hasPayload<Event::Ptr>());
         const Event::Ptr event = item.payload<Event::Ptr>();
-        QVERIFY(event != 0);
+        QVERIFY(event != nullptr);
 
         QCOMPARE(event->summary(), QStringLiteral("Test event"));
         QCOMPARE(event->location(), QStringLiteral("here"));
@@ -122,7 +122,7 @@ private Q_SLOTS:
         item2.setPayloadFromData(bytes);
 
         Event::Ptr event2 = item2.payload<Event::Ptr>();
-        QVERIFY(event2 != 0);
+        QVERIFY(event2 != nullptr);
         QVERIFY(event2->summary().toUtf8() == QByteArray(utf_umlaut));
         QVERIFY(event2->summary().toLatin1() == QByteArray(latin1_umlaut));
     }

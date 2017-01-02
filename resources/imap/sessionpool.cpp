@@ -325,7 +325,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         // All is fine
         break;
     case PasswordRequesterInterface::ReconnectNeeded:
-        Q_ASSERT(m_pendingInitialSession != 0);
+        Q_ASSERT(m_pendingInitialSession != nullptr);
         cancelSessionCreation(m_pendingInitialSession, ReconnectNeededError, errorMessage);
         return;
     case PasswordRequesterInterface::UserRejected:

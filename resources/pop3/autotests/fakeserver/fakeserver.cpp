@@ -44,7 +44,7 @@ void FakeServerThread::run()
 
 FakeServer *FakeServerThread::server() const
 {
-    Q_ASSERT(mServer != 0);
+    Q_ASSERT(mServer != nullptr);
     return mServer;
 }
 

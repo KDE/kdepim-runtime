@@ -85,7 +85,7 @@ class ItemDeleteTest : public QObject
     Q_OBJECT
 
 public:
-    ItemDeleteTest() : QObject(), mStore(0), mDir(0)
+    ItemDeleteTest() : QObject(), mStore(nullptr), mDir(nullptr)
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -123,9 +123,9 @@ void ItemDeleteTest::init()
 void ItemDeleteTest::cleanup()
 {
     delete mStore;
-    mStore = 0;
+    mStore = nullptr;
     delete mDir;
-    mDir = 0;
+    mDir = nullptr;
 }
 
 void ItemDeleteTest::testMaildir()
@@ -144,7 +144,7 @@ void ItemDeleteTest::testMaildir()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemDeleteJob *job = 0;
+    FileStore::ItemDeleteJob *job = nullptr;
     QSet<QString> entrySet;
     QSet<QString> delIdSet;
     QString delId;
@@ -202,16 +202,16 @@ void ItemDeleteTest::testMBox()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemDeleteJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
-    FileStore::StoreCompactJob *storeCompact = 0;
+    FileStore::ItemDeleteJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
+    FileStore::StoreCompactJob *storeCompact = nullptr;
 
     Item::List items;
     Collection::List collections;
     KMBox::MBoxEntry::List entryList;
 
-    QSignalSpy *collectionsSpy = 0;
-    QSignalSpy *itemsSpy = 0;
+    QSignalSpy *collectionsSpy = nullptr;
+    QSignalSpy *itemsSpy = nullptr;
 
     QVariant var;
 
@@ -395,8 +395,8 @@ void ItemDeleteTest::testCachePreservation()
     Item::List items;
     QMap<QByteArray, int> flagCounts;
 
-    FileStore::ItemDeleteJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
+    FileStore::ItemDeleteJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
 
     // test deleting from maildir
     Collection collection1;
@@ -529,9 +529,9 @@ void ItemDeleteTest::testExpectedFailure()
     mStore->setPath(topDir.path());
 
     // common variables
-    FileStore::ItemDeleteJob *job = 0;
-    FileStore::ItemFetchJob *itemFetch = 0;
-    FileStore::StoreCompactJob *storeCompact = 0;
+    FileStore::ItemDeleteJob *job = nullptr;
+    FileStore::ItemFetchJob *itemFetch = nullptr;
+    FileStore::StoreCompactJob *storeCompact = nullptr;
 
     // test failure of fetching an item previously deleted from maildir
     Collection collection1;

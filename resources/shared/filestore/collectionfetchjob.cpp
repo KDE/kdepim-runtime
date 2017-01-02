@@ -43,7 +43,7 @@ public:
 FileStore::CollectionFetchJob::CollectionFetchJob(const Collection &collection, Type type, FileStore::AbstractJobSession *session)
     : FileStore::Job(session), d(new Private())
 {
-    Q_ASSERT(session != 0);
+    Q_ASSERT(session != nullptr);
 
     d->mType = type;
     d->mCollection = collection;
