@@ -25,12 +25,12 @@
 class SettingsHelper
 {
 public:
-    SettingsHelper() : q(Q_NULLPTR) {}
+    SettingsHelper() : q(nullptr) {}
     ~SettingsHelper()
     {
         qCWarning(POP3RESOURCE_LOG) << q;
         delete q;
-        q = Q_NULLPTR;
+        q = nullptr;
     }
     Settings *q;
 };

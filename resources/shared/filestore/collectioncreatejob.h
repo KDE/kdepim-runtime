@@ -40,7 +40,7 @@ class AKONADI_FILESTORE_EXPORT CollectionCreateJob : public Job
     Q_OBJECT
 
 public:
-    explicit CollectionCreateJob(const Collection &collection, const Collection &targetParent, AbstractJobSession *session = Q_NULLPTR);
+    explicit CollectionCreateJob(const Collection &collection, const Collection &targetParent, AbstractJobSession *session = nullptr);
 
     virtual ~CollectionCreateJob();
 

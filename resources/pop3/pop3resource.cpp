@@ -48,13 +48,13 @@ using namespace KWallet;
 POP3Resource::POP3Resource(const QString &id)
     : ResourceBase(id),
       mState(Idle),
-      mPopSession(Q_NULLPTR),
+      mPopSession(nullptr),
       mAskAgain(false),
       mIntervalTimer(new QTimer(this)),
       mTestLocalInbox(false),
-      mWallet(Q_NULLPTR),
+      mWallet(nullptr),
       mIdsToSaveValid(false),
-      mDeleteJob(Q_NULLPTR)
+      mDeleteJob(nullptr)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
     setNeedsNetwork(true);
@@ -71,7 +71,7 @@ POP3Resource::~POP3Resource()
 {
     Settings::self()->save();
     delete mWallet;
-    mWallet = Q_NULLPTR;
+    mWallet = nullptr;
 }
 
 void POP3Resource::configurationChanged()
@@ -165,7 +165,7 @@ void POP3Resource::walletOpenedForLoading(bool success)
         }
     }
     delete mWallet;
-    mWallet = Q_NULLPTR;
+    mWallet = nullptr;
 
     if (!passwordLoaded) {
         const QString queryText = buildLabelForPasswordDialog(
@@ -191,7 +191,7 @@ void POP3Resource::walletOpenedForSaving(bool success)
     }
 
     delete mWallet;
-    mWallet = Q_NULLPTR;
+    mWallet = nullptr;
     finish();
 }
 
@@ -199,7 +199,7 @@ void POP3Resource::showPasswordDialog(const QString &queryText)
 {
     QPointer<KPasswordDialog> dlg =
         new KPasswordDialog(
-        Q_NULLPTR,
+        nullptr,
         KPasswordDialog::ShowUsernameLine);
     dlg->setModal(true);
     dlg->setUsername(Settings::self()->login());
@@ -448,7 +448,7 @@ void POP3Resource::localFolderRequestJobFinished(KJob *job)
         return;
     }
     if (mTestLocalInbox) {
-        KMessageBox::information(Q_NULLPTR,
+        KMessageBox::information(nullptr,
                                  i18n("<qt>The folder you deleted was associated with the account "
                                       "<b>%1</b> which delivered mail into it. The folder the account "
                                       "delivers new mail into was reset to the main Inbox folder.</qt>", name()));
@@ -546,7 +546,7 @@ void POP3Resource::uidListJobResult(KJob *job)
         mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
         if (Settings::self()->leaveOnServer() && !mUidListValid) {
             // FIXME: this needs a proper parent window
-            KMessageBox::sorry(Q_NULLPTR,
+            KMessageBox::sorry(nullptr,
                                i18n("Your POP3 server (Account: %1) does not support "
                                     "the UIDL command: this command is required to determine, in a reliable way, "
                                     "which of the mails on the server KMail has already seen before;\n"
@@ -824,7 +824,7 @@ void POP3Resource::deleteJobResult(KJob *job)
     Settings::self()->setSeenUidTimeList(timeOfSeenUids);
     Settings::self()->save();
 
-    mDeleteJob = Q_NULLPTR;
+    mDeleteJob = nullptr;
     if (!mIdsWaitingToDelete.isEmpty()) {
         mDeleteJob = new DeleteJob(mPopSession);
         mDeleteJob->setDeleteIds(mIdsWaitingToDelete);
@@ -947,7 +947,7 @@ void POP3Resource::cancelSync(const QString &errorMessage, bool error)
         cancelTask(errorMessage);
         qCWarning(POP3RESOURCE_LOG) << "============== ERROR DURING POP3 SYNC ==========================";
         qCWarning(POP3RESOURCE_LOG) << errorMessage;
-        KMessageBox::error(Q_NULLPTR, errorMessage);
+        KMessageBox::error(nullptr, errorMessage);
     } else {
         qCDebug(POP3RESOURCE_LOG) << "Canceled the sync, but no error.";
         cancelTask();
@@ -971,14 +971,14 @@ void POP3Resource::resetState()
     mIdsWaitingToDelete.clear();
     if (mDeleteJob) {
         mDeleteJob->deleteLater();
-        mDeleteJob = Q_NULLPTR;
+        mDeleteJob = nullptr;
     }
     mUidListValid = false;
     mIntervalCheckInProgress = false;
     mSavePassword = false;
     updateIntervalTimer();
     delete mWallet;
-    mWallet = Q_NULLPTR;
+    mWallet = nullptr;
 
     if (mPopSession) {
         // Closing the POP session means the KIO slave will get disconnected, which
@@ -986,7 +986,7 @@ void POP3Resource::resetState()
         // Delete the POP session later, otherwise the scheduler makes us crash
         mPopSession->abortCurrentJob();
         mPopSession->deleteLater();
-        mPopSession = Q_NULLPTR;
+        mPopSession = nullptr;
     }
 }
 
@@ -1035,7 +1035,7 @@ void POP3Resource::doSetOnline(bool online)
         }
         Q_EMIT status(Idle, i18n("Offline"));
         delete mWallet;
-        mWallet = Q_NULLPTR;
+        mWallet = nullptr;
         clearCachedPassword();
     }
 }

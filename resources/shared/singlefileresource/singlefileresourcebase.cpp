@@ -41,7 +41,7 @@ Q_DECLARE_METATYPE(QEventLoopLocker *)
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase(const QString &id)
-    : ResourceBase(id), mDownloadJob(Q_NULLPTR), mUploadJob(Q_NULLPTR)
+    : ResourceBase(id), mDownloadJob(nullptr), mUploadJob(nullptr)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
     QTimer::singleShot(0, this, SLOT(readFile()));
@@ -268,7 +268,7 @@ void SingleFileResourceBase::slotDownloadJobResult(KJob *job)
         readLocalFile(QUrl::fromLocalFile(cacheFile()).toLocalFile());
     }
 
-    mDownloadJob = Q_NULLPTR;
+    mDownloadJob = nullptr;
     auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker *>();
     if (ref) {
         delete ref;
@@ -285,7 +285,7 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
         Q_EMIT status(Broken, message);
     }
 
-    mUploadJob = Q_NULLPTR;
+    mUploadJob = nullptr;
     auto ref = job->property("QEventLoopLocker").value<QEventLoopLocker *>();
     if (ref) {
         delete ref;

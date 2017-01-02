@@ -35,9 +35,9 @@ RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const 
     m_collection(collection),
     m_maildir(md),
     m_mimeType(KMime::Message::mimeType()),
-    m_transaction(Q_NULLPTR),
+    m_transaction(nullptr),
     m_transactionSize(0),
-    m_entryIterator(Q_NULLPTR),
+    m_entryIterator(nullptr),
     m_previousMtime(0),
     m_highestMtime(0)
 {
@@ -82,7 +82,7 @@ void RetrieveItemsJob::localListDone(KJob *job)
 
 void RetrieveItemsJob::processEntry()
 {
-    Akonadi::TransactionSequence *lastTrx = Q_NULLPTR;
+    Akonadi::TransactionSequence *lastTrx = nullptr;
 
     while (m_entryIterator->hasNext() || m_listingPath.endsWith(QLatin1String("/new/"))) {
         if (!m_entryIterator->hasNext()) {
@@ -154,7 +154,7 @@ void RetrieveItemsJob::processEntryDone(KJob *)
 void RetrieveItemsJob::entriesProcessed()
 {
     delete m_entryIterator;
-    m_entryIterator = Q_NULLPTR;
+    m_entryIterator = nullptr;
     if (!m_localItems.isEmpty()) {
         Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(Akonadi::valuesToVector(m_localItems), transaction());
         m_maildir.removeCachedKeys(m_localItems.keys());
@@ -190,7 +190,7 @@ Akonadi::TransactionSequence *RetrieveItemsJob::transaction()
     if (++m_transactionSize >= 100) {
         qCDebug(MAILDIRRESOURCE_LOG) << "Commit!";
         m_transaction->commit();
-        m_transaction = Q_NULLPTR;
+        m_transaction = nullptr;
         m_transactionSize = 0;
     }
 

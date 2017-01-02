@@ -35,7 +35,7 @@ class FiFoQueueJobSession : public AbstractJobSession
     Q_OBJECT
 
 public:
-    explicit FiFoQueueJobSession(QObject *parent = Q_NULLPTR);
+    explicit FiFoQueueJobSession(QObject *parent = nullptr);
 
     virtual ~FiFoQueueJobSession();
 

@@ -37,7 +37,7 @@
 #include "uidnextattribute.h"
 
 ChangeItemTask::ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(DeferIfNoSession, resource, parent), m_session(Q_NULLPTR), m_oldUid(0), m_newUid(0)
+    : ResourceTask(DeferIfNoSession, resource, parent), m_session(nullptr), m_oldUid(0), m_newUid(0)
 {
 
 }
@@ -261,7 +261,7 @@ void ChangeItemTask::recordNewUid()
     Akonadi::Collection c = i.parentCollection();
 
     // Get the current uid next value and store it
-    UidNextAttribute *uidAttr = Q_NULLPTR;
+    UidNextAttribute *uidAttr = nullptr;
     int oldNextUid = 0;
     if (c.hasAttribute("uidnext")) {
         uidAttr = static_cast<UidNextAttribute *>(c.attribute("uidnext"));
@@ -273,7 +273,7 @@ void ChangeItemTask::recordNewUid()
     // If not something happened in our back, so we don't update and a refetch will
     // happen at some point.
     if (m_newUid == oldNextUid) {
-        if (uidAttr == Q_NULLPTR) {
+        if (uidAttr == nullptr) {
             uidAttr = new UidNextAttribute(m_newUid + 1);
             c.addAttribute(uidAttr);
         } else {

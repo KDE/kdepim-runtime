@@ -29,7 +29,7 @@
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
-    , mSession(Q_NULLPTR)
+    , mSession(nullptr)
     , mRetrieveType(type)
 {
 }

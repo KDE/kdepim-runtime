@@ -29,7 +29,7 @@ class RetrieveCollectionMetadataTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
     virtual ~RetrieveCollectionMetadataTask();
 
 private Q_SLOTS:

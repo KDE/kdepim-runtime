@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2014-2016 Montel Laurent <montel@kde.org>
+   Copyright (C) 2014-2017 Montel Laurent <montel@kde.org>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -27,7 +27,7 @@ class NewMailNotifierShowMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierShowMessageJob(Akonadi::Item::Id id, QObject *parent = Q_NULLPTR);
+    explicit NewMailNotifierShowMessageJob(Akonadi::Item::Id id, QObject *parent = nullptr);
     ~NewMailNotifierShowMessageJob();
 
     void start() Q_DECL_OVERRIDE;

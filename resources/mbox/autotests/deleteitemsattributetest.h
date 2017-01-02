@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015-2016 Montel Laurent <montel@kde.org>
+  Copyright (c) 2015-2017 Montel Laurent <montel@kde.org>
 
   This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License, version 2, as
@@ -24,7 +24,7 @@ class DeleteItemsAttributeTest : public QObject
 {
     Q_OBJECT
 public:
-    explicit DeleteItemsAttributeTest(QObject *parent = Q_NULLPTR);
+    explicit DeleteItemsAttributeTest(QObject *parent = nullptr);
     ~DeleteItemsAttributeTest();
 
 private Q_SLOTS:

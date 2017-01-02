@@ -30,7 +30,7 @@ class MigrationStatusWidget: public QWidget
 {
     Q_OBJECT
 public:
-    explicit MigrationStatusWidget(MigrationScheduler &scheduler, QWidget *parent = Q_NULLPTR);
+    explicit MigrationStatusWidget(MigrationScheduler &scheduler, QWidget *parent = nullptr);
 private Q_SLOTS:
     void startSelected();
     void pauseSelected();

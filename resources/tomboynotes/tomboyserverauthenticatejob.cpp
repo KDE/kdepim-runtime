@@ -25,7 +25,7 @@
 
 TomboyServerAuthenticateJob::TomboyServerAuthenticateJob(KIO::AccessManager *manager, QObject *parent)
     : TomboyJobBase(manager, parent),
-      mWebView(new QWebEngineView(Q_NULLPTR))
+      mWebView(new QWebEngineView(nullptr))
 {
     // Connect the o2 authenfication signals
     connect(mO1, &O1::linkingFailed, this, &TomboyServerAuthenticateJob::onLinkingFailed);
@@ -96,7 +96,7 @@ void TomboyServerAuthenticateJob::onApiRequestFinished()
     }
 
     // Parse received data as JSON and get user-href
-    const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);
+    const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
     const QJsonObject jo = document.object();
     mUserURL = jo[QLatin1String("user-ref")].toObject()[QLatin1String("api-ref")].toString();
 
@@ -117,7 +117,7 @@ void TomboyServerAuthenticateJob::onUserRequestFinished()
     }
 
     // Parse received data as JSON and get contentURL
-    QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);
+    QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
     QJsonObject jo = document.object();
     mContentURL = jo[QLatin1String("notes-ref")].toObject()[QLatin1String("api-ref")].toString();
 

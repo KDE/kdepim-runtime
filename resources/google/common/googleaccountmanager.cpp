@@ -57,7 +57,7 @@ void GoogleAccountManager::initManager()
     // in when slotWalletOpened() is called on walletOpened() signal
     m_wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(),
                                            0, KWallet::Wallet::Synchronous);
-    slotWalletOpened(m_wallet != Q_NULLPTR);
+    slotWalletOpened(m_wallet != nullptr);
 //     connect( m_wallet, SIGNAL(walletOpened(bool)),
 //              this, SLOT(slotWalletOpened(bool)) );
     if (m_wallet) {

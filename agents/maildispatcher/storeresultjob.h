@@ -48,7 +48,7 @@ public:
      * @param message An error message in case the mail could not be dispatched.
      * @param parent The parent object.
      */
-    explicit StoreResultJob(const Akonadi::Item &item, bool success, const QString &message, QObject *parent = Q_NULLPTR);
+    explicit StoreResultJob(const Akonadi::Item &item, bool success, const QString &message, QObject *parent = nullptr);
 
     /**
      * Destroys the store result job.

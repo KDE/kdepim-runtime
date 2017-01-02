@@ -40,7 +40,7 @@ class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
     Q_OBJECT
 
 public:
-    explicit StoreCompactJob(AbstractJobSession *session = Q_NULLPTR);
+    explicit StoreCompactJob(AbstractJobSession *session = nullptr);
 
     virtual ~StoreCompactJob();
 

@@ -26,7 +26,7 @@ class O1Tomboy : public O1
 {
     Q_OBJECT
 public:
-    explicit O1Tomboy(QObject *parent = Q_NULLPTR);
+    explicit O1Tomboy(QObject *parent = nullptr);
 
     void setBaseURL(const QString &value);
     QString getRequestToken() const;

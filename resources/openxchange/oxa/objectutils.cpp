@@ -106,7 +106,7 @@ KJob *OXA::ObjectUtils::preloadJob(const Object &object)
         }
     }
 
-    return Q_NULLPTR;
+    return nullptr;
 }
 
 void *OXA::ObjectUtils::preloadData(const Object &object, KJob *job)
@@ -117,7 +117,7 @@ void *OXA::ObjectUtils::preloadData(const Object &object, KJob *job)
         }
     }
 
-    return Q_NULLPTR;
+    return nullptr;
 }
 
 QString OXA::ObjectUtils::davPath(Folder::Module module)

@@ -39,7 +39,7 @@
 
 KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent),
-      mSession(Q_NULLPTR),
+      mSession(nullptr),
       mAdding(false)
 {
 }

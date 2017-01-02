@@ -69,7 +69,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void initStart();
-    void initDone(KJob *job = Q_NULLPTR);
+    void initDone(KJob *job = nullptr);
 
 private:
     Akonadi::Item handleContent(const QString &vcal,

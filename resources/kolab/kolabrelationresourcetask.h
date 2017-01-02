@@ -28,7 +28,7 @@ class KolabRelationResourceTask : public ResourceTask
 {
     Q_OBJECT
 public:
-    explicit KolabRelationResourceTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit KolabRelationResourceTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
 
     Akonadi::Collection relationCollection() const;
 

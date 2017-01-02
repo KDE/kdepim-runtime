@@ -34,7 +34,7 @@ Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
 
 RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
-      mSession(Q_NULLPTR), mFolderFound(false)
+      mSession(nullptr), mFolderFound(false)
 {
 }
 

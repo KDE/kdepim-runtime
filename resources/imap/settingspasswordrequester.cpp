@@ -37,7 +37,7 @@
 #include "settings.h"
 
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
-    : PasswordRequesterInterface(parent), m_resource(resource), m_requestDialog(Q_NULLPTR), m_settingsDialog(Q_NULLPTR)
+    : PasswordRequesterInterface(parent), m_resource(resource), m_requestDialog(nullptr), m_settingsDialog(nullptr)
 {
 
 }
@@ -95,7 +95,7 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
 
 void SettingsPasswordRequester::onDialogDestroyed()
 {
-    m_requestDialog = Q_NULLPTR;
+    m_requestDialog = nullptr;
 }
 
 void SettingsPasswordRequester::slotNoClicked()
@@ -103,7 +103,7 @@ void SettingsPasswordRequester::slotNoClicked()
     connect(m_resource->settings(), &Settings::passwordRequestCompleted,
             this, &SettingsPasswordRequester::onPasswordRequestCompleted);
     m_resource->settings()->requestManualAuth();
-    m_requestDialog = Q_NULLPTR;
+    m_requestDialog = nullptr;
 }
 
 void SettingsPasswordRequester::slotYesClicked()
@@ -114,18 +114,18 @@ void SettingsPasswordRequester::slotYesClicked()
         m_settingsDialog = dialog;
         dialog->show();
     }
-    m_requestDialog = Q_NULLPTR;
+    m_requestDialog = nullptr;
 }
 
 void SettingsPasswordRequester::slotCancelClicked()
 {
     Q_EMIT done(UserRejected);
-    m_requestDialog = Q_NULLPTR;
+    m_requestDialog = nullptr;
 }
 
 void SettingsPasswordRequester::onSettingsDialogFinished(int result)
 {
-    m_settingsDialog = Q_NULLPTR;
+    m_settingsDialog = nullptr;
     if (result == QDialog::Accepted) {
         Q_EMIT done(ReconnectNeeded);
     } else {
@@ -137,7 +137,7 @@ void SettingsPasswordRequester::cancelPasswordRequests()
 {
     if (m_requestDialog) {
         if (m_requestDialog->close()) {
-            m_requestDialog = Q_NULLPTR;
+            m_requestDialog = nullptr;
         }
     }
 }

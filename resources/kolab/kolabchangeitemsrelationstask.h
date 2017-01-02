@@ -28,7 +28,7 @@ class KolabChangeItemsRelationsTask : public KolabRelationResourceTask
 {
     Q_OBJECT
 public:
-    explicit KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
 
 protected:
     void startRelationTask(KIMAP::Session *session) Q_DECL_OVERRIDE;

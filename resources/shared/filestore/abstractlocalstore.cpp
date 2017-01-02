@@ -301,7 +301,7 @@ class FileStore::AbstractLocalStore::Private
 
 public:
     explicit Private(FileStore::AbstractLocalStore *parent)
-        : q(parent), mSession(new FileStore::FiFoQueueJobSession(q)), mCurrentJob(Q_NULLPTR),
+        : q(parent), mSession(new FileStore::FiFoQueueJobSession(q)), mCurrentJob(nullptr),
           mTopLevelCollectionFetcher(mSession), mCollectionsProcessedNotifier(mSession),
           mItemsProcessedNotifier(mSession)
     {
@@ -333,7 +333,7 @@ void FileStore::AbstractLocalStore::Private::processJobs(const QList<FileStore::
             }
         }
         mSession->emitResult(job);
-        mCurrentJob = Q_NULLPTR;
+        mCurrentJob = nullptr;
     }
 }
 

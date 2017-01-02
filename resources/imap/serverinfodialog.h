@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2013-2016 Montel Laurent <montel@kde.org>
+  Copyright (c) 2013-2017 Montel Laurent <montel@kde.org>
 
   This library is free software; you can redistribute it and/or modify it
   under the terms of the GNU Library General Public License as published by
@@ -29,7 +29,7 @@ class ServerInfoTextBrowser : public QTextBrowser
 {
     Q_OBJECT
 public:
-    explicit ServerInfoTextBrowser(QWidget *parent = Q_NULLPTR);
+    explicit ServerInfoTextBrowser(QWidget *parent = nullptr);
     ~ServerInfoTextBrowser();
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;

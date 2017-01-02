@@ -56,7 +56,7 @@ void TomboyItemDownloadJob::onRequestFinished()
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemDownloadJob: Network request finished. No error occured";
 
     // Parse received data as JSON
-    const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);
+    const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
 
     const QJsonObject jsonNote = document.object();
 

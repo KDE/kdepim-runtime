@@ -49,7 +49,7 @@ class CompactChangeHelper::Private
     CompactChangeHelper *const q;
 
 public:
-    explicit Private(CompactChangeHelper *parent) : q(parent), mSession(Q_NULLPTR)
+    explicit Private(CompactChangeHelper *parent) : q(parent), mSession(nullptr)
     {
     }
 

@@ -141,8 +141,8 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
     connect(mTextToSpeak, &QCheckBox::toggled, mTextToSpeakSetting, &QLineEdit::setEnabled);
 #else
-    mTextToSpeak = Q_NULLPTR;
-    mTextToSpeakSetting = Q_NULLPTR;
+    mTextToSpeak = nullptr;
+    mTextToSpeakSetting = nullptr;
 #endif
 
     mNotify = new KNotifyConfigWidget(this);

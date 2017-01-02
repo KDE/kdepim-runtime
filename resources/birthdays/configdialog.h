@@ -31,7 +31,7 @@ class ConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(QWidget *parent = Q_NULLPTR);
+    explicit ConfigDialog(QWidget *parent = nullptr);
     ~ConfigDialog();
 
 private:

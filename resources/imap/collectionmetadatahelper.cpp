@@ -75,7 +75,7 @@ bool CollectionMetadataHelper::applyRights(Akonadi::Collection &collection, cons
         accessRevoked = true;
     }
 
-    // kDebug(5327) << collection.remoteId()
+    // qDebug() << collection.remoteId()
     //             << "imapRights:" << imapRights
     //             << "newRights:" << newRights
     //             << "oldRights:" << collection.rights();

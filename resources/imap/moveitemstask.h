@@ -31,7 +31,7 @@ class MoveItemsTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit MoveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit MoveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
     virtual ~MoveItemsTask();
 
 private Q_SLOTS:

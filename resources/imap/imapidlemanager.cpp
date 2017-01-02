@@ -38,8 +38,8 @@
 
 ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state,
                                  SessionPool *pool, ImapResourceBase *parent)
-    : QObject(parent), m_sessionRequestId(0), m_pool(pool), m_session(Q_NULLPTR),
-      m_idle(Q_NULLPTR), m_resource(parent), m_state(state),
+    : QObject(parent), m_sessionRequestId(0), m_pool(pool), m_session(nullptr),
+      m_idle(nullptr), m_resource(parent), m_state(state),
       m_lastMessageCount(-1), m_lastRecentCount(-1)
 {
     connect(pool, &SessionPool::sessionRequestDone, this, &ImapIdleManager::onSessionRequestDone);
@@ -63,11 +63,11 @@ void ImapIdleManager::stop()
 {
     if (m_idle) {
         m_idle->stop();
-        disconnect(m_idle, Q_NULLPTR, this, Q_NULLPTR);
-        m_idle = Q_NULLPTR;
+        disconnect(m_idle, nullptr, this, nullptr);
+        m_idle = nullptr;
     }
     if (m_pool) {
-        disconnect(m_pool, Q_NULLPTR, this, Q_NULLPTR);
+        disconnect(m_pool, nullptr, this, nullptr);
     }
 }
 
@@ -79,7 +79,7 @@ KIMAP::Session *ImapIdleManager::session() const
 void ImapIdleManager::reconnect()
 {
     qCDebug(IMAPRESOURCE_LOG) << "attempting to reconnect IDLE session";
-    if (m_session == Q_NULLPTR && m_pool->isConnected() && m_sessionRequestId == 0) {
+    if (m_session == nullptr && m_pool->isConnected() && m_sessionRequestId == 0) {
         m_sessionRequestId = m_pool->requestSession();
     }
 }
@@ -87,7 +87,7 @@ void ImapIdleManager::reconnect()
 void ImapIdleManager::onSessionRequestDone(qint64 requestId, KIMAP::Session *session,
         int errorCode, const QString &/*errorString*/)
 {
-    if (requestId != m_sessionRequestId || session == Q_NULLPTR || errorCode != SessionPool::NoError) {
+    if (requestId != m_sessionRequestId || session == nullptr || errorCode != SessionPool::NoError) {
         return;
     }
 
@@ -115,7 +115,7 @@ void ImapIdleManager::onConnectionLost(KIMAP::Session *session)
         // Our session becomes invalid, so get ride of
         // the pointer, we don't need to release it once the
         // task is done
-        m_session = Q_NULLPTR;
+        m_session = nullptr;
         QMetaObject::invokeMethod(this, "reconnect", Qt::QueuedConnection);
     }
 }
@@ -125,7 +125,7 @@ void ImapIdleManager::onPoolDisconnect()
     // All the sessions in the pool we used changed,
     // so get ride of the pointer, we don't need to
     // release our session anymore
-    m_pool = Q_NULLPTR;
+    m_pool = nullptr;
 }
 
 void ImapIdleManager::onSelectDone(KJob *job)
@@ -139,7 +139,7 @@ void ImapIdleManager::onSelectDone(KJob *job)
 void ImapIdleManager::onIdleStopped()
 {
     qCDebug(IMAPRESOURCE_LOG) << "IDLE dropped maybe we should reconnect?";
-    m_idle = Q_NULLPTR;
+    m_idle = nullptr;
     if (m_session) {
         qCDebug(IMAPRESOURCE_LOG) << "Restarting the IDLE session!";
         m_idle = new KIMAP::IdleJob(m_session);

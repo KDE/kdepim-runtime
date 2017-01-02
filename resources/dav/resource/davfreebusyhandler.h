@@ -39,7 +39,7 @@ public:
     /**
      * Constructs a new DavFreeBusyHandler
      */
-    explicit DavFreeBusyHandler(QObject *parent = Q_NULLPTR);
+    explicit DavFreeBusyHandler(QObject *parent = nullptr);
 
     /**
      * Checks if the free-busy info for @p email can be handled

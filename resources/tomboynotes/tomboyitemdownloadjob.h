@@ -27,7 +27,7 @@ class TomboyItemDownloadJob : public TomboyJobBase
 {
     Q_OBJECT
 public:
-    explicit TomboyItemDownloadJob(const Akonadi::Item &item, KIO::AccessManager *manager, QObject *parent = Q_NULLPTR);
+    explicit TomboyItemDownloadJob(const Akonadi::Item &item, KIO::AccessManager *manager, QObject *parent = nullptr);
     // returns the parsed results wrapped in Akonadi::Item, see bellow
     Akonadi::Item item() const;
 

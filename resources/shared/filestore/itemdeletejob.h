@@ -39,7 +39,7 @@ class AKONADI_FILESTORE_EXPORT ItemDeleteJob : public Job
     Q_OBJECT
 
 public:
-    explicit ItemDeleteJob(const Item &item, AbstractJobSession *session = Q_NULLPTR);
+    explicit ItemDeleteJob(const Item &item, AbstractJobSession *session = nullptr);
 
     virtual ~ItemDeleteJob();
 

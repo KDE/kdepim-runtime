@@ -38,7 +38,7 @@ class RetrieveItemsJob : public Akonadi::Job
 {
     Q_OBJECT
 public:
-    RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent = Q_NULLPTR);
+    RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent = nullptr);
 
     ~RetrieveItemsJob();
 

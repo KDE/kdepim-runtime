@@ -32,7 +32,7 @@ class ChangeItemsFlagsTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
     virtual ~ChangeItemsFlagsTask();
 
 protected Q_SLOTS:

@@ -51,12 +51,12 @@
 
 RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
-      m_session(Q_NULLPTR),
+      m_session(nullptr),
       m_fetchedMissingBodies(-1),
       m_fetchMissingBodies(false),
       m_incremental(true),
       m_localHighestModSeq(-1),
-      m_batchFetcher(Q_NULLPTR),
+      m_batchFetcher(nullptr),
       m_uidBasedFetch(true),
       m_flagsChanged(false),
       m_messageCount(-1),
@@ -558,7 +558,7 @@ void RetrieveItemsTask::onItemsRetrieved(const Akonadi::Item::List &addedItems)
 
 void RetrieveItemsTask::onRetrievalDone(KJob *job)
 {
-    m_batchFetcher = Q_NULLPTR;
+    m_batchFetcher = nullptr;
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
@@ -616,7 +616,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
 
 void RetrieveItemsTask::onFlagsFetchDone(KJob *job)
 {
-    m_batchFetcher = Q_NULLPTR;
+    m_batchFetcher = nullptr;
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());

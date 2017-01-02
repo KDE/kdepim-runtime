@@ -28,7 +28,7 @@ class TomboyServerAuthenticateJob : public TomboyJobBase
 {
     Q_OBJECT
 public:
-    TomboyServerAuthenticateJob(KIO::AccessManager *manager, QObject *parent = Q_NULLPTR);
+    TomboyServerAuthenticateJob(KIO::AccessManager *manager, QObject *parent = nullptr);
 
     ~TomboyServerAuthenticateJob();
 

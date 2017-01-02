@@ -38,7 +38,7 @@ class CompactChangeHelper : public QObject
     Q_OBJECT
 
 public:
-    explicit CompactChangeHelper(const QByteArray &sessionId, QObject *parent = Q_NULLPTR);
+    explicit CompactChangeHelper(const QByteArray &sessionId, QObject *parent = nullptr);
 
     ~CompactChangeHelper();
 

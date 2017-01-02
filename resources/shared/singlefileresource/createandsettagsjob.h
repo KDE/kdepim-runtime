@@ -28,7 +28,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT CreateAndSetTagsJob : public KJob
 {
     Q_OBJECT
 public:
-    explicit CreateAndSetTagsJob(const Akonadi::Item &item, const Akonadi::Tag::List &tags, QObject *parent = Q_NULLPTR);
+    explicit CreateAndSetTagsJob(const Akonadi::Item &item, const Akonadi::Tag::List &tags, QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

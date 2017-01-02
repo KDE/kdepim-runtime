@@ -61,9 +61,9 @@ public:
     Private(const Item &itm, SendJob *qq)
         : q(qq),
           item(itm),
-          currentJob(Q_NULLPTR),
-          interface(Q_NULLPTR),
-          mailfilterInterface(Q_NULLPTR),
+          currentJob(nullptr),
+          interface(nullptr),
+          mailfilterInterface(nullptr),
           aborting(false)
     {
     }
@@ -147,7 +147,7 @@ void SendJob::Private::doAkonadiTransport()
     if (!interface->isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of resource %1.", resourceId));
         delete interface;
-        interface = Q_NULLPTR;
+        interface = nullptr;
         return;
     }
 
@@ -230,7 +230,7 @@ void SendJob::Private::transportPercent(KJob *job, unsigned long)
 void SendJob::Private::transportResult(KJob *job)
 {
     Q_ASSERT(currentJob == job);
-    currentJob = Q_NULLPTR;
+    currentJob = nullptr;
     doPostJob(!job->error(), job->errorString());
 }
 
@@ -255,7 +255,7 @@ void SendJob::Private::resourceResult(qlonglong itemId, int result,
     Q_UNUSED(itemId);
     Q_ASSERT(interface);
     delete interface; // So that abort() knows the transport job is over.
-    interface = Q_NULLPTR;
+    interface = nullptr;
 
     const TransportResourceBase::TransportResult transportResult =
         static_cast<TransportResourceBase::TransportResult>(result);
@@ -332,7 +332,7 @@ bool SendJob::Private::filterItem(int filterset)
     if (!mailfilterInterface->isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of mailfilteragent."));
         delete mailfilterInterface;
-        mailfilterInterface = Q_NULLPTR;
+        mailfilterInterface = nullptr;
         return false;
     }
 
@@ -341,12 +341,12 @@ bool SendJob::Private::filterItem(int filterset)
     if (!reply.isValid()) {
         storeResult(false, i18n("Invalid D-Bus reply from mailfilteragent"));
         delete mailfilterInterface;
-        mailfilterInterface = Q_NULLPTR;
+        mailfilterInterface = nullptr;
         return false;
     }
 
     delete mailfilterInterface;
-    mailfilterInterface = Q_NULLPTR;
+    mailfilterInterface = nullptr;
     return true;
 }
 
@@ -375,7 +375,7 @@ void SendJob::Private::slotSentMailCollectionFetched(KJob *job)
 void SendJob::Private::postJobResult(KJob *job)
 {
     Q_ASSERT(currentJob == job);
-    currentJob = Q_NULLPTR;
+    currentJob = nullptr;
     const SentBehaviourAttribute *attribute = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT(attribute);
 
@@ -421,7 +421,7 @@ void SendJob::Private::storeResult(bool success, const QString &message)
 void SendJob::Private::doEmitResult(KJob *job)
 {
     Q_ASSERT(currentJob == job);
-    currentJob = Q_NULLPTR;
+    currentJob = nullptr;
 
     if (job->error()) {
         qCWarning(MAILDISPATCHER_LOG) << "Error storing result.";
@@ -470,7 +470,7 @@ void SendJob::abort()
         qCDebug(MAILDISPATCHER_LOG) << "Abort called, active transport job.";
         // Abort transport.
         d->currentJob->kill(KJob::EmitResult);
-    } else if (d->interface != Q_NULLPTR) {
+    } else if (d->interface != nullptr) {
         qCDebug(MAILDISPATCHER_LOG) << "Abort called, propagating to resource.";
         // Abort resource doing transport.
         AgentInstance instance = AgentManager::self()->instance(d->resourceId);

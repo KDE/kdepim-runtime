@@ -38,7 +38,7 @@ class NewMailNotifierCollectionProxyModel : public QIdentityProxyModel
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierCollectionProxyModel(QObject *parent = Q_NULLPTR);
+    explicit NewMailNotifierCollectionProxyModel(QObject *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
@@ -55,7 +55,7 @@ class NewMailNotifierSelectCollectionWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = Q_NULLPTR);
+    explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = nullptr);
     ~NewMailNotifierSelectCollectionWidget();
 
     void updateCollectionsRecursive();

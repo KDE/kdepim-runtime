@@ -45,7 +45,7 @@ public:
      * @param item The item to send.
      * @param parent The parent object.
      */
-    explicit SendJob(const Akonadi::Item &item, QObject *parent = Q_NULLPTR);
+    explicit SendJob(const Akonadi::Item &item, QObject *parent = nullptr);
 
     /**
      * Destroys the send job.

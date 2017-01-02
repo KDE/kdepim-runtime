@@ -123,18 +123,18 @@ public:
         }
 
         FileStore::Job *job = mJobQueue.dequeue();
-        while (job != Q_NULLPTR && job->error() != 0) {
+        while (job != nullptr && job->error() != 0) {
             /*        qDebug() << "Dequeued job" << job << "has error ("
                              << job->error() << "," << job->errorText() << ")";*/
             mParent->emitResult(job);
             if (!mJobQueue.isEmpty()) {
                 job = mJobQueue.dequeue();
             } else {
-                job = Q_NULLPTR;
+                job = nullptr;
             }
         }
 
-        if (job != Q_NULLPTR) {
+        if (job != nullptr) {
             /*        qDebug() << "Dequeued job" << job << "is ready";*/
             QList<FileStore::Job *> jobs;
             jobs << job;

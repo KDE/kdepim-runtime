@@ -306,7 +306,7 @@ void MBoxContext::readIndexData()
     for (const KMBox::MBoxEntry &entry : entries) {
         const quint64 indexOffset = entry.messageOffset() + entry.separatorSize();
         const KMIndexDataPtr data = indexReader.dataByOffset(indexOffset);
-        if (data != Q_NULLPTR) {
+        if (data != nullptr) {
             mIndexData.insert(entry.messageOffset(), data);
         }
     }
@@ -489,7 +489,7 @@ void MaildirContext::readIndexData()
     const QStringList entries = mMaildir.entryList();
     for (const QString &entry : entries) {
         const KMIndexDataPtr data = indexReader.dataByFileName(entry);
-        if (data != Q_NULLPTR) {
+        if (data != nullptr) {
             mIndexData.insert(entry, data);
         }
     }
@@ -762,7 +762,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
 
         if (mbox->hasIndexData()) {
             const KMIndexDataPtr indexData = mbox->indexData(entry.messageOffset());
-            if (indexData != Q_NULLPTR && !indexData->isEmpty()) {
+            if (indexData != nullptr && !indexData->isEmpty()) {
                 item.setFlags(indexData->status().statusFlags());
 
                 quint64 uid = indexData->uid();
@@ -777,7 +777,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
                                                       << tagList.count() << "tags:" << tagList;
                     tagListHash.insert(item.remoteId(), tagList);
                 }
-            } else if (indexData == Q_NULLPTR) {
+            } else if (indexData == nullptr) {
                 Akonadi::MessageStatus status;
                 status.setDeleted(true),
                                   item.setFlags(status.statusFlags());
@@ -821,7 +821,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MaildirPtr 
 
         if (md->hasIndexData()) {
             const KMIndexDataPtr indexData = md->indexData(entry);
-            if (indexData != Q_NULLPTR && !indexData->isEmpty()) {
+            if (indexData != nullptr && !indexData->isEmpty()) {
                 item.setFlags(indexData->status().statusFlags());
 
                 const quint64 uid = indexData->uid();

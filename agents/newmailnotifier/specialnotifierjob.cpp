@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2013-2016 Montel Laurent <montel@kde.org>
+   Copyright (C) 2013-2017 Montel Laurent <montel@kde.org>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -155,7 +155,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification = new KNotification(QStringLiteral("new-email"), Q_NULLPTR, KNotification::CloseOnTimeout);
+        KNotification *notification = new KNotification(QStringLiteral("new-email"), nullptr, KNotification::CloseOnTimeout);
         notification->setText(result.join(QStringLiteral("\n")));
         notification->setPixmap(pixmap);
         notification->setActions(QStringList() << i18n("Show mail..."));

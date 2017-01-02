@@ -88,7 +88,7 @@ public:
         InvalidJobContext
     };
 
-    explicit Job(AbstractJobSession *session = Q_NULLPTR);
+    explicit Job(AbstractJobSession *session = nullptr);
 
     virtual ~Job();
 

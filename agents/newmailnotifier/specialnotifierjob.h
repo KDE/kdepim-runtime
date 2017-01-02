@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2013-2016 Montel Laurent <montel@kde.org>
+   Copyright (C) 2013-2017 Montel Laurent <montel@kde.org>
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -30,7 +30,7 @@ class SpecialNotifierJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = Q_NULLPTR);
+    explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = nullptr);
     ~SpecialNotifierJob();
 
     void setDefaultPixmap(const QPixmap &pixmap);

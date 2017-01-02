@@ -143,7 +143,7 @@ void Settings::onWalletOpened(bool success)
 
 void Settings::requestManualAuth()
 {
-    KPasswordDialog *dlg = new KPasswordDialog(Q_NULLPTR);
+    KPasswordDialog *dlg = new KPasswordDialog(nullptr);
     dlg->setModal(true);
     dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.",
                         userName(), imapServer()));
@@ -165,7 +165,7 @@ void Settings::onDialogFinished(int result)
 
 QString Settings::password(bool *userRejected) const
 {
-    if (userRejected != Q_NULLPTR) {
+    if (userRejected != nullptr) {
         *userRejected = false;
     }
 
@@ -181,7 +181,7 @@ QString Settings::password(bool *userRejected) const
         } else {
             wallet->createFolder(QStringLiteral("imap"));
         }
-    } else if (userRejected != Q_NULLPTR) {
+    } else if (userRejected != nullptr) {
         *userRejected = true;
     }
     delete wallet;
@@ -190,7 +190,7 @@ QString Settings::password(bool *userRejected) const
 
 QString Settings::sieveCustomPassword(bool *userRejected) const
 {
-    if (userRejected != Q_NULLPTR) {
+    if (userRejected != nullptr) {
         *userRejected = false;
     }
 
@@ -206,7 +206,7 @@ QString Settings::sieveCustomPassword(bool *userRejected) const
         } else {
             wallet->createFolder(QStringLiteral("imap"));
         }
-    } else if (userRejected != Q_NULLPTR) {
+    } else if (userRejected != nullptr) {
         *userRejected = true;
     }
     delete wallet;

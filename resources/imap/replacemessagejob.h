@@ -32,7 +32,7 @@ class ReplaceMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext = -1, KIMAP::ImapSet oldUids = KIMAP::ImapSet(), QObject *parent = Q_NULLPTR);
+    ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext = -1, KIMAP::ImapSet oldUids = KIMAP::ImapSet(), QObject *parent = nullptr);
 
     qint64 newUid() const;
 

@@ -76,9 +76,9 @@ public:
 AccountDialog::AccountDialog(POP3Resource *parentResource, WId parentWindow)
     : QDialog(),
       mParentResource(parentResource),
-      mServerTest(Q_NULLPTR),
+      mServerTest(nullptr),
       mValidator(this),
-      mWallet(Q_NULLPTR)
+      mWallet(nullptr)
 {
     KWindowSystem::setMainWindow(this, parentWindow);
     setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
@@ -92,9 +92,9 @@ AccountDialog::AccountDialog(POP3Resource *parentResource, WId parentWindow)
 AccountDialog::~AccountDialog()
 {
     delete mWallet;
-    mWallet = Q_NULLPTR;
+    mWallet = nullptr;
     delete mServerTest;
-    mServerTest = Q_NULLPTR;
+    mServerTest = nullptr;
 }
 
 void AccountDialog::setupWidgets()
@@ -293,7 +293,7 @@ void AccountDialog::walletOpenedForSaving(bool success)
     }
 
     delete mWallet;
-    mWallet = Q_NULLPTR;
+    mWallet = nullptr;
     accept();
 }
 

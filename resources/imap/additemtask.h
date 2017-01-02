@@ -29,7 +29,7 @@ class AddItemTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit AddItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit AddItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
     virtual ~AddItemTask();
 
 protected:

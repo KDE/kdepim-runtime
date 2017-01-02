@@ -23,7 +23,7 @@ TomboyJobBase::TomboyJobBase(KIO::AccessManager *manager, QObject *parent)
     : KCompositeJob(parent),
       mManager(manager),
       mO1(new O1Tomboy(this)),
-      mReply(Q_NULLPTR)
+      mReply(nullptr)
 
 {
     mRequestor = new O1Requestor(mManager, mO1, this);

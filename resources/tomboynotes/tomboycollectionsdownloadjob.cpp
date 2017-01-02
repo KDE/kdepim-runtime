@@ -56,7 +56,7 @@ void TomboyCollectionsDownloadJob::onRequestFinished()
     }
 
     // Parse received data as JSON
-    const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), Q_NULLPTR);
+    const QJsonDocument document = QJsonDocument::fromJson(mReply->readAll(), nullptr);
 
     const QJsonObject jo = document.object();
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: " << jo;

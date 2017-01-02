@@ -59,7 +59,7 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
 #ifdef HAVE_TEXTTOSPEECH
-    , mTextToSpeech(Q_NULLPTR)
+    , mTextToSpeech(nullptr)
 #endif
 {
     Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
@@ -494,7 +494,7 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
     KNotification::event(QStringLiteral("new-email"),
                          message,
                          pixmap,
-                         Q_NULLPTR,
+                         nullptr,
                          KNotification::CloseOnTimeout,
                          QStringLiteral("akonadi_newmailnotifier_agent"));
 

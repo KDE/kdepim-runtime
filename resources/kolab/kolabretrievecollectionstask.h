@@ -34,7 +34,7 @@ class KolabRetrieveCollectionsTask : public ResourceTask
     Q_OBJECT
 
 public:
-    explicit KolabRetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = Q_NULLPTR);
+    explicit KolabRetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
     virtual ~KolabRetrieveCollectionsTask();
 
 private Q_SLOTS:
@@ -76,7 +76,7 @@ class RetrieveMetadataJob : public KJob
 {
     Q_OBJECT
 public:
-    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = Q_NULLPTR);
+    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = nullptr);
     void start() Q_DECL_OVERRIDE;
 
     QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;

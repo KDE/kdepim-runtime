@@ -47,7 +47,7 @@ public:
         Recursive
     };
 
-    explicit CollectionFetchJob(const Collection &collection, Type type = FirstLevel, AbstractJobSession *session = Q_NULLPTR);
+    explicit CollectionFetchJob(const Collection &collection, Type type = FirstLevel, AbstractJobSession *session = nullptr);
 
     virtual ~CollectionFetchJob();
 

@@ -41,7 +41,7 @@ class SetupWizard : public QWizard
     Q_OBJECT
 
 public:
-    explicit SetupWizard(QWidget *parent = Q_NULLPTR);
+    explicit SetupWizard(QWidget *parent = nullptr);
 
     enum {
         W_CredentialsPage,
@@ -69,7 +69,7 @@ public:
 class PredefinedProviderPage : public QWizardPage
 {
 public:
-    explicit PredefinedProviderPage(QWidget *parent = Q_NULLPTR);
+    explicit PredefinedProviderPage(QWidget *parent = nullptr);
 
     void initializePage() Q_DECL_OVERRIDE;
     int nextId() const Q_DECL_OVERRIDE;
@@ -84,7 +84,7 @@ private:
 class CredentialsPage : public QWizardPage
 {
 public:
-    explicit CredentialsPage(QWidget *parent = Q_NULLPTR);
+    explicit CredentialsPage(QWidget *parent = nullptr);
     int nextId() const Q_DECL_OVERRIDE;
 
 private:
@@ -97,7 +97,7 @@ class ServerTypePage : public QWizardPage
     Q_OBJECT
 
 public:
-    explicit ServerTypePage(QWidget *parent = Q_NULLPTR);
+    explicit ServerTypePage(QWidget *parent = nullptr);
 
     bool validatePage() Q_DECL_OVERRIDE;
 
@@ -112,7 +112,7 @@ class ConnectionPage : public QWizardPage
     Q_OBJECT
 
 public:
-    explicit ConnectionPage(QWidget *parent = Q_NULLPTR);
+    explicit ConnectionPage(QWidget *parent = nullptr);
 
     void initializePage() Q_DECL_OVERRIDE;
     void cleanupPage() Q_DECL_OVERRIDE;
@@ -137,7 +137,7 @@ class CheckPage : public QWizardPage
     Q_OBJECT
 
 public:
-    explicit CheckPage(QWidget *parent = Q_NULLPTR);
+    explicit CheckPage(QWidget *parent = nullptr);
 
 private:
     void checkConnection();

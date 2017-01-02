@@ -40,7 +40,7 @@ class AKONADI_FILESTORE_EXPORT ItemModifyJob : public Job
     Q_OBJECT
 
 public:
-    explicit ItemModifyJob(const Item &item, AbstractJobSession *session = Q_NULLPTR);
+    explicit ItemModifyJob(const Item &item, AbstractJobSession *session = nullptr);
 
     virtual ~ItemModifyJob();
 

@@ -44,7 +44,7 @@ class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
 {
     Q_OBJECT
 public:
-    explicit SubscriptionFilterProxyModel(QObject *parent = Q_NULLPTR);
+    explicit SubscriptionFilterProxyModel(QObject *parent = nullptr);
 
 public Q_SLOTS:
     void setSearchPattern(const QString &pattern);
@@ -73,7 +73,7 @@ public:
     };
     Q_DECLARE_FLAGS(SubscriptionDialogOptions, SubscriptionDialogOption)
 
-    explicit SubscriptionDialog(QWidget *parent = Q_NULLPTR, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None);
+    explicit SubscriptionDialog(QWidget *parent = nullptr, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None);
     ~SubscriptionDialog();
 
     void connectAccount(const ImapAccount &account, const QString &password);

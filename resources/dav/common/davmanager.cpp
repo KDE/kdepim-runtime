@@ -28,7 +28,7 @@
 #include <QtCore/QUrl>
 #include <QtXml/QDomDocument>
 
-DavManager *DavManager::mSelf = Q_NULLPTR;
+DavManager *DavManager::mSelf = nullptr;
 
 DavManager::DavManager()
 {
@@ -95,7 +95,7 @@ const DavProtocolBase *DavManager::davProtocol(DavUtils::Protocol protocol)
     if (createProtocol(protocol)) {
         return mProtocols[ protocol ];
     } else {
-        return Q_NULLPTR;
+        return nullptr;
     }
 }
 

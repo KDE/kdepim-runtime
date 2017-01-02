@@ -41,7 +41,7 @@ public:
      *
      * @param parent The parent object.
      */
-    explicit OutboxQueue(QObject *parent = Q_NULLPTR);
+    explicit OutboxQueue(QObject *parent = nullptr);
 
     /**
      * Destroys the outbox queue.

@@ -34,7 +34,7 @@ class ConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = Q_NULLPTR);
+    explicit ConfigDialog(Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = nullptr);
     ~ConfigDialog();
 
 private Q_SLOTS:

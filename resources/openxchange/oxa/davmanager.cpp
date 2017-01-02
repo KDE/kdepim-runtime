@@ -27,7 +27,7 @@
 
 using namespace OXA;
 
-DavManager *DavManager::mSelf = Q_NULLPTR;
+DavManager *DavManager::mSelf = nullptr;
 
 DavManager::DavManager()
 {

@@ -382,7 +382,7 @@ bool ServerTypePage::validatePage()
  */
 
 ConnectionPage::ConnectionPage(QWidget *parent)
-    : QWizardPage(parent), mPreviewLayout(Q_NULLPTR), mCalDavUrlPreview(Q_NULLPTR), mCardDavUrlPreview(Q_NULLPTR), mGroupDavUrlPreview(Q_NULLPTR)
+    : QWizardPage(parent), mPreviewLayout(nullptr), mCalDavUrlPreview(nullptr), mCardDavUrlPreview(nullptr), mGroupDavUrlPreview(nullptr)
 {
     setTitle(i18n("Connection"));
     setSubTitle(i18n("Enter the connection information for the groupware server"));
@@ -449,19 +449,19 @@ void ConnectionPage::cleanupPage()
     if (mCalDavUrlPreview) {
         delete mCalDavUrlLabel;
         delete mCalDavUrlPreview;
-        mCalDavUrlPreview = Q_NULLPTR;
+        mCalDavUrlPreview = nullptr;
     }
 
     if (mCardDavUrlPreview) {
         delete mCardDavUrlLabel;
         delete mCardDavUrlPreview;
-        mCardDavUrlPreview = Q_NULLPTR;
+        mCardDavUrlPreview = nullptr;
     }
 
     if (mGroupDavUrlPreview) {
         delete mGroupDavUrlLabel;
         delete mGroupDavUrlPreview;
-        mGroupDavUrlPreview = Q_NULLPTR;
+        mGroupDavUrlPreview = nullptr;
     }
 
     QWizardPage::cleanupPage();

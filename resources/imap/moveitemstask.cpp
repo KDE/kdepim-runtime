@@ -313,7 +313,7 @@ void MoveItemsTask::recordNewUid()
     Akonadi::Collection c = targetCollection();
 
     // Get the current uid next value and store it
-    UidNextAttribute *uidAttr = Q_NULLPTR;
+    UidNextAttribute *uidAttr = nullptr;
     int oldNextUid = 0;
     if (c.hasAttribute("uidnext")) {
         uidAttr = static_cast<UidNextAttribute *>(c.attribute("uidnext"));
@@ -325,7 +325,7 @@ void MoveItemsTask::recordNewUid()
     // If not something happened in our back, so we don't update and a refetch will
     // happen at some point.
     if (!m_newUids.isEmpty() && m_newUids.last() == oldNextUid) {
-        if (uidAttr == Q_NULLPTR) {
+        if (uidAttr == nullptr) {
             uidAttr = new UidNextAttribute(m_newUids.last() + 1);
             c.addAttribute(uidAttr);
         } else {

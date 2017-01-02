@@ -64,7 +64,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
     if (parts().contains("AccessRights")) {
         Akonadi::ImapAclAttribute *aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>();
 
-        if (aclAttribute == Q_NULLPTR) {
+        if (aclAttribute == nullptr) {
             emitWarning(i18n("ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change",
                              collection().name()));
         } else {

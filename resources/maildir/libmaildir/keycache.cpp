@@ -19,7 +19,7 @@
 #include "keycache.h"
 #include <QDirIterator>
 
-KeyCache *KeyCache::mSelf = Q_NULLPTR;
+KeyCache *KeyCache::mSelf = nullptr;
 
 void KeyCache::addKeys(const QString &dir)
 {

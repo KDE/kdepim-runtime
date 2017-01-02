@@ -201,7 +201,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
         i.next();
         Akonadi::Collection collection = i.key();
         Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
-        Akonadi::CollectionModifyJob *modifyJob = Q_NULLPTR;
+        Akonadi::CollectionModifyJob *modifyJob = nullptr;
         const bool selected = i.value();
         if (selected && attr && attr->ignoreNewMail()) {
             collection.removeAttribute<Akonadi::NewMailNotifierAttribute>();

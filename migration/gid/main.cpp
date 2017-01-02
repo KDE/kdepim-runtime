@@ -64,7 +64,7 @@ int main(int argc, char **argv)
         return 2;
     }
 
-    InfoDialog *infoDialog = Q_NULLPTR;
+    InfoDialog *infoDialog = nullptr;
     if (parser.isSet(QStringLiteral("interactive")) || parser.isSet(QStringLiteral("interactive-on-change"))) {
         infoDialog = new InfoDialog(parser.isSet(QStringLiteral("interactive-on-change")));
         Akonadi::ControlGui::widgetNeedsAkonadi(infoDialog);
