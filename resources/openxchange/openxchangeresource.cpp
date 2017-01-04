@@ -158,7 +158,7 @@ private:
         parts.append(mLastModified);
 
         entity.setRemoteId(QString::number(mObjectId));
-        entity.setRemoteRevision(parts.join(QStringLiteral(":")));
+        entity.setRemoteRevision(parts.join(QLatin1Char(':')));
     }
 
     qlonglong mObjectId;
@@ -191,7 +191,7 @@ public:
             pairs.append(QString::number(it.key()) + QLatin1Char('=') + QString::number(it.value()));
         }
 
-        Settings::self()->setObjectsLastSync(pairs.join(QStringLiteral(":")));
+        Settings::self()->setObjectsLastSync(pairs.join(QLatin1Char(':')));
         Settings::self()->save();
     }
 

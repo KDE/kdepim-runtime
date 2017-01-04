@@ -473,7 +473,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
         }
 
         do {
-            result = sasl_client_start(conn, sasl_list.join(QStringLiteral(" ")).toLatin1(),
+            result = sasl_client_start(conn, sasl_list.join(QLatin1Char(' ')).toLatin1(),
                                        &client_interact, &out, &outlen, &mechusing);
 
             if (result == SASL_INTERACT) {

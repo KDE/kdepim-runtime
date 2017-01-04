@@ -255,7 +255,7 @@ static void parseRecurrence(const QDomElement &element,
             yearlyMonth = text.toInt() + 1; // starts at 0
             yearly2Month = text.toInt() + 1;
         } else if ((tagName == QLatin1String("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
-            const QStringList exceptionDates = text.split(QStringLiteral(","));
+            const QStringList exceptionDates = text.split(QLatin1Char(','));
             deleteExceptions.reserve(exceptionDates.count());
             foreach (const QString &date, exceptionDates) {
                 deleteExceptions.append(OXUtils::readDate(date));
@@ -504,7 +504,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         dates.append(OXUtils::writeDate(date));
     }
 
-    DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QStringLiteral(",")));
+    DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QLatin1Char(',')));
 
     //TODO: changeexceptions
 

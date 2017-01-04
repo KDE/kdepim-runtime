@@ -555,7 +555,7 @@ void Settings::updateToV3()
         if (splitUrl.size() == 3) {
             DavUtils::Protocol protocol = DavUtils::protocolByTranslatedName(splitUrl.at(1));
             splitUrl[1] = DavUtils::protocolName(protocol);
-            updatedUrls << splitUrl.join(QStringLiteral("|"));
+            updatedUrls << splitUrl.join(QLatin1Char('|'));
         }
     }
 

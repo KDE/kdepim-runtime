@@ -378,7 +378,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
 
         DAVUtils::addOxElement(document, propElement, QStringLiteral("pager"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Pager).number()));
 
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("categories"), OXUtils::writeString(contact.categories().join(QStringLiteral(","))));
+        DAVUtils::addOxElement(document, propElement, QStringLiteral("categories"), OXUtils::writeString(contact.categories().join(QLatin1Char(','))));
     } else {
         // it is a distribution list payload
 

@@ -44,7 +44,7 @@ QString OXUtils::writeString(const QString &value)
         lines[i].replace(QLatin1Char('"'), QStringLiteral("\\\""));
     }
 
-    return lines.join(QStringLiteral("\n"));
+    return lines.join(QLatin1Char('\n'));
 }
 
 QString OXUtils::writeName(const QString &value)

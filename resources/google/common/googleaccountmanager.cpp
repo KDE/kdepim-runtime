@@ -201,7 +201,7 @@ bool GoogleAccountManager::storeAccount(const AccountPtr &account)
     QMap<QString, QString> map;
     map[QStringLiteral("accessToken")] = account->accessToken();
     map[QStringLiteral("refreshToken")] = account->refreshToken();
-    map[QStringLiteral("scopes")] = scopes.join(QStringLiteral(","));
+    map[QStringLiteral("scopes")] = scopes.join(QLatin1Char(','));
 
     if (m_wallet->writeMap(account->accountName(), map) == 0) {
         m_accounts[account->accountName()] = account;

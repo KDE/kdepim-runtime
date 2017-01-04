@@ -38,7 +38,7 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     setAttribute(Qt::WA_DeleteOnClose);
 
     mTextBrowser = new ServerInfoTextBrowser(this);
-    mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QStringLiteral("\n")));
+    mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QLatin1Char('\n')));
     mainLayout->addWidget(mTextBrowser);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
