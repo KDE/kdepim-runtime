@@ -277,7 +277,7 @@ public:
             const QUrl pathUrl = QUrl::fromUserInput(url);
             QString encodedUrl = QString::fromAscii(pathUrl.encodedPath());
             if (pathUrl.hasQuery()) {
-                encodedUrl.append(QStringLiteral("?"));
+                encodedUrl.append(QLatin1Char('?'));
                 encodedUrl.append(QString::fromAscii(pathUrl.encodedQuery()));
             }
 
