@@ -197,6 +197,7 @@ void KolabResource::collectionChanged(const Akonadi::Collection &collection, con
     Trace() << collection.id() << parts;
     QSet<QByteArray> p = parts;
     //Update annotations if necessary
+    //FIXME col ?????
     const Akonadi::Collection col = updateAnnotations(collection);
     if (parts.contains(Akonadi::CollectionColorAttribute().type())) {
         p << Akonadi::CollectionAnnotationsAttribute().type();
