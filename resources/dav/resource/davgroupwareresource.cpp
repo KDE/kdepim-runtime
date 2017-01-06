@@ -1293,9 +1293,10 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
         mapping.insert(KCalCore::Journal::journalMimeType(), QStringLiteral("view-pim-journal"));
         mapping.insert(KContacts::Addressee::mimeType(), QStringLiteral("view-pim-contacts"));
 
-        if (mapping.contains(mimeTypes.first())) {
+        const QString mimetypeFirst = mimeTypes.first();
+        if (!mimetypeFirst.isEmpty()) {
             EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-            attribute->setIconName(mapping.value(mimeTypes.first()));
+            attribute->setIconName(mimetypeFirst);
         }
     }
 }
