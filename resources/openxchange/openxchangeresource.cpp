@@ -197,7 +197,7 @@ public:
 
     qulonglong lastSync(qlonglong collectionId) const
     {
-        return mObjectsMap.contains(collectionId);
+        return mObjectsMap.value(collectionId, 0);
     }
 
     void setLastSync(qlonglong collectionId, qulonglong timeStamp)
