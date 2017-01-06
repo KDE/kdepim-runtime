@@ -901,15 +901,13 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         }
     }
 
+    // Update the collection CTag attribute now as sync is done.
     if (mCTagCache.contains(collection.remoteId())) {
-        // Update the collection CTag attribute now as sync is done.
-        if (mCTagCache.contains(collection.remoteId())) {
-            CTagAttribute *CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
-            qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
-            CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
-            Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob(collection);
-            job->start();
-        }
+        CTagAttribute *CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
+        qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
+        CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
+        Akonadi::CollectionModifyJob *job = new Akonadi::CollectionModifyJob(collection);
+        job->start();
     }
 
     itemsRetrievedIncremental(items, Akonadi::Item::List());
