@@ -195,6 +195,8 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces(Namespace ns) cons
 
 void SessionPool::killSession(KIMAP::Session *session, SessionTermination termination)
 {
+    Q_ASSERT(session);
+
     if (!m_unusedPool.contains(session) && !m_reservedPool.contains(session) && !m_connectingPool.contains(session)) {
         qCWarning(IMAPRESOURCE_LOG) << "Unmanaged session" << session;
         Q_ASSERT(false);
@@ -264,7 +266,9 @@ void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode,
     if (!m_initialConnectDone) {
         disconnect(); // kills all sessions, including \a session
     } else {
-        killSession(session, LogoutSession);
+        if (session) {
+            killSession(session, LogoutSession);
+        }
         if (!m_pendingRequests.isEmpty()) {
             Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(), Q_NULLPTR, errorCode, errorMessage);
             if (!m_pendingRequests.isEmpty()) {
@@ -325,7 +329,6 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         // All is fine
         break;
     case PasswordRequesterInterface::ReconnectNeeded:
-        Q_ASSERT(m_pendingInitialSession != 0);
         cancelSessionCreation(m_pendingInitialSession, ReconnectNeededError, errorMessage);
         return;
     case PasswordRequesterInterface::UserRejected:
