@@ -129,7 +129,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &SetupServer::accept);
+    connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &SetupServer::reject);
     mainLayout->addWidget(buttonBox);
 
@@ -189,8 +189,6 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotCustomSieveChanged();
     connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged,
             this, &SetupServer::slotTestChanged);
-
-    connect(mOkButton, &QPushButton::clicked, this, &SetupServer::applySettings);
 }
 
 SetupServer::~SetupServer()
@@ -250,6 +248,25 @@ void SetupServer::slotCustomSieveChanged()
 
 void SetupServer::applySettings()
 {
+    if (m_ui->imapServer->text() != m_parentResource->settings()->imapServer()) {
+        if (KMessageBox::warningContinueCancel(
+                this, i18n("You have changed the address of the server. Even if this is the same server as before "
+                           "we will have to re-download all your emails from this account again. "
+                           "Are you sure you want to proceed?"),
+                i18n("Server address change")) == KMessageBox::Cancel) {
+            return;
+        }
+    }
+    if (m_ui->imapServer->text() != m_parentResource->settings()->userName()) {
+        if (KMessageBox::warningContinueCancel(
+                this, i18n("You have change the user name. Even if this is a user name for the same account as before "
+                           "we will have to re-download all your emails from this account again. "
+                           "Are you sure you want to proceed?"),
+                i18n("User name change")) == KMessageBox::Cancel) {
+            return;
+        }
+    }
+
     m_folderArchiveSettingPage->writeSettings();
     m_shouldClearCache = (m_parentResource->settings()->imapServer() != m_ui->imapServer->text())
                          || (m_parentResource->settings()->userName() != m_ui->userName->text());
@@ -333,6 +350,8 @@ void SetupServer::applySettings()
     if (m_oldResourceName != m_ui->accountName->text() && !m_ui->accountName->text().isEmpty()) {
         m_parentResource->settings()->renameRootCollection(m_ui->accountName->text());
     }
+
+    accept();
 }
 
 void SetupServer::readSettings()
