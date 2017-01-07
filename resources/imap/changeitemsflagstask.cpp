@@ -102,20 +102,35 @@ KIMAP::StoreJob *ChangeItemsFlagsTask::prepareJob(KIMAP::Session *session)
 
 void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session *session)
 {
-    KIMAP::StoreJob *store = prepareJob(session);
-    store->setFlags(fromAkonadiToSupportedImapFlags(addedFlags().toList(), items().at(0).parentCollection()));
-    store->setMode(KIMAP::StoreJob::AppendFlags);
-    connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onAppendFlagsDone);
-    store->start();
+    const auto supportedFlags = fromAkonadiToSupportedImapFlags(addedFlags().toList(), items().at(0).parentCollection());
+    if (supportedFlags.isEmpty()) {
+        if (!removedFlags().isEmpty()) {
+            m_processedItems = 0;
+            triggerRemoveFlagsJob(session);
+        } else {
+            changeProcessed();
+        }
+    } else {
+        KIMAP::StoreJob *store = prepareJob(session);
+        store->setFlags(supportedFlags);
+        store->setMode(KIMAP::StoreJob::AppendFlags);
+        connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onAppendFlagsDone);
+        store->start();
+    }
 }
 
 void ChangeItemsFlagsTask::triggerRemoveFlagsJob(KIMAP::Session *session)
 {
-    KIMAP::StoreJob *store = prepareJob(session);
-    store->setFlags(fromAkonadiToSupportedImapFlags(removedFlags().toList(), items().at(0).parentCollection()));
-    store->setMode(KIMAP::StoreJob::RemoveFlags);
-    connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onRemoveFlagsDone);
-    store->start();
+    const auto supportedFlags = fromAkonadiToSupportedImapFlags(removedFlags().toList(), items().at(0).parentCollection());
+    if (supportedFlags.isEmpty()) {
+        changeProcessed();
+    } else {
+        KIMAP::StoreJob *store = prepareJob(session);
+        store->setFlags(supportedFlags);
+        store->setMode(KIMAP::StoreJob::RemoveFlags);
+        connect(store, &KIMAP::StoreJob::result, this, &ChangeItemsFlagsTask::onRemoveFlagsDone);
+        store->start();
+    }
 }
 
 void ChangeItemsFlagsTask::onAppendFlagsDone(KJob *job)
