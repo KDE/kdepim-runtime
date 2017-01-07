@@ -248,7 +248,8 @@ void SetupServer::slotCustomSieveChanged()
 
 void SetupServer::applySettings()
 {
-    if (m_ui->imapServer->text() != m_parentResource->settings()->imapServer()) {
+    if (!m_parentResource->settings()->imapServer().isEmpty()
+        && m_ui->imapServer->text() != m_parentResource->settings()->imapServer()) {
         if (KMessageBox::warningContinueCancel(
                 this, i18n("You have changed the address of the server. Even if this is the same server as before "
                            "we will have to re-download all your emails from this account again. "
@@ -257,7 +258,8 @@ void SetupServer::applySettings()
             return;
         }
     }
-    if (m_ui->imapServer->text() != m_parentResource->settings()->userName()) {
+    if (!m_parentResource->settings()->userName().isEmpty()
+        && m_ui->imapServer->text() != m_parentResource->settings()->userName()) {
         if (KMessageBox::warningContinueCancel(
                 this, i18n("You have changed the user name. Even if this is a user name for the same account as before "
                            "we will have to re-download all your emails from this account again. "
