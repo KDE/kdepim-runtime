@@ -1,5 +1,11 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
+if (Sasl2_FOUND AND KF5GAPI_FOUND)
+    set(WITH_GMAIL_XOAUTH2 TRUE)
+    add_subdirectory(saslplugin)
+endif()
+configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
 ########### next target ###############
 
 set( imapresource_LIB_SRCS
@@ -38,9 +44,11 @@ set( imapresource_LIB_SRCS
   collectionmetadatahelper.cpp
   replacemessagejob.cpp
   tracer.cpp
+  utils.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
+
 
 ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME org.kde.pim.imapresource)
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
@@ -71,7 +79,7 @@ target_link_libraries(imapresource
     KF5::AkonadiAgentBase
     KF5::I18n
     KF5::WindowSystem
-    akonadi-singlefileresource   
+    akonadi-singlefileresource
 )
 
 ########### next target ###############
@@ -84,6 +92,14 @@ set( akonadi_imap_resource_SRCS
   setupserver.cpp
   serverinfodialog.cpp
 )
+
+if (WITH_GMAIL_XOAUTH2)
+  set( akonadi_imap_resource_SRCS
+    ${akonadi_imap_resource_SRCS}
+    passwordrequester.cpp
+    gmailpasswordrequester.cpp
+  )
+endif ()
 
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
@@ -112,6 +128,10 @@ target_link_libraries(akonadi_imap_resource
     imapresource
     KF5::TextWidgets
     folderarchivesettings)
+
+if (WITH_GMAIL_XOAUTH2)
+    target_link_libraries(akonadi_imap_resource KF5::GAPICore)
+endif ()
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

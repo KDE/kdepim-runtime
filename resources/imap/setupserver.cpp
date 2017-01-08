@@ -33,6 +33,7 @@
 #include "imapresource.h"
 #include "serverinfodialog.h"
 #include "folderarchivesettingpage.h"
+#include "utils.h"
 
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>
@@ -82,6 +83,8 @@ static QString authenticationModeString(MailTransport::Transport::EnumAuthentica
         return i18nc("Authentication method", "Clear text");
     case MailTransport::Transport::EnumAuthenticationType::ANONYMOUS:
         return i18nc("Authentication method", "Anonymous");
+    case MailTransport::Transport::EnumAuthenticationType::XOAUTH2:
+        return i18nc("Authentication method", "Gmail");
     default:
         break;
     }
@@ -168,6 +171,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 
     connect(m_ui->testButton, &QPushButton::pressed, this, &SetupServer::slotTest);
 
+    connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotServerChanged);
     connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotTestChanged);
     connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotComplete);
     connect(m_ui->userName, &KLineEdit::textChanged, this, &SetupServer::slotComplete);
@@ -566,8 +570,9 @@ void SetupServer::slotTestChanged()
     slotSafetyChanged();
 
     // do not use imapConnectionPossible, as the data is not yet saved.
-    m_ui->testButton->setEnabled(true /* TODO Global::connectionPossible() ||
-                                        m_ui->imapServer->text() == "localhost"*/);
+    const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
+    m_ui->testButton->setEnabled(!isGmail /* TODO && Global::connectionPossible() ||
+                                                m_ui->imapServer->text() == "localhost"*/);
 }
 
 void SetupServer::slotEnableWidgets()
@@ -590,12 +595,13 @@ void SetupServer::slotComplete()
 void SetupServer::slotSafetyChanged()
 {
     if (m_serverTest == nullptr) {
+        const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
         qCDebug(IMAPRESOURCE_LOG) << "serverTest null";
-        m_ui->noRadio->setEnabled(true);
-        m_ui->sslRadio->setEnabled(true);
-        m_ui->tlsRadio->setEnabled(true);
+        m_ui->noRadio->setEnabled(!isGmail);
+        m_ui->sslRadio->setEnabled(!isGmail);
+        m_ui->tlsRadio->setEnabled(!isGmail);
 
-        m_ui->authenticationCombo->setEnabled(true);
+        m_ui->authenticationCombo->setEnabled(!isGmail);
         return;
     }
 
@@ -698,4 +704,33 @@ void SetupServer::populateDefaultAuthenticationOptions(QComboBox *combo)
     addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::NTLM);
     addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::GSSAPI);
     addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::ANONYMOUS);
+    if (Utils::isGmail(m_ui->imapServer->text())) {
+        addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::XOAUTH2);
+    }
+}
+
+void SetupServer::slotServerChanged()
+{
+    const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
+    const bool wasGmail = !m_ui->password->isEnabled();
+
+    if (isGmail == wasGmail) {
+        return;
+    }
+
+    m_ui->password->setEnabled(!isGmail);
+    m_ui->managesieveCheck->setChecked(m_ui->managesieveCheck->isChecked() && !isGmail);
+    m_ui->managesieveCheck->setEnabled(!isGmail);
+    m_ui->testButton->setEnabled(!isGmail);
+    m_ui->sslRadio->setChecked(m_ui->sslRadio->isChecked() || isGmail);
+    m_ui->noRadio->setEnabled(!isGmail);
+    m_ui->sslRadio->setEnabled(!isGmail);
+    m_ui->tlsRadio->setEnabled(!isGmail);
+    m_ui->portSpin->setValue(isGmail ? 993 : m_ui->portSpin->value());
+    m_ui->portSpin->setEnabled(!isGmail);
+    populateDefaultAuthenticationOptions(m_ui->authenticationCombo);
+    if (isGmail) {
+        setCurrentAuthMode(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::XOAUTH2);
+    }
+    m_ui->authenticationCombo->setEnabled(!isGmail);
 }

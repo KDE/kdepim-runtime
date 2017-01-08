@@ -103,6 +103,7 @@ private Q_SLOTS:
     void slotFinished(const QList<int> &testResult);
     void slotCustomSieveChanged();
 
+    void slotServerChanged();
     void slotTestChanged();
     void slotComplete();
     void slotSafetyChanged();

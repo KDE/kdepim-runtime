@@ -32,6 +32,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <KPasswordDialog>
 
 #include "imapresourcebase.h"
 #include "settings.h"
@@ -102,7 +103,7 @@ void SettingsPasswordRequester::slotNoClicked()
 {
     connect(m_resource->settings(), &Settings::passwordRequestCompleted,
             this, &SettingsPasswordRequester::onPasswordRequestCompleted);
-    m_resource->settings()->requestManualAuth();
+    requestManualAuth(nullptr);
     m_requestDialog = nullptr;
 }
 
@@ -147,11 +148,33 @@ void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &passwo
     disconnect(m_resource->settings(), &Settings::passwordRequestCompleted,
                this, &SettingsPasswordRequester::onPasswordRequestCompleted);
 
+    QString pwd = password;
+    if (userRejected || pwd.isEmpty()) {
+        pwd = requestManualAuth(&userRejected);
+    }
+
     if (userRejected) {
         Q_EMIT done(UserRejected);
     } else if (password.isEmpty() && (m_resource->settings()->authentication() != MailTransport::Transport::EnumAuthenticationType::GSSAPI)) {
         Q_EMIT done(EmptyPasswordEntered);
     } else {
         Q_EMIT done(PasswordRetrieved, password);
+    }
+}
+
+QString SettingsPasswordRequester::requestManualAuth(bool* userRejected)
+{
+    KPasswordDialog *dlg = new KPasswordDialog(nullptr);
+    dlg->setModal(true);
+    dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.",
+                        m_resource->settings()->userName(), m_resource->settings()->imapServer()));
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    if (dlg->exec()) {
+        if (userRejected) *userRejected = false;
+        m_resource->settings()->setPassword(dlg->password());
+        return dlg->password();
+    } else {
+        if (userRejected) *userRejected = true;
+        return QString();
     }
 }

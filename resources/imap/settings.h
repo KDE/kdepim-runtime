@@ -28,6 +28,7 @@
 #include <mailtransport/transport.h>
 
 class ImapAccount;
+class KJob;
 
 class Settings : public SettingsBase
 {
@@ -40,7 +41,6 @@ public:
     void setWinId(WId);
 
     virtual void requestPassword();
-    virtual void requestManualAuth();
 
     virtual void loadAccount(ImapAccount *account) const;
 
@@ -61,7 +61,6 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     virtual void onWalletOpened(bool success);
-    virtual void onDialogFinished(int result);
 
     void onRootCollectionFetched(KJob *job);
 

@@ -71,13 +71,19 @@ function testOk( arg )
   if (stage == 1) {
     SetupManager.openWallet();
     var imapRes = SetupManager.createResource( "akonadi_imap_resource" );
-    imapRes.setOption( "ImapServer", page.widget().incommingAddress.text.trim() );
+    var server = page.widget().incommingAddress.text.trim();
+    imapRes.setOption( "ImapServer", server );
     imapRes.setOption( "UserName", page.widget().userName.text );
     imapRes.setOption( "Password", SetupManager.password() );
     imapRes.setOption( "DisconnectedModeEnabled", page.widget().disconnectedMode.checked );
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
-    imapRes.setOption( "Authentication", 7 ); // ClearText
+    if ( server == "imap.gmail.com" ) {
+        imapRes.setOption( "AuthenticationType", 9 ); // XOAuth2
+        arg = "ssl";
+    } else {
+        imapRes.setOption( "AuthenticationType", 7 ); // ClearText
+    }
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
       imapRes.setOption( "Safety", "SSL"); // SSL/TLS

@@ -22,6 +22,7 @@
 #include "settingsadaptor.h"
 
 #include "imapaccount.h"
+#include "utils.h"
 
 #include <kwallet.h>
 using KWallet::Wallet;
@@ -65,6 +66,8 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransp
         return KIAuth::CramMD5;
     case MTAuth::CLEAR:
         return KIAuth::ClearText;
+    case MTAuth::XOAUTH2:
+        return KIAuth::XOAuth2;
     default:
         qFatal("mapping from Transport::EnumAuthenticationType ->  KIMAP::LoginJob::AuthenticationMode not possible");
     }
@@ -129,37 +132,12 @@ void Settings::onWalletOpened(bool success)
             wallet->readPassword(config()->name(), m_password);
             passwordNotStoredInWallet = false;
         }
-        if (passwordNotStoredInWallet || m_password.isEmpty()) {
-            requestManualAuth();
-        } else {
-            Q_EMIT passwordRequestCompleted(m_password, passwordNotStoredInWallet);
-        }
+
+        Q_EMIT passwordRequestCompleted(m_password, passwordNotStoredInWallet);
 
         if (wallet) {
             wallet->deleteLater();
         }
-    }
-}
-
-void Settings::requestManualAuth()
-{
-    KPasswordDialog *dlg = new KPasswordDialog(nullptr);
-    dlg->setModal(true);
-    dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.",
-                        userName(), imapServer()));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
-    connect(dlg, &KPasswordDialog::finished, this, &Settings::onDialogFinished);
-    dlg->show();
-}
-
-void Settings::onDialogFinished(int result)
-{
-    if (result == QDialog::Accepted) {
-        KPasswordDialog *dlg = qobject_cast<KPasswordDialog *>(sender());
-        setPassword(dlg->password());
-        Q_EMIT passwordRequestCompleted(dlg->password(), false);
-    } else {
-        Q_EMIT passwordRequestCompleted(QString(), true);
     }
 }
 

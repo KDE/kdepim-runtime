@@ -28,9 +28,17 @@
 #include "setupserver.h"
 #include "settings.h"
 #include "sessionpool.h"
-#include "settingspasswordrequester.h"
 #include "sessionuiproxy.h"
 #include "tracer.h"
+#include "utils.h"
+#include "config.h"
+
+#ifdef WITH_GMAIL_XOAUTH2
+#include "passwordrequester.h"
+#else
+#include "settingspasswordrequester.h"
+#endif
+
 #include <QIcon>
 
 #include <KWindowSystem>
@@ -39,7 +47,11 @@
 ImapResource::ImapResource(const QString &id)
     : ImapResourceBase(id)
 {
+#ifdef WITH_GMAIL_XOAUTH2
+    m_pool->setPasswordRequester(new PasswordRequester(this, m_pool));
+#else
     m_pool->setPasswordRequester(new SettingsPasswordRequester(this, m_pool));
+#endif
     m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
     m_pool->setClientId(clientId());
 }

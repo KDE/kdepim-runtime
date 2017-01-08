@@ -49,6 +49,8 @@ private Q_SLOTS:
     void onSettingsDialogFinished(int result);
 
 private:
+    QString requestManualAuth(bool *userRejected);
+
     ImapResourceBase *m_resource;
     QDialog *m_requestDialog;
     QDialog *m_settingsDialog;
