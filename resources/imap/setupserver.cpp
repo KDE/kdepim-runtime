@@ -259,7 +259,7 @@ void SetupServer::applySettings()
     }
     if (m_ui->imapServer->text() != m_parentResource->settings()->userName()) {
         if (KMessageBox::warningContinueCancel(
-                this, i18n("You have change the user name. Even if this is a user name for the same account as before "
+                this, i18n("You have changed the user name. Even if this is a user name for the same account as before "
                            "we will have to re-download all your emails from this account again. "
                            "Are you sure you want to proceed?"),
                 i18n("User name change")) == KMessageBox::Cancel) {
