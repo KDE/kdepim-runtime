@@ -27,7 +27,7 @@ class ImapResource;
 class KolabResourceState : public ::ResourceState
 {
 public:
-    explicit KolabResourceState(ImapResource *resource, const TaskArguments &arguments);
+    explicit KolabResourceState(ImapResourceBase *resource, const TaskArguments &arguments);
 
 private:
     void collectionAttributesRetrieved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;

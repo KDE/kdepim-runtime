@@ -14,7 +14,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 ########### next target ###############
 
 set(kolabresource_SRCS
-    ../imap/imapresource.cpp
     ../imap/settingspasswordrequester.cpp
     ../imap/setupserver.cpp
     ../imap/serverinfodialog.cpp

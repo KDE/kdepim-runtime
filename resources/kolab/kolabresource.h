@@ -20,12 +20,13 @@
 #ifndef KOLABRESOURCE_H
 #define KOLABRESOURCE_H
 
-#include "imapresource.h"
+#include "imapresourcebase.h"
 #include <resourcestate.h>
 
-class KolabResource : public ImapResource
+class KolabResource : public ImapResourceBase
 {
     Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Resource")
 
     using Akonadi::AgentBase::Observer::collectionChanged;
 
@@ -35,6 +36,7 @@ public:
 
     QDialog *createConfigureDialog(WId windowId) Q_DECL_OVERRIDE;
     Settings *settings() const Q_DECL_OVERRIDE;
+    void cleanup() Q_DECL_OVERRIDE;
 
 protected Q_SLOTS:
     void retrieveCollections() Q_DECL_OVERRIDE;
@@ -68,6 +70,7 @@ protected:
 private Q_SLOTS:
     void retrieveTags() Q_DECL_OVERRIDE;
     void retrieveRelations() Q_DECL_OVERRIDE;
+    void onConfigurationDone(int result);
 };
 
 #endif

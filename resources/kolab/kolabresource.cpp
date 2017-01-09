@@ -21,6 +21,9 @@
 
 #include "kolabresource_debug.h"
 #include "setupserver.h"
+#include "sessionpool.h"
+#include "sessionuiproxy.h"
+#include "settingspasswordrequester.h"
 #include <resourcestateinterface.h>
 #include <resourcestate.h>
 #include <retrieveitemstask.h>
@@ -48,8 +51,12 @@
 #include "tracer.h"
 
 KolabResource::KolabResource(const QString &id)
-    : ImapResource(id)
+    : ImapResourceBase(id)
 {
+    m_pool->setPasswordRequester(new SettingsPasswordRequester(this, m_pool));
+    m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
+    m_pool->setClientId(clientId());
+
     Akonadi::AttributeFactory::registerAttribute<Akonadi::CollectionColorAttribute>();
     //Ensure we have up-to date metadata before attempting to sync folder
     setScheduleAttributeSyncBeforeItemSync(true);
@@ -70,9 +77,15 @@ Settings *KolabResource::settings() const
     return m_settings;
 }
 
+void KolabResource::cleanup()
+{
+    settings()->cleanup();
+    Akonadi::AgentBase::cleanup();
+}
+
 void KolabResource::delayedInit()
 {
-    ImapResource::delayedInit();
+    ImapResourceBase::delayedInit();
     settings()->setRetrieveMetadataOnFolderListing(false);
     Q_ASSERT(!settings()->retrieveMetadataOnFolderListing());
 }
@@ -95,6 +108,18 @@ QDialog *KolabResource::createConfigureDialog(WId windowId)
     dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("kolab")));
     connect(dlg, SIGNAL(finished(int)), this, SLOT(onConfigurationDone(int)));
     return dlg;
+}
+
+void KolabResource::onConfigurationDone(int result)
+{
+    SetupServer *dlg = qobject_cast<SetupServer *>(sender());
+    if (result) {
+        if (dlg->shouldClearCache()) {
+            clearCache();
+        }
+        settings()->save();
+    }
+    dlg->deleteLater();
 }
 
 ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArguments &args)
@@ -122,7 +147,7 @@ void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collecti
         cancelTask();
         return;
     }
-    ImapResource::itemAdded(imapItem, collection);
+    ImapResourceBase::itemAdded(imapItem, collection);
 }
 
 void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &parts)
@@ -135,7 +160,7 @@ void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArra
         cancelTask();
         return;
     }
-    ImapResource::itemChanged(imapItem, parts);
+    ImapResourceBase::itemChanged(imapItem, parts);
 }
 
 void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
@@ -148,7 +173,7 @@ void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::
         cancelTask();
         return;
     }
-    ImapResource::itemsMoved(imapItems, source, destination);
+    ImapResourceBase::itemsMoved(imapItems, source, destination);
 }
 
 static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collection)
@@ -189,7 +214,7 @@ void KolabResource::collectionAdded(const Akonadi::Collection &collection, const
     const Akonadi::Collection col = updateAnnotations(collection);
     //TODO we need to save the collections as well if the annotations have changed
     //or we simply don't have the annotations locally, which perhaps is also not required?
-    ImapResource::collectionAdded(col, parent);
+    ImapResourceBase::collectionAdded(col, parent);
 }
 
 void KolabResource::collectionChanged(const Akonadi::Collection &collection, const QSet< QByteArray > &parts)

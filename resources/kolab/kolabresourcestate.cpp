@@ -30,7 +30,7 @@
 #include <Akonadi/KMime/MessageParts>
 #include "kolabresource_debug.h"
 
-KolabResourceState::KolabResourceState(ImapResource *resource, const TaskArguments &arguments)
+KolabResourceState::KolabResourceState(ImapResourceBase *resource, const TaskArguments &arguments)
     : ResourceState(resource, arguments)
 {
 
