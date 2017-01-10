@@ -142,7 +142,7 @@ void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collecti
 
     KDAV::DavCollectionDeleteJob *job = new KDAV::DavCollectionDeleteJob(davUrl);
     job->setProperty("collection", QVariant::fromValue(collection));
-    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onCollectionRemovedFinished);
+    connect(job, &KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onCollectionRemovedFinished);
     job->start();
 }
 
@@ -258,8 +258,8 @@ void DavGroupwareResource::retrieveCollections()
     Q_EMIT status(Running, i18n("Fetching collections"));
 
     KDAV::DavCollectionsMultiFetchJob *job = new KDAV::DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
-    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
-    connect(job, & KDAV::DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
+    connect(job, &KDAV::DavCollectionsMultiFetchJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
+    connect(job, &KDAV::DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
     job->start();
 }
 
@@ -318,7 +318,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     }
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setContentMimeTypes(collection.contentMimeTypes());
-    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
+    connect(job, &KDAV::DavItemsListJob::result, this, &DavGroupwareResource::onRetrieveItemsFinished);
     job->start();
 }
 
@@ -343,7 +343,7 @@ bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QB
 
     KDAV::DavItemFetchJob *job = new KDAV::DavItemFetchJob(davItem);
     job->setProperty("item", QVariant::fromValue(item));
-    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onRetrieveItemFinished);
+    connect(job, &KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onRetrieveItemFinished);
     job->start();
 
     return true;
@@ -379,7 +379,7 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
     KDAV::DavItemCreateJob *job = new KDAV::DavItemCreateJob(davItem);
     job->setProperty("collection", QVariant::fromValue(collection));
     job->setProperty("item", QVariant::fromValue(item));
-    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemAddedFinished);
+    connect(job, &KDAV::DavItemCreateJob::result, this, &DavGroupwareResource::onItemAddedFinished);
     job->start();
 }
 
@@ -456,7 +456,7 @@ void DavGroupwareResource::doItemChange(const Akonadi::Item &item, const Akonadi
     modJob->setProperty("collection", QVariant::fromValue(item.parentCollection()));
     modJob->setProperty("item", QVariant::fromValue(item));
     modJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
-    connect(modJob, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+    connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
     modJob->start();
 }
 
@@ -548,7 +548,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
         modJob->setProperty("dependentItems", QVariant::fromValue(extraItems));
         modJob->setProperty("isRemoval", QVariant::fromValue(true));
         modJob->setProperty("removedItem", QVariant::fromValue(item));
-        connect(modJob, & KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
+        connect(modJob, &KDAV::DavItemModifyJob::result, this, &DavGroupwareResource::onItemChangedFinished);
         modJob->start();
     }
 }
@@ -564,7 +564,7 @@ void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
     KDAV::DavItemDeleteJob *job = new KDAV::DavItemDeleteJob(davItem);
     job->setProperty("item", QVariant::fromValue(item));
     job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
-    connect(job, & KDAV::DavCollectionDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
+    connect(job, &KDAV::DavItemDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
     job->start();
 }
 
@@ -840,7 +840,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     // to the remote server : only one request for n items instead of n requests.
     if (protocolSupportsMultiget && !changedRids.isEmpty()) {
         KDAV::DavItemsFetchJob *fetchJob = new KDAV::DavItemsFetchJob(davUrl, changedRids);
-        connect(fetchJob, & KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
+        connect(fetchJob, &KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onMultigetFinished);
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
         fetchJob->setProperty("items", QVariant::fromValue(changedItems));
         fetchJob->start();
@@ -1002,7 +1002,7 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
         KDAV::DavItemFetchJob *fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
-        connect(fetchJob, & KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, &KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         item.setRemoteRevision(davItem.etag());
@@ -1047,7 +1047,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
         fetchJob->setProperty("collection", QVariant::fromValue(collection));
         fetchJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
         fetchJob->setProperty("isRemoval", QVariant::fromValue(isRemoval));
-        connect(fetchJob, & KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, &KDAV::DavItemsFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         if (!isRemoval) {
@@ -1082,7 +1082,7 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
         KDAV::DavItemFetchJob *fetchJob = new KDAV::DavItemFetchJob(davItem);
         fetchJob->setProperty("item", QVariant::fromValue(item));
         fetchJob->setProperty("dependentItems", QVariant::fromValue(dependentItems));
-        connect(fetchJob, & KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
+        connect(fetchJob, &KDAV::DavItemFetchJob::result, this, &DavGroupwareResource::onItemRefreshed);
         fetchJob->start();
     } else {
         item.setRemoteRevision(davItem.etag());
