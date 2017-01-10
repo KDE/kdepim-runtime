@@ -59,6 +59,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void createInitialCache();
+    void initialRetrieveCollections();
     void onCreateInitialCacheReady(KJob *);
 
 protected:
@@ -82,6 +83,7 @@ private:
         ItemUpdateChange
     };
 
+    KJob *createRetrieveCollectionsJob();
     void onReloadConfig();
     void onCollectionRemovedFinished(KJob *);
 

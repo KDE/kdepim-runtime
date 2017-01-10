@@ -121,7 +121,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
 
     connect(this, &DavGroupwareResource::reloadConfiguration, this, &DavGroupwareResource::onReloadConfig);
 
-    scheduleCustomTask(this, "retrieveCollections", QVariant(), ResourceBase::Prepend);
+    scheduleCustomTask(this, "initialRetrieveCollections", QVariant(), ResourceBase::Prepend);
     scheduleCustomTask(this, "createInitialCache", QVariant(), ResourceBase::Prepend);
 }
 
@@ -246,13 +246,14 @@ void DavGroupwareResource::configure(WId windowId)
     }
 }
 
-void DavGroupwareResource::retrieveCollections()
+
+KJob *DavGroupwareResource::createRetrieveCollectionsJob()
 {
     qCDebug(DAVRESOURCE_LOG) << "Retrieving collections list";
     mSyncErrorNotified = false;
 
     if (!configurationIsValid()) {
-        return;
+        return nullptr;
     }
 
     Q_EMIT status(Running, i18n("Fetching collections"));
@@ -260,6 +261,26 @@ void DavGroupwareResource::retrieveCollections()
     KDAV::DavCollectionsMultiFetchJob *job = new KDAV::DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
     connect(job, &KDAV::DavCollectionsMultiFetchJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
     connect(job, &KDAV::DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
+    return job;
+}
+
+void DavGroupwareResource::initialRetrieveCollections()
+{
+    auto job = createRetrieveCollectionsJob();
+    if (!job) {
+        return;
+    }
+    job->setProperty("initialCacheSync", QVariant::fromValue(true));
+    job->start();
+}
+
+void DavGroupwareResource::retrieveCollections()
+{
+    auto job = createRetrieveCollectionsJob();
+    if (!job) {
+        return;
+    }
+    job->setProperty("initialCacheSync", QVariant::fromValue(false));
     job->start();
 }
 
@@ -656,6 +677,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         return;
     }
 
+    bool initialCacheSync = job->property("initialCacheSync").toBool();
     Akonadi::Collection::List collections;
     collections << mDavCollectionRoot;
     QSet<QString> seenCollectionsUrls;
@@ -764,7 +786,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         }
     }
 
-    collectionsRetrieved(collections);
+    if (!initialCacheSync) {
+        collectionsRetrieved(collections);
+    } else {
+        taskDone();
+    }
 }
 
 void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
