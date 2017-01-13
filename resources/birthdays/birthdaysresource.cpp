@@ -154,7 +154,8 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
     if (Settings::self()->filterOnCategories()) {
         bool hasCategory = false;
         const QStringList categories = contact.categories();
-        foreach (const QString &cat, Settings::self()->filterCategories()) {
+        const QStringList lst = Settings::self()->filterCategories();
+        for (const QString &cat : lst) {
             if (categories.contains(cat)) {
                 hasCategory = true;
                 break;

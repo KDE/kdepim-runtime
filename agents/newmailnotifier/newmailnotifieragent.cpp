@@ -448,7 +448,8 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
             QString resourceName;
             if (!mCacheResourceName.contains(it.key().resource())) {
-                Q_FOREACH (const Akonadi::AgentInstance &instance, Akonadi::AgentManager::self()->instances()) {
+                const Akonadi::AgentInstance::List lst = Akonadi::AgentManager::self()->instances();
+                for (const Akonadi::AgentInstance &instance : lst) {
                     if (instance.identifier() == it.key().resource()) {
                         mCacheResourceName.insert(instance.identifier(), instance.name());
                         resourceName = instance.name();

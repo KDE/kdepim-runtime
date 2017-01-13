@@ -281,7 +281,8 @@ bool Maildir::isValid(bool createMissingFolders) const
             return true;
         }
     } else {
-        Q_FOREACH (const QString &sf, subFolderList()) {
+        const QStringList lstMaildir = subFolderList();
+        for (const QString &sf : lstMaildir) {
             const Maildir subMd = Maildir(path() + QLatin1Char('/') + sf);
             if (!subMd.isValid()) {
                 d->lastError = subMd.lastError();

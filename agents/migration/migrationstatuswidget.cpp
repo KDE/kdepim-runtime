@@ -70,21 +70,24 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
 
 void MigrationStatusWidget::startSelected()
 {
-    foreach (const QModelIndex &index, mSelectionModel->selectedRows()) {
+    const QModelIndexList lst = mSelectionModel->selectedRows();
+    for (const QModelIndex &index : lst) {
         mScheduler.start(index.data(MigratorModel::IdentifierRole).toString());
     }
 }
 
 void MigrationStatusWidget::pauseSelected()
 {
-    foreach (const QModelIndex &index, mSelectionModel->selectedRows()) {
+    const QModelIndexList lst = mSelectionModel->selectedRows();
+    for (const QModelIndex &index : lst) {
         mScheduler.pause(index.data(MigratorModel::IdentifierRole).toString());
     }
 }
 
 void MigrationStatusWidget::abortSelected()
 {
-    foreach (const QModelIndex &index, mSelectionModel->selectedRows()) {
+    const QModelIndexList lst = mSelectionModel->selectedRows();
+    for (const QModelIndex &index : lst) {
         mScheduler.abort(index.data(MigratorModel::IdentifierRole).toString());
     }
 }

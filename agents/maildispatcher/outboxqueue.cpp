@@ -251,7 +251,8 @@ void OutboxQueue::Private::collectionFetched(KJob *job)
     Q_ASSERT(fetchJob);
     qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << "items.";
 
-    foreach (const Item &item, fetchJob->items()) {
+    const Akonadi::Item::List lst = fetchJob->items();
+    for (const Item &item : lst ) {
         addIfComplete(item);
     }
 }
