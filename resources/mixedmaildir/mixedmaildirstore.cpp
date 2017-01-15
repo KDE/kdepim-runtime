@@ -1678,7 +1678,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
 
     if (folderType == MBoxFolder) {
         MBoxHash::iterator findIt = mMBoxes.find(path);
-        if (findIt == mMBoxes.end() || (!fetchSingleItem || !fetchItemsBatch)) {
+        if (findIt == mMBoxes.end() || (!fetchSingleItem && !fetchItemsBatch)) {
             MBoxPtr mbox = findIt != mMBoxes.end() ? findIt.value() : MBoxPtr(new MBoxContext);
             if (!mbox->load(path)) {
                 errorText = i18nc("@info:status", "Failed to load MBox folder %1", path);
