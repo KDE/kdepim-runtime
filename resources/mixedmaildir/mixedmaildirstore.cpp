@@ -1659,10 +1659,10 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
     const bool includeHeaders = scope.payloadParts().contains(MessagePart::Header) ||
                                 scope.payloadParts().contains(MessagePart::Envelope);
 
-    const bool fetchSingleItem = job->collection().remoteId().isEmpty();
-    const bool fetchItemsBatch = !job->items().isEmpty() && !job->item().isValid();
-    const Collection collection = fetchSingleItem ? job->item().parentCollection() :
-                                  fetchItemsBatch ? job->items().at(0).parentCollection() :
+    const bool fetchItemsBatch = !job->requestedItems().isEmpty();
+    const bool fetchSingleItem = job->collection().remoteId().isEmpty() && !fetchItemsBatch;
+    const Collection collection = fetchItemsBatch ? job->requestedItems().at(0).parentCollection() :
+                                  fetchSingleItem ? job->item().parentCollection() :
                                   job->collection();
 
     QString path;
@@ -1699,7 +1699,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
         if (fetchSingleItem) {
             items << job->item();
         } else if (fetchItemsBatch) {
-            items = job->items();
+            items = job->requestedItems();
         } else {
             listCollection(job, findIt.value(), collection, items);
         }
@@ -1740,7 +1740,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
         if (fetchSingleItem) {
             items << job->item();
         } else if (fetchItemsBatch) {
-            items = job->items();
+            items = job->requestedItems();
         } else {
             listCollection(job, mdPtr, collection, items);
         }
@@ -2388,10 +2388,16 @@ void MixedMaildirStore::checkItemFetch(FileStore::ItemFetchJob *job, int &errorC
 {
     Q_UNUSED(errorCode);
     Q_UNUSED(errorText);
-    const bool fetchSingleItem = job->collection().remoteId().isEmpty();
-    if (fetchSingleItem) {
-        Collection coll = job->item().parentCollection();
-        Q_ASSERT(!coll.remoteId().isEmpty());
+    if (!job->requestedItems().isEmpty()) {
+        // Requesting items
+        for (const Item &item : job->requestedItems()) {
+            const Collection coll = item.parentCollection();
+            Q_ASSERT(!coll.remoteId().isEmpty());
+
+        }
+    } else {
+        // Requesting an entire collection
+        Q_ASSERT(!job->collection().remoteId().isEmpty());
     }
 }
 

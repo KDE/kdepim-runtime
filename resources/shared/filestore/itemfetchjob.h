@@ -54,6 +54,8 @@ public:
 
     Item item() const;
 
+    Item::List requestedItems() const;
+
     void setFetchScope(const ItemFetchScope &fetchScope);
 
     ItemFetchScope &fetchScope();

@@ -30,7 +30,8 @@ class FileStore::ItemFetchJob::Private
 public:
     ItemFetchScope mFetchScope;
 
-    Item::List mItems;
+    Item::List mRequestedItems;
+    Item::List mResultItems;
 
     Collection mCollection;
     Item mItem;
@@ -55,7 +56,7 @@ FileStore::ItemFetchJob::ItemFetchJob(const Item &item, FileStore::AbstractJobSe
 FileStore::ItemFetchJob::ItemFetchJob(const Item::List &items, FileStore::AbstractJobSession *session)
     : FileStore::Job(session), d(new Private())
 {
-    d->mItems = items;
+    d->mRequestedItems = items;
 
     session->addJob(this);
 }
@@ -85,9 +86,14 @@ ItemFetchScope &FileStore::ItemFetchJob::fetchScope()
     return d->mFetchScope;
 }
 
+Item::List FileStore::ItemFetchJob::requestedItems() const
+{
+    return d->mRequestedItems;
+}
+
 Item::List FileStore::ItemFetchJob::items() const
 {
-    return d->mItems;
+    return d->mResultItems;
 }
 
 bool FileStore::ItemFetchJob::accept(FileStore::Job::Visitor *visitor)
@@ -97,7 +103,7 @@ bool FileStore::ItemFetchJob::accept(FileStore::Job::Visitor *visitor)
 
 void FileStore::ItemFetchJob::handleItemsReceived(const Item::List &items)
 {
-    d->mItems << items;
+    d->mResultItems << items;
 
     Q_EMIT itemsReceived(items);
 }
