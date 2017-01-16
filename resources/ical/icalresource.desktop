@@ -1,5 +1,12 @@
 [Desktop Entry]
 Name=iCal Calendar File
+Name[ca]=Fitxer de calendari iCal
+Name[ca@valencia]=Fitxer de calendari iCal
+Name[es]=Archivo de calendario iCal
+Name[pt]=Ficheiro de Calendário do iCal
+Name[sv]=iCal-kalenderfil
+Name[uk]=Файл календаря iCal
+Name[x-test]=xxiCal Calendar Filexx
 Comment=Loads data from an iCal file
 Comment[ar]=تحميل البيانات من ملف ICal
 Comment[bg]=Зареждане на данни от файл iCal
