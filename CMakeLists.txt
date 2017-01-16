@@ -83,6 +83,7 @@ set(AKONADICONTACT_LIB_VERSION "5.4.40")
 set(AKONADINOTE_LIB_VERSION "5.4.40")
 set(KPIMTEXTEDIT_LIB_VERSION "5.4.40")
 
+
 set( SHARED_MIME_INFO_MINIMUM_VERSION "0.40" )
 find_package( SharedMimeInfo REQUIRED )
 
@@ -124,6 +125,7 @@ find_package(KF5Mbox ${KMBOX_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5PimTextEdit ${KPIMTEXTEDIT_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5IMAP ${KIMAP_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiNotes ${AKONADINOTE_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
@@ -137,6 +139,9 @@ set_package_properties(Sasl2 PROPERTIES
                              URL "http://www.cyrussasl.org"
                              TYPE OPTIONAL
 )
+
+# Extra package
+find_package(KF5GAPI "5.3.1" CONFIG)
 
 
 add_subdirectory(resources)

@@ -1,15 +1,3 @@
-set(AKONADICALENDAR_LIB_VERSION "5.4.40")
-set(KMBOX_LIB_VERSION "5.4.40")
-
-
-find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Mbox ${KMBOX_LIB_VERSION} CONFIG REQUIRED)
-
-# Extra package
-find_package(KF5GAPI "5.3.1" CONFIG)
-
-
-
 # Xsltproc
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
