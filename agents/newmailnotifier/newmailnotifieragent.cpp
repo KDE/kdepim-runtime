@@ -348,9 +348,8 @@ void NewMailNotifierAgent::itemsMoved(const Akonadi::Item::List &items, const Ak
 
         if (mNewMails.contains(collectionSource)) {
             QList<Akonadi::Item::Id> idListFrom = mNewMails[ collectionSource ];
-            if (idListFrom.contains(item.id())) {
-                idListFrom.removeAll(item.id());
-
+            const int removeItems = idListFrom.removeAll(item.id());
+            if (removeItems > 0) {
                 if (idListFrom.isEmpty()) {
                     mNewMails.remove(collectionSource);
                 } else {
@@ -524,9 +523,7 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     switch (instance.status()) {
     case Akonadi::AgentInstance::Broken:
     case Akonadi::AgentInstance::Idle: {
-        if (mInstanceNameInProgress.contains(identifier)) {
-            mInstanceNameInProgress.removeAll(identifier);
-        }
+        mInstanceNameInProgress.removeAll(identifier);
         break;
     }
     case Akonadi::AgentInstance::Running: {
@@ -565,9 +562,7 @@ void NewMailNotifierAgent::slotInstanceRemoved(const Akonadi::AgentInstance &ins
     }
 
     const QString identifier(instance.identifier());
-    if (mInstanceNameInProgress.contains(identifier)) {
-        mInstanceNameInProgress.removeAll(identifier);
-    }
+    mInstanceNameInProgress.removeAll(identifier);
 }
 
 void NewMailNotifierAgent::slotInstanceAdded(const Akonadi::AgentInstance &instance)

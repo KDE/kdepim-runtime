@@ -156,8 +156,8 @@ void SessionPool::cancelSessionRequest(qint64 id)
 
 void SessionPool::releaseSession(KIMAP::Session *session)
 {
-    if (m_reservedPool.contains(session)) {
-        m_reservedPool.removeAll(session);
+    const int removeSession = m_reservedPool.removeAll(session);
+    if (removeSession > 0) {
         m_unusedPool << session;
     }
 }
