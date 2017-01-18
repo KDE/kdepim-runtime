@@ -156,8 +156,8 @@ public:
         if (mDeletedOffsets.contains(offset)) {
             return false;
         }
-
-        Q_FOREACH (const KMBox::MBoxEntry &entry, mMBox.entries()) {
+        const KMBox::MBoxEntry::List lstEntry = mMBox.entries();
+        for (const KMBox::MBoxEntry &entry : lstEntry) {
             if (entry.messageOffset() == offset) {
                 return true;
             }
