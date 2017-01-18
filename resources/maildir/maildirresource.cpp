@@ -783,8 +783,7 @@ void MaildirResource::fsWatchDirFetchResult(KJob *job)
 void MaildirResource::slotFileChanged(const QFileInfo &fileInfo)
 {
     const QString key = fileInfo.fileName();
-    if (mChangedFiles.contains(key)) {
-        mChangedFiles.remove(key);
+    if (mChangedFiles.remove(key) > 0) {
         return;
     }
 

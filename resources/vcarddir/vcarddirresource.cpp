@@ -199,9 +199,7 @@ void VCardDirResource::itemRemoved(const Akonadi::Item &item)
     }
 
     // remove it from the cache...
-    if (mAddressees.contains(item.remoteId())) {
-        mAddressees.remove(item.remoteId());
-    }
+    mAddressees.remove(item.remoteId());
 
     // ... and remove it from the file system
     QFile::remove(vCardDirectoryFileName(item.remoteId()));

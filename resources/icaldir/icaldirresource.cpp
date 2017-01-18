@@ -224,9 +224,7 @@ void ICalDirResource::itemRemoved(const Akonadi::Item &item)
     }
 
     // remove it from the cache...
-    if (mIncidences.contains(item.remoteId())) {
-        mIncidences.remove(item.remoteId());
-    }
+    mIncidences.remove(item.remoteId());
 
     // ... and remove it from the file system
     QFile::remove(iCalDirectoryFileName(item.remoteId()));

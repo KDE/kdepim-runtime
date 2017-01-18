@@ -117,9 +117,7 @@ void VCardResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray
 
 void VCardResource::itemRemoved(const Akonadi::Item &item)
 {
-    if (mAddressees.contains(item.remoteId())) {
-        mAddressees.remove(item.remoteId());
-    }
+    mAddressees.remove(item.remoteId());
 
     scheduleWrite();
 
