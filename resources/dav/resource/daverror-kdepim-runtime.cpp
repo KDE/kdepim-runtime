@@ -109,7 +109,7 @@ QString translateErrorString(Error error)
         break;
     };
     case ERR_ITEMLIST_NOMIMETYPE: {
-        result = i18n("There was a problem with the request. The requested mimetypes are not supported.");
+        result = i18n("There was a problem with the request. The requested MIME types are not supported.");
         break;
     }
     case NO_ERR:
