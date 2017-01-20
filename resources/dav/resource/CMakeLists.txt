@@ -8,11 +8,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
                           ARCHIVE DESTINATION ${KDE_INSTALL_LIBDIR} )
   endif()
 
-  include_directories(
-      ../common/
-      ../protocols/
-  )
-
   ########### next target ###############
 
   set( davgroupwareresource_SRCS
