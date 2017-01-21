@@ -190,13 +190,13 @@ bool SerializerPluginMail::deserialize(Item &item, const QByteArray &label, QIOD
             stream >> dt;
             msg->date()->setDateTime(dt);
             stream >> str;
-            msg->subject()->fromUnicodeString(str, "UTF-8");
+            msg->subject()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
             stream >> str;
-            msg->inReplyTo()->fromUnicodeString(str, "UTF-8");
+            msg->inReplyTo()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
             stream >> str;
-            msg->messageID()->fromUnicodeString(str, "UTF-8");
+            msg->messageID()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
             stream >> str;
-            msg->references()->fromUnicodeString(str, "UTF-8");
+            msg->references()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
 
             parseAddrList(stream, msg->from(), version, m_stringPool);
             parseAddrList(stream, msg->sender(), version, m_stringPool);
