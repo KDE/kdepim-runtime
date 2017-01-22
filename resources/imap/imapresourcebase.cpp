@@ -170,10 +170,8 @@ ImapResourceBase::~ImapResourceBase()
 {
     //Destroy everything that could cause callbacks immediately, otherwise the callbacks can result in a crash.
 
-    if (m_idle) {
-        delete m_idle;
-        m_idle = nullptr;
-    }
+    delete m_idle;
+    m_idle = nullptr;
 
     Q_FOREACH (ResourceTask *task, m_taskList) {
         delete task;

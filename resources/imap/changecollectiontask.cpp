@@ -188,7 +188,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
                 }
             }
 
-            foreach (const QByteArray &id, ids) {
+            for (const QByteArray &id : ids) {
                 KIMAP::SetAclJob *job = new KIMAP::SetAclJob(session);
                 job->setMailBox(mailBoxForCollection(collection()));
                 job->setIdentifier(id);

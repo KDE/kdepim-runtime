@@ -109,7 +109,7 @@ void ChangeItemTask::onPreStoreSelectDone(KJob *job)
 
 void ChangeItemTask::triggerStoreJob()
 {
-    QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().toList(), item().parentCollection());
+    const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().toList(), item().parentCollection());
     qCDebug(IMAPRESOURCE_LOG) << flags;
 
     KIMAP::StoreJob *store = new KIMAP::StoreJob(m_session);
