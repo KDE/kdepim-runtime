@@ -132,5 +132,3 @@ QString SerializerPluginContactGroup::extractGid(const Item &item) const
     return item.payload<KContacts::ContactGroup>().id();
 }
 
-//Q_EXPORT_PLUGIN2( akonadi_serializer_contactgroup, Akonadi::SerializerPluginContactGroup )
-

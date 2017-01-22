@@ -146,13 +146,6 @@ static QString toString(const Alarm::Ptr &)
     return QString();
 }
 
-/*
-static QString toString( const Incidence::Ptr & )
-{
-  return QString();
-}
-*/
-
 static QString toString(const Attachment::Ptr &)
 {
     return QString();
