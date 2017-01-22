@@ -214,7 +214,7 @@ QList< QSharedPointer<MigratorBase> > MigratorModel::migrators() const
 {
     QList< QSharedPointer<MigratorBase> > migrators;
     foreach (const QSharedPointer<Row> &row, mMigrators) {
-        return migrators << row->mMigrator;
+        migrators << row->mMigrator;
     }
     return migrators;
 }
