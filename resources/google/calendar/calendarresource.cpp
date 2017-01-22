@@ -108,9 +108,7 @@ void CalendarResource::updateResourceName()
 
 QList< QUrl > CalendarResource::scopes() const
 {
-    QList<QUrl> scopes;
-    scopes << Account::calendarScopeUrl()
-           << Account::tasksScopeUrl();
+    const QList<QUrl> scopes = { Account::calendarScopeUrl(), Account::tasksScopeUrl()};
 
     return scopes;
 }
@@ -235,11 +233,12 @@ void CalendarResource::itemChanged(const Akonadi::Item &item,
 
     } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
         KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
-        TaskPtr ktodo(new Task(*todo));
+        //FIXME unused ktodo ?
+        //TaskPtr ktodo(new Task(*todo));
         QString parentUid = todo->relatedTo(KCalCore::Incidence::RelTypeParent);
         job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, account(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-        connect(job, &EventCreateJob::finished, this, &CalendarResource::slotModifyTaskReparentFinished);
+        connect(job, &TaskMoveJob::finished, this, &CalendarResource::slotModifyTaskReparentFinished);
     } else {
         cancelTask(i18n("Invalid payload type"));
         return;
@@ -257,7 +256,7 @@ void CalendarResource::itemRemoved(const Akonadi::Item &item)
     if (item.mimeType() == KCalCore::Event::eventMimeType()) {
         KGAPI2::Job *job = new EventDeleteJob(item.remoteId(), item.parentCollection().remoteId(), account(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-        connect(job, &EventCreateJob::finished, this, &CalendarResource::slotGenericJobFinished);
+        connect(job, &EventDeleteJob::finished, this, &CalendarResource::slotGenericJobFinished);
 
     } else if (item.mimeType() == KCalCore::Todo::todoMimeType()) {
         /* Google always automatically removes tasks with all their subtasks. In KOrganizer
@@ -298,7 +297,7 @@ void CalendarResource::itemMoved(const Item &item,
                                         collectionDestination.remoteId(), account(),
                                         this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &EventCreateJob::finished, this, &CalendarResource::slotGenericJobFinished);
+    connect(job, &EventMoveJob::finished, this, &CalendarResource::slotGenericJobFinished);
 }
 
 void CalendarResource::collectionAdded(const Collection &collection, const Collection &parent)
@@ -368,9 +367,8 @@ void CalendarResource::collectionRemoved(const Collection &collection)
     if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
         job = new CalendarDeleteJob(collection.remoteId(), account(), this);
 
-    } if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+    } else if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
         job = new TaskListDeleteJob(collection.remoteId(), account(), this);
-
     } else {
         cancelTask(i18n("Unknown collection mimetype"));
         return;
@@ -536,8 +534,8 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
             }
 
             if (event->useDefaultReminders() && attr) {
-                KCalCore::Alarm::List alarms = attr->alarms(event.data());
-                Q_FOREACH (const KCalCore::Alarm::Ptr &alarm, alarms) {
+                const KCalCore::Alarm::List alarms = attr->alarms(event.data());
+                for (const KCalCore::Alarm::Ptr &alarm : alarms) {
                     event->addAlarm(alarm);
                 }
             }
@@ -632,8 +630,8 @@ void CalendarResource::slotRemoveTaskFetchJobFinished(KJob *job)
 
     Item::List detachItems;
 
-    Item::List items = fetchJob->items();
-    Q_FOREACH (Item item, items) {   //krazy:exclude=foreach
+    const Item::List items = fetchJob->items();
+    for (Item item : items) {
         if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
             qDebug() << "Item " << item.remoteId() << " does not have Todo payload";
             continue;

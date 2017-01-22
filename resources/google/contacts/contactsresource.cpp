@@ -94,9 +94,7 @@ void ContactsResource::updateResourceName()
 
 QList< QUrl > ContactsResource::scopes() const
 {
-    QList< QUrl > scopes;
-    scopes << Account::contactsScopeUrl()
-           << Account::accountInfoScopeUrl();
+    const QList< QUrl > scopes = {Account::contactsScopeUrl(), Account::accountInfoScopeUrl()};
     return scopes;
 }
 
@@ -286,7 +284,7 @@ void ContactsResource::collectionAdded(const Akonadi::Collection &collection,
 
     ContactsGroupCreateJob *createJob = new ContactsGroupCreateJob(group, account(), this);
     createJob->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(createJob, &ContactCreateJob::finished, this, &ContactsResource::slotCreateJobFinished);
+    connect(createJob, &ContactsGroupCreateJob::finished, this, &ContactsResource::slotCreateJobFinished);
 }
 
 void ContactsResource::collectionChanged(const Akonadi::Collection &collection)
@@ -302,7 +300,7 @@ void ContactsResource::collectionChanged(const Akonadi::Collection &collection)
 
     ContactsGroupModifyJob *modifyJob = new ContactsGroupModifyJob(group, account(), this);
     modifyJob->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(modifyJob, &ContactModifyJob::finished, this, &ContactsResource::slotGenericJobFinished);
+    connect(modifyJob, &ContactsGroupModifyJob::finished, this, &ContactsResource::slotGenericJobFinished);
 }
 
 void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -313,7 +311,7 @@ void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
 
     ContactsGroupDeleteJob *deleteJob = new ContactsGroupDeleteJob(collection.remoteId(), account(), this);
     deleteJob->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(deleteJob, &ContactDeleteJob::finished, this, &ContactsResource::slotGenericJobFinished);
+    connect(deleteJob, &ContactsGroupDeleteJob::finished, this, &ContactsResource::slotGenericJobFinished);
 }
 
 void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
@@ -418,14 +416,14 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
     }
 
     ContactFetchJob *fetchJob = qobject_cast<ContactFetchJob *>(job);
-    const ObjectsList objects = fetchJob->items();
 
     Collection collection = fetchJob->property(COLLECTION_PROPERTY).value<Collection>();
 
     Item::List changedItems, removedItems;
     QMap<QString, Item::List> groupsMap;
     QList<QString> changedPhotos;
-    foreach (const ObjectPtr &object, objects) {
+    const ObjectsList objects = fetchJob->items();
+    for (const ObjectPtr &object : objects) {
         const ContactPtr contact = object.dynamicCast<Contact>();
 
         if (((collection.remoteId() == OTHERCONTACTS_REMOTEID) && !contact->groups().isEmpty()) ||
@@ -455,9 +453,7 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
 
     itemsRetrievedIncremental(changedItems, removedItems);
 
-    QMap<QString, Item::List>::ConstIterator iter;
-
-    for (iter = groupsMap.constBegin(); iter != groupsMap.constEnd(); ++iter) {
+    for (QMap<QString, Item::List>::ConstIterator iter = groupsMap.constBegin(), iterEnd = groupsMap.constEnd(); iter != iterEnd; ++iter) {
         new LinkJob(m_collections[iter.key()], iter.value(), this);
     }
 
@@ -478,11 +474,11 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
 void ContactsResource::slotUpdatePhotosItemsRetrieved(KJob *job)
 {
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
-    const Item::List items = fetchJob->items();
     const QList<QString> modifiedItems = fetchJob->property("modifiedItems").value< QList<QString> >();
     ContactsList contacts;
 
-    foreach (const Item &item, items) {
+    const Item::List items = fetchJob->items();
+    for (const Item &item : items) {
         if (modifiedItems.contains(item.remoteId())) {
             const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
             const ContactPtr contact(new Contact(addressee));
