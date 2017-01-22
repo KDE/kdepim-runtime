@@ -147,13 +147,13 @@ void SearchDialog::onSearchJobFinished(KJob *job)
     }
 
     KDAV::DavPrincipalSearchJob *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
-    QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
 
     const KDAV::DavProtocolBase *caldav = KDAV::DavManager::self()->davProtocol(KDAV::CalDav);
     KDAV::DavUrl davUrl = davJob->davUrl();
     QUrl url = davUrl.url();
 
-    foreach (const KDAV::DavPrincipalSearchJob::Result &result, results) {
+    const QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
+    for (const KDAV::DavPrincipalSearchJob::Result &result : results) {
         if (result.value.startsWith(QLatin1Char('/'))) {
             url.setPath(result.value, QUrl::TolerantMode);
         } else {

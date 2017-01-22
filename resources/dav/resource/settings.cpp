@@ -170,10 +170,9 @@ KDAV::DavUrl::List Settings::configuredDavUrls()
     }
     KDAV::DavUrl::List davUrls;
     davUrls.reserve(mUrls.count());
-    QMapIterator<QString, UrlConfiguration *> it(mUrls);
-
-    while (it.hasNext()) {
-        it.next();
+    QMap<QString, UrlConfiguration *>::const_iterator it = mUrls.cbegin();
+    const QMap<QString, UrlConfiguration *>::const_iterator itEnd = mUrls.cend();
+    for (; it != itEnd; ++it) {
         QStringList split = it.key().split(QLatin1Char(','));
         davUrls << configuredDavUrl(KDAV::Utils::protocolByName(split.at(1)), split.at(0));
     }
@@ -315,14 +314,13 @@ QString Settings::username(KDAV::Protocol proto, const QString &url) const
 {
     QString key = url + QLatin1Char(',') + KDAV::Utils::protocolName(proto);
 
-    if (mUrls.contains(key))
+    if (mUrls.contains(key)) {
         if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
             return defaultUsername();
-        }
-        else {
+        } else {
             return mUrls[ key ]->mUser;
         }
-    else {
+    } else {
         return QString();
     }
 }
@@ -331,13 +329,13 @@ QString Settings::password(KDAV::Protocol proto, const QString &url)
 {
     QString key = url + QLatin1Char(',') + KDAV::Utils::protocolName(proto);
 
-    if (mUrls.contains(key))
+    if (mUrls.contains(key)) {
         if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
             return defaultPassword();
         } else {
             return mUrls[ key ]->mPassword;
         }
-    else {
+    } else {
         return QString();
     }
 }

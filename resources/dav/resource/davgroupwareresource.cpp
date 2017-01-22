@@ -428,7 +428,8 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
 
     auto cache = mEtagCaches.value(collection.remoteId());
     Akonadi::Item::List extraItems;
-    foreach (const QString &rid, cache->urls()) {
+    const QStringList lstUrls = cache->urls();
+    for (const QString &rid : lstUrls) {
         if (rid.startsWith(ridBase) && rid != item.remoteId()) {
             Akonadi::Item extraItem;
             extraItem.setRemoteId(rid);
@@ -505,7 +506,8 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
 
         auto cache = mEtagCaches.value(collection.remoteId());
         Akonadi::Item::List extraItems;
-        foreach (const QString &rid, cache->urls()) {
+        const QStringList lstUrl = cache->urls();
+        for (const QString &rid : lstUrl) {
             if (rid.startsWith(ridBase) && rid != item.remoteId()) {
                 Akonadi::Item extraItem;
                 extraItem.setRemoteId(rid);
@@ -534,7 +536,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
 {
     Akonadi::ItemFetchJob *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
     Akonadi::Item item = job->property("item").value<Akonadi::Item>();
-    Akonadi::Item::List keptItems = fetchJob->items();
+    const Akonadi::Item::List keptItems = fetchJob->items();
 
     if (keptItems.isEmpty()) {
         // Urrrr? Not again!
@@ -545,7 +547,7 @@ void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
         QString ridBase = item.remoteId();
         ridBase.truncate(ridBase.indexOf(QLatin1Char('#')));
 
-        foreach (const Akonadi::Item &kept, keptItems) {
+        for (const Akonadi::Item &kept : keptItems) {
             if (kept.remoteId() == ridBase && extraItems.isEmpty()) {
                 mainItem = kept;
             } else {
@@ -613,7 +615,8 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
 {
     Akonadi::RecursiveItemFetchJob *fetchJob = qobject_cast<Akonadi::RecursiveItemFetchJob *>(job);
 
-    foreach (const Akonadi::Item &item, fetchJob->items()) {
+    const Akonadi::Item::List itemsLst = fetchJob->items();
+    for (const Akonadi::Item &item : itemsLst) {
         const QString rid = item.remoteId();
         if (rid.isEmpty()) {
             qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item without remote ID. " << item.id();
@@ -684,7 +687,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 
     const KDAV::DavCollection::List davCollections = fetchJob->collections();
 
-    foreach (const KDAV::DavCollection &davCollection, davCollections) {
+    for (const KDAV::DavCollection &davCollection : davCollections) {
         if (seenCollectionsUrls.contains(davCollection.url().toDisplayString())) {
             qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. " << davCollection.url().toDisplayString();
             continue;

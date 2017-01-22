@@ -59,7 +59,8 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mUi.configuredUrls->setModel(mModel);
     mUi.configuredUrls->setRootIsDecorated(false);
 
-    foreach (const KDAV::DavUrl &url, Settings::self()->configuredDavUrls()) {
+    const KDAV::DavUrl::List lstUrls = Settings::self()->configuredDavUrls();
+    for (const KDAV::DavUrl &url : lstUrls) {
         QUrl displayUrl = url.url();
         displayUrl.setUserInfo(QString());
         addModelRow(Utils::translatedProtocolName(url.protocol()), displayUrl.toDisplayString());
@@ -208,7 +209,7 @@ void ConfigDialog::onSearchButtonClicked()
 void ConfigDialog::onRemoveButtonClicked()
 {
     const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
-    if (indexes.size() == 0) {
+    if (indexes.isEmpty()) {
         return;
     }
 
@@ -224,7 +225,7 @@ void ConfigDialog::onRemoveButtonClicked()
 void ConfigDialog::onEditButtonClicked()
 {
     const QModelIndexList indexes = mUi.configuredUrls->selectionModel()->selectedRows();
-    if (indexes.size() == 0) {
+    if (indexes.isEmpty()) {
         return;
     }
 
