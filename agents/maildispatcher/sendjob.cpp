@@ -179,16 +179,13 @@ void SendJob::Private::doTraditionalTransport()
     Q_ASSERT(item.hasPayload<Message::Ptr>());
     const Message::Ptr message = item.payload<Message::Ptr>();
     bool needAssemble = false;
-    if (message->hasHeader("Bcc")) {
-        message->removeHeader("Bcc");
+    if (message->removeHeader("Bcc")) {
         needAssemble = true;
     }
-    if (message->hasHeader("X-KMail-Identity")) {
-        message->removeHeader("X-KMail-Identity");
+    if (message->removeHeader("X-KMail-Identity")) {
         needAssemble = true;
     }
-    if (message->hasHeader("X-KMail-Dictionary")) {
-        message->removeHeader("X-KMail-Dictionary");
+    if (message->removeHeader("X-KMail-Dictionary")) {
         needAssemble = true;
     }
 

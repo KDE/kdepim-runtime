@@ -336,7 +336,8 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
         // handle possible sent actions
         const MailTransport::SentActionAttribute *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
         if (attribute) {
-            foreach (const MailTransport::SentActionAttribute::Action &action, attribute->actions()) {
+            const MailTransport::SentActionAttribute::Action::List lstAct = attribute->actions();
+            for (const MailTransport::SentActionAttribute::Action &action : lstAct) {
                 sentActionHandler->runAction(action);
             }
         }
