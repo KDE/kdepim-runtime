@@ -170,7 +170,7 @@ void InvitationsAgentItem::add(const Item &item)
     Q_ASSERT(collection.isValid());
 
     ItemCreateJob *job = new ItemCreateJob(item, collection, this);
-    connect(job, &InvitationsCollectionRequestJob::result, this, &InvitationsAgentItem::createItemResult);
+    connect(job, &ItemCreateJob::result, this, &InvitationsAgentItem::createItemResult);
 
     m_jobs << job;
 
@@ -253,7 +253,7 @@ void InvitationsAgent::initStart()
         initDone();
     } else {
         SpecialCollectionsRequestJob *job = m_invitationsCollection->reguestJob();
-        connect(job, &InvitationsCollectionRequestJob::result, this, &InvitationsAgent::initDone);
+        connect(job, &SpecialCollectionsRequestJob::result, this, &InvitationsAgent::initDone);
         job->start();
     }
 }
