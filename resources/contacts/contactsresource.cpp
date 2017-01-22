@@ -406,33 +406,6 @@ void ContactsResource::collectionChanged(const Akonadi::Collection &collection)
     changeCommitted(newCollection);
 }
 
-/**
- * Removes a @p directory recursively.
- */
-static bool removeDirectory(const QDir &directory)
-{
-    const QFileInfoList infoList =
-        directory.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
-
-    for (const QFileInfo &info : infoList) {
-        if (info.isDir()) {
-            if (!removeDirectory(QDir(info.absoluteFilePath()))) {
-                return false;
-            }
-        } else {
-            if (!QFile::remove(info.filePath())) {
-                return false;
-            }
-        }
-    }
-
-    if (!QDir::root().rmdir(directory.absolutePath())) {
-        return false;
-    }
-
-    return true;
-}
-
 void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
 {
     if (mSettings->readOnly()) {
@@ -440,7 +413,8 @@ void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
         return;
     }
 
-    if (!removeDirectory(directoryForCollection(collection))) {
+    QDir collectionDir = directoryForCollection(collection);
+    if (!collectionDir.removeRecursively()) {
         cancelTask(i18n("Unable to delete folder '%1'.", collection.name()));
         return;
     }
@@ -484,9 +458,7 @@ void ContactsResource::initializeDirectory(const QString &path) const
     QDir dir(path);
 
     // if folder does not exists, create it
-    if (!dir.exists()) {
-        QDir::root().mkpath(dir.absolutePath());
-    }
+    QDir::root().mkpath(dir.absolutePath());
 
     // check whether warning file is in place...
     QFile file(dir.absolutePath() + QDir::separator() + QLatin1String("WARNING_README.txt"));
