@@ -35,6 +35,22 @@
 #include "newmailnotifier_debug.h"
 
 #include <QTextDocument>
+#if QT_VERSION < QT_VERSION_CHECK(5,7,0)
+namespace QtPrivate
+{
+template <typename T> struct QAddConst {
+    typedef const T Type;
+};
+}
+
+// this adds const to non-const objects (like std::as_const)
+template <typename T>
+Q_DECL_CONSTEXPR typename QtPrivate::QAddConst<T>::Type &qAsConst(T &t) Q_DECL_NOTHROW { return t; }
+// prevent rvalue arguments:
+template <typename T>
+void qAsConst(const T &&) Q_DECL_EQ_DELETE;
+#endif
+
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),
@@ -120,7 +136,7 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
-        Q_FOREACH (const QString &email, mListEmails) {
+        for (const QString &email : qAsConst(mListEmails)) {
             if (mFrom.contains(email)) {
                 //Exclude this notification
                 deleteLater();

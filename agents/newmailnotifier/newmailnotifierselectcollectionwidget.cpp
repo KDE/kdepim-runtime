@@ -138,7 +138,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     vbox->addWidget(searchLine);
 
-    mFolderView = new QTreeView;
+    mFolderView = new QTreeView(this);
     mFolderView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mFolderView->setAlternatingRowColors(true);
     vbox->addWidget(mFolderView);
@@ -207,7 +207,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
             collection.removeAttribute<Akonadi::NewMailNotifierAttribute>();
             modifyJob = new Akonadi::CollectionModifyJob(collection);
             modifyJob->setProperty("AttributeAdded", true);
-        } else if (!selected && (!attr || !attr->ignoreNewMail())) {
+        } else if (!selected && (!attr || (attr && !attr->ignoreNewMail()))) {
             attr = collection.attribute<Akonadi::NewMailNotifierAttribute>(Akonadi::Collection::AddIfMissing);
             attr->setIgnoreNewMail(true);
             modifyJob = new Akonadi::CollectionModifyJob(collection);

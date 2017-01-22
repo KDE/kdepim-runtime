@@ -292,8 +292,8 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
         QList<Akonadi::Item::Id> idList = it.value();
         bool itemFound = false;
         for (const Item &item : items) {
-            if (idList.contains(item.id())) {
-                idList.removeAll(item.id());
+            const int numberOfItemsRemoved = idList.removeAll(item.id());
+            if (numberOfItemsRemoved > 0) {
                 itemFound = true;
             }
         }
@@ -417,12 +417,12 @@ void NewMailNotifierAgent::slotShowNotifications()
         Akonadi::Item::Id item = -1;
         QString currentPath;
         QStringList texts;
-        QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         const int numberOfCollection(mNewMails.count());
         if (numberOfCollection > 1) {
             hasUniqMessage = false;
         }
 
+        QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         for (QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it) {
             Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;
@@ -507,8 +507,8 @@ void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance 
     }
 
     const QString identifier(instance.identifier());
-    if (mCacheResourceName.contains(identifier)) {
-        mCacheResourceName.remove(identifier);
+    int resourceNameRemoved = mCacheResourceName.remove(identifier);
+    if (resourceNameRemoved > 0) {
         mCacheResourceName.insert(identifier, instance.name());
     }
 }
