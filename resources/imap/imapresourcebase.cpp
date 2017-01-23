@@ -24,6 +24,7 @@
 */
 
 #include "imapresourcebase.h"
+#include "helper_p.h"
 
 #include <QHostInfo>
 #include <QSettings>
@@ -173,7 +174,7 @@ ImapResourceBase::~ImapResourceBase()
     delete m_idle;
     m_idle = nullptr;
 
-    Q_FOREACH (ResourceTask *task, m_taskList) {
+    for (ResourceTask *task : qAsConst(m_taskList)) {
         delete task;
     }
     m_taskList.clear();
@@ -189,7 +190,7 @@ void ImapResourceBase::aboutToQuit()
         m_idle->stop();
     }
 
-    Q_FOREACH (ResourceTask *task, m_taskList) {
+    for (ResourceTask *task : qAsConst(m_taskList)) {
         task->kill();
     }
 
@@ -505,8 +506,6 @@ void ImapResourceBase::doSearch(const QVariant &arg)
     startTask(new SearchTask(createResourceState(TaskArguments(collection)), query, this));
 }
 
-// -----
-
 // ----------------------------------------------------------------------------------
 
 void ImapResourceBase::scheduleConnectionAttempt()
@@ -519,7 +518,7 @@ void ImapResourceBase::doSetOnline(bool online)
 {
     qCDebug(IMAPRESOURCE_LOG) << "online=" << online;
     if (!online) {
-        Q_FOREACH (ResourceTask *task, m_taskList) {
+        for (ResourceTask *task : qAsConst(m_taskList)) {
             task->kill();
             delete task;
         }
@@ -723,7 +722,7 @@ void ImapResourceBase::cleanup()
 QString ImapResourceBase::dumpResourceToString() const
 {
     QString ret;
-    Q_FOREACH (ResourceTask *task, m_taskList) {
+    for (ResourceTask *task : qAsConst(m_taskList)) {
         if (!ret.isEmpty()) {
             ret += QLatin1String(", ");
         }

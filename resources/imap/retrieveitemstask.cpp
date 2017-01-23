@@ -135,7 +135,8 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
     } else {
         int i = 0;
         Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob *>(job);
-        Q_FOREACH (const Akonadi::Item &item, fetch->items())  {
+        const Akonadi::Item::List lstItems = fetch->items();
+        for (const Akonadi::Item &item : lstItems)  {
             if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
                 qCWarning(IMAPRESOURCE_LOG) << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
                 uids.append(item.remoteId().toInt());

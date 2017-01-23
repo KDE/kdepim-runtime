@@ -210,7 +210,7 @@ int ResourceTask::intervalCheckTime() const
     return m_resource->intervalCheckTime();
 }
 
-static Akonadi::Collection detatchCollection(const Akonadi::Collection &collection)
+static Akonadi::Collection detachCollection(const Akonadi::Collection &collection)
 {
     //HACK: Attributes are accessed via a const function, and the implicitly shared private pointer thus doesn't detach.
     //We force a detach to avoid surprises. (RetrieveItemsTask used to write back the collection changes, even though the task was canceled)
@@ -222,7 +222,7 @@ static Akonadi::Collection detatchCollection(const Akonadi::Collection &collecti
 
 Akonadi::Collection ResourceTask::collection() const
 {
-    return detatchCollection(m_resource->collection());
+    return detachCollection(m_resource->collection());
 }
 
 Akonadi::Item ResourceTask::item() const
@@ -237,17 +237,17 @@ Akonadi::Item::List ResourceTask::items() const
 
 Akonadi::Collection ResourceTask::parentCollection() const
 {
-    return detatchCollection(m_resource->parentCollection());
+    return detachCollection(m_resource->parentCollection());
 }
 
 Akonadi::Collection ResourceTask::sourceCollection() const
 {
-    return detatchCollection(m_resource->sourceCollection());
+    return detachCollection(m_resource->sourceCollection());
 }
 
 Akonadi::Collection ResourceTask::targetCollection() const
 {
-    return detatchCollection(m_resource->targetCollection());
+    return detachCollection(m_resource->targetCollection());
 }
 
 QSet<QByteArray> ResourceTask::parts() const

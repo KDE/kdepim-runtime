@@ -20,6 +20,7 @@
 */
 
 #include "sessionpool.h"
+#include "helper_p.h"
 
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslSocket>
@@ -317,7 +318,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     if (!m_account) {
         // it looks like the connection was lost while we were waiting
         // for the password, we should fail all the pending requests and stop there
-        foreach (int request, m_pendingRequests) {
+        for (int request : qAsConst(m_pendingRequests)) {
             Q_EMIT sessionRequestDone(request, nullptr,
                                       LoginFailError, i18n("Disconnected from server during login."));
         }
@@ -451,11 +452,10 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
     }
 
     m_capabilities = capJob->capabilities();
-    QStringList expected;
-    expected << QStringLiteral("IMAP4REV1");
 
     QStringList missing;
-    foreach (const QString &capability, expected) {
+    const QStringList expected = {QStringLiteral("IMAP4REV1")};
+    for (const QString &capability : expected) {
         if (!m_capabilities.contains(capability)) {
             missing << capability;
         }

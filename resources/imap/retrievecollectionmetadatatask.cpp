@@ -40,6 +40,7 @@
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include "collectionmetadatahelper.h"
+#include "helper_p.h"
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),
@@ -244,7 +245,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     newLimits.reserve(newRoots.count());
     newUsages.reserve(newRoots.count());
 
-    foreach (const QByteArray &root, newRoots) {
+    for (const QByteArray &root : qAsConst(newRoots)) {
         newLimits << quotaJob->allLimits(root);
         newUsages << quotaJob->allUsages(root);
 

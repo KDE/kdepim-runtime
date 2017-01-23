@@ -20,7 +20,7 @@
 */
 
 #include "moveitemstask.h"
-
+#include "helper_p.h"
 #include <QtCore/QUuid>
 
 #include "imapresource_debug.h"
@@ -114,7 +114,8 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
 
     // save message id, might be needed later to search for the
     // resulting message uid.
-    foreach (const Akonadi::Item &item, items()) {
+    const Akonadi::Item::List lstItems = items();
+    for (const Akonadi::Item &item : lstItems) {
         try {
             KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
             const QByteArray messageId = msg->messageID()->asUnicodeString().toUtf8();
@@ -124,6 +125,7 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
 
             set.add(item.remoteId().toLong());
         } catch (const Akonadi::PayloadException &e) {
+            Q_UNUSED(e);
             qCWarning(IMAPRESOURCE_LOG) << "Move failed, payload exception " << item.id() << item.remoteId();
             cancelTask(i18n("Failed to move item, it has no message payload. Remote id: %1", item.remoteId()));
             return;
@@ -239,7 +241,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
     if (!m_messageIds.isEmpty()) {
         QVector<KIMAP::Term> subterms;
         subterms.reserve(m_messageIds.size());
-        foreach (const QByteArray &messageId, m_messageIds) {
+        for (const QByteArray &messageId : qAsConst(m_messageIds)) {
             QByteArray header = "Message-ID ";
             header += messageId;
             subterms << KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(messageId));
@@ -283,13 +285,14 @@ void MoveItemsTask::recordNewUid()
 {
     // Create the item resulting of the operation, since at that point
     // the first part of the move succeeded
-    QVector<qint64> oldUids = imapSetToList(m_oldSet);
+    const QVector<qint64> oldUids = imapSetToList(m_oldSet);
 
     Akonadi::Item::List newItems;
     for (int i = 0; i < oldUids.count(); ++i) {
         const QString oldUid = QString::number(oldUids.at(i));
         Akonadi::Item item;
-        Q_FOREACH (const Akonadi::Item &it, items()) {
+        const Akonadi::Item::List lstItems = items();
+        for (const Akonadi::Item &it : lstItems) {
             if (it.remoteId() == oldUid) {
                 item = it;
                 break;
@@ -339,8 +342,10 @@ void MoveItemsTask::recordNewUid()
 QVector<qint64> MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
 {
     QVector<qint64> list;
-    foreach (const KIMAP::ImapInterval &interval, set.intervals()) {
-        for (qint64 i = interval.begin(); i <= interval.end(); ++i) {
+    const KIMAP::ImapInterval::List lstInterval = set.intervals();
+    list.reserve(lstInterval.count());
+    for (const KIMAP::ImapInterval &interval : lstInterval) {
+        for (qint64 i = interval.begin(), end = interval.end(); i <= end; ++i) {
             list << i;
         }
     }

@@ -101,8 +101,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
 void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
         const QList< QList<QByteArray> > &flags)
 {
-    QStringList contentTypes;
-    contentTypes << KMime::Message::mimeType() << Akonadi::Collection::mimeType();
+    const QStringList contentTypes = { KMime::Message::mimeType(), Akonadi::Collection::mimeType()};
 
     if (!descriptors.isEmpty()) {
         // This is still not optimal way of getting the separator, but it's better

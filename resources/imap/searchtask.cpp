@@ -79,7 +79,8 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
 {
     if (!term.subTerms().isEmpty()) {
         QVector<KIMAP::Term> subterms;
-        Q_FOREACH (const Akonadi::SearchTerm &subterm, term.subTerms()) {
+        const QList<Akonadi::SearchTerm> lstSearchTermsList = term.subTerms();
+        for (const Akonadi::SearchTerm &subterm : lstSearchTermsList) {
             const KIMAP::Term newTerm = recursiveEmailTermMapping(subterm);
             if (!newTerm.isNull()) {
                 subterms << newTerm;
