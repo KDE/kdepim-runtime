@@ -24,6 +24,7 @@
 #include "kolabhelpers.h"
 #include "tracer.h"
 #include "kolabresource_debug.h"
+#include "helper_p.h"
 
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>
@@ -76,13 +77,13 @@ void RetrieveMetadataJob::start()
 {
     Trace();
     //Fill the map with empty entires so we set the mimetype to mail if no metadata is retrieved
-    Q_FOREACH (const QString &mailbox, mMailboxes) {
+    for (const QString &mailbox : qAsConst(mMailboxes)) {
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
     if (mServerCapabilities.contains(QStringLiteral("METADATA")) || mServerCapabilities.contains(QStringLiteral("ANNOTATEMORE"))) {
         QSet<QString> toplevelMailboxes;
-        Q_FOREACH (const QString &mailbox, mMailboxes) {
+        for (const QString &mailbox : qAsConst(mMailboxes)) {
             const QStringList parts = mailbox.split(mSeparator);
             if (!parts.isEmpty()) {
                 if (isNamespaceFolder(mailbox, mUserNamespace) && parts.length() >= 2) {
@@ -93,34 +94,32 @@ void RetrieveMetadataJob::start()
                 }
             }
         }
-        Q_FOREACH (const KIMAP::MailBoxDescriptor &desc, mSharedNamespace) {
+        for (const KIMAP::MailBoxDescriptor &desc : qAsConst(mSharedNamespace)) {
             toplevelMailboxes << desc.name;
         }
         //TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
-        Q_FOREACH (const QString &mailbox, toplevelMailboxes) {
-            {
-                KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(mSession);
-                meta->setMailBox(mailbox + QLatin1String("*"));
-                if (mServerCapabilities.contains(QStringLiteral("METADATA"))) {
-                    meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
-                } else {
-                    meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
-                }
-                meta->setDepth(KIMAP::GetMetaDataJob::AllLevels);
-                Q_FOREACH (const QByteArray &requestedEntry, mRequestedMetadata) {
-                    meta->addRequestedEntry(requestedEntry);
-                }
-                connect(meta, &KJob::result, this, &RetrieveMetadataJob::onGetMetaDataDone);
-                mJobs++;
-                meta->start();
+        for (const QString &mailbox : qAsConst(toplevelMailboxes)) {
+            KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(mSession);
+            meta->setMailBox(mailbox + QLatin1String("*"));
+            if (mServerCapabilities.contains(QStringLiteral("METADATA"))) {
+                meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
+            } else {
+                meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
             }
+            meta->setDepth(KIMAP::GetMetaDataJob::AllLevels);
+            for (const QByteArray &requestedEntry : qAsConst(mRequestedMetadata)) {
+                meta->addRequestedEntry(requestedEntry);
+            }
+            connect(meta, &KJob::result, this, &RetrieveMetadataJob::onGetMetaDataDone);
+            mJobs++;
+            meta->start();
         }
     }
 
     // Get the ACLs from the mailbox if it's supported
     if (mServerCapabilities.contains(QStringLiteral("ACL"))) {
 
-        Q_FOREACH (const QString &mailbox, mMailboxes) {
+        for (const QString &mailbox : qAsConst(mMailboxes)) {
             // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
                 continue;
@@ -150,7 +149,8 @@ void RetrieveMetadataJob::onGetMetaDataDone(KJob *job)
     }
 
     const QHash<QString, QMap<QByteArray, QByteArray> > metadata = meta->allMetaDataForMailboxes();
-    Q_FOREACH (const QString &folder, metadata.keys()) {
+    const QStringList lstKeys = metadata.keys();
+    for (const QString &folder : lstKeys) {
         mMetadata.insert(folder, metadata.value(folder));
     }
     checkDone();
@@ -272,7 +272,8 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
         const QList< QList<QByteArray> > &flags)
 {
-    for (int i = 0; i < descriptors.size(); ++i) {
+    const int nbDescriptors = descriptors.size();
+    for (int i = 0; i < nbDescriptors; ++i) {
         const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
         createCollection(descriptor.name, flags.at(i), !isSubscriptionEnabled() || mSubscribedMailboxes.contains(descriptor.name));
     }
@@ -424,7 +425,8 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
         cancelTask(i18n("Collection retrieval failed"));
     } else {
         QSet<QString> mailboxes;
-        Q_FOREACH (const QString &mailbox, mMailCollections.keys()) {
+        const QStringList lstKeys = mMailCollections.keys();
+        for (const QString &mailbox : lstKeys) {
             if (!mailbox.isEmpty() && !isNamespaceFolder(mailbox, resourceState()->userNamespaces() + resourceState()->sharedNamespaces())) {
                 mailboxes << mailbox;
             }
@@ -440,10 +442,11 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     }
 }
 
-void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights> rights)
+void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::Rights> &rights)
 {
     // qCDebug(KOLABRESOURCE_LOG) << rights;
-    Q_FOREACH (const QString &mailbox, rights.keys()) {
+    const QStringList lstKeys = rights.keys();
+    for (const QString &mailbox : lstKeys) {
         if (mMailCollections.contains(mailbox)) {
             const KIMAP::Acl::Rights imapRights = rights.value(mailbox);
             QStringList parts = mailbox.split(separatorCharacter());
@@ -472,7 +475,7 @@ void KolabRetrieveCollectionsTask::applyRights(QHash<QString, KIMAP::Acl::Rights
     }
 }
 
-void KolabRetrieveCollectionsTask::applyMetadata(QHash<QString, QMap<QByteArray, QByteArray> > metadataMap)
+void KolabRetrieveCollectionsTask::applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray> > &metadataMap)
 {
     // qCDebug(KOLABRESOURCE_LOG) << metadataMap;
     Q_FOREACH (const QString &mailbox, metadataMap.keys()) {

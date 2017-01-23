@@ -30,6 +30,7 @@
 #include <KLocalizedString>
 #include <QColor>
 #include "tracer.h"
+#include "helper_p.h"
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
@@ -185,7 +186,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
             toAdd << ref;
         }
         contactGroup.removeAllContactReferences();
-        foreach (const KContacts::ContactGroup::ContactReference &ref, toAdd) {
+        for (const KContacts::ContactGroup::ContactReference &ref : qAsConst(toAdd)) {
             contactGroup.append(ref);
         }
 
@@ -207,6 +208,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
 Akonadi::Item::List KolabHelpers::translateToImap(const Akonadi::Item::List &items, bool &ok)
 {
     Akonadi::Item::List imapItems;
+    imapItems.reserve(items.count());
     for (const Akonadi::Item &item : items) {
         bool translationOk = true;
         imapItems << translateToImap(item, translationOk);
@@ -251,7 +253,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
     }
     KContacts::ContactGroup gidOnlyContactGroup = contactGroup;
     gidOnlyContactGroup.removeAllContactReferences();
-    foreach (const KContacts::ContactGroup::ContactReference &ref, toAdd) {
+    for (const KContacts::ContactGroup::ContactReference &ref : qAsConst(toAdd)) {
         gidOnlyContactGroup.append(ref);
     }
     return gidOnlyContactGroup;

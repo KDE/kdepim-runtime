@@ -102,8 +102,6 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob *>(job)->items();
-    qCDebug(KOLABRESOURCE_LOG) << items.size();
 
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 
@@ -112,10 +110,12 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
     connect(changeHelper, &TagChangeHelper::cancelTask, this, &KolabChangeItemsTagsTask::onCancelTask);
     connect(changeHelper, &TagChangeHelper::changeCommitted, this, &KolabChangeItemsTagsTask::onChangeCommitted);
 
+    const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob *>(job)->items();
+    qCDebug(KOLABRESOURCE_LOG) << items.size();
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     {
         qCDebug(KOLABRESOURCE_LOG) << "Writing " << tag.name() << " with " << items.size() << " members to the server: ";
-        foreach (const Akonadi::Item &item, items) {
+        for (const Akonadi::Item &item : items) {
             qCDebug(KOLABRESOURCE_LOG) << "member(localid, remoteid): " << item.id() << item.remoteId();
         }
     }

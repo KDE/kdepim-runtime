@@ -66,7 +66,8 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
         Akonadi::CollectionFetchJob *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
         Q_ASSERT(fetchJob != nullptr);
 
-        Q_FOREACH (const Akonadi::Collection &collection, fetchJob->collections()) {
+        const Akonadi::Collection::List lstCols = fetchJob->collections();
+        for (const Akonadi::Collection &collection : lstCols) {
             if (!collection.contentMimeTypes().contains(KolabHelpers::getMimeType(Kolab::ConfigurationType))) {
                 // Skip parents of the actual Configuration folder
                 continue;

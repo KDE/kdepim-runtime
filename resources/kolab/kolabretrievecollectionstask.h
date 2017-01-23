@@ -53,8 +53,8 @@ private:
     Akonadi::Collection getOrCreateParent(const QString &parentPath);
     void createCollection(const QString &mailbox, const QList<QByteArray> &flags, bool isSubscribed);
     void setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path);
-    void applyRights(QHash<QString, KIMAP::Acl::Rights> rights);
-    void applyMetadata(QHash<QString, QMap<QByteArray, QByteArray> > metadata);
+    void applyRights(const QHash<QString, KIMAP::Acl::Rights> &rights);
+    void applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray> > &metadata);
 
     int mJobs;
     QHash<QString, Akonadi::Collection> mMailCollections;

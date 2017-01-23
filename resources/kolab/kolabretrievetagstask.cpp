@@ -26,6 +26,7 @@
 #include <imapflags.h>
 #include <kolabobject.h>
 #include "tracer.h"
+#include "helper_p.h"
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -146,7 +147,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
             col.setParentCollection(Akonadi::Collection::root());
             parent = col;
         }
-        Q_FOREACH (const QByteArray part, member.mailbox) {
+        for (const QByteArray part : qAsConst(member.mailbox)) {
             Akonadi::Collection col;
             col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
             col.setParentCollection(parent);
@@ -166,7 +167,8 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
     Trace() << "Extracted tag: " << tag.gid() << " remoteId: " << remoteUid << tag.remoteId();
 
     Akonadi::Item::List members;
-    Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
+    const QStringList lstMemberUrl = reader.getTagMembers();
+    for (const QString &memberUrl : lstMemberUrl) {
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
         const Akonadi::Item i = extractMember(member);
         //TODO implement fallback to search if uid is not available
@@ -182,7 +184,8 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
 void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reader, qint64 remoteUid)
 {
     Akonadi::Item::List members;
-    Q_FOREACH (const QString &memberUrl, reader.getTagMembers()) {
+    const QStringList lstMemberUrl = reader.getTagMembers();
+    for (const QString &memberUrl : lstMemberUrl) {
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
         const Akonadi::Item i = extractMember(member);
         //TODO implement fallback to search if uid is not available
