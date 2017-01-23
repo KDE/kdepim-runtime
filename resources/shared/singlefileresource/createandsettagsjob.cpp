@@ -17,6 +17,7 @@
  *  02110-1301, USA.
  */
 #include "createandsettagsjob.h"
+#include "helper_p.h"
 #include <AkonadiCore/tagcreatejob.h>
 #include <AkonadiCore/itemmodifyjob.h>
 
@@ -38,7 +39,7 @@ void CreateAndSetTagsJob::start()
     if (mTags.isEmpty()) {
         emitResult();
     }
-    Q_FOREACH (const Akonadi::Tag &tag, mTags) {
+    for (const Akonadi::Tag &tag : qAsConst(mTags)) {
         Akonadi::TagCreateJob *createJob = new Akonadi::TagCreateJob(tag, this);
         createJob->setMergeIfExisting(true);
         connect(createJob, &Akonadi::TagCreateJob::result, this, &CreateAndSetTagsJob::onCreateDone);
@@ -55,7 +56,7 @@ void CreateAndSetTagsJob::onCreateDone(KJob *job)
         mCreatedTags << createJob->tag();
     }
     if (mCount == mTags.size()) {
-        Q_FOREACH (const Akonadi::Tag &tag, mCreatedTags) {
+        for (const Akonadi::Tag &tag : qAsConst(mCreatedTags)) {
             mItem.setTag(tag);
         }
         Akonadi::ItemModifyJob *modJob = new Akonadi::ItemModifyJob(mItem, this);

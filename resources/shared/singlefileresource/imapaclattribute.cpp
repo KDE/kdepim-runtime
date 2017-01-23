@@ -78,12 +78,12 @@ QByteArray ImapAclAttribute::serialized() const
 
     bool added = false;
 
-    QMapIterator<QByteArray, KIMAP::Acl::Rights> i(mRights);
-    while (i.hasNext()) {
-        i.next();
-        result += i.key();
+    QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator it = mRights.constBegin();
+    const QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator end = mRights.constEnd();
+    for (;it != end; ++it) {
+        result += it.key();
         result += ' ';
-        result += KIMAP::Acl::rightsToString(i.value());
+        result += KIMAP::Acl::rightsToString(it.value());
         result += " % "; // We use this separator as '%' is not allowed in keys or values
         added = true;
     }
@@ -95,12 +95,12 @@ QByteArray ImapAclAttribute::serialized() const
     result += " %% ";
 
     added = false;
-    QMapIterator<QByteArray, KIMAP::Acl::Rights> i2(mOldRights);
-    while (i2.hasNext()) {
-        i2.next();
-        result += i2.key();
+    QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator it2 = mOldRights.constBegin();
+    const QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator end2 = mOldRights.constEnd();
+    for (;it2 != end2; ++it2) {
+        result += it2.key();
         result += ' ';
-        result += KIMAP::Acl::rightsToString(i2.value());
+        result += KIMAP::Acl::rightsToString(it2.value());
         result += " % "; // We use this separator as '%' is not allowed in keys or values
         added = true;
     }
@@ -119,7 +119,7 @@ QByteArray ImapAclAttribute::serialized() const
 
 static void fillRightsMap(const QList<QByteArray> &rights, QMap <QByteArray, KIMAP::Acl::Rights> &map)
 {
-    foreach (const QByteArray &right, rights) {
+    for (const QByteArray &right : rights) {
         const QByteArray trimmed = right.trimmed();
         const int wsIndex = trimmed.indexOf(' ');
         const QByteArray id = trimmed.mid(0, wsIndex).trimmed();

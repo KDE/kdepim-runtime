@@ -59,12 +59,12 @@ QByteArray CollectionAnnotationsAttribute::serialized() const
 {
     QByteArray result = "";
 
-    QMapIterator<QByteArray, QByteArray> i(mAnnotations);
-    while (i.hasNext()) {
-        i.next();
-        result += i.key();
+    QMap<QByteArray, QByteArray>::const_iterator it = mAnnotations.constBegin();
+    const QMap<QByteArray, QByteArray>::const_iterator end = mAnnotations.constEnd();
+    for (;it != end; ++it) {
+        result += it.key();
         result += ' ';
-        result += i.value();
+        result += it.value();
         result += " % "; // We use this separator as '%' is not allowed in keys or values
     }
     result.chop(3);
