@@ -2,11 +2,17 @@
 Name=iCal Calendar File
 Name[ca]=Fitxer de calendari iCal
 Name[ca@valencia]=Fitxer de calendari iCal
+Name[en_GB]=iCal Calendar File
 Name[es]=Archivo de calendario iCal
 Name[it]=File di calendario iCal
+Name[ko]=iCal 달력 파일
 Name[nl]=iCal-agendabestand
 Name[pt]=Ficheiro de Calendário do iCal
 Name[sk]=Súbor kalendára iCal
+Name[sr]=И‑календарски фајл
+Name[sr@ijekavian]=И‑календарски фајл
+Name[sr@ijekavianlatin]=I‑kalendarski fajl
+Name[sr@latin]=I‑kalendarski fajl
 Name[sv]=iCal-kalenderfil
 Name[uk]=Файл календаря iCal
 Name[x-test]=xxiCal Calendar Filexx
