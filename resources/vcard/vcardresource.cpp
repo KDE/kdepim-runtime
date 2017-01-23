@@ -20,6 +20,7 @@
 
 #include "vcardresource.h"
 #include "vcardsettingsadaptor.h"
+#include "helper_p.h"
 #include "singlefileresourceconfigdialog.h"
 
 #include <kdbusconnectionpool.h>
@@ -136,7 +137,7 @@ void VCardResource::retrieveItems(const Akonadi::Collection &col)
     // items, otherwise set a bool and in the result slot of the job send the
     // items if the bool is set.
 
-    foreach (const KContacts::Addressee &addressee, mAddressees) {
+    for (const KContacts::Addressee &addressee : qAsConst(mAddressees)) {
         Item item;
         item.setRemoteId(addressee.uid());
         item.setMimeType(KContacts::Addressee::mimeType());
@@ -179,7 +180,7 @@ bool VCardResource::writeToFile(const QString &fileName)
 
     QVector<KContacts::Addressee> v;
     v.reserve(mAddressees.size());
-    foreach (const KContacts::Addressee &addressee, mAddressees) {
+    for (const KContacts::Addressee &addressee : qAsConst(mAddressees)) {
         v.push_back(addressee);
     }
 

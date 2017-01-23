@@ -22,6 +22,7 @@
 
 #include "settingsadaptor.h"
 #include "dirsettingsdialog.h"
+#include "helper_p.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
@@ -241,7 +242,7 @@ void VCardDirResource::retrieveItems(const Akonadi::Collection &)
     Item::List items;
     items.reserve(mAddressees.count());
 
-    foreach (const KContacts::Addressee &addressee, mAddressees) {
+    for (const KContacts::Addressee &addressee : qAsConst(mAddressees)) {
         Item item;
         item.setRemoteId(addressee.uid());
         item.setMimeType(KContacts::Addressee::mimeType());
