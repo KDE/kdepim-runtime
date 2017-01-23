@@ -303,7 +303,8 @@ bool Maildir::create()
 {
     // FIXME: in a failure case, this will leave partially created dirs around
     // we should clean them up, but only if they didn't previously existed...
-    Q_FOREACH (const QString &p, d->subPaths()) {
+    const QStringList lstPath = d->subPaths();
+    for (const QString &p : lstPath) {
         QDir dir(p);
         if (!dir.exists(p)) {
             if (!dir.mkpath(p)) {
