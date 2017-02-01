@@ -18,7 +18,7 @@
 */
 
 #include "collectionflagsattribute.h"
-
+#include "helper_p.h"
 #include <QByteArray>
 #include <attribute.h>
 
@@ -54,7 +54,7 @@ QByteArray CollectionFlagsAttribute::serialized() const
 {
     QByteArray result;
 
-    foreach (const QByteArray &flag, mFlags) {
+    for (const QByteArray &flag : qAsConst(mFlags)) {
         result += flag + ' ';
     }
     result.chop(1);

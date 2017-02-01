@@ -20,6 +20,7 @@
 #include "accountdialog.h"
 #include "settings.h"
 #include "jobs.h"
+#include "helper_p.h"
 #include <AkonadiCore/Pop3ResourceAttribute>
 
 #include <CollectionFetchJob>
@@ -764,7 +765,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
             if (Settings::self()->leaveOnServerSize() > 0) {
                 const qint64 limitInBytes = Settings::self()->leaveOnServerSize() * (1024 * 1024);
                 qint64 sizeOnServerAfterDeletion = 0;
-                foreach (int id, mIdsToSave) {
+                for (int id : qAsConst(mIdsToSave)) {
                     sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
                 }
                 while (sizeOnServerAfterDeletion > limitInBytes) {

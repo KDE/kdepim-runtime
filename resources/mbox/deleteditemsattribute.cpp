@@ -18,6 +18,7 @@
 */
 
 #include "deleteditemsattribute.h"
+#include "helper_p.h"
 
 DeletedItemsAttribute::DeletedItemsAttribute()
 {
@@ -77,9 +78,8 @@ QByteArray DeletedItemsAttribute::serialized() const
 {
     QByteArray serialized;
 
-    foreach (quint64 offset, mDeletedItemOffsets) {
-        serialized += QByteArray::number(offset);
-        serialized += ',';
+    for (quint64 offset : qAsConst(mDeletedItemOffsets)) {
+        serialized += QByteArray::number(offset) + ',';
     }
 
     serialized.chop(1);   // Remove the last ','
