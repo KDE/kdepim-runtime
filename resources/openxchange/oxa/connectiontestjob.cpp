@@ -22,6 +22,9 @@
 #include "connectiontestjob.h"
 
 #include <kio/job.h>
+
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QUrl>
 
 using namespace OXA;
@@ -54,21 +57,19 @@ void ConnectionTestJob::httpJobFinished(KJob *job)
     KIO::StoredTransferJob *transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
     Q_ASSERT(transferJob);
 
-    const QString data = QString::fromUtf8(transferJob->data());
+    const QJsonObject data = QJsonDocument::fromJson(transferJob->data()).object();
 
     // on success data contains something like: {"session":"e530578bca504aa89738fadde9e44b3d","random":"ac9090d2cc284fed926fa3c7e316c43b"}
     // on failure data contains something like: {"category":1,"error_params":[],"error":"Invalid credentials.","error_id":"-1529642166-37","code":"LGI-0006"}
-    const int index = data.indexOf(QLatin1String("\"session\":\""));
-    if (index == -1) {   // error case
-        const int errorIndex = data.indexOf(QLatin1String("\"error\":\""));
-        const QString errorText = data.mid(errorIndex + 9, data.indexOf(QLatin1Char('"'), errorIndex + 10) - errorIndex - 9);
+    if (data.contains(QStringLiteral("error"))) {
+        const QString errorText = data[QStringLiteral("error")].toString();
 
         setError(UserDefinedError);
         setErrorText(errorText);
         emitResult();
         return;
     } else { // success case
-        const QString sessionId = data.mid(index + 11, 33);   // I assume here the session id is always 32  characters long :}
+        const QString sessionId = data[QStringLiteral("session")].toString();
 
         // logout correctly...
         const QUrl url(mUrl + QStringLiteral("/ajax/login?action=logout&session=%1").arg(sessionId));
