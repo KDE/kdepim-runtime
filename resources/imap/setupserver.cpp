@@ -263,7 +263,7 @@ void SetupServer::applySettings()
         }
     }
     if (!m_parentResource->settings()->userName().isEmpty()
-        && m_ui->imapServer->text() != m_parentResource->settings()->userName()) {
+        && m_ui->userName->text() != m_parentResource->settings()->userName()) {
         if (KMessageBox::warningContinueCancel(
                 this, i18n("You have changed the user name. Even if this is a user name for the same account as before "
                            "we will have to re-download all your emails from this account again. "
