@@ -46,6 +46,7 @@ Name[zh_CN]=普通 IMAP 电子邮件服务器
 Name[zh_TW]=一般 IMAP 信件伺服器
 Icon=network-server
 Comment=Imap account
+Comment[ast]=Cuenta IMAP
 Comment[bg]=Сметка IMAP
 Comment[bs]=Imap nalog
 Comment[ca]=Compte Imap
