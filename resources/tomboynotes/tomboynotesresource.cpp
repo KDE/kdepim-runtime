@@ -310,7 +310,7 @@ void TomboyNotesResource::itemRemoved(const Akonadi::Item &item)
 
 bool TomboyNotesResource::configurationNotValid() const
 {
-    return Settings::requestToken().isEmpty() || Settings::requestToken().isEmpty() || Settings::contentURL().isEmpty();
+    return Settings::requestToken().isEmpty() || Settings::contentURL().isEmpty();
 }
 
 void TomboyNotesResource::retryAfterFailure(const QString &errorMessage)

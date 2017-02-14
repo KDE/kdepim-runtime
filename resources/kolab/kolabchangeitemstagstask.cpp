@@ -29,6 +29,7 @@
 
 KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
+    , mSession(nullptr)
     , mTagConverter(tagConverter)
 {
 }

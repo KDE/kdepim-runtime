@@ -29,7 +29,6 @@ QString translateErrorString(Error error)
     ErrorNumber errorNumber = error.errorNumber();
     int responseCode = error.responseCode();
     QString errorText = error.errorText();
-    int jobErrorCode = error.jobErrorCode();
     QString err = error.translatedJobError();
 
     switch (errorNumber) {
