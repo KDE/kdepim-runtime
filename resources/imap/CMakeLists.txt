@@ -1,6 +1,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
-if (Sasl2_FOUND AND KF5GAPI_FOUND)
+if (Sasl2_FOUND AND KPimGAPI_FOUND)
     set(WITH_GMAIL_XOAUTH2 TRUE)
     add_subdirectory(saslplugin)
 endif()
@@ -130,7 +130,7 @@ target_link_libraries(akonadi_imap_resource
     folderarchivesettings)
 
 if (WITH_GMAIL_XOAUTH2)
-    target_link_libraries(akonadi_imap_resource KF5::GAPICore)
+    target_link_libraries(akonadi_imap_resource KPim::GAPICore)
 endif ()
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

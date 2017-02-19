@@ -47,9 +47,9 @@ target_link_libraries(akonadi_googlecalendar_resource
   KF5::AkonadiCore
   KF5::CalendarCore
   KF5::AkonadiCalendar
-  KF5::GAPICalendar
-  KF5::GAPICore
-  KF5::GAPITasks
+  KPim::GAPICalendar
+  KPim::GAPICore
+  KPim::GAPITasks
   KF5::AkonadiAgentBase
   KF5::Wallet
   KF5::I18n

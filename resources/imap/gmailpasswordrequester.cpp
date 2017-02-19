@@ -22,8 +22,8 @@
 #include "settings.h"
 #include "imapresource_debug.h"
 
-#include <KGAPI/kgapi/account.h>
-#include <KGAPI/kgapi/authjob.h>
+#include <KGAPI/Account>
+#include <KGAPI/AuthJob>
 
 #define GOOGLE_API_KEY QStringLiteral("554041944266.apps.googleusercontent.com")
 #define GOOGLE_API_SECRET QStringLiteral("mdT1DjzohxN3npUUzkENT0gO")

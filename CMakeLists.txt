@@ -44,7 +44,7 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_VERSION "5.30.0")
+set(KF5_VERSION "5.31.0")
 find_package(ECM ${KF5_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
@@ -143,7 +143,7 @@ set_package_properties(Sasl2 PROPERTIES
 )
 
 # Extra package
-find_package(KF5GAPI "5.3.1" CONFIG)
+find_package(KPimGAPI "5.4.40" CONFIG)
 
 
 add_subdirectory(resources)
