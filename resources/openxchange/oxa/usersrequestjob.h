@@ -34,7 +34,7 @@ class UsersRequestJob : public KJob
     Q_OBJECT
 
 public:
-    explicit UsersRequestJob(QObject *parent = Q_NULLPTR);
+    explicit UsersRequestJob(QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

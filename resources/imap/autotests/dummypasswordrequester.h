@@ -26,7 +26,7 @@ class DummyPasswordRequester : public PasswordRequesterInterface
 {
     Q_OBJECT
 public:
-    DummyPasswordRequester(QObject *parent = Q_NULLPTR);
+    DummyPasswordRequester(QObject *parent = nullptr);
 
     QString password() const;
     void setPassword(const QString &password);

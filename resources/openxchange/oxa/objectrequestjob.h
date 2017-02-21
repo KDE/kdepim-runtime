@@ -34,7 +34,7 @@ class ObjectRequestJob : public KJob
     Q_OBJECT
 
 public:
-    explicit ObjectRequestJob(const Object &object, QObject *parent = Q_NULLPTR);
+    explicit ObjectRequestJob(const Object &object, QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

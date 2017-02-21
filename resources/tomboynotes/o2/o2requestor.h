@@ -18,7 +18,7 @@ class O2Requestor: public QObject
     Q_OBJECT
 
 public:
-    explicit O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent = Q_NULLPTR);
+    explicit O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent = nullptr);
     ~O2Requestor();
 
 public Q_SLOTS:

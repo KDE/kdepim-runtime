@@ -47,7 +47,7 @@ public:
      *
      * @note The folder needs the objectId property set.
      */
-    explicit FolderRequestJob(const Folder &folder, QObject *parent = Q_NULLPTR);
+    explicit FolderRequestJob(const Folder &folder, QObject *parent = nullptr);
 
     /**
      * Starts the job.

@@ -34,7 +34,7 @@ class ObjectModifyJob : public KJob
     Q_OBJECT
 
 public:
-    explicit ObjectModifyJob(const Object &object, QObject *parent = Q_NULLPTR);
+    explicit ObjectModifyJob(const Object &object, QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

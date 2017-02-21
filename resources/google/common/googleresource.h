@@ -77,7 +77,7 @@ protected Q_SLOTS:
 
 protected:
     bool configureKGAPIAccount(const KGAPI2::AccountPtr &account);
-    void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = Q_NULLPTR);
+    void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = nullptr);
 
     template <typename T>
     bool canPerformTask(const Akonadi::Item &item, const QString &mimeType = QString())

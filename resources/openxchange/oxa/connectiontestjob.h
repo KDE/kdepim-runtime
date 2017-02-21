@@ -32,7 +32,7 @@ class ConnectionTestJob : public KJob
     Q_OBJECT
 
 public:
-    ConnectionTestJob(const QString &url, const QString &user, const QString &password, QObject *parent = Q_NULLPTR);
+    ConnectionTestJob(const QString &url, const QString &user, const QString &password, QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

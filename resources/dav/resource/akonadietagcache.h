@@ -45,7 +45,7 @@ public:
      * Creates a new etag cache and populates it with the ETags
      * of items found in @p collection.
      */
-    explicit AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent = Q_NULLPTR);
+    explicit AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent = nullptr);
 
 private Q_SLOTS:
     void onItemFetchJobFinished(KJob *job);

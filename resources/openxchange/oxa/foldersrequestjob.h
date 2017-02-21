@@ -55,7 +55,7 @@ public:
      * @param mode The mode of folders to request.
      * @param parent The parent object.
      */
-    explicit FoldersRequestJob(qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR);
+    explicit FoldersRequestJob(qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = nullptr);
 
     /**
      * Starts the job.

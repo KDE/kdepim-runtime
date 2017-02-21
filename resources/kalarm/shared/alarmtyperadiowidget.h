@@ -35,7 +35,7 @@ class AlarmTypeRadioWidget : public Akonadi::SingleFileValidatingWidget
 {
     Q_OBJECT
 public:
-    explicit AlarmTypeRadioWidget(QWidget *parent = Q_NULLPTR);
+    explicit AlarmTypeRadioWidget(QWidget *parent = nullptr);
     void setAlarmType(CalEvent::Type);
     CalEvent::Type alarmType() const;
     bool validate() const Q_DECL_OVERRIDE;

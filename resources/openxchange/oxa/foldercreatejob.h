@@ -45,7 +45,7 @@ public:
      * @param folder The folder to create.
      * @param parent The parent object.
      */
-    explicit FolderCreateJob(const Folder &folder, QObject *parent = Q_NULLPTR);
+    explicit FolderCreateJob(const Folder &folder, QObject *parent = nullptr);
 
     /**
      * Starts the job.

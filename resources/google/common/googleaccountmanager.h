@@ -37,7 +37,7 @@ class GoogleAccountManager : public QObject
     Q_OBJECT
 
 public:
-    explicit GoogleAccountManager(QObject *parent = Q_NULLPTR);
+    explicit GoogleAccountManager(QObject *parent = nullptr);
     virtual ~GoogleAccountManager();
 
     bool isReady() const;

@@ -29,7 +29,7 @@ class FakeServer : public QObject
     Q_OBJECT
 
 public:
-    FakeServer(QObject *parent = Q_NULLPTR);
+    FakeServer(QObject *parent = nullptr);
     ~FakeServer();
 
     void setNextConversation(const QString &conversation,

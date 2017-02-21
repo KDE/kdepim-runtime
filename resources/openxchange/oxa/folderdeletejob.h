@@ -47,7 +47,7 @@ public:
      *
      * @note The folder needs the objectId, folderId and lastModified property set.
      */
-    explicit FolderDeleteJob(const Folder &folder, QObject *parent = Q_NULLPTR);
+    explicit FolderDeleteJob(const Folder &folder, QObject *parent = nullptr);
 
     /**
      * Starts the job.

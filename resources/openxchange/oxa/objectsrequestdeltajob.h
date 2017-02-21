@@ -47,7 +47,7 @@ public:
      *                 after this date will be requested. 0 will request all available objects.
      * @param parent The parent object.
      */
-    ObjectsRequestDeltaJob(const Folder &folder, qulonglong lastSync, QObject *parent = Q_NULLPTR);
+    ObjectsRequestDeltaJob(const Folder &folder, qulonglong lastSync, QObject *parent = nullptr);
 
     /**
      * Starts the job.

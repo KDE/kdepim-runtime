@@ -52,7 +52,7 @@ public:
      * @param mode The mode of objects to request.
      * @param parent The parent object.
      */
-    explicit ObjectsRequestJob(const Folder &folder, qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = Q_NULLPTR);
+    explicit ObjectsRequestJob(const Folder &folder, qulonglong lastSync = 0, Mode mode = Modified, QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

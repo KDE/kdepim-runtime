@@ -34,7 +34,7 @@ class ObjectCreateJob : public KJob
     Q_OBJECT
 
 public:
-    explicit ObjectCreateJob(const Object &object, QObject *parent = Q_NULLPTR);
+    explicit ObjectCreateJob(const Object &object, QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 

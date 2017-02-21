@@ -47,7 +47,7 @@ public:
      *
      * @note The folder needs at least the objectId and lastModified property set.
      */
-    explicit FolderModifyJob(const Folder &folder, QObject *parent = Q_NULLPTR);
+    explicit FolderModifyJob(const Folder &folder, QObject *parent = nullptr);
 
     /**
      * Starts the job.

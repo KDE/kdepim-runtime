@@ -27,7 +27,7 @@ Q_DECLARE_METATYPE(ResourceTask::ActionIfNoSession)
 class DummyResourceTask : public ResourceTask
 {
 public:
-    explicit DummyResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = Q_NULLPTR)
+    explicit DummyResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = nullptr)
         : ResourceTask(action, resource, parent)
     {
 

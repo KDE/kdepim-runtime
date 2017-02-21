@@ -34,7 +34,7 @@ class UpdateUsersJob : public KJob
     Q_OBJECT
 
 public:
-    explicit UpdateUsersJob(QObject *parent = Q_NULLPTR);
+    explicit UpdateUsersJob(QObject *parent = nullptr);
 
     void start() Q_DECL_OVERRIDE;
 
