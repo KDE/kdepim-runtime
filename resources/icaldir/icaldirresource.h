@@ -52,6 +52,8 @@ protected:
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
     void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
 
+    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+
 private:
     bool loadIncidences();
     QString iCalDirectoryName() const;
