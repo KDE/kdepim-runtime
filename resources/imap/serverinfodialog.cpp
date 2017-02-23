@@ -62,7 +62,7 @@ ServerInfoTextBrowser::~ServerInfoTextBrowser()
 
 void ServerInfoTextBrowser::paintEvent(QPaintEvent *event)
 {
-    if (toPlainText().isEmpty()) {
+    if (document()->isEmpty()) {
         QPainter p(viewport());
 
         QFont font = p.font();
