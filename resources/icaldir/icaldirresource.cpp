@@ -234,6 +234,18 @@ void ICalDirResource::itemRemoved(const Akonadi::Item &item)
     changeProcessed();
 }
 
+void ICalDirResource::collectionChanged(const Collection &collection)
+{
+    if (collection.hasAttribute<EntityDisplayAttribute>()) {
+        auto attr = collection.attribute<EntityDisplayAttribute>();
+        if (attr->displayName() != name()) {
+            setName(attr->displayName());
+        }
+    }
+
+    changeProcessed();
+}
+
 void ICalDirResource::retrieveCollections()
 {
     Collection c;
@@ -257,7 +269,7 @@ void ICalDirResource::retrieveCollections()
     }
 
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attr->setDisplayName(i18n("Calendar Folder"));
+    attr->setDisplayName(name() == identifier() ? i18n("Calendar Folder") : name());
     attr->setIconName(QStringLiteral("office-calendar"));
 
     Collection::List list;
