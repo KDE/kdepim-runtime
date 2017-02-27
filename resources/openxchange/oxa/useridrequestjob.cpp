@@ -59,7 +59,7 @@ void UserIdRequestJob::davJobFinished(KJob *job)
     Q_ASSERT(requestJob);
 
     const Folder::List folders = requestJob->folders();
-    foreach (const Folder &folder, folders) {
+    for (const Folder &folder : folders) {
         if (folder.folderId() == 1) {
             // Found folder with 'Private Folders' as parent, so the owner must
             // be the user that is currently logged in.

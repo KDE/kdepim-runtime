@@ -181,7 +181,7 @@ QByteArray O1::buildAuthorizationHeader(const QList<O0RequestParameter> &oauthPa
     QByteArray ret("OAuth ");
     QList<O0RequestParameter> headers(oauthParams);
     qSort(headers);
-    foreach (O0RequestParameter h, headers) {
+    foreach (const O0RequestParameter &h, headers) {
         if (first) {
             first = false;
         } else {

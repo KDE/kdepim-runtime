@@ -711,7 +711,7 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished(KJob *job)
     Item::List changedItems;
 
     const OXA::Object::List modifiedObjects = requestJob->modifiedObjects();
-    foreach (const OXA::Object &object, modifiedObjects) {
+    for (const OXA::Object &object : modifiedObjects) {
         Item item;
         switch (object.module()) {
         case OXA::Folder::Contacts:
@@ -1022,9 +1022,9 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
     Collection::List removedCollections;
 
     // add the deleted folders from the server
-    OXA::Folder::List deletedFolders = requestJob->deletedFolders();
+    const OXA::Folder::List deletedFolders = requestJob->deletedFolders();
     removedCollections.reserve(deletedFolders.count());
-    foreach (const OXA::Folder &folder, deletedFolders) {
+    for (const OXA::Folder &folder : deletedFolders) {
         Collection collection;
         collection.setRemoteId(QString::number(folder.objectId()));
 

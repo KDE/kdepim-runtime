@@ -257,7 +257,7 @@ static void parseRecurrence(const QDomElement &element,
         } else if ((tagName == QLatin1String("deleteexceptions")) || (tagName == QLatin1String("changeexceptions"))) {
             const QStringList exceptionDates = text.split(QLatin1Char(','));
             deleteExceptions.reserve(exceptionDates.count());
-            foreach (const QString &date, exceptionDates) {
+            for (const QString &date : exceptionDates) {
                 deleteExceptions.append(OXUtils::readDate(date));
             }
         } else if (tagName == QLatin1String("until")) {
@@ -323,7 +323,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     if (incidence->attendeeCount() > 0) {
         QDomElement members = DAVUtils::addOxElement(document, parent, QStringLiteral("participants"));
         const KCalCore::Attendee::List attendees = incidence->attendees();
-        foreach (const KCalCore::Attendee::Ptr &attendee, attendees) {
+        for (const KCalCore::Attendee::Ptr &attendee : attendees) {
             const User user = Users::self()->lookupEmail(attendee->email());
 
             if (!user.isValid()) {
@@ -500,7 +500,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
 
     QStringList dates;
     dates.reserve(exceptionList.count());
-    foreach (const QDate &date, exceptionList) {
+    for (const QDate &date : exceptionList) {
         dates.append(OXUtils::writeDate(date));
     }
 

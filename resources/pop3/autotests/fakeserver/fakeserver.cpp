@@ -204,8 +204,8 @@ void FakeServer::setAllowedDeletions(const QString &deleteIds)
 {
     QMutexLocker locker(&mMutex);
     mAllowedDeletions.clear();
-    QStringList ids = deleteIds.split(QLatin1Char(','), QString::SkipEmptyParts);
-    foreach (const QString &id, ids) {
+    const QStringList ids = deleteIds.split(QLatin1Char(','), QString::SkipEmptyParts);
+    for (const QString &id : ids) {
         mAllowedDeletions.append(id.toUtf8());
     }
 }
@@ -214,8 +214,8 @@ void FakeServer::setAllowedRetrieves(const QString &retrieveIds)
 {
     QMutexLocker locker(&mMutex);
     mAllowedRetrieves.clear();
-    QStringList ids = retrieveIds.split(QLatin1Char(','), QString::SkipEmptyParts);
-    foreach (const QString &id, ids) {
+    const QStringList ids = retrieveIds.split(QLatin1Char(','), QString::SkipEmptyParts);
+    for (const QString &id : ids) {
         mAllowedRetrieves.append(id.toUtf8());
     }
 }

@@ -29,7 +29,6 @@
 
 #include <QtCore/QMap>
 
-class QKeyEvent;
 class QStandardItemModel;
 class QStandardItem;
 
@@ -37,7 +36,6 @@ class QLineEdit;
 class QCheckBox;
 class ImapAccount;
 class QTreeView;
-class QListView;
 class QPushButton;
 
 class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel

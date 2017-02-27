@@ -31,7 +31,6 @@ class AuthJob;
 }
 
 class ImapAccount;
-class KJob;
 
 class GmailSettings : public Settings
 {
