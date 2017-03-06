@@ -34,7 +34,7 @@
 #include <AkonadiCore/qtest_akonadi.h>
 #include <AkonadiCore/collectionpathresolver.h>
 
-#include <mailtransport/messagequeuejob.h>
+#include <mailtransportakonadi/messagequeuejob.h>
 #include <mailtransport/transport.h>
 #include <mailtransport/transportmanager.h>
 

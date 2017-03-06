@@ -15,7 +15,7 @@ macro(add_akonadi_isolated_test _source)
     Qt5::Test
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::MailTransport
+    KF5::MailTransportAkonadi
     KF5::Mime
     KF5::I18n
     KF5::ConfigGui

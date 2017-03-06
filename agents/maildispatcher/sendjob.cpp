@@ -37,9 +37,9 @@
 #include "maildispatcher_debug.h"
 #include <klocalizedstring.h>
 #include <kmime/kmime_message.h>
-#include <mailtransport/sentbehaviourattribute.h>
+#include <mailtransportakonadi/sentbehaviourattribute.h>
 #include <mailtransport/transport.h>
-#include <mailtransport/transportattribute.h>
+#include <mailtransportakonadi/transportattribute.h>
 #include <mailtransport/transportjob.h>
 #include <mailtransport/transportmanager.h>
 

@@ -37,7 +37,7 @@ target_link_libraries(akonadi_maildispatcher_agent
     KF5::AkonadiCore
     KF5::AkonadiMime
     KF5::Mime
-    KF5::MailTransport
+    KF5::MailTransportAkonadi
     KF5::AkonadiAgentBase
     KF5::NotifyConfig
     KF5::DBusAddons

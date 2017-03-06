@@ -30,8 +30,8 @@
 
 #include <kdbusconnectionpool.h>
 #include <itemfetchscope.h>
-#include <mailtransport/sentactionattribute.h>
-#include <mailtransport/sentbehaviourattribute.h>
+#include <mailtransportakonadi/sentactionattribute.h>
+#include <mailtransportakonadi/sentbehaviourattribute.h>
 
 #include <knotifyconfigwidget.h>
 #include "maildispatcher_debug.h"

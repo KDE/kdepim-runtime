@@ -39,11 +39,11 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 
-#include <mailtransport/dispatcherinterface.h>
-#include <mailtransport/errorattribute.h>
-#include <mailtransport/messagequeuejob.h>
+#include <mailtransportakonadi/dispatcherinterface.h>
+#include <mailtransportakonadi/errorattribute.h>
+#include <mailtransportakonadi/messagequeuejob.h>
 #include <mailtransport/transport.h>
-#include <mailtransport/transportattribute.h>
+#include <mailtransportakonadi/transportattribute.h>
 #include <mailtransport/transportmanager.h>
 
 #include <kmime/kmime_message.h>
