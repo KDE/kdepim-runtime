@@ -1,8 +1,4 @@
 
-if (BUILD_TESTING)
-   add_subdirectory( autotests )
-endif()
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildispatcher_agent\")
 
 set( maildispatcheragent_SRCS
