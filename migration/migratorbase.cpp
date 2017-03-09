@@ -73,7 +73,7 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
         mMigrationState(None),
         mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QStringLiteral("/") + identifier + QStringLiteral("migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1Char('/') + identifier + QStringLiteral("migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);
