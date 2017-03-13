@@ -880,13 +880,13 @@ void POP3Protocol::get(const QUrl &url)
             if (command(list_cmd.toLatin1(), buf, sizeof(buf) - 1) == Ok) {
                 list_cmd = QLatin1String(buf);
                 // We need a space, otherwise we got an invalid reply
-                if (!list_cmd.indexOf(QLatin1String(" "))) {
+                if (!list_cmd.indexOf(QLatin1Char(' '))) {
                     qCDebug(POP3_LOG) << "List command needs a space? " << list_cmd;
                     closeConnection();
                     error(ERR_INTERNAL, i18n("Unexpected response from POP3 server."));
                     return;
                 }
-                list_cmd.remove(0, list_cmd.indexOf(QLatin1String(" ")) + 1);
+                list_cmd.remove(0, list_cmd.indexOf(QLatin1Char(' ')) + 1);
                 msg_len = list_cmd.toUInt(&ok);
                 if (!ok) {
                     qCDebug(POP3_LOG) << "LIST command needs to return a number? :" <<
