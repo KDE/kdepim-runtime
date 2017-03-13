@@ -79,10 +79,10 @@ function testOk( arg )
     imapRes.setOption( "UseDefaultIdentity", false );
     imapRes.setOption( "AccountIdentity", identity.uoid() );
     if ( server == "imap.gmail.com" ) {
-        imapRes.setOption( "AuthenticationType", 9 ); // XOAuth2
+        imapRes.setOption( "Authentication", 9 ); // XOAuth2
         arg = "ssl";
     } else {
-        imapRes.setOption( "AuthenticationType", 7 ); // ClearText
+        imapRes.setOption( "Authentication", 7 ); // ClearText
     }
     if ( arg == "ssl" ) { 
       // The ENUM used for authentication (in the imap resource only)
