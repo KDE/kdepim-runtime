@@ -73,7 +73,6 @@ private:
     Akonadi::ChangeRecorder *mChangeRecorder;
     KRecursiveFilterProxyModel *mCollectionFilter;
     NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel;
-    bool mNeedUpdate;
 };
 
 #endif // NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H

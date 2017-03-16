@@ -97,8 +97,7 @@ QHash<Akonadi::Collection, bool> NewMailNotifierCollectionProxyModel::notificati
 }
 
 NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWidget *parent)
-    : QWidget(parent),
-      mNeedUpdate(false)
+    : QWidget(parent)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     QVBoxLayout *vbox = new QVBoxLayout(this);
