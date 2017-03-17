@@ -519,7 +519,7 @@ void SetupServer::slotTest()
     m_serverTest->start();
 }
 
-void SetupServer::slotFinished(const QList<int> &testResult)
+void SetupServer::slotFinished(const QVector<int> &testResult)
 {
     qCDebug(IMAPRESOURCE_LOG) << testResult;
 
@@ -605,7 +605,7 @@ void SetupServer::slotSafetyChanged()
         return;
     }
 
-    QList<int> protocols;
+    QVector<int> protocols;
 
     switch (m_ui->safeImapGroup->checkedId()) {
     case KIMAP::LoginJob::Unencrypted :

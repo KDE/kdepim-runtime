@@ -405,7 +405,7 @@ void AccountDialog::slotCheckPopCapabilities()
     mServerTestFailed = false;
 }
 
-void AccountDialog::slotPopCapabilities(const QList<int> &encryptionTypes)
+void AccountDialog::slotPopCapabilities(const QVector<int> &encryptionTypes)
 {
     checkCapabilitiesStack->setCurrentIndex(0);
     mOkButton->setEnabled(true);
@@ -437,7 +437,7 @@ void AccountDialog::enablePopFeatures()
         return;
     }
 
-    QList<int> supportedAuths;
+    QVector<int> supportedAuths;
     if (encryptionButtonGroup->checkedId() == Transport::EnumEncryption::None) {
         supportedAuths = mServerTest->normalProtocols();
     }
