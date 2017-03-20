@@ -87,7 +87,7 @@ public:
 public:
     /// Constructor.
     /// @param  parent  Parent object.
-    explicit O2(QObject *parent = 0);
+    explicit O2(QObject *parent = nullptr);
 
     /// Get authentication code.
     QString code();
