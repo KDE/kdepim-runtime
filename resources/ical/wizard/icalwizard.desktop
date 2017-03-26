@@ -20,6 +20,7 @@ Name[sr@latin]=I‑kalendarski fajl
 Name[sv]=iCal-kalenderfil
 Name[uk]=Файл календаря iCal
 Name[x-test]=xxiCal Calendar Filexx
+Name[zh_TW]=iCal 行事曆檔案
 Icon=text-calendar
 Comment=Loads data from an iCal file
 Comment[ar]=تحميل البيانات من ملف ICal

@@ -20,6 +20,7 @@ Name[sr@latin]=I‑kalendarski fascikla
 Name[sv]=iCal-kalenderkatalog
 Name[uk]=Тека календаря iCal
 Name[x-test]=xxiCal Calendar Folderxx
+Name[zh_TW]=iCal 行事曆資料夾
 Comment="Provides access to calendar items, each stored in a single file, in a given directory"
 Comment[bs]="Puža pristup stavkama kalendara, svaka u pojedinoh datoteci u datom direktoriju"
 Comment[ca]=«Proporciona accés als elements d'un calendari, cadascun emmagatzemat en un fitxer individual, en un directori proporcionat»
