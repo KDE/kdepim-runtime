@@ -291,4 +291,13 @@ QString SerializerPluginMail::extractGid(const Item &item) const
     return QString();
 }
 
+QSet<QByteArray> SerializerPluginMail::allowedForeignParts(const Item &item) const
+{
+    if (!item.hasPayload<KMime::Message::Ptr>()) {
+        return {};
+    }
+
+    return { MessagePart::Header, MessagePart::Body };
+}
+
 #include "moc_akonadi_serializer_mail.cpp"

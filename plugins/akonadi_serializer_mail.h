@@ -59,6 +59,7 @@ public:
     void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) Q_DECL_OVERRIDE;
     QSet<QByteArray> parts(const Item &item) const Q_DECL_OVERRIDE;
     QString extractGid(const Item &item) const Q_DECL_OVERRIDE;
+    QSet<QByteArray> allowedForeignParts(const Item &item) const Q_DECL_OVERRIDE;
 private:
     StringPool m_stringPool;
 };
