@@ -301,14 +301,15 @@ void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     stopMaildirScan(dir);
 
     const QString rid = dir.addEntry(mail->encodedContent());
-    mChangedFiles.insert(rid);
-    mChangedCleanerTimer->start(CLEANER_TIMEOUT);
 
     if (rid.isEmpty()) {
         restartMaildirScan(dir);
         cancelTask(dir.lastError());
         return;
     }
+
+    mChangedFiles.insert(rid);
+    mChangedCleanerTimer->start(CLEANER_TIMEOUT);
 
     restartMaildirScan(dir);
 
