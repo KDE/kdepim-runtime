@@ -314,6 +314,7 @@ void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
 
     Item i(item);
     i.setRemoteId(rid);
+    i.setPayloadPath(dir.findRealKey(item.remoteId()));
     changeCommitted(i);
 }
 
@@ -362,6 +363,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
                 return;
             }
             newItem.setRemoteId(newKey);
+            newItem.setPayloadPath(dir.findRealKey(item.remoteId()));
         }
 
         if (bodyChanged || headChanged) {   //head or body changed
@@ -448,6 +450,7 @@ void MaildirResource::itemMoved(const Item &item, const Collection &source, cons
 
     Item i(item);
     i.setRemoteId(newRid);
+    i.setPayloadPath(destDir.findRealKey(item.remoteId()));
     changeCommitted(i);
 }
 
@@ -531,7 +534,7 @@ void MaildirResource::retrieveCollections()
     CachePolicy policy;
     policy.setInheritFromParent(false);
     policy.setSyncOnDemand(true);
-    policy.setLocalParts(QStringList() << QLatin1String(MessagePart::Envelope));
+    policy.setLocalParts({ QLatin1String(MessagePart::Envelope) });
     policy.setCacheTimeout(1);
     policy.setIntervalCheckTime(-1);
     root.setCachePolicy(policy);

@@ -110,6 +110,7 @@ void RetrieveItemsJob::processEntry()
         Akonadi::Item item;
         item.setRemoteId(fileName);
         item.setMimeType(m_mimeType);
+        item.setPayloadPath(entryInfo.absoluteFilePath());
         const qint64 entrySize = entryInfo.size();
         if (entrySize >= 0) {
             item.setSize(entrySize);
@@ -124,7 +125,6 @@ void RetrieveItemsJob::processEntry()
             item.setFlag(flag);
         }
 
-        item.setPayload(KMime::Message::Ptr(msg));
         Akonadi::MessageFlags::copyMessageFlags(*msg, item);
         auto localItemIter = m_localItems.find(fileName);
         Akonadi::TransactionSequence *trx = transaction();
