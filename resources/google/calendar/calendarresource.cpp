@@ -746,9 +746,9 @@ void CalendarResource::slotCreateJobFinished(KGAPI2::Job *job)
     }
 }
 
-KDateTime CalendarResource::lastCacheUpdate() const
+QDateTime CalendarResource::lastCacheUpdate() const
 {
-    return KDateTime();
+    return QDateTime();
 }
 
 void CalendarResource::canHandleFreeBusy(const QString &email) const
@@ -779,16 +779,15 @@ void CalendarResource::slotCanHandleFreeBusyJobFinished(KGAPI2::Job *job)
     handlesFreeBusy(queryJob->id(), true);
 }
 
-void CalendarResource::retrieveFreeBusy(const QString &email, const KDateTime &start,
-                                        const KDateTime &end)
+void CalendarResource::retrieveFreeBusy(const QString &email, const QDateTime &start,
+                                        const QDateTime &end)
 {
     if (!const_cast<CalendarResource *>(this)->canPerformTask()) {
         freeBusyRetrieved(email, QString(), false, QString());
         return;
     }
 
-    auto job = new KGAPI2::FreeBusyQueryJob(email, start.dateTime(), end.dateTime(),
-                                            account(), this);
+    auto job = new KGAPI2::FreeBusyQueryJob(email, start, end, account(), this);
     connect(job, &KGAPI2::Job::finished,
             this, &CalendarResource::slotRetrieveFreeBusyJobFinished);
 }

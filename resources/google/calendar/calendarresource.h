@@ -39,9 +39,9 @@ public:
 
 protected:
     // Freebusy
-    KDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
+    QDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
     void canHandleFreeBusy(const QString &email) const Q_DECL_OVERRIDE;
-    void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end) Q_DECL_OVERRIDE;
+    void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) Q_DECL_OVERRIDE;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual

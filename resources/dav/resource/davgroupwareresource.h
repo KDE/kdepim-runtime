@@ -27,7 +27,6 @@
 #include <akonadi/calendar/freebusyproviderbase.h>
 
 class DavFreeBusyHandler;
-class KDateTime;
 
 #include <QtCore/QSet>
 #include <QtCore/QStringList>
@@ -50,9 +49,9 @@ public:
     void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
     void cleanup() Q_DECL_OVERRIDE;
 
-    KDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
+    QDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
     void canHandleFreeBusy(const QString &email) const Q_DECL_OVERRIDE;
-    void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end) Q_DECL_OVERRIDE;
+    void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void configure(WId windowId) Q_DECL_OVERRIDE;

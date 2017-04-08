@@ -25,7 +25,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-class KDateTime;
+class QDateTime;
 class KJob;
 
 /**
@@ -55,7 +55,7 @@ public:
      * @param start The start of the free-busy period to report
      * @param end The end of the free-busy period to report
      */
-    void retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end);
+    void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end);
 
 Q_SIGNALS:
     /**

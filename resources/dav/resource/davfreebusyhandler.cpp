@@ -26,7 +26,6 @@
 #include <KDAV/Utils>
 
 #include <KCalCore/ICalFormat>
-#include <KDateTime>
 #include <KLocalizedString>
 #include <kio/davjob.h>
 #include <kio/job.h>
@@ -53,7 +52,7 @@ void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
     }
 }
 
-void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end)
+void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end)
 {
     if (!mPrincipalScheduleOutbox.contains(email)) {
         Q_EMIT freeBusyRetrieved(email, QString(), false,
@@ -61,7 +60,7 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const KDateTime 
         return;
     }
 
-    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy(start, end));
+    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy(KDateTime(start), KDateTime(end)));
     KCalCore::Attendee::Ptr att(new KCalCore::Attendee(QString(), email));
     fb->addAttendee(att);
 

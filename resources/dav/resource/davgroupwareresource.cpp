@@ -152,9 +152,9 @@ void DavGroupwareResource::cleanup()
     Akonadi::AgentBase::cleanup();
 }
 
-KDateTime DavGroupwareResource::lastCacheUpdate() const
+QDateTime DavGroupwareResource::lastCacheUpdate() const
 {
-    return KDateTime::currentLocalDateTime();
+    return QDateTime::currentDateTime();
 }
 
 void DavGroupwareResource::canHandleFreeBusy(const QString &email) const
@@ -171,7 +171,7 @@ void DavGroupwareResource::onHandlesFreeBusy(const QString &email, bool handles)
     handlesFreeBusy(email, handles);
 }
 
-void DavGroupwareResource::retrieveFreeBusy(const QString &email, const KDateTime &start, const KDateTime &end)
+void DavGroupwareResource::retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end)
 {
     if (!isOnline()) {
         freeBusyRetrieved(email, QString(), false, i18n("Unable to retrieve free-busy info while offline"));
