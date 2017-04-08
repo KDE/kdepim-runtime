@@ -503,6 +503,10 @@ void SessionPool::onNamespacesTestDone(KJob *job)
         return;
     }
 
+    m_personalNamespaces = nsJob->personalNamespaces();
+    m_userNamespaces = nsJob->userNamespaces();
+    m_sharedNamespaces = nsJob->sharedNamespaces();
+
     if (nsJob->containsEmptyNamespace()) {
         // When we got the empty namespace here, we assume that the other
         // ones can be freely ignored and that the server will give us all
