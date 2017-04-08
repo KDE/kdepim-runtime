@@ -32,7 +32,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="1" column="0" colspan="3">
-    <widget class="KButtonGroup" name="kcfg_LockfileMethod">
+    <widget class="QGroupBox" name="kcfg_LockfileMethod">
      <property name="title">
       <string/>
      </property>
@@ -115,12 +115,6 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KButtonGroup</class>
-   <extends>QGroupBox</extends>
-   <header>kbuttongroup.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>KComboBox</class>
    <extends>QComboBox</extends>

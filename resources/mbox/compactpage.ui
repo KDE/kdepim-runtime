@@ -71,7 +71,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="1" column="0" colspan="3">
-    <widget class="KButtonGroup" name="kcfg_CompactFrequency">
+    <widget class="QGroupBox" name="kcfg_CompactFrequency">
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="1" column="0" colspan="2">
        <widget class="QRadioButton" name="never">
@@ -102,14 +102,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KButtonGroup</class>
-   <extends>QGroupBox</extends>
-   <header>kbuttongroup.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

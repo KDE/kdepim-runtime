@@ -42,7 +42,10 @@ target_link_libraries(akonadi_mbox_resource
     KF5::Mime
     KF5::AkonadiAgentBase
     KF5::DBusAddons
-    KF5::KDELibs4Support
+    KF5::Completion
+    KF5::KIOWidgets
+    KF5::ConfigWidgets
+    KF5::WindowSystem
     akonadi-singlefileresource
 )
 
