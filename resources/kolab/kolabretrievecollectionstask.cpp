@@ -50,7 +50,7 @@
 static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool matchCompletePath = false)
 {
     for (const KIMAP::MailBoxDescriptor &desc : namespaces) {
-        if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and pathPart doesn't
+        if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and path doesn't
             if (!matchCompletePath || path.size() - desc.name.size() <= 1) {      //We want to match only for the complete path
                 return true;
             }
@@ -163,7 +163,7 @@ void RetrieveMetadataJob::onRightsReceived(KJob *job)
     if (job->error()) {
         qCDebug(KOLABRESOURCE_LOG) << "No rights for mailbox: " << rights->mailBox();
         if (!isNamespaceFolder(rights->mailBox(), mSharedNamespace)) {
-            qCWarning(KOLABRESOURCE_LOG) << "MyRights failed: " << job->errorString();
+            qCWarning(KOLABRESOURCE_LOG) << "MyRights for mailbox" << rights->mailBox() << "failed:" << job->errorString();
             //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
         }
         checkDone();
