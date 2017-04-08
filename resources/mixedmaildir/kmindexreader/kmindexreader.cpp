@@ -26,10 +26,10 @@
 
 #include "../mixedmaildirresource_debug.h"
 #include "../mixedmaildir_debug.h"
-#include <kde_file.h>
 #include <akonadi/kmime/messagestatus.h>
 using Akonadi::MessageStatus;
 #include <QFile>
+#include <qplatformdefs.h>
 
 //BEGIN: Magic definitions from old kmail code
 #ifdef HAVE_BYTESWAP_H
@@ -257,7 +257,7 @@ bool KMIndexReader::readHeader(int *version)
         quint32 sizeOfLong = sizeof(long);   // default
 
         quint32 header_length = 0;
-        KDE_fseek(mFp, sizeof(char), SEEK_CUR);
+        QT_FSEEK(mFp, sizeof(char), SEEK_CUR);
         if (fread(&header_length, sizeof(header_length), readCount, mFp) != readCount) {
             qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read header_length";
             return false;
@@ -266,7 +266,7 @@ bool KMIndexReader::readHeader(int *version)
             header_length = kmail_swap_32(header_length);
         }
 
-        off_t endOfHeader = KDE_ftell(mFp) + header_length;
+        off_t endOfHeader = QT_FTELL(mFp) + header_length;
 
         bool needs_update = true;
         // Process available header parts
@@ -296,7 +296,7 @@ bool KMIndexReader::readHeader(int *version)
 //         setDirty( true );
         }
         // Seek to end of header
-        KDE_fseek(mFp, endOfHeader, SEEK_SET);
+        QT_FSEEK(mFp, endOfHeader, SEEK_SET);
 
         if (mIndexSwapByteOrder) {
             qCDebug(MIXEDMAILDIR_LOG) << "Index File has byte order swapped!";
@@ -327,7 +327,7 @@ bool KMIndexReader::readIndex()
         return false;
     }
 
-    mHeaderOffset = KDE_ftell(mFp);
+    mHeaderOffset = QT_FTELL(mFp);
 
     // loop through the entire index
     while (!feof(mFp)) {
@@ -348,8 +348,8 @@ bool KMIndexReader::readIndex()
                 len = kmail_swap_32(len);
             }
 
-            off_t offs = KDE_ftell(mFp);
-            if (KDE_fseek(mFp, len, SEEK_CUR)) {
+            off_t offs = QT_FTELL(mFp);
+            if (QT_FSEEK(mFp, len, SEEK_CUR)) {
                 break;
             }
             msg = new KMIndexData();
@@ -378,8 +378,8 @@ bool KMIndexReader::readIndex()
                 mMsgByOffset.clear();
                 return false;
             }
-            off_t offs = KDE_ftell(mFp);
-            if (KDE_fseek(mFp, len, SEEK_CUR)) {
+            off_t offs = QT_FTELL(mFp);
+            if (QT_FSEEK(mFp, len, SEEK_CUR)) {
                 break;
             }
             msg = new KMIndexData;
@@ -497,13 +497,13 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
         g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
     }
 
-    off_t first_off = KDE_ftell(mFp);
-    KDE_fseek(mFp, indexOff, SEEK_SET);
+    off_t first_off = QT_FTELL(mFp);
+    QT_FSEEK(mFp, indexOff, SEEK_SET);
     if (fread(g_chunk, indexLen, readCount, mFp) != readCount) {
         qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read index";
         return false;
     }
-    KDE_fseek(mFp, first_off, SEEK_SET);
+    QT_FSEEK(mFp, first_off, SEEK_SET);
 
     MsgPartType type;
     quint16 len;

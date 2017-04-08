@@ -53,7 +53,10 @@ target_link_libraries(akonadi_mixedmaildir_resource
   KF5::Mbox
   KF5::Mime
   KF5::AkonadiAgentBase
-  KF5::KDELibs4Support
+  KF5::I18n
+  KF5::KIOWidgets
+  KF5::ConfigWidgets
+  KF5::WindowSystem
   akonadi-singlefileresource
 )
 
