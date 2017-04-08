@@ -46,7 +46,7 @@ void NewMailNotifierShowMessageJob::start()
     if (!reply.isValid() || !reply.value()) {
         // Program is not already running, so start it
         QString errmsg;
-        if (KToolInvocation::startServiceByDesktopName(QStringLiteral("org.kde.kmail"), QString(), &errmsg)) {
+        if (KToolInvocation::startServiceByDesktopName(QStringLiteral("org.kde.kmail2"), QString(), &errmsg)) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " Can not start kmail" << errmsg;
             setError(UserDefinedError);
             Q_EMIT emitResult();
