@@ -33,7 +33,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="KButtonGroup" name="remoteProtocol">
+    <widget class="QGroupBox" name="remoteProtocol">
      <property name="locale">
       <locale language="English" country="UnitedStates"/>
      </property>
@@ -210,12 +210,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KButtonGroup</class>
-   <extends>QGroupBox</extends>
-   <header>kbuttongroup.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>

@@ -27,6 +27,7 @@
 #include <QDialog>
 
 class KJob;
+class QButtonGroup;
 class QModelIndex;
 class QStandardItemModel;
 class QPushButton;
@@ -74,6 +75,7 @@ private:
     QString mDefaultUsername;
     QString mDefaultPassword;
     QPushButton *mOkButton;
+    QButtonGroup *mRemoteProtocolGroup;
 };
 
 #endif

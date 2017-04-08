@@ -33,6 +33,7 @@
 
 UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     : QDialog(parent)
+    , mRemoteProtocolGroup(new QButtonGroup(this))
 {
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -55,7 +56,11 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     mUi.discoveredUrls->setRootIsDecorated(false);
     connect(mModel, &QStandardItemModel::dataChanged, this, &UrlConfigurationDialog::onModelDataChanged);
 
-    connect(mUi.remoteProtocol, &KButtonGroup::changed, this, &UrlConfigurationDialog::onConfigChanged);
+    mRemoteProtocolGroup->setExclusive(true);
+    mRemoteProtocolGroup->addButton(mUi.caldav, KDAV::CalDav);
+    mRemoteProtocolGroup->addButton(mUi.carddav, KDAV::CardDav);
+    mRemoteProtocolGroup->addButton(mUi.groupdav, KDAV::GroupDav);
+    connect(mRemoteProtocolGroup, static_cast<void(QButtonGroup::*)(int, bool)>(&QButtonGroup::buttonToggled), this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.remoteUrl, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.useDefaultCreds, &QRadioButton::toggled, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.username, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
@@ -91,12 +96,12 @@ void UrlConfigurationDialog::writeConfig()
 
 KDAV::Protocol UrlConfigurationDialog::protocol() const
 {
-    return KDAV::Protocol(mUi.remoteProtocol->selected());
+    return KDAV::Protocol(mRemoteProtocolGroup->id(mRemoteProtocolGroup->checkedButton()));
 }
 
 void UrlConfigurationDialog::setProtocol(KDAV::Protocol protocol)
 {
-    mUi.remoteProtocol->setSelected(protocol);
+    mRemoteProtocolGroup->button(protocol)->setChecked(true);
 }
 
 QString UrlConfigurationDialog::remoteUrl() const
