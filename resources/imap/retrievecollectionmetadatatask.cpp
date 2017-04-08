@@ -228,14 +228,14 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
 void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
 {
     m_pendingMetaDataJobs--;
+    const QString &mailBox = mailBoxForCollection(m_collection);
     if (job->error()) {
-        qCWarning(IMAPRESOURCE_LOG) << "Quota retrieval failed: " << job->errorString();
+        qCWarning(IMAPRESOURCE_LOG) << "Quota retrieval for mailbox " << mailBox << " failed: " << job->errorString();
         endTaskIfNeeded();
         return; // Well, no metadata for us then...
     }
 
     KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
-    const QString &mailBox = mailBoxForCollection(m_collection);
 
     QList<QByteArray> newRoots = quotaJob->roots();
     QList< QMap<QByteArray, qint64> > newLimits;
