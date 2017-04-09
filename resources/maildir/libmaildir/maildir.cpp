@@ -143,13 +143,12 @@ public:
         }
         QString realKey = path + QLatin1String("/new/") + key;
 
-        QFile f(realKey);
-        if (f.exists()) {
+        if (QFileInfo::exists(realKey)) {
             keyCache->addNewKey(path, key);
         } else  { //not in "new", search in "cur"
             realKey = path + QLatin1String("/cur/") + key;
             QFile f2(realKey);
-            if (f2.exists()) {
+            if (QFileInfo::exists(realKey)) {
                 keyCache->addCurKey(path, key);
             } else {
                 realKey.clear(); //not in "cur" either
@@ -515,7 +514,7 @@ qint64 Maildir::size(const QString &key) const
         return -1;
     }
 
-    QFileInfo info(realKey);
+    const QFileInfo info(realKey);
     if (!info.exists()) {
         d->lastError = i18n("Cannot open mail file %1.", realKey);
         return -1;
