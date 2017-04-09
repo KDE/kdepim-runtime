@@ -447,7 +447,7 @@ KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
     if (!fileStorage->load()) {
         // Don't output an error in the case of the creation of a temporary
         // file which triggered fileChanged() but no longer exists.
-        if (QFile(path).exists()) {
+        if (QFileInfo::exists(path)) {
             qCWarning(KALARMDIRRESOURCE_LOG) << "Error loading" << path;
         }
         return KAEvent();
@@ -1167,7 +1167,7 @@ bool KAlarmDirResource::isFileValid(const QString &file) const
     return !file.isEmpty()
        &&  !file.startsWith(QLatin1Char('.'))  &&  !file.endsWith(QLatin1Char('~'))
        &&  file != QLatin1String(warningFile)
-       &&  QFile(filePath(file)).exists();   // a temporary file may no longer exist
+       &&  QFileInfo::exists(filePath(file));   // a temporary file may no longer exist
 }
 
 AKONADI_RESOURCE_MAIN(KAlarmDirResource)
