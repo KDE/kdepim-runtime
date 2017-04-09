@@ -61,7 +61,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         //FIXME Use message creation date time
         event->setDtStart(KDateTime::currentUtcDateTime());
         event->setSummary(i18n("Corrupt Event"));
-        event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server."));
+        event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server. Technical information: remote identifier %1", remoteId));
         item.setMimeType(KCalCore::Event::eventMimeType());
         item.setPayload(event);
     }
