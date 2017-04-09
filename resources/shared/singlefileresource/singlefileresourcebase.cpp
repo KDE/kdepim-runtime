@@ -226,7 +226,7 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         int i = 0;
         do {
             lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number(++i);
-        } while (QFile(lostFoundFileName).exists());
+        } while (QFileInfo::exists(lostFoundFileName));
 
         // create the directory if it doesn't exist yet
         QDir dir = QFileInfo(lostFoundFileName).dir();
