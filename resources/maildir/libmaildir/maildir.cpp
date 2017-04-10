@@ -407,7 +407,7 @@ QStringList Maildir::entryList() const
 {
     QStringList result;
     if (isValid()) {
-        result += d->listNew();
+        result = d->listNew();
         result += d->listCurrent();
     }
     //  qCDebug(LIBMAILDIR_LOG) <<"Maildir::entryList()" << result;
@@ -418,7 +418,7 @@ QStringList Maildir::listCurrent() const
 {
     QStringList result;
     if (isValid()) {
-        result += d->listCurrent();
+        result = d->listCurrent();
     }
     return result;
 }
@@ -432,7 +432,7 @@ QStringList Maildir::listNew() const
 {
     QStringList result;
     if (isValid()) {
-        result += d->listNew();
+        result = d->listNew();
     }
     return result;
 }
