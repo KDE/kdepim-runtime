@@ -147,7 +147,6 @@ public:
             keyCache->addNewKey(path, key);
         } else  { //not in "new", search in "cur"
             realKey = path + QLatin1String("/cur/") + key;
-            QFile f2(realKey);
             if (QFileInfo::exists(realKey)) {
                 keyCache->addCurKey(path, key);
             } else {
