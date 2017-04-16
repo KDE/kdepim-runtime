@@ -1,0 +1,8 @@
+[Global]
+IconName=akonadi
+Comment=POP3 Resource
+
+[Event/mail-check-error]
+Name=Error While Checking Mail
+Comment=There was an error while checking for new mail
+Action=Popup

@@ -107,7 +107,8 @@ find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Codecs ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5WindowSystem ${KF5_VERSION} CONFIG REQUIRED)
-find_packagE(KF5TextWidgets ${KF5_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
+find_package(KF5TextWidgets ${KF5_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
+find_package(KF5Notifications ${KF5_VERSION} CONFIG REQUIRED) # pop3
 
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)

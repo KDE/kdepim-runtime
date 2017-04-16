@@ -37,6 +37,7 @@
 #include <kio/job.h>
 #include <KPasswordDialog>
 #include <KMessageBox>
+#include <knotification.h>
 #include <kwallet.h>
 #include "pop3resource_debug.h"
 
@@ -948,7 +949,8 @@ void POP3Resource::cancelSync(const QString &errorMessage, bool error)
         cancelTask(errorMessage);
         qCWarning(POP3RESOURCE_LOG) << "============== ERROR DURING POP3 SYNC ==========================";
         qCWarning(POP3RESOURCE_LOG) << errorMessage;
-        KMessageBox::error(nullptr, errorMessage);
+        KNotification::event(QStringLiteral("mail-check-error"), name(), errorMessage.toHtmlEscaped(),
+                             QString(), nullptr, KNotification::CloseOnTimeout, QStringLiteral("akonadi_pop3_resource"));
     } else {
         qCDebug(POP3RESOURCE_LOG) << "Canceled the sync, but no error.";
         cancelTask();

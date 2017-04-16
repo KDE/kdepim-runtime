@@ -45,6 +45,7 @@ target_link_libraries( akonadi_pop3_resource
   KF5::Completion
   KF5::WidgetsAddons
   KF5::WindowSystem
+  KF5::Notifications
   Qt5::DBus
 )
 
@@ -55,3 +56,4 @@ endif()
 add_subdirectory( wizard )
 
 install(TARGETS akonadi_pop3_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES akonadi_pop3_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR})
