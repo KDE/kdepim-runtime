@@ -587,7 +587,9 @@ void ImapResourceBase::startIdle()
     }
 
     //Without password we don't even have to try
-    if (settings()->password().isEmpty()) {
+    if (m_pool->account()->authenticationMode() != KIMAP::LoginJob::GSSAPI &&
+        settings()->password().isEmpty())
+    {
         return;
     }
 
