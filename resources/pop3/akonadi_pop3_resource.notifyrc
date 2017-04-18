@@ -1,6 +1,9 @@
 [Global]
 IconName=akonadi
 Comment=POP3 Resource
+Comment[pt]=Recurso de POP3
+Comment[uk]=Ресурс POP3
+Comment[x-test]=xxPOP3 Resourcexx
 
 [Event/mail-check-error]
 Name=Error While Checking Mail
@@ -20,11 +23,13 @@ Name[nds]=Fehler bi't Kieken na Nettpost
 Name[nl]=Fout bij het controleren van e-mail
 Name[pa]=ਮੇਲ ਚੈੱਕ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ
 Name[pl]=Błąd podczas sprawdzania poczty
+Name[pt]=Erro na Verificação do Correio
 Name[ro]=Eroare la verificarea poștei
 Name[ru]=Не удалось проверить почту
 Name[sv]=Fel vid kontroll av post
 Name[tr]=E-posta Kontrol Edilirken Hata Oluştu
 Name[uk]=Помилка під час спроби отримання пошти
+Name[x-test]=xxError While Checking Mailxx
 Name[zh_CN]=检查邮件时出错
 Name[zh_TW]=檢查郵件時發生錯誤
 Comment=There was an error while checking for new mail
@@ -44,11 +49,13 @@ Comment[nds]=Bi't Kieken na nieg Nettpost hett dat en Fehler geven
 Comment[nl]=Er was een fout bij het controleren van nieuwe e-mail
 Comment[pa]=ਨਵੀਂ ਮੇਲ ਚੈੱਕ ਕਰਨ ਦੇ ਦੌਰਾਨ ਗਲਤੀ ਆਈ ਹੈ
 Comment[pl]=Podczas sprawdzania poczty wystąpił błąd
+Comment[pt]=Ocorreu um erro ao verificar o correio novo
 Comment[ro]=A avut loc o eroare la verificarea pentru mesaje noi
 Comment[ru]=При проверке наличия новой почты произошла ошибка.
 Comment[sv]=Ett fel uppstod vid kontroll av ny post
 Comment[tr]=Yeni e-postalar denetlenirken bir hata oluştu
 Comment[uk]=Під час спроби перевірки наявності нової пошти сталася помилка
+Comment[x-test]=xxThere was an error while checking for new mailxx
 Comment[zh_CN]=检查新邮件时发生错误
 Comment[zh_TW]=檢查郵件時發生錯誤
 Action=Popup
