@@ -97,6 +97,11 @@ void ImapIdleManager::onSessionRequestDone(qint64 requestId, KIMAP::Session *ses
     connect(m_pool, &SessionPool::connectionLost, this, &ImapIdleManager::onConnectionLost);
     connect(m_pool, &SessionPool::disconnectDone, this, &ImapIdleManager::onPoolDisconnect);
 
+    startIdle();
+}
+
+void ImapIdleManager::startIdle()
+{
     KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
     select->setMailBox(m_state->mailBoxForCollection(m_state->collection()));
     connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
@@ -142,10 +147,7 @@ void ImapIdleManager::onIdleStopped()
     m_idle = nullptr;
     if (m_session) {
         qCDebug(IMAPRESOURCE_LOG) << "Restarting the IDLE session!";
-        m_idle = new KIMAP::IdleJob(m_session);
-        connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
-        connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
-        m_idle->start();
+        startIdle();
     }
 }
 
