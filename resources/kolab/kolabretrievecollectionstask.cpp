@@ -24,7 +24,7 @@
 #include "kolabhelpers.h"
 #include "tracer.h"
 #include "kolabresource_debug.h"
-#include "helper_p.h"
+
 
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>

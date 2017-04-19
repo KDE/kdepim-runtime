@@ -18,7 +18,7 @@
 */
 
 #include "collectionflagsattribute.h"
-#include "helper_p.h"
+
 #include <QByteArray>
 #include <attribute.h>
 

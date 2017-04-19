@@ -18,7 +18,7 @@
 */
 
 #include "deleteditemsattribute.h"
-#include "helper_p.h"
+
 
 DeletedItemsAttribute::DeletedItemsAttribute()
 {

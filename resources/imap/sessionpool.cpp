@@ -20,7 +20,7 @@
 */
 
 #include "sessionpool.h"
-#include "helper_p.h"
+
 
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslSocket>

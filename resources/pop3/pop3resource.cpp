@@ -20,7 +20,7 @@
 #include "accountdialog.h"
 #include "settings.h"
 #include "jobs.h"
-#include "helper_p.h"
+
 #include <AkonadiCore/Pop3ResourceAttribute>
 
 #include <CollectionFetchJob>

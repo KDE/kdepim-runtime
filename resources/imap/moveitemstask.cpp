@@ -20,7 +20,7 @@
 */
 
 #include "moveitemstask.h"
-#include "helper_p.h"
+
 #include <QtCore/QUuid>
 
 #include "imapresource_debug.h"

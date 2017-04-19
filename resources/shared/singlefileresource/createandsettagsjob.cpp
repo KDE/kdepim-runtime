@@ -17,7 +17,7 @@
  *  02110-1301, USA.
  */
 #include "createandsettagsjob.h"
-#include "helper_p.h"
+
 #include <AkonadiCore/tagcreatejob.h>
 #include <AkonadiCore/itemmodifyjob.h>
 

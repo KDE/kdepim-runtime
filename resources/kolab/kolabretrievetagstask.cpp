@@ -26,7 +26,7 @@
 #include <imapflags.h>
 #include <kolabobject.h>
 #include "tracer.h"
-#include "helper_p.h"
+
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)

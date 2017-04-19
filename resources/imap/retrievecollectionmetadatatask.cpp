@@ -40,7 +40,7 @@
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include "collectionmetadatahelper.h"
-#include "helper_p.h"
+
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent),

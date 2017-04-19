@@ -24,7 +24,7 @@
 */
 
 #include "imapresourcebase.h"
-#include "helper_p.h"
+
 
 #include <QHostInfo>
 #include <QSettings>

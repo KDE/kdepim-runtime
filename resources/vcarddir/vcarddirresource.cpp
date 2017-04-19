@@ -22,7 +22,7 @@
 
 #include "settingsadaptor.h"
 #include "dirsettingsdialog.h"
-#include "helper_p.h"
+
 
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>

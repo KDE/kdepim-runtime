@@ -20,7 +20,7 @@
 
 #include "vcardresource.h"
 #include "vcardsettingsadaptor.h"
-#include "helper_p.h"
+
 #include "singlefileresourceconfigdialog.h"
 
 #include <kdbusconnectionpool.h>

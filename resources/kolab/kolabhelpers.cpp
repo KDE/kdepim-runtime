@@ -30,7 +30,7 @@
 #include <KLocalizedString>
 #include <QColor>
 #include "tracer.h"
-#include "helper_p.h"
+
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
