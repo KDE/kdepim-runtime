@@ -1,12 +1,16 @@
 [Global]
 IconName=akonadi
 Comment=POP3 Resource
+Comment[ca]=Recurs POP3
+Comment[nl]=POP3-hulpbron
 Comment[pt]=Recurso de POP3
+Comment[sv]=POP3-resurs
 Comment[uk]=Ресурс POP3
 Comment[x-test]=xxPOP3 Resourcexx
 
 [Event/mail-check-error]
 Name=Error While Checking Mail
+Name[ca]=Error en comprovar el correu
 Name[da]=Fejl under tjek af e-mail
 Name[de]=Fehler beim Sehen nach neuen Nachrichten
 Name[el]=Σφάλμα κατά τον έλεγχο νέας αλληλογραφίας
@@ -33,6 +37,7 @@ Name[x-test]=xxError While Checking Mailxx
 Name[zh_CN]=检查邮件时出错
 Name[zh_TW]=檢查郵件時發生錯誤
 Comment=There was an error while checking for new mail
+Comment[ca]=S'ha produït un error en comprovar el correu nou
 Comment[da]=Der opstod en fejl under tjek efter nye e-mails
 Comment[de]=Beim Sehen nach neuen Nachrichten ist ein Fehler aufgetreten
 Comment[el]=Παρουσιάστηκε ένα σφάλμα κατά τον έλεγχο νέας αλληλογραφίας
