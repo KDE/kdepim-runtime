@@ -632,6 +632,8 @@ void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)
     if (!fetch->collections().isEmpty()) {
         delete m_idle;
         m_idle = new ImapIdleManager(createResourceState(TaskArguments(fetch->collections().at(0))), m_pool, this);
+    } else {
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve IDLE collection: no such collection";
     }
 }
 

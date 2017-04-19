@@ -69,6 +69,8 @@ private Q_SLOTS:
     void reconnect();
 
 private:
+    void startIdle();
+
     qint64 m_sessionRequestId;
     SessionPool *m_pool;
     KIMAP::Session *m_session;
