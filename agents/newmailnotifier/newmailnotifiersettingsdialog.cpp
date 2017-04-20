@@ -166,6 +166,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
                             i18nc("EMAIL OF TRANSLATORS", "Your emails"));
 
     KHelpMenu *helpMenu = new KHelpMenu(this, aboutData, true);
+    helpMenu->action(KHelpMenu::menuHelpContents)->setVisible(false);
     //Initialize menu
     QMenu *menu = helpMenu->menu();
     helpMenu->action(KHelpMenu::menuAboutApp)->setIcon(QIcon::fromTheme(QStringLiteral("kmail")));
