@@ -16,7 +16,7 @@ public:
     {
         open(WriteOnly);
     }
-    virtual ~DebugStream() {};
+    virtual ~DebugStream() {}
 
     bool isSequential() const Q_DECL_OVERRIDE
     {
