@@ -242,8 +242,6 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         QVector<KIMAP::Term> subterms;
         subterms.reserve(m_messageIds.size());
         for (const QByteArray &messageId : qAsConst(m_messageIds)) {
-            QByteArray header = "Message-ID ";
-            header += messageId;
             subterms << KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(messageId));
         }
         search->setTerm(KIMAP::Term(KIMAP::Term::Or, subterms));
