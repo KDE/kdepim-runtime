@@ -407,8 +407,7 @@ QStringList Maildir::entryList() const
 {
     QStringList result;
     if (isValid()) {
-        result = d->listNew();
-        result += d->listCurrent();
+        result = d->listNew() + d->listCurrent();
     }
     //  qCDebug(LIBMAILDIR_LOG) <<"Maildir::entryList()" << result;
     return result;
