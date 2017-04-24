@@ -597,8 +597,8 @@ void SetupServer::slotComplete()
 
 void SetupServer::slotSafetyChanged()
 {
-#ifdef WITH_GMAIL_XOAUTH2
     if (m_serverTest == nullptr) {
+#ifdef WITH_GMAIL_XOAUTH2
         const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
         qCDebug(IMAPRESOURCE_LOG) << "serverTest null";
         m_ui->noRadio->setEnabled(!isGmail);
@@ -606,9 +606,9 @@ void SetupServer::slotSafetyChanged()
         m_ui->tlsRadio->setEnabled(!isGmail);
 
         m_ui->authenticationCombo->setEnabled(!isGmail);
+#endif
         return;
     }
-#endif
     QVector<int> protocols;
 
     switch (m_ui->safeImapGroup->checkedId()) {
