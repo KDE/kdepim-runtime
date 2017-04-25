@@ -31,7 +31,7 @@
 class ImapAccount
 {
 public:
-    explicit ImapAccount();
+    ImapAccount();
     ~ImapAccount();
 
     void setServer(const QString &server);
