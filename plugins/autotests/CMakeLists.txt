@@ -11,7 +11,7 @@ include_directories(
 )
 
 # convenience macro to add akonadi qtestlib unit-tests
-macro(add_akonadiplugin_test _source _libs _additionalSources)
+macro(add_akonadiplugin_test _source _libs _additionalSources _target_included_directories)
   set(_test ${_source})
   set(srcs ${_test} ${_additionalSources})
 
@@ -19,14 +19,16 @@ macro(add_akonadiplugin_test _source _libs _additionalSources)
   add_executable( ${_name} ${srcs} )
   add_test( ${_name} ${_name} )
   ecm_mark_as_test(akonadiplugin-${_name})
-
-  target_link_libraries(${_name} KF5::AkonadiCore KF5::AkonadiMime 
+  if(NOT ${_target_included_directories} STREQUAL "")
+    target_include_directories(${_name} PRIVATE "$<BUILD_INTERFACE:$<TARGET_PROPERTY:${_target_included_directories},INCLUDE_DIRECTORIES>>")
+  endif()
+  target_link_libraries(${_name} KF5::AkonadiCore KF5::AkonadiMime
                          Qt5::Test KF5::AkonadiPrivate KF5::I18n
                         KF5::AkonadiPrivate ${_libs})
 endmacro()
 
 # qtestlib unit tests
-add_akonadiplugin_test(mailserializertest.cpp "KF5::Mime" "../akonadi_serializer_mail_debug.cpp")
-add_akonadiplugin_test(mailserializerplugintest.cpp "KF5::Mime" "")
-add_akonadiplugin_test(kcalcoreserializertest.cpp "KF5::CalendarCore" "")
-add_akonadiplugin_test(addresseeserializertest.cpp "KF5::Contacts;KF5::AkonadiContact" "../akonadi_serializer_addressee.cpp")
+add_akonadiplugin_test(mailserializertest.cpp "KF5::Mime" "../akonadi_serializer_mail_debug.cpp" "akonadi_serializer_mail")
+add_akonadiplugin_test(mailserializerplugintest.cpp "KF5::Mime" "" "" )
+add_akonadiplugin_test(kcalcoreserializertest.cpp "KF5::CalendarCore" "" "" )
+add_akonadiplugin_test(addresseeserializertest.cpp "KF5::Contacts;KF5::AkonadiContact" "../akonadi_serializer_addressee.cpp" "")
