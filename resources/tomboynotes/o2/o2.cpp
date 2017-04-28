@@ -320,7 +320,7 @@ QByteArray O2::buildRequestBody(const QMap<QString, QString> &parameters)
 {
     QByteArray body;
     bool first = true;
-    foreach (QString key, parameters.keys()) {
+    foreach (const QString &key, parameters.keys()) {
         if (first) {
             first = false;
         } else {

@@ -113,7 +113,7 @@ void GoogleAccountManager::slotFolderUpdated(const QString &folder)
 
     QStringList walletEntries = m_wallet->entryList();
 
-    Q_FOREACH (const AccountPtr &account, m_accounts) {
+    Q_FOREACH (const AccountPtr &account, m_accounts) { //no using foreach
         AccountPtr changedAccount = findAccountInWallet(account->accountName());
         if (changedAccount.isNull()) {
             walletEntries.removeOne(account->accountName());
@@ -132,7 +132,7 @@ void GoogleAccountManager::slotFolderUpdated(const QString &folder)
         }
     }
 
-    Q_FOREACH (const QString &accountName, walletEntries) {
+    for (const QString &accountName : qAsConst(walletEntries)) {
         const AccountPtr newAccount = findAccountInWallet(accountName);
 
         m_accounts[newAccount->accountName()] = newAccount;

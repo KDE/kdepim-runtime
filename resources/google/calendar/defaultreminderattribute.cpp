@@ -73,7 +73,7 @@ QByteArray DefaultReminderAttribute::serialized() const
     QVariantList list;
     list.reserve(m_reminders.count());
 
-    Q_FOREACH (const ReminderPtr &rem, m_reminders) {
+    for (const ReminderPtr &rem : qAsConst(m_reminders)) {
         QVariantMap reminder;
 
         if (rem->type() == KCalCore::Alarm::Display) {
@@ -94,7 +94,7 @@ KCalCore::Alarm::List DefaultReminderAttribute::alarms(KCalCore::Incidence *inci
 {
     KCalCore::Alarm::List alarms;
     alarms.reserve(m_reminders.count());
-    Q_FOREACH (const ReminderPtr &reminder, m_reminders) {
+    for (const ReminderPtr &reminder : qAsConst(m_reminders)) {
         KCalCore::Alarm::Ptr alarm(new KCalCore::Alarm(incidence));
 
         alarm->setType(reminder->type());

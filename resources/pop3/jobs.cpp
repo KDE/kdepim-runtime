@@ -456,7 +456,7 @@ FetchJob::FetchJob(POPSession *session)
 void FetchJob::setFetchIds(const QList<int> &ids, const QList<int> &sizes)
 {
     mIdsPendingDownload = ids;
-    foreach (int size, sizes) {
+    for (int size : qAsConst(sizes)) {
         mTotalBytesToDownload += size;
     }
 }

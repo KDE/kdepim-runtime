@@ -507,7 +507,7 @@ void ContactsResource::slotUpdatePhotoFinished(KGAPI2::Job *job, const ContactPt
     job->setProperty("processedItems", processedItems);
     emitPercent(job, processedItems, items.count());
 
-    foreach (Item item, items) {
+    for (Item item : qAsConst(items)) {
         if (item.remoteId() == contact->uid()) {
             item.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
             new ItemModifyJob(item, this);

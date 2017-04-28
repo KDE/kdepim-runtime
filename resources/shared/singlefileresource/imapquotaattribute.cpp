@@ -83,7 +83,7 @@ QByteArray ImapQuotaAttribute::serialized() const
     QByteArray result = "";
 
     // First the roots list
-    foreach (const QByteArray &root, mRoots) {
+    for (const QByteArray &root : qAsConst(mRoots)) {
         result += root + " % ";
     }
     result.chop(3);
@@ -145,7 +145,7 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
     }
 
     QStringList roots = members[0].trimmed().split(QStringLiteral(" % "));
-    foreach (const QString &root, roots) {
+    for (const QString &root : qAsConst(roots)) {
         mRoots << root.trimmed().toUtf8();
     }
 

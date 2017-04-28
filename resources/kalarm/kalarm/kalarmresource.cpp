@@ -478,7 +478,7 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection &collection)
     // Retrieve events from the calendar
     const KCalCore::Event::List events = calendar()->events();
     Item::List items;
-    foreach (const KCalCore::Event::Ptr &kcalEvent, events) {
+    for (const KCalCore::Event::Ptr &kcalEvent : qAsConst(events)) {
         if (kcalEvent->alarms().isEmpty()) {
             qCWarning(KALARMRESOURCE_LOG) << "KCalCore::Event has no alarms:" << kcalEvent->uid();
             continue;    // ignore events without alarms

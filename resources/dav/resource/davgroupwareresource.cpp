@@ -929,7 +929,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         item.setRemoteRevision(davItem.etag());
         cache->setEtag(item.remoteId(), davItem.etag());
         items << item;
-        foreach (const Akonadi::Item &extraItem, extraItems) {
+        for (const Akonadi::Item &extraItem : qAsConst(extraItems)) {
             cache->setEtag(extraItem.remoteId(), davItem.etag());
             items << extraItem;
         }

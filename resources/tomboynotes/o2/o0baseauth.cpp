@@ -132,7 +132,7 @@ QByteArray O0BaseAuth::createQueryParameters(const QList<O0RequestParameter> &pa
 {
     QByteArray ret;
     bool first = true;
-    foreach (O0RequestParameter h, parameters) {
+    for (const O0RequestParameter &h : qAsConst(parameters)) {
         if (first) {
             first = false;
         } else {

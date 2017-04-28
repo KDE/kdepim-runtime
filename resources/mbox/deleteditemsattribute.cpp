@@ -57,7 +57,7 @@ KMBox::MBoxEntry::List DeletedItemsAttribute::deletedItemEntries() const
 {
     KMBox::MBoxEntry::List entries;
     entries.reserve(mDeletedItemOffsets.count());
-    foreach (quint64 offset, mDeletedItemOffsets) {
+    for (quint64 offset : qAsConst(mDeletedItemOffsets)) {
         entries << KMBox::MBoxEntry(offset);
     }
 
