@@ -149,18 +149,18 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
         mRoots << root.trimmed().toUtf8();
     }
 
-    QStringList allLimits = members[1].trimmed().split(QStringLiteral("%%%"));
+    const QStringList allLimits = members[1].trimmed().split(QStringLiteral("%%%"));
 
-    foreach (const QString &limits, allLimits) {
+    for (const QString &limits : qAsConst(allLimits)) {
         QMap<QByteArray, qint64> limitsMap;
-        QStringList strLines = limits.split(QStringLiteral("%%"));
+        const QStringList strLines = limits.split(QStringLiteral("%%"));
         QList<QByteArray> lines;
         lines.reserve(strLines.count());
-        foreach (const QString &strLine, strLines) {
+        for (const QString &strLine : strLines) {
             lines << strLine.trimmed().toUtf8();
         }
 
-        foreach (const QByteArray &line, lines) {
+        for (const QByteArray &line : qAsConst(lines)) {
             QByteArray trimmed = line.trimmed();
             int wsIndex = trimmed.indexOf('%');
             const QByteArray key = trimmed.mid(0, wsIndex).trimmed();
@@ -171,19 +171,19 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
         mLimits << limitsMap;
     }
 
-    QStringList allUsages = members[2].trimmed().split(QStringLiteral("%%%"));
+    const QStringList allUsages = members[2].trimmed().split(QStringLiteral("%%%"));
     mUsages.reserve(allUsages.count());
 
-    foreach (const QString &usages, allUsages) {
+    for (const QString &usages : qAsConst(allUsages)) {
         QMap<QByteArray, qint64> usagesMap;
-        QStringList strLines = usages.split(QStringLiteral("%%"));
+        const QStringList strLines = usages.split(QStringLiteral("%%"));
         QList<QByteArray> lines;
         lines.reserve(strLines.count());
-        foreach (const QString &strLine, strLines) {
+        for (const QString &strLine : qAsConst(strLines)) {
             lines << strLine.trimmed().toUtf8();
         }
 
-        foreach (const QByteArray &line, lines) {
+        for (const QByteArray &line : qAsConst(lines)) {
             QByteArray trimmed = line.trimmed();
             int wsIndex = trimmed.indexOf('%');
             const QByteArray key = trimmed.mid(0, wsIndex).trimmed();

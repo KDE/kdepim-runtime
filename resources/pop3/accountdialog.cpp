@@ -449,7 +449,7 @@ void AccountDialog::enablePopFeatures()
     }
 
     authCombo->clear();
-    foreach (int prot, supportedAuths) {
+    for (int prot : qAsConst(supportedAuths)) {
         authCombo->addItem(Transport::authenticationTypeString(prot), prot);
     }
 
