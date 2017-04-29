@@ -213,6 +213,7 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
     rv.reserve(items.count());
     for (const Akonadi::Item &item : items) {
         const QByteArray data = md.readEntry(item.remoteId());
+
         KMime::Message *mail = new KMime::Message();
         mail->setContent(KMime::CRLFtoLF(data));
         mail->parse();
@@ -878,15 +879,15 @@ QString MaildirResource::maildirPathForCollection(const Collection &collection) 
 void MaildirResource::stopMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->stopDirScan(path + QLatin1Literal("/new"));
-    mFsWatcher->stopDirScan(path + QLatin1Literal("/cur"));
+    mFsWatcher->removeDir(path + QLatin1Literal("/new"));
+    mFsWatcher->removeDir(path + QLatin1Literal("/cur"));
 }
 
 void MaildirResource::restartMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->restartDirScan(path + QLatin1Literal("/new"));
-    mFsWatcher->restartDirScan(path + QLatin1Literal("/cur"));
+    mFsWatcher->addDir(path + QLatin1Literal("/new"));
+    mFsWatcher->addDir(path + QLatin1Literal("/cur"));
 }
 
 void MaildirResource::changedCleaner()
