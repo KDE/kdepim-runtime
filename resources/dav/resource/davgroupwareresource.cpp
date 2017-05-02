@@ -906,7 +906,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
     const KDAV::DavItemsFetchJob *davJob = qobject_cast< KDAV::DavItemsFetchJob *>(job);
 
     Akonadi::Item::List items;
-    foreach (Akonadi::Item item, origItems) {   //krazy:exclude=foreach non-const is intended here
+    for (Akonadi::Item item : qAsConst(origItems)) {   //krazy:exclude=foreach non-const is intended here
         const KDAV::DavItem davItem = davJob->item(item.remoteId());
 
         // No data was retrieved for this item, maybe because it is not out of date
@@ -1174,8 +1174,8 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         }
 
         // Now try to find the item that really triggered the conflict
-        Akonadi::Item::List allRemoteItems; allRemoteItems << tmpRemoteItem << tmpRemoteDependentItems;
-        foreach (const Akonadi::Item &tmpItem, allRemoteItems) {
+        const Akonadi::Item::List allRemoteItems  = Akonadi::Item::List() << tmpRemoteItem << tmpRemoteDependentItems;
+        for (const Akonadi::Item &tmpItem : allRemoteItems) {
             if (tmpItem.payloadData() != localItem.payloadData()) {
                 if (remoteItem.isValid()) {
                     // Oops, we can only manage one changed item at this stage, sorry...

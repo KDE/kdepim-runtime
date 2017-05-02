@@ -555,7 +555,7 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
         }
 
         /* Step 3: Now process the recurrent events */
-        Q_FOREACH (const EventPtr &event, recurrentEvents) {
+        for (const EventPtr &event : qAsConst(recurrentEvents)) {
 
             Item item;
             item.setRemoteId(event->uid());

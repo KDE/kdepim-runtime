@@ -347,7 +347,7 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
 
     m_collections[ MYCONTACTS_REMOTEID ] = m_rootCollection;
 
-    foreach (const ObjectPtr &object, objects) {
+    for (const ObjectPtr &object : qAsConst(objects)) {
         const ContactsGroupPtr group = object.dynamicCast<ContactsGroup>();
 
         QString realName = group->title();

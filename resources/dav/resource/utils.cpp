@@ -101,7 +101,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
     } else if (item.hasPayload<IncidencePtr>()) {
         const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(KDateTime::LocalZone));
         calendar->addIncidence(item.payload<IncidencePtr>());
-        foreach (const Akonadi::Item &dependentItem, dependentItems) {
+        for (const Akonadi::Item &dependentItem : qAsConst(dependentItems)) {
             calendar->addIncidence(dependentItem.payload<IncidencePtr>());
         }
 
@@ -152,7 +152,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
         IncidencePtr mainIncidence;
         KCalCore::Incidence::List exceptions;
 
-        foreach (const IncidencePtr &incidence, incidences) {
+        for (const IncidencePtr &incidence : qAsConst(incidences)) {
             if (incidence->hasRecurrenceId()) {
                 qCDebug(DAVRESOURCE_LOG) << "Exception found with ID" << incidence->instanceIdentifier();
                 exceptions << incidence;
@@ -165,7 +165,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
             return false;
         }
 
-        foreach (const IncidencePtr &exception, exceptions) {
+        for (const IncidencePtr &exception : qAsConst(exceptions)) {
             if (exception->status() == KCalCore::Incidence::StatusCanceled) {
                 KDateTime exDateTime = exception->recurrenceId();
                 mainIncidence->recurrence()->addExDateTime(exDateTime);

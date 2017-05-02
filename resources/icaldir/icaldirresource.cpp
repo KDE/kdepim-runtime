@@ -281,7 +281,7 @@ void ICalDirResource::retrieveItems(const Akonadi::Collection &)
     Item::List items;
     items.reserve(mIncidences.count());
 
-    foreach (const KCalCore::Incidence::Ptr &incidence, mIncidences) {
+    for (const KCalCore::Incidence::Ptr &incidence : qAsConst(mIncidences)) {
         Item item;
         item.setRemoteId(incidence->instanceIdentifier());
         item.setMimeType(incidence->mimeType());

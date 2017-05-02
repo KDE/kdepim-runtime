@@ -371,7 +371,7 @@ void O1::onTokenExchangeFinished()
         // Set extra tokens if any
         if (!response.isEmpty()) {
             QVariantMap extraTokens;
-            foreach (QString key, response.keys()) {
+            foreach (const QString &key, response.keys()) {
                 extraTokens.insert(key, response.value(key));
             }
             setExtraTokens(extraTokens);
@@ -387,7 +387,7 @@ void O1::onTokenExchangeFinished()
 QMap<QString, QString> O1::parseResponse(const QByteArray &response)
 {
     QMap<QString, QString> ret;
-    foreach (QByteArray param, response.split('&')) {
+    foreach (const QByteArray &param, response.split('&')) {
         QList<QByteArray> kv = param.split('=');
         if (kv.length() == 2) {
             ret.insert(QUrl::fromPercentEncoding(kv[0]), QUrl::fromPercentEncoding(kv[1]));
