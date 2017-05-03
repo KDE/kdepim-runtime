@@ -365,7 +365,7 @@ void StoreCompactTest::testCompact()
 
     // The order of items depends on the order of iteration of a QHash in MixedMaildirStore.
     // This makes sure that the items are always sorted by collection and offset
-    qSort(items.begin(), items.end(),
+    std::sort(items.begin(), items.end(),
     [](const Akonadi::Item & left, const Akonadi::Item & right) {
         return left.parentCollection().remoteId().compare(right.parentCollection().remoteId()) < 0 ||
                (left.parentCollection().remoteId() == right.parentCollection().remoteId() && changedOffset(left) < changedOffset(right));
