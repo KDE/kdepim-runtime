@@ -38,7 +38,7 @@
   <group name="cache">
     <entry name="DisconnectedModeEnabled" type="Bool">
       <label>Defines if all the IMAP data should be cached locally all the time</label>
-      <default>false</default>
+      <default>true</default>
     </entry>
     <entry name="IntervalCheckEnabled" type="Bool">
        <label>Defines if interval checking is enabled.</label>
