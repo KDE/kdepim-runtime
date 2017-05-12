@@ -34,6 +34,7 @@
 #include "serverinfodialog.h"
 #include "folderarchivesettingpage.h"
 #include "utils.h"
+#include "config.h"
 
 #include <mailtransport/transport.h>
 #include <mailtransport/servertest.h>
