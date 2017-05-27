@@ -34,6 +34,7 @@ Comment[en_GB]="Provides access to calendar items, each stored in a single file,
 Comment[es]=«Proporciona acceso a elementos de calendario, cada uno almacenado en un solo archivo, en un directorio dado»
 Comment[et]="Võimaldab kasutada eraldi failidesse salvestatud kalendrielemente määratud kataloogis"
 Comment[fi]="Tarjoaa pääsyn määräkansion yksittäisiin tiedostoihin tallennettuihin kalenterimerkintöihin"
+Comment[fr]=« Fournit l'accès aux éléments d'agenda, chacun stocké dans un fichier distinct, dans un dossier donné »
 Comment[gl]=«Fornece acceso a elementos de calendario, cada un almacenado nun ficheiro de seu, nun directorio dado.»
 Comment[hu]=„Hozzáférést biztosít a naptárelemekhez, mindegyiket külön fájlban tárolva a megadott könyvtárban”
 Comment[ia]="Il provide accesso a elementos de calendario, cata un immagazinate in un file singule, in un date directorio"
