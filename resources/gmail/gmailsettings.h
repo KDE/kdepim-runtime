@@ -61,19 +61,19 @@ Q_SIGNALS:
     void accountRequestCompleted(const KGAPI2::AccountPtr &account, bool userRejected);
 
 public Q_SLOTS:
-    Q_SCRIPTABLE QString accountName(bool *userRejected = 0) const;
+    Q_SCRIPTABLE QString accountName(bool *userRejected = nullptr) const;
     Q_SCRIPTABLE void setAccountName(const QString &accountName);
 
-    Q_SCRIPTABLE QString password(bool *userRejected = 0) const;
+    Q_SCRIPTABLE QString password(bool *userRejected = nullptr) const;
     Q_SCRIPTABLE void setPassword(const QString &accessToken);
 
-    Q_SCRIPTABLE QString refreshToken(bool *userRejected = 0) const;
+    Q_SCRIPTABLE QString refreshToken(bool *userRejected = nullptr) const;
     Q_SCRIPTABLE void setRefreshToken(const QString &refreshToken);
 
 private Q_SLOTS:
     void onWalletOpened(bool success);
 
-    void loadAccountFromKWallet(bool *userRejected = 0) const;
+    void loadAccountFromKWallet(bool *userRejected = nullptr) const;
     void saveAccountToKWallet();
 
     void onAuthFinished(KGAPI2::Job *job);

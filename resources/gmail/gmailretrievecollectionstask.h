@@ -26,7 +26,7 @@ class GmailRetrieveCollectionsTask : public RetrieveCollectionsTask
 {
     Q_OBJECT
 public:
-    explicit GmailRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    explicit GmailRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent = nullptr);
 
 protected Q_SLOTS:
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);

@@ -26,7 +26,7 @@ class GmailChangeItemsLabelsTask : public ChangeItemsFlagsTask
 {
     Q_OBJECT
 public:
-    explicit GmailChangeItemsLabelsTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    explicit GmailChangeItemsLabelsTask(ResourceStateInterface::Ptr resource, QObject *parent = nullptr);
     virtual ~GmailChangeItemsLabelsTask();
 
 protected:

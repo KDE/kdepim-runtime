@@ -28,7 +28,7 @@ class GmailRetrieveItemsTask : public RetrieveItemsTask
 {
     Q_OBJECT
 public:
-    explicit GmailRetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = 0);
+    explicit GmailRetrieveItemsTask(ResourceStateInterface::Ptr resource, QObject *parent = nullptr);
     ~GmailRetrieveItemsTask();
 
     virtual bool serverSupportsCondstore() const;
