@@ -56,6 +56,13 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     policy.setInheritFromParent(false);
     policy.setSyncOnDemand(true);
 
+    // The first in the list of namespaces is User namespace
+    // If the user namespace is empty, then make it possible for user to create
+    // new folders as children of the root folder
+    if (serverNamespaces().value(0).name.isEmpty()) {
+        root.setRights(Akonadi::Collection::CanCreateCollection);
+    }
+
     QStringList localParts;
     localParts << QLatin1String(Akonadi::MessagePart::Envelope)
                << QLatin1String(Akonadi::MessagePart::Header);
