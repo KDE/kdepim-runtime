@@ -143,11 +143,7 @@ set_package_properties(Sasl2 PROPERTIES
 )
 
 # Extra package
-<<<<<<< HEAD
 find_package(KPimGAPI "5.5.40" CONFIG)
-=======
-find_package(KPimGAPI "5.5.2" CONFIG)
->>>>>>> Applications/17.04
 
 
 add_subdirectory(resources)
