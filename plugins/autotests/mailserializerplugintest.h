@@ -20,7 +20,7 @@
 #ifndef MAILSERIALIZERPLUGINTEST_H
 #define MAILSERIALIZERPLUGINTEST_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class MailSerializerPluginTest : public QObject
 {

@@ -22,10 +22,10 @@
 #ifndef OXA_DAVUTILS_H
 #define OXA_DAVUTILS_H
 
-#include <QtCore/QString>
-#include <QtXml/QDomDocument>
-#include <QtXml/QDomElement>
-#include <QtXml/QDomNode>
+#include <QString>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNode>
 
 namespace OXA
 {

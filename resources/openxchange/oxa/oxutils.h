@@ -22,9 +22,9 @@
 #ifndef OXA_OXUTILS_H
 #define OXA_OXUTILS_H
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QDateTime>
+#include <QString>
+#include <QStringList>
+#include <QDateTime>
 
 namespace OXA
 {

@@ -32,7 +32,7 @@
 
 #include <klocale.h>
 
-#include <QtCore/qplugin.h>
+#include <qplugin.h>
 
 using namespace Akonadi;
 using namespace KAlarmCal;

@@ -22,7 +22,7 @@
 #ifndef OXA_OXERRORS_H
 #define OXA_OXERRORS_H
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace OXA
 {

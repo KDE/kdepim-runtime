@@ -22,8 +22,8 @@
 #ifndef SESSIONPOOL_H
 #define SESSIONPOOL_H
 
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
+#include <QObject>
+#include <QStringList>
 
 #include <kimap/listjob.h>
 #include <kimap/session.h>

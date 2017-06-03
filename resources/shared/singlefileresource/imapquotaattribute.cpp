@@ -19,9 +19,9 @@
 
 #include "imapquotaattribute.h"
 
-#include <QtCore/QByteArray>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
+#include <QByteArray>
+#include <QString>
+#include <QStringList>
 
 #include <QDebug>
 

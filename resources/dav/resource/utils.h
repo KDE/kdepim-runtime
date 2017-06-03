@@ -21,9 +21,9 @@
 
 #include <KDAV/Enums>
 
-#include <QtCore/QList>
-#include <QtCore/QUrl>
-#include <QtXml/QDomElement>
+#include <QList>
+#include <QUrl>
+#include <QDomElement>
 
 #include <AkonadiCore/Item>
 

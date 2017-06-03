@@ -22,8 +22,8 @@
 #ifndef RESOURCESTATEINTERFACE_H
 #define RESOURCESTATEINTERFACE_H
 
-#include <QtCore/QStringList>
-#include <QtCore/QSharedPointer>
+#include <QStringList>
+#include <QSharedPointer>
 
 #include <Collection>
 #include <Item>

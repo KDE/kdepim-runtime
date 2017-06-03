@@ -26,8 +26,8 @@
 #include "davutils.h"
 #include "oxutils.h"
 
-#include <QtCore/QBuffer>
-#include <QtXml/QDomElement>
+#include <QBuffer>
+#include <QDomElement>
 
 using namespace OXA;
 

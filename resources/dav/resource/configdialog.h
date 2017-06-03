@@ -25,9 +25,9 @@
 
 #include <QDialog>
 
-#include <QtCore/QList>
-#include <QtCore/QPair>
-#include <QtCore/QString>
+#include <QList>
+#include <QPair>
+#include <QString>
 class QPushButton;
 class KConfigDialogManager;
 class QStandardItemModel;

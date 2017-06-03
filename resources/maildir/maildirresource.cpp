@@ -23,7 +23,7 @@
 #include "configdialog.h"
 #include "retrieveitemsjob.h"
 
-#include <QtCore/QDir>
+#include <QDir>
 #include <QtDBus/QDBusConnection>
 
 #include <Akonadi/KMime/MessageParts>

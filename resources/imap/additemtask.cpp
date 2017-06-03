@@ -21,7 +21,7 @@
 
 #include "additemtask.h"
 
-#include <QtCore/QUuid>
+#include <QUuid>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>

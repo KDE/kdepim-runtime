@@ -24,7 +24,7 @@
 
 #include <mailtransportakonadi/sentactionattribute.h>
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class KJob;
 

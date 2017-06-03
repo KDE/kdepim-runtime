@@ -67,7 +67,7 @@
 #include <KLocalizedString>
 #include "davresource_debug.h"
 
-#include <QtCore/QSet>
+#include <QSet>
 #include <QtDBus/QDBusConnection>
 
 using namespace Akonadi;

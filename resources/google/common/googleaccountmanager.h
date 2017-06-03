@@ -20,9 +20,9 @@
 #ifndef GOOGLEACCOUNTMANAGER_H
 #define GOOGLEACCOUNTMANAGER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
-#include <QtCore/QMap>
+#include <QObject>
+#include <QPointer>
+#include <QMap>
 
 #include <KGAPI/Types>
 #include <KGAPI/Account>

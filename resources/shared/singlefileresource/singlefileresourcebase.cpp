@@ -32,8 +32,8 @@
 
 #include <KConfigGroup>
 
-#include <QtCore/QDir>
-#include <QtCore/QCryptographicHash>
+#include <QDir>
+#include <QCryptographicHash>
 #include <QStandardPaths>
 
 Q_DECLARE_METATYPE(QEventLoopLocker *)

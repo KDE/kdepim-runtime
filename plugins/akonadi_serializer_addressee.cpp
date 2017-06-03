@@ -25,7 +25,7 @@
 #include <kcontacts/addressee.h>
 #include <KLocalizedString>
 #include <QDebug>
-#include <QtCore/qplugin.h>
+#include <qplugin.h>
 
 using namespace Akonadi;
 

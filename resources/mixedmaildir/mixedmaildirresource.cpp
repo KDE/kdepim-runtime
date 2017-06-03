@@ -59,7 +59,7 @@
 #include <KLocalizedString>
 #include <KWindowSystem>
 
-#include <QtCore/QDir>
+#include <QDir>
 #include <QtDBus/QDBusConnection>
 
 #include <AkonadiCore/Tag>

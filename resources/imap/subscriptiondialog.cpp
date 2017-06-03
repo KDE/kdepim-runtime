@@ -21,7 +21,7 @@
 
 #include "subscriptiondialog.h"
 
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 #include <QStandardItemModel>
 #include <QBoxLayout>
 #include <QKeyEvent>

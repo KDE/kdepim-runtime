@@ -29,10 +29,10 @@
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
-#include <QtCore/QBitArray>
-#include <QtCore/QDebug>
+#include <QBitArray>
+#include <QDebug>
 
 using namespace OXA;
 

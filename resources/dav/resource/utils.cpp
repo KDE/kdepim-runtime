@@ -33,8 +33,8 @@
 
 #include <KLocalizedString>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QString>
+#include <QByteArray>
+#include <QString>
 
 #include "davresource_debug.h"
 

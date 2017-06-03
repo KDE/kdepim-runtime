@@ -21,7 +21,7 @@
 
 #include "users.h"
 
-#include <QtCore/QFile>
+#include <QFile>
 #include <QStandardPaths>
 #include <QDataStream>
 

@@ -29,7 +29,7 @@
 #include <KMessageBox>
 #include <KLocalizedString>
 
-#include <QtCore/QUrl>
+#include <QUrl>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>

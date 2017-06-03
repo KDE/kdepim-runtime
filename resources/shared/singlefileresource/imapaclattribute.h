@@ -23,7 +23,7 @@
 #include "akonadi-singlefileresource_export.h"
 #include <attribute.h>
 
-#include <QtCore/QMap>
+#include <QMap>
 
 #include <kimap/acl.h>
 

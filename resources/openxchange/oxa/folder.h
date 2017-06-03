@@ -22,9 +22,9 @@
 #ifndef OXA_FOLDER_H
 #define OXA_FOLDER_H
 
-#include <QtCore/QVector>
-#include <QtCore/QMap>
-#include <QtCore/QString>
+#include <QVector>
+#include <QMap>
+#include <QString>
 
 namespace OXA
 {

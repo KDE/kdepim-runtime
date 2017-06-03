@@ -21,7 +21,7 @@
 
 #include <AkonadiCore/attribute.h>
 
-#include <QtCore/QString>
+#include <QString>
 
 class CTagAttribute : public Akonadi::Attribute
 {

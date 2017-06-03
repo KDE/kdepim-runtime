@@ -22,7 +22,7 @@
 #ifndef RESOURCETASK_H
 #define RESOURCETASK_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include <Collection>
 #include <Item>

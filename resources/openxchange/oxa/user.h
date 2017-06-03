@@ -22,8 +22,8 @@
 #ifndef OXA_USER_H
 #define OXA_USER_H
 
-#include <QtCore/QVector>
-#include <QtCore/QString>
+#include <QVector>
+#include <QString>
 
 namespace OXA
 {

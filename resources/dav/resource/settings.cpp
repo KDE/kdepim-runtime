@@ -33,13 +33,13 @@
 
 #include <KDAV/Utils>
 
-#include <QtCore/QByteArray>
-#include <QtCore/QDataStream>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QPointer>
-#include <QtCore/QRegExp>
-#include <QtCore/QUrl>
+#include <QByteArray>
+#include <QDataStream>
+#include <QFile>
+#include <QFileInfo>
+#include <QPointer>
+#include <QRegExp>
+#include <QUrl>
 #include <QtDBus/QDBusConnection>
 #include <QHBoxLayout>
 #include <QLabel>

@@ -40,7 +40,7 @@
 #include <KNotification>
 #include <Kdelibs4ConfigMigrator>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 #include <QtDBus/QDBusConnection>
 
 #ifdef MAIL_SERIALIZER_PLUGIN_STATIC

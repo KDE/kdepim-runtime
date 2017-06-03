@@ -36,7 +36,7 @@
 #include <QDebug>
 #include <QIcon>
 
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include <KGAPI/Types>
 #include <KGAPI/Account>

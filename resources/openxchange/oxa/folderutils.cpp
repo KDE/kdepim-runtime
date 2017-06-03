@@ -25,7 +25,7 @@
 #include "folder.h"
 #include "oxutils.h"
 
-#include <QtXml/QDomElement>
+#include <QDomElement>
 
 using namespace OXA;
 

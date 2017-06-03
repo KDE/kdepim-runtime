@@ -19,7 +19,7 @@
 
 #include "googleaccountmanager.h"
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
 #include <KWallet/kwallet.h>
 #include <QDebug>

@@ -27,7 +27,7 @@
 #include <krecursivefilterproxymodel.h>
 #include <kimap/listjob.h>
 
-#include <QtCore/QMap>
+#include <QMap>
 
 class QStandardItemModel;
 class QStandardItem;

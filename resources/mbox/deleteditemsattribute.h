@@ -23,7 +23,7 @@
 #include <attribute.h>
 #include <kmbox/mboxentry.h>
 
-#include <QtCore/QSet>
+#include <QSet>
 
 /**
  * This attribute stores a list of offsets in the mbox file of mails which are

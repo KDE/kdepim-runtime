@@ -20,7 +20,7 @@
 #ifndef SYNCTEST_H
 #define SYNCTEST_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include <AkonadiCore/Collection>
 

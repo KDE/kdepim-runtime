@@ -28,8 +28,8 @@
 
 class DavFreeBusyHandler;
 
-#include <QtCore/QSet>
-#include <QtCore/QStringList>
+#include <QSet>
+#include <QStringList>
 
 namespace KDAV
 {

@@ -31,7 +31,7 @@
 #include <KLocalizedString>
 
 #include <QDate>
-#include <QtCore/qplugin.h>
+#include <qplugin.h>
 #include <QDebug>
 
 using namespace KCalCore;

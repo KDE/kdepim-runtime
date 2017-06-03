@@ -21,9 +21,9 @@
 
 #include <KCalCore/FreeBusy>
 
-#include <QtCore/QMap>
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QMap>
+#include <QObject>
+#include <QString>
 
 class QDateTime;
 class KJob;

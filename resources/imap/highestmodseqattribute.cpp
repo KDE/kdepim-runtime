@@ -19,7 +19,7 @@
 
 #include "highestmodseqattribute.h"
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 HighestModSeqAttribute::HighestModSeqAttribute(qint64 highestModSequence):
     Akonadi::Attribute(),

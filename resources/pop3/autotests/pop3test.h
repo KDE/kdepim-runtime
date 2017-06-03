@@ -26,8 +26,8 @@
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QObject>
+#include <QList>
 
 class Pop3Test : public QObject
 {

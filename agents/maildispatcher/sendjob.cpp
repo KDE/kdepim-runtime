@@ -43,7 +43,7 @@
 #include <mailtransport/transportjob.h>
 #include <mailtransport/transportmanager.h>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
 

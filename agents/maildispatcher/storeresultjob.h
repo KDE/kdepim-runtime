@@ -22,7 +22,7 @@
 
 #include <TransactionSequence>
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace Akonadi
 {

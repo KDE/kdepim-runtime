@@ -19,7 +19,7 @@
 
 #include <AkonadiCore/item.h>
 #include <qtest.h>
-#include <QtCore/QObject>
+#include <QObject>
 #include <akonadi_serializer_addressee.h>
 
 using namespace Akonadi;

@@ -22,7 +22,7 @@
 #ifndef PASSWORDREQUESTERINTERFACE_H
 #define PASSWORDREQUESTERINTERFACE_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class PasswordRequesterInterface : public QObject
 {

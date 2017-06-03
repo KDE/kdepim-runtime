@@ -20,7 +20,7 @@
 #ifndef AKONADI_SERIALIZER_KCALCORE_H
 #define AKONADI_SERIALIZER_KCALCORE_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include <AkonadiCore/differencesalgorithminterface.h>
 #include <AkonadiCore/itemserializerplugin.h>

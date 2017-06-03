@@ -46,11 +46,11 @@
 #include <kdirwatch.h>
 #include <KLocalizedString>
 
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
-#include <QtCore/QFile>
-#include <QtCore/QFileInfo>
-#include <QtCore/QTimer>
+#include <QDir>
+#include <QDirIterator>
+#include <QFile>
+#include <QFileInfo>
+#include <QTimer>
 #include "kalarmdirresource_debug.h"
 
 using namespace Akonadi;

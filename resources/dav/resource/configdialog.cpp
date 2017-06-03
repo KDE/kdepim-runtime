@@ -28,9 +28,9 @@
 #include <KLocalizedString>
 #include <kmessagebox.h>
 
-#include <QtCore/QList>
-#include <QtCore/QPointer>
-#include <QtCore/QStringList>
+#include <QList>
+#include <QPointer>
+#include <QStringList>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVBoxLayout>

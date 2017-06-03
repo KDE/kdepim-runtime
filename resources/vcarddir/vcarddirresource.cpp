@@ -24,9 +24,9 @@
 #include "dirsettingsdialog.h"
 
 
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
-#include <QtCore/QFile>
+#include <QDir>
+#include <QDirIterator>
+#include <QFile>
 
 #include <changerecorder.h>
 #include <entitydisplayattribute.h>

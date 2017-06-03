@@ -24,8 +24,8 @@
 
 #include "user.h"
 
-#include <QtCore/QMap>
-#include <QtCore/QObject>
+#include <QMap>
+#include <QObject>
 
 namespace OXA
 {

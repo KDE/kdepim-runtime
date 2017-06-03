@@ -22,7 +22,7 @@
 
 #include <attribute.h>
 #include "akonadi-singlefileresource_export.h"
-#include <QtCore/QMap>
+#include <QMap>
 
 namespace Akonadi
 {

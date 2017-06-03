@@ -19,7 +19,7 @@
 
 #include "imapaclattribute.h"
 
-#include <QtCore/QByteArray>
+#include <QByteArray>
 
 using namespace Akonadi;
 

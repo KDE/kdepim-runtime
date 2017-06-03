@@ -20,8 +20,8 @@
 #ifndef __AKONADI_SERIALIZER_MAIL_H__
 #define __AKONADI_SERIALIZER_MAIL_H__
 
-#include <QtCore/QObject>
-#include <QtCore/QMutex>
+#include <QObject>
+#include <QMutex>
 
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>

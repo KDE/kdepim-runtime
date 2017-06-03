@@ -27,7 +27,7 @@
 #include <Item>
 #include <ItemCreateJob>
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class KJob;
 

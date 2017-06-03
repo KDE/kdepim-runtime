@@ -23,7 +23,7 @@
 
 #include <KDAV/Utils>
 
-#include <QtCore/QString>
+#include <QString>
 #include <QDialog>
 
 class KJob;

@@ -28,7 +28,7 @@
 #include <AkonadiCore/gidextractorinterface.h>
 #include <KCalCore/ICalFormat>
 
-#include <QtCore/QObject>
+#include <QObject>
 
 namespace Akonadi
 {

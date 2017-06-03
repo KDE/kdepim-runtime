@@ -22,7 +22,7 @@
 #include "sessionpool.h"
 
 
-#include <QtCore/QTimer>
+#include <QTimer>
 #include <QtNetwork/QSslSocket>
 
 #include "imapresource_debug.h"

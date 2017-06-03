@@ -20,8 +20,8 @@
 #include "akonadi_serializer_mail.h"
 #include "akonadi_serializer_mail_debug.h"
 
-#include <QtCore/qplugin.h>
-#include <QtCore/QDataStream>
+#include <qplugin.h>
+#include <QDataStream>
 
 #include <kmime/kmime_message.h>
 

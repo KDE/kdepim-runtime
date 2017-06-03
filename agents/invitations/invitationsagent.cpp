@@ -49,7 +49,7 @@
 #include <KMime/Message>
 #include <KSystemTimeZones>
 
-#include <QtCore/QTimer>
+#include <QTimer>
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
 #include <QStandardPaths>

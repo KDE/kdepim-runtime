@@ -20,7 +20,7 @@
 #include "mboxresource.h"
 #include "mboxresource_debug.h"
 
-#include <QtCore/QtPlugin>
+#include <QtPlugin>
 
 #include <attributefactory.h>
 #include <changerecorder.h>

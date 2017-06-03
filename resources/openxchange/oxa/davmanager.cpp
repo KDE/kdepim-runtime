@@ -23,7 +23,7 @@
 
 #include <kio/davjob.h>
 
-#include <QtXml/QDomDocument>
+#include <QDomDocument>
 
 using namespace OXA;
 

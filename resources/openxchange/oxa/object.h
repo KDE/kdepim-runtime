@@ -28,8 +28,8 @@
 #include <kcontacts/contactgroup.h>
 #include <KCalCore/Incidence>
 
-#include <QtCore/QVector>
-#include <QtCore/QString>
+#include <QVector>
+#include <QString>
 
 namespace OXA
 {

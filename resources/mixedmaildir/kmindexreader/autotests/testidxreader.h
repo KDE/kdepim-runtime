@@ -21,7 +21,7 @@
 #ifndef TESTIDXREADER_H
 #define TESTIDXREADER_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 class TestIdxReader : public QObject
 {

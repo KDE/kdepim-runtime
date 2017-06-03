@@ -20,7 +20,7 @@
 #ifndef __AKONADI_SERIALIZER_CONTACTGROUP_H__
 #define __AKONADI_SERIALIZER_CONTACTGROUP_H__
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include <AkonadiCore/differencesalgorithminterface.h>
 #include <AkonadiCore/itemserializerplugin.h>

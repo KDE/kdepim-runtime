@@ -22,7 +22,7 @@
 #ifndef MIGRATORBASE_H
 #define MIGRATORBASE_H
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <QFile>
 #include <kconfig.h>
 #include <KConfigGroup>

@@ -19,8 +19,8 @@
 
 #include "incidenceattribute.h"
 
-#include <QtCore/QString>
-#include <QtCore/QTextStream>
+#include <QString>
+#include <QTextStream>
 
 using namespace Akonadi;
 

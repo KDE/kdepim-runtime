@@ -22,8 +22,8 @@
 #ifndef DUMMYRESOURCESTATE_H
 #define DUMMYRESOURCESTATE_H
 
-#include <QtCore/QPair>
-#include <QtCore/QVariant>
+#include <QPair>
+#include <QVariant>
 
 #include "resourcestateinterface.h"
 

@@ -26,7 +26,7 @@
 
 #include <KDAV/DavUrl>
 
-#include <QtCore/QMap>
+#include <QMap>
 
 
 class Settings : public SettingsBase

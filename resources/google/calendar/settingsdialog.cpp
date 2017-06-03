@@ -28,7 +28,7 @@
 #include <QGroupBox>
 #include <QLayout>
 #include <QLabel>
-#include <QtCore/QPointer>
+#include <QPointer>
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>

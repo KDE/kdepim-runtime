@@ -27,7 +27,7 @@
 #include <kcontacts/contactgrouptool.h>
 #include <KLocalizedString>
 
-#include <QtCore/qplugin.h>
+#include <qplugin.h>
 
 using namespace Akonadi;
 

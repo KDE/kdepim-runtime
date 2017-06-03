@@ -20,7 +20,7 @@
 #include <AkonadiCore/item.h>
 #include <KCalCore/Event>
 #include <qtest.h>
-#include <QtCore/QObject>
+#include <QObject>
 
 using namespace Akonadi;
 using namespace KCalCore;

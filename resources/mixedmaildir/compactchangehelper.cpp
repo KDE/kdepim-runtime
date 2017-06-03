@@ -29,9 +29,9 @@
 #include <AkonadiCore/itemmodifyjob.h>
 #include <AkonadiCore/session.h>
 
-#include <QtCore/QMap>
-#include <QtCore/QQueue>
-#include <QtCore/QVariant>
+#include <QMap>
+#include <QQueue>
+#include <QVariant>
 
 using namespace Akonadi;
 

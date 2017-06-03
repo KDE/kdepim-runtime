@@ -29,7 +29,7 @@
 #include <kimap/subscribejob.h>
 #include <kimap/selectjob.h>
 
-#include <QtCore/QUuid>
+#include <QUuid>
 
 MoveCollectionTask::MoveCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)

@@ -24,8 +24,8 @@
 #include <resourcebase.h>
 
 #include <QUrl>
-#include <QtCore/QStringList>
-#include <QtCore/QTimer>
+#include <QStringList>
+#include <QTimer>
 
 namespace KIO
 {

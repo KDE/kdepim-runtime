@@ -27,9 +27,9 @@
 
 #include <Akonadi/Contact/ContactGroupExpandJob>
 
-#include <QtCore/QBuffer>
-#include <QtGui/QImage>
-#include <QtXml/QDomElement>
+#include <QBuffer>
+#include <QImage>
+#include <QDomElement>
 
 using namespace OXA;
 
