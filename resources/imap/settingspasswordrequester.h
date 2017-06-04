@@ -36,8 +36,8 @@ public:
     virtual ~SettingsPasswordRequester();
 
     virtual void requestPassword(RequestType request = StandardRequest,
-                                 const QString &serverError = QString()) Q_DECL_OVERRIDE;
-    void cancelPasswordRequests() Q_DECL_OVERRIDE;
+                                 const QString &serverError = QString()) override;
+    void cancelPasswordRequests() override;
 
 private Q_SLOTS:
     void askUserInput(const QString &serverError);

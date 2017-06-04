@@ -40,11 +40,11 @@ class MigrationExecutor : public KJob
 public:
     MigrationExecutor();
     void add(const QSharedPointer<MigratorBase> &);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 protected:
-    bool doResume() Q_DECL_OVERRIDE;
-    bool doSuspend() Q_DECL_OVERRIDE;
+    bool doResume() override;
+    bool doSuspend() override;
 
 private Q_SLOTS:
     void onStoppedProcessing();

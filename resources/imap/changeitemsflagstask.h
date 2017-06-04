@@ -43,7 +43,7 @@ protected Q_SLOTS:
 protected:
     KIMAP::StoreJob *prepareJob(KIMAP::Session *session);
 
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
     virtual void triggerAppendFlagsJob(KIMAP::Session *session);
     virtual void triggerRemoveFlagsJob(KIMAP::Session *session);

@@ -57,7 +57,7 @@ private Q_SLOTS:
     void onFlagsFetchDone(KJob *job);
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
     virtual BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set,
             const KIMAP::FetchJob::FetchScope &scope, int batchSize,

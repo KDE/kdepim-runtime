@@ -49,7 +49,7 @@ public:
      */
     virtual ~GidMigrationJob();
 
-    void doStart() Q_DECL_OVERRIDE;
+    void doStart() override;
 
 private Q_SLOTS:
     void collectionsReceived(const Akonadi::Collection::List &);
@@ -72,8 +72,8 @@ public:
     explicit UpdateJob(const Akonadi::Collection &col, QObject *parent = nullptr);
     virtual ~UpdateJob();
 
-    void doStart() Q_DECL_OVERRIDE;
-    void slotResult(KJob *job) Q_DECL_OVERRIDE;
+    void doStart() override;
+    void slotResult(KJob *job) override;
 
 private Q_SLOTS:
     void itemsReceived(const Akonadi::Item::List &items);

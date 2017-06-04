@@ -44,7 +44,7 @@ private Q_SLOTS:
     void onSearchDone(KJob *job);
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void startMove(KIMAP::Session *session);

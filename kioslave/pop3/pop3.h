@@ -46,12 +46,12 @@ public:
     virtual ~ POP3Protocol();
 
     virtual void setHost(const QString &host, quint16 port,
-                         const QString &user, const QString &pass) Q_DECL_OVERRIDE;
+                         const QString &user, const QString &pass) override;
 
-    void get(const QUrl &url) Q_DECL_OVERRIDE;
-    void stat(const QUrl &url) Q_DECL_OVERRIDE;
-    void del(const QUrl &url, bool isfile) Q_DECL_OVERRIDE;
-    void listDir(const QUrl &url) Q_DECL_OVERRIDE;
+    void get(const QUrl &url) override;
+    void stat(const QUrl &url) override;
+    void del(const QUrl &url, bool isfile) override;
+    void listDir(const QUrl &url) override;
 
 protected:
 
@@ -95,13 +95,13 @@ protected:
     Resp getResponse(char *buf, unsigned int len);
 
     /** Call int pop3_open() and report an error, if if fails */
-    void openConnection() Q_DECL_OVERRIDE;
+    void openConnection() override;
 
     /**
      *  Attempt to properly shut down the POP3 connection by sending
      *  "QUIT\r\n" before closing the socket.
      */
-    void closeConnection() Q_DECL_OVERRIDE;
+    void closeConnection() override;
 
     /**
      * Attempt to initiate a POP3 connection via a TCP socket.  If no port

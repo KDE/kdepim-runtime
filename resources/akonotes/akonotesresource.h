@@ -29,11 +29,11 @@ public:
     explicit AkonotesResource(const QString &id);
     ~AkonotesResource();
 
-    QString defaultResourceType() Q_DECL_OVERRIDE;
+    QString defaultResourceType() override;
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 protected:
-    QString itemMimeType() const Q_DECL_OVERRIDE;
+    QString itemMimeType() const override;
 };
 #endif

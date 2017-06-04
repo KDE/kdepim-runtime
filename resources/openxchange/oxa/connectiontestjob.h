@@ -34,7 +34,7 @@ class ConnectionTestJob : public KJob
 public:
     ConnectionTestJob(const QString &url, const QString &user, const QString &password, QObject *parent = nullptr);
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private Q_SLOTS:
     void httpJobFinished(KJob *);

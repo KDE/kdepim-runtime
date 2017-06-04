@@ -38,15 +38,15 @@ public:
     ~BirthdaysResource();
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected:
-    void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &collection) override;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 private:
     void addPendingEvent(const KCalCore::Event::Ptr &event, const QString &remoteId);

@@ -37,7 +37,7 @@ public:
     QString getContentUrl() const;
     QString getUserURL() const;
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private:
     void onLinkingFailed();

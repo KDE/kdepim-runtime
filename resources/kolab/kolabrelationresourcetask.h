@@ -39,7 +39,7 @@ protected:
     Akonadi::Collection mRelationCollection;
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
     virtual void startRelationTask(KIMAP::Session *session) = 0;
 

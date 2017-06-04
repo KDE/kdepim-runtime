@@ -18,17 +18,17 @@ public:
     }
     virtual ~DebugStream() {}
 
-    bool isSequential() const Q_DECL_OVERRIDE
+    bool isSequential() const override
     {
         return true;
     }
-    qint64 readData(char *, qint64) Q_DECL_OVERRIDE {
+    qint64 readData(char *, qint64) override {
         return 0; /* eof */
     }
-    qint64 readLineData(char *, qint64) Q_DECL_OVERRIDE {
+    qint64 readLineData(char *, qint64) override {
         return 0; /* eof */
     }
-    qint64 writeData(const char *data, qint64 len) Q_DECL_OVERRIDE {
+    qint64 writeData(const char *data, qint64 len) override {
         const QByteArray buf = QByteArray::fromRawData(data, len);
         if (!qEnvironmentVariableIsEmpty("IMAP_TRACE"))
         {

@@ -65,7 +65,7 @@ public:
     Akonadi::Collection collection() const;
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 private Q_SLOTS:
     void initStart();
@@ -76,7 +76,7 @@ private:
                                 const KCalCore::MemoryCalendar::Ptr &calendar,
                                 const Akonadi::Item &item);
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
 
 private:
     QString m_resourceId;

@@ -48,7 +48,7 @@ public:
 
     Collection targetParent() const;
 
-    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
+    bool accept(Visitor *visitor) override;
 
 private:
     void handleCollectionMoved(const Collection &collection);

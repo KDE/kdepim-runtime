@@ -92,7 +92,7 @@ public:
 
     virtual ~Job();
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     virtual bool accept(Visitor *visitor);
 

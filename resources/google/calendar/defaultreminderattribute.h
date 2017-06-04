@@ -30,10 +30,10 @@ class DefaultReminderAttribute : public Akonadi::Attribute
 public:
     explicit DefaultReminderAttribute();
 
-    Attribute *clone() const Q_DECL_OVERRIDE;
-    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
-    QByteArray serialized() const Q_DECL_OVERRIDE;
-    QByteArray type() const Q_DECL_OVERRIDE;
+    Attribute *clone() const override;
+    void deserialize(const QByteArray &data) override;
+    QByteArray serialized() const override;
+    QByteArray type() const override;
 
     void setReminders(const KGAPI2::RemindersList &reminders);
     KCalCore::Alarm::List alarms(KCalCore::Incidence *incidence) const;

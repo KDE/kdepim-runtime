@@ -31,7 +31,7 @@ class EntityTreeCreateJob : public Akonadi::TransactionSequence
 public:
     explicit EntityTreeCreateJob(const QList<Akonadi::Collection::List> &collections, const Akonadi::Item::List &items, QObject *parent = nullptr);
 
-    void doStart() Q_DECL_OVERRIDE;
+    void doStart() override;
 
 private Q_SLOTS:
     void collectionCreateJobDone(KJob *);

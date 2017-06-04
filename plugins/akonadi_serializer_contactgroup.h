@@ -43,14 +43,14 @@ class SerializerPluginContactGroup : public QObject,
     Q_INTERFACES(Akonadi::GidExtractorInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginContactGroup")
 public:
-    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) Q_DECL_OVERRIDE;
-    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) Q_DECL_OVERRIDE;
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) override;
 
     void compare(Akonadi::AbstractDifferencesReporter *reporter,
                  const Akonadi::Item &leftItem,
-                 const Akonadi::Item &rightItem) Q_DECL_OVERRIDE;
+                 const Akonadi::Item &rightItem) override;
 
-    QString extractGid(const Item &item) const Q_DECL_OVERRIDE;
+    QString extractGid(const Item &item) const override;
 };
 
 }

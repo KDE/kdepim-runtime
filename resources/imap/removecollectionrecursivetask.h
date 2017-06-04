@@ -42,7 +42,7 @@ private Q_SLOTS:
     void onJobDone(KJob *job);
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void deleteNextMailbox();

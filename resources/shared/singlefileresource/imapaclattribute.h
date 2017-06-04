@@ -41,10 +41,10 @@ public:
     QMap<QByteArray, KIMAP::Acl::Rights> oldRights() const;
     void setMyRights(KIMAP::Acl::Rights rights);
     KIMAP::Acl::Rights myRights() const;
-    QByteArray type() const Q_DECL_OVERRIDE;
-    ImapAclAttribute *clone() const Q_DECL_OVERRIDE;
-    QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
+    QByteArray type() const override;
+    ImapAclAttribute *clone() const override;
+    QByteArray serialized() const override;
+    void deserialize(const QByteArray &data) override;
 
     bool operator==(const ImapAclAttribute &other) const;
 private:

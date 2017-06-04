@@ -62,7 +62,7 @@ public:
 
     Item::List items() const;
 
-    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
+    bool accept(Visitor *visitor) override;
 
 Q_SIGNALS:
     void itemsReceived(const Akonadi::Item::List &items);

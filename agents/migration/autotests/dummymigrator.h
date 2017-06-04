@@ -34,14 +34,14 @@ class DummyMigrator : public MigratorBase
 public:
     explicit DummyMigrator(const QString &identifier);
 
-    QString displayName() const Q_DECL_OVERRIDE;
-    void startWork() Q_DECL_OVERRIDE;
+    QString displayName() const override;
+    void startWork() override;
 
-    bool shouldAutostart() const Q_DECL_OVERRIDE;
-    bool canStart() Q_DECL_OVERRIDE;
-    void pause() Q_DECL_OVERRIDE;
+    bool shouldAutostart() const override;
+    bool canStart() override;
+    void pause() override;
 
-    void abort() Q_DECL_OVERRIDE;
+    void abort() override;
 private Q_SLOTS:
     void onTimerElapsed();
 };

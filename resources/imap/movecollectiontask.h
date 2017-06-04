@@ -38,7 +38,7 @@ private Q_SLOTS:
     void onSubscribeDone(KJob *job);
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void doRename(KIMAP::Session *session);

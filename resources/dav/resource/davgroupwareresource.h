@@ -46,15 +46,15 @@ public:
     explicit DavGroupwareResource(const QString &id);
     ~DavGroupwareResource();
 
-    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void cleanup() Q_DECL_OVERRIDE;
+    void collectionRemoved(const Akonadi::Collection &collection) override;
+    void cleanup() override;
 
-    QDateTime lastCacheUpdate() const Q_DECL_OVERRIDE;
-    void canHandleFreeBusy(const QString &email) const Q_DECL_OVERRIDE;
-    void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) Q_DECL_OVERRIDE;
+    QDateTime lastCacheUpdate() const override;
+    void canHandleFreeBusy(const QString &email) const override;
+    void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 private Q_SLOTS:
     void createInitialCache();
@@ -65,15 +65,15 @@ protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected Q_SLOTS:
-    void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &collection) override;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 protected:
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
-    void doSetOnline(bool online) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
+    void doSetOnline(bool online) override;
 
 private:
     enum ItemFetchUpdateType {

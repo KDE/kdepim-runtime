@@ -49,23 +49,23 @@ public:
 
     void clearCachedPassword();
 
-    void cleanup() Q_DECL_OVERRIDE;
+    void cleanup() override;
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected Q_SLOTS:
-    void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &col) override;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 protected:
 
-    void aboutToQuit() Q_DECL_OVERRIDE;
-    void doSetOnline(bool online) Q_DECL_OVERRIDE;
+    void aboutToQuit() override;
+    void doSetOnline(bool online) override;
 
 private Q_SLOTS:
 

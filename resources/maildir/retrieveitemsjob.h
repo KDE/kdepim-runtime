@@ -44,7 +44,7 @@ public:
     void setMimeType(const QString &mimeType);
 
 protected:
-    void doStart() Q_DECL_OVERRIDE;
+    void doStart() override;
 
 private:
     void entriesProcessed();

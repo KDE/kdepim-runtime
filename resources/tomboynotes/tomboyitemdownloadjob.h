@@ -32,7 +32,7 @@ public:
     Akonadi::Item item() const;
 
     // automatically called by KJob
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private Q_SLOTS:
     // This will be called once the request is finished.

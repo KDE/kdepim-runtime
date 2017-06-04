@@ -61,7 +61,7 @@ public:
 
     Collection::List collections() const;
 
-    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
+    bool accept(Visitor *visitor) override;
 
 Q_SIGNALS:
     void collectionsReceived(const Akonadi::Collection::List &items);

@@ -33,16 +33,16 @@ public:
     ~TomboyNotesResource();
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected Q_SLOTS:
     // Standard akonadi slots
-    void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &col) override;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
     // Slots for Job result handling
     void onAuthorizationFinished(KJob *kjob);
@@ -56,12 +56,12 @@ private Q_SLOTS:
     void onSslError(QNetworkReply *reply, const QList<QSslError> &errors);
 
 protected:
-    void aboutToQuit() Q_DECL_OVERRIDE;
+    void aboutToQuit() override;
 
     // Standard akonadi
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
 
 private:
     bool configurationNotValid() const;

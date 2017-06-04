@@ -30,7 +30,7 @@ public:
     ~SettingsDialog();
 
 private Q_SLOTS:
-    void saveSettings() Q_DECL_OVERRIDE;
+    void saveSettings() override;
 
 };
 

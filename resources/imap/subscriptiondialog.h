@@ -50,7 +50,7 @@ public Q_SLOTS:
     void setIncludeCheckedOnly(int checkedOnlyState);
 
 protected:
-    bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
+    bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 private:
     QString m_pattern;

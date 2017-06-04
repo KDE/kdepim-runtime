@@ -30,15 +30,15 @@ public:
     GidMigrator(const QString &mimeType);
     virtual ~GidMigrator();
 
-    QString displayName() const Q_DECL_OVERRIDE;
-    QString description() const Q_DECL_OVERRIDE;
+    QString displayName() const override;
+    QString description() const override;
 
-    bool canStart() Q_DECL_OVERRIDE;
+    bool canStart() override;
 
-    bool shouldAutostart() const Q_DECL_OVERRIDE;
+    bool shouldAutostart() const override;
 
 protected:
-    void startWork() Q_DECL_OVERRIDE;
+    void startWork() override;
 private Q_SLOTS:
     void migrationFinished(KJob *);
 private:

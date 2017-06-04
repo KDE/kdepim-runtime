@@ -60,7 +60,7 @@ public:
 
 protected:
     // reimpl from TransactionSequence
-    void doStart() Q_DECL_OVERRIDE;
+    void doStart() override;
 
 private:
     //@cond PRIVATE

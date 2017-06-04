@@ -33,7 +33,7 @@ class MigrationAgent : public AgentBase, public AgentBase::ObserverV2
     Q_OBJECT
 public:
     explicit MigrationAgent(const QString &id);
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 private:
     MigrationScheduler mScheduler;
 };

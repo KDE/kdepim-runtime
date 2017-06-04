@@ -37,22 +37,22 @@ public:
     /**
      * Reimplemented from SlaveBase
      */
-    void get(const QUrl &url) Q_DECL_OVERRIDE;
+    void get(const QUrl &url) override;
 
     /**
      * Reimplemented from SlaveBase
      */
-    void stat(const QUrl &url) Q_DECL_OVERRIDE;
+    void stat(const QUrl &url) override;
 
     /**
      * Reimplemented from SlaveBase
      */
-    void listDir(const QUrl &url) Q_DECL_OVERRIDE;
+    void listDir(const QUrl &url) override;
 
     /**
      * Reimplemented from SlaveBase
      */
-    void del(const QUrl &url, bool isFile) Q_DECL_OVERRIDE;
+    void del(const QUrl &url, bool isFile) override;
 
 private:
     static KIO::UDSEntry entryForItem(const Akonadi::Item &item);

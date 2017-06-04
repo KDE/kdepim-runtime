@@ -46,7 +46,7 @@ public:
 
     Collection collection() const;
 
-    bool accept(Visitor *visitor) Q_DECL_OVERRIDE;
+    bool accept(Visitor *visitor) override;
 
 private:
     void handleCollectionModified(const Collection &collection);

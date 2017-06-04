@@ -87,15 +87,15 @@ public:
     void setShowButtonToDisplayMail(bool b);
 
 protected:
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection) Q_DECL_OVERRIDE;
-    void itemsRemoved(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
-    void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags) Q_DECL_OVERRIDE;
-    void doSetOnline(bool online) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection) override;
+    void itemsRemoved(const Akonadi::Item::List &items) override;
+    void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags) override;
+    void doSetOnline(bool online) override;
 
 private Q_SLOTS:
     void slotShowNotifications();
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
     void slotInstanceAdded(const Akonadi::AgentInstance &instance);

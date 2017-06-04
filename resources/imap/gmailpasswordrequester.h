@@ -37,8 +37,8 @@ public:
     explicit GmailPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
     ~GmailPasswordRequester();
 
-    void requestPassword(RequestType request, const QString &serverError) Q_DECL_OVERRIDE;
-    void cancelPasswordRequests() Q_DECL_OVERRIDE;
+    void requestPassword(RequestType request, const QString &serverError) override;
+    void cancelPasswordRequests() override;
 
 private Q_SLOTS:
     void onPasswordRequestCompleted(const QString &password, bool userRejected);

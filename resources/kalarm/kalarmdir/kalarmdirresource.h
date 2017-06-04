@@ -41,22 +41,22 @@ public:
     ~KAlarmDirResource();
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
-    void aboutToQuit() Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
+    void aboutToQuit() override;
 
 protected:
     using ResourceBase::retrieveItems; // suppress -Woverload-virtual warnings
 
 protected Q_SLOTS:
-    void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &) Q_DECL_OVERRIDE;
-    bool retrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &) override;
+    bool retrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
 
 protected:
-    void collectionChanged(const Akonadi::Collection &) Q_DECL_OVERRIDE;
-    void itemAdded(const Akonadi::Item &, const Akonadi::Collection &) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void itemRemoved(const Akonadi::Item &) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &) override;
+    void itemAdded(const Akonadi::Item &, const Akonadi::Collection &) override;
+    void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &) override;
 
 private Q_SLOTS:
     void    settingsChanged();

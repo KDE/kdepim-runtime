@@ -80,10 +80,10 @@ public:
 
 public Q_SLOTS:
     /// Authenticate.
-    Q_INVOKABLE virtual void link() Q_DECL_OVERRIDE;
+    Q_INVOKABLE virtual void link() override;
 
     /// De-authenticate.
-    Q_INVOKABLE virtual void unlink() Q_DECL_OVERRIDE;
+    Q_INVOKABLE virtual void unlink() override;
 
 Q_SIGNALS:
     void requestTokenUrlChanged();

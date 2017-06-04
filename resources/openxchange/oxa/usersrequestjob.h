@@ -36,7 +36,7 @@ class UsersRequestJob : public KJob
 public:
     explicit UsersRequestJob(QObject *parent = nullptr);
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     User::List users() const;
 

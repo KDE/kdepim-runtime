@@ -37,7 +37,7 @@ class ObjectMoveJob : public KJob
 public:
     ObjectMoveJob(const Object &object, const Folder &destinationFolder, QObject *parent = nullptr);
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     Object object() const;
 

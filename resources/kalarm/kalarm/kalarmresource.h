@@ -46,17 +46,17 @@ protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *) Q_DECL_OVERRIDE;
-    void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *) Q_DECL_OVERRIDE;
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *) override;
+    void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *) override;
 
-    void doRetrieveItems(const Akonadi::Collection &) Q_DECL_OVERRIDE;
-    bool doRetrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
-    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
-    void itemAdded(const Akonadi::Item &, const Akonadi::Collection &) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void collectionChanged(const Akonadi::Collection &) Q_DECL_OVERRIDE;
-    void retrieveCollections() Q_DECL_OVERRIDE;
+    void doRetrieveItems(const Akonadi::Collection &) override;
+    bool doRetrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
+    bool readFromFile(const QString &fileName) override;
+    bool writeToFile(const QString &fileName) override;
+    void itemAdded(const Akonadi::Item &, const Akonadi::Collection &) override;
+    void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
+    void collectionChanged(const Akonadi::Collection &) override;
+    void retrieveCollections() override;
 
 private Q_SLOTS:
     void settingsChanged();

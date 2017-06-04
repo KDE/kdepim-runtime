@@ -44,10 +44,10 @@ public:
     QList< QMap<QByteArray, qint64> > limits() const;
     QList< QMap<QByteArray, qint64> > usages() const;
 
-    QByteArray type() const Q_DECL_OVERRIDE;
-    Attribute *clone() const Q_DECL_OVERRIDE;
-    QByteArray serialized() const Q_DECL_OVERRIDE;
-    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
+    QByteArray type() const override;
+    Attribute *clone() const override;
+    QByteArray serialized() const override;
+    void deserialize(const QByteArray &data) override;
 
 private:
     QList<QByteArray> mRoots;

@@ -55,10 +55,10 @@ class SerializerPluginMail : public QObject, public ItemSerializerPlugin, public
     Q_INTERFACES(Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginMail")
 public:
-    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) Q_DECL_OVERRIDE;
-    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) Q_DECL_OVERRIDE;
-    QSet<QByteArray> parts(const Item &item) const Q_DECL_OVERRIDE;
-    QString extractGid(const Item &item) const Q_DECL_OVERRIDE;
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) override;
+    QSet<QByteArray> parts(const Item &item) const override;
+    QString extractGid(const Item &item) const override;
 private:
     StringPool m_stringPool;
 };

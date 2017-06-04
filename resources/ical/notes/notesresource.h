@@ -34,12 +34,12 @@ protected:
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
     */
-    QString mimeType(const KCalCore::IncidenceBase::Ptr &incidence) const Q_DECL_OVERRIDE;
+    QString mimeType(const KCalCore::IncidenceBase::Ptr &incidence) const override;
 
     /**
       Returns a list of all calendar component sub MIME types.
      */
-    QStringList allMimeTypes() const Q_DECL_OVERRIDE;
+    QStringList allMimeTypes() const override;
 };
 
 #endif

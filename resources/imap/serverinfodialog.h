@@ -32,7 +32,7 @@ public:
     explicit ServerInfoTextBrowser(QWidget *parent = nullptr);
     ~ServerInfoTextBrowser();
 protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) override;
 };
 
 class ServerInfoDialog : public QDialog

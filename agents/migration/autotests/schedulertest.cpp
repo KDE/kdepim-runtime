@@ -37,15 +37,15 @@ public:
         MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent), mAutostart(false)
     {}
 
-    QString displayName() const Q_DECL_OVERRIDE
+    QString displayName() const override
     {
         return QStringLiteral("name");
     }
 
-    void startWork() Q_DECL_OVERRIDE
+    void startWork() override
     {}
 
-    void abort() Q_DECL_OVERRIDE {
+    void abort() override {
         setMigrationState(Aborted);
     }
 
@@ -54,16 +54,16 @@ public:
         setMigrationState(Complete);
     }
 
-    bool shouldAutostart() const Q_DECL_OVERRIDE
+    bool shouldAutostart() const override
     {
         return mAutostart;
     }
 
-    void pause() Q_DECL_OVERRIDE {
+    void pause() override {
         setMigrationState(Paused);
     }
 
-    void resume() Q_DECL_OVERRIDE {
+    void resume() override {
         setMigrationState(InProgress);
     }
 
@@ -76,20 +76,20 @@ public:
     TestJobTracker() : mPercent(0)
     {}
 
-    void registerJob(KJob *job) Q_DECL_OVERRIDE {
+    void registerJob(KJob *job) override {
         KJobTrackerInterface::registerJob(job);
         mJobs << job;
     }
 
-    void unregisterJob(KJob *job) Q_DECL_OVERRIDE {
+    void unregisterJob(KJob *job) override {
         mJobs.removeAll(job);
     }
 
-    void finished(KJob *job) Q_DECL_OVERRIDE {
+    void finished(KJob *job) override {
         mJobs.removeAll(job);
     }
 
-    void percent(KJob *job, long unsigned int percent) Q_DECL_OVERRIDE {
+    void percent(KJob *job, long unsigned int percent) override {
         Q_UNUSED(job);
         mPercent = percent;
     }

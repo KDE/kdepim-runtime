@@ -38,114 +38,114 @@ public:
     ~DummyResourceState();
 
     void setUserName(const QString &name);
-    QString userName() const Q_DECL_OVERRIDE;
+    QString userName() const override;
 
     void setResourceName(const QString &name);
-    QString resourceName() const Q_DECL_OVERRIDE;
+    QString resourceName() const override;
 
     void setResourceIdentifier(const QString &identifier);
-    QString resourceIdentifier() const Q_DECL_OVERRIDE;
+    QString resourceIdentifier() const override;
 
     void setServerCapabilities(const QStringList &capabilities);
-    QStringList serverCapabilities() const Q_DECL_OVERRIDE;
+    QStringList serverCapabilities() const override;
 
     void setServerNamespaces(const QList<KIMAP::MailBoxDescriptor> &namespaces);
-    QList<KIMAP::MailBoxDescriptor> serverNamespaces() const Q_DECL_OVERRIDE;
-    QList<KIMAP::MailBoxDescriptor> personalNamespaces() const Q_DECL_OVERRIDE;
-    QList<KIMAP::MailBoxDescriptor> userNamespaces() const Q_DECL_OVERRIDE;
-    QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const Q_DECL_OVERRIDE;
+    QList<KIMAP::MailBoxDescriptor> serverNamespaces() const override;
+    QList<KIMAP::MailBoxDescriptor> personalNamespaces() const override;
+    QList<KIMAP::MailBoxDescriptor> userNamespaces() const override;
+    QList<KIMAP::MailBoxDescriptor> sharedNamespaces() const override;
 
     void setAutomaticExpungeEnagled(bool enabled);
-    bool isAutomaticExpungeEnabled() const Q_DECL_OVERRIDE;
+    bool isAutomaticExpungeEnabled() const override;
 
     void setSubscriptionEnabled(bool enabled);
-    bool isSubscriptionEnabled() const Q_DECL_OVERRIDE;
+    bool isSubscriptionEnabled() const override;
     void setDisconnectedModeEnabled(bool enabled);
-    bool isDisconnectedModeEnabled() const Q_DECL_OVERRIDE;
+    bool isDisconnectedModeEnabled() const override;
     void setIntervalCheckTime(int interval);
-    int intervalCheckTime() const Q_DECL_OVERRIDE;
+    int intervalCheckTime() const override;
 
     void setCollection(const Akonadi::Collection &collection);
-    Akonadi::Collection collection() const Q_DECL_OVERRIDE;
+    Akonadi::Collection collection() const override;
     void setItem(const Akonadi::Item &item);
-    Akonadi::Item item() const Q_DECL_OVERRIDE;
-    Akonadi::Item::List items() const Q_DECL_OVERRIDE;
+    Akonadi::Item item() const override;
+    Akonadi::Item::List items() const override;
 
     void setParentCollection(const Akonadi::Collection &collection);
-    Akonadi::Collection parentCollection() const Q_DECL_OVERRIDE;
+    Akonadi::Collection parentCollection() const override;
 
     void setSourceCollection(const Akonadi::Collection &collection);
-    Akonadi::Collection sourceCollection() const Q_DECL_OVERRIDE;
+    Akonadi::Collection sourceCollection() const override;
     void setTargetCollection(const Akonadi::Collection &collection);
-    Akonadi::Collection targetCollection() const Q_DECL_OVERRIDE;
+    Akonadi::Collection targetCollection() const override;
 
     void setParts(const QSet<QByteArray> &parts);
-    QSet<QByteArray> parts() const Q_DECL_OVERRIDE;
+    QSet<QByteArray> parts() const override;
 
     void setTag(const Akonadi::Tag &tag);
-    Akonadi::Tag tag() const Q_DECL_OVERRIDE;
+    Akonadi::Tag tag() const override;
     void setAddedTags(const QSet<Akonadi::Tag> &addedTags);
-    QSet<Akonadi::Tag> addedTags() const Q_DECL_OVERRIDE;
+    QSet<Akonadi::Tag> addedTags() const override;
     void setRemovedTags(const QSet<Akonadi::Tag> &removedTags);
-    QSet<Akonadi::Tag> removedTags() const Q_DECL_OVERRIDE;
+    QSet<Akonadi::Tag> removedTags() const override;
 
-    Akonadi::Relation::List addedRelations() const Q_DECL_OVERRIDE;
-    Akonadi::Relation::List removedRelations() const Q_DECL_OVERRIDE;
+    Akonadi::Relation::List addedRelations() const override;
+    Akonadi::Relation::List removedRelations() const override;
 
-    QString rootRemoteId() const Q_DECL_OVERRIDE;
+    QString rootRemoteId() const override;
 
-    void setIdleCollection(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void applyCollectionChanges(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void setIdleCollection(const Akonadi::Collection &collection) override;
+    void applyCollectionChanges(const Akonadi::Collection &collection) override;
 
-    void collectionAttributesRetrieved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionAttributesRetrieved(const Akonadi::Collection &collection) override;
 
-    void itemRetrieved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemRetrieved(const Akonadi::Item &item) override;
 
-    void itemsRetrieved(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
-    void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed) Q_DECL_OVERRIDE;
-    void itemsRetrievalDone() Q_DECL_OVERRIDE;
+    void itemsRetrieved(const Akonadi::Item::List &items) override;
+    void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed) override;
+    void itemsRetrievalDone() override;
 
-    void setTotalItems(int) Q_DECL_OVERRIDE;
+    void setTotalItems(int) override;
 
-    QSet< QByteArray > addedFlags() const Q_DECL_OVERRIDE;
-    QSet< QByteArray > removedFlags() const Q_DECL_OVERRIDE;
+    QSet< QByteArray > addedFlags() const override;
+    QSet< QByteArray > removedFlags() const override;
 
-    void itemChangeCommitted(const Akonadi::Item &item) Q_DECL_OVERRIDE;
-    void itemsChangesCommitted(const Akonadi::Item::List &items) Q_DECL_OVERRIDE;
+    void itemChangeCommitted(const Akonadi::Item &item) override;
+    void itemsChangesCommitted(const Akonadi::Item::List &items) override;
 
-    void collectionsRetrieved(const Akonadi::Collection::List &collections) Q_DECL_OVERRIDE;
+    void collectionsRetrieved(const Akonadi::Collection::List &collections) override;
 
-    void collectionChangeCommitted(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionChangeCommitted(const Akonadi::Collection &collection) override;
 
-    void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) Q_DECL_OVERRIDE;
-    void relationsRetrieved(const Akonadi::Relation::List &tags) Q_DECL_OVERRIDE;
-    void tagChangeCommitted(const Akonadi::Tag &tag) Q_DECL_OVERRIDE;
+    void tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &) override;
+    void relationsRetrieved(const Akonadi::Relation::List &tags) override;
+    void tagChangeCommitted(const Akonadi::Tag &tag) override;
 
-    void searchFinished(const QVector<qint64> &result, bool isRid = true) Q_DECL_OVERRIDE;
+    void searchFinished(const QVector<qint64> &result, bool isRid = true) override;
 
-    void changeProcessed() Q_DECL_OVERRIDE;
+    void changeProcessed() override;
 
-    void cancelTask(const QString &errorString) Q_DECL_OVERRIDE;
-    void deferTask() Q_DECL_OVERRIDE;
-    void restartItemRetrieval(Akonadi::Collection::Id col) Q_DECL_OVERRIDE;
-    void taskDone() Q_DECL_OVERRIDE;
+    void cancelTask(const QString &errorString) override;
+    void deferTask() override;
+    void restartItemRetrieval(Akonadi::Collection::Id col) override;
+    void taskDone() override;
 
-    void emitError(const QString &message) Q_DECL_OVERRIDE;
-    void emitWarning(const QString &message) Q_DECL_OVERRIDE;
-    void emitPercent(int percent) Q_DECL_OVERRIDE;
+    void emitError(const QString &message) override;
+    void emitWarning(const QString &message) override;
+    void emitPercent(int percent) override;
 
-    void synchronizeCollectionTree() Q_DECL_OVERRIDE;
-    void scheduleConnectionAttempt() Q_DECL_OVERRIDE;
+    void synchronizeCollectionTree() override;
+    void scheduleConnectionAttempt() override;
 
-    QChar separatorCharacter() const Q_DECL_OVERRIDE;
-    void setSeparatorCharacter(QChar separator) Q_DECL_OVERRIDE;
+    QChar separatorCharacter() const override;
+    void setSeparatorCharacter(QChar separator) override;
 
-    void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName) Q_DECL_OVERRIDE;
+    void showInformationDialog(const QString &message, const QString &title, const QString &dontShowAgainName) override;
 
-    int batchSize() const Q_DECL_OVERRIDE;
-    void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) Q_DECL_OVERRIDE;
+    int batchSize() const override;
+    void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) override;
 
-    MessageHelper::Ptr messageHelper() const Q_DECL_OVERRIDE;
+    MessageHelper::Ptr messageHelper() const override;
 
     QList< QPair<QByteArray, QVariant> > calls() const;
 

@@ -37,24 +37,24 @@ public:
     ~MboxResource();
 
 protected Q_SLOTS:
-    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
+    void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
-    void aboutToQuit() Q_DECL_OVERRIDE;
+    void aboutToQuit() override;
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
 
     // From SingleFileResourceBase
-    void handleHashChange() Q_DECL_OVERRIDE;
-    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
-    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
+    void handleHashChange() override;
+    bool readFromFile(const QString &fileName) override;
+    bool writeToFile(const QString &fileName) override;
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) Q_DECL_OVERRIDE;
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) override;
 
 private Q_SLOTS:
     void onCollectionFetch(KJob *job);

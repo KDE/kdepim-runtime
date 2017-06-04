@@ -48,7 +48,7 @@ public:
     }
 
 protected:
-    void save() Q_DECL_OVERRIDE {
+    void save() override {
         mManager->updateSettings();
         mSettings->setPath(ui.kcfg_Path->url().toString());
         mSettings->save();

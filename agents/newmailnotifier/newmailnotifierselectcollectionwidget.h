@@ -40,10 +40,10 @@ class NewMailNotifierCollectionProxyModel : public QIdentityProxyModel
 public:
     explicit NewMailNotifierCollectionProxyModel(QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role) const override;
 
-    bool setData(const QModelIndex &index, const QVariant &_data, int role) Q_DECL_OVERRIDE;
-    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    bool setData(const QModelIndex &index, const QVariant &_data, int role) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     QHash<Akonadi::Collection, bool> notificationCollection() const;
 

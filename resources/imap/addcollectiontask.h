@@ -38,7 +38,7 @@ public:
     virtual ~AddCollectionTask();
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void onCreateDone(KJob *job);

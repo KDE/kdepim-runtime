@@ -42,7 +42,7 @@ public:
     ~MailDispatcherAgent();
 
 public Q_SLOTS:
-    void configure(WId windowId) Q_DECL_OVERRIDE;
+    void configure(WId windowId) override;
 
 Q_SIGNALS:
     /**
@@ -56,7 +56,7 @@ Q_SIGNALS:
     Q_SCRIPTABLE void itemDispatchStarted();
 
 protected:
-    void doSetOnline(bool online) Q_DECL_OVERRIDE;
+    void doSetOnline(bool online) override;
 
 private:
     //@cond PRIVATE

@@ -34,7 +34,7 @@ public:
 
 protected:
 
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void onAppendMessageDone(KJob *job);

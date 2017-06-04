@@ -55,7 +55,7 @@ public:
     /**
      * Starts the job.
      */
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     /**
      * If this function is called before the job is started, the SendJob will

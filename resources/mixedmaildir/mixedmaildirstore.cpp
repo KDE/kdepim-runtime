@@ -531,18 +531,18 @@ public:
     void updateContextHashes(const QString &oldPath, const QString &newPath);
 
 public: // visitor interface implementation
-    bool visit(FileStore::Job *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::CollectionCreateJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::CollectionDeleteJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::CollectionFetchJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::CollectionModifyJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::CollectionMoveJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::ItemCreateJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::ItemDeleteJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::ItemFetchJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::ItemModifyJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::ItemMoveJob *job) Q_DECL_OVERRIDE;
-    bool visit(FileStore::StoreCompactJob *job) Q_DECL_OVERRIDE;
+    bool visit(FileStore::Job *job) override;
+    bool visit(FileStore::CollectionCreateJob *job) override;
+    bool visit(FileStore::CollectionDeleteJob *job) override;
+    bool visit(FileStore::CollectionFetchJob *job) override;
+    bool visit(FileStore::CollectionModifyJob *job) override;
+    bool visit(FileStore::CollectionMoveJob *job) override;
+    bool visit(FileStore::ItemCreateJob *job) override;
+    bool visit(FileStore::ItemDeleteJob *job) override;
+    bool visit(FileStore::ItemFetchJob *job) override;
+    bool visit(FileStore::ItemModifyJob *job) override;
+    bool visit(FileStore::ItemMoveJob *job) override;
+    bool visit(FileStore::StoreCompactJob *job) override;
 
 public:
     typedef QHash<QString, MBoxPtr> MBoxHash;

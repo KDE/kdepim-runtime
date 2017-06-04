@@ -31,7 +31,7 @@ public:
     explicit KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
 
 protected:
-    void startRelationTask(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void startRelationTask(KIMAP::Session *session) override;
 
 private Q_SLOTS:
     void onRelationFetchDone(KJob *job);

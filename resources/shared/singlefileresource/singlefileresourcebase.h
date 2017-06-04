@@ -51,7 +51,7 @@ public:
      */
     void setSupportedMimetypes(const QStringList &mimeTypes, const QString &icon = QString());
 
-    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionChanged(const Akonadi::Collection &collection) override;
 
 public Q_SLOTS:
     void reloadFile();

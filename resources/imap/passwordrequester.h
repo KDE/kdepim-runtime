@@ -32,8 +32,8 @@ public:
     explicit PasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
     ~PasswordRequester();
 
-    void requestPassword(RequestType request, const QString &serverError) Q_DECL_OVERRIDE;
-    void cancelPasswordRequests() Q_DECL_OVERRIDE;
+    void requestPassword(RequestType request, const QString &serverError) override;
+    void cancelPasswordRequests() override;
 
 private:
     PasswordRequesterInterface *requesterImpl();

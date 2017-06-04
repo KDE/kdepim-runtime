@@ -41,7 +41,7 @@ private Q_SLOTS:
     void onSetMetaDataDone(KJob *job);
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void endTaskIfNeeded();

@@ -40,21 +40,21 @@ public:
 
     void addDeletedItemOffset(quint64);
 
-    DeletedItemsAttribute *clone() const Q_DECL_OVERRIDE;
+    DeletedItemsAttribute *clone() const override;
 
     QSet<quint64> deletedItemOffsets() const;
     KMBox::MBoxEntry::List deletedItemEntries() const;
 
-    void deserialize(const QByteArray &data) Q_DECL_OVERRIDE;
+    void deserialize(const QByteArray &data) override;
 
     /**
      * Returns the number of offsets stored in this attribute.
      */
     int offsetCount() const;
 
-    QByteArray serialized() const Q_DECL_OVERRIDE;
+    QByteArray serialized() const override;
 
-    QByteArray type() const Q_DECL_OVERRIDE;
+    QByteArray type() const override;
 
     bool operator ==(const DeletedItemsAttribute &other) const;
 private:

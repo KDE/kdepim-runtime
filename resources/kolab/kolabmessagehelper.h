@@ -34,7 +34,7 @@ public:
                                         const QList<KIMAP::MessageAttribute> &attrs,
                                         const QList<QByteArray> &flags,
                                         const KIMAP::FetchJob::FetchScope &scope,
-                                        bool &ok) const Q_DECL_OVERRIDE;
+                                        bool &ok) const override;
 
 private:
     Akonadi::Collection mCollection;

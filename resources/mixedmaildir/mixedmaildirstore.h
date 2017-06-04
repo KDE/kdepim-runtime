@@ -33,16 +33,16 @@ public:
     ~MixedMaildirStore();
 
 protected:
-    void setTopLevelCollection(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void processJob(Akonadi::FileStore::Job *job) Q_DECL_OVERRIDE;
+    void setTopLevelCollection(const Akonadi::Collection &collection) override;
+    void processJob(Akonadi::FileStore::Job *job) override;
 
-    void checkCollectionMove(Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE;
+    void checkCollectionMove(Akonadi::FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const override;
 
-    void checkItemCreate(Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE;
+    void checkItemCreate(Akonadi::FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const override;
 
-    void checkItemModify(Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE;
+    void checkItemModify(Akonadi::FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const override;
 
-    void checkItemFetch(Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const Q_DECL_OVERRIDE;
+    void checkItemFetch(Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const override;
 
 private:
     class Private;

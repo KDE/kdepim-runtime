@@ -88,8 +88,8 @@ protected Q_SLOTS:
     virtual void slotSlaveResult(KJob *job);
 
 protected:
-    QString errorString() const Q_DECL_OVERRIDE;
-    bool doKill() Q_DECL_OVERRIDE;
+    QString errorString() const override;
+    bool doKill() override;
     void startJob(const QString &path);
     virtual void connectJob();
 
@@ -102,16 +102,16 @@ class LoginJob : public SlaveBaseJob
     Q_OBJECT
 public:
     LoginJob(POPSession *popSession);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 protected:
-    QString errorString() const Q_DECL_OVERRIDE;
+    QString errorString() const override;
 
 private Q_SLOTS:
     void slaveConnected(KIO::Slave *slave);
 
 private:
-    void slaveError(int errorCode, const QString &errorMessage) Q_DECL_OVERRIDE;
+    void slaveError(int errorCode, const QString &errorMessage) override;
 
     QString mErrorString;
 };
@@ -122,10 +122,10 @@ class ListJob : public SlaveBaseJob
 public:
     ListJob(POPSession *popSession);
     QMap<int, int> idList() const;
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private:
-    void slotSlaveData(KIO::Job *job, const QByteArray &data) Q_DECL_OVERRIDE;
+    void slotSlaveData(KIO::Job *job, const QByteArray &data) override;
 
 private:
     QMap<int, int> mIdList;
@@ -138,10 +138,10 @@ public:
     UIDListJob(POPSession *popSession);
     QMap<int, QString> uidList() const;
     QMap<QString, int> idList() const;
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private:
-    void slotSlaveData(KIO::Job *job, const QByteArray &data) Q_DECL_OVERRIDE;
+    void slotSlaveData(KIO::Job *job, const QByteArray &data) override;
 
     QMap<int, QString> mUidList;
     QMap<QString, int> mIdList;
@@ -153,7 +153,7 @@ class DeleteJob : public SlaveBaseJob
 public:
     DeleteJob(POPSession *popSession);
     void setDeleteIds(const QList<int> &ids);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
     QList<int> deletedIDs() const;
 
 private:
@@ -167,7 +167,7 @@ class QuitJob : public SlaveBaseJob
 
 public:
     QuitJob(POPSession *popSession);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 };
 
 class FetchJob : public SlaveBaseJob
@@ -177,7 +177,7 @@ public:
 
     FetchJob(POPSession *session);
     void setFetchIds(const QList<int> &ids, const QList<int> &sizes);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private Q_SLOTS:
     void slotInfoMessage(KJob *job, const QString &infoMessage, const QString &);
@@ -187,8 +187,8 @@ Q_SIGNALS:
 
 private:
 
-    void connectJob() Q_DECL_OVERRIDE;
-    void slotSlaveData(KIO::Job *job, const QByteArray &data) Q_DECL_OVERRIDE;
+    void connectJob() override;
+    void slotSlaveData(KIO::Job *job, const QByteArray &data) override;
 
     QList<int> mIdsPendingDownload;
     QByteArray mCurrentMessage;

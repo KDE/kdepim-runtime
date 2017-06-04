@@ -38,22 +38,22 @@ protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected Q_SLOTS:
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg) Q_DECL_OVERRIDE;
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg) override;
 
-    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
-    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
-    void aboutToQuit() Q_DECL_OVERRIDE;
+    bool readFromFile(const QString &fileName) override;
+    bool writeToFile(const QString &fileName) override;
+    void aboutToQuit() override;
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
 
 private:
     QMap<QString, KContacts::Addressee> mAddressees;

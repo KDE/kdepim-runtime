@@ -39,12 +39,12 @@ public:
 
     virtual ~FiFoQueueJobSession();
 
-    void addJob(Job *job) Q_DECL_OVERRIDE;
+    void addJob(Job *job) override;
 
-    void cancelAllJobs() Q_DECL_OVERRIDE;
+    void cancelAllJobs() override;
 
 protected:
-    void removeJob(Job *job) Q_DECL_OVERRIDE;
+    void removeJob(Job *job) override;
 
 private:
     class Private;

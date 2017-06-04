@@ -39,22 +39,22 @@ protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected Q_SLOTS:
-    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &col) Q_DECL_OVERRIDE;
+    bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
     enum CheckType { CheckForAdded, CheckForChanged };
 
     void initialise(const QStringList &mimeTypes, const QString &icon);
-    bool readFromFile(const QString &fileName) Q_DECL_OVERRIDE;
-    bool writeToFile(const QString &fileName) Q_DECL_OVERRIDE;
+    bool readFromFile(const QString &fileName) override;
+    bool writeToFile(const QString &fileName) override;
 
     /**
      * Customize the configuration dialog before it is displayed.
      */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings> *dlg) Q_DECL_OVERRIDE;
+    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings> *dlg) override;
 
-    void aboutToQuit() Q_DECL_OVERRIDE;
+    void aboutToQuit() override;
 
     /**
      * Retrieve an incidence from the calendar, and set it into a new item's payload.
@@ -80,7 +80,7 @@ protected:
      */
     template <typename PayloadPtr> bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
 
-    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) override;
 
     /** Return the local calendar. */
     KCalCore::MemoryCalendar::Ptr calendar() const;

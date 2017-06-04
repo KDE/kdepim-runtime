@@ -46,7 +46,7 @@ private Q_SLOTS:
     void onMetadataRetrieved(KJob *job);
 
 protected:
-    void doStart(KIMAP::Session *session) Q_DECL_OVERRIDE;
+    void doStart(KIMAP::Session *session) override;
 
 private:
     void checkDone();
@@ -77,7 +77,7 @@ class RetrieveMetadataJob : public KJob
     Q_OBJECT
 public:
     RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = nullptr);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;
     QHash<QString, KIMAP::Acl::Rights> mRights;

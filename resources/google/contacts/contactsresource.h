@@ -44,22 +44,22 @@ protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 
 protected Q_SLOTS:
-    void retrieveCollections() Q_DECL_OVERRIDE;
-    void retrieveItems(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &collection) override;
     virtual void retrieveContactsPhotos(const QVariant &argument);
 
-    void itemRemoved(const Akonadi::Item &item) Q_DECL_OVERRIDE;
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) Q_DECL_OVERRIDE;
+    void itemRemoved(const Akonadi::Item &item) override;
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
     void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                   const Akonadi::Collection &collectionDestination) Q_DECL_OVERRIDE;
+                   const Akonadi::Collection &collectionDestination) override;
 
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) Q_DECL_OVERRIDE;
-    void collectionChanged(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void collectionRemoved(const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
+    void collectionChanged(const Akonadi::Collection &collection) override;
+    void collectionRemoved(const Akonadi::Collection &collection) override;
 
-    void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
-    void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection) Q_DECL_OVERRIDE;
+    void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
 
     void slotItemsRetrieved(KGAPI2::Job *job);
     void slotCollectionsRetrieved(KGAPI2::Job *job);
@@ -69,10 +69,10 @@ protected Q_SLOTS:
 
     void slotCreateJobFinished(KGAPI2::Job *job);
 
-    GoogleSettings *settings() const Q_DECL_OVERRIDE;
-    int runConfigurationDialog(WId windowId) Q_DECL_OVERRIDE;
-    void updateResourceName() Q_DECL_OVERRIDE;
-    QList< QUrl > scopes() const Q_DECL_OVERRIDE;
+    GoogleSettings *settings() const override;
+    int runConfigurationDialog(WId windowId) override;
+    void updateResourceName() override;
+    QList< QUrl > scopes() const override;
 
 private:
 
