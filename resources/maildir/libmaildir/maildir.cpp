@@ -31,10 +31,7 @@
 #include <KLocalizedString>
 #include <Akonadi/KMime/MessageFlags>
 
-#include <time.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <sys/stat.h>
 
 //Define it to get more debug output to expense of operating speed
 // #define DEBUG_KEYCACHE_CONSITENCY
