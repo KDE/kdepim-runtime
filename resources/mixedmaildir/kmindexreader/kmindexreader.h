@@ -32,9 +32,6 @@ using Akonadi::MessageStatus;
 #include <QList>
 #include <QSharedPointer>
 
-#include <ctype.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 class KMINDEXREADER_EXPORT KMIndexData
 {
