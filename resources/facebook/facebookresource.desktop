@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Facebook Events
+Comment=Access your Facebook events from KDE
+Type=AkonadiResource
+Exec=akonadi_facebook_resource
+X-Akonadi-MimeTypes=text/calendar,application/x-vnd.akonadi.calendar.event
+X-Akonadi-Identifier=akonadi_facebook_resource
+X-Akonadi-Capabilities=Resource
+Icon=im-facebook
+

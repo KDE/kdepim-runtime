@@ -49,7 +49,7 @@ add_subdirectory( imap )
 if (Libkolab_FOUND AND Libkolabxml_FOUND)
     add_subdirectory( kolab )
 endif()
-
+add_subdirectory( facebook )
 add_subdirectory( maildir )
 
 add_subdirectory( openxchange )
