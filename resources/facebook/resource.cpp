@@ -120,7 +120,6 @@ void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
                     itemsRetrieved(items);
                 });
     }
-    job->setProperty("collection", QVariant::fromValue(collection));
     connect(job, &KJob::result, this, &FacebookResource::onListJobDone);
     job->start();
     mCurrentJob = job;
