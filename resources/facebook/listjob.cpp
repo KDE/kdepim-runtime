@@ -105,7 +105,6 @@ void ListJob::onGraphResponseReceived(KJob *job)
 
     const auto obj = json.object();
 
-    qCDebug(RESOURCE_LOG) << obj.toVariantMap();
     if (obj.contains(QLatin1String("error"))) {
         const auto err = obj.value(QLatin1String("error")).toObject();
         const auto code = err.value(QLatin1String("code")).toInt();
