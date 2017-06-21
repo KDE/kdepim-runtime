@@ -1,0 +1,161 @@
+/*
+ *    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "resource.h"
+#include "resource_debug.h"
+#include "eventslistjob.h"
+#include "birthdaylistjob.h"
+#include "settingsdialog.h"
+#include "tokenjobs.h"
+
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/CachePolicy>
+
+#include <KLocalizedString>
+
+#include <KCalCore/Event>
+
+FacebookResource::FacebookResource(const QString &id)
+    : Akonadi::ResourceBase(id)
+{
+    setNeedsNetwork(true);
+    setName(i18n("Facebook"));
+}
+
+FacebookResource::~FacebookResource()
+{
+}
+
+void FacebookResource::configure(WId windowId)
+{
+    Q_UNUSED(windowId);
+
+    QScopedPointer<SettingsDialog> dlg(new SettingsDialog(this));
+    if (dlg->exec()) {
+        configurationDialogAccepted();
+        synchronize();
+    } else {
+        configurationDialogRejected();
+    }
+}
+
+void FacebookResource::abortActivity()
+{
+    if (mCurrentJob) {
+        mCurrentJob->kill(KJob::EmitResult);
+    }
+}
+
+void FacebookResource::cleanup()
+{
+    (new LogoutJob(this))->exec();
+}
+
+
+Akonadi::Collection FacebookResource::makeCollection(Graph::RSVP rsvp, const QString &name,
+                                                     const Akonadi::Collection &parent)
+{
+    Akonadi::Collection col;
+    col.setName(name);
+    col.setRemoteId(Graph::rsvpToString(rsvp));
+    col.setContentMimeTypes({ KCalCore::Event::eventMimeType() });
+    col.setRights(Akonadi::Collection::ReadOnly);
+    col.setParentCollection(parent);
+    auto attr = col.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+    attr->setDisplayName(name);
+    attr->setIconName(QStringLiteral("im-facebook"));
+
+    return col;
+}
+
+void FacebookResource::retrieveCollections()
+{
+    QString userId;
+
+    Akonadi::Collection root;
+    root.setName(QStringLiteral("facebook_%1").arg(userId));
+    root.setRemoteId(QStringLiteral("root"));
+    root.setContentMimeTypes({ Akonadi::Collection::mimeType() });
+    root.setRights(Akonadi::Collection::ReadOnly);
+    root.setParentCollection(Akonadi::Collection::root());
+    auto attr = root.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+    attr->setDisplayName(i18n("Facebook"));
+    attr->setIconName(QStringLiteral("im-facebook"));
+
+    collectionsRetrieved(
+        { root,
+          makeCollection(Graph::Attending, i18n("Events I'm Attending"), root),
+          makeCollection(Graph::Declined, i18n("Events I'm not Attending"), root),
+          makeCollection(Graph::MaybeAttending, i18n("Events I May Be Attending"), root),
+          makeCollection(Graph::NotResponded, i18n("Events I have not Responded To"), root),
+          makeCollection(Graph::Birthday, i18n("Friends' Birthdays"), root)
+        });
+}
+
+void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
+{
+    setItemStreamingEnabled(true);
+
+    KJob *job = nullptr;
+    if (Graph::rsvpFromString(collection.remoteId()) == Graph::Birthday) {
+        job = new BirthdayListJob(collection, this);
+    } else {
+        job = new EventsListJob(collection, this);
+        connect(static_cast<ListJob*>(job), &ListJob::itemsAvailable,
+                this, [this](KJob*, const Akonadi::Item::List &items) {
+                    itemsRetrieved(items);
+                });
+    }
+    job->setProperty("collection", QVariant::fromValue(collection));
+    connect(job, &KJob::result, this, &FacebookResource::onListJobDone);
+    job->start();
+    mCurrentJob = job;
+}
+
+bool FacebookResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
+{
+    Q_UNUSED(items);
+    Q_UNUSED(parts);
+
+    // We always do full re-sync, and we always retrieve the entire payload, so
+    // there's no need to implement this function
+    return false;
+}
+
+
+void FacebookResource::onListJobDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(RESOURCE_LOG) << "Item sync error:" << job->errorString();
+        cancelTask(job->errorString());
+        return;
+    }
+
+    // Birthday job does not have item streaming
+    if (auto bjob = qobject_cast<BirthdayListJob*>(job)) {
+        itemsRetrieved(bjob->items());
+    }
+
+    itemsRetrievalDone();
+}
+
+int main(int argc, char **argv)
+{
+    // Enable to debug Facebook authentication
+    qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
+    return Akonadi::ResourceBase::init<FacebookResource>(argc, argv);
+}
