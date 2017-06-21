@@ -17,55 +17,149 @@
 
 #include "birthdaylistjob.h"
 #include "settings.h"
+#include "tokenjobs.h"
+#include "resource.h"
 
-#include <QJsonObject>
 #include <QDate>
+#include <QNetworkCookie>
+#include <QByteArrayMatcher>
 
-#include <KCalCore/Event>
-
+#include <KIO/Job>
 #include <KLocalizedString>
+#include <KCharsets>
 
-BirthdayListJob::BirthdayListJob(const Akonadi::Collection &collection, QObject *parent)
-    : ListJob(collection, parent)
+#include <KCalCore/MemoryCalendar>
+#include <KCalCore/ICalFormat>
+
+BirthdayListJob::BirthdayListJob(const Akonadi::Collection &collection, FacebookResource *parent)
+    : KJob(parent)
+    , mCollection(collection)
 {
-    setRequest(QStringLiteral("me/friends"),
-               { QStringLiteral("id"),
-                 QStringLiteral("name"),
-                 QStringLiteral("birthday") });
 }
 
 BirthdayListJob::~BirthdayListJob()
 {
 }
 
-Akonadi::Item BirthdayListJob::handleResponse(const QJsonObject &data)
+QVector<Akonadi::Item> BirthdayListJob::items() const
 {
-    if (!data.contains(QLatin1String("birthday"))) {
+    return mItems;
+}
+
+void BirthdayListJob::start()
+{
+    auto tokenJob = new GetTokenJob(qobject_cast<FacebookResource*>(parent()));
+    connect(tokenJob, &GetTokenJob::result,
+            this, [this, tokenJob]() {
+                if (tokenJob->error()) {
+                    setError(tokenJob->error());
+                    setErrorText(tokenJob->errorText());
+                    emitResult();
+                    return;
+                }
+
+                // Convert the cookies into a HTTP Cookie header that we can pass
+                // to KIO
+                mCookies = QStringLiteral("Cookie: ");
+                const auto parsedCookies = QNetworkCookie::parseCookies(tokenJob->cookies());
+                for (const auto &cookie : parsedCookies) {
+                    mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()),
+                                                              QString::fromUtf8(cookie.value()));
+                }
+                fetchFacebookEventsPage();
+            });
+    tokenJob->start();
+}
+
+KIO::StoredTransferJob *BirthdayListJob::createGetJob(const QUrl &url) const
+{
+    auto job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+    job->setMetaData({ QMap<QString,QString>{
+                        { QStringLiteral("cookies"), QStringLiteral("manual") },
+                        { QStringLiteral("setcookies"), mCookies } }
+                    });
+    return job;
+}
+
+void BirthdayListJob::emitError(const QString& errorText)
+{
+    setError(KJob::UserDefinedError);
+    setErrorText(errorText);
+    emitResult();
+}
+
+void BirthdayListJob::fetchFacebookEventsPage()
+{
+    auto job = createGetJob(QUrl(QStringLiteral("https://www.facebook.com/events/birthdays")));
+    connect(job, &KJob::result,
+            this, [this, job]() {
+                if (job->error()) {
+                    emitError(i18n("Failed to retrieve birthday calendar"));
+                    return;
+                }
+
+                auto url = findBirthdayIcalLink(job->data());
+                if (url.isEmpty()) {
+                    emitError(i18n("Failed to retrieve birthday calendar"));
+                    return;
+                }
+                // switch webcal scheme for https so we can fetch it with KIO
+                url.setScheme(QStringLiteral("https"));
+                fetchBirthdayIcal(url);
+            });
+    job->start();
+}
+
+QUrl BirthdayListJob::findBirthdayIcalLink(const QByteArray &data)
+{
+    // QXmlStreamParser cannot deal with Facebook's broken HTML and refuses
+    // to parse it. But since we know very well what we are looking for and the
+    // address is very unique in the source code, using QBAMatcher is much more
+    // efficient than QXmlStreamParser anyway...
+
+    QByteArrayMatcher matcher("webcal://www.facebook.com/ical/b.php");
+    const int start = matcher.indexIn(data);
+    if (start == -1) {
         return {};
     }
 
-    auto event = KCalCore::Event::Ptr::create();
-
-    const QString id = data.value(QLatin1String("id")).toString();
-    event->setUid(id);
-    const QString name = data.value(QLatin1String("name")).toString();
-    event->setSummary(i18n("%1's birthday", name));
-    event->setDescription(QStringLiteral("https://www.facebook.com/%1").arg(id));
-
-    const QString birthday = data.value(QLatin1String("birthday")).toString();
-    const int day = birthday.midRef(3, 2).toInt();
-    const int month = birthday.midRef(0, 2).toInt();
-    int year = birthday.length() > 6 ? birthday.midRef(6).toInt() : QDate::currentDate().year();
-    if (year < 100) { // handle just two-digit years, assume it's 1900's
-        year += 1900;
+    const int end = data.indexOf('\"', start);
+    if (end == -1) {
+        return {};
     }
-    QDate dt(year, month, day);
 
-    event->setDtStart(KDateTime(dt));
-    event->setAllDay(true);
-    auto recurrence = event->recurrence();
-    recurrence->setYearly(1);
+    auto str = QString::fromUtf8(data.constData() + start, end - start);
+    return QUrl(KCharsets::resolveEntities(str));
+}
 
+void BirthdayListJob::fetchBirthdayIcal(const QUrl &url)
+{
+    auto job = createGetJob(url);
+    connect(job, &KJob::result,
+            this, [this, job]() {
+                if (job->error()) {
+                    emitError(job->errorText());
+                    return;
+                }
+
+                auto cal = KCalCore::MemoryCalendar::Ptr::create(KDateTime::LocalZone);
+                KCalCore::ICalFormat format;
+                if (!format.fromRawString(cal, job->data(), false)) {
+                    emitError(i18n("Failed to parse birthday calendar"));
+                    return;
+                }
+
+                const auto events = cal->events();
+                for (const auto &event : events) {
+                    processEvent(event);
+                }
+
+                emitResult();
+            });
+}
+
+void BirthdayListJob::processEvent(const KCalCore::Event::Ptr &event)
+{
     if (Settings::self()->birthdayReminders()) {
         auto alarm = KCalCore::Alarm::Ptr::create(event.data());
         alarm->setDisplayAlarm(event->summary());
@@ -75,11 +169,16 @@ Akonadi::Item BirthdayListJob::handleResponse(const QJsonObject &data)
         event->addAlarm(alarm);
     }
 
+    const auto uid = event->uid(); // b123456789@facebook.com
+    const auto id = uid.mid(1, uid.indexOf(QLatin1Char('@')) - 2); // 123456789
+
+    event->setDescription(QStringLiteral("https://www.facebook.com/%1").arg(id));
+
     Akonadi::Item item;
-    item.setRemoteId(id);
-    item.setGid(id);
+    item.setRemoteId(uid);
+    item.setGid(uid);
     item.setMimeType(KCalCore::Event::eventMimeType());
-    item.setParentCollection(collection());
+    item.setParentCollection(mCollection);
     item.setPayload(event);
-    return item;
+    mItems.push_back(item);
 }

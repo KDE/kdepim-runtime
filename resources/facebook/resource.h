@@ -41,8 +41,7 @@ public:
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
 
 private Q_SLOTS:
-    void onItemsAvailable(KJob *job, const Akonadi::Item::List &items);
-    void onRetrieveItemsDone(KJob *job);
+    void onListJobDone(KJob *job);
 
 private:
     Akonadi::Collection makeCollection(Graph::RSVP rsvp, const QString &name,

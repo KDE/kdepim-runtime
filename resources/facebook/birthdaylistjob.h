@@ -18,18 +18,43 @@
 #ifndef FACEBOOK_BIRTHDAYLISTJOB_H_
 #define FACEBOOK_BIRTHDAYLISTJOB_H_
 
-#include "listjob.h"
+#include <KJob>
 
-class BirthdayListJob : public ListJob
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
+
+#include <KCalCore/Event>
+
+class QUrl;
+class FacebookResource;
+namespace KIO {
+class StoredTransferJob;
+}
+
+class BirthdayListJob : public KJob
 {
     Q_OBJECT
 
 public:
-    BirthdayListJob(const Akonadi::Collection &collection, QObject *parent = nullptr);
+    BirthdayListJob(const Akonadi::Collection &collection, FacebookResource *parent);
     ~BirthdayListJob() override;
 
-protected:
-    Akonadi::Item handleResponse(const QJsonObject &data) override;
+    void start() override;
+
+    QVector<Akonadi::Item> items() const;
+private:
+    KIO::StoredTransferJob *createGetJob(const QUrl &url) const;
+    void emitError(const QString &errorText);
+
+    void fetchFacebookEventsPage();
+    QUrl findBirthdayIcalLink(const QByteArray &data);
+    void fetchBirthdayIcal(const QUrl &url);
+    void processEvent(const KCalCore::Event::Ptr &event);
+
+
+    Akonadi::Collection mCollection;
+    QVector<Akonadi::Item> mItems;
+    QString mCookies;
 };
 
 #endif

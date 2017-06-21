@@ -110,15 +110,18 @@ void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
 {
     setItemStreamingEnabled(true);
 
-    ListJob *job = nullptr;
+    KJob *job = nullptr;
     if (Graph::rsvpFromString(collection.remoteId()) == Graph::Birthday) {
         job = new BirthdayListJob(collection, this);
     } else {
         job = new EventsListJob(collection, this);
+        connect(static_cast<ListJob*>(job), &ListJob::itemsAvailable,
+                this, [this](KJob*, const Akonadi::Item::List &items) {
+                    itemsRetrieved(items);
+                });
     }
     job->setProperty("collection", QVariant::fromValue(collection));
-    connect(job, &KJob::result, this, &FacebookResource::onRetrieveItemsDone);
-    connect(job, &ListJob::itemsAvailable, this, &FacebookResource::onItemsAvailable);
+    connect(job, &KJob::result, this, &FacebookResource::onListJobDone);
     job->start();
     mCurrentJob = job;
 }
@@ -134,20 +137,17 @@ bool FacebookResource::retrieveItems(const Akonadi::Item::List &items, const QSe
 }
 
 
-void FacebookResource::onItemsAvailable(KJob *job, const Akonadi::Item::List &items)
-{
-    Q_ASSERT(mCurrentJob == job);
-
-    itemsRetrieved(items);
-}
-
-
-void FacebookResource::onRetrieveItemsDone(KJob *job)
+void FacebookResource::onListJobDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(RESOURCE_LOG) << "Item sync error:" << job->errorString();
         cancelTask(job->errorString());
         return;
+    }
+
+    // Birthday job does not have item streaming
+    if (auto bjob = qobject_cast<BirthdayListJob*>(job)) {
+        itemsRetrieved(bjob->items());
     }
 
     itemsRetrievalDone();
@@ -156,6 +156,6 @@ void FacebookResource::onRetrieveItemsDone(KJob *job)
 int main(int argc, char **argv)
 {
     // Enable to debug Facebook authentication
-    //qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
+    qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
     return Akonadi::ResourceBase::init<FacebookResource>(argc, argv);
 }

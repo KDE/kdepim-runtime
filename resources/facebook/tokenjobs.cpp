@@ -456,6 +456,11 @@ QString GetTokenJob::userName() const
     return d->userName;
 }
 
+QByteArray GetTokenJob::cookies() const
+{
+    return d->cookies;
+}
+
 void GetTokenJob::start()
 {
     // Already have token, so we are done

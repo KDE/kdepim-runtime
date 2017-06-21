@@ -75,6 +75,7 @@ public:
     QString token() const;
     QString userName() const;
     QString userId() const;
+    QByteArray cookies() const;
 
     void start() override;
 

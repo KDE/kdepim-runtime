@@ -25,6 +25,7 @@ target_link_libraries(akonadi_facebook_resource
     KF5::CalendarCore
     KF5::I18n
     KF5::Wallet
+    KF5::Codecs
     Qt5::WebEngineWidgets
 )
 
