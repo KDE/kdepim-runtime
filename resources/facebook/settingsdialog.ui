@@ -105,7 +105,7 @@
       <item>
        <widget class="QCheckBox" name="birthdayReminderChkBox">
         <property name="text">
-         <string>Show reminders for friends' brithdays</string>
+         <string>Show reminders for friends' birthdays</string>
         </property>
         <property name="checked">
          <bool>true</bool>
