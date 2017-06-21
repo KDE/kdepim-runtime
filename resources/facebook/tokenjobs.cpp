@@ -33,10 +33,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include <QtWebEngineWidgets/QWebEngineView>
-#include <QtWebEngineWidgets/QWebEngineSettings>
-#include <QtWebEngineWidgets/QWebEnginePage>
-#include <QtWebEngineWidgets/QWebEngineProfile>
+#include <QWebEngineView>
+#include <QWebEngineSettings>
+#include <QWebEnginePage>
+#include <QWebEngineProfile>
+#include <QWebEngineCookieStore>
 
 #include <KWallet/Wallet>
 
@@ -48,6 +49,7 @@ static const auto KWalletFolder = QStringLiteral("Facebook");
 static const auto KWalletKeyToken = QStringLiteral("token");
 static const auto KWalletKeyName = QStringLiteral("name");
 static const auto KWalletKeyId = QStringLiteral("id");
+static const auto KWalletKeyCookies = QStringLiteral("cookies");
 
 class TokenManager
 {
@@ -62,6 +64,7 @@ public:
     QString token;
     QString userName;
     QString id;
+    QByteArray cookies;
 };
 
 Q_GLOBAL_STATIC(TokenManager, d)
@@ -86,8 +89,8 @@ class WebPage : public QWebEnginePage
 {
     Q_OBJECT
 public:
-    explicit WebPage(QObject *parent = nullptr)
-        : QWebEnginePage(parent)
+    explicit WebPage(QWebEngineProfile *profile, QObject *parent = nullptr)
+        : QWebEnginePage(profile, parent)
     {}
 
     QWebEngineCertificateError *lastCeritificateError() const
@@ -118,7 +121,8 @@ class AuthDialog : public QDialog
     Q_OBJECT
 
 public:
-    AuthDialog(QWidget *parent = nullptr)
+    AuthDialog(const QByteArray &cookies, FacebookResource *resource,
+               QWidget *parent = nullptr)
         : QDialog(parent)
     {
         setModal(true);
@@ -155,8 +159,28 @@ public:
         progressBar->setValue(0);
         v->addWidget(progressBar);
 
+        // Create a special profile just for us
+        auto profile = new QWebEngineProfile(resource->identifier(), this);
+        auto cookieStore = profile->cookieStore();
+        cookieStore->deleteAllCookies(); // delete all cookies from it
+        const auto parsedCookies = QNetworkCookie::parseCookies(cookies);
+        for (const auto &parsedCookie : parsedCookies) {
+            cookieStore->setCookie(parsedCookie, QUrl(QStringLiteral(".facebook.com")));
+            mCookies.insert(parsedCookie.name(), parsedCookie.toRawForm());
+        }
+        connect(cookieStore, &QWebEngineCookieStore::cookieAdded,
+                this, [this](const QNetworkCookie &cookie) {
+                    if (cookie.domain() == QLatin1String(".facebook.com")) {
+                        mCookies.insert(cookie.name(), cookie.toRawForm());
+                    }
+                });
+        connect(cookieStore, &QWebEngineCookieStore::cookieRemoved,
+                this, [this](const QNetworkCookie &cookie) {
+                    mCookies.remove(cookie.name());
+                });
+
         mView = new WebView(this);
-        auto webpage = new WebPage(mView);
+        auto webpage = new WebPage(profile, mView);
         connect(webpage, &WebPage::sslError,
                 this, [this]() {
                     setSslIcon(QStringLiteral("security-low"));
@@ -196,6 +220,15 @@ public:
     QString token() const
     {
         return mToken;
+    }
+
+    QByteArray cookies() const
+    {
+        QByteArray rv;
+        for (auto it = mCookies.cbegin(), end = mCookies.cend(); it != end; ++it) {
+            rv += it.value() + '\n';
+        }
+        return rv;
     }
 
 Q_SIGNALS:
@@ -252,6 +285,7 @@ private:
     QToolButton *mSslIndicator = nullptr;
     QLineEdit *mUrlEdit = nullptr;
     QString mToken;
+    QMap<QByteArray, QByteArray> mCookies;
 };
 
 } // namespace
@@ -324,11 +358,12 @@ QString LoginJob::token() const
 
 void LoginJob::doStart()
 {
-    auto dlg = new AuthDialog;
+    auto dlg = new AuthDialog(d->cookies, qobject_cast<FacebookResource*>(parent()));
     connect(dlg, &AuthDialog::authDone,
             this, [this, dlg]() {
                 dlg->deleteLater();
                 d->token = dlg->token();
+                d->cookies = dlg->cookies();
                 if (d->token.isEmpty()) {
                     emitError(i18n("Failed to obtain access token from Facebook"));
                     return;
@@ -358,7 +393,9 @@ void LoginJob::fetchUserInfo()
                 d->wallet->writeMap(qobject_cast<FacebookResource*>(parent())->identifier(),
                                     { { KWalletKeyToken, d->token },
                                       { KWalletKeyName, d->userName },
-                                      { KWalletKeyId, d->id } });
+                                      { KWalletKeyId, d->id },
+                                      { KWalletKeyCookies, QString::fromUtf8(d->cookies) }
+                                    });
                 emitResult();
             });
     job->start();
@@ -381,6 +418,7 @@ void LogoutJob::doStart()
     d->token.clear();
     d->userName.clear();
     d->id.clear();
+    d->cookies.clear();
 
     if (!d->wallet->isOpen()) {
         emitError(i18n("Failed to open KWallet"));
@@ -442,6 +480,7 @@ void GetTokenJob::doStart()
     d->token = entries.value(KWalletKeyToken);
     d->userName = entries.value(KWalletKeyName);
     d->id = entries.value(KWalletKeyId);
+    d->cookies = entries.value(KWalletKeyCookies).toUtf8();
 
     emitResult();
 }
