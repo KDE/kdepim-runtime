@@ -1,4 +1,3 @@
-#include <qcompilerdetection.h>
 /*
  *    Copyright (C) 2017 Daniel Vrátil <dvratil@kde.org>
  *
