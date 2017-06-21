@@ -156,6 +156,6 @@ void FacebookResource::onListJobDone(KJob *job)
 int main(int argc, char **argv)
 {
     // Enable to debug Facebook authentication
-    qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
+    //qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
     return Akonadi::ResourceBase::init<FacebookResource>(argc, argv);
 }
