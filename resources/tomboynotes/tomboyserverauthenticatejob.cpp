@@ -27,6 +27,7 @@ TomboyServerAuthenticateJob::TomboyServerAuthenticateJob(KIO::AccessManager *man
     : TomboyJobBase(manager, parent),
       mWebView(new QWebEngineView(nullptr))
 {
+    mWebView->setContextMenuPolicy(Qt::NoContextMenu);
     // Connect the o2 authenfication signals
     connect(mO1, &O1::linkingFailed, this, &TomboyServerAuthenticateJob::onLinkingFailed);
     connect(mO1, &O1::linkingSucceeded, this, &TomboyServerAuthenticateJob::onLinkingSucceeded);
