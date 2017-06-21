@@ -44,6 +44,12 @@ Akonadi::Collection ListJob::collection() const
     return mCollection;
 }
 
+void ListJob::emitError(const QString &errorText)
+{
+    setError(KJob::UserDefinedError);
+    setErrorText(errorText);
+    emitResult();
+}
 
 void ListJob::setRequest(const QString &endpoint, const QStringList &fields,
                          const QMap<QString,QString> &queries)
@@ -64,9 +70,7 @@ void ListJob::tokenJobResult(KJob *job)
 {
     auto tokenJob = qobject_cast<GetTokenJob*>(job);
     if (tokenJob->error()) {
-        setError(tokenJob->error());
-        setErrorText(tokenJob->errorText());
-        emitResult();
+        emitError(tokenJob->errorText());
         return;
     }
 
@@ -84,9 +88,7 @@ void ListJob::sendRequest(const QUrl &url)
 void ListJob::onGraphResponseReceived(KJob *job)
 {
     if (job->error()) {
-        setError(job->error());
-        setErrorText(job->errorText());
-        emitResult();
+        emitError(job->errorText());
         return;
     }
 
@@ -97,9 +99,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
     auto json = QJsonDocument::fromJson(tjob->data(), &error);
     if (error.error) {
         qCWarning(RESOURCE_LOG) << "JSON parsing error" << error.error << ", offset" << error.offset;
-        setError(KJob::UserDefinedError);
-        setErrorText(i18n("Invalid response from server: JSON parsing error"));
-        emitResult();
+        emitError(i18n("Invalid response from server: JSON parsing error"));
         return;
     }
 
@@ -115,9 +115,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
             connect(tokenJob, &LoginJob::result,
                     this, [this, tokenJob, url]() {
                         if (tokenJob->error()) {
-                            setError(tokenJob->error());
-                            setErrorText(tokenJob->errorText());
-                            emitResult();
+                            emitError(tokenJob->errorText());
                             return;
                         }
 
@@ -127,12 +125,10 @@ void ListJob::onGraphResponseReceived(KJob *job)
                         sendRequest(url_);
                     });
             tokenJob->start();
-        } else {
-            setError(KJob::UserDefinedError);
-            setErrorText(err.value(QLatin1String("message")).toString());
-            emitResult();
+            return;
         }
 
+        emitError(err.value(QLatin1String("message")).toString());
         return;
     }
 
@@ -149,9 +145,9 @@ void ListJob::onGraphResponseReceived(KJob *job)
     Q_EMIT itemsAvailable(this, items, {});
 
     const auto paging = obj.value(QLatin1String("paging")).toObject();
-    const auto nextIt = paging.constFind(QLatin1String("next"));
-    if (nextIt != paging.constEnd()) {
-        sendRequest(QUrl(nextIt->toString()));
+    const auto next = paging.constFind(QLatin1String("next"));
+    if (next != paging.constEnd()) {
+        sendRequest(QUrl(next->toString()));
     } else {
         emitResult();
     }

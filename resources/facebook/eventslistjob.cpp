@@ -106,29 +106,29 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
         const auto place = placeIt->toObject();
         QStringList locationStr;
         const auto placeEnd = place.constEnd();
-        auto it = place.constFind(QLatin1String("name"));
-        if (it != placeEnd) {
-            locationStr << it->toString();
+        const auto name = place.constFind(QLatin1String("name"));
+        if (name != placeEnd) {
+            locationStr << name->toString();
         }
-        it = place.constFind(QLatin1String("location"));
-        if (it != placeEnd) {
-            auto location = it->toObject();
+        const auto locationIt = place.constFind(QLatin1String("location"));
+        if (locationIt != placeEnd) {
+            const auto location = locationIt->toObject();
             for (const auto &loc : { QLatin1String("street"), QLatin1String("city"),
                                     QLatin1String("zip"), QLatin1String("country") }) {
-                it = place.constFind(loc);
+                const auto it = location.constFind(loc);
                 if (it != placeEnd) {
                     locationStr << it->toString();
                 }
             }
             // no name, no address, try GPS coordinates
             if (locationStr.size() < 1) {
-                it = place.constFind(QLatin1String("longitude"));
-                if (it != placeEnd) {
-                    event->setGeoLongitude(it->toDouble());
+                const auto longitude = place.constFind(QLatin1String("longitude"));
+                if (longitude != placeEnd) {
+                    event->setGeoLongitude(longitude->toDouble());
                 }
-                it = place.constFind(QLatin1String("latitude"));
-                if (it != placeEnd) {
-                    event->setGeoLatitude(it->toDouble());
+                const auto latitude = place.constFind(QLatin1String("latitude"));
+                if (latitude != placeEnd) {
+                    event->setGeoLatitude(latitude->toDouble());
                 }
             }
         }
@@ -140,16 +140,16 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
     const QString dtStart = data.value(QLatin1String("start_time")).toString();
     event->setDtStart(KDateTime(parseDateTime(dtStart)));
 
-    auto it = data.constFind(QLatin1String("end_time"));
-    if (it != dataEnd) {
-        event->setDtEnd(KDateTime(parseDateTime(it->toString())));
+    const auto endTime = data.constFind(QLatin1String("end_time"));
+    if (endTime != dataEnd) {
+        event->setDtEnd(KDateTime(parseDateTime(endTime->toString())));
     }
 
     QString description = data.value(QLatin1String("description")).toString();
     description += QStringLiteral("\n\nhttps://www.facebook.com/events/%1").arg(data.value(QLatin1String("id")).toString());
     event->setDescription(description);
 
-    auto status = parseStatus(data);
+    const auto status = parseStatus(data);
     event->setStatus(status);
     if (status == KCalCore::Incidence::StatusCanceled) {
         event->setTransparency(KCalCore::Event::Transparent);

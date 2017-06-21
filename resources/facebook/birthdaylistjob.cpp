@@ -46,31 +46,6 @@ QVector<Akonadi::Item> BirthdayListJob::items() const
     return mItems;
 }
 
-void BirthdayListJob::start()
-{
-    auto tokenJob = new GetTokenJob(qobject_cast<FacebookResource*>(parent()));
-    connect(tokenJob, &GetTokenJob::result,
-            this, [this, tokenJob]() {
-                if (tokenJob->error()) {
-                    setError(tokenJob->error());
-                    setErrorText(tokenJob->errorText());
-                    emitResult();
-                    return;
-                }
-
-                // Convert the cookies into a HTTP Cookie header that we can pass
-                // to KIO
-                mCookies = QStringLiteral("Cookie: ");
-                const auto parsedCookies = QNetworkCookie::parseCookies(tokenJob->cookies());
-                for (const auto &cookie : parsedCookies) {
-                    mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()),
-                                                              QString::fromUtf8(cookie.value()));
-                }
-                fetchFacebookEventsPage();
-            });
-    tokenJob->start();
-}
-
 KIO::StoredTransferJob *BirthdayListJob::createGetJob(const QUrl &url) const
 {
     auto job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
@@ -86,6 +61,29 @@ void BirthdayListJob::emitError(const QString& errorText)
     setError(KJob::UserDefinedError);
     setErrorText(errorText);
     emitResult();
+}
+
+void BirthdayListJob::start()
+{
+    auto tokenJob = new GetTokenJob(qobject_cast<FacebookResource*>(parent()));
+    connect(tokenJob, &GetTokenJob::result,
+            this, [this, tokenJob]() {
+                if (tokenJob->error()) {
+                    emitError(tokenJob->errorText());
+                    return;
+                }
+
+                // Convert the cookies into a HTTP Cookie header that we can pass
+                // to KIO
+                mCookies = QStringLiteral("Cookie: ");
+                const auto parsedCookies = QNetworkCookie::parseCookies(tokenJob->cookies());
+                for (const auto &cookie : parsedCookies) {
+                    mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()),
+                                                              QString::fromUtf8(cookie.value()));
+                }
+                fetchFacebookEventsPage();
+            });
+    tokenJob->start();
 }
 
 void BirthdayListJob::fetchFacebookEventsPage()
@@ -113,11 +111,11 @@ void BirthdayListJob::fetchFacebookEventsPage()
 QUrl BirthdayListJob::findBirthdayIcalLink(const QByteArray &data)
 {
     // QXmlStreamParser cannot deal with Facebook's broken HTML and refuses
-    // to parse it. But since we know very well what we are looking for and the
-    // address is very unique in the source code, using QBAMatcher is much more
-    // efficient than QXmlStreamParser anyway...
+    // to parse it. But we know very well what we are looking for and the
+    // address is very unique in the source code, so using QBAMatcher is much more
+    // efficient...
 
-    QByteArrayMatcher matcher("webcal://www.facebook.com/ical/b.php");
+    const QByteArrayMatcher matcher("webcal://www.facebook.com/ical/b.php");
     const int start = matcher.indexIn(data);
     if (start == -1) {
         return {};
@@ -128,7 +126,7 @@ QUrl BirthdayListJob::findBirthdayIcalLink(const QByteArray &data)
         return {};
     }
 
-    auto str = QString::fromUtf8(data.constData() + start, end - start);
+    const auto str = QString::fromUtf8(data.constData() + start, end - start);
     return QUrl(KCharsets::resolveEntities(str));
 }
 
@@ -170,7 +168,7 @@ void BirthdayListJob::processEvent(const KCalCore::Event::Ptr &event)
     }
 
     const auto uid = event->uid(); // b123456789@facebook.com
-    const auto id = uid.mid(1, uid.indexOf(QLatin1Char('@')) - 2); // 123456789
+    const auto id = uid.mid(1, uid.indexOf(QLatin1Char('@')) - 1); // 123456789
 
     event->setDescription(QStringLiteral("https://www.facebook.com/%1").arg(id));
 

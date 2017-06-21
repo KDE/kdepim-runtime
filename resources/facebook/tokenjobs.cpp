@@ -76,7 +76,6 @@ public:
     explicit WebView(QWidget *parent = nullptr)
         : QWebEngineView(parent)
     {
-        QWebEngineProfile::defaultProfile()->setPersistentCookiesPolicy(QWebEngineProfile::NoPersistentCookies);
     }
 
     void contextMenuEvent(QContextMenuEvent *e) override
@@ -165,7 +164,7 @@ public:
         cookieStore->deleteAllCookies(); // delete all cookies from it
         const auto parsedCookies = QNetworkCookie::parseCookies(cookies);
         for (const auto &parsedCookie : parsedCookies) {
-            cookieStore->setCookie(parsedCookie, QUrl(QStringLiteral(".facebook.com")));
+            cookieStore->setCookie(parsedCookie, QUrl(QStringLiteral("https://www.facebook.com")));
             mCookies.insert(parsedCookie.name(), parsedCookie.toRawForm());
         }
         connect(cookieStore, &QWebEngineCookieStore::cookieAdded,

@@ -47,6 +47,8 @@ protected:
 
     virtual Akonadi::Item handleResponse(const QJsonObject &data) = 0;
 
+    void emitError(const QString &errorString);
+
 Q_SIGNALS:
     void itemsAvailable(KJob *self, const Akonadi::Item::List &items, QPrivateSignal);
 
