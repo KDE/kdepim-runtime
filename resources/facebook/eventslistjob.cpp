@@ -86,7 +86,7 @@ QDateTime EventsListJob::parseDateTime(const QString &str) const
     auto dt = QDateTime::fromString(str.left(19), QStringLiteral("yyyy-MM-ddTHH:mm:ss"));
     // Parse the offset
     const auto tz = str.rightRef(5);
-    const int sec = (tz.left(1) == QLatin1Char('+') ? 1 : -1) * tz.mid(1, 2).toInt() * 3600 + tz.right(2).toInt() * 60;
+    const int sec = (tz.left(1) == QLatin1String("+") ? 1 : -1) * tz.mid(1, 2).toInt() * 3600 + tz.right(2).toInt() * 60;
     dt.setOffsetFromUtc(sec);
 
     // Convert to local time
