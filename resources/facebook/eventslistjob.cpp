@@ -61,9 +61,8 @@ KCalCore::Incidence::Status EventsListJob::parseStatus(const QJsonObject &data) 
     case Graph::NotResponded:
         return KCalCore::Incidence::StatusNeedsAction;
     case Graph::Declined:
-        Q_FALLTHROUGH();
     case Graph::Birthday:
-        Q_FALLTHROUGH();
+        break;
     }
 
     return KCalCore::Incidence::StatusNone;
