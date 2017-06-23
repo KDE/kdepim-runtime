@@ -1,3 +1,4 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_facebook_resource\")
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 
 set(fbresource_SRCS
