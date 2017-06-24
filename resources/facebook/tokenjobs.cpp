@@ -474,7 +474,7 @@ void GetTokenJob::start()
 void GetTokenJob::doStart()
 {
     if (!d->wallet->isOpen()) {
-        emitError(i18n("Failed to opened KWallet"));
+        emitError(i18n("Failed to open KWallet"));
         return;
     }
 
