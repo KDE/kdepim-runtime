@@ -15,7 +15,7 @@ qt5_wrap_ui(fbresource_SRCS
     settingsdialog.ui
 )
 
-ecm_qt_declare_logging_category(fbresource_SRCS HEADER resource_debug.h IDENTIFIER RESOURCE_LOG CATEGORY_NAME org.kde.pim.fbresource)
+ecm_qt_declare_logging_category(fbresource_SRCS HEADER resource_debug.h IDENTIFIER FBRESOURCE_LOG CATEGORY_NAME org.kde.pim.fbresource)
 
 kcfg_generate_dbus_interface(settings.kcfg org.kde.Akonadi.Facebook.Settings )
 kconfig_add_kcfg_files(fbresource_SRCS settings.kcfgc)

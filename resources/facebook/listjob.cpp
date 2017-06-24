@@ -98,7 +98,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(tjob->data(), &error);
     if (error.error) {
-        qCWarning(RESOURCE_LOG) << "JSON parsing error" << error.error << ", offset" << error.offset;
+        qCWarning(FBRESOURCE_LOG) << "JSON parsing error" << error.error << ", offset" << error.offset;
         emitError(i18n("Invalid response from server: JSON parsing error"));
         return;
     }

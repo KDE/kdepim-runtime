@@ -70,7 +70,7 @@ Graph::RSVP Graph::rsvpFromString(const QString &rsvp)
     } else if (rsvp == QLatin1String("birthday")) {
         return Birthday;
     } else {
-        qCDebug(RESOURCE_LOG) << "Unknown RSVP value" << rsvp;
+        qCDebug(FBRESOURCE_LOG) << "Unknown RSVP value" << rsvp;
         return NotResponded;
     }
 }

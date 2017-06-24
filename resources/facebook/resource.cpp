@@ -139,7 +139,7 @@ bool FacebookResource::retrieveItems(const Akonadi::Item::List &items, const QSe
 void FacebookResource::onListJobDone(KJob *job)
 {
     if (job->error()) {
-        qCWarning(RESOURCE_LOG) << "Item sync error:" << job->errorString();
+        qCWarning(FBRESOURCE_LOG) << "Item sync error:" << job->errorString();
         cancelTask(job->errorString());
         return;
     }
