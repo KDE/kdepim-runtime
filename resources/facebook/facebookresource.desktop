@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Facebook Events
 Name[ca]=Esdeveniments de Facebook
+Name[it]=Eventi di Facebook
 Name[nl]=Facebookgebeurtenissen
 Name[pt]=Eventos do Facebook
 Name[sv]=Facebook-händelser
@@ -8,6 +9,7 @@ Name[uk]=Події Facebook
 Name[x-test]=xxFacebook Eventsxx
 Comment=Access your Facebook events from KDE
 Comment[ca]=Accediu als esdeveniments de Facebook des del KDE
+Comment[it]=Accedi ai tuoi eventi di Facebook da KDE
 Comment[nl]=Heb toegang tot uw Facebook gebeurtenissen vanuit KDE
 Comment[pt]=Aceda aos seus eventos do Facebook a partir do KDE
 Comment[sv]=Kom åt Facebook-händelser från KDE
