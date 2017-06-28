@@ -32,6 +32,7 @@
 #include <itemfetchscope.h>
 #include <mailtransportakonadi/sentactionattribute.h>
 #include <mailtransportakonadi/sentbehaviourattribute.h>
+#include <AkonadiCore/ServerManager>
 
 #include <knotifyconfigwidget.h>
 #include "maildispatcher_debug.h"
@@ -192,7 +193,12 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
 
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/MailDispatcherAgent"),
             this, QDBusConnection::ExportAdaptors);
-    KDBusConnectionPool::threadConnection().registerService(QStringLiteral("org.freedesktop.Akonadi.MailDispatcherAgent"));
+    QString service = QStringLiteral("org.freedesktop.Akonadi.MailDispatcherAgent");
+    if (Akonadi::ServerManager::hasInstanceIdentifier()) {
+        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
+    }
+
+    KDBusConnectionPool::threadConnection().registerService(service);
 
     d->queue = new OutboxQueue(this);
     connect(d->queue, SIGNAL(newItems()),

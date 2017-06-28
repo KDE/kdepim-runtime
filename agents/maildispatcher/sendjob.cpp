@@ -42,6 +42,7 @@
 #include <mailtransportakonadi/transportattribute.h>
 #include <mailtransport/transportjob.h>
 #include <mailtransport/transportmanager.h>
+#include <AkonadiCore/ServerManager>
 
 #include <QTimer>
 #include <QtDBus/QDBusInterface>
@@ -321,8 +322,13 @@ bool SendJob::Private::filterItem(int filterset)
     Q_ASSERT(mailfilterInterface == nullptr);
 
     // TODO: create on stack
+    QString service = QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent");
+    if (Akonadi::ServerManager::hasInstanceIdentifier()) {
+        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
+    }
+
     mailfilterInterface = new QDBusInterface(
-        QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
+        service,
         QStringLiteral("/MailFilterAgent"), QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
         KDBusConnectionPool::threadConnection(), q);
 

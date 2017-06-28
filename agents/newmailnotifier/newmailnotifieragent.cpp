@@ -27,6 +27,7 @@
 #include "newmailnotifieragentsettings.h"
 #include "newmailnotifiersettingsdialog.h"
 
+#include <AkonadiCore/ServerManager>
 #include <KIdentityManagement/IdentityManager>
 
 #include <kdbusconnectionpool.h>
@@ -77,7 +78,12 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
 
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/NewMailNotifierAgent"),
             this, QDBusConnection::ExportAdaptors);
-    KDBusConnectionPool::threadConnection().registerService(QStringLiteral("org.freedesktop.Akonadi.NewMailNotifierAgent"));
+
+    QString service = QStringLiteral("org.freedesktop.Akonadi.NewMailNotifierAgent");
+    if (Akonadi::ServerManager::hasInstanceIdentifier()) {
+        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
+    }
+    KDBusConnectionPool::threadConnection().registerService(service);
 
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceStatusChanged, this, &NewMailNotifierAgent::slotInstanceStatusChanged);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &NewMailNotifierAgent::slotInstanceRemoved);
