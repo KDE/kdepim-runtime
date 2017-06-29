@@ -126,6 +126,7 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
     changeRecorder()->collectionFetchScope().setIncludeStatistics(true);
+    changeRecorder()->collectionFetchScope().fetchAttribute<CollectionAnnotationsAttribute>();
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
     changeRecorder()->itemFetchScope().setFetchModificationTime(false);

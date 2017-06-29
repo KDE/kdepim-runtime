@@ -83,37 +83,21 @@ void UpdateMessageJob::fetchHeaders()
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetchJob->setScope(scope);
-
-    connect(fetchJob, SIGNAL(headersReceived(QString,
-                             QMap<qint64, qint64>,
-                             QMap<qint64, qint64>,
-                             QMap<qint64, KIMAP::MessageAttribute>,
-                             QMap<qint64, KIMAP::MessageFlags>,
-                             QMap<qint64, KIMAP::MessagePtr>)),
-            this, SLOT(onHeadersReceived(QString,
-                                         QMap<qint64, qint64>,
-                                         QMap<qint64, qint64>,
-                                         QMap<qint64, KIMAP::MessageAttribute>,
-                                         QMap<qint64, KIMAP::MessageFlags>,
-                                         QMap<qint64, KIMAP::MessagePtr>)));
+    connect(fetchJob, &KIMAP::FetchJob::messagesAvailable,
+            this, &UpdateMessageJob::onMessagesAvailable);
     connect(fetchJob, &KJob::result,
             this, &UpdateMessageJob::onHeadersFetchDone);
     fetchJob->start();
 
 }
 
-void UpdateMessageJob::onHeadersReceived(const QString &,
-        const QMap<qint64, qint64> &uids,
-        const QMap<qint64, qint64> &,
-        const QMap<qint64, KIMAP::MessageAttribute> &,
-        const QMap<qint64, KIMAP::MessageFlags> &flags,
-        const QMap<qint64, KIMAP::MessagePtr> &)
+void UpdateMessageJob::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
 {
     //Filter deleted messages
-    foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
+    for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {
         // const KMime::Message::Ptr msg = messages[number];
-        if (!flags[number].contains(ImapFlags::Deleted)) {
-            mFoundUids << uids[number];
+        if (!it->flags.contains(ImapFlags::Deleted)) {
+            mFoundUids = it->uid;
         }
     }
 }
@@ -166,19 +150,8 @@ void UpdateMessageJob::onSearchDone(KJob *job)
         scope.parts.clear();
         scope.mode = KIMAP::FetchJob::FetchScope::Full;
         fetchJob->setScope(scope);
-
-        connect(fetchJob, SIGNAL(headersReceived(QString,
-                                 QMap<qint64, qint64>,
-                                 QMap<qint64, qint64>,
-                                 QMap<qint64, KIMAP::MessageAttribute>,
-                                 QMap<qint64, KIMAP::MessageFlags>,
-                                 QMap<qint64, KIMAP::MessagePtr>)),
-                this, SLOT(onConflictingMessagesReceived(QString,
-                           QMap<qint64, qint64>,
-                           QMap<qint64, qint64>,
-                           QMap<qint64, KIMAP::MessageAttribute>,
-                           QMap<qint64, KIMAP::MessageFlags>,
-                           QMap<qint64, KIMAP::MessagePtr>)));
+        connect(fetchJob, &KIMAP::FetchJob::messagesAvailable,
+                this, &UpdateMessageJob::onConflictingMessagesReceived);
         connect(fetchJob, &KJob::result,
                 this, &UpdateMessageJob::onConflictingMessageFetchDone);
         fetchJob->start();
@@ -188,16 +161,11 @@ void UpdateMessageJob::onSearchDone(KJob *job)
     }
 }
 
-void UpdateMessageJob::onConflictingMessagesReceived(const QString &,
-        const QMap<qint64, qint64> &uids,
-        const QMap<qint64, qint64> &,
-        const QMap<qint64, KIMAP::MessageAttribute> &,
-        const QMap<qint64, KIMAP::MessageFlags> &flags,
-        const QMap<qint64, KIMAP::MessagePtr> &messages)
+void UpdateMessageJob::onConflictingMessagesReceived(const QMap<qint64, KIMAP::Message> &messages)
 {
-    foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
-        if (!flags[number].contains(ImapFlags::Deleted)) {
-            mMessagesToMerge << messages[number];
+    for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {
+        if (!it->flags.contains(ImapFlags::Deleted)) {
+            mMessagesToMerge << it->message;
         }
     }
 }

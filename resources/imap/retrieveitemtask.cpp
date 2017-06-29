@@ -82,14 +82,8 @@ void RetrieveItemTask::triggerFetchJob()
     scope.parts.clear();// = parts.toList();
     scope.mode = KIMAP::FetchJob::FetchScope::Content;
     fetch->setScope(scope);
-    connect(fetch, SIGNAL(messagesReceived(QString,
-                                           QMap<qint64, qint64>,
-                                           QMap<qint64, KIMAP::MessageAttribute>,
-                                           QMap<qint64, KIMAP::MessagePtr>)),
-            this, SLOT(onMessagesReceived(QString,
-                                          QMap<qint64, qint64>,
-                                          QMap<qint64, KIMAP::MessageAttribute>,
-                                          QMap<qint64, KIMAP::MessagePtr>)));
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable,
+            this, &RetrieveItemTask::onMessagesReceived);
     //TODO: Handle parts retrieval
     //connect( fetch, SIGNAL(partsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)),
     //         this, SLOT(onPartsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)) );
@@ -98,16 +92,10 @@ void RetrieveItemTask::triggerFetchJob()
     fetch->start();
 }
 
-void RetrieveItemTask::onMessagesReceived(const QString &mailBox,
-        const QMap<qint64, qint64> &uids,
-        const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-        const QMap<qint64, KIMAP::MessagePtr> &messages)
+void RetrieveItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &messages)
 {
-    Q_UNUSED(mailBox);
-
     KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch != nullptr);
-    Q_ASSERT(uids.size() == 1);
     Q_ASSERT(messages.size() == 1);
 
     Akonadi::Item i = item();
@@ -115,11 +103,13 @@ void RetrieveItemTask::onMessagesReceived(const QString &mailBox,
     qCDebug(IMAPRESOURCE_LOG) << "MESSAGE from Imap server" << item().remoteId();
     Q_ASSERT(item().isValid());
 
-    const qint64 number = uids.cbegin().key();
+    const auto message = messages.cbegin();
+    const qint64 number = message->uid;
     bool ok;
-    const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(messages[number], uids[number], 0, attrs.values(number), QList<QByteArray>(), fetch->scope(), ok);
+    const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(
+        message->message, message->uid, 0, message->attributes, {}, fetch->scope(), ok);
     if (!ok) {
-        qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << uids[number];
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << message->uid;
         cancelTask(i18n("No message retrieved, failed to read the message."));
         return;
     }

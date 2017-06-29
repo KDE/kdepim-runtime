@@ -52,12 +52,7 @@ private:
 
 private Q_SLOTS:
     void onFinalSelectDone(KJob *job);
-    void onHeadersReceived(const QString &mailBox,
-                           const QMap<qint64, qint64> &uids,
-                           const QMap<qint64, qint64> &sizes,
-                           const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-                           const QMap<qint64, KIMAP::MessageFlags> &flags,
-                           const QMap<qint64, KIMAP::MessagePtr> &messages);
+    void onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages);
     void onHeadersFetchDone(KJob *job);
 
 private:

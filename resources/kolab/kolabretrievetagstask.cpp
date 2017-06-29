@@ -72,50 +72,30 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Full;
     fetch->setScope(scope);
-
-    connect(fetch, SIGNAL(headersReceived(QString,
-                                          QMap<qint64, qint64>,
-                                          QMap<qint64, qint64>,
-                                          QMap<qint64, KIMAP::MessageAttribute>,
-                                          QMap<qint64, KIMAP::MessageFlags>,
-                                          QMap<qint64, KIMAP::MessagePtr>)),
-            this, SLOT(onHeadersReceived(QString,
-                                         QMap<qint64, qint64>,
-                                         QMap<qint64, qint64>,
-                                         QMap<qint64, KIMAP::MessageAttribute>,
-                                         QMap<qint64, KIMAP::MessageFlags>,
-                                         QMap<qint64, KIMAP::MessagePtr>)));
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable,
+            this, &KolabRetrieveTagTask::onMessagesAvailable);
     connect(fetch, &KJob::result,
             this, &KolabRetrieveTagTask::onHeadersFetchDone);
     fetch->start();
 }
 
-void KolabRetrieveTagTask::onHeadersReceived(const QString &mailBox,
-        const QMap<qint64, qint64> &uids,
-        const QMap<qint64, qint64> &sizes,
-        const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-        const QMap<qint64, KIMAP::MessageFlags> &flags,
-        const QMap<qint64, KIMAP::MessagePtr> &messages)
+void KolabRetrieveTagTask::onHeadersReceived(const QMap<qint64, KIMAP::Message> &messages)
 {
-    Q_UNUSED(mailBox);
-    Q_UNUSED(sizes);
-    Q_UNUSED(attrs);
-
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch);
 
-    foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
-        if (flags[number].contains(ImapFlags::Deleted)) {
+    for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {
+        if (it->flags.contains(ImapFlags::Deleted)) {
             continue;
         }
-        const KMime::Message::Ptr msg = messages[number];
+        const KMime::Message::Ptr msg = it->message;
         const Kolab::KolabObjectReader reader(msg);
         switch (reader.getType()) {
         case Kolab::RelationConfigurationObject:
             if (mRetrieveType == RetrieveTags && reader.isTag()) {
-                extractTag(reader, uids[number]);
+                extractTag(reader, it->uid);
             } else if (mRetrieveType == RetrieveRelations && reader.isRelation()) {
-                extractRelation(reader, uids[number]);
+                extractRelation(reader, it->uid);
             }
             break;
 

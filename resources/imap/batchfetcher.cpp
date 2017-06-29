@@ -169,39 +169,25 @@ void BatchFetcher::fetchNextBatch()
     fetch->setUidBased(m_uidBased);
     fetch->setScope(m_scope);
     fetch->setGmailExtensionsEnabled(m_gmailEnabled);
-    connect(fetch, SIGNAL(headersReceived(QString,
-                                          QMap<qint64, qint64>,
-                                          QMap<qint64, qint64>,
-                                          QMap<qint64, KIMAP::MessageAttribute>,
-                                          QMap<qint64, KIMAP::MessageFlags>,
-                                          QMap<qint64, KIMAP::MessagePtr>)),
-            this, SLOT(onHeadersReceived(QString,
-                                         QMap<qint64, qint64>,
-                                         QMap<qint64, qint64>,
-                                         QMap<qint64, KIMAP::MessageAttribute>,
-                                         QMap<qint64, KIMAP::MessageFlags>,
-                                         QMap<qint64, KIMAP::MessagePtr>)));
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable,
+            this, &BatchFetcher::onMessagesAvailable);
     connect(fetch, &KJob::result,
             this, &BatchFetcher::onHeadersFetchDone);
     m_fetchInProgress = true;
     fetch->start();
 }
 
-void BatchFetcher::onHeadersReceived(const QString &mailBox,
-                                     const QMap<qint64, qint64> &uids,
-                                     const QMap<qint64, qint64> &sizes,
-                                     const QMap<qint64, KIMAP::MessageAttribute> &attrs,
-                                     const QMap<qint64, KIMAP::MessageFlags> &flags,
-                                     const QMap<qint64, KIMAP::MessagePtr> &messages)
+void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
 {
-    Q_UNUSED(mailBox);
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
 
     Akonadi::Item::List addedItems;
-    foreach (qint64 number, uids.keys()) { //krazy:exclude=foreach
+    for (auto msg = messages.cbegin(), end = messages.cend(); msg != end; ++msg) {
         //qDebug( 5327 ) << "Flags: " << i.flags();
         bool ok;
-        const Akonadi::Item item = m_messageHelper->createItemFromMessage(messages[number], uids[number], sizes[number], attrs.values(number), flags[number], fetch->scope(), ok);
+        const auto item = m_messageHelper->createItemFromMessage(
+                                msg->message, msg->uid, msg->size, msg->attributes,
+                                msg->flags, fetch->scope(), ok);
         if (ok) {
             m_fetchedItemsInCurrentBatch++;
             addedItems << item;
