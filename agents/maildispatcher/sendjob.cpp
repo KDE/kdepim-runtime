@@ -125,7 +125,7 @@ void SendJob::Private::doTransport()
         return;
     }
 
-    if (type.type() == Transport::EnumType::Akonadi) {
+    if (type.isAkonadiResource()) {
         // Send the item directly to the resource that will send it.
         resourceId = transportAttribute->transport()->host();
         doAkonadiTransport();
