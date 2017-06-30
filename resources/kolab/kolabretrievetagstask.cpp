@@ -79,7 +79,7 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     fetch->start();
 }
 
-void KolabRetrieveTagTask::onHeadersReceived(const QMap<qint64, KIMAP::Message> &messages)
+void KolabRetrieveTagTask::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
 {
     KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch);

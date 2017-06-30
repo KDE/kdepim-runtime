@@ -53,7 +53,7 @@ private Q_SLOTS:
     void onHeadersFetchDone(KJob *job);
     void onSelectDone(KJob *job);
     void onSearchDone(KJob *job);
-    void onConflictingMessagesReceived(const QMap<qint64, KIMAP::Message> &message_;
+    void onConflictingMessagesReceived(const QMap<qint64, KIMAP::Message> &message);
     void onConflictingMessageFetchDone(KJob *job);
     void onReplaceDone(KJob *job);
 

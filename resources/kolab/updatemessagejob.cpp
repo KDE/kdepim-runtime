@@ -97,7 +97,7 @@ void UpdateMessageJob::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &m
     for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {
         // const KMime::Message::Ptr msg = messages[number];
         if (!it->flags.contains(ImapFlags::Deleted)) {
-            mFoundUids = it->uid;
+            mFoundUids << it->uid;
         }
     }
 }
