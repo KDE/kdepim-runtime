@@ -47,6 +47,7 @@ target_link_libraries( akonadi_pop3_resource
   KF5::WindowSystem
   KF5::Notifications
   Qt5::DBus
+  KF5::PimCommon
 )
 
 if(BUILD_TESTING)

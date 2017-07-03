@@ -231,7 +231,7 @@ void AccountDialog::loadSettings()
     if (mWallet) {
         connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountDialog::walletOpenedForLoading);
     } else {
-        passwordEdit->setPlaceholderText(i18n("Wallet disabled in system settings"));
+        passwordEdit->passwordLineEdit()->setPlaceholderText(i18n("Wallet disabled in system settings"));
     }
     passwordEdit->setEnabled(false);
     passwordLabel->setEnabled(false);
@@ -248,7 +248,7 @@ void AccountDialog::walletOpenedForLoading(bool success)
             QString password;
             mWallet->setFolder(QStringLiteral("pop3"));
             mWallet->readPassword(mParentResource->identifier(), password);
-            passwordEdit->setText(password);
+            passwordEdit->setPassword(password);
             mInitalPassword = password;
         } else {
             qCWarning(POP3RESOURCE_LOG) << "Wallet not open or doesn't have pop3 folder.";
@@ -259,7 +259,7 @@ void AccountDialog::walletOpenedForLoading(bool success)
 
     const bool walletError = !success || !mWallet->isOpen();
     if (walletError) {
-        passwordEdit->setPlaceholderText(i18n("Unable to open wallet"));
+        passwordEdit->passwordLineEdit()->setPlaceholderText(i18n("Unable to open wallet"));
     }
 }
 
@@ -269,18 +269,18 @@ void AccountDialog::walletOpenedForSaving(bool success)
         if (mWallet && mWallet->isOpen()) {
 
             // Remove the password from the wallet if the user doesn't want to store it
-            if (passwordEdit->text().isEmpty() && mWallet->hasFolder(QStringLiteral("pop3"))) {
+            if (passwordEdit->password().isEmpty() && mWallet->hasFolder(QStringLiteral("pop3"))) {
                 mWallet->setFolder(QStringLiteral("pop3"));
                 mWallet->removeEntry(mParentResource->identifier());
             }
 
             // Store the password in the wallet if the user wants that
-            else if (!passwordEdit->text().isEmpty()) {
+            else if (!passwordEdit->password().isEmpty()) {
                 if (!mWallet->hasFolder(QStringLiteral("pop3"))) {
                     mWallet->createFolder(QStringLiteral("pop3"));
                 }
                 mWallet->setFolder(QStringLiteral("pop3"));
-                mWallet->writePassword(mParentResource->identifier(), passwordEdit->text());
+                mWallet->writePassword(mParentResource->identifier(), passwordEdit->password());
             }
 
             mParentResource->clearCachedPassword();
@@ -591,11 +591,11 @@ void AccountDialog::saveSettings()
 
     // Now, either save the password or delete it from the wallet. For both, we need
     // to open it.
-    const bool userChangedPassword = mInitalPassword != passwordEdit->text();
+    const bool userChangedPassword = mInitalPassword != passwordEdit->password();
     const bool userWantsToDeletePassword =
-        passwordEdit->text().isEmpty() && userChangedPassword;
+        passwordEdit->password().isEmpty() && userChangedPassword;
 
-    if ((!passwordEdit->text().isEmpty() && userChangedPassword) ||
+    if ((!passwordEdit->password().isEmpty() && userChangedPassword) ||
             userWantsToDeletePassword) {
         qCDebug(POP3RESOURCE_LOG) << mWallet <<  mWallet->isOpen();
         if (mWallet && mWallet->isOpen()) {
