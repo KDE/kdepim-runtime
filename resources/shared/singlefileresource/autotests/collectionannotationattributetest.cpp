@@ -19,7 +19,7 @@
 
 #include <QtTest>
 #include <qtest.h>
-#include "../collectionannotationsattribute.cpp"
+#include "../collectionannotationsattribute.h"
 
 typedef QMap<QByteArray, QByteArray> Annotation;
 Q_DECLARE_METATYPE(Annotation)
