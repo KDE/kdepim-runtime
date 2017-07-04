@@ -103,10 +103,16 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             switch (term.condition()) {
             case Akonadi::SearchTerm::CondGreaterOrEqual:
                 value--;
+#if QT_VERSION >= QT_VERSION_CHECK(5,8,0)
+        Q_FALLTHROUGH();
+#endif
             case Akonadi::SearchTerm::CondGreaterThan:
                 return KIMAP::Term(KIMAP::Term::Larger, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondLessOrEqual:
                 value++;
+#if QT_VERSION >= QT_VERSION_CHECK(5,8,0)
+        Q_FALLTHROUGH();
+#endif
             case Akonadi::SearchTerm::CondLessThan:
                 return KIMAP::Term(KIMAP::Term::Smaller, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondEqual:
@@ -123,17 +129,26 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             switch (term.condition()) {
             case Akonadi::SearchTerm::CondGreaterOrEqual:
                 value = value.addDays(-1);
+#if QT_VERSION >= QT_VERSION_CHECK(5,8,0)
+        Q_FALLTHROUGH();
+#endif
             case Akonadi::SearchTerm::CondGreaterThan:
                 return KIMAP::Term(KIMAP::Term::SentSince, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondLessOrEqual:
                 value = value.addDays(1);
+#if QT_VERSION >= QT_VERSION_CHECK(5,8,0)
+        Q_FALLTHROUGH();
+#endif
             case Akonadi::SearchTerm::CondLessThan:
                 return KIMAP::Term(KIMAP::Term::SentBefore, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondEqual:
                 return KIMAP::Term(KIMAP::Term::SentOn, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondContains:
                 qCDebug(IMAPRESOURCE_LOG) << " invalid condition for Date";
-                break;
+                return KIMAP::Term();
+            default:
+                qCWarning(IMAPRESOURCE_LOG) << "unknown term for date" << term.key();
+                return KIMAP::Term();
             }
         }
         case Akonadi::EmailSearchTerm::Subject:
