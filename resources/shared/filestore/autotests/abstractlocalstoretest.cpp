@@ -232,7 +232,7 @@ void AbstractLocalStoreTest::testSetPath()
 
 void AbstractLocalStoreTest::testCreateCollection()
 {
-    CollectionCreateJob *job = nullptr;
+    Akonadi::FileStore::CollectionCreateJob *job = nullptr;
 
     // test without setPath()
     job = mStore->createCollection(Collection(), Collection());
@@ -298,7 +298,7 @@ void AbstractLocalStoreTest::testCreateCollection()
 
 void AbstractLocalStoreTest::testDeleteCollection()
 {
-    CollectionDeleteJob *job = nullptr;
+    Akonadi::FileStore::CollectionDeleteJob *job = nullptr;
 
     // test without setPath()
     job = mStore->deleteCollection(Collection());
@@ -498,7 +498,7 @@ void AbstractLocalStoreTest::testModifyCollection()
 
 void AbstractLocalStoreTest::testMoveCollection()
 {
-    CollectionMoveJob *job = nullptr;
+    Akonadi::FileStore::CollectionMoveJob *job = nullptr;
 
     // test without setPath()
     job = mStore->moveCollection(Collection(), Collection());
@@ -577,7 +577,7 @@ void AbstractLocalStoreTest::testMoveCollection()
 
 void AbstractLocalStoreTest::testFetchItems()
 {
-    ItemFetchJob *job = nullptr;
+    Akonadi::FileStore::ItemFetchJob *job = nullptr;
 
     // test without setPath()
     job = mStore->fetchItems(Collection());
@@ -631,7 +631,7 @@ void AbstractLocalStoreTest::testFetchItems()
 
 void AbstractLocalStoreTest::testFetchItem()
 {
-    ItemFetchJob *job = nullptr;
+    Akonadi::FileStore::ItemFetchJob *job = nullptr;
 
     // test without setPath()
     job = mStore->fetchItem(Item());
@@ -739,7 +739,7 @@ void AbstractLocalStoreTest::testCreateItem()
 
 void AbstractLocalStoreTest::testDeleteItem()
 {
-    ItemDeleteJob *job = nullptr;
+    Akonadi::FileStore::ItemDeleteJob *job = nullptr;
 
     // test without setPath()
     job = mStore->deleteItem(Item());
@@ -845,7 +845,7 @@ void AbstractLocalStoreTest::testModifyItem()
 
 void AbstractLocalStoreTest::testMoveItem()
 {
-    ItemMoveJob *job = nullptr;
+    Akonadi::FileStore::ItemMoveJob *job = nullptr;
 
     // test without setPath()
     job = mStore->moveItem(Item(), Collection());
@@ -924,7 +924,7 @@ void AbstractLocalStoreTest::testMoveItem()
 
 void AbstractLocalStoreTest::testCompactStore()
 {
-    StoreCompactJob *job = nullptr;
+    Akonadi::FileStore::StoreCompactJob *job = nullptr;
 
     // test without setPath()
     job = mStore->compactStore();
