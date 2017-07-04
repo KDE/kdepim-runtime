@@ -19,7 +19,7 @@
 
 #include <QtTest>
 #include <qtest.h>
-#include "../imapaclattribute.cpp"
+#include "../imapaclattribute.h"
 
 using namespace Akonadi;
 
