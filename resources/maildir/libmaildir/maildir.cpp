@@ -30,7 +30,7 @@
 #include "libmaildir_debug.h"
 #include <KLocalizedString>
 #include <Akonadi/KMime/MessageFlags>
-
+#include <QCoreApplication>
 #include <fcntl.h>
 
 //Define it to get more debug output to expense of operating speed
@@ -45,7 +45,7 @@ static void initRandomSeed()
         int fd = ::open("/dev/urandom", O_RDONLY);
         if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
             // No /dev/urandom... try something else.
-            srand(getpid());
+            srand(QCoreApplication::applicationPid());
             seed = rand() + time(nullptr);
         }
 
