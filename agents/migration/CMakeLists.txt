@@ -7,8 +7,9 @@ include_directories(
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_migration_agent\")
 
 kde_enable_exceptions()
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+endif()
 
 set(migrationagent_SRCS
     migrationagent.cpp
