@@ -145,6 +145,8 @@ set_package_properties(Sasl2 PROPERTIES
 
 # Extra package
 find_package(KPimGAPI "5.5.40" CONFIG)
+find_package(Libkolabxml 1.1 QUIET CONFIG)
+set_package_properties(KPimGAPI PROPERTIES DESCRIPTION "libkgapi" TYPE OPTIONAL)
 
 
 add_subdirectory(resources)
