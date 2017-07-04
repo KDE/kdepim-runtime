@@ -239,22 +239,14 @@ void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
 
 void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
 {
-#ifndef Q_OS_WIN
-    configure(static_cast<WId>(windowId));
-#else
-    configure(reinterpret_cast<WId>(windowId));
-#endif
+    configure(windowId);
 }
 
 void NewMailNotifierAgent::configure(WId windowId)
 {
     QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
     if (windowId) {
-#ifndef Q_OS_WIN
         KWindowSystem::setMainWindow(dialog, windowId);
-#else
-        KWindowSystem::setMainWindow(dialog, (HWND)windowId);
-#endif
     }
     dialog->exec();
     delete dialog;
