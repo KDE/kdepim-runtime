@@ -80,6 +80,7 @@ target_link_libraries(imapresource
     KF5::I18n
     KF5::WindowSystem
     akonadi-singlefileresource
+    KF5::PimCommon
 )
 
 ########### next target ###############

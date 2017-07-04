@@ -301,7 +301,7 @@ void SetupServer::applySettings()
     MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode(m_ui->authenticationCombo);
     qCDebug(IMAPRESOURCE_LOG) << "saving IMAP auth mode: " << authenticationModeString(authtype);
     m_parentResource->settings()->setAuthentication(authtype);
-    m_parentResource->settings()->setPassword(m_ui->password->text());
+    m_parentResource->settings()->setPassword(m_ui->password->password());
     m_parentResource->settings()->setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
     m_parentResource->settings()->setIntervalCheckTime(m_ui->checkInterval->value());
     m_parentResource->settings()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
@@ -349,7 +349,7 @@ void SetupServer::applySettings()
         m_parentResource->settings()->setSieveCustomAuthentification(QStringLiteral("CustomUserPassword"));
     }
 
-    m_parentResource->settings()->setSieveCustomPassword(m_ui->customPassword->text());
+    m_parentResource->settings()->setSieveCustomPassword(m_ui->customPassword->password());
 
     m_parentResource->settings()->save();
     qCDebug(IMAPRESOURCE_LOG) << "wrote" << m_ui->imapServer->text() << m_ui->userName->text() << m_ui->safeImapGroup->checkedId();
@@ -414,7 +414,7 @@ void SetupServer::readSettings()
                                  "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
-        m_ui->password->insert(password);
+        m_ui->password->passwordLineEdit()->insert(password);
     }
 
     m_ui->subscriptionEnabled->setChecked(m_parentResource->settings()->subscriptionEnabled());
@@ -470,7 +470,7 @@ void SetupServer::readSettings()
                                  "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
-        m_ui->customPassword->insert(customPassword);
+        m_ui->customPassword->passwordLineEdit()->insert(customPassword);
     }
 
     const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());
@@ -660,7 +660,7 @@ void SetupServer::slotManageSubscriptions()
     QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog(this);
     subscriptions->setWindowTitle(i18n("Serverside Subscription"));
     subscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
-    subscriptions->connectAccount(account, m_ui->password->text());
+    subscriptions->connectAccount(account, m_ui->password->password());
     m_subscriptionsChanged = subscriptions->isSubscriptionChanged();
 
     subscriptions->exec();

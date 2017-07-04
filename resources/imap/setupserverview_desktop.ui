@@ -107,13 +107,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="KLineEdit" name="password">
-            <property name="echoMode">
-             <enum>QLineEdit::Password</enum>
-            </property>
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
-            </property>
+           <widget class="PimCommon::LineEditPassword" name="password">
            </widget>
           </item>
          </layout>
@@ -277,13 +271,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="KLineEdit" name="customPassword">
-            <property name="echoMode">
-             <enum>QLineEdit::Password</enum>
-            </property>
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
-            </property>
+           <widget class="PimCommon::LineEditPassword" name="customPassword">
            </widget>
           </item>
           <item row="0" column="0">
@@ -691,6 +679,11 @@ p, li { white-space: pre-wrap; }
    <extends>QFrame</extends>
    <header>CollectionRequester</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PimCommon::LineEditPassword</class>
+   <extends>QLineEdit</extends>
+   <header>pimcommon/lineeditpassword.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
