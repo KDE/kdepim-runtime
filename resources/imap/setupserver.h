@@ -41,7 +41,6 @@ class ServerTest;
 namespace KIdentityManagement
 {
 class IdentityCombo;
-class IdentityManager;
 }
 class FolderArchiveSettingPage;
 class ImapResourceBase;
@@ -90,7 +89,6 @@ private:
     bool m_subscriptionsChanged;
     bool m_shouldClearCache;
     QString m_vacationFileName;
-    KIdentityManagement::IdentityManager *m_identityManager;
     KIdentityManagement::IdentityCombo *m_identityCombobox;
     QString m_oldResourceName;
     QRegExpValidator mValidator;
