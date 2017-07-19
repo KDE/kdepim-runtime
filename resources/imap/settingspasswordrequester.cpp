@@ -164,11 +164,10 @@ void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &passwo
 
 QString SettingsPasswordRequester::requestManualAuth(bool* userRejected)
 {
-    KPasswordDialog *dlg = new KPasswordDialog(nullptr);
+    QScopedPointer<KPasswordDialog> dlg(new KPasswordDialog(nullptr));
     dlg->setModal(true);
     dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.",
                         m_resource->settings()->userName(), m_resource->settings()->imapServer()));
-    dlg->setAttribute(Qt::WA_DeleteOnClose);
     if (dlg->exec()) {
         if (userRejected) *userRejected = false;
         m_resource->settings()->setPassword(dlg->password());
