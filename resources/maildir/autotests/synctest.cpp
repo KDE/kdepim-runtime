@@ -28,6 +28,7 @@
 
 #include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/AgentManager>
+#include <AkonadiCore/ServerManager>
 #include <AkonadiCore/Control>
 #include <qtest_akonadi.h>
 #include <QSignalSpy>
@@ -61,7 +62,7 @@ void SyncTest::testSync()
 
     for (int i = 0; i < TIMES; ++i) {
         QDBusInterface interface(
-                QStringLiteral("org.freedesktop.Akonadi.Resource.%1").arg(mMaildirIdentifier),
+                Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mMaildirIdentifier),
                 QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
         QVERIFY(interface.isValid());
         QElapsedTimer t;
