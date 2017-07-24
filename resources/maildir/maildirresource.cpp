@@ -237,7 +237,7 @@ void MaildirResource::configurationChanged()
 {
     mSettings->save();
     bool configValid = ensureSaneConfiguration();
-    configValid &= ensureDirExists();
+    configValid = configValid && ensureDirExists();
     if (configValid) {
         Q_EMIT status(Idle);
         setOnline(true);
