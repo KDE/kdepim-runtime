@@ -19,6 +19,8 @@
 
 #include "synctest.h"
 
+#include "maildirsettings.h" // generated
+
 #include <QDBusInterface>
 #include <QTime>
 
@@ -26,9 +28,11 @@
 
 #include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/AgentManager>
+#include <AkonadiCore/ServerManager>
 #include <AkonadiCore/Control>
 #include <qtest_akonadi.h>
 #include <QSignalSpy>
+#include <AgentInstanceCreateJob>
 
 #define TIMES 100 // How many times to sync.
 #define TIMEOUT 10 // How many seconds to wait before declaring the resource dead.
@@ -37,27 +41,37 @@ using namespace Akonadi;
 
 void SyncTest::initTestCase()
 {
-    QVERIFY(Control::start());
-    QTest::qWait(1000);
+    AkonadiTest::checkTestIsIsolated();
+    AgentType maildirType = AgentManager::self()->type(QStringLiteral("akonadi_maildir_resource"));
+    AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob(maildirType);
+    QVERIFY(agentCreateJob->exec());
+    mMaildirIdentifier = agentCreateJob->instance().identifier();
+
+    OrgKdeAkonadiMaildirSettingsInterface interface(QStringLiteral("org.freedesktop.Akonadi.Resource.%1").arg(mMaildirIdentifier), QStringLiteral("/"), QDBusConnection::sessionBus());
+    QVERIFY(interface.isValid());
+    const QString mailPath = QFINDTESTDATA("maildir");
+    QVERIFY(!mailPath.isEmpty());
+    QVERIFY(QFile::exists(mailPath));
+    interface.setPath(mailPath);
 }
 
 void SyncTest::testSync()
 {
-    AgentInstance instance = AgentManager::self()->instance(QStringLiteral("akonadi_maildir_resource_0"));
+    AgentInstance instance = AgentManager::self()->instance(mMaildirIdentifier);
     QVERIFY(instance.isValid());
 
     for (int i = 0; i < TIMES; ++i) {
-        QDBusInterface *interface = new QDBusInterface(
-            QStringLiteral("org.freedesktop.Akonadi.Resource.%1").arg(instance.identifier()),
-            QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
-        QVERIFY(interface->isValid());
-        QTime t;
+        QDBusInterface interface(
+                Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mMaildirIdentifier),
+                QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
+        QVERIFY(interface.isValid());
+        QElapsedTimer t;
         t.start();
         instance.synchronize();
-        QSignalSpy spy(interface, SIGNAL(synchronized()));
+        QSignalSpy spy(&interface, SIGNAL(synchronized()));
+        QVERIFY(spy.isValid());
         QVERIFY(spy.wait(TIMEOUT * 1000));
         qDebug() << "Sync attempt" << i << "in" << t.elapsed() << "ms.";
-        delete interface;
     }
 }
 

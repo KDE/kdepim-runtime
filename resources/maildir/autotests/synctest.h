@@ -37,6 +37,7 @@ private Q_SLOTS:
     void testSync();
 
 private:
+    QString mMaildirIdentifier;
 
 };
 

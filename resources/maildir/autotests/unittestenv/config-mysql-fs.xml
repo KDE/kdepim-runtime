@@ -1,0 +1,5 @@
+<config>
+  <confighome>xdgconfig-mysql.fs</confighome>
+  <datahome>xdglocal</datahome>
+  <envvar name="TESTRUNNER_DB_ENVIRONMENT">mysql</envvar>
+</config>

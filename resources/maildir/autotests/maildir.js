@@ -1,3 +1,5 @@
+// TODO: this file is unused, but should be converted to C++ in order to add these tests to synctest.cpp
+
 Resource.setType( "akonadi_maildir_resource" );
 
 // read test
