@@ -25,6 +25,7 @@
 #include <AkonadiCore/ItemDeleteJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ServerManager>
 #include <qtest_akonadi.h>
 #include <KMime/Message>
 
@@ -37,6 +38,7 @@ using namespace Akonadi;
 
 void Pop3Test::initTestCase()
 {
+    AkonadiTest::checkTestIsIsolated();
     QVERIFY(Akonadi::Control::start());
 
     // switch all resources offline to reduce interference from them
@@ -112,41 +114,41 @@ void Pop3Test::initTestCase()
     // Configure the pop3 resource
     //
     mPOP3SettingsInterface = new OrgKdeAkonadiPOP3SettingsInterface(
-        QLatin1String("org.freedesktop.Akonadi.Resource.") + mPop3Identifier,
+        Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mPop3Identifier),
         QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this);
 
     QDBusReply<uint> reply0 = mPOP3SettingsInterface->port();
     QVERIFY(reply0.isValid());
-    QVERIFY(reply0.value() == 110);
+    QCOMPARE(reply0.value(), 110u);
 
     mPOP3SettingsInterface->setPort(5989);
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<uint> reply = mPOP3SettingsInterface->port();
     QVERIFY(reply.isValid());
-    QVERIFY(reply.value() == 5989);
+    QCOMPARE(reply.value(), 5989u);
 
     mPOP3SettingsInterface->setHost(QStringLiteral("localhost"));
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply2 = mPOP3SettingsInterface->host();
     QVERIFY(reply2.isValid());
-    QVERIFY(reply2.value() == QLatin1String("localhost"));
+    QCOMPARE(reply2.value(), QLatin1String("localhost"));
     mPOP3SettingsInterface->setLogin(QStringLiteral("HansWurst"));
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply3 = mPOP3SettingsInterface->login();
     QVERIFY(reply3.isValid());
-    QVERIFY(reply3.value() == QLatin1String("HansWurst"));
+    QCOMPARE(reply3.value(), QLatin1String("HansWurst"));
 
     mPOP3SettingsInterface->setUnitTestPassword(QStringLiteral("Geheim"));
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply4 = mPOP3SettingsInterface->unitTestPassword();
     QVERIFY(reply4.isValid());
-    QVERIFY(reply4.value() == QLatin1String("Geheim"));
+    QCOMPARE(reply4.value(), QLatin1String("Geheim"));
 
     mPOP3SettingsInterface->setTargetCollection(mMaildirCollection.id());
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<qlonglong> reply5 = mPOP3SettingsInterface->targetCollection();
     QVERIFY(reply5.isValid());
-    QVERIFY(reply5.value() == mMaildirCollection.id());
+    QCOMPARE(reply5.value(), mMaildirCollection.id());
 }
 
 void Pop3Test::cleanupTestCase()
