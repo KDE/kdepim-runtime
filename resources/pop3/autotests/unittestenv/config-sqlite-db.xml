@@ -1,6 +1,0 @@
-<config>
-  <confighome>xdgconfig-sqlite.db</confighome>
-  <datahome>xdglocal</datahome>
-  <envvar name="AKONADI_DISABLE_AGENT_AUTOSTART">true</envvar>
-  <envvar name="TESTRUNNER_DB_ENVIRONMENT">sqlite</envvar>
-</config>

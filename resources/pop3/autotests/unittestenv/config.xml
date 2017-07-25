@@ -1,6 +1,4 @@
 <config>
-  <confighome>xdgconfig-mysql.fs</confighome>
   <datahome>xdglocal</datahome>
   <envvar name="AKONADI_DISABLE_AGENT_AUTOSTART">true</envvar>
-  <envvar name="TESTRUNNER_DB_ENVIRONMENT">mysql</envvar>
 </config>
