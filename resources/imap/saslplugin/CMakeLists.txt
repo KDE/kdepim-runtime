@@ -1,4 +1,6 @@
-add_definitions(-D_POSIX_SOURCE)
+if (NOT CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+   add_definitions(-D_POSIX_SOURCE)
+endif()
 
 if (WIN32)
     add_definitions(-DWIN32)
