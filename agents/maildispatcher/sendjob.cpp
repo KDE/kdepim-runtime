@@ -64,7 +64,6 @@ public:
           item(itm),
           currentJob(nullptr),
           interface(nullptr),
-          mailfilterInterface(nullptr),
           aborting(false)
     {
     }
@@ -74,7 +73,6 @@ public:
     KJob *currentJob;
     QString resourceId;
     QDBusInterface *interface;
-    QDBusInterface *mailfilterInterface;
     bool aborting;
 
     void doAkonadiTransport();
@@ -140,10 +138,13 @@ void SendJob::Private::doAkonadiTransport()
     Q_ASSERT(!resourceId.isEmpty());
     Q_ASSERT(interface == nullptr);
 
-    interface = new QDBusInterface(
-        QLatin1String("org.freedesktop.Akonadi.Resource.") + resourceId,
-        QStringLiteral("/Transport"), QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
-        KDBusConnectionPool::threadConnection(), q);
+    const auto service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource,
+                                                                  resourceId);
+
+    interface = new QDBusInterface(service,
+                                   QStringLiteral("/Transport"),
+                                   QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
+                                   KDBusConnectionPool::threadConnection(), q);
 
     if (!interface->isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of resource %1.", resourceId));
@@ -319,37 +320,25 @@ void SendJob::Private::doPostJob(bool transportSuccess, const QString &transport
 
 bool SendJob::Private::filterItem(int filterset)
 {
-    Q_ASSERT(mailfilterInterface == nullptr);
+    const auto service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Agent,
+                                                                  QStringLiteral("akonadi_mailfilter_agent"));
 
-    // TODO: create on stack
-    QString service = QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent");
-    if (Akonadi::ServerManager::hasInstanceIdentifier()) {
-        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
-    }
-
-    mailfilterInterface = new QDBusInterface(
-        service,
-        QStringLiteral("/MailFilterAgent"), QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
-        KDBusConnectionPool::threadConnection(), q);
-
-    if (!mailfilterInterface->isValid()) {
+    QDBusInterface iface(service,
+                         QStringLiteral("/MailFilterAgent"),
+                         QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
+                         KDBusConnectionPool::threadConnection(), q);
+    if (!iface.isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of mailfilteragent."));
-        delete mailfilterInterface;
-        mailfilterInterface = nullptr;
         return false;
     }
 
     //Outbound = 0x2
-    const QDBusReply<void> reply = mailfilterInterface->call(QStringLiteral("filterItem"), item.id(), filterset, QString());
+    const QDBusReply<void> reply = iface.call(QStringLiteral("filterItem"), item.id(), filterset, QString());
     if (!reply.isValid()) {
         storeResult(false, i18n("Invalid D-Bus reply from mailfilteragent"));
-        delete mailfilterInterface;
-        mailfilterInterface = nullptr;
         return false;
     }
 
-    delete mailfilterInterface;
-    mailfilterInterface = nullptr;
     return true;
 }
 
