@@ -100,9 +100,7 @@ public:
 
     bool certificateError(const QWebEngineCertificateError &err) override
     {
-        if (mLastError) {
-            delete mLastError;
-        }
+        delete mLastError;
         mLastError = new QWebEngineCertificateError(err.error(), err.url(), err.isOverridable(), err.errorDescription());
         Q_EMIT sslError({});
 
