@@ -26,6 +26,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QJsonArray>
+#include <QUrlQuery>
 
 #include <KLocalizedString>
 
@@ -120,8 +121,11 @@ void ListJob::onGraphResponseReceived(KJob *job)
                         }
 
                         QUrl url_ = url;
-                        url_.removeQueryItem(QStringLiteral("access_token"));
-                        url_.addQueryItem(QStringLiteral("access_token"), tokenJob->token());
+                        QUrlQuery query(url);
+
+                        query.removeQueryItem(QStringLiteral("access_token"));
+                        query.addQueryItem(QStringLiteral("access_token"), tokenJob->token());
+                        url_.setQuery(query);
                         sendRequest(url_);
                     });
             tokenJob->start();

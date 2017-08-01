@@ -30,6 +30,7 @@
 #include <QLineEdit>
 #include <QProgressBar>
 
+#include <QUrlQuery>
 #include <QJsonDocument>
 #include <QJsonObject>
 

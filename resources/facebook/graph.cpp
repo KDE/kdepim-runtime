@@ -19,6 +19,7 @@
 #include "resource_debug.h"
 
 #include <QUrl>
+#include <QUrlQuery>
 
 QString Graph::appId()
 {
@@ -34,14 +35,15 @@ QUrl Graph::url(const QString &endpoint, const QString &accessToken,
                 const QStringList &fields, const QMap<QString, QString> &queries)
 {
     QUrl url(QStringLiteral("https://graph.facebook.com/v2.9/%1").arg(endpoint));
-    url.addQueryItem(QStringLiteral("access_token"), accessToken);
+    QUrlQuery query(url);
+    query.addQueryItem(QStringLiteral("access_token"), accessToken);
     if( !fields.isEmpty()) {
-        url.addQueryItem(QStringLiteral("fields"), fields.join(QLatin1Char(',')));
+        query.addQueryItem(QStringLiteral("fields"), fields.join(QLatin1Char(',')));
     }
     for (auto it = queries.cbegin(), end = queries.cend(); it != end; ++it) {
-        url.addQueryItem(it.key(), it.value());
+        query.addQueryItem(it.key(), it.value());
     }
-
+    url.setQuery(query);
     return url;
 }
 
