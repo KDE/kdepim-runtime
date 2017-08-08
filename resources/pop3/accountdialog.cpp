@@ -123,12 +123,12 @@ void AccountDialog::setupWidgets()
 
     connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotLeaveOnServerClicked);
     connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerDays);
-    connect(leaveOnServerDaysSpin, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerDaysChanged);
+    connect(leaveOnServerDaysSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerDaysChanged);
     connect(leaveOnServerCountCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerCount);
-    connect(leaveOnServerCountSpin, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerCountChanged);
+    connect(leaveOnServerCountSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerCountChanged);
     connect(leaveOnServerSizeCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerSize);
 
-    connect(filterOnServerSizeSpin, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AccountDialog::slotFilterOnServerSizeChanged);
+    connect(filterOnServerSizeSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountDialog::slotFilterOnServerSizeChanged);
     connect(filterOnServerCheck, &QCheckBox::toggled, filterOnServerSizeSpin, &QSpinBox::setEnabled);
     connect(filterOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotFilterOnServerClicked);
 
@@ -141,7 +141,7 @@ void AccountDialog::setupWidgets()
     encryptionButtonGroup->addButton(encryptionTLS,
                                      Transport::EnumEncryption::TLS);
 
-    connect(encryptionButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &AccountDialog::slotPopEncryptionChanged);
+    connect(encryptionButtonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &AccountDialog::slotPopEncryptionChanged);
     connect(intervalCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnablePopInterval);
 
     populateDefaultAuthenticationOptions();
