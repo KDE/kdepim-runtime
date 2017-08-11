@@ -155,7 +155,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification = new KNotification(QStringLiteral("new-email"), nullptr, KNotification::CloseOnTimeout);
+        KNotification *notification = new KNotification(QStringLiteral("new-email"), nullptr, NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
         notification->setPixmap(pixmap);
         notification->setActions(QStringList() << i18n("Show mail..."));

@@ -493,7 +493,7 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
                          message,
                          pixmap,
                          nullptr,
-                         KNotification::CloseOnTimeout,
+                         NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout,
                          QStringLiteral("akonadi_newmailnotifier_agent"));
 
 }

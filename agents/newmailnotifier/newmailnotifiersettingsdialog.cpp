@@ -109,6 +109,10 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mAllowToShowMail->setChecked(NewMailNotifierAgentSettings::showButtonToDisplayMail());
     vbox->addWidget(mAllowToShowMail);
 
+    mKeepPersistentNotification = new QCheckBox(i18n("Keep Persistent Notification"), this);
+    mKeepPersistentNotification->setChecked(NewMailNotifierAgentSettings::keepPersistentNotification());
+    vbox->addWidget(mKeepPersistentNotification);
+
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
@@ -217,6 +221,7 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setShowSubject(mShowSubject->isChecked());
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
+    NewMailNotifierAgentSettings::setKeepPersistentNotification(mKeepPersistentNotification->isChecked());
 #ifdef HAVE_TEXTTOSPEECH
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
     NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
