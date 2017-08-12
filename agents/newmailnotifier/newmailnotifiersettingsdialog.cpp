@@ -86,30 +86,37 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     grp->setLayout(groupboxLayout);
 
     mShowPhoto = new QCheckBox(i18n("Show Photo"), this);
+    mShowPhoto->setObjectName(QStringLiteral("mShowPhoto"));
     mShowPhoto->setChecked(NewMailNotifierAgentSettings::showPhoto());
     groupboxLayout->addWidget(mShowPhoto);
 
     mShowFrom = new QCheckBox(i18n("Show From"), this);
+    mShowFrom->setObjectName(QStringLiteral("mShowFrom"));
     mShowFrom->setChecked(NewMailNotifierAgentSettings::showFrom());
     groupboxLayout->addWidget(mShowFrom);
 
     mShowSubject = new QCheckBox(i18n("Show Subject"), this);
+    mShowSubject->setObjectName(QStringLiteral("mShowSubject"));
     mShowSubject->setChecked(NewMailNotifierAgentSettings::showSubject());
     groupboxLayout->addWidget(mShowSubject);
 
     mShowFolders = new QCheckBox(i18n("Show Folders"), this);
+    mShowFolders->setObjectName(QStringLiteral("mShowFolders"));
     mShowFolders->setChecked(NewMailNotifierAgentSettings::showFolder());
     groupboxLayout->addWidget(mShowFolders);
 
     mExcludeMySelf = new QCheckBox(i18n("Do not notify when email was sent by me"), this);
+    mExcludeMySelf->setObjectName(QStringLiteral("mExcludeMySelf"));
     mExcludeMySelf->setChecked(NewMailNotifierAgentSettings::excludeEmailsFromMe());
     vbox->addWidget(mExcludeMySelf);
 
     mAllowToShowMail = new QCheckBox(i18n("Show button to display mail"), this);
+    mAllowToShowMail->setObjectName(QStringLiteral("mAllowToShowMail"));
     mAllowToShowMail->setChecked(NewMailNotifierAgentSettings::showButtonToDisplayMail());
     vbox->addWidget(mAllowToShowMail);
 
     mKeepPersistentNotification = new QCheckBox(i18n("Keep Persistent Notification"), this);
+    mKeepPersistentNotification->setObjectName(QStringLiteral("mKeepPersistentNotification"));
     mKeepPersistentNotification->setChecked(NewMailNotifierAgentSettings::keepPersistentNotification());
     vbox->addWidget(mKeepPersistentNotification);
 
@@ -121,10 +128,12 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
     mTextToSpeak = new QCheckBox(i18n("Enabled"), this);
+    mTextToSpeak->setObjectName(QStringLiteral("mTextToSpeak"));
     mTextToSpeak->setChecked(NewMailNotifierAgentSettings::textToSpeakEnabled());
     vbox->addWidget(mTextToSpeak);
 
     QLabel *howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"), this);
+    howIsItWork->setObjectName(QStringLiteral("howIsItWork"));
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     howIsItWork->setContextMenuPolicy(Qt::NoContextMenu);
     vbox->addWidget(howIsItWork);
@@ -133,8 +142,10 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setMargin(0);
     QLabel *lab = new QLabel(i18n("Message:"), this);
+    lab->setObjectName(QStringLiteral("labmessage"));
     textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new QLineEdit;
+    mTextToSpeakSetting->setObjectName(QStringLiteral("mTextToSpeakSetting"));
     mTextToSpeakSetting->setClearButtonEnabled(true);
     mTextToSpeakSetting->setText(NewMailNotifierAgentSettings::textToSpeak());
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
@@ -150,10 +161,12 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
 #endif
 
     mNotify = new KNotifyConfigWidget(this);
+    mNotify->setObjectName(QStringLiteral("mNotify"));
     mNotify->setApplication(QStringLiteral("akonadi_newmailnotifier_agent"));
     tab->addTab(mNotify, i18n("Notify"));
 
     mSelectCollection = new NewMailNotifierSelectCollectionWidget(this);
+    mSelectCollection->setObjectName(QStringLiteral("mSelectCollection"));
     tab->addTab(mSelectCollection, i18n("Folders"));
 
     KAboutData aboutData = KAboutData(
