@@ -413,7 +413,7 @@ void SetupServer::readSettings()
                                  "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
-        m_ui->password->passwordLineEdit()->insert(password);
+        m_ui->password->lineEdit()->insert(password);
     }
 
     m_ui->subscriptionEnabled->setChecked(m_parentResource->settings()->subscriptionEnabled());
@@ -469,7 +469,7 @@ void SetupServer::readSettings()
                                  "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
-        m_ui->customPassword->passwordLineEdit()->insert(customPassword);
+        m_ui->customPassword->lineEdit()->insert(customPassword);
     }
 
     const QString sieverCustomAuth(m_parentResource->settings()->sieveCustomAuthentification());

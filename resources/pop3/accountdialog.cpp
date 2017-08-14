@@ -231,7 +231,7 @@ void AccountDialog::loadSettings()
     if (mWallet) {
         connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountDialog::walletOpenedForLoading);
     } else {
-        passwordEdit->passwordLineEdit()->setPlaceholderText(i18n("Wallet disabled in system settings"));
+        passwordEdit->lineEdit()->setPlaceholderText(i18n("Wallet disabled in system settings"));
     }
     passwordEdit->setEnabled(false);
     passwordLabel->setEnabled(false);
@@ -259,7 +259,7 @@ void AccountDialog::walletOpenedForLoading(bool success)
 
     const bool walletError = !success || !mWallet->isOpen();
     if (walletError) {
-        passwordEdit->passwordLineEdit()->setPlaceholderText(i18n("Unable to open wallet"));
+        passwordEdit->lineEdit()->setPlaceholderText(i18n("Unable to open wallet"));
     }
 }
 

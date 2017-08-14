@@ -107,7 +107,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="PimCommon::LineEditPassword" name="password">
+           <widget class="KPasswordLineEdit" name="password">
            </widget>
           </item>
          </layout>
@@ -271,7 +271,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="PimCommon::LineEditPassword" name="customPassword">
+           <widget class="KPasswordLineEdit" name="customPassword">
            </widget>
           </item>
           <item row="0" column="0">
@@ -681,9 +681,9 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>PimCommon::LineEditPassword</class>
-   <extends>QLineEdit</extends>
-   <header>pimcommon/lineeditpassword.h</header>
+   <class>KPasswordLineEdit</class>
+   <extends>QWidget</extends>
+   <header>kpasswordlineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

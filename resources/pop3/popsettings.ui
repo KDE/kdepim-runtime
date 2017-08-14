@@ -206,7 +206,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="PimCommon::LineEditPassword" name="passwordEdit">
+           <widget class="KPasswordLineEdit" name="passwordEdit">
             <property name="toolTip">
              <string>Password for access to the mail server</string>
             </property>
@@ -588,9 +588,9 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>PimCommon::LineEditPassword</class>
-   <extends>QLineEdit</extends>
-   <header>pimcommon/lineeditpassword.h</header>
+   <class>KPasswordLineEdit</class>
+   <extends>QWidget</extends>
+   <header>kpasswordlineedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
