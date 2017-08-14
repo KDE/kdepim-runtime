@@ -35,6 +35,7 @@ class QComboBox;
 class QFormLayout;
 class QLabel;
 class QRadioButton;
+class KPasswordLineEdit;
 
 class SetupWizard : public QWizard
 {
@@ -89,7 +90,7 @@ public:
 
 private:
     KLineEdit *mUserName;
-    KLineEdit *mPassword;
+    KPasswordLineEdit *mPassword;
 };
 
 class ServerTypePage : public QWizardPage

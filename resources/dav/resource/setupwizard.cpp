@@ -19,7 +19,7 @@
 #include "setupwizard.h"
 
 #include <KDAV/DavCollectionsMultiFetchJob>
-
+#include <KPasswordLineEdit>
 #include <qicon.h>
 #include <KLocalizedString>
 #include <klineedit.h>
@@ -228,10 +228,9 @@ CredentialsPage::CredentialsPage(QWidget *parent)
     layout->addRow(i18n("User"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
-    mPassword = new KLineEdit;
-    mPassword->setPasswordMode(true);
+    mPassword = new KPasswordLineEdit;
     layout->addRow(i18n("Password"), mPassword);
-    registerField(QStringLiteral("credentialsPassword*"), mPassword);
+    registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", "passwordChanged");
 }
 
 int CredentialsPage::nextId() const
