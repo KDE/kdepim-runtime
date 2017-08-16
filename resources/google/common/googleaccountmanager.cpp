@@ -21,7 +21,7 @@
 
 #include <QTimer>
 
-#include <KWallet/kwallet.h>
+#include <KWallet>
 #include <QDebug>
 #include <KWindowSystem>
 
