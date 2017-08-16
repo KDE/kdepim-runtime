@@ -18,8 +18,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <KWallet/Wallet>
-
 #include <QDBusConnection>
 
 class SettingsHelper
