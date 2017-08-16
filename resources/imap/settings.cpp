@@ -29,7 +29,6 @@
 using KWallet::Wallet;
 
 #include <KLocalizedString>
-#include <kpassworddialog.h>
 #include "imapresource_debug.h"
 
 #include <QDBusConnection>
