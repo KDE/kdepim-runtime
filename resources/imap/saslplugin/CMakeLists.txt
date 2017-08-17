@@ -8,9 +8,6 @@ elseif (APPLE)
     add_definitions(-Dmacintosh)
 endif()
 
-include_directories(${Sasl2_INCLUDE_DIRS}
-                    ${Sasl2_INCLUDE_DIRS}/sasl)
-
 set(kdexoauth2sasl_SRCS
     xoauth2plugin.c
     xoauth2plugin_init.c

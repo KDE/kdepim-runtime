@@ -4,8 +4,7 @@ set(pop3_optional_includes)
 set(pop3_optional_libs)
 
 if(Sasl2_FOUND)
-   set(pop3_optional_includes ${pop3_optional_includes} ${Sasl2_INCLUDE_DIRS})
-   set(pop3_optional_libs     ${pop3_optional_libs}     ${Sasl2_LIBRARIES})
+   set(pop3_optional_libs     ${pop3_optional_libs}     Sasl2::Sasl2)
    set(HAVE_LIBSASL2 1)
 else()
    set(HAVE_LIBSASL2 0)
@@ -13,8 +12,6 @@ endif()
 
 
 configure_file(pop3-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/pop3-config.h )
-
-include_directories(  ${pop3_optional_includes}  )
 
 ########### next target ###############
 
