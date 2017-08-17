@@ -59,9 +59,9 @@
 #endif /* WIN32 */
 #endif /* macintosh */
 
-#include <sasl.h>
-#include <saslutil.h>
-#include <saslplug.h>
+#include <sasl/sasl.h>
+#include <sasl/saslutil.h>
+#include <sasl/saslplug.h>
 
 #ifdef WIN32
 #define PLUG_API __declspec(dllexport)

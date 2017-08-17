@@ -59,9 +59,9 @@
 #include <unistd.h>
 #endif
 #include <fcntl.h>
-#include <sasl.h>
-#include <saslutil.h>
-#include <saslplug.h>
+#include <sasl/sasl.h>
+#include <sasl/saslutil.h>
+#include <sasl/saslplug.h>
 
 #include <errno.h>
 #include <ctype.h>
