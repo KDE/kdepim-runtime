@@ -132,11 +132,7 @@ find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION_LIB} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 
 find_package(Sasl2)
-set_package_properties(Sasl2 PROPERTIES
-                             DESCRIPTION "The Cyrus-sasl library"
-                             URL "http://www.cyrussasl.org"
-                             TYPE REQUIRED
-)
+set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
