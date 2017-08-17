@@ -84,6 +84,7 @@ set(AKONADIMIME_LIB_VERSION "5.6.40")
 set(AKONADICONTACT_LIB_VERSION "5.6.40")
 set(AKONADINOTE_LIB_VERSION "5.6.40")
 set(PIMCOMMON_LIB_VERSION_LIB "5.6.41")
+set(KGAPI_LIB_VERSION "5.6.40")
 
 set( SHARED_MIME_INFO_MINIMUM_VERSION "1.0" )
 find_package( SharedMimeInfo REQUIRED )
@@ -128,6 +129,14 @@ find_package(KF5IMAP ${KIMAP_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiNotes ${AKONADINOTE_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION_LIB} CONFIG REQUIRED)
+find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
+
+find_package(Sasl2)
+set_package_properties(Sasl2 PROPERTIES
+                             DESCRIPTION "The Cyrus-sasl library"
+                             URL "http://www.cyrussasl.org"
+                             TYPE REQUIRED
+)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
@@ -137,18 +146,9 @@ add_definitions( -DQT_NO_URL_CAST_FROM_STRING )
 add_definitions( -DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT )
 #add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
 
-find_package(Sasl2)
-set_package_properties(Sasl2 PROPERTIES
-                             DESCRIPTION "The Cyrus-sasl library"
-                             URL "http://www.cyrussasl.org"
-                             TYPE OPTIONAL
-)
 
 # Extra package
-find_package(KPimGAPI "5.6.40" CONFIG)
 find_package(Libkolabxml 1.1 QUIET CONFIG)
-set_package_properties(KPimGAPI PROPERTIES DESCRIPTION "libkgapi" TYPE OPTIONAL)
-
 
 add_subdirectory(resources)
 add_subdirectory(agents)

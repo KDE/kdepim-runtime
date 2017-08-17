@@ -55,11 +55,9 @@ add_subdirectory( maildir )
 add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
-if( KPimGAPI_FOUND )
-  add_subdirectory( google )
-  # Disabled in KDE 4.14 - too many issues for stable release
-  #add_subdirectory( gmail )
-endif()
+add_subdirectory( google )
+# Disabled in KDE 4.14 - too many issues for stable release
+#add_subdirectory( gmail )
 
 add_subdirectory( shared )
 add_subdirectory( birthdays )
