@@ -29,7 +29,7 @@ set( testdata_SRCS
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 add_executable(testdatatest testdatatest.cpp ${testdata_SRCS})
-add_test(testdatatest testdatatest)
+add_test(NAME testdatatest COMMAND testdatatest)
 ecm_mark_as_test(mixedmaildir-testdatatest)
 
 target_link_libraries(
@@ -53,7 +53,7 @@ set( common_link_libraries
 
 # test for overwritten methods
 add_executable(templatemethodstest ../mixedmaildirstore.cpp templatemethodstest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
-add_test(templatemethodstest templatemethodstest)
+add_test(NAME templatemethodstest COMMAND templatemethodstest)
 ecm_mark_as_test(mixedmaildir-templatemethodtest)
 
 
@@ -64,7 +64,7 @@ target_link_libraries(
 
 # test for collection creation handling
 add_executable(collectioncreatetest  ../mixedmaildirstore.cpp collectioncreatetest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
-add_test(collectioncreatetest collectioncreatetest)
+add_test(NAME collectioncreatetest COMMAND collectioncreatetest)
 ecm_mark_as_test(mixedmaildir-collectioncreatetest)
 
 
@@ -75,7 +75,7 @@ target_link_libraries(
 
 # test for collection deletion handling
 add_executable(collectiondeletetest   ../mixedmaildirstore.cpp collectiondeletetest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
-add_test(collectiondeletetest collectiondeletetest)
+add_test(NAME collectiondeletetest COMMAND collectiondeletetest)
 ecm_mark_as_test(mixedmaildir-collectiondeletetest)
 
 target_link_libraries(
@@ -85,7 +85,7 @@ target_link_libraries(
 
 # test for collection fetching handling
 add_executable( collectionfetchtest  ../mixedmaildirstore.cpp collectionfetchtest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp)
-add_test(collectionfetchtest collectionfetchtest)
+add_test(NAME collectionfetchtest COMMAND collectionfetchtest)
 ecm_mark_as_test(mixedmaildir-collectionfetchtest)
 
 
@@ -99,7 +99,7 @@ add_executable( collectionmodifytest  ../mixedmaildirstore.cpp
  collectionmodifytest.cpp ../mixedmaildir_debug.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
-add_test(collectionmodifytest collectionmodifytest)
+add_test(NAME collectionmodifytest COMMAND collectionmodifytest)
 ecm_mark_as_test(mixedmaildir-collectionmodifytest)
 
 
@@ -113,7 +113,7 @@ add_executable( collectionmovetest  ../mixedmaildirstore.cpp ../mixedmaildir_deb
  collectionmovetest.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
-add_test(collectionmovetest collectionmovetest)
+add_test(NAME collectionmovetest COMMAND collectionmovetest)
 ecm_mark_as_test(mixedmaildir-collectionmovetest)
 
 target_link_libraries(
@@ -126,7 +126,7 @@ add_executable(itemcreatetest   ../mixedmaildirstore.cpp ../mixedmaildir_debug.c
  itemcreatetest.cpp
  ${testdata_SRCS}
 )
-add_test(itemcreatetest itemcreatetest)
+add_test(NAME itemcreatetest COMMAND itemcreatetest)
 ecm_mark_as_test(mixedmaildir-itemcreatetest)
 
 
@@ -140,7 +140,7 @@ add_executable(itemdeletetest  ../mixedmaildirstore.cpp
  itemdeletetest.cpp ../mixedmaildirresource_debug.cpp
  ${testdata_SRCS}
 )
-add_test(itemdeletetest itemdeletetest)
+add_test(NAME itemdeletetest COMMAND itemdeletetest)
 ecm_mark_as_test(mixedmaildir-itemdeletetest)
 
 
@@ -155,7 +155,7 @@ add_executable(itemfetchtest   ../mixedmaildirstore.cpp ../mixedmaildirresource_
  itemfetchtest.cpp
  ${testdata_SRCS}
 )
-add_test(itemfetchtest itemfetchtest)
+add_test(NAME itemfetchtest COMMAND itemfetchtest)
 ecm_mark_as_test(mixedmaildir-itemfetchtest)
 
 target_link_libraries(
@@ -169,7 +169,7 @@ add_executable(itemmodifytest   ../mixedmaildirstore.cpp ../mixedmaildirresource
  itemmodifytest.cpp
  ${testdata_SRCS}
 )
-add_test(itemmodifytest itemmodifytest)
+add_test(NAME itemmodifytest COMMAND itemmodifytest)
 ecm_mark_as_test( mixedmaildir-itemmodifytest)
 
 target_link_libraries(
@@ -182,7 +182,7 @@ add_executable(itemmovetest  ../mixedmaildirstore.cpp ../mixedmaildirresource_de
  itemmovetest.cpp
  ${testdata_SRCS}
 )
-add_test(itemmovetest itemmovetest)
+add_test(NAME itemmovetest COMMAND itemmovetest)
 ecm_mark_as_test(mixedmaildir-itemmovetest)
 
 
@@ -196,7 +196,7 @@ add_executable(storecompacttest  ../mixedmaildirstore.cpp  ../mixedmaildirresour
  storecompacttest.cpp
  ${testdata_SRCS}
 )
-add_test(storecompacttest storecompacttest)
+add_test(NAME storecompacttest COMMAND storecompacttest)
 ecm_mark_as_test(mixedmaildir-storecompacttest)
 
 

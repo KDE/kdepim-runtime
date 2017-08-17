@@ -34,7 +34,7 @@ macro( akonadi_add_resourcetest _testname _script )
   endif ()
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${_script} ${CMAKE_CURRENT_BINARY_DIR}/${_script} COPYONLY)
   if (KDEPIM_RUN_ISOLATED_TESTS)
-    add_test( akonadi-mysql-db-${_testname} akonaditest -c ${kdepim-runtime_SOURCE_DIR}/resourcetester/tests/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_BINARY_DIR}/${_script} )
+    add_test( NAME akonadi-mysql-db-${_testname} COMMAND akonaditest -c ${kdepim-runtime_SOURCE_DIR}/resourcetester/tests/unittestenv/config-mysql-db.xml ${_resourcetester} -c ${CMAKE_CURRENT_BINARY_DIR}/${_script} )
   endif ()
 endmacro( akonadi_add_resourcetest )
 

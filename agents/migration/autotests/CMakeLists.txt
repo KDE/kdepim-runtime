@@ -9,4 +9,4 @@ target_link_libraries(schedulertest
     KF5::AkonadiCore
     Qt5::Test
 )
-add_test(schedulertest schedulertest)
+add_test(NAME schedulertest COMMAND schedulertest)

@@ -46,8 +46,16 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
 set(KF5_VERSION "5.37.0")
-find_package(ECM ${KF5_VERSION} REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake ${ECM_MODULE_PATH})
+option(RUN_UNINSTALL "test run uninstalled apps (experimental)" FALSE)
+
+set(ECM_VERSION ${KF5_VERSION})
+# ECM setup
+if (RUN_UNINSTALL)
+   set(ECM_VERSION "5.38.0")
+endif()
+
+find_package(ECM ${ECM_VERSION} CONFIG REQUIRED)
+set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
 
 include(CMakePackageConfigHelpers)
 include(ECMSetupVersion)

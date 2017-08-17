@@ -17,7 +17,7 @@ macro(add_akonadiplugin_test _source _libs _additionalSources _target_included_d
 
   get_filename_component(_name ${_source} NAME_WE)
   add_executable( ${_name} ${srcs} )
-  add_test( ${_name} ${_name} )
+  add_test(NAME ${_name} COMMAND ${_name} )
   ecm_mark_as_test(akonadiplugin-${_name})
   if(NOT ${_target_included_directories} STREQUAL "")
     target_include_directories(${_name} PRIVATE "$<BUILD_INTERFACE:$<TARGET_PROPERTY:${_target_included_directories},INCLUDE_DIRECTORIES>>")

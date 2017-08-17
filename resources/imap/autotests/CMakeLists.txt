@@ -20,7 +20,7 @@ if(KIMAPTEST_INCLUDE_DIR AND KIMAPTEST_LIBRARY)
     FOREACH(_testname ${ARGN})
       include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
       add_executable( ${_testname} ${_testname}.cpp dummypasswordrequester.cpp dummyresourcestate.cpp imaptestbase.cpp )
-      add_test( ${_testname} ${_testname} )
+      add_test(NAME ${_testname} COMMAND ${_testname} )
       ecm_mark_as_test(imap-${_testname})
 
       target_link_libraries(${_testname} 

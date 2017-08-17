@@ -5,7 +5,7 @@ set( testidxreader_SRCS
 )
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 add_executable( testidxreader  ${testidxreader_SRCS} )
-add_test( testidxreader testidxreader )
+add_test(NAME testidxreader COMMAND testidxreader )
 ecm_mark_as_test(testidxreader)
 
 target_link_libraries( testidxreader  Qt5::Test kmindexreader KF5::AkonadiMime )

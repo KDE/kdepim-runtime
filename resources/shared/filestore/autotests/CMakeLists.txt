@@ -18,7 +18,7 @@ include_directories(
 )
 
 add_executable(abstractlocalstoretest abstractlocalstoretest.cpp)
-add_test(abstractlocalstoretest abstractlocalstoretest)
+add_test(NAME abstractlocalstoretest COMMAND abstractlocalstoretest)
 ecm_mark_as_test(abstractlocalstoretest)
 
 target_link_libraries(
