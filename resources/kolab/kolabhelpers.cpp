@@ -197,6 +197,11 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return newItem;
     }
     break;
+    case Kolab::RelationConfigurationObject: {
+        // Do nothing about tags and relations, this is handled separately in KolabRetrieveTagTask::onMessagesAvailable
+        ok = false;
+        break;
+    }
     default:
         qCWarning(KOLABRESOURCE_LOG) << "Object type not handled";
         ok = false;
