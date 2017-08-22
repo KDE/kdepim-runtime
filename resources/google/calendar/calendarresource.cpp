@@ -24,6 +24,7 @@
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/ItemModifyJob>
@@ -448,6 +449,9 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(calendar->title());
         attr->setIconName(QStringLiteral("view-calendar"));
+
+        auto colorAttr = collection.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
+        colorAttr->setColor(calendar->backgroundColor());
 
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
         reminderAttr->setReminders(calendar->defaultReminders());
