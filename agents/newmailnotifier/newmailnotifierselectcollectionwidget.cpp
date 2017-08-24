@@ -22,7 +22,11 @@
 
 #include <CollectionModifyJob>
 #include <CollectionFilterProxyModel>
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
 #include <KRecursiveFilterProxyModel>
+#else
+#include <QSortFilterProxyModel>
+#endif
 #include <AkonadiCore/AttributeFactory>
 
 #include <ChangeRecorder>
@@ -124,7 +128,12 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mNewMailNotifierProxyModel = new NewMailNotifierCollectionProxyModel(this);
     mNewMailNotifierProxyModel->setSourceModel(mimeTypeProxy);
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
     mCollectionFilter = new KRecursiveFilterProxyModel(this);
+#else
+    mCollectionFilter = new QSortFilterProxyModel(this);
+    mCollectionFilter->setRecursiveFiltering(true);
+#endif
     mCollectionFilter->setSourceModel(mNewMailNotifierProxyModel);
     mCollectionFilter->setDynamicSortFilter(true);
     mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
