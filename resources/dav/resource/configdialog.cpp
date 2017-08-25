@@ -115,7 +115,7 @@ void ConfigDialog::writeConfig()
 
 void ConfigDialog::setPassword(const QString &password)
 {
-    mUi.password->setText(password);
+    mUi.password->setPassword(password);
 }
 
 void ConfigDialog::onSyncRangeStartTypeChanged()
@@ -138,7 +138,7 @@ void ConfigDialog::onAddButtonClicked()
 {
     QPointer<UrlConfigurationDialog> dlg = new UrlConfigurationDialog(this);
     dlg->setDefaultUsername(mUi.kcfg_defaultUsername->text());
-    dlg->setDefaultPassword(mUi.password->text());
+    dlg->setDefaultPassword(mUi.password->password());
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
@@ -174,7 +174,7 @@ void ConfigDialog::onSearchButtonClicked()
 {
     QPointer<SearchDialog> dlg = new SearchDialog(this);
     dlg->setUsername(mUi.kcfg_defaultUsername->text());
-    dlg->setPassword(mUi.password->text());
+    dlg->setPassword(mUi.password->password());
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
@@ -250,7 +250,7 @@ void ConfigDialog::onEditButtonClicked()
         dlg->setPassword(urlConfig->mPassword);
     }
     dlg->setDefaultUsername(mUi.kcfg_defaultUsername->text());
-    dlg->setDefaultPassword(mUi.password->text());
+    dlg->setDefaultPassword(mUi.password->password());
 
     const int result = dlg->exec();
 
@@ -281,7 +281,7 @@ void ConfigDialog::onOkClicked()
     }
 
     mManager->updateSettings();
-    Settings::self()->setDefaultPassword(mUi.password->text());
+    Settings::self()->setDefaultPassword(mUi.password->password());
     accept();
 }
 
