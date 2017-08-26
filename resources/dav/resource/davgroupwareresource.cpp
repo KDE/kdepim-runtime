@@ -51,6 +51,7 @@
 #include <kjob.h>
 
 #include <attributefactory.h>
+#include <collectioncolorattribute.h>
 #include <cachepolicy.h>
 #include <changerecorder.h>
 #include <collectionfetchscope.h>
@@ -82,6 +83,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     AttributeFactory::registerAttribute<EntityDisplayAttribute>();
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
     AttributeFactory::registerAttribute<CTagAttribute>();
+    AttributeFactory::registerAttribute<CollectionColorAttribute>();
 
     setNeedsNetwork(true);
 
@@ -699,6 +701,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         collection.setParentCollection(mDavCollectionRoot);
         collection.setRemoteId(davCollection.url().toDisplayString());
         collection.setName(collection.remoteId());
+
+        if (davCollection.color().isValid()) {
+            CollectionColorAttribute *colorAttr = collection.attribute<CollectionColorAttribute>(Akonadi::Collection::AddIfMissing);
+            colorAttr->setColor(davCollection.color());
+        }
 
         if (!davCollection.displayName().isEmpty()) {
             EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
