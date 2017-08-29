@@ -42,7 +42,7 @@ public:
     explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
     ~ServerInfoDialog();
 private:
-    ServerInfoTextBrowser *mTextBrowser;
+    ServerInfoTextBrowser *mTextBrowser = nullptr;
 };
 
 #endif // SERVERINFODIALOG_H

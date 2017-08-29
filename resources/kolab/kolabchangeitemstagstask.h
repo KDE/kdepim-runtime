@@ -35,7 +35,7 @@ protected:
     void startRelationTask(KIMAP::Session *session) override;
 
 private:
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     QList<Akonadi::Tag> mChangedTags;
     QSharedPointer<TagConverter> mTagConverter;
 

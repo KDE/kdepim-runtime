@@ -46,7 +46,7 @@ private:
     void onSetMetaDataDone(KJob *job);
     Akonadi::Collection m_collection;
     uint m_pendingJobs;
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
 };
 
 #endif

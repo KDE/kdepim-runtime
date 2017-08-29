@@ -41,7 +41,7 @@ public:
 
 private:
     Akonadi::Collection mCollection;
-    ResourceTask *mTask;
+    ResourceTask *mTask = nullptr;
 };
 
 #endif // GMAILMESSAGEHELPER_H

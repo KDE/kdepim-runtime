@@ -37,8 +37,8 @@ protected:
     virtual MessageHelper::Ptr messageHelper() const;
 
 private:
-    GmailResource *mResource;
-    ResourceTask *mTask;
+    GmailResource *mResource = nullptr;
+    ResourceTask *mTask = nullptr;
 };
 
 #endif // GMAILRESOURCESTATE_H

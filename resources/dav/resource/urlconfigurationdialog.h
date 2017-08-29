@@ -71,11 +71,11 @@ private:
     void readConfig();
 
     Ui::UrlConfigurationDialog mUi;
-    QStandardItemModel *mModel;
+    QStandardItemModel *mModel = nullptr;
     QString mDefaultUsername;
     QString mDefaultPassword;
-    QPushButton *mOkButton;
-    QButtonGroup *mRemoteProtocolGroup;
+    QPushButton *mOkButton = nullptr;
+    QButtonGroup *mRemoteProtocolGroup = nullptr;
 };
 
 #endif

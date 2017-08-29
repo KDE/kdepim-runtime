@@ -80,7 +80,7 @@ private:
 
 private:
     QStringList mSupportedMimeTypes;
-    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings;
+    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings = nullptr;
 };
 
 #endif

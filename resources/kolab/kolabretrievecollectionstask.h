@@ -60,7 +60,7 @@ private:
     QHash<QString, Akonadi::Collection> mMailCollections;
     QSet<QString> mSubscribedMailboxes;
     QSet<QByteArray> mRequestedMetadata;
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     QTime mTime;
     //For implicit sharing
     const QByteArray cContentMimeTypes;
@@ -88,7 +88,7 @@ private:
     QSet<QByteArray> mRequestedMetadata;
     QStringList mServerCapabilities;
     QStringList mMailboxes;
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     QString mSeparator;
     QList <KIMAP::MailBoxDescriptor > mSharedNamespace;
     QList <KIMAP::MailBoxDescriptor > mUserNamespace;

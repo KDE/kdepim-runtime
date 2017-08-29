@@ -120,12 +120,12 @@ private:
     static qint64 m_requestCounter;
 
     int m_maxPoolSize;
-    ImapAccount *m_account;
-    PasswordRequesterInterface *m_passwordRequester;
+    ImapAccount *m_account = nullptr;
+    PasswordRequesterInterface *m_passwordRequester = nullptr;
     KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
 
     bool m_initialConnectDone;
-    KIMAP::Session *m_pendingInitialSession;
+    KIMAP::Session *m_pendingInitialSession = nullptr;
 
     QList<qint64> m_pendingRequests;
     QList<KIMAP::Session *> m_connectingPool; // in preparation

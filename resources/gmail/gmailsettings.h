@@ -80,7 +80,7 @@ private Q_SLOTS:
 
 private:
     mutable KGAPI2::AccountPtr mAccount;
-    KGAPI2::AuthJob *mActiveAuthJob;
+    KGAPI2::AuthJob *mActiveAuthJob = nullptr;
 
 };
 

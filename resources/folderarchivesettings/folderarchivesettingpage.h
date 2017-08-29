@@ -59,10 +59,10 @@ public:
 private:
     void slotEnableChanged(bool enabled);
     QString mInstanceName;
-    QCheckBox *mEnabled;
-    FolderArchiveComboBox *mArchiveNamed;
-    Akonadi::CollectionRequester *mArchiveFolder;
-    FolderArchiveAccountInfo *mInfo;
+    QCheckBox *mEnabled = nullptr;
+    FolderArchiveComboBox *mArchiveNamed = nullptr;
+    Akonadi::CollectionRequester *mArchiveFolder = nullptr;
+    FolderArchiveAccountInfo *mInfo = nullptr;
 };
 
 #endif // FOLDERARCHIVESETTINGPAGE_H

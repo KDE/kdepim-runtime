@@ -46,11 +46,11 @@ private Q_SLOTS:
 private:
     void processNextRelation();
 
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     Akonadi::Relation::List mAddedRelations;
     Akonadi::Relation::List mRemovedRelations;
     Akonadi::Relation mCurrentRelation;
-    bool mAdding;
+    bool mAdding = false;
 };
 
 #endif

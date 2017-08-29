@@ -72,10 +72,10 @@ private:
     void startIdle();
 
     qint64 m_sessionRequestId;
-    SessionPool *m_pool;
-    KIMAP::Session *m_session;
+    SessionPool *m_pool = nullptr;
+    KIMAP::Session *m_session = nullptr;
     QPointer<KIMAP::IdleJob> m_idle;
-    ImapResourceBase *m_resource;
+    ImapResourceBase *m_resource = nullptr;
     ResourceStateInterface::Ptr m_state;
     qint64 m_lastMessageCount;
     qint64 m_lastRecentCount;

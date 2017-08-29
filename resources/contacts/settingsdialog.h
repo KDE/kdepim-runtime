@@ -46,9 +46,9 @@ private:
     void readConfig();
     void writeConfig();
     Ui::SettingsDialog ui;
-    KConfigDialogManager *mManager;
-    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings;
-    QPushButton *mOkButton;
+    KConfigDialogManager *mManager = nullptr;
+    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings = nullptr;
+    QPushButton *mOkButton = nullptr;
 };
 
 }

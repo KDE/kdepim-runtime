@@ -157,13 +157,13 @@ private Q_SLOTS:
     void onPoolDisconnect();
 
 private:
-    SessionPool *m_pool;
+    SessionPool *m_pool = nullptr;
     qint64 m_sessionRequestId;
 
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
     ActionIfNoSession m_actionIfNoSession;
     ResourceStateInterface::Ptr m_resource;
-    bool mCancelled;
+    bool mCancelled = false;
 };
 
 #endif

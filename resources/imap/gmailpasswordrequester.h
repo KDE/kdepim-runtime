@@ -47,7 +47,7 @@ private:
     void requestToken(const QString &password = QString());
     void refreshToken(const QString &refreshToken);
 
-    ImapResourceBase *mResource;
+    ImapResourceBase *mResource = nullptr;
     QPointer<KGAPI2::Job> mRunningRequest;
 };
 

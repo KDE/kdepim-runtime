@@ -60,11 +60,11 @@ private:
     void insertModelRow(int index, const QString &protocol, const QString &url);
 
     Ui::ConfigDialog mUi;
-    KConfigDialogManager *mManager;
+    KConfigDialogManager *mManager = nullptr;
     QList< QPair<QString, KDAV::Protocol> > mAddedUrls;
     QList< QPair<QString, KDAV::Protocol> > mRemovedUrls;
-    QStandardItemModel *mModel;
-    QPushButton *mOkButton;
+    QStandardItemModel *mModel = nullptr;
+    QPushButton *mOkButton = nullptr;
 };
 
 #endif

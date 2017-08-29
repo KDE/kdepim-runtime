@@ -52,7 +52,7 @@ private:
 
     void recordNewUid();
 
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
     QByteArray m_messageId;
     qint64 m_oldUid;
     qint64 m_newUid;

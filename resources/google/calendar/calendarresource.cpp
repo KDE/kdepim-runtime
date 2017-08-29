@@ -309,7 +309,7 @@ void CalendarResource::collectionAdded(const Collection &collection, const Colle
         return;
     }
 
-    KGAPI2::Job *job;
+    KGAPI2::Job *job = nullptr;
     if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
         CalendarPtr calendar(new Calendar());
         calendar->setTitle(collection.displayName());
@@ -336,7 +336,7 @@ void CalendarResource::collectionChanged(const Collection &collection)
         return;
     }
 
-    KGAPI2::Job *job;
+    KGAPI2::Job *job = nullptr;
     if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
         CalendarPtr calendar(new Calendar());
         calendar->setUid(collection.remoteId());
@@ -364,7 +364,7 @@ void CalendarResource::collectionRemoved(const Collection &collection)
         return;
     }
 
-    KGAPI2::Job *job;
+    KGAPI2::Job *job = nullptr;
     if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
         job = new CalendarDeleteJob(collection.remoteId(), account(), this);
 
@@ -700,7 +700,7 @@ void CalendarResource::slotTaskAddedSearchFinished(KJob *job)
         return;
     }
 
-    KGAPI2::Job *newJob;
+    KGAPI2::Job *newJob = nullptr;
     // The parent is not known, so give up and just store the item in Google
     // without the information about parent.
     if (items.isEmpty()) {

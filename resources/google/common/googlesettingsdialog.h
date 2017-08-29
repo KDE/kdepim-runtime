@@ -68,16 +68,16 @@ private Q_SLOTS:
     void slotAccountAuthenticated(KGAPI2::Job *job);
 
 private:
-    GoogleResource *m_parentResource;
-    GoogleAccountManager *m_accountManager;
+    GoogleResource *m_parentResource = nullptr;
+    GoogleAccountManager *m_accountManager = nullptr;
 
-    QGroupBox *m_accGroupBox;
-    QPushButton *m_addAccButton;
-    QPushButton *m_removeAccButton;
-    KComboBox *m_accComboBox;
-    QCheckBox *m_enableRefresh;
-    KPluralHandlingSpinBox *m_refreshSpinBox;
-    QVBoxLayout *m_mainLayout;
+    QGroupBox *m_accGroupBox = nullptr;
+    QPushButton *m_addAccButton = nullptr;
+    QPushButton *m_removeAccButton = nullptr;
+    KComboBox *m_accComboBox = nullptr;
+    QCheckBox *m_enableRefresh = nullptr;
+    KPluralHandlingSpinBox *m_refreshSpinBox = nullptr;
+    QVBoxLayout *m_mainLayout = nullptr;
 
 };
 

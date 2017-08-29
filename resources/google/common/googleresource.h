@@ -113,8 +113,8 @@ protected:
 private:
     void abort();
 
-    bool m_isConfiguring;
-    GoogleAccountManager *m_accountMgr;
+    bool m_isConfiguring = false;
+    GoogleAccountManager *m_accountMgr = nullptr;
     KGAPI2::AccountPtr m_account;
 
 };

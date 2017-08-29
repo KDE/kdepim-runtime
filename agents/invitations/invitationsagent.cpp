@@ -149,7 +149,7 @@ public:
     }
 
 private:
-    InvitationsAgent *m_agent;
+    InvitationsAgent *m_agent = nullptr;
     const QByteArray sInvitationsType;
     mutable Collection m_collection;
 };

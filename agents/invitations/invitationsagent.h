@@ -49,7 +49,7 @@ private Q_SLOTS:
     void modifyItemDone(KJob *job);
 
 private:
-    InvitationsAgent *m_agent;
+    InvitationsAgent *m_agent = nullptr;
     const Akonadi::Item m_originalItem;
     QList<Akonadi::ItemCreateJob *> m_jobs;
 };
@@ -80,7 +80,7 @@ private:
 
 private:
     QString m_resourceId;
-    InvitationsCollection *m_invitationsCollection;
+    InvitationsCollection *m_invitationsCollection = nullptr;
     Akonadi::Collection m_collection;
 };
 

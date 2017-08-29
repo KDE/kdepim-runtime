@@ -37,7 +37,7 @@ private Q_SLOTS:
     void abortSelected();
 private:
     MigrationScheduler &mScheduler;
-    QItemSelectionModel *mSelectionModel;
+    QItemSelectionModel *mSelectionModel = nullptr;
 public Q_SLOTS:
     void onItemActivated(const QModelIndex &);
 };

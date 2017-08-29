@@ -61,15 +61,15 @@ public Q_SLOTS:
 private:
     void scrollBarMoved(int value);
     QEventLoopLocker eventLoopLocker;
-    QDialogButtonBox *mButtonBox;
-    QListWidget *mList;
-    QLabel *mStatusLabel;
-    QProgressBar *mProgressBar;
+    QDialogButtonBox *mButtonBox = nullptr;
+    QListWidget *mList = nullptr;
+    QLabel *mStatusLabel = nullptr;
+    QProgressBar *mProgressBar = nullptr;
     int mMigratorCount;
     static bool mError;
-    bool mChange;
-    bool mCloseWhenDone;
-    bool mAutoScrollList;
+    bool mChange = false;
+    bool mCloseWhenDone = false;
+    bool mAutoScrollList = false;
 };
 
 #endif

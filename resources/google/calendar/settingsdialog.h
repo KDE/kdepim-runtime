@@ -42,15 +42,15 @@ private Q_SLOTS:
     void saveSettings() override;
 
 private:
-    QGroupBox *m_calendarsBox;
-    QListWidget *m_calendarsList;
-    QPushButton *m_reloadCalendarsBtn;
-    QLabel *m_eventsLimitLabel;
-    KDateComboBox *m_eventsLimitCombo;
+    QGroupBox *m_calendarsBox = nullptr;
+    QListWidget *m_calendarsList = nullptr;
+    QPushButton *m_reloadCalendarsBtn = nullptr;
+    QLabel *m_eventsLimitLabel = nullptr;
+    KDateComboBox *m_eventsLimitCombo = nullptr;
 
-    QGroupBox *m_taskListsBox;
-    QListWidget *m_taskListsList;
-    QPushButton *m_reloadTaskListsBtn;
+    QGroupBox *m_taskListsBox = nullptr;
+    QListWidget *m_taskListsList = nullptr;
+    QPushButton *m_reloadTaskListsBtn = nullptr;
 
 };
 

@@ -74,8 +74,8 @@ public:
 
     MailDispatcherAgent *const q;
 
-    OutboxQueue *queue;
-    SendJob *currentJob;
+    OutboxQueue *queue = nullptr;
+    SendJob *currentJob = nullptr;
     Item currentItem;
     bool aborting;
     bool sendingInProgress;
@@ -83,7 +83,7 @@ public:
     bool errorOccurred;
     bool showSentNotification;
     qulonglong sentItemsSize;
-    SentActionHandler *sentActionHandler;
+    SentActionHandler *sentActionHandler = nullptr;
 
     // Q_SLOTS:
     void abort();

@@ -127,7 +127,7 @@ private:
     QScopedPointer<MigratorModel> mModel;
     QHash<QString, QSharedPointer<LogModel> > mLogModel;
     QPointer<MigrationExecutor> mAutostartExecutor;
-    KJobTrackerInterface *mJobTracker;
+    KJobTrackerInterface *mJobTracker = nullptr;
 };
 
 #endif // MIGRATIONSCHEDULER_H

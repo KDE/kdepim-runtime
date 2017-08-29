@@ -71,15 +71,15 @@ private:
 
     void slotCollectionTreeFetched();
     void forceStatus(const QModelIndex &parent, bool status);
-    QTreeView *mFolderView;
-    Akonadi::EntityTreeModel *mModel;
-    Akonadi::ChangeRecorder *mChangeRecorder;
+    QTreeView *mFolderView = nullptr;
+    Akonadi::EntityTreeModel *mModel = nullptr;
+    Akonadi::ChangeRecorder *mChangeRecorder = nullptr;
 #if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
     KRecursiveFilterProxyModel *mCollectionFilter = nullptr;
 #else
     QSortFilterProxyModel *mCollectionFilter = nullptr;
 #endif
-    NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel;
+    NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel = nullptr;
 };
 
 #endif // NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H

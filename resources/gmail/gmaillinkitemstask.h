@@ -57,7 +57,7 @@ private:
     QList<QByteArray> mLabels;
     QMap<QByteArray, Akonadi::Collection> mLabelCollectionMap;
 
-    GmailResource *mResource;
+    GmailResource *mResource = nullptr;
 };
 
 #endif // GMAILLINKITEMSTASK_H

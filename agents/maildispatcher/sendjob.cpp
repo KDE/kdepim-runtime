@@ -70,10 +70,10 @@ public:
 
     SendJob *const q;
     Item item;
-    KJob *currentJob;
+    KJob *currentJob = nullptr;
     QString resourceId;
-    QDBusInterface *interface;
-    bool aborting;
+    QDBusInterface *interface = nullptr;
+    bool aborting = false;
 
     void doAkonadiTransport();
     void doTraditionalTransport();

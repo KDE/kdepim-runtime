@@ -86,7 +86,7 @@ private Q_SLOTS:
     void logMessage(KMigratorBase::MessageType type, const QString &msg);
 
 private:
-    QFile *m_logFile;
+    QFile *m_logFile = nullptr;
     QEventLoopLocker eventLoopLocker;
 };
 

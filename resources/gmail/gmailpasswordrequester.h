@@ -43,7 +43,7 @@ private Q_SLOTS:
     void onAuthFinished(const KGAPI2::AccountPtr &account, bool userRejected);
 
 private:
-    GmailResource *mResource;
+    GmailResource *mResource = nullptr;
 };
 
 #endif // GMAILPASSWORDREQUESTER_H

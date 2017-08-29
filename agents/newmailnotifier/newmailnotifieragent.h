@@ -116,9 +116,9 @@ private:
     QHash<QString, QString> mCacheResourceName;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
-    KIdentityManagement::IdentityManager *mIdentityManager;
+    KIdentityManagement::IdentityManager *mIdentityManager = nullptr;
 #ifdef HAVE_TEXTTOSPEECH
-    QTextToSpeech *mTextToSpeech;
+    QTextToSpeech *mTextToSpeech = nullptr;
 #endif
 };
 

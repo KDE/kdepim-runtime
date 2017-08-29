@@ -99,17 +99,17 @@ private:
     void writeConfig();
     void applyChanges();
 
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
     bool m_subscriptionChanged;
 
-    QTreeView *m_treeView;
+    QTreeView *m_treeView = nullptr;
 
-    QLineEdit *m_lineEdit;
-    QCheckBox *m_enableSubscription;
-    SubscriptionFilterProxyModel *m_filter;
-    QStandardItemModel *m_model;
+    QLineEdit *m_lineEdit = nullptr;
+    QCheckBox *m_enableSubscription = nullptr;
+    SubscriptionFilterProxyModel *m_filter = nullptr;
+    QStandardItemModel *m_model = nullptr;
     QMap<QString, QStandardItem *> m_itemsMap;
-    QPushButton *mUser1Button;
+    QPushButton *mUser1Button = nullptr;
 };
 
 #endif

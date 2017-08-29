@@ -66,11 +66,11 @@ public:
     OutboxQueue *const q;
 
     Collection outbox;
-    Monitor *monitor;
+    Monitor *monitor = nullptr;
     QList<Item> queue;
     QSet<Item> futureItems; // keeps track of items removed in the meantime
     QMultiMap<QDateTime, Item> futureMap;
-    QTimer *futureTimer;
+    QTimer *futureTimer = nullptr;
     qulonglong totalSize;
     int outboxDiscoveryRetries;
 

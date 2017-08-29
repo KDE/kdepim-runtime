@@ -40,7 +40,7 @@ private:
     void readConfig();
     void writeConfig();
     Ui::ConfigDialog ui;
-    KConfigDialogManager *mManager;
+    KConfigDialogManager *mManager = nullptr;
 };
 
 #endif

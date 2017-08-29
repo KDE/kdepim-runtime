@@ -60,7 +60,7 @@ private Q_SLOTS:
     void onRetrieveItemsCollectionRetrieved(KJob *job);
 
 private:
-    mutable GmailSettings *m_settings;
+    mutable GmailSettings *m_settings = nullptr;
 };
 
 #endif // GMAILRESOURCE_H

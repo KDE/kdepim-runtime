@@ -64,16 +64,16 @@ private Q_SLOTS:
 private:
     void readSettings();
 
-    GmailResource *m_parentResource;
-    Ui::GmailConfigDialog *m_ui;
+    GmailResource *m_parentResource = nullptr;
+    Ui::GmailConfigDialog *m_ui = nullptr;
     bool m_subscriptionsChanged;
     bool m_shouldClearCache;
-    KIdentityManagement::IdentityManager *m_identityManager;
-    KIdentityManagement::IdentityCombo *m_identityCombobox;
+    KIdentityManagement::IdentityManager *m_identityManager = nullptr;
+    KIdentityManagement::IdentityCombo *m_identityCombobox = nullptr;
     QString m_oldResourceName;
     KGAPI2::AccountPtr m_account;
-    FolderArchiveSettingPage *m_folderArchiveSettingPage;
-    QPushButton *mOkButton;
+    FolderArchiveSettingPage *m_folderArchiveSettingPage = nullptr;
+    QPushButton *mOkButton = nullptr;
 };
 
 #endif // GMAILSETUPSERVER_H

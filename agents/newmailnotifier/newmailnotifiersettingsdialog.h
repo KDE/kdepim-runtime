@@ -39,17 +39,17 @@ private:
     void slotHelpLinkClicked(const QString &);
     void writeConfig();
     void readConfig();
-    QCheckBox *mShowPhoto;
-    QCheckBox *mShowFrom;
-    QCheckBox *mShowSubject;
-    QCheckBox *mShowFolders;
-    QCheckBox *mExcludeMySelf;
-    QCheckBox *mAllowToShowMail;
-    QCheckBox *mKeepPersistentNotification;
-    KNotifyConfigWidget *mNotify;
-    QCheckBox *mTextToSpeak;
-    QLineEdit *mTextToSpeakSetting;
-    NewMailNotifierSelectCollectionWidget *mSelectCollection;
+    QCheckBox *mShowPhoto = nullptr;
+    QCheckBox *mShowFrom = nullptr;
+    QCheckBox *mShowSubject = nullptr;
+    QCheckBox *mShowFolders = nullptr;
+    QCheckBox *mExcludeMySelf = nullptr;
+    QCheckBox *mAllowToShowMail = nullptr;
+    QCheckBox *mKeepPersistentNotification = nullptr;
+    KNotifyConfigWidget *mNotify = nullptr;
+    QCheckBox *mTextToSpeak = nullptr;
+    QLineEdit *mTextToSpeakSetting = nullptr;
+    NewMailNotifierSelectCollectionWidget *mSelectCollection = nullptr;
 };
 
 #endif // NEWMAILNOTIFIERSETTINGSDIALOG_H

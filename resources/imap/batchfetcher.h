@@ -59,7 +59,7 @@ private:
     //Batch fetching
     KIMAP::ImapSet m_currentSet;
     KIMAP::FetchJob::FetchScope m_scope;
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
     int m_batchSize;
     bool m_uidBased;
     int m_fetchedItemsInCurrentBatch;
