@@ -49,7 +49,7 @@ private Q_SLOTS:
     void onDeleteDone(KJob *job);
 
 private:
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     const KMime::Message::Ptr mMessage;
     const QString mMailbox;
     qint64 mUidNext;

@@ -156,7 +156,7 @@ public:
     void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) override;
 
 private:
-    ImapResourceBase *m_resource;
+    ImapResourceBase *m_resource = nullptr;
     const TaskArguments m_arguments;
 };
 

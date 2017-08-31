@@ -170,8 +170,8 @@ protected:
     QUrl mCurrentUrl;
     QStringList mSupportedMimetypes;
     QString mCollectionIcon;
-    KIO::FileCopyJob *mDownloadJob;
-    KIO::FileCopyJob *mUploadJob;
+    KIO::FileCopyJob *mDownloadJob = nullptr;
+    KIO::FileCopyJob *mUploadJob = nullptr;
     QByteArray mCurrentHash;
 
 protected Q_SLOTS:

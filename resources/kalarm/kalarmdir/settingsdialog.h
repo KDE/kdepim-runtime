@@ -55,11 +55,11 @@ private Q_SLOTS:
 
 private:
     Ui::SettingsDialog    ui;
-    AlarmTypeWidget      *mTypeSelector;
-    QPushButton          *mOkButton;
-    KConfigDialogManager *mManager;
-    Akonadi_KAlarm_Dir_Resource::Settings *mSettings;
-    bool                  mReadOnlySelected;   // read-only was set by user (not by validate())
+    AlarmTypeWidget      *mTypeSelector = nullptr;
+    QPushButton          *mOkButton = nullptr;
+    KConfigDialogManager *mManager = nullptr;
+    Akonadi_KAlarm_Dir_Resource::Settings *mSettings = nullptr;
+    bool                  mReadOnlySelected = false;   // read-only was set by user (not by validate())
 };
 
 }

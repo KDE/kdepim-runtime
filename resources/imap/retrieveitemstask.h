@@ -73,13 +73,13 @@ private:
     void listFlagsForImapSet(const KIMAP::ImapSet &set);
     void taskComplete();
 
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
     QVector<qint64> m_messageUidsMissingBody;
     int m_fetchedMissingBodies;
     bool m_fetchMissingBodies;
     bool m_incremental;
     qint64 m_localHighestModSeq;
-    BatchFetcher *m_batchFetcher;
+    BatchFetcher *m_batchFetcher = nullptr;
     Akonadi::Collection m_modifiedCollection;
     bool m_uidBasedFetch;
     bool m_flagsChanged;

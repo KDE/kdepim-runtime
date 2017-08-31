@@ -128,7 +128,7 @@ private:
 
     QString mIndexFileName;
     QFile mIndexFile;
-    FILE *mFp;
+    FILE *mFp = nullptr;
 
     bool mConvertToUtf8;
     bool mIndexSwapByteOrder; // Index file was written with swapped byte order

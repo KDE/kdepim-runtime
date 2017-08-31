@@ -312,7 +312,7 @@ bool KMIndexReader::readHeader(int *version)
 bool KMIndexReader::readIndex()
 {
     qint32 len;
-    KMIndexData *msg;
+    KMIndexData *msg = nullptr;
 
     Q_ASSERT(mFp != nullptr);
     rewind(mFp);

@@ -44,7 +44,7 @@ protected:
     virtual void startRelationTask(KIMAP::Session *session) = 0;
 
 private:
-    KIMAP::Session *mImapSession;
+    KIMAP::Session *mImapSession = nullptr;
 
 private Q_SLOTS:
     void onCollectionFetchResult(KJob *job);

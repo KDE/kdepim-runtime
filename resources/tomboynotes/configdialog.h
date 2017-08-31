@@ -42,10 +42,10 @@ public:
     void saveSettings();
 
 private:
-    Ui::ConfigDialog *ui;
+    Ui::ConfigDialog *ui = nullptr;
 
-    KConfigDialogManager *mManager;
-    Settings *mSettings;
+    KConfigDialogManager *mManager = nullptr;
+    Settings *mSettings = nullptr;
 };
 
 #endif // CONFIGDIALOG_H

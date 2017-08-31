@@ -45,11 +45,11 @@ private:
     void readConfig();
     void writeConfig();
     Ui::ConfigDialog ui;
-    KConfigDialogManager *mManager;
-    FolderArchiveSettingPage *mFolderArchiveSettingPage;
-    Akonadi_Maildir_Resource::MaildirSettings *mSettings;
-    bool mToplevelIsContainer;
-    QPushButton *mOkButton;
+    KConfigDialogManager *mManager = nullptr;
+    FolderArchiveSettingPage *mFolderArchiveSettingPage = nullptr;
+    Akonadi_Maildir_Resource::MaildirSettings *mSettings = nullptr;
+    bool mToplevelIsContainer = false;
+    QPushButton *mOkButton = nullptr;
 };
 
 #endif

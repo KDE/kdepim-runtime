@@ -45,9 +45,9 @@ protected:
 private:
     void triggerFetchJob();
 
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
     qint64 m_uid;
-    bool m_messageReceived;
+    bool m_messageReceived = false;
 };
 
 #endif

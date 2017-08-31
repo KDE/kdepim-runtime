@@ -163,7 +163,7 @@ protected:
     }
 
 private:
-    FileStore::FiFoQueueJobSession *mParent;
+    FileStore::FiFoQueueJobSession *mParent = nullptr;
 };
 
 FileStore::FiFoQueueJobSession::FiFoQueueJobSession(QObject *parent)

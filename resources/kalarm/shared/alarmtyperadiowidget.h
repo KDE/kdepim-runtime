@@ -42,7 +42,7 @@ public:
 
 private:
     Ui::AlarmTypeRadioWidget ui;
-    QButtonGroup *mButtonGroup;
+    QButtonGroup *mButtonGroup = nullptr;
 };
 
 #endif // ALARMTYPERADIOWIDGET_H

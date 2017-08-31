@@ -35,7 +35,7 @@ namespace Akonadi
 template <typename Settings>
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
 {
-    Settings *mSettings;
+    Settings *mSettings = nullptr;
 
 public:
     explicit SingleFileResourceConfigDialog(WId windowId, Settings *settings)

@@ -32,7 +32,7 @@ public:
     }
 
 public:
-    FileStore::StoreCompactJob *mParent;
+    FileStore::StoreCompactJob *mParent = nullptr;
 
     Collection::List mCollections;
     Item::List mItems;

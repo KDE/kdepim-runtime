@@ -100,7 +100,7 @@ private:
     };
     QHash<QString, EventFile> mEvents;         // cached alarms and file names, indexed by ID
     QHash<QString, QString>   mFileEventIds;   // alarm IDs, indexed by file name
-    Akonadi_KAlarm_Dir_Resource::Settings *mSettings;
+    Akonadi_KAlarm_Dir_Resource::Settings *mSettings = nullptr;
     Akonadi::Collection::Id   mCollectionId;   // ID of this resource's collection
     KACalendar::Compat        mCompatibility;
     int                       mVersion;        // calendar format version

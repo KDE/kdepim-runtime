@@ -44,7 +44,7 @@ protected:
     void startRelationTask(KIMAP::Session *session) override;
 
 private:
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     Akonadi::Tag::List mTags;
     QHash<QString, Akonadi::Item::List> mTagMembers;
     Akonadi::Relation::List mRelations;

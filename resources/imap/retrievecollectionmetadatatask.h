@@ -47,7 +47,7 @@ private:
     int m_pendingMetaDataJobs;
 
     Akonadi::Collection m_collection;
-    KIMAP::Session *m_session;
+    KIMAP::Session *m_session = nullptr;
 };
 
 #endif

@@ -37,8 +37,8 @@ public:
 
 private:
     PasswordRequesterInterface *requesterImpl();
-    PasswordRequesterInterface *mImpl;
-    ImapResourceBase *mResource;
+    PasswordRequesterInterface *mImpl = nullptr;
+    ImapResourceBase *mResource = nullptr;
 };
 
 #endif

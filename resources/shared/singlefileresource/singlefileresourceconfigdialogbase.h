@@ -97,19 +97,19 @@ protected Q_SLOTS:
 
 protected:
     Ui::SingleFileResourceConfigDialog ui;
-    KConfigDialogManager *mManager;
+    KConfigDialogManager *mManager = nullptr;
 
 private:
     void validate();
     void slotStatJobResult(KJob *);
     void writeConfig();
     void readConfig();
-    KIO::StatJob *mStatJob;
-    SingleFileValidatingWidget *mAppendedWidget;
-    bool mDirUrlChecked;
-    bool mMonitorEnabled;
-    bool mLocalFileOnly;
-    QPushButton *mOkButton;
+    KIO::StatJob *mStatJob = nullptr;
+    SingleFileValidatingWidget *mAppendedWidget = nullptr;
+    bool mDirUrlChecked = false;
+    bool mMonitorEnabled = false;
+    bool mLocalFileOnly = false;
+    QPushButton *mOkButton = nullptr;
 };
 
 /**

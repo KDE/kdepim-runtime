@@ -189,7 +189,7 @@ void GmailConfigDialog::readSettings()
         const QString refreshToken = settings->refreshToken(&rejected);
         if (rejected) {
             //m_ui->password->setEnabled( false );
-            KMessageBox::information(0, i18n("Could not access KWallet. If you want to use Gmail resource, you have to activate it."));
+            KMessageBox::information(nullptr, i18n("Could not access KWallet. If you want to use Gmail resource, you have to activate it."));
         } else {
             m_account->setAccessToken(accessToken);
             m_account->setRefreshToken(refreshToken);

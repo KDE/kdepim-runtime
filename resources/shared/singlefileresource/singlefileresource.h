@@ -381,7 +381,7 @@ protected:
     }
 
 protected:
-    Settings *mSettings;
+    Settings *mSettings = nullptr;
 };
 
 }

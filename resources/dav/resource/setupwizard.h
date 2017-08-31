@@ -76,10 +76,10 @@ public:
     int nextId() const override;
 
 private:
-    QLabel *mLabel;
-    QButtonGroup *mProviderGroup;
-    QRadioButton *mUseProvider;
-    QRadioButton *mDontUseProvider;
+    QLabel *mLabel = nullptr;
+    QButtonGroup *mProviderGroup = nullptr;
+    QRadioButton *mUseProvider = nullptr;
+    QRadioButton *mDontUseProvider = nullptr;
 };
 
 class CredentialsPage : public QWizardPage
@@ -89,8 +89,8 @@ public:
     int nextId() const override;
 
 private:
-    KLineEdit *mUserName;
-    KPasswordLineEdit *mPassword;
+    KLineEdit *mUserName = nullptr;
+    KPasswordLineEdit *mPassword = nullptr;
 };
 
 class ServerTypePage : public QWizardPage
@@ -104,8 +104,8 @@ public:
 
 private:
     void manualConfigToggled(bool toggled);
-    QButtonGroup *mServerGroup;
-    QComboBox *mProvidersCombo;
+    QButtonGroup *mServerGroup = nullptr;
+    QComboBox *mProvidersCombo = nullptr;
 };
 
 class ConnectionPage : public QWizardPage
@@ -120,17 +120,17 @@ public:
 
 private:
     void urlElementChanged();
-    QFormLayout *mLayout;
-    KLineEdit *mHost;
-    KLineEdit *mPath;
-    QCheckBox *mUseSecureConnection;
-    QFormLayout *mPreviewLayout;
-    QLabel *mCalDavUrlLabel;
-    QLabel *mCalDavUrlPreview;
-    QLabel *mCardDavUrlLabel;
-    QLabel *mCardDavUrlPreview;
-    QLabel *mGroupDavUrlLabel;
-    QLabel *mGroupDavUrlPreview;
+    QFormLayout *mLayout = nullptr;
+    KLineEdit *mHost = nullptr;
+    KLineEdit *mPath = nullptr;
+    QCheckBox *mUseSecureConnection = nullptr;
+    QFormLayout *mPreviewLayout = nullptr;
+    QLabel *mCalDavUrlLabel = nullptr;
+    QLabel *mCalDavUrlPreview = nullptr;
+    QLabel *mCardDavUrlLabel = nullptr;
+    QLabel *mCardDavUrlPreview = nullptr;
+    QLabel *mGroupDavUrlLabel = nullptr;
+    QLabel *mGroupDavUrlPreview = nullptr;
 };
 
 class CheckPage : public QWizardPage
@@ -143,7 +143,7 @@ public:
 private:
     void checkConnection();
     void onFetchDone(KJob *);
-    QTextBrowser *mStatusLabel;
+    QTextBrowser *mStatusLabel = nullptr;
 };
 
 #endif
