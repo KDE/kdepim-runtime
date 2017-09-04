@@ -41,6 +41,7 @@ endif()
 
 
 
+
 set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
@@ -151,6 +152,7 @@ add_definitions( -DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT )
 
 
 # Extra package
+find_package(KPimGAPI "5.6.1" CONFIG)
 find_package(Libkolabxml 1.1 QUIET CONFIG)
 
 add_subdirectory(resources)
