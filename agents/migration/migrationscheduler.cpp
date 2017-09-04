@@ -187,6 +187,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
             return migrator->status();
         default:
             Q_ASSERT(false);
+            return QVariant();
         }
     case IdentifierRole:
         return migrator->identifier();
