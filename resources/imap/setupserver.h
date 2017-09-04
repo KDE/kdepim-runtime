@@ -83,18 +83,18 @@ private:
     void readSettings();
     void populateDefaultAuthenticationOptions();
 
-    ImapResourceBase *m_parentResource;
-    Ui::SetupServerView *m_ui;
-    MailTransport::ServerTest *m_serverTest;
-    bool m_subscriptionsChanged;
-    bool m_shouldClearCache;
+    ImapResourceBase *m_parentResource = nullptr;
+    Ui::SetupServerView *m_ui = nullptr;
+    MailTransport::ServerTest *m_serverTest = nullptr;
+    bool m_subscriptionsChanged = false;
+    bool m_shouldClearCache = false;
     QString m_vacationFileName;
-    KIdentityManagement::IdentityCombo *m_identityCombobox;
+    KIdentityManagement::IdentityCombo *m_identityCombobox = nullptr;
     QString m_oldResourceName;
     QRegExpValidator mValidator;
     Akonadi::Collection mOldTrash;
-    FolderArchiveSettingPage *m_folderArchiveSettingPage;
-    QPushButton *mOkButton;
+    FolderArchiveSettingPage *m_folderArchiveSettingPage = nullptr;
+    QPushButton *mOkButton = nullptr;
 
 private Q_SLOTS:
     void slotTest();

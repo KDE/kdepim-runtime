@@ -67,11 +67,11 @@ protected:
         Idle, Requesting, ReRequesting
     };
 
-    QNetworkAccessManager *manager_;
-    O2 *authenticator_;
+    QNetworkAccessManager *manager_ = nullptr;
+    O2 *authenticator_ = nullptr;
     QNetworkRequest request_;
     QByteArray data_;
-    QNetworkReply *reply_;
+    QNetworkReply *reply_ = nullptr;
     Status status_;
     int id_;
     QNetworkAccessManager::Operation operation_;

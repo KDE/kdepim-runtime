@@ -44,7 +44,7 @@ void EntityTreeCreateJob::doStart()
 
 void EntityTreeCreateJob::createNextLevelOfCollections()
 {
-    CollectionCreateJob *job;
+    CollectionCreateJob *job = nullptr;
 
     const Collection::List colList = m_collections.takeFirst();
     for (const Collection &collection : colList) {

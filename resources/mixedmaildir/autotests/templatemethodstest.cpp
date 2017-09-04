@@ -55,7 +55,7 @@ public:
 public:
     Collection mTopLevelCollection;
 
-    mutable FileStore::Job *mLastCheckedJob;
+    mutable FileStore::Job *mLastCheckedJob = nullptr;
     mutable int mErrorCode;
     mutable QString mErrorText;
 
@@ -96,7 +96,7 @@ public:
 
 private:
     QTemporaryDir mDir;
-    TestStore *mStore;
+    TestStore *mStore = nullptr;
 
 private Q_SLOTS:
     void init();

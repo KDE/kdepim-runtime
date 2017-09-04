@@ -48,7 +48,7 @@ private:
     void onUserRequestFinished();
     QString mUserURL;
 
-    QWebEngineView *mWebView;
+    QWebEngineView *mWebView = nullptr;
 
 };
 

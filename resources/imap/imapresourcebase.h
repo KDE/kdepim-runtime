@@ -152,7 +152,7 @@ protected:
     //Starts and queues a task
     void startTask(ResourceTask *task);
     void queueTask(ResourceTask *task);
-    SessionPool *m_pool;
+    SessionPool *m_pool = nullptr;
     mutable Settings *m_settings;
 
 private:
@@ -165,8 +165,8 @@ private:
 
     QList<ResourceTask *> m_taskList; //used to be able to kill tasks
     QPointer<SubscriptionDialog> mSubscriptions;
-    ImapIdleManager *m_idle;
-    QTimer *m_statusMessageTimer;
+    ImapIdleManager *m_idle = nullptr;
+    QTimer *m_statusMessageTimer = nullptr;
     QChar m_separatorCharacter;
 };
 

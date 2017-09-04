@@ -40,8 +40,8 @@ private:
     void save();
     void validate();
     Ui::SettingsDialog ui;
-    KConfigDialogManager *mManager;
-    QPushButton *mOkButton;
+    KConfigDialogManager *mManager = nullptr;
+    QPushButton *mOkButton = nullptr;
 };
 
 }

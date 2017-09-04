@@ -69,7 +69,7 @@ private:
     QString authenticationToString(int type) const;
 
     QPointer<KIO::Slave> mSlave;
-    SlaveBaseJob *mCurrentJob;
+    SlaveBaseJob *mCurrentJob = nullptr;
     QString mPassword;
 };
 
@@ -93,8 +93,8 @@ protected:
     void startJob(const QString &path);
     virtual void connectJob();
 
-    KIO::TransferJob *mJob;
-    POPSession *mPOPSession;
+    KIO::TransferJob *mJob = nullptr;
+    POPSession *mPOPSession = nullptr;
 };
 
 class LoginJob : public SlaveBaseJob

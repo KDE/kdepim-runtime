@@ -62,7 +62,7 @@ private Q_SLOTS:
 
 private:
     QHash<KJob *, Akonadi::Item> mCurrentItemDeletions;
-    KMBox::MBox *mMBox;
+    KMBox::MBox *mMBox = nullptr;
 };
 
 #endif

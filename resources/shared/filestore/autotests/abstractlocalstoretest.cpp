@@ -48,8 +48,8 @@ public:
     TestStore() : mLastCheckedJob(nullptr), mLastProcessedJob(nullptr), mErrorCode(0) {}
 
 public:
-    mutable Akonadi::FileStore::Job *mLastCheckedJob;
-    Akonadi::FileStore::Job *mLastProcessedJob;
+    mutable Akonadi::FileStore::Job *mLastCheckedJob = nullptr;
+    Akonadi::FileStore::Job *mLastProcessedJob = nullptr;
 
     Collection mTopLevelCollection;
 

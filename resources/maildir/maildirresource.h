@@ -96,11 +96,11 @@ private:
     void restartMaildirScan(const KPIM::Maildir &maildir);
 
 private:
-    Akonadi_Maildir_Resource::MaildirSettings *mSettings;
-    KDirWatch *mFsWatcher;
+    Akonadi_Maildir_Resource::MaildirSettings *mSettings = nullptr;
+    KDirWatch *mFsWatcher = nullptr;
     QHash<QString, KPIM::Maildir> mMaildirsForCollection;
     QSet<QString> mChangedFiles; //files changed by the resource and that should be ignored in slotFileChanged
-    QTimer *mChangedCleanerTimer;
+    QTimer *mChangedCleanerTimer = nullptr;
 };
 
 #endif

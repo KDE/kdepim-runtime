@@ -76,7 +76,7 @@ public:
 public:
     const Collection mCollection;
     MixedMaildirStore *const mStore;
-    TransactionSequence *mTransaction;
+    TransactionSequence *mTransaction = nullptr;
 
     QHash<QString, Item> mServerItemsByRemoteId;
 

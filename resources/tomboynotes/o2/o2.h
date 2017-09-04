@@ -160,8 +160,8 @@ protected:
     QString code_;
     QString localhostPolicy_;
     QString apiKey_;
-    QNetworkAccessManager *manager_;
-    O2ReplyServer *replyServer_;
+    QNetworkAccessManager *manager_ = nullptr;
+    O2ReplyServer *replyServer_ = nullptr;
     O2ReplyList timedReplies_;
     GrantFlow grantFlow_;
 };

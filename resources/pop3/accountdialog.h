@@ -74,14 +74,14 @@ private:
     void populateDefaultAuthenticationOptions();
 
 private:
-    POP3Resource *mParentResource;
-    QButtonGroup *encryptionButtonGroup;
-    MailTransport::ServerTest *mServerTest;
+    POP3Resource *mParentResource = nullptr;
+    QButtonGroup *encryptionButtonGroup = nullptr;
+    MailTransport::ServerTest *mServerTest = nullptr;
     QRegExpValidator mValidator;
-    bool mServerTestFailed;
-    KWallet::Wallet *mWallet;
+    bool mServerTestFailed = false;
+    KWallet::Wallet *mWallet = nullptr;
     QString mInitalPassword;
-    QPushButton *mOkButton;
+    QPushButton *mOkButton = nullptr;
 };
 
 #endif

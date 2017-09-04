@@ -41,11 +41,11 @@ private Q_SLOTS:
     void checkConnectionJobFinished(KJob *);
 
 private:
-    KConfigDialogManager *mManager;
-    KLineEdit *mServerEdit;
-    KLineEdit *mUserEdit;
-    KLineEdit *mPasswordEdit;
-    QPushButton *mCheckConnectionButton;
+    KConfigDialogManager *mManager = nullptr;
+    KLineEdit *mServerEdit = nullptr;
+    KLineEdit *mUserEdit = nullptr;
+    KLineEdit *mPasswordEdit = nullptr;
+    QPushButton *mCheckConnectionButton = nullptr;
 };
 
 #endif

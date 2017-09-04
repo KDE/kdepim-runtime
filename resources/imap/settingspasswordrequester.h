@@ -51,9 +51,9 @@ private Q_SLOTS:
 private:
     QString requestManualAuth(bool *userRejected);
 
-    ImapResourceBase *m_resource;
-    QDialog *m_requestDialog;
-    QDialog *m_settingsDialog;
+    ImapResourceBase *m_resource = nullptr;
+    QDialog *m_requestDialog = nullptr;
+    QDialog *m_settingsDialog = nullptr;
 };
 
 #endif

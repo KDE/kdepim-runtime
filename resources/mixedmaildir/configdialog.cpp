@@ -30,8 +30,7 @@
 using KPIM::Maildir;
 
 ConfigDialog::ConfigDialog(QWidget *parent) :
-    QDialog(parent),
-    mToplevelIsContainer(false)
+    QDialog(parent)
 {
     setWindowTitle(i18n("Select a KMail Mail folder"));
     QWidget *mainWidget = new QWidget(this);

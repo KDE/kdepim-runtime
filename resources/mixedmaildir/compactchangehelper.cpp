@@ -49,12 +49,12 @@ class CompactChangeHelper::Private
     CompactChangeHelper *const q;
 
 public:
-    explicit Private(CompactChangeHelper *parent) : q(parent), mSession(nullptr)
+    explicit Private(CompactChangeHelper *parent) : q(parent)
     {
     }
 
 public:
-    Session *mSession;
+    Session *mSession = nullptr;
     CollectionRevisionMap mChangesByCollection;
     QQueue<UpdateBatch> mPendingUpdates;
     UpdateBatch mCurrentUpdate;

@@ -61,9 +61,9 @@ private:
     KPIM::Maildir m_maildir;
     QHash<QString, Akonadi::Item> m_localItems;
     QString m_mimeType;
-    Akonadi::TransactionSequence *m_transaction;
+    Akonadi::TransactionSequence *m_transaction = nullptr;
     int m_transactionSize;
-    QDirIterator *m_entryIterator;
+    QDirIterator *m_entryIterator = nullptr;
     qint64 m_previousMtime;
     qint64 m_highestMtime;
     QString m_listingPath;

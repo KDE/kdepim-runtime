@@ -149,14 +149,14 @@ private:
 
     State mState;
     Akonadi::Collection mTargetCollection;
-    POPSession *mPopSession;
+    POPSession *mPopSession = nullptr;
     bool mAskAgain;
-    QTimer *mIntervalTimer;
+    QTimer *mIntervalTimer = nullptr;
     bool mIntervalCheckInProgress;
     QString mPassword;
     bool mSavePassword;
     bool mTestLocalInbox;
-    KWallet::Wallet *mWallet;
+    KWallet::Wallet *mWallet = nullptr;
 
     // Maps IDs on the server to message sizes on the server
     QMap<int, int> mIdsToSizeMap;

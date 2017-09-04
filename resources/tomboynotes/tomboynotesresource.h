@@ -69,12 +69,12 @@ private:
     void retryAfterFailure(const QString &errorMessage);
     // Status handling
     void showError(const QString &errorText);
-    QTimer *mStatusMessageTimer;
+    QTimer *mStatusMessageTimer = nullptr;
 
     // Only one UploadJob should run per time
     bool mUploadJobProcessRunning;
 
-    KIO::AccessManager *mManager;
+    KIO::AccessManager *mManager = nullptr;
 };
 
 #endif

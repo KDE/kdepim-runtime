@@ -337,10 +337,9 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mServerGroup = new QButtonGroup(this);
     mServerGroup->setExclusive(true);
 
-    QRadioButton *button;
 
     QHBoxLayout *hLayout = new QHBoxLayout;
-    button = new QRadioButton(i18n("Use one of those servers:"));
+    QRadioButton *button = new QRadioButton(i18n("Use one of those servers:"));
     registerField(QStringLiteral("templateConfiguration"), button);
     mServerGroup->addButton(button);
     mServerGroup->setId(button, 0);

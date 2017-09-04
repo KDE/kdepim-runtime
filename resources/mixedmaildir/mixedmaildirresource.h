@@ -92,7 +92,7 @@ private Q_SLOTS:
     void tagFetchJobResult(KJob *job);
 
 private:
-    MixedMaildirStore *mStore;
+    MixedMaildirStore *mStore = nullptr;
 
     struct TagContext {
         Akonadi::Item mItem;
@@ -106,7 +106,7 @@ private:
     QSet<Akonadi::Collection::Id> mSynchronizedCollections;
     QSet<Akonadi::Collection::Id> mPendingSynchronizeCollections;
 
-    CompactChangeHelper *mCompactHelper;
+    CompactChangeHelper *mCompactHelper = nullptr;
 };
 
 #endif

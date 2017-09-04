@@ -54,8 +54,8 @@ protected:
     /// Augment reply with a timer.
     QNetworkReply *addTimer(QNetworkReply *reply);
 
-    QNetworkAccessManager *manager_;
-    O1 *authenticator_;
+    QNetworkAccessManager *manager_ = nullptr;
+    O1 *authenticator_ = nullptr;
 };
 
 #endif // O1REQUESTOR_H

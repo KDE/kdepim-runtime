@@ -58,7 +58,7 @@ private Q_SLOTS:
     void onReplaceDone(KJob *job);
 
 private:
-    KIMAP::Session *mSession;
+    KIMAP::Session *mSession = nullptr;
     KMime::Message::Ptr mMessage;
     const QString mMailbox;
     qint64 mUidNext;

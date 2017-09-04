@@ -118,8 +118,8 @@ protected:
     QUrl refreshTokenUrl_;
     QString verifier_;
     QString signatureMethod_;
-    QNetworkAccessManager *manager_;
-    O2ReplyServer *replyServer_;
+    QNetworkAccessManager *manager_ = nullptr;
+    O2ReplyServer *replyServer_ = nullptr;
 };
 
 #endif // O1_H

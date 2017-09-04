@@ -39,9 +39,9 @@ private Q_SLOTS:
 
 private:
     Ui::ConfigDialog ui;
-    KConfigDialogManager *mManager;
-    QPushButton *mOkButton;
-    bool mToplevelIsContainer;
+    KConfigDialogManager *mManager = nullptr;
+    QPushButton *mOkButton = nullptr;
+    bool mToplevelIsContainer = false;
 };
 
 #endif

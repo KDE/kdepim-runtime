@@ -53,8 +53,8 @@ public:
     }
 
 private:
-    MixedMaildirStore *mStore;
-    QTemporaryDir *mDir;
+    MixedMaildirStore *mStore = nullptr;
+    QTemporaryDir *mDir = nullptr;
 
 private Q_SLOTS:
     void init();

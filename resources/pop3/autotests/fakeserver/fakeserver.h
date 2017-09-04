@@ -68,11 +68,11 @@ private:
     QList<QByteArray> mAllowedDeletions;
     QList<QByteArray> mAllowedRetrieves;
     QList<QByteArray> mMails;
-    QTcpServer *mTcpServer;
-    QTcpSocket *mTcpServerConnection;
+    QTcpServer *mTcpServer = nullptr;
+    QTcpSocket *mTcpServerConnection = nullptr;
     int mConnections;
     int mProgress;
-    bool mGotDisconnected;
+    bool mGotDisconnected = false;
 
     // We use one big mutex to protect everything
     // There shouldn't be deadlocks, as there are only 2 places where the functions
@@ -98,7 +98,7 @@ public:
 
 private:
 
-    FakeServer *mServer;
+    FakeServer *mServer = nullptr;
 };
 
 #endif
