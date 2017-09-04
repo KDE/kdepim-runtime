@@ -96,7 +96,11 @@ void RetrieveItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &me
 {
     KIMAP::FetchJob *fetch = qobject_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch != nullptr);
-    Q_ASSERT(messages.size() == 1);
+    if (messages.size() == 0) {
+        qCDebug(IMAPRESOURCE_LOG) << "Requested message does not exist on the server anymore";
+        cancelTask(i18n("No message retrieved, failed to read the message."));
+        return;
+    }
 
     Akonadi::Item i = item();
 
