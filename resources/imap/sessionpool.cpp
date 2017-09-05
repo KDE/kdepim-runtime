@@ -234,6 +234,11 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
     if (!m_initialConnectDone) {
         m_initialConnectDone = true;
         Q_EMIT connectDone();
+        // If the slot connected to connectDone() decided to disconnect the SessionPool
+        // then we must end here, because we expects the pools to be empty now!
+        if (!m_initialConnectDone) {
+            return;
+        }
     }
 
     m_connectingPool.removeAll(session);
@@ -582,12 +587,22 @@ void SessionPool::onSessionDestroyed(QObject *object)
 {
     //Safety net for bugs that cause dangling session pointers
     KIMAP::Session *session = static_cast<KIMAP::Session *>(object);
-    if (m_unusedPool.contains(session) || m_reservedPool.contains(session) || m_connectingPool.contains(session)) {
-        qCWarning(IMAPRESOURCE_LOG) << "Session destroyed while still in pool" << session;
+    bool sessionInPool = false;
+    if (m_unusedPool.contains(session)) {
+        qCWarning(IMAPRESOURCE_LOG) << "Session" << object << "destroyed while still in unused pool!";
         m_unusedPool.removeAll(session);
-        m_reservedPool.removeAll(session);
-        m_connectingPool.removeAll(session);
-        Q_ASSERT(false);
+        sessionInPool = true;
     }
+    if (m_reservedPool.contains(session)) {
+        qCWarning(IMAPRESOURCE_LOG) << "Session" << object << "destroyed while still in reserved pool!";
+        m_reservedPool.removeAll(session);
+        sessionInPool = true;
+    }
+    if (m_connectingPool.contains(session)) {
+        qCWarning(IMAPRESOURCE_LOG) << "Session" << object << "destroyed while still in connecting pool!";
+        m_connectingPool.removeAll(session);
+        sessionInPool = true;
+    }
+    Q_ASSERT(!sessionInPool);
 }
 
