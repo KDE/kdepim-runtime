@@ -44,6 +44,8 @@ class SessionPool;
 
 class KJob;
 
+class QTimer;
+
 class ImapIdleManager : public QObject
 {
     Q_OBJECT
@@ -67,7 +69,7 @@ private Q_SLOTS:
                          int messageCount, int recentCount);
     void onFlagsChanged(KIMAP::IdleJob *job);
     void reconnect();
-
+    void restartIdle();
 private:
     void startIdle();
 
@@ -77,6 +79,7 @@ private:
     QPointer<KIMAP::IdleJob> m_idle;
     ImapResourceBase *m_resource = nullptr;
     ResourceStateInterface::Ptr m_state;
+    QTimer *m_idleTimeout;
     qint64 m_lastMessageCount;
     qint64 m_lastRecentCount;
 };

@@ -36,14 +36,29 @@
 #include "imapresource.h"
 #include "sessionpool.h"
 
+#include <chrono>
+
+namespace {
+
+// RFC2177 says clients should restart IDLE every 29 minutes, as
+// servers MAY consider clients inactive after 30 minutes.
+// TODO: Make configurable to support less RF-conformant servers
+static const auto IdleTimeout = std::chrono::minutes(1);
+
+}
+
 ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state,
                                  SessionPool *pool, ImapResourceBase *parent)
     : QObject(parent), m_sessionRequestId(0), m_pool(pool), m_session(nullptr),
-      m_idle(nullptr), m_resource(parent), m_state(state),
+      m_idle(nullptr), m_resource(parent), m_state(state), m_idleTimeout(nullptr),
       m_lastMessageCount(-1), m_lastRecentCount(-1)
 {
     connect(pool, &SessionPool::sessionRequestDone, this, &ImapIdleManager::onSessionRequestDone);
     m_sessionRequestId = m_pool->requestSession();
+
+    m_idleTimeout = new QTimer(this);
+    m_idleTimeout->setSingleShot(true);
+    connect(m_idleTimeout, &QTimer::timeout, this, &ImapIdleManager::restartIdle);
 }
 
 ImapIdleManager::~ImapIdleManager()
@@ -61,6 +76,7 @@ ImapIdleManager::~ImapIdleManager()
 
 void ImapIdleManager::stop()
 {
+    m_idleTimeout->stop();
     if (m_idle) {
         m_idle->stop();
         disconnect(m_idle, nullptr, this, nullptr);
@@ -102,16 +118,28 @@ void ImapIdleManager::onSessionRequestDone(qint64 requestId, KIMAP::Session *ses
 
 void ImapIdleManager::startIdle()
 {
-    KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
-    select->setMailBox(m_state->mailBoxForCollection(m_state->collection()));
-    connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
-    select->start();
+    const auto idleMailBox = m_state->mailBoxForCollection(m_state->collection());
+    if (m_session->selectedMailBox() != idleMailBox) {
+        KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+        select->setMailBox(idleMailBox);
+        connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
+        select->start();
+    }
 
     m_idle = new KIMAP::IdleJob(m_session);
     connect(m_idle.data(), &KIMAP::IdleJob::mailBoxStats, this, &ImapIdleManager::onStatsReceived);
     connect(m_idle.data(), &KIMAP::IdleJob::mailBoxMessageFlagsChanged, this, &ImapIdleManager::onFlagsChanged);
     connect(m_idle.data(), &KIMAP::IdleJob::result, this, &ImapIdleManager::onIdleStopped);
     m_idle->start();
+    m_idleTimeout->start(std::chrono::milliseconds(IdleTimeout).count());
+}
+
+void ImapIdleManager::restartIdle()
+{
+    qCDebug(IMAPRESOURCE_LOG) << "Restarting IDLE to prevent server from disconnecting me!";
+    if (m_idle) {
+        m_idle->stop(); // this will invoke onIdleStopped(), which will automatically reconnect
+    }
 }
 
 void ImapIdleManager::onConnectionLost(KIMAP::Session *session)
