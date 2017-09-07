@@ -51,9 +51,8 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     m_accountManager(accountManager)
 {
     KWindowSystem::setMainWindow(this, wId);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QVBoxLayout *topLayout = new QVBoxLayout(this);
-    setLayout(topLayout);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
