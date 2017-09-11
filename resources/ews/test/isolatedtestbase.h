@@ -1,0 +1,148 @@
+/*
+    Copyright (C) 2017 Krzysztof Nowicki <krissn@op.pl>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA 02110-1301, USA.
+*/
+
+#ifndef ISOLATEDTESTBASE_H
+#define ISOLATEDTESTBASE_H
+
+#include <QObject>
+#include <QString>
+
+#include <Akonadi/KMime/SpecialMailCollections>
+
+#include "fakeewsserver.h"
+
+namespace Akonadi
+{
+class AgentInstance;
+}
+class FakeEwsServerThread;
+class OrgKdeAkonadiEwsSettingsInterface;
+class OrgKdeAkonadiEwsWalletInterface;
+
+class IsolatedTestBase : public QObject
+{
+    Q_OBJECT
+public:
+    class Folder
+    {
+    public:
+        enum DistinguishedType {
+            None,
+            Root,
+            Inbox,
+            Outbox,
+            Sent,
+            Trash,
+            Drafts,
+            Templates,
+            Calendar,
+            Tasks,
+            Contacts
+        };
+
+        QString id;
+        QString name;
+        DistinguishedType type;
+        QString parentId;
+    };
+
+    typedef QVector<Folder> FolderList;
+
+    explicit IsolatedTestBase(QObject *parent = 0);
+    ~IsolatedTestBase() override;
+
+    static QString loadResourceAsString(const QString &path);
+protected:
+    virtual void init();
+    virtual void cleanup();
+
+    bool setEwsResOnline(bool online, bool wait);
+protected:
+    QString mEwsResIdentifier;
+    QString mAkonadiInstanceIdentifier;
+    QScopedPointer<FakeEwsServerThread> mFakeServerThread;
+    QScopedPointer<Akonadi::AgentInstance> mEwsInstance;
+    QScopedPointer<OrgKdeAkonadiEwsSettingsInterface> mEwsSettingsInterface;
+    QScopedPointer<OrgKdeAkonadiEwsWalletInterface> mEwsWalletInterface;
+};
+
+class DialogEntryBase : public FakeEwsServer::DialogEntry
+{
+public:
+    explicit DialogEntryBase(const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback())
+    {
+        replyCallback = callback;
+        description = descr;
+    }
+};
+
+class MsgRootInboxDialogEntry : public DialogEntryBase
+{
+public:
+    explicit MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId,
+                                     const QString &descr = QString(),
+                                     const ReplyCallback &callback = ReplyCallback());
+};
+
+class SubscribedFoldersDialogEntry : public DialogEntryBase
+{
+public:
+    explicit SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &folders,
+                                          const QString &descr = QString(),
+                                          const ReplyCallback &callback = ReplyCallback());
+};
+
+class SpecialFoldersDialogEntry : public DialogEntryBase
+{
+public:
+    explicit SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &folders,
+                                       const QString &descr = QString(),
+                                       const ReplyCallback &callback = ReplyCallback());
+};
+
+class GetTagsEmptyDialogEntry : public DialogEntryBase
+{
+public:
+    explicit GetTagsEmptyDialogEntry(const QString &rootId, const QString &descr = QString(),
+                                     const ReplyCallback &callback = ReplyCallback());
+};
+
+class SubscribeStreamingDialogEntry : public DialogEntryBase
+{
+public:
+    explicit SubscribeStreamingDialogEntry(const QString &descr = QString(),
+                                           const ReplyCallback &callback = ReplyCallback());
+};
+
+class SyncFolderHierInitialDialogEntry : public DialogEntryBase
+{
+public:
+    explicit SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &folders,
+            const QString &syncState, const QString &descr = QString(),
+            const ReplyCallback &callback = ReplyCallback());
+};
+
+class UnsubscribeDialogEntry : public DialogEntryBase
+{
+public:
+    explicit UnsubscribeDialogEntry(const QString &descr = QString(),
+                                    const ReplyCallback &callback = ReplyCallback());
+};
+
+#endif

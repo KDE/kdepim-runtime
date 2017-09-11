@@ -1,0 +1,77 @@
+/*
+    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with this library; see the file COPYING.LIB.  If not, write to
+    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA 02110-1301, USA.
+*/
+
+#ifndef EWSPROPERTYFIELD_H
+#define EWSPROPERTYFIELD_H
+
+#include <QSharedDataPointer>
+#include <QXmlStreamWriter>
+
+#include "ewstypes.h"
+
+class EwsPropertyFieldPrivate;
+
+class EwsPropertyField
+{
+public:
+    enum Type {
+        Field,
+        ExtendedField,
+        IndexedField,
+        UnknownField
+    };
+
+    EwsPropertyField();
+    explicit EwsPropertyField(const QString &uri);  // FieldURI
+    EwsPropertyField(const QString &uri, unsigned index);   // IndexedFieldURI
+    EwsPropertyField(EwsDistinguishedPropSetId psid, unsigned id, EwsPropertyType type);
+    EwsPropertyField(EwsDistinguishedPropSetId psid, const QString &name, EwsPropertyType type);
+    EwsPropertyField(const QString &psid, unsigned id, EwsPropertyType type);
+    EwsPropertyField(const QString &psid, const QString &name, EwsPropertyType type);
+    EwsPropertyField(unsigned tag, EwsPropertyType type);
+    EwsPropertyField(const EwsPropertyField &other);
+    ~EwsPropertyField();
+
+    EwsPropertyField &operator=(const EwsPropertyField &other);
+    bool operator==(const EwsPropertyField &other) const;
+
+    EwsPropertyField(EwsPropertyField &&other);
+    EwsPropertyField &operator=(EwsPropertyField &&other);
+
+    void write(QXmlStreamWriter &writer) const;
+    bool read(QXmlStreamReader &reader);
+
+    bool writeWithValue(QXmlStreamWriter &writer, const QVariant &value) const;
+    void writeValue(QXmlStreamWriter &writer, const QVariant &value) const;
+    void writeExtendedValue(QXmlStreamWriter &writer, const QVariant &value) const;
+
+    Type type() const;
+    QString uri() const;
+private:
+    QSharedDataPointer<EwsPropertyFieldPrivate> d;
+
+    friend uint qHash(const EwsPropertyField &prop, uint seed);
+    friend QDebug operator<<(QDebug debug, const EwsPropertyField &prop);
+};
+
+uint qHash(const EwsPropertyField &prop, uint seed);
+
+QDebug operator<<(QDebug debug, const EwsPropertyField &prop);
+
+#endif

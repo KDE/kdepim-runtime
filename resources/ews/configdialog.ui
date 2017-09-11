@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SetupServerView</class>
+ <widget class="QWidget" name="SetupServerView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>602</width>
+    <height>527</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>EWS Configuration</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="generalTab">
+      <attribute name="title">
+       <string comment="General settings tab">General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="generalTabLayout">
+       <item>
+        <widget class="QGroupBox" name="accountInfoGroupBox">
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Account Information</string>
+         </property>
+         <layout class="QVBoxLayout" name="accountInfoGroupBoxLayout">
+          <item>
+           <widget class="QWidget" name="accountInfoContainer" native="true">
+            <layout class="QFormLayout" name="accountInfoContainerLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="accountNameLabel">
+               <property name="text">
+                <string>Account Name:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="KLineEdit" name="accountName">
+               <property name="whatsThis">
+                <string>This is the account name that will appear in all Akonadi applications</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="emailLabel">
+               <property name="text">
+                <string comment="Exchange account e-mail address">Email:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="KLineEdit" name="kcfg_Email">
+               <property name="whatsThis">
+                <string>The e-mail address of this account</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="KLineEdit" name="kcfg_Domain">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="whatsThis">
+                <string>The Active Directory domain the user belongs to.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="usernameLabel">
+               <property name="text">
+                <string comment="Exchange account username/login">Username:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="KLineEdit" name="kcfg_Username">
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The username used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="passwordLabel">
+               <property name="text">
+                <string>Password:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="passwordEdit">
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The password used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="echoMode">
+                <enum>QLineEdit::Password</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QWidget" name="autodiscoveryContainer" native="true">
+               <layout class="QHBoxLayout" name="autodiscoveryContainerLayout">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QCheckBox" name="kcfg_AutoDiscovery">
+                  <property name="whatsThis">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Attempts to find out the Microsoft Exchange server address relevant to the supplied e-mail address.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="text">
+                   <string>Server Autodiscovery</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="autodiscoverButton">
+                  <property name="text">
+                   <string>Perform</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="tryConnectButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Try connect</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="serverUrlLabel">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>EWS URL:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="KLineEdit" name="kcfg_BaseUrl">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="whatsThis">
+                <string>The Microsoft Exchange server URL used to send EWS requests.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="kcfg_HasDomain">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Domain:</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="kerberosNoteLabel">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Username and password are not needed (can be empty) when Kerberos is properly configured on your system.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="generalTabSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="subscriptionTab">
+      <attribute name="title">
+       <string>Subscriptions</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="subscriptionTabLayout"/>
+     </widget>
+     <widget class="QWidget" name="advancedTab">
+      <attribute name="title">
+       <string comment="Advanced settings tab">Advanced</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="advancedTabLayout">
+       <item>
+        <widget class="QGroupBox" name="retrievalMethodGroupBox">
+         <property name="title">
+          <string>Retrieval</string>
+         </property>
+         <layout class="QVBoxLayout" name="retrievalMethodGroupBoxLayout">
+          <item>
+           <widget class="QRadioButton" name="pollRadioButton">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Periodically asks for new item change events.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Po&amp;ll for new messages</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="pollIntervalWidget" native="true">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <layout class="QFormLayout" name="pollingIntervalWidgetLayout">
+             <property name="leftMargin">
+              <number>48</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item row="1" column="1">
+              <widget class="QDoubleSpinBox" name="kcfg_PollInterval">
+               <property name="suffix">
+                <string> minutes</string>
+               </property>
+               <property name="decimals">
+                <number>1</number>
+               </property>
+               <property name="minimum">
+                <double>0.500000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+               <property name="value">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="pollIntervalLabel">
+               <property name="text">
+                <string>Interval</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="streamingRadioButton">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Streaming notifications behave similarly to push mode - a connection is kept alive and notifications about item changes are delivered instantly.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This option requires Exchange server version 2010 SP1 or later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>&amp;Use streaming notifications</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="advAuthenticationGroupBox">
+         <property name="title">
+          <string>Authentication</string>
+         </property>
+         <layout class="QVBoxLayout" name="advAuthenticationGroupBoxLayout">
+          <item>
+           <widget class="QCheckBox" name="kcfg_EnableNTLMv2">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By default KDE uses the less secure NTLMv1 authentication. Enabling this will cause the more secure NTLMv2 protocol to be used.&lt;/p&gt;&lt;p&gt;Some newer Microsoft Exchange servers are configured to only allow NTLMv2 authentication. In such case this option must be enabled in order to connect successfully.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Enable NTLMv2</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="userAgentGroupBox">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some organizations restrict access to mail only to approved clients, such as Microsoft Outlook. On the server-side this is implemented by analyzing the User-Agent string and only allowing a list of approved clients.&lt;/p&gt;&lt;p&gt;This setting allows to emulate some well known clients as well as providing a custom User-Agent string.&lt;/p&gt;&lt;p&gt;Please be advised that bypasing company policies may result in personal consequences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="title">
+          <string>Use custo&amp;m User Agent</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="userAgentGroupBoxLayout">
+          <item>
+           <widget class="QComboBox" name="userAgentCombo"/>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="userAgentEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="clearSyncStateGroupBox">
+         <property name="title">
+          <string>Clear Synchronization State</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="clearSyncStateLabel">
+            <property name="text">
+             <string>Resets synchronization state between Exchange and Akonadi. Use in case some items or folders are not showing up despite existing in Exchange.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="clearSyncStateBtnContainer" native="true">
+            <layout class="QHBoxLayout" name="clearSyncStateBtnContainerLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="clearFolderTreeSyncStateButton">
+               <property name="text">
+                <string>Clear Folder Tree State</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="clearFolderItemSyncStateButton">
+               <property name="text">
+                <string>Clear Folder Item State</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="statusTab">
+      <attribute name="title">
+       <string>Status</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="statusTabLayout">
+       <item>
+        <widget class="QGroupBox" name="serverStatusGroupBox">
+         <property name="title">
+          <string>Server Status</string>
+         </property>
+         <layout class="QFormLayout" name="serverStatusGroupBoxLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="serverStatusLabel">
+            <property name="text">
+             <string>Status:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="serverStatusText">
+            <property name="text">
+             <string comment="Unknown server status">Unknown</string>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="serverVersionLabel">
+            <property name="text">
+             <string>Version:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="serverVersionText">
+            <property name="text">
+             <string comment="Unknown server version">Unknown</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="statusTabSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="aboutTab">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="aboutTabLayout">
+       <item>
+        <widget class="QWidget" name="aboutIconWidget" native="true">
+         <layout class="QVBoxLayout" name="aboutIconWidgetLayout">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="aboutIconLabel">
+            <property name="pixmap">
+             <pixmap>../../../../../usr/share/icons/hicolor/128x128/apps/akonadi-ews.png</pixmap>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="aboutIconSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="aboutTextWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <layout class="QVBoxLayout" name="aboutTextWidgetLayout">
+          <item>
+           <widget class="QLabel" name="aboutTextLabel">
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="aboutVersionLabel"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="aboutCopyrightLabel"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="aboutLicenseLabel">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="aboutUrlLabel">
+            <property name="openExternalLinks">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="aboutTextSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>klineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>accountName</tabstop>
+  <tabstop>kcfg_Email</tabstop>
+  <tabstop>kcfg_Domain</tabstop>
+  <tabstop>kcfg_Username</tabstop>
+  <tabstop>passwordEdit</tabstop>
+  <tabstop>kcfg_AutoDiscovery</tabstop>
+  <tabstop>autodiscoverButton</tabstop>
+  <tabstop>tryConnectButton</tabstop>
+  <tabstop>kcfg_BaseUrl</tabstop>
+  <tabstop>pollRadioButton</tabstop>
+  <tabstop>kcfg_PollInterval</tabstop>
+  <tabstop>streamingRadioButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>kcfg_AutoDiscovery</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>autodiscoverButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>388</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kcfg_AutoDiscovery</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>serverUrlLabel</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>95</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kcfg_AutoDiscovery</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_BaseUrl</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pollRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pollIntervalWidget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>260</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kcfg_HasDomain</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kcfg_Domain</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
