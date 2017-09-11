@@ -53,6 +53,7 @@
 #include <QtDBus/QDBusInterface>
 #include <QtDBus/QDBusReply>
 #include <QStandardPaths>
+#include <QTimeZone>
 
 using namespace Akonadi;
 
@@ -337,7 +338,7 @@ void InvitationsAgent::itemAdded(const Item &item, const Collection &collection)
     //const QString sender = message->sender()->asUnicodeString();
     //if ( identityManager()->thatIsMe( sender ) ) return;
 
-    KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(KSystemTimeZones::local()));
+    KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::systemTimeZone()));
     if (message->contentType()->isMultipart()) {
         qCDebug(INVITATIONAGENT_LOG) << "message is multipart:" << message->attachments().size();
 

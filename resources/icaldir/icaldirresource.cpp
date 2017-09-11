@@ -38,13 +38,14 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QFile>
+#include <QTimeZone>
 
 using namespace Akonadi;
 using namespace KCalCore;
 
 static Incidence::Ptr readFromFile(const QString &fileName, const QString &expectedIdentifier)
 {
-    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QStringLiteral("UTC")));
+    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QTimeZone::utc()));
     FileStorage::Ptr fileStorage = FileStorage::Ptr(new FileStorage(calendar, fileName, new ICalFormat()));
 
     Incidence::Ptr incidence;
@@ -67,7 +68,7 @@ static bool writeToFile(const QString &fileName, Incidence::Ptr &incidence)
         return false;
     }
 
-    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QStringLiteral("UTC")));
+    MemoryCalendar::Ptr calendar = MemoryCalendar::Ptr(new MemoryCalendar(QTimeZone::utc()));
     FileStorage::Ptr fileStorage = FileStorage::Ptr(new FileStorage(calendar, fileName, new ICalFormat()));
     calendar->addIncidence(incidence);
     Q_ASSERT(calendar->incidences().count() == 1);

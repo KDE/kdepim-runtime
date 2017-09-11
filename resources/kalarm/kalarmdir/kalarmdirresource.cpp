@@ -442,7 +442,7 @@ bool KAlarmDirResource::loadFiles(bool sync)
 KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
 {
     qCDebug(KALARMDIRRESOURCE_LOG) << path;
-    MemoryCalendar::Ptr calendar(new MemoryCalendar(QStringLiteral("UTC")));
+    MemoryCalendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
     FileStorage::Ptr fileStorage(new FileStorage(calendar, path, new ICalFormat()));
     if (!fileStorage->load()) {
         // Don't output an error in the case of the creation of a temporary
@@ -683,7 +683,7 @@ bool KAlarmDirResource::writeToFile(const KAEvent &event)
 {
     Event::Ptr kcalEvent(new Event);
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
-    MemoryCalendar::Ptr calendar(new MemoryCalendar(QStringLiteral("UTC")));
+    MemoryCalendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
     KACalendar::setKAlarmVersion(calendar);   // set the KAlarm custom property
     if (!calendar->addIncidence(kcalEvent)) {
         qCritical() << "Error adding event with id" << event.id();

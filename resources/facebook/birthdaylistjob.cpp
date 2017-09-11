@@ -23,6 +23,7 @@
 #include <QDate>
 #include <QNetworkCookie>
 #include <QByteArrayMatcher>
+#include <QTimeZone>
 
 #include <KIO/Job>
 #include <KLocalizedString>
@@ -140,7 +141,7 @@ void BirthdayListJob::fetchBirthdayIcal(const QUrl &url)
                     return;
                 }
 
-                auto cal = KCalCore::MemoryCalendar::Ptr::create(KDateTime::LocalZone);
+                auto cal = KCalCore::MemoryCalendar::Ptr::create(QTimeZone::systemTimeZone());
                 KCalCore::ICalFormat format;
                 if (!format.fromRawString(cal, job->data(), false)) {
                     emitError(i18n("Failed to parse birthday calendar"));

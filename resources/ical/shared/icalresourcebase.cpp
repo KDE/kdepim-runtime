@@ -29,8 +29,9 @@
 #include <KCalCore/Incidence>
 #include <KCalCore/ICalFormat>
 
-#include <QDebug>
 #include <KLocalizedString>
+#include <QDebug>
+#include <QTimeZone>
 
 using namespace Akonadi;
 using namespace KCalCore;
@@ -83,7 +84,7 @@ void ICalResourceBase::customizeConfigDialog(SingleFileResourceConfigDialog<Sett
 
 bool ICalResourceBase::readFromFile(const QString &fileName)
 {
-    mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QStringLiteral("UTC")));
+    mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QTimeZone::utc()));
     mFileStorage = KCalCore::FileStorage::Ptr(new KCalCore::FileStorage(mCalendar, fileName,
                    new KCalCore::ICalFormat()));
     const bool result = mFileStorage->load();

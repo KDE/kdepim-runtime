@@ -36,6 +36,7 @@
 
 #include <QByteArray>
 #include <QString>
+#include <QTimeZone>
 
 #include "davresource_debug.h"
 
@@ -100,7 +101,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         // rawData is already UTF-8
         rawData = converter.exportVCard(contact, KContacts::VCardConverter::v3_0);
     } else if (item.hasPayload<IncidencePtr>()) {
-        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(KDateTime::LocalZone));
+        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::systemTimeZone()));
         calendar->addIncidence(item.payload<IncidencePtr>());
         for (const Akonadi::Item &dependentItem : qAsConst(dependentItems)) {
             calendar->addIncidence(dependentItem.payload<IncidencePtr>());
@@ -138,7 +139,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
         target.setPayloadFromData(source.data());
     } else {
         KCalCore::ICalFormat formatter;
-        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(KDateTime::LocalZone));
+        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::systemTimeZone()));
         formatter.fromString(calendar, data);
         KCalCore::Incidence::List incidences = calendar->incidences();
 
