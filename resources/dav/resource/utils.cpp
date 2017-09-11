@@ -167,7 +167,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
 
         for (const IncidencePtr &exception : qAsConst(exceptions)) {
             if (exception->status() == KCalCore::Incidence::StatusCanceled) {
-                KDateTime exDateTime = exception->recurrenceId();
+                KDateTime exDateTime(exception->recurrenceId());
                 mainIncidence->recurrence()->addExDateTime(exDateTime);
             } else {
                 // The exception remote id will contain a fragment pointing to
