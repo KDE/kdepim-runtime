@@ -346,7 +346,7 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
         Alarm::Ptr alarm = event->newAlarm();
         alarm->setType(Alarm::Display);
         alarm->setText(event->summary());
-        alarm->setTime(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
+        alarm->setTime(QDateTime(date, {}));
         // N days before
         alarm->setStartOffset(Duration(-Settings::self()->alarmDays(), Duration::Days));
         alarm->setEnabled(true);
