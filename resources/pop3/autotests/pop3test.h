@@ -60,10 +60,10 @@ private:
     QString listSequence(const QList<QByteArray> &mails) const;
     QString uidSequence(const QStringList &uids) const;
 
-    FakeServerThread *mFakeServerThread;
+    FakeServerThread *mFakeServerThread = nullptr;
 
-    OrgKdeAkonadiPOP3SettingsInterface *mPOP3SettingsInterface;
-    OrgKdeAkonadiMaildirSettingsInterface *mMaildirSettingsInterface;
+    OrgKdeAkonadiPOP3SettingsInterface *mPOP3SettingsInterface = nullptr;
+    OrgKdeAkonadiMaildirSettingsInterface *mMaildirSettingsInterface = nullptr;
     Akonadi::Collection mMaildirCollection;
     QString mPop3Identifier;
     QString mMaildirIdentifier;

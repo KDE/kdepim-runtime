@@ -171,7 +171,7 @@ public:
     }
 
 private:
-    TestStore *mStore;
+    TestStore *mStore = nullptr;
 
 private Q_SLOTS:
     void init();

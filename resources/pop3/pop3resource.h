@@ -202,7 +202,7 @@ private:
     mutable bool mIdsToSaveValid;
 
     // Current deletion job in process
-    DeleteJob *mDeleteJob;
+    DeleteJob *mDeleteJob = nullptr;
 };
 
 #endif

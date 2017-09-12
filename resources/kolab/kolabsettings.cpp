@@ -28,26 +28,20 @@ KolabSettings::KolabSettings(WId winId) : Settings(winId)
 void KolabSettings::changeDefaults()
 {
     setCurrentGroup(QStringLiteral("network"));
-    KConfigSkeleton::ItemInt  *itemImapPort;
-    itemImapPort = (KConfigSkeleton::ItemInt *) findItem(QStringLiteral("ImapPort"));
+    KConfigSkeleton::ItemInt  *itemImapPort = (KConfigSkeleton::ItemInt *) findItem(QStringLiteral("ImapPort"));
     itemImapPort->setDefaultValue(143);
-    KConfigSkeleton::ItemString  *itemSafety;
-    itemSafety = (KConfigSkeleton::ItemString *) findItem(QStringLiteral("Safety"));
+    KConfigSkeleton::ItemString  *itemSafety = (KConfigSkeleton::ItemString *) findItem(QStringLiteral("Safety"));
     itemSafety->setDefaultValue(QStringLiteral("STARTTLS"));
-    KConfigSkeleton::ItemBool  *itemSubscriptionEnabled;
-    itemSubscriptionEnabled = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("SubscriptionEnabled"));
+    KConfigSkeleton::ItemBool  *itemSubscriptionEnabled = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("SubscriptionEnabled"));
     itemSubscriptionEnabled->setDefaultValue(true);
 
     setCurrentGroup(QStringLiteral("cache"));
-    KConfigSkeleton::ItemBool  *itemDisconnectedModeEnabled;
-    itemDisconnectedModeEnabled = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("DisconnectedModeEnabled"));
+    KConfigSkeleton::ItemBool  *itemDisconnectedModeEnabled = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("DisconnectedModeEnabled"));
     itemDisconnectedModeEnabled->setDefaultValue(true);
 
     setCurrentGroup(QStringLiteral("siever"));
-    KConfigSkeleton::ItemBool  *itemSieveSupport;
-    itemSieveSupport = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("SieveSupport"));
+    KConfigSkeleton::ItemBool  *itemSieveSupport = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("SieveSupport"));
     itemSieveSupport->setDefaultValue(true);
-    KConfigSkeleton::ItemBool  *itemSieveReuseConfig;
-    itemSieveReuseConfig = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("SieveReuseConfig"));
+    KConfigSkeleton::ItemBool  *itemSieveReuseConfig = (KConfigSkeleton::ItemBool *) findItem(QStringLiteral("SieveReuseConfig"));
     itemSieveReuseConfig->setDefaultValue(true);
 }

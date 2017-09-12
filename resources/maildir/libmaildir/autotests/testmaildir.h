@@ -53,7 +53,7 @@ private:
     void fillNewDirectory();
     void fillCurrentDirectory();
     void createSubFolders();
-    QTemporaryDir *m_temp;
+    QTemporaryDir *m_temp = nullptr;
 };
 
 #endif

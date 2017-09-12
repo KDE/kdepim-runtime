@@ -35,7 +35,7 @@ Q_SIGNALS:
     void groupKeyChanged();
 
 protected:
-    QSettings *settings_;
+    QSettings *settings_ = nullptr;
     QString groupKey_;
     O0SimpleCrypt crypt_;
 };

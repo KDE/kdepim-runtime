@@ -21,7 +21,7 @@ public Q_SLOTS:
     void onTimeOut();
 
 public:
-    QNetworkReply *reply;
+    QNetworkReply *reply = nullptr;
 };
 
 /// List of O2Replies.

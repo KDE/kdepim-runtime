@@ -112,7 +112,7 @@ public: // Job::Visitor interface implementation
     }
 
 protected:
-    FileStore::AbstractJobSession *mSession;
+    FileStore::AbstractJobSession *mSession = nullptr;
 };
 
 class TopLevelCollectionFetcher : public JobProcessingAdaptor
@@ -311,8 +311,8 @@ public:
     QFileInfo mPathFileInfo;
     Collection mTopLevelCollection;
 
-    FileStore::AbstractJobSession *mSession;
-    FileStore::Job *mCurrentJob;
+    FileStore::AbstractJobSession *mSession = nullptr;
+    FileStore::Job *mCurrentJob = nullptr;
 
     TopLevelCollectionFetcher mTopLevelCollectionFetcher;
     CollectionsProcessedNotifier mCollectionsProcessedNotifier;

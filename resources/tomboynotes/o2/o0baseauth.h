@@ -113,7 +113,7 @@ protected:
     QUrl authorizeUrl_;
     QUrl accessTokenUrl_;
     quint16 localPort_;
-    O0AbstractStore *store_;
+    O0AbstractStore *store_ = nullptr;
     QVariantMap extraTokens_;
 };
 
