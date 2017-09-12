@@ -490,7 +490,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
     }
 
     if (recurrence->endDateTime().isValid()) {
-        DAVUtils::addOxElement(document, parent, QStringLiteral("until"), OXUtils::writeDateTime(recurrence->endDateTime().dateTime()));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("until"), OXUtils::writeDateTime(recurrence->endDateTime()));
     } else {
         DAVUtils::addOxElement(document, parent, QStringLiteral("until"));
     }

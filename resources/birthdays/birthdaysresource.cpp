@@ -334,7 +334,7 @@ KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
 
     // Set the recurrence
     Recurrence *recurrence = event->recurrence();
-    recurrence->setStartDateTime(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
+    recurrence->setStartDateTime(QDateTime(date, {}), true);
     recurrence->setYearly(1);
     if (date.month() == 2 && date.day() == 29) {
         recurrence->addYearlyDay(60);

@@ -30,7 +30,6 @@
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <KCalCore/MemoryCalendar>
-#include <KCalCore/Utils>
 
 #include <KLocalizedString>
 
@@ -169,7 +168,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
 
         for (const IncidencePtr &exception : qAsConst(exceptions)) {
             if (exception->status() == KCalCore::Incidence::StatusCanceled) {
-                KDateTime exDateTime(KCalCore::q2k(exception->recurrenceId()));
+                QDateTime exDateTime(exception->recurrenceId());
                 mainIncidence->recurrence()->addExDateTime(exDateTime);
             } else {
                 // The exception remote id will contain a fragment pointing to

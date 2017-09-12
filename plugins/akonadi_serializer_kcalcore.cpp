@@ -161,6 +161,11 @@ static QString toString(const KDateTime &dateTime)
     return dateTime.dateTime().toString();
 }
 
+static QString toString(const QDateTime &dateTime)
+{
+    return dateTime.toString();
+}
+
 static QString toString(const QString &str)
 {
     return str;
