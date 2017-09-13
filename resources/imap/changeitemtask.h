@@ -54,8 +54,8 @@ private:
 
     KIMAP::Session *m_session = nullptr;
     QByteArray m_messageId;
-    qint64 m_oldUid;
-    qint64 m_newUid;
+    qint64 m_oldUid = 0;
+    qint64 m_newUid = 0;
 };
 
 #endif

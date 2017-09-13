@@ -37,7 +37,7 @@
 #include "uidnextattribute.h"
 
 ChangeItemTask::ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(DeferIfNoSession, resource, parent), m_session(nullptr), m_oldUid(0), m_newUid(0)
+    : ResourceTask(DeferIfNoSession, resource, parent)
 {
 
 }

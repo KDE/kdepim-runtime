@@ -153,20 +153,22 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             return KIMAP::Term(KIMAP::Term::Cc, term.value().toString()).setNegated(term.isNegated());
         case Akonadi::EmailSearchTerm::HeaderBCC:
             return KIMAP::Term(KIMAP::Term::Bcc, term.value().toString()).setNegated(term.isNegated());
-        case Akonadi::EmailSearchTerm::MessageStatus:
-            if (term.value().toString() == QString::fromLatin1(Akonadi::MessageFlags::Flagged)) {
+        case Akonadi::EmailSearchTerm::MessageStatus: {
+            const QString termStr = term.value().toString();
+            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Flagged)) {
                 return KIMAP::Term(KIMAP::Term::Flagged).setNegated(term.isNegated());
             }
-            if (term.value().toString() == QString::fromLatin1(Akonadi::MessageFlags::Deleted)) {
+            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Deleted)) {
                 return KIMAP::Term(KIMAP::Term::Deleted).setNegated(term.isNegated());
             }
-            if (term.value().toString() == QString::fromLatin1(Akonadi::MessageFlags::Replied)) {
+            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Replied)) {
                 return KIMAP::Term(KIMAP::Term::Answered).setNegated(term.isNegated());
             }
-            if (term.value().toString() == QString::fromLatin1(Akonadi::MessageFlags::Seen)) {
+            if (termStr == QString::fromLatin1(Akonadi::MessageFlags::Seen)) {
                 return KIMAP::Term(KIMAP::Term::Seen).setNegated(term.isNegated());
             }
             break;
+        }
         case Akonadi::EmailSearchTerm::MessageTag:
             break;
         case Akonadi::EmailSearchTerm::HeaderReplyTo:
