@@ -111,9 +111,9 @@ void RetrieveItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &me
     const qint64 number = message->uid;
     bool ok;
     const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(
-        message->message, message->uid, 0, message->attributes, {}, fetch->scope(), ok);
+        message->message, number, 0, message->attributes, {}, fetch->scope(), ok);
     if (!ok) {
-        qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << message->uid;
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << number;
         cancelTask(i18n("No message retrieved, failed to read the message."));
         return;
     }
