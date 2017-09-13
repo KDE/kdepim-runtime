@@ -26,7 +26,6 @@
 #include <QPair>
 
 class QJsonObject;
-class Token;
 
 class ListJob : public KCompositeJob
 {

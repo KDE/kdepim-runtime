@@ -21,8 +21,6 @@
 #include <KJob>
 
 class FacebookResource;
-class QUrl;
-class QDialog;
 
 class TokenJob : public KJob
 {
