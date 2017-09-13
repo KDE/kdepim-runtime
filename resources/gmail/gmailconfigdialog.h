@@ -22,7 +22,6 @@
 
 #include <QDialog>
 
-#include <KGAPI/Account>
 
 namespace Ui
 {

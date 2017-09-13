@@ -30,7 +30,6 @@
 #include <kwindowsystem.h>
 #include <KLocalizedString>
 #include <QDialogButtonBox>
-#include <KConfigGroup>
 #include <QPushButton>
 #include <QVBoxLayout>
 

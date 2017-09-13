@@ -24,7 +24,6 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QSpinBox>
 #include <QCheckBox>
 
 #include <KLocalizedString>
@@ -35,10 +34,8 @@
 #include <KWindowSystem>
 #include <KPluralHandlingSpinBox>
 
-#include <KGAPI/Account>
 #include <KGAPI/AuthJob>
 #include <QDialogButtonBox>
-#include <KConfigGroup>
 #include <QVBoxLayout>
 
 Q_DECLARE_METATYPE(KGAPI2::Job *)

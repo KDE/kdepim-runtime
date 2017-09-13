@@ -19,7 +19,6 @@
 
 #include "akonotesresource.h"
 
-#include <KLocalizedString>
 
 AkonotesResource::AkonotesResource(const QString &id)
     : MaildirResource(id)

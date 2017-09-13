@@ -1,5 +1,4 @@
 #include <QDataStream>
-#include <QDebug>
 #include "debug.h"
 
 #include "o2/o0baseauth.h"

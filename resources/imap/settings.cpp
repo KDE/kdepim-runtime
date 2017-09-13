@@ -28,7 +28,6 @@
 #include <kwallet.h>
 using KWallet::Wallet;
 
-#include <KLocalizedString>
 #include "imapresource_debug.h"
 
 #include <QDBusConnection>

@@ -37,34 +37,17 @@
 #include <KCalCore/FreeBusy>
 
 #include <KLocalizedString>
-#include <QDialog>
 #include <QIcon>
 
 #include <KGAPI/Calendar/Calendar>
-#include <KGAPI/Calendar/CalendarCreateJob>
-#include <KGAPI/Calendar/CalendarDeleteJob>
 #include <KGAPI/Calendar/CalendarFetchJob>
-#include <KGAPI/Calendar/CalendarModifyJob>
 #include <KGAPI/Calendar/Event>
-#include <KGAPI/Calendar/EventCreateJob>
-#include <KGAPI/Calendar/EventDeleteJob>
 #include <KGAPI/Calendar/EventFetchJob>
-#include <KGAPI/Calendar/EventModifyJob>
-#include <KGAPI/Calendar/EventMoveJob>
-#include <KGAPI/Calendar/FreeBusyQueryJob>
 #include <KGAPI/Tasks/Task>
-#include <KGAPI/Tasks/TaskCreateJob>
-#include <KGAPI/Tasks/TaskDeleteJob>
 #include <KGAPI/Tasks/TaskFetchJob>
-#include <KGAPI/Tasks/TaskModifyJob>
-#include <KGAPI/Tasks/TaskMoveJob>
 #include <KGAPI/Tasks/TaskList>
-#include <KGAPI/Tasks/TaskListCreateJob>
-#include <KGAPI/Tasks/TaskListDeleteJob>
 #include <KGAPI/Tasks/TaskListFetchJob>
-#include <KGAPI/Tasks/TaskListModifyJob>
 
-#include <KGAPI/Account>
 
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("RootCollection")
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"

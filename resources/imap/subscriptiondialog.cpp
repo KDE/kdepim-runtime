@@ -21,10 +21,7 @@
 
 #include "subscriptiondialog.h"
 
-#include <QCoreApplication>
 #include <QStandardItemModel>
-#include <QBoxLayout>
-#include <QKeyEvent>
 #include <QCheckBox>
 
 #include "imapresource_debug.h"
@@ -47,6 +44,7 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <QTreeView>
+#include <QVBoxLayout>
 
 SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
     : QDialog(parent),

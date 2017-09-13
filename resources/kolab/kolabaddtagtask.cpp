@@ -33,7 +33,6 @@
 
 #include <KDE/KLocalizedString>
 
-#include <QUuid>
 
 KolabAddTagTask::KolabAddTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)

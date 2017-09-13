@@ -28,10 +28,8 @@
 #include <mailtransport/transportbase.h>
 #include <kwindowsystem.h>
 #include "imapresource_debug.h"
-#include <KConfigGroup>
 #include <QDialogButtonBox>
 #include <QPushButton>
-#include <QVBoxLayout>
 #include <KPasswordDialog>
 
 #include "imapresourcebase.h"

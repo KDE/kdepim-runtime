@@ -44,7 +44,6 @@
 #include <QHBoxLayout>
 #include <QTreeView>
 #include <QLabel>
-#include <QTimer>
 
 NewMailNotifierCollectionProxyModel::NewMailNotifierCollectionProxyModel(QObject *parent)
     : QIdentityProxyModel(parent)

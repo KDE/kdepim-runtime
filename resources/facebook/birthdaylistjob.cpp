@@ -20,7 +20,6 @@
 #include "tokenjobs.h"
 #include "resource.h"
 
-#include <QDate>
 #include <QNetworkCookie>
 #include <QByteArrayMatcher>
 #include <QTimeZone>

@@ -1,4 +1,3 @@
-#include <QDebug>
 #include "debug.h"
 #include <QTimer>
 #if QT_VERSION >= 0x050000

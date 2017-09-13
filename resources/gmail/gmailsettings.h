@@ -22,7 +22,6 @@
 
 #include <imap/settings.h>
 
-#include <KGAPI/Types>
 
 namespace KGAPI2
 {

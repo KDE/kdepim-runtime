@@ -31,7 +31,6 @@
 
 #include <QMap>
 #include <QQueue>
-#include <QVariant>
 
 using namespace Akonadi;
 

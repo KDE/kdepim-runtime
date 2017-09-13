@@ -19,13 +19,10 @@
 
 #include "googleaccountmanager.h"
 
-#include <QTimer>
 
 #include <KWallet>
 #include <QDebug>
-#include <KWindowSystem>
 
-#include <KGAPI/Account>
 
 #define WALLET_FOLDER QStringLiteral("Akonadi Google")
 

@@ -35,7 +35,6 @@
 #include <KRandom>
 #include <QTemporaryDir>
 
-#include <QSignalSpy>
 
 #include <qtest.h>
 #include <QFileInfo>

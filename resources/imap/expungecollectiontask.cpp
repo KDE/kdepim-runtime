@@ -23,7 +23,6 @@
 
 #include "imapresource_debug.h"
 
-#include <KLocalizedString>
 
 #include <kimap/expungejob.h>
 #include <kimap/selectjob.h>

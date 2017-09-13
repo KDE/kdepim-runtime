@@ -27,7 +27,6 @@
 
 #include <kio/davjob.h>
 
-#include <QDebug>
 
 using namespace OXA;
 

@@ -21,7 +21,6 @@
 
 #include <attribute.h>
 
-#include <QString>
 
 class DavProtocolAttribute : public Akonadi::Attribute
 {

@@ -82,8 +82,7 @@ if syncing is extremely fast.
  #include <KDebug>
  #include <KLocale>
  
- #include <QDBusConnection>
- #include <QDBusInterface>
+  #include <QDBusInterface>
 +#include <QTimer>
  
  namespace Akonadi

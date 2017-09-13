@@ -19,7 +19,6 @@
 
 #include "collectionannotationsattribute.h"
 
-#include <QDebug>
 #include <QByteArray>
 #include <attribute.h>
 

@@ -23,7 +23,6 @@
 #define OXA_OXUTILS_H
 
 #include <QString>
-#include <QStringList>
 #include <QDateTime>
 
 namespace OXA

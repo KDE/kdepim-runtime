@@ -21,14 +21,12 @@
 
 #include "singlefileresourceconfigdialogbase.h"
 
-#include <QTabWidget>
-#include <KConfigDialogManager>
-#include <KFileItem>
 #include <KIO/Job>
 #include <KWindowSystem>
 #include <QUrl>
 #include <QTimer>
 
+#include <KConfigDialogManager>
 #include <KLocalizedString>
 #include <KSharedConfig>
 #include <QDialogButtonBox>

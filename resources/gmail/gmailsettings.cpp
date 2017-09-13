@@ -25,7 +25,6 @@
 
 #include <kwallet.h>
 using KWallet::Wallet;
-#include <KLocalizedString>
 #include <kpassworddialog.h>
 
 #include <QDBusConnection>
@@ -34,7 +33,6 @@ using KWallet::Wallet;
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/CollectionModifyJob>
 
-#include <KGAPI/Account>
 #include <KGAPI/AuthJob>
 
 GmailSettings::GmailSettings(WId winId)

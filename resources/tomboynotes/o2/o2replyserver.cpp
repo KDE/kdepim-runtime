@@ -5,7 +5,6 @@
 #include <QMap>
 #include <QPair>
 #include <QUrl>
-#include <QDebug>
 #include "debug.h"
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>

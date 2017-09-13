@@ -22,8 +22,6 @@
 
 #include <AkonadiCore/Item>
 
-#include <QList>
-#include <QPair>
 
 class QJsonObject;
 

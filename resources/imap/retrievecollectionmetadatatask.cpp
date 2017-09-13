@@ -21,7 +21,6 @@
 
 #include "retrievecollectionmetadatatask.h"
 
-#include <QDateTime>
 
 #include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>

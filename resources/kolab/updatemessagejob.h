@@ -22,7 +22,6 @@
 
 #include <KJob>
 #include <KMime/Message>
-#include <KIMAP/Session>
 #include <KIMAP/FetchJob>
 
 struct Merger {

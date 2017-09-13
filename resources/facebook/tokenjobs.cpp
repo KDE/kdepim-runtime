@@ -22,20 +22,18 @@
 
 #include <QDialog>
 #include <QVBoxLayout>
-#include <QGlobalStatic>
 #include <QTimer>
 #include <QContextMenuEvent>
 #include <QToolButton>
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QProgressBar>
+#include <QJsonObject>
 
 #include <QUrlQuery>
 #include <QJsonDocument>
-#include <QJsonObject>
 
 #include <QWebEngineView>
-#include <QWebEngineSettings>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineCookieStore>

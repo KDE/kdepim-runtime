@@ -19,7 +19,6 @@
 
 #include "infodialog.h"
 
-#include <KCursor>
 #include <QDebug>
 #include <QIcon>
 
@@ -31,7 +30,6 @@
 #include <QScrollBar>
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
-#include <KConfigGroup>
 #include <QPushButton>
 
 enum {

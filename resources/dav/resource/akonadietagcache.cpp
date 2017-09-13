@@ -22,7 +22,6 @@
 #include <item.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
-#include <KCoreAddons/KJob>
 
 using namespace KDAV;
 

@@ -28,7 +28,6 @@
 #include "../mixedmaildir_debug.h"
 #include <akonadi/kmime/messagestatus.h>
 using Akonadi::MessageStatus;
-#include <QFile>
 #include <qplatformdefs.h>
 
 //BEGIN: Magic definitions from old kmail code

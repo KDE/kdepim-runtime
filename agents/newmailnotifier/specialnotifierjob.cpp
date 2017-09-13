@@ -34,7 +34,6 @@
 #include <KLocalizedString>
 #include "newmailnotifier_debug.h"
 
-#include <QTextDocument>
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent),

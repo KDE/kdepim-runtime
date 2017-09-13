@@ -22,7 +22,6 @@
 #include "maildirsettings.h" // generated
 
 #include <QDBusInterface>
-#include <QTime>
 
 #include <QDebug>
 

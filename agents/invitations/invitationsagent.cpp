@@ -36,18 +36,17 @@
 #include <specialcollections.h>
 #include <specialcollectionsrequestjob.h>
 
+#include <KCoreConfigSkeleton>
 #include <KCalCore/Event>
 #include <KCalCore/ICalFormat>
 #include <KCalCore/Incidence>
 #include <KCalCore/Journal>
 #include <KCalCore/Todo>
 #include <KConfig>
-#include <KConfigSkeleton>
 #include <KJob>
 #include <KLocalizedString>
 #include <KMime/Content>
 #include <KMime/Message>
-#include <KSystemTimeZones>
 
 #include <QTimer>
 #include <QtDBus/QDBusInterface>

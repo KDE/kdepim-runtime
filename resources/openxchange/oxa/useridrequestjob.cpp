@@ -24,7 +24,6 @@
 #include "foldersrequestjob.h"
 #include "davmanager.h"
 
-#include <QDebug>
 
 using namespace OXA;
 

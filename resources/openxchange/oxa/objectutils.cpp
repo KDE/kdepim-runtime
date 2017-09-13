@@ -26,7 +26,6 @@
 #include "davutils.h"
 #include "oxutils.h"
 
-#include <QBuffer>
 #include <QDomElement>
 
 using namespace OXA;

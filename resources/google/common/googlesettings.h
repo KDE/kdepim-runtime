@@ -20,7 +20,6 @@
 
 #include "settingsbase.h"
 
-#include <QObject>
 #include <qwindowdefs.h>
 
 /**

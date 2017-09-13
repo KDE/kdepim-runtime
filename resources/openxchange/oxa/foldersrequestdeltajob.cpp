@@ -23,7 +23,6 @@
 
 #include "foldersrequestjob.h"
 
-#include <QDebug>
 
 using namespace OXA;
 

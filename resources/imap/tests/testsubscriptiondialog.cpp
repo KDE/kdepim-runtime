@@ -18,7 +18,6 @@
 */
 
 #include <QDebug>
-#include <QStringList>
 #include <QApplication>
 
 #include "imapaccount.h"

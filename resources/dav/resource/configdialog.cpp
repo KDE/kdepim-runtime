@@ -22,7 +22,6 @@
 #include "utils.h"
 #include "urlconfigurationdialog.h"
 
-#include <KDAV/DavUrl>
 #include <kconfigdialogmanager.h>
 #include <kconfigskeleton.h>
 #include <KLocalizedString>

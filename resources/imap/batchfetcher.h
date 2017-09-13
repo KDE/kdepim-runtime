@@ -21,7 +21,6 @@
 #define BATCHFETCHER_H
 
 #include <KJob>
-#include <KIMAP/ImapSet>
 #include <KIMAP/FetchJob>
 #include <KIMAP/SearchJob>
 

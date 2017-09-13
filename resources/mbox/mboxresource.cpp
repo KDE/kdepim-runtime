@@ -20,7 +20,6 @@
 #include "mboxresource.h"
 #include "mboxresource_debug.h"
 
-#include <QtPlugin>
 
 #include <attributefactory.h>
 #include <changerecorder.h>
@@ -31,7 +30,6 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
-#include <KWindowSystem>
 #include <QIcon>
 
 #include "compactpage.h"

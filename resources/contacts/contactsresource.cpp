@@ -24,7 +24,6 @@
 #include "settingsdialog.h"
 
 #include <QDir>
-#include <QDirIterator>
 #include <QFile>
 
 #include <changerecorder.h>

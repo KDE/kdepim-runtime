@@ -22,7 +22,6 @@
 
 #include <imap/passwordrequesterinterface.h>
 
-#include <KGAPI/Types>
 
 class GmailResource;
 class GmailPasswordRequester : public PasswordRequesterInterface

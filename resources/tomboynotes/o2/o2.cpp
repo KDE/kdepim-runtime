@@ -1,6 +1,5 @@
 #include <QList>
 #include <QPair>
-#include <QDebug>
 #include <QMap>
 #include <QNetworkRequest>
 #include <QNetworkReply>

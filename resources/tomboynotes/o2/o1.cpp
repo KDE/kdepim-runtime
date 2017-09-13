@@ -3,7 +3,6 @@
 #include <QNetworkAccessManager>
 #include <QDateTime>
 #include <QByteArray>
-#include <QDebug>
 #include "debug.h"
 
 #if QT_VERSION >= 0x050000

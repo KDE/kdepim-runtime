@@ -28,7 +28,6 @@
 
 #include <kmbox/mbox.h>
 
-#include <KRandom>
 #include <QTemporaryDir>
 
 #include <QSignalSpy>

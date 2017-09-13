@@ -23,7 +23,6 @@
 
 #include "objectsrequestjob.h"
 
-#include <QDebug>
 
 using namespace OXA;
 

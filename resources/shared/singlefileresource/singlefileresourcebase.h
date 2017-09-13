@@ -25,7 +25,6 @@
 
 #include <QUrl>
 #include <QStringList>
-#include <QTimer>
 
 namespace KIO
 {

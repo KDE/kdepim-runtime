@@ -29,7 +29,6 @@
 class DavFreeBusyHandler;
 
 #include <QSet>
-#include <QStringList>
 
 namespace KDAV
 {
