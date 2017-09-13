@@ -28,6 +28,7 @@ target_link_libraries(akonadi_facebook_resource
     KF5::Wallet
     KF5::Codecs
     Qt5::WebEngineWidgets
+    KF5::KIOCore
 )
 
 install(TARGETS akonadi_facebook_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

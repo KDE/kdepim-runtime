@@ -37,14 +37,14 @@ generate_export_header(akonadi-singlefileresource BASE_NAME akonadi-singlefilere
 target_link_libraries(akonadi-singlefileresource
 PUBLIC
     KF5::I18n
+    KF5::Completion
+    KF5::KIOWidgets
+    KF5::ConfigWidgets
 PRIVATE
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
     KF5::KIOCore
     KF5::IMAP
-    KF5::Completion
-    KF5::KIOWidgets
-    KF5::ConfigWidgets
     KF5::WindowSystem
 )
 

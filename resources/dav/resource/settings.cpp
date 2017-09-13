@@ -25,7 +25,6 @@
 #include "utils.h"
 #include "davresource_debug.h"
 
-#include <kapplication.h>
 #include <klineedit.h>
 #include <KLocalizedString>
 
@@ -33,6 +32,7 @@
 
 #include <KDAV/Utils>
 
+#include <QCoreApplication>
 #include <QByteArray>
 #include <QDataStream>
 #include <QFile>
@@ -376,7 +376,7 @@ void Settings::buildUrlsList()
 
 void Settings::loadMappings()
 {
-    QString collectionsMappingCacheBase = QStringLiteral("akonadi-davgroupware/%1_c2u.dat").arg(KApplication::applicationName());
+    QString collectionsMappingCacheBase = QStringLiteral("akonadi-davgroupware/%1_c2u.dat").arg(QCoreApplication::applicationName());
     mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + collectionsMappingCacheBase;
     QFile collectionsMappingsCache(mCollectionsUrlsMappingCache);
 

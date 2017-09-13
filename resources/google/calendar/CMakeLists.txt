@@ -53,6 +53,9 @@ target_link_libraries(akonadi_googlecalendar_resource
   KF5::AkonadiAgentBase
   KF5::Wallet
   KF5::I18n
+  KF5::WindowSystem
+  KF5::Completion
+  KF5::TextWidgets
 )
 
 install(TARGETS akonadi_googlecalendar_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

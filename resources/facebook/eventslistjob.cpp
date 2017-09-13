@@ -137,11 +137,11 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
     }
 
     const QString dtStart = data.value(QLatin1String("start_time")).toString();
-    event->setDtStart(KDateTime(parseDateTime(dtStart)));
+    event->setDtStart(parseDateTime(dtStart));
 
     const auto endTime = data.constFind(QLatin1String("end_time"));
     if (endTime != dataEnd) {
-        event->setDtEnd(KDateTime(parseDateTime(endTime->toString())));
+        event->setDtEnd(parseDateTime(endTime->toString()));
     }
 
     QString description = data.value(QLatin1String("description")).toString();

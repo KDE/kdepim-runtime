@@ -59,7 +59,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
     case Kolab::EventType: {
         KCalCore::Event::Ptr event(new KCalCore::Event);
         //FIXME Use message creation date time
-        event->setDtStart(KDateTime::currentUtcDateTime());
+        event->setDtStart(QDateTime::currentDateTimeUtc());
         event->setSummary(i18n("Corrupt Event"));
         event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server. Technical information: remote identifier %1", remoteId));
         item.setMimeType(KCalCore::Event::eventMimeType());
@@ -69,7 +69,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
     case Kolab::TaskType: {
         KCalCore::Todo::Ptr task(new KCalCore::Todo);
         //FIXME Use message creation date time
-        task->setDtStart(KDateTime::currentUtcDateTime());
+        task->setDtStart(QDateTime::currentDateTimeUtc());
         task->setSummary(i18n("Corrupt Task"));
         task->setDescription(i18n("Task could not be read. Delete this task to remove it from the server."));
         item.setMimeType(KCalCore::Todo::todoMimeType());
@@ -79,7 +79,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
     case Kolab::JournalType: {
         KCalCore::Journal::Ptr journal(new KCalCore::Journal);
         //FIXME Use message creation date time
-        journal->setDtStart(KDateTime::currentUtcDateTime());
+        journal->setDtStart(QDateTime::currentDateTimeUtc());
         journal->setSummary(i18n("Corrupt journal"));
         journal->setDescription(i18n("Journal could not be read. Delete this journal to remove it from the server."));
         item.setMimeType(KCalCore::Journal::journalMimeType());

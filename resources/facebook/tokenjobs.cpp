@@ -38,7 +38,7 @@
 #include <QWebEngineProfile>
 #include <QWebEngineCookieStore>
 
-#include <KWallet/Wallet>
+#include <KWallet>
 
 #include <KLocalizedString>
 

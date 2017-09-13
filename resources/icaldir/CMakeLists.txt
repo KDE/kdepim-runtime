@@ -29,8 +29,13 @@ endif ()
 
 target_link_libraries(akonadi_icaldir_resource
   KF5::AkonadiCore
-  KF5::AkonadiAgentBase  
+  KF5::AkonadiAgentBase
   KF5::CalendarCore
+  KF5::I18n
+  KF5::TextWidgets
+  KF5::KIOWidgets
+  KF5::ConfigWidgets
+  KF5::WindowSystem
 )
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

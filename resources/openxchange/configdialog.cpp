@@ -23,8 +23,6 @@
 #include "settings.h"
 #include "ui_configdialog.h"
 
-#include <kaboutdata.h>
-#include <kaboutapplicationdialog.h>
 #include <kconfigdialogmanager.h>
 #include <kmessagebox.h>
 #include <kwindowsystem.h>
@@ -47,13 +45,10 @@ ConfigDialog::ConfigDialog(WId windowId)
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    QPushButton *user1Button = new QPushButton;
-    buttonBox->addButton(user1Button, QDialogButtonBox::ActionRole);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
     mainLayout->addWidget(buttonBox);
-    user1Button->setText(i18n("About..."));
-
+ 
     setWindowTitle(i18n("Open-Xchange Configuration"));
 
     Ui::ConfigDialog ui;
@@ -72,7 +67,6 @@ ConfigDialog::ConfigDialog(WId windowId)
     mManager->updateWidgets();
 
     connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
-    connect(user1Button, &QPushButton::clicked, this, &ConfigDialog::showAboutDialog);
     connect(mServerEdit, &KLineEdit::textChanged, this, &ConfigDialog::updateButtonState);
     connect(mUserEdit, &KLineEdit::textChanged, this, &ConfigDialog::updateButtonState);
     connect(mCheckConnectionButton, &QPushButton::clicked, this, &ConfigDialog::checkConnection);
@@ -84,19 +78,6 @@ void ConfigDialog::save()
 {
     mManager->updateSettings();
     Settings::self()->save();
-}
-
-void ConfigDialog::showAboutDialog()
-{
-    KAboutData aboutData(QStringLiteral("ox"), i18n("Open-Xchange"), QStringLiteral("0.1"),
-                         i18n("Akonadi Open-Xchange Resource"),
-                         KAboutLicense::LGPL,
-                         i18n("(c) 2009 by Tobias Koenig (credativ GmbH)"));
-    aboutData.addAuthor(i18n("Tobias Koenig"), i18n("Current maintainer"), QStringLiteral("tokoe@kde.org"));
-    aboutData.addCredit(i18n("credativ GmbH"), i18n("Funded and supported"), QStringLiteral("http://www.credativ.com"));
-
-    KAboutApplicationDialog dlg(aboutData, this);
-    dlg.exec();
 }
 
 void ConfigDialog::updateButtonState()

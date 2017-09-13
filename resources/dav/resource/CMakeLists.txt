@@ -59,6 +59,10 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_davgroupware_resource\")
           KF5::AkonadiCore
           KF5::Wallet
           KF5::CalendarCore
+          KF5::Completion
+          KF5::ConfigCore
+          KF5::ConfigWidgets
+          KF5::WindowSystem
           KPim::KDAV
           )
 

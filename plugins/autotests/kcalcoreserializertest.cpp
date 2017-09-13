@@ -99,8 +99,9 @@ private Q_SLOTS:
 
         Event::Ptr event = Event::Ptr(new Event());
         event->setUid(QStringLiteral("12345"));
-        event->setDtStart(KDateTime(currentDate));
-        event->setDtEnd(KDateTime(currentDate.addDays(1)));
+        event->setDtStart(QDateTime(currentDate, {}));
+        event->setDtEnd(QDateTime(currentDate.addDays(1), {}));
+        event->setAllDay(true);
 
         // ü
         const char latin1_umlaut[] = { static_cast<char>(0xFC), '\0' };

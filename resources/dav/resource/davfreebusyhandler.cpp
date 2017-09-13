@@ -60,7 +60,7 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime 
         return;
     }
 
-    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy(KDateTime(start), KDateTime(end)));
+    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy(start, end));
     KCalCore::Attendee::Ptr att(new KCalCore::Attendee(QString(), email));
     fb->addAttendee(att);
 

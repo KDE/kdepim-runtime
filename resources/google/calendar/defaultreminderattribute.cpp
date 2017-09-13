@@ -20,8 +20,6 @@
 #include <QVariant>
 #include <QJsonDocument>
 
-#include <KCalCore/Utils>
-
 #include <KGAPI/Calendar/Reminder>
 
 using namespace KGAPI2;
@@ -100,7 +98,7 @@ KCalCore::Alarm::List DefaultReminderAttribute::alarms(KCalCore::Incidence *inci
         KCalCore::Alarm::Ptr alarm(new KCalCore::Alarm(incidence));
 
         alarm->setType(reminder->type());
-        alarm->setTime(KCalCore::k2q(incidence->dtStart()));
+        alarm->setTime(incidence->dtStart());
         alarm->setStartOffset(reminder->startOffset());
         alarm->setEnabled(true);
 

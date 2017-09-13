@@ -327,8 +327,8 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &c
 KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
 {
     Event::Ptr event(new Event());
-    event->setDtStart(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
-    event->setDtEnd(KDateTime(date, KDateTime::Spec(KDateTime::ClockTime)));
+    event->setDtStart(QDateTime(date, {}));
+    event->setDtEnd(QDateTime(date, {}));
     event->setAllDay(true);
     event->setTransparency(Event::Transparent);
 

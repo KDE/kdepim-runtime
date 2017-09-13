@@ -810,10 +810,10 @@ void CalendarResource::slotRetrieveFreeBusyJobFinished(KGAPI2::Job *job)
     fb->setOrganizer(account()->accountName());
     fb->addAttendee(KCalCore::Attendee::Ptr(new KCalCore::Attendee(QString(), queryJob->id())));
     // FIXME: is it really sort?
-    fb->setDateTime(KDateTime::currentUtcDateTime(), KCalCore::IncidenceBase::RoleSort);
+    fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalCore::IncidenceBase::RoleSort);
 
     Q_FOREACH (const KGAPI2::FreeBusyQueryJob::BusyRange &range, queryJob->busy()) {
-        fb->addPeriod(KDateTime(range.busyStart), KDateTime(range.busyEnd));
+        fb->addPeriod(range.busyStart, range.busyEnd);
     }
 
     KCalCore::ICalFormat format;

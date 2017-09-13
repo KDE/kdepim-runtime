@@ -140,15 +140,11 @@ static void parseEventAttribute(const QDomElement &element,
     const QString text = OXUtils::readString(element.text());
 
     if (tagName == QLatin1String("start_date")) {
-        KDateTime dateTime = KDateTime(OXUtils::readDateTime(element.text()), KDateTime::UTC);
-        if (event->allDay()) {
-            dateTime.setDateOnly(true);
-        }
-
+        QDateTime dateTime = OXUtils::readDateTime(element.text());
         event->setDtStart(dateTime);
 
     } else if (tagName == QLatin1String("end_date")) {
-        KDateTime dateTime = KDateTime(OXUtils::readDateTime(element.text()), KDateTime::UTC);
+        QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (event->allDay()) {
             dateTime = dateTime.addSecs(-1);
         }
@@ -167,12 +163,12 @@ static void parseTodoAttribute(const QDomElement &element,
     const QString text = OXUtils::readString(element.text());
 
     if (tagName == QLatin1String("start_date")) {
-        const KDateTime dateTime = KDateTime(OXUtils::readDateTime(element.text()), KDateTime::UTC);
+        const QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (dateTime.isValid()) {
             todo->setDtStart(dateTime);
         }
     } else if (tagName == QLatin1String("end_date")) {
-        const KDateTime dateTime = KDateTime(OXUtils::readDateTime(element.text()), KDateTime::UTC);
+        const QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (dateTime.isValid()) {
             todo->setDtDue(dateTime);
         }
@@ -371,9 +367,9 @@ static void createEventAttributes(QDomDocument &document, QDomElement &parent,
             DAVUtils::addOxElement(document, parent, QStringLiteral("end_date"), OXUtils::writeDate(event->dtEnd().date()));
         }
     } else {
-        DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"), OXUtils::writeDateTime(event->dtStart().dateTime()));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"), OXUtils::writeDateTime(event->dtStart()));
         if (event->hasEndDate()) {
-            DAVUtils::addOxElement(document, parent, QStringLiteral("end_date"), OXUtils::writeDateTime(event->dtEnd().dateTime()));
+            DAVUtils::addOxElement(document, parent, QStringLiteral("end_date"), OXUtils::writeDateTime(event->dtEnd()));
         }
     }
 
@@ -396,13 +392,13 @@ static void createTaskAttributes(QDomDocument &document, QDomElement &parent,
                                  const KCalCore::Todo::Ptr &todo)
 {
     if (todo->hasStartDate()) {
-        DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"), OXUtils::writeDateTime(todo->dtStart().dateTime()));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"), OXUtils::writeDateTime(todo->dtStart()));
     } else {
         DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"));
     }
 
     if (todo->hasDueDate()) {
-        DAVUtils::addOxElement(document, parent, QStringLiteral("end_date"), OXUtils::writeDateTime(todo->dtDue().dateTime()));
+        DAVUtils::addOxElement(document, parent, QStringLiteral("end_date"), OXUtils::writeDateTime(todo->dtDue()));
     } else {
         DAVUtils::addOxElement(document, parent, QStringLiteral("end_date"));
     }

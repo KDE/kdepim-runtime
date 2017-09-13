@@ -43,6 +43,7 @@ target_link_libraries(akonadi_kalarm_resource
                       KF5::KIOCore
                       KF5::AkonadiAgentBase
                       KF5::DBusAddons
+                      KF5::I18n
                       akonadi-singlefileresource
                      )
 

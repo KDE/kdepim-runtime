@@ -26,7 +26,6 @@
 #include <kmessagebox.h>
 #include <KLocalizedString>
 
-#include <KSharedConfigPtr>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVBoxLayout>

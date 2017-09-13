@@ -16,6 +16,7 @@ target_link_libraries(akonadi_invitations_agent
   KF5::Mime
   KF5::CalendarCore
   KF5::AkonadiAgentBase
+  KF5::I18n
 )
 
 if( APPLE )

@@ -35,7 +35,6 @@ public:
 
 private Q_SLOTS:
     void save();
-    void showAboutDialog();
     void updateButtonState();
     void checkConnection();
     void checkConnectionJobFinished(KJob *);

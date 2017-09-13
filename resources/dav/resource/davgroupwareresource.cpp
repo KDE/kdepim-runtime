@@ -47,7 +47,6 @@
 #include <KCalCore/ICalFormat>
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/Todo>
-#include <kdatetime.h>
 #include <kjob.h>
 
 #include <attributefactory.h>
