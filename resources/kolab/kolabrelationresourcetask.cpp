@@ -29,7 +29,7 @@
 #include <kimap/createjob.h>
 #include <kimap/setmetadatajob.h>
 
-#include <KDE/KLocalizedString>
+#include <KLocalizedString>
 
 KolabRelationResourceTask::KolabRelationResourceTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)

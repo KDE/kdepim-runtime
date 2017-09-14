@@ -58,6 +58,7 @@ target_link_libraries(akonadi_kolab_resource
     akonadi-singlefileresource
     KF5::PimCommon
     KF5::TextWidgets
+    KF5::I18n
 )
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

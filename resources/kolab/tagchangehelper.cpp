@@ -38,7 +38,7 @@
 #include <replacemessagejob.h>
 #include <AkonadiCore/TagModifyJob>
 
-#include <KDE/KLocalizedString>
+#include <KLocalizedString>
 
 KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
 {

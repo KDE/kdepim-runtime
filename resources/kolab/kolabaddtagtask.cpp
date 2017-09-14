@@ -31,7 +31,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 
-#include <KDE/KLocalizedString>
+#include <KLocalizedString>
 
 
 KolabAddTagTask::KolabAddTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
