@@ -105,7 +105,6 @@ endif()
 
 
 # KF5 package
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5ConfigWidgets ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
