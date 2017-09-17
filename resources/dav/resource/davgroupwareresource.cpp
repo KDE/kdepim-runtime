@@ -1070,8 +1070,10 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
 
     if (isRemoval) {
         Akonadi::Item removedItem = job->property("removedItem").value<Akonadi::Item>();
-        cache->removeEtag(removedItem.remoteId());
-        changeProcessed();
+        if (removedItem.isValid()) {
+            cache->removeEtag(removedItem.remoteId());
+            changeProcessed();
+        }
     }
 
     if (davItem.etag().isEmpty()) {
@@ -1345,4 +1347,3 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
 }
 
 AKONADI_RESOURCE_MAIN(DavGroupwareResource)
-
