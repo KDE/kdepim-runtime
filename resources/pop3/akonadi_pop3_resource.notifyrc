@@ -23,6 +23,7 @@ Comment[sv]=POP3-resurs
 Comment[tr]=POP3 Kaynağı
 Comment[uk]=Ресурс POP3
 Comment[x-test]=xxPOP3 Resourcexx
+Comment[zh_CN]=POP3 资源
 
 [Event/mail-check-error]
 Name=Error While Checking Mail
