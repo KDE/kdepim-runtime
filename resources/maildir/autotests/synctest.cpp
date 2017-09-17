@@ -46,7 +46,12 @@ void SyncTest::initTestCase()
     QVERIFY(agentCreateJob->exec());
     mMaildirIdentifier = agentCreateJob->instance().identifier();
 
-    OrgKdeAkonadiMaildirSettingsInterface interface(QStringLiteral("org.freedesktop.Akonadi.Resource.%1").arg(mMaildirIdentifier), QStringLiteral("/"), QDBusConnection::sessionBus());
+    QString service = QStringLiteral("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
+    if (Akonadi::ServerManager::hasInstanceIdentifier()) {
+        service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
+    }
+
+    OrgKdeAkonadiMaildirSettingsInterface interface(service, QStringLiteral("/"), QDBusConnection::sessionBus());
     QVERIFY(interface.isValid());
     const QString mailPath = QFINDTESTDATA("maildir");
     QVERIFY(!mailPath.isEmpty());
