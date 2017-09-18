@@ -28,7 +28,7 @@ class TomboyCollectionsDownloadJob : public TomboyJobBase
     Q_OBJECT
 public:
     // ctor
-    explicit TomboyCollectionsDownloadJob(const QString &collectionName, KIO::AccessManager *manager, QObject *parent = nullptr);
+    explicit TomboyCollectionsDownloadJob(const QString &collectionName, KIO::AccessManager *manager, int refreshInterval, QObject *parent = nullptr);
     // returns the parsed results wrapped in Akonadi::Collection::List, see bellow
     Akonadi::Collection::List collections() const;
 
@@ -42,6 +42,7 @@ private Q_SLOTS:
 private:
     Akonadi::Collection::List mResultCollections;
     QString mCollectionName;
+    int mRefreshInterval;
 };
 
 #endif // TOMBOYCOLLECTIONSDOWNLOADJOB_H
