@@ -24,6 +24,7 @@ Name[sv]=iCal-kalenderkatalog
 Name[tr]=iCal Takvim Klasörü
 Name[uk]=Тека календаря iCal
 Name[x-test]=xxiCal Calendar Folderxx
+Name[zh_CN]=iCal 日历文件夹
 Name[zh_TW]=iCal 行事曆資料夾
 Comment="Provides access to calendar items, each stored in a single file, in a given directory"
 Comment[bs]="Puža pristup stavkama kalendara, svaka u pojedinoh datoteci u datom direktoriju"
