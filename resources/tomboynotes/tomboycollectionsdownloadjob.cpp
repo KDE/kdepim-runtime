@@ -20,14 +20,16 @@
 #include "tomboycollectionsdownloadjob.h"
 #include "debug.h"
 #include <Akonadi/Notes/NoteUtils>
+#include <AkonadiCore/CachePolicy>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
-TomboyCollectionsDownloadJob::TomboyCollectionsDownloadJob(const QString &collectionName, KIO::AccessManager *manager, QObject *parent)
+TomboyCollectionsDownloadJob::TomboyCollectionsDownloadJob(const QString &collectionName, KIO::AccessManager *manager, int refreshInterval, QObject *parent)
     : TomboyJobBase(manager, parent),
       mCollectionName(collectionName)
 {
+    mRefreshInterval = refreshInterval;
 }
 
 Akonadi::Collection::List TomboyCollectionsDownloadJob::collections() const
@@ -69,6 +71,14 @@ void TomboyCollectionsDownloadJob::onRequestFinished()
     c.setName(mCollectionName);
     c.setRemoteRevision(QString::number(collectionRevision.toInt()));
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyCollectionsDownloadJob: Sync revision " << collectionRevision.toString();
+
+    Akonadi::CachePolicy cachePolicy;
+    cachePolicy.setInheritFromParent(false);
+    cachePolicy.setSyncOnDemand(false);
+    cachePolicy.setCacheTimeout(-1);
+    cachePolicy.setIntervalCheckTime(mRefreshInterval);
+    cachePolicy.setLocalParts(QStringList() << QStringLiteral("ALL"));
+    c.setCachePolicy(cachePolicy);
 
     c.setContentMimeTypes({ Akonadi::NoteUtils::noteMimeType() });
 

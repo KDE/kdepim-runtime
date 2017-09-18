@@ -77,7 +77,12 @@ void TomboyNotesResource::retrieveCollections()
         return;
     }
 
-    auto job = new TomboyCollectionsDownloadJob(Settings::collectionName(), mManager, this);
+    int refreshInterval = Settings::self()->refreshInterval();
+    if (refreshInterval == 0) {
+        refreshInterval = -1;
+    }
+
+    auto job = new TomboyCollectionsDownloadJob(Settings::collectionName(), mManager, refreshInterval, this);
     job->setAuthentication(Settings::requestToken(), Settings::requestTokenSecret());
     job->setServerURL(Settings::serverURL(), Settings::userURL());
     // connect to its result() signal
