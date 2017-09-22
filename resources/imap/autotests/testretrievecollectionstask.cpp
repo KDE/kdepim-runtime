@@ -354,6 +354,7 @@ private:
         collection.setContentMimeTypes(QStringList(Akonadi::Collection::mimeType()));
         collection.setParentCollection(Akonadi::Collection::root());
         collection.addAttribute(new NoSelectAttribute(true));
+        collection.setRights(Akonadi::Collection::CanCreateCollection);
 
         Akonadi::CachePolicy policy;
         policy.setInheritFromParent(false);
