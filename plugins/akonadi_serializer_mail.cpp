@@ -191,12 +191,18 @@ bool SerializerPluginMail::deserialize(Item &item, const QByteArray &label, QIOD
             msg->date()->setDateTime(dt);
             stream >> str;
             msg->subject()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
-            stream >> str;
-            msg->inReplyTo()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
+
+            QString inReplyTo;
+            stream >> inReplyTo;
+            msg->inReplyTo()->fromUnicodeString(inReplyTo, QByteArrayLiteral("UTF-8"));
             stream >> str;
             msg->messageID()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
             stream >> str;
-            msg->references()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
+            if (str == inReplyTo) {
+                msg->references()->fromIdent(msg->inReplyTo());
+            } else {
+                msg->references()->fromUnicodeString(str, QByteArrayLiteral("UTF-8"));
+            }
 
             parseAddrList(stream, msg->from(), version, m_stringPool);
             parseAddrList(stream, msg->sender(), version, m_stringPool);
