@@ -28,8 +28,6 @@
 #ifndef _POP3_H
 #define _POP3_H
 
-#include "pop3-config.h"
-
 #include <kio/tcpslavebase.h>
 #include <QUrl>
 
