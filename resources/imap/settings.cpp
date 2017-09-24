@@ -23,7 +23,7 @@
 
 #include "imapaccount.h"
 #include "utils.h"
-#include "config.h"
+#include "config-imap.h"
 
 #include <kwallet.h>
 using KWallet::Wallet;

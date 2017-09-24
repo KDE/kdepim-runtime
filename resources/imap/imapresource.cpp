@@ -31,7 +31,7 @@
 #include "sessionuiproxy.h"
 #include "tracer.h"
 #include "utils.h"
-#include "config.h"
+#include "config-imap.h"
 
 #ifdef WITH_GMAIL_XOAUTH2
 #include "passwordrequester.h"
