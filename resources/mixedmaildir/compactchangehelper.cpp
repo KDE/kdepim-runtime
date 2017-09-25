@@ -81,7 +81,7 @@ void CompactChangeHelper::Private::processNextItem()
     //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
     if (mCurrentUpdate.items.isEmpty()) {
         CollectionModifyJob *job = new CollectionModifyJob(mCurrentUpdate.collection, mSession);
-        QObject::connect(job, SIGNAL(result(KJob*)), q, SLOT(processNextBatch()));
+        QObject::connect(job, &CollectionModifyJob::result, q, [this]() { processNextBatch(); });
         return;
     }
 
@@ -127,7 +127,7 @@ void CompactChangeHelper::Private::itemFetchResult(KJob *job)
     updatedItem.setRemoteId(newRemoteId);
 
     ItemModifyJob *modifyJob = new ItemModifyJob(updatedItem);
-    QObject::connect(modifyJob, SIGNAL(result(KJob*)), q, SLOT(processNextItem()));
+    QObject::connect(modifyJob, &ItemModifyJob::result, q, [this]() { processNextItem(); });
 }
 
 CompactChangeHelper::CompactChangeHelper(const QByteArray &sessionId, QObject *parent)
