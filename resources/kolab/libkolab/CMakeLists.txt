@@ -1,6 +1,5 @@
 remove_definitions(
                    -DQT_NO_CAST_FROM_ASCII
-                   -DQT_NO_CAST_TO_ASCII
 )
 
 set(Libkolab_MODULE_DIR ${Libkolab_SOURCE_DIR}/cmake/modules)
@@ -102,7 +101,6 @@ set(KOLAB_LINK_LIBRARIES
 )
 
 if(BUILD_TESTS)
-    find_package(Qt5Test REQUIRED)
     #for tests only
     enable_testing()
     add_library(kolab_static STATIC ${KOLAB_SRCS})
