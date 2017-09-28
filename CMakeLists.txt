@@ -145,7 +145,6 @@ add_definitions( -DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT )
 
 # Extra package
 find_package(KPimGAPI "5.6.1" CONFIG)
-find_package(Libkolabxml 1.1 QUIET CONFIG)
 
 add_subdirectory(resources)
 add_subdirectory(agents)
