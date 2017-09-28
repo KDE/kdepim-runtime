@@ -25,8 +25,8 @@
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <akonadi/notes/noteutils.h>
-#include <kolabobject.h>
-#include <errorhandler.h>
+#include "libkolab/kolabformat/kolabobject.h"
+#include "libkolab/kolabformat/errorhandler.h"
 #include <KLocalizedString>
 #include <QColor>
 #include "tracer.h"

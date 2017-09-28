@@ -112,12 +112,4 @@ endif(BUILD_TESTS)
 
 add_library(pimkolab STATIC ${KOLAB_SRCS})
 target_link_libraries(pimkolab ${KOLAB_LINK_LIBRARIES})
-set_target_properties(pimkolab PROPERTIES VERSION ${Libkolab_VERSION}
-                                     SOVERSION ${Libkolab_VERSION_MAJOR})
-
-install(TARGETS pimkolab EXPORT LibkolabExport
-    RUNTIME DESTINATION ${BIN_INSTALL_DIR}
-    LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-)
 

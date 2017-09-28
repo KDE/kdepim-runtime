@@ -1,8 +1,9 @@
+add_subdirectory(libkolab)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../imap
     ${CMAKE_CURRENT_BINARY_DIR}/../imap
+    ${CMAKE_CURRENT_SOURCE_DIR}/libkolab/
     ${Libkolabxml_INCLUDES}
-    ${Libkolab_INCLUDES}
 )
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
@@ -52,7 +53,7 @@ target_link_libraries(akonadi_kolab_resource
     KF5::IdentityManagement
     imapresource
     folderarchivesettings
-    ${Libkolab_LIBRARIES}
+    pimkolab
     KF5::Contacts
     KF5::CalendarCore
     akonadi-singlefileresource

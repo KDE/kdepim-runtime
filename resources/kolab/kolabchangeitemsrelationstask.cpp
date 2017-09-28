@@ -22,7 +22,7 @@
 #include "kolabchangeitemsrelationstask.h"
 #include "kolabresource_debug.h"
 #include <imapflags.h>
-#include <kolabobject.h>
+#include "libkolab/kolabformat/kolabobject.h"
 
 #include <kimap/appendjob.h>
 #include <kimap/imapset.h>
