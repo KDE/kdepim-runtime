@@ -43,8 +43,8 @@ namespace Kolab {
 #define X_KOLAB_TYPE_HEADER "X-Kolab-Type"
 #define X_KOLAB_MIME_VERSION_HEADER "X-Kolab-Mime-Version"
 #define X_KOLAB_MIME_VERSION_HEADER_COMPAT "X-Kolab-Version"
-#define KOLAB_VERSION_V2 "2.0"
-#define KOLAB_VERSION_V3 "3.0"
+#define KOLAB_VERSION_V2 QStringLiteral("2.0")
+#define KOLAB_VERSION_V3 QStringLiteral("3.0")
 
 #define KOLAB_OBJECT_FILENAME "kolab.xml"
 

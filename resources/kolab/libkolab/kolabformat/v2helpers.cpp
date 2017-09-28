@@ -115,12 +115,12 @@ KContacts::Addressee addresseeFromKolab( const QByteArray &xmlData, const KMime:
     const QString &pictureAttachmentName = contact.pictureAttachmentName();
     if (!pictureAttachmentName.isEmpty()) {
         const QImage &img = getPicture(pictureAttachmentName, data, type);
-        contact.setPicture(img, type);
+        contact.setPicture(img, QString::fromLatin1(type));
     }
     
     const QString &logoAttachmentName = contact.logoAttachmentName();
     if (!logoAttachmentName.isEmpty()) {
-        contact.setLogo(getPicture(logoAttachmentName, data, type), type);
+        contact.setLogo(getPicture(logoAttachmentName, data, type), QString::fromLatin1(type));
     }
     
     const QString &soundAttachmentName = contact.soundAttachmentName();
@@ -154,7 +154,7 @@ static QByteArray createPicture(const QImage &img, const QString &/*format*/, QS
     QByteArray pic;
     QBuffer buffer(&pic);
     buffer.open(QIODevice::WriteOnly);
-    type = "image/png";
+    type = QStringLiteral("image/png");
     //FIXME it's not possible to save jpegs lossless, so we always use png. otherwise we would compress the image on every write.
 //     if (format == "image/jpeg") {
 //         type = "image/jpeg";
@@ -231,15 +231,15 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList& distL
 KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &creationDate)
 {
     KolabV2::Note j;
-    if ( !j.load( xmlData ) ) {
+    if ( !j.load( QString::fromUtf8(xmlData) ) ) {
         Warning() << "failed to read note";
         return KMime::Message::Ptr();
     }
     
     Akonadi::NoteUtils::NoteMessageWrapper note;
     note.setTitle(j.summary());
-    note.setText(j.body().toUtf8());
-    note.setFrom("kolab@kde4");
+    note.setText(j.body());
+    note.setFrom(QStringLiteral("kolab@kde4"));
     note.setCreationDate(creationDate.dateTime());
     return note.message();
 }
@@ -251,7 +251,7 @@ KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr& msg, const QString &p
         return KMime::Message::Ptr();
     }
     Akonadi::NoteUtils::NoteMessageWrapper note(msg);
-    return Mime::createMessage(note.title(), KOLAB_TYPE_NOTE, KOLAB_TYPE_NOTE, noteToKolabXML(msg), false, productId);
+    return Mime::createMessage(note.title(), QLatin1String(KOLAB_TYPE_NOTE), QLatin1String(KOLAB_TYPE_NOTE), noteToKolabXML(msg), false, productId);
 }
 
 QByteArray noteToKolabXML(const KMime::Message::Ptr& msg)
@@ -278,7 +278,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
 
     QDomElement top = xmlDoc.documentElement();
 
-    if ( top.tagName() != "configuration" ) {
+    if ( top.tagName() != QLatin1String("configuration") ) {
         qWarning( "XML error: Top tag was %s instead of the expected configuration",
                 top.tagName().toAscii().data() );
         return QStringList();
@@ -288,9 +288,9 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
         if ( n.isComment() || !n.isElement() )
             continue;
         QDomElement e = n.toElement();
-        if (e.tagName() == "language") {
+        if (e.tagName() == QLatin1String("language")) {
             language = e.text();
-        } else if (e.tagName() == "e") {
+        } else if (e.tagName() == QLatin1String("e")) {
             dictionary.append(e.text());
         }
     }

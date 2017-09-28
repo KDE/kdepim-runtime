@@ -63,7 +63,7 @@ public:
 
   void saveTo( const KCalCore::Journal::Ptr &journal );
 
-  QString type() const override { return "Note"; }
+  QString type() const override { return QStringLiteral("Note"); }
 
   virtual void setSummary( const QString& summary );
   virtual QString summary() const;

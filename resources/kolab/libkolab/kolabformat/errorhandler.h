@@ -110,7 +110,7 @@ void logMessage(const QString &,const QString &, int, ErrorHandler::Severity s);
 #define LOG(message) logMessage(message,__FILE__, __LINE__, ErrorHandler::Debug);
 #define WARNING(message) logMessage(message,__FILE__, __LINE__, ErrorHandler::Warning);
 #define ERROR(message) logMessage(message,__FILE__, __LINE__, ErrorHandler::Error);
-#define CRITICAL(message) logMessage(message,__FILE__, __LINE__, ErrorHandler::Critical);
+#define CRITICAL(message) logMessage(message,QStringLiteral(__FILE__), __LINE__, ErrorHandler::Critical);
 
 
 class DebugStream: public QIODevice

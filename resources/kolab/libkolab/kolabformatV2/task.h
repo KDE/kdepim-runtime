@@ -67,7 +67,7 @@ public:
     const QString& tz, const KCalCore::Todo::Ptr &todo = KCalCore::Todo::Ptr() );
   virtual ~Task();
 
-  QString type() const override { return "Task"; }
+  QString type() const override { return QStringLiteral("Task"); }
 
   void saveTo( const KCalCore::Todo::Ptr &todo );
 

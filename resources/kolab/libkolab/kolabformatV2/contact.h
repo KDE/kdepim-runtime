@@ -73,7 +73,7 @@ public:
 
   void saveTo( KContacts::Addressee* address );
 
-  QString type() const override { return "Contact"; }
+  QString type() const override { return QStringLiteral("Contact"); }
 
   void setGivenName( const QString& name );
   QString givenName() const;

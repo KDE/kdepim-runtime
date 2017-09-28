@@ -48,7 +48,7 @@ public:
 
   void saveTo( KContacts::ContactGroup* contactGroup );
 
-  QString type() const  override { return "DistributionList"; }
+  QString type() const  override { return QStringLiteral("DistributionList"); }
 
   void setName( const QString& name );
   QString name() const;

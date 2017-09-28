@@ -65,7 +65,7 @@ public:
 
   void saveTo( const KCalCore::Event::Ptr &event );
 
-  QString type() const override { return "Event"; }
+  QString type() const override { return QStringLiteral("Event"); }
 
   virtual void setTransparency( KCalCore::Event::Transparency transparency );
   virtual KCalCore::Event::Transparency transparency() const;

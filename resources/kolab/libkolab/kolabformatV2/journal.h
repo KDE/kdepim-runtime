@@ -60,7 +60,7 @@ public:
   explicit Journal( const QString& tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr() );
   virtual ~Journal();
 
-  QString type() const  override { return "Journal"; }
+  QString type() const  override { return QStringLiteral("Journal"); }
 
   void saveTo( const KCalCore::Journal::Ptr &journal );
 

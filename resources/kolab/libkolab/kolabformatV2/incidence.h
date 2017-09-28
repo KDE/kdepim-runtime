@@ -105,7 +105,7 @@ public:
   QList<Attendee>& attendees();
   const QList<Attendee>& attendees() const;
 
-   QString type() const  override { return "Incidence"; }
+   QString type() const  override { return QStringLiteral("Incidence"); }
  /**
    * The internal uid is used as the uid inside KOrganizer whenever
    * two or more events with the same uid appear, which KOrganizer

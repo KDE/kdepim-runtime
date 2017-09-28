@@ -44,7 +44,7 @@ DebugStream::~DebugStream(){}
 qint64 DebugStream::writeData(const char *data, qint64 len) {
     const QByteArray buf = QByteArray::fromRawData(data, len);
 //         qt_message_output(QtDebugMsg, buf.trimmed().constData());
-    ErrorHandler::instance().addError(m_severity, buf, m_location);
+    ErrorHandler::instance().addError(m_severity, QString::fromLatin1(buf), m_location);
     return len;
 }
 
@@ -53,7 +53,7 @@ QMutex mutex;
     
 void logMessage(const QString &message, const QString &file, int line, ErrorHandler::Severity s)
 {
-    ErrorHandler::instance().addError(s, message, file+" "+QString::number(line));
+    ErrorHandler::instance().addError(s, message, file+ QLatin1Char(' ') +QString::number(line));
 }
 
 ErrorHandler::ErrorHandler()
@@ -66,7 +66,7 @@ ErrorHandler::ErrorHandler()
 QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char* file)
 {
     QMutexLocker locker(&mutex);
-    ErrorHandler::instance().m_debugStream->m_location = QString(QString(file) + "(" + QString::number(line)+")");
+    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1String(file) + QStringLiteral("(") + QString::number(line)+QStringLiteral(")"));
     ErrorHandler::instance().m_debugStream->m_severity = severity;
     return QDebug(ErrorHandler::instance().m_debugStream.data());
 }
@@ -119,13 +119,13 @@ void ErrorHandler::handleLibkolabxmlErrors()
 {
     switch (Kolab::error()) {
         case Kolab::Warning:
-            instance().addError(ErrorHandler::Warning, QString::fromStdString(Kolab::errorMessage()), "libkolabxml");
+            instance().addError(ErrorHandler::Warning, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
             break;
         case Kolab::Error:
-            instance().addError(ErrorHandler::Error, QString::fromStdString(Kolab::errorMessage()), "libkolabxml");
+            instance().addError(ErrorHandler::Error, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
             break;
         case Kolab::Critical:
-            instance().addError(ErrorHandler::Critical, QString::fromStdString(Kolab::errorMessage()), "libkolabxml");
+            instance().addError(ErrorHandler::Critical, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
             break;
         default:
             //Do nothing, there is no message available in this case

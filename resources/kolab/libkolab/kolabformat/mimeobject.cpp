@@ -299,7 +299,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
             break;
         }
         default:
-            CRITICAL("no kolab object found ");
+            CRITICAL(QStringLiteral("no kolab object found "));
             break;
     }
     if (ErrorHandler::errorOccured()) {
@@ -450,7 +450,7 @@ void MIMEObject::setVersion(Version version)
 
 static std::string createCid()
 {
-    return QString::fromLatin1("cid:%1@%2").arg(KRandom::randomString(16)).arg("kolab.resource.akonadi").toStdString();
+    return QString::fromLatin1("cid:%1@%2").arg(KRandom::randomString(16)).arg(QString::fromLatin1("kolab.resource.akonadi")).toStdString();
 }
 
 std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Attachment> &attachments, std::vector<std::string> &attachmentCids)
@@ -481,7 +481,7 @@ static void addAttachments(KMime::Message::Ptr msg, const std::vector<Attachment
     foreach (const Attachment &attachment, attachments) {
         const std::string data = attachment.data();
         const std::string cid = attachmentCids.empty() ? attachment.uri() : attachmentCids.at(index);
-        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QByteArray(cid.c_str())).toLatin1(), QByteArray(attachment.mimetype().c_str()), QString::fromStdString(attachment.label()), QByteArray::fromRawData(data.c_str(), data.size())));
+        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(), QByteArray(attachment.mimetype().c_str()), QString::fromStdString(attachment.label()), QByteArray::fromRawData(data.c_str(), data.size())));
         index++;
     }
 }
