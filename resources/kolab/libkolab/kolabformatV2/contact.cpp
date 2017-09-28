@@ -768,7 +768,7 @@ bool Contact::loadXML( const QDomDocument& document )
 {
   QDomElement top = document.documentElement();
 
-  if ( top.tagName() != "contact" ) {
+  if ( top.tagName() != QLatin1String("contact") ) {
     qWarning( "XML error: Top tag was %s instead of the expected contact",
               top.tagName().toAscii().data() );
     return false;
@@ -799,7 +799,7 @@ QString Contact::saveXML() const
 {
   QDomDocument document = domTree();
   QDomElement element = document.createElement("contact" );
-  element.setAttribute( "version", "1.0" );
+  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
   saveAttributes( element );
   document.appendChild( element );
   return document.toString();
@@ -808,17 +808,17 @@ QString Contact::saveXML() const
 static QString addressTypeToString( int /*KContacts::Address::Type*/ type )
 {
   if ( type & KContacts::Address::Home )
-    return "home";
+    return QLatin1String("home");
   if ( type & KContacts::Address::Work )
-    return "business";
-  return "other";
+    return QLatin1String("business");
+  return QLatin1String("other");
 }
 
 static int addressTypeFromString( const QString& type )
 {
-  if ( type == "home" )
+  if ( type == QLatin1String("home") )
     return KContacts::Address::Home;
-  if ( type == "business" )
+  if ( type == QLatin1String("business") )
     return KContacts::Address::Work;
   // well, this shows "other" in the editor, which is what we want...
   return KContacts::Address::Dom | KContacts::Address::Intl | KContacts::Address::Postal | KContacts::Address::Parcel;
@@ -886,39 +886,39 @@ static QStringList phoneTypeToString( KContacts::PhoneNumber::Type type )
 
 static KContacts::PhoneNumber::Type phoneTypeFromString( const QString& type )
 {
-  if ( type == "homefax" )
+  if ( type == QLatin1String("homefax") )
     return KContacts::PhoneNumber::Home | KContacts::PhoneNumber::Fax;
-  if ( type == "businessfax" )
+  if ( type == QLatin1String("businessfax") )
     return KContacts::PhoneNumber::Work | KContacts::PhoneNumber::Fax;
-  if ( type == "business1" )
+  if ( type == QLatin1String("business1") )
     return KContacts::PhoneNumber::Work | KContacts::PhoneNumber::Pref;
-  if ( type == "business2" )
+  if ( type == QLatin1String("business2") )
     return KContacts::PhoneNumber::Work;
-  if ( type == "home1" )
+  if ( type == QLatin1String("home1") )
     return KContacts::PhoneNumber::Home | KContacts::PhoneNumber::Pref;
-  if ( type == "home2" )
+  if ( type == QLatin1String("home2") )
     return KContacts::PhoneNumber::Home;
-  if ( type == "company" )
+  if ( type == QLatin1String("company") )
     return KContacts::PhoneNumber::Msg;
-  if ( type == "primary" )
+  if ( type == QLatin1String("primary") )
     return KContacts::PhoneNumber::Pref;
-  if ( type == "callback" )
+  if ( type == QLatin1String("callback") )
     return KContacts::PhoneNumber::Voice;
-  if ( type == "mobile" )
+  if ( type == QLatin1String("mobile") )
     return KContacts::PhoneNumber::Cell;
-  if ( type == "radio" )
+  if ( type == QLatin1String("radio") )
     return KContacts::PhoneNumber::Video;
-  if ( type == "ttytdd" )
+  if ( type == QLatin1String("ttytdd") )
     return KContacts::PhoneNumber::Bbs;
-  if ( type == "telex" )
+  if ( type == QLatin1String("telex") )
     return KContacts::PhoneNumber::Modem;
-  if ( type == "car" )
+  if ( type == QLatin1String("car") )
     return KContacts::PhoneNumber::Car;
-  if ( type == "isdn" )
+  if ( type == QLatin1String("isdn") )
     return KContacts::PhoneNumber::Isdn;
-  if ( type == "assistant" )
+  if ( type == QLatin1String("assistant") )
     return KContacts::PhoneNumber::Pcs;
-  if ( type == "pager" )
+  if ( type == QLatin1String("pager") )
     return KContacts::PhoneNumber::Pager;
   return KContacts::PhoneNumber::Home; // whatever
 }
@@ -982,7 +982,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
   // Now the real-world addresses
   QString preferredAddress = "home";
   const KContacts::Address::List addresses = addressee->addresses();
-  for ( KContacts::Address::List::ConstIterator it = addresses.constBegin() ; it != addresses.constEnd(); ++it ) {
+  for ( KContacts::Address::List::ConstIterator it = addresses.constBegin(), end = addresses.constEnd(); it != end; ++it ) {
     Address address;
     address.kdeAddressType = (*it).type();
     address.type = addressTypeToString( address.kdeAddressType );
@@ -1005,7 +1005,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
   for ( KContacts::PhoneNumber::List::ConstIterator it = phones.constBegin(); it != phones.constEnd(); ++it ) {
     // Create a tag per phone type set in the bitfield
     QStringList types = phoneTypeToString( (*it).type() );
-    for( QStringList::ConstIterator typit = types.constBegin(); typit != types.constEnd(); ++typit ) {
+    for( QStringList::ConstIterator typit = types.constBegin(), end = types.constEnd(); typit != end; ++typit ) {
       PhoneNumber phoneNumber;
       phoneNumber.type = *typit;
       phoneNumber.number = (*it).number();
@@ -1138,13 +1138,13 @@ void Contact::saveTo( KContacts::Addressee* addressee )
     addressee->setGeo( KContacts::Geo( mLatitude, mLongitude ) );
 
   QStringList emailAddresses;
-  for ( QList<Email>::ConstIterator it = mEmails.constBegin(); it != mEmails.constEnd(); ++it ) {
+  for ( QList<Email>::ConstIterator it = mEmails.constBegin(), end = mEmails.constEnd(); it != end; ++it ) {
     // we can't do anything with (*it).displayName
     emailAddresses.append( (*it).smtpAddress );
   }
   addressee->setEmails( emailAddresses );
 
-  for ( QList<Address>::ConstIterator it = mAddresses.constBegin(); it != mAddresses.constEnd(); ++it ) {
+  for ( QList<Address>::ConstIterator it = mAddresses.constBegin(), end = mAddresses.constEnd(); it != end; ++it ) {
     KContacts::Address address;
     int type = (*it).kdeAddressType;
     if ( type == -1 ) { // no kde-specific type available
@@ -1162,14 +1162,14 @@ void Contact::saveTo( KContacts::Addressee* addressee )
     addressee->insertAddress( address );
   }
 
-  for ( QList<PhoneNumber>::ConstIterator it = mPhoneNumbers.constBegin(); it != mPhoneNumbers.constEnd(); ++it ) {
+  for ( QList<PhoneNumber>::ConstIterator it = mPhoneNumbers.constBegin(), end = mPhoneNumbers.constEnd(); it != end; ++it ) {
     KContacts::PhoneNumber number;
     number.setType( phoneTypeFromString( (*it).type ) );
     number.setNumber( (*it).number );
     addressee->insertPhoneNumber( number );
   }
 
-  for( QList<Custom>::ConstIterator it = mCustomList.constBegin(); it != mCustomList.constEnd(); ++it ) {
+  for( QList<Custom>::ConstIterator it = mCustomList.constBegin(), end = mCustomList.constEnd(); it != end; ++it ) {
     QString app = (*it).app.isEmpty() ? QString::fromLatin1( "KADDRESSBOOK" ) : (*it).app;
     addressee->insertCustom( app, (*it).name, (*it).value );
   }

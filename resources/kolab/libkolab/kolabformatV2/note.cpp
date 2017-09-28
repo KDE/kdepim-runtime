@@ -226,5 +226,5 @@ void Note::saveTo( const KCalCore::Journal::Ptr &journal )
 
 QString Note::productID() const
 {
-  return QString( "KNotes %1, Kolab resource" ).arg( LIBKOLAB_LIB_VERSION_STRING );
+  return QStringLiteral( "KNotes %1, Kolab resource" ).arg( LIBKOLAB_LIB_VERSION_STRING );
 }

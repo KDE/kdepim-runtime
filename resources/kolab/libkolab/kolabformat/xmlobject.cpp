@@ -322,7 +322,7 @@ Configuration XMLObject::readConfiguration(const std::string& s, Version version
             return Kolab::Configuration();
         }
         std::vector<std::string> entries;
-        foreach (const QString e, dict) {
+        foreach (const QString &e, dict) {
             entries.push_back(Conversion::toStdString(e));
         }
         Kolab::Dictionary dictionary(Conversion::toStdString(lang));

@@ -51,7 +51,7 @@ Note fromNote(const KMime::Message::Ptr &m)
     
     std::vector<Kolab::CustomProperty> customs;
     QMap<QString, QString> &customsMap = note.custom();
-    for (QMap <QString, QString >::const_iterator it = customsMap.constBegin(); it != customsMap.constEnd(); it ++) {
+    for (QMap <QString, QString >::const_iterator it = customsMap.constBegin(), end = customsMap.constEnd(); it != end; it ++) {
         customs.push_back(Kolab::CustomProperty(toStdString(it.key()), toStdString(it.value())));
     }
     n.setCustomProperties(customs);
@@ -77,7 +77,7 @@ KMime::Message::Ptr toNote(const Note &n)
     Akonadi::NoteUtils::NoteMessageWrapper note;
     note.setTitle(fromStdString(n.summary()));
     note.setText(fromStdString(n.description()));
-    note.setFrom("kolab@kde4");
+    note.setFrom(QStringLiteral("kolab@kde4"));
     note.setCreationDate(toDate(n.created()));
     note.setUid(fromStdString(n.uid()));
     note.setLastModifiedDate(toDate(n.lastModified()));

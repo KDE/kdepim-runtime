@@ -107,7 +107,8 @@ namespace Kolab {
         
         unsigned int stringListToCryptoMessageFormats( const QStringList & sl ) {
             unsigned int result = 0;
-            for ( QStringList::const_iterator it = sl.begin() ; it != sl.end() ; ++it )
+            const QStringList::const_iterator end(sl.end());
+            for ( QStringList::const_iterator it = sl.begin() ; it != end ; ++it )
                 result |= stringToCryptoMessageFormat( *it );
             return result;
         }
@@ -169,15 +170,15 @@ namespace Kolab {
         
         SigningPreference stringToSigningPreference( const QString& str )
         {
-            if ( str == "never" )
+            if ( str == QStringLiteral("never") )
                 return NeverSign;
-            if ( str == "always" )
+            if ( str == QStringLiteral("always") )
                 return AlwaysSign;
-            if ( str == "alwaysIfPossible" )
+            if ( str == QStringLiteral("alwaysIfPossible") )
                 return AlwaysSignIfPossible;
-            if ( str == "askAlways" )
+            if ( str == QStringLiteral("askAlways") )
                 return AlwaysAskForSigning;
-            if ( str == "askWhenPossible" )
+            if ( str == QStringLiteral("askWhenPossible") )
                 return AskSigningWheneverPossible;
             return UnknownSigningPreference;
         }
@@ -813,7 +814,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     c.setCrypto(crypto);
     
     
-    //FIXME the keys are most certainly worng, look at cryptopageplugin.cpp
+    //FIXME the keys are most certainly wrong, look at cryptopageplugin.cpp
     std::vector<Kolab::Key> keys;
     const std::string &pgpkey = toStdString(addressee.custom( "KADDRESSBOOK", "OPENPGPFP" ));
     if (!pgpkey.empty()) {

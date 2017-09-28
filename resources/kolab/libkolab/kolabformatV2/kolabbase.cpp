@@ -295,9 +295,9 @@ bool KolabBase::loadEmailAttribute( QDomElement& element, Email& email )
       QDomElement e = n.toElement();
       const QString tagName = e.tagName();
 
-      if ( tagName == "display-name" )
+      if ( tagName == QLatin1String("display-name") )
         email.displayName = e.text();
-      else if ( tagName == "smtp-address" )
+      else if ( tagName == QLatin1String("smtp-address") )
         email.smtpAddress = e.text();
       else
         // TODO: Unhandled tag - save for later storage
