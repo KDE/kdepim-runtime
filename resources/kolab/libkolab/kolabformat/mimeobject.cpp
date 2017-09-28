@@ -437,6 +437,11 @@ MIMEObject::MIMEObject()
 
 }
 
+MIMEObject::~MIMEObject()
+{
+    delete d;
+}
+
 void MIMEObject::setObjectType(ObjectType type)
 {
     d->mOverrideObjectType = type;

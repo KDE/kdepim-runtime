@@ -37,6 +37,7 @@ class KOLAB_EXPORT MIMEObject
 {
 public:
     MIMEObject();
+    ~MIMEObject();
 
     ObjectType parseMessage(const std::string &msg);
 
