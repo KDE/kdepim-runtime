@@ -120,10 +120,10 @@ public:
     ErrorHandler::Severity m_severity;
     DebugStream();
     virtual ~DebugStream();
-    bool isSequential() const { return true; }
-    qint64 readData(char *, qint64) { return 0; /* eof */ }
-    qint64 readLineData(char *, qint64) { return 0; /* eof */ }
-    qint64 writeData(const char *data, qint64 len);
+    bool isSequential() const override { return true; }
+    qint64 readData(char *, qint64) override { return 0; /* eof */ }
+    qint64 readLineData(char *, qint64)  override { return 0; /* eof */ }
+    qint64 writeData(const char *data, qint64 len) override;
 private:
     Q_DISABLE_COPY(DebugStream)
 };

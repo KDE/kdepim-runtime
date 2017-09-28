@@ -116,7 +116,7 @@ private:
     Kolab::ITipHandler mITipHandler;
 };
 
-    };
-};
+    }
+}
 
 #endif // EVENT_H

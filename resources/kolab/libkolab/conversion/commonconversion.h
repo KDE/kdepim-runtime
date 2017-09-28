@@ -53,7 +53,7 @@ namespace Kolab {
             return QString::fromUtf8(s.c_str());
         }
 
-    };
-};
+    }
+}
 
 #endif

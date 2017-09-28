@@ -32,14 +32,14 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 
-Q_DECLARE_METATYPE(Kolab::Event);
-Q_DECLARE_METATYPE(Kolab::Todo);
-Q_DECLARE_METATYPE(Kolab::Journal);
-Q_DECLARE_METATYPE(Kolab::Contact);
-Q_DECLARE_METATYPE(Kolab::DistList);
-Q_DECLARE_METATYPE(Kolab::Note);
-Q_DECLARE_METATYPE(Kolab::Freebusy);
-Q_DECLARE_METATYPE(Kolab::Configuration);
+Q_DECLARE_METATYPE(Kolab::Event)
+Q_DECLARE_METATYPE(Kolab::Todo)
+Q_DECLARE_METATYPE(Kolab::Journal)
+Q_DECLARE_METATYPE(Kolab::Contact)
+Q_DECLARE_METATYPE(Kolab::DistList)
+Q_DECLARE_METATYPE(Kolab::Note)
+Q_DECLARE_METATYPE(Kolab::Freebusy)
+Q_DECLARE_METATYPE(Kolab::Configuration)
 
 static inline std::string eventKolabType() { return std::string(KOLAB_TYPE_EVENT); }
 static inline std::string todoKolabType() { return std::string(KOLAB_TYPE_TASK); }

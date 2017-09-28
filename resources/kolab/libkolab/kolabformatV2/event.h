@@ -65,7 +65,7 @@ public:
 
   void saveTo( const KCalCore::Event::Ptr &event );
 
-  virtual QString type() const { return "Event"; }
+  QString type() const override { return "Event"; }
 
   virtual void setTransparency( KCalCore::Event::Transparency transparency );
   virtual KCalCore::Event::Transparency transparency() const;
@@ -76,16 +76,16 @@ public:
   virtual KDateTime endDate() const;
 
   // Load the attributes of this class
-  virtual bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  virtual bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
   // Load this event by reading the XML file
-  virtual bool loadXML( const QDomDocument& xml );
+  bool loadXML( const QDomDocument& xml ) override;
 
   // Serialize this event to an XML string
-  virtual QString saveXML() const;
+  QString saveXML() const override;
 
 protected:
   // Read all known fields from this ical incidence

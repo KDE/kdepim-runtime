@@ -42,10 +42,10 @@
 namespace Kolab {
 
 
-static inline QString eventKolabType() { return QString::fromLatin1(KOLAB_TYPE_EVENT); };
-static inline QString todoKolabType() { return QString::fromLatin1(KOLAB_TYPE_TASK); };
-static inline QString journalKolabType() { return QString::fromLatin1(KOLAB_TYPE_JOURNAL); };
-static inline QString contactKolabType() { return QString::fromLatin1(KOLAB_TYPE_CONTACT); };
+static inline QString eventKolabType() { return QString::fromLatin1(KOLAB_TYPE_EVENT); }
+static inline QString todoKolabType() { return QString::fromLatin1(KOLAB_TYPE_TASK); }
+static inline QString journalKolabType() { return QString::fromLatin1(KOLAB_TYPE_JOURNAL); }
+static inline QString contactKolabType() { return QString::fromLatin1(KOLAB_TYPE_CONTACT); }
 static inline QString distlistKolabType() { return QString::fromLatin1(KOLAB_TYPE_DISTLIST); }
 static inline QString distlistKolabTypeCompat() { return QString::fromLatin1(KOLAB_TYPE_DISTLIST_V2); }
 static inline QString noteKolabType() { return QString::fromLatin1(KOLAB_TYPE_NOTE); }
@@ -54,9 +54,9 @@ static inline QString dictKolabType() { return QString::fromLatin1(KOLAB_TYPE_DI
 static inline QString freebusyKolabType() { return QString::fromLatin1(KOLAB_TYPE_FREEBUSY); }
 static inline QString relationKolabType() { return QString::fromLatin1(KOLAB_TYPE_RELATION); }
 
-static inline QString xCalMimeType() { return QString::fromLatin1(MIME_TYPE_XCAL); };
-static inline QString xCardMimeType() { return QString::fromLatin1(MIME_TYPE_XCARD); };
-static inline QString kolabMimeType() { return QString::fromLatin1(MIME_TYPE_KOLAB); };
+static inline QString xCalMimeType() { return QString::fromLatin1(MIME_TYPE_XCAL); }
+static inline QString xCardMimeType() { return QString::fromLatin1(MIME_TYPE_XCARD); }
+static inline QString kolabMimeType() { return QString::fromLatin1(MIME_TYPE_KOLAB); }
 
 KCalCore::Event::Ptr readV2EventXML(const QByteArray& xmlData, QStringList& attachments)
 {
@@ -576,5 +576,5 @@ KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &re
 }
 
 
-}; //Namespace
+} //Namespace
 

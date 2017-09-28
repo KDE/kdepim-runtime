@@ -32,7 +32,7 @@ namespace Kolab {
 
     KOLAB_EXPORT std::string getLocalTimezone();
 
-    }; //Namespace
-}; //Namespace
+    } //Namespace
+} //Namespace
 
 #endif

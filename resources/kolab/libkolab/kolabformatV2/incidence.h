@@ -105,7 +105,7 @@ public:
   QList<Attendee>& attendees();
   const QList<Attendee>& attendees() const;
 
-   virtual QString type() const { return "Incidence"; }
+   QString type() const  override { return "Incidence"; }
  /**
    * The internal uid is used as the uid inside KOrganizer whenever
    * two or more events with the same uid appear, which KOrganizer
@@ -116,10 +116,10 @@ public:
   QString internalUID() const;
 
   // Load the attributes of this class
-  virtual bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  virtual bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
 protected:
   enum FloatingStatus { Unset, AllDay, HasTime };
@@ -141,7 +141,7 @@ protected:
   void saveCustomAttributes( QDomElement& element ) const;
   void loadCustomAttributes( QDomElement& element );
 
-  QString productID() const;
+  QString productID() const override;
 
   QString mSummary;
   QString mLocation;

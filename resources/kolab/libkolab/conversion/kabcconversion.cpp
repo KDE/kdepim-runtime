@@ -85,7 +85,7 @@ namespace Kolab {
             for ( unsigned int i = 0 ; i < numCryptoMessageFormats ; ++i )
                 if ( f == cryptoMessageFormats[i].format )
                     return cryptoMessageFormats[i].configName;
-                return 0;
+            return nullptr;
         }
         
         QStringList cryptoMessageFormatsToStringList( unsigned int f ) {
@@ -93,7 +93,7 @@ namespace Kolab {
             for ( unsigned int i = 0 ; i < numCryptoMessageFormats ; ++i )
                 if ( f & cryptoMessageFormats[i].format )
                     result.push_back( cryptoMessageFormats[i].configName );
-                return result;
+            return result;
         }
         
         
@@ -102,7 +102,7 @@ namespace Kolab {
             for ( unsigned int i = 0 ; i < numCryptoMessageFormats ; ++i )
                 if ( t == cryptoMessageFormats[i].configName )
                     return cryptoMessageFormats[i].format;
-                return AutoFormat;
+            return AutoFormat;
         }
         
         unsigned int stringListToCryptoMessageFormats( const QStringList & sl ) {

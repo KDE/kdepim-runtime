@@ -372,4 +372,4 @@ std::string XMLObject::writeFile(const File &file, Version version, const std::s
 }
 
     
-};
+}

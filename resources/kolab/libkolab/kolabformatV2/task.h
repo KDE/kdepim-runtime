@@ -67,7 +67,7 @@ public:
     const QString& tz, const KCalCore::Todo::Ptr &todo = KCalCore::Todo::Ptr() );
   virtual ~Task();
 
-  virtual QString type() const { return "Task"; }
+  QString type() const override { return "Task"; }
 
   void saveTo( const KCalCore::Todo::Ptr &todo );
 
@@ -94,16 +94,16 @@ public:
   virtual bool hasCompletedDate() const;
 
   // Load the attributes of this class
-  virtual bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  virtual bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
   // Load this task by reading the XML file
-  virtual bool loadXML( const QDomDocument& xml );
+  bool loadXML( const QDomDocument& xml ) override;
 
   // Serialize this task to an XML string
-  virtual QString saveXML() const;
+  QString saveXML() const override;
 
 protected:
   // Read all known fields from this ical todo

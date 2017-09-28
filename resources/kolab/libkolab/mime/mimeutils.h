@@ -53,7 +53,7 @@ KMime::Content* createMainPart(const QByteArray& mimeType, const QByteArray& dec
 KMime::Content* createAttachmentPart(const QByteArray& cid, const QByteArray& mimeType, const QString& fileName, const QByteArray& decodedContent);
 QString fromCid(const QString &cid);
 
-    };
-}; //Namespace
+    }
+} //Namespace
 
 #endif

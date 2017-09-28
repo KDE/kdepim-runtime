@@ -60,7 +60,7 @@ public:
   explicit Journal( const QString& tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr() );
   virtual ~Journal();
 
-  virtual QString type() const { return "Journal"; }
+  QString type() const  override { return "Journal"; }
 
   void saveTo( const KCalCore::Journal::Ptr &journal );
 
@@ -74,22 +74,22 @@ public:
   virtual KDateTime endDate() const;
 
   // Load the attributes of this class
-  virtual bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  virtual bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
   // Load this journal by reading the XML file
-  virtual bool loadXML( const QDomDocument& xml );
+  bool loadXML( const QDomDocument& xml ) override;
 
   // Serialize this journal to an XML string
-  virtual QString saveXML() const;
+  QString saveXML() const override;
 
 protected:
   // Read all known fields from this ical journal
   void setFields( const KCalCore::Journal::Ptr & );
 
-  QString productID() const;
+  QString productID() const override;
 
   QString mSummary;
   KDateTime mStartDate;

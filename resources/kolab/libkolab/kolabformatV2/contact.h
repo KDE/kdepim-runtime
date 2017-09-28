@@ -73,7 +73,7 @@ public:
 
   void saveTo( KContacts::Addressee* address );
 
-  QString type() const { return "Contact"; }
+  QString type() const override { return "Contact"; }
 
   void setGivenName( const QString& name );
   QString givenName() const;
@@ -189,16 +189,16 @@ public:
   void setLongitude( float longitude ) { mLongitude = longitude; }
 
   // Load the attributes of this class
-  bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
   // Load this note by reading the XML file
-  bool loadXML( const QDomDocument& xml );
+  bool loadXML( const QDomDocument& xml ) override;
 
   // Serialize this note to an XML string
-  QString saveXML() const;
+  QString saveXML() const override;
 
 protected:
   void setFields( const KContacts::Addressee* );
@@ -222,7 +222,7 @@ private:
 
   QByteArray loadSoundFromAddressee( const KContacts::Sound& sound );
 
-  QString productID() const;
+  QString productID() const override;
 
   QString mGivenName;
   QString mMiddleNames;

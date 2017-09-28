@@ -61,7 +61,7 @@ ErrorHandler::ErrorHandler()
     m_debugStream(new DebugStream)
 {
 
-};
+}
 
 QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char* file)
 {

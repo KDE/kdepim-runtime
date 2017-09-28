@@ -63,7 +63,7 @@ public:
 
   void saveTo( const KCalCore::Journal::Ptr &journal );
 
-  virtual QString type() const { return "Note"; }
+  QString type() const override { return "Note"; }
 
   virtual void setSummary( const QString& summary );
   virtual QString summary() const;
@@ -78,16 +78,16 @@ public:
   virtual bool richText() const;
 
   // Load the attributes of this class
-  virtual bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  virtual bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
   // Load this note by reading the XML file
-  virtual bool loadXML( const QDomDocument& xml );
+  bool loadXML( const QDomDocument& xml ) override;
 
   // Serialize this note to an XML string
-  virtual QString saveXML() const;
+  QString saveXML() const override;
 
 protected:
   // Read all known fields from this ical incidence
@@ -96,7 +96,7 @@ protected:
   // Save all known fields into this ical incidence
   void saveTo( const KCalCore::Incidence::Ptr & ) const;
 
-  QString productID() const;
+  QString productID() const override;
 
   QString mSummary;
   QColor mBackgroundColor;

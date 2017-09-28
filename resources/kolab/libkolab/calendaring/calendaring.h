@@ -80,7 +80,7 @@ private:
     boost::scoped_ptr<KCalCore::MemoryCalendar> mCalendar;
 };
 
-    }; //Namespace
-}; //Namespace
+    } //Namespace
+} //Namespace
 
 #endif

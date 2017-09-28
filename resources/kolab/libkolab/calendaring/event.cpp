@@ -235,5 +235,5 @@ cDateTime Calendaring::Event::getLastOccurrence() const
 }
 
 
-    };
-};
+    }
+}

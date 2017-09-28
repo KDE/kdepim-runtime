@@ -231,5 +231,5 @@ Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message:
 }
 
 
-}; //Namespace
-}; //Namespace
+} //Namespace
+} //Namespace

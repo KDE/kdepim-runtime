@@ -43,7 +43,7 @@ namespace Kolab {
         KOLAB_EXPORT KCalCore::Journal::Ptr toKCalCore(const Kolab::Journal &);
         KOLAB_EXPORT Kolab::Journal fromKCalCore(const KCalCore::Journal &);
 
-    };
-};
+    }
+}
 
 #endif

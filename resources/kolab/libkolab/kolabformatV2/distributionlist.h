@@ -48,24 +48,24 @@ public:
 
   void saveTo( KContacts::ContactGroup* contactGroup );
 
-  QString type() const { return "DistributionList"; }
+  QString type() const  override { return "DistributionList"; }
 
   void setName( const QString& name );
   QString name() const;
 
   // Load the attributes of this class
-  bool loadAttribute( QDomElement& );
+  bool loadAttribute( QDomElement& ) override;
 
   // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const;
+  bool saveAttributes( QDomElement& ) const override;
 
   // Load this note by reading the XML file
-  bool loadXML( const QDomDocument& xml );
+  bool loadXML( const QDomDocument& xml ) override;
 
   // Serialize this note to an XML string
-  QString saveXML() const;
+  QString saveXML() const override;
 
-  QString productID() const;
+  QString productID() const override;
 
 protected:
   void setFields( const KContacts::ContactGroup* );
