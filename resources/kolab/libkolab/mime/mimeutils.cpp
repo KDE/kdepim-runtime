@@ -32,7 +32,7 @@ KMime::Content* findContentByType(const KMime::Message::Ptr &data, const QByteAr
 {
     if (type.isEmpty()) {
         Error() << "Empty type";
-        return 0;
+        return nullptr;
     }
     Q_ASSERT(!data->contents().isEmpty());
     Q_FOREACH(KMime::Content *c, data->contents()) {
@@ -41,7 +41,7 @@ KMime::Content* findContentByType(const KMime::Message::Ptr &data, const QByteAr
             return c;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 KMime::Content* findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
@@ -54,7 +54,7 @@ KMime::Content* findContentByName(const KMime::Message::Ptr &data, const QString
             return c;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 KMime::Content* findContentById(const KMime::Message::Ptr &data, const QByteArray &id, QByteArray &type, QString &name)
@@ -72,7 +72,7 @@ KMime::Content* findContentById(const KMime::Message::Ptr &data, const QByteArra
             return c;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr& data)

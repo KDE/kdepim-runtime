@@ -192,7 +192,7 @@ Attendee *Event::getAttendee(const ContactReference &ref)
             return &*it;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 

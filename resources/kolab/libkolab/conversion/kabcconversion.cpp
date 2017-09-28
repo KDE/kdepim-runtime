@@ -118,7 +118,7 @@ namespace Kolab {
         {
             switch( pref ) {
                 case UnknownPreference:
-                    return 0;
+                    return nullptr;
                 case NeverEncrypt:
                     return "never";
                 case AlwaysEncrypt:
@@ -130,7 +130,7 @@ namespace Kolab {
                 case AskWheneverPossible:
                     return "askWhenPossible";
             }
-            return 0; // keep the compiler happy
+            return nullptr; // keep the compiler happy
         }
         
         EncryptionPreference stringToEncryptionPreference( const QString& str )
@@ -152,7 +152,7 @@ namespace Kolab {
         {
             switch( pref ) {
                 case UnknownSigningPreference:
-                    return 0;
+                    return nullptr;
                 case NeverSign:
                     return "never";
                 case AlwaysSign:
@@ -164,7 +164,7 @@ namespace Kolab {
                 case AskSigningWheneverPossible:
                     return "askWhenPossible";
             }
-            return 0; // keep the compiler happy
+            return nullptr; // keep the compiler happy
         }
         
         SigningPreference stringToSigningPreference( const QString& str )
