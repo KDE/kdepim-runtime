@@ -1,0 +1,181 @@
+/*
+ * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "timezonetest.h"
+#include <conversion/timezoneconverter.h>
+#include <conversion/commonconversion.h>
+#include <kolabformat/kolabobject.h>
+#include <kolabformat/errorhandler.h>
+#include "testutils.h"
+
+#include <QTest>
+#include <kcalcore/event.h>
+#include <kcalcore/icalformat.h>
+
+void TimezoneTest::initTestCase()
+{
+}
+
+void TimezoneTest::testFromName()
+{
+    TimezoneConverter converter;
+    const QString timezone = converter.normalizeTimezone("(GMT+01.00) Sarajevo/Warsaw/Zagreb");
+    QCOMPARE(timezone, QLatin1String("Europe/Sarajevo"));
+}
+
+void TimezoneTest::testFromHardcodedList_data()
+{
+    QTest::addColumn<QString>( "timezone" );
+    
+    QTest::newRow( "1" ) << QString::fromLatin1("(GMT+01:00) West Central Africa");
+    QTest::newRow( "2" ) << QString::fromLatin1("(GMT-04:00) Atlantic Time (Canada)");
+    QTest::newRow( "3" ) << QString::fromLatin1("(GMT-06:00) Saskatchewan");
+    QTest::newRow( "4" ) << QString::fromLatin1("(GMT-01:00) Cape Verde Islands");
+    QTest::newRow( "5" ) << QString::fromLatin1("(GMT-06:00) Central America");
+    QTest::newRow( "6" ) << QString::fromLatin1("(GMT-06:00) Central Time (US and Canada)");
+//     QTest::newRow( "7" ) << QString::fromLatin1("(GMT-12:00) International Date Line West"); //Not mappable
+    QTest::newRow( "8" ) << QString::fromLatin1("(GMT-05:00) Eastern Time (US and Canada)");
+//     QTest::newRow( "9" ) << QString::fromLatin1("(GMT-02:00) Mid-Atlantic"); //Not mappable
+    QTest::newRow( "10" ) << QString::fromLatin1("(GMT-07:00) Mountain Time (US and Canada)");
+    QTest::newRow( "11" ) << QString::fromLatin1("(GMT-03:30) Newfoundland and Labrador");
+    QTest::newRow( "12" ) << QString::fromLatin1("(GMT-08:00) Pacific Time (US and Canada); Tijuana");
+    QTest::newRow( "13" ) << QString::fromLatin1("(GMT-11:00) Midway Island, Samoa");
+    QTest::newRow( "14" ) << QString::fromLatin1("W. Europe Standard Time");
+    QTest::newRow( "15" ) << QString::fromLatin1("(GMT+1.00) Sarajevo/Warsaw/Zagreb");
+    //Lotus notes uses it's own set of specifiers
+//     QTest::newRow( "Lotus Notes" ) << QString::fromLatin1("W. Europe");
+//     QTest::newRow( "Google UTC offset" ) << QString::fromLatin1("2013-10-23T04:00:00+02:00");
+}
+
+void TimezoneTest::testFromHardcodedList()
+{
+    TimezoneConverter converter;
+    QFETCH(QString, timezone);
+    const QString tz = converter.normalizeTimezone(timezone);
+    qDebug() << tz;
+    QVERIFY(!tz.isEmpty());
+    QVERIFY(tz != timezone);
+}
+
+void TimezoneTest::testKolabObjectWriter()
+{
+    KCalCore::Event::Ptr event(new KCalCore::Event());
+    event->setOrganizer(KCalCore::Person::Ptr());
+    event->setDtStart(QDateTime(QDate(2012,11,11), QTime(1,1), QTimeZone(QTimeZone::windowsIdToDefaultIanaId("(GMT+01:00) West Central Africa"))));
+    KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
+    Kolab::KolabObjectReader reader(msg);
+    KCalCore::Event::Ptr result = reader.getEvent();
+    qDebug() << result->dtStart().timeZone().id();
+    QCOMPARE(result->dtStart().timeZone().id(), QTimeZone("Africa/Lagos").id());
+}
+
+// void TimezoneTest::testKolabObjectReader()
+// {
+//     const Kolab::Version version = Kolab::KolabV3;
+//     const Kolab::ObjectType type = Kolab::EventObject;
+//     QString icalFileName = TESTFILEDIR+QString::fromLatin1("timezone/windowsTimezone.ics"); //To compare
+//     QString mimeFileName = TESTFILEDIR+QString::fromLatin1("timezone/windowsTimezoneV3.mime"); //For parsing
+// 
+//     //Parse mime message
+//     bool ok = false;
+//     const KMime::Message::Ptr &msg = readMimeFile( mimeFileName, ok );
+//     QVERIFY(ok);
+//     Kolab::KolabObjectReader reader;
+//     Kolab::ObjectType t = reader.parseMimeMessage(msg);
+//     QCOMPARE(t, type);
+//     QCOMPARE(reader.getVersion(), version);
+//     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
+// 
+//     KCalCore::Incidence::Ptr convertedIncidence = reader.getIncidence();
+//     qDebug() << "read incidence";
+// 
+//     //Parse ICalFile for comparison
+//     QFile icalFile( icalFileName );
+//     QVERIFY( icalFile.open( QFile::ReadOnly ) );
+//     KCalCore::ICalFormat format;
+//     KCalCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
+// 
+//     // fix up the converted incidence for comparisson
+//     normalizeIncidence(convertedIncidence);
+//     normalizeIncidence(realIncidence);
+// 
+//     // recurrence objects are created on demand, but KCalCore::Incidence::operator==() doesn't take that into account
+//     // so make sure both incidences have one
+//     realIncidence->recurrence();
+//     convertedIncidence->recurrence();
+// 
+//     realIncidence->setLastModified(convertedIncidence->lastModified());
+// 
+//     //The following test is just for debugging and not really relevant
+//     if ( *(realIncidence.data()) != *(convertedIncidence.data()) ) {
+//         showDiff(format.toString( realIncidence ), format.toString( convertedIncidence ));
+//     }
+//     QVERIFY( *(realIncidence.data()) ==  *(convertedIncidence.data()) );
+// }
+
+void TimezoneTest::testFindLegacyTimezone()
+{
+    const QString normalized = TimezoneConverter::normalizeTimezone("US/Pacific");
+    qDebug() << normalized;
+    QEXPECT_FAIL("", "Currently broken", Continue);
+    QVERIFY(!normalized.isEmpty());
+}
+
+void TimezoneTest::testIgnoreInvalidTimezone()
+{
+    const QString normalized = TimezoneConverter::normalizeTimezone("FOOOOBAR");
+    qDebug() << normalized;
+    QVERIFY(normalized.isEmpty());
+}
+
+void TimezoneTest::testUTCOffset()
+{
+    const Kolab::cDateTime expected(2013, 10, 23, 2, 0 ,0, true);
+    const QDateTime input(QDateTime::fromString("2013-10-23T04:00:00+02:00", Qt::ISODate));
+    const Kolab::cDateTime result = Kolab::Conversion::fromDate(input, false);
+    QVERIFY(!Kolab::ErrorHandler::instance().errorOccured());
+    QCOMPARE(result, expected);
+}
+
+void TimezoneTest::localTimezone()
+{
+    {
+        const Kolab::cDateTime result = Kolab::Conversion::fromDate(QDateTime(QDate(2013, 10, 10), QTime(2, 0, 0), Qt::LocalTime), false);
+        QVERIFY(!result.timezone().empty());
+        QVERIFY(!Kolab::ErrorHandler::instance().errorOccured());
+    }
+    {
+        const Kolab::cDateTime result = Kolab::Conversion::fromDate(QDateTime(QDate(2013, 10, 10), QTime(2, 0, 0)), false);
+        QVERIFY(!Kolab::ErrorHandler::instance().errorOccured());
+    }
+    {
+        const Kolab::cDateTime result = Kolab::Conversion::fromDate(QDateTime(QDate(2013, 10, 10), QTime(2, 0, 0), QTimeZone()), false);
+        QVERIFY(result.timezone().empty());
+        QVERIFY(!Kolab::ErrorHandler::instance().errorOccured());
+    }
+    {
+        QDateTime dt(QDate(2013, 10, 10), QTime(2, 0, 0), QTimeZone("/etc/localzone"));
+        const Kolab::cDateTime result = Kolab::Conversion::fromDate(dt, false);
+        qDebug() << result.timezone();
+        QVERIFY(result.timezone().empty());
+        QVERIFY(!Kolab::ErrorHandler::instance().errorOccured());
+    }
+}
+
+QTEST_MAIN( TimezoneTest )
+
+#include "timezonetest.moc"
