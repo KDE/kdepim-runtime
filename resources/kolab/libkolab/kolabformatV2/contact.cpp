@@ -447,7 +447,8 @@ bool Contact::loadPhoneAttribute( QDomElement& element )
 void Contact::savePhoneAttributes( QDomElement& element ) const
 {
   QList<PhoneNumber>::ConstIterator it = mPhoneNumbers.constBegin();
-  for ( ; it != mPhoneNumbers.constEnd(); ++it ) {
+  const QList<PhoneNumber>::ConstIterator end = mPhoneNumbers.constEnd();
+  for ( ; it != end; ++it ) {
     QDomElement e = element.ownerDocument().createElement( "phone" );
     element.appendChild( e );
     const PhoneNumber& p = *it;
@@ -459,7 +460,8 @@ void Contact::savePhoneAttributes( QDomElement& element ) const
 void Contact::saveEmailAttributes( QDomElement& element ) const
 {
   QList<Email>::ConstIterator it = mEmails.constBegin();
-  for ( ; it != mEmails.constEnd(); ++it )
+  QList<Email>::ConstIterator end = mEmails.constEnd();
+  for ( ; it != end; ++it )
     saveEmailAttribute( element, *it );
 }
 
