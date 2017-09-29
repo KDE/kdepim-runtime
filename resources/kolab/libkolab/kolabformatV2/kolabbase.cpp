@@ -151,7 +151,7 @@ void KolabBase::saveTo( KContacts::Addressee* addressee ) const
   addressee->setNote( body() );
   addressee->setCategories( categories().split( ',', QString::SkipEmptyParts ) );
   addressee->setRevision( lastModified().toZone( mTimeZone ).dateTime() );
-  addressee->insertCustom( "KOLAB", "CreationDate",
+  addressee->insertCustom( QStringLiteral("KOLAB"), QStringLiteral("CreationDate"),
                            dateTimeToString( creationDate() ) );
 
   switch( sensitivity() ) {
@@ -323,47 +323,47 @@ bool KolabBase::loadAttribute( QDomElement& element )
   const QString tagName = element.tagName();
   switch ( tagName[0].toLatin1() ) {
   case 'u':
-    if ( tagName == "uid" ) {
+    if ( tagName == QLatin1String("uid") ) {
       setUid( element.text() );
       return true;
     }
     break;
   case 'b':
-    if ( tagName == "body" ) {
+    if ( tagName == QLatin1String("body") ) {
       setBody( element.text() );
       return true;
     }
     break;
   case 'c':
-    if ( tagName == "categories" ) {
+    if ( tagName == QLatin1String("categories") ) {
       setCategories( element.text() );
       return true;
     }
-    if ( tagName == "creation-date" ) {
+    if ( tagName == QLatin1String("creation-date") ) {
       setCreationDate( stringToDateTime( element.text() ) );
       return true;
     }
     break;
   case 'l':
-    if ( tagName == "last-modification-date" ) {
+    if ( tagName == QLatin1String("last-modification-date") ) {
       setLastModified( stringToDateTime( element.text() ) );
       return true;
     }
     break;
   case 's':
-    if ( tagName == "sensitivity" ) {
+    if ( tagName == QLatin1String("sensitivity") ) {
       setSensitivity( stringToSensitivity( element.text() ) );
       return true;
     }
     break;
   case 'p':
-    if ( tagName == "product-id" )
+    if ( tagName == QLatin1String("product-id") )
       return true; // ignore this field
-    if ( tagName == "pilot-sync-id" ) {
+    if ( tagName == QLatin1String("pilot-sync-id") ) {
       setPilotSyncId( element.text().toULong() );
       return true;
     }
-    if ( tagName == "pilot-sync-status" ) {
+    if ( tagName == QLatin1String("pilot-sync-status") ) {
       setPilotSyncStatus( element.text().toInt() );
       return true;
     }

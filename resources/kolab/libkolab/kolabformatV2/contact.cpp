@@ -1049,7 +1049,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
     int pos = (*it).indexOf( '-' );
     if ( pos == -1 ) continue;
     QString app = (*it).left( pos );
-    if ( app == "KOLAB" ) continue;
+    if ( app == QLatin1String("KOLAB") ) continue;
     QString name = (*it).mid( pos + 1 );
     pos = name.indexOf( ':' );
     if ( pos == -1 ) continue;

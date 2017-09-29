@@ -108,14 +108,14 @@ bool Note::richText() const
 bool Note::loadAttribute( QDomElement& element )
 {
   QString tagName = element.tagName();
-  if ( tagName == "summary" )
+  if ( tagName == QLatin1String("summary") )
     setSummary( element.text() );
-  else if ( tagName == "foreground-color" )
+  else if ( tagName == QLatin1String("foreground-color") )
     setForegroundColor( stringToColor( element.text() ) );
-  else if ( tagName == "background-color" )
+  else if ( tagName == QLatin1String("background-color") )
     setBackgroundColor( stringToColor( element.text() ) );
-  else if ( tagName == "knotes-richtext" )
-    mRichText = ( element.text() == "true" );
+  else if ( tagName == QLatin1String("knotes-richtext") )
+    mRichText = ( element.text() == QLatin1String("true") );
   else
     return KolabBase::loadAttribute( element );
 
@@ -149,7 +149,7 @@ bool Note::loadXML( const QDomDocument& document )
 {
   QDomElement top = document.documentElement();
 
-  if ( top.tagName() != "note" ) {
+  if ( top.tagName() != QLatin1String("note") ) {
     qWarning( "XML error: Top tag was %s instead of the expected note",
               top.tagName().toAscii().data() );
     return false;

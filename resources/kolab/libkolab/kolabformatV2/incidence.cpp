@@ -765,13 +765,13 @@ void Incidence::setRecurrence( KCalCore::Recurrence* recur )
   }
   int howMany = recur->duration();
   if ( howMany > 0 ) {
-    mRecurrence.rangeType = "number";
+    mRecurrence.rangeType = QStringLiteral("number");
     mRecurrence.range = QString::number( howMany );
   } else if ( howMany == 0 ) {
-    mRecurrence.rangeType = "date";
+    mRecurrence.rangeType = QStringLiteral("date");
     mRecurrence.range = dateToString( recur->endDate() );
   } else {
-    mRecurrence.rangeType = "none";
+    mRecurrence.rangeType = QStringLiteral("none");
   }
 }
 
@@ -833,7 +833,7 @@ void Incidence::setFields( const KCalCore::Incidence::Ptr &incidence )
 
   // Attachments
   KCalCore::Attachment::List attachments = incidence->attachments();
-  foreach ( KCalCore::Attachment::Ptr a, attachments ) {
+  foreach ( const KCalCore::Attachment::Ptr &a, attachments ) {
     mAttachments.push_back( a );
   }
 
@@ -841,7 +841,7 @@ void Incidence::setFields( const KCalCore::Incidence::Ptr &incidence )
 
   // Alarms
   KCalCore::Alarm::List alarms = incidence->alarms();
-  foreach ( KCalCore::Alarm::Ptr a, alarms ) {
+  foreach ( const KCalCore::Alarm::Ptr &a, alarms ) {
     mAlarms.push_back( a );
   }
 

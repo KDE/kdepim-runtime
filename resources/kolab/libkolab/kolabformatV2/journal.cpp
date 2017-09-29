@@ -101,9 +101,9 @@ bool Journal::loadAttribute( QDomElement& element )
 {
   QString tagName = element.tagName();
 
-  if ( tagName == "summary" )
+  if ( tagName == QLatin1String("summary") )
     setSummary( element.text() );
-  else if ( tagName == "start-date" )
+  else if ( tagName == QLatin1String("start-date") )
     setStartDate( stringToDateTime( element.text() ) );
   else
     // Not handled here
@@ -118,8 +118,8 @@ bool Journal::saveAttributes( QDomElement& element ) const
   // Save the base class elements
   KolabBase::saveAttributes( element );
 
-  writeString( element, "summary", summary() );
-  writeString( element, "start-date", dateTimeToString( startDate() ) );
+  writeString( element, QStringLiteral("summary"), summary() );
+  writeString( element, QStringLiteral("start-date"), dateTimeToString( startDate() ) );
 
   return true;
 }
@@ -129,7 +129,7 @@ bool Journal::loadXML( const QDomDocument& document )
 {
   QDomElement top = document.documentElement();
 
-  if ( top.tagName() != "journal" ) {
+  if ( top.tagName() != QLatin1String("journal") ) {
     qWarning( "XML error: Top tag was %s instead of the expected Journal",
               top.tagName().toAscii().data() );
     return false;
@@ -154,8 +154,8 @@ bool Journal::loadXML( const QDomDocument& document )
 QString Journal::saveXML() const
 {
   QDomDocument document = domTree();
-  QDomElement element = document.createElement( "journal" );
-  element.setAttribute( "version", "1.0" );
+  QDomElement element = document.createElement( QStringLiteral("journal") );
+  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
   saveAttributes( element );
   document.appendChild( element );
   return document.toString();

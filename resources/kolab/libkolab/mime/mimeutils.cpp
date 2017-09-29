@@ -199,7 +199,7 @@ KMime::Content* createAttachmentPart(const QByteArray& cid, const QByteArray& mi
 
 Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr &mimeData)
 {
-    if (!QString::fromStdString(id).contains("cid:")) {
+    if (!QString::fromStdString(id).contains(QLatin1String("cid:"))) {
         Error() << "not a cid reference";
         return Kolab::Attachment();
     }
