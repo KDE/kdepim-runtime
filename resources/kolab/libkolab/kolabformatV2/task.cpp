@@ -204,23 +204,23 @@ bool Task::saveAttributes( QDomElement& element ) const
   // Save the base class elements
   Incidence::saveAttributes( element );
 
-  writeString( element, "completed", QString::number( percentCompleted() ) );
+  writeString( element, QStringLiteral("completed"), QString::number( percentCompleted() ) );
 
   switch( status() ) {
   case KCalCore::Incidence::StatusInProcess:
-    writeString( element, "status", "in-progress" );
+    writeString( element, QStringLiteral("status"), QStringLiteral("in-progress") );
     break;
   case KCalCore::Incidence::StatusCompleted:
-    writeString( element, "status", "completed" );
+    writeString( element, QStringLiteral("status"), QStringLiteral("completed") );
     break;
   case KCalCore::Incidence::StatusNeedsAction:
-    writeString( element, "status", "waiting-on-someone-else" );
+    writeString( element, QStringLiteral("status"), QStringLiteral("waiting-on-someone-else") );
     break;
   case KCalCore::Incidence::StatusCanceled:
-    writeString( element, "status", "deferred" );
+    writeString( element, QStringLiteral("status"), QStringLiteral("deferred") );
     break;
   case KCalCore::Incidence::StatusNone:
-    writeString( element, "status", "not-started" );
+    writeString( element, QStringLiteral("status"), QStringLiteral("not-started") );
     break;
   case KCalCore::Incidence::StatusTentative:
   case KCalCore::Incidence::StatusConfirmed:
@@ -228,24 +228,24 @@ bool Task::saveAttributes( QDomElement& element ) const
   case KCalCore::Incidence::StatusFinal:
   case KCalCore::Incidence::StatusX:
     // All of these are saved as StatusNone.
-    writeString( element, "status", "not-started" );
+    writeString( element, QStringLiteral("status"), QStringLiteral("not-started") );
     break;
   }
 
   if ( hasDueDate() ) {
     if ( mFloatingStatus == HasTime ) {
-      writeString( element, "due-date", dateTimeToString( dueDate() ) );
+      writeString( element, QStringLiteral("due-date"), dateTimeToString( dueDate() ) );
     } else {
-      writeString( element, "due-date", dateToString( dueDate().date() ) );
+      writeString( element, QStringLiteral("due-date"), dateToString( dueDate().date() ) );
     }
   }
 
   if ( !parent().isNull() ) {
-    writeString( element, "parent", parent() );
+    writeString( element, QStringLiteral("parent"), parent() );
   }
 
   if ( hasCompletedDate() && percentCompleted() == 100 ) {
-    writeString( element, "x-completed-date", dateTimeToString( completedDate() ) );
+    writeString( element, QStringLiteral("x-completed-date"), dateTimeToString( completedDate() ) );
   }
 
   return true;

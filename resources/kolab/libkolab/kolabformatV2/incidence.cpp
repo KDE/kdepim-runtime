@@ -209,18 +209,18 @@ bool Incidence::loadAttendeeAttribute( QDomElement& element,
 void Incidence::saveAttendeeAttribute( QDomElement& element,
                                        const Attendee& attendee ) const
 {
-  QDomElement e = element.ownerDocument().createElement( "attendee" );
+  QDomElement e = element.ownerDocument().createElement( QStringLiteral("attendee") );
   element.appendChild( e );
-  writeString( e, "display-name", attendee.displayName );
-  writeString( e, "smtp-address", attendee.smtpAddress );
-  writeString( e, "status", attendee.status );
-  writeString( e, "request-response",
-               ( attendee.requestResponse ? "true" : "false" ) );
-  writeString( e, "invitation-sent",
-               ( attendee.invitationSent ? "true" : "false" ) );
-  writeString( e, "role", attendee.role );
-  writeString( e, "delegated-to", attendee.delegate );
-  writeString( e, "delegated-from", attendee.delegator );
+  writeString( e, QStringLiteral("display-name"), attendee.displayName );
+  writeString( e, QStringLiteral("smtp-address"), attendee.smtpAddress );
+  writeString( e, QStringLiteral("status"), attendee.status );
+  writeString( e, QStringLiteral("request-response"),
+               ( attendee.requestResponse ? QStringLiteral("true") : QStringLiteral("false") ) );
+  writeString( e, QStringLiteral("invitation-sent"),
+               ( attendee.invitationSent ? QStringLiteral("true") : QStringLiteral("false") ) );
+  writeString( e, QStringLiteral("role"), attendee.role );
+  writeString( e, QStringLiteral("delegated-to"), attendee.delegate );
+  writeString( e, QStringLiteral("delegated-from"), attendee.delegator );
 }
 
 void Incidence::saveAttendees( QDomElement& element ) const
@@ -233,9 +233,9 @@ void Incidence::saveAttachments( QDomElement& element ) const
 {
   foreach ( KCalCore::Attachment::Ptr a, mAttachments ) {
     if ( a->isUri() ) {
-      writeString( element, "link-attachment", a->uri() );
+      writeString( element, QStringLiteral("link-attachment"), a->uri() );
     } else if ( a->isBinary() ) {
-      writeString( element, "inline-attachment", a->label() );
+      writeString( element, QStringLiteral("inline-attachment"), a->label() );
     }
   }
 }
@@ -244,56 +244,56 @@ void Incidence::saveAlarms( QDomElement& element ) const
 {
   if ( mAlarms.isEmpty() ) return;
 
-  QDomElement list = element.ownerDocument().createElement( "advanced-alarms" );
+  QDomElement list = element.ownerDocument().createElement( QStringLiteral("advanced-alarms") );
   element.appendChild( list );
   foreach ( KCalCore::Alarm::Ptr a, mAlarms ) {
-    QDomElement e = list.ownerDocument().createElement( "alarm" );
+    QDomElement e = list.ownerDocument().createElement( QStringLiteral("alarm") );
     list.appendChild( e );
 
-    writeString( e, "enabled", a->enabled() ? "1" : "0" );
+    writeString( e, QStringLiteral("enabled"), a->enabled() ? QStringLiteral("1") : QStringLiteral("0") );
     if ( a->hasStartOffset() ) {
-      writeString( e, "start-offset", QString::number( a->startOffset().asSeconds()/60 ) );
+      writeString( e, QStringLiteral("start-offset"), QString::number( a->startOffset().asSeconds()/60 ) );
     }
     if ( a->hasEndOffset() ) {
-      writeString( e, "end-offset", QString::number( a->endOffset().asSeconds()/60 ) );
+      writeString( e, QStringLiteral("end-offset"), QString::number( a->endOffset().asSeconds()/60 ) );
     }
     if ( a->repeatCount() ) {
-      writeString( e, "repeat-count", QString::number( a->repeatCount() ) );
-      writeString( e, "repeat-interval", QString::number( a->snoozeTime().asSeconds() ) );
+      writeString( e, QStringLiteral("repeat-count"), QString::number( a->repeatCount() ) );
+      writeString( e, QStringLiteral("repeat-interval"), QString::number( a->snoozeTime().asSeconds() ) );
     }
 
     switch ( a->type() ) {
     case KCalCore::Alarm::Invalid:
       break;
     case KCalCore::Alarm::Display:
-      e.setAttribute( "type", "display" );
-      writeString( e, "text", a->text() );
+      e.setAttribute( QStringLiteral("type"), QStringLiteral("display") );
+      writeString( e, QStringLiteral("text"), a->text() );
       break;
     case KCalCore::Alarm::Procedure:
-      e.setAttribute( "type", "procedure" );
-      writeString( e, "program", a->programFile() );
-      writeString( e, "arguments", a->programArguments() );
+      e.setAttribute( QStringLiteral("type"), QStringLiteral("procedure") );
+      writeString( e, QStringLiteral("program"), a->programFile() );
+      writeString( e, QStringLiteral("arguments"), a->programArguments() );
       break;
     case KCalCore::Alarm::Email:
     {
-      e.setAttribute( "type", "email" );
-      QDomElement addresses = e.ownerDocument().createElement( "addresses" );
+      e.setAttribute( QStringLiteral("type"), QStringLiteral("email") );
+      QDomElement addresses = e.ownerDocument().createElement( QStringLiteral("addresses") );
       e.appendChild( addresses );
       foreach ( const KCalCore::Person::Ptr &person, a->mailAddresses() ) {
-        writeString( addresses, "address", person->fullName() );
+        writeString( addresses, QStringLiteral("address"), person->fullName() );
       }
-      writeString( e, "subject", a->mailSubject() );
-      writeString( e, "mail-text", a->mailText() );
-      QDomElement attachments = e.ownerDocument().createElement( "attachments" );
+      writeString( e, QStringLiteral("subject"), a->mailSubject() );
+      writeString( e, QStringLiteral("mail-text"), a->mailText() );
+      QDomElement attachments = e.ownerDocument().createElement( QStringLiteral("attachments") );
       e.appendChild( attachments );
       foreach ( const QString &attachment, a->mailAttachments() ) {
-        writeString( attachments, "attachment", attachment );
+        writeString( attachments, QStringLiteral("attachment"), attachment );
       }
       break;
     }
     case KCalCore::Alarm::Audio:
-      e.setAttribute( "type", "audio" );
-      writeString( e, "file", a->audioFile() );
+      e.setAttribute( QStringLiteral("type"), QStringLiteral("audio") );
+      writeString( e, QStringLiteral("file"), a->audioFile() );
       break;
     default:
       qWarning() << "Unhandled alarm type:" << a->type();
@@ -304,43 +304,43 @@ void Incidence::saveAlarms( QDomElement& element ) const
 
 void Incidence::saveRecurrence( QDomElement& element ) const
 {
-  QDomElement e = element.ownerDocument().createElement( "recurrence" );
+  QDomElement e = element.ownerDocument().createElement( QStringLiteral("recurrence") );
   element.appendChild( e );
-  e.setAttribute( "cycle", mRecurrence.cycle );
+  e.setAttribute( QStringLiteral("cycle"), mRecurrence.cycle );
   if ( !mRecurrence.type.isEmpty() )
-    e.setAttribute( "type", mRecurrence.type );
-  writeString( e, "interval", QString::number( mRecurrence.interval ) );
+    e.setAttribute( QStringLiteral("type"), mRecurrence.type );
+  writeString( e, QStringLiteral("interval"), QString::number( mRecurrence.interval ) );
   foreach ( const QString& recurrence, mRecurrence.days ) {
-    writeString( e, "day", recurrence );
+    writeString( e, QStringLiteral("day"), recurrence );
   }
   if ( !mRecurrence.dayNumber.isEmpty() )
-    writeString( e, "daynumber", mRecurrence.dayNumber );
+    writeString( e, QStringLiteral("daynumber"), mRecurrence.dayNumber );
   if ( !mRecurrence.month.isEmpty() )
-    writeString( e, "month", mRecurrence.month );
+    writeString( e, QStringLiteral("month"), mRecurrence.month );
   if ( !mRecurrence.rangeType.isEmpty() ) {
-    QDomElement range = element.ownerDocument().createElement( "range" );
+    QDomElement range = element.ownerDocument().createElement( QStringLiteral("range") );
     e.appendChild( range );
-    range.setAttribute( "type", mRecurrence.rangeType );
+    range.setAttribute(QStringLiteral("type"), mRecurrence.rangeType );
     QDomText t = element.ownerDocument().createTextNode( mRecurrence.range );
     range.appendChild( t );
   }
   foreach ( const QDate& date, mRecurrence.exclusions ) {
-    writeString( e, "exclusion", dateToString( date ) );
+    writeString( e, QStringLiteral("exclusion"), dateToString( date ) );
   }
 }
 
 void Incidence::loadRecurrence( const QDomElement& element )
 {
   mRecurrence.interval = 0;
-  mRecurrence.cycle = element.attribute( "cycle" );
-  mRecurrence.type = element.attribute( "type" );
+  mRecurrence.cycle = element.attribute( QStringLiteral("cycle") );
+  mRecurrence.type = element.attribute( QStringLiteral("type") );
   for ( QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
     if ( n.isComment() )
       continue;
     if ( n.isElement() ) {
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
-      if ( tagName == "interval" ) {
+      if ( tagName == QLatin1String("interval") ) {
         //kolab/issue4229, sometimes  the interval value can be empty
         if ( e.text().isEmpty() || e.text().toInt() <= 0 ) {
           mRecurrence.interval = 1;
@@ -500,40 +500,40 @@ bool Incidence::loadAttribute( QDomElement& element )
         setPriority(p);
       }
     }
-  } else if ( tagName == "summary" )
+  } else if ( tagName == QLatin1String("summary") )
     setSummary( element.text() );
-  else if ( tagName == "location" )
+  else if ( tagName == QLatin1String("location") )
     setLocation( element.text() );
-  else if ( tagName == "organizer" ) {
+  else if ( tagName == QLatin1String("organizer") ) {
     Email email;
     if ( loadEmailAttribute( element, email ) ) {
       setOrganizer( email );
       return true;
     } else
       return false;
-  } else if ( tagName == "start-date" )
+  } else if ( tagName == QLatin1String("start-date") )
     setStartDate( element.text() );
-  else if ( tagName == "recurrence" )
+  else if ( tagName == QLatin1String("recurrence") )
     loadRecurrence( element );
-  else if ( tagName == "attendee" ) {
+  else if ( tagName == QLatin1String("attendee") ) {
     Attendee attendee;
     if ( loadAttendeeAttribute( element, attendee ) ) {
       addAttendee( attendee );
       return true;
     } else
       return false;
-  } else if ( tagName == "link-attachment" ) {
+  } else if ( tagName == QLatin1String("link-attachment") ) {
     mAttachments.push_back( KCalCore::Attachment::Ptr( new KCalCore::Attachment( element.text() ) ) );
-  } else if ( tagName == "alarm" )
+  } else if ( tagName == QLatin1String("alarm") )
     // Alarms should be minutes before. Libkcal uses event time + alarm time
     setAlarm( - element.text().toInt() );
-  else if ( tagName == "advanced-alarms" )
+  else if ( tagName == QLatin1String("advanced-alarms") )
     loadAlarms( element );
-  else if ( tagName == "x-kde-internaluid" )
+  else if ( tagName == QLatin1String("x-kde-internaluid") )
     setInternalUID( element.text() );
-  else if ( tagName == "x-custom" ) {
+  else if ( tagName == QLatin1String("x-custom") ) {
     loadCustomAttributes( element );
-  } else if ( tagName == "inline-attachment"  ) {
+  } else if ( tagName == QLatin1String("inline-attachment")  ) {
     // we handle that separately later on, so no need to create a KolabUnhandled entry for it
   } else {
     bool ok = KolabBase::loadAttribute( element );
@@ -556,16 +556,16 @@ bool Incidence::saveAttributes( QDomElement& element ) const
   KolabBase::saveAttributes( element );
 
   if (priority() != 0) {
-    writeString( element, "priority", QString::number( priority() ) );
+    writeString( element, QStringLiteral("priority"), QString::number( priority() ) );
   }
 
   if ( mFloatingStatus == HasTime )
-    writeString( element, "start-date", dateTimeToString( startDate() ) );
+    writeString( element, QStringLiteral("start-date"), dateTimeToString( startDate() ) );
   else
-    writeString( element, "start-date", dateToString( startDate().date() ) );
-  writeString( element, "summary", summary() );
-  writeString( element, "location", location() );
-  saveEmailAttribute( element, organizer(), "organizer" );
+    writeString( element, QStringLiteral("start-date"), dateToString( startDate().date() ) );
+  writeString( element, QStringLiteral("summary"), summary() );
+  writeString( element, QStringLiteral("location"), location() );
+  saveEmailAttribute( element, organizer(), QStringLiteral("organizer") );
   if ( !mRecurrence.cycle.isEmpty() )
     saveRecurrence( element );
   saveAttendees( element );
@@ -573,10 +573,10 @@ bool Incidence::saveAttributes( QDomElement& element ) const
   if ( mHasAlarm ) {
     // Alarms should be minutes before. Libkcal uses event time + alarm time
     int alarmTime = qRound( -alarm() );
-    writeString( element, "alarm", QString::number( alarmTime ) );
+    writeString( element, QStringLiteral("alarm"), QString::number( alarmTime ) );
   }
   saveAlarms( element );
-  writeString( element, "x-kde-internaluid", internalUID() );
+  writeString( element, QStringLiteral("x-kde-internaluid"), internalUID() );
   saveCustomAttributes( element );
   return true;
 }
@@ -647,9 +647,9 @@ static QString attendeeStatusToString( KCalCore::Attendee::PartStat status )
 
 static KCalCore::Attendee::Role attendeeStringToRole( const QString& s )
 {
-  if ( s == "optional" )
+  if ( s == QLatin1String("optional") )
     return KCalCore::Attendee::OptParticipant;
-  if ( s == "resource" )
+  if ( s == QLatin1String("resource") )
     return KCalCore::Attendee::NonParticipant;
   return KCalCore::Attendee::ReqParticipant;
 }
@@ -730,8 +730,8 @@ void Incidence::setRecurrence( KCalCore::Recurrence* recur )
   }
   case KCalCore::Recurrence::rYearlyMonth: // (day n of Month Y)
   {
-    mRecurrence.cycle = "yearly";
-    mRecurrence.type = "monthday";
+    mRecurrence.cycle = QStringLiteral("yearly");
+    mRecurrence.type = QStringLiteral("monthday");
     QList<int> rmd = recur->yearDates();
     int day = !rmd.isEmpty() ? rmd.first() : recur->startDate().day();
     mRecurrence.dayNumber = QString::number( day );
@@ -741,13 +741,13 @@ void Incidence::setRecurrence( KCalCore::Recurrence* recur )
     break;
   }
   case KCalCore::Recurrence::rYearlyDay: // YearlyDay (day N of the year). Not supported by Outlook
-    mRecurrence.cycle = "yearly";
-    mRecurrence.type = "yearday";
+    mRecurrence.cycle = QStringLiteral("yearly");
+    mRecurrence.type = QStringLiteral("yearday");
     mRecurrence.dayNumber = QString::number( recur->yearDays().first() );
     break;
   case KCalCore::Recurrence::rYearlyPos: // (weekday X of week N of month Y)
-    mRecurrence.cycle = "yearly";
-    mRecurrence.type = "weekday";
+    mRecurrence.cycle = QStringLiteral("yearly");
+    mRecurrence.type = QStringLiteral("weekday");
     QList<int> months = recur->yearMonths();
     if ( !months.isEmpty() )
       mRecurrence.month = s_monthName[ months.first() - 1 ]; // #### Kolab XML limitation: only one month specified
@@ -944,32 +944,32 @@ void Incidence::saveTo( const KCalCore::Incidence::Ptr &incidence )
   if ( !mRecurrence.cycle.isEmpty() ) {
     KCalCore::Recurrence* recur = incidence->recurrence(); // yeah, this creates it
     // done below recur->setFrequency( mRecurrence.interval );
-    if ( mRecurrence.cycle == "minutely" ) {
+    if ( mRecurrence.cycle == QLatin1String("minutely") ) {
       recur->setMinutely( mRecurrence.interval );
-    } else if ( mRecurrence.cycle == "hourly" ) {
+    } else if ( mRecurrence.cycle == QLatin1String("hourly") ) {
       recur->setHourly( mRecurrence.interval );
-    } else if ( mRecurrence.cycle == "daily" ) {
+    } else if ( mRecurrence.cycle == QLatin1String("daily") ) {
       recur->setDaily( mRecurrence.interval );
-    } else if ( mRecurrence.cycle == "weekly" ) {
+    } else if ( mRecurrence.cycle == QLatin1String("weekly") ) {
       QBitArray rDays = daysListToBitArray( mRecurrence.days );
       recur->setWeekly( mRecurrence.interval, rDays );
-    } else if ( mRecurrence.cycle == "monthly" ) {
+    } else if ( mRecurrence.cycle == QLatin1String("monthly") ) {
       recur->setMonthly( mRecurrence.interval );
-      if ( mRecurrence.type == "weekday" ) {
+      if ( mRecurrence.type == QLatin1String("weekday") ) {
         recur->addMonthlyPos( mRecurrence.dayNumber.toInt(), daysListToBitArray( mRecurrence.days ) );
-      } else if ( mRecurrence.type == "daynumber" ) {
+      } else if ( mRecurrence.type == QLatin1String("daynumber") ) {
         recur->addMonthlyDate( mRecurrence.dayNumber.toInt() );
       } else qWarning() <<"Unhandled monthly recurrence type" << mRecurrence.type;
-    } else if ( mRecurrence.cycle == "yearly" ) {
+    } else if ( mRecurrence.cycle == QLatin1String("yearly") ) {
       recur->setYearly( mRecurrence.interval );
-      if ( mRecurrence.type == "monthday" ) {
+      if ( mRecurrence.type == QLatin1String("monthday") ) {
         recur->addYearlyDate( mRecurrence.dayNumber.toInt() );
 				for ( int i = 0; i < 12; ++i )
           if ( s_monthName[ i ] == mRecurrence.month )
             recur->addYearlyMonth( i+1 );
-      } else if ( mRecurrence.type == "yearday" ) {
+      } else if ( mRecurrence.type == QLatin1String("yearday") ) {
         recur->addYearlyDay( mRecurrence.dayNumber.toInt() );
-      } else if ( mRecurrence.type == "weekday" ) {
+      } else if ( mRecurrence.type == QLatin1String("weekday") ) {
 			  for ( int i = 0; i < 12; ++i )
           if ( s_monthName[ i ] == mRecurrence.month )
             recur->addYearlyMonth( i+1 );
@@ -977,9 +977,9 @@ void Incidence::saveTo( const KCalCore::Incidence::Ptr &incidence )
       } else qWarning() <<"Unhandled yearly recurrence type" << mRecurrence.type;
     } else qWarning() <<"Unhandled recurrence cycle" << mRecurrence.cycle;
 
-    if ( mRecurrence.rangeType == "number" ) {
+    if ( mRecurrence.rangeType == QLatin1String("number") ) {
       recur->setDuration( mRecurrence.range.toInt() );
-    } else if ( mRecurrence.rangeType == "date" ) {
+    } else if ( mRecurrence.rangeType == QLatin1String("date") ) {
       recur->setEndDate( stringToDate( mRecurrence.range ) );
     } // "none" is default since tje set*ly methods set infinite recurrence
 
