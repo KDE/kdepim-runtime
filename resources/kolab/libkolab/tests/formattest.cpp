@@ -170,7 +170,7 @@ enum TestMode {
     ReadOnly,
     ReadWrite
 };
-Q_DECLARE_METATYPE(TestMode);
+Q_DECLARE_METATYPE(TestMode)
 
 void FormatTest::testContact_data()
 {

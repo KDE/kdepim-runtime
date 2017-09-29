@@ -30,20 +30,20 @@
 
 #include <kolabformat.h>
 
-Q_DECLARE_METATYPE(Kolab::Duration);
-Q_DECLARE_METATYPE(Kolab::cDateTime);
-Q_DECLARE_METATYPE(std::vector<Kolab::cDateTime>);
-Q_DECLARE_METATYPE(Kolab::Event);
-Q_DECLARE_METATYPE(std::vector<Kolab::Event>);
-Q_DECLARE_METATYPE(Kolab::Todo);
-Q_DECLARE_METATYPE(Kolab::Journal);
-Q_DECLARE_METATYPE(Kolab::Contact);
-Q_DECLARE_METATYPE(Kolab::Period);
-Q_DECLARE_METATYPE(std::vector<Kolab::FreebusyPeriod>);
+Q_DECLARE_METATYPE(Kolab::Duration)
+Q_DECLARE_METATYPE(Kolab::cDateTime)
+Q_DECLARE_METATYPE(std::vector<Kolab::cDateTime>)
+Q_DECLARE_METATYPE(Kolab::Event)
+Q_DECLARE_METATYPE(std::vector<Kolab::Event>)
+Q_DECLARE_METATYPE(Kolab::Todo)
+Q_DECLARE_METATYPE(Kolab::Journal)
+Q_DECLARE_METATYPE(Kolab::Contact)
+Q_DECLARE_METATYPE(Kolab::Period)
+Q_DECLARE_METATYPE(std::vector<Kolab::FreebusyPeriod>)
 
-Q_DECLARE_METATYPE(KCalCore::Event);
-Q_DECLARE_METATYPE(KCalCore::Todo);
-Q_DECLARE_METATYPE(KCalCore::Journal);
+Q_DECLARE_METATYPE(KCalCore::Event)
+Q_DECLARE_METATYPE(KCalCore::Todo)
+Q_DECLARE_METATYPE(KCalCore::Journal)
 
 namespace QTest {
     

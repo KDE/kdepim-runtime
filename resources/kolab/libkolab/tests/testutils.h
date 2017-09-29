@@ -27,8 +27,8 @@
 #include "kolabformat/kolabobject.h"
 
 
-Q_DECLARE_METATYPE(Kolab::ObjectType);
-Q_DECLARE_METATYPE(Kolab::Version);
+Q_DECLARE_METATYPE(Kolab::ObjectType)
+Q_DECLARE_METATYPE(Kolab::Version)
 
 #define KCOMPARE(actual, expected) \
 do {\

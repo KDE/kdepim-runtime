@@ -100,13 +100,13 @@ set(KOLAB_LINK_LIBRARIES
     Qt5::Widgets
 )
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     #for tests only
     enable_testing()
     add_library(kolab_static STATIC ${KOLAB_SRCS})
     target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES} Qt5::Test)
     add_subdirectory(tests)
-endif(BUILD_TESTS)
+endif()
 
 add_library(pimkolab STATIC ${KOLAB_SRCS})
 target_link_libraries(pimkolab ${KOLAB_LINK_LIBRARIES})

@@ -79,6 +79,7 @@ QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr& data)
 {
     QList<QByteArray> typeList;
     Q_ASSERT(!data->contents().isEmpty());
+    typeList.reserve(data->contents().count());
     Q_FOREACH(KMime::Content *c, data->contents()) {
         typeList.append(c->contentType()->mimeType());
     }
