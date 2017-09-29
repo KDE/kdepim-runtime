@@ -20,7 +20,7 @@
 
 #include <QObject>
 
-class DebugStreamTest: public QObject
+class DebugStreamTest : public QObject
 {
     Q_OBJECT
 private slots:

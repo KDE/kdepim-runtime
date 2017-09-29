@@ -25,7 +25,7 @@
  *
  * Ensures we can read a mime message, serialize it again, and contents are still the same.
  */
-class MIMEObjectTest: public QObject
+class MIMEObjectTest : public QObject
 {
     Q_OBJECT
 
@@ -44,4 +44,3 @@ private slots:
     void testDistlist();
 };
 #endif // MIMEOBJECTTEST_H
-

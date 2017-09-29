@@ -17,18 +17,13 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #ifndef IMIP_H
 #define IMIP_H
 #include <QByteArray>
 #include <kcalcore/incidencebase.h>
 
-QByteArray mailAttendees( const KCalCore::IncidenceBase::Ptr &incidence,
-                                bool bccMe, const QString &attachment );
+QByteArray mailAttendees(const KCalCore::IncidenceBase::Ptr &incidence, bool bccMe, const QString &attachment);
 
-QByteArray mailOrganizer( const KCalCore::IncidenceBase::Ptr &incidence,
-                                const QString &from, bool bccMe,
-                                const QString &attachment,
-                                const QString &sub );
+QByteArray mailOrganizer(const KCalCore::IncidenceBase::Ptr &incidence, const QString &from, bool bccMe, const QString &attachment, const QString &sub);
 
 #endif // IMIP_H

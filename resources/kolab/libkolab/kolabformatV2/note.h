@@ -41,69 +41,71 @@
 class QDomElement;
 
 namespace KolabV2 {
-
 /**
  * This class represents a note, and knows how to load/save it
  * from/to XML, and from/to a KCalCore::Journal.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
-class Note : public KolabBase {
+class Note : public KolabBase
+{
 public:
-  /// Use this to parse an xml string to a journal entry
-  /// The caller is responsible for deleting the returned journal
-    static KCalCore::Journal::Ptr xmlToJournal( const QString& xml );
+    /// Use this to parse an xml string to a journal entry
+    /// The caller is responsible for deleting the returned journal
+    static KCalCore::Journal::Ptr xmlToJournal(const QString &xml);
 
-  /// Use this to get an xml string describing this journal entry
-    static QString journalToXML( const KCalCore::Journal::Ptr & );
+    /// Use this to get an xml string describing this journal entry
+    static QString journalToXML(const KCalCore::Journal::Ptr &);
 
-  /// Create a note object and
-  explicit Note( const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr() );
-  virtual ~Note();
+    /// Create a note object and
+    explicit Note(const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr());
+    virtual ~Note();
 
-  void saveTo( const KCalCore::Journal::Ptr &journal );
+    void saveTo(const KCalCore::Journal::Ptr &journal);
 
-  QString type() const override { return QStringLiteral("Note"); }
+    QString type() const override
+    {
+        return QStringLiteral("Note");
+    }
 
-  virtual void setSummary( const QString& summary );
-  virtual QString summary() const;
+    virtual void setSummary(const QString &summary);
+    virtual QString summary() const;
 
-  virtual void setBackgroundColor( const QColor& bgColor );
-  virtual QColor backgroundColor() const;
+    virtual void setBackgroundColor(const QColor &bgColor);
+    virtual QColor backgroundColor() const;
 
-  virtual void setForegroundColor( const QColor& fgColor );
-  virtual QColor foregroundColor() const;
+    virtual void setForegroundColor(const QColor &fgColor);
+    virtual QColor foregroundColor() const;
 
-  virtual void setRichText( bool richText );
-  virtual bool richText() const;
+    virtual void setRichText(bool richText);
+    virtual bool richText() const;
 
-  // Load the attributes of this class
-  bool loadAttribute( QDomElement& ) override;
+    // Load the attributes of this class
+    bool loadAttribute(QDomElement &) override;
 
-  // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const override;
+    // Save the attributes of this class
+    bool saveAttributes(QDomElement &) const override;
 
-  // Load this note by reading the XML file
-  bool loadXML( const QDomDocument& xml ) override;
+    // Load this note by reading the XML file
+    bool loadXML(const QDomDocument &xml) override;
 
-  // Serialize this note to an XML string
-  QString saveXML() const override;
+    // Serialize this note to an XML string
+    QString saveXML() const override;
 
 protected:
-  // Read all known fields from this ical incidence
-  void setFields( const KCalCore::Journal::Ptr & );
+    // Read all known fields from this ical incidence
+    void setFields(const KCalCore::Journal::Ptr &);
 
-  // Save all known fields into this ical incidence
-  void saveTo( const KCalCore::Incidence::Ptr & ) const;
+    // Save all known fields into this ical incidence
+    void saveTo(const KCalCore::Incidence::Ptr &) const;
 
-  QString productID() const override;
+    QString productID() const override;
 
-  QString mSummary;
-  QColor mBackgroundColor;
-  QColor mForegroundColor;
-  bool mRichText;
+    QString mSummary;
+    QColor mBackgroundColor;
+    QColor mForegroundColor;
+    bool mRichText;
 };
-
 }
 
 #endif // KOLAB_NOTE_H

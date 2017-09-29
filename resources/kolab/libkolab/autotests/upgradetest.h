@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef UPGRADETEST_H
 #define UPGRADETEST_H
 
@@ -23,24 +22,24 @@
 
 /**
  * Test format upgrade from v2 to v3
- * 
+ *
  * - Parse using v2 implementeation
  * - Serialize and reparse using v3 implementeation
  * - Compare results
- * 
+ *
  * This ensures that all properties which are interpreted by the v2 implementation can be serialized and deserialized by the v3 implementation.
- * 
+ *
  * Depends on serialization used for comparison to be correct (i.e. the ical implementation).
  */
 
-class UpgradeTest: public QObject
+class UpgradeTest : public QObject
 {
     Q_OBJECT
 private slots:
-    
+
     void testIncidence_data();
     void testIncidence();
-    
+
     void testContact_data();
     void testContact();
 };

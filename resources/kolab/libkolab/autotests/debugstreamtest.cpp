@@ -50,7 +50,6 @@ void DebugStreamTest::testHasError()
     QCOMPARE(Kolab::ErrorHandler::errorOccured(), false);
 }
 
-
-QTEST_MAIN( DebugStreamTest )
+QTEST_MAIN(DebugStreamTest)
 
 #include "debugstreamtest.moc"

@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "kolabobject.h"
 #include "v2helpers.h"
 #include "kolabdefinitions.h"
@@ -38,27 +37,78 @@
 #include <kolabformat/mimeobject.h>
 #include <kolabformat.h>
 
-
 namespace Kolab {
+static inline QString eventKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_EVENT);
+}
 
+static inline QString todoKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_TASK);
+}
 
-static inline QString eventKolabType() { return QString::fromLatin1(KOLAB_TYPE_EVENT); }
-static inline QString todoKolabType() { return QString::fromLatin1(KOLAB_TYPE_TASK); }
-static inline QString journalKolabType() { return QString::fromLatin1(KOLAB_TYPE_JOURNAL); }
-static inline QString contactKolabType() { return QString::fromLatin1(KOLAB_TYPE_CONTACT); }
-static inline QString distlistKolabType() { return QString::fromLatin1(KOLAB_TYPE_DISTLIST); }
-static inline QString distlistKolabTypeCompat() { return QString::fromLatin1(KOLAB_TYPE_DISTLIST_V2); }
-static inline QString noteKolabType() { return QString::fromLatin1(KOLAB_TYPE_NOTE); }
-static inline QString configurationKolabType() { return QString::fromLatin1(KOLAB_TYPE_CONFIGURATION); }
-static inline QString dictKolabType() { return QString::fromLatin1(KOLAB_TYPE_DICT); }
-static inline QString freebusyKolabType() { return QString::fromLatin1(KOLAB_TYPE_FREEBUSY); }
-static inline QString relationKolabType() { return QString::fromLatin1(KOLAB_TYPE_RELATION); }
+static inline QString journalKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_JOURNAL);
+}
 
-static inline QString xCalMimeType() { return QString::fromLatin1(MIME_TYPE_XCAL); }
-static inline QString xCardMimeType() { return QString::fromLatin1(MIME_TYPE_XCARD); }
-static inline QString kolabMimeType() { return QString::fromLatin1(MIME_TYPE_KOLAB); }
+static inline QString contactKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_CONTACT);
+}
 
-KCalCore::Event::Ptr readV2EventXML(const QByteArray& xmlData, QStringList& attachments)
+static inline QString distlistKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_DISTLIST);
+}
+
+static inline QString distlistKolabTypeCompat()
+{
+    return QString::fromLatin1(KOLAB_TYPE_DISTLIST_V2);
+}
+
+static inline QString noteKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_NOTE);
+}
+
+static inline QString configurationKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_CONFIGURATION);
+}
+
+static inline QString dictKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_DICT);
+}
+
+static inline QString freebusyKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_FREEBUSY);
+}
+
+static inline QString relationKolabType()
+{
+    return QString::fromLatin1(KOLAB_TYPE_RELATION);
+}
+
+static inline QString xCalMimeType()
+{
+    return QString::fromLatin1(MIME_TYPE_XCAL);
+}
+
+static inline QString xCardMimeType()
+{
+    return QString::fromLatin1(MIME_TYPE_XCARD);
+}
+
+static inline QString kolabMimeType()
+{
+    return QString::fromLatin1(MIME_TYPE_KOLAB);
+}
+
+KCalCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments)
 {
     return fromXML<KCalCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
 }
@@ -78,7 +128,7 @@ RelationMember parseMemberUrl(const QString &string)
     }
     QUrl url(QUrl::fromEncoded(string.toLatin1()));
     QList<QByteArray> path;
-    Q_FOREACH(const QByteArray &fragment, url.encodedPath().split('/')) {
+    Q_FOREACH (const QByteArray &fragment, url.encodedPath().split('/')) {
         path.append(ownUrlDecode(fragment).toUtf8());
     }
     // qDebug() << path;
@@ -135,7 +185,7 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
     } else {
         path << "shared";
     }
-    Q_FOREACH(const QByteArray &mb, member.mailbox) {
+    Q_FOREACH (const QByteArray &mb, member.mailbox) {
         path << QUrl::toPercentEncoding(mb);
     }
     path << QByteArray::number(member.uid);
@@ -155,10 +205,10 @@ class KolabObjectReader::Private
 {
 public:
     Private()
-    :   mObjectType( InvalidObject ),
-        mVersion( KolabV3 ),
-        mOverrideObjectType(InvalidObject),
-        mDoOverrideVersion(false)
+        :   mObjectType(InvalidObject)
+        , mVersion(KolabV3)
+        , mOverrideObjectType(InvalidObject)
+        , mDoOverrideVersion(false)
     {
         mAddressee = KContacts::Addressee();
     }
@@ -182,12 +232,12 @@ public:
 //@endcond
 
 KolabObjectReader::KolabObjectReader()
-: d( new KolabObjectReader::Private )
+    : d(new KolabObjectReader::Private)
 {
 }
 
-KolabObjectReader::KolabObjectReader(const KMime::Message::Ptr& msg)
-: d( new KolabObjectReader::Private )
+KolabObjectReader::KolabObjectReader(const KMime::Message::Ptr &msg)
+    : d(new KolabObjectReader::Private)
 {
     parseMimeMessage(msg);
 }
@@ -234,89 +284,98 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
     d->mObjectType = mimeObject.parseMessage(message);
     d->mVersion = mimeObject.getVersion();
     switch (mimeObject.getType()) {
-        case EventObject: {
-            const Kolab::Event & event = mimeObject.getEvent();
-            d->mIncidence = Kolab::Conversion::toKCalCore(event);
+    case EventObject:
+    {
+        const Kolab::Event &event = mimeObject.getEvent();
+        d->mIncidence = Kolab::Conversion::toKCalCore(event);
+        break;
+    }
+    case TodoObject:
+    {
+        const Kolab::Todo &event = mimeObject.getTodo();
+        d->mIncidence = Kolab::Conversion::toKCalCore(event);
+        break;
+    }
+    case JournalObject:
+    {
+        const Kolab::Journal &event = mimeObject.getJournal();
+        d->mIncidence = Kolab::Conversion::toKCalCore(event);
+        break;
+    }
+    case ContactObject:
+    {
+        const Kolab::Contact &contact = mimeObject.getContact();
+        d->mAddressee = Kolab::Conversion::toKABC(contact);     //TODO extract attachments
+        break;
+    }
+    case DistlistObject:
+    {
+        const Kolab::DistList &distlist = mimeObject.getDistlist();
+        d->mContactGroup = Kolab::Conversion::toKABC(distlist);
+        break;
+    }
+    case NoteObject:
+    {
+        const Kolab::Note &note = mimeObject.getNote();
+        d->mNote = Kolab::Conversion::toNote(note);
+        break;
+    }
+    case DictionaryConfigurationObject:
+    {
+        const Kolab::Configuration &configuration = mimeObject.getConfiguration();
+        const Kolab::Dictionary &dictionary = configuration.dictionary();
+        d->mDictionary.clear();
+        foreach (const std::string &entry, dictionary.entries()) {
+            d->mDictionary.append(Conversion::fromStdString(entry));
         }
-            break;
-        case TodoObject: {
-            const Kolab::Todo & event = mimeObject.getTodo();
-            d->mIncidence = Kolab::Conversion::toKCalCore(event);
-        }
-            break;
-        case JournalObject: {
-            const Kolab::Journal & event = mimeObject.getJournal();
-            d->mIncidence = Kolab::Conversion::toKCalCore(event);
-        }
-            break;
-        case ContactObject: {
-            const Kolab::Contact &contact = mimeObject.getContact();
-            d->mAddressee = Kolab::Conversion::toKABC(contact); //TODO extract attachments
-        }
-            break;
-        case DistlistObject: {
-            const Kolab::DistList &distlist = mimeObject.getDistlist();
-            d->mContactGroup = Kolab::Conversion::toKABC(distlist);
-        }
-            break;
-        case NoteObject: {
-            const Kolab::Note &note = mimeObject.getNote();
-            d->mNote = Kolab::Conversion::toNote(note);
-        }
-            break;
-        case DictionaryConfigurationObject: {
-            const Kolab::Configuration &configuration = mimeObject.getConfiguration();
-            const Kolab::Dictionary &dictionary = configuration.dictionary();
-            d->mDictionary.clear();
-            foreach (const std::string &entry, dictionary.entries()) {
-                d->mDictionary.append(Conversion::fromStdString(entry));
-            }
-            d->mDictionaryLanguage = Conversion::fromStdString(dictionary.language());
-        }
-            break;
-        case FreebusyObject: {
-            const Kolab::Freebusy &fb = mimeObject.getFreebusy();
-            d->mFreebusy = fb;
-            break;
-        }
-        case RelationConfigurationObject: {
-            const Kolab::Configuration &configuration = mimeObject.getConfiguration();
-            const Kolab::Relation &relation = configuration.relation();
+        d->mDictionaryLanguage = Conversion::fromStdString(dictionary.language());
+        break;
+    }
+    case FreebusyObject:
+    {
+        const Kolab::Freebusy &fb = mimeObject.getFreebusy();
+        d->mFreebusy = fb;
+        break;
+    }
+    case RelationConfigurationObject:
+    {
+        const Kolab::Configuration &configuration = mimeObject.getConfiguration();
+        const Kolab::Relation &relation = configuration.relation();
 
-            if (relation.type() == "tag") {
-                d->mTag = Akonadi::Tag();
-                d->mTag.setName(Conversion::fromStdString(relation.name()));
-                d->mTag.setGid(Conversion::fromStdString(configuration.uid()).toLatin1());
-                d->mTag.setType(Akonadi::Tag::GENERIC);
+        if (relation.type() == "tag") {
+            d->mTag = Akonadi::Tag();
+            d->mTag.setName(Conversion::fromStdString(relation.name()));
+            d->mTag.setGid(Conversion::fromStdString(configuration.uid()).toLatin1());
+            d->mTag.setType(Akonadi::Tag::GENERIC);
+
+            d->mTagMembers.reserve(relation.members().size());
+            foreach (const std::string &member, relation.members()) {
+                d->mTagMembers << Conversion::fromStdString(member);
+            }
+        } else if (relation.type() == "generic") {
+            if (relation.members().size() == 2) {
+                d->mRelation = Akonadi::Relation();
+                d->mRelation.setRemoteId(Conversion::fromStdString(configuration.uid()).toLatin1());
+                d->mRelation.setType(Akonadi::Relation::GENERIC);
 
                 d->mTagMembers.reserve(relation.members().size());
                 foreach (const std::string &member, relation.members()) {
                     d->mTagMembers << Conversion::fromStdString(member);
                 }
-            } else if (relation.type() == "generic") {
-                if (relation.members().size() == 2) {
-                    d->mRelation = Akonadi::Relation();
-                    d->mRelation.setRemoteId(Conversion::fromStdString(configuration.uid()).toLatin1());
-                    d->mRelation.setType(Akonadi::Relation::GENERIC);
-
-                    d->mTagMembers.reserve(relation.members().size());
-                    foreach (const std::string &member, relation.members()) {
-                        d->mTagMembers << Conversion::fromStdString(member);
-                    }
-                } else {
-                    Critical() << "generic relation had wrong number of members:" << relation.members().size();
-                    printMessageDebugInfo(msg);
-                }
             } else {
-                Critical() << "unknown configuration object type" << relation.type();
+                Critical() << "generic relation had wrong number of members:" << relation.members().size();
                 printMessageDebugInfo(msg);
             }
-        }
-            break;
-        default:
-            Critical() << "no kolab object found ";
+        } else {
+            Critical() << "unknown configuration object type" << relation.type();
             printMessageDebugInfo(msg);
-            break;
+        }
+        break;
+    }
+    default:
+        Critical() << "no kolab object found ";
+        printMessageDebugInfo(msg);
+        break;
     }
     return d->mObjectType;
 }
@@ -366,7 +425,7 @@ KMime::Message::Ptr KolabObjectReader::getNote() const
     return d->mNote;
 }
 
-QStringList KolabObjectReader::getDictionary(QString& lang) const
+QStringList KolabObjectReader::getDictionary(QString &lang) const
 {
     lang = d->mDictionaryLanguage;
     return d->mDictionary;
@@ -449,25 +508,24 @@ KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalCore::Journal::Ptr
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalCore::Incidence::Ptr &i, Version v, const QString& productId, const QString& tz)
+KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalCore::Incidence::Ptr &i, Version v, const QString &productId, const QString &tz)
 {
     if (!i) {
         Critical() << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     switch (i->type()) {
-        case KCalCore::IncidenceBase::TypeEvent:
-            return writeEvent(i.dynamicCast<KCalCore::Event>(),v,productId,tz);
-        case KCalCore::IncidenceBase::TypeTodo:
-            return writeTodo(i.dynamicCast<KCalCore::Todo>(),v,productId,tz);
-        case KCalCore::IncidenceBase::TypeJournal:
-            return writeJournal(i.dynamicCast<KCalCore::Journal>(),v,productId,tz);
-        default:
-            Critical() << "unknown incidence type";
+    case KCalCore::IncidenceBase::TypeEvent:
+        return writeEvent(i.dynamicCast<KCalCore::Event>(), v, productId, tz);
+    case KCalCore::IncidenceBase::TypeTodo:
+        return writeTodo(i.dynamicCast<KCalCore::Todo>(), v, productId, tz);
+    case KCalCore::IncidenceBase::TypeJournal:
+        return writeJournal(i.dynamicCast<KCalCore::Journal>(), v, productId, tz);
+    default:
+        Critical() << "unknown incidence type";
     }
     return KMime::Message::Ptr();
 }
-
 
 KMime::Message::Ptr KolabObjectWriter::writeContact(const KContacts::Addressee &addressee, Version v, const QString &productId)
 {
@@ -500,7 +558,7 @@ KMime::Message::Ptr KolabObjectWriter::writeNote(const KMime::Message::Ptr &n, V
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entries, const QString& lang, Version v, const QString& productId)
+KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entries, const QString &lang, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
 
@@ -516,7 +574,7 @@ KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entrie
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeFreebusy(const Freebusy &freebusy, Version v, const QString& productId)
+KMime::Message::Ptr KolabObjectWriter::writeFreebusy(const Freebusy &freebusy, Version v, const QString &productId)
 {
     ErrorHandler::clearErrors();
     Kolab::MIMEObject mimeObject;
@@ -574,7 +632,4 @@ KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &re
 
     return writeRelationHelper(kolabRelation, relation.remoteId(), productId);
 }
-
-
 } //Namespace
-

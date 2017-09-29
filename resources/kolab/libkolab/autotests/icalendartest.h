@@ -19,7 +19,7 @@
 #define ICALENDARTEST_H
 #include <QObject>
 
-class ICalendarTest: public QObject
+class ICalendarTest : public QObject
 {
     Q_OBJECT
 private slots:

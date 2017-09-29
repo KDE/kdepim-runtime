@@ -25,7 +25,7 @@
 void XMLObjectTest::testEvent()
 {
     Kolab::Event event;
-    event.setStart(Kolab::cDateTime(2012,01,01));
+    event.setStart(Kolab::cDateTime(2012, 01, 01));
 
     Kolab::XMLObject xmlobject;
     const std::string output = xmlobject.writeEvent(event, Kolab::KolabV2, "productid");
@@ -34,7 +34,6 @@ void XMLObjectTest::testEvent()
 
     const Kolab::Event resultEvent = xmlobject.readEvent(output, Kolab::KolabV2);
     QVERIFY(resultEvent.isValid());
-    
 }
 
 void XMLObjectTest::testDontCrash()
@@ -57,9 +56,8 @@ void XMLObjectTest::testDontCrash()
     ob.readDistlist("", Kolab::KolabV2);
     ob.readNote("", Kolab::KolabV2);
     ob.readConfiguration("", Kolab::KolabV2);
-
 }
 
-QTEST_MAIN( XMLObjectTest )
+QTEST_MAIN(XMLObjectTest)
 
 #include "xmlobjecttest.moc"

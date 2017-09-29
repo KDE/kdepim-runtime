@@ -15,19 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef CALENDARINGTEST_H
 #define CALENDARINGTEST_H
 #include <QObject>
 
-class CalendaringTest: public QObject
+class CalendaringTest : public QObject
 {
     Q_OBJECT
 private slots:
     void initTestCase();
 
     void testCalendaringEvent();
-    
+
     void testEventConflict_data();
     void testEventConflict();
 

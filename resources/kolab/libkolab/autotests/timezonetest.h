@@ -19,7 +19,7 @@
 #define TIMEZONETEST_H
 #include <QObject>
 
-class TimezoneTest: public QObject
+class TimezoneTest : public QObject
 {
     Q_OBJECT
 private slots:

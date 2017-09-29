@@ -35,62 +35,64 @@
 #include "kolabbase.h"
 
 namespace KContacts {
-  class ContactGroup;
+class ContactGroup;
 }
 
 namespace KolabV2 {
-
-class DistributionList : public KolabBase {
+class DistributionList : public KolabBase
+{
 public:
-  explicit DistributionList( const KContacts::ContactGroup* contactGroup );
-  DistributionList( const QString& xml );
-  ~DistributionList();
+    explicit DistributionList(const KContacts::ContactGroup *contactGroup);
+    DistributionList(const QString &xml);
+    ~DistributionList();
 
-  void saveTo( KContacts::ContactGroup* contactGroup );
+    void saveTo(KContacts::ContactGroup *contactGroup);
 
-  QString type() const  override { return QStringLiteral("DistributionList"); }
+    QString type() const override
+    {
+        return QStringLiteral("DistributionList");
+    }
 
-  void setName( const QString& name );
-  QString name() const;
+    void setName(const QString &name);
+    QString name() const;
 
-  // Load the attributes of this class
-  bool loadAttribute( QDomElement& ) override;
+    // Load the attributes of this class
+    bool loadAttribute(QDomElement &) override;
 
-  // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const override;
+    // Save the attributes of this class
+    bool saveAttributes(QDomElement &) const override;
 
-  // Load this note by reading the XML file
-  bool loadXML( const QDomDocument& xml ) override;
+    // Load this note by reading the XML file
+    bool loadXML(const QDomDocument &xml) override;
 
-  // Serialize this note to an XML string
-  QString saveXML() const override;
+    // Serialize this note to an XML string
+    QString saveXML() const override;
 
-  QString productID() const override;
+    QString productID() const override;
 
 protected:
-  void setFields( const KContacts::ContactGroup* );
+    void setFields(const KContacts::ContactGroup *);
 
 private:
-  void loadDistrListMember( const QDomElement& element );
-  void saveDistrListMembers( QDomElement& element ) const;
+    void loadDistrListMember(const QDomElement &element);
+    void saveDistrListMembers(QDomElement &element) const;
 
-  QString mName;
+    QString mName;
 
-  struct Custom {
-    QString app;
-    QString name;
-    QString value;
-  };
-  QList<Custom> mCustomList;
+    struct Custom {
+        QString app;
+        QString name;
+        QString value;
+    };
+    QList<Custom> mCustomList;
 
-  struct Member {
-    QString displayName;
-    QString email;
-    QString uid;
-  };
-  QList<Member> mDistrListMembers;
+    struct Member {
+        QString displayName;
+        QString email;
+        QString uid;
+    };
+    QList<Member> mDistrListMembers;
 };
-
 }
 
 #endif // KOLABDISTRIBUTIONLIST_H

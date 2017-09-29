@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef EVENT_H
 #define EVENT_H
 #include <kolabevent.h>
@@ -29,9 +28,8 @@
 #endif
 
 namespace Kolab {
-    namespace Calendaring {
-
-class KOLAB_EXPORT Event: public Kolab::Event
+namespace Calendaring {
+class KOLAB_EXPORT Event : public Kolab::Event
 {
 public:
     Event();
@@ -44,7 +42,6 @@ public:
      */
     std::string write() const;
 
-
     bool fromMime(const std::string &);
 
     /**
@@ -53,17 +50,17 @@ public:
     std::string toMime() const;
 
     enum ITipMethod {
-            iTIPPublish,       /**< Event, to-do, journal or freebusy posting */
-            iTIPRequest,       /**< Event, to-do or freebusy scheduling request */
-            iTIPReply,         /**< Event, to-do or freebusy reply to request */
-            iTIPAdd,           /**< Event, to-do or journal additional property request */
-            iTIPCancel,        /**< Event, to-do or journal cancellation notice */
-            iTIPRefresh,       /**< Event or to-do description update request */
-            iTIPCounter,       /**< Event or to-do submit counter proposal */
-            iTIPDeclineCounter,/**< Event or to-do decline a counter proposal */
-            iTIPNoMethod       /**< No method */
-        };
-    
+        iTIPPublish,           /**< Event, to-do, journal or freebusy posting */
+        iTIPRequest,           /**< Event, to-do or freebusy scheduling request */
+        iTIPReply,             /**< Event, to-do or freebusy reply to request */
+        iTIPAdd,               /**< Event, to-do or journal additional property request */
+        iTIPCancel,            /**< Event, to-do or journal cancellation notice */
+        iTIPRefresh,           /**< Event or to-do description update request */
+        iTIPCounter,           /**< Event or to-do submit counter proposal */
+        iTIPDeclineCounter,    /**< Event or to-do decline a counter proposal */
+        iTIPNoMethod           /**< No method */
+    };
+
     bool fromICal(const std::string &);
     std::string toICal() const;
 
@@ -74,7 +71,6 @@ public:
      * Returns the scheduling method from the last fromIMip call
      */
     ITipMethod getSchedulingMethod() const;
-
 
     /**
      * Updates the delegators and delegatees of the event.
@@ -115,8 +111,7 @@ private:
     Kolab::Attendee *getAttendee(const ContactReference &);
     Kolab::ITipHandler mITipHandler;
 };
-
-    }
+}
 }
 
 #endif // EVENT_H

@@ -20,7 +20,7 @@
 
 #include <QObject>
 
-class XMLObjectTest: public QObject
+class XMLObjectTest : public QObject
 {
     Q_OBJECT
 private slots:

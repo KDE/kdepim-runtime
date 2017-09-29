@@ -29,17 +29,17 @@
 namespace po = boost::program_options;
 using namespace std;
 
-KMime::Message::Ptr readMimeFile( const QString &fileName, bool &ok)
+KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
 {
-    QFile file( fileName );
-    ok = file.open( QFile::ReadOnly );
+    QFile file(fileName);
+    ok = file.open(QFile::ReadOnly);
     if (!ok) {
-        cout << "failed to open file: " << fileName.toStdString() << endl;;
+        cout << "failed to open file: " << fileName.toStdString() << endl;
         return KMime::Message::Ptr();
     }
     const QByteArray data = file.readAll();
     KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message);
-    msg->setContent( KMime::CRLFtoLF(data) );
+    msg->setContent(KMime::CRLFtoLF(data));
     msg->parse();
     return msg;
 }
@@ -51,14 +51,14 @@ int main(int argc, char *argv[])
     desc.add_options()
         ("help", "produce help message")
         ("input-file", po::value<std::vector<std::string> >(), "input files")
-        ;
+    ;
 
     po::positional_options_description p;
     p.add("input-file", -1);
 
     po::variables_map vm;
     po::store(po::command_line_parser(argc, argv).
-            options(desc).positional(p).run(), vm);
+              options(desc).positional(p).run(), vm);
     po::notify(vm);
 
     if (vm.count("help")) {
@@ -78,15 +78,14 @@ int main(int argc, char *argv[])
 
     cout << endl;
 
-    for(vector<string>::const_iterator it = inputFiles.begin();
-            it != inputFiles.end(); it++){
-
+    for (vector<string>::const_iterator it = inputFiles.begin();
+         it != inputFiles.end(); it++) {
         cout << "File: " << *it << endl;
 
         bool ok;
-        KMime::Message::Ptr message = readMimeFile( QString::fromStdString(*it), ok);
+        KMime::Message::Ptr message = readMimeFile(QString::fromStdString(*it), ok);
 
-        if(!ok){
+        if (!ok) {
             returnValue = -1;
             cout << endl;
             continue;
@@ -94,7 +93,7 @@ int main(int argc, char *argv[])
 
         Kolab::KolabObjectReader reader(message);
 
-        if (Kolab::ErrorHandler::errorOccured()){
+        if (Kolab::ErrorHandler::errorOccured()) {
             cout << "Errors occured during parsing." << endl;
             returnValue = -1;
         } else {
@@ -106,4 +105,3 @@ int main(int argc, char *argv[])
 
     return returnValue;
 }
-

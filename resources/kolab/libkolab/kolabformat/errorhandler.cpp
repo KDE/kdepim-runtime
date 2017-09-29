@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "errorhandler.h"
 
 #include <qdebug.h>
@@ -32,38 +31,38 @@ QDebug operator<<(QDebug dbg, const std::string &s)
 }
 
 namespace Kolab {
-
 DebugStream::DebugStream()
-:   QIODevice()
+    :   QIODevice()
 {
     open(WriteOnly);
 }
 
-DebugStream::~DebugStream(){}
+DebugStream::~DebugStream()
+{
+}
 
-qint64 DebugStream::writeData(const char *data, qint64 len) {
+qint64 DebugStream::writeData(const char *data, qint64 len)
+{
     const QByteArray buf = QByteArray::fromRawData(data, len);
 //         qt_message_output(QtDebugMsg, buf.trimmed().constData());
     ErrorHandler::instance().addError(m_severity, QString::fromLatin1(buf), m_location);
     return len;
 }
 
-
 QMutex mutex;
-    
+
 void logMessage(const QString &message, const QString &file, int line, ErrorHandler::Severity s)
 {
     ErrorHandler::instance().addError(s, message, file+ QLatin1Char(' ') +QString::number(line));
 }
 
 ErrorHandler::ErrorHandler()
-:   m_worstError(Debug),
-    m_debugStream(new DebugStream)
+    :   m_worstError(Debug)
+    , m_debugStream(new DebugStream)
 {
-
 }
 
-QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char* file)
+QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char *file)
 {
     QMutexLocker locker(&mutex);
     ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1String(file) + QStringLiteral("(") + QString::number(line)+QStringLiteral(")"));
@@ -71,12 +70,12 @@ QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, cons
     return QDebug(ErrorHandler::instance().m_debugStream.data());
 }
 
-void ErrorHandler::addError(ErrorHandler::Severity s, const QString& message, const QString &location)
+void ErrorHandler::addError(ErrorHandler::Severity s, const QString &message, const QString &location)
 {
     QMutexLocker locker(&mutex);
     QString filename = location;
     if (!filename.split(QLatin1Char('/')).isEmpty()) {
-       filename = filename.split(QLatin1Char('/')).last();
+        filename = filename.split(QLatin1Char('/')).last();
     }
     const QString output = QTime::currentTime().toString(QLatin1String("(hh:mm:ss) ")) + filename + QLatin1String(":\t") + message;
     std::cout << output.toStdString() << std::endl;
@@ -102,7 +101,7 @@ QString ErrorHandler::errorMessage() const
     return m_worstErrorMessage;
 }
 
-const QList< ErrorHandler::Err >& ErrorHandler::getErrors() const
+const QList< ErrorHandler::Err > &ErrorHandler::getErrors() const
 {
     QMutexLocker locker(&mutex);
     return m_errorQueue;
@@ -118,20 +117,18 @@ void ErrorHandler::clear()
 void ErrorHandler::handleLibkolabxmlErrors()
 {
     switch (Kolab::error()) {
-        case Kolab::Warning:
-            instance().addError(ErrorHandler::Warning, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
-            break;
-        case Kolab::Error:
-            instance().addError(ErrorHandler::Error, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
-            break;
-        case Kolab::Critical:
-            instance().addError(ErrorHandler::Critical, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
-            break;
-        default:
-            //Do nothing, there is no message available in this case
-            break;
+    case Kolab::Warning:
+        instance().addError(ErrorHandler::Warning, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
+        break;
+    case Kolab::Error:
+        instance().addError(ErrorHandler::Error, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
+        break;
+    case Kolab::Critical:
+        instance().addError(ErrorHandler::Critical, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
+        break;
+    default:
+        //Do nothing, there is no message available in this case
+        break;
     }
 }
-
-
 }

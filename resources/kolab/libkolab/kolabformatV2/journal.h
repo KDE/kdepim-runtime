@@ -41,61 +41,63 @@
 class QDomElement;
 
 namespace KolabV2 {
-
 /**
  * This class represents a journal entry, and knows how to load/save it
  * from/to XML, and from/to a KCalCore::Journal.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
-class Journal : public KolabBase {
+class Journal : public KolabBase
+{
 public:
-  /// Use this to parse an xml string to a journal entry
-  /// The caller is responsible for deleting the returned journal
-  static KCalCore::Journal::Ptr fromXml( const QDomDocument& xmlDoc, const QString& tz );
+    /// Use this to parse an xml string to a journal entry
+    /// The caller is responsible for deleting the returned journal
+    static KCalCore::Journal::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz);
 
-  /// Use this to get an xml string describing this journal entry
-  static QString journalToXML( const KCalCore::Journal::Ptr &, const QString& tz );
+    /// Use this to get an xml string describing this journal entry
+    static QString journalToXML(const KCalCore::Journal::Ptr &, const QString &tz);
 
-  explicit Journal( const QString& tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr() );
-  virtual ~Journal();
+    explicit Journal(const QString &tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr());
+    virtual ~Journal();
 
-  QString type() const  override { return QStringLiteral("Journal"); }
+    QString type() const override
+    {
+        return QStringLiteral("Journal");
+    }
 
-  void saveTo( const KCalCore::Journal::Ptr &journal );
+    void saveTo(const KCalCore::Journal::Ptr &journal);
 
-  virtual void setSummary( const QString& summary );
-  virtual QString summary() const;
+    virtual void setSummary(const QString &summary);
+    virtual QString summary() const;
 
-  virtual void setStartDate( const KDateTime& startDate );
-  virtual KDateTime startDate() const;
+    virtual void setStartDate(const KDateTime &startDate);
+    virtual KDateTime startDate() const;
 
-  virtual void setEndDate( const KDateTime& endDate );
-  virtual KDateTime endDate() const;
+    virtual void setEndDate(const KDateTime &endDate);
+    virtual KDateTime endDate() const;
 
-  // Load the attributes of this class
-  bool loadAttribute( QDomElement& ) override;
+    // Load the attributes of this class
+    bool loadAttribute(QDomElement &) override;
 
-  // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const override;
+    // Save the attributes of this class
+    bool saveAttributes(QDomElement &) const override;
 
-  // Load this journal by reading the XML file
-  bool loadXML( const QDomDocument& xml ) override;
+    // Load this journal by reading the XML file
+    bool loadXML(const QDomDocument &xml) override;
 
-  // Serialize this journal to an XML string
-  QString saveXML() const override;
+    // Serialize this journal to an XML string
+    QString saveXML() const override;
 
 protected:
-  // Read all known fields from this ical journal
-  void setFields( const KCalCore::Journal::Ptr & );
+    // Read all known fields from this ical journal
+    void setFields(const KCalCore::Journal::Ptr &);
 
-  QString productID() const override;
+    QString productID() const override;
 
-  QString mSummary;
-  KDateTime mStartDate;
-  KDateTime mEndDate;
+    QString mSummary;
+    KDateTime mStartDate;
+    KDateTime mEndDate;
 };
-
 }
 
 #endif // KOLAB_JOURNAL_H

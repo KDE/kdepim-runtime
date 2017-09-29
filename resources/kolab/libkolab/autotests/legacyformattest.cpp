@@ -29,7 +29,7 @@ void V2Test::testReadDistlistUID()
     std::ifstream t((TESTFILEDIR.toStdString()+"v2/contacts/distlistWithUID.xml").c_str());
     std::stringstream buffer;
     buffer << t.rdbuf();
-    
+
     Kolab::XMLObject xo;
     const Kolab::DistList distlist = xo.readDistlist(buffer.str(), Kolab::KolabV2);
     foreach (const Kolab::ContactReference &contact, distlist.members()) {
@@ -46,13 +46,13 @@ void V2Test::testWriteDistlistUID()
     std::vector<Kolab::ContactReference> members;
     members.push_back(Kolab::ContactReference(Kolab::ContactReference::UidReference, "memberuid", "membername"));
     distlist.setMembers(members);
-    
+
     Kolab::XMLObject xo;
     const std::string xml = xo.writeDistlist(distlist, Kolab::KolabV2);
     QVERIFY(QString::fromStdString(xml).contains("memberuid"));
     QVERIFY(!Kolab::ErrorHandler::errorOccured());
 }
 
-QTEST_MAIN( V2Test )
+QTEST_MAIN(V2Test)
 
 #include "legacyformattest.moc"

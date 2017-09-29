@@ -42,23 +42,21 @@
 #include <akonadi/notes/noteutils.h>
 
 namespace Kolab {
-
-
 /*
  * Parse XML, create KCalCore container and extract attachments
  */
-template <typename KCalPtr, typename Container>
+template<typename KCalPtr, typename Container>
 static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
 {
-    const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument( QString::fromUtf8(xmlData) ); //TODO extract function from V2 format
-    if ( xmlDoc.isNull() ) {
+    const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData));   //TODO extract function from V2 format
+    if (xmlDoc.isNull()) {
         Critical() << "Failed to read the xml document";
         return KCalPtr();
     }
-    const KCalPtr i = Container::fromXml( xmlDoc, QString() ); //For parsing we don't need the timezone, so we don't set one
-    Q_ASSERT ( i );
+    const KCalPtr i = Container::fromXml(xmlDoc, QString());   //For parsing we don't need the timezone, so we don't set one
+    Q_ASSERT(i);
     QDomNodeList nodes = xmlDoc.elementsByTagName(QStringLiteral("inline-attachment"));
-    for (int i = 0; i < nodes.size(); i++ ) {
+    for (int i = 0; i < nodes.size(); i++) {
         attachments.append(nodes.at(i).toElement().text());
     }
     return i;
@@ -66,38 +64,37 @@ static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
 
 void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData);
 
-template <typename IncidencePtr, typename Converter>
-static inline IncidencePtr incidenceFromKolabImpl( const KMime::Message::Ptr &data, const QByteArray &mimetype, const QString &timezoneId )
+template<typename IncidencePtr, typename Converter>
+static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &data, const QByteArray &mimetype, const QString &timezoneId)
 {
-    KMime::Content *xmlContent = Mime::findContentByType( data, mimetype );
-    if ( !xmlContent ) {
+    KMime::Content *xmlContent = Mime::findContentByType(data, mimetype);
+    if (!xmlContent) {
         Critical() << "couldn't find part";
         return IncidencePtr();
     }
     const QByteArray &xmlData = xmlContent->decodedContent();
-    
+
     QStringList attachments;
     IncidencePtr ptr = fromXML<IncidencePtr, Converter>(xmlData, attachments); //TODO do we care about timezone?
     getAttachments(ptr, attachments, data);
-    
+
     return ptr;
 }
 
-KContacts::Addressee addresseeFromKolab( const QByteArray &xmlData, const KMime::Message::Ptr &data);
-KContacts::Addressee addresseeFromKolab( const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName);
+KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::Message::Ptr &data);
+KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, QString &pictureAttachmentName, QString &logoAttachmentName, QString &soundAttachmentName);
 
-KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact& contact, const QString &productId);
+KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const QString &productId);
 
 KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData);
 
-KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList& distList, const QString &productId);
+KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId);
 KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &creationDate);
 
-KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr& msg, const QString &productId);
-QByteArray noteToKolabXML(const KMime::Message::Ptr& msg);
+KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &productId);
+QByteArray noteToKolabXML(const KMime::Message::Ptr &msg);
 
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language);
-
 }
 
 #endif

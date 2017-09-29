@@ -31,7 +31,7 @@
 #include <kolabevent.h>
 
 namespace Kolab {
-    namespace Calendaring {
+namespace Calendaring {
 /**
  * Returns true if the events conflict (overlap)
  * Start and end date/time is inclusive.
@@ -61,7 +61,8 @@ KOLAB_EXPORT std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &, 
 /**
  * In-Memory Calendar Cache
  */
-class KOLAB_EXPORT Calendar {
+class KOLAB_EXPORT Calendar
+{
 public:
     explicit Calendar();
     /**
@@ -79,8 +80,7 @@ private:
     void operator=(const Calendar &);
     boost::scoped_ptr<KCalCore::MemoryCalendar> mCalendar;
 };
-
-    } //Namespace
+}     //Namespace
 } //Namespace
 
 #endif

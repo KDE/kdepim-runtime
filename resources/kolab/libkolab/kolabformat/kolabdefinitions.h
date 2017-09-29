@@ -19,7 +19,6 @@
 #define KOLABDEFINITIONS_H
 
 namespace Kolab {
-
 #define KOLAB_FOLDER_TYPE_MAIL    "mail"
 #define KOLAB_FOLDER_TYPE_CONTACT "contact"
 #define KOLAB_FOLDER_TYPE_EVENT   "event"
@@ -82,7 +81,6 @@ enum ObjectType {
     FreebusyObject,
     RelationConfigurationObject
 };
-
 }
 
 #endif

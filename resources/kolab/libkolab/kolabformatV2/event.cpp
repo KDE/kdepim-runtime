@@ -39,184 +39,193 @@
 
 using namespace KolabV2;
 
-
-KCalCore::Event::Ptr Event::fromXml( const QDomDocument& xmlDoc, const QString& tz)
+KCalCore::Event::Ptr Event::fromXml(const QDomDocument &xmlDoc, const QString &tz)
 {
-  Event event( tz );
-  event.loadXML( xmlDoc );
-  KCalCore::Event::Ptr kcalEvent( new KCalCore::Event() );
-  event.saveTo( kcalEvent );
-  return kcalEvent;
+    Event event(tz);
+    event.loadXML(xmlDoc);
+    KCalCore::Event::Ptr kcalEvent(new KCalCore::Event());
+    event.saveTo(kcalEvent);
+    return kcalEvent;
 }
 
-QString Event::eventToXML( const KCalCore::Event::Ptr &kcalEvent, const QString& tz  )
+QString Event::eventToXML(const KCalCore::Event::Ptr &kcalEvent, const QString &tz)
 {
-  Event event( tz, kcalEvent );
-  return event.saveXML();
+    Event event(tz, kcalEvent);
+    return event.saveXML();
 }
 
-Event::Event( const QString& tz, const KCalCore::Event::Ptr &event )
-  : Incidence( tz, event ),
-  mShowTimeAs( KCalCore::Event::Opaque ), mHasEndDate( false )
+Event::Event(const QString &tz, const KCalCore::Event::Ptr &event)
+    : Incidence(tz, event)
+    , mShowTimeAs(KCalCore::Event::Opaque)
+    , mHasEndDate(false)
 {
-  if ( event ) {
-    setFields( event );
-  }
+    if (event) {
+        setFields(event);
+    }
 }
 
 Event::~Event()
 {
 }
 
-void Event::setTransparency( KCalCore::Event::Transparency transparency )
+void Event::setTransparency(KCalCore::Event::Transparency transparency)
 {
-  mShowTimeAs = transparency;
+    mShowTimeAs = transparency;
 }
 
 KCalCore::Event::Transparency Event::transparency() const
 {
-  return mShowTimeAs;
+    return mShowTimeAs;
 }
 
-void Event::setEndDate( const KDateTime& date )
+void Event::setEndDate(const KDateTime &date)
 {
-  mEndDate = date;
-  mHasEndDate = true;
-  if ( mFloatingStatus == AllDay )
-    qDebug() <<"ERROR: Time on end date but no time on the event";
-  mFloatingStatus = HasTime;
+    mEndDate = date;
+    mHasEndDate = true;
+    if (mFloatingStatus == AllDay) {
+        qDebug() <<"ERROR: Time on end date but no time on the event";
+    }
+    mFloatingStatus = HasTime;
 }
 
-void Event::setEndDate( const QDate& date )
+void Event::setEndDate(const QDate &date)
 {
-  mEndDate = KDateTime( date );
-  mHasEndDate = true;
-  if ( mFloatingStatus == HasTime )
-    qDebug() <<"ERROR: No time on end date but time on the event";
-  mFloatingStatus = AllDay;
+    mEndDate = KDateTime(date);
+    mHasEndDate = true;
+    if (mFloatingStatus == HasTime) {
+        qDebug() <<"ERROR: No time on end date but time on the event";
+    }
+    mFloatingStatus = AllDay;
 }
 
-void Event::setEndDate( const QString& endDate )
+void Event::setEndDate(const QString &endDate)
 {
-  if ( endDate.length() > 10 )
-    // This is a date + time
-    setEndDate( stringToDateTime( endDate ) );
-  else
-    // This is only a date
-    setEndDate( stringToDate( endDate ) );
+    if (endDate.length() > 10) {
+        // This is a date + time
+        setEndDate(stringToDateTime(endDate));
+    } else {
+        // This is only a date
+        setEndDate(stringToDate(endDate));
+    }
 }
 
 KDateTime Event::endDate() const
 {
-  return mEndDate;
+    return mEndDate;
 }
 
-bool Event::loadAttribute( QDomElement& element )
+bool Event::loadAttribute(QDomElement &element)
 {
-  // This method doesn't handle the color-label tag yet
-  QString tagName = element.tagName();
+    // This method doesn't handle the color-label tag yet
+    QString tagName = element.tagName();
 
-  if ( tagName == QLatin1String("show-time-as") ) {
+    if (tagName == QLatin1String("show-time-as")) {
+        // TODO: Support tentative and outofoffice
+        if (element.text() == QLatin1String("free")) {
+            setTransparency(KCalCore::Event::Transparent);
+        } else {
+            setTransparency(KCalCore::Event::Opaque);
+        }
+    } else if (tagName == QLatin1String("end-date")) {
+        setEndDate(element.text());
+    } else {
+        return Incidence::loadAttribute(element);
+    }
+
+    // We handled this
+    return true;
+}
+
+bool Event::saveAttributes(QDomElement &element) const
+{
+    // Save the base class elements
+    Incidence::saveAttributes(element);
+
     // TODO: Support tentative and outofoffice
-    if ( element.text() == QLatin1String("free") )
-      setTransparency( KCalCore::Event::Transparent );
-    else
-      setTransparency( KCalCore::Event::Opaque );
-  } else if ( tagName == QLatin1String("end-date") )
-    setEndDate( element.text() );
-  else
-    return Incidence::loadAttribute( element );
+    if (transparency() == KCalCore::Event::Transparent) {
+        writeString(element, QStringLiteral("show-time-as"), QStringLiteral("free"));
+    } else {
+        writeString(element, QStringLiteral("show-time-as"), QStringLiteral("busy"));
+    }
+    if (mHasEndDate) {
+        if (mFloatingStatus == HasTime) {
+            writeString(element, QStringLiteral("end-date"), dateTimeToString(endDate()));
+        } else {
+            writeString(element, QStringLiteral("end-date"), dateToString(endDate().date()));
+        }
+    }
 
-  // We handled this
-  return true;
+    return true;
 }
 
-bool Event::saveAttributes( QDomElement& element ) const
+bool Event::loadXML(const QDomDocument &document)
 {
-  // Save the base class elements
-  Incidence::saveAttributes( element );
+    QDomElement top = document.documentElement();
 
-  // TODO: Support tentative and outofoffice
-  if ( transparency() == KCalCore::Event::Transparent )
-    writeString( element, QStringLiteral("show-time-as"), QStringLiteral("free") );
-  else
-    writeString( element, QStringLiteral("show-time-as"), QStringLiteral("busy") );
-  if ( mHasEndDate ) {
-    if ( mFloatingStatus == HasTime )
-      writeString( element, QStringLiteral("end-date"), dateTimeToString( endDate() ) );
-    else
-      writeString( element, QStringLiteral("end-date"), dateToString( endDate().date() ) );
-  }
+    if (top.tagName() != QLatin1String("event")) {
+        qWarning("XML error: Top tag was %s instead of the expected event",
+                 qPrintable(top.tagName()));
+        return false;
+    }
 
-  return true;
-}
+    for (QDomNode n = top.firstChild(); !n.isNull(); n = n.nextSibling()) {
+        if (n.isComment()) {
+            continue;
+        }
+        if (n.isElement()) {
+            QDomElement e = n.toElement();
+            loadAttribute(e);
+        } else {
+            qDebug() <<"Node is not a comment or an element???";
+        }
+    }
 
-
-bool Event::loadXML( const QDomDocument& document )
-{
-  QDomElement top = document.documentElement();
-
-  if ( top.tagName() != QLatin1String("event") ) {
-    qWarning( "XML error: Top tag was %s instead of the expected event",
-              qPrintable(top.tagName()) );
-    return false;
-  }
-
-  for ( QDomNode n = top.firstChild(); !n.isNull(); n = n.nextSibling() ) {
-    if ( n.isComment() )
-      continue;
-    if ( n.isElement() ) {
-      QDomElement e = n.toElement();
-      loadAttribute( e );
-    } else
-      qDebug() <<"Node is not a comment or an element???";
-  }
-
-  return true;
+    return true;
 }
 
 QString Event::saveXML() const
 {
-  QDomDocument document = domTree();
-  QDomElement element = document.createElement( QStringLiteral("event") );
-  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
-  saveAttributes( element );
-  document.appendChild( element );
-  return document.toString();
+    QDomDocument document = domTree();
+    QDomElement element = document.createElement(QStringLiteral("event"));
+    element.setAttribute(QStringLiteral("version"), QStringLiteral("1.0"));
+    saveAttributes(element);
+    document.appendChild(element);
+    return document.toString();
 }
 
-void Event::setFields( const KCalCore::Event::Ptr &event )
+void Event::setFields(const KCalCore::Event::Ptr &event)
 {
-  Incidence::setFields( event );
+    Incidence::setFields(event);
 
-  // note: if hasEndDate() is false and hasDuration() is true
-  // dtEnd() returns start+duration
-  if ( event->hasEndDate() || event->hasDuration() ) {
-    if ( event->allDay() ) {
-      // This is an all-day event. Don't timezone move this one
-      mFloatingStatus = AllDay;
-      setEndDate( event->dtEnd().date() );
+    // note: if hasEndDate() is false and hasDuration() is true
+    // dtEnd() returns start+duration
+    if (event->hasEndDate() || event->hasDuration()) {
+        if (event->allDay()) {
+            // This is an all-day event. Don't timezone move this one
+            mFloatingStatus = AllDay;
+            setEndDate(event->dtEnd().date());
+        } else {
+            mFloatingStatus = HasTime;
+            setEndDate(localToUTC(Porting::q2k(event->dtEnd())));
+        }
     } else {
-      mFloatingStatus = HasTime;
-      setEndDate( localToUTC( Porting::q2k( event->dtEnd() ) ) );
+        mHasEndDate = false;
     }
-  } else {
-    mHasEndDate = false;
-  }
-  setTransparency( event->transparency() );
+    setTransparency(event->transparency());
 }
 
-void Event::saveTo( const KCalCore::Event::Ptr &event )
+void Event::saveTo(const KCalCore::Event::Ptr &event)
 {
-  Incidence::saveTo( event );
+    Incidence::saveTo(event);
 
-  //PORT KF5 ? method removed event->setHasEndDate( mHasEndDate );
-  if ( mHasEndDate ) {
-    if ( mFloatingStatus == AllDay )
-      // This is an all-day event. Don't timezone move this one
-      event->setDtEnd( Porting::k2q( endDate() ) );
-    else
-      event->setDtEnd( Porting::k2q( utcToLocal( endDate() ) ) );
-  }
-  event->setTransparency( transparency() );
+    //PORT KF5 ? method removed event->setHasEndDate( mHasEndDate );
+    if (mHasEndDate) {
+        if (mFloatingStatus == AllDay) {
+            // This is an all-day event. Don't timezone move this one
+            event->setDtEnd(Porting::k2q(endDate()));
+        } else {
+            event->setDtEnd(Porting::k2q(utcToLocal(endDate())));
+        }
+    }
+    event->setTransparency(transparency());
 }

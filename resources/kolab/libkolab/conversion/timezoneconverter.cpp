@@ -21,7 +21,7 @@
 #include "kolabformat/errorhandler.h"
 #include <QTimeZone>
 
-QString TimezoneConverter::normalizeTimezone(const QString& tz)
+QString TimezoneConverter::normalizeTimezone(const QString &tz)
 {
     if (QTimeZone::isTimeZoneIdAvailable(tz.toLatin1())) {
         return tz;
@@ -42,13 +42,13 @@ QString TimezoneConverter::normalizeTimezone(const QString& tz)
     return guessedTimezone;
 }
 
-QString TimezoneConverter::fromGMTOffsetTimezone(const QString& tz)
+QString TimezoneConverter::fromGMTOffsetTimezone(const QString &tz)
 {
     Q_UNUSED(tz);
     return QString();
 }
 
-QString TimezoneConverter::fromCityName(const QString& tz)
+QString TimezoneConverter::fromCityName(const QString &tz)
 {
     const auto zones = QTimeZone::availableTimeZoneIds();
     QHash<QString, QString> countryMap;
@@ -75,7 +75,6 @@ QString TimezoneConverter::fromCityName(const QString& tz)
     return QString();
 }
 
-
 //Based on
 // * http://msdn.microsoft.com/en-us/library/ms912391(v=winembedded.11).aspx
 // * http://technet.microsoft.com/en-us/library/cc749073(v=ws.10).aspx
@@ -83,9 +82,9 @@ QString TimezoneConverter::fromCityName(const QString& tz)
 // * http://stackoverflow.com/questions/4967903/linux-windows-timezone-mapping
 static const struct WindowsTimezone {
 //   const int gmtOffset;
-  const char *timezoneSpecifier; //This one should be stable and always in english
-  const char *name; //The display name (which is in some cases still useful to try guessing)
-  const char *olson[28]; //Corresponding olson timezones we can map to
+    const char *timezoneSpecifier; //This one should be stable and always in english
+    const char *name; //The display name (which is in some cases still useful to try guessing)
+    const char *olson[28]; //Corresponding olson timezones we can map to
 } windowsTimezones[] = {
     {"Afghanistan Standard Time", "Kabul", {"Asia/Kabul", "Asia/Kabul"}},
     {"Alaskan Standard Time", "Alaska", {"America/Anchorage", "America/Anchorage America/Juneau America/Nome America/Sitka America/Yakutat"}},
@@ -169,14 +168,14 @@ static const struct WindowsTimezone {
 };
 static const int numWindowsTimezones = sizeof windowsTimezones / sizeof *windowsTimezones;
 
-QString TimezoneConverter::fromHardcodedList(const QString& tz)
+QString TimezoneConverter::fromHardcodedList(const QString &tz)
 {
-    for (int i = 0; i <numWindowsTimezones; i++) {
+    for (int i = 0; i < numWindowsTimezones; i++) {
         const WindowsTimezone &windowsTimezone = windowsTimezones[i];
         const QByteArray specifier(windowsTimezone.timezoneSpecifier);
         const QByteArray windowsName(windowsTimezone.name);
-        if ((!specifier.isEmpty() && tz.contains(specifier)) ||
-            (!windowsName.isEmpty() && tz.contains(windowsName))) {
+        if ((!specifier.isEmpty() && tz.contains(specifier))
+            || (!windowsName.isEmpty() && tz.contains(windowsName))) {
             //TODO find the olson timezone matching the local timezone if we have multiple to map to
             return QString::fromLatin1(windowsTimezone.olson[0]);
         }

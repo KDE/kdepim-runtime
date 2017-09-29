@@ -29,10 +29,7 @@
 #include <kolabformat.h>
 #include "kolabdefinitions.h"
 
-
-namespace Kolab
-{
-
+namespace Kolab {
 class KOLAB_EXPORT MIMEObject
 {
 public:
@@ -70,7 +67,7 @@ public:
     Kolab::Freebusy getFreebusy() const;
     Kolab::Configuration getConfiguration() const;
 
-    std::string writeEvent(const Kolab::Event  &event, Version version, const std::string &productId = std::string());
+    std::string writeEvent(const Kolab::Event &event, Version version, const std::string &productId = std::string());
     Kolab::Event readEvent(const std::string &s);
 
     std::string writeTodo(const Kolab::Todo &todo, Version version, const std::string &productId = std::string());
@@ -102,6 +99,5 @@ private:
     Private *const d;
     //@endcond
 };
-
 }
-#endif  
+#endif

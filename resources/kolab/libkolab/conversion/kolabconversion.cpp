@@ -15,14 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "kolabconversion.h"
 #include "commonconversion.h"
 #include <akonadi/notes/noteutils.h>
 
 namespace Kolab {
-    namespace Conversion {
-        
+namespace Conversion {
 Note fromNote(const KMime::Message::Ptr &m)
 {
     Akonadi::NoteUtils::NoteMessageWrapper note(m);
@@ -37,27 +35,27 @@ Note fromNote(const KMime::Message::Ptr &m)
     QDateTime lastModified = note.lastModifiedDate();
     lastModified.setTimeSpec(Qt::UTC);
     n.setLastModified(fromDate(lastModified, false));
-    
+
     switch (note.classification()) {
-        case Akonadi::NoteUtils::NoteMessageWrapper::Confidential:
-            n.setClassification(Kolab::ClassConfidential);
-            break;
-        case Akonadi::NoteUtils::NoteMessageWrapper::Private:
-            n.setClassification(Kolab::ClassPrivate);
-            break;
-        default:
-            n.setClassification(Kolab::ClassPublic);
+    case Akonadi::NoteUtils::NoteMessageWrapper::Confidential:
+        n.setClassification(Kolab::ClassConfidential);
+        break;
+    case Akonadi::NoteUtils::NoteMessageWrapper::Private:
+        n.setClassification(Kolab::ClassPrivate);
+        break;
+    default:
+        n.setClassification(Kolab::ClassPublic);
     }
-    
+
     std::vector<Kolab::CustomProperty> customs;
     QMap<QString, QString> &customsMap = note.custom();
-    for (QMap <QString, QString >::const_iterator it = customsMap.constBegin(), end = customsMap.constEnd(); it != end; it ++) {
+    for (QMap <QString, QString >::const_iterator it = customsMap.constBegin(), end = customsMap.constEnd(); it != end; it++) {
         customs.push_back(Kolab::CustomProperty(toStdString(it.key()), toStdString(it.value())));
     }
     n.setCustomProperties(customs);
-    
+
     std::vector<Kolab::Attachment> attachments;
-    foreach(const Akonadi::NoteUtils::Attachment &a, note.attachments()) {
+    foreach (const Akonadi::NoteUtils::Attachment &a, note.attachments()) {
         Kolab::Attachment attachment;
         if (a.url().isValid()) {
             attachment.setUri(toStdString(a.url().toString()), toStdString(a.mimetype()));
@@ -82,14 +80,14 @@ KMime::Message::Ptr toNote(const Note &n)
     note.setUid(fromStdString(n.uid()));
     note.setLastModifiedDate(toDate(n.lastModified()));
     switch (n.classification()) {
-        case Kolab::ClassPrivate:
-            note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Private);
-            break;
-        case Kolab::ClassConfidential:
-            note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Confidential);
-            break;
-        default:
-            note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Public);
+    case Kolab::ClassPrivate:
+        note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Private);
+        break;
+    case Kolab::ClassConfidential:
+        note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Confidential);
+        break;
+    default:
+        note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Public);
     }
 
     foreach (const Kolab::Attachment &a, n.attachments()) {
@@ -108,8 +106,5 @@ KMime::Message::Ptr toNote(const Note &n)
     }
     return note.message();
 }
-
-        
-    }
 }
-
+}

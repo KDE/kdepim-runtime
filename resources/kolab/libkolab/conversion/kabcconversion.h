@@ -25,19 +25,17 @@
 #include <kcontacts/contactgroup.h>
 
 namespace Kolab {
-    /**
-     * Conversion of Kolab-Containers to/from KABC Containers.
-     *
-     */
-    namespace Conversion {
+/**
+ * Conversion of Kolab-Containers to/from KABC Containers.
+ *
+ */
+namespace Conversion {
+KOLAB_EXPORT KContacts::Addressee toKABC(const Kolab::Contact &);
+KOLAB_EXPORT Kolab::Contact fromKABC(const KContacts::Addressee &);
 
-        KOLAB_EXPORT KContacts::Addressee toKABC(const Kolab::Contact &);
-        KOLAB_EXPORT Kolab::Contact fromKABC(const KContacts::Addressee &);
-        
-        KOLAB_EXPORT KContacts::ContactGroup toKABC(const Kolab::DistList &);
-        KOLAB_EXPORT Kolab::DistList fromKABC(const KContacts::ContactGroup &);
-
-    }
+KOLAB_EXPORT KContacts::ContactGroup toKABC(const Kolab::DistList &);
+KOLAB_EXPORT Kolab::DistList fromKABC(const KContacts::ContactGroup &);
+}
 }
 
 #endif

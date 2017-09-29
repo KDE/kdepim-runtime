@@ -31,7 +31,6 @@
 #include <KRandom>
 #include <boost/algorithm/string/predicate.hpp>
 
-
 Q_DECLARE_METATYPE(Kolab::Event)
 Q_DECLARE_METATYPE(Kolab::Todo)
 Q_DECLARE_METATYPE(Kolab::Journal)
@@ -41,21 +40,75 @@ Q_DECLARE_METATYPE(Kolab::Note)
 Q_DECLARE_METATYPE(Kolab::Freebusy)
 Q_DECLARE_METATYPE(Kolab::Configuration)
 
-static inline std::string eventKolabType() { return std::string(KOLAB_TYPE_EVENT); }
-static inline std::string todoKolabType() { return std::string(KOLAB_TYPE_TASK); }
-static inline std::string journalKolabType() { return std::string(KOLAB_TYPE_JOURNAL); }
-static inline std::string contactKolabType() { return std::string(KOLAB_TYPE_CONTACT); }
-static inline std::string distlistKolabType() { return std::string(KOLAB_TYPE_DISTLIST); }
-static inline std::string distlistKolabTypeCompat() { return std::string(KOLAB_TYPE_DISTLIST_V2); }
-static inline std::string noteKolabType() { return std::string(KOLAB_TYPE_NOTE); }
-static inline std::string configurationKolabType() { return std::string(KOLAB_TYPE_CONFIGURATION); }
-static inline std::string dictKolabType() { return std::string(KOLAB_TYPE_DICT); }
-static inline std::string freebusyKolabType() { return std::string(KOLAB_TYPE_FREEBUSY); }
-static inline std::string relationKolabType() { return std::string(KOLAB_TYPE_RELATION); }
+static inline std::string eventKolabType()
+{
+    return std::string(KOLAB_TYPE_EVENT);
+}
 
-static inline std::string xCalMimeType() { return std::string(MIME_TYPE_XCAL); }
-static inline std::string xCardMimeType() { return std::string(MIME_TYPE_XCARD); }
-static inline std::string kolabMimeType() { return std::string(MIME_TYPE_KOLAB); }
+static inline std::string todoKolabType()
+{
+    return std::string(KOLAB_TYPE_TASK);
+}
+
+static inline std::string journalKolabType()
+{
+    return std::string(KOLAB_TYPE_JOURNAL);
+}
+
+static inline std::string contactKolabType()
+{
+    return std::string(KOLAB_TYPE_CONTACT);
+}
+
+static inline std::string distlistKolabType()
+{
+    return std::string(KOLAB_TYPE_DISTLIST);
+}
+
+static inline std::string distlistKolabTypeCompat()
+{
+    return std::string(KOLAB_TYPE_DISTLIST_V2);
+}
+
+static inline std::string noteKolabType()
+{
+    return std::string(KOLAB_TYPE_NOTE);
+}
+
+static inline std::string configurationKolabType()
+{
+    return std::string(KOLAB_TYPE_CONFIGURATION);
+}
+
+static inline std::string dictKolabType()
+{
+    return std::string(KOLAB_TYPE_DICT);
+}
+
+static inline std::string freebusyKolabType()
+{
+    return std::string(KOLAB_TYPE_FREEBUSY);
+}
+
+static inline std::string relationKolabType()
+{
+    return std::string(KOLAB_TYPE_RELATION);
+}
+
+static inline std::string xCalMimeType()
+{
+    return std::string(MIME_TYPE_XCAL);
+}
+
+static inline std::string xCardMimeType()
+{
+    return std::string(MIME_TYPE_XCARD);
+}
+
+static inline std::string kolabMimeType()
+{
+    return std::string(MIME_TYPE_KOLAB);
+}
 
 static std::string getProductId(const std::string &pId)
 {
@@ -65,9 +118,7 @@ static std::string getProductId(const std::string &pId)
     return pId + " " + LIBKOLAB_LIB_VERSION_STRING;
 }
 
-namespace Kolab
-{
-
+namespace Kolab {
 static Kolab::ObjectType getObjectType(const std::string &type)
 {
     if (type == eventKolabType()) {
@@ -96,26 +147,26 @@ static Kolab::ObjectType getObjectType(const std::string &type)
 static QByteArray getTypeString(Kolab::ObjectType type)
 {
     switch (type) {
-        case EventObject:
-            return KOLAB_TYPE_EVENT;
-        case TodoObject:
-            return KOLAB_TYPE_TASK;
-        case JournalObject:
-            return KOLAB_TYPE_JOURNAL;
-        case FreebusyObject:
-            return KOLAB_TYPE_FREEBUSY;
-        case ContactObject:
-            return KOLAB_TYPE_CONTACT;
-        case DistlistObject:
-            return KOLAB_TYPE_DISTLIST;
-        case NoteObject:
-            return KOLAB_TYPE_NOTE;
-        case DictionaryConfigurationObject:
-            return KOLAB_TYPE_CONFIGURATION;
-        case RelationConfigurationObject:
-            return KOLAB_TYPE_RELATION;
-        default:
-            Critical() << "unknown type "<< type;
+    case EventObject:
+        return KOLAB_TYPE_EVENT;
+    case TodoObject:
+        return KOLAB_TYPE_TASK;
+    case JournalObject:
+        return KOLAB_TYPE_JOURNAL;
+    case FreebusyObject:
+        return KOLAB_TYPE_FREEBUSY;
+    case ContactObject:
+        return KOLAB_TYPE_CONTACT;
+    case DistlistObject:
+        return KOLAB_TYPE_DISTLIST;
+    case NoteObject:
+        return KOLAB_TYPE_NOTE;
+    case DictionaryConfigurationObject:
+        return KOLAB_TYPE_CONFIGURATION;
+    case RelationConfigurationObject:
+        return KOLAB_TYPE_RELATION;
+    default:
+        Critical() << "unknown type "<< type;
     }
     return QByteArray();
 }
@@ -123,27 +174,27 @@ static QByteArray getTypeString(Kolab::ObjectType type)
 static QByteArray getMimeType(Kolab::ObjectType type)
 {
     switch (type) {
-        case EventObject:
-        case TodoObject:
-        case JournalObject:
-        case FreebusyObject:
-            return MIME_TYPE_XCAL;
-        case ContactObject:
-        case DistlistObject:
-            return MIME_TYPE_XCARD;
-        case NoteObject:
-        case DictionaryConfigurationObject:
-        case RelationConfigurationObject:
-            return MIME_TYPE_KOLAB;
-        default:
-            Critical() << "unknown type "<< type;
+    case EventObject:
+    case TodoObject:
+    case JournalObject:
+    case FreebusyObject:
+        return MIME_TYPE_XCAL;
+    case ContactObject:
+    case DistlistObject:
+        return MIME_TYPE_XCARD;
+    case NoteObject:
+    case DictionaryConfigurationObject:
+    case RelationConfigurationObject:
+        return MIME_TYPE_KOLAB;
+    default:
+        Critical() << "unknown type "<< type;
     }
     return QByteArray();
 }
 
 static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
 {
-    Q_FOREACH(const QByteArray &type, Mime::getContentMimeTypeList(msg)) {
+    Q_FOREACH (const QByteArray &type, Mime::getContentMimeTypeList(msg)) {
         Kolab::ObjectType t = getObjectType(type.toStdString()); //works for v2 types
         if (t != InvalidObject) {
             return t;
@@ -165,10 +216,10 @@ class MIMEObject::Private
 {
 public:
     Private()
-    :   mObjectType(InvalidObject),
-        mVersion(KolabV3),
-        mOverrideObjectType(InvalidObject),
-        mDoOverrideVersion(false)
+        :   mObjectType(InvalidObject)
+        , mVersion(KolabV3)
+        , mOverrideObjectType(InvalidObject)
+        , mDoOverrideVersion(false)
     {
     }
 
@@ -250,57 +301,63 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
 
     QVariant variant;
     switch (objectType) {
-        case EventObject: {
-            QStringList attachments;
-            KCalCore::Event::Ptr kEvent = fromXML<KCalCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
-            if (kEvent) {
-                Kolab::Event event = Kolab::Conversion::fromKCalCore(*kEvent);
-                event.setAttachments(getAttachments(attachments, msg));
-                variant = QVariant::fromValue(event);
-            }
-            break;
+    case EventObject:
+    {
+        QStringList attachments;
+        KCalCore::Event::Ptr kEvent = fromXML<KCalCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
+        if (kEvent) {
+            Kolab::Event event = Kolab::Conversion::fromKCalCore(*kEvent);
+            event.setAttachments(getAttachments(attachments, msg));
+            variant = QVariant::fromValue(event);
         }
-        case TodoObject: {
-            QStringList attachments;
-            KCalCore::Todo::Ptr kTodo = fromXML<KCalCore::Todo::Ptr, KolabV2::Task>(xmlData, attachments);
-            if (kTodo) {
-                Kolab::Todo todo = Kolab::Conversion::fromKCalCore(*kTodo);
-                todo.setAttachments(getAttachments(attachments, msg));
-                variant = QVariant::fromValue(todo);
-            }
-            break;
+        break;
+    }
+    case TodoObject:
+    {
+        QStringList attachments;
+        KCalCore::Todo::Ptr kTodo = fromXML<KCalCore::Todo::Ptr, KolabV2::Task>(xmlData, attachments);
+        if (kTodo) {
+            Kolab::Todo todo = Kolab::Conversion::fromKCalCore(*kTodo);
+            todo.setAttachments(getAttachments(attachments, msg));
+            variant = QVariant::fromValue(todo);
         }
-        case JournalObject: {
-            QStringList attachments;
-            KCalCore::Journal::Ptr kJournal = fromXML<KCalCore::Journal::Ptr, KolabV2::Journal>(xmlData, attachments);
-            if (kJournal) {
-                Kolab::Journal journal = Kolab::Conversion::fromKCalCore(*kJournal);
-                journal.setAttachments(getAttachments(attachments, msg));
-                variant = QVariant::fromValue(journal);
-            }
-            break;
+        break;
+    }
+    case JournalObject:
+    {
+        QStringList attachments;
+        KCalCore::Journal::Ptr kJournal = fromXML<KCalCore::Journal::Ptr, KolabV2::Journal>(xmlData, attachments);
+        if (kJournal) {
+            Kolab::Journal journal = Kolab::Conversion::fromKCalCore(*kJournal);
+            journal.setAttachments(getAttachments(attachments, msg));
+            variant = QVariant::fromValue(journal);
         }
-        case ContactObject: {
-            KContacts::Addressee kContact= addresseeFromKolab(xmlData, msg);
-            Kolab::Contact contact = Kolab::Conversion::fromKABC(kContact);
-            variant = QVariant::fromValue(contact);
-            break;
-        }
-        case DistlistObject: {
-            KContacts::ContactGroup kContactGroup= contactGroupFromKolab(xmlData);
-            Kolab::DistList distlist = Kolab::Conversion::fromKABC(kContactGroup);
-            variant = QVariant::fromValue(distlist);
-            break;
-        }
-        case NoteObject: {
-            KMime::Message::Ptr kNote = noteFromKolab(xmlData, KDateTime(msg->date()->dateTime()));
-            Kolab::Note note = Kolab::Conversion::fromNote(kNote);
-            variant = QVariant::fromValue(note);
-            break;
-        }
-        default:
-            CRITICAL(QStringLiteral("no kolab object found "));
-            break;
+        break;
+    }
+    case ContactObject:
+    {
+        KContacts::Addressee kContact = addresseeFromKolab(xmlData, msg);
+        Kolab::Contact contact = Kolab::Conversion::fromKABC(kContact);
+        variant = QVariant::fromValue(contact);
+        break;
+    }
+    case DistlistObject:
+    {
+        KContacts::ContactGroup kContactGroup = contactGroupFromKolab(xmlData);
+        Kolab::DistList distlist = Kolab::Conversion::fromKABC(kContactGroup);
+        variant = QVariant::fromValue(distlist);
+        break;
+    }
+    case NoteObject:
+    {
+        KMime::Message::Ptr kNote = noteFromKolab(xmlData, KDateTime(msg->date()->dateTime()));
+        Kolab::Note note = Kolab::Conversion::fromNote(kNote);
+        variant = QVariant::fromValue(note);
+        break;
+    }
+    default:
+        CRITICAL(QStringLiteral("no kolab object found "));
+        break;
     }
     if (ErrorHandler::errorOccured()) {
         printMessageDebugInfo(msg);
@@ -312,7 +369,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
 
 QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
 {
-    KMime::Content * const xmlContent = Mime::findContentByType(msg, getMimeType(objectType));
+    KMime::Content *const xmlContent = Mime::findContentByType(msg, getMimeType(objectType));
     if (!xmlContent) {
         Critical() << "no " << getMimeType(objectType) << " part found";
         printMessageDebugInfo(msg);
@@ -322,44 +379,47 @@ QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab:
     const std::string xml = std::string(content.data(), content.size());
     QVariant variant;
     switch (objectType) {
-        case EventObject: {
-            Kolab::Event event = Kolab::readEvent(xml, false);
-            event.setAttachments(getAttachments(event.attachments(), msg));
-            variant = QVariant::fromValue<Kolab::Event>(event);
-            break;
-        }
-        case TodoObject: {
-            Kolab::Todo todo = Kolab::readTodo(xml, false);
-            todo.setAttachments(getAttachments(todo.attachments(), msg));
-            variant = QVariant::fromValue<Kolab::Todo>(todo);
-            break;
-        }
-        case JournalObject: {
-            Kolab::Journal journal = Kolab::readJournal(xml, false);
-            journal.setAttachments(getAttachments(journal.attachments(), msg));
-            variant = QVariant::fromValue<Kolab::Journal>(journal);
-            break;
-        }
-        case ContactObject:
-            variant = QVariant::fromValue<Kolab::Contact>(Kolab::readContact(xml, false));
-            break;
-        case DistlistObject:
-            variant = QVariant::fromValue<Kolab::DistList>(Kolab::readDistlist(xml, false));
-            break;
-        case NoteObject:
-            variant = QVariant::fromValue<Kolab::Note>(Kolab::readNote(xml, false));
-            break;
-        case FreebusyObject:
-            variant = QVariant::fromValue<Kolab::Freebusy>(Kolab::readFreebusy(xml, false));
-            break;
-        case DictionaryConfigurationObject:
-        case RelationConfigurationObject:
-            variant = QVariant::fromValue<Kolab::Configuration>(Kolab::readConfiguration(xml, false));
-            break;
-        default:
-            Critical() << "no kolab object found ";
-            printMessageDebugInfo(msg);
-            break;
+    case EventObject:
+    {
+        Kolab::Event event = Kolab::readEvent(xml, false);
+        event.setAttachments(getAttachments(event.attachments(), msg));
+        variant = QVariant::fromValue<Kolab::Event>(event);
+        break;
+    }
+    case TodoObject:
+    {
+        Kolab::Todo todo = Kolab::readTodo(xml, false);
+        todo.setAttachments(getAttachments(todo.attachments(), msg));
+        variant = QVariant::fromValue<Kolab::Todo>(todo);
+        break;
+    }
+    case JournalObject:
+    {
+        Kolab::Journal journal = Kolab::readJournal(xml, false);
+        journal.setAttachments(getAttachments(journal.attachments(), msg));
+        variant = QVariant::fromValue<Kolab::Journal>(journal);
+        break;
+    }
+    case ContactObject:
+        variant = QVariant::fromValue<Kolab::Contact>(Kolab::readContact(xml, false));
+        break;
+    case DistlistObject:
+        variant = QVariant::fromValue<Kolab::DistList>(Kolab::readDistlist(xml, false));
+        break;
+    case NoteObject:
+        variant = QVariant::fromValue<Kolab::Note>(Kolab::readNote(xml, false));
+        break;
+    case FreebusyObject:
+        variant = QVariant::fromValue<Kolab::Freebusy>(Kolab::readFreebusy(xml, false));
+        break;
+    case DictionaryConfigurationObject:
+    case RelationConfigurationObject:
+        variant = QVariant::fromValue<Kolab::Configuration>(Kolab::readConfiguration(xml, false));
+        break;
+    default:
+        Critical() << "no kolab object found ";
+        printMessageDebugInfo(msg);
+        break;
     }
 
     if (ErrorHandler::errorOccured()) {
@@ -369,8 +429,6 @@ QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab:
     mObjectType = objectType;
     return variant;
 }
-
-
 
 QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
 {
@@ -386,7 +444,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
         if (KMime::Headers::Base *xKolabHeader = msg->headerByType(X_KOLAB_TYPE_HEADER)) {
             objectType = getObjectType(xKolabHeader->asUnicodeString().trimmed().toStdString());
         } else {
-            Warning() << "could not find the X-Kolab-Type Header, trying autodetection" ;
+            Warning() << "could not find the X-Kolab-Type Header, trying autodetection";
             //This works only for v2 messages atm.
             objectType = detectType(msg);
         }
@@ -434,7 +492,6 @@ QVariant MIMEObject::Private::parseMimeMessage(const std::string &s)
 MIMEObject::MIMEObject()
     : d(new MIMEObject::Private)
 {
-
 }
 
 MIMEObject::~MIMEObject()
@@ -472,7 +529,7 @@ std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Atta
     return attachmentsWithReferences;
 }
 
-template <class T>
+template<class T>
 static T convertAttachmentsToReferences(const T &incidence, std::vector<std::string> &attachmentCids)
 {
     T removedAttachments = incidence;
@@ -486,7 +543,8 @@ static void addAttachments(KMime::Message::Ptr msg, const std::vector<Attachment
     foreach (const Attachment &attachment, attachments) {
         const std::string data = attachment.data();
         const std::string cid = attachmentCids.empty() ? attachment.uri() : attachmentCids.at(index);
-        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(), QByteArray(attachment.mimetype().c_str()), QString::fromStdString(attachment.label()), QByteArray::fromRawData(data.c_str(), data.size())));
+        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(), QByteArray(attachment.mimetype().c_str()), QString::fromStdString(attachment.label()),
+                                                   QByteArray::fromRawData(data.c_str(), data.size())));
         index++;
     }
 }
@@ -617,8 +675,8 @@ std::string MIMEObject::writeJournal(const Journal &journal, Version version, co
     return msg->encodedContent().data();
 }
 
-Journal MIMEObject::readJournal(const std::string &s){
-
+Journal MIMEObject::readJournal(const std::string &s)
+{
     return d->parseMimeMessage(s).value<Kolab::Journal>();
 }
 
@@ -642,8 +700,8 @@ std::string MIMEObject::writeNote(const Note &note, Version version, const std::
     return msg->encodedContent().data();
 }
 
-Note MIMEObject::readNote(const std::string &s){
-
+Note MIMEObject::readNote(const std::string &s)
+{
     return d->parseMimeMessage(s).value<Kolab::Note>();
 }
 
@@ -673,8 +731,8 @@ std::string MIMEObject::writeContact(const Contact &contact, Version version, co
     return msg->encodedContent().data();
 }
 
-Contact MIMEObject::readContact(const std::string &s){
-
+Contact MIMEObject::readContact(const std::string &s)
+{
     return d->parseMimeMessage(s).value<Kolab::Contact>();
 }
 
@@ -700,7 +758,7 @@ DistList MIMEObject::readDistlist(const std::string &s)
     return d->parseMimeMessage(s).value<Kolab::DistList>();
 }
 
-std::string MIMEObject::writeConfiguration(const Configuration &configuration, Version version, const std::string& pId)
+std::string MIMEObject::writeConfiguration(const Configuration &configuration, Version version, const std::string &pId)
 {
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
@@ -710,23 +768,23 @@ std::string MIMEObject::writeConfiguration(const Configuration &configuration, V
     const std::string xml = xmlObject.writeConfiguration(configuration, version, productId);
     std::string kolabType;
     switch (configuration.type()) {
-        case Kolab::Configuration::TypeDictionary:
-            kolabType = dictKolabType();
-            break;
-        case Kolab::Configuration::TypeRelation:
-            kolabType = relationKolabType();
-            break;
-        case Kolab::Configuration::TypeSnippet:
-            kolabType = configurationKolabType();
-            break;
-        case Kolab::Configuration::TypeFileDriver:
-            kolabType = configurationKolabType();
-            break;
-        case Kolab::Configuration::TypeCategoryColor:
-            kolabType = configurationKolabType();
-            break;
-        default:
-            break;
+    case Kolab::Configuration::TypeDictionary:
+        kolabType = dictKolabType();
+        break;
+    case Kolab::Configuration::TypeRelation:
+        kolabType = relationKolabType();
+        break;
+    case Kolab::Configuration::TypeSnippet:
+        kolabType = configurationKolabType();
+        break;
+    case Kolab::Configuration::TypeFileDriver:
+        kolabType = configurationKolabType();
+        break;
+    case Kolab::Configuration::TypeCategoryColor:
+        kolabType = configurationKolabType();
+        break;
+    default:
+        break;
     }
     if (version == KolabV3) {
         msg = Mime::createMessage(kolabMimeType(), kolabType, xml, true, productId, std::string(), std::string(), configuration.uid());
@@ -742,7 +800,7 @@ Configuration MIMEObject::readConfiguration(const std::string &s)
     return d->parseMimeMessage(s).value<Kolab::Configuration>();
 }
 
-std::string MIMEObject::writeFreebusy(const Freebusy &freebusy, Version version, const std::string& pId)
+std::string MIMEObject::writeFreebusy(const Freebusy &freebusy, Version version, const std::string &pId)
 {
     ErrorHandler::clearErrors();
     const std::string productId = getProductId(pId);
@@ -763,6 +821,4 @@ Freebusy MIMEObject::readFreebusy(const std::string &s)
 {
     return d->parseMimeMessage(s).value<Kolab::Freebusy>();
 }
-
 }
-

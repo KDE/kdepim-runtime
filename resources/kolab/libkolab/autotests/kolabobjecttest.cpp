@@ -60,7 +60,7 @@ void KolabObjectTest::dontCrashWithEmptyOrganizer()
 {
     KCalCore::Event::Ptr event(new KCalCore::Event());
     event->setOrganizer(KCalCore::Person::Ptr());
-    event->setDtStart(QDateTime(QDate(2012,11,11), {}));
+    event->setDtStart(QDateTime(QDate(2012, 11, 11), {}));
     event->setAllDay(true);
     Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV2);
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
@@ -68,7 +68,6 @@ void KolabObjectTest::dontCrashWithEmptyOrganizer()
     qDebug() << Kolab::ErrorHandler::instance().error();
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
 }
-
 
 void KolabObjectTest::dontCrashWithEmptyIncidence()
 {
@@ -87,19 +86,19 @@ void KolabObjectTest::dontCrashWithEmptyIncidence()
 void KolabObjectTest::parseRelationMembers()
 {
     {
-        QString memberString("imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200");
+        QString memberString(
+            "imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200");
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberString);
 
         QString result = Kolab::generateMemberUrl(member);
         qDebug() << result;
-        result.replace(QLatin1String("%20"),QLatin1String("+"));
+        result.replace(QLatin1String("%20"), QLatin1String("+"));
         QEXPECT_FAIL("", "This is currently failing, probably a bug in the recent changes regarding the encoding.", Continue);
         QCOMPARE(result, memberString);
     }
 
     //user namespace by uid
     {
-
         Kolab::RelationMember member;
         member.uid = 20;
         member.mailbox = QList<QByteArray>() << "INBOX";
@@ -121,7 +120,6 @@ void KolabObjectTest::parseRelationMembers()
 
     //shared namespace by uid
     {
-
         Kolab::RelationMember member;
         member.uid = 20;
         member.mailbox = QList<QByteArray>() << "foo" << "bar";
@@ -141,7 +139,6 @@ void KolabObjectTest::parseRelationMembers()
 
     //by uuid/gid
     {
-
         Kolab::RelationMember member;
         member.gid = "fooobar";
         QString url = Kolab::generateMemberUrl(member);
@@ -152,7 +149,6 @@ void KolabObjectTest::parseRelationMembers()
 
     // chars to en/decode
     {
-
         Kolab::RelationMember member;
         member.uid = 20;
         member.mailbox = QList<QByteArray>() << "spaces in folders" << "+^,:@";
@@ -175,8 +171,6 @@ void KolabObjectTest::parseRelationMembers()
     }
 }
 
-
-
-QTEST_MAIN( KolabObjectTest )
+QTEST_MAIN(KolabObjectTest)
 
 #include "kolabobjecttest.moc"

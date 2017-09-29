@@ -36,151 +36,151 @@
 #include "utils/porting.h"
 #include <QDebug>
 
-
 using namespace KolabV2;
 
-
-KCalCore::Journal::Ptr Journal::fromXml( const QDomDocument& xmlDoc, const QString& tz )
+KCalCore::Journal::Ptr Journal::fromXml(const QDomDocument &xmlDoc, const QString &tz)
 {
-  Journal journal( tz );
-  journal.loadXML( xmlDoc );
-  KCalCore::Journal::Ptr kcalJournal( new KCalCore::Journal() );
-  journal.saveTo( kcalJournal );
-  return kcalJournal;
+    Journal journal(tz);
+    journal.loadXML(xmlDoc);
+    KCalCore::Journal::Ptr kcalJournal(new KCalCore::Journal());
+    journal.saveTo(kcalJournal);
+    return kcalJournal;
 }
 
-QString Journal::journalToXML( const KCalCore::Journal::Ptr &kcalJournal, const QString& tz )
+QString Journal::journalToXML(const KCalCore::Journal::Ptr &kcalJournal, const QString &tz)
 {
-  Journal journal( tz, kcalJournal );
-  return journal.saveXML();
+    Journal journal(tz, kcalJournal);
+    return journal.saveXML();
 }
 
-Journal::Journal( const QString& tz, const KCalCore::Journal::Ptr &journal )
-  : KolabBase( tz )
+Journal::Journal(const QString &tz, const KCalCore::Journal::Ptr &journal)
+    : KolabBase(tz)
 {
-  if ( journal ) {
-    setFields( journal );
-  }
+    if (journal) {
+        setFields(journal);
+    }
 }
 
 Journal::~Journal()
 {
 }
 
-void Journal::setSummary( const QString& summary )
+void Journal::setSummary(const QString &summary)
 {
-  mSummary = summary;
+    mSummary = summary;
 }
 
 QString Journal::summary() const
 {
-  return mSummary;
+    return mSummary;
 }
 
-void Journal::setStartDate( const KDateTime& startDate )
+void Journal::setStartDate(const KDateTime &startDate)
 {
-  mStartDate = startDate;
+    mStartDate = startDate;
 }
 
 KDateTime Journal::startDate() const
 {
-  return mStartDate;
+    return mStartDate;
 }
 
-void Journal::setEndDate( const KDateTime& endDate )
+void Journal::setEndDate(const KDateTime &endDate)
 {
-  mEndDate = endDate;
+    mEndDate = endDate;
 }
 
 KDateTime Journal::endDate() const
 {
-  return mEndDate;
+    return mEndDate;
 }
 
-bool Journal::loadAttribute( QDomElement& element )
+bool Journal::loadAttribute(QDomElement &element)
 {
-  QString tagName = element.tagName();
+    QString tagName = element.tagName();
 
-  if ( tagName == QLatin1String("summary") )
-    setSummary( element.text() );
-  else if ( tagName == QLatin1String("start-date") )
-    setStartDate( stringToDateTime( element.text() ) );
-  else
-    // Not handled here
-    return KolabBase::loadAttribute( element );
+    if (tagName == QLatin1String("summary")) {
+        setSummary(element.text());
+    } else if (tagName == QLatin1String("start-date")) {
+        setStartDate(stringToDateTime(element.text()));
+    } else {
+        // Not handled here
+        return KolabBase::loadAttribute(element);
+    }
 
-  // We handled this
-  return true;
+    // We handled this
+    return true;
 }
 
-bool Journal::saveAttributes( QDomElement& element ) const
+bool Journal::saveAttributes(QDomElement &element) const
 {
-  // Save the base class elements
-  KolabBase::saveAttributes( element );
+    // Save the base class elements
+    KolabBase::saveAttributes(element);
 
-  writeString( element, QStringLiteral("summary"), summary() );
-  writeString( element, QStringLiteral("start-date"), dateTimeToString( startDate() ) );
+    writeString(element, QStringLiteral("summary"), summary());
+    writeString(element, QStringLiteral("start-date"), dateTimeToString(startDate()));
 
-  return true;
+    return true;
 }
 
-
-bool Journal::loadXML( const QDomDocument& document )
+bool Journal::loadXML(const QDomDocument &document)
 {
-  QDomElement top = document.documentElement();
+    QDomElement top = document.documentElement();
 
-  if ( top.tagName() != QLatin1String("journal") ) {
-    qWarning( "XML error: Top tag was %s instead of the expected Journal",
-              qPrintable(top.tagName()) );
-    return false;
-  }
+    if (top.tagName() != QLatin1String("journal")) {
+        qWarning("XML error: Top tag was %s instead of the expected Journal",
+                 qPrintable(top.tagName()));
+        return false;
+    }
 
-  for ( QDomNode n = top.firstChild(); !n.isNull(); n = n.nextSibling() ) {
-    if ( n.isComment() )
-      continue;
-    if ( n.isElement() ) {
-      QDomElement e = n.toElement();
-      if ( !loadAttribute( e ) ) {
-        // Unhandled tag - save for later storage
-        //qDebug( "Unhandled tag: %s", e.toCString().data() );
-      }
-    } else
-      qDebug( "Node is not a comment or an element???" );
-  }
+    for (QDomNode n = top.firstChild(); !n.isNull(); n = n.nextSibling()) {
+        if (n.isComment()) {
+            continue;
+        }
+        if (n.isElement()) {
+            QDomElement e = n.toElement();
+            if (!loadAttribute(e)) {
+                // Unhandled tag - save for later storage
+                //qDebug( "Unhandled tag: %s", e.toCString().data() );
+            }
+        } else {
+            qDebug("Node is not a comment or an element???");
+        }
+    }
 
-  return true;
+    return true;
 }
 
 QString Journal::saveXML() const
 {
-  QDomDocument document = domTree();
-  QDomElement element = document.createElement( QStringLiteral("journal") );
-  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
-  saveAttributes( element );
-  document.appendChild( element );
-  return document.toString();
+    QDomDocument document = domTree();
+    QDomElement element = document.createElement(QStringLiteral("journal"));
+    element.setAttribute(QStringLiteral("version"), QStringLiteral("1.0"));
+    saveAttributes(element);
+    document.appendChild(element);
+    return document.toString();
 }
 
-void Journal::saveTo( const KCalCore::Journal::Ptr &journal )
+void Journal::saveTo(const KCalCore::Journal::Ptr &journal)
 {
-  KolabBase::saveTo( journal );
+    KolabBase::saveTo(journal);
 
-  journal->setSummary( summary() );
-  journal->setDtStart( Porting::k2q( utcToLocal( startDate() ) ) );
-  journal->setAllDay( startDate().isDateOnly() );
+    journal->setSummary(summary());
+    journal->setDtStart(Porting::k2q(utcToLocal(startDate())));
+    journal->setAllDay(startDate().isDateOnly());
 }
 
-void Journal::setFields( const KCalCore::Journal::Ptr &journal )
+void Journal::setFields(const KCalCore::Journal::Ptr &journal)
 {
-  // Set baseclass fields
-  KolabBase::setFields( journal );
+    // Set baseclass fields
+    KolabBase::setFields(journal);
 
-  // Set our own fields
-  setSummary( journal->summary() );
-  setStartDate( localToUTC( Porting::q2k( journal->dtStart() ) ) );
+    // Set our own fields
+    setSummary(journal->summary());
+    setStartDate(localToUTC(Porting::q2k(journal->dtStart())));
 }
 
 QString Journal::productID() const
 {
-  return QString::fromLatin1(LIBKOLAB_LIB_VERSION_STRING) + ", Kolab resource";
+    return QString::fromLatin1(LIBKOLAB_LIB_VERSION_STRING) + ", Kolab resource";
 }

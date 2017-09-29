@@ -28,11 +28,9 @@
 #include <string>
 
 namespace Kolab {
-    namespace DateTimeUtils {
-
-    KOLAB_EXPORT std::string getLocalTimezone();
-
-    } //Namespace
+namespace DateTimeUtils {
+KOLAB_EXPORT std::string getLocalTimezone();
+}     //Namespace
 } //Namespace
 
 #endif

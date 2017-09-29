@@ -29,8 +29,7 @@
 #include "commonconversion.h"
 
 namespace Kolab {
-    namespace Conversion {
-
+namespace Conversion {
 //The uid of a contact which refers to the uuid of a contact in the addressbook
 #define CUSTOM_KOLAB_CONTACT_UUID "X_KOLAB_CONTACT_UUID"
 #define CUSTOM_KOLAB_CONTACT_CUTYPE "X_KOLAB_CONTACT_CUTYPE"
@@ -72,37 +71,36 @@ Kolab::Duration fromDuration(const KCalCore::Duration &d)
 //         int hours = minutes / 60;
 //         minutes = minutes % 60;
     return Kolab::Duration(0, 0, 0, seconds, isNegative);
-
 }
 
 KCalCore::Incidence::Secrecy toSecrecy(Kolab::Classification c)
 {
-    switch(c) {
-        case Kolab::ClassPublic:
-            return KCalCore::Incidence::SecrecyPublic;
-        case Kolab::ClassPrivate:
-            return KCalCore::Incidence::SecrecyPrivate;
-        case Kolab::ClassConfidential:
-            return KCalCore::Incidence::SecrecyConfidential;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    switch (c) {
+    case Kolab::ClassPublic:
+        return KCalCore::Incidence::SecrecyPublic;
+    case Kolab::ClassPrivate:
+        return KCalCore::Incidence::SecrecyPrivate;
+    case Kolab::ClassConfidential:
+        return KCalCore::Incidence::SecrecyConfidential;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return KCalCore::Incidence::SecrecyPublic;
 }
 
 Kolab::Classification fromSecrecy(KCalCore::Incidence::Secrecy c)
 {
-    switch(c) {
-        case KCalCore::Incidence::SecrecyPublic:
-            return Kolab::ClassPublic;
-        case KCalCore::Incidence::SecrecyPrivate:
-            return Kolab::ClassPrivate;
-        case KCalCore::Incidence::SecrecyConfidential:
-            return Kolab::ClassConfidential;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    switch (c) {
+    case KCalCore::Incidence::SecrecyPublic:
+        return Kolab::ClassPublic;
+    case KCalCore::Incidence::SecrecyPrivate:
+        return Kolab::ClassPrivate;
+    case KCalCore::Incidence::SecrecyConfidential:
+        return Kolab::ClassConfidential;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return Kolab::ClassPublic;
 }
@@ -122,27 +120,27 @@ int fromPriority(int priority)
 KCalCore::Incidence::Status toStatus(Kolab::Status s)
 {
     switch (s) {
-        case StatusUndefined:
-            return  KCalCore::Incidence::StatusNone;
-        case StatusNeedsAction:
-            return  KCalCore::Incidence::StatusNeedsAction;
-        case StatusCompleted:
-            return  KCalCore::Incidence::StatusCompleted;
-        case StatusInProcess:
-            return  KCalCore::Incidence::StatusInProcess;
-        case StatusCancelled:
-            return  KCalCore::Incidence::StatusCanceled;
-        case StatusTentative:
-            return  KCalCore::Incidence::StatusTentative;
-        case StatusConfirmed:
-            return  KCalCore::Incidence::StatusConfirmed;
-        case StatusDraft:
-            return  KCalCore::Incidence::StatusDraft;
-        case StatusFinal:
-            return  KCalCore::Incidence::StatusFinal;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case StatusUndefined:
+        return KCalCore::Incidence::StatusNone;
+    case StatusNeedsAction:
+        return KCalCore::Incidence::StatusNeedsAction;
+    case StatusCompleted:
+        return KCalCore::Incidence::StatusCompleted;
+    case StatusInProcess:
+        return KCalCore::Incidence::StatusInProcess;
+    case StatusCancelled:
+        return KCalCore::Incidence::StatusCanceled;
+    case StatusTentative:
+        return KCalCore::Incidence::StatusTentative;
+    case StatusConfirmed:
+        return KCalCore::Incidence::StatusConfirmed;
+    case StatusDraft:
+        return KCalCore::Incidence::StatusDraft;
+    case StatusFinal:
+        return KCalCore::Incidence::StatusFinal;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return KCalCore::Incidence::StatusNone;
 }
@@ -150,27 +148,27 @@ KCalCore::Incidence::Status toStatus(Kolab::Status s)
 Kolab::Status fromStatus(KCalCore::Incidence::Status s)
 {
     switch (s) {
-        case KCalCore::Incidence::StatusNone:
-            return StatusUndefined;
-        case KCalCore::Incidence::StatusNeedsAction:
-            return StatusNeedsAction;
-        case KCalCore::Incidence::StatusCompleted:
-            return StatusCompleted;
-        case KCalCore::Incidence::StatusInProcess:
-            return StatusInProcess;
-        case KCalCore::Incidence::StatusCanceled:
-            return StatusCancelled;
-        case KCalCore::Incidence::StatusTentative:
-            return StatusTentative;
-        case KCalCore::Incidence::StatusConfirmed:
-            return StatusConfirmed;
-        case KCalCore::Incidence::StatusDraft:
-            return StatusDraft;
-        case KCalCore::Incidence::StatusFinal:
-            return StatusFinal;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case KCalCore::Incidence::StatusNone:
+        return StatusUndefined;
+    case KCalCore::Incidence::StatusNeedsAction:
+        return StatusNeedsAction;
+    case KCalCore::Incidence::StatusCompleted:
+        return StatusCompleted;
+    case KCalCore::Incidence::StatusInProcess:
+        return StatusInProcess;
+    case KCalCore::Incidence::StatusCanceled:
+        return StatusCancelled;
+    case KCalCore::Incidence::StatusTentative:
+        return StatusTentative;
+    case KCalCore::Incidence::StatusConfirmed:
+        return StatusConfirmed;
+    case KCalCore::Incidence::StatusDraft:
+        return StatusDraft;
+    case KCalCore::Incidence::StatusFinal:
+        return StatusFinal;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return StatusUndefined;
 }
@@ -178,19 +176,19 @@ Kolab::Status fromStatus(KCalCore::Incidence::Status s)
 KCalCore::Attendee::PartStat toPartStat(Kolab::PartStatus p)
 {
     switch (p) {
-        case PartNeedsAction:
-            return KCalCore::Attendee::NeedsAction;
-        case PartAccepted:
-            return KCalCore::Attendee::Accepted;
-        case PartDeclined:
-            return KCalCore::Attendee::Declined;
-        case PartTentative:
-            return KCalCore::Attendee::Tentative;
-        case PartDelegated:
-            return KCalCore::Attendee::Delegated;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case PartNeedsAction:
+        return KCalCore::Attendee::NeedsAction;
+    case PartAccepted:
+        return KCalCore::Attendee::Accepted;
+    case PartDeclined:
+        return KCalCore::Attendee::Declined;
+    case PartTentative:
+        return KCalCore::Attendee::Tentative;
+    case PartDelegated:
+        return KCalCore::Attendee::Delegated;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return KCalCore::Attendee::NeedsAction;
 }
@@ -198,19 +196,19 @@ KCalCore::Attendee::PartStat toPartStat(Kolab::PartStatus p)
 Kolab::PartStatus fromPartStat(KCalCore::Attendee::PartStat p)
 {
     switch (p) {
-        case KCalCore::Attendee::NeedsAction:
-            return PartNeedsAction;
-        case KCalCore::Attendee::Accepted:
-            return PartAccepted;
-        case KCalCore::Attendee::Declined:
-            return PartDeclined;
-        case KCalCore::Attendee::Tentative:
-            return PartTentative;
-        case KCalCore::Attendee::Delegated:
-            return PartDelegated;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case KCalCore::Attendee::NeedsAction:
+        return PartNeedsAction;
+    case KCalCore::Attendee::Accepted:
+        return PartAccepted;
+    case KCalCore::Attendee::Declined:
+        return PartDeclined;
+    case KCalCore::Attendee::Tentative:
+        return PartTentative;
+    case KCalCore::Attendee::Delegated:
+        return PartDelegated;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return PartNeedsAction;
 }
@@ -218,17 +216,17 @@ Kolab::PartStatus fromPartStat(KCalCore::Attendee::PartStat p)
 KCalCore::Attendee::Role toRole(Kolab::Role r)
 {
     switch (r) {
-        case Required:
-            return KCalCore::Attendee::ReqParticipant;
-        case Chair:
-            return KCalCore::Attendee::Chair;
-        case Optional:
-            return KCalCore::Attendee::OptParticipant;
-        case NonParticipant:
-            return KCalCore::Attendee::NonParticipant;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case Required:
+        return KCalCore::Attendee::ReqParticipant;
+    case Chair:
+        return KCalCore::Attendee::Chair;
+    case Optional:
+        return KCalCore::Attendee::OptParticipant;
+    case NonParticipant:
+        return KCalCore::Attendee::NonParticipant;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return KCalCore::Attendee::ReqParticipant;
 }
@@ -236,22 +234,22 @@ KCalCore::Attendee::Role toRole(Kolab::Role r)
 Kolab::Role fromRole(KCalCore::Attendee::Role r)
 {
     switch (r) {
-        case KCalCore::Attendee::ReqParticipant:
-            return Required;
-        case KCalCore::Attendee::Chair:
-            return Chair;
-        case KCalCore::Attendee::OptParticipant:
-            return Optional;
-        case KCalCore::Attendee::NonParticipant:
-            return NonParticipant;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case KCalCore::Attendee::ReqParticipant:
+        return Required;
+    case KCalCore::Attendee::Chair:
+        return Chair;
+    case KCalCore::Attendee::OptParticipant:
+        return Optional;
+    case KCalCore::Attendee::NonParticipant:
+        return NonParticipant;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return Required;
 }
 
-template <typename T>
+template<typename T>
 QString getCustomProperty(const QString &id, const T &e)
 {
     std::vector<CustomProperty> &props = e.customProperties();
@@ -262,19 +260,19 @@ QString getCustomProperty(const QString &id, const T &e)
     }
 }
 
-template <typename T>
+template<typename T>
 void setIncidence(KCalCore::Incidence &i, const T &e)
 {
     if (!e.uid().empty()) {
         i.setUid(fromStdString(e.uid()));
     }
-    
+
     i.setCreated(toDate(e.created()));
     i.setLastModified(toDate(e.lastModified()));
     i.setRevision(e.sequence());
     i.setSecrecy(toSecrecy(e.classification()));
     i.setCategories(toStringList(e.categories()));
-    
+
     if (e.start().isValid()) {
         i.setDtStart(toDate(e.start()));
         i.setAllDay(e.start().isDateOnly());
@@ -288,11 +286,11 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
          * KCalCore always sets a UID if empty, but that's just a pointer, and not the uid of a real contact.
          * Since that means the semantics of the two are different, we have to store the kolab uid as a custom property.
          */
-        KCalCore::Attendee::Ptr attendee = KCalCore::Attendee::Ptr(new KCalCore::Attendee(fromStdString(a.contact().name()), 
+        KCalCore::Attendee::Ptr attendee = KCalCore::Attendee::Ptr(new KCalCore::Attendee(fromStdString(a.contact().name()),
                                                                                           fromStdString(a.contact().email()),
                                                                                           a.rsvp(),
                                                                                           toPartStat(a.partStat()),
-                                                                                          toRole(a.role()) ));
+                                                                                          toRole(a.role())));
         if (!a.contact().uid().empty()) { //TODO Identify contact from addressbook based on uid
             attendee->customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID, fromStdString(a.contact().uid()));
         }
@@ -339,7 +337,7 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
     i.setCustomProperties(props);
 }
 
-template <typename T, typename I>
+template<typename T, typename I>
 void getIncidence(T &i, const I &e)
 {
     i.setUid(toStdString(e.uid()));
@@ -348,7 +346,7 @@ void getIncidence(T &i, const I &e)
     i.setSequence(e.revision());
     i.setClassification(fromSecrecy(e.secrecy()));
     i.setCategories(fromStringList(e.categories()));
-    
+
     i.setStart(fromDate(e.dtStart(), e.allDay()));
     i.setSummary(toStdString(e.summary()));
     i.setDescription(toStdString(e.description()));
@@ -374,7 +372,7 @@ void getIncidence(T &i, const I &e)
         if (!cutype.isEmpty()) {
             a.setCutype(static_cast<Kolab::Cutype>(cutype.toInt()));
         }
-        
+
         attendees.push_back(a);
     }
     i.setAttendees(attendees);
@@ -406,23 +404,23 @@ void getIncidence(T &i, const I &e)
 int toWeekDay(Kolab::Weekday wday)
 {
     switch (wday) {
-        case Kolab::Monday:
-            return  1;
-        case Kolab::Tuesday:
-            return 2;
-        case Kolab::Wednesday:
-            return 3;
-        case Kolab::Thursday:
-            return 4;
-        case Kolab::Friday:
-            return 5;
-        case Kolab::Saturday:
-            return 6;
-        case Kolab::Sunday:
-            return 7;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case Kolab::Monday:
+        return 1;
+    case Kolab::Tuesday:
+        return 2;
+    case Kolab::Wednesday:
+        return 3;
+    case Kolab::Thursday:
+        return 4;
+    case Kolab::Friday:
+        return 5;
+    case Kolab::Saturday:
+        return 6;
+    case Kolab::Sunday:
+        return 7;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return 1;
 }
@@ -430,77 +428,77 @@ int toWeekDay(Kolab::Weekday wday)
 Kolab::Weekday fromWeekDay(int wday)
 {
     switch (wday) {
-        case 1:
-            return Kolab::Monday;
-        case 2:
-            return Kolab::Tuesday;
-        case 3:
-            return Kolab::Wednesday;
-        case 4:
-            return Kolab::Thursday;
-        case 5:
-            return Kolab::Friday;
-        case 6:
-            return Kolab::Saturday;
-        case 7:
-            return Kolab::Sunday;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    case 1:
+        return Kolab::Monday;
+    case 2:
+        return Kolab::Tuesday;
+    case 3:
+        return Kolab::Wednesday;
+    case 4:
+        return Kolab::Thursday;
+    case 5:
+        return Kolab::Friday;
+    case 6:
+        return Kolab::Saturday;
+    case 7:
+        return Kolab::Sunday;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return Kolab::Monday;
 }
 
 KCalCore::RecurrenceRule::PeriodType toRecurrenceType(Kolab::RecurrenceRule::Frequency freq)
 {
-    switch(freq) {
-        case Kolab::RecurrenceRule::FreqNone:
-            Warning() << "no recurrence?";
-            break;
-        case Kolab::RecurrenceRule::Yearly:
-            return KCalCore::RecurrenceRule::rYearly;
-        case Kolab::RecurrenceRule::Monthly:
-            return KCalCore::RecurrenceRule::rMonthly;
-        case Kolab::RecurrenceRule::Weekly:
-            return KCalCore::RecurrenceRule::rWeekly;
-        case Kolab::RecurrenceRule::Daily:
-            return KCalCore::RecurrenceRule::rDaily;
-        case Kolab::RecurrenceRule::Hourly:
-            return KCalCore::RecurrenceRule::rHourly;
-        case Kolab::RecurrenceRule::Minutely:
-            return KCalCore::RecurrenceRule::rMinutely;
-        case Kolab::RecurrenceRule::Secondly:
-            return KCalCore::RecurrenceRule::rSecondly;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    switch (freq) {
+    case Kolab::RecurrenceRule::FreqNone:
+        Warning() << "no recurrence?";
+        break;
+    case Kolab::RecurrenceRule::Yearly:
+        return KCalCore::RecurrenceRule::rYearly;
+    case Kolab::RecurrenceRule::Monthly:
+        return KCalCore::RecurrenceRule::rMonthly;
+    case Kolab::RecurrenceRule::Weekly:
+        return KCalCore::RecurrenceRule::rWeekly;
+    case Kolab::RecurrenceRule::Daily:
+        return KCalCore::RecurrenceRule::rDaily;
+    case Kolab::RecurrenceRule::Hourly:
+        return KCalCore::RecurrenceRule::rHourly;
+    case Kolab::RecurrenceRule::Minutely:
+        return KCalCore::RecurrenceRule::rMinutely;
+    case Kolab::RecurrenceRule::Secondly:
+        return KCalCore::RecurrenceRule::rSecondly;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return KCalCore::RecurrenceRule::rNone;
 }
 
 Kolab::RecurrenceRule::Frequency fromRecurrenceType(KCalCore::RecurrenceRule::PeriodType freq)
 {
-    switch(freq) {
-        case KCalCore::RecurrenceRule::rNone:
-            Warning() << "no recurrence?";
-            break;
-        case KCalCore::RecurrenceRule::rYearly:
-            return Kolab::RecurrenceRule::Yearly;
-        case KCalCore::RecurrenceRule::rMonthly:
-            return Kolab::RecurrenceRule::Monthly;
-        case KCalCore::RecurrenceRule::rWeekly:
-            return Kolab::RecurrenceRule::Weekly;
-        case KCalCore::RecurrenceRule::rDaily:
-            return Kolab::RecurrenceRule::Daily;
-        case KCalCore::RecurrenceRule::rHourly:
-            return Kolab::RecurrenceRule::Hourly;
-        case KCalCore::RecurrenceRule::rMinutely:
-            return Kolab::RecurrenceRule::Minutely;
-        case KCalCore::RecurrenceRule::rSecondly:
-            return Kolab::RecurrenceRule::Secondly;
-        default:
-            Error() << "unhandled";
-            Q_ASSERT(0);
+    switch (freq) {
+    case KCalCore::RecurrenceRule::rNone:
+        Warning() << "no recurrence?";
+        break;
+    case KCalCore::RecurrenceRule::rYearly:
+        return Kolab::RecurrenceRule::Yearly;
+    case KCalCore::RecurrenceRule::rMonthly:
+        return Kolab::RecurrenceRule::Monthly;
+    case KCalCore::RecurrenceRule::rWeekly:
+        return Kolab::RecurrenceRule::Weekly;
+    case KCalCore::RecurrenceRule::rDaily:
+        return Kolab::RecurrenceRule::Daily;
+    case KCalCore::RecurrenceRule::rHourly:
+        return Kolab::RecurrenceRule::Hourly;
+    case KCalCore::RecurrenceRule::rMinutely:
+        return Kolab::RecurrenceRule::Minutely;
+    case KCalCore::RecurrenceRule::rSecondly:
+        return Kolab::RecurrenceRule::Secondly;
+    default:
+        Error() << "unhandled";
+        Q_ASSERT(0);
     }
     return Kolab::RecurrenceRule::FreqNone;
 }
@@ -515,26 +513,26 @@ Kolab::DayPos fromWeekDayPos(const KCalCore::RecurrenceRule::WDayPos &dp)
     return Kolab::DayPos(dp.pos(), fromWeekDay(dp.day()));
 }
 
-template <typename T>
+template<typename T>
 void setRecurrence(KCalCore::Incidence &e, const T &event)
 {
     const Kolab::RecurrenceRule &rrule = event.recurrenceRule();
     if (rrule.isValid()) {
         KCalCore::Recurrence *rec = e.recurrence();
-        
+
         KCalCore::RecurrenceRule *defaultRR = rec->defaultRRule(true);
         Q_ASSERT(defaultRR);
-        
+
         defaultRR->setWeekStart(toWeekDay(rrule.weekStart()));
         defaultRR->setRecurrenceType(toRecurrenceType(rrule.frequency()));
         defaultRR->setFrequency(rrule.interval());
-        
+
         if (rrule.end().isValid()) {
             rec->setEndDateTime(toDate(rrule.end())); //TODO date/datetime setEndDate(). With date-only the start date has to be taken into account.
         } else {
             rec->setDuration(rrule.count());
         }
-        
+
         if (!rrule.bysecond().empty()) {
             defaultRR->setBySeconds(QVector<int>::fromStdVector(rrule.bysecond()).toList());
         }
@@ -546,7 +544,7 @@ void setRecurrence(KCalCore::Incidence &e, const T &event)
         }
         if (!rrule.byday().empty()) {
             QList<KCalCore::RecurrenceRule::WDayPos> daypos;
-            foreach(const Kolab::DayPos &dp, rrule.byday()) {
+            foreach (const Kolab::DayPos &dp, rrule.byday()) {
                 daypos.append(toWeekDayPos(dp));
             }
             defaultRR->setByDays(daypos);
@@ -580,10 +578,9 @@ void setRecurrence(KCalCore::Incidence &e, const T &event)
             e.recurrence()->addExDateTime(date);
         }
     }
-
 }
 
-template <typename T, typename I>
+template<typename T, typename I>
 void getRecurrence(T &i, const I &e)
 {
     if (!e.recurs()) {
@@ -601,7 +598,7 @@ void getRecurrence(T &i, const I &e)
     rrule.setWeekStart(fromWeekDay(defaultRR->weekStart()));
     rrule.setFrequency(fromRecurrenceType(defaultRR->recurrenceType()));
     rrule.setInterval(defaultRR->frequency());
-  
+
     if (defaultRR->duration() != 0) { //Inidcates if end date is set or not
         if (defaultRR->duration() > 0) {
             rrule.setCount(defaultRR->duration());
@@ -609,23 +606,23 @@ void getRecurrence(T &i, const I &e)
     } else {
         rrule.setEnd(fromDate(defaultRR->endDt(), e.allDay()));
     }
-    
+
     rrule.setBysecond(defaultRR->bySeconds().toVector().toStdVector());
     rrule.setByminute(defaultRR->byMinutes().toVector().toStdVector());
     rrule.setByhour(defaultRR->byHours().toVector().toStdVector());
-    
+
     std::vector<Kolab::DayPos> daypos;
     foreach (const KCalCore::RecurrenceRule::WDayPos &dp, defaultRR->byDays()) {
         daypos.push_back(fromWeekDayPos(dp));
     }
     rrule.setByday(daypos);
-    
+
     rrule.setBymonthday(defaultRR->byMonthDays().toVector().toStdVector());
     rrule.setByyearday(defaultRR->byYearDays().toVector().toStdVector());
     rrule.setByweekno(defaultRR->byWeekNumbers().toVector().toStdVector());
     rrule.setBymonth(defaultRR->byMonths().toVector().toStdVector());
     i.setRecurrenceRule(rrule);
-    
+
     std::vector<Kolab::cDateTime> rdates;
     foreach (const QDateTime &dt, rec->rDateTimes()) {
         rdates.push_back(fromDate(dt, e.allDay()));
@@ -634,7 +631,7 @@ void getRecurrence(T &i, const I &e)
         rdates.push_back(fromDate(QDateTime(dt, {}), true));
     }
     i.setRecurrenceDates(rdates);
-    
+
     std::vector<Kolab::cDateTime> exdates;
     foreach (const QDateTime &dt, rec->exDateTimes()) {
         exdates.push_back(fromDate(dt, e.allDay()));
@@ -643,13 +640,13 @@ void getRecurrence(T &i, const I &e)
         exdates.push_back(fromDate(QDateTime(dt, {}), true));
     }
     i.setExceptionDates(exdates);
-    
+
     if (!rec->exRules().empty()) {
         Warning() << "exrules are not supported";
     }
 }
 
-template <typename T>
+template<typename T>
 void setTodoEvent(KCalCore::Incidence &i, const T &e)
 {
     i.setPriority(toPriority(e.priority()));
@@ -669,23 +666,24 @@ void setTodoEvent(KCalCore::Incidence &i, const T &e)
     foreach (const Kolab::Alarm a, e.alarms()) {
         KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&i));
         switch (a.type()) {
-            case Kolab::Alarm::EMailAlarm: {
-                KCalCore::Person::List receipents;
-                foreach (Kolab::ContactReference c ,a.attendees()) {
-                    KCalCore::Person::Ptr person = KCalCore::Person::Ptr(new KCalCore::Person(fromStdString(c.name()), fromStdString(c.email())));
-                    receipents.append(person);
-                }
-                alarm->setEmailAlarm(fromStdString(a.summary()), fromStdString(a.description()), receipents);
+        case Kolab::Alarm::EMailAlarm:
+        {
+            KCalCore::Person::List receipents;
+            foreach (Kolab::ContactReference c, a.attendees()) {
+                KCalCore::Person::Ptr person = KCalCore::Person::Ptr(new KCalCore::Person(fromStdString(c.name()), fromStdString(c.email())));
+                receipents.append(person);
             }
-                break;
-            case Kolab::Alarm::DisplayAlarm:
-                alarm->setDisplayAlarm(fromStdString(a.text()));
-                break;
-            case Kolab::Alarm::AudioAlarm:
-                alarm->setAudioAlarm(fromStdString(a.audioFile().uri()));
-                break;
-            default:
-                Error() << "invalid alarm";
+            alarm->setEmailAlarm(fromStdString(a.summary()), fromStdString(a.description()), receipents);
+            break;
+        }
+        case Kolab::Alarm::DisplayAlarm:
+            alarm->setDisplayAlarm(fromStdString(a.text()));
+            break;
+        case Kolab::Alarm::AudioAlarm:
+            alarm->setAudioAlarm(fromStdString(a.audioFile().uri()));
+            break;
+        default:
+            Error() << "invalid alarm";
         }
 
         if (a.start().isValid()) {
@@ -697,15 +695,15 @@ void setTodoEvent(KCalCore::Incidence &i, const T &e)
                 alarm->setStartOffset(toDuration(a.relativeStart()));
             }
         }
-        
+
         alarm->setSnoozeTime(toDuration(a.duration()));
         alarm->setRepeatCount(a.numrepeat());
         alarm->setEnabled(true);
-        i.addAlarm(alarm);       
+        i.addAlarm(alarm);
     }
 }
 
-template <typename T, typename I>
+template<typename T, typename I>
 void getTodoEvent(T &i, const I &e)
 {
     i.setPriority(fromPriority(e.priority()));
@@ -726,25 +724,27 @@ void getTodoEvent(T &i, const I &e)
             continue;
         }
         switch (a->type()) {
-            case KCalCore::Alarm::Display:
-                alarm = Kolab::Alarm(toStdString(a->text()));
-                break;
-            case KCalCore::Alarm::Email: {
-                std::vector<Kolab::ContactReference> receipents;
-                foreach(const KCalCore::Person::Ptr &p, a->mailAddresses()) {
-                    receipents.push_back(Kolab::ContactReference(toStdString(p->email()), toStdString(p->name())));
-                }
-                alarm = Kolab::Alarm(toStdString(a->mailSubject()), toStdString(a->mailText()), receipents);
+        case KCalCore::Alarm::Display:
+            alarm = Kolab::Alarm(toStdString(a->text()));
+            break;
+        case KCalCore::Alarm::Email:
+        {
+            std::vector<Kolab::ContactReference> receipents;
+            foreach (const KCalCore::Person::Ptr &p, a->mailAddresses()) {
+                receipents.push_back(Kolab::ContactReference(toStdString(p->email()), toStdString(p->name())));
             }
-                break;
-            case KCalCore::Alarm::Audio: {
-                Kolab::Attachment audioFile;
-                audioFile.setUri(toStdString(a->audioFile()), std::string());
-                alarm = Kolab::Alarm(audioFile);
-            }
-                break;
-            default:
-                Error() << "unhandled alarm";
+            alarm = Kolab::Alarm(toStdString(a->mailSubject()), toStdString(a->mailText()), receipents);
+            break;
+        }
+        case KCalCore::Alarm::Audio:
+        {
+            Kolab::Attachment audioFile;
+            audioFile.setUri(toStdString(a->audioFile()), std::string());
+            alarm = Kolab::Alarm(audioFile);
+            break;
+        }
+        default:
+            Error() << "unhandled alarm";
         }
 
         if (a->hasTime()) {
@@ -757,9 +757,9 @@ void getTodoEvent(T &i, const I &e)
             Error() << "alarm trigger is missing";
             continue;
         }
-        
+
         alarm.setDuration(fromDuration(a->snoozeTime()), a->repeatCount());
-        
+
         alarms.push_back(alarm);
     }
     i.setAlarms(alarms);
@@ -802,9 +802,7 @@ Event fromKCalCore(const KCalCore::Event &event)
     return e;
 }
 
-
-
-KCalCore::Todo::Ptr toKCalCore ( const Todo &todo )
+KCalCore::Todo::Ptr toKCalCore(const Todo &todo)
 {
     KCalCore::Todo::Ptr e(new KCalCore::Todo);
     setIncidence(*e, todo);
@@ -822,7 +820,7 @@ KCalCore::Todo::Ptr toKCalCore ( const Todo &todo )
     return e;
 }
 
-Todo fromKCalCore ( const KCalCore::Todo &todo )
+Todo fromKCalCore(const KCalCore::Todo &todo)
 {
     Todo t;
     getIncidence(t, todo);
@@ -838,7 +836,7 @@ Todo fromKCalCore ( const KCalCore::Todo &todo )
     return t;
 }
 
-KCalCore::Journal::Ptr toKCalCore ( const Journal &journal )
+KCalCore::Journal::Ptr toKCalCore(const Journal &journal)
 {
     KCalCore::Journal::Ptr e(new KCalCore::Journal);
     setIncidence(*e, journal);
@@ -846,15 +844,12 @@ KCalCore::Journal::Ptr toKCalCore ( const Journal &journal )
     return e;
 }
 
-Journal fromKCalCore ( const KCalCore::Journal &journal )
+Journal fromKCalCore(const KCalCore::Journal &journal)
 {
     Journal j;
     getIncidence(j, journal);
     //TODO contacts
     return j;
 }
-
-
-
 }
 }

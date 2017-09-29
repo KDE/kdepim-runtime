@@ -34,7 +34,6 @@
 #ifndef KOLABV2BASE_H
 #define KOLABV2BASE_H
 
-
 #include <kcalcore/incidence.h>
 
 #include <kdatetime.h>
@@ -44,140 +43,140 @@
 #include <qdom.h>
 
 namespace KContacts {
-  class Addressee;
-  class ContactGroup;
+class Addressee;
+class ContactGroup;
 }
 
 namespace KolabV2 {
-
-class KolabBase {
+class KolabBase
+{
 public:
-  struct Email {
-  public:
-    Email( const QString& name = QString(),
-           const QString& email = QString() )
-      : displayName( name ), smtpAddress( email )
-    {
-    }
+    struct Email {
+    public:
+        Email(const QString &name = QString(), const QString &email = QString())
+            : displayName(name)
+            , smtpAddress(email)
+        {
+        }
 
-    QString displayName;
-    QString smtpAddress;
-  };
+        QString displayName;
+        QString smtpAddress;
+    };
 
-  enum Sensitivity { Public = 0, Private = 1, Confidential = 2 };
+    enum Sensitivity {
+        Public = 0, Private = 1, Confidential = 2
+    };
 
-  explicit KolabBase( const QString& time_zone = QString() );
-  virtual ~KolabBase();
+    explicit KolabBase(const QString &time_zone = QString());
+    virtual ~KolabBase();
 
-  // Return a string identifying this type
-  virtual QString type() const = 0;
+    // Return a string identifying this type
+    virtual QString type() const = 0;
 
-  virtual void setUid( const QString& uid );
-  virtual QString uid() const;
+    virtual void setUid(const QString &uid);
+    virtual QString uid() const;
 
-  virtual void setBody( const QString& body );
-  virtual QString body() const;
+    virtual void setBody(const QString &body);
+    virtual QString body() const;
 
-  virtual void setCategories( const QString& categories );
-  virtual QString categories() const;
+    virtual void setCategories(const QString &categories);
+    virtual QString categories() const;
 
-  virtual void setCreationDate( const KDateTime& date );
-  virtual KDateTime creationDate() const;
+    virtual void setCreationDate(const KDateTime &date);
+    virtual KDateTime creationDate() const;
 
-  virtual void setLastModified( const KDateTime& date );
-  virtual KDateTime lastModified() const;
+    virtual void setLastModified(const KDateTime &date);
+    virtual KDateTime lastModified() const;
 
-  virtual void setSensitivity( Sensitivity sensitivity );
-  virtual Sensitivity sensitivity() const;
+    virtual void setSensitivity(Sensitivity sensitivity);
+    virtual Sensitivity sensitivity() const;
 
-  virtual void setPilotSyncId( unsigned long id );
-  virtual bool hasPilotSyncId() const;
-  virtual unsigned long pilotSyncId() const;
+    virtual void setPilotSyncId(unsigned long id);
+    virtual bool hasPilotSyncId() const;
+    virtual unsigned long pilotSyncId() const;
 
-  virtual void setPilotSyncStatus( int status );
-  virtual bool hasPilotSyncStatus() const;
-  virtual int pilotSyncStatus() const;
+    virtual void setPilotSyncStatus(int status);
+    virtual bool hasPilotSyncStatus() const;
+    virtual int pilotSyncStatus() const;
 
-  // String - Date conversion methods
-  static QString dateTimeToString( const KDateTime& time );
-  static QString dateToString( const QDate& date );
-  static KDateTime stringToDateTime( const QString& time );
-  static QDate stringToDate( const QString& date );
+    // String - Date conversion methods
+    static QString dateTimeToString(const KDateTime &time);
+    static QString dateToString(const QDate &date);
+    static KDateTime stringToDateTime(const QString &time);
+    static QDate stringToDate(const QString &date);
 
-  // String - Sensitivity conversion methods
-  static QString sensitivityToString( Sensitivity );
-  static Sensitivity stringToSensitivity( const QString& );
+    // String - Sensitivity conversion methods
+    static QString sensitivityToString(Sensitivity);
+    static Sensitivity stringToSensitivity(const QString &);
 
-  // String - Color conversion methods
-  static QString colorToString( const QColor& );
-  static QColor stringToColor( const QString& );
+    // String - Color conversion methods
+    static QString colorToString(const QColor &);
+    static QColor stringToColor(const QString &);
 
-  // Load this object by reading the XML file
-  bool load( const QString& xml );
-  static QDomDocument loadDocument( const QString& xmlData );
+    // Load this object by reading the XML file
+    bool load(const QString &xml);
+    static QDomDocument loadDocument(const QString &xmlData);
 
-  // Load this QDomDocument
-  virtual bool loadXML( const QDomDocument& xml ) = 0;
+    // Load this QDomDocument
+    virtual bool loadXML(const QDomDocument &xml) = 0;
 
-  // Serialize this object to an XML string
-  virtual QString saveXML() const = 0;
+    // Serialize this object to an XML string
+    virtual QString saveXML() const = 0;
 
 protected:
-  /// Read all known fields from this ical incidence
-  void setFields( const KCalCore::Incidence::Ptr & );
+    /// Read all known fields from this ical incidence
+    void setFields(const KCalCore::Incidence::Ptr &);
 
-  /// Save all known fields into this ical incidence
-  void saveTo( const KCalCore::Incidence::Ptr & ) const;
+    /// Save all known fields into this ical incidence
+    void saveTo(const KCalCore::Incidence::Ptr &) const;
 
-  /// Read all known fields from this contact
-  void setFields( const KContacts::Addressee* );
+    /// Read all known fields from this contact
+    void setFields(const KContacts::Addressee *);
 
-  /// Save all known fields into this contact
-  void saveTo( KContacts::Addressee* ) const;
+    /// Save all known fields into this contact
+    void saveTo(KContacts::Addressee *) const;
 
-  /// Read all known fields from this contact group
-  void setFields( const KContacts::ContactGroup* );
+    /// Read all known fields from this contact group
+    void setFields(const KContacts::ContactGroup *);
 
-  /// Save all known fields into this contact groupd
-  void saveTo( KContacts::ContactGroup* ) const;
+    /// Save all known fields into this contact groupd
+    void saveTo(KContacts::ContactGroup *) const;
 
-  // This just makes the initial dom tree with version and doctype
-  static QDomDocument domTree();
+    // This just makes the initial dom tree with version and doctype
+    static QDomDocument domTree();
 
-  bool loadEmailAttribute( QDomElement& element, Email& email );
+    bool loadEmailAttribute(QDomElement &element, Email &email);
 
-  void saveEmailAttribute( QDomElement& element, const Email& email,
-                           const QString& tagName = QStringLiteral("email") ) const;
+    void saveEmailAttribute(QDomElement &element, const Email &email, const QString &tagName = QStringLiteral("email")) const;
 
-  // Load the attributes of this class
-  virtual bool loadAttribute( QDomElement& );
+    // Load the attributes of this class
+    virtual bool loadAttribute(QDomElement &);
 
-  // Save the attributes of this class
-  virtual bool saveAttributes( QDomElement& ) const;
+    // Save the attributes of this class
+    virtual bool saveAttributes(QDomElement &) const;
 
-  // Return the product ID
-  virtual QString productID() const = 0;
+    // Return the product ID
+    virtual QString productID() const = 0;
 
-  // Write a string tag
-  static void writeString( QDomElement&, const QString&, const QString& );
+    // Write a string tag
+    static void writeString(QDomElement &, const QString &, const QString &);
 
-  KDateTime localToUTC( const KDateTime& time ) const;
-  KDateTime utcToLocal( const KDateTime& time ) const;
+    KDateTime localToUTC(const KDateTime &time) const;
+    KDateTime utcToLocal(const KDateTime &time) const;
 
-  QString mUid;
-  QString mBody;
-  QString mCategories;
-  KDateTime mCreationDate;
-  KDateTime mLastModified;
-  Sensitivity mSensitivity;
-  KTimeZone mTimeZone;
+    QString mUid;
+    QString mBody;
+    QString mCategories;
+    KDateTime mCreationDate;
+    KDateTime mLastModified;
+    Sensitivity mSensitivity;
+    KTimeZone mTimeZone;
 
-  // KPilot synchronization stuff
-  bool mHasPilotSyncId,  mHasPilotSyncStatus;
-  unsigned long mPilotSyncId;
-  int mPilotSyncStatus;
+    // KPilot synchronization stuff
+    bool mHasPilotSyncId, mHasPilotSyncStatus;
+    unsigned long mPilotSyncId;
+    int mPilotSyncStatus;
 };
-
 }
 
 #endif // KOLABBASE_H

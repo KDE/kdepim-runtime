@@ -25,7 +25,6 @@
 #include <QUuid>
 
 namespace Kolab {
-
 static QString createUuid()
 {
     const QString uuid = QUuid::createUuid().toString();
@@ -34,7 +33,6 @@ static QString createUuid()
 
 XMLObject::XMLObject()
 {
-
 }
 
 std::string XMLObject::getSerializedUID() const
@@ -47,7 +45,7 @@ std::vector<std::string> XMLObject::getAttachments() const
     return mAttachments;
 }
 
-std::string XMLObject::writeEvent(const Event &event, Version version, const std::string& productId)
+std::string XMLObject::writeEvent(const Event &event, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
@@ -70,7 +68,7 @@ std::string XMLObject::writeEvent(const Event &event, Version version, const std
     return result;
 }
 
-Event XMLObject::readEvent(const std::string& s, Version version)
+Event XMLObject::readEvent(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
@@ -90,7 +88,7 @@ Event XMLObject::readEvent(const std::string& s, Version version)
     return event;
 }
 
-std::string XMLObject::writeTodo(const Todo &event, Version version, const std::string& productId)
+std::string XMLObject::writeTodo(const Todo &event, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
@@ -113,7 +111,7 @@ std::string XMLObject::writeTodo(const Todo &event, Version version, const std::
     return result;
 }
 
-Todo XMLObject::readTodo(const std::string& s, Version version)
+Todo XMLObject::readTodo(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
@@ -133,7 +131,7 @@ Todo XMLObject::readTodo(const std::string& s, Version version)
     return todo;
 }
 
-std::string XMLObject::writeJournal(const Journal &event, Version version, const std::string& productId)
+std::string XMLObject::writeJournal(const Journal &event, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
@@ -155,7 +153,7 @@ std::string XMLObject::writeJournal(const Journal &event, Version version, const
     return result;
 }
 
-Journal XMLObject::readJournal(const std::string& s, Version version)
+Journal XMLObject::readJournal(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
@@ -175,7 +173,7 @@ Journal XMLObject::readJournal(const std::string& s, Version version)
     return journal;
 }
 
-std::string XMLObject::writeFreebusy(const Freebusy &event, Version version, const std::string& productId)
+std::string XMLObject::writeFreebusy(const Freebusy &event, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version != KolabV3) {
@@ -187,7 +185,7 @@ std::string XMLObject::writeFreebusy(const Freebusy &event, Version version, con
     return result;
 }
 
-Freebusy XMLObject::readFreebusy(const std::string& s, Version version)
+Freebusy XMLObject::readFreebusy(const std::string &s, Version version)
 {
     if (version != KolabV3) {
         Critical() << "only v3 implementation available";
@@ -211,9 +209,9 @@ std::string XMLObject::soundAttachmentName() const
     return mSoundAttachmentName;
 }
 
-Contact XMLObject::readContact(const std::string& s, Version version)
+Contact XMLObject::readContact(const std::string &s, Version version)
 {
-    if (version == KolabV2) {        
+    if (version == KolabV2) {
         const QByteArray xmlData(s.c_str(), s.size());
         QString pictureAttachmentName;
         QString logoAttachmentName;
@@ -229,7 +227,7 @@ Contact XMLObject::readContact(const std::string& s, Version version)
     return contact;
 }
 
-std::string XMLObject::writeContact(const Contact &contact, Version version, const std::string& productId)
+std::string XMLObject::writeContact(const Contact &contact, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
@@ -248,9 +246,9 @@ std::string XMLObject::writeContact(const Contact &contact, Version version, con
     return result;
 }
 
-DistList XMLObject::readDistlist(const std::string& s, Version version)
+DistList XMLObject::readDistlist(const std::string &s, Version version)
 {
-    if (version == KolabV2) {        
+    if (version == KolabV2) {
         const QByteArray xmlData(s.c_str(), s.size());
         const KContacts::ContactGroup contactGroup = contactGroupFromKolab(xmlData);
         return Conversion::fromKABC(contactGroup);
@@ -260,7 +258,7 @@ DistList XMLObject::readDistlist(const std::string& s, Version version)
     return distlist;
 }
 
-std::string XMLObject::writeDistlist(const DistList &distlist, Version version, const std::string& productId)
+std::string XMLObject::writeDistlist(const DistList &distlist, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
@@ -278,7 +276,7 @@ std::string XMLObject::writeDistlist(const DistList &distlist, Version version, 
     return result;
 }
 
-Note XMLObject::readNote(const std::string& s, Version version)
+Note XMLObject::readNote(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         const KMime::Message::Ptr msg = noteFromKolab(QByteArray(s.c_str(), s.length()), KDateTime());
@@ -293,7 +291,7 @@ Note XMLObject::readNote(const std::string& s, Version version)
     return note;
 }
 
-std::string XMLObject::writeNote(const Note &note, Version version, const std::string& productId)
+std::string XMLObject::writeNote(const Note &note, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
@@ -312,7 +310,7 @@ std::string XMLObject::writeNote(const Note &note, Version version, const std::s
     return result;
 }
 
-Configuration XMLObject::readConfiguration(const std::string& s, Version version)
+Configuration XMLObject::readConfiguration(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QString lang;
@@ -335,7 +333,7 @@ Configuration XMLObject::readConfiguration(const std::string& s, Version version
     return configuration;
 }
 
-std::string XMLObject::writeConfiguration(const Configuration &configuration, Version version, const std::string& productId)
+std::string XMLObject::writeConfiguration(const Configuration &configuration, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version != KolabV3) {
@@ -348,7 +346,7 @@ std::string XMLObject::writeConfiguration(const Configuration &configuration, Ve
     return result;
 }
 
-File XMLObject::readFile(const std::string& s, Version version)
+File XMLObject::readFile(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         Critical() << "only v3 implementation available";
@@ -359,7 +357,7 @@ File XMLObject::readFile(const std::string& s, Version version)
     return file;
 }
 
-std::string XMLObject::writeFile(const File &file, Version version, const std::string& productId)
+std::string XMLObject::writeFile(const File &file, Version version, const std::string &productId)
 {
     mWrittenUID.clear();
     if (version != KolabV3) {
@@ -371,6 +369,4 @@ std::string XMLObject::writeFile(const File &file, Version version, const std::s
     ErrorHandler::handleLibkolabxmlErrors();
     return result;
 }
-
-    
 }

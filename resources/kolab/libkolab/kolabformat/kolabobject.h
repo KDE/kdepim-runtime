@@ -34,9 +34,7 @@
 #include "kolabdefinitions.h"
 
 namespace Kolab {
-
 class Freebusy;
-
 
 KOLAB_EXPORT KCalCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments);
 
@@ -54,30 +52,31 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &url);
 
 /**
  * Class to read Kolab Mime files
- * 
+ *
  * It implements the Kolab specifics of Mime message handling.
  * This class is not reusable and only meant to read a single object.
  * Parse the mime message and then call the correct getter, based on the type
- * 
+ *
  */
-class KOLAB_EXPORT KolabObjectReader {
+class KOLAB_EXPORT KolabObjectReader
+{
 public:
     KolabObjectReader();
     explicit KolabObjectReader(const KMime::Message::Ptr &msg);
     ~KolabObjectReader();
-    
+
     ObjectType parseMimeMessage(const KMime::Message::Ptr &msg);
 
     /**
      * Set to override the autodetected object type, before parsing the message.
      */
     void setObjectType(ObjectType);
-    
+
     /**
      * Set to override the autodetected version, before parsing the message.
      */
     void setVersion(Version);
-    
+
     /**
      * Returns the Object type of the parsed kolab object.
      */
@@ -86,11 +85,11 @@ public:
      * Returns the kolab-format version of the parsed kolab object.
      */
     Version getVersion() const;
-    
+
     /**
      * Getter to get the retrieved object.
      * Only the correct one will return a valid object.
-     * 
+     *
      * Use getType() to determine the correct one to call.
      */
     KCalCore::Event::Ptr getEvent() const;
@@ -119,15 +118,16 @@ private:
 
 /**
  * Class to write Kolab Mime files
- * 
+ *
  */
-class KOLAB_EXPORT KolabObjectWriter {
+class KOLAB_EXPORT KolabObjectWriter
+{
 public:
 
     static KMime::Message::Ptr writeEvent(const KCalCore::Event::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeTodo(const KCalCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(),const QString &tz = QString());
-    static KMime::Message::Ptr writeJournal(const KCalCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(),const QString &tz = QString());
-    static KMime::Message::Ptr writeIncidence(const KCalCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(),const QString &tz = QString());
+    static KMime::Message::Ptr writeTodo(const KCalCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr writeJournal(const KCalCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr writeIncidence(const KCalCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
     static KMime::Message::Ptr writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());
@@ -135,9 +135,7 @@ public:
     static KMime::Message::Ptr writeFreebusy(const Kolab::Freebusy &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeRelation(const Akonadi::Relation &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
-    
 };
-
 } //Namespace
 
 #endif // KOLABOBJECT_H

@@ -20,7 +20,7 @@
 
 #include <QObject>
 
-class V2Test: public QObject
+class V2Test : public QObject
 {
     Q_OBJECT
 private slots:

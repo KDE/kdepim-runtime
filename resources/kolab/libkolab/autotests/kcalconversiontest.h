@@ -23,31 +23,30 @@
 
 class KCalConversionTest : public QObject
 {
-  Q_OBJECT
-  private slots:
+    Q_OBJECT
+private slots:
     void initTestCase();
 
     void testDate_data();
     void testDate();
-    
+
     void testDuration_data();
     void testDuration();
-    
+
     void testConversion_data();
     void testConversion();
 
     void testTodoConversion_data();
     void testTodoConversion();
-    
+
     void testJournalConversion_data();
     void testJournalConversion();
-    
+
     void testContactConversion_data();
     void testContactConversion();
-    
+
     void testDateTZ_data();
     void testDateTZ();
-
 };
 
 #endif

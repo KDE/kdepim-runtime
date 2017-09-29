@@ -28,22 +28,20 @@
 #include <kcalcore/journal.h>
 
 namespace Kolab {
-    /**
-     * Conversion of Kolab-Containers to/from KCalCore Containers.
-     *
-     */
-    namespace Conversion {
+/**
+ * Conversion of Kolab-Containers to/from KCalCore Containers.
+ *
+ */
+namespace Conversion {
+KOLAB_EXPORT KCalCore::Event::Ptr toKCalCore(const Kolab::Event &);
+KOLAB_EXPORT Kolab::Event fromKCalCore(const KCalCore::Event &);
 
-        KOLAB_EXPORT KCalCore::Event::Ptr toKCalCore(const Kolab::Event &);
-        KOLAB_EXPORT Kolab::Event fromKCalCore(const KCalCore::Event &);
+KOLAB_EXPORT KCalCore::Todo::Ptr toKCalCore(const Kolab::Todo &);
+KOLAB_EXPORT Kolab::Todo fromKCalCore(const KCalCore::Todo &);
 
-        KOLAB_EXPORT KCalCore::Todo::Ptr toKCalCore(const Kolab::Todo &);
-        KOLAB_EXPORT Kolab::Todo fromKCalCore(const KCalCore::Todo &);
-
-        KOLAB_EXPORT KCalCore::Journal::Ptr toKCalCore(const Kolab::Journal &);
-        KOLAB_EXPORT Kolab::Journal fromKCalCore(const KCalCore::Journal &);
-
-    }
+KOLAB_EXPORT KCalCore::Journal::Ptr toKCalCore(const Kolab::Journal &);
+KOLAB_EXPORT Kolab::Journal fromKCalCore(const KCalCore::Journal &);
+}
 }
 
 #endif

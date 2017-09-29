@@ -40,62 +40,62 @@
 
 class QDomElement;
 
-
 namespace KolabV2 {
-
 /**
  * This class represents an event, and knows how to load/save it
  * from/to XML, and from/to a KCalCore::Event.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
-class Event : public Incidence {
+class Event : public Incidence
+{
 public:
-  /// Use this to parse an xml string to a event entry
-  /// The caller is responsible for deleting the returned event
-  static KCalCore::Event::Ptr fromXml( const QDomDocument& xmlDoc, const QString& tz);
+    /// Use this to parse an xml string to a event entry
+    /// The caller is responsible for deleting the returned event
+    static KCalCore::Event::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz);
 
-  /// Use this to get an xml string describing this event entry
-  static QString eventToXML( const KCalCore::Event::Ptr &, const QString& tz );
+    /// Use this to get an xml string describing this event entry
+    static QString eventToXML(const KCalCore::Event::Ptr &, const QString &tz);
 
-  /// Create a event object and
-  explicit Event( const QString& tz,
-                  const KCalCore::Event::Ptr &event = KCalCore::Event::Ptr() );
-  virtual ~Event();
+    /// Create a event object and
+    explicit Event(const QString &tz, const KCalCore::Event::Ptr &event = KCalCore::Event::Ptr());
+    virtual ~Event();
 
-  void saveTo( const KCalCore::Event::Ptr &event );
+    void saveTo(const KCalCore::Event::Ptr &event);
 
-  QString type() const override { return QStringLiteral("Event"); }
+    QString type() const override
+    {
+        return QStringLiteral("Event");
+    }
 
-  virtual void setTransparency( KCalCore::Event::Transparency transparency );
-  virtual KCalCore::Event::Transparency transparency() const;
+    virtual void setTransparency(KCalCore::Event::Transparency transparency);
+    virtual KCalCore::Event::Transparency transparency() const;
 
-  virtual void setEndDate( const KDateTime& date );
-  virtual void setEndDate( const QDate& date );
-  virtual void setEndDate( const QString& date );
-  virtual KDateTime endDate() const;
+    virtual void setEndDate(const KDateTime &date);
+    virtual void setEndDate(const QDate &date);
+    virtual void setEndDate(const QString &date);
+    virtual KDateTime endDate() const;
 
-  // Load the attributes of this class
-  bool loadAttribute( QDomElement& ) override;
+    // Load the attributes of this class
+    bool loadAttribute(QDomElement &) override;
 
-  // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const override;
+    // Save the attributes of this class
+    bool saveAttributes(QDomElement &) const override;
 
-  // Load this event by reading the XML file
-  bool loadXML( const QDomDocument& xml ) override;
+    // Load this event by reading the XML file
+    bool loadXML(const QDomDocument &xml) override;
 
-  // Serialize this event to an XML string
-  QString saveXML() const override;
+    // Serialize this event to an XML string
+    QString saveXML() const override;
 
 protected:
-  // Read all known fields from this ical incidence
-  void setFields( const KCalCore::Event::Ptr & );
+    // Read all known fields from this ical incidence
+    void setFields(const KCalCore::Event::Ptr &);
 
-  KCalCore::Event::Transparency mShowTimeAs;
-  KDateTime mEndDate;
-  bool mHasEndDate;
+    KCalCore::Event::Transparency mShowTimeAs;
+    KDateTime mEndDate;
+    bool mHasEndDate;
 };
-
 }
 
 #endif // KOLAB_EVENT_H

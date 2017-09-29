@@ -15,12 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FREEBUSYTEST_H
 #define FREEBUSYTEST_H
 #include <QObject>
 
-class FreebusyTest: public QObject
+class FreebusyTest : public QObject
 {
     Q_OBJECT
 private slots:

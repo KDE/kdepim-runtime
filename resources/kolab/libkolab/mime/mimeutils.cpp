@@ -26,30 +26,29 @@
 #include "libkolab-version.h"
 
 namespace Kolab {
-    namespace Mime {
-
-KMime::Content* findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
+namespace Mime {
+KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
 {
     if (type.isEmpty()) {
         Error() << "Empty type";
         return nullptr;
     }
     Q_ASSERT(!data->contents().isEmpty());
-    Q_FOREACH(KMime::Content *c, data->contents()) {
+    Q_FOREACH (KMime::Content *c, data->contents()) {
 //         qDebug() << c->contentType()->mimeType() << type;
-        if (c->contentType()->mimeType() ==  type) {
+        if (c->contentType()->mimeType() == type) {
             return c;
         }
     }
     return nullptr;
 }
 
-KMime::Content* findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
+KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
 {
     Q_ASSERT(!data->contents().isEmpty());
-    Q_FOREACH(KMime::Content *c, data->contents()) {
+    Q_FOREACH (KMime::Content *c, data->contents()) {
 //         qDebug() << "searching: " << c->contentType()->name().toUtf8();
-        if ( c->contentType()->name() == name ) {
+        if (c->contentType()->name() == name) {
             type = c->contentType()->mimeType();
             return c;
         }
@@ -57,16 +56,16 @@ KMime::Content* findContentByName(const KMime::Message::Ptr &data, const QString
     return nullptr;
 }
 
-KMime::Content* findContentById(const KMime::Message::Ptr &data, const QByteArray &id, QByteArray &type, QString &name)
+KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArray &id, QByteArray &type, QString &name)
 {
     if (id.isEmpty()) {
         Error() << "looking for empty cid";
         return 0;
     }
     Q_ASSERT(!data->contents().isEmpty());
-    Q_FOREACH(KMime::Content *c, data->contents()) {
+    Q_FOREACH (KMime::Content *c, data->contents()) {
 //         qDebug() << "searching: " << c->contentID()->identifier();
-        if ( c->contentID()->identifier() == id ) {
+        if (c->contentID()->identifier() == id) {
             type = c->contentType()->mimeType();
             name = c->contentType()->name();
             return c;
@@ -75,12 +74,12 @@ KMime::Content* findContentById(const KMime::Message::Ptr &data, const QByteArra
     return nullptr;
 }
 
-QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr& data)
+QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data)
 {
     QList<QByteArray> typeList;
     Q_ASSERT(!data->contents().isEmpty());
     typeList.reserve(data->contents().count());
-    Q_FOREACH(KMime::Content *c, data->contents()) {
+    Q_FOREACH (KMime::Content *c, data->contents()) {
         typeList.append(c->contentType()->mimeType());
     }
     return typeList;
@@ -94,8 +93,8 @@ QString fromCid(const QString &cid)
     return cid.right(cid.size()-4);
 }
 
-KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &xKolabType, const QByteArray &xml, bool v3, const QByteArray &productId,
-                                  const QByteArray &fromEmail, const QString &fromName, const QString &subject)
+KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &xKolabType, const QByteArray &xml, bool v3, const QByteArray &productId, const QByteArray &fromEmail,
+                                  const QString &fromName, const QString &subject)
 {
     KMime::Message::Ptr message = createMessage(xKolabType, v3, productId);
     message->subject()->fromUnicodeString(subject, "utf-8");
@@ -109,56 +108,56 @@ KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &
     return message;
 }
 
-KMime::Message::Ptr createMessage(const std::string &mimetype, const std::string &xKolabType, const std::string &xml, bool v3, const std::string &productId,
-                                  const std::string &fromEmail, const std::string &fromName, const std::string &subject)
+KMime::Message::Ptr createMessage(const std::string &mimetype, const std::string &xKolabType, const std::string &xml, bool v3, const std::string &productId, const std::string &fromEmail,
+                                  const std::string &fromName, const std::string &subject)
 {
-    return createMessage(QByteArray(mimetype.c_str()), QByteArray(xKolabType.c_str()), QByteArray(xml.c_str()), v3, QByteArray(productId.data()), QByteArray(fromEmail.c_str()), QString::fromStdString(fromName), QString::fromStdString(subject));
+    return createMessage(QByteArray(mimetype.c_str()), QByteArray(xKolabType.c_str()), QByteArray(xml.c_str()), v3, QByteArray(productId.data()), QByteArray(fromEmail.c_str()),
+                         QString::fromStdString(fromName), QString::fromStdString(subject));
 }
 
 KMime::Message::Ptr createMessage(const QString &subject, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid)
 {
-    KMime::Message::Ptr message = createMessage( xKolabType.toLatin1(), v3, prodid.toLatin1() );
+    KMime::Message::Ptr message = createMessage(xKolabType.toLatin1(), v3, prodid.toLatin1());
     if (!subject.isEmpty()) {
-        message->subject()->fromUnicodeString( subject, "utf-8" );
+        message->subject()->fromUnicodeString(subject, "utf-8");
     }
-    
-    KMime::Content *content = createMainPart( mimetype.toLatin1(), xml );
-    message->addContent( content );
-    
+
+    KMime::Content *content = createMainPart(mimetype.toLatin1(), xml);
+    message->addContent(content);
+
     message->assemble();
     return message;
 }
 
-KMime::Content* createExplanationPart(bool v3)
+KMime::Content *createExplanationPart(bool v3)
 {
     KMime::Content *content = new KMime::Content();
-    content->contentType()->setMimeType( "text/plain" );
-    content->contentType()->setCharset( "us-ascii" );
-    content->contentTransferEncoding()->setEncoding( KMime::Headers::CE7Bit );
+    content->contentType()->setMimeType("text/plain");
+    content->contentType()->setCharset("us-ascii");
+    content->contentTransferEncoding()->setEncoding(KMime::Headers::CE7Bit);
     if (v3) {
-        content->setBody( "This is a Kolab Groupware object.\n"
-        "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
-        "For a list of such email clients please visit\n"
-        "http://www.kolab.org/get-kolab\n" );
+        content->setBody("This is a Kolab Groupware object.\n"
+                         "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
+                         "For a list of such email clients please visit\n"
+                         "http://www.kolab.org/get-kolab\n");
     } else {
-        content->setBody( "This is a Kolab Groupware object.\n"
-        "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
-        "For a list of such email clients please visit\n"
-        "http://www.kolab.org/get-kolab\n" );
+        content->setBody("This is a Kolab Groupware object.\n"
+                         "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
+                         "For a list of such email clients please visit\n"
+                         "http://www.kolab.org/get-kolab\n");
     }
     return content;
 }
 
-
-KMime::Message::Ptr createMessage(const QByteArray& xKolabType, bool v3, const QByteArray &prodid)
+KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const QByteArray &prodid)
 {
     KMime::Message::Ptr message(new KMime::Message);
     message->date()->setDateTime(KDateTime::currentUtcDateTime().dateTime());
-    KMime::Headers::Generic* h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
+    KMime::Headers::Generic *h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
     h->fromUnicodeString(xKolabType, "utf-8");
     message->appendHeader(h);
     if (v3) {
-        KMime::Headers::Generic* hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
+        KMime::Headers::Generic *hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
         hv3->fromUnicodeString(KOLAB_VERSION_V3, "utf-8");
         message->appendHeader(hv3);
     }
@@ -169,31 +168,30 @@ KMime::Message::Ptr createMessage(const QByteArray& xKolabType, bool v3, const Q
     return message;
 }
 
-
-KMime::Content* createMainPart(const QByteArray& mimeType, const QByteArray& decodedContent)
+KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &decodedContent)
 {
-    KMime::Content* content = new KMime::Content();
+    KMime::Content *content = new KMime::Content();
     content->contentType()->setMimeType(mimeType);
     content->contentType()->setName(KOLAB_OBJECT_FILENAME, "us-ascii");
-    content->contentTransferEncoding()->setEncoding( KMime::Headers::CEquPr );
-    content->contentDisposition()->setDisposition( KMime::Headers::CDattachment );
-    content->contentDisposition()->setFilename( KOLAB_OBJECT_FILENAME );
+    content->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
+    content->contentDisposition()->setDisposition(KMime::Headers::CDattachment);
+    content->contentDisposition()->setFilename(KOLAB_OBJECT_FILENAME);
     content->setBody(decodedContent);
     return content;
 }
 
-KMime::Content* createAttachmentPart(const QByteArray& cid, const QByteArray& mimeType, const QString& fileName, const QByteArray& base64EncodedContent)
+KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mimeType, const QString &fileName, const QByteArray &base64EncodedContent)
 {
-    KMime::Content* content = new KMime::Content();
+    KMime::Content *content = new KMime::Content();
     if (!cid.isEmpty()) {
-        content->contentID()->setIdentifier( cid );
+        content->contentID()->setIdentifier(cid);
     }
-    content->contentType()->setMimeType( mimeType );
-    content->contentType()->setName( fileName, "utf-8" );
-    content->contentTransferEncoding()->setEncoding( KMime::Headers::CEbase64 );
-    content->contentDisposition()->setDisposition( KMime::Headers::CDattachment );
-    content->contentDisposition()->setFilename( fileName );
-    content->setBody( base64EncodedContent );
+    content->contentType()->setMimeType(mimeType);
+    content->contentType()->setName(fileName, "utf-8");
+    content->contentTransferEncoding()->setEncoding(KMime::Headers::CEbase64);
+    content->contentDisposition()->setDisposition(KMime::Headers::CDattachment);
+    content->contentDisposition()->setFilename(fileName);
+    content->setBody(base64EncodedContent);
     return content;
 }
 
@@ -230,7 +228,5 @@ Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message:
     attachment.setLabel(name.toStdString());
     return attachment;
 }
-
-
 } //Namespace
 } //Namespace

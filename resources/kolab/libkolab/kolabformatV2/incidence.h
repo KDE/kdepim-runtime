@@ -41,132 +41,140 @@
 class QDomElement;
 
 namespace KolabV2 {
-
 /**
  * This abstract class represents an incidence which has the shared
  * fields, of events and tasks and knows how to load/save these
  * from/to XML, and from/to a KCalCore::Incidence.
  */
-class Incidence : public KolabBase {
+class Incidence : public KolabBase
+{
 public:
-  struct Recurrence {
-    QString cycle;
-    QString type;
-    int interval;
-    QStringList days; // list of days-of-the-week
-    QString dayNumber;
-    QString month;
-    QString rangeType;
-    QString range; // date or number or nothing
-    QList<QDate> exclusions;
-  };
+    struct Recurrence {
+        QString cycle;
+        QString type;
+        int interval;
+        QStringList days; // list of days-of-the-week
+        QString dayNumber;
+        QString month;
+        QString rangeType;
+        QString range; // date or number or nothing
+        QList<QDate> exclusions;
+    };
 
-  struct Attendee : Email {
-    Attendee() : requestResponse( true ), invitationSent( false ) {}
-    QString status;
-    bool requestResponse;
-    bool invitationSent;
-    QString role;
-    QString delegate;
-    QString delegator;
-  };
+    struct Attendee : Email {
+        Attendee() : requestResponse(true)
+            , invitationSent(false)
+        {
+        }
 
-  explicit Incidence( const QString& tz, const KCalCore::Incidence::Ptr &incidence = KCalCore::Incidence::Ptr() );
+        QString status;
+        bool requestResponse;
+        bool invitationSent;
+        QString role;
+        QString delegate;
+        QString delegator;
+    };
+
+    explicit Incidence(const QString &tz, const KCalCore::Incidence::Ptr &incidence = KCalCore::Incidence::Ptr());
 
 public:
-  virtual ~Incidence();
+    virtual ~Incidence();
 
-  void saveTo( const KCalCore::Incidence::Ptr &incidence );
+    void saveTo(const KCalCore::Incidence::Ptr &incidence);
 
-  virtual void setPriority( int priority );
-  virtual int priority() const;
+    virtual void setPriority(int priority);
+    virtual int priority() const;
 
-  virtual void setSummary( const QString& summary );
-  virtual QString summary() const;
+    virtual void setSummary(const QString &summary);
+    virtual QString summary() const;
 
-  virtual void setLocation( const QString& location );
-  virtual QString location() const;
+    virtual void setLocation(const QString &location);
+    virtual QString location() const;
 
-  virtual void setOrganizer( const Email& organizer );
-  virtual Email organizer() const;
+    virtual void setOrganizer(const Email &organizer);
+    virtual Email organizer() const;
 
-  virtual void setStartDate( const KDateTime& startDate );
-  virtual void setStartDate( const QDate& startDate );
-  virtual void setStartDate( const QString& startDate );
-  virtual KDateTime startDate() const;
+    virtual void setStartDate(const KDateTime &startDate);
+    virtual void setStartDate(const QDate &startDate);
+    virtual void setStartDate(const QString &startDate);
+    virtual KDateTime startDate() const;
 
-  virtual void setAlarm( float alarm );
-  virtual float alarm() const;
+    virtual void setAlarm(float alarm);
+    virtual float alarm() const;
 
-  virtual void setRecurrence( KCalCore::Recurrence* recur );
-  virtual Recurrence recurrence() const;
+    virtual void setRecurrence(KCalCore::Recurrence *recur);
+    virtual Recurrence recurrence() const;
 
-  virtual void addAttendee( const Attendee& attendee );
-  QList<Attendee>& attendees();
-  const QList<Attendee>& attendees() const;
+    virtual void addAttendee(const Attendee &attendee);
+    QList<Attendee> &attendees();
+    const QList<Attendee> &attendees() const;
 
-   QString type() const  override { return QStringLiteral("Incidence"); }
- /**
-   * The internal uid is used as the uid inside KOrganizer whenever
-   * two or more events with the same uid appear, which KOrganizer
-   * can't handle. To avoid keep that interal uid from changing all the
-   * time, it is persisted in the XML between a save and the next load.
-   */
-  void setInternalUID( const QString& iuid );
-  QString internalUID() const;
+    QString type() const override
+    {
+        return QStringLiteral("Incidence");
+    }
 
-  // Load the attributes of this class
-  bool loadAttribute( QDomElement& ) override;
+    /**
+      * The internal uid is used as the uid inside KOrganizer whenever
+      * two or more events with the same uid appear, which KOrganizer
+      * can't handle. To avoid keep that interal uid from changing all the
+      * time, it is persisted in the XML between a save and the next load.
+      */
+    void setInternalUID(const QString &iuid);
+    QString internalUID() const;
 
-  // Save the attributes of this class
-  bool saveAttributes( QDomElement& ) const override;
+    // Load the attributes of this class
+    bool loadAttribute(QDomElement &) override;
+
+    // Save the attributes of this class
+    bool saveAttributes(QDomElement &) const override;
 
 protected:
-  enum FloatingStatus { Unset, AllDay, HasTime };
+    enum FloatingStatus {
+        Unset, AllDay, HasTime
+    };
 
-  // Read all known fields from this ical incidence
-  void setFields( const KCalCore::Incidence::Ptr & );
+    // Read all known fields from this ical incidence
+    void setFields(const KCalCore::Incidence::Ptr &);
 
-  bool loadAttendeeAttribute( QDomElement&, Attendee& );
-  void saveAttendeeAttribute( QDomElement& element,
-                              const Attendee& attendee ) const;
-  void saveAttendees( QDomElement& element ) const;
-  void saveAttachments( QDomElement& element ) const;
+    bool loadAttendeeAttribute(QDomElement &, Attendee &);
+    void saveAttendeeAttribute(QDomElement &element, const Attendee &attendee) const;
+    void saveAttendees(QDomElement &element) const;
+    void saveAttachments(QDomElement &element) const;
 
-  void loadAlarms( const QDomElement& element );
-  void saveAlarms( QDomElement& element ) const;
+    void loadAlarms(const QDomElement &element);
+    void saveAlarms(QDomElement &element) const;
 
-  void loadRecurrence( const QDomElement& element );
-  void saveRecurrence( QDomElement& element ) const;
-  void saveCustomAttributes( QDomElement& element ) const;
-  void loadCustomAttributes( QDomElement& element );
+    void loadRecurrence(const QDomElement &element);
+    void saveRecurrence(QDomElement &element) const;
+    void saveCustomAttributes(QDomElement &element) const;
+    void loadCustomAttributes(QDomElement &element);
 
-  QString productID() const override;
+    QString productID() const override;
 
-  QString mSummary;
-  QString mLocation;
-  Email mOrganizer;
-  KDateTime mStartDate;
-  FloatingStatus mFloatingStatus;
-  float mAlarm;
-  bool mHasAlarm;
-  Recurrence mRecurrence;
-  QList<Attendee> mAttendees;
-  QList<KCalCore::Alarm::Ptr> mAlarms;
-  QList<KCalCore::Attachment::Ptr> mAttachments;
-  QString mInternalUID;
+    QString mSummary;
+    QString mLocation;
+    Email mOrganizer;
+    KDateTime mStartDate;
+    FloatingStatus mFloatingStatus;
+    float mAlarm;
+    bool mHasAlarm;
+    Recurrence mRecurrence;
+    QList<Attendee> mAttendees;
+    QList<KCalCore::Alarm::Ptr> mAlarms;
+    QList<KCalCore::Attachment::Ptr> mAttachments;
+    QString mInternalUID;
 
-  struct Custom {
-    QByteArray key;
-    QString value;
-  };
-  QList<Custom> mCustomList;
+    struct Custom {
+        QByteArray key;
+        QString value;
+    };
+    QList<Custom> mCustomList;
 
-  // This is the KCal priority, not the Kolab priority.
-  // See kcalPriorityToKolab() and kolabPrioritytoKCal().
-  int mPriority;
+    // This is the KCal priority, not the Kolab priority.
+    // See kcalPriorityToKolab() and kolabPrioritytoKCal().
+    int mPriority;
 };
-
 }
 
 #endif // KOLAB_INCIDENCE_H

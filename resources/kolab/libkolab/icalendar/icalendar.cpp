@@ -17,7 +17,6 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #include "icalendar.h"
 #include "imip.h"
 #include "libkolab-version.h"
@@ -34,7 +33,6 @@
 #include <QTimeZone>
 
 namespace Kolab {
-
 std::string toICal(const std::vector<Event> &events)
 {
     KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
@@ -48,7 +46,6 @@ std::string toICal(const std::vector<Event> &events)
 //     qDebug() << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
 
     return Conversion::toStdString(format.toString(calendar));
-    
 }
 
 std::vector< Event > fromICalEvents(const std::string &input)
@@ -65,10 +62,9 @@ std::vector< Event > fromICalEvents(const std::string &input)
 }
 
 ITipHandler::ITipHandler()
-:   mMethod(iTIPNoMethod)
+    :   mMethod(iTIPNoMethod)
 {
 }
-
 
 ITipHandler::ITipMethod mapFromKCalCore(KCalCore::iTIPMethod method)
 {
@@ -84,7 +80,6 @@ KCalCore::iTIPMethod mapToKCalCore(ITipHandler::ITipMethod method)
     return static_cast<KCalCore::iTIPMethod>(method);
 }
 
-
 std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod method) const
 {
     KCalCore::ICalFormat format;
@@ -98,7 +93,7 @@ std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod meth
  * DTSTAMP is created
  * CREATED is current timestamp
  * LASTMODIFIED is lastModified
- * 
+ *
  * Double check if that is correct.
  *
  * I think DTSTAMP should be the current timestamp, and CREATED should be the creation date.
@@ -107,12 +102,11 @@ std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod meth
     return Conversion::toStdString(format.createScheduleMessage(e, m));
 }
 
-
 std::vector< Event > ITipHandler::fromITip(const std::string &string)
 {
     KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::utc()));
     KCalCore::ICalFormat format;
-    KCalCore::ScheduleMessage::Ptr msg= format.parseScheduleMessage(calendar, Conversion::fromStdString(string));
+    KCalCore::ScheduleMessage::Ptr msg = format.parseScheduleMessage(calendar, Conversion::fromStdString(string));
     KCalCore::Event::Ptr event = msg->event().dynamicCast<KCalCore::Event>();
     std::vector< Event > events;
     events.push_back(Conversion::fromKCalCore(*event));
@@ -125,26 +119,26 @@ ITipHandler::ITipMethod ITipHandler::method() const
     return mMethod;
 }
 
-std::string ITipHandler::toIMip(const Event &event , ITipHandler::ITipMethod m, std::string from, bool bccMe) const
+std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, std::string from, bool bccMe) const
 {
     KCalCore::Event::Ptr e = Conversion::toKCalCore(event);
 //     e->recurrence()->addRDateTime(e->dtStart()); //FIXME The createScheduleMessage converts everything to utc without a recurrence.
     KCalCore::ICalFormat format;
     format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
     KCalCore::iTIPMethod method = mapToKCalCore(m);
-    const QString &messageText = format.createScheduleMessage( e, method );
+    const QString &messageText = format.createScheduleMessage(e, method);
     //This code is mostly from MailScheduler::performTransaction
-    if ( method == KCalCore::iTIPRequest ||
-        method == KCalCore::iTIPCancel ||
-        method == KCalCore::iTIPAdd ||
-        method == KCalCore::iTIPDeclineCounter ) {
+    if (method == KCalCore::iTIPRequest
+        || method == KCalCore::iTIPCancel
+        || method == KCalCore::iTIPAdd
+        || method == KCalCore::iTIPDeclineCounter) {
         return Conversion::toStdString(QString(mailAttendees(e, bccMe, messageText)));
     } else {
         QString subject;
-        if ( e && method == KCalCore::iTIPCounter ) {
-            subject = i18n( "Counter proposal: %1", e->summary());
+        if (e && method == KCalCore::iTIPCounter) {
+            subject = i18n("Counter proposal: %1", e->summary());
         }
-        return Conversion::toStdString(QString(mailOrganizer( e, Conversion::fromStdString(from), bccMe, messageText, subject)));
+        return Conversion::toStdString(QString(mailOrganizer(e, Conversion::fromStdString(from), bccMe, messageText, subject)));
     }
     return std::string();
 }
@@ -152,7 +146,7 @@ std::string ITipHandler::toIMip(const Event &event , ITipHandler::ITipMethod m, 
 std::vector< Event > ITipHandler::fromIMip(const std::string &input)
 {
     KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message);
-    msg->setContent( Conversion::fromStdString(input).toUtf8() );
+    msg->setContent(Conversion::fromStdString(input).toUtf8());
     msg->parse();
     msg->content(KMime::ContentIndex());
 
@@ -163,8 +157,4 @@ std::vector< Event > ITipHandler::fromIMip(const std::string &input)
     }
     return fromITip(Conversion::toStdString(QString(c->decodedContent())));
 }
-
-
-
-
 }

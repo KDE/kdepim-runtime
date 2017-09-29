@@ -19,7 +19,7 @@
 #define KOLABOBJECTTEST_H
 #include <QObject>
 
-class KolabObjectTest: public QObject
+class KolabObjectTest : public QObject
 {
     Q_OBJECT
 private slots:

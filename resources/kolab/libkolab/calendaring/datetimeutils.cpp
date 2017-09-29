@@ -22,12 +22,11 @@
 #include "conversion/commonconversion.h"
 
 namespace Kolab {
-    namespace DateTimeUtils {
-    KOLAB_EXPORT std::string getLocalTimezone()
-    {
-        const QString tz = QTimeZone::systemTimeZoneId();
-        return tz.toStdString();
-    }
-
-    } //Namespace
+namespace DateTimeUtils {
+KOLAB_EXPORT std::string getLocalTimezone()
+{
+    const QString tz = QTimeZone::systemTimeZoneId();
+    return tz.toStdString();
+}
+}     //Namespace
 } //Namespace

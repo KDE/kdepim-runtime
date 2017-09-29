@@ -31,11 +31,11 @@
 
 using namespace Kolab::Conversion;
 
-template <typename T>
+template<typename T>
 void comparePointerVectors(const QVector<T> &list, const QVector<T> &other)
 {
     QCOMPARE(list.size(), other.size());
-    for (int i = 0 ; i < list.size(); i++) {
+    for (int i = 0; i < list.size(); i++) {
         QCOMPARE(*list.at(i), *other.at(i));
     }
 }
@@ -43,7 +43,7 @@ void comparePointerVectors(const QVector<T> &list, const QVector<T> &other)
 void compareAttendeesVectors(const KCalCore::Attendee::List &list, const KCalCore::Attendee::List &other)
 {
     QCOMPARE(list.size(), other.size());
-    for (int i = 0 ; i < list.size(); i++) {
+    for (int i = 0; i < list.size(); i++) {
         KCalCore::Attendee::Ptr at1 = list.at(i).constCast<KCalCore::Attendee>();
         at1->setUid(QString());
         KCalCore::Attendee::Ptr at2 = other.at(i).constCast<KCalCore::Attendee>();
@@ -58,87 +58,83 @@ void KCalConversionTest::initTestCase()
 
 void KCalConversionTest::testDate_data()
 {
-    QTest::addColumn<Kolab::cDateTime>( "input" );
-    QTest::addColumn<QDateTime>( "result" );
+    QTest::addColumn<Kolab::cDateTime>("input");
+    QTest::addColumn<QDateTime>("result");
 
-    QTest::newRow( "datetime with tz" ) << Kolab::cDateTime("Europe/Zurich",2006,1,8,12,0,0) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), QTimeZone("Europe/Zurich"));
-    QTest::newRow( "floating datetime" ) << Kolab::cDateTime(2006,1,8,12,0,0, false) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0));
-    QTest::newRow( "utc datetime" ) << Kolab::cDateTime(2006,1,8,12,0,0, true) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), Qt::UTC);
-    QTest::newRow( "date only" ) << Kolab::cDateTime(2006,1,8) << QDateTime(QDate(2006, 1, 8), {});
+    QTest::newRow("datetime with tz") << Kolab::cDateTime("Europe/Zurich", 2006, 1, 8, 12, 0, 0) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), QTimeZone("Europe/Zurich"));
+    QTest::newRow("floating datetime") << Kolab::cDateTime(2006, 1, 8, 12, 0, 0, false) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0));
+    QTest::newRow("utc datetime") << Kolab::cDateTime(2006, 1, 8, 12, 0, 0, true) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), Qt::UTC);
+    QTest::newRow("date only") << Kolab::cDateTime(2006, 1, 8) << QDateTime(QDate(2006, 1, 8), {});
 }
-
 
 void KCalConversionTest::testDate()
 {
     QFETCH(Kolab::cDateTime, input);
     QFETCH(QDateTime, result);
-    
+
     const QDateTime &r = Kolab::Conversion::toDate(input);
     QCOMPARE(r, result);
-    
+
     const Kolab::cDateTime &r2 = Kolab::Conversion::fromDate(result, input.isDateOnly());
     QCOMPARE(r2, input);
 }
 
 void KCalConversionTest::testDuration_data()
 {
-    QTest::addColumn<Kolab::Duration>( "input" );
-    QTest::addColumn<KCalCore::Duration>( "result" );
-    QTest::addColumn<Kolab::Duration>( "fromResult" );
-    
-    QTest::newRow( "seconds" ) << Kolab::Duration(0,0,0,30,false) << KCalCore::Duration(30, KCalCore::Duration::Seconds) << Kolab::Duration(0,0,0,30,false);
-    QTest::newRow( "minutes" ) << Kolab::Duration(0,0,1,30,false) << KCalCore::Duration(90, KCalCore::Duration::Seconds) << Kolab::Duration(0,0,0,90,false);
-    QTest::newRow( "hours" ) << Kolab::Duration(0,1,1,30,false) << KCalCore::Duration(60*60+90, KCalCore::Duration::Seconds) << Kolab::Duration(0,0,0,60*60+90,false);
-    QTest::newRow( "days" ) << Kolab::Duration(1,1,1,30,false) << KCalCore::Duration(24*60*60+60*60+90, KCalCore::Duration::Seconds) << Kolab::Duration(0,0,0,24*60*60+60*60+90,false);
-    QTest::newRow( "daysonly" ) << Kolab::Duration(30,0,0,0, false) << KCalCore::Duration(30, KCalCore::Duration::Days) << Kolab::Duration(30,0,0,0,false);
-    QTest::newRow( "weeks" ) << Kolab::Duration(30,false) << KCalCore::Duration(30*7, KCalCore::Duration::Days) << Kolab::Duration(30*7,0,0,0,false);
-}
+    QTest::addColumn<Kolab::Duration>("input");
+    QTest::addColumn<KCalCore::Duration>("result");
+    QTest::addColumn<Kolab::Duration>("fromResult");
 
+    QTest::newRow("seconds") << Kolab::Duration(0, 0, 0, 30, false) << KCalCore::Duration(30, KCalCore::Duration::Seconds) << Kolab::Duration(0, 0, 0, 30, false);
+    QTest::newRow("minutes") << Kolab::Duration(0, 0, 1, 30, false) << KCalCore::Duration(90, KCalCore::Duration::Seconds) << Kolab::Duration(0, 0, 0, 90, false);
+    QTest::newRow("hours") << Kolab::Duration(0, 1, 1, 30, false) << KCalCore::Duration(60*60+90, KCalCore::Duration::Seconds) << Kolab::Duration(0, 0, 0, 60*60+90, false);
+    QTest::newRow("days") << Kolab::Duration(1, 1, 1, 30, false) << KCalCore::Duration(24*60*60+60*60+90, KCalCore::Duration::Seconds) << Kolab::Duration(0, 0, 0, 24*60*60+60*60+90, false);
+    QTest::newRow("daysonly") << Kolab::Duration(30, 0, 0, 0, false) << KCalCore::Duration(30, KCalCore::Duration::Days) << Kolab::Duration(30, 0, 0, 0, false);
+    QTest::newRow("weeks") << Kolab::Duration(30, false) << KCalCore::Duration(30*7, KCalCore::Duration::Days) << Kolab::Duration(30*7, 0, 0, 0, false);
+}
 
 void KCalConversionTest::testDuration()
 {
     QFETCH(Kolab::Duration, input);
     QFETCH(KCalCore::Duration, result);
     QFETCH(Kolab::Duration, fromResult);
-    
+
     const KCalCore::Duration &r = Kolab::Conversion::toDuration(input);
     QCOMPARE(r, result);
-    
+
     const Kolab::Duration &r2 = Kolab::Conversion::fromDuration(result);
     QCOMPARE(r2, fromResult);
 }
 
-
 void KCalConversionTest::testDateTZ_data()
 {
-    QTest::addColumn<Kolab::cDateTime>( "input" );
-    QTest::addColumn<QDateTime>( "result" );
-       
-    QTest::newRow( "berlin" ) << Kolab::cDateTime("Europe/Berlin",2006,1,8,12,0,0) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), QTimeZone("Europe/Berlin"));
+    QTest::addColumn<Kolab::cDateTime>("input");
+    QTest::addColumn<QDateTime>("result");
+
+    QTest::newRow("berlin") << Kolab::cDateTime("Europe/Berlin", 2006, 1, 8, 12, 0, 0) << QDateTime(QDate(2006, 1, 8), QTime(12, 0, 0), QTimeZone("Europe/Berlin"));
 }
 
 void KCalConversionTest::testDateTZ()
 {
     QFETCH(Kolab::cDateTime, input);
     QFETCH(QDateTime, result);
-    
+
     const QDateTime &r = Kolab::Conversion::toDate(input);
     QCOMPARE(QString::fromUtf8(result.timeZone().id()), QString::fromStdString(input.timezone()));
     QCOMPARE(r.timeZone().offsetFromUtc(QDateTime::currentDateTimeUtc()), result.timeZone().offsetFromUtc(QDateTime::currentDateTimeUtc()));
-    
+
     const Kolab::cDateTime &r2 = Kolab::Conversion::fromDate(result, input.isDateOnly());
     QCOMPARE(QString::fromStdString(r2.timezone()), QString::fromUtf8(result.timeZone().id()));
 }
 
-
 void KCalConversionTest::testConversion_data()
 {
-    QTest::addColumn<KCalCore::Event>( "kcal" );
-    QTest::addColumn<Kolab::Event>( "kolab" );
-    
-    Kolab::cDateTime date(2011,2,2,12,11,10,true);
-    Kolab::cDateTime date2(2011,2,2,12,12,10,true);
-    Kolab::cDateTime date3(2012,2,2,12,12,10,true);
+    QTest::addColumn<KCalCore::Event>("kcal");
+    QTest::addColumn<Kolab::Event>("kolab");
+
+    Kolab::cDateTime date(2011, 2, 2, 12, 11, 10, true);
+    Kolab::cDateTime date2(2011, 2, 2, 12, 12, 10, true);
+    Kolab::cDateTime date3(2012, 2, 2, 12, 12, 10, true);
     std::vector<int> intVector;
     intVector.push_back(1);
     intVector.push_back(-3);
@@ -147,7 +143,7 @@ void KCalConversionTest::testConversion_data()
     stringVector.push_back("cat1");
     stringVector.push_back("cat2");
     stringVector.push_back("parent/child");
-    
+
     {
         KCalCore::Event kcal;
         kcal.setUid("uid");
@@ -160,7 +156,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setDtEnd(toDate(date2));
         kcal.setAllDay(date.isDateOnly());
         kcal.setTransparency(KCalCore::Event::Transparent);
-        
+
         kcal.setRecurrenceId(toDate(date2)); //TODO THISANDFUTURE
         kcal.recurrence()->setDaily(3);
         kcal.recurrence()->setDuration(5);
@@ -168,18 +164,18 @@ void KCalConversionTest::testConversion_data()
         kcal.recurrence()->addRDate(toDate(date2).date());
         kcal.recurrence()->addExDateTime(toDate(date3));
         kcal.recurrence()->addExDate(toDate(date3).date());
-        
+
         KCalCore::RecurrenceRule *rr = kcal.recurrence()->defaultRRule(true);
         QList<int> intList = QVector<int>::fromStdVector(intVector).toList();
         rr->setBySeconds(intList);
         rr->setByMinutes(intList);
         rr->setByHours(intList);
-        rr->setByDays(QList<KCalCore::RecurrenceRule::WDayPos>() << KCalCore::RecurrenceRule::WDayPos(3,1) << KCalCore::RecurrenceRule::WDayPos(5,4));
+        rr->setByDays(QList<KCalCore::RecurrenceRule::WDayPos>() << KCalCore::RecurrenceRule::WDayPos(3, 1) << KCalCore::RecurrenceRule::WDayPos(5, 4));
         rr->setByMonthDays(intList);
         rr->setByYearDays(intList);
         rr->setByMonths(intList);
         rr->setByWeekNumbers(intList);
-        
+
         kcal.setSummary("summary");
         kcal.setDescription("description");
         kcal.setPriority(3);
@@ -193,7 +189,7 @@ void KCalConversionTest::testConversion_data()
         att->setDelegator("mailto:delegator<delegator@email>");
         kcal.addAttendee(att);
         kcal.addAttachment(KCalCore::Attachment::Ptr(new KCalCore::Attachment(QString("uri"), "mimetype/mime")));
-        KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&kcal));    
+        KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&kcal));
         KCalCore::Person::List addressees;
         addressees.append(KCalCore::Person::Ptr(new KCalCore::Person("name", "email@email")));
         alarm->setEmailAlarm("subject", "text", addressees, QStringList()); //No support for attachments
@@ -204,7 +200,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setNonKDECustomProperty("X-KOLAB-key2", "value2");
         kcal.setCustomProperty("SOMEOTHERAPP", "key2", "value2");
         Q_ASSERT(kcal.nonKDECustomProperty("X-KOLAB-key1") == "value1");
-        
+
         Kolab::Event kolab;
         kolab.setUid("uid");
         kolab.setCreated(date);
@@ -215,7 +211,7 @@ void KCalConversionTest::testConversion_data()
         kolab.setStart(date);
         kolab.setEnd(date2);
         kolab.setTransparency(true);
-        
+
         Kolab::RecurrenceRule rrule;
         rrule.setInterval(3);
         rrule.setFrequency(Kolab::RecurrenceRule::Daily);
@@ -228,44 +224,44 @@ void KCalConversionTest::testConversion_data()
         rrule.setByyearday(intVector);
         rrule.setByweekno(intVector);
         rrule.setBymonth(intVector);
-        
+
         kolab.setRecurrenceRule(rrule);
         kolab.setRecurrenceID(date2, true);
         kolab.setRecurrenceDates(std::vector<Kolab::cDateTime>() << date2 << Kolab::cDateTime(date2.year(), date2.month(), date2.day()));
         kolab.setExceptionDates(std::vector<Kolab::cDateTime>() << date3 << Kolab::cDateTime(date3.year(), date3.month(), date3.day()));
-        
+
         kolab.setSummary("summary");
         kolab.setDescription("description");
         kolab.setPriority(3);
         kolab.setStatus(Kolab::StatusConfirmed);
         kolab.setLocation("location");
-        kolab.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference,"organizer@email", "organizer")); //TODO uid
+        kolab.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference, "organizer@email", "organizer")); //TODO uid
         kolab.setUrl("http://test.org");
-        
-        Kolab::Attendee a(Kolab::ContactReference(Kolab::ContactReference::EmailReference,"attendee@email", "attendee"));//TODO uid
-        a.setDelegatedTo(std::vector<Kolab::ContactReference>() << Kolab::ContactReference(Kolab::ContactReference::EmailReference,"delegatee@email", "delegatee"));
-        a.setDelegatedFrom(std::vector<Kolab::ContactReference>() << Kolab::ContactReference(Kolab::ContactReference::EmailReference,"delegator@email", "delegator"));
+
+        Kolab::Attendee a(Kolab::ContactReference(Kolab::ContactReference::EmailReference, "attendee@email", "attendee"));//TODO uid
+        a.setDelegatedTo(std::vector<Kolab::ContactReference>() << Kolab::ContactReference(Kolab::ContactReference::EmailReference, "delegatee@email", "delegatee"));
+        a.setDelegatedFrom(std::vector<Kolab::ContactReference>() << Kolab::ContactReference(Kolab::ContactReference::EmailReference, "delegator@email", "delegator"));
         a.setCutype(Kolab::CutypeIndividual);
         kolab.setAttendees(std::vector<Kolab::Attendee>() << a);
-        
+
         Kolab::Attachment attach;
         attach.setUri("uri", "mimetype/mime");
         kolab.setAttachments(std::vector<Kolab::Attachment>() << attach);
-        
-    //     std::vector<std::string> receipents;
-    //     receipents.push_back("email@email");
-    //     Kolab::Alarm alarm2("summary", "description", receipents);
-    //     kolab.setAlarms(std::vector<Kolab::Alarm>() << alarm2);
+
+        //     std::vector<std::string> receipents;
+        //     receipents.push_back("email@email");
+        //     Kolab::Alarm alarm2("summary", "description", receipents);
+        //     kolab.setAlarms(std::vector<Kolab::Alarm>() << alarm2);
 
         //The sorting is random, just sort them here how we think they should arrive so we don't have to sort during compare (due to lazyness).
         std::vector<Kolab::CustomProperty> customproperties;
         customproperties.push_back(Kolab::CustomProperty("X-KDE-SOMEOTHERAPP-key2", "value2"));
         customproperties.push_back(Kolab::CustomProperty("key1", "value1"));
         customproperties.push_back(Kolab::CustomProperty("key2", "value2"));
-        
+
         kolab.setCustomProperties(customproperties);
 
-        QTest::newRow( "with endDate and recurrence duration" ) << kcal << kolab;
+        QTest::newRow("with endDate and recurrence duration") << kcal << kolab;
     }
     {
         KCalCore::Event kcal;
@@ -278,7 +274,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setDuration(KCalCore::Duration(toDate(date), toDate(date2)));
         kcal.recurrence()->setDaily(3);
         kcal.recurrence()->setEndDateTime(toDate(date3));
-        
+
         Kolab::Event kolab;
         kolab.setUid("uid");
         kolab.setCreated(date);
@@ -291,13 +287,13 @@ void KCalConversionTest::testConversion_data()
         rrule.setFrequency(Kolab::RecurrenceRule::Daily);
         rrule.setEnd(date3);
         kolab.setRecurrenceRule(rrule);
-        
+
         QTest::newRow("with duration and recurrence endDate") << kcal << kolab;
     }
     {
-        Kolab::cDateTime start(2011,1,1);
-        Kolab::cDateTime end(2011,1,3);
-        
+        Kolab::cDateTime start(2011, 1, 1);
+        Kolab::cDateTime end(2011, 1, 3);
+
         KCalCore::Event kcal;
         kcal.setUid("uid");
         kcal.setCreated(toDate(date));
@@ -307,7 +303,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setAllDay(start.isDateOnly());
         kcal.recurrence()->setDaily(3);
         kcal.recurrence()->setEndDateTime(toDate(end));
-        
+
         Kolab::Event kolab;
         kolab.setUid("uid");
         kolab.setCreated(date);
@@ -319,7 +315,7 @@ void KCalConversionTest::testConversion_data()
         rrule.setFrequency(Kolab::RecurrenceRule::Daily);
         rrule.setEnd(end);
         kolab.setRecurrenceRule(rrule);
-        
+
         QTest::newRow("date only dates") << kcal << kolab;
     }
     {
@@ -330,16 +326,15 @@ void KCalConversionTest::testConversion_data()
         kcal.setDtStart(toDate(date));
         kcal.setAllDay(date.isDateOnly());
         kcal.setSummary("äöü%@$£é¤¼²°€Š�");
-        
+
         Kolab::Event kolab;
         kolab.setUid("uid");
         kolab.setCreated(date);
         kolab.setLastModified(date);
         kolab.setStart(date);
         kolab.setSummary(std::string(QString("äöü%@$£é¤¼²°€Š�").toUtf8().constData()));
-        
-        QTest::newRow("latin1+Unicode") << kcal << kolab;
 
+        QTest::newRow("latin1+Unicode") << kcal << kolab;
     }
 }
 
@@ -347,10 +342,10 @@ void KCalConversionTest::testConversion()
 {
     QFETCH(KCalCore::Event, kcal);
     QFETCH(Kolab::Event, kolab);
-    
+
     KCalCore::Event::Ptr e = toKCalCore(kolab);
     const Kolab::Event &b = fromKCalCore(kcal);
-    
+
     QCOMPARE(e->uid(), kcal.uid());
     QCOMPARE(e->created(), kcal.created());
     QCOMPARE(e->lastModified(), kcal.lastModified());
@@ -377,14 +372,14 @@ void KCalConversionTest::testConversion()
     kcal.removeNonKDECustomProperty("X-KOLAB-URL");
     compareAttendeesVectors(e->attendees(), kcal.attendees());
     comparePointerVectors(e->attachments(), kcal.attachments());
-    
+
 //     QCOMPARE(e->alarms(), kcal.alarms()); //TODO
     QCOMPARE(e->customProperties(), kcal.customProperties());
 
 //     QBENCHMARK {
 //         toKCalCore(kolab);
 //     }
-    
+
     QCOMPARE(b.uid(), kolab.uid());
     QCOMPARE(b.created(), kolab.created());
     QCOMPARE(b.lastModified(), kolab.lastModified());
@@ -395,12 +390,12 @@ void KCalConversionTest::testConversion()
     QCOMPARE(b.end(), kolab.end());
     QCOMPARE(b.duration(), kolab.duration());
     QCOMPARE(b.transparency(), kolab.transparency());
-    
+
     QCOMPARE(b.recurrenceRule(), kolab.recurrenceRule());
     QCOMPARE(b.recurrenceID(), kolab.recurrenceID());
     QCOMPARE(b.recurrenceDates(), kolab.recurrenceDates());
     QCOMPARE(b.exceptionDates(), kolab.exceptionDates());
-    
+
     QCOMPARE(b.summary(), kolab.summary());
     QCOMPARE(b.description(), kolab.description());
     QCOMPARE(b.status(), kolab.status());
@@ -412,15 +407,14 @@ void KCalConversionTest::testConversion()
     QCOMPARE(b.customProperties(), kolab.customProperties());
 }
 
-
 void KCalConversionTest::testTodoConversion_data()
 {
-    QTest::addColumn<KCalCore::Todo>( "kcal" );
-    QTest::addColumn<Kolab::Todo>( "kolab" );
-    
-    Kolab::cDateTime date(2011,2,2,12,11,10,true);
-    Kolab::cDateTime date2(2011,2,2,12,12,10,true);
-    
+    QTest::addColumn<KCalCore::Todo>("kcal");
+    QTest::addColumn<Kolab::Todo>("kolab");
+
+    Kolab::cDateTime date(2011, 2, 2, 12, 11, 10, true);
+    Kolab::cDateTime date2(2011, 2, 2, 12, 12, 10, true);
+
     {
         KCalCore::Todo kcal;
         kcal.setUid("uid");
@@ -428,7 +422,7 @@ void KCalConversionTest::testTodoConversion_data()
         kcal.setDtDue(toDate(date2));
         kcal.setAllDay(date.isDateOnly());
         kcal.setRelatedTo("uid2", KCalCore::Incidence::RelTypeParent);
-        
+
         Kolab::Todo kolab;
         kolab.setUid("uid");
         kolab.setStart(date);
@@ -437,23 +431,22 @@ void KCalConversionTest::testTodoConversion_data()
         relateds.push_back("uid2");
         kolab.setRelatedTo(relateds);
 
-        QTest::newRow( "todo" ) << kcal << kolab;
+        QTest::newRow("todo") << kcal << kolab;
     }
 }
-
 
 void KCalConversionTest::testTodoConversion()
 {
     QFETCH(KCalCore::Todo, kcal);
     QFETCH(Kolab::Todo, kolab);
-    
+
     const KCalCore::Todo::Ptr e = toKCalCore(kolab);
-    
+
     QCOMPARE(e->uid(), kcal.uid());
     QCOMPARE(e->dtStart(), kcal.dtStart());
     QCOMPARE(e->dtDue(), kcal.dtDue());
     QCOMPARE(e->relatedTo(KCalCore::Incidence::RelTypeParent), kcal.relatedTo(KCalCore::Incidence::RelTypeParent));
-   
+
     const Kolab::Todo &b = fromKCalCore(kcal);
     QCOMPARE(b.uid(), kolab.uid());
     QCOMPARE(b.start(), kolab.start());
@@ -463,39 +456,38 @@ void KCalConversionTest::testTodoConversion()
 
 void KCalConversionTest::testJournalConversion_data()
 {
-    QTest::addColumn<KCalCore::Journal>( "kcal" );
-    QTest::addColumn<Kolab::Journal>( "kolab" );
-    
-    Kolab::cDateTime date(2011,2,2,12,11,10,true);
-    Kolab::cDateTime date2(2011,2,2,12,12,10,true);
-    
+    QTest::addColumn<KCalCore::Journal>("kcal");
+    QTest::addColumn<Kolab::Journal>("kolab");
+
+    Kolab::cDateTime date(2011, 2, 2, 12, 11, 10, true);
+    Kolab::cDateTime date2(2011, 2, 2, 12, 12, 10, true);
+
     {
         KCalCore::Journal kcal;
         kcal.setUid("uid");
         kcal.setDtStart(toDate(date));
         kcal.setSummary("summary");
-        
+
         Kolab::Journal kolab;
         kolab.setUid("uid");
         kolab.setStart(date);
         kolab.setSummary("summary");
-        
-        QTest::newRow( "journal" ) << kcal << kolab;
+
+        QTest::newRow("journal") << kcal << kolab;
     }
 }
-
 
 void KCalConversionTest::testJournalConversion()
 {
     QFETCH(KCalCore::Journal, kcal);
     QFETCH(Kolab::Journal, kolab);
-    
+
     const KCalCore::Journal::Ptr e = toKCalCore(kolab);
-    
+
     QCOMPARE(e->uid(), kcal.uid());
     QCOMPARE(e->dtStart(), kcal.dtStart());
     QCOMPARE(e->summary(), kcal.summary());
-    
+
     const Kolab::Journal &b = fromKCalCore(kcal);
     QCOMPARE(b.uid(), kolab.uid());
     QCOMPARE(b.start(), kolab.start());
@@ -504,9 +496,9 @@ void KCalConversionTest::testJournalConversion()
 
 void KCalConversionTest::testContactConversion_data()
 {
-    QTest::addColumn<KContacts::Addressee>( "kcal" );
-    QTest::addColumn<Kolab::Contact>( "kolab" );
-    
+    QTest::addColumn<KContacts::Addressee>("kcal");
+    QTest::addColumn<Kolab::Contact>("kolab");
+
     {
         KContacts::Addressee kcal;
         kcal.setUid("uid");
@@ -522,13 +514,13 @@ void KCalConversionTest::testContactConversion_data()
         KContacts::Addressee kcal;
         kcal.setUid("uid");
         kcal.setFormattedName("name");
-        kcal.setBirthday(QDateTime(QDate(2012,2,2)));
+        kcal.setBirthday(QDateTime(QDate(2012, 2, 2)));
 
         //Because QDateTime doesn't know date-only values we always end up with a date-time
         Kolab::Contact kolab;
         kolab.setUid("uid");
         kolab.setName("name");
-        kolab.setBDay(Kolab::cDateTime(2012,2,2,0,0,0));
+        kolab.setBDay(Kolab::cDateTime(2012, 2, 2, 0, 0, 0));
 
         QTest::newRow("bday") << kcal << kolab;
     }
@@ -554,14 +546,13 @@ void KCalConversionTest::testContactConversion_data()
     }
 }
 
-
 void KCalConversionTest::testContactConversion()
 {
     QFETCH(KContacts::Addressee, kcal);
     QFETCH(Kolab::Contact, kolab);
-    
+
     const KContacts::Addressee &e = toKABC(kolab);
-    
+
     QCOMPARE(e.uid(), kcal.uid());
     QCOMPARE(e.formattedName(), kcal.formattedName());
     QCOMPARE(e.emails(), kcal.emails());
@@ -570,7 +561,7 @@ void KCalConversionTest::testContactConversion()
         QCOMPARE(e.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)), kcal.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)));
     }
     QCOMPARE(e.birthday(), kcal.birthday());
-    
+
     const Kolab::Contact &b = fromKABC(kcal);
     QCOMPARE(b.uid(), kolab.uid());
     QCOMPARE(b.name(), kolab.name());
@@ -578,7 +569,6 @@ void KCalConversionTest::testContactConversion()
     QCOMPARE(b.emailAddressPreferredIndex(), kolab.emailAddressPreferredIndex());
     QCOMPARE(b.bDay(), kolab.bDay());
 }
-
 
 // void KCalConversionTest::BenchmarkRoundtripKCAL()
 // {
@@ -589,6 +579,6 @@ void KCalConversionTest::testContactConversion()
 //     }
 // }
 
-QTEST_MAIN( KCalConversionTest )
+QTEST_MAIN(KCalConversionTest)
 
 #include "kcalconversiontest.moc"

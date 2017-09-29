@@ -28,9 +28,7 @@
 #include "conversion/commonconversion.h"
 
 namespace Kolab {
-
-    namespace Calendaring {
-
+namespace Calendaring {
 bool conflicts(const Kolab::Event &e1, const Kolab::Event &e2)
 {
     KCalCore::Event::Ptr k1 = Kolab::Conversion::toKCalCore(e1);
@@ -46,17 +44,17 @@ bool conflicts(const Kolab::Event &e1, const Kolab::Event &e2)
 std::vector< std::vector< Event > > getConflictingSets(const std::vector< Event > &events, const std::vector< Event > &events2)
 {
     std::vector< std::vector< Kolab::Event > > ret;
-    for(std::size_t i = 0; i < events.size(); i++) {
+    for (std::size_t i = 0; i < events.size(); i++) {
         std::vector<Kolab::Event> set;
         const Kolab::Event &event = events.at(i);
         set.push_back(event);
-        for(std::size_t q = i+1; q < events.size(); q++) {
+        for (std::size_t q = i+1; q < events.size(); q++) {
             const Kolab::Event &e2 = events.at(q);
             if (conflicts(event, e2)) {
                 set.push_back(e2);
             }
         }
-        for(std::size_t m = 0; m < events2.size(); m++) {
+        for (std::size_t m = 0; m < events2.size(); m++) {
             const Kolab::Event &e2 = events2.at(m);
             if (conflicts(event, e2)) {
                 set.push_back(e2);
@@ -68,7 +66,6 @@ std::vector< std::vector< Event > > getConflictingSets(const std::vector< Event 
     }
     return ret;
 }
-
 
 std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab::cDateTime &start, const Kolab::cDateTime &end)
 {
@@ -82,7 +79,7 @@ std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab:
 }
 
 Calendar::Calendar()
-:   mCalendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string()))) //Always utc as it doesn't change anything anyways
+    :   mCalendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())))//Always utc as it doesn't change anything anyways
 {
 }
 
@@ -94,8 +91,7 @@ void Calendar::addEvent(const Kolab::Event &event)
     }
 }
 
-
-std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime& start, const Kolab::cDateTime& end, bool sort)
+std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime &start, const Kolab::cDateTime &end, bool sort)
 {
     const QDateTime s = Kolab::Conversion::toDate(start);
     const QDateTime e = Kolab::Conversion::toDate(end);
@@ -113,7 +109,5 @@ std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime& start, con
     }
     return eventlist;
 }
-
-
-    } //Namespace
+}     //Namespace
 } //Namespace

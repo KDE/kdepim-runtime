@@ -27,14 +27,17 @@
 
 #include <QDebug>
 
-KDateTime::Spec Porting::zoneToSpec(const QTimeZone& zone)
+KDateTime::Spec Porting::zoneToSpec(const QTimeZone &zone)
 {
-    if (!zone.isValid())
+    if (!zone.isValid()) {
         return KDateTime::Invalid;
-    if (zone == QTimeZone::utc())
+    }
+    if (zone == QTimeZone::utc()) {
         return KDateTime::UTC;
-    if (zone == QTimeZone::systemTimeZone())
+    }
+    if (zone == QTimeZone::systemTimeZone()) {
         return KDateTime::LocalZone;
+    }
     if (zone.id().startsWith("UTC")) {
         return KDateTime::Spec(KDateTime::OffsetFromUTC, zone.offsetFromUtc(QDateTime::currentDateTimeUtc()));
     } else {
@@ -43,7 +46,6 @@ KDateTime::Spec Porting::zoneToSpec(const QTimeZone& zone)
 }
 
 namespace {
-
 QTimeZone resolveCustomTZ(const KTimeZone &ktz)
 {
     // First, let's try Microsoft
@@ -96,8 +98,8 @@ QTimeZone resolveCustomTZ(const KTimeZone &ktz)
             const auto abvs = transition.phase().abbreviations();
             for (const auto &abv : abvs) {
 //                 if (candidateTransition.abbreviation == QString::fromUtf8(abv)) {
-                    ++matchedTransitions;
-                    break;
+                ++matchedTransitions;
+                break;
 //                 }
             }
         }
@@ -110,27 +112,27 @@ QTimeZone resolveCustomTZ(const KTimeZone &ktz)
 
     return {};
 }
-
 }
 
 QTimeZone Porting::specToZone(const KDateTime::Spec &spec)
 {
     switch (spec.type()) {
-        case KDateTime::Invalid:
-            return QTimeZone();
-        case KDateTime::LocalZone:
-        case KDateTime::ClockTime:
-            return QTimeZone::systemTimeZone();
-        case KDateTime::UTC:
-            return QTimeZone::utc();
-        default: {
-            auto tz = QTimeZone(spec.timeZone().name().toUtf8());
-            if (!tz.isValid()) {
-                tz = resolveCustomTZ(spec.timeZone());
-                qDebug() << "Resolved" << spec.timeZone().name() << "to" << tz.id();
-            }
-            return tz;
+    case KDateTime::Invalid:
+        return QTimeZone();
+    case KDateTime::LocalZone:
+    case KDateTime::ClockTime:
+        return QTimeZone::systemTimeZone();
+    case KDateTime::UTC:
+        return QTimeZone::utc();
+    default:
+    {
+        auto tz = QTimeZone(spec.timeZone().name().toUtf8());
+        if (!tz.isValid()) {
+            tz = resolveCustomTZ(spec.timeZone());
+            qDebug() << "Resolved" << spec.timeZone().name() << "to" << tz.id();
         }
+        return tz;
+    }
     }
 
     return QTimeZone::systemTimeZone();

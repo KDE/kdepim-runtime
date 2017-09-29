@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FREEBUSY_H
 #define FREEBUSY_H
 
@@ -25,15 +24,13 @@
 #include <kcalcore/event.h>
 
 namespace Kolab {
-    namespace FreebusyUtils {
-
-KOLAB_EXPORT Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr>& events, const QDateTime& startDate, const QDateTime& endDate, const KCalCore::Person::Ptr &organizer, bool allDay);
+namespace FreebusyUtils {
+KOLAB_EXPORT Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalCore::Person::Ptr &organizer, bool allDay);
 KOLAB_EXPORT std::string toIFB(const Kolab::Freebusy &);
 
 Kolab::Freebusy generateFreeBusy(const std::vector<Kolab::Event> &events, const Kolab::cDateTime &startDate, const Kolab::cDateTime &endDate);
 KOLAB_EXPORT Kolab::Freebusy aggregateFreeBusy(const std::vector<Kolab::Freebusy> &fbs, const std::string &organizerEmail, const std::string &organizerName, bool simple = true);
-
-    }
+}
 }
 
 #endif // FREEBUSY_H

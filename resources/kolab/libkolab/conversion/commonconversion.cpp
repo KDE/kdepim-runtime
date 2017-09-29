@@ -28,9 +28,8 @@
 #include <QDebug>
 
 namespace Kolab {
-    namespace Conversion {
-
-QTimeZone getTimeZone(const std::string& timezone)
+namespace Conversion {
+QTimeZone getTimeZone(const std::string &timezone)
 {
     //Convert non-olson timezones if necessary
     const QString normalizedTz = TimezoneConverter::normalizeTimezone(QString::fromStdString(timezone));
@@ -41,7 +40,7 @@ QTimeZone getTimeZone(const std::string& timezone)
     return QTimeZone(normalizedTz.toLatin1());
 }
 
-QTimeZone getTimeSpec(bool isUtc, const std::string& timezone)
+QTimeZone getTimeSpec(bool isUtc, const std::string &timezone)
 {
     if (isUtc) { //UTC
         return QTimeZone::utc();
@@ -208,7 +207,7 @@ QPair<std::string, std::string> fromMailto(const std::string &mailto)
         // std::cout << decoded << std::endl;
         return qMakePair(decoded, std::string());
     }
-    std::size_t begin = decoded.find('<',7);
+    std::size_t begin = decoded.find('<', 7);
     if (begin == std::string::npos) {
         WARNING("no mailto address");
         std::cout << decoded << std::endl;
@@ -224,7 +223,5 @@ QPair<std::string, std::string> fromMailto(const std::string &mailto)
     const std::string email = decoded.substr(begin+1, end-begin-1);
     return qMakePair(email, name);
 }
-
-    }
 }
-
+}
