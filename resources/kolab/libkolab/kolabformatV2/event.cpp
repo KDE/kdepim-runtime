@@ -138,14 +138,14 @@ bool Event::saveAttributes( QDomElement& element ) const
 
   // TODO: Support tentative and outofoffice
   if ( transparency() == KCalCore::Event::Transparent )
-    writeString( element, "show-time-as", "free" );
+    writeString( element, QStringLiteral("show-time-as"), QStringLiteral("free") );
   else
-    writeString( element, "show-time-as", "busy" );
+    writeString( element, QStringLiteral("show-time-as"), QStringLiteral("busy") );
   if ( mHasEndDate ) {
     if ( mFloatingStatus == HasTime )
-      writeString( element, "end-date", dateTimeToString( endDate() ) );
+      writeString( element, QStringLiteral("end-date"), dateTimeToString( endDate() ) );
     else
-      writeString( element, "end-date", dateToString( endDate().date() ) );
+      writeString( element, QStringLiteral("end-date"), dateToString( endDate().date() ) );
   }
 
   return true;

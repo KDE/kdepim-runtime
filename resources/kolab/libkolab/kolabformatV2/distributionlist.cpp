@@ -74,11 +74,11 @@ void KolabV2::DistributionList::loadDistrListMember( const QDomElement& element 
     if ( n.isElement() ) {
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
-      if ( tagName == "display-name" )
+      if ( tagName == QLatin1String("display-name") )
         member.displayName = e.text();
-      else if ( tagName == "smtp-address" )
+      else if ( tagName == QLatin1String("smtp-address" ))
         member.email = e.text();
-      else if ( tagName == "uid" )
+      else if ( tagName == QLatin1String("uid") )
         member.uid = e.text();
     }
   }
@@ -90,14 +90,14 @@ void DistributionList::saveDistrListMembers( QDomElement& element ) const
   QList<Member>::ConstIterator it = mDistrListMembers.constBegin();
   const QList<Member>::ConstIterator end = mDistrListMembers.constEnd();
   for( ; it != end; ++it ) {
-    QDomElement e = element.ownerDocument().createElement( "member" );
+    QDomElement e = element.ownerDocument().createElement( QStringLiteral("member") );
     element.appendChild( e );
     const Member& m = *it;
     if (!m.uid.isEmpty()) {
-      writeString( e, "uid", m.uid );
+      writeString( e, QStringLiteral("uid"), m.uid );
     } else {
-      writeString( e, "display-name", m.displayName );
-      writeString( e, "smtp-address", m.email );
+      writeString( e, QStringLiteral("display-name"), m.displayName );
+      writeString( e, QStringLiteral("smtp-address"), m.email );
     }
   }
 }

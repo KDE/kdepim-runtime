@@ -281,14 +281,14 @@ bool Task::loadXML( const QDomDocument& document )
 QString Task::saveXML() const
 {
   QDomDocument document = domTree();
-  QDomElement element = document.createElement( "task" );
-  element.setAttribute( "version", "1.0" );
+  QDomElement element = document.createElement( QStringLiteral("task") );
+  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
   saveAttributes( element );
   if ( !hasStartDate() && startDate().isValid() ) {
     // events and journals always have a start date, but tasks don't.
     // Remove the entry done by the inherited save above, because we
     // don't have one.
-    QDomNodeList l = element.elementsByTagName( "start-date" );
+    QDomNodeList l = element.elementsByTagName( QStringLiteral("start-date") );
     Q_ASSERT( l.count() == 1 );
     element.removeChild( l.item( 0 ) );
   }
