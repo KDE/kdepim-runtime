@@ -773,7 +773,7 @@ bool Contact::loadXML( const QDomDocument& document )
 
   if ( top.tagName() != QLatin1String("contact") ) {
     qWarning( "XML error: Top tag was %s instead of the expected contact",
-              top.tagName().toAscii().data() );
+              qPrintable(top.tagName()) );
     return false;
   }
 

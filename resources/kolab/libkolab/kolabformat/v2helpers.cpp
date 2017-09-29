@@ -280,7 +280,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
 
     if ( top.tagName() != QLatin1String("configuration") ) {
         qWarning( "XML error: Top tag was %s instead of the expected configuration",
-                top.tagName().toAscii().data() );
+                qPrintable(top.tagName()) );
         return QStringList();
     }
 

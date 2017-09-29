@@ -258,7 +258,7 @@ bool Task::loadXML( const QDomDocument& document )
 
   if ( top.tagName() != QLatin1String("task") ) {
     qWarning( "XML error: Top tag was %s instead of the expected task",
-              top.tagName().toAscii().data() );
+              qPrintable(top.tagName()) );
     return false;
   }
   setHasStartDate( false ); // todo's don't necessarily have one

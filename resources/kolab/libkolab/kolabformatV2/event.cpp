@@ -158,7 +158,7 @@ bool Event::loadXML( const QDomDocument& document )
 
   if ( top.tagName() != QLatin1String("event") ) {
     qWarning( "XML error: Top tag was %s instead of the expected event",
-              top.tagName().toAscii().data() );
+              qPrintable(top.tagName()) );
     return false;
   }
 
