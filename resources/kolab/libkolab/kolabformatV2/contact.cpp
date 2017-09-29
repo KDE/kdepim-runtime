@@ -407,16 +407,16 @@ bool Contact::loadNameAttribute( QDomElement& element )
 
 void Contact::saveNameAttribute( QDomElement& element ) const
 {
-  QDomElement e = element.ownerDocument().createElement( "name" );
+  QDomElement e = element.ownerDocument().createElement( QStringLiteral("name") );
   element.appendChild( e );
 
-  writeString( e, "given-name", givenName() );
-  writeString( e, "middle-names", middleNames() );
-  writeString( e, "last-name", lastName() );
-  writeString( e, "full-name", fullName() );
-  writeString( e, "initials", initials() );
-  writeString( e, "prefix", prefix() );
-  writeString( e, "suffix", suffix() );
+  writeString( e, QStringLiteral("given-name"), givenName() );
+  writeString( e, QStringLiteral("middle-names"), middleNames() );
+  writeString( e, QStringLiteral("last-name"), lastName() );
+  writeString( e, QStringLiteral("full-name"), fullName() );
+  writeString( e, QStringLiteral("initials"), initials() );
+  writeString( e, QStringLiteral("prefix"), prefix() );
+  writeString( e, QStringLiteral("suffix"), suffix() );
 }
 
 bool Contact::loadPhoneAttribute( QDomElement& element )
@@ -468,9 +468,9 @@ void Contact::saveEmailAttributes( QDomElement& element ) const
 void Contact::loadCustomAttributes( QDomElement& element )
 {
   Custom custom;
-  custom.app = element.attribute( "app" );
-  custom.name = element.attribute( "name" );
-  custom.value = element.attribute( "value" );
+  custom.app = element.attribute( QStringLiteral("app") );
+  custom.name = element.attribute( QStringLiteral("name") );
+  custom.value = element.attribute( QStringLiteral("value") );
   mCustomList.append( custom );
 }
 
@@ -483,11 +483,11 @@ void Contact::saveCustomAttributes( QDomElement& element ) const
       writeString( element, (*it).name, (*it).value );
     } else {
       // Let's use attributes so that other tag-preserving-code doesn't need sub-elements
-      QDomElement e = element.ownerDocument().createElement( "x-custom" );
+      QDomElement e = element.ownerDocument().createElement( QStringLiteral("x-custom") );
       element.appendChild( e );
-      e.setAttribute( "app", (*it).app );
-      e.setAttribute( "name", (*it).name );
-      e.setAttribute( "value", (*it).value );
+      e.setAttribute( QStringLiteral("app"), (*it).app );
+      e.setAttribute( QStringLiteral("name"), (*it).name );
+      e.setAttribute( QStringLiteral("value"), (*it).value );
     }
   }
 }

@@ -170,7 +170,7 @@ QString DistributionList::saveXML() const
 {
   QDomDocument document = domTree();
   QDomElement element = document.createElement( QLatin1String("distribution-list") );
-  element.setAttribute( "version", "1.0" );
+  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
   saveAttributes( element );
   document.appendChild( element );
   return document.toString();

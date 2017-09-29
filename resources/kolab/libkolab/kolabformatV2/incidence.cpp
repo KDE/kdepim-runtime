@@ -355,7 +355,7 @@ void Incidence::loadRecurrence( const QDomElement& element )
       else if ( tagName == QLatin1String("month") )
         mRecurrence.month = e.text();
       else if ( tagName == QLatin1String("range") ) {
-        mRecurrence.rangeType = e.attribute( "type" );
+        mRecurrence.rangeType = e.attribute( QStringLiteral("type") );
         mRecurrence.range = e.text();
       } else if ( tagName == QLatin1String("exclusion") ) {
         mRecurrence.exclusions.append( stringToDate( e.text() ) );

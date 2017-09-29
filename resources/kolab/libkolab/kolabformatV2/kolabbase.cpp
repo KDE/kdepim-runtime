@@ -419,7 +419,7 @@ QDomDocument KolabBase::domTree()
   QDomDocument document;
 
   QString p = QStringLiteral("version=\"1.0\" encoding=\"UTF-8\"");
-  document.appendChild(document.createProcessingInstruction( "xml", p ) );
+  document.appendChild(document.createProcessingInstruction( QStringLiteral("xml"), p ) );
 
   return document;
 }
