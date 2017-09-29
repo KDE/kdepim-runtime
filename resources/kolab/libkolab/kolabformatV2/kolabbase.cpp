@@ -103,7 +103,7 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
     setCategories(addressee->categories().join(QLatin1Char(',')));
 
     // Set creation-time and last-modification-time
-    const QString creationString = addressee->custom("KOLAB", "CreationDate");
+    const QString creationString = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));
     qDebug() <<"Creation time string:" << creationString;
     KDateTime creationDate;
     if (creationString.isEmpty()) {
@@ -425,7 +425,7 @@ QDomDocument KolabBase::domTree()
 {
     QDomDocument document;
 
-    QString p = QStringLiteral("version=\"1.0\" encoding=\"UTF-8\"");
+    const QString p = QStringLiteral("version=\"1.0\" encoding=\"UTF-8\"");
     document.appendChild(document.createProcessingInstruction(QStringLiteral("xml"), p));
 
     return document;

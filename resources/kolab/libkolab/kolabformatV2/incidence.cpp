@@ -193,7 +193,7 @@ bool Incidence::loadAttendeeAttribute(QDomElement &element, Attendee &attendee)
                 // This sets reqResp to false, if the text is "false". Otherwise it
                 // sets it to true. This means the default setting is true.
                 attendee.requestResponse = (e.text().toLower() != QLatin1String("false"));
-            } else if (tagName == "invitation-sent") {
+            } else if (tagName == QLatin1String("invitation-sent")) {
                 // Like above, only this defaults to false
                 attendee.invitationSent = (e.text().toLower() != QLatin1String("true"));
             } else if (tagName == QLatin1String("role")) {
@@ -471,7 +471,7 @@ void Incidence::loadAlarms(const QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == "alarm") {
+            if (tagName == QLatin1String("alarm")) {
                 KCalCore::Alarm::Ptr a = KCalCore::Alarm::Ptr(new KCalCore::Alarm(0));
                 a->setEnabled(true); // default to enabled, unless some XML attribute says otherwise.
                 QString type = e.attribute(QLatin1String("type"));
@@ -865,16 +865,18 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
     mAttachments.clear();
 
     // Attachments
-    KCalCore::Attachment::List attachments = incidence->attachments();
-    foreach (const KCalCore::Attachment::Ptr &a, attachments) {
+    const KCalCore::Attachment::List attachments = incidence->attachments();
+    mAttachments.reserve(attachments.size());
+    for (const KCalCore::Attachment::Ptr &a : attachments) {
         mAttachments.push_back(a);
     }
 
     mAlarms.clear();
 
     // Alarms
-    KCalCore::Alarm::List alarms = incidence->alarms();
-    foreach (const KCalCore::Alarm::Ptr &a, alarms) {
+    const KCalCore::Alarm::List alarms = incidence->alarms();
+    mAlarms.reserve(alarms.count());
+    for (const KCalCore::Alarm::Ptr &a : alarms) {
         mAlarms.push_back(a);
     }
 

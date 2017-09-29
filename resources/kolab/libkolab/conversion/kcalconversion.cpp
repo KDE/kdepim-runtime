@@ -612,6 +612,7 @@ void getRecurrence(T &i, const I &e)
     rrule.setByhour(defaultRR->byHours().toVector().toStdVector());
 
     std::vector<Kolab::DayPos> daypos;
+    daypos.reserve(defaultRR->byDays().count());
     foreach (const KCalCore::RecurrenceRule::WDayPos &dp, defaultRR->byDays()) {
         daypos.push_back(fromWeekDayPos(dp));
     }

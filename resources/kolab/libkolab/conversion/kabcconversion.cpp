@@ -683,8 +683,9 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     }
 
     std::vector<Kolab::Url> urls;
-    if (!addressee.url().url().isEmpty()) {
-        urls.push_back(Kolab::Url(toStdString(addressee.url().url().url())));
+    const QUrl url{addressee.url().url()};
+    if (!url.isEmpty()) {
+        urls.push_back(Kolab::Url(toStdString(url.url())));
     }
     const QString &blogUrl = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("BlogFeed"));
     if (!blogUrl.isEmpty()) {

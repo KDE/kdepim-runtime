@@ -124,7 +124,7 @@ std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, s
     KCalCore::Event::Ptr e = Conversion::toKCalCore(event);
 //     e->recurrence()->addRDateTime(e->dtStart()); //FIXME The createScheduleMessage converts everything to utc without a recurrence.
     KCalCore::ICalFormat format;
-    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
+    format.setApplication(QStringLiteral("libkolab"), LIBKOLAB_LIB_VERSION_STRING);
     KCalCore::iTIPMethod method = mapToKCalCore(m);
     const QString &messageText = format.createScheduleMessage(e, method);
     //This code is mostly from MailScheduler::performTransaction

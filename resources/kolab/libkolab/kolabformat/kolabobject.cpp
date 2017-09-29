@@ -564,6 +564,7 @@ KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entrie
 
     Kolab::Dictionary dictionary(Conversion::toStdString(lang));
     std::vector <std::string> ent;
+    ent.reserve(entries.count());
     foreach (const QString &e, entries) {
         ent.push_back(Conversion::toStdString(e));
     }

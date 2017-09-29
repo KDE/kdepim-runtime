@@ -78,6 +78,7 @@ Event XMLObject::readEvent(const std::string &s, Version version)
             return Event();
         }
         mAttachments.clear();
+        mAttachments.reserve(attachments.count());
         foreach (const QString &attachment, attachments) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
@@ -121,6 +122,7 @@ Todo XMLObject::readTodo(const std::string &s, Version version)
             return Todo();
         }
         mAttachments.clear();
+        mAttachments.reserve(attachments.count());
         foreach (const QString &attachment, attachments) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
@@ -163,6 +165,7 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
             return Journal();
         }
         mAttachments.clear();
+        mAttachments.reserve(attachments.count());
         foreach (const QString &attachment, attachments) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }

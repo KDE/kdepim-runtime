@@ -751,40 +751,40 @@ bool Contact::saveAttributes(QDomElement &element) const
     // Save the base class elements
     KolabBase::saveAttributes(element);
     saveNameAttribute(element);
-    writeString(element, "free-busy-url", freeBusyUrl());
-    writeString(element, "organization", organization());
-    writeString(element, "web-page", webPage());
-    writeString(element, "im-address", imAddress());
-    writeString(element, "department", department());
-    writeString(element, "office-location", officeLocation());
-    writeString(element, "profession", profession());
-    writeString(element, "role", role());
-    writeString(element, "job-title", title());
-    writeString(element, "manager-name", managerName());
-    writeString(element, "assistant", assistant());
-    writeString(element, "nick-name", nickName());
-    writeString(element, "spouse-name", spouseName());
-    writeString(element, "birthday", dateToString(birthday()));
-    writeString(element, "anniversary", dateToString(anniversary()));
+    writeString(element, QStringLiteral("free-busy-url"), freeBusyUrl());
+    writeString(element, QStringLiteral("organization"), organization());
+    writeString(element, QStringLiteral("web-page"), webPage());
+    writeString(element, QStringLiteral("im-address"), imAddress());
+    writeString(element, QStringLiteral("department"), department());
+    writeString(element, QStringLiteral("office-location"), officeLocation());
+    writeString(element, QStringLiteral("profession"), profession());
+    writeString(element, QStringLiteral("role"), role());
+    writeString(element, QStringLiteral("job-title"), title());
+    writeString(element, QStringLiteral("manager-name"), managerName());
+    writeString(element, QStringLiteral("assistant"), assistant());
+    writeString(element, QStringLiteral("nick-name"), nickName());
+    writeString(element, QStringLiteral("spouse-name"), spouseName());
+    writeString(element, QStringLiteral("birthday"), dateToString(birthday()));
+    writeString(element, QStringLiteral("anniversary"), dateToString(anniversary()));
     if (!picture().isNull()) {
-        writeString(element, "picture", mPictureAttachmentName);
+        writeString(element, QStringLiteral("picture"), mPictureAttachmentName);
     }
     if (!logo().isNull()) {
-        writeString(element, "x-logo", mLogoAttachmentName);
+        writeString(element, QStringLiteral("x-logo"), mLogoAttachmentName);
     }
     if (!sound().isNull()) {
-        writeString(element, "x-sound", mSoundAttachmentName);
+        writeString(element, QStringLiteral("x-sound"), mSoundAttachmentName);
     }
-    writeString(element, "children", children());
-    writeString(element, "gender", gender());
-    writeString(element, "language", language());
+    writeString(element, QStringLiteral("children"), children());
+    writeString(element, QStringLiteral("gender"), gender());
+    writeString(element, QStringLiteral("language"), language());
     savePhoneAttributes(element);
     saveEmailAttributes(element);
     saveAddressAttributes(element);
-    writeString(element, "preferred-address", preferredAddress());
+    writeString(element, QStringLiteral("preferred-address"), preferredAddress());
     if (mHasGeo) {
-        writeString(element, "latitude", QString::number(latitude(), 'g', DBL_DIG));
-        writeString(element, "longitude", QString::number(longitude(), 'g', DBL_DIG));
+        writeString(element, QStringLiteral("latitude"), QString::number(latitude(), 'g', DBL_DIG));
+        writeString(element, QStringLiteral("longitude"), QString::number(longitude(), 'g', DBL_DIG));
     }
     saveCustomAttributes(element);
 
@@ -865,9 +865,9 @@ static QStringList phoneTypeToString(KContacts::PhoneNumber::Type type)
     QStringList types;
     if (type & KContacts::PhoneNumber::Fax) {
         if (type & KContacts::PhoneNumber::Home) {
-            types << "homefax";
+            types << QStringLiteral("homefax");
         } else { // assume work -- if ( type & KContacts::PhoneNumber::Work )
-            types << "businessfax";
+            types << QStringLiteral("businessfax");
         }
         type = type & ~KContacts::PhoneNumber::Home;
         type = type & ~KContacts::PhoneNumber::Work;
@@ -875,55 +875,55 @@ static QStringList phoneTypeToString(KContacts::PhoneNumber::Type type)
 
     // To support both "home1" and "home2", map Home+Pref to home1
     if ((type &KContacts::PhoneNumber::Home) && (type & KContacts::PhoneNumber::Pref)) {
-        types << "home1";
+        types << QStringLiteral("home1");
         type = type & ~KContacts::PhoneNumber::Home;
         type = type & ~KContacts::PhoneNumber::Pref;
     }
     // To support both "business1" and "business2", map Work+Pref to business1
     if ((type &KContacts::PhoneNumber::Work) && (type & KContacts::PhoneNumber::Pref)) {
-        types << "business1";
+        types << QStringLiteral("business1");
         type = type & ~KContacts::PhoneNumber::Work;
         type = type & ~KContacts::PhoneNumber::Pref;
     }
 
     if (type & KContacts::PhoneNumber::Home) {
-        types << "home2";
+        types << QStringLiteral("home2");
     }
     if (type & KContacts::PhoneNumber::Msg) { // Msg==messaging
-        types << "company";
+        types << QStringLiteral("company");
     }
     if (type & KContacts::PhoneNumber::Work) {
-        types << "business2";
+        types << QStringLiteral("business2");
     }
     if (type & KContacts::PhoneNumber::Pref) {
-        types << "primary";
+        types << QStringLiteral("primary");
     }
     if (type & KContacts::PhoneNumber::Voice) {
-        types << "callback"; // ##
+        types << QStringLiteral("callback"); // ##
     }
     if (type & KContacts::PhoneNumber::Cell) {
-        types << "mobile";
+        types << QStringLiteral("mobile");
     }
     if (type & KContacts::PhoneNumber::Video) {
-        types << "radio"; // ##
+        types << QStringLiteral("radio"); // ##
     }
     if (type & KContacts::PhoneNumber::Bbs) {
-        types << "ttytdd";
+        types << QStringLiteral("ttytdd");
     }
     if (type & KContacts::PhoneNumber::Modem) {
-        types << "telex"; // #
+        types << QStringLiteral("telex"); // #
     }
     if (type & KContacts::PhoneNumber::Car) {
-        types << "car";
+        types << QStringLiteral("car");
     }
     if (type & KContacts::PhoneNumber::Isdn) {
-        types << "isdn";
+        types << QStringLiteral("isdn");
     }
     if (type & KContacts::PhoneNumber::Pcs) {
-        types << "assistant"; // ## Assistant is e.g. secretary
+        types << QStringLiteral("assistant"); // ## Assistant is e.g. secretary
     }
     if (type & KContacts::PhoneNumber::Pager) {
-        types << "pager";
+        types << QStringLiteral("pager");
     }
     return types;
 }
@@ -1042,7 +1042,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
     mFullEmail = addressee->fullEmail();
 
     // Now the real-world addresses
-    QString preferredAddress = "home";
+    QString preferredAddress = QStringLiteral("home");
     const KContacts::Address::List addresses = addressee->addresses();
     for (KContacts::Address::List::ConstIterator it = addresses.constBegin(), end = addresses.constEnd(); it != end; ++it) {
         Address address;
@@ -1109,7 +1109,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
     for (QStringList::ConstIterator it = customs.constBegin(), end = customs.constEnd(); it != end; ++it) {
         // KContacts::Addressee doesn't offer a real way to iterate over customs, other than splitting strings ourselves
         // The format is "app-name:value".
-        int pos = (*it).indexOf('-');
+        int pos = (*it).indexOf(QLatin1Char('-'));
         if (pos == -1) {
             continue;
         }
@@ -1118,7 +1118,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
             continue;
         }
         QString name = (*it).mid(pos + 1);
-        pos = name.indexOf(':');
+        pos = name.indexOf(QLatin1Char(':'));
         if (pos == -1) {
             continue;
         }
@@ -1127,7 +1127,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
         if (!knownCustoms.contains(name)) {
             //qDebug() <<"app=" << app <<" name=" << name <<" value=" << value;
             Custom c;
-            if (app != "KADDRESSBOOK") { // that's the default
+            if (app != QLatin1String("KADDRESSBOOK")) { // that's the default
                 c.app = app;
             }
             c.name = name;

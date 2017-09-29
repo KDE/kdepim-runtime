@@ -182,5 +182,5 @@ void Journal::setFields(const KCalCore::Journal::Ptr &journal)
 
 QString Journal::productID() const
 {
-    return QString::fromLatin1(LIBKOLAB_LIB_VERSION_STRING) + ", Kolab resource";
+    return QString::fromLatin1(LIBKOLAB_LIB_VERSION_STRING) + QLatin1String(", Kolab resource");
 }

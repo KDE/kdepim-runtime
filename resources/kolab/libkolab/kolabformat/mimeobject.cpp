@@ -280,6 +280,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
         mObjectType = objectType;
         Kolab::Dictionary dictionary(Conversion::toStdString(dictionaryLanguage));
         std::vector<std::string> convertedEntries;
+        convertedEntries.reserve(entries.count());
         foreach (const QString &value, entries) {
             convertedEntries.push_back(Conversion::toStdString(value));
         }
