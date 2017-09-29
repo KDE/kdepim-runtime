@@ -28,7 +28,7 @@
 #include <kcalcore/memorycalendar.h>
 #include <kcalcore/icalformat.h>
 #include <kmime/kmime_message.h>
-// #include <klocalizedstring.h>
+#include <klocalizedstring.h>
 #include <iostream>
 #include <QDebug>
 #include <QTimeZone>
@@ -44,7 +44,7 @@ std::string toICal(const std::vector<Event> &events)
         calendar->addEvent(kcalEvent);
     }
     KCalCore::ICalFormat format;
-    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
+    format.setApplication(QStringLiteral("libkolab"), LIBKOLAB_LIB_VERSION_STRING);
 //     qDebug() << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
 
     return Conversion::toStdString(format.toString(calendar));
@@ -55,7 +55,7 @@ std::vector< Event > fromICalEvents(const std::string &input)
 {
     KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
     KCalCore::ICalFormat format;
-    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
+    format.setApplication(QStringLiteral("libkolab"), LIBKOLAB_LIB_VERSION_STRING);
     format.fromString(calendar, Conversion::fromStdString(input));
     std::vector<Event> events;
     foreach (const KCalCore::Event::Ptr &event, calendar->events()) {
@@ -88,7 +88,7 @@ KCalCore::iTIPMethod mapToKCalCore(ITipHandler::ITipMethod method)
 std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod method) const
 {
     KCalCore::ICalFormat format;
-    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
+    format.setApplication(QStringLiteral("libkolab"), LIBKOLAB_LIB_VERSION_STRING);
     KCalCore::iTIPMethod m = mapToKCalCore(method);
     if (m == KCalCore::iTIPNoMethod) {
         return std::string();
@@ -142,7 +142,7 @@ std::string ITipHandler::toIMip(const Event &event , ITipHandler::ITipMethod m, 
     } else {
         QString subject;
         if ( e && method == KCalCore::iTIPCounter ) {
-            subject = QString( "Counter proposal: %1" ).arg(e->summary());
+            subject = i18n( "Counter proposal: %1" ).arg(e->summary());
         }
         return Conversion::toStdString(QString(mailOrganizer( e, Conversion::fromStdString(from), bccMe, messageText, subject)));
     }

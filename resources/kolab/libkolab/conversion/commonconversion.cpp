@@ -164,7 +164,8 @@ cDateTime fromDate(const QDateTime &dt, bool isAllDay)
 QStringList toStringList(const std::vector<std::string> &l)
 {
     QStringList list;
-    foreach(const std::string &s, l) {
+    list.reserve(l.size());
+    for (const std::string &s : l) {
         list.append(Conversion::fromStdString(s));
     }
     return list;
@@ -173,7 +174,8 @@ QStringList toStringList(const std::vector<std::string> &l)
 std::vector<std::string> fromStringList(const QStringList &l)
 {
     std::vector<std::string> list;
-    foreach(const QString &s, l) {
+    list.reserve(l.size());
+    for (const QString &s : l) {
         list.push_back(toStdString(s));
     }
     return list;

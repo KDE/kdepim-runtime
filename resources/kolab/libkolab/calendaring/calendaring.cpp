@@ -73,9 +73,9 @@ std::vector< std::vector< Event > > getConflictingSets(const std::vector< Event 
 std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab::cDateTime &start, const Kolab::cDateTime &end)
 {
     KCalCore::Event::Ptr k = Kolab::Conversion::toKCalCore(e);
-    KCalCore::DateTimeList list = k->recurrence()->timesInInterval(Kolab::Conversion::toDate(start), Kolab::Conversion::toDate(end));
+    const KCalCore::DateTimeList list = k->recurrence()->timesInInterval(Kolab::Conversion::toDate(start), Kolab::Conversion::toDate(end));
     std::vector<Kolab::cDateTime> dtList;
-    foreach(const QDateTime &dt, list) {
+    for (const QDateTime &dt : list) {
         dtList.push_back(Kolab::Conversion::fromDate(dt, start.isDateOnly()));
     }
     return dtList;

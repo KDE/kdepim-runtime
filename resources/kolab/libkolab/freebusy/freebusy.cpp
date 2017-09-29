@@ -175,6 +175,7 @@ Kolab::Period addLocalPeriod(  const QDateTime &eventStart, const QDateTime &eve
 Freebusy generateFreeBusy(const std::vector< Event >& events, const cDateTime& startDate, const cDateTime& endDate)
 {
     QList<KCalCore::Event::Ptr> list;
+    list.reserve(events.size());
     foreach (const Kolab::Event &e, events) {
         list.append(Kolab::Conversion::toKCalCore(e));
     }
@@ -315,7 +316,7 @@ std::string toIFB(const Kolab::Freebusy &freebusy)
     fb->setLastModified(Kolab::Conversion::toDate(freebusy.timestamp()));
 
     KCalCore::ICalFormat format;
-    format.setApplication("libkolab", LIBKOLAB_LIB_VERSION_STRING);
+    format.setApplication(QStringLiteral("libkolab"), LIBKOLAB_LIB_VERSION_STRING);
     QString data = format.createScheduleMessage( fb, KCalCore::iTIPPublish );
     return Conversion::toStdString(data);
 }

@@ -136,15 +136,15 @@ namespace Kolab {
         
         EncryptionPreference stringToEncryptionPreference( const QString& str )
         {
-            if ( str == "never" )
+            if ( str == QLatin1String("never") )
                 return NeverEncrypt;
-            if ( str == "always" )
+            if ( str == QLatin1String("always") )
                 return AlwaysEncrypt;
-            if ( str == "alwaysIfPossible" )
+            if ( str == QLatin1String("alwaysIfPossible") )
                 return AlwaysEncryptIfPossible;
-            if ( str == "askAlways" )
+            if ( str == QLatin1String("askAlways") )
                 return AlwaysAskForEncryption;
-            if ( str == "askWhenPossible" )
+            if ( str == QLatin1String("askWhenPossible") )
                 return AskWheneverPossible;
             return UnknownPreference;
         }
@@ -401,10 +401,10 @@ std::string getCustom(const std::string &id, T &object)
 static QString emailTypesToStringList(int emailTypes) {
     QStringList types;
     if (emailTypes & Kolab::Email::Home) {
-        types << "home";
+        types << QStringLiteral("home");
     }
     if (emailTypes & Kolab::Email::Work) {
-        types << "work";
+        types << QStringLiteral("work");
     }
     return types.join(",");
 }
