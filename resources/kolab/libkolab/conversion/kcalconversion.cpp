@@ -354,7 +354,7 @@ void getIncidence(T &i, const I &e)
     i.setDescription(toStdString(e.description()));
     i.setStatus(fromStatus(e.status()));
     std::vector<Kolab::Attendee> attendees;
-    foreach (const KCalCore::Attendee::Ptr ptr, e.attendees()) {
+    foreach (const KCalCore::Attendee::Ptr &ptr, e.attendees()) {
         const QString &uid = ptr->customProperties().nonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID);
         Kolab::Attendee a(Kolab::ContactReference(toStdString(ptr->email()), toStdString(ptr->name()), toStdString(uid)));
         a.setRSVP(ptr->RSVP());
@@ -398,7 +398,7 @@ void getIncidence(T &i, const I &e)
         if (key == QLatin1String(CUSTOM_KOLAB_URL)) {
             continue;
         }
-        customProperties.push_back(Kolab::CustomProperty(toStdString(key.remove("X-KOLAB-")), toStdString(it.value())));
+        customProperties.push_back(Kolab::CustomProperty(toStdString(key.remove(QStringLiteral("X-KOLAB-"))), toStdString(it.value())));
     }
     i.setCustomProperties(customProperties);
 }

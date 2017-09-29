@@ -99,7 +99,7 @@ void KolabBase::setFields( const KContacts::Addressee* addressee )
 
   setUid( addressee->uid() );
   setBody( addressee->note() );
-  setCategories( addressee->categories().join( "," ) );
+  setCategories( addressee->categories().join( QLatin1Char(',') ) );
 
   // Set creation-time and last-modification-time
   const QString creationString = addressee->custom( "KOLAB", "CreationDate" );
@@ -149,7 +149,7 @@ void KolabBase::saveTo( KContacts::Addressee* addressee ) const
 {
   addressee->setUid( uid() );
   addressee->setNote( body() );
-  addressee->setCategories( categories().split( ',', QString::SkipEmptyParts ) );
+  addressee->setCategories( categories().split( QLatin1Char(','), QString::SkipEmptyParts ) );
   addressee->setRevision( lastModified().toZone( mTimeZone ).dateTime() );
   addressee->insertCustom( QStringLiteral("KOLAB"), QStringLiteral("CreationDate"),
                            dateTimeToString( creationDate() ) );
@@ -314,8 +314,8 @@ void KolabBase::saveEmailAttribute( QDomElement& element, const Email& email,
 {
   QDomElement e = element.ownerDocument().createElement( tagName );
   element.appendChild( e );
-  writeString( e, "display-name", email.displayName );
-  writeString( e, "smtp-address", email.smtpAddress );
+  writeString( e, QStringLiteral("display-name"), email.displayName );
+  writeString( e, QStringLiteral("smtp-address"), email.smtpAddress );
 }
 
 bool KolabBase::loadAttribute( QDomElement& element )
@@ -376,17 +376,17 @@ bool KolabBase::loadAttribute( QDomElement& element )
 
 bool KolabBase::saveAttributes( QDomElement& element ) const
 {
-  writeString( element, "product-id", productID() );
-  writeString( element, "uid", uid() );
-  writeString( element, "body", body() );
-  writeString( element, "categories", categories() );
-  writeString( element, "creation-date", dateTimeToString( creationDate().toUtc() ) );
-  writeString( element, "last-modification-date", dateTimeToString( lastModified().toUtc() ) );
-  writeString( element, "sensitivity", sensitivityToString( sensitivity() ) );
+  writeString( element, QStringLiteral("product-id"), productID() );
+  writeString( element, QStringLiteral("uid"), uid() );
+  writeString( element, QStringLiteral("body"), body() );
+  writeString( element, QStringLiteral("categories"), categories() );
+  writeString( element, QStringLiteral("creation-date"), dateTimeToString( creationDate().toUtc() ) );
+  writeString( element, QStringLiteral("last-modification-date"), dateTimeToString( lastModified().toUtc() ) );
+  writeString( element, QStringLiteral("sensitivity"), sensitivityToString( sensitivity() ) );
   if ( hasPilotSyncId() )
-    writeString( element, "pilot-sync-id", QString::number( pilotSyncId() ) );
+    writeString( element, QStringLiteral("pilot-sync-id"), QString::number( pilotSyncId() ) );
   if ( hasPilotSyncStatus() )
-    writeString( element, "pilot-sync-status", QString::number( pilotSyncStatus() ) );
+    writeString( element, QStringLiteral("pilot-sync-status"), QString::number( pilotSyncStatus() ) );
   return true;
 }
 
@@ -459,9 +459,9 @@ QString KolabBase::sensitivityToString( Sensitivity s )
 
 KolabBase::Sensitivity KolabBase::stringToSensitivity( const QString& s )
 {
-  if ( s == "private" )
+  if ( s == QLatin1String("private") )
     return Private;
-  if ( s == "confidential" )
+  if ( s == QLatin1String("confidential") )
     return Confidential;
   return Public;
 }

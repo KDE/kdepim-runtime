@@ -200,7 +200,7 @@ QByteArray mailAttendees( const KCalCore::IncidenceBase::Ptr &incidence,
     KCalCore::Incidence::Ptr inc = incidence.staticCast<KCalCore::Incidence>();
     subject = inc->summary();
   } else {
-    subject = QString( "Free Busy Object" );
+    subject = QStringLiteral( "Free Busy Object" );
   }
 
   const QString body =
@@ -225,7 +225,7 @@ QByteArray mailOrganizer( const KCalCore::IncidenceBase::Ptr &incidence,
       subject = inc->summary();
     }
   } else {
-    subject = QString( "Free Busy Message" );
+    subject = QStringLiteral( "Free Busy Message" );
   }
 
   QString body = KCalUtils::IncidenceFormatter::mailBodyStr( incidence );

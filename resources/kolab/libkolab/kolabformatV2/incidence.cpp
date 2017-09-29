@@ -591,10 +591,10 @@ void Incidence::saveCustomAttributes( QDomElement& element ) const
       writeString( element, key, custom.value );
     } else {
       // Let's use attributes so that other tag-preserving-code doesn't need sub-elements
-      QDomElement e = element.ownerDocument().createElement( "x-custom" );
+      QDomElement e = element.ownerDocument().createElement( QStringLiteral("x-custom") );
       element.appendChild( e );
-      e.setAttribute( "key", key );
-      e.setAttribute( "value", custom.value );
+      e.setAttribute(QStringLiteral( "key"), key );
+      e.setAttribute( QStringLiteral("value"), custom.value );
     }
   }
 }
@@ -602,8 +602,8 @@ void Incidence::saveCustomAttributes( QDomElement& element ) const
 void Incidence::loadCustomAttributes( QDomElement& element )
 {
   Custom custom;
-  custom.key = element.attribute( "key" ).toLatin1();
-  custom.value = element.attribute( "value" );
+  custom.key = element.attribute( QStringLiteral("key") ).toLatin1();
+  custom.value = element.attribute( QStringLiteral("value") );
   mCustomList.append( custom );
 }
 

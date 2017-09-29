@@ -621,7 +621,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     c.setNameComponents(nc);
     
     c.setNote(toStdString(addressee.note()));
-    c.setFreeBusyUrl(toStdString(addressee.custom("KOLAB", QString("FreebusyUrl"))));
+    c.setFreeBusyUrl(toStdString(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("FreebusyUrl"))));
 
     if (!addressee.title().isEmpty()) {
         c.setTitles(std::vector<std::string>() << toStdString(addressee.title()));
@@ -754,7 +754,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     
     Kolab::Crypto crypto;
     
-    const QStringList protocolPrefs = addressee.custom( "KADDRESSBOOK", "CRYPTOPROTOPREF" ).split( ',', QString::SkipEmptyParts );
+    const QStringList protocolPrefs = addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF") ).split( ',', QString::SkipEmptyParts );
     const uint cryptoFormats = stringListToCryptoMessageFormats( protocolPrefs );
     int formats = 0;
     if (cryptoFormats & InlineOpenPGPFormat) {
@@ -772,7 +772,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     crypto.setAllowed(formats);
     
     Kolab::Crypto::CryptoPref signPref = Kolab::Crypto::Ask;
-    switch (stringToSigningPreference(addressee.custom( "KADDRESSBOOK", "CRYPTOSIGNPREF" ) )) {
+    switch (stringToSigningPreference(addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOSIGNPREF") ) )) {
         case NeverSign:
             signPref = Kolab::Crypto::Never;
             break;
@@ -792,7 +792,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     crypto.setSignPref(signPref);
     
     Kolab::Crypto::CryptoPref encryptPref = Kolab::Crypto::Ask;
-    switch (stringToSigningPreference(addressee.custom( "KADDRESSBOOK", "CRYPTOENCRYPTPREF" ) )) {
+    switch (stringToSigningPreference(addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOENCRYPTPREF") ) )) {
         case NeverEncrypt:
             encryptPref = Kolab::Crypto::Never;
             break;
@@ -816,11 +816,11 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     
     //FIXME the keys are most certainly wrong, look at cryptopageplugin.cpp
     std::vector<Kolab::Key> keys;
-    const std::string &pgpkey = toStdString(addressee.custom( "KADDRESSBOOK", "OPENPGPFP" ));
+    const std::string &pgpkey = toStdString(addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("OPENPGPFP") ));
     if (!pgpkey.empty()) {
         keys.push_back(Kolab::Key(pgpkey, Kolab::Key::PGP));
     }
-    const std::string &smimekey = toStdString(addressee.custom( "KADDRESSBOOK", "SMIMEFP" ));
+    const std::string &smimekey = toStdString(addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("SMIMEFP") ));
     if (!smimekey.empty()) {
         keys.push_back(Kolab::Key(smimekey, Kolab::Key::PKCS7_MIME));
     }
@@ -831,12 +831,12 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
         Warning() << "sound is not supported";
     }
     
-    const std::string &profession = toStdString(addressee.custom( "KADDRESSBOOK", "X-Profession" ));
+    const std::string &profession = toStdString(addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession") ));
     if (!profession.empty()) {
         setCustom(profession, "X-Profession", c);
     }
     
-    const std::string &adrBook = toStdString(addressee.custom( "KADDRESSBOOK", "X-AddressBook" ));
+    const std::string &adrBook = toStdString(addressee.custom( QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AddressBook") ));
     if (!adrBook.empty()) {
         setCustom(adrBook, "X-AddressBook", c);
     }

@@ -178,8 +178,8 @@ bool Event::loadXML( const QDomDocument& document )
 QString Event::saveXML() const
 {
   QDomDocument document = domTree();
-  QDomElement element = document.createElement( "event" );
-  element.setAttribute( "version", "1.0" );
+  QDomElement element = document.createElement( QStringLiteral("event") );
+  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
   saveAttributes( element );
   document.appendChild( element );
   return document.toString();

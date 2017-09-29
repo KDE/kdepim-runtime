@@ -134,12 +134,12 @@ bool Note::saveAttributes( QDomElement& element ) const
   element.appendChild( c );
 #endif
 
-  writeString( element, "summary", summary() );
+  writeString( element, QStringLiteral("summary"), summary() );
   if ( foregroundColor().isValid() )
-    writeString( element, "foreground-color", colorToString( foregroundColor() ) );
+    writeString( element, QStringLiteral("foreground-color"), colorToString( foregroundColor() ) );
   if ( backgroundColor().isValid() )
-    writeString( element, "background-color", colorToString( backgroundColor() ) );
-  writeString( element, "knotes-richtext", mRichText ? "true" : "false" );
+    writeString( element, QStringLiteral("background-color"), colorToString( backgroundColor() ) );
+  writeString( element, QStringLiteral("knotes-richtext"), mRichText ? QStringLiteral("true") : QStringLiteral("false") );
 
   return true;
 }
@@ -173,8 +173,8 @@ bool Note::loadXML( const QDomDocument& document )
 QString Note::saveXML() const
 {
   QDomDocument document = domTree();
-  QDomElement element = document.createElement( "note" );
-  element.setAttribute( "version", "1.0" );
+  QDomElement element = document.createElement( QStringLiteral("note") );
+  element.setAttribute( QStringLiteral("version"), QStringLiteral("1.0") );
   saveAttributes( element );
   document.appendChild( element );
   return document.toString();
@@ -190,14 +190,14 @@ void Note::setFields( const KCalCore::Journal::Ptr &journal )
   if ( !property.isEmpty() ) {
     setBackgroundColor( property );
   } else {
-    setBackgroundColor( "yellow" );
+    setBackgroundColor( QStringLiteral("yellow") );
   }
 
   property = journal->customProperty( "KNotes", "FgColor" );
   if ( !property.isEmpty() ) {
     setForegroundColor( property );
   } else {
-    setForegroundColor( "black" );
+    setForegroundColor( QStringLiteral("black") );
   }
 
   property = journal->customProperty( "KNotes", "RichText" );

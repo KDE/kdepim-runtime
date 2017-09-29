@@ -179,7 +179,7 @@ Freebusy generateFreeBusy(const std::vector< Event >& events, const cDateTime& s
     foreach (const Kolab::Event &e, events) {
         list.append(Kolab::Conversion::toKCalCore(e));
     }
-    KCalCore::Person::Ptr person(new KCalCore::Person("dummyname", "dummyemail"));
+    KCalCore::Person::Ptr person(new KCalCore::Person(QStringLiteral("dummyname"), QStringLiteral("dummyemail")));
     return generateFreeBusy(list, Kolab::Conversion::toDate(startDate), Kolab::Conversion::toDate(endDate), person, startDate.isDateOnly());
 }
 
@@ -200,7 +200,7 @@ Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr>& events, const QDate
 
     //TODO try to merge that with KCalCore::Freebusy
     std::vector<Kolab::FreebusyPeriod> freebusyPeriods;
-    Q_FOREACH (KCalCore::Event::Ptr event, events) {    
+    Q_FOREACH (const KCalCore::Event::Ptr &event, events) {
         // If this event is transparent it shouldn't be in the freebusy list.
         if ( event->transparency() == KCalCore::Event::Transparent ) {
             continue;

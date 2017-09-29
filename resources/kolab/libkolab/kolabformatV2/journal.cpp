@@ -131,7 +131,7 @@ bool Journal::loadXML( const QDomDocument& document )
 
   if ( top.tagName() != QLatin1String("journal") ) {
     qWarning( "XML error: Top tag was %s instead of the expected Journal",
-              top.tagName().toAscii().data() );
+              qPrintable(top.tagName()) );
     return false;
   }
 

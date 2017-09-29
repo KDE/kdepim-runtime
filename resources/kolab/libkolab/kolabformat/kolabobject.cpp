@@ -123,7 +123,7 @@ static QByteArray join(const QList<QByteArray> &list, const QByteArray &c)
 KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
 {
     if (!member.gid.isEmpty()) {
-        return QString("urn:uuid:%1").arg(member.gid);
+        return QStringLiteral("urn:uuid:%1").arg(member.gid);
     }
     QUrl url;
     url.setScheme("imap");
