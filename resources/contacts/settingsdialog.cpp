@@ -48,7 +48,7 @@ SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
     ui.label_3->setMinimumSize(ui.label_3->sizeHint());
     ui.label_2->setMinimumSize(ui.label_2->sizeHint());
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);

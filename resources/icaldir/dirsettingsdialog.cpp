@@ -41,7 +41,7 @@ SettingsDialog::SettingsDialog(WId windowId)
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
