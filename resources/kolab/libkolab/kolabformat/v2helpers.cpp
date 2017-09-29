@@ -149,12 +149,12 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, QString &pict
     return addressee;
 }
 
-static QByteArray createPicture(const QImage &img, const QString &/*format*/, QString &type)
+static QByteArray createPicture(const QImage &img, const QString &/*format*/, QByteArray &type)
 {
     QByteArray pic;
     QBuffer buffer(&pic);
     buffer.open(QIODevice::WriteOnly);
-    type = QStringLiteral("image/png");
+    type = "image/png";
     //FIXME it's not possible to save jpegs lossless, so we always use png. otherwise we would compress the image on every write.
 //     if (format == "image/jpeg") {
 //         type = "image/jpeg";
@@ -180,16 +180,16 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact& contact, const 
     message->addContent( content );
     
     if ( !contact.picture().isNull() ) {
-        QString type;
+        QByteArray type;
         const QByteArray &pic = createPicture(contact.picture(), contact.pictureFormat(), type);
-        content = Mime::createAttachmentPart(QByteArray(), type.toLatin1(), /*"kolab-picture.png"*/contact.pictureAttachmentName(), pic );
+        content = Mime::createAttachmentPart(QByteArray(), type, /*"kolab-picture.png"*/contact.pictureAttachmentName(), pic );
         message->addContent(content);
     }
     
     if ( !contact.logo().isNull() ) {
-        QString type;
+        QByteArray type;
         const QByteArray &pic = createPicture(contact.logo(), contact.logoFormat(), type);
-        content = Mime::createAttachmentPart(QByteArray(), type.toLatin1(), /*"kolab-logo.png"*/contact.logoAttachmentName(), pic );
+        content = Mime::createAttachmentPart(QByteArray(), type, /*"kolab-logo.png"*/contact.logoAttachmentName(), pic );
         message->addContent(content);
     }
     
