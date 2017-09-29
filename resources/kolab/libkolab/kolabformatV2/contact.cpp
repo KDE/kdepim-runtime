@@ -531,7 +531,8 @@ bool Contact::loadAddressAttribute( QDomElement& element )
 void Contact::saveAddressAttributes( QDomElement& element ) const
 {
   QList<Address>::ConstIterator it = mAddresses.constBegin();
-  for ( ; it != mAddresses.constEnd(); ++it ) {
+  const QList<Address>::ConstIterator end = mAddresses.constEnd();
+  for ( ; it != end; ++it ) {
     QDomElement e = element.ownerDocument().createElement( "address" );
     element.appendChild( e );
     const Address& a = *it;
@@ -557,39 +558,39 @@ bool Contact::loadAttribute( QDomElement& element )
   const QString tagName = element.tagName();
   switch ( tagName[0].toLatin1() ) {
   case 'a':
-    if ( tagName == "address" )
+    if ( tagName == QLatin1String("address") )
       return loadAddressAttribute( element );
-    if ( tagName == "assistant" ) {
+    if ( tagName == QLatin1String("assistant") ) {
       setAssistant( element.text() );
       return true;
     }
-    if ( tagName == "anniversary" ) {
+    if ( tagName == QLatin1String("anniversary") ) {
       if ( !element.text().isEmpty() )
         setAnniversary( stringToDate( element.text() ) );
       return true;
     }
     break;
   case 'b':
-    if ( tagName == "birthday" ) {
+    if ( tagName == QLatin1String("birthday") ) {
       if ( !element.text().isEmpty() )
         setBirthday( stringToDate( element.text() ) );
       return true;
     }
     break;
   case 'c':
-    if ( tagName == "children" ) {
+    if ( tagName == QLatin1String("children") ) {
       setChildren( element.text() );
       return true;
     }
     break;
   case 'd':
-    if ( tagName == "department" ) {
+    if ( tagName == QLatin1String("department") ) {
       setDepartment( element.text() );
       return true;
     }
     break;
   case 'e':
-    if ( tagName == "email" ) {
+    if ( tagName == QLatin1String("email") ) {
       Email email;
       if ( loadEmailAttribute( element, email ) ) {
         addEmail( email );
@@ -599,119 +600,119 @@ bool Contact::loadAttribute( QDomElement& element )
     }
     break;
   case 'f':
-    if ( tagName == "free-busy-url" ) {
+    if ( tagName == QLatin1String("free-busy-url") ) {
       setFreeBusyUrl( element.text() );
       return true;
     }
     break;
   case 'g':
-    if ( tagName == "gender" ) {
+    if ( tagName == QLatin1String("gender") ) {
       setGender( element.text() );
       return true;
     }
     break;
   case 'i':
-    if ( tagName == "im-address" ) {
+    if ( tagName == QLatin1String("im-address") ) {
       setIMAddress( element.text() );
       return true;
     }
     break;
   case 'j':
-   if ( tagName == "job-title" ) {
+   if ( tagName == QLatin1String("job-title") ) {
      // see saveAttributes: <job-title> is mapped to the Role field
       setTitle( element.text() );
       return true;
     }
     break;
   case 'l':
-    if ( tagName == "language" ) {
+    if ( tagName == QLatin1String("language") ) {
       setLanguage( element.text() );
       return true;
     }
-    if ( tagName == "latitude" ) {
+    if ( tagName == QLatin1String("latitude") ) {
       setLatitude( element.text().toFloat() );
       mHasGeo = true;
       return true;
     }
-    if ( tagName == "longitude" ) {
+    if ( tagName == QLatin1String("longitude") ) {
       setLongitude( element.text().toFloat() );
       mHasGeo = true;
     }
     break;
   case 'm':
-    if ( tagName == "manager-name" ) {
+    if ( tagName == QLatin1String("manager-name" )) {
       setManagerName( element.text() );
       return true;
     }
     break;
   case 'n':
-    if ( tagName == "name" )
+    if ( tagName ==QLatin1String("name") )
       return loadNameAttribute( element );
-    if ( tagName == "nick-name" ) {
+    if ( tagName == QLatin1String("nick-name") ) {
       setNickName( element.text() );
       return true;
     }
     break;
   case 'o':
-    if ( tagName == "organization" ) {
+    if ( tagName == QLatin1String("organization") ) {
       setOrganization( element.text() );
       return true;
     }
-    if ( tagName == "office-location" ) {
+    if ( tagName == QLatin1String("office-location") ) {
       setOfficeLocation( element.text() );
       return true;
     }
     break;
   case 'p':
-    if ( tagName == "profession" ) {
+    if ( tagName == QLatin1String("profession") ) {
       setProfession( element.text() );
       return true;
     }
-    if ( tagName == "picture" ) {
+    if ( tagName == QLatin1String("picture") ) {
       mPictureAttachmentName = element.text();
       return true;
     }
-    if ( tagName == "phone" ) {
+    if ( tagName == QLatin1String("phone") ) {
       return loadPhoneAttribute( element );
       return true;
     }
-    if ( tagName == "preferred-address" ) {
+    if ( tagName == QLatin1String("preferred-address") ) {
       setPreferredAddress( element.text() );
       return true;
     }
     break;
   case 'r':
-    if ( tagName == "role" ) {
+    if ( tagName == QLatin1String("role") ) {
       setRole( element.text() );
       return true;
     }
     break;
   case 's':
-    if ( tagName == "spouse-name" ) {
+    if ( tagName == QLatin1String("spouse-name") ) {
       setSpouseName( element.text() );
       return true;
     }
     break;
   case 'x':
-    if ( tagName == "x-logo" ) {
+    if ( tagName == QLatin1String("x-logo") ) {
       mLogoAttachmentName = element.text();
       return true;
     }
-    if ( tagName == "x-sound" ) {
+    if ( tagName == QLatin1String("x-sound") ) {
       mSoundAttachmentName = element.text();
       return true;
     }
-    if ( tagName == "x-custom" ) {
+    if ( tagName == QLatin1String("x-custom") ) {
       loadCustomAttributes( element );
       return true;
     }
-    if ( tagName == "x-title" ) {
+    if ( tagName == QLatin1String("x-title") ) {
       setTitle( element.text() );
       return true;
     }
     break;
   case 'w':
-    if ( tagName == "web-page" ) {
+    if ( tagName == QLatin1String("web-page") ) {
       setWebPage( element.text() );
       return true;
     }
@@ -1014,17 +1015,17 @@ void Contact::setFields( const KContacts::Addressee* addressee )
   }
 
   setPicture( loadPictureFromAddressee( addressee->photo() ), addressee->photo().type() );
-  mPictureAttachmentName = addressee->custom( "KOLAB", "PictureAttachmentName" );
+  mPictureAttachmentName = addressee->custom( QStringLiteral("KOLAB"), QStringLiteral("PictureAttachmentName") );
   if ( mPictureAttachmentName.isEmpty() )
     mPictureAttachmentName = s_pictureAttachmentName;
 
   setLogo( loadPictureFromAddressee( addressee->logo() ), addressee->logo().type() );
-  mLogoAttachmentName = addressee->custom( "KOLAB", "LogoAttachmentName" );
+  mLogoAttachmentName = addressee->custom( QStringLiteral("KOLAB"), QStringLiteral("LogoAttachmentName") );
   if ( mLogoAttachmentName.isEmpty() )
     mLogoAttachmentName = s_logoAttachmentName;
 
   setSound( loadSoundFromAddressee( addressee->sound() ) );
-  mSoundAttachmentName = addressee->custom( "KOLAB", "SoundAttachmentName" );
+  mSoundAttachmentName = addressee->custom( QStringLiteral("KOLAB"), QStringLiteral("SoundAttachmentName") );
   if ( mSoundAttachmentName.isEmpty() )
     mSoundAttachmentName = s_soundAttachmentName;
 
@@ -1063,7 +1064,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
     }
   }
 
-  const QString url = addressee->custom("KOLAB", "FreebusyUrl");
+  const QString url = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("FreebusyUrl"));
   if ( !url.isEmpty() ) {
     setFreeBusyUrl( url );
   }

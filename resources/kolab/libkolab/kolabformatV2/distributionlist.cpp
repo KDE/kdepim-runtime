@@ -88,7 +88,8 @@ void KolabV2::DistributionList::loadDistrListMember( const QDomElement& element 
 void DistributionList::saveDistrListMembers( QDomElement& element ) const
 {
   QList<Member>::ConstIterator it = mDistrListMembers.constBegin();
-  for( ; it != mDistrListMembers.constEnd(); ++it ) {
+  const QList<Member>::ConstIterator end = mDistrListMembers.constEnd();
+  for( ; it != end; ++it ) {
     QDomElement e = element.ownerDocument().createElement( "member" );
     element.appendChild( e );
     const Member& m = *it;
@@ -106,13 +107,13 @@ bool DistributionList::loadAttribute( QDomElement& element )
   const QString tagName = element.tagName();
   switch ( tagName[0].toLatin1() ) {
   case 'd':
-    if ( tagName == "display-name" ) {
+    if ( tagName == QLatin1String("display-name") ) {
       setName( element.text() );
       return true;
     }
     break;
   case 'm':
-    if ( tagName == "member" ) {
+    if ( tagName == QLatin1String("member") ) {
       loadDistrListMember( element );
       return true;
     }
@@ -137,7 +138,7 @@ bool DistributionList::loadXML( const QDomDocument& document )
 {
   QDomElement top = document.documentElement();
 
-  if ( top.tagName() != "distribution-list" ) {
+  if ( top.tagName() != QLatin1String("distribution-list") ) {
     qWarning( "XML error: Top tag was %s instead of the expected distribution-list",
               top.tagName().toAscii().data() );
     return false;
@@ -168,7 +169,7 @@ bool DistributionList::loadXML( const QDomDocument& document )
 QString DistributionList::saveXML() const
 {
   QDomDocument document = domTree();
-  QDomElement element = document.createElement( "distribution-list" );
+  QDomElement element = document.createElement( QLatin1String("distribution-list") );
   element.setAttribute( "version", "1.0" );
   saveAttributes( element );
   document.appendChild( element );
@@ -219,7 +220,8 @@ void DistributionList::saveTo( KContacts::ContactGroup* contactGroup )
   contactGroup->setName( name() );
 
   QList<Member>::ConstIterator mit = mDistrListMembers.constBegin();
-  for ( ; mit != mDistrListMembers.constEnd(); ++mit ) {
+  const QList<Member>::ConstIterator mEnd = mDistrListMembers.constEnd();
+  for ( ; mit != mEnd; ++mit ) {
     if (!(*mit).uid.isEmpty()) {
       contactGroup->append(KContacts::ContactGroup::ContactReference( (*mit).uid ));
     } else {

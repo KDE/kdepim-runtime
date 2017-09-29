@@ -71,7 +71,7 @@ QString ownUrlDecode(QByteArray encodedParam)
 
 RelationMember parseMemberUrl(const QString &string)
 {
-    if (string.startsWith("urn:uuid:")) {
+    if (string.startsWith(QStringLiteral("urn:uuid:"))) {
         RelationMember member;
         member.gid = string.mid(9);
         return member;

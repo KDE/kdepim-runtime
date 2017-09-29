@@ -116,13 +116,13 @@ bool Event::loadAttribute( QDomElement& element )
   // This method doesn't handle the color-label tag yet
   QString tagName = element.tagName();
 
-  if ( tagName == "show-time-as" ) {
+  if ( tagName == QLatin1String("show-time-as") ) {
     // TODO: Support tentative and outofoffice
-    if ( element.text() == "free" )
+    if ( element.text() == QLatin1String("free") )
       setTransparency( KCalCore::Event::Transparent );
     else
       setTransparency( KCalCore::Event::Opaque );
-  } else if ( tagName == "end-date" )
+  } else if ( tagName == QLatin1String("end-date") )
     setEndDate( element.text() );
   else
     return Incidence::loadAttribute( element );
@@ -156,7 +156,7 @@ bool Event::loadXML( const QDomDocument& document )
 {
   QDomElement top = document.documentElement();
 
-  if ( top.tagName() != "event" ) {
+  if ( top.tagName() != QLatin1String("event") ) {
     qWarning( "XML error: Top tag was %s instead of the expected event",
               top.tagName().toAscii().data() );
     return false;

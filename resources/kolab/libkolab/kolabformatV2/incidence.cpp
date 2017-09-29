@@ -177,24 +177,24 @@ bool Incidence::loadAttendeeAttribute( QDomElement& element,
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
 
-      if ( tagName == "display-name" )
+      if ( tagName == QLatin1String("display-name") )
         attendee.displayName = e.text();
-      else if ( tagName == "smtp-address" )
+      else if ( tagName == QLatin1String("smtp-address"))
         attendee.smtpAddress = e.text();
-      else if ( tagName == "status" )
+      else if ( tagName == QLatin1String("status") )
         attendee.status = e.text();
-      else if ( tagName == "request-response" )
+      else if ( tagName == QLatin1String("request-response") )
         // This sets reqResp to false, if the text is "false". Otherwise it
         // sets it to true. This means the default setting is true.
-        attendee.requestResponse = ( e.text().toLower() != "false" );
+        attendee.requestResponse = ( e.text().toLower() != QLatin1String("false") );
       else if ( tagName == "invitation-sent" )
         // Like above, only this defaults to false
-        attendee.invitationSent = ( e.text().toLower() != "true" );
-      else if ( tagName == "role" )
+        attendee.invitationSent = ( e.text().toLower() != QLatin1String("true") );
+      else if ( tagName == QLatin1String("role") )
         attendee.role = e.text();
-      else if ( tagName == "delegated-to" )
+      else if ( tagName == QLatin1String("delegated-to") )
         attendee.delegate = e.text();
-      else if ( tagName == "delegated-from" )
+      else if ( tagName == QLatin1String("delegated-from") )
         attendee.delegator = e.text();
       else
         // TODO: Unhandled tag - save for later storage
@@ -348,16 +348,16 @@ void Incidence::loadRecurrence( const QDomElement& element )
           mRecurrence.interval = e.text().toInt();
         }
       }
-      else if ( tagName == "day" ) // can be present multiple times
+      else if ( tagName == QLatin1String("day") ) // can be present multiple times
         mRecurrence.days.append( e.text() );
-      else if ( tagName == "daynumber" )
+      else if ( tagName == QLatin1String("daynumber") )
         mRecurrence.dayNumber = e.text();
-      else if ( tagName == "month" )
+      else if ( tagName == QLatin1String("month") )
         mRecurrence.month = e.text();
-      else if ( tagName == "range" ) {
+      else if ( tagName == QLatin1String("range") ) {
         mRecurrence.rangeType = e.attribute( "type" );
         mRecurrence.range = e.text();
-      } else if ( tagName == "exclusion" ) {
+      } else if ( tagName == QLatin1String("exclusion") ) {
         mRecurrence.exclusions.append( stringToDate( e.text() ) );
       } else
         // TODO: Unhandled tag - save for later storage
@@ -375,7 +375,7 @@ static void loadAddressesHelper( const QDomElement& element, const KCalCore::Ala
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
 
-      if ( tagName == "address" ) {
+      if ( tagName == QLatin1String("address") ) {
         a->addMailAddress( KCalCore::Person::fromFullName( e.text() ) );
       } else {
         qWarning() << "Unhandled tag" << tagName;
@@ -393,7 +393,7 @@ static void loadAttachmentsHelper( const QDomElement& element, const KCalCore::A
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
 
-      if ( tagName == "attachment" ) {
+      if ( tagName == QLatin1String("attachment") ) {
         a->addMailAttachment( e.text() );
       } else {
         qWarning() << "Unhandled tag" << tagName;
@@ -411,31 +411,31 @@ static void loadAlarmHelper( const QDomElement& element, const KCalCore::Alarm::
       QDomElement e = n.toElement();
       QString tagName = e.tagName();
 
-      if ( tagName == "start-offset" ) {
+      if ( tagName == QLatin1String("start-offset") ) {
         a->setStartOffset( e.text().toInt()*60 );
-      } else if ( tagName == "end-offset" ) {
+      } else if ( tagName == QLatin1String("end-offset") ) {
         a->setEndOffset( e.text().toInt()*60 );
-      } else if ( tagName == "repeat-count" ) {
+      } else if ( tagName == QLatin1String("repeat-count") ) {
         a->setRepeatCount( e.text().toInt() );
-      } else if ( tagName == "repeat-interval" ) {
+      } else if ( tagName == QLatin1String("repeat-interval") ) {
         a->setSnoozeTime( e.text().toInt() );
-      } else if ( tagName == "text" ) {
+      } else if ( tagName == QLatin1String("text") ) {
         a->setText( e.text() );
-      } else if ( tagName == "program" ) {
+      } else if ( tagName == QLatin1String("program") ) {
         a->setProgramFile( e.text() );
-      } else if ( tagName == "arguments" ) {
+      } else if ( tagName == QLatin1String("arguments") ) {
         a->setProgramArguments( e.text() );
-      } else if ( tagName == "addresses" ) {
+      } else if ( tagName == QLatin1String("addresses") ) {
         loadAddressesHelper( e, a );
-      } else if ( tagName == "subject" ) {
+      } else if ( tagName == QLatin1String("subject") ) {
         a->setMailSubject( e.text() );
-      } else if ( tagName == "mail-text" ) {
+      } else if ( tagName == QLatin1String("mail-text") ) {
         a->setMailText( e.text() );
-      } else if ( tagName == "attachments" ) {
+      } else if ( tagName == QLatin1String("attachments") ) {
         loadAttachmentsHelper( e, a );
-      } else if ( tagName == "file" ) {
+      } else if ( tagName == QLatin1String("file") ) {
         a->setAudioFile( e.text() );
-      } else if ( tagName == "enabled" ) {
+      } else if ( tagName == QLatin1String("enabled") ) {
         a->setEnabled( e.text().toInt() != 0 );
       } else {
         qWarning() << "Unhandled tag" << tagName;
@@ -456,14 +456,14 @@ void Incidence::loadAlarms( const QDomElement& element )
       if ( tagName == "alarm" ) {
         KCalCore::Alarm::Ptr a = KCalCore::Alarm::Ptr( new KCalCore::Alarm( 0 ) );
         a->setEnabled( true ); // default to enabled, unless some XML attribute says otherwise.
-        QString type = e.attribute( "type" );
-        if ( type == "display" ) {
+        QString type = e.attribute( QLatin1String("type") );
+        if ( type == QLatin1String("display") ) {
           a->setType( KCalCore::Alarm::Display );
-        } else if ( type == "procedure" ) {
+        } else if ( type == QLatin1String("procedure") ) {
           a->setType( KCalCore::Alarm::Procedure );
-        } else if ( type == "email" ) {
+        } else if ( type == QLatin1String("email") ) {
           a->setType( KCalCore::Alarm::Email );
-        } else if ( type == "audio" ) {
+        } else if ( type == QLatin1String("audio") ) {
           a->setType( KCalCore::Alarm::Audio );
         } else {
           qWarning() << "Unhandled alarm type:" << type;
@@ -482,7 +482,7 @@ bool Incidence::loadAttribute( QDomElement& element )
 {
   QString tagName = element.tagName();
 
-  if ( tagName == "priority" ) {
+  if ( tagName == QLatin1String("priority") ) {
     bool ok;
     int p = element.text().toInt( &ok );
     if ( !ok || p < 1 || p > 9 ) {
@@ -609,13 +609,13 @@ void Incidence::loadCustomAttributes( QDomElement& element )
 
 static KCalCore::Attendee::PartStat attendeeStringToStatus( const QString& s )
 {
-  if ( s == "none" )
+  if ( s == QLatin1String("none") )
     return KCalCore::Attendee::NeedsAction;
-  if ( s == "tentative" )
+  if ( s == QLatin1String("tentative") )
     return KCalCore::Attendee::Tentative;
-  if ( s == "declined" )
+  if ( s == QLatin1String("declined") )
     return KCalCore::Attendee::Declined;
-  if ( s == "delegated" )
+  if ( s == QLatin1String("delegated") )
     return KCalCore::Attendee::Delegated;
 
   // Default:
@@ -626,22 +626,22 @@ static QString attendeeStatusToString( KCalCore::Attendee::PartStat status )
 {
   switch( status ) {
   case KCalCore::Attendee::NeedsAction:
-    return "none";
+    return QStringLiteral("none");
   case KCalCore::Attendee::Accepted:
-    return "accepted";
+    return QStringLiteral("accepted");
   case KCalCore::Attendee::Declined:
-    return "declined";
+    return QStringLiteral("declined");
   case KCalCore::Attendee::Tentative:
-    return "tentative";
+    return QStringLiteral("tentative");
   case KCalCore::Attendee::Delegated:
-    return "delegated";
+    return QStringLiteral("delegated");
   case KCalCore::Attendee::Completed:
   case KCalCore::Attendee::InProcess:
     // These don't have any meaning in the Kolab format, so just use:
-    return "accepted";
+    return QStringLiteral("accepted");
   default:
     // Default for the case that there are more added later:
-    return "accepted";
+    return QStringLiteral("accepted");
   }
 }
 
@@ -658,19 +658,19 @@ static QString attendeeRoleToString( KCalCore::Attendee::Role role )
 {
   switch( role ) {
   case KCalCore::Attendee::ReqParticipant:
-    return "required";
+    return QStringLiteral("required");
   case KCalCore::Attendee::OptParticipant:
-    return "optional";
+    return QStringLiteral("optional");
   case KCalCore::Attendee::Chair:
     // We don't have the notion of chair, so use
-    return "required";
+    return QStringLiteral("required");
   case KCalCore::Attendee::NonParticipant:
     // In Kolab, a non-participant is a resource
-    return "resource";
+    return QStringLiteral("resource");
   }
 
   // Default for the case that there are more added later:
-  return "required";
+  return QStringLiteral("required");
 }
 
 static const char *s_weekDayName[] =
@@ -689,16 +689,16 @@ void Incidence::setRecurrence( KCalCore::Recurrence* recur )
   mRecurrence.interval = recur->frequency();
   switch ( recur->recurrenceType() ) {
   case KCalCore::Recurrence::rMinutely: // Not handled by the kolab XML
-    mRecurrence.cycle = "minutely";
+    mRecurrence.cycle = QStringLiteral("minutely");
     break;
   case KCalCore::Recurrence::rHourly:  // Not handled by the kolab XML
-    mRecurrence.cycle = "hourly";
+    mRecurrence.cycle = QStringLiteral("hourly");
     break;
   case KCalCore::Recurrence::rDaily:
-    mRecurrence.cycle = "daily";
+    mRecurrence.cycle = QStringLiteral("daily");
     break;
   case KCalCore::Recurrence::rWeekly: // every X weeks
-    mRecurrence.cycle = "weekly";
+    mRecurrence.cycle = QStringLiteral("weekly");
     {
       QBitArray arr = recur->days();
       for ( uint idx = 0 ; idx < 7 ; ++idx )
@@ -707,8 +707,8 @@ void Incidence::setRecurrence( KCalCore::Recurrence* recur )
     }
     break;
   case KCalCore::Recurrence::rMonthlyPos: {
-    mRecurrence.cycle = "monthly";
-    mRecurrence.type = "weekday";
+    mRecurrence.cycle = QStringLiteral("monthly");
+    mRecurrence.type = QStringLiteral("weekday");
     QList<KCalCore::RecurrenceRule::WDayPos> monthPositions = recur->monthPositions();
     if ( !monthPositions.isEmpty() ) {
       KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
@@ -720,8 +720,8 @@ void Incidence::setRecurrence( KCalCore::Recurrence* recur )
     break;
   }
   case KCalCore::Recurrence::rMonthlyDay: {
-    mRecurrence.cycle = "monthly";
-    mRecurrence.type = "daynumber";
+    mRecurrence.cycle = QStringLiteral("monthly");
+    mRecurrence.type = QStringLiteral("daynumber");
     QList<int> monthDays = recur->monthDays();
     // ####### Kolab XML limitation: only the first month day is used
     if ( !monthDays.isEmpty() )
@@ -853,7 +853,7 @@ void Incidence::setFields( const KCalCore::Incidence::Ptr &incidence )
   // Handle the scheduling ID
   if ( incidence->schedulingID() == incidence->uid() ) {
     // There is no scheduling ID
-    setInternalUID( QString::null );	//krazy:exclude=nullstrassign for old broken gcc
+    setInternalUID( QString() );	//krazy:exclude=nullstrassign for old broken gcc
   } else {
     // We've internally been using a different uid, so save that as the
     // temporary (internal) uid and restore the original uid, the one that
