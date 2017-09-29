@@ -204,7 +204,7 @@ void Note::setFields( const KCalCore::Journal::Ptr &journal )
   if ( !property.isEmpty() ) {
     setRichText( property == "true" ? true : false );
   } else {
-    setRichText( "false" );
+    setRichText( false );
   }
 }
 
