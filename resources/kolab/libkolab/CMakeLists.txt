@@ -79,7 +79,7 @@ set(KOLAB_SRCS
     kolabformat/formathelpers.cpp
     kolabformat/errorhandler.cpp
     kolabformat/v2helpers.cpp
-	kolabformat/mimeobject.cpp
+    kolabformat/mimeobject.cpp
     mime/mimeutils.cpp
     utils/porting.cpp
     ${CONVERSION_SRCS}
@@ -105,7 +105,7 @@ if(BUILD_TESTING)
     enable_testing()
     add_library(kolab_static STATIC ${KOLAB_SRCS})
     target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES} Qt5::Test)
-    add_subdirectory(tests)
+    add_subdirectory(autotests)
 endif()
 
 add_library(pimkolab STATIC ${KOLAB_SRCS})
