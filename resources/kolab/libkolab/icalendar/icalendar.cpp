@@ -142,7 +142,7 @@ std::string ITipHandler::toIMip(const Event &event , ITipHandler::ITipMethod m, 
     } else {
         QString subject;
         if ( e && method == KCalCore::iTIPCounter ) {
-            subject = i18n( "Counter proposal: %1" ).arg(e->summary());
+            subject = i18n( "Counter proposal: %1", e->summary());
         }
         return Conversion::toStdString(QString(mailOrganizer( e, Conversion::fromStdString(from), bccMe, messageText, subject)));
     }
