@@ -1002,7 +1002,7 @@ void Incidence::saveTo( const KCalCore::Incidence::Ptr &incidence )
 
 QString Incidence::productID() const
 {
-  return QString( "%1, Kolab resource" ).arg( LIBKOLAB_LIB_VERSION_STRING );
+  return QStringLiteral( "%1, Kolab resource" ).arg( LIBKOLAB_LIB_VERSION_STRING );
 }
 
 // Unhandled KCalCore::Incidence fields:

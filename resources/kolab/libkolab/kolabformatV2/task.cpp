@@ -164,32 +164,32 @@ bool Task::loadAttribute( QDomElement& element )
 {
   QString tagName = element.tagName();
 
-  if ( tagName == "completed" ) {
+  if ( tagName == QLatin1String("completed") ) {
     bool ok;
     int percent = element.text().toInt( &ok );
     if ( !ok || percent < 0 || percent > 100 )
       percent = 0;
     setPercentCompleted( percent );
-  } else if ( tagName == "status" ) {
-    if ( element.text() == "in-progress" )
+  } else if ( tagName == QLatin1String("status") ) {
+    if ( element.text() == QLatin1String("in-progress") )
       setStatus( KCalCore::Incidence::StatusInProcess );
-    else if ( element.text() == "completed" )
+    else if ( element.text() == QLatin1String("completed") )
       setStatus( KCalCore::Incidence::StatusCompleted );
-    else if ( element.text() == "waiting-on-someone-else" )
+    else if ( element.text() == QLatin1String("waiting-on-someone-else") )
       setStatus( KCalCore::Incidence::StatusNeedsAction );
-    else if ( element.text() == "deferred" )
+    else if ( element.text() == QLatin1String("deferred") )
       // Guessing a status here
       setStatus( KCalCore::Incidence::StatusCanceled );
     else
       // Default
       setStatus( KCalCore::Incidence::StatusNone );
-  } else if ( tagName == "due-date" ) {
+  } else if ( tagName == QLatin1String("due-date") ) {
     setDueDate( element.text() );
-  } else if ( tagName == "parent" ) {
+  } else if ( tagName == QLatin1String("parent") ) {
     setParent( element.text() );
-  } else if ( tagName == "x-completed-date" ) {
+  } else if ( tagName == QLatin1String("x-completed-date") ) {
     setCompletedDate( stringToDateTime( element.text() ) );
-  } else if ( tagName == "start-date" ) {
+  } else if ( tagName == QLatin1String("start-date") ) {
     setHasStartDate( true );
     setStartDate( element.text() );
   } else
@@ -256,7 +256,7 @@ bool Task::loadXML( const QDomDocument& document )
 {
   QDomElement top = document.documentElement();
 
-  if ( top.tagName() != "task" ) {
+  if ( top.tagName() != QLatin1String("task") ) {
     qWarning( "XML error: Top tag was %s instead of the expected task",
               top.tagName().toAscii().data() );
     return false;

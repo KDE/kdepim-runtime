@@ -418,7 +418,7 @@ QDomDocument KolabBase::domTree()
 {
   QDomDocument document;
 
-  QString p = "version=\"1.0\" encoding=\"UTF-8\"";
+  QString p = QStringLiteral("version=\"1.0\" encoding=\"UTF-8\"");
   document.appendChild(document.createProcessingInstruction( "xml", p ) );
 
   return document;
@@ -449,12 +449,12 @@ QDate KolabBase::stringToDate( const QString& date )
 QString KolabBase::sensitivityToString( Sensitivity s )
 {
   switch( s ) {
-  case Private: return "private";
-  case Confidential: return "confidential";
-  case Public: return "public";
+  case Private: return QStringLiteral("private");
+  case Confidential: return QStringLiteral("confidential");
+  case Public: return QStringLiteral("public");
   }
 
-  return "What what what???";
+  return QStringLiteral("What what what???");
 }
 
 KolabBase::Sensitivity KolabBase::stringToSensitivity( const QString& s )
