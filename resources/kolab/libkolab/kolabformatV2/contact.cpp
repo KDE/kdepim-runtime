@@ -972,7 +972,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
   // Conversion problem here:
   // KContacts::Addressee has only one full name and N addresses, but the XML format
   // has N times (fullname+address). So we just copy the fullname over and ignore it on loading.
-  for ( QStringList::ConstIterator it = emails.constBegin(); it != emails.constEnd(); ++it ) {
+  for ( QStringList::ConstIterator it = emails.constBegin(), end = emails.constEnd(); it != end; ++it ) {
     Email email;
     email.displayName = fullName();
     email.smtpAddress = *it;
@@ -1005,7 +1005,7 @@ void Contact::setFields( const KContacts::Addressee* addressee )
   setPreferredAddress( preferredAddress );
 
   const KContacts::PhoneNumber::List phones = addressee->phoneNumbers();
-  for ( KContacts::PhoneNumber::List::ConstIterator it = phones.constBegin(); it != phones.constEnd(); ++it ) {
+  for ( KContacts::PhoneNumber::List::ConstIterator it = phones.constBegin(), endIt = phones.constEnd(); it != endIt; ++it ) {
     // Create a tag per phone type set in the bitfield
     QStringList types = phoneTypeToString( (*it).type() );
     for( QStringList::ConstIterator typit = types.constBegin(), end = types.constEnd(); typit != end; ++typit ) {
@@ -1042,8 +1042,8 @@ void Contact::setFields( const KContacts::Addressee* addressee )
   QStringList knownCustoms;
   for ( const char** p = s_knownCustomFields; *p; ++p )
     knownCustoms << QString::fromLatin1( *p );
-  QStringList customs = addressee->customs();
-  for( QStringList::ConstIterator it = customs.constBegin(); it != customs.constEnd(); ++it ) {
+  const QStringList customs = addressee->customs();
+  for( QStringList::ConstIterator it = customs.constBegin(), end = customs.constEnd(); it != end; ++it ) {
     // KContacts::Addressee doesn't offer a real way to iterate over customs, other than splitting strings ourselves
     // The format is "app-name:value".
     int pos = (*it).indexOf( '-' );
