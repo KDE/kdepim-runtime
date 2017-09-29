@@ -814,6 +814,11 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
 
     const KDAV::DavItemsListJob *listJob = qobject_cast< KDAV::DavItemsListJob *>(job);
     auto cache = mEtagCaches.value(collection.remoteId());
+    if (!cache) {
+        qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
+        cancelTask();
+        return;
+    }
 
     Akonadi::Item::List changedItems;
     QSet<QString> seenRids;
@@ -902,6 +907,12 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
 
     Akonadi::Collection collection = job->property("collection").value<Akonadi::Collection>();
     auto cache = mEtagCaches.value(collection.remoteId());
+    if (!cache) {
+        qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
+        cancelTask();
+        return;
+    }
+
     const Akonadi::Item::List origItems = job->property("items").value<Akonadi::Item::List>();
     const KDAV::DavItemsFetchJob *davJob = qobject_cast< KDAV::DavItemsFetchJob *>(job);
 
@@ -1049,6 +1060,11 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     Akonadi::Item::List dependentItems = modifyJob->property("dependentItems").value<Akonadi::Item::List>();
     bool isRemoval = modifyJob->property("isRemoval").isValid() && modifyJob->property("isRemoval").toBool();
     auto cache = mEtagCaches.value(collection.remoteId());
+    if (!cache) {
+        qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
+        cancelTask();
+        return;
+    }
 
     if (modifyJob->error()) {
         qCCritical(DAVRESOURCE_LOG) << "Error when uploading item:" << modifyJob->error() << modifyJob->errorString();
