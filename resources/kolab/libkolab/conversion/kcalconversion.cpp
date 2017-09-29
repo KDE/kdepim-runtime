@@ -281,7 +281,7 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
     i.setSummary(fromStdString(e.summary())); //TODO detect richtext
     i.setDescription(fromStdString(e.description())); //TODO detect richtext
     i.setStatus(toStatus(e.status()));
-    foreach (const Kolab::Attendee a, e.attendees()) {
+    foreach (const Kolab::Attendee &a, e.attendees()) {
         /*
          * KCalCore always sets a UID if empty, but that's just a pointer, and not the uid of a real contact.
          * Since that means the semantics of the two are different, we have to store the kolab uid as a custom property.
@@ -311,7 +311,7 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
         }
         i.addAttendee(attendee);
     }
-    foreach (const Kolab::Attachment a, e.attachments()) {
+    foreach (const Kolab::Attachment &a, e.attachments()) {
         KCalCore::Attachment::Ptr ptr;
         if (!a.uri().empty()) {
             ptr = KCalCore::Attachment::Ptr(new KCalCore::Attachment(fromStdString(a.uri()), fromStdString(a.mimetype())));
@@ -663,7 +663,7 @@ void setTodoEvent(KCalCore::Incidence &i, const T &e)
         i.setRecurrenceId(toDate(e.recurrenceID())); //TODO THISANDFUTURE
     }
     setRecurrence(i, e);
-    foreach (const Kolab::Alarm a, e.alarms()) {
+    foreach (const Kolab::Alarm &a, e.alarms()) {
         KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&i));
         switch (a.type()) {
         case Kolab::Alarm::EMailAlarm:

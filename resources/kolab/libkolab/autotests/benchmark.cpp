@@ -38,12 +38,12 @@ KMime::Message::Ptr readMimeFile(const QString &fileName)
 KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
 {
     const KMime::Content::List list = data->contents();
-    Q_FOREACH (KMime::Content *c, list) {
+    for (KMime::Content *c : list) {
         if (c->contentType()->mimeType() == type) {
             return c;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void BenchmarkTests::parsingBenchmarkComparison_data()

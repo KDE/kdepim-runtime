@@ -844,8 +844,8 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
     }
 
     // Attendees:
-    KCalCore::Attendee::List attendees = incidence->attendees();
-    foreach (KCalCore::Attendee::Ptr kcalAttendee, attendees) {
+    const KCalCore::Attendee::List attendees = incidence->attendees();
+    foreach (const KCalCore::Attendee::Ptr &kcalAttendee, attendees) {
         Attendee attendee;
 
         attendee.displayName = kcalAttendee->name();
@@ -971,7 +971,7 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     }
 
     incidence->clearAttachments();
-    foreach (KCalCore::Attachment::Ptr a, mAttachments) {
+    foreach (const KCalCore::Attachment::Ptr &a, mAttachments) {
         // TODO should we copy?
         incidence->addAttachment(a);
     }
