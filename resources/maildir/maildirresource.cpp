@@ -360,7 +360,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
             const QString newKey = dir.changeEntryFlags(item.remoteId(), item.flags());
             if (newKey.isEmpty()) {
                 restartMaildirScan(dir);
-                cancelTask(i18n("Failed to change the flags for the mail. %1").arg(dir.lastError()));
+                cancelTask(i18n("Failed to change the flags for the mail. %1", dir.lastError()));
                 return;
             }
             newItem.setRemoteId(newKey);
