@@ -114,7 +114,7 @@ void OutboxQueue::Private::initQueue()
     ItemFetchJob *job = new ItemFetchJob(outbox);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload(false);
-    connect(job, SIGNAL(result(KJob*)), q, SLOT(collectionFetched(KJob*)));
+    connect(job, &ItemFetchJob::result, q, [this](KJob *job) { collectionFetched(job);});
 }
 
 void OutboxQueue::Private::addIfComplete(const Item &item)
