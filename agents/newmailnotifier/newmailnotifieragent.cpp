@@ -72,7 +72,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     new NewMailNotifierAdaptor(this);
 
     mIdentityManager = KIdentityManagement::IdentityManager::self();
-    connect(mIdentityManager, SIGNAL(changed()), SLOT(slotIdentitiesChanged()));
+    connect(mIdentityManager, QOverload<>::of(&KIdentityManagement::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
     slotIdentitiesChanged();
     mDefaultPixmap = QIcon::fromTheme(QStringLiteral("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
 

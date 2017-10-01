@@ -148,7 +148,7 @@ void MailDispatcherAgent::Private::dispatch()
             aborting = false;
             sentAnything = false;
             Q_EMIT q->status(AgentBase::Idle, i18n("Sending canceled."));
-            QTimer::singleShot(3000, q, SLOT(emitStatusReady()));
+            QTimer::singleShot(3000, q, [this]() {emitStatusReady();});
         } else {
             if (sentAnything) {
                 // Finished sending messages in queue.
@@ -168,7 +168,7 @@ void MailDispatcherAgent::Private::dispatch()
                 // Empty queue.
                 Q_EMIT q->status(AgentBase::Idle, i18n("No items in queue."));
             }
-            QTimer::singleShot(3000, q, SLOT(emitStatusReady()));
+            QTimer::singleShot(3000, q, [this]() {emitStatusReady();});
         }
 
         errorOccurred = false;
@@ -357,7 +357,7 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
 
     // dispatch next message
     sendingInProgress = false;
-    QTimer::singleShot(0, q, SLOT(dispatch()));
+    QTimer::singleShot(0, q, [this]() { dispatch();});
 }
 
 void MailDispatcherAgent::Private::emitStatusReady()

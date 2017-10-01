@@ -302,7 +302,7 @@ void OutboxQueue::Private::localFoldersChanged()
 
         SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(q);
         job->requestDefaultCollection(SpecialMailCollections::Outbox);
-        connect(job, SIGNAL(result(KJob*)), q, SLOT(localFoldersRequestResult(KJob*)));
+        connect(job, &SpecialMailCollectionsRequestJob::result, q, [this](KJob* job) {localFoldersRequestResult(job);} );
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting outbox folder.";
         job->start();
@@ -451,7 +451,7 @@ void OutboxQueue::fetchOne()
     ItemFetchJob *job = new ItemFetchJob(item);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload();
-    connect(job, SIGNAL(result(KJob*)), this, SLOT(itemFetched(KJob*)));
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {d->itemFetched(job); });
 }
 
 #include "moc_outboxqueue.cpp"
