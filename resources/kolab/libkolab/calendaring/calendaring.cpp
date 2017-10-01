@@ -72,6 +72,7 @@ std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab:
     KCalCore::Event::Ptr k = Kolab::Conversion::toKCalCore(e);
     const KCalCore::DateTimeList list = k->recurrence()->timesInInterval(Kolab::Conversion::toDate(start), Kolab::Conversion::toDate(end));
     std::vector<Kolab::cDateTime> dtList;
+    dtList.reserve(list.count());
     for (const QDateTime &dt : list) {
         dtList.push_back(Kolab::Conversion::fromDate(dt, start.isDateOnly()));
     }

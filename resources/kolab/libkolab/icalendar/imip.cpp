@@ -39,7 +39,7 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
     Q_UNUSED(hidden);
 
     const bool outlookConformInvitation = false;
-    QString userAgent = "libkolab";
+    QString userAgent = QStringLiteral("libkolab");
 
     // We must have a recipients list for most MUAs. Thus, if the 'to' list
     // is empty simply use the 'from' address as the recipient.

@@ -57,7 +57,7 @@ void logMessage(const QString &message, const QString &file, int line, ErrorHand
 }
 
 ErrorHandler::ErrorHandler()
-    :   m_worstError(Debug)
+    : m_worstError(Debug)
     , m_debugStream(new DebugStream)
 {
 }

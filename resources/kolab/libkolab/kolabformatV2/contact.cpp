@@ -1293,5 +1293,5 @@ QString KolabV2::Contact::productID() const
 {
     // TODO: When KAB has the version number in a header file, don't hardcode (Bo)
     // Or we could use Addressee::productID? (David)
-    return "KAddressBook 3.3, Kolab resource";
+    return QStringLiteral("KAddressBook 3.3, Kolab resource");
 }

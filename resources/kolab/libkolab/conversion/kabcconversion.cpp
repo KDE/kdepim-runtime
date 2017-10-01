@@ -423,7 +423,7 @@ static QString emailTypesToStringList(int emailTypes)
     if (emailTypes & Kolab::Email::Work) {
         types << QStringLiteral("work");
     }
-    return types.join(",");
+    return types.join(QLatin1Char(','));
 }
 
 static int emailTypesFromStringlist(const QString &types)
@@ -757,6 +757,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     int prefEmail = -1;
     int count = 0;
     std::vector<Kolab::Email> emails;
+    emails.resize(addressee.emails().count());
     foreach (const QString &e, addressee.emails()) {
         if ((prefEmail == -1) && (e == addressee.preferredEmail())) {
             prefEmail = count;

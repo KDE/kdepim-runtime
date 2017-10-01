@@ -216,7 +216,7 @@ class MIMEObject::Private
 {
 public:
     Private()
-        :   mObjectType(InvalidObject)
+        : mObjectType(InvalidObject)
         , mVersion(KolabV3)
         , mOverrideObjectType(InvalidObject)
         , mDoOverrideVersion(false)
