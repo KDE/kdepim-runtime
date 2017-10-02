@@ -208,8 +208,7 @@ void SendJob::Private::doTraditionalTransport()
     job->setBcc(addressAttribute->bcc());
 
     // Signals.
-    connect(job, SIGNAL(result(KJob*)),
-            q, SLOT(transportResult(KJob*)));
+    connect(job, &TransportJob::result, q, [this](KJob *job) { transportResult(job);});
     connect(job, SIGNAL(percent(KJob*,ulong)),
             q, SLOT(transportPercent(KJob*,ulong)));
 
