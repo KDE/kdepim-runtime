@@ -209,9 +209,10 @@ void SendJob::Private::doTraditionalTransport()
 
     // Signals.
     connect(job, &TransportJob::result, q, [this](KJob *job) { transportResult(job);});
+    //We have a private signal
+    //connect(job, QOverload<KJob*, ulong>::of(&TransportJob::percent), q, [this](KJob *job,ulong val) {transportPercent(job, val); });
     connect(job, SIGNAL(percent(KJob*,ulong)),
-            q, SLOT(transportPercent(KJob*,ulong)));
-
+                q, SLOT(transportPercent(KJob*,ulong)));
     job->start();
 }
 
@@ -297,20 +298,19 @@ void SendJob::Private::doPostJob(bool transportSuccess, const QString &transport
         if (attribute->sentBehaviour() == SentBehaviourAttribute::Delete) {
             qCDebug(MAILDISPATCHER_LOG) << "Deleting item from outbox.";
             currentJob = new ItemDeleteJob(item);
-            QObject::connect(currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)));
+            QObject::connect(currentJob, &ItemDeleteJob::result, q, [this](KJob *job) { postJobResult(job); });
         } else {
             if (attribute->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection) {
                 if (SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
                     currentJob = new ItemMoveJob(item, SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::SentMail), q);
-                    QObject::connect(currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)));
+                    QObject::connect(currentJob, &ItemMoveJob::result, q, [this](KJob *job) { postJobResult(job); });
                 } else {
                     abortPostJob();
                 }
             } else {
                 qCDebug(MAILDISPATCHER_LOG) << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
                 currentJob = new CollectionFetchJob(attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base);
-                QObject::connect(currentJob, SIGNAL(result(KJob*)),
-                                 q, SLOT(slotSentMailCollectionFetched(KJob*)));
+                QObject::connect(currentJob, &CollectionFetchJob::result, q, [this](KJob *job) { slotSentMailCollectionFetched(job);});
 
             }
         }
@@ -360,7 +360,7 @@ void SendJob::Private::slotSentMailCollectionFetched(KJob *job)
         fetchCol = SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::SentMail);
     }
     currentJob = new ItemMoveJob(item, fetchCol, q);
-    QObject::connect(currentJob, SIGNAL(result(KJob*)), q, SLOT(postJobResult(KJob*)));
+    QObject::connect(currentJob, &ItemMoveJob::result, q, [this](KJob *job) {postJobResult(job);});
 }
 
 void SendJob::Private::postJobResult(KJob *job)
@@ -406,7 +406,7 @@ void SendJob::Private::storeResult(bool success, const QString &message)
 
     Q_ASSERT(currentJob == nullptr);
     currentJob = new StoreResultJob(item, success, message);
-    connect(currentJob, SIGNAL(result(KJob*)), q, SLOT(doEmitResult(KJob*)));
+    connect(currentJob, &StoreResultJob::result, [this](KJob *job) { doEmitResult(job); });
 }
 
 void SendJob::Private::doEmitResult(KJob *job)

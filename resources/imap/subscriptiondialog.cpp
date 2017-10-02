@@ -94,8 +94,8 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     m_lineEdit->setFocus();
 
     QCheckBox *checkBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), mainWidget);
-    connect(checkBox, SIGNAL(stateChanged(int)),
-            m_filter, SLOT(setIncludeCheckedOnly(int)));
+    connect(checkBox, &QCheckBox::stateChanged,
+            m_filter, QOverload<int>::of(&SubscriptionFilterProxyModel::setIncludeCheckedOnly));
 
     filterBarLayout->addWidget(checkBox);
 

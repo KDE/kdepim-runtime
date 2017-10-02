@@ -45,7 +45,7 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
     : ResourceBase(id), mDownloadJob(nullptr), mUploadJob(nullptr)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
-    QTimer::singleShot(0, this, SLOT(readFile()));
+    QTimer::singleShot(0, this, [this]() {readFile();});
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     changeRecorder()->fetchCollection(true);

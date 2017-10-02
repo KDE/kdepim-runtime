@@ -79,7 +79,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     connect(mUi.configuredUrls->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ConfigDialog::checkConfiguredUrlsButtonsState);
     connect(mUi.configuredUrls, &QAbstractItemView::doubleClicked, this, &ConfigDialog::onEditButtonClicked);
 
-    connect(mUi.syncRangeStartType, SIGNAL(currentIndexChanged(int)), this, SLOT(onSyncRangeStartTypeChanged()));
+    connect(mUi.syncRangeStartType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ConfigDialog::onSyncRangeStartTypeChanged);
     connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
     connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
     connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);

@@ -54,7 +54,7 @@ void UpdateMessageJob::start()
     if (mSession->selectedMailBox() != mMailbox) {
         KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mMailbox);
-        connect(select, SIGNAL(result(KJob*)), this, SLOT(onSelectDone(KJob*)));
+        connect(select, &KIMAP::SelectJob::result, this, [this](KJob*job) { onSelectDone(job); });
         select->start();
     } else {
         fetchHeaders();
