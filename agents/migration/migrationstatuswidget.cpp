@@ -95,11 +95,11 @@ void MigrationStatusWidget::abortSelected()
 void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
 {
     QDialog *dlg = new QDialog(this);
-    QVBoxLayout *topLayout = new QVBoxLayout;
+    QVBoxLayout *topLayout = new QVBoxLayout(dlg);
     dlg->setLayout(topLayout);
     QWidget *widget = new QWidget(dlg);
     topLayout->addWidget(widget);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
     connect(buttonBox, &QDialogButtonBox::accepted, dlg, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
