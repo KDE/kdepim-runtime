@@ -201,8 +201,8 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     KDBusConnectionPool::threadConnection().registerService(service);
 
     d->queue = new OutboxQueue(this);
-    connect(d->queue, SIGNAL(newItems()),
-            this, SLOT(dispatch()));
+    connect(d->queue, &OutboxQueue::newItems,
+            this, [this]() { d->dispatch(); });
     connect(d->queue, SIGNAL(itemReady(Akonadi::Item)),
             this, SLOT(itemFetched(Akonadi::Item)));
     connect(d->queue, SIGNAL(error(QString)),
@@ -234,7 +234,7 @@ void MailDispatcherAgent::doSetOnline(bool online)
     if (online) {
         qCDebug(MAILDISPATCHER_LOG) << "Online. Dispatching messages.";
         Q_EMIT status(AgentBase::Idle, i18n("Online, sending messages in queue."));
-        QTimer::singleShot(0, this, SLOT(dispatch()));
+        QTimer::singleShot(0, this, [this]() { d->dispatch(); });
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Offline.";
         Q_EMIT status(AgentBase::Idle, i18n("Offline, message sending suspended."));

@@ -55,8 +55,6 @@ void GoogleAccountManager::initManager()
     m_wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(),
                                            0, KWallet::Wallet::Synchronous);
     slotWalletOpened(m_wallet != nullptr);
-//     connect( m_wallet, SIGNAL(walletOpened(bool)),
-//              this, SLOT(slotWalletOpened(bool)) );
     if (m_wallet) {
         connect(m_wallet.data(), &KWallet::Wallet::folderUpdated, this, &GoogleAccountManager::slotFolderUpdated);
         connect(m_wallet.data(), &KWallet::Wallet::walletClosed, this, &GoogleAccountManager::slotWalletClosed);

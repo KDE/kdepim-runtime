@@ -64,7 +64,6 @@ private:
     Private *const d;
 
     Q_PRIVATE_SLOT(d, void abort())
-    Q_PRIVATE_SLOT(d, void dispatch())
     Q_PRIVATE_SLOT(d, void itemFetched(const Akonadi::Item &))
     Q_PRIVATE_SLOT(d, void queueError(const QString &))
     Q_PRIVATE_SLOT(d, void sendPercent(KJob *, unsigned long))
