@@ -177,5 +177,3 @@ void UpgradeTest::testContact()
 }
 
 QTEST_MAIN(UpgradeTest)
-
-#include "upgradetest.moc"

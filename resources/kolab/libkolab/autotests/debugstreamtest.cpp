@@ -51,5 +51,3 @@ void DebugStreamTest::testHasError()
 }
 
 QTEST_MAIN(DebugStreamTest)
-
-#include "debugstreamtest.moc"

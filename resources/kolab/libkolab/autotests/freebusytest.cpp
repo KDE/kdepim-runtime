@@ -160,5 +160,3 @@ void FreebusyTest::testFB()
 // }
 
 QTEST_MAIN(FreebusyTest)
-
-#include "freebusytest.moc"

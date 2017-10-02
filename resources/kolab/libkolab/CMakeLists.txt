@@ -33,8 +33,6 @@ if (Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -DQT_NO_EXCEPTIONS -fno-common -Woverloaded-virtual -fno-threadsafe-statics -fvisibility=hidden -Werror=return-type -fvisibility-inlines-hidden -fexceptions -UQT_NO_EXCEPTIONS -fPIC -g -std=c++11")
-
 set(KDE_LIBRARIES
     KF5::CalendarCore
     KF5::CalendarUtils
@@ -57,14 +55,7 @@ include_directories(
 
 configure_file(libkolab-version.h.cmake "${CMAKE_CURRENT_BINARY_DIR}/libkolab-version.h" @ONLY)
 
-add_subdirectory(kolabformatV2)
-add_subdirectory(conversion)
-add_subdirectory(calendaring)
-add_subdirectory(icalendar)
-add_subdirectory(freebusy)
 add_subdirectory(utils)
-
-QT5_WRAP_CPP(CALENDARING_MOC calendaring/event.h)
 
 set(KOLAB_SRCS
     kolabformat/kolabobject.cpp
@@ -75,13 +66,25 @@ set(KOLAB_SRCS
     kolabformat/mimeobject.cpp
     mime/mimeutils.cpp
     utils/porting.cpp
-    ${CONVERSION_SRCS}
-    ${kolabformatv2_SRCS}
-    ${CALENDARING_SRCS}
-    ${ICALENDAR_SRCS}
-    ${CALENDARING_MOC}
-    ${CONVERSION_MOC}
-    ${FREEBUSY_SRCS}
+    conversion/kcalconversion.cpp
+    conversion/kabcconversion.cpp
+    conversion/commonconversion.cpp
+    conversion/kolabconversion.cpp
+    conversion/timezoneconverter.cpp
+    calendaring/calendaring.cpp
+    calendaring/event.cpp
+    calendaring/datetimeutils.cpp
+    icalendar/icalendar.cpp
+    icalendar/imip.cpp
+    kolabformatV2/kolabbase.cpp
+    kolabformatV2/contact.cpp
+    kolabformatV2/distributionlist.cpp
+    kolabformatV2/event.cpp
+    kolabformatV2/task.cpp
+    kolabformatV2/journal.cpp
+    kolabformatV2/incidence.cpp
+    kolabformatV2/note.cpp
+    freebusy/freebusy.cpp
 )
 
 set(KOLAB_LINK_LIBRARIES

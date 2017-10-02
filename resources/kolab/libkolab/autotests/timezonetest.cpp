@@ -177,5 +177,3 @@ void TimezoneTest::localTimezone()
 }
 
 QTEST_MAIN(TimezoneTest)
-
-#include "timezonetest.moc"

@@ -54,5 +54,3 @@ void V2Test::testWriteDistlistUID()
 }
 
 QTEST_MAIN(V2Test)
-
-#include "legacyformattest.moc"

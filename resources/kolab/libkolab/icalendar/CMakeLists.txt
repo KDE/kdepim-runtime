@@ -1,5 +1,0 @@
-
-set (ICALENDAR_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/icalendar.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imip.cpp
-    PARENT_SCOPE)

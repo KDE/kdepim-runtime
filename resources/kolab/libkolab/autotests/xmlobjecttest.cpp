@@ -59,5 +59,3 @@ void XMLObjectTest::testDontCrash()
 }
 
 QTEST_MAIN(XMLObjectTest)
-
-#include "xmlobjecttest.moc"

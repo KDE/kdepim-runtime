@@ -486,5 +486,3 @@ void FormatTest::proveJPGisLossy()
 }
 
 QTEST_MAIN(FormatTest)
-
-#include "formattest.moc"

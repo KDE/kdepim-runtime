@@ -1,3 +1,0 @@
-set (FREEBUSY_SRCS
-    ${CMAKE_CURRENT_SOURCE_DIR}/freebusy.cpp
-    PARENT_SCOPE)

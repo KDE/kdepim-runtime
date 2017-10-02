@@ -183,5 +183,3 @@ void MIMEObjectTest::testDistlist()
 }
 
 QTEST_MAIN(MIMEObjectTest)
-
-#include "mimeobjecttest.moc"

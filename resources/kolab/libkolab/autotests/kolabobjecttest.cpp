@@ -172,5 +172,3 @@ void KolabObjectTest::parseRelationMembers()
 }
 
 QTEST_MAIN(KolabObjectTest)
-
-#include "kolabobjecttest.moc"

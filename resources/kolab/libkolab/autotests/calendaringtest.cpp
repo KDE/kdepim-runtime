@@ -417,5 +417,3 @@ void CalendaringTest::testDateTimeUtils()
 }
 
 QTEST_MAIN(CalendaringTest)
-
-#include "calendaringtest.moc"

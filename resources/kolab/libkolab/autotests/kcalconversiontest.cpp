@@ -580,5 +580,3 @@ void KCalConversionTest::testContactConversion()
 // }
 
 QTEST_MAIN(KCalConversionTest)
-
-#include "kcalconversiontest.moc"

@@ -92,5 +92,3 @@ void ICalendarTest::testToIMip()
 }
 
 QTEST_MAIN(ICalendarTest)
-
-#include "icalendartest.moc"
