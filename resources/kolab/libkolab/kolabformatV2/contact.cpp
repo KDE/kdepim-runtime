@@ -435,9 +435,9 @@ bool Contact::loadPhoneAttribute(QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == "type") {
+            if (tagName == QLatin1String("type")) {
                 number.type = e.text();
-            } else if (tagName == "number") {
+            } else if (tagName == QLatin1String("number")) {
                 number.number = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -457,11 +457,11 @@ void Contact::savePhoneAttributes(QDomElement &element) const
     QList<PhoneNumber>::ConstIterator it = mPhoneNumbers.constBegin();
     const QList<PhoneNumber>::ConstIterator end = mPhoneNumbers.constEnd();
     for (; it != end; ++it) {
-        QDomElement e = element.ownerDocument().createElement("phone");
+        QDomElement e = element.ownerDocument().createElement(QStringLiteral("phone"));
         element.appendChild(e);
         const PhoneNumber &p = *it;
-        writeString(e, "type", p.type);
-        writeString(e, "number", p.number);
+        writeString(e, QStringLiteral("type"), p.type);
+        writeString(e, QStringLiteral("number"), p.number);
     }
 }
 

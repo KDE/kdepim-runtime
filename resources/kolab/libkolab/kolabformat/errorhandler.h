@@ -51,7 +51,8 @@ public:
     };
 
     struct Err {
-        Err(Severity s, const QString &m, const QString &l) : severity(s)
+        Err(Severity s, const QString &m, const QString &l)
+            : severity(s)
             , message(m)
             , location(l)
         {

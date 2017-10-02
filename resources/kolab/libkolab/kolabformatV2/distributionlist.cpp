@@ -234,4 +234,9 @@ void DistributionList::saveTo(KContacts::ContactGroup *contactGroup)
     }
 }
 
+QString DistributionList::type() const
+{
+    return QStringLiteral("DistributionList");
+}
+
 // kate: space-indent on; indent-width 2; replace-tabs on;
