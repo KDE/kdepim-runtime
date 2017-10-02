@@ -176,7 +176,7 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
         return QStringLiteral("urn:uuid:%1").arg(member.gid);
     }
     QUrl url;
-    url.setScheme("imap");
+    url.setScheme(QStringLiteral("imap"));
     QList<QByteArray> path;
     path << "/";
     if (!member.user.isEmpty()) {

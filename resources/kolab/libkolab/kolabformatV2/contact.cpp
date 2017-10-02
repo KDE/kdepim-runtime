@@ -39,10 +39,12 @@
 
 using namespace KolabV2;
 
-static const char *s_pictureAttachmentName = "kolab-picture.png";
-static const char *s_logoAttachmentName = "kolab-logo.png";
-static const char *s_soundAttachmentName = "sound";
-static const char *s_unhandledTagAppName = "KOLABUNHANDLED"; // no hyphens in appnames!
+namespace {
+inline QString pictureAttachmentName() { return QStringLiteral("kolab-picture.png"); }
+inline QString logoAttachmentName() { return QStringLiteral("kolab-logo.png"); }
+inline QString soundAttachmentName() { return QStringLiteral("sound"); }
+inline QString unhandledTagAppName() { return QStringLiteral("KOLABUNHANDLED"); } // no hyphens in appnames!
+}
 
 // saving (addressee->xml)
 Contact::Contact(const KContacts::Addressee *addr)
@@ -382,19 +384,19 @@ bool Contact::loadNameAttribute(QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == "given-name") {
+            if (tagName == QLatin1String("given-name")) {
                 setGivenName(e.text());
-            } else if (tagName == "middle-names") {
+            } else if (tagName == QLatin1String("middle-names")) {
                 setMiddleNames(e.text());
-            } else if (tagName == "last-name") {
+            } else if (tagName == QLatin1String("last-name")) {
                 setLastName(e.text());
-            } else if (tagName == "full-name") {
+            } else if (tagName ==QLatin1String("full-name")) {
                 setFullName(e.text());
-            } else if (tagName == "initials") {
+            } else if (tagName == QLatin1String("initials")) {
                 setInitials(e.text());
-            } else if (tagName == "prefix") {
+            } else if (tagName == QLatin1String("prefix")) {
                 setPrefix(e.text());
-            } else if (tagName == "suffix") {
+            } else if (tagName == QLatin1String("suffix")) {
                 setSuffix(e.text());
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -486,7 +488,7 @@ void Contact::saveCustomAttributes(QDomElement &element) const
     QList<Custom>::ConstIterator it = mCustomList.constBegin();
     for (; it != mCustomList.constEnd(); ++it) {
         Q_ASSERT(!(*it).name.isEmpty());
-        if ((*it).app == s_unhandledTagAppName) {
+        if ((*it).app == unhandledTagAppName()) {
             writeString(element, (*it).name, (*it).value);
         } else {
             // Let's use attributes so that other tag-preserving-code doesn't need sub-elements
@@ -511,21 +513,21 @@ bool Contact::loadAddressAttribute(QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
 
-            if (tagName == "type") {
+            if (tagName == QLatin1String("type")) {
                 address.type = e.text();
-            } else if (tagName == "x-kde-type") {
+            } else if (tagName == QLatin1String("x-kde-type")) {
                 address.kdeAddressType = e.text().toInt();
-            } else if (tagName == "street") {
+            } else if (tagName == QLatin1String("street")) {
                 address.street = e.text();
-            } else if (tagName == "pobox") {
+            } else if (tagName == QLatin1String("pobox")) {
                 address.pobox = e.text();
-            } else if (tagName == "locality") {
+            } else if (tagName == QLatin1String("locality")) {
                 address.locality = e.text();
-            } else if (tagName == "region") {
+            } else if (tagName == QLatin1String("region")) {
                 address.region = e.text();
-            } else if (tagName == "postal-code") {
+            } else if (tagName == QLatin1String("postal-code")) {
                 address.postalCode = e.text();
-            } else if (tagName == "country") {
+            } else if (tagName == QLatin1String("country")) {
                 address.country = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
@@ -545,28 +547,28 @@ void Contact::saveAddressAttributes(QDomElement &element) const
     QList<Address>::ConstIterator it = mAddresses.constBegin();
     const QList<Address>::ConstIterator end = mAddresses.constEnd();
     for (; it != end; ++it) {
-        QDomElement e = element.ownerDocument().createElement("address");
+        QDomElement e = element.ownerDocument().createElement(QStringLiteral("address"));
         element.appendChild(e);
         const Address &a = *it;
-        writeString(e, "type", a.type);
-        writeString(e, "x-kde-type", QString::number(a.kdeAddressType));
+        writeString(e, QStringLiteral("type"), a.type);
+        writeString(e, QStringLiteral("x-kde-type"), QString::number(a.kdeAddressType));
         if (!a.street.isEmpty()) {
-            writeString(e, "street", a.street);
+            writeString(e, QStringLiteral("street"), a.street);
         }
         if (!a.pobox.isEmpty()) {
-            writeString(e, "pobox", a.pobox);
+            writeString(e, QStringLiteral("pobox"), a.pobox);
         }
         if (!a.locality.isEmpty()) {
-            writeString(e, "locality", a.locality);
+            writeString(e, QStringLiteral("locality"), a.locality);
         }
         if (!a.region.isEmpty()) {
-            writeString(e, "region", a.region);
+            writeString(e, QStringLiteral("region"), a.region);
         }
         if (!a.postalCode.isEmpty()) {
-            writeString(e, "postal-code", a.postalCode);
+            writeString(e, QStringLiteral("postal-code"), a.postalCode);
         }
         if (!a.country.isEmpty()) {
-            writeString(e, "country", a.country);
+            writeString(e, QStringLiteral("country"), a.country);
         }
     }
 }
@@ -811,7 +813,7 @@ bool Contact::loadXML(const QDomDocument &document)
                 // Unhandled tag - save for later storage
                 //qDebug() <<"Saving unhandled tag" << e.tagName();
                 Custom c;
-                c.app = s_unhandledTagAppName;
+                c.app = unhandledTagAppName();
                 c.name = e.tagName();
                 c.value = e.text();
                 mCustomList.append(c);
@@ -1009,20 +1011,20 @@ void Contact::setFields(const KContacts::Addressee *addressee)
     setSuffix(addressee->suffix());
     setOrganization(addressee->organization());
     setWebPage(addressee->url().url().url());
-    setIMAddress(addressee->custom("KADDRESSBOOK", "X-IMAddress"));
+    setIMAddress(addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress")));
     setDepartment(addressee->department());
-    setOfficeLocation(addressee->custom("KADDRESSBOOK", "X-Office"));
-    setProfession(addressee->custom("KADDRESSBOOK", "X-Profession"));
+    setOfficeLocation(addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office")));
+    setProfession(addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession")));
     setRole(addressee->role());
     setTitle(addressee->title());
-    setManagerName(addressee->custom("KADDRESSBOOK", "X-ManagersName"));
-    setAssistant(addressee->custom("KADDRESSBOOK", "X-AssistantsName"));
+    setManagerName(addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName")));
+    setAssistant(addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName")));
     setNickName(addressee->nickName());
-    setSpouseName(addressee->custom("KADDRESSBOOK", "X-SpousesName"));
+    setSpouseName(addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName")));
     if (!addressee->birthday().isNull()) {
         setBirthday(addressee->birthday().date());
     }
-    const QString &anniversary = addressee->custom("KADDRESSBOOK", "X-Anniversary");
+    const QString &anniversary = addressee->custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"));
     if (!anniversary.isEmpty()) {
         setAnniversary(stringToDate(anniversary));
     }
@@ -1078,19 +1080,19 @@ void Contact::setFields(const KContacts::Addressee *addressee)
     setPicture(loadPictureFromAddressee(addressee->photo()), addressee->photo().type());
     mPictureAttachmentName = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("PictureAttachmentName"));
     if (mPictureAttachmentName.isEmpty()) {
-        mPictureAttachmentName = s_pictureAttachmentName;
+        mPictureAttachmentName = pictureAttachmentName();
     }
 
     setLogo(loadPictureFromAddressee(addressee->logo()), addressee->logo().type());
     mLogoAttachmentName = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("LogoAttachmentName"));
     if (mLogoAttachmentName.isEmpty()) {
-        mLogoAttachmentName = s_logoAttachmentName;
+        mLogoAttachmentName = logoAttachmentName();
     }
 
     setSound(loadSoundFromAddressee(addressee->sound()));
     mSoundAttachmentName = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("SoundAttachmentName"));
     if (mSoundAttachmentName.isEmpty()) {
-        mSoundAttachmentName = s_soundAttachmentName;
+        mSoundAttachmentName = soundAttachmentName();
     }
 
     if (addressee->geo().isValid()) {
@@ -1167,28 +1169,28 @@ void Contact::saveTo(KContacts::Addressee *addressee)
     addressee->setSuffix(suffix());
     addressee->setOrganization(organization());
     addressee->setUrl(url);
-    addressee->insertCustom("KADDRESSBOOK", "X-IMAddress", imAddress());
+    addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), imAddress());
     addressee->setDepartment(department());
-    addressee->insertCustom("KADDRESSBOOK", "X-Office", officeLocation());
-    addressee->insertCustom("KADDRESSBOOK", "X-Profession", profession());
+    addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), officeLocation());
+    addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession"), profession());
     addressee->setRole(role());
     addressee->setTitle(title());
-    addressee->insertCustom("KADDRESSBOOK", "X-ManagersName", managerName());
-    addressee->insertCustom("KADDRESSBOOK", "X-AssistantsName", assistant());
+    addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"), managerName());
+    addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"), assistant());
     addressee->setNickName(nickName());
-    addressee->insertCustom("KADDRESSBOOK", "X-SpousesName", spouseName());
+    addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), spouseName());
     if (birthday().isValid()) {
         addressee->setBirthday(QDateTime(birthday()));
     }
 
     if (anniversary().isValid()) {
-        addressee->insertCustom("KADDRESSBOOK", "X-Anniversary",
+        addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"),
                                 dateToString(anniversary()));
     } else {
-        addressee->removeCustom("KADDRESSBOOK", "X-Anniversary");
+        addressee->removeCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"));
     }
 
-    addressee->insertCustom("KOLAB", "FreebusyUrl", freeBusyUrl());
+    addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("FreebusyUrl"), freeBusyUrl());
 
     // We need to store both the original attachment name and the picture data into the addressee.
     // This is important, otherwise we would save the image under another attachment name w/o deleting the original one!
@@ -1198,16 +1200,16 @@ void Contact::saveTo(KContacts::Addressee *addressee)
     }
     // Note that we must save the filename in all cases, so that removing the picture
     // actually deletes the attachment.
-    addressee->insertCustom("KOLAB", "PictureAttachmentName", mPictureAttachmentName);
+    addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("PictureAttachmentName"), mPictureAttachmentName);
     if (!mLogo.isNull()) {
         KContacts::Picture picture(mLogo);
         addressee->setLogo(picture);
     }
-    addressee->insertCustom("KOLAB", "LogoAttachmentName", mLogoAttachmentName);
+    addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("LogoAttachmentName"), mLogoAttachmentName);
     if (!mSound.isNull()) {
         addressee->setSound(KContacts::Sound(mSound));
     }
-    addressee->insertCustom("KOLAB", "SoundAttachmentName", mSoundAttachmentName);
+    addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("SoundAttachmentName"), mSoundAttachmentName);
 
     if (mHasGeo) {
         addressee->setGeo(KContacts::Geo(mLatitude, mLongitude));

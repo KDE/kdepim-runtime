@@ -228,7 +228,7 @@ void Note::saveTo(const KCalCore::Journal::Ptr &journal)
                                    colorToString(backgroundColor()));
     }
     journal->setCustomProperty("KNotes", "RichText",
-                               richText() ? "true" : "false");
+                               richText() ? QLatin1String("true") : QLatin1String("false"));
 }
 
 QString Note::productID() const

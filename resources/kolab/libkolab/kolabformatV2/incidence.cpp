@@ -508,7 +508,7 @@ bool Incidence::loadAttribute(QDomElement &element)
         } else {
             setPriority(p);
         }
-    } else if (tagName == "x-kcal-priority") { //for backwards compat
+    } else if (tagName == QLatin1String("x-kcal-priority")) { //for backwards compat
         bool ok;
         int p = element.text().toInt(&ok);
         if (!ok || p < 0 || p > 9) {

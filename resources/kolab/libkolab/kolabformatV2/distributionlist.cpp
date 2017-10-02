@@ -37,8 +37,9 @@
 
 using namespace KolabV2;
 
-static const char *s_unhandledTagAppName = "KOLABUNHANDLED"; // no hyphens in appnames!
-
+namespace {
+inline QString unhandledTagAppName() { return  QStringLiteral("KOLABUNHANDLED"); } // no hyphens in appnames!
+}
 // saving (contactgroup->xml)
 DistributionList::DistributionList(const KContacts::ContactGroup *contactGroup)
 {
@@ -130,7 +131,7 @@ bool DistributionList::saveAttributes(QDomElement &element) const
 {
     // Save the base class elements
     KolabBase::saveAttributes(element);
-    writeString(element, "display-name", name());
+    writeString(element, QStringLiteral("display-name"), name());
     saveDistrListMembers(element);
 
     return true;
@@ -156,7 +157,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
                 // Unhandled tag - save for later storage
                 //qDebug() <<"Saving unhandled tag" << e.tagName();
                 Custom c;
-                c.app = s_unhandledTagAppName;
+                c.app = unhandledTagAppName();
                 c.name = e.tagName();
                 c.value = e.text();
                 mCustomList.append(c);

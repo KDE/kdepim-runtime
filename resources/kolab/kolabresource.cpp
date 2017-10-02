@@ -97,7 +97,7 @@ QString KolabResource::defaultName() const
 
 QByteArray KolabResource::clientId() const
 {
-    return "Kontact Kolab Resource 5/KOLAB";
+    return QByteArrayLiteral("Kontact Kolab Resource 5/KOLAB");
 }
 
 QDialog *KolabResource::createConfigureDialog(WId windowId)

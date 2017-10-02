@@ -429,10 +429,10 @@ static QString emailTypesToStringList(int emailTypes)
 static int emailTypesFromStringlist(const QString &types)
 {
     int emailTypes = Kolab::Email::NoType;
-    if (types.contains("home")) {
+    if (types.contains(QStringLiteral("home"))) {
         emailTypes |= Kolab::Email::Home;
     }
-    if (types.contains("work")) {
+    if (types.contains(QStringLiteral("work"))) {
         emailTypes |= Kolab::Email::Work;
     }
     return emailTypes;
@@ -491,7 +491,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
         if (preferredEmail.isEmpty()) {
             Error() << "f/b url is set but no email address available, skipping";
         } else {
-            addressee.insertCustom("KOLAB", "FreebusyUrl", fromStdString(contact.freeBusyUrl()));
+            addressee.insertCustom(QStringLiteral("KOLAB"), QStringLiteral("FreebusyUrl"), fromStdString(contact.freeBusyUrl()));
         }
     }
 
@@ -511,7 +511,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
         addressee.setUrl(url);
         foreach (const Kolab::Url &u, contact.urls()) {
             if (u.type() == Kolab::Url::Blog) {
-                addressee.insertCustom("KADDRESSBOOK", "BlogFeed", fromStdString(u.url()));
+                addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("BlogFeed"), fromStdString(u.url()));
             }
         }
     }

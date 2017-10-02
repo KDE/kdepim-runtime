@@ -45,7 +45,7 @@ namespace Kolab {
 #define KOLAB_VERSION_V2 QStringLiteral("2.0")
 #define KOLAB_VERSION_V3 QStringLiteral("3.0")
 
-#define KOLAB_OBJECT_FILENAME "kolab.xml"
+#define KOLAB_OBJECT_FILENAME QStringLiteral("kolab.xml")
 
 #define MIME_TYPE_XCAL "application/calendar+xml"
 #define MIME_TYPE_XCARD "application/vcard+xml"
