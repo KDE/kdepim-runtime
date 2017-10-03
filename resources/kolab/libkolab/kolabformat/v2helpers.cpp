@@ -27,7 +27,7 @@
 #include "kolabformatV2/distributionlist.h"
 #include "kolabformatV2/note.h"
 #include "mime/mimeutils.h"
-#include "kolabformat/errorhandler.h"
+
 #include "pimkolab_debug.h"
 #include <kcontacts/contactgroup.h>
 

@@ -20,7 +20,7 @@
 #include "commonconversion.h"
 #include <qbuffer.h>
 #include <qimagereader.h>
-#include "kolabformat/errorhandler.h"
+
 #include "pimkolab_debug.h"
 namespace Kolab {
 namespace Conversion {
@@ -646,7 +646,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     Kolab::Affiliation businessAff;
     businessAff.setOrganisation(toStdString(addressee.organization()));
     if (!addressee.department().isEmpty()) {
-        Debug() << addressee.department() << addressee.department().toLatin1() << addressee.department().toUtf8();
+        qCDebug(PIMKOLAB_LOG) << addressee.department() << addressee.department().toLatin1() << addressee.department().toUtf8();
         businessAff.setOrganisationalUnits(std::vector<std::string>() << toStdString(addressee.department()));
     }
 

@@ -25,7 +25,7 @@
 #include <QDate>
 #include <vector>
 
-#include "kolabformat/errorhandler.h"
+
 #include "commonconversion.h"
 #include "pimkolab_debug.h"
 namespace Kolab {
@@ -296,13 +296,13 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
         }
         if (!a.delegatedTo().empty()) {
             if (a.delegatedTo().size() > 1) {
-                WARNING("multiple delegatees are not supported");
+                qCWarning(PIMKOLAB_LOG) << "multiple delegatees are not supported";
             }
             attendee->setDelegate(toMailto(a.delegatedTo().front().email(), a.delegatedTo().front().name()).toString());
         }
         if (!a.delegatedFrom().empty()) {
             if (a.delegatedFrom().size() > 1) {
-                WARNING("multiple delegators are not supported");
+                qCWarning(PIMKOLAB_LOG) << "multiple delegators are not supported";
             }
             attendee->setDelegator(toMailto(a.delegatedFrom().front().email(), a.delegatedFrom().front().name()).toString());
         }

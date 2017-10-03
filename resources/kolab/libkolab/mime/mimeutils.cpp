@@ -21,7 +21,7 @@
 #include <qdom.h>
 #include <kdatetime.h>
 #include "kolabformat/kolabdefinitions.h"
-#include "kolabformat/errorhandler.h"
+
 #include <kolabformat.h>
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"

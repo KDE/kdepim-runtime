@@ -23,7 +23,7 @@
 #include "conversion/commonconversion.h"
 #include "kolabformat/kolabobject.h"
 #include "kolabformat/xmlobject.h"
-#include "kolabformat/errorhandler.h"
+
 #include "kolabformat/v2helpers.h"
 #include "mime/mimeutils.h"
 #include "libkolab-version.h"
