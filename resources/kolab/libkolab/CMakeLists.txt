@@ -76,6 +76,8 @@ set(KOLAB_SRCS
     freebusy/freebusy.cpp
 )
 
+ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PIMKOLAB_LOG CATEGORY_NAME org.kde.pim.pimkolab)
+
 set(KOLAB_LINK_LIBRARIES
     KF5::CalendarCore
     KF5::CalendarUtils
