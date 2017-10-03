@@ -220,7 +220,7 @@ Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message:
     QByteArray type;
     KMime::Content *content = findContentByName(mimeData, name, type);
     if (!content) { // guard against malformed events with non-existent attachments
-        Warning() << "could not find attachment: "<< name.toUtf8() << type;
+        qCWarning(PIMKOLAB_LOG) <<"could not find attachment: "<< name.toUtf8() << type;
         return Kolab::Attachment();
     }
     Kolab::Attachment attachment;

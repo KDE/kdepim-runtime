@@ -140,7 +140,7 @@ static Kolab::ObjectType getObjectType(const std::string &type)
     } else if (type == relationKolabType()) {
         return RelationConfigurationObject;
     }
-    Warning() << "Unknown object type: " << type;
+    qCWarning(PIMKOLAB_LOG) <<"Unknown object type: " << type;
     return Kolab::InvalidObject;
 }
 
@@ -166,7 +166,7 @@ static QByteArray getTypeString(Kolab::ObjectType type)
     case RelationConfigurationObject:
         return KOLAB_TYPE_RELATION;
     default:
-        Critical() << "unknown type "<< type;
+        qCCritical(PIMKOLAB_LOG) << "unknown type "<< type;
     }
     return QByteArray();
 }
@@ -187,7 +187,7 @@ static QByteArray getMimeType(Kolab::ObjectType type)
     case RelationConfigurationObject:
         return MIME_TYPE_KOLAB;
     default:
-        Critical() << "unknown type "<< type;
+        qCCritical(PIMKOLAB_LOG) << "unknown type "<< type;
     }
     return QByteArray();
 }
@@ -206,8 +206,8 @@ static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
 static void printMessageDebugInfo(const KMime::Message::Ptr &msg)
 {
     //TODO replace by Debug stream for Mimemessage
-    Debug() << "MessageId: " << msg->messageID()->asUnicodeString();
-    Debug() << "Subject: " << msg->subject()->asUnicodeString();
+    qCDebug(PIMKOLAB_LOG) << "MessageId: " << msg->messageID()->asUnicodeString();
+    qCDebug(PIMKOLAB_LOG) << "Subject: " << msg->subject()->asUnicodeString();
 //     Debug() << msg->encodedContent();
 }
 
@@ -270,7 +270,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     if (objectType == DictionaryConfigurationObject) {
         KMime::Content *xmlContent = Mime::findContentByType(msg, "application/xml");
         if (!xmlContent) {
-            Critical() << "no application/xml part found";
+            qCCritical(PIMKOLAB_LOG) << "no application/xml part found";
             printMessageDebugInfo(msg);
             return InvalidObject;
         }
@@ -289,13 +289,13 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     }
     KMime::Content *xmlContent = Mime::findContentByType(msg, getTypeString(objectType));
     if (!xmlContent) {
-        Critical() << "no part with type" << getTypeString(objectType) << " found";
+        qCCritical(PIMKOLAB_LOG) << "no part with type" << getTypeString(objectType) << " found";
         printMessageDebugInfo(msg);
         return QVariant();
     }
     const QByteArray &xmlData = xmlContent->decodedContent();
     if (xmlData.isEmpty()) {
-        Critical() << "no content in message part with type" << getTypeString(objectType);
+        qCCritical(PIMKOLAB_LOG) << "no content in message part with type" << getTypeString(objectType);
         printMessageDebugInfo(msg);
         return QVariant();
     }
@@ -372,7 +372,7 @@ QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab:
 {
     KMime::Content *const xmlContent = Mime::findContentByType(msg, getMimeType(objectType));
     if (!xmlContent) {
-        Critical() << "no " << getMimeType(objectType) << " part found";
+        qCCritical(PIMKOLAB_LOG) << "no " << getMimeType(objectType) << " part found";
         printMessageDebugInfo(msg);
         return InvalidObject;
     }
@@ -418,7 +418,7 @@ QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab:
         variant = QVariant::fromValue<Kolab::Configuration>(Kolab::readConfiguration(xml, false));
         break;
     default:
-        Critical() << "no kolab object found ";
+        qCCritical(PIMKOLAB_LOG) << "no kolab object found ";
         printMessageDebugInfo(msg);
         break;
     }
@@ -436,7 +436,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
     ErrorHandler::clearErrors();
     mObjectType = InvalidObject;
     if (msg->contents().isEmpty()) {
-        Critical() << "message has no contents (we likely failed to parse it correctly)";
+        qCCritical(PIMKOLAB_LOG) << "message has no contents (we likely failed to parse it correctly)";
         printMessageDebugInfo(msg);
         return QVariant();
     }
@@ -445,7 +445,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
         if (KMime::Headers::Base *xKolabHeader = msg->headerByType(X_KOLAB_TYPE_HEADER)) {
             objectType = getObjectType(xKolabHeader->asUnicodeString().trimmed().toStdString());
         } else {
-            Warning() << "could not find the X-Kolab-Type Header, trying autodetection";
+            qCWarning(PIMKOLAB_LOG) <<"could not find the X-Kolab-Type Header, trying autodetection";
             //This works only for v2 messages atm.
             objectType = detectType(msg);
         }
@@ -453,7 +453,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
         objectType = mOverrideObjectType;
     }
     if (objectType == InvalidObject) {
-        Critical() << "unable to detect object type";
+        qCCritical(PIMKOLAB_LOG) << "unable to detect object type";
         printMessageDebugInfo(msg);
         return QVariant();
     }
@@ -468,7 +468,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
             mVersion = KolabV2;
         } else {
             if (xKolabVersion->asUnicodeString() != KOLAB_VERSION_V3) { //TODO version compatibility check?
-                Warning() << "Kolab Version Header available but not on the same version as the implementation: " << xKolabVersion->asUnicodeString();
+                qCWarning(PIMKOLAB_LOG) <<"Kolab Version Header available but not on the same version as the implementation: " << xKolabVersion->asUnicodeString();
             }
             mVersion = KolabV3;
         }
@@ -790,7 +790,7 @@ std::string MIMEObject::writeConfiguration(const Configuration &configuration, V
     if (version == KolabV3) {
         msg = Mime::createMessage(kolabMimeType(), kolabType, xml, true, productId, std::string(), std::string(), configuration.uid());
     } else if (version == KolabV2) {
-        Critical() << "Not available in KolabV2";
+        qCCritical(PIMKOLAB_LOG) << "Not available in KolabV2";
     }
     msg->assemble();
     return msg->encodedContent().data();
@@ -812,7 +812,7 @@ std::string MIMEObject::writeFreebusy(const Freebusy &freebusy, Version version,
     if (version == KolabV3) {
         msg = Mime::createMessage(xCalMimeType(), freebusyKolabType(), xml, true, productId, std::string(), std::string(), freebusy.uid());
     } else if (version == KolabV2) {
-        Critical() << "Not available in KolabV2";
+        qCCritical(PIMKOLAB_LOG) << "Not available in KolabV2";
     }
     msg->assemble();
     return msg->encodedContent().data();

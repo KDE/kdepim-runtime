@@ -38,7 +38,7 @@ QString TimezoneConverter::normalizeTimezone(const QString &tz)
     if (guessedTimezone.isEmpty()) {
         guessedTimezone = fromGMTOffsetTimezone(tz);
     }
-    Debug() << "Guessed timezone and found: " << guessedTimezone;
+    qCDebug(PIMKOLAB_LOG) << "Guessed timezone and found: " << guessedTimezone;
     return guessedTimezone;
 }
 

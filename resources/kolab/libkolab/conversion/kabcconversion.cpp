@@ -205,19 +205,19 @@ int fromAddressType(int kabcType, bool &pref)
 {
     int type = 0;
     if (kabcType & KContacts::Address::Dom) {
-        Warning() << "domestic address is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"domestic address is not supported";
     }
     if (kabcType & KContacts::Address::Intl) {
-        Warning() << "international address is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"international address is not supported";
     }
     if (kabcType & KContacts::Address::Pref) {
         pref = true;
     }
     if (kabcType & KContacts::Address::Postal) {
-        Warning() << "postal address is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"postal address is not supported";
     }
     if (kabcType & KContacts::Address::Parcel) {
-        Warning() << "parcel is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"parcel is not supported";
     }
     if (kabcType & KContacts::Address::Home) {
         type |= Kolab::Address::Home;
@@ -271,16 +271,16 @@ int fromPhoneType(int kabcType, bool &pref)
         type |= Kolab::Telephone::Video;
     }
     if (kabcType & KContacts::PhoneNumber::Bbs) {
-        Warning() << "mailbox number is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"mailbox number is not supported";
     }
     if (kabcType & KContacts::PhoneNumber::Modem) {
-        Warning() << "modem is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"modem is not supported";
     }
     if (kabcType & KContacts::PhoneNumber::Car) {
         type |= Kolab::Telephone::Car;
     }
     if (kabcType & KContacts::PhoneNumber::Isdn) {
-        Warning() << "isdn number is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"isdn number is not supported";
     }
     if (kabcType & KContacts::PhoneNumber::Pcs) {
         type |= Kolab::Telephone::Text;
@@ -382,13 +382,13 @@ KContacts::Picture toPicture(const std::string &data, const std::string &mimetyp
         ret = img.loadFromData(QByteArray::fromRawData(data.data(), data.size()));
     }
     if (!ret) {
-        Warning() << "failed to load picture";
+        qCWarning(PIMKOLAB_LOG) <<"failed to load picture";
         return KContacts::Picture();
     }
 
     KContacts::Picture logo(img);
     if (logo.isEmpty()) {
-        Warning() << "failed to read picture";
+        qCWarning(PIMKOLAB_LOG) <<"failed to read picture";
         return KContacts::Picture();
     }
     return logo;
@@ -611,7 +611,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
             if (rel.relationTypes() & Kolab::Related::Spouse) {
                 addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-SpousesName"), fromStdString(rel.text())); //TODO support multiple
             } else {
-                Warning() << "relation not supported";
+                qCWarning(PIMKOLAB_LOG) <<"relation not supported";
                 continue;
             }
         }
@@ -844,7 +844,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     c.setKeys(keys);
 
     if (!addressee.sound().isEmpty()) {
-        Warning() << "sound is not supported";
+        qCWarning(PIMKOLAB_LOG) <<"sound is not supported";
     }
 
     const std::string &profession = toStdString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession")));

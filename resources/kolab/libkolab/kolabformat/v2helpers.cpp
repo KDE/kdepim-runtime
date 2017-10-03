@@ -47,26 +47,26 @@ void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attac
         QByteArray type;
         KMime::Content *content = Mime::findContentByName(mimeData, name, type);
         if (!content) { // guard against malformed events with non-existent attachments
-            Warning() << "could not find attachment: "<< name.toUtf8() << type;
+            qCWarning(PIMKOLAB_LOG) <<"could not find attachment: "<< name.toUtf8() << type;
             continue;
         }
         const QByteArray c = content->decodedContent().toBase64();
         KCalCore::Attachment::Ptr attachment(new KCalCore::Attachment(c, QString::fromLatin1(type)));
         attachment->setLabel(name);
         incidence->addAttachment(attachment);
-        Debug() << "ATTACHMENT NAME" << name << type;
+        qCDebug(PIMKOLAB_LOG) << "ATTACHMENT NAME" << name << type;
     }
 }
 
 static QImage getPicture(const QString &pictureAttachmentName, const KMime::Message::Ptr &data, QByteArray &type)
 {
     if (!data) {
-        Critical() << "empty message";
+        qCCritical(PIMKOLAB_LOG) << "empty message";
         return QImage();
     }
     KMime::Content *imgContent = Mime::findContentByName(data, pictureAttachmentName /*"kolab-picture.png"*/, type);
     if (!imgContent) {
-        Warning() << "could not find picture: " << pictureAttachmentName;
+        qCWarning(PIMKOLAB_LOG) <<"could not find picture: " << pictureAttachmentName;
         return QImage();
     }
     QByteArray imgData = imgContent->decodedContent();
@@ -96,7 +96,7 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
     }
     buffer.close();
     if (!success) {
-        Warning() << "failed to load picture";
+        qCWarning(PIMKOLAB_LOG) <<"failed to load picture";
     }
     return image;
 }
@@ -104,11 +104,11 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
 KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::Message::Ptr &data)
 {
     if (!data) {
-        Critical() << "empty message";
+        qCCritical(PIMKOLAB_LOG) << "empty message";
         return KContacts::Addressee();
     }
     KContacts::Addressee addressee;
-//     Debug() << "xmlData " << xmlData;
+//     qCDebug(PIMKOLAB_LOG) << "xmlData " << xmlData;
     KolabV2::Contact contact(QString::fromUtf8(xmlData));
     QByteArray type;
     const QString &pictureAttachmentName = contact.pictureAttachmentName();
@@ -130,7 +130,7 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::
             const QByteArray &sData = content->decodedContent();
             contact.setSound(sData);
         } else {
-            Warning() << "could not find sound: " << soundAttachmentName;
+            qCWarning(PIMKOLAB_LOG) <<"could not find sound: " << soundAttachmentName;
         }
     }
     contact.saveTo(&addressee);
@@ -169,7 +169,7 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
 {
     KMime::Message::Ptr message = Mime::createMessage(QByteArray(KOLAB_TYPE_CONTACT), false, productId.toLatin1());
     if (!message) {
-        Critical() << "empty message";
+        qCCritical(PIMKOLAB_LOG) << "empty message";
         return KMime::Message::Ptr();
     }
     message->subject()->fromUnicodeString(contact.uid(), "utf-8");
@@ -214,7 +214,7 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distL
 {
     KMime::Message::Ptr message = Mime::createMessage(KOLAB_TYPE_DISTLIST_V2, false, productId.toLatin1());
     if (!message) {
-        Critical() << "empty message";
+        qCCritical(PIMKOLAB_LOG) << "empty message";
         return KMime::Message::Ptr();
     }
     message->subject()->fromUnicodeString(distList.uid(), "utf-8");
@@ -231,7 +231,7 @@ KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &cr
 {
     KolabV2::Note j;
     if (!j.load(QString::fromUtf8(xmlData))) {
-        Warning() << "failed to read note";
+        qCWarning(PIMKOLAB_LOG) <<"failed to read note";
         return KMime::Message::Ptr();
     }
 
@@ -246,7 +246,7 @@ KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &cr
 KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &productId)
 {
     if (!msg) {
-        Critical() << "empty message";
+        qCCritical(PIMKOLAB_LOG) << "empty message";
         return KMime::Message::Ptr();
     }
     Akonadi::NoteUtils::NoteMessageWrapper note(msg);
@@ -256,7 +256,7 @@ KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &p
 QByteArray noteToKolabXML(const KMime::Message::Ptr &msg)
 {
     if (!msg) {
-        Critical() << "empty message";
+        qCCritical(PIMKOLAB_LOG) << "empty message";
         return QByteArray();
     }
     Akonadi::NoteUtils::NoteMessageWrapper note(msg);

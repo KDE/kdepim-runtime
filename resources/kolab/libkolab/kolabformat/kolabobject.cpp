@@ -20,6 +20,7 @@
 #include "kolabdefinitions.h"
 #include "errorhandler.h"
 #include "libkolab-version.h"
+#include "pimkolab_debug.h"
 
 #include "kolabbase.h"
 #include <kolabformatV2/journal.h>
@@ -139,12 +140,12 @@ RelationMember parseMemberUrl(const QString &string)
         isShared = true;
     }
     if (start < 0) {
-        Warning() << "Couldn't find \"user\" or \"shared\" in path: " << path;
+        qCWarning(PIMKOLAB_LOG) <<"Couldn't find \"user\" or \"shared\" in path: " << path;
         return RelationMember();
     }
     path = path.mid(start + 1);
     if (path.size() < 2) {
-        Warning() << "Incomplete path: " << path;
+        qCWarning(PIMKOLAB_LOG) <<"Incomplete path: " << path;
         return RelationMember();
     }
     RelationMember member;
@@ -261,8 +262,8 @@ void KolabObjectReader::setVersion(Version version)
 void printMessageDebugInfo(const KMime::Message::Ptr &msg)
 {
     //TODO replace by Debug stream for Mimemessage
-    Debug() << "MessageId: " << msg->messageID()->asUnicodeString();
-    Debug() << "Subject: " << msg->subject()->asUnicodeString();
+    qCDebug(PIMKOLAB_LOG) << "MessageId: " << msg->messageID()->asUnicodeString();
+    qCDebug(PIMKOLAB_LOG) << "Subject: " << msg->subject()->asUnicodeString();
 //     Debug() << msg->encodedContent();
 }
 
@@ -271,7 +272,7 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
     ErrorHandler::clearErrors();
     d->mObjectType = InvalidObject;
     if (msg->contents().isEmpty()) {
-        Critical() << "message has no contents (we likely failed to parse it correctly)";
+        qCCritical(PIMKOLAB_LOG) << "message has no contents (we likely failed to parse it correctly)";
         printMessageDebugInfo(msg);
         return InvalidObject;
     }
@@ -363,17 +364,17 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
                     d->mTagMembers << Conversion::fromStdString(member);
                 }
             } else {
-                Critical() << "generic relation had wrong number of members:" << relation.members().size();
+                qCCritical(PIMKOLAB_LOG) << "generic relation had wrong number of members:" << relation.members().size();
                 printMessageDebugInfo(msg);
             }
         } else {
-            Critical() << "unknown configuration object type" << relation.type();
+            qCCritical(PIMKOLAB_LOG) << "unknown configuration object type" << relation.type();
             printMessageDebugInfo(msg);
         }
         break;
     }
     default:
-        Critical() << "no kolab object found ";
+        qCCritical(PIMKOLAB_LOG) << "no kolab object found ";
         printMessageDebugInfo(msg);
         break;
     }
@@ -473,7 +474,7 @@ KMime::Message::Ptr KolabObjectWriter::writeEvent(const KCalCore::Event::Ptr &i,
 {
     ErrorHandler::clearErrors();
     if (!i) {
-        Critical() << "passed a null pointer";
+        qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     const Kolab::Event &event = Kolab::Conversion::fromKCalCore(*i);
@@ -486,7 +487,7 @@ KMime::Message::Ptr KolabObjectWriter::writeTodo(const KCalCore::Todo::Ptr &i, V
 {
     ErrorHandler::clearErrors();
     if (!i) {
-        Critical() << "passed a null pointer";
+        qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     const Kolab::Todo &todo = Kolab::Conversion::fromKCalCore(*i);
@@ -499,7 +500,7 @@ KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalCore::Journal::Ptr
 {
     ErrorHandler::clearErrors();
     if (!i) {
-        Critical() << "passed a null pointer";
+        qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     const Kolab::Journal &journal = Kolab::Conversion::fromKCalCore(*i);
@@ -511,7 +512,7 @@ KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalCore::Journal::Ptr
 KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalCore::Incidence::Ptr &i, Version v, const QString &productId, const QString &tz)
 {
     if (!i) {
-        Critical() << "passed a null pointer";
+        qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     switch (i->type()) {
@@ -522,7 +523,7 @@ KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalCore::Incidence:
     case KCalCore::IncidenceBase::TypeJournal:
         return writeJournal(i.dynamicCast<KCalCore::Journal>(), v, productId, tz);
     default:
-        Critical() << "unknown incidence type";
+        qCCritical(PIMKOLAB_LOG) << "unknown incidence type";
     }
     return KMime::Message::Ptr();
 }
@@ -549,7 +550,7 @@ KMime::Message::Ptr KolabObjectWriter::writeNote(const KMime::Message::Ptr &n, V
 {
     ErrorHandler::clearErrors();
     if (!n) {
-        Critical() << "passed a null pointer";
+        qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     const Kolab::Note &note = Kolab::Conversion::fromNote(n);
@@ -598,7 +599,7 @@ KMime::Message::Ptr KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const Q
 {
     ErrorHandler::clearErrors();
     if (v != KolabV3) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
     }
 
     Kolab::Relation relation(Conversion::toStdString(tag.name()), "tag");
@@ -616,11 +617,11 @@ KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &re
 {
     ErrorHandler::clearErrors();
     if (v != KolabV3) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
     }
 
     if (items.size() != 2) {
-        Critical() << "Wrong number of members for generic relation.";
+        qCCritical(PIMKOLAB_LOG) << "Wrong number of members for generic relation.";
         return KMime::Message::Ptr();
     }
 

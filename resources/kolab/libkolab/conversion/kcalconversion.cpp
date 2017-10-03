@@ -453,7 +453,7 @@ KCalCore::RecurrenceRule::PeriodType toRecurrenceType(Kolab::RecurrenceRule::Fre
 {
     switch (freq) {
     case Kolab::RecurrenceRule::FreqNone:
-        Warning() << "no recurrence?";
+        qCWarning(PIMKOLAB_LOG) <<"no recurrence?";
         break;
     case Kolab::RecurrenceRule::Yearly:
         return KCalCore::RecurrenceRule::rYearly;
@@ -480,7 +480,7 @@ Kolab::RecurrenceRule::Frequency fromRecurrenceType(KCalCore::RecurrenceRule::Pe
 {
     switch (freq) {
     case KCalCore::RecurrenceRule::rNone:
-        Warning() << "no recurrence?";
+        qCWarning(PIMKOLAB_LOG) <<"no recurrence?";
         break;
     case KCalCore::RecurrenceRule::rYearly:
         return Kolab::RecurrenceRule::Yearly;
@@ -589,7 +589,7 @@ void getRecurrence(T &i, const I &e)
     KCalCore::Recurrence *rec = e.recurrence();
     KCalCore::RecurrenceRule *defaultRR = rec->defaultRRule(false);
     if (!defaultRR) {
-        Warning() << "no recurrence";
+        qCWarning(PIMKOLAB_LOG) <<"no recurrence";
         return;
     }
     Q_ASSERT(defaultRR);
@@ -643,7 +643,7 @@ void getRecurrence(T &i, const I &e)
     i.setExceptionDates(exdates);
 
     if (!rec->exRules().empty()) {
-        Warning() << "exrules are not supported";
+        qCWarning(PIMKOLAB_LOG) <<"exrules are not supported";
     }
 }
 
@@ -721,7 +721,7 @@ void getTodoEvent(T &i, const I &e)
         //TODO KCalCore disables alarms using KCalCore::Alarm::enabled() (X-KDE-KCALCORE-ENABLED) We should either delete the alarm, or store the attribute .
         //Ideally we would store the alarm somewhere and temporarily delete it, so we can restore it when parsing. For now we just remove disabled alarms.
         if (!a->enabled()) {
-            Warning() << "skipping disabled alarm";
+            qCWarning(PIMKOLAB_LOG) <<"skipping disabled alarm";
             continue;
         }
         switch (a->type()) {

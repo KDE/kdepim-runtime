@@ -52,7 +52,7 @@ std::string XMLObject::writeEvent(const Event &event, Version version, const std
     if (version == KolabV2) {
         const KCalCore::Event::Ptr i = Conversion::toKCalCore(event);
         if (!i) {
-            Critical() << "invalid incidence";
+            qCCritical(PIMKOLAB_LOG) << "invalid incidence";
             return std::string();
         }
         if (i->uid().isEmpty()) {
@@ -75,7 +75,7 @@ Event XMLObject::readEvent(const std::string &s, Version version)
         QStringList attachments;
         const KCalCore::Event::Ptr event = Kolab::fromXML<KCalCore::Event::Ptr, KolabV2::Event>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
-            Critical() << "failed to read xml";
+            qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Event();
         }
         mAttachments.clear();
@@ -96,7 +96,7 @@ std::string XMLObject::writeTodo(const Todo &event, Version version, const std::
     if (version == KolabV2) {
         const KCalCore::Todo::Ptr i = Conversion::toKCalCore(event);
         if (!i) {
-            Critical() << "invalid incidence";
+            qCCritical(PIMKOLAB_LOG) << "invalid incidence";
             return std::string();
         }
         if (i->uid().isEmpty()) {
@@ -140,7 +140,7 @@ std::string XMLObject::writeJournal(const Journal &event, Version version, const
     if (version == KolabV2) {
         const KCalCore::Journal::Ptr i = Conversion::toKCalCore(event);
         if (!i) {
-            Critical() << "invalid journal";
+            qCCritical(PIMKOLAB_LOG) << "invalid journal";
             return std::string();
         }
         if (i->uid().isEmpty()) {
@@ -162,7 +162,7 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
         QStringList attachments;
         const KCalCore::Journal::Ptr event = Kolab::fromXML<KCalCore::Journal::Ptr, KolabV2::Journal>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
-            Critical() << "failed to read xml";
+            qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Journal();
         }
         mAttachments.clear();
@@ -181,7 +181,7 @@ std::string XMLObject::writeFreebusy(const Freebusy &event, Version version, con
 {
     mWrittenUID.clear();
     if (version != KolabV3) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
         return std::string();
     }
     const std::string result = Kolab::writeFreebusy(event, productId);
@@ -192,7 +192,7 @@ std::string XMLObject::writeFreebusy(const Freebusy &event, Version version, con
 Freebusy XMLObject::readFreebusy(const std::string &s, Version version)
 {
     if (version != KolabV3) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
         return Freebusy();
     }
     return Kolab::readFreebusy(s, false);
@@ -285,7 +285,7 @@ Note XMLObject::readNote(const std::string &s, Version version)
     if (version == KolabV2) {
         const KMime::Message::Ptr msg = noteFromKolab(QByteArray(s.c_str(), s.length()), KDateTime());
         if (!msg || Kolab::ErrorHandler::errorOccured()) {
-            Critical() << "failed to read xml";
+            qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Note();
         }
         return Conversion::fromNote(msg);
@@ -320,7 +320,7 @@ Configuration XMLObject::readConfiguration(const std::string &s, Version version
         QString lang;
         const QStringList dict = readLegacyDictionaryConfiguration(QByteArray(s.c_str(), s.length()), lang);
         if (lang.isEmpty()) {
-            Critical() << "not a dictionary or not a v2 configuration object";
+            qCCritical(PIMKOLAB_LOG) << "not a dictionary or not a v2 configuration object";
             return Kolab::Configuration();
         }
         std::vector<std::string> entries;
@@ -341,7 +341,7 @@ std::string XMLObject::writeConfiguration(const Configuration &configuration, Ve
 {
     mWrittenUID.clear();
     if (version != KolabV3) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
         return std::string();
     }
     const std::string result = Kolab::writeConfiguration(configuration, productId);
@@ -353,7 +353,7 @@ std::string XMLObject::writeConfiguration(const Configuration &configuration, Ve
 File XMLObject::readFile(const std::string &s, Version version)
 {
     if (version == KolabV2) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
         return File();
     }
     const Kolab::File file = Kolab::readFile(s, false);
@@ -365,7 +365,7 @@ std::string XMLObject::writeFile(const File &file, Version version, const std::s
 {
     mWrittenUID.clear();
     if (version != KolabV3) {
-        Critical() << "only v3 implementation available";
+        qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
         return std::string();
     }
     const std::string result = Kolab::writeFile(file, productId);
