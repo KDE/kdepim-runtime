@@ -20,7 +20,7 @@
 #include "kolabmessagehelper.h"
 
 #include <collectionannotationsattribute.h>
-#include "libkolab/kolabformat/kolabdefinitions.h"
+#include "pimkolab/kolabformat/kolabdefinitions.h"
 
 #include "kolabhelpers.h"
 #include "kolabresource_debug.h"

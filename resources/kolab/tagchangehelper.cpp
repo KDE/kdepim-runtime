@@ -28,7 +28,7 @@
 #include <imapflags.h>
 #include <uidnextattribute.h>
 
-#include "libkolab/kolabformat/kolabobject.h"
+#include "pimkolab/kolabformat/kolabobject.h"
 
 #include <kimap/appendjob.h>
 #include <kimap/searchjob.h>

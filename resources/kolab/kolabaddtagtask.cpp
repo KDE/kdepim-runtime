@@ -23,7 +23,7 @@
 #include "kolabresource_debug.h"
 #include "../imap/uidnextattribute.h"
 
-#include "libkolab/kolabformat/kolabobject.h"
+#include "pimkolab/kolabformat/kolabobject.h"
 
 #include <kimap/appendjob.h>
 #include <kimap/imapset.h>

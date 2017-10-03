@@ -24,7 +24,7 @@
 #include <kimap/selectjob.h>
 #include <kimap/fetchjob.h>
 #include <imapflags.h>
-#include "libkolab/kolabformat/kolabobject.h"
+#include "pimkolab/kolabformat/kolabobject.h"
 #include "tracer.h"
 
 

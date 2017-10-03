@@ -21,8 +21,8 @@
 #define KOLABHELPERS_H
 
 #include <AkonadiCore/Item>
-#include "libkolab/kolabformat/kolabdefinitions.h"//libkolab
-#include "libkolab/kolabformat/formathelpers.h" //libkolab
+#include "pimkolab/kolabformat/kolabdefinitions.h"//libkolab
+#include "pimkolab/kolabformat/formathelpers.h" //libkolab
 
 #define KOLAB_COLOR_ANNOTATION "/vendor/kolab/color"
 
