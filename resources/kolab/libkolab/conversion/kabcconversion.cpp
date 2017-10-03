@@ -21,7 +21,7 @@
 #include <qbuffer.h>
 #include <qimagereader.h>
 #include "kolabformat/errorhandler.h"
-
+#include "pimkolab_debug.h"
 namespace Kolab {
 namespace Conversion {
 //The following was copied from kdepim/libkleo/kleo/enum.h,.cpp
@@ -351,18 +351,18 @@ std::string fromPicture(const KContacts::Picture &pic, std::string &mimetype)
 //         }
     }
     if (img.isNull()) {
-        Error() << "invalid picture";
+        qCCritical(PIMKOLAB_LOG) << "invalid picture";
         return std::string();
     }
     if (!img.hasAlphaChannel()) {
         if (!img.save(&buffer, "JPEG")) {
-            Error() << "error on jpeg save";
+            qCCritical(PIMKOLAB_LOG) << "error on jpeg save";
             return std::string();
         }
         mimetype = "image/jpeg";
     } else {
         if (!img.save(&buffer, "PNG")) {
-            Error() << "error on png save";
+            qCCritical(PIMKOLAB_LOG) << "error on png save";
             return std::string();
         }
         mimetype = "image/png";
@@ -489,7 +489,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
 
     if (!contact.freeBusyUrl().empty()) {
         if (preferredEmail.isEmpty()) {
-            Error() << "f/b url is set but no email address available, skipping";
+            qCCritical(PIMKOLAB_LOG) << "f/b url is set but no email address available, skipping";
         } else {
             addressee.insertCustom(QStringLiteral("KOLAB"), QStringLiteral("FreebusyUrl"), fromStdString(contact.freeBusyUrl()));
         }
@@ -533,7 +533,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
         }
         foreach (const Kolab::Related &related, aff.relateds()) {
             if (related.type() != Kolab::Related::Text) {
-                Error() << "invalid relation type";
+                qCCritical(PIMKOLAB_LOG) << "invalid relation type";
                 continue;
             }
             if (related.relationTypes() & Kolab::Related::Assistant) {
@@ -605,7 +605,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     if (!contact.relateds().empty()) {
         foreach (const Kolab::Related &rel, contact.relateds()) {
             if (rel.type() != Kolab::Related::Text) {
-                Error() << "relation type not supported";
+                qCCritical(PIMKOLAB_LOG) << "relation type not supported";
                 continue;
             }
             if (rel.relationTypes() & Kolab::Related::Spouse) {
@@ -900,7 +900,7 @@ KContacts::ContactGroup toKABC(const DistList &dl)
             cg.append(KContacts::ContactGroup::ContactReference(fromStdString(m.uid())));
             break;
         default:
-            Error() << "invalid contact reference";
+            qCCritical(PIMKOLAB_LOG) << "invalid contact reference";
         }
     }
 

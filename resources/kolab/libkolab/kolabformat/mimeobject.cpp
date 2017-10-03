@@ -30,7 +30,7 @@
 #include <QString>
 #include <KRandom>
 #include <boost/algorithm/string/predicate.hpp>
-
+#include "pimkolab_debug.h"
 Q_DECLARE_METATYPE(Kolab::Event)
 Q_DECLARE_METATYPE(Kolab::Todo)
 Q_DECLARE_METATYPE(Kolab::Journal)

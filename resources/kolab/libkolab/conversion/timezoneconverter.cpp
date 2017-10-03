@@ -20,7 +20,7 @@
 #include <QRegExp>
 #include "kolabformat/errorhandler.h"
 #include <QTimeZone>
-
+#include "pimkolab_debug.h"
 QString TimezoneConverter::normalizeTimezone(const QString &tz)
 {
     if (QTimeZone::isTimeZoneIdAvailable(tz.toLatin1())) {

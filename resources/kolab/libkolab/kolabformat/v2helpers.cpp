@@ -28,7 +28,7 @@
 #include "kolabformatV2/note.h"
 #include "mime/mimeutils.h"
 #include "kolabformat/errorhandler.h"
-
+#include "pimkolab_debug.h"
 #include <kcontacts/contactgroup.h>
 
 #include <qdom.h>
@@ -40,7 +40,7 @@ namespace Kolab {
 void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData)
 {
     if (!incidence) {
-        Error() << "Invalid incidence";
+        qCCritical(PIMKOLAB_LOG) << "Invalid incidence";
         return;
     }
     foreach (const QString &name, attachments) {
@@ -271,7 +271,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
     QStringList dictionary;
     const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData));   //TODO extract function from V2 format
     if (xmlDoc.isNull()) {
-        Error() << "Failed to read the xml document";
+        qCCritical(PIMKOLAB_LOG) << "Failed to read the xml document";
         return QStringList();
     }
 

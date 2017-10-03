@@ -19,7 +19,7 @@
 #include "kolabformat/xmlobject.h"
 #include "kolabformat/errorhandler.h"
 #include "testutils.h"
-
+#include "pimkolab_debug.h"
 #include <QTest>
 #include <fstream>
 #include <sstream>

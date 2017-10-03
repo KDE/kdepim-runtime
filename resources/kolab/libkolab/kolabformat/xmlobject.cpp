@@ -23,6 +23,7 @@
 #include "conversion/commonconversion.h"
 #include "conversion/kabcconversion.h"
 #include <QUuid>
+#include "pimkolab_debug.h"
 
 namespace Kolab {
 static QString createUuid()
@@ -118,7 +119,7 @@ Todo XMLObject::readTodo(const std::string &s, Version version)
         QStringList attachments;
         const KCalCore::Todo::Ptr event = Kolab::fromXML<KCalCore::Todo::Ptr, KolabV2::Task>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
-            Error() << "failed to read xml";
+            qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Todo();
         }
         mAttachments.clear();

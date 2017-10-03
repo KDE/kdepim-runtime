@@ -27,7 +27,7 @@
 
 #include "kolabformat/errorhandler.h"
 #include "commonconversion.h"
-
+#include "pimkolab_debug.h"
 namespace Kolab {
 namespace Conversion {
 //The uid of a contact which refers to the uuid of a contact in the addressbook
@@ -83,7 +83,7 @@ KCalCore::Incidence::Secrecy toSecrecy(Kolab::Classification c)
     case Kolab::ClassConfidential:
         return KCalCore::Incidence::SecrecyConfidential;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return KCalCore::Incidence::SecrecyPublic;
@@ -99,7 +99,7 @@ Kolab::Classification fromSecrecy(KCalCore::Incidence::Secrecy c)
     case KCalCore::Incidence::SecrecyConfidential:
         return Kolab::ClassConfidential;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return Kolab::ClassPublic;
@@ -139,7 +139,7 @@ KCalCore::Incidence::Status toStatus(Kolab::Status s)
     case StatusFinal:
         return KCalCore::Incidence::StatusFinal;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return KCalCore::Incidence::StatusNone;
@@ -167,7 +167,7 @@ Kolab::Status fromStatus(KCalCore::Incidence::Status s)
     case KCalCore::Incidence::StatusFinal:
         return StatusFinal;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return StatusUndefined;
@@ -187,7 +187,7 @@ KCalCore::Attendee::PartStat toPartStat(Kolab::PartStatus p)
     case PartDelegated:
         return KCalCore::Attendee::Delegated;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return KCalCore::Attendee::NeedsAction;
@@ -207,7 +207,7 @@ Kolab::PartStatus fromPartStat(KCalCore::Attendee::PartStat p)
     case KCalCore::Attendee::Delegated:
         return PartDelegated;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return PartNeedsAction;
@@ -225,7 +225,7 @@ KCalCore::Attendee::Role toRole(Kolab::Role r)
     case NonParticipant:
         return KCalCore::Attendee::NonParticipant;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return KCalCore::Attendee::ReqParticipant;
@@ -243,7 +243,7 @@ Kolab::Role fromRole(KCalCore::Attendee::Role r)
     case KCalCore::Attendee::NonParticipant:
         return NonParticipant;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return Required;
@@ -419,7 +419,7 @@ int toWeekDay(Kolab::Weekday wday)
     case Kolab::Sunday:
         return 7;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return 1;
@@ -443,7 +443,7 @@ Kolab::Weekday fromWeekDay(int wday)
     case 7:
         return Kolab::Sunday;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return Kolab::Monday;
@@ -470,7 +470,7 @@ KCalCore::RecurrenceRule::PeriodType toRecurrenceType(Kolab::RecurrenceRule::Fre
     case Kolab::RecurrenceRule::Secondly:
         return KCalCore::RecurrenceRule::rSecondly;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return KCalCore::RecurrenceRule::rNone;
@@ -497,7 +497,7 @@ Kolab::RecurrenceRule::Frequency fromRecurrenceType(KCalCore::RecurrenceRule::Pe
     case KCalCore::RecurrenceRule::rSecondly:
         return Kolab::RecurrenceRule::Secondly;
     default:
-        Error() << "unhandled";
+        qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
     return Kolab::RecurrenceRule::FreqNone;
@@ -684,7 +684,7 @@ void setTodoEvent(KCalCore::Incidence &i, const T &e)
             alarm->setAudioAlarm(fromStdString(a.audioFile().uri()));
             break;
         default:
-            Error() << "invalid alarm";
+            qCCritical(PIMKOLAB_LOG) << "invalid alarm";
         }
 
         if (a.start().isValid()) {
@@ -745,7 +745,7 @@ void getTodoEvent(T &i, const I &e)
             break;
         }
         default:
-            Error() << "unhandled alarm";
+            qCCritical(PIMKOLAB_LOG) << "unhandled alarm";
         }
 
         if (a->hasTime()) {
@@ -755,7 +755,7 @@ void getTodoEvent(T &i, const I &e)
         } else if (a->hasEndOffset()) {
             alarm.setRelativeStart(fromDuration(a->endOffset()), End);
         } else {
-            Error() << "alarm trigger is missing";
+            qCCritical(PIMKOLAB_LOG) << "alarm trigger is missing";
             continue;
         }
 
@@ -814,7 +814,7 @@ KCalCore::Todo::Ptr toKCalCore(const Todo &todo)
     if (!todo.relatedTo().empty()) {
         e->setRelatedTo(Conversion::fromStdString(todo.relatedTo().front()), KCalCore::Incidence::RelTypeParent);
         if (todo.relatedTo().size() > 1) {
-            Error() << "only one relation support but got multiple";
+            qCCritical(PIMKOLAB_LOG) << "only one relation support but got multiple";
         }
     }
     e->setPercentComplete(todo.percentComplete());

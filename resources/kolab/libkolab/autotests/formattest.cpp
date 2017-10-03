@@ -35,7 +35,7 @@
 #include "kolabformat/kolabobject.h"
 #include "kolabformat/errorhandler.h"
 #include "kolabformat/kolabdefinitions.h"
-
+#include "pimkolab_debug.h"
 static bool compareMimeMessage(const KMime::Message::Ptr &msg, const KMime::Message::Ptr &expectedMsg)
 {
     // headers

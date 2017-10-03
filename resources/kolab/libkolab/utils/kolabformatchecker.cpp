@@ -25,7 +25,7 @@
 #include <kolabformat.h>
 #include "kolabformat/errorhandler.h"
 #include "kolabformat/kolabobject.h"
-
+#include "pimkolab_debug.h"
 namespace po = boost::program_options;
 using namespace std;
 

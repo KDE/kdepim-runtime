@@ -24,13 +24,13 @@
 #include "kolabformat/errorhandler.h"
 #include <kolabformat.h>
 #include "libkolab-version.h"
-
+#include "pimkolab_debug.h"
 namespace Kolab {
 namespace Mime {
 KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteArray &type)
 {
     if (type.isEmpty()) {
-        Error() << "Empty type";
+        qCCritical(PIMKOLAB_LOG) << "Empty type";
         return nullptr;
     }
     Q_ASSERT(!data->contents().isEmpty());
@@ -59,7 +59,7 @@ KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString
 KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArray &id, QByteArray &type, QString &name)
 {
     if (id.isEmpty()) {
-        Error() << "looking for empty cid";
+        qCCritical(PIMKOLAB_LOG) << "looking for empty cid";
         return 0;
     }
     Q_ASSERT(!data->contents().isEmpty());
@@ -198,14 +198,14 @@ KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mi
 Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr &mimeData)
 {
     if (!QString::fromStdString(id).contains(QLatin1String("cid:"))) {
-        Error() << "not a cid reference";
+        qCCritical(PIMKOLAB_LOG) << "not a cid reference";
         return Kolab::Attachment();
     }
     QByteArray type;
     QString name;
     KMime::Content *content = findContentById(mimeData, fromCid(QString::fromStdString(id)).toLatin1(), type, name);
     if (!content) { // guard against malformed events with non-existent attachments
-        Error() << "could not find attachment: "<< name << type;
+        qCCritical(PIMKOLAB_LOG) << "could not find attachment: "<< name << type;
         return Kolab::Attachment();
     }
     // Debug() << id << content->decodedContent().toBase64().toStdString();
