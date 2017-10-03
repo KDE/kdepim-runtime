@@ -33,17 +33,6 @@ if (Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
-set(KDE_LIBRARIES
-    KF5::CalendarCore
-    KF5::CalendarUtils
-    KF5::Contacts
-    KF5::Mime
-    KF5::AkonadiCore
-    KF5::AkonadiNotes
-    KF5::Codecs
-    KF5::KDELibs4Support
-)
-
 find_package(Boost REQUIRED)
 
 include_directories(
@@ -88,8 +77,15 @@ set(KOLAB_SRCS
 )
 
 set(KOLAB_LINK_LIBRARIES
+    KF5::CalendarCore
+    KF5::CalendarUtils
+    KF5::Contacts
+    KF5::Mime
+    KF5::AkonadiCore
+    KF5::AkonadiNotes
+    KF5::Codecs
+    KF5::KDELibs4Support
     ${Libkolabxml_LIBRARIES}
-    ${KDE_LIBRARIES}
     Qt5::Core
     Qt5::Xml
     Qt5::Gui
