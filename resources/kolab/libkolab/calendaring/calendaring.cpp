@@ -16,6 +16,7 @@
  */
 
 #include "calendaring.h"
+#include "pimkolab_debug.h"
 
 #include <kcalcore/event.h>
 #include <kcalcore/todo.h>
@@ -88,7 +89,7 @@ void Calendar::addEvent(const Kolab::Event &event)
 {
     KCalCore::Event::Ptr k = Kolab::Conversion::toKCalCore(event);
     if (!mCalendar->addEvent(k)) {
-        qWarning() << "failed to add event";
+        qCWarning(PIMKOLAB_LOG) << "failed to add event";
     }
 }
 

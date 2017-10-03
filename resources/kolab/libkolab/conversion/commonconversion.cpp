@@ -16,16 +16,14 @@
  */
 
 #include "commonconversion.h"
+#include "pimkolab_debug.h"
 #include "timezoneconverter.h"
 #include "utils/porting.h"
-#include <kolabformat/errorhandler.h>
 
 #include <iostream>
 #include <KTimeZone>
 #include <QUrl>
 #include <QTimeZone>
-
-#include <QDebug>
 
 namespace Kolab {
 namespace Conversion {
@@ -83,7 +81,6 @@ QDateTime toDate(const Kolab::cDateTime &dt)
 cDateTime fromDate(const KDateTime &dt)
 {
     if (!dt.isValid()) {
-        //         qDebug() << "invalid datetime converted";
         return cDateTime();
     }
     cDateTime date;
@@ -111,11 +108,11 @@ cDateTime fromDate(const KDateTime &dt)
             if (!timezone.isEmpty()) {
                 date.setTimezone(toStdString(timezone));
             } else {
-                Warning() << "invalid timezone: " << dt.timeZone().name() << ", assuming floating time";
+                qCWarning(PIMKOLAB_LOG) << "invalid timezone: " << dt.timeZone().name() << ", assuming floating time";
                 return date;
             }
         } else if (dt.timeType() != KDateTime::ClockTime) {
-            Error() << "invalid timespec, assuming floating time. Type: " << dt.timeType() << "dt: " << dt.toString();
+            qCCritical(PIMKOLAB_LOG) << "invalid timespec, assuming floating time. Type: " << dt.timeType() << "dt: " << dt.toString();
             return date;
         }
     }
@@ -151,7 +148,7 @@ cDateTime fromDate(const QDateTime &dt, bool isAllDay)
             if (!timezone.isEmpty()) {
                 date.setTimezone(toStdString(timezone));
             } else {
-                Warning() << "invalid timezone: " << dt.timeZone().id() << ", assuming floating time";
+                qCWarning(PIMKOLAB_LOG) << "invalid timezone: " << dt.timeZone().id() << ", assuming floating time";
                 return date;
             }
         }
@@ -209,13 +206,13 @@ QPair<std::string, std::string> fromMailto(const std::string &mailto)
     }
     std::size_t begin = decoded.find('<', 7);
     if (begin == std::string::npos) {
-        WARNING("no mailto address");
+        qCDebug(PIMKOLAB_LOG) << "no mailto address";
         std::cout << decoded << std::endl;
         return qMakePair(decoded, std::string());
     }
     std::size_t end = decoded.find('>', begin);
     if (end == std::string::npos) {
-        WARNING("no mailto address");
+        qCWarning(PIMKOLAB_LOG) << "no mailto address";
         std::cout << decoded << std::endl;
         return qMakePair(decoded, std::string());
     }

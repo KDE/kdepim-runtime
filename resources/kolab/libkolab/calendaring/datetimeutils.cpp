@@ -17,7 +17,6 @@
 
 #include "datetimeutils.h"
 
-#include <qdebug.h>
 #include <QTimeZone>
 #include "conversion/commonconversion.h"
 
