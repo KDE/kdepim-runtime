@@ -58,7 +58,7 @@ QString TimezoneConverter::fromCityName(const QString &tz)
         countryMap.insert(cityName, zone);
     }
 
-    QRegExp locationFinder("\\b([a-zA-Z])+\\b", Qt::CaseSensitive, QRegExp::RegExp2);
+    QRegExp locationFinder(QLatin1String("\\b([a-zA-Z])+\\b"), Qt::CaseSensitive, QRegExp::RegExp2);
     int pos = 0;
     while (pos >= 0) {
         pos = locationFinder.indexIn(tz, pos);

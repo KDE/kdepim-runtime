@@ -829,7 +829,7 @@ bool Contact::loadXML(const QDomDocument &document)
 QString Contact::saveXML() const
 {
     QDomDocument document = domTree();
-    QDomElement element = document.createElement("contact");
+    QDomElement element = document.createElement(QStringLiteral("contact"));
     element.setAttribute(QStringLiteral("version"), QStringLiteral("1.0"));
     saveAttributes(element);
     document.appendChild(element);

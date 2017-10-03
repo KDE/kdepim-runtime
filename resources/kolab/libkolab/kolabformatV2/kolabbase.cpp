@@ -128,7 +128,7 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
     if (creationString != newCreationDate) {
         // We modified the creation date, so store it for future reference
         const_cast<KContacts::Addressee *>(addressee)
-        ->insertCustom("KOLAB", "CreationDate", newCreationDate);
+        ->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"), newCreationDate);
         qDebug() <<"Creation date modified. New one:" << newCreationDate;
     }
 

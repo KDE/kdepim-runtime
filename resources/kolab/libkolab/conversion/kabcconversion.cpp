@@ -94,7 +94,7 @@ QStringList cryptoMessageFormatsToStringList(unsigned int f)
     QStringList result;
     for (unsigned int i = 0; i < numCryptoMessageFormats; ++i) {
         if (f & cryptoMessageFormats[i].format) {
-            result.push_back(cryptoMessageFormats[i].configName);
+            result.push_back(QLatin1String(cryptoMessageFormats[i].configName));
         }
     }
     return result;
@@ -104,7 +104,7 @@ CryptoMessageFormat stringToCryptoMessageFormat(const QString &s)
 {
     const QString t = s.toLower();
     for (unsigned int i = 0; i < numCryptoMessageFormats; ++i) {
-        if (t == cryptoMessageFormats[i].configName) {
+        if (t == QLatin1String(cryptoMessageFormats[i].configName)) {
             return cryptoMessageFormats[i].format;
         }
     }
@@ -772,7 +772,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
 
     Kolab::Crypto crypto;
 
-    const QStringList protocolPrefs = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(',', QString::SkipEmptyParts);
+    const QStringList protocolPrefs = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(QLatin1Char(','), QString::SkipEmptyParts);
     const uint cryptoFormats = stringListToCryptoMessageFormats(protocolPrefs);
     int formats = 0;
     if (cryptoFormats & InlineOpenPGPFormat) {
