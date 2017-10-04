@@ -22,7 +22,6 @@
 
 #include <QDialog>
 
-class KJob;
 
 class ProgressDialog : public QDialog
 {

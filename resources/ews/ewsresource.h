@@ -33,9 +33,6 @@
 #include <ewsconfig.h>
 
 class FetchItemState;
-class EwsGetItemRequest;
-class EwsFindFolderRequest;
-class EwsFolder;
 class EwsSubscriptionManager;
 class EwsTagStore;
 class Settings;

@@ -26,7 +26,6 @@
 #include "ewsrequest.h"
 #include "ewstypes.h"
 
-class QXmlStreamWriter;
 
 class EwsSubscribeRequest : public EwsRequest
 {

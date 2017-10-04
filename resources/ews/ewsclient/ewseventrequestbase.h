@@ -29,7 +29,6 @@
 #include "ewstypes.h"
 
 class QXmlStreamReader;
-class QXmlStreamWriter;
 
 class EwsEventRequestBase : public EwsRequest
 {

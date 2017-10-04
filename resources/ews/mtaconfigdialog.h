@@ -25,7 +25,6 @@
 class QDialogButtonBox;
 namespace Akonadi
 {
-class ManageAccountWidget;
 }
 namespace Ui
 {
