@@ -476,6 +476,9 @@ void EwsResource::configure(WId windowId)
     QPointer<ConfigDialog> dlg = new ConfigDialog(this, mEwsClient, windowId);
     if (dlg->exec()) {
         reloadConfig();
+        Q_EMIT configurationDialogAccepted();
+    } else {
+        Q_EMIT configurationDialogRejected();
     }
     delete dlg;
 }
