@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Microsoft Exchange Server (EWS)
-Comment="Provides access to mail, appointments tasks and contacts of a Microsoft Exchange server using EWS"
+Comment=Provides access to mail, appointments tasks and contacts of a Microsoft Exchange server using EWS
 Type=AkonadiResource
 Exec=akonadi_ews_resource
 Icon=akonadi-ews
