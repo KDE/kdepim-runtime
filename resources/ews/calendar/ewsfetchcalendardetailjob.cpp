@@ -24,9 +24,6 @@
 #include <KCalCore/Event>
 #include <KCalCore/ICalFormat>
 #include <KCalCore/MemoryCalendar>
-#include <KDE/KDateTime>
-#include <KDE/KSystemTimeZones>
-#include <KDE/KTimeZone>
 
 #include "ewsresource_debug.h"
 #include "ewsgetitemrequest.h"
