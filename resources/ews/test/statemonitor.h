@@ -31,7 +31,7 @@ class StateMonitorBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit StateMonitorBase(QObject *parent) : QObject(parent) {};
+    explicit StateMonitorBase(QObject *parent) : QObject(parent) {}
     virtual ~StateMonitorBase() = default;
 Q_SIGNALS:
     void stateReached();

@@ -57,7 +57,6 @@ protected:
     const Akonadi::Collection mCollection;
 private Q_SLOTS:
     void itemDetailFetched(KJob *job);
-private:
 };
 
 #endif

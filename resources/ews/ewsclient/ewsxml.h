@@ -39,23 +39,23 @@ public:
     static Q_CONSTEXPR T Ignore = static_cast<T>(-1);
 
     struct Item {
-        Item() : key(Ignore) {};
+        Item() : key(Ignore) {}
         Item(T k, const QString &n, ReadFunction rfn = ReadFunction(), WriteFunction wfn = WriteFunction())
-            : key(k), elmName(n), readFn(rfn), writeFn(wfn) {};
+            : key(k), elmName(n), readFn(rfn), writeFn(wfn) {}
         T key;
         QString elmName;
         ReadFunction readFn;
         WriteFunction writeFn;
     };
 
-    EwsXml() {};
+    EwsXml() {}
     EwsXml(const QVector<Item> &items) : mItems(items)
     {
         rebuildItemHash();
     }
 
     EwsXml(const EwsXml &other)
-        : mItems(other.mItems), mValues(other.mValues), mItemHash(other.mItemHash) {};
+        : mItems(other.mItems), mValues(other.mValues), mItemHash(other.mItemHash) {}
 
     void setItems(const QVector<Item> &items)
     {

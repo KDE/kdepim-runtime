@@ -40,11 +40,11 @@ public:
 
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    explicit EwsItemShape(EwsBaseShape shape = EwsShapeDefault) : EwsFolderShape(shape), mBodyType(BodyNone) {};
+    explicit EwsItemShape(EwsBaseShape shape = EwsShapeDefault) : EwsFolderShape(shape), mBodyType(BodyNone) {}
     EwsItemShape(const EwsItemShape &other)
-        : EwsFolderShape(other), mBodyType(BodyNone) {};
+        : EwsFolderShape(other), mBodyType(BodyNone) {}
     explicit EwsItemShape(EwsFolderShape &&other)
-        : EwsFolderShape(other), mBodyType(BodyNone) {};
+        : EwsFolderShape(other), mBodyType(BodyNone) {}
     EwsItemShape &operator=(EwsItemShape &&other)
     {
         mBaseShape = other.mBaseShape;

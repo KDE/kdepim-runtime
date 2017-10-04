@@ -33,7 +33,7 @@ class Job;
 
 template <typename F>
 struct Finally {
-    Finally(F f): cleanupf{f} {};
+    Finally(F f): cleanupf{f} {}
     ~Finally()
     {
         cleanupf();

@@ -71,7 +71,7 @@ public:
         : mPropType(EwsPropertyField::UnknownField), mIndex(0), mPsIdType(DistinguishedPropSet),
           mPsDid(EwsPropSetMeeting), mIdType(PropName), mId(0), mHasTag(false), mTag(0),
           mType(EwsPropTypeNull), mHash(0)
-    {};
+    {}
 
     enum PropSetIdType {
         DistinguishedPropSet,

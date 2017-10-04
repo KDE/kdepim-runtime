@@ -121,7 +121,7 @@ public:
     } Flag;
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    FolderDescr() {};
+    FolderDescr() {}
 
     Akonadi::Collection collection;
     Flags flags;

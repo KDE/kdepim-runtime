@@ -52,7 +52,7 @@ public:
     class Protocol
     {
     public:
-        Protocol() : mType(UnknownProto) {};
+        Protocol() : mType(UnknownProto) {}
 
         bool isValid() const
         {
