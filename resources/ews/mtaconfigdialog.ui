@@ -14,6 +14,18 @@
    <string>EWS Mail Transport Configuration</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="accountLabel">
      <property name="text">
@@ -32,7 +44,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Akonadi::AgentInstanceWidget" name="resourceWidget" native="true">
+    <widget class="Akonadi::AgentInstanceWidget" name="resourceWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
