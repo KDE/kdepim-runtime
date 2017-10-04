@@ -464,7 +464,7 @@ void UtEwsAttachment::read_data()
         << false << EwsItem();
 
     QTest::newRow("valid last modified time")
-        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-01-03T09:24:39</LastModifiedTime>") + xmlFileAttTail
+        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-01-03T08:24:39Z</LastModifiedTime>") + xmlFileAttTail
         << true
         << EwsAttachment::FileAttachment
         << false << QString()
@@ -894,14 +894,16 @@ void UtEwsAttachment::write_data()
     item1.setType(EwsItemTypeItem);
     item1.setField(EwsItemFieldItemId, QVariant::fromValue<EwsId>(EwsId(QStringLiteral("VGhpcyBpcyBhIHRlc3Q="), QStringLiteral("muKls0n8pUM="))));
 
+    QDateTime testDt(QDateTime::fromSecsSinceEpoch(1483621243, QTimeZone::utc()));
+
     QTest::newRow("non-empty item attachment")
         << xmlHead + QStringLiteral("<ItemAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\">"
             "<AttachmentId Id=\"5IaIqJVsJzamf2105wg4wQ==\"/>"
             "<ContentType>application/x-test</ContentType>"
             "<ContentLocation>file:///foo/bar</ContentLocation>"
-            "<LastModifiedTime>2017-01-05T13:00:43+00:00</LastModifiedTime>"
+            "<LastModifiedTime>%1</LastModifiedTime>"
             "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
-            "</ItemAttachment>")
+            "</ItemAttachment>").arg(testDt.toString(Qt::ISODate))
         << true
         << EwsAttachment::ItemAttachment
         << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==")
@@ -910,7 +912,7 @@ void UtEwsAttachment::write_data()
         << false << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
         << true << QStringLiteral("file:///foo/bar")
         << false << 123l
-        << true << QDateTime::fromSecsSinceEpoch(1483621243, QTimeZone::utc())
+        << true << testDt
         << false << true
         << true << true
         << true << QByteArray("This is another test")
@@ -933,7 +935,7 @@ void UtEwsAttachment::write_data()
         << true << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
         << false << QStringLiteral("file:///foo/bar")
         << true << 123l
-        << false << QDateTime::fromSecsSinceEpoch(1483621243, QTimeZone::utc())
+        << false << testDt
         << true << true
         << true << true
         << true << QByteArray("This is another test")
