@@ -84,9 +84,6 @@ void RetrieveItemTask::triggerFetchJob()
     fetch->setScope(scope);
     connect(fetch, &KIMAP::FetchJob::messagesAvailable,
             this, &RetrieveItemTask::onMessagesReceived);
-    //TODO: Handle parts retrieval
-    //connect( fetch, SIGNAL(partsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)),
-    //         this, SLOT(onPartsReceived(QString,QMap<qint64,qint64>,QMap<qint64,KIMAP::MessageParts>)) );
     connect(fetch, &KJob::result,
             this, &RetrieveItemTask::onContentFetchDone);
     fetch->start();

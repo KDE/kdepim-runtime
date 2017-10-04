@@ -330,7 +330,7 @@ void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
         if (++outboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES) {
             const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * outboxDiscoveryRetries;
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
-            QTimer::singleShot(timeout, q, SLOT(localFoldersChanged()));
+            QTimer::singleShot(timeout, q, [this]() { localFoldersChanged(); });
         } else {
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up.";
             Q_EMIT q->error(i18n("Could not access the outbox folder (%1).", job->errorString()));
@@ -402,11 +402,11 @@ OutboxQueue::OutboxQueue(QObject *parent)
     connect(d->monitor, SIGNAL(itemRemoved(Akonadi::Item)),
             this, SLOT(itemRemoved(Akonadi::Item)));
 
-    connect(SpecialMailCollections::self(), SIGNAL(defaultCollectionsChanged()), this, SLOT(localFoldersChanged()));
+    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() { d->localFoldersChanged(); });
     d->localFoldersChanged();
 
     d->futureTimer = new QTimer(this);
-    connect(d->futureTimer, SIGNAL(timeout()), this, SLOT(checkFuture()));
+    connect(d->futureTimer, &QTimer::timeout, this, [this]() { d->checkFuture(); });
     d->futureTimer->start(60 * 60 * 1000);   // 1 hour
 }
 

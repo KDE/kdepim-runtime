@@ -444,7 +444,7 @@ SendJob::~SendJob()
 
 void SendJob::start()
 {
-    QTimer::singleShot(0, this, SLOT(doTransport()));
+    QTimer::singleShot(0, this, [this]() { d->doTransport(); });
 }
 
 void SendJob::setMarkAborted()

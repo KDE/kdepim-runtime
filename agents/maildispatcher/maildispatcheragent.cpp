@@ -209,8 +209,8 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
             this, SLOT(queueError(QString)));
     connect(this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
             d->queue, SLOT(itemProcessed(Akonadi::Item,bool)));
-    connect(this, SIGNAL(abortRequested()),
-            this, SLOT(abort()));
+    connect(this, &MailDispatcherAgent::abortRequested,
+            this, [this]() { d->abort(); });
 
     d->sentActionHandler = new SentActionHandler(this);
 
