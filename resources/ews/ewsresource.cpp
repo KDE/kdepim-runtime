@@ -381,6 +381,7 @@ bool EwsResource::retrieveItems(const Item::List &items, const QSet<QByteArray> 
 
     EwsGetItemRequest *req = new EwsGetItemRequest(mEwsClient, this);
     EwsId::List ids;
+    ids.reserve(items.count());
     Q_FOREACH (const Item &item, items) {
         ids << EwsId(item.remoteId(), item.remoteRevision());
     }
@@ -571,7 +572,7 @@ void EwsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> 
     } else {
         EwsModifyItemJob *job = EwsItemHandler::itemHandler(type)->modifyItemJob(mEwsClient,
                                 Item::List() << item, partIdentifiers, this);
-        connect(job, SIGNAL(result(KJob*)), SLOT(itemChangeRequestFinished(KJob*)));
+        connect(job, &KJob::result, this, &EwsResource::itemChangeRequestFinished);
         job->start();
     }
 }
@@ -631,6 +632,7 @@ void EwsResource::itemsMoved(const Item::List &items, const Collection &sourceCo
 
     EwsId::List ids;
 
+    ids.reserve(items.count());
     Q_FOREACH (const Item &item, items) {
         EwsId id(item.remoteId(), item.remoteRevision());
         ids.append(id);
@@ -704,7 +706,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
             qCDebugNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsMoved: failed for item %1").arg(ewsHash(item.remoteId()));
             failedIds.append(EwsId(item.remoteId(), QString()));
         }
-        it++;
+        ++it;
     }
 
     if (!failedIds.isEmpty()) {
@@ -725,7 +727,7 @@ void EwsResource::itemsRemoved(const Item::List &items)
     qCDebugNC(EWSRES_AGENTIF_LOG) << "itemsRemoved: start" << items;
 
     EwsId::List ids;
-
+    ids.reserve(items.count());
     Q_FOREACH (const Item &item, items) {
         EwsId id(item.remoteId(), item.remoteRevision());
         ids.append(id);
@@ -1165,9 +1167,9 @@ void EwsResource::fetchSpecialFolders()
 
 void EwsResource::specialFoldersCollectionsRetrieved(const Collection::List &folders)
 {
-    QStringList queryItemNames;
     EwsId::List queryItems;
 
+    queryItems.reserve(specialFolderList.count());
     Q_FOREACH (const SpecialFolders &sf, specialFolderList) {
         queryItems.append(EwsId(sf.did));
     }

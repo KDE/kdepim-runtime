@@ -47,8 +47,8 @@ EwsItemHandler *EwsItemHandler::itemHandler(EwsItemType type)
     if (it != handlers->end()) {
         return it->data();
     } else {
-        HandlerList::const_iterator it;
-        for (it = handlerFactories->cbegin(); it != handlerFactories->cend(); ++it) {
+        const HandlerList::const_iterator end(handlerFactories->cend());
+        for (HandlerList::const_iterator it = handlerFactories->cbegin(); it != end; ++it) {
             if (it->type == type) {
                 EwsItemHandler *handler = it->factory();
                 (*handlers)[type].reset(handler);

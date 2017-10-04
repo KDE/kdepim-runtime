@@ -298,8 +298,8 @@ void EwsFetchItemsJob::compareItemLists()
     if (mFullSync) {
         /* In case of a full sync all items that are still on the local item list do not exist
          * remotely and need to be deleted locally. */
-        QHash<QString, Item>::iterator it;
-        for (it = itemHash.begin(); it != itemHash.end(); ++it) {
+        const QHash<QString, Item>::iterator end(itemHash.end());
+        for (QHash<QString, Item>::iterator it = itemHash.begin(); it != end; ++it) {
             mDeletedItems.append(it.value());
         }
     } else {

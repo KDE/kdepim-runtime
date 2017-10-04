@@ -44,7 +44,7 @@ EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &r
     mStreamingEvents = mEwsClient.serverVersion().supports(EwsServerVersion::StreamingSubscription);
     mStreamingTimer.setInterval(streamingConnTimeout * 1000);
     mStreamingTimer.setSingleShot(true);
-    connect(&mStreamingTimer, SIGNAL(timeout()), this, SLOT(streamingConnectionTimeout()));
+    connect(&mStreamingTimer, &QTimer::timeout, this, &EwsSubscriptionManager::streamingConnectionTimeout);
 }
 
 EwsSubscriptionManager::~EwsSubscriptionManager()

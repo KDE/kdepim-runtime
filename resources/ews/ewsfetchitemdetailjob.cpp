@@ -25,7 +25,7 @@ EwsFetchItemDetailJob::EwsFetchItemDetailJob(EwsClient &client, QObject *parent,
     : KCompositeJob(parent), mDeletedItems(nullptr), mClient(client), mCollection(collection)
 {
     mRequest = new EwsGetItemRequest(client, this);
-    connect(mRequest, SIGNAL(result(KJob*)), SLOT(itemDetailFetched(KJob*)));
+    connect(mRequest.data(), &KJob::result, this, &EwsFetchItemDetailJob::itemDetailFetched);
     addSubjob(mRequest);
 }
 
@@ -33,7 +33,7 @@ EwsFetchItemDetailJob::~EwsFetchItemDetailJob()
 {
 }
 
-void EwsFetchItemDetailJob::setItemLists(Akonadi::Item::List changedItems,
+void EwsFetchItemDetailJob::setItemLists(const Akonadi::Item::List &changedItems,
         Akonadi::Item::List *deletedItems)
 {
     mChangedItems = changedItems;

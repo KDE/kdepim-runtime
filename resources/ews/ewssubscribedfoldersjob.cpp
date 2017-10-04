@@ -43,6 +43,7 @@ void EwsSubscribedFoldersJob::start()
     if (mSettings->serverSubscriptionList() == QStringList() << QStringLiteral("default")) {
         ids = defaultSubscriptionFolders();
     } else {
+        ids.reserve(mSettings->serverSubscriptionList().count());
         Q_FOREACH (const QString &id, mSettings->serverSubscriptionList()) {
             ids << EwsId(id);
         }

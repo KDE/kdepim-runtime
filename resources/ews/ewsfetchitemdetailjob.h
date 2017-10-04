@@ -39,7 +39,7 @@ public:
     EwsFetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection);
     ~EwsFetchItemDetailJob() override;
 
-    void setItemLists(Akonadi::Item::List changedItems, Akonadi::Item::List *deletedItems);
+    void setItemLists(const Akonadi::Item::List &changedItems, Akonadi::Item::List *deletedItems);
 
     Akonadi::Item::List changedItems() const
     {
@@ -52,7 +52,7 @@ protected:
 
     QPointer<EwsGetItemRequest> mRequest;
     Akonadi::Item::List mChangedItems;
-    Akonadi::Item::List *mDeletedItems;
+    Akonadi::Item::List *mDeletedItems = nullptr;
     EwsClient &mClient;
     const Akonadi::Collection mCollection;
 private Q_SLOTS:

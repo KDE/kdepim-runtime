@@ -74,21 +74,21 @@ public Q_SLOTS:
     void filterTextChanged(const QString &text);
 public:
     bool mEnabled;
-    QCheckBox *mEnableCheckBox;
-    QTreeView *mFolderTreeView;
-    QWidget *mSubContainer;
-    QPushButton *mRefreshButton;
+    QCheckBox *mEnableCheckBox = nullptr;
+    QTreeView *mFolderTreeView = nullptr;
+    QWidget *mSubContainer = nullptr;
+    QPushButton *mRefreshButton = nullptr;
     EwsClient &mClient;
-    KMessageWidget *mMsgWidget;
-    QStandardItemModel *mFolderTreeModel;
+    KMessageWidget *mMsgWidget = nullptr;
+    QStandardItemModel *mFolderTreeModel = nullptr;
     QHash<QString, QStandardItem*> mFolderItemHash;
     int mFolderListPendingRequests;
     EwsFolder::List mFolders;
     EwsId::List mSubscribedIds;
     EwsId::List mOrigSubscribedIds;
     bool mSubscribedIdsRetrieved;
-    EwsSubscriptionFilterModel *mFilterModel;
-    Settings *mSettings;
+    EwsSubscriptionFilterModel *mFilterModel = nullptr;
+    Settings *mSettings = nullptr;
 
     EwsSubscriptionWidget *q_ptr;
     Q_DECLARE_PUBLIC(EwsSubscriptionWidget)
@@ -364,6 +364,7 @@ QStringList EwsSubscriptionWidget::subscribedList() const
     Q_D(const EwsSubscriptionWidget);
 
     QStringList list;
+    list.reserve(d->mSubscribedIds.count());
     Q_FOREACH (const EwsId &id, d->mSubscribedIds) {
         list.append(id.id());
     }
