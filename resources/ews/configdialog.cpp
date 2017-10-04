@@ -49,8 +49,8 @@ static const QVector<StringPair> userAgents = {
 };
 
 ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId)
-    : QDialog(), mParentResource(parentResource), mAutoDiscoveryNeeded(false), mTryConnectNeeded(false),
-      mProgressDialog(nullptr)
+    : QDialog()
+    , mParentResource(parentResource)
 {
     if (wId) {
         KWindowSystem::setMainWindow(this, wId);

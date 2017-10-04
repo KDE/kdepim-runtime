@@ -78,7 +78,7 @@ Q_SIGNALS:
     void folderTreeModified();
     void fullSyncRequested();
     void connectionError();
-private Q_SLOTS:
+private:
     void subscribeRequestFinished(KJob *job);
     void verifySubFoldersRequestFinished(KJob *job);
     void getEventsRequestFinished(KJob *job);

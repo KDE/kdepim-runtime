@@ -43,7 +43,7 @@ class ConfigDialog : public QDialog
 public:
     explicit ConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId);
     ~ConfigDialog() override;
-private Q_SLOTS:
+private:
     void save();
     void autoDiscoveryFinished(KJob *job);
     void tryConnectFinished(KJob *job);
@@ -55,20 +55,20 @@ private Q_SLOTS:
     void enableTryConnect();
     void tryConnect();
     void userAgentChanged(int index);
-private:
+
     QString fullUsername() const;
 
-    EwsResource *mParentResource;
-    KConfigDialogManager *mConfigManager;
-    Ui::SetupServerView *mUi;
+    EwsResource *mParentResource = nullptr;
+    KConfigDialogManager *mConfigManager = nullptr;
+    Ui::SetupServerView *mUi = nullptr;
 
-    QDialogButtonBox *mButtonBox;
-    EwsAutodiscoveryJob *mAutoDiscoveryJob;
-    EwsGetFolderRequest *mTryConnectJob;
-    bool mAutoDiscoveryNeeded;
-    bool mTryConnectNeeded;
-    ProgressDialog *mProgressDialog;
-    EwsSubscriptionWidget *mSubWidget;
+    QDialogButtonBox *mButtonBox = nullptr;
+    EwsAutodiscoveryJob *mAutoDiscoveryJob = nullptr;
+    EwsGetFolderRequest *mTryConnectJob = nullptr;
+    bool mAutoDiscoveryNeeded = false;
+    bool mTryConnectNeeded = false;
+    ProgressDialog *mProgressDialog = nullptr;
+    EwsSubscriptionWidget *mSubWidget = nullptr;
 };
 
 #endif
