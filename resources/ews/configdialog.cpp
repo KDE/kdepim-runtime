@@ -133,14 +133,14 @@ ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId w
 
     connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
     connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &ConfigDialog::performAutoDiscovery);
-    connect(mUi->kcfg_Username, SIGNAL(textChanged(QString)), this, SLOT(setAutoDiscoveryNeeded()));
-    connect(mUi->passwordEdit, SIGNAL(textChanged(QString)), this, SLOT(setAutoDiscoveryNeeded()));
-    connect(mUi->kcfg_Domain, SIGNAL(textChanged(QString)), this, SLOT(setAutoDiscoveryNeeded()));
-    connect(mUi->kcfg_HasDomain, SIGNAL(toggled(bool)), this, SLOT(setAutoDiscoveryNeeded()));
-    connect(mUi->kcfg_Email, SIGNAL(textChanged(QString)), this, SLOT(setAutoDiscoveryNeeded()));
-    connect(mUi->kcfg_BaseUrl, SIGNAL(textChanged(QString)), this, SLOT(enableTryConnect()));
+    connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->passwordEdit, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &ConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_BaseUrl, &KLineEdit::textChanged, this, &ConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &ConfigDialog::tryConnect);
-    connect(mUi->userAgentCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(userAgentChanged(int)));
+    connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ConfigDialog::userAgentChanged);
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource,
             &EwsResource::clearFolderTreeSyncState);
     connect(mUi->clearFolderItemSyncStateButton, &QPushButton::clicked, mParentResource,
