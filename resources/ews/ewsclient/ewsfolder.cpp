@@ -80,7 +80,7 @@ static const QVector<EwsFolderPrivate::XmlProc::Item> ewsFolderItems = {
 const EwsFolderPrivate::XmlProc EwsFolderPrivate::mStaticEwsXml(ewsFolderItems);
 
 EwsFolderPrivate::EwsFolderPrivate()
-    : EwsItemBasePrivate(), mType(EwsFolderTypeUnknown), mParent(0), mEwsXml(mStaticEwsXml)
+    : EwsItemBasePrivate(), mType(EwsFolderTypeUnknown), mParent(nullptr), mEwsXml(mStaticEwsXml)
 {
 }
 
