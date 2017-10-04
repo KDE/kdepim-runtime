@@ -27,7 +27,7 @@
 
 #include <KLocalizedString>
 
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 
 using namespace Akonadi;
 using namespace Akonadi_VCard_Resource;

@@ -19,7 +19,7 @@
 
 #include "dummypasswordrequester.h"
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
 #include <qtest.h>
 

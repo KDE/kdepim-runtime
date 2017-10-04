@@ -33,7 +33,7 @@
 #include <ksslinfodialog.h>
 #include <kwindowsystem.h>
 #include <QSslCipher>
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 
 using namespace Akonadi;
 

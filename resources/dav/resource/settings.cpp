@@ -40,7 +40,7 @@
 #include <QPointer>
 #include <QRegExp>
 #include <QUrl>
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QVBoxLayout>

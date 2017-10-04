@@ -24,7 +24,7 @@
 #include "retrieveitemsjob.h"
 
 #include <QDir>
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 
 #include <Akonadi/KMime/MessageParts>
 #include <changerecorder.h>

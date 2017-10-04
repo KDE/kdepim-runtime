@@ -60,7 +60,7 @@
 #include <KWindowSystem>
 
 #include <QDir>
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 
 #include <AkonadiCore/Tag>
 

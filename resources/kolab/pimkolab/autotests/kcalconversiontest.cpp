@@ -18,8 +18,8 @@
 #include "kcalconversiontest.h"
 #include <contact.h>
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
+#include <QObject>
+#include <QtTest>
 #include <kolabcontact.h>
 #include <kcalcore/recurrence.h>
 #include <kcontacts/addressee.h>

@@ -42,7 +42,7 @@
 #include <Kdelibs4ConfigMigrator>
 
 #include <QTimer>
-#include <QtDBus/QDBusConnection>
+#include <QDBusConnection>
 
 #ifdef MAIL_SERIALIZER_PLUGIN_STATIC
 
