@@ -1,0 +1,10 @@
+#fndef _CONFIG_H
+#efine _CONFIG_H
+	
+#makedefine HAVE_SEPARATE_MTA_RESOURCE
+
+#cmakedefine HAVE_INBOX_FILTERING_WORKAROUND
+
+#cmakedefine AKONADI_EWS_VERSION "@AKONADI_EWS_VERSION@"
+
+#endif
