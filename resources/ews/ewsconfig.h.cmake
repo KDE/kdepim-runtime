@@ -1,7 +1,7 @@
-#fndef _CONFIG_H
-#efine _CONFIG_H
+#ifndef _CONFIG_H
+#define _CONFIG_H
 	
-#makedefine HAVE_SEPARATE_MTA_RESOURCE
+#cmakedefine HAVE_SEPARATE_MTA_RESOURCE
 
 #cmakedefine HAVE_INBOX_FILTERING_WORKAROUND
 
