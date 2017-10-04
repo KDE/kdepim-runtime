@@ -473,7 +473,7 @@ void UtEwsAttachment::read_data()
         << false << QString()
         << false << QString()
         << false << 0l
-        << true << QDateTime::fromTime_t(1483431879)
+        << true << QDateTime::fromSecsSinceEpoch(1483431879, QTimeZone::utc())
         << false << false
         << false << false
         << false << QByteArray()
@@ -899,7 +899,7 @@ void UtEwsAttachment::write_data()
             "<AttachmentId Id=\"5IaIqJVsJzamf2105wg4wQ==\"/>"
             "<ContentType>application/x-test</ContentType>"
             "<ContentLocation>file:///foo/bar</ContentLocation>"
-            "<LastModifiedTime>2017-01-05T14:00:43</LastModifiedTime>"
+            "<LastModifiedTime>2017-01-05T13:00:43+00:00</LastModifiedTime>"
             "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
             "</ItemAttachment>")
         << true
@@ -910,7 +910,7 @@ void UtEwsAttachment::write_data()
         << false << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
         << true << QStringLiteral("file:///foo/bar")
         << false << 123l
-        << true << QDateTime::fromTime_t(1483621243)
+        << true << QDateTime::fromSecsSinceEpoch(1483621243, QTimeZone::utc())
         << false << true
         << true << true
         << true << QByteArray("This is another test")
@@ -933,7 +933,7 @@ void UtEwsAttachment::write_data()
         << true << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
         << false << QStringLiteral("file:///foo/bar")
         << true << 123l
-        << false << QDateTime::fromTime_t(1483621243)
+        << false << QDateTime::fromSecsSinceEpoch(1483621243, QTimeZone::utc())
         << true << true
         << true << true
         << true << QByteArray("This is another test")
