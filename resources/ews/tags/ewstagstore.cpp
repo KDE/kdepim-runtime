@@ -153,7 +153,7 @@ QStringList EwsTagStore::serialize() const
 {
     QStringList tagList;
 
-    for (auto it = mTagData.cbegin(); it != mTagData.cend(); ++it) {
+    for (auto it = mTagData.cbegin(), end(mTagData.cend()); it != end; ++it) {
         QByteArray data;
         QDataStream stream(&data, QIODevice::WriteOnly);
         stream.setVersion(QDataStream::Qt_5_4);
@@ -169,7 +169,7 @@ Tag::List EwsTagStore::tags() const
 {
     Tag::List tagList;
 
-    for (auto it = mTagData.cbegin(); it != mTagData.cend(); ++it) {
+    for (auto it = mTagData.cbegin(), end = mTagData.cend(); it != end; ++it) {
         Tag tag(-1);
         if (unserializeTag(it.value(), tag)) {
             tagList.append(tag);

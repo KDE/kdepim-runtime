@@ -50,7 +50,7 @@ void EwsModifyMailJob::start()
             EwsUpdateItemRequest::ItemChange ic(itemId, EwsItemTypeMessage);
             QHash<EwsPropertyField, QVariant> propertyHash = EwsMailHandler::writeFlags(item.flags());
 
-            for (auto it = propertyHash.cbegin(); it != propertyHash.cend(); ++it) {
+            for (auto it = propertyHash.cbegin(), end = propertyHash.cend(); it != end; ++it) {
                 EwsUpdateItemRequest::Update *upd;
                 if (it.value().isNull()) {
                     upd = new EwsUpdateItemRequest::DeleteUpdate(it.key());
@@ -66,7 +66,7 @@ void EwsModifyMailJob::start()
     }
 
     if (doSubmit) {
-        connect(req, SIGNAL(result(KJob*)), SLOT(updateItemFinished(KJob*)));
+        connect(req, &KJob::result, this, &EwsModifyMailJob::updateItemFinished);
         req->start();
     } else {
         delete req;

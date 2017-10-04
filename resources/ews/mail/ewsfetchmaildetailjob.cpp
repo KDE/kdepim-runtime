@@ -92,7 +92,6 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
         v = ewsItem[EwsItemFieldToRecipients];
         if (Q_LIKELY(v.isValid())) {
             EwsMailbox::List mboxList = v.value<EwsMailbox::List>();
-            QStringList addrList;
             Q_FOREACH (const EwsMailbox &mbox, mboxList) {
                 msg->to()->addAddress(mbox);
             }
@@ -101,7 +100,6 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
         v = ewsItem[EwsItemFieldCcRecipients];
         if (Q_LIKELY(v.isValid())) {
             EwsMailbox::List mboxList = v.value<EwsMailbox::List>();
-            QStringList addrList;
             Q_FOREACH (const EwsMailbox &mbox, mboxList) {
                 msg->cc()->addAddress(mbox);
             }
@@ -110,7 +108,6 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
         v = ewsItem[EwsItemFieldBccRecipients];
         if (v.isValid()) {
             EwsMailbox::List mboxList = v.value<EwsMailbox::List>();
-            QStringList addrList;
             Q_FOREACH (const EwsMailbox &mbox, mboxList) {
                 msg->bcc()->addAddress(mbox);
             }
