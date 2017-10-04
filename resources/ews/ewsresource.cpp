@@ -645,7 +645,7 @@ void EwsResource::itemsMoved(const Item::List &items, const Collection &sourceCo
     req->setProperty("items", QVariant::fromValue<Item::List>(items));
     req->setProperty("sourceCollection", QVariant::fromValue<Collection>(sourceCollection));
     req->setProperty("destinationCollection", QVariant::fromValue<Collection>(destinationCollection));
-    connect(req, SIGNAL(result(KJob*)), SLOT(itemMoveRequestFinished(KJob*)));
+    connect(req, &KJob::result, this, &EwsResource::itemMoveRequestFinished);
     req->start();
 }
 
@@ -1109,7 +1109,7 @@ void EwsResource::foldersModifiedEvent(EwsId::List folders)
         job->setFetchScope(changeRecorder()->collectionFetchScope());
         job->fetchScope().setResource(identifier());
         job->fetchScope().setListFilter(CollectionFetchScope::Sync);
-        connect(job, SIGNAL(result(KJob*)), SLOT(foldersModifiedCollectionSyncFinished(KJob*)));
+        connect(job, &KJob::result, this, &EwsResource::foldersModifiedCollectionSyncFinished);
     }
 
 }

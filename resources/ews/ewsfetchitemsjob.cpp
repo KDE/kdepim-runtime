@@ -197,7 +197,7 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
             syncItemsReq->setItemShape(shape);
             syncItemsReq->setSyncState(itemReq->syncState());
             syncItemsReq->setMaxChanges(listBatchSize);
-            connect(syncItemsReq, SIGNAL(result(KJob*)), SLOT(remoteItemFetchDone(KJob*)));
+            connect(syncItemsReq, &KJob::result, this, &EwsFetchItemsJob::remoteItemFetchDone);
             addSubjob(syncItemsReq);
             syncItemsReq->start();
         } else {
@@ -385,7 +385,7 @@ void EwsFetchItemsJob::compareItemLists()
                     EwsFetchItemDetailJob *job = handler->fetchItemDetailJob(mClient, this, mCollection);
                     Item::List itemList = toFetchItems[iType].mid(i, fetchBatchSize);
                     job->setItemLists(itemList, &mDeletedItems);
-                    connect(job, SIGNAL(result(KJob*)), SLOT(itemDetailFetchDone(KJob*)));
+                    connect(job, &KJob::result, this, &EwsFetchItemsJob::itemDetailFetchDone);
                     addSubjob(job);
                     fetch = true;
                 }

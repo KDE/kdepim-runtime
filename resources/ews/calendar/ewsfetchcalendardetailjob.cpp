@@ -151,7 +151,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
         req->setItemShape(shape);
 
         req->setItemIds(addItems);
-        connect(req, SIGNAL(result(KJob*)), SLOT(exceptionItemsFetched(KJob*)));
+        connect(req, &KJob::result, this, &EwsFetchCalendarDetailJob::exceptionItemsFetched);
         req->start();
     }
 }
