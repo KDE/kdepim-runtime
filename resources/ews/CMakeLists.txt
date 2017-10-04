@@ -142,8 +142,9 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
       KF5::AkonadiAgentBase
       KF5::AkonadiCore
       KF5::AkonadiWidgets
-      KF5::Mime
-      KF5::KDELibs4Support)
+      KF5::I18n
+      KF5::WindowSystem
+      KF5::Mime)
 
   set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
 else (HAVE_SEPARATE_MTA_RESOURCE)
