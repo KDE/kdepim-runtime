@@ -19,13 +19,14 @@
 
 #include "progressdialog.h"
 
+#include <KLocalizedString>
+
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QProgressBar>
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include <KI18n/KLocalizedString>
 
 ProgressDialog::ProgressDialog(QWidget *parent, Type type)
     : QDialog(parent)

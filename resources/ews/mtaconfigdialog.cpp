@@ -20,11 +20,10 @@
 #include "mtaconfigdialog.h"
 
 #include <QAbstractItemView>
-#include <QDebug>
 #include <QDialogButtonBox>
 #include <QPushButton>
 
-#include <KWindowSystem/KWindowSystem>
+#include <KWindowSystem>
 
 #include <AkonadiCore/AgentFilterProxyModel>
 #include <AkonadiCore/AgentInstance>

@@ -22,11 +22,11 @@
 
 #include <QDialog>
 
-#include <KConfigWidgets/KConfigDialogManager>
 
 class QDialogButtonBox;
 class EwsResource;
 class EwsClient;
+class KConfigDialogManager;
 namespace Ui
 {
 class SetupServerView;

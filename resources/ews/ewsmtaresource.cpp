@@ -20,11 +20,9 @@
 #include "ewsmtaresource.h"
 
 #include <QDBusConnection>
-#include <QDebug>
 
-#include <KI18n/KLocalizedString>
 #include <KMime/Message>
-
+#include <KLocalizedString>
 #include "ewsresource_debug.h"
 #include "mtaconfigdialog.h"
 #include "mtasettings.h"

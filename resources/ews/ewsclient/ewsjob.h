@@ -20,7 +20,7 @@
 #ifndef EWSJOB_H
 #define EWSJOB_H
 
-#include <KCoreAddons/KCompositeJob>
+#include <KCompositeJob>
 
 class EwsJob : public KCompositeJob
 {

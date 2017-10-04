@@ -22,10 +22,8 @@
 
 #include <functional>
 
-#include <QDebug>
 #include <QQueue>
 
-#include <KCoreAddons/KJob>
 #include <KIO/SpecialJob>
 
 namespace KIO

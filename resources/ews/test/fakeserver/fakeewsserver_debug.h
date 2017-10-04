@@ -20,7 +20,6 @@
 #ifndef FAKEEWSSERVER_DEBUG_H
 #define FAKEEWSSERVER_DEBUG_H
 
-#include <QTemporaryDir>
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(EWSFAKE_LOG)

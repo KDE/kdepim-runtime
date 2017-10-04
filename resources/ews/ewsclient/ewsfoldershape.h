@@ -21,7 +21,6 @@
 #define EWSFOLDERSHAPE_H
 
 #include <QVector>
-#include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 #include "ewspropertyfield.h"

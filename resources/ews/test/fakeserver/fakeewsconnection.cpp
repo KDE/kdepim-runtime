@@ -25,6 +25,7 @@
 #include <QXmlQuery>
 #include <QXmlResultItems>
 #include <QXmlSerializer>
+#include <QRegularExpression>
 
 #include "fakeewsserver.h"
 #include "fakeewsserver_debug.h"

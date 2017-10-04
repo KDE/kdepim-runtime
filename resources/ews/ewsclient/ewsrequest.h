@@ -22,7 +22,6 @@
 
 #include <functional>
 
-#include <QPointer>
 #include <QSharedPointer>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>

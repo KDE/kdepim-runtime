@@ -22,7 +22,6 @@
 
 #include <QPointer>
 
-#include <KCoreAddons/KCompositeJob>
 
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Collection>

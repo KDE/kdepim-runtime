@@ -19,14 +19,14 @@
 
 #include "configdialog.h"
 
+#include <KConfigDialogManager>
+#include <KWindowSystem>
+#include <KMessageBox>
+
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QMessageBox>
-#include <QProgressBar>
 
-#include <KWindowSystem/KWindowSystem>
-#include <KWidgetsAddons/KMessageBox>
 
 #include "ui_configdialog.h"
 #include "settings.h"

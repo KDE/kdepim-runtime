@@ -19,7 +19,6 @@
 
 #include "faketransferjob.h"
 
-#include <QDebug>
 #include <QUrl>
 
 #include <KIO/TransferJob>

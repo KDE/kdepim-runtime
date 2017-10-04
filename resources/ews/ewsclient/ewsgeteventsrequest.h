@@ -20,8 +20,6 @@
 #ifndef EWSGETEVENTSREQUEST_H
 #define EWSGETEVENTSREQUEST_H
 
-#include <QDateTime>
-#include <QList>
 #include <QSharedPointer>
 
 #include "ewsid.h"

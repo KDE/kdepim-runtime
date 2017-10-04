@@ -19,12 +19,13 @@
 
 #include "ewscreatemailjob.h"
 
+#include <KLocalizedString>
+
 #include <KMime/Message>
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
 #include <AkonadiCore/AgentManager>
 #include <Akonadi/KMime/SpecialMailCollections>
-#include <KI18n/KLocalizedString>
 
 #include "ewscreateitemrequest.h"
 #include "ewsmoveitemrequest.h"

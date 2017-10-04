@@ -21,9 +21,9 @@
 
 #include <QPointer>
 
+#include <KPasswordDialog>
 #include <KWallet/KWallet>
-#include <KWidgetsAddons/KPasswordDialog>
-#include <KI18n/KLocalizedString>
+#include <KLocalizedString>
 
 Settings::Settings(WId windowId)
     : SettingsBase(), mWindowId(windowId)

@@ -20,7 +20,6 @@
 #ifndef FAKEHTTPPOST_H
 #define FAKEHTTPPOST_H
 
-#include <QDebug>
 
 #include <KIO/TransferJob>
 

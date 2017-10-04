@@ -27,6 +27,7 @@
 #include "ewssubscriberequest.h"
 #include "ewsunsubscriberequest.h"
 #include "settings.h"
+#include <QPointer>
 
 // TODO: Allow customization
 static Q_CONSTEXPR uint pollInterval = 10; /* seconds */

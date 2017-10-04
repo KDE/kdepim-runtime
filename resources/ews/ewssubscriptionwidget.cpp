@@ -28,10 +28,9 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-#include <KItemModels/KRecursiveFilterProxyModel>
+#include <KMessageWidget>
 #include <KLocalizedString>
-#include <KWidgetsAddons/KMessageWidget>
-
+#include <KRecursiveFilterProxyModel>
 #include "ewsclient.h"
 #include "ewsfindfolderrequest.h"
 #include "ewssubscribedfoldersjob.h"

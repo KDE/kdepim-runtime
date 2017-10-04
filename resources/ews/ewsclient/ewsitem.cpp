@@ -22,7 +22,6 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
-#include <KCodecs/KCodecs>
 
 #include "ewsattachment.h"
 #include "ewsattendee.h"

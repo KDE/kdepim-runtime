@@ -20,7 +20,6 @@
 #ifndef EWSCLIENT_DEBUG_H
 #define EWSCLIENT_DEBUG_H
 
-#include <QLoggingCategory>
 #include <QTemporaryDir>
 #include <ewscli_debug.h>
 #include <ewscli_proto_debug.h>

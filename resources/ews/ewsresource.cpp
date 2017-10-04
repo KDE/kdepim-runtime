@@ -21,7 +21,6 @@
 
 #include <QDebug>
 
-#include <KI18n/KLocalizedString>
 #include <AkonadiCore/ChangeRecorder>
 #include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/ItemFetchScope>
@@ -31,7 +30,8 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <KMime/Message>
 #include <KWallet/KWallet>
-#include <KWidgetsAddons/KPasswordDialog>
+
+#include <KLocalizedString>
 
 #include "ewsfetchitemsjob.h"
 #include "ewsfetchfoldersjob.h"

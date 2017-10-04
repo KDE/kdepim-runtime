@@ -20,7 +20,6 @@
 #ifndef EWSGETSTREAMINGEVENTSREQUEST_H
 #define EWSGETSTREAMINGEVENTSREQUEST_H
 
-#include <QList>
 #include <QSharedPointer>
 #include <QTimer>
 

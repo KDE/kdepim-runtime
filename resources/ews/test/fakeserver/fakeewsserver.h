@@ -24,7 +24,6 @@
 
 #include <QMutex>
 #include <QPointer>
-#include <QRegularExpression>
 #include <QTcpServer>
 #include <QTcpSocket>
 

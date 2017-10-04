@@ -20,7 +20,6 @@
 #ifndef EWSITEMSHAPE_H
 #define EWSITEMSHAPE_H
 
-#include <QFlags>
 
 #include "ewsfoldershape.h"
 

@@ -20,11 +20,9 @@
 #ifndef EWSCLIENT_H
 #define EWSCLIENT_H
 
-#include <QPointer>
 #include <QString>
 #include <QUrl>
-#include <QVector>
-
+#include <QObject>
 #include "ewsserverversion.h"
 
 class EwsClient : public QObject
