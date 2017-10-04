@@ -96,7 +96,7 @@ protected:
     QString mResponseData;
 protected Q_SLOTS:
     void requestResult(KJob *job);
-    void requestData(KIO::Job *job, const QByteArray &data);
+    virtual void requestData(KIO::Job *job, const QByteArray &data);
 private:
     bool readSoapBody(QXmlStreamReader &reader);
     bool readSoapFault(QXmlStreamReader &reader);

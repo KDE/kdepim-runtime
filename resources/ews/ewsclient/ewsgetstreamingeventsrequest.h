@@ -46,7 +46,7 @@ public Q_SLOTS:
 Q_SIGNALS:
     void eventsReceived(KJob *job);
 protected Q_SLOTS:
-    void requestData(KIO::Job *job, const QByteArray &data);
+    void requestData(KIO::Job *job, const QByteArray &data) override;
     void requestDataTimeout();
 protected:
     uint mTimeout;
