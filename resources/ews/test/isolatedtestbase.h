@@ -64,7 +64,7 @@ public:
 
     typedef QVector<Folder> FolderList;
 
-    explicit IsolatedTestBase(QObject *parent = 0);
+    explicit IsolatedTestBase(QObject *parent = nullptr);
     ~IsolatedTestBase() override;
 
     static QString loadResourceAsString(const QString &path);
