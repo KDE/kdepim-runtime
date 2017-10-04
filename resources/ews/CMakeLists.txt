@@ -159,12 +159,12 @@ endif (BUILD_TESTING)
 
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop
-  DESTINATION "${KDE_INSTALL_DATAROOTDIR}/share/akonadi/agents" )
+  DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 install(TARGETS akonadi_ews_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
   install(FILES ewsmtaresource.desktop
-    DESTINATION "${KDE_INSTALL_DATAROOTDIR}/share/akonadi/agents" )
+    DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
   install(TARGETS akonadi_ewsmta_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 endif (HAVE_SEPARATE_MTA_RESOURCE)
 
