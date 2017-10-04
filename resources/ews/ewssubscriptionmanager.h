@@ -107,8 +107,8 @@ private:
     bool mStreamingEvents;
     QMultiHash<QString, UpdateItem> mQueuedUpdates;
     QTimer mStreamingTimer;
-    EwsEventRequestBase *mEventReq;
-    Settings *mSettings;
+    EwsEventRequestBase *mEventReq = nullptr;
+    Settings *mSettings = nullptr;
 };
 
 #endif

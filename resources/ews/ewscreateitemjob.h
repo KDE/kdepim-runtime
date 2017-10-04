@@ -51,7 +51,7 @@ protected:
     Akonadi::Item mItem;
     Akonadi::Collection mCollection;
     EwsClient &mClient;
-    EwsTagStore *mTagStore;
+    EwsTagStore *mTagStore = nullptr;
 };
 
 #endif

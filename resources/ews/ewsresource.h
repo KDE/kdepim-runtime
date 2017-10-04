@@ -155,7 +155,7 @@ private:
     QString mPassword;
     bool mTagsRetrieved;
     int mReconnectTimeout;
-    EwsTagStore *mTagStore;
+    EwsTagStore *mTagStore = nullptr;
     QScopedPointer<Settings> mSettings;
 };
 

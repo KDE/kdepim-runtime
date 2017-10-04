@@ -60,7 +60,7 @@ private:
     void doUpdateItemsTags();
 
     Akonadi::Item::List mItems;
-    EwsTagStore *mTagStore;
+    EwsTagStore *mTagStore = nullptr;
     EwsClient &mClient;
 };
 

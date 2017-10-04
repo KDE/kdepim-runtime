@@ -43,7 +43,7 @@ private Q_SLOTS:
     void tagFetchFinished(KJob *job);
     void tagWriteFinished(KJob *job);
 private:
-    EwsTagStore *mTagStore;
+    EwsTagStore *mTagStore = nullptr;
     EwsClient &mClient;
     const Akonadi::Collection &mRootCollection;
 };

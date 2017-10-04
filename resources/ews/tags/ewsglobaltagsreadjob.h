@@ -48,7 +48,7 @@ public:
 private Q_SLOTS:
     void getFolderRequestFinished(KJob *job);
 private:
-    EwsTagStore *mTagStore;
+    EwsTagStore *mTagStore = nullptr;
     EwsClient &mClient;
     const Akonadi::Collection &mRootCollection;
     Akonadi::Tag::List mTags;

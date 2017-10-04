@@ -102,7 +102,7 @@ private:
     QString mSyncState;
     bool mFullSync;
     QueuedUpdateHash mQueuedUpdates;
-    EwsTagStore *mTagStore;
+    EwsTagStore *mTagStore = nullptr;
     bool mTagsSynced;
 
     Akonadi::Item::List mChangedItems;

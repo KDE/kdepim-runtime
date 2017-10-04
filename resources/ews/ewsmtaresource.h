@@ -46,7 +46,7 @@ private Q_SLOTS:
 private:
     bool connectEws();
 
-    OrgKdeAkonadiEwsResourceInterface *mEwsResource;
+    OrgKdeAkonadiEwsResourceInterface *mEwsResource = nullptr;
     QHash<QString, Akonadi::Item> mItemHash;
 };
 

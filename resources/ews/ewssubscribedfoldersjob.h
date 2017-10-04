@@ -46,7 +46,7 @@ private Q_SLOTS:
 private:
     EwsId::List mFolders;
     EwsClient &mClient;
-    Settings *mSettings;
+    Settings *mSettings = nullptr;
 };
 
 #endif

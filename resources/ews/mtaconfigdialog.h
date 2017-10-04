@@ -42,9 +42,9 @@ private Q_SLOTS:
     void save();
     void dialogAccepted();
 private:
-    QDialogButtonBox *mButtonBox;
-    EwsMtaResource *mParentResource;
-    Ui::SetupServerView *mUi;
+    QDialogButtonBox *mButtonBox = nullptr;
+    EwsMtaResource *mParentResource = nullptr;
+    Ui::SetupServerView *mUi = nullptr;
 };
 
 #endif
