@@ -62,7 +62,7 @@ public:
     EwsIdComparatorRegistrar()
     {
         QMetaType::registerComparators<EwsId>();
-    };
+    }
 };
 const EwsIdComparatorRegistrar ewsIdComparatorRegistrar;
 
