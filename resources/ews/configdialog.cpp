@@ -103,7 +103,7 @@ ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId w
 
     QString password;
     mParentResource->settings()->requestPassword(password, false);
-    mUi->passwordEdit->setText(password);
+    mUi->passwordEdit->setPassword(password);
 
     int selectedIndex = -1;
     int i = 0;
@@ -134,7 +134,7 @@ ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId w
     connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
     connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &ConfigDialog::performAutoDiscovery);
     connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->passwordEdit, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->passwordEdit, &KPasswordLineEdit::passwordChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &ConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
@@ -181,14 +181,14 @@ void ConfigDialog::save()
         mParentResource->settings()->setUserAgent(QString());
     }
 
-    mParentResource->settings()->setPassword(mUi->passwordEdit->text());
+    mParentResource->settings()->setPassword(mUi->passwordEdit->password());
     mParentResource->settings()->save();
 }
 
 void ConfigDialog::performAutoDiscovery()
 {
     mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
-            fullUsername(), mUi->passwordEdit->text(),
+            fullUsername(), mUi->passwordEdit->password(),
             mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
             mUi->kcfg_EnableNTLMv2->isChecked(), this);
     connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &ConfigDialog::autoDiscoveryFinished);
@@ -276,7 +276,7 @@ void ConfigDialog::dialogAccepted()
 {
     if (mUi->kcfg_AutoDiscovery->isChecked() && mAutoDiscoveryNeeded) {
         mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
-                fullUsername(), mUi->passwordEdit->text(),
+                fullUsername(), mUi->passwordEdit->password(),
                 mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
                 mUi->kcfg_EnableNTLMv2->isChecked(), this);
         connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &ConfigDialog::autoDiscoveryFinished);
@@ -298,7 +298,7 @@ void ConfigDialog::dialogAccepted()
     if (mTryConnectNeeded) {
         EwsClient cli;
         cli.setUrl(mUi->kcfg_BaseUrl->text());
-        cli.setCredentials(fullUsername(), mUi->passwordEdit->text());
+        cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
         if (mUi->userAgentGroupBox->isChecked()) {
             cli.setUserAgent(mUi->userAgentEdit->text());
         }
@@ -348,7 +348,7 @@ void ConfigDialog::tryConnect()
 {
     EwsClient cli;
     cli.setUrl(mUi->kcfg_BaseUrl->text());
-    cli.setCredentials(fullUsername(), mUi->passwordEdit->text());
+    cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
     if (mUi->userAgentGroupBox->isChecked()) {
         cli.setUserAgent(mUi->userAgentEdit->text());
     }
