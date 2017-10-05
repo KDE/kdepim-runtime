@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Microsoft Exchange Server (EWS)
+Name[ca]=Servidor Microsoft Exchange (EWS)
+Name[nl]=Microsoft Exchange Server (EWS)
+Name[pt]=Servidor de Microsoft Exchange (EWS)
+Name[sv]=Microsoft Exchange-server (EWS)
+Name[x-test]=xxMicrosoft Exchange Server (EWS)xx
 Comment=Provides access to mail, appointments tasks and contacts of a Microsoft Exchange server using EWS
 Type=AkonadiResource
 Exec=akonadi_ews_resource
