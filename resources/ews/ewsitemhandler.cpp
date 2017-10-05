@@ -99,8 +99,9 @@ QSet<QByteArray> EwsItemHandler::readFlags(const EwsItem &item)
 
     QVariant flagProp = item[EwsResource::flagsProperty];
     if (!flagProp.isNull() && (flagProp.canConvert<QStringList>())) {
-        QStringList flagList = flagProp.toStringList();
-        Q_FOREACH (const QString &flag, flagList) {
+        const QStringList flagList = flagProp.toStringList();
+        flags.reserve(flagList.count());
+        for (const QString &flag : flagList) {
             flags.insert(flag.toAscii());
         }
     }

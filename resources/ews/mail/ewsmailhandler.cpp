@@ -26,6 +26,7 @@
 #include "ewsfetchmaildetailjob.h"
 #include "ewsmodifymailjob.h"
 #include "ewscreatemailjob.h"
+#include "ewsresource_debug.h"
 
 using namespace Akonadi;
 
@@ -68,7 +69,7 @@ bool EwsMailHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)
 {
     QByteArray mimeContent = ewsItem[EwsItemFieldMimeContent].toByteArray();
     if (mimeContent.isEmpty()) {
-        qWarning() << QStringLiteral("MIME content is empty!");
+        qCWarning(EWSRES_LOG) << QStringLiteral("MIME content is empty!");
         return false;
     }
 

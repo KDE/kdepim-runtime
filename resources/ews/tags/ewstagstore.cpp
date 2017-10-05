@@ -307,7 +307,7 @@ bool EwsTagStore::writeEwsProperties(const Akonadi::Item &item, EwsItem &ewsItem
                 return false;
             }
             tagList.append(QString::fromLatin1(tagRemoteId(tag.id())));
-            QString name = tagName(tag.id());
+            const QString name = tagName(tag.id());
             if (!name.isEmpty()) {
                 categoryList.append(name);
             }
