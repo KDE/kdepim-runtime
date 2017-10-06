@@ -61,7 +61,7 @@ public:
     explicit Note(const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr());
     virtual ~Note();
 
-    void saveTo(const KCalCore::Journal::Ptr &journal);
+    void saveTo(const KCalCore::Journal::Ptr &journal) const;
 
     QString type() const override
     {

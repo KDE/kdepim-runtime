@@ -161,7 +161,7 @@ QString Journal::saveXML() const
     return document.toString();
 }
 
-void Journal::saveTo(const KCalCore::Journal::Ptr &journal)
+void Journal::saveTo(const KCalCore::Journal::Ptr &journal) const
 {
     KolabBase::saveTo(journal);
 

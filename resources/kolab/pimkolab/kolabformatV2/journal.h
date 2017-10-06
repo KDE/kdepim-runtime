@@ -65,7 +65,7 @@ public:
         return QStringLiteral("Journal");
     }
 
-    void saveTo(const KCalCore::Journal::Ptr &journal);
+    void saveTo(const KCalCore::Journal::Ptr &journal) const;
 
     virtual void setSummary(const QString &summary);
     virtual QString summary() const;

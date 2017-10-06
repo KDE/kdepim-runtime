@@ -213,7 +213,7 @@ void Note::setFields(const KCalCore::Journal::Ptr &journal)
     }
 }
 
-void Note::saveTo(const KCalCore::Journal::Ptr &journal)
+void Note::saveTo(const KCalCore::Journal::Ptr &journal) const
 {
     KolabBase::saveTo(journal);
 

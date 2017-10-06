@@ -699,7 +699,6 @@ bool Contact::loadAttribute(QDomElement &element)
         }
         if (tagName == QLatin1String("phone")) {
             return loadPhoneAttribute(element);
-            return true;
         }
         if (tagName == QLatin1String("preferred-address")) {
             setPreferredAddress(element.text());

@@ -131,21 +131,15 @@ KMime::Message::Ptr createMessage(const QString &subject, const QString &mimetyp
 
 KMime::Content *createExplanationPart(bool v3)
 {
+    Q_UNUSED(v3)
     KMime::Content *content = new KMime::Content();
     content->contentType()->setMimeType("text/plain");
     content->contentType()->setCharset("us-ascii");
     content->contentTransferEncoding()->setEncoding(KMime::Headers::CE7Bit);
-    if (v3) {
-        content->setBody("This is a Kolab Groupware object.\n"
-                         "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
-                         "For a list of such email clients please visit\n"
-                         "http://www.kolab.org/get-kolab\n");
-    } else {
-        content->setBody("This is a Kolab Groupware object.\n"
-                         "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
-                         "For a list of such email clients please visit\n"
-                         "http://www.kolab.org/get-kolab\n");
-    }
+    content->setBody("This is a Kolab Groupware object.\n"
+                     "To view this object you will need an email client that can understand the Kolab Groupware format.\n"
+                     "For a list of such email clients please visit\n"
+                     "http://www.kolab.org/get-kolab\n");
     return content;
 }
 
