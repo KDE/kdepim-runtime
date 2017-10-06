@@ -158,7 +158,7 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
         }
         qCDebugNC(EWSRES_LOG) << "EwsFetchMailDetailJob::processItems:" << ewsHash(item.remoteId()) << item.flags();
 
-        it++;
+        ++it;
     }
 
     qCDebugNC(EWSRES_LOG) << "EwsFetchMailDetailJob::processItems: done";

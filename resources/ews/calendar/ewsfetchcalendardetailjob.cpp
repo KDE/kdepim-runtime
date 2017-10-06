@@ -135,7 +135,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
             item.setPayload<KCalCore::Incidence::Ptr>(incidence);
         }
 
-        it++;
+        ++it;
     }
 
     if (addItems.isEmpty()) {

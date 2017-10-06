@@ -234,7 +234,7 @@ bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, QVector<QString> 
     }
     int i = 0;
     QVector<QString>::const_iterator it;
-    for (it = items.cbegin(); it != items.cend(); it++, i++) {
+    for (it = items.cbegin(); it != items.cend(); ++it, i++) {
         if (text == *it) {
             val = i;
             break;

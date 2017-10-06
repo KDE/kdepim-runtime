@@ -793,7 +793,7 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
                 foldersToSync.append(colId);
             }
         }
-        it++;
+        ++it;
     }
 
     if (!foldersToSync.isEmpty()) {

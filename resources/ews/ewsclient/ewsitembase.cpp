@@ -76,7 +76,6 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
             || reader.name() == QStringLiteral("ExtendedFieldURI")) {
             if (!prop.read(reader)) {
                 return false;
-                reader.skipCurrentElement();
             }
             reader.skipCurrentElement();
         } else if (reader.name() == QStringLiteral("Value")) {
