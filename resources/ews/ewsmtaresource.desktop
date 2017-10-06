@@ -1,11 +1,19 @@
 [Desktop Entry]
 Name=Microsoft Exchange Server (EWS) Mail Transport
 Name[ca]=Transport de correu del servidor Microsoft Exchange (EWS)
+Name[ca@valencia]=Transport de correu del servidor Microsoft Exchange (EWS)
 Name[nl]=Microsoft Exchange Server (EWS) e-mailtransport
 Name[pt]=Transporte de Correio do Servidor Microsoft Exchange (EWS)
 Name[sv]=Microsoft Exchange-server (EWS) brevöverföring
+Name[uk]=Транспортування пошти за допомогою сервера обміну поштою Microsoft (EWS)
 Name[x-test]=xxMicrosoft Exchange Server (EWS) Mail Transportxx
 Comment=Allows sending e-mail through the Microsoft Exchange server using EWS
+Comment[ca]=Permet l'enviament de correu electrònic a través d'un servidor Microsoft Exchange emprant EWS
+Comment[ca@valencia]=Permet l'enviament de correu electrònic a través d'un servidor Microsoft Exchange emprant EWS
+Comment[pt]=Permite o envio de e-mail através de um servidor Microsoft Exchange com o EWS
+Comment[sv]=Gör det möjligt att skicka e-post via Microsoft Exchange-servern med användning av EWS
+Comment[uk]=Надає змогу надсилати повідомлення електронної пошти за допомогою сервера Microsoft Exchange та EWS
+Comment[x-test]=xxAllows sending e-mail through the Microsoft Exchange server using EWSxx
 Type=AkonadiResource
 Exec=akonadi_ewsmta_resource
 Icon=akonadi-ews
