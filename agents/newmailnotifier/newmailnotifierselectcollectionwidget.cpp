@@ -214,7 +214,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
             collection.removeAttribute<Akonadi::NewMailNotifierAttribute>();
             modifyJob = new Akonadi::CollectionModifyJob(collection);
             modifyJob->setProperty("AttributeAdded", true);
-        } else if (!selected && (!attr || (attr && !attr->ignoreNewMail()))) {
+        } else if (!selected && (!attr || !attr->ignoreNewMail())) {
             attr = collection.attribute<Akonadi::NewMailNotifierAttribute>(Akonadi::Collection::AddIfMissing);
             attr->setIgnoreNewMail(true);
             modifyJob = new Akonadi::CollectionModifyJob(collection);
