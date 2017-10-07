@@ -38,57 +38,10 @@ target_link_libraries(isolatedtestcommon
   Qt5::Core
   Qt5::Network
   Qt5::Test
+  fakeewsserver
 )
-
-macro(add_akonadi_isolated_test _source)
-  get_filename_component(_targetName ${_source} NAME_WE)
-  set(_srcList ${_source})
-  if(EXISTS ${_targetName}.qrc)
-    qt5_add_resources(_srcList ${_targetName}.qrc)
-  endif(EXISTS ${_targetName}.qrc)
-
-  add_executable(${_targetName} ${_srcList} ${isolatestestcommon_RSRCS})
-  target_link_libraries(${_targetName}
-    Qt5::Test
-    KF5::AkonadiCore
-    KF5::Mime
-    Qt5::Network
-    Qt5::Widgets
-    Qt5::DBus
-    fakeewsserver
-    isolatedtestcommon
-  )
-
-  # based on kde4_add_unit_test
-  if (WIN32)
-    get_target_property( _loc ${_targetName} LOCATION )
-    set(_executable ${_loc}.bat)
-  else()
-    set(_executable ${CMAKE_CURRENT_BINARY_DIR}/${_targetName})
-  endif()
-  if (UNIX)
-    if (APPLE)
-      set(_executable ${_executable}.app/Contents/MacOS/${_targetName})
-    else()
-      set(_executable ${_executable})
-    endif()
-  endif()
-
-  find_program(_testrunner akonaditest)
-
-  add_test( ${_targetName} ${_testrunner} -c ${CMAKE_CURRENT_BINARY_DIR}/config.xml ${_executable} )
-endmacro(add_akonadi_isolated_test)
 
 add_subdirectory(unittests)
 add_subdirectory(fakeserver)
 
-file(TO_NATIVE_PATH ${CMAKE_CURRENT_BINARY_DIR}/xdgdata EWS_TMP_XDG_DATA_DIR)
-file(TO_NATIVE_PATH ${EWS_TMP_XDG_DATA_DIR}/akonadi/agents EWS_TMP_AGENTS_DIR)
-file(MAKE_DIRECTORY ${EWS_TMP_XDG_DATA_DIR})
-file(COPY ${CMAKE_CURRENT_BINARY_DIR}/../ewsresource.desktop DESTINATION ${EWS_TMP_AGENTS_DIR})
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/testenv/config.xml.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.xml)
-
-# Disable for now - needs to be properly ported to kdepim-runtime
-#add_akonadi_isolated_test(basictest.cpp)
-
+add_akonadi_isolated_test_advanced(ewstest.cpp "${isolatestestcommon_RSRCS}" "isolatedtestcommon")

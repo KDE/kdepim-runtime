@@ -159,4 +159,4 @@ void BasicTest::testBasic()
     QVERIFY(setEwsResOnline(false, true));
 }
 
-#include "basictest.moc"
+#include "ewstest.moc"
