@@ -458,6 +458,7 @@ bool EwsRecurrence::readDailyRecurrence(QXmlStreamReader &reader)
                                       .arg(QStringLiteral("Interval").arg(text));
                 return false;
             }
+            hasInterval = true;
         } else {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read recurrence element - unknown element: %1.")
                                   .arg(elmName);
@@ -562,7 +563,7 @@ bool EwsRecurrence::readDow(QXmlStreamReader &reader, QBitArray &dow)
             dow.fill(true, 0, 7);
         } else if (dowIndex == 8) { // "Weekday"
             dow.fill(true, 0, 5);
-        } else if (dowIndex == 8) { // "WeekendDay"
+        } else if (dowIndex == 9) { // "WeekendDay"
             dow.fill(true, 5, 7);
         } else {
             dow.setBit(dowIndex);
