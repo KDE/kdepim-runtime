@@ -68,10 +68,12 @@ void BasicTest::cleanupTestCase()
 
 void BasicTest::testBasic()
 {
+    TestAgentInstance instance(QStringLiteral("http://127.0.0.1:%1/EWS/Exchange.asmx").arg(mFakeServerThread->portNumber()));
+
     static const auto rootId = QStringLiteral("cm9vdA==");
     static const auto inboxId = QStringLiteral("aW5ib3g=");
     FolderList folderList = {
-        {rootId, mEwsInstance->identifier(), Folder::Root, QString()},
+        {rootId, instance.identifier(), Folder::Root, QString()},
         {inboxId, QStringLiteral("Inbox"), Folder::Inbox, rootId},
         {QStringLiteral("Y2FsZW5kYXI="), QStringLiteral("Calendar"), Folder::Calendar, rootId},
         {QStringLiteral("dGFza3M="), QStringLiteral("Tasks"), Folder::Tasks, rootId},
@@ -136,7 +138,7 @@ void BasicTest::testBasic()
     stateMonitor.monitor().fetchCollection(true);
     stateMonitor.monitor().collectionFetchScope().fetchAttribute<EntityDisplayAttribute>();
     stateMonitor.monitor().collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::Parent);
-    stateMonitor.monitor().setResourceMonitored(mEwsInstance->identifier().toAscii(), true);
+    stateMonitor.monitor().setResourceMonitored(instance.identifier().toAscii(), true);
     connect(&stateMonitor, &CollectionStateMonitor<DesiredState>::stateReached, this, [&]() {
         loop.exit(0);
     });
@@ -144,7 +146,7 @@ void BasicTest::testBasic()
         loop.exit(1);
     });
 
-    QVERIFY(setEwsResOnline(true, true));
+    QVERIFY(instance.setOnline(true, true));
 
     QTimer timer;
     timer.setSingleShot(true);
@@ -156,7 +158,7 @@ void BasicTest::testBasic()
     QCOMPARE(loop.exec(), 0);
 
     QVERIFY(!unknownRequestEncountered);
-    QVERIFY(setEwsResOnline(false, true));
+    QVERIFY(instance.setOnline(false, true));
 }
 
 #include "ewstest.moc"

@@ -55,53 +55,8 @@ void IsolatedTestBase::init()
         qDebug() << "AgentInstanceAdded" << instance.identifier();
     });
 
-    AgentType ewsType = AgentManager::self()->type(QStringLiteral("akonadi_ews_resource"));
-    AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob(ewsType);
-    QVERIFY(agentCreateJob->exec());
-    mEwsInstance.reset(new AgentInstance(agentCreateJob->instance()));
-    mEwsResIdentifier = mEwsInstance->identifier();
-    mAkonadiInstanceIdentifier = QProcessEnvironment::systemEnvironment().value(QStringLiteral("AKONADI_INSTANCE"));
-
     mFakeServerThread->start();
     QVERIFY(mFakeServerThread->waitServerStarted());
-    qDebug() << mFakeServerThread->portNumber();
-
-    mEwsSettingsInterface.reset(new OrgKdeAkonadiEwsSettingsInterface(
-                                    QStringLiteral("org.freedesktop.Akonadi.Resource.") + mEwsResIdentifier
-                                    + QStringLiteral(".") + mAkonadiInstanceIdentifier,
-                                    QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
-    QVERIFY(mEwsSettingsInterface->isValid());
-
-    mEwsWalletInterface.reset(new OrgKdeAkonadiEwsWalletInterface(
-                                  QStringLiteral("org.freedesktop.Akonadi.Resource.") + mEwsResIdentifier
-                                  + QStringLiteral(".") + mAkonadiInstanceIdentifier,
-                                  QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
-    QVERIFY(mEwsWalletInterface->isValid());
-
-    /* The EWS resource initializes its DBus adapters asynchronously. Therefore it can happen that
-     * due to a race access is attempted prior to their initialization. To fix this retry the DBus
-     * communication a few times before declaring failure. */
-    QDBusReply<QString> reply;
-    int retryCnt = 4;
-    QString ewsUrl = QStringLiteral("http://127.0.0.1:%1/EWS/Exchange.asmx").arg(mFakeServerThread->portNumber());
-    do {
-        mEwsSettingsInterface->setBaseUrl(ewsUrl);
-        reply = mEwsSettingsInterface->baseUrl();
-        if (!reply.isValid()) {
-            qDebug() << "Failed to set base URL:" << reply.error().message();
-            QThread::usleep(250);
-        }
-    } while (!reply.isValid() && retryCnt-- > 0);
-    QVERIFY(reply.isValid());
-    QVERIFY(reply.value() == ewsUrl);
-
-    mEwsSettingsInterface->setUsername(QStringLiteral("test"));
-    reply = mEwsSettingsInterface->username();
-    QVERIFY(reply.isValid());
-    QVERIFY(reply.value() == QStringLiteral("test"));
-
-    mEwsWalletInterface->setTestPassword(QStringLiteral("test"));
-    AgentManager::self()->instance(mEwsResIdentifier).reconfigure();
 }
 
 void IsolatedTestBase::cleanup()
@@ -116,10 +71,70 @@ QString IsolatedTestBase::loadResourceAsString(const QString &path)
     if (f.open(QIODevice::ReadOnly)) {
         return QString::fromUtf8(f.readAll());
     }
+    qWarning() << "Resource" << path << "not found";
     return QString();
 }
 
-bool IsolatedTestBase::setEwsResOnline(bool online, bool wait)
+TestAgentInstance::TestAgentInstance(const QString &url)
+{
+    AgentType ewsType = AgentManager::self()->type(QStringLiteral("akonadi_ews_resource"));
+    AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob(ewsType);
+    QVERIFY(agentCreateJob->exec());
+
+    mEwsInstance.reset(new AgentInstance(agentCreateJob->instance()));
+    mIdentifier = mEwsInstance->identifier();
+    const QString akonadiInstanceIdentifier = QProcessEnvironment::systemEnvironment().value(QStringLiteral("AKONADI_INSTANCE"));
+
+    mEwsSettingsInterface.reset(new OrgKdeAkonadiEwsSettingsInterface(
+                                    QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier
+                                    + QStringLiteral(".") + akonadiInstanceIdentifier,
+                                    QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
+    QVERIFY(mEwsSettingsInterface->isValid());
+
+    mEwsWalletInterface.reset(new OrgKdeAkonadiEwsWalletInterface(
+                                  QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier
+                                  + QStringLiteral(".") + akonadiInstanceIdentifier,
+                                  QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
+    QVERIFY(mEwsWalletInterface->isValid());
+
+    /* The EWS resource initializes its DBus adapters asynchronously. Therefore it can happen that
+     * due to a race access is attempted prior to their initialization. To fix this retry the DBus
+     * communication a few times before declaring failure. */
+    QDBusReply<QString> reply;
+    int retryCnt = 4;
+    do {
+        mEwsSettingsInterface->setBaseUrl(url);
+        reply = mEwsSettingsInterface->baseUrl();
+        if (!reply.isValid()) {
+            qDebug() << "Failed to set base URL:" << reply.error().message();
+            QThread::usleep(250);
+        }
+    } while (!reply.isValid() && retryCnt-- > 0);
+    QVERIFY(reply.isValid());
+    QVERIFY(reply.value() == url);
+
+    mEwsSettingsInterface->setUsername(QStringLiteral("test"));
+    reply = mEwsSettingsInterface->username();
+    QVERIFY(reply.isValid());
+    QVERIFY(reply.value() == QStringLiteral("test"));
+
+    mEwsWalletInterface->setTestPassword(QStringLiteral("test"));
+    AgentManager::self()->instance(mIdentifier).reconfigure();
+}
+
+TestAgentInstance::~TestAgentInstance()
+{
+    if (mEwsInstance) {
+        AgentManager::self()->removeInstance(*mEwsInstance);
+    }
+}
+
+const QString &TestAgentInstance::identifier() const
+{
+    return mIdentifier;
+}
+
+bool TestAgentInstance::setOnline(bool online, bool wait)
 {
     if (wait) {
         QEventLoop loop;

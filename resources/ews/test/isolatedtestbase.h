@@ -72,14 +72,25 @@ protected:
     virtual void init();
     virtual void cleanup();
 
-    bool setEwsResOnline(bool online, bool wait);
 protected:
-    QString mEwsResIdentifier;
-    QString mAkonadiInstanceIdentifier;
     QScopedPointer<FakeEwsServerThread> mFakeServerThread;
+};
+
+class TestAgentInstance : public QObject
+{
+    Q_OBJECT
+public:
+    TestAgentInstance(const QString &url);
+    ~TestAgentInstance();
+
+    const QString &identifier() const;
+
+    bool setOnline(bool online, bool wait);
+private:
     QScopedPointer<Akonadi::AgentInstance> mEwsInstance;
     QScopedPointer<OrgKdeAkonadiEwsSettingsInterface> mEwsSettingsInterface;
     QScopedPointer<OrgKdeAkonadiEwsWalletInterface> mEwsWalletInterface;
+    QString mIdentifier;
 };
 
 class DialogEntryBase : public FakeEwsServer::DialogEntry
