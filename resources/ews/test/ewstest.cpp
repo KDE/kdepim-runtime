@@ -47,6 +47,8 @@ QTEST_AKONADIMAIN(BasicTest)
 
 using namespace Akonadi;
 
+constexpr int DesiredStateTimeoutMs = 20000;
+
 BasicTest::BasicTest(QObject *parent)
     : IsolatedTestBase(parent)
 {
@@ -155,7 +157,7 @@ void BasicTest::testBasic()
         qDebug() << "Timeout waiting for desired resource online state.";
         loop.exit(1);
     });
-    timer.start(5000);
+    timer.start(DesiredStateTimeoutMs);
     QCOMPARE(loop.exec(), 0);
 
     QVERIFY(!unknownRequestEncountered);

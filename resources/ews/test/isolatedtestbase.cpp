@@ -31,6 +31,8 @@
 
 using namespace Akonadi;
 
+constexpr int OnlineStateChangeTimeoutMs = 20000;
+
 IsolatedTestBase::IsolatedTestBase(QObject *parent)
     : QObject(parent), mFakeServerThread(new FakeEwsServerThread(this))
 {
@@ -156,7 +158,7 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
             qDebug() << "Timeout waiting for desired resource online state.";
             loop.exit(1);
         });
-        timer.start(3000);
+        timer.start(OnlineStateChangeTimeoutMs);
         mEwsInstance->setIsOnline(online);
         bool status = (loop.exec() == 0);
         disconnect(conn);
