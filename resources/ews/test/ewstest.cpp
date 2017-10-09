@@ -154,7 +154,7 @@ void BasicTest::testBasic()
     QTimer timer;
     timer.setSingleShot(true);
     connect(&timer, &QTimer::timeout, this, [&]() {
-        qDebug() << "Timeout waiting for desired resource online state.";
+        qWarning() << "Timeout waiting for desired resource online state.";
         loop.exit(1);
     });
     timer.start(DesiredStateTimeoutMs);
