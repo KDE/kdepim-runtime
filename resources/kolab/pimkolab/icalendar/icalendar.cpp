@@ -140,7 +140,6 @@ std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, s
         }
         return Conversion::toStdString(QString(mailOrganizer(e, Conversion::fromStdString(from), bccMe, messageText, subject)));
     }
-    return std::string();
 }
 
 std::vector< Event > ITipHandler::fromIMip(const std::string &input)

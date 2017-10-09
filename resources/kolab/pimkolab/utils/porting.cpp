@@ -134,8 +134,6 @@ QTimeZone Porting::specToZone(const KDateTime::Spec &spec)
         return tz;
     }
     }
-
-    return QTimeZone::systemTimeZone();
 }
 
 QDateTime Porting::k2q(const KDateTime &kdt)

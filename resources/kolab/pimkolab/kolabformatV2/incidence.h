@@ -157,7 +157,7 @@ protected:
     Email mOrganizer;
     KDateTime mStartDate;
     FloatingStatus mFloatingStatus;
-    float mAlarm;
+    float mAlarm = 0.0;
     bool mHasAlarm;
     Recurrence mRecurrence;
     QList<Attendee> mAttendees;
