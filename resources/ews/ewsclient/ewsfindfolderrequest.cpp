@@ -179,6 +179,7 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
                 i += readCount;
             }
             mFolders.append(*folder);
+            delete folder;
         }
     }
 
