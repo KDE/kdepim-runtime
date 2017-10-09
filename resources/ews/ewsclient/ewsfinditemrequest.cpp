@@ -267,7 +267,8 @@ EwsItem* EwsFindItemResponse::readItem(QXmlStreamReader &reader)
         if (!item->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
                         .arg(reader.name().toString()));
-            return 0;
+            delete item;
+            return nullptr;
         }
     } else {
         qCWarning(EWSCLI_LOG).noquote() << QStringLiteral("Unsupported folder type %1").arg(reader.name().toString());

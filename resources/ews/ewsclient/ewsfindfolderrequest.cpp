@@ -203,7 +203,8 @@ EwsFolder* EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
                         .arg(QStringLiteral("Folder")));
-            return 0;
+            delete folder;
+            return nullptr;
         }
         QVariant dn = (*folder)[EwsFolderFieldDisplayName];
         if (!dn.isNull()) {
