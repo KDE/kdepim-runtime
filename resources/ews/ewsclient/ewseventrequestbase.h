@@ -100,7 +100,7 @@ public:
         QDateTime mTimestamp;
         EwsId mId;
         EwsId mParentFolderId;
-        uint mUnreadCount;
+        uint mUnreadCount = 0;
         EwsId mOldId;
         EwsId mOldParentFolderId;
         bool mIsFolder;
