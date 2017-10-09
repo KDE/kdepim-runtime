@@ -87,11 +87,7 @@ void GmailPasswordRequester::onPasswordRequestCompleted(const QString &password,
         }
     }
 
-    if (userRejected) {
-        Q_EMIT done(UserRejected);
-    } else {
-        Q_EMIT done(PasswordRetrieved, token);
-    }
+    Q_EMIT done(PasswordRetrieved, token);
 }
 
 void GmailPasswordRequester::requestToken(const QString &password)
