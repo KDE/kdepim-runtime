@@ -86,6 +86,7 @@ public:
     const QString &identifier() const;
 
     bool setOnline(bool online, bool wait);
+    bool isValid() const;
 private:
     QScopedPointer<Akonadi::AgentInstance> mEwsInstance;
     QScopedPointer<OrgKdeAkonadiEwsSettingsInterface> mEwsSettingsInterface;

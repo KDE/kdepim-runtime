@@ -129,6 +129,11 @@ TestAgentInstance::~TestAgentInstance()
     }
 }
 
+bool TestAgentInstance::isValid() const
+{
+    return mEwsInstance && mEwsSettingsInterface && mEwsWalletInterface && !mIdentifier.isEmpty();
+}
+
 const QString &TestAgentInstance::identifier() const
 {
     return mIdentifier;

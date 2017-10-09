@@ -69,6 +69,7 @@ void BasicTest::cleanupTestCase()
 void BasicTest::testBasic()
 {
     TestAgentInstance instance(QStringLiteral("http://127.0.0.1:%1/EWS/Exchange.asmx").arg(mFakeServerThread->portNumber()));
+    QVERIFY(instance.isValid());
 
     static const auto rootId = QStringLiteral("cm9vdA==");
     static const auto inboxId = QStringLiteral("aW5ib3g=");
