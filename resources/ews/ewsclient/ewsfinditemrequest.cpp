@@ -251,7 +251,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 
 EwsItem* EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
-    EwsItem *item = 0;
+    EwsItem *item = nullptr;
     if (reader.name() == QStringLiteral("Item") ||
         reader.name() == QStringLiteral("Message") ||
         reader.name() == QStringLiteral("CalendarItem") ||

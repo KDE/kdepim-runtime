@@ -73,7 +73,7 @@ public Q_SLOTS:
     void treeItemChanged(QStandardItem *item);
     void filterTextChanged(const QString &text);
 public:
-    bool mEnabled;
+    bool mEnabled = true;
     QCheckBox *mEnableCheckBox = nullptr;
     QTreeView *mFolderTreeView = nullptr;
     QWidget *mSubContainer = nullptr;
@@ -82,15 +82,15 @@ public:
     KMessageWidget *mMsgWidget = nullptr;
     QStandardItemModel *mFolderTreeModel = nullptr;
     QHash<QString, QStandardItem*> mFolderItemHash;
-    int mFolderListPendingRequests;
+    int mFolderListPendingRequests = 0;
     EwsFolder::List mFolders;
     EwsId::List mSubscribedIds;
     EwsId::List mOrigSubscribedIds;
-    bool mSubscribedIdsRetrieved;
+    bool mSubscribedIdsRetrieved = true;
     EwsSubscriptionFilterModel *mFilterModel = nullptr;
     Settings *mSettings = nullptr;
 
-    EwsSubscriptionWidget *q_ptr;
+    EwsSubscriptionWidget *q_ptr = nullptr;
     Q_DECLARE_PUBLIC(EwsSubscriptionWidget)
 };
 
