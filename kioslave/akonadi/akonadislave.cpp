@@ -45,8 +45,6 @@ int kdemain(int argc, char **argv)
     KAboutData aboutData(QStringLiteral("kio_akonadi"), QString(), QStringLiteral("0"));
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
-    parser.addVersionOption();
-    parser.addHelpOption();
     parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+protocol"), i18n("Protocol name")));
     parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+pool"), i18n("Socket name")));
     parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+app"), i18n("Socket name")));
