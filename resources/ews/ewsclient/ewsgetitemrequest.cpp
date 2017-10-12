@@ -87,7 +87,7 @@ bool EwsGetItemRequest::parseItemsResponse(QXmlStreamReader &reader)
             const EwsItem &item = resp.item();
             const EwsId &id = item[EwsItemFieldItemId].value<EwsId>();
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetItem response (id: %1, subject: %2)")
-                                          .arg(ewsHash(id.id())).arg(item[EwsItemFieldSubject].toString());
+                                          .arg(ewsHash(id.id()), item[EwsItemFieldSubject].toString());
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetItem response - %1")
                                           .arg(resp.responseMessage());

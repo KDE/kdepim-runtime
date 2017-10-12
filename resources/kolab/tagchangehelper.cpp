@@ -87,7 +87,7 @@ void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &
     append->start();
 }
 
-void TagChangeHelper::recordNewUid(qint64 newUid, Akonadi::Tag tag)
+void TagChangeHelper::recordNewUid(qint64 newUid, const Akonadi::Tag &tag)
 {
     Q_ASSERT(newUid > 0);
     Q_ASSERT(tag.isValid());

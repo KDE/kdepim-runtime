@@ -55,7 +55,7 @@ static QVariantMap parseTokenResponse(const QByteArray &data)
 }
 
 /// Add query parameters to a query
-static void addQueryParametersToUrl(QUrl &url,  QList<QPair<QString, QString> > parameters)
+static void addQueryParametersToUrl(QUrl &url,  const QList<QPair<QString, QString> > &parameters)
 {
 #if QT_VERSION < 0x050000
     url.setQueryItems(parameters);

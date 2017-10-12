@@ -75,7 +75,7 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
                                           .arg(mReqName).arg(resp.notifications().size()).arg(numEv);
         } else {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response - %2")
-                                        .arg(mReqName).arg(resp.responseMessage());
+                                        .arg(mReqName, resp.responseMessage());
         }
     }
 
@@ -93,7 +93,7 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
             setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage")).arg(reader.namespaceUri().toString()));
+                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

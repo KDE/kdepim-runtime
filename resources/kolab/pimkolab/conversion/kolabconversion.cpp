@@ -55,6 +55,7 @@ Note fromNote(const KMime::Message::Ptr &m)
     n.setCustomProperties(customs);
 
     std::vector<Kolab::Attachment> attachments;
+    attachments.reserve(note.attachments().count());
     foreach (const Akonadi::NoteUtils::Attachment &a, note.attachments()) {
         Kolab::Attachment attachment;
         if (a.url().isValid()) {

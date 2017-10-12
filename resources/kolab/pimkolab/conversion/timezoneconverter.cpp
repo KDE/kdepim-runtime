@@ -52,7 +52,7 @@ QString TimezoneConverter::fromCityName(const QString &tz)
 {
     const auto zones = QTimeZone::availableTimeZoneIds();
     QHash<QString, QString> countryMap;
-    for (auto zone : zones) {
+    for (const auto &zone : zones) {
         const QString cityName = zone.split('/').last();
         Q_ASSERT(!countryMap.contains(cityName));
         countryMap.insert(cityName, zone);

@@ -61,7 +61,7 @@ private:
     KolabRelationResourceTask *const mTask;
 
 private:
-    void recordNewUid(qint64 newUid, Akonadi::Tag tag);
+    void recordNewUid(qint64 newUid, const Akonadi::Tag &tag);
 
 private Q_SLOTS:
     void onReplaceDone(KJob *job);

@@ -119,7 +119,7 @@ ITipHandler::ITipMethod ITipHandler::method() const
     return mMethod;
 }
 
-std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, std::string from, bool bccMe) const
+std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, const std::string &from, bool bccMe) const
 {
     KCalCore::Event::Ptr e = Conversion::toKCalCore(event);
 //     e->recurrence()->addRDateTime(e->dtStart()); //FIXME The createScheduleMessage converts everything to utc without a recurrence.

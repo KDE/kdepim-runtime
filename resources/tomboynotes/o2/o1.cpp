@@ -305,7 +305,7 @@ void O1::onTokenRequestFinished()
     Q_EMIT openBrowser(url);
 }
 
-void O1::onVerificationReceived(QMap<QString, QString> params)
+void O1::onVerificationReceived(const QMap<QString, QString> &params)
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onVerificationReceived";
     Q_EMIT closeBrowser();

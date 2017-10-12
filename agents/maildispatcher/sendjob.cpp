@@ -406,7 +406,7 @@ void SendJob::Private::storeResult(bool success, const QString &message)
 
     Q_ASSERT(currentJob == nullptr);
     currentJob = new StoreResultJob(item, success, message);
-    connect(currentJob, &StoreResultJob::result, [this](KJob *job) { doEmitResult(job); });
+    connect(currentJob, &StoreResultJob::result, q, [this](KJob *job) { doEmitResult(job); });
 }
 
 void SendJob::Private::doEmitResult(KJob *job)

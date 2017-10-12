@@ -24,7 +24,7 @@
 
 using namespace Akonadi;
 
-EwsModifyItemFlagsJob::EwsModifyItemFlagsJob(EwsClient &client, QObject *parent, const Item::List items,
+EwsModifyItemFlagsJob::EwsModifyItemFlagsJob(EwsClient &client, QObject *parent, const Item::List &items,
         const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
     : EwsJob(parent), mItems(items), mClient(client), mAddedFlags(addedFlags), mRemovedFlags(removedFlags)
 {

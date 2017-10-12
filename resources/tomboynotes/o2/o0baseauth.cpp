@@ -116,7 +116,7 @@ QVariantMap O0BaseAuth::extraTokens()
     return extraTokens_;
 }
 
-void O0BaseAuth::setExtraTokens(QVariantMap extraTokens)
+void O0BaseAuth::setExtraTokens(const QVariantMap &extraTokens)
 {
     extraTokens_ = extraTokens;
     QByteArray bytes;

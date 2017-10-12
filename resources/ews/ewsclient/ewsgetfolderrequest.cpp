@@ -91,7 +91,7 @@ bool EwsGetFolderRequest::parseFoldersResponse(QXmlStreamReader &reader)
             const EwsFolder &folder = resp.folder();
             const EwsId &id = folder[EwsFolderFieldFolderId].value<EwsId>();
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetFolder response (id: %1, name: %2)")
-                                          .arg(ewsHash(id.id())).arg(folder[EwsFolderFieldDisplayName].toString());
+                                          .arg(ewsHash(id.id()), folder[EwsFolderFieldDisplayName].toString());
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetFolder response - %1")
                                           .arg(resp.responseMessage());

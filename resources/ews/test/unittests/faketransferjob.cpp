@@ -48,7 +48,7 @@ void FakeTransferJob::postResponse(const QByteArray &resp)
 {
     mResponse = resp;
     qRegisterMetaType<KIO::Job*>();
-    metaObject()->invokeMethod(this, "doData", Qt::QueuedConnection, Q_ARG(const QByteArray&, mResponse));
+    metaObject()->invokeMethod(this, "doData", Qt::QueuedConnection, Q_ARG(QByteArray, mResponse));
     metaObject()->invokeMethod(this, "doEmitResult", Qt::QueuedConnection);
 }
 

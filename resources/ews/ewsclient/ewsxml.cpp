@@ -222,7 +222,7 @@ bool ewsXmlFolderReader(QXmlStreamReader &reader, QVariant &val)
     return true;
 }
 
-bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, QVector<QString> items)
+bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QVector<QString> &items)
 {
     QString elmName = reader.name().toString();
     QString text = reader.readElementText();

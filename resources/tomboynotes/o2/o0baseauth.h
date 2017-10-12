@@ -101,7 +101,7 @@ protected:
     void setLinked(bool v);
 
     /// Set extra tokens found in OAuth response
-    void setExtraTokens(QVariantMap extraTokens);
+    void setExtraTokens(const QVariantMap &extraTokens);
 
 protected:
     QString clientId_;

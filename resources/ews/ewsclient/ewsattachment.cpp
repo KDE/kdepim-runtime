@@ -172,7 +172,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
             d->mItem = EwsItem(reader);
             if (!d->mItem.isValid()) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                                        .arg(QStringLiteral("Attachment")).arg(QStringLiteral("Item"));
+                                        .arg(QStringLiteral("Attachment"), QStringLiteral("Item"));
                 reader.skipCurrentElement();
                 ok = false;
             } else {
@@ -180,7 +180,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
             }
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown %2 element.")
-                                    .arg(QStringLiteral("Attachment")).arg(elmName);
+                                    .arg(QStringLiteral("Attachment"), elmName);
             reader.skipCurrentElement();
             ok = false;
         }

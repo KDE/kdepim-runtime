@@ -46,10 +46,10 @@ void FacebookResource::configure(WId windowId)
 
     QScopedPointer<SettingsDialog> dlg(new SettingsDialog(this));
     if (dlg->exec()) {
-        configurationDialogAccepted();
+        Q_EMIT configurationDialogAccepted();
         synchronize();
     } else {
-        configurationDialogRejected();
+        Q_EMIT configurationDialogRejected();
     }
 }
 

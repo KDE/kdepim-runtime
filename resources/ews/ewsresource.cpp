@@ -705,7 +705,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
                 movedItems.append(item);
             }
         } else {
-            warning(QStringLiteral("Move failed for item %1").arg(item.remoteId()));
+            Q_EMIT warning(QStringLiteral("Move failed for item %1").arg(item.remoteId()));
             qCDebugNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsMoved: failed for item %1").arg(ewsHash(item.remoteId()));
             failedIds.append(EwsId(item.remoteId(), QString()));
         }
@@ -785,7 +785,7 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
             }
             mQueuedUpdates[item.parentCollection().remoteId()].append({item.remoteId(), QString(), EwsDeletedEvent});
         } else {
-            warning(QStringLiteral("Delete failed for item %1").arg(item.remoteId()));
+            Q_EMIT warning(QStringLiteral("Delete failed for item %1").arg(item.remoteId()));
             qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsRemoved: failed for item %1").arg(ewsHash(item.remoteId()));
             EwsId colId = EwsId(item.parentCollection().remoteId(), QString());
             mItemsToCheck[colId.id()].append(EwsId(item.remoteId(), QString()));

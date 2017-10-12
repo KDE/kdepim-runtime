@@ -77,7 +77,7 @@ public:
     class FolderChange
     {
     public:
-        FolderChange(EwsId folderId, EwsFolderType type) : mId(folderId), mType(type) {}
+        FolderChange(const EwsId &folderId, EwsFolderType type) : mId(folderId), mType(type) {}
         void addUpdate(const Update *upd)
         {
             mUpdates.append(QSharedPointer<const Update>(upd));

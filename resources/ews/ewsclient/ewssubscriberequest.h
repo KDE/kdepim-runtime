@@ -67,7 +67,7 @@ public:
         mType = t;
     }
 
-    void setFolderIds(EwsId::List folders)
+    void setFolderIds(const EwsId::List &folders)
     {
         mFolderIds = folders;
     }
@@ -77,7 +77,7 @@ public:
         mAllFolders = allFolders;
     }
 
-    void setEventTypes(QList<EwsEventType> types)
+    void setEventTypes(const QList<EwsEventType> &types)
     {
         mEventTypes = types;
     }

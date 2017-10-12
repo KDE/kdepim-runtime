@@ -50,7 +50,7 @@ Q_SIGNALS:
 protected:
     void run() override;
 private Q_SLOTS:
-    void doQueueEventsXml(const QStringList events);
+    void doQueueEventsXml(const QStringList &events);
 private:
     QScopedPointer<FakeEwsServer> mServer;
     ushort mPortNumber;

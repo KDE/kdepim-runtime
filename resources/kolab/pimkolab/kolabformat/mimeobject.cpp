@@ -513,7 +513,7 @@ void MIMEObject::setVersion(Version version)
 
 static std::string createCid()
 {
-    return QStringLiteral("cid:%1@%2").arg(KRandom::randomString(16)).arg(QStringLiteral("kolab.resource.akonadi")).toStdString();
+    return QStringLiteral("cid:%1@%2").arg(KRandom::randomString(16), QStringLiteral("kolab.resource.akonadi")).toStdString();
 }
 
 std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Attachment> &attachments, std::vector<std::string> &attachmentCids)

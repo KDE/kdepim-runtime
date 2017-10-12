@@ -36,7 +36,7 @@ constexpr int OnlineStateChangeTimeoutMs = 20000;
 IsolatedTestBase::IsolatedTestBase(QObject *parent)
     : QObject(parent), mFakeServerThread(new FakeEwsServerThread(this))
 {
-    qsrand(QDateTime::currentDateTime().toTime_t());
+    qsrand(QDateTime::currentDateTimeUtc().toTime_t());
 }
 
 IsolatedTestBase::~IsolatedTestBase()

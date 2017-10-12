@@ -85,7 +85,7 @@ void FakeEwsServerThread::queueEventsXml(const QStringList &events)
     }
 }
 
-void FakeEwsServerThread::doQueueEventsXml(const QStringList events)
+void FakeEwsServerThread::doQueueEventsXml(const QStringList &events)
 {
     mServer->queueEventsXml(events);
 }

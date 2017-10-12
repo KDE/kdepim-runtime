@@ -48,7 +48,7 @@ public:
             Unknown
         };
 
-        Update(EwsPropertyField field, const QVariant &val, Type type)
+        Update(const EwsPropertyField &field, const QVariant &val, Type type)
             : mField(field), mValue(val), mType(type) {}
 
         EwsPropertyField mField;

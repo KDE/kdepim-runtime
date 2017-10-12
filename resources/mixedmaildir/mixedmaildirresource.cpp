@@ -248,7 +248,7 @@ void MixedMaildirResource::retrieveCollections()
     FileStore::CollectionFetchJob *job = mStore->fetchCollections(mStore->topLevelCollection(), FileStore::CollectionFetchJob::Recursive);
     connect(job, &FileStore::CollectionFetchJob::result, this, &MixedMaildirResource::retrieveCollectionsResult);
 
-    status(Running, i18nc("@info:status", "Synchronizing email folders"));
+    Q_EMIT status(Running, i18nc("@info:status", "Synchronizing email folders"));
 }
 
 void MixedMaildirResource::retrieveItems(const Collection &col)
@@ -263,7 +263,7 @@ void MixedMaildirResource::retrieveItems(const Collection &col)
     RetrieveItemsJob *job = new RetrieveItemsJob(col, mStore, this);
     connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::retrieveItemsResult);
 
-    status(Running, i18nc("@info:status", "Synchronizing email folder %1", col.name()));
+    Q_EMIT status(Running, i18nc("@info:status", "Synchronizing email folder %1", col.name()));
 }
 
 bool MixedMaildirResource::retrieveItems(const Item::List &items, const QSet<QByteArray> &parts)
@@ -527,7 +527,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
             for (const Item &item : items) {
                 const QVariant tagListVar = tagListHash[ item.remoteId() ];
                 if (tagListVar.isValid()) {
-                    const QStringList tagList = tagListVar.value<QStringList>();
+                    const QStringList tagList = tagListVar.toStringList();
                     if (!tagListHash.isEmpty()) {
                         TagContext tag;
                         tag.mItem = item;
@@ -650,8 +650,6 @@ void MixedMaildirResource::itemRemovedResult(KJob *job)
 
     changeCommitted(itemJob->item());
 
-    const QString remoteId = itemJob->item().remoteId();
-
     const QVariant compactStoreVar = itemJob->property("compactStore");
     if (compactStoreVar.isValid() && compactStoreVar.toBool()) {
         scheduleCustomTask(this, "compactStore", QVariant());
@@ -670,7 +668,7 @@ void MixedMaildirResource::collectionAddedResult(KJob *job)
 {
     if (job->error() != 0) {
         qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
-        status(Broken, job->errorString());
+        Q_EMIT status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
     }
@@ -685,7 +683,7 @@ void MixedMaildirResource::collectionChangedResult(KJob *job)
 {
     if (job->error() != 0) {
         qCCritical(MIXEDMAILDIRRESOURCE_LOG) << job->errorString();
-        status(Broken, job->errorString());
+        Q_EMIT status(Broken, job->errorString());
         cancelTask(job->errorString());
         return;
     }
