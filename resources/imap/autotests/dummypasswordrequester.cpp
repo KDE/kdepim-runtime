@@ -26,6 +26,8 @@
 DummyPasswordRequester::DummyPasswordRequester(QObject *parent)
     : PasswordRequesterInterface(parent)
 {
+    m_expectedCalls.reserve(10);
+    m_results.reserve(10);
     for (int i = 0; i < 10; ++i) {
         m_expectedCalls << StandardRequest;
         m_results << PasswordRetrieved;

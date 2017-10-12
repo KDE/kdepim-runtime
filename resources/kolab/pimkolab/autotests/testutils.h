@@ -72,14 +72,14 @@ void showDiff(const QString &expected, const QString &converted)
 
     bool showDiff = true;
     if (showDiff) {
-        QTemporaryFile expectedFile("expectedFile");
-        QTemporaryFile convertedFile("convertedFile");
+        QTemporaryFile expectedFile(QStringLiteral("expectedFile"));
+        QTemporaryFile convertedFile(QStringLiteral("convertedFile"));
         if (expectedFile.open() && convertedFile.open()) {
             expectedFile.write(expected.toLatin1());
             convertedFile.write(converted.toLatin1());
             expectedFile.close();
             convertedFile.close();
-            QProcess::execute("kdiff3", QStringList() << expectedFile.fileName() << convertedFile.fileName());
+            QProcess::execute(QStringLiteral("kdiff3"), QStringList() << expectedFile.fileName() << convertedFile.fileName());
         } else {
             qWarning() << "files are not open";
         }
@@ -109,34 +109,34 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
 
 void normalizeMimemessage(QString &content)
 {
-    content.replace(QRegExp("\\bLibkolab-\\d.\\d.\\d\\b", Qt::CaseSensitive), "Libkolab-x.x.x");
-    content.replace(QRegExp("\\bLibkolabxml-\\d.\\d.\\d\\b", Qt::CaseSensitive), "Libkolabxml-x.x.x");
-    content.replace(QRegExp("\\bLibkolab-\\d.\\d\\b", Qt::CaseSensitive), "Libkolab-x.x.x");
-    content.replace(QRegExp("\\bLibkolabxml-\\d.\\d\\b", Qt::CaseSensitive), "Libkolabxml-x.x.x");
-    content.replace(QRegExp("<uri>cid:*@kolab.resource.akonadi</uri>", Qt::CaseSensitive, QRegExp::Wildcard), "<uri>cid:id@kolab.resource.akonadi</uri>");
-    content.replace(QRegExp("Content-ID: <*@kolab.resource.akonadi>", Qt::CaseSensitive, QRegExp::Wildcard), "Content-ID: <id@kolab.resource.akonadi>");
-    content.replace(QRegExp("<uri>mailto:*</uri>", Qt::CaseSensitive, QRegExp::Wildcard), "<uri>mailto:</uri>");
-    content.replace(QRegExp("<cal-address>mailto:*</cal-address>", Qt::CaseSensitive, QRegExp::Wildcard), "<cal-address>mailto:</cal-address>");
-    content.replace(QRegExp("<uri>data:*</uri>", Qt::CaseSensitive, QRegExp::Wildcard), "<uri>data:</uri>");
-    content.replace(QRegExp("<last-modification-date>*</last-modification-date>", Qt::CaseSensitive, QRegExp::Wildcard), "<last-modification-date></last-modification-date>");
+    content.replace(QRegExp("\\bLibkolab-\\d.\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegExp("\\bLibkolabxml-\\d.\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
+    content.replace(QRegExp("\\bLibkolab-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegExp("\\bLibkolabxml-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
+    content.replace(QRegExp("<uri>cid:*@kolab.resource.akonadi</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>cid:id@kolab.resource.akonadi</uri>"));
+    content.replace(QRegExp("Content-ID: <*@kolab.resource.akonadi>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("Content-ID: <id@kolab.resource.akonadi>"));
+    content.replace(QRegExp("<uri>mailto:*</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>mailto:</uri>"));
+    content.replace(QRegExp("<cal-address>mailto:*</cal-address>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<cal-address>mailto:</cal-address>"));
+    content.replace(QRegExp("<uri>data:*</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>data:</uri>"));
+    content.replace(QRegExp("<last-modification-date>*</last-modification-date>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<last-modification-date></last-modification-date>"));
     //We no longer support pobox, so remove pobox lines
-    content.replace(QRegExp("<pobox>*</pobox>", Qt::CaseSensitive, QRegExp::Wildcard), "");
-    content.replace(QRegExp("<timestamp>*</timestamp>", Qt::CaseSensitive, QRegExp::Wildcard), "<timestamp></timestamp>");
-    content.replace(QRegExp("<x-kolab-version>*</x-kolab-version>", Qt::CaseSensitive, QRegExp::Wildcard), "<x-kolab-version></x-kolab-version>");
+    content.replace(QRegExp("<pobox>*</pobox>", Qt::CaseSensitive, QRegExp::Wildcard), QLatin1String(""));
+    content.replace(QRegExp("<timestamp>*</timestamp>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<timestamp></timestamp>"));
+    content.replace(QRegExp("<x-kolab-version>*</x-kolab-version>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-kolab-version></x-kolab-version>"));
 
-    content.replace(QRegExp("--nextPart\\S*", Qt::CaseSensitive), "--part");
-    content.replace(QRegExp("\\bboundary=\"nextPart[^\\n]*", Qt::CaseSensitive), "boundary");
-    content.replace(QRegExp("Date[^\\n]*", Qt::CaseSensitive), "Date");
+    content.replace(QRegExp("--nextPart\\S*", Qt::CaseSensitive), QStringLiteral("--part"));
+    content.replace(QRegExp("\\bboundary=\"nextPart[^\\n]*", Qt::CaseSensitive), QStringLiteral("boundary"));
+    content.replace(QRegExp("Date[^\\n]*", Qt::CaseSensitive), QStringLiteral("Date"));
     //The sort order of the attributes in kolabV2 is unpredictable
-    content.replace(QRegExp("<x-custom*/>", Qt::CaseSensitive, QRegExp::Wildcard), "<x-custom/>");
+    content.replace(QRegExp("<x-custom*/>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-custom/>"));
     //quoted-printable encoding changes where the linebreaks are every now and then (an all are valid), so we remove the linebreaks
-    content.replace(QRegExp("=\\n", Qt::CaseSensitive), "");
+    content.replace(QRegExp("=\\n", Qt::CaseSensitive), QLatin1String(""));
 }
 
 QString normalizeVCardMessage(QString content)
 {
     //The encoding changes every now and then
-    content.replace(QRegExp("ENCODING=b;TYPE=png:*", Qt::CaseSensitive, QRegExp::Wildcard), "ENCODING=b;TYPE=png:picturedata");
+    content.replace(QRegExp("ENCODING=b;TYPE=png:*", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("ENCODING=b;TYPE=png:picturedata"));
     return content;
 }
 
@@ -233,12 +233,12 @@ void normalizeContact(KContacts::Addressee &addressee)
     }
     addressee.setSound(KContacts::Sound()); //Sound is not supported
 
-    addressee.removeCustom("KOLAB", "CreationDate"); //The creation date is no longer existing
+    addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate")); //The creation date is no longer existing
 
     //Attachment names are no longer required because we identify the parts by cid and no longer by name
-    addressee.removeCustom("KOLAB", "LogoAttachmentName");
-    addressee.removeCustom("KOLAB", "PictureAttachmentName");
-    addressee.removeCustom("KOLAB", "SoundAttachmentName");
+    addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("LogoAttachmentName"));
+    addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("PictureAttachmentName"));
+    addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("SoundAttachmentName"));
 }
 
 Kolab::Event createEvent(const Kolab::cDateTime &start, const Kolab::cDateTime &end)

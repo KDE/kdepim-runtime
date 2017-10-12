@@ -60,7 +60,7 @@ std::string XMLObject::writeEvent(const Event &event, Version version, const std
         }
         mWrittenUID = Conversion::toStdString(i->uid());
         //The timezone is used for created and last modified dates
-        const QString &xml = KolabV2::Event::eventToXML(i, QLatin1String("UTC"));
+        const QString &xml = KolabV2::Event::eventToXML(i, QStringLiteral("UTC"));
         return Conversion::toStdString(xml);
     }
     const std::string result = Kolab::writeEvent(event, productId);
@@ -104,7 +104,7 @@ std::string XMLObject::writeTodo(const Todo &event, Version version, const std::
         }
         mWrittenUID = Conversion::toStdString(i->uid());
         //The timezone is used for created and last modified dates
-        const QString &xml = KolabV2::Task::taskToXML(i, QLatin1String("UTC"));
+        const QString &xml = KolabV2::Task::taskToXML(i, QStringLiteral("UTC"));
         return Conversion::toStdString(xml);
     }
     const std::string result = Kolab::writeTodo(event, productId);
@@ -148,7 +148,7 @@ std::string XMLObject::writeJournal(const Journal &event, Version version, const
         }
         mWrittenUID = Conversion::toStdString(i->uid());
         //The timezone is used for created and last modified dates
-        const QString &xml = KolabV2::Journal::journalToXML(i, QLatin1String("UTC"));
+        const QString &xml = KolabV2::Journal::journalToXML(i, QStringLiteral("UTC"));
         return Conversion::toStdString(xml);
     }
     const std::string result = Kolab::writeJournal(event, productId);

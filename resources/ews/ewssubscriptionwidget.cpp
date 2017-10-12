@@ -47,7 +47,7 @@ public Q_SLOTS:
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 private:
-    bool hasCheckedChildren(QModelIndex index) const;
+    bool hasCheckedChildren(const QModelIndex &index) const;
     bool mFilterSelected;
 };
 
@@ -120,7 +120,7 @@ bool EwsSubscriptionFilterModel::filterAcceptsRow(int sourceRow, const QModelInd
     }
 }
 
-bool EwsSubscriptionFilterModel::hasCheckedChildren(QModelIndex index) const
+bool EwsSubscriptionFilterModel::hasCheckedChildren(const QModelIndex &index) const
 {
     QModelIndex child;
     int row = 0;

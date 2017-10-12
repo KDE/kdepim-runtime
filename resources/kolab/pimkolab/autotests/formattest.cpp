@@ -250,7 +250,7 @@ void FormatTest::testContact()
     convertedAddressee.setName(realAddressee.name());   // name() apparently is something strange
     if (version == Kolab::KolabV2) { //No creation date in xcal
         QVERIFY(!convertedAddressee.custom("KOLAB", "CreationDate").isEmpty());
-        convertedAddressee.removeCustom("KOLAB", "CreationDate");   // that's conversion time !?
+        convertedAddressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));   // that's conversion time !?
     } else {
         normalizeContact(convertedAddressee);
         normalizeContact(realAddressee);

@@ -59,25 +59,25 @@ public:
     class AppendUpdate : public Update
     {
     public:
-        AppendUpdate(EwsPropertyField field, const QVariant &val) : Update(field, val, Append) {}
+        AppendUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Append) {}
     };
 
     class SetUpdate : public Update
     {
     public:
-        SetUpdate(EwsPropertyField field, const QVariant &val) : Update(field, val, Set) {}
+        SetUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Set) {}
     };
 
     class DeleteUpdate : public Update
     {
     public:
-        DeleteUpdate(EwsPropertyField field) : Update(field, QVariant(), Delete) {}
+        DeleteUpdate(const EwsPropertyField &field) : Update(field, QVariant(), Delete) {}
     };
 
     class ItemChange
     {
     public:
-        ItemChange(EwsId itemId, EwsItemType type) : mId(itemId), mType(type) {}
+        ItemChange(const EwsId &itemId, EwsItemType type) : mId(itemId), mType(type) {}
         void addUpdate(const Update *upd)
         {
             mUpdates.append(QSharedPointer<const Update>(upd));

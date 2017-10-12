@@ -173,7 +173,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
 QString DistributionList::saveXML() const
 {
     QDomDocument document = domTree();
-    QDomElement element = document.createElement(QLatin1String("distribution-list"));
+    QDomElement element = document.createElement(QStringLiteral("distribution-list"));
     element.setAttribute(QStringLiteral("version"), QStringLiteral("1.0"));
     saveAttributes(element);
     document.appendChild(element);
@@ -183,7 +183,7 @@ QString DistributionList::saveXML() const
 QString DistributionList::productID() const
 {
     // TODO should we get name/version from desktop file?
-    return QLatin1String("Akonadi Kolab Proxy");
+    return QStringLiteral("Akonadi Kolab Proxy");
 }
 
 // The saving is contactgroup -> DistributionList -> xml, this is the first part

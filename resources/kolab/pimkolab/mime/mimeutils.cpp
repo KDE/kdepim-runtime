@@ -87,7 +87,7 @@ QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data)
 
 QString fromCid(const QString &cid)
 {
-    if (cid.left(4) != QString::fromLatin1("cid:")) { //Don't set if not a cid, happens when serializing format v2
+    if (cid.left(4) != QLatin1String("cid:")) { //Don't set if not a cid, happens when serializing format v2
         return QString();
     }
     return cid.right(cid.size()-4);

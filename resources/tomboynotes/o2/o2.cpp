@@ -164,8 +164,8 @@ void O2::link()
     }
 
     setLinked(false);
-    setToken("");
-    setTokenSecret("");
+    setToken(QLatin1String(""));
+    setTokenSecret(QLatin1String(""));
     setExtraTokens(QVariantMap());
     setRefreshToken(QString());
     setExpires(0);
@@ -228,7 +228,7 @@ void O2::onVerificationReceived(const QMap<QString, QString> &response)
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived: Emitting closeBrowser()";
     Q_EMIT closeBrowser();
 
-    if (response.contains("error")) {
+    if (response.contains(QStringLiteral("error"))) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived: Verification failed: " << response;
         Q_EMIT linkingFailed();
         return;
@@ -326,7 +326,7 @@ QByteArray O2::buildRequestBody(const QMap<QString, QString> &parameters)
             body.append("&");
         }
         QString value = parameters.value(key);
-        body.append(QUrl::toPercentEncoding(key) + QString("=").toUtf8() + QUrl::toPercentEncoding(value));
+        body.append(QUrl::toPercentEncoding(key) + QStringLiteral("=").toUtf8() + QUrl::toPercentEncoding(value));
     }
     return body;
 }

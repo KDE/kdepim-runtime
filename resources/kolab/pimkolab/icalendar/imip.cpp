@@ -74,8 +74,8 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
     if (outlookConformInvitation) {
         message->contentType()->setMimeType("text/calendar");
         message->contentType()->setCharset("utf-8");
-        message->contentType()->setName(QLatin1String("cal.ics"), "utf-8");
-        message->contentType()->setParameter(QLatin1String("method"), QLatin1String("request"));
+        message->contentType()->setName(QStringLiteral("cal.ics"), "utf-8");
+        message->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
 
         if (!attachment.isEmpty()) {
             KMime::Headers::ContentDisposition *disposition
@@ -114,9 +114,9 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
             attachDisposition->setDisposition(KMime::Headers::CDattachment);
             attachMessage->contentType()->setMimeType("text/calendar");
             attachMessage->contentType()->setCharset("utf-8");
-            attachMessage->contentType()->setName(QLatin1String("cal.ics"), "utf-8");
-            attachMessage->contentType()->setParameter(QLatin1String("method"),
-                                                       QLatin1String("request"));
+            attachMessage->contentType()->setName(QStringLiteral("cal.ics"), "utf-8");
+            attachMessage->contentType()->setParameter(QStringLiteral("method"),
+                                                       QStringLiteral("request"));
             attachMessage->setHeader(attachDisposition);
             attachMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
             attachMessage->setBody(KMime::CRLFtoLF(attachment.toUtf8()));

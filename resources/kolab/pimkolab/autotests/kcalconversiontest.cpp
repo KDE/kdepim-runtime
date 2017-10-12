@@ -146,7 +146,7 @@ void KCalConversionTest::testConversion_data()
 
     {
         KCalCore::Event kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         kcal.setCreated(toDate(date));
         kcal.setLastModified(toDate(date));
         kcal.setRevision(3);
@@ -176,29 +176,29 @@ void KCalConversionTest::testConversion_data()
         rr->setByMonths(intList);
         rr->setByWeekNumbers(intList);
 
-        kcal.setSummary("summary");
-        kcal.setDescription("description");
+        kcal.setSummary(QStringLiteral("summary"));
+        kcal.setDescription(QStringLiteral("description"));
         kcal.setPriority(3);
         kcal.setStatus(KCalCore::Incidence::StatusConfirmed);
-        kcal.setLocation("location");
-        kcal.setOrganizer(KCalCore::Person::Ptr(new KCalCore::Person("organizer", "organizer@email")));
+        kcal.setLocation(QStringLiteral("location"));
+        kcal.setOrganizer(KCalCore::Person::Ptr(new KCalCore::Person(QStringLiteral("organizer"), QStringLiteral("organizer@email"))));
         //Url
-        kcal.setNonKDECustomProperty("X-KOLAB-URL", "http://test.org");
-        KCalCore::Attendee::Ptr att(new KCalCore::Attendee("attendee", "attendee@email", false, KCalCore::Attendee::NeedsAction, KCalCore::Attendee::ReqParticipant));
-        att->setDelegate("mailto:delegatee<delegatee@email>");
-        att->setDelegator("mailto:delegator<delegator@email>");
+        kcal.setNonKDECustomProperty("X-KOLAB-URL", QStringLiteral("http://test.org"));
+        KCalCore::Attendee::Ptr att(new KCalCore::Attendee(QStringLiteral("attendee"), QStringLiteral("attendee@email"), false, KCalCore::Attendee::NeedsAction, KCalCore::Attendee::ReqParticipant));
+        att->setDelegate(QStringLiteral("mailto:delegatee<delegatee@email>"));
+        att->setDelegator(QStringLiteral("mailto:delegator<delegator@email>"));
         kcal.addAttendee(att);
-        kcal.addAttachment(KCalCore::Attachment::Ptr(new KCalCore::Attachment(QString("uri"), "mimetype/mime")));
+        kcal.addAttachment(KCalCore::Attachment::Ptr(new KCalCore::Attachment(QStringLiteral("uri"), QStringLiteral("mimetype/mime"))));
         KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&kcal));
         KCalCore::Person::List addressees;
-        addressees.append(KCalCore::Person::Ptr(new KCalCore::Person("name", "email@email")));
-        alarm->setEmailAlarm("subject", "text", addressees, QStringList()); //No support for attachments
+        addressees.append(KCalCore::Person::Ptr(new KCalCore::Person(QStringLiteral("name"), QStringLiteral("email@email"))));
+        alarm->setEmailAlarm(QStringLiteral("subject"), QStringLiteral("text"), addressees, QStringList()); //No support for attachments
         kcal.addAlarm(alarm);
         //TODO alarms
 
-        kcal.setNonKDECustomProperty("X-KOLAB-key1", "value1");
-        kcal.setNonKDECustomProperty("X-KOLAB-key2", "value2");
-        kcal.setCustomProperty("SOMEOTHERAPP", "key2", "value2");
+        kcal.setNonKDECustomProperty("X-KOLAB-key1", QStringLiteral("value1"));
+        kcal.setNonKDECustomProperty("X-KOLAB-key2", QStringLiteral("value2"));
+        kcal.setCustomProperty("SOMEOTHERAPP", "key2", QStringLiteral("value2"));
         Q_ASSERT(kcal.nonKDECustomProperty("X-KOLAB-key1") == "value1");
 
         Kolab::Event kolab;
@@ -265,7 +265,7 @@ void KCalConversionTest::testConversion_data()
     }
     {
         KCalCore::Event kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         kcal.setCreated(toDate(date));
         kcal.setLastModified(toDate(date));
         kcal.setRevision(3);
@@ -295,7 +295,7 @@ void KCalConversionTest::testConversion_data()
         Kolab::cDateTime end(2011, 1, 3);
 
         KCalCore::Event kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         kcal.setCreated(toDate(date));
         kcal.setLastModified(toDate(date));
         kcal.setDtStart(toDate(start));
@@ -320,19 +320,19 @@ void KCalConversionTest::testConversion_data()
     }
     {
         KCalCore::Event kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         kcal.setCreated(toDate(date));
         kcal.setLastModified(toDate(date));
         kcal.setDtStart(toDate(date));
         kcal.setAllDay(date.isDateOnly());
-        kcal.setSummary("äöü%@$£é¤¼²°€Š�");
+        kcal.setSummary(QStringLiteral("äöü%@$£é¤¼²°€Š�"));
 
         Kolab::Event kolab;
         kolab.setUid("uid");
         kolab.setCreated(date);
         kolab.setLastModified(date);
         kolab.setStart(date);
-        kolab.setSummary(std::string(QString("äöü%@$£é¤¼²°€Š�").toUtf8().constData()));
+        kolab.setSummary(std::string(QStringLiteral("äöü%@$£é¤¼²°€Š�").toUtf8().constData()));
 
         QTest::newRow("latin1+Unicode") << kcal << kolab;
     }
@@ -417,11 +417,11 @@ void KCalConversionTest::testTodoConversion_data()
 
     {
         KCalCore::Todo kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         kcal.setDtStart(toDate(date));
         kcal.setDtDue(toDate(date2));
         kcal.setAllDay(date.isDateOnly());
-        kcal.setRelatedTo("uid2", KCalCore::Incidence::RelTypeParent);
+        kcal.setRelatedTo(QStringLiteral("uid2"), KCalCore::Incidence::RelTypeParent);
 
         Kolab::Todo kolab;
         kolab.setUid("uid");
@@ -464,9 +464,9 @@ void KCalConversionTest::testJournalConversion_data()
 
     {
         KCalCore::Journal kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         kcal.setDtStart(toDate(date));
-        kcal.setSummary("summary");
+        kcal.setSummary(QStringLiteral("summary"));
 
         Kolab::Journal kolab;
         kolab.setUid("uid");
@@ -501,8 +501,8 @@ void KCalConversionTest::testContactConversion_data()
 
     {
         KContacts::Addressee kcal;
-        kcal.setUid("uid");
-        kcal.setFormattedName("name");
+        kcal.setUid(QStringLiteral("uid"));
+        kcal.setFormattedName(QStringLiteral("name"));
 
         Kolab::Contact kolab;
         kolab.setUid("uid");
@@ -512,8 +512,8 @@ void KCalConversionTest::testContactConversion_data()
     }
     {
         KContacts::Addressee kcal;
-        kcal.setUid("uid");
-        kcal.setFormattedName("name");
+        kcal.setUid(QStringLiteral("uid"));
+        kcal.setFormattedName(QStringLiteral("name"));
         kcal.setBirthday(QDateTime(QDate(2012, 2, 2)));
 
         //Because QDateTime doesn't know date-only values we always end up with a date-time
@@ -526,10 +526,10 @@ void KCalConversionTest::testContactConversion_data()
     }
     {
         KContacts::Addressee kcal;
-        kcal.setUid("uid");
+        kcal.setUid(QStringLiteral("uid"));
         //The first address is always the preferred
-        kcal.setEmails(QStringList() << "email1@example.org" << "email2@example.org");
-        kcal.insertCustom("KOLAB", "EmailTypesemail1@example.org", "home,work");
+        kcal.setEmails(QStringList() << QStringLiteral("email1@example.org") << QStringLiteral("email2@example.org"));
+        kcal.insertCustom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypesemail1@example.org"), QStringLiteral("home,work"));
 
         Kolab::Contact kolab;
         kolab.setUid("uid");

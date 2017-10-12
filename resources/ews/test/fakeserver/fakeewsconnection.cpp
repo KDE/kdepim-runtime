@@ -72,15 +72,15 @@ void FakeEwsConnection::dataAvailable()
         mKeepAlive = false;
 
         if (tokens.size() < 3) {
-            sendError(QLatin1String("Invalid request header"));
+            sendError(QStringLiteral("Invalid request header"));
             return;
         }
         if (tokens.at(0) != "POST") {
-            sendError(QLatin1String("Expected POST request"));
+            sendError(QStringLiteral("Expected POST request"));
             return;
         }
         if (tokens.at(1) != "/EWS/Exchange.asmx") {
-            sendError(QLatin1String("Invalid EWS URL"));
+            sendError(QStringLiteral("Invalid EWS URL"));
             return;
         }
         mState = RequestReceived;
@@ -94,7 +94,7 @@ void FakeEwsConnection::dataAvailable()
                 bool ok;
                 mContentLength = line.trimmed().mid(16).toUInt(&ok);
                 if (!ok) {
-                    sendError(QLatin1String("Failed to parse content length."));
+                    sendError(QStringLiteral("Failed to parse content length."));
                     return;
                 }
             } else if (line.toLower().startsWith(QByteArray("authorization: basic "))) {
@@ -113,7 +113,7 @@ void FakeEwsConnection::dataAvailable()
 
     if (mState == HeadersReceived) {
         if (mContentLength == 0) {
-            sendError(QLatin1String("Expected content"));
+            sendError(QStringLiteral("Expected content"));
             return;
         }
 
@@ -205,7 +205,7 @@ void FakeEwsConnection::sendError(const QString &msg, ushort code)
 void FakeEwsConnection::dataTimeout()
 {
     qCWarning(EWSFAKE_LOG) << QLatin1String("Timeout waiting for content.");
-    sendError(QLatin1String("Timeout waiting for content."));
+    sendError(QStringLiteral("Timeout waiting for content."));
 }
 
 FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::parseRequest(const QString &content)

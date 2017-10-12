@@ -83,9 +83,9 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     // top level dir
     QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
-    QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
+    //QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
     QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection2")));
-    QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
+    //QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
 
     // first level maildir parent
     QDir subDir1 = topDir;

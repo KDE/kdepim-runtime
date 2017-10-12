@@ -117,6 +117,7 @@ public:
     KMBox::MBoxEntry::List entryList() const
     {
         KMBox::MBoxEntry::List result;
+        result.reserve(mMBox.entries().count());
         Q_FOREACH (const KMBox::MBoxEntry &entry, mMBox.entries()) {
             if (!mDeletedOffsets.contains(entry.messageOffset())) {
                 result << entry;

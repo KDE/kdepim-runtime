@@ -77,7 +77,7 @@ void ErrorHandler::addError(ErrorHandler::Severity s, const QString &message, co
     if (!filename.split(QLatin1Char('/')).isEmpty()) {
         filename = filename.split(QLatin1Char('/')).last();
     }
-    const QString output = QTime::currentTime().toString(QLatin1String("(hh:mm:ss) ")) + filename + QLatin1String(":\t") + message;
+    const QString output = QTime::currentTime().toString(QStringLiteral("(hh:mm:ss) ")) + filename + QLatin1String(":\t") + message;
     std::cout << output.toStdString() << std::endl;
     if (s == Debug) {
         return;

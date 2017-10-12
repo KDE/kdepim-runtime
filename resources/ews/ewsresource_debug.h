@@ -33,6 +33,7 @@ inline QDebug operator<<(QDebug debug, const Akonadi::Item::List &items)
 {
     QDebugStateSaver saver(debug);
     QStringList itemStrs;
+    itemStrs.reserve(items.count());
     Q_FOREACH (const Akonadi::Item &item, items) {
         itemStrs.append(ewsHash(item.remoteId()));
     }
@@ -51,6 +52,7 @@ inline QDebug operator<<(QDebug debug, const Akonadi::Collection::List &cols)
 {
     QDebugStateSaver saver(debug);
     QStringList itemStrs;
+    itemStrs.reserve(cols.count());
     Q_FOREACH (const Akonadi::Collection &col, cols) {
         itemStrs.append(EwsClient::folderHash.value(col.remoteId(), ewsHash(col.remoteId())));
     }
@@ -69,6 +71,7 @@ inline QDebug operator<<(QDebug debug, const QSet<QByteArray> &items)
 {
     QDebugStateSaver saver(debug);
     QStringList itemStrs;
+    itemStrs.reserve(items.count());
     Q_FOREACH (const QByteArray &item, items) {
         itemStrs.append(QString::fromLatin1(item));
     }

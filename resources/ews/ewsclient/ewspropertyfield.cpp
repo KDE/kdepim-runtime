@@ -389,7 +389,7 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
                                     .arg(QStringLiteral("FieldIndex"));
             return false;
         }
-        unsigned index = indexStr.mid(tokens[1].size()).toUInt(&ok, 0);
+        unsigned index = indexStr.midRef(tokens[1].size()).toUInt(&ok, 0);
         if (!ok) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - error reading %1 attribute.")
                                     .arg(QStringLiteral("FieldIndex"));

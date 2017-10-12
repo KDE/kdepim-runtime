@@ -38,7 +38,7 @@ NewMailNotifierShowMessageJob::~NewMailNotifierShowMessageJob()
 void NewMailNotifierShowMessageJob::start()
 {
     if (mId < 0) {
-        Q_EMIT emitResult();
+        emitResult();
         return;
     }
     const QString kmailInterface = QStringLiteral("org.kde.kmail");
@@ -49,7 +49,7 @@ void NewMailNotifierShowMessageJob::start()
         if (KToolInvocation::startServiceByDesktopName(QStringLiteral("org.kde.kmail2"), QString(), &errmsg)) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " Can not start kmail" << errmsg;
             setError(UserDefinedError);
-            Q_EMIT emitResult();
+            emitResult();
             return;
         }
     }
@@ -57,5 +57,5 @@ void NewMailNotifierShowMessageJob::start()
     if (kmail.isValid()) {
         kmail.call(QStringLiteral("showMail"), mId);
     }
-    Q_EMIT emitResult();
+    emitResult();
 }

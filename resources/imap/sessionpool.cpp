@@ -483,7 +483,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
         QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
         nsJob->start();
         return;
-    } else if (m_capabilities.contains(QLatin1String("ID"))) {
+    } else if (m_capabilities.contains(QStringLiteral("ID"))) {
         KIMAP::IdJob *idJob = new KIMAP::IdJob(capJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);

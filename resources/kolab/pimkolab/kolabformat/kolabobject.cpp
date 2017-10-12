@@ -40,72 +40,72 @@
 namespace Kolab {
 static inline QString eventKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_EVENT);
+    return QStringLiteral(KOLAB_TYPE_EVENT);
 }
 
 static inline QString todoKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_TASK);
+    return QStringLiteral(KOLAB_TYPE_TASK);
 }
 
 static inline QString journalKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_JOURNAL);
+    return QStringLiteral(KOLAB_TYPE_JOURNAL);
 }
 
 static inline QString contactKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_CONTACT);
+    return QStringLiteral(KOLAB_TYPE_CONTACT);
 }
 
 static inline QString distlistKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_DISTLIST);
+    return QStringLiteral(KOLAB_TYPE_DISTLIST);
 }
 
 static inline QString distlistKolabTypeCompat()
 {
-    return QString::fromLatin1(KOLAB_TYPE_DISTLIST_V2);
+    return QStringLiteral(KOLAB_TYPE_DISTLIST_V2);
 }
 
 static inline QString noteKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_NOTE);
+    return QStringLiteral(KOLAB_TYPE_NOTE);
 }
 
 static inline QString configurationKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_CONFIGURATION);
+    return QStringLiteral(KOLAB_TYPE_CONFIGURATION);
 }
 
 static inline QString dictKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_DICT);
+    return QStringLiteral(KOLAB_TYPE_DICT);
 }
 
 static inline QString freebusyKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_FREEBUSY);
+    return QStringLiteral(KOLAB_TYPE_FREEBUSY);
 }
 
 static inline QString relationKolabType()
 {
-    return QString::fromLatin1(KOLAB_TYPE_RELATION);
+    return QStringLiteral(KOLAB_TYPE_RELATION);
 }
 
 static inline QString xCalMimeType()
 {
-    return QString::fromLatin1(MIME_TYPE_XCAL);
+    return QStringLiteral(MIME_TYPE_XCAL);
 }
 
 static inline QString xCardMimeType()
 {
-    return QString::fromLatin1(MIME_TYPE_XCARD);
+    return QStringLiteral(MIME_TYPE_XCARD);
 }
 
 static inline QString kolabMimeType()
 {
-    return QString::fromLatin1(MIME_TYPE_KOLAB);
+    return QStringLiteral(MIME_TYPE_KOLAB);
 }
 
 KCalCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments)
@@ -192,9 +192,9 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
     url.setEncodedPath("/" + join(path, "/"));
 
     QList<QPair<QByteArray, QByteArray> > queryItems;
-    queryItems.append(qMakePair(QString::fromLatin1("message-id").toLatin1(), QUrl::toPercentEncoding(member.messageId)));
-    queryItems.append(qMakePair(QString::fromLatin1("subject").toLatin1(), QUrl::toPercentEncoding(member.subject)));
-    queryItems.append(qMakePair(QString::fromLatin1("date").toLatin1(), QUrl::toPercentEncoding(member.date)));
+    queryItems.append(qMakePair(QStringLiteral("message-id").toLatin1(), QUrl::toPercentEncoding(member.messageId)));
+    queryItems.append(qMakePair(QStringLiteral("subject").toLatin1(), QUrl::toPercentEncoding(member.subject)));
+    queryItems.append(qMakePair(QStringLiteral("date").toLatin1(), QUrl::toPercentEncoding(member.date)));
     url.setEncodedQueryItems(queryItems);
 
     return QString::fromLatin1(url.toEncoded());

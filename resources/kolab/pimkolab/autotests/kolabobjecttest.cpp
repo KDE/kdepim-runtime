@@ -44,7 +44,7 @@ void KolabObjectTest::preserveUnicode()
     KCalCore::Event::Ptr event(new KCalCore::Event());
     event->setDtStart(QDateTime(QDate(2014, 1, 1), {}));
     event->setAllDay(true);
-    QString summary(QString::fromUtf8("€Š�ـأبـ☺"));
+    QString summary(QStringLiteral("€Š�ـأبـ☺"));
     event->setSummary(summary);
     QCOMPARE(event->summary(), summary);
 //     std::cout << event->summary().toStdString() << std::endl;
@@ -87,7 +87,7 @@ void KolabObjectTest::parseRelationMembers()
 {
     {
         QString memberString(
-            "imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200");
+            QStringLiteral("imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200"));
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberString);
 
         QString result = Kolab::generateMemberUrl(member);
@@ -102,10 +102,10 @@ void KolabObjectTest::parseRelationMembers()
         Kolab::RelationMember member;
         member.uid = 20;
         member.mailbox = QList<QByteArray>() << "INBOX";
-        member.user = "john.doe@example.org";
-        member.messageId = "messageid";
-        member.date = "date";
-        member.subject = "subject";
+        member.user = QStringLiteral("john.doe@example.org");
+        member.messageId = QStringLiteral("messageid");
+        member.date = QStringLiteral("date");
+        member.subject = QStringLiteral("subject");
         QString url = Kolab::generateMemberUrl(member);
         qDebug() << url;
         Kolab::RelationMember result = Kolab::parseMemberUrl(url);
@@ -123,9 +123,9 @@ void KolabObjectTest::parseRelationMembers()
         Kolab::RelationMember member;
         member.uid = 20;
         member.mailbox = QList<QByteArray>() << "foo" << "bar";
-        member.messageId = "messageid";
-        member.date = "date";
-        member.subject = "subject";
+        member.messageId = QStringLiteral("messageid");
+        member.date = QStringLiteral("date");
+        member.subject = QStringLiteral("subject");
         QString url = Kolab::generateMemberUrl(member);
         qDebug() << url;
         Kolab::RelationMember result = Kolab::parseMemberUrl(url);
@@ -140,7 +140,7 @@ void KolabObjectTest::parseRelationMembers()
     //by uuid/gid
     {
         Kolab::RelationMember member;
-        member.gid = "fooobar";
+        member.gid = QStringLiteral("fooobar");
         QString url = Kolab::generateMemberUrl(member);
         qDebug() << url;
         Kolab::RelationMember result = Kolab::parseMemberUrl(url);
@@ -152,10 +152,10 @@ void KolabObjectTest::parseRelationMembers()
         Kolab::RelationMember member;
         member.uid = 20;
         member.mailbox = QList<QByteArray>() << "spaces in folders" << "+^,:@";
-        member.user = "john.doe:^@example.org";
-        member.messageId = "messageid+^,:@";
-        member.date = "date+^,:@";
-        member.subject = "subject+^,:@";
+        member.user = QStringLiteral("john.doe:^@example.org");
+        member.messageId = QStringLiteral("messageid+^,:@");
+        member.date = QStringLiteral("date+^,:@");
+        member.subject = QStringLiteral("subject+^,:@");
 
         QString url = Kolab::generateMemberUrl(member);
         qDebug() << url;

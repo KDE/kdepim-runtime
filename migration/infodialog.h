@@ -37,6 +37,10 @@ public:
     InfoDialog(bool closeWhenDone = true);
     ~InfoDialog();
 
+    static bool hasError()
+    {
+        return mError;
+    }
 public Q_SLOTS:
     void message(KMigratorBase::MessageType type, const QString &msg);
     void message(MigratorBase::MessageType type, const QString &msg);
@@ -44,14 +48,6 @@ public Q_SLOTS:
     void migratorAdded();
     void migratorDone();
 
-    static bool hasError()
-    {
-        return mError;
-    }
-    bool hasChange() const
-    {
-        return mChange;
-    }
 
     void status(const QString &msg);
 
@@ -59,6 +55,10 @@ public Q_SLOTS:
     void progress(int min, int max, int value);
 
 private:
+    bool hasChange() const
+    {
+        return mChange;
+    }
     void scrollBarMoved(int value);
     QEventLoopLocker eventLoopLocker;
     QDialogButtonBox *mButtonBox = nullptr;

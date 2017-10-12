@@ -33,7 +33,7 @@ void TimezoneTest::initTestCase()
 void TimezoneTest::testFromName()
 {
     TimezoneConverter converter;
-    const QString timezone = converter.normalizeTimezone("(GMT+01.00) Sarajevo/Warsaw/Zagreb");
+    const QString timezone = converter.normalizeTimezone(QStringLiteral("(GMT+01.00) Sarajevo/Warsaw/Zagreb"));
     QCOMPARE(timezone, QLatin1String("Europe/Sarajevo"));
 }
 
@@ -41,21 +41,21 @@ void TimezoneTest::testFromHardcodedList_data()
 {
     QTest::addColumn<QString>("timezone");
 
-    QTest::newRow("1") << QString::fromLatin1("(GMT+01:00) West Central Africa");
-    QTest::newRow("2") << QString::fromLatin1("(GMT-04:00) Atlantic Time (Canada)");
-    QTest::newRow("3") << QString::fromLatin1("(GMT-06:00) Saskatchewan");
-    QTest::newRow("4") << QString::fromLatin1("(GMT-01:00) Cape Verde Islands");
-    QTest::newRow("5") << QString::fromLatin1("(GMT-06:00) Central America");
-    QTest::newRow("6") << QString::fromLatin1("(GMT-06:00) Central Time (US and Canada)");
+    QTest::newRow("1") << QStringLiteral("(GMT+01:00) West Central Africa");
+    QTest::newRow("2") << QStringLiteral("(GMT-04:00) Atlantic Time (Canada)");
+    QTest::newRow("3") << QStringLiteral("(GMT-06:00) Saskatchewan");
+    QTest::newRow("4") << QStringLiteral("(GMT-01:00) Cape Verde Islands");
+    QTest::newRow("5") << QStringLiteral("(GMT-06:00) Central America");
+    QTest::newRow("6") << QStringLiteral("(GMT-06:00) Central Time (US and Canada)");
 //     QTest::newRow( "7" ) << QString::fromLatin1("(GMT-12:00) International Date Line West"); //Not mappable
-    QTest::newRow("8") << QString::fromLatin1("(GMT-05:00) Eastern Time (US and Canada)");
+    QTest::newRow("8") << QStringLiteral("(GMT-05:00) Eastern Time (US and Canada)");
 //     QTest::newRow( "9" ) << QString::fromLatin1("(GMT-02:00) Mid-Atlantic"); //Not mappable
-    QTest::newRow("10") << QString::fromLatin1("(GMT-07:00) Mountain Time (US and Canada)");
-    QTest::newRow("11") << QString::fromLatin1("(GMT-03:30) Newfoundland and Labrador");
-    QTest::newRow("12") << QString::fromLatin1("(GMT-08:00) Pacific Time (US and Canada); Tijuana");
-    QTest::newRow("13") << QString::fromLatin1("(GMT-11:00) Midway Island, Samoa");
-    QTest::newRow("14") << QString::fromLatin1("W. Europe Standard Time");
-    QTest::newRow("15") << QString::fromLatin1("(GMT+1.00) Sarajevo/Warsaw/Zagreb");
+    QTest::newRow("10") << QStringLiteral("(GMT-07:00) Mountain Time (US and Canada)");
+    QTest::newRow("11") << QStringLiteral("(GMT-03:30) Newfoundland and Labrador");
+    QTest::newRow("12") << QStringLiteral("(GMT-08:00) Pacific Time (US and Canada); Tijuana");
+    QTest::newRow("13") << QStringLiteral("(GMT-11:00) Midway Island, Samoa");
+    QTest::newRow("14") << QStringLiteral("W. Europe Standard Time");
+    QTest::newRow("15") << QStringLiteral("(GMT+1.00) Sarajevo/Warsaw/Zagreb");
     //Lotus notes uses it's own set of specifiers
 //     QTest::newRow( "Lotus Notes" ) << QString::fromLatin1("W. Europe");
 //     QTest::newRow( "Google UTC offset" ) << QString::fromLatin1("2013-10-23T04:00:00+02:00");
@@ -129,7 +129,7 @@ void TimezoneTest::testKolabObjectWriter()
 
 void TimezoneTest::testFindLegacyTimezone()
 {
-    const QString normalized = TimezoneConverter::normalizeTimezone("US/Pacific");
+    const QString normalized = TimezoneConverter::normalizeTimezone(QStringLiteral("US/Pacific"));
     qDebug() << normalized;
     QEXPECT_FAIL("", "Currently broken", Continue);
     QVERIFY(!normalized.isEmpty());
@@ -137,7 +137,7 @@ void TimezoneTest::testFindLegacyTimezone()
 
 void TimezoneTest::testIgnoreInvalidTimezone()
 {
-    const QString normalized = TimezoneConverter::normalizeTimezone("FOOOOBAR");
+    const QString normalized = TimezoneConverter::normalizeTimezone(QStringLiteral("FOOOOBAR"));
     qDebug() << normalized;
     QVERIFY(normalized.isEmpty());
 }
@@ -145,7 +145,7 @@ void TimezoneTest::testIgnoreInvalidTimezone()
 void TimezoneTest::testUTCOffset()
 {
     const Kolab::cDateTime expected(2013, 10, 23, 2, 0, 0, true);
-    const QDateTime input(QDateTime::fromString("2013-10-23T04:00:00+02:00", Qt::ISODate));
+    const QDateTime input(QDateTime::fromString(QStringLiteral("2013-10-23T04:00:00+02:00"), Qt::ISODate));
     const Kolab::cDateTime result = Kolab::Conversion::fromDate(input, false);
     QVERIFY(!Kolab::ErrorHandler::instance().errorOccured());
     QCOMPARE(result, expected);

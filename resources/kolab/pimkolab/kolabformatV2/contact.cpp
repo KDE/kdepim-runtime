@@ -838,12 +838,12 @@ QString Contact::saveXML() const
 static QString addressTypeToString(int /*KContacts::Address::Type*/ type)
 {
     if (type & KContacts::Address::Home) {
-        return QLatin1String("home");
+        return QStringLiteral("home");
     }
     if (type & KContacts::Address::Work) {
-        return QLatin1String("business");
+        return QStringLiteral("business");
     }
-    return QLatin1String("other");
+    return QStringLiteral("other");
 }
 
 static int addressTypeFromString(const QString &type)
@@ -1248,7 +1248,7 @@ void Contact::saveTo(KContacts::Addressee *addressee)
     }
 
     for (QList<Custom>::ConstIterator it = mCustomList.constBegin(), end = mCustomList.constEnd(); it != end; ++it) {
-        QString app = (*it).app.isEmpty() ? QString::fromLatin1("KADDRESSBOOK") : (*it).app;
+        QString app = (*it).app.isEmpty() ? QStringLiteral("KADDRESSBOOK") : (*it).app;
         addressee->insertCustom(app, (*it).name, (*it).value);
     }
     //qDebug() << addressee->customs();

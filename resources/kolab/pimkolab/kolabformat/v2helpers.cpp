@@ -250,7 +250,7 @@ KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &p
         return KMime::Message::Ptr();
     }
     Akonadi::NoteUtils::NoteMessageWrapper note(msg);
-    return Mime::createMessage(note.title(), QLatin1String(KOLAB_TYPE_NOTE), QLatin1String(KOLAB_TYPE_NOTE), noteToKolabXML(msg), false, productId);
+    return Mime::createMessage(note.title(), QStringLiteral(KOLAB_TYPE_NOTE), QStringLiteral(KOLAB_TYPE_NOTE), noteToKolabXML(msg), false, productId);
 }
 
 QByteArray noteToKolabXML(const KMime::Message::Ptr &msg)

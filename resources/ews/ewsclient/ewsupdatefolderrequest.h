@@ -48,7 +48,7 @@ public:
             Unknown
         };
 
-        Update(EwsPropertyField field, const QVariant &val, Type type)
+        Update(const EwsPropertyField &field, const QVariant &val, Type type)
             : mField(field), mValue(val), mType(type) {}
 
         EwsPropertyField mField;
@@ -59,19 +59,19 @@ public:
     class AppendUpdate : public Update
     {
     public:
-        AppendUpdate(EwsPropertyField field, const QVariant &val) : Update(field, val, Append) {}
+        AppendUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Append) {}
     };
 
     class SetUpdate : public Update
     {
     public:
-        SetUpdate(EwsPropertyField field, const QVariant &val) : Update(field, val, Set) {}
+        SetUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Set) {}
     };
 
     class DeleteUpdate : public Update
     {
     public:
-        DeleteUpdate(EwsPropertyField field) : Update(field, QVariant(), Delete) {}
+        DeleteUpdate(const EwsPropertyField &field) : Update(field, QVariant(), Delete) {}
     };
 
     class FolderChange

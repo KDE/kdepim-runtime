@@ -328,7 +328,7 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
     foreach (const Kolab::CustomProperty &prop, e.customProperties()) {
         QString key;
         if (prop.identifier.compare(0, 5, "X-KDE")) {
-            key.append(QString::fromLatin1("X-KOLAB-"));
+            key.append(QLatin1String("X-KOLAB-"));
         }
         key.append(fromStdString(prop.identifier));
         props.insert(key.toLatin1(), fromStdString(prop.value));

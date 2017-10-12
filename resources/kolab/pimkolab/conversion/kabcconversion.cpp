@@ -475,7 +475,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
             emails << fromStdString(email.address());
             const QString types = emailTypesToStringList(email.types());
             if (!types.isEmpty()) {
-                addressee.insertCustom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(fromStdString(email.address())), types);
+                addressee.insertCustom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(fromStdString(email.address())), types);
             }
         }
         addressee.setEmails(emails);
@@ -537,24 +537,24 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
                 continue;
             }
             if (related.relationTypes() & Kolab::Related::Assistant) {
-                addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-AssistantsName"), fromStdString(related.text()));
+                addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"), fromStdString(related.text()));
             }
             if (related.relationTypes() & Kolab::Related::Manager) {
-                addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-ManagersName"), fromStdString(related.text()));
+                addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"), fromStdString(related.text()));
             }
         }
         foreach (const Kolab::Address &address, aff.addresses()) {
-            addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Office"), fromStdString(address.label())); //TODO support proper addresses
+            addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), fromStdString(address.label())); //TODO support proper addresses
         }
     }
     const std::string &prof = getCustom("X-Profession", contact);
     if (!prof.empty()) {
-        addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Profession"), fromStdString(prof));
+        addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession"), fromStdString(prof));
     }
 
     const std::string &adrBook = getCustom("X-AddressBook", contact);
     if (!adrBook.empty()) {
-        addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-AddressBook"), fromStdString(prof));
+        addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AddressBook"), fromStdString(prof));
     }
 
     if (!contact.photo().empty()) {
@@ -595,11 +595,11 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     }
 
     if (contact.anniversary().isValid()) {
-        addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Anniversary"), toDate(contact.anniversary()).toString(Qt::ISODate));
+        addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"), toDate(contact.anniversary()).toString(Qt::ISODate));
     }
 
     if (!contact.imAddresses().empty()) {
-        addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-IMAddress"), fromStdString(contact.imAddresses()[0])); //TODO support multiple
+        addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), fromStdString(contact.imAddresses()[0])); //TODO support multiple
     }
 
     if (!contact.relateds().empty()) {
@@ -609,7 +609,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
                 continue;
             }
             if (rel.relationTypes() & Kolab::Related::Spouse) {
-                addressee.insertCustom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-SpousesName"), fromStdString(rel.text())); //TODO support multiple
+                addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), fromStdString(rel.text())); //TODO support multiple
             } else {
                 qCWarning(PIMKOLAB_LOG) <<"relation not supported";
                 continue;
@@ -658,20 +658,20 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     if (!addressee.role().isEmpty()) {
         businessAff.setRoles(std::vector<std::string>() << toStdString(addressee.role()));
     }
-    const QString &office = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Office"));
+    const QString &office = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"));
     if (!office.isEmpty()) {
         Kolab::Address a;
         a.setTypes(Kolab::Address::Work);
-        a.setLabel(toStdString(addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Office"))));
+        a.setLabel(toStdString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"))));
         businessAff.setAddresses(std::vector<Kolab::Address>() << a);
     }
 
     std::vector<Kolab::Related> relateds;
-    const QString &manager = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-ManagersName"));
+    const QString &manager = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"));
     if (!manager.isEmpty()) {
         relateds.push_back(Kolab::Related(Kolab::Related::Text, toStdString(manager), Kolab::Related::Manager));
     }
-    const QString &assistant = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-AssistantsName"));
+    const QString &assistant = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"));
     if (!assistant.isEmpty()) {
         relateds.push_back(Kolab::Related(Kolab::Related::Text, toStdString(assistant), Kolab::Related::Assistant));
     }
@@ -687,7 +687,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     if (!url.isEmpty()) {
         urls.push_back(Kolab::Url(toStdString(url.url())));
     }
-    const QString &blogUrl = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("BlogFeed"));
+    const QString &blogUrl = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("BlogFeed"));
     if (!blogUrl.isEmpty()) {
         urls.push_back(Kolab::Url(toStdString(blogUrl), Kolab::Url::Blog));
     }
@@ -718,12 +718,12 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
         c.setNickNames(std::vector<std::string>() << toStdString(addressee.nickName()));
     }
 
-    const QString &spouse = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-SpousesName"));
+    const QString &spouse = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"));
     if (!spouse.isEmpty()) {
         c.setRelateds(std::vector<Kolab::Related>() << Kolab::Related(Kolab::Related::Text, toStdString(spouse), Kolab::Related::Spouse));
     }
     c.setBDay(fromDate(addressee.birthday(), true));
-    c.setAnniversary(fromDate(QDateTime(QDate::fromString(addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-Anniversary")), Qt::ISODate), {}), true));
+    c.setAnniversary(fromDate(QDateTime(QDate::fromString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary")), Qt::ISODate), {}), true));
     if (!addressee.photo().isEmpty()) {
         std::string mimetype;
         const std::string &photo = fromPicture(addressee.photo(), mimetype);
@@ -749,7 +749,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     }
     c.setTelephones(phones, prefNum);
 
-    const QString &imAddress = addressee.custom(QLatin1String("KADDRESSBOOK"), QLatin1String("X-IMAddress"));
+    const QString &imAddress = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"));
     if (!imAddress.isEmpty()) {
         c.setIMaddresses(std::vector<std::string>() << toStdString(imAddress), 0);
     }
@@ -763,7 +763,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
             prefEmail = count;
         }
         count++;
-        emails.push_back(Kolab::Email(toStdString(e), emailTypesFromStringlist(addressee.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(e)))));
+        emails.push_back(Kolab::Email(toStdString(e), emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e)))));
     }
     c.setEmailAddresses(emails, prefEmail);
     if (addressee.geo().isValid()) {

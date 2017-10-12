@@ -207,7 +207,7 @@ void Note::setFields(const KCalCore::Journal::Ptr &journal)
 
     property = journal->customProperty("KNotes", "RichText");
     if (!property.isEmpty()) {
-        setRichText(property == "true" ? true : false);
+        setRichText(property == QLatin1String("true") ? true : false);
     } else {
         setRichText(false);
     }
@@ -228,7 +228,7 @@ void Note::saveTo(const KCalCore::Journal::Ptr &journal) const
                                    colorToString(backgroundColor()));
     }
     journal->setCustomProperty("KNotes", "RichText",
-                               richText() ? QLatin1String("true") : QLatin1String("false"));
+                               richText() ? QStringLiteral("true") : QStringLiteral("false"));
 }
 
 QString Note::productID() const

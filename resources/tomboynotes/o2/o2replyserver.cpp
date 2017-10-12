@@ -50,10 +50,10 @@ QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2ReplyServer::parseQueryParams";
 
-    QString splitGetLine = QString(*data).split("\r\n").first();
-    splitGetLine.remove("GET ");
-    splitGetLine.remove("HTTP/1.1");
-    splitGetLine.remove("\r\n");
+    QString splitGetLine = QString(*data).split(QStringLiteral("\r\n")).first();
+    splitGetLine.remove(QStringLiteral("GET "));
+    splitGetLine.remove(QStringLiteral("HTTP/1.1"));
+    splitGetLine.remove(QStringLiteral("\r\n"));
     splitGetLine.prepend("http://localhost");
     QUrl getTokenUrl(splitGetLine);
 

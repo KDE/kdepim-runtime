@@ -55,14 +55,14 @@ void BenchmarkTests::parsingBenchmarkComparison_data()
 
 void BenchmarkTests::parsingBenchmarkComparison()
 {
-    const KMime::Message::Ptr kolabItem = readMimeFile(TESTFILEDIR+QString::fromLatin1("/v2/event/complex.ics.mime"));
+    const KMime::Message::Ptr kolabItem = readMimeFile(TESTFILEDIR+QLatin1String("/v2/event/complex.ics.mime"));
     KMime::Content *xmlContent = findContentByType(kolabItem, "application/x-vnd.kolab.event");
     QVERIFY(xmlContent);
     const QByteArray xmlData = xmlContent->decodedContent();
     //     qDebug() << xmlData;
     const QDomDocument xmlDoc = KolabV2::Event::loadDocument(QString::fromUtf8(xmlData));
     QVERIFY(!xmlDoc.isNull());
-    const KCalCore::Event::Ptr i = KolabV2::Event::fromXml(xmlDoc, QString::fromLatin1("Europe/Berlin"));
+    const KCalCore::Event::Ptr i = KolabV2::Event::fromXml(xmlDoc, QStringLiteral("Europe/Berlin"));
     QVERIFY(i);
     const Kolab::Event &event = Kolab::Conversion::fromKCalCore(*i);
     const std::string &v3String = Kolab::writeEvent(event);
@@ -75,7 +75,7 @@ void BenchmarkTests::parsingBenchmarkComparison()
     //     qDebug() << QString::fromStdString(v3String);
     if (v2Parser) {
         QBENCHMARK {
-            KolabV2::Event::fromXml(KolabV2::Event::loadDocument(QString::fromUtf8(xmlData)), QString::fromLatin1("Europe/Berlin"));
+            KolabV2::Event::fromXml(KolabV2::Event::loadDocument(QString::fromUtf8(xmlData)), QStringLiteral("Europe/Berlin"));
         }
     } else {
         QBENCHMARK {
