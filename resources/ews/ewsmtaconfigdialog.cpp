@@ -32,7 +32,7 @@
 
 #include "ewsmtaresource.h"
 #include "ewsmtasettings.h"
-#include "ui_mtaconfigdialog.h"
+#include "ui_ewsmtaconfigdialog.h"
 
 EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     : QDialog(), mParentResource(parentResource)

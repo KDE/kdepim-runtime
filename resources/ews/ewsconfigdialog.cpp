@@ -34,7 +34,7 @@
 #include "ewssettings.h"
 #include "ewssubscriptionwidget.h"
 #include "ewsprogressdialog.h"
-#include "ui_configdialog.h"
+#include "ui_ewsconfigdialog.h"
 
 typedef QPair<QString, QString> StringPair;
 
