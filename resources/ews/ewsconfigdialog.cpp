@@ -17,7 +17,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "configdialog.h"
+#include "ewsconfigdialog.h"
 
 #include <KConfigDialogManager>
 #include <KWindowSystem>
@@ -28,13 +28,13 @@
 #include <QPushButton>
 
 
-#include "ui_configdialog.h"
-#include "settings.h"
-#include "ewsresource.h"
 #include "ewsautodiscoveryjob.h"
 #include "ewsgetfolderrequest.h"
-#include "progressdialog.h"
+#include "ewsresource.h"
+#include "ewssettings.h"
 #include "ewssubscriptionwidget.h"
+#include "ewsprogressdialog.h"
+#include "ui_configdialog.h"
 
 typedef QPair<QString, QString> StringPair;
 
@@ -48,7 +48,7 @@ static const QVector<StringPair> userAgents = {
     {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}
 };
 
-ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId)
+EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId)
     : QDialog()
     , mParentResource(parentResource)
 {
@@ -64,8 +64,8 @@ ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId w
     QPushButton *okButton = mButtonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(mButtonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::dialogAccepted);
-    connect(mButtonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    connect(mButtonBox, &QDialogButtonBox::accepted, this, &EwsConfigDialog::dialogAccepted);
+    connect(mButtonBox, &QDialogButtonBox::rejected, this, &EwsConfigDialog::reject);
     mainLayout->addWidget(mButtonBox);
 
     setWindowTitle(i18n("Microsoft Exchange Configuration"));
@@ -131,28 +131,28 @@ ConfigDialog::ConfigDialog(EwsResource *parentResource, EwsClient &client, WId w
     mUi->aboutLicenseLabel->setText(i18nc("@info", "Distributed under the GNU Library General Public License version 2.0 or later."));
     mUi->aboutUrlLabel->setText(QStringLiteral("<a href=\"https://github.com/KrissN/akonadi-ews\">https://github.com/KrissN/akonadi-ews</a>"));
 
-    connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
-    connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &ConfigDialog::performAutoDiscovery);
-    connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->passwordEdit, &KPasswordLineEdit::passwordChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &ConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &ConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_BaseUrl, &KLineEdit::textChanged, this, &ConfigDialog::enableTryConnect);
-    connect(mUi->tryConnectButton, &QPushButton::clicked, this, &ConfigDialog::tryConnect);
-    connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ConfigDialog::userAgentChanged);
+    connect(okButton, &QPushButton::clicked, this, &EwsConfigDialog::save);
+    connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &EwsConfigDialog::performAutoDiscovery);
+    connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->passwordEdit, &KPasswordLineEdit::passwordChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_BaseUrl, &KLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
+    connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
+    connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource,
             &EwsResource::clearFolderTreeSyncState);
     connect(mUi->clearFolderItemSyncStateButton, &QPushButton::clicked, mParentResource,
             static_cast<void (EwsResource::*)()>(&EwsResource::clearFolderSyncState));
 }
 
-ConfigDialog::~ConfigDialog()
+EwsConfigDialog::~EwsConfigDialog()
 {
     delete mUi;
 }
 
-void ConfigDialog::save()
+void EwsConfigDialog::save()
 {
     mParentResource->setName(mUi->accountName->text());
     mConfigManager->updateSettings();
@@ -185,20 +185,20 @@ void ConfigDialog::save()
     mParentResource->settings()->save();
 }
 
-void ConfigDialog::performAutoDiscovery()
+void EwsConfigDialog::performAutoDiscovery()
 {
     mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
             fullUsername(), mUi->passwordEdit->password(),
             mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
             mUi->kcfg_EnableNTLMv2->isChecked(), this);
-    connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &ConfigDialog::autoDiscoveryFinished);
-    mProgressDialog = new ProgressDialog(this, ProgressDialog::AutoDiscovery);
-    connect(mProgressDialog, &QDialog::rejected, this, &ConfigDialog::autoDiscoveryCancelled);
+    connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
+    mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
+    connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
     mAutoDiscoveryJob->start();
     mProgressDialog->show();
 }
 
-void ConfigDialog::autoDiscoveryFinished(KJob *job)
+void EwsConfigDialog::autoDiscoveryFinished(KJob *job)
 {
     if (job->error() || job != mAutoDiscoveryJob) {
         KMessageBox::error(this, job->errorText(), i18nc("Exchange server autodiscovery", "Autodiscovery failed"));
@@ -213,7 +213,7 @@ void ConfigDialog::autoDiscoveryFinished(KJob *job)
     mProgressDialog = nullptr;
 }
 
-void ConfigDialog::tryConnectFinished(KJob *job)
+void EwsConfigDialog::tryConnectFinished(KJob *job)
 {
     if (job->error() || job != mTryConnectJob) {
         KMessageBox::error(this, job->errorText(), i18nc("Exchange server connection", "Connection failed"));
@@ -231,7 +231,7 @@ void ConfigDialog::tryConnectFinished(KJob *job)
     mProgressDialog = nullptr;
 }
 
-void ConfigDialog::autoDiscoveryCancelled()
+void EwsConfigDialog::autoDiscoveryCancelled()
 {
     if (mAutoDiscoveryJob) {
         mAutoDiscoveryJob->kill();
@@ -240,7 +240,7 @@ void ConfigDialog::autoDiscoveryCancelled()
     mProgressDialog = nullptr;
 }
 
-void ConfigDialog::tryConnectCancelled()
+void EwsConfigDialog::tryConnectCancelled()
 {
     if (mTryConnectJob) {
         mTryConnectJob->kill();
@@ -249,7 +249,7 @@ void ConfigDialog::tryConnectCancelled()
     mTryConnectJob = nullptr;
 }
 
-void ConfigDialog::setAutoDiscoveryNeeded()
+void EwsConfigDialog::setAutoDiscoveryNeeded()
 {
     mAutoDiscoveryNeeded = true;
     mTryConnectNeeded = true;
@@ -263,7 +263,7 @@ void ConfigDialog::setAutoDiscoveryNeeded()
     mButtonBox->button(QDialogButtonBox::Ok)->setEnabled(okEnabled);
 }
 
-QString ConfigDialog::fullUsername() const
+QString EwsConfigDialog::fullUsername() const
 {
     QString username = mUi->kcfg_Username->text();
     if (mUi->kcfg_HasDomain->isChecked()) {
@@ -272,16 +272,16 @@ QString ConfigDialog::fullUsername() const
     return username;
 }
 
-void ConfigDialog::dialogAccepted()
+void EwsConfigDialog::dialogAccepted()
 {
     if (mUi->kcfg_AutoDiscovery->isChecked() && mAutoDiscoveryNeeded) {
         mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
                 fullUsername(), mUi->passwordEdit->password(),
                 mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
                 mUi->kcfg_EnableNTLMv2->isChecked(), this);
-        connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &ConfigDialog::autoDiscoveryFinished);
-        mProgressDialog = new ProgressDialog(this, ProgressDialog::AutoDiscovery);
-        connect(mProgressDialog, &QDialog::rejected, this, &ConfigDialog::autoDiscoveryCancelled);
+        connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
+        mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
+        connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
         mAutoDiscoveryJob->start();
         if (!mProgressDialog->exec()) {
             if (KMessageBox::questionYesNo(this,
@@ -306,9 +306,9 @@ void ConfigDialog::dialogAccepted()
         mTryConnectJob = new EwsGetFolderRequest(cli, this);
         mTryConnectJob->setFolderShape(EwsFolderShape(EwsShapeIdOnly));
         mTryConnectJob->setFolderIds(EwsId::List() << EwsId(EwsDIdInbox));
-        connect(mTryConnectJob, &EwsGetFolderRequest::result, this, &ConfigDialog::tryConnectFinished);
-        mProgressDialog = new ProgressDialog(this, ProgressDialog::TryConnect);
-        connect(mProgressDialog, &QDialog::rejected, this, &ConfigDialog::tryConnectCancelled);
+        connect(mTryConnectJob, &EwsGetFolderRequest::result, this, &EwsConfigDialog::tryConnectFinished);
+        mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
+        connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
         mTryConnectJob->start();
         if (!mProgressDialog->exec()) {
             if (KMessageBox::questionYesNo(this,
@@ -329,7 +329,7 @@ void ConfigDialog::dialogAccepted()
     }
 }
 
-void ConfigDialog::enableTryConnect()
+void EwsConfigDialog::enableTryConnect()
 {
     mTryConnectNeeded = true;
     bool baseUrlEmpty = mUi->kcfg_BaseUrl->text().isEmpty();
@@ -344,7 +344,7 @@ void ConfigDialog::enableTryConnect()
     mUi->tryConnectButton->setEnabled(!baseUrlEmpty);
 }
 
-void ConfigDialog::tryConnect()
+void EwsConfigDialog::tryConnect()
 {
     EwsClient cli;
     cli.setUrl(mUi->kcfg_BaseUrl->text());
@@ -356,8 +356,8 @@ void ConfigDialog::tryConnect()
     mTryConnectJob = new EwsGetFolderRequest(cli, this);
     mTryConnectJob->setFolderShape(EwsFolderShape(EwsShapeIdOnly));
     mTryConnectJob->setFolderIds(EwsId::List() << EwsId(EwsDIdInbox));
-    mProgressDialog = new ProgressDialog(this, ProgressDialog::TryConnect);
-    connect(mProgressDialog, &QDialog::rejected, this, &ConfigDialog::tryConnectCancelled);
+    mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
+    connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
     mProgressDialog->show();
     if (!mTryConnectJob->exec()) {
         mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
@@ -370,7 +370,7 @@ void ConfigDialog::tryConnect()
     mProgressDialog->hide();
 }
 
-void ConfigDialog::userAgentChanged(int)
+void EwsConfigDialog::userAgentChanged(int)
 {
     QString data = mUi->userAgentCombo->currentData().toString();
     mUi->userAgentEdit->setEnabled(data.isEmpty());

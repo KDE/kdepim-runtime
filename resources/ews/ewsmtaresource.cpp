@@ -24,9 +24,9 @@
 #include <KMime/Message>
 #include <KLocalizedString>
 #include "ewsresource_debug.h"
-#include "mtaconfigdialog.h"
-#include "mtasettings.h"
-#include "resourceinterface.h"
+#include "ewsmtaconfigdialog.h"
+#include "ewsmtasettings.h"
+#include "ewsresourceinterface.h"
 
 using namespace Akonadi;
 
@@ -45,7 +45,7 @@ bool EwsMtaResource::connectEws()
         return true;
     }
     mEwsResource = new OrgKdeAkonadiEwsResourceInterface(
-        QStringLiteral("org.freedesktop.Akonadi.Resource.") + MtaSettings::ewsResource(),
+        QStringLiteral("org.freedesktop.Akonadi.Resource.") + EwsMtaSettings::ewsResource(),
         QStringLiteral("/"), QDBusConnection::sessionBus(), this);
     if (!mEwsResource->isValid()) {
         delete mEwsResource;
@@ -59,9 +59,9 @@ bool EwsMtaResource::connectEws()
 
 void EwsMtaResource::configure(WId windowId)
 {
-    QPointer<MtaConfigDialog> dlg = new MtaConfigDialog(this, windowId);
+    QPointer<EwsMtaConfigDialog> dlg = new EwsMtaConfigDialog(this, windowId);
     if (dlg->exec()) {
-        MtaSettings::self()->save();
+        EwsMtaSettings::self()->save();
     }
     delete dlg;
 }

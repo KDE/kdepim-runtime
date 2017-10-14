@@ -17,7 +17,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "progressdialog.h"
+#include "ewsprogressdialog.h"
 
 #include <KLocalizedString>
 
@@ -28,7 +28,7 @@
 #include <QVBoxLayout>
 
 
-ProgressDialog::ProgressDialog(QWidget *parent, Type type)
+EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
     : QDialog(parent)
 {
     setModal(true);
@@ -72,6 +72,6 @@ ProgressDialog::ProgressDialog(QWidget *parent, Type type)
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 }
 
-ProgressDialog::~ProgressDialog()
+EwsProgressDialog::~EwsProgressDialog()
 {
 }

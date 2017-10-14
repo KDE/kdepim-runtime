@@ -17,24 +17,23 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "settings.h"
-
+#include <ewssettings.h>
 #include <QPointer>
 
 #include <KPasswordDialog>
 #include <KWallet/KWallet>
 #include <KLocalizedString>
 
-Settings::Settings(WId windowId)
-    : SettingsBase(), mWindowId(windowId)
+EwsSettings::EwsSettings(WId windowId)
+    : EwsSettingsBase(), mWindowId(windowId)
 {
 }
 
-Settings::~Settings()
+EwsSettings::~EwsSettings()
 {
 }
 
-bool Settings::requestPassword(QString &password, bool ask)
+bool EwsSettings::requestPassword(QString &password, bool ask)
 {
     bool status = true;
 
@@ -79,7 +78,7 @@ bool Settings::requestPassword(QString &password, bool ask)
     return true;
 }
 
-void Settings::setPassword(const QString &password)
+void EwsSettings::setPassword(const QString &password)
 {
     mPassword = password;
     QScopedPointer<KWallet::Wallet> wallet(KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(),
@@ -93,7 +92,7 @@ void Settings::setPassword(const QString &password)
     }
 }
 
-void Settings::setTestPassword(const QString &password)
+void EwsSettings::setTestPassword(const QString &password)
 {
     mPassword = password;
 }

@@ -17,8 +17,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef MTACONFIGDIALOG_H
-#define MTACONFIGDIALOG_H
+#ifndef EWSMTACONFIGDIALOG_H
+#define EWSMTACONFIGDIALOG_H
 
 #include <QDialog>
 
@@ -32,12 +32,12 @@ class SetupServerView;
 }
 class EwsMtaResource;
 
-class MtaConfigDialog : public QDialog
+class EwsMtaConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit MtaConfigDialog(EwsMtaResource *parentResource, WId windowId);
-    ~MtaConfigDialog() override;
+    explicit EwsMtaConfigDialog(EwsMtaResource *parentResource, WId windowId);
+    ~EwsMtaConfigDialog() override;
 private Q_SLOTS:
     void save();
     void dialogAccepted();

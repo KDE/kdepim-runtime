@@ -29,7 +29,7 @@
 class EwsClient;
 class KJob;
 class EwsEventRequestBase;
-class Settings;
+class EwsSettings;
 
 /**
  *  @brief  Mailbox update subscription manager class
@@ -69,7 +69,7 @@ class EwsSubscriptionManager : public QObject
 {
     Q_OBJECT
 public:
-    EwsSubscriptionManager(EwsClient &client, const EwsId &rootId, Settings *settings, QObject *parent);
+    EwsSubscriptionManager(EwsClient &client, const EwsId &rootId, EwsSettings *settings, QObject *parent);
     ~EwsSubscriptionManager() override;
     void start();
     void queueUpdate(EwsEventType type, const QString &id, const QString &changeKey);
@@ -108,7 +108,7 @@ private:
     QMultiHash<QString, UpdateItem> mQueuedUpdates;
     QTimer mStreamingTimer;
     EwsEventRequestBase *mEventReq = nullptr;
-    Settings *mSettings = nullptr;
+    EwsSettings *mSettings = nullptr;
 };
 
 #endif

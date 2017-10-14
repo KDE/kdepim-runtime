@@ -24,13 +24,13 @@
 #include "ewsid.h"
 
 class EwsClient;
-class Settings;
+class EwsSettings;
 
 class EwsSubscribedFoldersJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsSubscribedFoldersJob(EwsClient &client, Settings *settings, QObject *parent);
+    EwsSubscribedFoldersJob(EwsClient &client, EwsSettings *settings, QObject *parent);
     ~EwsSubscribedFoldersJob();
 
     void start() override;
@@ -46,7 +46,7 @@ private Q_SLOTS:
 private:
     EwsId::List mFolders;
     EwsClient &mClient;
-    Settings *mSettings = nullptr;
+    EwsSettings *mSettings = nullptr;
 };
 
 #endif

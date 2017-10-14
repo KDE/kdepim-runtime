@@ -17,7 +17,7 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "mtaconfigdialog.h"
+#include "ewsmtaconfigdialog.h"
 
 #include <QAbstractItemView>
 #include <QDialogButtonBox>
@@ -31,10 +31,10 @@
 #include <AkonadiWidgets/AgentInstanceWidget>
 
 #include "ewsmtaresource.h"
-#include "mtasettings.h"
+#include "ewsmtasettings.h"
 #include "ui_mtaconfigdialog.h"
 
-MtaConfigDialog::MtaConfigDialog(EwsMtaResource *parentResource, WId wId)
+EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     : QDialog(), mParentResource(parentResource)
 {
     if (wId) {
@@ -48,8 +48,8 @@ MtaConfigDialog::MtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     QPushButton *okButton = mButtonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(mButtonBox, &QDialogButtonBox::accepted, this, &MtaConfigDialog::accept);
-    connect(mButtonBox, &QDialogButtonBox::rejected, this, &MtaConfigDialog::reject);
+    connect(mButtonBox, &QDialogButtonBox::accepted, this, &EwsMtaConfigDialog::accept);
+    connect(mButtonBox, &QDialogButtonBox::rejected, this, &EwsMtaConfigDialog::reject);
     mainLayout->addWidget(mButtonBox);
 
     setWindowTitle(i18n("Microsoft Exchange Mail Transport Configuration"));
@@ -65,27 +65,27 @@ MtaConfigDialog::MtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     for (int i = 0; i < model->rowCount(); i++) {
         QModelIndex index = model->index(i, 0);
         QVariant v = model->data(index, Akonadi::AgentInstanceModel::InstanceIdentifierRole);
-        if (v.toString() == MtaSettings::ewsResource()) {
+        if (v.toString() == EwsMtaSettings::ewsResource()) {
             mUi->resourceWidget->view()->setCurrentIndex(index);
         }
     }
 
-    connect(okButton, &QPushButton::clicked, this, &MtaConfigDialog::save);
+    connect(okButton, &QPushButton::clicked, this, &EwsMtaConfigDialog::save);
 }
 
-MtaConfigDialog::~MtaConfigDialog()
+EwsMtaConfigDialog::~EwsMtaConfigDialog()
 {
     delete mUi;
 }
 
-void MtaConfigDialog::save()
+void EwsMtaConfigDialog::save()
 {
-    MtaSettings::setEwsResource(mUi->resourceWidget->selectedAgentInstances().first().identifier());
+    EwsMtaSettings::setEwsResource(mUi->resourceWidget->selectedAgentInstances().first().identifier());
     mParentResource->setName(mUi->accountName->text());
-    MtaSettings::self()->save();
+    EwsMtaSettings::self()->save();
 }
 
-void MtaConfigDialog::dialogAccepted()
+void EwsMtaConfigDialog::dialogAccepted()
 {
 }
 

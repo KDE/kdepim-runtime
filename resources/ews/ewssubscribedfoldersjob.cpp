@@ -20,11 +20,11 @@
 #include "ewssubscribedfoldersjob.h"
 
 #include "ewsclient.h"
+#include "ewssettings.h"
 #include "ewsgetfolderrequest.h"
-#include "settings.h"
 #include "ewsresource_debug.h"
 
-EwsSubscribedFoldersJob::EwsSubscribedFoldersJob(EwsClient &client, Settings *settings, QObject *parent)
+EwsSubscribedFoldersJob::EwsSubscribedFoldersJob(EwsClient &client, EwsSettings *settings, QObject *parent)
     : EwsJob(parent), mClient(client), mSettings(settings)
 {
 

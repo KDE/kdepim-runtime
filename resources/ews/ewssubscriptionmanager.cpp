@@ -26,7 +26,7 @@
 #include "ewssubscribedfoldersjob.h"
 #include "ewssubscriberequest.h"
 #include "ewsunsubscriberequest.h"
-#include "settings.h"
+#include "ewssettings.h"
 #include <QPointer>
 
 // TODO: Allow customization
@@ -37,7 +37,7 @@ static Q_CONSTEXPR uint streamingTimeout = 30; /* minutes */
 static Q_CONSTEXPR uint streamingConnTimeout = 60; /* seconds */
 
 EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &rootId,
-        Settings *settings, QObject *parent)
+        EwsSettings *settings, QObject *parent)
     : QObject(parent), mEwsClient(client), mPollTimer(this), mMsgRootId(rootId), mFolderTreeChanged(false),
       mEventReq(nullptr), mSettings(settings)
 {

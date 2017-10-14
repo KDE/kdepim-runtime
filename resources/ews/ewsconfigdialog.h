@@ -17,8 +17,8 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef EWSCONFIGDIALOG_H
+#define EWSCONFIGDIALOG_H
 
 #include <QDialog>
 
@@ -34,15 +34,15 @@ class SetupServerView;
 class KJob;
 class EwsAutodiscoveryJob;
 class EwsGetFolderRequest;
-class ProgressDialog;
+class EwsProgressDialog;
 class EwsSubscriptionWidget;
 
-class ConfigDialog : public QDialog
+class EwsConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId);
-    ~ConfigDialog() override;
+    explicit EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId);
+    ~EwsConfigDialog() override;
 private:
     void save();
     void autoDiscoveryFinished(KJob *job);
@@ -67,7 +67,7 @@ private:
     EwsGetFolderRequest *mTryConnectJob = nullptr;
     bool mAutoDiscoveryNeeded = false;
     bool mTryConnectNeeded = false;
-    ProgressDialog *mProgressDialog = nullptr;
+    EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
 };
 

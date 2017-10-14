@@ -34,7 +34,7 @@
 #include "ewsclient.h"
 #include "ewsfindfolderrequest.h"
 #include "ewssubscribedfoldersjob.h"
-#include "settings.h"
+#include "ewssettings.h"
 
 class EwsSubscriptionFilterModel : public KRecursiveFilterProxyModel
 {
@@ -55,7 +55,7 @@ class EwsSubscriptionWidgetPrivate : public QObject
 {
     Q_OBJECT
 public:
-    EwsSubscriptionWidgetPrivate(EwsClient &client, Settings *settings, QObject *parent);
+    EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings, QObject *parent);
     ~EwsSubscriptionWidgetPrivate();
 
     enum TreeModelRoles {
@@ -88,7 +88,7 @@ public:
     EwsId::List mOrigSubscribedIds;
     bool mSubscribedIdsRetrieved = true;
     EwsSubscriptionFilterModel *mFilterModel = nullptr;
-    Settings *mSettings = nullptr;
+    EwsSettings *mSettings = nullptr;
 
     EwsSubscriptionWidget *q_ptr = nullptr;
     Q_DECLARE_PUBLIC(EwsSubscriptionWidget)
@@ -143,7 +143,7 @@ void EwsSubscriptionFilterModel::setFilterSelected(bool enabled)
     invalidateFilter();
 }
 
-EwsSubscriptionWidgetPrivate::EwsSubscriptionWidgetPrivate(EwsClient &client, Settings *settings,
+EwsSubscriptionWidgetPrivate::EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings,
         QObject *parent)
     : QObject(parent), mClient(client), mSubscribedIdsRetrieved(false), mSettings(settings)
 {
@@ -282,7 +282,7 @@ void EwsSubscriptionWidgetPrivate::resetSelection(bool)
     populateFolderTree();
 }
 
-EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, Settings *settings, QWidget *parent)
+EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *settings, QWidget *parent)
     : QWidget(parent), d_ptr(new EwsSubscriptionWidgetPrivate(client, settings, this))
 {
     Q_D(EwsSubscriptionWidget);

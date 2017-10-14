@@ -27,13 +27,13 @@
 
 class EwsSubscriptionWidgetPrivate;
 class EwsClient;
-class Settings;
+class EwsSettings;
 
 class EwsSubscriptionWidget : public QWidget
 {
     Q_OBJECT
 public:
-    EwsSubscriptionWidget(EwsClient &client, Settings *settings, QWidget *parent);
+    EwsSubscriptionWidget(EwsClient &client, EwsSettings *settings, QWidget *parent);
     ~EwsSubscriptionWidget();
 
     QStringList subscribedList() const;

@@ -1,5 +1,5 @@
 File=ewsresource.kcfg
-ClassName=SettingsBase
+ClassName=EwsSettingsBase
 Mutators=true
 ItemAccessors=true
 SetUserTexts=true

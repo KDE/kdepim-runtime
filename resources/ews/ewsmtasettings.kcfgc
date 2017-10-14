@@ -1,5 +1,5 @@
 File=ewsmtaresource.kcfg
-ClassName=MtaSettings
+ClassName=EwsMtaSettings
 Mutators=true
 ItemAccessors=true
 SetUserTexts=true

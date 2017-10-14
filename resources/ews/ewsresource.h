@@ -35,7 +35,7 @@
 class FetchItemState;
 class EwsSubscriptionManager;
 class EwsTagStore;
-class Settings;
+class EwsSettings;
 
 class EwsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV4,
     public Akonadi::TransportResourceBase
@@ -79,7 +79,7 @@ public:
         return mRootCollection;
     }
 
-    Settings *settings()
+    EwsSettings *settings()
     {
         return mSettings.data();
     }
@@ -156,7 +156,7 @@ private:
     bool mTagsRetrieved;
     int mReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;
-    QScopedPointer<Settings> mSettings;
+    QScopedPointer<EwsSettings> mSettings;
 };
 
 #endif

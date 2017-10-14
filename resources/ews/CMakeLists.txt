@@ -61,8 +61,8 @@ set(ewsresource_SRCS
     task/ewsfetchtaskdetailjob.cpp
     task/ewsmodifytaskjob.cpp
     task/ewstaskhandler.cpp
-    configdialog.cpp
     ewsautodiscoveryjob.cpp
+    ewsconfigdialog.cpp
     ewscreateitemjob.cpp
     ewsfetchfoldersjob.cpp
     ewsfetchfoldersincrjob.cpp
@@ -71,12 +71,12 @@ set(ewsresource_SRCS
     ewsitemhandler.cpp
     ewsmodifyitemjob.cpp
     ewsmodifyitemflagsjob.cpp
+    ewsprogressdialog.cpp
     ewsresource.cpp
+    ewssettings.cpp
     ewssubscribedfoldersjob.cpp
     ewssubscriptionmanager.cpp
-    ewssubscriptionwidget.cpp
-    progressdialog.cpp
-    settings.cpp)
+    ewssubscriptionwidget.cpp)
 
 ecm_qt_declare_logging_category(ewsresource_SRCS
   HEADER ewsres_debug.h
@@ -88,21 +88,21 @@ ecm_qt_declare_logging_category(ewsresource_SRCS
   CATEGORY_NAME org.kde.pim.ews.agentif)
 
 
-ki18n_wrap_ui(ewsresource_SRCS configdialog.ui)
+ki18n_wrap_ui(ewsresource_SRCS ewsconfigdialog.ui)
 
-kconfig_add_kcfg_files(ewsresource_SRCS settingsbase.kcfgc)
+kconfig_add_kcfg_files(ewsresource_SRCS ewssettingsbase.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.kcfg org.kde.Akonadi.Ews.Settings)
 qt5_add_dbus_adaptor(ewsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml ewssettings.h EwsSettings ewssettingsadaptor EwsSettingsAdaptor
 )
 
 qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.h org.kde.Akonadi.Ews.Resource.xml OPTIONS -a )
 qt5_add_dbus_adaptor(ewsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresource.h EwsResource
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresource.h EwsResource ewsresourceadaptor EwsResourceAdaptor
 )
-qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/settings.h org.kde.Akonadi.Ews.Wallet.xml OPTIONS -a )
+qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/ewssettings.h org.kde.Akonadi.Ews.Wallet.xml OPTIONS -a )
 qt5_add_dbus_adaptor(ewsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Wallet.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Wallet.xml ewssettings.h EwsSettings ewswalletadaptor EwsWalletAdaptor
 )
 
 
@@ -125,17 +125,17 @@ target_link_libraries(akonadi_ews_resource
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
   set(ewsmtaresource_SRCS
-    ewsmtaresource.cpp
-    mtaconfigdialog.cpp)
+    ewsmtaconfigdialog.cpp
+    ewsmtaresource.cpp)
 
-  ki18n_wrap_ui(ewsmtaresource_SRCS mtaconfigdialog.ui)
+  ki18n_wrap_ui(ewsmtaresource_SRCS ewsmtaconfigdialog.ui)
 
-  kconfig_add_kcfg_files(ewsmtaresource_SRCS mtasettings.kcfgc)
+  kconfig_add_kcfg_files(ewsmtaresource_SRCS ewsmtasettings.kcfgc)
   kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/ewsmtaresource.kcfg org.kde.Akonadi.EwsMta.Settings)
   qt5_add_dbus_adaptor(ewsmtaresource_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.EwsMta.Settings.xml mtasettings.h MtaSettings mtasettingsadaptor
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.EwsMta.Settings.xml ewsmtasettings.h EwsMtaSettings ewsmtasettingsadaptor
   )
-  qt5_add_dbus_interface(ewsmtaresource_SRCS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml resourceinterface)
+  qt5_add_dbus_interface(ewsmtaresource_SRCS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresourceinterface)
 
   add_executable(akonadi_ewsmta_resource ${ewsmtaresource_SRCS})
   target_link_libraries(akonadi_ewsmta_resource

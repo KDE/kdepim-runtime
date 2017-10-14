@@ -50,8 +50,8 @@
 #include "ewsitemhandler.h"
 #include "ewsmodifyitemjob.h"
 #include "ewscreateitemjob.h"
-#include "configdialog.h"
-#include "settings.h"
+#include "ewsconfigdialog.h"
+#include "ewssettings.h"
 #ifdef HAVE_SEPARATE_MTA_RESOURCE
 #include "ewscreateitemrequest.h"
 #endif
@@ -61,9 +61,9 @@
 #include "tags/ewsglobaltagsreadjob.h"
 #include "ewsresource_debug.h"
 
-#include "resourceadaptor.h"
-#include "settingsadaptor.h"
-#include "walletadaptor.h"
+#include "ewsresourceadaptor.h"
+#include "ewssettingsadaptor.h"
+#include "ewswalletadaptor.h"
 
 using namespace Akonadi;
 
@@ -97,7 +97,7 @@ static Q_CONSTEXPR int ReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
     : Akonadi::ResourceBase(id), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
-      mSettings(new Settings(winIdForDialogs()))
+      mSettings(new EwsSettings(winIdForDialogs()))
 {
     //setName(i18n("Microsoft Exchange"));
     mEwsClient.setUrl(mSettings->baseUrl());
@@ -163,9 +163,9 @@ EwsResource::~EwsResource()
 
 void EwsResource::delayedInit()
 {
-    new ResourceAdaptor(this);
-    new SettingsAdaptor(mSettings.data());
-    new WalletAdaptor(mSettings.data());
+    new EwsResourceAdaptor(this);
+    new EwsSettingsAdaptor(mSettings.data());
+    new EwsWalletAdaptor(mSettings.data());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
             mSettings.data(), QDBusConnection::ExportAdaptors);
 }
@@ -473,7 +473,7 @@ void EwsResource::reloadConfig()
 
 void EwsResource::configure(WId windowId)
 {
-    QPointer<ConfigDialog> dlg = new ConfigDialog(this, mEwsClient, windowId);
+    QPointer<EwsConfigDialog> dlg = new EwsConfigDialog(this, mEwsClient, windowId);
     if (dlg->exec()) {
         reloadConfig();
         Q_EMIT configurationDialogAccepted();
