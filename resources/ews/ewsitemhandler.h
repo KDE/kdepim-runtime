@@ -57,7 +57,7 @@ public:
                                             EwsTagStore *tagStore, EwsResource *parent) = 0;
 
     typedef std::function<EwsItemHandler*()> ItemHandlerFactory;
-    static void registerItemHandler(EwsItemType type, ItemHandlerFactory factory);
+    static void registerItemHandler(EwsItemType type, const ItemHandlerFactory &factory);
     static EwsItemHandler *itemHandler(EwsItemType type);
     static EwsItemType mimeToItemType(const QString &mimeType);
     static QHash<EwsPropertyField, QVariant> writeFlags(const QSet<QByteArray> &flags);

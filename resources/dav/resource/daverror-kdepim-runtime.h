@@ -21,6 +21,6 @@
 
 #include <KDAV/DavError>
 
-QString translateErrorString(KDAV::Error error);
+QString translateErrorString(const KDAV::Error &error);
 
 #endif

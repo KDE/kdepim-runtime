@@ -37,7 +37,7 @@ EwsItemHandler::~EwsItemHandler()
 {
 }
 
-void EwsItemHandler::registerItemHandler(EwsItemType type, ItemHandlerFactory factory)
+void EwsItemHandler::registerItemHandler(EwsItemType type, const ItemHandlerFactory &factory)
 {
     handlerFactories->append({type, factory});
 }

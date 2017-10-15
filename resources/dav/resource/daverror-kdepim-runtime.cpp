@@ -22,7 +22,7 @@
 
 using namespace KDAV;
 
-QString translateErrorString(Error error)
+QString translateErrorString(const Error &error)
 {
     QString result;
 

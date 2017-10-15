@@ -40,7 +40,7 @@ public:
 
     struct Item {
         Item() : key(Ignore) {}
-        Item(T k, const QString &n, ReadFunction rfn = ReadFunction(), WriteFunction wfn = WriteFunction())
+        Item(T k, const QString &n, const ReadFunction &rfn = ReadFunction(), const WriteFunction &wfn = WriteFunction())
             : key(k), elmName(n), readFn(rfn), writeFn(wfn) {}
         T key;
         QString elmName;
@@ -90,7 +90,7 @@ public:
     }
 
     bool readItems(QXmlStreamReader &reader, const QString &nsUri,
-                   UnknownElementFunction unknownElmFn = &defaultUnknownElmFunction)
+                   const UnknownElementFunction &unknownElmFn = &defaultUnknownElmFunction)
     {
         QString elmName(reader.name().toString());
         while (reader.readNextStartElement()) {
