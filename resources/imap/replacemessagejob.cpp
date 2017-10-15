@@ -29,7 +29,7 @@
 
 #include "imapflags.h"
 
-ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, KIMAP::ImapSet oldUids, QObject *parent)
+ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, const KIMAP::ImapSet &oldUids, QObject *parent)
     : KJob(parent),
       mSession(session),
       mMessage(msg),

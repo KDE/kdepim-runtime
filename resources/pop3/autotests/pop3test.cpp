@@ -212,7 +212,7 @@ static const QByteArray simpleMail5 =
     "\r\n"
     "Hello World!!\r\n";
 
-void Pop3Test::cleanupMaildir(Akonadi::Item::List items)
+void Pop3Test::cleanupMaildir(const Akonadi::Item::List &items)
 {
     // Delete all mails so the maildir is clean for the next test
     if (!items.isEmpty()) {

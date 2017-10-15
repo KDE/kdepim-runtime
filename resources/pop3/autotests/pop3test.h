@@ -48,7 +48,7 @@ private Q_SLOTS:
 
 private:
     void lowerTimeOfSeenMail(const QString &uidOfMail, int secondsToLower);
-    void cleanupMaildir(Akonadi::Item::List items);
+    void cleanupMaildir(const Akonadi::Item::List &items);
     void checkMailsInMaildir(const QList< QByteArray > &mails);
     Akonadi::Item::List checkMailsOnAkonadiServer(const QList<QByteArray> &mails);
     void syncAndWaitForFinish();

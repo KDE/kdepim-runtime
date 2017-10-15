@@ -304,7 +304,7 @@ int PredefinedProviderPage::nextId() const
  * ServerTypePage
  */
 
-bool compareServiceOffers(QPair<QString, QString> off1, QPair<QString, QString> off2)
+bool compareServiceOffers(const QPair<QString, QString> &off1, const QPair<QString, QString> &off2)
 {
     return off1.first.toLower() < off2.first.toLower();
 }
