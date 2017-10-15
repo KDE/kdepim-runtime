@@ -261,7 +261,7 @@ void MailDispatcherAgent::Private::itemFetched(const Item &item)
         currentJob->setMarkAborted();
     }
 
-    q->status(AgentBase::Running, i18nc("Message with given subject is being sent.", "Sending: %1",
+    Q_EMIT q->status(AgentBase::Running, i18nc("Message with given subject is being sent.", "Sending: %1",
                                         item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
 
     connect(currentJob, SIGNAL(result(KJob*)),
