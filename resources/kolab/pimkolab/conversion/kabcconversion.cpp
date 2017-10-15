@@ -342,7 +342,6 @@ std::string fromPicture(const KContacts::Picture &pic, std::string &mimetype)
             img = pic.data();
         }
     } else if (!pic.url().isEmpty()) {
-        QString tmpFile;
         qWarning() << "external pictures are currently not supported";
         //FIXME add kio support to libcalendaring or use libcurl
 //         if ( KIO::NetAccess::download( pic.url(), tmpFile, 0 /*no widget known*/ ) ) {

@@ -72,8 +72,6 @@ void EwsUpdateItemsTagsJob::start()
 
 void EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched(KJob *job)
 {
-    Item::List items = job->property("items").value<Item::List>();
-
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();

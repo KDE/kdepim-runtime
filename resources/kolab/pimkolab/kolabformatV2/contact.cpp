@@ -1258,7 +1258,6 @@ QImage Contact::loadPictureFromAddressee(const KContacts::Picture &picture)
 {
     QImage img;
     if (!picture.isIntern() && !picture.url().isEmpty()) {
-        QString tmpFile;
         qWarning() << "external pictures are currently not supported";
         //FIXME add kio support to libcalendaring or use libcurl
 //     if ( KIO::NetAccess::download( picture.url(), tmpFile, 0 /*no widget known*/ ) ) {
@@ -1275,7 +1274,6 @@ QByteArray KolabV2::Contact::loadSoundFromAddressee(const KContacts::Sound &soun
 {
     QByteArray data;
     if (!sound.isIntern() && !sound.url().isEmpty()) {
-        QString tmpFile;
 //     if ( KIO::NetAccess::download( sound.url(), tmpFile, 0 /*no widget known*/ ) ) {
 //       QFile f( tmpFile );
 //       if ( f.open( QIODevice::ReadOnly ) ) {

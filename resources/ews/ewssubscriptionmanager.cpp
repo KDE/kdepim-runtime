@@ -82,8 +82,6 @@ void EwsSubscriptionManager::cancelSubscription()
 
 void EwsSubscriptionManager::setupSubscription()
 {
-    EwsId::List ids;
-
     EwsSubscribedFoldersJob *job = new EwsSubscribedFoldersJob(mEwsClient, mSettings, this);
     connect(job, &EwsRequest::result, this, &EwsSubscriptionManager::verifySubFoldersRequestFinished);
     job->start();

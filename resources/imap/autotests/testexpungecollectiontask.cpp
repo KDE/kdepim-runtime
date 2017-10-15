@@ -33,8 +33,6 @@ private Q_SLOTS:
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection collection;
-        QSet<QByteArray> parts;
-        QString messageContent;
         QList<QByteArray> scenario;
         QStringList callNames;
 

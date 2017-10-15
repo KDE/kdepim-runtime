@@ -367,7 +367,6 @@ bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &pare
 template <>
 QByteArray readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
-    QStringRef elmName = reader.name();
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     QByteArray val;
     if (ok) {

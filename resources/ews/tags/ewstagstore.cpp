@@ -277,7 +277,6 @@ bool EwsTagStore::readEwsProperties(Akonadi::Item &item, const EwsItem &ewsItem,
     QVariant tagProp = ewsItem[EwsResource::tagsProperty];
     if (tagProp.isValid() && tagProp.canConvert<QStringList>()) {
         QStringList tagRids = tagProp.toStringList();
-        Tag::List tags;
         Q_FOREACH (const QString &tagRid, tagRids) {
             Tag::Id tagId = tagIdForRid(tagRid.toAscii());
             if (tagId == -1) {
