@@ -144,6 +144,7 @@ private:
     void doRetrieveCollections();
 
     int reconnectTimeout();
+    void passwordRequestFinished(const QString &password);
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;

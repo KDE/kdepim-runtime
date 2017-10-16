@@ -51,6 +51,7 @@ static const QVector<StringPair> userAgents = {
 EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId)
     : QDialog()
     , mParentResource(parentResource)
+    , mSettings(new EwsSettings(wId))
 {
     if (wId) {
         KWindowSystem::setMainWindow(this, wId);
@@ -74,12 +75,12 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->setupUi(mainWidget);
     mUi->accountName->setText(parentResource->name());
 
-    mSubWidget = new EwsSubscriptionWidget(client, mParentResource->settings(), this);
+    mSubWidget = new EwsSubscriptionWidget(client, mSettings.data(), this);
     mUi->subscriptionTabLayout->addWidget(mSubWidget);
 
-    mConfigManager = new KConfigDialogManager(this, mParentResource->settings());
+    mConfigManager = new KConfigDialogManager(this, mSettings.data());
     mConfigManager->updateWidgets();
-    switch (mParentResource->settings()->retrievalMethod()) {
+    switch (mSettings->retrievalMethod()) {
     case 0:
         mUi->pollRadioButton->setChecked(true);
         break;
@@ -102,23 +103,24 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mTryConnectNeeded = baseUrlEmpty;
 
     QString password;
-    mParentResource->settings()->requestPassword(password, false);
-    mUi->passwordEdit->setPassword(password);
+    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
+            &KPasswordLineEdit::setPassword);
+    mSettings->requestPassword(false);
 
     int selectedIndex = -1;
     int i = 0;
     Q_FOREACH (const StringPair &item, userAgents) {
         mUi->userAgentCombo->addItem(item.first, item.second);
-        if (mParentResource->settings()->userAgent() == item.second) {
+        if (mSettings->userAgent() == item.second) {
             selectedIndex = i;
         }
         i++;
     }
     mUi->userAgentCombo->addItem(i18nc("User Agent", "Custom"));
-    if (!mParentResource->settings()->userAgent().isEmpty()) {
+    if (!mSettings->userAgent().isEmpty()) {
         mUi->userAgentGroupBox->setChecked(true);
         mUi->userAgentCombo->setCurrentIndex(selectedIndex >= 0 ? selectedIndex : mUi->userAgentCombo->count() - 1);
-        mUi->userAgentEdit->setText(mParentResource->settings()->userAgent());
+        mUi->userAgentEdit->setText(mSettings->userAgent());
     } else {
         mUi->userAgentCombo->setCurrentIndex(mUi->userAgentCombo->count());
     }
@@ -157,32 +159,32 @@ void EwsConfigDialog::save()
     mParentResource->setName(mUi->accountName->text());
     mConfigManager->updateSettings();
     if (mUi->pollRadioButton->isChecked()) {
-        mParentResource->settings()->setRetrievalMethod(0);
+        mSettings->setRetrievalMethod(0);
     } else {
-        mParentResource->settings()->setRetrievalMethod(1);
+        mSettings->setRetrievalMethod(1);
     }
 
     /* Erase the subscription id in case subscription is disabled or its parameters changed. This
      * fill force creation of a new subscription. */
     if (!mSubWidget->subscriptionEnabled() ||
-        (mSubWidget->subscribedList() != mParentResource->settings()->serverSubscriptionList())) {
-        mParentResource->settings()->setEventSubscriptionId(QString());
-        mParentResource->settings()->setEventSubscriptionWatermark(QString());
+        (mSubWidget->subscribedList() != mSettings->serverSubscriptionList())) {
+        mSettings->setEventSubscriptionId(QString());
+        mSettings->setEventSubscriptionWatermark(QString());
     }
 
-    mParentResource->settings()->setServerSubscription(mSubWidget->subscriptionEnabled());
+    mSettings->setServerSubscription(mSubWidget->subscriptionEnabled());
     if (mSubWidget->subscribedListValid()) {
-        mParentResource->settings()->setServerSubscriptionList(mSubWidget->subscribedList());
+        mSettings->setServerSubscriptionList(mSubWidget->subscribedList());
     }
 
     if (mUi->userAgentGroupBox->isChecked()) {
-        mParentResource->settings()->setUserAgent(mUi->userAgentEdit->text());
+        mSettings->setUserAgent(mUi->userAgentEdit->text());
     } else {
-        mParentResource->settings()->setUserAgent(QString());
+        mSettings->setUserAgent(QString());
     }
 
-    mParentResource->settings()->setPassword(mUi->passwordEdit->password());
-    mParentResource->settings()->save();
+    mSettings->setPassword(mUi->passwordEdit->password());
+    mSettings->save();
 }
 
 void EwsConfigDialog::performAutoDiscovery()

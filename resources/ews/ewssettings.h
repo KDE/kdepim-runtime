@@ -22,6 +22,13 @@
 
 #include "ewssettingsbase.h"
 
+#include <QTimer>
+#include <QPointer>
+
+namespace KWallet {
+class Wallet;
+}
+
 class EwsSettings : public EwsSettingsBase
 {
     Q_OBJECT
@@ -30,14 +37,22 @@ public:
     explicit EwsSettings(WId windowId);
     ~EwsSettings() override;
 
-    bool requestPassword(QString &password, bool ask);
+    void requestPassword(bool ask);
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
     Q_SCRIPTABLE void setTestPassword(const QString &password);
-
+Q_SIGNALS:
+    void passwordRequestFinished(const QString &password);
+private Q_SLOTS:
+    void onWalletOpenedForRead(bool success);
+    void onWalletOpenedForWrite(bool success);
 private:
+    QString readPassword() const;
     WId mWindowId;
     QString mPassword;
+    QPointer<KWallet::Wallet> mWallet;
+    QTimer mWalletReadTimer;
+    QTimer mWalletWriteTimer;
 };
 
 #endif

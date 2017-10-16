@@ -99,14 +99,6 @@ EwsResource::EwsResource(const QString &id)
     : Akonadi::ResourceBase(id), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
       mSettings(new EwsSettings(winIdForDialogs()))
 {
-    //setName(i18n("Microsoft Exchange"));
-    mEwsClient.setUrl(mSettings->baseUrl());
-    mSettings->requestPassword(mPassword, true);
-    if (!mSettings->hasDomain()) {
-        mEwsClient.setCredentials(mSettings->username(), mPassword);
-    } else {
-        mEwsClient.setCredentials(mSettings->domain() + QChar::fromLatin1('\\') + mSettings->username(), mPassword);
-    }
     mEwsClient.setUserAgent(mSettings->userAgent());
     mEwsClient.setEnableNTLMv2(mSettings->enableNTLMv2());
 
@@ -123,13 +115,6 @@ EwsResource::EwsResource(const QString &id)
     mRootCollection.setRights(Collection::ReadOnly);
 
     setScheduleAttributeSyncBeforeItemSync(true);
-
-    if (mSettings->baseUrl().isEmpty()) {
-        setOnline(false);
-        Q_EMIT status(NotConfigured, i18nc("@info:status", "No server configured yet."));
-    } else {
-        resetUrl();
-    }
 
     // Load the sync state
     QByteArray data = QByteArray::fromBase64(mSettings->syncState().toAscii());
@@ -155,6 +140,9 @@ EwsResource::EwsResource(const QString &id)
     QMetaObject::invokeMethod(this, "delayedInit", Qt::QueuedConnection);
 
     connect(this, &AgentBase::reloadConfiguration, this, &EwsResource::reloadConfig);
+
+    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, this,
+            &EwsResource::passwordRequestFinished);
 }
 
 EwsResource::~EwsResource()
@@ -461,14 +449,29 @@ void EwsResource::reloadConfig()
 {
     mSubManager.reset(nullptr);
     mEwsClient.setUrl(mSettings->baseUrl());
-    mSettings->requestPassword(mPassword, false);
-    if (mSettings->domain().isEmpty()) {
-        mEwsClient.setCredentials(mSettings->username(), mPassword);
+    mSettings->requestPassword(true);
+}
+
+void EwsResource::passwordRequestFinished(const QString &password)
+{
+    mPassword = password;
+    if (mPassword.isNull()) {
+        setOnline(false);
+        Q_EMIT status(NotConfigured, i18nc("@info:status", "No password configured."));
     } else {
-        mEwsClient.setCredentials(mSettings->domain() + QChar::fromLatin1('\\') + mSettings->username(), mPassword);
+        if (mSettings->domain().isEmpty()) {
+            mEwsClient.setCredentials(mSettings->username(), mPassword);
+        } else {
+            mEwsClient.setCredentials(mSettings->domain() + QChar::fromLatin1('\\') + mSettings->username(), mPassword);
+        }
+        mSettings->save();
+        if (mSettings->baseUrl().isEmpty()) {
+            setOnline(false);
+            Q_EMIT status(NotConfigured, i18nc("@info:status", "No server configured yet."));
+        } else {
+            resetUrl();
+        }
     }
-    mSettings->save();
-    resetUrl();
 }
 
 void EwsResource::configure(WId windowId)
@@ -1248,7 +1251,7 @@ void EwsResource::saveState()
 void EwsResource::doSetOnline(bool online)
 {
     if (online) {
-        resetUrl();
+        reloadConfig();
     } else {
         mSubManager.reset(nullptr);
     }

@@ -36,6 +36,7 @@ class EwsAutodiscoveryJob;
 class EwsGetFolderRequest;
 class EwsProgressDialog;
 class EwsSubscriptionWidget;
+class EwsSettings;
 
 class EwsConfigDialog : public QDialog
 {
@@ -69,6 +70,7 @@ private:
     bool mTryConnectNeeded = false;
     EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
+    QScopedPointer<EwsSettings> mSettings;
 };
 
 #endif
