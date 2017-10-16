@@ -147,7 +147,7 @@ bool EwsItemPrivate::bodyReader(QXmlStreamReader &reader, QVariant &val)
     QStringRef bodyType = reader.attributes().value(QStringLiteral("BodyType"));
     if (bodyType.isNull()) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - missing %2 attribute")
-                                .arg(QStringLiteral("Body")).arg(QStringLiteral("BodyType"));
+                                .arg(QStringLiteral("Body"), QStringLiteral("BodyType"));
         return false;
     }
     bool isHtml;

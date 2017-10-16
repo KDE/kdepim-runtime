@@ -117,6 +117,7 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
         if (!item.tags().isEmpty()) {
             QStringList tagList;
             QStringList categoryList;
+            tagList.reserve(item.tags().count());
             Q_FOREACH (const Tag &tag, item.tags()) {
                 Q_ASSERT(mTagStore->containsId(tag.id()));
                 tagList.append(QString::fromLatin1(mTagStore->tagRemoteId(tag.id())));

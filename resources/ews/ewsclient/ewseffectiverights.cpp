@@ -64,7 +64,7 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
     QString text = reader.readElementText();
     if (reader.error() != QXmlStreamReader::NoError) {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                              .arg(QStringLiteral("EffectiveRights")).arg(elm);
+                              .arg(QStringLiteral("EffectiveRights"), elm);
         return false;
     }
 
@@ -74,7 +74,7 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
         mRights.clearBit(right);
     } else {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element value: %3.")
-                              .arg(QStringLiteral("EffectiveRights")).arg(elm).arg(text);
+                              .arg(QStringLiteral("EffectiveRights"), elm, text);
         return false;
     }
 
@@ -126,7 +126,7 @@ EwsEffectiveRights::EwsEffectiveRights(QXmlStreamReader &reader)
             }
         } else {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                                  .arg(QStringLiteral("EffectiveRights")).arg(reader.name().toString());
+                                  .arg(QStringLiteral("EffectiveRights"), reader.name().toString());
             return;
         }
     }

@@ -226,7 +226,7 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     QHash<EventElementType, QVariant> values = ewsreader.values();
 
     mWatermark = values[Watermark].toString();
-    mTimestamp = values[Timestamp].value<QDateTime>();
+    mTimestamp = values[Timestamp].toDateTime();
     if (values.contains(ItemId)) {
         mId = values[ItemId].value<EwsId>();
         mOldId = values[OldItemId].value<EwsId>();

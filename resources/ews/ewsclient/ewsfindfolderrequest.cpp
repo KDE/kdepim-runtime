@@ -131,7 +131,7 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 {
     if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QStringLiteral("RootFolder")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
-                           .arg(QStringLiteral("RootFolder")).arg(reader.qualifiedName().toString()));
+                           .arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
 
     if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))
@@ -153,7 +153,7 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 
     if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QStringLiteral("Folders")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
-                           .arg(QStringLiteral("Folders")).arg(reader.qualifiedName().toString()));
+                           .arg(QStringLiteral("Folders"), reader.qualifiedName().toString()));
     }
 
     if (!reader.readNextStartElement()) {

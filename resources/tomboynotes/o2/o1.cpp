@@ -370,7 +370,7 @@ void O1::onTokenExchangeFinished()
         // Set extra tokens if any
         if (!response.isEmpty()) {
             QVariantMap extraTokens;
-            foreach (const QString &key, response.keys()) {
+            foreach (const QString &key, response) {
                 extraTokens.insert(key, response.value(key));
             }
             setExtraTokens(extraTokens);

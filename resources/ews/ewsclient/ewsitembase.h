@@ -47,7 +47,7 @@ public:
     void setProperty(const EwsPropertyField &prop, const QVariant &value);
 
 protected:
-    EwsItemBase(QSharedDataPointer<EwsItemBasePrivate> priv);
+    EwsItemBase(const QSharedDataPointer<EwsItemBasePrivate> &priv);
 
     void resetFields();
 

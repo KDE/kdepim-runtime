@@ -32,7 +32,7 @@ EwsItemBasePrivate::~EwsItemBasePrivate()
 {
 }
 
-EwsItemBase::EwsItemBase(QSharedDataPointer<EwsItemBasePrivate> priv)
+EwsItemBase::EwsItemBase(const QSharedDataPointer<EwsItemBasePrivate> &priv)
     : d(priv)
 {
 }
@@ -99,7 +99,7 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
             value = values;
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unexpected child element %2")
-                                    .arg(elmName).arg(reader.qualifiedName().toString());
+                                    .arg(elmName, reader.qualifiedName().toString());
             reader.skipCurrentElement();
             return false;
         }
