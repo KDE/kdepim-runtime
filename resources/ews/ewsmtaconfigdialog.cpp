@@ -62,7 +62,7 @@ EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     model->addCapabilityFilter(QStringLiteral("X-EwsMailTransport"));
     mUi->resourceWidget->view()->setSelectionMode(QAbstractItemView::SingleSelection);
 
-    for (int i = 0; i < model->rowCount(); i++) {
+    for (int i = 0, total = model->rowCount(); i < total; ++i) {
         QModelIndex index = model->index(i, 0);
         QVariant v = model->data(index, Akonadi::AgentInstanceModel::InstanceIdentifierRole);
         if (v.toString() == EwsMtaSettings::ewsResource()) {
