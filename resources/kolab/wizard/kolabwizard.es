@@ -26,7 +26,7 @@ var userChangedServerAddress = false;
 
 page.widget().nameEdit.text = SetupManager.name()
 page.widget().emailEdit.text = SetupManager.email()
-page.widget().passwordEdit.text = SetupManager.password()
+page.widget().passwordEdit.password = SetupManager.password()
 
 function guessServerName()
 {
@@ -40,7 +40,7 @@ function guessServerName()
 
 function validateInput()
 {
-  if (page.widget().emailEdit.text.trim() == "" || page.widget().passwordEdit.text.trim() == "") {
+  if (page.widget().emailEdit.text.trim() == "" || page.widget().passwordEdit.password.trim() == "") {
     page.setValid(false);
   } else {
     page.setValid(true);
@@ -145,21 +145,21 @@ function checkAutoconfig()
     ac_mail.ispdbFinished.connect(mail_finished);
     ac_mail.info.connect(mail_text);
     ac_mail.setEmail(page.widget().emailEdit.text);
-    ac_mail.setPassword(page.widget().passwordEdit.text);
+    ac_mail.setPassword(page.widget().passwordEdit.password);
     ac_mail.start();
 
     ac_freebusy = SetupManager.ispDB('autoconfigkolabfreebusy');
     ac_freebusy.ispdbFinished.connect(freebusy_finished);
     ac_freebusy.info.connect(freebusy_text);
     ac_freebusy.setEmail(page.widget().emailEdit.text);
-    ac_freebusy.setPassword(page.widget().passwordEdit.text);
+    ac_freebusy.setPassword(page.widget().passwordEdit.password);
     ac_freebusy.start();
 
     ac_ldap = SetupManager.ispDB('autoconfigkolabldap');
     ac_ldap.ispdbFinished.connect(ldap_finished);
     ac_ldap.info.connect(ldap_text);
     ac_ldap.setEmail(page.widget().emailEdit.text);
-    ac_ldap.setPassword(page.widget().passwordEdit.text);
+    ac_ldap.setPassword(page.widget().passwordEdit.password);
     ac_ldap.start();
 }
 
@@ -210,7 +210,7 @@ function setup()
     SetupManager.openWallet();
     smtp = SetupManager.createTransport("smtp");
     smtp.setEditMode(page2.widget().checkBoxSmtpEdit.checked);
-    smtp.setPassword(page.widget().passwordEdit.text);
+    smtp.setPassword(page.widget().passwordEdit.password);
 
     if (ac_mail_stat) {
         ac_mail.fillSmtpServer(0, smtp);
@@ -248,7 +248,7 @@ function setup()
 
     kolabRes = SetupManager.createResource("akonadi_kolab_resource");
     kolabRes.setEditMode(page2.widget().checkBoxImapEdit.checked);
-    kolabRes.setOption("Password", page.widget().passwordEdit.text);
+    kolabRes.setOption("Password", page.widget().passwordEdit.password);
     kolabRes.setOption("UseDefaultIdentity", false);
     kolabRes.setOption("AccountIdentity", identity.uoid());
     kolabRes.setOption("DisconnectedModeEnabled", true);
@@ -280,7 +280,7 @@ function setup()
     } else if (page2.widget().checkBoxLdapEdit.checked) {
         var ldap = SetupManager.createLdap();
         ldap.setEditMode(page2.widget().checkBoxLdapEdit.checked);
-        ldap.setPassword(page.widget().passwordEdit.text);
+        ldap.setPassword(page.widget().passwordEdit.password);
         ldap.setUser(page.widget().emailEdit.text);
         ldap.setServer(guessServerName());
     }
@@ -311,7 +311,7 @@ try {
   ServerTest.testResult.connect(testOk);
 
   page.widget().emailEdit.textChanged.connect(validateInput);
-  page.widget().passwordEdit.textChanged.connect(validateInput);
+  page.widget().passwordEdit.passwordChanged.connect(validateInput);
 
   page.pageLeftNext.connect(checkAutoconfig);
   page2.pageLeftNext.connect(setup);
