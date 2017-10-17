@@ -40,7 +40,6 @@ public:
     ~EwsMtaConfigDialog() override;
 private Q_SLOTS:
     void save();
-    void dialogAccepted();
 private:
     QDialogButtonBox *mButtonBox = nullptr;
     EwsMtaResource *mParentResource = nullptr;

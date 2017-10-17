@@ -85,7 +85,3 @@ void EwsMtaConfigDialog::save()
     EwsMtaSettings::self()->save();
 }
 
-void EwsMtaConfigDialog::dialogAccepted()
-{
-}
-
