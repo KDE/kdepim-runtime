@@ -22,6 +22,9 @@
 #include <KWallet/KWallet>
 
 #include "ewssettings.h"
+#include "ewssettings_ut_mock.h"
+
+Q_LOGGING_CATEGORY(EWSRES_LOG, "org.kde.pim.ews", QtInfoMsg)
 
 class UtEwsSettings : public QObject
 {

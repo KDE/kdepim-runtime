@@ -33,13 +33,13 @@ akonadi_ews_add_ut(ewsgetitemrequest_ut)
 akonadi_ews_add_ut(ewsunsubscriberequest_ut)
 akonadi_ews_add_ut(ewsattachment_ut)
 
-#add_executable(ewssettings_ut
-#	ewssettings_ut.cpp
-#	${CMAKE_CURRENT_SOURCE_DIR}/../../ewssettings.cpp
-#	${CMAKE_CURRENT_BINARY_DIR}/../../ewssettingsbase.cpp
-#	${CMAKE_CURRENT_BINARY_DIR}/../../ewsres_debug.cpp)
-#target_link_libraries(ewssettings_ut Qt5::Core Qt5::Test KF5::WidgetsAddons KF5::I18n KF5::ConfigCore KF5::ConfigGui KF5::Wallet)
-#target_compile_definitions(ewssettings_ut PUBLIC -DWALLET_TIMEOUT=2000)
-#add_test(NAME ewssettings_ut COMMAND ewssettings_ut)
+set(ewssettings_ut_SRCS ewssettings_ut.cpp)
+qt5_wrap_cpp(ewssettings_ut_SRCS ewssettings_ut_mock.h)
+add_executable(ewssettings_ut
+	${ewssettings_ut_SRCS}
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ewssettings.cpp)
+target_link_libraries(ewssettings_ut Qt5::Core Qt5::Test KF5::WidgetsAddons KF5::I18n KF5::ConfigCore KF5::ConfigGui KF5::Wallet)
+target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
+add_test(NAME ewssettings_ut COMMAND ewssettings_ut)
 
 
