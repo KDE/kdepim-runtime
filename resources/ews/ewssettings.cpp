@@ -92,15 +92,15 @@ void EwsSettings::requestPassword(bool ask)
             qCDebug(EWSRES_LOG) << "requestPassword: Not allowed to ask";
         } else {
             qCDebug(EWSRES_LOG) << "requestPassword: Requesting interactively";
-            QPointer<KPasswordDialog> dlg = new KPasswordDialog(nullptr);
-            dlg->setModal(true);
-            dlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.",
+            mPasswordDlg = new KPasswordDialog(nullptr);
+            mPasswordDlg->setModal(true);
+            mPasswordDlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.",
                                 username(), email()));
-            if (dlg->exec() == QDialog::Accepted) {
-                mPassword = dlg->password();
+            if (mPasswordDlg->exec() == QDialog::Accepted) {
+                mPassword = mPasswordDlg->password();
                 setPassword(mPassword);
             }
-            delete dlg;
+            delete mPasswordDlg;
         }
     }
 
@@ -152,6 +152,9 @@ void EwsSettings::setPassword(const QString &password)
     if (mWallet) {
         onWalletOpenedForRead(true);
     }
+    if (mPasswordDlg) {
+        mPasswordDlg->reject();
+    }
 
     mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
                                  mWindowId, Wallet::Asynchronous);
@@ -186,6 +189,9 @@ void EwsSettings::setTestPassword(const QString &password)
     mPassword = password;
     if (mWallet) {
         onWalletOpenedForRead(true);
+    }
+    if (mPasswordDlg) {
+        mPasswordDlg->reject();
     }
 }
 

@@ -32,6 +32,7 @@
 namespace KWallet {
 class Wallet;
 }
+class KPasswordDialog;
 
 class EwsSettings : public EwsSettingsBase
 {
@@ -57,6 +58,7 @@ private:
     QPointer<KWallet::Wallet> mWallet;
     QTimer mWalletReadTimer;
     QTimer mWalletWriteTimer;
+    QPointer<KPasswordDialog> mPasswordDlg;
 };
 
 #endif
