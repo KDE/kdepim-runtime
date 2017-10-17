@@ -29,8 +29,10 @@
 static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
 
 // Allow unittest to override this to shorten test execution
-#ifndef WALLET_TIMEOUT
-#define WALLET_TIMEOUT 30000
+#ifdef EWSSETTINGS_UNITTEST
+constexpr int walletTimeout = 2000;
+#else
+constexpr int walletTimeout = 30000;
 #endif
 
 using namespace KWallet;
@@ -38,13 +40,13 @@ using namespace KWallet;
 EwsSettings::EwsSettings(WId windowId)
     : EwsSettingsBase(), mWindowId(windowId), mWalletReadTimer(this), mWalletWriteTimer(this)
 {
-    mWalletReadTimer.setInterval(WALLET_TIMEOUT);
+    mWalletReadTimer.setInterval(walletTimeout);
     mWalletReadTimer.setSingleShot(true);
     connect(&mWalletReadTimer, &QTimer::timeout, this, [this]() {
         qCWarning(EWSRES_LOG) << "Timeout waiting for wallet open for read";
         onWalletOpenedForRead(false);
     });
-    mWalletWriteTimer.setInterval(WALLET_TIMEOUT);
+    mWalletWriteTimer.setInterval(walletTimeout);
     mWalletWriteTimer.setSingleShot(true);
     connect(&mWalletWriteTimer, &QTimer::timeout, this, [this]() {
         qCWarning(EWSRES_LOG) << "Timeout waiting for wallet open for write";

@@ -20,7 +20,11 @@
 #ifndef EWSSETTINGS_H
 #define EWSSETTINGS_H
 
+#ifdef EWSSETTINGS_UNITTEST
+#include "ewssettings_ut_mock.h"
+#else
 #include "ewssettingsbase.h"
+#endif
 
 #include <QTimer>
 #include <QPointer>
