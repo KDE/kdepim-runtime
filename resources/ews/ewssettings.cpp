@@ -33,6 +33,8 @@ static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
 #define WALLET_TIMEOUT 30000
 #endif
 
+using namespace KWallet;
+
 EwsSettings::EwsSettings(WId windowId)
     : EwsSettingsBase(), mWindowId(windowId), mWalletReadTimer(this), mWalletWriteTimer(this)
 {
@@ -66,10 +68,10 @@ void EwsSettings::requestPassword(bool ask)
     }
 
     if (!mWallet) {
-        mWallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(),
-                                              mWindowId, KWallet::Wallet::Asynchronous);
+        mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
+                                     mWindowId, Wallet::Asynchronous);
         if (mWallet) {
-            connect(mWallet.data(), &KWallet::Wallet::walletOpened, this,
+            connect(mWallet.data(), &Wallet::walletOpened, this,
                     &EwsSettings::onWalletOpenedForRead);
             mWalletReadTimer.start();
             return;
@@ -149,10 +151,10 @@ void EwsSettings::setPassword(const QString &password)
         onWalletOpenedForRead(true);
     }
 
-    mWallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(),
-                                          mWindowId, KWallet::Wallet::Asynchronous);
+    mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
+                                 mWindowId, Wallet::Asynchronous);
     if (mWallet) {
-        connect(mWallet.data(), &KWallet::Wallet::walletOpened, this, &EwsSettings::onWalletOpenedForWrite);
+        connect(mWallet.data(), &Wallet::walletOpened, this, &EwsSettings::onWalletOpenedForWrite);
         mWalletWriteTimer.start();
     } else {
         qCWarning(EWSRES_LOG) << "Failed to open wallet";
