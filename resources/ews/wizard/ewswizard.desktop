@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Maildir
+Icon=message-rfc822
+Comment=Exchange account
+
+[Wizard]
+Type=message/rfc822
+Script=maildirwizard.es
+
+[Translate]
+Filename=accountwizard_ews
