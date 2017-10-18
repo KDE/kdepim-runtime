@@ -45,7 +45,7 @@ public:
      * "new", "accepted", "tentative", "counter", "cancel", "reply", "delegated"
      */
     QString status() const;
-    void setStatus(const QString &newstatus) const;
+    void setStatus(const QString &newstatus);
 
     /**
      * The referenced item. This is used e.g. in the invitationagent to
@@ -55,8 +55,8 @@ public:
     void setReference(Akonadi::Item::Id id);
 
 private:
-    class Private;
-    Private *const d;
+    QString mStatus;
+    Akonadi::Item::Id mReferenceId;
 };
 
 }

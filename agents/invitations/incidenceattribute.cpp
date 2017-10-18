@@ -23,24 +23,13 @@
 #include <QTextStream>
 
 using namespace Akonadi;
-
-class IncidenceAttribute::Private
-{
-public:
-    QString status;
-    Akonadi::Item::Id referenceId;
-
-    explicit Private() : referenceId(-1) {}
-};
-
 IncidenceAttribute::IncidenceAttribute()
-    : Attribute(), d(new Private)
+    : Attribute()
 {
 }
 
 IncidenceAttribute::~IncidenceAttribute()
 {
-    delete d;
 }
 
 QByteArray IncidenceAttribute::type() const
@@ -59,8 +48,8 @@ QByteArray IncidenceAttribute::serialized() const
 {
     QString data;
     QTextStream out(&data);
-    out << d->status;
-    out << d->referenceId;
+    out << mStatus;
+    out << mReferenceId;
     return data.toUtf8();
 }
 
@@ -68,26 +57,26 @@ void IncidenceAttribute::deserialize(const QByteArray &data)
 {
     QString s(QString::fromUtf8(data));
     QTextStream in(&s);
-    in >> d->status;
-    in >> d->referenceId;
+    in >> mStatus;
+    in >> mReferenceId;
 }
 
 QString IncidenceAttribute::status() const
 {
-    return d->status;
+    return mStatus;
 }
 
-void IncidenceAttribute::setStatus(const QString &newstatus) const
+void IncidenceAttribute::setStatus(const QString &newstatus)
 {
-    d->status = newstatus;
+    mStatus = newstatus;
 }
 
 Akonadi::Item::Id IncidenceAttribute::reference() const
 {
-    return d->referenceId;
+    return mReferenceId;
 }
 
 void IncidenceAttribute::setReference(Akonadi::Item::Id id)
 {
-    d->referenceId = id;
+    mReferenceId = id;
 }
