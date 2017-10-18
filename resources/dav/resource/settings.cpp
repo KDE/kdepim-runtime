@@ -477,7 +477,7 @@ QString Settings::promptForPassword(const QString &user)
     QPointer<QDialog> dlg = new QDialog();
     QString password;
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dlg);
     QVBoxLayout *mainLayout = new QVBoxLayout(dlg);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
