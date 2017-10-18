@@ -111,7 +111,7 @@ private Q_SLOTS:
     void folderUpdateRequestFinished(KJob *job);
     void folderDeleteRequestFinished(KJob *job);
     void delayedInit();
-    void foldersModifiedEvent(EwsId::List folders);
+    void foldersModifiedEvent(const EwsId::List &folders);
     void foldersModifiedCollectionSyncFinished(KJob *job);
     void folderTreeModifiedEvent();
     void fullSyncRequestedEvent();

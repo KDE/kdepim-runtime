@@ -163,9 +163,7 @@ void EwsResource::resetUrl()
     Q_EMIT status(Running, i18nc("@info:status", "Connecting to Exchange server"));
 
     EwsGetFolderRequest *req = new EwsGetFolderRequest(mEwsClient, this);
-    EwsId::List folders;
-    folders << EwsId(EwsDIdMsgFolderRoot);
-    folders << EwsId(EwsDIdInbox);
+    const EwsId::List folders {EwsId(EwsDIdMsgFolderRoot), EwsId(EwsDIdInbox)};
     req->setFolderIds(folders);
     EwsFolderShape shape(EwsShapeIdOnly);
     shape << EwsPropertyField(QStringLiteral("folder:DisplayName"));
@@ -370,7 +368,7 @@ bool EwsResource::retrieveItems(const Item::List &items, const QSet<QByteArray> 
     EwsGetItemRequest *req = new EwsGetItemRequest(mEwsClient, this);
     EwsId::List ids;
     ids.reserve(items.count());
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : items) {
         ids << EwsId(item.remoteId(), item.remoteRevision());
     }
     req->setItemIds(ids);
@@ -398,10 +396,11 @@ void EwsResource::getItemsRequestFinished(KJob *job)
         return;
     }
 
-    Item::List items = req->property("items").value<Item::List>();
+    const Item::List items = req->property("items").value<Item::List>();
 
     QHash<QString, Item> itemHash;
-    Q_FOREACH (const Item &item, items) {
+    itemHash.reserve(items.count());
+    for (const Item &item : items) {
         itemHash.insert(item.remoteId(), item);
     }
 
@@ -639,7 +638,7 @@ void EwsResource::itemsMoved(const Item::List &items, const Collection &sourceCo
     EwsId::List ids;
 
     ids.reserve(items.count());
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : items) {
         EwsId id(item.remoteId(), item.remoteRevision());
         ids.append(id);
     }
@@ -734,7 +733,7 @@ void EwsResource::itemsRemoved(const Item::List &items)
 
     EwsId::List ids;
     ids.reserve(items.count());
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : items) {
         EwsId id(item.remoteId(), item.remoteRevision());
         ids.append(id);
     }
@@ -1106,7 +1105,7 @@ void EwsResource::messageSendRequestFinished(KJob *job)
 }
 #endif
 
-void EwsResource::foldersModifiedEvent(EwsId::List folders)
+void EwsResource::foldersModifiedEvent(const EwsId::List &folders)
 {
     Q_FOREACH (const EwsId &id, folders) {
         Collection c;
@@ -1204,7 +1203,7 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
         return;
     }
 
-    Collection::List collections = req->property("collections").value<Collection::List>();
+    const Collection::List collections = req->property("collections").value<Collection::List>();
 
     if (req->responses().size() != specialFolderList.size()) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Special collection fetch failed:")
@@ -1213,7 +1212,7 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
     }
 
     QMap<QString, Collection> map;
-    Q_FOREACH (const Collection &col, collections) {
+    for (const Collection &col : collections) {
         map.insert(col.remoteId(), col);
     }
 

@@ -365,7 +365,7 @@ QStringList EwsSubscriptionWidget::subscribedList() const
 
     QStringList list;
     list.reserve(d->mSubscribedIds.count());
-    Q_FOREACH (const EwsId &id, d->mSubscribedIds) {
+    for (const EwsId &id : qAsConst(d->mSubscribedIds)) {
         list.append(id.id());
     }
 
