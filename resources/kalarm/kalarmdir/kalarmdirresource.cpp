@@ -95,7 +95,7 @@ KAlarmDirResource::KAlarmDirResource(const QString &id)
     job->fetchScope().setResource(identifier());
     connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::collectionFetchResult);
 
-    QTimer::singleShot(0, this, SLOT(loadFiles()));
+    QTimer::singleShot(0, this, [this] {loadFiles();});
 }
 
 KAlarmDirResource::~KAlarmDirResource()

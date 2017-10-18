@@ -203,8 +203,8 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     d->queue = new OutboxQueue(this);
     connect(d->queue, &OutboxQueue::newItems,
             this, [this]() { d->dispatch(); });
-    connect(d->queue, SIGNAL(itemReady(Akonadi::Item)),
-            this, SLOT(itemFetched(Akonadi::Item)));
+    connect(d->queue, &OutboxQueue::itemReady,
+            this, [this](const Akonadi::Item &item) { d->itemFetched(item);});
     connect(d->queue, SIGNAL(error(QString)),
             this, SLOT(queueError(QString)));
     connect(this, SIGNAL(itemProcessed(Akonadi::Item,bool)),

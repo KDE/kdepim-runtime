@@ -399,8 +399,7 @@ OutboxQueue::OutboxQueue(QObject *parent)
             this, SLOT(itemChanged(Akonadi::Item)));
     connect(d->monitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
             this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)));
-    connect(d->monitor, SIGNAL(itemRemoved(Akonadi::Item)),
-            this, SLOT(itemRemoved(Akonadi::Item)));
+    connect(d->monitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) { d->itemRemoved(item); });
 
     connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() { d->localFoldersChanged(); });
     d->localFoldersChanged();

@@ -149,7 +149,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItems(mCollection);
     // just basic items, no data
 
-    connect(storeFetch, SIGNAL(result(KJob*)), q, SLOT(storeListResult(KJob*)));
+    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob*job) { storeListResult(job);});
 }
 
 void RetrieveItemsJob::Private::storeListResult(KJob *job)
@@ -229,7 +229,7 @@ void RetrieveItemsJob::Private::processNewItem()
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
     storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-    connect(storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchNewResult(KJob*)));
+    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) { fetchNewResult(job);});
 }
 
 void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
