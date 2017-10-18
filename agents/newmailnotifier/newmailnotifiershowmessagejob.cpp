@@ -19,6 +19,8 @@
 
 #include "newmailnotifiershowmessagejob.h"
 #include "newmailnotifier_debug.h"
+#include <KLocalizedString>
+
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
@@ -49,6 +51,7 @@ void NewMailNotifierShowMessageJob::start()
         if (KToolInvocation::startServiceByDesktopName(QStringLiteral("org.kde.kmail2"), QString(), &errmsg)) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " Can not start kmail" << errmsg;
             setError(UserDefinedError);
+            setErrorText(i18n("Unable to start KMail application."));
             emitResult();
             return;
         }
@@ -56,6 +59,8 @@ void NewMailNotifierShowMessageJob::start()
     QDBusInterface kmail(kmailInterface, QStringLiteral("/KMail"), QStringLiteral("org.kde.kmail.kmail"));
     if (kmail.isValid()) {
         kmail.call(QStringLiteral("showMail"), mId);
+    } else {
+        qCWarning(NEWMAILNOTIFIER_LOG) << "Impossible to access to DBus interface";
     }
     emitResult();
 }
