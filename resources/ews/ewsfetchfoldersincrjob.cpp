@@ -337,7 +337,7 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
     bool reparentPassNeeded = false;
 
     /* Iterate over all changed folders. */
-    for (auto it = mFolderHash.begin(); it != mFolderHash.end(); ++it) {
+    for (auto it = mFolderHash.begin(), end = mFolderHash.end(); it != end; ++it) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Processing: ") << it.key();
 
         if (it->isModified()) {
@@ -426,7 +426,7 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
     }
 
     /* Build the resulting collection list. */
-    for (auto it = mFolderHash.begin(); it != mFolderHash.end(); ++it) {
+    for (auto it = mFolderHash.begin(), end = mFolderHash.end(); it != end; ++it) {
         if (it->isRemoved()) {
             q->mDeletedFolders.append(it->collection);
         } else if (it->isProcessed()) {

@@ -410,7 +410,7 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
             mChangedItems += detailJob->changedItems();
         }
 
-        if (subjobs().size() == 0) {
+        if (subjobs().isEmpty()) {
             emitResult();
         } else {
             subjobs().first()->start();

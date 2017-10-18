@@ -84,7 +84,8 @@ QHash<EwsPropertyField, QVariant> EwsItemHandler::writeFlags(const QSet<QByteArr
         propertyHash.insert(EwsResource::flagsProperty, QVariant());
     } else {
         QStringList flagList;
-        Q_FOREACH (const QByteArray &flag, flags) {
+        flagList.reserve(flags.count());
+        for (const QByteArray &flag : flags) {
             flagList.append(QString::fromLatin1(flag));
         }
         propertyHash.insert(EwsResource::flagsProperty, flagList);

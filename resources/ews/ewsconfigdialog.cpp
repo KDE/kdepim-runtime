@@ -102,7 +102,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->tryConnectButton->setEnabled(!baseUrlEmpty);
     mTryConnectNeeded = baseUrlEmpty;
 
-    QString password;
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
             &KPasswordLineEdit::setPassword);
     mSettings->requestPassword(false);
@@ -290,10 +289,8 @@ void EwsConfigDialog::dialogAccepted()
                                            i18n("Autodiscovery failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
                                            i18n("Exchange server autodiscovery")) == KMessageBox::Yes) {
                 accept();
-                return;
-            } else {
-                return;
             }
+            return;
         }
     }
 
@@ -317,10 +314,8 @@ void EwsConfigDialog::dialogAccepted()
                                            i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
                                            i18n("Exchange server connection")) == KMessageBox::Yes) {
                 accept();
-                return;
-            } else {
-                return;
             }
+            return;
         } else {
             accept();
         }

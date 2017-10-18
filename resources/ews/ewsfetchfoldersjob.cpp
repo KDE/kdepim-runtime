@@ -182,7 +182,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
         shape << EwsPropertyField(QStringLiteral("folder:ParentFolderId"));
         mPendingFetchJobs = 0;
 
-        for (int i = 0; i < mRemoteFolderIds.size(); i += fetchBatchSize) {
+        for (int i = 0, total = mRemoteFolderIds.size(); i < total; i += fetchBatchSize) {
             EwsGetFolderRequest *req = new EwsGetFolderRequest(mClient, this);
             req->setFolderIds(mRemoteFolderIds.mid(i, fetchBatchSize));
             req->setFolderShape(shape);
