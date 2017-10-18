@@ -47,6 +47,7 @@
 #include <QDialogButtonBox>
 #include <QDialog>
 #include <QPushButton>
+#include <KPasswordLineEdit>
 
 class SettingsHelper
 {
@@ -498,8 +499,7 @@ QString Settings::promptForPassword(const QString &user)
     QHBoxLayout *hLayout = new QHBoxLayout();
     label = new QLabel(i18n("Password: "), mainWidget);
     hLayout->addWidget(label);
-    KLineEdit *lineEdit = new KLineEdit();
-    lineEdit->setPasswordMode(true);
+    KPasswordLineEdit *lineEdit = new KPasswordLineEdit();
     hLayout->addWidget(lineEdit);
     vLayout->addLayout(hLayout);
     lineEdit->setFocus();
@@ -507,7 +507,7 @@ QString Settings::promptForPassword(const QString &user)
     const int result = dlg->exec();
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
-        password = lineEdit->text();
+        password = lineEdit->password();
     }
 
     delete dlg;
