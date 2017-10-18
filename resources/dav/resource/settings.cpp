@@ -113,9 +113,7 @@ Settings::Settings()
 
     if (settingsVersion() == 1) {
         updateToV2();
-    }
-
-    if (settingsVersion() == 2) {
+    } else if (settingsVersion() == 2) {
         updateToV3();
     }
 }
