@@ -18,7 +18,6 @@
 */
 
 #include "ewssettings.h"
-#include <QPointer>
 
 #include <KPasswordDialog>
 #include <KWallet/KWallet>
