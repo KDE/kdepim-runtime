@@ -63,7 +63,7 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     connect(mUi.remoteUrl, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.useDefaultCreds, &QRadioButton::toggled, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.username, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
-    connect(mUi.password, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
+    connect(mUi.password, &KPasswordLineEdit::passwordChanged, this, &UrlConfigurationDialog::onConfigChanged);
 
     connect(mUi.fetchButton, &QPushButton::clicked, this, &UrlConfigurationDialog::onFetchButtonClicked);
     connect(mOkButton, &QPushButton::clicked, this, &UrlConfigurationDialog::onOkButtonClicked);
@@ -151,7 +151,7 @@ QString UrlConfigurationDialog::password() const
     if (mUi.useDefaultCreds->isChecked()) {
         return mDefaultPassword;
     } else {
-        return mUi.password->text();
+        return mUi.password->password();
     }
 }
 
@@ -162,7 +162,7 @@ void UrlConfigurationDialog::setDefaultPassword(const QString &password)
 
 void UrlConfigurationDialog::setPassword(const QString &password)
 {
-    mUi.password->setText(password);
+    mUi.password->setPassword(password);
 }
 
 void UrlConfigurationDialog::onConfigChanged()
@@ -276,7 +276,7 @@ void UrlConfigurationDialog::initModel()
 
 bool UrlConfigurationDialog::checkUserAuthInput()
 {
-    return (mUi.useDefaultCreds->isChecked() || !(mUi.username->text().isEmpty() || mUi.password->text().isEmpty()));
+    return (mUi.useDefaultCreds->isChecked() || !(mUi.username->text().isEmpty() || mUi.password->password().isEmpty()));
 }
 
 void UrlConfigurationDialog::addModelRow(const QString &displayName, const QString &url)
