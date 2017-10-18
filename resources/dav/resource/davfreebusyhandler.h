@@ -77,15 +77,13 @@ private:
      */
     struct RequestTracker {
         RequestTracker()
-            : handlingJobCount(0), handlingJobSuccessful(false),
-              retrievalJobCount(0), retrievalJobSuccessful(false)
         {
         }
 
-        int handlingJobCount;
-        bool handlingJobSuccessful;
-        int retrievalJobCount;
-        bool retrievalJobSuccessful;
+        int handlingJobCount = 0;
+        bool handlingJobSuccessful = false;
+        int retrievalJobCount = 0;
+        bool retrievalJobSuccessful = false;
         QMap<uint, KCalCore::FreeBusy::Ptr> resultingFreeBusy;
     };
 

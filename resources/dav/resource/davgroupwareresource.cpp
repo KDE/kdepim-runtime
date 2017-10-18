@@ -1008,7 +1008,7 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
     etag->setEtag(item.remoteId(), davItem.etag());
 
     if (!extraItems.isEmpty()) {
-        for (int i = 0; i < extraItems.size(); ++i) {
+        for (int i = 0, total = extraItems.size(); i < total; ++i) {
             etag->setEtag(extraItems.at(i).remoteId(), davItem.etag());
         }
 
@@ -1110,7 +1110,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
         }
 
         if (!dependentItems.isEmpty()) {
-            for (int i = 0; i < dependentItems.size(); ++i) {
+            for (int i = 0, total = dependentItems.size(); i < total; ++i) {
                 dependentItems[i].setRemoteRevision(davItem.etag());
                 cache->setEtag(dependentItems.at(i).remoteId(), davItem.etag());
             }
@@ -1144,7 +1144,7 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
         changeCommitted(item);
 
         if (!dependentItems.isEmpty()) {
-            for (int i = 0; i < dependentItems.size(); ++i) {
+            for (int i = 0, total = dependentItems.size(); i < total; ++i) {
                 dependentItems[i].setRemoteRevision(davItem.etag());
                 etag->setEtag(dependentItems.at(i).remoteId(), davItem.etag());
             }
