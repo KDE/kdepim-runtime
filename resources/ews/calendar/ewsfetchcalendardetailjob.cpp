@@ -106,8 +106,8 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
                     incidence = event;
                 }
             }
-            EwsOccurrence::List excList = ewsItem[EwsItemFieldModifiedOccurrences].value<EwsOccurrence::List>();
-            Q_FOREACH (const EwsOccurrence &exc, excList) {
+            const EwsOccurrence::List excList = ewsItem[EwsItemFieldModifiedOccurrences].value<EwsOccurrence::List>();
+            for (const EwsOccurrence &exc : excList) {
                 addItems.append(exc.itemId());
             }
         } else if (memcal->events().count() == 1) {

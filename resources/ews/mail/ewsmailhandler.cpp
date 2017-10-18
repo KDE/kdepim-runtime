@@ -102,7 +102,7 @@ EwsCreateItemJob *EwsMailHandler::createItemJob(EwsClient &client, const Akonadi
     return new EwsCreateMailJob(client, item, collection, tagStore, parent);
 }
 
-QHash<EwsPropertyField, QVariant> EwsMailHandler::writeFlags(const QSet<QByteArray> flags)
+QHash<EwsPropertyField, QVariant> EwsMailHandler::writeFlags(const QSet<QByteArray> &flags)
 {
     // Strip all the message flags that can be stored in dedicated Exchange fields and leave
     // any remaining ones to be stored in a private property.

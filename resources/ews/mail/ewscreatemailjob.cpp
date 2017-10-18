@@ -99,7 +99,7 @@ void EwsCreateMailJob::doStart()
     }
     // Set flags
     QHash<EwsPropertyField, QVariant> propertyHash = EwsMailHandler::writeFlags(mItem.flags());
-    for (auto it = propertyHash.cbegin(); it != propertyHash.cend(); ++it) {
+    for (auto it = propertyHash.cbegin(), end = propertyHash.cend(); it != end; ++it) {
         if (!it.value().isNull()) {
             if (it.key().type() == EwsPropertyField::ExtendedField) {
                 item.setProperty(it.key(), it.value());
