@@ -94,8 +94,10 @@ protected:
     void doSetOnline(bool online) override;
 
 private Q_SLOTS:
-    void slotShowNotifications();
     void configure(WId windowId) override;
+
+private:
+    void slotShowNotifications();
     void slotInstanceStatusChanged(const Akonadi::AgentInstance &instance);
     void slotInstanceRemoved(const Akonadi::AgentInstance &instance);
     void slotInstanceAdded(const Akonadi::AgentInstance &instance);
@@ -103,8 +105,6 @@ private Q_SLOTS:
     void slotIdentitiesChanged();
     void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
     void slotSay(const QString &message);
-
-private:
     bool excludeAgentType(const Akonadi::AgentInstance &instance);
     bool ignoreStatusMail(const Akonadi::Item &item);
     bool isActive() const;

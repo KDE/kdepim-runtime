@@ -39,11 +39,10 @@ Q_SIGNALS:
     void displayNotification(const QPixmap &pixmap, const QString &message);
     void say(const QString &message);
 
-private Q_SLOTS:
+private:
     void slotSearchJobFinished(KJob *job);
     void slotItemFetchJobDone(KJob *);
     void slotOpenMail();
-private:
     void emitNotification(const QPixmap &pixmap);
     QPixmap mDefaultPixmap;
     QStringList mListEmails;
