@@ -21,12 +21,13 @@
 #define SENDJOB_H
 
 #include <KJob>
-
+#include <AkonadiCore/Item>
 namespace Akonadi
 {
 class Item;
+class AgentInstance;
 }
-
+class QDBusInterface;
 /**
  * @short A job to send a mail
  *
@@ -45,7 +46,7 @@ public:
      * @param item The item to send.
      * @param parent The parent object.
      */
-    explicit SendJob(const Akonadi::Item &item, QObject *parent = nullptr);
+    explicit SendJob(const Akonadi::Item &mItem, QObject *parent = nullptr);
 
     /**
      * Destroys the send job.
@@ -73,19 +74,28 @@ public:
     void abort();
 
 private:
-    //@cond PRIVATE
-    class Private;
-    Private *const d;
+    void doAkonadiTransport();
+    void doTraditionalTransport();
+    void doPostJob(bool transportSuccess, const QString &transportMessage);
+    void storeResult(bool success, const QString &message = QString());
+    void abortPostJob();
+    bool filterItem(int filterset);
 
-    Q_PRIVATE_SLOT(d, void doTransport())
-    Q_PRIVATE_SLOT(d, void transportPercent(KJob *, unsigned long))
-    Q_PRIVATE_SLOT(d, void transportResult(KJob *))
-    Q_PRIVATE_SLOT(d, void resourceProgress(const Akonadi::AgentInstance &))
-    Q_PRIVATE_SLOT(d, void resourceResult(qlonglong, int, const QString &))
-    Q_PRIVATE_SLOT(d, void postJobResult(KJob *))
-    Q_PRIVATE_SLOT(d, void doEmitResult(KJob *))
-    Q_PRIVATE_SLOT(d, void slotSentMailCollectionFetched(KJob *))
-    //@endcond
+    // slots
+    void doTransport();
+    void transportPercent(KJob *job, unsigned long percent);
+    void transportResult(KJob *job);
+    void resourceProgress(const Akonadi::AgentInstance &instance);
+    void resourceResult(qlonglong itemId, int result, const QString &message);
+    void postJobResult(KJob *job);
+    void doEmitResult(KJob *job);
+    void slotSentMailCollectionFetched(KJob *job);
+
+    Akonadi::Item mItem;
+    QString mResourceId;
+    KJob *mCurrentJob = nullptr;
+    QDBusInterface *mInterface = nullptr;
+    bool mAborting = false;
 };
 
 #endif
