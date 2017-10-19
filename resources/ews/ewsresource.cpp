@@ -461,7 +461,7 @@ void EwsResource::passwordRequestFinished(const QString &password)
         if (mSettings->domain().isEmpty()) {
             mEwsClient.setCredentials(mSettings->username(), mPassword);
         } else {
-            mEwsClient.setCredentials(mSettings->domain() + QChar::fromLatin1('\\') + mSettings->username(), mPassword);
+            mEwsClient.setCredentials(mSettings->domain() + QLatin1Char('\\') + mSettings->username(), mPassword);
         }
         mSettings->save();
         if (mSettings->baseUrl().isEmpty()) {

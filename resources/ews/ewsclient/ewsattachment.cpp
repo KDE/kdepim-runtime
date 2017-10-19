@@ -93,14 +93,15 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         return;
     }
 
-    if (reader.name() == QStringLiteral("ItemAttachment")) {
+    const QStringRef readerName = reader.name();
+    if (readerName == QStringLiteral("ItemAttachment")) {
         d->mType = ItemAttachment;
-    } else if (reader.name() == QStringLiteral("FileAttachment")) {
+    } else if (readerName == QStringLiteral("FileAttachment")) {
         d->mType = FileAttachment;
-    } else if (reader.name() == QStringLiteral("ReferenceAttachment")) {
+    } else if (readerName == QStringLiteral("ReferenceAttachment")) {
         d->mType = ReferenceAttachment;
     } else {
-        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unknown attachment type %1").arg(reader.name().toString());
+        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unknown attachment type %1").arg(readerName.toString());
         ok = false;
     }
 
@@ -121,7 +122,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
             break;
         }
 
-        QString elmName = reader.name().toString();
+        const QString elmName = reader.name().toString();
         if (elmName == QStringLiteral("AttachmentId")) {
             QXmlStreamAttributes attrs = reader.attributes();
             if (!attrs.hasAttribute(QStringLiteral("Id"))) {

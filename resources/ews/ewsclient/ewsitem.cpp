@@ -419,13 +419,13 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
     EwsItemPrivate *d = reinterpret_cast<EwsItemPrivate*>(this->d.data());
 
     // Check what item type are we
-    QStringRef elmName = reader.name();
+    const QStringRef elmName = reader.name();
     if (elmName == QStringLiteral("Item")) {
         d->mType = EwsItemTypeItem;
-        QStringRef subtype = reader.attributes().value(QStringLiteral("xsi:type"));
+        const QStringRef subtype = reader.attributes().value(QStringLiteral("xsi:type"));
         if (!subtype.isEmpty()) {
-            auto tokens = subtype.split(QChar::fromLatin1(':'));
-            QStringRef type = tokens.size() == 1 ? tokens[0] : tokens[1];
+            auto tokens = subtype.split(QLatin1Char(':'));
+            const QStringRef type = tokens.size() == 1 ? tokens[0] : tokens[1];
             if (type == QStringLiteral("AbchPersonItemType")) {
                 d->mType = EwsItemTypeAbchPerson;
             }

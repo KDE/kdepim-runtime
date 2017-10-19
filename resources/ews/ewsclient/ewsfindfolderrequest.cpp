@@ -195,11 +195,12 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 EwsFolder* EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
-    if (reader.name() == QStringLiteral("Folder") ||
-        reader.name() == QStringLiteral("CalendarFolder") ||
-        reader.name() == QStringLiteral("ContactsFolder") ||
-        reader.name() == QStringLiteral("TasksFolder") ||
-        reader.name() == QStringLiteral("SearchFolder")) {
+    const QStringRef readerName = reader.name();
+    if (readerName == QStringLiteral("Folder") ||
+        readerName == QStringLiteral("CalendarFolder") ||
+        readerName == QStringLiteral("ContactsFolder") ||
+        readerName == QStringLiteral("TasksFolder") ||
+        readerName == QStringLiteral("SearchFolder")) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
@@ -212,7 +213,7 @@ EwsFolder* EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
             EwsClient::folderHash[(*folder)[EwsFolderFieldFolderId].value<EwsId>().id()] = dn.toString();
         }
     } else {
-        qCWarning(EWSCLI_LOG).noquote() << QStringLiteral("Unsupported folder type %1").arg(reader.name().toString());
+        qCWarning(EWSCLI_LOG).noquote() << QStringLiteral("Unsupported folder type %1").arg(readerName.toString());
         reader.skipCurrentElement();
     }
 

@@ -319,7 +319,7 @@ void EwsPropertyField::write(QXmlStreamWriter &writer) const
     case IndexedField: {
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("IndexedFieldURI"));
         writer.writeAttribute(QStringLiteral("FieldURI"), d->mUri);
-        QStringList tokens = d->mUri.split(QChar::fromLatin1(':'));
+        QStringList tokens = d->mUri.split(QLatin1Char(':'));
         writer.writeAttribute(QStringLiteral("FieldIndex"), tokens[1] + QString::number(d->mIndex));
         writer.writeEndElement();
         break;
@@ -382,7 +382,7 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             return false;
         }
         QString uri = attrs.value(QStringLiteral("FieldURI")).toString();
-        QStringList tokens = uri.split(QChar::fromLatin1(':'));
+        QStringList tokens = uri.split(QLatin1Char(':'));
         QString indexStr = attrs.value(QStringLiteral("FieldIndex")).toString();
         if (!indexStr.startsWith(tokens[1])) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - malformed %1 attribute.")
@@ -542,7 +542,7 @@ bool EwsPropertyField::writeWithValue(QXmlStreamWriter &writer, const QVariant &
 {
     switch (d->mPropType) {
     case Field: {
-        QStringList tokens = d->mUri.split(QChar::fromLatin1(':'));
+        QStringList tokens = d->mUri.split(QLatin1Char(':'));
         if (tokens.size() != 2) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Invalid field URI: %1").arg(d->mUri);
             return false;
@@ -553,7 +553,7 @@ bool EwsPropertyField::writeWithValue(QXmlStreamWriter &writer, const QVariant &
         break;
     }
     case IndexedField: {
-        QStringList tokens = d->mUri.split(QChar::fromLatin1(':'));
+        QStringList tokens = d->mUri.split(QLatin1Char(':'));
         if (tokens.size() != 2) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Invalid field URI: %1").arg(d->mUri);
             return false;

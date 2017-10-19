@@ -252,26 +252,27 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 EwsItem* EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
-    if (reader.name() == QStringLiteral("Item") ||
-        reader.name() == QStringLiteral("Message") ||
-        reader.name() == QStringLiteral("CalendarItem") ||
-        reader.name() == QStringLiteral("Contact") ||
-        reader.name() == QStringLiteral("DistributionList") ||
-        reader.name() == QStringLiteral("MeetingMessage") ||
-        reader.name() == QStringLiteral("MeetingRequest") ||
-        reader.name() == QStringLiteral("MeetingResponse") ||
-        reader.name() == QStringLiteral("MeetingCancellation") ||
-        reader.name() == QStringLiteral("Task")) {
-        qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(reader.name().toString());
+    const QStringRef readerName = reader.name();
+    if (readerName == QStringLiteral("Item") ||
+        readerName == QStringLiteral("Message") ||
+        readerName == QStringLiteral("CalendarItem") ||
+        readerName == QStringLiteral("Contact") ||
+        readerName == QStringLiteral("DistributionList") ||
+        readerName == QStringLiteral("MeetingMessage") ||
+        readerName == QStringLiteral("MeetingRequest") ||
+        readerName == QStringLiteral("MeetingResponse") ||
+        readerName == QStringLiteral("MeetingCancellation") ||
+        readerName == QStringLiteral("Task")) {
+        qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(readerName.toString());
         item = new EwsItem(reader);
         if (!item->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
-                        .arg(reader.name().toString()));
+                        .arg(readerName.toString()));
             delete item;
             return nullptr;
         }
     } else {
-        qCWarning(EWSCLI_LOG).noquote() << QStringLiteral("Unsupported folder type %1").arg(reader.name().toString());
+        qCWarning(EWSCLI_LOG).noquote() << QStringLiteral("Unsupported folder type %1").arg(readerName.toString());
         reader.skipCurrentElement();
     }
 

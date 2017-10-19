@@ -163,7 +163,7 @@ EwsEventRequestBase::Notification::Notification(QXmlStreamReader &reader)
 bool EwsEventRequestBase::Notification::eventsReader(QXmlStreamReader &reader, QVariant &val)
 {
     Event::List events = val.value<Event::List>();
-    QString elmName(reader.name().toString());
+    const QString elmName(reader.name().toString());
 
     Event event(reader);
     if (!event.isValid()) {

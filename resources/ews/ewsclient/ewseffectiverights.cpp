@@ -95,38 +95,38 @@ EwsEffectiveRights::EwsEffectiveRights(QXmlStreamReader &reader)
                                     << reader.namespaceUri();
             return;
         }
-
-        if (reader.name() == QStringLiteral("CreateAssociated")) {
+        const QStringRef readerName = reader.name();
+        if (readerName == QStringLiteral("CreateAssociated")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::CreateAssociated)) {
                 return;
             }
-        } else if (reader.name() == QStringLiteral("CreateContents")) {
+        } else if (readerName == QStringLiteral("CreateContents")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::CreateContents)) {
                 return;
             }
-        } else if (reader.name() == QStringLiteral("CreateHierarchy")) {
+        } else if (readerName == QStringLiteral("CreateHierarchy")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::CreateHierarchy)) {
                 return;
             }
-        } else if (reader.name() == QStringLiteral("Delete")) {
+        } else if (readerName == QStringLiteral("Delete")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::Delete)) {
                 return;
             }
-        } else if (reader.name() == QStringLiteral("Modify")) {
+        } else if (readerName == QStringLiteral("Modify")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::Modify)) {
                 return;
             }
-        } else if (reader.name() == QStringLiteral("Read")) {
+        } else if (readerName == QStringLiteral("Read")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::Read)) {
                 return;
             }
-        } else if (reader.name() == QStringLiteral("ViewPrivateItems")) {
+        } else if (readerName == QStringLiteral("ViewPrivateItems")) {
             if (!d->readRight(reader, EwsEffectiveRightsPrivate::ViewPrivateItems)) {
                 return;
             }
         } else {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                                  .arg(QStringLiteral("EffectiveRights"), reader.name().toString());
+                                  .arg(QStringLiteral("EffectiveRights"), readerName.toString());
             return;
         }
     }

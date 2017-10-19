@@ -44,7 +44,7 @@ void EwsCreateFolderRequest::start()
     writer.writeEndElement();
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Folders"));
-    Q_FOREACH (const EwsFolder &folder, mFolders) {
+    for (const EwsFolder &folder : qAsConst(mFolders)) {
         folder.write(writer);
     }
     writer.writeEndElement();

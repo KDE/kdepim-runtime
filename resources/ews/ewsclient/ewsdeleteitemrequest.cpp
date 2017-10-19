@@ -47,7 +47,7 @@ void EwsDeleteItemRequest::start()
     writer.writeAttribute(QStringLiteral("DeleteType"), deleteTypes[mType]);
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemIds"));
-    Q_FOREACH (const EwsId &id, mIds) {
+    for (const EwsId &id : qAsConst(mIds)) {
         id.writeItemIds(writer);
     }
     writer.writeEndElement();
