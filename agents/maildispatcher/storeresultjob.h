@@ -23,12 +23,7 @@
 #include <TransactionSequence>
 
 #include <QString>
-
-namespace Akonadi
-{
-class Item;
-}
-
+#include <AkonadiCore/Item>
 /**
  * This class stores the result of a StoreResultJob in an item.
  * First, it removes the 'queued' flag.
@@ -63,13 +58,13 @@ protected:
     void doStart() override;
 
 private:
-    //@cond PRIVATE
-    class Private;
-    Private *const d;
+    // Q_SLOTS:
+    void fetchDone(KJob *job);
+    void modifyDone(KJob *job);
 
-    Q_PRIVATE_SLOT(d, void fetchDone(KJob *job))
-    Q_PRIVATE_SLOT(d, void modifyDone(KJob *job))
-    //@endcond
+    Akonadi::Item mItem;
+    bool mSuccess = false;
+    QString mMessage;
 };
 
 #endif

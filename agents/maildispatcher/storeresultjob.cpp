@@ -31,28 +31,37 @@
 using namespace Akonadi;
 using namespace MailTransport;
 
-/**
- * @internal
- */
-class StoreResultJob::Private
+
+StoreResultJob::StoreResultJob(const Item &item, bool success, const QString &message, QObject *parent)
+    : TransactionSequence(parent)
 {
-public:
-    Private(StoreResultJob *qq)
-        : q(qq), success(false)
-    {
-    }
+    mItem = item;
+    mSuccess = success;
+    mMessage = message;
+}
 
-    StoreResultJob *const q;
-    Item item;
-    bool success;
-    QString message;
+StoreResultJob::~StoreResultJob()
+{
+}
 
-    // Q_SLOTS:
-    void fetchDone(KJob *job);
-    void modifyDone(KJob *job);
-};
+void StoreResultJob::doStart()
+{
+    // Fetch item in case it was modified elsewhere.
+    ItemFetchJob *job = new ItemFetchJob(mItem, this);
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) { fetchDone(job); });
+}
 
-void StoreResultJob::Private::fetchDone(KJob *job)
+bool StoreResultJob::success() const
+{
+    return mSuccess;
+}
+
+QString StoreResultJob::message() const
+{
+    return mMessage;
+}
+
+void StoreResultJob::fetchDone(KJob *job)
 {
     if (job->error()) {
         return;
@@ -64,22 +73,22 @@ void StoreResultJob::Private::fetchDone(KJob *job)
     Q_ASSERT(fetchJob);
     if (fetchJob->items().count() != 1) {
         qCritical() << "Fetched" << fetchJob->items().count() << "items, expected 1.";
-        q->setError(Unknown);
-        q->setErrorText(i18n("Failed to fetch item."));
-        q->commit();
+        setError(Unknown);
+        setErrorText(i18n("Failed to fetch item."));
+        commit();
         return;
     }
 
     // Store result in item.
     Item item = fetchJob->items().at(0);
-    if (success) {
+    if (mSuccess) {
         item.clearFlag(Akonadi::MessageFlags::Queued);
         item.setFlag(Akonadi::MessageFlags::Sent);
         item.setFlag(Akonadi::MessageFlags::Seen);
         item.removeAttribute<ErrorAttribute>();
     } else {
         item.setFlag(Akonadi::MessageFlags::HasError);
-        ErrorAttribute *errorAttribute = new ErrorAttribute(message);
+        ErrorAttribute *errorAttribute = new ErrorAttribute(mMessage);
         item.addAttribute(errorAttribute);
 
         // If dispatch failed, set the DispatchModeAttribute to Manual.
@@ -92,11 +101,11 @@ void StoreResultJob::Private::fetchDone(KJob *job)
         }
     }
 
-    ItemModifyJob *modifyJob = new ItemModifyJob(item, q);
-    QObject::connect(modifyJob, &ItemModifyJob::result, q, [this](KJob *job) { modifyDone(job); });
+    ItemModifyJob *modifyJob = new ItemModifyJob(item, this);
+    QObject::connect(modifyJob, &ItemModifyJob::result, this, [this](KJob *job) { modifyDone(job); });
 }
 
-void StoreResultJob::Private::modifyDone(KJob *job)
+void StoreResultJob::modifyDone(KJob *job)
 {
     if (job->error()) {
         return;
@@ -104,38 +113,5 @@ void StoreResultJob::Private::modifyDone(KJob *job)
 
     qCDebug(MAILDISPATCHER_LOG);
 
-    q->commit();
+    commit();
 }
-
-StoreResultJob::StoreResultJob(const Item &item, bool success, const QString &message, QObject *parent)
-    : TransactionSequence(parent),
-      d(new Private(this))
-{
-    d->item = item;
-    d->success = success;
-    d->message = message;
-}
-
-StoreResultJob::~StoreResultJob()
-{
-    delete d;
-}
-
-void StoreResultJob::doStart()
-{
-    // Fetch item in case it was modified elsewhere.
-    ItemFetchJob *job = new ItemFetchJob(d->item, this);
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) { d->fetchDone(job); });
-}
-
-bool StoreResultJob::success() const
-{
-    return d->success;
-}
-
-QString StoreResultJob::message() const
-{
-    return d->message;
-}
-
-#include "moc_storeresultjob.cpp"
