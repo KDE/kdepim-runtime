@@ -47,65 +47,8 @@ using namespace MailTransport;
 static const int OUTBOX_DISCOVERY_RETRIES = 3; // number of times we try to find or create the outbox
 static const int OUTBOX_DISCOVERY_WAIT_TIME = 5000; // number of ms to wait before retrying
 
-/**
- * @internal
- */
-class OutboxQueue::Private
-{
-public:
-    Private(OutboxQueue *qq)
-        : q(qq),
-          mOutbox(-1),
-          mMonitor(nullptr),
-          mFutureTimer(nullptr),
-          mTotalSize(0),
-          mOutboxDiscoveryRetries(0)
-    {
-    }
 
-    OutboxQueue *const q;
-
-    Collection mOutbox = Akonadi::Collection(-1);
-    Monitor *mMonitor = nullptr;
-    QList<Item> mQueue;
-    QSet<Item> mFutureItems; // keeps track of items removed in the meantime
-    QMultiMap<QDateTime, Item> mFutureMap;
-    QTimer *mFutureTimer = nullptr;
-    qulonglong mTotalSize = 0;
-    int mOutboxDiscoveryRetries = 0;
-
-#if 0
-    // If an item is modified externally between the moment we pass it to
-    // the MDA and the time the MDA marks it as sent, then we will get
-    // itemChanged() and may mistakenly re-add the item to the queue.
-    // So we ignore the item that we pass to the MDA, until the MDA finishes
-    // sending it.
-    Item currentItem;
-#endif
-    // HACK: The above is not enough.
-    // Apparently change notifications are delayed sometimes (???)
-    // and we re-add an item long after it was sent.  So keep a list of sent
-    // items.
-    // TODO debug and figure out why this happens.
-    QSet<Item::Id> mIgnore;
-
-    void initQueue();
-    void addIfComplete(const Item &item);
-
-    // Q_SLOTS:
-    void checkFuture();
-    void collectionFetched(KJob *job);
-    void itemFetched(KJob *job);
-    void localFoldersChanged();
-    void localFoldersRequestResult(KJob *job);
-    void itemAdded(const Item &item);
-    void itemChanged(const Item &item);
-    void itemMoved(const Item &item, const Collection &source, const Collection &dest);
-    void itemRemoved(const Item &item);
-    void itemProcessed(const Item &item, bool result);
-};
-
-void OutboxQueue::Private::initQueue()
+void OutboxQueue::initQueue()
 {
     mTotalSize = 0;
     mQueue.clear();
@@ -114,10 +57,10 @@ void OutboxQueue::Private::initQueue()
     ItemFetchJob *job = new ItemFetchJob(mOutbox);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload(false);
-    connect(job, &ItemFetchJob::result, q, [this](KJob *job) { collectionFetched(job);});
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) { collectionFetched(job);});
 }
 
-void OutboxQueue::Private::addIfComplete(const Item &item)
+void OutboxQueue::addIfComplete(const Item &item)
 {
     if (mIgnore.contains(item.id())) {
         qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is ignored.";
@@ -200,10 +143,10 @@ void OutboxQueue::Private::addIfComplete(const Item &item)
     Q_ASSERT(!mQueue.contains(item));
     mTotalSize += item.size();
     mQueue.append(item);
-    Q_EMIT q->newItems();
+    Q_EMIT newItems();
 }
 
-void OutboxQueue::Private::checkFuture()
+void OutboxQueue::checkFuture()
 {
     qCDebug(MAILDISPATCHER_LOG) << "The future is here." << mFutureMap.count() << "items in futureMap.";
     Q_ASSERT(mFutureTimer);
@@ -240,7 +183,7 @@ void OutboxQueue::Private::checkFuture()
     mFutureTimer->start();
 }
 
-void OutboxQueue::Private::collectionFetched(KJob *job)
+void OutboxQueue::collectionFetched(KJob *job)
 {
     if (job->error()) {
         qCWarning(MAILDISPATCHER_LOG) << "Failed to fetch outbox collection.  Queue will be empty until the outbox changes.";
@@ -257,26 +200,26 @@ void OutboxQueue::Private::collectionFetched(KJob *job)
     }
 }
 
-void OutboxQueue::Private::itemFetched(KJob *job)
+void OutboxQueue::itemFetched(KJob *job)
 {
     if (job->error()) {
         qCDebug(MAILDISPATCHER_LOG) << "Error fetching item:" << job->errorString() << ". Trying next item in queue.";
-        q->fetchOne();
+        fetchOne();
     }
 
     const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob);
     if (fetchJob->items().count() != 1) {
         qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << ", expected 1. Trying next item in queue.";
-        q->fetchOne();
+        fetchOne();
     }
 
     if (!fetchJob->items().isEmpty()) {
-        Q_EMIT q->itemReady(fetchJob->items().at(0));
+        Q_EMIT itemReady(fetchJob->items().at(0));
     }
 }
 
-void OutboxQueue::Private::localFoldersChanged()
+void OutboxQueue::localFoldersChanged()
 {
     // Called on startup, and whenever the local folders change.
 
@@ -300,9 +243,9 @@ void OutboxQueue::Private::localFoldersChanged()
         mMonitor->setCollectionMonitored(mOutbox, false);
         mOutbox = Collection(-1);
 
-        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(q);
+        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::Outbox);
-        connect(job, &SpecialMailCollectionsRequestJob::result, q, [this](KJob* job) {localFoldersRequestResult(job);} );
+        connect(job, &SpecialMailCollectionsRequestJob::result, this, [this](KJob* job) {localFoldersRequestResult(job);} );
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting outbox folder.";
         job->start();
@@ -310,7 +253,7 @@ void OutboxQueue::Private::localFoldersChanged()
 
     // make sure we have a place to dump the sent mails as well
     if (!SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
-        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(q);
+        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::SentMail);
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting sent-mail folder";
@@ -318,7 +261,7 @@ void OutboxQueue::Private::localFoldersChanged()
     }
 }
 
-void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
+void OutboxQueue::localFoldersRequestResult(KJob *job)
 {
     if (job->error()) {
         // We tried to create the outbox, but that failed. This could be because some
@@ -330,10 +273,10 @@ void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
         if (++mOutboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES) {
             const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * mOutboxDiscoveryRetries;
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
-            QTimer::singleShot(timeout, q, [this]() { localFoldersChanged(); });
+            QTimer::singleShot(timeout, this, [this]() { localFoldersChanged(); });
         } else {
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up.";
-            Q_EMIT q->error(i18n("Could not access the outbox folder (%1).", job->errorString()));
+            Q_EMIT error(i18n("Could not access the outbox folder (%1).", job->errorString()));
         }
         return;
     }
@@ -341,18 +284,18 @@ void OutboxQueue::Private::localFoldersRequestResult(KJob *job)
     localFoldersChanged();
 }
 
-void OutboxQueue::Private::itemAdded(const Item &item)
+void OutboxQueue::itemAdded(const Item &item)
 {
     addIfComplete(item);
 }
 
-void OutboxQueue::Private::itemChanged(const Item &item)
+void OutboxQueue::itemChanged(const Item &item)
 {
     addIfComplete(item);
     // TODO: if the item is moved out of the outbox, will I get itemChanged?
 }
 
-void OutboxQueue::Private::itemMoved(const Item &item, const Collection &source, const Collection &destination)
+void OutboxQueue::itemMoved(const Item &item, const Collection &source, const Collection &destination)
 {
     if (source == mOutbox) {
         itemRemoved(item);
@@ -361,7 +304,7 @@ void OutboxQueue::Private::itemMoved(const Item &item, const Collection &source,
     }
 }
 
-void OutboxQueue::Private::itemRemoved(const Item &removedItem)
+void OutboxQueue::itemRemoved(const Item &removedItem)
 {
     // @p item has size=0, so get the size from our own copy.
     const int index = mQueue.indexOf(removedItem);
@@ -377,7 +320,7 @@ void OutboxQueue::Private::itemRemoved(const Item &removedItem)
     mFutureItems.remove(removedItem);
 }
 
-void OutboxQueue::Private::itemProcessed(const Item &item, bool result)
+void OutboxQueue::itemProcessed(const Item &item, bool result)
 {
     Q_ASSERT(mIgnore.contains(item.id()));
     if (!result) {
@@ -387,51 +330,49 @@ void OutboxQueue::Private::itemProcessed(const Item &item, bool result)
 }
 
 OutboxQueue::OutboxQueue(QObject *parent)
-    : QObject(parent),
-      d(new Private(this))
+    : QObject(parent)
 {
-    d->mMonitor = new Monitor(this);
-    d->mMonitor->itemFetchScope().fetchAllAttributes();
-    d->mMonitor->itemFetchScope().fetchFullPayload(false);
-    connect(d->mMonitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
+    mMonitor = new Monitor(this);
+    mMonitor->itemFetchScope().fetchAllAttributes();
+    mMonitor->itemFetchScope().fetchFullPayload(false);
+    connect(mMonitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
             this, SLOT(itemAdded(Akonadi::Item)));
-    connect(d->mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
+    connect(mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
             this, SLOT(itemChanged(Akonadi::Item)));
-    connect(d->mMonitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
+    connect(mMonitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
             this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)));
-    connect(d->mMonitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) { d->itemRemoved(item); });
+    connect(mMonitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) { itemRemoved(item); });
 
-    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() { d->localFoldersChanged(); });
-    d->localFoldersChanged();
+    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() { localFoldersChanged(); });
+    localFoldersChanged();
 
-    d->mFutureTimer = new QTimer(this);
-    connect(d->mFutureTimer, &QTimer::timeout, this, [this]() { d->checkFuture(); });
-    d->mFutureTimer->start(60 * 60 * 1000);   // 1 hour
+    mFutureTimer = new QTimer(this);
+    connect(mFutureTimer, &QTimer::timeout, this, [this]() { checkFuture(); });
+    mFutureTimer->start(60 * 60 * 1000);   // 1 hour
 }
 
 OutboxQueue::~OutboxQueue()
 {
-    delete d;
 }
 
 bool OutboxQueue::isEmpty() const
 {
-    return d->mQueue.isEmpty();
+    return mQueue.isEmpty();
 }
 
 int OutboxQueue::count() const
 {
-    const int numberOfElement(d->mQueue.count());
+    const int numberOfElement(mQueue.count());
     if (numberOfElement == 0) {
         // TODO Is this asking for too much?
-        Q_ASSERT(d->mTotalSize == 0);
+        Q_ASSERT(mTotalSize == 0);
     }
     return numberOfElement;
 }
 
 qulonglong OutboxQueue::totalSize() const
 {
-    return d->mTotalSize;
+    return mTotalSize;
 }
 
 void OutboxQueue::fetchOne()
@@ -441,16 +382,16 @@ void OutboxQueue::fetchOne()
         return;
     }
 
-    const Item item = d->mQueue.takeFirst();
+    const Item item = mQueue.takeFirst();
 
-    d->mTotalSize -= item.size();
-    Q_ASSERT(!d->mIgnore.contains(item.id()));
-    d->mIgnore.insert(item.id());
+    mTotalSize -= item.size();
+    Q_ASSERT(!mIgnore.contains(item.id()));
+    mIgnore.insert(item.id());
 
     ItemFetchJob *job = new ItemFetchJob(item);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload();
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {d->itemFetched(job); });
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {itemFetched(job); });
 }
 
 #include "moc_outboxqueue.cpp"

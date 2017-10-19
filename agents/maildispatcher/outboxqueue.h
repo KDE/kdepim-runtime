@@ -20,12 +20,17 @@
 #ifndef OUTBOXQUEUE_H
 #define OUTBOXQUEUE_H
 
-#include <Collection>
-#include <Item>
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
 #include <QObject>
 
 class KJob;
+class QTimer;
+namespace Akonadi
+{
+class Monitor;
+}
 
 /**
  * @short Monitors the outbox collection and provides a queue of messages for the MDA to send.
@@ -74,21 +79,45 @@ Q_SIGNALS:
     void error(const QString &error);
 
 private:
-    //@cond PRIVATE
-    class Private;
-    Private *const d;
+    void initQueue();
+    void addIfComplete(const Akonadi::Item &item);
 
-    Q_PRIVATE_SLOT(d, void checkFuture())
-    Q_PRIVATE_SLOT(d, void collectionFetched(KJob *))
-    Q_PRIVATE_SLOT(d, void itemFetched(KJob *))
-    Q_PRIVATE_SLOT(d, void localFoldersChanged())
-    Q_PRIVATE_SLOT(d, void localFoldersRequestResult(KJob *))
-    Q_PRIVATE_SLOT(d, void itemAdded(Akonadi::Item))
-    Q_PRIVATE_SLOT(d, void itemChanged(Akonadi::Item))
-    Q_PRIVATE_SLOT(d, void itemMoved(Akonadi::Item, Akonadi::Collection, Akonadi::Collection))
-    Q_PRIVATE_SLOT(d, void itemRemoved(Akonadi::Item))
-    Q_PRIVATE_SLOT(d, void itemProcessed(Akonadi::Item, bool))
-    //@endcond
+    // Q_SLOTS:
+    void checkFuture();
+    void collectionFetched(KJob *job);
+    void itemFetched(KJob *job);
+    void localFoldersChanged();
+    void localFoldersRequestResult(KJob *job);
+    void itemAdded(const Akonadi::Item &item);
+    void itemChanged(const Akonadi::Item &item);
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &source, const Akonadi::Collection &dest);
+    void itemRemoved(const Akonadi::Item &item);
+    void itemProcessed(const Akonadi::Item &item, bool result);
+
+    QList<Akonadi::Item> mQueue;
+    QSet<Akonadi::Item> mFutureItems; // keeps track of items removed in the meantime
+    QMultiMap<QDateTime, Akonadi::Item> mFutureMap;
+    Akonadi::Collection mOutbox = Akonadi::Collection(-1);
+    Akonadi::Monitor *mMonitor = nullptr;
+    QTimer *mFutureTimer = nullptr;
+    qulonglong mTotalSize = 0;
+    int mOutboxDiscoveryRetries = 0;
+
+#if 0
+    // If an item is modified externally between the moment we pass it to
+    // the MDA and the time the MDA marks it as sent, then we will get
+    // itemChanged() and may mistakenly re-add the item to the queue.
+    // So we ignore the item that we pass to the MDA, until the MDA finishes
+    // sending it.
+    Item currentItem;
+#endif
+    // HACK: The above is not enough.
+    // Apparently change notifications are delayed sometimes (???)
+    // and we re-add an item long after it was sent.  So keep a list of sent
+    // items.
+    // TODO debug and figure out why this happens.
+    QSet<Akonadi::Item::Id> mIgnore;
+
 };
 
 #endif
