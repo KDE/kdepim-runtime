@@ -22,12 +22,11 @@
 #define MAILDISPATCHERAGENT_H
 
 #include <AgentBase>
+#include <AkonadiCore/Item>
 
-namespace Akonadi
-{
-class Item;
-}
-
+class OutboxQueue;
+class SendJob;
+class SentActionHandler;
 /**
  * @short This agent dispatches mail put into the outbox collection.
  */
@@ -59,17 +58,25 @@ protected:
     void doSetOnline(bool online) override;
 
 private:
-    //@cond PRIVATE
-    class Private;
-    Private *const d;
+    // Q_SLOTS:
+    void abort();
+    void dispatch();
+    void itemFetched(const Akonadi::Item &item);
+    void queueError(const QString &message);
+    void sendPercent(KJob *job, unsigned long percent);
+    void sendResult(KJob *job);
+    void emitStatusReady();
 
-    Q_PRIVATE_SLOT(d, void abort())
-    Q_PRIVATE_SLOT(d, void itemFetched(const Akonadi::Item &))
-    Q_PRIVATE_SLOT(d, void queueError(const QString &))
-    Q_PRIVATE_SLOT(d, void sendPercent(KJob *, unsigned long))
-    Q_PRIVATE_SLOT(d, void sendResult(KJob *))
-    Q_PRIVATE_SLOT(d, void emitStatusReady())
-    //@endcond
+    OutboxQueue *mQueue = nullptr;
+    SendJob *mCurrentJob = nullptr;
+    Akonadi::Item mCurrentItem;
+    bool mAborting = false;
+    bool mSendingInProgress = false;
+    bool mSentAnything = false;
+    bool mErrorOccurred = false;
+    bool mShowSentNotification = true;
+    qulonglong mSentItemsSize = 0;
+    SentActionHandler *mSentActionHandler = nullptr;
 };
 
 #endif // MAILDISPATCHERAGENT_H
