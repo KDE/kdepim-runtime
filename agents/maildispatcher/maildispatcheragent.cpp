@@ -55,16 +55,7 @@ class MailDispatcherAgent::Private
 {
 public:
     Private(MailDispatcherAgent *parent)
-        : q(parent),
-          queue(nullptr),
-          currentJob(nullptr),
-          aborting(false),
-          sendingInProgress(false),
-          sentAnything(false),
-          errorOccurred(false),
-          showSentNotification(true),
-          sentItemsSize(0),
-          sentActionHandler(nullptr)
+        : q(parent)
     {
     }
 
@@ -77,12 +68,12 @@ public:
     OutboxQueue *queue = nullptr;
     SendJob *currentJob = nullptr;
     Item currentItem;
-    bool aborting;
-    bool sendingInProgress;
-    bool sentAnything;
-    bool errorOccurred;
-    bool showSentNotification;
-    qulonglong sentItemsSize;
+    bool aborting = false;
+    bool sendingInProgress = false;
+    bool sentAnything = false;
+    bool errorOccurred = false;
+    bool showSentNotification = true;
+    qulonglong sentItemsSize = 0;
     SentActionHandler *sentActionHandler = nullptr;
 
     // Q_SLOTS:
