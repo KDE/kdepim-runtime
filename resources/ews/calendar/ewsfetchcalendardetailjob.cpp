@@ -100,7 +100,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(memcal->events().count());
         KCalCore::Incidence::Ptr incidence;
         if (memcal->events().count() > 1) {
-            Q_FOREACH (KCalCore::Event::Ptr event, memcal->events()) {
+            Q_FOREACH (const KCalCore::Event::Ptr &event, memcal->events()) {
                 qCDebugNC(EWSRES_LOG) << QString::number(event->recurrence()->recurrenceType(), 16) << event->recurrenceId() << event->recurrenceId().isValid();
                 if (!event->recurrenceId().isValid()) {
                     incidence = event;
