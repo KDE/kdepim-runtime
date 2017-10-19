@@ -65,16 +65,16 @@ public:
 
     MailDispatcherAgent *const q;
 
-    OutboxQueue *queue = nullptr;
-    SendJob *currentJob = nullptr;
-    Item currentItem;
-    bool aborting = false;
-    bool sendingInProgress = false;
-    bool sentAnything = false;
-    bool errorOccurred = false;
-    bool showSentNotification = true;
-    qulonglong sentItemsSize = 0;
-    SentActionHandler *sentActionHandler = nullptr;
+    OutboxQueue *mQueue = nullptr;
+    SendJob *mCurrentJob = nullptr;
+    Item mCurrentItem;
+    bool mAborting = false;
+    bool mSendingInProgress = false;
+    bool mSentAnything = false;
+    bool mErrorOccurred = false;
+    bool mShowSentNotification = true;
+    qulonglong mSentItemsSize = 0;
+    SentActionHandler *mSentActionHandler = nullptr;
 
     // Q_SLOTS:
     void abort();
@@ -93,19 +93,19 @@ void MailDispatcherAgent::Private::abort()
         return;
     }
 
-    if (aborting) {
+    if (mAborting) {
         qCDebug(MAILDISPATCHER_LOG) << "Already aborting.";
         return;
     }
 
-    if (!sendingInProgress && queue->isEmpty()) {
+    if (!mSendingInProgress && mQueue->isEmpty()) {
         qCDebug(MAILDISPATCHER_LOG) << "MDA is idle.";
         Q_ASSERT(q->status() == AgentBase::Idle);
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Aborting...";
-        aborting = true;
-        if (currentJob) {
-            currentJob->abort();
+        mAborting = true;
+        if (mCurrentJob) {
+            mCurrentJob->abort();
         }
         // Further SendJobs will mark remaining items in the queue as 'aborted'.
     }
@@ -113,48 +113,48 @@ void MailDispatcherAgent::Private::abort()
 
 void MailDispatcherAgent::Private::dispatch()
 {
-    Q_ASSERT(queue);
+    Q_ASSERT(mQueue);
 
-    if (!q->isOnline() || sendingInProgress) {
+    if (!q->isOnline() || mSendingInProgress) {
         qCDebug(MAILDISPATCHER_LOG) << "Offline or busy. See you later.";
         return;
     }
 
-    if (!queue->isEmpty()) {
-        if (!sentAnything) {
-            sentAnything = true;
-            sentItemsSize = 0;
+    if (!mQueue->isEmpty()) {
+        if (!mSentAnything) {
+            mSentAnything = true;
+            mSentItemsSize = 0;
             Q_EMIT q->percent(0);
         }
         Q_EMIT q->status(AgentBase::Running,
                          i18np("Sending messages (1 item in queue)...",
-                               "Sending messages (%1 items in queue)...", queue->count()));
+                               "Sending messages (%1 items in queue)...", mQueue->count()));
         qCDebug(MAILDISPATCHER_LOG) << "Attempting to dispatch the next message.";
-        sendingInProgress = true;
-        queue->fetchOne(); // will trigger itemFetched
+        mSendingInProgress = true;
+        mQueue->fetchOne(); // will trigger itemFetched
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Empty queue.";
-        if (aborting) {
+        if (mAborting) {
             // Finished marking messages as 'aborted'.
-            aborting = false;
-            sentAnything = false;
+            mAborting = false;
+            mSentAnything = false;
             Q_EMIT q->status(AgentBase::Idle, i18n("Sending canceled."));
             QTimer::singleShot(3000, q, [this]() {emitStatusReady();});
         } else {
-            if (sentAnything) {
+            if (mSentAnything) {
                 // Finished sending messages in queue.
-                sentAnything = false;
+                mSentAnything = false;
                 Q_EMIT q->percent(100);
                 Q_EMIT q->status(AgentBase::Idle, i18n("Finished sending messages."));
 
-                if (!errorOccurred && showSentNotification) {
+                if (!mErrorOccurred && mShowSentNotification) {
                     KNotification *notify = new KNotification(QStringLiteral("emailsent"));
                     notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
                     notify->setText(i18nc("Notification when the email was sent", "Your E-Mail has been sent successfully."));
                     notify->sendEvent();
                 }
-                showSentNotification = true;
+                mShowSentNotification = true;
             } else {
                 // Empty queue.
                 Q_EMIT q->status(AgentBase::Idle, i18n("No items in queue."));
@@ -162,7 +162,7 @@ void MailDispatcherAgent::Private::dispatch()
             QTimer::singleShot(3000, q, [this]() {emitStatusReady();});
         }
 
-        errorOccurred = false;
+        mErrorOccurred = false;
     }
 }
 
@@ -191,19 +191,19 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
 
     KDBusConnectionPool::threadConnection().registerService(service);
 
-    d->queue = new OutboxQueue(this);
-    connect(d->queue, &OutboxQueue::newItems,
+    d->mQueue = new OutboxQueue(this);
+    connect(d->mQueue, &OutboxQueue::newItems,
             this, [this]() { d->dispatch(); });
-    connect(d->queue, &OutboxQueue::itemReady,
+    connect(d->mQueue, &OutboxQueue::itemReady,
             this, [this](const Akonadi::Item &item) { d->itemFetched(item);});
-    connect(d->queue, SIGNAL(error(QString)),
+    connect(d->mQueue, SIGNAL(error(QString)),
             this, SLOT(queueError(QString)));
     connect(this, SIGNAL(itemProcessed(Akonadi::Item,bool)),
-            d->queue, SLOT(itemProcessed(Akonadi::Item,bool)));
+            d->mQueue, SLOT(itemProcessed(Akonadi::Item,bool)));
     connect(this, &MailDispatcherAgent::abortRequested,
             this, [this]() { d->abort(); });
 
-    d->sentActionHandler = new SentActionHandler(this);
+    d->mSentActionHandler = new SentActionHandler(this);
 
     setNeedsNetwork(true);
 }
@@ -221,7 +221,7 @@ void MailDispatcherAgent::configure(WId windowId)
 
 void MailDispatcherAgent::doSetOnline(bool online)
 {
-    Q_ASSERT(d->queue);
+    Q_ASSERT(d->mQueue);
     if (online) {
         qCDebug(MAILDISPATCHER_LOG) << "Online. Dispatching messages.";
         Q_EMIT status(AgentBase::Idle, i18n("Online, sending messages in queue."));
@@ -241,39 +241,39 @@ void MailDispatcherAgent::doSetOnline(bool online)
 void MailDispatcherAgent::Private::itemFetched(const Item &item)
 {
     qCDebug(MAILDISPATCHER_LOG) << "Fetched item" << item.id() << "; creating SendJob.";
-    Q_ASSERT(sendingInProgress);
-    Q_ASSERT(!currentItem.isValid());
-    currentItem = item;
-    Q_ASSERT(currentJob == nullptr);
+    Q_ASSERT(mSendingInProgress);
+    Q_ASSERT(!mCurrentItem.isValid());
+    mCurrentItem = item;
+    Q_ASSERT(mCurrentJob == nullptr);
     Q_EMIT q->itemDispatchStarted();
 
-    currentJob = new SendJob(item, q);
-    if (aborting) {
-        currentJob->setMarkAborted();
+    mCurrentJob = new SendJob(item, q);
+    if (mAborting) {
+        mCurrentJob->setMarkAborted();
     }
 
     Q_EMIT q->status(AgentBase::Running, i18nc("Message with given subject is being sent.", "Sending: %1",
                                         item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
 
-    connect(currentJob, SIGNAL(result(KJob*)),
+    connect(mCurrentJob, SIGNAL(result(KJob*)),
             q, SLOT(sendResult(KJob*)));
-    connect(currentJob, SIGNAL(percent(KJob*,ulong)),
+    connect(mCurrentJob, SIGNAL(percent(KJob*,ulong)),
             q, SLOT(sendPercent(KJob*,ulong)));
 
-    currentJob->start();
+    mCurrentJob->start();
 }
 
 void MailDispatcherAgent::Private::queueError(const QString &message)
 {
     Q_EMIT q->error(message);
-    errorOccurred = true;
+    mErrorOccurred = true;
     // FIXME figure out why this does not set the status to Broken, etc.
 }
 
 void MailDispatcherAgent::Private::sendPercent(KJob *job, unsigned long)
 {
-    Q_ASSERT(sendingInProgress);
-    Q_ASSERT(job == currentJob);
+    Q_ASSERT(mSendingInProgress);
+    Q_ASSERT(job == mCurrentJob);
     // The progress here is actually the TransportJob, not the entire SendJob,
     // because the post-job doesn't report progress.  This should be fine,
     // since the TransportJob is the lengthiest operation.
@@ -281,13 +281,13 @@ void MailDispatcherAgent::Private::sendPercent(KJob *job, unsigned long)
     // Give the transport 80% of the weight, and move-to-sendmail 20%.
     const double transportWeight = 0.8;
 
-    const int percent = 100 * (sentItemsSize + job->processedAmount(KJob::Bytes) * transportWeight)
-                        / (sentItemsSize + currentItem.size() + queue->totalSize());
+    const int percent = 100 * (mSentItemsSize + job->processedAmount(KJob::Bytes) * transportWeight)
+                        / (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize());
 
-    qCDebug(MAILDISPATCHER_LOG) << "sentItemsSize" << sentItemsSize
+    qCDebug(MAILDISPATCHER_LOG) << "sentItemsSize" << mSentItemsSize
                                 << "this job processed" << job->processedAmount(KJob::Bytes)
-                                << "queue totalSize" << queue->totalSize()
-                                << "total total size (sent+current+queue)" << (sentItemsSize + currentItem.size() + queue->totalSize())
+                                << "queue totalSize" << mQueue->totalSize()
+                                << "total total size (sent+current+queue)" << (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize())
                                 << "new percentage" << percent << "old percentage" << q->progress();
 
     if (percent != q->progress()) {
@@ -298,22 +298,22 @@ void MailDispatcherAgent::Private::sendPercent(KJob *job, unsigned long)
     // It is possible that the number of queued messages has changed.
     Q_EMIT q->status(AgentBase::Running,
                      i18np("Sending messages (1 item in queue)...",
-                           "Sending messages (%1 items in queue)...", 1 + queue->count()));
+                           "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
 }
 
 void MailDispatcherAgent::Private::sendResult(KJob *job)
 {
-    Q_ASSERT(sendingInProgress);
-    Q_ASSERT(job == currentJob);
-    currentJob->disconnect(q);
-    currentJob = nullptr;
+    Q_ASSERT(mSendingInProgress);
+    Q_ASSERT(job == mCurrentJob);
+    mCurrentJob->disconnect(q);
+    mCurrentJob = nullptr;
 
-    Q_ASSERT(currentItem.isValid());
-    sentItemsSize += currentItem.size();
-    Q_EMIT q->itemProcessed(currentItem, !job->error());
+    Q_ASSERT(mCurrentItem.isValid());
+    mSentItemsSize += mCurrentItem.size();
+    Q_EMIT q->itemProcessed(mCurrentItem, !job->error());
 
-    const Akonadi::Item sentItem = currentItem;
-    currentItem = Item();
+    const Akonadi::Item sentItem = mCurrentItem;
+    mCurrentItem = Item();
 
     if (job->error()) {
         // The SendJob gave the item an ErrorAttribute, so we don't have to
@@ -326,7 +326,7 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
         notify->setText(job->errorString());
         notify->sendEvent();
 
-        errorOccurred = true;
+        mErrorOccurred = true;
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Sending succeeded.";
 
@@ -335,19 +335,19 @@ void MailDispatcherAgent::Private::sendResult(KJob *job)
         if (attribute) {
             const MailTransport::SentActionAttribute::Action::List lstAct = attribute->actions();
             for (const MailTransport::SentActionAttribute::Action &action : lstAct) {
-                sentActionHandler->runAction(action);
+                mSentActionHandler->runAction(action);
             }
         }
         const auto bhAttribute = sentItem.attribute<MailTransport::SentBehaviourAttribute>();
         if (bhAttribute) {
-            showSentNotification = !bhAttribute->sendSilently();
+            mShowSentNotification = !bhAttribute->sendSilently();
         } else {
-            showSentNotification = true;
+            mShowSentNotification = true;
         }
     }
 
     // dispatch next message
-    sendingInProgress = false;
+    mSendingInProgress = false;
     QTimer::singleShot(0, q, [this]() { dispatch();});
 }
 
