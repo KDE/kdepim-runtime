@@ -187,8 +187,8 @@ bool EwsPoxAutodiscoverRequest::readAccount(QXmlStreamReader &reader)
         if (reader.namespaceUri() != poxAdOuRespNsUri) {
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
-
-        if (reader.name() == QStringLiteral("Action")) {
+        const QStringRef readerName = reader.name();
+        if (readerName == QStringLiteral("Action")) {
             QString action = reader.readElementText();
             if (action == QStringLiteral("settings")) {
                 mAction = Settings;
@@ -200,13 +200,13 @@ bool EwsPoxAutodiscoverRequest::readAccount(QXmlStreamReader &reader)
                 return setErrorMsg(QStringLiteral("Failed to read POX response - unknown action '%1'")
                                    .arg(action));
             }
-        } else if (reader.name() == QStringLiteral("RedirectUrl")) {
+        } else if (readerName == QStringLiteral("RedirectUrl")) {
             mRedirectUrl = reader.readElementText();
-        } else if (reader.name() == QStringLiteral("RedirectAddr")) {
+        } else if (readerName == QStringLiteral("RedirectAddr")) {
             mRedirectAddr = reader.readElementText();
-        } else if (reader.name() == QStringLiteral("RedirectAddr")) {
+        } else if (readerName == QStringLiteral("RedirectAddr")) {
             mRedirectAddr = reader.readElementText();
-        } else if (reader.name() == QStringLiteral("Protocol")) {
+        } else if (readerName == QStringLiteral("Protocol")) {
             if (!readProtocol(reader)) {
                 return false;
             }
@@ -226,7 +226,8 @@ bool EwsPoxAutodiscoverRequest::readProtocol(QXmlStreamReader &reader)
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
 
-        if (reader.name() == QStringLiteral("Type")) {
+        const QStringRef readerName = reader.name();
+        if (readerName == QStringLiteral("Type")) {
             QString type = reader.readElementText();
             if (type == QStringLiteral("EXCH")) {
                 proto.mType = ExchangeProto;
@@ -238,9 +239,9 @@ bool EwsPoxAutodiscoverRequest::readProtocol(QXmlStreamReader &reader)
                 return setErrorMsg(QStringLiteral("Failed to read POX response - unknown protocol '%1'")
                                    .arg(type));
             }
-        } else if (reader.name() == QStringLiteral("EwsUrl")) {
+        } else if (readerName == QStringLiteral("EwsUrl")) {
             proto.mEwsUrl = reader.readElementText();
-        } else if (reader.name() == QStringLiteral("OabUrl")) {
+        } else if (readerName == QStringLiteral("OabUrl")) {
             proto.mOabUrl = reader.readElementText();
         } else {
             reader.skipCurrentElement();

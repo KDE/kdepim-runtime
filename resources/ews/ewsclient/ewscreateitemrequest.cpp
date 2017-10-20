@@ -67,7 +67,7 @@ void EwsCreateItemRequest::start()
     }
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Items"));
-    Q_FOREACH (const EwsItem &item, mItems) {
+    for (const EwsItem &item : qAsConst(mItems)) {
         item.write(writer);
     }
     writer.writeEndElement();

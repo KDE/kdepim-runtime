@@ -210,7 +210,7 @@ bool ewsXmlItemReader(QXmlStreamReader &reader, QVariant &val)
 
 bool ewsXmlFolderReader(QXmlStreamReader &reader, QVariant &val)
 {
-    QString elmName = reader.name().toString();
+    const QString elmName = reader.name().toString();
     EwsFolder folder = EwsFolder(reader);
     if (!folder.isValid()) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid content.")
@@ -224,7 +224,7 @@ bool ewsXmlFolderReader(QXmlStreamReader &reader, QVariant &val)
 
 bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QVector<QString> &items)
 {
-    QString elmName = reader.name().toString();
+    const QString elmName = reader.name().toString();
     QString text = reader.readElementText();
     if (reader.error() != QXmlStreamReader::NoError) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid content.")

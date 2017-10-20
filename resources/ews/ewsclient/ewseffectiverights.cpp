@@ -61,13 +61,13 @@ EwsEffectiveRightsPrivate::~EwsEffectiveRightsPrivate()
 bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
 {
     QString elm = reader.name().toString();
-    QString text = reader.readElementText();
     if (reader.error() != QXmlStreamReader::NoError) {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
                               .arg(QStringLiteral("EffectiveRights"), elm);
         return false;
     }
 
+    const QString text = reader.readElementText();
     if (text == QStringLiteral("true")) {
         mRights.setBit(right);
     } else if (text == QStringLiteral("false")) {

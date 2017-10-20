@@ -583,8 +583,8 @@ void EwsPropertyField::writeValue(QXmlStreamWriter &writer, const QVariant &valu
 {
     switch (value.type()) {
     case QVariant::StringList: {
-        QStringList list = value.toStringList();
-        Q_FOREACH (const QString &str, list) {
+        const QStringList list = value.toStringList();
+        for (const QString &str : list) {
             writer.writeTextElement(ewsTypeNsUri, QStringLiteral("String"), str);
         }
         break;
@@ -602,9 +602,9 @@ void EwsPropertyField::writeExtendedValue(QXmlStreamWriter &writer, const QVaria
 {
     switch (value.type()) {
     case QVariant::StringList: {
-        QStringList list = value.toStringList();
+        const QStringList list = value.toStringList();
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Values"));
-        Q_FOREACH (const QString &str, list) {
+        for (const QString &str : list) {
             writer.writeTextElement(ewsTypeNsUri, QStringLiteral("Value"), str);
         }
         writer.writeEndElement();

@@ -54,7 +54,7 @@ void EwsGetFolderRequest::start()
     mShape.write(writer);
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderIds"));
-    Q_FOREACH (const EwsId &id, mIds) {
+    for (const EwsId &id : qAsConst(mIds)) {
         id.writeFolderIds(writer);
     }
     writer.writeEndElement();

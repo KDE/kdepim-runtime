@@ -353,9 +353,9 @@ bool EwsItemPrivate::categoriesReader(QXmlStreamReader &reader, QVariant &val)
 
 bool EwsItemPrivate::categoriesWriter(QXmlStreamWriter &writer, const QVariant &val)
 {
-    QStringList categories = val.toStringList();
+    const QStringList categories = val.toStringList();
 
-    Q_FOREACH (const QString &cat, categories) {
+    for (const QString &cat : categories) {
         writer.writeTextElement(ewsTypeNsUri, QStringLiteral("String"), cat);
     }
 
