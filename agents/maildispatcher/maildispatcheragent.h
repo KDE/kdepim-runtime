@@ -57,13 +57,14 @@ Q_SIGNALS:
 protected:
     void doSetOnline(bool online) override;
 
+private Q_SLOTS:
+    void sendPercent(KJob *job, unsigned long percent);
 private:
     // Q_SLOTS:
     void abort();
     void dispatch();
     void itemFetched(const Akonadi::Item &item);
     void queueError(const QString &message);
-    void sendPercent(KJob *job, unsigned long percent);
     void sendResult(KJob *job);
     void emitStatusReady();
 

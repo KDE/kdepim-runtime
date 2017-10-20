@@ -335,12 +335,12 @@ OutboxQueue::OutboxQueue(QObject *parent)
     mMonitor = new Monitor(this);
     mMonitor->itemFetchScope().fetchAllAttributes();
     mMonitor->itemFetchScope().fetchFullPayload(false);
-    connect(mMonitor, SIGNAL(itemAdded(Akonadi::Item,Akonadi::Collection)),
-            this, SLOT(itemAdded(Akonadi::Item)));
-    connect(mMonitor, SIGNAL(itemChanged(Akonadi::Item,QSet<QByteArray>)),
-            this, SLOT(itemChanged(Akonadi::Item)));
-    connect(mMonitor, SIGNAL(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)),
-            this, SLOT(itemMoved(Akonadi::Item,Akonadi::Collection,Akonadi::Collection)));
+    connect(mMonitor, &Monitor::itemAdded,
+            this, &OutboxQueue::itemAdded);
+    connect(mMonitor, &Monitor::itemChanged,
+            this, &OutboxQueue::itemChanged);
+    connect(mMonitor, &Monitor::itemMoved,
+            this, &OutboxQueue::itemMoved);
     connect(mMonitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) { itemRemoved(item); });
 
     connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() { localFoldersChanged(); });
