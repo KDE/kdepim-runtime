@@ -237,13 +237,13 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
 
 void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 {
+    KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob *>(job);
+
     if (job->error()) {
-        qCWarning(IMAPRESOURCE_LOG) << job->errorString();
-        cancelTask(job->errorString());
+        qCWarning(IMAPRESOURCE_LOG) << select->mailBox() << ":" << job->errorString();
+        cancelTask(select->mailBox() + QStringLiteral(" : ") + job->errorString());
         return;
     }
-
-    KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob *>(job);
 
     m_mailBox = select->mailBox();
     m_messageCount = select->messageCount();
