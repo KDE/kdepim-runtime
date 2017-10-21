@@ -157,4 +157,12 @@ public:
                                     const ReplyCallback &callback = ReplyCallback());
 };
 
+class ValidateFolderIdsDialogEntry : public DialogEntryBase
+{
+public:
+    explicit ValidateFolderIdsDialogEntry(const QStringList &ids = QStringList(),
+                                          const QString &descr = QString(),
+                                          const ReplyCallback &callback = ReplyCallback());
+};
+
 #endif

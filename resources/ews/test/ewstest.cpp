@@ -108,6 +108,12 @@ void BasicTest::testBasic()
                                 QStringLiteral("GetFolder request for inbox and msgroot")),
         SubscribedFoldersDialogEntry(folderList,
                                      QStringLiteral("GetFolder request for subscribed folders")),
+        ValidateFolderIdsDialogEntry(QStringList()
+                                     << inboxId
+                                     << QStringLiteral("Y2FsZW5kYXI=")
+                                     << QStringLiteral("dGFza3M=")
+                                     << QStringLiteral("Y29udGFjdHM="),
+                                     QStringLiteral("GetFolder request for subscribed folder ids")),
         SpecialFoldersDialogEntry(folderList,
                                   QStringLiteral("GetFolder request for special folders")),
         GetTagsEmptyDialogEntry(rootId,

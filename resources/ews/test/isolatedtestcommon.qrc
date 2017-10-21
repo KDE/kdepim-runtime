@@ -8,6 +8,6 @@
     <file alias="subscribe-streaming">resources/subscribe-streaming.xq</file>
     <file alias="syncfolderhierarhy-emptystate">resources/syncfolderhierarhy-emptystate.xq</file>
     <file alias="unsubscribe">resources/unsubscribe.xq</file>
+    <file alias="getfolder-validateids">resources/getfolder-validateids.xq</file>
 </qresource>
 </RCC>
- 

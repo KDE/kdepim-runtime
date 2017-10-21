@@ -312,3 +312,25 @@ UnsubscribeDialogEntry::UnsubscribeDialogEntry(const QString &descr, const Reply
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/unsubscribe"));
 }
 
+ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &ids, const QString &descr,
+                                                           const ReplyCallback &callback)
+    : DialogEntryBase(descr, callback)
+{
+    QStringList xQueryFolderIds;
+    QString responseXml;
+    int folderIndex = 0;
+
+    for (auto folderId : ids) {
+        xQueryFolderIds.append(QStringLiteral("//m:GetFolder/m:FolderIds/t:FolderId[position()=%1 and @Id=\"%2\"]")
+                               .arg(++folderIndex).arg(folderId));
+        responseXml += QStringLiteral("<m:GetFolderResponseMessage ResponseClass=\"Success\">");
+        responseXml += QStringLiteral("<m:ResponseCode>NoError</m:ResponseCode>");
+        responseXml += QStringLiteral("<m:Folders><t:Folder>");
+        responseXml += QStringLiteral("<t:FolderId Id=\"%1\" ChangeKey=\"MDAx\" />").arg(folderId);
+        responseXml += QStringLiteral("</t:Folder></m:Folders>");
+        responseXml += QStringLiteral("</m:GetFolderResponseMessage>");
+    }
+
+    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-validateids"))
+        .arg(folderIndex).arg(xQueryFolderIds.join(QStringLiteral(" and "))).arg(responseXml);
+}
