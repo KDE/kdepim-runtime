@@ -109,7 +109,7 @@ TestAgentInstance::TestAgentInstance(const QString &url)
         reply = mEwsSettingsInterface->baseUrl();
         if (!reply.isValid()) {
             qDebug() << "Failed to set base URL:" << reply.error().message();
-            QThread::usleep(250);
+            QThread::msleep(250);
         }
     } while (!reply.isValid() && retryCnt-- > 0);
     QVERIFY(reply.isValid());
