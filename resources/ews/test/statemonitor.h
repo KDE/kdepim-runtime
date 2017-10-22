@@ -32,7 +32,7 @@ class StateMonitorBase : public QObject
     Q_OBJECT
 public:
     explicit StateMonitorBase(QObject *parent) : QObject(parent) {}
-    virtual ~StateMonitorBase() = default;
+    ~StateMonitorBase() override = default;
 Q_SIGNALS:
     void stateReached();
     void errorOccurred();
@@ -44,7 +44,7 @@ public:
     typedef std::function<bool(const Akonadi::Collection &col, const T &state)> StateComparisonFunc;
     CollectionStateMonitor(QObject *parent, const QHash<QString, T> &stateHash,
                            const QString &inboxId, const StateComparisonFunc &comparisonFunc);
-    ~CollectionStateMonitor() = default;
+    ~CollectionStateMonitor() override = default;
     Akonadi::Monitor &monitor()
     {
         return mMonitor;
