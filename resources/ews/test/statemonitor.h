@@ -55,7 +55,7 @@ private:
     Akonadi::Monitor mMonitor;
     QSet<QString> mPending;
     const QHash<QString, T> &mStateHash;
-    const StateComparisonFunc &mComparisonFunc;
+    StateComparisonFunc mComparisonFunc;
     const QString &mInboxId;
 };
 
