@@ -34,17 +34,17 @@ public:
     /// It should contain a `%1` place marker, to be replaced by `O0BaseAuth::localPort()`.
     /// Defaults to `O2_CALLBACK_URL`.
     Q_PROPERTY(QString callbackUrl READ callbackUrl WRITE setCallbackUrl)
-    QString callbackUrl();
+    QString callbackUrl() const;
     void setCallbackUrl(const QString &value);
 
     /// Authorization URL.
     Q_PROPERTY(QUrl authorizeUrl READ authorizeUrl WRITE setAuthorizeUrl NOTIFY authorizeUrlChanged)
-    QUrl authorizeUrl();
+    QUrl authorizeUrl() const;
     void setAuthorizeUrl(const QUrl &value);
 
     /// Access token URL.
     Q_PROPERTY(QUrl accessTokenUrl READ accessTokenUrl WRITE setAccessTokenUrl NOTIFY accessTokenUrlChanged)
-    QUrl accessTokenUrl();
+    QUrl accessTokenUrl() const;
     void setAccessTokenUrl(const QUrl &value);
 
     /// Constructor.

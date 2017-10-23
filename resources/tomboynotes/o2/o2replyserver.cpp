@@ -75,7 +75,7 @@ QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
     return queryParams;
 }
 
-QByteArray O2ReplyServer::replyContent()
+QByteArray O2ReplyServer::replyContent() const
 {
     return replyContent_;
 }

@@ -49,7 +49,7 @@ void O1::setRequestParameters(const QList<O0RequestParameter> &v)
     requestParameters_ = v;
 }
 
-QString O1::callbackUrl()
+QString O1::callbackUrl() const
 {
     return callbackUrl_;
 }
@@ -59,7 +59,7 @@ void O1::setCallbackUrl(const QString &v)
     callbackUrl_ = v;
 }
 
-QUrl O1::authorizeUrl()
+QUrl O1::authorizeUrl() const
 {
     return authorizeUrl_;
 }
@@ -70,7 +70,7 @@ void O1::setAuthorizeUrl(const QUrl &value)
     Q_EMIT authorizeUrlChanged();
 }
 
-QUrl O1::accessTokenUrl()
+QUrl O1::accessTokenUrl() const
 {
     return accessTokenUrl_;
 }

@@ -16,7 +16,7 @@ public:
 
     /// Page content on local host after successful oauth - in case you do not want to close the browser, but display something
     Q_PROPERTY(QByteArray replyContent READ replyContent WRITE setReplyContent)
-    QByteArray replyContent();
+    QByteArray replyContent() const;
     void setReplyContent(const QByteArray &value);
 
 Q_SIGNALS:

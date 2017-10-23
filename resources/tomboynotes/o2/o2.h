@@ -38,12 +38,12 @@ public:
     /// Resource owner password.
     /// O2 instances with the same (username, password) share the same "linked" and "token" properties.
     Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordChanged)
-    QString password();
+    QString password() const;
     void setPassword(const QString &value);
 
     /// Scope of authentication.
     Q_PROPERTY(QString scope READ scope WRITE setScope NOTIFY scopeChanged)
-    QString scope();
+    QString scope() const;
     void setScope(const QString &value);
 
     /// Localhost policy. By default it's value is http://127.0.0.1:%1/, however some services may
@@ -54,13 +54,13 @@ public:
 
     /// API key.
     Q_PROPERTY(QString apiKey READ apiKey WRITE setApiKey)
-    QString apiKey();
+    QString apiKey() const;
     void setApiKey(const QString &value);
 
     /// Page content on local host after successful oauth.
     /// Provide it in case you do not want to close the browser, but display something
     Q_PROPERTY(QByteArray replyContent READ replyContent WRITE setReplyContent)
-    QByteArray replyContent();
+    QByteArray replyContent() const;
     void setReplyContent(const QByteArray &value);
 
     /// Allow ignoring SSL errors?
@@ -71,7 +71,7 @@ public:
 
     /// Request URL.
     Q_PROPERTY(QString requestUrl READ requestUrl WRITE setRequestUrl NOTIFY requestUrlChanged)
-    QString requestUrl();
+    QString requestUrl() const;
     void setRequestUrl(const QString &value);
 
     /// Token request URL.
@@ -90,7 +90,7 @@ public:
     explicit O2(QObject *parent = nullptr);
 
     /// Get authentication code.
-    QString code();
+    QString code() const;
 
     /// Get refresh token.
     QString refreshToken();

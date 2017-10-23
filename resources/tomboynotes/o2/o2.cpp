@@ -98,7 +98,7 @@ void O2::setUsername(const QString &value)
     Q_EMIT usernameChanged();
 }
 
-QString O2::password()
+QString O2::password() const
 {
     return password_;
 }
@@ -109,7 +109,7 @@ void O2::setPassword(const QString &value)
     Q_EMIT passwordChanged();
 }
 
-QString O2::scope()
+QString O2::scope() const
 {
     return scope_;
 }
@@ -120,7 +120,7 @@ void O2::setScope(const QString &value)
     Q_EMIT scopeChanged();
 }
 
-QString O2::requestUrl()
+QString O2::requestUrl() const
 {
     return requestUrl_.toString();
 }
@@ -262,7 +262,7 @@ void O2::onVerificationReceived(const QMap<QString, QString> &response)
     }
 }
 
-QString O2::code()
+QString O2::code() const
 {
     QString key = QString(O2_KEY_CODE).arg(clientId_);
     return store_->value(key);
@@ -424,7 +424,7 @@ void O2::setLocalhostPolicy(const QString &value)
     localhostPolicy_ = value;
 }
 
-QString O2::apiKey()
+QString O2::apiKey() const
 {
     return apiKey_;
 }
@@ -434,7 +434,7 @@ void O2::setApiKey(const QString &value)
     apiKey_ = value;
 }
 
-QByteArray O2::replyContent()
+QByteArray O2::replyContent() const
 {
     return replyServer_->replyContent();
 }
