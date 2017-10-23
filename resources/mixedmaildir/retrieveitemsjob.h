@@ -56,8 +56,6 @@ private:
     Private *const d;
 
     Q_PRIVATE_SLOT(d, void itemModifyJobResult(KJob *))
-    Q_PRIVATE_SLOT(d, void itemCreateJobResult(KJob *))
-    Q_PRIVATE_SLOT(d, void akonadiFetchResult(KJob *))
     Q_PRIVATE_SLOT(d, void transactionResult(KJob *))
     Q_PRIVATE_SLOT(d, void storeListResult(KJob *))
     Q_PRIVATE_SLOT(d, void processNewItem())

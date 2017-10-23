@@ -256,7 +256,7 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 
     ItemCreateJob *itemCreate = new ItemCreateJob(item, mCollection, transaction());
     mNumItemCreateJobs++;
-    connect(itemCreate, SIGNAL(result(KJob*)), q, SLOT(itemCreateJobResult(KJob*)));
+    connect(itemCreate, &ItemCreateJob::result, q, [this](KJob *job) { itemCreateJobResult(job); });
 
     if (mNumItemCreateJobs < MaxItemCreateJobs) {
         QMetaObject::invokeMethod(q, "processNewItem", Qt::QueuedConnection);
@@ -359,7 +359,7 @@ Item::List RetrieveItemsJob::itemsMarkedAsDeleted() const
 void RetrieveItemsJob::doStart()
 {
     ItemFetchJob *job = new Akonadi::ItemFetchJob(d->mCollection, this);
-    connect(job, SIGNAL(result(KJob*)), this, SLOT(akonadiFetchResult(KJob*)));
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) { d->akonadiFetchResult(job); });
 }
 
 #include "moc_retrieveitemsjob.cpp"
