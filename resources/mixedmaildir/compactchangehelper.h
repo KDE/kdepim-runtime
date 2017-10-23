@@ -54,7 +54,6 @@ private:
 
     Q_PRIVATE_SLOT(d, void processNextBatch())
     Q_PRIVATE_SLOT(d, void processNextItem())
-    Q_PRIVATE_SLOT(d, void itemFetchResult(KJob *))
 };
 
 #endif

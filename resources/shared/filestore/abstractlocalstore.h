@@ -116,8 +116,6 @@ protected: // template methods
 private:
     class Private;
     Private *const d;
-
-    Q_PRIVATE_SLOT(d, void processJobs(const QList<FileStore::Job *> &jobs))
 };
 
 }

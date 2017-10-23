@@ -93,7 +93,7 @@ void CompactChangeHelper::Private::processNextItem()
     ItemFetchJob *job = new ItemFetchJob(item);
     job->setProperty("oldRemoteId", item.remoteId());
     job->setProperty("newRemoteId", nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId());
-    QObject::connect(job, SIGNAL(result(KJob*)), q, SLOT(itemFetchResult(KJob*)));
+    QObject::connect(job, &ItemFetchJob::result, q, [this](KJob *job) { itemFetchResult(job); });
 }
 
 void CompactChangeHelper::Private::itemFetchResult(KJob *job)

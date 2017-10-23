@@ -111,7 +111,7 @@ public:
     explicit Private(FileStore::FiFoQueueJobSession *parent)
         : mParent(parent)
     {
-        QObject::connect(&mJobRunTimer, SIGNAL(timeout()), mParent, SLOT(runNextJob()));
+        QObject::connect(&mJobRunTimer, &QTimer::timeout, mParent, [this]() { runNextJob(); });
     }
 
     void runNextJob()
