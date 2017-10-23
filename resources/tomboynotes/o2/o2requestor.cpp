@@ -45,7 +45,7 @@ int O2Requestor::post(const QNetworkRequest &req, const QByteArray &data)
     timedReplies_.add(reply_);
     connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRequestError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
     connect(reply_, SIGNAL(finished()), this, SLOT(onRequestFinished()), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(onUploadProgress(qint64,qint64)));
+    connect(reply_, &QNetworkReply::uploadProgress, this, &O2Requestor::onUploadProgress);
     return id_;
 }
 
@@ -58,8 +58,8 @@ int O2Requestor::put(const QNetworkRequest &req, const QByteArray &data)
     reply_ = manager_->put(request_, data_);
     timedReplies_.add(reply_);
     connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRequestError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(finished()), this, SLOT(onRequestFinished()), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(onUploadProgress(qint64,qint64)));
+    connect(reply_, &QNetworkReply::finished, this, &O2Requestor::onRequestFinished, Qt::QueuedConnection);
+    connect(reply_, &QNetworkReply::uploadProgress, this, &O2Requestor::onUploadProgress);
     return id_;
 }
 

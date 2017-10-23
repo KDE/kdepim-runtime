@@ -24,7 +24,7 @@ O1::O1(QObject *parent): O0BaseAuth(parent)
     manager_ = new QNetworkAccessManager(this);
     replyServer_ = new O2ReplyServer(this);
     qRegisterMetaType<QNetworkReply::NetworkError>("QNetworkReply::NetworkError");
-    connect(replyServer_, SIGNAL(verificationReceived(QMap<QString,QString>)), this, SLOT(onVerificationReceived(QMap<QString,QString>)));
+    connect(replyServer_, &O2ReplyServer::verificationReceived, this, &O1::onVerificationReceived);
     setCallbackUrl(O2_CALLBACK_URL);
 }
 
