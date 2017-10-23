@@ -67,8 +67,7 @@ public:
         if (!mTransaction) {
             mTransaction = new TransactionSequence(q);
             mTransaction->setAutomaticCommittingEnabled(false);
-            connect(mTransaction, SIGNAL(result(KJob*)),
-                    q, SLOT(transactionResult(KJob*)));
+            connect(mTransaction, &TransactionSequence::result, q, [this](KJob *job) { transactionResult(job); });
         }
         return mTransaction;
     }
@@ -286,7 +285,7 @@ void RetrieveItemsJob::Private::processChangedItem()
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
     storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-    connect(storeFetch, SIGNAL(result(KJob*)), q, SLOT(fetchChangedResult(KJob*)));
+    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) { fetchChangedResult(job); });
 }
 
 void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
@@ -312,7 +311,7 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
     }
 
     ItemModifyJob *itemModify = new ItemModifyJob(item, transaction());
-    connect(itemModify, SIGNAL(result(KJob*)), q, SLOT(itemModifyJobResult(KJob*)));
+    connect(itemModify, &ItemModifyJob::result, q, [this](KJob *job) {itemModifyJobResult(job); });
     mNumItemModifyJobs++;
     if (mNumItemModifyJobs < MaxItemModifyJobs) {
         QMetaObject::invokeMethod(q, "processChangedItem", Qt::QueuedConnection);
