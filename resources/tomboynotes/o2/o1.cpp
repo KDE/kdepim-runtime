@@ -28,7 +28,7 @@ O1::O1(QObject *parent): O0BaseAuth(parent)
     setCallbackUrl(O2_CALLBACK_URL);
 }
 
-QUrl O1::requestTokenUrl()
+QUrl O1::requestTokenUrl() const
 {
     return requestTokenUrl_;
 }

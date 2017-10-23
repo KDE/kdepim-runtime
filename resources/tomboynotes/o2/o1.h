@@ -22,7 +22,7 @@ public:
 
     /// Token request URL.
     Q_PROPERTY(QUrl requestTokenUrl READ requestTokenUrl WRITE setRequestTokenUrl NOTIFY requestTokenUrlChanged)
-    QUrl requestTokenUrl();
+    QUrl requestTokenUrl() const;
     void setRequestTokenUrl(const QUrl &value);
 
     /// Parameters to pass with request URL.

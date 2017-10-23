@@ -81,7 +81,7 @@ int main(int argc, char **argv)
         QObject::connect(migrator, SIGNAL(message(MigratorBase::MessageType,QString)),
                          infoDialog, SLOT(message(MigratorBase::MessageType,QString)));
         QObject::connect(migrator, &QObject::destroyed, infoDialog, &InfoDialog::migratorDone);
-        QObject::connect(migrator, SIGNAL(progress(int)), infoDialog, SLOT(progress(int)));
+        QObject::connect(migrator, QOverload<int>::of(&MigratorBase::progress), infoDialog, QOverload<int>::of(&InfoDialog::progress));
     }
     QObject::connect(migrator, SIGNAL(stoppedProcessing()), &app, SLOT(quit()));
     migrator->start();

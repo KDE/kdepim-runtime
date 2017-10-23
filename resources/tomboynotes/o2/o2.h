@@ -26,7 +26,7 @@ public:
 
     /// Authorization flow.
     Q_PROPERTY(GrantFlow grantFlow READ grantFlow WRITE setGrantFlow NOTIFY grantFlowChanged)
-    GrantFlow grantFlow();
+    GrantFlow grantFlow() const;
     void setGrantFlow(GrantFlow value);
 
     /// Resource owner username.

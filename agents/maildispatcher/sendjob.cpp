@@ -113,8 +113,8 @@ void SendJob::doAkonadiTransport()
     }
 
     // Signals.
-    QObject::connect(AgentManager::self(), SIGNAL(instanceProgressChanged(Akonadi::AgentInstance)),
-                     this, SLOT(resourceProgress(Akonadi::AgentInstance)));
+    QObject::connect(AgentManager::self(), &AgentManager::instanceProgressChanged,
+                     this, &SendJob::resourceProgress);
     QObject::connect(mInterface, SIGNAL(transportResult(qlonglong,int,QString)),
                      this, SLOT(resourceResult(qlonglong,int,QString)));
 

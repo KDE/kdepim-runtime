@@ -73,10 +73,10 @@ O2::O2(QObject *parent): O0BaseAuth(parent)
     grantFlow_ = GrantFlowAuthorizationCode;
     localhostPolicy_ = QString(O2_CALLBACK_URL);
     qRegisterMetaType<QNetworkReply::NetworkError>("QNetworkReply::NetworkError");
-    connect(replyServer_, SIGNAL(verificationReceived(QMap<QString,QString>)), this, SLOT(onVerificationReceived(QMap<QString,QString>)));
+    connect(replyServer_, &O2ReplyServer::verificationReceived, this, &O2::onVerificationReceived);
 }
 
-O2::GrantFlow O2::grantFlow()
+O2::GrantFlow O2::grantFlow() const
 {
     return grantFlow_;
 }
