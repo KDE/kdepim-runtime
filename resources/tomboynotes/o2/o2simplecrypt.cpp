@@ -151,25 +151,25 @@ QString O0SimpleCrypt::encryptToString(const QByteArray &plaintext)
 
 QString O0SimpleCrypt::decryptToString(const QString &cyphertext)
 {
-    QByteArray cyphertextArray = QByteArray::fromBase64(cyphertext.toLatin1());
-    QByteArray plaintextArray = decryptToByteArray(cyphertextArray);
-    QString plaintext = QString::fromUtf8(plaintextArray.constData(), plaintextArray.size());
+    const QByteArray cyphertextArray = QByteArray::fromBase64(cyphertext.toLatin1());
+    const QByteArray plaintextArray = decryptToByteArray(cyphertextArray);
+    const QString plaintext = QString::fromUtf8(plaintextArray.constData(), plaintextArray.size());
 
     return plaintext;
 }
 
 QString O0SimpleCrypt::decryptToString(const QByteArray &cypher)
 {
-    QByteArray ba = decryptToByteArray(cypher);
-    QString plaintext = QString::fromUtf8(ba.constData(), ba.size());
+    const QByteArray ba = decryptToByteArray(cypher);
+    const QString plaintext = QString::fromUtf8(ba.constData(), ba.size());
 
     return plaintext;
 }
 
 QByteArray O0SimpleCrypt::decryptToByteArray(const QString &cyphertext)
 {
-    QByteArray cyphertextArray = QByteArray::fromBase64(cyphertext.toLatin1());
-    QByteArray ba = decryptToByteArray(cyphertextArray);
+    const QByteArray cyphertextArray = QByteArray::fromBase64(cyphertext.toLatin1());
+    const QByteArray ba = decryptToByteArray(cyphertextArray);
 
     return ba;
 }

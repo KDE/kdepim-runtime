@@ -48,20 +48,20 @@ void O0BaseAuth::setLinked(bool v)
 
 QString O0BaseAuth::tokenSecret()
 {
-    QString key = QString::fromLatin1(O2_KEY_TOKEN_SECRET).arg(clientId_);
+    const QString key = QString::fromLatin1(O2_KEY_TOKEN_SECRET).arg(clientId_);
     return store_->value(key);
 }
 
 void O0BaseAuth::setTokenSecret(const QString &v)
 {
-    QString key = QString::fromLatin1(O2_KEY_TOKEN_SECRET).arg(clientId_);
+    const QString key = QString::fromLatin1(O2_KEY_TOKEN_SECRET).arg(clientId_);
     store_->setValue(key, v);
     Q_EMIT tokenSecretChanged();
 }
 
-QString O0BaseAuth::token()
+QString O0BaseAuth::token() const
 {
-    QString key = QString::fromLatin1(O2_KEY_TOKEN).arg(clientId_);
+    const QString key = QString::fromLatin1(O2_KEY_TOKEN).arg(clientId_);
     return store_->value(key);
 }
 
@@ -72,7 +72,7 @@ void O0BaseAuth::setToken(const QString &v)
     Q_EMIT tokenChanged();
 }
 
-QString O0BaseAuth::clientId()
+QString O0BaseAuth::clientId() const
 {
     return clientId_;
 }
@@ -83,7 +83,7 @@ void O0BaseAuth::setClientId(const QString &value)
     Q_EMIT clientIdChanged();
 }
 
-QString O0BaseAuth::clientSecret()
+QString O0BaseAuth::clientSecret() const
 {
     return clientSecret_;
 }
@@ -94,7 +94,7 @@ void O0BaseAuth::setClientSecret(const QString &value)
     Q_EMIT clientSecretChanged();
 }
 
-int O0BaseAuth::localPort()
+int O0BaseAuth::localPort() const
 {
     return localPort_;
 }

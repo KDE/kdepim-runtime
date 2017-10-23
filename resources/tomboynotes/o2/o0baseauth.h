@@ -25,7 +25,7 @@ public:
 
     /// Authentication token.
     Q_PROPERTY(QString token READ token NOTIFY tokenChanged)
-    QString token();
+    QString token() const;
 
     /// Authentication token secret.
     Q_PROPERTY(QString tokenSecret READ tokenSecret NOTIFY tokenSecretChanged)
@@ -38,20 +38,20 @@ public:
     /// Client application ID.
     /// O1 instances with the same (client ID, client secret) share the same "linked", "token" and "tokenSecret" properties.
     Q_PROPERTY(QString clientId READ clientId WRITE setClientId NOTIFY clientIdChanged)
-    QString clientId();
+    QString clientId() const;
     void setClientId(const QString &value);
 
     /// Client application secret.
     /// O1 instances with the same (client ID, client secret) share the same "linked", "token" and "tokenSecret" properties.
     Q_PROPERTY(QString clientSecret READ clientSecret WRITE setClientSecret NOTIFY clientSecretChanged)
-    QString clientSecret();
+    QString clientSecret() const;
     void setClientSecret(const QString &value);
 
     /// TCP port number to use in local redirections.
     /// The OAuth "redirect_uri" will be set to "http://localhost:<localPort>/".
     /// If localPort is set to 0 (default), O2 will replace it with a free one.
     Q_PROPERTY(int localPort READ localPort WRITE setLocalPort NOTIFY localPortChanged)
-    int localPort();
+    int localPort() const;
     void setLocalPort(int value);
 
     /// Sets the storage object to use for storing the OAuth tokens on a peristent medium

@@ -32,7 +32,7 @@ public:
     /// Resource owner username.
     /// O2 instances with the same (username, password) share the same "linked" and "token" properties.
     Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
-    QString username();
+    QString username() const;
     void setUsername(const QString &value);
 
     /// Resource owner password.

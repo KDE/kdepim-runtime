@@ -15,7 +15,7 @@
 O2ReplyServer::O2ReplyServer(QObject *parent): QTcpServer(parent)
 {
     connect(this, &QTcpServer::newConnection, this, &O2ReplyServer::onIncomingConnection);
-    replyContent_ = "<HTML></HTML>";
+    replyContent_ = QByteArrayLiteral("<HTML></HTML>");
 }
 
 void O2ReplyServer::onIncomingConnection()

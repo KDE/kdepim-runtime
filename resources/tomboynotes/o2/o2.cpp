@@ -87,7 +87,7 @@ void O2::setGrantFlow(O2::GrantFlow value)
     Q_EMIT grantFlowChanged();
 }
 
-QString O2::username()
+QString O2::username() const
 {
     return username_;
 }
@@ -333,19 +333,19 @@ QByteArray O2::buildRequestBody(const QMap<QString, QString> &parameters)
 
 int O2::expires()
 {
-    QString key = QString(O2_KEY_EXPIRES).arg(clientId_);
+    const QString key = QString(O2_KEY_EXPIRES).arg(clientId_);
     return store_->value(key).toInt();
 }
 
 void O2::setExpires(int v)
 {
-    QString key = QString(O2_KEY_EXPIRES).arg(clientId_);
+    const QString key = QString(O2_KEY_EXPIRES).arg(clientId_);
     store_->setValue(key, QString::number(v));
 }
 
 QString O2::refreshToken()
 {
-    QString key = QString(O2_KEY_REFRESH_TOKEN).arg(clientId_);
+    const QString key = QString(O2_KEY_REFRESH_TOKEN).arg(clientId_);
     return store_->value(key);
 }
 
