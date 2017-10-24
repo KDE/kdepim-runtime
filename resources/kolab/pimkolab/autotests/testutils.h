@@ -62,7 +62,7 @@ QString getPath(const char *file)
 void showDiff(const QString &expected, const QString &converted)
 {
     if (expected.isEmpty() || converted.isEmpty()) {
-        qWarning() << "files are emtpy";
+        qWarning() << "files are empty";
         return;
     }
     if (expected == converted) {
