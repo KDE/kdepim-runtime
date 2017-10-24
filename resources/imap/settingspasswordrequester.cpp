@@ -71,7 +71,7 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
                         "%1", serverError, m_resource->name());
     QDialog *dialog = new QDialog(parent, Qt::Dialog);
     dialog->setWindowTitle(i18n("Could Not Authenticate"));
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::No | QDialogButtonBox::Yes);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::No | QDialogButtonBox::Yes, dialog);
     buttonBox->button(QDialogButtonBox::Yes)->setDefault(true);
 
     buttonBox->button(QDialogButtonBox::Yes)->setText(i18n("Account Settings"));
