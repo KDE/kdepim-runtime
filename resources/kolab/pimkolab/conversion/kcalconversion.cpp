@@ -25,7 +25,6 @@
 #include <QDate>
 #include <vector>
 
-
 #include "commonconversion.h"
 #include "pimkolab_debug.h"
 namespace Kolab {

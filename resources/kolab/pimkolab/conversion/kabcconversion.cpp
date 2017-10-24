@@ -682,7 +682,9 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     }
 
     std::vector<Kolab::Url> urls;
-    const QUrl url{addressee.url().url()};
+    const QUrl url{
+        addressee.url().url()
+    };
     if (!url.isEmpty()) {
         urls.push_back(Kolab::Url(toStdString(url.url())));
     }

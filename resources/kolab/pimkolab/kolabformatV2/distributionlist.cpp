@@ -38,7 +38,10 @@
 using namespace KolabV2;
 
 namespace {
-inline QString unhandledTagAppName() { return  QStringLiteral("KOLABUNHANDLED"); } // no hyphens in appnames!
+inline QString unhandledTagAppName()
+{
+    return QStringLiteral("KOLABUNHANDLED");
+}                                                                                  // no hyphens in appnames!
 }
 // saving (contactgroup->xml)
 DistributionList::DistributionList(const KContacts::ContactGroup *contactGroup)

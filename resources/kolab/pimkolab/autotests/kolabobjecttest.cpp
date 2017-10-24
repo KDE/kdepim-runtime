@@ -87,7 +87,8 @@ void KolabObjectTest::parseRelationMembers()
 {
     {
         QString memberString(
-            QStringLiteral("imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200"));
+            QStringLiteral(
+                "imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200"));
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberString);
 
         QString result = Kolab::generateMemberUrl(member);

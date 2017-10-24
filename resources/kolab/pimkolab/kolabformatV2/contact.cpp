@@ -40,10 +40,25 @@
 using namespace KolabV2;
 
 namespace {
-inline QString pictureAttachmentName() { return QStringLiteral("kolab-picture.png"); }
-inline QString logoAttachmentName() { return QStringLiteral("kolab-logo.png"); }
-inline QString soundAttachmentName() { return QStringLiteral("sound"); }
-inline QString unhandledTagAppName() { return QStringLiteral("KOLABUNHANDLED"); } // no hyphens in appnames!
+inline QString pictureAttachmentName()
+{
+    return QStringLiteral("kolab-picture.png");
+}
+
+inline QString logoAttachmentName()
+{
+    return QStringLiteral("kolab-logo.png");
+}
+
+inline QString soundAttachmentName()
+{
+    return QStringLiteral("sound");
+}
+
+inline QString unhandledTagAppName()
+{
+    return QStringLiteral("KOLABUNHANDLED");
+}                                                                                 // no hyphens in appnames!
 }
 
 // saving (addressee->xml)
@@ -390,7 +405,7 @@ bool Contact::loadNameAttribute(QDomElement &element)
                 setMiddleNames(e.text());
             } else if (tagName == QLatin1String("last-name")) {
                 setLastName(e.text());
-            } else if (tagName ==QLatin1String("full-name")) {
+            } else if (tagName == QLatin1String("full-name")) {
                 setFullName(e.text());
             } else if (tagName == QLatin1String("initials")) {
                 setInitials(e.text());
