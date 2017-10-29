@@ -115,7 +115,7 @@ private:
 
         OXA::Folder::Module module = OXA::Folder::Unbound;
 
-        if (parts.count() > 0) {
+        if (!parts.isEmpty()) {
             if (parts.at(0) == QLatin1String("calendar")) {
                 module = OXA::Folder::Calendar;
             } else if (parts.at(0) == QLatin1String("contacts")) {
