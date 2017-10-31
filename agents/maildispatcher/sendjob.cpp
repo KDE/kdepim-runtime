@@ -168,7 +168,7 @@ void SendJob::doTraditionalTransport()
 
     // Signals.
     connect(job, &TransportJob::result, this, [this](KJob *job) { transportResult(job);});
-    //We have a private signal
+    //Wait kf6 We have a private signal
     //connect(job, thisOverload<KJob*, ulong>::of(&TransportJob::percent), this, [this](KJob *job,ulong val) {transportPercent(job, val); });
     connect(job, SIGNAL(percent(KJob*,ulong)),
                 this, SLOT(transportPercent(KJob*,ulong)));

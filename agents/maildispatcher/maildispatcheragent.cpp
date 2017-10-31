@@ -221,6 +221,7 @@ void MailDispatcherAgent::itemFetched(const Item &item)
 
     connect(mCurrentJob, &KJob::result,
             this, &MailDispatcherAgent::sendResult);
+    //TODO wait kf6. For the moment we can't convert to new connect api.
     connect(mCurrentJob, SIGNAL(percent(KJob*,ulong)),
             this, SLOT(sendPercent(KJob*,ulong)));
 
