@@ -4,6 +4,6 @@ Mutators=true
 ItemAccessors=true
 SetUserTexts=true
 Singleton=false
-#IncludeFiles=
 GlobalEnums=true
 NameSpace=Akonadi_Maildir_Resource
+TranslationSystem=kde

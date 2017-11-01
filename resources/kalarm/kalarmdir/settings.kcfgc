@@ -6,3 +6,4 @@ SetUserTexts=true
 Singleton=false
 GlobalEnums=true
 NameSpace=Akonadi_KAlarm_Dir_Resource
+TranslationSystem=kde

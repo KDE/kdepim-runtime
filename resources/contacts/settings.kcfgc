@@ -6,3 +6,4 @@ SetUserTexts=true
 Singleton=false
 GlobalEnums=true
 NameSpace=Akonadi_Contacts_Resource
+TranslationSystem=kde

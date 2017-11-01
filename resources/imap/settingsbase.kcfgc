@@ -4,3 +4,4 @@ Mutators=true
 SetUserTexts=true
 Singleton=false
 GlobalEnums=true
+TranslationSystem=kde

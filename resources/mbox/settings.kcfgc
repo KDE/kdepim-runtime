@@ -4,5 +4,5 @@ Mutators=true
 ItemAccessors=true
 SetUserTexts=true
 Singleton=false
-#IncludeFiles=
 GlobalEnums=true
+TranslationSystem=kde

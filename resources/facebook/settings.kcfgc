@@ -1,6 +1,5 @@
 File=settings.kcfg
 ClassName=Settings
 Mutators=true
-SetUserTexts=true
 Singleton=true
 GlobalEnums=true

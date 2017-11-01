@@ -4,7 +4,6 @@ Mutators=true
 ItemAccessors=true
 SetUserTexts=true
 Singleton=false
-#IncludeFiles=
 GlobalEnums=true
 NameSpace=Akonadi_ICal_Resource
-
+TranslationSystem=kde
