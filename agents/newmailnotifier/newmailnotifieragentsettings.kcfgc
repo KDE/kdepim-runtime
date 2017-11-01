@@ -3,4 +3,3 @@ File=newmailnotifieragentsettings.kcfg
 ClassName=NewMailNotifierAgentSettings
 Singleton=true
 Mutators=true
-SetUserTexts=true
