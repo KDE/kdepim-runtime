@@ -75,6 +75,7 @@ public:
 
 private Q_SLOTS:
     void transportPercent(KJob *job, unsigned long percent);
+    void resourceResult(qlonglong itemId, int result, const QString &message);
 private:
     void doAkonadiTransport();
     void doTraditionalTransport();
@@ -87,7 +88,6 @@ private:
     void doTransport();
     void transportResult(KJob *job);
     void resourceProgress(const Akonadi::AgentInstance &instance);
-    void resourceResult(qlonglong itemId, int result, const QString &message);
     void postJobResult(KJob *job);
     void doEmitResult(KJob *job);
     void slotSentMailCollectionFetched(KJob *job);
