@@ -26,8 +26,6 @@
 
 #include "ewstypes.h"
 
-#include <ewsconfig.h>
-
 class QXmlStreamWriter;
 class QXmlStreamReader;
 /**
@@ -102,9 +100,6 @@ public:
     void writeAttributes(QXmlStreamWriter &writer) const;
 
     friend QDebug operator<<(QDebug debug, const EwsId &id);
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-    static void setInboxId(EwsId id);
-#endif
 private:
     Type mType;
     QString mId;

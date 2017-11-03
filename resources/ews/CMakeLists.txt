@@ -20,10 +20,6 @@
 # a single resource is not able to both send and receive e-mail.
 set(HAVE_SEPARATE_MTA_RESOURCE TRUE)
 
-# Pretend the inbox folder remote identifier is "INBOX" in order to satisfy the assumption
-# that only such named folders should be monitored for filtering rules.
-set(HAVE_INBOX_FILTERING_WORKAROUND TRUE)
-
 set(AKONADI_EWS_VERSION ${KDEPIM_RUNTIME_VERSION})
 
 add_subdirectory(ewsclient)

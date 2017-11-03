@@ -201,16 +201,14 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
     EwsFolder folder = req->responses()[1].folder();
     EwsId id = folder[EwsFolderFieldFolderId].value<EwsId>();
     if (id.type() == EwsId::Real) {
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-        EwsId::setInboxId(id);
-        Collection c;
-        c.setRemoteId(id.id());
-        CollectionFetchJob *job = new CollectionFetchJob(c, CollectionFetchJob::Base, this);
-        job->setFetchScope(changeRecorder()->collectionFetchScope());
-        job->fetchScope().setResource(identifier());
-        job->fetchScope().setListFilter(CollectionFetchScope::Sync);
-        connect(job, &CollectionFetchJob::result, this, &EwsResource::adjustInboxRemoteIdFetchFinished);
-#else
+        /* Since KDE PIM is heavily based on IMAP philosophy it would only consider for filtering
+         * folders with the remote identifier set to "INBOX". While this is true for IMAP/POP3, Exchange
+         * uses Base64-encoded strings with data private to the server. In order for mail filtering to work
+         * the EWS resource has pretended that the inbox folder's remote name is "INBOX". Since KDE Applications
+         * 17.12 this workaround is no longer needed, however in order to clean-up after old Akonadi EWS
+         * installations the code below sets the correct Exchange id for the Inbox folder.
+         *
+         * At some day in the future this part of code can be removed too. */
         Collection c;
         c.setRemoteId(QStringLiteral("INBOX"));
         CollectionFetchJob *job = new CollectionFetchJob(c, CollectionFetchJob::Base, this);
@@ -226,7 +224,6 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
             subList[inboxIdx] = id.id();
             mSettings->setServerSubscriptionList(subList);
         }
-#endif
     }
 
     folder = req->responses().first().folder();
@@ -263,11 +260,7 @@ void EwsResource::adjustInboxRemoteIdFetchFinished(KJob *job)
         Q_ASSERT(fetchJob);
         if (!fetchJob->collections().isEmpty()) {
             Collection c = fetchJob->collections()[0];
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-            c.setRemoteId(QStringLiteral("INBOX"));
-#else
             c.setRemoteId(fetchJob->property("inboxId").toString());
-#endif
             CollectionModifyJob *modifyJob = new CollectionModifyJob(c, this);
             modifyJob->start();
         }

@@ -66,17 +66,6 @@ public:
 };
 const EwsIdComparatorRegistrar ewsIdComparatorRegistrar;
 
-/*
- * Current Akonadi mail filter agent determines which folders to filter for incoming mail by
- * checking if their remote ID is "INBOX". This is very IMAP-centric and obviously will not work
- * with EWS, which uses Base64 folder identifiers.
- * Until Akonadi is fixed pretend that the remote identifier for the inbox folder is "INBOX" and
- * hide the real identifier in a global variable.
- */
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-static QString inboxId;
-#endif
-
 EwsId::EwsId(QXmlStreamReader &reader)
     : mDid(EwsDIdCalendar)
 {
@@ -92,22 +81,12 @@ EwsId::EwsId(QXmlStreamReader &reader)
     mId = idRef.toString();
     if (!changeKeyRef.isNull())
         mChangeKey = changeKeyRef.toString();
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-    if (mId == inboxId) {
-        mId = QStringLiteral("INBOX");
-    }
-#endif
     mType = Real;
 }
 
 EwsId::EwsId(const QString &id, const QString &changeKey)
     : mType(Real), mId(id), mChangeKey(changeKey), mDid(EwsDIdCalendar)
 {
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-    if (mId == inboxId) {
-        mId = QStringLiteral("INBOX");
-    }
-#endif
 }
 
 EwsId &EwsId::operator=(const EwsId &other)
@@ -167,23 +146,8 @@ void EwsId::writeFolderIds(QXmlStreamWriter &writer) const
         writer.writeAttribute(QStringLiteral("Id"), distinguishedIdNames[mDid]);
         writer.writeEndElement();
     } else if (mType == Real) {
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-        if (mId == QStringLiteral("INBOX")) {
-            if (inboxId.isEmpty()) {
-                writer.writeStartElement(ewsTypeNsUri, QStringLiteral("DistinguishedFolderId"));
-                writer.writeAttribute(QStringLiteral("Id"), distinguishedIdNames[EwsDIdInbox]);
-            } else {
-                writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderId"));
-                writer.writeAttribute(QStringLiteral("Id"), inboxId);
-            }
-        } else {
-            writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderId"));
-            writer.writeAttribute(QStringLiteral("Id"), mId);
-        }
-#else
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderId"));
         writer.writeAttribute(QStringLiteral("Id"), mId);
-#endif
         if (!mChangeKey.isEmpty()) {
             writer.writeAttribute(QStringLiteral("ChangeKey"), mChangeKey);
         }
@@ -195,15 +159,7 @@ void EwsId::writeItemIds(QXmlStreamWriter &writer) const
 {
     if (mType == Real) {
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("ItemId"));
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-        if (mId == QStringLiteral("INBOX")) {
-            writer.writeAttribute(QStringLiteral("Id"), inboxId);
-        } else {
-            writer.writeAttribute(QStringLiteral("Id"), mId);
-        }
-#else
         writer.writeAttribute(QStringLiteral("Id"), mId);
-#endif
         if (!mChangeKey.isEmpty()) {
             writer.writeAttribute(QStringLiteral("ChangeKey"), mChangeKey);
         }
@@ -214,15 +170,7 @@ void EwsId::writeItemIds(QXmlStreamWriter &writer) const
 void EwsId::writeAttributes(QXmlStreamWriter &writer) const
 {
     if (mType == Real) {
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-        if (mId == QStringLiteral("INBOX")) {
-            writer.writeAttribute(QStringLiteral("Id"), inboxId);
-        } else {
-            writer.writeAttribute(QStringLiteral("Id"), mId);
-        }
-#else
         writer.writeAttribute(QStringLiteral("Id"), mId);
-#endif
         if (!mChangeKey.isEmpty()) {
             writer.writeAttribute(QStringLiteral("ChangeKey"), mChangeKey);
         }
@@ -255,13 +203,3 @@ uint qHash(const EwsId &id, uint seed)
 {
     return qHash(id.id(), seed) ^ qHash(id.changeKey(), seed) ^ static_cast<uint>(id.type());
 }
-
-#ifdef HAVE_INBOX_FILTERING_WORKAROUND
-void EwsId::setInboxId(EwsId id)
-{
-    if (inboxId.isEmpty()) {
-        inboxId = id.mId;
-    }
-}
-#endif
-
