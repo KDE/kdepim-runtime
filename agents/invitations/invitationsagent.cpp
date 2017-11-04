@@ -84,7 +84,7 @@ public:
     }
 };
 
-class  InvitationsCollection : public SpecialCollections
+class InvitationsCollection : public SpecialCollections
 {
 public:
 
@@ -106,7 +106,9 @@ public:
     };
 
     InvitationsCollection(InvitationsAgent *agent)
-        : Akonadi::SpecialCollections(new Settings), m_agent(agent), sInvitationsType("invitations")
+        : Akonadi::SpecialCollections(new Settings)
+        , m_agent(agent)
+        , sInvitationsType("invitations")
     {
     }
 
@@ -142,7 +144,7 @@ public:
     SpecialCollectionsRequestJob *reguestJob() const
     {
         InvitationsCollectionRequestJob *job = new InvitationsCollectionRequestJob(const_cast<InvitationsCollection *>(this),
-                m_agent);
+                                                                                   m_agent);
         job->requestDefaultCollection(sInvitationsType);
 
         return job;
@@ -155,7 +157,9 @@ private:
 };
 
 InvitationsAgentItem::InvitationsAgentItem(InvitationsAgent *agent, const Item &originalItem)
-    : QObject(agent), m_agent(agent), m_originalItem(originalItem)
+    : QObject(agent)
+    , m_agent(agent)
+    , m_originalItem(originalItem)
 {
 }
 
@@ -165,7 +169,6 @@ InvitationsAgentItem::~InvitationsAgentItem()
 
 void InvitationsAgentItem::add(const Item &item)
 {
-
     const Collection collection = m_agent->collection();
     Q_ASSERT(collection.isValid());
 
@@ -223,9 +226,9 @@ void InvitationsAgentItem::modifyItemDone(KJob *job)
 }
 
 InvitationsAgent::InvitationsAgent(const QString &id)
-    : AgentBase(id),
-      AgentBase::ObserverV3(),
-      m_invitationsCollection(new InvitationsCollection(this))
+    : AgentBase(id)
+    , AgentBase::ObserverV3()
+    , m_invitationsCollection(new InvitationsCollection(this))
 {
     changeRecorder()->setMimeTypeMonitored(KMime::Message::mimeType());
     changeRecorder()->itemFetchScope().setCacheOnly(true);
@@ -284,9 +287,7 @@ void InvitationsAgent::configure(WId windowId)
     initStart(); //reload
 }
 
-Item InvitationsAgent::handleContent(const QString &vcal,
-                                     const KCalCore::MemoryCalendar::Ptr &calendar,
-                                     const Item &item)
+Item InvitationsAgent::handleContent(const QString &vcal, const KCalCore::MemoryCalendar::Ptr &calendar, const Item &item)
 {
     KCalCore::ICalFormat format;
     KCalCore::ScheduleMessage::Ptr message = format.parseScheduleMessage(calendar, vcal);
@@ -343,7 +344,6 @@ void InvitationsAgent::itemAdded(const Item &item, const Collection &collection)
 
         InvitationsAgentItem *it = nullptr;
         foreach (KMime::Content *content, message->contents()) {
-
             KMime::Headers::ContentType *ct = content->contentType();
             Q_ASSERT(ct);
             const QByteArray mimeType = ct->mimeType();
@@ -389,4 +389,3 @@ void InvitationsAgent::itemAdded(const Item &item, const Collection &collection)
 }
 
 AKONADI_AGENT_MAIN(InvitationsAgent)
-

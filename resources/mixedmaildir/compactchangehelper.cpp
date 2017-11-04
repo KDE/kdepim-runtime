@@ -81,7 +81,9 @@ void CompactChangeHelper::Private::processNextItem()
     //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
     if (mCurrentUpdate.items.isEmpty()) {
         CollectionModifyJob *job = new CollectionModifyJob(mCurrentUpdate.collection, mSession);
-        QObject::connect(job, &CollectionModifyJob::result, q, [this]() { processNextBatch(); });
+        QObject::connect(job, &CollectionModifyJob::result, q, [this]() {
+            processNextBatch();
+        });
         return;
     }
 
@@ -93,7 +95,9 @@ void CompactChangeHelper::Private::processNextItem()
     ItemFetchJob *job = new ItemFetchJob(item);
     job->setProperty("oldRemoteId", item.remoteId());
     job->setProperty("newRemoteId", nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId());
-    QObject::connect(job, &ItemFetchJob::result, q, [this](KJob *job) { itemFetchResult(job); });
+    QObject::connect(job, &ItemFetchJob::result, q, [this](KJob *job) {
+        itemFetchResult(job);
+    });
 }
 
 void CompactChangeHelper::Private::itemFetchResult(KJob *job)
@@ -127,11 +131,14 @@ void CompactChangeHelper::Private::itemFetchResult(KJob *job)
     updatedItem.setRemoteId(newRemoteId);
 
     ItemModifyJob *modifyJob = new ItemModifyJob(updatedItem);
-    QObject::connect(modifyJob, &ItemModifyJob::result, q, [this]() { processNextItem(); });
+    QObject::connect(modifyJob, &ItemModifyJob::result, q, [this]() {
+        processNextItem();
+    });
 }
 
 CompactChangeHelper::CompactChangeHelper(const QByteArray &sessionId, QObject *parent)
-    : QObject(parent), d(new Private(this))
+    : QObject(parent)
+    , d(new Private(this))
 {
     d->mSession = new Session(sessionId, this);
 }
@@ -232,4 +239,3 @@ void CompactChangeHelper::checkCollectionChanged(const Collection &collection)
 }
 
 #include "moc_compactchangehelper.cpp"
-

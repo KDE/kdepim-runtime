@@ -33,7 +33,8 @@ class TestRetrieveCollectionsTask : public ImapTestBase
     Q_OBJECT
 public:
     TestRetrieveCollectionsTask(QObject *parent = nullptr)
-        : ImapTestBase(parent), m_nextCollectionId(1)
+        : ImapTestBase(parent)
+        , m_nextCollectionId(1)
     {
     }
 
@@ -81,8 +82,8 @@ private Q_SLOTS:
         intervalCheckTime = -1;
 
         QTest::newRow("first listing, connected IMAP") << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('/');
+                                                       << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                       << QChar('/');
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5)
@@ -108,8 +109,8 @@ private Q_SLOTS:
         intervalCheckTime = 5;
 
         QTest::newRow("first listing, disconnected IMAP") << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('/');
+                                                          << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                          << QChar('/');
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5)
@@ -132,8 +133,8 @@ private Q_SLOTS:
         intervalCheckTime = 5;
 
         QTest::newRow("first listing, spurious INBOX/ (BR: 25342)") << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('/');
+                                                                    << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                                    << QChar('/');
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
@@ -158,8 +159,8 @@ private Q_SLOTS:
         intervalCheckTime = -1;
 
         QTest::newRow("auto-insert missing nodes in the tree") << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('/');
+                                                               << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                               << QChar('/');
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -177,9 +178,9 @@ private Q_SLOTS:
         intervalCheckTime = -1;
 
         QTest::newRow("auto-insert missing nodes in the tree (reverse order)")
-                << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('/');
+            << expectedCollections << scenario << callNames
+            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+            << QChar('/');
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
@@ -235,8 +236,8 @@ private Q_SLOTS:
         intervalCheckTime = -1;
 
         QTest::newRow("subscription enabled, case insensitive inbox") << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('/');
+                                                                      << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                                      << QChar('/');
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
@@ -281,8 +282,8 @@ private Q_SLOTS:
         intervalCheckTime = -1;
 
         QTest::newRow("non-standard separators") << expectedCollections << scenario << callNames
-                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                << QChar('.');
+                                                 << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+                                                 << QChar('.');
     }
 
     void shouldListCollections()
@@ -362,12 +363,12 @@ private:
 
         if (isDisconnectedImap) {
             policy.setLocalParts(QStringList() << Akonadi::MessagePart::Envelope
-                                 << Akonadi::MessagePart::Header
-                                 << Akonadi::MessagePart::Body);
+                                               << Akonadi::MessagePart::Header
+                                               << Akonadi::MessagePart::Body);
             policy.setCacheTimeout(-1);
         } else {
             policy.setLocalParts(QStringList() << Akonadi::MessagePart::Envelope
-                                 << Akonadi::MessagePart::Header);
+                                               << Akonadi::MessagePart::Header);
             policy.setCacheTimeout(60);
         }
 
@@ -432,8 +433,7 @@ private:
         return collection;
     }
 
-    void compareCollectionLists(const Akonadi::Collection::List &resultList,
-                                const Akonadi::Collection::List &expectedList)
+    void compareCollectionLists(const Akonadi::Collection::List &resultList, const Akonadi::Collection::List &expectedList)
     {
         for (int i = 0; i < expectedList.size(); i++) {
             Akonadi::Collection expected = expectedList[i];

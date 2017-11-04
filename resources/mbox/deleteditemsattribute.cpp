@@ -19,7 +19,6 @@
 
 #include "deleteditemsattribute.h"
 
-
 DeletedItemsAttribute::DeletedItemsAttribute()
 {
 }

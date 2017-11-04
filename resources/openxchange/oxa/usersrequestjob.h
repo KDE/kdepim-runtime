@@ -26,9 +26,7 @@
 
 #include "user.h"
 
-namespace OXA
-{
-
+namespace OXA {
 class UsersRequestJob : public KJob
 {
     Q_OBJECT
@@ -46,7 +44,6 @@ private Q_SLOTS:
 private:
     User::List mUsers;
 };
-
 }
 
 #endif

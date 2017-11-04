@@ -8,7 +8,7 @@
 #include "o2/o0simplecrypt.h"
 
 /// Persistent storage for authentication tokens, using QSettings.
-class O0SettingsStore: public O0AbstractStore
+class O0SettingsStore : public O0AbstractStore
 {
     Q_OBJECT
 

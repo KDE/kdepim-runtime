@@ -30,16 +30,12 @@
 
 #include <QObject>
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Item;
 class AbstractDifferencesReporter;
 }
 
-class SerializerPluginKAlarm : public QObject,
-    public Akonadi::ItemSerializerPlugin,
-    public Akonadi::DifferencesAlgorithmInterface,
-    public Akonadi::GidExtractorInterface
+class SerializerPluginKAlarm : public QObject, public Akonadi::ItemSerializerPlugin, public Akonadi::DifferencesAlgorithmInterface, public Akonadi::GidExtractorInterface
 {
     Q_OBJECT
     Q_INTERFACES(Akonadi::ItemSerializerPlugin)
@@ -62,4 +58,3 @@ private:
 };
 
 #endif // AKONADI_SERIALIZER_KALARM_H
-

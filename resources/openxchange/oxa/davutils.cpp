@@ -54,7 +54,7 @@ bool DAVUtils::davErrorOccurred(const QDomDocument &document, QString &errorText
 {
     const QDomElement documentElement = document.documentElement();
     const QDomNodeList propStats = documentElement.elementsByTagNameNS(QStringLiteral("DAV:"),
-                                   QStringLiteral("propstat"));
+                                                                       QStringLiteral("propstat"));
 
     for (int i = 0; i < propStats.count(); ++i) {
         const QDomElement propStat = propStats.at(i).toElement();

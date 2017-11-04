@@ -24,8 +24,7 @@
 
 #include "resourcetask.h"
 
-namespace KIMAP
-{
+namespace KIMAP {
 class Session;
 }
 

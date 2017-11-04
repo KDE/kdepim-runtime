@@ -25,12 +25,8 @@
 
 #include <QObject>
 
-namespace Akonadi
-{
-
-namespace FileStore
-{
-
+namespace Akonadi {
+namespace FileStore {
 class Job;
 
 /**
@@ -80,9 +76,7 @@ Q_SIGNALS:
 protected:
     virtual void removeJob(Job *job) = 0;
 };
-
 }
 }
 
 #endif
-

@@ -24,8 +24,7 @@
 class QString;
 class QStringList;
 
-namespace TestDataUtil
-{
+namespace TestDataUtil {
 enum FolderType {
     InvalidFolder,
     MaildirFolder,
@@ -40,4 +39,3 @@ bool installFolder(const QString &testDataName, const QString &installPath, cons
 }
 
 #endif
-

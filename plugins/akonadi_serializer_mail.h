@@ -26,9 +26,7 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 /**
  * Levare QString implicit sharing to decrease memory consumption.
  *
@@ -62,7 +60,6 @@ public:
 private:
     StringPool m_stringPool;
 };
-
 }
 
 #endif

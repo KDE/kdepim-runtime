@@ -22,8 +22,7 @@
 
 #include "resourcetask.h"
 
-namespace KIMAP
-{
+namespace KIMAP {
 class StoreJob;
 }
 
@@ -50,7 +49,6 @@ protected:
 
 protected:
     int m_processedItems;
-
 };
 
 #endif

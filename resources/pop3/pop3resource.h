@@ -26,20 +26,17 @@
 
 class DeleteJob;
 
-namespace Akonadi
-{
+namespace Akonadi {
 class ItemCreateJob;
 }
-namespace KWallet
-{
+namespace KWallet {
 class Wallet;
 }
 
 class POPSession;
 class QTimer;
 
-class POP3Resource : public Akonadi::ResourceBase,
-    public Akonadi::AgentBase::Observer
+class POP3Resource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
 

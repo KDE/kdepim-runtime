@@ -25,9 +25,7 @@
 #include <QVector>
 #include <QString>
 
-namespace OXA
-{
-
+namespace OXA {
 class User
 {
 public:
@@ -51,7 +49,6 @@ private:
     QString mEmail;
     QString mName;
 };
-
 }
 
 Q_DECLARE_TYPEINFO(OXA::User, Q_MOVABLE_TYPE);

@@ -103,7 +103,6 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-
     TagChangeHelper *changeHelper = new TagChangeHelper(this);
 
     connect(changeHelper, &TagChangeHelper::applyCollectionChanges,

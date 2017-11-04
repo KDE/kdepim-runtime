@@ -18,8 +18,8 @@
 #include "googlesettings.h"
 #include "settingsbase.h"
 
-GoogleSettings::GoogleSettings():
-    m_winId(0)
+GoogleSettings::GoogleSettings()
+    : m_winId(0)
 {
 }
 
@@ -52,4 +52,3 @@ void GoogleSettings::setAccount(const QString &account)
 {
     SettingsBase::setAccount(account);
 }
-

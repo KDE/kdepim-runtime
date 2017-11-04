@@ -28,8 +28,7 @@
 #include <QObject>
 #include <QPointer>
 
-namespace KIO
-{
+namespace KIO {
 class Slave;
 class Job;
 class TransferJob;

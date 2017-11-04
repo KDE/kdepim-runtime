@@ -26,9 +26,7 @@
 
 #include "folder.h"
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * @short A job that moves a folder on the OX server.
  *
@@ -68,7 +66,6 @@ private:
     Folder mFolder;
     Folder mDestinationFolder;
 };
-
 }
 
 #endif

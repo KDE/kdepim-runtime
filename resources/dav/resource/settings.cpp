@@ -101,15 +101,15 @@ Settings *Settings::self()
 }
 
 Settings::Settings()
-    : SettingsBase(), mWinId(0)
+    : SettingsBase()
+    , mWinId(0)
 {
-
     Q_ASSERT(!s_globalSettings->q);
     s_globalSettings->q = this;
 
     new SettingsAdaptor(this);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
-            QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 
     if (settingsVersion() == 1) {
         updateToV2();
@@ -343,7 +343,7 @@ QDateTime Settings::getSyncRangeStart() const
 {
     QDateTime start = QDateTime::currentDateTimeUtc();
     start.setTime(QTime());
-    const int delta = - syncRangeStartNumber().toUInt();
+    const int delta = -syncRangeStartNumber().toUInt();
 
     if (syncRangeStartType() == QLatin1String("D")) {
         start = start.addDays(delta);
@@ -435,8 +435,7 @@ QString Settings::loadPassword(const QString &key, const QString &user)
 
     if (user == QLatin1String("$default$")) {
         entry = mResourceIdentifier + QLatin1Char(',') + user;
-    }
-    else {
+    } else {
         entry = key + QLatin1Char(',') + user;
     }
 
@@ -492,7 +491,7 @@ QString Settings::promptForPassword(const QString &user)
     QLabel *label = new QLabel(i18n("A password is required for user %1",
                                     (user == QLatin1String("$default$") ? defaultUsername() : user)),
                                mainWidget
-                              );
+                               );
     vLayout->addWidget(label);
     QHBoxLayout *hLayout = new QHBoxLayout();
     label = new QLabel(i18n("Password: "), mainWidget);
@@ -561,4 +560,3 @@ void Settings::updateToV3()
     setSettingsVersion(3);
     save();
 }
-

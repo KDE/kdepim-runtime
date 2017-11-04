@@ -31,7 +31,8 @@ public:
 };
 
 FileStore::ItemCreateJob::ItemCreateJob(const Item &item, const Collection &collection, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     d->mItem = item;
     d->mCollection = collection;
@@ -63,4 +64,3 @@ void FileStore::ItemCreateJob::handleItemCreated(const Item &item)
 {
     d->mItem = item;
 }
-

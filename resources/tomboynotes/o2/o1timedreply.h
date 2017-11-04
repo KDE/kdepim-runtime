@@ -5,7 +5,7 @@
 #include <QTimer>
 
 /// A timer connected to a network reply.
-class O1TimedReply: public QTimer
+class O1TimedReply : public QTimer
 {
     Q_OBJECT
 

@@ -28,21 +28,14 @@
 KolabMessageHelper::KolabMessageHelper(const Akonadi::Collection &col)
     : mCollection(col)
 {
-
 }
 
 KolabMessageHelper::~KolabMessageHelper()
 {
-
 }
 
-Akonadi::Item KolabMessageHelper::createItemFromMessage(const KMime::Message::Ptr &message,
-        const qint64 uid,
-        const qint64 size,
-        const QMap<QByteArray, QVariant> &attrs,
-        const QList<QByteArray> &flags,
-        const KIMAP::FetchJob::FetchScope &scope,
-        bool &ok) const
+Akonadi::Item KolabMessageHelper::createItemFromMessage(const KMime::Message::Ptr &message, const qint64 uid, const qint64 size, const QMap<QByteArray, QVariant> &attrs,
+                                                        const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
 {
     const Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, attrs, flags, scope, ok);
     if (!ok) {

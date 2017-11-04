@@ -91,17 +91,20 @@ public:
         EmailBcc,
         EmailBody,
         EmailAttachments
-
     };
 
-    KAEventFormatter() {}
+    KAEventFormatter()
+    {
+    }
+
     KAEventFormatter(const KAEvent &e, bool falseForUnspecified);
-    bool           isApplicable(Parameter) const;
-    QString        value(Parameter) const;
+    bool isApplicable(Parameter) const;
+    QString value(Parameter) const;
     const KAEvent &event() const
     {
         return mEvent;
     }
+
     static QString label(Parameter);
 
 private:
@@ -110,4 +113,3 @@ private:
 };
 
 #endif // KAEVENTFORMATTER_H
-

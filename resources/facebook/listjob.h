@@ -22,7 +22,6 @@
 
 #include <AkonadiCore/Item>
 
-
 class QJsonObject;
 
 class ListJob : public KCompositeJob
@@ -30,8 +29,7 @@ class ListJob : public KCompositeJob
     Q_OBJECT
 
 public:
-    explicit ListJob(const Akonadi::Collection &col,
-                     QObject *parent = nullptr);
+    explicit ListJob(const Akonadi::Collection &col, QObject *parent = nullptr);
     ~ListJob() override;
 
     Akonadi::Collection collection() const;
@@ -39,8 +37,7 @@ public:
     void start() override;
 
 protected:
-    void setRequest(const QString &endpoint, const QStringList &fields = {},
-                    const QMap<QString,QString> &queries = {});
+    void setRequest(const QString &endpoint, const QStringList &fields = {}, const QMap<QString, QString> &queries = {});
 
     virtual Akonadi::Item handleResponse(const QJsonObject &data) = 0;
 
@@ -60,8 +57,7 @@ private:
     Akonadi::Collection mCollection;
     QString mEndpoint;
     QStringList mFields;
-    QMap<QString,QString> mQueries;
+    QMap<QString, QString> mQueries;
 };
-
 
 #endif

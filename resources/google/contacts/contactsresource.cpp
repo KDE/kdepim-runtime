@@ -53,8 +53,8 @@
 #include <KGAPI/Contacts/ContactsGroupFetchJob>
 #include <KGAPI/Contacts/ContactsGroupModifyJob>
 
-#define MYCONTACTS_REMOTEID QStringLiteral( "MyContacts" )
-#define OTHERCONTACTS_REMOTEID QStringLiteral( "OtherContacts" )
+#define MYCONTACTS_REMOTEID QStringLiteral("MyContacts")
+#define OTHERCONTACTS_REMOTEID QStringLiteral("OtherContacts")
 
 Q_DECLARE_METATYPE(KGAPI2::Job *)
 Q_DECLARE_METATYPE(QList<QString>)
@@ -62,8 +62,8 @@ Q_DECLARE_METATYPE(QList<QString>)
 using namespace Akonadi;
 using namespace KGAPI2;
 
-ContactsResource::ContactsResource(const QString &id):
-    GoogleResource(id)
+ContactsResource::ContactsResource(const QString &id)
+    : GoogleResource(id)
 {
     updateResourceName();
 }
@@ -79,7 +79,6 @@ GoogleSettings *ContactsResource::settings() const
 
 int ContactsResource::runConfigurationDialog(WId windowId)
 {
-
     QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(accountManager(), windowId, this));
     settingsDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("im-google")));
 
@@ -105,8 +104,8 @@ void ContactsResource::retrieveItems(const Collection &collection)
     }
 
     // All items are only in top-level collection and Other Contacts collection
-    if ((collection.remoteId() != m_rootCollection.remoteId()) &&
-            (collection.remoteId() != OTHERCONTACTS_REMOTEID)) {
+    if ((collection.remoteId() != m_rootCollection.remoteId())
+        && (collection.remoteId() != OTHERCONTACTS_REMOTEID)) {
         itemsRetrievalDone();
         return;
     }
@@ -193,8 +192,7 @@ void ContactsResource::itemChanged(const Item &item, const QSet< QByteArray > &p
     connect(modifyJob, &ContactModifyJob::finished, this, &ContactsResource::slotGenericJobFinished);
 }
 
-void ContactsResource::itemMoved(const Item &item, const Collection &collectionSource,
-                                 const Collection &collectionDestination)
+void ContactsResource::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
     if (!canPerformTask<KContacts::Addressee>(item, KContacts::Addressee::mimeType())) {
         return;
@@ -204,15 +202,14 @@ void ContactsResource::itemMoved(const Item &item, const Collection &collectionS
     ContactPtr contact(new Contact(addressee));
 
     // MyContacts -> OtherContacts
-    if (collectionSource.remoteId() == MYCONTACTS_REMOTEID &&
-            collectionDestination.remoteId() == OTHERCONTACTS_REMOTEID) {
+    if (collectionSource.remoteId() == MYCONTACTS_REMOTEID
+        && collectionDestination.remoteId() == OTHERCONTACTS_REMOTEID) {
         contact->removeGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
 
         // OtherContacts -> MyContacts
-    } else if (collectionSource.remoteId() == OTHERCONTACTS_REMOTEID &&
-               collectionDestination.remoteId() == MYCONTACTS_REMOTEID) {
+    } else if (collectionSource.remoteId() == OTHERCONTACTS_REMOTEID
+               && collectionDestination.remoteId() == MYCONTACTS_REMOTEID) {
         contact->addGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(account()->accountName()))));
-
     } else {
         cancelTask(i18n("Invalid source or destination collection"));
         return;
@@ -269,8 +266,7 @@ void ContactsResource::itemUnlinked(const Item &item, const Collection &collecti
     connect(modifyJob, &ContactModifyJob::finished, this, &ContactsResource::slotGenericJobFinished);
 }
 
-void ContactsResource::collectionAdded(const Akonadi::Collection &collection,
-                                       const Akonadi::Collection &parent)
+void ContactsResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     Q_UNUSED(parent);
 
@@ -331,15 +327,15 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
 
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes(QStringList() << Collection::virtualMimeType()
-                                         << KContacts::Addressee::mimeType());
+                                                       << KContacts::Addressee::mimeType());
     m_rootCollection.setRemoteId(MYCONTACTS_REMOTEID);
     m_rootCollection.setName(fetchJob->account()->accountName());
     m_rootCollection.setParentCollection(Collection::root());
     m_rootCollection.setCachePolicy(cachePolicy);
-    m_rootCollection.setRights(Collection::CanCreateCollection |
-                               Collection::CanCreateItem |
-                               Collection::CanChangeItem |
-                               Collection::CanDeleteItem);
+    m_rootCollection.setRights(Collection::CanCreateCollection
+                               |Collection::CanCreateItem
+                               |Collection::CanChangeItem
+                               |Collection::CanDeleteItem);
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(fetchJob->account()->accountName());
@@ -373,13 +369,13 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         collection.setContentMimeTypes(QStringList() << KContacts::Addressee::mimeType());
         collection.setName(group->id());
         collection.setParentCollection(m_rootCollection);
-        collection.setRights(Collection::CanLinkItem |
-                             Collection::CanUnlinkItem |
-                             Collection::CanChangeItem);
+        collection.setRights(Collection::CanLinkItem
+                             |Collection::CanUnlinkItem
+                             |Collection::CanChangeItem);
         if (!group->isSystemGroup()) {
-            collection.setRights(collection.rights() |
-                                 Collection::CanChangeCollection |
-                                 Collection::CanDeleteCollection);
+            collection.setRights(collection.rights()
+                                 |Collection::CanChangeCollection
+                                 |Collection::CanDeleteCollection);
         }
         collection.setRemoteId(group->id());
         collection.setVirtual(true);
@@ -395,9 +391,9 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     otherCollection.setContentMimeTypes(QStringList() << KContacts::Addressee::mimeType());
     otherCollection.setName(i18n("Other Contacts"));
     otherCollection.setParentCollection(m_rootCollection);
-    otherCollection.setRights(Collection::CanCreateItem |
-                              Collection::CanChangeItem |
-                              Collection::CanDeleteItem);
+    otherCollection.setRights(Collection::CanCreateItem
+                              |Collection::CanChangeItem
+                              |Collection::CanDeleteItem);
     otherCollection.setRemoteId(OTHERCONTACTS_REMOTEID);
 
     attr = otherCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
@@ -426,8 +422,8 @@ void ContactsResource::slotItemsRetrieved(KGAPI2::Job *job)
     for (const ObjectPtr &object : objects) {
         const ContactPtr contact = object.dynamicCast<Contact>();
 
-        if (((collection.remoteId() == OTHERCONTACTS_REMOTEID) && !contact->groups().isEmpty()) ||
-                ((collection.remoteId() == MYCONTACTS_REMOTEID) && contact->groups().isEmpty())) {
+        if (((collection.remoteId() == OTHERCONTACTS_REMOTEID) && !contact->groups().isEmpty())
+            || ((collection.remoteId() == MYCONTACTS_REMOTEID) && contact->groups().isEmpty())) {
             continue;
         }
 

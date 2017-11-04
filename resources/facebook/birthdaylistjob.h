@@ -51,7 +51,6 @@ private:
     void fetchBirthdayIcal(const QUrl &url);
     void processEvent(const KCalCore::Event::Ptr &event);
 
-
     Akonadi::Collection mCollection;
     QVector<Akonadi::Item> mItems;
     QString mCookies;

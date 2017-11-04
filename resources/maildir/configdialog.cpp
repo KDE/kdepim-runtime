@@ -32,10 +32,10 @@
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
-ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget *parent) :
-    QDialog(parent),
-    mSettings(settings),
-    mToplevelIsContainer(false)
+ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget *parent)
+    : QDialog(parent)
+    , mSettings(settings)
+    , mToplevelIsContainer(false)
 {
     setWindowTitle(i18n("Select a MailDir folder"));
     QWidget *mainWidget = new QWidget(this);
@@ -142,4 +142,3 @@ void ConfigDialog::save()
         }
     }
 }
-

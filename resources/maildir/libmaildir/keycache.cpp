@@ -91,4 +91,3 @@ QSet<QString> KeyCache::listCurrent(const QString &dir) const
     }
     return keys;
 }
-

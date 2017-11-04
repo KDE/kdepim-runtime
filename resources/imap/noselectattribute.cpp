@@ -51,7 +51,7 @@ Akonadi::Attribute *NoSelectAttribute::clone() const
 
 QByteArray NoSelectAttribute::serialized() const
 {
-    return mNoSelect ? QByteArray::number(1) :  QByteArray::number(0);
+    return mNoSelect ? QByteArray::number(1) : QByteArray::number(0);
 }
 
 void NoSelectAttribute::deserialize(const QByteArray &data)

@@ -22,12 +22,10 @@
 
 #include "job.h"
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Item;
 
-namespace FileStore
-{
+namespace FileStore {
 class AbstractJobSession;
 
 /**
@@ -54,9 +52,7 @@ private:
     class Private;
     Private *const d;
 };
-
 }
 }
 
 #endif
-

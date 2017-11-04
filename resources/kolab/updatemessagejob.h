@@ -25,7 +25,10 @@
 #include <KIMAP/FetchJob>
 
 struct Merger {
-    virtual ~Merger() {}
+    virtual ~Merger()
+    {
+    }
+
     virtual KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const = 0;
 };
 
@@ -36,7 +39,8 @@ class UpdateMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext = -1, qint64 oldUid = -1, QObject *parent = nullptr);
+    UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext = -1,
+                     qint64 oldUid = -1, QObject *parent = nullptr);
 
     qint64 newUid() const;
 
@@ -72,4 +76,3 @@ private:
 };
 
 #endif
-

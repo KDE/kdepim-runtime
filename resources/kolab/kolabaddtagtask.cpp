@@ -33,7 +33,6 @@
 
 #include <KLocalizedString>
 
-
 KolabAddTagTask::KolabAddTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
 {
@@ -113,7 +112,7 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
         search->setTerm(KIMAP::Term(KIMAP::Term::And, {
             KIMAP::Term(KIMAP::Term::New),
             KIMAP::Term(KIMAP::Term::Uid,
-            KIMAP::ImapSet(uidNext->uidNext(), 0))
+                        KIMAP::ImapSet(uidNext->uidNext(), 0))
         }));
     }
 
@@ -124,7 +123,6 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
 }
 
 void KolabAddTagTask::onAppendMessageDone(KJob *job)
-
 {
     KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
 
@@ -140,7 +138,6 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
     if (uid > 0) {
         // We got it directly if UIDPLUS is supported...
         applyFoundUid(uid);
-
     } else {
         // ... otherwise prepare searching for the message
         KIMAP::Session *session = append->session();
@@ -154,7 +151,6 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
                     this, &KolabAddTagTask::onPreSearchSelectDone);
 
             select->start();
-
         } else {
             triggerSearchJob(session);
         }

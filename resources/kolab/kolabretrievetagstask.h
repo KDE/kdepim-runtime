@@ -23,8 +23,7 @@
 #include "kolabrelationresourcetask.h"
 #include <tag.h>
 
-namespace Kolab
-{
+namespace Kolab {
 class KolabObjectReader;
 class RelationMember;
 } // namespace Kolab

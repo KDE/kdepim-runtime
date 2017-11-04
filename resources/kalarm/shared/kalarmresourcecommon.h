@@ -27,19 +27,16 @@
 
 #include <QObject>
 
-namespace KCalCore
-{
+namespace KCalCore {
 class FileStorage;
 }
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 class Item;
 }
 using namespace KAlarmCal;
 
-namespace KAlarmResourceCommon
-{
+namespace KAlarmResourceCommon {
 void          initialise(QObject *parent);
 //    void          customizeConfigDialog(SingleFileResourceConfigDialog<Settings>*);
 KACalendar::Compat getCompatibility(const KCalCore::FileStorage::Ptr &, int &version);
@@ -55,8 +52,7 @@ enum ErrorCode {
     EventReadOnly,
     CalendarAdd
 };
-QString       errorMessage(ErrorCode, const QString &param = QString());
+QString errorMessage(ErrorCode, const QString &param = QString());
 }
 
 #endif // KALARMRESOURCECOMMON_H
-

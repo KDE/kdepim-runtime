@@ -33,7 +33,6 @@
 KolabResourceState::KolabResourceState(ImapResourceBase *resource, const TaskArguments &arguments)
     : ResourceState(resource, arguments)
 {
-
 }
 
 static Akonadi::Collection processAnnotations(const Akonadi::Collection &collection)

@@ -53,4 +53,3 @@ void CTagAttribute::deserialize(const QByteArray &data)
 {
     mCTag = QString::fromUtf8(data);
 }
-

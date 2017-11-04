@@ -34,7 +34,6 @@
 MoveCollectionTask::MoveCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
-
 }
 
 MoveCollectionTask::~MoveCollectionTask()
@@ -113,7 +112,6 @@ void MoveCollectionTask::doRename(KIMAP::Session *session)
         connect(job, &KIMAP::RenameJob::result, this, &MoveCollectionTask::onRenameDone);
 
         job->start();
-
     } else {
         changeProcessed();
     }
@@ -146,4 +144,3 @@ void MoveCollectionTask::onSubscribeDone(KJob *job)
 
     changeCommitted(collection());
 }
-

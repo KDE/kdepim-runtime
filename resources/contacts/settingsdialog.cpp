@@ -34,8 +34,8 @@ using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
 
 SettingsDialog::SettingsDialog(ContactsResourceSettings *settings, WId windowId)
-    : QDialog(),
-      mSettings(settings)
+    : QDialog()
+    , mSettings(settings)
 {
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);

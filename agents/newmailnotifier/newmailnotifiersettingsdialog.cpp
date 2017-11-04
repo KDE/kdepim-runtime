@@ -49,15 +49,15 @@
 #include <QDialogButtonBox>
 #include <KConfigGroup>
 
-static const char *textToSpeakMessage =
-    I18N_NOOP("<qt>"
-              "<p>Here you can define message. "
-              "You can use:</p>"
-              "<ul>"
-              "<li>%s set subject</li>"
-              "<li>%f set from</li>"
-              "</ul>"
-              "</qt>");
+static const char *textToSpeakMessage
+    = I18N_NOOP("<qt>"
+                "<p>Here you can define message. "
+                "You can use:</p>"
+                "<ul>"
+                "<li>%s set subject</li>"
+                "<li>%f set from</li>"
+                "</ul>"
+                "</qt>");
 
 NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     : QDialog(parent)
@@ -170,12 +170,12 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     tab->addTab(mSelectCollection, i18n("Folders"));
 
     KAboutData aboutData = KAboutData(
-                               QStringLiteral("newmailnotifieragent"),
-                               i18n("New Mail Notifier Agent"),
-                               QStringLiteral(KDEPIM_RUNTIME_VERSION),
-                               i18n("Notify about new mails."),
-                               KAboutLicense::GPL_V2,
-                               i18n("Copyright (C) 2013-2017 Laurent Montel"));
+        QStringLiteral("newmailnotifieragent"),
+        i18n("New Mail Notifier Agent"),
+        QStringLiteral(KDEPIM_RUNTIME_VERSION),
+        i18n("Notify about new mails."),
+        KAboutLicense::GPL_V2,
+        i18n("Copyright (C) 2013-2017 Laurent Montel"));
 
     aboutData.addAuthor(i18n("Laurent Montel"),
                         i18n("Maintainer"), QStringLiteral("montel@kde.org"));
@@ -219,8 +219,8 @@ void NewMailNotifierSettingsDialog::writeConfig()
 
 void NewMailNotifierSettingsDialog::slotHelpLinkClicked(const QString &)
 {
-    const QString help =
-        i18n(textToSpeakMessage);
+    const QString help
+        = i18n(textToSpeakMessage);
 
     QWhatsThis::showText(QCursor::pos(), help);
 }
@@ -244,4 +244,3 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     mNotify->save();
     accept();
 }
-

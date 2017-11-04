@@ -52,7 +52,6 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
                 this, &KolabRemoveTagTask::onSelectDone);
 
         select->start();
-
     } else {
         triggerStoreJob(session);
     }

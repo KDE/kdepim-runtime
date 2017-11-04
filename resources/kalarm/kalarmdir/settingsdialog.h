@@ -34,9 +34,7 @@ using namespace KAlarmCal;
 class KConfigDialogManager;
 class AlarmTypeWidget;
 
-namespace Akonadi_KAlarm_Dir_Resource
-{
-
+namespace Akonadi_KAlarm_Dir_Resource {
 class Settings;
 
 class SettingsDialog : public QDialog
@@ -54,15 +52,13 @@ private Q_SLOTS:
     void readOnlyClicked(bool);
 
 private:
-    Ui::SettingsDialog    ui;
-    AlarmTypeWidget      *mTypeSelector = nullptr;
-    QPushButton          *mOkButton = nullptr;
+    Ui::SettingsDialog ui;
+    AlarmTypeWidget *mTypeSelector = nullptr;
+    QPushButton *mOkButton = nullptr;
     KConfigDialogManager *mManager = nullptr;
     Akonadi_KAlarm_Dir_Resource::Settings *mSettings = nullptr;
-    bool                  mReadOnlySelected = false;   // read-only was set by user (not by validate())
+    bool mReadOnlySelected = false;                    // read-only was set by user (not by validate())
 };
-
 }
 
 #endif // KALARMDIR_SETTINGSDIALOG_H
-

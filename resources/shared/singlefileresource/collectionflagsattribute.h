@@ -23,9 +23,7 @@
 #include <attribute.h>
 #include "akonadi-singlefileresource_export.h"
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionFlagsAttribute : public Akonadi::Attribute
 {
 public:
@@ -40,7 +38,6 @@ public:
 private:
     QList<QByteArray> mFlags;
 };
-
 }
 
 #endif

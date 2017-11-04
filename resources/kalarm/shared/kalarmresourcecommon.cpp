@@ -43,7 +43,10 @@ class Private : public QObject
 {
     Q_OBJECT
 public:
-    Private(QObject *parent) : QObject(parent) {}
+    Private(QObject *parent) : QObject(parent)
+    {
+    }
+
     static Private *mInstance;
 
 private Q_SLOTS:
@@ -51,9 +54,7 @@ private Q_SLOTS:
 };
 Private *Private::mInstance = nullptr;
 
-namespace KAlarmResourceCommon
-{
-
+namespace KAlarmResourceCommon {
 /******************************************************************************
 * Perform common initialisation for KAlarm resources.
 */
@@ -157,7 +158,7 @@ void setCollectionCompatibility(const Collection &collection, KACalendar::Compat
     attr->setVersion(version);
     Q_ASSERT(Private::mInstance);
     CollectionModifyJob *job = new CollectionModifyJob(col, Private::mInstance->parent());
-    Private::mInstance->connect(job, SIGNAL(result(KJob*)), SLOT(modifyCollectionJobDone(KJob*)));
+    Private::mInstance->connect(job, SIGNAL(result(KJob *)), SLOT(modifyCollectionJobDone(KJob *)));
 }
 
 /******************************************************************************
@@ -181,7 +182,6 @@ QString errorMessage(ErrorCode code, const QString &param)
     }
     return QString();
 }
-
 } // namespace KAlarmResourceCommon
 
 /******************************************************************************
@@ -197,4 +197,3 @@ void Private::modifyCollectionJobDone(KJob *j)
 }
 
 #include "kalarmresourcecommon.moc"
-

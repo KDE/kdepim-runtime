@@ -26,9 +26,9 @@
 #include <QUuid>
 
 TomboyItemUploadJob::TomboyItemUploadJob(const Akonadi::Item &item, JobType jobType, KIO::AccessManager *manager, QObject *parent)
-    : TomboyJobBase(manager, parent),
-      mSourceItem(item),
-      mJobType(jobType)
+    : TomboyJobBase(manager, parent)
+    , mSourceItem(item)
+    , mJobType(jobType)
 {
     mSourceItem = Akonadi::Item(item);
     if (item.hasPayload<KMime::Message::Ptr>()) {
@@ -64,7 +64,7 @@ void TomboyItemUploadJob::start()
         break;
     case JobType::AddItem:
         jsonNote[QLatin1String("create-date")] = getCurrentISOTime();
-    // Missing break is intended
+        // Missing break is intended
         Q_FALLTHROUGH();
     case JobType::ModifyItem:
         jsonNote[QLatin1String("title")] = mNoteContent->headerByType("subject")->asUnicodeString();

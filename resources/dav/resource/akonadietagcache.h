@@ -21,8 +21,7 @@
 
 #include <KDAV/EtagCache>
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 }
 
@@ -49,7 +48,6 @@ public:
 
 private Q_SLOTS:
     void onItemFetchJobFinished(KJob *job);
-
 };
 
 #endif

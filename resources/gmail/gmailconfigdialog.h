@@ -22,14 +22,11 @@
 
 #include <QDialog>
 
-
-namespace Ui
-{
+namespace Ui {
 class GmailConfigDialog;
 }
 
-namespace KIdentityManagement
-{
+namespace KIdentityManagement {
 class IdentityCombo;
 class IdentityManager;
 }

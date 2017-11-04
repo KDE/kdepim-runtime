@@ -26,8 +26,7 @@ class KConfigDialogManager;
 
 class Settings;
 
-namespace Ui
-{
+namespace Ui {
 class ConfigDialog;
 }
 

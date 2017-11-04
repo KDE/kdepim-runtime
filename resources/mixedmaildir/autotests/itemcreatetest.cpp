@@ -44,7 +44,11 @@ class ItemCreateTest : public QObject
     Q_OBJECT
 
 public:
-    ItemCreateTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
+    ItemCreateTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
 
     ~ItemCreateTest()
     {
@@ -535,4 +539,3 @@ void ItemCreateTest::testMaildir()
 QTEST_MAIN(ItemCreateTest)
 
 #include "itemcreatetest.moc"
-

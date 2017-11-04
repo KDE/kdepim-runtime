@@ -42,10 +42,10 @@ Q_DECLARE_METATYPE(KGAPI2::Job *)
 
 using namespace KGAPI2;
 
-GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager, WId wId, GoogleResource *parent):
-    QDialog(),
-    m_parentResource(parent),
-    m_accountManager(accountManager)
+GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager, WId wId, GoogleResource *parent)
+    : QDialog()
+    , m_parentResource(parent)
+    , m_accountManager(accountManager)
 {
     KWindowSystem::setMainWindow(this, wId);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
@@ -174,16 +174,15 @@ void GoogleSettingsDialog::slotRemoveAccountClicked()
     }
 
     if (KMessageBox::warningYesNo(
-                this,
-                i18n("Do you really want to revoke access to account <b>%1</b>?"
-                     "<p>This will revoke access to all resources using this account!</p>",
-                     account->accountName()),
-                i18n("Revoke Access?"),
-                KStandardGuiItem::yes(),
-                KStandardGuiItem::no(),
-                QString(),
-                KMessageBox::Dangerous) != KMessageBox::Yes) {
-
+            this,
+            i18n("Do you really want to revoke access to account <b>%1</b>?"
+                 "<p>This will revoke access to all resources using this account!</p>",
+                 account->accountName()),
+            i18n("Revoke Access?"),
+            KStandardGuiItem::yes(),
+            KStandardGuiItem::no(),
+            QString(),
+            KMessageBox::Dangerous) != KMessageBox::Yes) {
         return;
     }
 
@@ -262,4 +261,3 @@ void GoogleSettingsDialog::slotSaveSettings()
     saveSettings();
     accept();
 }
-

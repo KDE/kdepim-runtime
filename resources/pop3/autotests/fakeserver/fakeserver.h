@@ -32,8 +32,7 @@ public:
     FakeServer(QObject *parent = nullptr);
     ~FakeServer();
 
-    void setNextConversation(const QString &conversation,
-                             const QList<int> &exceptions = QList<int>());
+    void setNextConversation(const QString &conversation, const QList<int> &exceptions = QList<int>());
     void setAllowedDeletions(const QString &deleteIds);
     void setAllowedRetrieves(const QString &retrieveIds);
     void setMails(const QList<QByteArray> &mails);
@@ -102,4 +101,3 @@ private:
 };
 
 #endif
-

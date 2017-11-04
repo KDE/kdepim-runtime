@@ -76,10 +76,8 @@ private Q_SLOTS:
         delete attr2;
         delete attr3;
     }
-
 };
 
 QTEST_MAIN(CollectionAnnotationAttributeTest)
 
 #include "collectionannotationattributetest.moc"
-

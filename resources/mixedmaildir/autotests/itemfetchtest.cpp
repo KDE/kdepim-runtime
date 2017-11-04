@@ -87,7 +87,10 @@ class ItemFetchTest : public QObject
 
 public:
     ItemFetchTest()
-        : QObject(), mStore(0), mDir(0), mIndexFilePattern(QLatin1String(".%1.index"))
+        : QObject()
+        , mStore(0)
+        , mDir(0)
+        , mIndexFilePattern(QLatin1String(".%1.index"))
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -1162,4 +1165,3 @@ void ItemFetchTest::testSingleItemFetchMBox()
 QTEST_MAIN(ItemFetchTest)
 
 #include "itemfetchtest.moc"
-

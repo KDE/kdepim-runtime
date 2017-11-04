@@ -19,4 +19,3 @@
 
 #include "mixedmaildirresource_debug.h"
 Q_LOGGING_CATEGORY(MIXEDMAILDIRRESOURCE_LOG, "log_mixedmaildirresource")
-

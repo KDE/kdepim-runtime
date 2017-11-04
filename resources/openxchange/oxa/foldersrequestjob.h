@@ -26,9 +26,7 @@
 
 #include "folder.h"
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * @short A job that requests all folders from the OX server.
  *
@@ -75,7 +73,6 @@ private:
     Mode mMode;
     Folder::List mFolders;
 };
-
 }
 
 #endif

@@ -29,8 +29,8 @@
 #include <QDialogButtonBox>
 using KPIM::Maildir;
 
-ConfigDialog::ConfigDialog(QWidget *parent) :
-    QDialog(parent)
+ConfigDialog::ConfigDialog(QWidget *parent)
+    : QDialog(parent)
 {
     setWindowTitle(i18n("Select a KMail Mail folder"));
     QWidget *mainWidget = new QWidget(this);
@@ -97,8 +97,7 @@ void ConfigDialog::checkPath()
 void ConfigDialog::save()
 {
     mManager->updateSettings();
-    Settings::self()->setPath(ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile()  : ui.kcfg_Path->url().path());
+    Settings::self()->setPath(ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path());
     Settings::self()->setTopLevelIsContainer(mToplevelIsContainer);
     Settings::self()->save();
 }
-

@@ -29,8 +29,7 @@
 using namespace KAlarmCal;
 
 class KJob;
-namespace Akonadi
-{
+namespace Akonadi {
 class CollectionFetchJob;
 }
 class AlarmTypeRadioWidget;
@@ -69,13 +68,12 @@ private:
     Akonadi::CollectionFetchJob *fetchCollection(const char *slot);
 
     AlarmTypeRadioWidget *mTypeSelector = nullptr;
-    KACalendar::Compat    mCompatibility;
-    KACalendar::Compat    mFileCompatibility;  // calendar file compatibility found by readFromFile()
-    int                   mVersion;            // calendar format version
-    int                   mFileVersion;        // calendar format version found by readFromFile()
-    bool                  mHaveReadFile;       // the calendar file has been read
-    bool                  mFetchedAttributes;  // attributes have been fetched after initialisation
+    KACalendar::Compat mCompatibility;
+    KACalendar::Compat mFileCompatibility;     // calendar file compatibility found by readFromFile()
+    int mVersion;                              // calendar format version
+    int mFileVersion;                          // calendar format version found by readFromFile()
+    bool mHaveReadFile;                        // the calendar file has been read
+    bool mFetchedAttributes;                   // attributes have been fetched after initialisation
 };
 
 #endif
-

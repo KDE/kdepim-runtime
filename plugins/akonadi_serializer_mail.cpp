@@ -43,9 +43,8 @@ QString StringPool::sharedValue(const QString &value)
     return value;
 }
 
-template <typename T>
-static void parseAddrList(const QVarLengthArray<QByteArray, 16> &addrList, T *hdr,
-                          int version, StringPool &pool)
+template<typename T>
+static void parseAddrList(const QVarLengthArray<QByteArray, 16> &addrList, T *hdr, int version, StringPool &pool)
 {
     hdr->clear();
     const int count = addrList.count();
@@ -71,8 +70,7 @@ static void parseAddrList(const QVarLengthArray<QByteArray, 16> &addrList, T *hd
 }
 
 template<typename T>
-static void parseAddrList(QDataStream &stream, T *hdr,
-                          int version, StringPool &pool)
+static void parseAddrList(QDataStream &stream, T *hdr, int version, StringPool &pool)
 {
     Q_UNUSED(version);
 

@@ -27,8 +27,7 @@
 #include <KGAPI/Types>
 #include <KGAPI/Account>
 
-namespace KWallet
-{
+namespace KWallet {
 class Wallet;
 }
 

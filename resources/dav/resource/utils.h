@@ -27,13 +27,11 @@
 
 #include <AkonadiCore/Item>
 
-namespace KDAV
-{
+namespace KDAV {
 class DavItem;
 }
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 class Item;
 }
@@ -41,8 +39,7 @@ class Item;
 /**
  * @short A namespace that contains helper methods for DAV functionality.
  */
-namespace Utils
-{
+namespace Utils {
 /**
  * Returns the i18n'ed name of the given DAV @p protocol dialect.
  */

@@ -127,7 +127,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("collectionChangeCommitted");
         QTest::newRow("rename with invalid separator") << collection << parts << scenario << callNames
-                << "BarBaz" << caps;
+                                                       << "BarBaz" << caps;
 
         collection = createCollectionChain(QStringLiteral(".INBOX.Foo"));
         collection.setName(QStringLiteral("Bar"));
@@ -138,7 +138,7 @@ private Q_SLOTS:
                  << "C: A000004 SUBSCRIBE \"INBOX.Bar\""
                  << "S: A000004 OK mailbox subscribed";
         QTest::newRow("rename with non-standard separator") << collection << parts << scenario << callNames
-                << "Bar" << caps;
+                                                            << "Bar" << caps;
 
         collection = createCollectionChain(QStringLiteral("/Foo"));
         collection.setName(QStringLiteral("Bar"));

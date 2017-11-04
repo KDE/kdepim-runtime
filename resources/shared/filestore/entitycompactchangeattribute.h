@@ -25,12 +25,8 @@
 
 #include <Attribute>
 
-namespace Akonadi
-{
-
-namespace FileStore
-{
-
+namespace Akonadi {
+namespace FileStore {
 class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 {
 public:
@@ -61,10 +57,7 @@ private:
     Private *const d;
     //@endcond
 };
-
 }
-
 }
 
 #endif
-

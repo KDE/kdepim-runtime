@@ -26,7 +26,7 @@
 #include <QWidget>
 #include <QItemSelectionModel>
 
-class MigrationStatusWidget: public QWidget
+class MigrationStatusWidget : public QWidget
 {
     Q_OBJECT
 public:
@@ -43,4 +43,3 @@ public Q_SLOTS:
 };
 
 #endif // MIGRATIONCONFIGDIALOG_H
-

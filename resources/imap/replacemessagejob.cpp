@@ -30,14 +30,14 @@
 #include "imapflags.h"
 
 ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, const KIMAP::ImapSet &oldUids, QObject *parent)
-    : KJob(parent),
-      mSession(session),
-      mMessage(msg),
-      mMailbox(mailbox),
-      mUidNext(uidNext),
-      mOldUids(oldUids),
-      mNewUid(-1),
-      mMessageId(msg->messageID()->asUnicodeString().toUtf8())
+    : KJob(parent)
+    , mSession(session)
+    , mMessage(msg)
+    , mMailbox(mailbox)
+    , mUidNext(uidNext)
+    , mOldUids(oldUids)
+    , mNewUid(-1)
+    , mMessageId(msg->messageID()->asUnicodeString().toUtf8())
 {
 }
 
@@ -120,7 +120,7 @@ void ReplaceMessageJob::triggerSearchJob()
         search->setTerm(KIMAP::Term(KIMAP::Term::And, {
             KIMAP::Term(KIMAP::Term::New),
             KIMAP::Term(KIMAP::Term::Uid,
-            KIMAP::ImapSet(mUidNext, 0))
+                        KIMAP::ImapSet(mUidNext, 0))
         }));
     }
 

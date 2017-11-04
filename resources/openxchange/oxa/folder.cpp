@@ -24,11 +24,11 @@
 using namespace OXA;
 
 Folder::Permissions::Permissions()
-    : mFolderPermission(NoPermission),
-      mObjectReadPermission(NoReadPermission),
-      mObjectWritePermission(NoWritePermission),
-      mObjectDeletePermission(NoDeletePermission),
-      mAdminFlag(false)
+    : mFolderPermission(NoPermission)
+    , mObjectReadPermission(NoReadPermission)
+    , mObjectWritePermission(NoWritePermission)
+    , mObjectDeletePermission(NoDeletePermission)
+    , mAdminFlag(false)
 {
 }
 
@@ -83,7 +83,8 @@ bool Folder::Permissions::adminFlag() const
 }
 
 Folder::Folder()
-    : mObjectId(-1), mFolderId(-1)
+    : mObjectId(-1)
+    , mFolderId(-1)
 {
 }
 

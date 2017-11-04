@@ -210,7 +210,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
 
     KDAV::DavUrl davUrl(url, protocol());
     KDAV::DavCollectionsFetchJob *job = new KDAV::DavCollectionsFetchJob(davUrl);
-    connect(job, & KDAV::DavCollectionsFetchJob::result, this, &UrlConfigurationDialog::onCollectionsFetchDone);
+    connect(job, &KDAV::DavCollectionsFetchJob::result, this, &UrlConfigurationDialog::onCollectionsFetchDone);
     job->start();
 }
 
@@ -253,7 +253,7 @@ void UrlConfigurationDialog::onModelDataChanged(const QModelIndex &topLeft, cons
     KDAV::DavUrl davUrl(fullUrl, protocol());
     KDAV::DavCollectionModifyJob *job = new KDAV::DavCollectionModifyJob(davUrl);
     job->setProperty(QStringLiteral("displayname"), newName);
-    connect(job, & KDAV::DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
+    connect(job, &KDAV::DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
     job->start();
     mUi.discoveredUrls->setEnabled(false);
 }
@@ -276,7 +276,7 @@ void UrlConfigurationDialog::initModel()
 
 bool UrlConfigurationDialog::checkUserAuthInput()
 {
-    return (mUi.useDefaultCreds->isChecked() || !(mUi.username->text().isEmpty() || mUi.password->password().isEmpty()));
+    return mUi.useDefaultCreds->isChecked() || !(mUi.username->text().isEmpty() || mUi.password->password().isEmpty());
 }
 
 void UrlConfigurationDialog::addModelRow(const QString &displayName, const QString &url)

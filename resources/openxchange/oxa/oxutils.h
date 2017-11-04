@@ -25,11 +25,8 @@
 #include <QString>
 #include <QDateTime>
 
-namespace OXA
-{
-
-namespace OXUtils
-{
+namespace OXA {
+namespace OXUtils {
 QString writeBoolean(bool value);
 QString writeNumber(qlonglong value);
 QString writeString(const QString &value);
@@ -44,7 +41,6 @@ QString readName(const QString &text);
 QDateTime readDateTime(const QString &text);
 QDate readDate(const QString &text);
 }
-
 }
 
 #endif

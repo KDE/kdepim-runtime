@@ -38,9 +38,9 @@
 #include "kolabhelpers.h"
 
 KolabChangeItemsRelationsTask::KolabChangeItemsRelationsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : KolabRelationResourceTask(resource, parent),
-      mSession(nullptr),
-      mAdding(false)
+    : KolabRelationResourceTask(resource, parent)
+    , mSession(nullptr)
+    , mAdding(false)
 {
 }
 
@@ -131,7 +131,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
     Akonadi::Item leftItem = items[0] == relation.left() ? items[0] : items[1];
     Akonadi::Item rightItem = items[0] == relation.right() ? items[0] : items[1];
     const QString left = KolabHelpers::createMemberUrl(leftItem, resourceState()->userName());
-    const QString right =  KolabHelpers::createMemberUrl(rightItem, resourceState()->userName());
+    const QString right = KolabHelpers::createMemberUrl(rightItem, resourceState()->userName());
     if (left.isEmpty() || right.isEmpty()) {
         qCWarning(KOLABRESOURCE_LOG) << "Failed to add relation, invalid member: " << left << " : " << right;
         processNextRelation();
@@ -205,4 +205,3 @@ void KolabChangeItemsRelationsTask::onChangeCommitted(KJob *job)
         processNextRelation();
     }
 }
-

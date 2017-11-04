@@ -82,11 +82,9 @@ public:
 private Q_SLOTS:
     void onLoginDone(KJob *job);
     void onReloadRequested();
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                             const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags);
     void onFullListingDone(KJob *job);
-    void onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-                                       const QList< QList<QByteArray> > &flags);
+    void onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags);
     void onReloadDone(KJob *job);
     void onItemChanged(QStandardItem *item);
 

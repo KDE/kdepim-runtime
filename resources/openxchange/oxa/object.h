@@ -31,9 +31,7 @@
 #include <QVector>
 #include <QString>
 
-namespace OXA
-{
-
+namespace OXA {
 class Object
 {
 public:

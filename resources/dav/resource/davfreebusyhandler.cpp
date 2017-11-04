@@ -32,14 +32,15 @@
 #include "davresource_debug.h"
 
 DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)
-    : QObject(parent), mNextRequestId(0)
+    : QObject(parent)
+    , mNextRequestId(0)
 {
 }
 
 void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 {
     const KDAV::DavUrl::List urls = Settings::self()->configuredDavUrls();
-    for (const  KDAV::DavUrl &url : urls) {
+    for (const KDAV::DavUrl &url : urls) {
         if (url.protocol() == KDAV::CalDav) {
             ++mRequestsTracker[email].handlingJobCount;
             KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(url, KDAV::DavPrincipalSearchJob::EmailAddress, email);
@@ -134,7 +135,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 
     if (job->error()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT(freeBusyRetrieved(email, QString(), false, job->errorString()));
+            Q_EMIT (freeBusyRetrieved(email, QString(), false, job->errorString()));
         }
         return;
     }
@@ -184,7 +185,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     QDomElement responseElement = KDAV::Utils::firstChildElementNS(scheduleResponse, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("response"));
     if (responseElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT(freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
+            Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
         }
         return;
     }
@@ -195,7 +196,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     QDomElement calendarDataElement = KDAV::Utils::firstChildElementNS(responseElement, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data"));
     if (calendarDataElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT(freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
+            Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
         }
         return;
     }
@@ -206,7 +207,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     KCalCore::FreeBusy::Ptr fb = format.parseFreeBusy(rawData);
     if (fb.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT(freeBusyRetrieved(email, QString(), false, i18n("Unable to parse free-busy data received")));
+            Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Unable to parse free-busy data received")));
         }
         return;
     }
@@ -223,7 +224,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 
     if (retrievalJobCount == 0) {
         QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId],
-                        KCalCore::iTIPRequest);
+                                                     KCalCore::iTIPRequest);
         Q_EMIT freeBusyRetrieved(email, fbStr, true, QString());
     }
 }

@@ -13,7 +13,7 @@
 class O2;
 
 /// Makes authenticated requests.
-class O2Requestor: public QObject
+class O2Requestor : public QObject
 {
     Q_OBJECT
 

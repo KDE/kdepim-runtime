@@ -98,9 +98,9 @@ Collection MaildirResource::collectionForMaildir(const Maildir &md) const
 }
 
 MaildirResource::MaildirResource(const QString &id)
-    : ResourceBase(id),
-      mSettings(new MaildirSettings(config())),
-      mFsWatcher(new KDirWatch(this))
+    : ResourceBase(id)
+    , mSettings(new MaildirSettings(config()))
+    , mFsWatcher(new KDirWatch(this))
 {
     // we cannot be sure that a config file is existing
     // the MaildirResource will always be build
@@ -116,7 +116,7 @@ MaildirResource::MaildirResource(const QString &id)
     }
     new MaildirSettingsAdaptor(mSettings);
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
-            mSettings, QDBusConnection::ExportAdaptors);
+                                                           mSettings, QDBusConnection::ExportAdaptors);
     connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 
     // We need to enable this here, otherwise we neither get the remote ID of the
@@ -193,7 +193,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
     }
 }
 
-MaildirResource::~ MaildirResource()
+MaildirResource::~MaildirResource()
 {
     delete mSettings;
 }
@@ -329,7 +329,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
     bool bodyChanged = false;
     bool flagsChanged = false;
     bool headChanged = false;
-    for (const QByteArray &part : parts)  {
+    for (const QByteArray &part : parts) {
         if (part.startsWith("PLD:RFC822")) {
             bodyChanged = true;
         } else if (part.startsWith("PLD:HEAD")) {
@@ -599,7 +599,6 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
         col.setName(collectionName);
         changeCommitted(col);
     }
-
 }
 
 void MaildirResource::collectionChanged(const Collection &collection)

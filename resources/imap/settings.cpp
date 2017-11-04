@@ -73,7 +73,8 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransp
     return KIAuth::ClearText; // dummy value, shouldn't get here.
 }
 
-Settings::Settings(WId winId) : SettingsBase(), m_winId(winId)
+Settings::Settings(WId winId) : SettingsBase()
+    , m_winId(winId)
 {
     load();
 
@@ -116,8 +117,8 @@ void Settings::cleanup()
 
 void Settings::requestPassword()
 {
-    if (!m_password.isEmpty() ||
-            (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
+    if (!m_password.isEmpty()
+        || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         Q_EMIT passwordRequestCompleted(m_password, false);
     } else {
         Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
@@ -157,8 +158,8 @@ QString Settings::password(bool *userRejected) const
         *userRejected = false;
     }
 
-    if (!m_password.isEmpty() ||
-            (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
+    if (!m_password.isEmpty()
+        || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         return m_password;
     }
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
@@ -287,12 +288,11 @@ void Settings::loadAccount(ImapAccount *account) const
 
     account->setAuthenticationMode(
         mapTransportAuthToKimap(
-            (MailTransport::TransportBase::EnumAuthenticationType::type) authentication()
-        )
-    );
+            (MailTransport::TransportBase::EnumAuthenticationType::type)authentication()
+            )
+        );
 
     account->setTimeout(sessionTimeout());
-
 }
 
 QString Settings::rootRemoteId() const
@@ -304,8 +304,8 @@ void Settings::renameRootCollection(const QString &newName)
 {
     Akonadi::Collection rootCollection;
     rootCollection.setRemoteId(rootRemoteId());
-    Akonadi::CollectionFetchJob *fetchJob =
-        new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
+    Akonadi::CollectionFetchJob *fetchJob
+        = new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
     fetchJob->setProperty("collectionName", newName);
     connect(fetchJob, &KJob::result,
             this, &Settings::onRootCollectionFetched);
@@ -323,4 +323,3 @@ void Settings::onRootCollectionFetched(KJob *job)
         // We don't care about the result here, nothing we can/should do if the renaming fails
     }
 }
-

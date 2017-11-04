@@ -39,7 +39,6 @@
 AddItemTask::AddItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
-
 }
 
 AddItemTask::~AddItemTask()
@@ -88,7 +87,6 @@ void AddItemTask::onAppendMessageDone(KJob *job)
     if (uid > 0) {
         // We got it directly if UIDPLUS is supported...
         applyFoundUid(uid);
-
     } else {
         // ... otherwise prepare searching for the message
         KIMAP::Session *session = append->session();
@@ -102,7 +100,6 @@ void AddItemTask::onAppendMessageDone(KJob *job)
                     this, &AddItemTask::onPreSearchSelectDone);
 
             select->start();
-
         } else {
             triggerSearchJob(session);
         }
@@ -139,7 +136,7 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
         search->setTerm(KIMAP::Term(KIMAP::Term::And, {
             KIMAP::Term(KIMAP::Term::New),
             KIMAP::Term(KIMAP::Term::Uid,
-            KIMAP::ImapSet(uidNext->uidNext(), 0))
+                        KIMAP::ImapSet(uidNext->uidNext(), 0))
         }));
     }
 
@@ -207,4 +204,3 @@ void AddItemTask::applyFoundUid(qint64 uid)
         applyCollectionChanges(c);
     }
 }
-

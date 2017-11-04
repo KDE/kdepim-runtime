@@ -27,9 +27,7 @@
 #include "folder.h"
 #include "object.h"
 
-namespace OXA
-{
-
+namespace OXA {
 class ObjectsRequestJob : public KJob
 {
     Q_OBJECT
@@ -67,7 +65,6 @@ private:
     Mode mMode;
     Object::List mObjects;
 };
-
 }
 
 #endif

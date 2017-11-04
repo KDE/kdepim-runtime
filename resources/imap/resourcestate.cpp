@@ -34,15 +34,13 @@
 #include "imapresource_debug.h"
 
 ResourceState::ResourceState(ImapResourceBase *resource, const TaskArguments &args)
-    : m_resource(resource),
-      m_arguments(args)
+    : m_resource(resource)
+    , m_arguments(args)
 {
-
 }
 
 ResourceState::~ResourceState()
 {
-
 }
 
 QString ResourceState::userName() const
@@ -271,8 +269,8 @@ void ResourceState::changeProcessed()
 
 void ResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
 {
-    m_resource->searchFinished(result, isRid ? Akonadi::AgentSearchInterface::Rid :
-                               Akonadi::AgentSearchInterface::Uid);
+    m_resource->searchFinished(result, isRid ? Akonadi::AgentSearchInterface::Rid
+                               : Akonadi::AgentSearchInterface::Uid);
 }
 
 void ResourceState::cancelTask(const QString &errorString)

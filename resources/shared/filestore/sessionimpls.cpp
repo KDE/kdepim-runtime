@@ -41,62 +41,74 @@ using namespace Akonadi;
 class AbstractEnqueueVisitor : public FileStore::Job::Visitor
 {
 public:
-    bool visit(FileStore::Job *job) override {
+    bool visit(FileStore::Job *job) override
+    {
         enqueue(job, "Job");
         return true;
     }
 
-    bool visit(FileStore::CollectionCreateJob *job) override {
+    bool visit(FileStore::CollectionCreateJob *job) override
+    {
         enqueue(job, "CollectionCreateJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job) override {
+    bool visit(FileStore::CollectionDeleteJob *job) override
+    {
         enqueue(job, "CollectionDeleteJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job) override {
+    bool visit(FileStore::CollectionFetchJob *job) override
+    {
         enqueue(job, "CollectionFetchJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job) override {
+    bool visit(FileStore::CollectionModifyJob *job) override
+    {
         enqueue(job, "CollectionModifyJob");
         return true;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job) override {
+    bool visit(FileStore::CollectionMoveJob *job) override
+    {
         enqueue(job, "CollectionMoveJob");
         return true;
     }
 
-    bool visit(FileStore::ItemCreateJob *job) override {
+    bool visit(FileStore::ItemCreateJob *job) override
+    {
         enqueue(job, "ItemCreateJob");
         return true;
     }
 
-    bool visit(FileStore::ItemDeleteJob *job) override {
+    bool visit(FileStore::ItemDeleteJob *job) override
+    {
         enqueue(job, "ItemDeleteJob");
         return true;
     }
 
-    bool visit(FileStore::ItemFetchJob *job) override {
+    bool visit(FileStore::ItemFetchJob *job) override
+    {
         enqueue(job, "ItemFetchJob");
         return true;
     }
 
-    bool visit(FileStore::ItemModifyJob *job) override {
+    bool visit(FileStore::ItemModifyJob *job) override
+    {
         enqueue(job, "ItemModifyJob");
         return true;
     }
 
-    bool visit(FileStore::ItemMoveJob *job) override {
+    bool visit(FileStore::ItemMoveJob *job) override
+    {
         enqueue(job, "ItemMoveJob");
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) override {
+    bool visit(FileStore::StoreCompactJob *job) override
+    {
         enqueue(job, "StoreCompactJob");
         return true;
     }
@@ -111,7 +123,9 @@ public:
     explicit Private(FileStore::FiFoQueueJobSession *parent)
         : mParent(parent)
     {
-        QObject::connect(&mJobRunTimer, &QTimer::timeout, mParent, [this]() { runNextJob(); });
+        QObject::connect(&mJobRunTimer, &QTimer::timeout, mParent, [this]() {
+            runNextJob();
+        });
     }
 
     void runNextJob()
@@ -152,7 +166,8 @@ public:
     QTimer mJobRunTimer;
 
 protected:
-    void enqueue(FileStore::Job *job, const char *className) override {
+    void enqueue(FileStore::Job *job, const char *className) override
+    {
         Q_UNUSED(className);
         mJobQueue.enqueue(job);
 
@@ -167,7 +182,8 @@ private:
 };
 
 FileStore::FiFoQueueJobSession::FiFoQueueJobSession(QObject *parent)
-    : FileStore::AbstractJobSession(parent), d(new Private(this))
+    : FileStore::AbstractJobSession(parent)
+    , d(new Private(this))
 {
 }
 
@@ -198,4 +214,3 @@ void FileStore::FiFoQueueJobSession::removeJob(FileStore::Job *job)
 }
 
 #include "moc_sessionimpls_p.cpp"
-

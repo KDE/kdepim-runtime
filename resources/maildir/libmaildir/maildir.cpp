@@ -69,7 +69,8 @@ class Maildir::Private
 {
 public:
     Private(const QString &p, bool isRoot)
-        : path(p), isRoot(isRoot)
+        : path(p)
+        , isRoot(isRoot)
     {
         hostName = QHostInfo::localHostName();
         // The default implementation of QUuid::createUuid() doesn't use
@@ -93,6 +94,7 @@ public:
     {
         return path == rhs.path;
     }
+
     bool accessIsPossible(bool createMissingFolders = true);
     bool canAccess(const QString &path) const;
 
@@ -142,7 +144,7 @@ public:
 
         if (QFileInfo::exists(realKey)) {
             keyCache->addNewKey(path, key);
-        } else  { //not in "new", search in "cur"
+        } else {  //not in "new", search in "cur"
             realKey = path + QLatin1String("/cur/") + key;
             if (QFileInfo::exists(realKey)) {
                 keyCache->addCurKey(path, key);
@@ -213,7 +215,7 @@ Maildir::Maildir(const Maildir &rhs)
 {
 }
 
-Maildir &Maildir::operator= (const Maildir &rhs)
+Maildir &Maildir::operator=(const Maildir &rhs)
 {
     // copy and swap, exception safe, and handles assignment to self
     Maildir temp(rhs);
@@ -221,7 +223,7 @@ Maildir &Maildir::operator= (const Maildir &rhs)
     return *this;
 }
 
-bool Maildir::operator== (const Maildir &rhs) const
+bool Maildir::operator==(const Maildir &rhs) const
 {
     return *d == *rhs.d;
 }
@@ -499,6 +501,7 @@ QByteArray Maildir::readEntry(const QString &key) const
 
     return result;
 }
+
 qint64 Maildir::size(const QString &key) const
 {
     QString realKey(d->findRealKey(key));

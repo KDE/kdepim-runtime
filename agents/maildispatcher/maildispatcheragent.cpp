@@ -51,7 +51,6 @@ Q_IMPORT_PLUGIN(akonadi_serializer_mail)
 
 using namespace Akonadi;
 
-
 void MailDispatcherAgent::abort()
 {
     if (!isOnline()) {
@@ -93,8 +92,8 @@ void MailDispatcherAgent::dispatch()
             Q_EMIT percent(0);
         }
         Q_EMIT status(AgentBase::Running,
-                         i18np("Sending messages (1 item in queue)...",
-                               "Sending messages (%1 items in queue)...", mQueue->count()));
+                      i18np("Sending messages (1 item in queue)...",
+                            "Sending messages (%1 items in queue)...", mQueue->count()));
         qCDebug(MAILDISPATCHER_LOG) << "Attempting to dispatch the next message.";
         mSendingInProgress = true;
         mQueue->fetchOne(); // will trigger itemFetched
@@ -105,7 +104,9 @@ void MailDispatcherAgent::dispatch()
             mAborting = false;
             mSentAnything = false;
             Q_EMIT status(AgentBase::Idle, i18n("Sending canceled."));
-            QTimer::singleShot(3000, this, [this]() {emitStatusReady();});
+            QTimer::singleShot(3000, this, [this]() {
+                emitStatusReady();
+            });
         } else {
             if (mSentAnything) {
                 // Finished sending messages in queue.
@@ -125,7 +126,9 @@ void MailDispatcherAgent::dispatch()
                 // Empty queue.
                 Q_EMIT status(AgentBase::Idle, i18n("No items in queue."));
             }
-            QTimer::singleShot(3000, this, [this]() {emitStatusReady();});
+            QTimer::singleShot(3000, this, [this]() {
+                emitStatusReady();
+            });
         }
 
         mErrorOccurred = false;
@@ -145,10 +148,10 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     new MailDispatcherAgentAdaptor(this);
 
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
-            Settings::self(), QDBusConnection::ExportAdaptors);
+                                                           Settings::self(), QDBusConnection::ExportAdaptors);
 
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/MailDispatcherAgent"),
-            this, QDBusConnection::ExportAdaptors);
+                                                           this, QDBusConnection::ExportAdaptors);
     QString service = QStringLiteral("org.freedesktop.Akonadi.MailDispatcherAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
@@ -158,15 +161,21 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
 
     mQueue = new OutboxQueue(this);
     connect(mQueue, &OutboxQueue::newItems,
-            this, [this]() { dispatch(); });
+            this, [this]() {
+        dispatch();
+    });
     connect(mQueue, &OutboxQueue::itemReady,
-            this, [this](const Akonadi::Item &item) { itemFetched(item);});
+            this, [this](const Akonadi::Item &item) {
+        itemFetched(item);
+    });
     connect(mQueue, &OutboxQueue::error,
             this, &MailDispatcherAgent::queueError);
     connect(this, &MailDispatcherAgent::itemProcessed,
             mQueue, &OutboxQueue::itemProcessed);
     connect(this, &MailDispatcherAgent::abortRequested,
-            this, [this]() { abort(); });
+            this, [this]() {
+        abort();
+    });
 
     mSentActionHandler = new SentActionHandler(this);
 
@@ -189,7 +198,9 @@ void MailDispatcherAgent::doSetOnline(bool online)
     if (online) {
         qCDebug(MAILDISPATCHER_LOG) << "Online. Dispatching messages.";
         Q_EMIT status(AgentBase::Idle, i18n("Online, sending messages in queue."));
-        QTimer::singleShot(0, this, [this]() { dispatch(); });
+        QTimer::singleShot(0, this, [this]() {
+            dispatch();
+        });
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Offline.";
         Q_EMIT status(AgentBase::Idle, i18n("Offline, message sending suspended."));
@@ -217,13 +228,13 @@ void MailDispatcherAgent::itemFetched(const Item &item)
     }
 
     Q_EMIT status(AgentBase::Running, i18nc("Message with given subject is being sent.", "Sending: %1",
-                                        item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
+                                            item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
 
     connect(mCurrentJob, &KJob::result,
             this, &MailDispatcherAgent::sendResult);
     //TODO wait kf6. For the moment we can't convert to new connect api.
-    connect(mCurrentJob, SIGNAL(percent(KJob*,ulong)),
-            this, SLOT(sendPercent(KJob*,ulong)));
+    connect(mCurrentJob, SIGNAL(percent(KJob *,ulong)),
+            this, SLOT(sendPercent(KJob *,ulong)));
 
     mCurrentJob->start();
 }
@@ -247,7 +258,7 @@ void MailDispatcherAgent::sendPercent(KJob *job, unsigned long)
     const double transportWeight = 0.8;
 
     const int percentValue = 100 * (mSentItemsSize + job->processedAmount(KJob::Bytes) * transportWeight)
-                        / (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize());
+                             / (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize());
 
     qCDebug(MAILDISPATCHER_LOG) << "sentItemsSize" << mSentItemsSize
                                 << "this job processed" << job->processedAmount(KJob::Bytes)
@@ -262,8 +273,8 @@ void MailDispatcherAgent::sendPercent(KJob *job, unsigned long)
 
     // It is possible that the number of queued messages has changed.
     Q_EMIT status(AgentBase::Running,
-                     i18np("Sending messages (1 item in queue)...",
-                           "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
+                  i18np("Sending messages (1 item in queue)...",
+                        "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
 }
 
 void MailDispatcherAgent::sendResult(KJob *job)
@@ -313,7 +324,9 @@ void MailDispatcherAgent::sendResult(KJob *job)
 
     // dispatch next message
     mSendingInProgress = false;
-    QTimer::singleShot(0, this, [this]() { dispatch();});
+    QTimer::singleShot(0, this, [this]() {
+        dispatch();
+    });
 }
 
 void MailDispatcherAgent::emitStatusReady()

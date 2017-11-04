@@ -51,62 +51,74 @@ public:
     }
 
 public: // Job::Visitor interface implementation
-    bool visit(FileStore::Job *job) override {
+    bool visit(FileStore::Job *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::CollectionCreateJob *job) override {
+    bool visit(FileStore::CollectionCreateJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job) override {
+    bool visit(FileStore::CollectionDeleteJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job) override {
+    bool visit(FileStore::CollectionFetchJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job) override {
+    bool visit(FileStore::CollectionModifyJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job) override {
+    bool visit(FileStore::CollectionMoveJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::ItemCreateJob *job) override {
+    bool visit(FileStore::ItemCreateJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::ItemDeleteJob *job) override {
+    bool visit(FileStore::ItemDeleteJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::ItemFetchJob *job) override {
+    bool visit(FileStore::ItemFetchJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::ItemModifyJob *job) override {
+    bool visit(FileStore::ItemModifyJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::ItemMoveJob *job) override {
+    bool visit(FileStore::ItemMoveJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) override {
+    bool visit(FileStore::StoreCompactJob *job) override
+    {
         Q_UNUSED(job);
         return false;
     }
@@ -131,10 +143,10 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::CollectionFetchJob *job) override {
-        if (job->type() == FileStore::CollectionFetchJob::Base &&
-        job->collection().remoteId() == mTopLevelCollection.remoteId())
-        {
+    bool visit(FileStore::CollectionFetchJob *job) override
+    {
+        if (job->type() == FileStore::CollectionFetchJob::Base
+            && job->collection().remoteId() == mTopLevelCollection.remoteId()) {
             mSession->notifyCollectionsReceived(job, Collection::List() << mTopLevelCollection);
             return true;
         }
@@ -162,60 +174,62 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::CollectionCreateJob *job) override {
+    bool visit(FileStore::CollectionCreateJob *job) override
+    {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1)
-        {
+        if (mCollections.count() > 1) {
             qCritical() << "Processing collections for CollectionCreateJob "
-            "encountered more than one collection. Just processing the first one.";
+                           "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionCreated(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::CollectionDeleteJob *job) override {
+    bool visit(FileStore::CollectionDeleteJob *job) override
+    {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1)
-        {
+        if (mCollections.count() > 1) {
             qCritical() << "Processing collections for CollectionDeleteJob "
-            "encountered more than one collection. Just processing the first one.";
+                           "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionDeleted(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::CollectionFetchJob *job) override {
+    bool visit(FileStore::CollectionFetchJob *job) override
+    {
         mSession->notifyCollectionsReceived(job, mCollections);
         return true;
     }
 
-    bool visit(FileStore::CollectionModifyJob *job) override {
+    bool visit(FileStore::CollectionModifyJob *job) override
+    {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1)
-        {
+        if (mCollections.count() > 1) {
             qCritical() << "Processing collections for CollectionModifyJob "
-            "encountered more than one collection. Just processing the first one.";
+                           "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionModified(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::CollectionMoveJob *job) override {
+    bool visit(FileStore::CollectionMoveJob *job) override
+    {
         Q_ASSERT(!mCollections.isEmpty());
-        if (mCollections.count() > 1)
-        {
+        if (mCollections.count() > 1) {
             qCritical() << "Processing collections for CollectionMoveJob "
-            "encountered more than one collection. Just processing the first one.";
+                           "encountered more than one collection. Just processing the first one.";
         }
 
         mSession->notifyCollectionMoved(job, mCollections[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) override {
+    bool visit(FileStore::StoreCompactJob *job) override
+    {
         mSession->notifyCollectionsChanged(job, mCollections);
         return true;
     }
@@ -245,48 +259,50 @@ public:
 public:
     using JobProcessingAdaptor::visit;
 
-    bool visit(FileStore::ItemCreateJob *job) override {
+    bool visit(FileStore::ItemCreateJob *job) override
+    {
         Q_ASSERT(!mItems.isEmpty());
-        if (mItems.count() > 1)
-        {
+        if (mItems.count() > 1) {
             qCritical() << "Processing items for ItemCreateJob encountered more than one item. "
-            "Just processing the first one.";
+                           "Just processing the first one.";
         }
 
         mSession->notifyItemCreated(job, mItems[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::ItemFetchJob *job) override {
+    bool visit(FileStore::ItemFetchJob *job) override
+    {
         mSession->notifyItemsReceived(job, mItems);
         return true;
     }
 
-    bool visit(FileStore::ItemModifyJob *job) override {
+    bool visit(FileStore::ItemModifyJob *job) override
+    {
         Q_ASSERT(!mItems.isEmpty());
-        if (mItems.count() > 1)
-        {
+        if (mItems.count() > 1) {
             qCritical() << "Processing items for ItemModifyJob encountered more than one item. "
-            "Just processing the first one.";
+                           "Just processing the first one.";
         }
 
         mSession->notifyItemModified(job, mItems[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::ItemMoveJob *job) override {
+    bool visit(FileStore::ItemMoveJob *job) override
+    {
         Q_ASSERT(!mItems.isEmpty());
-        if (mItems.count() > 1)
-        {
+        if (mItems.count() > 1) {
             qCritical() << "Processing items for ItemMoveJob encountered more than one item. "
-            "Just processing the first one.";
+                           "Just processing the first one.";
         }
 
         mSession->notifyItemMoved(job, mItems[ 0 ]);
         return true;
     }
 
-    bool visit(FileStore::StoreCompactJob *job) override {
+    bool visit(FileStore::StoreCompactJob *job) override
+    {
         mSession->notifyItemsChanged(job, mItems);
         return true;
     }
@@ -301,9 +317,12 @@ class FileStore::AbstractLocalStore::Private
 
 public:
     explicit Private(FileStore::AbstractLocalStore *parent)
-        : q(parent), mSession(new FileStore::FiFoQueueJobSession(q)), mCurrentJob(nullptr),
-          mTopLevelCollectionFetcher(mSession), mCollectionsProcessedNotifier(mSession),
-          mItemsProcessedNotifier(mSession)
+        : q(parent)
+        , mSession(new FileStore::FiFoQueueJobSession(q))
+        , mCurrentJob(nullptr)
+        , mTopLevelCollectionFetcher(mSession)
+        , mCollectionsProcessedNotifier(mSession)
+        , mItemsProcessedNotifier(mSession)
     {
     }
 
@@ -338,9 +357,12 @@ void FileStore::AbstractLocalStore::Private::processJobs(const QList<FileStore::
 }
 
 FileStore::AbstractLocalStore::AbstractLocalStore()
-    : QObject(), d(new Private(this))
+    : QObject()
+    , d(new Private(this))
 {
-    connect(d->mSession, &AbstractJobSession::jobsReady, this, [this](const QList<FileStore::Job*> &jobs) { d->processJobs(jobs); });
+    connect(d->mSession, &AbstractJobSession::jobsReady, this, [this](const QList<FileStore::Job *> &jobs) {
+        d->processJobs(jobs);
+    });
 }
 
 FileStore::AbstractLocalStore::~AbstractLocalStore()
@@ -424,8 +446,8 @@ FileStore::CollectionDeleteJob *FileStore::AbstractLocalStore::deleteCollection(
         qCritical() << message;
         qCritical() << collection;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
-    } else if (collection.remoteId().isEmpty() ||
-               collection.parentCollection().remoteId().isEmpty()) {
+    } else if (collection.remoteId().isEmpty()
+               || collection.parentCollection().remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
         qCritical() << message;
         qCritical() << collection;
@@ -513,9 +535,9 @@ FileStore::CollectionMoveJob *FileStore::AbstractLocalStore::moveCollection(cons
         qCritical() << message;
         qCritical() << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
-    } else if (collection.remoteId().isEmpty() ||
-               collection.parentCollection().remoteId().isEmpty() ||
-               targetParent.remoteId().isEmpty()) {
+    } else if (collection.remoteId().isEmpty()
+               || collection.parentCollection().remoteId().isEmpty()
+               || targetParent.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
         qCritical() << message;
         qCritical() << collection << targetParent;
@@ -715,8 +737,8 @@ FileStore::ItemMoveJob *FileStore::AbstractLocalStore::moveItem(const Item &item
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")"
                     << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
-    } else if (item.parentCollection().remoteId().isEmpty() ||
-               targetParent.remoteId().isEmpty()) {
+    } else if (item.parentCollection().remoteId().isEmpty()
+               || targetParent.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
         qCritical() << message;
         qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
@@ -889,4 +911,3 @@ void FileStore::AbstractLocalStore::checkStoreCompact(FileStore::StoreCompactJob
 }
 
 #include "moc_abstractlocalstore.cpp"
-

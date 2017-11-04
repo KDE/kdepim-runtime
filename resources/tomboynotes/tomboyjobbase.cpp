@@ -20,11 +20,10 @@
 #include "tomboyjobbase.h"
 
 TomboyJobBase::TomboyJobBase(KIO::AccessManager *manager, QObject *parent)
-    : KCompositeJob(parent),
-      mManager(manager),
-      mO1(new O1Tomboy(this)),
-      mReply(nullptr)
-
+    : KCompositeJob(parent)
+    , mManager(manager)
+    , mO1(new O1Tomboy(this))
+    , mReply(nullptr)
 {
     mRequestor = new O1Requestor(mManager, mO1, this);
 }
@@ -44,7 +43,7 @@ void TomboyJobBase::setAuthentication(const QString &token, const QString &secre
 void TomboyJobBase::checkReplyError()
 {
     switch (mReply->error()) {
-    case QNetworkReply::NoError :
+    case QNetworkReply::NoError:
         setError(TomboyJobError::NoError);
         break;
     case QNetworkReply::RemoteHostClosedError:

@@ -31,13 +31,11 @@ public:
     QString password() const;
     void setPassword(const QString &password);
 
-    void setScenario(const QList<RequestType> &expectedCalls,
-                     const QList<ResultType> &results);
+    void setScenario(const QList<RequestType> &expectedCalls, const QList<ResultType> &results);
     void setDelays(const QList<int> &delays);
 
 public:
-    void requestPassword(RequestType request = StandardRequest,
-                         const QString &serverError = QString()) override;
+    void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString()) override;
 
 private Q_SLOTS:
     void emitResult();
@@ -50,4 +48,3 @@ private:
 };
 
 #endif
-

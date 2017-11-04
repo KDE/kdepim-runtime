@@ -83,7 +83,8 @@ private slots:
         tag.setName("tagname");
         Kolab::KolabObjectWriter writer;
         QStringList members;
-        members << QLatin1String("imap:///user/john.doe%40example.org/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
+        members << QLatin1String(
+            "imap:///user/john.doe%40example.org/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
         KMime::Message::Ptr msg = writer.writeTag(tag, members);
         // qCDebug(KOLABRESOURCE_LOG) << msg->encodedContent();
 
@@ -94,8 +95,8 @@ private slots:
                  << "S: A000003 OK select done"
                  << "C: A000004 FETCH 1:* (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-                 "RFC822.SIZE 75 BODY[] {" + QByteArray::number(content.size()) + "}\r\n"
-                 + content + " )"
+            "RFC822.SIZE 75 BODY[] {" + QByteArray::number(content.size()) + "}\r\n"
+            + content + " )"
                  << "S: A000004 OK fetch done";
 
         callNames.clear();

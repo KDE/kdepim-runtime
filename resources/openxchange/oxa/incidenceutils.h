@@ -27,14 +27,11 @@
 class QDomDocument;
 class QDomElement;
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * Namespace that contains helper methods for handling events and tasks.
  */
-namespace IncidenceUtils
-{
+namespace IncidenceUtils {
 /**
  * Parses the XML tree under @p propElement and fills the event data of @p object.
  */
@@ -55,7 +52,6 @@ void addEventElements(QDomDocument &document, QDomElement &propElement, const Ob
  */
 void addTaskElements(QDomDocument &document, QDomElement &propElement, const Object &object);
 }
-
 }
 
 #endif

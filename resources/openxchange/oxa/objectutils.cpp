@@ -57,10 +57,18 @@ Object OXA::ObjectUtils::parseObject(const QDomElement &propElement, Folder::Mod
     }
 
     switch (module) {
-    case Folder::Contacts: ContactUtils::parseContact(propElement, object); break;
-    case Folder::Calendar: IncidenceUtils::parseEvent(propElement, object); break;
-    case Folder::Tasks: IncidenceUtils::parseTask(propElement, object); break;
-    case Folder::Unbound: Q_ASSERT(false); break;
+    case Folder::Contacts:
+        ContactUtils::parseContact(propElement, object);
+        break;
+    case Folder::Calendar:
+        IncidenceUtils::parseEvent(propElement, object);
+        break;
+    case Folder::Tasks:
+        IncidenceUtils::parseTask(propElement, object);
+        break;
+    case Folder::Unbound:
+        Q_ASSERT(false);
+        break;
     }
 
     return object;
@@ -79,10 +87,18 @@ void OXA::ObjectUtils::addObjectElements(QDomDocument &document, QDomElement &pr
     }
 
     switch (object.module()) {
-    case Folder::Contacts: ContactUtils::addContactElements(document, propElement, object, preloadedData); break;
-    case Folder::Calendar: IncidenceUtils::addEventElements(document, propElement, object); break;
-    case Folder::Tasks: IncidenceUtils::addTaskElements(document, propElement, object); break;
-    case Folder::Unbound: Q_ASSERT(false); break;
+    case Folder::Contacts:
+        ContactUtils::addContactElements(document, propElement, object, preloadedData);
+        break;
+    case Folder::Calendar:
+        IncidenceUtils::addEventElements(document, propElement, object);
+        break;
+    case Folder::Tasks:
+        IncidenceUtils::addTaskElements(document, propElement, object);
+        break;
+    case Folder::Unbound:
+        Q_ASSERT(false);
+        break;
     }
 }
 
@@ -122,10 +138,15 @@ void *OXA::ObjectUtils::preloadData(const Object &object, KJob *job)
 QString OXA::ObjectUtils::davPath(Folder::Module module)
 {
     switch (module) {
-    case Folder::Contacts: return QStringLiteral("/servlet/webdav.contacts");
-    case Folder::Calendar: return QStringLiteral("/servlet/webdav.calendar");
-    case Folder::Tasks: return QStringLiteral("/servlet/webdav.tasks");
-    case Folder::Unbound: Q_ASSERT(false); return QString();
+    case Folder::Contacts:
+        return QStringLiteral("/servlet/webdav.contacts");
+    case Folder::Calendar:
+        return QStringLiteral("/servlet/webdav.calendar");
+    case Folder::Tasks:
+        return QStringLiteral("/servlet/webdav.tasks");
+    case Folder::Unbound:
+        Q_ASSERT(false);
+        return QString();
     }
 
     return QString();

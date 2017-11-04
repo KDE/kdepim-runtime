@@ -37,8 +37,7 @@ public:
     virtual ~RetrieveCollectionsTask();
 
 private Q_SLOTS:
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                             const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);
     void onMailBoxesReceiveDone(KJob *job);
     void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
     void onFullMailBoxesReceiveDone(KJob *job);

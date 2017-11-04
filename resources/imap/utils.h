@@ -22,11 +22,8 @@
 
 class QString;
 
-namespace Utils
-{
-
+namespace Utils {
 bool isGmail(const QString &host);
-
 }
 
 #endif

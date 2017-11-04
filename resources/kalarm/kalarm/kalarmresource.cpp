@@ -44,13 +44,13 @@ using namespace KAlarmCal;
 using KAlarmResourceCommon::errorMessage;
 
 KAlarmResource::KAlarmResource(const QString &id)
-    : ICalResourceBase(id),
-      mCompatibility(KACalendar::Incompatible),
-      mFileCompatibility(KACalendar::Incompatible),
-      mVersion(KACalendar::MixedFormat),
-      mFileVersion(KACalendar::IncompatibleFormat),
-      mHaveReadFile(false),
-      mFetchedAttributes(false)
+    : ICalResourceBase(id)
+    , mCompatibility(KACalendar::Incompatible)
+    , mFileCompatibility(KACalendar::Incompatible)
+    , mVersion(KACalendar::MixedFormat)
+    , mFileVersion(KACalendar::IncompatibleFormat)
+    , mHaveReadFile(false)
+    , mFetchedAttributes(false)
 {
     qCDebug(KALARMRESOURCE_LOG) << id;
     KAlarmResourceCommon::initialise(this);
@@ -58,7 +58,7 @@ KAlarmResource::KAlarmResource(const QString &id)
     connect(mSettings, &Settings::configChanged, this, &KAlarmResource::settingsChanged);
 
     // Start a job to fetch the collection attributes
-    fetchCollection(SLOT(collectionFetchResult(KJob*)));
+    fetchCollection(SLOT(collectionFetchResult(KJob *)));
 }
 
 KAlarmResource::~KAlarmResource()
@@ -114,7 +114,7 @@ void KAlarmResource::retrieveCollections()
     qCDebug(KALARMRESOURCE_LOG);
     mSupportedMimetypes = mSettings->alarmTypes();
     ICalResourceBase::retrieveCollections();
-    fetchCollection(SLOT(collectionFetchResult(KJob*)));
+    fetchCollection(SLOT(collectionFetchResult(KJob *)));
 }
 
 /******************************************************************************
@@ -138,7 +138,7 @@ void KAlarmResource::collectionFetchResult(KJob *j)
             // Check whether calendar file format needs to be updated
             qCDebug(KALARMRESOURCE_LOG) << "Fetched collection";
             const Collection &c(collections[0]);
-            if (firstTime  &&  mSettings->path().isEmpty()) {
+            if (firstTime && mSettings->path().isEmpty()) {
                 // Initialising a resource which seems to have no stored
                 // settings config file. Recreate the settings.
                 static const Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
@@ -197,25 +197,25 @@ bool KAlarmResource::readFromFile(const QString &fileName)
 void KAlarmResource::checkFileCompatibility(const Collection &collection, bool createAttribute)
 {
     if (collection.isValid()
-    &&  collection.hasAttribute<CompatibilityAttribute>()) {
+        && collection.hasAttribute<CompatibilityAttribute>()) {
         // Update our note of the calendar version and compatibility
         const CompatibilityAttribute *attr = collection.attribute<CompatibilityAttribute>();
         mCompatibility = attr->compatibility();
-        mVersion       = attr->version();
+        mVersion = attr->version();
         createAttribute = false;
     }
     if (mHaveReadFile
-    && (createAttribute
-        ||  mFileCompatibility != mCompatibility  ||  mFileVersion != mVersion)) {
+        && (createAttribute
+            || mFileCompatibility != mCompatibility || mFileVersion != mVersion)) {
         // The actual file's version and compatibility are different from
         // those in the Akonadi database, so update the database attributes.
         mCompatibility = mFileCompatibility;
-        mVersion       = mFileVersion;
+        mVersion = mFileVersion;
         const Collection c(collection);
         if (c.isValid()) {
             KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
         } else {
-            fetchCollection(SLOT(setCompatibility(KJob*)));
+            fetchCollection(SLOT(setCompatibility(KJob *)));
         }
     }
 }
@@ -303,7 +303,7 @@ void KAlarmResource::settingsChanged()
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
         qCDebug(KALARMRESOURCE_LOG) << "Update storage format";
-        fetchCollection(SLOT(updateFormat(KJob*)));
+        fetchCollection(SLOT(updateFormat(KJob *)));
     }
 }
 
@@ -335,7 +335,8 @@ void KAlarmResource::updateFormat(KJob *j)
             qCWarning(KALARMRESOURCE_LOG) << "Incompatible storage format: compat=" << mCompatibility;
             break;
         case KACalendar::Converted:
-        case KACalendar::Convertible: {
+        case KACalendar::Convertible:
+        {
             if (mSettings->readOnly()) {
                 qCWarning(KALARMRESOURCE_LOG) << "Cannot update storage format for a read-only resource";
                 break;
@@ -506,7 +507,7 @@ CollectionFetchJob *KAlarmResource::fetchCollection(const char *slot)
 {
     CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
-    connect(job, SIGNAL(result(KJob*)), slot);
+    connect(job, SIGNAL(result(KJob *)), slot);
     return job;
 }
 

@@ -26,9 +26,7 @@
 #include <QMap>
 #include <QString>
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * @short A class that contains information about folders on the OX server.
  *
@@ -192,7 +190,6 @@ private:
     UserPermissions mUserPermissions;
     GroupPermissions mGroupPermissions;
 };
-
 }
 Q_DECLARE_TYPEINFO(OXA::Folder, Q_MOVABLE_TYPE);
 

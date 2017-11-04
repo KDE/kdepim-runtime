@@ -36,9 +36,11 @@
 #include "settings.h"
 
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
-    : PasswordRequesterInterface(parent), m_resource(resource), m_requestDialog(nullptr), m_settingsDialog(nullptr)
+    : PasswordRequesterInterface(parent)
+    , m_resource(resource)
+    , m_requestDialog(nullptr)
+    , m_settingsDialog(nullptr)
 {
-
 }
 
 SettingsPasswordRequester::~SettingsPasswordRequester()
@@ -160,18 +162,22 @@ void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &passwo
     }
 }
 
-QString SettingsPasswordRequester::requestManualAuth(bool* userRejected)
+QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
 {
     QScopedPointer<KPasswordDialog> dlg(new KPasswordDialog(nullptr));
     dlg->setModal(true);
     dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.",
                         m_resource->settings()->userName(), m_resource->settings()->imapServer()));
     if (dlg->exec()) {
-        if (userRejected) *userRejected = false;
+        if (userRejected) {
+            *userRejected = false;
+        }
         m_resource->settings()->setPassword(dlg->password());
         return dlg->password();
     } else {
-        if (userRejected) *userRejected = true;
+        if (userRejected) {
+            *userRejected = true;
+        }
         return QString();
     }
 }

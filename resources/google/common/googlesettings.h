@@ -29,7 +29,7 @@
  * clientSecret and read-write access to accessToken and
  * refreshToken.
  */
-class GoogleSettings: public SettingsBase
+class GoogleSettings : public SettingsBase
 {
     Q_OBJECT
 
@@ -49,7 +49,6 @@ public:
 private:
     WId m_winId;
     QString m_resourceId;
-
 };
 
 #endif // GOOGLESETTINGS_H

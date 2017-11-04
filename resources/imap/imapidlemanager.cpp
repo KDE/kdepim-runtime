@@ -39,19 +39,23 @@
 #include <chrono>
 
 namespace {
-
 // RFC2177 says clients should restart IDLE every 29 minutes, as
 // servers MAY consider clients inactive after 30 minutes.
 // TODO: Make configurable to support less RF-conformant servers
 static const auto IdleTimeout = std::chrono::minutes(29);
-
 }
 
-ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state,
-                                 SessionPool *pool, ImapResourceBase *parent)
-    : QObject(parent), m_sessionRequestId(0), m_pool(pool), m_session(nullptr),
-      m_idle(nullptr), m_resource(parent), m_state(state), m_idleTimeout(nullptr),
-      m_lastMessageCount(-1), m_lastRecentCount(-1)
+ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state, SessionPool *pool, ImapResourceBase *parent)
+    : QObject(parent)
+    , m_sessionRequestId(0)
+    , m_pool(pool)
+    , m_session(nullptr)
+    , m_idle(nullptr)
+    , m_resource(parent)
+    , m_state(state)
+    , m_idleTimeout(nullptr)
+    , m_lastMessageCount(-1)
+    , m_lastRecentCount(-1)
 {
     connect(pool, &SessionPool::sessionRequestDone, this, &ImapIdleManager::onSessionRequestDone);
     m_sessionRequestId = m_pool->requestSession();
@@ -100,8 +104,7 @@ void ImapIdleManager::reconnect()
     }
 }
 
-void ImapIdleManager::onSessionRequestDone(qint64 requestId, KIMAP::Session *session,
-        int errorCode, const QString &/*errorString*/)
+void ImapIdleManager::onSessionRequestDone(qint64 requestId, KIMAP::Session *session, int errorCode, const QString & /*errorString*/)
 {
     if (requestId != m_sessionRequestId || session == nullptr || errorCode != SessionPool::NoError) {
         return;
@@ -179,8 +182,7 @@ void ImapIdleManager::onIdleStopped()
     }
 }
 
-void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
-                                      int messageCount, int recentCount)
+void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox, int messageCount, int recentCount)
 {
     qCDebug(IMAPRESOURCE_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
     qCDebug(IMAPRESOURCE_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()

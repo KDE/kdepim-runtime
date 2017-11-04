@@ -33,7 +33,6 @@ private Q_SLOTS:
     void testReadHeader();
     void testRead();
 private:
-
 };
 
 #endif // TESTIDXREADER_H

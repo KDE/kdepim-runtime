@@ -513,11 +513,11 @@ typedef unsigned int socklen_t;
 
 #ifndef HAVE_STRUCT_SOCKADDR_STORAGE
 #define _SS_MAXSIZE 128 /* Implementation specific max size */
-#define _SS_PADSIZE (_SS_MAXSIZE - sizeof (struct sockaddr))
+#define _SS_PADSIZE (_SS_MAXSIZE - sizeof(struct sockaddr))
 
 struct sockaddr_storage {
     struct  sockaddr ss_sa;
-    char        __ss_pad2[_SS_PADSIZE];
+    char __ss_pad2[_SS_PADSIZE];
 };
 # define ss_family ss_sa.sa_family
 #endif /* !HAVE_STRUCT_SOCKADDR_STORAGE */
@@ -576,4 +576,3 @@ struct sockaddr_storage {
 #endif
 
 #endif /* CONFIG_H */
-

@@ -28,9 +28,7 @@
 
 class QDateTime;
 
-namespace KPIM
-{
-
+namespace KPIM {
 class MAILDIR_EXPORT Maildir
 {
 public:
@@ -253,6 +251,5 @@ private:
     class Private;
     Private *d;
 };
-
 }
 #endif // __MAILDIR_H__

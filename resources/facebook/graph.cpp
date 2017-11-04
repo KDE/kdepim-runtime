@@ -31,13 +31,12 @@ QString Graph::scopes()
     return QStringLiteral("user_birthday,user_friends,user_events");
 }
 
-QUrl Graph::url(const QString &endpoint, const QString &accessToken,
-                const QStringList &fields, const QMap<QString, QString> &queries)
+QUrl Graph::url(const QString &endpoint, const QString &accessToken, const QStringList &fields, const QMap<QString, QString> &queries)
 {
     QUrl url(QStringLiteral("https://graph.facebook.com/v2.9/%1").arg(endpoint));
     QUrlQuery query(url);
     query.addQueryItem(QStringLiteral("access_token"), accessToken);
-    if( !fields.isEmpty()) {
+    if (!fields.isEmpty()) {
         query.addQueryItem(QStringLiteral("fields"), fields.join(QLatin1Char(',')));
     }
     for (auto it = queries.cbegin(), end = queries.cend(); it != end; ++it) {
@@ -47,8 +46,7 @@ QUrl Graph::url(const QString &endpoint, const QString &accessToken,
     return url;
 }
 
-KJob *Graph::job(const QString &endpoint, const QString &accessToken,
-                 const QStringList &fields, const QMap<QString, QString> &queries)
+KJob *Graph::job(const QString &endpoint, const QString &accessToken, const QStringList &fields, const QMap<QString, QString> &queries)
 {
     return job(url(endpoint, accessToken, fields, queries));
 }
@@ -57,7 +55,6 @@ KJob *Graph::job(const QUrl &url)
 {
     return KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
 }
-
 
 Graph::RSVP Graph::rsvpFromString(const QString &rsvp)
 {

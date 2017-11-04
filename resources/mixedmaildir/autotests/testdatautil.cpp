@@ -72,7 +72,7 @@ FolderType TestDataUtil::folderType(const QString &testDataName)
     }
 
     const QFileInfo fileInfo(dir, testDataName);
-    return (fileInfo.isDir() ? MaildirFolder : MBoxFolder);
+    return fileInfo.isDir() ? MaildirFolder : MBoxFolder;
 }
 
 QStringList TestDataUtil::testDataNames()
@@ -134,11 +134,12 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
     const QDir testDataDir(QStringLiteral(":/data"));
 
     switch (type) {
-    case MaildirFolder: {
+    case MaildirFolder:
+    {
         const QString subPathPattern = QStringLiteral("%1/%2");
-        if (!installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("new"))) ||
-                !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("cur"))) ||
-                !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("tmp")))) {
+        if (!installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("new")))
+            || !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("cur")))
+            || !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("tmp")))) {
             qCritical() << "Couldn't create maildir directory structure";
             return false;
         }
@@ -176,7 +177,8 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
         break;
     }
 
-    case MBoxFolder: {
+    case MBoxFolder:
+    {
         const QFileInfo mboxFileInfo(testDataDir, testDataName);
         if (!copyFile(mboxFileInfo.absoluteFilePath(), installFileInfo.absoluteFilePath())) {
             qCritical() << "Failed to copy" << mboxFileInfo.absoluteFilePath()
@@ -198,4 +200,3 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
 
     return copyFile(indexFileInfo.absoluteFilePath(), indexInstallFileInfo.absoluteFilePath());
 }
-

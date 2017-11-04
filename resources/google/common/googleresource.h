@@ -34,15 +34,13 @@
 #define COLLECTION_PROPERTY "_AkonadiCollection"
 #define JOB_PROPERTY "_KGAPI2Job"
 
-namespace KGAPI2
-{
+namespace KGAPI2 {
 class Job;
 }
 
 class GoogleSettings;
 
-class GoogleResource : public Akonadi::ResourceBase,
-    public Akonadi::AgentBase::ObserverV2
+class GoogleResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 
@@ -79,7 +77,7 @@ protected:
     bool configureKGAPIAccount(const KGAPI2::AccountPtr &account);
     void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = nullptr);
 
-    template <typename T>
+    template<typename T>
     bool canPerformTask(const Akonadi::Item &item, const QString &mimeType = QString())
     {
         if (item.isValid() && !item.hasPayload<T>()) {
@@ -116,7 +114,6 @@ private:
     bool m_isConfiguring = false;
     GoogleAccountManager *m_accountMgr = nullptr;
     KGAPI2::AccountPtr m_account;
-
 };
 
 #endif // GOOGLERESOURCE_H

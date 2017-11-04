@@ -29,9 +29,11 @@ using namespace Akonadi;
 static const char collectionIdMappingProperty[] = "collectionIdMappingProperty";
 
 EntityTreeCreateJob::EntityTreeCreateJob(const QList< Akonadi::Collection::List > &collections, const Akonadi::Item::List &items, QObject *parent)
-    : Akonadi::TransactionSequence(parent), m_collections(collections), m_items(items), m_pendingJobs(0)
+    : Akonadi::TransactionSequence(parent)
+    , m_collections(collections)
+    , m_items(items)
+    , m_pendingJobs(0)
 {
-
 }
 
 void EntityTreeCreateJob::doStart()
@@ -61,7 +63,7 @@ void EntityTreeCreateJob::createReadyItems()
     for (it = m_items.begin(); it != m_items.end();) {
         Collection parentCollection = (*it).parentCollection();
         if (parentCollection.isValid()) {
-            (void) new ItemCreateJob(*it, parentCollection, this);
+            (void)new ItemCreateJob(*it, parentCollection, this);
             it = m_items.erase(it);
         } else {
             ++it;
@@ -114,4 +116,3 @@ void EntityTreeCreateJob::collectionCreateJobDone(KJob *job)
         commit();
     }
 }
-

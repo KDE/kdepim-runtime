@@ -50,7 +50,10 @@ class TestStore : public MixedMaildirStore
     Q_OBJECT
 
 public:
-    TestStore() : mLastCheckedJob(nullptr), mErrorCode(0) {}
+    TestStore() : mLastCheckedJob(nullptr)
+        , mErrorCode(0)
+    {
+    }
 
 public:
     Collection mTopLevelCollection;
@@ -60,7 +63,8 @@ public:
     mutable QString mErrorText;
 
 protected:
-    void setTopLevelCollection(const Collection &collection) override {
+    void setTopLevelCollection(const Collection &collection) override
+    {
         MixedMaildirStore::setTopLevelCollection(collection);
     }
 
@@ -88,7 +92,11 @@ class TemplateMethodsTest : public QObject
     Q_OBJECT
 
 public:
-    TemplateMethodsTest() : QObject(), mStore(nullptr) {}
+    TemplateMethodsTest() : QObject()
+        , mStore(nullptr)
+    {
+    }
+
     ~TemplateMethodsTest()
     {
         delete mStore;
@@ -123,9 +131,9 @@ void TemplateMethodsTest::testSetTopLevelCollection()
     // check the adjustments on the top level collection
     const Collection collection = mStore->topLevelCollection();
     QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType());
-    QCOMPARE(collection.rights(), Collection::CanCreateCollection |
-             Collection::CanChangeCollection |
-             Collection::CanDeleteCollection);
+    QCOMPARE(collection.rights(), Collection::CanCreateCollection
+             |Collection::CanChangeCollection
+             |Collection::CanDeleteCollection);
     const CachePolicy cachePolicy = collection.cachePolicy();
     QVERIFY(!cachePolicy.inheritFromParent());
     QCOMPARE(cachePolicy.localParts(), QStringList() << MessagePart::Envelope);
@@ -231,4 +239,3 @@ void TemplateMethodsTest::testCreateItem()
 QTEST_MAIN(TemplateMethodsTest)
 
 #include "templatemethodstest.moc"
-

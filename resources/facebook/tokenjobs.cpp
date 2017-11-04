@@ -43,7 +43,6 @@
 #include <KLocalizedString>
 
 namespace {
-
 static const auto KWalletFolder = QStringLiteral("Facebook");
 static const auto KWalletKeyToken = QStringLiteral("token");
 static const auto KWalletKeyName = QStringLiteral("name");
@@ -89,7 +88,8 @@ class WebPage : public QWebEnginePage
 public:
     explicit WebPage(QWebEngineProfile *profile, QObject *parent = nullptr)
         : QWebEnginePage(profile, parent)
-    {}
+    {
+    }
 
     QWebEngineCertificateError *lastCeritificateError() const
     {
@@ -117,8 +117,7 @@ class AuthDialog : public QDialog
     Q_OBJECT
 
 public:
-    AuthDialog(const QByteArray &cookies, FacebookResource *resource,
-               QWidget *parent = nullptr)
+    AuthDialog(const QByteArray &cookies, FacebookResource *resource, QWidget *parent = nullptr)
         : QDialog(parent)
     {
         setModal(true);
@@ -132,15 +131,15 @@ public:
         mSslIndicator = new QToolButton(this);
         connect(mSslIndicator, &QToolButton::clicked,
                 this, [this]() {
-                    auto page = qobject_cast<WebPage*>(mView->page());
-                    if (auto err = page->lastCeritificateError()) {
-                        QMessageBox msg;
-                        msg.setIconPixmap(QIcon::fromTheme(QStringLiteral("security-low")).pixmap(64));
-                        msg.setText(err->errorDescription());
-                        msg.addButton(QMessageBox::Ok);
-                        msg.exec();
-                    }
-                });
+                auto page = qobject_cast<WebPage *>(mView->page());
+                if (auto err = page->lastCeritificateError()) {
+                    QMessageBox msg;
+                    msg.setIconPixmap(QIcon::fromTheme(QStringLiteral("security-low")).pixmap(64));
+                    msg.setText(err->errorDescription());
+                    msg.addButton(QMessageBox::Ok);
+                    msg.exec();
+                }
+            });
         h->addWidget(mSslIndicator);
 
         mUrlEdit = new QLineEdit(this);
@@ -166,21 +165,21 @@ public:
         }
         connect(cookieStore, &QWebEngineCookieStore::cookieAdded,
                 this, [this](const QNetworkCookie &cookie) {
-                    if (cookie.domain() == QLatin1String(".facebook.com")) {
-                        mCookies.insert(cookie.name(), cookie.toRawForm());
-                    }
-                });
+                if (cookie.domain() == QLatin1String(".facebook.com")) {
+                    mCookies.insert(cookie.name(), cookie.toRawForm());
+                }
+            });
         connect(cookieStore, &QWebEngineCookieStore::cookieRemoved,
                 this, [this](const QNetworkCookie &cookie) {
-                    mCookies.remove(cookie.name());
-                });
+                mCookies.remove(cookie.name());
+            });
 
         mView = new WebView(this);
         auto webpage = new WebPage(profile, mView);
         connect(webpage, &WebPage::sslError,
                 this, [this]() {
-                    setSslIcon(QStringLiteral("security-low"));
-                });
+                setSslIcon(QStringLiteral("security-low"));
+            });
         mView->setPage(webpage);
         v->addWidget(mView);
 
@@ -241,7 +240,7 @@ private Q_SLOTS:
             return;
         }
 
-        if (qobject_cast<WebPage*>(mView->page())->lastCeritificateError()) {
+        if (qobject_cast<WebPage *>(mView->page())->lastCeritificateError()) {
             setSslIcon(QStringLiteral("security-low"));
         } else {
             setSslIcon(QStringLiteral("security-high"));
@@ -283,14 +282,12 @@ private:
     QString mToken;
     QMap<QByteArray, QByteArray> mCookies;
 };
-
 } // namespace
-
-
 
 TokenJob::TokenJob(FacebookResource *parent)
     : KJob(parent)
-{}
+{
+}
 
 TokenJob::~TokenJob()
 {
@@ -312,21 +309,21 @@ void TokenJob::start()
     } else {
         connect(d->wallet, &KWallet::Wallet::walletOpened,
                 this, [this]() {
-                        if (!d->wallet->isOpen()) {
-                            delete d->wallet;
-                            d->wallet = nullptr;
-                            emitError(i18n("Failed to open KWallet"));
-                            return;
-                        }
+            if (!d->wallet->isOpen()) {
+                delete d->wallet;
+                d->wallet = nullptr;
+                emitError(i18n("Failed to open KWallet"));
+                return;
+            }
 
-                        if (!d->wallet->hasFolder(KWalletFolder)) {
-                            d->wallet->createFolder(KWalletFolder);
-                        }
+            if (!d->wallet->hasFolder(KWalletFolder)) {
+                d->wallet->createFolder(KWalletFolder);
+            }
 
-                        d->wallet->setFolder(KWalletFolder);
+            d->wallet->setFolder(KWalletFolder);
 
-                        doStart();
-                });
+            doStart();
+        });
     }
 }
 
@@ -336,7 +333,6 @@ void TokenJob::emitError(const QString &text)
     setErrorText(text);
     emitResult();
 }
-
 
 LoginJob::LoginJob(FacebookResource *parent)
     : TokenJob(parent)
@@ -354,19 +350,19 @@ QString LoginJob::token() const
 
 void LoginJob::doStart()
 {
-    auto dlg = new AuthDialog(d->cookies, qobject_cast<FacebookResource*>(parent()));
+    auto dlg = new AuthDialog(d->cookies, qobject_cast<FacebookResource *>(parent()));
     connect(dlg, &AuthDialog::authDone,
             this, [this, dlg]() {
-                dlg->deleteLater();
-                d->token = dlg->token();
-                d->cookies = dlg->cookies();
-                if (d->token.isEmpty()) {
-                    emitError(i18n("Failed to obtain access token from Facebook"));
-                    return;
-                }
+        dlg->deleteLater();
+        d->token = dlg->token();
+        d->cookies = dlg->cookies();
+        if (d->token.isEmpty()) {
+            emitError(i18n("Failed to obtain access token from Facebook"));
+            return;
+        }
 
-                fetchUserInfo();
-            });
+        fetchUserInfo();
+    });
 
     dlg->run();
 }
@@ -376,29 +372,25 @@ void LoginJob::fetchUserInfo()
     auto job = Graph::job(QStringLiteral("me"), d->token, { QStringLiteral("id"), QStringLiteral("name") });
     connect(job, &KJob::result,
             this, [this, job]() {
-                if (job->error()) {
-                    emitError(job->errorText());
-                    return;
-                }
+        if (job->error()) {
+            emitError(job->errorText());
+            return;
+        }
 
-                const auto json = QJsonDocument::fromJson(qobject_cast<KIO::StoredTransferJob*>(job)->data());
-                const auto me = json.object();
+        const auto json = QJsonDocument::fromJson(qobject_cast<KIO::StoredTransferJob *>(job)->data());
+        const auto me = json.object();
 
-                d->userName = me.value(QStringLiteral("name")).toString();
-                d->id = me.value(QStringLiteral("id")).toString();
-                d->wallet->writeMap(qobject_cast<FacebookResource*>(parent())->identifier(),
-                                    { { KWalletKeyToken, d->token },
-                                      { KWalletKeyName, d->userName },
-                                      { KWalletKeyId, d->id },
-                                      { KWalletKeyCookies, QString::fromUtf8(d->cookies) }
-                                    });
-                emitResult();
-            });
+        d->userName = me.value(QStringLiteral("name")).toString();
+        d->id = me.value(QStringLiteral("id")).toString();
+        d->wallet->writeMap(qobject_cast<FacebookResource *>(parent())->identifier(),
+                            { { KWalletKeyToken, d->token },
+                              { KWalletKeyName, d->userName },
+                              { KWalletKeyId, d->id },
+                              { KWalletKeyCookies, QString::fromUtf8(d->cookies) }});
+        emitResult();
+    });
     job->start();
 }
-
-
-
 
 LogoutJob::LogoutJob(FacebookResource *parent)
     : TokenJob(parent)
@@ -421,12 +413,9 @@ void LogoutJob::doStart()
         return;
     }
 
-    d->wallet->removeEntry(qobject_cast<FacebookResource*>(parent())->identifier());
+    d->wallet->removeEntry(qobject_cast<FacebookResource *>(parent())->identifier());
     emitResult();
 }
-
-
-
 
 GetTokenJob::GetTokenJob(FacebookResource *parent)
     : TokenJob(parent)
@@ -461,7 +450,9 @@ void GetTokenJob::start()
 {
     // Already have token, so we are done
     if (!d->token.isEmpty()) {
-        QTimer::singleShot(0, this, [this]() { emitResult(); });
+        QTimer::singleShot(0, this, [this]() {
+            emitResult();
+        });
         return;
     }
 
@@ -475,7 +466,7 @@ void GetTokenJob::doStart()
         return;
     }
 
-    const auto key = qobject_cast<FacebookResource*>(parent())->identifier();
+    const auto key = qobject_cast<FacebookResource *>(parent())->identifier();
     QMap<QString, QString> entries;
     d->wallet->readMap(key, entries);
     d->token = entries.value(KWalletKeyToken);

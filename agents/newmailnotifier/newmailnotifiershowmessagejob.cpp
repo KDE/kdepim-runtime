@@ -28,8 +28,8 @@
 #include <ktoolinvocation.h>
 
 NewMailNotifierShowMessageJob::NewMailNotifierShowMessageJob(Akonadi::Item::Id id, QObject *parent)
-    : KJob(parent),
-      mId(id)
+    : KJob(parent)
+    , mId(id)
 {
 }
 

@@ -57,8 +57,13 @@ class RetrieveItemsJob::Private
 
 public:
     Private(RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store)
-        : q(parent), mCollection(collection), mStore(store),
-          mTransaction(nullptr), mHighestModTime(-1), mNumItemCreateJobs(0), mNumItemModifyJobs(0)
+        : q(parent)
+        , mCollection(collection)
+        , mStore(store)
+        , mTransaction(nullptr)
+        , mHighestModTime(-1)
+        , mNumItemCreateJobs(0)
+        , mNumItemModifyJobs(0)
     {
     }
 
@@ -67,7 +72,9 @@ public:
         if (!mTransaction) {
             mTransaction = new TransactionSequence(q);
             mTransaction->setAutomaticCommittingEnabled(false);
-            connect(mTransaction, &TransactionSequence::result, q, [this](KJob *job) { transactionResult(job); });
+            connect(mTransaction, &TransactionSequence::result, q, [this](KJob *job) {
+                transactionResult(job);
+            });
         }
         return mTransaction;
     }
@@ -148,7 +155,9 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItems(mCollection);
     // just basic items, no data
 
-    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob*job) { storeListResult(job);});
+    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
+        storeListResult(job);
+    });
 }
 
 void RetrieveItemsJob::Private::storeListResult(KJob *job)
@@ -228,7 +237,9 @@ void RetrieveItemsJob::Private::processNewItem()
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
     storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) { fetchNewResult(job);});
+    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
+        fetchNewResult(job);
+    });
 }
 
 void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
@@ -255,7 +266,9 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 
     ItemCreateJob *itemCreate = new ItemCreateJob(item, mCollection, transaction());
     mNumItemCreateJobs++;
-    connect(itemCreate, &ItemCreateJob::result, q, [this](KJob *job) { itemCreateJobResult(job); });
+    connect(itemCreate, &ItemCreateJob::result, q, [this](KJob *job) {
+        itemCreateJobResult(job);
+    });
 
     if (mNumItemCreateJobs < MaxItemCreateJobs) {
         QMetaObject::invokeMethod(q, "processNewItem", Qt::QueuedConnection);
@@ -285,7 +298,9 @@ void RetrieveItemsJob::Private::processChangedItem()
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
     storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) { fetchChangedResult(job); });
+    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
+        fetchChangedResult(job);
+    });
 }
 
 void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
@@ -311,7 +326,9 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
     }
 
     ItemModifyJob *itemModify = new ItemModifyJob(item, transaction());
-    connect(itemModify, &ItemModifyJob::result, q, [this](KJob *job) {itemModifyJobResult(job); });
+    connect(itemModify, &ItemModifyJob::result, q, [this](KJob *job) {
+        itemModifyJobResult(job);
+    });
     mNumItemModifyJobs++;
     if (mNumItemModifyJobs < MaxItemModifyJobs) {
         QMetaObject::invokeMethod(q, "processChangedItem", Qt::QueuedConnection);
@@ -328,7 +345,8 @@ void RetrieveItemsJob::Private::transactionResult(KJob *job)
 }
 
 RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent)
-    : Job(parent), d(new Private(this, collection, store))
+    : Job(parent)
+    , d(new Private(this, collection, store))
 {
     Q_ASSERT(d->mCollection.isValid());
     Q_ASSERT(!d->mCollection.remoteId().isEmpty());
@@ -358,8 +376,9 @@ Item::List RetrieveItemsJob::itemsMarkedAsDeleted() const
 void RetrieveItemsJob::doStart()
 {
     ItemFetchJob *job = new Akonadi::ItemFetchJob(d->mCollection, this);
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) { d->akonadiFetchResult(job); });
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
+        d->akonadiFetchResult(job);
+    });
 }
 
 #include "moc_retrieveitemsjob.cpp"
-

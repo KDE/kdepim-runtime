@@ -26,9 +26,11 @@ Q_DECLARE_METATYPE(QString)
 Q_DECLARE_METATYPE(TagListAndMembers)
 
 DummyResourceState::DummyResourceState()
-    : m_automaticExpunge(true), m_subscriptionEnabled(true),
-      m_disconnectedMode(true), m_intervalCheckTime(-1),
-      m_mergeMode(Akonadi::ItemSync::RIDMerge)
+    : m_automaticExpunge(true)
+    , m_subscriptionEnabled(true)
+    , m_disconnectedMode(true)
+    , m_intervalCheckTime(-1)
+    , m_mergeMode(Akonadi::ItemSync::RIDMerge)
 {
     qRegisterMetaType<QList<qint64> >();
     qRegisterMetaType<QVector<qint64> >();
@@ -37,7 +39,6 @@ DummyResourceState::DummyResourceState()
 
 DummyResourceState::~DummyResourceState()
 {
-
 }
 
 void DummyResourceState::setUserName(const QString &name)
@@ -258,12 +259,12 @@ QString DummyResourceState::rootRemoteId() const
 
 void DummyResourceState::setIdleCollection(const Akonadi::Collection &collection)
 {
-    recordCall("setIdleCollection",  QVariant::fromValue(collection));
+    recordCall("setIdleCollection", QVariant::fromValue(collection));
 }
 
 void DummyResourceState::applyCollectionChanges(const Akonadi::Collection &collection)
 {
-    recordCall("applyCollectionChanges",  QVariant::fromValue(collection));
+    recordCall("applyCollectionChanges", QVariant::fromValue(collection));
 }
 
 void DummyResourceState::collectionAttributesRetrieved(const Akonadi::Collection &collection)
@@ -278,14 +279,14 @@ void DummyResourceState::itemRetrieved(const Akonadi::Item &item)
 
 void DummyResourceState::itemsRetrieved(const Akonadi::Item::List &items)
 {
-    recordCall("itemsRetrieved",  QVariant::fromValue(items));
+    recordCall("itemsRetrieved", QVariant::fromValue(items));
 }
 
 void DummyResourceState::itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed)
 {
     Q_UNUSED(removed)
 
-    recordCall("itemsRetrievedIncremental",  QVariant::fromValue(changed));
+    recordCall("itemsRetrievedIncremental", QVariant::fromValue(changed));
 }
 
 void DummyResourceState::itemsRetrievalDone()
@@ -295,7 +296,6 @@ void DummyResourceState::itemsRetrievalDone()
 
 void DummyResourceState::setTotalItems(int)
 {
-
 }
 
 QSet< QByteArray > DummyResourceState::addedFlags() const
@@ -310,7 +310,7 @@ QSet< QByteArray > DummyResourceState::removedFlags() const
 
 void DummyResourceState::itemChangeCommitted(const Akonadi::Item &item)
 {
-    recordCall("itemChangeCommitted",  QVariant::fromValue(item));
+    recordCall("itemChangeCommitted", QVariant::fromValue(item));
 }
 
 void DummyResourceState::itemsChangesCommitted(const Akonadi::Item::List &items)
@@ -320,7 +320,7 @@ void DummyResourceState::itemsChangesCommitted(const Akonadi::Item::List &items)
 
 void DummyResourceState::collectionsRetrieved(const Akonadi::Collection::List &collections)
 {
-    recordCall("collectionsRetrieved",  QVariant::fromValue(collections));
+    recordCall("collectionsRetrieved", QVariant::fromValue(collections));
 }
 
 void DummyResourceState::collectionChangeCommitted(const Akonadi::Collection &collection)
@@ -330,12 +330,12 @@ void DummyResourceState::collectionChangeCommitted(const Akonadi::Collection &co
 
 void DummyResourceState::tagsRetrieved(const Akonadi::Tag::List &tags, const QHash<QString, Akonadi::Item::List> &items)
 {
-    recordCall("tagsRetrieved",  QVariant::fromValue(qMakePair(tags, items)));
+    recordCall("tagsRetrieved", QVariant::fromValue(qMakePair(tags, items)));
 }
 
 void DummyResourceState::relationsRetrieved(const Akonadi::Relation::List &relations)
 {
-    recordCall("relationsRetrieved",  QVariant::fromValue(relations));
+    recordCall("relationsRetrieved", QVariant::fromValue(relations));
 }
 
 void DummyResourceState::tagChangeCommitted(const Akonadi::Tag &tag)

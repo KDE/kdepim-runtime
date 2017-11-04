@@ -27,9 +27,7 @@
 
 class KConfigDialogManager;
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
@@ -43,7 +41,6 @@ private:
     KConfigDialogManager *mManager = nullptr;
     QPushButton *mOkButton = nullptr;
 };
-
 }
 
 #endif

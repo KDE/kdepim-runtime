@@ -24,13 +24,11 @@
 
 #include <item.h>
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 class ItemFetchScope;
 
-namespace FileStore
-{
+namespace FileStore {
 class AbstractJobSession;
 
 /**
@@ -74,9 +72,7 @@ private:
     class Private;
     Private *const d;
 };
-
 }
 }
 
 #endif
-

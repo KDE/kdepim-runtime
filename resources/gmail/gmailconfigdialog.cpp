@@ -271,4 +271,3 @@ void GmailConfigDialog::onAccountRequestCompleted(const KGAPI2::AccountPtr &acco
     settings->storeAccount(m_account);
     slotComplete();
 }
-

@@ -40,11 +40,11 @@ enum {
 
 bool InfoDialog::mError = false;
 
-InfoDialog::InfoDialog(bool closeWhenDone) :
-    mMigratorCount(0),
-    mChange(false),
-    mCloseWhenDone(closeWhenDone),
-    mAutoScrollList(true)
+InfoDialog::InfoDialog(bool closeWhenDone)
+    : mMigratorCount(0)
+    , mChange(false)
+    , mCloseWhenDone(closeWhenDone)
+    , mAutoScrollList(true)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -79,11 +79,16 @@ InfoDialog::~InfoDialog()
 static KMigratorBase::MessageType convertType(MigratorBase::MessageType type)
 {
     switch (type) {
-    case MigratorBase::Success: return KMigratorBase::Success;
-    case MigratorBase::Error: return KMigratorBase::Error;
-    case MigratorBase::Skip: return KMigratorBase::Skip;
-    case MigratorBase::Warning: return KMigratorBase::Warning;
-    case MigratorBase::Info: return KMigratorBase::Info;
+    case MigratorBase::Success:
+        return KMigratorBase::Success;
+    case MigratorBase::Error:
+        return KMigratorBase::Error;
+    case MigratorBase::Skip:
+        return KMigratorBase::Skip;
+    case MigratorBase::Warning:
+        return KMigratorBase::Warning;
+    case MigratorBase::Info:
+        return KMigratorBase::Info;
     }
     return KMigratorBase::Info;
 }
@@ -116,15 +121,16 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-warning")));
         qDebug() << msg;
         break;
-    case KMigratorBase::Error: {
+    case KMigratorBase::Error:
+    {
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-error")));
         QFont currentFont = font();
         currentFont.setBold(true);
         item->setFont(currentFont);
         mError = true;
         qCritical() << msg;
+        break;
     }
-    break;
     default:
         qCritical() << "WTF?";
     }
@@ -182,4 +188,3 @@ void InfoDialog::scrollBarMoved(int value)
 {
     mAutoScrollList = (value == mList->verticalScrollBar()->maximum());
 }
-

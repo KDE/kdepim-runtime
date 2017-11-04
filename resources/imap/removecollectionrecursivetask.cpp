@@ -33,8 +33,9 @@
 Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
 
 RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(CancelIfNoSession, resource, parent),
-      mSession(nullptr), mFolderFound(false)
+    : ResourceTask(CancelIfNoSession, resource, parent)
+    , mSession(nullptr)
+    , mFolderFound(false)
 {
 }
 
@@ -56,8 +57,7 @@ void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
     listJob->start();
 }
 
-void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
-        const QList< QList<QByteArray> > &)
+void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList<QByteArray> > &)
 {
     const QString mailBox = mailBoxForCollection(collection());
 
@@ -167,4 +167,3 @@ void RemoveCollectionRecursiveTask::onJobDone(KJob *job)
         synchronizeCollectionTree();
     }
 }
-

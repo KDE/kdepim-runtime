@@ -24,8 +24,7 @@
 #include <AkonadiCore/Collection>
 #include <Akonadi/Calendar/FreeBusyProviderBase>
 
-class CalendarResource : public GoogleResource
-    , public Akonadi::FreeBusyProviderBase
+class CalendarResource : public GoogleResource, public Akonadi::FreeBusyProviderBase
 {
     Q_OBJECT
 public:
@@ -53,9 +52,7 @@ protected Q_SLOTS:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
     void itemRemoved(const Akonadi::Item &item) override;
-    void itemMoved(const Akonadi::Item &item,
-                   const Akonadi::Collection &collectionSource,
-                   const Akonadi::Collection &collectionDestination) override;
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
@@ -80,7 +77,6 @@ protected:
 private:
     QMap<QString, Akonadi::Collection> m_collections;
     Akonadi::Collection m_rootCollection;
-
 };
 
 #endif // CALENDARRESOURCE_H

@@ -25,7 +25,6 @@
 
 #include "imapresourcebase.h"
 
-
 #include <QHostInfo>
 #include <QSettings>
 
@@ -96,11 +95,11 @@ Q_DECLARE_METATYPE(QWeakPointer<QObject>)
 using namespace Akonadi;
 
 ImapResourceBase::ImapResourceBase(const QString &id)
-    : ResourceBase(id),
-      m_pool(new SessionPool(2, this)),
-      m_settings(nullptr),
-      mSubscriptions(nullptr),
-      m_idle(nullptr)
+    : ResourceBase(id)
+    , m_pool(new SessionPool(2, this))
+    , m_settings(nullptr)
+    , mSubscriptions(nullptr)
+    , m_idle(nullptr)
 {
     QTimer::singleShot(0, this, &ImapResourceBase::updateResourceName);
 
@@ -206,8 +205,8 @@ void ImapResourceBase::updateResourceName()
 
         const QSettings agentsrc(agentsrcFile, QSettings::IniFormat);
         const int instanceCounter = agentsrc.value(
-                                        QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType),
-                                        -1).toInt();
+            QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType),
+            -1).toInt();
 
         if (instanceCounter > 0) {
             setName(QStringLiteral("%1 %2").arg(defaultName()).arg(instanceCounter));
@@ -371,8 +370,7 @@ void ImapResourceBase::itemChanged(const Item &item, const QSet<QByteArray> &par
     startTask(new ChangeItemTask(createResourceState(TaskArguments(item, parts)), this));
 }
 
-void ImapResourceBase::itemsFlagsChanged(const Item::List &items, const QSet< QByteArray > &addedFlags,
-        const QSet< QByteArray > &removedFlags)
+void ImapResourceBase::itemsFlagsChanged(const Item::List &items, const QSet< QByteArray > &addedFlags, const QSet< QByteArray > &removedFlags)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating items"));
 
@@ -393,8 +391,7 @@ void ImapResourceBase::itemsRemoved(const Akonadi::Item::List &items)
     startTask(new ChangeItemsFlagsTask(createResourceState(TaskArguments(items, QSet<QByteArray>() << ImapFlags::Deleted, QSet<QByteArray>())), this));
 }
 
-void ImapResourceBase::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source,
-                                  const Akonadi::Collection &destination)
+void ImapResourceBase::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
 {
     if (items.first().parentCollection() != destination) {   // should have been set by the server
         qCWarning(IMAPRESOURCE_LOG) << "Collections don't match: destination=" << destination.id()
@@ -436,7 +433,6 @@ void ImapResourceBase::retrieveItems(const Collection &col)
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
     connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
-
 }
 
 void ImapResourceBase::collectionAdded(const Collection &collection, const Collection &parent)
@@ -465,8 +461,7 @@ void ImapResourceBase::collectionRemoved(const Collection &collection)
     startTask(new RemoveCollectionRecursiveTask(createResourceState(TaskArguments(collection)), this));
 }
 
-void ImapResourceBase::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source,
-                                       const Akonadi::Collection &destination)
+void ImapResourceBase::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &destination)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving folder '%1' from '%2' to '%3'",
                                             collection.name(), source.name(), destination.name()));
@@ -550,9 +545,9 @@ bool ImapResourceBase::needsNetwork() const
 {
     const QString hostName = settings()->imapServer().section(QLatin1Char(':'), 0, 0);
     // ### is there a better way to do this?
-    if (hostName == QLatin1String("127.0.0.1") ||
-            hostName == QLatin1String("localhost") ||
-            hostName == QHostInfo::localHostName()) {
+    if (hostName == QLatin1String("127.0.0.1")
+        || hostName == QLatin1String("localhost")
+        || hostName == QHostInfo::localHostName()) {
         return false;
     }
     return true;
@@ -584,9 +579,8 @@ void ImapResourceBase::startIdle()
     }
 
     //Without password we don't even have to try
-    if (m_pool->account()->authenticationMode() != KIMAP::LoginJob::GSSAPI &&
-        settings()->password().isEmpty())
-    {
+    if (m_pool->account()->authenticationMode() != KIMAP::LoginJob::GSSAPI
+        && settings()->password().isEmpty()) {
         return;
     }
 
@@ -665,7 +659,6 @@ void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
 
         scheduleCustomTask(this, "triggerCollectionExpunge",
                            QVariant::fromValue(collection));
-
     } else {
         qCWarning(IMAPRESOURCE_LOG) << "CollectionFetch for expunge failed."
                                     << "error=" << job->error()

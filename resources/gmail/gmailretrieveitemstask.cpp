@@ -34,14 +34,9 @@ GmailRetrieveItemsTask::GmailRetrieveItemsTask(ResourceStateInterface::Ptr resou
 
 GmailRetrieveItemsTask::~GmailRetrieveItemsTask()
 {
-
 }
 
-BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
-        const KIMAP::ImapSet &set,
-        const KIMAP::FetchJob::FetchScope &scope,
-        int batchSize,
-        KIMAP::Session *session)
+BatchFetcher *GmailRetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session)
 {
     qDebug();
     KIMAP::FetchJob::FetchScope gmailScope = scope;

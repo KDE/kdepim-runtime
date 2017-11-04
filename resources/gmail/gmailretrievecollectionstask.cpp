@@ -32,14 +32,12 @@
 
 #include <KLocalizedString>
 
-GmailRetrieveCollectionsTask::GmailRetrieveCollectionsTask(ResourceStateInterface::Ptr resource,
-        QObject *parent)
+GmailRetrieveCollectionsTask::GmailRetrieveCollectionsTask(ResourceStateInterface::Ptr resource, QObject *parent)
     : RetrieveCollectionsTask(resource, parent)
 {
 }
 
-void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
-        const QList<QList<QByteArray> > &flags)
+void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags)
 {
     Akonadi::Collection &rootCollection = m_reportedCollections[QString()];
     Akonadi::EntityDisplayAttribute *attr = rootCollection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
@@ -105,14 +103,14 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
             c.setParentCollection(parentCollection);
             c.setContentMimeTypes(contentTypes);
             c.setVirtual(true); // All collections are virtual
-            c.setRights(Akonadi::Collection::CanChangeCollection |
-                        Akonadi::Collection::CanDeleteCollection |
-                        Akonadi::Collection::CanCreateCollection |
-                        Akonadi::Collection::CanLinkItem |
-                        Akonadi::Collection::CanUnlinkItem |
-                        Akonadi::Collection::CanCreateItem |
-                        Akonadi::Collection::CanDeleteItem |
-                        Akonadi::Collection::CanChangeItem);
+            c.setRights(Akonadi::Collection::CanChangeCollection
+                        |Akonadi::Collection::CanDeleteCollection
+                        |Akonadi::Collection::CanCreateCollection
+                        |Akonadi::Collection::CanLinkItem
+                        |Akonadi::Collection::CanUnlinkItem
+                        |Akonadi::Collection::CanCreateItem
+                        |Akonadi::Collection::CanDeleteItem
+                        |Akonadi::Collection::CanChangeItem);
 
             Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Entity::AddIfMissing);
             if (currentFlags.contains("\\trash")) {
@@ -154,9 +152,9 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
                     // all labels - YAY!
                     setIdleCollection(c);
                 }
-                c.setRights(Akonadi::Collection::CanCreateItem |
-                            Akonadi::Collection::CanChangeItem |
-                            Akonadi::Collection::CanDeleteItem);
+                c.setRights(Akonadi::Collection::CanCreateItem
+                            |Akonadi::Collection::CanChangeItem
+                            |Akonadi::Collection::CanDeleteItem);
             }
 
             // If this folder is a noselect folder, make some special settings.
@@ -179,11 +177,11 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
 
             qDebug() << currentPath << currentFlags;
             // Special treating of Gmail system collections (and INBOX)
-            if (currentPath == QLatin1String("/INBOX") ||
-                    currentFlags.contains("\\drafts") ||
-                    currentFlags.contains("\\important") ||
-                    currentFlags.contains("\\sent") ||
-                    currentFlags.contains("\\flagged")) {
+            if (currentPath == QLatin1String("/INBOX")
+                || currentFlags.contains("\\drafts")
+                || currentFlags.contains("\\important")
+                || currentFlags.contains("\\sent")
+                || currentFlags.contains("\\flagged")) {
                 // Keep [Gmail] in remoteID, so that we can reference them correctly
                 // even though they have different parent in Akonadi
                 c.setRemoteId(currentPath);
@@ -241,4 +239,3 @@ void GmailRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBo
     // FIXME GMAIL: Don't hardcode this, try to have some detection or at least a constant
     m_reportedCollections.remove(separatorCharacter() + QLatin1String("[Gmail]"));
 }
-

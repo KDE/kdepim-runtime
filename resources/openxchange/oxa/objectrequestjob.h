@@ -26,9 +26,7 @@
 
 #include "object.h"
 
-namespace OXA
-{
-
+namespace OXA {
 class ObjectRequestJob : public KJob
 {
     Q_OBJECT
@@ -46,7 +44,6 @@ private Q_SLOTS:
 private:
     Object mObject;
 };
-
 }
 
 #endif

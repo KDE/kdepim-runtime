@@ -24,7 +24,6 @@
 
 ResourceStateInterface::~ResourceStateInterface()
 {
-
 }
 
 QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &collection, bool showWarnings)
@@ -47,7 +46,7 @@ QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &
         return QString();
     }
 
-    const QString mailbox =  parentMailbox + collection.remoteId();
+    const QString mailbox = parentMailbox + collection.remoteId();
     if (parentMailbox.isEmpty()) {
         return mailbox.mid(1);    // strip of the separator on top-level mailboxes
     }

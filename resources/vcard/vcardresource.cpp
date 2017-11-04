@@ -39,7 +39,7 @@ VCardResource::VCardResource(const QString &id)
 
     new VCardSettingsAdaptor(mSettings);
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
-            mSettings, QDBusConnection::ExportAdaptors);
+                                                           mSettings, QDBusConnection::ExportAdaptors);
 }
 
 VCardResource::~VCardResource()
@@ -80,7 +80,7 @@ void VCardResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collecti
 {
     KContacts::Addressee addressee;
     if (item.hasPayload<KContacts::Addressee>()) {
-        addressee  = item.payload<KContacts::Addressee>();
+        addressee = item.payload<KContacts::Addressee>();
     }
 
     if (!addressee.isEmpty()) {
@@ -100,7 +100,7 @@ void VCardResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray
 {
     KContacts::Addressee addressee;
     if (item.hasPayload<KContacts::Addressee>()) {
-        addressee  = item.payload<KContacts::Addressee>();
+        addressee = item.payload<KContacts::Addressee>();
     }
 
     if (!addressee.isEmpty()) {

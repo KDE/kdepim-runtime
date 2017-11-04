@@ -28,7 +28,6 @@
 
 class KeyCache
 {
-
 public:
     static KeyCache *self()
     {
@@ -72,7 +71,6 @@ private:
     QHash< QString, QSet<QString> > mCurKeys;
 
     static KeyCache *mSelf;
-
 };
 
 #endif // KEYCACHE_H

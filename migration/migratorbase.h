@@ -33,17 +33,19 @@ class NullableConfigGroup
 {
 public:
     NullableConfigGroup()
-    {}
+    {
+    }
 
-    NullableConfigGroup(const KConfigGroup &grp): mConfigGroup(grp)
-    {}
+    NullableConfigGroup(const KConfigGroup &grp) : mConfigGroup(grp)
+    {
+    }
 
     KConfigGroup &configGroup()
     {
         return mConfigGroup;
     }
 
-    template <typename T>
+    template<typename T>
     inline T readEntry(const QString &key, const T &aDefault) const
     {
         if (mConfigGroup.isValid()) {
@@ -52,13 +54,14 @@ public:
         return aDefault;
     }
 
-    template <typename T>
+    template<typename T>
     inline void writeEntry(const QString &key, const T &value)
     {
         if (mConfigGroup.isValid()) {
             mConfigGroup.writeEntry<T>(key, value);
         }
     }
+
 private:
     KConfigGroup mConfigGroup;
 };

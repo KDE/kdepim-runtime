@@ -25,8 +25,8 @@
 #include <QTcpServer>
 
 FakeServerThread::FakeServerThread(QObject *parent)
-    : QThread(parent),
-      mServer(nullptr)
+    : QThread(parent)
+    , mServer(nullptr)
 {
 }
 
@@ -49,10 +49,10 @@ FakeServer *FakeServerThread::server() const
 }
 
 FakeServer::FakeServer(QObject *parent)
-    : QObject(parent),
-      mConnections(0),
-      mProgress(0),
-      mGotDisconnected(false)
+    : QObject(parent)
+    , mConnections(0)
+    , mProgress(0)
+    , mGotDisconnected(false)
 {
     mTcpServer = new QTcpServer();
     if (!mTcpServer->listen(QHostAddress(QHostAddress::LocalHost), 5989)) {
@@ -72,8 +72,7 @@ FakeServer::~FakeServer()
     mTcpServer = nullptr;
 }
 
-QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData,
-                                       const QByteArray &dataReceived)
+QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData, const QByteArray &dataReceived)
 {
     // Only called from parseResponse(), which is already thread-safe
 
@@ -97,8 +96,7 @@ QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData,
     }
 }
 
-QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData,
-                                     const QByteArray &dataReceived)
+QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData, const QByteArray &dataReceived)
 {
     // Only called from parseResponse(), which is already thread-safe
 
@@ -122,8 +120,7 @@ QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData,
     }
 }
 
-QByteArray FakeServer::parseResponse(const QByteArray &expectedData,
-                                     const QByteArray &dataReceived)
+QByteArray FakeServer::parseResponse(const QByteArray &expectedData, const QByteArray &dataReceived)
 {
     // Only called from dataAvailable, which is already thread-safe
 
@@ -226,8 +223,7 @@ void FakeServer::setMails(const QList<QByteArray> &mails)
     mMails = mails;
 }
 
-void FakeServer::setNextConversation(const QString &conversation,
-                                     const QList<int> &exceptions)
+void FakeServer::setNextConversation(const QString &conversation, const QList<int> &exceptions)
 {
     QMutexLocker locker(&mMutex);
 
@@ -239,7 +235,9 @@ void FakeServer::setNextConversation(const QString &conversation,
     QStringList lines = conversation.split(QStringLiteral("\r\n"), QString::SkipEmptyParts);
     Q_ASSERT(lines.first().startsWith(QLatin1String("C:")));
 
-    enum Mode { Client, Server };
+    enum Mode {
+        Client, Server
+    };
     Mode mode = Client;
 
     const QByteArray mailSizeMarker = QStringLiteral("%MAILSIZE%").toLatin1();
@@ -248,7 +246,6 @@ void FakeServer::setNextConversation(const QString &conversation,
     int mailIndex = 0;
 
     foreach (const QString &line, lines) {
-
         QByteArray lineData(line.toUtf8());
 
         if (lineData.contains(mailSizeMarker)) {
@@ -272,8 +269,12 @@ void FakeServer::setNextConversation(const QString &conversation,
             mode = Client;
         } else {
             switch (mode) {
-            case Server: mWriteData.last() += (lineData + "\r\n"); break;
-            case Client: mReadData.last() += (lineData + "\r\n"); break;
+            case Server:
+                mWriteData.last() += (lineData + "\r\n");
+                break;
+            case Client:
+                mReadData.last() += (lineData + "\r\n");
+                break;
             }
         }
     }
@@ -290,4 +291,3 @@ bool FakeServer::gotDisconnected() const
     QMutexLocker locker(&mMutex);
     return mGotDisconnected;
 }
-

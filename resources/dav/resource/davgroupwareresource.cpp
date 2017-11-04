@@ -247,7 +247,6 @@ void DavGroupwareResource::configure(WId windowId)
     }
 }
 
-
 KJob *DavGroupwareResource::createRetrieveCollectionsJob()
 {
     qCDebug(DAVRESOURCE_LOG) << "Retrieving collections list";
@@ -1198,7 +1197,7 @@ void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &loca
         }
 
         // Now try to find the item that really triggered the conflict
-        const Akonadi::Item::List allRemoteItems  = Akonadi::Item::List() << tmpRemoteItem << tmpRemoteDependentItems;
+        const Akonadi::Item::List allRemoteItems = Akonadi::Item::List() << tmpRemoteItem << tmpRemoteDependentItems;
         for (const Akonadi::Item &tmpItem : allRemoteItems) {
             if (tmpItem.payloadData() != localItem.payloadData()) {
                 if (remoteItem.isValid()) {

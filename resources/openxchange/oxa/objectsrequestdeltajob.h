@@ -26,9 +26,7 @@
 
 #include "object.h"
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * @short A job that requests the delta for objects changes from the OX server.
  *
@@ -75,7 +73,6 @@ private:
     Object::List mDeletedObjects;
     int mJobFinishedCount;
 };
-
 }
 
 #endif

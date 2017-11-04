@@ -101,9 +101,9 @@ void SendJob::doAkonadiTransport()
                                                                   mResourceId);
 
     mInterface = new QDBusInterface(service,
-                                   QStringLiteral("/Transport"),
-                                   QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
-                                   KDBusConnectionPool::threadConnection(), this);
+                                    QStringLiteral("/Transport"),
+                                    QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
+                                    KDBusConnectionPool::threadConnection(), this);
 
     if (!mInterface->isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of resource %1.", mResourceId));
@@ -167,11 +167,13 @@ void SendJob::doTraditionalTransport()
     job->setBcc(addressAttribute->bcc());
 
     // Signals.
-    connect(job, &TransportJob::result, this, [this](KJob *job) { transportResult(job);});
+    connect(job, &TransportJob::result, this, [this](KJob *job) {
+        transportResult(job);
+    });
     //Wait kf6 We have a private signal
     //connect(job, thisOverload<KJob*, ulong>::of(&TransportJob::percent), this, [this](KJob *job,ulong val) {transportPercent(job, val); });
-    connect(job, SIGNAL(percent(KJob*,ulong)),
-                this, SLOT(transportPercent(KJob*,ulong)));
+    connect(job, SIGNAL(percent(KJob *,ulong)),
+            this, SLOT(transportPercent(KJob *,ulong)));
     job->start();
 }
 
@@ -207,16 +209,15 @@ void SendJob::resourceProgress(const AgentInstance &instance)
     }
 }
 
-void SendJob::resourceResult(qlonglong itemId, int result,
-                                      const QString &message)
+void SendJob::resourceResult(qlonglong itemId, int result, const QString &message)
 {
     Q_UNUSED(itemId);
     Q_ASSERT(mInterface);
     delete mInterface; // So that abort() knows the transport job is over.
     mInterface = nullptr;
 
-    const TransportResourceBase::TransportResult transportResult =
-        static_cast<TransportResourceBase::TransportResult>(result);
+    const TransportResourceBase::TransportResult transportResult
+        = static_cast<TransportResourceBase::TransportResult>(result);
 
     const bool success = (transportResult == TransportResourceBase::TransportSucceeded);
 
@@ -257,20 +258,25 @@ void SendJob::doPostJob(bool transportSuccess, const QString &transportMessage)
         if (attribute->sentBehaviour() == SentBehaviourAttribute::Delete) {
             qCDebug(MAILDISPATCHER_LOG) << "Deleting item from outbox.";
             mCurrentJob = new ItemDeleteJob(mItem);
-            QObject::connect(mCurrentJob, &ItemDeleteJob::result, this, [this](KJob *job) { postJobResult(job); });
+            QObject::connect(mCurrentJob, &ItemDeleteJob::result, this, [this](KJob *job) {
+                postJobResult(job);
+            });
         } else {
             if (attribute->sentBehaviour() == SentBehaviourAttribute::MoveToDefaultSentCollection) {
                 if (SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
                     mCurrentJob = new ItemMoveJob(mItem, SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::SentMail), this);
-                    QObject::connect(mCurrentJob, &ItemMoveJob::result, this, [this](KJob *job) { postJobResult(job); });
+                    QObject::connect(mCurrentJob, &ItemMoveJob::result, this, [this](KJob *job) {
+                        postJobResult(job);
+                    });
                 } else {
                     abortPostJob();
                 }
             } else {
                 qCDebug(MAILDISPATCHER_LOG) << "sentBehaviour=" << attribute->sentBehaviour() << "using collection from attribute";
                 mCurrentJob = new CollectionFetchJob(attribute->moveToCollection(), Akonadi::CollectionFetchJob::Base);
-                QObject::connect(mCurrentJob, &CollectionFetchJob::result, this, [this](KJob *job) { slotSentMailCollectionFetched(job);});
-
+                QObject::connect(mCurrentJob, &CollectionFetchJob::result, this, [this](KJob *job) {
+                    slotSentMailCollectionFetched(job);
+                });
             }
         }
     }
@@ -319,7 +325,9 @@ void SendJob::slotSentMailCollectionFetched(KJob *job)
         fetchCol = SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::SentMail);
     }
     mCurrentJob = new ItemMoveJob(mItem, fetchCol, this);
-    QObject::connect(mCurrentJob, &ItemMoveJob::result, this, [this](KJob *job) {postJobResult(job);});
+    QObject::connect(mCurrentJob, &ItemMoveJob::result, this, [this](KJob *job) {
+        postJobResult(job);
+    });
 }
 
 void SendJob::postJobResult(KJob *job)
@@ -335,12 +343,12 @@ void SendJob::postJobResult(KJob *job)
         QString errorStr;
         switch (attribute->sentBehaviour()) {
         case SentBehaviourAttribute::Delete:
-            errorStr =
-                i18n("Sending succeeded, but failed to remove the message from the outbox.");
+            errorStr
+                = i18n("Sending succeeded, but failed to remove the message from the outbox.");
             break;
         default:
-            errorStr =
-                i18n("Sending succeeded, but failed to move the message to the sent-mail folder.");
+            errorStr
+                = i18n("Sending succeeded, but failed to move the message to the sent-mail folder.");
             break;
         }
         setError(UserDefinedError);
@@ -365,7 +373,9 @@ void SendJob::storeResult(bool success, const QString &message)
 
     Q_ASSERT(mCurrentJob == nullptr);
     mCurrentJob = new StoreResultJob(mItem, success, message);
-    connect(mCurrentJob, &StoreResultJob::result, this, [this](KJob *job) { doEmitResult(job); });
+    connect(mCurrentJob, &StoreResultJob::result, this, [this](KJob *job) {
+        doEmitResult(job);
+    });
 }
 
 void SendJob::doEmitResult(KJob *job)
@@ -402,7 +412,9 @@ SendJob::~SendJob()
 
 void SendJob::start()
 {
-    QTimer::singleShot(0, this, [this]() { doTransport(); });
+    QTimer::singleShot(0, this, [this]() {
+        doTransport();
+    });
 }
 
 void SendJob::setMarkAborted()

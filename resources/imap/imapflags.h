@@ -24,8 +24,7 @@
 /**
  * Contains constants for IMAP flags from KIMAP.
  */
-namespace ImapFlags
-{
+namespace ImapFlags {
 /**
   * The flag for a message being seen (i.e. opened by user).
   */
@@ -45,7 +44,6 @@ extern const char *Answered;
   * The flag for a message being marked as flagged.
   */
 extern const char *Flagged;
-
 }
 
 #endif

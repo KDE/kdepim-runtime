@@ -26,16 +26,11 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 /**
  * @since 4.2
  */
-class SerializerPluginContactGroup : public QObject,
-    public ItemSerializerPlugin,
-    public DifferencesAlgorithmInterface,
-    public GidExtractorInterface
+class SerializerPluginContactGroup : public QObject, public ItemSerializerPlugin, public DifferencesAlgorithmInterface, public GidExtractorInterface
 {
     Q_OBJECT
     Q_INTERFACES(Akonadi::ItemSerializerPlugin)
@@ -46,13 +41,10 @@ public:
     bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
     void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) override;
 
-    void compare(Akonadi::AbstractDifferencesReporter *reporter,
-                 const Akonadi::Item &leftItem,
-                 const Akonadi::Item &rightItem) override;
+    void compare(Akonadi::AbstractDifferencesReporter *reporter, const Akonadi::Item &leftItem, const Akonadi::Item &rightItem) override;
 
     QString extractGid(const Item &item) const override;
 };
-
 }
 
 #endif

@@ -27,9 +27,9 @@ ImapAclAttribute::ImapAclAttribute()
 {
 }
 
-ImapAclAttribute::ImapAclAttribute(const QMap<QByteArray, KIMAP::Acl::Rights> &rights,
-                                   const QMap<QByteArray, KIMAP::Acl::Rights> &oldRights)
-    : mRights(rights), mOldRights(oldRights)
+ImapAclAttribute::ImapAclAttribute(const QMap<QByteArray, KIMAP::Acl::Rights> &rights, const QMap<QByteArray, KIMAP::Acl::Rights> &oldRights)
+    : mRights(rights)
+    , mOldRights(oldRights)
 {
 }
 
@@ -80,7 +80,7 @@ QByteArray ImapAclAttribute::serialized() const
 
     QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator it = mRights.constBegin();
     const QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator end = mRights.constEnd();
-    for (;it != end; ++it) {
+    for (; it != end; ++it) {
         result += it.key();
         result += ' ';
         result += KIMAP::Acl::rightsToString(it.value());
@@ -97,7 +97,7 @@ QByteArray ImapAclAttribute::serialized() const
     added = false;
     QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator it2 = mOldRights.constBegin();
     const QMap<QByteArray, KIMAP::Acl::Rights>::const_iterator end2 = mOldRights.constEnd();
-    for (;it2 != end2; ++it2) {
+    for (; it2 != end2; ++it2) {
         result += it2.key();
         result += ' ';
         result += KIMAP::Acl::rightsToString(it2.value());

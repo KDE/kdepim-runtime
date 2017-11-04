@@ -55,12 +55,12 @@ void SettingsDialog::save()
 {
     auto settings = Settings::self();
     const bool changed = ui->attendingReminderChkBox->isChecked() != settings->attendingReminders()
-            || ui->maybeAttendingReminderChkBox->isChecked() != settings->maybeAttendingReminders()
-            || ui->notAttendingReminderChkBox->isChecked() != settings->notAttendingReminders()
-            || ui->notRespondedReminderChkBox->isChecked() != settings->notRespondedToReminders()
-            || ui->birthdayReminderChkBox->isChecked() != settings->birthdayReminders()
-            || ui->eventReminderHoursSpinBox->value() != settings->eventReminderHours()
-            || ui->birthdayReminderDaysSpinBox->value() != settings->birthdayReminderDays();
+                         || ui->maybeAttendingReminderChkBox->isChecked() != settings->maybeAttendingReminders()
+                         || ui->notAttendingReminderChkBox->isChecked() != settings->notAttendingReminders()
+                         || ui->notRespondedReminderChkBox->isChecked() != settings->notRespondedToReminders()
+                         || ui->birthdayReminderChkBox->isChecked() != settings->birthdayReminders()
+                         || ui->eventReminderHoursSpinBox->value() != settings->eventReminderHours()
+                         || ui->birthdayReminderDaysSpinBox->value() != settings->birthdayReminderDays();
     if (!changed) {
         reject();
     }
@@ -85,21 +85,21 @@ void SettingsDialog::checkToken()
     auto job = new GetTokenJob(mResource);
     connect(job, &GetTokenJob::result,
             this, [this, job]() {
-                if (job->error()) {
-                    ui->loginStatusLbl->setText(job->errorText());
-                } else {
-                    const auto token = job->token();
-                    if (token.isEmpty()) {
-                        ui->loginStatusLbl->setText(i18n("Not logged in"));
-                        ui->logoutBtn->setVisible(false);
-                        ui->loginBtn->setVisible(true);
-                    } else {
-                        ui->loginStatusLbl->setText(i18n("Logged in as <b>%1</b>", job->userName()));
-                        ui->loginBtn->setVisible(false);
-                        ui->logoutBtn->setVisible(true);
-                    }
-                }
-            });
+        if (job->error()) {
+            ui->loginStatusLbl->setText(job->errorText());
+        } else {
+            const auto token = job->token();
+            if (token.isEmpty()) {
+                ui->loginStatusLbl->setText(i18n("Not logged in"));
+                ui->logoutBtn->setVisible(false);
+                ui->loginBtn->setVisible(true);
+            } else {
+                ui->loginStatusLbl->setText(i18n("Logged in as <b>%1</b>", job->userName()));
+                ui->loginBtn->setVisible(false);
+                ui->logoutBtn->setVisible(true);
+            }
+        }
+    });
     job->start();
 }
 
@@ -109,12 +109,12 @@ void SettingsDialog::login()
     auto job = new LoginJob(mResource);
     connect(job, &LoginJob::result,
             this, [this](KJob *job) {
-                if (job->error()) {
-                    ui->loginStatusLbl->setText(job->errorText());
-                } else {
-                    checkToken();
-                }
-            });
+        if (job->error()) {
+            ui->loginStatusLbl->setText(job->errorText());
+        } else {
+            checkToken();
+        }
+    });
     job->start();
 }
 
@@ -124,11 +124,11 @@ void SettingsDialog::logout()
     auto job = new LogoutJob(mResource);
     connect(job, &LogoutJob::result,
             this, [this](KJob *job) {
-                if (job->error()) {
-                    ui->loginStatusLbl->setText(job->errorText());
-                } else {
-                    checkToken();
-                }
-            });
+        if (job->error()) {
+            ui->loginStatusLbl->setText(job->errorText());
+        } else {
+            checkToken();
+        }
+    });
     job->start();
 }

@@ -91,7 +91,7 @@ private Q_SLOTS:
 
         Akonadi::Collection::Rights rights = Akonadi::Collection::AllRights;
         QTest::newRow("first listing, connected IMAP") << collection << capabilities << scenario
-                << callNames << rights << expectedAnnotations;
+                                                       << callNames << rights << expectedAnnotations;
 
         //
         // Test that if the parent collection doesn't allow renaming in its ACL, the child mailbox
@@ -99,9 +99,9 @@ private Q_SLOTS:
         //
         Akonadi::Collection parentCollection = createCollectionChain(QStringLiteral("/INBOX"));
         QMap<QByteArray, KIMAP::Acl::Rights> rightsMap;
-        rightsMap.insert("Hans", KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen |
-                         KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post |
-                         KIMAP::Acl::Delete);
+        rightsMap.insert("Hans", KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen
+                         |KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post
+                         |KIMAP::Acl::Delete);
         Akonadi::ImapAclAttribute *aclAttribute = new Akonadi::ImapAclAttribute();
         aclAttribute->setRights(rightsMap);
         parentCollection.addAttribute(aclAttribute);
@@ -109,7 +109,7 @@ private Q_SLOTS:
         rights = Akonadi::Collection::AllRights;
         rights &= ~Akonadi::Collection::CanChangeCollection;
         QTest::newRow("parent without create rights") << collection << capabilities << scenario
-                << callNames << rights << expectedAnnotations;
+                                                      << callNames << rights << expectedAnnotations;
 
         //
         // Test that if the parent collection is a noselect folder, the child mailbox will not have
@@ -140,8 +140,8 @@ private Q_SLOTS:
                  << "S: * QUOTAROOT INBOX/Foo user/foo"
                  << "S: * QUOTA user/foo ( )"
                  << "S: A000005 OK quota retrieved";
-        rights = Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanChangeItem |
-                 Akonadi::Collection::CanChangeCollection;
+        rights = Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanChangeItem
+                 |Akonadi::Collection::CanChangeCollection;
         QTest::newRow("only some rights") << collection << capabilities << scenario
                                           << callNames << rights << expectedAnnotations;
 

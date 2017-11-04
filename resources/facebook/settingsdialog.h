@@ -30,7 +30,7 @@ public:
     explicit SettingsDialog(FacebookResource *parent);
     ~SettingsDialog() override;
 
-private Q_SLOT:
+    private Q_SLOT:
     void save();
     void checkToken();
     void login();
@@ -40,6 +40,5 @@ private:
     FacebookResource *mResource = nullptr;
     QScopedPointer<Ui_SettingsDialog> ui;
 };
-
 
 #endif

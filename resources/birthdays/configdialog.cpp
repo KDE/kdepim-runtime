@@ -88,4 +88,3 @@ void ConfigDialog::writeConfig()
     group.writeEntry("Size", size());
     group.sync();
 }
-

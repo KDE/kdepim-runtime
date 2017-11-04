@@ -27,8 +27,8 @@
 
 using namespace KGAPI2;
 
-SettingsDialog::SettingsDialog(GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent):
-    GoogleSettingsDialog(accountMgr, windowId, parent)
+SettingsDialog::SettingsDialog(GoogleAccountManager *accountMgr, WId windowId, GoogleResource *parent)
+    : GoogleSettingsDialog(accountMgr, windowId, parent)
 {
 }
 

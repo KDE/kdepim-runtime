@@ -60,7 +60,7 @@ QByteArray CollectionAnnotationsAttribute::serialized() const
 
     QMap<QByteArray, QByteArray>::const_iterator it = mAnnotations.constBegin();
     const QMap<QByteArray, QByteArray>::const_iterator end = mAnnotations.constEnd();
-    for (;it != end; ++it) {
+    for (; it != end; ++it) {
         result += it.key();
         result += ' ';
         result += it.value();

@@ -31,7 +31,6 @@
 #include <QColor>
 #include "tracer.h"
 
-
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
     if (!Kolab::ErrorHandler::instance().errorOccured()) {
@@ -56,7 +55,8 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
     Akonadi::Item item;
     item.setRemoteId(remoteId);
     switch (folderType) {
-    case Kolab::EventType: {
+    case Kolab::EventType:
+    {
         KCalCore::Event::Ptr event(new KCalCore::Event);
         //FIXME Use message creation date time
         event->setDtStart(QDateTime::currentDateTimeUtc());
@@ -64,9 +64,10 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server. Technical information: remote identifier %1", remoteId));
         item.setMimeType(KCalCore::Event::eventMimeType());
         item.setPayload(event);
+        break;
     }
-    break;
-    case Kolab::TaskType: {
+    case Kolab::TaskType:
+    {
         KCalCore::Todo::Ptr task(new KCalCore::Todo);
         //FIXME Use message creation date time
         task->setDtStart(QDateTime::currentDateTimeUtc());
@@ -74,9 +75,10 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         task->setDescription(i18n("Task could not be read. Delete this task to remove it from the server."));
         item.setMimeType(KCalCore::Todo::todoMimeType());
         item.setPayload(task);
+        break;
     }
-    break;
-    case Kolab::JournalType: {
+    case Kolab::JournalType:
+    {
         KCalCore::Journal::Ptr journal(new KCalCore::Journal);
         //FIXME Use message creation date time
         journal->setDtStart(QDateTime::currentDateTimeUtc());
@@ -84,24 +86,26 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         journal->setDescription(i18n("Journal could not be read. Delete this journal to remove it from the server."));
         item.setMimeType(KCalCore::Journal::journalMimeType());
         item.setPayload(journal);
+        break;
     }
-    break;
-    case Kolab::ContactType: {
+    case Kolab::ContactType:
+    {
         KContacts::Addressee addressee;
         addressee.setName(i18n("Corrupt Contact"));
         addressee.setNote(i18n("Contact could not be read. Delete this contact to remove it from the server."));
         item.setMimeType(KContacts::Addressee::mimeType());
         item.setPayload(addressee);
+        break;
     }
-    break;
-    case Kolab::NoteType: {
+    case Kolab::NoteType:
+    {
         Akonadi::NoteUtils::NoteMessageWrapper note;
         note.setTitle(i18n("Corrupt Note"));
         note.setText(i18n("Note could not be read. Delete this note to remove it from the server."));
         item.setPayload(Akonadi::NoteUtils::noteMimeType());
         item.setPayload(note.message());
+        break;
     }
-    break;
     case Kolab::MailType:
     //We don't convert mails, so that should never fail.
     default:
@@ -138,7 +142,8 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
     switch (reader.getType()) {
     case Kolab::EventObject:
     case Kolab::TodoObject:
-    case Kolab::JournalObject: {
+    case Kolab::JournalObject:
+    {
         const KCalCore::Incidence::Ptr incidencePtr = reader.getIncidence();
         if (!incidencePtr) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read incidence.";
@@ -150,9 +155,10 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         newItem.setRemoteId(imapItem.remoteId());
         newItem.setGid(incidencePtr->instanceIdentifier());
         return newItem;
+        break;
     }
-    break;
-    case Kolab::NoteObject: {
+    case Kolab::NoteObject:
+    {
         const KMime::Message::Ptr note = reader.getNote();
         if (!note) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read note.";
@@ -165,17 +171,19 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         const Akonadi::NoteUtils::NoteMessageWrapper wrapper(note);
         newItem.setGid(wrapper.uid());
         return newItem;
+        break;
     }
-    break;
-    case Kolab::ContactObject: {
+    case Kolab::ContactObject:
+    {
         Akonadi::Item newItem(KContacts::Addressee::mimeType());
         newItem.setPayload(reader.getContact());
         newItem.setRemoteId(imapItem.remoteId());
         newItem.setGid(reader.getContact().uid());
         return newItem;
+        break;
     }
-    break;
-    case Kolab::DistlistObject: {
+    case Kolab::DistlistObject:
+    {
         KContacts::ContactGroup contactGroup = reader.getDistlist();
 
         QList<KContacts::ContactGroup::ContactReference> toAdd;
@@ -195,13 +203,12 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         newItem.setRemoteId(imapItem.remoteId());
         newItem.setGid(contactGroup.id());
         return newItem;
+        break;
     }
-    break;
-    case Kolab::RelationConfigurationObject: {
+    case Kolab::RelationConfigurationObject:
         // Do nothing about tags and relations, this is handled separately in KolabRetrieveTagTask::onMessagesAvailable
         ok = false;
         break;
-    }
     default:
         qCWarning(KOLABRESOURCE_LOG) << "Object type not handled";
         ok = false;
@@ -280,41 +287,44 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         switch (getKolabTypeFromMimeType(item.mimeType())) {
         case Kolab::EventObject:
         case Kolab::TodoObject:
-        case Kolab::JournalObject: {
+        case Kolab::JournalObject:
+        {
             qCDebug(KOLABRESOURCE_LOG) << "converted event";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
-                                                    item.payload<KCalCore::Incidence::Ptr>(),
-                                                    Kolab::KolabV3, productId, QStringLiteral("UTC"));
+                item.payload<KCalCore::Incidence::Ptr>(),
+                Kolab::KolabV3, productId, QStringLiteral("UTC"));
             imapItem.setPayload(message);
+            break;
         }
-        break;
-        case Kolab::NoteObject: {
+        case Kolab::NoteObject:
+        {
             qCDebug(KOLABRESOURCE_LOG) << "converted note";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(
-                                                    item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
+                item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
             imapItem.setPayload(message);
+            break;
         }
-        break;
-        case Kolab::ContactObject: {
+        case Kolab::ContactObject:
+        {
             qCDebug(KOLABRESOURCE_LOG) << "converted contact";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(
-                                                    item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
+                item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
             imapItem.setPayload(message);
+            break;
         }
-        break;
-        case Kolab::DistlistObject: {
+        case Kolab::DistlistObject:
+        {
             const KContacts::ContactGroup contactGroup = convertToGidOnly(item.payload<KContacts::ContactGroup>());
             qCDebug(KOLABRESOURCE_LOG) << "converted distlist";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(
-                                                    contactGroup, Kolab::KolabV3, productId);
+                contactGroup, Kolab::KolabV3, productId);
             imapItem.setPayload(message);
+            break;
         }
-        break;
         default:
             qCWarning(KOLABRESOURCE_LOG) << "object type not handled: " << item.id() << item.mimeType();
             ok = false;
             return Akonadi::Item();
-
         }
     } catch (const Akonadi::PayloadException &e) {
         qCWarning(KOLABRESOURCE_LOG) << "The item contains the wrong or no payload: " << item.id() << item.mimeType();
@@ -340,8 +350,8 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
         return QByteArrayLiteral("task");
     } else if (contentMimeTypes.contains(KCalCore::Journal::journalMimeType())) {
         return QByteArrayLiteral("journal");
-    } else if (contentMimeTypes.contains(QStringLiteral("application/x-vnd.akonadi.note")) ||
-               contentMimeTypes.contains(QStringLiteral("text/x-vnd.akonadi.note"))) {
+    } else if (contentMimeTypes.contains(QStringLiteral("application/x-vnd.akonadi.note"))
+               || contentMimeTypes.contains(QStringLiteral("text/x-vnd.akonadi.note"))) {
         return QByteArrayLiteral("note");
     }
     return QByteArray();
@@ -359,8 +369,8 @@ Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
         return Kolab::ContactObject;
     } else if (type == KContacts::ContactGroup::mimeType()) {
         return Kolab::DistlistObject;
-    } else if (type == QLatin1String("text/x-vnd.akonadi.note") ||
-               type == QLatin1String("application/x-vnd.akonadi.note")) {
+    } else if (type == QLatin1String("text/x-vnd.akonadi.note")
+               || type == QLatin1String("application/x-vnd.akonadi.note")) {
         return Kolab::NoteObject;
     }
     return Kolab::InvalidObject;
@@ -420,7 +430,7 @@ Kolab::FolderType KolabHelpers::folderTypeFromString(const QByteArray &folderTyp
 QByteArray KolabHelpers::getFolderTypeAnnotation(const QMap< QByteArray, QByteArray > &annotations)
 {
     if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION)
-            && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
+        && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
         return annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION);
     } else if (annotations.contains("/private" KOLAB_FOLDER_TYPE_ANNOTATION)
                && !annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
@@ -528,4 +538,3 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
     }
     return Kolab::generateMemberUrl(member);
 }
-

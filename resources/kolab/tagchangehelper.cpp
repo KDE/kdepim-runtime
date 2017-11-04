@@ -58,7 +58,10 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
 }
 
 struct TagMerger : public Merger {
-    virtual ~TagMerger() {}
+    virtual ~TagMerger()
+    {
+    }
+
     KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const override
     {
         qCDebug(KOLABRESOURCE_LOG) << "Got " << conflictingMessages.size() << " conflicting relation configuration objects. Overwriting with local version.";
@@ -92,7 +95,7 @@ void TagChangeHelper::recordNewUid(qint64 newUid, const Akonadi::Tag &tag)
     Q_ASSERT(newUid > 0);
     Q_ASSERT(tag.isValid());
 
-    const QByteArray remoteId =  QByteArray::number(newUid);
+    const QByteArray remoteId = QByteArray::number(newUid);
     qCDebug(KOLABRESOURCE_LOG) << "Setting remote ID to " << remoteId << " on tag with local id: " << tag.id();
     //Make sure we only update the id and send nothing else
     Akonadi::Tag updateTag;
@@ -126,4 +129,3 @@ void TagChangeHelper::onModifyDone(KJob *job)
     }
     Q_EMIT changeCommitted();
 }
-

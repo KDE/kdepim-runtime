@@ -49,9 +49,7 @@ using namespace MailTransport;
 using namespace Akonadi;
 using namespace KWallet;
 
-namespace
-{
-
+namespace {
 class BusyCursorHelper : public QObject
 {
 public:
@@ -70,15 +68,14 @@ public:
 #endif
     }
 };
-
 }
 
 AccountDialog::AccountDialog(POP3Resource *parentResource, WId parentWindow)
-    : QDialog(),
-      mParentResource(parentResource),
-      mServerTest(nullptr),
-      mValidator(this),
-      mWallet(nullptr)
+    : QDialog()
+    , mParentResource(parentResource)
+    , mServerTest(nullptr)
+    , mValidator(this)
+    , mWallet(nullptr)
 {
     KWindowSystem::setMainWindow(this, parentWindow);
     setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
@@ -166,12 +163,12 @@ void AccountDialog::loadSettings()
 
     nameEdit->setText(mParentResource->name());
     nameEdit->setFocus();
-    loginEdit->setText(!Settings::self()->login().isEmpty() ? Settings::self()->login() :
-                       KUser().loginName());
+    loginEdit->setText(!Settings::self()->login().isEmpty() ? Settings::self()->login()
+                       : KUser().loginName());
 
     hostEdit->setText(
-        !Settings::self()->host().isEmpty() ? Settings::self()->host() :
-        KEMailSettings().getSetting(KEMailSettings::InServer));
+        !Settings::self()->host().isEmpty() ? Settings::self()->host()
+        : KEMailSettings().getSetting(KEMailSettings::InServer));
     hostEdit->setText(Settings::self()->host());
     portEdit->setValue(Settings::self()->port());
     precommand->setText(Settings::self()->precommand());
@@ -179,16 +176,16 @@ void AccountDialog::loadSettings()
     leaveOnServerCheck->setChecked(Settings::self()->leaveOnServer());
     leaveOnServerDaysCheck->setEnabled(Settings::self()->leaveOnServer());
     leaveOnServerDaysCheck->setChecked(Settings::self()->leaveOnServerDays() >= 1);
-    leaveOnServerDaysSpin->setValue(Settings::self()->leaveOnServerDays() >= 1 ?
-                                    Settings::self()->leaveOnServerDays() : 7);
+    leaveOnServerDaysSpin->setValue(Settings::self()->leaveOnServerDays() >= 1
+                                    ? Settings::self()->leaveOnServerDays() : 7);
     leaveOnServerCountCheck->setEnabled(Settings::self()->leaveOnServer());
     leaveOnServerCountCheck->setChecked(Settings::self()->leaveOnServerCount() >= 1);
-    leaveOnServerCountSpin->setValue(Settings::self()->leaveOnServerCount() >= 1 ?
-                                     Settings::self()->leaveOnServerCount() : 100);
+    leaveOnServerCountSpin->setValue(Settings::self()->leaveOnServerCount() >= 1
+                                     ? Settings::self()->leaveOnServerCount() : 100);
     leaveOnServerSizeCheck->setEnabled(Settings::self()->leaveOnServer());
     leaveOnServerSizeCheck->setChecked(Settings::self()->leaveOnServerSize() >= 1);
-    leaveOnServerSizeSpin->setValue(Settings::self()->leaveOnServerSize() >= 1 ?
-                                    Settings::self()->leaveOnServerSize() : 10);
+    leaveOnServerSizeSpin->setValue(Settings::self()->leaveOnServerSize() >= 1
+                                    ? Settings::self()->leaveOnServerSize() : 10);
     filterOnServerCheck->setChecked(Settings::self()->filterOnServer());
     filterOnServerSizeSpin->setValue(Settings::self()->filterCheckSize());
     intervalCheck->setChecked(Settings::self()->intervalCheckEnabled());
@@ -201,20 +198,20 @@ void AccountDialog::loadSettings()
     encryptionSSL->setChecked(Settings::self()->useSSL());
     encryptionTLS->setChecked(Settings::self()->useTLS());
 
-    slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled() ?
-                                Settings::self()->leaveOnServerDays() >= 1 : false);
-    slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled() ?
-                                 Settings::self()->leaveOnServerCount() >= 1 : false);
-    slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled() ?
-                                Settings::self()->leaveOnServerSize() >= 1 : false);
+    slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled()
+                                ? Settings::self()->leaveOnServerDays() >= 1 : false);
+    slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled()
+                                 ? Settings::self()->leaveOnServerCount() >= 1 : false);
+    slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled()
+                                ? Settings::self()->leaveOnServerSize() >= 1 : false);
 
     // We need to fetch the collection, as the CollectionRequester needs the name
     // of it to work correctly
     Collection targetCollection(Settings::self()->targetCollection());
     if (targetCollection.isValid()) {
         CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
-                CollectionFetchJob::Base,
-                this);
+                                                              CollectionFetchJob::Base,
+                                                              this);
         connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &AccountDialog::targetCollectionReceived);
     } else {
         // FIXME: This is a bit duplicated from POP3Resource...
@@ -267,13 +264,11 @@ void AccountDialog::walletOpenedForSaving(bool success)
 {
     if (success) {
         if (mWallet && mWallet->isOpen()) {
-
             // Remove the password from the wallet if the user doesn't want to store it
             if (passwordEdit->password().isEmpty() && mWallet->hasFolder(QStringLiteral("pop3"))) {
                 mWallet->setFolder(QStringLiteral("pop3"));
                 mWallet->removeEntry(mParentResource->identifier());
             }
-
             // Store the password in the wallet if the user wants that
             else if (!passwordEdit->password().isEmpty()) {
                 if (!mWallet->hasFolder(QStringLiteral("pop3"))) {
@@ -318,8 +313,8 @@ void AccountDialog::slotLeaveOnServerClicked()
         slotEnableLeaveOnServerCount(state);
         slotEnableLeaveOnServerSize(state);
     }
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL) &&
-            leaveOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL)
+        && leaveOnServerCheck->isChecked()) {
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support unique "
                                       "message numbers, but this is a "
@@ -334,8 +329,8 @@ void AccountDialog::slotLeaveOnServerClicked()
 
 void AccountDialog::slotFilterOnServerClicked()
 {
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top) &&
-            filterOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top)
+        && filterOnServerCheck->isChecked()) {
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support "
                                       "fetching message headers, but this is a "
@@ -350,7 +345,7 @@ void AccountDialog::slotFilterOnServerClicked()
 
 void AccountDialog::slotPipeliningClicked()
 {
-    if (usePipeliningCheck->isChecked())
+    if (usePipeliningCheck->isChecked()) {
         KMessageBox::information(topLevelWidget(),
                                  i18n("Please note that this feature can cause some POP3 servers "
                                       "that do not support pipelining to send corrupted mail;\n"
@@ -362,6 +357,7 @@ void AccountDialog::slotPipeliningClicked()
                                       "you should do some testing first by sending yourself a batch "
                                       "of mail and downloading it."), QString(),
                                  QStringLiteral("pipelining"));
+    }
 }
 
 void AccountDialog::slotPopEncryptionChanged(int id)
@@ -453,8 +449,8 @@ void AccountDialog::enablePopFeatures()
         authCombo->addItem(Transport::authenticationTypeString(prot), prot);
     }
 
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Pipelining) &&
-            usePipeliningCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Pipelining)
+        && usePipeliningCheck->isChecked()) {
         usePipeliningCheck->setChecked(false);
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support "
@@ -474,8 +470,8 @@ void AccountDialog::enablePopFeatures()
                                       "server."));
     }
 
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL) &&
-            leaveOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL)
+        && leaveOnServerCheck->isChecked()) {
         leaveOnServerCheck->setChecked(false);
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support unique "
@@ -489,8 +485,8 @@ void AccountDialog::enablePopFeatures()
                                       "fetched messages on the server on."));
     }
 
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top) &&
-            filterOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top)
+        && filterOnServerCheck->isChecked()) {
         filterOnServerCheck->setChecked(false);
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support "
@@ -505,8 +501,7 @@ void AccountDialog::enablePopFeatures()
     }
 }
 
-static void addAuthenticationItem(QComboBox *combo,
-                                  int authenticationType)
+static void addAuthenticationItem(QComboBox *combo, int authenticationType)
 {
     combo->addItem(Transport::authenticationTypeString(authenticationType),
                    QVariant(authenticationType));
@@ -575,15 +570,15 @@ void AccountDialog::saveSettings()
     Settings::self()->setAuthenticationMethod(authCombo->itemData(authCombo->currentIndex()).toInt());
     Settings::self()->setPipelining(usePipeliningCheck->isChecked());
     Settings::self()->setLeaveOnServer(leaveOnServerCheck->isChecked());
-    Settings::self()->setLeaveOnServerDays(leaveOnServerCheck->isChecked() ?
-                                           (leaveOnServerDaysCheck->isChecked() ?
-                                            leaveOnServerDaysSpin->value() : -1) : 0);
-    Settings::self()->setLeaveOnServerCount(leaveOnServerCheck->isChecked() ?
-                                            (leaveOnServerCountCheck->isChecked() ?
-                                                    leaveOnServerCountSpin->value() : -1) : 0);
-    Settings::self()->setLeaveOnServerSize(leaveOnServerCheck->isChecked() ?
-                                           (leaveOnServerSizeCheck->isChecked() ?
-                                            leaveOnServerSizeSpin->value() : -1) : 0);
+    Settings::self()->setLeaveOnServerDays(leaveOnServerCheck->isChecked()
+                                           ? (leaveOnServerDaysCheck->isChecked()
+                                              ? leaveOnServerDaysSpin->value() : -1) : 0);
+    Settings::self()->setLeaveOnServerCount(leaveOnServerCheck->isChecked()
+                                            ? (leaveOnServerCountCheck->isChecked()
+                                               ? leaveOnServerCountSpin->value() : -1) : 0);
+    Settings::self()->setLeaveOnServerSize(leaveOnServerCheck->isChecked()
+                                           ? (leaveOnServerSizeCheck->isChecked()
+                                              ? leaveOnServerSizeSpin->value() : -1) : 0);
     Settings::self()->setFilterOnServer(filterOnServerCheck->isChecked());
     Settings::self()->setFilterCheckSize(filterOnServerSizeSpin->value());
     Settings::self()->setTargetCollection(folderRequester->collection().id());
@@ -592,11 +587,11 @@ void AccountDialog::saveSettings()
     // Now, either save the password or delete it from the wallet. For both, we need
     // to open it.
     const bool userChangedPassword = mInitalPassword != passwordEdit->password();
-    const bool userWantsToDeletePassword =
-        passwordEdit->password().isEmpty() && userChangedPassword;
+    const bool userWantsToDeletePassword
+        = passwordEdit->password().isEmpty() && userChangedPassword;
 
-    if ((!passwordEdit->password().isEmpty() && userChangedPassword) ||
-            userWantsToDeletePassword) {
+    if ((!passwordEdit->password().isEmpty() && userChangedPassword)
+        || userWantsToDeletePassword) {
         qCDebug(POP3RESOURCE_LOG) << mWallet <<  mWallet->isOpen();
         if (mWallet && mWallet->isOpen()) {
             // wallet is already open
@@ -660,4 +655,3 @@ void AccountDialog::localFolderRequestJobFinished(KJob *job)
         folderRequester->setCollection(targetCollection);
     }
 }
-

@@ -34,15 +34,14 @@
 #include "tracer.h"
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
-    : QObject(parent),
-      m_pool(nullptr),
-      m_sessionRequestId(0),
-      m_session(nullptr),
-      m_actionIfNoSession(action),
-      m_resource(resource),
-      mCancelled(false)
+    : QObject(parent)
+    , m_pool(nullptr)
+    , m_sessionRequestId(0)
+    , m_session(nullptr)
+    , m_actionIfNoSession(action)
+    , m_resource(resource)
+    , mCancelled(false)
 {
-
 }
 
 ResourceTask::~ResourceTask()
@@ -87,8 +86,7 @@ void ResourceTask::start(SessionPool *pool)
     }
 }
 
-void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
-                                      int errorCode, const QString &/*errorString*/)
+void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session, int errorCode, const QString & /*errorString*/)
 {
     if (requestId != m_sessionRequestId) {
         // Not for us, ignore
@@ -305,8 +303,7 @@ void ResourceTask::itemsRetrieved(const Akonadi::Item::List &items)
     }
 }
 
-void ResourceTask::itemsRetrievedIncremental(const Akonadi::Item::List &changed,
-        const Akonadi::Item::List &removed)
+void ResourceTask::itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed)
 {
     if (!mCancelled) {
         m_resource->itemsRetrievedIncremental(changed, removed);
@@ -450,8 +447,7 @@ void ResourceTask::showInformationDialog(const QString &message, const QString &
     m_resource->showInformationDialog(message, title, dontShowAgainName);
 }
 
-QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags(const QList<QByteArray> &flags,
-        const Akonadi::Collection &collection)
+QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags(const QList<QByteArray> &flags, const Akonadi::Collection &collection)
 {
     QList<QByteArray> imapFlags = fromAkonadiFlags(flags);
 
@@ -563,8 +559,8 @@ bool ResourceTask::serverSupportsCondstore() const
 {
     // Don't enable CONDSTORE for GMail (X-GM-EXT-1 is a GMail-specific capability)
     // because it breaks changes synchronization when using labels.
-    return serverCapabilities().contains(QStringLiteral("CONDSTORE")) &&
-           !serverCapabilities().contains(QStringLiteral("X-GM-EXT-1"));
+    return serverCapabilities().contains(QStringLiteral("CONDSTORE"))
+           && !serverCapabilities().contains(QStringLiteral("X-GM-EXT-1"));
 }
 
 int ResourceTask::batchSize() const

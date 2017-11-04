@@ -31,7 +31,8 @@
 using namespace OXA;
 
 FolderCreateJob::FolderCreateJob(const Folder &folder, QObject *parent)
-    : KJob(parent), mFolder(folder)
+    : KJob(parent)
+    , mFolder(folder)
 {
 }
 
@@ -94,4 +95,3 @@ void FolderCreateJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

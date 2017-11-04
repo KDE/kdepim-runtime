@@ -34,7 +34,9 @@
 #include <collectiondeletejob.h>
 
 AddCollectionTask::AddCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(DeferIfNoSession, resource, parent), m_pendingJobs(0), m_session(nullptr)
+    : ResourceTask(DeferIfNoSession, resource, parent)
+    , m_pendingJobs(0)
+    , m_session(nullptr)
 {
 }
 
@@ -155,4 +157,3 @@ void AddCollectionTask::onSetMetaDataDone(KJob *job)
         changeCommitted(m_collection);
     }
 }
-

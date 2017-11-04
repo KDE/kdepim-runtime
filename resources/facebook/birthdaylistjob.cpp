@@ -49,14 +49,14 @@ QVector<Akonadi::Item> BirthdayListJob::items() const
 KIO::StoredTransferJob *BirthdayListJob::createGetJob(const QUrl &url) const
 {
     auto job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
-    job->setMetaData({ QMap<QString,QString>{
-                        { QStringLiteral("cookies"), QStringLiteral("manual") },
-                        { QStringLiteral("setcookies"), mCookies } }
-                    });
+    job->setMetaData({ QMap<QString, QString>{
+                           { QStringLiteral("cookies"), QStringLiteral("manual") },
+                           { QStringLiteral("setcookies"), mCookies }
+                       }});
     return job;
 }
 
-void BirthdayListJob::emitError(const QString& errorText)
+void BirthdayListJob::emitError(const QString &errorText)
 {
     setError(KJob::UserDefinedError);
     setErrorText(errorText);
@@ -65,24 +65,24 @@ void BirthdayListJob::emitError(const QString& errorText)
 
 void BirthdayListJob::start()
 {
-    auto tokenJob = new GetTokenJob(qobject_cast<FacebookResource*>(parent()));
+    auto tokenJob = new GetTokenJob(qobject_cast<FacebookResource *>(parent()));
     connect(tokenJob, &GetTokenJob::result,
             this, [this, tokenJob]() {
-                if (tokenJob->error()) {
-                    emitError(tokenJob->errorText());
-                    return;
-                }
+        if (tokenJob->error()) {
+            emitError(tokenJob->errorText());
+            return;
+        }
 
-                // Convert the cookies into a HTTP Cookie header that we can pass
-                // to KIO
-                mCookies = QStringLiteral("Cookie: ");
-                const auto parsedCookies = QNetworkCookie::parseCookies(tokenJob->cookies());
-                for (const auto &cookie : parsedCookies) {
-                    mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()),
-                                                              QString::fromUtf8(cookie.value()));
-                }
-                fetchFacebookEventsPage();
-            });
+        // Convert the cookies into a HTTP Cookie header that we can pass
+        // to KIO
+        mCookies = QStringLiteral("Cookie: ");
+        const auto parsedCookies = QNetworkCookie::parseCookies(tokenJob->cookies());
+        for (const auto &cookie : parsedCookies) {
+            mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()),
+                                                      QString::fromUtf8(cookie.value()));
+        }
+        fetchFacebookEventsPage();
+    });
     tokenJob->start();
 }
 
@@ -91,20 +91,20 @@ void BirthdayListJob::fetchFacebookEventsPage()
     auto job = createGetJob(QUrl(QStringLiteral("https://www.facebook.com/events/birthdays")));
     connect(job, &KJob::result,
             this, [this, job]() {
-                if (job->error()) {
-                    emitError(i18n("Failed to retrieve birthday calendar"));
-                    return;
-                }
+        if (job->error()) {
+            emitError(i18n("Failed to retrieve birthday calendar"));
+            return;
+        }
 
-                auto url = findBirthdayIcalLink(job->data());
-                if (url.isEmpty()) {
-                    emitError(i18n("Failed to retrieve birthday calendar"));
-                    return;
-                }
-                // switch webcal scheme for https so we can fetch it with KIO
-                url.setScheme(QStringLiteral("https"));
-                fetchBirthdayIcal(url);
-            });
+        auto url = findBirthdayIcalLink(job->data());
+        if (url.isEmpty()) {
+            emitError(i18n("Failed to retrieve birthday calendar"));
+            return;
+        }
+        // switch webcal scheme for https so we can fetch it with KIO
+        url.setScheme(QStringLiteral("https"));
+        fetchBirthdayIcal(url);
+    });
     job->start();
 }
 
@@ -135,25 +135,25 @@ void BirthdayListJob::fetchBirthdayIcal(const QUrl &url)
     auto job = createGetJob(url);
     connect(job, &KJob::result,
             this, [this, job]() {
-                if (job->error()) {
-                    emitError(job->errorText());
-                    return;
-                }
+        if (job->error()) {
+            emitError(job->errorText());
+            return;
+        }
 
-                auto cal = KCalCore::MemoryCalendar::Ptr::create(QTimeZone::systemTimeZone());
-                KCalCore::ICalFormat format;
-                if (!format.fromRawString(cal, job->data(), false)) {
-                    emitError(i18n("Failed to parse birthday calendar"));
-                    return;
-                }
+        auto cal = KCalCore::MemoryCalendar::Ptr::create(QTimeZone::systemTimeZone());
+        KCalCore::ICalFormat format;
+        if (!format.fromRawString(cal, job->data(), false)) {
+            emitError(i18n("Failed to parse birthday calendar"));
+            return;
+        }
 
-                const auto events = cal->events();
-                for (const auto &event : events) {
-                    processEvent(event);
-                }
+        const auto events = cal->events();
+        for (const auto &event : events) {
+            processEvent(event);
+        }
 
-                emitResult();
-            });
+        emitResult();
+    });
 }
 
 void BirthdayListJob::processEvent(const KCalCore::Event::Ptr &event)

@@ -27,7 +27,6 @@
 #include "pimkolab/kolabformat/kolabobject.h"
 #include "tracer.h"
 
-
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
     , mSession(nullptr)

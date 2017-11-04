@@ -19,18 +19,16 @@
 
 #include "googleaccountmanager.h"
 
-
 #include <KWallet>
 #include <QDebug>
-
 
 #define WALLET_FOLDER QStringLiteral("Akonadi Google")
 
 using namespace KGAPI2;
 
-GoogleAccountManager::GoogleAccountManager(QObject *parent):
-    QObject(parent),
-    m_isReady(false)
+GoogleAccountManager::GoogleAccountManager(QObject *parent)
+    : QObject(parent)
+    , m_isReady(false)
 {
     QMetaObject::invokeMethod(this, "initManager", Qt::QueuedConnection);
 }
@@ -117,10 +115,9 @@ void GoogleAccountManager::slotFolderUpdated(const QString &folder)
             continue;
         }
 
-        if ((account->accessToken() != changedAccount->accessToken()) ||
-                (account->refreshToken() != changedAccount->refreshToken()) ||
-                (account->scopes() != changedAccount->scopes())) {
-
+        if ((account->accessToken() != changedAccount->accessToken())
+            || (account->refreshToken() != changedAccount->refreshToken())
+            || (account->scopes() != changedAccount->scopes())) {
             walletEntries.removeOne(account->accountName());
             m_accounts[account->accountName()] = changedAccount;
             Q_EMIT accountChanged(changedAccount);
@@ -240,4 +237,3 @@ void GoogleAccountManager::cleanup(const QString &accountName)
 {
     removeAccount(accountName);
 }
-

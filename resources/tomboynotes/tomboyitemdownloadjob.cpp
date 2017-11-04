@@ -24,8 +24,8 @@
 #include <QJsonObject>
 
 TomboyItemDownloadJob::TomboyItemDownloadJob(const Akonadi::Item &item, KIO::AccessManager *manager, QObject *parent)
-    : TomboyJobBase(manager, parent),
-      mResultItem(item)
+    : TomboyJobBase(manager, parent)
+    , mResultItem(item)
 {
 }
 

@@ -32,7 +32,6 @@ using Akonadi::MessageStatus;
 #include <QList>
 #include <QSharedPointer>
 
-
 class KMINDEXREADER_EXPORT KMIndexData
 {
     Q_DISABLE_COPY(KMIndexData)

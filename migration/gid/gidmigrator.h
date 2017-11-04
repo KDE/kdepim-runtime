@@ -23,7 +23,7 @@
 #include <migratorbase.h>
 #include <KJob>
 
-class GidMigrator: public MigratorBase
+class GidMigrator : public MigratorBase
 {
     Q_OBJECT
 public:

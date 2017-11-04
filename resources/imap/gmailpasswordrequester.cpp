@@ -109,7 +109,7 @@ void GmailPasswordRequester::onTokenRequestFinished(KGAPI2::Job *job)
 {
     mRunningRequest.clear();
 
-    auto authJob = qobject_cast<KGAPI2::AuthJob*>(job);
+    auto authJob = qobject_cast<KGAPI2::AuthJob *>(job);
     if (authJob->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Error obtaining XOAUTH2 token:" << authJob->errorString();
         Q_EMIT done(UserRejected);

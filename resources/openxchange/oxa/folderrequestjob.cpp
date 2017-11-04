@@ -31,7 +31,8 @@
 using namespace OXA;
 
 FolderRequestJob::FolderRequestJob(const Folder &folder, QObject *parent)
-    : KJob(parent), mFolder(folder)
+    : KJob(parent)
+    , mFolder(folder)
 {
 }
 
@@ -82,4 +83,3 @@ void FolderRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

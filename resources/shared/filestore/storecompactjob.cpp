@@ -39,7 +39,8 @@ public:
 };
 
 FileStore::StoreCompactJob::StoreCompactJob(FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private(this))
+    : FileStore::Job(session)
+    , d(new Private(this))
 {
     session->addJob(this);
 }
@@ -75,4 +76,3 @@ void FileStore::StoreCompactJob::handleItemsChanged(const Item::List &items)
     d->mItems << items;
     Q_EMIT itemsChanged(items);
 }
-

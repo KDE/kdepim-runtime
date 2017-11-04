@@ -27,13 +27,8 @@
 #include <AkonadiCore/gidextractorinterface.h>
 #include <kcontacts/vcardconverter.h>
 
-namespace Akonadi
-{
-
-class SerializerPluginAddressee : public QObject,
-    public ItemSerializerPlugin,
-    public DifferencesAlgorithmInterface,
-    public GidExtractorInterface
+namespace Akonadi {
+class SerializerPluginAddressee : public QObject, public ItemSerializerPlugin, public DifferencesAlgorithmInterface, public GidExtractorInterface
 {
     Q_OBJECT
     Q_INTERFACES(Akonadi::ItemSerializerPlugin)
@@ -44,16 +39,13 @@ public:
     bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
     void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) override;
 
-    void compare(Akonadi::AbstractDifferencesReporter *reporter,
-                 const Akonadi::Item &leftItem,
-                 const Akonadi::Item &rightItem) override;
+    void compare(Akonadi::AbstractDifferencesReporter *reporter, const Akonadi::Item &leftItem, const Akonadi::Item &rightItem) override;
 
     QString extractGid(const Item &item) const override;
 
 private:
     KContacts::VCardConverter m_converter;
 };
-
 }
 
 #endif

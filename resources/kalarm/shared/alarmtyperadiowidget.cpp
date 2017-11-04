@@ -70,4 +70,3 @@ bool AlarmTypeRadioWidget::validate() const
 {
     return static_cast<bool>(mButtonGroup->checkedButton());
 }
-

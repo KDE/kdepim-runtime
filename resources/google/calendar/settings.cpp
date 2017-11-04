@@ -38,15 +38,15 @@ public:
 
 Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
-Settings::Settings():
-    GoogleSettings()
+Settings::Settings()
+    : GoogleSettings()
 {
     Q_ASSERT(!s_globalSettings->q);
     s_globalSettings->q = this;
 
     new SettingsAdaptor(this);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
-            QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
 Settings *Settings::self()
@@ -57,5 +57,4 @@ Settings *Settings::self()
     }
 
     return s_globalSettings->q;
-
 }

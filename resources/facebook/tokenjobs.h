@@ -62,7 +62,6 @@ protected:
     void doStart() override;
 };
 
-
 class GetTokenJob : public TokenJob
 {
     Q_OBJECT
@@ -82,4 +81,3 @@ protected:
 };
 
 #endif
-

@@ -60,7 +60,7 @@ bool SerializerPluginKAlarm::deserialize(Item &item, const QByteArray &label, QI
     }
     KAEvent event(i.staticCast<KCalCore::Event>());
     const QString mime = CalEvent::mimeType(event.category());
-    if (mime.isEmpty()  ||  !event.isValid()) {
+    if (mime.isEmpty() || !event.isValid()) {
         qCWarning(AKONADI_SERIALIZER_KALARM_LOG) << "Event with uid" << event.id() << "contains no usable alarms!";
         data.seek(0);
         return false;
@@ -83,7 +83,8 @@ bool SerializerPluginKAlarm::deserialize(Item &item, const QByteArray &label, QI
                 // Registering EventAttribute doesn't work in the serializer
                 // unless the application also registers it. This doesn't
                 // matter unless the application uses KAEvent class.
-                qCCritical(AKONADI_SERIALIZER_KALARM_LOG) << "deserialize(): Event with uid" << event.id() << "contains unknown type EventAttribute (application must call AttributeFactory::registerAttribute())";
+                qCCritical(AKONADI_SERIALIZER_KALARM_LOG) << "deserialize(): Event with uid" << event.id()
+                                                          << "contains unknown type EventAttribute (application must call AttributeFactory::registerAttribute())";
             } else {
                 KAEvent::CmdErrType err = evAttr->commandError();
                 event.setCommandError(err);
@@ -233,8 +234,8 @@ void SerializerPluginKAlarm::compare(AbstractDifferencesReporter *reporter, cons
         reportDifference(reporter, KAEventFormatter::KMailSerial);
     }
     if (eventL.beep() != eventR.beep()
-            ||  eventL.speak() != eventR.speak()
-            ||  eventL.audioFile() != eventR.audioFile()) {
+        || eventL.speak() != eventR.speak()
+        || eventL.audioFile() != eventR.audioFile()) {
         reportDifference(reporter, KAEventFormatter::Sound);
     }
     if (eventL.repeatSound() != eventR.repeatSound()) {
@@ -303,7 +304,7 @@ void SerializerPluginKAlarm::compare(AbstractDifferencesReporter *reporter, cons
 
 void SerializerPluginKAlarm::reportDifference(AbstractDifferencesReporter *reporter, KAEventFormatter::Parameter id)
 {
-    if (mValueL.isApplicable(id)  ||  mValueR.isApplicable(id)) {
+    if (mValueL.isApplicable(id) || mValueR.isApplicable(id)) {
         reporter->addProperty(AbstractDifferencesReporter::ConflictMode, KAEventFormatter::label(id), mValueL.value(id), mValueR.value(id));
     }
 }
@@ -312,4 +313,3 @@ QString SerializerPluginKAlarm::extractGid(const Item &item) const
 {
     return item.hasPayload<KAEvent>() ? item.payload<KAEvent>().id() : QString();
 }
-

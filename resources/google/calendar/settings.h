@@ -20,14 +20,13 @@
 
 #include "common/googlesettings.h"
 
-class Settings: public GoogleSettings
+class Settings : public GoogleSettings
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.GoogleCalendar.ExtendedSettings")
 public:
     Settings();
     static Settings *self();
-
 };
 
 #endif // SETTINGS_H

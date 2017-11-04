@@ -25,12 +25,10 @@
 
 #include "ui_popsettings.h"
 
-namespace MailTransport
-{
+namespace MailTransport {
 class ServerTest;
 }
-namespace KWallet
-{
+namespace KWallet {
 class Wallet;
 }
 

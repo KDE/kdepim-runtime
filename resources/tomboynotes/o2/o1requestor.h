@@ -12,7 +12,7 @@ class QNetworkReply;
 class O1;
 
 /// Makes authenticated requests using OAuth 1.0.
-class O1Requestor: public QObject
+class O1Requestor : public QObject
 {
     Q_OBJECT
 

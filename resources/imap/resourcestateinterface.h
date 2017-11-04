@@ -80,8 +80,7 @@ public:
     virtual void itemRetrieved(const Akonadi::Item &item) = 0;
 
     virtual void itemsRetrieved(const Akonadi::Item::List &items) = 0;
-    virtual void itemsRetrievedIncremental(const Akonadi::Item::List &changed,
-                                           const Akonadi::Item::List &removed) = 0;
+    virtual void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed) = 0;
     virtual void itemsRetrievalDone() = 0;
 
     virtual void setTotalItems(int) = 0;

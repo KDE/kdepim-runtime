@@ -22,9 +22,7 @@
 
 #include <imap/settings.h>
 
-
-namespace KGAPI2
-{
+namespace KGAPI2 {
 class Job;
 class AuthJob;
 }
@@ -80,7 +78,6 @@ private Q_SLOTS:
 private:
     mutable KGAPI2::AccountPtr mAccount;
     KGAPI2::AuthJob *mActiveAuthJob = nullptr;
-
 };
 
 #endif

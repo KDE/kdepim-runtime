@@ -32,7 +32,8 @@ public:
 };
 
 FileStore::CollectionCreateJob::CollectionCreateJob(const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     Q_ASSERT(session != nullptr);
 

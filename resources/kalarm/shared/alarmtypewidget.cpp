@@ -58,4 +58,3 @@ CalEvent::Types AlarmTypeWidget::alarmTypes() const
     }
     return types;
 }
-

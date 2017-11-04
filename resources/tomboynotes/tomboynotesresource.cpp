@@ -42,8 +42,8 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
 {
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            Settings::self(),
-            QDBusConnection::ExportAdaptors);
+                                                 Settings::self(),
+                                                 QDBusConnection::ExportAdaptors);
 
     // Akonadi:Item should always provide the payload
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -51,7 +51,7 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
     // Status message stuff
     mStatusMessageTimer = new QTimer(this);
     mStatusMessageTimer->setSingleShot(true);
-    connect(mStatusMessageTimer, &QTimer::timeout, [ = ]() {
+    connect(mStatusMessageTimer, &QTimer::timeout, [=]() {
         Q_EMIT status(Akonadi::AgentBase::Idle, QString());
     });
     connect(this, &AgentBase::error, this, &TomboyNotesResource::showError);

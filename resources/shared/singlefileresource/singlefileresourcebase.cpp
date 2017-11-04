@@ -42,10 +42,14 @@ Q_DECLARE_METATYPE(QEventLoopLocker *)
 using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase(const QString &id)
-    : ResourceBase(id), mDownloadJob(nullptr), mUploadJob(nullptr)
+    : ResourceBase(id)
+    , mDownloadJob(nullptr)
+    , mUploadJob(nullptr)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
-    QTimer::singleShot(0, this, [this]() {readFile();});
+    QTimer::singleShot(0, this, [this]() {
+        readFile();
+    });
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     changeRecorder()->fetchCollection(true);
@@ -226,7 +230,8 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         const QUrl prevUrl = mCurrentUrl;
         int i = 0;
         do {
-            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-') + QString::number(++i);
+            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-')
+                                + QString::number(++i);
         } while (QFileInfo::exists(lostFoundFileName));
 
         // create the directory if it doesn't exist yet
@@ -294,4 +299,3 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
-

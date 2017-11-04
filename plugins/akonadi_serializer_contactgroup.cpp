@@ -78,7 +78,7 @@ static QString toString(const KContacts::Addressee &contact)
     return contact.fullEmail();
 }
 
-template <class T>
+template<class T>
 static void compareVector(AbstractDifferencesReporter *reporter, const QString &id, const QVector<T> &left, const QVector<T> &right)
 {
     for (int i = 0; i < left.count(); ++i) {
@@ -94,9 +94,7 @@ static void compareVector(AbstractDifferencesReporter *reporter, const QString &
     }
 }
 
-void SerializerPluginContactGroup::compare(Akonadi::AbstractDifferencesReporter *reporter,
-        const Akonadi::Item &leftItem,
-        const Akonadi::Item &rightItem)
+void SerializerPluginContactGroup::compare(Akonadi::AbstractDifferencesReporter *reporter, const Akonadi::Item &leftItem, const Akonadi::Item &rightItem)
 {
     Q_ASSERT(reporter);
     Q_ASSERT(leftItem.hasPayload<KContacts::ContactGroup>());
@@ -108,9 +106,10 @@ void SerializerPluginContactGroup::compare(Akonadi::AbstractDifferencesReporter 
     const KContacts::ContactGroup leftContactGroup = leftItem.payload<KContacts::ContactGroup>();
     const KContacts::ContactGroup rightContactGroup = rightItem.payload<KContacts::ContactGroup>();
 
-    if (!compareString(leftContactGroup.name(), rightContactGroup.name()))
+    if (!compareString(leftContactGroup.name(), rightContactGroup.name())) {
         reporter->addProperty(AbstractDifferencesReporter::ConflictMode, i18n("Name"),
                               leftContactGroup.name(), rightContactGroup.name());
+    }
 
     // using job->exec() is ok here, not a hot path
     Akonadi::ContactGroupExpandJob *leftJob = new Akonadi::ContactGroupExpandJob(leftContactGroup);
@@ -131,4 +130,3 @@ QString SerializerPluginContactGroup::extractGid(const Item &item) const
     }
     return item.payload<KContacts::ContactGroup>().id();
 }
-

@@ -30,7 +30,10 @@
 using namespace OXA;
 
 ConnectionTestJob::ConnectionTestJob(const QString &url, const QString &user, const QString &password, QObject *parent)
-    : KJob(parent), mUrl(url), mUser(user), mPassword(password)
+    : KJob(parent)
+    , mUrl(url)
+    , mUser(user)
+    , mPassword(password)
 {
 }
 
@@ -78,4 +81,3 @@ void ConnectionTestJob::httpJobFinished(KJob *job)
 
     emitResult();
 }
-

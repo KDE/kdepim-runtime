@@ -32,7 +32,8 @@ public:
 };
 
 FileStore::ItemMoveJob::ItemMoveJob(const Item &item, const Collection &targetParent, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     d->mItem = item;
     d->mTargetParent = targetParent;
@@ -64,4 +65,3 @@ void FileStore::ItemMoveJob::handleItemMoved(const Item &item)
 {
     d->mItem = item;
 }
-

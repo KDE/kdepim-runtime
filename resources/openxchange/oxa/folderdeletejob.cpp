@@ -27,11 +27,11 @@
 
 #include <kio/davjob.h>
 
-
 using namespace OXA;
 
 FolderDeleteJob::FolderDeleteJob(const Folder &folder, QObject *parent)
-    : KJob(parent), mFolder(folder)
+    : KJob(parent)
+    , mFolder(folder)
 {
 }
 
@@ -74,4 +74,3 @@ void FolderDeleteJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

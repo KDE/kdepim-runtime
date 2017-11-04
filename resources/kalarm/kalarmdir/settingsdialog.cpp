@@ -32,13 +32,11 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-namespace Akonadi_KAlarm_Dir_Resource
-{
-
+namespace Akonadi_KAlarm_Dir_Resource {
 SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
-    : QDialog(),
-      mSettings(settings),
-      mReadOnlySelected(false)
+    : QDialog()
+    , mSettings(settings)
+    , mReadOnlySelected(false)
 {
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -95,7 +93,7 @@ void SettingsDialog::textChanged()
 {
     bool oldReadOnly = ui.kcfg_ReadOnly->isEnabled();
     validate();
-    if (ui.kcfg_ReadOnly->isEnabled()  &&  !oldReadOnly) {
+    if (ui.kcfg_ReadOnly->isEnabled() && !oldReadOnly) {
         // If read-only was only set earlier by validating the input path,
         // and the path is now ok to be read-write, clear the read-only status.
         ui.kcfg_ReadOnly->setChecked(mReadOnlySelected);
@@ -126,7 +124,7 @@ void SettingsDialog::validate()
                 for (;;) {
                     file.setFile(file.dir().absolutePath());   // get parent dir's file info
                     if (file.exists()) {
-                        if (file.isDir()  &&  file.isWritable()) {
+                        if (file.isDir() && file.isWritable()) {
                             enableOk = true;    // it's possible to create the directory
                         }
                         break;
@@ -137,6 +135,4 @@ void SettingsDialog::validate()
     }
     mOkButton->setEnabled(enableOk);
 }
-
 }
-

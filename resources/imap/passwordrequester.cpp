@@ -26,7 +26,7 @@
 #include "gmailpasswordrequester.h"
 #include "settingspasswordrequester.h"
 
-PasswordRequester::PasswordRequester(ImapResourceBase* resource, QObject* parent)
+PasswordRequester::PasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
     , mImpl(nullptr)
     , mResource(resource)
@@ -37,9 +37,9 @@ PasswordRequester::~PasswordRequester()
 {
 }
 
-PasswordRequesterInterface * PasswordRequester::requesterImpl()
+PasswordRequesterInterface *PasswordRequester::requesterImpl()
 {
-    if (!mImpl || Utils::isGmail(mResource->settings()->imapServer()) != !!qobject_cast<GmailPasswordRequester*>(mImpl)) {
+    if (!mImpl || Utils::isGmail(mResource->settings()->imapServer()) != !!qobject_cast<GmailPasswordRequester *>(mImpl)) {
         if (mImpl) {
             mImpl->disconnect(this);
             mImpl->deleteLater();

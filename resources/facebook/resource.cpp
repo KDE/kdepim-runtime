@@ -65,9 +65,7 @@ void FacebookResource::cleanup()
     (new LogoutJob(this))->exec();
 }
 
-
-Akonadi::Collection FacebookResource::makeCollection(Graph::RSVP rsvp, const QString &name,
-                                                     const Akonadi::Collection &parent)
+Akonadi::Collection FacebookResource::makeCollection(Graph::RSVP rsvp, const QString &name, const Akonadi::Collection &parent)
 {
     Akonadi::Collection col;
     col.setName(name);
@@ -102,8 +100,7 @@ void FacebookResource::retrieveCollections()
           makeCollection(Graph::Declined, i18n("Events I'm not Attending"), root),
           makeCollection(Graph::MaybeAttending, i18n("Events I May Be Attending"), root),
           makeCollection(Graph::NotResponded, i18n("Events I have not Responded To"), root),
-          makeCollection(Graph::Birthday, i18n("Friends' Birthdays"), root)
-        });
+          makeCollection(Graph::Birthday, i18n("Friends' Birthdays"), root)});
 }
 
 void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
@@ -115,10 +112,10 @@ void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
         job = new BirthdayListJob(collection, this);
     } else {
         job = new EventsListJob(collection, this);
-        connect(static_cast<ListJob*>(job), &ListJob::itemsAvailable,
-                this, [this](KJob*, const Akonadi::Item::List &items) {
-                    itemsRetrieved(items);
-                });
+        connect(static_cast<ListJob *>(job), &ListJob::itemsAvailable,
+                this, [this](KJob *, const Akonadi::Item::List &items) {
+            itemsRetrieved(items);
+        });
     }
     connect(job, &KJob::result, this, &FacebookResource::onListJobDone);
     job->start();
@@ -135,7 +132,6 @@ bool FacebookResource::retrieveItems(const Akonadi::Item::List &items, const QSe
     return false;
 }
 
-
 void FacebookResource::onListJobDone(KJob *job)
 {
     if (job->error()) {
@@ -145,7 +141,7 @@ void FacebookResource::onListJobDone(KJob *job)
     }
 
     // Birthday job does not have item streaming
-    if (auto bjob = qobject_cast<BirthdayListJob*>(job)) {
+    if (auto bjob = qobject_cast<BirthdayListJob *>(job)) {
         itemsRetrieved(bjob->items());
     }
 

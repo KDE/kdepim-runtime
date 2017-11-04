@@ -50,21 +50,20 @@
 #include <kimap/statusjob.h>
 
 RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(CancelIfNoSession, resource, parent),
-      m_session(nullptr),
-      m_fetchedMissingBodies(-1),
-      m_fetchMissingBodies(false),
-      m_incremental(true),
-      m_localHighestModSeq(-1),
-      m_batchFetcher(nullptr),
-      m_uidBasedFetch(true),
-      m_flagsChanged(false),
-      m_messageCount(-1),
-      m_uidValidity(-1),
-      m_nextUid(-1),
-      m_highestModSeq(-1)
+    : ResourceTask(CancelIfNoSession, resource, parent)
+    , m_session(nullptr)
+    , m_fetchedMissingBodies(-1)
+    , m_fetchMissingBodies(false)
+    , m_incremental(true)
+    , m_localHighestModSeq(-1)
+    , m_batchFetcher(nullptr)
+    , m_uidBasedFetch(true)
+    , m_flagsChanged(false)
+    , m_messageCount(-1)
+    , m_uidValidity(-1)
+    , m_nextUid(-1)
+    , m_highestModSeq(-1)
 {
-
 }
 
 RetrieveItemsTask::~RetrieveItemsTask()
@@ -103,8 +102,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     }
 
     if (m_fetchMissingBodies && col.cachePolicy()
-            .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {  //disconnected mode, make sure we really have the body cached
-
+        .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {      //disconnected mode, make sure we really have the body cached
         Akonadi::Session *session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
         Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(col, session);
         fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
@@ -117,10 +115,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     }
 }
 
-BatchFetcher *RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper,
-        const KIMAP::ImapSet &set,
-        const KIMAP::FetchJob::FetchScope &scope,
-        int batchSize, KIMAP::Session *session)
+BatchFetcher *RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session)
 {
     return new BatchFetcher(messageHelper, set, scope, batchSize, session);
 }
@@ -136,7 +131,7 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
         int i = 0;
         Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob *>(job);
         const Akonadi::Item::List lstItems = fetch->items();
-        for (const Akonadi::Item &item : lstItems)  {
+        for (const Akonadi::Item &item : lstItems) {
             if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
                 qCWarning(IMAPRESOURCE_LOG) << "Item " << item.id() << " is missing the payload! Cached payloads: " << item.cachedPayloadParts();
                 uids.append(item.remoteId().toInt());
@@ -165,7 +160,7 @@ void RetrieveItemsTask::startRetrievalTasks()
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
     const bool hasACL = serverCapabilities().contains(QStringLiteral("ACL"));
     const KIMAP::Acl::Rights rights = myRights(collection());
-    if (isAutomaticExpungeEnabled() && (!hasACL || (rights & KIMAP::Acl::Expunge) || (rights & KIMAP::Acl::Delete))) {
+    if (isAutomaticExpungeEnabled() && (!hasACL || (rights &KIMAP::Acl::Expunge) || (rights & KIMAP::Acl::Delete))) {
         if (m_session->selectedMailBox() != mailBox) {
             triggerPreExpungeSelect(mailBox);
         } else {
@@ -274,7 +269,7 @@ void RetrieveItemsTask::onStatusDone(KJob *job)
     }
 
     KIMAP::StatusJob *status = qobject_cast<KIMAP::StatusJob *>(job);
-    const QList<QPair<QByteArray, qint64>> results = status->status();
+    const QList<QPair<QByteArray, qint64> > results = status->status();
     for (const auto &val : results) {
         if (val.first == "UIDNEXT") {
             m_nextUid = val.second;
@@ -287,7 +282,6 @@ void RetrieveItemsTask::onStatusDone(KJob *job)
 
 void RetrieveItemsTask::prepareRetrieval()
 {
-
     // Handle invalid UIDNEXT in case even STATUS is not able to retrieve it
     if (m_nextUid < 0) {
         qCWarning(IMAPRESOURCE_LOG) << "Server bug: Your IMAP Server delivered an invalid UIDNEXT value.";
@@ -305,12 +299,12 @@ void RetrieveItemsTask::prepareRetrieval()
     // Get the current uid validity value and store it
     int oldUidValidity = 0;
     if (!col.hasAttribute("uidvalidity")) {
-        UidValidityAttribute *currentUidValidity  = new UidValidityAttribute(m_uidValidity);
+        UidValidityAttribute *currentUidValidity = new UidValidityAttribute(m_uidValidity);
         col.addAttribute(currentUidValidity);
         modifyNeeded = true;
     } else {
-        UidValidityAttribute *currentUidValidity =
-            static_cast<UidValidityAttribute *>(col.attribute("uidvalidity"));
+        UidValidityAttribute *currentUidValidity
+            = static_cast<UidValidityAttribute *>(col.attribute("uidvalidity"));
         oldUidValidity = currentUidValidity->uidValidity();
         if (oldUidValidity != m_uidValidity) {
             currentUidValidity->setUidValidity(m_uidValidity);
@@ -335,12 +329,12 @@ void RetrieveItemsTask::prepareRetrieval()
 
     // Store the mailbox flags
     if (!col.hasAttribute("collectionflags")) {
-        Akonadi::CollectionFlagsAttribute *flagsAttribute  = new Akonadi::CollectionFlagsAttribute(m_flags);
+        Akonadi::CollectionFlagsAttribute *flagsAttribute = new Akonadi::CollectionFlagsAttribute(m_flags);
         col.addAttribute(flagsAttribute);
         modifyNeeded = true;
     } else {
-        Akonadi::CollectionFlagsAttribute *flagsAttribute =
-            static_cast<Akonadi::CollectionFlagsAttribute *>(col.attribute("collectionflags"));
+        Akonadi::CollectionFlagsAttribute *flagsAttribute
+            = static_cast<Akonadi::CollectionFlagsAttribute *>(col.attribute("collectionflags"));
         const QList<QByteArray> oldFlags = flagsAttribute->flags();
         if (oldFlags != m_flags) {
             flagsAttribute->setFlags(m_flags);
@@ -381,7 +375,7 @@ void RetrieveItemsTask::prepareRetrieval()
     scope.mode = KIMAP::FetchJob::FetchScope::FullHeaders;
 
     if (col.cachePolicy()
-            .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {
+        .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {
         scope.mode = KIMAP::FetchJob::FetchScope::Full;
     }
 
@@ -597,7 +591,7 @@ void RetrieveItemsTask::listFlagsForImapSet(const KIMAP::ImapSet &set)
     if (m_incremental && serverSupportsCondstore()) {
         scope.changedSince = m_localHighestModSeq;
         if (!m_flagsChanged) {
-            qCDebug(IMAPRESOURCE_LOG)  << "No flag changes.";
+            qCDebug(IMAPRESOURCE_LOG) << "No flag changes.";
             taskComplete();
             return;
         }

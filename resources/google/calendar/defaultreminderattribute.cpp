@@ -113,4 +113,3 @@ QByteArray DefaultReminderAttribute::type() const
     static const QByteArray sType("defaultReminders");
     return sType;
 }
-

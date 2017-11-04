@@ -56,7 +56,9 @@ class CollectionFetchTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionFetchTest() : QObject(), mStore(nullptr), mDir(nullptr)
+    CollectionFetchTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -299,12 +301,12 @@ void CollectionFetchTest::testMixedTree()
         QCOMPARE(collection.remoteId(), collection.name());
         QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-        QCOMPARE(collection.rights(), Collection::CanCreateItem |
-                 Collection::CanChangeItem |
-                 Collection::CanDeleteItem |
-                 Collection::CanCreateCollection |
-                 Collection::CanChangeCollection |
-                 Collection::CanDeleteCollection);
+        QCOMPARE(collection.rights(), Collection::CanCreateItem
+                 |Collection::CanChangeItem
+                 |Collection::CanDeleteItem
+                 |Collection::CanCreateCollection
+                 |Collection::CanChangeCollection
+                 |Collection::CanDeleteCollection);
 
         QCOMPARE(collection.parentCollection(), mStore->topLevelCollection());
         QVERIFY(firstLevelNames.contains(collection.name()));
@@ -329,12 +331,12 @@ void CollectionFetchTest::testMixedTree()
         QCOMPARE(collection.remoteId(), collection.name());
         QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-        QCOMPARE(collection.rights(), Collection::CanCreateItem |
-                 Collection::CanChangeItem |
-                 Collection::CanDeleteItem |
-                 Collection::CanCreateCollection |
-                 Collection::CanChangeCollection |
-                 Collection::CanDeleteCollection);
+        QCOMPARE(collection.rights(), Collection::CanCreateItem
+                 |Collection::CanChangeItem
+                 |Collection::CanDeleteItem
+                 |Collection::CanCreateCollection
+                 |Collection::CanChangeCollection
+                 |Collection::CanDeleteCollection);
 
         if (firstLevelNames.contains(collection.name())) {
             QCOMPARE(collection.parentCollection(), mStore->topLevelCollection());
@@ -368,12 +370,12 @@ void CollectionFetchTest::testMixedTree()
         QCOMPARE(col.remoteId(), col.name());
         QCOMPARE(col.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-        QCOMPARE(col.rights(), Collection::CanCreateItem |
-                 Collection::CanChangeItem |
-                 Collection::CanDeleteItem |
-                 Collection::CanCreateCollection |
-                 Collection::CanChangeCollection |
-                 Collection::CanDeleteCollection);
+        QCOMPARE(col.rights(), Collection::CanCreateItem
+                 |Collection::CanChangeItem
+                 |Collection::CanDeleteItem
+                 |Collection::CanCreateCollection
+                 |Collection::CanChangeCollection
+                 |Collection::CanDeleteCollection);
     }
 
     // test first level fetching all collections
@@ -395,12 +397,12 @@ void CollectionFetchTest::testMixedTree()
             QCOMPARE(childCollection.remoteId(), childCollection.name());
             QCOMPARE(childCollection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-            QCOMPARE(childCollection.rights(), Collection::CanCreateItem |
-                     Collection::CanChangeItem |
-                     Collection::CanDeleteItem |
-                     Collection::CanCreateCollection |
-                     Collection::CanChangeCollection |
-                     Collection::CanDeleteCollection);
+            QCOMPARE(childCollection.rights(), Collection::CanCreateItem
+                     |Collection::CanChangeItem
+                     |Collection::CanDeleteItem
+                     |Collection::CanCreateCollection
+                     |Collection::CanChangeCollection
+                     |Collection::CanDeleteCollection);
         }
 
         if (firstLevelNames.contains(collection.name())) {
@@ -435,24 +437,24 @@ void CollectionFetchTest::testMixedTree()
         QCOMPARE(job->collections(), list);
 
         Q_FOREACH (const Collection &childCollection, list) {
-            QVERIFY(childCollection.parentCollection() == collection ||
-                    childCollection.parentCollection().parentCollection() == collection);
+            QVERIFY(childCollection.parentCollection() == collection
+                    || childCollection.parentCollection().parentCollection() == collection);
             QVERIFY(!childCollection.remoteId().isEmpty());
             QCOMPARE(childCollection.remoteId(), childCollection.name());
             QCOMPARE(childCollection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-            QCOMPARE(childCollection.rights(), Collection::CanCreateItem |
-                     Collection::CanChangeItem |
-                     Collection::CanDeleteItem |
-                     Collection::CanCreateCollection |
-                     Collection::CanChangeCollection |
-                     Collection::CanDeleteCollection);
+            QCOMPARE(childCollection.rights(), Collection::CanCreateItem
+                     |Collection::CanChangeItem
+                     |Collection::CanDeleteItem
+                     |Collection::CanCreateCollection
+                     |Collection::CanChangeCollection
+                     |Collection::CanDeleteCollection);
         }
 
         if (firstLevelNames.contains(collection.name())) {
             Q_FOREACH (const Collection &childCollection, list) {
-                QVERIFY(secondLevelNames.contains(childCollection.name()) ||
-                        thirdLevelNames.contains(childCollection.name()));
+                QVERIFY(secondLevelNames.contains(childCollection.name())
+                        || thirdLevelNames.contains(childCollection.name()));
             }
         } else if (secondLevelNames.contains(collection.name())) {
             Q_FOREACH (const Collection &childCollection, list) {
@@ -473,4 +475,3 @@ void CollectionFetchTest::testMixedTree()
 QTEST_MAIN(CollectionFetchTest)
 
 #include "collectionfetchtest.moc"
-

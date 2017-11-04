@@ -25,7 +25,8 @@
 
 DummyMigrator::DummyMigrator(const QString &identifier)
     :   MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
-{}
+{
+}
 
 QString DummyMigrator::displayName() const
 {
@@ -65,4 +66,3 @@ void DummyMigrator::abort()
     qDebug();
     MigratorBase::abort();
 }
-

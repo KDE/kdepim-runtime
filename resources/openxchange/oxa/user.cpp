@@ -30,7 +30,7 @@ User::User()
 
 bool User::isValid() const
 {
-    return (mUid != -1);
+    return mUid != -1;
 }
 
 void User::setUid(qlonglong uid)

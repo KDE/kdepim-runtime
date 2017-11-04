@@ -35,6 +35,7 @@ private Q_SLOTS:
         QTest::newRow("specific") << "application/x-vnd.akonadi.calendar.event";
         QTest::newRow("generic") << "text/calendar";
     }
+
     void testCharsets_data()
     {
         testEventSerialize_data();
@@ -44,32 +45,32 @@ private Q_SLOTS:
     {
         QFETCH(QString, mimeType);
 
-        QByteArray serialized =
-            "BEGIN:VCALENDAR\n"
-            "PRODID:-//K Desktop Environment//NONSGML libkcal 3.5//EN\n"
-            "VERSION:2.0\n"
-            "BEGIN:VEVENT\n"
-            "DTSTAMP:20070109T100625Z\n"
-            "ORGANIZER;CN=\"Volker Krause\":MAILTO:vkrause@kde.org\n"
-            "CREATED:20070109T100553Z\n"
-            "UID:libkcal-1135684253.945\n"
-            "SEQUENCE:1\n"
-            "LAST-MODIFIED:20070109T100625Z\n"
-            "SUMMARY:Test event\n"
-            "LOCATION:here\n"
-            "CLASS:PUBLIC\n"
-            "PRIORITY:5\n"
-            "CATEGORIES:KDE\n"
-            "DTSTART:20070109T183000Z\n"
-            "DTEND:20070109T225900Z\n"
-            "TRANSP:OPAQUE\n"
-            "BEGIN:VALARM\n"
-            "DESCRIPTION:\n"
-            "ACTION:DISPLAY\n"
-            "TRIGGER;VALUE=DURATION:-PT45M\n"
-            "END:VALARM\n"
-            "END:VEVENT\n"
-            "END:VCALENDAR\n";
+        QByteArray serialized
+            = "BEGIN:VCALENDAR\n"
+              "PRODID:-//K Desktop Environment//NONSGML libkcal 3.5//EN\n"
+              "VERSION:2.0\n"
+              "BEGIN:VEVENT\n"
+              "DTSTAMP:20070109T100625Z\n"
+              "ORGANIZER;CN=\"Volker Krause\":MAILTO:vkrause@kde.org\n"
+              "CREATED:20070109T100553Z\n"
+              "UID:libkcal-1135684253.945\n"
+              "SEQUENCE:1\n"
+              "LAST-MODIFIED:20070109T100625Z\n"
+              "SUMMARY:Test event\n"
+              "LOCATION:here\n"
+              "CLASS:PUBLIC\n"
+              "PRIORITY:5\n"
+              "CATEGORIES:KDE\n"
+              "DTSTART:20070109T183000Z\n"
+              "DTEND:20070109T225900Z\n"
+              "TRANSP:OPAQUE\n"
+              "BEGIN:VALARM\n"
+              "DESCRIPTION:\n"
+              "ACTION:DISPLAY\n"
+              "TRIGGER;VALUE=DURATION:-PT45M\n"
+              "END:VALARM\n"
+              "END:VEVENT\n"
+              "END:VCALENDAR\n";
 
         // deserializing
         Item item;

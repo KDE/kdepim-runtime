@@ -194,8 +194,8 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                 // communication
             } else if (tagName == QLatin1String("email1")) {
                 contact.insertEmail(text, true);
-            } else if (tagName == QLatin1String("email2") ||
-                       tagName == QLatin1String("email3")) {
+            } else if (tagName == QLatin1String("email2")
+                       || tagName == QLatin1String("email3")) {
                 contact.insertEmail(text);
             } else if (tagName == QLatin1String("mobile1")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Cell));
@@ -396,7 +396,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             KContacts::Addressee::List *contacts = static_cast<KContacts::Addressee::List *>(preloadedData);
             foreach (const KContacts::Addressee &contact, *contacts) {
                 QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"),
-                                    OXUtils::writeString(contact.preferredEmail()));
+                                                           OXUtils::writeString(contact.preferredEmail()));
 
                 DAVUtils::setOxAttribute(email, QStringLiteral("folder_id"), OXUtils::writeNumber(0));
                 DAVUtils::setOxAttribute(email, QStringLiteral("emailfield"), OXUtils::writeNumber(0));
@@ -410,7 +410,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             for (uint i = 0; i < contactGroup.dataCount(); ++i) {
                 const KContacts::ContactGroup::Data &data = contactGroup.data(i);
                 QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"),
-                                    OXUtils::writeString(data.email()));
+                                                           OXUtils::writeString(data.email()));
 
                 DAVUtils::setOxAttribute(email, QStringLiteral("folder_id"), OXUtils::writeNumber(0));
                 DAVUtils::setOxAttribute(email, QStringLiteral("emailfield"), OXUtils::writeNumber(0));

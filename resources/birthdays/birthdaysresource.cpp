@@ -45,12 +45,12 @@ using namespace Akonadi;
 using namespace KContacts;
 using namespace KCalCore;
 
-BirthdaysResource::BirthdaysResource(const QString &id) :
-    ResourceBase(id)
+BirthdaysResource::BirthdaysResource(const QString &id)
+    : ResourceBase(id)
 {
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 Settings::self(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("Birthdays & Anniversaries"));
 
@@ -363,4 +363,3 @@ void BirthdaysResource::checkForUnknownCategories(const QString &categoryToCheck
 }
 
 AKONADI_RESOURCE_MAIN(BirthdaysResource)
-

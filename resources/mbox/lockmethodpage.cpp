@@ -56,4 +56,3 @@ void LockMethodPage::checkAvailableLockMethods()
         }
     }
 }
-

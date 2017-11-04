@@ -37,27 +37,28 @@
 
 using namespace Akonadi;
 
-namespace
-{
-
+namespace {
 QString messageTypeToString(KMigratorBase::MessageType type)
 {
     switch (type) {
-    case KMigratorBase::Success: return QStringLiteral("Success");
-    case KMigratorBase::Skip:    return QStringLiteral("Skipped");
-    case KMigratorBase::Info:    return QStringLiteral("Info   ");
-    case KMigratorBase::Warning: return QStringLiteral("WARNING");
-    case KMigratorBase::Error:   return QStringLiteral("ERROR  ");
+    case KMigratorBase::Success:
+        return QStringLiteral("Success");
+    case KMigratorBase::Skip:
+        return QStringLiteral("Skipped");
+    case KMigratorBase::Info:
+        return QStringLiteral("Info   ");
+    case KMigratorBase::Warning:
+        return QStringLiteral("WARNING");
+    case KMigratorBase::Error:
+        return QStringLiteral("ERROR  ");
     }
     Q_ASSERT(false);
     return QString();
 }
-
 }
 
 KMigratorBase::KMigratorBase() : m_logFile(nullptr)
 {
-
     const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1String("/migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
@@ -99,8 +100,7 @@ KMigratorBase::MigrationState KMigratorBase::migrationState(const QString &ident
     return state;
 }
 
-void KMigratorBase::setMigrationState(const QString &identifier, MigrationState state,
-                                      const QString &resId, const QString &type)
+void KMigratorBase::setMigrationState(const QString &identifier, MigrationState state, const QString &resId, const QString &type)
 {
     KConfigGroup cfg(KSharedConfig::openConfig(), QStringLiteral("Resource ") + identifier);
     QMetaEnum e = metaObject()->enumerator(metaObject()->indexOfEnumerator("MigrationState"));
@@ -126,7 +126,7 @@ KJob *KMigratorBase::createAgentInstance(const QString &typeId, QObject *receive
 {
     Q_EMIT message(Info, i18n("Creating instance of type %1", typeId));
     AgentInstanceCreateJob *job = new AgentInstanceCreateJob(typeId, this);
-    connect(job, SIGNAL(result(KJob*)), receiver, slot);
+    connect(job, SIGNAL(result(KJob *)), receiver, slot);
     job->start();
     return job;
 }
@@ -139,4 +139,3 @@ void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString &m
         m_logFile->flush();
     }
 }
-

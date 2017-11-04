@@ -32,8 +32,7 @@
 
 #include "resourcestateinterface.h"
 
-namespace KIMAP
-{
+namespace KIMAP {
 class Session;
 }
 
@@ -100,8 +99,7 @@ protected:
     void itemRetrieved(const Akonadi::Item &item);
 
     void itemsRetrieved(const Akonadi::Item::List &items);
-    void itemsRetrievedIncremental(const Akonadi::Item::List &changed,
-                                   const Akonadi::Item::List &removed);
+    void itemsRetrievedIncremental(const Akonadi::Item::List &changed, const Akonadi::Item::List &removed);
     void itemsRetrievalDone();
 
     void setTotalItems(int);
@@ -151,8 +149,7 @@ private:
     static QList<QByteArray> fromAkonadiFlags(const QList<QByteArray> &flags);
 
 private Q_SLOTS:
-    void onSessionRequested(qint64 requestId, KIMAP::Session *session,
-                            int errorCode, const QString &errorString);
+    void onSessionRequested(qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorString);
     void onConnectionLost(KIMAP::Session *session);
     void onPoolDisconnect();
 

@@ -18,7 +18,7 @@
 #include "o2/o0globals.h"
 #include "o2/o0settingsstore.h"
 
-O1::O1(QObject *parent): O0BaseAuth(parent)
+O1::O1(QObject *parent) : O0BaseAuth(parent)
 {
     setSignatureMethod(O2_SIGNATURE_TYPE_HMAC_SHA1);
     manager_ = new QNetworkAccessManager(this);
@@ -125,17 +125,23 @@ static QByteArray hmacSha1(QByteArray key, QByteArray baseString)
     QByteArray hashed = QCryptographicHash::hash(total, QCryptographicHash::Sha1);
     return hashed.toBase64();
 }
+
 #endif
 
 /// Get HTTP operation name.
 static QString getOperationName(QNetworkAccessManager::Operation op)
 {
     switch (op) {
-    case QNetworkAccessManager::GetOperation: return QStringLiteral("GET");
-    case QNetworkAccessManager::PostOperation: return QStringLiteral("POST");
-    case QNetworkAccessManager::PutOperation: return QStringLiteral("PUT");
-    case QNetworkAccessManager::DeleteOperation: return QStringLiteral("DEL");
-    default: return QString();
+    case QNetworkAccessManager::GetOperation:
+        return QStringLiteral("GET");
+    case QNetworkAccessManager::PostOperation:
+        return QStringLiteral("POST");
+    case QNetworkAccessManager::PutOperation:
+        return QStringLiteral("PUT");
+    case QNetworkAccessManager::DeleteOperation:
+        return QStringLiteral("DEL");
+    default:
+        return QString();
     }
 }
 
@@ -163,7 +169,8 @@ QByteArray O1::getRequestBase(const QList<O0RequestParameter> &oauthParams, cons
     return base;
 }
 
-QByteArray O1::sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op, const QString &consumerSecret, const QString &tokenSecret)
+QByteArray O1::sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op, const QString &consumerSecret,
+                    const QString &tokenSecret)
 {
     QByteArray baseString = getRequestBase(oauthParams, otherParams, url, op);
     QByteArray secret = QUrl::toPercentEncoding(consumerSecret) + "&" + QUrl::toPercentEncoding(tokenSecret);

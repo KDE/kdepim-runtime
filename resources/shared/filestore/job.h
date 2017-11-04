@@ -26,11 +26,8 @@
 
 #include <KJob>
 
-namespace Akonadi
-{
-
-namespace FileStore
-{
+namespace Akonadi {
+namespace FileStore {
 class AbstractJobSession;
 class CollectionCreateJob;
 class CollectionDeleteJob;
@@ -56,7 +53,9 @@ public:
     class Visitor
     {
     public:
-        virtual ~Visitor() {}
+        virtual ~Visitor()
+        {
+        }
 
         virtual bool visit(Job *job) = 0;
 
@@ -100,9 +99,7 @@ private:
     class Private;
     Private *d;
 };
-
 }
 }
 
 #endif
-

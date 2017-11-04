@@ -27,8 +27,7 @@
 #include <resourcebase.h>
 #include <QHash>
 
-namespace Akonadi_KAlarm_Dir_Resource
-{
+namespace Akonadi_KAlarm_Dir_Resource {
 class Settings;
 }
 using namespace KAlarmCal;
@@ -67,6 +66,7 @@ private Q_SLOTS:
     {
         loadFiles(true);
     }
+
     void    collectionFetchResult(KJob *);
     void    jobDone(KJob *);
 
@@ -93,21 +93,27 @@ private:
     bool    isFileValid(const QString &file) const;
 
     struct EventFile {  // data to be indexed by event ID
-        EventFile() {}
-        EventFile(const KAEvent &e, const QStringList &f) : event(e), files(f) {}
-        KAEvent     event;
+        EventFile()
+        {
+        }
+
+        EventFile(const KAEvent &e, const QStringList &f) : event(e)
+            , files(f)
+        {
+        }
+
+        KAEvent event;
         QStringList files;   // files containing this event ID, in-use one first
     };
     QHash<QString, EventFile> mEvents;         // cached alarms and file names, indexed by ID
-    QHash<QString, QString>   mFileEventIds;   // alarm IDs, indexed by file name
+    QHash<QString, QString> mFileEventIds;     // alarm IDs, indexed by file name
     Akonadi_KAlarm_Dir_Resource::Settings *mSettings = nullptr;
-    Akonadi::Collection::Id   mCollectionId;   // ID of this resource's collection
-    KACalendar::Compat        mCompatibility;
-    int                       mVersion;        // calendar format version
-    QStringList               mChangedFiles;   // files being written to
-    bool                      mCollectionFetched;  // mCollectionId has been initialised
-    bool                      mWaitingToRetrieve;  // retrieveCollections() needs to be called
+    Akonadi::Collection::Id mCollectionId;     // ID of this resource's collection
+    KACalendar::Compat mCompatibility;
+    int mVersion;                              // calendar format version
+    QStringList mChangedFiles;                 // files being written to
+    bool mCollectionFetched;                       // mCollectionId has been initialised
+    bool mWaitingToRetrieve;                       // retrieveCollections() needs to be called
 };
 
 #endif
-

@@ -27,16 +27,13 @@
 #include <QDomElement>
 #include <QDomNode>
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * Namespace that contains methods for creating or modifying DAV XML documents.
  *
  * @author Tobias Koenig <tokoe@kde.org>
  */
-namespace DAVUtils
-{
+namespace DAVUtils {
 /**
  * Adds a new element with the given @p tag inside the DAV namespace under @p parentNode
  * to the @p document.
@@ -64,7 +61,6 @@ void setOxAttribute(QDomElement &element, const QString &name, const QString &va
  */
 bool davErrorOccurred(const QDomDocument &document, QString &errorText, QString &errorStatus);
 }
-
 }
 
 #endif

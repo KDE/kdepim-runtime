@@ -30,7 +30,8 @@ public:
 };
 
 FileStore::ItemDeleteJob::ItemDeleteJob(const Item &item, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     d->mItem = item;
 
@@ -56,4 +57,3 @@ void FileStore::ItemDeleteJob::handleItemDeleted(const Item &item)
 {
     d->mItem = item;
 }
-

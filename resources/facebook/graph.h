@@ -21,17 +21,12 @@
 #include <kio/storedtransferjob.h>
 
 namespace Graph {
-
 QString appId();
 QString scopes();
 
-QUrl url(const QString &endpoint, const QString &accessToken,
-         const QStringList &fields = {},
-         const QMap<QString, QString> &queries = {});
+QUrl url(const QString &endpoint, const QString &accessToken, const QStringList &fields = {}, const QMap<QString, QString> &queries = {});
 
-KJob *job(const QString &endpoint, const QString &accessToken,
-          const QStringList &fields = {},
-          const QMap<QString, QString> &queries = {});
+KJob *job(const QString &endpoint, const QString &accessToken, const QStringList &fields = {}, const QMap<QString, QString> &queries = {});
 KJob *job(const QUrl &url);
 
 enum RSVP {
@@ -44,7 +39,6 @@ enum RSVP {
 
 RSVP rsvpFromString(const QString &rsvp);
 QString rsvpToString(RSVP rsvp);
-
 }
 
 #endif // GRAPH_H_

@@ -22,8 +22,7 @@
 
 #include <KGAPI/Types>
 
-namespace KGAPI2
-{
+namespace KGAPI2 {
 class Job;
 }
 
@@ -78,8 +77,6 @@ private:
     QCheckBox *m_enableRefresh = nullptr;
     KPluralHandlingSpinBox *m_refreshSpinBox = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;
-
 };
 
 #endif // GOOGLESETTINGSDIALOG_H
-

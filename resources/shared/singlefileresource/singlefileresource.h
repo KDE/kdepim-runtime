@@ -40,13 +40,11 @@
 
 Q_DECLARE_METATYPE(QEventLoopLocker *)
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 /**
  * Base class for single file based resources.
  */
-template <typename Settings>
+template<typename Settings>
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileResourceBase
 {
 public:
@@ -57,6 +55,7 @@ public:
         // The resource needs network when the path refers to a non local file.
         setNeedsNetwork(!QUrl::fromUserInput(mSettings->path()).isLocalFile());
     }
+
     ~SingleFileResource()
     {
         delete mSettings;
@@ -65,14 +64,13 @@ public:
     /**
      * Read changes from the backend file.
      */
-    void readFile(bool taskContext = false) override {
-        if (KDirWatch::self()->contains(mCurrentUrl.toLocalFile()))
-        {
+    void readFile(bool taskContext = false) override
+    {
+        if (KDirWatch::self()->contains(mCurrentUrl.toLocalFile())) {
             KDirWatch::self()->removeFile(mCurrentUrl.toLocalFile());
         }
 
-        if (mSettings->path().isEmpty())
-        {
+        if (mSettings->path().isEmpty()) {
             const QString message = i18n("No file selected.");
             qWarning() << message;
             emit status(NotConfigured, i18n("The resource not configured yet"));
@@ -83,18 +81,16 @@ public:
         }
 
         mCurrentUrl = QUrl::fromUserInput(mSettings->path()); // the string contains the scheme if remote, doesn't if local path
-        if (mCurrentHash.isEmpty())
-        {
+        if (mCurrentHash.isEmpty()) {
             // First call to readFile() lets see if there is a hash stored in a
             // cache file. If both are the same than there is no need to load the
             // file and synchronize the resource.
             mCurrentHash = loadHash();
         }
 
-        if (mCurrentUrl.isLocalFile())
-        {
+        if (mCurrentUrl.isLocalFile()) {
             if (mSettings->displayName().isEmpty()
-                    && (name().isEmpty() || name() == identifier()) && !mCurrentUrl.isEmpty()) {
+                && (name().isEmpty() || name() == identifier()) && !mCurrentUrl.isEmpty()) {
                 setName(mCurrentUrl.fileName());
             }
 
@@ -104,7 +100,7 @@ public:
 
                 // first create try to create the directory the file should be located in
                 QDir dir = QFileInfo(f).dir();
-                if (! dir.exists()) {
+                if (!dir.exists()) {
                     dir.mkpath(dir.path());
                 }
 
@@ -140,8 +136,7 @@ public:
 
             emit status(Idle, i18nc("@info:status", "Ready"));
         } else { // !mCurrentUrl.isLocalFile()
-            if (mDownloadJob)
-            {
+            if (mDownloadJob) {
                 const QString message = i18n("Another download is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -151,8 +146,7 @@ public:
                 return;
             }
 
-            if (mUploadJob)
-            {
+            if (mUploadJob) {
                 const QString message = i18n("Another file upload is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -164,34 +158,34 @@ public:
 
             auto ref = new QEventLoopLocker();
             // NOTE: Test what happens with remotefile -> save, close before save is finished.
-            mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite |
-                                          KIO::DefaultFlags | KIO::HideProgressInfo);
+            mDownloadJob = KIO::file_copy(mCurrentUrl, QUrl::fromLocalFile(cacheFile()), -1, KIO::Overwrite
+                                          |KIO::DefaultFlags | KIO::HideProgressInfo);
             mDownloadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mDownloadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotDownloadJobResult);
-            connect(mDownloadJob, SIGNAL(percent(KJob *, ulong)),
-                    SLOT(handleProgress(KJob *, ulong)));
+            connect(mDownloadJob, SIGNAL(percent(KJob *,ulong)),
+                    SLOT(handleProgress(KJob *,ulong)));
 
             emit status(Running, i18n("Downloading remote file."));
         }
 
-        const QString display =  mSettings->displayName();
-        if (!display.isEmpty())
-        {
+        const QString display = mSettings->displayName();
+        if (!display.isEmpty()) {
             setName(display);
         }
     }
 
-    void writeFile(const QVariant &task_context) override {
-        writeFile(task_context.canConvert<bool>()  &&task_context.toBool());
+    void writeFile(const QVariant &task_context) override
+    {
+        writeFile(task_context.canConvert<bool>() && task_context.toBool());
     }
 
     /**
      * Write changes to the backend file.
      */
-    void writeFile(bool taskContext = false) override {
-        if (mSettings->readOnly())
-        {
+    void writeFile(bool taskContext = false) override
+    {
+        if (mSettings->readOnly()) {
             const QString message = i18n("Trying to write to a read-only file: '%1'.", mSettings->path());
             qWarning() << message;
             emit error(message);
@@ -203,8 +197,7 @@ public:
 
         // We don't use the Settings::self()->path() here as that might have changed
         // and in that case it would probably cause data lose.
-        if (mCurrentUrl.isEmpty())
-        {
+        if (mCurrentUrl.isEmpty()) {
             const QString message = i18n("No file specified.");
             qWarning() << message;
             emit status(Broken, message);
@@ -214,8 +207,7 @@ public:
             return;
         }
 
-        if (mCurrentUrl.isLocalFile())
-        {
+        if (mCurrentUrl.isLocalFile()) {
             KDirWatch::self()->stopScan();
             const bool writeResult = writeToFile(mCurrentUrl.toLocalFile());
             // Update the hash so we can detect at fileChanged() if the file actually
@@ -231,11 +223,9 @@ public:
                 return;
             }
             emit status(Idle, i18nc("@info:status", "Ready"));
-
         } else {
             // Check if there is a download or an upload in progress.
-            if (mDownloadJob)
-            {
+            if (mDownloadJob) {
                 const QString message = i18n("A download is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -245,8 +235,7 @@ public:
                 return;
             }
 
-            if (mUploadJob)
-            {
+            if (mUploadJob) {
                 const QString message = i18n("Another file upload is still in progress.");
                 qWarning() << message;
                 emit error(message);
@@ -257,8 +246,7 @@ public:
             }
 
             // Write te items to the locally cached file.
-            if (!writeToFile(cacheFile()))
-            {
+            if (!writeToFile(cacheFile())) {
                 qWarning() << "Error writing to file";
                 if (taskContext) {
                     cancelTask();
@@ -277,27 +265,25 @@ public:
             mUploadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mUploadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotUploadJobResult);
-            connect(mUploadJob, SIGNAL(percent(KJob *, ulong)),
-                    SLOT(handleProgress(KJob *, ulong)));
+            connect(mUploadJob, SIGNAL(percent(KJob *,ulong)),
+                    SLOT(handleProgress(KJob *,ulong)));
 
             emit status(Running, i18n("Uploading cached file to remote location."));
         }
-        if (taskContext)
-        {
+        if (taskContext) {
             taskDone();
         }
     }
 
-    void collectionChanged(const Collection &collection) override {
+    void collectionChanged(const Collection &collection) override
+    {
         QString newName;
-        if (collection.hasAttribute<EntityDisplayAttribute>())
-        {
+        if (collection.hasAttribute<EntityDisplayAttribute>()) {
             EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
             newName = attr->displayName();
         }
         const QString oldName = mSettings->displayName();
-        if (newName != oldName)
-        {
+        if (newName != oldName) {
             mSettings->setDisplayName(newName);
             mSettings->save();
         }
@@ -332,12 +318,12 @@ public Q_SLOTS:
     /**
      * Display the configuration dialog for the resource.
      */
-    void configure(WId windowId) override {
+    void configure(WId windowId) override
+    {
         QPointer<SingleFileResourceConfigDialog<Settings> > dlg
-        = new SingleFileResourceConfigDialog<Settings>(windowId, mSettings);
+            = new SingleFileResourceConfigDialog<Settings>(windowId, mSettings);
         customizeConfigDialog(dlg);
-        if (dlg->exec() == QDialog::Accepted)
-        {
+        if (dlg->exec() == QDialog::Accepted) {
             if (dlg) {     // in case is got destroyed
                 configDialogAcceptedActions(dlg);
             }
@@ -369,7 +355,8 @@ protected:
         Q_UNUSED(dlg);
     }
 
-    void retrieveCollections() override {
+    void retrieveCollections() override
+    {
         Collection::List list;
         list << rootCollection();
         collectionsRetrieved(list);
@@ -383,7 +370,6 @@ protected:
 protected:
     Settings *mSettings = nullptr;
 };
-
 }
 
 #endif

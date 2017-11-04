@@ -11,7 +11,7 @@
 class O2ReplyServer;
 
 /// Simple OAuth2 authenticator.
-class O2: public O0BaseAuth
+class O2 : public O0BaseAuth
 {
     Q_OBJECT
     Q_ENUMS(GrantFlow)

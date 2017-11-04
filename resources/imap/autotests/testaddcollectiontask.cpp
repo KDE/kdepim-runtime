@@ -76,7 +76,7 @@ private Q_SLOTS:
         callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
         QTest::newRow("folder with invalid separator") << parentCollection << collection << scenario
-                << callNames << "BarBaz" << "/BarBaz";
+                                                       << callNames << "BarBaz" << "/BarBaz";
 
         parentCollection = createCollectionChain(QStringLiteral(".INBOX"));
         collection = Akonadi::Collection(3);
@@ -93,7 +93,7 @@ private Q_SLOTS:
         callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
         QTest::newRow("folder with non-standard separator") << parentCollection << collection << scenario
-                << callNames << "Foo" << ".Foo";
+                                                            << callNames << "Foo" << ".Foo";
 
         parentCollection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection = Akonadi::Collection(4);
@@ -117,7 +117,7 @@ private Q_SLOTS:
         callNames << QStringLiteral("collectionChangeCommitted");
 
         QTest::newRow("folder with annotations") << parentCollection << collection << scenario << callNames
-                << collection.name() << "/Bar";
+                                                 << collection.name() << "/Bar";
     }
 
     void shouldCreateAndSubscribe()

@@ -31,31 +31,36 @@
 void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
     switch (type) {
-    case MigratorBase::Success: {
+    case MigratorBase::Success:
+    {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Skip: {
+    case MigratorBase::Skip:
+    {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Info: {
+    case MigratorBase::Info:
+    {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-information")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Warning: {
+    case MigratorBase::Warning:
+    {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-warning")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Error: {
+    case MigratorBase::Error:
+    {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-error")), msg);
         item->setEditable(false);
         appendRow(item);
@@ -67,9 +72,9 @@ void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 }
 
 Row::Row(const QSharedPointer<MigratorBase> &migrator, MigratorModel &model)
-    :   QObject(),
-        mMigrator(migrator),
-        mModel(model)
+    :   QObject()
+    , mMigrator(migrator)
+    , mModel(model)
 {
     connect(migrator.data(), &MigratorBase::stateChanged, this, &Row::stateChanged);
     connect(migrator.data(), QOverload<int>::of(&MigratorBase::progress), this, &Row::progress);
@@ -125,7 +130,7 @@ bool MigratorModel::addMigrator(const QSharedPointer<MigratorBase> &m)
     return true;
 }
 
-int MigratorModel::columnCount(const QModelIndex &/*parent*/) const
+int MigratorModel::columnCount(const QModelIndex & /*parent*/) const
 {
     return ColumnCount;
 }
@@ -146,7 +151,7 @@ QModelIndex MigratorModel::index(int row, int column, const QModelIndex &parent)
     return createIndex(row, column, static_cast<void *>(mMigrators.at(row).data()));
 }
 
-QModelIndex MigratorModel::parent(const QModelIndex &/*child*/) const
+QModelIndex MigratorModel::parent(const QModelIndex & /*child*/) const
 {
     return QModelIndex();
 }
@@ -222,9 +227,9 @@ QList< QSharedPointer<MigratorBase> > MigratorModel::migrators() const
 }
 
 MigrationScheduler::MigrationScheduler(KJobTrackerInterface *jobTracker, QObject *parent)
-    : QObject(parent),
-      mModel(new MigratorModel),
-      mJobTracker(jobTracker)
+    : QObject(parent)
+    , mModel(new MigratorModel)
+    , mJobTracker(jobTracker)
 {
 }
 
@@ -259,7 +264,6 @@ QStandardItemModel &MigrationScheduler::logModel(const QString &identifier)
 void MigrationScheduler::checkForAutostart(const QSharedPointer<MigratorBase> &migrator)
 {
     if (migrator->migrationState() != MigratorBase::Complete) {
-
         if (!mAutostartExecutor) {
             mAutostartExecutor = new MigrationExecutor;
             if (mJobTracker) {
@@ -297,4 +301,3 @@ void MigrationScheduler::abort(const QString &identifier)
         m->abort();
     }
 }
-

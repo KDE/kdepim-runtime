@@ -73,9 +73,9 @@ FolderArchiveAccountInfo::FolderArchiveType FolderArchiveComboBox::type() const
 }
 
 FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, QWidget *parent)
-    : QWidget(parent),
-      mInstanceName(instanceName),
-      mInfo(nullptr)
+    : QWidget(parent)
+    , mInstanceName(instanceName)
+    , mInfo(nullptr)
 {
     QVBoxLayout *lay = new QVBoxLayout(this);
     mEnabled = new QCheckBox(i18n("Enable"));
@@ -156,4 +156,3 @@ void FolderArchiveSettingPage::writeSettings()
     QDBusInterface kmail(kmailInterface, QStringLiteral("/KMail"), QStringLiteral("org.kde.kmail.kmail"));
     kmail.asyncCall(QStringLiteral("reloadFolderArchiveConfig"));
 }
-

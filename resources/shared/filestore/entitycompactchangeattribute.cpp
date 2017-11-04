@@ -33,7 +33,7 @@ public:
             return *this;
         }
 
-        mRemoteId  = other.mRemoteId;
+        mRemoteId = other.mRemoteId;
         mRemoteRev = other.mRemoteRev;
         return *this;
     }
@@ -44,7 +44,8 @@ public:
 };
 
 FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
-    : Attribute(), d(new Private())
+    : Attribute()
+    , d(new Private())
 {
 }
 
@@ -103,4 +104,3 @@ void FileStore::EntityCompactChangeAttribute::deserialize(const QByteArray &data
     stream >> d->mRemoteId;
     stream >> d->mRemoteRev;
 }
-

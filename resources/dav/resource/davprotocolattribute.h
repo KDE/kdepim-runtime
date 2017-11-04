@@ -21,7 +21,6 @@
 
 #include <attribute.h>
 
-
 class DavProtocolAttribute : public Akonadi::Attribute
 {
 public:

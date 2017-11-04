@@ -23,10 +23,9 @@
 
 #include <QObject>
 
-template <typename T> class QList;
+template<typename T> class QList;
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 class Item;
 
@@ -57,4 +56,3 @@ private:
 };
 
 #endif
-

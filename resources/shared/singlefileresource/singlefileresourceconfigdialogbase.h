@@ -32,14 +32,11 @@ class KConfigDialogManager;
 class KJob;
 class QPushButton;
 
-namespace KIO
-{
+namespace KIO {
 class StatJob;
 }
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 class SingleFileValidatingWidget;
 
 /**
@@ -138,7 +135,6 @@ Q_SIGNALS:
      */
     void changed();
 };
-
 }
 
 #endif

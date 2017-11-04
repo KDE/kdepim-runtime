@@ -31,7 +31,8 @@ public:
 };
 
 FileStore::CollectionDeleteJob::CollectionDeleteJob(const Collection &collection, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     Q_ASSERT(session != nullptr);
 
@@ -59,4 +60,3 @@ void FileStore::CollectionDeleteJob::handleCollectionDeleted(const Collection &c
 {
     d->mCollection = collection;
 }
-

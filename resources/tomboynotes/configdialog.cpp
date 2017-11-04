@@ -24,10 +24,10 @@
 #include <klocalizedstring.h>
 #include <QDialogButtonBox>
 
-ConfigDialog::ConfigDialog(Settings *settings, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ConfigDialog),
-    mSettings(settings)
+ConfigDialog::ConfigDialog(Settings *settings, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::ConfigDialog)
+    , mSettings(settings)
 {
     // Create window
     setWindowTitle(i18n("Select a Tomboy server"));

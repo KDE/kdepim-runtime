@@ -39,13 +39,13 @@ using namespace Akonadi;
 using namespace Akonadi_Contacts_Resource;
 
 ContactsResource::ContactsResource(const QString &id)
-    : ResourceBase(id),
-      mSettings(new ContactsResourceSettings(config()))
+    : ResourceBase(id)
+    , mSettings(new ContactsResourceSettings(config()))
 {
     // setup the resource
     new ContactsResourceSettingsAdaptor(mSettings);
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
-            mSettings, QDBusConnection::ExportAdaptors);
+                                                           mSettings, QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -251,7 +251,6 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         file.close();
 
         newItem.setRemoteId(contact.uid() + QLatin1String(".vcf"));
-
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
         const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
 
@@ -268,7 +267,6 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         file.close();
 
         newItem.setRemoteId(group.id() + QLatin1String(".ctg"));
-
     } else {
         qCWarning(CONTACTSRESOURCES_LOG) << "got item without (usable) payload, ignoring it";
     }
@@ -302,7 +300,6 @@ void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
         file.close();
 
         newItem.setRemoteId(item.remoteId());
-
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
         const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
 
@@ -317,7 +314,6 @@ void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
         file.close();
 
         newItem.setRemoteId(item.remoteId());
-
     } else {
         cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
         return;
@@ -421,8 +417,7 @@ void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
     changeProcessed();
 }
 
-void ContactsResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                                 const Akonadi::Collection &collectionDestination)
+void ContactsResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     const QString sourceFileName = directoryForCollection(collectionSource) + QDir::separator() + item.remoteId();
     const QString targetFileName = directoryForCollection(collectionDestination) + QDir::separator() + item.remoteId();
@@ -434,8 +429,7 @@ void ContactsResource::itemMoved(const Akonadi::Item &item, const Akonadi::Colle
     }
 }
 
-void ContactsResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-                                       const Akonadi::Collection &collectionDestination)
+void ContactsResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     const QString sourceDirectoryName = directoryForCollection(collectionSource) + QDir::separator() + collection.remoteId();
     const QString targetDirectoryName = directoryForCollection(collectionDestination) + QDir::separator() + collection.remoteId();
@@ -497,9 +491,10 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
     }
 
     if (collection.parentCollection() == Collection::root()) {
-        if (collection.remoteId() != baseDirectoryPath())
+        if (collection.remoteId() != baseDirectoryPath()) {
             qCWarning(CONTACTSRESOURCES_LOG) << "RID mismatch, is " << collection.remoteId()
                                              << " expected " << baseDirectoryPath();
+        }
         return collection.remoteId();
     }
 

@@ -6,7 +6,7 @@
 #include <QCoreApplication>
 #include <iostream>
 
-class DebugStream: public QIODevice
+class DebugStream : public QIODevice
 {
 public:
     QString m_location;
@@ -15,27 +15,36 @@ public:
     {
         open(WriteOnly);
     }
-    virtual ~DebugStream() {}
+
+    virtual ~DebugStream()
+    {
+    }
 
     bool isSequential() const override
     {
         return true;
     }
-    qint64 readData(char *, qint64) override {
+
+    qint64 readData(char *, qint64) override
+    {
         return 0; /* eof */
     }
-    qint64 readLineData(char *, qint64) override {
+
+    qint64 readLineData(char *, qint64) override
+    {
         return 0; /* eof */
     }
-    qint64 writeData(const char *data, qint64 len) override {
+
+    qint64 writeData(const char *data, qint64 len) override
+    {
         const QByteArray buf = QByteArray::fromRawData(data, len);
-        if (!qEnvironmentVariableIsEmpty("IMAP_TRACE"))
-        {
+        if (!qEnvironmentVariableIsEmpty("IMAP_TRACE")) {
             // qt_message_output(QtDebugMsg, buf.trimmed().constData());
             std::cout << buf.trimmed().constData() << std::endl;
         }
         return len;
     }
+
 private:
     Q_DISABLE_COPY(DebugStream)
 };

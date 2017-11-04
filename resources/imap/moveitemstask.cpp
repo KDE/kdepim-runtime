@@ -41,7 +41,6 @@
 MoveItemsTask::MoveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
-
 }
 
 MoveItemsTask::~MoveItemsTask()
@@ -99,7 +98,6 @@ void MoveItemsTask::onSelectDone(KJob *job)
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Select failed: " << job->errorString();
         cancelTask(job->errorString());
-
     } else {
         KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
         startMove(select->session());
@@ -156,7 +154,6 @@ void MoveItemsTask::onCopyDone(KJob *job)
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
-
     } else {
         KIMAP::CopyJob *copy = static_cast<KIMAP::CopyJob *>(job);
 
@@ -256,7 +253,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         search->setTerm(KIMAP::Term(KIMAP::Term::And, {
             KIMAP::Term(KIMAP::Term::New),
             KIMAP::Term(KIMAP::Term::Uid,
-            KIMAP::ImapSet(uidNext->uidNext(), 0))
+                        KIMAP::ImapSet(uidNext->uidNext(), 0))
         }));
     }
 
@@ -350,4 +347,3 @@ QVector<qint64> MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
 
     return list;
 }
-

@@ -77,7 +77,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mDefaultPixmap = QIcon::fromTheme(QStringLiteral("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
 
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/NewMailNotifierAgent"),
-            this, QDBusConnection::ExportAdaptors);
+                                                           this, QDBusConnection::ExportAdaptors);
 
     QString service = QStringLiteral("org.freedesktop.Akonadi.NewMailNotifierAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
@@ -276,7 +276,6 @@ bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &c
     default:
         return true;
     }
-
 }
 
 void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
@@ -495,7 +494,6 @@ void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const 
                          nullptr,
                          NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout,
                          QStringLiteral("akonadi_newmailnotifier_agent"));
-
 }
 
 void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance &instance)
@@ -520,18 +518,16 @@ void NewMailNotifierAgent::slotInstanceStatusChanged(const Akonadi::AgentInstanc
     const QString identifier(instance.identifier());
     switch (instance.status()) {
     case Akonadi::AgentInstance::Broken:
-    case Akonadi::AgentInstance::Idle: {
+    case Akonadi::AgentInstance::Idle:
         mInstanceNameInProgress.removeAll(identifier);
         break;
-    }
-    case Akonadi::AgentInstance::Running: {
+    case Akonadi::AgentInstance::Running:
         if (!excludeAgentType(instance)) {
             if (!mInstanceNameInProgress.contains(identifier)) {
                 mInstanceNameInProgress.append(identifier);
             }
         }
         break;
-    }
     case Akonadi::AgentInstance::NotConfigured:
         //Nothing
         break;
@@ -542,9 +538,9 @@ bool NewMailNotifierAgent::excludeAgentType(const Akonadi::AgentInstance &instan
 {
     if (instance.type().mimeTypes().contains(KMime::Message::mimeType())) {
         const QStringList capabilities(instance.type().capabilities());
-        if (capabilities.contains(QStringLiteral("Resource")) &&
-                !capabilities.contains(QStringLiteral("Virtual")) &&
-                !capabilities.contains(QStringLiteral("MailTransport"))) {
+        if (capabilities.contains(QStringLiteral("Resource"))
+            && !capabilities.contains(QStringLiteral("Virtual"))
+            && !capabilities.contains(QStringLiteral("MailTransport"))) {
             return false;
         } else {
             return true;

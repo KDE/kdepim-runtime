@@ -65,7 +65,6 @@ KolabResource::KolabResource(const QString &id)
 
 KolabResource::~KolabResource()
 {
-
 }
 
 Settings *KolabResource::settings() const
@@ -277,9 +276,7 @@ void KolabResource::retrieveRelations()
     startTask(task);
 }
 
-void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
-        const Akonadi::Relation::List &addedRelations,
-        const Akonadi::Relation::List &removedRelations)
+void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items, const Akonadi::Relation::List &addedRelations, const Akonadi::Relation::List &removedRelations)
 {
     Trace() << items.size() << addedRelations.size() << removedRelations.size();
     KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));

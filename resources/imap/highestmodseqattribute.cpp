@@ -21,9 +21,9 @@
 
 #include <QByteArray>
 
-HighestModSeqAttribute::HighestModSeqAttribute(qint64 highestModSequence):
-    Akonadi::Attribute(),
-    m_highestModSeq(highestModSequence)
+HighestModSeqAttribute::HighestModSeqAttribute(qint64 highestModSequence)
+    : Akonadi::Attribute()
+    , m_highestModSeq(highestModSequence)
 {
 }
 

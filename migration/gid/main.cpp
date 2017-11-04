@@ -44,7 +44,7 @@ int main(int argc, char **argv)
                          KAboutLicense::LGPL,
                          i18n("(c) 2013-2016 the Akonadi developers"),
                          QStringLiteral("http://pim.kde.org/akonadi/"));
-    aboutData.addAuthor(i18n("Christian Mollekopf"),  i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
+    aboutData.addAuthor(i18n("Christian Mollekopf"), i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
     parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("interactive"), i18n("Show reporting dialog")));

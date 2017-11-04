@@ -35,8 +35,7 @@ EventsListJob::EventsListJob(const Akonadi::Collection &col, QObject *parent)
                  QStringLiteral("start_time"),
                  QStringLiteral("end_time"),
                  QStringLiteral("owner"),
-                 QStringLiteral("is_canceled")
-               },
+                 QStringLiteral("is_canceled")},
                { { QStringLiteral("type"), col.remoteId() } });
 }
 
@@ -73,11 +72,10 @@ bool EventsListJob::shouldHaveAlarm(const Akonadi::Collection &col) const
     const auto s = Settings::self();
     const auto rsvp = Graph::rsvpFromString(col.remoteId());
     return (rsvp == Graph::Attending && s->attendingReminders())
-            || (rsvp == Graph::MaybeAttending && s->maybeAttendingReminders())
-            || (rsvp == Graph::Declined && s->notAttendingReminders())
-            || (rsvp == Graph::NotResponded && s->notRespondedToReminders());
+           || (rsvp == Graph::MaybeAttending && s->maybeAttendingReminders())
+           || (rsvp == Graph::Declined && s->notAttendingReminders())
+           || (rsvp == Graph::NotResponded && s->notRespondedToReminders());
 }
-
 
 QDateTime EventsListJob::parseDateTime(const QString &str) const
 {
@@ -92,7 +90,6 @@ QDateTime EventsListJob::parseDateTime(const QString &str) const
     // Convert to local time
     return dt.toLocalTime();
 }
-
 
 Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
 {
@@ -113,7 +110,7 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
         if (locationIt != placeEnd) {
             const auto location = locationIt->toObject();
             for (const auto &loc : { QLatin1String("street"), QLatin1String("city"),
-                                    QLatin1String("zip"), QLatin1String("country") }) {
+                                     QLatin1String("zip"), QLatin1String("country") }) {
                 const auto it = location.constFind(loc);
                 if (it != placeEnd) {
                     locationStr << it->toString();

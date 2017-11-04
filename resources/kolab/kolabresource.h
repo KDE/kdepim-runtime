@@ -47,8 +47,7 @@ protected:
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
-    void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source,
-                    const Akonadi::Collection &destination) override;
+    void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
     //itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
@@ -60,9 +59,7 @@ protected:
     void tagRemoved(const Akonadi::Tag &tag) override;
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
 
-    void itemsRelationsChanged(const Akonadi::Item::List &items,
-                               const Akonadi::Relation::List &addedRelations,
-                               const Akonadi::Relation::List &removedRelations) override;
+    void itemsRelationsChanged(const Akonadi::Item::List &items, const Akonadi::Relation::List &addedRelations, const Akonadi::Relation::List &removedRelations) override;
 
     QString defaultName() const override;
     QByteArray clientId() const override;

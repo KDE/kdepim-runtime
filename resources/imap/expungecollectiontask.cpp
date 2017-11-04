@@ -23,7 +23,6 @@
 
 #include "imapresource_debug.h"
 
-
 #include <kimap/expungejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
@@ -33,7 +32,6 @@
 ExpungeCollectionTask::ExpungeCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
 {
-
 }
 
 ExpungeCollectionTask::~ExpungeCollectionTask()
@@ -61,7 +59,6 @@ void ExpungeCollectionTask::doStart(KIMAP::Session *session)
         connect(select, &KIMAP::SelectJob::result, this, &ExpungeCollectionTask::onSelectDone);
 
         select->start();
-
     } else {
         triggerExpungeJob(session);
     }
@@ -94,4 +91,3 @@ void ExpungeCollectionTask::onExpungeDone(KJob *job)
         taskDone();
     }
 }
-

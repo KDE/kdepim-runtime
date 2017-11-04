@@ -36,7 +36,9 @@
 #include <KLocalizedString>
 
 ChangeCollectionTask::ChangeCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(DeferIfNoSession, resource, parent), m_pendingJobs(0), m_syncEnabledState(true)
+    : ResourceTask(DeferIfNoSession, resource, parent)
+    , m_pendingJobs(0)
+    , m_syncEnabledState(true)
 {
 }
 
@@ -103,8 +105,8 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
                 imapRights &= ~KIMAP::Acl::DeleteMailbox;
             }
 
-            if ((newRights & Akonadi::Collection::CanDeleteItem)
-                    && (newRights & Akonadi::Collection::CanDeleteCollection)) {
+            if ((newRights &Akonadi::Collection::CanDeleteItem)
+                && (newRights & Akonadi::Collection::CanDeleteCollection)) {
                 imapRights |= KIMAP::Acl::Delete;
             } else {
                 imapRights &= ~KIMAP::Acl::Delete;
@@ -128,14 +130,14 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
     if (parts().contains("collectionannotations") && serverSupportsAnnotations()) {
         Akonadi::Collection c = collection();
-        Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-            c.attribute<Akonadi::CollectionAnnotationsAttribute>();
+        Akonadi::CollectionAnnotationsAttribute *annotationsAttribute
+            = c.attribute<Akonadi::CollectionAnnotationsAttribute>();
 
         if (annotationsAttribute) {   // No annotations it seems... server is lieing to us?
             QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
             qCDebug(IMAPRESOURCE_LOG) << "All annotations: " << annotations;
 
-            foreach (const QByteArray & entry, annotations.keys()) {  //krazy:exclude=foreach
+            foreach (const QByteArray &entry, annotations.keys()) {   //krazy:exclude=foreach
                 KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob(session);
                 if (serverCapabilities().contains(QStringLiteral("METADATA"))) {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
@@ -307,4 +309,3 @@ void ChangeCollectionTask::endTaskIfNeeded()
         changeCommitted(m_collection);
     }
 }
-

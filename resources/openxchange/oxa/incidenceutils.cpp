@@ -36,8 +36,7 @@
 
 using namespace OXA;
 
-static void parseMembersAttribute(const QDomElement &element,
-                                  const KCalCore::Incidence::Ptr &incidence)
+static void parseMembersAttribute(const QDomElement &element, const KCalCore::Incidence::Ptr &incidence)
 {
     incidence->clearAttendees();
 
@@ -85,8 +84,7 @@ static void parseMembersAttribute(const QDomElement &element,
     }
 }
 
-static void parseIncidenceAttribute(const QDomElement &element,
-                                    const KCalCore::Incidence::Ptr &incidence)
+static void parseIncidenceAttribute(const QDomElement &element, const KCalCore::Incidence::Ptr &incidence)
 {
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString(element.text());
@@ -133,8 +131,7 @@ static void parseIncidenceAttribute(const QDomElement &element,
     }
 }
 
-static void parseEventAttribute(const QDomElement &element,
-                                const KCalCore::Event::Ptr &event)
+static void parseEventAttribute(const QDomElement &element, const KCalCore::Event::Ptr &event)
 {
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString(element.text());
@@ -142,7 +139,6 @@ static void parseEventAttribute(const QDomElement &element,
     if (tagName == QLatin1String("start_date")) {
         QDateTime dateTime = OXUtils::readDateTime(element.text());
         event->setDtStart(dateTime);
-
     } else if (tagName == QLatin1String("end_date")) {
         QDateTime dateTime = OXUtils::readDateTime(element.text());
         if (event->allDay()) {
@@ -150,14 +146,12 @@ static void parseEventAttribute(const QDomElement &element,
         }
 
         event->setDtEnd(dateTime);
-
     } else if (tagName == QLatin1String("location")) {
         event->setLocation(text);
     }
 }
 
-static void parseTodoAttribute(const QDomElement &element,
-                               const KCalCore::Todo::Ptr &todo)
+static void parseTodoAttribute(const QDomElement &element, const KCalCore::Todo::Ptr &todo)
 {
     const QString tagName = element.tagName();
     const QString text = OXUtils::readString(element.text());
@@ -196,8 +190,7 @@ static void parseTodoAttribute(const QDomElement &element,
     }
 }
 
-static void parseRecurrence(const QDomElement &element,
-                            const KCalCore::Incidence::Ptr &incidence)
+static void parseRecurrence(const QDomElement &element, const KCalCore::Incidence::Ptr &incidence)
 {
     QString type;
 
@@ -310,8 +303,7 @@ static void parseRecurrence(const QDomElement &element,
     recurrence->setExDates(deleteExceptions);
 }
 
-static void createIncidenceAttributes(QDomDocument &document, QDomElement &parent,
-                                      const KCalCore::Incidence::Ptr &incidence)
+static void createIncidenceAttributes(QDomDocument &document, QDomElement &parent, const KCalCore::Incidence::Ptr &incidence)
 {
     DAVUtils::addOxElement(document, parent, QStringLiteral("title"), OXUtils::writeString(incidence->summary()));
     DAVUtils::addOxElement(document, parent, QStringLiteral("note"), OXUtils::writeString(incidence->description()));
@@ -328,9 +320,15 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
 
             QString status;
             switch (attendee->status()) {
-            case KCalCore::Attendee::Accepted: status = QStringLiteral("accept"); break;
-            case KCalCore::Attendee::Declined: status = QStringLiteral("decline"); break;
-            default: status = QStringLiteral("none"); break;
+            case KCalCore::Attendee::Accepted:
+                status = QStringLiteral("accept");
+                break;
+            case KCalCore::Attendee::Declined:
+                status = QStringLiteral("decline");
+                break;
+            default:
+                status = QStringLiteral("none");
+                break;
             }
 
             QDomElement element = DAVUtils::addOxElement(document, members, QStringLiteral("user"), OXUtils::writeNumber(user.uid()));
@@ -358,8 +356,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QStringLiteral(", "))));
 }
 
-static void createEventAttributes(QDomDocument &document, QDomElement &parent,
-                                  const KCalCore::Event::Ptr &event)
+static void createEventAttributes(QDomDocument &document, QDomElement &parent, const KCalCore::Event::Ptr &event)
 {
     if (event->allDay()) {
         DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"), OXUtils::writeDate(event->dtStart().date()));
@@ -385,11 +382,9 @@ static void createEventAttributes(QDomDocument &document, QDomElement &parent,
     } else if (event->transparency() == KCalCore::Event::Opaque) {
         DAVUtils::addOxElement(document, parent, QStringLiteral("shown_as"), OXUtils::writeNumber(1));
     }
-
 }
 
-static void createTaskAttributes(QDomDocument &document, QDomElement &parent,
-                                 const KCalCore::Todo::Ptr &todo)
+static void createTaskAttributes(QDomDocument &document, QDomElement &parent, const KCalCore::Todo::Ptr &todo)
 {
     if (todo->hasStartDate()) {
         DAVUtils::addOxElement(document, parent, QStringLiteral("start_date"), OXUtils::writeDateTime(todo->dtStart()));
@@ -422,8 +417,7 @@ static void createTaskAttributes(QDomDocument &document, QDomElement &parent,
     DAVUtils::addOxElement(document, parent, QStringLiteral("percent_completed"), OXUtils::writeNumber(todo->percentComplete()));
 }
 
-static void createRecurrenceAttributes(QDomDocument &document, QDomElement &parent,
-                                       const KCalCore::Incidence::Ptr &incidence)
+static void createRecurrenceAttributes(QDomDocument &document, QDomElement &parent, const KCalCore::Incidence::Ptr &incidence)
 {
     if (!incidence->recurs()) {
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("none"));
@@ -437,7 +431,8 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("daily"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
         break;
-    case KCalCore::Recurrence::rWeekly: {
+    case KCalCore::Recurrence::rWeekly:
+    {
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("weekly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
 
@@ -449,29 +444,31 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         }
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("days"), OXUtils::writeNumber(days));
+        break;
     }
-    break;
     case KCalCore::Recurrence::rMonthlyDay:
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("monthly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->monthDays().first()));
         break;
-    case KCalCore::Recurrence::rMonthlyPos: {
+    case KCalCore::Recurrence::rMonthlyPos:
+    {
         const KCalCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("monthly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("days"), OXUtils::writeNumber(1 << wdp.day()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(wdp.pos()));
+        break;
     }
-    break;
     case KCalCore::Recurrence::rYearlyMonth:
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("yearly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), QStringLiteral("1"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->yearDates().constFirst()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().constFirst() + monthOffset));
         break;
-    case KCalCore::Recurrence::rYearlyPos: {
+    case KCalCore::Recurrence::rYearlyPos:
+    {
         const KCalCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("yearly"));
@@ -479,8 +476,8 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         DAVUtils::addOxElement(document, parent, QStringLiteral("days"), OXUtils::writeNumber(1 << wdp.day()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(wdp.pos()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().constFirst() + monthOffset));
+        break;
     }
-    break;
     default:
         qDebug() << "unsupported recurrence type:" << recurrence->recurrenceType();
     }
@@ -503,7 +500,6 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
     DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QLatin1Char(',')));
 
     //TODO: changeexceptions
-
 }
 
 void OXA::IncidenceUtils::parseEvent(const QDomElement &propElement, Object &object)
@@ -519,9 +515,14 @@ void OXA::IncidenceUtils::parseEvent(const QDomElement &propElement, Object &obj
     if (!ShowAsElement.isNull()) {
         int showAs = OXUtils::readNumber(ShowAsElement.text());
         switch (showAs) {
-        case 1 : event->setTransparency(KCalCore::Event::Transparent); break;
-        case 4 : event->setTransparency(KCalCore::Event::Opaque); break;
-        default : event->setTransparency(KCalCore::Event::Opaque);
+        case 1:
+            event->setTransparency(KCalCore::Event::Transparent);
+            break;
+        case 4:
+            event->setTransparency(KCalCore::Event::Opaque);
+            break;
+        default:
+            event->setTransparency(KCalCore::Event::Opaque);
         }
     }
 

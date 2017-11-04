@@ -41,13 +41,13 @@ public:
     {
         return mError;
     }
+
 public Q_SLOTS:
     void message(KMigratorBase::MessageType type, const QString &msg);
     void message(MigratorBase::MessageType type, const QString &msg);
 
     void migratorAdded();
     void migratorDone();
-
 
     void status(const QString &msg);
 
@@ -59,6 +59,7 @@ private:
     {
         return mChange;
     }
+
     void scrollBarMoved(int value);
     QEventLoopLocker eventLoopLocker;
     QDialogButtonBox *mButtonBox = nullptr;

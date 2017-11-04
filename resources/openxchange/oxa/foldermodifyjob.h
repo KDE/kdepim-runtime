@@ -26,9 +26,7 @@
 
 #include "folder.h"
 
-namespace OXA
-{
-
+namespace OXA {
 /**
  * @short A job that modifies a folder on the OX server.
  *
@@ -65,7 +63,6 @@ private Q_SLOTS:
 private:
     Folder mFolder;
 };
-
 }
 
 #endif

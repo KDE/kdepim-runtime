@@ -34,17 +34,18 @@
 //Check if the expected uid message is still there => no modification, replace message.
 //otherwise search for uptodate message by subject containing UID, merge contents, and replace message
 
-UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext, qint64 oldUid, QObject *parent)
-    : KJob(parent),
-      mSession(session),
-      mMessage(msg),
-      mMailbox(mailbox),
-      mUidNext(uidNext),
-      mOldUid(oldUid),
-      mNewUid(-1),
-      mMessageId(msg->messageID()->asUnicodeString().toUtf8()),
-      mKolabUid(kolabUid),
-      mMerger(merger)
+UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext,
+                                   qint64 oldUid, QObject *parent)
+    : KJob(parent)
+    , mSession(session)
+    , mMessage(msg)
+    , mMailbox(mailbox)
+    , mUidNext(uidNext)
+    , mOldUid(oldUid)
+    , mNewUid(-1)
+    , mMessageId(msg->messageID()->asUnicodeString().toUtf8())
+    , mKolabUid(kolabUid)
+    , mMerger(merger)
 {
     mOldUids.add(oldUid);
 }
@@ -54,7 +55,9 @@ void UpdateMessageJob::start()
     if (mSession->selectedMailBox() != mMailbox) {
         KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mMailbox);
-        connect(select, &KIMAP::SelectJob::result, this, [this](KJob*job) { onSelectDone(job); });
+        connect(select, &KIMAP::SelectJob::result, this, [this](KJob *job) {
+            onSelectDone(job);
+        });
         select->start();
     } else {
         fetchHeaders();
@@ -88,7 +91,6 @@ void UpdateMessageJob::fetchHeaders()
     connect(fetchJob, &KJob::result,
             this, &UpdateMessageJob::onHeadersFetchDone);
     fetchJob->start();
-
 }
 
 void UpdateMessageJob::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
@@ -204,4 +206,3 @@ qint64 UpdateMessageJob::newUid() const
 {
     return mNewUid;
 }
-

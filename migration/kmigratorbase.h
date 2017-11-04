@@ -66,15 +66,14 @@ public:
      * @param resId and @param state is registered under @param identifier.
      * Additionally all bridged resources are registered in the @param type and @param identifier.
      */
-    void setMigrationState(const QString &identifier, MigrationState state,
-                           const QString &resId, const QString &type);
+    void setMigrationState(const QString &identifier, MigrationState state, const QString &resId, const QString &type);
 
     virtual void migrateNext() = 0;
 
 protected:
     KJob *createAgentInstance(const QString &typeId, QObject *receiver, const char *slot);
     virtual void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance
-                                 = Akonadi::AgentInstance()) = 0;
+                                     = Akonadi::AgentInstance()) = 0;
 
 Q_SIGNALS:
     void message(KMigratorBase::MessageType type, const QString &msg);

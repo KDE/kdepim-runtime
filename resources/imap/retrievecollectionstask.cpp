@@ -105,8 +105,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     listJob->start();
 }
 
-void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
-        const QList< QList<QByteArray> > &flags)
+void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList<QByteArray> > &flags)
 {
     const QStringList contentTypes = { KMime::Message::mimeType(), Akonadi::Collection::mimeType()};
 
@@ -156,7 +155,6 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
                     m_dummyCollections.remove(currentPath);
                     m_reportedCollections.remove(currentPath);
                     m_reportedCollections.insert(currentPath, c);
-
                 }
                 parentPath = currentPath;
                 continue;
@@ -224,8 +222,7 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     }
 }
 
-void RetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
-        const QList< QList< QByteArray > > &flags)
+void RetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList< QByteArray > > &flags)
 {
     Q_UNUSED(flags);
     for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {
@@ -239,4 +236,3 @@ void RetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
         cancelTask(job->errorString());
     }
 }
-

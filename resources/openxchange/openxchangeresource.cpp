@@ -61,9 +61,9 @@ class RemoteInformation
 {
 public:
     RemoteInformation(qlonglong objectId, OXA::Folder::Module module, const QString &lastModified)
-        : mObjectId(objectId),
-          mModule(module),
-          mLastModified(lastModified)
+        : mObjectId(objectId)
+        , mModule(module)
+        , mLastModified(lastModified)
     {
     }
 
@@ -220,11 +220,18 @@ static Collection::Rights folderPermissionsToCollectionRights(const OXA::Folder 
         const OXA::Folder::Permissions permissions = userPermissions.value(OXA::Users::self()->currentUserId());
         Collection::Rights rights = Collection::ReadOnly;
         switch (permissions.folderPermission()) {
-        case OXA::Folder::Permissions::FolderIsVisible: rights |= Collection::ReadOnly; break;
-        case OXA::Folder::Permissions::CreateObjects: rights |= Collection::CanCreateItem; break;
+        case OXA::Folder::Permissions::FolderIsVisible:
+            rights |= Collection::ReadOnly;
+            break;
+        case OXA::Folder::Permissions::CreateObjects:
+            rights |= Collection::CanCreateItem;
+            break;
         case OXA::Folder::Permissions::CreateSubfolders: // fallthrough
-        case OXA::Folder::Permissions::AdminPermission: rights |= (Collection::CanCreateItem | Collection::CanCreateCollection); break;
-        default: break;
+        case OXA::Folder::Permissions::AdminPermission:
+            rights |= (Collection::CanCreateItem | Collection::CanCreateCollection);
+            break;
+        default:
+            break;
         }
 
         if (permissions.objectWritePermission() != OXA::Folder::Permissions::NoWritePermission) {
@@ -247,7 +254,7 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     // setup the resource
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 Settings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -356,7 +363,6 @@ void OpenXchangeResource::configure(WId windowId)
     ConfigDialog dlg(windowId);
     dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("ox")));
     if (dlg.exec()) {   //krazy:exclude=crashy
-
         // if the user has changed the incremental update settings we have to do
         // some additional initialization work
         if (useIncrementalUpdates != Settings::self()->useIncrementalUpdates()) {
@@ -513,8 +519,7 @@ void OpenXchangeResource::itemRemoved(const Akonadi::Item &item)
     job->start();
 }
 
-void OpenXchangeResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                                    const Akonadi::Collection &collectionDestination)
+void OpenXchangeResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     const RemoteInformation remoteInformation = RemoteInformation::load(item);
     const RemoteInformation parentRemoteInformation = RemoteInformation::load(collectionSource);
@@ -606,8 +611,7 @@ void OpenXchangeResource::collectionRemoved(const Akonadi::Collection &collectio
     job->start();
 }
 
-void OpenXchangeResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-        const Akonadi::Collection &collectionDestination)
+void OpenXchangeResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     const RemoteInformation remoteInformation = RemoteInformation::load(collection);
     const RemoteInformation parentRemoteInformation = RemoteInformation::load(collectionSource);
@@ -820,15 +824,30 @@ void OpenXchangeResource::onObjectCreateJobFinished(KJob *job)
         QString errorText = job->errorText();
         if (job->error() == KJob::UserDefinedError) {
             switch (OXA::OXErrors::getEditErrorID(job->errorText())) {
-            case OXA::OXErrors::ConcurrentModification : errorText = i18n("The object was edited by another participant in the meantime. Please check."); break;
-            case OXA::OXErrors::ObjectNotFound : errorText = i18n("Object not found. Maybe it was deleted by another participant in the meantime."); break;
-            case OXA::OXErrors::NoPermissionForThisAction : errorText = i18n("You don't have the permission to perform this action on this object."); break;
-            case OXA::OXErrors::ConflictsDetected : errorText = i18n("A conflict detected. Please check if there are other objects in conflict with this one."); break;
-            case OXA::OXErrors::MissingMandatoryFields : errorText = i18n("A mandatory data field is missing. Please check. Otherwise contact your administrator."); break;
-            case OXA::OXErrors::AppointmentConflicts : errorText = i18n("An appointment conflict detected.\nPlease check if there are other appointments in conflict with this one."); break;
-            case OXA::OXErrors::InternalServerError : errorText = i18n("Internal server error. Please contact your administrator."); break;
-            case OXA::OXErrors::EditErrorUndefined :
-            default :;
+            case OXA::OXErrors::ConcurrentModification:
+                errorText = i18n("The object was edited by another participant in the meantime. Please check.");
+                break;
+            case OXA::OXErrors::ObjectNotFound:
+                errorText = i18n("Object not found. Maybe it was deleted by another participant in the meantime.");
+                break;
+            case OXA::OXErrors::NoPermissionForThisAction:
+                errorText = i18n("You don't have the permission to perform this action on this object.");
+                break;
+            case OXA::OXErrors::ConflictsDetected:
+                errorText = i18n("A conflict detected. Please check if there are other objects in conflict with this one.");
+                break;
+            case OXA::OXErrors::MissingMandatoryFields:
+                errorText = i18n("A mandatory data field is missing. Please check. Otherwise contact your administrator.");
+                break;
+            case OXA::OXErrors::AppointmentConflicts:
+                errorText = i18n("An appointment conflict detected.\nPlease check if there are other appointments in conflict with this one.");
+                break;
+            case OXA::OXErrors::InternalServerError:
+                errorText = i18n("Internal server error. Please contact your administrator.");
+                break;
+            case OXA::OXErrors::EditErrorUndefined:
+            default:
+                ;
             }
         }
         cancelTask(errorText);
@@ -1011,7 +1030,6 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
             // the value of foldersLastSync is determined by the maximum last modified value
             // of the added or changed folders
             foldersLastSync = qMax(foldersLastSync, folder.lastModified().toULongLong());
-
         } else {
             // we have to wait until the parent folder has been created
             modifiedFolders.append(folder);
@@ -1171,4 +1189,3 @@ void OpenXchangeResource::onFetchResourceCollectionsFinished(KJob *job)
 }
 
 AKONADI_RESOURCE_MAIN(OpenXchangeResource)
-

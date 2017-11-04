@@ -30,14 +30,11 @@ class DavFreeBusyHandler;
 
 #include <QSet>
 
-namespace KDAV
-{
-    class DavItem;
+namespace KDAV {
+class DavItem;
 }
 
-class DavGroupwareResource : public Akonadi::ResourceBase,
-    public Akonadi::AgentBase::Observer,
-    public Akonadi::FreeBusyProviderBase
+class DavGroupwareResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer, public Akonadi::FreeBusyProviderBase
 {
     Q_OBJECT
 
@@ -114,12 +111,7 @@ private:
 
     void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
     void doItemRemoval(const Akonadi::Item &item);
-    void handleConflict(const Akonadi::Item &localItem,
-                        const Akonadi::Item::List &localDependentItems,
-                        const KDAV::DavItem &remoteItem,
-                        bool isLocalRemoval,
-                        int responseCode
-                       );
+    void handleConflict(const Akonadi::Item &localItem, const Akonadi::Item::List &localDependentItems, const KDAV::DavItem &remoteItem, bool isLocalRemoval, int responseCode);
 
     bool configurationIsValid();
     void retryAfterFailure(const QString &errorMessage);

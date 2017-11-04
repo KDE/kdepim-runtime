@@ -23,8 +23,7 @@
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Job>
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 }
 
@@ -60,4 +59,3 @@ private:
 };
 
 #endif
-

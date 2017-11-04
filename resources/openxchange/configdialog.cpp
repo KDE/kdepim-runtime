@@ -48,7 +48,7 @@ ConfigDialog::ConfigDialog(WId windowId)
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
     mainLayout->addWidget(buttonBox);
- 
+
     setWindowTitle(i18n("Open-Xchange Configuration"));
 
     Ui::ConfigDialog ui;
@@ -88,7 +88,7 @@ void ConfigDialog::updateButtonState()
 void ConfigDialog::checkConnection()
 {
     OXA::ConnectionTestJob *job = new OXA::ConnectionTestJob(mServerEdit->text(), mUserEdit->text(),
-            mPasswordEdit->text(), this);
+                                                             mPasswordEdit->text(), this);
     connect(job, &OXA::ConnectionTestJob::result, this, &ConfigDialog::checkConnectionJobFinished);
     job->start();
 

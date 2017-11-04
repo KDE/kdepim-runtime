@@ -37,7 +37,12 @@ class CollectionDeleteTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionDeleteTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
+    CollectionDeleteTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
+
     ~CollectionDeleteTest()
     {
         delete mStore;
@@ -465,4 +470,3 @@ void CollectionDeleteTest::testSubTrees()
 QTEST_MAIN(CollectionDeleteTest)
 
 #include "collectiondeletetest.moc"
-

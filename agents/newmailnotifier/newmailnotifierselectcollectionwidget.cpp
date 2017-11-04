@@ -54,8 +54,8 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
 {
     if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
-            const Akonadi::Collection collection =
-                data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            const Akonadi::Collection collection
+                = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             if (mNotificationCollection.contains(collection)) {
                 return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
@@ -74,8 +74,8 @@ bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, cons
 {
     if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
-            const Akonadi::Collection collection =
-                data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            const Akonadi::Collection collection
+                = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             mNotificationCollection[collection] = (value == Qt::Checked);
             emit dataChanged(index, index);
             return true;
@@ -167,7 +167,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
 NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget()
 {
-
 }
 
 void NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched()
@@ -242,4 +241,3 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
         }
     }
 }
-

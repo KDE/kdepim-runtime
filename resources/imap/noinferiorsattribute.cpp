@@ -50,7 +50,7 @@ Akonadi::Attribute *NoInferiorsAttribute::clone() const
 
 QByteArray NoInferiorsAttribute::serialized() const
 {
-    return mNoInferiors ? QByteArray::number(1) :  QByteArray::number(0);
+    return mNoInferiors ? QByteArray::number(1) : QByteArray::number(0);
 }
 
 void NoInferiorsAttribute::deserialize(const QByteArray &data)

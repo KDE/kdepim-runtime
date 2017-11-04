@@ -31,7 +31,8 @@
 using namespace OXA;
 
 ObjectModifyJob::ObjectModifyJob(const Object &object, QObject *parent)
-    : KJob(parent), mObject(object)
+    : KJob(parent)
+    , mObject(object)
 {
 }
 
@@ -115,4 +116,3 @@ void ObjectModifyJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

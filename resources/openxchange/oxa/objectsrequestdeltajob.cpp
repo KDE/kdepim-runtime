@@ -23,11 +23,13 @@
 
 #include "objectsrequestjob.h"
 
-
 using namespace OXA;
 
 ObjectsRequestDeltaJob::ObjectsRequestDeltaJob(const Folder &folder, qulonglong lastSync, QObject *parent)
-    : KJob(parent), mFolder(folder), mLastSync(lastSync), mJobFinishedCount(0)
+    : KJob(parent)
+    , mFolder(folder)
+    , mLastSync(lastSync)
+    , mJobFinishedCount(0)
 {
 }
 
@@ -91,4 +93,3 @@ void ObjectsRequestDeltaJob::fetchDeletedJobFinished(KJob *job)
         emitResult();
     }
 }
-

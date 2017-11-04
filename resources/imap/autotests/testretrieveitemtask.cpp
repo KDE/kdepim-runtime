@@ -108,7 +108,6 @@ private Q_SLOTS:
             QString payload = parameter.value<Akonadi::Item>().payload<KMime::Message::Ptr>()->encodedContent();
 
             QCOMPARE(payload, message);
-
         } else if (callName == QLatin1String("cancelTask")) {
             QVERIFY(!parameter.toString().isEmpty());
         } else {

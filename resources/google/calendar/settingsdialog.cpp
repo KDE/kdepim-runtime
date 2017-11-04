@@ -39,8 +39,8 @@
 
 using namespace KGAPI2;
 
-SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent):
-    GoogleSettingsDialog(accountManager, windowId, parent)
+SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowId, GoogleResource *parent)
+    : GoogleSettingsDialog(accountManager, windowId, parent)
 {
     connect(this, &SettingsDialog::currentAccountChanged, this, &SettingsDialog::slotCurrentAccountChanged);
 
@@ -66,8 +66,8 @@ SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowI
     m_eventsLimitLabel->setBuddy(m_eventsLimitCombo);
     m_eventsLimitCombo->setMaximumDate(QDate::currentDate());
     m_eventsLimitCombo->setMinimumDate(QDate::fromString(QStringLiteral("2000-01-01"), Qt::ISODate));
-    m_eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate |
-                                   KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
+    m_eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate
+                                   |KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
     if (Settings::self()->eventsSince().isEmpty()) {
         const QString ds = QStringLiteral("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
         m_eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
@@ -197,7 +197,6 @@ void SettingsDialog::slotCalendarsRetrieved(Job *job)
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
         item->setCheckState((activeCalendars.isEmpty() || activeCalendars.contains(calendar->uid())) ? Qt::Checked : Qt::Unchecked);
         m_calendarsList->addItem(item);
-
     }
 
     m_calendarsBox->setEnabled(true);

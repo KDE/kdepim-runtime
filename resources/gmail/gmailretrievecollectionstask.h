@@ -30,7 +30,6 @@ public:
 
 protected Q_SLOTS:
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
-
 };
 
 #endif // GMAILRETRIEVECOLLECTIONSTASK_H

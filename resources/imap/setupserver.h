@@ -29,17 +29,14 @@
 #include <QRegExpValidator>
 class QPushButton;
 class QComboBox;
-namespace Ui
-{
+namespace Ui {
 class SetupServerView;
 }
 
-namespace MailTransport
-{
+namespace MailTransport {
 class ServerTest;
 }
-namespace KIdentityManagement
-{
+namespace KIdentityManagement {
 class IdentityCombo;
 }
 class FolderArchiveSettingPage;

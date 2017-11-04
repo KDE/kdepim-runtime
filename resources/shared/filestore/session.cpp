@@ -141,4 +141,3 @@ void FileStore::AbstractJobSession::emitResult(FileStore::Job *job)
 
     job->emitResult();
 }
-

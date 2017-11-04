@@ -24,9 +24,7 @@
 
 #include <kjob.h>
 
-namespace OXA
-{
-
+namespace OXA {
 class UserIdRequestJob : public KJob
 {
     Q_OBJECT
@@ -44,7 +42,6 @@ private Q_SLOTS:
 private:
     qlonglong mUserId;
 };
-
 }
 
 #endif

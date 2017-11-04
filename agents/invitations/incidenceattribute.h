@@ -23,9 +23,7 @@
 #include <item.h>
 #include <attribute.h>
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 class IncidenceAttribute : public Akonadi::Attribute
 {
 public:
@@ -58,7 +56,6 @@ private:
     QString mStatus;
     Akonadi::Item::Id mReferenceId;
 };
-
 }
 
 #endif

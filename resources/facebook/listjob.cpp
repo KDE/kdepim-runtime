@@ -52,8 +52,7 @@ void ListJob::emitError(const QString &errorText)
     emitResult();
 }
 
-void ListJob::setRequest(const QString &endpoint, const QStringList &fields,
-                         const QMap<QString,QString> &queries)
+void ListJob::setRequest(const QString &endpoint, const QStringList &fields, const QMap<QString, QString> &queries)
 {
     mEndpoint = endpoint;
     mFields = fields;
@@ -62,14 +61,14 @@ void ListJob::setRequest(const QString &endpoint, const QStringList &fields,
 
 void ListJob::start()
 {
-    auto job = new GetTokenJob(qobject_cast<FacebookResource*>(parent()));
+    auto job = new GetTokenJob(qobject_cast<FacebookResource *>(parent()));
     connect(job, &GetTokenJob::result, this, &ListJob::tokenJobResult);
     job->start();
 }
 
 void ListJob::tokenJobResult(KJob *job)
 {
-    auto tokenJob = qobject_cast<GetTokenJob*>(job);
+    auto tokenJob = qobject_cast<GetTokenJob *>(job);
     if (tokenJob->error()) {
         emitError(tokenJob->errorText());
         return;
@@ -85,7 +84,6 @@ void ListJob::sendRequest(const QUrl &url)
     job->start();
 }
 
-
 void ListJob::onGraphResponseReceived(KJob *job)
 {
     if (job->error()) {
@@ -93,7 +91,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
         return;
     }
 
-    auto tjob = qobject_cast<KIO::StoredTransferJob*>(job);
+    auto tjob = qobject_cast<KIO::StoredTransferJob *>(job);
     Q_ASSERT(tjob);
 
     QJsonParseError error;
@@ -111,23 +109,23 @@ void ListJob::onGraphResponseReceived(KJob *job)
         const auto code = err.value(QLatin1String("code")).toInt();
         if (code == 190) {
             // expired token
-            auto tokenJob = new LoginJob(qobject_cast<FacebookResource*>(parent()));
+            auto tokenJob = new LoginJob(qobject_cast<FacebookResource *>(parent()));
             const QUrl url = tjob->url();
             connect(tokenJob, &LoginJob::result,
                     this, [this, tokenJob, url]() {
-                        if (tokenJob->error()) {
-                            emitError(tokenJob->errorText());
-                            return;
-                        }
+                if (tokenJob->error()) {
+                    emitError(tokenJob->errorText());
+                    return;
+                }
 
-                        QUrl url_ = url;
-                        QUrlQuery query(url);
+                QUrl url_ = url;
+                QUrlQuery query(url);
 
-                        query.removeQueryItem(QStringLiteral("access_token"));
-                        query.addQueryItem(QStringLiteral("access_token"), tokenJob->token());
-                        url_.setQuery(query);
-                        sendRequest(url_);
-                    });
+                query.removeQueryItem(QStringLiteral("access_token"));
+                query.addQueryItem(QStringLiteral("access_token"), tokenJob->token());
+                url_.setQuery(query);
+                sendRequest(url_);
+            });
             tokenJob->start();
             return;
         }
@@ -139,7 +137,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
     const auto data = obj.value(QLatin1String("data")).toArray();
     Akonadi::Item::List items;
     items.reserve(data.size());
-    for (auto it = data.constBegin(), end = data.constEnd(); it != end; ++it)  {
+    for (auto it = data.constBegin(), end = data.constEnd(); it != end; ++it) {
         const auto item = handleResponse(it->toObject());
         if (item.hasPayload()) {
             items.push_back(item);

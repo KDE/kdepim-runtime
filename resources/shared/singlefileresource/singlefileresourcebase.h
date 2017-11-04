@@ -26,15 +26,12 @@
 #include <QUrl>
 #include <QStringList>
 
-namespace KIO
-{
+namespace KIO {
 class FileCopyJob;
 class Job;
 }
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 /**
  * Base class for single file based resources.
  * @see SingleFileResource
@@ -180,7 +177,6 @@ protected Q_SLOTS:
     void slotDownloadJobResult(KJob *);
     void slotUploadJobResult(KJob *);
 };
-
 }
 
 #endif

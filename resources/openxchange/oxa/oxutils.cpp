@@ -27,7 +27,7 @@ using namespace OXA;
 
 QString OXUtils::writeBoolean(bool value)
 {
-    return (value ? QStringLiteral("true") : QStringLiteral("false"));
+    return value ? QStringLiteral("true") : QStringLiteral("false");
 }
 
 QString OXUtils::writeNumber(qlonglong value)
@@ -61,17 +61,12 @@ QString OXUtils::writeDateTime(const QDateTime &value)
     QDateTime Time_t_S(QDate(1970, 1, 1), QTime(0, 0, 0), Qt::UTC);
 
     if (value < Time_t_S) {
-
         result = QString::number(Time_t_S.secsTo(value));
-
     } else {
-
         result = QString::number(value.toUTC().toTime_t());
-
     }
 
     return QString(result + QLatin1String("000"));
-
 }
 
 QString OXUtils::writeDate(const QDate &value)
@@ -118,14 +113,10 @@ QDateTime OXUtils::readDateTime(const QString &text)
     //workaround, as QDateTime does not support negative time_t values
     QDateTime value;
     if (ticks < 0) {
-
         value.setTime_t(0);
         value = value.addSecs(ticks);
-
     } else {
-
         value.setTime_t(ticks);
-
     }
 
     return value;

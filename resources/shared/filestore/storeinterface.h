@@ -27,13 +27,11 @@
 // TODO not nice, collection fetch type should probably be in its own header
 #include "collectionfetchjob.h"
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 class Item;
 
-namespace FileStore
-{
+namespace FileStore {
 class CollectionCreateJob;
 class CollectionDeleteJob;
 class CollectionFetchJob;
@@ -51,7 +49,9 @@ class StoreCompactJob;
 class AKONADI_FILESTORE_EXPORT StoreInterface
 {
 public:
-    virtual ~StoreInterface() {}
+    virtual ~StoreInterface()
+    {
+    }
 
     virtual Collection topLevelCollection() const = 0;
 
@@ -84,9 +84,7 @@ public:
 protected:
     virtual void setTopLevelCollection(const Collection &collection) = 0;
 };
-
 }
 }
 
 #endif
-

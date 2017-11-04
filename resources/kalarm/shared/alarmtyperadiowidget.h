@@ -46,4 +46,3 @@ private:
 };
 
 #endif // ALARMTYPERADIOWIDGET_H
-

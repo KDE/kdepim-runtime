@@ -72,9 +72,7 @@ private Q_SLOTS:
     void initDone(KJob *job = nullptr);
 
 private:
-    Akonadi::Item handleContent(const QString &vcal,
-                                const KCalCore::MemoryCalendar::Ptr &calendar,
-                                const Akonadi::Item &item);
+    Akonadi::Item handleContent(const QString &vcal, const KCalCore::MemoryCalendar::Ptr &calendar, const Akonadi::Item &item);
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
 

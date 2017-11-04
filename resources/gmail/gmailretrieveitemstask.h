@@ -37,11 +37,7 @@ Q_SIGNALS:
     void linkItem(const QString &remoteId, const QVector<QByteArray> &labels);
 
 protected:
-    BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper,
-                                     const KIMAP::ImapSet &set,
-                                     const KIMAP::FetchJob::FetchScope &scope,
-                                     int batchSize,
-                                     KIMAP::Session *session);
+    BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session);
 
 private:
     // Allow GmailMessageHelper to emit linkItem() for us

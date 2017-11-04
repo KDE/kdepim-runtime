@@ -32,13 +32,11 @@
 class QTextToSpeech;
 #endif
 
-namespace Akonadi
-{
+namespace Akonadi {
 class AgentInstance;
 }
 
-namespace KIdentityManagement
-{
+namespace KIdentityManagement {
 class IdentityManager;
 }
 

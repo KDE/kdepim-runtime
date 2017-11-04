@@ -24,9 +24,7 @@
 
 #include <kjob.h>
 
-namespace OXA
-{
-
+namespace OXA {
 class ConnectionTestJob : public KJob
 {
     Q_OBJECT
@@ -44,7 +42,6 @@ private:
     QString mUser;
     QString mPassword;
 };
-
 }
 
 #endif

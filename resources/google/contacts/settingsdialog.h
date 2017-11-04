@@ -31,7 +31,6 @@ public:
 
 private Q_SLOTS:
     void saveSettings() override;
-
 };
 
 #endif // SETTINGSDIALOG_H

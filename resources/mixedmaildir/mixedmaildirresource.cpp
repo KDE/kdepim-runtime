@@ -67,11 +67,13 @@
 using namespace Akonadi;
 
 MixedMaildirResource::MixedMaildirResource(const QString &id)
-    : ResourceBase(id), mStore(new MixedMaildirStore()), mCompactHelper(nullptr)
+    : ResourceBase(id)
+    , mStore(new MixedMaildirStore())
+    , mCompactHelper(nullptr)
 {
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 Settings::self(), QDBusConnection::ExportAdaptors);
     connect(this, &MixedMaildirResource::reloadConfiguration, this, &MixedMaildirResource::reapplyConfiguration);
 
     // We need to enable this here, otherwise we neither get the remote ID of the
@@ -85,8 +87,8 @@ MixedMaildirResource::MixedMaildirResource(const QString &id)
     setHierarchicalRemoteIdentifiersEnabled(true);
 
     if (ensureSaneConfiguration()) {
-        const bool changeName = name().isEmpty() || name() == identifier() ||
-                                name() == mStore->topLevelCollection().name();
+        const bool changeName = name().isEmpty() || name() == identifier()
+                                || name() == mStore->topLevelCollection().name();
         mStore->setPath(Settings::self()->path());
         if (changeName) {
             setName(mStore->topLevelCollection().name());
@@ -120,8 +122,8 @@ void MixedMaildirResource::configure(WId windowId)
     bool fullSync = false;
 
     if (dlg.exec()) {
-        const bool changeName = name().isEmpty() || name() == identifier() ||
-                                name() == mStore->topLevelCollection().name();
+        const bool changeName = name().isEmpty() || name() == identifier()
+                                || name() == mStore->topLevelCollection().name();
 
         const QString oldPath = mStore->path();
         mStore->setPath(Settings::self()->path());
@@ -826,4 +828,3 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
 }
 
 AKONADI_RESOURCE_MAIN(MixedMaildirResource)
-

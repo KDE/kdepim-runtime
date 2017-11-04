@@ -24,10 +24,8 @@
 PasswordRequesterInterface::PasswordRequesterInterface(QObject *parent)
     : QObject(parent)
 {
-
 }
 
 void PasswordRequesterInterface::cancelPasswordRequests()
 {
-
 }

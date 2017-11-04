@@ -32,7 +32,8 @@ public:
 };
 
 FileStore::CollectionMoveJob::CollectionMoveJob(const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     Q_ASSERT(session != nullptr);
 
@@ -66,4 +67,3 @@ void FileStore::CollectionMoveJob::handleCollectionMoved(const Collection &colle
 {
     d->mCollection = collection;
 }
-

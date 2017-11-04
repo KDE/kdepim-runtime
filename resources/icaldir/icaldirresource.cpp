@@ -87,7 +87,7 @@ ICalDirResource::ICalDirResource(const QString &id)
     // setup the resource
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 Settings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
 }
@@ -194,7 +194,7 @@ void ICalDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
     KCalCore::Incidence::Ptr incidence;
     if (item.hasPayload<KCalCore::Incidence::Ptr>()) {
-        incidence  = item.payload<KCalCore::Incidence::Ptr>();
+        incidence = item.payload<KCalCore::Incidence::Ptr>();
     }
 
     if (incidence) {
@@ -323,4 +323,3 @@ void ICalDirResource::initializeICalDirectory() const
 }
 
 AKONADI_RESOURCE_MAIN(ICalDirResource)
-

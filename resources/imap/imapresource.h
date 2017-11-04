@@ -46,7 +46,6 @@ protected:
 
 private Q_SLOTS:
     void onConfigurationDone(int result);
-
 };
 
 #endif // IMAPRESOURCE_H

@@ -26,8 +26,7 @@
 #include <QComboBox>
 
 class QCheckBox;
-namespace Akonadi
-{
+namespace Akonadi {
 class CollectionRequester;
 }
 

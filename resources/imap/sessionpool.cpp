@@ -21,7 +21,6 @@
 
 #include "sessionpool.h"
 
-
 #include <QTimer>
 #include <QtNetwork/QSslSocket>
 
@@ -39,12 +38,12 @@
 qint64 SessionPool::m_requestCounter = 0;
 
 SessionPool::SessionPool(int maxPoolSize, QObject *parent)
-    : QObject(parent),
-      m_maxPoolSize(maxPoolSize),
-      m_account(nullptr),
-      m_passwordRequester(nullptr),
-      m_initialConnectDone(false),
-      m_pendingInitialSession(nullptr)
+    : QObject(parent)
+    , m_maxPoolSize(maxPoolSize)
+    , m_account(nullptr)
+    , m_passwordRequester(nullptr)
+    , m_initialConnectDone(false)
+    , m_pendingInitialSession(nullptr)
 {
 }
 
@@ -255,8 +254,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
     }
 }
 
-void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode,
-                                        const QString &errorMessage)
+void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode, const QString &errorMessage)
 {
     m_pendingInitialSession = nullptr;
 
@@ -301,7 +299,6 @@ void SessionPool::processPendingRequests()
     } else if (m_unusedPool.size() + m_reservedPool.size() < m_maxPoolSize) {
         // We didn't reach the max pool size yet so create a new one
         m_passwordRequester->requestPassword();
-
     } else {
         // No session available, and max pool size reached
         if (!m_pendingRequests.isEmpty()) {
@@ -518,14 +515,13 @@ void SessionPool::onNamespacesTestDone(KJob *job)
         // the mailboxes if we list from the empty namespace itself...
 
         m_namespaces.clear();
-
     } else {
         // ... otherwise we assume that we have to list explicitly each
         // namespace
 
-        m_namespaces = nsJob->personalNamespaces() +
-                       nsJob->userNamespaces() +
-                       nsJob->sharedNamespaces();
+        m_namespaces = nsJob->personalNamespaces()
+                       +nsJob->userNamespaces()
+                       +nsJob->sharedNamespaces();
     }
 
     if (m_capabilities.contains(QStringLiteral("ID"))) {
@@ -605,4 +601,3 @@ void SessionPool::onSessionDestroyed(QObject *object)
     }
     Q_ASSERT(!sessionInPool);
 }
-

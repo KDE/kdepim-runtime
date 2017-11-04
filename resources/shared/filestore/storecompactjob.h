@@ -25,12 +25,8 @@
 #include <Collection>
 #include <Item>
 
-namespace Akonadi
-{
-
-namespace FileStore
-{
-
+namespace Akonadi {
+namespace FileStore {
 /**
  */
 class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
@@ -62,9 +58,7 @@ private:
     class Private;
     Private *d;
 };
-
 }
 }
 
 #endif
-

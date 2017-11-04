@@ -30,11 +30,8 @@ class KJob;
 class QDomDocument;
 class QDomElement;
 
-namespace OXA
-{
-
-namespace ObjectUtils
-{
+namespace OXA {
+namespace ObjectUtils {
 Object parseObject(const QDomElement &propElement, Folder::Module module);
 void addObjectElements(QDomDocument &document, QDomElement &propElement, const Object &object, void *preloadedData = nullptr);
 
@@ -64,7 +61,6 @@ KJob *preloadJob(const Object &object);
  */
 void *preloadData(const Object &object, KJob *job);
 }
-
 }
 
 #endif

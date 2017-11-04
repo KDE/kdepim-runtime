@@ -22,8 +22,7 @@
 
 #include <KJob>
 #include <AkonadiCore/Item>
-namespace Akonadi
-{
+namespace Akonadi {
 class Item;
 class AgentInstance;
 }

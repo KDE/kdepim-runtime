@@ -39,7 +39,6 @@
 ChangeItemTask::ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(DeferIfNoSession, resource, parent)
 {
-
 }
 
 ChangeItemTask::~ChangeItemTask()
@@ -76,9 +75,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         connect(job, &KIMAP::AppendJob::result, this, &ChangeItemTask::onAppendMessageDone);
 
         job->start();
-
     } else if (parts().contains("FLAGS")) {
-
         if (session->selectedMailBox() != mailBox) {
             KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
@@ -86,11 +83,9 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
             connect(select, &KIMAP::SelectJob::result, this, &ChangeItemTask::onPreStoreSelectDone);
 
             select->start();
-
         } else {
             triggerStoreJob();
         }
-
     } else {
         qCDebug(IMAPRESOURCE_LOG) << "Nothing to do";
         changeProcessed();
@@ -158,7 +153,6 @@ void ChangeItemTask::onAppendMessageDone(KJob *job)
         connect(select, &KIMAP::SelectJob::result, this, &ChangeItemTask::onPreDeleteSelectDone);
 
         select->start();
-
     } else {
         if (m_newUid > 0) {
             triggerDeleteJob();
@@ -205,7 +199,7 @@ void ChangeItemTask::triggerSearchJob()
         search->setTerm(KIMAP::Term(KIMAP::Term::And, {
             KIMAP::Term(KIMAP::Term::New),
             KIMAP::Term(KIMAP::Term::Uid,
-            KIMAP::ImapSet(uidNext->uidNext(), 0))
+                        KIMAP::ImapSet(uidNext->uidNext(), 0))
         }));
     }
 
@@ -283,10 +277,9 @@ void ChangeItemTask::recordNewUid()
         applyCollectionChanges(c);
     }
 
-    const QString remoteId =  QString::number(m_newUid);
+    const QString remoteId = QString::number(m_newUid);
     qCDebug(IMAPRESOURCE_LOG) << "Setting remote ID to " << remoteId << " for item with local id " << i.id();
     i.setRemoteId(remoteId);
 
     changeCommitted(i);
 }
-

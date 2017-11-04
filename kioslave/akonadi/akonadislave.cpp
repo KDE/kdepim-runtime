@@ -36,7 +36,7 @@
 #include <QCommandLineOption>
 
 extern "C" {
-    int Q_DECL_EXPORT kdemain(int argc, char **argv);
+int Q_DECL_EXPORT kdemain(int argc, char **argv);
 }
 
 int kdemain(int argc, char **argv)
@@ -61,13 +61,13 @@ int kdemain(int argc, char **argv)
 
 using namespace Akonadi;
 
-AkonadiSlave::AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket) :
-    KIO::SlaveBase("akonadi", pool_socket, app_socket)
+AkonadiSlave::AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket)
+    : KIO::SlaveBase("akonadi", pool_socket, app_socket)
 {
     qCDebug(AKONADISLAVE_LOG) << "kio_akonadi starting up";
 }
 
-AkonadiSlave::~ AkonadiSlave()
+AkonadiSlave::~AkonadiSlave()
 {
     qCDebug(AKONADISLAVE_LOG) << "kio_akonadi shutting down";
 }

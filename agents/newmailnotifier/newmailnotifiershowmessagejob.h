@@ -34,7 +34,6 @@ public:
 
 private:
     Akonadi::Item::Id mId;
-
 };
 
 #endif // NEWMAILNOTIFIERSHOWMESSAGEJOB_H

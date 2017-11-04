@@ -26,12 +26,10 @@
 class QTimer;
 class QFileInfo;
 class KDirWatch;
-namespace Akonadi_Maildir_Resource
-{
+namespace Akonadi_Maildir_Resource {
 class MaildirSettings;
 }
-namespace KPIM
-{
+namespace KPIM {
 class Maildir;
 }
 

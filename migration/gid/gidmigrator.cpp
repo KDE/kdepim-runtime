@@ -23,14 +23,13 @@
 #include "gidmigrationjob.h"
 
 GidMigrator::GidMigrator(const QString &mimeType)
-    : MigratorBase(QLatin1String("gidmigrator") + mimeType),
-      mMimeType(mimeType)
+    : MigratorBase(QLatin1String("gidmigrator") + mimeType)
+    , mMimeType(mimeType)
 {
 }
 
 GidMigrator::~GidMigrator()
 {
-
 }
 
 QString GidMigrator::displayName() const

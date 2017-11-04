@@ -24,9 +24,7 @@
 #include "akonadi-singlefileresource_export.h"
 #include <QMap>
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionAnnotationsAttribute : public Akonadi::Attribute
 {
 public:
@@ -42,7 +40,6 @@ public:
 private:
     QMap<QByteArray, QByteArray> mAnnotations;
 };
-
 }
 
 #endif

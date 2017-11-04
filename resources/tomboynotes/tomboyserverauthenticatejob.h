@@ -49,7 +49,6 @@ private:
     QString mUserURL;
 
     QWebEngineView *mWebView = nullptr;
-
 };
 
 #endif // TOMBOYSERVERAUTHENTICATEJOB_H

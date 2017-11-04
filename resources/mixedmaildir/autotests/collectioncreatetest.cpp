@@ -39,7 +39,12 @@ class CollectionCreateTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionCreateTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
+    CollectionCreateTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
+
     ~CollectionCreateTest()
     {
         delete mStore;
@@ -66,7 +71,6 @@ void CollectionCreateTest::init()
     mDir = new QTemporaryDir;
     QVERIFY(mDir->isValid());
     QVERIFY(QDir(mDir->path()).exists());
-
 }
 
 void CollectionCreateTest::cleanup()
@@ -96,12 +100,12 @@ void CollectionCreateTest::testCollectionProperties()
 
     QCOMPARE(collection1.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-    QCOMPARE(collection1.rights(), Collection::CanCreateItem |
-             Collection::CanChangeItem |
-             Collection::CanDeleteItem |
-             Collection::CanCreateCollection |
-             Collection::CanChangeCollection |
-             Collection::CanDeleteCollection);
+    QCOMPARE(collection1.rights(), Collection::CanCreateItem
+             |Collection::CanChangeItem
+             |Collection::CanDeleteItem
+             |Collection::CanCreateCollection
+             |Collection::CanChangeCollection
+             |Collection::CanDeleteCollection);
 }
 
 void CollectionCreateTest::testEmptyDir()
@@ -327,4 +331,3 @@ void CollectionCreateTest::testMixedTree()
 QTEST_MAIN(CollectionCreateTest)
 
 #include "collectioncreatetest.moc"
-

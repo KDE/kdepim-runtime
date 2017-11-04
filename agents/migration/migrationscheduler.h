@@ -40,7 +40,7 @@ public Q_SLOTS:
     void message(MigratorBase::MessageType type, const QString &msg);
 };
 
-class Row: public QObject
+class Row : public QObject
 {
     Q_OBJECT
 public:
@@ -61,7 +61,7 @@ private Q_SLOTS:
  *
  * It can be plugged into a Listview to inform about the migration progress.
  */
-class MigratorModel: public QAbstractItemModel
+class MigratorModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:

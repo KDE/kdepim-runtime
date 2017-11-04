@@ -40,7 +40,11 @@ class CollectionMoveTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionMoveTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
+    CollectionMoveTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
 
     ~CollectionMoveTest()
     {
@@ -615,8 +619,8 @@ void CollectionMoveTest::testMoveToMaildir()
     QVERIFY(subDir4.cd(QStringLiteral(".collection4.directory")));
     QCOMPARE(subDir4.entryList(QStringList() << QStringLiteral("collection*")),
              QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2")
-             << QStringLiteral("collection4_3") << QStringLiteral("collection4_4")
-            );
+                           << QStringLiteral("collection4_3") << QStringLiteral("collection4_4")
+             );
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -1377,8 +1381,8 @@ void CollectionMoveTest::testMoveToMBox()
     QVERIFY(subDir1.cd(QStringLiteral(".collection1.directory")));
     QCOMPARE(subDir1.entryList(QStringList() << QStringLiteral("collection*")),
              QStringList() << QStringLiteral("collection1_1") << QStringLiteral("collection1_2")
-             << QStringLiteral("collection1_3") << QStringLiteral("collection1_4")
-            );
+                           << QStringLiteral("collection1_3") << QStringLiteral("collection1_4")
+             );
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -1485,7 +1489,7 @@ void CollectionMoveTest::testMoveToMBox()
     QVERIFY(subDir4.cd(QStringLiteral(".collection4.directory")));
     QCOMPARE(subDir4.entryList(QStringList() << QStringLiteral("collection*")),
              QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2")
-            );
+             );
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -1999,4 +2003,3 @@ void CollectionMoveTest::testMoveToMBox()
 QTEST_MAIN(CollectionMoveTest)
 
 #include "collectionmovetest.moc"
-

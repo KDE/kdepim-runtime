@@ -22,8 +22,7 @@
 
 #include <kio/slavebase.h>
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Item;
 class Collection;
 }

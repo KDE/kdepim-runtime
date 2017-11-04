@@ -34,12 +34,11 @@
 #include <KLocalizedString>
 #include "newmailnotifier_debug.h"
 
-
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
-    : QObject(parent),
-      mListEmails(listEmails),
-      mPath(path),
-      mItemId(id)
+    : QObject(parent)
+    , mListEmails(listEmails)
+    , mPath(path)
+    , mItemId(id)
 {
     Akonadi::Item item(mItemId);
     Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(item, this);
@@ -50,7 +49,6 @@ SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QStr
 
 SpecialNotifierJob::~SpecialNotifierJob()
 {
-
 }
 
 void SpecialNotifierJob::setDefaultPixmap(const QPixmap &pixmap)
@@ -154,7 +152,9 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification = new KNotification(QStringLiteral("new-email"), nullptr, NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout);
+        KNotification *notification = new KNotification(QStringLiteral("new-email"), nullptr,
+                                                        NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent
+                                                        | KNotification::SkipGrouping : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
         notification->setPixmap(pixmap);
         notification->setActions(QStringList() << i18n("Show mail..."));

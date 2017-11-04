@@ -43,7 +43,9 @@ protected Q_SLOTS:
     void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
-    enum CheckType { CheckForAdded, CheckForChanged };
+    enum CheckType {
+        CheckForAdded, CheckForChanged
+    };
 
     void initialise(const QStringList &mimeTypes, const QString &icon);
     bool readFromFile(const QString &fileName) override;
@@ -78,7 +80,7 @@ protected:
      *         false if a check failed, in which case itemAdded() or itemChanged()
      *               should stop processing.
      */
-    template <typename PayloadPtr> bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
+    template<typename PayloadPtr> bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
 
     void itemRemoved(const Akonadi::Item &item) override;
 
@@ -93,7 +95,7 @@ private:
     KCalCore::FileStorage::Ptr mFileStorage;
 };
 
-template <typename PayloadPtr>
+template<typename PayloadPtr>
 bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckType type)
 {
     if (!mCalendar) {

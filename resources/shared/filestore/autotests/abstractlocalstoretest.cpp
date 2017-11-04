@@ -45,7 +45,11 @@ class TestStore : public AbstractLocalStore
     Q_OBJECT
 
 public:
-    TestStore() : mLastCheckedJob(nullptr), mLastProcessedJob(nullptr), mErrorCode(0) {}
+    TestStore() : mLastCheckedJob(nullptr)
+        , mLastProcessedJob(nullptr)
+        , mErrorCode(0)
+    {
+    }
 
 public:
     mutable Akonadi::FileStore::Job *mLastCheckedJob = nullptr;
@@ -60,7 +64,8 @@ protected:
     void processJob(Akonadi::FileStore::Job *job) override;
 
 protected:
-    void setTopLevelCollection(const Collection &collection) override {
+    void setTopLevelCollection(const Collection &collection) override
+    {
         mTopLevelCollection = collection;
 
         Collection modifiedCollection = collection;
@@ -164,7 +169,11 @@ class AbstractLocalStoreTest : public QObject
     Q_OBJECT
 
 public:
-    AbstractLocalStoreTest() : QObject(), mStore(nullptr) {}
+    AbstractLocalStoreTest() : QObject()
+        , mStore(nullptr)
+    {
+    }
+
     ~AbstractLocalStoreTest()
     {
         delete mStore;
@@ -967,4 +976,3 @@ void AbstractLocalStoreTest::testCompactStore()
 QTEST_MAIN(AbstractLocalStoreTest)
 
 #include "abstractlocalstoretest.moc"
-

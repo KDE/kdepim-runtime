@@ -34,11 +34,7 @@ class BatchFetcher : public KJob
 {
     Q_OBJECT
 public:
-    BatchFetcher(MessageHelper::Ptr messageHelper,
-                 const KIMAP::ImapSet &set,
-                 const KIMAP::FetchJob::FetchScope &scope,
-                 int batchSize,
-                 KIMAP::Session *session);
+    BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session);
     virtual ~BatchFetcher();
     void start() override;
     void fetchNextBatch();

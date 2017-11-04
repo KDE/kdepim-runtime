@@ -33,8 +33,7 @@
 #include <QObject>
 #include <QPointer>
 
-namespace KIMAP
-{
+namespace KIMAP {
 class IdleJob;
 class Session;
 }
@@ -61,12 +60,10 @@ private Q_SLOTS:
     void onConnectionLost(KIMAP::Session *session);
     void onPoolDisconnect();
 
-    void onSessionRequestDone(qint64 requestId, KIMAP::Session *session,
-                              int errorCode, const QString &errorString);
+    void onSessionRequestDone(qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorString);
     void onSelectDone(KJob *job);
     void onIdleStopped();
-    void onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox,
-                         int messageCount, int recentCount);
+    void onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox, int messageCount, int recentCount);
     void onFlagsChanged(KIMAP::IdleJob *job);
     void reconnect();
     void restartIdle();

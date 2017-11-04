@@ -27,13 +27,15 @@
 using namespace Akonadi;
 
 UpdateJob::UpdateJob(const Collection &col, QObject *parent)
-    :   Job(parent),
-        mCollection(col),
-        mModJobRunning(false)
-{}
+    :   Job(parent)
+    , mCollection(col)
+    , mModJobRunning(false)
+{
+}
 
 UpdateJob::~UpdateJob()
-{}
+{
+}
 
 void UpdateJob::doStart()
 {
@@ -92,8 +94,8 @@ bool UpdateJob::processNext()
 }
 
 GidMigrationJob::GidMigrationJob(const QStringList &mimeTypeFilter, QObject *parent)
-    :   Job(parent),
-        mMimeTypeFilter(mimeTypeFilter)
+    :   Job(parent)
+    , mMimeTypeFilter(mimeTypeFilter)
 {
 }
 

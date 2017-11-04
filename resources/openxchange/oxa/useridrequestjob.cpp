@@ -24,11 +24,11 @@
 #include "foldersrequestjob.h"
 #include "davmanager.h"
 
-
 using namespace OXA;
 
 UserIdRequestJob::UserIdRequestJob(QObject *parent)
-    : KJob(parent), mUserId(-1)
+    : KJob(parent)
+    , mUserId(-1)
 {
 }
 
@@ -74,4 +74,3 @@ void UserIdRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

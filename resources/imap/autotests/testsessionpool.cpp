@@ -111,7 +111,7 @@ private Q_SLOTS:
         errorCode = SessionPool::LoginFailError;
         capabilities.clear();
         QTest::newRow("login fail, user reject password entry") << account << requester << scenario
-                << password << errorCode << capabilities;
+                                                                << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -134,7 +134,7 @@ private Q_SLOTS:
         capabilities.clear();
         capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
         QTest::newRow("login fail, user provide new password") << account << requester << scenario
-                << password << errorCode << capabilities;
+                                                               << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -152,7 +152,7 @@ private Q_SLOTS:
         errorCode = SessionPool::LoginFailError;
         capabilities.clear();
         QTest::newRow("login fail, user provided empty password") << account << requester << scenario
-                << password << errorCode << capabilities;
+                                                                  << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -170,7 +170,7 @@ private Q_SLOTS:
         errorCode = SessionPool::ReconnectNeededError;
         capabilities.clear();
         QTest::newRow("login fail, user change the settings") << account << requester << scenario
-                << password << errorCode << capabilities;
+                                                              << password << errorCode << capabilities;
     }
 
     void shouldPrepareFirstSessionOnConnect()
@@ -233,13 +233,13 @@ private Q_SLOTS:
                            << "C: A000003 NAMESPACE"
                            << "S: * NAMESPACE ( (\"INBOX/\" \"/\") ) ( (\"user/\" \"/\") ) ( (\"\" \"/\") )"
                            << "S: A000003 OK Completed"
-                          );
+                           );
 
         server.addScenario(QList<QByteArray>()
                            << FakeServer::greeting()
                            << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
                            << "S: A000001 OK User Logged in"
-                          );
+                           );
 
         server.startAndWait();
 
@@ -252,7 +252,7 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
 
         // Before connect we can't get any session
         qint64 requestId = pool.requestSession();
@@ -270,7 +270,7 @@ private Q_SLOTS:
         requestId = pool.requestSession();
         QCOMPARE(requestId, qint64(1));
         QTest::qWait(100);
-        QCOMPARE(requesterSpy.count(),  1);
+        QCOMPARE(requesterSpy.count(), 1);
         QCOMPARE(connectSpy.count(), 1);
         QCOMPARE(sessionSpy.count(), 1);
 
@@ -284,7 +284,7 @@ private Q_SLOTS:
         requestId = pool.requestSession();
         QCOMPARE(requestId, qint64(2));
         QTest::qWait(100);
-        QCOMPARE(requesterSpy.count(),  2);
+        QCOMPARE(requesterSpy.count(), 2);
         QCOMPARE(connectSpy.count(), 1);
         QCOMPARE(sessionSpy.count(), 2);
 
@@ -300,7 +300,7 @@ private Q_SLOTS:
         requestId = pool.requestSession();
         QCOMPARE(requestId, qint64(3));
         QTest::qWait(100);
-        QCOMPARE(requesterSpy.count(),  2);
+        QCOMPARE(requesterSpy.count(), 2);
         QCOMPARE(connectSpy.count(), 1);
         QCOMPARE(sessionSpy.count(), 3);
 
@@ -344,7 +344,7 @@ private Q_SLOTS:
                            << "C: A000003 CAPABILITY"
                            << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                            << "X"
-                          );
+                           );
 
         server.startAndWait();
 
@@ -355,8 +355,8 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -435,7 +435,7 @@ private Q_SLOTS:
         QTest::qWait(100);
 
         QCOMPARE(disconnectSpy.count(), 0);
-        pool.disconnect((SessionPool::SessionTermination) termination);
+        pool.disconnect((SessionPool::SessionTermination)termination);
         QTest::qWait(100);
         QCOMPARE(disconnectSpy.count(), 1);
 
@@ -493,8 +493,8 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -534,7 +534,7 @@ private Q_SLOTS:
                            << "C: A000003 CAPABILITY"
                            << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                            << "X"
-                          );
+                           );
 
         server.startAndWait();
 
@@ -545,8 +545,8 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -577,7 +577,7 @@ private Q_SLOTS:
                            << "C: A000003 CAPABILITY"
                            << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                            << "X"
-                          );
+                           );
 
         server.addScenario(QList<QByteArray>()
                            << FakeServer::greeting()
@@ -586,7 +586,7 @@ private Q_SLOTS:
                            << "C: A000002 CAPABILITY"
                            << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                            << "X"
-                          );
+                           );
 
         server.startAndWait();
 
@@ -596,7 +596,7 @@ private Q_SLOTS:
         SessionPool pool(2);
         pool.setPasswordRequester(requester);
 
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -627,7 +627,7 @@ private Q_SLOTS:
         KIMAP::Session *session2 = sessionSpy.at(1).at(1).value<KIMAP::Session *>();
 
         // Prepare for session disconnects
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
 
         // Make the first session drop
         KIMAP::CapabilitiesJob *job = new KIMAP::CapabilitiesJob(session1);
@@ -677,7 +677,7 @@ private Q_SLOTS:
                            << "C: A000003 CAPABILITY"
                            << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
                            << "X"
-                          );
+                           );
 
         server.startAndWait();
 
@@ -687,8 +687,8 @@ private Q_SLOTS:
         QVERIFY(!pool.isConnected());
 
         QSignalSpy poolSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
 
         pool.setPasswordRequester(requester);
         QVERIFY(pool.connect(account));
@@ -762,7 +762,7 @@ private Q_SLOTS:
         QSignalSpy requesterSpy(requester, SIGNAL(done(int,QString)));
         SessionPool pool(2);
         QSignalSpy connectDoneSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
         QVERIFY(!pool.isConnected());
         pool.setPasswordRequester(requester);
         pool.connect(account);
@@ -772,7 +772,6 @@ private Q_SLOTS:
         QCOMPARE(connectDoneSpy.at(0).at(0).toInt(), (int)SessionPool::CouldNotConnectError);
         QCOMPARE(lostSpy.count(), 0);   // don't want this, it makes the resource reconnect immediately (and fail, and reconnect, and so on...)
     }
-
 };
 
 QTEST_GUILESS_MAIN(TestSessionPool)

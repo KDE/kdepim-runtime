@@ -26,9 +26,7 @@
 
 #include <kjob.h>
 
-namespace OXA
-{
-
+namespace OXA {
 class ObjectDeleteJob : public KJob
 {
     Q_OBJECT
@@ -44,7 +42,6 @@ private Q_SLOTS:
 private:
     Object mObject;
 };
-
 }
 
 #endif

@@ -44,8 +44,7 @@ private Q_SLOTS:
     void onListJobDone(KJob *job);
 
 private:
-    Akonadi::Collection makeCollection(Graph::RSVP rsvp, const QString &name,
-                                       const Akonadi::Collection &parent);
+    Akonadi::Collection makeCollection(Graph::RSVP rsvp, const QString &name, const Akonadi::Collection &parent);
 
 private:
     KJob *mCurrentJob = nullptr;

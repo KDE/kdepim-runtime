@@ -26,12 +26,10 @@
 FolderArchiveAccountInfoTest::FolderArchiveAccountInfoTest(QObject *parent)
     : QObject(parent)
 {
-
 }
 
 FolderArchiveAccountInfoTest::~FolderArchiveAccountInfoTest()
 {
-
 }
 
 void FolderArchiveAccountInfoTest::shouldHaveDefaultValue()
@@ -43,7 +41,6 @@ void FolderArchiveAccountInfoTest::shouldHaveDefaultValue()
     QCOMPARE(info.enabled(), false);
     QCOMPARE(info.keepExistingStructure(), false);
     QCOMPARE(info.isValid(), false);
-
 }
 
 void FolderArchiveAccountInfoTest::shouldBeValid()

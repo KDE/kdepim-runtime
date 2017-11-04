@@ -30,7 +30,9 @@
 using namespace OXA;
 
 FolderMoveJob::FolderMoveJob(const Folder &folder, const Folder &destinationFolder, QObject *parent)
-    : KJob(parent), mFolder(folder), mDestinationFolder(destinationFolder)
+    : KJob(parent)
+    , mFolder(folder)
+    , mDestinationFolder(destinationFolder)
 {
 }
 
@@ -93,4 +95,3 @@ void FolderMoveJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

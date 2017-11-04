@@ -29,8 +29,7 @@
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
 
-namespace KIMAP
-{
+namespace KIMAP {
 struct MailBoxDescriptor;
 }
 
@@ -94,8 +93,7 @@ public:
 Q_SIGNALS:
     void connectionLost(KIMAP::Session *session);
 
-    void sessionRequestDone(qint64 requestNumber, KIMAP::Session *session,
-                            int errorCode = NoError, const QString &errorString = QString());
+    void sessionRequestDone(qint64 requestNumber, KIMAP::Session *session, int errorCode = NoError, const QString &errorString = QString());
     void connectDone(int errorCode = NoError, const QString &errorString = QString());
     void disconnectDone();
 

@@ -37,10 +37,10 @@ Q_DECLARE_METATYPE(KGAPI2::Job *)
 using namespace KGAPI2;
 using namespace Akonadi;
 
-GoogleResource::GoogleResource(const QString &id):
-    ResourceBase(id),
-    AgentBase::ObserverV2(),
-    m_isConfiguring(false)
+GoogleResource::GoogleResource(const QString &id)
+    : ResourceBase(id)
+    , AgentBase::ObserverV2()
+    , m_isConfiguring(false)
 {
     connect(this, &GoogleResource::abortRequested, this, &GoogleResource::slotAbortRequested);
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
@@ -150,7 +150,6 @@ void GoogleResource::reloadConfig()
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
-
 
 bool GoogleResource::configureKGAPIAccount(const AccountPtr &account)
 {
@@ -300,7 +299,7 @@ void GoogleResource::emitPercent(KGAPI2::Job *job, int processedItems, int total
 {
     Q_UNUSED(job);
 
-    Q_EMIT percent(((float) processedItems / (float) totalItems) * 100);
+    Q_EMIT percent(((float)processedItems / (float)totalItems) * 100);
 }
 
 bool GoogleResource::retrieveItem(const Item &item, const QSet< QByteArray > &parts)

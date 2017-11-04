@@ -99,16 +99,17 @@ static void setCurrentAuthMode(QComboBox *authCombo, MailTransport::Transport::E
     if (index == -1) {
         qCWarning(IMAPRESOURCE_LOG) << "desired authmode not in the combo";
     }
-    qCDebug(IMAPRESOURCE_LOG) << "found corresponding index: " << index << "with data" << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData(index).toInt());
+    qCDebug(IMAPRESOURCE_LOG) << "found corresponding index: " << index << "with data" << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(
+                                                                                                                       index).toInt());
     authCombo->setCurrentIndex(index);
-    MailTransport::Transport::EnumAuthenticationType::type t = (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData(authCombo->currentIndex()).toInt();
+    MailTransport::Transport::EnumAuthenticationType::type t = (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
     qCDebug(IMAPRESOURCE_LOG) << "selected auth mode:" << authenticationModeString(t);
     Q_ASSERT(t == authtype);
 }
 
 static MailTransport::Transport::EnumAuthenticationType::type getCurrentAuthMode(QComboBox *authCombo)
 {
-    MailTransport::Transport::EnumAuthenticationType::type authtype = (MailTransport::Transport::EnumAuthenticationType::type) authCombo->itemData(authCombo->currentIndex()).toInt();
+    MailTransport::Transport::EnumAuthenticationType::type authtype = (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
     qCDebug(IMAPRESOURCE_LOG) << "current auth mode: " << authenticationModeString(authtype);
     return authtype;
 }
@@ -120,8 +121,13 @@ static void addAuthenticationItem(QComboBox *authCombo, MailTransport::Transport
 }
 
 SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
-    : QDialog(), m_parentResource(parentResource), m_ui(new Ui::SetupServerView), m_serverTest(nullptr),
-      m_subscriptionsChanged(false), m_shouldClearCache(false), mValidator(this)
+    : QDialog()
+    , m_parentResource(parentResource)
+    , m_ui(new Ui::SetupServerView)
+    , m_serverTest(nullptr)
+    , m_subscriptionsChanged(false)
+    , m_shouldClearCache(false)
+    , mValidator(this)
 {
     QNetworkConfigurationManager *networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
 
@@ -240,8 +246,8 @@ void SetupServer::slotCustomSieveChanged()
 {
     QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
-    if (checkedButton == m_ui->imapUserPassword ||
-            checkedButton == m_ui->noAuthentification) {
+    if (checkedButton == m_ui->imapUserPassword
+        || checkedButton == m_ui->noAuthentification) {
         m_ui->customUsername->setEnabled(false);
         m_ui->customPassword->setEnabled(false);
     } else if (checkedButton == m_ui->customUserPassword) {
@@ -284,7 +290,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setUserName(m_ui->userName->text());
     QString encryption;
     switch (m_ui->safeImapGroup->checkedId()) {
-    case KIMAP::LoginJob::Unencrypted :
+    case KIMAP::LoginJob::Unencrypted:
         encryption = QStringLiteral("None");
         break;
     case KIMAP::LoginJob::AnySslVersion:
@@ -317,7 +323,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setTrashCollection(m_ui->folderRequester->collection().id());
     Akonadi::Collection trash = m_ui->folderRequester->collection();
     Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
-    Akonadi::EntityDisplayAttribute *attribute =  trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+    Akonadi::EntityDisplayAttribute *attribute = trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("user-trash"));
     new Akonadi::CollectionModifyJob(trash);
     if (mOldTrash != trash) {
@@ -370,14 +376,14 @@ void SetupServer::readSettings()
     KEMailSettings esetting;
 
     m_ui->imapServer->setText(
-        !m_parentResource->settings()->imapServer().isEmpty() ? m_parentResource->settings()->imapServer() :
-        esetting.getSetting(KEMailSettings::InServer));
+        !m_parentResource->settings()->imapServer().isEmpty() ? m_parentResource->settings()->imapServer()
+        : esetting.getSetting(KEMailSettings::InServer));
 
     m_ui->portSpin->setValue(m_parentResource->settings()->imapPort());
 
     m_ui->userName->setText(
-        !m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName() :
-        currentUser->loginName());
+        !m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName()
+        : currentUser->loginName());
 
     const QString safety = m_parentResource->settings()->safety();
     int i = 0;
@@ -396,21 +402,21 @@ void SetupServer::readSettings()
 
     populateDefaultAuthenticationOptions();
     i = m_parentResource->settings()->authentication();
-    qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type) i);
-    setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) i);
+    qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type)i);
+    setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)i);
 
     i = m_parentResource->settings()->alternateAuthentication();
-    setCurrentAuthMode(m_ui->authenticationAlternateCombo, (MailTransport::Transport::EnumAuthenticationType::type) i);
+    setCurrentAuthMode(m_ui->authenticationAlternateCombo, (MailTransport::Transport::EnumAuthenticationType::type)i);
 
     bool rejected = false;
     const QString password = m_parentResource->settings()->password(&rejected);
     if (rejected) {
         m_ui->password->setEnabled(false);
         KMessageBox::information(nullptr, i18n("Could not access KWallet. "
-                                 "If you want to store the password permanently then you have to "
-                                 "activate it. If you do not "
-                                 "want to use KWallet, check the box below, but note that you will be "
-                                 "prompted for your password when needed."),
+                                               "If you want to store the password permanently then you have to "
+                                               "activate it. If you do not "
+                                               "want to use KWallet, check the box below, but note that you will be "
+                                               "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
         m_ui->password->lineEdit()->insert(password);
@@ -463,10 +469,10 @@ void SetupServer::readSettings()
     if (rejected) {
         m_ui->customPassword->setEnabled(false);
         KMessageBox::information(nullptr, i18n("Could not access KWallet. "
-                                 "If you want to store the password permanently then you have to "
-                                 "activate it. If you do not "
-                                 "want to use KWallet, check the box below, but note that you will be "
-                                 "prompted for your password when needed."),
+                                               "If you want to store the password permanently then you have to "
+                                               "activate it. If you do not "
+                                               "want to use KWallet, check the box below, but note that you will be "
+                                               "prompted for your password when needed."),
                                  i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
     } else {
         m_ui->customPassword->lineEdit()->insert(customPassword);
@@ -590,7 +596,7 @@ void SetupServer::slotEnableWidgets()
 
 void SetupServer::slotComplete()
 {
-    const bool ok =  !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
+    const bool ok = !m_ui->imapServer->text().isEmpty() && !m_ui->userName->text().isEmpty();
     mOkButton->setEnabled(ok);
 }
 
@@ -611,7 +617,7 @@ void SetupServer::slotSafetyChanged()
     QVector<int> protocols;
 
     switch (m_ui->safeImapGroup->checkedId()) {
-    case KIMAP::LoginJob::Unencrypted :
+    case KIMAP::LoginJob::Unencrypted:
         qCDebug(IMAPRESOURCE_LOG) << "safeImapGroup: unencrypted";
         protocols = m_serverTest->normalProtocols();
         break;
@@ -630,12 +636,12 @@ void SetupServer::slotSafetyChanged()
     m_ui->authenticationCombo->clear();
     addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR);
     for (int prot : qAsConst(protocols)) {
-        addAuthenticationItem(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) prot);
+        addAuthenticationItem(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)prot);
     }
     if (protocols.isEmpty()) {
         qCDebug(IMAPRESOURCE_LOG) << "no authmodes found";
     } else {
-        setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type) protocols.first());
+        setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)protocols.first());
     }
 }
 
@@ -652,7 +658,7 @@ void SetupServer::slotManageSubscriptions()
 
     account.setEncryptionMode(
         static_cast<KIMAP::LoginJob::EncryptionMode>(m_ui->safeImapGroup->checkedId())
-    );
+        );
 
     account.setAuthenticationMode(Settings::mapTransportAuthToKimap(getCurrentAuthMode(m_ui->authenticationCombo)));
 

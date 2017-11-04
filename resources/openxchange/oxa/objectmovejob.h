@@ -27,9 +27,7 @@
 #include "folder.h"
 #include "object.h"
 
-namespace OXA
-{
-
+namespace OXA {
 class ObjectMoveJob : public KJob
 {
     Q_OBJECT
@@ -48,7 +46,6 @@ private:
     Object mObject;
     Folder mDestinationFolder;
 };
-
 }
 
 #endif

@@ -55,7 +55,7 @@ static QVariantMap parseTokenResponse(const QByteArray &data)
 }
 
 /// Add query parameters to a query
-static void addQueryParametersToUrl(QUrl &url,  const QList<QPair<QString, QString> > &parameters)
+static void addQueryParametersToUrl(QUrl &url, const QList<QPair<QString, QString> > &parameters)
 {
 #if QT_VERSION < 0x050000
     url.setQueryItems(parameters);
@@ -66,7 +66,7 @@ static void addQueryParametersToUrl(QUrl &url,  const QList<QPair<QString, QStri
 #endif
 }
 
-O2::O2(QObject *parent): O0BaseAuth(parent)
+O2::O2(QObject *parent) : O0BaseAuth(parent)
 {
     manager_ = new QNetworkAccessManager(this);
     replyServer_ = new O2ReplyServer(this);

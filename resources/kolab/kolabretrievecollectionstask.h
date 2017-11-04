@@ -38,8 +38,7 @@ public:
     virtual ~KolabRetrieveCollectionsTask();
 
 private Q_SLOTS:
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                             const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);
     void onMailBoxesReceiveDone(KJob *job);
     void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
     void onFullMailBoxesReceiveDone(KJob *job);
@@ -76,7 +75,8 @@ class RetrieveMetadataJob : public KJob
 {
     Q_OBJECT
 public:
-    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = nullptr);
+    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator,
+                        const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = nullptr);
     void start() override;
 
     QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;

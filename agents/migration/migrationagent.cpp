@@ -31,12 +31,10 @@
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 MigrationAgent::MigrationAgent(const QString &id)
-    :   AgentBase(id),
-        mScheduler(new KUiServerJobTracker)
+    :   AgentBase(id)
+    , mScheduler(new KUiServerJobTracker)
 {
     KLocalizedString::setApplicationDomain("akonadi_migration_agent");
     mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KContacts::Addressee::mimeType())));
@@ -63,8 +61,6 @@ void MigrationAgent::configure(WId windowId)
     }
     dlg->show();
 }
-
 }
 
 AKONADI_AGENT_MAIN(Akonadi::MigrationAgent)
-

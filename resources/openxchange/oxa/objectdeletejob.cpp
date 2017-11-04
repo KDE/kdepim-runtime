@@ -31,7 +31,8 @@
 using namespace OXA;
 
 ObjectDeleteJob::ObjectDeleteJob(const Object &object, QObject *parent)
-    : KJob(parent), mObject(object)
+    : KJob(parent)
+    , mObject(object)
 {
 }
 
@@ -75,4 +76,3 @@ void ObjectDeleteJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

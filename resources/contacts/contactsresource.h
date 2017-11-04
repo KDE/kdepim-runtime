@@ -27,8 +27,7 @@
 #include <kcontacts/contactgrouptool.h>
 #include <kcontacts/vcardconverter.h>
 
-namespace Akonadi_Contacts_Resource
-{
+namespace Akonadi_Contacts_Resource {
 class ContactsResourceSettings;
 }
 class QDir;
@@ -65,14 +64,11 @@ protected:
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection &collection) override;
 
-    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                   const Akonadi::Collection &collectionDestination) override;
-    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-                         const Akonadi::Collection &collectionDestination) override;
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
 private:
-    Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory,
-            const Akonadi::Collection &parentCollection) const;
+    Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory, const Akonadi::Collection &parentCollection) const;
     QString baseDirectoryPath() const;
     void initializeDirectory(const QString &path) const;
     Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;

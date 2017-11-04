@@ -28,11 +28,13 @@
 
 #include <kio/davjob.h>
 
-
 using namespace OXA;
 
 ObjectsRequestJob::ObjectsRequestJob(const Folder &folder, qulonglong lastSync, Mode mode, QObject *parent)
-    : KJob(parent), mFolder(folder), mLastSync(lastSync), mMode(mode)
+    : KJob(parent)
+    , mFolder(folder)
+    , mLastSync(lastSync)
+    , mMode(mode)
 {
 }
 
@@ -92,4 +94,3 @@ void ObjectsRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

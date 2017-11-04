@@ -51,7 +51,6 @@ private:
     QGroupBox *m_taskListsBox = nullptr;
     QListWidget *m_taskListsList = nullptr;
     QPushButton *m_reloadTaskListsBtn = nullptr;
-
 };
 
 #endif // SETTINGSDIALOG_H

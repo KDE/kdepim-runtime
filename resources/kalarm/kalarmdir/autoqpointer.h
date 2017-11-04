@@ -28,22 +28,33 @@
  *
  *  @author David Jarvie <djarvie@kde.org>
  */
-template <class T>
+template<class T>
 class AutoQPointer : public QPointer<T>
 {
 public:
-    AutoQPointer() : QPointer<T>() {}
-    AutoQPointer(T *p) : QPointer<T>(p) {}
-    AutoQPointer(const QPointer<T> &p) : QPointer<T>(p) {}
+    AutoQPointer() : QPointer<T>()
+    {
+    }
+
+    AutoQPointer(T *p) : QPointer<T>(p)
+    {
+    }
+
+    AutoQPointer(const QPointer<T> &p) : QPointer<T>(p)
+    {
+    }
+
     ~AutoQPointer()
     {
         delete this->data();
     }
+
     AutoQPointer<T> &operator=(const AutoQPointer<T> &p)
     {
         QPointer<T>::operator=(p);
         return *this;
     }
+
     AutoQPointer<T> &operator=(T *p)
     {
         QPointer<T>::operator=(p);
@@ -52,4 +63,3 @@ public:
 };
 
 #endif // AUTOQPOINTER_H
-

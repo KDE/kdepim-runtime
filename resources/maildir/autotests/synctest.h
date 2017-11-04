@@ -38,7 +38,6 @@ private Q_SLOTS:
 
 private:
     QString mMaildirIdentifier;
-
 };
 
 #endif

@@ -23,8 +23,7 @@
 #include <AkonadiAgentBase/ResourceBase>
 #include <KIO/AccessManager>
 
-class TomboyNotesResource : public Akonadi::ResourceBase,
-    public Akonadi::AgentBase::Observer
+class TomboyNotesResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
 

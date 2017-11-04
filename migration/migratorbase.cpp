@@ -33,11 +33,16 @@
 static QString messageTypeToString(MigratorBase::MessageType type)
 {
     switch (type) {
-    case MigratorBase::Success: return QStringLiteral("Success");
-    case MigratorBase::Skip:    return QStringLiteral("Skipped");
-    case MigratorBase::Info:    return QStringLiteral("Info   ");
-    case MigratorBase::Warning: return QStringLiteral("WARNING");
-    case MigratorBase::Error:   return QStringLiteral("ERROR  ");
+    case MigratorBase::Success:
+        return QStringLiteral("Success");
+    case MigratorBase::Skip:
+        return QStringLiteral("Skipped");
+    case MigratorBase::Info:
+        return QStringLiteral("Info   ");
+    case MigratorBase::Warning:
+        return QStringLiteral("WARNING");
+    case MigratorBase::Error:
+        return QStringLiteral("ERROR  ");
     }
     Q_ASSERT(false);
     return QString();
@@ -68,12 +73,13 @@ static MigratorBase::MigrationState identifierToState(const QString &identifier)
 }
 
 MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
-    :   QObject(parent),
-        mIdentifier(identifier),
-        mMigrationState(None),
-        mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
+    :   QObject(parent)
+    , mIdentifier(identifier)
+    , mMigrationState(None)
+    , mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1Char('/') + identifier + QStringLiteral("migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1Char('/') + identifier
+                                + QStringLiteral("migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);
@@ -82,9 +88,9 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
 }
 
 MigratorBase::MigratorBase(const QString &identifier, const QString &configFile, const QString &logFile, QObject *parent)
-    :   QObject(parent),
-        mIdentifier(identifier),
-        mMigrationState(None)
+    :   QObject(parent)
+    , mIdentifier(identifier)
+    , mMigrationState(None)
 {
     if (!configFile.isEmpty()) {
         mConfig.reset(new KConfig(configFile));
@@ -96,7 +102,6 @@ MigratorBase::MigratorBase(const QString &identifier, const QString &configFile,
 
 MigratorBase::~MigratorBase()
 {
-
 }
 
 void MigratorBase::setLogfile(const QString &logfile)
@@ -278,14 +283,20 @@ void MigratorBase::setProgress(int prog)
 QString MigratorBase::status() const
 {
     switch (mMigrationState) {
-    case None: return i18nc("@info:status", "Not started");
-    case InProgress: return i18nc("@info:status", "Running...");
-    case Complete: return i18nc("@info:status", "Complete");
-    case Aborted: return i18nc("@info:status", "Aborted");
-    case Paused: return i18nc("@info:status", "Paused");
-    case NeedsUpdate: return i18nc("@info:status", "Needs Update");
-    case Failed: return i18nc("@info:status", "Failed");
+    case None:
+        return i18nc("@info:status", "Not started");
+    case InProgress:
+        return i18nc("@info:status", "Running...");
+    case Complete:
+        return i18nc("@info:status", "Complete");
+    case Aborted:
+        return i18nc("@info:status", "Aborted");
+    case Paused:
+        return i18nc("@info:status", "Paused");
+    case NeedsUpdate:
+        return i18nc("@info:status", "Needs Update");
+    case Failed:
+        return i18nc("@info:status", "Failed");
     }
     return QString();
 }
-

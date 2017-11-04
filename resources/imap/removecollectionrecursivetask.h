@@ -35,8 +35,7 @@ public:
     virtual ~RemoveCollectionRecursiveTask();
 
 private Q_SLOTS:
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors,
-                             const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);
     void onCloseJobDone(KJob *job);
     void onDeleteJobDone(KJob *job);
     void onJobDone(KJob *job);

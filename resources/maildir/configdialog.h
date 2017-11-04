@@ -25,8 +25,7 @@
 #include "ui_settings.h"
 class QPushButton;
 class KConfigDialogManager;
-namespace Akonadi_Maildir_Resource
-{
+namespace Akonadi_Maildir_Resource {
 class MaildirSettings;
 }
 class FolderArchiveSettingPage;

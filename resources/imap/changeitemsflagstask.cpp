@@ -24,11 +24,10 @@
 #include <kimap/storejob.h>
 #include "imapresource_debug.h"
 
-ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent):
-    ResourceTask(ResourceTask::DeferIfNoSession, resource, parent),
-    m_processedItems(0)
+ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
+    : ResourceTask(ResourceTask::DeferIfNoSession, resource, parent)
+    , m_processedItems(0)
 {
-
 }
 
 ChangeItemsFlagsTask::~ChangeItemsFlagsTask()
@@ -48,7 +47,6 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
                 this, &ChangeItemsFlagsTask::onSelectDone);
 
         select->start();
-
     } else {
         if (!addedFlags().isEmpty()) {
             triggerAppendFlagsJob(session);
@@ -165,4 +163,3 @@ void ChangeItemsFlagsTask::onRemoveFlagsDone(KJob *job)
         }
     }
 }
-

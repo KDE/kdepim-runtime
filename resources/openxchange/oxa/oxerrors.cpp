@@ -36,14 +36,22 @@ OXErrors::EditErrorID OXErrors::getEditErrorID(const QString &errorText)
     }
 
     switch (eid) {
-    case 1000 : return OXErrors::ConcurrentModification;
-    case 1001 : return OXErrors::ObjectNotFound;
-    case 1002 : return OXErrors::NoPermissionForThisAction;
-    case 1003 : return OXErrors::ConflictsDetected;
-    case 1004 : return OXErrors::MissingMandatoryFields;
-    case 1006 : return OXErrors::AppointmentConflicts;
-    case 1500 : return OXErrors::InternalServerError;
-    default :;
+    case 1000:
+        return OXErrors::ConcurrentModification;
+    case 1001:
+        return OXErrors::ObjectNotFound;
+    case 1002:
+        return OXErrors::NoPermissionForThisAction;
+    case 1003:
+        return OXErrors::ConflictsDetected;
+    case 1004:
+        return OXErrors::MissingMandatoryFields;
+    case 1006:
+        return OXErrors::AppointmentConflicts;
+    case 1500:
+        return OXErrors::InternalServerError;
+    default:
+        ;
     }
 
     return OXErrors::EditErrorUndefined;

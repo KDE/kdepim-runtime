@@ -28,7 +28,10 @@
 using namespace OXA;
 
 UpdateUsersJob::UpdateUsersJob(QObject *parent)
-    : KJob(parent), mUserIdRequestFinished(false), mUsersRequestFinished(false), mUserId(-1)
+    : KJob(parent)
+    , mUserIdRequestFinished(false)
+    , mUsersRequestFinished(false)
+    , mUserId(-1)
 {
 }
 
@@ -91,4 +94,3 @@ void UpdateUsersJob::finish()
 
     emitResult();
 }
-

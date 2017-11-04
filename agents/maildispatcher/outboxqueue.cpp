@@ -47,7 +47,6 @@ using namespace MailTransport;
 static const int OUTBOX_DISCOVERY_RETRIES = 3; // number of times we try to find or create the outbox
 static const int OUTBOX_DISCOVERY_WAIT_TIME = 5000; // number of ms to wait before retrying
 
-
 void OutboxQueue::initQueue()
 {
     mTotalSize = 0;
@@ -57,7 +56,9 @@ void OutboxQueue::initQueue()
     ItemFetchJob *job = new ItemFetchJob(mOutbox);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload(false);
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) { collectionFetched(job);});
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
+        collectionFetched(job);
+    });
 }
 
 void OutboxQueue::addIfComplete(const Item &item)
@@ -113,8 +114,8 @@ void OutboxQueue::addIfComplete(const Item &item)
 
     const SentBehaviourAttribute *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT(sentBehaviourAttribute);
-    if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection &&
-            !sentBehaviourAttribute->moveToCollection().isValid()) {
+    if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection
+        && !sentBehaviourAttribute->moveToCollection().isValid()) {
         qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid sent-mail collection.";
         return;
     }
@@ -127,9 +128,9 @@ void OutboxQueue::addIfComplete(const Item &item)
     }
     */
 
-    if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Automatic &&
-            dispatchModeAttribute->sendAfter().isValid() &&
-            dispatchModeAttribute->sendAfter() > QDateTime::currentDateTime()) {
+    if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Automatic
+        && dispatchModeAttribute->sendAfter().isValid()
+        && dispatchModeAttribute->sendAfter() > QDateTime::currentDateTime()) {
         // All the above was OK, so accept it for the future.
         qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted to be sent in the future.";
         mFutureMap.insert(dispatchModeAttribute->sendAfter(), item);
@@ -195,7 +196,7 @@ void OutboxQueue::collectionFetched(KJob *job)
     qCDebug(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << "items.";
 
     const Akonadi::Item::List lst = fetchJob->items();
-    for (const Item &item : lst ) {
+    for (const Item &item : lst) {
         addIfComplete(item);
     }
 }
@@ -245,7 +246,9 @@ void OutboxQueue::localFoldersChanged()
 
         SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::Outbox);
-        connect(job, &SpecialMailCollectionsRequestJob::result, this, [this](KJob* job) {localFoldersRequestResult(job);} );
+        connect(job, &SpecialMailCollectionsRequestJob::result, this, [this](KJob *job) {
+            localFoldersRequestResult(job);
+        });
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting outbox folder.";
         job->start();
@@ -273,7 +276,9 @@ void OutboxQueue::localFoldersRequestResult(KJob *job)
         if (++mOutboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES) {
             const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * mOutboxDiscoveryRetries;
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
-            QTimer::singleShot(timeout, this, [this]() { localFoldersChanged(); });
+            QTimer::singleShot(timeout, this, [this]() {
+                localFoldersChanged();
+            });
         } else {
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up.";
             Q_EMIT error(i18n("Could not access the outbox folder (%1).", job->errorString()));
@@ -341,13 +346,19 @@ OutboxQueue::OutboxQueue(QObject *parent)
             this, &OutboxQueue::itemChanged);
     connect(mMonitor, &Monitor::itemMoved,
             this, &OutboxQueue::itemMoved);
-    connect(mMonitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) { itemRemoved(item); });
+    connect(mMonitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) {
+        itemRemoved(item);
+    });
 
-    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() { localFoldersChanged(); });
+    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() {
+        localFoldersChanged();
+    });
     localFoldersChanged();
 
     mFutureTimer = new QTimer(this);
-    connect(mFutureTimer, &QTimer::timeout, this, [this]() { checkFuture(); });
+    connect(mFutureTimer, &QTimer::timeout, this, [this]() {
+        checkFuture();
+    });
     mFutureTimer->start(60 * 60 * 1000);   // 1 hour
 }
 
@@ -391,7 +402,9 @@ void OutboxQueue::fetchOne()
     ItemFetchJob *job = new ItemFetchJob(item);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload();
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {itemFetched(job); });
+    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
+        itemFetched(job);
+    });
 }
 
 #include "moc_outboxqueue.cpp"

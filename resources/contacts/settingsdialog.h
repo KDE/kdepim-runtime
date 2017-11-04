@@ -24,15 +24,12 @@
 
 #include <QDialog>
 class QPushButton;
-namespace Akonadi_Contacts_Resource
-{
+namespace Akonadi_Contacts_Resource {
 class ContactsResourceSettings;
 }
 class KConfigDialogManager;
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
@@ -50,7 +47,6 @@ private:
     Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings = nullptr;
     QPushButton *mOkButton = nullptr;
 };
-
 }
 
 #endif

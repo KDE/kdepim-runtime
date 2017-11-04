@@ -23,7 +23,6 @@
 #include "settingsadaptor.h"
 #include "dirsettingsdialog.h"
 
-
 #include <QDir>
 #include <QDirIterator>
 #include <QFile>
@@ -44,7 +43,7 @@ VCardDirResource::VCardDirResource(const QString &id)
     // setup the resource
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 Settings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
 }
@@ -129,7 +128,7 @@ void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
 
     KContacts::Addressee addressee;
     if (item.hasPayload<KContacts::Addressee>()) {
-        addressee  = item.payload<KContacts::Addressee>();
+        addressee = item.payload<KContacts::Addressee>();
     }
 
     if (!addressee.isEmpty()) {
@@ -148,7 +147,6 @@ void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         Item newItem(item);
         newItem.setRemoteId(addressee.uid());
         changeCommitted(newItem);
-
     } else {
         changeProcessed();
     }
@@ -164,7 +162,7 @@ void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
 
     KContacts::Addressee addressee;
     if (item.hasPayload<KContacts::Addressee>()) {
-        addressee  = item.payload<KContacts::Addressee>();
+        addressee = item.payload<KContacts::Addressee>();
     }
 
     if (!addressee.isEmpty()) {
@@ -185,7 +183,6 @@ void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
         } else {
             qDebug() << " We can't write in file " << file.fileName();
         }
-
     } else {
         changeProcessed();
     }
@@ -283,4 +280,3 @@ void VCardDirResource::initializeVCardDirectory() const
 }
 
 AKONADI_RESOURCE_MAIN(VCardDirResource)
-

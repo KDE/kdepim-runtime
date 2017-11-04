@@ -35,7 +35,9 @@
 #include <QDialogButtonBox>
 
 SearchDialog::SearchDialog(QWidget *parent)
-    : QDialog(parent), mModel(new QStandardItemModel(this)), mSubJobCount(0)
+    : QDialog(parent)
+    , mModel(new QStandardItemModel(this))
+    , mSubJobCount(0)
 {
     setWindowTitle(i18n("Search"));
     QWidget *mainWidget = new QWidget(this);
@@ -171,7 +173,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
         }
 
         KDAV::DavCollectionsFetchJob *fetchJob = new KDAV::DavCollectionsFetchJob(davUrl);
-        connect(fetchJob, & KDAV::DavCollectionsFetchJob::result, this, &SearchDialog::onCollectionsFetchJobFinished);
+        connect(fetchJob, &KDAV::DavCollectionsFetchJob::result, this, &SearchDialog::onCollectionsFetchJobFinished);
         fetchJob->start();
         ++mSubJobCount;
     }

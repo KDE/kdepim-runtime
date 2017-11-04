@@ -29,13 +29,15 @@
 
 Q_DECLARE_METATYPE(QModelIndex)
 
-class Testmigrator: public MigratorBase
+class Testmigrator : public MigratorBase
 {
     Q_OBJECT
 public:
-    explicit Testmigrator(const QString &identifier, QObject *parent = nullptr):
-        MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent), mAutostart(false)
-    {}
+    explicit Testmigrator(const QString &identifier, QObject *parent = nullptr)
+        : MigratorBase(QLatin1String("testmigrator") + identifier, QString(), QString(), parent)
+        , mAutostart(false)
+    {
+    }
 
     QString displayName() const override
     {
@@ -43,9 +45,11 @@ public:
     }
 
     void startWork() override
-    {}
+    {
+    }
 
-    void abort() override {
+    void abort() override
+    {
         setMigrationState(Aborted);
     }
 
@@ -59,11 +63,13 @@ public:
         return mAutostart;
     }
 
-    void pause() override {
+    void pause() override
+    {
         setMigrationState(Paused);
     }
 
-    void resume() override {
+    void resume() override
+    {
         setMigrationState(InProgress);
     }
 
@@ -74,22 +80,27 @@ class TestJobTracker : public KJobTrackerInterface
 {
 public:
     TestJobTracker() : mPercent(0)
-    {}
+    {
+    }
 
-    void registerJob(KJob *job) override {
+    void registerJob(KJob *job) override
+    {
         KJobTrackerInterface::registerJob(job);
         mJobs << job;
     }
 
-    void unregisterJob(KJob *job) override {
+    void unregisterJob(KJob *job) override
+    {
         mJobs.removeAll(job);
     }
 
-    void finished(KJob *job) override {
+    void finished(KJob *job) override
+    {
         mJobs.removeAll(job);
     }
 
-    void percent(KJob *job, long unsigned int percent) override {
+    void percent(KJob *job, long unsigned int percent) override
+    {
         Q_UNUSED(job);
         mPercent = percent;
     }
@@ -98,7 +109,7 @@ public:
     int mPercent;
 };
 
-class SchedulerTest: public QObject
+class SchedulerTest : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
@@ -213,7 +224,6 @@ private Q_SLOTS:
         QCOMPARE(m2->migrationState(), MigratorBase::None);
         m1->complete();
         QCOMPARE(m2->migrationState(), MigratorBase::InProgress);
-
     }
 
     void testJobTracker()
@@ -278,7 +288,6 @@ private Q_SLOTS:
         m1->complete();
         QCOMPARE(jobTracker.mPercent, 100);
     }
-
 };
 
 QTEST_MAIN(SchedulerTest)

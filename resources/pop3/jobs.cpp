@@ -30,9 +30,10 @@
 #include <KLocalizedString>
 
 POPSession::POPSession(const QString &password)
-    : mCurrentJob(nullptr), mPassword(password)
+    : mCurrentJob(nullptr)
+    , mPassword(password)
 {
-    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
+    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave *,int,QString)), this, SLOT(slotSlaveError(KIO::Slave *,int,QString)));
 }
 
 POPSession::~POPSession()
@@ -40,8 +41,7 @@ POPSession::~POPSession()
     closeSession();
 }
 
-void POPSession::slotSlaveError(KIO::Slave *slave, int errorCode,
-                                const QString &errorMessage)
+void POPSession::slotSlaveError(KIO::Slave *slave, int errorCode, const QString &errorMessage)
 {
     Q_UNUSED(slave);
     qCWarning(POP3RESOURCE_LOG) << "Got a slave error:" << errorMessage;
@@ -192,8 +192,8 @@ static QString intListToString(const QList<int> &intList)
 }
 
 SlaveBaseJob::SlaveBaseJob(POPSession *POPSession)
-    : mJob(nullptr),
-      mPOPSession(POPSession)
+    : mJob(nullptr)
+    , mPOPSession(POPSession)
 {
     mPOPSession->setCurrentJob(this);
 }
@@ -274,7 +274,7 @@ LoginJob::LoginJob(POPSession *popSession)
 void LoginJob::start()
 {
     // This will create a connected slave, which means it will also try to login.
-    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave*)), this, SLOT(slaveConnected(KIO::Slave*)));
+    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave *)), this, SLOT(slaveConnected(KIO::Slave *)));
     if (!mPOPSession->connectSlave()) {
         setError(KJob::UserDefinedError);
         setErrorText(i18n("Unable to create POP3 slave, aborting mail check."));
@@ -342,9 +342,10 @@ void ListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
         int id = QString::fromLatin1(idString).toInt(&idIsNumber);
         if (idIsNumber) {
             mIdList.insert(id, length);
-        } else
+        } else {
             qCWarning(POP3RESOURCE_LOG) << "Got non-integer ID as part of the LIST response, ignoring"
                                         << idString.data();
+        }
     } else {
         qCWarning(POP3RESOURCE_LOG) << "Got invalid LIST response:" << data.data();
     }
@@ -446,10 +447,10 @@ void QuitJob::start()
 }
 
 FetchJob::FetchJob(POPSession *session)
-    : SlaveBaseJob(session),
-      mBytesDownloaded(0),
-      mTotalBytesToDownload(0),
-      mDataCounter(0)
+    : SlaveBaseJob(session)
+    , mBytesDownloaded(0)
+    , mTotalBytesToDownload(0)
+    , mDataCounter(0)
 {
 }
 
@@ -499,4 +500,3 @@ void FetchJob::slotInfoMessage(KJob *job, const QString &infoMessage, const QStr
     const int idOfCurrentMessage = mIdsPendingDownload.takeFirst();
     Q_EMIT messageFinished(idOfCurrentMessage, msg);
 }
-

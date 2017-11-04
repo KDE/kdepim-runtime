@@ -31,7 +31,8 @@
 using namespace OXA;
 
 ObjectCreateJob::ObjectCreateJob(const Object &object, QObject *parent)
-    : KJob(parent), mObject(object)
+    : KJob(parent)
+    , mObject(object)
 {
 }
 
@@ -117,4 +118,3 @@ void ObjectCreateJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

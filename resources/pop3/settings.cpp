@@ -25,13 +25,17 @@
 class SettingsHelper
 {
 public:
-    SettingsHelper() : q(nullptr) {}
+    SettingsHelper() : q(nullptr)
+    {
+    }
+
     ~SettingsHelper()
     {
         qCWarning(POP3RESOURCE_LOG) << q;
         delete q;
         q = nullptr;
     }
+
     Settings *q;
 };
 
@@ -53,7 +57,7 @@ Settings::Settings()
 
     new SettingsAdaptor(this);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
-            QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
 void Settings::setWindowId(WId id)

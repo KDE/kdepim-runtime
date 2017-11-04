@@ -172,11 +172,11 @@ void GmailSettings::loadAccountFromKWallet(bool *userRejected) const
             QMap<QString, QString> map;
             wallet->readMap(config()->name(), map);
             mAccount = KGAPI2::AccountPtr(new KGAPI2::Account(map[QLatin1String("accountName")],
-                                          map[QLatin1String("accessToken")],
-                                          map[QLatin1String("refreshToken")],
-                                          QList<QUrl>() << QUrl(QLatin1String("https://mail.google.com"))
-                                          << KGAPI2::Account::accountInfoScopeUrl()
-                                          << KGAPI2::Account::accountInfoEmailScopeUrl()));
+                                                              map[QLatin1String("accessToken")],
+                                                              map[QLatin1String("refreshToken")],
+                                                              QList<QUrl>() << QUrl(QLatin1String("https://mail.google.com"))
+                                                                            << KGAPI2::Account::accountInfoScopeUrl()
+                                                                            << KGAPI2::Account::accountInfoEmailScopeUrl()));
         } else {
             wallet->createFolder(QLatin1String("gmail"));
             mAccount = KGAPI2::AccountPtr();

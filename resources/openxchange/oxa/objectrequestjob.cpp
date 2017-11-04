@@ -31,7 +31,8 @@
 using namespace OXA;
 
 ObjectRequestJob::ObjectRequestJob(const Object &object, QObject *parent)
-    : KJob(parent), mObject(object)
+    : KJob(parent)
+    , mObject(object)
 {
 }
 
@@ -82,4 +83,3 @@ void ObjectRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

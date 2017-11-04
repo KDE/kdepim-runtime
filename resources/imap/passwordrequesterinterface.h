@@ -46,8 +46,7 @@ protected:
     explicit PasswordRequesterInterface(QObject *parent = nullptr);
 
 public:
-    virtual void requestPassword(RequestType request = StandardRequest,
-                                 const QString &serverError = QString()) = 0;
+    virtual void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString()) = 0;
     virtual void cancelPasswordRequests();
 
 Q_SIGNALS:

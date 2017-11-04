@@ -22,12 +22,10 @@
 DeleteItemsAttributeTest::DeleteItemsAttributeTest(QObject *parent)
     : QObject(parent)
 {
-
 }
 
 DeleteItemsAttributeTest::~DeleteItemsAttributeTest()
 {
-
 }
 
 void DeleteItemsAttributeTest::shouldHaveDefaultValue()

@@ -57,8 +57,8 @@ static const int MAX_LINE = 4096;
 #define kmail_swap_32(x) bswap_32(x)
 #else
 #define kmail_swap_32(x) \
-    ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >>  8) |                      \
-     (((x) & 0x0000ff00) <<  8) | (((x) & 0x000000ff) << 24))
+    ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >>  8)                        \
+     |(((x) & 0x0000ff00) <<  8) | (((x) & 0x000000ff) << 24))
 #endif
 
 /* Swap bytes in 64 bit value.  */
@@ -113,7 +113,7 @@ MessageStatus &KMIndexData::status()
             // status and merge it in.
             // This is kept to provide an upgrade path from the old single
             // status to the new multiple status scheme.
-            KMLegacyMsgStatus legacyMsgStatus = (KMLegacyMsgStatus) mCachedLongParts[KMIndexReader::MsgLegacyStatusPart];
+            KMLegacyMsgStatus legacyMsgStatus = (KMLegacyMsgStatus)mCachedLongParts[KMIndexReader::MsgLegacyStatusPart];
             mStatus.setRead();
             switch (legacyMsgStatus) {
             case KMLegacyMsgStatusUnknown:
@@ -146,7 +146,6 @@ MessageStatus &KMIndexData::status()
             default:
                 break;
             }
-
         }
     }
     return mStatus;
@@ -303,7 +302,6 @@ bool KMIndexReader::readHeader(int *version)
         if (mIndexSizeOfLong != sizeof(long)) {
             qCDebug(MIXEDMAILDIR_LOG) << "Index File sizeOfLong is" << mIndexSizeOfLong << "while sizeof(long) is" << sizeof(long) << "!";
         }
-
     }
     return true;
 }
@@ -469,9 +467,8 @@ static void swapEndian(QString &str)
 static int g_chunk_length = 0, g_chunk_offset = 0;
 static uchar *g_chunk = nullptr;
 
-namespace
-{
-template < typename T > void copy_from_stream(T &x)
+namespace {
+template< typename T > void copy_from_stream(T &x)
 {
     if (g_chunk_offset + int(sizeof(T)) > g_chunk_length) {
         g_chunk_offset = g_chunk_length;
@@ -515,7 +512,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
             tmp = kmail_swap_32(tmp);
             len = kmail_swap_16(len);
         }
-        type = (MsgPartType) tmp;
+        type = (MsgPartType)tmp;
         if (g_chunk_offset + len > indexLen) {
             qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "g_chunk_offset + len > indexLen" << "This should never happen..";
             return false;
@@ -523,7 +520,6 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
         // Only try to create strings if the part is really a string part, see declaration of
         // MsgPartType
         if (len && ((type >= 1 && type <= 6) || type == 11 || type == 14 || type == 15 || type == 19)) {
-
             // This works because the QString constructor does a memcpy.
             // Otherwise we would need to be concerned about the alignment.
             QString str((QChar *)(g_chunk + g_chunk_offset), len / 2);
@@ -540,7 +536,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
 #     else
             // Byte order is big endian (swap is false)
 #     endif
-        } else  if ((type >= 7 && type <= 10) || type == 12 || type == 13 || (type >= 16 && type <= 18)) {
+        } else if ((type >= 7 && type <= 10) || type == 12 || type == 13 || (type >= 16 && type <= 18)) {
             Q_ASSERT(mIndexSizeOfLong == len);
             if (mIndexSizeOfLong == sizeof(ret)) {
                 //qCDebug(MIXEDMAILDIR_LOG) << "mIndexSizeOfLong == sizeof(ret)";

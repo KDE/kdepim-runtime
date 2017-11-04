@@ -21,7 +21,6 @@
 
 #include "retrievecollectionmetadatatask.h"
 
-
 #include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>
 #include <kimap/getquotarootjob.h>
@@ -40,11 +39,10 @@
 #include "noselectattribute.h"
 #include "collectionmetadatahelper.h"
 
-
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
-    : ResourceTask(CancelIfNoSession, resource, parent),
-      m_pendingMetaDataJobs(0),
-      m_session(nullptr)
+    : ResourceTask(CancelIfNoSession, resource, parent)
+    , m_pendingMetaDataJobs(0)
+    , m_session(nullptr)
 {
 }
 
@@ -134,8 +132,8 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
     rawAnnotations.remove("/private/vendor/cmu/cyrus-imapd/lastupdate");
 
     // Store the mailbox metadata
-    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute =
-        m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute
+        = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
     if (oldAnnotations != rawAnnotations) {
         annotationsAttribute->setAnnotations(rawAnnotations);
@@ -264,8 +262,8 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     const QList< QMap<QByteArray, qint64> > oldUsages = imapQuotaAttribute->usages();
 
     if (oldRoots != newRoots
-            || oldLimits != newLimits
-            || oldUsages != newUsages) {
+        || oldLimits != newLimits
+        || oldUsages != newUsages) {
         imapQuotaAttribute->setQuotas(newRoots, newLimits, newUsages);
     }
 
@@ -276,7 +274,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     qint64 oldMax = quotaAttribute->maximumValue();
 
     if (oldCurrent != newCurrent
-            || oldMax != newMax) {
+        || oldMax != newMax) {
         quotaAttribute->setCurrentValue(newCurrent);
         quotaAttribute->setMaximumValue(newMax);
     }

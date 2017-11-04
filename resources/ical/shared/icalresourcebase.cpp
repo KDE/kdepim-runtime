@@ -47,15 +47,14 @@ void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &i
     setSupportedMimetypes(mimeTypes, icon);
     new ICalSettingsAdaptor(mSettings);
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
-            mSettings, QDBusConnection::ExportAdaptors);
+                                                           mSettings, QDBusConnection::ExportAdaptors);
 }
 
 ICalResourceBase::~ICalResourceBase()
 {
 }
 
-bool ICalResourceBase::retrieveItem(const Akonadi::Item &item,
-                                    const QSet<QByteArray> &parts)
+bool ICalResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     qDebug() << "Item:" << item.url();
 
@@ -86,7 +85,7 @@ bool ICalResourceBase::readFromFile(const QString &fileName)
 {
     mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QTimeZone::utc()));
     mFileStorage = KCalCore::FileStorage::Ptr(new KCalCore::FileStorage(mCalendar, fileName,
-                   new KCalCore::ICalFormat()));
+                                                                        new KCalCore::ICalFormat()));
     const bool result = mFileStorage->load();
     if (!result) {
         qCritical() << "akonadi_ical_resource: Error loading file " << fileName;
@@ -166,4 +165,3 @@ KCalCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
 {
     return mFileStorage;
 }
-

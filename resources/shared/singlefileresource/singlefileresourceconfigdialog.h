@@ -26,13 +26,11 @@
 
 #include <KConfigDialogManager>
 
-namespace Akonadi
-{
-
+namespace Akonadi {
 /**
  * Configuration dialog for single file resources.
  */
-template <typename Settings>
+template<typename Settings>
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
 {
     Settings *mSettings = nullptr;
@@ -48,13 +46,13 @@ public:
     }
 
 protected:
-    void save() override {
+    void save() override
+    {
         mManager->updateSettings();
         mSettings->setPath(ui.kcfg_Path->url().toString());
         mSettings->save();
     }
 };
-
 }
 
 #endif

@@ -41,7 +41,8 @@ public:
 };
 
 FileStore::CollectionFetchJob::CollectionFetchJob(const Collection &collection, Type type, FileStore::AbstractJobSession *session)
-    : FileStore::Job(session), d(new Private())
+    : FileStore::Job(session)
+    , d(new Private())
 {
     Q_ASSERT(session != nullptr);
 
@@ -92,4 +93,3 @@ void FileStore::CollectionFetchJob::handleCollectionsReceived(const Collection::
 
     Q_EMIT collectionsReceived(collections);
 }
-

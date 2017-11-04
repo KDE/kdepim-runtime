@@ -35,7 +35,6 @@
 #include <KRandom>
 #include <QTemporaryDir>
 
-
 #include <qtest.h>
 #include <QFileInfo>
 #include <QDir>
@@ -44,9 +43,9 @@ using namespace KMBox;
 
 static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset() &&
-           a.separatorSize() == b.separatorSize() &&
-           a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset()
+           && a.separatorSize() == b.separatorSize()
+           && a.messageSize() == b.messageSize();
 }
 
 static quint64 changedOffset(const Item &item)
@@ -69,7 +68,11 @@ class ItemMoveTest : public QObject
 
 public:
     ItemMoveTest()
-        : QObject(), mStore(nullptr), mDir(nullptr) {}
+        : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
 
     ~ItemMoveTest()
     {
@@ -672,4 +675,3 @@ void ItemMoveTest::testMBoxItem()
 QTEST_MAIN(ItemMoveTest)
 
 #include "itemmovetest.moc"
-

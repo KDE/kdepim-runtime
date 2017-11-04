@@ -97,4 +97,3 @@ void UsersRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
-

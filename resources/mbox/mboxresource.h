@@ -23,8 +23,7 @@
 #include "settings.h"
 #include "singlefileresource.h"
 
-namespace KMBox
-{
+namespace KMBox {
 class MBox;
 }
 

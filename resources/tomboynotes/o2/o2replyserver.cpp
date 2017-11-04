@@ -12,7 +12,7 @@
 
 #include "o2/o2replyserver.h"
 
-O2ReplyServer::O2ReplyServer(QObject *parent): QTcpServer(parent)
+O2ReplyServer::O2ReplyServer(QObject *parent) : QTcpServer(parent)
 {
     connect(this, &QTcpServer::newConnection, this, &O2ReplyServer::onIncomingConnection);
     replyContent_ = QByteArrayLiteral("<HTML></HTML>");

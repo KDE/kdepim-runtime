@@ -35,9 +35,8 @@ SentActionHandler::SentActionHandler(QObject *parent)
 
 void SentActionHandler::runAction(const SentActionAttribute::Action &action)
 {
-    if (action.type() == SentActionAttribute::Action::MarkAsReplied ||
-            action.type() == SentActionAttribute::Action::MarkAsForwarded) {
-
+    if (action.type() == SentActionAttribute::Action::MarkAsReplied
+        || action.type() == SentActionAttribute::Action::MarkAsForwarded) {
         const Akonadi::Item item(action.value().toLongLong());
         Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(item);
         connect(job, &Akonadi::ItemFetchJob::result, this, &SentActionHandler::itemFetchResult);
@@ -69,4 +68,3 @@ void SentActionHandler::itemFetchResult(KJob *job)
     Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(item);
     modifyJob->setIgnorePayload(true);
 }
-

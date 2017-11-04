@@ -47,8 +47,8 @@ void CompactPage::checkCollectionId()
     if (!mCollectionId.isEmpty()) {
         Collection collection;
         collection.setRemoteId(mCollectionId);
-        CollectionFetchJob *fetchJob =
-            new CollectionFetchJob(collection, CollectionFetchJob::Base);
+        CollectionFetchJob *fetchJob
+            = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
         connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
     }
@@ -60,8 +60,8 @@ void CompactPage::compact()
 
     Collection collection;
     collection.setRemoteId(mCollectionId);
-    CollectionFetchJob *fetchJob =
-        new CollectionFetchJob(collection, CollectionFetchJob::Base);
+    CollectionFetchJob *fetchJob
+        = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
     connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
 }
@@ -114,8 +114,8 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
         ui.messageLabel->setText(i18np("(Deleting 1 message)",
                                        "(Deleting %1 messages)", attr->offsetCount()));
         // TODO: implement and connect to messageProcessed signal.
-        if (mbox.purge(attr->deletedItemEntries()) ||
-                (QFileInfo(fileName).size() == 0)) {
+        if (mbox.purge(attr->deletedItemEntries())
+            || (QFileInfo(fileName).size() == 0)) {
             // even if purge() failed but the file is now empty.
             // it was probably deleted/emptied by an external prog. For whatever reason
             // doesn't matter here. We know the file is empty so we can get rid
@@ -137,4 +137,3 @@ void CompactPage::onCollectionModify(KJob *job)
         ui.messageLabel->setText(i18n("MBox file compacted."));
     }
 }
-

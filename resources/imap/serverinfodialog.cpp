@@ -56,7 +56,6 @@ ServerInfoTextBrowser::ServerInfoTextBrowser(QWidget *parent)
 
 ServerInfoTextBrowser::~ServerInfoTextBrowser()
 {
-
 }
 
 void ServerInfoTextBrowser::paintEvent(QPaintEvent *event)
@@ -78,4 +77,3 @@ void ServerInfoTextBrowser::paintEvent(QPaintEvent *event)
         QTextBrowser::paintEvent(event);
     }
 }
-

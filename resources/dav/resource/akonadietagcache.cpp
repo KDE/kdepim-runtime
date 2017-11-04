@@ -49,4 +49,3 @@ void AkonadiEtagCache::onItemFetchJobFinished(KJob *job)
         }
     }
 }
-

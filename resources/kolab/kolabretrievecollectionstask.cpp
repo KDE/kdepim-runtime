@@ -25,7 +25,6 @@
 #include "tracer.h"
 #include "kolabresource_debug.h"
 
-
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>
 #include <collectionannotationsattribute.h>
@@ -59,7 +58,8 @@ static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDes
     return false;
 }
 
-RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace, const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
+RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata,
+                                         const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace, const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
     : KJob(parent)
     , mJobs(0)
     , mRequestedMetadata(requestedMetadata)
@@ -70,7 +70,6 @@ RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringL
     , mSharedNamespace(sharedNamespace)
     , mUserNamespace(userNamespace)
 {
-
 }
 
 void RetrieveMetadataJob::start()
@@ -118,7 +117,6 @@ void RetrieveMetadataJob::start()
 
     // Get the ACLs from the mailbox if it's supported
     if (mServerCapabilities.contains(QStringLiteral("ACL"))) {
-
         for (const QString &mailbox : qAsConst(mMailboxes)) {
             // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
@@ -204,7 +202,6 @@ KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(const ResourceStateIn
 
 KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
 {
-
 }
 
 void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
@@ -269,8 +266,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     listJob->start();
 }
 
-void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
-        const QList< QList<QByteArray> > &flags)
+void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList<QByteArray> > &flags)
 {
     const int nbDescriptors = descriptors.size();
     for (int i = 0; i < nbDescriptors; ++i) {
@@ -308,7 +304,6 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
 
 void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path)
 {
-
     Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
     attr->setIdentifier(path.toLatin1());
 
@@ -347,7 +342,6 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
         Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setCollectionNamespace("shared");
     }
-
 }
 
 void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, const QList<QByteArray> &currentFlags, bool isSubscribed)
@@ -435,7 +429,8 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
         //Only request metadata for subscribed Other Users Folders
         const QStringList metadataMailboxes = mailboxes.unite(mSubscribedMailboxes.toList().toSet()).toList();
 
-        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(), resourceState()->sharedNamespaces(), resourceState()->userNamespaces(), this);
+        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(),
+                                                                resourceState()->sharedNamespaces(), resourceState()->userNamespaces(), this);
         connect(metadata, &KJob::result, this, &KolabRetrieveCollectionsTask::onMetadataRetrieved);
         mJobs++;
         metadata->start();
@@ -479,7 +474,7 @@ void KolabRetrieveCollectionsTask::applyMetadata(const QHash<QString, QMap<QByte
 {
     // qCDebug(KOLABRESOURCE_LOG) << metadataMap;
     Q_FOREACH (const QString &mailbox, metadataMap.keys()) {
-        const QMap<QByteArray, QByteArray> metadata  = metadataMap.value(mailbox);
+        const QMap<QByteArray, QByteArray> metadata = metadataMap.value(mailbox);
         if (mMailCollections.contains(mailbox)) {
             Akonadi::Collection &collection = mMailCollections[mailbox];
             // qCDebug(KOLABRESOURCE_LOG) << mailbox << metadata << type << folderType << KolabHelpers::getContentMimeTypes(folderType);
@@ -523,8 +518,7 @@ void KolabRetrieveCollectionsTask::checkDone()
     }
 }
 
-void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors,
-        const QList< QList< QByteArray > > &flags)
+void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList< QByteArray > > &flags)
 {
     Q_UNUSED(flags);
     for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {

@@ -29,10 +29,10 @@ public:
     explicit DummyResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = nullptr)
         : ResourceTask(action, resource, parent)
     {
-
     }
 
-    void doStart(KIMAP::Session */*session*/) Q_DECL_OVERRIDE {
+    void doStart(KIMAP::Session */*session*/) Q_DECL_OVERRIDE
+    {
         cancelTask(QStringLiteral("Dummy task"));
     }
 };
@@ -75,35 +75,35 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("deferTask");
         QTest::newRow("all sessions allocated (defer)") << state << scenario
-                << true << true
-                << ResourceTask::DeferIfNoSession
-                << callNames << QVariant();
+                                                        << true << true
+                                                        << ResourceTask::DeferIfNoSession
+                                                        << callNames << QVariant();
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         callNames.clear();
         callNames << QStringLiteral("cancelTask");
         QTest::newRow("all sessions allocated (cancel)") << state << scenario
-                << true << true
-                << ResourceTask::CancelIfNoSession
-                << callNames << QVariant();
+                                                         << true << true
+                                                         << ResourceTask::CancelIfNoSession
+                                                         << callNames << QVariant();
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         scenario.clear();
         callNames.clear();
         callNames << QStringLiteral("deferTask") << QStringLiteral("scheduleConnectionAttempt");
         QTest::newRow("disconnected pool (defer)") << state << scenario
-                << false << false
-                << ResourceTask::DeferIfNoSession
-                << callNames << QVariant();
+                                                   << false << false
+                                                   << ResourceTask::DeferIfNoSession
+                                                   << callNames << QVariant();
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         scenario.clear();
         callNames.clear();
         callNames << QStringLiteral("cancelTask") << QStringLiteral("scheduleConnectionAttempt");
         QTest::newRow("disconnected pool (cancel)") << state << scenario
-                << false << false
-                << ResourceTask::CancelIfNoSession
-                << callNames << QVariant();
+                                                    << false << false
+                                                    << ResourceTask::CancelIfNoSession
+                                                    << callNames << QVariant();
     }
 
     void shouldRequestSession()
@@ -133,12 +133,12 @@ private Q_SLOTS:
         }
 
         if (shouldRequestSession) {
-            QSignalSpy requestSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+            QSignalSpy requestSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
             pool.requestSession();
             QTRY_COMPARE(requestSpy.count(), 1);
         }
 
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
         DummyResourceTask *task = new DummyResourceTask(actionIfNoSession, state);
         task->start(&pool);
 

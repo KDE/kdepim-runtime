@@ -21,23 +21,19 @@
 
 #include <KIMAP/Session>
 #include "imapresource_debug.h"
-BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
-                           const KIMAP::ImapSet &set,
-                           const KIMAP::FetchJob::FetchScope &scope,
-                           int batchSize,
-                           KIMAP::Session *session)
-    : KJob(session),
-      m_currentSet(set),
-      m_scope(scope),
-      m_session(session),
-      m_batchSize(batchSize),
-      m_uidBased(false),
-      m_fetchedItemsInCurrentBatch(0),
-      m_messageHelper(messageHelper),
-      m_fetchInProgress(false),
-      m_continuationRequested(false),
-      m_gmailEnabled(false),
-      m_searchInChunks(false)
+BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session)
+    : KJob(session)
+    , m_currentSet(set)
+    , m_scope(scope)
+    , m_session(session)
+    , m_batchSize(batchSize)
+    , m_uidBased(false)
+    , m_fetchedItemsInCurrentBatch(0)
+    , m_messageHelper(messageHelper)
+    , m_fetchInProgress(false)
+    , m_continuationRequested(false)
+    , m_gmailEnabled(false)
+    , m_searchInChunks(false)
 {
 }
 
@@ -73,9 +69,9 @@ void BatchFetcher::start()
     if (m_searchUidInterval.size()) {
         //Search in chunks also Exchange can handle
         const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidInterval.begin();
-        const KIMAP::ImapInterval::Id lastUidToSearch  = m_searchInChunks
-                ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end())
-                : m_searchUidInterval.end();
+        const KIMAP::ImapInterval::Id lastUidToSearch = m_searchInChunks
+                                                        ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end())
+                                                        : m_searchUidInterval.end();
 
         //Prepare next chunk
         const KIMAP::ImapInterval::Id intervalBegin = lastUidToSearch + 1;
@@ -186,8 +182,8 @@ void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messa
         //qDebug( 5327 ) << "Flags: " << i.flags();
         bool ok;
         const auto item = m_messageHelper->createItemFromMessage(
-                                msg->message, msg->uid, msg->size, msg->attributes,
-                                msg->flags, fetch->scope(), ok);
+            msg->message, msg->uid, msg->size, msg->attributes,
+            msg->flags, fetch->scope(), ok);
         if (ok) {
             m_fetchedItemsInCurrentBatch++;
             addedItems << item;

@@ -70,9 +70,9 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 
 static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset() &&
-           a.separatorSize() == b.separatorSize() &&
-           a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset()
+           && a.separatorSize() == b.separatorSize()
+           && a.messageSize() == b.messageSize();
 }
 
 static quint64 changedOffset(const Item &item)
@@ -94,7 +94,9 @@ class StoreCompactTest : public QObject
     Q_OBJECT
 
 public:
-    StoreCompactTest() : QObject(), mStore(nullptr), mDir(nullptr)
+    StoreCompactTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -365,9 +367,9 @@ void StoreCompactTest::testCompact()
     // The order of items depends on the order of iteration of a QHash in MixedMaildirStore.
     // This makes sure that the items are always sorted by collection and offset
     std::sort(items.begin(), items.end(),
-    [](const Akonadi::Item & left, const Akonadi::Item & right) {
-        return left.parentCollection().remoteId().compare(right.parentCollection().remoteId()) < 0 ||
-               (left.parentCollection().remoteId() == right.parentCollection().remoteId() && changedOffset(left) < changedOffset(right));
+              [](const Akonadi::Item &left, const Akonadi::Item &right) {
+        return left.parentCollection().remoteId().compare(right.parentCollection().remoteId()) < 0
+        || (left.parentCollection().remoteId() == right.parentCollection().remoteId() && changedOffset(left) < changedOffset(right));
     });
 
     entryList3.pop_front();
@@ -405,4 +407,3 @@ void StoreCompactTest::testCompact()
 QTEST_MAIN(StoreCompactTest)
 
 #include "storecompacttest.moc"
-

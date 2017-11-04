@@ -47,12 +47,12 @@
 #include <QVBoxLayout>
 
 SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
-    : QDialog(parent),
-      m_session(nullptr),
-      m_subscriptionChanged(false),
-      m_lineEdit(nullptr),
-      m_filter(new SubscriptionFilterProxyModel(this)),
-      m_model(new QStandardItemModel(this))
+    : QDialog(parent)
+    , m_session(nullptr)
+    , m_subscriptionChanged(false)
+    , m_lineEdit(nullptr)
+    , m_filter(new SubscriptionFilterProxyModel(this))
+    , m_model(new QStandardItemModel(this))
 {
     QVBoxLayout *topLayout = new QVBoxLayout(this);
     setModal(true);
@@ -78,14 +78,14 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     topLayout->addWidget(buttonBox);
 
     m_enableSubscription = new QCheckBox(i18nc("@option:check",
-                                         "Enable server-side subscriptions"));
+                                               "Enable server-side subscriptions"));
     mainLayout->addWidget(m_enableSubscription);
 
     QHBoxLayout *filterBarLayout = new QHBoxLayout;
     mainLayout->addLayout(filterBarLayout);
 
     filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription",
-                                          "Search:")));
+                                                "Search:")));
 
     m_lineEdit = new QLineEdit(mainWidget);
     m_lineEdit->setClearButtonEnabled(true);
@@ -191,7 +191,7 @@ void SubscriptionDialog::onReloadRequested()
 
     // we need a connection
     if (!m_session
-            || m_session->state() != KIMAP::Session::Authenticated) {
+        || m_session->state() != KIMAP::Session::Authenticated) {
         qCWarning(IMAPRESOURCE_LOG) << "SubscriptionDialog - got no connection";
         mUser1Button->setEnabled(true);
         return;
@@ -204,8 +204,7 @@ void SubscriptionDialog::onReloadRequested()
     list->start();
 }
 
-void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-        const QList< QList<QByteArray> > &flags)
+void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags)
 {
     const int numberOfMailBoxes(mailBoxes.size());
     for (int i = 0; i < numberOfMailBoxes; i++) {
@@ -230,7 +229,6 @@ void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescripto
                     QStandardItem *item = m_itemsMap[currentPath];
                     item->setCheckable(isCheckable);
                 }
-
             } else if (!parentPath.isEmpty()) {
                 Q_ASSERT(m_itemsMap.contains(parentPath));
 
@@ -242,7 +240,6 @@ void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescripto
                 item->setData(currentPath.mid(1), PathRole);
                 parentItem->appendRow(item);
                 m_itemsMap[currentPath] = item;
-
             } else {
                 QStandardItem *item = new QStandardItem(pathPart);
                 item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -271,8 +268,7 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
     list->start();
 }
 
-void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes,
-        const QList< QList<QByteArray> > &flags)
+void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags)
 {
     Q_UNUSED(flags);
     const int numberOfMailBoxes(mailBoxes.size());
@@ -333,9 +329,9 @@ void SubscriptionDialog::applyChanges()
 }
 
 SubscriptionFilterProxyModel::SubscriptionFilterProxyModel(QObject *parent)
-    : KRecursiveFilterProxyModel(parent), m_checkedOnly(false)
+    : KRecursiveFilterProxyModel(parent)
+    , m_checkedOnly(false)
 {
-
 }
 
 void SubscriptionFilterProxyModel::setSearchPattern(const QString &pattern)

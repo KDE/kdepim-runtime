@@ -75,9 +75,9 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 
 static bool fullEntryCompare(const KMBox::MBoxEntry &a, const KMBox::MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset() &&
-           a.separatorSize() == b.separatorSize() &&
-           a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset()
+           && a.separatorSize() == b.separatorSize()
+           && a.messageSize() == b.messageSize();
 }
 
 class ItemDeleteTest : public QObject
@@ -85,7 +85,9 @@ class ItemDeleteTest : public QObject
     Q_OBJECT
 
 public:
-    ItemDeleteTest() : QObject(), mStore(nullptr), mDir(nullptr)
+    ItemDeleteTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
     {
         // for monitoring signals
         qRegisterMetaType<Akonadi::Collection::List>();
@@ -237,7 +239,7 @@ void ItemDeleteTest::testMBox()
     QCOMPARE(item.id(), item4.id());
 
     fileInfo1.refresh();
-    QCOMPARE((int) fileInfo1.size(), size1);
+    QCOMPARE((int)fileInfo1.size(), size1);
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     entryList = mbox1.entries();
     QCOMPARE(entryList.count(), entryList1.count());
@@ -302,7 +304,7 @@ void ItemDeleteTest::testMBox()
     QCOMPARE(item.id(), item2.id());
 
     fileInfo1.refresh();
-    QCOMPARE((int) fileInfo1.size(), size1);
+    QCOMPARE((int)fileInfo1.size(), size1);
     QVERIFY(mbox1.load(fileInfo1.absoluteFilePath()));
     entryList = mbox1.entries();
     QCOMPARE(entryList.count(), entryList1.count());
@@ -348,8 +350,8 @@ void ItemDeleteTest::testMBox()
     QCOMPARE(item3.remoteId(), item.remoteId());
 
     QVERIFY(item.hasAttribute<FileStore::EntityCompactChangeAttribute>());
-    FileStore::EntityCompactChangeAttribute *attribute =
-        item.attribute<FileStore::EntityCompactChangeAttribute>();
+    FileStore::EntityCompactChangeAttribute *attribute
+        = item.attribute<FileStore::EntityCompactChangeAttribute>();
 
     QString newRemoteId = attribute->remoteId();
     QVERIFY(!newRemoteId.isEmpty());
@@ -606,4 +608,3 @@ void ItemDeleteTest::testExpectedFailure()
 QTEST_MAIN(ItemDeleteTest)
 
 #include "itemdeletetest.moc"
-

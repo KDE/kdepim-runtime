@@ -28,14 +28,10 @@
 
 #include <QObject>
 
-template <typename T> class QList;
+template<typename T> class QList;
 
-namespace Akonadi
-{
-
-namespace FileStore
-{
-
+namespace Akonadi {
+namespace FileStore {
 /**
  */
 class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public StoreInterface
@@ -117,9 +113,7 @@ private:
     class Private;
     Private *const d;
 };
-
 }
 }
 
 #endif
-

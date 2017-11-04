@@ -36,14 +36,14 @@
 
 using namespace Akonadi;
 
-SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windowId) :
-    QDialog(),
-    mManager(nullptr),
-    mStatJob(nullptr),
-    mAppendedWidget(nullptr),
-    mDirUrlChecked(false),
-    mMonitorEnabled(true),
-    mLocalFileOnly(false)
+SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windowId)
+    : QDialog()
+    , mManager(nullptr)
+    , mStatJob(nullptr)
+    , mAppendedWidget(nullptr)
+    , mDirUrlChecked(false)
+    , mMonitorEnabled(true)
+    , mLocalFileOnly(false)
 {
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);

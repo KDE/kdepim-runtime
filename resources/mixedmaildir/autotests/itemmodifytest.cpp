@@ -48,9 +48,9 @@ using namespace KMBox;
 
 static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset() &&
-           a.separatorSize() == b.separatorSize() &&
-           a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset()
+           && a.separatorSize() == b.separatorSize()
+           && a.messageSize() == b.messageSize();
 }
 
 class ItemModifyTest : public QObject
@@ -59,7 +59,11 @@ class ItemModifyTest : public QObject
 
 public:
     ItemModifyTest()
-        : QObject(), mStore(nullptr), mDir(nullptr) {}
+        : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
 
     ~ItemModifyTest()
     {
@@ -88,7 +92,6 @@ void ItemModifyTest::init()
     mDir = new QTemporaryDir;
     QVERIFY(mDir->isValid());
     QVERIFY(QDir(mDir->path()).exists());
-
 }
 
 void ItemModifyTest::cleanup()
@@ -549,7 +552,6 @@ void ItemModifyTest::testModifyFlags()
     // check index preservation is not triggered
     var = job->property("onDiskIndexInvalidated");
     QVERIFY(!var.isValid());
-
 }
 
 void ItemModifyTest::testModifyFlagsAndPayload()
@@ -608,7 +610,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     // setting \SEEN so indicate a flags change and
     // setting new subject so indicate a payload change
     job->setParts(QSet<QByteArray>() << "FLAGS"
-                  << QByteArray("PLD:") + QByteArray(MessagePart::Header));
+                                     << QByteArray("PLD:") + QByteArray(MessagePart::Header));
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -668,4 +670,3 @@ void ItemModifyTest::testModifyFlagsAndPayload()
 QTEST_MAIN(ItemModifyTest)
 
 #include "itemmodifytest.moc"
-

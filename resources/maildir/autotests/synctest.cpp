@@ -66,8 +66,8 @@ void SyncTest::testSync()
 
     for (int i = 0; i < TIMES; ++i) {
         QDBusInterface interface(
-                Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mMaildirIdentifier),
-                QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
+            Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mMaildirIdentifier),
+            QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
         QVERIFY(interface.isValid());
         QElapsedTimer t;
         t.start();
@@ -80,4 +80,3 @@ void SyncTest::testSync()
 }
 
 QTEST_AKONADIMAIN(SyncTest)
-

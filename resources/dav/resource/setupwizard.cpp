@@ -191,7 +191,7 @@ SetupWizard::Url::List SetupWizard::urls() const
         Url url;
 
         if (protocol == QLatin1String("CalDav")) {
-            url.protocol =KDAV::CalDav;
+            url.protocol = KDAV::CalDav;
         } else if (protocol == QLatin1String("CardDav")) {
             url.protocol = KDAV::CardDav;
         } else if (protocol == QLatin1String("GroupDav")) {
@@ -337,7 +337,6 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mServerGroup = new QButtonGroup(this);
     mServerGroup->setExclusive(true);
 
-
     QHBoxLayout *hLayout = new QHBoxLayout;
     QRadioButton *button = new QRadioButton(i18n("Use one of those servers:"));
     registerField(QStringLiteral("templateConfiguration"), button);
@@ -380,7 +379,11 @@ bool ServerTypePage::validatePage()
  */
 
 ConnectionPage::ConnectionPage(QWidget *parent)
-    : QWizardPage(parent), mPreviewLayout(nullptr), mCalDavUrlPreview(nullptr), mCardDavUrlPreview(nullptr), mGroupDavUrlPreview(nullptr)
+    : QWizardPage(parent)
+    , mPreviewLayout(nullptr)
+    , mCalDavUrlPreview(nullptr)
+    , mCardDavUrlPreview(nullptr)
+    , mGroupDavUrlPreview(nullptr)
 {
     setTitle(i18n("Connection"));
     setSubTitle(i18n("Enter the connection information for the groupware server"));
@@ -534,7 +537,7 @@ void CheckPage::checkConnection()
 
     // start the dav collections fetch job to test connectivity
     KDAV::DavCollectionsMultiFetchJob *job = new KDAV::DavCollectionsMultiFetchJob(davUrls, this);
-    connect(job, & KDAV::DavCollectionsMultiFetchJob::result, this, &CheckPage::onFetchDone);
+    connect(job, &KDAV::DavCollectionsMultiFetchJob::result, this, &CheckPage::onFetchDone);
     job->start();
 }
 
@@ -554,4 +557,3 @@ void CheckPage::onFetchDone(KJob *job)
     mStatusLabel->setHtml(QStringLiteral("<html><body><img src=\"icon\"> %1</body></html>").arg(msg));
     mStatusLabel->document()->addResource(QTextDocument::ImageResource, QUrl(QStringLiteral("icon")), QVariant(icon));
 }
-

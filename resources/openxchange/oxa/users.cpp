@@ -155,4 +155,3 @@ void Users::saveToCache()
         stream << it.value().uid() << it.value().name() << it.value().email();
     }
 }
-

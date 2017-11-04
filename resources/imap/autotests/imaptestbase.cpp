@@ -24,7 +24,6 @@
 ImapTestBase::ImapTestBase(QObject *parent)
     : QObject(parent)
 {
-
 }
 
 QString ImapTestBase::defaultUserName() const
@@ -135,4 +134,3 @@ Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId)
 
     return collection;
 }
-

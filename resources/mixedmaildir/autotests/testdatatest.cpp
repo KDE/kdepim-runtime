@@ -29,7 +29,9 @@ class TestDataTest : public QObject
 {
     Q_OBJECT
 public:
-    TestDataTest() {}
+    TestDataTest()
+    {
+    }
 
 private Q_SLOTS:
     void testResources();
@@ -40,11 +42,11 @@ void TestDataTest::testResources()
 {
     const QStringList testDataNames = TestDataUtil::testDataNames();
     QCOMPARE(testDataNames, QStringList() << QStringLiteral("dimap")
-             << QStringLiteral("maildir")
-             << QStringLiteral("maildir-tagged")
-             << QStringLiteral("mbox")
-             << QStringLiteral("mbox-tagged")
-             << QStringLiteral("mbox-unpurged"));
+                                          << QStringLiteral("maildir")
+                                          << QStringLiteral("maildir-tagged")
+                                          << QStringLiteral("mbox")
+                                          << QStringLiteral("mbox-tagged")
+                                          << QStringLiteral("mbox-unpurged"));
 
     Q_FOREACH (const QString testDataName, testDataNames) {
         if (testDataName.startsWith(QLatin1String("mbox"))) {
@@ -103,4 +105,3 @@ void TestDataTest::testInstall()
 #include "testdatatest.moc"
 
 QTEST_MAIN(TestDataTest)
-

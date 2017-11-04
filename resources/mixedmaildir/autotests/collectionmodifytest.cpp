@@ -40,7 +40,11 @@ class CollectionModifyTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionModifyTest() : QObject(), mStore(nullptr), mDir(nullptr) {}
+    CollectionModifyTest() : QObject()
+        , mStore(nullptr)
+        , mDir(nullptr)
+    {
+    }
 
     ~CollectionModifyTest()
     {
@@ -155,7 +159,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(topLevelCollection);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QCOMPARE(collection.remoteId(), mStore->path());
     QCOMPARE(collection, mStore->topLevelCollection());
 
@@ -213,7 +217,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(collection2);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2_renamed"));
     QVERIFY(md2.isValid(false));
 
@@ -239,7 +243,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(collection3);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     fileInfo3.refresh();
     QVERIFY(fileInfo3.exists());
 
@@ -269,7 +273,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(collection4_1);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QCOMPARE(md4.subFolderList(), QStringList() << QStringLiteral("collection4_1_renamed"));
     QVERIFY(md4_1.isValid(false));
 
@@ -295,7 +299,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(collection4_2);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     fileInfo4_2.refresh();
     QVERIFY(fileInfo4_2.exists());
 
@@ -328,7 +332,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(collection1);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1_renamed") << QStringLiteral("collection2_renamed"));
     QVERIFY(md2.isValid(false));
     QVERIFY(fileInfo1_1.exists());
@@ -361,7 +365,7 @@ void CollectionModifyTest::testRename()
     // test failure of renaming again
     job = mStore->modifyCollection(collection4);
     QVERIFY(!job->exec());
-    QCOMPARE(job->error(), (int) FileStore::Job::InvalidJobContext);
+    QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
     fileInfo4.refresh();
     QVERIFY(fileInfo4.exists());
 }
@@ -628,4 +632,3 @@ void CollectionModifyTest::testIndexCacheUpdate()
 QTEST_MAIN(CollectionModifyTest)
 
 #include "collectionmodifytest.moc"
-

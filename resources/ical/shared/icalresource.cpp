@@ -89,8 +89,7 @@ void ICalResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
     changeCommitted(it);
 }
 
-void ICalResource::itemChanged(const Akonadi::Item &item,
-                               const QSet<QByteArray> &parts)
+void ICalResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
 
@@ -142,13 +141,12 @@ void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
 QStringList ICalResource::allMimeTypes() const
 {
     return QStringList() << KCalCore::Event::eventMimeType()
-           << KCalCore::Todo::todoMimeType()
-           << KCalCore::Journal::journalMimeType()
-           << KCalCore::FreeBusy::freeBusyMimeType();
+                         << KCalCore::Todo::todoMimeType()
+                         << KCalCore::Journal::journalMimeType()
+                         << KCalCore::FreeBusy::freeBusyMimeType();
 }
 
 QString ICalResource::mimeType(const IncidenceBase::Ptr &incidence) const
 {
     return incidence->mimeType();
 }
-

@@ -36,7 +36,7 @@ static void createFolderPermissions(const Folder &folder, QDomDocument &document
         Folder::UserPermissions::ConstIterator it = userPermissions.constBegin();
         while (it != userPermissions.constEnd()) {
             QDomElement user = DAVUtils::addOxElement(document, permissions, QStringLiteral("user"),
-                               OXUtils::writeNumber(it.key()));
+                                                      OXUtils::writeNumber(it.key()));
             DAVUtils::setOxAttribute(user, QStringLiteral("folderpermission"),
                                      OXUtils::writeNumber(it.value().folderPermission()));
             DAVUtils::setOxAttribute(user, QStringLiteral("objectreadpermission"),
@@ -57,7 +57,7 @@ static void createFolderPermissions(const Folder &folder, QDomDocument &document
         Folder::GroupPermissions::ConstIterator it = groupPermissions.constBegin();
         while (it != groupPermissions.constEnd()) {
             QDomElement group = DAVUtils::addOxElement(document, permissions, QStringLiteral("group"),
-                                OXUtils::writeNumber(it.key()));
+                                                       OXUtils::writeNumber(it.key()));
             DAVUtils::setOxAttribute(group, QStringLiteral("folderpermission"),
                                      OXUtils::writeNumber(it.value().folderPermission()));
             DAVUtils::setOxAttribute(group, QStringLiteral("objectreadpermission"),
@@ -175,14 +175,20 @@ void OXA::FolderUtils::addFolderElements(QDomDocument &document, QDomElement &pr
 
     QString module;
     switch (folder.module()) {
-    case Folder::Calendar: module = QStringLiteral("calendar"); break;
-    case Folder::Contacts: module = QStringLiteral("contact"); break;
-    case Folder::Tasks: module = QStringLiteral("task"); break;
-    default: break;
+    case Folder::Calendar:
+        module = QStringLiteral("calendar");
+        break;
+    case Folder::Contacts:
+        module = QStringLiteral("contact");
+        break;
+    case Folder::Tasks:
+        module = QStringLiteral("task");
+        break;
+    default:
+        break;
     }
     DAVUtils::addOxElement(document, propElement, QStringLiteral("module"), OXUtils::writeString(module));
 
     QDomElement permissions = DAVUtils::addOxElement(document, propElement, QStringLiteral("permissions"));
     createFolderPermissions(folder, document, permissions);
 }
-

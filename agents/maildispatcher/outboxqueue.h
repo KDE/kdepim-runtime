@@ -27,8 +27,7 @@
 
 class KJob;
 class QTimer;
-namespace Akonadi
-{
+namespace Akonadi {
 class Monitor;
 }
 
@@ -117,7 +116,6 @@ private:
     // items.
     // TODO debug and figure out why this happens.
     QSet<Akonadi::Item::Id> mIgnore;
-
 };
 
 #endif

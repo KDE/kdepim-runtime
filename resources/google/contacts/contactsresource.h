@@ -24,13 +24,12 @@
 #include <AkonadiCore/Item>
 
 class GoogleSettings;
-namespace KGAPI2
-{
+namespace KGAPI2 {
 class Job;
 }
 class KJob;
 
-class ContactsResource: public GoogleResource
+class ContactsResource : public GoogleResource
 {
     Q_OBJECT
 
@@ -51,8 +50,7 @@ protected Q_SLOTS:
     void itemRemoved(const Akonadi::Item &item) override;
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
-    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource,
-                   const Akonadi::Collection &collectionDestination) override;
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
@@ -78,7 +76,6 @@ private:
 
     QMap<QString, Akonadi::Collection> m_collections;
     Akonadi::Collection m_rootCollection;
-
 };
 
 #endif // CONTACTSRESOURCE_H

@@ -28,7 +28,6 @@
 
 #include <QMap>
 
-
 class Settings : public SettingsBase
 {
     Q_OBJECT

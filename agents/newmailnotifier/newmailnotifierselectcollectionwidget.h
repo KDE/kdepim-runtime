@@ -29,8 +29,7 @@ class KRecursiveFilterProxyModel;
 #else
 class QSortFilterProxyModel;
 #endif
-namespace Akonadi
-{
+namespace Akonadi {
 class EntityTreeModel;
 class ChangeRecorder;
 }

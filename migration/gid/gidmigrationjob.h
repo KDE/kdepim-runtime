@@ -65,7 +65,7 @@ private:
 /**
  * @internal
  */
-class UpdateJob: public Akonadi::Job
+class UpdateJob : public Akonadi::Job
 {
     Q_OBJECT
 public:
