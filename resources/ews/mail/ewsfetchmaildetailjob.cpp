@@ -92,7 +92,7 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
         v = ewsItem[EwsItemFieldToRecipients];
         if (Q_LIKELY(v.isValid())) {
             const EwsMailbox::List mboxList = v.value<EwsMailbox::List>();
-            Q_FOREACH (const EwsMailbox &mbox, mboxList) {
+            for (const EwsMailbox &mbox : mboxList) {
                 msg->to()->addAddress(mbox);
             }
         }

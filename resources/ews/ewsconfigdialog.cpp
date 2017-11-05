@@ -57,11 +57,11 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         KWindowSystem::setMainWindow(this, wId);
     }
 
-    mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout();
-    setLayout(mainLayout);
     mainLayout->addWidget(mainWidget);
+
+    mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QPushButton *okButton = mButtonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
