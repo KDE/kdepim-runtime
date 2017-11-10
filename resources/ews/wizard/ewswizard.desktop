@@ -65,6 +65,7 @@ Comment[sr@latin]=Nalog na Exchangeu
 Comment[sv]=Exchange-konto
 Comment[uk]=Обліковий запис Exchange
 Comment[x-test]=xxExchange accountxx
+Comment[zh_CN]=Exchange 帐户
 
 [Wizard]
 Type=message/rfc822
