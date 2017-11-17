@@ -2,6 +2,7 @@
 Name=Microsoft Exchange Server (EWS)
 Name[ca]=Servidor Microsoft Exchange (EWS)
 Name[ca@valencia]=Servidor Microsoft Exchange (EWS)
+Name[cs]=Server Microsoft Exchange (EWS)
 Name[es]=Servidor Microsoft Exchange (EWS)
 Name[it]=Microsoft Exchange Server (EWS)
 Name[nl]=Microsoft Exchange Server (EWS)
