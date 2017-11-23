@@ -189,6 +189,12 @@ KDAV::DavUrl Settings::configuredDavUrl(KDAV::Protocol proto, const QString &sea
 
     if (!finalUrl.isEmpty()) {
         fullUrl = QUrl::fromUserInput(finalUrl);
+        if (finalUrl.startsWith(QLatin1Char('/')) ) {
+            QUrl searchQUrl(searchUrl);
+            fullUrl.setHost(searchQUrl.host());
+            fullUrl.setScheme(searchQUrl.scheme());
+            fullUrl.setPort(searchQUrl.port());
+        }
     } else {
         fullUrl = QUrl::fromUserInput(searchUrl);
     }
