@@ -36,7 +36,7 @@ endif()
 #    3.2 
 
 if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "")
+    set(KDEPIM_RUNTIME_DEV_VERSION "rc")
 endif()
 
 
