@@ -88,8 +88,8 @@ set(AKONADINOTE_LIB_VERSION "5.6.90")
 set(PIMCOMMON_LIB_VERSION_LIB "5.6.90")
 set(KGAPI_LIB_VERSION "5.6.90")
 
-set( SHARED_MIME_INFO_MINIMUM_VERSION "1.0" )
-find_package( SharedMimeInfo REQUIRED )
+set( SharedMimeInfo_MINIMUM_VERSION "1.0" )
+find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 
 find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
