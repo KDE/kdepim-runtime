@@ -99,6 +99,8 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     cts.removeOne(KMime::Message::mimeType());
     if (!cts.isEmpty()) {
         setItemMergingMode(Akonadi::ItemSync::GIDMerge);
+    } else {
+        setItemMergingMode(Akonadi::ItemSync::RIDMerge);
     }
 
     if (m_fetchMissingBodies && col.cachePolicy()
