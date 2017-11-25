@@ -53,9 +53,9 @@ private Q_SLOTS:
 private:
     QQueue< QWeakPointer<MigratorBase> > mQueue;
     QWeakPointer<MigratorBase> mCurrentMigrator;
-    bool mSuspended;
-    int mTotalAmount;
-    int mAlreadyProcessed;
+    bool mSuspended = false;
+    int mTotalAmount = 0;
+    int mAlreadyProcessed = 0;
 };
 
 #endif

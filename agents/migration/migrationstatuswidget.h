@@ -31,15 +31,18 @@ class MigrationStatusWidget : public QWidget
     Q_OBJECT
 public:
     explicit MigrationStatusWidget(MigrationScheduler &scheduler, QWidget *parent = nullptr);
+
+public Q_SLOTS:
+    void onItemActivated(const QModelIndex &);
+
 private Q_SLOTS:
     void startSelected();
     void pauseSelected();
     void abortSelected();
+
 private:
     MigrationScheduler &mScheduler;
     QItemSelectionModel *mSelectionModel = nullptr;
-public Q_SLOTS:
-    void onItemActivated(const QModelIndex &);
 };
 
 #endif // MIGRATIONCONFIGDIALOG_H

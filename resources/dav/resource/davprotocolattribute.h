@@ -35,7 +35,7 @@ public:
     void deserialize(const QByteArray &data) override;
 
 private:
-    int mDavProtocol;
+    int mDavProtocol = 0;
 };
 
 #endif

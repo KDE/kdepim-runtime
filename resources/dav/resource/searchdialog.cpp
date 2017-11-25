@@ -37,7 +37,6 @@
 SearchDialog::SearchDialog(QWidget *parent)
     : QDialog(parent)
     , mModel(new QStandardItemModel(this))
-    , mSubJobCount(0)
 {
     setWindowTitle(i18n("Search"));
     QWidget *mainWidget = new QWidget(this);

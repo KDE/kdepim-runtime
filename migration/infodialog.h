@@ -66,7 +66,7 @@ private:
     QListWidget *mList = nullptr;
     QLabel *mStatusLabel = nullptr;
     QProgressBar *mProgressBar = nullptr;
-    int mMigratorCount;
+    int mMigratorCount = 0;
     static bool mError;
     bool mChange = false;
     bool mCloseWhenDone = false;

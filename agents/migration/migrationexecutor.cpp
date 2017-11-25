@@ -23,10 +23,7 @@
 #include <KLocalizedString>
 
 MigrationExecutor::MigrationExecutor()
-    :   KJob()
-    , mSuspended(false)
-    , mTotalAmount(0)
-    , mAlreadyProcessed(0)
+    : KJob()
 {
     setCapabilities(Suspendable);
 }

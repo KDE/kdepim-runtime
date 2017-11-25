@@ -32,7 +32,6 @@ EntityTreeCreateJob::EntityTreeCreateJob(const QList< Akonadi::Collection::List 
     : Akonadi::TransactionSequence(parent)
     , m_collections(collections)
     , m_items(items)
-    , m_pendingJobs(0)
 {
 }
 

@@ -89,7 +89,7 @@ private:
 
     QMap<QString, RequestTracker> mRequestsTracker;
     QMap<QString, QStringList> mPrincipalScheduleOutbox;
-    uint mNextRequestId;
+    uint mNextRequestId = 0;
 };
 
 #endif // DAVFREEBUSYHANDLER_H

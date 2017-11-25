@@ -52,7 +52,7 @@ private:
 
     Ui::SearchDialog mUi;
     QStandardItemModel *mModel = nullptr;
-    int mSubJobCount;
+    int mSubJobCount = 0;
 };
 
 #endif // SEARCHDIALOG_H

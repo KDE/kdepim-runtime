@@ -33,7 +33,6 @@
 
 DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)
     : QObject(parent)
-    , mNextRequestId(0)
 {
 }
 
