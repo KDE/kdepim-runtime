@@ -112,7 +112,7 @@ QHash<EwsPropertyField, QVariant> EwsMailHandler::writeFlags(const QSet<QByteArr
     bool isRead = false;
     bool isFlagged = false;
 
-    Q_FOREACH (const QByteArray &flag, flags) {
+    for (const QByteArray &flag : flags) {
         if (flag == MessageFlags::Seen) {
             isRead = true;
         } else if (flag == MessageFlags::Flagged) {
