@@ -2,6 +2,8 @@
 Name=Microsoft Exchange Server (EWS) Mail Transport
 Name[ca]=Transport de correu del servidor Microsoft Exchange (EWS)
 Name[ca@valencia]=Transport de correu del servidor Microsoft Exchange (EWS)
+Name[de]=E-Mail-Transport über Microsoft Exchange Server (EWS) 
+Name[en_GB]=Microsoft Exchange Server (EWS) Mail Transport
 Name[es]=Agente de transporte de Microsoft Exchange Server (EWS)
 Name[it]=Trasporto della posta Microsoft Exchange Server (EWS)
 Name[nl]=Microsoft Exchange Server (EWS) e-mailtransport
@@ -18,6 +20,8 @@ Name[zh_CN]=微软 Exchange 服务器（EWS）邮件传输
 Comment=Allows sending e-mail through the Microsoft Exchange server using EWS
 Comment[ca]=Permet l'enviament de correu electrònic a través d'un servidor Microsoft Exchange emprant EWS
 Comment[ca@valencia]=Permet l'enviament de correu electrònic a través d'un servidor Microsoft Exchange emprant EWS
+Comment[de]=Ermöglicht den Versand von E-Mails mit EWS über einen Microsoft Exchange Server
+Comment[en_GB]=Allows sending e-mail through the Microsoft Exchange server using EWS
 Comment[es]=Permite el envío de correo a través del servidor Microsoft Exchange usando EWS
 Comment[it]=Permette l'invio di messaggi di posta tramite il server Microsoft Exchange usando EWS
 Comment[nl]=Staat het zenden van e-mail via de Microsoft Exchange server toe met EWS
