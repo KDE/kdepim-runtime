@@ -421,6 +421,7 @@ void POP3Resource::doStateStep()
         }
         break;
     case CheckRemovingMessage:
+        qCDebug(POP3RESOURCE_LOG) << "================ Starting state CheckRemovingMessage ===================";
         checkRemovingMessageFromServer();
         break;
     }
@@ -836,6 +837,9 @@ void POP3Resource::deleteJobResult(KJob *job)
 
     if (shouldAdvanceToQuitState()) {
         advanceState(Quit);
+    }
+    else if (mDeleteJob == nullptr) {
+        advanceState(Save);
     }
 }
 
