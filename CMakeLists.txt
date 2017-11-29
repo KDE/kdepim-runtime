@@ -18,7 +18,7 @@ endif()
 #
 # If "z" is 0, it the version is "x.y"
 #
-# KDEPIM_RUNTIME_DEV_VERSION
+# KDEPIM_DEV_VERSION
 # is empty for final versions. For development versions "build" is
 # something like "pre", "", "alpha2", "beta1", "beta2", "rc1", "rc2".
 #
@@ -35,11 +35,11 @@ endif()
 #    3.2 pre
 #    3.2 
 
-if(NOT DEFINED KDEPIM_RUNTIME_DEV_VERSION)
-    set(KDEPIM_RUNTIME_DEV_VERSION "alpha")
+if(NOT DEFINED KDEPIM_DEV_VERSION)
+    set(KDEPIM_DEV_VERSION "alpha")
 endif()
 
-set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_RUNTIME_DEV_VERSION}")
+set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION}")
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
