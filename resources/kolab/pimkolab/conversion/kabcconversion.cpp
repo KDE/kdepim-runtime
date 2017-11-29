@@ -758,15 +758,17 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     int prefEmail = -1;
     int count = 0;
     std::vector<Kolab::Email> emails;
-    emails.resize(addressee.emails().count());
+    emails.reserve(addressee.emails().count());
     foreach (const QString &e, addressee.emails()) {
         if ((prefEmail == -1) && (e == addressee.preferredEmail())) {
             prefEmail = count;
         }
         count++;
-        emails.push_back(Kolab::Email(toStdString(e), emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e)))));
+        emails.push_back(Kolab::Email(toStdString(e),
+                                      emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e)))));
     }
     c.setEmailAddresses(emails, prefEmail);
+
     if (addressee.geo().isValid()) {
         c.setGPSpos(std::vector<Kolab::Geo>() << Kolab::Geo(addressee.geo().latitude(), addressee.geo().longitude()));
     }
