@@ -146,17 +146,13 @@ EncryptionPreference stringToEncryptionPreference(const QString &str)
 {
     if (str == QLatin1String("never")) {
         return NeverEncrypt;
-    }
-    if (str == QLatin1String("always")) {
+    } else if (str == QLatin1String("always")) {
         return AlwaysEncrypt;
-    }
-    if (str == QLatin1String("alwaysIfPossible")) {
+    } else if (str == QLatin1String("alwaysIfPossible")) {
         return AlwaysEncryptIfPossible;
-    }
-    if (str == QLatin1String("askAlways")) {
+    } else if (str == QLatin1String("askAlways")) {
         return AlwaysAskForEncryption;
-    }
-    if (str == QLatin1String("askWhenPossible")) {
+    } else if (str == QLatin1String("askWhenPossible")) {
         return AskWheneverPossible;
     }
     return UnknownPreference;
@@ -470,6 +466,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
 
     if (!contact.emailAddresses().empty()) {
         QStringList emails;
+        emails.reserve(contact.emailAddresses().size());
         foreach (const Kolab::Email &email, contact.emailAddresses()) {
             emails << fromStdString(email.address());
             const QString types = emailTypesToStringList(email.types());
@@ -731,8 +728,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
         c.setPhoto(photo, mimetype);
     }
     //TODO
-//     c.setGender();
-//     c.setLanguages();
+     // c.setGender(addressee.gender());
+     // c.setLanguages(addressee.langs());
 
     std::vector <Kolab::Telephone> phones;
     prefNum = -1;
