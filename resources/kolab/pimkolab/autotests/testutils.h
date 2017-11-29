@@ -43,6 +43,8 @@ Q_DECLARE_METATYPE(Kolab::Version)
     do { \
         if (!(actual.simplified() == expected.simplified())) { \
             qDebug() << "Content not the same."; \
+            qDebug() << "actual." << actual.simplified() << "\n"; \
+            qDebug() << "expected." << expected.simplified(); \
             showDiff(expected, actual); \
             QTest::qFail("Compared versions differ.", __FILE__, __LINE__); \
             return; \
@@ -112,6 +114,7 @@ void normalizeMimemessage(QString &content)
     content.replace(QRegExp("\\bLibkolab-\\d.\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
     content.replace(QRegExp("\\bLibkolabxml-\\d.\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
     content.replace(QRegExp("\\bLibkolab-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegExp("\\bkdepim-runtime-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
     content.replace(QRegExp("\\bLibkolabxml-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
     content.replace(QRegExp("<uri>cid:*@kolab.resource.akonadi</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>cid:id@kolab.resource.akonadi</uri>"));
     content.replace(QRegExp("Content-ID: <*@kolab.resource.akonadi>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("Content-ID: <id@kolab.resource.akonadi>"));
