@@ -9,7 +9,6 @@ set(Libkolab_VERSION_MAJOR 1)
 set(Libkolab_VERSION_MINOR 0)
 # Enable the full x.y.z version only for release versions
 set(Libkolab_VERSION_PATCH 2)
-#set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR}.${Libkolab_VERSION_PATCH})
 set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR})
 set(Libkolab_VERSION_STRING ${CMAKE_PROJECT_NAME}-${Libkolab_VERSION})
 
