@@ -5,15 +5,6 @@ remove_definitions(
 set(Libkolab_MODULE_DIR ${Libkolab_SOURCE_DIR}/cmake/modules)
 set(CMAKE_MODULE_PATH ${Libkolab_MODULE_DIR})
 
-# Versioning
-# x.y.z scheme
-# Development versions are only x.y
-#
-# i.e.
-# 0.1 (0.1 development version towards 0.1.0)
-# 0.1.0 (first release)
-# 0.1.1 (patch release for 0.1.0)
-# 0.2 (0.2 development version towards 0.2.0)
 set(Libkolab_VERSION_MAJOR 1)
 set(Libkolab_VERSION_MINOR 0)
 # Enable the full x.y.z version only for release versions
@@ -21,12 +12,6 @@ set(Libkolab_VERSION_PATCH 2)
 #set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR}.${Libkolab_VERSION_PATCH})
 set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR})
 set(Libkolab_VERSION_STRING ${CMAKE_PROJECT_NAME}-${Libkolab_VERSION})
-
-# set up install directories.
-set(LIB_INSTALL_DIR lib${LIB_SUFFIX} CACHE STRING "The directories where to install libraries to")
-set(INCLUDE_INSTALL_DIR include CACHE STRING "The directory where to install headers to")
-set(INCLUDE_INSTALL_DIR ${INCLUDE_INSTALL_DIR}/kolab)
-set(CMAKECONFIG_INSTALL_DIR ${LIB_INSTALL_DIR}/cmake/Libkolab)
 
 if (Qt5_POSITION_INDEPENDENT_CODE)
     #Requires cmake 2.8.9 (same as -fPIC on gcc)
