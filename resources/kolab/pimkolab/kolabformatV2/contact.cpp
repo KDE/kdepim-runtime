@@ -483,7 +483,6 @@ void Contact::saveEmailAttributes(QDomElement &element) const
 {
     QList<Email>::ConstIterator it = mEmails.constBegin();
     QList<Email>::ConstIterator end = mEmails.constEnd();
-    qDebug() << " mEMAILMS ::: "<< mEmails.count();
     for (; it != end; ++it) {
         saveEmailAttribute(element, *it);
     }
