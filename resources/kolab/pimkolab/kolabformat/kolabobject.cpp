@@ -133,7 +133,7 @@ RelationMember parseMemberUrl(const QString &string)
     for (const QByteArray &fragment : fragments) {
         path.append(ownUrlDecode(fragment).toUtf8());
     }
-    // qDebug() << path;
+    // qCDebug(PIMKOLAB_LOG) << path;
     bool isShared = false;
     int start = path.indexOf("user");
     if (start < 0) {
@@ -158,14 +158,14 @@ RelationMember parseMemberUrl(const QString &string)
     member.messageId = ownUrlDecode(url.encodedQueryItemValue("message-id"));
     member.subject = ownUrlDecode(url.encodedQueryItemValue("subject"));
     member.date = ownUrlDecode(url.encodedQueryItemValue("date"));
-    // qDebug() << member.uid << member.mailbox;
+    // qCDebug(PIMKOLAB_LOG) << member.uid << member.mailbox;
     return member;
 }
 
 static QByteArray join(const QList<QByteArray> &list, const QByteArray &c)
 {
     QByteArray result;
-    Q_FOREACH (const QByteArray &a, list) {
+    for (const QByteArray &a : list) {
         result += a + c;
     }
     result.chop(c.size());
@@ -226,7 +226,7 @@ public:
     Kolab::Freebusy mFreebusy;
     ObjectType mOverrideObjectType;
     Version mOverrideVersion;
-    bool mDoOverrideVersion;
+    bool mDoOverrideVersion = false;
     Akonadi::Relation mRelation;
     Akonadi::Tag mTag;
     QStringList mTagMembers;

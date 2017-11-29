@@ -232,7 +232,7 @@ public:
     Version mVersion;
     ObjectType mOverrideObjectType;
     Version mOverrideVersion;
-    bool mDoOverrideVersion;
+    bool mDoOverrideVersion = false;
     QVariant mObject;
 };
 //@endcond

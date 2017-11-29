@@ -19,6 +19,7 @@
 
 #include "icalendar.h"
 #include "imip.h"
+#include "pimkolab_debug.h"
 #include "libkolab-version.h"
 #include <conversion/kcalconversion.h>
 #include <conversion/commonconversion.h>
@@ -43,7 +44,7 @@ std::string toICal(const std::vector<Event> &events)
     }
     KCalCore::ICalFormat format;
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
-//     qDebug() << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
+//     qCDebug(PIMKOLAB_LOG) << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
 
     return Conversion::toStdString(format.toString(calendar));
 }
@@ -88,7 +89,7 @@ std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod meth
     if (m == KCalCore::iTIPNoMethod) {
         return std::string();
     }
-//     qDebug() << event.start().
+//     qCDebug(PIMKOLAB_LOG) << event.start().
 /* TODO
  * DTSTAMP is created
  * CREATED is current timestamp
@@ -151,7 +152,7 @@ std::vector< Event > ITipHandler::fromIMip(const std::string &input)
 
     KMime::Content *c = Kolab::Mime::findContentByType(msg, "text/calendar");
     if (!c) {
-        qWarning() << "could not find text/calendar part";
+        qCWarning(PIMKOLAB_LOG) << "could not find text/calendar part";
         return std::vector< Event >();
     }
     return fromITip(Conversion::toStdString(QString(c->decodedContent())));

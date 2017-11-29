@@ -33,8 +33,8 @@
 
 #include "journal.h"
 #include "libkolab-version.h"
+#include "pimkolab_debug.h"
 #include "utils/porting.h"
-#include <QDebug>
 
 using namespace KolabV2;
 
@@ -128,8 +128,7 @@ bool Journal::loadXML(const QDomDocument &document)
     QDomElement top = document.documentElement();
 
     if (top.tagName() != QLatin1String("journal")) {
-        qWarning("XML error: Top tag was %s instead of the expected Journal",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected Journal").arg(top.tagName());
         return false;
     }
 
@@ -144,7 +143,7 @@ bool Journal::loadXML(const QDomDocument &document)
                 //qDebug( "Unhandled tag: %s", e.toCString().data() );
             }
         } else {
-            qDebug("Node is not a comment or an element???");
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 

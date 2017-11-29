@@ -16,6 +16,7 @@
  */
 
 #include "freebusy.h"
+#include "pimkolab_debug.h"
 #include "conversion/kcalconversion.h"
 #include "conversion/commonconversion.h"
 #include "libkolab-version.h"
@@ -23,7 +24,6 @@
 #include <kcalcore/icalformat.h>
 #include <quuid.h>
 #include <QTime>
-#include <QDebug>
 
 // namespace KCalCore {
 //     struct KCalFreebusy
@@ -79,30 +79,30 @@
 //             ( eventStart.secsTo( mDtEnd ) >= 0 ) ) ||
 //           ( ( mDtStart.secsTo( eventEnd ) >= 0 ) &&
 //             ( eventEnd.secsTo( mDtEnd ) >= 0 ) ) ) ) {
-//       qDebug() << "out of scope";
+//       qCDebug(PIMKOLAB_LOG) << "out of scope";
 //     return false;
 //   }
 //
-// //   qDebug() << eventStart.date().toString() << eventStart.time().toString() << mDtStart.toString();
+// //   qCDebug(PIMKOLAB_LOG) << eventStart.date().toString() << eventStart.time().toString() << mDtStart.toString();
 //   if ( eventStart < mDtStart ) { //eventStart is before start
-// //       qDebug() << "use start";
+// //       qCDebug(PIMKOLAB_LOG) << "use start";
 //     tmpStart = mDtStart;
 //   } else {
 //     tmpStart = eventStart;
 //   }
 //
-//   qDebug() << eventEnd.date().toString() << eventEnd.time().toString() << mDtEnd.toString();
+//   qCDebug(PIMKOLAB_LOG) << eventEnd.date().toString() << eventEnd.time().toString() << mDtEnd.toString();
 //   if ( eventEnd > mDtEnd ) { //event end is after dtEnd
-// //     qDebug() << "use end";
+// //     qCDebug(PIMKOLAB_LOG) << "use end";
 //     tmpEnd = mDtEnd;
 //   } else {
 //     tmpEnd = eventEnd;
 //   }
 //
-// //   qDebug() << "########## " << tmpStart.isValid();
+// //   qCDebug(PIMKOLAB_LOG) << "########## " << tmpStart.isValid();
 //   Q_ASSERT(tmpStart.isValid());
 //   Q_ASSERT(tmpEnd.isValid());
-// //   qDebug() << tmpStart.date().toString() << tmpStart.time().toString() << tmpStart.toString();
+// //   qCDebug(PIMKOLAB_LOG) << tmpStart.date().toString() << tmpStart.time().toString() << tmpStart.toString();
 //
 //   FreeBusyPeriod p( tmpStart, tmpEnd );
 //   mBusyPeriods.append( p );
@@ -137,7 +137,7 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
            && (eventStart <= mDtEnd))
           || ((mDtStart <= eventEnd)
               && (eventEnd <= mDtEnd)))) {
-        qDebug() << "event is not within the fb range, skipping";
+        qCDebug(PIMKOLAB_LOG) << "event is not within the fb range, skipping";
         return Kolab::Period();
     }
 
@@ -147,7 +147,7 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
         tmpStart = eventStart;
     }
 
-//   qDebug() << eventEnd.date().toString() << eventEnd.time().toString() << mDtEnd.toString();
+//   qCDebug(PIMKOLAB_LOG) << eventEnd.date().toString() << eventEnd.time().toString() << mDtEnd.toString();
     if (eventEnd > mDtEnd) { //event end is after dtEnd
         tmpEnd = mDtEnd;
     } else {

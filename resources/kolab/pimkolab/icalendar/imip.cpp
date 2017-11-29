@@ -18,11 +18,11 @@
 */
 
 #include "imip.h"
+#include "pimkolab_debug.h"
 
 #include <kcalutils/incidenceformatter.h>
 #include <KEmailAddress>
 #include <kmime/kmime_message.h>
-#include <QDebug>
 #include <QTime>
 /*
  * The code in here is copy paste work from kdepim/calendarsupport.
@@ -47,7 +47,7 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
     if (to.isEmpty()) {
         to = from;
     }
-    qDebug() << "\nFrom:" << from
+    qCDebug(PIMKOLAB_LOG) << "\nFrom:" << from
              << "\nTo:" << to
              << "\nCC:" << cc
              << "\nSubject:" << subject << "\nBody: \n" << body
@@ -137,7 +137,7 @@ QByteArray mailAttendees(const KCalCore::IncidenceBase::Ptr &incidence,
 {
     KCalCore::Attendee::List attendees = incidence->attendees();
     if (attendees.isEmpty()) {
-        qWarning() << "There are no attendees to e-mail";
+        qCWarning(PIMKOLAB_LOG) << "There are no attendees to e-mail";
         return QByteArray();
     }
 
@@ -180,7 +180,7 @@ QByteArray mailAttendees(const KCalCore::IncidenceBase::Ptr &incidence,
     }
     if (toList.isEmpty() && ccList.isEmpty()) {
         // Not really to be called a groupware meeting, eh
-        qWarning() << "There are really no attendees to e-mail";
+        qCWarning(PIMKOLAB_LOG) << "There are really no attendees to e-mail";
         return QByteArray();
     }
     QString to;

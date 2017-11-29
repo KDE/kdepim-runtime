@@ -55,7 +55,7 @@ static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
     }
     const KCalPtr i = Container::fromXml(xmlDoc, QString());   //For parsing we don't need the timezone, so we don't set one
     Q_ASSERT(i);
-    QDomNodeList nodes = xmlDoc.elementsByTagName(QStringLiteral("inline-attachment"));
+    const QDomNodeList nodes = xmlDoc.elementsByTagName(QStringLiteral("inline-attachment"));
     for (int i = 0; i < nodes.size(); i++) {
         attachments.append(nodes.at(i).toElement().text());
     }

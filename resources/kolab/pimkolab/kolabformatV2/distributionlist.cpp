@@ -30,10 +30,10 @@
 */
 
 #include "distributionlist.h"
+#include "pimkolab_debug.h"
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <QDebug>
 
 using namespace KolabV2;
 
@@ -145,8 +145,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
     QDomElement top = document.documentElement();
 
     if (top.tagName() != QLatin1String("distribution-list")) {
-        qWarning("XML error: Top tag was %s instead of the expected distribution-list",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected distribution-list").arg(top.tagName());
         return false;
     }
 
@@ -158,7 +157,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // Unhandled tag - save for later storage
-                //qDebug() <<"Saving unhandled tag" << e.tagName();
+                //qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << e.tagName();
                 Custom c;
                 c.app = unhandledTagAppName();
                 c.name = e.tagName();
@@ -166,7 +165,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
                 mCustomList.append(c);
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 
@@ -215,7 +214,7 @@ void DistributionList::setFields(const KContacts::ContactGroup *contactGroup)
         mDistrListMembers.append(m);
     }
     if (contactGroup->contactGroupReferenceCount() > 0) {
-        qWarning() << "Tried to save contact group references, which should have been resolved already";
+        qCWarning(PIMKOLAB_LOG) << "Tried to save contact group references, which should have been resolved already";
     }
 }
 

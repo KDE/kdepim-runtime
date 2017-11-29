@@ -342,7 +342,7 @@ std::string fromPicture(const KContacts::Picture &pic, std::string &mimetype)
             img = pic.data();
         }
     } else if (!pic.url().isEmpty()) {
-        qWarning() << "external pictures are currently not supported";
+        qCWarning(PIMKOLAB_LOG) << "external pictures are currently not supported";
         //FIXME add kio support to libcalendaring or use libcurl
 //         if ( KIO::NetAccess::download( pic.url(), tmpFile, 0 /*no widget known*/ ) ) {
 //             img.load( tmpFile );
@@ -880,7 +880,7 @@ DistList fromKABC(const KContacts::ContactGroup &cg)
     }
 
     if (cg.contactGroupReferenceCount() > 0) {
-        qWarning() << "Tried to save contact group references, which should have been resolved already";
+        qCWarning(PIMKOLAB_LOG) << "Tried to save contact group references, which should have been resolved already";
     }
 
     dl.setMembers(members);

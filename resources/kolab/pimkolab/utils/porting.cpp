@@ -20,12 +20,11 @@
 */
 
 #include "porting.h"
+#include "pimkolab_debug.h"
 
 #include <QTimeZone>
 #include <KTimeZone>
 #include <KSystemTimeZones>
-
-#include <QDebug>
 
 KDateTime::Spec Porting::zoneToSpec(const QTimeZone &zone)
 {
@@ -129,7 +128,7 @@ QTimeZone Porting::specToZone(const KDateTime::Spec &spec)
         auto tz = QTimeZone(spec.timeZone().name().toUtf8());
         if (!tz.isValid()) {
             tz = resolveCustomTZ(spec.timeZone());
-            qDebug() << "Resolved" << spec.timeZone().name() << "to" << tz.id();
+            qCDebug(PIMKOLAB_LOG) << "Resolved" << spec.timeZone().name() << "to" << tz.id();
         }
         return tz;
     }

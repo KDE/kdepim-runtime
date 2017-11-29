@@ -74,8 +74,9 @@ void ErrorHandler::addError(ErrorHandler::Severity s, const QString &message, co
 {
     QMutexLocker locker(&mutex);
     QString filename = location;
-    if (!filename.split(QLatin1Char('/')).isEmpty()) {
-        filename = filename.split(QLatin1Char('/')).last();
+    const QStringList lst = filename.split(QLatin1Char('/'));
+    if (!lst.isEmpty()) {
+        filename = lst.last();
     }
     const QString output = QTime::currentTime().toString(QStringLiteral("(hh:mm:ss) ")) + filename + QLatin1String(":\t") + message;
     std::cout << output.toStdString() << std::endl;

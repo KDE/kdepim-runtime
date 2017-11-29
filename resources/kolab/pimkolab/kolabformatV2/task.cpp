@@ -33,9 +33,9 @@
 
 #include "task.h"
 #include "utils/porting.h"
+#include "pimkolab_debug.h"
 
 #include <kcalcore/todo.h>
-#include <QDebug>
 
 using namespace KolabV2;
 
@@ -260,8 +260,7 @@ bool Task::loadXML(const QDomDocument &document)
     QDomElement top = document.documentElement();
 
     if (top.tagName() != QLatin1String("task")) {
-        qWarning("XML error: Top tag was %s instead of the expected task",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected task").arg(top.tagName());
         return false;
     }
     setHasStartDate(false); // todo's don't necessarily have one
@@ -274,10 +273,10 @@ bool Task::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // TODO: Unhandled tag - save for later storage
-                qDebug() <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 

@@ -66,9 +66,9 @@ QString TimezoneConverter::fromCityName(const QString &tz)
             ++pos;
         }
         const QString location = locationFinder.capturedTexts().first();
-        qDebug() << "location " << location;
+        qCDebug(PIMKOLAB_LOG) << "location " << location;
         if (countryMap.contains(location)) {
-            qDebug() << "found match " << countryMap.value(location);
+            qCDebug(PIMKOLAB_LOG) << "found match " << countryMap.value(location);
             return countryMap.value(location);
         }
     }

@@ -31,10 +31,9 @@
 */
 
 #include "contact.h"
-
+#include "pimkolab_debug.h"
 #include <kcontacts/addressee.h>
 #include <QFile>
-#include <QDebug>
 #include <float.h>
 
 using namespace KolabV2;
@@ -415,10 +414,10 @@ bool Contact::loadNameAttribute(QDomElement &element)
                 setSuffix(e.text());
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qDebug() <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 
@@ -456,10 +455,10 @@ bool Contact::loadPhoneAttribute(QDomElement &element)
                 number.number = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qDebug() <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 
@@ -484,6 +483,7 @@ void Contact::saveEmailAttributes(QDomElement &element) const
 {
     QList<Email>::ConstIterator it = mEmails.constBegin();
     QList<Email>::ConstIterator end = mEmails.constEnd();
+    qDebug() << " mEMAILMS ::: "<< mEmails.count();
     for (; it != end; ++it) {
         saveEmailAttribute(element, *it);
     }
@@ -546,10 +546,10 @@ bool Contact::loadAddressAttribute(QDomElement &element)
                 address.country = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qDebug() <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 
@@ -812,8 +812,7 @@ bool Contact::loadXML(const QDomDocument &document)
     QDomElement top = document.documentElement();
 
     if (top.tagName() != QLatin1String("contact")) {
-        qWarning("XML error: Top tag was %s instead of the expected contact",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected contact").arg(top.tagName());
         return false;
     }
 
@@ -825,7 +824,7 @@ bool Contact::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // Unhandled tag - save for later storage
-                //qDebug() <<"Saving unhandled tag" << e.tagName();
+                //qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << e.tagName();
                 Custom c;
                 c.app = unhandledTagAppName();
                 c.name = e.tagName();
@@ -833,7 +832,7 @@ bool Contact::loadXML(const QDomDocument &document)
                 mCustomList.append(c);
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 
@@ -1141,7 +1140,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
         QString value = name.mid(pos + 1);
         name = name.left(pos);
         if (!knownCustoms.contains(name)) {
-            //qDebug() <<"app=" << app <<" name=" << name <<" value=" << value;
+            //qCDebug(PIMKOLAB_LOG) <<"app=" << app <<" name=" << name <<" value=" << value;
             Custom c;
             if (app != QLatin1String("KADDRESSBOOK")) { // that's the default
                 c.app = app;
@@ -1266,14 +1265,14 @@ void Contact::saveTo(KContacts::Addressee *addressee)
         QString app = (*it).app.isEmpty() ? QStringLiteral("KADDRESSBOOK") : (*it).app;
         addressee->insertCustom(app, (*it).name, (*it).value);
     }
-    //qDebug() << addressee->customs();
+    //qCDebug(PIMKOLAB_LOG) << addressee->customs();
 }
 
 QImage Contact::loadPictureFromAddressee(const KContacts::Picture &picture)
 {
     QImage img;
     if (!picture.isIntern() && !picture.url().isEmpty()) {
-        qWarning() << "external pictures are currently not supported";
+        qCWarning(PIMKOLAB_LOG) << "external pictures are currently not supported";
         //FIXME add kio support to libcalendaring or use libcurl
 //     if ( KIO::NetAccess::download( picture.url(), tmpFile, 0 /*no widget known*/ ) ) {
 //       img.load( tmpFile );

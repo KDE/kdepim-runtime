@@ -35,7 +35,7 @@ KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteAr
     }
     Q_ASSERT(!data->contents().isEmpty());
     Q_FOREACH (KMime::Content *c, data->contents()) {
-//         qDebug() << c->contentType()->mimeType() << type;
+//         qCDebug(PIMKOLAB_LOG) << c->contentType()->mimeType() << type;
         if (c->contentType()->mimeType() == type) {
             return c;
         }
@@ -47,7 +47,7 @@ KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString
 {
     Q_ASSERT(!data->contents().isEmpty());
     Q_FOREACH (KMime::Content *c, data->contents()) {
-//         qDebug() << "searching: " << c->contentType()->name().toUtf8();
+//         qCDebug(PIMKOLAB_LOG) << "searching: " << c->contentType()->name().toUtf8();
         if (c->contentType()->name() == name) {
             type = c->contentType()->mimeType();
             return c;
@@ -64,7 +64,7 @@ KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArra
     }
     Q_ASSERT(!data->contents().isEmpty());
     Q_FOREACH (KMime::Content *c, data->contents()) {
-//         qDebug() << "searching: " << c->contentID()->identifier();
+//         qCDebug(PIMKOLAB_LOG) << "searching: " << c->contentID()->identifier();
         if (c->contentID()->identifier() == id) {
             type = c->contentType()->mimeType();
             name = c->contentType()->name();

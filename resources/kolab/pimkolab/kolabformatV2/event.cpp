@@ -33,9 +33,9 @@
 
 #include "event.h"
 #include "utils/porting.h"
+#include "pimkolab_debug.h"
 
 #include <kcalcore/event.h>
-#include <QDebug>
 
 using namespace KolabV2;
 
@@ -83,7 +83,7 @@ void Event::setEndDate(const KDateTime &date)
     mEndDate = date;
     mHasEndDate = true;
     if (mFloatingStatus == AllDay) {
-        qDebug() <<"ERROR: Time on end date but no time on the event";
+        qCDebug(PIMKOLAB_LOG) <<"ERROR: Time on end date but no time on the event";
     }
     mFloatingStatus = HasTime;
 }
@@ -93,7 +93,7 @@ void Event::setEndDate(const QDate &date)
     mEndDate = KDateTime(date);
     mHasEndDate = true;
     if (mFloatingStatus == HasTime) {
-        qDebug() <<"ERROR: No time on end date but time on the event";
+        qCDebug(PIMKOLAB_LOG) <<"ERROR: No time on end date but time on the event";
     }
     mFloatingStatus = AllDay;
 }
@@ -163,8 +163,7 @@ bool Event::loadXML(const QDomDocument &document)
     QDomElement top = document.documentElement();
 
     if (top.tagName() != QLatin1String("event")) {
-        qWarning("XML error: Top tag was %s instead of the expected event",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected event").arg(top.tagName());
         return false;
     }
 
@@ -176,7 +175,7 @@ bool Event::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             loadAttribute(e);
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 

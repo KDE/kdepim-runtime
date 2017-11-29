@@ -33,9 +33,9 @@
 
 #include "note.h"
 #include "libkolab-version.h"
+#include "pimkolab_debug.h"
 
 #include <kcalcore/journal.h>
-#include <QDebug>
 
 using namespace KolabV2;
 
@@ -152,8 +152,7 @@ bool Note::loadXML(const QDomDocument &document)
     QDomElement top = document.documentElement();
 
     if (top.tagName() != QLatin1String("note")) {
-        qWarning("XML error: Top tag was %s instead of the expected note",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected note").arg(top.tagName());
         return false;
     }
 
@@ -165,10 +164,10 @@ bool Note::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // TODO: Unhandled tag - save for later storage
-                qDebug() <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 

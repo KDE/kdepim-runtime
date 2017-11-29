@@ -204,7 +204,7 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
 KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData)
 {
     KContacts::ContactGroup contactGroup;
-    //     qDebug() << "xmlData " << xmlData;
+    //     qCDebug(PIMKOLAB_LOG) << "xmlData " << xmlData;
     KolabV2::DistributionList distList(QString::fromUtf8(xmlData));
     distList.saveTo(&contactGroup);
     return contactGroup;
@@ -278,8 +278,7 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
     QDomElement top = xmlDoc.documentElement();
 
     if (top.tagName() != QLatin1String("configuration")) {
-        qWarning("XML error: Top tag was %s instead of the expected configuration",
-                 qPrintable(top.tagName()));
+        qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected configuration").arg(top.tagName());
         return QStringList();
     }
 
@@ -287,10 +286,11 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
         if (n.isComment() || !n.isElement()) {
             continue;
         }
-        QDomElement e = n.toElement();
-        if (e.tagName() == QLatin1String("language")) {
+        const QDomElement e = n.toElement();
+        const QString tagName = e.tagName();
+        if (tagName == QLatin1String("language")) {
             language = e.text();
-        } else if (e.tagName() == QLatin1String("e")) {
+        } else if (tagName == QLatin1String("e")) {
             dictionary.append(e.text());
         }
     }

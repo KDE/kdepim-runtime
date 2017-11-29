@@ -33,12 +33,12 @@
 
 #include "kolabbase.h"
 #include "utils/porting.h"
+#include "pimkolab_debug.h"
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
 #include <kcalcore/incidence.h>
 #include <kcalcore/journal.h>
-#include <QDebug>
 #include <KTimeZone>
 
 using namespace KolabV2;
@@ -104,14 +104,14 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
 
     // Set creation-time and last-modification-time
     const QString creationString = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));
-    qDebug() <<"Creation time string:" << creationString;
+    qCDebug(PIMKOLAB_LOG) <<"Creation time string:" << creationString;
     KDateTime creationDate;
     if (creationString.isEmpty()) {
         creationDate = KDateTime::currentDateTime(KDateTime::Spec(mTimeZone));
-        qDebug() <<"Creation date set to current time";
+        qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time";
     } else {
         creationDate = stringToDateTime(creationString);
-        qDebug() <<"Creation date loaded";
+        qCDebug(PIMKOLAB_LOG) <<"Creation date loaded";
     }
     KDateTime modified = KDateTime(addressee->revision(), mTimeZone);
     if (!modified.isValid()) {
@@ -121,7 +121,7 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
     if (modified < creationDate) {
         // It's not possible that the modification date is earlier than creation
         creationDate = modified;
-        qDebug() <<"Creation date set to modification date";
+        qCDebug(PIMKOLAB_LOG) <<"Creation date set to modification date";
     }
     setCreationDate(creationDate);
     const QString newCreationDate = dateTimeToString(creationDate);
@@ -129,7 +129,7 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
         // We modified the creation date, so store it for future reference
         const_cast<KContacts::Addressee *>(addressee)
         ->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"), newCreationDate);
-        qDebug() <<"Creation date modified. New one:" << newCreationDate;
+        qCDebug(PIMKOLAB_LOG) <<"Creation date modified. New one:" << newCreationDate;
     }
 
     switch (addressee->secrecy().type()) {
@@ -178,14 +178,14 @@ void KolabBase::setFields(const KContacts::ContactGroup *contactGroup)
 
     // Set creation-time and last-modification-time
     KDateTime creationDate = KDateTime::currentDateTime(KDateTime::Spec(mTimeZone));
-    qDebug() <<"Creation date set to current time";
+    qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time";
 
     KDateTime modified = KDateTime::currentUtcDateTime();
     setLastModified(modified);
     if (modified < creationDate) {
         // It's not possible that the modification date is earlier than creation
         creationDate = modified;
-        qDebug() <<"Creation date set to modification date";
+        qCDebug(PIMKOLAB_LOG) <<"Creation date set to modification date";
     }
     setCreationDate(creationDate);
 }
@@ -303,10 +303,10 @@ bool KolabBase::loadEmailAttribute(QDomElement &element, Email &email)
                 email.smtpAddress = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qDebug() <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qDebug() <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
         }
     }
 
