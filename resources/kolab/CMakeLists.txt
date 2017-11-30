@@ -66,6 +66,6 @@ install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akon
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 if (BUILD_TESTING)
-    #add_subdirectory(tests)
+    #add_subdirectory(autotests)
 endif()
 add_subdirectory(wizard)
