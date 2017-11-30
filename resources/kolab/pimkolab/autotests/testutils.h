@@ -72,23 +72,8 @@ void showDiff(const QString &expected, const QString &converted)
         return;
     }
 
-    bool showDiff = true;
-    if (showDiff) {
-        QTemporaryFile expectedFile(QStringLiteral("expectedFile"));
-        QTemporaryFile convertedFile(QStringLiteral("convertedFile"));
-        if (expectedFile.open() && convertedFile.open()) {
-            expectedFile.write(expected.toLatin1());
-            convertedFile.write(converted.toLatin1());
-            expectedFile.close();
-            convertedFile.close();
-            QProcess::execute(QStringLiteral("kdiff3"), QStringList() << expectedFile.fileName() << convertedFile.fileName());
-        } else {
-            qWarning() << "files are not open";
-        }
-    } else {
-        qDebug() << "EXPECTED: " << expected;
-        qDebug() << "CONVERTED: " << converted;
-    }
+    qDebug() << "EXPECTED: " << expected;
+    qDebug() << "CONVERTED: " << converted;
 }
 
 KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
