@@ -36,36 +36,31 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
     : QWidget(parent)
     , mScheduler(scheduler)
 {
-    QVBoxLayout *vboxLayout = new QVBoxLayout;
-    {
-        QToolBar *toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
+    QVBoxLayout *vboxLayout = new QVBoxLayout(this);
+    QToolBar *toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
 
-        QAction *start = toolbar->addAction(QStringLiteral("Start"));
-        start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
-        connect(start, &QAction::triggered, this, &MigrationStatusWidget::startSelected);
+    QAction *start = toolbar->addAction(QStringLiteral("Start"));
+    start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
+    connect(start, &QAction::triggered, this, &MigrationStatusWidget::startSelected);
 
-        QAction *pause = toolbar->addAction(QStringLiteral("Pause"));
-        pause->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
-        connect(pause, &QAction::triggered, this, &MigrationStatusWidget::pauseSelected);
+    QAction *pause = toolbar->addAction(QStringLiteral("Pause"));
+    pause->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-pause")));
+    connect(pause, &QAction::triggered, this, &MigrationStatusWidget::pauseSelected);
 
-        QAction *abort = toolbar->addAction(QStringLiteral("Abort"));
-        abort->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-stop")));
-        connect(abort, &QAction::triggered, this, &MigrationStatusWidget::abortSelected);
+    QAction *abort = toolbar->addAction(QStringLiteral("Abort"));
+    abort->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-stop")));
+    connect(abort, &QAction::triggered, this, &MigrationStatusWidget::abortSelected);
 
-        vboxLayout->addWidget(toolbar);
-    }
-    {
-        QTreeView *treeView = new QTreeView(this);
-        treeView->setModel(&mScheduler.model());
-        mSelectionModel = treeView->selectionModel();
-        Q_ASSERT(mSelectionModel);
-        //Not sure why this is required, but otherwise the view doesn't load anything from the model
-        treeView->update(QModelIndex());
-        connect(treeView, &QTreeView::doubleClicked, this, &MigrationStatusWidget::onItemActivated);
+    vboxLayout->addWidget(toolbar);
+    QTreeView *treeView = new QTreeView(this);
+    treeView->setModel(&mScheduler.model());
+    mSelectionModel = treeView->selectionModel();
+    Q_ASSERT(mSelectionModel);
+    //Not sure why this is required, but otherwise the view doesn't load anything from the model
+    treeView->update(QModelIndex());
+    connect(treeView, &QTreeView::doubleClicked, this, &MigrationStatusWidget::onItemActivated);
 
-        vboxLayout->addWidget(treeView);
-    }
-    setLayout(vboxLayout);
+    vboxLayout->addWidget(treeView);
 }
 
 void MigrationStatusWidget::startSelected()
