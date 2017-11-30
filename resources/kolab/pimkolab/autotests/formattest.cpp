@@ -190,6 +190,8 @@ void FormatTest::testContact_data()
     //FIXME the following test fails because the vcard implementation always writes jpeg (which is lossy). The reference vcf file is therefore probably also not really useful
 //     QTest::newRow( "v2pictureJPGHorde" ) << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/pictureJPGHorde.vcf") << getPath("v2/contacts/pictureJPGHorde.vcf.mime");
 
+    QTest::newRow("v2contactRelated") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/related.vcf") << getPath("v2/contacts/related.vcf.mime") << ReadWrite;
+
     QTest::newRow("v3contactSimple") << Kolab::KolabV3 << Kolab::ContactObject << getPath("v3/contacts/simple.vcf") << getPath("v3/contacts/simple.vcf.mime") << ReadWrite;
     QTest::newRow("v3contactComplex") << Kolab::KolabV3 << Kolab::ContactObject << getPath("v3/contacts/complex.vcf") << getPath("v3/contacts/complex.vcf.mime") << ReadWrite;
     QTest::newRow("v3contactPng") << Kolab::KolabV3 << Kolab::ContactObject << getPath("v3/readonly/png.vcf") << getPath("v3/readonly/png.vcf.mime") << ReadOnly;
