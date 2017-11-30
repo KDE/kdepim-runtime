@@ -729,7 +729,11 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     }
     //TODO
      // c.setGender(addressee.gender());
-     // c.setLanguages(addressee.langs());
+    std::vector<std::string> langages;
+    foreach (const KContacts::Lang &n, addressee.langs()) {
+        langages.push_back(toStdString(n.language()));
+    }
+    c.setLanguages(langages);
 
     std::vector <Kolab::Telephone> phones;
     prefNum = -1;

@@ -500,7 +500,8 @@ void Contact::loadCustomAttributes(QDomElement &element)
 void Contact::saveCustomAttributes(QDomElement &element) const
 {
     QList<Custom>::ConstIterator it = mCustomList.constBegin();
-    for (; it != mCustomList.constEnd(); ++it) {
+    const QList<Custom>::ConstIterator total = mCustomList.constEnd();
+    for (; it != total; ++it) {
         Q_ASSERT(!(*it).name.isEmpty());
         if ((*it).app == unhandledTagAppName()) {
             writeString(element, (*it).name, (*it).value);
