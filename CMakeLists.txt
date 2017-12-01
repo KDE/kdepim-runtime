@@ -144,8 +144,6 @@ add_definitions( -DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT )
 #add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
 
 
-# Extra package
-find_package(KPimGAPI "5.6.2" CONFIG)
 
 add_subdirectory(resources)
 add_subdirectory(agents)
