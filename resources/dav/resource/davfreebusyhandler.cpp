@@ -94,7 +94,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
     }
 
     KDAV::DavPrincipalSearchJob *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
-    const QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
+    const QVector<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
 
     if (results.isEmpty()) {
         if (handlingJobCount == 0 && !mRequestsTracker[email].handlingJobSuccessful) {
