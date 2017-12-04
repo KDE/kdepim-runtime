@@ -20,12 +20,7 @@
 #ifndef ICALENDAR_H
 #define ICALENDAR_H
 
-#ifndef SWIG
 #include "kolab_export.h"
-#else
-/* No export/import SWIG interface files */
-#define KOLAB_EXPORT
-#endif
 
 #include <kolabevent.h>
 

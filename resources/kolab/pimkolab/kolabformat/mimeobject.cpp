@@ -216,10 +216,6 @@ class MIMEObject::Private
 {
 public:
     Private()
-        : mObjectType(InvalidObject)
-        , mVersion(KolabV3)
-        , mOverrideObjectType(InvalidObject)
-        , mDoOverrideVersion(false)
     {
     }
 
@@ -228,10 +224,10 @@ public:
     QVariant parseMimeMessage(const KMime::Message::Ptr &msg);
     QVariant parseMimeMessage(const std::string &s);
 
-    ObjectType mObjectType;
-    Version mVersion;
-    ObjectType mOverrideObjectType;
-    Version mOverrideVersion;
+    ObjectType mObjectType = InvalidObject;
+    Version mVersion = KolabV3;
+    ObjectType mOverrideObjectType = InvalidObject;
+    Version mOverrideVersion = KolabV3;
     bool mDoOverrideVersion = false;
     QVariant mObject;
 };

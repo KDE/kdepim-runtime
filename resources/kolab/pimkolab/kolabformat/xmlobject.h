@@ -18,12 +18,7 @@
 #ifndef KOLABXMLOBJECT_H
 #define KOLABXMLOBJECT_H
 
-#ifndef SWIG
 #include "kolab_export.h"
-#else
-/* No export/import SWIG interface files */
-#define KOLAB_EXPORT
-#endif
 
 #include <kolabformat.h>
 

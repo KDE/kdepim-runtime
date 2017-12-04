@@ -207,10 +207,9 @@ class KolabObjectReader::Private
 {
 public:
     Private()
-        :   mObjectType(InvalidObject)
+        : mObjectType(InvalidObject)
         , mVersion(KolabV3)
         , mOverrideObjectType(InvalidObject)
-        , mDoOverrideVersion(false)
     {
         mAddressee = KContacts::Addressee();
     }
@@ -327,7 +326,9 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
         const Kolab::Configuration &configuration = mimeObject.getConfiguration();
         const Kolab::Dictionary &dictionary = configuration.dictionary();
         d->mDictionary.clear();
-        foreach (const std::string &entry, dictionary.entries()) {
+        const std::vector<std::string> entries = dictionary.entries();
+        d->mDictionary.reserve(entries.size());
+        foreach (const std::string &entry, entries) {
             d->mDictionary.append(Conversion::fromStdString(entry));
         }
         d->mDictionaryLanguage = Conversion::fromStdString(dictionary.language());
