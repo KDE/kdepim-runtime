@@ -20,6 +20,9 @@ set(akonadi-filestore_SRCS
   storecompactjob.cpp
 )
 
+ecm_qt_declare_logging_category(akonadi-filestore_SRCS HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore)
+
+
 add_library(akonadi-filestore  ${akonadi-filestore_SRCS} )
 generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 

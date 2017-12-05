@@ -301,7 +301,7 @@ void MBoxContext::readIndexData()
 
     KMIndexReader indexReader(indexFileInfo.absoluteFilePath());
     if (indexReader.error() || !indexReader.readIndex()) {
-        qCritical() << "Index file" << indexFileInfo.path() << "could not be read";
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Index file" << indexFileInfo.path() << "could not be read";
         return;
     }
 
@@ -489,7 +489,7 @@ void MaildirContext::readIndexData()
 
     KMIndexReader indexReader(indexFileInfo.absoluteFilePath());
     if (indexReader.error() || !indexReader.readIndex()) {
-        qCritical() << "Index file" << indexFileInfo.path() << "could not be read";
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Index file" << indexFileInfo.path() << "could not be read";
         return;
     }
 
@@ -1002,7 +1002,7 @@ void MixedMaildirStore::Private::updateContextHashes(const QString &oldPath, con
 bool MixedMaildirStore::Private::visit(FileStore::Job *job)
 {
     const QString message = i18nc("@info:status", "Unhandled operation %1", QLatin1String(job->metaObject()->className()));
-    qCritical() << message;
+    qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
     q->notifyError(FileStore::Job::InvalidJobContext, message);
     return false;
 }
@@ -1016,7 +1016,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
     if (folderType == InvalidFolder) {
         errorText = i18nc("@info:status", "Cannot create folder %1 inside folder %2",
                           job->collection().name(), job->targetParent().name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1030,7 +1030,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
         if (dirInfo.exists() && !dirInfo.isDir()) {
             errorText = i18nc("@info:status", "Cannot create folder %1 inside folder %2",
                               job->collection().name(), job->targetParent().name());
-            qCritical() << errorText << "FolderType=" << folderType << ", dirInfo exists and it not a dir";
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType << ", dirInfo exists and it not a dir";
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1038,7 +1038,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
         if (!dir.mkpath(collectionName)) {
             errorText = i18nc("@info:status", "Cannot create folder %1 inside folder %2",
                               job->collection().name(), job->targetParent().name());
-            qCritical() << errorText << "FolderType=" << folderType << ", mkpath failed";
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType << ", mkpath failed";
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1047,7 +1047,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
         if (!md.create()) {
             errorText = i18nc("@info:status", "Cannot create folder %1 inside folder %2",
                               job->collection().name(), job->targetParent().name());
-            qCritical() << errorText << "FolderType=" << folderType << ", maildir create failed";
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType << ", maildir create failed";
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1059,7 +1059,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
         if (parentMd.addSubFolder(collectionName).isEmpty()) {
             errorText = i18nc("@info:status", "Cannot create folder %1 inside folder %2",
                               job->collection().name(), job->targetParent().name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1088,7 +1088,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionDeleteJob *job)
     if (folderType == InvalidFolder) {
         errorText = i18nc("@info:status", "Cannot remove folder %1 from folder %2",
                           job->collection().name(), job->collection().parentCollection().name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1098,7 +1098,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionDeleteJob *job)
     if (parentFolderType == InvalidFolder) {
         errorText = i18nc("@info:status", "Cannot remove folder %1 from folder %2",
                           job->collection().name(), job->collection().parentCollection().name());
-        qCritical() << errorText << "Parent FolderType=" << parentFolderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "Parent FolderType=" << parentFolderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1107,7 +1107,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionDeleteJob *job)
         if (!QFile::remove(path)) {
             errorText = i18nc("@info:status", "Cannot remove folder %1 from folder %2",
                               job->collection().name(), job->collection().parentCollection().name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1115,7 +1115,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionDeleteJob *job)
         if (!QDir(path).removeRecursively()) {
             errorText = i18nc("@info:status", "Cannot remove folder %1 from folder %2",
                               job->collection().name(), job->collection().parentCollection().name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1135,7 +1135,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionFetchJob *job)
     const FolderType folderType = folderForCollection(job->collection(), path, errorText);
 
     if (folderType == InvalidFolder) {
-        qCritical() << errorText << "collection:" << job->collection();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "collection:" << job->collection();
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1151,7 +1151,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionFetchJob *job)
                 mbox = MBoxPtr(new MBoxContext);
                 if (!mbox->load(path)) {
                     errorText = i18nc("@info:status", "Failed to load MBox folder %1", path);
-                    qCritical() << errorText << "collection=" << collection;
+                    qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "collection=" << collection;
                     q->notifyError(FileStore::Job::InvalidJobContext, errorText);   // TODO should be a different error code
                     return false;
                 }
@@ -1217,7 +1217,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
     if (folderType == InvalidFolder) {
         errorText = i18nc("@info:status", "Cannot rename folder %1",
                           collection.name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1234,7 +1234,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
     if (targetFileInfo.exists() || (subDirInfo.exists() && targetSubDirInfo.exists())) {
         errorText = i18nc("@info:status", "Cannot rename folder %1",
                           collection.name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1270,7 +1270,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
     if (!parentDir.rename(fileInfo.absoluteFilePath(), targetFileInfo.fileName())) {
         errorText = i18nc("@info:status", "Cannot rename folder %1",
                           collection.name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1279,7 +1279,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
         if (!parentDir.rename(subDirInfo.absoluteFilePath(), targetSubDirInfo.fileName())) {
             errorText = i18nc("@info:status", "Cannot rename folder %1",
                               collection.name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
 
             // try to recover the previous rename
@@ -1340,7 +1340,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
     if (moveFolderType == InvalidFolder || moveFolderType == TopLevelFolder) {
         errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                           moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
-        qCritical() << errorText << "FolderType=" << moveFolderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << moveFolderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1354,7 +1354,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
     if (targetFolderType == InvalidFolder) {
         errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                           moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
-        qCritical() << errorText << "FolderType=" << targetFolderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1372,7 +1372,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
             if (!topDir.mkpath(targetSubDirInfo.absoluteFilePath())) {
                 errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                                   moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
-                qCritical() << errorText << "MoveFolderType=" << moveFolderType
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
                             << "TargetFolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
@@ -1412,7 +1412,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
             || !targetDir.rename(moveFileInfo.absoluteFilePath(), moveFileInfo.fileName())) {
             errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                               moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
-            qCritical() << errorText << "MoveFolderType=" << moveFolderType
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
                         << "TargetFolderType=" << targetFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
@@ -1423,7 +1423,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
                 || !targetDir.rename(moveSubDirInfo.absoluteFilePath(), moveSubDirInfo.fileName())) {
                 errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                                   moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
-                qCritical() << errorText << "MoveFolderType=" << moveFolderType
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
                             << "TargetFolderType=" << targetFolderType;
 
                 // try to revert the other rename
@@ -1455,7 +1455,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
         if (!moveMd.moveTo(targetMd)) {
             errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                               moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
-            qCritical() << errorText << "MoveFolderType=" << moveFolderType
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
                         << "TargetFolderType=" << targetFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
@@ -1496,7 +1496,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemCreateJob *job)
     if (folderType == InvalidFolder || folderType == TopLevelFolder) {
         errorText = i18nc("@info:status", "Cannot add emails to folder %1",
                           job->collection().name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1511,7 +1511,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemCreateJob *job)
             if (!mbox->load(path)) {
                 errorText = i18nc("@info:status", "Cannot add emails to folder %1",
                                   job->collection().name());
-                qCritical() << errorText << "FolderType=" << folderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -1537,7 +1537,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemCreateJob *job)
         if (result < 0) {
             errorText = i18nc("@info:status", "Cannot add emails to folder %1",
                               job->collection().name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1568,7 +1568,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemCreateJob *job)
         if (result.isEmpty()) {
             errorText = i18nc("@info:status", "Cannot add emails to folder %1",
                               job->collection().name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1592,7 +1592,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemDeleteJob *job)
     if (folderType == InvalidFolder || folderType == TopLevelFolder) {
         errorText = i18nc("@info:status", "Cannot remove emails from folder %1",
                           collection.name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1605,7 +1605,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemDeleteJob *job)
             if (!mbox->load(path)) {
                 errorText = i18nc("@info:status", "Cannot remove emails from folder %1",
                                   collection.name());
-                qCritical() << errorText << "FolderType=" << folderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -1620,7 +1620,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemDeleteJob *job)
         if (!ok || offset < 0 || !mbox->isValidOffset(offset)) {
             errorText = i18nc("@info:status", "Cannot remove emails from folder %1",
                               collection.name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1653,7 +1653,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemDeleteJob *job)
         if (!mdPtr->removeEntry(item.remoteId())) {
             errorText = i18nc("@info:status", "Cannot remove emails from folder %1",
                               collection.name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1683,7 +1683,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
     const FolderType folderType = folderForCollection(collection, path, errorText);
 
     if (folderType == InvalidFolder) {
-        qCritical() << errorText << "collection:" << job->collection();
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "collection:" << job->collection();
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1694,7 +1694,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
             MBoxPtr mbox = findIt != mMBoxes.end() ? findIt.value() : MBoxPtr(new MBoxContext);
             if (!mbox->load(path)) {
                 errorText = i18nc("@info:status", "Failed to load MBox folder %1", path);
-                qCritical() << errorText << "collection=" << collection;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "collection=" << collection;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);   // TODO should be a different error code
                 if (findIt != mMBoxes.end()) {
                     mMBoxes.erase(findIt);
@@ -1723,7 +1723,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
                 const QString errorText
                     = i18nc("@info:status", "Error while reading mails from folder %1", collection.name());
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);   // TODO should be a different error code
-                qCritical() << "Failed to read item" << (*it).remoteId() << "in MBox file" << path;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read item" << (*it).remoteId() << "in MBox file" << path;
                 return false;
             }
         }
@@ -1743,7 +1743,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
 
         if (!mdPtr->isValid(errorText)) {
             errorText = i18nc("@info:status", "Failed to load Maildirs folder %1", path);
-            qCritical() << errorText << "collection=" << collection;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "collection=" << collection;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);   // TODO should be a different error code
             return false;
         }
@@ -1764,7 +1764,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
                 const QString errorText
                     = i18nc("@info:status", "Error while reading mails from folder %1", collection.name());
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);   // TODO should be a different error code
-                qCritical() << "Failed to read item" << (*it).remoteId() << "in Maildir" << path;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read item" << (*it).remoteId() << "in Maildir" << path;
                 return false;
             }
         }
@@ -1805,7 +1805,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
     if (folderType == InvalidFolder || folderType == TopLevelFolder) {
         errorText = i18nc("@info:status", "Cannot modify emails in folder %1",
                           collection.name());
-        qCritical() << errorText << "FolderType=" << folderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1818,7 +1818,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
             if (!mbox->load(path)) {
                 errorText = i18nc("@info:status", "Cannot modify emails in folder %1",
                                   collection.name());
-                qCritical() << errorText << "FolderType=" << folderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -1833,7 +1833,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
         if (!ok || offset < 0 || !mbox->isValidOffset(offset)) {
             errorText = i18nc("@info:status", "Cannot modify emails in folder %1",
                               collection.name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1871,7 +1871,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
         if (newOffset < 0) {
             errorText = i18nc("@info:status", "Cannot modify emails in folder %1",
                               collection.name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1896,7 +1896,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
         if (!mdPtr->isValidEntry(item.remoteId())) {
             errorText = i18nc("@info:status", "Cannot modify emails in folder %1",
                               collection.name());
-            qCritical() << errorText << "FolderType=" << folderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1931,7 +1931,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
             if (newKey.isEmpty()) {
                 errorText = i18nc("@info:status", "Cannot modify emails in folder %1. %2",
                                   collection.name(), md.lastError());
-                qCritical() << errorText << "FolderType=" << folderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << folderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -1957,7 +1957,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
     if (sourceFolderType == InvalidFolder || sourceFolderType == TopLevelFolder) {
         errorText = i18nc("@info:status", "Cannot move emails from folder %1",
                           sourceCollection.name());
-        qCritical() << errorText << "FolderType=" << sourceFolderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1972,7 +1972,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
     if (targetFolderType == InvalidFolder || targetFolderType == TopLevelFolder) {
         errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                           targetCollection.name());
-        qCritical() << errorText << "FolderType=" << targetFolderType;
+        qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
         q->notifyError(FileStore::Job::InvalidJobContext, errorText);
         return false;
     }
@@ -1990,7 +1990,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
         if (!ok) {
             errorText = i18nc("@info:status", "Cannot move emails from folder %1",
                               sourceCollection.name());
-            qCritical() << errorText << "FolderType=" << sourceFolderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -2002,7 +2002,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (!mbox->load(sourcePath)) {
                 errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                                   sourceCollection.name());
-                qCritical() << errorText << "FolderType=" << sourceFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2016,7 +2016,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
         if (!mbox->isValidOffset(offset)) {
             errorText = i18nc("@info:status", "Cannot move emails from folder %1",
                               sourceCollection.name());
-            qCritical() << errorText << "FolderType=" << sourceFolderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -2026,7 +2026,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (!fillItem(mbox, true, true, item)) {
                 errorText = i18nc("@info:status", "Cannot move email from folder %1",
                                   sourceCollection.name());
-                qCritical() << errorText << "FolderType=" << sourceFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2051,7 +2051,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
                 if (!targetMBox->load(targetPath)) {
                     errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                                       targetCollection.name());
-                    qCritical() << errorText << "FolderType=" << targetFolderType;
+                    qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
                     q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                     return false;
                 }
@@ -2076,7 +2076,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (remoteId < 0) {
                 errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                                   targetCollection.name());
-                qCritical() << errorText << "FolderType=" << targetFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2084,7 +2084,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (!targetMBox->save()) {
                 errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                                   targetCollection.name());
-                qCritical() << errorText << "FolderType=" << targetFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2108,7 +2108,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (remoteId.isEmpty()) {
                 errorText = i18nc("@info:status", "Cannot move email from folder %1 to folder %2",
                                   sourceCollection.name(), targetCollection.name());
-                qCritical() << errorText << "SourceFolderType=" << sourceFolderType << "TargetFolderType=" << targetFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "SourceFolderType=" << sourceFolderType << "TargetFolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2131,7 +2131,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
         if (!sourceMdPtr->isValidEntry(item.remoteId())) {
             errorText = i18nc("@info:status", "Cannot move email from folder %1",
                               sourceCollection.name());
-            qCritical() << errorText << "FolderType=" << sourceFolderType;
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -2155,7 +2155,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
                 if (!fillItem(sourceMdPtr, true, true, item)) {
                     errorText = i18nc("@info:status", "Cannot move email from folder %1",
                                       sourceCollection.name());
-                    qCritical() << errorText << "FolderType=" << sourceFolderType;
+                    qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << sourceFolderType;
                     q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                     return false;
                 }
@@ -2168,7 +2168,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
                 if (!mbox->load(targetPath)) {
                     errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                                       targetCollection.name());
-                    qCritical() << errorText << "FolderType=" << targetFolderType;
+                    qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
                     q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                     return false;
                 }
@@ -2193,7 +2193,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (remoteId < 0) {
                 errorText = i18nc("@info:status", "Cannot move emails to folder %1",
                                   targetCollection.name());
-                qCritical() << errorText << "FolderType=" << targetFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "FolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2219,7 +2219,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
             if (remoteId.isEmpty()) {
                 errorText = i18nc("@info:status", "Cannot move email from folder %1 to folder %2",
                                   sourceCollection.name(), targetCollection.name());
-                qCritical() << errorText << "SourceFolderType=" << sourceFolderType << "TargetFolderType=" << targetFolderType;
+                qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "SourceFolderType=" << sourceFolderType << "TargetFolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -2354,13 +2354,13 @@ void MixedMaildirStore::processJob(FileStore::Job *job)
     if (!job->accept(d)) {
         // check that an error has been set
         if (job->error() == 0 || job->errorString().isEmpty()) {
-            qCritical() << "visitor did not set either error code or error string when returning false";
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "visitor did not set either error code or error string when returning false";
             Q_ASSERT(job->error() == 0 || job->errorString().isEmpty());
         }
     } else {
         // check that no error has been set
         if (job->error() != 0 || !job->errorString().isEmpty()) {
-            qCritical() << "visitor did set either error code or error string when returning true";
+            qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "visitor did set either error code or error string when returning true";
             Q_ASSERT(job->error() != 0 || !job->errorString().isEmpty());
         }
     }

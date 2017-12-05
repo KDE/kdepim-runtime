@@ -32,12 +32,12 @@
 #include "itemmovejob.h"
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
+#include "akonadifilestore_debug.h"
 
 #include <collection.h>
 #include <entitydisplayattribute.h>
 
 #include <KLocalizedString>
-#include <QDebug>
 #include <QFileInfo>
 
 using namespace Akonadi;
@@ -178,7 +178,7 @@ public:
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
-            qCritical() << "Processing collections for CollectionCreateJob "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing collections for CollectionCreateJob "
                            "encountered more than one collection. Just processing the first one.";
         }
 
@@ -190,7 +190,7 @@ public:
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
-            qCritical() << "Processing collections for CollectionDeleteJob "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing collections for CollectionDeleteJob "
                            "encountered more than one collection. Just processing the first one.";
         }
 
@@ -208,7 +208,7 @@ public:
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
-            qCritical() << "Processing collections for CollectionModifyJob "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing collections for CollectionModifyJob "
                            "encountered more than one collection. Just processing the first one.";
         }
 
@@ -220,7 +220,7 @@ public:
     {
         Q_ASSERT(!mCollections.isEmpty());
         if (mCollections.count() > 1) {
-            qCritical() << "Processing collections for CollectionMoveJob "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing collections for CollectionMoveJob "
                            "encountered more than one collection. Just processing the first one.";
         }
 
@@ -263,7 +263,7 @@ public:
     {
         Q_ASSERT(!mItems.isEmpty());
         if (mItems.count() > 1) {
-            qCritical() << "Processing items for ItemCreateJob encountered more than one item. "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing items for ItemCreateJob encountered more than one item. "
                            "Just processing the first one.";
         }
 
@@ -281,7 +281,7 @@ public:
     {
         Q_ASSERT(!mItems.isEmpty());
         if (mItems.count() > 1) {
-            qCritical() << "Processing items for ItemModifyJob encountered more than one item. "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing items for ItemModifyJob encountered more than one item. "
                            "Just processing the first one.";
         }
 
@@ -293,7 +293,7 @@ public:
     {
         Q_ASSERT(!mItems.isEmpty());
         if (mItems.count() > 1) {
-            qCritical() << "Processing items for ItemMoveJob encountered more than one item. "
+            qCCritical(AKONADIFILESTORE_LOG) << "Processing items for ItemMoveJob encountered more than one item. "
                            "Just processing the first one.";
         }
 
@@ -412,18 +412,18 @@ FileStore::CollectionCreateJob *FileStore::AbstractLocalStore::createCollection(
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection << targetParent;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (targetParent.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection << targetParent;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((targetParent.rights() & Collection::CanCreateCollection) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits folder creation in folder %1", targetParent.name());
-        qCritical() << message;
-        qCritical() << collection << targetParent;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
 
@@ -443,19 +443,19 @@ FileStore::CollectionDeleteJob *FileStore::AbstractLocalStore::deleteCollection(
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (collection.remoteId().isEmpty()
                || collection.parentCollection().remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((collection.rights() & Collection::CanDeleteCollection) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits folder deletion in folder %1", collection.name());
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
 
@@ -475,13 +475,13 @@ FileStore::CollectionFetchJob *FileStore::AbstractLocalStore::fetchCollections(c
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection << "FetchType=" << type;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << "FetchType=" << type;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (collection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection << "FetchType=" << type;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << "FetchType=" << type;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
 
@@ -501,18 +501,18 @@ FileStore::CollectionModifyJob *FileStore::AbstractLocalStore::modifyCollection(
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (collection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((collection.rights() & Collection::CanChangeCollection) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits folder modification in folder %1", collection.name());
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
 
@@ -532,20 +532,20 @@ FileStore::CollectionMoveJob *FileStore::AbstractLocalStore::moveCollection(cons
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection << targetParent;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (collection.remoteId().isEmpty()
                || collection.parentCollection().remoteId().isEmpty()
                || targetParent.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection << targetParent;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((targetParent.rights() & Collection::CanCreateCollection) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits folder creation in folder %1", targetParent.name());
-        qCritical() << message;
-        qCritical() << collection << targetParent;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
 
@@ -565,13 +565,13 @@ FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Collect
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (collection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
 
@@ -593,14 +593,14 @@ FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Item::L
         const Akonadi::Item &item = items[0];
         if (d->mTopLevelCollection.remoteId().isEmpty()) {
             const QString message = i18nc("@info:status", "Configured storage location is empty");
-            qCritical() << message;
-            qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+            qCCritical(AKONADIFILESTORE_LOG) << message;
+            qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                         << ", parentCollection=" << item.parentCollection().remoteId() << ")";
             d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
         } else if (item.remoteId().isEmpty()) {
             const QString message = i18nc("@info:status", "Given item identifier is empty");
-            qCritical() << message;
-            qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+            qCCritical(AKONADIFILESTORE_LOG) << message;
+            qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                         << ", parentCollection=" << item.parentCollection().remoteId() << ")";
             d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
         }
@@ -627,22 +627,22 @@ FileStore::ItemCreateJob *FileStore::AbstractLocalStore::createItem(const Item &
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << collection
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection
                     << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ")";
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (collection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << collection
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection
                     << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ")";
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((collection.rights() & Collection::CanCreateItem) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits item creation in folder %1", collection.name());
-        qCritical() << message;
-        qCritical() << collection
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << collection
                     << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ")";
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
@@ -664,20 +664,20 @@ FileStore::ItemModifyJob *FileStore::AbstractLocalStore::modifyItem(const Item &
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")";
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (item.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given item identifier is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")";
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((item.parentCollection().rights() & Collection::CanChangeItem) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits item modification in folder %1", item.parentCollection().name());
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")";
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
@@ -698,20 +698,20 @@ FileStore::ItemDeleteJob *FileStore::AbstractLocalStore::deleteItem(const Item &
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")";
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (item.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given item identifier is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")";
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((item.parentCollection().rights() & Collection::CanDeleteItem) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name());
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")";
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     }
@@ -732,37 +732,37 @@ FileStore::ItemMoveJob *FileStore::AbstractLocalStore::moveItem(const Item &item
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")"
                     << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     } else if (item.parentCollection().remoteId().isEmpty()
                || targetParent.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given folder name is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")"
                     << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((targetParent.rights() & Collection::CanCreateItem) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits item creation in folder %1", targetParent.name());
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")"
                     << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if ((item.parentCollection().rights() & Collection::CanDeleteItem) == 0) {
         const QString message = i18nc("@info:status", "Access control prohibits item deletion in folder %1", item.parentCollection().name());
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")"
                     << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
     } else if (item.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Given item identifier is empty");
-        qCritical() << message;
-        qCritical() << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
+        qCCritical(AKONADIFILESTORE_LOG) << message;
+        qCCritical(AKONADIFILESTORE_LOG) << "Item(remoteId=" << item.remoteId() << ", mimeType=" << item.mimeType()
                     << ", parentCollection=" << item.parentCollection().remoteId() << ")"
                     << targetParent;
         d->mSession->setError(job, FileStore::Job::InvalidJobContext, message);
@@ -784,7 +784,7 @@ FileStore::StoreCompactJob *FileStore::AbstractLocalStore::compactStore()
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
-        qCritical() << message;
+        qCCritical(AKONADIFILESTORE_LOG) << message;
         d->mSession->setError(job, FileStore::Job::InvalidStoreState, message);
     }
 
