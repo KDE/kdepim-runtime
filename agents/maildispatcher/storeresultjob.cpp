@@ -73,7 +73,7 @@ void StoreResultJob::fetchDone(KJob *job)
     const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob);
     if (fetchJob->items().count() != 1) {
-        qCritical() << "Fetched" << fetchJob->items().count() << "items, expected 1.";
+        qCCritical(MAILDISPATCHER_LOG) << "Fetched" << fetchJob->items().count() << "items, expected 1.";
         setError(Unknown);
         setErrorText(i18n("Failed to fetch item."));
         commit();
