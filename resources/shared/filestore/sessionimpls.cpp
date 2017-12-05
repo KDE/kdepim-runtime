@@ -31,8 +31,6 @@
 #include "itemmovejob.h"
 #include "storecompactjob.h"
 
-#include <QDebug>
-
 #include <QQueue>
 #include <QTimer>
 
