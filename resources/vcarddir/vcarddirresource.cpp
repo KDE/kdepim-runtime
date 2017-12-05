@@ -93,7 +93,7 @@ bool VCardDirResource::loadAddressees()
                     mAddressees.insert(addr.uid(), addr);
                 }
             } else {
-                qDebug() << " file can't be load " << it.filePath();
+                qCritical() << " file can't be load " << it.filePath();
             }
         }
     }
@@ -181,7 +181,7 @@ void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
             newItem.setRemoteId(addressee.uid());
             changeCommitted(newItem);
         } else {
-            qDebug() << " We can't write in file " << file.fileName();
+            qCritical() << " We can't write in file " << file.fileName();
         }
     } else {
         changeProcessed();
