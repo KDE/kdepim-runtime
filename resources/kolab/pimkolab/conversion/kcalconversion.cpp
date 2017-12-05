@@ -119,23 +119,23 @@ int fromPriority(int priority)
 KCalCore::Incidence::Status toStatus(Kolab::Status s)
 {
     switch (s) {
-    case StatusUndefined:
+    case Kolab::StatusUndefined:
         return KCalCore::Incidence::StatusNone;
-    case StatusNeedsAction:
+    case Kolab::StatusNeedsAction:
         return KCalCore::Incidence::StatusNeedsAction;
-    case StatusCompleted:
+    case Kolab::StatusCompleted:
         return KCalCore::Incidence::StatusCompleted;
-    case StatusInProcess:
+    case Kolab::StatusInProcess:
         return KCalCore::Incidence::StatusInProcess;
-    case StatusCancelled:
+    case Kolab::StatusCancelled:
         return KCalCore::Incidence::StatusCanceled;
-    case StatusTentative:
+    case Kolab::StatusTentative:
         return KCalCore::Incidence::StatusTentative;
-    case StatusConfirmed:
+    case Kolab::StatusConfirmed:
         return KCalCore::Incidence::StatusConfirmed;
-    case StatusDraft:
+    case Kolab::StatusDraft:
         return KCalCore::Incidence::StatusDraft;
-    case StatusFinal:
+    case Kolab::StatusFinal:
         return KCalCore::Incidence::StatusFinal;
     default:
         qCCritical(PIMKOLAB_LOG) << "unhandled";
@@ -148,42 +148,42 @@ Kolab::Status fromStatus(KCalCore::Incidence::Status s)
 {
     switch (s) {
     case KCalCore::Incidence::StatusNone:
-        return StatusUndefined;
+        return Kolab::StatusUndefined;
     case KCalCore::Incidence::StatusNeedsAction:
-        return StatusNeedsAction;
+        return Kolab::StatusNeedsAction;
     case KCalCore::Incidence::StatusCompleted:
-        return StatusCompleted;
+        return Kolab::StatusCompleted;
     case KCalCore::Incidence::StatusInProcess:
-        return StatusInProcess;
+        return Kolab::StatusInProcess;
     case KCalCore::Incidence::StatusCanceled:
-        return StatusCancelled;
+        return Kolab::StatusCancelled;
     case KCalCore::Incidence::StatusTentative:
-        return StatusTentative;
+        return Kolab::StatusTentative;
     case KCalCore::Incidence::StatusConfirmed:
-        return StatusConfirmed;
+        return Kolab::StatusConfirmed;
     case KCalCore::Incidence::StatusDraft:
-        return StatusDraft;
+        return Kolab::StatusDraft;
     case KCalCore::Incidence::StatusFinal:
-        return StatusFinal;
+        return Kolab::StatusFinal;
     default:
         qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
-    return StatusUndefined;
+    return Kolab::StatusUndefined;
 }
 
 KCalCore::Attendee::PartStat toPartStat(Kolab::PartStatus p)
 {
     switch (p) {
-    case PartNeedsAction:
+    case Kolab::PartNeedsAction:
         return KCalCore::Attendee::NeedsAction;
-    case PartAccepted:
+    case Kolab::PartAccepted:
         return KCalCore::Attendee::Accepted;
-    case PartDeclined:
+    case Kolab::PartDeclined:
         return KCalCore::Attendee::Declined;
-    case PartTentative:
+    case Kolab::PartTentative:
         return KCalCore::Attendee::Tentative;
-    case PartDelegated:
+    case Kolab::PartDelegated:
         return KCalCore::Attendee::Delegated;
     default:
         qCCritical(PIMKOLAB_LOG) << "unhandled";
@@ -196,32 +196,32 @@ Kolab::PartStatus fromPartStat(KCalCore::Attendee::PartStat p)
 {
     switch (p) {
     case KCalCore::Attendee::NeedsAction:
-        return PartNeedsAction;
+        return Kolab::PartNeedsAction;
     case KCalCore::Attendee::Accepted:
-        return PartAccepted;
+        return Kolab::PartAccepted;
     case KCalCore::Attendee::Declined:
-        return PartDeclined;
+        return Kolab::PartDeclined;
     case KCalCore::Attendee::Tentative:
-        return PartTentative;
+        return Kolab::PartTentative;
     case KCalCore::Attendee::Delegated:
-        return PartDelegated;
+        return Kolab::PartDelegated;
     default:
         qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
-    return PartNeedsAction;
+    return Kolab::PartNeedsAction;
 }
 
 KCalCore::Attendee::Role toRole(Kolab::Role r)
 {
     switch (r) {
-    case Required:
+    case Kolab::Required:
         return KCalCore::Attendee::ReqParticipant;
-    case Chair:
+    case Kolab::Chair:
         return KCalCore::Attendee::Chair;
-    case Optional:
+    case Kolab::Optional:
         return KCalCore::Attendee::OptParticipant;
-    case NonParticipant:
+    case Kolab::NonParticipant:
         return KCalCore::Attendee::NonParticipant;
     default:
         qCCritical(PIMKOLAB_LOG) << "unhandled";
@@ -234,25 +234,25 @@ Kolab::Role fromRole(KCalCore::Attendee::Role r)
 {
     switch (r) {
     case KCalCore::Attendee::ReqParticipant:
-        return Required;
+        return Kolab::Required;
     case KCalCore::Attendee::Chair:
-        return Chair;
+        return Kolab::Chair;
     case KCalCore::Attendee::OptParticipant:
-        return Optional;
+        return Kolab::Optional;
     case KCalCore::Attendee::NonParticipant:
-        return NonParticipant;
+        return Kolab::NonParticipant;
     default:
         qCCritical(PIMKOLAB_LOG) << "unhandled";
         Q_ASSERT(0);
     }
-    return Required;
+    return Kolab::Required;
 }
 
 template<typename T>
 QString getCustomProperty(const QString &id, const T &e)
 {
-    std::vector<CustomProperty> &props = e.customProperties();
-    foreach (const CustomProperty &p, props) {
+    std::vector<Kolab::CustomProperty> &props = e.customProperties();
+    foreach (const Kolab::CustomProperty &p, props) {
         if (fromStdString(p.identifier) == id) {
             return fromStdString(p.value);
         }
@@ -305,7 +305,7 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
             }
             attendee->setDelegator(toMailto(a.delegatedFrom().front().email(), a.delegatedFrom().front().name()).toString());
         }
-        if (a.cutype() != CutypeIndividual) {
+        if (a.cutype() != Kolab::CutypeIndividual) {
             attendee->customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_CUTYPE, QString::number(a.cutype()));
         }
         i.addAttendee(attendee);
@@ -750,9 +750,9 @@ void getTodoEvent(T &i, const I &e)
         if (a->hasTime()) {
             alarm.setStart(fromDate(a->time(), false));
         } else if (a->hasStartOffset()) {
-            alarm.setRelativeStart(fromDuration(a->startOffset()), Start);
+            alarm.setRelativeStart(fromDuration(a->startOffset()), Kolab::Start);
         } else if (a->hasEndOffset()) {
-            alarm.setRelativeStart(fromDuration(a->endOffset()), End);
+            alarm.setRelativeStart(fromDuration(a->endOffset()), Kolab::End);
         } else {
             qCCritical(PIMKOLAB_LOG) << "alarm trigger is missing";
             continue;
@@ -784,9 +784,9 @@ KCalCore::Event::Ptr toKCalCore(const Kolab::Event &event)
     return e;
 }
 
-Event fromKCalCore(const KCalCore::Event &event)
+Kolab::Event fromKCalCore(const KCalCore::Event &event)
 {
-    Event e;
+    Kolab::Event e;
     getIncidence(e, event);
     getTodoEvent(e, event);
     if (event.hasEndDate()) {
@@ -802,7 +802,7 @@ Event fromKCalCore(const KCalCore::Event &event)
     return e;
 }
 
-KCalCore::Todo::Ptr toKCalCore(const Todo &todo)
+KCalCore::Todo::Ptr toKCalCore(const Kolab::Todo &todo)
 {
     KCalCore::Todo::Ptr e(new KCalCore::Todo);
     setIncidence(*e, todo);
@@ -811,7 +811,7 @@ KCalCore::Todo::Ptr toKCalCore(const Todo &todo)
         e->setDtDue(toDate(todo.due()));
     }
     if (!todo.relatedTo().empty()) {
-        e->setRelatedTo(Conversion::fromStdString(todo.relatedTo().front()), KCalCore::Incidence::RelTypeParent);
+        e->setRelatedTo(Kolab::Conversion::fromStdString(todo.relatedTo().front()), KCalCore::Incidence::RelTypeParent);
         if (todo.relatedTo().size() > 1) {
             qCCritical(PIMKOLAB_LOG) << "only one relation support but got multiple";
         }
@@ -820,9 +820,9 @@ KCalCore::Todo::Ptr toKCalCore(const Todo &todo)
     return e;
 }
 
-Todo fromKCalCore(const KCalCore::Todo &todo)
+Kolab::Todo fromKCalCore(const KCalCore::Todo &todo)
 {
-    Todo t;
+    Kolab::Todo t;
     getIncidence(t, todo);
     getTodoEvent(t, todo);
     t.setDue(fromDate(todo.dtDue(true), todo.allDay()));
@@ -830,13 +830,13 @@ Todo fromKCalCore(const KCalCore::Todo &todo)
     const QString relatedTo = todo.relatedTo(KCalCore::Incidence::RelTypeParent);
     if (!relatedTo.isEmpty()) {
         std::vector<std::string> relateds;
-        relateds.push_back(Conversion::toStdString(relatedTo));
+        relateds.push_back(Kolab::Conversion::toStdString(relatedTo));
         t.setRelatedTo(relateds);
     }
     return t;
 }
 
-KCalCore::Journal::Ptr toKCalCore(const Journal &journal)
+KCalCore::Journal::Ptr toKCalCore(const Kolab::Journal &journal)
 {
     KCalCore::Journal::Ptr e(new KCalCore::Journal);
     setIncidence(*e, journal);
@@ -844,9 +844,9 @@ KCalCore::Journal::Ptr toKCalCore(const Journal &journal)
     return e;
 }
 
-Journal fromKCalCore(const KCalCore::Journal &journal)
+Kolab::Journal fromKCalCore(const KCalCore::Journal &journal)
 {
-    Journal j;
+    Kolab::Journal j;
     getIncidence(j, journal);
     //TODO contacts
     return j;
