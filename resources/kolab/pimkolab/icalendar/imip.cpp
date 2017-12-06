@@ -1,5 +1,5 @@
 /*
-    <one line to give the library's name and an idea of what it does.>
+
     Copyright (C) 2012  Christian Mollekopf <chrigi_1@fastmail.fm>
 
     This library is free software; you can redistribute it and/or
@@ -48,10 +48,10 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
         to = from;
     }
     qCDebug(PIMKOLAB_LOG) << "\nFrom:" << from
-             << "\nTo:" << to
-             << "\nCC:" << cc
-             << "\nSubject:" << subject << "\nBody: \n" << body
-             << "\nAttachment:\n" << attachment
+                          << "\nTo:" << to
+                          << "\nCC:" << cc
+                          << "\nSubject:" << subject << "\nBody: \n" << body
+                          << "\nAttachment:\n" << attachment
         /*<< "\nmailTransport: " << mailTransport*/;
 
     // Now build the message we like to send. The message KMime::Message::Ptr instance

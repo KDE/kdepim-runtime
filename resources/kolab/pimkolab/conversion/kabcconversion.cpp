@@ -728,7 +728,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
         c.setPhoto(photo, mimetype);
     }
     //TODO
-     // c.setGender(addressee.gender());
+    // c.setGender(addressee.gender());
     std::vector<std::string> langages;
     foreach (const KContacts::Lang &n, addressee.langs()) {
         langages.push_back(toStdString(n.language()));

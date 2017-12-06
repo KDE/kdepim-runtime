@@ -53,7 +53,7 @@ QMutex mutex;
 
 void logMessage(const QString &message, const QString &file, int line, ErrorHandler::Severity s)
 {
-    ErrorHandler::instance().addError(s, message, file+ QLatin1Char(' ') +QString::number(line));
+    ErrorHandler::instance().addError(s, message, file + QLatin1Char(' ') + QString::number(line));
 }
 
 ErrorHandler::ErrorHandler()
