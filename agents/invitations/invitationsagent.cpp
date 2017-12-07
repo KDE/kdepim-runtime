@@ -65,7 +65,7 @@ public:
         setDefaultResourceType(QStringLiteral("akonadi_ical_resource"));
 
         QVariantMap options;
-        options.insert(QStringLiteral("Path"), QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QStringLiteral("akonadi_invitations")));
+        options.insert(QStringLiteral("Path"), QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/akonadi_invitations")));
         options.insert(QStringLiteral("Name"), i18n("Invitations"));
         setDefaultResourceOptions(options);
 
