@@ -574,7 +574,7 @@ QByteArray Maildir::readEntryHeaders(const QString &key) const
 
 static QString createUniqueFileName()
 {
-    const qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+    const qint64 time = QDateTime::currentSecsSinceEpoch();
     const int r = qrand() % 1000;
     const QString identifier = QLatin1String("R") + QString::number(r);
 
