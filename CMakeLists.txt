@@ -43,15 +43,10 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_VERSION "5.39.0")
+set(KF5_VERSION "5.41.0")
 
 find_package(ECM ${KF5_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
-
-# TODO: Remove the cmake/deprecated directory when we'll require ECM >= 5.41.0
-if("${ECM_VERSION}" VERSION_LESS "5.41.0")
-  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${kdepim-runtime_SOURCE_DIR}/cmake/deprecated)
-endif()
 
 include(CMakePackageConfigHelpers)
 include(ECMSetupVersion)
