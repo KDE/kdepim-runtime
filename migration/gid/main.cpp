@@ -83,7 +83,7 @@ int main(int argc, char **argv)
         QObject::connect(migrator, &QObject::destroyed, infoDialog, &InfoDialog::migratorDone);
         QObject::connect(migrator, QOverload<int>::of(&MigratorBase::progress), infoDialog, QOverload<int>::of(&InfoDialog::progress));
     }
-    QObject::connect(migrator, SIGNAL(stoppedProcessing()), &app, SLOT(quit()));
+    QObject::connect(migrator, &GidMigrator::stoppedProcessing, &app, &QApplication::quit);
     migrator->start();
     const int result = app.exec();
     if (InfoDialog::hasError() || migrator->migrationState() == MigratorBase::Failed) {
