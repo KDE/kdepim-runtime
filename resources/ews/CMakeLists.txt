@@ -164,8 +164,17 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
   install(TARGETS akonadi_ewsmta_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 endif (HAVE_SEPARATE_MTA_RESOURCE)
 
-foreach(icon_resolution 16 22 24 32 48 64 72 96 128)
-  install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/icons/akonadi-ews-${icon_resolution}.png
-    DESTINATION "${KDE_INSTALL_ICONDIR}/hicolor/${icon_resolution}x${icon_resolution}/apps/"
-    RENAME "akonadi-ews.png")
-endforeach(icon_resolution)
+ecm_install_icons(
+    ICONS
+        icons/16-apps-akonadi-ews.png
+        icons/22-apps-akonadi-ews.png
+        icons/24-apps-akonadi-ews.png
+        icons/32-apps-akonadi-ews.png
+        icons/48-apps-akonadi-ews.png
+        icons/64-apps-akonadi-ews.png
+        icons/72-apps-akonadi-ews.png
+        icons/96-apps-akonadi-ews.png
+        icons/128-apps-akonadi-ews.png
+    DESTINATION ${KDE_INSTALL_ICONDIR}
+    THEME hicolor
+)
