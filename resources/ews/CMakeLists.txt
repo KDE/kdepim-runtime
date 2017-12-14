@@ -143,15 +143,15 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
       KF5::Mime)
 
   set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
-else (HAVE_SEPARATE_MTA_RESOURCE)
+else ()
   set(EWS_MTA_CAPABILITIES "MailTransport,Synchronizable")
-endif (HAVE_SEPARATE_MTA_RESOURCE)
+endif ()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop)
 
 if (BUILD_TESTING)
   add_subdirectory(test)
-endif (BUILD_TESTING)
+endif ()
 
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop
@@ -162,7 +162,7 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
   install(FILES ewsmtaresource.desktop
     DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
   install(TARGETS akonadi_ewsmta_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
-endif (HAVE_SEPARATE_MTA_RESOURCE)
+endif ()
 
 ecm_install_icons(
     ICONS
