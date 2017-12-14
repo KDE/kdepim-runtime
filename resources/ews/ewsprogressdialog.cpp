@@ -55,7 +55,6 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
     hLayout->addWidget(progressContainer);
     hLayout->addWidget(cancelButton);
 
-    setLayout(hLayout);
     hLayout->setSizeConstraint(QLayout::SetFixedSize);
 
     switch (type) {
