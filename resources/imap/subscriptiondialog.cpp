@@ -61,12 +61,11 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    mUser1Button = new QPushButton;
+    mUser1Button = new QPushButton(i18nc("@action:button", "Reload &List"), this);
     buttonBox->addButton(mUser1Button, QDialogButtonBox::ActionRole);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &SubscriptionDialog::slotAccepted);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &SubscriptionDialog::reject);
 
-    mUser1Button->setText(i18nc("@action:button", "Reload &List"));
     mUser1Button->setEnabled(false);
     connect(mUser1Button, &QPushButton::clicked, this, &SubscriptionDialog::onReloadRequested);
 
