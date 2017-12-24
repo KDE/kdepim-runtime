@@ -15,6 +15,7 @@ set(kdexoauth2sasl_SRCS
 )
 
 add_library(kdexoauth2 SHARED ${kdexoauth2sasl_SRCS})
+target_include_directories(kdexoauth2 PRIVATE ${Sasl2_INCLUDE_DIRS})
 set_target_properties(kdexoauth2 PROPERTIES
     C_VISIBILITY_PRESET default
     SOVERSION 3
