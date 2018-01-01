@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2013-2017 Laurent Montel <montel@kde.org>
+    Copyright (c) 2013-2018 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -175,7 +175,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
         QStringLiteral(KDEPIM_RUNTIME_VERSION),
         i18n("Notify about new mails."),
         KAboutLicense::GPL_V2,
-        i18n("Copyright (C) 2013-2017 Laurent Montel"));
+        i18n("Copyright (C) 2013-2018 Laurent Montel"));
 
     aboutData.addAuthor(i18n("Laurent Montel"),
                         i18n("Maintainer"), QStringLiteral("montel@kde.org"));
