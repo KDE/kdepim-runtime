@@ -30,7 +30,11 @@ GoogleAccountManager::GoogleAccountManager(QObject *parent)
     : QObject(parent)
     , m_isReady(false)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    QMetaObject::invokeMethod(this, &GoogleAccountManager::initManager, Qt::QueuedConnection);
+#else
     QMetaObject::invokeMethod(this, "initManager", Qt::QueuedConnection);
+#endif
 }
 
 GoogleAccountManager::~GoogleAccountManager()

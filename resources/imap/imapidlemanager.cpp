@@ -152,7 +152,11 @@ void ImapIdleManager::onConnectionLost(KIMAP::Session *session)
         // the pointer, we don't need to release it once the
         // task is done
         m_session = nullptr;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+        QMetaObject::invokeMethod(this, &ImapIdleManager::reconnect, Qt::QueuedConnection);
+#else
         QMetaObject::invokeMethod(this, "reconnect", Qt::QueuedConnection);
+#endif
     }
 }
 
