@@ -230,7 +230,7 @@ CredentialsPage::CredentialsPage(QWidget *parent)
 
     mPassword = new KPasswordLineEdit;
     layout->addRow(i18n("Password"), mPassword);
-    registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", "passwordChanged");
+    registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 }
 
 int CredentialsPage::nextId() const
