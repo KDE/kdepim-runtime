@@ -89,13 +89,13 @@ TestAgentInstance::TestAgentInstance(const QString &url)
 
     mEwsSettingsInterface.reset(new OrgKdeAkonadiEwsSettingsInterface(
                                     QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier
-                                    + QStringLiteral(".") + akonadiInstanceIdentifier,
+                                    + QLatin1Char('.') + akonadiInstanceIdentifier,
                                     QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
     QVERIFY(mEwsSettingsInterface->isValid());
 
     mEwsWalletInterface.reset(new OrgKdeAkonadiEwsWalletInterface(
                                   QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier
-                                  + QStringLiteral(".") + akonadiInstanceIdentifier,
+                                  + QLatin1Char('.') + akonadiInstanceIdentifier,
                                   QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
     QVERIFY(mEwsWalletInterface->isValid());
 
