@@ -65,7 +65,7 @@ ErrorHandler::ErrorHandler()
 QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, const char *file)
 {
     QMutexLocker locker(&mutex);
-    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1String(file) + QStringLiteral("(") + QString::number(line)+QStringLiteral(")"));
+    ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1String(file) + QLatin1Char('(') + QString::number(line) + QLatin1Char(')'));
     ErrorHandler::instance().m_debugStream->m_severity = severity;
     return QDebug(ErrorHandler::instance().m_debugStream.data());
 }
