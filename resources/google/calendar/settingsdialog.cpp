@@ -169,7 +169,7 @@ void SettingsDialog::slotReloadTaskLists()
     }
 
     TaskListFetchJob *fetchJob = new TaskListFetchJob(account, this);
-    connect(fetchJob, &CalendarFetchJob::finished, this, &SettingsDialog::slotTaskListsRetrieved);
+    connect(fetchJob, &TaskListFetchJob::finished, this, &SettingsDialog::slotTaskListsRetrieved);
 
     m_taskListsBox->setDisabled(true);
     m_taskListsList->clear();
@@ -189,6 +189,7 @@ void SettingsDialog::slotCalendarsRetrieved(Job *job)
     if (currentAccount()->accountName() == Settings::self()->account()) {
         activeCalendars = Settings::self()->calendars();
     }
+    m_calendarsList->clear();
     for (const ObjectPtr &object : objects) {
         CalendarPtr calendar = object.dynamicCast<Calendar>();
 
@@ -216,6 +217,7 @@ void SettingsDialog::slotTaskListsRetrieved(Job *job)
     if (currentAccount()->accountName() == Settings::self()->account()) {
         activeTaskLists = Settings::self()->taskLists();
     }
+    m_taskListsList->clear();
     for (const ObjectPtr &object : objects) {
         TaskListPtr taskList = object.dynamicCast<TaskList>();
 

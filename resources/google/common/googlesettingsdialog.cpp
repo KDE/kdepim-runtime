@@ -131,8 +131,7 @@ KGAPI2::AccountPtr GoogleSettingsDialog::currentAccount() const
 
 void GoogleSettingsDialog::reloadAccounts()
 {
-    disconnect(m_accComboBox, SIGNAL(currentIndexChanged(QString)),
-               this, SIGNAL(currentAccountChanged(QString)));
+    disconnect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_accComboBox->clear();
 
@@ -146,8 +145,7 @@ void GoogleSettingsDialog::reloadAccounts()
         m_accComboBox->setCurrentIndex(index);
     }
 
-    disconnect(m_accComboBox, SIGNAL(currentIndexChanged(QString)),
-               this, SIGNAL(currentAccountChanged(QString)));
+    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_removeAccButton->setEnabled(m_accComboBox->count() > 0);
     Q_EMIT currentAccountChanged(m_accComboBox->currentText());
