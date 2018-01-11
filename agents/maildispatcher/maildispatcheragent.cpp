@@ -104,9 +104,7 @@ void MailDispatcherAgent::dispatch()
             mAborting = false;
             mSentAnything = false;
             Q_EMIT status(AgentBase::Idle, i18n("Sending canceled."));
-            QTimer::singleShot(3000, this, [this]() {
-                emitStatusReady();
-            });
+            QTimer::singleShot(3000, this, &MailDispatcherAgent::emitStatusReady);
         } else {
             if (mSentAnything) {
                 // Finished sending messages in queue.
@@ -126,9 +124,7 @@ void MailDispatcherAgent::dispatch()
                 // Empty queue.
                 Q_EMIT status(AgentBase::Idle, i18n("No items in queue."));
             }
-            QTimer::singleShot(3000, this, [this]() {
-                emitStatusReady();
-            });
+            QTimer::singleShot(3000, this, &MailDispatcherAgent::emitStatusReady);
         }
 
         mErrorOccurred = false;
@@ -194,9 +190,7 @@ void MailDispatcherAgent::doSetOnline(bool online)
     if (online) {
         qCDebug(MAILDISPATCHER_LOG) << "Online. Dispatching messages.";
         Q_EMIT status(AgentBase::Idle, i18n("Online, sending messages in queue."));
-        QTimer::singleShot(0, this, [this]() {
-            dispatch();
-        });
+        QTimer::singleShot(0, this, &MailDispatcherAgent::dispatch);
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Offline.";
         Q_EMIT status(AgentBase::Idle, i18n("Offline, message sending suspended."));
@@ -320,9 +314,7 @@ void MailDispatcherAgent::sendResult(KJob *job)
 
     // dispatch next message
     mSendingInProgress = false;
-    QTimer::singleShot(0, this, [this]() {
-        dispatch();
-    });
+    QTimer::singleShot(0, this, &MailDispatcherAgent::dispatch);
 }
 
 void MailDispatcherAgent::emitStatusReady()

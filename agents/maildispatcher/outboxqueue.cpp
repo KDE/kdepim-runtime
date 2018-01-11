@@ -272,9 +272,7 @@ void OutboxQueue::localFoldersRequestResult(KJob *job)
         if (++mOutboxDiscoveryRetries <= OUTBOX_DISCOVERY_RETRIES) {
             const int timeout = OUTBOX_DISCOVERY_WAIT_TIME * mOutboxDiscoveryRetries;
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Retrying in: " << timeout;
-            QTimer::singleShot(timeout, this, [this]() {
-                localFoldersChanged();
-            });
+            QTimer::singleShot(timeout, this, &OutboxQueue::localFoldersChanged);
         } else {
             qCWarning(MAILDISPATCHER_LOG) << "Failed to get outbox folder. Giving up.";
             Q_EMIT error(i18n("Could not access the outbox folder (%1).", job->errorString()));

@@ -400,9 +400,7 @@ SendJob::~SendJob()
 
 void SendJob::start()
 {
-    QTimer::singleShot(0, this, [this]() {
-        doTransport();
-    });
+    QTimer::singleShot(0, this, &SendJob::doTransport);
 }
 
 void SendJob::setMarkAborted()
