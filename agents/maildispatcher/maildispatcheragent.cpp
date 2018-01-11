@@ -159,9 +159,7 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     connect(mQueue, &OutboxQueue::newItems,
             this, &MailDispatcherAgent::dispatch);
     connect(mQueue, &OutboxQueue::itemReady,
-            this, [this](const Akonadi::Item &item) {
-        itemFetched(item);
-    });
+            this, &MailDispatcherAgent::itemFetched);
     connect(mQueue, &OutboxQueue::error,
             this, &MailDispatcherAgent::queueError);
     connect(this, &MailDispatcherAgent::itemProcessed,
