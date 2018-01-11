@@ -56,9 +56,7 @@ void OutboxQueue::initQueue()
     ItemFetchJob *job = new ItemFetchJob(mOutbox);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload(false);
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
-        collectionFetched(job);
-    });
+    connect(job, &ItemFetchJob::result, this, &OutboxQueue::collectionFetched);
 }
 
 void OutboxQueue::addIfComplete(const Item &item)
@@ -246,9 +244,7 @@ void OutboxQueue::localFoldersChanged()
 
         SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::Outbox);
-        connect(job, &SpecialMailCollectionsRequestJob::result, this, [this](KJob *job) {
-            localFoldersRequestResult(job);
-        });
+        connect(job, &SpecialMailCollectionsRequestJob::result, this, &OutboxQueue::localFoldersRequestResult);
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting outbox folder.";
         job->start();
@@ -346,19 +342,13 @@ OutboxQueue::OutboxQueue(QObject *parent)
             this, &OutboxQueue::itemChanged);
     connect(mMonitor, &Monitor::itemMoved,
             this, &OutboxQueue::itemMoved);
-    connect(mMonitor, &Monitor::itemRemoved, this, [this](const Akonadi::Item &item) {
-        itemRemoved(item);
-    });
+    connect(mMonitor, &Monitor::itemRemoved, this, &OutboxQueue::itemRemoved);
 
-    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, [this]() {
-        localFoldersChanged();
-    });
+    connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, &OutboxQueue::localFoldersChanged);
     localFoldersChanged();
 
     mFutureTimer = new QTimer(this);
-    connect(mFutureTimer, &QTimer::timeout, this, [this]() {
-        checkFuture();
-    });
+    connect(mFutureTimer, &QTimer::timeout, this, &OutboxQueue::checkFuture);
     mFutureTimer->start(60 * 60 * 1000);   // 1 hour
 }
 
@@ -402,9 +392,7 @@ void OutboxQueue::fetchOne()
     ItemFetchJob *job = new ItemFetchJob(item);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload();
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
-        itemFetched(job);
-    });
+    connect(job, &ItemFetchJob::result, this, &OutboxQueue::itemFetched);
 }
 
 #include "moc_outboxqueue.cpp"

@@ -161,9 +161,7 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
 
     mQueue = new OutboxQueue(this);
     connect(mQueue, &OutboxQueue::newItems,
-            this, [this]() {
-        dispatch();
-    });
+            this, &MailDispatcherAgent::dispatch);
     connect(mQueue, &OutboxQueue::itemReady,
             this, [this](const Akonadi::Item &item) {
         itemFetched(item);
@@ -173,9 +171,7 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     connect(this, &MailDispatcherAgent::itemProcessed,
             mQueue, &OutboxQueue::itemProcessed);
     connect(this, &MailDispatcherAgent::abortRequested,
-            this, [this]() {
-        abort();
-    });
+            this, &MailDispatcherAgent::abort);
 
     mSentActionHandler = new SentActionHandler(this);
 

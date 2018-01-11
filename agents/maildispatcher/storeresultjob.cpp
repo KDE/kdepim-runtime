@@ -47,9 +47,7 @@ void StoreResultJob::doStart()
 {
     // Fetch item in case it was modified elsewhere.
     ItemFetchJob *job = new ItemFetchJob(mItem, this);
-    connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
-        fetchDone(job);
-    });
+    connect(job, &ItemFetchJob::result, this, &StoreResultJob::fetchDone);
 }
 
 bool StoreResultJob::success() const
@@ -103,9 +101,7 @@ void StoreResultJob::fetchDone(KJob *job)
     }
 
     ItemModifyJob *modifyJob = new ItemModifyJob(item, this);
-    QObject::connect(modifyJob, &ItemModifyJob::result, this, [this](KJob *job) {
-        modifyDone(job);
-    });
+    QObject::connect(modifyJob, &ItemModifyJob::result, this, &StoreResultJob::modifyDone);
 }
 
 void StoreResultJob::modifyDone(KJob *job)
