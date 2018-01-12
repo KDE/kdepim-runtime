@@ -529,7 +529,7 @@ void POP3Resource::listJobResult(KJob *job)
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
         mIdsToSaveValid = false;
-        qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap:" << mIdsToSizeMap;
+        qCDebug(POP3RESOURCE_LOG) << "IdsToSizeMap size" << mIdsToSizeMap.size();
         advanceState(UIDList);
     }
 }
@@ -544,8 +544,8 @@ void POP3Resource::uidListJobResult(KJob *job)
         Q_ASSERT(listJob);
         mIdsToUidsMap = listJob->uidList();
         mUidsToIdsMap = listJob->idList();
-        qCDebug(POP3RESOURCE_LOG) << "IdToUidMap:" << mIdsToUidsMap;
-        qCDebug(POP3RESOURCE_LOG) << "UidToIdMap:" << mUidsToIdsMap;
+        qCDebug(POP3RESOURCE_LOG) << "IdsToUidsMap size" << mIdsToUidsMap.size();
+        qCDebug(POP3RESOURCE_LOG) << "UidsToIdsMap size" << mUidsToIdsMap.size();
 
         mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
         if (Settings::self()->leaveOnServer() && !mUidListValid) {
