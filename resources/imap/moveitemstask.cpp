@@ -130,7 +130,7 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
         }
     }
 
-    const bool canMove = serverCapabilities().contains(QStringLiteral("MOVE"), Qt::CaseInsensitive);
+    const bool canMove = serverCapabilities().contains(QLatin1String("MOVE"), Qt::CaseInsensitive);
     if (canMove) {
         auto job = new KIMAP::MoveJob(session);
         job->setUidBased(true);

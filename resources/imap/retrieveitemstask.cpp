@@ -160,7 +160,7 @@ void RetrieveItemsTask::startRetrievalTasks()
     m_time.start();
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
-    const bool hasACL = serverCapabilities().contains(QStringLiteral("ACL"));
+    const bool hasACL = serverCapabilities().contains(QLatin1String("ACL"));
     const KIMAP::Acl::Rights rights = myRights(collection());
     if (isAutomaticExpungeEnabled() && (!hasACL || (rights &KIMAP::Acl::Expunge) || (rights & KIMAP::Acl::Delete))) {
         if (m_session->selectedMailBox() != mailBox) {

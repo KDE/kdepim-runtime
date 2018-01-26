@@ -426,17 +426,17 @@ void ConnectionPage::initializePage()
     mPreviewLayout = new QFormLayout;
     mLayout->addRow(mPreviewLayout);
 
-    if (supportedProtocols.contains(QStringLiteral("CalDav"))) {
+    if (supportedProtocols.contains(QLatin1String("CalDav"))) {
         mCalDavUrlLabel = new QLabel(i18n("Final URL (CalDav)"));
         mCalDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mCalDavUrlLabel, mCalDavUrlPreview);
     }
-    if (supportedProtocols.contains(QStringLiteral("CardDav"))) {
+    if (supportedProtocols.contains(QLatin1String("CardDav"))) {
         mCardDavUrlLabel = new QLabel(i18n("Final URL (CardDav)"));
         mCardDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mCardDavUrlLabel, mCardDavUrlPreview);
     }
-    if (supportedProtocols.contains(QStringLiteral("GroupDav"))) {
+    if (supportedProtocols.contains(QLatin1String("GroupDav"))) {
         mGroupDavUrlLabel = new QLabel(i18n("Final URL (GroupDav)"));
         mGroupDavUrlPreview = new QLabel;
         mPreviewLayout->addRow(mGroupDavUrlLabel, mGroupDavUrlPreview);

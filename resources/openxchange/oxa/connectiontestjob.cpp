@@ -64,7 +64,7 @@ void ConnectionTestJob::httpJobFinished(KJob *job)
 
     // on success data contains something like: {"session":"e530578bca504aa89738fadde9e44b3d","random":"ac9090d2cc284fed926fa3c7e316c43b"}
     // on failure data contains something like: {"category":1,"error_params":[],"error":"Invalid credentials.","error_id":"-1529642166-37","code":"LGI-0006"}
-    if (data.contains(QStringLiteral("error"))) {
+    if (data.contains(QLatin1String("error"))) {
         const QString errorText = data[QStringLiteral("error")].toString();
 
         setError(UserDefinedError);

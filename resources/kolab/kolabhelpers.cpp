@@ -350,8 +350,8 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
         return QByteArrayLiteral("task");
     } else if (contentMimeTypes.contains(KCalCore::Journal::journalMimeType())) {
         return QByteArrayLiteral("journal");
-    } else if (contentMimeTypes.contains(QStringLiteral("application/x-vnd.akonadi.note"))
-               || contentMimeTypes.contains(QStringLiteral("text/x-vnd.akonadi.note"))) {
+    } else if (contentMimeTypes.contains(QLatin1String("application/x-vnd.akonadi.note"))
+               || contentMimeTypes.contains(QLatin1String("text/x-vnd.akonadi.note"))) {
         return QByteArrayLiteral("note");
     }
     return QByteArray();

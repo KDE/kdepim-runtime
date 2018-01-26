@@ -80,7 +80,7 @@ void RetrieveMetadataJob::start()
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
-    if (mServerCapabilities.contains(QStringLiteral("METADATA")) || mServerCapabilities.contains(QStringLiteral("ANNOTATEMORE"))) {
+    if (mServerCapabilities.contains(QLatin1String("METADATA")) || mServerCapabilities.contains(QLatin1String("ANNOTATEMORE"))) {
         QSet<QString> toplevelMailboxes;
         for (const QString &mailbox : qAsConst(mMailboxes)) {
             const QStringList parts = mailbox.split(mSeparator);
@@ -100,7 +100,7 @@ void RetrieveMetadataJob::start()
         for (const QString &mailbox : qAsConst(toplevelMailboxes)) {
             KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(mSession);
             meta->setMailBox(mailbox + QLatin1String("*"));
-            if (mServerCapabilities.contains(QStringLiteral("METADATA"))) {
+            if (mServerCapabilities.contains(QLatin1String("METADATA"))) {
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
             } else {
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
@@ -116,7 +116,7 @@ void RetrieveMetadataJob::start()
     }
 
     // Get the ACLs from the mailbox if it's supported
-    if (mServerCapabilities.contains(QStringLiteral("ACL"))) {
+    if (mServerCapabilities.contains(QLatin1String("ACL"))) {
         for (const QString &mailbox : qAsConst(mMailboxes)) {
             // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
@@ -370,7 +370,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     c.setKeepLocalChanges(cDefaultKeepLocalChanges);
 
     //assume LRS, until myrights is executed
-    if (serverCapabilities().contains(QStringLiteral("ACL"))) {
+    if (serverCapabilities().contains(QLatin1String("ACL"))) {
         c.setRights(Akonadi::Collection::ReadOnly);
     } else {
         c.setRights(Akonadi::Collection::AllRights);

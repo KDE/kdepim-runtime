@@ -121,7 +121,7 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
     while (i.hasNext()) {
         i.next();
         KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob(m_session);
-        if (serverCapabilities().contains(QStringLiteral("METADATA"))) {
+        if (serverCapabilities().contains(QLatin1String("METADATA"))) {
             job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
         } else {
             job->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);

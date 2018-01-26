@@ -72,10 +72,10 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
     m_pendingMetaDataJobs = 0;
 
     // First get the annotations from the mailbox if it's supported
-    if (capabilities.contains(QStringLiteral("METADATA")) || capabilities.contains(QStringLiteral("ANNOTATEMORE"))) {
+    if (capabilities.contains(QLatin1String("METADATA")) || capabilities.contains(QLatin1String("ANNOTATEMORE"))) {
         KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(session);
         meta->setMailBox(mailBox);
-        if (capabilities.contains(QStringLiteral("METADATA"))) {
+        if (capabilities.contains(QLatin1String("METADATA"))) {
             meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
             meta->addRequestedEntry("/shared");
             meta->setDepth(KIMAP::GetMetaDataJob::AllLevels);
@@ -89,7 +89,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
     }
 
     // Get the ACLs from the mailbox if it's supported
-    if (capabilities.contains(QStringLiteral("ACL"))) {
+    if (capabilities.contains(QLatin1String("ACL"))) {
         KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob(session);
         rights->setMailBox(mailBox);
         connect(rights, &KJob::result, this, &RetrieveCollectionMetadataTask::onRightsReceived);
@@ -98,7 +98,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
     }
 
     // Get the QUOTA info from the mailbox if it's supported
-    if (capabilities.contains(QStringLiteral("QUOTA"))) {
+    if (capabilities.contains(QLatin1String("QUOTA"))) {
         KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob(session);
         quota->setMailBox(mailBox);
         connect(quota, &KJob::result, this, &RetrieveCollectionMetadataTask::onQuotasReceived);

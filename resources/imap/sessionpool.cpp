@@ -475,12 +475,12 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
     }
 
     // If the extension is supported, grab the namespaces from the server
-    if (m_capabilities.contains(QStringLiteral("NAMESPACE"))) {
+    if (m_capabilities.contains(QLatin1String("NAMESPACE"))) {
         KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob(capJob->session());
         QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
         nsJob->start();
         return;
-    } else if (m_capabilities.contains(QStringLiteral("ID"))) {
+    } else if (m_capabilities.contains(QLatin1String("ID"))) {
         KIMAP::IdJob *idJob = new KIMAP::IdJob(capJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
@@ -524,7 +524,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
                        +nsJob->sharedNamespaces();
     }
 
-    if (m_capabilities.contains(QStringLiteral("ID"))) {
+    if (m_capabilities.contains(QLatin1String("ID"))) {
         KIMAP::IdJob *idJob = new KIMAP::IdJob(nsJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);

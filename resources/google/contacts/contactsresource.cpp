@@ -349,18 +349,18 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         QString realName = group->title();
 
         if (group->isSystemGroup()) {
-            if (group->title().contains(QStringLiteral("Coworkers"))) {
+            if (group->title().contains(QLatin1String("Coworkers"))) {
                 realName = i18nc("Name of a group of contacts", "Coworkers");
-            } else if (group->title().contains(QStringLiteral("Friends"))) {
+            } else if (group->title().contains(QLatin1String("Friends"))) {
                 realName = i18nc("Name of a group of contacts", "Friends");
-            } else if (group->title().contains(QStringLiteral("Family"))) {
+            } else if (group->title().contains(QLatin1String("Family"))) {
                 realName = i18nc("Name of a group of contacts", "Family");
-            } else if (group->title().contains(QStringLiteral("My Contacts"))) {
+            } else if (group->title().contains(QLatin1String("My Contacts"))) {
                 // Yes, skip My Contacts group, we store "My Contacts" in root collection
                 continue;
             }
         } else {
-            if (group->title().contains(QStringLiteral("Other Contacts"))) {
+            if (group->title().contains(QLatin1String("Other Contacts"))) {
                 realName = i18nc("Name of a group of contacts", "Other Contacts");
             }
         }

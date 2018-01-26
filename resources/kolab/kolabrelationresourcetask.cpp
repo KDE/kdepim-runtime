@@ -105,7 +105,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
     }
 
     KIMAP::SetMetaDataJob *setMetadataJob = new KIMAP::SetMetaDataJob(mImapSession);
-    if (serverCapabilities().contains(QStringLiteral("METADATA"))) {
+    if (serverCapabilities().contains(QLatin1String("METADATA"))) {
         setMetadataJob->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
     } else {
         setMetadataJob->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);

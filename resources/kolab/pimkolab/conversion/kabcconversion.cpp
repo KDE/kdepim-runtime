@@ -424,10 +424,10 @@ static QString emailTypesToStringList(int emailTypes)
 static int emailTypesFromStringlist(const QString &types)
 {
     int emailTypes = Kolab::Email::NoType;
-    if (types.contains(QStringLiteral("home"))) {
+    if (types.contains(QLatin1String("home"))) {
         emailTypes |= Kolab::Email::Home;
     }
-    if (types.contains(QStringLiteral("work"))) {
+    if (types.contains(QLatin1String("work"))) {
         emailTypes |= Kolab::Email::Work;
     }
     return emailTypes;
