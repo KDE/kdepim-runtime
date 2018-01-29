@@ -20,6 +20,7 @@
 #include "kolabresource.h"
 
 #include "kolabresource_debug.h"
+#include "kolabresource_trace.h"
 #include "setupserver.h"
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
@@ -48,7 +49,6 @@
 #include "kolabremovetagtask.h"
 #include "kolabretrievecollectionstask.h"
 #include "kolabretrievetagstask.h"
-#include "tracer.h"
 
 KolabResource::KolabResource(const QString &id)
     : ImapResourceBase(id)
@@ -128,7 +128,7 @@ ResourceStateInterface::Ptr KolabResource::createResourceState(const TaskArgumen
 
 void KolabResource::retrieveCollections()
 {
-    Trace();
+    qCDebug(KOLABRESOURCE_TRACE);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving folders"));
 
     startTask(new KolabRetrieveCollectionsTask(createResourceState(TaskArguments()), this));
@@ -138,7 +138,7 @@ void KolabResource::retrieveCollections()
 
 void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    Trace() << item.id() << collection.id();
+    qCDebug(KOLABRESOURCE_TRACE) << item.id() << collection.id();
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
@@ -151,7 +151,7 @@ void KolabResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collecti
 
 void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &parts)
 {
-    Trace() << item.id() << parts;
+    qCDebug(KOLABRESOURCE_TRACE) << item.id() << parts;
     bool ok = true;
     const Akonadi::Item imapItem = KolabHelpers::translateToImap(item, ok);
     if (!ok) {
@@ -164,7 +164,7 @@ void KolabResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArra
 
 void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
 {
-    Trace() << items.size() << source.id() << destination.id();
+    qCDebug(KOLABRESOURCE_TRACE) << items.size() << source.id() << destination.id();
     bool ok = true;
     const Akonadi::Item::List imapItems = KolabHelpers::translateToImap(items, ok);
     if (!ok) {
@@ -177,7 +177,7 @@ void KolabResource::itemsMoved(const Akonadi::Item::List &items, const Akonadi::
 
 static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collection)
 {
-    Trace() << collection.id();
+    qCDebug(KOLABRESOURCE_TRACE) << collection.id();
     //Set the annotations on new folders
     const QByteArray kolabType = KolabHelpers::kolabTypeForMimeType(collection.contentMimeTypes());
     Akonadi::Collection col = collection;
@@ -208,7 +208,7 @@ static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collecti
 
 void KolabResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
-    Trace() << collection.id() << parent.id();
+    qCDebug(KOLABRESOURCE_TRACE) << collection.id() << parent.id();
     //Set the annotations on new folders
     const Akonadi::Collection col = updateAnnotations(collection);
     //TODO we need to save the collections as well if the annotations have changed
@@ -218,7 +218,7 @@ void KolabResource::collectionAdded(const Akonadi::Collection &collection, const
 
 void KolabResource::collectionChanged(const Akonadi::Collection &collection, const QSet< QByteArray > &parts)
 {
-    Trace() << collection.id() << parts;
+    qCDebug(KOLABRESOURCE_TRACE) << collection.id() << parts;
     QSet<QByteArray> p = parts;
     //Update annotations if necessary
     //FIXME col ?????
@@ -236,49 +236,49 @@ void KolabResource::collectionChanged(const Akonadi::Collection &collection, con
 
 void KolabResource::tagAdded(const Akonadi::Tag &tag)
 {
-    Trace() << tag.id();
+    qCDebug(KOLABRESOURCE_TRACE) << tag.id();
     KolabAddTagTask *task = new KolabAddTagTask(createResourceState(TaskArguments(tag)), this);
     startTask(task);
 }
 
 void KolabResource::tagChanged(const Akonadi::Tag &tag)
 {
-    Trace() << tag.id();
+    qCDebug(KOLABRESOURCE_TRACE) << tag.id();
     KolabChangeTagTask *task = new KolabChangeTagTask(createResourceState(TaskArguments(tag)), QSharedPointer<TagConverter>(new TagConverter), this);
     startTask(task);
 }
 
 void KolabResource::tagRemoved(const Akonadi::Tag &tag)
 {
-    Trace() << tag.id();
+    qCDebug(KOLABRESOURCE_TRACE) << tag.id();
     KolabRemoveTagTask *task = new KolabRemoveTagTask(createResourceState(TaskArguments(tag)), this);
     startTask(task);
 }
 
 void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags)
 {
-    Trace() << items.size() << addedTags.size() << removedTags.size();
+    qCDebug(KOLABRESOURCE_TRACE) << items.size() << addedTags.size() << removedTags.size();
     KolabChangeItemsTagsTask *task = new KolabChangeItemsTagsTask(createResourceState(TaskArguments(items, addedTags, removedTags)), QSharedPointer<TagConverter>(new TagConverter), this);
     startTask(task);
 }
 
 void KolabResource::retrieveTags()
 {
-    Trace();
+    qCDebug(KOLABRESOURCE_TRACE);
     KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
     startTask(task);
 }
 
 void KolabResource::retrieveRelations()
 {
-    Trace();
+    qCDebug(KOLABRESOURCE_TRACE);
     KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveRelations, this);
     startTask(task);
 }
 
 void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items, const Akonadi::Relation::List &addedRelations, const Akonadi::Relation::List &removedRelations)
 {
-    Trace() << items.size() << addedRelations.size() << removedRelations.size();
+    qCDebug(KOLABRESOURCE_TRACE) << items.size() << addedRelations.size() << removedRelations.size();
     KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
     startTask(task);
 }

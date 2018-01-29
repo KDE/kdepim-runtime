@@ -29,7 +29,6 @@
 #include "settings.h"
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
-#include "tracer.h"
 #include "utils.h"
 #include "config-imap.h"
 

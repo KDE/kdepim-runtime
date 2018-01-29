@@ -25,13 +25,13 @@
 
 #include <KLocalizedString>
 #include "imapresource_debug.h"
+#include "imapresource_trace.h"
 
 #include "collectionflagsattribute.h"
 #include <imapaclattribute.h>
 #include "imapflags.h"
 #include "sessionpool.h"
 #include "resourcestateinterface.h"
-#include "tracer.h"
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent)
@@ -58,7 +58,7 @@ ResourceTask::~ResourceTask()
 
 void ResourceTask::start(SessionPool *pool)
 {
-    Trace() << metaObject()->className();
+    qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
     m_pool = pool;
     connect(m_pool, &SessionPool::sessionRequestDone,
             this, &ResourceTask::onSessionRequested);
@@ -117,7 +117,7 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
     m_session = session;
 
     if (errorCode != SessionPool::NoError) {
-        Trace() << "Error on: " << metaObject()->className();
+        qCDebug(IMAPRESOURCE_TRACE) << "Error on: " << metaObject()->className();
         switch (m_actionIfNoSession) {
         case CancelIfNoSession:
             qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
@@ -141,7 +141,7 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
     connect(m_pool, &SessionPool::disconnectDone,
             this, &ResourceTask::onPoolDisconnect);
 
-    Trace() << "starting: " << metaObject()->className();
+    qCDebug(IMAPRESOURCE_TRACE) << "starting: " << metaObject()->className();
     doStart(m_session);
 }
 
@@ -152,7 +152,7 @@ void ResourceTask::onConnectionLost(KIMAP::Session *session)
         // the pointer, we don't need to release it once the
         // task is done
         m_session = nullptr;
-        Trace() << metaObject()->className();
+        qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
         cancelTask(i18n("Connection lost"));
     }
 }
@@ -164,7 +164,7 @@ void ResourceTask::onPoolDisconnect()
     // release our session anymore
     m_pool = nullptr;
 
-    Trace() << metaObject()->className();
+    qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
     cancelTask(i18n("Connection lost"));
 }
 
@@ -514,8 +514,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags(const QList<QByteArray> &flags)
 
 void ResourceTask::kill()
 {
-    Trace() << metaObject()->className();
-    qCDebug(IMAPRESOURCE_LOG);
+    qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
     cancelTask(i18n("killed"));
 }
 

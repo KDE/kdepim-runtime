@@ -35,7 +35,17 @@ set(kolabresource_SRCS
     updatemessagejob.cpp
 )
 
-ecm_qt_declare_logging_category(kolabresource_SRCS HEADER kolabresource_debug.h IDENTIFIER KOLABRESOURCE_LOG CATEGORY_NAME org.kde.pim.kolabresource)
+ecm_qt_declare_logging_category(kolabresource_SRCS
+    HEADER kolabresource_debug.h
+    IDENTIFIER KOLABRESOURCE_LOG
+    CATEGORY_NAME org.kde.pim.kolabresource
+)
+ecm_qt_declare_logging_category(kolabresource_SRCS
+    HEADER kolabresource_trace.h
+    IDENTIFIER KOLABRESOURCE_TRACE
+    CATEGORY_NAME org.kde.pim.kolamresource.trace
+    DEFAULT_SEVERITY Debug
+)
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
 

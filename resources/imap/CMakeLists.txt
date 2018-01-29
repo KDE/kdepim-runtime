@@ -42,7 +42,6 @@ set( imapresource_LIB_SRCS
   resourcestate.cpp
   collectionmetadatahelper.cpp
   replacemessagejob.cpp
-  tracer.cpp
   utils.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
@@ -50,6 +49,12 @@ set( imapresource_LIB_SRCS
 
 
 ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME org.kde.pim.imapresource)
+ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
+        IDENTIFIER IMAPRESOURCE_TRACE
+        CATEGORY_NAME org.kde.pim.imapresource.trace
+        DEFAULT_SEVERITY Debug
+)
+
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
 

@@ -19,6 +19,7 @@
 
 #include "kolabhelpers.h"
 #include "kolabresource_debug.h"
+#include "kolabresource_trace.h"
 #include <KMime/KMimeMessage>
 #include <KCalCore/Incidence>
 #include <AkonadiCore/Collection>
@@ -29,7 +30,6 @@
 #include "pimkolab/kolabformat/errorhandler.h"
 #include <KLocalizedString>
 #include <QColor>
-#include "tracer.h"
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
@@ -515,7 +515,7 @@ QList<QByteArray> KolabHelpers::ancestorChain(const Akonadi::Collection &col)
 
 QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &user)
 {
-    Trace() << item.id() << item.mimeType() << item.gid() << item.hasPayload();
+    qCDebug(KOLABRESOURCE_TRACE) << item.id() << item.mimeType() << item.gid() << item.hasPayload();
     Kolab::RelationMember member;
     if (item.mimeType() == KMime::Message::mimeType()) {
         if (!item.hasPayload<KMime::Message::Ptr>()) {

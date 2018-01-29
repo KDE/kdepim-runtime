@@ -19,13 +19,13 @@
 
 #include "kolabretrievetagstask.h"
 #include "kolabresource_debug.h"
+#include "kolabresource_trace.h"
 #include "tagchangehelper.h"
 
 #include <kimap/selectjob.h>
 #include <kimap/fetchjob.h>
 #include <imapflags.h>
 #include "pimkolab/kolabformat/kolabobject.h"
-#include "tracer.h"
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -143,7 +143,7 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
     tag.setRemoteId(QByteArray::number(remoteUid));
     mTags << tag;
 
-    Trace() << "Extracted tag: " << tag.gid() << " remoteId: " << remoteUid << tag.remoteId();
+    qCDebug(KOLABRESOURCE_TRACE) << "Extracted tag: " << tag.gid() << " remoteId: " << remoteUid << tag.remoteId();
 
     Akonadi::Item::List members;
     const QStringList lstMemberUrl = reader.getTagMembers();

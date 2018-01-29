@@ -22,8 +22,9 @@
 
 #include "kolabretrievecollectionstask.h"
 #include "kolabhelpers.h"
-#include "tracer.h"
 #include "kolabresource_debug.h"
+#include "kolabresource_trace.h"
+
 
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>
@@ -74,7 +75,7 @@ RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringL
 
 void RetrieveMetadataJob::start()
 {
-    Trace();
+    qCDebug(KOLABRESOURCE_TRACE);
     //Fill the map with empty entires so we set the mimetype to mail if no metadata is retrieved
     for (const QString &mailbox : qAsConst(mMailboxes)) {
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
@@ -176,7 +177,7 @@ void RetrieveMetadataJob::onRightsReceived(KJob *job)
 void RetrieveMetadataJob::checkDone()
 {
     if (!mJobs) {
-        Trace() << "done";
+        qCDebug(KOLABRESOURCE_TRACE) << "done";
         qCDebug(KOLABRESOURCE_LOG) << "done";
         emitResult();
     }
@@ -206,7 +207,6 @@ KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
 
 void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 {
-    Trace();
     qCDebug(KOLABRESOURCE_LOG) << "Starting collection retrieval";
     mTime.start();
     mSession = session;
@@ -243,7 +243,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 
     mMailCollections.insert(QString(), root);
 
-    Trace() << "subscription enabled: " << isSubscriptionEnabled();
+    qCDebug(KOLABRESOURCE_TRACE) << "subscription enabled: " << isSubscriptionEnabled();
     //jobs are serialized by the session
     if (isSubscriptionEnabled()) {
         KIMAP::ListJob *fullListJob = new KIMAP::ListJob(session);
@@ -410,7 +410,6 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
 void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
 {
-    Trace();
     qCDebug(KOLABRESOURCE_LOG) << "All mailboxes received: " << mTime.elapsed();
     qCDebug(KOLABRESOURCE_LOG) << "in total: " << mMailCollections.size();
     mJobs--;
@@ -495,7 +494,6 @@ void KolabRetrieveCollectionsTask::applyMetadata(const QHash<QString, QMap<QByte
 
 void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
 {
-    Trace();
     qCDebug(KOLABRESOURCE_LOG) << mTime.elapsed();
     mJobs--;
     if (job->error()) {
@@ -512,7 +510,6 @@ void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
 void KolabRetrieveCollectionsTask::checkDone()
 {
     if (!mJobs) {
-        Trace() << "done " << mMailCollections.size();
         collectionsRetrieved(Akonadi::valuesToVector(mMailCollections));
         qCDebug(KOLABRESOURCE_LOG) << "done " <<  mTime.elapsed();
     }
@@ -528,7 +525,6 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::M
 
 void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
 {
-    Trace();
     qCDebug(KOLABRESOURCE_LOG) << "received subscribed collections " <<  mTime.elapsed();
     mJobs--;
     if (job->error()) {
