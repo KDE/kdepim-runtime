@@ -43,7 +43,7 @@ ecm_qt_declare_logging_category(kolabresource_SRCS
 ecm_qt_declare_logging_category(kolabresource_SRCS
     HEADER kolabresource_trace.h
     IDENTIFIER KOLABRESOURCE_TRACE
-    CATEGORY_NAME org.kde.pim.kolamresource.trace
+    CATEGORY_NAME org.kde.pim.kolabresource.trace
     DEFAULT_SEVERITY Debug
 )
 
