@@ -52,7 +52,6 @@ ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.
 ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
         IDENTIFIER IMAPRESOURCE_TRACE
         CATEGORY_NAME org.kde.pim.imapresource.trace
-        DEFAULT_SEVERITY Debug
 )
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
