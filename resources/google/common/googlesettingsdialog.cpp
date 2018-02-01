@@ -196,6 +196,11 @@ void GoogleSettingsDialog::slotAccountAuthenticated(Job *job)
     AuthJob *authJob = qobject_cast<AuthJob *>(job);
     const AccountPtr account = authJob->account();
 
+    if (authJob->error() != KGAPI2::NoError) {
+        KMessageBox::sorry(this, authJob->errorString());
+        return;
+    }
+
     if (!m_accountManager->storeAccount(account)) {
         qWarning() << "Failed to add account to KWallet";
     }
