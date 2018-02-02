@@ -236,7 +236,7 @@ CredentialsPage::CredentialsPage(QWidget *parent)
 int CredentialsPage::nextId() const
 {
     QString userName = field(QStringLiteral("credentialsUserName")).toString();
-    if (userName.endsWith(QStringLiteral("@yahoo.com"))) {
+    if (userName.endsWith(QLatin1String("@yahoo.com"))) {
         KService::List offers;
         offers = KServiceTypeTrader::self()->query(QStringLiteral("DavGroupwareProvider"), QStringLiteral("Name == 'Yahoo!'"));
         if (offers.isEmpty()) {

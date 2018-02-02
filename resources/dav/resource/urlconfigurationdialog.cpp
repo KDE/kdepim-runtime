@@ -195,7 +195,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
         setRemoteUrl(remoteUrl() + QLatin1Char('/'));
     }
 
-    if (!remoteUrl().startsWith(QStringLiteral("https://")) && !remoteUrl().startsWith(QStringLiteral("http://"))) {
+    if (!remoteUrl().startsWith(QLatin1String("https://")) && !remoteUrl().startsWith(QLatin1String("http://"))) {
         setRemoteUrl(QStringLiteral("https://") + remoteUrl());
     }
 
