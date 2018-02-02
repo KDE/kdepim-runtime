@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Google Calendars and Tasks
+Name[ar]=تقاويم ومهامّ «غوغل»
 Name[bg]=Календари и задачи в Google
 Name[bs]=Google kalendari i zadaće
 Name[ca]=Calendaris i tasques de Google
@@ -42,6 +43,7 @@ Name[x-test]=xxGoogle Calendars and Tasksxx
 Name[zh_CN]=Google 日历和任务
 Name[zh_TW]=Google 行事曆與工作
 Comment=Access your Google Calendars and Tasks from KDE
+Comment[ar]=توصّل إلى تقاويم ومهام «غوغل» من «كدي»
 Comment[bg]=Достъп до календарите и задачите ви в Google от KDE
 Comment[bs]=Pristupite svojim Google kalendaru i zadacima iz KDE
 Comment[ca]=Accediu als calendaris i tasques de Google des del KDE

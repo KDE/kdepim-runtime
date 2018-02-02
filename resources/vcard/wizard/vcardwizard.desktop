@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=vCard File
+Name[ar]=ملفّ vCard
 Name[bg]=Файл vCard
 Name[bs]=VCard datoteka
 Name[ca]=Fitxer vCard
@@ -43,6 +44,7 @@ Name[zh_CN]=vCard 文件
 Name[zh_TW]=vCard 檔案
 Icon=text-directory
 Comment=Loads contact from vCard File
+Comment[ar]=يحمّل متراسلًا من ملفّ vCard
 Comment[bg]=Зареждане на контакти от файл vCard
 Comment[ca]=Carrega els contactes des d'un fitxer vCard
 Comment[ca@valencia]=Carrega els contactes des d'un fitxer vCard
