@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Mbox
+Name[ar]=Mbox
 Name[bg]=Mbox
 Name[bs]=Mbox
 Name[ca]=Mbox
@@ -48,6 +49,7 @@ Name[x-test]=xxMboxxx
 Name[zh_CN]=MBox
 Name[zh_TW]=Mbox
 Comment=Loads data from a local mbox file
+Comment[ar]=يحمّل البيانات من ملفّ MBox محليّ
 Comment[bg]=Зареждане на данни от локален файл mbox
 Comment[bs]=Učitava podatke iz lokalne mbox datoteke
 Comment[ca]=Carrega les dades des d'un fitxer «mbox» local

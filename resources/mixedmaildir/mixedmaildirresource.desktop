@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KMail Mail Folder
+Name[ar]=مجلّد بريد «بريدك»
 Name[bg]=Папка с поща на KMail
 Name[bs]=KMail fascikla pošte
 Name[ca]=Carpeta de correu del KMail
@@ -43,6 +44,7 @@ Name[x-test]=xxKMail Mail Folderxx
 Name[zh_CN]=KMail 邮件文件夹
 Name[zh_TW]=KMail 資料夾
 Comment=Loads data from a local KMail mail folder
+Comment[ar]=يحمّل البيانات من مجلّد بريد «بريدك»
 Comment[bg]=Зареждане на данни от локална папка с поща на KMail
 Comment[bs]=Učitava podatke iz lokalne fascikle KMail pošte
 Comment[ca]=Carrega les dades des d'una carpeta local de correu del KMail

@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=KAlarm Calendar File
+Name[ar]=ملفّ تقاويم «منبّهك»
 Name[bg]=Календарен файл на KAlarm
 Name[bs]=KAlarm Kalendar Datoteka
 Name[ca]=Fitxer de calendari del KAlarm
@@ -46,6 +47,7 @@ Name[x-test]=xxKAlarm Calendar Filexx
 Name[zh_CN]=KAlarm 日历文件
 Name[zh_TW]=KAlarm 行事曆檔案
 Comment=Loads data from a KAlarm calendar file
+Comment[ar]=يحمّل البيانات من ملفّ تقاويم «منبّهك»
 Comment[bg]=Зареждане на данни от календарен файл KAlarm
 Comment[bs]=Učitava podatke iz KAlarm kalendar datoteke
 Comment[ca]=Carrega les dades des d'un fitxer de calendari del KAlarm

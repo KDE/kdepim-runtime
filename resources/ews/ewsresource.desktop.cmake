@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Microsoft Exchange Server (EWS)
+Name[ar]=خادوم «مايكروسوفت إكسچينج» (EWS)
 Name[ca]=Servidor Microsoft Exchange (EWS)
 Name[ca@valencia]=Servidor Microsoft Exchange (EWS)
 Name[cs]=Server Microsoft Exchange (EWS)
@@ -24,6 +25,7 @@ Name[uk]=Сервер Microsoft Exchange (EWS)
 Name[x-test]=xxMicrosoft Exchange Server (EWS)xx
 Name[zh_CN]=微软 Exchange 服务器（EWS）
 Comment=Provides access to mail, appointments tasks and contacts of a Microsoft Exchange server using EWS
+Comment[ar]=يوفّر نفاذًا إلى البريد ومهام المواعيد ومتراسلو خادوم «مايكروسوفت إكسچينج» باستخدام EWS
 Comment[ca]=Proporciona accés al correu, tasques de cita i contactes emmagatzemats en un servidor Microsoft Exchange emprant EWS
 Comment[ca@valencia]=Proporciona accés al correu, tasques de cita i contactes emmagatzemats en un servidor Microsoft Exchange emprant EWS
 Comment[de]=Ermöglicht den Zugriff über EWS auf E-Mails, Termine, Aufgaben und Kontakte, die auf einem Microsoft Exchange Server gespeichert sind.

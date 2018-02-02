@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=POP3
+Name[ar]=POP3
 Name[ast]=POP3
 Name[bg]=POP3
 Name[ca]=POP3
@@ -41,6 +42,7 @@ Name[zh_CN]=POP3
 Name[zh_TW]=POP3
 Icon=message-rfc822
 Comment=Pop3 account
+Comment[ar]=حساب POP3
 Comment[bg]=Сметка POP3
 Comment[bs]=Pop3 nalog
 Comment[ca]=Compte Pop3

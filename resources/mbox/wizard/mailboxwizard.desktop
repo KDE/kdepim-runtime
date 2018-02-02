@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=MailBox
+Name[ar]=صندوق البريد
 Name[bg]=MailBox
 Name[bs]=MailBox
 Name[ca]=Bústia
@@ -49,6 +50,7 @@ Name[zh_CN]=MailBox
 Name[zh_TW]=信箱格式（Mailbox）
 Icon=message-rfc822
 Comment=Mailbox account
+Comment[ar]=حساب صندوق البريد
 Comment[bg]=Сметка mailbox
 Comment[bs]=Mailbox nalog
 Comment[ca]=Compte de bústia

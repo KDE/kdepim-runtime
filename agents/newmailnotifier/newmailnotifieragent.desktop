@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=New Email Notifier
+Name[ar]=إخطار ببريد جديد
 Name[bg]=Уведомяване за нова поща
 Name[bs]=Novi obavještavač o pošti
 Name[ca]=Notificador de correu electrònic nou
@@ -45,6 +46,7 @@ Name[x-test]=xxNew Email Notifierxx
 Name[zh_CN]=新邮件提醒
 Name[zh_TW]=新郵件通知器
 Comment=Notifications about newly received emails
+Comment[ar]=إخطارات بالبريد المستلم حديثًا
 Comment[bs]=Obavještenja o novoprimljenoj pošti
 Comment[ca]=Notificacions quant a correus electrònics nous rebuts
 Comment[ca@valencia]=Notificacions quant a correus electrònics nous rebuts

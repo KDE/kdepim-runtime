@@ -1,6 +1,7 @@
 [Global]
 IconName=akonadi
 Comment=POP3 Resource
+Comment[ar]=مورد POP3
 Comment[ca]=Recurs POP3
 Comment[ca@valencia]=Recurs POP3
 Comment[cs]=Zdroj POP3
@@ -29,6 +30,7 @@ Comment[zh_CN]=POP3 资源
 
 [Event/mail-check-error]
 Name=Error While Checking Mail
+Name[ar]=خطأ أثناء التماس البريد
 Name[ca]=Error en comprovar el correu
 Name[ca@valencia]=Error en comprovar el correu
 Name[cs]=Chyba při kontrole pošty
@@ -69,6 +71,7 @@ Name[x-test]=xxError While Checking Mailxx
 Name[zh_CN]=检查邮件时出错
 Name[zh_TW]=檢查郵件時發生錯誤
 Comment=There was an error while checking for new mail
+Comment[ar]=حدث خطأ أثناء التماس البريد الجديد
 Comment[ca]=S'ha produït un error en comprovar el correu nou
 Comment[ca@valencia]=S'ha produït un error en comprovar el correu nou
 Comment[cs]=Nastala chyba při kontrole pošty

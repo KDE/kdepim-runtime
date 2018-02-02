@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Kolab Groupware Server
+Name[ar]=خادوم البرمجيّات التّعاونيّة Kolab
 Name[bg]=Сървър Kolab Groupware
 Name[bs]=Server kolaborativnog softvera
 Name[ca]=Servidor de treball en grup Kolab
@@ -47,6 +48,7 @@ Name[zh_CN]=Kolab 群件服务器
 Name[zh_TW]=Kolab 群組伺服器
 Icon=network-server
 Comment=Kolab Groupware Server
+Comment[ar]=خادوم البرمجيّات التّعاونيّة Kolab
 Comment[bg]=Сървър Kolab Groupware
 Comment[bs]=Server kolaborativnog softvera
 Comment[ca]=Servidor de treball en grup Kolab
