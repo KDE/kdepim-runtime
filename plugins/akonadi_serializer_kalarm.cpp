@@ -29,6 +29,7 @@
 #include <AkonadiCore/item.h>
 #include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/attributefactory.h>
+#include <AkonadiSearch/Indexer>
 
 #include <klocale.h>
 
@@ -312,4 +313,12 @@ void SerializerPluginKAlarm::reportDifference(AbstractDifferencesReporter *repor
 QString SerializerPluginKAlarm::extractGid(const Item &item) const
 {
     return item.hasPayload<KAEvent>() ? item.payload<KAEvent>().id() : QString();
+}
+
+QByteArray SerializerPluginKAlarm::index(const Item &item, const Collection &parent) const
+{
+    if (auto indexer = mIndexer.get(item.mimeType())) {
+        return indexer->index(item, parent);
+    }
+    return {};
 }

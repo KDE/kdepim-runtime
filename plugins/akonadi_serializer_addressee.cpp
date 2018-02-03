@@ -21,6 +21,7 @@
 
 #include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/item.h>
+#include <AkonadiSearch/Indexer>
 
 #include <kcontacts/addressee.h>
 #include <KLocalizedString>
@@ -298,6 +299,8 @@ void SerializerPluginAddressee::compare(Akonadi::AbstractDifferencesReporter *re
     //TODO: logo/photo/custom entries
 }
 
+
+
 //// GidExtractorInterface
 
 QString SerializerPluginAddressee::extractGid(const Item &item) const
@@ -306,4 +309,13 @@ QString SerializerPluginAddressee::extractGid(const Item &item) const
         return QString();
     }
     return item.payload<KContacts::Addressee>().uid();
+}
+
+//// ItemIndexerInterface
+QByteArray SerializerPluginAddressee::index(const Item &item, const Collection &parent) const
+{
+    if (auto indexer = m_indexer.get(item.mimeType())) {
+        return indexer->index(item, parent);
+    }
+    return {};
 }

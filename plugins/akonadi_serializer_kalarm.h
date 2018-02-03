@@ -26,6 +26,8 @@
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/differencesalgorithminterface.h>
 #include <AkonadiCore/gidextractorinterface.h>
+#include <AkonadiCore/IndexerInterface>
+#include <AkonadiSearch/ObjectCache>
 #include <KCalCore/ICalFormat>
 
 #include <QObject>
@@ -33,28 +35,36 @@
 namespace Akonadi {
 class Item;
 class AbstractDifferencesReporter;
-}
 
-class SerializerPluginKAlarm : public QObject, public Akonadi::ItemSerializerPlugin, public Akonadi::DifferencesAlgorithmInterface, public Akonadi::GidExtractorInterface
+class SerializerPluginKAlarm : public QObject
+                             , public ItemSerializerPlugin
+                             , public DifferencesAlgorithmInterface
+                             , public GidExtractorInterface
+                             , public ItemIndexerInterface
 {
     Q_OBJECT
-    Q_INTERFACES(Akonadi::ItemSerializerPlugin)
-    Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
-    Q_INTERFACES(Akonadi::GidExtractorInterface)
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin
+                 Akonadi::DifferencesAlgorithmInterface
+                 Akonadi::GidExtractorInterface
+                 Akonadi::ItemIndexerInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginKAlarm")
 public:
-    bool deserialize(Akonadi::Item &item, const QByteArray &label, QIODevice &data, int version) override;
-    void serialize(const Akonadi::Item &item, const QByteArray &label, QIODevice &data, int &version) override;
-    void compare(Akonadi::AbstractDifferencesReporter *, const Akonadi::Item &left, const Akonadi::Item &right) override;
-    QString extractGid(const Akonadi::Item &item) const override;
+    bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
+    void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) override;
+    void compare(AbstractDifferencesReporter *, const Item &left, const Item &right) override;
+    QString extractGid(const Item &item) const override;
+    QByteArray index(const Item &item, const Collection &parent) const override;
 
 private:
-    void reportDifference(Akonadi::AbstractDifferencesReporter *, KAEventFormatter::Parameter);
+    void reportDifference(AbstractDifferencesReporter *, KAEventFormatter::Parameter);
 
     KCalCore::ICalFormat mFormat;
     KAEventFormatter mValueL;
     KAEventFormatter mValueR;
     QString mRegistered;
+    Search::IndexerCache mIndexer;
 };
+
+}
 
 #endif // AKONADI_SERIALIZER_KALARM_H

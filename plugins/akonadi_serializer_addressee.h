@@ -25,15 +25,23 @@
 #include <AkonadiCore/differencesalgorithminterface.h>
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
+#include <AkonadiCore/IndexerInterface>
+#include <AkonadiSearch/ObjectCache>
 #include <kcontacts/vcardconverter.h>
 
 namespace Akonadi {
-class SerializerPluginAddressee : public QObject, public ItemSerializerPlugin, public DifferencesAlgorithmInterface, public GidExtractorInterface
+
+class SerializerPluginAddressee : public QObject
+                                , public ItemSerializerPlugin
+                                , public DifferencesAlgorithmInterface
+                                , public GidExtractorInterface
+                                , public ItemIndexerInterface
 {
     Q_OBJECT
-    Q_INTERFACES(Akonadi::ItemSerializerPlugin)
-    Q_INTERFACES(Akonadi::DifferencesAlgorithmInterface)
-    Q_INTERFACES(Akonadi::GidExtractorInterface)
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin
+                 Akonadi::DifferencesAlgorithmInterface
+                 Akonadi::GidExtractorInterface
+                 Akonadi::ItemIndexerInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginAddressee")
 public:
     bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
@@ -42,9 +50,11 @@ public:
     void compare(Akonadi::AbstractDifferencesReporter *reporter, const Akonadi::Item &leftItem, const Akonadi::Item &rightItem) override;
 
     QString extractGid(const Item &item) const override;
+    QByteArray index(const Item &item, const Collection &parent) const override;
 
 private:
     KContacts::VCardConverter m_converter;
+    Search::IndexerCache m_indexer;
 };
 }
 

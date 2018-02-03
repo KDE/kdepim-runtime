@@ -22,6 +22,7 @@
 #include <AkonadiCore/abstractdifferencesreporter.h>
 #include <AkonadiCore/item.h>
 #include <AkonadiCore/collection.h>
+#include <AkonadiSearch/Indexer>
 
 #include <KCalCore/Event>
 #include <KCalCore/Todo>
@@ -360,4 +361,12 @@ QString SerializerPluginKCalCore::extractGid(const Item &item) const
         return QString();
     }
     return item.payload<Incidence::Ptr>()->instanceIdentifier();
+}
+
+QByteArray SerializerPluginKCalCore::index(const Item &item, const Collection &parent) const
+{
+    if (auto indexer = mIndexer.get(item.mimeType())) {
+        return indexer->index(item, parent);
+    }
+    return {};
 }

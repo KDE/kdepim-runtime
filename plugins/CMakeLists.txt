@@ -10,6 +10,7 @@ add_library(akonadi_serializer_addressee MODULE ${SERIALIZER_TYPE} ${akonadi_ser
 target_link_libraries(akonadi_serializer_addressee
     KF5::Contacts
     KF5::AkonadiCore
+    KF5::AkonadiSearch
     KF5::I18n
 )
 install(TARGETS akonadi_serializer_addressee DESTINATION ${KDE_INSTALL_PLUGINDIR})
@@ -23,6 +24,7 @@ target_link_libraries(akonadi_serializer_mail
     KF5::AkonadiCore
     KF5::AkonadiMime
     KF5::AkonadiPrivate
+    KF5::AkonadiSearch
     Qt5::DBus
 )
 install(TARGETS akonadi_serializer_mail DESTINATION ${KDE_INSTALL_PLUGINDIR})
@@ -33,6 +35,7 @@ target_link_libraries(akonadi_serializer_kcalcore
     KF5::CalendarUtils
     KF5::CalendarCore
     KF5::AkonadiCore
+    KF5::AkonadiSearch
     KF5::I18n
 )
 install(TARGETS akonadi_serializer_kcalcore DESTINATION ${KDE_INSTALL_PLUGINDIR})
@@ -42,6 +45,7 @@ add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_
 target_link_libraries(akonadi_serializer_contactgroup
     KF5::Contacts
     KF5::AkonadiCore
+    KF5::AkonadiSearch
     KF5::I18n
     KF5::AkonadiContact
 )
@@ -52,11 +56,12 @@ ecm_qt_declare_logging_category(akonadi_serializer_kalarm_SRCS HEADER akonadi_se
 
 add_library(akonadi_serializer_kalarm MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
 target_link_libraries(akonadi_serializer_kalarm
-                      KF5::AlarmCalendar
-                      KF5::CalendarCore
-                      KF5::CalendarUtils
-                      KF5::AkonadiCore
-                     )
+    KF5::AlarmCalendar
+    KF5::CalendarCore
+    KF5::CalendarUtils
+    KF5::AkonadiCore
+    KF5::AkonadiSearch
+)
 install(TARGETS akonadi_serializer_kalarm DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
 ########### install files ###############

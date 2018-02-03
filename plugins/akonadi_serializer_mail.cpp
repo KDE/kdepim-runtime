@@ -28,6 +28,7 @@
 #include <AkonadiCore/item.h>
 #include <Akonadi/KMime/MessageParts>
 #include <akonadi/private/imapparser_p.h>
+#include <AkonadiSearch/Indexer>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -293,6 +294,14 @@ QString SerializerPluginMail::extractGid(const Item &item) const
         return uid->asUnicodeString();
     }
     return QString();
+}
+
+QByteArray SerializerPluginMail::index(const Item &item, const Collection &parent) const
+{
+    if (auto indexer = m_indexer.get(item.mimeType())) {
+        return indexer->index(item, parent);
+    }
+    return {};
 }
 
 #include "moc_akonadi_serializer_mail.cpp"

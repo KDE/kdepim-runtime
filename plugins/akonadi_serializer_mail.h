@@ -25,6 +25,8 @@
 
 #include <AkonadiCore/itemserializerplugin.h>
 #include <AkonadiCore/gidextractorinterface.h>
+#include <AkonadiCore/IndexerInterface>
+#include <AkonadiSearch/ObjectCache>
 
 namespace Akonadi {
 /**
@@ -47,18 +49,27 @@ private:
     QSet<QString> m_pool;
 };
 
-class SerializerPluginMail : public QObject, public ItemSerializerPlugin, public GidExtractorInterface
+class SerializerPluginMail : public QObject
+                           , public ItemSerializerPlugin
+                           , public GidExtractorInterface
+                           , public ItemIndexerInterface
 {
     Q_OBJECT
-    Q_INTERFACES(Akonadi::ItemSerializerPlugin Akonadi::GidExtractorInterface)
+    Q_INTERFACES(Akonadi::ItemSerializerPlugin
+                 Akonadi::GidExtractorInterface
+                 Akonadi::ItemIndexerInterface)
     Q_PLUGIN_METADATA(IID "org.kde.akonadi.SerializerPluginMail")
+
 public:
     bool deserialize(Item &item, const QByteArray &label, QIODevice &data, int version) override;
     void serialize(const Item &item, const QByteArray &label, QIODevice &data, int &version) override;
     QSet<QByteArray> parts(const Item &item) const override;
     QString extractGid(const Item &item) const override;
+    QByteArray index(const Item &item, const Collection &parent) const override;
+
 private:
     StringPool m_stringPool;
+    Search::IndexerCache m_indexer;
 };
 }
 

@@ -22,6 +22,7 @@
 #include <AkonadiCore/abstractdifferencesreporter.h>
 #include <Akonadi/Contact/ContactGroupExpandJob>
 #include <AkonadiCore/item.h>
+#include <AkonadiSearch/Indexer>
 
 #include <kcontacts/contactgroup.h>
 #include <kcontacts/contactgrouptool.h>
@@ -129,4 +130,13 @@ QString SerializerPluginContactGroup::extractGid(const Item &item) const
         return QString();
     }
     return item.payload<KContacts::ContactGroup>().id();
+}
+
+//// ItemIndexerInterface
+QByteArray SerializerPluginContactGroup::index(const Item &item, const Collection &parent) const
+{
+    if (auto indexer = m_indexer.get(item.mimeType())) {
+        return indexer->index(item, parent);
+    }
+    return {};
 }
