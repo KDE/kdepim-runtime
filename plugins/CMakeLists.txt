@@ -15,9 +15,9 @@ target_link_libraries(akonadi_serializer_addressee
 )
 install(TARGETS akonadi_serializer_addressee DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
+
 set(akonadi_serializer_mail_PART_SRCS akonadi_serializer_mail.cpp)
 ecm_qt_declare_logging_category(akonadi_serializer_mail_PART_SRCS HEADER akonadi_serializer_mail_debug.h IDENTIFIER AKONADI_SERIALIZER_MAIL_LOG CATEGORY_NAME org.kde.pim.akonadi_serializer_mail)
-
 add_library(akonadi_serializer_mail MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_mail_PART_SRCS})
 target_link_libraries(akonadi_serializer_mail
     KF5::Mime
@@ -28,6 +28,7 @@ target_link_libraries(akonadi_serializer_mail
     Qt5::DBus
 )
 install(TARGETS akonadi_serializer_mail DESTINATION ${KDE_INSTALL_PLUGINDIR})
+
 
 set(akonadi_serializer_kcalcore_SRCS akonadi_serializer_kcalcore.cpp)
 add_library(akonadi_serializer_kcalcore MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kcalcore_SRCS})
@@ -40,6 +41,7 @@ target_link_libraries(akonadi_serializer_kcalcore
 )
 install(TARGETS akonadi_serializer_kcalcore DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
+
 set(akonadi_serializer_contactgroup_PART_SRCS akonadi_serializer_contactgroup.cpp )
 add_library(akonadi_serializer_contactgroup MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_contactgroup_PART_SRCS})
 target_link_libraries(akonadi_serializer_contactgroup
@@ -51,9 +53,9 @@ target_link_libraries(akonadi_serializer_contactgroup
 )
 install(TARGETS akonadi_serializer_contactgroup DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
+
 set(akonadi_serializer_kalarm_SRCS akonadi_serializer_kalarm.cpp kaeventformatter.cpp)
 ecm_qt_declare_logging_category(akonadi_serializer_kalarm_SRCS HEADER akonadi_serializer_kalarm_debug.h IDENTIFIER AKONADI_SERIALIZER_KALARM_LOG CATEGORY_NAME org.kde.pim.akonadi_serializer_kalarm)
-
 add_library(akonadi_serializer_kalarm MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_kalarm_SRCS})
 target_link_libraries(akonadi_serializer_kalarm
     KF5::AlarmCalendar
@@ -64,6 +66,15 @@ target_link_libraries(akonadi_serializer_kalarm
 )
 install(TARGETS akonadi_serializer_kalarm DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
+
+set(akonadi_serializer_collection_SRCS akonadi_serializer_collection.cpp)
+add_library(akonadi_serializer_collection MODULE ${SERIALIZER_TYPE} ${akonadi_serializer_collection_SRCS})
+target_link_libraries(akonadi_serializer_collection
+    KF5::AkonadiCore
+    KF5::AkonadiSearch
+)
+install(TARGETS akonadi_serializer_collection DESTINATION ${KDE_INSTALL_PLUGINDIR})
+
 ########### install files ###############
 
 install( FILES
@@ -72,6 +83,7 @@ install( FILES
   akonadi_serializer_kcalcore.desktop
   akonadi_serializer_contactgroup.desktop
   akonadi_serializer_kalarm.desktop
+  akonadi_serializer_collection.desktop
 DESTINATION ${KDE_INSTALL_DATADIR}/akonadi/plugins/serializer)
 
 if (BUILD_TESTING)
