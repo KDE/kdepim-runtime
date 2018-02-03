@@ -217,6 +217,14 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
         KMime::Message *mail = new KMime::Message();
         mail->setContent(KMime::CRLFtoLF(data));
         mail->parse();
+        // Some messages may have an empty body
+        if (mail->body().isEmpty()) {
+            if (parts.contains("PLD:BODY") || parts.contains("PLD:RFC822")) {
+                // In that case put a space in as body so that it gets cached
+                // otherwise we'll wrongly believe the body part is missing from the cache
+                mail->setBody(" ");
+            }
+        }
 
         Item i(item);
         i.setPayload(KMime::Message::Ptr(mail));
