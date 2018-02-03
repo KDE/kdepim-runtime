@@ -36,7 +36,6 @@ public:
 
     QDialog *createConfigureDialog(WId windowId) override;
     Settings *settings() const override;
-    void cleanup() override;
 
 protected Q_SLOTS:
     void retrieveCollections() override;

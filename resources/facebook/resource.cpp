@@ -63,6 +63,7 @@ void FacebookResource::abortActivity()
 void FacebookResource::cleanup()
 {
     (new LogoutJob(this))->exec();
+    ResourceBase::cleanup();
 }
 
 Akonadi::Collection FacebookResource::makeCollection(Graph::RSVP rsvp, const QString &name, const Akonadi::Collection &parent)

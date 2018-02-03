@@ -150,7 +150,7 @@ void DavGroupwareResource::collectionRemoved(const Akonadi::Collection &collecti
 void DavGroupwareResource::cleanup()
 {
     Settings::self()->cleanup();
-    Akonadi::AgentBase::cleanup();
+    ResourceBase::cleanup();
 }
 
 QDateTime DavGroupwareResource::lastCacheUpdate() const

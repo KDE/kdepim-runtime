@@ -38,7 +38,6 @@ public:
     virtual ~ImapResource();
 
     QDialog *createConfigureDialog(WId windowId) override;
-    void cleanup() override;
 
 protected:
     QString defaultName() const override;

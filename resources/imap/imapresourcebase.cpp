@@ -715,6 +715,8 @@ QStringList ImapResourceBase::serverCapabilities() const
 void ImapResourceBase::cleanup()
 {
     settings()->cleanup();
+
+    ResourceBase::cleanup();
 }
 
 QString ImapResourceBase::dumpResourceToString() const

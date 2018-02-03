@@ -76,12 +76,6 @@ Settings *KolabResource::settings() const
     return m_settings;
 }
 
-void KolabResource::cleanup()
-{
-    settings()->cleanup();
-    Akonadi::AgentBase::cleanup();
-}
-
 void KolabResource::delayedInit()
 {
     ImapResourceBase::delayedInit();
