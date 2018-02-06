@@ -539,6 +539,16 @@ p, li { white-space: pre-wrap; }
               </property>
              </widget>
             </item>
+            <item row="4" column="0" colspan="2">
+             <widget class="QCheckBox" name="proxyCheck">
+              <property name="text">
+               <string>Connect using the system proxy settings</string>
+              </property>
+              <property name="toolTip">
+               <string>If checked, the system proxy settings will be used to connect to the mail server.</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>

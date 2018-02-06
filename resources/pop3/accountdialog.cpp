@@ -197,6 +197,7 @@ void AccountDialog::loadSettings()
     encryptionNone->setChecked(!Settings::self()->useSSL() && !Settings::self()->useTLS());
     encryptionSSL->setChecked(Settings::self()->useSSL());
     encryptionTLS->setChecked(Settings::self()->useTLS());
+    proxyCheck->setChecked(Settings::self()->useProxy());
 
     slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled()
                                 ? Settings::self()->leaveOnServerDays() >= 1 : false);
@@ -568,6 +569,7 @@ void AccountDialog::saveSettings()
     Settings::self()->setUseSSL(encryptionSSL->isChecked());
     Settings::self()->setUseTLS(encryptionTLS->isChecked());
     Settings::self()->setAuthenticationMethod(authCombo->itemData(authCombo->currentIndex()).toInt());
+    Settings::self()->setUseProxy(proxyCheck->isChecked());
     Settings::self()->setPipelining(usePipeliningCheck->isChecked());
     Settings::self()->setLeaveOnServer(leaveOnServerCheck->isChecked());
     Settings::self()->setLeaveOnServerDays(leaveOnServerCheck->isChecked()
