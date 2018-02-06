@@ -78,8 +78,8 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
     localPart.remove(QRegExp(QLatin1String("@.*$")));
-    pathPattern.replace(QStringLiteral("$user$"), username);
-    pathPattern.replace(QStringLiteral("$localpart$"), localPart);
+    pathPattern.replace(QLatin1String("$user$"), username);
+    pathPattern.replace(QLatin1String("$localpart$"), localPart);
     QString providerName;
     if (!service->property(QStringLiteral("X-DavGroupware-Provider")).isNull()) {
         providerName = service->property(QStringLiteral("X-DavGroupware-Provider")).toString();

@@ -145,8 +145,8 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
         if (!NewMailNotifierAgentSettings::textToSpeak().isEmpty()) {
             QString message = NewMailNotifierAgentSettings::textToSpeak();
-            message.replace(QStringLiteral("%s"), mSubject.toHtmlEscaped());
-            message.replace(QStringLiteral("%f"), mFrom.toHtmlEscaped());
+            message.replace(QLatin1String("%s"), mSubject.toHtmlEscaped());
+            message.replace(QLatin1String("%f"), mFrom.toHtmlEscaped());
             Q_EMIT say(message);
         }
     }
