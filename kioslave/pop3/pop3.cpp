@@ -40,8 +40,10 @@ extern "C" {
 #include <qdebug.h>
 #include <KLocalizedString>
 #include <QCryptographicHash>
+#include <QNetworkProxy>
 
 #include <kio/slaveinterface.h>
+#include <ktcpsocket.h>
 
 #define GREETING_BUF_LEN 1024
 #define MAX_RESPONSE_LEN 512
@@ -613,6 +615,21 @@ bool POP3Protocol::pop3_open()
         qCDebug(POP3_LOG) << "Reusing old connection";
         return true;
     }
+
+    if (!hasMetaData(QStringLiteral("useProxy"))
+        || metaData(QStringLiteral("useProxy")) != QLatin1String("on")) {
+        qCDebug(POP3_LOG) << "requested to use no proxy";
+
+        KTcpSocket *sock = qobject_cast<KTcpSocket *>(socket());
+        if (sock) {
+            QNetworkProxy proxy;
+            proxy.setType(QNetworkProxy::NoProxy);
+            sock->setProxy(proxy);
+        } else {
+            qCWarning(POP3_LOG) << "no socket, cannot set no proxy";
+        }
+    }
+
     do {
         closeConnection();
 

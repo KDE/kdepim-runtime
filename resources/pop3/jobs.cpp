@@ -80,6 +80,7 @@ KIO::MetaData POPSession::slaveConfig() const
     m.insert(QStringLiteral("progress"), QStringLiteral("off"));
     m.insert(QStringLiteral("tls"), Settings::self()->useTLS() ? QStringLiteral("on") : QStringLiteral("off"));
     m.insert(QStringLiteral("pipelining"), (Settings::self()->pipelining()) ? QStringLiteral("on") : QStringLiteral("off"));
+    m.insert(QStringLiteral("useProxy"), Settings::self()->useProxy() ? QStringLiteral("on") : QStringLiteral("off"));
     int type = Settings::self()->authenticationMethod();
     switch (type) {
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
@@ -98,6 +99,7 @@ KIO::MetaData POPSession::slaveConfig() const
         m.insert(QStringLiteral("auth"), authenticationToString(type));
         break;
     }
+
     return m;
 }
 

@@ -38,6 +38,10 @@
       <label></label>
       <default>false</default>
     </entry>
+    <entry name="useProxy" type="Bool">
+      <label></label>
+      <default>false</default>
+    </entry>
     <entry name="leaveOnServer" type="Bool">
       <label></label>
       <default>false</default>
