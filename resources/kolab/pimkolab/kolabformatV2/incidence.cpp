@@ -727,7 +727,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
         mRecurrence.cycle = QStringLiteral("weekly");
         {
             QBitArray arr = recur->days();
-            for (uint idx = 0; idx < 7; ++idx) {
+            for (int idx = 0; idx < 7; ++idx) {
                 if (arr.testBit(idx)) {
                     mRecurrence.days.append(s_weekDayName[idx]);
                 }
@@ -914,7 +914,7 @@ static QBitArray daysListToBitArray(const QStringList &days)
     QBitArray arr(7);
     arr.fill(false);
     foreach (const QString &day, days) {
-        for (uint i = 0; i < 7; ++i) {
+        for (int i = 0; i < 7; ++i) {
             if (day == s_weekDayName[i]) {
                 arr.setBit(i, true);
             }

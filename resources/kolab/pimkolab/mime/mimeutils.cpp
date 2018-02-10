@@ -60,7 +60,7 @@ KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArra
 {
     if (id.isEmpty()) {
         qCCritical(PIMKOLAB_LOG) << "looking for empty cid";
-        return 0;
+        return nullptr;
     }
     Q_ASSERT(!data->contents().isEmpty());
     Q_FOREACH (KMime::Content *c, data->contents()) {
