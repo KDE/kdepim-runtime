@@ -40,17 +40,17 @@
 using namespace KolabV2;
 
 namespace {
-inline QString pictureAttachmentName()
+inline QString defaultPictureAttachmentName()
 {
     return QStringLiteral("kolab-picture.png");
 }
 
-inline QString logoAttachmentName()
+inline QString defaultLogoAttachmentName()
 {
     return QStringLiteral("kolab-logo.png");
 }
 
-inline QString soundAttachmentName()
+inline QString defaultSoundAttachmentName()
 {
     return QStringLiteral("sound");
 }
@@ -1094,19 +1094,19 @@ void Contact::setFields(const KContacts::Addressee *addressee)
     setPicture(loadPictureFromAddressee(addressee->photo()), addressee->photo().type());
     mPictureAttachmentName = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("PictureAttachmentName"));
     if (mPictureAttachmentName.isEmpty()) {
-        mPictureAttachmentName = pictureAttachmentName();
+        mPictureAttachmentName = defaultPictureAttachmentName();
     }
 
     setLogo(loadPictureFromAddressee(addressee->logo()), addressee->logo().type());
     mLogoAttachmentName = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("LogoAttachmentName"));
     if (mLogoAttachmentName.isEmpty()) {
-        mLogoAttachmentName = logoAttachmentName();
+        mLogoAttachmentName = defaultLogoAttachmentName();
     }
 
     setSound(loadSoundFromAddressee(addressee->sound()));
     mSoundAttachmentName = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("SoundAttachmentName"));
     if (mSoundAttachmentName.isEmpty()) {
-        mSoundAttachmentName = soundAttachmentName();
+        mSoundAttachmentName = defaultSoundAttachmentName();
     }
 
     if (addressee->geo().isValid()) {
