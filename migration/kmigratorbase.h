@@ -51,7 +51,7 @@ public:
     Q_ENUM(MigrationState)
 
     KMigratorBase();
-    virtual ~KMigratorBase();
+    ~KMigratorBase() override;
 
     /**
      * Read resource migration state.

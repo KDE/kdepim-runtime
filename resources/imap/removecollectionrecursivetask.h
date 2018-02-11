@@ -32,7 +32,7 @@ class RemoveCollectionRecursiveTask : public ResourceTask
 
 public:
     explicit RemoveCollectionRecursiveTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~RemoveCollectionRecursiveTask();
+    ~RemoveCollectionRecursiveTask() override;
 
 private Q_SLOTS:
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);

@@ -32,7 +32,7 @@ class RetrieveItemTask : public ResourceTask
 
 public:
     explicit RetrieveItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~RetrieveItemTask();
+    ~RetrieveItemTask() override;
 
 private Q_SLOTS:
     void onSelectDone(KJob *job);

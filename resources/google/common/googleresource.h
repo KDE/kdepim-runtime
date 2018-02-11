@@ -46,7 +46,7 @@ class GoogleResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::
 
 public:
     explicit GoogleResource(const QString &id);
-    virtual ~GoogleResource();
+    ~GoogleResource() override;
 
     virtual GoogleSettings *settings() const = 0;
     virtual QList<QUrl> scopes() const = 0;

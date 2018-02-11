@@ -47,7 +47,7 @@ public:
     /**
      * Destroys the item fetch job.
      */
-    virtual ~GidMigrationJob();
+    ~GidMigrationJob() override;
 
     void doStart() override;
 
@@ -70,7 +70,7 @@ class UpdateJob : public Akonadi::Job
     Q_OBJECT
 public:
     explicit UpdateJob(const Akonadi::Collection &col, QObject *parent = nullptr);
-    virtual ~UpdateJob();
+    ~UpdateJob() override;
 
     void doStart() override;
     void slotResult(KJob *job) override;

@@ -35,7 +35,7 @@ class KolabRetrieveCollectionsTask : public ResourceTask
 
 public:
     explicit KolabRetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~KolabRetrieveCollectionsTask();
+    ~KolabRetrieveCollectionsTask() override;
 
 private Q_SLOTS:
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);

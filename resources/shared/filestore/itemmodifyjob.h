@@ -39,7 +39,7 @@ class AKONADI_FILESTORE_EXPORT ItemModifyJob : public Job
 public:
     explicit ItemModifyJob(const Item &item, AbstractJobSession *session = nullptr);
 
-    virtual ~ItemModifyJob();
+    ~ItemModifyJob() override;
 
     void setIgnorePayload(bool ignorePayload);
 

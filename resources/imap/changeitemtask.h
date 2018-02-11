@@ -30,7 +30,7 @@ class ChangeItemTask : public ResourceTask
 
 public:
     explicit ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~ChangeItemTask();
+    ~ChangeItemTask() override;
 
 private Q_SLOTS:
     void onAppendMessageDone(KJob *job);

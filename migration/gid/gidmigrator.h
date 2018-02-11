@@ -28,7 +28,7 @@ class GidMigrator : public MigratorBase
     Q_OBJECT
 public:
     GidMigrator(const QString &mimeType);
-    virtual ~GidMigrator();
+    ~GidMigrator() override;
 
     QString displayName() const override;
     QString description() const override;

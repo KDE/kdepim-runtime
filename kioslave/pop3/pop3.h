@@ -41,7 +41,7 @@ class POP3Protocol : public KIO::TCPSlaveBase
 {
 public:
     POP3Protocol(const QByteArray &pool, const QByteArray &app, bool SSL);
-    virtual ~POP3Protocol();
+    ~POP3Protocol() override;
 
     virtual void setHost(const QString &host, quint16 port, const QString &user, const QString &pass) override;
 

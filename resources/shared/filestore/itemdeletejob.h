@@ -39,7 +39,7 @@ class AKONADI_FILESTORE_EXPORT ItemDeleteJob : public Job
 public:
     explicit ItemDeleteJob(const Item &item, AbstractJobSession *session = nullptr);
 
-    virtual ~ItemDeleteJob();
+    ~ItemDeleteJob() override;
 
     Item item() const;
 

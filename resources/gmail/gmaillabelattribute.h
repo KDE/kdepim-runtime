@@ -28,7 +28,7 @@ class GmailLabelAttribute : public Akonadi::Attribute
 public:
     explicit GmailLabelAttribute();
     explicit GmailLabelAttribute(const QByteArray &label);
-    virtual ~GmailLabelAttribute();
+    ~GmailLabelAttribute() override;
 
     QByteArray label() const;
     void setLabel(const QByteArray &label);

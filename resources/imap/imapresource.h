@@ -35,7 +35,7 @@ class ImapResource : public ImapResourceBase
 
 public:
     explicit ImapResource(const QString &id);
-    virtual ~ImapResource();
+    ~ImapResource() override;
 
     QDialog *createConfigureDialog(WId windowId) override;
 

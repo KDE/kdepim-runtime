@@ -47,7 +47,7 @@ public:
 
     explicit CollectionFetchJob(const Collection &collection, Type type = FirstLevel, AbstractJobSession *session = nullptr);
 
-    virtual ~CollectionFetchJob();
+    ~CollectionFetchJob() override;
 
     Type type() const;
 

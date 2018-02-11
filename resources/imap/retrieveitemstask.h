@@ -38,7 +38,7 @@ class RetrieveItemsTask : public ResourceTask
 
 public:
     explicit RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~RetrieveItemsTask();
+    ~RetrieveItemsTask() override;
     void setFetchMissingItemBodies(bool enabled);
 
 public Q_SLOTS:

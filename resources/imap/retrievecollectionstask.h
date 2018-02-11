@@ -34,7 +34,7 @@ class RetrieveCollectionsTask : public ResourceTask
 
 public:
     explicit RetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~RetrieveCollectionsTask();
+    ~RetrieveCollectionsTask() override;
 
 private Q_SLOTS:
     void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);

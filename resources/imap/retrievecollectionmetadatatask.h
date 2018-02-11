@@ -30,7 +30,7 @@ class RetrieveCollectionMetadataTask : public ResourceTask
 
 public:
     explicit RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~RetrieveCollectionMetadataTask();
+    ~RetrieveCollectionMetadataTask() override;
 
 private Q_SLOTS:
     void onGetMetaDataDone(KJob *job);

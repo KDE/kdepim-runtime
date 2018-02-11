@@ -50,7 +50,7 @@ public:
     /**
      * Destroys the outbox queue.
      */
-    virtual ~OutboxQueue();
+    ~OutboxQueue() override;
 
     /**
      * Returns whether the queue is empty.

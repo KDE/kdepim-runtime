@@ -30,7 +30,7 @@ class ExpungeCollectionTask : public ResourceTask
 
 public:
     explicit ExpungeCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~ExpungeCollectionTask();
+    ~ExpungeCollectionTask() override;
 
 private Q_SLOTS:
     void onSelectDone(KJob *job);

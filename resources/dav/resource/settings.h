@@ -54,7 +54,7 @@ public:
     };
 
     Settings();
-    virtual ~Settings();
+    ~Settings() override;
     static Settings *self();
     void setWinId(WId wid);
     void cleanup();

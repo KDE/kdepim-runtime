@@ -27,7 +27,7 @@ class GmailChangeItemsLabelsTask : public ChangeItemsFlagsTask
     Q_OBJECT
 public:
     explicit GmailChangeItemsLabelsTask(ResourceStateInterface::Ptr resource, QObject *parent = nullptr);
-    virtual ~GmailChangeItemsLabelsTask();
+    ~GmailChangeItemsLabelsTask() override;
 
 protected:
     void doStart(KIMAP::Session *session);

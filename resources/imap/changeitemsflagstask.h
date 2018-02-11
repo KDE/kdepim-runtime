@@ -32,7 +32,7 @@ class ChangeItemsFlagsTask : public ResourceTask
 
 public:
     explicit ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~ChangeItemsFlagsTask();
+    ~ChangeItemsFlagsTask() override;
 
 protected Q_SLOTS:
     void onSelectDone(KJob *job);

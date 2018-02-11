@@ -40,7 +40,7 @@ class AKONADI_FILESTORE_EXPORT CollectionMoveJob : public Job
 public:
     explicit CollectionMoveJob(const Collection &collection, const Collection &targetParent, AbstractJobSession *session = nullptr);
 
-    virtual ~CollectionMoveJob();
+    ~CollectionMoveJob() override;
 
     Collection collection() const;
 

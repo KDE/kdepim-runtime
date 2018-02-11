@@ -30,7 +30,7 @@ class MoveCollectionTask : public ResourceTask
 
 public:
     explicit MoveCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~MoveCollectionTask();
+    ~MoveCollectionTask() override;
 
 private Q_SLOTS:
     void onExamineDone(KJob *job);

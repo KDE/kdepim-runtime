@@ -43,7 +43,7 @@ class GoogleSettingsDialog : public QDialog
 
 public:
     explicit GoogleSettingsDialog(GoogleAccountManager *accountManager, WId wId, GoogleResource *parent);
-    virtual ~GoogleSettingsDialog();
+    ~GoogleSettingsDialog() override;
 
     GoogleAccountManager *accountManager() const;
     KGAPI2::AccountPtr currentAccount() const;

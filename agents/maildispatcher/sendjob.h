@@ -50,7 +50,7 @@ public:
     /**
      * Destroys the send job.
      */
-    virtual ~SendJob();
+    ~SendJob() override;
 
     /**
      * Starts the job.

@@ -40,7 +40,7 @@ class AKONADI_FILESTORE_EXPORT ItemCreateJob : public Job
 public:
     explicit ItemCreateJob(const Item &item, const Collection &collection, AbstractJobSession *session = nullptr);
 
-    virtual ~ItemCreateJob();
+    ~ItemCreateJob() override;
 
     Collection collection() const;
 

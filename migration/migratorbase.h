@@ -97,7 +97,7 @@ public:
      */
     explicit MigratorBase(const QString &identifier, const QString &configFile, const QString &logFile, QObject *parent = nullptr);
 
-    virtual ~MigratorBase();
+    ~MigratorBase() override;
 
     QString identifier() const;
 

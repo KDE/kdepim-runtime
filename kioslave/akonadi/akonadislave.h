@@ -31,7 +31,7 @@ class AkonadiSlave : public KIO::SlaveBase
 {
 public:
     AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket);
-    virtual ~AkonadiSlave();
+    ~AkonadiSlave() override;
 
     /**
      * Reimplemented from SlaveBase

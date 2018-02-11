@@ -122,7 +122,7 @@ public:
     QString m_location;
     ErrorHandler::Severity m_severity;
     DebugStream();
-    virtual ~DebugStream();
+    ~DebugStream() override;
     bool isSequential() const override
     {
         return true;

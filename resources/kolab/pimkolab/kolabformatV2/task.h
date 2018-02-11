@@ -65,7 +65,7 @@ public:
 
     explicit Task( /*KCalCore::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
         const QString &tz, const KCalCore::Todo::Ptr &todo = KCalCore::Todo::Ptr());
-    virtual ~Task();
+    ~Task() override;
 
     QString type() const override
     {

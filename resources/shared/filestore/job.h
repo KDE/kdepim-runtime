@@ -89,7 +89,7 @@ public:
 
     explicit Job(AbstractJobSession *session = nullptr);
 
-    virtual ~Job();
+    ~Job() override;
 
     void start() override;
 

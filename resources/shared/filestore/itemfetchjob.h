@@ -46,7 +46,7 @@ public:
 
     explicit ItemFetchJob(const Item::List &items, AbstractJobSession *session = nullptr);
 
-    virtual ~ItemFetchJob();
+    ~ItemFetchJob() override;
 
     Collection collection() const;
 

@@ -29,7 +29,7 @@ class GmailPasswordRequester : public PasswordRequesterInterface
 
 public:
     GmailPasswordRequester(GmailResource *resource, QObject *parent);
-    virtual ~GmailPasswordRequester();
+    ~GmailPasswordRequester() override;
 
     virtual void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString());
 

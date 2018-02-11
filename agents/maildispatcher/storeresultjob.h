@@ -48,7 +48,7 @@ public:
     /**
      * Destroys the store result job.
      */
-    virtual ~StoreResultJob();
+    ~StoreResultJob() override;
 
     bool success() const;
     QString message() const;

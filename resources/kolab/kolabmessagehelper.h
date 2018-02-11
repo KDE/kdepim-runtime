@@ -27,7 +27,7 @@ class KolabMessageHelper : public MessageHelper
 {
 public:
     explicit KolabMessageHelper(const Akonadi::Collection &collection);
-    virtual ~KolabMessageHelper();
+    ~KolabMessageHelper() override;
     Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message, const qint64 uid, const qint64 size, const QMap<QByteArray, QVariant> &attrs, const QList<QByteArray> &flags,
                                         const KIMAP::FetchJob::FetchScope &scope, bool &ok) const override;
 

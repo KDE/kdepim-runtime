@@ -39,7 +39,7 @@ class GmailConfigDialog : public QDialog
 
 public:
     explicit GmailConfigDialog(GmailResource *resource, WId parent);
-    virtual ~GmailConfigDialog();
+    ~GmailConfigDialog() override;
 
     bool shouldClearCache() const;
 

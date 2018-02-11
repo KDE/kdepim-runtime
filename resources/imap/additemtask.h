@@ -30,7 +30,7 @@ class AddItemTask : public ResourceTask
 
 public:
     explicit AddItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~AddItemTask();
+    ~AddItemTask() override;
 
 protected:
 

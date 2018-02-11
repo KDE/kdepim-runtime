@@ -32,7 +32,7 @@ class SearchDialog : public QDialog
 
 public:
     explicit SearchDialog(QWidget *parent = nullptr);
-    virtual ~SearchDialog();
+    ~SearchDialog() override;
 
     bool useDefaultCredentials() const;
 

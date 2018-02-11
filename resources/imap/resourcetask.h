@@ -50,7 +50,7 @@ public:
     Q_ENUM(ActionIfNoSession)
 
     explicit ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = nullptr);
-    virtual ~ResourceTask();
+    ~ResourceTask() override;
 
     void start(SessionPool *pool);
 

@@ -78,7 +78,7 @@ public:
     explicit Incidence(const QString &tz, const KCalCore::Incidence::Ptr &incidence = KCalCore::Incidence::Ptr());
 
 public:
-    virtual ~Incidence();
+    ~Incidence() override;
 
     void saveTo(const KCalCore::Incidence::Ptr &incidence);
 

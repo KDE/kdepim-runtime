@@ -33,7 +33,7 @@ class SettingsPasswordRequester : public PasswordRequesterInterface
 
 public:
     explicit SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
-    virtual ~SettingsPasswordRequester();
+    ~SettingsPasswordRequester() override;
 
     virtual void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString()) override;
     void cancelPasswordRequests() override;

@@ -33,7 +33,7 @@ class FiFoQueueJobSession : public AbstractJobSession
 public:
     explicit FiFoQueueJobSession(QObject *parent = nullptr);
 
-    virtual ~FiFoQueueJobSession();
+    ~FiFoQueueJobSession() override;
 
     void addJob(Job *job) override;
 

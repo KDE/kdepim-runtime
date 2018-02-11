@@ -35,7 +35,7 @@ class GmailLinkItemsTask : public QObject
 
 public:
     explicit GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, GmailResource *parent0);
-    virtual ~GmailLinkItemsTask();
+    ~GmailLinkItemsTask() override;
 
 Q_SIGNALS:
     void done();

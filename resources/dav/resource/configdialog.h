@@ -38,7 +38,7 @@ class ConfigDialog : public QDialog
 
 public:
     explicit ConfigDialog(QWidget *parent = nullptr);
-    virtual ~ConfigDialog();
+    ~ConfigDialog() override;
 
     void setPassword(const QString &password);
 

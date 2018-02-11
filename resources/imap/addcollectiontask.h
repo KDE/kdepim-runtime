@@ -34,7 +34,7 @@ class AddCollectionTask : public ResourceTask
 
 public:
     explicit AddCollectionTask(const ResourceStateInterface::Ptr &resource, QObject *parent = nullptr);
-    virtual ~AddCollectionTask();
+    ~AddCollectionTask() override;
 
 protected:
     void doStart(KIMAP::Session *session) override;

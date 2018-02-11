@@ -41,7 +41,7 @@ class AccountDialog : public QDialog, private Ui::PopPage
 
 public:
     AccountDialog(POP3Resource *parentResource, WId parentWindow);
-    virtual ~AccountDialog();
+    ~AccountDialog() override;
 
 private Q_SLOTS:
     void slotEnablePopInterval(bool state);

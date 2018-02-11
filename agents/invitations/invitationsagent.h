@@ -40,7 +40,7 @@ class InvitationsAgentItem : public QObject
 
 public:
     InvitationsAgentItem(InvitationsAgent *a, const Akonadi::Item &originalItem);
-    virtual ~InvitationsAgentItem();
+    ~InvitationsAgentItem() override;
     void add(const Akonadi::Item &newItem);
 
 private Q_SLOTS:
@@ -60,7 +60,7 @@ class InvitationsAgent : public Akonadi::AgentBase, public Akonadi::AgentBase::O
 
 public:
     explicit InvitationsAgent(const QString &id);
-    virtual ~InvitationsAgent();
+    ~InvitationsAgent() override;
 
     Akonadi::Collection collection() const;
 

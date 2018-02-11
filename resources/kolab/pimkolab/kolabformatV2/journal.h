@@ -58,7 +58,7 @@ public:
     static QString journalToXML(const KCalCore::Journal::Ptr &, const QString &tz);
 
     explicit Journal(const QString &tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr());
-    virtual ~Journal();
+    ~Journal() override;
 
     QString type() const override
     {

@@ -38,7 +38,7 @@ class AbstractJobSession : public QObject
 public:
     explicit AbstractJobSession(QObject *parent = nullptr);
 
-    virtual ~AbstractJobSession();
+    ~AbstractJobSession() override;
 
     virtual void addJob(Job *job) = 0;
 

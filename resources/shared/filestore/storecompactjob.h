@@ -38,7 +38,7 @@ class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
 public:
     explicit StoreCompactJob(AbstractJobSession *session = nullptr);
 
-    virtual ~StoreCompactJob();
+    ~StoreCompactJob() override;
 
     bool accept(Visitor *visitor) override;
 
