@@ -58,7 +58,7 @@ KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const A
 }
 
 struct TagMerger : public Merger {
-    virtual ~TagMerger()
+    ~TagMerger() override
     {
     }
 

@@ -193,9 +193,9 @@ public:
     }
 
     QString path;
-    bool isRoot;
     QString hostName;
     QString lastError;
+    bool isRoot;
 };
 
 Maildir::Maildir(const QString &path, bool isRoot)

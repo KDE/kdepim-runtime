@@ -791,7 +791,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
                 }
             } else if (indexData == nullptr) {
                 Akonadi::MessageStatus status;
-                status.setDeleted(true),
+                status.setDeleted(true);
                 item.setFlags(status.statusFlags());
                 qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "no index for item" << item.remoteId() << "in MBox" << mbox->fileName()
                                                   << "so it has been deleted but not purged. Marking it as"
