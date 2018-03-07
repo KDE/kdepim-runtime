@@ -146,7 +146,6 @@ add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
 
 add_subdirectory(resources)
 add_subdirectory(agents)
-add_subdirectory(plugins)
 add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(migration)
