@@ -21,6 +21,8 @@
 
 #include "alarmtyperadiowidget.h"
 
+#include <QButtonGroup>
+
 AlarmTypeRadioWidget::AlarmTypeRadioWidget(QWidget *parent)
     : Akonadi::SingleFileValidatingWidget(parent)
 {
