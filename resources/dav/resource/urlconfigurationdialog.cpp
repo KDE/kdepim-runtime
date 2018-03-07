@@ -26,6 +26,7 @@
 #include <kmessagebox.h>
 #include <KLocalizedString>
 
+#include <QButtonGroup>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVBoxLayout>

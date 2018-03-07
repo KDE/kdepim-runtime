@@ -32,6 +32,7 @@
 #include <QDialogButtonBox>
 #include <KConfigGroup>
 #include <QPushButton>
+#include <QTabBar>
 #include <QVBoxLayout>
 
 using namespace Akonadi;
