@@ -11,6 +11,7 @@ target_link_libraries(kio_akonadi
                       KF5::I18n
                       Qt5::DBus
                       Qt5::Widgets
+                      Qt5::Network
                       )
 set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
 
