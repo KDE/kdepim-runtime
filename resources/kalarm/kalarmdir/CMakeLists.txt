@@ -35,11 +35,15 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_kalarm_dir_resource
+                      KF5::DBusAddons
+                      KF5::KIOCore
+                      KF5::KIOWidgets
+                      KF5::ConfigWidgets
+                      KF5::WindowSystem
                       KF5::AlarmCalendar
                       KF5::AkonadiCore
                       KF5::CalendarCore
                       KF5::AkonadiAgentBase 
-                      KF5::DBusAddons
                      )
 
 install(TARGETS akonadi_kalarm_dir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
