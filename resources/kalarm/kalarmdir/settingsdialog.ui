@@ -55,7 +55,10 @@
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>Directory:</string>
+              <string>&amp;Directory:</string>
+             </property>
+             <property name="buddy">
+              <cstring>kcfg_Path</cstring>
              </property>
             </widget>
            </item>
@@ -88,12 +91,15 @@
            <item>
             <widget class="QLabel" name="label_1">
              <property name="text">
-              <string>Name:</string>
+              <string>&amp;Name:</string>
+             </property>
+             <property name="buddy">
+              <cstring>kcfg_DisplayName</cstring>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="KLineEdit" name="kcfg_DisplayName"/>
+            <widget class="QLineEdit" name="kcfg_DisplayName"/>
            </item>
           </layout>
          </item>
@@ -146,12 +152,6 @@
    <class>KUrlRequester</class>
    <extends>QWidget</extends>
    <header>kurlrequester.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
