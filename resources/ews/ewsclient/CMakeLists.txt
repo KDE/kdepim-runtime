@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+#  Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 #
 #  This library is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU Library General Public
@@ -60,6 +60,11 @@ set(EWSCLIENT_SRCS
   ewsxml.cpp
   ewsclient_debug.cpp)
 
+if (Qt5NetworkAuth_FOUND)
+  list(APPEND EWSCLIENT_SRCS
+    ewsoauth.cpp)
+endif ()
+
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
   HEADER ewscli_debug.h
   IDENTIFIER EWSCLI_LOG
@@ -81,7 +86,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
   DEFAULT_SEVERITY Warning)
 
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
-target_link_libraries(ewsclient 
+target_link_libraries(ewsclient
   Qt5::Network
   KF5::KIOCore
   KF5::KIOFileWidgets
@@ -90,3 +95,9 @@ target_link_libraries(ewsclient
   KF5::Codecs
   KF5::Mime
   KF5::CalendarCore)
+
+if (Qt5NetworkAuth_FOUND)
+  target_link_libraries(ewsclient
+    Qt5::NetworkAuth
+    Qt5::WebEngineWidgets)
+endif ()

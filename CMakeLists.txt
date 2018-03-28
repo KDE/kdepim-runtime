@@ -97,11 +97,16 @@ set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
 
 # QT5 package
 find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus WebEngineWidgets)
-find_package(Qt5 OPTIONAL_COMPONENTS TextToSpeech)
+find_package(Qt5 OPTIONAL_COMPONENTS TextToSpeech NetworkAuth)
 if (NOT Qt5TextToSpeech_FOUND)
     message(STATUS "Qt5TextToSpeech not found, speech feature will be disabled")
 else()
     add_definitions(-DHAVE_TEXTTOSPEECH)
+endif()
+if (NOT Qt5NetworkAuth_FOUND)
+    message(STATUS "Qt5NetworkAuth not found, OAuth2 authentication will not be supported")
+else()
+    add_definitions(-DHAVE_NETWORKAUTH)
 endif()
 
 
