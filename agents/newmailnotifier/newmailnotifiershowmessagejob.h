@@ -28,7 +28,7 @@ class NewMailNotifierShowMessageJob : public KJob
     Q_OBJECT
 public:
     explicit NewMailNotifierShowMessageJob(Akonadi::Item::Id id, QObject *parent = nullptr);
-    ~NewMailNotifierShowMessageJob();
+    ~NewMailNotifierShowMessageJob() override;
 
     void start() override;
 

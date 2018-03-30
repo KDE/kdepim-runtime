@@ -110,7 +110,7 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     mExcludeMySelf->setChecked(NewMailNotifierAgentSettings::excludeEmailsFromMe());
     vbox->addWidget(mExcludeMySelf);
 
-    mAllowToShowMail = new QCheckBox(i18n("Show button to display mail"), this);
+    mAllowToShowMail = new QCheckBox(i18n("Show Action Buttons"), this);
     mAllowToShowMail->setObjectName(QStringLiteral("mAllowToShowMail"));
     mAllowToShowMail->setChecked(NewMailNotifierAgentSettings::showButtonToDisplayMail());
     vbox->addWidget(mAllowToShowMail);

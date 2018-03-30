@@ -24,6 +24,8 @@
 #include <Item>
 #include <QStringList>
 #include <QPixmap>
+#include <Akonadi/KMime/MarkAsCommand>
+
 class KJob;
 
 class SpecialNotifierJob : public QObject
@@ -42,8 +44,13 @@ Q_SIGNALS:
 private:
     void slotSearchJobFinished(KJob *job);
     void slotItemFetchJobDone(KJob *);
+    void slotMarkAsResult(Akonadi::CommandBase::Result result);
     void slotOpenMail();
+    void slotMarkAsRead();
+    void slotDeleteMessage();
+    void slotActivateNotificationAction(unsigned int index);
     void emitNotification(const QPixmap &pixmap);
+    void deleteItemDone(KJob *job);
     QPixmap mDefaultPixmap;
     QStringList mListEmails;
     QString mSubject;

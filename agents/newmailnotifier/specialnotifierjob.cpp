@@ -24,6 +24,7 @@
 #include <Akonadi/Contact/ContactSearchJob>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
+#include <AkonadiCore/ItemDeleteJob>
 #include <Akonadi/KMime/MessageParts>
 
 #include <KNotification>
@@ -157,15 +158,74 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                                                         | KNotification::SkipGrouping : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
         notification->setPixmap(pixmap);
-        notification->setActions(QStringList() << i18n("Show mail..."));
+        notification->setActions(QStringList() << i18n("Show mail...") << i18n("Mark As Read") << i18n("Delete"));
 
-        connect(notification, QOverload<unsigned int>::of(&KNotification::activated), this, &SpecialNotifierJob::slotOpenMail);
+        connect(notification, QOverload<unsigned int>::of(&KNotification::activated), this, &SpecialNotifierJob::slotActivateNotificationAction);
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
 
         notification->sendEvent();
     } else {
         Q_EMIT displayNotification(pixmap, result.join(QLatin1Char('\n')));
         deleteLater();
+    }
+}
+
+void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
+{
+    switch (index) {
+    case 0:
+        slotOpenMail();
+        return;
+    case 1:
+        slotMarkAsRead();
+        return;
+    case 2:
+        slotDeleteMessage();
+        return;
+    }
+    qCWarning(NEWMAILNOTIFIER_LOG) << " SpecialNotifierJob::slotActivateNotificationAction unknown index " << index;
+}
+
+void SpecialNotifierJob::slotDeleteMessage()
+{
+    const Akonadi::Item item(mItemId);
+    Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(item);
+    connect(job, &Akonadi::ItemDeleteJob::result, this, &SpecialNotifierJob::deleteItemDone);
+}
+
+void SpecialNotifierJob::deleteItemDone(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob::deleteItemDone error:" << job->errorString();
+    }
+}
+
+void SpecialNotifierJob::slotMarkAsRead()
+{
+    Akonadi::MessageStatus messageStatus;
+    messageStatus.setRead(true);
+    const Akonadi::Item item(mItemId);
+    Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << item);
+    connect(markAsReadAllJob, &Akonadi::MarkAsCommand::result, this, &SpecialNotifierJob::slotMarkAsResult);
+    markAsReadAllJob->execute();
+
+}
+
+void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)
+{
+    switch (result) {
+    case Akonadi::MarkAsCommand::Undefined:
+        qCDebug(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob undefined result";
+        break;
+    case Akonadi::MarkAsCommand::OK:
+        qCDebug(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob Done";
+        break;
+    case Akonadi::MarkAsCommand::Canceled:
+        qCDebug(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob was canceled";
+        break;
+    case Akonadi::MarkAsCommand::Failed:
+        qCDebug(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob was failed";
+        break;
     }
 }
 
