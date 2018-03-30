@@ -56,6 +56,7 @@ private:
     QString mSubject;
     QString mFrom;
     QString mPath;
+    Akonadi::Item mItem;
     Akonadi::Item::Id mItemId;
 };
 

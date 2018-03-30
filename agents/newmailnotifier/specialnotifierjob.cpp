@@ -67,14 +67,14 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 
     const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
     if (lst.count() == 1) {
-        const Akonadi::Item item = lst.first();
-        if (!item.hasPayload<KMime::Message::Ptr>()) {
+        mItem = lst.first();
+        if (!mItem.hasPayload<KMime::Message::Ptr>()) {
             qCDebug(NEWMAILNOTIFIER_LOG) << " message has not payload.";
             deleteLater();
             return;
         }
 
-        const KMime::Message::Ptr mb = item.payload<KMime::Message::Ptr>();
+        const KMime::Message::Ptr mb = mItem.payload<KMime::Message::Ptr>();
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
         if (NewMailNotifierAgentSettings::showPhoto()) {
@@ -172,14 +172,15 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
 void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
 {
+    //Index == 0 => is the default action. We don't have it.
     switch (index) {
-    case 0:
+    case 1:
         slotOpenMail();
         return;
-    case 1:
+    case 2:
         slotMarkAsRead();
         return;
-    case 2:
+    case 3:
         slotDeleteMessage();
         return;
     }
@@ -188,8 +189,7 @@ void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
 
 void SpecialNotifierJob::slotDeleteMessage()
 {
-    const Akonadi::Item item(mItemId);
-    Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(item);
+    Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(mItem);
     connect(job, &Akonadi::ItemDeleteJob::result, this, &SpecialNotifierJob::deleteItemDone);
 }
 
@@ -204,8 +204,7 @@ void SpecialNotifierJob::slotMarkAsRead()
 {
     Akonadi::MessageStatus messageStatus;
     messageStatus.setRead(true);
-    const Akonadi::Item item(mItemId);
-    Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << item);
+    Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << mItem);
     connect(markAsReadAllJob, &Akonadi::MarkAsCommand::result, this, &SpecialNotifierJob::slotMarkAsResult);
     markAsReadAllJob->execute();
 
@@ -231,6 +230,6 @@ void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)
 
 void SpecialNotifierJob::slotOpenMail()
 {
-    NewMailNotifierShowMessageJob *job = new NewMailNotifierShowMessageJob(mItemId);
+    NewMailNotifierShowMessageJob *job = new NewMailNotifierShowMessageJob(mItem.id());
     job->start();
 }
