@@ -35,10 +35,53 @@
          <property name="title">
           <string>Account Information</string>
          </property>
-         <layout class="QVBoxLayout" name="accountInfoGroupBoxLayout">
+         <layout class="QFormLayout" name="accountInfoGroupBoxLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="accountNameLabel">
+            <property name="minimumSize">
+             <size>
+              <width>95</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Account Name:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="KLineEdit" name="accountName">
+            <property name="whatsThis">
+             <string>This is the account name that will appear in all Akonadi applications</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="emailLabel">
+            <property name="text">
+             <string comment="Exchange account e-mail address">Email:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="KLineEdit" name="kcfg_Email">
+            <property name="whatsThis">
+             <string>The e-mail address of this account</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="authenticationGroupBox">
+         <property name="title">
+          <string>Authentication</string>
+         </property>
+         <layout class="QVBoxLayout" name="authenticationGroupBoxLayout">
           <item>
-           <widget class="QWidget" name="accountInfoContainer" native="true">
-            <layout class="QFormLayout" name="accountInfoContainerLayout">
+           <widget class="QWidget" name="authenticationContainer" native="true">
+            <layout class="QFormLayout" name="authenticationContainerLayout">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -48,144 +91,10 @@
              <property name="rightMargin">
               <number>0</number>
              </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item row="0" column="0">
-              <widget class="QLabel" name="accountNameLabel">
-               <property name="text">
-                <string>Account Name:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="KLineEdit" name="accountName">
-               <property name="whatsThis">
-                <string>This is the account name that will appear in all Akonadi applications</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="emailLabel">
-               <property name="text">
-                <string comment="Exchange account e-mail address">Email:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="KLineEdit" name="kcfg_Email">
-               <property name="whatsThis">
-                <string>The e-mail address of this account</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="KLineEdit" name="kcfg_Domain">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="whatsThis">
-                <string>The Active Directory domain the user belongs to.</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="usernameLabel">
-               <property name="text">
-                <string comment="Exchange account username/login">Username:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="KLineEdit" name="kcfg_Username">
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The username used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="passwordLabel">
-               <property name="text">
-                <string>Password:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="KPasswordLineEdit" name="passwordEdit">
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The password used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="echoMode">
-                <enum>QLineEdit::Password</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QWidget" name="autodiscoveryContainer" native="true">
-               <layout class="QHBoxLayout" name="autodiscoveryContainerLayout">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QCheckBox" name="kcfg_AutoDiscovery">
-                  <property name="whatsThis">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Attempts to find out the Microsoft Exchange server address relevant to the supplied e-mail address.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="text">
-                   <string>Server Autodiscovery</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="autodiscoverButton">
-                  <property name="text">
-                   <string>Perform</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="tryConnectButton">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Try connect</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QLabel" name="serverUrlLabel">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>EWS URL:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="1">
-              <widget class="KLineEdit" name="kcfg_BaseUrl">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="whatsThis">
-                <string>The Microsoft Exchange server URL used to send EWS requests.</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
               <widget class="QCheckBox" name="kcfg_HasDomain">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -195,6 +104,53 @@
                </property>
                <property name="text">
                 <string>Domain:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="KLineEdit" name="kcfg_Domain">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="whatsThis">
+                <string>The Active Directory domain the user belongs to.</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="usernameLabel">
+               <property name="minimumSize">
+                <size>
+                 <width>95</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string comment="Exchange account username/login">Username:</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="KLineEdit" name="kcfg_Username">
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The username used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="passwordLabel">
+               <property name="text">
+                <string>Password:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="KPasswordLineEdit" name="passwordEdit" native="true">
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The password used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
@@ -212,6 +168,92 @@
             <property name="wordWrap">
              <bool>true</bool>
             </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="ewsSettingsGroupBox">
+         <property name="title">
+          <string>EWS Settings</string>
+         </property>
+         <layout class="QFormLayout" name="ewsSettingsGroupBoxLayout">
+          <item row="1" column="0">
+           <widget class="QLabel" name="serverUrlLabel">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>95</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>EWS URL:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="KLineEdit" name="kcfg_BaseUrl">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="whatsThis">
+             <string>The Microsoft Exchange server URL used to send EWS requests.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QWidget" name="autodiscoveryContainer" native="true">
+            <layout class="QHBoxLayout" name="autodiscoveryContainerLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QCheckBox" name="kcfg_AutoDiscovery">
+               <property name="whatsThis">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Attempts to find out the Microsoft Exchange server address relevant to the supplied e-mail address.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Server Autodiscovery</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="autodiscoverButton">
+               <property name="text">
+                <string>Perform</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="tryConnectButton">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Try connect</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -615,6 +657,7 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>accountName</tabstop>
   <tabstop>kcfg_Email</tabstop>
+  <tabstop>kcfg_HasDomain</tabstop>
   <tabstop>kcfg_Domain</tabstop>
   <tabstop>kcfg_Username</tabstop>
   <tabstop>passwordEdit</tabstop>
@@ -625,6 +668,12 @@
   <tabstop>pollRadioButton</tabstop>
   <tabstop>kcfg_PollInterval</tabstop>
   <tabstop>streamingRadioButton</tabstop>
+  <tabstop>kcfg_EnableNTLMv2</tabstop>
+  <tabstop>userAgentGroupBox</tabstop>
+  <tabstop>userAgentCombo</tabstop>
+  <tabstop>userAgentEdit</tabstop>
+  <tabstop>clearFolderTreeSyncStateButton</tabstop>
+  <tabstop>clearFolderItemSyncStateButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
