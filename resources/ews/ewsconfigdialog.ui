@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>602</width>
-    <height>527</height>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,8 +80,21 @@
          </property>
          <layout class="QVBoxLayout" name="authenticationGroupBoxLayout">
           <item>
-           <widget class="QWidget" name="authenticationContainer" native="true">
-            <layout class="QFormLayout" name="authenticationContainerLayout">
+           <widget class="QRadioButton" name="authUsernameRadioButton">
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables traditional username/password authentication against the Exchange server. This includes methods like Basic, NTLM or Kerberos.&lt;/p&gt;&lt;p&gt;This authentication method is considered to be somewhat legacy and is mostly used for smaller on-premise Exchange installations and hosted Office 365 instances, where the administrator has chosen to enable it.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string comment="authentication type">&amp;Username/Password</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="authUsernameContainer" native="true">
+            <layout class="QVBoxLayout" name="authUsernameContainerLayout">
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -94,63 +107,94 @@
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="kcfg_HasDomain">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Domain:</string>
-               </property>
+             <item>
+              <widget class="QWidget" name="authUsernameFieldsContainer" native="true">
+               <layout class="QFormLayout" name="authUsernameFieldsContainerLayout">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QCheckBox" name="kcfg_HasDomain">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Domain:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="KLineEdit" name="kcfg_Domain">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="whatsThis">
+                   <string>The Active Directory domain the user belongs to.</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="usernameLabel">
+                  <property name="minimumSize">
+                   <size>
+                    <width>95</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string comment="Exchange account username/login">Username:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="passwordLabel">
+                  <property name="text">
+                   <string>Password:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="KPasswordLineEdit" name="passwordEdit">
+                  <property name="whatsThis">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The password used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="KLineEdit" name="kcfg_Username">
+                  <property name="whatsThis">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The username used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="KLineEdit" name="kcfg_Domain">
-               <property name="enabled">
+             <item>
+              <widget class="QLabel" name="kerberosNoteLabel">
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Username and password are not needed (can be empty) when Kerberos is properly configured on your system.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="scaledContents">
                 <bool>false</bool>
                </property>
-               <property name="whatsThis">
-                <string>The Active Directory domain the user belongs to.</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="usernameLabel">
-               <property name="minimumSize">
-                <size>
-                 <width>95</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text">
-                <string comment="Exchange account username/login">Username:</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="KLineEdit" name="kcfg_Username">
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The username used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="passwordLabel">
-               <property name="text">
-                <string>Password:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="KPasswordLineEdit" name="passwordEdit" native="true">
-               <property name="whatsThis">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The password used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <property name="wordWrap">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -158,15 +202,15 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="kerberosNoteLabel">
-            <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Username and password are not needed (can be empty) when Kerberos is properly configured on your system.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="scaledContents">
+           <widget class="QRadioButton" name="authOAuth2RadioButton">
+            <property name="enabled">
              <bool>false</bool>
             </property>
-            <property name="wordWrap">
-             <bool>true</bool>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables more modern and stronger authentication based on OAuth2.&lt;/p&gt;&lt;p&gt;This type of authentication will open an organization-supplied webpage, where the user will be able to enter authentication information, which may also include multifactor authentication in form of one-time-passwords generated by tokens.&lt;/p&gt;&lt;p&gt;This method is mostly used for hosted Office 365 instances.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>OAuth&amp;2 (Office 365)</string>
             </property>
            </widget>
           </item>
@@ -657,10 +701,12 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>accountName</tabstop>
   <tabstop>kcfg_Email</tabstop>
+  <tabstop>authUsernameRadioButton</tabstop>
   <tabstop>kcfg_HasDomain</tabstop>
   <tabstop>kcfg_Domain</tabstop>
   <tabstop>kcfg_Username</tabstop>
   <tabstop>passwordEdit</tabstop>
+  <tabstop>authOAuth2RadioButton</tabstop>
   <tabstop>kcfg_AutoDiscovery</tabstop>
   <tabstop>autodiscoverButton</tabstop>
   <tabstop>tryConnectButton</tabstop>
@@ -754,6 +800,22 @@
     <hint type="destinationlabel">
      <x>322</x>
      <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>authUsernameRadioButton</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>authUsernameContainer</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>300</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>300</x>
+     <y>290</y>
     </hint>
    </hints>
   </connection>
