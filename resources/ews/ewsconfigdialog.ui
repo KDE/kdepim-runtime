@@ -130,6 +130,9 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="whatsThis">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Allows to specify an Active Directory domain for the user.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; There is a subtle difference between &amp;quot;empty domain&amp;quot; and &amp;quot;no-domain&amp;quot;.&lt;/p&gt;&lt;p&gt;With an empty domain (Domain checkbox checked, empty domain in edit box) the EWS resource will pass the user with an explicitly empty domain (&amp;quot;\username&amp;quot;).&lt;/p&gt;&lt;p&gt;With no domain set (Domain checkbox cleared) the username will be passed without the domain (&amp;quot;username&amp;quot;), which will cause the server to set the domain to the default one its configured with.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="text">
                    <string>Domain:</string>
                   </property>
