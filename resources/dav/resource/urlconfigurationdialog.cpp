@@ -271,7 +271,7 @@ void UrlConfigurationDialog::onChangeDisplayNameFinished(KJob *job)
 void UrlConfigurationDialog::initModel()
 {
     mModel->clear();
-    const QStringList headers = { i18n("Display name"), i18n("URL") };
+    const QStringList headers = { i18n("Display Name"), i18n("URL") };
     mModel->setHorizontalHeaderLabels(headers);
 }
 
