@@ -36,27 +36,6 @@
 //Define it to get more debug output to expense of operating speed
 // #define DEBUG_KEYCACHE_CONSITENCY
 
-static void initRandomSeed()
-{
-    static bool init = false;
-    if (!init) {
-        unsigned int seed;
-        init = true;
-        int fd = ::open("/dev/urandom", O_RDONLY);
-        if (fd < 0 || ::read(fd, &seed, sizeof(seed)) != sizeof(seed)) {
-            // No /dev/urandom... try something else.
-            srand(QCoreApplication::applicationPid());
-            seed = rand() + time(nullptr);
-        }
-
-        if (fd >= 0) {
-            close(fd);
-        }
-
-        qsrand(seed);
-    }
-}
-
 using namespace KPIM;
 
 static QRegularExpression statusSeparatorRx()
@@ -73,10 +52,6 @@ public:
         , isRoot(isRoot)
     {
         hostName = QHostInfo::localHostName();
-        // The default implementation of QUuid::createUuid() doesn't use
-        // a seed that is random enough. Therefor we use our own initialization
-        // until this issue will be fixed in Qt 4.7.
-        initRandomSeed();
 
         //Cache object is created the first time this runs.
         //It will live throughout the lifetime of the application
@@ -574,7 +549,7 @@ QByteArray Maildir::readEntryHeaders(const QString &key) const
 
 static QString createUniqueFileName()
 {
-    const qint64 time = QDateTime::currentSecsSinceEpoch();
+    const qint64 time = QDateTime::currentMSecsSinceEpoch();
     const int r = qrand() % 1000;
     const QString identifier = QLatin1String("R") + QString::number(r);
 
