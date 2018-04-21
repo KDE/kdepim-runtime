@@ -36,11 +36,7 @@ endif()
 #    3.2 pre
 #    3.2 
 
-<<<<<<< HEAD
 set(KDEPIM_DEV_VERSION alpha)
-=======
-set(KDEPIM_DEV_VERSION)
->>>>>>> origin/Applications/18.04
 
 # add an extra space
 if(DEFINED KDEPIM_DEV_VERSION)
