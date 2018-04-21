@@ -68,25 +68,33 @@ void ResourceTask::start(SessionPool *pool)
     if (m_sessionRequestId <= 0) {
         m_sessionRequestId = 0;
 
-        switch (m_actionIfNoSession) {
-        case CancelIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no connection.";
-            m_resource->cancelTask(i18n("There is currently no connection to the IMAP server."));
-            break;
-
-        case DeferIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no connection.";
-            m_resource->deferTask();
-            break;
-        }
-
-        // In this case we were likely disconnect, try to get the resource online
+        abortTask(QString());
+        // In this case we were likely disconnected, try to get the resource online
         m_resource->scheduleConnectionAttempt();
-        deleteLater();
     }
 }
 
-void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session, int errorCode, const QString & /*errorString*/)
+void ResourceTask::abortTask(const QString &errorString)
+{
+    if (!mCancelled) {
+        mCancelled = true;
+
+        switch (m_actionIfNoSession) {
+            case CancelIfNoSession:
+                qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request.";
+                m_resource->cancelTask(errorString.isEmpty() ? i18n("Unable to connect to the IMAP server.") : errorString);
+                break;
+
+            case DeferIfNoSession:
+                qCDebug(IMAPRESOURCE_LOG) << "Defering this request.";
+                m_resource->deferTask();
+                break;
+        }
+    }
+    deleteLater();
+}
+
+void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session, int errorCode, const QString &errorString)
 {
     if (requestId != m_sessionRequestId) {
         // Not for us, ignore
@@ -98,39 +106,7 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
     m_sessionRequestId = 0;
 
     if (errorCode != SessionPool::NoError) {
-        switch (m_actionIfNoSession) {
-        case CancelIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
-            m_resource->cancelTask(i18n("There is currently no session to the IMAP server available."));
-            break;
-
-        case DeferIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no more session available.";
-            m_resource->deferTask();
-            break;
-        }
-
-        deleteLater();
-        return;
-    }
-
-    m_session = session;
-
-    if (errorCode != SessionPool::NoError) {
-        qCDebug(IMAPRESOURCE_TRACE) << "Error on: " << metaObject()->className();
-        switch (m_actionIfNoSession) {
-        case CancelIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request. Probably there is no more session available.";
-            m_resource->cancelTask(i18n("There is currently no session to the IMAP server available."));
-            break;
-
-        case DeferIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Defering this request. Probably there is no more session available.";
-            m_resource->deferTask();
-            break;
-        }
-
-        deleteLater();
+        abortTask(errorString);
         return;
     }
 
@@ -153,7 +129,7 @@ void ResourceTask::onConnectionLost(KIMAP::Session *session)
         // task is done
         m_session = nullptr;
         qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
-        cancelTask(i18n("Connection lost"));
+        abortTask(i18n("Connection lost"));
     }
 }
 
@@ -165,7 +141,7 @@ void ResourceTask::onPoolDisconnect()
     m_pool = nullptr;
 
     qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
-    cancelTask(i18n("Connection lost"));
+    abortTask(i18n("Connection lost"));
 }
 
 QString ResourceTask::userName() const
@@ -515,7 +491,7 @@ QList<QByteArray> ResourceTask::toAkonadiFlags(const QList<QByteArray> &flags)
 void ResourceTask::kill()
 {
     qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
-    cancelTask(i18n("killed"));
+    abortTask(i18n("killed"));
 }
 
 const QChar ResourceTask::separatorCharacter() const
