@@ -745,6 +745,61 @@ private Q_SLOTS:
         server.quit();
     }
 
+    void shouldHandleDisconnectionDuringSecondLogin()
+    {
+        FakeServer server;
+        server.addScenario(QList<QByteArray>()
+                           << FakeServer::greeting()
+                           << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+                           << "S: A000001 OK User Logged in"
+                           << "C: A000002 CAPABILITY"
+                           << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+                           << "S: A000002 OK Completed"
+                           );
+
+        server.addScenario(QList<QByteArray>()
+                           << FakeServer::greeting()
+                           << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+                           << "X"
+                           );
+
+        server.startAndWait();
+
+        ImapAccount *account = createDefaultAccount();
+        DummyPasswordRequester *requester = createDefaultRequester();
+
+        SessionPool pool(2);
+        pool.setPasswordRequester(requester);
+
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QVERIFY(pool.connect(account));
+
+        // We should be connected now
+        QTRY_VERIFY(pool.isConnected());
+
+        // Ask for a session
+        pool.requestSession();
+        QTRY_COMPARE(sessionSpy.count(), 1);
+        QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != nullptr);
+
+        // Prepare for session disconnects
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+
+        // Ask for a second session, where we'll lose the connection during the Login job.
+        pool.requestSession();
+        QTest::qWait(100);
+        QCOMPARE(sessionSpy.count(), 2);
+        QVERIFY(sessionSpy.at(1).at(1).value<KIMAP::Session *>() == nullptr);
+        QCOMPARE(lostSpy.count(), 1);
+
+        // The pool itself is still connected
+        QVERIFY(pool.isConnected());
+
+        QVERIFY(server.isAllScenarioDone());
+
+        server.quit();
+    }
+
     void shouldNotifyFailureToConnect()
     {
         // This tests what happens when we can't connect to the server, e.g. due to being offline.
