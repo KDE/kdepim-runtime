@@ -1,7 +1,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
 set(WITH_GMAIL_XOAUTH2 TRUE)
-add_subdirectory(saslplugin)
 
 configure_file(config-imap.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-imap.h)
 
