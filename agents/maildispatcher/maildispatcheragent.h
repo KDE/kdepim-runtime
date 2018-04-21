@@ -38,7 +38,7 @@ class MailDispatcherAgent : public Akonadi::AgentBase
 
 public:
     explicit MailDispatcherAgent(const QString &id);
-    ~MailDispatcherAgent();
+    ~MailDispatcherAgent() override;
 
 public Q_SLOTS:
     void configure(WId windowId) override;
