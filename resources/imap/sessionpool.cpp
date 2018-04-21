@@ -202,8 +202,8 @@ void SessionPool::killSession(KIMAP::Session *session, SessionTermination termin
         Q_ASSERT(false);
         return;
     }
-    QObject::disconnect(session, &KIMAP::Session::stateChanged,
-                        this, &SessionPool::onSessionStateChanged);
+    QObject::disconnect(session, &KIMAP::Session::connectionLost,
+                        this, &SessionPool::onConnectionLost);
     m_unusedPool.removeAll(session);
     m_reservedPool.removeAll(session);
     m_connectingPool.removeAll(session);
@@ -372,8 +372,8 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         m_connectingPool << session;
     }
 
-    QObject::connect(session, &KIMAP::Session::stateChanged,
-                     this, &SessionPool::onSessionStateChanged);
+    QObject::connect(session, &KIMAP::Session::connectionLost,
+                     this, &SessionPool::onConnectionLost);
 
     KIMAP::LoginJob *loginJob = new KIMAP::LoginJob(session);
     loginJob->setUserName(m_account->userName());
@@ -544,13 +544,6 @@ void SessionPool::onIdDone(KJob *job)
         return;
     }
     declareSessionReady(idJob->session());
-}
-
-void SessionPool::onSessionStateChanged(KIMAP::Session::State newState, KIMAP::Session::State oldState)
-{
-    if (newState == KIMAP::Session::Disconnected && oldState != KIMAP::Session::Disconnected) {
-        onConnectionLost();
-    }
 }
 
 void SessionPool::onConnectionLost()
