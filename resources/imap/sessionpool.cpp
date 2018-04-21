@@ -573,6 +573,10 @@ void SessionPool::onConnectionLost()
 
     Q_EMIT connectionLost(session);
 
+    if (!m_pendingRequests.isEmpty()) {
+        cancelSessionCreation(nullptr, CouldNotConnectError, QString());
+    }
+
     session->deleteLater();
     if (session == m_pendingInitialSession) {
         m_pendingInitialSession = nullptr;
