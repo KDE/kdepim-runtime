@@ -575,12 +575,9 @@ void SetupServer::slotTestChanged()
     m_serverTest = nullptr;
     slotSafetyChanged();
 
-#ifdef WITH_GMAIL_XOAUTH2
     // do not use imapConnectionPossible, as the data is not yet saved.
-    const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
-    m_ui->testButton->setEnabled(!isGmail /* TODO && Global::connectionPossible() ||
+    m_ui->testButton->setEnabled(true /* TODO && Global::connectionPossible() ||
                                                 m_ui->imapServer->text() == "localhost"*/);
-#endif
 }
 
 void SetupServer::slotEnableWidgets()
@@ -603,15 +600,6 @@ void SetupServer::slotComplete()
 void SetupServer::slotSafetyChanged()
 {
     if (m_serverTest == nullptr) {
-#ifdef WITH_GMAIL_XOAUTH2
-        const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
-        qCDebug(IMAPRESOURCE_LOG) << "serverTest null";
-        m_ui->noRadio->setEnabled(!isGmail);
-        m_ui->sslRadio->setEnabled(!isGmail);
-        m_ui->tlsRadio->setEnabled(!isGmail);
-
-        m_ui->authenticationCombo->setEnabled(!isGmail);
-#endif
         return;
     }
     QVector<int> protocols;
@@ -713,37 +701,10 @@ void SetupServer::populateDefaultAuthenticationOptions(QComboBox *combo)
     addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::NTLM);
     addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::GSSAPI);
     addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::ANONYMOUS);
-#ifdef WITH_GMAIL_XOAUTH2
-    if (Utils::isGmail(m_ui->imapServer->text())) {
-        addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::XOAUTH2);
-    }
-#endif
+    addAuthenticationItem(combo, MailTransport::Transport::EnumAuthenticationType::XOAUTH2);
 }
 
 void SetupServer::slotServerChanged()
 {
-#ifdef WITH_GMAIL_XOAUTH2
-    const bool isGmail = Utils::isGmail(m_ui->imapServer->text());
-    const bool wasGmail = !m_ui->password->isEnabled();
-
-    if (isGmail == wasGmail) {
-        return;
-    }
-
-    m_ui->password->setEnabled(!isGmail);
-    m_ui->managesieveCheck->setChecked(m_ui->managesieveCheck->isChecked() && !isGmail);
-    m_ui->managesieveCheck->setEnabled(!isGmail);
-    m_ui->testButton->setEnabled(!isGmail);
-    m_ui->sslRadio->setChecked(m_ui->sslRadio->isChecked() || isGmail);
-    m_ui->noRadio->setEnabled(!isGmail);
-    m_ui->sslRadio->setEnabled(!isGmail);
-    m_ui->tlsRadio->setEnabled(!isGmail);
-    m_ui->portSpin->setValue(isGmail ? 993 : m_ui->portSpin->value());
-    m_ui->portSpin->setEnabled(!isGmail);
     populateDefaultAuthenticationOptions(m_ui->authenticationCombo);
-    if (isGmail) {
-        setCurrentAuthMode(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::XOAUTH2);
-    }
-    m_ui->authenticationCombo->setEnabled(!isGmail);
-#endif
 }

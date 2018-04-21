@@ -22,7 +22,6 @@
 #include "settingsadaptor.h"
 
 #include "imapaccount.h"
-#include "utils.h"
 #include "config-imap.h"
 
 #include <kwallet.h>
@@ -77,17 +76,6 @@ Settings::Settings(WId winId) : SettingsBase()
     , m_winId(winId)
 {
     load();
-
-#ifdef WITH_GMAIL_XOAUTH2
-    // Make sure that Gmail configuration is correctly migrated even if the user
-    // did not open the configuration dialog
-    if (Utils::isGmail(imapServer())) {
-        setImapPort(993);
-        setSafety(QStringLiteral("SSL"));
-        setAuthentication(MailTransport::Transport::EnumAuthenticationType::XOAUTH2);
-        save();
-    }
-#endif
 
     new SettingsAdaptor(this);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);

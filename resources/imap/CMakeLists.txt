@@ -41,7 +41,6 @@ set( imapresource_LIB_SRCS
   resourcestate.cpp
   collectionmetadatahelper.cpp
   replacemessagejob.cpp
-  utils.cpp
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )

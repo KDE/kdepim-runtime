@@ -20,7 +20,6 @@
 #include "passwordrequester.h"
 #include "imapresourcebase.h"
 #include "settings.h"
-#include "utils.h"
 #include "config-imap.h"
 
 #include "gmailpasswordrequester.h"
@@ -39,12 +38,13 @@ PasswordRequester::~PasswordRequester()
 
 PasswordRequesterInterface *PasswordRequester::requesterImpl()
 {
-    if (!mImpl || Utils::isGmail(mResource->settings()->imapServer()) != !!qobject_cast<GmailPasswordRequester *>(mImpl)) {
+    const bool isXOAuth = mResource->settings()->authentication() == MailTransport::Transport::EnumAuthenticationType::XOAUTH2;
+    if (!mImpl || (isXOAuth != !!qobject_cast<GmailPasswordRequester *>(mImpl))) {
         if (mImpl) {
             mImpl->disconnect(this);
             mImpl->deleteLater();
         }
-        if (Utils::isGmail(mResource->settings()->imapServer())) {
+        if (isXOAuth) {
             mImpl = new GmailPasswordRequester(mResource, this);
         } else {
             mImpl = new SettingsPasswordRequester(mResource, this);
