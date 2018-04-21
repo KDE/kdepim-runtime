@@ -234,7 +234,7 @@ void SessionPool::declareSessionReady(KIMAP::Session *session)
         m_initialConnectDone = true;
         Q_EMIT connectDone();
         // If the slot connected to connectDone() decided to disconnect the SessionPool
-        // then we must end here, because we expects the pools to be empty now!
+        // then we must end here, because we expect the pools to be empty now!
         if (!m_initialConnectDone) {
             return;
         }
@@ -280,7 +280,7 @@ void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode, 
             }
         }
     }
-    //AlwaysQ_EMIT this at the end. This can call SessionPool::disconnect via ImapResource.
+    // Always emit this at the end. This can call SessionPool::disconnect via ImapResource.
     Q_EMIT connectDone(errorCode, msg);
 }
 
@@ -389,7 +389,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
 void SessionPool::onLoginDone(KJob *job)
 {
     KIMAP::LoginJob *login = static_cast<KIMAP::LoginJob *>(job);
-    //Can happen if we disonnected meanwhile
+    // Can happen if we disconnected meanwhile
     if (!m_connectingPool.contains(login->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
         return;
@@ -412,7 +412,7 @@ void SessionPool::onLoginDone(KJob *job)
                                       i18n("Could not connect to the IMAP-server %1.\n%2",
                                            m_account->server(), job->errorString()));
             } else {
-                // Can happen when we loose all ready connections while trying to login.
+                // Can happen when we lose all ready connections while trying to login.
                 cancelSessionCreation(login->session(),
                                       CouldNotConnectError,
                                       i18n("Could not connect to the IMAP-server.\n%1",
@@ -430,7 +430,7 @@ void SessionPool::onLoginDone(KJob *job)
 void SessionPool::onCapabilitiesTestDone(KJob *job)
 {
     KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob *>(job);
-    //Can happen if we disonnected meanwhile
+    // Can happen if we disconnected meanwhile
     if (!m_connectingPool.contains(capJob->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
         return;
@@ -444,7 +444,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
                                        "IMAP server %1.\n%2",
                                        m_account->server(), job->errorString()));
         } else {
-            // Can happen when we loose all ready connections while trying to check capabilities.
+            // Can happen when we lose all ready connections while trying to check capabilities.
             cancelSessionCreation(capJob->session(),
                                   CapabilitiesTestError,
                                   i18n("Could not test the capabilities supported by the "
@@ -538,7 +538,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
 void SessionPool::onIdDone(KJob *job)
 {
     KIMAP::IdJob *idJob = qobject_cast<KIMAP::IdJob *>(job);
-    //Can happen if we disonnected meanwhile
+    // Can happen if we disconnected meanwhile
     if (!m_connectingPool.contains(idJob->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected during login."));
         return;
