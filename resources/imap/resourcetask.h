@@ -145,6 +145,7 @@ protected:
     KIMAP::Acl::Rights myRights(const Akonadi::Collection &);
 
 private:
+    void abortTask(const QString &errorString);
 
     static QList<QByteArray> fromAkonadiFlags(const QList<QByteArray> &flags);
 
