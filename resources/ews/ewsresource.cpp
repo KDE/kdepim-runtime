@@ -455,7 +455,7 @@ void EwsResource::passwordRequestFinished(const QString &password)
         setOnline(false);
         Q_EMIT status(NotConfigured, i18nc("@info:status", "No password configured."));
     } else {
-        if (mSettings->domain().isEmpty()) {
+        if (!mSettings->hasDomain()) {
             mEwsClient.setCredentials(mSettings->username(), mPassword);
         } else {
             mEwsClient.setCredentials(mSettings->domain() + QLatin1Char('\\') + mSettings->username(), mPassword);
