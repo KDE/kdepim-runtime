@@ -38,6 +38,7 @@ Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado 
 Comment[sv]=Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog
 Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
 Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
+Comment[zh_TW]=提供存取行事曆的項目。每個項目都以單一檔案存放在指定的目錄中
 
 Type=AkonadiResource
 Exec=akonadi_icaldir_resource
