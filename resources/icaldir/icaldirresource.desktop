@@ -34,6 +34,7 @@ Comment[ca@valencia]=Proporciona accés als elements d'un calendari, cadascun em
 Comment[en_GB]=Provides access to calendar items, each stored in a single file, in a given directory
 Comment[fr]=Fournit l'accès aux éléments d'agenda, chacun stocké dans un fichier distinct, dans un dossier donné
 Comment[gl]=Fornece acceso a elementos de calendario, cada un almacenado nun ficheiro de seu, nun directorio dado.
+Comment[it]=Fornisce accesso a voci di calendario, ciascuna memorizzata in un singolo file in una data cartella
 Comment[nl]=Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map
 Comment[nn]=Gjev tilgang til kalenderelement i ei viss mappe, der dei er lagra i kvar sine filer.
 Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
