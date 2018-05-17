@@ -139,7 +139,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     KLineEdit *searchLine = new KLineEdit(this);
     searchLine->setPlaceholderText(i18n("Search..."));
-    searchLine->setClearButtonShown(true);
+    searchLine->setClearButtonEnabled(true);
     connect(searchLine, &QLineEdit::textChanged,
             this, &NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter);
 
