@@ -145,7 +145,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource,
             &EwsResource::clearFolderTreeSyncState);
     connect(mUi->clearFolderItemSyncStateButton, &QPushButton::clicked, mParentResource,
-            static_cast<void (EwsResource::*)()>(&EwsResource::clearFolderSyncState));
+            QOverload<>::of(&EwsResource::clearFolderSyncState));
 }
 
 EwsConfigDialog::~EwsConfigDialog()
