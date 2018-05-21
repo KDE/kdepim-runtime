@@ -41,6 +41,7 @@ add_executable(ewssettings_ut
 target_link_libraries(ewssettings_ut
   Qt5::Core
   Qt5::Test
+  KF5::AkonadiCore
   KF5::WidgetsAddons
   KF5::I18n
   KF5::ConfigCore
