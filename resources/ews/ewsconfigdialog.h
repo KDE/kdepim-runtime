@@ -21,6 +21,7 @@
 #define EWSCONFIGDIALOG_H
 
 #include <QDialog>
+#include <QPointer>
 
 
 class QDialogButtonBox;
@@ -42,7 +43,8 @@ class EwsConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId);
+    explicit EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId,
+                             EwsSettings *settings);
     ~EwsConfigDialog() override;
 private:
     void save();
@@ -70,7 +72,7 @@ private:
     bool mTryConnectNeeded = false;
     EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
-    QScopedPointer<EwsSettings> mSettings;
+    QPointer<EwsSettings> mSettings;
 };
 
 #endif

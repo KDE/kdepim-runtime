@@ -472,7 +472,7 @@ void EwsResource::passwordRequestFinished(const QString &password)
 
 void EwsResource::configure(WId windowId)
 {
-    QPointer<EwsConfigDialog> dlg = new EwsConfigDialog(this, mEwsClient, windowId);
+    QPointer<EwsConfigDialog> dlg = new EwsConfigDialog(this, mEwsClient, windowId, mSettings.data());
     if (dlg->exec()) {
         reloadConfig();
         Q_EMIT configurationDialogAccepted();
