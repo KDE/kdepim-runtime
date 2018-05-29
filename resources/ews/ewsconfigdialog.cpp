@@ -48,10 +48,11 @@ static const QVector<StringPair> userAgents = {
     {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}
 };
 
-EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId)
+EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId,
+                                 EwsSettings *settings)
     : QDialog()
     , mParentResource(parentResource)
-    , mSettings(new EwsSettings(wId))
+    , mSettings(settings)
 {
     if (wId) {
         KWindowSystem::setMainWindow(this, wId);
