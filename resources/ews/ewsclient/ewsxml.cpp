@@ -372,7 +372,7 @@ QByteArray readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString
     if (ok) {
         /* QByteArray::fromBase64() does not perform any input validity checks
            and skips invalid input characters */
-        val = QByteArray::fromBase64(valStr.toAscii());
+        val = QByteArray::fromBase64(valStr.toLatin1());
     }
 
     return val;

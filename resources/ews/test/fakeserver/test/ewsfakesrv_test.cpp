@@ -721,7 +721,7 @@ void UtEwsFakeSrvTest::delayedContentSize()
             "Accept-Charset: utf-8,*;q=0.5\r\n"
             "Accept-Language: pl-PL,en;q=0.9\r\n"
             "Authorization: Basic dGVzdDp0ZXN0\r\n"
-            "Content-Type: text/xml\r\n").arg(thread.portNumber()).toAscii());
+            "Content-Type: text/xml\r\n").arg(thread.portNumber()).toLatin1());
     sock.waitForBytesWritten(100);
     QThread::msleep(100);
     sock.write("Content-Length: 20\r\n\r\n");

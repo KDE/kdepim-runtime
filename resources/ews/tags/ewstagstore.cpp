@@ -126,7 +126,7 @@ bool EwsTagStore::readTags(const QStringList &taglist, int version)
     mTagData.clear();
 
     Q_FOREACH (const QString &tag, taglist) {
-        QByteArray tagdata = qUncompress(QByteArray::fromBase64(tag.toAscii()));
+        QByteArray tagdata = qUncompress(QByteArray::fromBase64(tag.toLatin1()));
         if (tagdata.isNull()) {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Incorrect tag data");
         } else {
@@ -278,7 +278,7 @@ bool EwsTagStore::readEwsProperties(Akonadi::Item &item, const EwsItem &ewsItem,
     if (tagProp.isValid() && tagProp.canConvert<QStringList>()) {
         QStringList tagRids = tagProp.toStringList();
         Q_FOREACH (const QString &tagRid, tagRids) {
-            Tag::Id tagId = tagIdForRid(tagRid.toAscii());
+            Tag::Id tagId = tagIdForRid(tagRid.toLatin1());
             if (tagId == -1) {
                 /* Tag not found. */
                 qCDebug(EWSRES_LOG) << QStringLiteral("Found missing tag: %1").arg(tagRid);

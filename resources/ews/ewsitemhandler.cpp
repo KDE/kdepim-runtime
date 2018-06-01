@@ -103,7 +103,7 @@ QSet<QByteArray> EwsItemHandler::readFlags(const EwsItem &item)
         const QStringList flagList = flagProp.toStringList();
         flags.reserve(flagList.count());
         for (const QString &flag : flagList) {
-            flags.insert(flag.toAscii());
+            flags.insert(flag.toLatin1());
         }
     }
 

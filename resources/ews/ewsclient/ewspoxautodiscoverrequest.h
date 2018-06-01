@@ -20,6 +20,7 @@
 #ifndef EWSPOXAUTODISCOVERREQUEST_H
 #define EWSPOXAUTODISCOVERREQUEST_H
 
+#include <QHash>
 #include <QString>
 #include <QUrl>
 

@@ -115,12 +115,12 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
 
         v = ewsItem[EwsItemFieldInternetMessageId];
         if (v.isValid()) {
-            msg->messageID()->from7BitString(v.toString().toAscii());
+            msg->messageID()->from7BitString(v.toString().toLatin1());
         }
 
         v = ewsItem[EwsItemFieldInReplyTo];
         if (v.isValid()) {
-            msg->inReplyTo()->from7BitString(v.toString().toAscii());
+            msg->inReplyTo()->from7BitString(v.toString().toLatin1());
         }
 
         v = ewsItem[EwsItemFieldDateTimeReceived];
@@ -130,7 +130,7 @@ void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response
 
         v = ewsItem[EwsItemFieldReferences];
         if (v.isValid()) {
-            msg->references()->from7BitString(v.toString().toAscii());
+            msg->references()->from7BitString(v.toString().toLatin1());
         }
 
         v = ewsItem[EwsItemFieldReplyTo];

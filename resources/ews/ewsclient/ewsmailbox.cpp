@@ -137,7 +137,7 @@ QString EwsMailbox::emailWithName() const
 EwsMailbox::operator KMime::Types::Mailbox() const
 {
     KMime::Types::Mailbox mbox;
-    mbox.setAddress(d->mEmail.toAscii());
+    mbox.setAddress(d->mEmail.toLatin1());
     if (!d->mName.isEmpty()) {
         mbox.setName(d->mName);
     }

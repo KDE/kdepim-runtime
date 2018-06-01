@@ -147,7 +147,7 @@ void BasicTest::testBasic()
     stateMonitor.monitor().fetchCollection(true);
     stateMonitor.monitor().collectionFetchScope().fetchAttribute<EntityDisplayAttribute>();
     stateMonitor.monitor().collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::Parent);
-    stateMonitor.monitor().setResourceMonitored(instance.identifier().toAscii(), true);
+    stateMonitor.monitor().setResourceMonitored(instance.identifier().toLatin1(), true);
     connect(&stateMonitor, &CollectionStateMonitor<DesiredState>::stateReached, this, [&]() {
         loop.exit(0);
     });

@@ -117,7 +117,7 @@ EwsResource::EwsResource(const QString &id)
     setScheduleAttributeSyncBeforeItemSync(true);
 
     // Load the sync state
-    QByteArray data = QByteArray::fromBase64(mSettings->syncState().toAscii());
+    QByteArray data = QByteArray::fromBase64(mSettings->syncState().toLatin1());
     if (!data.isEmpty()) {
         data = qUncompress(data);
         if (!data.isEmpty()) {
@@ -125,11 +125,11 @@ EwsResource::EwsResource(const QString &id)
             stream >> mSyncState;
         }
     }
-    data = QByteArray::fromBase64(mSettings->folderSyncState().toAscii());
+    data = QByteArray::fromBase64(mSettings->folderSyncState().toLatin1());
     if (!data.isEmpty()) {
         data = qUncompress(data);
         if (!data.isEmpty()) {
-            mFolderSyncState = QString::fromAscii(data);
+            mFolderSyncState = QString::fromLatin1(data);
         }
     }
 
@@ -1240,7 +1240,7 @@ void EwsResource::saveState()
     QDataStream dataStream(&str, QIODevice::WriteOnly);
     dataStream << mSyncState;
     mSettings->setSyncState(QString::fromLatin1(qCompress(str, 9).toBase64()));
-    mSettings->setFolderSyncState(QString::fromLatin1(qCompress(mFolderSyncState.toAscii(), 9).toBase64()));
+    mSettings->setFolderSyncState(QString::fromLatin1(qCompress(mFolderSyncState.toLatin1(), 9).toBase64()));
     mSettings->save();
 }
 
