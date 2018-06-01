@@ -500,7 +500,7 @@ private Q_SLOTS:
         QVERIFY(pool.connect(account));
         QTest::qWait(100);
         QCOMPARE(connectSpy.count(), 0);   // Login not done yet
-        QWeakPointer<KIMAP::Session> session = qFindChild<KIMAP::Session *>(&pool);
+        QPointer<KIMAP::Session> session = pool.findChild<KIMAP::Session *>();
         QVERIFY(session.data());
         QCOMPARE(sessionSpy.count(), 0);
 
