@@ -243,10 +243,9 @@ void Settings::loadAccount(ImapAccount *account) const
 
     const QString encryption = safety();
     if (encryption == QLatin1String("SSL")) {
-        account->setEncryptionMode(KIMAP::LoginJob::AnySslVersion);
+        account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
     } else if (encryption == QLatin1String("STARTTLS")) {
-        //KIMAP confused TLS and STARTTLS, TlsV1 really means "use STARTTLS"
-        account->setEncryptionMode(KIMAP::LoginJob::TlsV1);
+        account->setEncryptionMode(KIMAP::LoginJob::STARTTLS);
     } else {
         account->setEncryptionMode(KIMAP::LoginJob::Unencrypted);
     }
@@ -258,15 +257,15 @@ void Settings::loadAccount(ImapAccount *account) const
     if (!overrideEncryptionMode.isEmpty()) {
         qCWarning(IMAPRESOURCE_LOG) << "Overriding encryption mode with: " << overrideEncryptionMode;
         if (overrideEncryptionMode == QLatin1String("SSLV2")) {
-            account->setEncryptionMode(KIMAP::LoginJob::SslV2);
+            account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
         } else if (overrideEncryptionMode == QLatin1String("SSLV3")) {
-            account->setEncryptionMode(KIMAP::LoginJob::SslV3);
+            account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
         } else if (overrideEncryptionMode == QLatin1String("TLSV1")) {
-            account->setEncryptionMode(KIMAP::LoginJob::SslV3_1);
+            account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
         } else if (overrideEncryptionMode == QLatin1String("SSL")) {
-            account->setEncryptionMode(KIMAP::LoginJob::AnySslVersion);
+            account->setEncryptionMode(KIMAP::LoginJob::SSLorTLS);
         } else if (overrideEncryptionMode == QLatin1String("STARTTLS")) {
-            account->setEncryptionMode(KIMAP::LoginJob::TlsV1);
+            account->setEncryptionMode(KIMAP::LoginJob::STARTTLS);
         } else if (overrideEncryptionMode == QLatin1String("UNENCRYPTED")) {
             account->setEncryptionMode(KIMAP::LoginJob::Unencrypted);
         } else {

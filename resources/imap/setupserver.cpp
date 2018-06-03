@@ -147,8 +147,8 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
     m_ui->safeImapGroup->setId(m_ui->noRadio, KIMAP::LoginJob::Unencrypted);
-    m_ui->safeImapGroup->setId(m_ui->sslRadio, KIMAP::LoginJob::AnySslVersion);
-    m_ui->safeImapGroup->setId(m_ui->tlsRadio, KIMAP::LoginJob::TlsV1);
+    m_ui->safeImapGroup->setId(m_ui->sslRadio, KIMAP::LoginJob::SSLorTLS);
+    m_ui->safeImapGroup->setId(m_ui->tlsRadio, KIMAP::LoginJob::STARTTLS);
 
     connect(m_ui->noRadio, &QRadioButton::toggled, this, &SetupServer::slotSafetyChanged);
     connect(m_ui->sslRadio, &QRadioButton::toggled, this, &SetupServer::slotSafetyChanged);
@@ -231,10 +231,10 @@ void SetupServer::slotEncryptionRadioChanged()
     // TODO these really should be defined somewhere else
     switch (m_ui->safeImapGroup->checkedId()) {
     case KIMAP::LoginJob::Unencrypted:
-    case KIMAP::LoginJob::TlsV1:
+    case KIMAP::LoginJob::STARTTLS:
         m_ui->portSpin->setValue(143);
         break;
-    case KIMAP::LoginJob::AnySslVersion:
+    case KIMAP::LoginJob::SSLorTLS:
         m_ui->portSpin->setValue(993);
         break;
     default:
@@ -293,10 +293,10 @@ void SetupServer::applySettings()
     case KIMAP::LoginJob::Unencrypted:
         encryption = QStringLiteral("None");
         break;
-    case KIMAP::LoginJob::AnySslVersion:
+    case KIMAP::LoginJob::SSLorTLS:
         encryption = QStringLiteral("SSL");
         break;
-    case KIMAP::LoginJob::TlsV1:
+    case KIMAP::LoginJob::STARTTLS:
         encryption = QStringLiteral("STARTTLS");
         break;
     default:
@@ -388,9 +388,9 @@ void SetupServer::readSettings()
     const QString safety = m_parentResource->settings()->safety();
     int i = 0;
     if (safety == QLatin1String("SSL")) {
-        i = KIMAP::LoginJob::AnySslVersion;
+        i = KIMAP::LoginJob::SSLorTLS;
     } else if (safety == QLatin1String("STARTTLS")) {
-        i = KIMAP::LoginJob::TlsV1;
+        i = KIMAP::LoginJob::STARTTLS;
     } else {
         i = KIMAP::LoginJob::Unencrypted;
     }
@@ -549,10 +549,10 @@ void SetupServer::slotFinished(const QVector<int> &testResult)
     QString text;
     if (testResult.contains(Transport::EnumEncryption::TLS)) {
         m_ui->tlsRadio->setChecked(true);
-        text = i18n("<qt><b>TLS is supported and recommended.</b></qt>");
+        text = i18n("<qt><b>STARTTLS is supported and recommended.</b></qt>");
     } else if (testResult.contains(Transport::EnumEncryption::SSL)) {
         m_ui->sslRadio->setChecked(true);
-        text = i18n("<qt><b>SSL is supported and recommended.</b></qt>");
+        text = i18n("<qt><b>SSL/TLS is supported and recommended.</b></qt>");
     } else if (testResult.contains(Transport::EnumEncryption::None)) {
         m_ui->noRadio->setChecked(true);
         text = i18n("<qt><b>No security is supported. It is not "
@@ -609,11 +609,11 @@ void SetupServer::slotSafetyChanged()
         qCDebug(IMAPRESOURCE_LOG) << "safeImapGroup: unencrypted";
         protocols = m_serverTest->normalProtocols();
         break;
-    case KIMAP::LoginJob::AnySslVersion:
+    case KIMAP::LoginJob::SSLorTLS:
         protocols = m_serverTest->secureProtocols();
         qCDebug(IMAPRESOURCE_LOG) << "safeImapGroup: SSL";
         break;
-    case KIMAP::LoginJob::TlsV1:
+    case KIMAP::LoginJob::STARTTLS:
         protocols = m_serverTest->tlsProtocols();
         qCDebug(IMAPRESOURCE_LOG) << "safeImapGroup: starttls";
         break;
