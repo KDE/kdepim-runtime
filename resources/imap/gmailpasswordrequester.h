@@ -27,7 +27,7 @@
 class ImapResourceBase;
 
 namespace KGAPI2 {
-class Job;
+class AccountPromise;
 }
 
 class GmailPasswordRequester : public PasswordRequesterInterface
@@ -41,14 +41,11 @@ public:
     void cancelPasswordRequests() override;
 
 private Q_SLOTS:
-    void onPasswordRequestCompleted(const QString &password, bool userRejected);
-    void onTokenRequestFinished(KGAPI2::Job *job);
-private:
-    void requestToken(const QString &password = QString());
-    void refreshToken(const QString &refreshToken);
+    void onTokenRequestFinished(KGAPI2::AccountPromise *promise);
 
+private:
     ImapResourceBase *mResource = nullptr;
-    QPointer<KGAPI2::Job> mRunningRequest;
+    KGAPI2::AccountPromise *mPendingPromise = nullptr;
 };
 
 #endif

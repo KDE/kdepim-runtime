@@ -24,6 +24,7 @@
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>
+#include <KGAPI/AccountManager>
 
 #define GOOGLE_API_KEY QStringLiteral("554041944266.apps.googleusercontent.com")
 #define GOOGLE_API_SECRET QStringLiteral("mdT1DjzohxN3npUUzkENT0gO")
@@ -31,7 +32,6 @@
 GmailPasswordRequester::GmailPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
     , mResource(resource)
-    , mRunningRequest(nullptr)
 {
 }
 
@@ -44,94 +44,45 @@ void GmailPasswordRequester::requestPassword(RequestType request, const QString 
     Q_UNUSED(serverError); // we don't get anything useful from XOAUTH2 SASL
 
     if (request == WrongPasswordRequest) {
-        const QString tokens = mResource->settings()->password();
-        if (tokens.isEmpty()) {
-            requestToken();
-        } else {
-            const QString token = tokens.mid(tokens.indexOf(QLatin1Char('\001')) + 1);
-            if (token.isEmpty() || token == tokens) {
-                requestToken(token); // if token == tokens, assume it's account password
-            } else {
-                refreshToken(token);
-            }
-        }
+        auto promise = KGAPI2::AccountManager::instance()->findAccount(GOOGLE_API_KEY, mResource->settings()->userName());
+        connect(promise, &KGAPI2::AccountPromise::finished,
+                this, [this](KGAPI2::AccountPromise *promise) {
+                    if (promise->account()) {
+                        promise = KGAPI2::AccountManager::instance()->refreshTokens(
+                            GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName());
+                    } else {
+                        promise = KGAPI2::AccountManager::instance()->getAccount(
+                            GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName(),
+                            { KGAPI2::Account::mailScopeUrl() });
+                    }
+                    connect(promise, &KGAPI2::AccountPromise::finished,
+                            this, &GmailPasswordRequester::onTokenRequestFinished);
+                    mPendingPromise = promise;
+                });
+        mPendingPromise = promise;
     } else {
-        connect(mResource->settings(), &Settings::passwordRequestCompleted,
-                this, &GmailPasswordRequester::onPasswordRequestCompleted);
-        mResource->settings()->requestPassword();
+        auto promise = KGAPI2::AccountManager::instance()->getAccount(
+            GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName(),
+            { KGAPI2::Account::mailScopeUrl() });
+        connect(promise, &KGAPI2::AccountPromise::finished,
+                this, &GmailPasswordRequester::onTokenRequestFinished);
+        mPendingPromise = promise;
     }
 }
 
 void GmailPasswordRequester::cancelPasswordRequests()
 {
-    if (mRunningRequest) {
-        mRunningRequest->disconnect(this);
-        mRunningRequest->deleteLater();
+    if (mPendingPromise) {
+        mPendingPromise->disconnect(this);
     }
 }
 
-void GmailPasswordRequester::onPasswordRequestCompleted(const QString &password, bool userRejected)
+void GmailPasswordRequester::onTokenRequestFinished(KGAPI2::AccountPromise *promise)
 {
-    disconnect(mResource->settings(), &Settings::passwordRequestCompleted,
-               this, &GmailPasswordRequester::onPasswordRequestCompleted);
-
-    QString token = password;
-    if (userRejected || token.isEmpty()) {
-        requestToken();
-        return;
+    mPendingPromise = nullptr;
+    if (promise->hasError()) {
+        Q_EMIT done(UserRejected, promise->errorText());
     } else {
-        token = password.left(password.indexOf(QLatin1Char('\001')));
-        if (token.isEmpty() || token == password) {
-            requestToken(password); // if token == password, assume it's account password
-            return;
-        }
+        Q_EMIT done(PasswordRetrieved, promise->account()->accessToken());
     }
-
-    Q_EMIT done(PasswordRetrieved, token);
-}
-
-void GmailPasswordRequester::requestToken(const QString &password)
-{
-    Q_ASSERT(!mRunningRequest);
-    auto acc = KGAPI2::AccountPtr::create(mResource->settings()->userName(),
-                                          QString(), QString(),
-                                          QList<QUrl>{ QUrl(QStringLiteral("https://mail.google.com/")) });
-
-    auto authJob = new KGAPI2::AuthJob(acc, GOOGLE_API_KEY, GOOGLE_API_SECRET, this);
-    authJob->setUsername(mResource->settings()->userName());
-    authJob->setPassword(password);
-    connect(authJob, &KGAPI2::Job::finished,
-            this, &GmailPasswordRequester::onTokenRequestFinished);
-    mRunningRequest = authJob;
-}
-
-void GmailPasswordRequester::onTokenRequestFinished(KGAPI2::Job *job)
-{
-    mRunningRequest.clear();
-
-    auto authJob = qobject_cast<KGAPI2::AuthJob *>(job);
-    if (authJob->error()) {
-        qCWarning(IMAPRESOURCE_LOG) << "Error obtaining XOAUTH2 token:" << authJob->errorString();
-        Q_EMIT done(UserRejected);
-        return;
-    }
-
-    const auto account = authJob->account();
-    const QString tokens = QStringLiteral("%1\001%2").arg(account->accessToken(),
-                                                          account->refreshToken());
-    mResource->settings()->setPassword(tokens);
-    Q_EMIT done(PasswordRetrieved, account->accessToken());
-}
-
-void GmailPasswordRequester::refreshToken(const QString &refreshToken)
-{
-    Q_ASSERT(!mRunningRequest);
-    auto acc = KGAPI2::AccountPtr::create(mResource->settings()->userName(),
-                                          QString(), refreshToken,
-                                          QList<QUrl>{ QUrl(QStringLiteral("https://mail.google.com/")) });
-    auto authJob = new KGAPI2::AuthJob(acc, GOOGLE_API_KEY, GOOGLE_API_SECRET, this);
-    authJob->setUsername(mResource->settings()->userName());
-    connect(authJob, &KGAPI2::Job::finished,
-            this, &GmailPasswordRequester::onTokenRequestFinished);
-    mRunningRequest = authJob;
 }
