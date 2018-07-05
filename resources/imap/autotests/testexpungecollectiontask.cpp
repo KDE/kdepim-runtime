@@ -75,6 +75,18 @@ private Q_SLOTS:
         callNames << QStringLiteral("cancelTask");
 
         QTest::newRow("expunge failed") << collection << scenario << callNames;
+
+        // We keep the same collection
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: A000003 OK [READ-ONLY] select done";
+
+        callNames.clear();
+        callNames << QStringLiteral("taskDone");
+
+        QTest::newRow("read-only mailbox") << collection << scenario << callNames;
     }
 
     void shouldDeleteMailBox()
