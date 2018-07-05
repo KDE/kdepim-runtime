@@ -42,6 +42,7 @@ Comment[nl]=Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand 
 Comment[nn]=Gjev tilgang til kalenderelement i ei viss mappe, der dei er lagra i kvar sine filer.
 Comment[pl]=Daje dostęp do plików obiektów kalendarza, każdy w oddzielnym pliku, w podanym katalogu
 Comment[pt]=Oferece o acesso aos itens do calendário, estando cada um guardado num único ficheiro de uma dada pasta
+Comment[se]=Dáinna beasat kaleandarmerkošidda, vurkejuvvon okta fiilan, dihto katalogas
 Comment[sv]=Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog
 Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
 Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
