@@ -70,7 +70,12 @@ void ExpungeCollectionTask::onSelectDone(KJob *job)
         cancelTask(job->errorString());
     } else {
         KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
-        triggerExpungeJob(select->session());
+        if (select->isOpenReadOnly()) {
+            qCDebug(IMAPRESOURCE_LOG) << "Mailbox is opened readonly, not expunging";
+            taskDone();
+        } else {
+            triggerExpungeJob(select->session());
+        }
     }
 }
 

@@ -80,6 +80,35 @@ private Q_SLOTS:
 
         QTest::newRow("first listing, connected IMAP") << collection << scenario << callNames;
 
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 SELECT \"INBOX/Foo\""
+                 << "S: * FLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen)"
+                 << "S: * OK [ PERMANENTFLAGS (\\Answered \\Flagged \\Draft \\Deleted \\Seen) ]"
+                 << "S: * 1 EXISTS"
+                 << "S: * 0 RECENT"
+                 << "S: * OK [ UIDVALIDITY 1149151135  ]"
+                 << "S: * OK [ UIDNEXT 9  ]"
+                 << "S: A000003 OK [READ-ONLY] select done"
+                 << "C: A000004 UID SEARCH UID 1:9"
+                 << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+                 << "S: A000004 OK search done"
+                 << "C: A000005 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
+            "BODY.PEEK[HEADER] "
+            "FLAGS UID)"
+                 << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
+            "RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
+            "From: Foo <foo@kde.org>\r\n"
+            "To: Bar <bar@kde.org>\r\n"
+            "Subject: Test Mail\r\n"
+            "\r\n"
+            " )"
+                 << "S: A000005 OK fetch done";
+        callNames.clear();
+        callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
+
+        QTest::newRow("retrieval from read-only mailbox (no expunge)") << collection << scenario << callNames;
+
         Akonadi::CachePolicy policy;
         policy.setLocalParts(QStringList() << Akonadi::MessagePart::Envelope
                                            << Akonadi::MessagePart::Header

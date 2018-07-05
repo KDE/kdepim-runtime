@@ -191,7 +191,13 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
         cancelTask(job->errorString());
     } else {
         KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
-        triggerExpunge(select->mailBox());
+        if (select->isOpenReadOnly()) {
+            qCDebug(IMAPRESOURCE_LOG) << "Mailbox is opened readonly, not expunging";
+            // Treat this SELECT as if it was triggerFinalSelect()
+            onFinalSelectDone(job);
+        } else {
+            triggerExpunge(select->mailBox());
+        }
     }
 }
 
