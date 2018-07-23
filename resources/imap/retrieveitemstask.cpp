@@ -390,6 +390,7 @@ void RetrieveItemsTask::prepareRetrieval()
     const qint64 realMessageCount = col.statistics().count();
 
     qCDebug(IMAPRESOURCE_LOG) << "Starting message retrieval. Elapsed(ms): " << m_time.elapsed();
+    qCDebug(IMAPRESOURCE_LOG) << "UidValidity: " << m_uidValidity << "Local UidValidity: " << oldUidValidity;
     qCDebug(IMAPRESOURCE_LOG) << "MessageCount: " << m_messageCount << "Local message count: " << realMessageCount;
     qCDebug(IMAPRESOURCE_LOG) << "UidNext: " << m_nextUid << "Local UidNext: " << oldNextUid;
     qCDebug(IMAPRESOURCE_LOG) << "HighestModSeq: " << m_highestModSeq << "Local HighestModSeq: " << oldHighestModSeq;
