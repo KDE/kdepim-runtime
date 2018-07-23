@@ -37,6 +37,7 @@
 #include <kdbusconnectionpool.h>
 #include <Akonadi/KMime/MessageFlags>
 #include <kmime/kmime_message.h>
+#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include "maildirresource_debug.h"
 #include <kdirwatch.h>
@@ -502,6 +503,9 @@ Collection::List MaildirResource::listRecursive(const Collection &root, const Ma
         c.setRemoteId(sub);
         c.setParentCollection(root);
         c.setContentMimeTypes(mimeTypes);
+        if (sub.compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+            c.attribute<SpecialCollectionAttribute>(Collection::AddIfMissing)->setCollectionType("inbox");
+        }
 
         const Maildir md = maildirForCollection(c);
         if (!md.isValid()) {

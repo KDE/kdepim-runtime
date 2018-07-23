@@ -55,6 +55,8 @@ protected:
      */
     void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) override;
 
+    Akonadi::Collection rootCollection() const override;
+
 private Q_SLOTS:
     void onCollectionFetch(KJob *job);
     void onCollectionModify(KJob *job);

@@ -41,6 +41,7 @@
 #include <AkonadiCore/CollectionIdentificationAttribute>
 #include <akonadi/calendar/blockalarmsattribute.h>
 #include <AkonadiCore/vectorhelper.h>
+#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include <kmime/kmime_message.h>
 #include <KLocalizedString>
@@ -383,6 +384,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
         Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Inbox"));
         attr->setIconName(QStringLiteral("mail-folder-inbox"));
+        c.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
         setIdleCollection(c);
     }
 

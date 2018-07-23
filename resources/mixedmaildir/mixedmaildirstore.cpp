@@ -45,6 +45,7 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <AkonadiCore/cachepolicy.h>
 #include <AkonadiCore/itemfetchscope.h>
+#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include <KLocalizedString>
 
@@ -663,7 +664,9 @@ void MixedMaildirStore::Private::fillMBoxCollectionDetails(const MBoxPtr &mbox, 
 {
     collection.setContentMimeTypes(QStringList() << Collection::mimeType()
                                                  << KMime::Message::mimeType());
-
+    if (collection.name().compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+        collection.attribute<Akonadi::SpecialCollectionAttribute>(Collection::AddIfMissing)->setCollectionType("inbox");
+    }
     const QFileInfo fileInfo(mbox->fileName());
     if (fileInfo.isWritable()) {
         collection.setRights(Collection::CanCreateItem
@@ -685,6 +688,9 @@ void MixedMaildirStore::Private::fillMaildirCollectionDetails(const Maildir &md,
 {
     collection.setContentMimeTypes(QStringList() << Collection::mimeType()
                                                  << KMime::Message::mimeType());
+    if (collection.name().compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
+        collection.attribute<Akonadi::SpecialCollectionAttribute>(Collection::AddIfMissing)->setCollectionType("inbox");
+    }
 
     const QFileInfo fileInfo(md.path());
     if (fileInfo.isWritable()) {

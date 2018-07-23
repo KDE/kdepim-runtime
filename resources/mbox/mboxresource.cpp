@@ -30,6 +30,7 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 #include <QIcon>
+#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include "compactpage.h"
 #include "deleteditemsattribute.h"
@@ -82,6 +83,14 @@ MboxResource::MboxResource(const QString &id)
 MboxResource::~MboxResource()
 {
     delete mMBox;
+}
+
+Collection MboxResource::rootCollection() const
+{
+    // Maildir only has a single collection so we treat it as an inbox
+    auto col = SingleFileResource<Settings>::rootCollection();
+    col.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
+    return col;
 }
 
 void MboxResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)

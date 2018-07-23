@@ -28,6 +28,7 @@
 #include <entitydisplayattribute.h>
 #include <Akonadi/KMime/MessageParts>
 #include <AkonadiCore/VectorHelper>
+#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include <kmime/kmime_message.h>
 
@@ -174,6 +175,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
                 Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QStringLiteral("mail-folder-inbox"));
+                c.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
                 setIdleCollection(c);
             }
 
