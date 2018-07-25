@@ -128,7 +128,7 @@ RelationMember parseMemberUrl(const QString &string)
     }
     QUrl url(QUrl::fromEncoded(string.toLatin1()));
     QList<QByteArray> path;
-    const QList<QByteArray> fragments = url.encodedPath().split('/');
+    const QList<QByteArray> fragments = url.path(QUrl::FullyEncoded).toLatin1().split('/');
     path.reserve(fragments.count());
     for (const QByteArray &fragment : fragments) {
         path.append(ownUrlDecode(fragment).toUtf8());

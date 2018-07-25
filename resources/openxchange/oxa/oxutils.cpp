@@ -22,6 +22,7 @@
 #include "oxutils.h"
 
 #include <qdatetime.h>
+#include <QStringList>
 
 using namespace OXA;
 
@@ -63,7 +64,7 @@ QString OXUtils::writeDateTime(const QDateTime &value)
     if (value < Time_t_S) {
         result = QString::number(Time_t_S.secsTo(value));
     } else {
-        result = QString::number(value.toUTC().toTime_t());
+        result = QString::number(value.toUTC().toSecsSinceEpoch());
     }
 
     return QString(result + QLatin1String("000"));
@@ -113,10 +114,10 @@ QDateTime OXUtils::readDateTime(const QString &text)
     //workaround, as QDateTime does not support negative time_t values
     QDateTime value;
     if (ticks < 0) {
-        value.setTime_t(0);
+        value.fromSecsSinceEpoch(0);
         value = value.addSecs(ticks);
     } else {
-        value.setTime_t(ticks);
+        value.fromSecsSinceEpoch(ticks);
     }
 
     return value;

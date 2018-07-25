@@ -217,7 +217,7 @@ KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item &item)
     entry.insert(KIO::UDSEntry::UDS_URL, item.url().url());
     entry.insert(KIO::UDSEntry::UDS_SIZE, item.size());
     entry.insert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
-    entry.insert(KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toTime_t());
+    entry.insert(KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toSecsSinceEpoch());
     return entry;
 }
 

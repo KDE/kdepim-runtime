@@ -248,7 +248,7 @@ void O1::link()
     headers.append(O0RequestParameter(O2_OAUTH_CALLBACK, callbackUrl().arg(replyServer_->serverPort()).toLatin1()));
     headers.append(O0RequestParameter(O2_OAUTH_CONSUMER_KEY, clientId().toLatin1()));
     headers.append(O0RequestParameter(O2_OAUTH_NONCE, nonce()));
-    headers.append(O0RequestParameter(O2_OAUTH_TIMESTAMP, QString::number(QDateTime::currentDateTimeUtc().toTime_t()).toLatin1()));
+    headers.append(O0RequestParameter(O2_OAUTH_TIMESTAMP, QString::number(QDateTime::currentDateTimeUtc().toSecsSinceEpoch()).toLatin1()));
     headers.append(O0RequestParameter(O2_OAUTH_VERSION, "1.0"));
     headers.append(O0RequestParameter(O2_OAUTH_SIGNATURE_METHOD, signatureMethod().toLatin1()));
     headers.append(O0RequestParameter(O2_OAUTH_SIGNATURE, generateSignature(headers, request, requestParameters(), QNetworkAccessManager::PostOperation)));
@@ -335,7 +335,7 @@ void O1::exchangeToken()
     QList<O0RequestParameter> oauthParams;
     oauthParams.append(O0RequestParameter(O2_OAUTH_CONSUMER_KEY, clientId().toLatin1()));
     oauthParams.append(O0RequestParameter(O2_OAUTH_VERSION, "1.0"));
-    oauthParams.append(O0RequestParameter(O2_OAUTH_TIMESTAMP, QString::number(QDateTime::currentDateTimeUtc().toTime_t()).toLatin1()));
+    oauthParams.append(O0RequestParameter(O2_OAUTH_TIMESTAMP, QString::number(QDateTime::currentDateTimeUtc().toSecsSinceEpoch()).toLatin1()));
     oauthParams.append(O0RequestParameter(O2_OAUTH_NONCE, nonce()));
     oauthParams.append(O0RequestParameter(O2_OAUTH_TOKEN, requestToken_.toLatin1()));
     oauthParams.append(O0RequestParameter(O2_OAUTH_VERFIER, verifier_.toLatin1()));
@@ -409,7 +409,7 @@ QByteArray O1::nonce()
         firstTime = false;
         qsrand(QTime::currentTime().msec());
     }
-    QString u = QString::number(QDateTime::currentDateTimeUtc().toTime_t());
+    QString u = QString::number(QDateTime::currentDateTimeUtc().toSecsSinceEpoch());
     u.append(QString::number(qrand()));
     return u.toLatin1();
 }

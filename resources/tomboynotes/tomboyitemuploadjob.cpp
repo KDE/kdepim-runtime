@@ -138,7 +138,7 @@ QString TomboyItemUploadJob::getCurrentISOTime() const
     QDateTime utc = local.toUTC();
     utc.setTimeSpec(Qt::LocalTime);
     int utcOffset = utc.secsTo(local);
-    local.setUtcOffset(utcOffset);
+    local.setOffsetFromUtc(utcOffset);
 
     return local.toString(Qt::ISODate);
 }
