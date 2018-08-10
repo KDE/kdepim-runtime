@@ -30,6 +30,7 @@
 #include <noinferiorsattribute.h>
 
 typedef QMap<QByteArray, QByteArray> QBYTEARRAYMAP;
+typedef QMap<QByteArray, qint64> QBYTEARRAYINT64MAP;
 
 Q_DECLARE_METATYPE(Akonadi::Collection::Rights)
 Q_DECLARE_METATYPE(QBYTEARRAYMAP)
@@ -54,12 +55,22 @@ private Q_SLOTS:
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<Akonadi::Collection::Rights>("expectedRights");
         QTest::addColumn<QBYTEARRAYMAP>("expectedAnnotations");
+        QTest::addColumn< QList<QByteArray> >("expectedRoots");
+        QTest::addColumn< QList<QBYTEARRAYINT64MAP> >("expectedLimits");
+        QTest::addColumn< QList<QBYTEARRAYINT64MAP> >("expectedUsages");
 
         Akonadi::Collection collection;
         QStringList capabilities;
         QList<QByteArray> scenario;
         QStringList callNames;
         QMap<QByteArray, QByteArray> expectedAnnotations;
+        QList<QByteArray> expectedRoots;
+        QList< QMap<QByteArray, qint64> > expectedLimits;
+        QList< QMap<QByteArray, qint64> > expectedUsages;
+
+        expectedRoots.clear();
+        expectedLimits.clear();
+        expectedUsages.clear();
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setRights(nullptr);
@@ -91,7 +102,8 @@ private Q_SLOTS:
 
         Akonadi::Collection::Rights rights = Akonadi::Collection::AllRights;
         QTest::newRow("first listing, connected IMAP") << collection << capabilities << scenario
-                                                       << callNames << rights << expectedAnnotations;
+                                                       << callNames << rights << expectedAnnotations
+                                                       << expectedRoots << expectedLimits << expectedUsages;
 
         //
         // Test that if the parent collection doesn't allow renaming in its ACL, the child mailbox
@@ -109,7 +121,8 @@ private Q_SLOTS:
         rights = Akonadi::Collection::AllRights;
         rights &= ~Akonadi::Collection::CanChangeCollection;
         QTest::newRow("parent without create rights") << collection << capabilities << scenario
-                                                      << callNames << rights << expectedAnnotations;
+                                                      << callNames << rights << expectedAnnotations
+                                                      << expectedRoots << expectedLimits << expectedUsages;
 
         //
         // Test that if the parent collection is a noselect folder, the child mailbox will not have
@@ -120,7 +133,8 @@ private Q_SLOTS:
         parentCollection.addAttribute(noSelectAttribute);
         collection.setParentCollection(parentCollection);
         QTest::newRow("parent wit noselect") << collection << capabilities << scenario
-                                             << callNames << rights << expectedAnnotations;
+                                             << callNames << rights << expectedAnnotations
+                                             << expectedRoots << expectedLimits << expectedUsages;
         parentCollection.removeAttribute<NoSelectAttribute>();
 
         //
@@ -143,7 +157,8 @@ private Q_SLOTS:
         rights = Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanChangeItem
                  |Akonadi::Collection::CanChangeCollection;
         QTest::newRow("only some rights") << collection << capabilities << scenario
-                                          << callNames << rights << expectedAnnotations;
+                                          << callNames << rights << expectedAnnotations
+                                          << expectedRoots << expectedLimits << expectedUsages;
 
         //
         // Test that a warning is issued if the insert rights of a folder have been revoked on the server.
@@ -176,7 +191,8 @@ private Q_SLOTS:
 
         rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
         QTest::newRow("revoked rights") << collection << capabilities << scenario
-                                        << callNames << rights << expectedAnnotations;
+                                        << callNames << rights << expectedAnnotations
+                                        << expectedRoots << expectedLimits << expectedUsages;
 
         //
         // Test that NoInferiors overrides acl rights and disallows creating new mailboxes
@@ -205,7 +221,8 @@ private Q_SLOTS:
         rights = Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanChangeCollection;
 
         QTest::newRow("noinferiors") << collection << capabilities << scenario
-                                     << callNames << rights << expectedAnnotations;
+                                     << callNames << rights << expectedAnnotations
+                                     << expectedRoots << expectedLimits << expectedUsages;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setRights(nullptr);
@@ -240,7 +257,8 @@ private Q_SLOTS:
 
         rights = Akonadi::Collection::AllRights;
         QTest::newRow("METADATA") << collection << capabilities << scenario
-                                  << callNames << rights << expectedAnnotations;
+                                  << callNames << rights << expectedAnnotations
+                                  << expectedRoots << expectedLimits << expectedUsages;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.setRights(nullptr);
@@ -257,7 +275,77 @@ private Q_SLOTS:
         scenario << defaultPoolConnectionScenario();
 
         QTest::newRow("no capabilities") << collection << capabilities << scenario
-                                         << callNames << rights << expectedAnnotations;
+                                         << callNames << rights << expectedAnnotations
+                                         << expectedRoots << expectedLimits << expectedUsages;
+
+        //
+        // Test for GETQUOTAROOT with multiple IMAP quota roots but only one QUOTA response.
+        //
+        collection = createCollectionChain(QStringLiteral("/INBOX"));
+        collection.setRights(nullptr);
+
+        capabilities.clear();
+        capabilities << QStringLiteral("QUOTA");
+
+        rights = nullptr;
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 GETQUOTAROOT \"INBOX\""
+                 << "S: * QUOTAROOT INBOX mailbox1 mailbox2 mailbox3"
+                 << "S: * QUOTA mailbox2 ( STORAGE 21 512 )"
+                 << "S: A000003 OK quota retrieved";
+
+        callNames.clear();
+        callNames << QStringLiteral("collectionAttributesRetrieved");
+
+        expectedAnnotations.clear();
+
+        expectedRoots = { "mailbox2" };
+        expectedUsages = { {{"STORAGE", 21}} };
+        expectedLimits = { {{"STORAGE", 512}} };
+
+        QTest::newRow("multiple quota roots, one resource only")
+                                    << collection << capabilities << scenario
+                                    << callNames << rights << expectedAnnotations
+                                    << expectedRoots << expectedLimits << expectedUsages;
+
+
+        //
+        // Test for GETQUOTAROOT with multiple IMAP quota roots, some with no resource,
+        // but only (not the first on the list) matches the mailbox name.
+        //
+        collection = createCollectionChain(QStringLiteral("/INBOX"));
+        collection.setRights(nullptr);
+
+        capabilities.clear();
+        capabilities << QStringLiteral("QUOTA");
+
+        rights = nullptr;
+
+        scenario.clear();
+        scenario << defaultPoolConnectionScenario()
+                 << "C: A000003 GETQUOTAROOT \"INBOX\""
+                 << "S: * QUOTAROOT INBOX mailbox1 INBOX mailbox2 mailbox3"
+                 << "S: * QUOTA mailbox1 ( STORAGE 21 512 )"
+                 << "S: * QUOTA INBOX ( STORAGE 11 250 )"
+                 << "S: * QUOTA mailbox2 (  )"
+                 << "S: * QUOTA mailbox3 ( STORAGE 31 500 )"
+                 << "S: A000003 OK quota retrieved";
+
+        callNames.clear();
+        callNames << QStringLiteral("collectionAttributesRetrieved");
+
+        expectedAnnotations.clear();
+
+        expectedRoots = { "mailbox1", "INBOX", "mailbox3" };
+        expectedUsages = { {{"STORAGE", 21}}, {{"STORAGE", 11}}, {{"STORAGE", 31}} };
+        expectedLimits = { {{"STORAGE", 512}}, {{"STORAGE", 250}}, {{"STORAGE", 500}} };
+
+        QTest::newRow("multiple quota roots, some with no resources, one matches the mailbox name")
+                                    << collection << capabilities << scenario
+                                    << callNames << rights << expectedAnnotations
+                                    << expectedRoots << expectedLimits << expectedUsages;
     }
 
     void shouldCollectionRetrieveMetadata()
@@ -268,6 +356,9 @@ private Q_SLOTS:
         QFETCH(QStringList, callNames);
         QFETCH(Akonadi::Collection::Rights, expectedRights);
         QFETCH(QBYTEARRAYMAP, expectedAnnotations);
+        QFETCH(QList<QByteArray>, expectedRoots);
+        QFETCH(QList<QBYTEARRAYINT64MAP>, expectedLimits);
+        QFETCH(QList<QBYTEARRAYINT64MAP>, expectedUsages);
 
         FakeServer server;
         server.setScenario(scenario);
@@ -309,6 +400,28 @@ private Q_SLOTS:
                 if (!expectedAnnotations.isEmpty()) {
                     QVERIFY(collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>());
                     QCOMPARE(collection.attribute<Akonadi::CollectionAnnotationsAttribute>()->annotations(), expectedAnnotations);
+                }
+
+                if (!expectedRoots.isEmpty()) {
+                    int i = expectedRoots.indexOf("INBOX");
+
+                    QVERIFY(collection.hasAttribute<Akonadi::ImapQuotaAttribute>());
+                    QCOMPARE(collection.attribute<Akonadi::ImapQuotaAttribute>()->roots(), expectedRoots);
+                    QCOMPARE(collection.attribute<Akonadi::ImapQuotaAttribute>()->limits(), expectedLimits);
+                    QCOMPARE(collection.attribute<Akonadi::ImapQuotaAttribute>()->usages(), expectedUsages);
+
+                    QVERIFY(collection.hasAttribute<Akonadi::CollectionQuotaAttribute>());
+                    if (i != -1) {
+                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(),
+                                                                    expectedUsages.at(i)["STORAGE"] * 1024);
+                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(),
+                                                                    expectedLimits.at(i)["STORAGE"] * 1024);
+                    } else {
+                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(),
+                                                                    expectedUsages.first()["STORAGE"] * 1024);
+                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(),
+                                                                    expectedLimits.first()["STORAGE"] * 1024);
+                    }
                 }
             }
         }
