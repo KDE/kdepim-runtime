@@ -89,7 +89,7 @@ QByteArray ImapQuotaAttribute::serialized() const
     result += " %%%% "; // Members separator
 
     // Then the limit maps list
-    for (int i = 0; i < mRoots.size(); ++i) {
+    for (int i = 0; i < mLimits.size(); ++i) {
         const QMap<QByteArray, qint64> limits = mLimits[i];
         for (auto it = limits.cbegin(), end = limits.cend(); it != end; ++it) {
             result += it.key();
@@ -105,7 +105,7 @@ QByteArray ImapQuotaAttribute::serialized() const
     result += " %%%% "; // Members separator
 
     // Then the usage maps list
-    for (int i = 0; i < mRoots.size(); ++i) {
+    for (int i = 0; i < mUsages.size(); ++i) {
         const QMap<QByteArray, qint64> usages = mUsages[i];
         for (auto it = usages.cbegin(), end = usages.cend(); it != end; ++it) {
             result += it.key();
