@@ -234,24 +234,39 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
 
     KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
 
-    QList<QByteArray> newRoots = quotaJob->roots();
+    QList<QByteArray> allRoots = quotaJob->roots();
+    QList<QByteArray> newRoots;
     QList< QMap<QByteArray, qint64> > newLimits;
     QList< QMap<QByteArray, qint64> > newUsages;
     qint64 newCurrent = -1;
     qint64 newMax = -1;
-    newLimits.reserve(newRoots.count());
-    newUsages.reserve(newRoots.count());
+    newRoots.reserve(allRoots.count());
+    newLimits.reserve(allRoots.count());
+    newUsages.reserve(allRoots.count());
 
-    for (const QByteArray &root : qAsConst(newRoots)) {
-        newLimits << quotaJob->allLimits(root);
-        newUsages << quotaJob->allUsages(root);
+    for (const QByteArray &root : qAsConst(allRoots)) {
+        const QMap<QByteArray, qint64> limit = quotaJob->allLimits(root);
+        const QMap<QByteArray, qint64> usage = quotaJob->allUsages(root);
 
-        const QString &decodedRoot = QString::fromUtf8(KIMAP::decodeImapFolderName(root));
+        // Process IMAP Quota roots with associated quotas only
+        if (!limit.isEmpty() && !usage.isEmpty()) {
+            newRoots << root;
+            newLimits << limit;
+            newUsages << usage;
 
-        if (newRoots.size() == 1 || decodedRoot == mailBox) {
-            newCurrent = newUsages.last()["STORAGE"] * 1024;
-            newMax = newLimits.last()["STORAGE"] * 1024;
+            const QString &decodedRoot = QString::fromUtf8(KIMAP::decodeImapFolderName(root));
+
+            if (decodedRoot == mailBox) {
+                newCurrent = newUsages.last()["STORAGE"] * 1024;
+                newMax = newLimits.last()["STORAGE"] * 1024;
+            }
         }
+    }
+
+    // If usage and limit were not set, retrieve them from the first root, if exists
+    if ((newCurrent == -1 && newMax == -1) && !newRoots.isEmpty()) {
+        newCurrent = newUsages.first()["STORAGE"] * 1024;
+        newMax = newLimits.first()["STORAGE"] * 1024;
     }
 
     // Store the mailbox IMAP Quotas
