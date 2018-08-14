@@ -283,6 +283,16 @@ void SetupServer::applySettings()
     m_shouldClearCache = (m_parentResource->settings()->imapServer() != m_ui->imapServer->text())
                          || (m_parentResource->settings()->userName() != m_ui->userName->text());
 
+    const MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode(m_ui->authenticationCombo);
+    if (!m_ui->userName->text().contains(QLatin1Char('@'))
+            && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
+            && m_ui->imapServer->text().contains(QLatin1String("gmail.com"))) {
+        // Normalize gmail username so that it matches the JSON account info returned by GMail authentication.
+        // If we don't do this, we will look up cached auth without @gmail.com and save it with @gmail.com => very frequent auth dialog popping up.
+        qCDebug(IMAPRESOURCE_LOG) << "Fixing up username" << m_ui->userName->text() << "by adding @gmail.com";
+        m_ui->userName->setText(m_ui->userName->text() + QLatin1String("@gmail.com"));
+    }
+
     m_parentResource->setName(m_ui->accountName->text());
 
     m_parentResource->settings()->setImapServer(m_ui->imapServer->text());
@@ -303,7 +313,7 @@ void SetupServer::applySettings()
         qFatal("Shouldn't happen");
     }
     m_parentResource->settings()->setSafety(encryption);
-    MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode(m_ui->authenticationCombo);
+
     qCDebug(IMAPRESOURCE_LOG) << "saving IMAP auth mode: " << authenticationModeString(authtype);
     m_parentResource->settings()->setAuthentication(authtype);
     m_parentResource->settings()->setPassword(m_ui->password->password());
