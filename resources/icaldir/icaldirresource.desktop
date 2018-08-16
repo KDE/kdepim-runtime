@@ -39,6 +39,7 @@ Comment[es]=Proporciona acceso a elementos de calendario, cada uno almacenado en
 Comment[fr]=Fournit l'accès aux éléments d'agenda, chacun stocké dans un fichier distinct, dans un dossier donné
 Comment[gl]=Fornece acceso a elementos de calendario, cada un almacenado nun ficheiro de seu, nun directorio dado.
 Comment[it]=Fornisce accesso a voci di calendario, ciascuna memorizzata in un singolo file in una data cartella
+Comment[ko]=지정한 디렉터리의 단일 로컬 파일에 저장되어 있는 달력 항목에 접근합니다
 Comment[nl]=Geeft toegang tot agenda-items, elk opgeslagen in een enkel bestand in een opgegeven map
 Comment[nn]=Gjev tilgang til kalenderelement i ei viss mappe, der dei er lagra i kvar sine filer.
 Comment[pl]=Daje dostęp do plików obiektów kalendarza, każdy w oddzielnym pliku, w podanym katalogu
