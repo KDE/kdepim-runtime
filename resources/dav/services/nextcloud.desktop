@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Nextcloud
+Type=Service
+X-KDE-ServiceTypes=DavGroupwareProvider
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-CalDavPath=/remote.php/dav
+X-DavGroupware-CardDavPath=/remote.php/dav
