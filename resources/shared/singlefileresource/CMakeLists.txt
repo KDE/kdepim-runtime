@@ -3,12 +3,12 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_singlefile_resource\")
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
   singlefileresourcebase.cpp
-  singlefileresourceconfigdialogbase.cpp
+  singlefileresourceconfigwidgetbase.cpp
 )
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
-  singlefileresourceconfigdialog_desktop.ui
-  singlefileresourceconfigdialog.ui
+  singlefileresourceconfigwidget_desktop.ui
+  singlefileresourceconfigwidget.ui
 )
 
 set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
@@ -45,7 +45,6 @@ PRIVATE
     KF5::AkonadiAgentBase
     KF5::KIOCore
     KF5::IMAP
-    KF5::WindowSystem
 )
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

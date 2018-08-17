@@ -51,11 +51,6 @@ protected:
     bool readFromFile(const QString &fileName) override;
     bool writeToFile(const QString &fileName) override;
 
-    /**
-     * Customize the configuration dialog before it is displayed.
-     */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<SETTINGS_NAMESPACE::Settings> *dlg) override;
-
     void aboutToQuit() override;
 
     /**

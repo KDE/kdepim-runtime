@@ -18,39 +18,42 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOG_H
-#define AKONADI_SINGLEFILERESOURCECONFIGDIALOG_H
+#ifndef AKONADI_SINGLEFILERESOURCECONFIGWIDGET_H
+#define AKONADI_SINGLEFILERESOURCECONFIGWIDGET_H
 
 #include "akonadi-singlefileresource_export.h"
-#include "singlefileresourceconfigdialogbase.h"
+#include "singlefileresourceconfigwidgetbase.h"
 
 #include <KConfigDialogManager>
 
 namespace Akonadi {
 /**
- * Configuration dialog for single file resources.
+ * Configuration widget for single file resources.
  */
 template<typename Settings>
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialog : public SingleFileResourceConfigDialogBase
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigWidget : public SingleFileResourceConfigWidgetBase
 {
     Settings *mSettings = nullptr;
 
 public:
-    explicit SingleFileResourceConfigDialog(WId windowId, Settings *settings)
-        : SingleFileResourceConfigDialogBase(windowId)
+    explicit SingleFileResourceConfigWidget(QWidget *parent, Settings *settings)
+        : SingleFileResourceConfigWidgetBase(parent)
         , mSettings(settings)
     {
-        ui.kcfg_Path->setUrl(QUrl::fromUserInput(mSettings->path()));
-        mManager = new KConfigDialogManager(this, mSettings);
-        mManager->updateWidgets();
     }
 
-protected:
-    void save() override
+    bool save() const override
     {
         mManager->updateSettings();
         mSettings->setPath(ui.kcfg_Path->url().toString());
         mSettings->save();
+        return true;
+    }
+
+    void load() override {
+        ui.kcfg_Path->setUrl(QUrl::fromUserInput(mSettings->path()));
+        mManager = new KConfigDialogManager(this, mSettings);
+        mManager->updateWidgets();
     }
 };
 }

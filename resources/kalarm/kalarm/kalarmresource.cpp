@@ -66,41 +66,9 @@ KAlarmResource::~KAlarmResource()
 }
 
 /******************************************************************************
-* Customize the configuration dialog before it is displayed.
-*/
-void KAlarmResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
-{
-    ICalResourceBase::customizeConfigDialog(dlg);
-    mTypeSelector = new AlarmTypeRadioWidget(dlg);
-    const QStringList types = mSettings->alarmTypes();
-    CalEvent::Type alarmType = CalEvent::ACTIVE;
-    if (!types.isEmpty()) {
-        alarmType = CalEvent::type(types[0]);
-    }
-    mTypeSelector->setAlarmType(alarmType);
-    dlg->appendWidget(mTypeSelector);
-    dlg->setMonitorEnabled(false);
-    QString title;
-    switch (alarmType) {
-    case CalEvent::ACTIVE:
-        title = i18nc("@title:window", "Select Active Alarm Calendar");
-        break;
-    case CalEvent::ARCHIVED:
-        title = i18nc("@title:window", "Select Archived Alarm Calendar");
-        break;
-    case CalEvent::TEMPLATE:
-        title = i18nc("@title:window", "Select Alarm Template Calendar");
-        break;
-    default:
-        return;
-    }
-    dlg->setWindowTitle(title);
-}
-
-/******************************************************************************
 * Save extra settings after the configuration dialog has been accepted.
 */
-void KAlarmResource::configDialogAcceptedActions(SingleFileResourceConfigDialog<Settings> *)
+void KAlarmResource::applyConfigurationChanges()
 {
     mSettings->setAlarmTypes(CalEvent::mimeTypes(mTypeSelector->alarmType()));
     mSettings->save();

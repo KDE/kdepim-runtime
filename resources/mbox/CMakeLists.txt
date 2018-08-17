@@ -1,25 +1,23 @@
 
 add_subdirectory(wizard)
 
-########### next target ###############
+set(mboxresource_common_SRCS
+    deleteditemsattribute.cpp
+)
+kconfig_add_kcfg_files(mboxresource_common_SRCS settings.kcfgc)
+
+################################## Resource #################################
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mbox_resource\")
 
 set( mboxresource_SRCS
-  compactpage.cpp
-  lockmethodpage.cpp
-  deleteditemsattribute.cpp
   mboxresource.cpp
+  ${mboxresource_common_SRCS}
 )
 
 ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME org.kde.pim.mboxresource)
 
 install( FILES mboxresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-ki18n_wrap_ui(mboxresource_SRCS
-  compactpage.ui
-  lockfilepage.ui
-)
-kconfig_add_kcfg_files(mboxresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mboxresource.kcfg org.kde.Akonadi.Mbox.Settings)
 qt5_add_dbus_adaptor(mboxresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Mbox.Settings.xml settings.h Settings
@@ -43,9 +41,6 @@ target_link_libraries(akonadi_mbox_resource
     KF5::AkonadiAgentBase
     KF5::DBusAddons
     KF5::Completion
-    KF5::KIOWidgets
-    KF5::ConfigWidgets
-    KF5::WindowSystem
     akonadi-singlefileresource
 )
 
@@ -53,3 +48,31 @@ install(TARGETS akonadi_mbox_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 if (BUILD_TESTING)
    add_subdirectory(autotests)
 endif()
+
+############################# Config plugin ################################
+
+set(mboxconfig_SRCS
+    mboxconfig.cpp
+    lockmethodpage.cpp
+    compactpage.cpp
+    ${mboxresource_common_SRCS}
+)
+
+ki18n_wrap_ui(mboxconfig_SRCS
+  compactpage.ui
+  lockfilepage.ui
+)
+
+kcoreaddons_add_plugin(mboxconfig
+    SOURCES ${mboxconfig_SRCS}
+    JSON "mboxconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+target_link_libraries(mboxconfig
+    KF5::AkonadiCore
+    KF5::ConfigWidgets
+    KF5::KIOWidgets
+    KF5::I18n
+    KF5::Mbox
+    akonadi-singlefileresource
+)

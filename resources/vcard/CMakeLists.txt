@@ -6,15 +6,20 @@ endif()
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_vcard_resource\")
 
-########### next target ###############
+set(vcardresource_common_SRCS)
+kconfig_add_kcfg_files(vcardresource_common_SRCS settings.kcfgc)
+
+############################## Resource ####################################
+
+add_definitions(-DSETTINGS_NAMESPACE=Akonadi_VCard_Resource)
 
 set( vcardresource_SRCS
   vcardresource.cpp
+  ${vcardresource_common_SRCS}
 )
 
 install( FILES vcardresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-kconfig_add_kcfg_files(vcardresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
 qt5_add_dbus_adaptor(vcardresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCard.Settings.xml settings.h Akonadi_VCard_Resource::Settings vcardsettingsadaptor VCardSettingsAdaptor
@@ -34,3 +39,16 @@ target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore KF5::KIOCore   KF5
 
 install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+
+############################# Config plugin #################################
+
+kcoreaddons_add_plugin(vcardconfig
+    SOURCES vcardconfig.cpp ${vcardresource_common_SRCS}
+    JSON "vcardconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+
+target_link_libraries(vcardconfig
+    KF5::AkonadiCore
+    akonadi-singlefileresource
+)

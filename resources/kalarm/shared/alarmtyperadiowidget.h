@@ -22,7 +22,7 @@
 #ifndef ALARMTYPERADIOWIDGET_H
 #define ALARMTYPERADIOWIDGET_H
 
-#include "singlefileresourceconfigdialogbase.h"
+#include "singlefileresourceconfigwidget.h"
 #include "ui_alarmtyperadiowidget.h"
 
 #include <kalarmcal/kacalendar.h>

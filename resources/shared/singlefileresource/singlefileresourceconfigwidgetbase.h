@@ -19,12 +19,12 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
-#define AKONADI_SINGLEFILERESOURCECONFIGDIALOGBASE_H
+#ifndef AKONADI_SINGLEFILERESOURCECONFIGWIDGETBASE_H
+#define AKONADI_SINGLEFILERESOURCECONFIGWIDGETBASE_H
 
 #include "akonadi-singlefileresource_export.h"
 
-#include "ui_singlefileresourceconfigdialog_desktop.h"
+#include "ui_singlefileresourceconfigwidget_desktop.h"
 
 #include <QDialog>
 #include <QUrl>
@@ -41,14 +41,14 @@ class SingleFileValidatingWidget;
 
 /**
  * Base class for the configuration dialog for single file based resources.
- * @see SingleFileResourceConfigDialog
+ * @see SingleFileResourceConfigWidget
  */
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigDialogBase : public QDialog
+class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigWidgetBase : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SingleFileResourceConfigDialogBase(WId windowId);
-    ~SingleFileResourceConfigDialogBase();
+    explicit SingleFileResourceConfigWidgetBase(QWidget *parent);
+    ~SingleFileResourceConfigWidgetBase();
 
     /**
      * Adds @param page to the tabwidget. This can be used to add custom
@@ -89,18 +89,19 @@ public:
      */
     void appendWidget(SingleFileValidatingWidget *widget);
 
-protected Q_SLOTS:
-    virtual void save() = 0;
+    virtual bool save() const = 0;
+    virtual void load() = 0;
+Q_SIGNALS:
+    void okEnabled(bool enabled);
+
 
 protected:
-    Ui::SingleFileResourceConfigDialog ui;
+    Ui::SingleFileResourceConfigWidget ui;
     KConfigDialogManager *mManager = nullptr;
 
 private:
     void validate();
     void slotStatJobResult(KJob *);
-    void writeConfig();
-    void readConfig();
     KIO::StatJob *mStatJob = nullptr;
     SingleFileValidatingWidget *mAppendedWidget = nullptr;
     bool mDirUrlChecked = false;
@@ -110,7 +111,7 @@ private:
 };
 
 /**
- * Base class for widgets added to SingleFileResourceConfigDialogBase
+ * Base class for widgets added to SingleFileResourceConfigWidgetBase
  * using its appendWidget() method.
  *
  * Derived classes must implement validate() andQ_EMIT changed() when

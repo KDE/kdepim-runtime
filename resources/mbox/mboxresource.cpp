@@ -36,7 +36,6 @@
 #include "deleteditemsattribute.h"
 #include "lockmethodpage.h"
 #include "settingsadaptor.h"
-#include "singlefileresourceconfigdialog.h"
 
 using namespace Akonadi;
 
@@ -91,14 +90,6 @@ Collection MboxResource::rootCollection() const
     auto col = SingleFileResource<Settings>::rootCollection();
     col.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
     return col;
-}
-
-void MboxResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
-{
-    dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("message-rfc822")));
-    dlg->addPage(i18n("Compact frequency"), new CompactPage(mSettings->path()));
-    dlg->addPage(i18n("Lock method"), new LockMethodPage());
-    dlg->setWindowTitle(i18n("Select MBox file"));
 }
 
 void MboxResource::retrieveItems(const Akonadi::Collection &col)

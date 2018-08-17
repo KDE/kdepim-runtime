@@ -19,10 +19,9 @@
     02110-1301, USA.
 */
 
-#include "singlefileresourceconfigdialogbase.h"
+#include "singlefileresourceconfigwidgetbase.h"
 
 #include <KIO/Job>
-#include <KWindowSystem>
 #include <QUrl>
 #include <QTimer>
 
@@ -37,8 +36,8 @@
 
 using namespace Akonadi;
 
-SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windowId)
-    : QDialog()
+SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *parent)
+    : QWidget(parent)
     , mManager(nullptr)
     , mStatJob(nullptr)
     , mAppendedWidget(nullptr)
@@ -49,55 +48,24 @@ SingleFileResourceConfigDialogBase::SingleFileResourceConfigDialogBase(WId windo
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
+    mainLayout->setMargin(0);
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
     ui.statusLabel->setText(QString());
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-    mOkButton->setDefault(true);
-    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &SingleFileResourceConfigDialogBase::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &SingleFileResourceConfigDialogBase::reject);
-    mainLayout->addWidget(buttonBox);
-
-    if (windowId) {
-        KWindowSystem::setMainWindow(this, windowId);
-    }
-
     ui.tabWidget->tabBar()->hide();
 
-    connect(mOkButton, &QPushButton::clicked, this, &SingleFileResourceConfigDialogBase::save);
-
-    connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SingleFileResourceConfigDialogBase::validate);
-    connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigDialogBase::validate);
+    connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &SingleFileResourceConfigWidgetBase::validate);
+    connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigWidgetBase::validate);
     ui.kcfg_Path->setFocus();
-    QTimer::singleShot(0, this, &SingleFileResourceConfigDialogBase::validate);
-    setMinimumSize(800, 700);
-    readConfig();
+    QTimer::singleShot(0, this, &SingleFileResourceConfigWidgetBase::validate);
 }
 
-SingleFileResourceConfigDialogBase::~SingleFileResourceConfigDialogBase()
+SingleFileResourceConfigWidgetBase::~SingleFileResourceConfigWidgetBase()
 {
-    writeConfig();
 }
 
-void SingleFileResourceConfigDialogBase::writeConfig()
-{
-    KConfigGroup group(KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase");
-    group.writeEntry("Size", size());
-}
-
-void SingleFileResourceConfigDialogBase::readConfig()
-{
-    KConfigGroup group(KSharedConfig::openConfig(), "SingleFileResourceConfigDialogBase");
-    const QSize sizeDialog = group.readEntry("Size", QSize(600, 540));
-    if (sizeDialog.isValid()) {
-        resize(sizeDialog);
-    }
-}
-
-void SingleFileResourceConfigDialogBase::addPage(const QString &title, QWidget *page)
+void SingleFileResourceConfigWidgetBase::addPage(const QString &title, QWidget *page)
 {
     ui.tabWidget->tabBar()->show();
     ui.tabWidget->addTab(page, title);
@@ -105,51 +73,51 @@ void SingleFileResourceConfigDialogBase::addPage(const QString &title, QWidget *
     mManager->updateWidgets();
 }
 
-void SingleFileResourceConfigDialogBase::setFilter(const QString &filter)
+void SingleFileResourceConfigWidgetBase::setFilter(const QString &filter)
 {
     ui.kcfg_Path->setFilter(filter);
 }
 
-void SingleFileResourceConfigDialogBase::setMonitorEnabled(bool enable)
+void SingleFileResourceConfigWidgetBase::setMonitorEnabled(bool enable)
 {
     mMonitorEnabled = enable;
     ui.groupBox_MonitorFile->setVisible(mMonitorEnabled);
 }
 
-void SingleFileResourceConfigDialogBase::setUrl(const QUrl &url)
+void SingleFileResourceConfigWidgetBase::setUrl(const QUrl &url)
 {
     ui.kcfg_Path->setUrl(url);
 }
 
-QUrl SingleFileResourceConfigDialogBase::url() const
+QUrl SingleFileResourceConfigWidgetBase::url() const
 {
     return ui.kcfg_Path->url();
 }
 
-void SingleFileResourceConfigDialogBase::setLocalFileOnly(bool local)
+void SingleFileResourceConfigWidgetBase::setLocalFileOnly(bool local)
 {
     mLocalFileOnly = local;
     ui.kcfg_Path->setMode(mLocalFileOnly ? KFile::File | KFile::LocalOnly : KFile::File);
 }
 
-void SingleFileResourceConfigDialogBase::appendWidget(SingleFileValidatingWidget *widget)
+void SingleFileResourceConfigWidgetBase::appendWidget(SingleFileValidatingWidget *widget)
 {
     widget->setParent(static_cast<QWidget *>(ui.tab));
     ui.tabLayout->addWidget(widget);
-    connect(widget, &SingleFileValidatingWidget::changed, this, &SingleFileResourceConfigDialogBase::validate);
+    connect(widget, &SingleFileValidatingWidget::changed, this, &SingleFileResourceConfigWidgetBase::validate);
     mAppendedWidget = widget;
 }
 
-void SingleFileResourceConfigDialogBase::validate()
+void SingleFileResourceConfigWidgetBase::validate()
 {
     if (mAppendedWidget && !mAppendedWidget->validate()) {
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
         return;
     }
 
     const QUrl currentUrl = ui.kcfg_Path->url();
     if (ui.kcfg_Path->text().trimmed().isEmpty() || currentUrl.isEmpty()) {
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
         return;
     }
 
@@ -163,11 +131,11 @@ void SingleFileResourceConfigDialogBase::validate()
         // but it is then impossible to know at a later date if the file
         // permissions change, whether the user actually wanted the resource to be
         // read-only or not. So just leave the read-only checkbox untouched.
-        mOkButton->setEnabled(true);
+        Q_EMIT okEnabled(true);
     } else {
         // Not a local file.
         if (mLocalFileOnly) {
-            mOkButton->setEnabled(false);
+            Q_EMIT okEnabled(false);
             return;
         }
         if (mMonitorEnabled) {
@@ -183,14 +151,14 @@ void SingleFileResourceConfigDialogBase::validate()
         mStatJob->setDetails(2);   // All details.
         mStatJob->setSide(KIO::StatJob::SourceSide);
 
-        connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigDialogBase::slotStatJobResult);
+        connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
 
         // Allow the OK button to be disabled until the MetaJob is finished.
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
     }
 }
 
-void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
+void SingleFileResourceConfigWidgetBase::slotStatJobResult(KJob *job)
 {
     if (job->error() == KIO::ERR_DOES_NOT_EXIST && !mDirUrlChecked) {
         // The file did not exist, so let's see if the directory the file should
@@ -203,7 +171,7 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
         mStatJob->setDetails(2);   // All details.
         mStatJob->setSide(KIO::StatJob::SourceSide);
 
-        connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigDialogBase::slotStatJobResult);
+        connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
 
         // Make sure we don't check the whole path upwards.
         mDirUrlChecked = true;
@@ -212,14 +180,14 @@ void SingleFileResourceConfigDialogBase::slotStatJobResult(KJob *job)
         // It doesn't seem possible to read nor write from the location so leave the
         // ok button disabled
         ui.statusLabel->setText(QString());
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
         mDirUrlChecked = false;
         mStatJob = nullptr;
         return;
     }
 
     ui.statusLabel->setText(QString());
-    mOkButton->setEnabled(true);
+    Q_EMIT okEnabled(true);
 
     mDirUrlChecked = false;
     mStatJob = nullptr;

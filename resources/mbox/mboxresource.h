@@ -50,10 +50,6 @@ protected:
     void handleHashChange() override;
     bool readFromFile(const QString &fileName) override;
     bool writeToFile(const QString &fileName) override;
-    /**
-     * Customize the configuration dialog before it is displayed.
-     */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Settings> *dlg) override;
 
     Akonadi::Collection rootCollection() const override;
 

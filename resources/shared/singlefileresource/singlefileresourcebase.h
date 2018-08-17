@@ -75,6 +75,12 @@ public Q_SLOTS:
 
 protected:
     /**
+     * Implement in derived classes to do things when the configuration changes
+     * before reload file is called.
+     */
+    virtual void applyConfigurationChanges();
+
+    /**
      * Returns a pointer to the KConfig object which is used to store runtime
      * information of the resource.
      */

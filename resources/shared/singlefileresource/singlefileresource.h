@@ -24,7 +24,6 @@
 
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourcebase.h"
-#include "singlefileresourceconfigdialog.h"
 
 #include <entitydisplayattribute.h>
 
@@ -314,47 +313,7 @@ public:
         return c;
     }
 
-public Q_SLOTS:
-    /**
-     * Display the configuration dialog for the resource.
-     */
-    void configure(WId windowId) override
-    {
-        QPointer<SingleFileResourceConfigDialog<Settings> > dlg
-            = new SingleFileResourceConfigDialog<Settings>(windowId, mSettings);
-        customizeConfigDialog(dlg);
-        if (dlg->exec() == QDialog::Accepted) {
-            if (dlg) {     // in case is got destroyed
-                configDialogAcceptedActions(dlg);
-            }
-            reloadFile();
-            synchronizeCollectionTree();
-            emit configurationDialogAccepted();
-        } else {
-            emit configurationDialogRejected();
-        }
-        delete dlg;
-    }
-
 protected:
-    /**
-     * Implement in derived classes to customize the configuration dialog
-     * before it is displayed.
-     */
-    virtual void customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
-    {
-        Q_UNUSED(dlg);
-    }
-
-    /**
-     * Implement in derived classes to do things when the configuration dialog
-     * has been accepted, before reloadFile() is called.
-     */
-    virtual void configDialogAcceptedActions(SingleFileResourceConfigDialog<Settings> *dlg)
-    {
-        Q_UNUSED(dlg);
-    }
-
     void retrieveCollections() override
     {
         Collection::List list;

@@ -1,0 +1,5 @@
+{
+    "X-Akonadi-PluginType": "AgentConfig",
+    "X-Akonadi-Library": "kalarmconfig",
+    "X-Akonadi-AgentConfig-Type": "akonadi_kalarm_resource"
+}

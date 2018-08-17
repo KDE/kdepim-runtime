@@ -20,7 +20,6 @@
 
 #include "icalresourcebase.h"
 #include "icalsettingsadaptor.h"
-#include "singlefileresourceconfigdialog.h"
 
 #include <kdbusconnectionpool.h>
 
@@ -73,12 +72,6 @@ void ICalResourceBase::aboutToQuit()
         writeFile();
     }
     mSettings->save();
-}
-
-void ICalResourceBase::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
-{
-    dlg->setFilter(QStringLiteral("text/calendar"));
-    dlg->setWindowTitle(i18n("Select Calendar"));
 }
 
 bool ICalResourceBase::readFromFile(const QString &fileName)

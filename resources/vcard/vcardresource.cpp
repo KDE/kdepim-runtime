@@ -21,8 +21,6 @@
 #include "vcardresource.h"
 #include "vcardsettingsadaptor.h"
 
-#include "singlefileresourceconfigdialog.h"
-
 #include <kdbusconnectionpool.h>
 
 #include <KLocalizedString>
@@ -67,13 +65,6 @@ void VCardResource::aboutToQuit()
         writeFile();
     }
     mSettings->save();
-}
-
-void VCardResource::customizeConfigDialog(SingleFileResourceConfigDialog<Settings> *dlg)
-{
-    dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
-    dlg->setFilter(QStringLiteral("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File"));
-    dlg->setWindowTitle(i18n("Select Address Book"));
 }
 
 void VCardResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)

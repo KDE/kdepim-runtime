@@ -42,11 +42,6 @@ protected Q_SLOTS:
     void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
-    /**
-     * Customize the configuration dialog before it is displayed.
-     */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_VCard_Resource::Settings> *dlg) override;
-
     bool readFromFile(const QString &fileName) override;
     bool writeToFile(const QString &fileName) override;
     void aboutToQuit() override;

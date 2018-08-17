@@ -4,9 +4,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/shared
 )
 
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_ical_resource\")
-
 
 add_subdirectory( wizard )
 add_subdirectory( notes )
@@ -15,18 +13,21 @@ if(BUILD_TESTING)
     add_subdirectory( autotests )
 endif()
 
-########### next target ###############
+set(icalresource_common_SRCS)
+kconfig_add_kcfg_files(icalresource_common_SRCS settings.kcfgc)
+
+############################# Resource #################################
 add_definitions( -DSETTINGS_NAMESPACE=Akonadi_ICal_Resource )
 
 set( icalresource_SRCS
   icalresource.cpp
   shared/icalresourcebase.cpp
   shared/icalresource.cpp
+  ${icalresource_common_SRCS}
 )
 
 install( FILES icalresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-kconfig_add_kcfg_files(icalresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icalresource.kcfg org.kde.Akonadi.ICal.Settings)
 qt5_add_dbus_adaptor(icalresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICal.Settings.xml settings.h Akonadi_ICal_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor
@@ -43,3 +44,15 @@ endif ()
 target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource KF5::DBusAddons)
 
 install(TARGETS akonadi_ical_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+
+################################ Config plugin ###############################
+
+kcoreaddons_add_plugin(icalconfig
+    SOURCES icalconfig.cpp ${icalresource_common_SRCS}
+    JSON "icalconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+target_link_libraries(icalconfig
+    KF5::AkonadiCore
+    akonadi-singlefileresource
+)

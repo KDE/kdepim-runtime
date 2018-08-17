@@ -42,12 +42,6 @@ public:
     ~KAlarmResource() override;
 
 protected:
-    /**
-     * Customize the configuration dialog before it is displayed.
-     */
-    void customizeConfigDialog(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *) override;
-    void configDialogAcceptedActions(Akonadi::SingleFileResourceConfigDialog<Akonadi_KAlarm_Resource::Settings> *) override;
-
     void doRetrieveItems(const Akonadi::Collection &) override;
     bool doRetrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
     bool readFromFile(const QString &fileName) override;
@@ -63,6 +57,9 @@ private Q_SLOTS:
     void updateFormat(KJob *);
     void setCompatibility(KJob *);
 
+protected:
+    void applyConfigurationChanges() override;
+    
 private:
     void checkFileCompatibility(const Akonadi::Collection & = Akonadi::Collection(), bool createAttribute = false);
     Akonadi::CollectionFetchJob *fetchCollection(const char *slot);

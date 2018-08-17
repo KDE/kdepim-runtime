@@ -46,7 +46,12 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
     , mDownloadJob(nullptr)
     , mUploadJob(nullptr)
 {
-    connect(this, &SingleFileResourceBase::reloadConfiguration, this, &SingleFileResourceBase::reloadFile);
+    connect(this, &SingleFileResourceBase::reloadConfiguration,
+            this, [this]() {
+                applyConfigurationChanges();
+                reloadFile();
+                synchronizeCollectionTree();
+            });
     QTimer::singleShot(0, this, [this]() {
         readFile();
     });
@@ -59,6 +64,11 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
     connect(KDirWatch::self(), &KDirWatch::dirty, this, &SingleFileResourceBase::fileChanged);
     connect(KDirWatch::self(), &KDirWatch::created, this, &SingleFileResourceBase::fileChanged);
 }
+
+void SingleFileResourceBase::applyConfigurationChanges()
+{
+}
+
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {
