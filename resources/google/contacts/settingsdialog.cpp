@@ -20,7 +20,6 @@
 
 #include <KWindowSystem>
 #include <KLocalizedString>
-#include <QDebug>
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>

@@ -19,6 +19,7 @@
 #include "defaultreminderattribute.h"
 #include "settings.h"
 #include "settingsdialog.h"
+#include "googlecalendarresource_debug.h"
 
 #include <AkonadiCore/Attribute>
 #include <AkonadiCore/AttributeFactory>
@@ -626,7 +627,7 @@ void CalendarResource::slotRemoveTaskFetchJobFinished(KJob *job)
     const Item::List items = fetchJob->items();
     for (Item item : items) {
         if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
-            qDebug() << "Item " << item.remoteId() << " does not have Todo payload";
+            qCDebug(GOOGLE_CALENDAR_LOG) << "Item " << item.remoteId() << " does not have Todo payload";
             continue;
         }
 
@@ -680,7 +681,7 @@ void CalendarResource::slotTaskAddedSearchFinished(KJob *job)
     TaskPtr task = job->property(TASK_PROPERTY).value<TaskPtr>();
 
     Item::List items = fetchJob->items();
-    qDebug() << "Parent query returned" << items.count() << "results";
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Parent query returned" << items.count() << "results";
 
     const QString tasksListId = item.parentCollection().remoteId();
 
