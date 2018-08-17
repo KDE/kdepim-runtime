@@ -47,8 +47,6 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
 public:
     explicit NewMailNotifierAgent(const QString &id);
 
-    void showConfigureDialog(qlonglong windowId = 0);
-
     void setEnableAgent(bool b);
     bool enabledAgent() const;
 
@@ -90,9 +88,6 @@ protected:
     void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags) override;
     void doSetOnline(bool online) override;
-
-private Q_SLOTS:
-    void configure(WId windowId) override;
 
 private:
     void slotShowNotifications();

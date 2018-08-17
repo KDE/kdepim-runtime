@@ -4,6 +4,7 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
  <include>KLocalizedString</include>
+ <kcfgfile arg="true" />
  <group name="General">
  <entry name="verboseNotification" key="verboseNotification" type="Bool">
    <default>true</default>

@@ -5,26 +5,24 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_newmailnotifier_agent\")
 add_definitions( -DQT_NO_CAST_FROM_ASCII )
 add_definitions( -DQT_NO_CAST_TO_ASCII )
 
-set(newmailnotifieragent_SRCS
-  newmailnotifiersettingsdialog.cpp
-  newmailnotifieragent.cpp
-  specialnotifierjob.cpp
-  newmailnotifierselectcollectionwidget.cpp
-  newmailnotifiershowmessagejob.cpp
-)
+set(newmailnotifier_common_SRCS)
 
-ecm_qt_declare_logging_category(newmailnotifieragent_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier)
-
-kconfig_add_kcfg_files(newmailnotifieragent_SRCS
+kconfig_add_kcfg_files(newmailnotifier_common_SRCS
     newmailnotifieragentsettings.kcfgc
   )
 
+ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier)
+
+set(newmailnotifieragent_SRCS
+  newmailnotifieragent.cpp
+  specialnotifierjob.cpp
+  newmailnotifiershowmessagejob.cpp
+  ${newmailnotifier_common_SRCS}
+)
 
 qt5_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 
-
 add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
-
 
 target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiCore
@@ -33,13 +31,9 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiContact
   KF5::Codecs
   KF5::IdentityManagement
-  KF5::NotifyConfig
   KF5::AkonadiAgentBase
   KF5::DBusAddons
-  KF5::XmlGui
   KF5::Notifications
-  KF5::WindowSystem
-  KF5::Completion
   KF5::Service
   KF5::IconThemes
   KF5::I18n
@@ -65,3 +59,21 @@ install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS
 install(FILES newmailnotifieragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )
 
+########################## Config plugin #################################
+
+kcoreaddons_add_plugin(newmailnotifierconfig
+    SOURCES newmailnotifiersettingswidget.cpp 
+            newmailnotifierselectcollectionwidget.cpp
+            ${newmailnotifier_common_SRCS}
+    JSON "newmailnotifierconfig.json"
+    INSTALL_NAMESPACE "akonadi/config")
+target_link_libraries(newmailnotifierconfig
+    KF5::AkonadiCore
+    Qt5::Widgets
+    KF5::NotifyConfig
+    KF5::ConfigGui
+    KF5::I18n
+    KF5::XmlGui
+    KF5::Mime
+    KF5::Completion
+)

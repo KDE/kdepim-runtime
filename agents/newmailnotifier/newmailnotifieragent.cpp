@@ -45,7 +45,6 @@
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#include <KWindowSystem>
 #include <Kdelibs4ConfigMigrator>
 #include "newmailnotifier_debug.h"
 #include <KToolInvocation>
@@ -235,21 +234,6 @@ void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
 {
     NewMailNotifierAgentSettings::setShowButtonToDisplayMail(b);
     NewMailNotifierAgentSettings::self()->save();
-}
-
-void NewMailNotifierAgent::showConfigureDialog(qlonglong windowId)
-{
-    configure(windowId);
-}
-
-void NewMailNotifierAgent::configure(WId windowId)
-{
-    QPointer<NewMailNotifierSettingsDialog> dialog = new NewMailNotifierSettingsDialog;
-    if (windowId) {
-        KWindowSystem::setMainWindow(dialog, windowId);
-    }
-    dialog->exec();
-    delete dialog;
 }
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const
