@@ -117,61 +117,6 @@ void NewMailNotifierAgent::doSetOnline(bool online)
     }
 }
 
-void NewMailNotifierAgent::setExcludeMyselfFromNotification(bool b)
-{
-    NewMailNotifierAgentSettings::setExcludeEmailsFromMe(b);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::excludeMyselfFromNotification() const
-{
-    return NewMailNotifierAgentSettings::excludeEmailsFromMe();
-}
-
-void NewMailNotifierAgent::setShowPhoto(bool show)
-{
-    NewMailNotifierAgentSettings::setShowPhoto(show);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::showPhoto() const
-{
-    return NewMailNotifierAgentSettings::showPhoto();
-}
-
-void NewMailNotifierAgent::setShowFrom(bool show)
-{
-    NewMailNotifierAgentSettings::setShowFrom(show);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::showFrom() const
-{
-    return NewMailNotifierAgentSettings::showFrom();
-}
-
-void NewMailNotifierAgent::setShowSubject(bool show)
-{
-    NewMailNotifierAgentSettings::setShowSubject(show);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::showSubject() const
-{
-    return NewMailNotifierAgentSettings::showSubject();
-}
-
-void NewMailNotifierAgent::setShowFolderName(bool show)
-{
-    NewMailNotifierAgentSettings::setShowFolder(show);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::showFolderName() const
-{
-    return NewMailNotifierAgentSettings::showFolder();
-}
-
 void NewMailNotifierAgent::setEnableAgent(bool enabled)
 {
     NewMailNotifierAgentSettings::setEnabled(enabled);
@@ -181,59 +126,15 @@ void NewMailNotifierAgent::setEnableAgent(bool enabled)
     }
 }
 
-void NewMailNotifierAgent::setVerboseMailNotification(bool verbose)
+bool NewMailNotifierAgent::enabledAgent() const
 {
-    NewMailNotifierAgentSettings::setVerboseNotification(verbose);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::verboseMailNotification() const
-{
-    return NewMailNotifierAgentSettings::verboseNotification();
-}
-
-void NewMailNotifierAgent::setTextToSpeakEnabled(bool enabled)
-{
-    NewMailNotifierAgentSettings::setTextToSpeakEnabled(enabled);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-bool NewMailNotifierAgent::textToSpeakEnabled() const
-{
-    return NewMailNotifierAgentSettings::textToSpeakEnabled();
-}
-
-void NewMailNotifierAgent::setTextToSpeak(const QString &msg)
-{
-    NewMailNotifierAgentSettings::setTextToSpeak(msg);
-    NewMailNotifierAgentSettings::self()->save();
-}
-
-QString NewMailNotifierAgent::textToSpeak() const
-{
-    return NewMailNotifierAgentSettings::textToSpeak();
+    return NewMailNotifierAgentSettings::enabled();
 }
 
 void NewMailNotifierAgent::clearAll()
 {
     mNewMails.clear();
     mInstanceNameInProgress.clear();
-}
-
-bool NewMailNotifierAgent::enabledAgent() const
-{
-    return NewMailNotifierAgentSettings::enabled();
-}
-
-bool NewMailNotifierAgent::showButtonToDisplayMail() const
-{
-    return NewMailNotifierAgentSettings::showButtonToDisplayMail();
-}
-
-void NewMailNotifierAgent::setShowButtonToDisplayMail(bool b)
-{
-    NewMailNotifierAgentSettings::setShowButtonToDisplayMail(b);
-    NewMailNotifierAgentSettings::self()->save();
 }
 
 bool NewMailNotifierAgent::excludeSpecialCollection(const Akonadi::Collection &collection) const

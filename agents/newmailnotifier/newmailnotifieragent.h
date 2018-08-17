@@ -50,37 +50,7 @@ public:
     void setEnableAgent(bool b);
     bool enabledAgent() const;
 
-    void setVerboseMailNotification(bool b);
-    bool verboseMailNotification() const;
-
-    void setBeepOnNewMails(bool b);
-    bool beepOnNewMails() const;
-
-    void setShowPhoto(bool b);
-    bool showPhoto() const;
-
-    void setShowFrom(bool b);
-    bool showFrom() const;
-
-    void setShowSubject(bool b);
-    bool showSubject() const;
-
-    void setShowFolderName(bool b);
-    bool showFolderName() const;
-
-    void setExcludeMyselfFromNotification(bool b);
-    bool excludeMyselfFromNotification() const;
-
-    void setTextToSpeakEnabled(bool enabled);
-    bool textToSpeakEnabled() const;
-
-    QString textToSpeak() const;
-    void setTextToSpeak(const QString &msg);
-
     void printDebug();
-
-    bool showButtonToDisplayMail() const;
-    void setShowButtonToDisplayMail(bool b);
 
 protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;

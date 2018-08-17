@@ -7,61 +7,6 @@
     <method name="enabledAgent" >
       <arg type="b" direction="out"/>
     </method>
-    <method name="setVerboseMailNotification" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="verboseMailNotification" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setShowPhoto" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="showPhoto" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setShowFrom" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="showFrom" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setShowSubject" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="showSubject" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setShowFolderName" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="showFolderName" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setExcludeMyselfFromNotification" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="excludeMyselfFromNotification" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setTextToSpeakEnabled" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="textToSpeakEnabled" >
-      <arg type="b" direction="out"/>
-    </method>
-    <method name="setTextToSpeak" >
-      <arg type="s" direction="in"/>
-    </method>
-    <method name="textToSpeak" >
-      <arg type="s" direction="out"/>
-    </method>
-    <method name="setShowButtonToDisplayMail" >
-      <arg type="b" direction="in"/>
-    </method>
-    <method name="showButtonToDisplayMail" >
-      <arg type="b" direction="out"/>
-    </method>
-
 
     <method name="printDebug" />
   </interface>
