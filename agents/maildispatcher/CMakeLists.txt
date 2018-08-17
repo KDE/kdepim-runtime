@@ -35,7 +35,6 @@ target_link_libraries(akonadi_maildispatcher_agent
     KF5::Mime
     KF5::MailTransportAkonadi
     KF5::AkonadiAgentBase
-    KF5::NotifyConfig
     KF5::DBusAddons
     KF5::I18n
     KF5::Notifications
@@ -44,3 +43,15 @@ target_link_libraries(akonadi_maildispatcher_agent
 install( TARGETS akonadi_maildispatcher_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES maildispatcheragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )
+
+############################## Configuration ##############################
+
+kcoreaddons_add_plugin(maildispatcherconfig
+    SOURCES maildispatcherconfig.cpp
+    JSON "maildispatcherconfig.json"
+    INSTALL_NAMESPACE "akonadi/config")
+target_link_libraries(maildispatcherconfig
+    KF5::AkonadiCore
+    KF5::NotifyConfig
+    KF5::ConfigCore
+)

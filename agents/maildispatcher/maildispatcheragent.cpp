@@ -34,7 +34,6 @@
 #include <mailtransportakonadi/sentbehaviourattribute.h>
 #include <AkonadiCore/ServerManager>
 
-#include <knotifyconfigwidget.h>
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
 #include <KMime/Message>
@@ -174,12 +173,6 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
 
 MailDispatcherAgent::~MailDispatcherAgent()
 {
-}
-
-void MailDispatcherAgent::configure(WId windowId)
-{
-    Q_UNUSED(windowId);
-    KNotifyConfigWidget::configure(nullptr);
 }
 
 void MailDispatcherAgent::doSetOnline(bool online)

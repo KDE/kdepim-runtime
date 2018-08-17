@@ -40,9 +40,6 @@ public:
     explicit MailDispatcherAgent(const QString &id);
     ~MailDispatcherAgent() override;
 
-public Q_SLOTS:
-    void configure(WId windowId) override;
-
 Q_SIGNALS:
     /**
      * Emitted when the MDA has attempted to send an item.
