@@ -42,7 +42,6 @@
 #include "maildirresource_debug.h"
 #include <kdirwatch.h>
 #include <KLocalizedString>
-#include <kwindowsystem.h>
 
 #include "libmaildir/maildir.h"
 #include <QStandardPaths>
@@ -251,6 +250,11 @@ void MaildirResource::configurationChanged()
         Q_EMIT status(Idle);
         setOnline(true);
     }
+    if (name().isEmpty() || name() == identifier()) {
+        Maildir md(mSettings->path());
+        setName(md.name());
+    }
+    synchronizeCollectionTree();
 }
 
 void MaildirResource::aboutToQuit()
@@ -263,30 +267,6 @@ void MaildirResource::aboutToQuit()
 QString MaildirResource::defaultResourceType()
 {
     return QString();
-}
-
-void MaildirResource::configure(WId windowId)
-{
-    ConfigDialog dlg(mSettings, identifier());
-    if (windowId) {
-        KWindowSystem::setMainWindow(&dlg, windowId);
-    }
-    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("message-rfc822")));
-    if (dlg.exec()) {
-        // if we have no name, or the default one,
-        // better use the name of the top level collection
-        // that looks nicer
-        if (name().isEmpty() || name() == identifier()) {
-            Maildir md(mSettings->path());
-            setName(md.name());
-        }
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-
-    configurationChanged();
-    synchronizeCollectionTree();
 }
 
 void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)

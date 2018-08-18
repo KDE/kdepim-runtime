@@ -8,23 +8,20 @@ include_directories(
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_akonotes_resource\")
 
+set(akonotes_common_SRCS)
+kconfig_add_kcfg_files(akonotes_common_SRCS ../maildir/settings.kcfgc)
 
-########### next target ###############
+################################# Resource #################################
 
 set( akonotesresource_SRCS
   ../maildir/maildirresource.cpp
-  ../maildir/configdialog.cpp
   ../maildir/retrieveitemsjob.cpp
   ../maildir/maildirresource_debug.cpp
   akonotesresource.cpp
+  ${akonotes_common_SRCS}
 )
 
-
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../maildir/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
-
-ki18n_wrap_ui(akonotesresource_SRCS ../maildir/settings.ui)
-
-kconfig_add_kcfg_files(akonotesresource_SRCS ../maildir/settings.kcfgc)
 
 qt5_add_dbus_adaptor(akonotesresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Akonadi_Maildir_Resource::MaildirSettings maildirsettingsadaptor MaildirSettingsAdaptor
@@ -41,12 +38,32 @@ target_link_libraries(akonadi_akonotes_resource
     KF5::AkonadiAgentBase
     KF5::DBusAddons
     KF5::I18n
-    KF5::KIOWidgets
-    KF5::WindowSystem
-    KF5::ConfigWidgets
     maildir
     folderarchivesettings
 )
 
 install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+############################### Config plugin #################################
+
+set(akonotesconfig_SRCS
+    ../maildir/configwidget.cpp
+    ../maildir/maildirconfig.cpp
+    akonotesconfig.cpp
+    ${akonotes_common_SRCS}
+)
+ki18n_wrap_ui(akonotesconfig_SRCS ../maildir/settings.ui)
+
+kcoreaddons_add_plugin(akonotesconfig
+    SOURCES ${akonotesconfig_SRCS}
+    JSON "akonotesconfig.json"
+    INSTALL_NAMESPACE "akonadi/agents"
+)
+target_link_libraries(akonotesconfig
+    KF5::AkonadiCore
+    KF5::KIOWidgets
+    KF5::ConfigWidgets
+    KF5::I18n
+    maildir
+    folderarchivesettings
+)

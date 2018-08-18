@@ -13,21 +13,19 @@ add_subdirectory( wizard )
 # maildir access library
 add_subdirectory(libmaildir)
 
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
-########### next target ###############
+set(maildir_common_SRCS)
+kconfig_add_kcfg_files(maildir_common_SRCS settings.kcfgc)
+
+############################### Resource #####################################
 set( maildirresource_SRCS
   main.cpp
   maildirresource.cpp
-  configdialog.cpp
   retrieveitemsjob.cpp
+  ${maildir_common_SRCS}
 )
 ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debug.h IDENTIFIER MAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.maildirresource)
-
-ki18n_wrap_ui(maildirresource_SRCS settings.ui)
-
-kconfig_add_kcfg_files(maildirresource_SRCS settings.kcfgc)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 
@@ -42,13 +40,10 @@ target_link_libraries(akonadi_maildir_resource
     folderarchivesettings
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::KIOWidgets
     KF5::Mime
     KF5::AkonadiAgentBase
     KF5::DBusAddons
-    KF5::WindowSystem
     KF5::I18n
-    KF5::ConfigWidgets
 )
 
 install(TARGETS akonadi_maildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -57,3 +52,25 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
 
 install( FILES maildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
+############################# Config plugin ###############################
+
+set(maildirconfig_SRCS
+    maildirconfigmain.cpp
+    maildirconfig.cpp
+    configwidget.cpp
+    ${maildir_common_SRCS}
+)
+
+kcoreaddons_add_plugin(maildirconfig
+    SOURCES ${maildirconfig_SRCS}
+    JSON "maildirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+target_link_libraries(maildirconfig
+    KF5::AkonadiCore
+    KF5::ConfigWidgets
+    KF5::KIOWidgets
+    KF5::I18n
+    folderarchivesettings
+    maildir
+)

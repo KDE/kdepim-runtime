@@ -42,8 +42,6 @@ public:
     ~MaildirResource();
 
     virtual QString defaultResourceType();
-public Q_SLOTS:
-    void configure(WId windowId) override;
 
 protected Q_SLOTS:
     void retrieveCollections() override;

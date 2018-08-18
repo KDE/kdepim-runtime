@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "configdialog.h"
+#include "configwidget.h"
 #include "settings.h"
 #include "resources/folderarchivesettings/folderarchivesettingpage.h"
 
@@ -32,66 +32,35 @@
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
-ConfigDialog::ConfigDialog(MaildirSettings *settings, const QString &identifier, QWidget *parent)
-    : QDialog(parent)
+ConfigWidget::ConfigWidget(MaildirSettings *settings, const QString &identifier, QWidget *parent)
+    : QWidget(parent)
     , mSettings(settings)
     , mToplevelIsContainer(false)
 {
-    setWindowTitle(i18n("Select a MailDir folder"));
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier, this);
-    mFolderArchiveSettingPage->loadSettings();
     ui.tabWidget->addTab(mFolderArchiveSettingPage, i18n("Archive Folder"));
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-    mOkButton->setDefault(true);
-    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-    mainLayout->addWidget(buttonBox);
-
-    mManager = new KConfigDialogManager(this, mSettings);
-    mManager->updateWidgets();
     ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(mSettings->path()));
 
-    connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
-    connect(ui.kcfg_Path->lineEdit(), &QLineEdit::textChanged, this, &ConfigDialog::checkPath);
+    connect(ui.kcfg_Path->lineEdit(), &QLineEdit::textChanged, this, &ConfigWidget::checkPath);
     ui.kcfg_Path->lineEdit()->setFocus();
     checkPath();
-    readConfig();
 }
 
-ConfigDialog::~ConfigDialog()
+ConfigWidget::~ConfigWidget()
 {
-    writeConfig();
 }
 
-void ConfigDialog::readConfig()
-{
-    KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
-    const QSize size = group.readEntry("Size", QSize(600, 400));
-    if (size.isValid()) {
-        resize(size);
-    }
-}
-
-void ConfigDialog::writeConfig()
-{
-    KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
-    group.writeEntry("Size", size());
-    group.sync();
-}
-
-void ConfigDialog::checkPath()
+void ConfigWidget::checkPath()
 {
     if (ui.kcfg_Path->url().isEmpty()) {
         ui.statusLabel->setText(i18n("The selected path is empty."));
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
         return;
     }
     bool ok = false;
@@ -123,17 +92,23 @@ void ConfigDialog::checkPath()
             ui.statusLabel->setText(i18n("The selected path does not exist."));
         }
     }
-    mOkButton->setEnabled(ok);
+    Q_EMIT okEnabled(ok);
 }
 
-void ConfigDialog::save()
+void ConfigWidget::load()
+{
+    mFolderArchiveSettingPage->loadSettings();
+    mManager = new KConfigDialogManager(this, mSettings);
+    mManager->updateWidgets();
+}
+
+bool ConfigWidget::save() const
 {
     mFolderArchiveSettingPage->writeSettings();
     mManager->updateSettings();
     QString path = ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path();
     mSettings->setPath(path);
     mSettings->setTopLevelIsContainer(mToplevelIsContainer);
-    mSettings->save();
 
     if (ui.kcfg_Path->url().isLocalFile()) {
         QDir d(path);
@@ -141,4 +116,6 @@ void ConfigDialog::save()
             d.mkpath(ui.kcfg_Path->url().toLocalFile());
         }
     }
+
+    return true;
 }
