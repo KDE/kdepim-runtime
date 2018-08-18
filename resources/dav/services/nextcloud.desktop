@@ -1,5 +1,10 @@
 [Desktop Entry]
 Name=Nextcloud
+Name[ca]=Nextcloud
+Name[nl]=Nextcloud
+Name[sv]=Nextcloud
+Name[uk]=Nextcloud
+Name[x-test]=xxNextcloudxx
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
 
