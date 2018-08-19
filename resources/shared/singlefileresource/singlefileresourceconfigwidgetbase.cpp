@@ -38,12 +38,6 @@ using namespace Akonadi;
 
 SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *parent)
     : QWidget(parent)
-    , mManager(nullptr)
-    , mStatJob(nullptr)
-    , mAppendedWidget(nullptr)
-    , mDirUrlChecked(false)
-    , mMonitorEnabled(true)
-    , mLocalFileOnly(false)
 {
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);

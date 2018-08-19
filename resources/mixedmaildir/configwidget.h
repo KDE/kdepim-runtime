@@ -17,28 +17,32 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef CONFIGWIDGET_H
+#define CONFIGWIDGET_H
 
 #include <QDialog>
 
 #include "ui_settings.h"
 class QPushButton;
-
 class KConfigDialogManager;
-
-class ConfigDialog : public QDialog
+class Settings;
+class ConfigWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(QWidget *parent = nullptr);
+    explicit ConfigWidget(Settings *settings, QWidget *parent = nullptr);
+
+    void load(Settings *settings);
+    void save(Settings *settings) const;
+
+Q_SIGNALS:
+    void okEnabled(bool enabled);
 
 private Q_SLOTS:
     void checkPath();
-    void save();
 
 private:
-    Ui::ConfigDialog ui;
+    Ui::ConfigWidget ui;
     KConfigDialogManager *mManager = nullptr;
     QPushButton *mOkButton = nullptr;
     bool mToplevelIsContainer = false;

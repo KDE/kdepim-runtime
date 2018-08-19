@@ -24,7 +24,6 @@
 #include "mixedmaildir_debug.h"
 
 #include "compactchangehelper.h"
-#include "configdialog.h"
 #include "mixedmaildirstore.h"
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -57,7 +56,6 @@
 
 #include "mixedmaildirresource_debug.h"
 #include <KLocalizedString>
-#include <KWindowSystem>
 
 #include <QDir>
 #include <QDBusConnection>
@@ -71,6 +69,7 @@ MixedMaildirResource::MixedMaildirResource(const QString &id)
     , mStore(new MixedMaildirStore())
     , mCompactHelper(nullptr)
 {
+    Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  Settings::self(), QDBusConnection::ExportAdaptors);
@@ -102,6 +101,7 @@ MixedMaildirResource::MixedMaildirResource(const QString &id)
 MixedMaildirResource::~MixedMaildirResource()
 {
     delete mStore;
+    delete Settings::self();
 }
 
 void MixedMaildirResource::aboutToQuit()
@@ -109,42 +109,6 @@ void MixedMaildirResource::aboutToQuit()
     // The settings may not have been saved if e.g. they have been modified via
     // DBus instead of the config dialog.
     Settings::self()->save();
-}
-
-void MixedMaildirResource::configure(WId windowId)
-{
-    ConfigDialog dlg;
-    if (windowId) {
-        KWindowSystem::setMainWindow(&dlg, windowId);
-    }
-    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("message-rfc822")));
-
-    bool fullSync = false;
-
-    if (dlg.exec()) {
-        const bool changeName = name().isEmpty() || name() == identifier()
-                                || name() == mStore->topLevelCollection().name();
-
-        const QString oldPath = mStore->path();
-        mStore->setPath(Settings::self()->path());
-
-        fullSync = oldPath != mStore->path();
-
-        if (changeName) {
-            setName(mStore->topLevelCollection().name());
-        }
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-
-    if (ensureDirExists()) {
-        if (fullSync) {
-            mSynchronizedCollections.clear();
-            mPendingSynchronizeCollections.clear();
-        }
-        synchronizeCollectionTree();
-    }
 }
 
 void MixedMaildirResource::itemAdded(const Item &item, const Collection &collection)
@@ -452,6 +416,12 @@ void MixedMaildirResource::checkForInvalidatedIndexCollections(KJob *job)
 
 void MixedMaildirResource::reapplyConfiguration()
 {
+    const bool changeName = name().isEmpty() || name() == identifier()
+                            || name() == mStore->topLevelCollection().name();
+    if (changeName) {
+        setName(mStore->topLevelCollection().name());
+    }
+
     if (ensureSaneConfiguration() && ensureDirExists()) {
         const QString oldPath = mStore->path();
         mStore->setPath(Settings::self()->path());

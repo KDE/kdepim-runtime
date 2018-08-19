@@ -37,9 +37,6 @@ public:
     explicit MixedMaildirResource(const QString &id);
     ~MixedMaildirResource();
 
-public Q_SLOTS:
-    void configure(WId windowId) override;
-
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &col) override;

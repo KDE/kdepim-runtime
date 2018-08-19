@@ -40,6 +40,7 @@ public:
         : SingleFileResourceConfigWidgetBase(parent)
         , mSettings(settings)
     {
+        mManager = new KConfigDialogManager(this, mSettings);
     }
 
     bool save() const override

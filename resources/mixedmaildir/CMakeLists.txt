@@ -11,23 +11,23 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mixedmaildir_resource\")
 
 add_subdirectory(kmindexreader)
 
-########### next target ###############
+set(mixedmaildir_common_SRCS)
+kconfig_add_kcfg_files(mixedmaildir_common_SRCS settings.kcfgc)
+
+############################# Resource #######################################
 
 set( mixedmaildirresource_SRCS
   mixedmaildirresource_debug.cpp
   compactchangehelper.cpp
-  configdialog.cpp
   mixedmaildirresource.cpp
   mixedmaildirstore.cpp
   retrieveitemsjob.cpp
   mixedmaildir_debug.cpp
+  ${mixedmaildir_common_SRCS}
 )
 
 install( FILES mixedmaildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-ki18n_wrap_ui(mixedmaildirresource_SRCS settings.ui)
-
-kconfig_add_kcfg_files(mixedmaildirresource_SRCS settings.kcfgc)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mixedmaildirresource.kcfg org.kde.Akonadi.MixedMaildir.Settings)
 
@@ -54,9 +54,6 @@ target_link_libraries(akonadi_mixedmaildir_resource
   KF5::Mime
   KF5::AkonadiAgentBase
   KF5::I18n
-  KF5::KIOWidgets
-  KF5::ConfigWidgets
-  KF5::WindowSystem
   akonadi-singlefileresource
 )
 
@@ -68,3 +65,25 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.
 if (BUILD_TESTING)
   add_subdirectory( autotests )
 endif ()
+
+###################################### Config Plugin #########################
+
+set(mixedmaildirconfig_SRCS
+    mixedmaildirconfig.cpp
+    configwidget.cpp
+    ${mixedmaildir_common_SRCS}
+)
+ki18n_wrap_ui(mixedmaildirconfig_SRCS settings.ui)
+
+kcoreaddons_add_plugin(mixedmaildirconfig
+    SOURCES ${mixedmaildirconfig_SRCS}
+    JSON "mixedmaildirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+target_link_libraries(mixedmaildirconfig
+    KF5::AkonadiCore
+    KF5::I18n
+    KF5::KIOWidgets
+    KF5::ConfigWidgets
+    maildir
+)

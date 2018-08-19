@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include "configdialog.h"
+#include "configwidget.h"
 #include "settings.h"
 
 #include "libmaildir/maildir.h"
@@ -29,38 +29,20 @@
 #include <QDialogButtonBox>
 using KPIM::Maildir;
 
-ConfigDialog::ConfigDialog(QWidget *parent)
-    : QDialog(parent)
+ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)
+    : QWidget(parent)
+    , mManager(new KConfigDialogManager(this, settings))
 {
-    setWindowTitle(i18n("Select a KMail Mail folder"));
-    QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(mainWidget);
-    ui.setupUi(mainWidget);
-    mManager = new KConfigDialogManager(this, Settings::self());
-    mManager->updateWidgets();
-    ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);
-    ui.kcfg_Path->setUrl(QUrl::fromLocalFile(Settings::self()->path()));
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mainLayout->addWidget(buttonBox);
-    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-    mOkButton->setDefault(true);
-    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-
-    connect(mOkButton, &QPushButton::clicked, this, &ConfigDialog::save);
-    connect(ui.kcfg_Path->lineEdit(), &QLineEdit::textChanged, this, &ConfigDialog::checkPath);
+    ui.setupUi(this);
+    connect(ui.kcfg_Path->lineEdit(), &QLineEdit::textChanged, this, &ConfigWidget::checkPath);
     ui.kcfg_Path->lineEdit()->setFocus();
-    checkPath();
 }
 
-void ConfigDialog::checkPath()
+void ConfigWidget::checkPath()
 {
     if (ui.kcfg_Path->url().isEmpty()) {
         ui.statusLabel->setText(i18n("The selected path is empty."));
-        mOkButton->setEnabled(false);
+        Q_EMIT okEnabled(false);
         return;
     }
     bool ok = false;
@@ -91,13 +73,20 @@ void ConfigDialog::checkPath()
             ui.statusLabel->setText(i18n("The selected path does not exist."));
         }
     }
-    mOkButton->setEnabled(ok);
+    Q_EMIT okEnabled(ok);
 }
 
-void ConfigDialog::save()
+void ConfigWidget::load(Settings* settings)
+{
+    mManager->updateWidgets();
+    ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);
+    ui.kcfg_Path->setUrl(QUrl::fromLocalFile(settings->path()));
+    checkPath();
+}
+
+void ConfigWidget::save(Settings *settings) const
 {
     mManager->updateSettings();
-    Settings::self()->setPath(ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path());
-    Settings::self()->setTopLevelIsContainer(mToplevelIsContainer);
-    Settings::self()->save();
+    settings->setPath(ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path());
+    settings->setTopLevelIsContainer(mToplevelIsContainer);
 }
