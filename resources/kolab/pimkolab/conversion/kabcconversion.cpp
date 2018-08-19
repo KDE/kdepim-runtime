@@ -438,7 +438,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     KContacts::Addressee addressee;
     addressee.setUid(fromStdString(contact.uid()));
     addressee.setCategories(toStringList(contact.categories()));
-    //addressee.setName(fromStdString(contact.name()));//This one is only for compatiblity (and results in a non-existing name property)
+    //addressee.setName(fromStdString(contact.name()));//This one is only for compatibility (and results in a non-existing name property)
     addressee.setFormattedName(fromStdString(contact.name())); //This on corresponds to fn
 
     const Kolab::NameComponents &nc = contact.nameComponents();

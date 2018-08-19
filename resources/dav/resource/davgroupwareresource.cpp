@@ -748,7 +748,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
          * We unfortunately have to update the CTag now in the cache
          * as this information will not be available when retrieveItems()
          * is called. We leave it untouched in the collection attribute
-         * and will only update it there after sucessfull sync.
+         * and will only update it there after successful sync.
          */
         if (!davCollection.CTag().isEmpty()) {
             mCTagCache.insert(davCollection.url().toDisplayString(), davCollection.CTag());

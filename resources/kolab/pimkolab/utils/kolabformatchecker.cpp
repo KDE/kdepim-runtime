@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         Kolab::KolabObjectReader reader(message);
 
         if (Kolab::ErrorHandler::errorOccured()) {
-            cout << "Errors occured during parsing." << endl;
+            cout << "Errors occurred during parsing." << endl;
             returnValue = -1;
         } else {
             cout << "Parsed message without error." << endl;

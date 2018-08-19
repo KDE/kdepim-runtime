@@ -45,8 +45,8 @@
 #include <AkonadiCore/ServerManager>
 
 #include <QTimer>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 using namespace Akonadi;
 using namespace KMime;

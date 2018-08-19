@@ -75,7 +75,7 @@ public Q_SLOTS:
     QString dumpResourceToString() const override;
 
 protected:
-    using ResourceBase::retrieveItems; // supress -Woverload-virtual
+    using ResourceBase::retrieveItems; // suppress -Woverload-virtual
 
 protected Q_SLOTS:
     void startIdleIfNeeded();

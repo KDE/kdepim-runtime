@@ -49,8 +49,8 @@
 #include <KMime/Message>
 
 #include <QTimer>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
+#include <QDBusInterface>
+#include <QDBusReply>
 #include <QStandardPaths>
 #include <QTimeZone>
 
