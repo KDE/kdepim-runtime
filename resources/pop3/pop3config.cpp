@@ -1,4 +1,4 @@
-/* Copyright 2010 Thomas McGuire <mcguire@kde.org>
+/* Copyright 2018 Daniel Vrátil <dvratil@kde.org>
 
    This library is free software; you can redistribute it and/or modify
    it under the terms of the GNU Library General Public License as published
@@ -16,33 +16,39 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 */
-#ifndef SETTINGS_H
-#define SETTINGS_H
 
-#include "settingsbase.h"
+#include <AkonadiCore/AgentConfigurationBase>
 
-#include <qwindowdefs.h>
+#include "settings.h"
+#include "accountwidget.h"
 
-/**
- * Extended settings class that allows setting the password over dbus, which is used by the
- * wizard.
- */
-class Settings : public SettingsBase
+class Pop3Config : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.POP3.Wallet")
 public:
-    Settings(KSharedConfigPtr config);
+    Pop3Config(KSharedConfigPtr config, QWidget *parent, const QVariantList &args)
+        : Akonadi::AgentConfigurationBase(config, parent, args)
+        , mSettings(new Settings(config))
+        , mWidget(new AccountWidget(identifier(), parent))
+    {
+    }
 
-    void setWindowId(WId id);
-    void setResourceId(const QString &resourceIdentifier);
-    static Settings *self();
+    void load() override
+    {
+        Akonadi::AgentConfigurationBase::load();
+        mWidget->loadSettings();
+    }
 
-public Q_SLOTS:
-    Q_SCRIPTABLE void setPassword(const QString &password);
-private:
-    WId mWinId;
-    QString mResourceId;
+    bool save() const override
+    {
+        mWidget->saveSettings();
+        return Akonadi::AgentConfigurationBase::save();
+    }
+
+    QScopedPointer<Settings> mSettings;
+    QScopedPointer<AccountWidget> mWidget;
 };
 
-#endif
+AKONADI_AGENTCONFIG_FACTORY(Pop3ConfigFactory, "pop3config.json", Pop3Config)
+
+#include "pop3config.moc"

@@ -16,8 +16,8 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 */
+
 #include "pop3resource.h"
-#include "accountdialog.h"
 #include "settings.h"
 #include "jobs.h"
 
@@ -58,9 +58,18 @@ POP3Resource::POP3Resource(const QString &id)
     , mIdsToSaveValid(false)
     , mDeleteJob(nullptr)
 {
+    new Settings(KSharedConfig::openConfig());
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
     setNeedsNetwork(true);
     Settings::self()->setResourceId(identifier());
+    if (Settings::self()->name().isEmpty()) {
+        if (name() == identifier()) {
+            Settings::self()->setName(i18n("POP3 Account"));
+        } else {
+            Settings::self()->setName(name());
+        }
+    }
+    setName(Settings::self()->name());
     resetState();
 
     connect(this, &POP3Resource::abortRequested, this, &POP3Resource::slotAbortRequested);
@@ -78,8 +87,8 @@ POP3Resource::~POP3Resource()
 
 void POP3Resource::configurationChanged()
 {
-    Settings::self()->save();
     updateIntervalTimer();
+    mPassword.clear();
 }
 
 void POP3Resource::updateIntervalTimer()
@@ -115,19 +124,6 @@ void POP3Resource::slotAbortRequested()
     if (mState != Idle) {
         cancelSync(i18n("Mail check was canceled manually."), false /* no error */);
     }
-}
-
-void POP3Resource::configure(WId windowId)
-{
-    QPointer<AccountDialog> accountDialog(new AccountDialog(this, windowId));
-    if (accountDialog->exec() == QDialog::Accepted) {
-        updateIntervalTimer();
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-
-    delete accountDialog;
 }
 
 void POP3Resource::retrieveItems(const Akonadi::Collection &collection)

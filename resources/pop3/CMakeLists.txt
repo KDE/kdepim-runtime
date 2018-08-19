@@ -1,26 +1,25 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_pop3_resource\")
 
 
+set(pop3_common_SRCS
+    settings.cpp
+)
+kconfig_add_kcfg_files(pop3_common_SRCS settingsbase.kcfgc)
+ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME org.kde.pim.pop3resource)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
+qt5_add_dbus_adaptor(pop3_common_SRCS
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml settings.h Settings
+)
 
-########### next target ###############
+################################# Resource ####################################
 
 set( pop3resource_SRCS
   pop3resource.cpp
-  accountdialog.cpp
   jobs.cpp
-  settings.cpp
+  ${pop3_common_SRCS}
 )
-
-ecm_qt_declare_logging_category(pop3resource_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME org.kde.pim.pop3resource)
 
 install( FILES pop3resource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-
-ki18n_wrap_ui( pop3resource_SRCS popsettings.ui)
-kconfig_add_kcfg_files(pop3resource_SRCS settingsbase.kcfgc)
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
-qt5_add_dbus_adaptor(pop3resource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml settings.h Settings
-)
 
 #add_executable(akonadi_pop3_resource RUN_UNINSTALLED ${pop3resource_SRCS})
 add_executable(akonadi_pop3_resource ${pop3resource_SRCS})
@@ -39,12 +38,7 @@ target_link_libraries( akonadi_pop3_resource
   KF5::Mime
   KF5::MailTransport
   KF5::AkonadiAgentBase
-  KF5::AkonadiWidgets
   KF5::I18n
-  KF5::TextWidgets
-  KF5::Completion
-  KF5::WidgetsAddons
-  KF5::WindowSystem
   KF5::Notifications
   Qt5::DBus
   KF5::PimCommon
@@ -58,3 +52,30 @@ add_subdirectory( wizard )
 
 install(TARGETS akonadi_pop3_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES akonadi_pop3_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR})
+
+
+################################## Config plugin ##############################
+
+set(pop3config_SRCS
+    pop3config.cpp
+    accountwidget.cpp
+    ${pop3_common_SRCS}
+)
+ki18n_wrap_ui(pop3config_SRCS popsettings.ui)
+
+kcoreaddons_add_plugin(pop3config
+    SOURCES ${pop3config_SRCS}
+    JSON "pop3config.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+target_link_libraries(pop3config
+    KF5::AkonadiCore
+    KF5::TextWidgets
+    KF5::Completion
+    KF5::WidgetsAddons
+    KF5::I18n
+    KF5::MailTransport
+    KF5::AkonadiWidgets
+    KF5::AkonadiAgentBase
+    KF5::AkonadiMime
+)

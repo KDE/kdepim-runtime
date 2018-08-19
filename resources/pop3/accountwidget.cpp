@@ -21,8 +21,7 @@
  */
 
 // Local includes
-#include "accountdialog.h"
-#include "pop3resource.h"
+#include "accountwidget.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 
@@ -38,7 +37,6 @@
 #include <KEMailSettings>
 #include <KMessageBox>
 #include <KUser>
-#include <KWindowSystem>
 #include <kwallet.h>
 #include "pop3resource_debug.h"
 
@@ -72,23 +70,17 @@ public:
 };
 }
 
-AccountDialog::AccountDialog(POP3Resource *parentResource, WId parentWindow)
-    : QDialog()
-    , mParentResource(parentResource)
-    , mServerTest(nullptr)
+AccountWidget::AccountWidget(const QString &identifier, QWidget *parent)
+    : QWidget(parent)
     , mValidator(this)
-    , mWallet(nullptr)
+    , mIdentifier(identifier)
 {
-    KWindowSystem::setMainWindow(this, parentWindow);
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
-    setWindowTitle(i18n("POP3 Account Settings"));
     mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
 
     setupWidgets();
-    loadSettings();
 }
 
-AccountDialog::~AccountDialog()
+AccountWidget::~AccountWidget()
 {
     delete mWallet;
     mWallet = nullptr;
@@ -96,19 +88,12 @@ AccountDialog::~AccountDialog()
     mServerTest = nullptr;
 }
 
-void AccountDialog::setupWidgets()
+void AccountWidget::setupWidgets()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mOkButton = buttonBox->button(QDialogButtonBox::Ok);
-    mOkButton->setDefault(true);
-    mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &AccountDialog::slotAccepted);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &AccountDialog::reject);
 
     QWidget *page = new QWidget(this);
     mainLayout->addWidget(page);
-    mainLayout->addWidget(buttonBox);
 
     setupUi(page);
 
@@ -120,18 +105,18 @@ void AccountDialog::setupWidgets()
     intervalSpin->setRange(ResourceSettings::self()->minimumCheckInterval(), 10000);
     intervalSpin->setSingleStep(1);
 
-    connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotLeaveOnServerClicked);
-    connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerDays);
-    connect(leaveOnServerDaysSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerDaysChanged);
-    connect(leaveOnServerCountCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerCount);
-    connect(leaveOnServerCountSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountDialog::slotLeaveOnServerCountChanged);
-    connect(leaveOnServerSizeCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnableLeaveOnServerSize);
+    connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotLeaveOnServerClicked);
+    connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerDays);
+    connect(leaveOnServerDaysSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerDaysChanged);
+    connect(leaveOnServerCountCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerCount);
+    connect(leaveOnServerCountSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerCountChanged);
+    connect(leaveOnServerSizeCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerSize);
 
-    connect(filterOnServerSizeSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountDialog::slotFilterOnServerSizeChanged);
+    connect(filterOnServerSizeSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountWidget::slotFilterOnServerSizeChanged);
     connect(filterOnServerCheck, &QCheckBox::toggled, filterOnServerSizeSpin, &QSpinBox::setEnabled);
-    connect(filterOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotFilterOnServerClicked);
+    connect(filterOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotFilterOnServerClicked);
 
-    connect(checkCapabilities, &QPushButton::clicked, this, &AccountDialog::slotCheckPopCapabilities);
+    connect(checkCapabilities, &QPushButton::clicked, this, &AccountWidget::slotCheckPopCapabilities);
     encryptionButtonGroup = new QButtonGroup();
     encryptionButtonGroup->addButton(encryptionNone,
                                      Transport::EnumEncryption::None);
@@ -140,8 +125,8 @@ void AccountDialog::setupWidgets()
     encryptionButtonGroup->addButton(encryptionTLS,
                                      Transport::EnumEncryption::TLS);
 
-    connect(encryptionButtonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &AccountDialog::slotPopEncryptionChanged);
-    connect(intervalCheck, &QCheckBox::toggled, this, &AccountDialog::slotEnablePopInterval);
+    connect(encryptionButtonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
+    connect(intervalCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnablePopInterval);
 
     populateDefaultAuthenticationOptions();
 
@@ -150,20 +135,21 @@ void AccountDialog::setupWidgets()
     folderRequester->setAccessRightsFilter(Akonadi::Collection::CanCreateItem);
     folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
 
-    connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountDialog::slotPipeliningClicked);
+    connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountWidget::slotPipeliningClicked);
 
     // FIXME: Hide widgets which are not supported yet
     filterOnServerCheck->hide();
     filterOnServerSizeSpin->hide();
 }
 
-void AccountDialog::loadSettings()
+void AccountWidget::loadSettings()
 {
-    if (mParentResource->name() == mParentResource->identifier()) {
-        mParentResource->setName(i18n("POP3 Account"));
+    if (Settings::self()->name().isEmpty()) {
+        nameEdit->setText(i18n("POP3 Account"));
+    } else {
+        nameEdit->setText(Settings::self()->name());
     }
 
-    nameEdit->setText(mParentResource->name());
     nameEdit->setFocus();
     loginEdit->setText(!Settings::self()->login().isEmpty() ? Settings::self()->login()
                        : KUser().loginName());
@@ -215,7 +201,7 @@ void AccountDialog::loadSettings()
         CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
                                                               CollectionFetchJob::Base,
                                                               this);
-        connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &AccountDialog::targetCollectionReceived);
+        connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &AccountWidget::targetCollectionReceived);
     } else {
         // FIXME: This is a bit duplicated from POP3Resource...
 
@@ -223,13 +209,13 @@ void AccountDialog::loadSettings()
         SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob(this);
         requestJob->requestDefaultCollection(SpecialMailCollections::Inbox);
         requestJob->start();
-        connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &AccountDialog::localFolderRequestJobFinished);
+        connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &AccountWidget::localFolderRequestJobFinished);
     }
 
     mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winId(),
                                  Wallet::Asynchronous);
     if (mWallet) {
-        connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountDialog::walletOpenedForLoading);
+        connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountWidget::walletOpenedForLoading);
     } else {
         passwordEdit->lineEdit()->setPlaceholderText(i18n("Wallet disabled in system settings"));
     }
@@ -237,7 +223,7 @@ void AccountDialog::loadSettings()
     passwordLabel->setEnabled(false);
 }
 
-void AccountDialog::walletOpenedForLoading(bool success)
+void AccountWidget::walletOpenedForLoading(bool success)
 {
     if (success) {
         if (mWallet->isOpen()) {
@@ -247,7 +233,7 @@ void AccountDialog::walletOpenedForLoading(bool success)
         if (mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
             QString password;
             mWallet->setFolder(QStringLiteral("pop3"));
-            mWallet->readPassword(mParentResource->identifier(), password);
+            mWallet->readPassword(mIdentifier, password);
             passwordEdit->setPassword(password);
             mInitalPassword = password;
         } else {
@@ -263,14 +249,14 @@ void AccountDialog::walletOpenedForLoading(bool success)
     }
 }
 
-void AccountDialog::walletOpenedForSaving(bool success)
+void AccountWidget::walletOpenedForSaving(bool success)
 {
     if (success) {
         if (mWallet && mWallet->isOpen()) {
             // Remove the password from the wallet if the user doesn't want to store it
             if (passwordEdit->password().isEmpty() && mWallet->hasFolder(QStringLiteral("pop3"))) {
                 mWallet->setFolder(QStringLiteral("pop3"));
-                mWallet->removeEntry(mParentResource->identifier());
+                mWallet->removeEntry(mIdentifier);
             }
             // Store the password in the wallet if the user wants that
             else if (!passwordEdit->password().isEmpty()) {
@@ -278,10 +264,8 @@ void AccountDialog::walletOpenedForSaving(bool success)
                     mWallet->createFolder(QStringLiteral("pop3"));
                 }
                 mWallet->setFolder(QStringLiteral("pop3"));
-                mWallet->writePassword(mParentResource->identifier(), passwordEdit->password());
+                mWallet->writePassword(mIdentifier, passwordEdit->password());
             }
-
-            mParentResource->clearCachedPassword();
         } else {
             qCWarning(POP3RESOURCE_LOG) << "Wallet not open.";
         }
@@ -292,10 +276,9 @@ void AccountDialog::walletOpenedForSaving(bool success)
 
     delete mWallet;
     mWallet = nullptr;
-    accept();
 }
 
-void AccountDialog::slotLeaveOnServerClicked()
+void AccountWidget::slotLeaveOnServerClicked()
 {
     const bool state = leaveOnServerCheck->isChecked();
     leaveOnServerDaysCheck->setEnabled(state);
@@ -330,7 +313,7 @@ void AccountDialog::slotLeaveOnServerClicked()
     }
 }
 
-void AccountDialog::slotFilterOnServerClicked()
+void AccountWidget::slotFilterOnServerClicked()
 {
     if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top)
         && filterOnServerCheck->isChecked()) {
@@ -346,7 +329,7 @@ void AccountDialog::slotFilterOnServerClicked()
     }
 }
 
-void AccountDialog::slotPipeliningClicked()
+void AccountWidget::slotPipeliningClicked()
 {
     if (usePipeliningCheck->isChecked()) {
         KMessageBox::information(topLevelWidget(),
@@ -363,7 +346,7 @@ void AccountDialog::slotPipeliningClicked()
     }
 }
 
-void AccountDialog::slotPopEncryptionChanged(int id)
+void AccountWidget::slotPopEncryptionChanged(int id)
 {
     qCDebug(POP3RESOURCE_LOG) << "setting port";
     // adjust port
@@ -375,7 +358,7 @@ void AccountDialog::slotPopEncryptionChanged(int id)
     enablePopFeatures(); // removes invalid auth options from the combobox
 }
 
-void AccountDialog::slotCheckPopCapabilities()
+void AccountWidget::slotCheckPopCapabilities()
 {
     if (hostEdit->text().isEmpty()) {
         KMessageBox::sorry(this, i18n("Please specify a server and port on "
@@ -386,7 +369,7 @@ void AccountDialog::slotCheckPopCapabilities()
     mServerTest = new ServerTest(this);
     BusyCursorHelper *busyCursorHelper = new BusyCursorHelper(mServerTest);
     mServerTest->setProgressBar(checkCapabilitiesProgress);
-    mOkButton->setEnabled(false);
+    Q_EMIT okEnabled(false);
     checkCapabilitiesStack->setCurrentIndex(1);
     Transport::EnumEncryption::type encryptionType;
     if (encryptionSSL->isChecked()) {
@@ -397,17 +380,17 @@ void AccountDialog::slotCheckPopCapabilities()
     mServerTest->setPort(encryptionType, portEdit->value());
     mServerTest->setServer(hostEdit->text());
     mServerTest->setProtocol(QStringLiteral("pop"));
-    connect(mServerTest, &MailTransport::ServerTest::finished, this, &AccountDialog::slotPopCapabilities);
+    connect(mServerTest, &MailTransport::ServerTest::finished, this, &AccountWidget::slotPopCapabilities);
     connect(mServerTest, &MailTransport::ServerTest::finished, busyCursorHelper, &BusyCursorHelper::deleteLater);
 
     mServerTest->start();
     mServerTestFailed = false;
 }
 
-void AccountDialog::slotPopCapabilities(const QVector<int> &encryptionTypes)
+void AccountWidget::slotPopCapabilities(const QVector<int> &encryptionTypes)
 {
     checkCapabilitiesStack->setCurrentIndex(0);
-    mOkButton->setEnabled(true);
+    Q_EMIT okEnabled(true);
 
     // if both fail, popup a dialog
     if (!mServerTest->isNormalPossible() && !mServerTest->isSecurePossible()) {
@@ -430,7 +413,7 @@ void AccountDialog::slotPopCapabilities(const QVector<int> &encryptionTypes)
     checkHighest(encryptionButtonGroup);
 }
 
-void AccountDialog::enablePopFeatures()
+void AccountWidget::enablePopFeatures()
 {
     if (!mServerTest || mServerTestFailed) {
         return;
@@ -510,7 +493,7 @@ static void addAuthenticationItem(QComboBox *combo, int authenticationType)
                    QVariant(authenticationType));
 }
 
-void AccountDialog::populateDefaultAuthenticationOptions()
+void AccountWidget::populateDefaultAuthenticationOptions()
 {
     authCombo->clear();
     addAuthenticationItem(authCombo, Transport::EnumAuthenticationType::CLEAR);
@@ -523,22 +506,22 @@ void AccountDialog::populateDefaultAuthenticationOptions()
     addAuthenticationItem(authCombo, Transport::EnumAuthenticationType::APOP);
 }
 
-void AccountDialog::slotLeaveOnServerDaysChanged(int value)
+void AccountWidget::slotLeaveOnServerDaysChanged(int value)
 {
     leaveOnServerDaysSpin->setSuffix(i18np(" day", " days", value));
 }
 
-void AccountDialog::slotLeaveOnServerCountChanged(int value)
+void AccountWidget::slotLeaveOnServerCountChanged(int value)
 {
     leaveOnServerCountSpin->setSuffix(i18np(" message", " messages", value));
 }
 
-void AccountDialog::slotFilterOnServerSizeChanged(int value)
+void AccountWidget::slotFilterOnServerSizeChanged(int value)
 {
     filterOnServerSizeSpin->setSuffix(i18np(" byte", " bytes", value));
 }
 
-void AccountDialog::checkHighest(QButtonGroup *btnGroup)
+void AccountWidget::checkHighest(QButtonGroup *btnGroup)
 {
     QListIterator<QAbstractButton *> it(btnGroup->buttons());
     it.toBack();
@@ -551,17 +534,16 @@ void AccountDialog::checkHighest(QButtonGroup *btnGroup)
     }
 }
 
-void AccountDialog::slotAccepted()
+void AccountWidget::slotAccepted()
 {
     saveSettings();
     // Don't call accept() yet, saveSettings() triggers an asnychronous wallet operation,
     // which will call accept() when it is finished
 }
 
-void AccountDialog::saveSettings()
+void AccountWidget::saveSettings()
 {
-    mParentResource->setName(nameEdit->text());
-
+    Settings::self()->setName(nameEdit->text());
     Settings::self()->setIntervalCheckEnabled(intervalCheck->checkState() == Qt::Checked);
     Settings::self()->setIntervalCheckInterval(intervalSpin->value());
     Settings::self()->setHost(hostEdit->text().trimmed());
@@ -604,19 +586,15 @@ void AccountDialog::saveSettings()
             // we need to open the wallet
             qCDebug(POP3RESOURCE_LOG) << "we need to open the wallet";
             mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winId(),
-                                         Wallet::Asynchronous);
+                                         Wallet::Synchronous);
             if (mWallet) {
-                connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountDialog::walletOpenedForSaving);
-            } else {
-                accept();
+                walletOpenedForSaving(true);
             }
         }
-    } else {
-        accept();
     }
 }
 
-void AccountDialog::slotEnableLeaveOnServerDays(bool state)
+void AccountWidget::slotEnableLeaveOnServerDays(bool state)
 {
     if (state && !leaveOnServerDaysCheck->isEnabled()) {
         return;
@@ -624,7 +602,7 @@ void AccountDialog::slotEnableLeaveOnServerDays(bool state)
     leaveOnServerDaysSpin->setEnabled(state);
 }
 
-void AccountDialog::slotEnableLeaveOnServerCount(bool state)
+void AccountWidget::slotEnableLeaveOnServerCount(bool state)
 {
     if (state && !leaveOnServerCountCheck->isEnabled()) {
         return;
@@ -632,7 +610,7 @@ void AccountDialog::slotEnableLeaveOnServerCount(bool state)
     leaveOnServerCountSpin->setEnabled(state);
 }
 
-void AccountDialog::slotEnableLeaveOnServerSize(bool state)
+void AccountWidget::slotEnableLeaveOnServerSize(bool state)
 {
     if (state && !leaveOnServerSizeCheck->isEnabled()) {
         return;
@@ -640,18 +618,18 @@ void AccountDialog::slotEnableLeaveOnServerSize(bool state)
     leaveOnServerSizeSpin->setEnabled(state);
 }
 
-void AccountDialog::slotEnablePopInterval(bool state)
+void AccountWidget::slotEnablePopInterval(bool state)
 {
     intervalSpin->setEnabled(state);
     intervalLabel->setEnabled(state);
 }
 
-void AccountDialog::targetCollectionReceived(Akonadi::Collection::List collections)
+void AccountWidget::targetCollectionReceived(Akonadi::Collection::List collections)
 {
     folderRequester->setCollection(collections.first());
 }
 
-void AccountDialog::localFolderRequestJobFinished(KJob *job)
+void AccountWidget::localFolderRequestJobFinished(KJob *job)
 {
     if (!job->error()) {
         Collection targetCollection = SpecialMailCollections::self()->defaultCollection(SpecialMailCollections::Inbox);

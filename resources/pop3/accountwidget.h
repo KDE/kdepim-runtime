@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef _ACCOUNT_DIALOG_H_
-#define _ACCOUNT_DIALOG_H_
+#ifndef _ACCOUNT_WIDGET_H_
+#define _ACCOUNT_WIDGET_H_
 
 #include "ui_popsettings.h"
 
@@ -35,13 +35,19 @@ class Wallet;
 class POP3Resource;
 class KJob;
 
-class AccountDialog : public QDialog, private Ui::PopPage
+class AccountWidget : public QWidget, private Ui::PopPage
 {
     Q_OBJECT
 
 public:
-    AccountDialog(POP3Resource *parentResource, WId parentWindow);
-    ~AccountDialog() override;
+    AccountWidget(const QString &identifier, QWidget *parent);
+    ~AccountWidget() override;
+
+    void loadSettings();
+    void saveSettings();
+
+Q_SIGNALS:
+    void okEnabled(bool enabled);
 
 private Q_SLOTS:
     void slotEnablePopInterval(bool state);
@@ -65,21 +71,18 @@ private Q_SLOTS:
     void slotAccepted();
 private:
     void setupWidgets();
-    void loadSettings();
-    void saveSettings();
     void checkHighest(QButtonGroup *);
     void enablePopFeatures();
     void populateDefaultAuthenticationOptions();
 
 private:
-    POP3Resource *mParentResource = nullptr;
     QButtonGroup *encryptionButtonGroup = nullptr;
     MailTransport::ServerTest *mServerTest = nullptr;
     QRegExpValidator mValidator;
     bool mServerTestFailed = false;
     KWallet::Wallet *mWallet = nullptr;
     QString mInitalPassword;
-    QPushButton *mOkButton = nullptr;
+    QString mIdentifier;
 };
 
 #endif

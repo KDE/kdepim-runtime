@@ -43,22 +43,20 @@ Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
 Settings *Settings::self()
 {
-    if (!s_globalSettings->q) {
-        new Settings;
-        s_globalSettings->q->load();
-    }
+    Q_ASSERT_X(s_globalSettings->q, "Settings::self()", "You must create an instance first!");
     return s_globalSettings->q;
 }
 
-Settings::Settings()
+Settings::Settings(KSharedConfigPtr config)
+    : SettingsBase(config)
 {
     Q_ASSERT(!s_globalSettings->q);
     s_globalSettings->q = this;
-
     new SettingsAdaptor(this);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
                                                  QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
+
 
 void Settings::setWindowId(WId id)
 {
