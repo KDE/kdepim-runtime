@@ -33,7 +33,6 @@ public:
     void cleanup() override;
 
 public Q_SLOTS:
-    void configure(WId windowId) override;
     void aboutToQuit() override;
 
 protected:
@@ -59,6 +58,8 @@ protected:
     virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
 private Q_SLOTS:
+    void onReloadConfiguration();
+
     void onUpdateUsersJobFinished(KJob *);
     void onFoldersRequestJobFinished(KJob *);
     void onFoldersRequestDeltaJobFinished(KJob *);
@@ -83,6 +84,8 @@ private:
 
     Akonadi::Collection mResourceCollection;
     QMap<qlonglong, Akonadi::Collection> mStandardCollectionsMap;
+
+    bool mUseIncrementalUpdates = false;
 };
 
 #endif

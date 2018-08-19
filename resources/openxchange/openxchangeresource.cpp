@@ -19,7 +19,6 @@
 
 #include "openxchangeresource.h"
 
-#include "configdialog.h"
 #include "settingsadaptor.h"
 
 #include <cachepolicy.h>
@@ -252,9 +251,11 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     : ResourceBase(id)
 {
     // setup the resource
+    Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  Settings::self(), QDBusConnection::ExportAdaptors);
+    mUseIncrementalUpdates = Settings::self()->useIncrementalUpdates();
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -336,6 +337,8 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     if (Settings::self()->useIncrementalUpdates()) {
         syncCollectionsRemoteIdCache();
     }
+
+    connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &OpenXchangeResource::onReloadConfiguration);
 }
 
 OpenXchangeResource::~OpenXchangeResource()
@@ -356,40 +359,29 @@ void OpenXchangeResource::aboutToQuit()
 {
 }
 
-void OpenXchangeResource::configure(WId windowId)
+void OpenXchangeResource::onReloadConfiguration()
 {
-    const bool useIncrementalUpdates = Settings::self()->useIncrementalUpdates();
-
-    ConfigDialog dlg(windowId);
-    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("ox")));
-    if (dlg.exec()) {   //krazy:exclude=crashy
-        // if the user has changed the incremental update settings we have to do
-        // some additional initialization work
-        if (useIncrementalUpdates != Settings::self()->useIncrementalUpdates()) {
-            Settings::self()->setFoldersLastSync(0);
-            Settings::self()->setObjectsLastSync(QString());
-        }
-
-        Settings::self()->save();
-
-        clearCache();
-
-        QUrl baseUrl = QUrl::fromLocalFile(Settings::self()->baseUrl());
-        baseUrl.setUserName(Settings::self()->username());
-        baseUrl.setPassword(Settings::self()->password());
-        OXA::DavManager::self()->setBaseUrl(baseUrl);
-
-        // To find out the correct ACLs we need the uid of the user that
-        // logs in. For loading events and tasks we need a complete mapping of
-        // user id to name as well, so the mapping must be loaded as well.
-        // Both is done by UpdateUsersJob, so trigger it here before we continue
-        // with synchronization in onUpdateUsersJobFinished.
-        OXA::UpdateUsersJob *job = new OXA::UpdateUsersJob(this);
-        connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onUpdateUsersJobFinished);
-        job->start();
-    } else {
-        Q_EMIT configurationDialogRejected();
+    if (mUseIncrementalUpdates != Settings::self()->useIncrementalUpdates()) {
+        mUseIncrementalUpdates = Settings::self()->useIncrementalUpdates();
+        Settings::self()->setFoldersLastSync(0);
+        Settings::self()->setObjectsLastSync(QString());
     }
+
+    clearCache();
+
+    QUrl baseUrl = QUrl::fromLocalFile(Settings::self()->baseUrl());
+    baseUrl.setUserName(Settings::self()->username());
+    baseUrl.setPassword(Settings::self()->password());
+    OXA::DavManager::self()->setBaseUrl(baseUrl);
+
+    // To find out the correct ACLs we need the uid of the user that
+    // logs in. For loading events and tasks we need a complete mapping of
+    // user id to name as well, so the mapping must be loaded as well.
+    // Both is done by UpdateUsersJob, so trigger it here before we continue
+    // with synchronization in onUpdateUsersJobFinished.
+    OXA::UpdateUsersJob *job = new OXA::UpdateUsersJob(this);
+    connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onUpdateUsersJobFinished);
+    job->start();
 }
 
 void OpenXchangeResource::retrieveCollections()

@@ -1,8 +1,12 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_openxchange_resource\")
 
+set(openxchange_common_SRCS)
+kconfig_add_kcfg_files(openxchange_common_SRCS settings.kcfgc)    
+
+################################ Resource ##################################
+
 set( openxchangeresource_SRCS
-  oxa/connectiontestjob.cpp
   oxa/contactutils.cpp
   oxa/davmanager.cpp
   oxa/davutils.cpp
@@ -33,15 +37,13 @@ set( openxchangeresource_SRCS
   oxa/useridrequestjob.cpp
   oxa/usersrequestjob.cpp
 
-  configdialog.cpp
   openxchangeresource.cpp
-)
 
-ki18n_wrap_ui( openxchangeresource_SRCS configdialog.ui )
+  ${openxchange_common_SRCS}
+)
 
 install( FILES openxchangeresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-kconfig_add_kcfg_files(openxchangeresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/openxchangeresource.kcfg org.kde.Akonadi.OpenXchange.Settings)
 qt5_add_dbus_adaptor(openxchangeresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.OpenXchange.Settings.xml settings.h Settings
@@ -61,13 +63,36 @@ target_link_libraries(akonadi_openxchange_resource
     KF5::AkonadiCore
     KF5::Contacts
     KF5::KIOCore
-    KF5::CalendarCore 
+    KF5::CalendarCore
     KF5::AkonadiContact
     KF5::I18n
-    KF5::Completion
-    KF5::WindowSystem
 )
 
 install(TARGETS akonadi_openxchange_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory(icons)
+
+################################### Config plugin ############################
+
+set(openxchangeconfig_SRCS
+  configwidget.cpp
+  openxchangeconfig.cpp
+  oxa/connectiontestjob.cpp
+  ${openxchange_common_SRCS}
+)
+
+ki18n_wrap_ui(openxchangeconfig_SRCS configwidget.ui)
+
+kcoreaddons_add_plugin(openxchangeconfig
+    SOURCES ${openxchangeconfig_SRCS}
+    JSON "openxchangeconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
+
+target_link_libraries(openxchangeconfig
+    KF5::AkonadiCore
+    KF5::I18n
+    KF5::Completion
+    KF5::ConfigWidgets
+    KF5::KIOCore
+)

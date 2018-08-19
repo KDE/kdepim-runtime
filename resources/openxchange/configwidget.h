@@ -17,24 +17,27 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef CONFIGWIDGET_H
+#define CONFIGWIDGET_H
 
-#include <QDialog>
+#include <QWidget>
 
 class KConfigDialogManager;
 class KJob;
 class KLineEdit;
-
-class ConfigDialog : public QDialog
+class QPushButton;
+class Settings;
+class ConfigWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ConfigDialog(WId windowId);
+    explicit ConfigWidget(Settings *settings, QWidget *parent);
+
+    void load();
+    void save() const;
 
 private Q_SLOTS:
-    void save();
     void updateButtonState();
     void checkConnection();
     void checkConnectionJobFinished(KJob *);

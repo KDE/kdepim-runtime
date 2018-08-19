@@ -17,42 +17,25 @@
     02110-1301, USA.
 */
 
-#include "configdialog.h"
+#include "configwidget.h"
 
 #include "oxa/connectiontestjob.h"
 #include "settings.h"
-#include "ui_configdialog.h"
+#include "ui_configwidget.h"
 
 #include <kconfigdialogmanager.h>
 #include <kmessagebox.h>
-#include <kwindowsystem.h>
+
 #include <KLocalizedString>
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 
-ConfigDialog::ConfigDialog(WId windowId)
-    : QDialog()
+ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)
+    : QWidget(parent)
 {
-    if (windowId) {
-        KWindowSystem::setMainWindow(this, windowId);
-    }
-
-    QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    mainLayout->addWidget(mainWidget);
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    okButton->setDefault(true);
-    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
-    mainLayout->addWidget(buttonBox);
-
-    setWindowTitle(i18n("Open-Xchange Configuration"));
-
-    Ui::ConfigDialog ui;
-    ui.setupUi(mainWidget);
+    Ui::ConfigWidget ui;
+    ui.setupUi(this);
 
     ui.kcfg_BaseUrl->setWhatsThis(i18n("Enter the http or https URL to your Open-Xchange installation here."));
     ui.kcfg_Username->setWhatsThis(i18n("Enter the username of your Open-Xchange account here."));
@@ -63,39 +46,41 @@ ConfigDialog::ConfigDialog(WId windowId)
     mPasswordEdit = ui.kcfg_Password;
     mCheckConnectionButton = ui.checkConnectionButton;
 
-    mManager = new KConfigDialogManager(this, Settings::self());
-    mManager->updateWidgets();
+    mManager = new KConfigDialogManager(this, settings);
 
-    connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
-    connect(mServerEdit, &KLineEdit::textChanged, this, &ConfigDialog::updateButtonState);
-    connect(mUserEdit, &KLineEdit::textChanged, this, &ConfigDialog::updateButtonState);
-    connect(mCheckConnectionButton, &QPushButton::clicked, this, &ConfigDialog::checkConnection);
+    connect(mServerEdit, &KLineEdit::textChanged, this, &ConfigWidget::updateButtonState);
+    connect(mUserEdit, &KLineEdit::textChanged, this, &ConfigWidget::updateButtonState);
+    connect(mCheckConnectionButton, &QPushButton::clicked, this, &ConfigWidget::checkConnection);
 
     resize(QSize(410, 200));
 }
 
-void ConfigDialog::save()
+void ConfigWidget::load()
 {
-    mManager->updateSettings();
-    Settings::self()->save();
+    mManager->updateWidgets();
 }
 
-void ConfigDialog::updateButtonState()
+void ConfigWidget::save() const
+{
+    mManager->updateSettings();
+}
+
+void ConfigWidget::updateButtonState()
 {
     mCheckConnectionButton->setEnabled(!mServerEdit->text().isEmpty() && !mUserEdit->text().isEmpty());
 }
 
-void ConfigDialog::checkConnection()
+void ConfigWidget::checkConnection()
 {
     OXA::ConnectionTestJob *job = new OXA::ConnectionTestJob(mServerEdit->text(), mUserEdit->text(),
                                                              mPasswordEdit->text(), this);
-    connect(job, &OXA::ConnectionTestJob::result, this, &ConfigDialog::checkConnectionJobFinished);
+    connect(job, &OXA::ConnectionTestJob::result, this, &ConfigWidget::checkConnectionJobFinished);
     job->start();
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
 }
 
-void ConfigDialog::checkConnectionJobFinished(KJob *job)
+void ConfigWidget::checkConnectionJobFinished(KJob *job)
 {
     QApplication::restoreOverrideCursor();
 
