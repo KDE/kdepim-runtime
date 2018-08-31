@@ -29,7 +29,7 @@ class Q_DECL_EXPORT FakeEwsServerThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit FakeEwsServerThread(QObject *parent = 0);
+    explicit FakeEwsServerThread(QObject *parent = nullptr);
     ~FakeEwsServerThread() override;
 
 //    FakeEwsServer *server() const;
