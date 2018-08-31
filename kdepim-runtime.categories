@@ -21,6 +21,7 @@ org.kde.pim.fbresource facebook resource (kdepim-runtime) IDENTIFIER [FBRESOURCE
 org.kde.pim.pimkolab pimkolab lib (kdepim-runtime) IDENTIFIER [PIMKOLAB_LOG]
 org.kde.pim.ews exchange ews resource (kdepim-runtime) IDENTIFIER [EWSRES_LOG]
 org.kde.pim.ews.agentif exchange ews agent (kdepim-runtime) IDENTIFIER [EWSRES_AGENTIF_LOG]
+org.kde.pim.ews.mta ews mta (kdepim-runtime) IDENTIFIER [EWSRES_MTA_LOG]
 org.kde.pim.ews.client ews client (kdepim-runtime) IDENTIFIER [EWSCLI_LOG]
 org.kde.pim.ews.client.proto ews client proto (kdepim-runtime) IDENTIFIER [EWSCLI_PROTO_LOG]
 org.kde.pim.ews.client.request ews client request (kdepim-runtime) IDENTIFIER [EWSCLI_REQUEST_LOG]

@@ -31,6 +31,7 @@
 #include <AkonadiWidgets/AgentInstanceWidget>
 
 #include "ewsmtaresource.h"
+#include "ewsres_mta_debug.h"
 #include "ewsmtasettings.h"
 #include "ui_ewsmtaconfigdialog.h"
 
@@ -80,8 +81,12 @@ EwsMtaConfigDialog::~EwsMtaConfigDialog()
 
 void EwsMtaConfigDialog::save()
 {
-    EwsMtaSettings::setEwsResource(mUi->resourceWidget->selectedAgentInstances().first().identifier());
-    mParentResource->setName(mUi->accountName->text());
-    EwsMtaSettings::self()->save();
+    if (!mUi->resourceWidget->selectedAgentInstances().isEmpty()) {
+        EwsMtaSettings::setEwsResource(mUi->resourceWidget->selectedAgentInstances().first().identifier());
+        mParentResource->setName(mUi->accountName->text());
+        EwsMtaSettings::self()->save();
+    } else {
+        qCWarning(EWSRES_MTA_LOG) << "Any agent instance selected";
+    }
 }
 

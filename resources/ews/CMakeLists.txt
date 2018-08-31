@@ -124,6 +124,11 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
     ewsmtaconfigdialog.cpp
     ewsmtaresource.cpp)
 
+  ecm_qt_declare_logging_category(ewsmtaresource_SRCS
+     HEADER ewsres_mta_debug.h
+     IDENTIFIER EWSRES_MTA_LOG
+     CATEGORY_NAME org.kde.pim.ews.mta)
+
   ki18n_wrap_ui(ewsmtaresource_SRCS ewsmtaconfigdialog.ui)
 
   kconfig_add_kcfg_files(ewsmtaresource_SRCS ewsmtasettings.kcfgc)
