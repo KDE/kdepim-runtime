@@ -42,7 +42,7 @@ GmailLinkItemsTask::GmailLinkItemsTask(GmailRetrieveItemsTask *retrieveTask, Gma
 {
     connect(retrieveTask, SIGNAL(linkItem(QString,QVector<QByteArray>)),
             this, SLOT(linkItem(QString,QVector<QByteArray>)));
-    connect(retrieveTask, SIGNAL(destroyed(QObject *)),
+    connect(retrieveTask, SIGNAL(destroyed(QObject*)),
             this, SLOT(onRetrievalDone()));
 }
 
@@ -109,8 +109,8 @@ void GmailLinkItemsTask::resolveNextLabel()
         = new Akonadi::CollectionPathResolver(realCollectionName, rootCollection, this);
     resolver->setProperty(COLLECTION_NAME_PROPERTY, realCollectionName);
     resolver->setProperty(LABEL_PROPERTY, label);
-    connect(resolver, SIGNAL(finished(KJob *)),
-            this, SLOT(onLabelResolved(KJob *)));
+    connect(resolver, SIGNAL(finished(KJob*)),
+            this, SLOT(onLabelResolved(KJob*)));
 }
 
 // Step 2: Continue resolving until all is resolved, then go to step 3
@@ -153,8 +153,8 @@ void GmailLinkItemsTask::retrieveVirtualReferences()
     fetchJob->fetchScope().setFetchModificationTime(false);
     fetchJob->fetchScope().setFetchRemoteIdentification(true);
     fetchJob->fetchScope().setFetchVirtualReferences(true);
-    connect(fetchJob, SIGNAL(finished(KJob *)),
-            this, SLOT(onVirtualReferencesRetrieved(KJob *)));
+    connect(fetchJob, SIGNAL(finished(KJob*)),
+            this, SLOT(onVirtualReferencesRetrieved(KJob*)));
 }
 
 // Step 4: Compare existing virtual references and our current labels, link and

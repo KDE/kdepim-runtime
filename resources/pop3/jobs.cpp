@@ -33,7 +33,7 @@ POPSession::POPSession(const QString &password)
     : mCurrentJob(nullptr)
     , mPassword(password)
 {
-    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave *,int,QString)), this, SLOT(slotSlaveError(KIO::Slave *,int,QString)));
+    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
 }
 
 POPSession::~POPSession()
@@ -276,7 +276,7 @@ LoginJob::LoginJob(POPSession *popSession)
 void LoginJob::start()
 {
     // This will create a connected slave, which means it will also try to login.
-    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave *)), this, SLOT(slaveConnected(KIO::Slave *)));
+    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave*)), this, SLOT(slaveConnected(KIO::Slave*)));
     if (!mPOPSession->connectSlave()) {
         setError(KJob::UserDefinedError);
         setErrorText(i18n("Unable to create POP3 slave, aborting mail check."));

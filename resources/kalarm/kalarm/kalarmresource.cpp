@@ -58,7 +58,7 @@ KAlarmResource::KAlarmResource(const QString &id)
     connect(mSettings, &Settings::configChanged, this, &KAlarmResource::settingsChanged);
 
     // Start a job to fetch the collection attributes
-    fetchCollection(SLOT(collectionFetchResult(KJob *)));
+    fetchCollection(SLOT(collectionFetchResult(KJob*)));
 }
 
 KAlarmResource::~KAlarmResource()
@@ -114,7 +114,7 @@ void KAlarmResource::retrieveCollections()
     qCDebug(KALARMRESOURCE_LOG);
     mSupportedMimetypes = mSettings->alarmTypes();
     ICalResourceBase::retrieveCollections();
-    fetchCollection(SLOT(collectionFetchResult(KJob *)));
+    fetchCollection(SLOT(collectionFetchResult(KJob*)));
 }
 
 /******************************************************************************
@@ -215,7 +215,7 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
         if (c.isValid()) {
             KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
         } else {
-            fetchCollection(SLOT(setCompatibility(KJob *)));
+            fetchCollection(SLOT(setCompatibility(KJob*)));
         }
     }
 }
@@ -303,7 +303,7 @@ void KAlarmResource::settingsChanged()
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
         qCDebug(KALARMRESOURCE_LOG) << "Update storage format";
-        fetchCollection(SLOT(updateFormat(KJob *)));
+        fetchCollection(SLOT(updateFormat(KJob*)));
     }
 }
 
@@ -507,7 +507,7 @@ CollectionFetchJob *KAlarmResource::fetchCollection(const char *slot)
 {
     CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
-    connect(job, SIGNAL(result(KJob *)), slot);
+    connect(job, SIGNAL(result(KJob*)), slot);
     return job;
 }
 

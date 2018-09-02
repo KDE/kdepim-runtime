@@ -120,7 +120,7 @@ void GmailResource::retrieveCollections()
 
     ResourceTask *task = new GmailRetrieveCollectionsTask(createResourceState(TaskArguments()), this);
     if (settings()->trashCollection() == -1) {
-        connect(task, SIGNAL(destroyed(QObject *)),
+        connect(task, SIGNAL(destroyed(QObject*)),
                 this, SLOT(updateTrashFolder()));
     }
     task->start(m_pool);
@@ -171,8 +171,8 @@ void GmailResource::retrieveItems(const Akonadi::Collection &col)
     if (col.isVirtual()) {
         Akonadi::CollectionFetchJob *fetch
             = new Akonadi::CollectionFetchJob(allMailCollection(), Akonadi::CollectionFetchJob::Base, this);
-        connect(fetch, SIGNAL(finished(KJob *)),
-                this, SLOT(onRetrieveItemsCollectionRetrieved(KJob *)));
+        connect(fetch, SIGNAL(finished(KJob*)),
+                this, SLOT(onRetrieveItemsCollectionRetrieved(KJob*)));
         return;
     }
 

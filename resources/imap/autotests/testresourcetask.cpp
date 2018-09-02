@@ -133,12 +133,12 @@ private Q_SLOTS:
         }
 
         if (shouldRequestSession) {
-            QSignalSpy requestSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+            QSignalSpy requestSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
             pool.requestSession();
             QTRY_COMPARE(requestSpy.count(), 1);
         }
 
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
         DummyResourceTask *task = new DummyResourceTask(actionIfNoSession, state);
         task->start(&pool);
 
