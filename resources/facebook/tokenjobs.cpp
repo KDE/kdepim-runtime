@@ -37,6 +37,7 @@
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineCookieStore>
+#include <QWebEngineCertificateError>
 
 #include <KWallet>
 
