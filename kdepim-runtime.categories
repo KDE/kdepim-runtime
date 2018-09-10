@@ -8,8 +8,8 @@ org.kde.pim.mboxresource mbox resource (kdepim-runtime) IDENTIFIER [MBOXRESOURCE
 org.kde.pim.birthdays birthdays resource (kdepim-runtime) IDENTIFIER [BIRTHDAYS_LOG]
 org.kde.pim.davresource dav resource (kdepim-runtime) IDENTIFIER [DAVRESOURCE_LOG]
 org.kde.pim.kolabresource kolab resource (kdepim-runtime) IDENTIFIER [KOLABRESOURCE_LOG]
-org.kde.pim.mixedmaildirresource mixedmaildir resource (kdepim-runtime)
-org.kde.pim.mixedmaildir mixed maildir resource (kdepim-runtime)
+org.kde.pim.mixedmaildirresource mixedmaildir resource (kdepim-runtime) IDENTIFIER [MIXEDMAILDIRRESOURCE_LOG]
+org.kde.pim.mixedmaildir mixed maildir resource (kdepim-runtime) IDENTIFIER [MIXEDMAILDIR_LOG]
 org.kde.pim.kalarmresource kalarm file resource (kdepim-runtime) IDENTIFIER [KALARMRESOURCE_LOG]
 org.kde.pim.kalarmdirresource kalarm directory resource (kdepim-runtime) IDENTIFIER [KALARMDIRRESOURCE_LOG]
 org.kde.pim.pop3resource pop3 resource (kdepim-runtime) IDENTIFIER [POP3RESOURCE_LOG]
