@@ -48,7 +48,6 @@
 #include "kolabchangetagtask.h"
 #include "kolabremovetagtask.h"
 #include "kolabretrievecollectionstask.h"
-#include "kolabretrievetagstask.h"
 
 KolabResource::KolabResource(const QString &id)
     : ImapResourceBase(id)

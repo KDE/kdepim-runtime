@@ -38,7 +38,6 @@
 #include <QWebEngineProfile>
 #include <QWebEngineCertificateError>
 #include <QWebEngineCookieStore>
-#include <QWebEngineCertificateError>
 
 #include <KWallet>
 
@@ -251,7 +250,7 @@ private Q_SLOTS:
         if (newUrl.path() == QLatin1String("/login.php")) {
             if (!isVisible() && !mShowTimer->isActive()) {
                 // If we get stuck on login.php for at least a second, then it means
-                // facebook wants user login, otherwise we are just immediatelly redirected
+                // facebook wants user login, otherwise we are just immediately redirected
                 // to login_success.html, which causes the webview to just flash on the
                 // screen, which is not nice, and can be confusing if it happens randomly
                 // when the resource is syncing in the background

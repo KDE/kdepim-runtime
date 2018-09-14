@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef GMAILCHANGEGMLABELTASK_H
-#define GMAILCHANGEGMLABELTASK_H
+#ifndef GMAILCHANGEITEMSLABELSTASK_H
+#define GMAILCHANGEITEMSLABELSTASK_H
 
 #include <imap/changeitemsflagstask.h>
 
@@ -37,4 +37,4 @@ protected:
     void triggerRemoveFlagsJob(KIMAP::Session *session);
 };
 
-#endif // GMAILCHANGEGMLABELTASK_H
+#endif // GMAILCHANGEITEMSLABELSTASK_H

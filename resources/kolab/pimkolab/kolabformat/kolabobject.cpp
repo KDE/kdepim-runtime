@@ -191,7 +191,7 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
         path << QUrl::toPercentEncoding(mb);
     }
     path << QByteArray::number(member.uid);
-    url.setEncodedPath("/" + join(path, "/"));
+    url.setEncodedPath('/' + join(path, "/"));
 
     QList<QPair<QByteArray, QByteArray> > queryItems;
     queryItems.append(qMakePair(QStringLiteral("message-id").toLatin1(), QUrl::toPercentEncoding(member.messageId)));

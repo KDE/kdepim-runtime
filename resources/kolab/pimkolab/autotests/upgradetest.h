@@ -23,8 +23,8 @@
 /**
  * Test format upgrade from v2 to v3
  *
- * - Parse using v2 implementeation
- * - Serialize and reparse using v3 implementeation
+ * - Parse using v2 implementation
+ * - Serialize and reparse using v3 implementation
  * - Compare results
  *
  * This ensures that all properties which are interpreted by the v2 implementation can be serialized and deserialized by the v3 implementation.

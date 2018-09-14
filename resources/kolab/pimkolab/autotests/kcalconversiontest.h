@@ -18,8 +18,8 @@
 #ifndef KCALCONVERSIONTEST_H
 #define KCALCONVERSIONTEST_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
+#include <QObject>
+#include <QtTest>
 
 class KCalConversionTest : public QObject
 {

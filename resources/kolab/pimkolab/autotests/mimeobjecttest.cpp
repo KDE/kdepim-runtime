@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QTest>
 #include "mimeobjecttest.h"
+#include <QTest>
 #include "testutils.h"
 #include "kolabformat/mimeobject.h"
 #include "conversion/commonconversion.h"

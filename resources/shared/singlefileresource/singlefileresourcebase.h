@@ -112,7 +112,7 @@ protected:
      * when it actually needs to read the file.
      *
      * The default implementation will just call readFromFile( fileName ), so
-     * implementing resources will have to explictly reimplement this method to
+     * implementing resources will have to explicitly reimplement this method to
      * actually get any profit of this.
      *
      * @p fileName This will always be a path to a local file.

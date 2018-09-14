@@ -115,7 +115,7 @@ static std::string getProductId(const std::string &pId)
     if (pId.empty()) {
         return LIBKOLAB_LIB_VERSION_STRING;
     }
-    return pId + " " + LIBKOLAB_LIB_VERSION_STRING;
+    return pId + ' ' + LIBKOLAB_LIB_VERSION_STRING;
 }
 
 namespace Kolab {

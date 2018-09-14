@@ -31,8 +31,8 @@
     your version.
 */
 
-#ifndef KOLABV2BASE_H
-#define KOLABV2BASE_H
+#ifndef KOLABV2_KOLABBASE_H
+#define KOLABV2_KOLABBASE_H
 
 #include <kcalcore/incidence.h>
 
@@ -179,4 +179,4 @@ protected:
 };
 }
 
-#endif // KOLABBASE_H
+#endif // KOLABV2_KOLABBASE_H

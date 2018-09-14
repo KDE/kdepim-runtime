@@ -17,8 +17,8 @@
    Boston, MA 02110-1301, USA.
 */
 
-#include "newmailnotifiershowmessagejob.h"
 #include "specialnotifierjob.h"
+#include "newmailnotifiershowmessagejob.h"
 #include "newmailnotifieragentsettings.h"
 
 #include <Akonadi/Contact/ContactSearchJob>

@@ -43,6 +43,7 @@
  */
 
 #include <config.h>
+#include "plugin_common.h"
 #ifndef macintosh
 #ifdef WIN32
 # include <winsock2.h>
@@ -70,8 +71,6 @@
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
-
-#include "plugin_common.h"
 
 /* translate IPv4 mapped IPv6 address to IPv4 address */
 static void sockaddr_unmapped(
