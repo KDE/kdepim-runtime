@@ -287,7 +287,7 @@ void MailDispatcherAgent::sendResult(KJob *job)
         KNotification *notify = new KNotification(QStringLiteral("sendingfailed"));
         notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
         notify->setTitle(i18nc("Notification title when email sending failed", "E-Mail Sending Failed"));
-        notify->setText(job->errorString());
+        notify->setText(job->errorString().toHtmlEscaped());
         notify->sendEvent();
 
         mErrorOccurred = true;
