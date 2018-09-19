@@ -142,9 +142,6 @@ find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
-add_definitions(-DQT_NO_CAST_FROM_ASCII)
-add_definitions(-DQT_NO_CAST_TO_ASCII)
-add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
 add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
 #add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
 
