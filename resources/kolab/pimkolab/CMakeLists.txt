@@ -1,7 +1,3 @@
-remove_definitions(
-                   -DQT_NO_CAST_FROM_ASCII
-)
-
 set(Libkolab_MODULE_DIR ${Libkolab_SOURCE_DIR}/cmake/modules)
 set(CMAKE_MODULE_PATH ${Libkolab_MODULE_DIR})
 
