@@ -1,6 +1,3 @@
-#REMOVE IT
-remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
-
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/
 )

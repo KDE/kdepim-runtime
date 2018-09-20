@@ -87,7 +87,7 @@ KMigratorBase::MigrationState KMigratorBase::migrationState(const QString &ident
     KConfigGroup cfg(KSharedConfig::openConfig(), QStringLiteral("Resource ") + identifier);
     QMetaEnum e = metaObject()->enumerator(metaObject()->indexOfEnumerator("MigrationState"));
     const QString s = cfg.readEntry("MigrationState", e.valueToKey(None));
-    MigrationState state = (MigrationState)e.keyToValue(s.toLatin1());
+    MigrationState state = (MigrationState)e.keyToValue(s.toLatin1().constData());
 
     if (state != None) {
         const QString resId = cfg.readEntry("ResourceIdentifier", "");
