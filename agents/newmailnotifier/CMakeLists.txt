@@ -2,9 +2,6 @@
 include_directories(${kdepim-runtime_BINARY_DIR})
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_newmailnotifier_agent\")
 
-add_definitions( -DQT_NO_CAST_FROM_ASCII )
-add_definitions( -DQT_NO_CAST_TO_ASCII )
-
 set(newmailnotifieragent_SRCS
   newmailnotifiersettingsdialog.cpp
   newmailnotifieragent.cpp
