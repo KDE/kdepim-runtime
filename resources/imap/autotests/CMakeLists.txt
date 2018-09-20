@@ -11,7 +11,6 @@ include(ECMMarkAsTest)
 
 find_package(Qt5Test CONFIG REQUIRED)
 
-remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 MACRO(IMAP_RESOURCE_UNIT_TESTS)
   FOREACH(_testname ${ARGN})
