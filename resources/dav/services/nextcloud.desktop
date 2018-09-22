@@ -12,6 +12,7 @@ Name[pt_BR]=Nextcloud
 Name[sv]=Nextcloud
 Name[uk]=Nextcloud
 Name[x-test]=xxNextcloudxx
+Name[zh_CN]=NextCloud
 Name[zh_TW]=Nextcloud
 Type=Service
 X-KDE-ServiceTypes=DavGroupwareProvider
