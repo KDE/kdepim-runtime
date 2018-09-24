@@ -149,6 +149,19 @@ void SendJob::doTraditionalTransport()
     if (message->removeHeader("X-KMail-Dictionary")) {
         needAssemble = true;
     }
+    if (message->removeHeader("X-KMail-Transport")) {
+        needAssemble = true;
+    }
+    if (message->removeHeader("X-KMail-Fcc")) {
+        needAssemble = true;
+    }
+    if (message->removeHeader("X-KMail-Identity-Name")) {
+        needAssemble = true;
+    }    
+    if (message->removeHeader("X-KMail-Transport-Name")) {
+        needAssemble = true;
+    }
+
 
     if (needAssemble) {
         message->assemble();
