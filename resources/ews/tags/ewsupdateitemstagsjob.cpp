@@ -21,6 +21,7 @@
 
 #include <AkonadiCore/Tag>
 #include <AkonadiCore/TagFetchJob>
+#include <AkonadiCore/TagFetchScope>
 #include <AkonadiCore/TagAttribute>
 #include <AkonadiCore/AttributeFactory>
 
@@ -64,6 +65,7 @@ void EwsUpdateItemsTagsJob::start()
 
     if (!unknownTags.empty()) {
         TagFetchJob *job = new TagFetchJob(unknownTags, this);
+        job->fetchScope().setFetchRemoteId(true);
         connect(job, &TagFetchJob::result, this, &EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched);
     } else {
         doUpdateItemsTags();
