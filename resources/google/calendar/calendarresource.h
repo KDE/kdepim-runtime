@@ -24,7 +24,9 @@
 #include <AkonadiCore/Collection>
 #include <Akonadi/Calendar/FreeBusyProviderBase>
 
-class CalendarResource : public GoogleResource, public Akonadi::FreeBusyProviderBase
+class CalendarResource : public GoogleResource
+                       , public Akonadi::AgentBase::ObserverV2
+                       , public Akonadi::FreeBusyProviderBase
 {
     Q_OBJECT
 public:
@@ -32,7 +34,7 @@ public:
     ~CalendarResource();
 
 public:
-    using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual
+    using Akonadi::AgentBase::ObserverV2::collectionChanged; // So we don't trigger -Woverloaded-virtual
     GoogleSettings *settings() const override;
     QList< QUrl > scopes() const override;
 

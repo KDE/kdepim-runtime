@@ -40,7 +40,7 @@ class Job;
 
 class GoogleSettings;
 
-class GoogleResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
+class GoogleResource : public Akonadi::ResourceBase
 {
     Q_OBJECT
 
@@ -88,6 +88,16 @@ protected:
             return false;
         }
 
+        return canPerformTask();
+    }
+
+    template<typename T>
+    bool canPerformTask(const Akonadi::Item::List &items, const QString &mimeType = {}) {
+        for (const auto &item : items) {
+            if (!canPerformTask<T>(item, mimeType)) {
+                return false;
+            }
+        }
         return canPerformTask();
     }
 

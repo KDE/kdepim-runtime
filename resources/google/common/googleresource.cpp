@@ -39,7 +39,6 @@ using namespace Akonadi;
 
 GoogleResource::GoogleResource(const QString &id)
     : ResourceBase(id)
-    , AgentBase::ObserverV2()
     , m_isConfiguring(false)
 {
     connect(this, &GoogleResource::abortRequested, this, &GoogleResource::slotAbortRequested);

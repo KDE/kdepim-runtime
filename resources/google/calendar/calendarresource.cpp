@@ -80,6 +80,8 @@ using namespace KGAPI2;
 
 CalendarResource::CalendarResource(const QString &id)
     : GoogleResource(id)
+    , Akonadi::AgentBase::ObserverV2()
+    , Akonadi::FreeBusyProviderBase()
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
     updateResourceName();

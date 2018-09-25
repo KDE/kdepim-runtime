@@ -30,11 +30,12 @@ class Job;
 class KJob;
 
 class ContactsResource : public GoogleResource
+                       , public Akonadi::AgentBase::ObserverV4
 {
     Q_OBJECT
 
 public:
-    using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual
+    using Akonadi::AgentBase::ObserverV4::collectionChanged; // So we don't trigger -Woverloaded-virtual
     explicit ContactsResource(const QString &id);
 
     ~ContactsResource();
@@ -46,36 +47,27 @@ protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
     virtual void retrieveContactsPhotos(const QVariant &argument);
+    void retrieveTags() override;
 
-    void itemRemoved(const Akonadi::Item &item) override;
+    void itemsRemoved(const Akonadi::Item::List &item) override;
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
-    void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
-    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override;
 
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionChanged(const Akonadi::Collection &collection) override;
-    void collectionRemoved(const Akonadi::Collection &collection) override;
+    void tagAdded(const Akonadi::Tag &tag) override;
+    void tagRemoved(const Akonadi::Tag &tag) override;
+    void itemsTagsChanged(const Akonadi::Item::List &items,
+                          const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
 
-    void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
-    void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
 
     void slotItemsRetrieved(KGAPI2::Job *job);
-    void slotCollectionsRetrieved(KGAPI2::Job *job);
 
     void slotUpdatePhotosItemsRetrieved(KJob *job);
     void slotUpdatePhotoFinished(KGAPI2::Job *job, const KGAPI2::ContactPtr &contact);
-
-    void slotCreateJobFinished(KGAPI2::Job *job);
 
     GoogleSettings *settings() const override;
     int runConfigurationDialog(WId windowId) override;
     void updateResourceName() override;
     QList< QUrl > scopes() const override;
-
-private:
-
-    QMap<QString, Akonadi::Collection> m_collections;
-    Akonadi::Collection m_rootCollection;
 };
 
 #endif // CONTACTSRESOURCE_H
