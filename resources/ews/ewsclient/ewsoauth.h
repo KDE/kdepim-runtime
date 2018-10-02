@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QScopedPointer>
 
+class QWidget;
 class EwsOAuthPrivate;
 
 class EwsOAuth : public QObject
@@ -42,6 +43,8 @@ public:
     void authenticate();
     QString token() const;
     State state() const;
+
+    void setParentWindow(QWidget *w);
 Q_SIGNALS:
     void granted();
     void error(const QString &error, const QString &errorDescription, const QUrl &uri);

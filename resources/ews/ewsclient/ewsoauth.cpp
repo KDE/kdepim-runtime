@@ -109,6 +109,7 @@ public:
     const QString mEmail;
     const QString mRedirectUri;
     EwsOAuth::State mState;
+    QWidget *mParentWindow;
     QPointer<QDialog> mWebDialog;
 
     EwsOAuth *q_ptr = nullptr;
@@ -198,7 +199,7 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
 {
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Launching browser for authentication");
 
-    mWebDialog = new QDialog(nullptr);
+    mWebDialog = new QDialog(mParentWindow);
     mWebDialog->setObjectName(QStringLiteral("Akonadi EWS Resource - Authentication"));
     mWebDialog->setWindowIcon(QIcon("akonadi-ews"));
     mWebDialog->resize(400, 500);
@@ -277,6 +278,13 @@ EwsOAuth::State EwsOAuth::state() const
     Q_D(const EwsOAuth);
 
     return d->mState;
+}
+
+void EwsOAuth::setParentWindow(QWidget *window)
+{
+    Q_D(EwsOAuth);
+
+    d->mParentWindow = window;
 }
 
 #include "ewsoauth.moc"

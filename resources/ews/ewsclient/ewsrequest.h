@@ -33,6 +33,8 @@
 #include "ewsserverversion.h"
 #include "ewstypes.h"
 
+class QWidget;
+
 class EwsRequest : public EwsJob
 {
     Q_OBJECT
@@ -79,6 +81,7 @@ public:
     }
 
     void dump() const;
+    void setParentWindow(QWidget *w);
 
 protected:
     typedef std::function<bool(QXmlStreamReader &reader)> ContentReaderFn;
@@ -109,6 +112,7 @@ private:
     QString mBody;
     EwsClient &mClient;
     EwsServerVersion mServerVersion;
+    QWidget *mParentWindow;
 };
 
 #endif

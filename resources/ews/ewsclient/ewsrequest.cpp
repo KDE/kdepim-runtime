@@ -29,7 +29,7 @@
 #endif
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
-    : EwsJob(parent), mClient(client), mServerVersion(EwsServerVersion::ewsVersion2007Sp1)
+    : EwsJob(parent), mClient(client), mServerVersion(EwsServerVersion::ewsVersion2007Sp1), mParentWindow(nullptr)
 {
 }
 
@@ -137,6 +137,9 @@ QString EwsRequest::getOAuthToken()
                 emitResult();
             });
         if (oAuth->state() == EwsOAuth::NotAuthenticated) {
+            if (mParentWindow) {
+                oAuth->setParentWindow(mParentWindow);
+            }
             oAuth->authenticate();
         }
         break;
@@ -409,4 +412,9 @@ void EwsRequest::dump() const
     } else {
         qCWarning(EWSCLI_LOG) << "failed to dump request and response";
     }
+}
+
+void EwsRequest::setParentWindow(QWidget *window)
+{
+    mParentWindow = window;
 }
