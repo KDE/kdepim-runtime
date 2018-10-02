@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,12 +21,15 @@
 
 #include <QString>
 
+#ifdef HAVE_NETWORKAUTH
+#include "ewsoauth.h"
+#endif
 #include "ewsclient_debug.h"
 
 QHash<QString, QString> EwsClient::folderHash;
 
 EwsClient::EwsClient(QObject *parent)
-    : QObject(parent), mEnableNTLMv2(true)
+    : QObject(parent), mAuthMode(Unknown), mEnableNTLMv2(true)
 {
 
 }
@@ -42,3 +45,36 @@ void EwsClient::setServerVersion(const EwsServerVersion &version)
     }
     mServerVersion = version;
 }
+
+QUrl EwsClient::url() const
+{
+    auto url = mUrl;
+#ifdef HAVE_NETWORKAUTH
+    if (mAuthMode == OAuth2) {
+        url.setUserInfo(QString());
+    }
+#endif
+    return url;
+}
+
+#ifdef HAVE_NETWORKAUTH
+EwsOAuth *EwsClient::oAuth()
+{
+    if (mAuthMode == OAuth2 && !mOAuth) {
+        mOAuth = new EwsOAuth(this, mEmail, mAppId, mRedirectUri);
+    }
+    return mOAuth;
+}
+
+void EwsClient::setOAuthData(const QString &email, const QString &appId, const QString &redirectUri)
+{
+    mEmail = email;
+    mAppId = appId;
+    mRedirectUri = redirectUri;
+
+    mAuthMode = OAuth2;
+    delete mOAuth;
+}
+
+#endif
+

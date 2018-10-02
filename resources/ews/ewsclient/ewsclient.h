@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -25,12 +25,30 @@
 #include <QObject>
 #include "ewsserverversion.h"
 
+#ifdef HAVE_NETWORKAUTH
+#include <QPointer>
+class EwsOAuth;
+#endif
+
 class EwsClient : public QObject
 {
     Q_OBJECT
 public:
+    enum AuthMode {
+        Unknown,
+        UsernamePassword,
+#ifdef HAVE_NETWORKAUTH
+        OAuth2,
+#endif
+    };
+
     explicit EwsClient(QObject *parent = nullptr);
     ~EwsClient();
+
+    AuthMode authMode() const
+    {
+        return mAuthMode;
+    }
 
     void setUrl(const QString &url)
     {
@@ -41,7 +59,14 @@ public:
     {
         mUrl.setUserName(username);
         mUrl.setPassword(password);
+
+        mAuthMode = UsernamePassword;
     }
+
+#ifdef HAVE_NETWORKAUTH
+    void setOAuthData(const QString &email, const QString &appId, const QString &redirectUri);
+    EwsOAuth *oAuth();
+#endif
 
     enum RequestedConfiguration {
         MailTips = 0,
@@ -49,10 +74,7 @@ public:
         ProtectionRules
     };
 
-    QUrl url() const
-    {
-        return mUrl;
-    }
+    QUrl url() const;
 
     bool isConfigured() const
     {
@@ -85,9 +107,18 @@ public:
 
     static QHash<QString, QString> folderHash;
 private:
+    AuthMode mAuthMode;
+
     QUrl mUrl;
     QString mUsername;
     QString mPassword;
+
+#ifdef HAVE_NETWORKAUTH
+    QString mEmail;
+    QString mAppId;
+    QString mRedirectUri;
+    QPointer<EwsOAuth> mOAuth;
+#endif
 
     QString mUserAgent;
     bool mEnableNTLMv2;
