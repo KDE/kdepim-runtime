@@ -115,7 +115,18 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
 
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
             &KPasswordLineEdit::setPassword);
+#ifdef HAVE_NETWORKAUTH
+    mUi->authOAuth2RadioButton->setEnabled(true);
+    const auto authMode = mSettings->authMode();
+    if (authMode == QStringLiteral("username-password")) {
+        mUi->authUsernameRadioButton->setChecked(true);
+        mSettings->requestPassword(false);
+    } else {
+        mUi->authOAuth2RadioButton->setChecked(true);
+    }
+#else
     mSettings->requestPassword(false);
+#endif
 
     int selectedIndex = -1;
     int i = 0;
@@ -356,7 +367,14 @@ void EwsConfigDialog::tryConnect()
 {
     EwsClient cli;
     cli.setUrl(mUi->kcfg_BaseUrl->text());
-    cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
+#ifdef HAVE_NETWORKAUTH
+    if (mUi->authOAuth2RadioButton->isChecked()) {
+        cli.setOAuthData(mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+    } else
+#endif
+    if (mUi->authUsernameRadioButton->isChecked()) {
+        cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
+    }
     if (mUi->userAgentGroupBox->isChecked()) {
         cli.setUserAgent(mUi->userAgentEdit->text());
     }
@@ -368,6 +386,7 @@ void EwsConfigDialog::tryConnect()
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
     mProgressDialog->show();
+    mTryConnectJob->setParentWindow(mProgressDialog);
     if (!execJob(mTryConnectJob)) {
         if (!mTryConnectJobCancelled) {
             mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
