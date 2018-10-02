@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -102,6 +102,9 @@ private:
     bool readSoapFault(QXmlStreamReader &reader);
     bool readHeader(QXmlStreamReader &reader);
     bool readResponseAttr(const QXmlStreamAttributes &attrs, EwsResponseClass &responseClass);
+#ifdef HAVE_NETWORKAUTH
+    QString getOAuthToken();
+#endif
 
     QString mBody;
     EwsClient &mClient;
