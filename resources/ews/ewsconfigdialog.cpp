@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -47,6 +47,16 @@ static const QVector<StringPair> userAgents = {
     {QStringLiteral("Mozilla Thunderbird 38 for Linux (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
     {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}
 };
+
+static bool execJob(KJob *job)
+{
+    QEventLoop loop;
+    QObject::connect(job, &KJob::finished, &loop, [&](KJob *j) {
+            loop.exit(j->error());
+        });
+    job->start();
+    return loop.exec() == 0;
+}
 
 EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId,
                                  EwsSettings *settings)
@@ -247,8 +257,8 @@ void EwsConfigDialog::tryConnectCancelled()
     if (mTryConnectJob) {
         mTryConnectJob->kill();
     }
-    //mTryConnectJob->deleteLater();
-    mTryConnectJob = nullptr;
+
+    mTryConnectJobCancelled = true;
 }
 
 void EwsConfigDialog::setAutoDiscoveryNeeded()
@@ -354,18 +364,22 @@ void EwsConfigDialog::tryConnect()
     mTryConnectJob = new EwsGetFolderRequest(cli, this);
     mTryConnectJob->setFolderShape(EwsFolderShape(EwsShapeIdOnly));
     mTryConnectJob->setFolderIds(EwsId::List() << EwsId(EwsDIdInbox));
+    mTryConnectJobCancelled = false;
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
     mProgressDialog->show();
-    if (!mTryConnectJob->exec()) {
-        mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
-        mUi->serverVersionText->setText(i18nc("Exchange server version", "Unknown"));
-        KMessageBox::error(this, mTryConnectJob->errorText(), i18n("Connection failed"));
+    if (!execJob(mTryConnectJob)) {
+        if (!mTryConnectJobCancelled) {
+            mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
+            mUi->serverVersionText->setText(i18nc("Exchange server version", "Unknown"));
+            KMessageBox::error(this, mTryConnectJob->errorText(), i18n("Connection failed"));
+        }
     } else {
         mUi->serverStatusText->setText(i18nc("Exchange server status", "OK"));
         mUi->serverVersionText->setText(mTryConnectJob->serverVersion().toString());
     }
     mProgressDialog->hide();
+    mTryConnectJob = nullptr;
 }
 
 void EwsConfigDialog::userAgentChanged(int)

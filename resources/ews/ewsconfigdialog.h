@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -68,6 +68,7 @@ private:
     QDialogButtonBox *mButtonBox = nullptr;
     EwsAutodiscoveryJob *mAutoDiscoveryJob = nullptr;
     EwsGetFolderRequest *mTryConnectJob = nullptr;
+    bool mTryConnectJobCancelled = false;
     bool mAutoDiscoveryNeeded = false;
     bool mTryConnectNeeded = false;
     EwsProgressDialog *mProgressDialog = nullptr;
