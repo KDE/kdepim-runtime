@@ -142,7 +142,7 @@ void BasicTest::testBasic()
             specialType = attr->collectionType();
         }
         return col.parentCollection().remoteId() == state.parentId && specialType == state.specialType;
-    });
+    }, 1000);
 
     stateMonitor.monitor().fetchCollection(true);
     stateMonitor.monitor().collectionFetchScope().fetchAttribute<SpecialCollectionAttribute>();
