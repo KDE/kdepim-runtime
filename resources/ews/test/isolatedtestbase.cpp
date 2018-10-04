@@ -77,6 +77,24 @@ QString IsolatedTestBase::loadResourceAsString(const QString &path)
     return QString();
 }
 
+template <typename T>
+QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc,
+                                  const QString &name)
+{
+    QDBusReply<T> reply;
+    int retryCnt = 4;
+    do {
+        setFunc();
+        reply = getFunc();
+        if (!reply.isValid()) {
+            qDebug() << "Failed to set DBus config option" << name << reply.error().message();
+            QThread::msleep(250);
+        }
+    } while (!reply.isValid() && retryCnt-- > 0);
+
+    return reply;
+}
+
 TestAgentInstance::TestAgentInstance(const QString &url)
 {
     AgentType ewsType = AgentManager::self()->type(QStringLiteral("akonadi_ews_resource"));
@@ -102,23 +120,27 @@ TestAgentInstance::TestAgentInstance(const QString &url)
     /* The EWS resource initializes its DBus adapters asynchronously. Therefore it can happen that
      * due to a race access is attempted prior to their initialization. To fix this retry the DBus
      * communication a few times before declaring failure. */
-    QDBusReply<QString> reply;
-    int retryCnt = 4;
-    do {
-        mEwsSettingsInterface->setBaseUrl(url);
-        reply = mEwsSettingsInterface->baseUrl();
-        if (!reply.isValid()) {
-            qDebug() << "Failed to set base URL:" << reply.error().message();
-            QThread::msleep(250);
-        }
-    } while (!reply.isValid() && retryCnt-- > 0);
-    QVERIFY(reply.isValid());
-    QVERIFY(reply.value() == url);
+    const auto baseUrlReply = dBusSetAndWaitReply<QString>(
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setBaseUrl, mEwsSettingsInterface.get(), url),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::baseUrl, mEwsSettingsInterface.get()),
+        QStringLiteral("Base URL"));
+    QVERIFY(baseUrlReply.isValid());
+    QVERIFY(baseUrlReply.value() == url);
 
-    mEwsSettingsInterface->setUsername(QStringLiteral("test"));
-    reply = mEwsSettingsInterface->username();
-    QVERIFY(reply.isValid());
-    QVERIFY(reply.value() == QStringLiteral("test"));
+    const auto hasDomainReply = dBusSetAndWaitReply<bool>(
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setHasDomain, mEwsSettingsInterface.get(), false),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::hasDomain, mEwsSettingsInterface.get()),
+        QStringLiteral("has domain"));
+    QVERIFY(hasDomainReply.isValid());
+    QVERIFY(hasDomainReply.value() == false);
+
+    const auto username = QStringLiteral("test");
+    const auto usernameReply = dBusSetAndWaitReply<QString>(
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setUsername, mEwsSettingsInterface.get(), username),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::username, mEwsSettingsInterface.get()),
+        QStringLiteral("Username"));
+    QVERIFY(usernameReply.isValid());
+    QVERIFY(usernameReply.value() == username);
 
     mEwsWalletInterface->setTestPassword(QStringLiteral("test"));
     AgentManager::self()->instance(mIdentifier).reconfigure();
