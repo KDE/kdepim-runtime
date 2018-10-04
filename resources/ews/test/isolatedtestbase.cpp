@@ -121,23 +121,23 @@ TestAgentInstance::TestAgentInstance(const QString &url)
      * due to a race access is attempted prior to their initialization. To fix this retry the DBus
      * communication a few times before declaring failure. */
     const auto baseUrlReply = dBusSetAndWaitReply<QString>(
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setBaseUrl, mEwsSettingsInterface.get(), url),
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::baseUrl, mEwsSettingsInterface.get()),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setBaseUrl, mEwsSettingsInterface.data(), url),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::baseUrl, mEwsSettingsInterface.data()),
         QStringLiteral("Base URL"));
     QVERIFY(baseUrlReply.isValid());
     QVERIFY(baseUrlReply.value() == url);
 
     const auto hasDomainReply = dBusSetAndWaitReply<bool>(
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setHasDomain, mEwsSettingsInterface.get(), false),
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::hasDomain, mEwsSettingsInterface.get()),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setHasDomain, mEwsSettingsInterface.data(), false),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::hasDomain, mEwsSettingsInterface.data()),
         QStringLiteral("has domain"));
     QVERIFY(hasDomainReply.isValid());
     QVERIFY(hasDomainReply.value() == false);
 
     const auto username = QStringLiteral("test");
     const auto usernameReply = dBusSetAndWaitReply<QString>(
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setUsername, mEwsSettingsInterface.get(), username),
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::username, mEwsSettingsInterface.get()),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setUsername, mEwsSettingsInterface.data(), username),
+        std::bind(&OrgKdeAkonadiEwsSettingsInterface::username, mEwsSettingsInterface.data()),
         QStringLiteral("Username"));
     QVERIFY(usernameReply.isValid());
     QVERIFY(usernameReply.value() == username);
