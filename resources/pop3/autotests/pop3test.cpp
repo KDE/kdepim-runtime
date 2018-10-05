@@ -98,7 +98,8 @@ void Pop3Test::initTestCase()
         QVERIFY(job->exec());
         Collection::List collections = job->collections();
         foreach (const Collection &col, collections) {
-            if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier()) {
+            if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier() &&
+                col.remoteId() == maildirRootPath) {
                 mMaildirCollection = col;
                 found = true;
                 break;
