@@ -485,6 +485,8 @@ void Pop3Test::testSimpleDownload()
     Akonadi::Item::List items = checkMailsOnAkonadiServer(mails);
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testBigFetch()
@@ -517,6 +519,8 @@ void Pop3Test::testBigFetch()
     Akonadi::Item::List items = checkMailsOnAkonadiServer(mails);
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testSeenUIDCleanup()
@@ -572,6 +576,8 @@ void Pop3Test::testSeenUIDCleanup()
             == mPOP3SettingsInterface->seenUidList().value().size());
 
     mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testSimpleLeaveOnServer()
@@ -657,6 +663,8 @@ void Pop3Test::testSimpleLeaveOnServer()
     QVERIFY(mPOP3SettingsInterface->seenUidList().value().isEmpty());
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size()
             == mPOP3SettingsInterface->seenUidList().value().size());
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testTimeBasedLeaveRule()
