@@ -823,6 +823,8 @@ void POP3Resource::deleteJobResult(KJob *job)
                 timeOfSeenUids.removeAt(index);
             }
         }
+        mIdsToUidsMap.remove(deletedId);
+        mIdsToSizeMap.remove(deletedId);
     }
     Settings::self()->setSeenUidList(seenUIDs);
     Settings::self()->setSeenUidTimeList(timeOfSeenUids);
