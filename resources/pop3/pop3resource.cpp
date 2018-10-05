@@ -787,6 +787,8 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
     } else {
         if (downloadedId != -1) {
             idsToDeleteFromServer << downloadedId;
+        } else {
+            idsToDeleteFromServer << mIdsToSizeMap.keys();
         }
     }
     return idsToDeleteFromServer;
