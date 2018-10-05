@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2017-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -49,15 +49,21 @@ public Q_SLOTS:
 Q_SIGNALS:
     void passwordRequestFinished(const QString &password);
 private Q_SLOTS:
-    void onWalletOpenedForRead(bool success);
-    void onWalletOpenedForWrite(bool success);
+    void onWalletOpened(bool success);
 private:
     QString readPassword() const;
+    QMap<QString, QString> readMap() const;
+    void satisfyPasswordReadRequest(bool success);
+    void satisfyPasswordWriteRequest(bool success);
+    bool requestWalletOpen();
     WId mWindowId;
+
     QString mPassword;
+    bool mPasswordReadPending;
+    bool mPasswordWritePending;
+
     QPointer<KWallet::Wallet> mWallet;
-    QTimer mWalletReadTimer;
-    QTimer mWalletWriteTimer;
+    QTimer mWalletTimer;
     QPointer<KPasswordDialog> mPasswordDlg;
 };
 

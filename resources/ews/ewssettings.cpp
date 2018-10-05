@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2017-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -37,24 +37,35 @@ constexpr int walletTimeout = 30000;
 using namespace KWallet;
 
 EwsSettings::EwsSettings(WId windowId)
-    : EwsSettingsBase(), mWindowId(windowId), mWalletReadTimer(this), mWalletWriteTimer(this)
+    : EwsSettingsBase(), mWindowId(windowId), mWalletTimer(this)
 {
-    mWalletReadTimer.setInterval(walletTimeout);
-    mWalletReadTimer.setSingleShot(true);
-    connect(&mWalletReadTimer, &QTimer::timeout, this, [this]() {
-        qCWarning(EWSRES_LOG) << "Timeout waiting for wallet open for read";
-        onWalletOpenedForRead(false);
-    });
-    mWalletWriteTimer.setInterval(walletTimeout);
-    mWalletWriteTimer.setSingleShot(true);
-    connect(&mWalletWriteTimer, &QTimer::timeout, this, [this]() {
-        qCWarning(EWSRES_LOG) << "Timeout waiting for wallet open for write";
-        onWalletOpenedForWrite(false);
+    mWalletTimer.setInterval(walletTimeout);
+    mWalletTimer.setSingleShot(true);
+    connect(&mWalletTimer, &QTimer::timeout, this, [this]() {
+        qCWarning(EWSRES_LOG) << "Timeout waiting for wallet open";
+        onWalletOpened(false);
     });
 }
 
 EwsSettings::~EwsSettings()
 {
+}
+
+bool EwsSettings::requestWalletOpen()
+{
+    if (!mWallet) {
+        mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
+                                     mWindowId, Wallet::Asynchronous);
+        if (mWallet) {
+            connect(mWallet.data(), &Wallet::walletOpened, this,
+                    &EwsSettings::onWalletOpened);
+            mWalletTimer.start();
+            return true;
+        } else {
+            qCWarning(EWSRES_LOG) << "Failed to open wallet";
+        }
+    }
+    return false;
 }
 
 void EwsSettings::requestPassword(bool ask)
@@ -68,18 +79,11 @@ void EwsSettings::requestPassword(bool ask)
         return;
     }
 
-    if (!mWallet) {
-        mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
-                                     mWindowId, Wallet::Asynchronous);
-        if (mWallet) {
-            connect(mWallet.data(), &Wallet::walletOpened, this,
-                    &EwsSettings::onWalletOpenedForRead);
-            mWalletReadTimer.start();
-            return;
-        } else {
-            qCWarning(EWSRES_LOG) << "Failed to open wallet";
-        }
+    if (requestWalletOpen()) {
+        mPasswordReadPending = true;
+        return;
     }
+
     if (mWallet && mWallet->isOpen()) {
         mPassword = readPassword();
         mWallet.clear();
@@ -104,7 +108,6 @@ void EwsSettings::requestPassword(bool ask)
     }
 
     Q_EMIT passwordRequestFinished(mPassword);
-    return;
 }
 
 QString EwsSettings::readPassword() const
@@ -119,20 +122,42 @@ QString EwsSettings::readPassword() const
     return password;
 }
 
-void EwsSettings::onWalletOpenedForRead(bool success)
+void EwsSettings::satisfyPasswordReadRequest(bool success)
 {
-    qCDebug(EWSRES_LOG) << "onWalletOpenedForRead: start" << success;
-    mWalletReadTimer.stop();
+    if (success) {
+        if (mPassword.isNull()) {
+            mPassword = readPassword();
+        }
+        qCDebug(EWSRES_LOG) << "satisfyPasswordReadRequest: got password";
+        Q_EMIT passwordRequestFinished(mPassword);
+    } else {
+        qCDebug(EWSRES_LOG) << "satisfyPasswordReadRequest: failed to retrieve password";
+        Q_EMIT passwordRequestFinished(QString());
+    }
+    mPasswordReadPending = false;
+}
+
+void EwsSettings::satisfyPasswordWriteRequest(bool success)
+{
+    if (success) {
+        if (!mWallet->hasFolder(ewsWalletFolder)) {
+            mWallet->createFolder(ewsWalletFolder);
+        }
+        mWallet->setFolder(ewsWalletFolder);
+        mWallet->writePassword(config()->name(), mPassword);
+    }
+    mPasswordWritePending = false;
+}
+
+void EwsSettings::onWalletOpened(bool success)
+{
+    mWalletTimer.stop();
     if (mWallet) {
-        if (success) {
-            if (mPassword.isNull()) {
-                mPassword = readPassword();
-            }
-            qCDebug(EWSRES_LOG) << "onWalletOpenedForRead: got password";
-            Q_EMIT passwordRequestFinished(mPassword);
-        } else {
-            qCDebug(EWSRES_LOG) << "onWalletOpenedForRead: failed to retrieve password";
-            Q_EMIT passwordRequestFinished(QString());
+        if (mPasswordReadPending) {
+            satisfyPasswordReadRequest(success);
+        }
+        if (mPasswordWritePending) {
+            satisfyPasswordWriteRequest(success);
         }
         mWallet.clear();
     }
@@ -148,34 +173,17 @@ void EwsSettings::setPassword(const QString &password)
     mPassword = password;
 
     /* If a pending password request is running, satisfy it. */
-    if (mWallet) {
-        onWalletOpenedForRead(true);
+    if (mWallet && mPasswordReadPending) {
+        satisfyPasswordReadRequest(true);
     }
     if (mPasswordDlg) {
         mPasswordDlg->reject();
     }
 
-    mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
-                                 mWindowId, Wallet::Asynchronous);
-    if (mWallet) {
-        connect(mWallet.data(), &Wallet::walletOpened, this, &EwsSettings::onWalletOpenedForWrite);
-        mWalletWriteTimer.start();
-    } else {
-        qCWarning(EWSRES_LOG) << "Failed to open wallet";
+    if (requestWalletOpen()) {
+        mPasswordWritePending = true;
+        return;
     }
-}
-
-void EwsSettings::onWalletOpenedForWrite(bool success)
-{
-    mWalletWriteTimer.stop();
-    if (success) {
-        if (!mWallet->hasFolder(ewsWalletFolder)) {
-            mWallet->createFolder(ewsWalletFolder);
-        }
-        mWallet->setFolder(ewsWalletFolder);
-        mWallet->writePassword(config()->name(), mPassword);
-    }
-    mWallet.clear();
 }
 
 void EwsSettings::setTestPassword(const QString &password)
@@ -187,10 +195,9 @@ void EwsSettings::setTestPassword(const QString &password)
 
     mPassword = password;
     if (mWallet) {
-        onWalletOpenedForRead(true);
+        satisfyPasswordReadRequest(true);
     }
     if (mPasswordDlg) {
         mPasswordDlg->reject();
     }
 }
-
