@@ -25,6 +25,7 @@
 #include <AkonadiCore/ItemDeleteJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/Monitor>
 #include <AkonadiCore/ServerManager>
 #include <qtest_akonadi.h>
 #include <KMime/Message>
@@ -35,6 +36,8 @@
 QTEST_AKONADIMAIN(Pop3Test)
 
 using namespace Akonadi;
+
+constexpr int serverSettleTimeout = 200; /* ms */
 
 void Pop3Test::initTestCase()
 {
@@ -346,6 +349,32 @@ void Pop3Test::syncAndWaitForFinish()
             break;
         }
     }
+
+    // Once the messages are processed give the Akonadi server and the maildir resource some time to
+    // process the item operations. Do this by running a monitor together with a timer. Each captured
+    // item operation bumps the timer to wait longer. After 200ms of inactivity the state is considered
+    // stable and the test case can proceed.
+    Akonadi::Monitor mon(this);
+    mon.setResourceMonitored(mPop3Identifier.toLatin1());
+    mon.setResourceMonitored(mMaildirIdentifier.toLatin1());
+    QEventLoop settleLoop;
+    QTimer settleTimer;
+    settleTimer.setSingleShot(true);
+    connect(&mon, &Akonadi::Monitor::itemAdded, this, [&](const Akonadi::Item &, const Akonadi::Collection &) {
+            settleTimer.start(serverSettleTimeout);
+        });
+    connect(&mon, &Akonadi::Monitor::itemChanged, this, [&](const Akonadi::Item &, const QSet< QByteArray > &) {
+            settleTimer.start(serverSettleTimeout);
+        });
+    connect(&mon, &Akonadi::Monitor::itemRemoved, this, [&](const Akonadi::Item &) {
+            settleTimer.start(serverSettleTimeout);
+        });
+
+    settleTimer.start(serverSettleTimeout);
+    connect(&settleTimer, &QTimer::timeout, this, [&]() {
+            settleLoop.exit(0);
+        });
+    settleLoop.exec();
 }
 
 QString Pop3Test::loginSequence() const
