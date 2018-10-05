@@ -165,9 +165,7 @@ void Pop3Test::initTestCase()
 
 void Pop3Test::cleanupTestCase()
 {
-    // Post the "quit" event to the thread's event loop, then wait until the thread
-    // is finished (it finishes when the event loop finishes)
-    QMetaObject::invokeMethod(mFakeServerThread, "quit", Qt::QueuedConnection);
+    mFakeServerThread->quit();
     if (!mFakeServerThread->wait(10000)) {
         qWarning() << "The fake server thread has not yet finished, what is wrong!?";
     }
