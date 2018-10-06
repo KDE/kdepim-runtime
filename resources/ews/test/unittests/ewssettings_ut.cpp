@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2017-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -26,6 +26,9 @@
 
 Q_LOGGING_CATEGORY(EWSRES_LOG, "org.kde.pim.ews", QtInfoMsg)
 
+static const QString accessTokenMapKey = QStringLiteral("access-token");
+static const QString refreshTokenMapKey = QStringLiteral("refresh-token");
+
 class UtEwsSettings : public QObject
 {
     Q_OBJECT
@@ -39,6 +42,8 @@ private Q_SLOTS:
     void writeNullWallet();
     void writeTimeout();
     void writeValidPassword();
+    void readValidTokens();
+    void writeValidTokens();
 };
 
 namespace KWallet {
@@ -57,12 +62,16 @@ public:
     bool createFolder(const QString &folder) override;
     int readPassword(const QString &key, QString &value) override;
     int writePassword(const QString &key, const QString &value) override;
+    int readMap(const QString &key, QMap<QString, QString> &value) override;
+    int writeMap(const QString &key, const QMap<QString, QString> &value) override;
 
     std::function<bool(const QString &)> hasFolderCallback;
     std::function<bool(const QString &)> setFolderCallback;
     std::function<bool(const QString &)> createFolderCallback;
     std::function<int(const QString &, QString &)> readPasswordCallback;
     std::function<int(const QString &, const QString &)> writePasswordCallback;
+    std::function<int(const QString &, QMap<QString, QString> &)> readMapCallback;
+    std::function<int(const QString &, const QMap<QString, QString> &)> writeMapCallback;
 };
 
 static std::function<void()> errorCallback;
@@ -174,6 +183,28 @@ int MyWallet::writePassword(const QString &key, const QString &value)
         return writePasswordCallback(key, value);
     } else {
         qWarning() << "writePasswordCallback() callback not set!";
+        reportError();
+        return 0;
+    }
+}
+
+int MyWallet::readMap(const QString &key, QMap<QString, QString> &value)
+{
+    if (readMapCallback) {
+        return readMapCallback(key, value);
+    } else {
+        qWarning() << "readMapCallback() callback not set!";
+        reportError();
+        return 0;
+    }
+}
+
+int MyWallet::writeMap(const QString &key, const QMap<QString, QString> &value)
+{
+    if (writeMapCallback) {
+        return writeMapCallback(key, value);
+    } else {
+        qWarning() << "writeMapCallback() callback not set!";
         reportError();
         return 0;
     }
@@ -685,6 +716,151 @@ void UtEwsSettings::writeValidPassword()
     QVERIFY(loop.exec() == 0);
 
     QVERIFY(password == QStringLiteral("foo"));
+    QVERIFY(hasFolderCalled);
+    QVERIFY(setFolderCalled);
+    QVERIFY(createFolderCalled);
+}
+
+void UtEwsSettings::readValidTokens()
+{
+    KWallet::MyWallet *wallet = nullptr;
+    KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
+        wallet = w;
+        return w;
+    };
+
+    QEventLoop loop;
+    bool error = false;
+    KWallet::errorCallback = [&]() {
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
+
+
+    bool hasFolderCalled = false;
+    bool setFolderCalled = false;
+    QString accessToken, refreshToken;
+    EwsSettings settings(0);
+    connect(&settings, &EwsSettings::tokensRequestFinished, this, [&](const QString &at, const QString &rt) {
+        accessToken = at;
+        refreshToken = rt;
+        loop.exit(0);
+    });
+    QTimer::singleShot(100, [&]() {
+        settings.requestTokens();
+        if (!wallet) {
+            qDebug() << "Wallet is null";
+            loop.exit(1);
+            return;
+        }
+        wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
+            hasFolderCalled = true;
+            return true;
+        };
+        wallet->createFolderCallback = [](const QString &) {
+            return false;
+        };
+        wallet->setFolderCallback = [&setFolderCalled](const QString &) {
+            setFolderCalled = true;
+            return true;
+        };
+        wallet->readMapCallback = [](const QString &, QMap<QString, QString> &map) {
+            map[accessTokenMapKey] = QStringLiteral("afoo");
+            map[refreshTokenMapKey] = QStringLiteral("rfoo");
+            return true;
+        };
+        wallet->doOpen(true);
+    });
+    QTimer timeoutTimer;
+    connect(&timeoutTimer, &QTimer::timeout, this, [&]() {
+        qDebug() << "Test timeout";
+        loop.exit(1);
+    });
+    timeoutTimer.setSingleShot(true);
+    timeoutTimer.start(2000);
+
+    QVERIFY(error != true);
+
+    QVERIFY(loop.exec() == 0);
+
+    QVERIFY(accessToken == QStringLiteral("afoo"));
+    QVERIFY(refreshToken == QStringLiteral("rfoo"));
+    QVERIFY(hasFolderCalled);
+    QVERIFY(setFolderCalled);
+}
+
+void UtEwsSettings::writeValidTokens()
+{
+    KWallet::MyWallet *wallet = nullptr;
+    KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
+        wallet = w;
+        return w;
+    };
+
+    QEventLoop loop;
+    bool error = false;
+    KWallet::errorCallback = [&]() {
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
+
+
+    bool hasFolderCalled = false;
+    bool createFolderCalled = false;
+    bool setFolderCalled = false;
+    QString accessToken, refreshToken;
+    EwsSettings settings(0);
+    QTimer::singleShot(100, [&]() {
+        settings.setTokens(QStringLiteral("afoo"), QStringLiteral("rfoo"));
+        if (!wallet) {
+            qDebug() << "Wallet is null";
+            loop.exit(1);
+            return;
+        }
+        wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
+            hasFolderCalled = true;
+            return false;
+        };
+        wallet->createFolderCallback = [&createFolderCalled](const QString &) {
+            createFolderCalled = true;
+            return true;
+        };
+        wallet->setFolderCallback = [&setFolderCalled](const QString &) {
+            setFolderCalled = true;
+            return false;
+        };
+        wallet->writeMapCallback = [&](const QString &, const QMap<QString, QString> &m) {
+            if (!m.contains(accessTokenMapKey) || !m.contains(refreshTokenMapKey)) {
+                qDebug() << "Map does not contain required keys";
+                loop.exit(1);
+            }
+            accessToken = m[accessTokenMapKey];
+            refreshToken = m[refreshTokenMapKey];
+            loop.exit(0);
+            return true;
+        };
+        wallet->doOpen(true);
+    });
+    QTimer timeoutTimer;
+    connect(&timeoutTimer, &QTimer::timeout, this, [&]() {
+        qDebug() << "Test timeout";
+        loop.exit(1);
+    });
+    timeoutTimer.setSingleShot(true);
+    timeoutTimer.start(2000);
+
+    QVERIFY(error != true);
+
+    QVERIFY(loop.exec() == 0);
+
+    QVERIFY(accessToken == QStringLiteral("afoo"));
+    QVERIFY(refreshToken == QStringLiteral("rfoo"));
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
     QVERIFY(createFolderCalled);

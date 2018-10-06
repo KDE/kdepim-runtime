@@ -37,7 +37,8 @@ constexpr int walletTimeout = 30000;
 using namespace KWallet;
 
 EwsSettings::EwsSettings(WId windowId)
-    : EwsSettingsBase(), mWindowId(windowId), mWalletTimer(this)
+    : EwsSettingsBase(), mWindowId(windowId), mPasswordReadPending(false), mPasswordWritePending(false),
+      mTokensReadPending(false),  mTokensWritePending(false), mWalletTimer(this)
 {
     mWalletTimer.setInterval(walletTimeout);
     mWalletTimer.setSingleShot(true);
@@ -110,6 +111,30 @@ void EwsSettings::requestPassword(bool ask)
     Q_EMIT passwordRequestFinished(mPassword);
 }
 
+void EwsSettings::requestTokens()
+{
+    qCDebug(EWSRES_LOG) << "requestTokens: start";
+    if (!mAccessToken.isNull() || !mRefreshToken.isNull()) {
+        qCDebug(EWSRES_LOG) << "requestTokens: already set";
+        Q_EMIT tokensRequestFinished(mAccessToken, mRefreshToken);
+        return;
+    }
+
+    if (requestWalletOpen()) {
+        mTokensReadPending = true;
+        return;
+    }
+
+    if (mWallet && mWallet->isOpen()) {
+        const auto map = readMap();
+        mAccessToken = map[QStringLiteral("access-token")];
+        mRefreshToken = map[QStringLiteral("refresh-token")];
+        mWallet.clear();
+    }
+
+    Q_EMIT tokensRequestFinished(mAccessToken, mRefreshToken);
+}
+
 QString EwsSettings::readPassword() const
 {
     QString password;
@@ -120,6 +145,18 @@ QString EwsSettings::readPassword() const
         mWallet->createFolder(ewsWalletFolder);
     }
     return password;
+}
+
+QMap<QString, QString> EwsSettings::readMap() const
+{
+    QMap<QString, QString> map;
+    if (mWallet->hasFolder(ewsWalletFolder)) {
+        mWallet->setFolder(ewsWalletFolder);
+        mWallet->readMap(config()->name(), map);
+    } else {
+        mWallet->createFolder(ewsWalletFolder);
+    }
+    return map;
 }
 
 void EwsSettings::satisfyPasswordReadRequest(bool success)
@@ -149,6 +186,38 @@ void EwsSettings::satisfyPasswordWriteRequest(bool success)
     mPasswordWritePending = false;
 }
 
+void EwsSettings::satisfyTokensReadRequest(bool success)
+{
+    if (success) {
+        if (mAccessToken.isNull() || mRefreshToken.isNull()) {
+            const auto map = readMap();
+            mAccessToken = map[QStringLiteral("access-token")];
+            mRefreshToken = map[QStringLiteral("refresh-token")];
+        }
+        qCDebug(EWSRES_LOG) << "satisfyTokensReadRequest: got tokens";
+        Q_EMIT tokensRequestFinished(mAccessToken, mRefreshToken);
+    } else {
+        qCDebug(EWSRES_LOG) << "satisfyTokensReadRequest: failed to retrieve tokens";
+        Q_EMIT tokensRequestFinished(QString(), QString());
+    }
+    mTokensReadPending = false;
+}
+
+void EwsSettings::satisfyTokensWriteRequest(bool success)
+{
+    if (success) {
+        if (!mWallet->hasFolder(ewsWalletFolder)) {
+            mWallet->createFolder(ewsWalletFolder);
+        }
+        mWallet->setFolder(ewsWalletFolder);
+        QMap<QString, QString> map;
+        map[QStringLiteral("access-token")] = mAccessToken;
+        map[QStringLiteral("refresh-token")] = mRefreshToken;
+        mWallet->writeMap(config()->name(), map);
+    }
+    mTokensWritePending = false;
+}
+
 void EwsSettings::onWalletOpened(bool success)
 {
     mWalletTimer.stop();
@@ -158,6 +227,12 @@ void EwsSettings::onWalletOpened(bool success)
         }
         if (mPasswordWritePending) {
             satisfyPasswordWriteRequest(success);
+        }
+        if (mTokensReadPending) {
+            satisfyTokensReadRequest(success);
+        }
+        if (mTokensWritePending) {
+            satisfyTokensWriteRequest(success);
         }
         mWallet.clear();
     }
@@ -182,7 +257,26 @@ void EwsSettings::setPassword(const QString &password)
 
     if (requestWalletOpen()) {
         mPasswordWritePending = true;
+    }
+}
+
+void EwsSettings::setTokens(const QString &accessToken, const QString &refreshToken)
+{
+    if (accessToken.isNull() || refreshToken.isNull()) {
+        qCWarning(EWSRES_LOG) << "Trying to set null tokens";
         return;
+    }
+
+    mAccessToken = accessToken;
+    mRefreshToken = refreshToken;
+
+    /* If a pending password request is running, satisfy it. */
+    if (mWallet && mTokensReadPending) {
+        satisfyTokensReadRequest(true);
+    }
+
+    if (requestWalletOpen()) {
+        mTokensWritePending = true;
     }
 }
 

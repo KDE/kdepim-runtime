@@ -43,11 +43,14 @@ public:
     ~EwsSettings() override;
 
     void requestPassword(bool ask);
+    void requestTokens();
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
+    Q_SCRIPTABLE void setTokens(const QString &accessToken, const QString &refreshToken);
     Q_SCRIPTABLE void setTestPassword(const QString &password);
 Q_SIGNALS:
     void passwordRequestFinished(const QString &password);
+    void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
 private Q_SLOTS:
     void onWalletOpened(bool success);
 private:
@@ -55,6 +58,8 @@ private:
     QMap<QString, QString> readMap() const;
     void satisfyPasswordReadRequest(bool success);
     void satisfyPasswordWriteRequest(bool success);
+    void satisfyTokensReadRequest(bool success);
+    void satisfyTokensWriteRequest(bool success);
     bool requestWalletOpen();
     WId mWindowId;
 
@@ -62,10 +67,14 @@ private:
     bool mPasswordReadPending;
     bool mPasswordWritePending;
 
+    QString mAccessToken;
+    QString mRefreshToken;
+    bool mTokensReadPending;
+    bool mTokensWritePending;
+
     QPointer<KWallet::Wallet> mWallet;
     QTimer mWalletTimer;
     QPointer<KPasswordDialog> mPasswordDlg;
 };
 
 #endif
-
