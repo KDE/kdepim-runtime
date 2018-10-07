@@ -373,6 +373,8 @@ void EwsConfigDialog::tryConnect()
 #ifdef HAVE_NETWORKAUTH
     if (mUi->authOAuth2RadioButton->isChecked()) {
         cli.setOAuthData(mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+        cli.setOAuthTokens(mAccessToken, mRefreshToken);
+        connect(&cli, &EwsClient::oAuthTokensChanged, this, &EwsConfigDialog::tokensRequestFinished);
     } else
 #endif
     if (mUi->authUsernameRadioButton->isChecked()) {
