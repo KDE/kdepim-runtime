@@ -176,7 +176,11 @@ void EwsOAuthPrivate::authenticate()
 
     mState = EwsOAuth::Authenticating;
 
-    mOAuth2.grant();
+    if (!mOAuth2.refreshToken().isEmpty()) {
+        mOAuth2.refreshAccessToken();
+    } else {
+        mOAuth2.grant();
+    }
 }
 
 void EwsOAuthPrivate::modifyParametersFunction(QAbstractOAuth::Stage stage, QVariantMap *parameters)
@@ -242,6 +246,13 @@ void EwsOAuthPrivate::granted()
 void EwsOAuthPrivate::error(const QString &error, const QString &errorDescription, const QUrl &uri)
 {
     Q_Q(EwsOAuth);
+
+    if (!mOAuth2.refreshToken().isEmpty()) {
+        qCInfoNC(EWSCLI_LOG) << QStringLiteral("Refresh token failed. Falling back to full authentication: ")
+                             << error << errorDescription;
+        mOAuth2.setRefreshToken(QString());
+        mOAuth2.grant();
+    }
 
     mState = EwsOAuth::AuthenticationFailed;
 
