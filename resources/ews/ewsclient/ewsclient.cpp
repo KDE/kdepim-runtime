@@ -62,6 +62,17 @@ EwsOAuth *EwsClient::oAuth()
 {
     if (mAuthMode == OAuth2 && !mOAuth) {
         mOAuth = new EwsOAuth(this, mEmail, mAppId, mRedirectUri);
+        if (!mAccessToken.isEmpty()) {
+            mOAuth->setAccessToken(mAccessToken);
+        }
+        if (!mRefreshToken.isEmpty()) {
+            mOAuth->setRefreshToken(mRefreshToken);
+        }
+        connect(mOAuth, &EwsOAuth::granted, this, [this]() {
+                mAccessToken = mOAuth->token();
+                mRefreshToken = mOAuth->refreshToken();
+                Q_EMIT oAuthTokensChanged(mAccessToken, mRefreshToken);
+            });
     }
     return mOAuth;
 }
@@ -74,6 +85,20 @@ void EwsClient::setOAuthData(const QString &email, const QString &appId, const Q
 
     mAuthMode = OAuth2;
     delete mOAuth;
+}
+
+void EwsClient::setOAuthTokens(const QString &accessToken, const QString &refreshToken)
+{
+    mAccessToken = accessToken;
+    mRefreshToken = refreshToken;
+    if (mOAuth) {
+        if (!mAccessToken.isEmpty()) {
+            mOAuth->setAccessToken(mAccessToken);
+        }
+        if (!mRefreshToken.isEmpty()) {
+            mOAuth->setRefreshToken(mRefreshToken);
+        }
+    }
 }
 
 #endif

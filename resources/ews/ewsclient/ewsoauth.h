@@ -43,8 +43,13 @@ public:
     void authenticate();
     QString token() const;
     State state() const;
+    QString refreshToken() const;
 
     void setParentWindow(QWidget *w);
+
+    void setAccessToken(const QString &accessToken);
+    void setRefreshToken(const QString &refreshToken);
+    void resetAccessToken();
 Q_SIGNALS:
     void granted();
     void error(const QString &error, const QString &errorDescription, const QUrl &uri);

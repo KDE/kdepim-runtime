@@ -273,6 +273,13 @@ QString EwsOAuth::token() const
     return d->mOAuth2.token();
 }
 
+QString EwsOAuth::refreshToken() const
+{
+    Q_D(const EwsOAuth);
+
+    return d->mOAuth2.refreshToken();
+}
+
 EwsOAuth::State EwsOAuth::state() const
 {
     Q_D(const EwsOAuth);
@@ -285,6 +292,29 @@ void EwsOAuth::setParentWindow(QWidget *window)
     Q_D(EwsOAuth);
 
     d->mParentWindow = window;
+}
+
+void EwsOAuth::setAccessToken(const QString &accessToken)
+{
+    Q_D(EwsOAuth);
+
+    d->mOAuth2.setToken(accessToken);
+    d->mState = Authenticated;
+}
+
+void EwsOAuth::setRefreshToken(const QString &refreshToken)
+{
+    Q_D(EwsOAuth);
+
+    d->mOAuth2.setRefreshToken(refreshToken);
+}
+
+void EwsOAuth::resetAccessToken()
+{
+    Q_D(EwsOAuth);
+
+    d->mOAuth2.setToken(QString());
+    d->mState = NotAuthenticated;
 }
 
 #include "ewsoauth.moc"

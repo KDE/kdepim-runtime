@@ -65,6 +65,7 @@ public:
 
 #ifdef HAVE_NETWORKAUTH
     void setOAuthData(const QString &email, const QString &appId, const QString &redirectUri);
+    void setOAuthTokens(const QString &authToken, const QString &refreshToken);
     EwsOAuth *oAuth();
 #endif
 
@@ -106,6 +107,9 @@ public:
     }
 
     static QHash<QString, QString> folderHash;
+Q_SIGNALS:
+    void oAuthTokensChanged(const QString &accessToken, const QString &refreshToken);
+
 private:
     AuthMode mAuthMode;
 
@@ -117,6 +121,8 @@ private:
     QString mEmail;
     QString mAppId;
     QString mRedirectUri;
+    QString mAccessToken;
+    QString mRefreshToken;
     QPointer<EwsOAuth> mOAuth;
 #endif
 
