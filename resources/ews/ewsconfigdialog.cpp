@@ -128,6 +128,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         mSettings->requestTokens();
     }
 #else
+    mUi->authUsernameRadioButton->setChecked(true);
     mSettings->requestPassword(false);
 #endif
 
