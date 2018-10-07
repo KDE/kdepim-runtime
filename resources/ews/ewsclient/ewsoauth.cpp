@@ -275,6 +275,10 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
     layout->addWidget(&mWebView);
     mWebView.show();
 
+    connect(mWebDialog.data(), &QDialog::rejected, this, [this]() {
+            error(QStringLiteral("User cancellation"), QStringLiteral("The authentication browser was closed"), QUrl());
+        });
+
     mWebView.load(url);
     mWebDialog->show();
 }
