@@ -23,9 +23,10 @@
 #include <QDialog>
 #include <QHBoxLayout>
 #include <QIcon>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkReply>
 #include <QOAuth2AuthorizationCodeFlow>
-#include <QOAuthOobReplyHandler>
 #include <QPointer>
 #include <QUrlQuery>
 #include <QWebEngineProfile>
@@ -52,15 +53,18 @@ signals:
     void returnUriReceived(QUrl url);
 };
 
-class EwsOAuthReplyHandler final : public QOAuthOobReplyHandler
+class EwsOAuthReplyHandler final : public QAbstractOAuthReplyHandler
 {
     Q_OBJECT
 public:
     EwsOAuthReplyHandler(QObject *parent, const QString &returnUri)
-        : QOAuthOobReplyHandler(parent), mReturnUri(returnUri) {};
+        : QAbstractOAuthReplyHandler(parent), mReturnUri(returnUri) {};
     ~EwsOAuthReplyHandler() override = default;
 
     QString callback() const override { return mReturnUri; };
+    void networkReplyFinished(QNetworkReply *reply) override;
+Q_SIGNALS:
+    void replyError(const QString &error);
 private:
     const QString mReturnUri;
 };
@@ -122,6 +126,62 @@ void EwsOAuthUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
     returnUriReceived(request->requestUrl());
 }
 
+void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
+{
+    if (reply->error() != QNetworkReply::NoError) {
+        Q_EMIT replyError(reply->errorString());
+        return;
+    } else if (reply->header(QNetworkRequest::ContentTypeHeader).isNull()) {
+        Q_EMIT replyError(QStringLiteral("Empty or no Content-type header"));
+        return;
+    }
+    const auto cth = reply->header(QNetworkRequest::ContentTypeHeader);
+    const auto ct = cth.isNull() ? QStringLiteral("text/html") : cth.toString();
+    const auto data = reply->readAll();
+    if (data.isEmpty()) {
+        Q_EMIT replyError(QStringLiteral("No data received"));
+        return;
+    }
+    Q_EMIT replyDataReceived(data);
+    QVariantMap tokens;
+    if (ct.startsWith(QStringLiteral("text/html")) ||
+        ct.startsWith(QStringLiteral("application/x-www-form-urlencoded"))) {
+        QUrlQuery q(QString::fromUtf8(data));
+        const auto items = q.queryItems(QUrl::FullyDecoded);
+        for (const auto it : items) {
+            tokens.insert(it.first, it.second);
+        }
+    } else if (ct.startsWith(QStringLiteral("application/json"))
+               || ct.startsWith(QStringLiteral("text/javascript"))) {
+        const auto document = QJsonDocument::fromJson(data);
+        if (!document.isObject()) {
+            Q_EMIT replyError(QStringLiteral("Invalid JSON data received"));
+            return;
+        }
+        const auto object = document.object();
+        if (object.isEmpty()) {
+            Q_EMIT replyError(QStringLiteral("Empty JSON data received"));
+            return;
+        }
+        tokens = object.toVariantMap();
+    } else {
+        Q_EMIT replyError(QStringLiteral("Unknown content type"));
+        return;
+    }
+
+    const auto error = tokens.value(QStringLiteral("error"));
+    if (error.isValid()) {
+        Q_EMIT replyError(QStringLiteral("Received error response: ") + error.toString());
+        return;
+    }
+    const auto accessToken = tokens.value(QStringLiteral("access_token"));
+    if (!accessToken.isValid() || accessToken.toString().isEmpty()) {
+        Q_EMIT replyError(QStringLiteral("Received empty or no access token"));
+        return;
+    }
+
+    Q_EMIT tokensReceived(tokens);
+}
 
 void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
@@ -168,6 +228,9 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::error, this, &EwsOAuthPrivate::error);
     connect(&mRequestInterceptor, &EwsOAuthRequestInterceptor::redirectUriIntercepted, this,
         &EwsOAuthPrivate::redirectUriIntercepted, Qt::QueuedConnection);
+    connect(&mReplyHandler, &EwsOAuthReplyHandler::replyError, this, [this](const QString &err) {
+            error(QStringLiteral("Network reply error"), err, QUrl());
+        });
 }
 
 void EwsOAuthPrivate::authenticate()
