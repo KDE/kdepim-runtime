@@ -180,8 +180,10 @@ void EwsRequest::requestResult(KJob *job)
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
 #ifdef HAVE_NETWORKAUTH
-    if (resp == 401) {
+    if (resp == 401 && mClient.authMode() == EwsClient::OAuth2) {
+        qCInfo(EWSCLI_LOG) << QStringLiteral("Got HTTP 401 Unauthorized with OAuth - reset access token");
         auto oAuth = mClient.oAuth();
+        oAuth->resetAccessToken();
         if (oAuth->state() == EwsOAuth::NotAuthenticated || oAuth->state() == EwsOAuth::Authenticating) {
             prepare(mBody);
             return;
