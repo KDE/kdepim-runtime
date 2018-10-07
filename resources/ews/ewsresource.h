@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -145,6 +145,10 @@ private:
 
     int reconnectTimeout();
     void passwordRequestFinished(const QString &password);
+#ifdef HAVE_NETWORKAUTH
+    void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
+    void tokensChanged(const QString &accessToken, const QString &refreshToken);
+#endif
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;
@@ -154,6 +158,10 @@ private:
     QHash<QString, EwsId::List> mItemsToCheck;
     QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
     QString mPassword;
+#ifdef HAVE_NETWORKAUTH
+    QString mAccessToken;
+    QString mRefreshToken;
+#endif
     bool mTagsRetrieved;
     int mReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;

@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -147,6 +147,12 @@ EwsResource::EwsResource(const QString &id)
 
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, this,
             &EwsResource::passwordRequestFinished);
+#ifdef HAVE_NETWORKAUTH
+    connect(mSettings.data(), &EwsSettings::tokensRequestFinished, this,
+            &EwsResource::tokensRequestFinished);
+    connect(&mEwsClient, &EwsClient::oAuthTokensChanged, this,
+            &EwsResource::tokensChanged);
+#endif
 }
 
 EwsResource::~EwsResource()
@@ -445,7 +451,15 @@ void EwsResource::reloadConfig()
 {
     mSubManager.reset(nullptr);
     mEwsClient.setUrl(mSettings->baseUrl());
-    mSettings->requestPassword(true);
+#ifdef HAVE_NETWORKAUTH
+    if (mSettings->authMode() == QStringLiteral("oauth2")) {
+        mEwsClient.setOAuthData(mSettings->email(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+        mSettings->requestTokens();
+    } else if (mSettings->authMode() == QStringLiteral("username-password"))
+#endif
+    {
+        mSettings->requestPassword(true);
+    }
 }
 
 void EwsResource::passwordRequestFinished(const QString &password)
@@ -1343,5 +1357,30 @@ void EwsResource::globalTagsRetrievalFinished(KJob *job)
         tagsRetrieved(readJob->tags(), QHash<QString, Item::List>());
     }
 }
+
+#ifdef HAVE_NETWORKAUTH
+void EwsResource::tokensRequestFinished(const QString &accessToken, const QString &refreshToken)
+{
+    mAccessToken = accessToken;
+    mRefreshToken = refreshToken;
+    if (!mRefreshToken.isEmpty()) {
+        qCDebugNC(EWSRES_AGENTIF_LOG) << "tokensRequestFinished: got tokens";
+        mEwsClient.setOAuthTokens(mAccessToken, mRefreshToken);
+        mSettings->save();
+        if (mSettings->baseUrl().isEmpty()) {
+            setOnline(false);
+            Q_EMIT status(NotConfigured, i18nc("@info:status", "No server configured yet."));
+        } else {
+            resetUrl();
+        }
+    }
+}
+
+void EwsResource::tokensChanged(const QString &accessToken, const QString &refreshToken)
+{
+    qCDebugNC(EWSRES_LOG) << "tokensChanged: received new OAuth2 tokens";
+    mSettings->setTokens(accessToken, refreshToken);
+}
+#endif
 
 AKONADI_RESOURCE_MAIN(EwsResource)
