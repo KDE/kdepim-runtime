@@ -60,7 +60,9 @@ private:
     void userAgentChanged(int index);
 
     QString fullUsername() const;
-
+#ifdef HAVE_NETWORKAUTH
+    void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
+#endif
     EwsResource *mParentResource = nullptr;
     KConfigDialogManager *mConfigManager = nullptr;
     Ui::SetupServerView *mUi = nullptr;
@@ -74,6 +76,10 @@ private:
     EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
     QPointer<EwsSettings> mSettings;
+#ifdef HAVE_NETWORKAUTH
+    QString mAccessToken;
+    QString mRefreshToken;
+#endif
 };
 
 #endif

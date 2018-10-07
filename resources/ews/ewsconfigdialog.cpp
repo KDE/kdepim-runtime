@@ -116,13 +116,16 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
             &KPasswordLineEdit::setPassword);
 #ifdef HAVE_NETWORKAUTH
+    connect(mSettings.data(), &EwsSettings::tokensRequestFinished, this,
+            &EwsConfigDialog::tokensRequestFinished);
     mUi->authOAuth2RadioButton->setEnabled(true);
     const auto authMode = mSettings->authMode();
     if (authMode == QStringLiteral("username-password")) {
         mUi->authUsernameRadioButton->setChecked(true);
         mSettings->requestPassword(false);
-    } else {
+    } else if (authMode == QStringLiteral("oauth2")) {
         mUi->authOAuth2RadioButton->setChecked(true);
+        mSettings->requestTokens();
     }
 #else
     mSettings->requestPassword(false);
@@ -409,3 +412,12 @@ void EwsConfigDialog::userAgentChanged(int)
         mUi->userAgentEdit->setText(data);
     }
 }
+
+#ifdef HAVE_NETWORKAUTH
+void EwsConfigDialog::tokensRequestFinished(const QString &accessToken, const QString &refreshToken)
+{
+    qDebug() << "EwsConfigDialog: got tokens" << accessToken << refreshToken;
+    mAccessToken = accessToken;
+    mRefreshToken = refreshToken;
+}
+#endif
