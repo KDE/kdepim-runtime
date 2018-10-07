@@ -208,7 +208,16 @@ void EwsConfigDialog::save()
         mSettings->setUserAgent(QString());
     }
 
-    mSettings->setPassword(mUi->passwordEdit->password());
+    if (mUi->authUsernameRadioButton->isChecked()) {
+        mSettings->setPassword(mUi->passwordEdit->password());
+        mSettings->setAuthMode(QStringLiteral("username-password"));
+    }
+#ifdef HAVE_NETWORKAUTH
+    if (mUi->authOAuth2RadioButton->isChecked()) {
+        mSettings->setTokens(mAccessToken, mRefreshToken);
+        mSettings->setAuthMode(QStringLiteral("oauth2"));
+    }
+#endif
     mSettings->save();
 }
 
@@ -323,7 +332,16 @@ void EwsConfigDialog::dialogAccepted()
     if (mTryConnectNeeded) {
         EwsClient cli;
         cli.setUrl(mUi->kcfg_BaseUrl->text());
-        cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
+#ifdef HAVE_NETWORKAUTH
+        if (mUi->authOAuth2RadioButton->isChecked()) {
+            cli.setOAuthData(mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+            cli.setOAuthTokens(mAccessToken, mRefreshToken);
+            connect(&cli, &EwsClient::oAuthTokensChanged, this, &EwsConfigDialog::tokensRequestFinished);
+        } else
+#endif
+        if (mUi->authUsernameRadioButton->isChecked()) {
+            cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
+        }
         if (mUi->userAgentGroupBox->isChecked()) {
             cli.setUserAgent(mUi->userAgentEdit->text());
         }
@@ -334,12 +352,15 @@ void EwsConfigDialog::dialogAccepted()
         connect(mTryConnectJob, &EwsGetFolderRequest::result, this, &EwsConfigDialog::tryConnectFinished);
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
+        mTryConnectJob->setParentWindow(mProgressDialog);
         mTryConnectJob->start();
-        if (!mProgressDialog->exec()) {
-            if (KMessageBox::questionYesNo(this,
-                                           i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                                           i18n("Exchange server connection")) == KMessageBox::Yes) {
-                accept();
+        if (!execJob(mTryConnectJob)) {
+            if (!mTryConnectJobCancelled) {
+                if (KMessageBox::questionYesNo(this,
+                                               i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
+                                               i18n("Exchange server connection")) == KMessageBox::Yes) {
+                    accept();
+                }
             }
             return;
         } else {
