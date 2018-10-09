@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+#  Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 #
 #  This library is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU Library General Public
@@ -21,10 +21,15 @@ kde_enable_exceptions()
 add_library(uttesthelpers STATIC faketransferjob.cpp)
 target_link_libraries(uttesthelpers Qt5::Core KF5::KIOCore)
 
-macro(akonadi_ews_add_ut utname)
-  add_executable(${utname} ${utname}.cpp)
-  target_link_libraries(${utname} Qt5::Test uttesthelpers ewsclient)
+macro(akonadi_ews_add_ut_advanced utname extra_SRCS)
+  add_executable(${utname} ${utname}.cpp ${extra_SRCS})
+  target_link_libraries(${utname} Qt5::Test uttesthelpers)
   add_test(NAME ${utname} COMMAND ${utname})
+endmacro(akonadi_ews_add_ut_advanced utname)
+
+macro(akonadi_ews_add_ut utname)
+  akonadi_ews_add_ut_advanced(${utname} "")
+  target_link_libraries(${utname} ewsclient)
 endmacro(akonadi_ews_add_ut utname)
 
 akonadi_ews_add_ut(ewsmoveitemrequest_ut)
@@ -33,14 +38,9 @@ akonadi_ews_add_ut(ewsgetitemrequest_ut)
 akonadi_ews_add_ut(ewsunsubscriberequest_ut)
 akonadi_ews_add_ut(ewsattachment_ut)
 
-set(ewssettings_ut_SRCS ewssettings_ut.cpp)
 qt5_wrap_cpp(ewssettings_ut_SRCS ewssettings_ut_mock.h)
-add_executable(ewssettings_ut
-  ${ewssettings_ut_SRCS}
-  ${CMAKE_CURRENT_SOURCE_DIR}/../../ewssettings.cpp)
+akonadi_ews_add_ut_advanced(ewssettings_ut "${CMAKE_CURRENT_SOURCE_DIR}/../../ewssettings.cpp;${ewssettings_ut_SRCS}")
 target_link_libraries(ewssettings_ut
-  Qt5::Core
-  Qt5::Test
   KF5::AkonadiCore
   KF5::WidgetsAddons
   KF5::I18n
@@ -49,6 +49,4 @@ target_link_libraries(ewssettings_ut
   KF5::CoreAddons
   KF5::Wallet)
 target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
-add_test(NAME ewssettings_ut COMMAND ewssettings_ut)
-
 
