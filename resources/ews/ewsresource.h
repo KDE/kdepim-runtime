@@ -36,6 +36,7 @@ class FetchItemState;
 class EwsSubscriptionManager;
 class EwsTagStore;
 class EwsSettings;
+class KNotification;
 
 class EwsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV4,
     public Akonadi::TransportResourceBase
@@ -148,6 +149,8 @@ private:
 #ifdef HAVE_NETWORKAUTH
     void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
     void tokensChanged(const QString &accessToken, const QString &refreshToken);
+    void oAuthBrowserRequest();
+    void oAuthBrowserNotificationDismissed(bool accepted);
 #endif
 
     EwsClient mEwsClient;
@@ -161,6 +164,7 @@ private:
 #ifdef HAVE_NETWORKAUTH
     QString mAccessToken;
     QString mRefreshToken;
+    QPointer<KNotification> mOAuthNotification;
 #endif
     bool mTagsRetrieved;
     int mReconnectTimeout;

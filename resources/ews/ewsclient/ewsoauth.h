@@ -50,7 +50,9 @@ public:
     void setAccessToken(const QString &accessToken);
     void setRefreshToken(const QString &refreshToken);
     void resetAccessToken();
+    void browserDisplayReply(bool display);
 Q_SIGNALS:
+    void browserDisplayRequest();
     void granted();
     void error(const QString &error, const QString &errorDescription, const QUrl &uri);
 private:

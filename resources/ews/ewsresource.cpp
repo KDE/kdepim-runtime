@@ -30,6 +30,7 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <KMime/Message>
 #include <KWallet/KWallet>
+#include <KNotification>
 
 #include <KLocalizedString>
 
@@ -152,6 +153,7 @@ EwsResource::EwsResource(const QString &id)
             &EwsResource::tokensRequestFinished);
     connect(&mEwsClient, &EwsClient::oAuthTokensChanged, this,
             &EwsResource::tokensChanged);
+    connect(&mEwsClient, &EwsClient::oAuthBrowserDisplayRequest, this, &EwsResource::oAuthBrowserRequest);
 #endif
 }
 
@@ -1381,6 +1383,30 @@ void EwsResource::tokensChanged(const QString &accessToken, const QString &refre
     qCDebugNC(EWSRES_LOG) << "tokensChanged: received new OAuth2 tokens";
     mSettings->setTokens(accessToken, refreshToken);
 }
+
+void EwsResource::oAuthBrowserRequest()
+{
+    mOAuthNotification = new KNotification(QStringLiteral("oauth2-tokens-expired"), KNotification::Persistent, this);
+
+    mOAuthNotification->setText(i18nc("@info", "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.").arg(mSettings->email()));
+    mOAuthNotification->setActions(QStringList(i18nc("@action:button", "Authenticate")));
+    mOAuthNotification->setComponentName(QStringLiteral("akonadi_ews_resource"));
+    auto acceptedFn = std::bind(&EwsResource::oAuthBrowserNotificationDismissed, this, true);
+    auto rejectedFn = std::bind(&EwsResource::oAuthBrowserNotificationDismissed, this, false);
+    connect(mOAuthNotification.data(), &KNotification::action1Activated, this, acceptedFn);
+    connect(mOAuthNotification.data(), &KNotification::closed, this, rejectedFn);
+    connect(mOAuthNotification.data(), &KNotification::ignored, this, rejectedFn);
+    mOAuthNotification->sendEvent();
+}
+
+void EwsResource::oAuthBrowserNotificationDismissed(bool accepted)
+{
+    if (mOAuthNotification) {
+        mOAuthNotification.clear();
+        mEwsClient.oAuthBrowserDisplayReply(accepted);
+    }
+}
+
 #endif
 
 AKONADI_RESOURCE_MAIN(EwsResource)

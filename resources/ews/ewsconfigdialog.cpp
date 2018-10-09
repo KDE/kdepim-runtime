@@ -353,6 +353,11 @@ void EwsConfigDialog::dialogAccepted()
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
         mTryConnectJob->setParentWindow(mProgressDialog);
+#ifdef HAVE_NETWORKAUTH
+        connect(&cli, &EwsClient::oAuthBrowserDisplayRequest, this, [&cli]() {
+                cli.oAuthBrowserDisplayReply(true);
+            });
+#endif
         mTryConnectJob->start();
         if (!execJob(mTryConnectJob)) {
             if (!mTryConnectJobCancelled) {
@@ -412,6 +417,11 @@ void EwsConfigDialog::tryConnect()
     mTryConnectJobCancelled = false;
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
+#ifdef HAVE_NETWORKAUTH
+    connect(&cli, &EwsClient::oAuthBrowserDisplayRequest, this, [&cli]() {
+            cli.oAuthBrowserDisplayReply(true);
+        });
+#endif
     mProgressDialog->show();
     mTryConnectJob->setParentWindow(mProgressDialog);
     if (!execJob(mTryConnectJob)) {

@@ -235,6 +235,8 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
 
 void EwsOAuthPrivate::authenticate()
 {
+    Q_Q(EwsOAuth);
+
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Starting OAuth2 authentication");
 
     mState = EwsOAuth::Authenticating;
@@ -242,7 +244,7 @@ void EwsOAuthPrivate::authenticate()
     if (!mOAuth2.refreshToken().isEmpty()) {
         mOAuth2.refreshAccessToken();
     } else {
-        mOAuth2.grant();
+        Q_EMIT q->browserDisplayRequest();
     }
 }
 
@@ -318,7 +320,7 @@ void EwsOAuthPrivate::error(const QString &error, const QString &errorDescriptio
         qCInfoNC(EWSCLI_LOG) << QStringLiteral("Refresh token failed. Falling back to full authentication: ")
                              << error << errorDescription;
         mOAuth2.setRefreshToken(QString());
-        mOAuth2.grant();
+        authenticate();
     }
 
     mState = EwsOAuth::AuthenticationFailed;
@@ -393,6 +395,17 @@ void EwsOAuth::resetAccessToken()
 
     d->mOAuth2.setToken(QString());
     d->mState = NotAuthenticated;
+}
+
+void EwsOAuth::browserDisplayReply(bool display)
+{
+    Q_D(EwsOAuth);
+
+    if (display) {
+        d->mOAuth2.grant();
+    } else {
+        Q_EMIT error(QStringLiteral("User cancellation"), QStringLiteral("The authentication was cancelled by the user"), QUrl());
+    }
 }
 
 #include "ewsoauth.moc"

@@ -73,6 +73,8 @@ EwsOAuth *EwsClient::oAuth()
                 mRefreshToken = mOAuth->refreshToken();
                 Q_EMIT oAuthTokensChanged(mAccessToken, mRefreshToken);
             });
+        connect(mOAuth, &EwsOAuth::browserDisplayRequest,
+                this, &EwsClient::oAuthBrowserDisplayRequest);
     }
     return mOAuth;
 }
@@ -98,6 +100,13 @@ void EwsClient::setOAuthTokens(const QString &accessToken, const QString &refres
         if (!mRefreshToken.isEmpty()) {
             mOAuth->setRefreshToken(mRefreshToken);
         }
+    }
+}
+
+void EwsClient::oAuthBrowserDisplayReply(bool display)
+{
+    if (mOAuth) {
+        mOAuth->browserDisplayReply(display);
     }
 }
 

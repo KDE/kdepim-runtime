@@ -66,6 +66,8 @@ public:
 #ifdef HAVE_NETWORKAUTH
     void setOAuthData(const QString &email, const QString &appId, const QString &redirectUri);
     void setOAuthTokens(const QString &authToken, const QString &refreshToken);
+    void oAuthBrowserDisplayReply(bool display);
+
     EwsOAuth *oAuth();
 #endif
 
@@ -109,6 +111,7 @@ public:
     static QHash<QString, QString> folderHash;
 Q_SIGNALS:
     void oAuthTokensChanged(const QString &accessToken, const QString &refreshToken);
+    void oAuthBrowserDisplayRequest();
 
 private:
     AuthMode mAuthMode;
