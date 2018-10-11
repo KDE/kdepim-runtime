@@ -19,6 +19,10 @@
 
 #include "ewsoauth.h"
 
+#ifdef EWSOAUTH_UNITTEST
+#include "ewsoauth_ut_mock.h"
+using namespace Mock;
+#else
 #include <QAbstractOAuthReplyHandler>
 #include <QDialog>
 #include <QHBoxLayout>
@@ -34,6 +38,7 @@
 #include <QWebEngineUrlRequestJob>
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
+#endif
 
 #include "ewsclient_debug.h"
 

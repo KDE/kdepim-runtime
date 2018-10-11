@@ -50,3 +50,13 @@ target_link_libraries(ewssettings_ut
   KF5::Wallet)
 target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
 
+if (Qt5NetworkAuth_FOUND)
+  set(ewsoauth_ut_SRCS
+    ewsoauth_ut_mock.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../ewsclient/ewsoauth.cpp)
+  akonadi_ews_add_ut_advanced(ewsoauth_ut "${ewsoauth_ut_SRCS}")
+  target_link_libraries(ewsoauth_ut
+    Qt5::Widgets
+    )
+  target_compile_definitions(ewsoauth_ut PUBLIC -DEWSOAUTH_UNITTEST)
+endif ()
