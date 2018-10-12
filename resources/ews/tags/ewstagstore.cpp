@@ -53,7 +53,7 @@ QByteArray EwsTagStore::serializeTag(const Akonadi::Tag &tag) const
     stream << TagDataVer1;
     stream << tag.name() << tag.gid();
     Attribute::List attrs = tag.attributes();
-    stream << (int)attrs.size();
+    stream << static_cast<int>(attrs.size());
 
     Q_FOREACH (const Attribute *attr, attrs) {
         stream << attr->type();
