@@ -246,7 +246,11 @@ void EwsOAuthPrivate::authenticate()
 
     mState = EwsOAuth::Authenticating;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     if (!mOAuth2.refreshToken().isEmpty()) {
+#else
+    if (mOAuth2.status() == QAbstractOAuth::Status::Granted) {
+#endif
         mOAuth2.refreshAccessToken();
     } else {
         Q_EMIT q->browserDisplayRequest();
@@ -320,13 +324,20 @@ void EwsOAuthPrivate::granted()
 void EwsOAuthPrivate::error(const QString &error, const QString &errorDescription, const QUrl &uri)
 {
     Q_Q(EwsOAuth);
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     if (!mOAuth2.refreshToken().isEmpty()) {
         qCInfoNC(EWSCLI_LOG) << QStringLiteral("Refresh token failed. Falling back to full authentication: ")
                              << error << errorDescription;
         mOAuth2.setRefreshToken(QString());
         authenticate();
     }
+#else
+    if (mOAuth2.status() == QAbstractOAuth::Status::RefreshingToken) {
+        qCInfoNC(EWSCLI_LOG) << QStringLiteral("Refresh token failed. Falling back to full authentication: ")
+                             << error << errorDescription;
+        authenticate();
+    }
+#endif
 
     mState = EwsOAuth::AuthenticationFailed;
 
@@ -362,7 +373,11 @@ QString EwsOAuth::refreshToken() const
 {
     Q_D(const EwsOAuth);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     return d->mOAuth2.refreshToken();
+#else
+    return QString();
+#endif
 }
 
 EwsOAuth::State EwsOAuth::state() const
@@ -391,7 +406,11 @@ void EwsOAuth::setRefreshToken(const QString &refreshToken)
 {
     Q_D(EwsOAuth);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     d->mOAuth2.setRefreshToken(refreshToken);
+#else
+    Q_UNUSED(refreshToken);
+#endif
 }
 
 void EwsOAuth::resetAccessToken()

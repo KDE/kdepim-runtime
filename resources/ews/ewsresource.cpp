@@ -1365,7 +1365,7 @@ void EwsResource::tokensRequestFinished(const QString &accessToken, const QStrin
 {
     mAccessToken = accessToken;
     mRefreshToken = refreshToken;
-    if (!mRefreshToken.isEmpty()) {
+    if (!mAccessToken.isEmpty() || !mRefreshToken.isEmpty()) {
         qCDebugNC(EWSRES_AGENTIF_LOG) << "tokensRequestFinished: got tokens";
         mEwsClient.setOAuthTokens(mAccessToken, mRefreshToken);
         mSettings->save();
