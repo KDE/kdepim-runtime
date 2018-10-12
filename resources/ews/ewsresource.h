@@ -51,7 +51,7 @@ public:
     static const EwsPropertyField flagsProperty;
 
     explicit EwsResource(const QString &id);
-    ~EwsResource();
+    ~EwsResource() override;
 
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags,
                                   const QSet<Akonadi::Tag> &removedTags) override;

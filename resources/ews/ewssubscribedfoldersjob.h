@@ -31,7 +31,7 @@ class EwsSubscribedFoldersJob : public EwsJob
     Q_OBJECT
 public:
     EwsSubscribedFoldersJob(EwsClient &client, EwsSettings *settings, QObject *parent);
-    ~EwsSubscribedFoldersJob();
+    ~EwsSubscribedFoldersJob() override;
 
     void start() override;
 

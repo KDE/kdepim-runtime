@@ -37,7 +37,7 @@ class EwsGlobalTagsReadJob : public EwsJob
 public:
     EwsGlobalTagsReadJob(EwsTagStore *tagStore, EwsClient &client,
                          const Akonadi::Collection &rootCollection, QObject *parent);
-    ~EwsGlobalTagsReadJob();
+    ~EwsGlobalTagsReadJob() override;
 
     void start() override;
 

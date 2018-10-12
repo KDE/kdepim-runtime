@@ -32,7 +32,7 @@ public:
         TryConnect
     };
 
-    EwsProgressDialog(QWidget *parent, Type type);
+    explicit EwsProgressDialog(QWidget *parent, Type type);
     ~EwsProgressDialog() override;
 };
 

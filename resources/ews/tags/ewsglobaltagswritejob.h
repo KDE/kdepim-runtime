@@ -35,7 +35,7 @@ class EwsGlobalTagsWriteJob : public EwsJob
 public:
     EwsGlobalTagsWriteJob(EwsTagStore *tagStore, EwsClient &client,
                           const Akonadi::Collection &rootCollection, QObject *parent);
-    ~EwsGlobalTagsWriteJob();
+    ~EwsGlobalTagsWriteJob() override;
 
     void start() override;
 private Q_SLOTS:
