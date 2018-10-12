@@ -45,7 +45,7 @@ public:
     ~QWebEngineUrlRequestJob() override = default;
 
     QUrl requestUrl() const;
-    
+
     QUrl mUrl;
 };
 
@@ -119,7 +119,7 @@ class QWebEngineView : public QWidget
     Q_OBJECT
 public:
     typedef std::function<void(const QUrl &, QVariantMap &)> AuthFunc;
-    
+
     QWebEngineView(QWidget *parent);
     ~QWebEngineView() override;
 
@@ -187,12 +187,19 @@ class QAbstractOAuth : public QObject
     Q_OBJECT
 public:
     Q_ENUMS(Stage)
-
-    enum Stage {
+    enum class Stage {
         RequestingTemporaryCredentials,
         RequestingAuthorization,
         RequestingAccessToken,
         RefreshingAccessToken
+    };
+
+    Q_ENUMS(Status)
+    enum class Status {
+        NotAuthenticated,
+        TemporaryCredentialsReceived,
+        Granted,
+        RefreshingToken
     };
 
     QAbstractOAuth(QObject *parent);
@@ -204,6 +211,7 @@ public:
     void setModifyParametersFunction(const std::function<void (QAbstractOAuth::Stage, QMap<QString, QVariant>*)> &func);
     QString token() const;
     void setToken(const QString &token);
+    Status status() const;
 Q_SIGNALS:
     void authorizeWithBrowser(const QUrl &url);
     void granted();
@@ -217,6 +225,7 @@ protected:
     QString mRefreshToken;
     QUrl mTokenUrl;
     QString mResource;
+    Status mStatus;
 };
 
 class QAbstractOAuth2 : public QAbstractOAuth
@@ -239,7 +248,7 @@ class QOAuth2AuthorizationCodeFlow : public QAbstractOAuth2
     Q_OBJECT
 public:
     typedef std::function<QNetworkReply::NetworkError(QString &, QMap<QNetworkRequest::KnownHeaders, QVariant> &)> TokenFunc;
-    
+
     QOAuth2AuthorizationCodeFlow(QObject *parent = nullptr);
     ~QOAuth2AuthorizationCodeFlow() override;
 
@@ -258,6 +267,7 @@ protected:
     void authCallbackReceived(QMap<QString, QVariant> const &params);
     void replyDataCallbackReceived(const QByteArray &data);
     void tokenCallbackReceived(const QVariantMap &tokens);
+    void doRefreshAccessToken();
 
     TokenFunc mTokenFunc;
     QString mState;

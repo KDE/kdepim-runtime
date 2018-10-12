@@ -117,7 +117,7 @@ void QWebEngineView::load(const QUrl &url)
     QVariantMap params;
     if (mAuthFunction) {
         mAuthFunction(url, params);
-        
+
         simulatePageLoad(QUrl(mRedirectUri + QStringLiteral("?") + QOAuth2AuthorizationCodeFlow::mapToSortedQuery(params).toString()));
     } else {
         qWarning() << "No authentication callback defined";
@@ -156,7 +156,7 @@ void QWebEngineView::setRedirectUri(const QString &uri)
 {
     mRedirectUri = uri;
 }
-    
+
 QNetworkReply::NetworkError QNetworkReply::error() const
 {
     return NoError;
@@ -177,7 +177,7 @@ QAbstractOAuthReplyHandler::~QAbstractOAuthReplyHandler()
 }
 
 QAbstractOAuth::QAbstractOAuth(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), mStatus(Status::NotAuthenticated)
 {
 }
 
@@ -211,6 +211,11 @@ void QAbstractOAuth::setToken(const QString &token)
     mToken = token;
 }
 
+QAbstractOAuth::Status QAbstractOAuth::status() const
+{
+    return mStatus;
+}
+
 QAbstractOAuth2::QAbstractOAuth2(QObject *parent)
     : QAbstractOAuth(parent)
 {
@@ -225,7 +230,7 @@ void QAbstractOAuth2::setRefreshToken(const QString &token)
 {
     mRefreshToken = token;
 }
-    
+
 QOAuth2AuthorizationCodeFlow::QOAuth2AuthorizationCodeFlow(QObject *parent)
     : QAbstractOAuth2(parent)
 {
@@ -257,7 +262,7 @@ void QOAuth2AuthorizationCodeFlow::grant()
     Q_EMIT logEvent(QStringLiteral("ModifyParams:RequestingAuthorization:") + mapToSortedQuery(map).toString());
 
     if (mModifyParamsFunc) {
-        mModifyParamsFunc(RequestingAuthorization, &map);
+        mModifyParamsFunc(Stage::RequestingAuthorization, &map);
     }
 
     mResource = QUrl::fromPercentEncoding(map[QStringLiteral("resource")].toByteArray());
@@ -268,13 +273,52 @@ void QOAuth2AuthorizationCodeFlow::grant()
     Q_EMIT logEvent(QStringLiteral("AuthorizeWithBrowser:") + url.toString());
 
     connect(this, &QAbstractOAuth2::authorizationCallbackReceived, this,
-            &QOAuth2AuthorizationCodeFlow::authCallbackReceived);
-    
+            &QOAuth2AuthorizationCodeFlow::authCallbackReceived, Qt::UniqueConnection);
+
     Q_EMIT authorizeWithBrowser(url);
 }
 
 void QOAuth2AuthorizationCodeFlow::refreshAccessToken()
 {
+    mStatus = Status::RefreshingToken;
+
+    doRefreshAccessToken();
+}
+
+void QOAuth2AuthorizationCodeFlow::doRefreshAccessToken()
+{
+    QMap<QString, QVariant> map;
+    map[QStringLiteral("grant_type")] = QStringLiteral("authorization_code");
+    map[QStringLiteral("code")] = QUrl::toPercentEncoding(mRefreshToken);
+    map[QStringLiteral("client_id")] = QUrl::toPercentEncoding(mClientId);
+    map[QStringLiteral("redirect_uri")] = QUrl::toPercentEncoding(mReplyHandler->callback());
+
+    Q_EMIT logEvent(QStringLiteral("ModifyParams:RequestingAccessToken:") + mapToSortedQuery(map).toString());
+
+    if (mModifyParamsFunc) {
+        mModifyParamsFunc(Stage::RequestingAccessToken, &map);
+    }
+
+    connect(mReplyHandler, &QAbstractOAuthReplyHandler::tokensReceived, this,
+            &QOAuth2AuthorizationCodeFlow::tokenCallbackReceived, Qt::UniqueConnection);
+    connect(mReplyHandler, &QAbstractOAuthReplyHandler::replyDataReceived, this,
+            &QOAuth2AuthorizationCodeFlow::replyDataCallbackReceived, Qt::UniqueConnection);
+
+    if (mTokenFunc) {
+        QNetworkReply reply(this);
+
+        QString data;
+        reply.mError = mTokenFunc(data, reply.mHeaders);
+
+        reply.setData(data.toUtf8());
+        reply.open(QIODevice::ReadOnly);
+
+        Q_EMIT logEvent(QStringLiteral("NetworkReplyFinished:") + data);
+
+        mReplyHandler->networkReplyFinished(&reply);
+    } else {
+        qWarning() << "No token function defined";
+    }
 }
 
 QUrlQuery QOAuth2AuthorizationCodeFlow::mapToSortedQuery(QMap<QString, QVariant> const &map)
@@ -292,37 +336,12 @@ void QOAuth2AuthorizationCodeFlow::authCallbackReceived(QMap<QString, QVariant> 
 {
     Q_EMIT logEvent(QStringLiteral("AuthorizatioCallbackReceived:") + mapToSortedQuery(params).toString());
 
-    QMap<QString, QVariant> map;
-    map[QStringLiteral("grant_type")] = QStringLiteral("authorization_code");
-    map[QStringLiteral("code")] = QUrl::toPercentEncoding(params[QStringLiteral("code")].toByteArray());
-    map[QStringLiteral("client_id")] = QUrl::toPercentEncoding(mClientId);
-    map[QStringLiteral("redirect_uri")] = QUrl::toPercentEncoding(mReplyHandler->callback());
-
-    Q_EMIT logEvent(QStringLiteral("ModifyParams:RequestingAccessToken:") + mapToSortedQuery(map).toString());
-
-    if (mModifyParamsFunc) {
-        mModifyParamsFunc(RequestingAccessToken, &map);
-    }
-
-    connect(mReplyHandler, &QAbstractOAuthReplyHandler::tokensReceived, this,
-            &QOAuth2AuthorizationCodeFlow::tokenCallbackReceived);
-    connect(mReplyHandler, &QAbstractOAuthReplyHandler::replyDataReceived, this,
-            &QOAuth2AuthorizationCodeFlow::replyDataCallbackReceived);
-
-    if (mTokenFunc) {
-        QNetworkReply reply(this);
-
-        QString data;
-        reply.mError = mTokenFunc(data, reply.mHeaders);
-
-        reply.setData(data.toUtf8());
-        reply.open(QIODevice::ReadOnly);
-
-        Q_EMIT logEvent(QStringLiteral("NetworkReplyFinished:") + data);
-            
-        mReplyHandler->networkReplyFinished(&reply);
+    mRefreshToken = params[QStringLiteral("code")].toString();
+    if (!mRefreshToken.isEmpty()) {
+        mStatus = Status::TemporaryCredentialsReceived;
+        doRefreshAccessToken();
     } else {
-        qWarning() << "No token function defined";
+        Q_EMIT error(QString(), QString(), QUrl());
     }
 }
 
@@ -332,6 +351,8 @@ void QOAuth2AuthorizationCodeFlow::tokenCallbackReceived(const QVariantMap &toke
 
     mToken = tokens["access_token"].toString();
     mRefreshToken = tokens["refresh_token"].toString();
+
+    mStatus = Status::Granted;
 
     Q_EMIT granted();
 }
@@ -384,7 +405,7 @@ QString loadWebPageString(const QString &url)
 {
     return QStringLiteral("LoadWebPage:") + url;
 }
-    
+
 QString interceptRequestString(const QString &url)
 {
     return QStringLiteral("InterceptRequest:") + url;
