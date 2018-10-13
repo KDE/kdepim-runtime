@@ -1,38 +1,9 @@
 [Global]
 IconName=akonadi
 Comment=Microsoft Exchange Server (EWS)
-Comment[ar]=خادوم «مايكروسوفت إكسچينج» (EWS)
-Comment[ca]=Servidor Microsoft Exchange (EWS)
-Comment[ca@valencia]=Servidor Microsoft Exchange (EWS)
-Comment[cs]=Server Microsoft Exchange (EWS)
-Comment[de]=Microsoft Exchange Server (EWS)
-Comment[en_GB]=Microsoft Exchange Server (EWS)
-Comment[es]=Servidor Microsoft Exchange (EWS)
-Comment[fi]=Microsoft Exchange -palvelin (EWS)
-Comment[fr]=Microsoft Exchange Server (EWS)
-Comment[gl]=Servidor de Microsoft Exchange (EWS)
-Comment[it]=Microsoft Exchange Server (EWS)
-Comment[ko]=Microsoft Exchange 서버(EWS)
-Comment[nl]=Microsoft Exchange Server (EWS)
-Comment[pl]=Microsoft Exchange Server (EWS)
-Comment[pt]=Servidor de Microsoft Exchange (EWS)
-Comment[pt_BR]=Microsoft Exchange Server (EWS)
-Comment[sl]=Strežnik Microsoft Exchange (EWS)
-Comment[sr]=Мајкрософтов Ексчејнџ-сервер (ЕВС)
-Comment[sr@ijekavian]=Мајкрософтов Ексчејнџ-сервер (ЕВС)
-Comment[sr@ijekavianlatin]=Microsoftov Exchange Server (EWS)
-Comment[sr@latin]=Microsoftov Exchange Server (EWS)
-Comment[sv]=Microsoft Exchange-server (EWS)
-Comment[tr]=Microsoft Exchange Sunucusu (EWS)
-Comment[uk]=Сервер Microsoft Exchange (EWS)
-Comment[x-test]=xxMicrosoft Exchange Server (EWS)xx
-Comment[zh_CN]=微软 Exchange 服务器（EWS）
-Comment[zh_TW]=Microsoft Exchange 伺服器 (EWS)
 
 
 [Event/oauth2-tokens-expired]
 Name=Microsoft Exchange authentication expired
-Name[pl]=Uwierzytelnienie do Microsoft Exchange wygasło
 Comment=Credentials used to access Microsoft Exchange are no longer valid
-Comment[pl]=Poświadczenia dostępu do serwera Microsoft Exchange są nieważne
 Action=Popup
