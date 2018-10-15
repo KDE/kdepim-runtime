@@ -1,6 +1,8 @@
 [Global]
 IconName=akonadi
 Comment=Microsoft Exchange Server (EWS)
+Comment[ca]=Servidor Microsoft Exchange (EWS)
+Comment[ca@valencia]=Servidor Microsoft Exchange (EWS)
 Comment[nl]=Microsoft Exchange Server (EWS)
 Comment[pt]=Servidor de Microsoft Exchange (EWS)
 Comment[sv]=Microsoft Exchange-server (EWS)
@@ -10,12 +12,16 @@ Comment[x-test]=xxMicrosoft Exchange Server (EWS)xx
 
 [Event/oauth2-tokens-expired]
 Name=Microsoft Exchange authentication expired
+Name[ca]=L'autenticació del Microsoft Exchange ha expirat
+Name[ca@valencia]=L'autenticació del Microsoft Exchange ha expirat
 Name[nl]=Microsoft Exchange authenticatie is verlopen
 Name[pt]=A autenticação do Microsoft Exchange expirou
 Name[sv]=Microsoft Exchange behörighet utgången
 Name[uk]=Строк дії розпізнавання Microsoft Exchange вичерпано
 Name[x-test]=xxMicrosoft Exchange authentication expiredxx
 Comment=Credentials used to access Microsoft Exchange are no longer valid
+Comment[ca]=Les credencials que s'usen per accedir al Microsoft Exchange ja no són vàlides
+Comment[ca@valencia]=Les credencials que s'usen per accedir al Microsoft Exchange ja no són vàlides
 Comment[nl]=Gebruikte credentials voor toegang tot Microsoft Exchange is niet langer geldig
 Comment[pt]=As credenciais usadas para aceder ao Microsoft Exchange já não são válidas
 Comment[sv]=Inloggningsinformation använd för att komma åt Microsoft Exchange är inte längre giltig
