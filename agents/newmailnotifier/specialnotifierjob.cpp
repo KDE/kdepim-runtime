@@ -52,9 +52,9 @@ SpecialNotifierJob::~SpecialNotifierJob()
 {
 }
 
-void SpecialNotifierJob::setDefaultPixmap(const QPixmap &pixmap)
+void SpecialNotifierJob::setDefaultIconName(const QString &iconName)
 {
-    mDefaultPixmap = pixmap;
+    mDefaultIconName = iconName;
 }
 
 void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
@@ -83,7 +83,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             job->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
             connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
-            emitNotification(mDefaultPixmap);
+            emitNotification(QPixmap());
             deleteLater();
         }
     } else {
@@ -98,7 +98,7 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob *>(job);
     if (searchJob->error()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << "Unable to fetch contact:" << searchJob->errorText();
-        emitNotification(mDefaultPixmap);
+        emitNotification(QPixmap());
         return;
     }
     if (!searchJob->contacts().isEmpty()) {
@@ -106,12 +106,12 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
         const KContacts::Picture photo = addressee.photo();
         const QImage image = photo.data();
         if (image.isNull()) {
-            emitNotification(mDefaultPixmap);
+            emitNotification(QPixmap());
         } else {
             emitNotification(QPixmap::fromImage(image));
         }
     } else {
-        emitNotification(mDefaultPixmap);
+        emitNotification(QPixmap());
     }
 }
 
@@ -157,7 +157,11 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                                                         NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent
                                                         | KNotification::SkipGrouping : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
-        notification->setPixmap(pixmap);
+        if (pixmap.isNull()) {
+            notification->setIconName(mDefaultIconName);
+        } else {
+            notification->setPixmap(pixmap);
+        }
         notification->setActions(QStringList() << i18n("Show mail...") << i18n("Mark As Read") << i18n("Delete"));
 
         connect(notification, QOverload<unsigned int>::of(&KNotification::activated), this, &SpecialNotifierJob::slotActivateNotificationAction);

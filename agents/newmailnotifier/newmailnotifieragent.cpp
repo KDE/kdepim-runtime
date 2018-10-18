@@ -74,7 +74,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mIdentityManager = KIdentityManagement::IdentityManager::self();
     connect(mIdentityManager, QOverload<>::of(&KIdentityManagement::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
     slotIdentitiesChanged();
-    mDefaultPixmap = QIcon::fromTheme(QStringLiteral("kmail")).pixmap(KIconLoader::SizeMedium, KIconLoader::SizeMedium);
+    mDefaultIconName = QStringLiteral("kmail");
 
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/NewMailNotifierAgent"),
                                                            this, QDBusConnection::ExportAdaptors);
@@ -465,7 +465,7 @@ void NewMailNotifierAgent::slotShowNotifications()
         }
         if (hasUniqMessage) {
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
-            job->setDefaultPixmap(mDefaultPixmap);
+            job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
 #ifdef HAVE_TEXTTOSPEECH
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
@@ -481,19 +481,29 @@ void NewMailNotifierAgent::slotShowNotifications()
 
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
-    slotDisplayNotification(mDefaultPixmap, message);
+    slotDisplayNotification(QPixmap(), message);
 
     mNewMails.clear();
 }
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    KNotification::event(QStringLiteral("new-email"),
-                         message,
-                         pixmap,
-                         nullptr,
-                         NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout,
-                         QStringLiteral("akonadi_newmailnotifier_agent"));
+    if (pixmap.isNull()) {
+        KNotification::event(QStringLiteral("new-email"),
+                             QString(),
+                             message,
+                             mDefaultIconName,
+                             nullptr,
+                             NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout,
+                             QStringLiteral("akonadi_newmailnotifier_agent"));
+    } else {
+        KNotification::event(QStringLiteral("new-email"),
+                             message,
+                             pixmap,
+                             nullptr,
+                             NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping : KNotification::CloseOnTimeout,
+                             QStringLiteral("akonadi_newmailnotifier_agent"));
+    }
 }
 
 void NewMailNotifierAgent::slotInstanceNameChanged(const Akonadi::AgentInstance &instance)
