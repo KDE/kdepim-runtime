@@ -50,7 +50,7 @@ private:
     void slotMarkAsRead();
     void slotDeleteMessage();
     void slotActivateNotificationAction(unsigned int index);
-    void emitNotification(const QPixmap &pixmap);
+    void emitNotification(const QPixmap &pixmap = QPixmap());
     void deleteItemDone(KJob *job);
     QStringList mListEmails;
     QString mDefaultIconName;

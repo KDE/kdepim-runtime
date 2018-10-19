@@ -83,7 +83,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             job->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
             connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
-            emitNotification(QPixmap());
+            emitNotification();
             deleteLater();
         }
     } else {
@@ -98,7 +98,7 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
     const Akonadi::ContactSearchJob *searchJob = qobject_cast<Akonadi::ContactSearchJob *>(job);
     if (searchJob->error()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << "Unable to fetch contact:" << searchJob->errorText();
-        emitNotification(QPixmap());
+        emitNotification();
         return;
     }
     if (!searchJob->contacts().isEmpty()) {
@@ -106,12 +106,12 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
         const KContacts::Picture photo = addressee.photo();
         const QImage image = photo.data();
         if (image.isNull()) {
-            emitNotification(QPixmap());
+            emitNotification();
         } else {
             emitNotification(QPixmap::fromImage(image));
         }
     } else {
-        emitNotification(QPixmap());
+        emitNotification();
     }
 }
 
