@@ -114,6 +114,7 @@ void MailDispatcherAgent::dispatch()
 
                 if (!mErrorOccurred && mShowSentNotification) {
                     KNotification *notify = new KNotification(QStringLiteral("emailsent"));
+                    notify->setIconName(QStringLiteral("kmail"));
                     notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
                     notify->setText(i18nc("Notification when the email was sent", "Your E-Mail has been sent successfully."));
@@ -286,6 +287,7 @@ void MailDispatcherAgent::sendResult(KJob *job)
 
         KNotification *notify = new KNotification(QStringLiteral("sendingfailed"));
         notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
+        notify->setIconName(QStringLiteral("kmail"));
         notify->setTitle(i18nc("Notification title when email sending failed", "E-Mail Sending Failed"));
         notify->setText(job->errorString().toHtmlEscaped());
         notify->sendEvent();
