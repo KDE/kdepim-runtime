@@ -21,6 +21,7 @@
 #define EWSCONFIGDIALOG_H
 
 #include <QDialog>
+#include <QMap>
 #include <QPointer>
 
 
@@ -75,6 +76,7 @@ private:
     EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
     QPointer<EwsSettings> mSettings;
+    QMap<QString, QString> mAuthMap;
 };
 
 #endif

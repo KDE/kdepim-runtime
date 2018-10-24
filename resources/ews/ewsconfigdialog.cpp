@@ -35,6 +35,9 @@
 #include "ewssubscriptionwidget.h"
 #include "ewsprogressdialog.h"
 #include "auth/ewspasswordauth.h"
+#ifdef HAVE_NETWORKAUTH
+#include "auth/ewsoauth.h"
+#endif
 #include "ui_ewsconfigdialog.h"
 
 typedef QPair<QString, QString> StringPair;
@@ -213,6 +216,9 @@ void EwsConfigDialog::save()
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
 #endif
+    if (!mAuthMap.isEmpty()) {
+        mSettings->setMap(mAuthMap);
+    }
     mSettings->save();
 }
 
@@ -284,6 +290,7 @@ void EwsConfigDialog::setAutoDiscoveryNeeded()
 {
     mAutoDiscoveryNeeded = true;
     mTryConnectNeeded = true;
+    mAuthMap.clear();
 
     /* Enable the OK button when at least the e-mail and username fields are set. Additionally if
      * autodiscovery is disabled, enable the OK button only if the base URL is set. */
@@ -420,12 +427,26 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 {
     EwsAbstractAuth *auth = nullptr;
 
+#ifdef HAVE_NETWORKAUTH
+    if (mUi->authOAuth2RadioButton->isChecked()) {
+        auto oAuth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+        oAuth->setParentWindow(this);
+        auth = oAuth;
+    } else
+#endif
+
     if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
     }
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
             auth->walletPasswordRequestFinished(mUi->passwordEdit->password());
+        });
+    connect(auth, &EwsAbstractAuth::requestWalletMap, this, [&]() {
+            auth->walletMapRequestFinished(mAuthMap);
+        });
+    connect(auth, &EwsAbstractAuth::setWalletMap, this, [&](const QMap<QString, QString> &map) {
+            mAuthMap = map;
         });
 
     auth->init();
