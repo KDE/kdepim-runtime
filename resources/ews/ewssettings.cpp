@@ -24,6 +24,10 @@
 #include <KLocalizedString>
 
 #include "auth/ewspasswordauth.h"
+#ifdef HAVE_NETWORKAUTH
+#include "auth/ewsoauth.h"
+#endif
+
 #include "ewsresource_debug.h"
 
 static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
@@ -394,6 +398,13 @@ EwsAbstractAuth *EwsSettings::loadAuth()
 
     EwsAbstractAuth *auth = nullptr;
     const auto mode = authMode();
+#ifdef HAVE_NETWORKAUTH
+    if (mode == QStringLiteral("oauth2")) {
+        qCDebugNC(EWSRES_LOG) << QStringLiteral("Using OAuth2 authentication");
+
+        auth = new EwsOAuth(this, email(), oAuth2AppId(), oAuth2ReturnUri());
+    }
+#endif
     if (mode == QStringLiteral("username-password")) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Using password-based authentication");
 
