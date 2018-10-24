@@ -34,6 +34,8 @@ class Wallet;
 }
 class KPasswordDialog;
 
+class EwsAbstractAuth;
+
 class EwsSettings : public EwsSettingsBase
 {
     Q_OBJECT
@@ -45,6 +47,8 @@ public:
     void requestPassword(bool ask);
     void requestTokens();
     void requestMap();
+
+    EwsAbstractAuth *loadAuth();
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
     Q_SCRIPTABLE void setTokens(const QString &accessToken, const QString &refreshToken);

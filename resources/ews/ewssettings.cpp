@@ -23,6 +23,7 @@
 #include <KWallet/KWallet>
 #include <KLocalizedString>
 
+#include "auth/ewspasswordauth.h"
 #include "ewsresource_debug.h"
 
 static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
@@ -384,3 +385,34 @@ void EwsSettings::setTestPassword(const QString &password)
         mPasswordDlg->reject();
     }
 }
+
+/* Not needed for unittests - exclude to avoid excess link-time dependencies. */
+#ifndef EWSSETTINGS_UNITTEST
+EwsAbstractAuth *EwsSettings::loadAuth()
+{
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Setting up authentication");
+
+    EwsAbstractAuth *auth = nullptr;
+    const auto mode = authMode();
+    if (mode == QStringLiteral("username-password")) {
+        qCDebugNC(EWSRES_LOG) << QStringLiteral("Using password-based authentication");
+
+        QString user;
+        if (!hasDomain()) {
+            user = username();
+        } else {
+            user = domain() + QLatin1Char('\\') + username();
+        }
+        auth = new EwsPasswordAuth(user, this);
+    }
+
+    connect(auth, &EwsAbstractAuth::requestWalletPassword, this, &EwsSettings::requestPassword);
+    connect(auth, &EwsAbstractAuth::requestWalletMap, this, &EwsSettings::requestMap);
+    connect(this, &EwsSettings::passwordRequestFinished, auth, &EwsAbstractAuth::walletPasswordRequestFinished);
+    connect(this, &EwsSettings::mapRequestFinished, auth, &EwsAbstractAuth::walletMapRequestFinished);
+    connect(auth, &EwsAbstractAuth::setWalletPassword, this, &EwsSettings::setPassword);
+    connect(auth, &EwsAbstractAuth::setWalletMap, this, &EwsSettings::setMap);
+
+    return auth;
+}
+#endif /* EWSSETTINGS_UNITTEST */

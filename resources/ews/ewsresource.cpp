@@ -53,7 +53,7 @@
 #include "ewscreateitemjob.h"
 #include "ewsconfigdialog.h"
 #include "ewssettings.h"
-#include "auth/ewspasswordauth.h"
+#include "auth/ewsabstractauth.h"
 #ifdef HAVE_SEPARATE_MTA_RESOURCE
 #include "ewscreateitemrequest.h"
 #endif
@@ -1365,28 +1365,7 @@ void EwsResource::globalTagsRetrievalFinished(KJob *job)
 
 void EwsResource::setUpAuth()
 {
-    qCDebugNC(EWSRES_LOG) << QStringLiteral("Setting up authentication");
-
-    EwsAbstractAuth *auth = nullptr;
-    const auto authMode = mSettings->authMode();
-    if (authMode == QStringLiteral("username-password")) {
-        qCDebugNC(EWSRES_LOG) << QStringLiteral("Using password-based authentication");
-
-        QString username;
-        if (!mSettings->hasDomain()) {
-            username = mSettings->username();
-        } else {
-            username = mSettings->domain() + QLatin1Char('\\') + mSettings->username();
-        }
-        auth = new EwsPasswordAuth(username, this);
-    }
-
-    connect(auth, &EwsAbstractAuth::requestWalletPassword, mSettings.data(), &EwsSettings::requestPassword);
-    connect(auth, &EwsAbstractAuth::requestWalletMap, mSettings.data(), &EwsSettings::requestMap);
-    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, auth, &EwsAbstractAuth::walletPasswordRequestFinished);
-    connect(mSettings.data(), &EwsSettings::mapRequestFinished, auth, &EwsAbstractAuth::walletMapRequestFinished);
-    connect(auth, &EwsAbstractAuth::setWalletPassword, mSettings.data(), &EwsSettings::setPassword);
-    connect(auth, &EwsAbstractAuth::setWalletMap, mSettings.data(), &EwsSettings::setMap);
+    EwsAbstractAuth *auth = mSettings->loadAuth();
 
     /* Use queued connections here to avoid stack overflow when the reauthentication proceeds through all stages. */
     connect(auth, SIGNAL(authSucceeded()), this, SLOT(authSucceeded()), Qt::QueuedConnection);
