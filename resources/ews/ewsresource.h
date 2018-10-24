@@ -126,6 +126,9 @@ private Q_SLOTS:
     void rootCollectionFetched(KJob *job);
     void connectionError();
     void reloadConfig();
+    void authSucceeded();
+    void authFailed(const QString &error);
+    void requestAuthFailed();
 public Q_SLOTS:
     Q_SCRIPTABLE void sendMessage(const QString &id, const QByteArray &content);
 Q_SIGNALS:
@@ -154,6 +157,8 @@ private:
     void oAuthBrowserNotificationDismissed(bool accepted);
 #endif
     void setUpAuth();
+    void reauthNotificationDismissed(bool accepted);
+    void reauthenticate();
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;
@@ -169,6 +174,9 @@ private:
     QPointer<KNotification> mOAuthNotification;
 #endif
     QScopedPointer<EwsAbstractAuth> mAuth;
+    int mAuthStage;
+    QPointer<KNotification> mReauthNotification;
+
     bool mTagsRetrieved;
     int mReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;

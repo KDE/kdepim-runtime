@@ -98,7 +98,7 @@ static Q_CONSTEXPR int InitialReconnectTimeout = 60;
 static Q_CONSTEXPR int ReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
-    : Akonadi::ResourceBase(id), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
+    : Akonadi::ResourceBase(id), mAuthStage(0), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
       mSettings(new EwsSettings(winIdForDialogs()))
 {
     mEwsClient.setUserAgent(mSettings->userAgent());
@@ -1388,11 +1388,91 @@ void EwsResource::setUpAuth()
     connect(auth, &EwsAbstractAuth::setWalletPassword, mSettings.data(), &EwsSettings::setPassword);
     connect(auth, &EwsAbstractAuth::setWalletMap, mSettings.data(), &EwsSettings::setMap);
 
+    /* Use queued connections here to avoid stack overflow when the reauthentication proceeds through all stages. */
+    connect(auth, SIGNAL(authSucceeded()), this, SLOT(authSucceeded()), Qt::QueuedConnection);
+    connect(auth, SIGNAL(authFailed(QString)), this, SLOT(authFailed(QString)), Qt::QueuedConnection);
+    connect(auth, SIGNAL(requestAuthFailed()), this, SLOT(requestAuthFailed()), Qt::QueuedConnection);
+
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Initializing authentication");
 
     mAuth.reset(auth);
 
     auth->init();
+}
+
+void EwsResource::authSucceeded()
+{
+    mAuthStage = 0;
+
+    resetUrl();
+}
+
+void EwsResource::reauthNotificationDismissed(bool accepted)
+{
+    if (mReauthNotification) {
+        mReauthNotification.clear();
+        if (accepted) {
+            mAuth->authenticate(true);
+        } else {
+            Q_EMIT authFailed(QString("Interactive authentication request denied"));
+        }
+    }
+}
+
+void EwsResource::authFailed(const QString &error)
+{
+    qCWarningNC(EWSRES_LOG) << "Authentication failed: " << error;
+
+    reauthenticate();
+}
+
+void EwsResource::reauthenticate()
+{
+    switch (mAuthStage) {
+    case 0:
+    {
+        if (mAuth->authenticate(false)) {
+            break;
+        } else {
+            ++mAuthStage;
+        }
+    }
+    /* fall through */
+    case 1:
+    {
+        const auto reauthPrompt = mAuth->reauthPrompt();
+        if (!reauthPrompt.isNull()) {
+            mReauthNotification = new KNotification(QStringLiteral("auth-expired"), KNotification::Persistent, this);
+
+            mReauthNotification->setText(reauthPrompt.arg(name()));
+            mReauthNotification->setActions(QStringList(i18nc("@action:button", "Authenticate")));
+            mReauthNotification->setComponentName(QStringLiteral("akonadi_ews_resource"));
+            auto acceptedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, true);
+            auto rejectedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, false);
+            connect(mReauthNotification.data(), &KNotification::action1Activated, this, acceptedFn);
+            connect(mReauthNotification.data(), &KNotification::closed, this, rejectedFn);
+            connect(mReauthNotification.data(), &KNotification::ignored, this, rejectedFn);
+            mReauthNotification->sendEvent();
+            break;
+        }
+    }
+    /* fall through */
+    case 2:
+        Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
+        break;
+    }
+
+    ++mAuthStage;
+}
+
+void EwsResource::requestAuthFailed()
+{
+    qCWarningNC(EWSRES_LOG) << "requestAuthFailed - going offline";
+
+    setTemporaryOffline(reconnectTimeout());
+    Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
+
+    reauthenticate();
 }
 
 #ifdef HAVE_NETWORKAUTH
