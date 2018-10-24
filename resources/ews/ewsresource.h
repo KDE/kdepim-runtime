@@ -33,6 +33,7 @@
 #include <ewsconfig.h>
 
 class FetchItemState;
+class EwsAbstractAuth;
 class EwsSubscriptionManager;
 class EwsTagStore;
 class EwsSettings;
@@ -152,6 +153,7 @@ private:
     void oAuthBrowserRequest();
     void oAuthBrowserNotificationDismissed(bool accepted);
 #endif
+    void setUpAuth();
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;
@@ -166,6 +168,7 @@ private:
     QString mRefreshToken;
     QPointer<KNotification> mOAuthNotification;
 #endif
+    QScopedPointer<EwsAbstractAuth> mAuth;
     bool mTagsRetrieved;
     int mReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;

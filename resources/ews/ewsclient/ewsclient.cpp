@@ -21,6 +21,7 @@
 
 #include <QString>
 
+#include "auth/ewsabstractauth.h"
 #ifdef HAVE_NETWORKAUTH
 #include "ewsoauth.h"
 #endif
@@ -55,6 +56,16 @@ QUrl EwsClient::url() const
     }
 #endif
     return url;
+}
+
+void EwsClient::setAuth(EwsAbstractAuth *auth)
+{
+    mAuth = auth;
+}
+
+EwsAbstractAuth *EwsClient::auth() const
+{
+    return mAuth.data();
 }
 
 #ifdef HAVE_NETWORKAUTH

@@ -30,6 +30,8 @@
 class EwsOAuth;
 #endif
 
+class EwsAbstractAuth;
+
 class EwsClient : public QObject
 {
     Q_OBJECT
@@ -70,6 +72,9 @@ public:
 
     EwsOAuth *oAuth();
 #endif
+
+    void setAuth(EwsAbstractAuth *auth);
+    EwsAbstractAuth *auth() const;
 
     enum RequestedConfiguration {
         MailTips = 0,
@@ -128,6 +133,8 @@ private:
     QString mRefreshToken;
     QPointer<EwsOAuth> mOAuth;
 #endif
+
+    QPointer<EwsAbstractAuth> mAuth;
 
     QString mUserAgent;
     bool mEnableNTLMv2;
