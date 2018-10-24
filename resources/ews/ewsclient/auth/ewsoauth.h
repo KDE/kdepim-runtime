@@ -23,38 +23,30 @@
 #include <QObject>
 #include <QScopedPointer>
 
+#include "ewsabstractauth.h"
+
 class QWidget;
 class EwsOAuthPrivate;
 
-class EwsOAuth : public QObject
+class EwsOAuth : public EwsAbstractAuth
 {
     Q_OBJECT
 public:
-    enum State {
-        NotAuthenticated,
-        Authenticating,
-        Authenticated,
-        AuthenticationFailed
-    };
-
     EwsOAuth(QObject *parent, const QString &email, const QString &appId, const QString &redirectUri);
     ~EwsOAuth() override;
 
-    void authenticate();
-    QString token() const;
-    State state() const;
-    QString refreshToken() const;
-
     void setParentWindow(QWidget *w);
 
-    void setAccessToken(const QString &accessToken);
-    void setRefreshToken(const QString &refreshToken);
-    void resetAccessToken();
-    void browserDisplayReply(bool display);
-Q_SIGNALS:
-    void browserDisplayRequest();
-    void granted();
-    void error(const QString &error, const QString &errorDescription, const QUrl &uri);
+    void init() override;
+    bool getAuthData(QString &username, QString &password, QStringList &customHeaders) override;
+    void notifyRequestAuthFailed() override;
+    bool authenticate(bool interactive) override;
+    const QString &reauthPrompt() const override;
+    const QString &authFailedPrompt() const override;
+
+    void walletPasswordRequestFinished(const QString &password) override;
+    void walletMapRequestFinished(const QMap<QString, QString> &map) override;
+
 private:
     QScopedPointer<EwsOAuthPrivate> d_ptr;
     Q_DECLARE_PRIVATE(EwsOAuth)

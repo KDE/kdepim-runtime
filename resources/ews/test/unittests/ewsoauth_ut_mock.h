@@ -33,6 +33,8 @@
 #include <QUrl>
 #include <QWidget>
 
+#include <KLocalizedString>
+
 Q_DECLARE_LOGGING_CATEGORY(EWSCLI_LOG)
 
 namespace Mock {
@@ -288,6 +290,7 @@ QString replyDataCallbackString(const QString &data);
 QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken,
                             quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
                             const QString &resource);
+QString requestWalletMapString();
 
 }
 

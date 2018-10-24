@@ -64,7 +64,7 @@ set(EWSCLIENT_SRCS
 
 if (Qt5NetworkAuth_FOUND)
   list(APPEND EWSCLIENT_SRCS
-    ewsoauth.cpp)
+    auth/ewsoauth.cpp)
 endif ()
 
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS

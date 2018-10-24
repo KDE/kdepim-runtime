@@ -38,6 +38,7 @@ using namespace Mock;
 #include <QWebEngineUrlRequestJob>
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
+#include <KLocalizedString>
 #endif
 
 #include "ewsclient_debug.h"
@@ -46,6 +47,9 @@ static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.micr
 static const auto o365AccessTokenUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/token"));
 static const auto o365FakeUserAgent = QStringLiteral("Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
 static const auto o365Resource = QStringLiteral("https%3A%2F%2Foutlook.office365.com%2F");
+
+static const QString accessTokenMapKey = QStringLiteral("access-token");
+static const QString refreshTokenMapKey = QStringLiteral("refresh-token");
 
 class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
@@ -99,7 +103,7 @@ public:
     EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const QString &appId, const QString &redirectUri);
     ~EwsOAuthPrivate() override = default;
 
-    void authenticate();
+    bool authenticate(bool interactive);
 
     void modifyParametersFunction(QAbstractOAuth::Stage stage, QVariantMap *parameters);
     void authorizeWithBrowser(const QUrl &url);
@@ -117,8 +121,8 @@ public:
     QString mToken;
     const QString mEmail;
     const QString mRedirectUri;
-    EwsOAuth::State mState;
     QWidget *mParentWindow;
+    bool mAuthenticated;
     QPointer<QDialog> mWebDialog;
 
     EwsOAuth *q_ptr = nullptr;
@@ -204,8 +208,8 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
 
 EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const QString &appId, const QString &redirectUri)
     : QObject(nullptr), mWebView(nullptr), mWebProfile(), mWebPage(&mWebProfile), mReplyHandler(this, redirectUri),
-      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mState(EwsOAuth::NotAuthenticated),
-      mParentWindow(nullptr), q_ptr(parent)
+      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mParentWindow(nullptr),
+      mAuthenticated(false), q_ptr(parent)
 {
     mOAuth2.setReplyHandler(&mReplyHandler);
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
@@ -238,13 +242,11 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
         });
 }
 
-void EwsOAuthPrivate::authenticate()
+bool EwsOAuthPrivate::authenticate(bool interactive)
 {
     Q_Q(EwsOAuth);
 
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Starting OAuth2 authentication");
-
-    mState = EwsOAuth::Authenticating;
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     if (!mOAuth2.refreshToken().isEmpty()) {
@@ -252,8 +254,12 @@ void EwsOAuthPrivate::authenticate()
     if (mOAuth2.status() == QAbstractOAuth::Status::Granted) {
 #endif
         mOAuth2.refreshAccessToken();
+        return true;
+    } else if (interactive) {
+        mOAuth2.grant();
+        return true;
     } else {
-        Q_EMIT q->browserDisplayRequest();
+        return false;
     }
 }
 
@@ -312,79 +318,43 @@ void EwsOAuthPrivate::granted()
 {
     Q_Q(EwsOAuth);
 
-    mState = EwsOAuth::Authenticated;
+    qCInfoNC(EWSCLI_LOG) << QStringLiteral("Authentication succeeded");
 
-    // TODO: Store refreshUri
+    mAuthenticated = true;
 
-    qCInfo(EWSCLI_LOG) << QStringLiteral("Authentication succeeded");
+    QMap<QString, QString> map;
+    map[accessTokenMapKey] = mOAuth2.token();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    map[refreshTokenMapKey] = mOAuth2.refreshToken();
+#endif
+    Q_EMIT q->setWalletMap(map);
 
-    Q_EMIT(q->granted());
+    Q_EMIT q->authSucceeded();
 }
 
 void EwsOAuthPrivate::error(const QString &error, const QString &errorDescription, const QUrl &uri)
 {
     Q_Q(EwsOAuth);
+
+    Q_UNUSED(uri);
+
+    mAuthenticated = false;
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    if (!mOAuth2.refreshToken().isEmpty()) {
-        qCInfoNC(EWSCLI_LOG) << QStringLiteral("Refresh token failed. Falling back to full authentication: ")
-                             << error << errorDescription;
-        mOAuth2.setRefreshToken(QString());
-        authenticate();
-    }
-#else
-    if (mOAuth2.status() == QAbstractOAuth::Status::RefreshingToken) {
-        qCInfoNC(EWSCLI_LOG) << QStringLiteral("Refresh token failed. Falling back to full authentication: ")
-                             << error << errorDescription;
-        authenticate();
-    }
+    mOAuth2.setRefreshToken(QString());
 #endif
-
-    mState = EwsOAuth::AuthenticationFailed;
-
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Authentication failed: ") << error << errorDescription;
 
-    Q_EMIT(q->error(error, errorDescription, uri));
+    Q_EMIT q->authFailed(error);
 }
 
 EwsOAuth::EwsOAuth(QObject *parent, const QString &email, const QString &appId, const QString &redirectUri)
-    : QObject(parent), d_ptr(new EwsOAuthPrivate(this, email, appId, redirectUri))
+    : EwsAbstractAuth(parent), d_ptr(new EwsOAuthPrivate(this, email, appId, redirectUri))
 {
 }
 
 EwsOAuth::~EwsOAuth()
 {
-}
-
-void EwsOAuth::authenticate()
-{
-    Q_D(EwsOAuth);
-
-    d->authenticate();
-}
-
-QString EwsOAuth::token() const
-{
-    Q_D(const EwsOAuth);
-
-    return d->mOAuth2.token();
-}
-
-QString EwsOAuth::refreshToken() const
-{
-    Q_D(const EwsOAuth);
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    return d->mOAuth2.refreshToken();
-#else
-    return QString();
-#endif
-}
-
-EwsOAuth::State EwsOAuth::state() const
-{
-    Q_D(const EwsOAuth);
-
-    return d->mState;
 }
 
 void EwsOAuth::setParentWindow(QWidget *window)
@@ -394,41 +364,75 @@ void EwsOAuth::setParentWindow(QWidget *window)
     d->mParentWindow = window;
 }
 
-void EwsOAuth::setAccessToken(const QString &accessToken)
+void EwsOAuth::init()
 {
-    Q_D(EwsOAuth);
-
-    d->mOAuth2.setToken(accessToken);
-    d->mState = Authenticated;
+    requestWalletMap();
 }
 
-void EwsOAuth::setRefreshToken(const QString &refreshToken)
+bool EwsOAuth::getAuthData(QString &username, QString &password, QStringList &customHeaders)
 {
-    Q_D(EwsOAuth);
+    Q_D(const EwsOAuth);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    d->mOAuth2.setRefreshToken(refreshToken);
-#else
-    Q_UNUSED(refreshToken);
-#endif
+    Q_UNUSED(username);
+    Q_UNUSED(password);
+
+    if (d->mAuthenticated) {
+        customHeaders.append(QStringLiteral("Authorization: Bearer ") + d->mOAuth2.token());
+        return true;
+    } else {
+        return false;
+    }
 }
 
-void EwsOAuth::resetAccessToken()
+void EwsOAuth::notifyRequestAuthFailed()
 {
     Q_D(EwsOAuth);
 
     d->mOAuth2.setToken(QString());
-    d->mState = NotAuthenticated;
+    d->mAuthenticated = false;
+
+    EwsAbstractAuth::notifyRequestAuthFailed();
 }
 
-void EwsOAuth::browserDisplayReply(bool display)
+bool EwsOAuth::authenticate(bool interactive)
 {
     Q_D(EwsOAuth);
 
-    if (display) {
-        d->mOAuth2.grant();
+    return d->authenticate(interactive);
+}
+
+const QString &EwsOAuth::reauthPrompt() const
+{
+    static const QString prompt = i18nc("@info", "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.");
+    return prompt;
+}
+
+const QString &EwsOAuth::authFailedPrompt() const
+{
+    static const QString prompt = i18nc("@info", "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. Please update it in the account settings page.");
+    return prompt;
+}
+
+void EwsOAuth::walletPasswordRequestFinished(const QString &password)
+{
+    Q_UNUSED(password);
+}
+
+void EwsOAuth::walletMapRequestFinished(const QMap<QString, QString> &map)
+{
+    Q_D(EwsOAuth);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    if (map.contains(refreshTokenMapKey)) {
+        d->mOAuth2.setRefreshToken(map[refreshTokenMapKey]);
+    }
+#endif
+    if (map.contains(accessTokenMapKey)) {
+        d->mOAuth2.setToken(map[accessTokenMapKey]);
+        d->mAuthenticated = true;
+        Q_EMIT authSucceeded();
     } else {
-        Q_EMIT error(QStringLiteral("User cancellation"), QStringLiteral("The authentication was cancelled by the user"), QUrl());
+        Q_EMIT authFailed(QStringLiteral("Access token request failed"));
     }
 }
 

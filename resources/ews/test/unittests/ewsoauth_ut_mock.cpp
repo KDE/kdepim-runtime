@@ -447,4 +447,9 @@ QString tokenCallbackString(const QString &accessToken, const QString &refreshTo
         .arg(refreshToken).arg(resource);
 }
 
+QString requestWalletMapString()
+{
+    return QStringLiteral("RequestWalletMap");
+}
+
 }
