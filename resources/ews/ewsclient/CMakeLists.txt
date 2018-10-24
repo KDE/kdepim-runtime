@@ -19,6 +19,7 @@
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 
 set(EWSCLIENT_SRCS
+  auth/ewsabstractauth.cpp
   ewsattachment.cpp
   ewsattendee.cpp
   ewsclient.cpp
