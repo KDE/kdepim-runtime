@@ -149,13 +149,6 @@ private:
     void doRetrieveCollections();
 
     int reconnectTimeout();
-    void passwordRequestFinished(const QString &password);
-#ifdef HAVE_NETWORKAUTH
-    void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
-    void tokensChanged(const QString &accessToken, const QString &refreshToken);
-    void oAuthBrowserRequest();
-    void oAuthBrowserNotificationDismissed(bool accepted);
-#endif
     void setUpAuth();
     void reauthNotificationDismissed(bool accepted);
     void reauthenticate();
@@ -168,11 +161,6 @@ private:
     QHash<QString, EwsId::List> mItemsToCheck;
     QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
     QString mPassword;
-#ifdef HAVE_NETWORKAUTH
-    QString mAccessToken;
-    QString mRefreshToken;
-    QPointer<KNotification> mOAuthNotification;
-#endif
     QScopedPointer<EwsAbstractAuth> mAuth;
     int mAuthStage;
     QPointer<KNotification> mReauthNotification;

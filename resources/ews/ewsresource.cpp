@@ -146,16 +146,6 @@ EwsResource::EwsResource(const QString &id)
 #endif
 
     connect(this, &AgentBase::reloadConfiguration, this, &EwsResource::reloadConfig);
-
-    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, this,
-            &EwsResource::passwordRequestFinished);
-#ifdef HAVE_NETWORKAUTH
-    connect(mSettings.data(), &EwsSettings::tokensRequestFinished, this,
-            &EwsResource::tokensRequestFinished);
-    connect(&mEwsClient, &EwsClient::oAuthTokensChanged, this,
-            &EwsResource::tokensChanged);
-    connect(&mEwsClient, &EwsClient::oAuthBrowserDisplayRequest, this, &EwsResource::oAuthBrowserRequest);
-#endif
 }
 
 EwsResource::~EwsResource()
@@ -454,39 +444,8 @@ void EwsResource::reloadConfig()
 {
     mSubManager.reset(nullptr);
     mEwsClient.setUrl(mSettings->baseUrl());
-#ifdef HAVE_NETWORKAUTH
-    if (mSettings->authMode() == QStringLiteral("oauth2")) {
-        mEwsClient.setOAuthData(mSettings->email(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
-        mSettings->requestTokens();
-    } else if (mSettings->authMode() == QStringLiteral("username-password"))
-#endif
-    {
-        mSettings->requestPassword(true);
-    }
     setUpAuth();
     mEwsClient.setAuth(mAuth.data());
-}
-
-void EwsResource::passwordRequestFinished(const QString &password)
-{
-    mPassword = password;
-    if (mPassword.isNull()) {
-        setOnline(false);
-        Q_EMIT status(NotConfigured, i18nc("@info:status", "No password configured."));
-    } else {
-        if (!mSettings->hasDomain()) {
-            mEwsClient.setCredentials(mSettings->username(), mPassword);
-        } else {
-            mEwsClient.setCredentials(mSettings->domain() + QLatin1Char('\\') + mSettings->username(), mPassword);
-        }
-        mSettings->save();
-        if (mSettings->baseUrl().isEmpty()) {
-            setOnline(false);
-            Q_EMIT status(NotConfigured, i18nc("@info:status", "No server configured yet."));
-        } else {
-            resetUrl();
-        }
-    }
 }
 
 void EwsResource::configure(WId windowId)
@@ -1453,54 +1412,5 @@ void EwsResource::requestAuthFailed()
 
     reauthenticate();
 }
-
-#ifdef HAVE_NETWORKAUTH
-void EwsResource::tokensRequestFinished(const QString &accessToken, const QString &refreshToken)
-{
-    mAccessToken = accessToken;
-    mRefreshToken = refreshToken;
-    if (!mAccessToken.isEmpty() || !mRefreshToken.isEmpty()) {
-        qCDebugNC(EWSRES_AGENTIF_LOG) << "tokensRequestFinished: got tokens";
-        mEwsClient.setOAuthTokens(mAccessToken, mRefreshToken);
-        mSettings->save();
-        if (mSettings->baseUrl().isEmpty()) {
-            setOnline(false);
-            Q_EMIT status(NotConfigured, i18nc("@info:status", "No server configured yet."));
-        } else {
-            resetUrl();
-        }
-    }
-}
-
-void EwsResource::tokensChanged(const QString &accessToken, const QString &refreshToken)
-{
-    qCDebugNC(EWSRES_LOG) << "tokensChanged: received new OAuth2 tokens";
-    mSettings->setTokens(accessToken, refreshToken);
-}
-
-void EwsResource::oAuthBrowserRequest()
-{
-    mOAuthNotification = new KNotification(QStringLiteral("oauth2-tokens-expired"), KNotification::Persistent, this);
-
-    mOAuthNotification->setText(i18nc("@info", "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.").arg(mSettings->email()));
-    mOAuthNotification->setActions(QStringList(i18nc("@action:button", "Authenticate")));
-    mOAuthNotification->setComponentName(QStringLiteral("akonadi_ews_resource"));
-    auto acceptedFn = std::bind(&EwsResource::oAuthBrowserNotificationDismissed, this, true);
-    auto rejectedFn = std::bind(&EwsResource::oAuthBrowserNotificationDismissed, this, false);
-    connect(mOAuthNotification.data(), &KNotification::action1Activated, this, acceptedFn);
-    connect(mOAuthNotification.data(), &KNotification::closed, this, rejectedFn);
-    connect(mOAuthNotification.data(), &KNotification::ignored, this, rejectedFn);
-    mOAuthNotification->sendEvent();
-}
-
-void EwsResource::oAuthBrowserNotificationDismissed(bool accepted)
-{
-    if (mOAuthNotification) {
-        mOAuthNotification.clear();
-        mEwsClient.oAuthBrowserDisplayReply(accepted);
-    }
-}
-
-#endif
 
 AKONADI_RESOURCE_MAIN(EwsResource)

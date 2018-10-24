@@ -20,15 +20,12 @@
 #ifndef EWSCLIENT_H
 #define EWSCLIENT_H
 
+#include <QObject>
+#include <QPointer>
 #include <QString>
 #include <QUrl>
-#include <QObject>
-#include "ewsserverversion.h"
 
-#ifdef HAVE_NETWORKAUTH
-#include <QPointer>
-class EwsOAuth;
-#endif
+#include "ewsserverversion.h"
 
 class EwsAbstractAuth;
 
@@ -36,42 +33,13 @@ class EwsClient : public QObject
 {
     Q_OBJECT
 public:
-    enum AuthMode {
-        Unknown,
-        UsernamePassword,
-#ifdef HAVE_NETWORKAUTH
-        OAuth2,
-#endif
-    };
-
     explicit EwsClient(QObject *parent = nullptr);
     ~EwsClient();
-
-    AuthMode authMode() const
-    {
-        return mAuthMode;
-    }
 
     void setUrl(const QString &url)
     {
         mUrl.setUrl(url);
     }
-
-    void setCredentials(const QString &username, const QString &password)
-    {
-        mUrl.setUserName(username);
-        mUrl.setPassword(password);
-
-        mAuthMode = UsernamePassword;
-    }
-
-#ifdef HAVE_NETWORKAUTH
-    void setOAuthData(const QString &email, const QString &appId, const QString &redirectUri);
-    void setOAuthTokens(const QString &authToken, const QString &refreshToken);
-    void oAuthBrowserDisplayReply(bool display);
-
-    EwsOAuth *oAuth();
-#endif
 
     void setAuth(EwsAbstractAuth *auth);
     EwsAbstractAuth *auth() const;
@@ -119,20 +87,7 @@ Q_SIGNALS:
     void oAuthBrowserDisplayRequest();
 
 private:
-    AuthMode mAuthMode;
-
     QUrl mUrl;
-    QString mUsername;
-    QString mPassword;
-
-#ifdef HAVE_NETWORKAUTH
-    QString mEmail;
-    QString mAppId;
-    QString mRedirectUri;
-    QString mAccessToken;
-    QString mRefreshToken;
-    QPointer<EwsOAuth> mOAuth;
-#endif
 
     QPointer<EwsAbstractAuth> mAuth;
 

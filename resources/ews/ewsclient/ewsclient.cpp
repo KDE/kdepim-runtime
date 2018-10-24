@@ -22,15 +22,12 @@
 #include <QString>
 
 #include "auth/ewsabstractauth.h"
-#ifdef HAVE_NETWORKAUTH
-#include "ewsoauth.h"
-#endif
 #include "ewsclient_debug.h"
 
 QHash<QString, QString> EwsClient::folderHash;
 
 EwsClient::EwsClient(QObject *parent)
-    : QObject(parent), mAuthMode(Unknown), mEnableNTLMv2(true)
+    : QObject(parent), mEnableNTLMv2(true)
 {
 
 }
@@ -49,13 +46,7 @@ void EwsClient::setServerVersion(const EwsServerVersion &version)
 
 QUrl EwsClient::url() const
 {
-    auto url = mUrl;
-#ifdef HAVE_NETWORKAUTH
-    if (mAuthMode == OAuth2) {
-        url.setUserInfo(QString());
-    }
-#endif
-    return url;
+    return mUrl;
 }
 
 void EwsClient::setAuth(EwsAbstractAuth *auth)
@@ -67,59 +58,3 @@ EwsAbstractAuth *EwsClient::auth() const
 {
     return mAuth.data();
 }
-
-#ifdef HAVE_NETWORKAUTH
-EwsOAuth *EwsClient::oAuth()
-{
-    if (mAuthMode == OAuth2 && !mOAuth) {
-        mOAuth = new EwsOAuth(this, mEmail, mAppId, mRedirectUri);
-        if (!mAccessToken.isEmpty()) {
-            mOAuth->setAccessToken(mAccessToken);
-        }
-        if (!mRefreshToken.isEmpty()) {
-            mOAuth->setRefreshToken(mRefreshToken);
-        }
-        connect(mOAuth, &EwsOAuth::granted, this, [this]() {
-                mAccessToken = mOAuth->token();
-                mRefreshToken = mOAuth->refreshToken();
-                Q_EMIT oAuthTokensChanged(mAccessToken, mRefreshToken);
-            });
-        connect(mOAuth, &EwsOAuth::browserDisplayRequest,
-                this, &EwsClient::oAuthBrowserDisplayRequest);
-    }
-    return mOAuth;
-}
-
-void EwsClient::setOAuthData(const QString &email, const QString &appId, const QString &redirectUri)
-{
-    mEmail = email;
-    mAppId = appId;
-    mRedirectUri = redirectUri;
-
-    mAuthMode = OAuth2;
-    delete mOAuth;
-}
-
-void EwsClient::setOAuthTokens(const QString &accessToken, const QString &refreshToken)
-{
-    mAccessToken = accessToken;
-    mRefreshToken = refreshToken;
-    if (mOAuth) {
-        if (!mAccessToken.isEmpty()) {
-            mOAuth->setAccessToken(mAccessToken);
-        }
-        if (!mRefreshToken.isEmpty()) {
-            mOAuth->setRefreshToken(mRefreshToken);
-        }
-    }
-}
-
-void EwsClient::oAuthBrowserDisplayReply(bool display)
-{
-    if (mOAuth) {
-        mOAuth->browserDisplayReply(display);
-    }
-}
-
-#endif
-
