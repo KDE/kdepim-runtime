@@ -33,6 +33,7 @@ namespace Ui
 class SetupServerView;
 }
 class KJob;
+class EwsAbstractAuth;
 class EwsAutodiscoveryJob;
 class EwsGetFolderRequest;
 class EwsProgressDialog;
@@ -58,11 +59,9 @@ private:
     void enableTryConnect();
     void tryConnect();
     void userAgentChanged(int index);
+    EwsAbstractAuth *prepareAuth();
 
     QString fullUsername() const;
-#ifdef HAVE_NETWORKAUTH
-    void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
-#endif
     EwsResource *mParentResource = nullptr;
     KConfigDialogManager *mConfigManager = nullptr;
     Ui::SetupServerView *mUi = nullptr;
@@ -76,10 +75,6 @@ private:
     EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
     QPointer<EwsSettings> mSettings;
-#ifdef HAVE_NETWORKAUTH
-    QString mAccessToken;
-    QString mRefreshToken;
-#endif
 };
 
 #endif

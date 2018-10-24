@@ -34,6 +34,7 @@
 #include "ewssettings.h"
 #include "ewssubscriptionwidget.h"
 #include "ewsprogressdialog.h"
+#include "auth/ewspasswordauth.h"
 #include "ui_ewsconfigdialog.h"
 
 typedef QPair<QString, QString> StringPair;
@@ -115,21 +116,17 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
 
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
             &KPasswordLineEdit::setPassword);
+    mSettings->requestPassword(false);
 #ifdef HAVE_NETWORKAUTH
-    connect(mSettings.data(), &EwsSettings::tokensRequestFinished, this,
-            &EwsConfigDialog::tokensRequestFinished);
     mUi->authOAuth2RadioButton->setEnabled(true);
     const auto authMode = mSettings->authMode();
     if (authMode == QStringLiteral("username-password")) {
         mUi->authUsernameRadioButton->setChecked(true);
-        mSettings->requestPassword(false);
     } else if (authMode == QStringLiteral("oauth2")) {
         mUi->authOAuth2RadioButton->setChecked(true);
-        mSettings->requestTokens();
     }
 #else
     mUi->authUsernameRadioButton->setChecked(true);
-    mSettings->requestPassword(false);
 #endif
 
     int selectedIndex = -1;
@@ -209,12 +206,10 @@ void EwsConfigDialog::save()
     }
 
     if (mUi->authUsernameRadioButton->isChecked()) {
-        mSettings->setPassword(mUi->passwordEdit->password());
         mSettings->setAuthMode(QStringLiteral("username-password"));
     }
 #ifdef HAVE_NETWORKAUTH
     if (mUi->authOAuth2RadioButton->isChecked()) {
-        mSettings->setTokens(mAccessToken, mRefreshToken);
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
 #endif
@@ -332,16 +327,8 @@ void EwsConfigDialog::dialogAccepted()
     if (mTryConnectNeeded) {
         EwsClient cli;
         cli.setUrl(mUi->kcfg_BaseUrl->text());
-#ifdef HAVE_NETWORKAUTH
-        if (mUi->authOAuth2RadioButton->isChecked()) {
-            cli.setOAuthData(mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
-            cli.setOAuthTokens(mAccessToken, mRefreshToken);
-            connect(&cli, &EwsClient::oAuthTokensChanged, this, &EwsConfigDialog::tokensRequestFinished);
-        } else
-#endif
-        if (mUi->authUsernameRadioButton->isChecked()) {
-            cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
-        }
+        const auto auth = prepareAuth();
+        cli.setAuth(auth);
         if (mUi->userAgentGroupBox->isChecked()) {
             cli.setUserAgent(mUi->userAgentEdit->text());
         }
@@ -353,11 +340,6 @@ void EwsConfigDialog::dialogAccepted()
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
         mTryConnectJob->setParentWindow(mProgressDialog);
-#ifdef HAVE_NETWORKAUTH
-        connect(&cli, &EwsClient::oAuthBrowserDisplayRequest, this, [&cli]() {
-                cli.oAuthBrowserDisplayReply(true);
-            });
-#endif
         mTryConnectJob->start();
         if (!execJob(mTryConnectJob)) {
             if (!mTryConnectJobCancelled) {
@@ -397,16 +379,8 @@ void EwsConfigDialog::tryConnect()
 {
     EwsClient cli;
     cli.setUrl(mUi->kcfg_BaseUrl->text());
-#ifdef HAVE_NETWORKAUTH
-    if (mUi->authOAuth2RadioButton->isChecked()) {
-        cli.setOAuthData(mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
-        cli.setOAuthTokens(mAccessToken, mRefreshToken);
-        connect(&cli, &EwsClient::oAuthTokensChanged, this, &EwsConfigDialog::tokensRequestFinished);
-    } else
-#endif
-    if (mUi->authUsernameRadioButton->isChecked()) {
-        cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
-    }
+    const auto auth = prepareAuth();
+    cli.setAuth(auth);
     if (mUi->userAgentGroupBox->isChecked()) {
         cli.setUserAgent(mUi->userAgentEdit->text());
     }
@@ -417,11 +391,6 @@ void EwsConfigDialog::tryConnect()
     mTryConnectJobCancelled = false;
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
-#ifdef HAVE_NETWORKAUTH
-    connect(&cli, &EwsClient::oAuthBrowserDisplayRequest, this, [&cli]() {
-            cli.oAuthBrowserDisplayReply(true);
-        });
-#endif
     mProgressDialog->show();
     mTryConnectJob->setParentWindow(mProgressDialog);
     if (!execJob(mTryConnectJob)) {
@@ -447,11 +416,37 @@ void EwsConfigDialog::userAgentChanged(int)
     }
 }
 
-#ifdef HAVE_NETWORKAUTH
-void EwsConfigDialog::tokensRequestFinished(const QString &accessToken, const QString &refreshToken)
+EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 {
-    qDebug() << "EwsConfigDialog: got tokens" << accessToken << refreshToken;
-    mAccessToken = accessToken;
-    mRefreshToken = refreshToken;
+    EwsAbstractAuth *auth = nullptr;
+
+    if (mUi->authUsernameRadioButton->isChecked()) {
+        auth = new EwsPasswordAuth(fullUsername(), this);
+    }
+
+    connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
+            auth->walletPasswordRequestFinished(mUi->passwordEdit->password());
+        });
+
+    auth->init();
+
+    QEventLoop loop;
+    bool authFinished = false;
+
+    connect(auth, &EwsAbstractAuth::authSucceeded, this, [&]() {
+            authFinished = true;
+            loop.exit(0);
+        });
+    connect(auth, &EwsAbstractAuth::authFailed, this, [&](const QString&) {
+            authFinished = true;
+            loop.exit(0);
+        });
+
+    if (auth->authenticate(true)) {
+        if (!authFinished) {
+            loop.exec();
+        }
+    }
+
+    return auth;
 }
-#endif
