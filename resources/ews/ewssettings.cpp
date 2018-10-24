@@ -135,6 +135,28 @@ void EwsSettings::requestTokens()
     Q_EMIT tokensRequestFinished(mAccessToken, mRefreshToken);
 }
 
+void EwsSettings::requestMap()
+{
+    qCDebug(EWSRES_LOG) << "requestMap: start";
+    if (!mMap.isEmpty()) {
+        qCDebug(EWSRES_LOG) << "requestMap: already set";
+        Q_EMIT mapRequestFinished(mMap);
+        return;
+    }
+
+    if (requestWalletOpen()) {
+        mMapReadPending = true;
+        return;
+    }
+
+    if (mWallet && mWallet->isOpen()) {
+        mMap = readMap();
+        mWallet.clear();
+    }
+
+    Q_EMIT mapRequestFinished(mMap);
+}
+
 QString EwsSettings::readPassword() const
 {
     QString password;
@@ -218,6 +240,33 @@ void EwsSettings::satisfyTokensWriteRequest(bool success)
     mTokensWritePending = false;
 }
 
+void EwsSettings::satisfyMapReadRequest(bool success)
+{
+    if (success) {
+        if (mMap.isEmpty()) {
+            mMap = readMap();
+        }
+        qCDebug(EWSRES_LOG) << "satisfyMapReadRequest: got map";
+        Q_EMIT mapRequestFinished(mMap);
+    } else {
+        qCDebug(EWSRES_LOG) << "satisfyTokensReadRequest: failed to retrieve map";
+        Q_EMIT mapRequestFinished(QMap<QString, QString>());
+    }
+    mMapReadPending = false;
+}
+
+void EwsSettings::satisfyMapWriteRequest(bool success)
+{
+    if (success) {
+        if (!mWallet->hasFolder(ewsWalletFolder)) {
+            mWallet->createFolder(ewsWalletFolder);
+        }
+        mWallet->setFolder(ewsWalletFolder);
+        mWallet->writeMap(config()->name(), mMap);
+    }
+    mMapWritePending = false;
+}
+
 void EwsSettings::onWalletOpened(bool success)
 {
     mWalletTimer.stop();
@@ -233,6 +282,12 @@ void EwsSettings::onWalletOpened(bool success)
         }
         if (mTokensWritePending) {
             satisfyTokensWriteRequest(success);
+        }
+        if (mMapReadPending) {
+            satisfyMapReadRequest(success);
+        }
+        if (mMapWritePending) {
+            satisfyMapWriteRequest(success);
         }
         mWallet.clear();
     }
@@ -277,6 +332,40 @@ void EwsSettings::setTokens(const QString &accessToken, const QString &refreshTo
 
     if (requestWalletOpen()) {
         mTokensWritePending = true;
+    }
+}
+
+void EwsSettings::setMap(const QMap<QString, QString> &map)
+{
+    if (map.isEmpty()) {
+        qCWarning(EWSRES_LOG) << "Trying to set null map";
+        return;
+    }
+
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        qDebug() << "setMap:" << it.key();
+        if (!it.value().isNull()) {
+            mMap[it.key()] = it.value();
+        } else {
+            mMap.remove(it.key());
+        }
+    }
+
+    /* Remote items with null value - this is a way to remove
+       unwanted items from the map. */
+    for (auto it = mMap.begin(); it != mMap.end(); ++it) {
+        while (it->isNull()) {
+            it = mMap.erase(it);
+        }
+    }
+
+    /* If a pending password request is running, satisfy it. */
+    if (mWallet && mMapReadPending) {
+        satisfyMapReadRequest(true);
+    }
+
+    if (requestWalletOpen()) {
+        mMapWritePending = true;
     }
 }
 
