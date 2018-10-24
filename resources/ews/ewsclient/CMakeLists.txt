@@ -20,6 +20,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 
 set(EWSCLIENT_SRCS
   auth/ewsabstractauth.cpp
+  auth/ewspasswordauth.cpp
   ewsattachment.cpp
   ewsattendee.cpp
   ewsclient.cpp
@@ -94,6 +95,7 @@ target_link_libraries(ewsclient
   KF5::KIOWidgets
   KF5::KIONTLM
   KF5::Codecs
+  KF5::I18n
   KF5::Mime
   KF5::CalendarCore)
 
