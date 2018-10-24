@@ -45,18 +45,15 @@ public:
     ~EwsSettings() override;
 
     void requestPassword(bool ask);
-    void requestTokens();
     void requestMap();
 
     EwsAbstractAuth *loadAuth();
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
-    Q_SCRIPTABLE void setTokens(const QString &accessToken, const QString &refreshToken);
     Q_SCRIPTABLE void setMap(const QMap<QString, QString> &map);
     Q_SCRIPTABLE void setTestPassword(const QString &password);
 Q_SIGNALS:
     void passwordRequestFinished(const QString &password);
-    void tokensRequestFinished(const QString &accessToken, const QString &refreshToken);
     void mapRequestFinished(const QMap<QString, QString> &map);
 private Q_SLOTS:
     void onWalletOpened(bool success);
@@ -65,8 +62,6 @@ private:
     QMap<QString, QString> readMap() const;
     void satisfyPasswordReadRequest(bool success);
     void satisfyPasswordWriteRequest(bool success);
-    void satisfyTokensReadRequest(bool success);
-    void satisfyTokensWriteRequest(bool success);
     void satisfyMapReadRequest(bool success);
     void satisfyMapWriteRequest(bool success);
     bool requestWalletOpen();
@@ -75,11 +70,6 @@ private:
     QString mPassword;
     bool mPasswordReadPending;
     bool mPasswordWritePending;
-
-    QString mAccessToken;
-    QString mRefreshToken;
-    bool mTokensReadPending;
-    bool mTokensWritePending;
 
     QMap<QString, QString> mMap;
     bool mMapReadPending;
