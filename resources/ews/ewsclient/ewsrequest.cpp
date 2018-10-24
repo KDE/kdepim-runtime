@@ -24,9 +24,7 @@
 #include "ewsclient.h"
 #include "ewsclient_debug.h"
 #include "ewsserverversion.h"
-#ifdef HAVE_NETWORKAUTH
-#include "ewsoauth.h"
-#endif
+#include "auth/ewsabstractauth.h"
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
     : EwsJob(parent), mClient(client), mServerVersion(EwsServerVersion::ewsVersion2007Sp1), mParentWindow(nullptr)
@@ -81,17 +79,19 @@ void EwsRequest::prepare(const QString &body)
 {
     mBody = body;
 
-#ifdef HAVE_NETWORKAUTH
-    QString authToken;
-    if (mClient.authMode() == EwsClient::OAuth2) {
-        authToken = getOAuthToken();
-        if (authToken.isNull()) {
-            return;
+    QString username, password;
+    QStringList customHeaders;
+    if (mClient.auth()) {
+        if (!mClient.auth()->getAuthData(username, password, customHeaders)) {
+            setErrorMsg(QStringLiteral("Failed to retrieve authentication data"));
         }
     }
-#endif
 
-    KIO::TransferJob *job = KIO::http_post(mClient.url(), body.toUtf8(),
+    QUrl url = mClient.url();
+    url.setUserName(username);
+    url.setPassword(password);
+
+    KIO::TransferJob *job = KIO::http_post(url, body.toUtf8(),
                                            KIO::HideProgressInfo);
     job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/xml"));
     if (!mClient.userAgent().isEmpty()) {
@@ -100,12 +100,10 @@ void EwsRequest::prepare(const QString &body)
 
     job->addMetaData(mMd);
 
-#ifdef HAVE_NETWORKAUTH
-    if (mClient.authMode() == EwsClient::OAuth2) {
-        job->addMetaData(QStringLiteral("customHTTPHeader"),
-                         QStringLiteral("Authorization: Bearer ") + authToken);
+    if (!customHeaders.isEmpty()) {
+        job->addMetaData(QStringLiteral("customHTTPHeader"), customHeaders.join("\r\n"));
     }
-#endif
+
     job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     if (mClient.isNTLMv2Enabled()) {
         job->addMetaData(QStringLiteral("EnableNTLMv2Auth"), QStringLiteral("true"));
@@ -116,41 +114,6 @@ void EwsRequest::prepare(const QString &body)
 
     addSubjob(job);
 }
-
-#ifdef HAVE_NETWORKAUTH
-QString EwsRequest::getOAuthToken()
-{
-    auto oAuth = mClient.oAuth();
-    switch (oAuth->state()) {
-    case EwsOAuth::Authenticated:
-        return oAuth->token();
-    case EwsOAuth::Authenticating:
-        /* fall through */
-    case EwsOAuth::NotAuthenticated:
-        qCInfoNC(EWSCLI_LOG) << QStringLiteral("OAuth token missing - delaying request until authentication finishes");
-        connect(oAuth, &EwsOAuth::granted, this, [this]() {
-                qDebug() << "EwsRequest::prepareAuth: granted";
-                prepare(mBody);
-            });
-        connect(oAuth, &EwsOAuth::error, this, [this](const QString &error, const QString &, const QUrl &) {
-                setErrorMsg(QStringLiteral("Failed to process EWS request - OAuth2 authentication failed - %1").arg(error));
-                emitResult();
-            });
-        if (oAuth->state() == EwsOAuth::NotAuthenticated) {
-            if (mParentWindow) {
-                oAuth->setParentWindow(mParentWindow);
-            }
-            oAuth->authenticate();
-        }
-        break;
-    default:
-        setErrorMsg(QStringLiteral("Failed to process EWS request - unknown OAuth2 authentication state - %1").arg(oAuth->state()));
-        emitResult();
-    }
-
-    return QString();
-}
-#endif
 
 void EwsRequest::setMetaData(const KIO::MetaData &md)
 {
@@ -179,17 +142,9 @@ void EwsRequest::requestResult(KJob *job)
     KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob*>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
-#ifdef HAVE_NETWORKAUTH
-    if (resp == 401 && mClient.authMode() == EwsClient::OAuth2) {
-        qCInfo(EWSCLI_LOG) << QStringLiteral("Got HTTP 401 Unauthorized with OAuth - reset access token");
-        auto oAuth = mClient.oAuth();
-        oAuth->resetAccessToken();
-        if (oAuth->state() == EwsOAuth::NotAuthenticated || oAuth->state() == EwsOAuth::Authenticating) {
-            prepare(mBody);
-            return;
-        }
+    if (resp == 401 && mClient.auth()) {
+        mClient.auth()->notifyRequestAuthFailed();
     }
-#endif
 
     if (job->error() != 0) {
         setErrorMsg(QStringLiteral("Failed to process EWS request: ") + job->errorString(), job->error());
