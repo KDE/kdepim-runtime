@@ -42,8 +42,8 @@ private Q_SLOTS:
     void writeNullWallet();
     void writeTimeout();
     void writeValidPassword();
-    void readValidTokens();
-    void writeValidTokens();
+    void readValidMap();
+    void writeValidMap();
 };
 
 namespace KWallet {
@@ -721,7 +721,7 @@ void UtEwsSettings::writeValidPassword()
     QVERIFY(createFolderCalled);
 }
 
-void UtEwsSettings::readValidTokens()
+void UtEwsSettings::readValidMap()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
@@ -742,15 +742,18 @@ void UtEwsSettings::readValidTokens()
 
     bool hasFolderCalled = false;
     bool setFolderCalled = false;
-    QString accessToken, refreshToken;
+    QMap<QString, QString> map;
+    const QMap<QString, QString> expectedMap = {
+        {accessTokenMapKey, QStringLiteral("afoo")},
+        {refreshTokenMapKey, QStringLiteral("rfoo")}
+    };
     EwsSettings settings(0);
-    connect(&settings, &EwsSettings::tokensRequestFinished, this, [&](const QString &at, const QString &rt) {
-        accessToken = at;
-        refreshToken = rt;
+    connect(&settings, &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &m) {
+        map = m;
         loop.exit(0);
     });
     QTimer::singleShot(100, [&]() {
-        settings.requestTokens();
+        settings.requestMap();
         if (!wallet) {
             qDebug() << "Wallet is null";
             loop.exit(1);
@@ -786,13 +789,12 @@ void UtEwsSettings::readValidTokens()
 
     QVERIFY(loop.exec() == 0);
 
-    QVERIFY(accessToken == QStringLiteral("afoo"));
-    QVERIFY(refreshToken == QStringLiteral("rfoo"));
+    QVERIFY(map == expectedMap);
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
 }
 
-void UtEwsSettings::writeValidTokens()
+void UtEwsSettings::writeValidMap()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
@@ -814,10 +816,14 @@ void UtEwsSettings::writeValidTokens()
     bool hasFolderCalled = false;
     bool createFolderCalled = false;
     bool setFolderCalled = false;
-    QString accessToken, refreshToken;
+    const QMap<QString, QString> expectedMap = {
+        {accessTokenMapKey, QStringLiteral("afoo")},
+        {refreshTokenMapKey, QStringLiteral("rfoo")}
+    };
+    QMap<QString, QString> map;
     EwsSettings settings(0);
     QTimer::singleShot(100, [&]() {
-        settings.setTokens(QStringLiteral("afoo"), QStringLiteral("rfoo"));
+        settings.setMap(expectedMap);
         if (!wallet) {
             qDebug() << "Wallet is null";
             loop.exit(1);
@@ -836,12 +842,7 @@ void UtEwsSettings::writeValidTokens()
             return false;
         };
         wallet->writeMapCallback = [&](const QString &, const QMap<QString, QString> &m) {
-            if (!m.contains(accessTokenMapKey) || !m.contains(refreshTokenMapKey)) {
-                qDebug() << "Map does not contain required keys";
-                loop.exit(1);
-            }
-            accessToken = m[accessTokenMapKey];
-            refreshToken = m[refreshTokenMapKey];
+            map = m;
             loop.exit(0);
             return true;
         };
@@ -859,8 +860,7 @@ void UtEwsSettings::writeValidTokens()
 
     QVERIFY(loop.exec() == 0);
 
-    QVERIFY(accessToken == QStringLiteral("afoo"));
-    QVERIFY(refreshToken == QStringLiteral("rfoo"));
+    QVERIFY(map == expectedMap);
     QVERIFY(hasFolderCalled);
     QVERIFY(setFolderCalled);
     QVERIFY(createFolderCalled);
