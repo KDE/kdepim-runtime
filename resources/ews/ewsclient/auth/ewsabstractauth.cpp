@@ -20,7 +20,7 @@
 #include "ewsabstractauth.h"
 
 EwsAbstractAuth::EwsAbstractAuth(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), mAuthParentWidget(nullptr)
 {
 }
 
