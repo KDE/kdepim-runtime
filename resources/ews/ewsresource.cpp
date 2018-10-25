@@ -1324,7 +1324,7 @@ void EwsResource::globalTagsRetrievalFinished(KJob *job)
 
 void EwsResource::setUpAuth()
 {
-    EwsAbstractAuth *auth = mSettings->loadAuth();
+    EwsAbstractAuth *auth = mSettings->loadAuth(this);
 
     /* Use queued connections here to avoid stack overflow when the reauthentication proceeds through all stages. */
     connect(auth, SIGNAL(authSucceeded()), this, SLOT(authSucceeded()), Qt::QueuedConnection);

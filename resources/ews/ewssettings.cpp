@@ -310,7 +310,7 @@ void EwsSettings::setTestPassword(const QString &password)
 
 /* Not needed for unittests - exclude to avoid excess link-time dependencies. */
 #ifndef EWSSETTINGS_UNITTEST
-EwsAbstractAuth *EwsSettings::loadAuth()
+EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
 {
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Setting up authentication");
 
@@ -320,7 +320,7 @@ EwsAbstractAuth *EwsSettings::loadAuth()
     if (mode == QStringLiteral("oauth2")) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Using OAuth2 authentication");
 
-        auth = new EwsOAuth(this, email(), oAuth2AppId(), oAuth2ReturnUri());
+        auth = new EwsOAuth(parent, email(), oAuth2AppId(), oAuth2ReturnUri());
     }
 #endif
     if (mode == QStringLiteral("username-password")) {
@@ -332,7 +332,7 @@ EwsAbstractAuth *EwsSettings::loadAuth()
         } else {
             user = domain() + QLatin1Char('\\') + username();
         }
-        auth = new EwsPasswordAuth(user, this);
+        auth = new EwsPasswordAuth(user, parent);
     }
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, &EwsSettings::requestPassword);

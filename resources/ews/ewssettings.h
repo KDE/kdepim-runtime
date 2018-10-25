@@ -47,7 +47,7 @@ public:
     void requestPassword(bool ask);
     void requestMap();
 
-    EwsAbstractAuth *loadAuth();
+    EwsAbstractAuth *loadAuth(QObject *parent);
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
     Q_SCRIPTABLE void setMap(const QMap<QString, QString> &map);
