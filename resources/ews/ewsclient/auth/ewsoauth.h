@@ -35,8 +35,6 @@ public:
     EwsOAuth(QObject *parent, const QString &email, const QString &appId, const QString &redirectUri);
     ~EwsOAuth() override;
 
-    void setParentWindow(QWidget *w);
-
     void init() override;
     bool getAuthData(QString &username, QString &password, QStringList &customHeaders) override;
     void notifyRequestAuthFailed() override;

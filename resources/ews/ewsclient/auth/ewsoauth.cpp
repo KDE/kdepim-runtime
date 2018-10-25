@@ -121,7 +121,6 @@ public:
     QString mToken;
     const QString mEmail;
     const QString mRedirectUri;
-    QWidget *mParentWindow;
     bool mAuthenticated;
     QPointer<QDialog> mWebDialog;
 
@@ -208,8 +207,7 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
 
 EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const QString &appId, const QString &redirectUri)
     : QObject(nullptr), mWebView(nullptr), mWebProfile(), mWebPage(&mWebProfile), mReplyHandler(this, redirectUri),
-      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mParentWindow(nullptr),
-      mAuthenticated(false), q_ptr(parent)
+      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mAuthenticated(false), q_ptr(parent)
 {
     mOAuth2.setReplyHandler(&mReplyHandler);
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
@@ -281,9 +279,11 @@ void EwsOAuthPrivate::modifyParametersFunction(QAbstractOAuth::Stage stage, QVar
 
 void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
 {
+    Q_Q(EwsOAuth);
+
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Launching browser for authentication");
 
-    mWebDialog = new QDialog(mParentWindow);
+    mWebDialog = new QDialog(q->mAuthParentWidget);
     mWebDialog->setObjectName(QStringLiteral("Akonadi EWS Resource - Authentication"));
     mWebDialog->setWindowIcon(QIcon("akonadi-ews"));
     mWebDialog->resize(400, 500);
@@ -355,13 +355,6 @@ EwsOAuth::EwsOAuth(QObject *parent, const QString &email, const QString &appId, 
 
 EwsOAuth::~EwsOAuth()
 {
-}
-
-void EwsOAuth::setParentWindow(QWidget *window)
-{
-    Q_D(EwsOAuth);
-
-    d->mParentWindow = window;
 }
 
 void EwsOAuth::init()

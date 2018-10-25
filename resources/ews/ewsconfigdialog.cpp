@@ -346,7 +346,6 @@ void EwsConfigDialog::dialogAccepted()
         connect(mTryConnectJob, &EwsGetFolderRequest::result, this, &EwsConfigDialog::tryConnectFinished);
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
-        mTryConnectJob->setParentWindow(mProgressDialog);
         mTryConnectJob->start();
         if (!execJob(mTryConnectJob)) {
             if (!mTryConnectJobCancelled) {
@@ -399,7 +398,6 @@ void EwsConfigDialog::tryConnect()
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
     mProgressDialog->show();
-    mTryConnectJob->setParentWindow(mProgressDialog);
     if (!execJob(mTryConnectJob)) {
         if (!mTryConnectJobCancelled) {
             mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
@@ -429,15 +427,13 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 
 #ifdef HAVE_NETWORKAUTH
     if (mUi->authOAuth2RadioButton->isChecked()) {
-        auto oAuth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
-        oAuth->setParentWindow(this);
-        auth = oAuth;
+        auth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
     } else
 #endif
-
     if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
     }
+    auth->setAuthParentWidget(this);
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
             auth->walletPasswordRequestFinished(mUi->passwordEdit->password());

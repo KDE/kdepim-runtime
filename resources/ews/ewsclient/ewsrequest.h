@@ -81,7 +81,6 @@ public:
     }
 
     void dump() const;
-    void setParentWindow(QWidget *w);
 
 protected:
     typedef std::function<bool(QXmlStreamReader &reader)> ContentReaderFn;
