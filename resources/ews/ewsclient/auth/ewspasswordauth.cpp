@@ -31,7 +31,7 @@ EwsPasswordAuth::EwsPasswordAuth(const QString &username, QObject *parent)
 
 void EwsPasswordAuth::init()
 {
-    requestWalletPassword(false);
+    Q_EMIT requestWalletPassword(false);
 }
 
 bool EwsPasswordAuth::getAuthData(QString &username, QString &password, QStringList &customHeaders)
