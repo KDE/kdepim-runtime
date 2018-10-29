@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>602</width>
-    <height>551</height>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -172,7 +172,7 @@
                  </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="KPasswordLineEdit" name="passwordEdit">
+                 <widget class="KPasswordLineEdit" name="passwordEdit" native="true">
                   <property name="whatsThis">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The password used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -302,6 +302,68 @@
              </item>
             </layout>
            </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="pkeyAuthGroupBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Private Key (PKey) Authentication is used as an additional authentication step to OAuth2-based authentication. It uses an X.509 certificate and private key that identifies a trusted device, which was joined to the Azure Directory using a Workplace Join.&lt;/p&gt;&lt;p&gt;Some administrators may mandate use of PKey authentication when connecting to Office 365 from outside of corporate network. In other cases, when multi-factor authentication is set-up, using the PKey authentication can satisfy requirements for strong authentication, in which case entering the MFA code is not required.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="title">
+          <string>Private Key (PKey) Authentication (Office 365)</string>
+         </property>
+         <layout class="QFormLayout" name="pkeyAuthGroupBoxLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="pkeyAuthCertLabel">
+            <property name="minimumSize">
+             <size>
+              <width>95</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Certificate:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="KUrlRequester" name="pkeyAuthCert" native="true">
+            <property name="filter" stdset="0">
+             <string notr="true">*.pem</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="pkeyAuthKeyLabel">
+            <property name="text">
+             <string>Private key:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="KUrlRequester" name="pkeyAuthKey" native="true">
+            <property name="filter" stdset="0">
+             <string notr="true">*.pem</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="pkeyAuthPasswordLabel">
+            <property name="text">
+             <string>Key password:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="KPasswordLineEdit" name="pkeyAuthPassword" native="true"/>
           </item>
          </layout>
         </widget>
@@ -699,6 +761,11 @@
    <extends>QWidget</extends>
    <header>kpasswordlineedit.h</header>
   </customwidget>
+  <customwidget>
+   <class>KUrlRequester</class>
+   <extends>QWidget</extends>
+   <header>kurlrequester.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
@@ -714,6 +781,9 @@
   <tabstop>autodiscoverButton</tabstop>
   <tabstop>tryConnectButton</tabstop>
   <tabstop>kcfg_BaseUrl</tabstop>
+  <tabstop>pkeyAuthCert</tabstop>
+  <tabstop>pkeyAuthKey</tabstop>
+  <tabstop>pkeyAuthPassword</tabstop>
   <tabstop>pollRadioButton</tabstop>
   <tabstop>kcfg_PollInterval</tabstop>
   <tabstop>streamingRadioButton</tabstop>

@@ -68,6 +68,12 @@
       <label>OAuth2 return URI</label>
       <default>urn:ietf:wg:oauth:2.0:oob</default>
     </entry>
+    <entry name="PKeyCert" type="String">
+      <label>Path to PKey authentication PEM certificate</label>
+    </entry>
+    <entry name="PKeyKey" type="String">
+      <label>Path to PKey authentication PEM private key</label>
+    </entry>
     <entry name="SyncState" type="String" />
     <entry name="FolderSyncState" type="String" />
     <entry name="EventSubscriptionId" type="String" />

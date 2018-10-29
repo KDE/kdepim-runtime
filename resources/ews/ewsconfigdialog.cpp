@@ -52,6 +52,8 @@ static const QVector<StringPair> userAgents = {
     {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}
 };
 
+static const QString pkeyPasswordMapKey = QStringLiteral("pkey-password");
+
 static bool execJob(KJob *job)
 {
     QEventLoop loop;
@@ -127,9 +129,20 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         mUi->authUsernameRadioButton->setChecked(true);
     } else if (authMode == QStringLiteral("oauth2")) {
         mUi->authOAuth2RadioButton->setChecked(true);
+        mUi->pkeyAuthGroupBox->setEnabled(true);
     }
 #else
     mUi->authUsernameRadioButton->setChecked(true);
+#endif
+#ifdef HAVE_QCA
+    mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
+    mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
+    connect(mSettings.data(), &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &map) {
+            if (map.contains(pkeyPasswordMapKey)) {
+                mUi->pkeyAuthPassword->setPassword(map[pkeyPasswordMapKey]);
+            }
+        });
+    mSettings->requestMap();
 #endif
 
     int selectedIndex = -1;
@@ -158,6 +171,9 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->aboutLicenseLabel->setText(i18nc("@info", "Distributed under the GNU Library General Public License version 2.0 or later."));
     mUi->aboutUrlLabel->setText(QStringLiteral("<a href=\"https://github.com/KrissN/akonadi-ews\">https://github.com/KrissN/akonadi-ews</a>"));
 
+    mUi->pkeyAuthCert->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
+    mUi->pkeyAuthKey->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
+
     connect(okButton, &QPushButton::clicked, this, &EwsConfigDialog::save);
     connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &EwsConfigDialog::performAutoDiscovery);
     connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
@@ -165,6 +181,8 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->authUsernameRadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->authOAuth2RadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_BaseUrl, &KLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
@@ -216,6 +234,16 @@ void EwsConfigDialog::save()
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
 #endif
+#ifdef HAVE_QCA
+    if (mUi->pkeyAuthGroupBox->isEnabled() &&
+        !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+        mSettings->setPKeyCert(mUi->pkeyAuthCert->text());
+        mSettings->setPKeyKey(mUi->pkeyAuthKey->text());
+        const QMap<QString, QString> map = {{pkeyPasswordMapKey, mUi->pkeyAuthPassword->password()}};
+        mSettings->setMap(map);
+    }
+#endif
+
     if (!mAuthMap.isEmpty()) {
         mSettings->setMap(mAuthMap);
     }
@@ -299,6 +327,8 @@ void EwsConfigDialog::setAutoDiscoveryNeeded()
         okEnabled = false;
     }
     mButtonBox->button(QDialogButtonBox::Ok)->setEnabled(okEnabled);
+
+    mUi->pkeyAuthGroupBox->setEnabled(mUi->authOAuth2RadioButton->isChecked());
 }
 
 QString EwsConfigDialog::fullUsername() const
@@ -434,6 +464,14 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
         auth = new EwsPasswordAuth(fullUsername(), this);
     }
     auth->setAuthParentWidget(this);
+
+#ifdef HAVE_QCA
+    if (mUi->pkeyAuthGroupBox->isEnabled() &&
+        !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+        auth->setPKeyAuthCertificateFiles(mUi->pkeyAuthCert->text(), mUi->pkeyAuthKey->text());
+        mAuthMap[pkeyPasswordMapKey] = mUi->pkeyAuthPassword->password();
+    }
+#endif
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
             auth->walletPasswordRequestFinished(mUi->passwordEdit->password());
