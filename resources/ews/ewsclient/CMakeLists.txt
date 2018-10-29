@@ -67,6 +67,11 @@ if (Qt5NetworkAuth_FOUND)
     auth/ewsoauth.cpp)
 endif ()
 
+if (Qca-qt5_FOUND)
+  list(APPEND EWSCLIENT_SRCS
+    auth/ewspkeyauthjob.cpp)
+endif ()
+
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
   HEADER ewscli_debug.h
   IDENTIFIER EWSCLI_LOG
@@ -103,4 +108,9 @@ if (Qt5NetworkAuth_FOUND)
   target_link_libraries(ewsclient
     Qt5::NetworkAuth
     Qt5::WebEngineWidgets)
+endif ()
+
+if (Qca-qt5_FOUND)
+  target_link_libraries(ewsclient
+    qca-qt5)
 endif ()

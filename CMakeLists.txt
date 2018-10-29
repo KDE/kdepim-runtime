@@ -95,6 +95,8 @@ find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
 
+find_package(Qca-qt5)
+
 # QT5 package
 find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus WebEngineWidgets)
 find_package(Qt5 OPTIONAL_COMPONENTS TextToSpeech NetworkAuth)
@@ -107,6 +109,11 @@ if (NOT Qt5NetworkAuth_FOUND)
     message(STATUS "Qt5NetworkAuth not found, OAuth2 authentication will not be supported")
 else()
     add_definitions(-DHAVE_NETWORKAUTH)
+endif()
+if (NOT Qca-qt5_FOUND)
+    message(STATUS "QCA not found, public key authentication will not be supported")
+else()
+    add_definitions(-DHAVE_QCA)
 endif()
 
 
