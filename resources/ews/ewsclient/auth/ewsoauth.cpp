@@ -39,6 +39,9 @@ using namespace Mock;
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
 #include <KLocalizedString>
+#ifdef HAVE_QCA
+#include "ewspkeyauthjob.h"
+#endif
 #endif
 
 #include "ewsclient_debug.h"
@@ -47,6 +50,12 @@ static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.micr
 static const auto o365AccessTokenUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/token"));
 static const auto o365FakeUserAgent = QStringLiteral("Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
 static const auto o365Resource = QStringLiteral("https%3A%2F%2Foutlook.office365.com%2F");
+
+#ifdef HAVE_QCA
+static const auto pkeyAuthSuffix = QStringLiteral(" PKeyAuth/1.0");
+static const auto pkeyRedirectUri = QStringLiteral("urn:http-auth:PKeyAuth");
+static const QString pkeyPasswordMapKey = QStringLiteral("pkey-password");
+#endif
 
 static const QString accessTokenMapKey = QStringLiteral("access-token");
 static const QString refreshTokenMapKey = QStringLiteral("refresh-token");
@@ -110,6 +119,10 @@ public:
     void redirectUriIntercepted(const QUrl &url);
     void granted();
     void error(const QString &error, const QString &errorDescription, const QUrl &uri);
+    QVariantMap queryToVarmap(const QUrl &url);
+#ifdef HAVE_QCA
+    void pkeyAuthResult(KJob *job);
+#endif
 
     QWebEngineView mWebView;
     QWebEngineProfile mWebProfile;
@@ -123,6 +136,9 @@ public:
     const QString mRedirectUri;
     bool mAuthenticated;
     QPointer<QDialog> mWebDialog;
+#ifdef HAVE_QCA
+    QString mPKeyPassword;
+#endif
 
     EwsOAuth *q_ptr = nullptr;
     Q_DECLARE_PUBLIC(EwsOAuth)
@@ -195,9 +211,13 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
 {
     const auto url = info.requestUrl();
 
-    qCDebug(EWSCLI_LOG) << QStringLiteral("Intercepted browser navigation to ") << url;
+    qCDebugNC(EWSCLI_LOG) << QStringLiteral("Intercepted browser navigation to ") << url;
 
-    if (url.toString(QUrl::RemoveQuery) == mRedirectUri) {
+    if ((url.toString(QUrl::RemoveQuery) == mRedirectUri)
+#ifdef HAVE_QCA
+        || (url.toString(QUrl::RemoveQuery) == pkeyRedirectUri)
+#endif
+        ) {
         qCDebug(EWSCLI_LOG) << QStringLiteral("Found redirect URI - blocking request");
 
         redirectUriIntercepted(url);
@@ -207,20 +227,13 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
 
 EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const QString &appId, const QString &redirectUri)
     : QObject(nullptr), mWebView(nullptr), mWebProfile(), mWebPage(&mWebProfile), mReplyHandler(this, redirectUri),
-      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mAuthenticated(false), q_ptr(parent)
+      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mAuthenticated(false),
+      q_ptr(parent)
 {
     mOAuth2.setReplyHandler(&mReplyHandler);
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
     mOAuth2.setAccessTokenUrl(o365AccessTokenUrl);
     mOAuth2.setClientIdentifier(appId);
-
-    /* Bad bad Microsoft...
-     * When Conditional Access is enabled on the server the OAuth2 authentication server only supports Windows,
-     * MacOSX, Android and iOS. No option to include Linux. Support (i.e. guarantee that it works)
-     * is one thing, but blocking unsupported browsers completely is just wrong.
-     * Fortunately enough this can be worked around by faking the user agent to something "supported".
-     */
-    mWebProfile.setHttpUserAgent(o365FakeUserAgent);
 
     mWebProfile.setRequestInterceptor(&mRequestInterceptor);
     mWebProfile.installUrlSchemeHandler("urn", &mSchemeHandler);
@@ -283,6 +296,23 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
 
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Launching browser for authentication");
 
+    /* Bad bad Microsoft...
+     * When Conditional Access is enabled on the server the OAuth2 authentication server only supports Windows,
+     * MacOSX, Android and iOS. No option to include Linux. Support (i.e. guarantee that it works)
+     * is one thing, but blocking unsupported browsers completely is just wrong.
+     * Fortunately enough this can be worked around by faking the user agent to something "supported".
+     */
+    auto userAgent = o365FakeUserAgent;
+#ifdef HAVE_QCA
+    if (!q->mPKeyCertFile.isNull() && !q->mPKeyKeyFile.isNull()) {
+        qCInfoNC(EWSCLI_LOG) << QStringLiteral("Found PKeyAuth certificates");
+        userAgent += pkeyAuthSuffix;
+    } else {
+        qCInfoNC(EWSCLI_LOG) << QStringLiteral("PKeyAuth certificates not found");
+    }
+#endif
+    mWebProfile.setHttpUserAgent(userAgent);
+
     mWebDialog = new QDialog(q->mAuthParentWidget);
     mWebDialog->setObjectName(QStringLiteral("Akonadi EWS Resource - Authentication"));
     mWebDialog->setWindowIcon(QIcon("akonadi-ews"));
@@ -300,19 +330,55 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
     mWebDialog->show();
 }
 
-void EwsOAuthPrivate::redirectUriIntercepted(const QUrl &url)
+QVariantMap EwsOAuthPrivate::queryToVarmap(const QUrl &url)
 {
-    qCDebug(EWSCLI_LOG) << QStringLiteral("Intercepted redirect URI from browser");
-
     QUrlQuery query(url);
     QVariantMap varmap;
     for (const auto item : query.queryItems()) {
         varmap[item.first] = item.second;
     }
-    mOAuth2.authorizationCallbackReceived(varmap);
+    return varmap;
+}
+
+void EwsOAuthPrivate::redirectUriIntercepted(const QUrl &url)
+{
+    qCDebugNC(EWSCLI_LOG) << QStringLiteral("Intercepted redirect URI from browser: ") << url;
+
     mWebView.stop();
     mWebDialog->hide();
+
+#ifdef HAVE_QCA
+    Q_Q(EwsOAuth);
+    if (url.toString(QUrl::RemoveQuery) == pkeyRedirectUri) {
+        qCDebugNC(EWSCLI_LOG) << QStringLiteral("Found PKeyAuth URI");
+
+        auto pkeyAuthJob = new EwsPKeyAuthJob(url, q->mPKeyCertFile, q->mPKeyKeyFile, mPKeyPassword, this);
+
+        connect(pkeyAuthJob, &KJob::result, this, &EwsOAuthPrivate::pkeyAuthResult);
+
+        pkeyAuthJob->start();
+
+        return;
+    }
+#endif
+    mOAuth2.authorizationCallbackReceived(queryToVarmap(url));
 }
+
+#ifdef HAVE_QCA
+void EwsOAuthPrivate::pkeyAuthResult(KJob *j)
+{
+    EwsPKeyAuthJob *job = qobject_cast<EwsPKeyAuthJob*>(j);
+
+    qCDebugNC(EWSCLI_LOG) << QStringLiteral("PKeyAuth result: %1").arg(job->error());
+    QVariantMap varmap;
+    if (job->error() == 0) {
+        varmap = queryToVarmap(job->resultUri());
+    } else {
+        varmap[QStringLiteral("error")] = job->errorString();
+    }
+    mOAuth2.authorizationCallbackReceived(varmap);
+}
+#endif
 
 void EwsOAuthPrivate::granted()
 {
@@ -415,6 +481,11 @@ void EwsOAuth::walletMapRequestFinished(const QMap<QString, QString> &map)
 {
     Q_D(EwsOAuth);
 
+#ifdef HAVE_QCA
+    if (map.contains(pkeyPasswordMapKey)) {
+        d->mPKeyPassword = map[pkeyPasswordMapKey];
+    }
+#endif
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     if (map.contains(refreshTokenMapKey)) {
         d->mOAuth2.setRefreshToken(map[refreshTokenMapKey]);

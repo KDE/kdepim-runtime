@@ -275,6 +275,31 @@ protected:
     QString mState;
 };
 
+class KJob : public QObject
+{
+    Q_OBJECT
+public:
+    explicit KJob(QObject *) {};
+    ~KJob() override = default;
+
+    int error() const { return 0; };
+    const QString &errorString() const;
+Q_SIGNALS:
+    void result(KJob *job);
+};
+
+class EwsPKeyAuthJob : public KJob
+{
+    Q_OBJECT
+public:
+    EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
+                   QObject *parent);
+    ~EwsPKeyAuthJob() override = default;
+    void start() {};
+
+    const QUrl &resultUri() const;
+};
+
 QString browserDisplayRequestString();
 QString modifyParamsAuthString(const QString &clientId, const QString &returnUri, const QString &state);
 QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri,

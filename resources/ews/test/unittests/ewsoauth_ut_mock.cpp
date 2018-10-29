@@ -452,4 +452,26 @@ QString requestWalletMapString()
     return QStringLiteral("RequestWalletMap");
 }
 
+const QString &KJob::errorString() const
+{
+    static const QString empty;
+    return empty;
+}
+
+EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
+        QObject *parent)
+    : KJob(parent)
+{
+    Q_UNUSED(pkeyUri);
+    Q_UNUSED(certFile);
+    Q_UNUSED(keyFile);
+    Q_UNUSED(keyPassword);
+}
+
+const QUrl &EwsPKeyAuthJob::resultUri() const
+{
+    static const QUrl empty;
+    return empty;
+}
+
 }
