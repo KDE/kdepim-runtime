@@ -19,6 +19,8 @@
 
 #include "ewsabstractauth.h"
 
+#include <QFile>
+
 EwsAbstractAuth::EwsAbstractAuth(QObject *parent)
     : QObject(parent), mAuthParentWidget(nullptr)
 {
@@ -32,4 +34,12 @@ void EwsAbstractAuth::setAuthParentWidget(QWidget *widget)
 void EwsAbstractAuth::notifyRequestAuthFailed()
 {
     Q_EMIT requestAuthFailed();
+}
+
+void EwsAbstractAuth::setPKeyAuthCertificateFiles(const QString &certFile, const QString &pkeyFile)
+{
+    if (QFile::exists(certFile) && QFile::exists(pkeyFile)) {
+        mPKeyCertFile = certFile;
+        mPKeyKeyFile = pkeyFile;
+    }
 }

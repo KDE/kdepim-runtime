@@ -79,6 +79,8 @@ public:
     virtual void walletMapRequestFinished(const QMap<QString, QString> &map) = 0;
 
     void setAuthParentWidget(QWidget *widget);
+
+    void setPKeyAuthCertificateFiles(const QString &certFile, const QString &pkeyFile);
 Q_SIGNALS:
     void authSucceeded();
     void authFailed(const QString &error);
@@ -89,6 +91,8 @@ Q_SIGNALS:
     void setWalletMap(const QMap<QString, QString> &map);
 protected:
     QWidget *mAuthParentWidget;
+    QString mPKeyCertFile;
+    QString mPKeyKeyFile;
 };
 
 #endif /* EWSABSTRACTAUTH_H */
