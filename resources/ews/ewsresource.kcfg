@@ -62,7 +62,7 @@
     </entry>
     <entry name="OAuth2AppId" type="String">
       <label>OAuth2 application identifier</label>
-      <default>d3590ed6-52b3-4102-aeff-aad2292ab01c</default>
+      <default>452b289a-7894-41d7-9cd4-d5275739fa27</default>
     </entry>
     <entry name="OAuth2ReturnUri" type="String">
       <label>OAuth2 return URI</label>
