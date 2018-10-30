@@ -123,7 +123,6 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
-#ifdef HAVE_TEXTTOSPEECH
     QWidget *textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
@@ -155,10 +154,6 @@ NewMailNotifierSettingsDialog::NewMailNotifierSettingsDialog(QWidget *parent)
     vbox->addStretch();
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
     connect(mTextToSpeak, &QCheckBox::toggled, mTextToSpeakSetting, &QLineEdit::setEnabled);
-#else
-    mTextToSpeak = nullptr;
-    mTextToSpeakSetting = nullptr;
-#endif
 
     mNotify = new KNotifyConfigWidget(this);
     mNotify->setObjectName(QStringLiteral("mNotify"));
@@ -235,10 +230,8 @@ void NewMailNotifierSettingsDialog::slotOkClicked()
     NewMailNotifierAgentSettings::setShowFolder(mShowFolders->isChecked());
     NewMailNotifierAgentSettings::setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
     NewMailNotifierAgentSettings::setKeepPersistentNotification(mKeepPersistentNotification->isChecked());
-#ifdef HAVE_TEXTTOSPEECH
     NewMailNotifierAgentSettings::setTextToSpeakEnabled(mTextToSpeak->isChecked());
     NewMailNotifierAgentSettings::setTextToSpeak(mTextToSpeakSetting->text());
-#endif
     NewMailNotifierAgentSettings::setShowButtonToDisplayMail(mAllowToShowMail->isChecked());
     NewMailNotifierAgentSettings::self()->save();
     mNotify->save();

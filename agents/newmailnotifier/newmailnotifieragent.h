@@ -28,9 +28,7 @@
 #include <QTimer>
 #include <QStringList>
 #include <QPixmap>
-#ifdef HAVE_TEXTTOSPEECH
 class QTextToSpeech;
-#endif
 
 namespace Akonadi {
 class AgentInstance;
@@ -115,9 +113,7 @@ private:
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     KIdentityManagement::IdentityManager *mIdentityManager = nullptr;
-#ifdef HAVE_TEXTTOSPEECH
     QTextToSpeech *mTextToSpeech = nullptr;
-#endif
 };
 
 #endif

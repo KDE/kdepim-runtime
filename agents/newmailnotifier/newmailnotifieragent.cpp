@@ -51,17 +51,13 @@
 #include <KToolInvocation>
 #include <QIcon>
 #include <KIconLoader>
-#ifdef HAVE_TEXTTOSPEECH
 #include <QTextToSpeech>
-#endif
 
 using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
-#ifdef HAVE_TEXTTOSPEECH
     , mTextToSpeech(nullptr)
-#endif
 {
     Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("akonadi_newmailnotifier_agentrc") << QStringLiteral("akonadi_newmailnotifier_agent.notifyrc"));
@@ -467,9 +463,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
-#ifdef HAVE_TEXTTOSPEECH
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
-#endif
             mNewMails.clear();
             return;
         } else {
@@ -588,7 +582,6 @@ bool NewMailNotifierAgent::isActive() const
 
 void NewMailNotifierAgent::slotSay(const QString &message)
 {
-#ifdef HAVE_TEXTTOSPEECH
     if (!mTextToSpeech) {
         mTextToSpeech = new QTextToSpeech(this);
     }
@@ -597,7 +590,6 @@ void NewMailNotifierAgent::slotSay(const QString &message)
     } else {
         mTextToSpeech->say(message);
     }
-#endif
 }
 
 AKONADI_AGENT_MAIN(NewMailNotifierAgent)
