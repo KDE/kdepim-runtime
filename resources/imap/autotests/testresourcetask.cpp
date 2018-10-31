@@ -69,7 +69,7 @@ private Q_SLOTS:
         QTest::newRow("normal case") << state << scenario
                                      << true << false
                                      << ResourceTask::DeferIfNoSession
-                                     << callNames << QVariant("Dummy task");
+                                     << callNames << QVariant(QLatin1String("Dummy task"));
 
         state = DummyResourceState::Ptr(new DummyResourceState);
         callNames.clear();

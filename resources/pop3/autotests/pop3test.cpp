@@ -75,7 +75,7 @@ void Pop3Test::initTestCase()
     QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("tester");
     mMaildirPath = maildirRootPath + QLatin1String("/new");
     QDir::current().mkpath(mMaildirPath);
-    QDir::current().mkpath(maildirRootPath + "/tmp");
+    QDir::current().mkpath(maildirRootPath + QLatin1String("/tmp"));
 
     QString service = QLatin1String("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {

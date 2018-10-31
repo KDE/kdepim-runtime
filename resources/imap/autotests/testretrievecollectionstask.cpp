@@ -47,7 +47,7 @@ private Q_SLOTS:
         QTest::addColumn<bool>("isSubscriptionEnabled");
         QTest::addColumn<bool>("isDisconnectedModeEnabled");
         QTest::addColumn<int>("intervalCheckTime");
-        QTest::addColumn<QChar>("separator");
+        QTest::addColumn<char>("separator");
 
         Akonadi::Collection collection;
 
@@ -83,7 +83,7 @@ private Q_SLOTS:
 
         QTest::newRow("first listing, connected IMAP") << expectedCollections << scenario << callNames
                                                        << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                       << QChar('/');
+                                                       << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5)
@@ -110,7 +110,7 @@ private Q_SLOTS:
 
         QTest::newRow("first listing, disconnected IMAP") << expectedCollections << scenario << callNames
                                                           << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                          << QChar('/');
+                                                          << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection(true, 5)
@@ -134,7 +134,7 @@ private Q_SLOTS:
 
         QTest::newRow("first listing, spurious INBOX/ (BR: 25342)") << expectedCollections << scenario << callNames
                                                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                                    << QChar('/');
+                                                                    << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
@@ -160,7 +160,7 @@ private Q_SLOTS:
 
         QTest::newRow("auto-insert missing nodes in the tree") << expectedCollections << scenario << callNames
                                                                << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                               << QChar('/');
+                                                               << '/';
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -180,7 +180,7 @@ private Q_SLOTS:
         QTest::newRow("auto-insert missing nodes in the tree (reverse order)")
             << expectedCollections << scenario << callNames
             << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-            << QChar('/');
+            << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
@@ -212,7 +212,7 @@ private Q_SLOTS:
 
         QTest::newRow("subscription enabled") << expectedCollections << scenario << callNames
                                               << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                              << QChar('/');
+                                              << '/';
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 LIST \"\" *"
@@ -237,7 +237,7 @@ private Q_SLOTS:
 
         QTest::newRow("subscription enabled, case insensitive inbox") << expectedCollections << scenario << callNames
                                                                       << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                                      << QChar('/');
+                                                                      << '/';
 
         expectedCollections.clear();
         expectedCollections << createRootCollection()
@@ -260,7 +260,7 @@ private Q_SLOTS:
 
         QTest::newRow("Noinferiors") << expectedCollections << scenario << callNames
                                      << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                     << QChar('/');
+                                     << '/';
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -283,7 +283,7 @@ private Q_SLOTS:
 
         QTest::newRow("non-standard separators") << expectedCollections << scenario << callNames
                                                  << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                 << QChar('.');
+                                                 << '.';
     }
 
     void shouldListCollections()
@@ -294,7 +294,7 @@ private Q_SLOTS:
         QFETCH(bool, isSubscriptionEnabled);
         QFETCH(bool, isDisconnectedModeEnabled);
         QFETCH(int, intervalCheckTime);
-        QFETCH(QChar, separator);
+        QFETCH(char, separator);
 
         FakeServer server;
         server.setScenario(scenario);
@@ -335,7 +335,7 @@ private Q_SLOTS:
             }
         }
 
-        QCOMPARE(state->separatorCharacter(), separator);
+        QCOMPARE(state->separatorCharacter(), QLatin1Char(separator));
 
         QVERIFY(server.isAllScenarioDone());
         compareCollectionLists(collections, expectedCollections);
@@ -362,13 +362,13 @@ private:
         policy.setSyncOnDemand(true);
 
         if (isDisconnectedImap) {
-            policy.setLocalParts(QStringList() << Akonadi::MessagePart::Envelope
-                                               << Akonadi::MessagePart::Header
-                                               << Akonadi::MessagePart::Body);
+            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope)
+                                               << QLatin1String(Akonadi::MessagePart::Header)
+                                               << QLatin1String(Akonadi::MessagePart::Body));
             policy.setCacheTimeout(-1);
         } else {
-            policy.setLocalParts(QStringList() << Akonadi::MessagePart::Envelope
-                                               << Akonadi::MessagePart::Header);
+            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope)
+                                               << QLatin1String(Akonadi::MessagePart::Header));
             policy.setCacheTimeout(60);
         }
 

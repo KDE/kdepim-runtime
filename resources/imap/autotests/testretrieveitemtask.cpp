@@ -105,13 +105,13 @@ private Q_SLOTS:
             QCOMPARE(parameter.value<Akonadi::Item>().id(), item.id());
             QCOMPARE(parameter.value<Akonadi::Item>().remoteId(), item.remoteId());
 
-            QString payload = parameter.value<Akonadi::Item>().payload<KMime::Message::Ptr>()->encodedContent();
+            QString payload = QString::fromUtf8(parameter.value<Akonadi::Item>().payload<KMime::Message::Ptr>()->encodedContent());
 
             QCOMPARE(payload, message);
         } else if (callName == QLatin1String("cancelTask")) {
             QVERIFY(!parameter.toString().isEmpty());
         } else {
-            QFAIL(QString("Unexpected call type: %1").arg(callName).toUtf8().constData());
+            QFAIL(QStringLiteral("Unexpected call type: %1").arg(callName).toUtf8().constData());
         }
 
         QVERIFY(server.isAllScenarioDone());
