@@ -335,7 +335,7 @@ private Q_SLOTS:
             }
         }
 
-        QCOMPARE(state->separatorCharacter(), QLatin1Char(separator));
+        QCOMPARE(state->separatorCharacter(), QChar::fromLatin1(separator));
 
         QVERIFY(server.isAllScenarioDone());
         compareCollectionLists(collections, expectedCollections);
