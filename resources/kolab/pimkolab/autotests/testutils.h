@@ -212,9 +212,9 @@ bool normalizeAddresses(KContacts::Addressee &addressee, const KContacts::Addres
 
 void normalizeContact(KContacts::Addressee &addressee)
 {
-    KContacts::Address::List addresses = addressee.addresses();
+    const KContacts::Address::List addresses = addressee.addresses();
 
-    foreach (KContacts::Address a, addresses) {
+    for (KContacts::Address a : addresses) {
         addressee.removeAddress(a);
         a.setPostOfficeBox(QString()); //Not supported anymore
         addressee.insertAddress(a);

@@ -37,7 +37,7 @@ namespace Kolab {
 std::string toICal(const std::vector<Event> &events)
 {
     KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
-    foreach (const Event &event, events) {
+    for (const Event &event : events) {
         KCalCore::Event::Ptr kcalEvent = Conversion::toKCalCore(event);
         kcalEvent->setCreated(QDateTime::currentDateTimeUtc()); //sets dtstamp
         calendar->addEvent(kcalEvent);

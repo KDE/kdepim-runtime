@@ -168,7 +168,7 @@ Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &s
 {
     QList<KCalCore::Event::Ptr> list;
     list.reserve(events.size());
-    foreach (const Kolab::Event &e, events) {
+    for (const Kolab::Event &e : events) {
         list.append(Kolab::Conversion::toKCalCore(e));
     }
     KCalCore::Person::Ptr person(new KCalCore::Person(QStringLiteral("dummyname"), QStringLiteral("dummyemail")));
