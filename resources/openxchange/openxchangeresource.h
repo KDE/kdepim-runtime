@@ -48,7 +48,7 @@ protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemRemoved(const Akonadi::Item &item) override;
-    virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
@@ -56,7 +56,7 @@ protected:
     // which just forwards to the one above
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection &collection) override;
-    virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
 private Q_SLOTS:
     void onUpdateUsersJobFinished(KJob *);
