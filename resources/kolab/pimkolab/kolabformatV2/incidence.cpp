@@ -955,8 +955,8 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     if (organizer().displayName.isEmpty()) {
         incidence->setOrganizer(organizer().smtpAddress);
     } else {
-        incidence->setOrganizer(organizer().displayName + '<'
-                                + organizer().smtpAddress + '>');
+        incidence->setOrganizer(organizer().displayName + QLatin1Char('<')
+                                + organizer().smtpAddress + QLatin1Char('>'));
     }
 
     incidence->clearAttendees();

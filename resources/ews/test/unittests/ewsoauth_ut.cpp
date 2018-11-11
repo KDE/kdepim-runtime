@@ -98,7 +98,7 @@ void UtEwsOAuth::initialInteractiveSuccessful()
         Mock::loadWebPageString(authUrlString),
         Mock::interceptRequestString(authUrlString),
         Mock::interceptRequestBlockedString(false),
-        Mock::interceptRequestString(testReturnUri + "?code=" + QUrl::toPercentEncoding(refreshToken1)),
+        Mock::interceptRequestString(testReturnUri + QStringLiteral("?code=") + QUrl::toPercentEncoding(refreshToken1)),
         Mock::interceptRequestBlockedString(true),
         Mock::authorizationCallbackReceivedString(refreshToken1),
         Mock::modifyParamsTokenString(testClientId, testReturnUri, refreshToken1),
@@ -212,7 +212,7 @@ void UtEwsOAuth::refreshSuccessful()
         Mock::loadWebPageString(authUrlString),
         Mock::interceptRequestString(authUrlString),
         Mock::interceptRequestBlockedString(false),
-        Mock::interceptRequestString(testReturnUri + "?code=" + QUrl::toPercentEncoding(refreshToken1)),
+        Mock::interceptRequestString(testReturnUri + QStringLiteral("?code=") + QUrl::toPercentEncoding(refreshToken1)),
         Mock::interceptRequestBlockedString(true),
         Mock::authorizationCallbackReceivedString(refreshToken1),
         Mock::modifyParamsTokenString(testClientId, testReturnUri, refreshToken1),
@@ -249,12 +249,12 @@ QString UtEwsOAuth::formatJsonSorted(const QVariantMap &map)
     QStringList keys = map.keys();
     keys.sort();
     QStringList elems;
-    for (const auto key : keys) {
+    for (const auto &key : keys) {
         QString val = map[key].toString();
-        val.replace('"', QStringLiteral("\\\""));
+        val.replace(QLatin1Char('"'), QStringLiteral("\\\""));
         elems.append(QStringLiteral("\"%1\":\"%2\"").arg(key, val));
     }
-    return QStringLiteral("{") + elems.join(',') + QStringLiteral("}");
+    return QStringLiteral("{") + elems.join(QLatin1Char(',')) + QStringLiteral("}");
 }
 
 int UtEwsOAuth::performAuthAction(EwsOAuth &oAuth, int timeout, std::function<bool(EwsOAuth *)> actionFn)
@@ -346,11 +346,11 @@ void UtEwsOAuth::setUpOAuth(EwsOAuth &oAuth, QStringList &events, QString passwo
                 events.append(event);
             });
     connect(&oAuth, &EwsOAuth::requestWalletPassword, this, [&oAuth, &events, password](bool) {
-            events.append("RequestWalletPassword");
+            events.append(QStringLiteral("RequestWalletPassword"));
             oAuth.walletPasswordRequestFinished(password);
         });
     connect(&oAuth, &EwsOAuth::requestWalletMap, this, [&oAuth, &events, map]() {
-            events.append("RequestWalletMap");
+            events.append(QStringLiteral("RequestWalletMap"));
             oAuth.walletMapRequestFinished(map);
         });
 }

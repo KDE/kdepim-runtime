@@ -64,7 +64,7 @@ class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    EwsOAuthUrlSchemeHandler(QObject *parent = Q_NULLPTR) : QWebEngineUrlSchemeHandler(parent) {};
+    EwsOAuthUrlSchemeHandler(QObject *parent = Q_NULLPTR) : QWebEngineUrlSchemeHandler(parent) {}
     ~EwsOAuthUrlSchemeHandler() override = default;
     void requestStarted(QWebEngineUrlRequestJob *request) override;
 signals:
@@ -76,10 +76,10 @@ class EwsOAuthReplyHandler final : public QAbstractOAuthReplyHandler
     Q_OBJECT
 public:
     EwsOAuthReplyHandler(QObject *parent, const QString &returnUri)
-        : QAbstractOAuthReplyHandler(parent), mReturnUri(returnUri) {};
+        : QAbstractOAuthReplyHandler(parent), mReturnUri(returnUri) {}
     ~EwsOAuthReplyHandler() override = default;
 
-    QString callback() const override { return mReturnUri; };
+    QString callback() const override { return mReturnUri; }
     void networkReplyFinished(QNetworkReply *reply) override;
 Q_SIGNALS:
     void replyError(const QString &error);
@@ -94,7 +94,7 @@ public:
     EwsOAuthRequestInterceptor(QObject *parent, const QString &redirectUri)
         : QWebEngineUrlRequestInterceptor(parent), mRedirectUri(redirectUri)
     {
-    };
+    }
 
     ~EwsOAuthRequestInterceptor() override = default;
 
@@ -172,7 +172,7 @@ void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
         ct.startsWith(QStringLiteral("application/x-www-form-urlencoded"))) {
         QUrlQuery q(QString::fromUtf8(data));
         const auto items = q.queryItems(QUrl::FullyDecoded);
-        for (const auto it : items) {
+        for (const auto &it : items) {
             tokens.insert(it.first, it.second);
         }
     } else if (ct.startsWith(QStringLiteral("application/json"))
@@ -315,7 +315,7 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
 
     mWebDialog = new QDialog(q->mAuthParentWidget);
     mWebDialog->setObjectName(QStringLiteral("Akonadi EWS Resource - Authentication"));
-    mWebDialog->setWindowIcon(QIcon("akonadi-ews"));
+    mWebDialog->setWindowIcon(QIcon(QStringLiteral("akonadi-ews")));
     mWebDialog->resize(400, 500);
     auto layout = new QHBoxLayout(mWebDialog);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -334,7 +334,7 @@ QVariantMap EwsOAuthPrivate::queryToVarmap(const QUrl &url)
 {
     QUrlQuery query(url);
     QVariantMap varmap;
-    for (const auto item : query.queryItems()) {
+    for (const auto &item : query.queryItems()) {
         varmap[item.first] = item.second;
     }
     return varmap;

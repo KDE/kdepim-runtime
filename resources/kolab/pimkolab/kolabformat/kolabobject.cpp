@@ -183,7 +183,7 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
     path << "/";
     if (!member.user.isEmpty()) {
         path << "user";
-        path << QUrl::toPercentEncoding(member.user.toLatin1());
+        path << QUrl::toPercentEncoding(member.user);
     } else {
         path << "shared";
     }

@@ -1352,7 +1352,7 @@ void EwsResource::reauthNotificationDismissed(bool accepted)
         if (accepted) {
             mAuth->authenticate(true);
         } else {
-            Q_EMIT authFailed(QString("Interactive authentication request denied"));
+            Q_EMIT authFailed(QStringLiteral("Interactive authentication request denied"));
         }
     }
 }

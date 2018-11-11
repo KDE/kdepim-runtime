@@ -326,7 +326,7 @@ QUrlQuery QOAuth2AuthorizationCodeFlow::mapToSortedQuery(QMap<QString, QVariant>
     QUrlQuery query;
     QStringList keys = map.keys();
     keys.sort();
-    for (const auto key : keys) {
+    for (const auto &key : keys) {
         query.addQueryItem(key, map[key].toString());
     }
     return query;
@@ -349,8 +349,8 @@ void QOAuth2AuthorizationCodeFlow::tokenCallbackReceived(const QVariantMap &toke
 {
     Q_EMIT logEvent(QStringLiteral("TokenCallback:") + mapToSortedQuery(tokens).toString());
 
-    mToken = tokens["access_token"].toString();
-    mRefreshToken = tokens["refresh_token"].toString();
+    mToken = tokens[QStringLiteral("access_token")].toString();
+    mRefreshToken = tokens[QStringLiteral("refresh_token")].toString();
 
     mStatus = Status::Granted;
 
