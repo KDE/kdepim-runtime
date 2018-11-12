@@ -144,7 +144,7 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
     }
 
     QCA::Certificate cert;
-    for (const auto c : certs.certificates()) {
+    for (const auto &c : certs.certificates()) {
         if (c.issuerInfo() == authoritiesInfo) {
             cert = c;
             break;

@@ -22,7 +22,7 @@
 #include <QFile>
 
 EwsAbstractAuth::EwsAbstractAuth(QObject *parent)
-    : QObject(parent), mAuthParentWidget(nullptr)
+    : QObject(parent)
 {
 }
 

@@ -66,7 +66,7 @@ class EwsAbstractAuth : public QObject
 {
     Q_OBJECT
 public:
-    EwsAbstractAuth(QObject *parent = nullptr);
+    explicit EwsAbstractAuth(QObject *parent = nullptr);
     ~EwsAbstractAuth() override = default;
     virtual void init() = 0;
     virtual bool getAuthData(QString &username, QString &password, QStringList &customHeaders) = 0;
@@ -90,7 +90,7 @@ Q_SIGNALS:
     void setWalletPassword(const QString &password);
     void setWalletMap(const QMap<QString, QString> &map);
 protected:
-    QWidget *mAuthParentWidget;
+    QWidget *mAuthParentWidget = nullptr;
     QString mPKeyCertFile;
     QString mPKeyKeyFile;
 };

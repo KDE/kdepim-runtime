@@ -25,7 +25,7 @@ class EwsPasswordAuth : public EwsAbstractAuth
 {
     Q_OBJECT
 public:
-    EwsPasswordAuth(const QString &username, QObject *parent = nullptr);
+    explicit EwsPasswordAuth(const QString &username, QObject *parent = nullptr);
     ~EwsPasswordAuth() override = default;
 
     void init() override;
