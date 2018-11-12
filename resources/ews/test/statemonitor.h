@@ -110,7 +110,7 @@ void CollectionStateMonitor<T>::forceRecheck()
     auto fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
     fetchJob->setFetchScope(mMonitor.collectionFetchScope());
     if (fetchJob->exec()) {
-        for (const auto col : fetchJob->collections()) {
+        for (const auto &col : fetchJob->collections()) {
             const auto remoteId = col.remoteId();
             const auto state = mStateHash.find(remoteId);
             if (state != mStateHash.end()) {

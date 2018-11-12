@@ -43,7 +43,7 @@ class QWebEngineUrlRequestJob : public QObject
 {
     Q_OBJECT
 public:
-    QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent), mUrl(url) {};
+    QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent), mUrl(url) {}
     ~QWebEngineUrlRequestJob() override = default;
 
     QUrl requestUrl() const;
@@ -55,7 +55,7 @@ class QWebEngineUrlRequestInfo : public QObject
 {
     Q_OBJECT
 public:
-    QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent), mBlocked(false), mUrl(url) {};
+    QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent), mBlocked(false), mUrl(url) {}
     ~QWebEngineUrlRequestInfo() override = default;
 
     QUrl requestUrl() const;
@@ -69,7 +69,7 @@ class QWebEngineUrlRequestInterceptor : public QObject
 {
     Q_OBJECT
 public:
-    QWebEngineUrlRequestInterceptor(QObject *parent);
+    explicit QWebEngineUrlRequestInterceptor(QObject *parent);
     ~QWebEngineUrlRequestInterceptor() override;
 
     virtual void interceptRequest(QWebEngineUrlRequestInfo &info) = 0;
@@ -160,7 +160,7 @@ public:
     };
     Q_ENUM(NetworkError)
 
-    QNetworkReply(QObject *parent) : QBuffer(parent) {};
+    QNetworkReply(QObject *parent) : QBuffer(parent) {}
     ~QNetworkReply() override = default;
 
     NetworkError error() const;
@@ -234,7 +234,7 @@ class QAbstractOAuth2 : public QAbstractOAuth
 {
     Q_OBJECT
 public:
-    QAbstractOAuth2(QObject *parent);
+    explicit QAbstractOAuth2(QObject *parent);
     ~QAbstractOAuth2() override = default;
 
     QString refreshToken() const;
@@ -251,7 +251,7 @@ class QOAuth2AuthorizationCodeFlow : public QAbstractOAuth2
 public:
     typedef std::function<QNetworkReply::NetworkError(QString &, QMap<QNetworkRequest::KnownHeaders, QVariant> &)> TokenFunc;
 
-    QOAuth2AuthorizationCodeFlow(QObject *parent = nullptr);
+    explicit QOAuth2AuthorizationCodeFlow(QObject *parent = nullptr);
     ~QOAuth2AuthorizationCodeFlow() override;
 
     void setAccessTokenUrl(const QUrl &url);
@@ -279,10 +279,10 @@ class KJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit KJob(QObject *) {};
+    explicit KJob(QObject *) {}
     ~KJob() override = default;
 
-    int error() const { return 0; };
+    int error() const { return 0; }
     const QString &errorString() const;
 Q_SIGNALS:
     void result(KJob *job);
@@ -295,7 +295,7 @@ public:
     EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
                    QObject *parent);
     ~EwsPKeyAuthJob() override = default;
-    void start() {};
+    void start() {}
 
     const QUrl &resultUri() const;
 };

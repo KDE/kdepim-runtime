@@ -49,7 +49,6 @@ protected:
     QSet<QByteArray> mRemovedFlags;
 private Q_SLOTS:
     void itemModifyFinished(KJob *job);
-private:
 };
 
 #endif
