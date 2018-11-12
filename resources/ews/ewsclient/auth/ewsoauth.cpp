@@ -64,11 +64,11 @@ class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    EwsOAuthUrlSchemeHandler(QObject *parent = Q_NULLPTR) : QWebEngineUrlSchemeHandler(parent) {}
+    EwsOAuthUrlSchemeHandler(QObject *parent = nullptr) : QWebEngineUrlSchemeHandler(parent) {}
     ~EwsOAuthUrlSchemeHandler() override = default;
     void requestStarted(QWebEngineUrlRequestJob *request) override;
 signals:
-    void returnUriReceived(QUrl url);
+    void returnUriReceived(const QUrl &url);
 };
 
 class EwsOAuthReplyHandler final : public QAbstractOAuthReplyHandler
