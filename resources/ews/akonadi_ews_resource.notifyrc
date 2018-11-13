@@ -14,6 +14,7 @@ Comment[pt]=Servidor de Microsoft Exchange (EWS)
 Comment[sv]=Microsoft Exchange-server (EWS)
 Comment[uk]=Сервер Microsoft Exchange (EWS)
 Comment[x-test]=xxMicrosoft Exchange Server (EWS)xx
+Comment[zh_CN]=微软 Exchange 服务器（EWS）
 
 
 [Event/auth-expired]
