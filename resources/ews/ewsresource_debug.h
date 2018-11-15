@@ -56,7 +56,7 @@ inline QDebug operator<<(QDebug debug, const Akonadi::Collection::List &cols)
     for (const Akonadi::Collection &col : cols) {
         itemStrs.append(EwsClient::folderHash.value(col.remoteId(), ewsHash(col.remoteId())));
     }
-    debug.nospace().noquote() << "Akonadi::Collection::List(" << itemStrs.join(QChar::fromLatin1(',')) << ")";
+    debug.nospace().noquote() << "Akonadi::Collection::List(" << itemStrs.join(QLatin1Char(',')) << ")";
     return debug.maybeSpace();
 }
 
@@ -75,7 +75,7 @@ inline QDebug operator<<(QDebug debug, const QSet<QByteArray> &items)
     for (const QByteArray &item : items) {
         itemStrs.append(QString::fromLatin1(item));
     }
-    debug.nospace().noquote() << "QSet<QByteArray>(" << itemStrs.join(QChar::fromLatin1(',')) << ")";
+    debug.nospace().noquote() << "QSet<QByteArray>(" << itemStrs.join(QLatin1Char(',')) << ")";
     return debug.maybeSpace();
 }
 

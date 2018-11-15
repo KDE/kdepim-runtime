@@ -43,7 +43,7 @@ class QWebEngineUrlRequestJob : public QObject
 {
     Q_OBJECT
 public:
-    QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent), mUrl(url) {}
+    explicit QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent), mUrl(url) {}
     ~QWebEngineUrlRequestJob() override = default;
 
     QUrl requestUrl() const;
@@ -55,7 +55,7 @@ class QWebEngineUrlRequestInfo : public QObject
 {
     Q_OBJECT
 public:
-    QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent), mBlocked(false), mUrl(url) {}
+    explicit QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent), mBlocked(false), mUrl(url) {}
     ~QWebEngineUrlRequestInfo() override = default;
 
     QUrl requestUrl() const;
@@ -89,7 +89,7 @@ class QWebEngineProfile : public QObject
 {
     Q_OBJECT
 public:
-    QWebEngineProfile(QObject *parent = nullptr);
+    explicit QWebEngineProfile(QObject *parent = nullptr);
     ~QWebEngineProfile() override;
 
     void setHttpUserAgent(const QString &ua);
@@ -108,7 +108,7 @@ class QWebEnginePage : public QObject
 {
     Q_OBJECT
 public:
-    QWebEnginePage(QWebEngineProfile *profile, QObject *parent = nullptr);
+    explicit QWebEnginePage(QWebEngineProfile *profile, QObject *parent = nullptr);
     ~QWebEnginePage() override;
 Q_SIGNALS:
     void logEvent(const QString &event);
@@ -122,7 +122,7 @@ class QWebEngineView : public QWidget
 public:
     typedef std::function<void(const QUrl &, QVariantMap &)> AuthFunc;
 
-    QWebEngineView(QWidget *parent);
+    explicit QWebEngineView(QWidget *parent);
     ~QWebEngineView() override;
 
     void load(const QUrl &url);
@@ -160,7 +160,7 @@ public:
     };
     Q_ENUM(NetworkError)
 
-    QNetworkReply(QObject *parent) : QBuffer(parent) {}
+    explicit QNetworkReply(QObject *parent) : QBuffer(parent) {}
     ~QNetworkReply() override = default;
 
     NetworkError error() const;
@@ -204,7 +204,7 @@ public:
         RefreshingToken
     };
 
-    QAbstractOAuth(QObject *parent);
+    explicit QAbstractOAuth(QObject *parent);
     ~QAbstractOAuth() override = default;
 
     void setReplyHandler(QAbstractOAuthReplyHandler *handler);
@@ -292,7 +292,7 @@ class EwsPKeyAuthJob : public KJob
 {
     Q_OBJECT
 public:
-    EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
+    explicit EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
                    QObject *parent);
     ~EwsPKeyAuthJob() override = default;
     void start() {}

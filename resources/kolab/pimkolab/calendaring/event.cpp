@@ -98,7 +98,7 @@ std::string Event::toICal() const
 
 bool Event::fromIMip(const std::string &input)
 {
-    std::vector<Kolab::Event> list = mITipHandler.fromIMip(input);
+    const std::vector<Kolab::Event> list = mITipHandler.fromIMip(input);
     if (list.size() != 1) {
         std::cout << "invalid number of events: " << list.size();
         return false;

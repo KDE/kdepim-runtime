@@ -40,7 +40,7 @@ class DavGroupwareResource : public Akonadi::ResourceBase, public Akonadi::Agent
 
 public:
     explicit DavGroupwareResource(const QString &id);
-    ~DavGroupwareResource();
+    ~DavGroupwareResource() override;
 
     void collectionRemoved(const Akonadi::Collection &collection) override;
     void cleanup() override;

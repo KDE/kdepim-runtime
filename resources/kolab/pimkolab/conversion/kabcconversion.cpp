@@ -226,7 +226,7 @@ int fromAddressType(int kabcType, bool &pref)
 
 KContacts::Address::Type toAddressType(int types, bool pref)
 {
-    KContacts::Address::Type type = 0;
+    KContacts::Address::Type type = {};
     if (pref) {
         type |= KContacts::Address::Pref;
     }
@@ -289,7 +289,7 @@ int fromPhoneType(int kabcType, bool &pref)
 
 KContacts::PhoneNumber::Type toPhoneType(int types, bool pref)
 {
-    KContacts::PhoneNumber::Type type = 0;
+    KContacts::PhoneNumber::Type type = {};
     if (types & Kolab::Telephone::Home) {
         type |= KContacts::PhoneNumber::Home;
     }

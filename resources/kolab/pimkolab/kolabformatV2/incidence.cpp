@@ -472,7 +472,7 @@ void Incidence::loadAlarms(const QDomElement &element)
             QString tagName = e.tagName();
 
             if (tagName == QLatin1String("alarm")) {
-                KCalCore::Alarm::Ptr a = KCalCore::Alarm::Ptr(new KCalCore::Alarm(0));
+                KCalCore::Alarm::Ptr a = KCalCore::Alarm::Ptr(new KCalCore::Alarm(nullptr));
                 a->setEnabled(true); // default to enabled, unless some XML attribute says otherwise.
                 QString type = e.attribute(QStringLiteral("type"));
                 if (type == QLatin1String("display")) {

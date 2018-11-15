@@ -1008,7 +1008,7 @@ static const char *s_knownCustomFields[] = {
     "X-SpousesName",
     "X-Anniversary",
     "DistributionList",
-    0
+    nullptr
 };
 
 // The saving is addressee -> Contact -> xml, this is the first part
