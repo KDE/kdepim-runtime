@@ -9,7 +9,6 @@ set(Libkolab_VERSION ${Libkolab_VERSION_MAJOR}.${Libkolab_VERSION_MINOR})
 set(Libkolab_VERSION_STRING ${CMAKE_PROJECT_NAME}-${Libkolab_VERSION})
 
 if (Qt5_POSITION_INDEPENDENT_CODE)
-    #Requires cmake 2.8.9 (same as -fPIC on gcc)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
@@ -66,6 +65,7 @@ set(KOLAB_LINK_LIBRARIES
     KF5::AkonadiCore
     KF5::AkonadiNotes
     KF5::Codecs
+    KF5::I18n
     KF5::KDELibs4Support
     ${Libkolabxml_LIBRARIES}
     Qt5::Core
