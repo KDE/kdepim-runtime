@@ -22,7 +22,7 @@
 #include "settingsadaptor.h"
 
 #include "imapaccount.h"
-#include "config-imap.h"
+#include <config-imap.h>
 
 #include <kwallet.h>
 using KWallet::Wallet;

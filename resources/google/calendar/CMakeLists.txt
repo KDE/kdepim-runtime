@@ -13,7 +13,7 @@ set(calendarresource_SRCS
   ../common/googlesettingsdialog.cpp
   ${accounts_SRCS}
 )
-
+ecm_qt_declare_logging_category(calendarresource_SRCS HEADER googlecalendarresource_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar)
 kconfig_add_kcfg_files(calendarresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
 
 kcfg_generate_dbus_interface(

@@ -98,7 +98,7 @@ std::string Event::toICal() const
 
 bool Event::fromIMip(const std::string &input)
 {
-    std::vector<Kolab::Event> list = mITipHandler.fromIMip(input);
+    const std::vector<Kolab::Event> list = mITipHandler.fromIMip(input);
     if (list.size() != 1) {
         std::cout << "invalid number of events: " << list.size();
         return false;
@@ -123,7 +123,7 @@ Calendaring::Event::ITipMethod Event::getSchedulingMethod() const
 
 bool contains(const Kolab::ContactReference &delegatorRef, const std::vector <Kolab::ContactReference > &list)
 {
-    foreach (const Kolab::ContactReference &ref, list) {
+    for (const Kolab::ContactReference &ref : list) {
         if (delegatorRef.uid() == ref.uid() || delegatorRef.email() == ref.email() || delegatorRef.name() == ref.name()) {
             return true;
         }
@@ -135,7 +135,7 @@ void Event::delegate(const std::vector< Attendee > &delegators, const std::vecto
 {
     //First build a list of attendee references, and insert any missing attendees
     std::vector<Kolab::Attendee *> delegateesRef;
-    foreach (const Attendee &a, delegatees) {
+    for (const Attendee &a : delegatees) {
         if (Attendee *attendee = getAttendee(a.contact())) {
             delegateesRef.push_back(attendee);
         } else {

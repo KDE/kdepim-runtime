@@ -21,7 +21,7 @@
 #include <AkonadiCore/AgentManager>
 #include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/Control>
-#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/SpecialCollectionAttribute>
 #include <AkonadiCore/Monitor>
 #include <qtest_akonadi.h>
 
@@ -89,18 +89,18 @@ void BasicTest::testBasic()
 
     struct DesiredState {
         QString parentId;
-        QString iconName;
+        QByteArray specialType;
     };
     QHash<QString, DesiredState> desiredStates = {
-        {rootId, {QString(), QString()}},
-        {inboxId, {rootId, QStringLiteral("mail-folder-inbox")}},
-        {QStringLiteral("Y2FsZW5kYXI="), {rootId, QString()}},
-        {QStringLiteral("dGFza3M="), {rootId, QString()}},
-        {QStringLiteral("Y29udGFjdHM="), {rootId, QString()}},
-        {QStringLiteral("b3V0Ym94"), {rootId, QStringLiteral("mail-folder-outbox")}},
-        {QStringLiteral("c2VudCBpdGVtcw=="), {rootId, QStringLiteral("mail-folder-sent")}},
-        {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), {rootId, QStringLiteral("user-trash")}},
-        {QStringLiteral("ZHJhZnRz"), {rootId, QStringLiteral("document-properties")}}
+        {rootId, {QString(), QByteArray()}},
+        {inboxId, {rootId, "inbox"}},
+        {QStringLiteral("Y2FsZW5kYXI="), {rootId, QByteArray()}},
+        {QStringLiteral("dGFza3M="), {rootId, QByteArray()}},
+        {QStringLiteral("Y29udGFjdHM="), {rootId, QByteArray()}},
+        {QStringLiteral("b3V0Ym94"), {rootId, "outbox"}},
+        {QStringLiteral("c2VudCBpdGVtcw=="), {rootId, "sent-mail"}},
+        {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), {rootId, "trash"}},
+        {QStringLiteral("ZHJhZnRz"), {rootId, "drafts"}}
     };
 
     FakeEwsServer::DialogEntry::List dialog = {
@@ -136,16 +136,16 @@ void BasicTest::testBasic()
 
     CollectionStateMonitor<DesiredState> stateMonitor(this, desiredStates, inboxId,
                                                       [](const Collection &col, const DesiredState &state) {
-        auto attr = col.attribute<EntityDisplayAttribute>();
-        QString iconName;
+        auto attr = col.attribute<SpecialCollectionAttribute>();
+        QByteArray specialType;
         if (attr) {
-            iconName = attr->iconName();
+            specialType = attr->collectionType();
         }
-        return col.parentCollection().remoteId() == state.parentId && iconName == state.iconName;
-    });
+        return col.parentCollection().remoteId() == state.parentId && specialType == state.specialType;
+    }, 1000);
 
     stateMonitor.monitor().fetchCollection(true);
-    stateMonitor.monitor().collectionFetchScope().fetchAttribute<EntityDisplayAttribute>();
+    stateMonitor.monitor().collectionFetchScope().fetchAttribute<SpecialCollectionAttribute>();
     stateMonitor.monitor().collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::Parent);
     stateMonitor.monitor().setResourceMonitored(instance.identifier().toLatin1(), true);
     connect(&stateMonitor, &CollectionStateMonitor<DesiredState>::stateReached, this, [&]() {

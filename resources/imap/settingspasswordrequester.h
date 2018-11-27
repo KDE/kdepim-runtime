@@ -35,7 +35,7 @@ public:
     explicit SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
     ~SettingsPasswordRequester() override;
 
-    virtual void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString()) override;
+    void requestPassword(RequestType request = StandardRequest, const QString &serverError = QString()) override;
     void cancelPasswordRequests() override;
 
 private Q_SLOTS:

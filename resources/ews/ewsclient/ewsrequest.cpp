@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -24,6 +24,7 @@
 #include "ewsclient.h"
 #include "ewsclient_debug.h"
 #include "ewsserverversion.h"
+#include "auth/ewsabstractauth.h"
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
     : EwsJob(parent), mClient(client), mServerVersion(EwsServerVersion::ewsVersion2007Sp1)
@@ -77,17 +78,36 @@ void EwsRequest::endSoapDocument(QXmlStreamWriter &writer)
 void EwsRequest::prepare(const QString &body)
 {
     mBody = body;
-    KIO::TransferJob *job = KIO::http_post(mClient.url(), body.toUtf8(),
+
+    QString username, password;
+    QStringList customHeaders;
+    if (mClient.auth()) {
+        if (!mClient.auth()->getAuthData(username, password, customHeaders)) {
+            setErrorMsg(QStringLiteral("Failed to retrieve authentication data"));
+        }
+    }
+
+    QUrl url = mClient.url();
+    url.setUserName(username);
+    url.setPassword(password);
+
+    KIO::TransferJob *job = KIO::http_post(url, body.toUtf8(),
                                            KIO::HideProgressInfo);
     job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/xml"));
+    if (!mClient.userAgent().isEmpty()) {
+        job->addMetaData(QStringLiteral("UserAgent"), mClient.userAgent());
+    }
+
+    job->addMetaData(mMd);
+
+    if (!customHeaders.isEmpty()) {
+        job->addMetaData(QStringLiteral("customHTTPHeader"), customHeaders.join(QStringLiteral("\r\n")));
+    }
+
     job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));
     if (mClient.isNTLMv2Enabled()) {
         job->addMetaData(QStringLiteral("EnableNTLMv2Auth"), QStringLiteral("true"));
     }
-    if (!mClient.userAgent().isEmpty()) {
-        job->addMetaData(QStringLiteral("UserAgent"), mClient.userAgent());
-    }
-    job->addMetaData(mMd);
 
     connect(job, &KIO::TransferJob::result, this, &EwsRequest::requestResult);
     connect(job, &KIO::TransferJob::data, this, &EwsRequest::requestData);
@@ -121,6 +141,10 @@ void EwsRequest::requestResult(KJob *job)
 
     KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob*>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
+
+    if (resp == 401 && mClient.auth()) {
+        mClient.auth()->notifyRequestAuthFailed();
+    }
 
     if (job->error() != 0) {
         setErrorMsg(QStringLiteral("Failed to process EWS request: ") + job->errorString(), job->error());

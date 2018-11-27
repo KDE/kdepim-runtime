@@ -1,5 +1,5 @@
-/*  This file is part of the KDE project
-    Copyright (C) 2014-2018 Laurent Montel <montel@kde.org>
+/*
+    Copyright (C) 2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -17,10 +17,29 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef MIXEDMAILDIRRESOURCE_DEBUG_H
-#define MIXEDMAILDIRRESOURCE_DEBUG_H
+#include "ewsabstractauth.h"
 
-#include <QLoggingCategory>
-Q_DECLARE_LOGGING_CATEGORY(MIXEDMAILDIRRESOURCE_LOG)
+#include <QFile>
 
-#endif
+EwsAbstractAuth::EwsAbstractAuth(QObject *parent)
+    : QObject(parent)
+{
+}
+
+void EwsAbstractAuth::setAuthParentWidget(QWidget *widget)
+{
+    mAuthParentWidget = widget;
+}
+
+void EwsAbstractAuth::notifyRequestAuthFailed()
+{
+    Q_EMIT requestAuthFailed();
+}
+
+void EwsAbstractAuth::setPKeyAuthCertificateFiles(const QString &certFile, const QString &pkeyFile)
+{
+    if (QFile::exists(certFile) && QFile::exists(pkeyFile)) {
+        mPKeyCertFile = certFile;
+        mPKeyKeyFile = pkeyFile;
+    }
+}

@@ -35,9 +35,10 @@ public:
     explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = nullptr);
     ~SpecialNotifierJob();
 
-    void setDefaultPixmap(const QPixmap &pixmap);
+    void setDefaultIconName(const QString &iconName);
 
 Q_SIGNALS:
+    void displayDefaultIconNotification(const QString &message);
     void displayNotification(const QPixmap &pixmap, const QString &message);
     void say(const QString &message);
 
@@ -49,10 +50,10 @@ private:
     void slotMarkAsRead();
     void slotDeleteMessage();
     void slotActivateNotificationAction(unsigned int index);
-    void emitNotification(const QPixmap &pixmap);
+    void emitNotification(const QPixmap &pixmap = QPixmap());
     void deleteItemDone(KJob *job);
-    QPixmap mDefaultPixmap;
     QStringList mListEmails;
+    QString mDefaultIconName;
     QString mSubject;
     QString mFrom;
     QString mPath;

@@ -39,7 +39,7 @@ Akonadi::Collection::List TomboyCollectionsDownloadJob::collections() const
 
 void TomboyCollectionsDownloadJob::start()
 {
-    // Get user informations
+    // Get user information
     QNetworkRequest request = QNetworkRequest(QUrl(mContentURL));
     mReply = mRequestor->get(request, QList<O0RequestParameter>());
 

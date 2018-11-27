@@ -110,9 +110,9 @@ private Q_SLOTS:
         QTest::newRow("retrieval from read-only mailbox (no expunge)") << collection << scenario << callNames;
 
         Akonadi::CachePolicy policy;
-        policy.setLocalParts(QStringList() << Akonadi::MessagePart::Envelope
-                                           << Akonadi::MessagePart::Header
-                                           << Akonadi::MessagePart::Body);
+        policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope)
+                                           << QLatin1String(Akonadi::MessagePart::Header)
+                                           << QLatin1String(Akonadi::MessagePart::Body));
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);

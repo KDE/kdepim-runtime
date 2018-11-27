@@ -33,7 +33,6 @@
 #include <KContacts/Picture>
 
 #include <KLocalizedString>
-#include <QDebug>
 #include <QIcon>
 
 #include <QPointer>

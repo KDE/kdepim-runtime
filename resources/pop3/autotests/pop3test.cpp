@@ -25,6 +25,7 @@
 #include <AkonadiCore/ItemDeleteJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/Monitor>
 #include <AkonadiCore/ServerManager>
 #include <qtest_akonadi.h>
 #include <KMime/Message>
@@ -35,6 +36,8 @@
 QTEST_AKONADIMAIN(Pop3Test)
 
 using namespace Akonadi;
+
+constexpr int serverSettleTimeout = 200; /* ms */
 
 void Pop3Test::initTestCase()
 {
@@ -71,6 +74,8 @@ void Pop3Test::initTestCase()
     //
     QString maildirRootPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QLatin1String("tester");
     mMaildirPath = maildirRootPath + QLatin1String("/new");
+    QDir::current().mkpath(mMaildirPath);
+    QDir::current().mkpath(maildirRootPath + QLatin1String("/tmp"));
 
     QString service = QLatin1String("org.freedesktop.Akonadi.Resource.") + mMaildirIdentifier;
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
@@ -98,7 +103,8 @@ void Pop3Test::initTestCase()
         QVERIFY(job->exec());
         Collection::List collections = job->collections();
         foreach (const Collection &col, collections) {
-            if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier()) {
+            if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier() &&
+                col.remoteId() == maildirRootPath) {
                 mMaildirCollection = col;
                 found = true;
                 break;
@@ -127,30 +133,30 @@ void Pop3Test::initTestCase()
     QVERIFY(reply0.isValid());
     QCOMPARE(reply0.value(), 110u);
 
-    mPOP3SettingsInterface->setPort(5989);
+    mPOP3SettingsInterface->setPort(5989).waitForFinished();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<uint> reply = mPOP3SettingsInterface->port();
     QVERIFY(reply.isValid());
     QCOMPARE(reply.value(), 5989u);
 
-    mPOP3SettingsInterface->setHost(QStringLiteral("localhost"));
+    mPOP3SettingsInterface->setHost(QStringLiteral("localhost")).waitForFinished();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply2 = mPOP3SettingsInterface->host();
     QVERIFY(reply2.isValid());
     QCOMPARE(reply2.value(), QLatin1String("localhost"));
-    mPOP3SettingsInterface->setLogin(QStringLiteral("HansWurst"));
+    mPOP3SettingsInterface->setLogin(QStringLiteral("HansWurst")).waitForFinished();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply3 = mPOP3SettingsInterface->login();
     QVERIFY(reply3.isValid());
     QCOMPARE(reply3.value(), QLatin1String("HansWurst"));
 
-    mPOP3SettingsInterface->setUnitTestPassword(QStringLiteral("Geheim"));
+    mPOP3SettingsInterface->setUnitTestPassword(QStringLiteral("Geheim")).waitForFinished();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<QString> reply4 = mPOP3SettingsInterface->unitTestPassword();
     QVERIFY(reply4.isValid());
     QCOMPARE(reply4.value(), QLatin1String("Geheim"));
 
-    mPOP3SettingsInterface->setTargetCollection(mMaildirCollection.id());
+    mPOP3SettingsInterface->setTargetCollection(mMaildirCollection.id()).waitForFinished();
     AgentManager::self()->instance(mPop3Identifier).reconfigure();
     QDBusReply<qlonglong> reply5 = mPOP3SettingsInterface->targetCollection();
     QVERIFY(reply5.isValid());
@@ -159,9 +165,7 @@ void Pop3Test::initTestCase()
 
 void Pop3Test::cleanupTestCase()
 {
-    // Post the "quit" event to the thread's event loop, then wait until the thread
-    // is finished (it finishes when the event loop finishes)
-    QMetaObject::invokeMethod(mFakeServerThread, "quit", Qt::QueuedConnection);
+    mFakeServerThread->quit();
     if (!mFakeServerThread->wait(10000)) {
         qWarning() << "The fake server thread has not yet finished, what is wrong!?";
     }
@@ -345,6 +349,32 @@ void Pop3Test::syncAndWaitForFinish()
             break;
         }
     }
+
+    // Once the messages are processed give the Akonadi server and the maildir resource some time to
+    // process the item operations. Do this by running a monitor together with a timer. Each captured
+    // item operation bumps the timer to wait longer. After 200ms of inactivity the state is considered
+    // stable and the test case can proceed.
+    Akonadi::Monitor mon(this);
+    mon.setResourceMonitored(mPop3Identifier.toLatin1());
+    mon.setResourceMonitored(mMaildirIdentifier.toLatin1());
+    QEventLoop settleLoop;
+    QTimer settleTimer;
+    settleTimer.setSingleShot(true);
+    connect(&mon, &Akonadi::Monitor::itemAdded, this, [&](const Akonadi::Item &, const Akonadi::Collection &) {
+            settleTimer.start(serverSettleTimeout);
+        });
+    connect(&mon, &Akonadi::Monitor::itemChanged, this, [&](const Akonadi::Item &, const QSet< QByteArray > &) {
+            settleTimer.start(serverSettleTimeout);
+        });
+    connect(&mon, &Akonadi::Monitor::itemRemoved, this, [&](const Akonadi::Item &) {
+            settleTimer.start(serverSettleTimeout);
+        });
+
+    settleTimer.start(serverSettleTimeout);
+    connect(&settleTimer, &QTimer::timeout, this, [&]() {
+            settleLoop.exit(0);
+        });
+    settleLoop.exec();
 }
 
 QString Pop3Test::loginSequence() const
@@ -428,7 +458,7 @@ void Pop3Test::lowerTimeOfSeenMail(const QString &uidOfMail, int secondsToLower)
     int msgTime = seenTimeList.at(index);
     msgTime -= secondsToLower;
     seenTimeList.replace(index, msgTime);
-    mPOP3SettingsInterface->setSeenUidTimeList(seenTimeList);
+    mPOP3SettingsInterface->setSeenUidTimeList(seenTimeList).waitForFinished();
 }
 
 void Pop3Test::testSimpleDownload()
@@ -453,6 +483,8 @@ void Pop3Test::testSimpleDownload()
     Akonadi::Item::List items = checkMailsOnAkonadiServer(mails);
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testBigFetch()
@@ -485,6 +517,8 @@ void Pop3Test::testBigFetch()
     Akonadi::Item::List items = checkMailsOnAkonadiServer(mails);
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testSeenUIDCleanup()
@@ -492,7 +526,7 @@ void Pop3Test::testSeenUIDCleanup()
     //
     // First, fetch 3 normal mails, but leave them on the server.
     //
-    mPOP3SettingsInterface->setLeaveOnServer(true);
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
     QList<QByteArray> mails;
     mails << simpleMail1 << simpleMail2 << simpleMail3;
     QStringList uids;
@@ -539,12 +573,14 @@ void Pop3Test::testSeenUIDCleanup()
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size()
             == mPOP3SettingsInterface->seenUidList().value().size());
 
-    mPOP3SettingsInterface->setLeaveOnServer(false);
+    mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testSimpleLeaveOnServer()
 {
-    mPOP3SettingsInterface->setLeaveOnServer(true);
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
 
     QList<QByteArray> mails;
     mails << simpleMail1 << simpleMail2 << simpleMail3;
@@ -606,7 +642,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     // Ok, next test: When turning off leaving on the server, all mails should be deleted, but
     // none downloaded.
     //
-    mPOP3SettingsInterface->setLeaveOnServer(false);
+    mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
 
     mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,2,3,4"));
     mFakeServerThread->server()->setAllowedRetrieves(QString());
@@ -625,12 +661,14 @@ void Pop3Test::testSimpleLeaveOnServer()
     QVERIFY(mPOP3SettingsInterface->seenUidList().value().isEmpty());
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size()
             == mPOP3SettingsInterface->seenUidList().value().size());
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
 }
 
 void Pop3Test::testTimeBasedLeaveRule()
 {
-    mPOP3SettingsInterface->setLeaveOnServer(true);
-    mPOP3SettingsInterface->setLeaveOnServerDays(2);
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerDays(2).waitForFinished();
 
     //
     // First download 3 mails and leave them on the server
@@ -688,16 +726,16 @@ void Pop3Test::testTimeBasedLeaveRule()
         QVERIFY(seenTime >= time(nullptr) - 10 * 60);
     }
 
-    mPOP3SettingsInterface->setLeaveOnServer(false);
-    mPOP3SettingsInterface->setLeaveOnServerDays(0);
-    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>());
-    mPOP3SettingsInterface->setSeenUidList(QStringList());
+    mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerDays(0).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
 }
 
 void Pop3Test::testCountBasedLeaveRule()
 {
-    mPOP3SettingsInterface->setLeaveOnServer(true);
-    mPOP3SettingsInterface->setLeaveOnServerCount(3);
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerCount(3).waitForFinished();
 
     //
     // First download 3 mails and leave them on the server
@@ -757,16 +795,16 @@ void Pop3Test::testCountBasedLeaveRule()
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size()
             == mPOP3SettingsInterface->seenUidList().value().size());
 
-    mPOP3SettingsInterface->setLeaveOnServer(false);
-    mPOP3SettingsInterface->setLeaveOnServerCount(0);
-    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>());
-    mPOP3SettingsInterface->setSeenUidList(QStringList());
+    mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerCount(0).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
 }
 
 void Pop3Test::testSizeBasedLeaveRule()
 {
-    mPOP3SettingsInterface->setLeaveOnServer(true);
-    mPOP3SettingsInterface->setLeaveOnServerSize(10);   // 10 MB
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerSize(10).waitForFinished();   // 10 MB
 
     //
     // First download 3 mails and leave them on the server.
@@ -826,16 +864,16 @@ void Pop3Test::testSizeBasedLeaveRule()
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size()
             == mPOP3SettingsInterface->seenUidList().value().size());
 
-    mPOP3SettingsInterface->setLeaveOnServer(false);
-    mPOP3SettingsInterface->setLeaveOnServerCount(0);
-    mPOP3SettingsInterface->setLeaveOnServerSize(0);
-    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>());
-    mPOP3SettingsInterface->setSeenUidList(QStringList());
+    mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerCount(0).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerSize(0).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
 }
 
 void Pop3Test::testMixedLeaveRules()
 {
-    mPOP3SettingsInterface->setLeaveOnServer(true);
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();;
     //
     // Generate 10 mails
     //
@@ -873,10 +911,10 @@ void Pop3Test::testMixedLeaveRules()
         lowerTimeOfSeenMail(QStringLiteral("UID%1").arg(i), 60 * 60 * 24 * i);
     }
 
-    mPOP3SettingsInterface->setLeaveOnServer(true);
-    mPOP3SettingsInterface->setLeaveOnServerSize(25);   // UID 4, 5 oldest here
-    mPOP3SettingsInterface->setLeaveOnServerCount(5);   // UID 6, 7 oldest here
-    mPOP3SettingsInterface->setLeaveOnServerDays(7);    // UID 8, 9 and 10 too old
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerSize(25).waitForFinished();   // UID 4, 5 oldest here
+    mPOP3SettingsInterface->setLeaveOnServerCount(5).waitForFinished();   // UID 6, 7 oldest here
+    mPOP3SettingsInterface->setLeaveOnServerDays(7).waitForFinished();    // UID 8, 9 and 10 too old
 
     // Ok, now we do another mail check that only deletes stuff from the server.
     // Above are the UIDs that should be deleted.
@@ -915,9 +953,9 @@ void Pop3Test::testMixedLeaveRules()
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size()
             == mPOP3SettingsInterface->seenUidList().value().size());
 
-    mPOP3SettingsInterface->setLeaveOnServer(false);
-    mPOP3SettingsInterface->setLeaveOnServerCount(0);
-    mPOP3SettingsInterface->setLeaveOnServerSize(0);
-    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>());
-    mPOP3SettingsInterface->setSeenUidList(QStringList());
+    mPOP3SettingsInterface->setLeaveOnServer(false).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerCount(0).waitForFinished();
+    mPOP3SettingsInterface->setLeaveOnServerSize(0).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
+    mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
 }

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef V2TEST_H
-#define V2TEST_H
+#ifndef LEGACYFORMATTEST_H
+#define LEGACYFORMATTEST_H
 
 #include <QObject>
 
@@ -28,4 +28,4 @@ private slots:
     void testWriteDistlistUID();
 };
 
-#endif // V2TEST_H
+#endif // LEGACYFORMATTEST_H

@@ -88,16 +88,16 @@ void TestIdxReader::testRead()
     QString subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
     MessageStatus status;
     status.fromQInt32(msg->mCachedLongParts[KMIndexReader::MsgStatusPart]);
-    QCOMPARE(subject, QString("hello from kmail"));
+    QCOMPARE(subject, QStringLiteral("hello from kmail"));
     QVERIFY(!status.isImportant());
     QVERIFY(!msg->status().isImportant());
     QVERIFY(msg->status().isRead());
-    QVERIFY(msg->tagList().contains("N5tUHPOZFf"));
+    QVERIFY(msg->tagList().contains(QLatin1String("N5tUHPOZFf")));
 
     msg = reader.messages().back();
     status.fromQInt32(msg->mCachedLongParts[KMIndexReader::MsgStatusPart]);
     subject = msg->mCachedStringParts[KMIndexReader::MsgSubjectPart];
-    QCOMPARE(subject, QString("foo bar"));
+    QCOMPARE(subject, QStringLiteral("foo bar"));
     QVERIFY(status.isImportant());
     QVERIFY(msg->status().isImportant());
     QVERIFY(!msg->status().isRead());

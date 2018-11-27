@@ -113,6 +113,7 @@ void MailDispatcherAgent::dispatch()
 
                 if (!mErrorOccurred && mShowSentNotification) {
                     KNotification *notify = new KNotification(QStringLiteral("emailsent"));
+                    notify->setIconName(QStringLiteral("kmail"));
                     notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
                     notify->setText(i18nc("Notification when the email was sent", "Your E-Mail has been sent successfully."));
@@ -214,8 +215,8 @@ void MailDispatcherAgent::itemFetched(const Item &item)
     connect(mCurrentJob, &KJob::result,
             this, &MailDispatcherAgent::sendResult);
     //TODO wait kf6. For the moment we can't convert to new connect api.
-    connect(mCurrentJob, SIGNAL(percent(KJob *,ulong)),
-            this, SLOT(sendPercent(KJob *,ulong)));
+    connect(mCurrentJob, SIGNAL(percent(KJob*,ulong)),
+            this, SLOT(sendPercent(KJob*,ulong)));
 
     mCurrentJob->start();
 }
@@ -279,8 +280,9 @@ void MailDispatcherAgent::sendResult(KJob *job)
 
         KNotification *notify = new KNotification(QStringLiteral("sendingfailed"));
         notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
+        notify->setIconName(QStringLiteral("kmail"));
         notify->setTitle(i18nc("Notification title when email sending failed", "E-Mail Sending Failed"));
-        notify->setText(job->errorString());
+        notify->setText(job->errorString().toHtmlEscaped());
         notify->sendEvent();
 
         mErrorOccurred = true;

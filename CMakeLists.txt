@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-set(PIM_VERSION "5.9.40")
+set(PIM_VERSION "5.10.40")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
@@ -47,12 +47,12 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_VERSION "5.48.0")
+set(KF5_VERSION "5.51.0")
 
 find_package(ECM ${KF5_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
 
-include(CMakePackageConfigHelpers)
+
 include(ECMSetupVersion)
 include(FeatureSummary)
 include(KDEInstallDirs)
@@ -61,33 +61,33 @@ include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 include(GenerateExportHeader)
-include(ECMCoverageOption)
+
 
 set(QT_REQUIRED_VERSION "5.9.0")
 
 set(KDEPIMRUNTIME_LIB_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
-set(AKONADI_VERSION "5.9.40")
+set(AKONADI_VERSION "5.9.80")
 
-set(KCONTACTS_LIB_VERSION "5.9.40")
-set(KCALENDARCORE_LIB_VERSION "5.9.40")
-set(IDENTITYMANAGEMENT_LIB_VERSION "5.9.40")
-set(KMAILTRANSPORT_LIB_VERSION "5.9.40")
-set(CALENDARUTILS_LIB_VERSION "5.9.40")
-set(KDAV_LIB_VERSION "5.9.40")
-set(KIMAP_LIB_VERSION "5.9.40")
-set(KMBOX_LIB_VERSION "5.9.40")
-set(AKONADICALENDAR_LIB_VERSION "5.9.40")
-set(KONTACTINTERFACE_LIB_VERSION "5.9.40")
-set(AKONADIKALARM_LIB_VERSION "5.9.40")
-set(KMIME_LIB_VERSION "5.9.40")
-set(XMLRPCCLIENT_LIB_VERSION "5.9.40")
-set(KCONTACTS_LIB_VERSION "5.9.40")
-set(AKONADIMIME_LIB_VERSION "5.9.40")
-set(AKONADICONTACT_LIB_VERSION "5.9.40")
-set(AKONADINOTE_LIB_VERSION "5.9.40")
-set(PIMCOMMON_LIB_VERSION "5.9.40")
-set(KGAPI_LIB_VERSION "5.9.40")
+set(KCONTACTS_LIB_VERSION "5.9.80")
+set(KCALENDARCORE_LIB_VERSION "5.9.80")
+set(IDENTITYMANAGEMENT_LIB_VERSION "5.9.80")
+set(KMAILTRANSPORT_LIB_VERSION "5.9.80")
+set(CALENDARUTILS_LIB_VERSION "5.9.80")
+set(KDAV_LIB_VERSION "5.9.80")
+set(KIMAP_LIB_VERSION "5.9.80")
+set(KMBOX_LIB_VERSION "5.9.80")
+set(AKONADICALENDAR_LIB_VERSION "5.9.80")
+set(KONTACTINTERFACE_LIB_VERSION "5.9.80")
+set(AKONADIKALARM_LIB_VERSION "5.9.80")
+set(KMIME_LIB_VERSION "5.9.80")
+set(XMLRPCCLIENT_LIB_VERSION "5.9.80")
+set(KCONTACTS_LIB_VERSION "5.9.80")
+set(AKONADIMIME_LIB_VERSION "5.9.80")
+set(AKONADICONTACT_LIB_VERSION "5.9.80")
+set(AKONADINOTE_LIB_VERSION "5.9.80")
+set(PIMCOMMON_LIB_VERSION "5.9.80")
+set(KGAPI_LIB_VERSION "5.9.80")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -95,13 +95,20 @@ find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
 
+find_package(Qca-qt5)
+
 # QT5 package
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus WebEngineWidgets)
-find_package(Qt5 OPTIONAL_COMPONENTS TextToSpeech)
-if (NOT Qt5TextToSpeech_FOUND)
-    message(STATUS "Qt5TextToSpeech not found, speech feature will be disabled")
+find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED TextToSpeech Network Widgets Test XmlPatterns DBus WebEngineWidgets)
+find_package(Qt5 OPTIONAL_COMPONENTS NetworkAuth)
+if (NOT Qt5NetworkAuth_FOUND)
+    message(STATUS "Qt5NetworkAuth not found, OAuth2 authentication will not be supported")
 else()
-    add_definitions(-DHAVE_TEXTTOSPEECH)
+    add_definitions(-DHAVE_NETWORKAUTH)
+endif()
+if (NOT Qca-qt5_FOUND)
+    message(STATUS "QCA not found, public key authentication will not be supported")
+else()
+    add_definitions(-DHAVE_QCA)
 endif()
 
 
@@ -114,7 +121,7 @@ find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5Codecs ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5WindowSystem ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5TextWidgets ${KF5_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
-find_package(KF5Notifications ${KF5_VERSION} CONFIG REQUIRED) # pop3
+find_package(KF5Notifications ${KF5_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF5DocTools ${KF5_VERSION} CONFIG REQUIRED) # pop3
 find_package(KF5Holidays ${KF5_VERSION} CONFIG REQUIRED)
 find_package(KF5DBusAddons ${KF5_VERSION} CONFIG REQUIRED)
@@ -142,10 +149,7 @@ find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
-add_definitions(-DQT_NO_CAST_FROM_ASCII)
-add_definitions(-DQT_NO_CAST_TO_ASCII)
-add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
-add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
+
 #add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
 
 

@@ -38,7 +38,7 @@ class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
 
 public:
     explicit ContactsResource(const QString &id);
-    ~ContactsResource();
+    ~ContactsResource() override;
 
 public Q_SLOTS:
     void configure(WId windowId) override;

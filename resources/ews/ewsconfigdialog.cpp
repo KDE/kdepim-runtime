@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -34,6 +34,10 @@
 #include "ewssettings.h"
 #include "ewssubscriptionwidget.h"
 #include "ewsprogressdialog.h"
+#include "auth/ewspasswordauth.h"
+#ifdef HAVE_NETWORKAUTH
+#include "auth/ewsoauth.h"
+#endif
 #include "ui_ewsconfigdialog.h"
 
 typedef QPair<QString, QString> StringPair;
@@ -47,6 +51,18 @@ static const QVector<StringPair> userAgents = {
     {QStringLiteral("Mozilla Thunderbird 38 for Linux (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
     {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}
 };
+
+static const QString pkeyPasswordMapKey = QStringLiteral("pkey-password");
+
+static bool execJob(KJob *job)
+{
+    QEventLoop loop;
+    QObject::connect(job, &KJob::finished, &loop, [&](KJob *j) {
+            loop.exit(j->error());
+        });
+    job->start();
+    return loop.exec() == 0;
+}
 
 EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId,
                                  EwsSettings *settings)
@@ -106,6 +122,28 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
             &KPasswordLineEdit::setPassword);
     mSettings->requestPassword(false);
+#ifdef HAVE_NETWORKAUTH
+    mUi->authOAuth2RadioButton->setEnabled(true);
+    const auto authMode = mSettings->authMode();
+    if (authMode == QStringLiteral("username-password")) {
+        mUi->authUsernameRadioButton->setChecked(true);
+    } else if (authMode == QStringLiteral("oauth2")) {
+        mUi->authOAuth2RadioButton->setChecked(true);
+        mUi->pkeyAuthGroupBox->setEnabled(true);
+    }
+#else
+    mUi->authUsernameRadioButton->setChecked(true);
+#endif
+#ifdef HAVE_QCA
+    mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
+    mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
+    connect(mSettings.data(), &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &map) {
+            if (map.contains(pkeyPasswordMapKey)) {
+                mUi->pkeyAuthPassword->setPassword(map[pkeyPasswordMapKey]);
+            }
+        });
+    mSettings->requestMap();
+#endif
 
     int selectedIndex = -1;
     int i = 0;
@@ -133,6 +171,9 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->aboutLicenseLabel->setText(i18nc("@info", "Distributed under the GNU Library General Public License version 2.0 or later."));
     mUi->aboutUrlLabel->setText(QStringLiteral("<a href=\"https://github.com/KrissN/akonadi-ews\">https://github.com/KrissN/akonadi-ews</a>"));
 
+    mUi->pkeyAuthCert->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
+    mUi->pkeyAuthKey->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
+
     connect(okButton, &QPushButton::clicked, this, &EwsConfigDialog::save);
     connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &EwsConfigDialog::performAutoDiscovery);
     connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
@@ -140,6 +181,8 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->authUsernameRadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->authOAuth2RadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_BaseUrl, &KLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
@@ -183,7 +226,27 @@ void EwsConfigDialog::save()
         mSettings->setUserAgent(QString());
     }
 
-    mSettings->setPassword(mUi->passwordEdit->password());
+    if (mUi->authUsernameRadioButton->isChecked()) {
+        mSettings->setAuthMode(QStringLiteral("username-password"));
+    }
+#ifdef HAVE_NETWORKAUTH
+    if (mUi->authOAuth2RadioButton->isChecked()) {
+        mSettings->setAuthMode(QStringLiteral("oauth2"));
+    }
+#endif
+#ifdef HAVE_QCA
+    if (mUi->pkeyAuthGroupBox->isEnabled() &&
+        !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+        mSettings->setPKeyCert(mUi->pkeyAuthCert->text());
+        mSettings->setPKeyKey(mUi->pkeyAuthKey->text());
+        const QMap<QString, QString> map = {{pkeyPasswordMapKey, mUi->pkeyAuthPassword->password()}};
+        mSettings->setMap(map);
+    }
+#endif
+
+    if (!mAuthMap.isEmpty()) {
+        mSettings->setMap(mAuthMap);
+    }
     mSettings->save();
 }
 
@@ -247,14 +310,15 @@ void EwsConfigDialog::tryConnectCancelled()
     if (mTryConnectJob) {
         mTryConnectJob->kill();
     }
-    //mTryConnectJob->deleteLater();
-    mTryConnectJob = nullptr;
+
+    mTryConnectJobCancelled = true;
 }
 
 void EwsConfigDialog::setAutoDiscoveryNeeded()
 {
     mAutoDiscoveryNeeded = true;
     mTryConnectNeeded = true;
+    mAuthMap.clear();
 
     /* Enable the OK button when at least the e-mail and username fields are set. Additionally if
      * autodiscovery is disabled, enable the OK button only if the base URL is set. */
@@ -263,6 +327,8 @@ void EwsConfigDialog::setAutoDiscoveryNeeded()
         okEnabled = false;
     }
     mButtonBox->button(QDialogButtonBox::Ok)->setEnabled(okEnabled);
+
+    mUi->pkeyAuthGroupBox->setEnabled(mUi->authOAuth2RadioButton->isChecked());
 }
 
 QString EwsConfigDialog::fullUsername() const
@@ -298,7 +364,8 @@ void EwsConfigDialog::dialogAccepted()
     if (mTryConnectNeeded) {
         EwsClient cli;
         cli.setUrl(mUi->kcfg_BaseUrl->text());
-        cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
+        const auto auth = prepareAuth();
+        cli.setAuth(auth);
         if (mUi->userAgentGroupBox->isChecked()) {
             cli.setUserAgent(mUi->userAgentEdit->text());
         }
@@ -310,11 +377,13 @@ void EwsConfigDialog::dialogAccepted()
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
         mTryConnectJob->start();
-        if (!mProgressDialog->exec()) {
-            if (KMessageBox::questionYesNo(this,
-                                           i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                                           i18n("Exchange server connection")) == KMessageBox::Yes) {
-                accept();
+        if (!execJob(mTryConnectJob)) {
+            if (!mTryConnectJobCancelled) {
+                if (KMessageBox::questionYesNo(this,
+                                               i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
+                                               i18n("Exchange server connection")) == KMessageBox::Yes) {
+                    accept();
+                }
             }
             return;
         } else {
@@ -346,7 +415,8 @@ void EwsConfigDialog::tryConnect()
 {
     EwsClient cli;
     cli.setUrl(mUi->kcfg_BaseUrl->text());
-    cli.setCredentials(fullUsername(), mUi->passwordEdit->password());
+    const auto auth = prepareAuth();
+    cli.setAuth(auth);
     if (mUi->userAgentGroupBox->isChecked()) {
         cli.setUserAgent(mUi->userAgentEdit->text());
     }
@@ -354,18 +424,22 @@ void EwsConfigDialog::tryConnect()
     mTryConnectJob = new EwsGetFolderRequest(cli, this);
     mTryConnectJob->setFolderShape(EwsFolderShape(EwsShapeIdOnly));
     mTryConnectJob->setFolderIds(EwsId::List() << EwsId(EwsDIdInbox));
+    mTryConnectJobCancelled = false;
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::TryConnect);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::tryConnectCancelled);
     mProgressDialog->show();
-    if (!mTryConnectJob->exec()) {
-        mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
-        mUi->serverVersionText->setText(i18nc("Exchange server version", "Unknown"));
-        KMessageBox::error(this, mTryConnectJob->errorText(), i18n("Connection failed"));
+    if (!execJob(mTryConnectJob)) {
+        if (!mTryConnectJobCancelled) {
+            mUi->serverStatusText->setText(i18nc("Exchange server status", "Failed"));
+            mUi->serverVersionText->setText(i18nc("Exchange server version", "Unknown"));
+            KMessageBox::error(this, mTryConnectJob->errorText(), i18n("Connection failed"));
+        }
     } else {
         mUi->serverStatusText->setText(i18nc("Exchange server status", "OK"));
         mUi->serverVersionText->setText(mTryConnectJob->serverVersion().toString());
     }
     mProgressDialog->hide();
+    mTryConnectJob = nullptr;
 }
 
 void EwsConfigDialog::userAgentChanged(int)
@@ -375,4 +449,59 @@ void EwsConfigDialog::userAgentChanged(int)
     if (!data.isEmpty()) {
         mUi->userAgentEdit->setText(data);
     }
+}
+
+EwsAbstractAuth *EwsConfigDialog::prepareAuth()
+{
+    EwsAbstractAuth *auth = nullptr;
+
+#ifdef HAVE_NETWORKAUTH
+    if (mUi->authOAuth2RadioButton->isChecked()) {
+        auth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
+    } else
+#endif
+    if (mUi->authUsernameRadioButton->isChecked()) {
+        auth = new EwsPasswordAuth(fullUsername(), this);
+    }
+    auth->setAuthParentWidget(this);
+
+#ifdef HAVE_QCA
+    if (mUi->pkeyAuthGroupBox->isEnabled() &&
+        !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+        auth->setPKeyAuthCertificateFiles(mUi->pkeyAuthCert->text(), mUi->pkeyAuthKey->text());
+        mAuthMap[pkeyPasswordMapKey] = mUi->pkeyAuthPassword->password();
+    }
+#endif
+
+    connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
+            auth->walletPasswordRequestFinished(mUi->passwordEdit->password());
+        });
+    connect(auth, &EwsAbstractAuth::requestWalletMap, this, [&]() {
+            auth->walletMapRequestFinished(mAuthMap);
+        });
+    connect(auth, &EwsAbstractAuth::setWalletMap, this, [&](const QMap<QString, QString> &map) {
+            mAuthMap = map;
+        });
+
+    auth->init();
+
+    QEventLoop loop;
+    bool authFinished = false;
+
+    connect(auth, &EwsAbstractAuth::authSucceeded, this, [&]() {
+            authFinished = true;
+            loop.exit(0);
+        });
+    connect(auth, &EwsAbstractAuth::authFailed, this, [&](const QString&) {
+            authFinished = true;
+            loop.exit(0);
+        });
+
+    if (auth->authenticate(true)) {
+        if (!authFinished) {
+            loop.exec();
+        }
+    }
+
+    return auth;
 }

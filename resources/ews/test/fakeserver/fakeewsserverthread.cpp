@@ -37,7 +37,7 @@ void FakeEwsServerThread::run()
 {
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Starting fake server thread");
     mMutex.lock();
-    mServer.reset(new FakeEwsServer(0));
+    mServer.reset(new FakeEwsServer(nullptr));
     bool ok = mServer->start();
     mMutex.unlock();
 

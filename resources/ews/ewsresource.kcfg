@@ -57,6 +57,23 @@
     <entry name="UserAgent" type="String">
       <label>Forces a non-default User-Agent string</label>
     </entry>
+    <entry name="AuthMode" type="String">
+      <default>username-password</default>
+    </entry>
+    <entry name="OAuth2AppId" type="String">
+      <label>OAuth2 application identifier</label>
+      <default>452b289a-7894-41d7-9cd4-d5275739fa27</default>
+    </entry>
+    <entry name="OAuth2ReturnUri" type="String">
+      <label>OAuth2 return URI</label>
+      <default>urn:ietf:wg:oauth:2.0:oob</default>
+    </entry>
+    <entry name="PKeyCert" type="String">
+      <label>Path to PKey authentication PEM certificate</label>
+    </entry>
+    <entry name="PKeyKey" type="String">
+      <label>Path to PKey authentication PEM private key</label>
+    </entry>
     <entry name="SyncState" type="String" />
     <entry name="FolderSyncState" type="String" />
     <entry name="EventSubscriptionId" type="String" />

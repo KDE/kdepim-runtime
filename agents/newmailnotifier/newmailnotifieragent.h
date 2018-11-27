@@ -28,9 +28,7 @@
 #include <QTimer>
 #include <QStringList>
 #include <QPixmap>
-#ifdef HAVE_TEXTTOSPEECH
 class QTextToSpeech;
-#endif
 
 namespace Akonadi {
 class AgentInstance;
@@ -73,16 +71,14 @@ private:
     bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
-    QPixmap mDefaultPixmap;
+    QString mDefaultIconName;
     QStringList mListEmails;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
     QHash<QString, QString> mCacheResourceName;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     KIdentityManagement::IdentityManager *mIdentityManager = nullptr;
-#ifdef HAVE_TEXTTOSPEECH
     QTextToSpeech *mTextToSpeech = nullptr;
-#endif
 };
 
 #endif

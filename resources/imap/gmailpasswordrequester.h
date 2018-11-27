@@ -45,7 +45,7 @@ private Q_SLOTS:
 
 private:
     ImapResourceBase *mResource = nullptr;
-    KGAPI2::AccountPromise *mPendingPromise = nullptr;
+    QPointer<KGAPI2::AccountPromise> mPendingPromise;
 };
 
 #endif

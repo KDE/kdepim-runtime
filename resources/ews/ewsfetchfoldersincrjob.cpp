@@ -367,7 +367,7 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
                 if (!parentIt->isProcessed()) {
                     qCDebugNC(EWSRES_LOG) << QStringLiteral("Parent not yet processed - delaying");
                     /* The new parent collection is not yet processed - defer the move to make
-                     * sure all the oprtations are done in down-the-tree order. */
+                     * sure all the operations are done in down-the-tree order. */
                     reparentPassNeeded = true;
                 } else {
                     moveCollection(*it);

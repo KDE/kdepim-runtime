@@ -19,7 +19,7 @@ plan is for this to become part of KDE PIM.
 
 The EWS resource is currently in preview state. It can be used as a daily driver
 when it comes to e-mail. For other tasks like calendar interaction (scheduling
-and accepting meetings) it is necessary to use wither OWA or Microsoft Outlook.
+and accepting meetings) it is necessary to use either OWA or Microsoft Outlook.
 
 ### Supported features
 

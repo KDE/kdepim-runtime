@@ -1,0 +1,52 @@
+[Global]
+IconName=akonadi
+Comment=Microsoft Exchange Server (EWS)
+Comment[ca]=Servidor Microsoft Exchange (EWS)
+Comment[ca@valencia]=Servidor Microsoft Exchange (EWS)
+Comment[de]=Microsoft Exchange Server (EWS)
+Comment[en_GB]=Microsoft Exchange Server (EWS)
+Comment[es]=Servidor Microsoft Exchange (EWS)
+Comment[gl]=Servidor de Microsoft Exchange (EWS)
+Comment[it]=Server Microsoft Exchange (EWS)
+Comment[nl]=Microsoft Exchange Server (EWS)
+Comment[pl]=Microsoft Exchange Server (EWS)
+Comment[pt]=Servidor de Microsoft Exchange (EWS)
+Comment[pt_BR]=Microsoft Exchange Server (EWS)
+Comment[sv]=Microsoft Exchange-server (EWS)
+Comment[uk]=Сервер Microsoft Exchange (EWS)
+Comment[x-test]=xxMicrosoft Exchange Server (EWS)xx
+Comment[zh_CN]=微软 Exchange 服务器（EWS）
+
+
+[Event/auth-expired]
+Name=Microsoft Exchange authentication expired
+Name[ca]=L'autenticació del Microsoft Exchange ha expirat
+Name[ca@valencia]=L'autenticació del Microsoft Exchange ha expirat
+Name[de]=Authentifizierung für Microsoft Exchange abgelaufen
+Name[en_GB]=Microsoft Exchange authentication expired
+Name[es]=Autenticación en Microsoft Exchange expirada
+Name[gl]=A autenticación de Microsoft Exchange caducou
+Name[it]=Autenticazione di Microsoft Exchange scaduta
+Name[nl]=Microsoft Exchange authenticatie is verlopen
+Name[pl]=Wygasło uwierzytelnianie Microsoft Exchange
+Name[pt]=A autenticação do Microsoft Exchange expirou
+Name[pt_BR]=Autenticação do Microsoft Exchange expirada
+Name[sv]=Microsoft Exchange behörighet utgången
+Name[uk]=Строк дії розпізнавання Microsoft Exchange вичерпано
+Name[x-test]=xxMicrosoft Exchange authentication expiredxx
+Comment=Credentials used to access Microsoft Exchange are no longer valid
+Comment[ca]=Les credencials que s'usen per accedir al Microsoft Exchange ja no són vàlides
+Comment[ca@valencia]=Les credencials que s'usen per accedir al Microsoft Exchange ja no són vàlides
+Comment[de]=Anmeldungsdaten für den Zugriff auf Microsoft Exchange sind nicht mehr gültig
+Comment[en_GB]=Credentials used to access Microsoft Exchange are no longer valid
+Comment[es]=Las credenciales usadas para acceder a Microsoft Exchange ya no son válidas
+Comment[gl]=Os credenciais que se usan para acceder a Microsoft Exchange xa non son válidos
+Comment[it]=Le credenziali usate per accedere a Microsoft Exchange non sono più valide
+Comment[nl]=Gebruikte credentials voor toegang tot Microsoft Exchange is niet langer geldig
+Comment[pl]=Dane dostępowe do Microsoft Exchange przestały być ważne
+Comment[pt]=As credenciais usadas para aceder ao Microsoft Exchange já não são válidas
+Comment[pt_BR]=As credenciais usadas para acessar o Microsoft Exchange não são mais válidas
+Comment[sv]=Inloggningsinformation använd för att komma åt Microsoft Exchange är inte längre giltig
+Comment[uk]=Реєстраційні дані для доступу Microsoft Exchange втратили чинність
+Comment[x-test]=xxCredentials used to access Microsoft Exchange are no longer validxx
+Action=Popup

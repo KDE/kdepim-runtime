@@ -112,7 +112,6 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(KSharedConfigPtr co
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
-#ifdef HAVE_TEXTTOSPEECH
     QWidget *textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
@@ -141,10 +140,6 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(KSharedConfigPtr co
     vbox->addStretch();
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
     connect(mTextToSpeak, &QCheckBox::toggled, mTextToSpeakSetting, &QLineEdit::setEnabled);
-#else
-    mTextToSpeak = nullptr;
-    mTextToSpeakSetting = nullptr;
-#endif
 
     mNotify = new KNotifyConfigWidget(parent);
     mNotify->setObjectName(QStringLiteral("mNotify"));
@@ -223,3 +218,4 @@ void NewMailNotifierSettingsWidget::slotHelpLinkClicked(const QString &)
 
     QWhatsThis::showText(QCursor::pos(), help);
 }
+

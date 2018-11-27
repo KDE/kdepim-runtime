@@ -401,12 +401,12 @@ bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
         case SASL_CB_USER:
         case SASL_CB_AUTHNAME:
             qCDebug(POP3_LOG) << "SASL_CB_[USER|AUTHNAME]: " << m_sUser;
-            interact->result = strdup(m_sUser.toUtf8());
+            interact->result = strdup(m_sUser.toUtf8().constData());
             interact->len = strlen((const char *)interact->result);
             break;
         case SASL_CB_PASS:
             qCDebug(POP3_LOG) << "SASL_CB_PASS: [hidden] ";
-            interact->result = strdup(m_sPass.toUtf8());
+            interact->result = strdup(m_sPass.toUtf8().constData());
             interact->len = strlen((const char *)interact->result);
             break;
         default:
@@ -437,7 +437,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
     Resp resp;
 
     result = sasl_client_new("pop",
-                             m_sServer.toLatin1(),
+                             m_sServer.toLatin1().constData(),
                              nullptr, nullptr, callbacks, 0, &conn);
 
     if (result != SASL_OK) {
@@ -469,7 +469,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
         }
 
         do {
-            result = sasl_client_start(conn, sasl_list.join(QLatin1Char(' ')).toLatin1(),
+            result = sasl_client_start(conn, sasl_list.join(QLatin1Char(' ')).toLatin1().constData(),
                                        &client_interact, &out, &outlen, &mechusing);
 
             if (result == SASL_INTERACT) {

@@ -32,7 +32,7 @@ class EwsMtaResource : public Akonadi::ResourceBase, public Akonadi::TransportRe
     Q_OBJECT
 public:
     explicit EwsMtaResource(const QString &id);
-    ~EwsMtaResource();
+    ~EwsMtaResource() override;
 
     void sendItem(const Akonadi::Item &item) override;
 public Q_SLOTS:

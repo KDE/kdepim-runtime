@@ -20,7 +20,7 @@
 #include "passwordrequester.h"
 #include "imapresourcebase.h"
 #include "settings.h"
-#include "config-imap.h"
+#include <config-imap.h>
 
 #include "gmailpasswordrequester.h"
 #include "settingspasswordrequester.h"

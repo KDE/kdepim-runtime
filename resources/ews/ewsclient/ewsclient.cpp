@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,6 +21,7 @@
 
 #include <QString>
 
+#include "auth/ewsabstractauth.h"
 #include "ewsclient_debug.h"
 
 QHash<QString, QString> EwsClient::folderHash;
@@ -41,4 +42,19 @@ void EwsClient::setServerVersion(const EwsServerVersion &version)
         qCWarning(EWSCLI_LOG) << "Warning - server version changed." << mServerVersion << version;
     }
     mServerVersion = version;
+}
+
+QUrl EwsClient::url() const
+{
+    return mUrl;
+}
+
+void EwsClient::setAuth(EwsAbstractAuth *auth)
+{
+    mAuth = auth;
+}
+
+EwsAbstractAuth *EwsClient::auth() const
+{
+    return mAuth.data();
 }

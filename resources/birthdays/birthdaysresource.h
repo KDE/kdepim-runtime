@@ -35,7 +35,7 @@ class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBas
 
 public:
     explicit BirthdaysResource(const QString &id);
-    ~BirthdaysResource();
+    ~BirthdaysResource() override;
 
 public Q_SLOTS:
     void configure(WId windowId) override;

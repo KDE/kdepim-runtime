@@ -35,7 +35,7 @@ class EwsAkonadiTagsSyncJob : public EwsJob
 public:
     EwsAkonadiTagsSyncJob(EwsTagStore *tagStore, EwsClient &client,
                           const Akonadi::Collection &rootCollection, QObject *parent);
-    ~EwsAkonadiTagsSyncJob();
+    ~EwsAkonadiTagsSyncJob() override;
 
     void start() override;
 

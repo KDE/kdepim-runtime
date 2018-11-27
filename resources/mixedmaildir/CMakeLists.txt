@@ -17,14 +17,15 @@ kconfig_add_kcfg_files(mixedmaildir_common_SRCS settings.kcfgc)
 ############################# Resource #######################################
 
 set( mixedmaildirresource_SRCS
-  mixedmaildirresource_debug.cpp
   compactchangehelper.cpp
   mixedmaildirresource.cpp
   mixedmaildirstore.cpp
   retrieveitemsjob.cpp
-  mixedmaildir_debug.cpp
   ${mixedmaildir_common_SRCS}
 )
+
+ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildirresource_debug.h IDENTIFIER MIXEDMAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.mixedmaildirresource)
+ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildir_debug.h IDENTIFIER MIXEDMAILDIR_LOG CATEGORY_NAME org.kde.pim.mixedmaildir)
 
 install( FILES mixedmaildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 

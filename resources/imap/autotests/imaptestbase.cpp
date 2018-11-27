@@ -81,7 +81,7 @@ QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario(const QList<QByteA
     QList<QByteArray> scenario;
 
     QByteArray caps = "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE";
-    Q_FOREACH (const QByteArray &cap, customCapabilities) {
+    for (const QByteArray &cap : customCapabilities) {
         caps += " " + cap;
     }
 

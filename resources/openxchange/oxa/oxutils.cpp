@@ -114,10 +114,10 @@ QDateTime OXUtils::readDateTime(const QString &text)
     //workaround, as QDateTime does not support negative time_t values
     QDateTime value;
     if (ticks < 0) {
-        value.fromSecsSinceEpoch(0);
+        value = QDateTime::fromSecsSinceEpoch(0);
         value = value.addSecs(ticks);
     } else {
-        value.fromSecsSinceEpoch(ticks);
+        value = QDateTime::fromSecsSinceEpoch(ticks);
     }
 
     return value;

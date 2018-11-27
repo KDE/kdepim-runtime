@@ -8,8 +8,8 @@ org.kde.pim.mboxresource mbox resource (kdepim-runtime) IDENTIFIER [MBOXRESOURCE
 org.kde.pim.birthdays birthdays resource (kdepim-runtime) IDENTIFIER [BIRTHDAYS_LOG]
 org.kde.pim.davresource dav resource (kdepim-runtime) IDENTIFIER [DAVRESOURCE_LOG]
 org.kde.pim.kolabresource kolab resource (kdepim-runtime) IDENTIFIER [KOLABRESOURCE_LOG]
-org.kde.pim.mixedmaildirresource mixedmaildir resource (kdepim-runtime)
-org.kde.pim.mixedmaildir mixed maildir resource (kdepim-runtime)
+org.kde.pim.mixedmaildirresource mixedmaildir resource (kdepim-runtime) IDENTIFIER [MIXEDMAILDIRRESOURCE_LOG]
+org.kde.pim.mixedmaildir mixed maildir resource (kdepim-runtime) IDENTIFIER [MIXEDMAILDIR_LOG]
 org.kde.pim.kalarmresource kalarm file resource (kdepim-runtime) IDENTIFIER [KALARMRESOURCE_LOG]
 org.kde.pim.kalarmdirresource kalarm directory resource (kdepim-runtime) IDENTIFIER [KALARMDIRRESOURCE_LOG]
 org.kde.pim.pop3resource pop3 resource (kdepim-runtime) IDENTIFIER [POP3RESOURCE_LOG]
@@ -21,6 +21,7 @@ org.kde.pim.fbresource facebook resource (kdepim-runtime) IDENTIFIER [FBRESOURCE
 org.kde.pim.pimkolab pimkolab lib (kdepim-runtime) IDENTIFIER [PIMKOLAB_LOG]
 org.kde.pim.ews exchange ews resource (kdepim-runtime) IDENTIFIER [EWSRES_LOG]
 org.kde.pim.ews.agentif exchange ews agent (kdepim-runtime) IDENTIFIER [EWSRES_AGENTIF_LOG]
+org.kde.pim.ews.mta ews mta (kdepim-runtime) IDENTIFIER [EWSRES_MTA_LOG]
 org.kde.pim.ews.client ews client (kdepim-runtime) IDENTIFIER [EWSCLI_LOG]
 org.kde.pim.ews.client.proto ews client proto (kdepim-runtime) IDENTIFIER [EWSCLI_PROTO_LOG]
 org.kde.pim.ews.client.request ews client request (kdepim-runtime) IDENTIFIER [EWSCLI_REQUEST_LOG]
@@ -28,3 +29,4 @@ org.kde.pim.ews.client.failedrequest ews client failed request (kdepim-runtime) 
 org.kde.pim.filestore resource filestore lib (kdepim-runtime) IDENTIFIER [AKONADIFILESTORE_LOG]
 org.kde.pim.imapresource.trace resource imap trace (kdepim-runtime) IDENTIFIER [IMAPRESOURCE_TRACE]
 org.kde.pim.kolabresource.trace resource kolab trace (kdepim-runtime) IDENTIFIER [KOLABRESOURCE_TRACE]
+org.kde.pim.google.calendar resource google calendar (kdepim-runtime) IDENTIFIER [GOOGLE_CALENDAR_LOG]

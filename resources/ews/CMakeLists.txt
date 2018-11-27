@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+#  Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 #
 #  This library is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU Library General Public
@@ -117,12 +117,18 @@ target_link_libraries(akonadi_ews_resource
     KF5::WidgetsAddons
     KF5::I18n
     KF5::WindowSystem
+    KF5::Notifications
     ewsclient)
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
   set(ewsmtaresource_SRCS
     ewsmtaconfigdialog.cpp
     ewsmtaresource.cpp)
+
+  ecm_qt_declare_logging_category(ewsmtaresource_SRCS
+     HEADER ewsres_mta_debug.h
+     IDENTIFIER EWSRES_MTA_LOG
+     CATEGORY_NAME org.kde.pim.ews.mta)
 
   ki18n_wrap_ui(ewsmtaresource_SRCS ewsmtaconfigdialog.ui)
 
@@ -178,3 +184,6 @@ ecm_install_icons(
     DESTINATION ${KDE_INSTALL_ICONDIR}
     THEME hicolor
 )
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/akonadi_ews_resource.notifyrc
+    DESTINATION "${KNOTIFYRC_INSTALL_DIR}")

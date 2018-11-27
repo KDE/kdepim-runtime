@@ -65,7 +65,7 @@ static const QVector<QString> responseTypeNames = {
 
 bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val)
 {
-    QString elmText = reader.readElementText();
+    const QString elmText = reader.readElementText();
     if (reader.error() != QXmlStreamReader::NoError) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading %1 element")
                                 .arg(reader.name().toString());

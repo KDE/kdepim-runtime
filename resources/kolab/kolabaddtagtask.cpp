@@ -63,7 +63,7 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
         tag.setRemoteId(QByteArray::number(uid));
     }
 
-    qCDebug(KOLABRESOURCE_LOG) << "comitting new tag";
+    qCDebug(KOLABRESOURCE_LOG) << "committing new tag";
     changeCommitted(tag);
 
     Akonadi::Collection c = relationCollection();

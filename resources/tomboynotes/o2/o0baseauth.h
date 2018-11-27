@@ -54,7 +54,7 @@ public:
     int localPort() const;
     void setLocalPort(int value);
 
-    /// Sets the storage object to use for storing the OAuth tokens on a peristent medium
+    /// Sets the storage object to use for storing the OAuth tokens on a persistent medium
     void setStore(O0AbstractStore *store);
 
     /// Construct query string from list of headers

@@ -119,10 +119,10 @@
    */
 /* #undef HAVE_GSSKRB5_REGISTER_ACCEPTOR_IDENTITY */
 
-/* Define if your GSSAPI implimentation defines GSS_C_NT_HOSTBASED_SERVICE */
+/* Define if your GSSAPI implementation defines GSS_C_NT_HOSTBASED_SERVICE */
 #define HAVE_GSS_C_NT_HOSTBASED_SERVICE
 
-/* Define if your GSSAPI implimentation defines GSS_C_NT_USER_NAME */
+/* Define if your GSSAPI implementation defines GSS_C_NT_USER_NAME */
 #define HAVE_GSS_C_NT_USER_NAME
 
 /* Define to 1 if you have the `inet_aton' function. */

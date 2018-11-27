@@ -5,9 +5,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/pimkolab/
     ${Libkolabxml_INCLUDES}
 )
-add_definitions( -DQT_NO_CAST_FROM_ASCII )
-add_definitions( -DQT_NO_CAST_TO_ASCII )
-
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 

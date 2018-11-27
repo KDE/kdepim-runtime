@@ -226,7 +226,7 @@ int fromAddressType(int kabcType, bool &pref)
 
 KContacts::Address::Type toAddressType(int types, bool pref)
 {
-    KContacts::Address::Type type = 0;
+    KContacts::Address::Type type = {};
     if (pref) {
         type |= KContacts::Address::Pref;
     }
@@ -289,7 +289,7 @@ int fromPhoneType(int kabcType, bool &pref)
 
 KContacts::PhoneNumber::Type toPhoneType(int types, bool pref)
 {
-    KContacts::PhoneNumber::Type type = 0;
+    KContacts::PhoneNumber::Type type = {};
     if (types & Kolab::Telephone::Home) {
         type |= KContacts::PhoneNumber::Home;
     }
@@ -438,7 +438,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     KContacts::Addressee addressee;
     addressee.setUid(fromStdString(contact.uid()));
     addressee.setCategories(toStringList(contact.categories()));
-    //addressee.setName(fromStdString(contact.name()));//This one is only for compatiblity (and results in a non-existing name property)
+    //addressee.setName(fromStdString(contact.name()));//This one is only for compatibility (and results in a non-existing name property)
     addressee.setFormattedName(fromStdString(contact.name())); //This on corresponds to fn
 
     const Kolab::NameComponents &nc = contact.nameComponents();

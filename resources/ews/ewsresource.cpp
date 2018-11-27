@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -30,6 +30,7 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <KMime/Message>
 #include <KWallet/KWallet>
+#include <KNotification>
 
 #include <KLocalizedString>
 
@@ -52,6 +53,7 @@
 #include "ewscreateitemjob.h"
 #include "ewsconfigdialog.h"
 #include "ewssettings.h"
+#include "auth/ewsabstractauth.h"
 #ifdef HAVE_SEPARATE_MTA_RESOURCE
 #include "ewscreateitemrequest.h"
 #endif
@@ -96,7 +98,7 @@ static Q_CONSTEXPR int InitialReconnectTimeout = 60;
 static Q_CONSTEXPR int ReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
-    : Akonadi::ResourceBase(id), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
+    : Akonadi::ResourceBase(id), mAuthStage(0), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
       mSettings(new EwsSettings(winIdForDialogs()))
 {
     mEwsClient.setUserAgent(mSettings->userAgent());
@@ -144,9 +146,6 @@ EwsResource::EwsResource(const QString &id)
 #endif
 
     connect(this, &AgentBase::reloadConfiguration, this, &EwsResource::reloadConfig);
-
-    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, this,
-            &EwsResource::passwordRequestFinished);
 }
 
 EwsResource::~EwsResource()
@@ -445,29 +444,8 @@ void EwsResource::reloadConfig()
 {
     mSubManager.reset(nullptr);
     mEwsClient.setUrl(mSettings->baseUrl());
-    mSettings->requestPassword(true);
-}
-
-void EwsResource::passwordRequestFinished(const QString &password)
-{
-    mPassword = password;
-    if (mPassword.isNull()) {
-        setOnline(false);
-        Q_EMIT status(NotConfigured, i18nc("@info:status", "No password configured."));
-    } else {
-        if (!mSettings->hasDomain()) {
-            mEwsClient.setCredentials(mSettings->username(), mPassword);
-        } else {
-            mEwsClient.setCredentials(mSettings->domain() + QLatin1Char('\\') + mSettings->username(), mPassword);
-        }
-        mSettings->save();
-        if (mSettings->baseUrl().isEmpty()) {
-            setOnline(false);
-            Q_EMIT status(NotConfigured, i18nc("@info:status", "No server configured yet."));
-        } else {
-            resetUrl();
-        }
-    }
+    setUpAuth();
+    mEwsClient.setAuth(mAuth.data());
 }
 
 void EwsResource::configure(WId windowId)
@@ -1342,6 +1320,97 @@ void EwsResource::globalTagsRetrievalFinished(KJob *job)
         Q_ASSERT(readJob);
         tagsRetrieved(readJob->tags(), QHash<QString, Item::List>());
     }
+}
+
+void EwsResource::setUpAuth()
+{
+    EwsAbstractAuth *auth = mSettings->loadAuth(this);
+
+    /* Use queued connections here to avoid stack overflow when the reauthentication proceeds through all stages. */
+    connect(auth, SIGNAL(authSucceeded()), this, SLOT(authSucceeded()), Qt::QueuedConnection);
+    connect(auth, SIGNAL(authFailed(QString)), this, SLOT(authFailed(QString)), Qt::QueuedConnection);
+    connect(auth, SIGNAL(requestAuthFailed()), this, SLOT(requestAuthFailed()), Qt::QueuedConnection);
+
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Initializing authentication");
+
+    mAuth.reset(auth);
+
+    auth->init();
+}
+
+void EwsResource::authSucceeded()
+{
+    mAuthStage = 0;
+
+    resetUrl();
+}
+
+void EwsResource::reauthNotificationDismissed(bool accepted)
+{
+    if (mReauthNotification) {
+        mReauthNotification.clear();
+        if (accepted) {
+            mAuth->authenticate(true);
+        } else {
+            Q_EMIT authFailed(QStringLiteral("Interactive authentication request denied"));
+        }
+    }
+}
+
+void EwsResource::authFailed(const QString &error)
+{
+    qCWarningNC(EWSRES_LOG) << "Authentication failed: " << error;
+
+    reauthenticate();
+}
+
+void EwsResource::reauthenticate()
+{
+    switch (mAuthStage) {
+    case 0:
+    {
+        if (mAuth->authenticate(false)) {
+            break;
+        } else {
+            ++mAuthStage;
+        }
+    }
+    /* fall through */
+    case 1:
+    {
+        const auto reauthPrompt = mAuth->reauthPrompt();
+        if (!reauthPrompt.isNull()) {
+            mReauthNotification = new KNotification(QStringLiteral("auth-expired"), KNotification::Persistent, this);
+
+            mReauthNotification->setText(reauthPrompt.arg(name()));
+            mReauthNotification->setActions(QStringList(i18nc("@action:button", "Authenticate")));
+            mReauthNotification->setComponentName(QStringLiteral("akonadi_ews_resource"));
+            auto acceptedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, true);
+            auto rejectedFn = std::bind(&EwsResource::reauthNotificationDismissed, this, false);
+            connect(mReauthNotification.data(), &KNotification::action1Activated, this, acceptedFn);
+            connect(mReauthNotification.data(), &KNotification::closed, this, rejectedFn);
+            connect(mReauthNotification.data(), &KNotification::ignored, this, rejectedFn);
+            mReauthNotification->sendEvent();
+            break;
+        }
+    }
+    /* fall through */
+    case 2:
+        Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
+        break;
+    }
+
+    ++mAuthStage;
+}
+
+void EwsResource::requestAuthFailed()
+{
+    qCWarningNC(EWSRES_LOG) << "requestAuthFailed - going offline";
+
+    setTemporaryOffline(reconnectTimeout());
+    Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
+
+    reauthenticate();
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)

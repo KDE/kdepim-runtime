@@ -20,8 +20,8 @@
 
 #include <contact.h>
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
+#include <QObject>
+#include <QtTest>
 #include <kcalcore/recurrence.h>
 #include <kcalcore/event.h>
 #include <kcalcore/todo.h>

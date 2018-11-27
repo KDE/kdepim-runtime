@@ -19,8 +19,8 @@
   Boston, MA 02110-1301, USA.
 */
 
-#ifndef MAILDIRTEST_H
-#define MAILDIRTEST_H
+#ifndef TESTMAILDIR_H
+#define TESTMAILDIR_H
 
 #include <QObject>
 

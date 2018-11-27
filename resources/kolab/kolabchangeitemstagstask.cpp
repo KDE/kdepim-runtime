@@ -26,6 +26,7 @@
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/TagFetchJob>
+#include <AkonadiCore/TagFetchScope>
 
 KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -65,6 +66,7 @@ void KolabChangeItemsTagsTask::processNextTag()
     //We have to fetch it again in case it changed since the notification was emitted (which is likely)
     //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
     Akonadi::TagFetchJob *fetch = new Akonadi::TagFetchJob(tag);
+    fetch->fetchScope().setFetchRemoteId(true);
     connect(fetch, &KJob::result, this, &KolabChangeItemsTagsTask::onTagFetchDone);
 }
 

@@ -43,7 +43,7 @@ void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attac
         qCCritical(PIMKOLAB_LOG) << "Invalid incidence";
         return;
     }
-    foreach (const QString &name, attachments) {
+    for (const QString &name : attachments) {
         QByteArray type;
         KMime::Content *content = Mime::findContentByName(mimeData, name, type);
         if (!content) { // guard against malformed events with non-existent attachments

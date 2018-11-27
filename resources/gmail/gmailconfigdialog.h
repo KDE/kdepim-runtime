@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef GMAILSETUPSERVER_H
-#define GMAILSETUPSERVER_H
+#ifndef GMAILCONFIGDIALOG_H
+#define GMAILCONFIGDIALOG_H
 
 #include <QDialog>
 
@@ -72,4 +72,4 @@ private:
     QPushButton *mOkButton = nullptr;
 };
 
-#endif // GMAILSETUPSERVER_H
+#endif // GMAILCONFIGDIALOG_H

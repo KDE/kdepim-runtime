@@ -75,7 +75,7 @@ public Q_SLOTS:
     QString dumpResourceToString() const override;
 
 protected:
-    using ResourceBase::retrieveItems; // supress -Woverload-virtual
+    using ResourceBase::retrieveItems; // suppress -Woverload-virtual
 
 protected Q_SLOTS:
     void startIdleIfNeeded();
@@ -94,12 +94,12 @@ protected:
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags) override;
     void itemsRemoved(const Akonadi::Item::List &items) override;
-    virtual void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
+    void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;
-    virtual void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
+    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
 
     void addSearch(const QString &query, const QString &queryLanguage, const Akonadi::Collection &resultCollection) override;
     void removeSearch(const Akonadi::Collection &resultCollection) override;

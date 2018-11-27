@@ -34,8 +34,8 @@ void GmailChangeItemsLabelsTask::doStart(KIMAP::Session *session)
     if (session->selectedMailBox() != mailbox) {
         KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
         select->setMailBox(mailbox);
-        connect(select, SIGNAL(finished(KJob *)),
-                this, SLOT(onSelectDone(KJob *)));
+        connect(select, SIGNAL(finished(KJob*)),
+                this, SLOT(onSelectDone(KJob*)));
         select->start();
     } else {
         if (!addedFlags().isEmpty()) {
@@ -53,8 +53,8 @@ void GmailChangeItemsLabelsTask::triggerAppendFlagsJob(KIMAP::Session *session)
     KIMAP::StoreJob *store = prepareJob(session);
     store->setGMLabels(addedFlags().toList());
     store->setMode(KIMAP::StoreJob::AppendFlags);
-    connect(store, SIGNAL(result(KJob *)),
-            this, SLOT(onAppendFlagsDone(KJob *)));
+    connect(store, SIGNAL(result(KJob*)),
+            this, SLOT(onAppendFlagsDone(KJob*)));
     store->start();
 }
 
@@ -63,7 +63,7 @@ void GmailChangeItemsLabelsTask::triggerRemoveFlagsJob(KIMAP::Session *session)
     KIMAP::StoreJob *store = prepareJob(session);
     store->setGMLabels(removedFlags().toList());
     store->setMode(KIMAP::StoreJob::RemoveFlags);
-    connect(store, SIGNAL(result(KJob *)),
-            this, SLOT(onRemoveFlagsDone(KJob *)));
+    connect(store, SIGNAL(result(KJob*)),
+            this, SLOT(onRemoveFlagsDone(KJob*)));
     store->start();
 }

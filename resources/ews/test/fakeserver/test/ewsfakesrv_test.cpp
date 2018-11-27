@@ -636,7 +636,7 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
             srv->queueEventsXml(QStringList() << event2);
             pushEventTime = QDateTime::currentDateTime();
         } else if (responseNo == 2) {
-            /* Check if the response to the above event came "immediatelly" */
+            /* Check if the response to the above event came "immediately" */
             QDateTime now = QDateTime::currentDateTime();
             if (pushEventTime.msecsTo(now) > 200) {
                 qWarning() << "Push event maximum roundtrip time exceeded";

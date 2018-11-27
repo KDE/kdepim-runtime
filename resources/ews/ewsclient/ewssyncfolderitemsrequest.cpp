@@ -249,6 +249,7 @@ EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
     case ReadFlagChange:
         mIsRead = values[IsRead].toBool();
     /* fall through */
+        Q_FALLTHROUGH();
     case Delete:
         mId = values[ItemId].value<EwsId>();
         break;

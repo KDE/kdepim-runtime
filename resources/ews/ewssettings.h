@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2017-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -34,6 +34,8 @@ class Wallet;
 }
 class KPasswordDialog;
 
+class EwsAbstractAuth;
+
 class EwsSettings : public EwsSettingsBase
 {
     Q_OBJECT
@@ -43,23 +45,39 @@ public:
     ~EwsSettings() override;
 
     void requestPassword(bool ask);
+    void requestMap();
+
+    EwsAbstractAuth *loadAuth(QObject *parent);
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
+    Q_SCRIPTABLE void setMap(const QMap<QString, QString> &map);
     Q_SCRIPTABLE void setTestPassword(const QString &password);
 Q_SIGNALS:
     void passwordRequestFinished(const QString &password);
+    void mapRequestFinished(const QMap<QString, QString> &map);
 private Q_SLOTS:
-    void onWalletOpenedForRead(bool success);
-    void onWalletOpenedForWrite(bool success);
+    void onWalletOpened(bool success);
 private:
     QString readPassword() const;
+    QMap<QString, QString> readMap() const;
+    void satisfyPasswordReadRequest(bool success);
+    void satisfyPasswordWriteRequest(bool success);
+    void satisfyMapReadRequest(bool success);
+    void satisfyMapWriteRequest(bool success);
+    bool requestWalletOpen();
     WId mWindowId;
+
     QString mPassword;
+    bool mPasswordReadPending;
+    bool mPasswordWritePending;
+
+    QMap<QString, QString> mMap;
+    bool mMapReadPending;
+    bool mMapWritePending;
+
     QPointer<KWallet::Wallet> mWallet;
-    QTimer mWalletReadTimer;
-    QTimer mWalletWriteTimer;
+    QTimer mWalletTimer;
     QPointer<KPasswordDialog> mPasswordDlg;
 };
 
 #endif
-

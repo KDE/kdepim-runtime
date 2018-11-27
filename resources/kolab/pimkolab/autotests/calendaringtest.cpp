@@ -157,7 +157,7 @@ void CalendaringTest::testEventConflictSet()
         const std::vector<Kolab::Event> &list = result.at(i);
 
         qDebug() << "---------_Set--------------";
-        foreach (const Kolab::Event &event, list) {
+        for (const Kolab::Event &event : list) {
             qDebug() << QTest::toString(event.start()) << QTest::toString(event.end());
         }
         compareEvents(result.at(i), expectedResult.at(i));

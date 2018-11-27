@@ -96,35 +96,35 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
 
 void normalizeMimemessage(QString &content)
 {
-    content.replace(QRegExp("\\bLibkolab-\\d.\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
-    content.replace(QRegExp("\\bLibkolabxml-\\d.\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
-    content.replace(QRegExp("\\bLibkolab-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
-    content.replace(QRegExp("\\bkdepim-runtime-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
-    content.replace(QRegExp("\\bLibkolabxml-\\d.\\d\\b", Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
-    content.replace(QRegExp("<uri>cid:*@kolab.resource.akonadi</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>cid:id@kolab.resource.akonadi</uri>"));
-    content.replace(QRegExp("Content-ID: <*@kolab.resource.akonadi>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("Content-ID: <id@kolab.resource.akonadi>"));
-    content.replace(QRegExp("<uri>mailto:*</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>mailto:</uri>"));
-    content.replace(QRegExp("<cal-address>mailto:*</cal-address>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<cal-address>mailto:</cal-address>"));
-    content.replace(QRegExp("<uri>data:*</uri>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>data:</uri>"));
-    content.replace(QRegExp("<last-modification-date>*</last-modification-date>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<last-modification-date></last-modification-date>"));
+    content.replace(QRegExp(QStringLiteral("\\bLibkolab-\\d.\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegExp(QStringLiteral("\\bLibkolabxml-\\d.\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
+    content.replace(QRegExp(QStringLiteral("\\bLibkolab-\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegExp(QStringLiteral("\\bkdepim-runtime-\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegExp(QStringLiteral("\\bLibkolabxml-\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
+    content.replace(QRegExp(QStringLiteral("<uri>cid:*@kolab.resource.akonadi</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>cid:id@kolab.resource.akonadi</uri>"));
+    content.replace(QRegExp(QStringLiteral("Content-ID: <*@kolab.resource.akonadi>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("Content-ID: <id@kolab.resource.akonadi>"));
+    content.replace(QRegExp(QStringLiteral("<uri>mailto:*</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>mailto:</uri>"));
+    content.replace(QRegExp(QStringLiteral("<cal-address>mailto:*</cal-address>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<cal-address>mailto:</cal-address>"));
+    content.replace(QRegExp(QStringLiteral("<uri>data:*</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>data:</uri>"));
+    content.replace(QRegExp(QStringLiteral("<last-modification-date>*</last-modification-date>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<last-modification-date></last-modification-date>"));
     //We no longer support pobox, so remove pobox lines
-    content.replace(QRegExp("<pobox>*</pobox>", Qt::CaseSensitive, QRegExp::Wildcard), QLatin1String(""));
-    content.replace(QRegExp("<timestamp>*</timestamp>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<timestamp></timestamp>"));
-    content.replace(QRegExp("<x-kolab-version>*</x-kolab-version>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-kolab-version></x-kolab-version>"));
+    content.replace(QRegExp(QStringLiteral("<pobox>*</pobox>"), Qt::CaseSensitive, QRegExp::Wildcard), QLatin1String(""));
+    content.replace(QRegExp(QStringLiteral("<timestamp>*</timestamp>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<timestamp></timestamp>"));
+    content.replace(QRegExp(QStringLiteral("<x-kolab-version>*</x-kolab-version>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-kolab-version></x-kolab-version>"));
 
-    content.replace(QRegExp("--nextPart\\S*", Qt::CaseSensitive), QStringLiteral("--part"));
-    content.replace(QRegExp("\\bboundary=\"nextPart[^\\n]*", Qt::CaseSensitive), QStringLiteral("boundary"));
-    content.replace(QRegExp("Date[^\\n]*", Qt::CaseSensitive), QStringLiteral("Date"));
+    content.replace(QRegExp(QStringLiteral("--nextPart\\S*"), Qt::CaseSensitive), QStringLiteral("--part"));
+    content.replace(QRegExp(QStringLiteral("\\bboundary=\"nextPart[^\\n]*"), Qt::CaseSensitive), QStringLiteral("boundary"));
+    content.replace(QRegExp(QStringLiteral("Date[^\\n]*"), Qt::CaseSensitive), QStringLiteral("Date"));
     //The sort order of the attributes in kolabV2 is unpredictable
-    content.replace(QRegExp("<x-custom*/>", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-custom/>"));
+    content.replace(QRegExp(QStringLiteral("<x-custom*/>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-custom/>"));
     //quoted-printable encoding changes where the linebreaks are every now and then (an all are valid), so we remove the linebreaks
-    content.replace(QRegExp("=\\n", Qt::CaseSensitive), QLatin1String(""));
+    content.replace(QRegExp(QStringLiteral("=\\n"), Qt::CaseSensitive), QLatin1String(""));
 }
 
 QString normalizeVCardMessage(QString content)
 {
     //The encoding changes every now and then
-    content.replace(QRegExp("ENCODING=b;TYPE=png:*", Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("ENCODING=b;TYPE=png:picturedata"));
+    content.replace(QRegExp(QStringLiteral("ENCODING=b;TYPE=png:*"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("ENCODING=b;TYPE=png:picturedata"));
     return content;
 }
 
@@ -212,9 +212,9 @@ bool normalizeAddresses(KContacts::Addressee &addressee, const KContacts::Addres
 
 void normalizeContact(KContacts::Addressee &addressee)
 {
-    KContacts::Address::List addresses = addressee.addresses();
+    const KContacts::Address::List addresses = addressee.addresses();
 
-    foreach (KContacts::Address a, addresses) {
+    for (KContacts::Address a : addresses) {
         addressee.removeAddress(a);
         a.setPostOfficeBox(QString()); //Not supported anymore
         addressee.insertAddress(a);

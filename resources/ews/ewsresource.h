@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -33,9 +33,11 @@
 #include <ewsconfig.h>
 
 class FetchItemState;
+class EwsAbstractAuth;
 class EwsSubscriptionManager;
 class EwsTagStore;
 class EwsSettings;
+class KNotification;
 
 class EwsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV4,
     public Akonadi::TransportResourceBase
@@ -50,7 +52,7 @@ public:
     static const EwsPropertyField flagsProperty;
 
     explicit EwsResource(const QString &id);
-    ~EwsResource();
+    ~EwsResource() override;
 
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags,
                                   const QSet<Akonadi::Tag> &removedTags) override;
@@ -124,6 +126,9 @@ private Q_SLOTS:
     void rootCollectionFetched(KJob *job);
     void connectionError();
     void reloadConfig();
+    void authSucceeded();
+    void authFailed(const QString &error);
+    void requestAuthFailed();
 public Q_SLOTS:
     Q_SCRIPTABLE void sendMessage(const QString &id, const QByteArray &content);
 Q_SIGNALS:
@@ -144,7 +149,9 @@ private:
     void doRetrieveCollections();
 
     int reconnectTimeout();
-    void passwordRequestFinished(const QString &password);
+    void setUpAuth();
+    void reauthNotificationDismissed(bool accepted);
+    void reauthenticate();
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;
@@ -154,6 +161,10 @@ private:
     QHash<QString, EwsId::List> mItemsToCheck;
     QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
     QString mPassword;
+    QScopedPointer<EwsAbstractAuth> mAuth;
+    int mAuthStage;
+    QPointer<KNotification> mReauthNotification;
+
     bool mTagsRetrieved;
     int mReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;

@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef __AKONOTES_RESOURCE_H__
-#define __AKONOTES_RESOURCE_H__
+#ifndef AKONOTES_RESOURCE_H
+#define AKONOTES_RESOURCE_H
 
 #include "maildirresource.h"
 

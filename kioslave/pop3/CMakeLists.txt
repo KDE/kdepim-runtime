@@ -1,5 +1,3 @@
-remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
-
 ########### next target ###############
 
 set(kio_pop3_PART_SRCS pop3.cpp pop3_debug.cpp )

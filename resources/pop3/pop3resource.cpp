@@ -374,8 +374,8 @@ void POP3Resource::doStateStep()
             connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
             connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
             //TODO wait kf6. For the moment we can't convert to new connect api.
-            connect(fetchJob, SIGNAL(processedAmount(KJob *,KJob::Unit,qulonglong)),
-                    this, SLOT(messageDownloadProgress(KJob *,KJob::Unit,qulonglong)));
+            connect(fetchJob, SIGNAL(processedAmount(KJob*,KJob::Unit,qulonglong)),
+                    this, SLOT(messageDownloadProgress(KJob*,KJob::Unit,qulonglong)));
 
             fetchJob->start();
         }
@@ -783,6 +783,8 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
     } else {
         if (downloadedId != -1) {
             idsToDeleteFromServer << downloadedId;
+        } else {
+            idsToDeleteFromServer << mIdsToSizeMap.keys();
         }
     }
     return idsToDeleteFromServer;
@@ -817,6 +819,8 @@ void POP3Resource::deleteJobResult(KJob *job)
                 timeOfSeenUids.removeAt(index);
             }
         }
+        mIdsToUidsMap.remove(deletedId);
+        mIdsToSizeMap.remove(deletedId);
     }
     Settings::self()->setSeenUidList(seenUIDs);
     Settings::self()->setSeenUidTimeList(timeOfSeenUids);

@@ -26,7 +26,6 @@ set( testdata_SRCS
   ../mixedmaildir_debug.cpp
 )
 
-remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 add_executable(testdatatest testdatatest.cpp ${testdata_SRCS})
 add_test(NAME testdatatest COMMAND testdatatest)

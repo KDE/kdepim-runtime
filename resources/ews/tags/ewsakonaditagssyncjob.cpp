@@ -20,6 +20,7 @@
 #include "ewsakonaditagssyncjob.h"
 
 #include <AkonadiCore/TagFetchJob>
+#include <AkonadiCore/TagFetchScope>
 #include "ewstagstore.h"
 #include "ewsglobaltagswritejob.h"
 
@@ -38,6 +39,7 @@ EwsAkonadiTagsSyncJob::~EwsAkonadiTagsSyncJob()
 void EwsAkonadiTagsSyncJob::start()
 {
     TagFetchJob *job = new TagFetchJob(this);
+    job->fetchScope().setFetchRemoteId(true);
     connect(job, &TagFetchJob::result, this, &EwsAkonadiTagsSyncJob::tagFetchFinished);
 }
 

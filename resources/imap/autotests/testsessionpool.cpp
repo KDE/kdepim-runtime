@@ -252,7 +252,7 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
 
         // Before connect we can't get any session
         qint64 requestId = pool.requestSession();
@@ -355,8 +355,8 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -493,8 +493,8 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -545,8 +545,8 @@ private Q_SLOTS:
         pool.setPasswordRequester(requester);
 
         QSignalSpy connectSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -596,7 +596,7 @@ private Q_SLOTS:
         SessionPool pool(2);
         pool.setPasswordRequester(requester);
 
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
 
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
@@ -627,7 +627,7 @@ private Q_SLOTS:
         KIMAP::Session *session2 = sessionSpy.at(1).at(1).value<KIMAP::Session *>();
 
         // Prepare for session disconnects
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
 
         // Make the first session drop
         KIMAP::CapabilitiesJob *job = new KIMAP::CapabilitiesJob(session1);
@@ -687,8 +687,8 @@ private Q_SLOTS:
         QVERIFY(!pool.isConnected());
 
         QSignalSpy poolSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
 
         pool.setPasswordRequester(requester);
         QVERIFY(pool.connect(account));
@@ -780,7 +780,7 @@ private Q_SLOTS:
         SessionPool pool(2);
         pool.setPasswordRequester(requester);
 
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session *,int,QString)));
+        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
         QVERIFY(pool.connect(account));
 
         // We should be connected now
@@ -792,7 +792,7 @@ private Q_SLOTS:
         QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != nullptr);
 
         // Prepare for session disconnects
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
 
         // Ask for a second session, where we'll lose the connection during the Login job.
         pool.requestSession();
@@ -826,7 +826,7 @@ private Q_SLOTS:
         QSignalSpy requesterSpy(requester, SIGNAL(done(int,QString)));
         SessionPool pool(2);
         QSignalSpy connectDoneSpy(&pool, SIGNAL(connectDone(int,QString)));
-        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session *)));
+        QSignalSpy lostSpy(&pool, SIGNAL(connectionLost(KIMAP::Session*)));
         QVERIFY(!pool.isConnected());
         pool.setPasswordRequester(requester);
         pool.connect(account);

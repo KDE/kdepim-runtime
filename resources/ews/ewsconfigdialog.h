@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -21,6 +21,7 @@
 #define EWSCONFIGDIALOG_H
 
 #include <QDialog>
+#include <QMap>
 #include <QPointer>
 
 
@@ -33,6 +34,7 @@ namespace Ui
 class SetupServerView;
 }
 class KJob;
+class EwsAbstractAuth;
 class EwsAutodiscoveryJob;
 class EwsGetFolderRequest;
 class EwsProgressDialog;
@@ -58,9 +60,9 @@ private:
     void enableTryConnect();
     void tryConnect();
     void userAgentChanged(int index);
+    EwsAbstractAuth *prepareAuth();
 
     QString fullUsername() const;
-
     EwsResource *mParentResource = nullptr;
     KConfigDialogManager *mConfigManager = nullptr;
     Ui::SetupServerView *mUi = nullptr;
@@ -68,11 +70,13 @@ private:
     QDialogButtonBox *mButtonBox = nullptr;
     EwsAutodiscoveryJob *mAutoDiscoveryJob = nullptr;
     EwsGetFolderRequest *mTryConnectJob = nullptr;
+    bool mTryConnectJobCancelled = false;
     bool mAutoDiscoveryNeeded = false;
     bool mTryConnectNeeded = false;
     EwsProgressDialog *mProgressDialog = nullptr;
     EwsSubscriptionWidget *mSubWidget = nullptr;
     QPointer<EwsSettings> mSettings;
+    QMap<QString, QString> mAuthMap;
 };
 
 #endif

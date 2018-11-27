@@ -30,7 +30,7 @@ class DebugStream;
  * Kolab Error Handler
  *
  * Errors are reported during an operation, but the operation might still succeed.
- * The error handler therefore contains all errors which occured during a single operation,
+ * The error handler therefore contains all errors which occurred during a single operation,
  * and must be cleared at the start of a new operation.
  *
  * A user of the kolabobject classes should check ErrorHandler::error() after every operation.

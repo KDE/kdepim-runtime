@@ -67,7 +67,7 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
 
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp.isSuccess()) {
-            uint numEv = 0;
+            int numEv = 0;
             Q_FOREACH (const Notification &nfy, resp.notifications()) {
                 numEv += nfy.events().size();
             }

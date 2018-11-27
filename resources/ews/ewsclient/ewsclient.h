@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,10 +20,14 @@
 #ifndef EWSCLIENT_H
 #define EWSCLIENT_H
 
+#include <QObject>
+#include <QPointer>
 #include <QString>
 #include <QUrl>
-#include <QObject>
+
 #include "ewsserverversion.h"
+
+class EwsAbstractAuth;
 
 class EwsClient : public QObject
 {
@@ -37,11 +41,8 @@ public:
         mUrl.setUrl(url);
     }
 
-    void setCredentials(const QString &username, const QString &password)
-    {
-        mUrl.setUserName(username);
-        mUrl.setPassword(password);
-    }
+    void setAuth(EwsAbstractAuth *auth);
+    EwsAbstractAuth *auth() const;
 
     enum RequestedConfiguration {
         MailTips = 0,
@@ -49,10 +50,7 @@ public:
         ProtectionRules
     };
 
-    QUrl url() const
-    {
-        return mUrl;
-    }
+    QUrl url() const;
 
     bool isConfigured() const
     {
@@ -84,10 +82,14 @@ public:
     }
 
     static QHash<QString, QString> folderHash;
+Q_SIGNALS:
+    void oAuthTokensChanged(const QString &accessToken, const QString &refreshToken);
+    void oAuthBrowserDisplayRequest();
+
 private:
     QUrl mUrl;
-    QString mUsername;
-    QString mPassword;
+
+    QPointer<EwsAbstractAuth> mAuth;
 
     QString mUserAgent;
     bool mEnableNTLMv2;

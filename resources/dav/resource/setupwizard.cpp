@@ -225,11 +225,11 @@ CredentialsPage::CredentialsPage(QWidget *parent)
     QFormLayout *layout = new QFormLayout(this);
 
     mUserName = new KLineEdit;
-    layout->addRow(i18n("User"), mUserName);
+    layout->addRow(i18n("User:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
     mPassword = new KPasswordLineEdit;
-    layout->addRow(i18n("Password"), mPassword);
+    layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 }
 

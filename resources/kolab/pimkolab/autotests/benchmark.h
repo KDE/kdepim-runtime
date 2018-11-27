@@ -18,8 +18,8 @@
 #ifndef BENCHMARK_TEST_H
 #define BENCHMARK_TEST_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
+#include <QObject>
+#include <QtTest>
 
 class BenchmarkTests : public QObject
 {

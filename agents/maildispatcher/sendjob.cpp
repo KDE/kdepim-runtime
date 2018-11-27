@@ -45,8 +45,8 @@
 #include <AkonadiCore/ServerManager>
 
 #include <QTimer>
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
+#include <QDBusInterface>
+#include <QDBusReply>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -149,6 +149,19 @@ void SendJob::doTraditionalTransport()
     if (message->removeHeader("X-KMail-Dictionary")) {
         needAssemble = true;
     }
+    if (message->removeHeader("X-KMail-Transport")) {
+        needAssemble = true;
+    }
+    if (message->removeHeader("X-KMail-Fcc")) {
+        needAssemble = true;
+    }
+    if (message->removeHeader("X-KMail-Identity-Name")) {
+        needAssemble = true;
+    }    
+    if (message->removeHeader("X-KMail-Transport-Name")) {
+        needAssemble = true;
+    }
+
 
     if (needAssemble) {
         message->assemble();
@@ -170,8 +183,8 @@ void SendJob::doTraditionalTransport()
     connect(job, &TransportJob::result, this, &SendJob::transportResult);
     //Wait kf6 We have a private signal
     //connect(job, thisOverload<KJob*, ulong>::of(&TransportJob::percent), this, [this](KJob *job,ulong val) {transportPercent(job, val); });
-    connect(job, SIGNAL(percent(KJob *,ulong)),
-            this, SLOT(transportPercent(KJob *,ulong)));
+    connect(job, SIGNAL(percent(KJob*,ulong)),
+            this, SLOT(transportPercent(KJob*,ulong)));
     job->start();
 }
 

@@ -44,7 +44,7 @@ class EwsUpdateItemsTagsJob : public EwsJob
 public:
     EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, EwsTagStore *tagStore, EwsClient &client,
                           EwsResource *parent);
-    ~EwsUpdateItemsTagsJob();
+    ~EwsUpdateItemsTagsJob() override;
 
     void start() override;
 

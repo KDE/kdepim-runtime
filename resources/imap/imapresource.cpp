@@ -30,7 +30,7 @@
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
 #include "utils.h"
-#include "config-imap.h"
+#include <config-imap.h>
 
 #ifdef WITH_GMAIL_XOAUTH2
 #include "passwordrequester.h"

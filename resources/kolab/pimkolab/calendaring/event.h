@@ -83,17 +83,17 @@ public:
     Kolab::Attendee getAttendee(const std::string &);
 
     /**
-     * Returns the next occurence for a recurring event.
+     * Returns the next occurrence for a recurring event.
      *
-     * If the start date of the event is passed in, the second occurence is returned (so it can be used in a for loop to loop through all occurences).
+     * If the start date of the event is passed in, the second occurrence is returned (so it can be used in a for loop to loop through all occurrences).
      *
-     * If there is no next occurence or the event is not recurring at all an invalid cDateTime is returned.
+     * If there is no next occurrence or the event is not recurring at all an invalid cDateTime is returned.
      */
     Kolab::cDateTime getNextOccurence(const Kolab::cDateTime &);
 
     /**
-     * Returns the corresponding end date-time for a specific occurence.
-     * @param start is the start date of the occurence.
+     * Returns the corresponding end date-time for a specific occurrence.
+     * @param start is the start date of the occurrence.
      */
     Kolab::cDateTime getOccurenceEndDate(const Kolab::cDateTime &start);
 

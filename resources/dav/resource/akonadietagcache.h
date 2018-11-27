@@ -16,8 +16,8 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#ifndef ETAGCACHE_AKONADI_H
-#define ETAGCACHE_AKONADI_H
+#ifndef AKONADI_ETAGCACHE_H
+#define AKONADI_ETAGCACHE_H
 
 #include <KDAV/EtagCache>
 

@@ -168,7 +168,7 @@ Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &s
 {
     QList<KCalCore::Event::Ptr> list;
     list.reserve(events.size());
-    foreach (const Kolab::Event &e, events) {
+    for (const Kolab::Event &e : events) {
         list.append(Kolab::Conversion::toKCalCore(e));
     }
     KCalCore::Person::Ptr person(new KCalCore::Person(QStringLiteral("dummyname"), QStringLiteral("dummyemail")));
@@ -306,7 +306,7 @@ std::string toIFB(const Kolab::Freebusy &freebusy)
     fb->setLastModified(Kolab::Conversion::toDate(freebusy.timestamp()));
 
     KCalCore::ICalFormat format;
-    format.setApplication(QStringLiteral("libkolab"), LIBKOLAB_LIB_VERSION_STRING);
+    format.setApplication(QStringLiteral("libkolab"), QLatin1String(LIBKOLAB_LIB_VERSION_STRING));
     QString data = format.createScheduleMessage(fb, KCalCore::iTIPPublish);
     return Conversion::toStdString(data);
 }

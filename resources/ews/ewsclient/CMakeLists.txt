@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+#  Copyright (C) 2015-2018 Krzysztof Nowicki <krissn@op.pl>
 #
 #  This library is free software; you can redistribute it and/or
 #  modify it under the terms of the GNU Library General Public
@@ -19,6 +19,8 @@
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 
 set(EWSCLIENT_SRCS
+  auth/ewsabstractauth.cpp
+  auth/ewspasswordauth.cpp
   ewsattachment.cpp
   ewsattendee.cpp
   ewsclient.cpp
@@ -60,6 +62,16 @@ set(EWSCLIENT_SRCS
   ewsxml.cpp
   ewsclient_debug.cpp)
 
+if (Qt5NetworkAuth_FOUND)
+  list(APPEND EWSCLIENT_SRCS
+    auth/ewsoauth.cpp)
+endif ()
+
+if (Qca-qt5_FOUND)
+  list(APPEND EWSCLIENT_SRCS
+    auth/ewspkeyauthjob.cpp)
+endif ()
+
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS
   HEADER ewscli_debug.h
   IDENTIFIER EWSCLI_LOG
@@ -81,12 +93,24 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
   DEFAULT_SEVERITY Warning)
 
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
-target_link_libraries(ewsclient 
+target_link_libraries(ewsclient
   Qt5::Network
   KF5::KIOCore
   KF5::KIOFileWidgets
   KF5::KIOWidgets
   KF5::KIONTLM
   KF5::Codecs
+  KF5::I18n
   KF5::Mime
   KF5::CalendarCore)
+
+if (Qt5NetworkAuth_FOUND)
+  target_link_libraries(ewsclient
+    Qt5::NetworkAuth
+    Qt5::WebEngineWidgets)
+endif ()
+
+if (Qca-qt5_FOUND)
+  target_link_libraries(ewsclient
+    qca-qt5)
+endif ()
