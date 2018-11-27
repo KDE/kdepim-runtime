@@ -19,6 +19,7 @@
 
 #include "ewsoauth.h"
 
+#include <QUrlQuery>
 #ifdef EWSOAUTH_UNITTEST
 #include "ewsoauth_ut_mock.h"
 using namespace Mock;
@@ -32,7 +33,6 @@ using namespace Mock;
 #include <QNetworkReply>
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QPointer>
-#include <QUrlQuery>
 #include <QWebEngineProfile>
 #include <QWebEngineUrlRequestInterceptor>
 #include <QWebEngineUrlRequestJob>
@@ -67,7 +67,7 @@ public:
     EwsOAuthUrlSchemeHandler(QObject *parent = nullptr) : QWebEngineUrlSchemeHandler(parent) {}
     ~EwsOAuthUrlSchemeHandler() override = default;
     void requestStarted(QWebEngineUrlRequestJob *request) override;
-signals:
+Q_SIGNALS:
     void returnUriReceived(const QUrl &url);
 };
 

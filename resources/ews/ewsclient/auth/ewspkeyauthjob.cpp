@@ -22,6 +22,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QUrlQuery>
 
 #include <QtCrypto>
 
@@ -72,7 +73,7 @@ void EwsPKeyAuthJob::start()
     const QUrlQuery query(mPKeyUri);
     QMap<QString, QString> params;
     for (const auto &it : query.queryItems()) {
-        params[it.first.toLower()] = QUrl::fromPercentEncoding(it.second.toAscii());
+        params[it.first.toLower()] = QUrl::fromPercentEncoding(it.second.toLatin1());
     }
 
     if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce")) &&
@@ -99,7 +100,7 @@ void EwsPKeyAuthJob::sendAuthRequest(const QByteArray &respToken, const QUrl &su
 
     req.setRawHeader(
         "Authorization",
-        QStringLiteral("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"").arg(respToken, context).toAscii());
+        QStringLiteral("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"").arg(QString::fromLatin1(respToken), context).toLatin1());
 
     mAuthReply.reset(mNetworkAccessManager->get(req));
 
@@ -162,7 +163,7 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
         return QByteArray();
     }
 
-    const QString certStr = escapeSlashes(cert.toDER().toBase64());
+    const QString certStr = escapeSlashes(QString::fromLatin1(cert.toDER().toBase64()));
     const QString header = QStringLiteral("{\"x5c\":[\"%1\"],\"typ\":\"JWT\",\"alg\":\"RS256\"}").arg(certStr);
 
     const QString payload = QStringLiteral("{\"nonce\":\"%1\",\"iat\":\"%2\",\"aud\":\"%3\"}")

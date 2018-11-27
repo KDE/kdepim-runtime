@@ -148,7 +148,7 @@ static QString getOperationName(QNetworkAccessManager::Operation op)
 /// Build a concatenated/percent-encoded string from a list of headers.
 QByteArray O1::encodeHeaders(const QList<O0RequestParameter> &headers)
 {
-    return QUrl::toPercentEncoding(createQueryParameters(headers));
+    return QUrl::toPercentEncoding(QString::fromLatin1(createQueryParameters(headers)));
 }
 
 /// Build a base string for signing.
@@ -195,7 +195,7 @@ QByteArray O1::buildAuthorizationHeader(const QList<O0RequestParameter> &oauthPa
         }
         ret.append(h.name);
         ret.append("=\"");
-        ret.append(QUrl::toPercentEncoding(h.value));
+        ret.append(QUrl::toPercentEncoding(QString::fromLatin1(h.value)));
         ret.append("\"");
     }
     return ret;
@@ -233,7 +233,7 @@ void O1::link()
     QUrlQuery requestData;
     O0RequestParameter param("", "");
     foreach (param, requestParameters()) {
-        requestData.addQueryItem(QString(param.name), QUrl::toPercentEncoding(QString(param.value)));
+        requestData.addQueryItem(QString::fromLatin1(param.name), QString::fromLatin1(QUrl::toPercentEncoding(QString::fromLatin1(param.value))));
     }
 
     // Get the request url and add parameters
@@ -306,7 +306,7 @@ void O1::onTokenRequestFinished()
 #else
     QUrlQuery query(url);
     query.addQueryItem(QLatin1String(O2_OAUTH_TOKEN), requestToken_);
-    query.addQueryItem(QLatin1String(O2_OAUTH_CALLBACK), callbackUrl().arg(replyServer_->serverPort()).toLatin1());
+    query.addQueryItem(QLatin1String(O2_OAUTH_CALLBACK), QString::fromLatin1(callbackUrl().arg(replyServer_->serverPort()).toLatin1()));
     url.setQuery(query);
 #endif
     Q_EMIT openBrowser(url);
