@@ -540,7 +540,7 @@ QChar ImapResourceBase::separatorCharacter() const
     return m_separatorCharacter;
 }
 
-void ImapResourceBase::setSeparatorCharacter(const QChar &separator)
+void ImapResourceBase::setSeparatorCharacter(QChar separator)
 {
     m_separatorCharacter = separator;
 }
