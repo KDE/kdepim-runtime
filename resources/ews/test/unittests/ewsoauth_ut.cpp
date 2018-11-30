@@ -27,10 +27,10 @@
 static const QString testEmail = QStringLiteral("joe.bloggs@unknown.com");
 static const QString testClientId = QStringLiteral("b43c59cd-dd1c-41fd-bb9a-b0a1d5696a93");
 static const QString testReturnUri = QStringLiteral("urn:ietf:wg:oauth:2.0:oob");
-static const QString testReturnUriPercent = QUrl::toPercentEncoding(testReturnUri);
+//static const QString testReturnUriPercent = QUrl::toPercentEncoding(testReturnUri);
 static const QString testState = QStringLiteral("joidsiuhq");
 static const QString resource = QStringLiteral("https://outlook.office365.com/");
-static const QString resourcePercent = QUrl::toPercentEncoding(resource);
+//static const QString resourcePercent = QUrl::toPercentEncoding(resource);
 static const QString authUrl = QStringLiteral("https://login.microsoftonline.com/common/oauth2/authorize");
 static const QString tokenUrl = QStringLiteral("https://login.microsoftonline.com/common/oauth2/token");
 
@@ -98,7 +98,7 @@ void UtEwsOAuth::initialInteractiveSuccessful()
         Mock::loadWebPageString(authUrlString),
         Mock::interceptRequestString(authUrlString),
         Mock::interceptRequestBlockedString(false),
-        Mock::interceptRequestString(testReturnUri + QStringLiteral("?code=") + QUrl::toPercentEncoding(refreshToken1)),
+        Mock::interceptRequestString(testReturnUri + QStringLiteral("?code=") + QString::fromLatin1(QUrl::toPercentEncoding(refreshToken1))),
         Mock::interceptRequestBlockedString(true),
         Mock::authorizationCallbackReceivedString(refreshToken1),
         Mock::modifyParamsTokenString(testClientId, testReturnUri, refreshToken1),
@@ -212,7 +212,7 @@ void UtEwsOAuth::refreshSuccessful()
         Mock::loadWebPageString(authUrlString),
         Mock::interceptRequestString(authUrlString),
         Mock::interceptRequestBlockedString(false),
-        Mock::interceptRequestString(testReturnUri + QStringLiteral("?code=") + QUrl::toPercentEncoding(refreshToken1)),
+        Mock::interceptRequestString(testReturnUri + QStringLiteral("?code=") + QString::fromLatin1(QUrl::toPercentEncoding(refreshToken1))),
         Mock::interceptRequestBlockedString(true),
         Mock::authorizationCallbackReceivedString(refreshToken1),
         Mock::modifyParamsTokenString(testClientId, testReturnUri, refreshToken1),

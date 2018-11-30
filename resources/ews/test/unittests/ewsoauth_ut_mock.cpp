@@ -19,6 +19,9 @@
 
 #include "ewsoauth_ut_mock.h"
 
+#include <QUrl>
+#include <QUrlQuery>
+
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
 namespace Mock {
@@ -80,7 +83,7 @@ void QWebEngineProfile::setRequestInterceptor(QWebEngineUrlRequestInterceptor *i
 
 void QWebEngineProfile::installUrlSchemeHandler(QByteArray const &scheme, QWebEngineUrlSchemeHandler *handler)
 {
-    mScheme = scheme;
+    mScheme = QString::fromLatin1(scheme);
     mHandler = handler;
 }
 
@@ -359,7 +362,7 @@ void QOAuth2AuthorizationCodeFlow::tokenCallbackReceived(const QVariantMap &toke
 
 void QOAuth2AuthorizationCodeFlow::replyDataCallbackReceived(const QByteArray &data)
 {
-    Q_EMIT logEvent(QStringLiteral("ReplyDataCallback:") + data);
+    Q_EMIT logEvent(QStringLiteral("ReplyDataCallback:") + QString::fromLatin1(data));
 }
 
 QString QOAuth2AuthorizationCodeFlow::redirectUri() const
@@ -385,15 +388,15 @@ QString browserDisplayRequestString()
 QString modifyParamsAuthString(const QString &clientId, const QString &returnUri, const QString &state)
 {
     return QStringLiteral("ModifyParams:RequestingAuthorization:client_id=%1&redirect_uri=%2&response_type=code&scope&state=%3")
-        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QUrl::toPercentEncoding(returnUri), QUrl::toPercentEncoding(state));
+        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(returnUri)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
 }
 
 QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri,
                       const QString &email, const QString &resource, const QString &state)
 {
     return QStringLiteral("%1?client_id=%2&login_hint=%3&prompt=login&redirect_uri=%4&resource=%5&response_type=code&scope&state=%6")
-        .arg(authUrl, QUrl::toPercentEncoding(clientId), email, QUrl::toPercentEncoding(returnUri),
-             QUrl::toPercentEncoding(resource), QUrl::toPercentEncoding(state));
+        .arg(authUrl, QString::fromLatin1(QUrl::toPercentEncoding(clientId)), email, QString::fromLatin1(QUrl::toPercentEncoding(returnUri)),
+             QString::fromLatin1(QUrl::toPercentEncoding(resource)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
 }
 
 QString authorizeWithBrowserString(const QString &url)
@@ -424,8 +427,8 @@ QString authorizationCallbackReceivedString(const QString &code)
 QString modifyParamsTokenString(const QString &clientId, const QString &returnUri, const QString &code)
 {
     return QStringLiteral("ModifyParams:RequestingAccessToken:client_id=%1&code=%2&grant_type=authorization_code&redirect_uri=%3")
-        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QUrl::toPercentEncoding(code),
-             QUrl::toPercentEncoding(returnUri));
+        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(code)),
+             QString::fromLatin1(QUrl::toPercentEncoding(returnUri)));
 }
 
 QString networkReplyFinishedString(const QString &data)

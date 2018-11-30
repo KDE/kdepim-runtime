@@ -123,7 +123,7 @@ void O0BaseAuth::setExtraTokens(const QVariantMap &extraTokens)
     QDataStream stream(&bytes, QIODevice::WriteOnly);
     stream << extraTokens;
     QString key = QString::fromLatin1(O2_KEY_EXTRA_TOKENS).arg(clientId_);
-    store_->setValue(key, bytes.toBase64());
+    store_->setValue(key, QString::fromLatin1(bytes.toBase64()));
     Q_EMIT extraTokensChanged();
 }
 
@@ -137,7 +137,7 @@ QByteArray O0BaseAuth::createQueryParameters(const QList<O0RequestParameter> &pa
         } else {
             ret.append("&");
         }
-        ret.append(QUrl::toPercentEncoding(h.name) + "=" + QUrl::toPercentEncoding(h.value));
+        ret.append(QUrl::toPercentEncoding(QString::fromLatin1(h.name)) + "=" + QUrl::toPercentEncoding(QString::fromLatin1(h.value)));
     }
     return ret;
 }

@@ -2266,7 +2266,7 @@ bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
         QList<KMBox::MBoxEntry::Pair> movedEntries;
         const int result = mbox->purge(movedEntries);
         if (result > 0) {
-            if (movedEntries.count() > 0) {
+            if (!movedEntries.isEmpty()) {
                 qint64 revision = mbox->mCollection.remoteRevision().toLongLong();
                 qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "purge of" << mbox->mCollection.name() << "caused item move: oldRevision="
                                                   << revision << "(stored)," << mbox->mRevision << "(local)";

@@ -108,7 +108,7 @@ protected:
     void doSetOnline(bool online) override;
 
     QChar separatorCharacter() const;
-    void setSeparatorCharacter(const QChar &separator);
+    void setSeparatorCharacter(QChar separator);
 
     void aboutToQuit() override;
 
