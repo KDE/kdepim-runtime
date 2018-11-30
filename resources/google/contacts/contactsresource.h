@@ -37,7 +37,7 @@ public:
     using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual
     explicit ContactsResource(const QString &id);
 
-    ~ContactsResource();
+    ~ContactsResource() override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual

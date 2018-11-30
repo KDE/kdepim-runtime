@@ -28,7 +28,7 @@ class NotesResource : public ICalResource
 
 public:
     explicit NotesResource(const QString &id);
-    ~NotesResource();
+    ~NotesResource() override;
 
 protected:
     /**

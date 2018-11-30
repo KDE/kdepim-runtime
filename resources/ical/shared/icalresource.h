@@ -31,7 +31,7 @@ class ICalResource : public ICalResourceBase
 
 public:
     explicit ICalResource(const QString &id);
-    ~ICalResource();
+    ~ICalResource() override;
 
 protected:
     /**

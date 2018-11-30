@@ -29,7 +29,7 @@ class CalendarResource : public GoogleResource, public Akonadi::FreeBusyProvider
     Q_OBJECT
 public:
     explicit CalendarResource(const QString &id);
-    ~CalendarResource();
+    ~CalendarResource() override;
 
 public:
     using GoogleResource::collectionChanged; // So we don't trigger -Woverloaded-virtual

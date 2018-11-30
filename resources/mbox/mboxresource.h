@@ -33,7 +33,7 @@ class MboxResource : public Akonadi::SingleFileResource<Settings>
 
 public:
     explicit MboxResource(const QString &id);
-    ~MboxResource();
+    ~MboxResource() override;
 
 protected Q_SLOTS:
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;

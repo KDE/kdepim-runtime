@@ -27,7 +27,7 @@ class AkonotesResource : public MaildirResource
     Q_OBJECT
 public:
     explicit AkonotesResource(const QString &id);
-    ~AkonotesResource();
+    ~AkonotesResource() override;
 
     QString defaultResourceType() override;
 public Q_SLOTS:

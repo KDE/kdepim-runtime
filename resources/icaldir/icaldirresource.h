@@ -33,7 +33,7 @@ class ICalDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
 
 public:
     explicit ICalDirResource(const QString &id);
-    ~ICalDirResource();
+    ~ICalDirResource() override;
 
 public Q_SLOTS:
     void configure(WId windowId) override;
