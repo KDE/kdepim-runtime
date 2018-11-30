@@ -27,7 +27,7 @@
 class MBoxConfigBase : public SingleFileResourceConfigBase<Settings>
 {
 public:
-    MBoxConfigBase(KSharedConfigPtr config, QWidget *parent, const QVariantList &args)
+    MBoxConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : SingleFileResourceConfigBase<Settings>(config, parent, args)
     {
         mWidget->addPage(i18n("Compact frequency"), new CompactPage(mSettings->path()));

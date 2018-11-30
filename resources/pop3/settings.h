@@ -32,7 +32,7 @@ class Settings : public SettingsBase
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.POP3.Wallet")
 public:
-    Settings(KSharedConfigPtr config);
+    Settings(const KSharedConfigPtr &config);
 
     void setWindowId(WId id);
     void setResourceId(const QString &resourceIdentifier);

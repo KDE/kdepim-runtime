@@ -23,14 +23,14 @@
 
 #include <KNotifyConfigWidget>
 
-MailDispatcherConfig::MailDispatcherConfig(KSharedConfigPtr config, QWidget *parent, const QVariantList &cfg)
+MailDispatcherConfig::MailDispatcherConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &cfg)
     : Akonadi::AgentConfigurationBase(config, parent, cfg)
 {
-    auto layout = new QHBoxLayout(parent);
+    QWidget *w = new QWidget(parent);
 
     mWidget = new KNotifyConfigWidget(parent);
     mWidget->setApplication(QStringLiteral("akonadi_maildispatcher_agent"));
-    layout->addWidget(mWidget);
+    parent->layout()->addWidget(w);
 }
 
 bool MailDispatcherConfig::save() const

@@ -19,7 +19,7 @@
 
 #include "maildirconfig.h"
 
-MaildirConfig::MaildirConfig(KSharedConfigPtr config, QWidget *parent, const QVariantList &args)
+MaildirConfig::MaildirConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
     , mSettings(new Akonadi_Maildir_Resource::MaildirSettings(config))
     , mWidget(new ConfigWidget(mSettings.data(), identifier(), parent))

@@ -26,7 +26,7 @@ class OpenXChangeConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    OpenXChangeConfig(KSharedConfigPtr config, QWidget *parent, const QVariantList &args)
+    OpenXChangeConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : Akonadi::AgentConfigurationBase(config, parent, args)
     {
         Settings::instance(config);

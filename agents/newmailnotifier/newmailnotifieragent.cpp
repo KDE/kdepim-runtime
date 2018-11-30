@@ -66,6 +66,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor(this);
 
+    NewMailNotifierAgentSettings::instance(KSharedConfig::openConfig());
     mIdentityManager = KIdentityManagement::IdentityManager::self();
     connect(mIdentityManager, QOverload<>::of(&KIdentityManagement::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
     slotIdentitiesChanged();

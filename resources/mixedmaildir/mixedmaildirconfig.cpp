@@ -25,7 +25,7 @@ class MixedMaildirConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    MixedMaildirConfig(KSharedConfigPtr config, QWidget *parent, const QVariantList &args)
+    MixedMaildirConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : Akonadi::AgentConfigurationBase(config, parent, args)
     {
         Settings::instance(config);

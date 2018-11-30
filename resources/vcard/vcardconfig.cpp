@@ -23,7 +23,7 @@
 class VCardConfigBase : public SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>
 {
 public:
-    VCardConfigBase(KSharedConfigPtr config, QWidget *parent, const QVariantList &list)
+    VCardConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &list)
         : SingleFileResourceConfigBase(config, parent, list)
     {
         mWidget->setFilter(QStringLiteral("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File"));

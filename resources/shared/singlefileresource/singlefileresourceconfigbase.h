@@ -31,7 +31,7 @@ template<typename Settings>
 class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
 {
 public:
-    explicit SingleFileResourceConfigBase(KSharedConfigPtr config, QWidget *parent, const QVariantList &list)
+    explicit SingleFileResourceConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &list)
         : Akonadi::AgentConfigurationBase(config, parent, list)
         , mSettings(new Settings(config))
         , mWidget(new Akonadi::SingleFileResourceConfigWidget<Settings>(parent, mSettings.data()))

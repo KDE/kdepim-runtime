@@ -24,7 +24,7 @@
 class KAlarmConfigBase : public SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>
 {
 public:
-    KAlarmConfigBase(KSharedConfigPtr config, QWidget *parent, const QVariantList &params)
+    KAlarmConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &params)
         : SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>(config, parent, params)
     {
         mTypeSelector.reset(new AlarmTypeRadioWidget(parent));

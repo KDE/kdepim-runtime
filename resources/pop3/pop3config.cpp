@@ -26,7 +26,7 @@ class Pop3Config : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    Pop3Config(KSharedConfigPtr config, QWidget *parent, const QVariantList &args)
+    Pop3Config(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : Akonadi::AgentConfigurationBase(config, parent, args)
         , mSettings(new Settings(config))
         , mWidget(new AccountWidget(identifier(), parent))

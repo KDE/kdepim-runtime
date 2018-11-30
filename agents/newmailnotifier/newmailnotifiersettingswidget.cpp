@@ -60,21 +60,18 @@ static const char *textToSpeakMessage
                 "</ul>"
                 "</qt>");
 
-NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(KSharedConfigPtr config,
+NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfigPtr &config,
                                                              QWidget *parent,
                                                              const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
 {
     NewMailNotifierAgentSettings::instance(config);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout(parent);
-
-    QTabWidget *tab = new QTabWidget;
-    mainLayout->addWidget(tab);
+    setObjectName(QStringLiteral("NewMailNotifierSettingsWidget"));
+    QTabWidget *tab = new QTabWidget(parent);
+    parent->layout()->addWidget(tab);
 
     QWidget *settings = new QWidget;
-    QVBoxLayout *vbox = new QVBoxLayout;
-    settings->setLayout(vbox);
+    QVBoxLayout *vbox = new QVBoxLayout(settings);
 
     QGroupBox *grp = new QGroupBox(i18n("Choose which fields to show:"), parent);
     vbox->addWidget(grp);
@@ -184,11 +181,9 @@ void NewMailNotifierSettingsWidget::load()
     mExcludeMySelf->setChecked(settings->excludeEmailsFromMe());
     mAllowToShowMail->setChecked(settings->showButtonToDisplayMail());
     mKeepPersistentNotification->setChecked(settings->keepPersistentNotification());
-#ifdef HAVE_TEXTTOSPEECH
     mTextToSpeak->setChecked(settings->textToSpeakEnabled());
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     mTextToSpeakSetting->setText(settings->textToSpeak());
-#endif
 }
 
 bool NewMailNotifierSettingsWidget::save() const
@@ -201,10 +196,8 @@ bool NewMailNotifierSettingsWidget::save() const
     settings->setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
     settings->setShowButtonToDisplayMail(mAllowToShowMail->isChecked());
     settings->setKeepPersistentNotification(mKeepPersistentNotification->isChecked());
-#ifdef HAVE_TEXTTOSPEECH
     settings->setTextToSpeakEnabled(mTextToSpeak->isChecked());
     settings->setTextToSpeak(mTextToSpeakSetting->text());
-#endif
     settings->save();
     mNotify->save();
 

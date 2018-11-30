@@ -31,8 +31,8 @@ class MaildirConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    MaildirConfig(KSharedConfigPtr config, QWidget *parent, const QVariantList &args);
-    ~MaildirConfig();
+    MaildirConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
+    ~MaildirConfig() override;
 
     void load() override;
     bool save() const override;

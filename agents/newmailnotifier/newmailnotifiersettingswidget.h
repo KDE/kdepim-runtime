@@ -33,7 +33,7 @@ class NewMailNotifierSettingsWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    explicit NewMailNotifierSettingsWidget(KSharedConfigPtr config, QWidget *parent, const QVariantList &args);
+    explicit NewMailNotifierSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
     ~NewMailNotifierSettingsWidget() override;
 
     void load() override;

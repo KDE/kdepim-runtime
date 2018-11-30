@@ -47,7 +47,7 @@ Settings *Settings::self()
     return s_globalSettings->q;
 }
 
-Settings::Settings(KSharedConfigPtr config)
+Settings::Settings(const KSharedConfigPtr &config)
     : SettingsBase(config)
 {
     Q_ASSERT(!s_globalSettings->q);

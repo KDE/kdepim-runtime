@@ -38,8 +38,8 @@ class MaildirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase:
     Q_OBJECT
 
 public:
-    MaildirResource(const QString &id);
-    ~MaildirResource();
+    explicit MaildirResource(const QString &id);
+    ~MaildirResource() override;
 
     virtual QString defaultResourceType();
 

@@ -27,7 +27,7 @@ class MailDispatcherConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    explicit MailDispatcherConfig(KSharedConfigPtr config, QWidget *parent, const QVariantList &cfg);
+    explicit MailDispatcherConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &cfg);
 
     bool save() const override;
 
