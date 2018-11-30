@@ -124,7 +124,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(KSharedConfigPtr co
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     howIsItWork->setContextMenuPolicy(Qt::NoContextMenu);
     vbox->addWidget(howIsItWork);
-    connect(howIsItWork, &QLabel::linkActivated, this, &NewMailNotifierSettingsDialog::slotHelpLinkClicked);
+    connect(howIsItWork, &QLabel::linkActivated, this, &NewMailNotifierSettingsWidget::slotHelpLinkClicked);
 
     QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setMargin(0);
