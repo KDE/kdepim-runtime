@@ -25,6 +25,7 @@ set( maildirresource_SRCS
   retrieveitemsjob.cpp
   ${maildir_common_SRCS}
 )
+
 ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debug.h IDENTIFIER MAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.maildirresource)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
@@ -60,6 +61,9 @@ set(maildirconfig_SRCS
     configwidget.cpp
     ${maildir_common_SRCS}
 )
+
+ki18n_wrap_ui(maildirconfig_SRCS settings.ui)
+
 
 kcoreaddons_add_plugin(maildirconfig
     SOURCES ${maildirconfig_SRCS}
