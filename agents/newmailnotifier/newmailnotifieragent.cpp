@@ -56,7 +56,6 @@ using namespace Akonadi;
 
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
-    , mTextToSpeech(nullptr)
 {
     Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("akonadi_newmailnotifier_agentrc") << QStringLiteral("akonadi_newmailnotifier_agent.notifyrc"));
