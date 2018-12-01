@@ -18,7 +18,6 @@
 */
 
 #include "newmailnotifiersettingswidget.h"
-#include "newmailnotifierattribute.h"
 #include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
 
@@ -27,12 +26,10 @@
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
 #include <QLineEdit>
-#include <KCheckableProxyModel>
 #include <QPushButton>
 #include <KHelpMenu>
 #include <kaboutdata.h>
 #include <QIcon>
-#include <KSharedConfig>
 
 #include <QTabWidget>
 #include <QCheckBox>
@@ -42,12 +39,7 @@
 #include <QWhatsThis>
 #include <QAction>
 
-#include <AkonadiWidgets/CollectionView>
-#include <AkonadiCore/RecursiveCollectionFilterProxyModel>
-#include <AkonadiCore/CollectionFilterProxyModel>
-#include <AkonadiCore/CollectionModifyJob>
 #include <KSharedConfig>
-#include <QDialogButtonBox>
 #include <KConfigGroup>
 
 static const char *textToSpeakMessage
