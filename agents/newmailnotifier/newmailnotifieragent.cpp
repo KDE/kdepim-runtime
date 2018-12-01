@@ -25,7 +25,6 @@
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
-#include "newmailnotifiersettingsdialog.h"
 
 #include <AkonadiCore/ServerManager>
 #include <KIdentityManagement/IdentityManager>
