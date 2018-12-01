@@ -39,10 +39,8 @@ public:
     void load() override;
     bool save() const override;
 
-private Q_SLOTS:
-    void slotHelpLinkClicked(const QString &);
-
 private:
+    void slotHelpLinkClicked(const QString &);
     QCheckBox *mShowPhoto = nullptr;
     QCheckBox *mShowFrom = nullptr;
     QCheckBox *mShowSubject = nullptr;
