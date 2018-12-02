@@ -16,7 +16,6 @@ org.kde.pim.pop3resource pop3 resource (kdepim-runtime) IDENTIFIER [POP3RESOURCE
 org.kde.pim.resources_contacts contacts resource (kdepim-runtime) IDENTIFIER [CONTACTSRESOURCES_LOG]
 org.kde.pim.pop3 kioslave (kdepim-runtime) IDENTIFIER [POP3_LOG]
 org.kde.pim.tomboynotesresource tomboynote resource  (kdepim-runtime) IDENTIFIER [TOMBOYNOTESRESOURCE_LOG]
-org.kde.pim.invitationagent invitationagent agent (kdepim-runtime) IDENTIFIER [INVITATIONAGENT_LOG]
 org.kde.pim.fbresource facebook resource (kdepim-runtime) IDENTIFIER [FBRESOURCE_LOG]
 org.kde.pim.pimkolab pimkolab lib (kdepim-runtime) IDENTIFIER [PIMKOLAB_LOG]
 org.kde.pim.ews exchange ews resource (kdepim-runtime) IDENTIFIER [EWSRES_LOG]
