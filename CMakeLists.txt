@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 set(PIM_VERSION "5.10.40")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
