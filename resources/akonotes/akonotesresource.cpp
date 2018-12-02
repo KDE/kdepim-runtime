@@ -33,12 +33,6 @@ QString AkonotesResource::itemMimeType() const
     return QStringLiteral("text/x-vnd.akonadi.note");
 }
 
-void AkonotesResource::configure(WId windowId)
-{
-    MaildirResource::configure(windowId);
-    synchronize(); // heavy to do it in the MaildirResource method, which already has sync on demand working properly
-}
-
 QString AkonotesResource::defaultResourceType()
 {
     return QStringLiteral("notes");

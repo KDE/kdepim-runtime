@@ -30,8 +30,6 @@ public:
     ~AkonotesResource() override;
 
     QString defaultResourceType() override;
-public Q_SLOTS:
-    void configure(WId windowId) override;
 
 protected:
     QString itemMimeType() const override;
