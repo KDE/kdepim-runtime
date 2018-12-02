@@ -57,8 +57,9 @@ ki18n_wrap_ui(akonotesconfig_SRCS ../maildir/settings.ui)
 kcoreaddons_add_plugin(akonotesconfig
     SOURCES ${akonotesconfig_SRCS}
     JSON "akonotesconfig.json"
-    INSTALL_NAMESPACE "akonadi/agents"
+    INSTALL_NAMESPACE akonadi/config
 )
+
 target_link_libraries(akonotesconfig
     KF5::AkonadiCore
     KF5::KIOWidgets
