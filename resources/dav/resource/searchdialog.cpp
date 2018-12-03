@@ -97,7 +97,7 @@ QStringList SearchDialog::selection() const
     QStringList ret;
     ret.reserve(indexes.count());
     for (const QModelIndex &index : indexes) {
-        qCritical() << "SELECTED DATA: " << index.data(Qt::UserRole + 1).toString();
+        //qCritical() << "SELECTED DATA: " << index.data(Qt::UserRole + 1).toString();
         ret << index.data(Qt::UserRole + 1).toString();
     }
     return ret;
