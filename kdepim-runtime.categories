@@ -29,3 +29,4 @@ org.kde.pim.filestore resource filestore lib (kdepim-runtime) IDENTIFIER [AKONAD
 org.kde.pim.imapresource.trace resource imap trace (kdepim-runtime) IDENTIFIER [IMAPRESOURCE_TRACE]
 org.kde.pim.kolabresource.trace resource kolab trace (kdepim-runtime) IDENTIFIER [KOLABRESOURCE_TRACE]
 org.kde.pim.google.calendar resource google calendar (kdepim-runtime) IDENTIFIER [GOOGLE_CALENDAR_LOG]
+org.kde.pim.vcarddirresource vcarddir resource (kdepim-runtime) IDENTIFIER [VCARDDIRRESOURCE_LOG]

@@ -21,6 +21,7 @@
 #include "vcarddirresource.h"
 
 #include "settingsadaptor.h"
+#include "vcarddirresource_debug.h"
 #include "dirsettingsdialog.h"
 
 #include <QDir>
@@ -93,7 +94,7 @@ bool VCardDirResource::loadAddressees()
                     mAddressees.insert(addr.uid(), addr);
                 }
             } else {
-                qCritical() << " file can't be load " << it.filePath();
+                qCCritical(VCARDDIRRESOURCE_LOG) << " file can't be load " << it.filePath();
             }
         }
     }

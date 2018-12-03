@@ -6,6 +6,8 @@ set( vcarddirresource_SRCS
   vcarddirresource.cpp
   dirsettingsdialog.cpp
 )
+ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource)
+
 
 kconfig_add_kcfg_files(vcarddirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcarddirresource.kcfg org.kde.Akonadi.VCardDirectory.Settings)
