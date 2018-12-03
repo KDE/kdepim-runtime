@@ -35,12 +35,10 @@ public:
     // automatically called by KJob
     void start() override;
 
-private Q_SLOTS:
-    // This will be called once the request is finished.
-    void onRequestFinished();
-
 private:
     Akonadi::Collection::Id mCollectionId;
+    // This will be called once the request is finished.
+    void onRequestFinished();
     Akonadi::Item::List mResultItems;
 };
 

@@ -28,9 +28,9 @@ class TomboyServerAuthenticateJob : public TomboyJobBase
 {
     Q_OBJECT
 public:
-    TomboyServerAuthenticateJob(KIO::AccessManager *manager, QObject *parent = nullptr);
+    explicit TomboyServerAuthenticateJob(KIO::AccessManager *manager, QObject *parent = nullptr);
 
-    ~TomboyServerAuthenticateJob();
+    ~TomboyServerAuthenticateJob() override;
 
     QString getRequestToken() const;
     QString getRequestTokenSecret() const;

@@ -44,11 +44,9 @@ public:
     // automatically called by KJob
     void start() override;
 
-private Q_SLOTS:
+private:
     // This will be called once the request is finished.
     void onRequestFinished();
-
-private:
     // Workaround for https://bugreports.qt-project.org/browse/QTBUG-26161 Qt bug
     QString getCurrentISOTime() const;
 

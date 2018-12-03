@@ -35,11 +35,9 @@ public:
     // automatically called by KJob
     void start() override;
 
-private Q_SLOTS:
+private:
     // This will be called once the request is finished.
     void onRequestFinished();
-
-private:
     Akonadi::Collection::List mResultCollections;
     QString mCollectionName;
     int mRefreshInterval;

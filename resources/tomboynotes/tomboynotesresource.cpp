@@ -231,24 +231,23 @@ void TomboyNotesResource::configure(WId windowId)
     }
 
     // Run the configuration dialog an save settings if accepted
-    if (dialog.exec() != QDialog::Accepted) {
-        Q_EMIT configurationDialogRejected();
-        return;
-    }
+    if (dialog.exec() == QDialog::Accepted) {
+        dialog.saveSettings();
+        setAgentName(Settings::collectionName());
 
-    dialog.saveSettings();
-    setAgentName(Settings::collectionName());
-
-    if (configurationNotValid()) {
-        auto job = new TomboyServerAuthenticateJob(mManager, this);
-        job->setServerURL(Settings::serverURL(), QString());
-        connect(job, &KJob::result, this, &TomboyNotesResource::onAuthorizationFinished);
-        job->start();
-        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Authorization job started";
+        if (configurationNotValid()) {
+            auto job = new TomboyServerAuthenticateJob(mManager, this);
+            job->setServerURL(Settings::serverURL(), QString());
+            connect(job, &KJob::result, this, &TomboyNotesResource::onAuthorizationFinished);
+            job->start();
+            qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Authorization job started";
+        } else {
+            synchronize();
+        }
+        Q_EMIT configurationDialogAccepted();
     } else {
-        synchronize();
+        Q_EMIT configurationDialogRejected();
     }
-    Q_EMIT configurationDialogAccepted();
 }
 
 void TomboyNotesResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)

@@ -28,8 +28,8 @@ class TomboyNotesResource : public Akonadi::ResourceBase, public Akonadi::AgentB
     Q_OBJECT
 
 public:
-    TomboyNotesResource(const QString &id);
-    ~TomboyNotesResource();
+    explicit TomboyNotesResource(const QString &id);
+    ~TomboyNotesResource() override;
 
 public Q_SLOTS:
     void configure(WId windowId) override;
