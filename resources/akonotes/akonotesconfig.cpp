@@ -20,3 +20,4 @@
 #include "maildirconfig.h"
 
 AKONADI_AGENTCONFIG_FACTORY(AkonotesConfigFactory, "akonotesconfig.json", MaildirConfig)
+#include "akonotesconfig.moc"
