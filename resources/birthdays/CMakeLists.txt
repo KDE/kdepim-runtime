@@ -1,8 +1,12 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_birthdays_resource\")
 
+set(birthdayconfig_SRCS
+    configdialog.cpp
+    )
+
 set( birthdayresource_srcs
   birthdaysresource.cpp
-  configdialog.cpp
+  ${birthdayconfig_SRCS}
 )
 
 kconfig_add_kcfg_files( birthdayresource_srcs settings.kcfgc )
