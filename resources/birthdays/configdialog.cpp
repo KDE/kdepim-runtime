@@ -26,6 +26,8 @@
 #include <KLocalizedString>
 #include <QPushButton>
 #include <QDialogButtonBox>
+#include <KConfigGroup>
+#include <KSharedConfig>
 
 ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
