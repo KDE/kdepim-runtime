@@ -25,13 +25,13 @@
 #include "ui_birthdaysconfigwidget.h"
 #include <AkonadiCore/AgentConfigurationBase>
 
-class KBirthdaysConfigWidgetManager;
+class KConfigDialogManager;
 
 class BirthdaysConfigAgentWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    explicit BirthdaysConfigAgentWidget(QWidget *parent = nullptr);
+    explicit BirthdaysConfigAgentWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
     ~BirthdaysConfigAgentWidget() override;
 
     void load() override;
@@ -39,11 +39,10 @@ public:
     QSize restoreDialogSize() const override;
     void saveDialogSize(const QSize &size) override;
 private:
-    void loadTags();
     Ui::BirthdaysConfigWidget ui;
-    KBirthdaysConfigWidgetManager *mManager = nullptr;
+    KConfigDialogManager *mManager = nullptr;
 
 };
-AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigFactory, "birthdaysconfig.json", BirthdaysConfig)
+AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigAgentWidgetFactory, "birthdaysconfig.json", BirthdaysConfigAgentWidget)
 
 #endif

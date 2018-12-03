@@ -47,12 +47,12 @@ using namespace KCalCore;
 BirthdaysResource::BirthdaysResource(const QString &id)
     : ResourceBase(id)
 {
+    Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  Settings::self(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("Birthdays & Anniversaries"));
-
     Monitor *monitor = new Monitor(this);
     monitor->setMimeTypeMonitored(Addressee::mimeType());
     monitor->itemFetchScope().fetchFullPayload();
@@ -60,28 +60,18 @@ BirthdaysResource::BirthdaysResource(const QString &id)
     connect(monitor, &Monitor::itemChanged, this, &BirthdaysResource::contactChanged);
     connect(monitor, &Monitor::itemRemoved, this, &BirthdaysResource::contactRemoved);
 
-    connect(this, &BirthdaysResource::reloadConfiguration, this, &BirthdaysResource::doFullSearch);
+    connect(this, &BirthdaysResource::reloadConfiguration, this, &BirthdaysResource::slotReloadConfig);
 }
 
 BirthdaysResource::~BirthdaysResource()
 {
 }
-#if 0
-void BirthdaysResource::configure(WId windowId)
+
+void BirthdaysResource::slotReloadConfig()
 {
-    ConfigDialog dlg;
-    if (windowId) {
-        KWindowSystem::setMainWindow(&dlg, windowId);
-    }
-    if (dlg.exec()) {
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
     doFullSearch();
     synchronizeCollectionTree();
 }
-#endif
 
 void BirthdaysResource::retrieveCollections()
 {

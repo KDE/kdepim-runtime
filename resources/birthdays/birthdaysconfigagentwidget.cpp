@@ -21,7 +21,7 @@
 #include "birthdaysconfigagentwidget.h"
 #include "settings.h"
 #include <AkonadiCore/Tag>
-#include <kbirthdaysconfigwidgetmanager.h>
+#include <kconfigdialogmanager.h>
 #include <QIcon>
 #include <KLocalizedString>
 #include <QPushButton>
@@ -33,18 +33,16 @@ BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &c
 {
     //setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
 
-    QWidget *mainWidget = new QWidget(this);
+    Settings::instance(config);
+
+    QWidget *mainWidget = new QWidget(parent);
     ui.setupUi(mainWidget);
-    mainLayout->addWidget(mainWidget);
+    parent->layout()->addWidget(mainWidget);
 
-    mainLayout->addWidget(buttonBox);
 
-    mManager = new KBirthdaysConfigWidgetManager(this, Settings::self());
+    mManager = new KConfigDialogManager(mainWidget, Settings::self());
     mManager->updateWidgets();
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
-
-    connect(okButton, &QPushButton::clicked, this, &BirthdaysConfigWidget::save);
-    loadTags();
 }
 
 BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget()
@@ -53,49 +51,28 @@ BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget()
 
 void BirthdaysConfigAgentWidget::load()
 {
-
-}
-
-bool BirthdaysConfigAgentWidget::save() const
-{
-
-}
-
-void BirthdaysConfigAgentWidget::loadTags()
-{
     const QStringList categories = Settings::self()->filterCategories();
     ui.FilterCategories->setSelectionFromStringList(categories);
 }
 
-void BirthdaysConfigWidget::save()
+bool BirthdaysConfigAgentWidget::save() const
 {
     mManager->updateSettings();
 
     Settings::self()->setFilterCategories(ui.FilterCategories->tagToStringList());
     Settings::self()->save();
+    return true;
 }
-
-//void BirthdaysConfigWidget::readConfig()
-//{
-//    KConfigGroup group(KSharedConfig::openConfig(), "BirthdaysConfigWidget");
-//    const QSize size = group.readEntry("Size", QSize(600, 400));
-//    if (size.isValid()) {
-//        resize(size);
-//    }
-//}
-
-//void BirthdaysConfigWidget::writeConfig()
-//{
-//    KConfigGroup group(KSharedConfig::openConfig(), "BirthdaysConfigWidget");
-//    group.writeEntry("Size", size());
-//    group.sync();
-//}
-
 
 QSize BirthdaysConfigAgentWidget::restoreDialogSize() const
 {
+    auto group = config()->group("BirthdaysConfigWidget");
+    const QSize size = group.readEntry("Size", QSize(600, 400));
+    return size;
 }
 
 void BirthdaysConfigAgentWidget::saveDialogSize(const QSize &size)
 {
+        auto group = config()->group("BirthdaysConfigWidget");
+        group.writeEntry("Size", size);
 }

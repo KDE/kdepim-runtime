@@ -45,27 +45,28 @@ install( FILES birthdaysresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}
 
 
 ############################# Config plugin ################################
-#set(birthdaysconfig_SRCS)
-#ki18n_wrap_ui(birthdaysconfig_SRCS birthdaysconfigwidget.ui)
-#set(birthdaysconfig_SRCS
-#    birthdaysconfigagentwidget.cpp
-#    ${birthdayresource_common_SRCS}
-#    )
+set(birthdaysconfig_ui_SRCS)
+ki18n_wrap_ui(birthdaysconfig_ui_SRCS birthdaysconfigwidget.ui)
+set(birthdaysconfig_SRCS
+    birthdaysconfigagentwidget.cpp
+    ${birthdaysconfig_ui_SRCS}
+    ${birthdayresource_common_SRCS}
+    )
 
 
-#kcoreaddons_add_plugin(birthdaysconfig
-#    SOURCES ${birthdaysconfig_SRCS}
-#    JSON "birthdaysconfig.json"
-#    INSTALL_NAMESPACE "akonadi/config"
-#    )
-#target_link_libraries(birthdaysconfig
-#    KF5::AkonadiCore
-#    KF5::CalendarCore
-#    KF5::Codecs
-#    KF5::AkonadiAgentBase
-#    KF5::Contacts
-#    KF5::AkonadiWidgets
-#    KF5::I18n
-#    KF5::TextWidgets
-#    KF5::WindowSystem
-#    )
+kcoreaddons_add_plugin(birthdaysconfig
+    SOURCES ${birthdaysconfig_SRCS}
+    JSON "birthdaysconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+target_link_libraries(birthdaysconfig
+    KF5::AkonadiCore
+    KF5::CalendarCore
+    KF5::Codecs
+    KF5::AkonadiAgentBase
+    KF5::Contacts
+    KF5::AkonadiWidgets
+    KF5::I18n
+    KF5::TextWidgets
+    KF5::WindowSystem
+    )

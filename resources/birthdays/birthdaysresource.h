@@ -63,6 +63,7 @@ private Q_SLOTS:
 
     void contactRetrieved(KJob *job);
 private:
+    void slotReloadConfig();
     QHash<QString, Akonadi::Item> mPendingItems;
     QHash<QString, Akonadi::Item> mDeletedItems;
 };
