@@ -41,8 +41,8 @@ class POP3Resource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Ob
     Q_OBJECT
 
 public:
-    POP3Resource(const QString &id);
-    ~POP3Resource();
+    explicit POP3Resource(const QString &id);
+    ~POP3Resource() override;
 
     void clearCachedPassword();
 
@@ -144,12 +144,12 @@ private:
     State mState;
     Akonadi::Collection mTargetCollection;
     POPSession *mPopSession = nullptr;
-    bool mAskAgain;
+    bool mAskAgain = false;
     QTimer *mIntervalTimer = nullptr;
-    bool mIntervalCheckInProgress;
+    bool mIntervalCheckInProgress = false;
     QString mPassword;
-    bool mSavePassword;
-    bool mTestLocalInbox;
+    bool mSavePassword = false;
+    bool mTestLocalInbox = false;
     KWallet::Wallet *mWallet = nullptr;
 
     // Maps IDs on the server to message sizes on the server

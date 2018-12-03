@@ -50,13 +50,7 @@ using namespace KWallet;
 POP3Resource::POP3Resource(const QString &id)
     : ResourceBase(id)
     , mState(Idle)
-    , mPopSession(nullptr)
-    , mAskAgain(false)
     , mIntervalTimer(new QTimer(this))
-    , mTestLocalInbox(false)
-    , mWallet(nullptr)
-    , mIdsToSaveValid(false)
-    , mDeleteJob(nullptr)
 {
     new Settings(KSharedConfig::openConfig());
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
