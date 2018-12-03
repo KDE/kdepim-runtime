@@ -37,9 +37,6 @@ public:
     explicit BirthdaysResource(const QString &id);
     ~BirthdaysResource() override;
 
-public Q_SLOTS:
-    void configure(WId windowId) override;
-
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 

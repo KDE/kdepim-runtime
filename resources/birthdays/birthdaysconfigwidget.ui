@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ConfigDialog</class>
- <widget class="QWidget" name="ConfigDialog">
+ <class>BirthdaysConfigWidget</class>
+ <widget class="QWidget" name="BirthdaysConfigWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

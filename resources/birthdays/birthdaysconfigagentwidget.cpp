@@ -18,28 +18,20 @@
     Boston, MA 02110-1301, USA.
 */
 
-#include "configdialog.h"
+#include "birthdaysconfigagentwidget.h"
 #include "settings.h"
 #include <AkonadiCore/Tag>
-#include <kconfigdialogmanager.h>
+#include <kbirthdaysconfigwidgetmanager.h>
 #include <QIcon>
 #include <KLocalizedString>
 #include <QPushButton>
-#include <QDialogButtonBox>
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-ConfigDialog::ConfigDialog(QWidget *parent)
-    : QDialog(parent)
+BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
+    : Akonadi::AgentConfigurationBase(config, parent, args)
 {
-    setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    okButton->setDefault(true);
-    okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::reject);
+    //setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
 
     QWidget *mainWidget = new QWidget(this);
     ui.setupUi(mainWidget);
@@ -47,27 +39,35 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 
     mainLayout->addWidget(buttonBox);
 
-    mManager = new KConfigDialogManager(this, Settings::self());
+    mManager = new KBirthdaysConfigWidgetManager(this, Settings::self());
     mManager->updateWidgets();
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
 
-    connect(okButton, &QPushButton::clicked, this, &ConfigDialog::save);
+    connect(okButton, &QPushButton::clicked, this, &BirthdaysConfigWidget::save);
     loadTags();
-    readConfig();
 }
 
-ConfigDialog::~ConfigDialog()
+BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget()
 {
-    writeConfig();
 }
 
-void ConfigDialog::loadTags()
+void BirthdaysConfigAgentWidget::load()
+{
+
+}
+
+bool BirthdaysConfigAgentWidget::save() const
+{
+
+}
+
+void BirthdaysConfigAgentWidget::loadTags()
 {
     const QStringList categories = Settings::self()->filterCategories();
     ui.FilterCategories->setSelectionFromStringList(categories);
 }
 
-void ConfigDialog::save()
+void BirthdaysConfigWidget::save()
 {
     mManager->updateSettings();
 
@@ -75,18 +75,27 @@ void ConfigDialog::save()
     Settings::self()->save();
 }
 
-void ConfigDialog::readConfig()
+//void BirthdaysConfigWidget::readConfig()
+//{
+//    KConfigGroup group(KSharedConfig::openConfig(), "BirthdaysConfigWidget");
+//    const QSize size = group.readEntry("Size", QSize(600, 400));
+//    if (size.isValid()) {
+//        resize(size);
+//    }
+//}
+
+//void BirthdaysConfigWidget::writeConfig()
+//{
+//    KConfigGroup group(KSharedConfig::openConfig(), "BirthdaysConfigWidget");
+//    group.writeEntry("Size", size());
+//    group.sync();
+//}
+
+
+QSize BirthdaysConfigAgentWidget::restoreDialogSize() const
 {
-    KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
-    const QSize size = group.readEntry("Size", QSize(600, 400));
-    if (size.isValid()) {
-        resize(size);
-    }
 }
 
-void ConfigDialog::writeConfig()
+void BirthdaysConfigAgentWidget::saveDialogSize(const QSize &size)
 {
-    KConfigGroup group(KSharedConfig::openConfig(), "ConfigDialog");
-    group.writeEntry("Size", size());
-    group.sync();
 }

@@ -21,7 +21,6 @@
 #include "birthdaysresource.h"
 #include "settings.h"
 #include "settingsadaptor.h"
-#include "configdialog.h"
 
 #include <collectionfetchjob.h>
 #include <itemfetchjob.h>
@@ -67,7 +66,7 @@ BirthdaysResource::BirthdaysResource(const QString &id)
 BirthdaysResource::~BirthdaysResource()
 {
 }
-
+#if 0
 void BirthdaysResource::configure(WId windowId)
 {
     ConfigDialog dlg;
@@ -82,6 +81,7 @@ void BirthdaysResource::configure(WId windowId)
     doFullSearch();
     synchronizeCollectionTree();
 }
+#endif
 
 void BirthdaysResource::retrieveCollections()
 {

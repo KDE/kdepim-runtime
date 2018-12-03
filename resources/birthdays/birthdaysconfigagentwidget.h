@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2003 Cornelius Schumacher <schumacher@kde.org>
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
+    Copyright (c) 2018 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -18,29 +19,31 @@
     Boston, MA 02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef BIRTHDAYSCONFIGAGENTWIDGET_H
+#define BIRTHDAYSCONFIGAGENTWIDGET_H
 
-#include "ui_configdialog.h"
+#include "ui_birthdaysconfigwidget.h"
+#include <AkonadiCore/AgentConfigurationBase>
 
-#include <QDialog>
+class KBirthdaysConfigWidgetManager;
 
-class KConfigDialogManager;
-
-class ConfigDialog : public QDialog
+class BirthdaysConfigAgentWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    explicit ConfigDialog(QWidget *parent = nullptr);
-    ~ConfigDialog();
+    explicit BirthdaysConfigAgentWidget(QWidget *parent = nullptr);
+    ~BirthdaysConfigAgentWidget() override;
 
+    void load() override;
+    bool save() const override;
+    QSize restoreDialogSize() const override;
+    void saveDialogSize(const QSize &size) override;
 private:
-    void save();
     void loadTags();
-    void readConfig();
-    void writeConfig();
-    Ui::ConfigDialog ui;
-    KConfigDialogManager *mManager = nullptr;
+    Ui::BirthdaysConfigWidget ui;
+    KBirthdaysConfigWidgetManager *mManager = nullptr;
+
 };
+AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigFactory, "birthdaysconfig.json", BirthdaysConfig)
 
 #endif

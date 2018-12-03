@@ -1,18 +1,18 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_birthdays_resource\")
 
-set(birthdayconfig_SRCS
-    configdialog.cpp
-    )
+set(birthdayresource_common_SRCS)
+
+kconfig_add_kcfg_files(birthdayresource_common_SRCS
+    settings.kcfgc
+  )
 
 set( birthdayresource_srcs
   birthdaysresource.cpp
-  ${birthdayconfig_SRCS}
+  ${birthdayresource_common_SRCS}
 )
 
-kconfig_add_kcfg_files( birthdayresource_srcs settings.kcfgc )
-kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings)
 
-ki18n_wrap_ui(birthdayresource_srcs configdialog.ui)
+kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/birthdaysresource.kcfg org.kde.Akonadi.Birthdays.Settings)
 
 qt5_add_dbus_adaptor(birthdayresource_srcs
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Birthdays.Settings.xml settings.h Settings
@@ -42,3 +42,30 @@ target_link_libraries(akonadi_birthdays_resource
 
 install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES birthdaysresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+
+
+############################# Config plugin ################################
+#set(birthdaysconfig_SRCS)
+#ki18n_wrap_ui(birthdaysconfig_SRCS birthdaysconfigwidget.ui)
+#set(birthdaysconfig_SRCS
+#    birthdaysconfigagentwidget.cpp
+#    ${birthdayresource_common_SRCS}
+#    )
+
+
+#kcoreaddons_add_plugin(birthdaysconfig
+#    SOURCES ${birthdaysconfig_SRCS}
+#    JSON "birthdaysconfig.json"
+#    INSTALL_NAMESPACE "akonadi/config"
+#    )
+#target_link_libraries(birthdaysconfig
+#    KF5::AkonadiCore
+#    KF5::CalendarCore
+#    KF5::Codecs
+#    KF5::AkonadiAgentBase
+#    KF5::Contacts
+#    KF5::AkonadiWidgets
+#    KF5::I18n
+#    KF5::TextWidgets
+#    KF5::WindowSystem
+#    )
