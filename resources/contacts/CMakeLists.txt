@@ -65,5 +65,4 @@ target_link_libraries(contactsconfig
     KF5::AkonadiWidgets
     KF5::I18n
     KF5::KIOWidgets
-    KF5::WindowSystem
     )

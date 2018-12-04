@@ -18,7 +18,6 @@
 #include "settingsdialog.h"
 #include "settings.h"
 
-#include <KWindowSystem>
 #include <KLocalizedString>
 
 #include <KGAPI/Account>

@@ -22,7 +22,6 @@
 #include "settings.h"
 
 #include <KConfigDialogManager>
-#include <KWindowSystem>
 
 #include <QTimer>
 #include <KSharedConfig>
@@ -60,8 +59,7 @@ void ContactsSettingsWidget::validate()
 {
     const QUrl currentUrl = ui.kcfg_Path->url();
     if (currentUrl.isEmpty()) {
-
-        //mOkButton->setEnabled(false);
+        Q_EMIT enableOkButton(false);
         return;
     }
 
@@ -72,7 +70,7 @@ void ContactsSettingsWidget::validate()
     } else {
         ui.kcfg_ReadOnly->setEnabled(true);
     }
-    //mOkButton->setEnabled(true);
+    Q_EMIT enableOkButton(true);
 }
 
 void ContactsSettingsWidget::load()
