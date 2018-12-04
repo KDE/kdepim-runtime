@@ -3,8 +3,13 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_tomboynotes_resource\")
 
 ########### next target ###############
 
+set(tomboynotesresource_common_SRCS)
+
+kconfig_add_kcfg_files(tomboynotesresource_common_SRCS
+    settings.kcfgc
+)
+
 set(tomboynotesresource_SRCS
-    configdialog.cpp
     tomboynotesresource.cpp
     tomboycollectionsdownloadjob.cpp
     tomboyitemdownloadjob.cpp
@@ -33,7 +38,7 @@ ecm_qt_declare_logging_category(tomboynotesresource_SRCS
     CATEGORY_NAME org.kde.pim.tomboynotesresource
 )
 
-ki18n_wrap_ui(tomboynotesresource_SRCS configdialog.ui)
+
 
 kconfig_add_kcfg_files(tomboynotesresource_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfgc
@@ -75,3 +80,28 @@ install(TARGETS akonadi_tomboynotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 install(FILES tomboynotesresource.desktop
         DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
 )
+
+############################# Config plugin ################################
+set(tomboynotesconfig_ui_SRCS)
+ki18n_wrap_ui(tomboynotesconfig_ui_SRCS tomboynotesagentconfigwidget.ui)
+set(tomboynotesconfig_SRCS
+    tomboynotesconfigwidget.cpp
+    ${tomboynotesconfig_ui_SRCS}
+    ${tomboynotesresource_common_SRCS}
+    )
+
+
+kcoreaddons_add_plugin(tomboynotesconfig
+    SOURCES ${tomboynotesconfig_SRCS}
+    JSON "tomboynotesconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+target_link_libraries(tomboynotesconfig
+    KF5::AkonadiCore
+    KF5::CalendarCore
+    KF5::Contacts
+    KF5::AkonadiWidgets
+    KF5::I18n
+    KF5::ConfigWidgets
+    KF5::Completion
+    )

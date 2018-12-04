@@ -31,8 +31,6 @@ public:
     explicit TomboyNotesResource(const QString &id);
     ~TomboyNotesResource() override;
 
-public Q_SLOTS:
-    void configure(WId windowId) override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
@@ -64,6 +62,7 @@ protected:
 
 private:
     bool configurationNotValid() const;
+    void slotReloadConfig();
 
     void retryAfterFailure(const QString &errorMessage);
     // Status handling

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author>Till Adam &lt;adam@kde.org&gt;</author>
- <class>ConfigDialog</class>
- <widget class="QWidget" name="ConfigDialog">
+ <class>TomboyNotesAgentConfigWidget</class>
+ <widget class="QWidget" name="TomboyNotesAgentConfigWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

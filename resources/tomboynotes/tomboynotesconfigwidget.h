@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2016 Stefan Stäglich <sstaeglich@kdemail.net>
+    Copyright (c) 2018 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,34 +18,32 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef TomboyNotesConfigWidget_H
+#define TomboyNotesConfigWidget_H
 
-#include <QDialog>
-
+#include <AkonadiCore/AgentConfigurationBase>
 class KConfigDialogManager;
 
-class Settings;
-
 namespace Ui {
-class ConfigDialog;
+class TomboyNotesAgentConfigWidget;
 }
 
-class ConfigDialog : public QDialog
+class TomboyNotesConfigWidget  : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
-
 public:
-    explicit ConfigDialog(Settings *settings, QWidget *parent = nullptr);
-    ~ConfigDialog();
+    explicit TomboyNotesConfigWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
+    ~TomboyNotesConfigWidget() override;
 
-    void saveSettings();
+    void load() override;
+    bool save() const override;
+    QSize restoreDialogSize() const override;
+    void saveDialogSize(const QSize &size) override;
 
 private:
-    Ui::ConfigDialog *ui = nullptr;
+    Ui::TomboyNotesAgentConfigWidget *ui = nullptr;
 
     KConfigDialogManager *mManager = nullptr;
-    Settings *mSettings = nullptr;
 };
-
-#endif // CONFIGDIALOG_H
+AKONADI_AGENTCONFIG_FACTORY(TomboyNotesConfigWidgetFactory, "tomboynotesconfig.json", TomboyNotesConfigWidget)
+#endif // TomboyNotesConfigWidget_H

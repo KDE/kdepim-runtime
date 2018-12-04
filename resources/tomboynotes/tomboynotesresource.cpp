@@ -19,7 +19,6 @@
 
 #include "tomboynotesresource.h"
 #include "debug.h"
-#include "configdialog.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "tomboyserverauthenticatejob.h"
@@ -31,7 +30,6 @@
 #include <ItemFetchScope>
 #include <klocalizedstring.h>
 #include <ksslinfodialog.h>
-#include <kwindowsystem.h>
 #include <QSslCipher>
 #include <QDBusConnection>
 
@@ -62,6 +60,7 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
     connect(mManager, &KIO::AccessManager::sslErrors, this, &TomboyNotesResource::onSslError);
 
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Resource started";
+    connect(this, &TomboyNotesResource::reloadConfiguration, this, &TomboyNotesResource::slotReloadConfig);
 }
 
 TomboyNotesResource::~TomboyNotesResource()
@@ -220,34 +219,20 @@ void TomboyNotesResource::aboutToQuit()
     // event loop. The resource will terminate after this method returns
 }
 
-void TomboyNotesResource::configure(WId windowId)
+void TomboyNotesResource::slotReloadConfig()
 {
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Resource configuration started";
+    setAgentName(Settings::collectionName());
 
-    ConfigDialog dialog(Settings::self());
-
-    if (windowId) {
-        KWindowSystem::setMainWindow(&dialog, windowId);
-    }
-
-    // Run the configuration dialog an save settings if accepted
-    if (dialog.exec() == QDialog::Accepted) {
-        dialog.saveSettings();
-        setAgentName(Settings::collectionName());
-
-        if (configurationNotValid()) {
-            auto job = new TomboyServerAuthenticateJob(mManager, this);
-            job->setServerURL(Settings::serverURL(), QString());
-            connect(job, &KJob::result, this, &TomboyNotesResource::onAuthorizationFinished);
-            job->start();
-            qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Authorization job started";
-        } else {
-            synchronize();
-        }
-        Q_EMIT configurationDialogAccepted();
+    if (configurationNotValid()) {
+        auto job = new TomboyServerAuthenticateJob(mManager, this);
+        job->setServerURL(Settings::serverURL(), QString());
+        connect(job, &KJob::result, this, &TomboyNotesResource::onAuthorizationFinished);
+        job->start();
+        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Authorization job started";
     } else {
-        Q_EMIT configurationDialogRejected();
+        synchronize();
     }
+
 }
 
 void TomboyNotesResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
