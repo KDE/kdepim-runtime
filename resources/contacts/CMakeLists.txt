@@ -36,3 +36,30 @@ target_link_libraries(akonadi_contacts_resource
 )
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+
+############################## Config plugin ################################
+#set(contactsconfig_ui_SRCS)
+#ki18n_wrap_ui(contactsconfig_ui_SRCS birthdaysconfigwidget.ui)
+#set(birthdaysconfig_SRCS
+#    birthdaysconfigagentwidget.cpp
+#    ${birthdaysconfig_ui_SRCS}
+#    ${birthdayresource_common_SRCS}
+#    )
+
+
+#kcoreaddons_add_plugin(contactsconfig
+#    SOURCES ${contactsconfig_ui_SRCS}
+#    JSON "birthdaysconfig.json"
+#    INSTALL_NAMESPACE "akonadi/config"
+#    )
+#target_link_libraries(contactsconfig
+#    KF5::AkonadiCore
+#    KF5::CalendarCore
+#    KF5::Codecs
+#    KF5::AkonadiAgentBase
+#    KF5::Contacts
+#    KF5::AkonadiWidgets
+#    KF5::I18n
+#    KF5::TextWidgets
+#    KF5::WindowSystem
+#    )

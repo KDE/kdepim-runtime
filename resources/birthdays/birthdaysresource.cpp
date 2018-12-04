@@ -36,7 +36,6 @@
 
 #include "birthdays_debug.h"
 #include <KLocalizedString>
-#include <KWindowSystem>
 
 #include <AkonadiCore/TagCreateJob>
 
