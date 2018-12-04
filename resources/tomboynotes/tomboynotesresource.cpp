@@ -38,6 +38,7 @@ using namespace Akonadi;
 TomboyNotesResource::TomboyNotesResource(const QString &id)
     : ResourceBase(id)
 {
+    Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  Settings::self(),
