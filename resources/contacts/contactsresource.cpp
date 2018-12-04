@@ -21,7 +21,6 @@
 
 #include "settings.h"
 #include "contactsresourcesettingsadaptor.h"
-#include "settingsdialog.h"
 
 #include <QDir>
 #include <QFile>
@@ -36,16 +35,15 @@
 #include <KLocalizedString>
 
 using namespace Akonadi;
-using namespace Akonadi_Contacts_Resource;
 
 ContactsResource::ContactsResource(const QString &id)
     : ResourceBase(id)
-    , mSettings(new ContactsResourceSettings(config()))
 {
     // setup the resource
-    new ContactsResourceSettingsAdaptor(mSettings);
+    ContactsResourceSettings::instance(KSharedConfig::openConfig());
+    new ContactsResourceSettingsAdaptor(ContactsResourceSettings::self());
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
-                                                           mSettings, QDBusConnection::ExportAdaptors);
+                                                           ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -61,39 +59,32 @@ ContactsResource::ContactsResource(const QString &id)
     }
 
     // Make sure we have a valid directory (XDG dirs want this very much).
-    initializeDirectory(mSettings->path());
+    initializeDirectory(ContactsResourceSettings::self()->path());
 
-    if (mSettings->isConfigured()) {
+    if (ContactsResourceSettings::self()->isConfigured()) {
         synchronize();
     }
+    connect(this, &ContactsResource::reloadConfiguration, this, &ContactsResource::slotReloadConfig);
 }
 
 ContactsResource::~ContactsResource()
 {
-    delete mSettings;
+    delete ContactsResourceSettings::self();
 }
 
 void ContactsResource::aboutToQuit()
 {
 }
 
-void ContactsResource::configure(WId windowId)
+void ContactsResource::slotReloadConfig()
 {
-    QPointer<SettingsDialog> dlg = new SettingsDialog(mSettings, windowId);
-    if (dlg->exec()) {
-        mSettings->setIsConfigured(true);
-        mSettings->save();
+    ContactsResourceSettings::self()->setIsConfigured(true);
+    ContactsResourceSettings::self()->save();
 
-        clearCache();
-        initializeDirectory(baseDirectoryPath());
+    clearCache();
+    initializeDirectory(baseDirectoryPath());
 
-        synchronize();
-
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-    delete dlg;
+    synchronize();
 }
 
 Collection::List ContactsResource::createCollectionsForDirectory(const QDir &parentDirectory, const Collection &parentCollection) const
@@ -224,7 +215,7 @@ bool ContactsResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
 
 void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    if (mSettings->readOnly()) {
+    if (ContactsResourceSettings::self()->readOnly()) {
         cancelTask(i18n("Trying to write to a read-only directory: '%1'", collection.remoteId()));
         return;
     }
@@ -276,7 +267,7 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
 
 void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    if (mSettings->readOnly()) {
+    if (ContactsResourceSettings::self()->readOnly()) {
         cancelTask(i18n("Trying to write to a read-only file: '%1'", item.remoteId()));
         return;
     }
@@ -324,7 +315,7 @@ void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
 
 void ContactsResource::itemRemoved(const Akonadi::Item &item)
 {
-    if (mSettings->readOnly()) {
+    if (ContactsResourceSettings::self()->readOnly()) {
         cancelTask(i18n("Trying to write to a read-only file: '%1'", item.remoteId()));
         return;
     }
@@ -349,7 +340,7 @@ void ContactsResource::itemRemoved(const Akonadi::Item &item)
 
 void ContactsResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
-    if (mSettings->readOnly()) {
+    if (ContactsResourceSettings::self()->readOnly()) {
         cancelTask(i18n("Trying to write to a read-only directory: '%1'", parent.remoteId()));
         return;
     }
@@ -370,7 +361,7 @@ void ContactsResource::collectionAdded(const Akonadi::Collection &collection, co
 
 void ContactsResource::collectionChanged(const Akonadi::Collection &collection)
 {
-    if (mSettings->readOnly()) {
+    if (ContactsResourceSettings::self()->readOnly()) {
         cancelTask(i18n("Trying to write to a read-only directory: '%1'", collection.remoteId()));
         return;
     }
@@ -403,7 +394,7 @@ void ContactsResource::collectionChanged(const Akonadi::Collection &collection)
 
 void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
 {
-    if (mSettings->readOnly()) {
+    if (ContactsResourceSettings::self()->readOnly()) {
         cancelTask(i18n("Trying to write to a read-only directory: '%1'", collection.remoteId()));
         return;
     }
@@ -443,7 +434,7 @@ void ContactsResource::collectionMoved(const Akonadi::Collection &collection, co
 
 QString ContactsResource::baseDirectoryPath() const
 {
-    return mSettings->path();
+    return ContactsResourceSettings::self()->path();
 }
 
 void ContactsResource::initializeDirectory(const QString &path) const
@@ -468,7 +459,7 @@ Collection::Rights ContactsResource::supportedRights(bool isResourceCollection) 
 {
     Collection::Rights rights = Collection::ReadOnly;
 
-    if (!mSettings->readOnly()) {
+    if (!ContactsResourceSettings::self()->readOnly()) {
         rights |= Collection::CanChangeItem;
         rights |= Collection::CanCreateItem;
         rights |= Collection::CanDeleteItem;

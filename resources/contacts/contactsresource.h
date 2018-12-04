@@ -27,9 +27,6 @@
 #include <kcontacts/contactgrouptool.h>
 #include <kcontacts/vcardconverter.h>
 
-namespace Akonadi_Contacts_Resource {
-class ContactsResourceSettings;
-}
 class QDir;
 
 class ContactsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
@@ -41,7 +38,6 @@ public:
     ~ContactsResource() override;
 
 public Q_SLOTS:
-    void configure(WId windowId) override;
     void aboutToQuit() override;
 
 protected:
@@ -68,6 +64,7 @@ protected:
     void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
 private:
+    void slotReloadConfig();
     Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory, const Akonadi::Collection &parentCollection) const;
     QString baseDirectoryPath() const;
     void initializeDirectory(const QString &path) const;
@@ -76,7 +73,6 @@ private:
 
 private:
     QStringList mSupportedMimeTypes;
-    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings = nullptr;
 };
 
 #endif

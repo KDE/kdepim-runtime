@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2018 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -17,36 +18,30 @@
     02110-1301, USA.
 */
 
-#ifndef AKONADI_SETTINGSDIALOG_H
-#define AKONADI_SETTINGSDIALOG_H
+#ifndef CONTACTS_SETTINGSWIDGET_H
+#define CONTACTS_SETTINGSWIDGET_H
 
-#include "ui_settingsdialog.h"
+#include "ui_contactsagentsettingswidget.h"
+#include <AkonadiCore/AgentConfigurationBase>
 
-#include <QDialog>
-class QPushButton;
-namespace Akonadi_Contacts_Resource {
-class ContactsResourceSettings;
-}
 class KConfigDialogManager;
 
-namespace Akonadi {
-class SettingsDialog : public QDialog
+class ContactsSettingsWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    explicit SettingsDialog(Akonadi_Contacts_Resource::ContactsResourceSettings *settings, WId windowId);
-    ~SettingsDialog();
+    explicit ContactsSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
+    ~ContactsSettingsWidget() override;
 
+    void load() override;
+    bool save() const override;
+    QSize restoreDialogSize() const override;
+    void saveDialogSize(const QSize &size) override;
 private:
-    void save();
     void validate();
-    void readConfig();
-    void writeConfig();
-    Ui::SettingsDialog ui;
+    Ui::ContactAgentSettingsWidget ui;
     KConfigDialogManager *mManager = nullptr;
-    Akonadi_Contacts_Resource::ContactsResourceSettings *mSettings = nullptr;
-    QPushButton *mOkButton = nullptr;
 };
-}
+AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigAgentWidgetFactory, "contactsconfig.json", ContactsSettingsWidget)
 
 #endif
