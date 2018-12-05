@@ -98,6 +98,6 @@ QSize ContactsSettingsWidget::restoreDialogSize() const
 
 void ContactsSettingsWidget::saveDialogSize(const QSize &size)
 {
-    auto group = config()->group("ContactsSettingsWidget");
+    auto group = config()->group("BirthdaysConfigWidget");
     group.writeEntry("Size", size);
 }
