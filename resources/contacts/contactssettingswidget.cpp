@@ -31,6 +31,10 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+namespace {
+static const char myConfigGroupName[] = "ContactsSettingsDialog";
+}
+
 ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
 {
@@ -91,13 +95,13 @@ bool ContactsSettingsWidget::save() const
 
 QSize ContactsSettingsWidget::restoreDialogSize() const
 {
-    auto group = config()->group("BirthdaysConfigWidget");
+    auto group = config()->group(myConfigGroupName);
     const QSize size = group.readEntry("Size", QSize(600, 400));
     return size;
 }
 
 void ContactsSettingsWidget::saveDialogSize(const QSize &size)
 {
-    auto group = config()->group("BirthdaysConfigWidget");
+    auto group = config()->group(myConfigGroupName);
     group.writeEntry("Size", size);
 }

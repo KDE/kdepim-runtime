@@ -42,6 +42,6 @@ private:
     Ui::ContactAgentSettingsWidget ui;
     KConfigDialogManager *mManager = nullptr;
 };
-AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigAgentWidgetFactory, "contactsconfig.json", ContactsSettingsWidget)
+AKONADI_AGENTCONFIG_FACTORY(ContactsSettingsWidgetFactory, "contactsconfig.json", ContactsSettingsWidget)
 
 #endif
