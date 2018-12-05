@@ -2,18 +2,22 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_icaldir_resource\")
 
 
+set(contactsresource_common_SRCS)
+
+kconfig_add_kcfg_files(icaldirresource_common_SRCS
+    settings.kcfgc
+  )
 ########### next target ###############
 
 set( icaldirresource_SRCS
   icaldirresource.cpp
-  dirsettingsdialog.cpp
+  ${icaldirresource_common_SRCS}
 )
 
 ki18n_wrap_ui(icaldirresource_SRCS settingsdialog.ui)
-kconfig_add_kcfg_files(icaldirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/icaldirresource.kcfg org.kde.Akonadi.ICalDirectory.Settings)
 qt5_add_dbus_adaptor(icaldirresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICalDirectory.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.ICalDirectory.Settings.xml settings.h IcalDirResourceSettings
 )
 
 install( FILES icaldirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
@@ -39,3 +43,31 @@ target_link_libraries(akonadi_icaldir_resource
 )
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+
+############################## Config plugin ################################
+set(icaldirconfig_ui_SRCS)
+ki18n_wrap_ui(icaldirconfig_ui_SRCS icaldirsagentsettingswidget.ui)
+
+set(icaldirconfig_SRCS
+    icaldirsettingswidget.cpp
+    ${icaldirconfig_ui_SRCS}
+    ${icaldirresource_common_SRCS}
+    )
+
+
+kcoreaddons_add_plugin(icaldirconfig
+    SOURCES ${icaldirconfig_SRCS}
+    JSON "icaldirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+target_link_libraries(icaldirconfig
+    KF5::AkonadiCore
+    KF5::CalendarCore
+    KF5::Codecs
+    KF5::AkonadiAgentBase
+    KF5::Contacts
+    KF5::AkonadiWidgets
+    KF5::I18n
+    KF5::KIOWidgets
+    KF5::TextWidgets
+    )

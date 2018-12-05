@@ -22,7 +22,6 @@
 #include "icaldirresource.h"
 
 #include "settingsadaptor.h"
-#include "dirsettingsdialog.h"
 
 #include <changerecorder.h>
 #include <entitydisplayattribute.h>
@@ -84,37 +83,31 @@ static bool writeToFile(const QString &fileName, Incidence::Ptr &incidence)
 ICalDirResource::ICalDirResource(const QString &id)
     : ResourceBase(id)
 {
+    IcalDirResourceSettings::instance(KSharedConfig::openConfig());
     // setup the resource
-    new SettingsAdaptor(Settings::self());
+    new SettingsAdaptor(IcalDirResourceSettings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 IcalDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
+    connect(this, &ICalDirResource::reloadConfiguration, this, &ICalDirResource::slotReloadConfig);
 }
 
 ICalDirResource::~ICalDirResource()
 {
 }
 
-void ICalDirResource::aboutToQuit()
+void ICalDirResource::slotReloadConfig()
 {
-    Settings::self()->save();
+    initializeICalDirectory();
+    loadIncidences();
+
+    synchronize();
 }
 
-void ICalDirResource::configure(WId windowId)
+void ICalDirResource::aboutToQuit()
 {
-    SettingsDialog dlg(windowId);
-    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("text-calendar")));
-    if (dlg.exec()) {
-        initializeICalDirectory();
-        loadIncidences();
-
-        synchronize();
-
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
+    IcalDirResourceSettings::self()->save();
 }
 
 bool ICalDirResource::loadIncidences()
@@ -153,7 +146,7 @@ bool ICalDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteAr
 
 void ICalDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
-    if (Settings::self()->readOnly()) {
+    if (IcalDirResourceSettings::self()->readOnly()) {
         Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
         cancelTask();
         return;
@@ -186,7 +179,7 @@ void ICalDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
 
 void ICalDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    if (Settings::self()->readOnly()) {
+    if (IcalDirResourceSettings::self()->readOnly()) {
         Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
         cancelTask();
         return;
@@ -218,7 +211,7 @@ void ICalDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
 void ICalDirResource::itemRemoved(const Akonadi::Item &item)
 {
-    if (Settings::self()->readOnly()) {
+    if (IcalDirResourceSettings::self()->readOnly()) {
         Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", iCalDirectoryName()));
         cancelTask();
         return;
@@ -256,7 +249,7 @@ void ICalDirResource::retrieveCollections()
     mimetypes << KCalCore::Event::eventMimeType() << KCalCore::Todo::todoMimeType() << KCalCore::Journal::journalMimeType() << QStringLiteral("text/calendar");
     c.setContentMimeTypes(mimetypes);
 
-    if (Settings::self()->readOnly()) {
+    if (IcalDirResourceSettings::self()->readOnly()) {
         c.setRights(Collection::CanChangeCollection);
     } else {
         Collection::Rights rights = Collection::ReadOnly;
@@ -294,12 +287,12 @@ void ICalDirResource::retrieveItems(const Akonadi::Collection &)
 
 QString ICalDirResource::iCalDirectoryName() const
 {
-    return Settings::self()->path();
+    return IcalDirResourceSettings::self()->path();
 }
 
 QString ICalDirResource::iCalDirectoryFileName(const QString &file) const
 {
-    return Settings::self()->path() + QDir::separator() + file;
+    return IcalDirResourceSettings::self()->path() + QDir::separator() + file;
 }
 
 void ICalDirResource::initializeICalDirectory() const

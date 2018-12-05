@@ -36,7 +36,6 @@ public:
     ~ICalDirResource() override;
 
 public Q_SLOTS:
-    void configure(WId windowId) override;
     void aboutToQuit() override;
 
 protected:
@@ -59,6 +58,7 @@ private:
     QString iCalDirectoryName() const;
     QString iCalDirectoryFileName(const QString &file) const;
     void initializeICalDirectory() const;
+    void slotReloadConfig();
 
 private:
     QHash<QString, KCalCore::Incidence::Ptr> mIncidences;
