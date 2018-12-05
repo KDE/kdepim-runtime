@@ -31,6 +31,7 @@ public:
         , mSettings(new Settings(config))
         , mWidget(new AccountWidget(identifier(), parent))
     {
+        connect(mWidget.data(), &AccountWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
     }
 
     void load() override

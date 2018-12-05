@@ -31,6 +31,7 @@ public:
         Settings::instance(config);
         mSettings.reset(Settings::self());
         mWidget.reset(new ConfigWidget(mSettings.data(), parent));
+        connect(mWidget.data(), &ConfigWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
     }
 
     void load() override

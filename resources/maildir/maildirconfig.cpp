@@ -24,6 +24,7 @@ MaildirConfig::MaildirConfig(const KSharedConfigPtr &config, QWidget *parent, co
     , mSettings(new Akonadi_Maildir_Resource::MaildirSettings(config))
     , mWidget(new ConfigWidget(mSettings.data(), identifier(), parent))
 {
+    connect(mWidget.data(), &ConfigWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
 }
 
 MaildirConfig::~MaildirConfig()
