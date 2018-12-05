@@ -26,7 +26,7 @@
 #include <collectionmodifyjob.h>
 #include <transactionsequence.h>
 #include <Akonadi/KMime/MessageFlags>
-#include <AkonadiCore/akranges.h>
+#include <AkonadiCore/vectorhelper.h>
 #include <QDirIterator>
 #include <KMime/Message>
 
@@ -164,7 +164,7 @@ void RetrieveItemsJob::entriesProcessed()
     delete m_entryIterator;
     m_entryIterator = nullptr;
     if (!m_localItems.isEmpty()) {
-        Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(m_localItems.values()|Akonadi::toQVector, transaction());
+        Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(Akonadi::valuesToVector(m_localItems), transaction());
         m_maildir.removeCachedKeys(m_localItems.keys());
         // We ensure m_transaction is valid by calling transaction() above,
         // however calling it again here could cause it to give us another transaction

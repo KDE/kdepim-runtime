@@ -31,8 +31,7 @@
 #include <AkonadiCore/ItemModifyJob>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
 #include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/akranges.h>
-
+#include <AkonadiCore/VectorHelper>
 
 #include <KCalCore/Calendar>
 #include <KCalCore/Attendee>
@@ -484,7 +483,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         m_collections[ collection.remoteId() ] = collection;
     }
 
-    collectionsRetrieved(m_collections.values()|toQVector);
+    collectionsRetrieved(Akonadi::valuesToVector(m_collections));
 
     job->deleteLater();
 }
