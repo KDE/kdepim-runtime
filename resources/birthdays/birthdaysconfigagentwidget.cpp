@@ -28,6 +28,10 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+namespace {
+static const char myConfigGroupName[] = "BirthdaysSettingsDialog";
+}
+
 BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
 {
@@ -66,13 +70,13 @@ bool BirthdaysConfigAgentWidget::save() const
 
 QSize BirthdaysConfigAgentWidget::restoreDialogSize() const
 {
-    auto group = config()->group("BirthdaysConfigWidget");
+    auto group = config()->group(myConfigGroupName);
     const QSize size = group.readEntry("Size", QSize(600, 400));
     return size;
 }
 
 void BirthdaysConfigAgentWidget::saveDialogSize(const QSize &size)
 {
-    auto group = config()->group("BirthdaysConfigWidget");
+    auto group = config()->group(myConfigGroupName);
     group.writeEntry("Size", size);
 }
