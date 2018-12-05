@@ -22,7 +22,6 @@
 
 #include "settingsadaptor.h"
 #include "vcarddirresource_debug.h"
-#include "dirsettingsdialog.h"
 
 #include <QDir>
 #include <QDirIterator>
@@ -34,19 +33,20 @@
 
 #include <QIcon>
 #include <KLocalizedString>
-#include <QDebug>
 
 using namespace Akonadi;
 
 VCardDirResource::VCardDirResource(const QString &id)
     : ResourceBase(id)
 {
+    VcardDirResourceSettings::instance(KSharedConfig::openConfig());
     // setup the resource
-    new SettingsAdaptor(Settings::self());
+    new SettingsAdaptor(VcardDirResourceSettings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 VcardDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
+    connect(this, &VCardDirResource::reloadConfiguration, this, &VCardDirResource::slotReloadConfig);
 }
 
 VCardDirResource::~VCardDirResource()
@@ -55,25 +55,17 @@ VCardDirResource::~VCardDirResource()
     mAddressees.clear();
 }
 
-void VCardDirResource::aboutToQuit()
+void VCardDirResource::slotReloadConfig()
 {
-    Settings::self()->save();
+    initializeVCardDirectory();
+    loadAddressees();
+
+    synchronize();
 }
 
-void VCardDirResource::configure(WId windowId)
+void VCardDirResource::aboutToQuit()
 {
-    SettingsDialog dlg(windowId);
-    dlg.setWindowIcon(QIcon::fromTheme(QStringLiteral("text-directory")));
-    if (dlg.exec()) {
-        initializeVCardDirectory();
-        loadAddressees();
-
-        synchronize();
-
-        Q_EMIT configurationDialogAccepted();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
+    VcardDirResourceSettings::self()->save();
 }
 
 bool VCardDirResource::loadAddressees()
@@ -121,7 +113,7 @@ bool VCardDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
 
 void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
-    if (Settings::self()->readOnly()) {
+    if (VcardDirResourceSettings::self()->readOnly()) {
         Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
         cancelTask();
         return;
@@ -155,7 +147,7 @@ void VCardDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
 
 void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    if (Settings::self()->readOnly()) {
+    if (VcardDirResourceSettings::self()->readOnly()) {
         Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
         cancelTask();
         return;
@@ -191,7 +183,7 @@ void VCardDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
 
 void VCardDirResource::itemRemoved(const Akonadi::Item &item)
 {
-    if (Settings::self()->readOnly()) {
+    if (VcardDirResourceSettings::self()->readOnly()) {
         Q_EMIT error(i18n("Trying to write to a read-only directory: '%1'", vCardDirectoryName()));
         cancelTask();
         return;
@@ -215,7 +207,7 @@ void VCardDirResource::retrieveCollections()
     QStringList mimeTypes;
     mimeTypes << KContacts::Addressee::mimeType();
     c.setContentMimeTypes(mimeTypes);
-    if (Settings::self()->readOnly()) {
+    if (VcardDirResourceSettings::self()->readOnly()) {
         c.setRights(Collection::ReadOnly);
     } else {
         Collection::Rights rights;
@@ -252,12 +244,12 @@ void VCardDirResource::retrieveItems(const Akonadi::Collection &)
 
 QString VCardDirResource::vCardDirectoryName() const
 {
-    return Settings::self()->path();
+    return VcardDirResourceSettings::self()->path();
 }
 
 QString VCardDirResource::vCardDirectoryFileName(const QString &file) const
 {
-    return Settings::self()->path() + QDir::separator() + file;
+    return VcardDirResourceSettings::self()->path() + QDir::separator() + file;
 }
 
 void VCardDirResource::initializeVCardDirectory() const

@@ -30,11 +30,10 @@ class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase
     Q_OBJECT
 
 public:
-    VCardDirResource(const QString &id);
-    ~VCardDirResource();
+    explicit VCardDirResource(const QString &id);
+    ~VCardDirResource() override;
 
 public Q_SLOTS:
-    void configure(WId windowId) override;
     void aboutToQuit() override;
 
 protected:
@@ -51,6 +50,7 @@ protected:
     void itemRemoved(const Akonadi::Item &item) override;
 
 private:
+    void slotReloadConfig();
     bool loadAddressees();
     QString vCardDirectoryName() const;
     QString vCardDirectoryFileName(const QString &file) const;

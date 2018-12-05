@@ -1,5 +1,6 @@
 /*
     Copyright (c) 2009 Tobias Koenig <tokoe@kde.org>
+    Copyright (c) 2018 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or modify it
     under the terms of the GNU Library General Public License as published by
@@ -20,27 +21,26 @@
 #ifndef DIRSETTINGSDIALOG_H
 #define DIRSETTINGSDIALOG_H
 
-#include "ui_settingsdialog.h"
+#include "ui_vcarddiragentsettingswidget.h"
+#include <AkonadiCore/AgentConfigurationBase>
 
-#include <QDialog>
-#include <QPushButton>
 
 class KConfigDialogManager;
 
-namespace Akonadi {
-class SettingsDialog : public QDialog
+class VcardDirSettingsWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:
-    explicit SettingsDialog(WId windowId);
+    explicit VcardDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
 
+    void load() override;
+    bool save() const override;
 private:
-    void save();
     void validate();
-    Ui::SettingsDialog ui;
+    Ui::VcardDirsAgentSettingsWidget ui;
     KConfigDialogManager *mManager = nullptr;
-    QPushButton *mOkButton = nullptr;
 };
-}
+
+AKONADI_AGENTCONFIG_FACTORY(VcardDirSettingsWidgetFactory, "vcarddirconfig.json", VcardDirSettingsWidget)
 
 #endif

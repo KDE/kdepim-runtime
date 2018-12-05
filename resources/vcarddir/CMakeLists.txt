@@ -11,14 +11,13 @@ kconfig_add_kcfg_files(vcarddirresource_common_SRCS
 set( vcarddirresource_SRCS
     ${vcarddirresource_common_SRCS}
   vcarddirresource.cpp
-  dirsettingsdialog.cpp
 )
 ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource)
 
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcarddirresource.kcfg org.kde.Akonadi.VCardDirectory.Settings)
 qt5_add_dbus_adaptor(vcarddirresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCardDirectory.Settings.xml settings.h Settings
+  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCardDirectory.Settings.xml settings.h VcardDirResourceSettings
 )
 
 install( FILES vcarddirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
@@ -51,28 +50,27 @@ add_subdirectory(wizard)
 install(TARGETS akonadi_vcarddir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
-#set(contactsconfig_ui_SRCS)
-#ki18n_wrap_ui(contactsconfig_ui_SRCS contactsagentsettingswidget.ui)
+set(vcarddirconfig_ui_SRCS)
+ki18n_wrap_ui(vcarddirconfig_ui_SRCS vcarddiragentsettingswidget.ui)
 
-#set(contactsconfig_SRCS
-#    contactssettingswidget.cpp
-#    ${contactsconfig_ui_SRCS}
-#    ${vcarddirresource_common_SRCS}
-#    )
+set(vcarddirconfig_SRCS
+    vcarddirsettingswidget.cpp
+    ${vcarddirconfig_ui_SRCS}
+    ${vcarddirresource_common_SRCS}
+    )
 
 
-#kcoreaddons_add_plugin(contactsconfig
-#    SOURCES ${contactsconfig_SRCS}
-#    JSON "contactsconfig.json"
-#    INSTALL_NAMESPACE "akonadi/config"
-#    )
-#target_link_libraries(contactsconfig
-#    KF5::AkonadiCore
-#    KF5::CalendarCore
-#    KF5::Codecs
-#    KF5::AkonadiAgentBase
-#    KF5::Contacts
-#    KF5::AkonadiWidgets
-#    KF5::I18n
-#    KF5::KIOWidgets
-#    )
+kcoreaddons_add_plugin(vcarddirconfig
+    SOURCES ${vcarddirconfig_SRCS}
+    JSON "vcarddirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+target_link_libraries(vcarddirconfig
+    KF5::AkonadiCore
+    KF5::CalendarCore
+    KF5::AkonadiAgentBase
+    KF5::AkonadiWidgets
+    KF5::I18n
+    KF5::KIOWidgets
+    KF5::TextWidgets
+    )
