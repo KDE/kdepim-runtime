@@ -233,7 +233,6 @@ void TomboyNotesResource::slotReloadConfig()
     } else {
         synchronize();
     }
-
 }
 
 void TomboyNotesResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)

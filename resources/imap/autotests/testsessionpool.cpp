@@ -747,7 +747,7 @@ private Q_SLOTS:
 
     void shouldHandleDisconnectionDuringSecondLogin_data()
     {
-        QTest::addColumn<QList<QByteArray>>("scenario");
+        QTest::addColumn<QList<QByteArray> >("scenario");
 
         QTest::newRow("immediate_disconnect") << QList<QByteArray>{};
         QTest::newRow("disconnect_after_greeting") << QList<QByteArray>{FakeServer::greeting()};

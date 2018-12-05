@@ -194,7 +194,7 @@ static const struct WindowsTimezone {
       "Europe/Monaco", "Europe/Malta", "Europe/Amsterdam", "Europe/Oslo", "Europe/Stockholm", "Arctic/Longyearbyen", "Europe/San_Marino", "Europe/Vatican"}},
     {"West Asia Standard Time", "Islamabad, Karachi, Tashkent",
      {"Asia/Tashkent", "Antarctica/Mawson", "Asia/Oral Asia/Aqtau Asia/Aqtobe", "Indian/Maldives", "Indian/Kerguelen", "Asia/Dushanbe", "Asia/Ashgabat", "Asia/Tashkent Asia/Samarkand",
-         "Etc/GMT-5"}},
+      "Etc/GMT-5"}},
     {"West Pacific Standard Time", "Guam, Port Moresby", {"Pacific/Port_Moresby", "Antarctica/DumontDUrville", "Pacific/Truk", "Pacific/Guam", "Pacific/Saipan", "Pacific/Port_Moresby", "Etc/GMT-10"}},
     {"Yakutsk Standard Time", "Yakuts", {"Asia/Yakutsk", "Asia/Yakutsk"}}
 };

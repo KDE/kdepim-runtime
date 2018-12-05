@@ -43,7 +43,6 @@ BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &c
     ui.setupUi(mainWidget);
     parent->layout()->addWidget(mainWidget);
 
-
     mManager = new KConfigDialogManager(mainWidget, Settings::self());
     mManager->updateWidgets();
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));

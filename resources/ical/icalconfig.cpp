@@ -34,7 +34,10 @@ class ICalConfig : public ICalConfigBase
 {
     Q_OBJECT
 public:
-    ~ICalConfig() override {}
+    ~ICalConfig() override
+    {
+    }
+
     using ICalConfigBase::ICalConfigBase;
 };
 

@@ -41,8 +41,8 @@ static QString normalizeMimemessage(const std::string &path)
 }
 
 template<class T>
-void testFunction(const QString &filename, Kolab::Version version, Kolab::ObjectType type, T (Kolab::MIMEObject::*readFunction)(const std::string &),
-                  std::string (Kolab::MIMEObject::*writeFunction)(const T &, Kolab::Version, const std::string &))
+void testFunction(const QString &filename, Kolab::Version version, Kolab::ObjectType type, T (Kolab::MIMEObject::*readFunction)(const std::string &), std::string (Kolab::MIMEObject::*writeFunction)(
+                      const T &, Kolab::Version, const std::string &))
 {
     const std::string input = readFile(filename);
     Kolab::MIMEObject mimeobject;

@@ -35,10 +35,12 @@ public:
         : Akonadi::AgentConfigurationBase(config, parent, list)
         , mSettings(new Settings(config))
         , mWidget(new Akonadi::SingleFileResourceConfigWidget<Settings>(parent, mSettings.data()))
-    {}
+    {
+    }
 
     ~SingleFileResourceConfigBase()
-    {}
+    {
+    }
 
     void load() override
     {
@@ -56,7 +58,7 @@ public:
 
 protected:
     QScopedPointer<Settings> mSettings;
-    QScopedPointer<Akonadi::SingleFileResourceConfigWidget<Settings>> mWidget;
+    QScopedPointer<Akonadi::SingleFileResourceConfigWidget<Settings> > mWidget;
 };
 
 #endif

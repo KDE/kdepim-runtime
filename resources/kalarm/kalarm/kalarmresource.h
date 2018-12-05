@@ -59,7 +59,7 @@ private Q_SLOTS:
 
 protected:
     void applyConfigurationChanges() override;
-    
+
 private:
     void checkFileCompatibility(const Akonadi::Collection & = Akonadi::Collection(), bool createAttribute = false);
     Akonadi::CollectionFetchJob *fetchCollection(const char *slot);

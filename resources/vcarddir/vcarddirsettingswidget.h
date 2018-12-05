@@ -24,7 +24,6 @@
 #include "ui_vcarddiragentsettingswidget.h"
 #include <AkonadiCore/AgentConfigurationBase>
 
-
 class KConfigDialogManager;
 
 class VcardDirSettingsWidget : public Akonadi::AgentConfigurationBase

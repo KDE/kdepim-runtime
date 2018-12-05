@@ -52,9 +52,7 @@ static const char *textToSpeakMessage
                 "</ul>"
                 "</qt>");
 
-NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfigPtr &config,
-                                                             QWidget *parent,
-                                                             const QVariantList &args)
+NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
 {
     NewMailNotifierAgentSettings::instance(config);
@@ -203,4 +201,3 @@ void NewMailNotifierSettingsWidget::slotHelpLinkClicked(const QString &)
 
     QWhatsThis::showText(QCursor::pos(), help);
 }
-

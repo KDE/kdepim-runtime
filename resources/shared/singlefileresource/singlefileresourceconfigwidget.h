@@ -51,7 +51,8 @@ public:
         return true;
     }
 
-    void load() override {
+    void load() override
+    {
         ui.kcfg_Path->setUrl(QUrl::fromUserInput(mSettings->path()));
         mManager = new KConfigDialogManager(this, mSettings);
         mManager->updateWidgets();

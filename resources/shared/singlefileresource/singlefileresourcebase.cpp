@@ -48,10 +48,10 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration,
             this, [this]() {
-                applyConfigurationChanges();
-                reloadFile();
-                synchronizeCollectionTree();
-            });
+        applyConfigurationChanges();
+        reloadFile();
+        synchronizeCollectionTree();
+    });
     QTimer::singleShot(0, this, [this]() {
         readFile();
     });
@@ -68,7 +68,6 @@ SingleFileResourceBase::SingleFileResourceBase(const QString &id)
 void SingleFileResourceBase::applyConfigurationChanges()
 {
 }
-
 
 KSharedConfig::Ptr SingleFileResourceBase::runtimeConfig() const
 {

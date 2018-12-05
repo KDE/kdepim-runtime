@@ -111,7 +111,7 @@ protected:
      */
     int loginAPOP(const char *challenge, KIO::AuthInfo &ai);
 
-    bool saslInteract(void *in, KIO::AuthInfo &ai);
+    bool saslInteract(void *in, KIO::AuthInfo & ai);
     /**
      * Authenticate via SASL
      */

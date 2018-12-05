@@ -42,7 +42,6 @@ private:
     QScopedPointer<AlarmTypeRadioWidget> mTypeSelector;
 };
 
-
 class KAlarmConfig : public KAlarmConfigBase
 {
     Q_OBJECT

@@ -57,7 +57,6 @@ Settings::Settings(const KSharedConfigPtr &config)
                                                  QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
-
 void Settings::setWindowId(WId id)
 {
     mWinId = id;

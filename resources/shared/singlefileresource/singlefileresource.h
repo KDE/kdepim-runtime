@@ -162,8 +162,8 @@ public:
             mDownloadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mDownloadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotDownloadJobResult);
-            connect(mDownloadJob, SIGNAL(percent(KJob *,ulong)),
-                    SLOT(handleProgress(KJob *,ulong)));
+            connect(mDownloadJob, SIGNAL(percent(KJob*,ulong)),
+                    SLOT(handleProgress(KJob*,ulong)));
 
             emit status(Running, i18n("Downloading remote file."));
         }
@@ -264,8 +264,8 @@ public:
             mUploadJob->setProperty("QEventLoopLocker", QVariant::fromValue(ref));
             connect(mUploadJob, &KJob::result,
                     this, &SingleFileResource<Settings>::slotUploadJobResult);
-            connect(mUploadJob, SIGNAL(percent(KJob *,ulong)),
-                    SLOT(handleProgress(KJob *,ulong)));
+            connect(mUploadJob, SIGNAL(percent(KJob*,ulong)),
+                    SLOT(handleProgress(KJob*,ulong)));
 
             emit status(Running, i18n("Uploading cached file to remote location."));
         }

@@ -103,8 +103,8 @@ void Pop3Test::initTestCase()
         QVERIFY(job->exec());
         Collection::List collections = job->collections();
         foreach (const Collection &col, collections) {
-            if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier() &&
-                col.remoteId() == maildirRootPath) {
+            if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier()
+                && col.remoteId() == maildirRootPath) {
                 mMaildirCollection = col;
                 found = true;
                 break;
@@ -361,19 +361,19 @@ void Pop3Test::syncAndWaitForFinish()
     QTimer settleTimer;
     settleTimer.setSingleShot(true);
     connect(&mon, &Akonadi::Monitor::itemAdded, this, [&](const Akonadi::Item &, const Akonadi::Collection &) {
-            settleTimer.start(serverSettleTimeout);
-        });
+        settleTimer.start(serverSettleTimeout);
+    });
     connect(&mon, &Akonadi::Monitor::itemChanged, this, [&](const Akonadi::Item &, const QSet< QByteArray > &) {
-            settleTimer.start(serverSettleTimeout);
-        });
+        settleTimer.start(serverSettleTimeout);
+    });
     connect(&mon, &Akonadi::Monitor::itemRemoved, this, [&](const Akonadi::Item &) {
-            settleTimer.start(serverSettleTimeout);
-        });
+        settleTimer.start(serverSettleTimeout);
+    });
 
     settleTimer.start(serverSettleTimeout);
     connect(&settleTimer, &QTimer::timeout, this, [&]() {
-            settleLoop.exit(0);
-        });
+        settleLoop.exit(0);
+    });
     settleLoop.exec();
 }
 
@@ -873,7 +873,7 @@ void Pop3Test::testSizeBasedLeaveRule()
 
 void Pop3Test::testMixedLeaveRules()
 {
-    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();;
+    mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
     //
     // Generate 10 mails
     //

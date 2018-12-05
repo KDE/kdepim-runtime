@@ -191,8 +191,8 @@ void POP3Resource::showPasswordDialog(const QString &queryText)
 {
     QPointer<KPasswordDialog> dlg
         = new KPasswordDialog(
-        nullptr,
-        KPasswordDialog::ShowUsernameLine);
+              nullptr,
+              KPasswordDialog::ShowUsernameLine);
     dlg->setModal(true);
     dlg->setUsername(Settings::self()->login());
     dlg->setPassword(mPassword);
@@ -831,8 +831,7 @@ void POP3Resource::deleteJobResult(KJob *job)
 
     if (shouldAdvanceToQuitState()) {
         advanceState(Quit);
-    }
-    else if (mDeleteJob == nullptr) {
+    } else if (mDeleteJob == nullptr) {
         advanceState(Save);
     }
 }

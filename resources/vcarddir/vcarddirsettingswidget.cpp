@@ -46,7 +46,6 @@ VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, Q
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &VcardDirSettingsWidget::validate);
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &VcardDirSettingsWidget::validate);
 
-
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(VcardDirResourceSettings::self()->path()));
     ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
     mManager = new KConfigDialogManager(mainWidget, VcardDirResourceSettings::self());
@@ -69,7 +68,6 @@ void VcardDirSettingsWidget::validate()
     }
     Q_EMIT enableOkButton(true);
 }
-
 
 void VcardDirSettingsWidget::load()
 {

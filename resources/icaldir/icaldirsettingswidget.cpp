@@ -31,7 +31,6 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-
 IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
 {
@@ -46,7 +45,6 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
 
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &IcalDirSettingsWidget::validate);
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &IcalDirSettingsWidget::validate);
-
 
     ui.kcfg_Path->setUrl(QUrl::fromLocalFile(IcalDirResourceSettings::self()->path()));
     ui.kcfg_AutosaveInterval->setSuffix(ki18np(" minute", " minutes"));
@@ -70,7 +68,6 @@ void IcalDirSettingsWidget::validate()
     }
     Q_EMIT enableOkButton(true);
 }
-
 
 void IcalDirSettingsWidget::load()
 {

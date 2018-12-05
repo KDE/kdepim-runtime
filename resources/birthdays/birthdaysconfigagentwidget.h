@@ -41,7 +41,6 @@ public:
 private:
     Ui::BirthdaysConfigWidget ui;
     KConfigDialogManager *mManager = nullptr;
-
 };
 AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigAgentWidgetFactory, "birthdaysconfig.json", BirthdaysConfigAgentWidget)
 

@@ -42,5 +42,4 @@ private:
     QScopedPointer<ConfigWidget> mWidget;
 };
 
-
 #endif

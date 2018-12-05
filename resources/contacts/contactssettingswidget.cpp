@@ -52,7 +52,6 @@ ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, Q
 
     connect(ui.kcfg_Path, &KUrlRequester::textChanged, this, &ContactsSettingsWidget::validate);
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &ContactsSettingsWidget::validate);
-
 }
 
 ContactsSettingsWidget::~ContactsSettingsWidget()

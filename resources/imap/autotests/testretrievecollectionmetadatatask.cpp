@@ -306,10 +306,9 @@ private Q_SLOTS:
         expectedLimits = { {{"STORAGE", 512}} };
 
         QTest::newRow("multiple quota roots, one resource only")
-                                    << collection << capabilities << scenario
-                                    << callNames << rights << expectedAnnotations
-                                    << expectedRoots << expectedLimits << expectedUsages;
-
+            << collection << capabilities << scenario
+            << callNames << rights << expectedAnnotations
+            << expectedRoots << expectedLimits << expectedUsages;
 
         //
         // Test for GETQUOTAROOT with multiple IMAP quota roots, some with no resource,
@@ -343,9 +342,9 @@ private Q_SLOTS:
         expectedLimits = { {{"STORAGE", 512}}, {{"STORAGE", 250}}, {{"STORAGE", 500}} };
 
         QTest::newRow("multiple quota roots, some with no resources, one matches the mailbox name")
-                                    << collection << capabilities << scenario
-                                    << callNames << rights << expectedAnnotations
-                                    << expectedRoots << expectedLimits << expectedUsages;
+            << collection << capabilities << scenario
+            << callNames << rights << expectedAnnotations
+            << expectedRoots << expectedLimits << expectedUsages;
     }
 
     void shouldCollectionRetrieveMetadata()
@@ -413,14 +412,14 @@ private Q_SLOTS:
                     QVERIFY(collection.hasAttribute<Akonadi::CollectionQuotaAttribute>());
                     if (i != -1) {
                         QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(),
-                                                                    expectedUsages.at(i)["STORAGE"] * 1024);
+                                 expectedUsages.at(i)["STORAGE"] * 1024);
                         QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(),
-                                                                    expectedLimits.at(i)["STORAGE"] * 1024);
+                                 expectedLimits.at(i)["STORAGE"] * 1024);
                     } else {
                         QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(),
-                                                                    expectedUsages.first()["STORAGE"] * 1024);
+                                 expectedUsages.first()["STORAGE"] * 1024);
                         QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(),
-                                                                    expectedLimits.first()["STORAGE"] * 1024);
+                                 expectedLimits.first()["STORAGE"] * 1024);
                     }
                 }
             }

@@ -385,9 +385,9 @@ void LoginJob::fetchUserInfo()
         d->id = me.value(QStringLiteral("id")).toString();
         d->wallet->writeMap(qobject_cast<FacebookResource *>(parent())->identifier(),
                             { { KWalletKeyToken, d->token },
-                              { KWalletKeyName, d->userName },
-                              { KWalletKeyId, d->id },
-                              { KWalletKeyCookies, QString::fromUtf8(d->cookies) }});
+                                { KWalletKeyName, d->userName },
+                                { KWalletKeyId, d->id },
+                                { KWalletKeyCookies, QString::fromUtf8(d->cookies) }});
         emitResult();
     });
     job->start();

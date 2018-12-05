@@ -28,14 +28,16 @@ public:
     {
         mWidget->setFilter(QStringLiteral("*.vcf|") + i18nc("Filedialog filter for *.vcf", "vCard Address Book File"));
     }
-
 };
 
 class VCardConfig : public VCardConfigBase
 {
     Q_OBJECT
 public:
-    ~VCardConfig() override {}
+    ~VCardConfig() override
+    {
+    }
+
     using VCardConfigBase::VCardConfigBase;
 };
 

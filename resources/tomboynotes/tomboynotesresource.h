@@ -31,7 +31,6 @@ public:
     explicit TomboyNotesResource(const QString &id);
     ~TomboyNotesResource() override;
 
-
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
 

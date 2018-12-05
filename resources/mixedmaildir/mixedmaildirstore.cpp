@@ -1379,7 +1379,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
                 errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                                   moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
                 qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
-                            << "TargetFolderType=" << targetFolderType;
+                                                     << "TargetFolderType=" << targetFolderType;
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText);
                 return false;
             }
@@ -1419,7 +1419,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
             errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                               moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
             qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
-                        << "TargetFolderType=" << targetFolderType;
+                                                 << "TargetFolderType=" << targetFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }
@@ -1430,7 +1430,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
                 errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                                   moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
                 qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
-                            << "TargetFolderType=" << targetFolderType;
+                                                     << "TargetFolderType=" << targetFolderType;
 
                 // try to revert the other rename
                 QDir sourceDir(moveFileInfo.absolutePath());
@@ -1462,7 +1462,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
             errorText = i18nc("@info:status", "Cannot move folder %1 from folder %2 to folder %3",
                               moveCollection.name(), moveCollection.parentCollection().name(), targetCollection.name());
             qCCritical(MIXEDMAILDIRRESOURCE_LOG) << errorText << "MoveFolderType=" << moveFolderType
-                        << "TargetFolderType=" << targetFolderType;
+                                                 << "TargetFolderType=" << targetFolderType;
             q->notifyError(FileStore::Job::InvalidJobContext, errorText);
             return false;
         }

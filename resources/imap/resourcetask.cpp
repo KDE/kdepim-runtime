@@ -80,15 +80,15 @@ void ResourceTask::abortTask(const QString &errorString)
         mCancelled = true;
 
         switch (m_actionIfNoSession) {
-            case CancelIfNoSession:
-                qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request.";
-                m_resource->cancelTask(errorString.isEmpty() ? i18n("Unable to connect to the IMAP server.") : errorString);
-                break;
+        case CancelIfNoSession:
+            qCDebug(IMAPRESOURCE_LOG) << "Cancelling this request.";
+            m_resource->cancelTask(errorString.isEmpty() ? i18n("Unable to connect to the IMAP server.") : errorString);
+            break;
 
-            case DeferIfNoSession:
-                qCDebug(IMAPRESOURCE_LOG) << "Defering this request.";
-                m_resource->deferTask();
-                break;
+        case DeferIfNoSession:
+            qCDebug(IMAPRESOURCE_LOG) << "Defering this request.";
+            m_resource->deferTask();
+            break;
         }
     }
     deleteLater();

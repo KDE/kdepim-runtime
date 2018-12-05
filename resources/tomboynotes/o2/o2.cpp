@@ -179,7 +179,8 @@ void O2::link()
 
         // Assemble initial authentication URL
         QList<QPair<QString, QString> > parameters;
-        parameters.append(qMakePair(QLatin1String(O2_OAUTH2_RESPONSE_TYPE), (grantFlow_ == GrantFlowAuthorizationCode) ? QLatin1String(O2_OAUTH2_GRANT_TYPE_CODE) : QLatin1String(O2_OAUTH2_GRANT_TYPE_TOKEN)));
+        parameters.append(qMakePair(QLatin1String(O2_OAUTH2_RESPONSE_TYPE),
+                                    (grantFlow_ == GrantFlowAuthorizationCode) ? QLatin1String(O2_OAUTH2_GRANT_TYPE_CODE) : QLatin1String(O2_OAUTH2_GRANT_TYPE_TOKEN)));
         parameters.append(qMakePair(QLatin1String(O2_OAUTH2_CLIENT_ID), clientId_));
         parameters.append(qMakePair(QLatin1String(O2_OAUTH2_REDIRECT_URI), redirectUri_));
         parameters.append(qMakePair(QLatin1String(O2_OAUTH2_SCOPE), scope_));

@@ -106,7 +106,8 @@ void normalizeMimemessage(QString &content)
     content.replace(QRegExp(QStringLiteral("<uri>mailto:*</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>mailto:</uri>"));
     content.replace(QRegExp(QStringLiteral("<cal-address>mailto:*</cal-address>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<cal-address>mailto:</cal-address>"));
     content.replace(QRegExp(QStringLiteral("<uri>data:*</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>data:</uri>"));
-    content.replace(QRegExp(QStringLiteral("<last-modification-date>*</last-modification-date>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<last-modification-date></last-modification-date>"));
+    content.replace(QRegExp(QStringLiteral("<last-modification-date>*</last-modification-date>"), Qt::CaseSensitive, QRegExp::Wildcard),
+                    QStringLiteral("<last-modification-date></last-modification-date>"));
     //We no longer support pobox, so remove pobox lines
     content.replace(QRegExp(QStringLiteral("<pobox>*</pobox>"), Qt::CaseSensitive, QRegExp::Wildcard), QLatin1String(""));
     content.replace(QRegExp(QStringLiteral("<timestamp>*</timestamp>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<timestamp></timestamp>"));

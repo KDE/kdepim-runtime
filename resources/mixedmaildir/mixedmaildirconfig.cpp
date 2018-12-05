@@ -46,6 +46,7 @@ public:
         mSettings->save();
         return Akonadi::AgentConfigurationBase::save();
     }
+
 private:
     QScopedPointer<Settings> mSettings;
     QScopedPointer<ConfigWidget> mWidget;

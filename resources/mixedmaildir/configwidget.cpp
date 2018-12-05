@@ -76,7 +76,7 @@ void ConfigWidget::checkPath()
     Q_EMIT okEnabled(ok);
 }
 
-void ConfigWidget::load(Settings* settings)
+void ConfigWidget::load(Settings *settings)
 {
     mManager->updateWidgets();
     ui.kcfg_Path->setMode(KFile::Directory | KFile::ExistingOnly);

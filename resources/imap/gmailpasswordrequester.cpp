@@ -47,18 +47,18 @@ void GmailPasswordRequester::requestPassword(RequestType request, const QString 
         auto promise = KGAPI2::AccountManager::instance()->findAccount(GOOGLE_API_KEY, mResource->settings()->userName());
         connect(promise, &KGAPI2::AccountPromise::finished,
                 this, [this](KGAPI2::AccountPromise *promise) {
-                    if (promise->account()) {
-                        promise = KGAPI2::AccountManager::instance()->refreshTokens(
-                            GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName());
-                    } else {
-                        promise = KGAPI2::AccountManager::instance()->getAccount(
-                            GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName(),
-                            { KGAPI2::Account::mailScopeUrl() });
-                    }
-                    connect(promise, &KGAPI2::AccountPromise::finished,
-                            this, &GmailPasswordRequester::onTokenRequestFinished);
-                    mPendingPromise = promise;
-                });
+            if (promise->account()) {
+                promise = KGAPI2::AccountManager::instance()->refreshTokens(
+                    GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName());
+            } else {
+                promise = KGAPI2::AccountManager::instance()->getAccount(
+                    GOOGLE_API_KEY, GOOGLE_API_SECRET, mResource->settings()->userName(),
+                    { KGAPI2::Account::mailScopeUrl() });
+            }
+            connect(promise, &KGAPI2::AccountPromise::finished,
+                    this, &GmailPasswordRequester::onTokenRequestFinished);
+            mPendingPromise = promise;
+        });
         mPendingPromise = promise;
     } else {
         auto promise = KGAPI2::AccountManager::instance()->getAccount(

@@ -157,11 +157,10 @@ void SendJob::doTraditionalTransport()
     }
     if (message->removeHeader("X-KMail-Identity-Name")) {
         needAssemble = true;
-    }    
+    }
     if (message->removeHeader("X-KMail-Transport-Name")) {
         needAssemble = true;
     }
-
 
     if (needAssemble) {
         message->assemble();

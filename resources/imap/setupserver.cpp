@@ -285,8 +285,8 @@ void SetupServer::applySettings()
 
     const MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode(m_ui->authenticationCombo);
     if (!m_ui->userName->text().contains(QLatin1Char('@'))
-            && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
-            && m_ui->imapServer->text().contains(QLatin1String("gmail.com"))) {
+        && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
+        && m_ui->imapServer->text().contains(QLatin1String("gmail.com"))) {
         // Normalize gmail username so that it matches the JSON account info returned by GMail authentication.
         // If we don't do this, we will look up cached auth without @gmail.com and save it with @gmail.com => very frequent auth dialog popping up.
         qCDebug(IMAPRESOURCE_LOG) << "Fixing up username" << m_ui->userName->text() << "by adding @gmail.com";

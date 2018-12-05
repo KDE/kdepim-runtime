@@ -38,5 +38,3 @@ public:
 AKONADI_AGENTCONFIG_FACTORY(NotesConfigFactory, "notesconfig.json", NotesConfig)
 
 #include "notesconfig.moc"
-
-

@@ -25,7 +25,6 @@
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
 
-
 #include <noselectattribute.h>
 #include <noinferiorsattribute.h>
 #include <collectionannotationsattribute.h>

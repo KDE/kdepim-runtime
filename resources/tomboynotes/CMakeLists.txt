@@ -72,7 +72,6 @@ target_link_libraries(akonadi_tomboynotes_resource
     KF5::KIONTLM
     KF5::KIOWidgets
     KF5::Mime
-    KF5::WindowSystem
 )
 
 install(TARGETS akonadi_tomboynotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

@@ -28,7 +28,7 @@ namespace Ui {
 class TomboyNotesAgentConfigWidget;
 }
 
-class TomboyNotesConfigWidget  : public Akonadi::AgentConfigurationBase
+class TomboyNotesConfigWidget : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
 public:

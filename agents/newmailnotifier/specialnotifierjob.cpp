@@ -211,7 +211,6 @@ void SpecialNotifierJob::slotMarkAsRead()
     Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << mItem);
     connect(markAsReadAllJob, &Akonadi::MarkAsCommand::result, this, &SpecialNotifierJob::slotMarkAsResult);
     markAsReadAllJob->execute();
-
 }
 
 void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)

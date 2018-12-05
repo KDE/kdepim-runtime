@@ -31,7 +31,7 @@ namespace Porting {
  * Helpers to retain backwards compatibility of binary serialization.
  */
 void serializeQDateTimeAsKDateTime(QDataStream &out, const QDateTime &dt);
-void deserializeKDateTimeAsQDateTime(QDataStream &in, QDateTime &dt);
+void deserializeKDateTimeAsQDateTime(QDataStream &in, QDateTime & dt);
 
 /** Convert a QTimeZone to a KDateTime::Spec */
 KDateTime::Spec zoneToSpec(const QTimeZone &zone);

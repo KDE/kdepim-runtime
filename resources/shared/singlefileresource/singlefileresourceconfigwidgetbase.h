@@ -94,7 +94,6 @@ public:
 Q_SIGNALS:
     void okEnabled(bool enabled);
 
-
 protected:
     Ui::SingleFileResourceConfigWidget ui;
     KConfigDialogManager *mManager = nullptr;
