@@ -27,7 +27,7 @@
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/VectorHelper>
+#include <AkonadiCore/akranges.h>
 #include <AkonadiCore/SpecialCollectionAttribute>
 
 #include <kmime/kmime_message.h>
@@ -220,7 +220,7 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     if (job->error()) {
         cancelTask(job->errorString());
     } else {
-        collectionsRetrieved(Akonadi::valuesToVector(m_reportedCollections));
+        collectionsRetrieved(m_reportedCollections.values() | Akonadi::toQVector);
     }
 }
 

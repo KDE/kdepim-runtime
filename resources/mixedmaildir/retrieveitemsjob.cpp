@@ -36,7 +36,7 @@
 #include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/itemmodifyjob.h>
 #include <AkonadiCore/transactionsequence.h>
-#include <AkonadiCore/vectorhelper.h>
+#include <AkonadiCore/akranges.h>
 
 #include "mixedmaildirresource_debug.h"
 
@@ -219,7 +219,7 @@ void RetrieveItemsJob::Private::storeListResult(KJob *job)
     // all items remaining in mServerItemsByRemoteId are no longer in the store
 
     if (!mServerItemsByRemoteId.isEmpty()) {
-        ItemDeleteJob *deleteJob = new ItemDeleteJob(Akonadi::valuesToVector(mServerItemsByRemoteId), transaction());
+        ItemDeleteJob *deleteJob = new ItemDeleteJob(mServerItemsByRemoteId.values() | toQVector, transaction());
         transaction()->setIgnoreJobFailure(deleteJob);
     }
 
