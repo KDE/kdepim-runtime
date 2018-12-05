@@ -27,7 +27,7 @@
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <AkonadiCore/vectorhelper.h>
+//#include <AkonadiCore/vectorhelper.h>
 
 #include <kcontacts/addressee.h>
 #include <KCalCore/Event>

@@ -28,7 +28,7 @@
 #include <mimetypechecker.h>
 #include <monitor.h>
 #include <entitydisplayattribute.h>
-#include <AkonadiCore/vectorhelper.h>
+#include <AkonadiCore/akranges.h>
 
 #include <kcontacts/addressee.h>
 
@@ -92,7 +92,7 @@ void BirthdaysResource::retrieveCollections()
 void BirthdaysResource::retrieveItems(const Akonadi::Collection &collection)
 {
     Q_UNUSED(collection);
-    itemsRetrievedIncremental(Akonadi::valuesToVector(mPendingItems), Akonadi::valuesToVector(mDeletedItems));
+    itemsRetrievedIncremental((mPendingItems.values() | toQVector),mDeletedItems.values() | toQVector);
     mPendingItems.clear();
     mDeletedItems.clear();
 }

@@ -27,7 +27,7 @@
 #include <AkonadiCore/LinkJob>
 #include <AkonadiCore/UnlinkJob>
 #include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/VectorHelper>
+#include <AkonadiCore/akranges.h>
 
 #include <KContacts/Addressee>
 #include <KContacts/Picture>
@@ -400,7 +400,7 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     attr->setIconName(QStringLiteral("view-pim-contacts"));
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
-    collectionsRetrieved(Akonadi::valuesToVector(m_collections));
+    collectionsRetrieved(m_collections.values()|toQVector);
     job->deleteLater();
 }
 
