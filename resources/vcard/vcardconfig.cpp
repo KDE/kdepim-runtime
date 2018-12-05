@@ -35,6 +35,7 @@ class VCardConfig : public VCardConfigBase
 {
     Q_OBJECT
 public:
+    ~VCardConfig() override {}
     using VCardConfigBase::VCardConfigBase;
 };
 
