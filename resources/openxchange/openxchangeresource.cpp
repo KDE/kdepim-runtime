@@ -27,7 +27,7 @@
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <AkonadiCore/akranges.h>
+//#include <AkonadiCore/vectorhelper.h>
 
 #include <kcontacts/addressee.h>
 #include <KCalCore/Event>
@@ -967,7 +967,7 @@ void OpenXchangeResource::onFoldersRequestJobFinished(KJob *job)
     Collection::List collections;
 
     // add the standard collections
-    collections << (mStandardCollectionsMap.values()|Akonadi::toQVector);
+    collections << Akonadi::valuesToVector(mStandardCollectionsMap);
 
     QMap<qlonglong, Collection> remoteIdMap(mStandardCollectionsMap);
 
@@ -1005,7 +1005,7 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
     Collection::List changedCollections;
 
     // add the standard collections
-    changedCollections << (mStandardCollectionsMap.values() | toQVector);
+    changedCollections << Akonadi::valuesToVector(mStandardCollectionsMap);
 
     qulonglong foldersLastSync = Settings::self()->foldersLastSync();
 

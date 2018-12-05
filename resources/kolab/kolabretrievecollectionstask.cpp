@@ -40,7 +40,7 @@
 #include <akonadi/kmime/messageparts.h>
 #include <AkonadiCore/CollectionIdentificationAttribute>
 #include <akonadi/calendar/blockalarmsattribute.h>
-#include <AkonadiCore/akranges.h>
+#include <AkonadiCore/vectorhelper.h>
 #include <AkonadiCore/SpecialCollectionAttribute>
 
 #include <kmime/kmime_message.h>
@@ -512,7 +512,7 @@ void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
 void KolabRetrieveCollectionsTask::checkDone()
 {
     if (!mJobs) {
-        collectionsRetrieved(mMailCollections.values()|Akonadi::toQVector);
+        collectionsRetrieved(Akonadi::valuesToVector(mMailCollections));
         qCDebug(KOLABRESOURCE_LOG) << "done " <<  mTime.elapsed();
     }
 }
