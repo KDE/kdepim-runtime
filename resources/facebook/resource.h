@@ -32,7 +32,6 @@ public:
     explicit FacebookResource(const QString &id);
     ~FacebookResource() override;
 
-    void configure(WId windowId) override;
     void abortActivity() override;
     void cleanup() override;
 

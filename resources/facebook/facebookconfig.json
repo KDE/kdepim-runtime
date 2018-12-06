@@ -1,0 +1,5 @@
+{
+    "X-Akonadi-PluginType": "AgentConfig",
+    "X-Akonadi-Library": "facebookconfig",
+    "X-Akonadi-AgentConfig-Type": "akonadi_facebook_resource"
+}

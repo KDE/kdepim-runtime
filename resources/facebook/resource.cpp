@@ -19,7 +19,6 @@
 #include "resource_debug.h"
 #include "eventslistjob.h"
 #include "birthdaylistjob.h"
-#include "settingsdialog.h"
 #include "tokenjobs.h"
 
 #include <AkonadiCore/EntityDisplayAttribute>
@@ -34,12 +33,13 @@ FacebookResource::FacebookResource(const QString &id)
 {
     setNeedsNetwork(true);
     setName(i18n("Facebook"));
+
 }
 
 FacebookResource::~FacebookResource()
 {
 }
-
+#if 0
 void FacebookResource::configure(WId windowId)
 {
     Q_UNUSED(windowId);
@@ -52,6 +52,7 @@ void FacebookResource::configure(WId windowId)
         Q_EMIT configurationDialogRejected();
     }
 }
+#endif
 
 void FacebookResource::abortActivity()
 {
