@@ -2,4 +2,4 @@ File=settings.kcfg
 ClassName=Settings
 Mutators=true
 Singleton=true
-GlobalEnums=true
+TranslationSystem=kde
