@@ -39,20 +39,6 @@ FacebookResource::FacebookResource(const QString &id)
 FacebookResource::~FacebookResource()
 {
 }
-#if 0
-void FacebookResource::configure(WId windowId)
-{
-    Q_UNUSED(windowId);
-
-    QScopedPointer<SettingsDialog> dlg(new SettingsDialog(this));
-    if (dlg->exec()) {
-        Q_EMIT configurationDialogAccepted();
-        synchronize();
-    } else {
-        Q_EMIT configurationDialogRejected();
-    }
-}
-#endif
 
 void FacebookResource::abortActivity()
 {
