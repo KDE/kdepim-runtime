@@ -11,7 +11,7 @@ set(fbresource_SRCS
     graph.cpp
 )
 
-qt5_wrap_ui(fbresource_SRCS
+ki18n_wrap_ui(fbresource_SRCS
     settingsdialog.ui
 )
 
