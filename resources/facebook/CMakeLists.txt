@@ -1,10 +1,10 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_facebook_resource\")
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
+
 set(fbresource_common_SRCS)
 kconfig_add_kcfg_files(fbresource_common_SRCS settings.kcfgc)
 
 set(fbresource_SRCS
-    resource.cpp
     listjob.cpp
     eventslistjob.cpp
     birthdaylistjob.cpp
@@ -17,8 +17,26 @@ ecm_qt_declare_logging_category(fbresource_SRCS HEADER resource_debug.h IDENTIFI
 
 kcfg_generate_dbus_interface(settings.kcfg org.kde.Akonadi.Facebook.Settings )
 
-add_executable(akonadi_facebook_resource ${fbresource_SRCS})
+add_library(facebookresourcelib STATIC ${fbresource_SRCS})
+
+target_link_libraries(facebookresourcelib
+    KF5::KIOWidgets
+    KF5::IconThemes
+    KF5::I18n
+    KF5::ConfigGui
+    KF5::CalendarCore
+    Qt5::WebEngineWidgets
+    KF5::Wallet
+    KF5::Codecs
+)
+
+#####
+
+set(akonadi_facebook_resource_SRCS resource.cpp)
+
+add_executable(akonadi_facebook_resource ${akonadi_facebook_resource_SRCS})
 target_link_libraries(akonadi_facebook_resource
+    facebookresourcelib
     KF5::AkonadiAgentBase
     KF5::CalendarCore
     KF5::I18n
@@ -52,6 +70,7 @@ kcoreaddons_add_plugin(facebookconfig
     INSTALL_NAMESPACE "akonadi/config"
     )
 target_link_libraries(facebookconfig
+    facebookresourcelib
     KF5::AkonadiCore
     KF5::CalendarCore
     KF5::Codecs
