@@ -27,7 +27,7 @@ class EventsListJob : public ListJob
     Q_OBJECT
 
 public:
-    explicit EventsListJob(const Akonadi::Collection &col, QObject *parent = nullptr);
+    explicit EventsListJob(const QString &identifier, const Akonadi::Collection &col, QObject *parent = nullptr);
     ~EventsListJob() override;
 
 protected:

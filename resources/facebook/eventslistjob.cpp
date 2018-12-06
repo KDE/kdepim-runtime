@@ -24,8 +24,8 @@
 
 #include <KCalCore/Event>
 
-EventsListJob::EventsListJob(const Akonadi::Collection &col, QObject *parent)
-    : ListJob(col, parent)
+EventsListJob::EventsListJob(const QString &identifier, const Akonadi::Collection &col, QObject *parent)
+    : ListJob(identifier, col, parent)
 {
     setRequest(QStringLiteral("me/events"),
                { QStringLiteral("id"),

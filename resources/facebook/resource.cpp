@@ -63,7 +63,7 @@ void FacebookResource::abortActivity()
 
 void FacebookResource::cleanup()
 {
-    (new LogoutJob(this))->exec();
+    (new LogoutJob(identifier(), this))->exec();
     ResourceBase::cleanup();
 }
 
@@ -111,9 +111,9 @@ void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
 
     KJob *job = nullptr;
     if (Graph::rsvpFromString(collection.remoteId()) == Graph::Birthday) {
-        job = new BirthdayListJob(collection, this);
+        job = new BirthdayListJob(identifier(), collection, this);
     } else {
-        job = new EventsListJob(collection, this);
+        job = new EventsListJob(identifier(), collection, this);
         connect(static_cast<ListJob *>(job), &ListJob::itemsAvailable,
                 this, [this](KJob *, const Akonadi::Item::List &items) {
             itemsRetrieved(items);

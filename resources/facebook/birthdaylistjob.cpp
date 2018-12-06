@@ -18,7 +18,6 @@
 #include "birthdaylistjob.h"
 #include "settings.h"
 #include "tokenjobs.h"
-#include "resource.h"
 
 #include <QNetworkCookie>
 #include <QByteArrayMatcher>
@@ -31,9 +30,10 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/ICalFormat>
 
-BirthdayListJob::BirthdayListJob(const Akonadi::Collection &collection, FacebookResource *parent)
+BirthdayListJob::BirthdayListJob(const QString &identifier, const Akonadi::Collection &collection, QObject *parent)
     : KJob(parent)
     , mCollection(collection)
+    , mIdentifier(identifier)
 {
 }
 
@@ -65,7 +65,7 @@ void BirthdayListJob::emitError(const QString &errorText)
 
 void BirthdayListJob::start()
 {
-    auto tokenJob = new GetTokenJob(qobject_cast<FacebookResource *>(parent()));
+    auto tokenJob = new GetTokenJob(mIdentifier, parent());
     connect(tokenJob, &GetTokenJob::result,
             this, [this, tokenJob]() {
         if (tokenJob->error()) {

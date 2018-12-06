@@ -20,13 +20,11 @@
 
 #include <KJob>
 
-class FacebookResource;
-
 class TokenJob : public KJob
 {
     Q_OBJECT
 public:
-    explicit TokenJob(FacebookResource *parent);
+    explicit TokenJob(const QString &identifier, QObject *parent);
     ~TokenJob() override;
 
     void start() override;
@@ -35,13 +33,14 @@ protected:
     void emitError(const QString &text);
 
     virtual void doStart() = 0;
+    QString mIdentifier;
 };
 
 class LoginJob : public TokenJob
 {
     Q_OBJECT
 public:
-    explicit LoginJob(FacebookResource *parent);
+    explicit LoginJob(const QString &identifier, QObject *parent);
     ~LoginJob() override;
 
     QString token() const;
@@ -55,7 +54,7 @@ class LogoutJob : public TokenJob
 {
     Q_OBJECT
 public:
-    explicit LogoutJob(FacebookResource *parent);
+    explicit LogoutJob(const QString &identifier, QObject *parent);
     ~LogoutJob() override;
 
 protected:
@@ -66,7 +65,7 @@ class GetTokenJob : public TokenJob
 {
     Q_OBJECT
 public:
-    explicit GetTokenJob(FacebookResource *parent);
+    explicit GetTokenJob(const QString &identifier, QObject *parent);
     ~GetTokenJob() override;
 
     QString token() const;

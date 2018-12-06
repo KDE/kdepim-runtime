@@ -18,7 +18,6 @@
 #include "listjob.h"
 #include "resource_debug.h"
 #include "tokenjobs.h"
-#include "resource.h"
 #include "graph.h"
 
 #include <QUrl>
@@ -30,8 +29,9 @@
 
 #include <KLocalizedString>
 
-ListJob::ListJob(const Akonadi::Collection &col, QObject *parent)
+ListJob::ListJob(const QString &identifier, const Akonadi::Collection &col, QObject *parent)
     : KCompositeJob(parent)
+    , mIdentifier(identifier)
     , mCollection(col)
 {
 }
@@ -61,7 +61,7 @@ void ListJob::setRequest(const QString &endpoint, const QStringList &fields, con
 
 void ListJob::start()
 {
-    auto job = new GetTokenJob(qobject_cast<FacebookResource *>(parent()));
+    auto job = new GetTokenJob(mIdentifier, parent());
     connect(job, &GetTokenJob::result, this, &ListJob::tokenJobResult);
     job->start();
 }
@@ -109,7 +109,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
         const auto code = err.value(QLatin1String("code")).toInt();
         if (code == 190) {
             // expired token
-            auto tokenJob = new LoginJob(qobject_cast<FacebookResource *>(parent()));
+            auto tokenJob = new LoginJob(mIdentifier, parent());
             const QUrl url = tjob->url();
             connect(tokenJob, &LoginJob::result,
                     this, [this, tokenJob, url]() {

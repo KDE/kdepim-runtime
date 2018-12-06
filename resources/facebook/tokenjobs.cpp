@@ -16,7 +16,6 @@
  */
 
 #include "tokenjobs.h"
-#include "resource.h"
 #include "resource_debug.h"
 #include "graph.h"
 
@@ -118,7 +117,7 @@ class AuthDialog : public QDialog
     Q_OBJECT
 
 public:
-    AuthDialog(const QByteArray &cookies, FacebookResource *resource, QWidget *parent = nullptr)
+    AuthDialog(const QByteArray &cookies, const QString &resourceIdentifier, QWidget *parent = nullptr)
         : QDialog(parent)
     {
         setModal(true);
@@ -156,7 +155,7 @@ public:
         v->addWidget(progressBar);
 
         // Create a special profile just for us
-        auto profile = new QWebEngineProfile(resource->identifier(), this);
+        auto profile = new QWebEngineProfile(resourceIdentifier, this);
         auto cookieStore = profile->cookieStore();
         cookieStore->deleteAllCookies(); // delete all cookies from it
         const auto parsedCookies = QNetworkCookie::parseCookies(cookies);
@@ -285,8 +284,9 @@ private:
 };
 } // namespace
 
-TokenJob::TokenJob(FacebookResource *parent)
+TokenJob::TokenJob(const QString &identifier, QObject *parent)
     : KJob(parent)
+    , mIdentifier(identifier)
 {
 }
 
@@ -335,8 +335,8 @@ void TokenJob::emitError(const QString &text)
     emitResult();
 }
 
-LoginJob::LoginJob(FacebookResource *parent)
-    : TokenJob(parent)
+LoginJob::LoginJob(const QString &identifier, QObject *parent)
+    : TokenJob(identifier, parent)
 {
 }
 
@@ -351,7 +351,7 @@ QString LoginJob::token() const
 
 void LoginJob::doStart()
 {
-    auto dlg = new AuthDialog(d->cookies, qobject_cast<FacebookResource *>(parent()));
+    auto dlg = new AuthDialog(d->cookies, mIdentifier);
     connect(dlg, &AuthDialog::authDone,
             this, [this, dlg]() {
         dlg->deleteLater();
@@ -383,7 +383,7 @@ void LoginJob::fetchUserInfo()
 
         d->userName = me.value(QStringLiteral("name")).toString();
         d->id = me.value(QStringLiteral("id")).toString();
-        d->wallet->writeMap(qobject_cast<FacebookResource *>(parent())->identifier(),
+        d->wallet->writeMap(mIdentifier,
                             { { KWalletKeyToken, d->token },
                                 { KWalletKeyName, d->userName },
                                 { KWalletKeyId, d->id },
@@ -393,8 +393,8 @@ void LoginJob::fetchUserInfo()
     job->start();
 }
 
-LogoutJob::LogoutJob(FacebookResource *parent)
-    : TokenJob(parent)
+LogoutJob::LogoutJob(const QString &identifier, QObject *parent)
+    : TokenJob(identifier, parent)
 {
 }
 
@@ -414,12 +414,12 @@ void LogoutJob::doStart()
         return;
     }
 
-    d->wallet->removeEntry(qobject_cast<FacebookResource *>(parent())->identifier());
+    d->wallet->removeEntry(mIdentifier);
     emitResult();
 }
 
-GetTokenJob::GetTokenJob(FacebookResource *parent)
-    : TokenJob(parent)
+GetTokenJob::GetTokenJob(const QString &identifier, QObject *parent)
+    : TokenJob(identifier, parent)
 {
 }
 
@@ -467,7 +467,7 @@ void GetTokenJob::doStart()
         return;
     }
 
-    const auto key = qobject_cast<FacebookResource *>(parent())->identifier();
+    const auto key = mIdentifier;
     QMap<QString, QString> entries;
     d->wallet->readMap(key, entries);
     d->token = entries.value(KWalletKeyToken);

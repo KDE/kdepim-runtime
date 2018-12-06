@@ -26,7 +26,6 @@
 #include <KCalCore/Event>
 
 class QUrl;
-class FacebookResource;
 namespace KIO {
 class StoredTransferJob;
 }
@@ -36,7 +35,7 @@ class BirthdayListJob : public KJob
     Q_OBJECT
 
 public:
-    BirthdayListJob(const Akonadi::Collection &collection, FacebookResource *parent);
+    BirthdayListJob(const QString &identifier, const Akonadi::Collection &collection, QObject *parent);
     ~BirthdayListJob() override;
 
     void start() override;
@@ -54,6 +53,7 @@ private:
     Akonadi::Collection mCollection;
     QVector<Akonadi::Item> mItems;
     QString mCookies;
+    QString mIdentifier;
 };
 
 #endif

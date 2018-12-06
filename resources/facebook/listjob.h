@@ -29,7 +29,7 @@ class ListJob : public KCompositeJob
     Q_OBJECT
 
 public:
-    explicit ListJob(const Akonadi::Collection &col, QObject *parent = nullptr);
+    explicit ListJob(const QString &identifier, const Akonadi::Collection &col, QObject *parent = nullptr);
     ~ListJob() override;
 
     Akonadi::Collection collection() const;
@@ -42,6 +42,8 @@ protected:
     virtual Akonadi::Item handleResponse(const QJsonObject &data) = 0;
 
     void emitError(const QString &errorString);
+
+    QString mIdentifier;
 
 Q_SIGNALS:
     void itemsAvailable(KJob *self, const Akonadi::Item::List & items, QPrivateSignal);
