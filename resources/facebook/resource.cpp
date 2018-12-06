@@ -33,7 +33,7 @@ FacebookResource::FacebookResource(const QString &id)
 {
     setNeedsNetwork(true);
     setName(i18n("Facebook"));
-
+    connect(this, &FacebookResource::reloadConfiguration, this, &FacebookResource::synchronize);
 }
 
 FacebookResource::~FacebookResource()
