@@ -132,7 +132,7 @@ void AccountDialog::setupWidgets()
     connect(filterOnServerCheck, &QCheckBox::clicked, this, &AccountDialog::slotFilterOnServerClicked);
 
     connect(checkCapabilities, &QPushButton::clicked, this, &AccountDialog::slotCheckPopCapabilities);
-    encryptionButtonGroup = new QButtonGroup();
+    encryptionButtonGroup = new QButtonGroup(this);
     encryptionButtonGroup->addButton(encryptionNone,
                                      Transport::EnumEncryption::None);
     encryptionButtonGroup->addButton(encryptionSSL,
