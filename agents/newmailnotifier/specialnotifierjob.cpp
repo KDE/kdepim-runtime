@@ -64,7 +64,6 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         deleteLater();
         return;
     }
-
     const Akonadi::Item::List lst = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
     if (lst.count() == 1) {
         mItem = lst.first();
@@ -84,7 +83,6 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
             emitNotification();
-            deleteLater();
         }
     } else {
         qCWarning(NEWMAILNOTIFIER_LOG) << " Found item different from 1: " << lst.count();
@@ -195,6 +193,7 @@ void SpecialNotifierJob::slotDeleteMessage()
 {
     Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(mItem);
     connect(job, &Akonadi::ItemDeleteJob::result, this, &SpecialNotifierJob::deleteItemDone);
+    deleteLater();
 }
 
 void SpecialNotifierJob::deleteItemDone(KJob *job)
@@ -211,7 +210,7 @@ void SpecialNotifierJob::slotMarkAsRead()
     Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << mItem);
     connect(markAsReadAllJob, &Akonadi::MarkAsCommand::result, this, &SpecialNotifierJob::slotMarkAsResult);
     markAsReadAllJob->execute();
-
+    deleteLater();
 }
 
 void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)
@@ -236,4 +235,5 @@ void SpecialNotifierJob::slotOpenMail()
 {
     NewMailNotifierShowMessageJob *job = new NewMailNotifierShowMessageJob(mItem.id());
     job->start();
+    deleteLater();
 }
