@@ -129,7 +129,7 @@ void SearchDialog::search()
     KDAV::DavUrl davUrl;
     davUrl.setUrl(url);
 
-    KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text());
+    KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text(), this);
 
     const KDAV::DavProtocolBase *proto = KDAV::DavManager::self()->davProtocol(KDAV::CalDav);
     job->fetchProperty(proto->principalHomeSet(), proto->principalHomeSetNS());
