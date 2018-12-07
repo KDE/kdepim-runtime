@@ -32,7 +32,7 @@ class KolabResource : public ImapResourceBase
 
 public:
     explicit KolabResource(const QString &id);
-    ~KolabResource();
+    ~KolabResource() override;
 
     QDialog *createConfigureDialog(WId windowId) override;
     Settings *settings() const override;
