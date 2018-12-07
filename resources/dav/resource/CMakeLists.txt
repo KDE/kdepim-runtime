@@ -8,19 +8,28 @@ if(WIN32)
 endif()
 
 ########### next target ###############
+set(davgroupwareresource_common_SRCS)
+kconfig_add_kcfg_files(davgroupwareresource_common_SRCS settingsbase.kcfgc)
+
+set(davgroupwareconfig_SRCS
+    configdialog.cpp
+    searchdialog.cpp
+    setupwizard.cpp
+
+    )
+ki18n_wrap_ui(davgroupwareconfig_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
+
 
 set( davgroupwareresource_SRCS
-
+    ${davgroupwareresource_common_SRCS}
+    ${davgroupwareconfig_SRCS}
     daverror-kdepim-runtime.cpp
     akonadietagcache.cpp
     utils.cpp
 
-    configdialog.cpp
     ctagattribute.cpp
     davfreebusyhandler.cpp
     davprotocolattribute.cpp
-    searchdialog.cpp
-    setupwizard.cpp
     settings.cpp
     urlconfigurationdialog.cpp
     davgroupwareresource.cpp
@@ -34,8 +43,6 @@ install( FILES davgroupwareprovider.desktop DESTINATION ${KDE_INSTALL_KSERVICETY
 file( GLOB providersFiles "../services/*.desktop" )
 install( FILES ${providersFiles} DESTINATION "${KDE_INSTALL_KSERVICES5DIR}/akonadi/davgroupware-providers" )
 
-kconfig_add_kcfg_files(davgroupwareresource_SRCS settingsbase.kcfgc)
-ki18n_wrap_ui(davgroupwareresource_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
 qt5_add_dbus_adaptor(davgroupwareresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.davGroupware.Settings.xml settings.h Settings
