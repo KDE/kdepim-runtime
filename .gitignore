@@ -19,6 +19,6 @@ svnmerge-commit-message.txt
 avail
 Doxyfile
 *.user
-/build/
+/build*/
 CMakeLists.txt.user*
 
