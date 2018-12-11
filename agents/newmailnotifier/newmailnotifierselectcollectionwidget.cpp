@@ -121,6 +121,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     Akonadi::CollectionFilterProxyModel *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel(this);
     mimeTypeProxy->setExcludeVirtualCollections(true);
+    mimeTypeProxy->setDynamicSortFilter(true);
     mimeTypeProxy->addMimeTypeFilters(QStringList() << KMime::Message::mimeType());
     mimeTypeProxy->setSourceModel(mModel);
 
@@ -136,6 +137,9 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mCollectionFilter->setSourceModel(mNewMailNotifierProxyModel);
     mCollectionFilter->setDynamicSortFilter(true);
     mCollectionFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    mCollectionFilter->setSortRole(Qt::DisplayRole);
+    mCollectionFilter->setSortCaseSensitivity(Qt::CaseSensitive);
+    mCollectionFilter->setSortLocaleAware(true);
 
     KLineEdit *searchLine = new KLineEdit(this);
     searchLine->setPlaceholderText(i18n("Search..."));
@@ -171,6 +175,7 @@ NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget()
 
 void NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched()
 {
+    mCollectionFilter->sort(0, Qt::AscendingOrder);
     mFolderView->expandAll();
 }
 
