@@ -193,7 +193,6 @@ void SpecialNotifierJob::slotDeleteMessage()
 {
     Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(mItem);
     connect(job, &Akonadi::ItemDeleteJob::result, this, &SpecialNotifierJob::deleteItemDone);
-    deleteLater();
 }
 
 void SpecialNotifierJob::deleteItemDone(KJob *job)
@@ -201,6 +200,7 @@ void SpecialNotifierJob::deleteItemDone(KJob *job)
     if (job->error()) {
         qCWarning(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob::deleteItemDone error:" << job->errorString();
     }
+    deleteLater();
 }
 
 void SpecialNotifierJob::slotMarkAsRead()
@@ -210,7 +210,6 @@ void SpecialNotifierJob::slotMarkAsRead()
     Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << mItem);
     connect(markAsReadAllJob, &Akonadi::MarkAsCommand::result, this, &SpecialNotifierJob::slotMarkAsResult);
     markAsReadAllJob->execute();
-    deleteLater();
 }
 
 void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)
@@ -229,6 +228,7 @@ void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)
         qCDebug(NEWMAILNOTIFIER_LOG) << "SpecialNotifierJob was failed";
         break;
     }
+    deleteLater();
 }
 
 void SpecialNotifierJob::slotOpenMail()
