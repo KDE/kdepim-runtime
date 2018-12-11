@@ -54,7 +54,7 @@ protected:
 
 private:
     QString m_pattern;
-    bool m_checkedOnly;
+    bool m_checkedOnly = false;
 };
 
 class SubscriptionDialog : public QDialog
@@ -98,7 +98,7 @@ private:
     void applyChanges();
 
     KIMAP::Session *m_session = nullptr;
-    bool m_subscriptionChanged;
+    bool m_subscriptionChanged = false;
 
     QTreeView *m_treeView = nullptr;
 

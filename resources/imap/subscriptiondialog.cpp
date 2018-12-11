@@ -48,9 +48,6 @@
 
 SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
     : QDialog(parent)
-    , m_session(nullptr)
-    , m_subscriptionChanged(false)
-    , m_lineEdit(nullptr)
     , m_filter(new SubscriptionFilterProxyModel(this))
     , m_model(new QStandardItemModel(this))
 {
@@ -329,7 +326,6 @@ void SubscriptionDialog::applyChanges()
 
 SubscriptionFilterProxyModel::SubscriptionFilterProxyModel(QObject *parent)
     : KRecursiveFilterProxyModel(parent)
-    , m_checkedOnly(false)
 {
 }
 
