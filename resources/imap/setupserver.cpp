@@ -124,9 +124,6 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     : QDialog()
     , m_parentResource(parentResource)
     , m_ui(new Ui::SetupServerView)
-    , m_serverTest(nullptr)
-    , m_subscriptionsChanged(false)
-    , m_shouldClearCache(false)
     , mValidator(this)
 {
     QNetworkConfigurationManager *networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());

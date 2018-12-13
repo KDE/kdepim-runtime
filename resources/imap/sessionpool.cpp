@@ -40,10 +40,6 @@ qint64 SessionPool::m_requestCounter = 0;
 SessionPool::SessionPool(int maxPoolSize, QObject *parent)
     : QObject(parent)
     , m_maxPoolSize(maxPoolSize)
-    , m_account(nullptr)
-    , m_passwordRequester(nullptr)
-    , m_initialConnectDone(false)
-    , m_pendingInitialSession(nullptr)
 {
 }
 

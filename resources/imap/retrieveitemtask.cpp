@@ -32,9 +32,6 @@
 
 RetrieveItemTask::RetrieveItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
-    , m_session(nullptr)
-    , m_uid(0)
-    , m_messageReceived(false)
 {
 }
 

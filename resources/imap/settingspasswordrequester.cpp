@@ -38,8 +38,6 @@
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
     , m_resource(resource)
-    , m_requestDialog(nullptr)
-    , m_settingsDialog(nullptr)
 {
 }
 

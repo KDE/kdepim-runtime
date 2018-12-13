@@ -26,7 +26,6 @@
 
 ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(ResourceTask::DeferIfNoSession, resource, parent)
-    , m_processedItems(0)
 {
 }
 

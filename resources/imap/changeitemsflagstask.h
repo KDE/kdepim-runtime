@@ -48,7 +48,7 @@ protected:
     virtual void triggerRemoveFlagsJob(KIMAP::Session *session);
 
 protected:
-    int m_processedItems;
+    int m_processedItems = 0;
 };
 
 #endif

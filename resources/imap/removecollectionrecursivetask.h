@@ -47,7 +47,7 @@ private:
     void deleteNextMailbox();
 
     KIMAP::Session *mSession = nullptr;
-    bool mFolderFound;
+    bool mFolderFound = false;
 
     QScopedPointer< QMapIterator<int, KIMAP::MailBoxDescriptor > > mFolderIterator;
 };

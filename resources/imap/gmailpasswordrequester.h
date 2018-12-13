@@ -35,7 +35,7 @@ class GmailPasswordRequester : public PasswordRequesterInterface
     Q_OBJECT
 public:
     explicit GmailPasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
-    ~GmailPasswordRequester();
+    ~GmailPasswordRequester() override;
 
     void requestPassword(RequestType request, const QString &serverError) override;
     void cancelPasswordRequests() override;

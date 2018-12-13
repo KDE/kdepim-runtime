@@ -121,7 +121,7 @@ private:
     PasswordRequesterInterface *m_passwordRequester = nullptr;
     KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;
 
-    bool m_initialConnectDone;
+    bool m_initialConnectDone = false;
     KIMAP::Session *m_pendingInitialSession = nullptr;
 
     QList<qint64> m_pendingRequests;

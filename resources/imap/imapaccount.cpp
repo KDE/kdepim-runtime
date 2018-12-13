@@ -26,11 +26,8 @@
 #include "imapaccount.h"
 
 ImapAccount::ImapAccount()
-    : m_port(0)
-    , m_timeout(30)
-    , m_encryption(KIMAP::LoginJob::Unencrypted)
+    : m_encryption(KIMAP::LoginJob::Unencrypted)
     , m_authentication(KIMAP::LoginJob::ClearText)
-    , m_subscriptionEnabled(false)
 {
 }
 

@@ -58,12 +58,12 @@ public:
 private:
     QString m_name;
     QString m_server;
-    quint16 m_port;
+    quint16 m_port = 0;
     QString m_userName;
-    int m_timeout;
+    int m_timeout = 30;
     KIMAP::LoginJob::EncryptionMode m_encryption;
     KIMAP::LoginJob::AuthenticationMode m_authentication;
-    bool m_subscriptionEnabled;
+    bool m_subscriptionEnabled = false;
 };
 
 #endif

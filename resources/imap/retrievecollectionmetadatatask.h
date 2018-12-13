@@ -44,7 +44,7 @@ protected:
 private:
     void endTaskIfNeeded();
 
-    int m_pendingMetaDataJobs;
+    int m_pendingMetaDataJobs = 0;
 
     Akonadi::Collection m_collection;
     KIMAP::Session *m_session = nullptr;

@@ -76,9 +76,9 @@ private:
     QPointer<KIMAP::IdleJob> m_idle;
     ImapResourceBase *m_resource = nullptr;
     ResourceStateInterface::Ptr m_state;
-    QTimer *m_idleTimeout;
-    qint64 m_lastMessageCount;
-    qint64 m_lastRecentCount;
+    QTimer *m_idleTimeout = nullptr;
+    qint64 m_lastMessageCount = -1;
+    qint64 m_lastRecentCount = -1;
 };
 
 #endif

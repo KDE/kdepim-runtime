@@ -30,7 +30,7 @@ class ServerInfoTextBrowser : public QTextBrowser
     Q_OBJECT
 public:
     explicit ServerInfoTextBrowser(QWidget *parent = nullptr);
-    ~ServerInfoTextBrowser();
+    ~ServerInfoTextBrowser() override;
 protected:
     void paintEvent(QPaintEvent *event) override;
 };

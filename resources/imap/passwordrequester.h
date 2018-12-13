@@ -30,7 +30,7 @@ class PasswordRequester : public PasswordRequesterInterface
 
 public:
     explicit PasswordRequester(ImapResourceBase *resource, QObject *parent = nullptr);
-    ~PasswordRequester();
+    ~PasswordRequester() override;
 
     void requestPassword(RequestType request, const QString &serverError) override;
     void cancelPasswordRequests() override;

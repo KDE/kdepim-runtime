@@ -49,11 +49,8 @@ ImapIdleManager::ImapIdleManager(ResourceStateInterface::Ptr state, SessionPool 
     : QObject(parent)
     , m_sessionRequestId(0)
     , m_pool(pool)
-    , m_session(nullptr)
-    , m_idle(nullptr)
     , m_resource(parent)
     , m_state(state)
-    , m_idleTimeout(nullptr)
     , m_lastMessageCount(-1)
     , m_lastRecentCount(-1)
 {

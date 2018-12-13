@@ -27,7 +27,6 @@
 
 PasswordRequester::PasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
-    , mImpl(nullptr)
     , mResource(resource)
 {
 }

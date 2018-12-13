@@ -46,9 +46,9 @@ protected:
 private:
     void endTaskIfNeeded();
 
-    int m_pendingJobs;
+    int m_pendingJobs = 0;
     Akonadi::Collection m_collection;
-    bool m_syncEnabledState;
+    bool m_syncEnabledState = true;
 };
 
 #endif

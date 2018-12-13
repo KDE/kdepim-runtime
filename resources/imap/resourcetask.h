@@ -156,7 +156,7 @@ private Q_SLOTS:
 
 private:
     SessionPool *m_pool = nullptr;
-    qint64 m_sessionRequestId;
+    qint64 m_sessionRequestId = 0;
 
     KIMAP::Session *m_session = nullptr;
     ActionIfNoSession m_actionIfNoSession;
