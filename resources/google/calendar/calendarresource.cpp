@@ -185,7 +185,9 @@ void CalendarResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         EventPtr kevent(new Event(*event));
         kevent->setUid(QLatin1String(""));
 
-        job = new EventCreateJob(kevent, collection.remoteId(), account(), this);
+        auto cjob = new EventCreateJob(kevent, collection.remoteId(), account(), this);
+        cjob->setSendUpdates(SendUpdatesPolicy::None);
+        job = cjob;
     } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
         KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
         TaskPtr ktodo(new Task(*todo));
@@ -210,7 +212,7 @@ void CalendarResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
     }
 
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &EventCreateJob::finished, this, &CalendarResource::slotCreateJobFinished);
+    connect(job, &CreateJob::finished, this, &CalendarResource::slotCreateJobFinished);
 }
 
 void CalendarResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers)
@@ -228,8 +230,10 @@ void CalendarResource::itemChanged(const Akonadi::Item &item, const QSet< QByteA
         EventPtr kevent(new Event(*event));
         kevent->setUid(item.remoteId());
 
-        job = new EventModifyJob(kevent, item.parentCollection().remoteId(), account(), this);
-        connect(job, &EventCreateJob::finished, this, &CalendarResource::slotGenericJobFinished);
+        auto mjob = new EventModifyJob(kevent, item.parentCollection().remoteId(), account(), this);
+        mjob->setSendUpdates(SendUpdatesPolicy::None);
+        connect(mjob, &EventModifyJob::finished, this, &CalendarResource::slotGenericJobFinished);
+        job = mjob;
     } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
         KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
         //FIXME unused ktodo ?
