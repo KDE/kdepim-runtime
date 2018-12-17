@@ -139,11 +139,7 @@ EwsResource::EwsResource(const QString &id)
 
     mTagStore = new EwsTagStore(this);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QMetaObject::invokeMethod(this, &EwsResource::delayedInit, Qt::QueuedConnection);
-#else
-    QMetaObject::invokeMethod(this, "delayedInit", Qt::QueuedConnection);
-#endif
 
     connect(this, &AgentBase::reloadConfiguration, this, &EwsResource::reloadConfig);
 }

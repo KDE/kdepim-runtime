@@ -147,11 +147,7 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     connect(m_statusMessageTimer, &QTimer::timeout, this, &ImapResourceBase::clearStatusMessage);
     connect(this, &AgentBase::error, this, &ImapResourceBase::showError);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QMetaObject::invokeMethod(this, &ImapResourceBase::delayedInit, Qt::QueuedConnection);
-#else
-    QMetaObject::invokeMethod(this, "delayedInit", Qt::QueuedConnection);
-#endif
 }
 
 void ImapResourceBase::delayedInit()

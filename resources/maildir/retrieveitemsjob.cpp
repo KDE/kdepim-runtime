@@ -77,11 +77,7 @@ void RetrieveItemsJob::localListDone(KJob *job)
     m_entryIterator = new QDirIterator(m_maildir.pathToNew(), QDir::Files);
     m_previousMtime = m_collection.remoteRevision().toLongLong();
     m_highestMtime = 0;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QMetaObject::invokeMethod(this, &RetrieveItemsJob::processEntry, Qt::QueuedConnection);
-#else
-    QMetaObject::invokeMethod(this, "processEntry", Qt::QueuedConnection);
-#endif
 }
 
 void RetrieveItemsJob::processEntry()
@@ -141,11 +137,7 @@ void RetrieveItemsJob::processEntry()
         }
         if (trx != lastTrx) {
             lastTrx = trx;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
             QMetaObject::invokeMethod(this, &RetrieveItemsJob::processEntry, Qt::QueuedConnection);
-#else
-            QMetaObject::invokeMethod(this, "processEntry", Qt::QueuedConnection);
-#endif
             return;
         }
     }

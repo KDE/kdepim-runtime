@@ -24,11 +24,7 @@
 #include <Collection>
 #include <QModelIndex>
 #include <QIdentityProxyModel>
-#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
-class KRecursiveFilterProxyModel;
-#else
 class QSortFilterProxyModel;
-#endif
 namespace Akonadi {
 class EntityTreeModel;
 class ChangeRecorder;
@@ -73,11 +69,7 @@ private:
     QTreeView *mFolderView = nullptr;
     Akonadi::EntityTreeModel *mModel = nullptr;
     Akonadi::ChangeRecorder *mChangeRecorder = nullptr;
-#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
-    KRecursiveFilterProxyModel *mCollectionFilter = nullptr;
-#else
     QSortFilterProxyModel *mCollectionFilter = nullptr;
-#endif
     NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel = nullptr;
 };
 

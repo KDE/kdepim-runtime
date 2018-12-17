@@ -259,11 +259,7 @@ bool EwsOAuthPrivate::authenticate(bool interactive)
 
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Starting OAuth2 authentication");
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     if (!mOAuth2.refreshToken().isEmpty()) {
-#else
-    if (mOAuth2.status() == QAbstractOAuth::Status::Granted) {
-#endif
         mOAuth2.refreshAccessToken();
         return true;
     } else if (interactive) {
@@ -390,9 +386,7 @@ void EwsOAuthPrivate::granted()
 
     QMap<QString, QString> map;
     map[accessTokenMapKey] = mOAuth2.token();
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     map[refreshTokenMapKey] = mOAuth2.refreshToken();
-#endif
     Q_EMIT q->setWalletMap(map);
 
     Q_EMIT q->authSucceeded();
@@ -406,9 +400,7 @@ void EwsOAuthPrivate::error(const QString &error, const QString &errorDescriptio
 
     mAuthenticated = false;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     mOAuth2.setRefreshToken(QString());
-#endif
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Authentication failed: ") << error << errorDescription;
 
     Q_EMIT q->authFailed(error);
@@ -486,11 +478,9 @@ void EwsOAuth::walletMapRequestFinished(const QMap<QString, QString> &map)
         d->mPKeyPassword = map[pkeyPasswordMapKey];
     }
 #endif
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     if (map.contains(refreshTokenMapKey)) {
         d->mOAuth2.setRefreshToken(map[refreshTokenMapKey]);
     }
-#endif
     if (map.contains(accessTokenMapKey)) {
         d->mOAuth2.setToken(map[accessTokenMapKey]);
         d->mAuthenticated = true;

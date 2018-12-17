@@ -103,11 +103,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     if (m_enableRefresh->isEnabled()) {
         m_refreshSpinBox->setValue(Settings::self()->intervalCheckTime());
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QMetaObject::invokeMethod(this, &GoogleSettingsDialog::reloadAccounts, Qt::QueuedConnection);
-#else
-    QMetaObject::invokeMethod(this, "reloadAccounts", Qt::QueuedConnection);
-#endif
 }
 
 GoogleSettingsDialog::~GoogleSettingsDialog()

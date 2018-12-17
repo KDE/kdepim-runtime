@@ -151,16 +151,6 @@ void UtEwsOAuth::initialRefreshSuccessful()
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
     const QStringList expectedEvents = {
         Mock::requestWalletMapString(),
-#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-        Mock::modifyParamsAuthString(testClientId, testReturnUri, testState),
-        Mock::authorizeWithBrowserString(authUrlString),
-        Mock::loadWebPageString(authUrlString),
-        Mock::interceptRequestString(authUrlString),
-        Mock::interceptRequestBlockedString(false),
-        Mock::interceptRequestString(testReturnUri + "?code=" + QUrl::toPercentEncoding(refreshToken1)),
-        Mock::interceptRequestBlockedString(true),
-        Mock::authorizationCallbackReceivedString(refreshToken1),
-#endif
         Mock::modifyParamsTokenString(testClientId, testReturnUri, refreshToken1),
         Mock::networkReplyFinishedString(tokenReplyData),
         Mock::replyDataCallbackString(tokenReplyData),

@@ -748,11 +748,7 @@ void MixedMaildirResource::restoreTags(const QVariant &arg)
     const TagContextList taggedItems = mTagContextByColId[ collection.id() ];
     mPendingTagContexts << taggedItems;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QMetaObject::invokeMethod(this, &MixedMaildirResource::processNextTagContext, Qt::QueuedConnection);
-#else
-    QMetaObject::invokeMethod(this, "processNextTagContext", Qt::QueuedConnection);
-#endif
     taskDone();
 }
 

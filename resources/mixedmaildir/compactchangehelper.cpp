@@ -180,13 +180,9 @@ void CompactChangeHelper::addChangedItems(const Item::List &items)
     if (updateBatch.collection.isValid()) {
         d->mPendingUpdates << updateBatch;
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QMetaObject::invokeMethod(this, [this]() {
         d->processNextBatch();
     }, Qt::QueuedConnection);
-#else
-    QMetaObject::invokeMethod(this, "processNextBatch", Qt::QueuedConnection);
-#endif
 }
 
 QString CompactChangeHelper::currentRemoteId(const Item &item) const
