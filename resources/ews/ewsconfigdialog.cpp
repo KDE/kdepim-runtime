@@ -35,9 +35,7 @@
 #include "ewssubscriptionwidget.h"
 #include "ewsprogressdialog.h"
 #include "auth/ewspasswordauth.h"
-#ifdef HAVE_NETWORKAUTH
 #include "auth/ewsoauth.h"
-#endif
 #include "ui_ewsconfigdialog.h"
 
 typedef QPair<QString, QString> StringPair;
@@ -122,7 +120,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
             &KPasswordLineEdit::setPassword);
     mSettings->requestPassword(false);
-#ifdef HAVE_NETWORKAUTH
     mUi->authOAuth2RadioButton->setEnabled(true);
     const auto authMode = mSettings->authMode();
     if (authMode == QStringLiteral("username-password")) {
@@ -131,9 +128,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         mUi->authOAuth2RadioButton->setChecked(true);
         mUi->pkeyAuthGroupBox->setEnabled(true);
     }
-#else
-    mUi->authUsernameRadioButton->setChecked(true);
-#endif
 #ifdef HAVE_QCA
     mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
     mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
@@ -229,11 +223,9 @@ void EwsConfigDialog::save()
     if (mUi->authUsernameRadioButton->isChecked()) {
         mSettings->setAuthMode(QStringLiteral("username-password"));
     }
-#ifdef HAVE_NETWORKAUTH
     if (mUi->authOAuth2RadioButton->isChecked()) {
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
-#endif
 #ifdef HAVE_QCA
     if (mUi->pkeyAuthGroupBox->isEnabled() &&
         !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
@@ -455,11 +447,9 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 {
     EwsAbstractAuth *auth = nullptr;
 
-#ifdef HAVE_NETWORKAUTH
     if (mUi->authOAuth2RadioButton->isChecked()) {
         auth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
     } else
-#endif
     if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
     }

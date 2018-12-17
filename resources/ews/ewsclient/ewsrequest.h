@@ -104,9 +104,7 @@ private:
     bool readSoapFault(QXmlStreamReader &reader);
     bool readHeader(QXmlStreamReader &reader);
     bool readResponseAttr(const QXmlStreamAttributes &attrs, EwsResponseClass &responseClass);
-#ifdef HAVE_NETWORKAUTH
     QString getOAuthToken();
-#endif
 
     QString mBody;
     EwsClient &mClient;
