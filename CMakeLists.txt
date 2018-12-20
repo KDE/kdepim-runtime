@@ -47,9 +47,9 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_VERSION "5.53.0")
+set(KF5_MIN_VERSION "5.53.0")
 
-find_package(ECM ${KF5_VERSION} CONFIG REQUIRED)
+find_package(ECM ${KF5_MIN_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
 
 
@@ -107,20 +107,20 @@ endif()
 
 
 # KF5 package
-find_package(KF5Config ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5ConfigWidgets ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5NotifyConfig ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KIO ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5ItemModels ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5Codecs ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5WindowSystem ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5TextWidgets ${KF5_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
-find_package(KF5Notifications ${KF5_VERSION} CONFIG REQUIRED) # pop3, ews
-find_package(KF5DocTools ${KF5_VERSION} CONFIG REQUIRED) # pop3
-find_package(KF5Holidays ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5DBusAddons ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5IconThemes ${KF5_VERSION} CONFIG REQUIRED)
-find_package(KF5KDELibs4Support ${KF5_VERSION} CONFIG REQUIRED)
+find_package(KF5Config ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5ConfigWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5NotifyConfig ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5KIO ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5ItemModels ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5Codecs ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5WindowSystem ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5TextWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
+find_package(KF5Notifications ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
+find_package(KF5DocTools ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3
+find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5DBusAddons ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5IconThemes ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5KDELibs4Support ${KF5_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
