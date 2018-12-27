@@ -675,9 +675,12 @@ int POP3Resource::idToTime(int id) const
 {
     const QString uid = mIdsToUidsMap.value(id);
     if (!uid.isEmpty()) {
-        const int index = Settings::self()->seenUidList().indexOf(uid);
-        if (index != -1) {
-            return Settings::self()->seenUidTimeList().at(index);
+        const QList<QString> seenUIDs = Settings::self()->seenUidList();
+        const QList<int> timeOfSeenUids = Settings::self()->seenUidTimeList();
+        Q_ASSERT(seenUIDs.size() == timeOfSeenUids.size());
+        const int index = seenUIDs.indexOf(uid);
+        if (index != -1 && (index < timeOfSeenUids.size())) {
+            return timeOfSeenUids.at(index);
         }
     }
 
