@@ -42,7 +42,7 @@ public:
     /**
      * Creates a new send job.
      *
-     * @param item The item to send.
+     * @param mItem The item to send.
      * @param parent The parent object.
      */
     explicit SendJob(const Akonadi::Item &mItem, QObject *parent = nullptr);
