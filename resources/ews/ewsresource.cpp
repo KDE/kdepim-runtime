@@ -1323,9 +1323,9 @@ void EwsResource::setUpAuth()
     EwsAbstractAuth *auth = mSettings->loadAuth(this);
 
     /* Use queued connections here to avoid stack overflow when the reauthentication proceeds through all stages. */
-    connect(auth, SIGNAL(authSucceeded()), this, SLOT(authSucceeded()), Qt::QueuedConnection);
-    connect(auth, SIGNAL(authFailed(QString)), this, SLOT(authFailed(QString)), Qt::QueuedConnection);
-    connect(auth, SIGNAL(requestAuthFailed()), this, SLOT(requestAuthFailed()), Qt::QueuedConnection);
+    connect(auth, &EwsAbstractAuth::authSucceeded, this, &EwsResource::authSucceeded, Qt::QueuedConnection);
+    connect(auth, &EwsAbstractAuth::authFailed, this, &EwsResource::authFailed, Qt::QueuedConnection);
+    connect(auth, &EwsAbstractAuth::requestAuthFailed, this, &EwsResource::requestAuthFailed, Qt::QueuedConnection);
 
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Initializing authentication");
 

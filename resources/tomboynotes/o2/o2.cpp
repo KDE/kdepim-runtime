@@ -207,7 +207,7 @@ void O2::link()
         tokenRequest.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("application/x-www-form-urlencoded"));
         QNetworkReply *tokenReply = manager_->post(tokenRequest, payload);
 
-        connect(tokenReply, SIGNAL(finished()), this, SLOT(onTokenReplyFinished()), Qt::QueuedConnection);
+        connect(tokenReply, &QNetworkReply::finished, this, &O2::onTokenReplyFinished, Qt::QueuedConnection);
         connect(tokenReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onTokenReplyError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
     }
 }
@@ -229,7 +229,7 @@ void O2::onVerificationReceived(const QMap<QString, QString> &response)
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived: Emitting closeBrowser()";
     Q_EMIT closeBrowser();
 
-    if (response.contains(QLatin1String("error"))) {
+    if (response.contains(QStringLiteral("error"))) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived: Verification failed: " << response;
         Q_EMIT linkingFailed();
         return;
@@ -255,7 +255,7 @@ void O2::onVerificationReceived(const QMap<QString, QString> &response)
         QByteArray data = buildRequestBody(parameters);
         QNetworkReply *tokenReply = manager_->post(tokenRequest, data);
         timedReplies_.add(tokenReply);
-        connect(tokenReply, SIGNAL(finished()), this, SLOT(onTokenReplyFinished()), Qt::QueuedConnection);
+        connect(tokenReply, &QNetworkReply::finished, this, &O2::onTokenReplyFinished, Qt::QueuedConnection);
         connect(tokenReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onTokenReplyError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
     } else {
         setToken(response.value(QLatin1String(O2_OAUTH2_ACCESS_TOKEN)));
@@ -383,7 +383,7 @@ void O2::refresh()
     QByteArray data = buildRequestBody(parameters);
     QNetworkReply *refreshReply = manager_->post(refreshRequest, data);
     timedReplies_.add(refreshReply);
-    connect(refreshReply, SIGNAL(finished()), this, SLOT(onRefreshFinished()), Qt::QueuedConnection);
+    connect(refreshReply, &QNetworkReply::finished, this, &O2::onRefreshFinished, Qt::QueuedConnection);
     connect(refreshReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRefreshError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
 }
 

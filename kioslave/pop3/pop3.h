@@ -80,7 +80,7 @@ protected:
      *  reply via getResponse.  Similar rules apply.  If no buffer is
      *  specified, no data is passed back.
      */
-    Resp command(const QByteArray &buf, char *r_buf = 0, unsigned int r_len = 0);
+    Resp command(const QByteArray &buf, char *r_buf = nullptr, unsigned int r_len = 0);
 
     /**
      *  All POP3 commands will generate a response.  Each response will

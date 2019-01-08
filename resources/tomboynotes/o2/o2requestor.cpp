@@ -18,7 +18,7 @@ O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObj
         timedReplies_.setIgnoreSslErrors(authenticator->ignoreSslErrors());
     }
     qRegisterMetaType<QNetworkReply::NetworkError>("QNetworkReply::NetworkError");
-    connect(authenticator, SIGNAL(refreshFinished(QNetworkReply::NetworkError)), this, SLOT(onRefreshFinished(QNetworkReply::NetworkError)), Qt::QueuedConnection);
+    connect(authenticator, &O2::refreshFinished, this, &O2Requestor::onRefreshFinished, Qt::QueuedConnection);
 }
 
 O2Requestor::~O2Requestor()
@@ -33,7 +33,7 @@ int O2Requestor::get(const QNetworkRequest &req)
     reply_ = manager_->get(request_);
     timedReplies_.add(reply_);
     connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRequestError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(finished()), this, SLOT(onRequestFinished()), Qt::QueuedConnection);
+    connect(reply_, &QNetworkReply::finished, this, &O2Requestor::onRequestFinished, Qt::QueuedConnection);
     return id_;
 }
 
@@ -46,7 +46,7 @@ int O2Requestor::post(const QNetworkRequest &req, const QByteArray &data)
     reply_ = manager_->post(request_, data_);
     timedReplies_.add(reply_);
     connect(reply_, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onRequestError(QNetworkReply::NetworkError)), Qt::QueuedConnection);
-    connect(reply_, SIGNAL(finished()), this, SLOT(onRequestFinished()), Qt::QueuedConnection);
+    connect(reply_, &QNetworkReply::finished, this, &O2Requestor::onRequestFinished, Qt::QueuedConnection);
     connect(reply_, &QNetworkReply::uploadProgress, this, &O2Requestor::onUploadProgress);
     return id_;
 }
