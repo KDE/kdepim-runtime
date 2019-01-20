@@ -27,7 +27,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-
 #include "ewsautodiscoveryjob.h"
 #include "ewsgetfolderrequest.h"
 #include "ewsresource.h"
@@ -56,14 +55,13 @@ static bool execJob(KJob *job)
 {
     QEventLoop loop;
     QObject::connect(job, &KJob::finished, &loop, [&](KJob *j) {
-            loop.exit(j->error());
-        });
+        loop.exit(j->error());
+    });
     job->start();
     return loop.exec() == 0;
 }
 
-EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId,
-                                 EwsSettings *settings)
+EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId wId, EwsSettings *settings)
     : QDialog()
     , mParentResource(parentResource)
     , mSettings(settings)
@@ -132,10 +130,10 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
     mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
     connect(mSettings.data(), &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &map) {
-            if (map.contains(pkeyPasswordMapKey)) {
-                mUi->pkeyAuthPassword->setPassword(map[pkeyPasswordMapKey]);
-            }
-        });
+        if (map.contains(pkeyPasswordMapKey)) {
+            mUi->pkeyAuthPassword->setPassword(map[pkeyPasswordMapKey]);
+        }
+    });
     mSettings->requestMap();
 #endif
 
@@ -203,8 +201,8 @@ void EwsConfigDialog::save()
 
     /* Erase the subscription id in case subscription is disabled or its parameters changed. This
      * fill force creation of a new subscription. */
-    if (!mSubWidget->subscriptionEnabled() ||
-        (mSubWidget->subscribedList() != mSettings->serverSubscriptionList())) {
+    if (!mSubWidget->subscriptionEnabled()
+        || (mSubWidget->subscribedList() != mSettings->serverSubscriptionList())) {
         mSettings->setEventSubscriptionId(QString());
         mSettings->setEventSubscriptionWatermark(QString());
     }
@@ -227,8 +225,8 @@ void EwsConfigDialog::save()
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
 #ifdef HAVE_QCA
-    if (mUi->pkeyAuthGroupBox->isEnabled() &&
-        !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+    if (mUi->pkeyAuthGroupBox->isEnabled()
+        && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         mSettings->setPKeyCert(mUi->pkeyAuthCert->text());
         mSettings->setPKeyKey(mUi->pkeyAuthKey->text());
         const QMap<QString, QString> map = {{pkeyPasswordMapKey, mUi->pkeyAuthPassword->password()}};
@@ -245,9 +243,9 @@ void EwsConfigDialog::save()
 void EwsConfigDialog::performAutoDiscovery()
 {
     mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
-            fullUsername(), mUi->passwordEdit->password(),
-            mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
-            mUi->kcfg_EnableNTLMv2->isChecked(), this);
+                                                fullUsername(), mUi->passwordEdit->password(),
+                                                mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
+                                                mUi->kcfg_EnableNTLMv2->isChecked(), this);
     connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
@@ -336,9 +334,9 @@ void EwsConfigDialog::dialogAccepted()
 {
     if (mUi->kcfg_AutoDiscovery->isChecked() && mAutoDiscoveryNeeded) {
         mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
-                fullUsername(), mUi->passwordEdit->password(),
-                mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
-                mUi->kcfg_EnableNTLMv2->isChecked(), this);
+                                                    fullUsername(), mUi->passwordEdit->password(),
+                                                    mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
+                                                    mUi->kcfg_EnableNTLMv2->isChecked(), this);
         connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
@@ -449,29 +447,28 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 
     if (mUi->authOAuth2RadioButton->isChecked()) {
         auth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
-    } else
-    if (mUi->authUsernameRadioButton->isChecked()) {
+    } else if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
     }
     auth->setAuthParentWidget(this);
 
 #ifdef HAVE_QCA
-    if (mUi->pkeyAuthGroupBox->isEnabled() &&
-        !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+    if (mUi->pkeyAuthGroupBox->isEnabled()
+        && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         auth->setPKeyAuthCertificateFiles(mUi->pkeyAuthCert->text(), mUi->pkeyAuthKey->text());
         mAuthMap[pkeyPasswordMapKey] = mUi->pkeyAuthPassword->password();
     }
 #endif
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
-            auth->walletPasswordRequestFinished(mUi->passwordEdit->password());
-        });
+        auth->walletPasswordRequestFinished(mUi->passwordEdit->password());
+    });
     connect(auth, &EwsAbstractAuth::requestWalletMap, this, [&]() {
-            auth->walletMapRequestFinished(mAuthMap);
-        });
+        auth->walletMapRequestFinished(mAuthMap);
+    });
     connect(auth, &EwsAbstractAuth::setWalletMap, this, [&](const QMap<QString, QString> &map) {
-            mAuthMap = map;
-        });
+        mAuthMap = map;
+    });
 
     auth->init();
 
@@ -479,13 +476,13 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
     bool authFinished = false;
 
     connect(auth, &EwsAbstractAuth::authSucceeded, this, [&]() {
-            authFinished = true;
-            loop.exit(0);
-        });
-    connect(auth, &EwsAbstractAuth::authFailed, this, [&](const QString&) {
-            authFinished = true;
-            loop.exit(0);
-        });
+        authFinished = true;
+        loop.exit(0);
+    });
+    connect(auth, &EwsAbstractAuth::authFailed, this, [&](const QString &) {
+        authFinished = true;
+        loop.exit(0);
+    });
 
     if (auth->authenticate(true)) {
         if (!authFinished) {

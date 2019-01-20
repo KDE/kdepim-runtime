@@ -33,8 +33,7 @@
 
 using namespace Akonadi;
 
-EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject *parent,
-        const Collection &collection)
+EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject *parent, const Collection &collection)
     : EwsFetchItemDetailJob(client, parent, collection)
 {
     EwsItemShape shape(EwsShapeIdOnly);
@@ -72,7 +71,6 @@ EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject 
 //    shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
     mRequest->setItemShape(shape);
 }
-
 
 EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob()
 {
@@ -121,7 +119,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
                 incidence->setDtStart(dt);
             }
             if (incidence->type() == KCalCore::Incidence::TypeEvent) {
-                KCalCore::Event *event = reinterpret_cast<KCalCore::Event*>(incidence.data());
+                KCalCore::Event *event = reinterpret_cast<KCalCore::Event *>(incidence.data());
                 dt = event->dtEnd();
                 if (dt.isValid()) {
                     event->setDtEnd(dt);
@@ -165,7 +163,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         return;
     }
 
-    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest*>(job);
+    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest *>(job);
 
     if (!req) {
         setError(1);
@@ -199,7 +197,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
             incidence->setDtStart(dt);
         }
         if (incidence->type() == KCalCore::Incidence::TypeEvent) {
-            KCalCore::Event *event = reinterpret_cast<KCalCore::Event*>(incidence.data());
+            KCalCore::Event *event = reinterpret_cast<KCalCore::Event *>(incidence.data());
             dt = event->dtEnd();
             if (dt.isValid()) {
                 event->setDtEnd(dt);

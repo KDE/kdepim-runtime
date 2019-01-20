@@ -75,7 +75,9 @@ void EwsGetFolderRequest::start()
 bool EwsGetFolderRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("GetFolder"),
-                                [this](QXmlStreamReader &reader) {return parseFoldersResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseFoldersResponse(reader);
+    });
 }
 
 bool EwsGetFolderRequest::parseFoldersResponse(QXmlStreamReader &reader)
@@ -91,10 +93,10 @@ bool EwsGetFolderRequest::parseFoldersResponse(QXmlStreamReader &reader)
             const EwsFolder &folder = resp.folder();
             const EwsId &id = folder[EwsFolderFieldFolderId].value<EwsId>();
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetFolder response (id: %1, name: %2)")
-                                          .arg(ewsHash(id.id()), folder[EwsFolderFieldDisplayName].toString());
+                .arg(ewsHash(id.id()), folder[EwsFolderFieldDisplayName].toString());
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetFolder response - %1")
-                                          .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
 
@@ -120,8 +122,7 @@ EwsGetFolderRequest::Response::Response(QXmlStreamReader &reader)
             if (responseClass() == EwsResponseError) {
                 // Skip empty folders element
                 reader.skipCurrentElement();
-            }
-            else if (!parseFolders(reader)) {
+            } else if (!parseFolders(reader)) {
                 return;
             }
         } else if (!readResponseElement(reader)) {

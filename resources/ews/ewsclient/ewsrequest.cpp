@@ -27,7 +27,9 @@
 #include "auth/ewsabstractauth.h"
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
-    : EwsJob(parent), mClient(client), mServerVersion(EwsServerVersion::ewsVersion2007Sp1)
+    : EwsJob(parent)
+    , mClient(client)
+    , mServerVersion(EwsServerVersion::ewsVersion2007Sp1)
 {
 }
 
@@ -139,7 +141,7 @@ void EwsRequest::requestResult(KJob *job)
         }
     }
 
-    KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob*>(job);
+    KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob *>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
     if (resp == 401 && mClient.auth()) {
@@ -178,8 +180,9 @@ bool EwsRequest::readResponse(QXmlStreamReader &reader)
         }
 
         if (reader.name() == QStringLiteral("Body")) {
-            if (!readSoapBody(reader))
+            if (!readSoapBody(reader)) {
                 return false;
+            }
         } else if (reader.name() == QStringLiteral("Header")) {
             if (!readHeader(reader)) {
                 return false;
@@ -236,8 +239,7 @@ void EwsRequest::requestData(KIO::Job *job, const QByteArray &data)
     mResponseData += QString::fromUtf8(data);
 }
 
-bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &reqName,
-                                      ContentReaderFn contentReader)
+bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &reqName, ContentReaderFn contentReader)
 {
     if (reader.name() != reqName + QStringLiteral("Response")
         || reader.namespaceUri() != ewsMsgNsUri) {

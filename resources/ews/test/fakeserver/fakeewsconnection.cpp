@@ -42,9 +42,13 @@ static const QHash<uint, QString> responseCodes = {
 
 static Q_CONSTEXPR int streamingEventsHeartbeatIntervalSeconds = 5;
 
-FakeEwsConnection::FakeEwsConnection(QTcpSocket *sock, FakeEwsServer* parent)
-    : QObject(parent), mSock(sock), mContentLength(0), mKeepAlive(false), mState(Initial),
-      mAuthenticated(false)
+FakeEwsConnection::FakeEwsConnection(QTcpSocket *sock, FakeEwsServer *parent)
+    : QObject(parent)
+    , mSock(sock)
+    , mContentLength(0)
+    , mKeepAlive(false)
+    , mState(Initial)
+    , mAuthenticated(false)
 {
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Got new EWS connection.");
     connect(mSock.data(), &QTcpSocket::disconnected, this, &FakeEwsConnection::disconnected);
@@ -149,7 +153,7 @@ void FakeEwsConnection::dataAvailable()
                 }
             }
 
-            FakeEwsServer *server = qobject_cast<FakeEwsServer*>(parent());
+            FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());
             auto defaultReplyCallback = server->defaultReplyCallback();
             if (defaultReplyCallback && (resp == FakeEwsServer::EmptyResponse)) {
                 QXmlResultItems ri;
@@ -212,7 +216,7 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::parseRequest(const Q
 {
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Got request: ") << content;
 
-    FakeEwsServer *server = qobject_cast<FakeEwsServer*>(parent());
+    FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());
     FakeEwsServer::DialogEntry::HttpResponse resp = FakeEwsServer::EmptyResponse;
     Q_FOREACH (const FakeEwsServer::DialogEntry &de, server->dialog()) {
         QXmlResultItems ri;
@@ -259,7 +263,8 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::parseRequest(const Q
 
 FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsRequest(const QString &content)
 {
-    const QRegularExpression re(QStringLiteral("<?xml .*<\\w*:?GetEvents[ >].*<\\w*:?SubscriptionId>(?<subid>[^<]*)</\\w*:?SubscriptionId><\\w*:?Watermark>(?<watermark>[^<]*)</\\w*:?Watermark></\\w*:?GetEvents>.*"));
+    const QRegularExpression re(QStringLiteral(
+                                    "<?xml .*<\\w*:?GetEvents[ >].*<\\w*:?SubscriptionId>(?<subid>[^<]*)</\\w*:?SubscriptionId><\\w*:?Watermark>(?<watermark>[^<]*)</\\w*:?Watermark></\\w*:?GetEvents>.*"));
 
     QRegularExpressionMatch match = re.match(content);
     if (!match.hasMatch() || match.hasPartialMatch()) {
@@ -270,44 +275,44 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Got valid GetEvents request.");
 
     QString resp = QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-            "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-            "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-            "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-            "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-            "<soap:Header>"
-            "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-            "</soap:Header>"
-            "<soap:Body>"
-            "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-            "<m:ResponseMessages>"
-            "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
-            "<m:ResponseCode>NoError</m:ResponseCode>"
-            "<m:Notification>");
+                                  "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+                                  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                                  "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+                                  "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+                                  "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                  "<soap:Header>"
+                                  "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+                                  "</soap:Header>"
+                                  "<soap:Body>"
+                                  "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                  "<m:ResponseMessages>"
+                                  "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
+                                  "<m:ResponseCode>NoError</m:ResponseCode>"
+                                  "<m:Notification>");
 
     if (match.captured(QStringLiteral("subid")).isEmpty() || match.captured(QStringLiteral("watermark")).isEmpty()) {
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Missing subscription id or watermark.");
         const QString errorResp = QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                "<soap:Header>"
-                "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                "</soap:Header>"
-                "<soap:Body>"
-                "<m:GetEventsResponse>"
-                "<m:ResponseMessages>"
-                "<m:GetEventsResponseMessage ResponseClass=\"Error\">"
-                "<m:MessageText>Missing subscription id or watermark.</m:MessageText>"
-                "<m:ResponseCode>ErrorInvalidPullSubscriptionId</m:ResponseCode>"
-                "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
-                "</m:GetEventsResponseMessage>"
-                "</m:ResponseMessages>"
-                "</m:GetEventsResponse>"
-                "</soap:Body>"
-                "</soap:Envelope>");
+                                                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+                                                 "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                                                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+                                                 "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+                                                 "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                                 "<soap:Header>"
+                                                 "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+                                                 "</soap:Header>"
+                                                 "<soap:Body>"
+                                                 "<m:GetEventsResponse>"
+                                                 "<m:ResponseMessages>"
+                                                 "<m:GetEventsResponseMessage ResponseClass=\"Error\">"
+                                                 "<m:MessageText>Missing subscription id or watermark.</m:MessageText>"
+                                                 "<m:ResponseCode>ErrorInvalidPullSubscriptionId</m:ResponseCode>"
+                                                 "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
+                                                 "</m:GetEventsResponseMessage>"
+                                                 "</m:ResponseMessages>"
+                                                 "</m:GetEventsResponse>"
+                                                 "</soap:Body>"
+                                                 "</soap:Envelope>");
         return {errorResp, 200};
     }
 
@@ -315,7 +320,7 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
     resp += QStringLiteral("<PreviousWatermark>") + match.captured(QStringLiteral("watermark")) + QStringLiteral("<PreviousWatermark>");
     resp += QStringLiteral("<MoreEvents>false<MoreEvents>");
 
-    FakeEwsServer *server = qobject_cast<FakeEwsServer*>(parent());
+    FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());
     const QStringList events = server->retrieveEventsXml();
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning %1 events.").arg(events.size());
     Q_FOREACH (const QString &eventXml, events) {
@@ -325,27 +330,26 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
     resp += QStringLiteral("</m:Notification></m:GetEventsResponseMessage></m:ResponseMessages>"
                            "</m:GetEventsResponse></soap:Body></soap:Envelope>");
 
-
     return {resp, 200};
 }
 
 QString FakeEwsConnection::prepareEventsResponse(const QStringList &events)
 {
     QString resp = QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-            "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-            "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-            "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-            "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-            "<soap:Header>"
-            "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-            "</soap:Header>"
-            "<soap:Body>"
-            "<m:GetStreamingEventsResponse>"
-            "<m:ResponseMessages>"
-            "<m:GetStreamingEventsResponseMessage ResponseClass=\"Success\">"
-            "<m:ResponseCode>NoError</m:ResponseCode>"
-            "<m:ConnectionStatus>OK</m:ConnectionStatus>");
+                                  "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+                                  "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                                  "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+                                  "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+                                  "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                  "<soap:Header>"
+                                  "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+                                  "</soap:Header>"
+                                  "<soap:Body>"
+                                  "<m:GetStreamingEventsResponse>"
+                                  "<m:ResponseMessages>"
+                                  "<m:GetStreamingEventsResponseMessage ResponseClass=\"Success\">"
+                                  "<m:ResponseCode>NoError</m:ResponseCode>"
+                                  "<m:ConnectionStatus>OK</m:ConnectionStatus>");
 
     if (!events.isEmpty()) {
         resp += QStringLiteral("<m:Notifications><m:Notification><SubscriptionId>") + mStreamingSubId + QStringLiteral("<SubscriptionId>");
@@ -365,7 +369,8 @@ QString FakeEwsConnection::prepareEventsResponse(const QStringList &events)
 
 FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetStreamingEventsRequest(const QString &content)
 {
-    const QRegularExpression re(QStringLiteral("<?xml .*<\\w*:?GetStreamingEvents[ >].*<\\w*:?SubscriptionIds><\\w*:?SubscriptionId>(?<subid>[^<]*)</\\w*:?SubscriptionId></\\w*:?SubscriptionIds>.*<\\w*:?ConnectionTimeout>(?<timeout>[^<]*)</\\w*:?ConnectionTimeout></\\w*:?GetStreamingEvents>.*"));
+    const QRegularExpression re(QStringLiteral(
+                                    "<?xml .*<\\w*:?GetStreamingEvents[ >].*<\\w*:?SubscriptionIds><\\w*:?SubscriptionId>(?<subid>[^<]*)</\\w*:?SubscriptionId></\\w*:?SubscriptionIds>.*<\\w*:?ConnectionTimeout>(?<timeout>[^<]*)</\\w*:?ConnectionTimeout></\\w*:?GetStreamingEvents>.*"));
 
     QRegularExpressionMatch match = re.match(content);
     if (!match.hasMatch() || match.hasPartialMatch()) {
@@ -378,32 +383,32 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetStreamingEv
     if (match.captured(QStringLiteral("subid")).isEmpty() || match.captured(QStringLiteral("timeout")).isEmpty()) {
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Missing subscription id or timeout.");
         const QString errorResp = QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                "<soap:Header>"
-                "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                "</soap:Header>"
-                "<soap:Body>"
-                "<m:GetStreamingEventsResponse>"
-                "<m:ResponseMessages>"
-                "<m:GetStreamingEventsResponseMessage ResponseClass=\"Error\">"
-                "<m:MessageText>Missing subscription id or timeout.</m:MessageText>"
-                "<m:ResponseCode>ErrorInvalidSubscription</m:ResponseCode>"
-                "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
-                "</m:GetEventsResponseMessage>"
-                "</m:ResponseMessages>"
-                "</m:GetEventsResponse>"
-                "</soap:Body>"
-                "</soap:Envelope>");
+                                                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+                                                 "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                                                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+                                                 "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+                                                 "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                                 "<soap:Header>"
+                                                 "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+                                                 "</soap:Header>"
+                                                 "<soap:Body>"
+                                                 "<m:GetStreamingEventsResponse>"
+                                                 "<m:ResponseMessages>"
+                                                 "<m:GetStreamingEventsResponseMessage ResponseClass=\"Error\">"
+                                                 "<m:MessageText>Missing subscription id or timeout.</m:MessageText>"
+                                                 "<m:ResponseCode>ErrorInvalidSubscription</m:ResponseCode>"
+                                                 "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
+                                                 "</m:GetEventsResponseMessage>"
+                                                 "</m:ResponseMessages>"
+                                                 "</m:GetEventsResponse>"
+                                                 "</soap:Body>"
+                                                 "</soap:Envelope>");
         return {errorResp, 200};
     }
 
     mStreamingSubId = match.captured(QStringLiteral("subid"));
 
-    FakeEwsServer *server = qobject_cast<FakeEwsServer*>(parent());
+    FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());
     const QStringList events = server->retrieveEventsXml();
 
     QString resp = prepareEventsResponse(events);
@@ -436,4 +441,3 @@ void FakeEwsConnection::sendEvents(const QStringList &events)
 
     mSock->write(QByteArray::number(resp.size(), 16) + "\r\n" + resp + "\r\n");
 }
-

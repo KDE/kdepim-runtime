@@ -25,7 +25,9 @@
 #include "fakeewsserver_debug.h"
 
 FakeEwsServerThread::FakeEwsServerThread(QObject *parent)
-    : QThread(parent), mPortNumber(0), mIsRunning(0)
+    : QThread(parent)
+    , mPortNumber(0)
+    , mIsRunning(0)
 {
 }
 

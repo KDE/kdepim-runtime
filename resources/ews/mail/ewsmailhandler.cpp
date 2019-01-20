@@ -45,8 +45,7 @@ EwsItemHandler *EwsMailHandler::factory()
     return new EwsMailHandler();
 }
 
-EwsFetchItemDetailJob *EwsMailHandler::fetchItemDetailJob(EwsClient &client, QObject *parent,
-        const Akonadi::Collection &collection)
+EwsFetchItemDetailJob *EwsMailHandler::fetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
 {
     return new EwsFetchMailDetailJob(client, parent, collection);
 }
@@ -89,15 +88,12 @@ bool EwsMailHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)
     return true;
 }
 
-EwsModifyItemJob *EwsMailHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items,
-        const QSet<QByteArray> &parts, QObject *parent)
+EwsModifyItemJob *EwsMailHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent)
 {
     return new EwsModifyMailJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsMailHandler::createItemJob(EwsClient &client, const Akonadi::Item &item,
-        const Akonadi::Collection &collection,
-        EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *EwsMailHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
 {
     return new EwsCreateMailJob(client, item, collection, tagStore, parent);
 }
@@ -117,8 +113,8 @@ QHash<EwsPropertyField, QVariant> EwsMailHandler::writeFlags(const QSet<QByteArr
             isRead = true;
         } else if (flag == MessageFlags::Flagged) {
             isFlagged = true;
-        } else if (flag == MessageFlags::HasAttachment || flag == MessageFlags::HasInvitation ||
-                   flag == MessageFlags::Signed || flag == MessageFlags::Encrypted) {
+        } else if (flag == MessageFlags::HasAttachment || flag == MessageFlags::HasInvitation
+                   || flag == MessageFlags::Signed || flag == MessageFlags::Encrypted) {
             // These flags are read-only. Remove them from the unknown list but don't do anything with them.
         } else {
             unknownFlags.insert(flag);

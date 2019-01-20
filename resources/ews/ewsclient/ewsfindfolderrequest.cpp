@@ -36,14 +36,15 @@ class EwsFindFolderResponse : public EwsRequest::Response
 public:
     EwsFindFolderResponse(QXmlStreamReader &reader);
     bool parseRootFolder(QXmlStreamReader &reader);
-    EwsFolder* readFolder(QXmlStreamReader &reader);
+    EwsFolder *readFolder(QXmlStreamReader &reader);
     unsigned readChildFolders(EwsFolder &parent, unsigned count, QXmlStreamReader &reader);
 
     QList<EwsFolder> mFolders;
 };
 
 EwsFindFolderRequest::EwsFindFolderRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mTraversal(EwsTraversalDeep)
+    : EwsRequest(client, parent)
+    , mTraversal(EwsTraversalDeep)
 {
 }
 
@@ -91,7 +92,9 @@ void EwsFindFolderRequest::start()
 bool EwsFindFolderRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("FindFolder"),
-                                [this](QXmlStreamReader &reader) {return parseFoldersResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseFoldersResponse(reader);
+    });
 }
 
 bool EwsFindFolderRequest::parseFoldersResponse(QXmlStreamReader &reader)
@@ -174,8 +177,9 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
             int childCount = (*folder)[EwsFolderFieldChildFolderCount].toUInt(&ok);
             if (childCount > 0) {
                 unsigned readCount = readChildFolders(*folder, childCount, reader);
-                if (readCount == 0)
+                if (readCount == 0) {
                     return false;
+                }
                 i += readCount;
             }
             mFolders.append(*folder);
@@ -192,15 +196,15 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
     return true;
 }
 
-EwsFolder* EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
+EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
     const QStringRef readerName = reader.name();
-    if (readerName == QStringLiteral("Folder") ||
-        readerName == QStringLiteral("CalendarFolder") ||
-        readerName == QStringLiteral("ContactsFolder") ||
-        readerName == QStringLiteral("TasksFolder") ||
-        readerName == QStringLiteral("SearchFolder")) {
+    if (readerName == QStringLiteral("Folder")
+        || readerName == QStringLiteral("CalendarFolder")
+        || readerName == QStringLiteral("ContactsFolder")
+        || readerName == QStringLiteral("TasksFolder")
+        || readerName == QStringLiteral("SearchFolder")) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
@@ -231,8 +235,9 @@ unsigned EwsFindFolderResponse::readChildFolders(EwsFolder &parent, unsigned cou
             int childCount = (*folder)[EwsFolderFieldChildFolderCount].toUInt(&ok);
             if (ok && childCount > 0) {
                 unsigned readCount2 = readChildFolders(*folder, childCount, reader);
-                if (readCount2 == 0)
+                if (readCount2 == 0) {
                     return false;
+                }
                 readCount += readCount2;
             }
             parent.addChild(*folder);
@@ -241,4 +246,3 @@ unsigned EwsFindFolderResponse::readChildFolders(EwsFolder &parent, unsigned cou
     }
     return readCount;
 }
-

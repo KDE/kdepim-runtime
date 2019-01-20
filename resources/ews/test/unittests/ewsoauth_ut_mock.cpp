@@ -25,7 +25,6 @@
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
 namespace Mock {
-
 QPointer<QWebEngineView> QWebEngineView::instance;
 QPointer<QOAuth2AuthorizationCodeFlow> QOAuth2AuthorizationCodeFlow::instance;
 
@@ -63,7 +62,9 @@ QWebEngineUrlSchemeHandler::~QWebEngineUrlSchemeHandler()
 }
 
 QWebEngineProfile::QWebEngineProfile(QObject *parent)
-    : QObject(parent), mInterceptor(nullptr), mHandler(nullptr)
+    : QObject(parent)
+    , mInterceptor(nullptr)
+    , mHandler(nullptr)
 {
 }
 
@@ -88,7 +89,8 @@ void QWebEngineProfile::installUrlSchemeHandler(QByteArray const &scheme, QWebEn
 }
 
 QWebEnginePage::QWebEnginePage(QWebEngineProfile *profile, QObject *parent)
-    : QObject(parent), mProfile(profile)
+    : QObject(parent)
+    , mProfile(profile)
 {
     connect(profile, &QWebEngineProfile::logEvent, this, &QWebEnginePage::logEvent);
 }
@@ -98,7 +100,8 @@ QWebEnginePage::~QWebEnginePage()
 }
 
 QWebEngineView::QWebEngineView(QWidget *parent)
-    : QWidget(parent), mPage(nullptr)
+    : QWidget(parent)
+    , mPage(nullptr)
 {
     if (!instance) {
         instance = this;
@@ -180,7 +183,8 @@ QAbstractOAuthReplyHandler::~QAbstractOAuthReplyHandler()
 }
 
 QAbstractOAuth::QAbstractOAuth(QObject *parent)
-    : QObject(parent), mStatus(Status::NotAuthenticated)
+    : QObject(parent)
+    , mStatus(Status::NotAuthenticated)
 {
 }
 
@@ -199,7 +203,7 @@ void QAbstractOAuth::setClientIdentifier(const QString &identifier)
     mClientId = identifier;
 }
 
-void QAbstractOAuth::setModifyParametersFunction(const std::function<void (QAbstractOAuth::Stage, QMap<QString, QVariant>*)> &func)
+void QAbstractOAuth::setModifyParametersFunction(const std::function<void(QAbstractOAuth::Stage, QMap<QString, QVariant> *)> &func)
 {
     mModifyParamsFunc = func;
 }
@@ -388,15 +392,14 @@ QString browserDisplayRequestString()
 QString modifyParamsAuthString(const QString &clientId, const QString &returnUri, const QString &state)
 {
     return QStringLiteral("ModifyParams:RequestingAuthorization:client_id=%1&redirect_uri=%2&response_type=code&scope&state=%3")
-        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(returnUri)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
+           .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(returnUri)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
 }
 
-QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri,
-                      const QString &email, const QString &resource, const QString &state)
+QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri, const QString &email, const QString &resource, const QString &state)
 {
     return QStringLiteral("%1?client_id=%2&login_hint=%3&prompt=login&redirect_uri=%4&resource=%5&response_type=code&scope&state=%6")
-        .arg(authUrl, QString::fromLatin1(QUrl::toPercentEncoding(clientId)), email, QString::fromLatin1(QUrl::toPercentEncoding(returnUri)),
-             QString::fromLatin1(QUrl::toPercentEncoding(resource)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
+           .arg(authUrl, QString::fromLatin1(QUrl::toPercentEncoding(clientId)), email, QString::fromLatin1(QUrl::toPercentEncoding(returnUri)),
+                QString::fromLatin1(QUrl::toPercentEncoding(resource)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
 }
 
 QString authorizeWithBrowserString(const QString &url)
@@ -427,8 +430,8 @@ QString authorizationCallbackReceivedString(const QString &code)
 QString modifyParamsTokenString(const QString &clientId, const QString &returnUri, const QString &code)
 {
     return QStringLiteral("ModifyParams:RequestingAccessToken:client_id=%1&code=%2&grant_type=authorization_code&redirect_uri=%3")
-        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(code)),
-             QString::fromLatin1(QUrl::toPercentEncoding(returnUri)));
+           .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(code)),
+                QString::fromLatin1(QUrl::toPercentEncoding(returnUri)));
 }
 
 QString networkReplyFinishedString(const QString &data)
@@ -441,13 +444,13 @@ QString replyDataCallbackString(const QString &data)
     return QStringLiteral("ReplyDataCallback:") + data;
 }
 
-QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken,
-                            quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
+QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
                             const QString &resource)
 {
-    return QStringLiteral("TokenCallback:access_token=%1&expires_in=%2&expires_on=%3&ext_expires_in=%4&foci=1&id_token=%5&not_before=%6&refresh_token=%7&resource=%8&scope=ReadWrite.All&token_type=Bearer")
-        .arg(accessToken).arg(tokenLifetime).arg(time + tokenLifetime).arg(extTokenLifetime).arg(idToken).arg(time)
-        .arg(refreshToken).arg(resource);
+    return QStringLiteral(
+        "TokenCallback:access_token=%1&expires_in=%2&expires_on=%3&ext_expires_in=%4&foci=1&id_token=%5&not_before=%6&refresh_token=%7&resource=%8&scope=ReadWrite.All&token_type=Bearer")
+           .arg(accessToken).arg(tokenLifetime).arg(time + tokenLifetime).arg(extTokenLifetime).arg(idToken).arg(time)
+           .arg(refreshToken).arg(resource);
 }
 
 QString requestWalletMapString()
@@ -461,8 +464,7 @@ const QString &KJob::errorString() const
     return empty;
 }
 
-EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
-        QObject *parent)
+EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword, QObject *parent)
     : KJob(parent)
 {
     Q_UNUSED(pkeyUri);
@@ -476,5 +478,4 @@ const QUrl &EwsPKeyAuthJob::resultUri() const
     static const QUrl empty;
     return empty;
 }
-
 }

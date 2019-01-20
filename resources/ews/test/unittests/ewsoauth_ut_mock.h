@@ -38,12 +38,15 @@
 Q_DECLARE_LOGGING_CATEGORY(EWSCLI_LOG)
 
 namespace Mock {
-
 class QWebEngineUrlRequestJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent), mUrl(url) {}
+    explicit QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent)
+        , mUrl(url)
+    {
+    }
+
     ~QWebEngineUrlRequestJob() override = default;
 
     QUrl requestUrl() const;
@@ -55,7 +58,12 @@ class QWebEngineUrlRequestInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent), mBlocked(false), mUrl(url) {}
+    explicit QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent)
+        , mBlocked(false)
+        , mUrl(url)
+    {
+    }
+
     ~QWebEngineUrlRequestInfo() override = default;
 
     QUrl requestUrl() const;
@@ -120,7 +128,7 @@ class QWebEngineView : public QWidget
 {
     Q_OBJECT
 public:
-    typedef std::function<void(const QUrl &, QVariantMap &)> AuthFunc;
+    typedef std::function<void (const QUrl &, QVariantMap &)> AuthFunc;
 
     explicit QWebEngineView(QWidget *parent);
     ~QWebEngineView() override;
@@ -160,7 +168,10 @@ public:
     };
     Q_ENUM(NetworkError)
 
-    explicit QNetworkReply(QObject *parent) : QBuffer(parent) {}
+    explicit QNetworkReply(QObject *parent) : QBuffer(parent)
+    {
+    }
+
     ~QNetworkReply() override = default;
 
     NetworkError error() const;
@@ -210,7 +221,7 @@ public:
     void setReplyHandler(QAbstractOAuthReplyHandler *handler);
     void setAuthorizationUrl(const QUrl &url);
     void setClientIdentifier(const QString &identifier);
-    void setModifyParametersFunction(const std::function<void (QAbstractOAuth::Stage, QMap<QString, QVariant>*)> &func);
+    void setModifyParametersFunction(const std::function<void(QAbstractOAuth::Stage, QMap<QString, QVariant> *)> &func);
     QString token() const;
     void setToken(const QString &token);
     Status status() const;
@@ -222,7 +233,7 @@ protected:
     QAbstractOAuthReplyHandler *mReplyHandler;
     QUrl mAuthUrl;
     QString mClientId;
-    std::function<void (QAbstractOAuth::Stage, QMap<QString, QVariant>*)> mModifyParamsFunc;
+    std::function<void(QAbstractOAuth::Stage, QMap<QString, QVariant> *)> mModifyParamsFunc;
     QString mToken;
     QString mRefreshToken;
     QUrl mTokenUrl;
@@ -279,10 +290,17 @@ class KJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit KJob(QObject *) {}
+    explicit KJob(QObject *)
+    {
+    }
+
     ~KJob() override = default;
 
-    int error() const { return 0; }
+    int error() const
+    {
+        return 0;
+    }
+
     const QString &errorString() const;
 Q_SIGNALS:
     void result(KJob *job);
@@ -292,18 +310,18 @@ class EwsPKeyAuthJob : public KJob
 {
     Q_OBJECT
 public:
-    explicit EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
-                   QObject *parent);
+    explicit EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword, QObject *parent);
     ~EwsPKeyAuthJob() override = default;
-    void start() {}
+    void start()
+    {
+    }
 
     const QUrl &resultUri() const;
 };
 
 QString browserDisplayRequestString();
 QString modifyParamsAuthString(const QString &clientId, const QString &returnUri, const QString &state);
-QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri,
-                      const QString &email, const QString &resource, const QString &state);
+QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri, const QString &email, const QString &resource, const QString &state);
 QString authorizeWithBrowserString(const QString &url);
 QString loadWebPageString(const QString &url);
 QString interceptRequestString(const QString &url);
@@ -312,11 +330,9 @@ QString authorizationCallbackReceivedString(const QString &code);
 QString modifyParamsTokenString(const QString &clientId, const QString &returnUri, const QString &code);
 QString networkReplyFinishedString(const QString &data);
 QString replyDataCallbackString(const QString &data);
-QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken,
-                            quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
+QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
                             const QString &resource);
 QString requestWalletMapString();
-
 }
 
 #endif /* EWSOAUTH_UT_MOCK_H */

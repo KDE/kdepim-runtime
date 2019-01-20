@@ -20,7 +20,6 @@
 #ifndef EWSRESOURCE_DEBUG_H
 #define EWSRESOURCE_DEBUG_H
 
-
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
 

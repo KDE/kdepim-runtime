@@ -34,14 +34,13 @@ static Q_CONSTEXPR quint32 TagDataVer1 = 1;
 static Q_CONSTEXPR QDataStream::Version TagDataVer1StreamVer = QDataStream::Qt_5_4;
 
 EwsTagStore::EwsTagStore(QObject *parent)
-    : QObject(parent), mVersion(0)
+    : QObject(parent)
+    , mVersion(0)
 {
-
 }
 
 EwsTagStore::~EwsTagStore()
 {
-
 }
 
 QByteArray EwsTagStore::serializeTag(const Akonadi::Tag &tag) const
@@ -113,10 +112,9 @@ bool EwsTagStore::unserializeTag(const QByteArray &data, Akonadi::Tag &tag) cons
 
 bool EwsTagStore::readTags(const QStringList &taglist, int version)
 {
-
     if (version < mVersion) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Reading tags from older version (have %1, got %2)")
-                                .arg(mVersion).arg(version);
+            .arg(mVersion).arg(version);
         return false;
     } else if (version == mVersion) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Both tag lists in version %1 - not syncing").arg(version);

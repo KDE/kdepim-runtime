@@ -27,7 +27,8 @@ static const QVector<QString> deleteTypes = {
 };
 
 EwsDeleteFolderRequest::EwsDeleteFolderRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mType(SoftDelete)
+    : EwsRequest(client, parent)
+    , mType(SoftDelete)
 {
 }
 
@@ -57,7 +58,7 @@ void EwsDeleteFolderRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting DeleteFolder request (%1 folders)")
-                                  .arg(mIds.size());
+        .arg(mIds.size());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -69,7 +70,9 @@ void EwsDeleteFolderRequest::start()
 bool EwsDeleteFolderRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("DeleteFolder"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsDeleteFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -84,7 +87,7 @@ bool EwsDeleteFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteFolder response - OK");
         } else {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteFolder response - %1")
-                                        .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
 

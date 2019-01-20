@@ -33,8 +33,7 @@ class EwsCreateItemJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsCreateItemJob(EwsClient &client, const Akonadi::Item &item,
-                     const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent);
+    EwsCreateItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent);
     ~EwsCreateItemJob() override;
 
     virtual bool setSend(bool send = true) = 0;

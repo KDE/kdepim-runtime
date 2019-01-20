@@ -22,7 +22,10 @@
 #include "ewsgetitemrequest.h"
 
 EwsFetchItemDetailJob::EwsFetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
-    : KCompositeJob(parent), mDeletedItems(nullptr), mClient(client), mCollection(collection)
+    : KCompositeJob(parent)
+    , mDeletedItems(nullptr)
+    , mClient(client)
+    , mCollection(collection)
 {
     mRequest = new EwsGetItemRequest(client, this);
     connect(mRequest.data(), &KJob::result, this, &EwsFetchItemDetailJob::itemDetailFetched);
@@ -33,8 +36,7 @@ EwsFetchItemDetailJob::~EwsFetchItemDetailJob()
 {
 }
 
-void EwsFetchItemDetailJob::setItemLists(const Akonadi::Item::List &changedItems,
-        Akonadi::Item::List *deletedItems)
+void EwsFetchItemDetailJob::setItemLists(const Akonadi::Item::List &changedItems, Akonadi::Item::List *deletedItems)
 {
     mChangedItems = changedItems;
     mDeletedItems = deletedItems;

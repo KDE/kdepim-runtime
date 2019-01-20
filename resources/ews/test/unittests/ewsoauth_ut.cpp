@@ -38,7 +38,6 @@ static const QString accessToken1 = QStringLiteral("IERbOTo5NSdtY5HMntWTH1wgrRt9
 static const QString refreshToken1 = QStringLiteral("YW7lJFWcEISynbraq4NiLLke3rOieFdvoJEDxpjCXorJblIGM56OJSu1PZXMCQL5W3KLxS9ydxqLHxRTSdw");
 static const QString idToken1 = QStringLiteral("gz7l0chu9xIi1MMgPkpHGQTmo3W7L1rQbmWAxEL5VSKHeqdIJ7E3K7vmMYTl/C1fWihB5XiLjD2GSVQoOzTfCw");
 
-
 class UtEwsOAuth : public QObject
 {
     Q_OBJECT
@@ -50,8 +49,7 @@ private:
     static QString formatJsonSorted(const QVariantMap &map);
     static int performAuthAction(EwsOAuth &oAuth, int timeout, std::function<bool(EwsOAuth *)> actionFn);
     static void setUpAccessFunction(const QString &refreshToken);
-    static void setUpTokenFunction(const QString &accessToken, const QString &refreshToken, const QString &idToken,
-                                   quint64 time, int tokenLifetime, int extTokenLifetime, QString &tokenReplyData);
+    static void setUpTokenFunction(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, int tokenLifetime, int extTokenLifetime, QString &tokenReplyData);
     static void dumpEvents(const QStringList &events, const QStringList &expectedEvents);
 
     void setUpOAuth(EwsOAuth &oAuth, QStringList &events, QString password, QMap<QString, QString> map);
@@ -67,10 +65,10 @@ void UtEwsOAuth::initialInteractiveSuccessful()
     QStringList events;
 
     setUpOAuth(oAuth, events, QString(), QMap<QString, QString>());
-        
+
     Mock::QWebEngineView::instance->setRedirectUri(Mock::QOAuth2AuthorizationCodeFlow::instance->redirectUri());
     auto time = QDateTime::currentSecsSinceEpoch();
-    
+
     constexpr unsigned int tokenLifetime = 86399;
     constexpr unsigned int extTokenLifetime = 345599;
     QString tokenReplyData;
@@ -80,14 +78,14 @@ void UtEwsOAuth::initialInteractiveSuccessful()
     Mock::QOAuth2AuthorizationCodeFlow::instance->setState(testState);
 
     const auto initStatus = performAuthAction(oAuth, 1000, [](EwsOAuth *oAuth) {
-            oAuth->init();
-            return true;
-        });
+        oAuth->init();
+        return true;
+    });
     QVERIFY(initStatus == 1);
 
     const auto authStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
-            return oAuth->authenticate(true);
-        });
+        return oAuth->authenticate(true);
+    });
     QVERIFY(authStatus == 0);
 
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
@@ -123,7 +121,7 @@ void UtEwsOAuth::initialRefreshSuccessful()
     QMap<QString, QString> map = {
         {QStringLiteral("refresh-token"), refreshToken1}
     };
-    
+
     setUpOAuth(oAuth, events, QString(), map);
 
     Mock::QWebEngineView::instance->setRedirectUri(Mock::QOAuth2AuthorizationCodeFlow::instance->redirectUri());
@@ -138,14 +136,14 @@ void UtEwsOAuth::initialRefreshSuccessful()
     Mock::QOAuth2AuthorizationCodeFlow::instance->setState(testState);
 
     const auto initStatus = performAuthAction(oAuth, 1000, [](EwsOAuth *oAuth) {
-            oAuth->init();
-            return true;
-        });
+        oAuth->init();
+        return true;
+    });
     QVERIFY(initStatus == 1);
 
     const auto authStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
-            return oAuth->authenticate(true);
-        });
+        return oAuth->authenticate(true);
+    });
     QVERIFY(authStatus == 0);
 
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
@@ -171,7 +169,7 @@ void UtEwsOAuth::refreshSuccessful()
     QStringList events;
 
     setUpOAuth(oAuth, events, QString(), QMap<QString, QString>());
-        
+
     Mock::QWebEngineView::instance->setRedirectUri(Mock::QOAuth2AuthorizationCodeFlow::instance->redirectUri());
     auto time = QDateTime::currentSecsSinceEpoch();
 
@@ -184,14 +182,14 @@ void UtEwsOAuth::refreshSuccessful()
     Mock::QOAuth2AuthorizationCodeFlow::instance->setState(testState);
 
     const auto initStatus = performAuthAction(oAuth, 1000, [](EwsOAuth *oAuth) {
-            oAuth->init();
-            return true;
-        });
+        oAuth->init();
+        return true;
+    });
     QVERIFY(initStatus == 1);
 
     const auto authStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
-            return oAuth->authenticate(true);
-        });
+        return oAuth->authenticate(true);
+    });
     QVERIFY(authStatus == 0);
 
     const auto authUrlString = Mock::authUrlString(authUrl, testClientId, testReturnUri, testEmail, resource, testState);
@@ -215,12 +213,12 @@ void UtEwsOAuth::refreshSuccessful()
     QVERIFY(events == expectedEvents);
 
     events.clear();
-    
+
     oAuth.notifyRequestAuthFailed();
 
     const auto reauthStatus = performAuthAction(oAuth, 2000, [](EwsOAuth *oAuth) {
-            return oAuth->authenticate(false);
-        });
+        return oAuth->authenticate(false);
+    });
     QVERIFY(reauthStatus == 0);
 
     const QStringList expectedEventsRefresh = {
@@ -253,28 +251,27 @@ int UtEwsOAuth::performAuthAction(EwsOAuth &oAuth, int timeout, std::function<bo
     int status = -1;
     QTimer timer;
     connect(&oAuth, &EwsOAuth::authSucceeded, &timer, [&]() {
-            qDebug() << "succeeded";
-            loop.exit(0);
-            status = 0;
-        });
+        qDebug() << "succeeded";
+        loop.exit(0);
+        status = 0;
+    });
     connect(&oAuth, &EwsOAuth::authFailed, &timer, [&](const QString &msg) {
-            qDebug() << "failed" << msg;
-            loop.exit(1);
-            status = 1;
-        });
+        qDebug() << "failed" << msg;
+        loop.exit(1);
+        status = 1;
+    });
     connect(&timer, &QTimer::timeout, &timer, [&]() {
-            qDebug() << "timeout";
-            loop.exit(1);
-            status = 1;
-        });
+        qDebug() << "timeout";
+        loop.exit(1);
+        status = 1;
+    });
     timer.setSingleShot(true);
     timer.start(timeout);
 
-    if (!actionFn(&oAuth))
-    {
+    if (!actionFn(&oAuth)) {
         return -1;
     }
-    
+
     if (status == -1) {
         status = loop.exec();
     }
@@ -285,33 +282,32 @@ int UtEwsOAuth::performAuthAction(EwsOAuth &oAuth, int timeout, std::function<bo
 void UtEwsOAuth::setUpAccessFunction(const QString &refreshToken)
 {
     Mock::QWebEngineView::instance->setAuthFunction([&](const QUrl &, QVariantMap &map){
-            map[QStringLiteral("code")] = QUrl::toPercentEncoding(refreshToken);
-        });
+        map[QStringLiteral("code")] = QUrl::toPercentEncoding(refreshToken);
+    });
 }
 
-void UtEwsOAuth::setUpTokenFunction(const QString &accessToken, const QString &refreshToken, const QString &idToken,
-                                    quint64 time, int tokenLifetime, int extTokenLifetime, QString &tokenReplyData)
+void UtEwsOAuth::setUpTokenFunction(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, int tokenLifetime, int extTokenLifetime, QString &tokenReplyData)
 {
     Mock::QOAuth2AuthorizationCodeFlow::instance->setTokenFunction(
-        [=, &tokenReplyData] (QString &data, QMap<Mock::QNetworkRequest::KnownHeaders, QVariant> &headers) {
-            QVariantMap map;
-            map[QStringLiteral("token_type")] = QStringLiteral("Bearer");
-            map[QStringLiteral("scope")] = QStringLiteral("ReadWrite.All");
-            map[QStringLiteral("expires_in")] = QString::number(tokenLifetime);
-            map[QStringLiteral("ext_expires_in")] = QString::number(extTokenLifetime);
-            map[QStringLiteral("expires_on")] = QString::number(time + tokenLifetime);
-            map[QStringLiteral("not_before")] = QString::number(time);
-            map[QStringLiteral("resource")] = resource;
-            map[QStringLiteral("access_token")] = accessToken;
-            map[QStringLiteral("refresh_token")] = refreshToken;
-            map[QStringLiteral("foci")] = QStringLiteral("1");
-            map[QStringLiteral("id_token")] = idToken;
-            tokenReplyData = formatJsonSorted(map);
-            data = tokenReplyData;
-            headers[Mock::QNetworkRequest::ContentTypeHeader] = QStringLiteral("application/json; charset=utf-8");
+        [=, &tokenReplyData](QString &data, QMap<Mock::QNetworkRequest::KnownHeaders, QVariant> &headers) {
+        QVariantMap map;
+        map[QStringLiteral("token_type")] = QStringLiteral("Bearer");
+        map[QStringLiteral("scope")] = QStringLiteral("ReadWrite.All");
+        map[QStringLiteral("expires_in")] = QString::number(tokenLifetime);
+        map[QStringLiteral("ext_expires_in")] = QString::number(extTokenLifetime);
+        map[QStringLiteral("expires_on")] = QString::number(time + tokenLifetime);
+        map[QStringLiteral("not_before")] = QString::number(time);
+        map[QStringLiteral("resource")] = resource;
+        map[QStringLiteral("access_token")] = accessToken;
+        map[QStringLiteral("refresh_token")] = refreshToken;
+        map[QStringLiteral("foci")] = QStringLiteral("1");
+        map[QStringLiteral("id_token")] = idToken;
+        tokenReplyData = formatJsonSorted(map);
+        data = tokenReplyData;
+        headers[Mock::QNetworkRequest::ContentTypeHeader] = QStringLiteral("application/json; charset=utf-8");
 
-            return Mock::QNetworkReply::NoError;
-        });
+        return Mock::QNetworkReply::NoError;
+    });
 }
 
 void UtEwsOAuth::dumpEvents(const QStringList &events, const QStringList &expectedEvents)
@@ -329,20 +325,20 @@ void UtEwsOAuth::dumpEvents(const QStringList &events, const QStringList &expect
 void UtEwsOAuth::setUpOAuth(EwsOAuth &oAuth, QStringList &events, QString password, QMap<QString, QString> map)
 {
     connect(Mock::QWebEngineView::instance.data(), &Mock::QWebEngineView::logEvent, this, [&events](const QString &event) {
-            events.append(event);
-        });
+        events.append(event);
+    });
     connect(Mock::QOAuth2AuthorizationCodeFlow::instance.data(), &Mock::QOAuth2AuthorizationCodeFlow::logEvent, this,
             [&events](const QString &event) {
-                events.append(event);
-            });
+        events.append(event);
+    });
     connect(&oAuth, &EwsOAuth::requestWalletPassword, this, [&oAuth, &events, password](bool) {
-            events.append(QStringLiteral("RequestWalletPassword"));
-            oAuth.walletPasswordRequestFinished(password);
-        });
+        events.append(QStringLiteral("RequestWalletPassword"));
+        oAuth.walletPasswordRequestFinished(password);
+    });
     connect(&oAuth, &EwsOAuth::requestWalletMap, this, [&oAuth, &events, map]() {
-            events.append(QStringLiteral("RequestWalletMap"));
-            oAuth.walletMapRequestFinished(map);
-        });
+        events.append(QStringLiteral("RequestWalletMap"));
+        oAuth.walletMapRequestFinished(map);
+    });
 }
 
 QTEST_MAIN(UtEwsOAuth)

@@ -28,8 +28,7 @@
 #include "ewsserverversion.h"
 #include "ewstypes.h"
 
-namespace KIO
-{
+namespace KIO {
 class Job;
 }
 
@@ -53,7 +52,9 @@ public:
     class Protocol
     {
     public:
-        Protocol() : mType(UnknownProto) {}
+        Protocol() : mType(UnknownProto)
+        {
+        }
 
         bool isValid() const
         {
@@ -74,6 +75,7 @@ public:
         {
             return mOabUrl;
         }
+
     private:
         ProtocolType mType;
         QString mEwsUrl;
@@ -81,8 +83,7 @@ public:
         friend class EwsPoxAutodiscoverRequest;
     };
 
-    EwsPoxAutodiscoverRequest(const QUrl &url, const QString &email, const QString &userAgent,
-                              bool useNTLMv2, QObject *parent);
+    EwsPoxAutodiscoverRequest(const QUrl &url, const QString &email, const QString &userAgent, bool useNTLMv2, QObject *parent);
     ~EwsPoxAutodiscoverRequest() override;
 
     const EwsServerVersion &serverVersion() const

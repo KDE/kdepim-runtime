@@ -46,18 +46,22 @@ public:
         {
             return mClass;
         }
+
         bool isSuccess() const
         {
             return mClass == EwsResponseSuccess;
         }
+
         QString responseCode() const
         {
             return mCode;
         }
+
         QString responseMessage() const
         {
             return mMessage;
         }
+
     protected:
         Response(QXmlStreamReader &reader);
         bool readResponseElement(QXmlStreamReader &reader);
@@ -83,15 +87,14 @@ public:
     void dump() const;
 
 protected:
-    typedef std::function<bool(QXmlStreamReader &reader)> ContentReaderFn;
+    typedef std::function<bool (QXmlStreamReader &reader)> ContentReaderFn;
 
     void doSend();
     void prepare(const QString &body);
     virtual bool parseResult(QXmlStreamReader &reader) = 0;
     void startSoapDocument(QXmlStreamWriter &writer);
     void endSoapDocument(QXmlStreamWriter &writer);
-    bool parseResponseMessage(QXmlStreamReader &reader, const QString &reqName,
-                              ContentReaderFn contentReader);
+    bool parseResponseMessage(QXmlStreamReader &reader, const QString &reqName, ContentReaderFn contentReader);
     bool readResponse(QXmlStreamReader &reader);
 
     KIO::MetaData mMd;

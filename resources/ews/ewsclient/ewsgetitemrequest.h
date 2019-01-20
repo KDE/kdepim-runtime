@@ -40,6 +40,7 @@ public:
         {
             return mItem;
         }
+
     private:
         EwsItem mItem;
     };
@@ -56,6 +57,7 @@ public:
     {
         return mResponses;
     }
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);

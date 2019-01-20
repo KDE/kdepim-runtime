@@ -26,22 +26,25 @@
 
 #include <KIO/SpecialJob>
 
-namespace KIO
-{
+namespace KIO {
 class Job;
 }
 
-template <typename F>
+template<typename F>
 struct Finally {
-    Finally(F f): cleanupf{f} {}
+    Finally(F f) : cleanupf{f}
+    {
+    }
+
     ~Finally()
     {
         cleanupf();
     }
+
     F cleanupf;
 };
 
-template <typename F>
+template<typename F>
 Finally<F> finally(F f)
 {
     return Finally<F>(f);
@@ -51,7 +54,7 @@ class FakeTransferJob : public KIO::SpecialJob
 {
     Q_OBJECT
 public:
-    typedef std::function<void(FakeTransferJob*, const QByteArray &)> VerifierFn;
+    typedef std::function<void (FakeTransferJob *, const QByteArray &)> VerifierFn;
 
     struct Verifier {
         QObject *object;

@@ -63,7 +63,7 @@ void EwsUpdateFolderRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting UpdateFolder request (%1 changes)")
-                                  .arg(mChanges.size());
+        .arg(mChanges.size());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -75,7 +75,9 @@ void EwsUpdateFolderRequest::start()
 bool EwsUpdateFolderRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("UpdateFolder"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsUpdateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -90,7 +92,7 @@ bool EwsUpdateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got UpdateFolder response - OK");
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got UpdateFolder response - %1")
-                                          .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
 

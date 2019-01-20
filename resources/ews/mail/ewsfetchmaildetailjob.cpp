@@ -57,7 +57,6 @@ EwsFetchMailDetailJob::EwsFetchMailDetailJob(EwsClient &client, QObject *parent,
     mRequest->setItemShape(shape);
 }
 
-
 EwsFetchMailDetailJob::~EwsFetchMailDetailJob()
 {
 }

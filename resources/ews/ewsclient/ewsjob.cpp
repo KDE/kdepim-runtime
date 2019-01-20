@@ -46,4 +46,3 @@ bool EwsJob::setErrorMsg(const QString &msg, int code)
     qCWarningNC(EWSCLI_LOG) << msg;
     return false;
 }
-

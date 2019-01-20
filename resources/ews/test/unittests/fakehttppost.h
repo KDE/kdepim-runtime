@@ -20,14 +20,11 @@
 #ifndef FAKEHTTPPOST_H
 #define FAKEHTTPPOST_H
 
-
 #include <KIO/TransferJob>
 
 #include "faketransferjob.h"
 
-namespace KIO
-{
-
+namespace KIO {
 TransferJob *http_post(const QUrl &url, const QByteArray &postData, JobFlags flags)
 {
     Q_UNUSED(url);
@@ -35,9 +32,8 @@ TransferJob *http_post(const QUrl &url, const QByteArray &postData, JobFlags fla
 
     FakeTransferJob::Verifier vfy = FakeTransferJob::getVerifier();
     FakeTransferJob *job = new FakeTransferJob(postData, vfy.fn, vfy.object);
-    return reinterpret_cast<TransferJob*>(job);
+    return reinterpret_cast<TransferJob *>(job);
 }
-
 }
 
 #endif

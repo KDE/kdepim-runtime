@@ -49,7 +49,11 @@ public:
         };
 
         Update(const EwsPropertyField &field, const QVariant &val, Type type)
-            : mField(field), mValue(val), mType(type) {}
+            : mField(field)
+            , mValue(val)
+            , mType(type)
+        {
+        }
 
         EwsPropertyField mField;
         QVariant mValue;
@@ -59,34 +63,45 @@ public:
     class AppendUpdate : public Update
     {
     public:
-        AppendUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Append) {}
+        AppendUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Append)
+        {
+        }
     };
 
     class SetUpdate : public Update
     {
     public:
-        SetUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Set) {}
+        SetUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Set)
+        {
+        }
     };
 
     class DeleteUpdate : public Update
     {
     public:
-        DeleteUpdate(const EwsPropertyField &field) : Update(field, QVariant(), Delete) {}
+        DeleteUpdate(const EwsPropertyField &field) : Update(field, QVariant(), Delete)
+        {
+        }
     };
 
     class ItemChange
     {
     public:
-        ItemChange(const EwsId &itemId, EwsItemType type) : mId(itemId), mType(type) {}
+        ItemChange(const EwsId &itemId, EwsItemType type) : mId(itemId)
+            , mType(type)
+        {
+        }
+
         void addUpdate(const Update *upd)
         {
             mUpdates.append(QSharedPointer<const Update>(upd));
         }
+
         bool write(QXmlStreamWriter &writer) const;
     private:
         EwsId mId;
         EwsItemType mType;
-        QList<QSharedPointer<const Update>> mUpdates;
+        QList<QSharedPointer<const Update> > mUpdates;
     };
 
     class Response : public EwsRequest::Response
@@ -101,6 +116,7 @@ public:
         {
             return mConflictCount;
         }
+
     protected:
         Response(QXmlStreamReader &reader);
 
@@ -144,6 +160,7 @@ public:
     {
         return mResponses;
     }
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);

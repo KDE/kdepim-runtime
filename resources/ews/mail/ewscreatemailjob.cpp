@@ -37,12 +37,12 @@ using namespace Akonadi;
 
 static const EwsPropertyField propPidMessageFlags(0x0e07, EwsPropTypeInteger);
 
-EwsCreateMailJob::EwsCreateMailJob(EwsClient &client, const Akonadi::Item &item,
-                                   const Akonadi::Collection &collection, EwsTagStore *tagStore,
-                                   EwsResource *parent)
-    : EwsCreateItemJob(client, item, collection, tagStore, parent), mSend(false)
+EwsCreateMailJob::EwsCreateMailJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+    : EwsCreateItemJob(client, item, collection, tagStore, parent)
+    , mSend(false)
 {
 }
+
 EwsCreateMailJob::~EwsCreateMailJob()
 {
 }
@@ -128,7 +128,7 @@ void EwsCreateMailJob::doStart()
 
 void EwsCreateMailJob::mailCreateFinished(KJob *job)
 {
-    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest*>(job);
+    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest *>(job);
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();
@@ -162,7 +162,7 @@ void EwsCreateMailJob::mailCreateFinished(KJob *job)
 
 void EwsCreateMailJob::mailCreateWorkaroundFinished(KJob *job)
 {
-    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest*>(job);
+    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest *>(job);
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();
@@ -198,7 +198,7 @@ void EwsCreateMailJob::mailCreateWorkaroundFinished(KJob *job)
 
 void EwsCreateMailJob::mailMoveWorkaroundFinished(KJob *job)
 {
-    EwsMoveItemRequest *req = qobject_cast<EwsMoveItemRequest*>(job);
+    EwsMoveItemRequest *req = qobject_cast<EwsMoveItemRequest *>(job);
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();
@@ -229,7 +229,6 @@ void EwsCreateMailJob::mailMoveWorkaroundFinished(KJob *job)
 
     emitResult();
 }
-
 
 bool EwsCreateMailJob::setSend(bool send)
 {

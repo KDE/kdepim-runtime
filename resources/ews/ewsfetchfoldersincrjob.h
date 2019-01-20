@@ -34,18 +34,19 @@ class EwsFetchFoldersIncrJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsFetchFoldersIncrJob(EwsClient &client, const QString &syncState,
-                           const Akonadi::Collection &rootCollection, QObject *parent);
+    EwsFetchFoldersIncrJob(EwsClient &client, const QString &syncState, const Akonadi::Collection &rootCollection, QObject *parent);
     ~EwsFetchFoldersIncrJob() override;
 
     Akonadi::Collection::List changedFolders() const
     {
         return mChangedFolders;
     }
+
     Akonadi::Collection::List deletedFolders() const
     {
         return mDeletedFolders;
     }
+
     const QString &syncState() const
     {
         return mSyncState;

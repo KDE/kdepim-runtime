@@ -40,6 +40,7 @@ public:
         {
             return mId;
         }
+
     protected:
         Response(QXmlStreamReader &reader);
 
@@ -77,6 +78,7 @@ public:
     {
         return mResponses;
     }
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);

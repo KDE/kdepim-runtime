@@ -51,7 +51,8 @@ public:
 };
 
 EwsSyncFolderHierarchyRequest::EwsSyncFolderHierarchyRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mIncludesLastItem(false)
+    : EwsRequest(client, parent)
+    , mIncludesLastItem(false)
 {
     qRegisterMetaType<EwsSyncFolderHierarchyRequest::Change::List>();
     qRegisterMetaType<EwsFolder>();
@@ -115,7 +116,9 @@ void EwsSyncFolderHierarchyRequest::start()
 bool EwsSyncFolderHierarchyRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("SyncFolderHierarchy"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsSyncFolderHierarchyRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -132,10 +135,10 @@ bool EwsSyncFolderHierarchyRequest::parseItemsResponse(QXmlStreamReader &reader)
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp->isSuccess()) {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderHierarchy response (%1 changes, state: %3)")
-                                          .arg(mChanges.size()).arg(qHash(mSyncState), 0, 36);
+                .arg(mChanges.size()).arg(qHash(mSyncState), 0, 36);
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderHierarchy response - %1")
-                                          .arg(resp->responseMessage());
+                .arg(resp->responseMessage());
         }
     }
 
@@ -159,14 +162,13 @@ EwsSyncFolderHierarchyRequest::Response::Response(QXmlStreamReader &reader)
     EwsXml<SyncFolderHierarchyResponseElementType> ewsReader(staticReader);
 
     if (!ewsReader.readItems(reader, ewsMsgNsUri,
-        [this](QXmlStreamReader &reader, const QString &) {
-            if (!readResponseElement(reader)) {
-                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
-                return false;
-            }
-            return true;
-        }))
-    {
+                             [this](QXmlStreamReader &reader, const QString &) {
+        if (!readResponseElement(reader)) {
+            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
+            return false;
+        }
+        return true;
+    })) {
         mClass = EwsResponseParseError;
         return;
     }

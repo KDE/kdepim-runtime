@@ -28,11 +28,11 @@
 
 using namespace Akonadi;
 
-EwsModifyMailJob::EwsModifyMailJob(EwsClient &client, const Akonadi::Item::List &items,
-                                   const QSet<QByteArray> &parts, QObject *parent)
+EwsModifyMailJob::EwsModifyMailJob(EwsClient &client, const Akonadi::Item::List &items, const QSet<QByteArray> &parts, QObject *parent)
     : EwsModifyItemJob(client, items, parts, parent)
 {
 }
+
 EwsModifyMailJob::~EwsModifyMailJob()
 {
 }
@@ -82,7 +82,7 @@ void EwsModifyMailJob::updateItemFinished(KJob *job)
         return;
     }
 
-    EwsUpdateItemRequest *req = qobject_cast<EwsUpdateItemRequest*>(job);
+    EwsUpdateItemRequest *req = qobject_cast<EwsUpdateItemRequest *>(job);
     if (!req) {
         setErrorText(QStringLiteral("Invalid EwsUpdateItemRequest job object"));
         emitResult();

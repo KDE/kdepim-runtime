@@ -37,7 +37,7 @@ class EwsFindItemResponse : public EwsRequest::Response
 public:
     EwsFindItemResponse(QXmlStreamReader &reader);
     bool parseRootFolder(QXmlStreamReader &reader);
-    EwsItem* readItem(QXmlStreamReader &reader);
+    EwsItem *readItem(QXmlStreamReader &reader);
 
     QList<EwsItem> mItems;
     unsigned mTotalItems;
@@ -48,10 +48,20 @@ public:
 };
 
 EwsFindItemRequest::EwsFindItemRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mTraversal(EwsTraversalShallow), mPagination(false),
-      mPageBasePoint(EwsBasePointBeginning), mPageOffset(0), mFractional(false), mMaxItems(-1),
-      mFracNumerator(0), mFracDenominator(0), mTotalItems(0), mNextOffset(-1), mNextNumerator(-1),
-      mNextDenominator(-1), mIncludesLastItem(false)
+    : EwsRequest(client, parent)
+    , mTraversal(EwsTraversalShallow)
+    , mPagination(false)
+    , mPageBasePoint(EwsBasePointBeginning)
+    , mPageOffset(0)
+    , mFractional(false)
+    , mMaxItems(-1)
+    , mFracNumerator(0)
+    , mFracDenominator(0)
+    , mTotalItems(0)
+    , mNextOffset(-1)
+    , mNextNumerator(-1)
+    , mNextDenominator(-1)
+    , mIncludesLastItem(false)
 {
 }
 
@@ -121,7 +131,9 @@ void EwsFindItemRequest::start()
 bool EwsFindItemRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("FindItem"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsFindItemRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -141,10 +153,10 @@ bool EwsFindItemRequest::parseItemsResponse(QXmlStreamReader &reader)
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp->isSuccess()) {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got FindItems response (%1 items, last included: %2)")
-                                          .arg(mItems.size()).arg(mIncludesLastItem ? QStringLiteral("true") : QStringLiteral("false"));
+                .arg(mItems.size()).arg(mIncludesLastItem ? QStringLiteral("true") : QStringLiteral("false"));
         } else {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got FindItems response - %1")
-                                        .arg(resp->responseMessage());
+                .arg(resp->responseMessage());
         }
     }
 
@@ -174,9 +186,10 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
 
 bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QStringLiteral("RootFolder"))
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QStringLiteral("RootFolder")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
                            .arg(QStringLiteral("RootFolder")).arg(reader.qualifiedName().toString()));
+    }
 
     if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))
         || !reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))) {
@@ -216,13 +229,15 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
         }
     }
 
-    if (!reader.readNextStartElement())
+    if (!reader.readNextStartElement()) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.")
                            .arg(QStringLiteral("RootFolder")));
+    }
 
-    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QStringLiteral("Items"))
+    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QStringLiteral("Items")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
                            .arg(QStringLiteral("Items")).arg(reader.qualifiedName().toString()));
+    }
 
     if (!reader.readNextStartElement()) {
         // An empty Items element means no items.
@@ -230,11 +245,12 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
         return true;
     }
 
-    if (reader.namespaceUri() != ewsTypeNsUri)
+    if (reader.namespaceUri() != ewsTypeNsUri) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected child element from types namespace."));
+    }
 
     do {
-        EwsItem*item = readItem(reader);
+        EwsItem *item = readItem(reader);
         if (item) {
             mItems.append(*item);
         }
@@ -249,20 +265,20 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
     return true;
 }
 
-EwsItem* EwsFindItemResponse::readItem(QXmlStreamReader &reader)
+EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
     const QStringRef readerName = reader.name();
-    if (readerName == QStringLiteral("Item") ||
-        readerName == QStringLiteral("Message") ||
-        readerName == QStringLiteral("CalendarItem") ||
-        readerName == QStringLiteral("Contact") ||
-        readerName == QStringLiteral("DistributionList") ||
-        readerName == QStringLiteral("MeetingMessage") ||
-        readerName == QStringLiteral("MeetingRequest") ||
-        readerName == QStringLiteral("MeetingResponse") ||
-        readerName == QStringLiteral("MeetingCancellation") ||
-        readerName == QStringLiteral("Task")) {
+    if (readerName == QStringLiteral("Item")
+        || readerName == QStringLiteral("Message")
+        || readerName == QStringLiteral("CalendarItem")
+        || readerName == QStringLiteral("Contact")
+        || readerName == QStringLiteral("DistributionList")
+        || readerName == QStringLiteral("MeetingMessage")
+        || readerName == QStringLiteral("MeetingRequest")
+        || readerName == QStringLiteral("MeetingResponse")
+        || readerName == QStringLiteral("MeetingCancellation")
+        || readerName == QStringLiteral("Task")) {
         qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(readerName.toString());
         item = new EwsItem(reader);
         if (!item->isValid()) {
@@ -278,4 +294,3 @@ EwsItem* EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 
     return item;
 }
-

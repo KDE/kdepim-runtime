@@ -22,7 +22,6 @@
 
 #include <QDialog>
 
-
 class EwsProgressDialog : public QDialog
 {
     Q_OBJECT

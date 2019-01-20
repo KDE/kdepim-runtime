@@ -27,8 +27,9 @@
 static Q_CONSTEXPR uint respChunkTimeout = 250; /* ms */
 
 EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent)
-    : EwsEventRequestBase(client, QStringLiteral("GetStreamingEvents"), parent), mTimeout(30),
-      mRespTimer(this)
+    : EwsEventRequestBase(client, QStringLiteral("GetStreamingEvents"), parent)
+    , mTimeout(30)
+    , mRespTimer(this)
 {
     mRespTimer.setInterval(respChunkTimeout);
     connect(&mRespTimer, &QTimer::timeout, this, &EwsGetStreamingEventsRequest::requestDataTimeout);
@@ -62,7 +63,7 @@ void EwsGetStreamingEventsRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting GetStreamingEvents request (subId: %1, timeout: %2)")
-                                  .arg(ewsHash(mSubscriptionId)).arg(mTimeout);
+        .arg(ewsHash(mSubscriptionId)).arg(mTimeout);
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 

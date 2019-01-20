@@ -27,7 +27,8 @@ static const QVector<QString> deleteTypes = {
 };
 
 EwsDeleteItemRequest::EwsDeleteItemRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mType(SoftDelete)
+    : EwsRequest(client, parent)
+    , mType(SoftDelete)
 {
 }
 
@@ -68,7 +69,9 @@ void EwsDeleteItemRequest::start()
 bool EwsDeleteItemRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("DeleteItem"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsDeleteItemRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -83,7 +86,7 @@ bool EwsDeleteItemRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteItem response - OK, deleted items") << mIds;
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteItem response - %1")
-                                          .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
 

@@ -23,10 +23,12 @@
 #include "tags/ewstagstore.h"
 #include "tags/ewsakonaditagssyncjob.h"
 
-EwsCreateItemJob::EwsCreateItemJob(EwsClient &client, const Akonadi::Item &item,
-                                   const Akonadi::Collection &collection, EwsTagStore *tagStore,
-                                   EwsResource *parent)
-    : EwsJob(parent), mItem(item), mCollection(collection), mClient(client), mTagStore(tagStore)
+EwsCreateItemJob::EwsCreateItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+    : EwsJob(parent)
+    , mItem(item)
+    , mCollection(collection)
+    , mClient(client)
+    , mTagStore(tagStore)
 {
 }
 
@@ -52,7 +54,7 @@ void EwsCreateItemJob::start()
 
     if (syncNeeded) {
         EwsAkonadiTagsSyncJob *job = new EwsAkonadiTagsSyncJob(mTagStore,
-                mClient, qobject_cast<EwsResource*>(parent())->rootCollection(), this);
+                                                               mClient, qobject_cast<EwsResource *>(parent())->rootCollection(), this);
         connect(job, &EwsAkonadiTagsSyncJob::result, this, &EwsCreateItemJob::tagSyncFinished);
         job->start();
     } else {

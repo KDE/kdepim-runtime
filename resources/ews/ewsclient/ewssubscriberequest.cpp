@@ -40,7 +40,10 @@ static const QVector<QString> eventTypeNames = {
 };
 
 EwsSubscribeRequest::EwsSubscribeRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mType(PullSubscription), mAllFolders(false), mTimeout(30)
+    : EwsRequest(client, parent)
+    , mType(PullSubscription)
+    , mAllFolders(false)
+    , mTimeout(30)
 {
 }
 
@@ -107,7 +110,9 @@ void EwsSubscribeRequest::start()
 bool EwsSubscribeRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("Subscribe"),
-                                [this](QXmlStreamReader &reader) {return parseSubscribeResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseSubscribeResponse(reader);
+    });
 }
 
 bool EwsSubscribeRequest::parseSubscribeResponse(QXmlStreamReader &reader)

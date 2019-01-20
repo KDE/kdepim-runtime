@@ -83,12 +83,17 @@ static Q_CONSTEXPR int fetchBatchSize = 50;
  * to be safely ignored.
  */
 
-EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection, EwsClient &client,
-                                   const QString &syncState, const EwsId::List &itemsToCheck,
-                                   EwsTagStore *tagStore, EwsResource *parent)
-    : EwsJob(parent), mCollection(collection), mClient(client), mItemsToCheck(itemsToCheck),
-      mPendingJobs(0), mTotalItems(0), mSyncState(syncState), mFullSync(syncState.isNull()),
-      mTagStore(tagStore), mTagsSynced(false)
+EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection, EwsClient &client, const QString &syncState, const EwsId::List &itemsToCheck, EwsTagStore *tagStore, EwsResource *parent)
+    : EwsJob(parent)
+    , mCollection(collection)
+    , mClient(client)
+    , mItemsToCheck(itemsToCheck)
+    , mPendingJobs(0)
+    , mTotalItems(0)
+    , mSyncState(syncState)
+    , mFullSync(syncState.isNull())
+    , mTagStore(tagStore)
+    , mTagsSynced(false)
 {
     qRegisterMetaType<EwsId::List>();
 }
@@ -136,7 +141,7 @@ void EwsFetchItemsJob::start()
 
 void EwsFetchItemsJob::localItemFetchDone(KJob *job)
 {
-    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob*>(job);
+    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
 
     qCDebug(EWSRES_LOG) << "EwsFetchItemsJob::localItemFetchDone";
     if (!fetchJob) {
@@ -158,7 +163,7 @@ void EwsFetchItemsJob::localItemFetchDone(KJob *job)
 
 void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
 {
-    EwsSyncFolderItemsRequest *itemReq = qobject_cast<EwsSyncFolderItemsRequest*>(job);
+    EwsSyncFolderItemsRequest *itemReq = qobject_cast<EwsSyncFolderItemsRequest *>(job);
 
     qCDebug(EWSRES_LOG) << "EwsFetchItemsJob::remoteItemFetchDone";
     if (!itemReq) {
@@ -212,7 +217,7 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
 
 void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
 {
-    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest*>(job);
+    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest *>(job);
 
     if (!req) {
         setErrorMsg(QStringLiteral("Invalid item fetch job pointer."));
@@ -366,8 +371,8 @@ void EwsFetchItemsJob::compareItemLists()
     }
 
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Changed %2, deleted %3, new %4")
-                          .arg(mRemoteChangedItems.size())
-                          .arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
+        .arg(mRemoteChangedItems.size())
+        .arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
 
     bool fetch = false;
     for (unsigned iType = 0; iType < sizeof(toFetchItems) / sizeof(toFetchItems[0]); ++iType) {
@@ -377,7 +382,7 @@ void EwsFetchItemsJob::compareItemLists()
                 if (!handler) {
                     // TODO: Temporarily ignore unsupported item types.
                     qCWarning(EWSRES_LOG) << QStringLiteral("Unable to initialize fetch for item type %1")
-                                          .arg(iType);
+                        .arg(iType);
                     /*setErrorMsg(QStringLiteral("Unable to initialize fetch for item type %1").arg(iType));
                     emitResult();
                     return;*/
@@ -405,7 +410,7 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
     removeSubjob(job);
 
     if (!job->error()) {
-        EwsFetchItemDetailJob *detailJob = qobject_cast<EwsFetchItemDetailJob*>(job);
+        EwsFetchItemDetailJob *detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
         if (detailJob) {
             mChangedItems += detailJob->changedItems();
         }
@@ -434,7 +439,7 @@ void EwsFetchItemsJob::syncTags()
         emitResult();
     } else {
         EwsAkonadiTagsSyncJob *job = new EwsAkonadiTagsSyncJob(mTagStore, mClient,
-                qobject_cast<EwsResource*>(parent())->rootCollection(), this);
+                                                               qobject_cast<EwsResource *>(parent())->rootCollection(), this);
         connect(job, &EwsAkonadiTagsSyncJob::result, this, &EwsFetchItemsJob::tagSyncFinished);
         job->start();
         mTagsSynced = true;

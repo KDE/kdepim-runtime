@@ -46,14 +46,11 @@ FacebookSettingsWidget::FacebookSettingsWidget(const KSharedConfigPtr &config, Q
 
     connect(ui->loginBtn, &QPushButton::clicked, this, &FacebookSettingsWidget::login);
     connect(ui->logoutBtn, &QPushButton::clicked, this, &FacebookSettingsWidget::logout);
-
-
 }
 
 FacebookSettingsWidget::~FacebookSettingsWidget()
 {
 }
-
 
 void FacebookSettingsWidget::checkToken()
 {
@@ -111,7 +108,6 @@ void FacebookSettingsWidget::logout()
     });
     job->start();
 }
-
 
 void FacebookSettingsWidget::load()
 {

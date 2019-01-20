@@ -40,8 +40,7 @@ EwsItemHandler *EwsCalendarHandler::factory()
     return new EwsCalendarHandler();
 }
 
-EwsFetchItemDetailJob *EwsCalendarHandler::fetchItemDetailJob(EwsClient &client, QObject *parent,
-        const Akonadi::Collection &collection)
+EwsFetchItemDetailJob *EwsCalendarHandler::fetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
 {
     return new EwsFetchCalendarDetailJob(client, parent, collection);
 }
@@ -65,15 +64,12 @@ bool EwsCalendarHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsI
     return true;
 }
 
-EwsModifyItemJob *EwsCalendarHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items,
-        const QSet<QByteArray> &parts, QObject *parent)
+EwsModifyItemJob *EwsCalendarHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent)
 {
     return new EwsModifyCalendarJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsCalendarHandler::createItemJob(EwsClient &client, const Akonadi::Item &item,
-        const Akonadi::Collection &collection,
-        EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *EwsCalendarHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
 {
     return new EwsCreateCalendarJob(client, item, collection, tagStore, parent);
 }

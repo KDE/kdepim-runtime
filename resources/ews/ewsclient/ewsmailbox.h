@@ -27,10 +27,8 @@
 
 class EwsMailboxPrivate;
 
-namespace KMime
-{
-namespace Types
-{
+namespace KMime {
+namespace Types {
 class Mailbox;
 }
 }

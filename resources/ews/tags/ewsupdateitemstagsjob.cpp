@@ -35,9 +35,11 @@
 
 using namespace Akonadi;
 
-EwsUpdateItemsTagsJob::EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, EwsTagStore *tagStore,
-        EwsClient &client, EwsResource *parent)
-    : EwsJob(parent), mItems(items), mTagStore(tagStore), mClient(client)
+EwsUpdateItemsTagsJob::EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, EwsTagStore *tagStore, EwsClient &client, EwsResource *parent)
+    : EwsJob(parent)
+    , mItems(items)
+    , mTagStore(tagStore)
+    , mClient(client)
 {
 }
 
@@ -80,7 +82,7 @@ void EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched(KJob *job)
         return;
     }
 
-    TagFetchJob *tagJob = qobject_cast<TagFetchJob*>(job);
+    TagFetchJob *tagJob = qobject_cast<TagFetchJob *>(job);
     if (!tagJob) {
         setErrorMsg(QStringLiteral("Invalid TagFetchJob job object"));
         emitResult();
@@ -90,10 +92,10 @@ void EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched(KJob *job)
     /* All unknown tags have been fetched and can be written to Exchange. */
     mTagStore->addTags(tagJob->tags());
 
-    EwsResource *res = qobject_cast<EwsResource*>(parent());
+    EwsResource *res = qobject_cast<EwsResource *>(parent());
     Q_ASSERT(res);
     EwsGlobalTagsWriteJob *writeJob = new EwsGlobalTagsWriteJob(mTagStore, mClient,
-            res->rootCollection(), this);
+                                                                res->rootCollection(), this);
     connect(writeJob, &EwsGlobalTagsWriteJob::result, this,
             &EwsUpdateItemsTagsJob::globalTagsWriteFinished);
     writeJob->start();
@@ -156,7 +158,7 @@ void EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished(KJob *job)
         return;
     }
 
-    EwsUpdateItemRequest *req = qobject_cast<EwsUpdateItemRequest*>(job);
+    EwsUpdateItemRequest *req = qobject_cast<EwsUpdateItemRequest *>(job);
     if (!req) {
         setErrorMsg(QStringLiteral("Invalid EwsUpdateItemRequest job object"));
         return;

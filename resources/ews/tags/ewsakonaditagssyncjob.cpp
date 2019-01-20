@@ -26,9 +26,11 @@
 
 using namespace Akonadi;
 
-EwsAkonadiTagsSyncJob::EwsAkonadiTagsSyncJob(EwsTagStore *tagStore, EwsClient &client,
-        const Collection &rootCollection, QObject *parent)
-    : EwsJob(parent), mTagStore(tagStore), mClient(client), mRootCollection(rootCollection)
+EwsAkonadiTagsSyncJob::EwsAkonadiTagsSyncJob(EwsTagStore *tagStore, EwsClient &client, const Collection &rootCollection, QObject *parent)
+    : EwsJob(parent)
+    , mTagStore(tagStore)
+    , mClient(client)
+    , mRootCollection(rootCollection)
 {
 }
 
@@ -51,7 +53,7 @@ void EwsAkonadiTagsSyncJob::tagFetchFinished(KJob *job)
         return;
     }
 
-    TagFetchJob *tagJob = qobject_cast<TagFetchJob*>(job);
+    TagFetchJob *tagJob = qobject_cast<TagFetchJob *>(job);
     Q_ASSERT(tagJob);
 
     if (mTagStore->syncTags(tagJob->tags())) {
@@ -62,6 +64,7 @@ void EwsAkonadiTagsSyncJob::tagFetchFinished(KJob *job)
         emitResult();
     }
 }
+
 void EwsAkonadiTagsSyncJob::tagWriteFinished(KJob *job)
 {
     if (job->error()) {

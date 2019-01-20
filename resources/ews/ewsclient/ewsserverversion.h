@@ -33,14 +33,33 @@ public:
         FreeBusyChangedEvent,
     };
 
-    EwsServerVersion() : mMajor(0), mMinor(0), mMajorBuild(0), mMinorBuild(0) {}
+    EwsServerVersion() : mMajor(0)
+        , mMinor(0)
+        , mMajorBuild(0)
+        , mMinorBuild(0)
+    {
+    }
+
     EwsServerVersion(uint major, uint minor, const QString &name, const QString &friendlyName)
-        : mMajor(major), mMinor(minor), mMajorBuild(0), mMinorBuild(0), mName(name),
-          mFriendlyName(friendlyName) {}
+        : mMajor(major)
+        , mMinor(minor)
+        , mMajorBuild(0)
+        , mMinorBuild(0)
+        , mName(name)
+        , mFriendlyName(friendlyName)
+    {
+    }
+
     explicit EwsServerVersion(QXmlStreamReader &reader);
     EwsServerVersion(const EwsServerVersion &other)
-        : mMajor(other.mMajor), mMinor(other.mMinor), mMajorBuild(other.mMajorBuild),
-          mMinorBuild(other.mMinorBuild), mName(other.mName), mFriendlyName(other.mFriendlyName) {}
+        : mMajor(other.mMajor)
+        , mMinor(other.mMinor)
+        , mMajorBuild(other.mMajorBuild)
+        , mMinorBuild(other.mMinorBuild)
+        , mName(other.mName)
+        , mFriendlyName(other.mFriendlyName)
+    {
+    }
 
     EwsServerVersion &operator=(const EwsServerVersion &other)
     {

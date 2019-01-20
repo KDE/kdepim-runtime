@@ -67,26 +67,26 @@ EwsOccurrence::EwsOccurrence(QXmlStreamReader &reader)
             d->mStart = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                                      .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("Start"));
+                    .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("Start"));
                 return;
             }
         } else if (reader.name() == QStringLiteral("End")) {
             d->mEnd = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                                      .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("End"));
+                    .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("End"));
                 return;
             }
         } else if (reader.name() == QStringLiteral("OriginalStart")) {
             d->mStart = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                                      .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("OriginalStart"));
+                    .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("OriginalStart"));
                 return;
             }
         } else {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                                  .arg(QStringLiteral("Occurrence")).arg(reader.name().toString());
+                .arg(QStringLiteral("Occurrence")).arg(reader.name().toString());
             return;
         }
     }
@@ -117,6 +117,7 @@ EwsOccurrence &EwsOccurrence::operator=(const EwsOccurrence &other)
     d = other.d;
     return *this;
 }
+
 EwsOccurrence &EwsOccurrence::operator=(EwsOccurrence &&other)
 {
     d = std::move(other.d);

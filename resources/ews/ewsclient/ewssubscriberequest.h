@@ -26,7 +26,6 @@
 #include "ewsrequest.h"
 #include "ewstypes.h"
 
-
 class EwsSubscribeRequest : public EwsRequest
 {
     Q_OBJECT
@@ -50,6 +49,7 @@ public:
         {
             return mWatermark;
         }
+
     protected:
         Response(QXmlStreamReader &reader);
 

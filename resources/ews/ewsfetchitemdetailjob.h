@@ -22,7 +22,6 @@
 
 #include <QPointer>
 
-
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Collection>
 

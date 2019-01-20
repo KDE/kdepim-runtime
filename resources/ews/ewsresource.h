@@ -39,8 +39,7 @@ class EwsTagStore;
 class EwsSettings;
 class KNotification;
 
-class EwsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV4,
-    public Akonadi::TransportResourceBase
+class EwsResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV4, public Akonadi::TransportResourceBase
 {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Ews.Resource")
@@ -54,24 +53,20 @@ public:
     explicit EwsResource(const QString &id);
     ~EwsResource() override;
 
-    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags,
-                                  const QSet<Akonadi::Tag> &removedTags) override;
+    void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
     void tagAdded(const Akonadi::Tag &tag) override;
     void tagChanged(const Akonadi::Tag &tag) override;
     void tagRemoved(const Akonadi::Tag &tag) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource,
-                         const Akonadi::Collection &collectionDestination) override;
+    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
     void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override;
-    void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags,
-                           const QSet<QByteArray> &removedFlags) override;
-    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection,
-                    const Akonadi::Collection &destinationCollection) override;
+    void itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags) override;
+    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection) override;
     void itemsRemoved(const Akonadi::Item::List &items) override;
 
     void sendItem(const Akonadi::Item &item) override;
@@ -85,6 +80,7 @@ public:
     {
         return mSettings.data();
     }
+
 protected:
     void doSetOnline(bool online) override;
 public Q_SLOTS:

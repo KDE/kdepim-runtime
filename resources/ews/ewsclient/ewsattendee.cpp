@@ -50,7 +50,8 @@ static const QString responseTypeNames[] = {
 Q_CONSTEXPR unsigned responseTypeNameCount = sizeof(responseTypeNames) / sizeof(responseTypeNames[0]);
 
 EwsAttendeePrivate::EwsAttendeePrivate()
-    : mValid(false), mResponse(EwsEventResponseNotReceived)
+    : mValid(false)
+    , mResponse(EwsEventResponseNotReceived)
 {
 }
 
@@ -74,16 +75,16 @@ EwsAttendee::EwsAttendee(QXmlStreamReader &reader)
             d->mMailbox = EwsMailbox(reader);
             if (!d->mMailbox.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.")
-                                      .arg(readerName.toString());
+                    .arg(readerName.toString());
                 return;
             }
         } else if (readerName == QStringLiteral("ResponseType")) {
             bool ok;
             d->mResponse = decodeEnumString<EwsEventResponseType>(reader.readElementText(),
-                           responseTypeNames, responseTypeNameCount, &ok);
+                                                                  responseTypeNames, responseTypeNameCount, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid attendee %1 element.")
-                                      .arg(readerName.toString());
+                    .arg(readerName.toString());
                 return;
             }
         } else if (readerName == QStringLiteral("LastResponseTime")) {
@@ -119,6 +120,7 @@ EwsAttendee &EwsAttendee::operator=(const EwsAttendee &other)
     d = other.d;
     return *this;
 }
+
 EwsAttendee &EwsAttendee::operator=(EwsAttendee &&other)
 {
     d = std::move(other.d);

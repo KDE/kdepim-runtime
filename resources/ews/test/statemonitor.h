@@ -33,19 +33,21 @@ class StateMonitorBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit StateMonitorBase(QObject *parent) : QObject(parent) {}
+    explicit StateMonitorBase(QObject *parent) : QObject(parent)
+    {
+    }
+
     ~StateMonitorBase() override = default;
 Q_SIGNALS:
     void stateReached();
     void errorOccurred();
 };
 
-template <typename T> class CollectionStateMonitor : public StateMonitorBase
+template<typename T> class CollectionStateMonitor : public StateMonitorBase
 {
 public:
-    typedef std::function<bool(const Akonadi::Collection &col, const T &state)> StateComparisonFunc;
-    CollectionStateMonitor(QObject *parent, const QHash<QString, T> &stateHash,
-                           const QString &inboxId, const StateComparisonFunc &comparisonFunc, int recheckInterval = 0);
+    typedef std::function<bool (const Akonadi::Collection &col, const T &state)> StateComparisonFunc;
+    CollectionStateMonitor(QObject *parent, const QHash<QString, T> &stateHash, const QString &inboxId, const StateComparisonFunc &comparisonFunc, int recheckInterval = 0);
     ~CollectionStateMonitor() override = default;
     Akonadi::Monitor &monitor()
     {
@@ -64,18 +66,22 @@ private:
     QTimer mRecheckTimer;
 };
 
-template <typename T>
-CollectionStateMonitor<T>::CollectionStateMonitor(QObject *parent, const QHash<QString, T> &stateHash,
-        const QString &inboxId, const StateComparisonFunc &comparisonFunc, int recheckInterval)
-    : StateMonitorBase(parent), mMonitor(this), mPending(stateHash.keys().toSet()), mStateHash(stateHash),
-      mComparisonFunc(comparisonFunc), mInboxId(inboxId), mRecheckTimer(this)
+template<typename T>
+CollectionStateMonitor<T>::CollectionStateMonitor(QObject *parent, const QHash<QString, T> &stateHash, const QString &inboxId, const StateComparisonFunc &comparisonFunc, int recheckInterval)
+    : StateMonitorBase(parent)
+    , mMonitor(this)
+    , mPending(stateHash.keys().toSet())
+    , mStateHash(stateHash)
+    , mComparisonFunc(comparisonFunc)
+    , mInboxId(inboxId)
+    , mRecheckTimer(this)
 {
     connect(&mMonitor, &Akonadi::Monitor::collectionAdded, this,
-    [this](const Akonadi::Collection & col, const Akonadi::Collection &) {
+            [this](const Akonadi::Collection &col, const Akonadi::Collection &) {
         stateChanged(col);
     });
-    connect(&mMonitor, QOverload<const Akonadi::Collection&>::of(&Akonadi::Monitor::collectionChanged), this,
-    [this](const Akonadi::Collection & col) {
+    connect(&mMonitor, QOverload<const Akonadi::Collection &>::of(&Akonadi::Monitor::collectionChanged), this,
+            [this](const Akonadi::Collection &col) {
         stateChanged(col);
     });
     if (recheckInterval > 0) {
@@ -85,7 +91,7 @@ CollectionStateMonitor<T>::CollectionStateMonitor(QObject *parent, const QHash<Q
     }
 }
 
-template <typename T>
+template<typename T>
 void CollectionStateMonitor<T>::stateChanged(const Akonadi::Collection &col)
 {
     auto remoteId = col.remoteId();
@@ -104,7 +110,7 @@ void CollectionStateMonitor<T>::stateChanged(const Akonadi::Collection &col)
     }
 }
 
-template <typename T>
+template<typename T>
 void CollectionStateMonitor<T>::forceRecheck()
 {
     auto fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);

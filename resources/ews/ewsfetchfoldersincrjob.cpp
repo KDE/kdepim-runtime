@@ -121,7 +121,9 @@ public:
     } Flag;
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    FolderDescr() {}
+    FolderDescr()
+    {
+    }
 
     Akonadi::Collection collection;
     Flags flags;
@@ -131,18 +133,22 @@ public:
     {
         return flags & RemoteCreated;
     }
+
     bool isModified() const
     {
         return flags & RemoteUpdated;
     }
+
     bool isRemoved() const
     {
         return flags & RemoteDeleted;
     }
+
     bool isProcessed() const
     {
         return flags & Processed;
     }
+
     QString parent() const
     {
         return ewsFolder.isValid() ? ewsFolder[EwsFolderFieldParentFolderId].value<EwsId>().id() : QString();
@@ -154,8 +160,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(FolderDescr::Flags)
 class EwsFetchFoldersIncrJobPrivate : public QObject
 {
 public:
-    EwsFetchFoldersIncrJobPrivate(EwsFetchFoldersIncrJob *parent, EwsClient &client,
-                                  const Collection &rootCollection);
+    EwsFetchFoldersIncrJobPrivate(EwsFetchFoldersIncrJob *parent, EwsClient &client, const Collection &rootCollection);
     ~EwsFetchFoldersIncrJobPrivate();
 
     bool processRemoteFolders();
@@ -182,9 +187,11 @@ public:
     Q_DECLARE_PUBLIC(EwsFetchFoldersIncrJob)
 };
 
-EwsFetchFoldersIncrJobPrivate::EwsFetchFoldersIncrJobPrivate(EwsFetchFoldersIncrJob *parent, EwsClient &client,
-        const Collection &rootCollection)
-    : QObject(parent), mClient(client), mRootCollection(rootCollection), q_ptr(parent)
+EwsFetchFoldersIncrJobPrivate::EwsFetchFoldersIncrJobPrivate(EwsFetchFoldersIncrJob *parent, EwsClient &client, const Collection &rootCollection)
+    : QObject(parent)
+    , mClient(client)
+    , mRootCollection(rootCollection)
+    , q_ptr(parent)
 {
     mPendingMoveJobs = 0;
 }
@@ -197,7 +204,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersIncrJob);
 
-    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest*>(job);
+    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsSyncFolderHierarchyRequestjob object");
         q->setErrorMsg(QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object"));
@@ -224,7 +231,8 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
         Collection c;
 
         switch (ch.type()) {
-        case EwsSyncFolderHierarchyRequest::Update: {
+        case EwsSyncFolderHierarchyRequest::Update:
+        {
             fd.ewsFolder = ch.folder();
             fd.flags |= FolderDescr::RemoteUpdated;
             EwsId id = fd.ewsFolder[EwsFolderFieldFolderId].value<EwsId>();
@@ -240,7 +248,8 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
             localFetchHash.insert(c.remoteId(), c);
             break;
         }
-        case EwsSyncFolderHierarchyRequest::Create: {
+        case EwsSyncFolderHierarchyRequest::Create:
+        {
             fd.ewsFolder = ch.folder();
             fd.flags |= FolderDescr::RemoteCreated;
             EwsId id = fd.ewsFolder[EwsFolderFieldFolderId].value<EwsId>();
@@ -254,7 +263,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
             }
             break;
         }
-        case EwsSyncFolderHierarchyRequest::Delete: {
+        case EwsSyncFolderHierarchyRequest::Delete:
             fd.flags |= FolderDescr::RemoteDeleted;
             mFolderHash.insert(ch.folderId().id(), fd);
 
@@ -262,7 +271,6 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
             c.setRemoteId(ch.folderId().id());
             localFetchHash.insert(c.remoteId(), c);
             break;
-        }
         default:
             break;
         }
@@ -278,7 +286,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
     q->mSyncState = req->syncState();
 
     CollectionFetchJob *fetchJob = new CollectionFetchJob(localFetchHash.values().toVector(),
-            CollectionFetchJob::Base);
+                                                          CollectionFetchJob::Base);
     CollectionFetchScope scope;
     scope.setAncestorRetrieval(CollectionFetchScope::All);
     fetchJob->setFetchScope(scope);
@@ -297,7 +305,7 @@ void EwsFetchFoldersIncrJobPrivate::localFolderFetchDone(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>(job);
+    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
 
     Q_FOREACH (const Collection &col, fetchJob->collections()) {
@@ -447,8 +455,8 @@ void EwsFetchFoldersIncrJobPrivate::reparentRemoteFolder(const QString &id)
     FolderDescr &fd = mFolderHash[id];
     Q_FOREACH (const QString &childId, children) {
         FolderDescr &childFd = mFolderHash[childId];
-        if (!childFd.isProcessed() && childFd.isModified() &&
-            childFd.parent() != childFd.collection.parentCollection().remoteId()) {
+        if (!childFd.isProcessed() && childFd.isModified()
+            && childFd.parent() != childFd.collection.parentCollection().remoteId()) {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Found moved collection");
             /* Found unprocessed collection move. */
             moveCollection(childFd);
@@ -462,9 +470,9 @@ void EwsFetchFoldersIncrJobPrivate::reparentRemoteFolder(const QString &id)
 
 void EwsFetchFoldersIncrJobPrivate::moveCollection(const FolderDescr &fd)
 {
-    qCDebugNC(EWSRES_LOG) << QStringLiteral("Moving collection") << fd.collection.remoteId() <<
-                          QStringLiteral("from") << fd.collection.parentCollection().remoteId() <<
-                          QStringLiteral("to") << fd.parent();
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Moving collection") << fd.collection.remoteId()
+                          <<QStringLiteral("from") << fd.collection.parentCollection().remoteId()
+                          <<QStringLiteral("to") << fd.parent();
     CollectionMoveJob *job = new CollectionMoveJob(fd.collection, mFolderHash[fd.parent()].collection);
     connect(job, &CollectionMoveJob::result, this, &EwsFetchFoldersIncrJobPrivate::localFolderMoveDone);
     mPendingMoveJobs++;
@@ -535,11 +543,10 @@ void EwsFetchFoldersIncrJobPrivate::updateFolderCollection(Collection &collectio
     collection.setRemoteRevision(id.changeKey());
 }
 
-
-EwsFetchFoldersIncrJob::EwsFetchFoldersIncrJob(EwsClient &client, const QString &syncState,
-        const Akonadi::Collection &rootCollection, QObject *parent)
-    : EwsJob(parent), mSyncState(syncState),
-      d_ptr(new EwsFetchFoldersIncrJobPrivate(this, client, rootCollection))
+EwsFetchFoldersIncrJob::EwsFetchFoldersIncrJob(EwsClient &client, const QString &syncState, const Akonadi::Collection &rootCollection, QObject *parent)
+    : EwsJob(parent)
+    , mSyncState(syncState)
+    , d_ptr(new EwsFetchFoldersIncrJobPrivate(this, client, rootCollection))
 {
     qRegisterMetaType<EwsId::List>();
 }

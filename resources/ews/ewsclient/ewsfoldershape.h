@@ -29,18 +29,33 @@
 class EwsFolderShape
 {
 public:
-    explicit EwsFolderShape(EwsBaseShape shape = EwsShapeDefault) : mBaseShape(shape) {}
-    ~EwsFolderShape() {}
+    explicit EwsFolderShape(EwsBaseShape shape = EwsShapeDefault) : mBaseShape(shape)
+    {
+    }
+
+    ~EwsFolderShape()
+    {
+    }
+
     EwsFolderShape(const EwsFolderShape &other)
-        : mBaseShape(other.mBaseShape), mProps(other.mProps) {}
+        : mBaseShape(other.mBaseShape)
+        , mProps(other.mProps)
+    {
+    }
+
     EwsFolderShape(EwsFolderShape &&other)
-        : mBaseShape(other.mBaseShape), mProps(other.mProps) {}
+        : mBaseShape(other.mBaseShape)
+        , mProps(other.mProps)
+    {
+    }
+
     EwsFolderShape &operator=(EwsFolderShape &&other)
     {
         mBaseShape = other.mBaseShape;
         mProps = std::move(other.mProps);
         return *this;
     }
+
     EwsFolderShape &operator=(const EwsFolderShape &other)
     {
         mBaseShape = other.mBaseShape;

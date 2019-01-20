@@ -31,10 +31,14 @@ static const QString poxAdOuReqNsUri = QStringLiteral("http://schemas.microsoft.
 static const QString poxAdRespNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006");
 static const QString poxAdOuRespNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a");
 
-EwsPoxAutodiscoverRequest::EwsPoxAutodiscoverRequest(const QUrl &url, const QString &email,
-        const QString &userAgent, bool useNTLMv2, QObject *parent)
-    : EwsJob(parent), mUrl(url), mEmail(email), mUserAgent(userAgent), mUseNTLMv2(useNTLMv2),
-      mServerVersion(EwsServerVersion::ewsVersion2007Sp1), mAction(Settings)
+EwsPoxAutodiscoverRequest::EwsPoxAutodiscoverRequest(const QUrl &url, const QString &email, const QString &userAgent, bool useNTLMv2, QObject *parent)
+    : EwsJob(parent)
+    , mUrl(url)
+    , mEmail(email)
+    , mUserAgent(userAgent)
+    , mUseNTLMv2(useNTLMv2)
+    , mServerVersion(EwsServerVersion::ewsVersion2007Sp1)
+    , mAction(Settings)
 {
 }
 
@@ -102,7 +106,6 @@ void EwsPoxAutodiscoverRequest::start()
     doSend();
 }
 
-
 void EwsPoxAutodiscoverRequest::requestData(KIO::Job *job, const QByteArray &data)
 {
     Q_UNUSED(job);
@@ -125,7 +128,7 @@ void EwsPoxAutodiscoverRequest::requestResult(KJob *job)
         }
     }
 
-    KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob*>(job);
+    KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob *>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
     if (job->error() != 0) {

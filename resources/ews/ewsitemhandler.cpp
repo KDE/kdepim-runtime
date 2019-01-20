@@ -28,7 +28,7 @@ struct HandlerFactory {
 };
 
 typedef QList<HandlerFactory> HandlerList;
-typedef QHash<EwsItemType, QSharedPointer<EwsItemHandler>> HandlerHash;
+typedef QHash<EwsItemType, QSharedPointer<EwsItemHandler> > HandlerHash;
 
 Q_GLOBAL_STATIC(HandlerList, handlerFactories)
 Q_GLOBAL_STATIC(HandlerHash, handlers)
@@ -41,6 +41,7 @@ void EwsItemHandler::registerItemHandler(EwsItemType type, const ItemHandlerFact
 {
     handlerFactories->append({type, factory});
 }
+
 EwsItemHandler *EwsItemHandler::itemHandler(EwsItemType type)
 {
     HandlerHash::iterator it = handlers->find(type);
@@ -119,4 +120,3 @@ QList<EwsPropertyField> EwsItemHandler::tagsProperties()
 {
     return {EwsResource::tagsProperty};
 }
-

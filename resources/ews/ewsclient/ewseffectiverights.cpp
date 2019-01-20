@@ -50,7 +50,8 @@ public:
 };
 
 EwsEffectiveRightsPrivate::EwsEffectiveRightsPrivate()
-    : mValid(false), mRights(7)
+    : mValid(false)
+    , mRights(7)
 {
 }
 
@@ -63,7 +64,7 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
     QString elm = reader.name().toString();
     if (reader.error() != QXmlStreamReader::NoError) {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                              .arg(QStringLiteral("EffectiveRights"), elm);
+            .arg(QStringLiteral("EffectiveRights"), elm);
         return false;
     }
 
@@ -74,7 +75,7 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
         mRights.clearBit(right);
     } else {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element value: %3.")
-                              .arg(QStringLiteral("EffectiveRights"), elm, text);
+            .arg(QStringLiteral("EffectiveRights"), elm, text);
         return false;
     }
 
@@ -126,7 +127,7 @@ EwsEffectiveRights::EwsEffectiveRights(QXmlStreamReader &reader)
             }
         } else {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                                  .arg(QStringLiteral("EffectiveRights"), readerName.toString());
+                .arg(QStringLiteral("EffectiveRights"), readerName.toString());
             return;
         }
     }
@@ -153,6 +154,7 @@ EwsEffectiveRights &EwsEffectiveRights::operator=(const EwsEffectiveRights &othe
     d = other.d;
     return *this;
 }
+
 EwsEffectiveRights &EwsEffectiveRights::operator=(EwsEffectiveRights &&other)
 {
     d = std::move(other.d);
@@ -198,4 +200,3 @@ bool EwsEffectiveRights::canViewPrivateItems() const
 {
     return d->mRights.testBit(EwsEffectiveRightsPrivate::ViewPrivateItems);
 }
-

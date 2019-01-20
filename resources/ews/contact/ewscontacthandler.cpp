@@ -41,8 +41,7 @@ EwsItemHandler *EwsContactHandler::factory()
     return new EwsContactHandler();
 }
 
-EwsFetchItemDetailJob *EwsContactHandler::fetchItemDetailJob(EwsClient &client, QObject *parent,
-        const Akonadi::Collection &collection)
+EwsFetchItemDetailJob *EwsContactHandler::fetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
 {
     return new EwsFetchContactDetailJob(client, parent, collection);
 }
@@ -66,15 +65,12 @@ bool EwsContactHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsIt
     return true;
 }
 
-EwsModifyItemJob *EwsContactHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items,
-        const QSet<QByteArray> &parts, QObject *parent)
+EwsModifyItemJob *EwsContactHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent)
 {
     return new EwsModifyContactJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsContactHandler::createItemJob(EwsClient &client, const Akonadi::Item &item,
-        const Akonadi::Collection &collection,
-        EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *EwsContactHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
 {
     return new EwsCreateContactJob(client, item, collection, tagStore, parent);
 }

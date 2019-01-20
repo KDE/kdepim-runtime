@@ -64,7 +64,10 @@ class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    EwsOAuthUrlSchemeHandler(QObject *parent = nullptr) : QWebEngineUrlSchemeHandler(parent) {}
+    EwsOAuthUrlSchemeHandler(QObject *parent = nullptr) : QWebEngineUrlSchemeHandler(parent)
+    {
+    }
+
     ~EwsOAuthUrlSchemeHandler() override = default;
     void requestStarted(QWebEngineUrlRequestJob *request) override;
 Q_SIGNALS:
@@ -76,10 +79,18 @@ class EwsOAuthReplyHandler final : public QAbstractOAuthReplyHandler
     Q_OBJECT
 public:
     EwsOAuthReplyHandler(QObject *parent, const QString &returnUri)
-        : QAbstractOAuthReplyHandler(parent), mReturnUri(returnUri) {}
+        : QAbstractOAuthReplyHandler(parent)
+        , mReturnUri(returnUri)
+    {
+    }
+
     ~EwsOAuthReplyHandler() override = default;
 
-    QString callback() const override { return mReturnUri; }
+    QString callback() const override
+    {
+        return mReturnUri;
+    }
+
     void networkReplyFinished(QNetworkReply *reply) override;
 Q_SIGNALS:
     void replyError(const QString &error);
@@ -92,7 +103,8 @@ class EwsOAuthRequestInterceptor final : public QWebEngineUrlRequestInterceptor
     Q_OBJECT
 public:
     EwsOAuthRequestInterceptor(QObject *parent, const QString &redirectUri)
-        : QWebEngineUrlRequestInterceptor(parent), mRedirectUri(redirectUri)
+        : QWebEngineUrlRequestInterceptor(parent)
+        , mRedirectUri(redirectUri)
     {
     }
 
@@ -144,7 +156,6 @@ public:
     Q_DECLARE_PUBLIC(EwsOAuth)
 };
 
-
 void EwsOAuthUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
 {
     returnUriReceived(request->requestUrl());
@@ -168,8 +179,8 @@ void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
     }
     Q_EMIT replyDataReceived(data);
     QVariantMap tokens;
-    if (ct.startsWith(QStringLiteral("text/html")) ||
-        ct.startsWith(QStringLiteral("application/x-www-form-urlencoded"))) {
+    if (ct.startsWith(QStringLiteral("text/html"))
+        || ct.startsWith(QStringLiteral("application/x-www-form-urlencoded"))) {
         QUrlQuery q(QString::fromUtf8(data));
         const auto items = q.queryItems(QUrl::FullyDecoded);
         for (const auto &it : items) {
@@ -226,9 +237,16 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
 }
 
 EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const QString &appId, const QString &redirectUri)
-    : QObject(nullptr), mWebView(nullptr), mWebProfile(), mWebPage(&mWebProfile), mReplyHandler(this, redirectUri),
-      mRequestInterceptor(this, redirectUri), mEmail(email), mRedirectUri(redirectUri), mAuthenticated(false),
-      q_ptr(parent)
+    : QObject(nullptr)
+    , mWebView(nullptr)
+    , mWebProfile()
+    , mWebPage(&mWebProfile)
+    , mReplyHandler(this, redirectUri)
+    , mRequestInterceptor(this, redirectUri)
+    , mEmail(email)
+    , mRedirectUri(redirectUri)
+    , mAuthenticated(false)
+    , q_ptr(parent)
 {
     mOAuth2.setReplyHandler(&mReplyHandler);
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
@@ -247,10 +265,10 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::granted, this, &EwsOAuthPrivate::granted);
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::error, this, &EwsOAuthPrivate::error);
     connect(&mRequestInterceptor, &EwsOAuthRequestInterceptor::redirectUriIntercepted, this,
-        &EwsOAuthPrivate::redirectUriIntercepted, Qt::QueuedConnection);
+            &EwsOAuthPrivate::redirectUriIntercepted, Qt::QueuedConnection);
     connect(&mReplyHandler, &EwsOAuthReplyHandler::replyError, this, [this](const QString &err) {
-            error(QStringLiteral("Network reply error"), err, QUrl());
-        });
+        error(QStringLiteral("Network reply error"), err, QUrl());
+    });
 }
 
 bool EwsOAuthPrivate::authenticate(bool interactive)
@@ -319,8 +337,8 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
     mWebView.show();
 
     connect(mWebDialog.data(), &QDialog::rejected, this, [this]() {
-            error(QStringLiteral("User cancellation"), QStringLiteral("The authentication browser was closed"), QUrl());
-        });
+        error(QStringLiteral("User cancellation"), QStringLiteral("The authentication browser was closed"), QUrl());
+    });
 
     mWebView.load(url);
     mWebDialog->show();
@@ -363,7 +381,7 @@ void EwsOAuthPrivate::redirectUriIntercepted(const QUrl &url)
 #ifdef HAVE_QCA
 void EwsOAuthPrivate::pkeyAuthResult(KJob *j)
 {
-    EwsPKeyAuthJob *job = qobject_cast<EwsPKeyAuthJob*>(j);
+    EwsPKeyAuthJob *job = qobject_cast<EwsPKeyAuthJob *>(j);
 
     qCDebugNC(EWSCLI_LOG) << QStringLiteral("PKeyAuth result: %1").arg(job->error());
     QVariantMap varmap;
@@ -374,6 +392,7 @@ void EwsOAuthPrivate::pkeyAuthResult(KJob *j)
     }
     mOAuth2.authorizationCallbackReceived(varmap);
 }
+
 #endif
 
 void EwsOAuthPrivate::granted()
@@ -407,7 +426,8 @@ void EwsOAuthPrivate::error(const QString &error, const QString &errorDescriptio
 }
 
 EwsOAuth::EwsOAuth(QObject *parent, const QString &email, const QString &appId, const QString &redirectUri)
-    : EwsAbstractAuth(parent), d_ptr(new EwsOAuthPrivate(this, email, appId, redirectUri))
+    : EwsAbstractAuth(parent)
+    , d_ptr(new EwsOAuthPrivate(this, email, appId, redirectUri))
 {
 }
 

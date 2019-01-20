@@ -33,7 +33,6 @@ EwsFetchTaskDetailJob::EwsFetchTaskDetailJob(EwsClient &client, QObject *parent,
     mRequest->setItemShape(shape);
 }
 
-
 EwsFetchTaskDetailJob::~EwsFetchTaskDetailJob()
 {
 }
@@ -59,4 +58,3 @@ void EwsFetchTaskDetailJob::processItems(const QList<EwsGetItemRequest::Response
 
     emitResult();
 }
-

@@ -24,10 +24,14 @@
 
 #include <KLocalizedString>
 
-EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email, const QString &username, const QString &password,
-        const QString &userAgent, bool enableNTLMv2, QObject *parent)
-    : EwsJob(parent), mEmail(email), mUsername(username), mPassword(password), mUserAgent(userAgent),
-      mEnableNTLMv2(enableNTLMv2), mUsedCreds(false)
+EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email, const QString &username, const QString &password, const QString &userAgent, bool enableNTLMv2, QObject *parent)
+    : EwsJob(parent)
+    , mEmail(email)
+    , mUsername(username)
+    , mPassword(password)
+    , mUserAgent(userAgent)
+    , mEnableNTLMv2(enableNTLMv2)
+    , mUsedCreds(false)
 {
 }
 
@@ -80,7 +84,7 @@ void EwsAutodiscoveryJob::sendNextRequest(bool useCreds)
     }
     mUsedCreds = useCreds;
     EwsPoxAutodiscoverRequest *req = new EwsPoxAutodiscoverRequest(url, mEmail, mUserAgent,
-            mEnableNTLMv2, this);
+                                                                   mEnableNTLMv2, this);
     connect(req, &EwsPoxAutodiscoverRequest::result, this,
             &EwsAutodiscoveryJob::autodiscoveryRequestFinished);
     req->start();
@@ -88,7 +92,7 @@ void EwsAutodiscoveryJob::sendNextRequest(bool useCreds)
 
 void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
 {
-    EwsPoxAutodiscoverRequest *req = qobject_cast<EwsPoxAutodiscoverRequest*>(job);
+    EwsPoxAutodiscoverRequest *req = qobject_cast<EwsPoxAutodiscoverRequest *>(job);
     if (!req) {
         setErrorMsg(QStringLiteral("Invalid EwsPoxAutodiscoverRequest job object"));
         emitResult();
@@ -96,10 +100,8 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
     }
 
     if (req->error()) {
-
-        if (req->error() == 401 && !mUsedCreds &&
-            req->lastHttpUrl().scheme() != QStringLiteral("http")) { // Don't try authentication over HTTP
-
+        if (req->error() == 401 && !mUsedCreds
+            && req->lastHttpUrl().scheme() != QStringLiteral("http")) { // Don't try authentication over HTTP
             /* The 401 error may have come from an URL different to the original one (due to
              * redirections). When the original URL is retried with credentials KIO HTTP will issue
              * a warning that an authenticated request is made to a host that never asked for it.
@@ -120,7 +122,8 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
         }
     } else {
         switch (req->action()) {
-        case EwsPoxAutodiscoverRequest::Settings: {
+        case EwsPoxAutodiscoverRequest::Settings:
+        {
             EwsPoxAutodiscoverRequest::Protocol proto = req->protocol(EwsPoxAutodiscoverRequest::ExchangeProto);
             if (!proto.isValid()) {
                 setErrorMsg(i18n("Exchange protocol information not found"));

@@ -27,8 +27,7 @@
 #include "ewspropertyfield.h"
 #include "ewstypes.h"
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 class Item;
 }
@@ -45,18 +44,14 @@ class EwsItemHandler
 public:
     virtual ~EwsItemHandler();
 
-    virtual EwsFetchItemDetailJob *fetchItemDetailJob(EwsClient &client, QObject *parent,
-            const Akonadi::Collection &collection) = 0;
+    virtual EwsFetchItemDetailJob *fetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection) = 0;
     virtual void setSeenFlag(Akonadi::Item &item, bool value) = 0;
     virtual QString mimeType() = 0;
     virtual bool setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem) = 0;
-    virtual EwsModifyItemJob *modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items,
-                                            const QSet<QByteArray> &parts, QObject *parent) = 0;
-    virtual EwsCreateItemJob *createItemJob(EwsClient &client, const Akonadi::Item &item,
-                                            const Akonadi::Collection &collection,
-                                            EwsTagStore *tagStore, EwsResource *parent) = 0;
+    virtual EwsModifyItemJob *modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent) = 0;
+    virtual EwsCreateItemJob *createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) = 0;
 
-    typedef std::function<EwsItemHandler*()> ItemHandlerFactory;
+    typedef std::function<EwsItemHandler *()> ItemHandlerFactory;
     static void registerItemHandler(EwsItemType type, const ItemHandlerFactory &factory);
     static EwsItemHandler *itemHandler(EwsItemType type);
     static EwsItemType mimeToItemType(const QString &mimeType);

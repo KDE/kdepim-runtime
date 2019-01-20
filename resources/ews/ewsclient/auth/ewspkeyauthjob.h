@@ -32,8 +32,7 @@ class EwsPKeyAuthJob : public EwsJob
 {
     Q_OBJECT
 public:
-    explicit EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
-                            QObject *parent);
+    explicit EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword, QObject *parent);
     ~EwsPKeyAuthJob() override;
 
     const QUrl &resultUri() const;

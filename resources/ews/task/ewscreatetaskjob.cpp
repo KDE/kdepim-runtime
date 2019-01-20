@@ -21,12 +21,11 @@
 
 #include "ewsresource_debug.h"
 
-EwsCreateTaskJob::EwsCreateTaskJob(EwsClient &client, const Akonadi::Item &item,
-                                   const Akonadi::Collection &collection, EwsTagStore *tagStore,
-                                   EwsResource *parent)
+EwsCreateTaskJob::EwsCreateTaskJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
     : EwsCreateItemJob(client, item, collection, tagStore, parent)
 {
 }
+
 EwsCreateTaskJob::~EwsCreateTaskJob()
 {
 }

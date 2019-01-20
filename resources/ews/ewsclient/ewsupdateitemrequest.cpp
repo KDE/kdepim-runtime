@@ -47,8 +47,10 @@ static const QVector<QString> updateTypeElementNames = {
 };
 
 EwsUpdateItemRequest::EwsUpdateItemRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mMessageDisp(EwsDispSaveOnly),
-      mConflictResol(EwsResolAlwaysOverwrite), mMeetingDisp(EwsMeetingDispUnspecified)
+    : EwsRequest(client, parent)
+    , mMessageDisp(EwsDispSaveOnly)
+    , mConflictResol(EwsResolAlwaysOverwrite)
+    , mMeetingDisp(EwsMeetingDispUnspecified)
 {
 }
 
@@ -93,7 +95,7 @@ void EwsUpdateItemRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting UpdateItem request (%1 changes)")
-                                  .arg(mChanges.size());
+        .arg(mChanges.size());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -105,7 +107,9 @@ void EwsUpdateItemRequest::start()
 bool EwsUpdateItemRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("UpdateItem"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsUpdateItemRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -120,7 +124,7 @@ bool EwsUpdateItemRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got UpdateItem response - OK");
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got UpdateItem response - %1")
-                                          .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
 
@@ -129,7 +133,8 @@ bool EwsUpdateItemRequest::parseItemsResponse(QXmlStreamReader &reader)
 }
 
 EwsUpdateItemRequest::Response::Response(QXmlStreamReader &reader)
-    : EwsRequest::Response(reader), mConflictCount(0)
+    : EwsRequest::Response(reader)
+    , mConflictCount(0)
 {
     if (mClass == EwsResponseParseError) {
         return;

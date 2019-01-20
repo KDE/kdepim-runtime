@@ -33,14 +33,13 @@ public:
     void load() override;
     bool save() const override;
 
-private Q_SLOT:
+    private Q_SLOT:
     void checkToken();
     void login();
     void logout();
 
 private:
     QScopedPointer<Ui_FacebookAgentSettingsWidget> ui;
-
 };
 AKONADI_AGENTCONFIG_FACTORY(FacebookSettingsWidgetFactory, "facebookconfig.json", FacebookSettingsWidget)
 #endif

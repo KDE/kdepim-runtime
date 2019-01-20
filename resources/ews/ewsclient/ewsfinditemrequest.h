@@ -83,6 +83,7 @@ public:
     {
         return mItems;
     }
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);

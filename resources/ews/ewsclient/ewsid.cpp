@@ -75,17 +75,22 @@ EwsId::EwsId(QXmlStreamReader &reader)
 
     QStringRef idRef = attrs.value(QStringLiteral("Id"));
     QStringRef changeKeyRef = attrs.value(QStringLiteral("ChangeKey"));
-    if (idRef.isNull())
+    if (idRef.isNull()) {
         return;
+    }
 
     mId = idRef.toString();
-    if (!changeKeyRef.isNull())
+    if (!changeKeyRef.isNull()) {
         mChangeKey = changeKeyRef.toString();
+    }
     mType = Real;
 }
 
 EwsId::EwsId(const QString &id, const QString &changeKey)
-    : mType(Real), mId(id), mChangeKey(changeKey), mDid(EwsDIdCalendar)
+    : mType(Real)
+    , mId(id)
+    , mChangeKey(changeKey)
+    , mDid(EwsDIdCalendar)
 {
 }
 
@@ -115,26 +120,28 @@ EwsId &EwsId::operator=(EwsId &&other)
 
 bool EwsId::operator==(const EwsId &other) const
 {
-    if (mType != other.mType)
+    if (mType != other.mType) {
         return false;
+    }
 
     if (mType == Distinguished) {
-        return (mDid == other.mDid);
+        return mDid == other.mDid;
     } else if (mType == Real) {
-        return (mId == other.mId && mChangeKey == other.mChangeKey);
+        return mId == other.mId && mChangeKey == other.mChangeKey;
     }
     return true;
 }
 
 bool EwsId::operator<(const EwsId &other) const
 {
-    if (mType != other.mType)
+    if (mType != other.mType) {
         return mType < other.mType;
+    }
 
     if (mType == Distinguished) {
-        return (mDid < other.mDid);
+        return mDid < other.mDid;
     } else if (mType == Real) {
-        return (mId < other.mId && mChangeKey < other.mChangeKey);
+        return mId < other.mId && mChangeKey < other.mChangeKey;
     }
     return false;
 }
@@ -187,7 +194,8 @@ QDebug operator<<(QDebug debug, const EwsId &id)
     case EwsId::Distinguished:
         d << QStringLiteral("Distinguished: ") << distinguishedIdNames[id.mDid];
         break;
-    case EwsId::Real: {
+    case EwsId::Real:
+    {
         QString name = EwsClient::folderHash.value(id.mId, ewsHash(id.mId));
         d << name << QStringLiteral(", ") << ewsHash(id.mChangeKey);
         break;

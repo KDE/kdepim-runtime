@@ -51,7 +51,9 @@ public:
 };
 
 EwsSyncFolderItemsRequest::EwsSyncFolderItemsRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mMaxChanges(100), mIncludesLastItem(false)
+    : EwsRequest(client, parent)
+    , mMaxChanges(100)
+    , mIncludesLastItem(false)
 {
     qRegisterMetaType<EwsSyncFolderItemsRequest::Change::List>();
     qRegisterMetaType<EwsItem>();
@@ -123,7 +125,9 @@ void EwsSyncFolderItemsRequest::start()
 bool EwsSyncFolderItemsRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("SyncFolderItems"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsSyncFolderItemsRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -140,11 +144,11 @@ bool EwsSyncFolderItemsRequest::parseItemsResponse(QXmlStreamReader &reader)
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp->isSuccess()) {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderItems response (%1 changes, last included: %2, state: %3)")
-                                          .arg(mChanges.size()).arg(mIncludesLastItem ? QStringLiteral("true") : QStringLiteral("false"))
-                                          .arg(qHash(mSyncState), 0, 36);
+                .arg(mChanges.size()).arg(mIncludesLastItem ? QStringLiteral("true") : QStringLiteral("false"))
+                .arg(qHash(mSyncState), 0, 36);
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderItems response - %1")
-                                          .arg(resp->responseMessage());
+                .arg(resp->responseMessage());
         }
     }
 
@@ -168,14 +172,13 @@ EwsSyncFolderItemsRequest::Response::Response(QXmlStreamReader &reader)
     EwsXml<SyncFolderItemsResponseElementType> ewsReader(staticReader);
 
     if (!ewsReader.readItems(reader, ewsMsgNsUri,
-        [this](QXmlStreamReader &reader, const QString &) {
-            if (!readResponseElement(reader)) {
-                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
-                return false;
-            }
-            return true;
-        }))
-    {
+                             [this](QXmlStreamReader &reader, const QString &) {
+        if (!readResponseElement(reader)) {
+            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
+            return false;
+        }
+        return true;
+    })) {
         mClass = EwsResponseParseError;
         return;
     }
@@ -248,7 +251,7 @@ EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
         break;
     case ReadFlagChange:
         mIsRead = values[IsRead].toBool();
-    /* fall through */
+        /* fall through */
         Q_FALLTHROUGH();
     case Delete:
         mId = values[ItemId].value<EwsId>();

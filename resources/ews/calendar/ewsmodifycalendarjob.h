@@ -26,8 +26,7 @@ class EwsModifyCalendarJob : public EwsModifyItemJob
 {
     Q_OBJECT
 public:
-    EwsModifyCalendarJob(EwsClient &client, const Akonadi::Item::List &items, const QSet<QByteArray> &parts,
-                         QObject *parent);
+    EwsModifyCalendarJob(EwsClient &client, const Akonadi::Item::List &items, const QSet<QByteArray> &parts, QObject *parent);
     ~EwsModifyCalendarJob() override;
     void start() override;
 };

@@ -55,7 +55,11 @@ public:
 
     typedef QList<EwsId> List;
 
-    explicit EwsId(EwsDistinguishedId did) : mType(Distinguished), mDid(did) {}
+    explicit EwsId(EwsDistinguishedId did) : mType(Distinguished)
+        , mDid(did)
+    {
+    }
+
     explicit EwsId(const QString &id, const QString &changeKey = QString());
     EwsId(const EwsId &id)
     {
@@ -67,7 +71,11 @@ public:
         *this = std::move(id);
     }
 
-    EwsId() : mType(Unspecified), mDid(EwsDIdCalendar) {}
+    EwsId() : mType(Unspecified)
+        , mDid(EwsDIdCalendar)
+    {
+    }
+
     explicit EwsId(QXmlStreamReader &reader);
 
     Type type() const

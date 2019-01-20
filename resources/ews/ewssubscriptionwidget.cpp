@@ -81,7 +81,7 @@ public:
     EwsClient &mClient;
     KMessageWidget *mMsgWidget = nullptr;
     QStandardItemModel *mFolderTreeModel = nullptr;
-    QHash<QString, QStandardItem*> mFolderItemHash;
+    QHash<QString, QStandardItem *> mFolderItemHash;
     int mFolderListPendingRequests = 0;
     EwsFolder::List mFolders;
     EwsId::List mSubscribedIds;
@@ -95,7 +95,8 @@ public:
 };
 
 EwsSubscriptionFilterModel::EwsSubscriptionFilterModel(QObject *parent)
-    : KRecursiveFilterProxyModel(parent), mFilterSelected(false)
+    : KRecursiveFilterProxyModel(parent)
+    , mFilterSelected(false)
 {
 }
 
@@ -143,9 +144,11 @@ void EwsSubscriptionFilterModel::setFilterSelected(bool enabled)
     invalidateFilter();
 }
 
-EwsSubscriptionWidgetPrivate::EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings,
-        QObject *parent)
-    : QObject(parent), mClient(client), mSubscribedIdsRetrieved(false), mSettings(settings)
+EwsSubscriptionWidgetPrivate::EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings, QObject *parent)
+    : QObject(parent)
+    , mClient(client)
+    , mSubscribedIdsRetrieved(false)
+    , mSettings(settings)
 {
 }
 
@@ -177,7 +180,6 @@ void EwsSubscriptionWidgetPrivate::reloadFolderList(bool)
             mFolderListPendingRequests++;
         }
         mRefreshButton->setEnabled(false);
-
     } else {
         mMsgWidget->setText(i18nc("@info", "Exchange server not configured."));
         mMsgWidget->setMessageType(KMessageWidget::Error);
@@ -193,7 +195,7 @@ void EwsSubscriptionWidgetPrivate::readFolderListFinished(KJob *job)
         mMsgWidget->animatedShow();
         mRefreshButton->setEnabled(true);
     } else {
-        EwsFindFolderRequest *req = qobject_cast<EwsFindFolderRequest*>(job);
+        EwsFindFolderRequest *req = qobject_cast<EwsFindFolderRequest *>(job);
         Q_ASSERT(req);
 
         mFolders = req->folders();
@@ -214,7 +216,7 @@ void EwsSubscriptionWidgetPrivate::subscribedFoldersJobFinished(KJob *job)
         mMsgWidget->animatedShow();
         mRefreshButton->setEnabled(true);
     } else {
-        EwsSubscribedFoldersJob *req = qobject_cast<EwsSubscribedFoldersJob*>(job);
+        EwsSubscribedFoldersJob *req = qobject_cast<EwsSubscribedFoldersJob *>(job);
         Q_ASSERT(req);
 
         mSubscribedIds = req->folders();
@@ -227,7 +229,6 @@ void EwsSubscriptionWidgetPrivate::subscribedFoldersJobFinished(KJob *job)
             populateFolderTree();
         }
     }
-
 }
 
 void EwsSubscriptionWidgetPrivate::populateFolderTree()
@@ -254,7 +255,7 @@ void EwsSubscriptionWidgetPrivate::populateFolderTree()
         mFolderItemHash.insert(id.id(), item);
     }
 
-    Q_FOREACH (QStandardItem* item, mFolderItemHash) {
+    Q_FOREACH (QStandardItem *item, mFolderItemHash) {
         if (!item->parent()) {
             mFolderTreeModel->appendRow(item);
         }
@@ -283,7 +284,8 @@ void EwsSubscriptionWidgetPrivate::resetSelection(bool)
 }
 
 EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *settings, QWidget *parent)
-    : QWidget(parent), d_ptr(new EwsSubscriptionWidgetPrivate(client, settings, this))
+    : QWidget(parent)
+    , d_ptr(new EwsSubscriptionWidgetPrivate(client, settings, this))
 {
     Q_D(EwsSubscriptionWidget);
 

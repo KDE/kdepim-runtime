@@ -45,6 +45,7 @@ public:
     {
         return mFolders;
     }
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseFoldersResponse(QXmlStreamReader &reader);

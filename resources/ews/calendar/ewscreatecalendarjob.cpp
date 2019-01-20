@@ -21,12 +21,11 @@
 
 #include "ewsresource_debug.h"
 
-EwsCreateCalendarJob::EwsCreateCalendarJob(EwsClient &client, const Akonadi::Item &item,
-        const Akonadi::Collection &collection,
-        EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateCalendarJob::EwsCreateCalendarJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
     : EwsCreateItemJob(client, item, collection, tagStore, parent)
 {
 }
+
 EwsCreateCalendarJob::~EwsCreateCalendarJob()
 {
 }

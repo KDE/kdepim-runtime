@@ -48,7 +48,7 @@ void EwsGetEventsRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting GetEvents request (subId: %1, wmark: %2)")
-                                  .arg(mSubscriptionId, mWatermark);
+        .arg(mSubscriptionId, mWatermark);
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 

@@ -272,7 +272,7 @@ void UtEwsAttachment::read_data()
 
     QTest::newRow("invalid attachment id - bad namespace")
         << xmlFileAttHead + QStringLiteral("<AttachmentId xmlns=\"") + xmlMsgNsUri
-            + QStringLiteral("\" Id=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail
+        + QStringLiteral("\" Id=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail
         << false
         << EwsAttachment::UnknownAttachment
         << false << QString()
@@ -735,7 +735,6 @@ void UtEwsAttachment::write()
         }
     }
 
-
     QFETCH(QString, xml);
 
     QString xmlData;
@@ -898,12 +897,12 @@ void UtEwsAttachment::write_data()
 
     QTest::newRow("non-empty item attachment")
         << xmlHead + QStringLiteral("<ItemAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\">"
-            "<AttachmentId Id=\"5IaIqJVsJzamf2105wg4wQ==\"/>"
-            "<ContentType>application/x-test</ContentType>"
-            "<ContentLocation>file:///foo/bar</ContentLocation>"
-            "<LastModifiedTime>%1</LastModifiedTime>"
-            "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
-            "</ItemAttachment>").arg(testDt.toString(Qt::ISODate))
+                                                                                                "<AttachmentId Id=\"5IaIqJVsJzamf2105wg4wQ==\"/>"
+                                                                                                "<ContentType>application/x-test</ContentType>"
+                                                                                                "<ContentLocation>file:///foo/bar</ContentLocation>"
+                                                                                                "<LastModifiedTime>%1</LastModifiedTime>"
+                                                                                                "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
+                                                                                                "</ItemAttachment>").arg(testDt.toString(Qt::ISODate))
         << true
         << EwsAttachment::ItemAttachment
         << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==")
@@ -920,13 +919,13 @@ void UtEwsAttachment::write_data()
 
     QTest::newRow("non-empty file attachment")
         << xmlHead + QStringLiteral("<FileAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\">"
-            "<Name>Test attachment</Name>"
-            "<ContentId>FE938BD618330B9DA0C965A6077BB3FF20415531@1</ContentId>"
-            "<Size>123</Size>"
-            "<IsInline>true</IsInline>"
-            "<IsContactPhoto>true</IsContactPhoto>"
-            "<Content>VGhpcyBpcyBhbm90aGVyIHRlc3Q=</Content>"
-            "</FileAttachment>")
+                                                                                                "<Name>Test attachment</Name>"
+                                                                                                "<ContentId>FE938BD618330B9DA0C965A6077BB3FF20415531@1</ContentId>"
+                                                                                                "<Size>123</Size>"
+                                                                                                "<IsInline>true</IsInline>"
+                                                                                                "<IsContactPhoto>true</IsContactPhoto>"
+                                                                                                "<Content>VGhpcyBpcyBhbm90aGVyIHRlc3Q=</Content>"
+                                                                                                "</FileAttachment>")
         << true
         << EwsAttachment::FileAttachment
         << false << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==")
@@ -940,7 +939,6 @@ void UtEwsAttachment::write_data()
         << true << true
         << true << QByteArray("This is another test")
         << true << item1;
-
 }
 
 QTEST_MAIN(UtEwsAttachment)

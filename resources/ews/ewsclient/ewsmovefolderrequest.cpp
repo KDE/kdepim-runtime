@@ -53,7 +53,7 @@ void EwsMoveFolderRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting MoveFolder request (%1 folders, to %2)")
-                                  .arg(mIds.size()).arg(mDestFolderId.id());
+        .arg(mIds.size()).arg(mDestFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -65,7 +65,9 @@ void EwsMoveFolderRequest::start()
 bool EwsMoveFolderRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("MoveFolder"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsMoveFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -80,7 +82,7 @@ bool EwsMoveFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - OK");
         } else {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - %1")
-                                        .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);

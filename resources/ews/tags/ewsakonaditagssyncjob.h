@@ -24,8 +24,7 @@
 
 class EwsTagStore;
 class EwsClient;
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 }
 
@@ -33,8 +32,7 @@ class EwsAkonadiTagsSyncJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsAkonadiTagsSyncJob(EwsTagStore *tagStore, EwsClient &client,
-                          const Akonadi::Collection &rootCollection, QObject *parent);
+    EwsAkonadiTagsSyncJob(EwsTagStore *tagStore, EwsClient &client, const Akonadi::Collection &rootCollection, QObject *parent);
     ~EwsAkonadiTagsSyncJob() override;
 
     void start() override;

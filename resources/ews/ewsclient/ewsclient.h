@@ -67,6 +67,7 @@ public:
     {
         mUserAgent = userAgent;
     }
+
     const QString &userAgent() const
     {
         return mUserAgent;
@@ -76,6 +77,7 @@ public:
     {
         mEnableNTLMv2 = enable;
     }
+
     bool isNTLMv2Enabled() const
     {
         return mEnableNTLMv2;

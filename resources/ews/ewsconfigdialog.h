@@ -24,13 +24,11 @@
 #include <QMap>
 #include <QPointer>
 
-
 class QDialogButtonBox;
 class EwsResource;
 class EwsClient;
 class KConfigDialogManager;
-namespace Ui
-{
+namespace Ui {
 class SetupServerView;
 }
 class KJob;
@@ -45,8 +43,7 @@ class EwsConfigDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId,
-                             EwsSettings *settings);
+    explicit EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId, EwsSettings *settings);
     ~EwsConfigDialog() override;
 private:
     void save();

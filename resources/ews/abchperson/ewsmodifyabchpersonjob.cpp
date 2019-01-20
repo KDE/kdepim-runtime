@@ -21,11 +21,11 @@
 
 #include "ewsresource_debug.h"
 
-EwsModifyAbchPersonJob::EwsModifyAbchPersonJob(EwsClient &client, const Akonadi::Item::List &items,
-        const QSet<QByteArray> &parts, QObject *parent)
+EwsModifyAbchPersonJob::EwsModifyAbchPersonJob(EwsClient &client, const Akonadi::Item::List &items, const QSet<QByteArray> &parts, QObject *parent)
     : EwsModifyItemJob(client, items, parts, parent)
 {
 }
+
 EwsModifyAbchPersonJob::~EwsModifyAbchPersonJob()
 {
 }

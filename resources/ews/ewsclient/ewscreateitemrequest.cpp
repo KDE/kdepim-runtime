@@ -35,7 +35,9 @@ static const QVector<QString> meetingDispositionNames = {
 };
 
 EwsCreateItemRequest::EwsCreateItemRequest(EwsClient &client, QObject *parent)
-    : EwsRequest(client, parent), mMessageDisp(EwsDispSaveOnly), mMeetingDisp(EwsMeetingDispUnspecified)
+    : EwsRequest(client, parent)
+    , mMessageDisp(EwsDispSaveOnly)
+    , mMeetingDisp(EwsMeetingDispUnspecified)
 {
 }
 
@@ -77,7 +79,7 @@ void EwsCreateItemRequest::start()
     endSoapDocument(writer);
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateItem request (%1 items, parent %2)")
-                                  .arg(mItems.size()).arg(mSavedFolderId.id());
+        .arg(mItems.size()).arg(mSavedFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -89,7 +91,9 @@ void EwsCreateItemRequest::start()
 bool EwsCreateItemRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("CreateItem"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsCreateItemRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -104,7 +108,7 @@ bool EwsCreateItemRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateItem response - OK");
         } else {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateItem response - %1")
-                                        .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);

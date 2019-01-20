@@ -23,11 +23,9 @@
 #include <QDialog>
 
 class QDialogButtonBox;
-namespace Akonadi
-{
+namespace Akonadi {
 }
-namespace Ui
-{
+namespace Ui {
 class SetupServerView;
 }
 class EwsMtaResource;

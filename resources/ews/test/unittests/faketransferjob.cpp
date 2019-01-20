@@ -26,8 +26,9 @@
 QQueue<FakeTransferJob::Verifier> FakeTransferJob::mVerifierQueue;
 
 FakeTransferJob::FakeTransferJob(const QByteArray &postData, VerifierFn fn, QObject *parent)
-    : KIO::SpecialJob(QUrl(QStringLiteral("file:///tmp/")), QByteArray()), mPostData(postData),
-      mVerifier(fn)
+    : KIO::SpecialJob(QUrl(QStringLiteral("file:///tmp/")), QByteArray())
+    , mPostData(postData)
+    , mVerifier(fn)
 {
     Q_UNUSED(parent);
 
@@ -36,7 +37,6 @@ FakeTransferJob::FakeTransferJob(const QByteArray &postData, VerifierFn fn, QObj
 
 FakeTransferJob::~FakeTransferJob()
 {
-
 }
 
 void FakeTransferJob::callVerifier()
@@ -47,7 +47,7 @@ void FakeTransferJob::callVerifier()
 void FakeTransferJob::postResponse(const QByteArray &resp)
 {
     mResponse = resp;
-    qRegisterMetaType<KIO::Job*>();
+    qRegisterMetaType<KIO::Job *>();
     metaObject()->invokeMethod(this, "doData", Qt::QueuedConnection, Q_ARG(QByteArray, mResponse));
     metaObject()->invokeMethod(this, "doEmitResult", Qt::QueuedConnection);
 }

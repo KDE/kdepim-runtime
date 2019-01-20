@@ -36,10 +36,14 @@ static Q_CONSTEXPR uint streamingTimeout = 30; /* minutes */
 
 static Q_CONSTEXPR uint streamingConnTimeout = 60; /* seconds */
 
-EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &rootId,
-        EwsSettings *settings, QObject *parent)
-    : QObject(parent), mEwsClient(client), mPollTimer(this), mMsgRootId(rootId), mFolderTreeChanged(false),
-      mEventReq(nullptr), mSettings(settings)
+EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &rootId, EwsSettings *settings, QObject *parent)
+    : QObject(parent)
+    , mEwsClient(client)
+    , mPollTimer(this)
+    , mMsgRootId(rootId)
+    , mFolderTreeChanged(false)
+    , mEventReq(nullptr)
+    , mSettings(settings)
 {
     mStreamingEvents = mEwsClient.serverVersion().supports(EwsServerVersion::StreamingSubscription);
     mStreamingTimer.setInterval(streamingConnTimeout * 1000);
@@ -90,7 +94,7 @@ void EwsSubscriptionManager::setupSubscription()
 void EwsSubscriptionManager::verifySubFoldersRequestFinished(KJob *job)
 {
     if (!job->error()) {
-        EwsSubscribedFoldersJob *folderJob = qobject_cast<EwsSubscribedFoldersJob*>(job);
+        EwsSubscribedFoldersJob *folderJob = qobject_cast<EwsSubscribedFoldersJob *>(job);
         Q_ASSERT(folderJob);
 
         setupSubscriptionReq(folderJob->folders());
@@ -141,7 +145,7 @@ void EwsSubscriptionManager::resetSubscription()
 void EwsSubscriptionManager::subscribeRequestFinished(KJob *job)
 {
     if (!job->error()) {
-        EwsSubscribeRequest *req = qobject_cast<EwsSubscribeRequest*>(job);
+        EwsSubscribeRequest *req = qobject_cast<EwsSubscribeRequest *>(job);
         if (req) {
             mSettings->setEventSubscriptionId(req->response().subscriptionId());
             if (mStreamingEvents) {
@@ -187,16 +191,16 @@ void EwsSubscriptionManager::getEventsRequestFinished(KJob *job)
     mEventReq->deleteLater();
     mEventReq = nullptr;
 
-    EwsEventRequestBase *req = qobject_cast<EwsEventRequestBase*>(job);
+    EwsEventRequestBase *req = qobject_cast<EwsEventRequestBase *>(job);
     if (!req) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Invalid EwsEventRequestBase job object.");
         reset();
         return;
     }
 
-    if ((!req->responses().isEmpty()) &&
-        ((req->responses()[0].responseCode() == QStringLiteral("ErrorInvalidSubscription")) ||
-         (req->responses()[0].responseCode() == QStringLiteral("ErrorSubscriptionNotFound")))) {
+    if ((!req->responses().isEmpty())
+        && ((req->responses()[0].responseCode() == QStringLiteral("ErrorInvalidSubscription"))
+            || (req->responses()[0].responseCode() == QStringLiteral("ErrorSubscriptionNotFound")))) {
         mSettings->setEventSubscriptionId(QString());
         mSettings->setEventSubscriptionWatermark(QString());
         mSettings->save();
@@ -218,7 +222,7 @@ void EwsSubscriptionManager::streamingEventsReceived(KJob *job)
 {
     mStreamingTimer.stop();
 
-    EwsEventRequestBase *req = qobject_cast<EwsEventRequestBase*>(job);
+    EwsEventRequestBase *req = qobject_cast<EwsEventRequestBase *>(job);
     if (!req) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Invalid EwsEventRequestBase job object.");
         reset();
@@ -248,7 +252,6 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
     Q_FOREACH (const EwsGetEventsRequest::Response &resp, req->responses()) {
         Q_FOREACH (const EwsGetEventsRequest::Notification &nfy, resp.notifications()) {
             Q_FOREACH (const EwsGetEventsRequest::Event &event, nfy.events()) {
-
                 bool skip = false;
                 EwsId id = event.itemId();
                 for (auto it = mQueuedUpdates.find(id.id()); it != mQueuedUpdates.end(); ++it) {
@@ -293,7 +296,7 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
             }
         }
         if (mStreamingEvents) {
-            EwsGetStreamingEventsRequest *req2 = qobject_cast<EwsGetStreamingEventsRequest*>(req);
+            EwsGetStreamingEventsRequest *req2 = qobject_cast<EwsGetStreamingEventsRequest *>(req);
             if (req2) {
                 req2->eventsProcessed(resp);
             }
@@ -310,7 +313,7 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
         }
         if (!mUpdatedFolderIds.isEmpty()) {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 modified folders")
-                                  .arg(mUpdatedFolderIds.size());
+                .arg(mUpdatedFolderIds.size());
             Q_EMIT foldersModified(mUpdatedFolderIds.toList());
             mUpdatedFolderIds.clear();
         }

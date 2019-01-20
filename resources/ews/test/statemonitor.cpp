@@ -18,4 +18,3 @@
 */
 
 #include "statemonitor.h"
-

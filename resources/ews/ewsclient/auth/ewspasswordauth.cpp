@@ -23,9 +23,9 @@
 
 #include "ewsclient_debug.h"
 
-
 EwsPasswordAuth::EwsPasswordAuth(const QString &username, QObject *parent)
-    : EwsAbstractAuth(parent), mUsername(username)
+    : EwsAbstractAuth(parent)
+    , mUsername(username)
 {
 }
 

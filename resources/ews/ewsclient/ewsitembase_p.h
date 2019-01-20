@@ -47,7 +47,7 @@ public:
     bool operator==(const EwsItemBasePrivate &other) const;
 };
 
-template <>
+template<>
 Q_INLINE_TEMPLATE EwsItemBasePrivate *QSharedDataPointer<EwsItemBasePrivate>::clone()
 {
     return d->clone();

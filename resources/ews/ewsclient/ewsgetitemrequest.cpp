@@ -72,7 +72,9 @@ void EwsGetItemRequest::start()
 bool EwsGetItemRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("GetItem"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsGetItemRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -87,10 +89,10 @@ bool EwsGetItemRequest::parseItemsResponse(QXmlStreamReader &reader)
             const EwsItem &item = resp.item();
             const EwsId &id = item[EwsItemFieldItemId].value<EwsId>();
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetItem response (id: %1, subject: %2)")
-                                          .arg(ewsHash(id.id()), item[EwsItemFieldSubject].toString());
+                .arg(ewsHash(id.id()), item[EwsItemFieldSubject].toString());
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got GetItem response - %1")
-                                          .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
 
@@ -132,8 +134,9 @@ bool EwsGetItemRequest::Response::parseItems(QXmlStreamReader &reader)
     }
 
     if (reader.readNextStartElement()) {
-        if (reader.namespaceUri() != ewsTypeNsUri)
+        if (reader.namespaceUri() != ewsTypeNsUri) {
             return setErrorMsg(QStringLiteral("Failed to read EWS request - expected child element from types namespace."));
+        }
 
         EwsItem item(reader);
         if (!item.isValid()) {

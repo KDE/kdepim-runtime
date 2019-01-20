@@ -33,14 +33,32 @@ public:
     class Config
     {
     public:
-        QString name() const { return QStringLiteral("test_resource_name"); }
+        QString name() const
+        {
+            return QStringLiteral("test_resource_name");
+        }
     };
 
-    EwsSettingsBase() {}
+    EwsSettingsBase()
+    {
+    }
+
     virtual ~EwsSettingsBase() = default;
-    QString username() const { return QStringLiteral("testuser"); }
-    QString email() const { return QStringLiteral("test@example.com"); }
-    const Config *config() const { return  &mConfig; }
+    QString username() const
+    {
+        return QStringLiteral("testuser");
+    }
+
+    QString email() const
+    {
+        return QStringLiteral("test@example.com");
+    }
+
+    const Config *config() const
+    {
+        return &mConfig;
+    }
+
     Config mConfig;
 };
 

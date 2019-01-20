@@ -25,9 +25,10 @@
 #include "ewsresource_debug.h"
 
 EwsSubscribedFoldersJob::EwsSubscribedFoldersJob(EwsClient &client, EwsSettings *settings, QObject *parent)
-    : EwsJob(parent), mClient(client), mSettings(settings)
+    : EwsJob(parent)
+    , mClient(client)
+    , mSettings(settings)
 {
-
 }
 
 EwsSubscribedFoldersJob::~EwsSubscribedFoldersJob()
@@ -60,7 +61,7 @@ void EwsSubscribedFoldersJob::start()
 void EwsSubscribedFoldersJob::verifySubFoldersRequestFinished(KJob *job)
 {
     if (!job->error()) {
-        EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest*>(job);
+        EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest *>(job);
         Q_ASSERT(req);
 
         mFolders.clear();
@@ -99,4 +100,3 @@ const EwsId::List &EwsSubscribedFoldersJob::defaultSubscriptionFolders()
 
     return list;
 }
-

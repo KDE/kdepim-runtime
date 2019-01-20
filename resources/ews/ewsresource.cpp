@@ -86,20 +86,23 @@ static const QVector<SpecialFolders> specialFolderList = {
 const QString EwsResource::akonadiEwsPropsetUuid = QStringLiteral("9bf757ae-69b5-4d8a-bf1d-2dd0c0871a28");
 
 const EwsPropertyField EwsResource::globalTagsProperty(EwsResource::akonadiEwsPropsetUuid,
-        QStringLiteral("GlobalTags"), EwsPropTypeStringArray);
+                                                       QStringLiteral("GlobalTags"), EwsPropTypeStringArray);
 const EwsPropertyField EwsResource::globalTagsVersionProperty(EwsResource::akonadiEwsPropsetUuid,
-        QStringLiteral("GlobalTagsVersion"), EwsPropTypeInteger);
+                                                              QStringLiteral("GlobalTagsVersion"), EwsPropTypeInteger);
 const EwsPropertyField EwsResource::tagsProperty(EwsResource::akonadiEwsPropsetUuid,
-        QStringLiteral("Tags"), EwsPropTypeStringArray);
+                                                 QStringLiteral("Tags"), EwsPropTypeStringArray);
 const EwsPropertyField EwsResource::flagsProperty(EwsResource::akonadiEwsPropsetUuid,
-        QStringLiteral("Flags"), EwsPropTypeStringArray);
+                                                  QStringLiteral("Flags"), EwsPropTypeStringArray);
 
 static Q_CONSTEXPR int InitialReconnectTimeout = 60;
 static Q_CONSTEXPR int ReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
-    : Akonadi::ResourceBase(id), mAuthStage(0), mTagsRetrieved(false), mReconnectTimeout(InitialReconnectTimeout),
-      mSettings(new EwsSettings(winIdForDialogs()))
+    : Akonadi::ResourceBase(id)
+    , mAuthStage(0)
+    , mTagsRetrieved(false)
+    , mReconnectTimeout(InitialReconnectTimeout)
+    , mSettings(new EwsSettings(winIdForDialogs()))
 {
     mEwsClient.setUserAgent(mSettings->userAgent());
     mEwsClient.setEnableNTLMv2(mSettings->enableNTLMv2());
@@ -154,7 +157,7 @@ void EwsResource::delayedInit()
     new EwsSettingsAdaptor(mSettings.data());
     new EwsWalletAdaptor(mSettings.data());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-            mSettings.data(), QDBusConnection::ExportAdaptors);
+                                                 mSettings.data(), QDBusConnection::ExportAdaptors);
 }
 
 void EwsResource::resetUrl()
@@ -175,7 +178,7 @@ void EwsResource::resetUrl()
 
 void EwsResource::rootFolderFetchFinished(KJob *job)
 {
-    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest*>(job);
+    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest *>(job);
     if (!req) {
         Q_EMIT status(Idle, i18nc("@info:status", "Unable to connect to Exchange server"));
         setTemporaryOffline(reconnectTimeout());
@@ -255,7 +258,7 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
 void EwsResource::adjustInboxRemoteIdFetchFinished(KJob *job)
 {
     if (!job->error()) {
-        CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>(job);
+        CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
         Q_ASSERT(fetchJob);
         if (!fetchJob->collections().isEmpty()) {
             Collection c = fetchJob->collections()[0];
@@ -282,7 +285,7 @@ void EwsResource::retrieveCollections()
          * be, as it needs to be the anchor point.
          */
         CollectionFetchJob *fetchJob = new CollectionFetchJob(mRootCollection,
-                CollectionFetchJob::Base);
+                                                              CollectionFetchJob::Base);
         connect(fetchJob, &CollectionFetchJob::result, this, &EwsResource::rootCollectionFetched);
         fetchJob->start();
     } else {
@@ -296,7 +299,7 @@ void EwsResource::rootCollectionFetched(KJob *job)
     if (job->error()) {
         qCWarning(EWSRES_LOG) << "ERROR" << job->errorString();
     } else {
-        CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>(job);
+        CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
         if (fetchJob && !fetchJob->collections().isEmpty()) {
             mRootCollection = fetchJob->collections().first();
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Root collection fetched: ") << mRootCollection;
@@ -320,7 +323,7 @@ void EwsResource::doRetrieveCollections()
         job->start();
     } else {
         EwsFetchFoldersIncrJob *job = new EwsFetchFoldersIncrJob(mEwsClient, mFolderSyncState,
-                mRootCollection, this);
+                                                                 mRootCollection, this);
         connect(job, &EwsFetchFoldersIncrJob::result, this, &EwsResource::fetchFoldersIncrJobFinished);
         job->start();
     }
@@ -340,7 +343,7 @@ void EwsResource::retrieveItems(const Collection &collection)
 
     QString rid = collection.remoteId();
     EwsFetchItemsJob *job = new EwsFetchItemsJob(collection, mEwsClient,
-            mSyncState.value(rid), mItemsToCheck.value(rid), mTagStore, this);
+                                                 mSyncState.value(rid), mItemsToCheck.value(rid), mTagStore, this);
     job->setQueuedUpdates(mQueuedUpdates.value(collection.remoteId()));
     mQueuedUpdates.remove(collection.remoteId());
     connect(job, &EwsFetchItemsJob::result, this, &EwsResource::itemFetchJobFinished);
@@ -381,7 +384,7 @@ void EwsResource::getItemsRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to process items retrieval request"));
         return;
     }
-    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest*>(job);
+    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsGetItemRequest job object");
         cancelTask(i18nc("@info:status", "Failed to retrieve items - internal error"));
@@ -407,7 +410,6 @@ void EwsResource::getItemsRequestFinished(KJob *job)
         qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: incorrect number of responses.");
         cancelTask(i18nc("@info:status", "Failed to retrieve items - incorrect number of responses"));
         return;
-
     }
 
     Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
@@ -459,7 +461,7 @@ void EwsResource::configure(WId windowId)
 void EwsResource::fetchFoldersJobFinished(KJob *job)
 {
     Q_EMIT status(Idle, i18nc("@info:status The resource is ready", "Ready"));
-    EwsFetchFoldersJob *req = qobject_cast<EwsFetchFoldersJob*>(job);
+    EwsFetchFoldersJob *req = qobject_cast<EwsFetchFoldersJob *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsFetchFoldersJob job object");
         cancelTask(i18nc("@info:status", "Failed to retrieve folders - internal error"));
@@ -482,7 +484,7 @@ void EwsResource::fetchFoldersJobFinished(KJob *job)
 void EwsResource::fetchFoldersIncrJobFinished(KJob *job)
 {
     Q_EMIT status(Idle, i18nc("@info:status The resource is ready", "Ready"));
-    EwsFetchFoldersIncrJob *req = qobject_cast<EwsFetchFoldersIncrJob*>(job);
+    EwsFetchFoldersIncrJob *req = qobject_cast<EwsFetchFoldersIncrJob *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsFetchFoldersIncrJob job object");
         cancelTask(i18nc("@info:status", "Invalid incremental folders retrieval request job object"));
@@ -508,7 +510,7 @@ void EwsResource::fetchFoldersIncrJobFinished(KJob *job)
 
 void EwsResource::itemFetchJobFinished(KJob *job)
 {
-    EwsFetchItemsJob *fetchJob = qobject_cast<EwsFetchItemsJob*>(job);
+    EwsFetchItemsJob *fetchJob = qobject_cast<EwsFetchItemsJob *>(job);
 
     if (!fetchJob) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Invalid EwsFetchItemsJobjob object");
@@ -547,14 +549,13 @@ void EwsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> 
         cancelTask(i18nc("@info:status", "Item type not supported for changing"));
     } else {
         EwsModifyItemJob *job = EwsItemHandler::itemHandler(type)->modifyItemJob(mEwsClient,
-                                Item::List() << item, partIdentifiers, this);
+                                                                                 Item::List() << item, partIdentifiers, this);
         connect(job, &KJob::result, this, &EwsResource::itemChangeRequestFinished);
         job->start();
     }
 }
 
-void EwsResource::itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags,
-                                    const QSet<QByteArray> &removedFlags)
+void EwsResource::itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
 {
     qCDebug(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged: start" << items << addedFlags << removedFlags;
 
@@ -571,7 +572,7 @@ void EwsResource::itemModifyFlagsRequestFinished(KJob *job)
         return;
     }
 
-    EwsModifyItemFlagsJob *req = qobject_cast<EwsModifyItemFlagsJob*>(job);
+    EwsModifyItemFlagsJob *req = qobject_cast<EwsModifyItemFlagsJob *>(job);
     if (!req) {
         qCWarning(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged: Invalid EwsModifyItemFlagsJob job object";
         cancelTask(i18nc("@info:status", "Failed to update item flags - internal error"));
@@ -590,7 +591,7 @@ void EwsResource::itemChangeRequestFinished(KJob *job)
         return;
     }
 
-    EwsModifyItemJob *req = qobject_cast<EwsModifyItemJob*>(job);
+    EwsModifyItemJob *req = qobject_cast<EwsModifyItemJob *>(job);
     if (!req) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemChanged: Invalid EwsModifyItemJob job object";
         cancelTask(i18nc("@info:status", "Failed to update item - internal error"));
@@ -601,8 +602,7 @@ void EwsResource::itemChangeRequestFinished(KJob *job)
     changesCommitted(req->items());
 }
 
-void EwsResource::itemsMoved(const Item::List &items, const Collection &sourceCollection,
-                             const Collection &destinationCollection)
+void EwsResource::itemsMoved(const Item::List &items, const Collection &sourceCollection, const Collection &destinationCollection)
 {
     qCDebug(EWSRES_AGENTIF_LOG) << "itemsMoved: start" << items << sourceCollection << destinationCollection;
 
@@ -633,7 +633,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
         return;
     }
 
-    EwsMoveItemRequest *req = qobject_cast<EwsMoveItemRequest*>(job);
+    EwsMoveItemRequest *req = qobject_cast<EwsMoveItemRequest *>(job);
     if (!req) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemsMoved: Invalid EwsMoveItemRequest job object";
         cancelTask(i18nc("@info:status", "Failed to move item - internal error"));
@@ -664,7 +664,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
         Item &item = *it;
         if (resp.isSuccess()) {
             qCDebugNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsMoved: succeeded for item %1 (new id: %2)")
-                                          .arg(ewsHash(item.remoteId())).arg(ewsHash(resp.itemId().id()));
+                .arg(ewsHash(item.remoteId())).arg(ewsHash(resp.itemId().id()));
             if (item.isValid()) {
                 /* Log item deletion in the source folder so that the next sync doesn't trip over
                  * non-existent items. Use old remote ids for that. */
@@ -687,7 +687,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
 
     if (!failedIds.isEmpty()) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to move %1 items. Forcing src & dst folder sync.")
-                                .arg(failedIds.size());
+            .arg(failedIds.size());
         mItemsToCheck[srcCol.remoteId()] += failedIds;
         foldersModifiedEvent(EwsId::List({EwsId(srcCol.remoteId(), QString())}));
         mItemsToCheck[dstCol.remoteId()] += failedIds;
@@ -714,7 +714,6 @@ void EwsResource::itemsRemoved(const Item::List &items)
     req->setProperty("items", QVariant::fromValue<Item::List>(items));
     connect(req, &EwsDeleteItemRequest::result, this, &EwsResource::itemDeleteRequestFinished);
     req->start();
-
 }
 
 void EwsResource::itemDeleteRequestFinished(KJob *job)
@@ -725,7 +724,7 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
         return;
     }
 
-    EwsDeleteItemRequest *req = qobject_cast<EwsDeleteItemRequest*>(job);
+    EwsDeleteItemRequest *req = qobject_cast<EwsDeleteItemRequest *>(job);
     if (!req) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemsRemoved: Invalid EwsDeleteItemRequest job object";
         cancelTask(i18nc("@info:status", "Failed to delete item - internal error"));
@@ -771,7 +770,7 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
 
     if (!foldersToSync.isEmpty()) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Need to force sync for %1 folders.")
-                                .arg(foldersToSync.size());
+            .arg(foldersToSync.size());
         foldersModifiedEvent(foldersToSync);
     }
 
@@ -786,7 +785,7 @@ void EwsResource::itemAdded(const Item &item, const Collection &collection)
         cancelTask(i18nc("@info:status", "Item type not supported for creation"));
     } else {
         EwsCreateItemJob *job = EwsItemHandler::itemHandler(type)->createItemJob(mEwsClient, item,
-                                collection, mTagStore, this);
+                                                                                 collection, mTagStore, this);
         connect(job, &EwsCreateItemJob::result, this, &EwsResource::itemCreateRequestFinished);
         job->start();
     }
@@ -799,7 +798,7 @@ void EwsResource::itemCreateRequestFinished(KJob *job)
         return;
     }
 
-    EwsCreateItemJob *req = qobject_cast<EwsCreateItemJob*>(job);
+    EwsCreateItemJob *req = qobject_cast<EwsCreateItemJob *>(job);
     if (!req) {
         cancelTask(i18nc("@info:status", "Failed to create item - internal error"));
         return;
@@ -845,7 +844,7 @@ void EwsResource::folderCreateRequestFinished(KJob *job)
         return;
     }
 
-    EwsCreateFolderRequest *req = qobject_cast<EwsCreateFolderRequest*>(job);
+    EwsCreateFolderRequest *req = qobject_cast<EwsCreateFolderRequest *>(job);
     if (!req) {
         cancelTask(i18nc("@info:status", "Failed to create folder - internal error"));
         return;
@@ -863,8 +862,7 @@ void EwsResource::folderCreateRequestFinished(KJob *job)
     }
 }
 
-void EwsResource::collectionMoved(const Collection &collection, const Collection &collectionSource,
-                                  const Collection &collectionDestination)
+void EwsResource::collectionMoved(const Collection &collection, const Collection &collectionSource, const Collection &collectionDestination)
 {
     Q_UNUSED(collectionSource)
 
@@ -887,7 +885,7 @@ void EwsResource::folderMoveRequestFinished(KJob *job)
         return;
     }
 
-    EwsMoveFolderRequest *req = qobject_cast<EwsMoveFolderRequest*>(job);
+    EwsMoveFolderRequest *req = qobject_cast<EwsMoveFolderRequest *>(job);
     if (!req) {
         cancelTask(i18nc("@info:status", "Failed to move folder - internal error"));
         return;
@@ -910,8 +908,7 @@ void EwsResource::folderMoveRequestFinished(KJob *job)
     }
 }
 
-void EwsResource::collectionChanged(const Collection &collection,
-                                    const QSet<QByteArray> &changedAttributes)
+void EwsResource::collectionChanged(const Collection &collection, const QSet<QByteArray> &changedAttributes)
 {
     if (changedAttributes.contains("NAME")) {
         EwsUpdateFolderRequest *req = new EwsUpdateFolderRequest(mEwsClient, this);
@@ -919,7 +916,7 @@ void EwsResource::collectionChanged(const Collection &collection,
                                                 EwsFolderTypeMail);
         EwsUpdateFolderRequest::Update *upd
             = new EwsUpdateFolderRequest::SetUpdate(EwsPropertyField(QStringLiteral("folder:DisplayName")),
-                    collection.name());
+                                                    collection.name());
         fc.addUpdate(upd);
         req->addFolderChange(fc);
         req->setProperty("collection", QVariant::fromValue<Collection>(collection));
@@ -942,7 +939,7 @@ void EwsResource::folderUpdateRequestFinished(KJob *job)
         return;
     }
 
-    EwsUpdateFolderRequest *req = qobject_cast<EwsUpdateFolderRequest*>(job);
+    EwsUpdateFolderRequest *req = qobject_cast<EwsUpdateFolderRequest *>(job);
     if (!req) {
         cancelTask(i18nc("@info:status", "Failed to update folder - internal error"));
         return;
@@ -973,7 +970,6 @@ void EwsResource::collectionRemoved(const Collection &collection)
     req->setFolderIds(ids);
     connect(req, &EwsDeleteFolderRequest::result, this, &EwsResource::folderDeleteRequestFinished);
     req->start();
-
 }
 
 void EwsResource::folderDeleteRequestFinished(KJob *job)
@@ -983,7 +979,7 @@ void EwsResource::folderDeleteRequestFinished(KJob *job)
         return;
     }
 
-    EwsDeleteFolderRequest *req = qobject_cast<EwsDeleteFolderRequest*>(job);
+    EwsDeleteFolderRequest *req = qobject_cast<EwsDeleteFolderRequest *>(job);
     if (!req) {
         cancelTask(i18nc("@info:status", "Failed to delete folder - internal error"));
         return;
@@ -1006,7 +1002,7 @@ void EwsResource::sendItem(const Akonadi::Item &item)
         itemSent(item, TransportFailed, i18nc("@info:status", "Item type not supported for creation"));
     } else {
         EwsCreateItemJob *job = EwsItemHandler::itemHandler(type)->createItemJob(mEwsClient, item,
-                                Collection(), mTagStore, this);
+                                                                                 Collection(), mTagStore, this);
         job->setSend(true);
         job->setProperty("item", QVariant::fromValue<Item>(item));
         connect(job, &EwsCreateItemJob::result, this, &EwsResource::itemSendRequestFinished);
@@ -1022,7 +1018,7 @@ void EwsResource::itemSendRequestFinished(KJob *job)
         return;
     }
 
-    EwsCreateItemJob *req = qobject_cast<EwsCreateItemJob*>(job);
+    EwsCreateItemJob *req = qobject_cast<EwsCreateItemJob *>(job);
     if (!req) {
         itemSent(item, TransportFailed, i18nc("@info:status", "Failed to send item - internal error"));
         return;
@@ -1056,7 +1052,7 @@ void EwsResource::messageSendRequestFinished(KJob *job)
         return;
     }
 
-    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest*>(job);
+    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest *>(job);
     if (!req) {
         Q_EMIT messageSent(id, i18nc("@info:status", "Failed to send item - internal error"));
         return;
@@ -1074,6 +1070,7 @@ void EwsResource::messageSendRequestFinished(KJob *job)
         Q_EMIT messageSent(id, resp.responseMessage());
     }
 }
+
 #endif
 
 void EwsResource::foldersModifiedEvent(const EwsId::List &folders)
@@ -1087,7 +1084,6 @@ void EwsResource::foldersModifiedEvent(const EwsId::List &folders)
         job->fetchScope().setListFilter(CollectionFetchScope::Sync);
         connect(job, &KJob::result, this, &EwsResource::foldersModifiedCollectionSyncFinished);
     }
-
 }
 
 void EwsResource::foldersModifiedCollectionSyncFinished(KJob *job)
@@ -1097,7 +1093,7 @@ void EwsResource::foldersModifiedCollectionSyncFinished(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob*>(job);
+    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
     synchronizeCollection(fetchJob->collections()[0].id());
 }
 
@@ -1133,7 +1129,7 @@ void EwsResource::fetchSpecialFolders()
 {
     CollectionFetchJob *job = new CollectionFetchJob(mRootCollection, CollectionFetchJob::Recursive, this);
     connect(job, &CollectionFetchJob::collectionsReceived, this, &EwsResource::specialFoldersCollectionsRetrieved);
-    connect(job, &CollectionFetchJob::result, this, [this](KJob * job) {
+    connect(job, &CollectionFetchJob::result, this, [this](KJob *job) {
         if (job->error()) {
             qCWarningNC(EWSRES_LOG) << "Special folders fetch failed:" << job->errorString();
         }
@@ -1167,7 +1163,7 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
         return;
     }
 
-    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest*>(job);
+    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest *>(job);
     if (!req) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Special collection fetch failed:")
                                 << QStringLiteral("Invalid EwsGetFolderRequest job object");
@@ -1194,7 +1190,7 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
             QMap<QString, Collection>::iterator mapIt = map.find(fid.id());
             if (mapIt != map.end()) {
                 qCDebugNC(EWSRES_LOG) << QStringLiteral("Registering folder %1(%2) as special collection %3")
-                                      .arg(ewsHash(mapIt->remoteId())).arg(mapIt->id()).arg(it->type);
+                    .arg(ewsHash(mapIt->remoteId())).arg(mapIt->id()).arg(it->type);
                 SpecialMailCollections::self()->registerCollection(it->type, *mapIt);
                 if (!mapIt->hasAttribute<EntityDisplayAttribute>()) {
                     EntityDisplayAttribute *attr = mapIt->attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
@@ -1235,8 +1231,7 @@ int EwsResource::reconnectTimeout()
     return timeout;
 }
 
-void EwsResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags,
-                                   const QSet<Tag> &removedTags)
+void EwsResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &addedTags, const QSet<Tag> &removedTags)
 {
     Q_UNUSED(addedTags)
     Q_UNUSED(removedTags)
@@ -1253,7 +1248,7 @@ void EwsResource::itemsTagChangeFinished(KJob *job)
         return;
     }
 
-    EwsUpdateItemsTagsJob *updJob = qobject_cast<EwsUpdateItemsTagsJob*>(job);
+    EwsUpdateItemsTagsJob *updJob = qobject_cast<EwsUpdateItemsTagsJob *>(job);
     if (!updJob) {
         cancelTask(i18nc("@info:status", "Failed to update item tags - internal error"));
         return;
@@ -1280,7 +1275,6 @@ void EwsResource::tagChanged(const Tag &tag)
     job->start();
 }
 
-
 void EwsResource::tagRemoved(const Tag &tag)
 {
     mTagStore->removeTag(tag);
@@ -1299,7 +1293,6 @@ void EwsResource::globalTagChangeFinished(KJob *job)
     }
 }
 
-
 void EwsResource::retrieveTags()
 {
     EwsGlobalTagsReadJob *job = new EwsGlobalTagsReadJob(mTagStore, mEwsClient, mRootCollection, this);
@@ -1312,7 +1305,7 @@ void EwsResource::globalTagsRetrievalFinished(KJob *job)
     if (job->error()) {
         cancelTask(i18nc("@info:status", "Failed to process global tags retrieval request"));
     } else {
-        EwsGlobalTagsReadJob *readJob = qobject_cast<EwsGlobalTagsReadJob*>(job);
+        EwsGlobalTagsReadJob *readJob = qobject_cast<EwsGlobalTagsReadJob *>(job);
         Q_ASSERT(readJob);
         tagsRetrieved(readJob->tags(), QHash<QString, Item::List>());
     }
@@ -1364,13 +1357,11 @@ void EwsResource::reauthenticate()
 {
     switch (mAuthStage) {
     case 0:
-    {
         if (mAuth->authenticate(false)) {
             break;
         } else {
             ++mAuthStage;
         }
-    }
     /* fall through */
     case 1:
     {

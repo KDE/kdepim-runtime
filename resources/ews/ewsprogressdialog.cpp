@@ -27,7 +27,6 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-
 EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
     : QDialog(parent)
 {

@@ -25,8 +25,7 @@
 #include "ewsjob.h"
 #include "ewsfinditemrequest.h"
 
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 }
 class EwsClient;
@@ -45,23 +44,24 @@ public:
 
     typedef QList<QueuedUpdate> QueuedUpdateList;
 
-    EwsFetchItemsJob(const Akonadi::Collection &collection, EwsClient &client,
-                     const QString &syncState, const EwsId::List &itemsToCheck,
-                     EwsTagStore *tagStore, EwsResource *parent);
+    EwsFetchItemsJob(const Akonadi::Collection &collection, EwsClient &client, const QString &syncState, const EwsId::List &itemsToCheck, EwsTagStore *tagStore, EwsResource *parent);
     ~EwsFetchItemsJob() override;
 
     Akonadi::Item::List changedItems() const
     {
         return mChangedItems;
     }
+
     Akonadi::Item::List deletedItems() const
     {
         return mDeletedItems;
     }
+
     const QString &syncState() const
     {
         return mSyncState;
     }
+
     const Akonadi::Collection &collection() const
     {
         return mCollection;

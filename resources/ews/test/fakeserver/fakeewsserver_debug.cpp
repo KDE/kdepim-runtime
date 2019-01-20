@@ -20,4 +20,3 @@
 #include "fakeewsserver_debug.h"
 
 Q_LOGGING_CATEGORY(EWSFAKE_LOG, "log_ews_fakeserver")
-

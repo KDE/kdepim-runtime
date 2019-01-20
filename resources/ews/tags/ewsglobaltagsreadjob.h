@@ -26,8 +26,7 @@
 
 class EwsTagStore;
 class EwsClient;
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 }
 
@@ -35,8 +34,7 @@ class EwsGlobalTagsReadJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsGlobalTagsReadJob(EwsTagStore *tagStore, EwsClient &client,
-                         const Akonadi::Collection &rootCollection, QObject *parent);
+    EwsGlobalTagsReadJob(EwsTagStore *tagStore, EwsClient &client, const Akonadi::Collection &rootCollection, QObject *parent);
     ~EwsGlobalTagsReadJob() override;
 
     void start() override;
@@ -45,6 +43,7 @@ public:
     {
         return mTags;
     }
+
 private Q_SLOTS:
     void getFolderRequestFinished(KJob *job);
 private:

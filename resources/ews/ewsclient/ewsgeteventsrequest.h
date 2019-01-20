@@ -26,7 +26,6 @@
 #include "ewseventrequestbase.h"
 #include "ewstypes.h"
 
-
 class EwsGetEventsRequest : public EwsEventRequestBase
 {
     Q_OBJECT

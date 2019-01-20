@@ -28,16 +28,12 @@ public:
     EwsAbchPersonHandler();
     ~EwsAbchPersonHandler() override;
 
-    EwsFetchItemDetailJob *fetchItemDetailJob(EwsClient &client, QObject *parent,
-                                              const Akonadi::Collection &collection) override;
+    EwsFetchItemDetailJob *fetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection) override;
     void setSeenFlag(Akonadi::Item &item, bool value) override;
     QString mimeType() override;
     bool setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem) override;
-    EwsModifyItemJob *modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items,
-                                    const QSet<QByteArray> &parts, QObject *parent) override;
-    EwsCreateItemJob *createItemJob(EwsClient &client, const Akonadi::Item &item,
-                                    const Akonadi::Collection &collection,
-                                    EwsTagStore *tagStore, EwsResource *parent) override;
+    EwsModifyItemJob *modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent) override;
+    EwsCreateItemJob *createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) override;
     static EwsItemHandler *factory();
 };
 

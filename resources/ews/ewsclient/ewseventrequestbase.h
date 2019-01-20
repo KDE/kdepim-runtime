@@ -180,6 +180,7 @@ public:
     {
         return mResponses;
     }
+
 protected:
     EwsEventRequestBase(EwsClient &client, const QString &reqName, QObject *parent);
     bool parseResult(QXmlStreamReader &reader) override;

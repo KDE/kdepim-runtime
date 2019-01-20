@@ -27,8 +27,7 @@
 
 #include "fakeewsserver.h"
 
-namespace Akonadi
-{
+namespace Akonadi {
 class AgentInstance;
 }
 class FakeEwsServerThread;
@@ -107,62 +106,49 @@ public:
 class MsgRootInboxDialogEntry : public DialogEntryBase
 {
 public:
-    explicit MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId,
-                                     const QString &descr = QString(),
-                                     const ReplyCallback &callback = ReplyCallback());
+    explicit MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId, const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class SubscribedFoldersDialogEntry : public DialogEntryBase
 {
 public:
-    explicit SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &folders,
-                                          const QString &descr = QString(),
-                                          const ReplyCallback &callback = ReplyCallback());
+    explicit SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &folders, const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class SpecialFoldersDialogEntry : public DialogEntryBase
 {
 public:
-    explicit SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &folders,
-                                       const QString &descr = QString(),
-                                       const ReplyCallback &callback = ReplyCallback());
+    explicit SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &folders, const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class GetTagsEmptyDialogEntry : public DialogEntryBase
 {
 public:
-    explicit GetTagsEmptyDialogEntry(const QString &rootId, const QString &descr = QString(),
-                                     const ReplyCallback &callback = ReplyCallback());
+    explicit GetTagsEmptyDialogEntry(const QString &rootId, const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class SubscribeStreamingDialogEntry : public DialogEntryBase
 {
 public:
-    explicit SubscribeStreamingDialogEntry(const QString &descr = QString(),
-                                           const ReplyCallback &callback = ReplyCallback());
+    explicit SubscribeStreamingDialogEntry(const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class SyncFolderHierInitialDialogEntry : public DialogEntryBase
 {
 public:
-    explicit SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &folders,
-            const QString &syncState, const QString &descr = QString(),
-            const ReplyCallback &callback = ReplyCallback());
+    explicit SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &folders, const QString &syncState, const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class UnsubscribeDialogEntry : public DialogEntryBase
 {
 public:
-    explicit UnsubscribeDialogEntry(const QString &descr = QString(),
-                                    const ReplyCallback &callback = ReplyCallback());
+    explicit UnsubscribeDialogEntry(const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 class ValidateFolderIdsDialogEntry : public DialogEntryBase
 {
 public:
-    explicit ValidateFolderIdsDialogEntry(const QStringList &ids = QStringList(),
-                                          const QString &descr = QString(),
-                                          const ReplyCallback &callback = ReplyCallback());
+    explicit ValidateFolderIdsDialogEntry(const QStringList &ids = QStringList(), const QString &descr = QString(), const ReplyCallback &callback = ReplyCallback());
 };
 
 #endif

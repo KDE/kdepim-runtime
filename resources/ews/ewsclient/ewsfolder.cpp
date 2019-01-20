@@ -27,8 +27,8 @@
 #include "ewseffectiverights.h"
 #include "ewsclient_debug.h"
 
-#define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate*>(this->d.data());
-#define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate*>(this->d.data());
+#define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate *>(this->d.data());
+#define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate *>(this->d.data());
 
 static const QVector<QString> folderTypeNames = {
     QStringLiteral("Folder"),
@@ -69,18 +69,21 @@ static const QVector<EwsFolderPrivate::XmlProc::Item> ewsFolderItems = {
     {EwsFolderFieldTotalCount, QStringLiteral("TotalCount"), &ewsXmlUIntReader, &ewsXmlUIntWriter},
     {EwsFolderFieldChildFolderCount, QStringLiteral("ChildFolderCount"), &ewsXmlUIntReader},
     {EwsItemFieldExtendedProperties, QStringLiteral("ExtendedProperty"),
-        &EwsItemBasePrivate::extendedPropertyReader, &EwsItemBasePrivate::extendedPropertyWriter},
+     &EwsItemBasePrivate::extendedPropertyReader, &EwsItemBasePrivate::extendedPropertyWriter},
     {EwsFolderFieldUnreadCount, QStringLiteral("UnreadCount"), &ewsXmlUIntReader},
     {EwsFolderPrivate::XmlProc::Ignore, QStringLiteral("SearchParameters")},
     {EwsFolderFieldEffectiveRights, QStringLiteral("EffectiveRights"),
-        &EwsFolderPrivate::effectiveRightsReader},
+     &EwsFolderPrivate::effectiveRightsReader},
     {EwsFolderPrivate::XmlProc::Ignore, QStringLiteral("ManagedFolderInformation")},
 };
 
 const EwsFolderPrivate::XmlProc EwsFolderPrivate::mStaticEwsXml(ewsFolderItems);
 
 EwsFolderPrivate::EwsFolderPrivate()
-    : EwsItemBasePrivate(), mType(EwsFolderTypeUnknown), mParent(nullptr), mEwsXml(mStaticEwsXml)
+    : EwsItemBasePrivate()
+    , mType(EwsFolderTypeUnknown)
+    , mParent(nullptr)
+    , mEwsXml(mStaticEwsXml)
 {
 }
 
@@ -132,7 +135,6 @@ EwsFolder::EwsFolder(QXmlStreamReader &reader)
         }
     }
     d->mValid = true;
-
 }
 
 EwsFolder::EwsFolder(const EwsFolder &other)
@@ -187,14 +189,14 @@ void EwsFolder::addChild(EwsFolder &child)
 
     if (child.parentFolder() != nullptr) {
         qCWarning(EWSCLI_LOG).noquote()
-                << QStringLiteral("Attempt to add child folder which already has a parent (child: %1)").
-                arg(child[EwsFolderFieldFolderId].value<EwsId>().id());
+            << QStringLiteral("Attempt to add child folder which already has a parent (child: %1)").
+            arg(child[EwsFolderFieldFolderId].value<EwsId>().id());
     }
     d->mChildren.append(child);
     child.setParentFolder(this);
 }
 
-EwsFolder* EwsFolder::parentFolder() const
+EwsFolder *EwsFolder::parentFolder() const
 {
     D_CPTR
     return d->mParent;
@@ -230,4 +232,3 @@ bool EwsFolder::write(QXmlStreamWriter &writer) const
 
     return status;
 }
-

@@ -26,8 +26,7 @@ class EwsCreateMailJob : public EwsCreateItemJob
 {
     Q_OBJECT
 public:
-    EwsCreateMailJob(EwsClient &client, const Akonadi::Item &item,
-                     const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent);
+    EwsCreateMailJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent);
     ~EwsCreateMailJob() override;
     bool setSend(bool send = true) override;
 protected:

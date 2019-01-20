@@ -28,8 +28,7 @@ class EwsAutodiscoveryJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsAutodiscoveryJob(const QString &email, const QString &username, const QString &password, const QString &userAgent,
-                        bool enableNTLMv2, QObject *parent);
+    EwsAutodiscoveryJob(const QString &email, const QString &username, const QString &password, const QString &userAgent, bool enableNTLMv2, QObject *parent);
     ~EwsAutodiscoveryJob() override;
 
     void start() override;
@@ -38,6 +37,7 @@ public:
     {
         return mEwsUrl;
     }
+
     const QString &oabUrl() const
     {
         return mOabUrl;

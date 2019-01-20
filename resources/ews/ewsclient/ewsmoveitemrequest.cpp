@@ -64,7 +64,9 @@ void EwsMoveItemRequest::start()
 bool EwsMoveItemRequest::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, QStringLiteral("MoveItem"),
-                                [this](QXmlStreamReader &reader) {return parseItemsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseItemsResponse(reader);
+    });
 }
 
 bool EwsMoveItemRequest::parseItemsResponse(QXmlStreamReader &reader)
@@ -79,7 +81,7 @@ bool EwsMoveItemRequest::parseItemsResponse(QXmlStreamReader &reader)
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveItem response - OK");
         } else {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveItem response - %1")
-                                          .arg(resp.responseMessage());
+                .arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);

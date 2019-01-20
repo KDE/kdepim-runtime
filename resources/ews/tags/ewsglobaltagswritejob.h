@@ -24,8 +24,7 @@
 
 class EwsTagStore;
 class EwsClient;
-namespace Akonadi
-{
+namespace Akonadi {
 class Collection;
 }
 
@@ -33,8 +32,7 @@ class EwsGlobalTagsWriteJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsGlobalTagsWriteJob(EwsTagStore *tagStore, EwsClient &client,
-                          const Akonadi::Collection &rootCollection, QObject *parent);
+    EwsGlobalTagsWriteJob(EwsTagStore *tagStore, EwsClient &client, const Akonadi::Collection &rootCollection, QObject *parent);
     ~EwsGlobalTagsWriteJob() override;
 
     void start() override;

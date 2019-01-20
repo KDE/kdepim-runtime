@@ -41,6 +41,7 @@ public:
     {
         return mFolders;
     }
+
     const QString &syncState() const
     {
         return mSyncState;

@@ -36,7 +36,8 @@
 #include "ui_ewsmtaconfigdialog.h"
 
 EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
-    : QDialog(), mParentResource(parentResource)
+    : QDialog()
+    , mParentResource(parentResource)
 {
     if (wId) {
         KWindowSystem::setMainWindow(this, wId);
@@ -89,4 +90,3 @@ void EwsMtaConfigDialog::save()
         qCWarning(EWSRES_MTA_LOG) << "Any agent instance selected";
     }
 }
-

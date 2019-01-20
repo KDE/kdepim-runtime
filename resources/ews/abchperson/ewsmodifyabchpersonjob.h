@@ -26,8 +26,7 @@ class EwsModifyAbchPersonJob : public EwsModifyItemJob
 {
     Q_OBJECT
 public:
-    EwsModifyAbchPersonJob(EwsClient &client, const Akonadi::Item::List &items, const QSet<QByteArray> &parts,
-                           QObject *parent);
+    EwsModifyAbchPersonJob(EwsClient &client, const Akonadi::Item::List &items, const QSet<QByteArray> &parts, QObject *parent);
     ~EwsModifyAbchPersonJob() override;
     void start() override;
 };

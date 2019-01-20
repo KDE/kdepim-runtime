@@ -39,6 +39,7 @@ public:
         {
             return mFolder;
         }
+
     private:
         EwsFolder mFolder;
     };
@@ -55,6 +56,7 @@ public:
     {
         return mResponses;
     }
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseFoldersResponse(QXmlStreamReader &reader);

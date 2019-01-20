@@ -42,8 +42,7 @@ class EwsUpdateItemsTagsJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, EwsTagStore *tagStore, EwsClient &client,
-                          EwsResource *parent);
+    EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, EwsTagStore *tagStore, EwsClient &client, EwsResource *parent);
     ~EwsUpdateItemsTagsJob() override;
 
     void start() override;
@@ -52,6 +51,7 @@ public:
     {
         return mItems;
     }
+
 private Q_SLOTS:
     void itemsTagsChangedTagsFetched(KJob *job);
     void updateItemsTagsRequestFinished(KJob *job);

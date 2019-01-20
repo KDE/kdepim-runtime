@@ -32,7 +32,6 @@ EwsFetchContactDetailJob::EwsFetchContactDetailJob(EwsClient &client, QObject *p
     mRequest->setItemShape(shape);
 }
 
-
 EwsFetchContactDetailJob::~EwsFetchContactDetailJob()
 {
 }

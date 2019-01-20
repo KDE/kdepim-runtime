@@ -45,7 +45,6 @@ public:
         NumFields
     };
 
-
     EwsAttachment::Type mType;
     QString mId;
     QString mName;
@@ -63,8 +62,12 @@ public:
 };
 
 EwsAttachmentPrivate::EwsAttachmentPrivate()
-    : mType(EwsAttachment::UnknownAttachment), mSize(0), mIsInline(false), mIsContactPhoto(false), mValid(false),
-      mValidFields(NumFields)
+    : mType(EwsAttachment::UnknownAttachment)
+    , mSize(0)
+    , mIsInline(false)
+    , mIsContactPhoto(false)
+    , mValid(false)
+    , mValidFields(NumFields)
 {
 }
 
@@ -127,7 +130,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
             QXmlStreamAttributes attrs = reader.attributes();
             if (!attrs.hasAttribute(QStringLiteral("Id"))) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - missing Id in AttachmentId element.")
-                                        .arg(QStringLiteral("Attachment"));
+                    .arg(QStringLiteral("Attachment"));
                 reader.skipCurrentElement();
                 ok = false;
             } else {
@@ -165,15 +168,15 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         } else if (d->mType == FileAttachment && elmName == QStringLiteral("Content")) {
             d->mContent = readXmlElementValue<QByteArray>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::Content, ok);
-        } else if (d->mType == ItemAttachment && (elmName == QStringLiteral("Item") || elmName == QStringLiteral("Message") ||
-                   elmName == QStringLiteral("CalendarItem") || elmName == QStringLiteral("Contact") ||
-                   elmName == QStringLiteral("MeetingMessage") || elmName == QStringLiteral("MeetingRequest") ||
-                   elmName == QStringLiteral("MeetingResponse") || elmName == QStringLiteral("MeetingCancellation") ||
-                   elmName == QStringLiteral("Task"))) {
+        } else if (d->mType == ItemAttachment && (elmName == QStringLiteral("Item") || elmName == QStringLiteral("Message")
+                                                  || elmName == QStringLiteral("CalendarItem") || elmName == QStringLiteral("Contact")
+                                                  || elmName == QStringLiteral("MeetingMessage") || elmName == QStringLiteral("MeetingRequest")
+                                                  || elmName == QStringLiteral("MeetingResponse") || elmName == QStringLiteral("MeetingCancellation")
+                                                  || elmName == QStringLiteral("Task"))) {
             d->mItem = EwsItem(reader);
             if (!d->mItem.isValid()) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                                        .arg(QStringLiteral("Attachment"), QStringLiteral("Item"));
+                    .arg(QStringLiteral("Attachment"), QStringLiteral("Item"));
                 reader.skipCurrentElement();
                 ok = false;
             } else {
@@ -181,7 +184,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
             }
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown %2 element.")
-                                    .arg(QStringLiteral("Attachment"), elmName);
+                .arg(QStringLiteral("Attachment"), elmName);
             reader.skipCurrentElement();
             ok = false;
         }
@@ -529,5 +532,3 @@ bool EwsAttachment::hasItem() const
 {
     return d->mValidFields[EwsAttachmentPrivate::Item];
 }
-
-

@@ -43,7 +43,8 @@ enum EventElementType {
 typedef EwsXml<EventElementType> EventReader;
 
 EwsEventRequestBase::EwsEventRequestBase(EwsClient &client, const QString &reqName, QObject *parent)
-    : EwsRequest(client, parent), mReqName(reqName)
+    : EwsRequest(client, parent)
+    , mReqName(reqName)
 {
     qRegisterMetaType<EwsEventRequestBase::Event::List>();
 }
@@ -55,7 +56,9 @@ EwsEventRequestBase::~EwsEventRequestBase()
 bool EwsEventRequestBase::parseResult(QXmlStreamReader &reader)
 {
     return parseResponseMessage(reader, mReqName,
-                                [this](QXmlStreamReader &reader) {return parseNotificationsResponse(reader);});
+                                [this](QXmlStreamReader &reader) {
+        return parseNotificationsResponse(reader);
+    });
 }
 
 bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
@@ -72,10 +75,10 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
                 numEv += nfy.events().size();
             }
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response (%2 notifications, %3 events)")
-                                          .arg(mReqName).arg(resp.notifications().size()).arg(numEv);
+                .arg(mReqName).arg(resp.notifications().size()).arg(numEv);
         } else {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response - %2")
-                                        .arg(mReqName, resp.responseMessage());
+                .arg(mReqName, resp.responseMessage());
         }
     }
 
@@ -214,7 +217,7 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
         mType = EwsFreeBusyChangedEvent;
     } else {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Unknown notification event type: %1")
-                              .arg(elmName.toString());
+            .arg(elmName.toString());
         return;
     }
 
@@ -255,15 +258,15 @@ bool EwsEventRequestBase::Response::operator==(const Response &other) const
 
 bool EwsEventRequestBase::Notification::operator==(const Notification &other) const
 {
-    return (mSubscriptionId == other.mSubscriptionId) && (mWatermark == other.mWatermark) &&
-           (mMoreEvents == other.mMoreEvents) && (mEvents == other.mEvents);
+    return (mSubscriptionId == other.mSubscriptionId) && (mWatermark == other.mWatermark)
+           && (mMoreEvents == other.mMoreEvents) && (mEvents == other.mEvents);
 }
 
 bool EwsEventRequestBase::Event::operator==(const Event &other) const
 {
-    return (mType == other.mType) && (mWatermark == other.mWatermark) &&
-           (mTimestamp == other.mTimestamp) && (mId == other.mId) &&
-           (mParentFolderId == other.mParentFolderId) && (mUnreadCount == other.mUnreadCount) &&
-           (mOldId == other.mOldId) && (mOldParentFolderId == other.mOldParentFolderId) &&
-           (mIsFolder == other.mIsFolder);
+    return (mType == other.mType) && (mWatermark == other.mWatermark)
+           && (mTimestamp == other.mTimestamp) && (mId == other.mId)
+           && (mParentFolderId == other.mParentFolderId) && (mUnreadCount == other.mUnreadCount)
+           && (mOldId == other.mOldId) && (mOldParentFolderId == other.mOldParentFolderId)
+           && (mIsFolder == other.mIsFolder);
 }

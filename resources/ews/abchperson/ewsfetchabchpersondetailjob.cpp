@@ -33,7 +33,6 @@ EwsFetchAbchContactDetailsJob::EwsFetchAbchContactDetailsJob(EwsClient &client, 
     mRequest->setItemShape(shape);
 }
 
-
 EwsFetchAbchContactDetailsJob::~EwsFetchAbchContactDetailsJob()
 {
 }
@@ -59,4 +58,3 @@ void EwsFetchAbchContactDetailsJob::processItems(const QList<EwsGetItemRequest::
 
     emitResult();
 }
-

@@ -46,7 +46,7 @@ public:
 
     const QVector<EwsFolder> childFolders() const;
     void addChild(EwsFolder &child);
-    EwsFolder* parentFolder() const;
+    EwsFolder *parentFolder() const;
     void setParentFolder(EwsFolder *parent);
 
     bool write(QXmlStreamWriter &writer) const;

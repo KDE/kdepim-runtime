@@ -57,10 +57,13 @@ static QString escapeSlashes(const QString &str)
     return result.replace(QLatin1Char('/'), QStringLiteral("\\/"));
 }
 
-EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword,
-        QObject *parent)
-    : EwsJob(parent), mPKeyUri(pkeyUri), mCertFile(certFile), mKeyFile(keyFile), mKeyPassword(keyPassword),
-      mNetworkAccessManager(new QNetworkAccessManager(this))
+EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword, QObject *parent)
+    : EwsJob(parent)
+    , mPKeyUri(pkeyUri)
+    , mCertFile(certFile)
+    , mKeyFile(keyFile)
+    , mKeyPassword(keyPassword)
+    , mNetworkAccessManager(new QNetworkAccessManager(this))
 {
 }
 
@@ -76,10 +79,9 @@ void EwsPKeyAuthJob::start()
         params[it.first.toLower()] = QUrl::fromPercentEncoding(it.second.toLatin1());
     }
 
-    if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce")) &&
-        params.contains(QStringLiteral("certauthorities")) && params.contains(QStringLiteral("context")) &&
-        params.contains(QStringLiteral("version"))) {
-
+    if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce"))
+        && params.contains(QStringLiteral("certauthorities")) && params.contains(QStringLiteral("context"))
+        && params.contains(QStringLiteral("version"))) {
         const auto respToken = buildAuthResponse(params);
 
         if (!respToken.isEmpty()) {
@@ -91,7 +93,6 @@ void EwsPKeyAuthJob::start()
         setErrorMsg(QStringLiteral("Missing one or more input parameters"));
         emitResult();
     }
-
 }
 
 void EwsPKeyAuthJob::sendAuthRequest(const QByteArray &respToken, const QUrl &submitUrl, const QString &context)
@@ -126,7 +127,7 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
 
     if (!QCA::isSupported("cert")) {
         setErrorMsg(QStringLiteral("QCA was not built with PKI certificate support"));
-      	return QByteArray();
+        return QByteArray();
     }
 
     if (params[QStringLiteral("version")] != QStringLiteral("1.0")) {
@@ -167,8 +168,8 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
     const QString header = QStringLiteral("{\"x5c\":[\"%1\"],\"typ\":\"JWT\",\"alg\":\"RS256\"}").arg(certStr);
 
     const QString payload = QStringLiteral("{\"nonce\":\"%1\",\"iat\":\"%2\",\"aud\":\"%3\"}")
-        .arg(params[QStringLiteral("nonce")]).arg(QDateTime::currentSecsSinceEpoch())
-        .arg(escapeSlashes(params[QStringLiteral("submiturl")]));
+                            .arg(params[QStringLiteral("nonce")]).arg(QDateTime::currentSecsSinceEpoch())
+                            .arg(escapeSlashes(params[QStringLiteral("submiturl")]));
 
     const auto headerB64 = header.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     const auto payloadB64 = payload.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);

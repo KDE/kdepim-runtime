@@ -28,9 +28,11 @@
 
 using namespace Akonadi;
 
-EwsGlobalTagsReadJob::EwsGlobalTagsReadJob(EwsTagStore *tagStore, EwsClient &client,
-        const Collection &rootCollection, QObject *parent)
-    : EwsJob(parent), mTagStore(tagStore), mClient(client), mRootCollection(rootCollection)
+EwsGlobalTagsReadJob::EwsGlobalTagsReadJob(EwsTagStore *tagStore, EwsClient &client, const Collection &rootCollection, QObject *parent)
+    : EwsJob(parent)
+    , mTagStore(tagStore)
+    , mClient(client)
+    , mRootCollection(rootCollection)
 {
 }
 
@@ -51,7 +53,7 @@ void EwsGlobalTagsReadJob::start()
 
 void EwsGlobalTagsReadJob::getFolderRequestFinished(KJob *job)
 {
-    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest*>(job);
+    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest *>(job);
 
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsGetFolderRequest job object");

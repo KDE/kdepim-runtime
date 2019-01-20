@@ -44,8 +44,7 @@ static Q_CONSTEXPR int fetchBatchSize = 50;
 class EwsFetchFoldersJobPrivate : public QObject
 {
 public:
-    EwsFetchFoldersJobPrivate(EwsFetchFoldersJob *parent, EwsClient &client,
-                              const Collection &rootCollection);
+    EwsFetchFoldersJobPrivate(EwsFetchFoldersJob *parent, EwsClient &client, const Collection &rootCollection);
     ~EwsFetchFoldersJobPrivate();
 
     void processRemoteFolders();
@@ -74,9 +73,11 @@ public:
     Q_DECLARE_PUBLIC(EwsFetchFoldersJob)
 };
 
-EwsFetchFoldersJobPrivate::EwsFetchFoldersJobPrivate(EwsFetchFoldersJob *parent, EwsClient &client,
-        const Collection &rootCollection)
-    : QObject(parent), mClient(client), mRootCollection(rootCollection), q_ptr(parent)
+EwsFetchFoldersJobPrivate::EwsFetchFoldersJobPrivate(EwsFetchFoldersJob *parent, EwsClient &client, const Collection &rootCollection)
+    : QObject(parent)
+    , mClient(client)
+    , mRootCollection(rootCollection)
+    , q_ptr(parent)
 {
     mPendingFetchJobs = 0;
     mPendingMoveJobs = 0;
@@ -90,7 +91,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest*>(job);
+    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object");
         q->setErrorMsg(QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object"));
@@ -153,7 +154,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest*>(job);
+    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object");
         q->setErrorMsg(QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object"));
@@ -213,7 +214,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest*>(job);
+    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsGetFolderRequest job object");
         q->setErrorMsg(QStringLiteral("Invalid EwsGetFolderRequest job object"));
@@ -242,7 +243,6 @@ void EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone(KJob *job)
         processRemoteFolders();
 
         buildCollectionList();
-
 
         q->emitResult();
     }
@@ -274,7 +274,6 @@ void EwsFetchFoldersJobPrivate::processRemoteFolders()
 void EwsFetchFoldersJobPrivate::buildCollectionList()
 {
     Q_Q(EwsFetchFoldersJob);
-
 
     q->mFolders.append(mRootCollection);
     buildChildCollectionList(mRootCollection);
@@ -350,10 +349,9 @@ Collection EwsFetchFoldersJobPrivate::createFolderCollection(const EwsFolder &fo
     return collection;
 }
 
-EwsFetchFoldersJob::EwsFetchFoldersJob(EwsClient &client, const Akonadi::Collection &rootCollection,
-                                       QObject *parent)
-    : EwsJob(parent),
-      d_ptr(new EwsFetchFoldersJobPrivate(this, client, rootCollection))
+EwsFetchFoldersJob::EwsFetchFoldersJob(EwsClient &client, const Akonadi::Collection &rootCollection, QObject *parent)
+    : EwsJob(parent)
+    , d_ptr(new EwsFetchFoldersJobPrivate(this, client, rootCollection))
 {
     qRegisterMetaType<EwsId::List>();
 }
@@ -383,4 +381,3 @@ void EwsFetchFoldersJob::start()
 
     syncFoldersReq->start();
 }
-

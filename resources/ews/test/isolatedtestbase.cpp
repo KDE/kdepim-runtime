@@ -34,7 +34,8 @@ using namespace Akonadi;
 constexpr int OnlineStateChangeTimeoutMs = 20000;
 
 IsolatedTestBase::IsolatedTestBase(QObject *parent)
-    : QObject(parent), mFakeServerThread(new FakeEwsServerThread(this))
+    : QObject(parent)
+    , mFakeServerThread(new FakeEwsServerThread(this))
 {
     qsrand(QDateTime::currentDateTimeUtc().toTime_t());
 }
@@ -77,9 +78,8 @@ QString IsolatedTestBase::loadResourceAsString(const QString &path)
     return QString();
 }
 
-template <typename T>
-QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc,
-                                  const QString &name)
+template<typename T>
+QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc, const QString &name)
 {
     QDBusReply<T> reply;
     int retryCnt = 4;
@@ -168,7 +168,7 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
     if (wait) {
         QEventLoop loop;
         auto conn = connect(AgentManager::self(), &AgentManager::instanceOnline, this,
-                [&](const AgentInstance &instance, bool state) {
+                            [&](const AgentInstance &instance, bool state) {
             if (instance == *mEwsInstance && state == online) {
                 qDebug() << "is online" << state;
                 loop.exit(0);
@@ -191,9 +191,7 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
     }
 }
 
-
-MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId,
-        const QString &descr, const ReplyCallback &callback)
+MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-inbox-msgroot"))
@@ -201,8 +199,7 @@ MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QS
     description = QStringLiteral("GetFolder request for inbox and msgroot");
 }
 
-SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &list,
-        const QString &descr, const ReplyCallback &callback)
+SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &list, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {
@@ -211,7 +208,7 @@ SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBas
         IsolatedTestBase::Folder::Tasks,
         IsolatedTestBase::Folder::Contacts
     };
-    QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder*> folderHash;
+    QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder *> folderHash;
     for (const auto &folder : list) {
         if (specialFolders.contains(folder.type)) {
             folderHash.insert(folder.type, &folder);
@@ -234,8 +231,7 @@ SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBas
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-subscribedfolders")).arg(xml);
 }
 
-SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &list,
-        const QString &descr, const ReplyCallback &callback)
+SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &list, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {
@@ -245,7 +241,7 @@ SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::Fol
         IsolatedTestBase::Folder::Trash,
         IsolatedTestBase::Folder::Drafts
     };
-    QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder*> folderHash;
+    QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder *> folderHash;
     for (const auto &folder : list) {
         if (specialFolders.contains(folder.type)) {
             folderHash.insert(folder.type, &folder);
@@ -268,8 +264,7 @@ SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::Fol
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-specialfolders")).arg(xml);
 }
 
-GetTagsEmptyDialogEntry::GetTagsEmptyDialogEntry(const QString &rootId, const QString &descr,
-        const ReplyCallback &callback)
+GetTagsEmptyDialogEntry::GetTagsEmptyDialogEntry(const QString &rootId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-tags")).arg(rootId);
@@ -281,8 +276,7 @@ SubscribeStreamingDialogEntry::SubscribeStreamingDialogEntry(const QString &desc
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/subscribe-streaming"));
 }
 
-SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &list,
-        const QString &syncState, const QString &descr, const ReplyCallback &callback)
+SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &list, const QString &syncState, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     QHash<QString, int> childCount;
@@ -322,7 +316,6 @@ SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const Isolate
         xml += extraXml;
         xml += QStringLiteral("</t:Folder>");
         xml += QStringLiteral("</t:Create>");
-
     }
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/syncfolderhierarhy-emptystate"))
              .arg(syncState).arg(xml);
@@ -334,8 +327,7 @@ UnsubscribeDialogEntry::UnsubscribeDialogEntry(const QString &descr, const Reply
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/unsubscribe"));
 }
 
-ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &ids, const QString &descr,
-                                                           const ReplyCallback &callback)
+ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &ids, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     QStringList xQueryFolderIds;
@@ -354,5 +346,5 @@ ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &id
     }
 
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-validateids"))
-        .arg(folderIndex).arg(xQueryFolderIds.join(QStringLiteral(" and "))).arg(responseXml);
+             .arg(folderIndex).arg(xQueryFolderIds.join(QStringLiteral(" and "))).arg(responseXml);
 }

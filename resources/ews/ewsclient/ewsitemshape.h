@@ -20,7 +20,6 @@
 #ifndef EWSITEMSHAPE_H
 #define EWSITEMSHAPE_H
 
-
 #include "ewsfoldershape.h"
 
 class EwsItemShape : public EwsFolderShape
@@ -40,11 +39,23 @@ public:
 
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    explicit EwsItemShape(EwsBaseShape shape = EwsShapeDefault) : EwsFolderShape(shape), mBodyType(BodyNone) {}
+    explicit EwsItemShape(EwsBaseShape shape = EwsShapeDefault) : EwsFolderShape(shape)
+        , mBodyType(BodyNone)
+    {
+    }
+
     EwsItemShape(const EwsItemShape &other)
-        : EwsFolderShape(other), mBodyType(BodyNone) {}
+        : EwsFolderShape(other)
+        , mBodyType(BodyNone)
+    {
+    }
+
     explicit EwsItemShape(EwsFolderShape &&other)
-        : EwsFolderShape(other), mBodyType(BodyNone) {}
+        : EwsFolderShape(other)
+        , mBodyType(BodyNone)
+    {
+    }
+
     EwsItemShape &operator=(EwsItemShape &&other)
     {
         mBaseShape = other.mBaseShape;
@@ -53,6 +64,7 @@ public:
         mBodyType = other.mBodyType;
         return *this;
     }
+
     EwsItemShape &operator=(const EwsItemShape &other)
     {
         mBaseShape = other.mBaseShape;
@@ -76,7 +88,6 @@ public:
 protected:
     Flags mFlags;
     BodyType mBodyType;
-
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EwsItemShape::Flags)

@@ -27,35 +27,51 @@
 
 #include "ewsclient_debug.h"
 
-template <typename T> class EwsXml
+template<typename T> class EwsXml
 {
 public:
-    typedef std::function<bool(QXmlStreamReader&, QVariant&)> ReadFunction;
-    typedef std::function<bool(QXmlStreamWriter&, const QVariant&)> WriteFunction;
-    typedef std::function<bool(QXmlStreamReader&, const QString&)> UnknownElementFunction;
+    typedef std::function<bool (QXmlStreamReader &, QVariant &)> ReadFunction;
+    typedef std::function<bool (QXmlStreamWriter &, const QVariant &)> WriteFunction;
+    typedef std::function<bool (QXmlStreamReader &, const QString &)> UnknownElementFunction;
 
     typedef QHash<T, QVariant> ValueHash;
 
     static Q_CONSTEXPR T Ignore = static_cast<T>(-1);
 
     struct Item {
-        Item() : key(Ignore) {}
+        Item() : key(Ignore)
+        {
+        }
+
         Item(T k, const QString &n, const ReadFunction &rfn = ReadFunction(), const WriteFunction &wfn = WriteFunction())
-            : key(k), elmName(n), readFn(rfn), writeFn(wfn) {}
+            : key(k)
+            , elmName(n)
+            , readFn(rfn)
+            , writeFn(wfn)
+        {
+        }
+
         T key;
         QString elmName;
         ReadFunction readFn;
         WriteFunction writeFn;
     };
 
-    EwsXml() {}
+    EwsXml()
+    {
+    }
+
     EwsXml(const QVector<Item> &items) : mItems(items)
     {
         rebuildItemHash();
     }
 
     EwsXml(const EwsXml &other)
-        : mItems(other.mItems), mValues(other.mValues), mItemHash(other.mItemHash) {}
+        : mItems(other.mItems)
+        , mValues(other.mValues)
+        , mItemHash(other.mItemHash)
+    {
+    }
 
     void setItems(const QVector<Item> &items)
     {
@@ -63,19 +79,18 @@ public:
         rebuildItemHash();
     }
 
-    bool readItem(QXmlStreamReader &reader, const QString &parentElm, const QString &nsUri,
-                  UnknownElementFunction unknownElmFn = &defaultUnknownElmFunction)
+    bool readItem(QXmlStreamReader &reader, const QString &parentElm, const QString &nsUri, UnknownElementFunction unknownElmFn = &defaultUnknownElmFunction)
     {
         typename QHash<QString, Item>::iterator it = mItemHash.find(reader.name().toString());
         if (it != mItemHash.end() && nsUri == reader.namespaceUri()) {
             if (it->key == Ignore) {
                 qCInfoNC(EWSCLI_LOG) << QStringLiteral("Unsupported %1 child element %2 - ignoring.")
-                                     .arg(parentElm).arg(reader.name().toString());
+                    .arg(parentElm).arg(reader.name().toString());
                 reader.skipCurrentElement();
                 return true;
             } else if (!it->readFn) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - no read support for %2 element.")
-                                      .arg(parentElm).arg(reader.name().toString());
+                    .arg(parentElm).arg(reader.name().toString());
                 return false;
             } else {
                 QVariant val = mValues[it->key];
@@ -89,8 +104,7 @@ public:
         return unknownElmFn(reader, parentElm);
     }
 
-    bool readItems(QXmlStreamReader &reader, const QString &nsUri,
-                   const UnknownElementFunction &unknownElmFn = &defaultUnknownElmFunction)
+    bool readItems(QXmlStreamReader &reader, const QString &nsUri, const UnknownElementFunction &unknownElmFn = &defaultUnknownElmFunction)
     {
         QString elmName(reader.name().toString());
         while (reader.readNextStartElement()) {
@@ -101,8 +115,7 @@ public:
         return true;
     }
 
-    bool writeItems(QXmlStreamWriter &writer, const QString &parentElm, const QString &nsUri,
-                    const ValueHash &values, const QList<T> &keysToWrite = QList<T>()) const
+    bool writeItems(QXmlStreamWriter &writer, const QString &parentElm, const QString &nsUri, const ValueHash &values, const QList<T> &keysToWrite = QList<T>()) const
     {
         bool hasKeysToWrite = !keysToWrite.isEmpty();
         Q_FOREACH (const Item &item, mItems) {
@@ -111,7 +124,7 @@ public:
                 if (it != values.end()) {
                     if (!item.writeFn) {
                         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to write %1 element - no write support for %2 element.")
-                                              .arg(parentElm).arg(item.elmName);
+                            .arg(parentElm).arg(item.elmName);
                         return false;
                     }
                     writer.writeStartElement(nsUri, item.elmName);
@@ -135,7 +148,7 @@ private:
     static bool defaultUnknownElmFunction(QXmlStreamReader &reader, const QString &parentElm)
     {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                              .arg(parentElm).arg(reader.name().toString());
+            .arg(parentElm).arg(reader.name().toString());
         return false;
     }
 
@@ -151,7 +164,7 @@ private:
     }
 };
 
-template <typename T>
+template<typename T>
 T readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement);
 
 extern bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val);

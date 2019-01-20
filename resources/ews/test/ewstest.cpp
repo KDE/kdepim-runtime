@@ -126,7 +126,7 @@ void BasicTest::testBasic()
 
     bool unknownRequestEncountered = false;
     mFakeServerThread->setDialog(dialog);
-    mFakeServerThread->setDefaultReplyCallback([&](const QString & req, QXmlResultItems &, const QXmlNamePool &) {
+    mFakeServerThread->setDefaultReplyCallback([&](const QString &req, QXmlResultItems &, const QXmlNamePool &) {
         qDebug() << "Unknown EWS request encountered." << req;
         unknownRequestEncountered = true;
         return FakeEwsServer::EmptyResponse;
@@ -136,13 +136,13 @@ void BasicTest::testBasic()
 
     CollectionStateMonitor<DesiredState> stateMonitor(this, desiredStates, inboxId,
                                                       [](const Collection &col, const DesiredState &state) {
-        auto attr = col.attribute<SpecialCollectionAttribute>();
-        QByteArray specialType;
-        if (attr) {
-            specialType = attr->collectionType();
-        }
-        return col.parentCollection().remoteId() == state.parentId && specialType == state.specialType;
-    }, 1000);
+                                                      auto attr = col.attribute<SpecialCollectionAttribute>();
+                                                      QByteArray specialType;
+                                                      if (attr) {
+                                                          specialType = attr->collectionType();
+                                                      }
+                                                      return col.parentCollection().remoteId() == state.parentId && specialType == state.specialType;
+        }, 1000);
 
     stateMonitor.monitor().fetchCollection(true);
     stateMonitor.monitor().collectionFetchScope().fetchAttribute<SpecialCollectionAttribute>();

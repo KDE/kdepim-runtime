@@ -40,8 +40,13 @@ constexpr int walletTimeout = 30000;
 using namespace KWallet;
 
 EwsSettings::EwsSettings(WId windowId)
-    : EwsSettingsBase(), mWindowId(windowId), mPasswordReadPending(false), mPasswordWritePending(false),
-      mMapReadPending(false),  mMapWritePending(false), mWalletTimer(this)
+    : EwsSettingsBase()
+    , mWindowId(windowId)
+    , mPasswordReadPending(false)
+    , mPasswordWritePending(false)
+    , mMapReadPending(false)
+    , mMapWritePending(false)
+    , mWalletTimer(this)
 {
     mWalletTimer.setInterval(walletTimeout);
     mWalletTimer.setSingleShot(true);
@@ -102,7 +107,7 @@ void EwsSettings::requestPassword(bool ask)
             mPasswordDlg = new KPasswordDialog(nullptr);
             mPasswordDlg->setModal(true);
             mPasswordDlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.",
-                                username(), email()));
+                                         username(), email()));
             if (mPasswordDlg->exec() == QDialog::Accepted) {
                 mPassword = mPasswordDlg->password();
                 setPassword(mPassword);
@@ -346,4 +351,5 @@ EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
 
     return auth;
 }
+
 #endif /* EWSSETTINGS_UNITTEST */

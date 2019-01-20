@@ -27,7 +27,6 @@
 #include "ewsid.h"
 #include "ewstypes.h"
 
-
 class EwsGetStreamingEventsRequest : public EwsEventRequestBase
 {
     Q_OBJECT
