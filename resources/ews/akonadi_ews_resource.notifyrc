@@ -13,10 +13,12 @@ Comment[nl]=Microsoft Exchange Server (EWS)
 Comment[pl]=Microsoft Exchange Server (EWS)
 Comment[pt]=Servidor de Microsoft Exchange (EWS)
 Comment[pt_BR]=Microsoft Exchange Server (EWS)
+Comment[ru]=Сервер Microsoft Exchange (EWS)
 Comment[sv]=Microsoft Exchange-server (EWS)
 Comment[uk]=Сервер Microsoft Exchange (EWS)
 Comment[x-test]=xxMicrosoft Exchange Server (EWS)xx
 Comment[zh_CN]=微软 Exchange 服务器（EWS）
+Comment[zh_TW]=Microsoft Exchange 伺服器 (EWS)
 
 
 [Event/auth-expired]
@@ -33,6 +35,7 @@ Name[nl]=Microsoft Exchange authenticatie is verlopen
 Name[pl]=Wygasło uwierzytelnianie Microsoft Exchange
 Name[pt]=A autenticação do Microsoft Exchange expirou
 Name[pt_BR]=Autenticação do Microsoft Exchange expirada
+Name[ru]=Закончился срок действия подтверждения подлинности на сервере Microsoft Exchange
 Name[sv]=Microsoft Exchange behörighet utgången
 Name[uk]=Строк дії розпізнавання Microsoft Exchange вичерпано
 Name[x-test]=xxMicrosoft Exchange authentication expiredxx
@@ -49,6 +52,7 @@ Comment[nl]=Gebruikte credentials voor toegang tot Microsoft Exchange is niet la
 Comment[pl]=Dane dostępowe do Microsoft Exchange przestały być ważne
 Comment[pt]=As credenciais usadas para aceder ao Microsoft Exchange já não são válidas
 Comment[pt_BR]=As credenciais usadas para acessar o Microsoft Exchange não são mais válidas
+Comment[ru]=Учётные данные, использованные для доступа к Microsoft Exchange, более недействительны
 Comment[sv]=Inloggningsinformation använd för att komma åt Microsoft Exchange är inte längre giltig
 Comment[uk]=Реєстраційні дані для доступу Microsoft Exchange втратили чинність
 Comment[x-test]=xxCredentials used to access Microsoft Exchange are no longer validxx
