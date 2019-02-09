@@ -196,7 +196,7 @@ void DistributionList::setFields(const KContacts::ContactGroup *contactGroup)
     setName(contactGroup->name());
 
     // explicit contact data
-    for (uint index = 0; index < contactGroup->dataCount(); ++index) {
+    for (int index = 0; index < contactGroup->dataCount(); ++index) {
         const KContacts::ContactGroup::Data &data = contactGroup->data(index);
 
         Member m;
@@ -205,7 +205,7 @@ void DistributionList::setFields(const KContacts::ContactGroup *contactGroup)
 
         mDistrListMembers.append(m);
     }
-    for (uint index = 0; index < contactGroup->contactReferenceCount(); ++index) {
+    for (int index = 0; index < contactGroup->contactReferenceCount(); ++index) {
         const KContacts::ContactGroup::ContactReference &data = contactGroup->contactReference(index);
 
         Member m;

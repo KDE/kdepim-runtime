@@ -407,7 +407,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             delete contacts;
         } else {
             // the contact group contains only internal contact data
-            for (uint i = 0; i < contactGroup.dataCount(); ++i) {
+            for (int i = 0; i < contactGroup.dataCount(); ++i) {
                 const KContacts::ContactGroup::Data &data = contactGroup.data(i);
                 QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"),
                                                            OXUtils::writeString(data.email()));

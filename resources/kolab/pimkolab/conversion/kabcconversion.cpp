@@ -873,11 +873,11 @@ DistList fromKABC(const KContacts::ContactGroup &cg)
     dl.setUid(toStdString(cg.id()));
 
     std::vector <Kolab::ContactReference > members;
-    for (unsigned int i = 0; i < cg.dataCount(); i++) {
+    for (int i = 0; i < cg.dataCount(); i++) {
         const KContacts::ContactGroup::Data &data = cg.data(i);
         members.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(data.email()), toStdString(data.name())));
     }
-    for (unsigned int i = 0; i < cg.contactReferenceCount(); i++) {
+    for (int i = 0; i < cg.contactReferenceCount(); i++) {
         const KContacts::ContactGroup::ContactReference &ref = cg.contactReference(i);
         members.push_back(Kolab::ContactReference(Kolab::ContactReference::UidReference, toStdString(ref.uid())));
     }

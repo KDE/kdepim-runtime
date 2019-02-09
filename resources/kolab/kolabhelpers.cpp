@@ -187,7 +187,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         KContacts::ContactGroup contactGroup = reader.getDistlist();
 
         QList<KContacts::ContactGroup::ContactReference> toAdd;
-        for (uint index = 0; index < contactGroup.contactReferenceCount(); ++index) {
+        for (int index = 0; index < contactGroup.contactReferenceCount(); ++index) {
             const KContacts::ContactGroup::ContactReference &reference = contactGroup.contactReference(index);
             KContacts::ContactGroup::ContactReference ref;
             ref.setGid(reference.uid()); //libkolab set a gid with setUid()
@@ -234,7 +234,7 @@ Akonadi::Item::List KolabHelpers::translateToImap(const Akonadi::Item::List &ite
 static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &contactGroup)
 {
     QList<KContacts::ContactGroup::ContactReference> toAdd;
-    for (uint index = 0; index < contactGroup.contactReferenceCount(); ++index) {
+    for (int index = 0; index < contactGroup.contactReferenceCount(); ++index) {
         const KContacts::ContactGroup::ContactReference &reference = contactGroup.contactReference(index);
         QString gid;
         if (!reference.gid().isEmpty()) {
