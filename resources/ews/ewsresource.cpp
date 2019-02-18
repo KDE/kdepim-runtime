@@ -234,7 +234,7 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
         mRootCollection.setRemoteId(id.id());
         mRootCollection.setRemoteRevision(id.changeKey());
         qCDebug(EWSRES_LOG) << "Root folder is " << id;
-        Q_EMIT status(Idle, i18nc("@info:status Resource is ready", "Ready"));
+        emitReadyStatus();
 
         if (mSettings->serverSubscription()) {
             mSubManager.reset(new EwsSubscriptionManager(mEwsClient, id, mSettings.data(), this));
@@ -460,7 +460,7 @@ void EwsResource::configure(WId windowId)
 
 void EwsResource::fetchFoldersJobFinished(KJob *job)
 {
-    Q_EMIT status(Idle, i18nc("@info:status The resource is ready", "Ready"));
+    emitReadyStatus();
     EwsFetchFoldersJob *req = qobject_cast<EwsFetchFoldersJob *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsFetchFoldersJob job object");
@@ -483,7 +483,7 @@ void EwsResource::fetchFoldersJobFinished(KJob *job)
 
 void EwsResource::fetchFoldersIncrJobFinished(KJob *job)
 {
-    Q_EMIT status(Idle, i18nc("@info:status The resource is ready", "Ready"));
+    emitReadyStatus();
     EwsFetchFoldersIncrJob *req = qobject_cast<EwsFetchFoldersIncrJob *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsFetchFoldersIncrJob job object");
@@ -536,7 +536,7 @@ void EwsResource::itemFetchJobFinished(KJob *job)
     }
     saveState();
     mItemsToCheck.remove(fetchJob->collection().remoteId());
-    Q_EMIT status(Idle, i18nc("@info:status The resource is ready", "Ready"));
+    emitReadyStatus();
 }
 
 void EwsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers)
@@ -1400,6 +1400,12 @@ void EwsResource::requestAuthFailed()
 
         reauthenticate();
     }
+}
+
+void EwsResource::emitReadyStatus()
+{
+    Q_EMIT status(Idle, i18nc("@info:status Resource is ready", "Ready"));
+    Q_EMIT percent(0);
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)

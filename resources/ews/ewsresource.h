@@ -125,6 +125,7 @@ private Q_SLOTS:
     void authSucceeded();
     void authFailed(const QString &error);
     void requestAuthFailed();
+    void emitReadyStatus();
 public Q_SLOTS:
     Q_SCRIPTABLE void sendMessage(const QString &id, const QByteArray &content);
 Q_SIGNALS:
