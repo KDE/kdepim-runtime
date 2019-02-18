@@ -19,6 +19,9 @@
 
 #include "ewsfetchitemsjob.h"
 
+#include <KLocalizedString>
+
+#include <AkonadiAgentBase/AgentBase>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 
@@ -89,7 +92,8 @@ EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection, EwsClient &clie
     , mClient(client)
     , mItemsToCheck(itemsToCheck)
     , mPendingJobs(0)
-    , mTotalItems(0)
+    , mTotalItemsToFetch(0)
+    , mTotalItemsFetched(0)
     , mSyncState(syncState)
     , mFullSync(syncState.isNull())
     , mTagStore(tagStore)
@@ -104,6 +108,9 @@ EwsFetchItemsJob::~EwsFetchItemsJob()
 
 void EwsFetchItemsJob::start()
 {
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list", mCollection.name()));
+    Q_EMIT percent(0);
+
     /* Begin stage 1 - query item list from local and remote side. */
     EwsSyncFolderItemsRequest *syncItemsReq = new EwsSyncFolderItemsRequest(mClient, this);
     syncItemsReq->setFolderId(EwsId(mCollection.remoteId(), mCollection.remoteRevision()));
@@ -212,6 +219,10 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
                 compareItemLists();
             }
         }
+        const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size() +
+            mRemoteFlagChangedIds.size();
+        Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(),
+                                                totalItems));
     }
 }
 
@@ -255,9 +266,6 @@ void EwsFetchItemsJob::compareItemLists()
 
     Item::List toFetchItems[EwsItemTypeUnknown + 1];
 
-    Q_EMIT status(1, QStringLiteral("Retrieving items"));
-    Q_EMIT percent(0);
-
     QHash<QString, Item> itemHash;
     for (const Item &item : qAsConst(mLocalItems)) {
         itemHash.insert(item.remoteId(), item);
@@ -286,6 +294,7 @@ void EwsFetchItemsJob::compareItemLists()
                 return;
             }
             toFetchItems[type].append(item);
+            ++mTotalItemsToFetch;
         } else {
             Item &item = *it;
             item.clearPayload();
@@ -296,6 +305,7 @@ void EwsFetchItemsJob::compareItemLists()
                 return;
             }
             toFetchItems[type].append(item);
+            ++mTotalItemsToFetch;
             itemHash.erase(it);
         }
     }
@@ -327,6 +337,7 @@ void EwsFetchItemsJob::compareItemLists()
             }
             EwsItemType type = ewsItem.internalType();
             toFetchItems[type].append(item);
+            ++mTotalItemsToFetch;
             itemHash.erase(it);
         }
 
@@ -374,6 +385,9 @@ void EwsFetchItemsJob::compareItemLists()
         .arg(mRemoteChangedItems.size())
         .arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
 
+
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
+
     bool fetch = false;
     for (unsigned iType = 0; iType < sizeof(toFetchItems) / sizeof(toFetchItems[0]); ++iType) {
         if (!toFetchItems[iType].isEmpty()) {
@@ -414,6 +428,9 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
         if (detailJob) {
             mChangedItems += detailJob->changedItems();
         }
+
+        mTotalItemsFetched = mChangedItems.size();
+        Q_EMIT percent((mTotalItemsFetched * 100) / mTotalItemsToFetch);
 
         if (subjobs().isEmpty()) {
             emitResult();

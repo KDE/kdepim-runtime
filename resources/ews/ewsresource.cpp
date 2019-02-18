@@ -337,10 +337,6 @@ void EwsResource::connectionError()
 
 void EwsResource::retrieveItems(const Collection &collection)
 {
-    Q_EMIT status(1, QStringLiteral("Retrieving item list"));
-
-    Q_EMIT status(Running, i18nc("@info:status", "Retrieving %1 items", collection.name()));
-
     QString rid = collection.remoteId();
     EwsFetchItemsJob *job = new EwsFetchItemsJob(collection, mEwsClient,
                                                  mSyncState.value(rid), mItemsToCheck.value(rid), mTagStore, this);

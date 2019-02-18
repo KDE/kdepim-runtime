@@ -98,7 +98,8 @@ private:
     EwsId::List mRemoteDeletedIds;
     QHash<EwsId, bool> mRemoteFlagChangedIds;
     int mPendingJobs;
-    unsigned mTotalItems;
+    unsigned mTotalItemsToFetch;
+    unsigned mTotalItemsFetched;
     QString mSyncState;
     bool mFullSync;
     QueuedUpdateHash mQueuedUpdates;
