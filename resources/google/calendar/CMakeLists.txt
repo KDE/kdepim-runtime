@@ -11,6 +11,7 @@ set(calendarresource_SRCS
   ../common/googleaccountmanager.cpp
   ../common/googlesettings.cpp
   ../common/googlesettingsdialog.cpp
+  ../common/kgapiversionattribute.cpp
   ${accounts_SRCS}
 )
 ecm_qt_declare_logging_category(calendarresource_SRCS HEADER googlecalendarresource_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar)

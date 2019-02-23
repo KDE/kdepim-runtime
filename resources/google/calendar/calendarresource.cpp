@@ -20,6 +20,7 @@
 #include "settings.h"
 #include "settingsdialog.h"
 #include "googlecalendarresource_debug.h"
+#include "common/kgapiversionattribute.h"
 
 #include <AkonadiCore/Attribute>
 #include <AkonadiCore/AttributeFactory>
@@ -75,6 +76,13 @@
 Q_DECLARE_METATYPE(KGAPI2::ObjectsList)
 Q_DECLARE_METATYPE(KGAPI2::TaskPtr)
 
+namespace {
+
+static constexpr uint32_t KGAPIEventVersion = 1;
+
+}
+
+
 using namespace Akonadi;
 using namespace KGAPI2;
 
@@ -82,6 +90,7 @@ CalendarResource::CalendarResource(const QString &id)
     : GoogleResource(id)
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
+    AttributeFactory::registerAttribute<KGAPIVersionAttribute>();
     updateResourceName();
 }
 
@@ -130,6 +139,10 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
 
     KGAPI2::Job *job = nullptr;
     if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+        if (!collection.hasAttribute<KGAPIVersionAttribute>() || collection.attribute<KGAPIVersionAttribute>()->version() != KGAPIEventVersion) {
+            lastSyncDelta = -1;
+        }
+
         EventFetchJob *fetchJob = new EventFetchJob(collection.remoteId(), account(), this);
         if (lastSyncDelta > -1 && lastSyncDelta < 25 * 24 * 3600) {
             fetchJob->setFetchOnlyUpdated(collection.remoteRevision().toULongLong());
@@ -528,6 +541,8 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
             }
         }
 
+        if (!isIncremental) {
+            collection.attribute<KGAPIVersionAttribute>(Collection::AddIfMissing)->setVersion(KGAPIEventVersion);
         }
     } else if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
         isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
