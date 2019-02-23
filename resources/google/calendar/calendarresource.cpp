@@ -134,7 +134,7 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
     // max. last 25 days, otherwise we get an error.
     int lastSyncDelta = -1;
     if (!collection.remoteRevision().isEmpty()) {
-        lastSyncDelta = QDateTime::currentDateTimeUtc().toTime_t() - collection.remoteRevision().toUInt();
+        lastSyncDelta = QDateTime::currentDateTimeUtc().toTime_t() - collection.remoteRevision().toULongLong();
     }
 
     KGAPI2::Job *job = nullptr;
