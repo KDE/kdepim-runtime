@@ -325,14 +325,12 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     }
 
     m_rootCollection = Collection();
-    m_rootCollection.setContentMimeTypes(QStringList() << Collection::virtualMimeType()
-                                                       << KContacts::Addressee::mimeType());
+    m_rootCollection.setContentMimeTypes({Collection::virtualMimeType(), Collection::mimeType(), KContacts::Addressee::mimeType()});
     m_rootCollection.setRemoteId(MYCONTACTS_REMOTEID);
     m_rootCollection.setName(fetchJob->account()->accountName());
     m_rootCollection.setParentCollection(Collection::root());
     m_rootCollection.setCachePolicy(cachePolicy);
-    m_rootCollection.setRights(Collection::CanCreateCollection
-                               |Collection::CanCreateItem
+    m_rootCollection.setRights(Collection::CanCreateItem
                                |Collection::CanChangeItem
                                |Collection::CanDeleteItem);
 
