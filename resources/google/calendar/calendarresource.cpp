@@ -183,8 +183,6 @@ void CalendarResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
     if (item.hasPayload<KCalCore::Event::Ptr>()) {
         KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
         EventPtr kevent(new Event(*event));
-        kevent->setUid(QLatin1String(""));
-
         auto cjob = new EventCreateJob(kevent, collection.remoteId(), account(), this);
         cjob->setSendUpdates(SendUpdatesPolicy::None);
         job = cjob;
@@ -228,7 +226,6 @@ void CalendarResource::itemChanged(const Akonadi::Item &item, const QSet< QByteA
     if (item.hasPayload<KCalCore::Event::Ptr>()) {
         KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
         EventPtr kevent(new Event(*event));
-        kevent->setUid(item.remoteId());
 
         auto mjob = new EventModifyJob(kevent, item.parentCollection().remoteId(), account(), this);
         mjob->setSendUpdates(SendUpdatesPolicy::None);
@@ -508,32 +505,8 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
         QMap< QString, EventPtr > recurrentEvents;
 
         isIncremental = (qobject_cast<EventFetchJob *>(job)->fetchOnlyUpdated() > 0);
-
-        /* Step 1: Find all recurrent events and move them to a separate map */
-        int i = 0;
-        while (i < objects.length()) {
-            EventPtr event = objects.at(i).dynamicCast<Event>();
-            if (event->recurs() && !event->deleted()) {
-                recurrentEvents.insert(event->uid(), event);
-                objects.removeAt(i);
-            } else {
-                i++;
-            }
-        }
-
-        /* Step 2: Process all remaining events */
         Q_FOREACH (const ObjectPtr &object, objects) {
             EventPtr event = object.dynamicCast<Event>();
-
-            /* If current event is related to a recurrent event stored in the map then
-             * take the original recurrent event, set date of the current event as an
-             * exception and continue. We will process content of the map later. */
-            if (recurrentEvents.contains(event->uid())) {
-                EventPtr rEvent = recurrentEvents.value(event->uid());
-                rEvent->recurrence()->addExDate(event->dtStart().date());
-                continue;
-            }
-
             if (event->useDefaultReminders() && attr) {
                 const KCalCore::Alarm::List alarms = attr->alarms(event.data());
                 for (const KCalCore::Alarm::Ptr &alarm : alarms) {
@@ -544,7 +517,7 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
             Item item;
             item.setMimeType(KCalCore::Event::eventMimeType());
             item.setParentCollection(collection);
-            item.setRemoteId(event->uid());
+            item.setRemoteId(event->id());
             item.setRemoteRevision(event->etag());
             item.setPayload<KCalCore::Event::Ptr>(event.dynamicCast<KCalCore::Event>());
 
@@ -555,16 +528,6 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
             }
         }
 
-        /* Step 3: Now process the recurrent events */
-        for (const EventPtr &event : qAsConst(recurrentEvents)) {
-            Item item;
-            item.setRemoteId(event->uid());
-            item.setRemoteRevision(event->etag());
-            item.setPayload< KCalCore::Event::Ptr >(event.dynamicCast<KCalCore::Event>());
-            item.setMimeType(KCalCore::Event::eventMimeType());
-            item.setParentCollection(collection);
-
-            changedItems << item;
         }
     } else if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
         isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
@@ -727,7 +690,7 @@ void CalendarResource::slotCreateJobFinished(KGAPI2::Job *job)
 
     if (item.mimeType() == KCalCore::Event::eventMimeType()) {
         EventPtr event = objects.first().dynamicCast<Event>();
-        item.setRemoteId(event->uid());
+        item.setRemoteId(event->id());
         item.setRemoteRevision(event->etag());
         item.setGid(event->uid());
         changeCommitted(item);
