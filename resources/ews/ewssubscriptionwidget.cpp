@@ -301,14 +301,14 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
 
     d->mSubContainer = new QWidget(this);
     QVBoxLayout *subContainerLayout = new QVBoxLayout(d->mSubContainer);
-    subContainerLayout->setMargin(0);
+    subContainerLayout->setContentsMargins(0, 0, 0, 0);
 
     QLineEdit *filterLineEdit = new QLineEdit(this);
     filterLineEdit->setPlaceholderText(i18nc("@label:textbox", "Filter folders"));
 
     QWidget *treeContainer = new QWidget(this);
     QHBoxLayout *treeContainerLayout = new QHBoxLayout(treeContainer);
-    treeContainerLayout->setMargin(0);
+    treeContainerLayout->setContentsMargins(0, 0, 0, 0);
 
     d->mFolderTreeView = new QTreeView(this);
     d->mFolderTreeModel = new QStandardItemModel(this);
@@ -321,7 +321,7 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
 
     QWidget *buttonContainer = new QWidget(this);
     QVBoxLayout *buttonContainerLayout = new QVBoxLayout(buttonContainer);
-    buttonContainerLayout->setMargin(0);
+    buttonContainerLayout->setContentsMargins(0, 0, 0, 0);
 
     d->mRefreshButton = new QPushButton(this);
     d->mRefreshButton->setText(i18nc("@action:button", "Reload &List"));

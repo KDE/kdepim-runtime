@@ -38,7 +38,7 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
 
     QVBoxLayout *vLayout = new QVBoxLayout(this);
 
-    vLayout->setMargin(0);
+    vLayout->setContentsMargins(0, 0, 0, 0);
 
     vLayout->addWidget(statusLabel);
     vLayout->addWidget(progress);

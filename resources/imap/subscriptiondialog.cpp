@@ -68,7 +68,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
 
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainWidget->setLayout(mainLayout);
     topLayout->addWidget(mainWidget);
     topLayout->addWidget(buttonBox);

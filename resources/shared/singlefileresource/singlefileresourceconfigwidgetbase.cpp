@@ -42,7 +42,7 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
     ui.statusLabel->setText(QString());
