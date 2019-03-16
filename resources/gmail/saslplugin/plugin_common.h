@@ -155,8 +155,7 @@ int _plug_challenge_prompt(const sasl_utils_t *utils, unsigned int id, const cha
 
 int _plug_get_realm(const sasl_utils_t *utils, const char **availrealms, const char **realm, sasl_interact_t **prompt_need);
 
-int _plug_make_prompts(const sasl_utils_t *utils, sasl_interact_t **prompts_res, const char *user_prompt, const char *user_def, const char *auth_prompt, const char *auth_def, const char *pass_prompt,
-                       const char *pass_def, const char *echo_chal, const char *echo_prompt, const char *echo_def, const char *realm_chal, const char *realm_prompt, const char *realm_def);
+int _plug_make_prompts(const sasl_utils_t *utils, sasl_interact_t **prompts_res, const char *user_prompt, const char *user_def, const char *auth_prompt, const char *auth_def, const char *pass_prompt, const char *pass_def, const char *echo_chal, const char *echo_prompt, const char *echo_def, const char *realm_chal, const char *realm_prompt, const char *realm_def);
 
 typedef struct decode_context {
     const sasl_utils_t *utils;

@@ -27,8 +27,15 @@ public:
     explicit KGAPIVersionAttribute(uint32_t version);
     ~KGAPIVersionAttribute() override = default;
 
-    uint32_t version() const { return mVersion; }
-    void setVersion(uint32_t version) { mVersion = version; }
+    uint32_t version() const
+    {
+        return mVersion;
+    }
+
+    void setVersion(uint32_t version)
+    {
+        mVersion = version;
+    }
 
     QByteArray type() const override;
     Akonadi::Attribute *clone() const override;

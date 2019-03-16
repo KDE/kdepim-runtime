@@ -33,8 +33,7 @@
  */
 
 //From MailClient::send
-KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const QString &cc, const QString &subject, const QString &body, bool hidden, bool bccMe,
-                                  const QString &attachment /*, const QString &mailTransport */)
+KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const QString &cc, const QString &subject, const QString &body, bool hidden, bool bccMe, const QString &attachment /*, const QString &mailTransport */)
 {
     Q_UNUSED(hidden);
 
@@ -204,7 +203,7 @@ QByteArray mailAttendees(const KCalCore::IncidenceBase::Ptr &incidence,
         = KCalUtils::IncidenceFormatter::mailBodyStr(incidence);
 
     return createMessage(/* identity, */ from, to, cc, subject, body, false,
-                                         bccMe, attachment /*, mailTransport */)->encodedContent();
+                         bccMe, attachment /*, mailTransport */)->encodedContent();
 }
 
 QByteArray mailOrganizer(const KCalCore::IncidenceBase::Ptr &incidence,
@@ -226,5 +225,5 @@ QByteArray mailOrganizer(const KCalCore::IncidenceBase::Ptr &incidence,
     QString body = KCalUtils::IncidenceFormatter::mailBodyStr(incidence);
 
     return createMessage(/*identity, */ from, to, QString(), subject, body, false,
-                                        bccMe, attachment /*, mailTransport */)->encodedContent();
+                         bccMe, attachment /*, mailTransport */)->encodedContent();
 }

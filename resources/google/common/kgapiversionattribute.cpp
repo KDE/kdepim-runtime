@@ -19,7 +19,8 @@
 
 KGAPIVersionAttribute::KGAPIVersionAttribute(uint32_t version)
     : mVersion(version)
-{}
+{
+}
 
 QByteArray KGAPIVersionAttribute::type() const
 {
@@ -40,4 +41,3 @@ QByteArray KGAPIVersionAttribute::serialized() const
 {
     return QByteArray::number(mVersion);
 }
-

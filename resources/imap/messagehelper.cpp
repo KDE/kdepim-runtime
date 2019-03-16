@@ -28,8 +28,7 @@ MessageHelper::~MessageHelper()
 {
 }
 
-Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &message, const qint64 uid, const qint64 size, const QMap<QByteArray, QVariant> &attrs, const QList<QByteArray> &flags,
-                                                   const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
+Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &message, const qint64 uid, const qint64 size, const QMap<QByteArray, QVariant> &attrs, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
 {
     Q_UNUSED(attrs);
 

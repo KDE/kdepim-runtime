@@ -77,11 +77,8 @@ Q_DECLARE_METATYPE(KGAPI2::ObjectsList)
 Q_DECLARE_METATYPE(KGAPI2::TaskPtr)
 
 namespace {
-
 static constexpr uint32_t KGAPIEventVersion = 1;
-
 }
-
 
 using namespace Akonadi;
 using namespace KGAPI2;

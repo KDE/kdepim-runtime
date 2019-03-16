@@ -93,8 +93,7 @@ QString fromCid(const QString &cid)
     return cid.right(cid.size()-4);
 }
 
-KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &xKolabType, const QByteArray &xml, bool v3, const QByteArray &productId, const QByteArray &fromEmail,
-                                  const QString &fromName, const QString &subject)
+KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &xKolabType, const QByteArray &xml, bool v3, const QByteArray &productId, const QByteArray &fromEmail, const QString &fromName, const QString &subject)
 {
     KMime::Message::Ptr message = createMessage(xKolabType, v3, productId);
     message->subject()->fromUnicodeString(subject, "utf-8");
@@ -108,8 +107,7 @@ KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &
     return message;
 }
 
-KMime::Message::Ptr createMessage(const std::string &mimetype, const std::string &xKolabType, const std::string &xml, bool v3, const std::string &productId, const std::string &fromEmail,
-                                  const std::string &fromName, const std::string &subject)
+KMime::Message::Ptr createMessage(const std::string &mimetype, const std::string &xKolabType, const std::string &xml, bool v3, const std::string &productId, const std::string &fromEmail, const std::string &fromName, const std::string &subject)
 {
     return createMessage(QByteArray(mimetype.c_str()), QByteArray(xKolabType.c_str()), QByteArray(xml.c_str()), v3, QByteArray(productId.data()), QByteArray(fromEmail.c_str()),
                          QString::fromStdString(fromName), QString::fromStdString(subject));

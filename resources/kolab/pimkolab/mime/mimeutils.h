@@ -37,10 +37,8 @@ QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data);
 Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr &mimeData);
 Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message::Ptr &mimeData);
 
-KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &xKolabType, const QByteArray &xml, bool v3, const QByteArray &productId, const QByteArray &fromEmail,
-                                  const QString &fromName, const QString &subject);
-KMime::Message::Ptr createMessage(const std::string &mimetype, const std::string &xKolabType, const std::string &xml, bool v3, const std::string &productId, const std::string &fromEmail,
-                                  const std::string &fromName, const std::string &subject);
+KMime::Message::Ptr createMessage(const QByteArray &mimetype, const QByteArray &xKolabType, const QByteArray &xml, bool v3, const QByteArray &productId, const QByteArray &fromEmail, const QString &fromName, const QString &subject);
+KMime::Message::Ptr createMessage(const std::string &mimetype, const std::string &xKolabType, const std::string &xml, bool v3, const std::string &productId, const std::string &fromEmail, const std::string &fromName, const std::string &subject);
 
 ///Generic serializing functions
 KMime::Message::Ptr createMessage(const QString &subject, const QString &mimetype, const QString &xKolabType, const QByteArray &xml, bool v3, const QString &prodid);

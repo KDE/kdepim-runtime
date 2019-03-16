@@ -75,8 +75,7 @@ class RetrieveMetadataJob : public KJob
 {
     Q_OBJECT
 public:
-    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator,
-                        const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = nullptr);
+    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace, QObject *parent = nullptr);
     void start() override;
 
     QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;

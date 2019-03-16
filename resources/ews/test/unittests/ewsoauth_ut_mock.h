@@ -330,8 +330,7 @@ QString authorizationCallbackReceivedString(const QString &code);
 QString modifyParamsTokenString(const QString &clientId, const QString &returnUri, const QString &code);
 QString networkReplyFinishedString(const QString &data);
 QString replyDataCallbackString(const QString &data);
-QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
-                            const QString &resource);
+QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime, const QString &resource);
 QString requestWalletMapString();
 }
 

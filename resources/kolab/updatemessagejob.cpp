@@ -34,8 +34,7 @@
 //Check if the expected uid message is still there => no modification, replace message.
 //otherwise search for uptodate message by subject containing UID, merge contents, and replace message
 
-UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext,
-                                   qint64 oldUid, QObject *parent)
+UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext, qint64 oldUid, QObject *parent)
     : KJob(parent)
     , mSession(session)
     , mMessage(msg)

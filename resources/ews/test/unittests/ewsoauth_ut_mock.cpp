@@ -444,8 +444,7 @@ QString replyDataCallbackString(const QString &data)
     return QStringLiteral("ReplyDataCallback:") + data;
 }
 
-QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime,
-                            const QString &resource)
+QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime, const QString &resource)
 {
     return QStringLiteral(
         "TokenCallback:access_token=%1&expires_in=%2&expires_on=%3&ext_expires_in=%4&foci=1&id_token=%5&not_before=%6&refresh_token=%7&resource=%8&scope=ReadWrite.All&token_type=Bearer")

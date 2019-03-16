@@ -169,8 +169,7 @@ QByteArray O1::getRequestBase(const QList<O0RequestParameter> &oauthParams, cons
     return base;
 }
 
-QByteArray O1::sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op, const QString &consumerSecret,
-                    const QString &tokenSecret)
+QByteArray O1::sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op, const QString &consumerSecret, const QString &tokenSecret)
 {
     QByteArray baseString = getRequestBase(oauthParams, otherParams, url, op);
     QByteArray secret = QUrl::toPercentEncoding(consumerSecret) + "&" + QUrl::toPercentEncoding(tokenSecret);

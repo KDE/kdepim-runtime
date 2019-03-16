@@ -27,8 +27,7 @@ GmailMessageHelper::GmailMessageHelper(const Akonadi::Collection &collection, Re
 {
 }
 
-Akonadi::Item GmailMessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<KIMAP::MessageAttribute> &attrs, const QList<QByteArray> &flags,
-                                                        const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
+Akonadi::Item GmailMessageHelper::createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<KIMAP::MessageAttribute> &attrs, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const
 {
     Akonadi::Item item = MessageHelper::createItemFromMessage(message, uid, size, attrs, flags, scope, ok);
     if (!ok) {

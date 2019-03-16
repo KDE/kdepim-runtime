@@ -31,8 +31,7 @@ class GmailMessageHelper : public MessageHelper
 public:
     GmailMessageHelper(const Akonadi::Collection &collection, ResourceTask *currentTask);
 
-    virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<KIMAP::MessageAttribute> &attrs, const QList<QByteArray> &flags,
-                                                const KIMAP::FetchJob::FetchScope &scope, bool &ok) const;
+    virtual Akonadi::Item createItemFromMessage(KMime::Message::Ptr message, const qint64 uid, const qint64 size, const QList<KIMAP::MessageAttribute> &attrs, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const;
 
 private:
     Akonadi::Collection mCollection;

@@ -57,7 +57,7 @@ class Task : public Incidence
 public:
     /// Use this to parse an xml string to a task entry
     /// The caller is responsible for deleting the returned task
-    static KCalCore::Todo::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz/*, KCalCore::ResourceKolab *res = 0,
+    static KCalCore::Todo::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz /*, KCalCore::ResourceKolab *res = 0,
                                 const QString& subResource = QString(), quint32 sernum = 0 */);
 
     /// Use this to get an xml string describing this task entry

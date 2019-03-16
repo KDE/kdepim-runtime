@@ -70,8 +70,7 @@ public:
     /// @param  consumerSecret  Consumer (application) secret.
     /// @param  tokenSecret     Authorization token secret (empty if not yet available).
     /// @return Signature that can be used as the value of the "oauth_signature" parameter.
-    static QByteArray sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op,
-                           const QString &consumerSecret, const QString &tokenSecret);
+    static QByteArray sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op, const QString &consumerSecret, const QString &tokenSecret);
 
     /// Build a base string for signing.
     static QByteArray getRequestBase(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op);
