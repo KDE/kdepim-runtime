@@ -20,7 +20,6 @@ set(kalarmresource_SRCS
 
 install(FILES kalarmresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
-ki18n_wrap_ui(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org.kde.Akonadi.KAlarm.Settings)
 qt5_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
@@ -29,7 +28,14 @@ ecm_qt_declare_logging_category(kalarmresource_SRCS HEADER kalarmresource_debug.
 
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
 
-add_executable(akonadi_kalarm_resource ${kalarmresource_SRCS})
+# ui_alarmtyperadiowidget.h is used by both akonadi_kalarm_resource and kalarmconfig
+ki18n_wrap_ui(kalarmresource_shared_SRCS ../shared/alarmtyperadiowidget.ui)
+add_library(kalarmresource_shared_object OBJECT ${kalarmresource_shared_SRCS})
+
+add_executable(akonadi_kalarm_resource
+  $<TARGET_OBJECTS:kalarmresource_shared_object>
+  ${kalarmresource_SRCS}
+)
 
 if( APPLE )
     set_target_properties(akonadi_kalarm_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -54,6 +60,7 @@ install(TARGETS akonadi_kalarm_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 ############################## Config plugin #################################
 
 set(kalarmconfig_SRCS
+    $<TARGET_OBJECTS:kalarmresource_shared_object>
     kalarmconfig.cpp
     ../shared/alarmtyperadiowidget.cpp
     ${kalarmresource_common_SRCS}
