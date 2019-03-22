@@ -31,6 +31,8 @@ add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/or
 # ui_alarmtyperadiowidget.h is used by both akonadi_kalarm_resource and kalarmconfig
 ki18n_wrap_ui(kalarmresource_shared_SRCS ../shared/alarmtyperadiowidget.ui)
 add_library(kalarmresource_shared_object OBJECT ${kalarmresource_shared_SRCS})
+# The asan build on FreeBSD doesn't like the empty moc object
+set_target_properties(kalarmresource_shared_object PROPERTIES AUTOMOC OFF)
 
 add_executable(akonadi_kalarm_resource
   $<TARGET_OBJECTS:kalarmresource_shared_object>
