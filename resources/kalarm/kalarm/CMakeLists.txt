@@ -34,8 +34,6 @@ add_library(kalarmresource_shared_object OBJECT ${kalarmresource_shared_SRCS})
 # The asan build on FreeBSD doesn't like the empty moc object
 set_target_properties(kalarmresource_shared_object PROPERTIES AUTOMOC OFF)
 
-file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bla.txt CONTENT $<TARGET_OBJECTS:kalarmresource_shared_object>)
-
 add_executable(akonadi_kalarm_resource
   $<TARGET_OBJECTS:kalarmresource_shared_object>
   ${kalarmresource_SRCS}
