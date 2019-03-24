@@ -55,7 +55,7 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
             if (mNotificationCollection.contains(collection)) {
                 return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
-                Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+                const Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
                 if (!attr || !attr->ignoreNewMail()) {
                     return Qt::Checked;
                 }

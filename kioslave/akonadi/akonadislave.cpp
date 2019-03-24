@@ -229,7 +229,7 @@ KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection &collec
     entry.insert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR);
     entry.insert(KIO::UDSEntry::UDS_URL, collection.url().url());
     entry.insert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
-    if (EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>()) {
+    if (const EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>()) {
         if (!attr->iconName().isEmpty()) {
             entry.insert(KIO::UDSEntry::UDS_ICON_NAME, attr->iconName());
         }

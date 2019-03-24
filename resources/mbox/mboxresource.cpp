@@ -108,7 +108,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
 
     KMBox::MBoxEntry::List entryList;
     if (col.hasAttribute<DeletedItemsAttribute>()) {
-        DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
+        const DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
         entryList = mMBox->entries(attr->deletedItemEntries());
     } else { // No deleted items (yet)
         entryList = mMBox->entries();

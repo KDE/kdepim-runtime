@@ -278,7 +278,7 @@ public:
     {
         QString newName;
         if (collection.hasAttribute<EntityDisplayAttribute>()) {
-            EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+            const EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
             newName = attr->displayName();
         }
         const QString oldName = mSettings->displayName();

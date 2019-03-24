@@ -313,7 +313,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
 
     // Only continue if the collection has changed or if
     // it's the first time we see it
-    CTagAttribute *CTagAttr = collection.attribute<CTagAttribute>();
+    const CTagAttribute *CTagAttr = collection.attribute<CTagAttribute>();
     if (CTagAttr && mCTagCache.contains(collection.remoteId()) && mCTagCache.value(collection.remoteId()) == CTagAttr->CTag()) {
         qCDebug(DAVRESOURCE_LOG) << "CTag for collection" << collection.remoteId() << "didn't change: " << CTagAttr->CTag();
         itemsRetrievalDone();
