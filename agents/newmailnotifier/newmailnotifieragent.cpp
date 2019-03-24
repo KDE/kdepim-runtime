@@ -301,7 +301,7 @@ void NewMailNotifierAgent::slotShowNotifications()
 
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         for (QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it) {
-            Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
+            const Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;
             if (attr && !attr->displayName().isEmpty()) {
                 displayName = attr->displayName();

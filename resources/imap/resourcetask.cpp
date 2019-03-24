@@ -550,7 +550,7 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
 
 KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
 {
-    Akonadi::ImapAclAttribute *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    const Akonadi::ImapAclAttribute *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
     if (aclAttribute) {
         //HACK, only return myrights if they are available
         if (aclAttribute->myRights() != KIMAP::Acl::None) {
