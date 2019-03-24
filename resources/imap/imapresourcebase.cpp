@@ -300,10 +300,11 @@ void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)
     case SessionPool::IncompatibleServerError:
         setOnline(false);
         Q_EMIT status(Broken, errorString);
-        cancelTask();
+        cancelTask(errorString);
         return;
 
     case SessionPool::CouldNotConnectError:
+    case SessionPool::CancelledError: // e.g. we got disconnected during login
         Q_EMIT status(Idle, i18n("Server is not available."));
         deferTask();
         setTemporaryOffline((m_pool->account() && m_pool->account()->timeout() > 0) ? m_pool->account()->timeout() : 300);
@@ -315,9 +316,6 @@ void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)
 
     case SessionPool::NoAvailableSessionError:
         qFatal("Shouldn't happen");
-        return;
-    case SessionPool::CancelledError:
-        qCWarning(IMAPRESOURCE_LOG) << "Session login cancelled";
         return;
     }
 }
