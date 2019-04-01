@@ -22,7 +22,7 @@
 
 #include <QTemporaryDir>
 
-#include <qtest.h>
+#include <QTest>
 #include <QDir>
 
 class TestDataTest : public QObject

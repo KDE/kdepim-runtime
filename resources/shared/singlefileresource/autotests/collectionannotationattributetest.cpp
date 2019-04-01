@@ -18,7 +18,7 @@
 */
 
 #include <QtTest>
-#include <qtest.h>
+#include <QTest>
 #include "../collectionannotationsattribute.h"
 
 typedef QMap<QByteArray, QByteArray> Annotation;

@@ -28,7 +28,7 @@
 using Akonadi::MessageStatus;
 #include <QTemporaryFile>
 
-#include <qtest.h>
+#include <QTest>
 #include <QTest>
 #include <QDebug>
 

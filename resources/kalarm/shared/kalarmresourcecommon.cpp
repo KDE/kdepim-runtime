@@ -33,7 +33,7 @@
 #include <KLocalizedString>
 
 #include <QTime>
-#include <qdebug.h>
+#include <QDebug>
 
 using namespace Akonadi;
 using namespace KCalCore;

@@ -28,7 +28,7 @@
 
 #include <QTemporaryDir>
 
-#include <qtest.h>
+#include <QTest>
 #include <QFileInfo>
 #include <QDir>
 

@@ -41,7 +41,7 @@
 #include <KRandom>
 #include <QTemporaryDir>
 
-#include <qtest.h>
+#include <QTest>
 
 using namespace Akonadi;
 

@@ -20,7 +20,7 @@
 #include "folderarchiveaccountinfotest.h"
 #include "../folderarchiveaccountinfo.h"
 #include <AkonadiCore/Collection>
-#include <qtest.h>
+#include <QTest>
 #include <KSharedConfig>
 
 FolderArchiveAccountInfoTest::FolderArchiveAccountInfoTest(QObject *parent)

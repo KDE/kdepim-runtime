@@ -32,7 +32,7 @@
 #include <kcontacts/contactgroup.h>
 
 #include <qdom.h>
-#include <qbuffer.h>
+#include <QBuffer>
 #include <QDebug>
 #include <akonadi/notes/noteutils.h>
 

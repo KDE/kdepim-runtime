@@ -24,7 +24,7 @@
 #include <kconfiggroup.h>
 #include <KLocalizedString>
 
-#include <qdebug.h>
+#include <QDebug>
 #include <QIcon>
 #include <QApplication>
 #include <infodialog.h>

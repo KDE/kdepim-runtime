@@ -21,7 +21,7 @@
 
 #include <QTimer>
 
-#include <qtest.h>
+#include <QTest>
 
 DummyPasswordRequester::DummyPasswordRequester(QObject *parent)
     : PasswordRequesterInterface(parent)

@@ -17,9 +17,9 @@
 
 #include "errorhandler.h"
 
-#include <qdebug.h>
+#include <QDebug>
 #include <QTime>
-#include <qmutex.h>
+#include <QMutex>
 #include <iostream>
 
 #include <kolabformat.h>

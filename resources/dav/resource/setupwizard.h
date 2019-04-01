@@ -23,7 +23,7 @@
 
 #include <QWizard>
 #include <QWizardPage>
-#include <qlabel.h>
+#include <QLabel>
 
 class KJob;
 class KLineEdit;

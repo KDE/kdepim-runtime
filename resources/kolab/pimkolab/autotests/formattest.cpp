@@ -20,8 +20,8 @@
 #include <QTest>
 #include <QFile>
 #include <QDebug>
-#include <qprocess.h>
-#include <qtemporaryfile.h>
+#include <QProcess>
+#include <QTemporaryFile>
 #include <QBuffer>
 #include <kolabcontainers.h>
 #include <kolabformat.h>

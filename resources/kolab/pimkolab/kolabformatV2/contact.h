@@ -34,7 +34,7 @@
 #define KOLABV2CONTACT_H
 
 #include "kolabbase.h"
-#include <qimage.h>
+#include <QImage>
 
 namespace KContacts {
 class Addressee;

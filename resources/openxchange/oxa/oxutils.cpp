@@ -21,7 +21,7 @@
 
 #include "oxutils.h"
 
-#include <qdatetime.h>
+#include <QDateTime>
 #include <QStringList>
 
 using namespace OXA;

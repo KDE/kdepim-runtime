@@ -18,9 +18,9 @@
 #ifndef TESTUTILS_H
 #define TESTUTILS_H
 
-#include <qtemporaryfile.h>
-#include <qprocess.h>
-#include <quuid.h>
+#include <QTemporaryFile>
+#include <QProcess>
+#include <QUuid>
 #include <kolabevent.h>
 #include <kmime/kmime_message.h>
 

@@ -39,7 +39,7 @@
 
 #include <QSignalSpy>
 
-#include <qtest.h>
+#include <QTest>
 #include <QFileInfo>
 #include <QDir>
 using namespace Akonadi;
