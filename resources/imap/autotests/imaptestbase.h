@@ -20,7 +20,7 @@
 #ifndef IMAPTESTBASE_H
 #define IMAPTESTBASE_H
 
-#include <qtest.h>
+#include <QTest>
 
 #include <kimaptest/fakeserver.h>
 

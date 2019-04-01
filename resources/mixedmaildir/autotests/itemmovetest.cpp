@@ -35,7 +35,7 @@
 #include <KRandom>
 #include <QTemporaryDir>
 
-#include <qtest.h>
+#include <QTest>
 #include <QFileInfo>
 #include <QDir>
 using namespace Akonadi;

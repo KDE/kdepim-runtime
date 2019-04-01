@@ -18,8 +18,8 @@
 #include "kabcconversion.h"
 
 #include "commonconversion.h"
-#include <qbuffer.h>
-#include <qimagereader.h>
+#include <QBuffer>
+#include <QImageReader>
 
 #include "pimkolab_debug.h"
 namespace Kolab {

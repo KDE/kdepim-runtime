@@ -35,7 +35,7 @@
 
 #include <KRandom>
 
-#include <qtest.h>
+#include <QTest>
 
 using namespace Akonadi;
 using namespace Akonadi::FileStore;

@@ -49,7 +49,7 @@
 #include <CollectionModifyJob>
 #include <kemailsettings.h>
 #include <KLocalizedString>
-#include <qpushbutton.h>
+#include <QPushButton>
 #include <kmessagebox.h>
 #include <kuser.h>
 #include "imapresource_debug.h"

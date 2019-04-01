@@ -22,7 +22,7 @@
 #ifndef OXA_DAVMANAGER_H
 #define OXA_DAVMANAGER_H
 
-#include <qurl.h>
+#include <QUrl>
 
 namespace KIO {
 class DavJob;

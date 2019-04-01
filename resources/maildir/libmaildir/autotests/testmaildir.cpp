@@ -25,7 +25,7 @@
 #include <QDir>
 #include <QFile>
 
-#include <qtest.h>
+#include <QTest>
 
 #include <QTemporaryDir>
 #include <akonadi/kmime/messageflags.h>

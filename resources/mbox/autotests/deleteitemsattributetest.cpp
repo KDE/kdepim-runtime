@@ -19,7 +19,7 @@
 
 #include "deleteitemsattributetest.h"
 #include "../deleteditemsattribute.h"
-#include <qtest.h>
+#include <QTest>
 
 DeleteItemsAttributeTest::DeleteItemsAttributeTest(QObject *parent)
     : QObject(parent)

@@ -20,7 +20,7 @@
 
 #include <KDAV/DavCollectionsMultiFetchJob>
 #include <KPasswordLineEdit>
-#include <qicon.h>
+#include <QIcon>
 #include <KLocalizedString>
 #include <klineedit.h>
 #include <kservice.h>

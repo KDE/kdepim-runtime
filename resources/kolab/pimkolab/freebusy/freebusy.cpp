@@ -22,7 +22,7 @@
 #include "libkolab-version.h"
 #include <kcalcore/freebusy.h>
 #include <kcalcore/icalformat.h>
-#include <quuid.h>
+#include <QUuid>
 #include <QTime>
 
 // namespace KCalCore {
