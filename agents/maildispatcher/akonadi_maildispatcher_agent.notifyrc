@@ -148,6 +148,7 @@ Name[zh_CN]=邮件已成功发送
 Name[zh_TW]=電子郵件已成功傳送
 Action=Popup
 IconName=mail-folder-outbox
+Urgency=Low
 
 [Event/sendingfailed]
 Name=E-mail sending failed
@@ -198,3 +199,4 @@ Name[zh_CN]=发送邮件失败
 Name[zh_TW]=傳送信件失敗
 Action=Popup
 IconName=mail-mark-junk
+Urgency=Critical

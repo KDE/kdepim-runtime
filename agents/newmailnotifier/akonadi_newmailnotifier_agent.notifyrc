@@ -137,4 +137,4 @@ Name[x-test]=xxNew email arrivedxx
 Name[zh_CN]=新邮件到达
 Name[zh_TW]=新郵件已抵達
 Action=Popup
-
+Urgency=Normal
