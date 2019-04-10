@@ -1075,7 +1075,7 @@ void EwsResource::messageSendRequestFinished(KJob *job)
 
 void EwsResource::foldersModifiedEvent(const EwsId::List &folders)
 {
-    Q_FOREACH (const EwsId &id, folders) {
+    for (const EwsId &id : folders) {
         Collection c;
         c.setRemoteId(id.id());
         CollectionFetchJob *job = new CollectionFetchJob(c, CollectionFetchJob::Base);
@@ -1142,7 +1142,7 @@ void EwsResource::specialFoldersCollectionsRetrieved(const Collection::List &fol
     EwsId::List queryItems;
 
     queryItems.reserve(specialFolderList.count());
-    Q_FOREACH (const SpecialFolders &sf, specialFolderList) {
+    for (const SpecialFolders &sf : qAsConst(specialFolderList)) {
         queryItems.append(EwsId(sf.did));
     }
 

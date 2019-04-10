@@ -76,13 +76,13 @@ void EwsSubscribeRequest::start()
     }
 
     writer.writeStartElement(ewsTypeNsUri, QStringLiteral("FolderIds"));
-    Q_FOREACH (const EwsId &id, mFolderIds) {
+    for (const EwsId &id : qAsConst(mFolderIds)) {
         id.writeFolderIds(writer);
     }
     writer.writeEndElement();
 
     writer.writeStartElement(ewsTypeNsUri, QStringLiteral("EventTypes"));
-    Q_FOREACH (const EwsEventType type, mEventTypes) {
+    for (const EwsEventType type : qAsConst(mEventTypes)) {
         writer.writeTextElement(ewsTypeNsUri, QStringLiteral("EventType"), eventTypeNames[type]);
     }
     writer.writeEndElement();   // EventTypes

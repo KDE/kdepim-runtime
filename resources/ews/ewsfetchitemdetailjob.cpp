@@ -44,7 +44,7 @@ void EwsFetchItemDetailJob::setItemLists(const Akonadi::Item::List &changedItems
     EwsId::List ids;
     ids.reserve(changedItems.count());
 
-    Q_FOREACH (const Akonadi::Item &item, changedItems) {
+    for (const Akonadi::Item &item : changedItems) {
         EwsId id(item.remoteId(), item.remoteRevision());
         ids.append(id);
     }

@@ -287,8 +287,8 @@ void EwsFetchFoldersJobPrivate::buildChildCollectionList(const Collection &col)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    QStringList children = mParentMap.values(col.remoteId());
-    Q_FOREACH (const QString &childId, children) {
+    const QStringList children = mParentMap.values(col.remoteId());
+    for (const QString &childId : children) {
         Collection child(mCollectionMap.take(childId));
         child.setParentCollection(col);
         q->mFolders.append(child);

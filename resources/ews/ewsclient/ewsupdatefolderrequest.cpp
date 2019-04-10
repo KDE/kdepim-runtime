@@ -53,7 +53,7 @@ void EwsUpdateFolderRequest::start()
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("UpdateFolder"));
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderChanges"));
-    Q_FOREACH (const FolderChange &ch, mChanges) {
+    for (const FolderChange &ch : qAsConst(mChanges)) {
         ch.write(writer);
     }
     writer.writeEndElement();

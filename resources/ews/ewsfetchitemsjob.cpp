@@ -259,7 +259,7 @@ void EwsFetchItemsJob::compareItemLists()
     Q_EMIT percent(0);
 
     QHash<QString, Item> itemHash;
-    Q_FOREACH (const Item &item, mLocalItems) {
+    for (const Item &item : qAsConst(mLocalItems)) {
         itemHash.insert(item.remoteId(), item);
     }
 
@@ -426,7 +426,7 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
 void EwsFetchItemsJob::setQueuedUpdates(const QueuedUpdateList &updates)
 {
     mQueuedUpdates.clear();
-    Q_FOREACH (const QueuedUpdate &upd, updates) {
+    for (const QueuedUpdate &upd : updates) {
         mQueuedUpdates[upd.type].insert(upd.id, upd.changeKey);
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Queued update %1 for item %2").arg(upd.type).arg(ewsHash(upd.id));
     }

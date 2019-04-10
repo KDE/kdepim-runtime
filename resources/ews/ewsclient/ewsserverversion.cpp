@@ -135,7 +135,7 @@ QString EwsServerVersion::toString() const
         version.append(QStringLiteral(".%1.%2").arg(mMajorBuild).arg(mMinorBuild));
     }
 
-    Q_FOREACH (const EwsServerVersion &ver, knownVersions) {
+    for (const EwsServerVersion &ver : knownVersions) {
         if (*this == ver) {
             version.append(QStringLiteral(" (") + ver.mFriendlyName + QStringLiteral(")"));
         }

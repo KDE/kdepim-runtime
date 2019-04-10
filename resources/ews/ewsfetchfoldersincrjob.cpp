@@ -428,7 +428,7 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
 
     if (reparentPassNeeded) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Executing reparent pass") << topLevelList;
-        Q_FOREACH (const QString &id, topLevelList) {
+        for (const QString &id : qAsConst(topLevelList)) {
             reparentRemoteFolder(id);
         }
     }
@@ -451,9 +451,9 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
 void EwsFetchFoldersIncrJobPrivate::reparentRemoteFolder(const QString &id)
 {
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Reparenting") << id;
-    QStringList children = mParentMap.values(id);
+    const QStringList children = mParentMap.values(id);
     FolderDescr &fd = mFolderHash[id];
-    Q_FOREACH (const QString &childId, children) {
+    for (const QString &childId : children) {
         FolderDescr &childFd = mFolderHash[childId];
         if (!childFd.isProcessed() && childFd.isModified()
             && childFd.parent() != childFd.collection.parentCollection().remoteId()) {

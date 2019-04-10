@@ -51,10 +51,10 @@ QByteArray EwsTagStore::serializeTag(const Akonadi::Tag &tag) const
     stream.setVersion(TagDataVer1StreamVer);
     stream << TagDataVer1;
     stream << tag.name() << tag.gid();
-    Attribute::List attrs = tag.attributes();
+    const Attribute::List attrs = tag.attributes();
     stream << static_cast<int>(attrs.size());
 
-    Q_FOREACH (const Attribute *attr, attrs) {
+    for (const Attribute *attr : attrs) {
         stream << attr->type();
         stream << attr->serialized();
     }
@@ -123,7 +123,7 @@ bool EwsTagStore::readTags(const QStringList &taglist, int version)
 
     mTagData.clear();
 
-    Q_FOREACH (const QString &tag, taglist) {
+    for (const QString &tag : taglist) {
         QByteArray tagdata = qUncompress(QByteArray::fromBase64(tag.toLatin1()));
         if (tagdata.isNull()) {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Incorrect tag data");
@@ -204,7 +204,7 @@ bool EwsTagStore::syncTags(const Akonadi::Tag::List &tags)
     bool changed = false;
 
     QList<QByteArray> tagIds = mTagData.keys();
-    Q_FOREACH (const Tag &tag, tags) {
+    for (const Tag &tag : tags) {
         QByteArray serialized = serializeTag(tag);
         auto it = mTagData.find(tag.gid());
         /* First check if the tag exists or if it has been changed. Only once that is done
@@ -234,7 +234,7 @@ bool EwsTagStore::syncTags(const Akonadi::Tag::List &tags)
         }
     }
 
-    Q_FOREACH (const QByteArray &tagId, tagIds) {
+    for (const QByteArray &tagId : qAsConst(tagIds)) {
         mTagData.remove(tagId);
     }
 
@@ -274,9 +274,9 @@ bool EwsTagStore::readEwsProperties(Akonadi::Item &item, const EwsItem &ewsItem,
 {
     QVariant tagProp = ewsItem[EwsResource::tagsProperty];
     if (tagProp.isValid() && tagProp.canConvert<QStringList>()) {
-        QStringList tagRids = tagProp.toStringList();
-        Q_FOREACH (const QString &tagRid, tagRids) {
-            Tag::Id tagId = tagIdForRid(tagRid.toLatin1());
+        const QStringList tagRids = tagProp.toStringList();
+        for (const QString &tagRid : tagRids) {
+            const Tag::Id tagId = tagIdForRid(tagRid.toLatin1());
             if (tagId == -1) {
                 /* Tag not found. */
                 qCDebug(EWSRES_LOG) << QStringLiteral("Found missing tag: %1").arg(tagRid);

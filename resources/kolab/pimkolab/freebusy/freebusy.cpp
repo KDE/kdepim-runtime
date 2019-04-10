@@ -209,7 +209,7 @@ Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDate
         if (event->recurs()) {
             const KCalCore::Duration duration(eventStart, eventEnd);
             const auto list = event->recurrence()->timesInInterval(start, end);
-            Q_FOREACH (const auto &dt, list) {
+            for (const auto &dt : list) {
                 const auto utc = dt.toUTC();
                 const Kolab::Period &period = addLocalPeriod(utc, duration.end(utc), start, end, allDay);
                 if (period.isValid()) {

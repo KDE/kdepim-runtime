@@ -41,11 +41,12 @@ void EwsSubscribedFoldersJob::start()
 
     // Before subscribing make sure the subscription list doesn't contain invalid folders.
     // Do this also for the default list in order to transform the distinguished IDs into real ones.
-    if (mSettings->serverSubscriptionList() == QStringList() << QStringLiteral("default")) {
+    const auto serverSubscriptionList = mSettings->serverSubscriptionList();
+    if (serverSubscriptionList == QStringList() << QStringLiteral("default")) {
         ids = defaultSubscriptionFolders();
     } else {
-        ids.reserve(mSettings->serverSubscriptionList().count());
-        Q_FOREACH (const QString &id, mSettings->serverSubscriptionList()) {
+        ids.reserve(serverSubscriptionList.count());
+        for (const QString &id : serverSubscriptionList) {
             ids << EwsId(id);
         }
     }

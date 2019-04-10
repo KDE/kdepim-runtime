@@ -111,7 +111,7 @@ EwsFolder::EwsFolder(QXmlStreamReader &reader)
     // Check what item type are we
     uint i = 0;
     d->mType = EwsFolderTypeUnknown;
-    Q_FOREACH (const QString &name, folderTypeNames) {
+    for (const QString &name : qAsConst(folderTypeNames)) {
         if (name == reader.name()) {
             d->mType = static_cast<EwsFolderType>(i);
             break;

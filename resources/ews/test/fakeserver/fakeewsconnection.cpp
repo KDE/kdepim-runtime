@@ -323,7 +323,7 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
     FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());
     const QStringList events = server->retrieveEventsXml();
     qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning %1 events.").arg(events.size());
-    Q_FOREACH (const QString &eventXml, events) {
+    for (const QString &eventXml : events) {
         resp += eventXml;
     }
 
