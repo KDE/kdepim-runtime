@@ -20,5 +20,6 @@ qt5_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
 # add the dbus interace to every test (easier than adding to particular tests only)
 #qt5_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
-
-add_akonadi_isolated_test_advanced(pop3test.cpp "${_srcList}" "KF5::Mime")
+if (KDEPIM_RUN_AKONADI_TEST)
+	add_akonadi_isolated_test_advanced(pop3test.cpp "${_srcList}" "KF5::Mime")
+endif()	

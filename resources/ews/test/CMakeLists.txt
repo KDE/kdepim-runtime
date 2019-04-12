@@ -43,5 +43,6 @@ target_link_libraries(isolatedtestcommon
 
 add_subdirectory(unittests)
 add_subdirectory(fakeserver)
-
-add_akonadi_isolated_test_advanced(ewstest.cpp "${isolatestestcommon_RSRCS}" "isolatedtestcommon")
+if (KDEPIM_RUN_AKONADI_TEST)
+	add_akonadi_isolated_test_advanced(ewstest.cpp "${isolatestestcommon_RSRCS}" "isolatedtestcommon")
+endif()
