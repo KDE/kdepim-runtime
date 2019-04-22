@@ -1129,7 +1129,7 @@ void EwsResource::fetchSpecialFolders()
 {
     CollectionFetchJob *job = new CollectionFetchJob(mRootCollection, CollectionFetchJob::Recursive, this);
     connect(job, &CollectionFetchJob::collectionsReceived, this, &EwsResource::specialFoldersCollectionsRetrieved);
-    connect(job, &CollectionFetchJob::result, this, [this](KJob *job) {
+    connect(job, &CollectionFetchJob::result, this, [](KJob *job) {
         if (job->error()) {
             qCWarningNC(EWSRES_LOG) << "Special folders fetch failed:" << job->errorString();
         }

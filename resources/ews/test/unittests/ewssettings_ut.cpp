@@ -269,7 +269,7 @@ void UtEwsSettings::readNoPassword()
 void UtEwsSettings::readNullWallet()
 {
     KWallet::MyWallet *wallet = nullptr;
-    KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *) {
+    KWallet::openWalletCallback = [](KWallet::MyWallet *) {
                                       return nullptr;
                                   };
 
@@ -541,7 +541,7 @@ void UtEwsSettings::writeNullPassword()
 void UtEwsSettings::writeNullWallet()
 {
     KWallet::MyWallet *wallet = nullptr;
-    KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *) {
+    KWallet::openWalletCallback = [](KWallet::MyWallet *) {
                                       return nullptr;
                                   };
 

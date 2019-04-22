@@ -798,7 +798,7 @@ void UtEwsFakeSrvTest::xqueryResultsInCallback()
     const FakeEwsServer::DialogEntry::List dialog = {
         {
             QStringLiteral("if (//test1/a = <a />) then (<b>test</b>) else ()"),
-            [&callbackOk](const QString &, QXmlResultItems &ri, const QXmlNamePool &)
+            [](const QString &, QXmlResultItems &ri, const QXmlNamePool &)
             {
                 if (ri.hasError()) {
                     qDebug() << "XQuery result has errors.";

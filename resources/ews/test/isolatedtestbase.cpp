@@ -334,7 +334,7 @@ ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &id
     QString responseXml;
     int folderIndex = 0;
 
-    for (auto folderId : ids) {
+    for (const auto &folderId : ids) {
         xQueryFolderIds.append(QStringLiteral("//m:GetFolder/m:FolderIds/t:FolderId[position()=%1 and @Id=\"%2\"]")
                                .arg(++folderIndex).arg(folderId));
         responseXml += QStringLiteral("<m:GetFolderResponseMessage ResponseClass=\"Success\">");

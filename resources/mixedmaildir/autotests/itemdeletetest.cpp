@@ -265,8 +265,8 @@ void ItemDeleteTest::testMBox()
     // last item purging does not change any others
     storeCompact = mStore->compactStore();
 
-    collectionsSpy = new QSignalSpy(storeCompact, SIGNAL(collectionsChanged(Akonadi::Collection::List)));
-    itemsSpy = new QSignalSpy(storeCompact, SIGNAL(itemsChanged(Akonadi::Item::List)));
+    collectionsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::collectionsChanged);
+    itemsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(storeCompact->exec());
     QCOMPARE(storeCompact->error(), 0);
@@ -329,8 +329,8 @@ void ItemDeleteTest::testMBox()
     // non-last item purging changes all items after it
     storeCompact = mStore->compactStore();
 
-    collectionsSpy = new QSignalSpy(storeCompact, SIGNAL(collectionsChanged(Akonadi::Collection::List)));
-    itemsSpy = new QSignalSpy(storeCompact, SIGNAL(itemsChanged(Akonadi::Item::List)));
+    collectionsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::collectionsChanged);
+    itemsSpy = new QSignalSpy(storeCompact, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(storeCompact->exec());
     QCOMPARE(storeCompact->error(), 0);

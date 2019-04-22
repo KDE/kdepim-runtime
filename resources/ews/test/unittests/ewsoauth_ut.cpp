@@ -312,11 +312,11 @@ void UtEwsOAuth::setUpTokenFunction(const QString &accessToken, const QString &r
 
 void UtEwsOAuth::dumpEvents(const QStringList &events, const QStringList &expectedEvents)
 {
-    for (const auto event : events) {
+    for (const auto &event : events) {
         qDebug() << "Got event:" << event;
     }
     if (events != expectedEvents) {
-        for (const auto event : expectedEvents) {
+        for (const auto &event : expectedEvents) {
             qDebug() << "Expected event:" << event;
         }
     }

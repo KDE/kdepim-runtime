@@ -205,8 +205,8 @@ void StoreCompactTest::testCompact()
 
     job = mStore->compactStore();
 
-    collectionSpy = new QSignalSpy(job, SIGNAL(collectionsChanged(Akonadi::Collection::List)));
-    itemSpy = new QSignalSpy(job, SIGNAL(itemsChanged(Akonadi::Item::List)));
+    collectionSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::collectionsChanged);
+    itemSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -249,8 +249,8 @@ void StoreCompactTest::testCompact()
 
     job = mStore->compactStore();
 
-    collectionSpy = new QSignalSpy(job, SIGNAL(collectionsChanged(Akonadi::Collection::List)));
-    itemSpy = new QSignalSpy(job, SIGNAL(itemsChanged(Akonadi::Item::List)));
+    collectionSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::collectionsChanged);
+    itemSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -330,8 +330,8 @@ void StoreCompactTest::testCompact()
 
     job = mStore->compactStore();
 
-    collectionSpy = new QSignalSpy(job, SIGNAL(collectionsChanged(Akonadi::Collection::List)));
-    itemSpy = new QSignalSpy(job, SIGNAL(itemsChanged(Akonadi::Item::List)));
+    collectionSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::collectionsChanged);
+    itemSpy = new QSignalSpy(job, &FileStore::StoreCompactJob::itemsChanged);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);

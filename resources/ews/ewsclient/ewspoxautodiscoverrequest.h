@@ -122,7 +122,7 @@ public:
 
 protected:
     void doSend();
-    void prepare(const QString body);
+    void prepare(const QString &body);
     bool readResponse(QXmlStreamReader &reader);
 
 protected Q_SLOTS:

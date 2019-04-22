@@ -53,7 +53,7 @@ void EwsPoxAutodiscoverRequest::doSend()
     }
 }
 
-void EwsPoxAutodiscoverRequest::prepare(const QString body)
+void EwsPoxAutodiscoverRequest::prepare(const QString &body)
 {
     mBody = body;
     mLastUrl = mUrl;

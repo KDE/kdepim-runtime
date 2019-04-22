@@ -123,7 +123,7 @@ private Q_SLOTS:
         SessionPool pool(1);
 
         if (shouldConnect) {
-            QSignalSpy poolSpy(&pool, SIGNAL(connectDone(int,QString)));
+            QSignalSpy poolSpy(&pool, &SessionPool::connectDone);
 
             pool.setPasswordRequester(createDefaultRequester());
             QVERIFY(pool.connect(createDefaultAccount()));
@@ -133,12 +133,12 @@ private Q_SLOTS:
         }
 
         if (shouldRequestSession) {
-            QSignalSpy requestSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+            QSignalSpy requestSpy(&pool, &SessionPool::sessionRequestDone);
             pool.requestSession();
             QTRY_COMPARE(requestSpy.count(), 1);
         }
 
-        QSignalSpy sessionSpy(&pool, SIGNAL(sessionRequestDone(qint64,KIMAP::Session*,int,QString)));
+        QSignalSpy sessionSpy(&pool, &SessionPool::sessionRequestDone);
         DummyResourceTask *task = new DummyResourceTask(actionIfNoSession, state);
         task->start(&pool);
 
