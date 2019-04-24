@@ -142,7 +142,7 @@ find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
-option(NO_REGENERATE_MIME "Don't regenerate mime file (only for developper)" FALSE )
+option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 
 
 #add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
