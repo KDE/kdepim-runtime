@@ -142,6 +142,7 @@ find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
+option(NO_REGENERATE_MIME "Don't regenerate mime file (only for developper)" FALSE )
 
 
 #add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
@@ -157,7 +158,9 @@ add_subdirectory(doc)
 
 ## install the MIME type spec file for KDEPIM specific MIME types
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
-update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
+if (NOT NO_REGENERATE_MIME)
+   update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
+endif()   
 
 
 install( FILES kdepim-runtime.renamecategories kdepim-runtime.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
