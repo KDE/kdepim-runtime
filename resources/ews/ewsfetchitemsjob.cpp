@@ -264,7 +264,7 @@ void EwsFetchItemsJob::compareItemLists()
 {
     /* Begin stage 2 - determine list of new/changed items and fetch details about them. */
 
-    Item::List toFetchItems[EwsItemTypeUnknown + 1];
+    QHash<EwsItemType, Item::List> toFetchItems;
 
     QHash<QString, Item> itemHash;
     for (const Item &item : qAsConst(mLocalItems)) {
@@ -389,7 +389,7 @@ void EwsFetchItemsJob::compareItemLists()
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
 
     bool fetch = false;
-    for (unsigned iType = 0; iType < sizeof(toFetchItems) / sizeof(toFetchItems[0]); ++iType) {
+    for (const auto iType : toFetchItems.keys()) {
         if (!toFetchItems[iType].isEmpty()) {
             for (int i = 0; i < toFetchItems[iType].size(); i += fetchBatchSize) {
                 EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(iType));
