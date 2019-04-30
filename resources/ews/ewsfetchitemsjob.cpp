@@ -390,24 +390,22 @@ void EwsFetchItemsJob::compareItemLists()
 
     bool fetch = false;
     for (const auto iType : toFetchItems.keys()) {
-        if (!toFetchItems[iType].isEmpty()) {
-            for (int i = 0; i < toFetchItems[iType].size(); i += fetchBatchSize) {
-                EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(iType));
-                if (!handler) {
-                    // TODO: Temporarily ignore unsupported item types.
-                    qCWarning(EWSRES_LOG) << QStringLiteral("Unable to initialize fetch for item type %1")
-                        .arg(iType);
-                    /*setErrorMsg(QStringLiteral("Unable to initialize fetch for item type %1").arg(iType));
-                    emitResult();
-                    return;*/
-                } else {
-                    EwsFetchItemDetailJob *job = handler->fetchItemDetailJob(mClient, this, mCollection);
-                    Item::List itemList = toFetchItems[iType].mid(i, fetchBatchSize);
-                    job->setItemLists(itemList, &mDeletedItems);
-                    connect(job, &KJob::result, this, &EwsFetchItemsJob::itemDetailFetchDone);
-                    addSubjob(job);
-                    fetch = true;
-                }
+        for (int i = 0; i < toFetchItems[iType].size(); i += fetchBatchSize) {
+            EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(iType));
+            if (!handler) {
+                // TODO: Temporarily ignore unsupported item types.
+                qCWarning(EWSRES_LOG) << QStringLiteral("Unable to initialize fetch for item type %1")
+                    .arg(iType);
+                /*setErrorMsg(QStringLiteral("Unable to initialize fetch for item type %1").arg(iType));
+                emitResult();
+                return;*/
+            } else {
+                EwsFetchItemDetailJob *job = handler->fetchItemDetailJob(mClient, this, mCollection);
+                Item::List itemList = toFetchItems[iType].mid(i, fetchBatchSize);
+                job->setItemLists(itemList, &mDeletedItems);
+                connect(job, &KJob::result, this, &EwsFetchItemsJob::itemDetailFetchDone);
+                addSubjob(job);
+                fetch = true;
             }
         }
     }
