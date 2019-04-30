@@ -501,7 +501,9 @@ void EwsResource::fetchFoldersIncrJobFinished(KJob *job)
     saveState();
     collectionsRetrievedIncremental(req->changedFolders(), req->deletedFolders());
 
-    fetchSpecialFolders();
+    if (!req->changedFolders().isEmpty() || !req->deletedFolders().isEmpty()) {
+        fetchSpecialFolders();
+    }
 }
 
 void EwsResource::itemFetchJobFinished(KJob *job)
