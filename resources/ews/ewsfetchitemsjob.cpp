@@ -260,6 +260,34 @@ void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
     }
 }
 
+bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List& items, QHash<QString, Item> &itemHash,
+                                                           QHash<EwsItemType, Item::List> &toFetchItems)
+{
+    Q_FOREACH (const EwsItem &ewsItem, items) {
+        EwsId id(ewsItem[EwsItemFieldItemId].value<EwsId>());
+        auto it = itemHash.find(id.id());
+        if (it == itemHash.end()) {
+            setErrorMsg(QStringLiteral("Got update for item %1, but item not found in local store.")
+                        .arg(ewsHash(id.id())));
+            emitResult();
+            return false;
+        }
+        Item &item = *it;
+        item.clearPayload();
+        item.setRemoteRevision(id.changeKey());
+        if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
+            qCDebugNC(EWSRES_LOG) << QStringLiteral("Missing tags encountered - forcing sync");
+            syncTags();
+            return false;
+        }
+        EwsItemType type = ewsItem.internalType();
+        toFetchItems[type].append(item);
+        ++mTotalItemsToFetch;
+    }
+
+    return true;
+}
+
 void EwsFetchItemsJob::compareItemLists()
 {
     /* Begin stage 2 - determine list of new/changed items and fetch details about them. */
@@ -318,27 +346,8 @@ void EwsFetchItemsJob::compareItemLists()
             mDeletedItems.append(it.value());
         }
     } else {
-        Q_FOREACH (const EwsItem &ewsItem, mRemoteChangedItems) {
-            EwsId id(ewsItem[EwsItemFieldItemId].value<EwsId>());
-            QHash<QString, Item>::iterator it = itemHash.find(id.id());
-            if (it == itemHash.end()) {
-                setErrorMsg(QStringLiteral("Got update for item %1, but item not found in local store.")
-                            .arg(ewsHash(id.id())));
-                emitResult();
-                return;
-            }
-            Item &item = *it;
-            item.clearPayload();
-            item.setRemoteRevision(id.changeKey());
-            if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
-                qCDebugNC(EWSRES_LOG) << QStringLiteral("Missing tags encountered - forcing sync");
-                syncTags();
-                return;
-            }
-            EwsItemType type = ewsItem.internalType();
-            toFetchItems[type].append(item);
-            ++mTotalItemsToFetch;
-            itemHash.erase(it);
+        if (!processIncrementalRemoteItemUpdates(mRemoteChangedItems, itemHash, toFetchItems)) {
+            return;
         }
 
         // In case of an incremental sync deleted items will be given explicitly. */

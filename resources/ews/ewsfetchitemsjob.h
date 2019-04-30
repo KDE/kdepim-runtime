@@ -82,6 +82,8 @@ Q_SIGNALS:
 private:
     void compareItemLists();
     void syncTags();
+    bool processIncrementalRemoteItemUpdates(const EwsItem::List& items, QHash<QString, Akonadi::Item> &itemHash,
+                                             QHash<EwsItemType, Akonadi::Item::List> &toFetchItems);
 
     /*struct QueuedUpdateInt {
         QString changeKey;
