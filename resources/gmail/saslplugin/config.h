@@ -245,9 +245,6 @@
 /* Define to 1 if you have the `strstr' function. */
 #define HAVE_STRSTR 1
 
-/* Define to 1 if you have the `strtol' function. */
-#define HAVE_STRTOL 1
-
 /* Do we have struct sockaddr_stroage? */
 #define HAVE_STRUCT_SOCKADDR_STORAGE
 
