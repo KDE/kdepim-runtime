@@ -206,7 +206,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection1);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -255,7 +255,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection1);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -275,7 +275,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection2);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -322,7 +322,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection2);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -342,7 +342,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection3);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -403,7 +403,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection4);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -476,7 +476,7 @@ void ItemFetchTest::testListingMaildir()
 
     job = mStore->fetchItems(collection5);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -579,7 +579,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection1);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -619,7 +619,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection1);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -639,7 +639,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection2);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -680,7 +680,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection2);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -700,7 +700,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection3);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -748,7 +748,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection4);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -805,7 +805,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection5);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -855,7 +855,7 @@ void ItemFetchTest::testListingMBox()
 
     job = mStore->fetchItems(collection3);
 
-    spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+    spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);
@@ -932,7 +932,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
         job = mStore->fetchItem(item1);
         job->fetchScope().fetchPayloadPart(MessagePart::Header);
 
-        spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+        spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -966,7 +966,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
         job->fetchScope().fetchPayloadPart(MessagePart::Header);
         job->fetchScope().fetchPayloadPart(MessagePart::Body);
 
-        spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+        spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -999,7 +999,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
         job = mStore->fetchItem(item1);
         job->fetchScope().fetchFullPayload(true);
 
-        spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+        spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -1063,7 +1063,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
         job = mStore->fetchItem(item1);
         job->fetchScope().fetchPayloadPart(MessagePart::Header);
 
-        spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+        spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -1097,7 +1097,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
         job->fetchScope().fetchPayloadPart(MessagePart::Header);
         job->fetchScope().fetchPayloadPart(MessagePart::Body);
 
-        spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+        spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
@@ -1135,7 +1135,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
         job = mStore->fetchItem(item1);
         job->fetchScope().fetchFullPayload(true);
 
-        spy = new QSignalSpy(job, SIGNAL(itemsReceived(Akonadi::Item::List)));
+        spy = new QSignalSpy(job, &FileStore::ItemFetchJob::itemsReceived);
 
         QVERIFY(job->exec());
         QCOMPARE(job->error(), 0);
