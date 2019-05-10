@@ -275,7 +275,7 @@ void CalendarResource::itemRemoved(const Akonadi::Item &item)
         ItemFetchJob *fetchJob = new ItemFetchJob(item.parentCollection());
         fetchJob->setAutoDelete(true);
         fetchJob->fetchScope().fetchFullPayload(true);
-        fetchJob->setProperty(ITEM_PROPERTY, qVariantFromValue(item));
+        fetchJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
         connect(fetchJob, &ItemFetchJob::finished, this, &CalendarResource::slotRemoveTaskFetchJobFinished);
         fetchJob->start();
     } else {
