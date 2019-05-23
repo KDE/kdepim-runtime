@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.h  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2019 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -57,20 +57,17 @@ private Q_SLOTS:
     void updateFormat(KJob *);
     void setCompatibility(KJob *);
 
-protected:
-    void applyConfigurationChanges() override;
-
 private:
     void checkFileCompatibility(const Akonadi::Collection & = Akonadi::Collection(), bool createAttribute = false);
     Akonadi::CollectionFetchJob *fetchCollection(const char *slot);
 
     AlarmTypeRadioWidget *mTypeSelector = nullptr;
     KACalendar::Compat mCompatibility;
-    KACalendar::Compat mFileCompatibility;     // calendar file compatibility found by readFromFile()
-    int mVersion;                              // calendar format version
-    int mFileVersion;                          // calendar format version found by readFromFile()
-    bool mHaveReadFile;                        // the calendar file has been read
-    bool mFetchedAttributes;                   // attributes have been fetched after initialisation
+    KACalendar::Compat mFileCompatibility;  // calendar file compatibility found by readFromFile()
+    int mVersion;                           // calendar format version
+    int mFileVersion;                       // calendar format version found by readFromFile()
+    bool mHaveReadFile;                     // the calendar file has been read
+    bool mFetchedAttributes;                // attributes have been fetched after initialisation
 };
 
 #endif

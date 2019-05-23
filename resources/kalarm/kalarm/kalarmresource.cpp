@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.cpp  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2019 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -63,15 +63,6 @@ KAlarmResource::KAlarmResource(const QString &id)
 
 KAlarmResource::~KAlarmResource()
 {
-}
-
-/******************************************************************************
-* Save extra settings after the configuration dialog has been accepted.
-*/
-void KAlarmResource::applyConfigurationChanges()
-{
-    mSettings->setAlarmTypes(CalEvent::mimeTypes(mTypeSelector->alarmType()));
-    mSettings->save();
 }
 
 /******************************************************************************
