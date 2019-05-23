@@ -43,7 +43,7 @@ int main(int argc, char **argv)
                          i18n("Migration of Akonadi Items to support GID"),
                          KAboutLicense::LGPL,
                          i18n("(c) 2013-2016 the Akonadi developers"),
-                         QStringLiteral("http://pim.kde.org/akonadi/"));
+                         QStringLiteral("https://community.kde.org/KDE_PIM/Akonadi"));
     aboutData.addAuthor(i18n("Christian Mollekopf"), i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
