@@ -1,5 +1,6 @@
 /*
  *  Copyright © 2018  Daniel Vrátil <dvratil@kde.org>
+ *  Copyright © 2019  David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -36,6 +37,12 @@ public:
         mTypeSelector->setAlarmType(alarmType);
         mWidget->appendWidget(mTypeSelector.data());
         mWidget->setMonitorEnabled(false);
+    }
+
+    bool save() const override
+    {
+        mSettings->setAlarmTypes(CalEvent::mimeTypes(mTypeSelector->alarmType()));
+        return SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>::save();
     }
 
 private:
