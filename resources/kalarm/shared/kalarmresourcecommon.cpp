@@ -192,7 +192,7 @@ void Private::modifyCollectionJobDone(KJob *j)
     qDebug();
     if (j->error()) {
         Collection collection = static_cast<CollectionModifyJob *>(j)->collection();
-        qCritical() << "Error: collection id" << collection.id() << ":" << j->errorString();
+        qCritical() << "Error: modifyCollectionJobDone: collection" << collection.id() << ":" << j->errorString();
     }
 }
 

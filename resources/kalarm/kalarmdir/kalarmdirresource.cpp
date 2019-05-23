@@ -1,7 +1,7 @@
 /*
  *  kalarmdirresource.cpp  -  Akonadi directory resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2011-2016 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2011-2019 David Jarvie <djarvie@kde.org>
  *  Copyright (c) 2008 Tobias Koenig <tokoe@kde.org>
  *  Copyright (c) 2008 Bertjan Broeksema <broeksema@kde.org>
  *
@@ -60,8 +60,8 @@ using KAlarmResourceCommon::errorMessage;
 
 static const char warningFile[] = "WARNING_README.txt";
 
-#define DEBUG_DATA \
-    qCDebug(KALARMDIRRESOURCE_LOG)<<"ID:Files:"; \
+#define DEBUG_DATA(func) \
+    qCDebug(KALARMDIRRESOURCE_LOG)<<func<<"ID:Files:"; \
     foreach (const QString &id, mEvents.uniqueKeys()) { qCDebug(KALARMDIRRESOURCE_LOG)<<id<<":"<<mEvents[id].files; } \
     qCDebug(KALARMDIRRESOURCE_LOG)<<"File:IDs:"; \
     foreach (const QString &f, mFileEventIds.uniqueKeys()) { qCDebug(KALARMDIRRESOURCE_LOG)<<f<<":"<<mFileEventIds[f]; }
@@ -74,7 +74,7 @@ KAlarmDirResource::KAlarmDirResource(const QString &id)
     , mCollectionFetched(false)
     , mWaitingToRetrieve(false)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << id;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "Starting:" << id;
     KAlarmResourceCommon::initialise(this);
 
     // Set up the resource
@@ -118,12 +118,12 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
 {
     qCDebug(KALARMDIRRESOURCE_LOG);
     if (j->error()) {
-        qCritical() << "CollectionFetchJob error: " << j->errorString();
+        qCritical() << "Error: collectionFetchResult: " << j->errorString();
     } else {
         CollectionFetchJob *job = static_cast<CollectionFetchJob *>(j);
         Collection::List collections = job->collections();
         int count = collections.count();
-        qCDebug(KALARMDIRRESOURCE_LOG) << "Count:" << count;
+        qCDebug(KALARMDIRRESOURCE_LOG) << "collectionFetchResult: count:" << count;
         if (!count) {
             qCritical() << "Cannot retrieve this resource's collection";
         } else {
@@ -131,7 +131,7 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
                 qCritical() << "Multiple collections for this resource:" << count;
             }
             Collection &c(collections[0]);
-            qCDebug(KALARMDIRRESOURCE_LOG) << "Id:" << c.id() << ", remote id:" << c.remoteId();
+            qCDebug(KALARMDIRRESOURCE_LOG) << "collectionFetchResult: id:" << c.id() << ", remote id:" << c.remoteId();
             if (!mCollectionFetched) {
                 bool recreate = mSettings->path().isEmpty();
                 if (!recreate) {
@@ -149,7 +149,7 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
                     // Initialising a resource which seems to have no stored
                     // settings config file. Recreate the settings.
                     static const Collection::Rights writableRights = Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem;
-                    qCDebug(KALARMDIRRESOURCE_LOG) << "Recreating config for remote id:" << c.remoteId();
+                    qCDebug(KALARMDIRRESOURCE_LOG) << "collectionFetchResult: Recreating config for remote id:" << c.remoteId();
                     mSettings->setPath(c.remoteId());
                     mSettings->setDisplayName(c.name());
                     mSettings->setAlarmTypes(c.contentMimeTypes());
@@ -179,7 +179,7 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
 */
 void KAlarmDirResource::configure(WId windowId)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG);
+    qCDebug(KALARMDIRRESOURCE_LOG) << "configure";
     // Keep note of the old configuration settings
     QString path = mSettings->path();
     QString name = mSettings->displayName();
@@ -238,9 +238,9 @@ void KAlarmDirResource::configure(WId windowId)
 */
 void KAlarmDirResource::changeAlarmTypes(CalEvent::Types removed)
 {
-    DEBUG_DATA;
+    DEBUG_DATA("changeAlarmTypes:");
     const QString dirPath = directoryName();
-    qCDebug(KALARMDIRRESOURCE_LOG) << dirPath;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "changeAlarmTypes:" << dirPath;
     const QDir dir(dirPath);
 
     // Read and parse each file in turn
@@ -296,7 +296,7 @@ void KAlarmDirResource::changeAlarmTypes(CalEvent::Types removed)
             removeEventFile(fileEventId, file);
         }
     }
-    DEBUG_DATA;
+    DEBUG_DATA("changeAlarmTypes exit:");
     setCompatibility();
 }
 
@@ -310,7 +310,7 @@ void KAlarmDirResource::changeAlarmTypes(CalEvent::Types removed)
 */
 void KAlarmDirResource::settingsChanged()
 {
-    qCDebug(KALARMDIRRESOURCE_LOG);
+    qCDebug(KALARMDIRRESOURCE_LOG) << "settingsChanged";
     const QString display = mSettings->displayName();
     if (display != name()) {
         setName(display);
@@ -380,7 +380,7 @@ bool KAlarmDirResource::loadFiles(bool sync)
     if (dirPath.isEmpty()) {
         return false;
     }
-    qCDebug(KALARMDIRRESOURCE_LOG) << dirPath;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "loadFiles:" << dirPath;
     const QDir dir(dirPath);
 
     // Create the directory if it doesn't exist.
@@ -416,7 +416,7 @@ bool KAlarmDirResource::loadFiles(bool sync)
             }
         }
     }
-    DEBUG_DATA;
+    DEBUG_DATA("loadFiles:");
 
     setCompatibility(false);   // don't write compatibility - no collection exists yet
 
@@ -443,7 +443,7 @@ bool KAlarmDirResource::loadFiles(bool sync)
 */
 KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << path;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "loadFile:" << path;
     MemoryCalendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
     FileStorage::Ptr fileStorage(new FileStorage(calendar, path, new ICalFormat()));
     if (!fileStorage->load()) {
@@ -479,11 +479,11 @@ KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
     KAEvent event(kcalEvent);
     const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty()) {
-        qCWarning(KALARMDIRRESOURCE_LOG) << "KAEvent has no usable alarms:" << event.id();
+        qCWarning(KALARMDIRRESOURCE_LOG) << "loadFile: KAEvent has no usable alarms:" << event.id();
         return KAEvent();
     }
     if (!mSettings->alarmTypes().contains(mime)) {
-        qCWarning(KALARMDIRRESOURCE_LOG) << "KAEvent has wrong alarm type for resource:" << mime;
+        qCWarning(KALARMDIRRESOURCE_LOG) << "loadFile: KAEvent has wrong alarm type for resource:" << mime;
         return KAEvent();
     }
     event.setCompatibility(compat);
@@ -523,7 +523,7 @@ bool KAlarmDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByte
     const QString rid = item.remoteId();
     QHash<QString, EventFile>::ConstIterator it = mEvents.constFind(rid);
     if (it == mEvents.constEnd()) {
-        qCWarning(KALARMDIRRESOURCE_LOG) << "Event not found:" << rid;
+        qCWarning(KALARMDIRRESOURCE_LOG) << "retrieveItem: Event not found:" << rid;
         Q_EMIT error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
         return false;
     }
@@ -540,7 +540,7 @@ bool KAlarmDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByte
 */
 void KAlarmDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << item.id();
+    qCDebug(KALARMDIRRESOURCE_LOG) << "itemAdded:" << item.id();
     if (cancelIfReadOnly()) {
         return;
     }
@@ -574,7 +574,7 @@ void KAlarmDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Coll
 */
 void KAlarmDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << item.id() << ", remote ID:" << item.remoteId();
+    qCDebug(KALARMDIRRESOURCE_LOG) << "itemChanged:" << item.id() << ", remote ID:" << item.remoteId();
     if (cancelIfReadOnly()) {
         return;
     }
@@ -632,7 +632,7 @@ void KAlarmDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteA
 */
 void KAlarmDirResource::itemRemoved(const Akonadi::Item &item)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << item.id();
+    qCDebug(KALARMDIRRESOURCE_LOG) << "itemRemoved:" << item.id();
     if (cancelIfReadOnly()) {
         return;
     }
@@ -654,7 +654,7 @@ void KAlarmDirResource::removeEvent(const QString &eventId, bool deleteFile)
         file = it.value().files[0];
         nextFile = removeEventFile(eventId, file);
         mFileEventIds.remove(file);
-        DEBUG_DATA;
+        DEBUG_DATA("removeEvent:");
     }
     if (deleteFile) {
         QFile::remove(filePath(file));
@@ -697,7 +697,7 @@ bool KAlarmDirResource::writeToFile(const KAEvent &event)
     mChangedFiles += event.id();    // suppress KDirWatch processing for this write
 
     const QString path = filePath(event.id());
-    qCDebug(KALARMDIRRESOURCE_LOG) << event.id() << " File:" << path;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "writeToFile:" << event.id() << " File:" << path;
     FileStorage::Ptr fileStorage(new FileStorage(calendar, path, new ICalFormat()));
     if (!fileStorage->save()) {
         Q_EMIT error(i18nc("@info", "Failed to save event file: %1", path));
@@ -720,7 +720,7 @@ void KAlarmDirResource::retrieveCollections()
         return;
     }
 
-    qCDebug(KALARMDIRRESOURCE_LOG);
+    qCDebug(KALARMDIRRESOURCE_LOG) << "retrieveCollections";
     Collection c;
     c.setParentCollection(Collection::root());
     c.setRemoteId(rid);
@@ -741,7 +741,7 @@ void KAlarmDirResource::retrieveCollections()
 */
 void KAlarmDirResource::setNameRights(Collection &c)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG);
+    qCDebug(KALARMDIRRESOURCE_LOG) << "setNameRights";
     const QString display = mSettings->displayName();
     c.setName(display.isEmpty() ? name() : display);
     EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
@@ -757,7 +757,7 @@ void KAlarmDirResource::setNameRights(Collection &c)
         rights |= Collection::CanChangeCollection;
         c.setRights(rights);
     }
-    qCDebug(KALARMDIRRESOURCE_LOG) << "end";
+    qCDebug(KALARMDIRRESOURCE_LOG) << "setNameRights: end";
 }
 
 /******************************************************************************
@@ -773,7 +773,7 @@ void KAlarmDirResource::setNameRights(Collection &c)
 void KAlarmDirResource::retrieveItems(const Akonadi::Collection &collection)
 {
     mCollectionId = collection.id();   // note the one and only collection for this resource
-    qCDebug(KALARMDIRRESOURCE_LOG) << "Collection id:" << mCollectionId;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "retrieveItems: collection" << mCollectionId;
 
     // Set the collection's compatibility status
     KAlarmResourceCommon::setCollectionCompatibility(collection, mCompatibility, mVersion);
@@ -787,7 +787,7 @@ void KAlarmDirResource::retrieveItems(const Akonadi::Collection &collection)
         const KAEvent &event = data.event;
         const QString mime = CalEvent::mimeType(event.category());
         if (mime.isEmpty()) {
-            qCWarning(KALARMDIRRESOURCE_LOG) << "KAEvent has no alarms:" << event.id();
+            qCWarning(KALARMDIRRESOURCE_LOG) << "retrieveItems: KAEvent has no alarms:" << event.id();
             continue;   // event has no usable alarms
         }
         if (!mimeTypes.contains(mime)) {
@@ -809,7 +809,7 @@ void KAlarmDirResource::retrieveItems(const Akonadi::Collection &collection)
 */
 void KAlarmDirResource::collectionChanged(const Akonadi::Collection &collection)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG);
+    qCDebug(KALARMDIRRESOURCE_LOG) << "collectionChanged";
     // If the collection has a new display name, set the resource's display
     // name the same, and save to the settings.
     const QString newName = collection.displayName();
@@ -829,7 +829,7 @@ void KAlarmDirResource::collectionChanged(const Akonadi::Collection &collection)
 */
 void KAlarmDirResource::fileCreated(const QString &path)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << path;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "fileCreated:" << path;
     if (path == directoryName()) {
         // The directory has been created. Load all files in it, and
         // tell the Akonadi server to create an Item for each event.
@@ -846,7 +846,7 @@ void KAlarmDirResource::fileCreated(const QString &path)
             if (createItemAndIndex(path, file)) {
                 setCompatibility();
             }
-            DEBUG_DATA;
+            DEBUG_DATA("fileCreated:");
         }
     }
 }
@@ -857,7 +857,7 @@ void KAlarmDirResource::fileCreated(const QString &path)
 void KAlarmDirResource::fileChanged(const QString &path)
 {
     if (path != directoryName()) {
-        qCDebug(KALARMDIRRESOURCE_LOG) << path;
+        qCDebug(KALARMDIRRESOURCE_LOG) << "fileChanged:" << path;
         const QString file = fileName(path);
         int i = mChangedFiles.indexOf(file);
         if (i >= 0) {
@@ -905,7 +905,7 @@ void KAlarmDirResource::fileChanged(const QString &path)
             } else {
                 modifyItem(event);
             }
-            DEBUG_DATA;
+            DEBUG_DATA("fileChanged:");
         }
     }
 }
@@ -915,7 +915,7 @@ void KAlarmDirResource::fileChanged(const QString &path)
 */
 void KAlarmDirResource::fileDeleted(const QString &path)
 {
-    qCDebug(KALARMDIRRESOURCE_LOG) << path;
+    qCDebug(KALARMDIRRESOURCE_LOG) << "fileDeleted:" << path;
     if (path == directoryName()) {
         // The directory has been deleted
         mEvents.clear();
@@ -946,7 +946,7 @@ void KAlarmDirResource::fileDeleted(const QString &path)
                     // Tell the Akonadi server to delete the Item for the event
                     deleteItem(event);
                 }
-                DEBUG_DATA;
+                DEBUG_DATA("fileDeleted:");
             }
         }
     }
@@ -978,7 +978,7 @@ bool KAlarmDirResource::createItem(const KAEvent &event)
 {
     Item item;
     if (!event.setItemPayload(item, mSettings->alarmTypes())) {
-        qCWarning(KALARMDIRRESOURCE_LOG) << "Invalid mime type for collection";
+        qCWarning(KALARMDIRRESOURCE_LOG) << "createItem: Invalid mime type for collection";
         return false;
     }
     Collection c(mCollectionId);
@@ -996,7 +996,7 @@ bool KAlarmDirResource::modifyItem(const KAEvent &event)
 {
     Item item;
     if (!event.setItemPayload(item, mSettings->alarmTypes())) {
-        qCWarning(KALARMDIRRESOURCE_LOG) << "Invalid mime type for collection";
+        qCWarning(KALARMDIRRESOURCE_LOG) << "modifyItem: Invalid mime type for collection";
         return false;
     }
     Collection c(mCollectionId);
@@ -1038,13 +1038,13 @@ void KAlarmDirResource::jobDone(KJob *j)
 */
 void KAlarmDirResource::initializeDirectory() const
 {
-    qCDebug(KALARMDIRRESOURCE_LOG);
     const QDir dir(directoryName());
     const QString dirPath = dir.absolutePath();
+    qCDebug(KALARMDIRRESOURCE_LOG) << "initializeDirectory" << dirPath;
 
     // If folder does not exist, create it
     if (!dir.exists()) {
-        qCDebug(KALARMDIRRESOURCE_LOG) << "Creating" << dirPath;
+        qCDebug(KALARMDIRRESOURCE_LOG) << "initializeDirectory: creating" << dirPath;
         QDir::root().mkpath(dirPath);
     }
 
