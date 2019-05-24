@@ -32,7 +32,6 @@ class KJob;
 namespace Akonadi {
 class CollectionFetchJob;
 }
-class AlarmTypeRadioWidget;
 
 class KAlarmResource : public ICalResourceBase
 {
@@ -61,7 +60,6 @@ private:
     void checkFileCompatibility(const Akonadi::Collection & = Akonadi::Collection(), bool createAttribute = false);
     Akonadi::CollectionFetchJob *fetchCollection(const char *slot);
 
-    AlarmTypeRadioWidget *mTypeSelector = nullptr;
     KACalendar::Compat mCompatibility;
     KACalendar::Compat mFileCompatibility;  // calendar file compatibility found by readFromFile()
     int mVersion;                           // calendar format version
