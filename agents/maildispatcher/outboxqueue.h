@@ -55,12 +55,12 @@ public:
     /**
      * Returns whether the queue is empty.
      */
-    bool isEmpty() const;
+    Q_REQUIRED_RESULT bool isEmpty() const;
 
     /**
      * Returns the number of items in the queue.
      */
-    int count() const;
+    Q_REQUIRED_RESULT int count() const;
 
     /**
      * Returns the size (in bytes) of all items in the queue.
