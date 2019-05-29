@@ -3,3 +3,4 @@ File=newmailnotifieragentsettings.kcfg
 ClassName=NewMailNotifierAgentSettings
 Mutators=true
 Singleton=true
+ItemAccessors=true
