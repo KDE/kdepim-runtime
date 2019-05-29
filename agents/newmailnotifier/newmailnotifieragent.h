@@ -46,7 +46,7 @@ public:
     explicit NewMailNotifierAgent(const QString &id);
 
     void setEnableAgent(bool b);
-    bool enabledAgent() const;
+    Q_REQUIRED_RESULT bool enabledAgent() const;
 
     void printDebug();
 
@@ -71,6 +71,7 @@ private:
     bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    void reloadConfiguration();
     QString mDefaultIconName;
     QStringList mListEmails;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
