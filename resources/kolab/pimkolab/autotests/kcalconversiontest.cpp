@@ -181,7 +181,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setPriority(3);
         kcal.setStatus(KCalCore::Incidence::StatusConfirmed);
         kcal.setLocation(QStringLiteral("location"));
-        kcal.setOrganizer(KCalCore::Person::Ptr(new KCalCore::Person(QStringLiteral("organizer"), QStringLiteral("organizer@email"))));
+        kcal.setOrganizer(KCalCore::Person(QStringLiteral("organizer"), QStringLiteral("organizer@email")));
         //Url
         kcal.setNonKDECustomProperty("X-KOLAB-URL", QStringLiteral("http://test.org"));
         KCalCore::Attendee::Ptr att(new KCalCore::Attendee(QStringLiteral("attendee"), QStringLiteral("attendee@email"), false, KCalCore::Attendee::NeedsAction, KCalCore::Attendee::ReqParticipant));
@@ -191,7 +191,7 @@ void KCalConversionTest::testConversion_data()
         kcal.addAttachment(KCalCore::Attachment::Ptr(new KCalCore::Attachment(QStringLiteral("uri"), QStringLiteral("mimetype/mime"))));
         KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&kcal));
         KCalCore::Person::List addressees;
-        addressees.append(KCalCore::Person::Ptr(new KCalCore::Person(QStringLiteral("name"), QStringLiteral("email@email"))));
+        addressees.append(KCalCore::Person(QStringLiteral("name"), QStringLiteral("email@email")));
         alarm->setEmailAlarm(QStringLiteral("subject"), QStringLiteral("text"), addressees, QStringList()); //No support for attachments
         kcal.addAlarm(alarm);
         //TODO alarms
@@ -364,8 +364,8 @@ void KCalConversionTest::testConversion()
     QCOMPARE(e->priority(), kcal.priority());
     QCOMPARE(e->status(), kcal.status());
     QCOMPARE(e->location(), kcal.location());
-    QCOMPARE(e->organizer()->name(), kcal.organizer()->name());
-    QCOMPARE(e->organizer()->email(), kcal.organizer()->email());
+    QCOMPARE(e->organizer().name(), kcal.organizer().name());
+    QCOMPARE(e->organizer().email(), kcal.organizer().email());
     QCOMPARE(e->nonKDECustomProperty("X-KOLAB-URL"), kcal.nonKDECustomProperty("X-KOLAB-URL"));
     //otherwise we'd break the customProperties comparison
     e->removeNonKDECustomProperty("X-KOLAB-URL");

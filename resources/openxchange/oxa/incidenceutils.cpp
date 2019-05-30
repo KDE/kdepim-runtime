@@ -117,7 +117,7 @@ static void parseIncidenceAttribute(const QDomElement &element, const KCalCore::
         }
     } else if (tagName == QLatin1String("created_by")) {
         const User user = Users::self()->lookupUid(OXUtils::readNumber(element.text()));
-        incidence->setOrganizer(KCalCore::Person::Ptr(new KCalCore::Person(user.name(), user.email())));
+        incidence->setOrganizer(KCalCore::Person(user.name(), user.email()));
     } else if (tagName == QLatin1String("participants")) {
         parseMembersAttribute(element, incidence);
     } else if (tagName == QLatin1String("private_flag")) {

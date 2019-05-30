@@ -74,7 +74,6 @@ void TimezoneTest::testFromHardcodedList()
 void TimezoneTest::testKolabObjectWriter()
 {
     KCalCore::Event::Ptr event(new KCalCore::Event());
-    event->setOrganizer(KCalCore::Person::Ptr());
     event->setDtStart(QDateTime(QDate(2012, 11, 11), QTime(1, 1), QTimeZone(QTimeZone::windowsIdToDefaultIanaId("(GMT+01:00) West Central Africa"))));
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
     Kolab::KolabObjectReader reader(msg);

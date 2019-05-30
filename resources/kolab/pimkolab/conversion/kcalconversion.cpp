@@ -654,7 +654,7 @@ void setTodoEvent(KCalCore::Incidence &i, const T &e)
         i.setLocation(fromStdString(e.location())); //TODO detect richtext
     }
     if (e.organizer().isValid()) {
-        i.setOrganizer(KCalCore::Person::Ptr(new KCalCore::Person(fromStdString(e.organizer().name()), fromStdString(e.organizer().email())))); //TODO handle uid too
+        i.setOrganizer(KCalCore::Person(fromStdString(e.organizer().name()), fromStdString(e.organizer().email()))); //TODO handle uid too
     }
     if (!e.url().empty()) {
         i.setNonKDECustomProperty(CUSTOM_KOLAB_URL, fromStdString(e.url()));
@@ -670,7 +670,7 @@ void setTodoEvent(KCalCore::Incidence &i, const T &e)
         {
             KCalCore::Person::List receipents;
             foreach (Kolab::ContactReference c, a.attendees()) {
-                KCalCore::Person::Ptr person = KCalCore::Person::Ptr(new KCalCore::Person(fromStdString(c.name()), fromStdString(c.email())));
+                KCalCore::Person person(fromStdString(c.name()), fromStdString(c.email()));
                 receipents.append(person);
             }
             alarm->setEmailAlarm(fromStdString(a.summary()), fromStdString(a.description()), receipents);
@@ -708,8 +708,8 @@ void getTodoEvent(T &i, const I &e)
 {
     i.setPriority(fromPriority(e.priority()));
     i.setLocation(toStdString(e.location()));
-    if (e.organizer() && !e.organizer()->email().isEmpty()) {
-        i.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(e.organizer()->email()), toStdString(e.organizer()->name()))); //TODO handle uid too
+    if (!e.organizer().email().isEmpty()) {
+        i.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(e.organizer().email()), toStdString(e.organizer().name()))); //TODO handle uid too
     }
     i.setUrl(toStdString(e.nonKDECustomProperty(CUSTOM_KOLAB_URL)));
     i.setRecurrenceID(fromDate(e.recurrenceId(), e.allDay()), false); //TODO THISANDFUTURE
@@ -730,8 +730,8 @@ void getTodoEvent(T &i, const I &e)
         case KCalCore::Alarm::Email:
         {
             std::vector<Kolab::ContactReference> receipents;
-            foreach (const KCalCore::Person::Ptr &p, a->mailAddresses()) {
-                receipents.push_back(Kolab::ContactReference(toStdString(p->email()), toStdString(p->name())));
+            foreach (const KCalCore::Person &p, a->mailAddresses()) {
+                receipents.push_back(Kolab::ContactReference(toStdString(p.email()), toStdString(p.name())));
             }
             alarm = Kolab::Alarm(toStdString(a->mailSubject()), toStdString(a->mailText()), receipents);
             break;

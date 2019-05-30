@@ -289,8 +289,8 @@ void Incidence::saveAlarms(QDomElement &element) const
             e.setAttribute(QStringLiteral("type"), QStringLiteral("email"));
             QDomElement addresses = e.ownerDocument().createElement(QStringLiteral("addresses"));
             e.appendChild(addresses);
-            foreach (const KCalCore::Person::Ptr &person, a->mailAddresses()) {
-                writeString(addresses, QStringLiteral("address"), person->fullName());
+            foreach (const KCalCore::Person &person, a->mailAddresses()) {
+                writeString(addresses, QStringLiteral("address"), person.fullName());
             }
             writeString(e, QStringLiteral("subject"), a->mailSubject());
             writeString(e, QStringLiteral("mail-text"), a->mailText());
@@ -838,8 +838,8 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
         }
     }
 
-    if (incidence->organizer()) {
-        Email org(incidence->organizer()->name(), incidence->organizer()->email());
+    if (!incidence->organizer().isEmpty()) {
+        Email org(incidence->organizer().name(), incidence->organizer().email());
         setOrganizer(org);
     }
 
