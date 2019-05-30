@@ -171,11 +171,11 @@ Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &s
     for (const Kolab::Event &e : events) {
         list.append(Kolab::Conversion::toKCalCore(e));
     }
-    KCalCore::Person::Ptr person(new KCalCore::Person(QStringLiteral("dummyname"), QStringLiteral("dummyemail")));
+    KCalCore::Person person(QStringLiteral("dummyname"), QStringLiteral("dummyemail"));
     return generateFreeBusy(list, Kolab::Conversion::toDate(startDate), Kolab::Conversion::toDate(endDate), person, startDate.isDateOnly());
 }
 
-Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalCore::Person::Ptr &organizer, bool allDay)
+Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalCore::Person &organizer, bool allDay)
 {
     /*
      * TODO the conversion of date-only values to date-time is only necessary because xCal doesn't allow date only. iCalendar doesn't seem to make this restriction so it looks like a bug.
@@ -239,8 +239,8 @@ Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDate
     freebusy.setPeriods(freebusyPeriods);
     freebusy.setUid(createUuid().toStdString());
     freebusy.setTimestamp(Kolab::Conversion::fromDate(QDateTime::currentDateTimeUtc(), false));
-    if (organizer) {
-        freebusy.setOrganizer(ContactReference(Kolab::ContactReference::EmailReference, Kolab::Conversion::toStdString(organizer->email()), Kolab::Conversion::toStdString(organizer->name())));
+    if (!organizer.isEmpty()) {
+        freebusy.setOrganizer(ContactReference(Kolab::ContactReference::EmailReference, Kolab::Conversion::toStdString(organizer.email()), Kolab::Conversion::toStdString(organizer.name())));
     }
 
     return freebusy;
@@ -302,7 +302,7 @@ std::string toIFB(const Kolab::Freebusy &freebusy)
     fb->addPeriods(list);
 
     fb->setUid(QString::fromStdString(freebusy.uid()));
-    fb->setOrganizer(KCalCore::Person::Ptr(new KCalCore::Person(Conversion::fromStdString(freebusy.organizer().name()), Conversion::fromStdString(freebusy.organizer().email()))));
+    fb->setOrganizer(KCalCore::Person(Conversion::fromStdString(freebusy.organizer().name()), Conversion::fromStdString(freebusy.organizer().email())));
     fb->setLastModified(Kolab::Conversion::toDate(freebusy.timestamp()));
 
     KCalCore::ICalFormat format;

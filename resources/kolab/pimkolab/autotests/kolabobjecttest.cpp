@@ -59,7 +59,6 @@ void KolabObjectTest::preserveUnicode()
 void KolabObjectTest::dontCrashWithEmptyOrganizer()
 {
     KCalCore::Event::Ptr event(new KCalCore::Event());
-    event->setOrganizer(KCalCore::Person::Ptr());
     event->setDtStart(QDateTime(QDate(2012, 11, 11), {}));
     event->setAllDay(true);
     Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV2);

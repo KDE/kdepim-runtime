@@ -140,8 +140,8 @@ QByteArray mailAttendees(const KCalCore::IncidenceBase::Ptr &incidence,
         return QByteArray();
     }
 
-    const QString from = incidence->organizer()->fullName();
-    const QString organizerEmail = incidence->organizer()->email();
+    const QString from = incidence->organizer().fullName();
+    const QString organizerEmail = incidence->organizer().email();
 
     QStringList toList;
     QStringList ccList;
@@ -210,7 +210,7 @@ QByteArray mailOrganizer(const KCalCore::IncidenceBase::Ptr &incidence,
 //                                 const KPIMIdentities::Identity &identity,
                          const QString &from, bool bccMe, const QString &attachment, const QString &sub /*, const QString &mailTransport*/)
 {
-    const QString to = incidence->organizer()->fullName();
+    const QString to = incidence->organizer().fullName();
     QString subject = sub;
 
     if (incidence->type() != KCalCore::Incidence::TypeFreeBusy) {
