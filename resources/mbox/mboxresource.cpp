@@ -65,7 +65,6 @@ static quint64 itemOffset(const QString &remoteItemId)
 
 MboxResource::MboxResource(const QString &id)
     : SingleFileResource<Settings>(id)
-    , mMBox(nullptr)
 {
     new SettingsAdaptor(mSettings);
     KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
@@ -113,7 +112,6 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     } else { // No deleted items (yet)
         entryList = mMBox->entries();
     }
-
     mMBox->lock(); // Lock the file so that it doesn't get locked for every
     // readEntryHeaders() call.
 
