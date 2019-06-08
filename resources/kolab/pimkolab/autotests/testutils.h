@@ -134,9 +134,11 @@ void normalizeIncidence(KCalCore::Incidence::Ptr incidence)
 {
     //The UID is not persistent (it's just the internal pointer), therefore we clear it
     //TODO make sure that the UID does really not need to be persistent
-    foreach (KCalCore::Attendee::Ptr attendee, incidence->attendees()) {
+    auto attendees = incidence->attendees();
+    for (auto &attendee : attendees) {
         attendee->setUid(QString());
     }
+    incidence->setAttendees(attendees);
 
     //FIXME even if hasDueDate can differ, it shouldn't because it breaks equality. Check why they differ in the first place.
     if (incidence->type() == KCalCore::IncidenceBase::TypeTodo) {
