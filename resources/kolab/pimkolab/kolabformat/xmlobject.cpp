@@ -283,7 +283,7 @@ std::string XMLObject::writeDistlist(const DistList &distlist, Version version, 
 Note XMLObject::readNote(const std::string &s, Version version)
 {
     if (version == KolabV2) {
-        const KMime::Message::Ptr msg = noteFromKolab(QByteArray(s.c_str(), s.length()), KDateTime());
+        const KMime::Message::Ptr msg = noteFromKolab(QByteArray(s.c_str(), s.length()), QDateTime());
         if (!msg || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Note();

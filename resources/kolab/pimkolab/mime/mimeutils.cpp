@@ -19,7 +19,7 @@
 #include <QUuid>
 #include <QFile>
 #include <qdom.h>
-#include <kdatetime.h>
+#include <QDateTime>
 #include "kolabformat/kolabdefinitions.h"
 
 #include <kolabformat.h>
@@ -144,7 +144,7 @@ KMime::Content *createExplanationPart(bool v3)
 KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const QByteArray &prodid)
 {
     KMime::Message::Ptr message(new KMime::Message);
-    message->date()->setDateTime(KDateTime::currentUtcDateTime().dateTime());
+    message->date()->setDateTime(QDateTime::currentDateTimeUtc());
     KMime::Headers::Generic *h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
     h->fromUnicodeString(xKolabType, "utf-8");
     message->appendHeader(h);

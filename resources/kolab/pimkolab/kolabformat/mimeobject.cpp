@@ -347,7 +347,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     }
     case NoteObject:
     {
-        KMime::Message::Ptr kNote = noteFromKolab(xmlData, KDateTime(msg->date()->dateTime()));
+        KMime::Message::Ptr kNote = noteFromKolab(xmlData, msg->date()->dateTime());
         Kolab::Note note = Kolab::Conversion::fromNote(kNote);
         variant = QVariant::fromValue(note);
         break;

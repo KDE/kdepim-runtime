@@ -227,7 +227,7 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distL
     return message;
 }
 
-KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &creationDate)
+KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const QDateTime &creationDate)
 {
     KolabV2::Note j;
     if (!j.load(QString::fromUtf8(xmlData))) {
@@ -239,7 +239,7 @@ KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &cr
     note.setTitle(j.summary());
     note.setText(j.body());
     note.setFrom(QStringLiteral("kolab@kde4"));
-    note.setCreationDate(creationDate.dateTime());
+    note.setCreationDate(creationDate);
     return note.message();
 }
 

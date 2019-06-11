@@ -34,7 +34,6 @@
 #include <kcontacts/addressee.h>
 #include <kcalcore/incidence.h>
 #include <kcalcore/event.h>
-#include <kdatetime.h>
 #include <kmime/kmime_message.h>
 
 #include <qdom.h>
@@ -89,7 +88,7 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
 KContacts::ContactGroup contactGroupFromKolab(const QByteArray &xmlData);
 
 KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distList, const QString &productId);
-KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const KDateTime &creationDate);
+KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const QDateTime &creationDate);
 
 KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &productId);
 QByteArray noteToKolabXML(const KMime::Message::Ptr &msg);
