@@ -69,7 +69,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
 
     m_accComboBox = new KComboBox(m_accGroupBox);
     accLayout->addWidget(m_accComboBox, 1);
-    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
+    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_addAccButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add-user")), i18n("&Add"), m_accGroupBox);
     accLayout->addWidget(m_addAccButton);
@@ -127,7 +127,7 @@ KGAPI2::AccountPtr GoogleSettingsDialog::currentAccount() const
 
 void GoogleSettingsDialog::reloadAccounts()
 {
-    disconnect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
+    disconnect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_accComboBox->clear();
 
@@ -141,7 +141,7 @@ void GoogleSettingsDialog::reloadAccounts()
         m_accComboBox->setCurrentIndex(index);
     }
 
-    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentIndexChanged), this, &GoogleSettingsDialog::currentAccountChanged);
+    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_removeAccButton->setEnabled(m_accComboBox->count() > 0);
     Q_EMIT currentAccountChanged(m_accComboBox->currentText());

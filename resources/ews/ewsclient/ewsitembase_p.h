@@ -21,7 +21,7 @@
 #define EWSITEMBASE_P_H
 
 #include <QSharedData>
-
+#include <QHash>
 #include "ewsid.h"
 
 class EwsItemBasePrivate : public QSharedData
