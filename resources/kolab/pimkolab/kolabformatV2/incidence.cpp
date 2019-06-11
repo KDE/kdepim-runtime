@@ -33,7 +33,6 @@
 
 #include "incidence.h"
 #include "libkolab-version.h"
-#include "utils/porting.h"
 #include "pimkolab_debug.h"
 
 #include <QList>
@@ -98,7 +97,7 @@ KolabBase::Email Incidence::organizer() const
     return mOrganizer;
 }
 
-void Incidence::setStartDate(const KDateTime &startDate)
+void Incidence::setStartDate(const QDateTime &startDate)
 {
     mStartDate = startDate;
     if (mFloatingStatus == AllDay) {
@@ -109,7 +108,7 @@ void Incidence::setStartDate(const KDateTime &startDate)
 
 void Incidence::setStartDate(const QDate &startDate)
 {
-    mStartDate = KDateTime(startDate);
+    mStartDate = QDateTime(startDate, QTime());
     if (mFloatingStatus == HasTime) {
         qCDebug(PIMKOLAB_LOG) <<"ERROR: No time on start date but time on the event";
     }
@@ -120,14 +119,14 @@ void Incidence::setStartDate(const QString &startDate)
 {
     if (startDate.length() > 10) {
         // This is a date + time
-        setStartDate(stringToKDateTime(startDate));
+        setStartDate(stringToDateTime(startDate));
     } else {
         // This is only a date
         setStartDate(stringToDate(startDate));
     }
 }
 
-KDateTime Incidence::startDate() const
+QDateTime Incidence::startDate() const
 {
     return mStartDate;
 }
@@ -819,7 +818,7 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
         setStartDate(incidence->dtStart().date());
     } else {
         mFloatingStatus = HasTime;
-        setStartDate(Porting::q2k(localToUTC(incidence->dtStart())));
+        setStartDate(localToUTC(incidence->dtStart()));
     }
 
     setSummary(incidence->summary());
@@ -930,10 +929,10 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     incidence->setPriority(priority());
     if (mFloatingStatus == AllDay) {
         // This is an all-day event. Don't timezone move this one
-        incidence->setDtStart(Porting::k2q(startDate()));
+        incidence->setDtStart(startDate());
         incidence->setAllDay(true);
     } else {
-        incidence->setDtStart(utcToLocal(Porting::k2q(startDate())));
+        incidence->setDtStart(utcToLocal(startDate()));
         incidence->setAllDay(false);
     }
 

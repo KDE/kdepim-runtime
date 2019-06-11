@@ -71,10 +71,10 @@ public:
     virtual void setTransparency(KCalCore::Event::Transparency transparency);
     virtual KCalCore::Event::Transparency transparency() const;
 
-    virtual void setEndDate(const KDateTime &date);
+    virtual void setEndDate(const QDateTime &date);
     virtual void setEndDate(const QDate &date);
     virtual void setEndDate(const QString &date);
-    virtual KDateTime endDate() const;
+    virtual QDateTime endDate() const;
 
     // Load the attributes of this class
     bool loadAttribute(QDomElement &) override;
@@ -93,7 +93,7 @@ protected:
     void setFields(const KCalCore::Event::Ptr &);
 
     KCalCore::Event::Transparency mShowTimeAs;
-    KDateTime mEndDate;
+    QDateTime mEndDate;
     bool mHasEndDate;
 };
 }

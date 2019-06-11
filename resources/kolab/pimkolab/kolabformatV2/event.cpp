@@ -32,7 +32,6 @@
 */
 
 #include "event.h"
-#include "utils/porting.h"
 #include "pimkolab_debug.h"
 
 #include <kcalcore/event.h>
@@ -78,7 +77,7 @@ KCalCore::Event::Transparency Event::transparency() const
     return mShowTimeAs;
 }
 
-void Event::setEndDate(const KDateTime &date)
+void Event::setEndDate(const QDateTime &date)
 {
     mEndDate = date;
     mHasEndDate = true;
@@ -90,7 +89,7 @@ void Event::setEndDate(const KDateTime &date)
 
 void Event::setEndDate(const QDate &date)
 {
-    mEndDate = KDateTime(date);
+    mEndDate = QDateTime(date, QTime());
     mHasEndDate = true;
     if (mFloatingStatus == HasTime) {
         qCDebug(PIMKOLAB_LOG) <<"ERROR: No time on end date but time on the event";
@@ -102,14 +101,14 @@ void Event::setEndDate(const QString &endDate)
 {
     if (endDate.length() > 10) {
         // This is a date + time
-        setEndDate(stringToKDateTime(endDate));
+        setEndDate(stringToDateTime(endDate));
     } else {
         // This is only a date
         setEndDate(stringToDate(endDate));
     }
 }
 
-KDateTime Event::endDate() const
+QDateTime Event::endDate() const
 {
     return mEndDate;
 }
@@ -205,7 +204,7 @@ void Event::setFields(const KCalCore::Event::Ptr &event)
             setEndDate(event->dtEnd().date());
         } else {
             mFloatingStatus = HasTime;
-            setEndDate(Porting::q2k(localToUTC(event->dtEnd())));
+            setEndDate(localToUTC(event->dtEnd()));
         }
     } else {
         mHasEndDate = false;
@@ -221,9 +220,9 @@ void Event::saveTo(const KCalCore::Event::Ptr &event)
     if (mHasEndDate) {
         if (mFloatingStatus == AllDay) {
             // This is an all-day event. Don't timezone move this one
-            event->setDtEnd(Porting::k2q(endDate()));
+            event->setDtEnd(endDate());
         } else {
-            event->setDtEnd(utcToLocal(Porting::k2q(endDate())));
+            event->setDtEnd(utcToLocal(endDate()));
         }
     }
     event->setTransparency(transparency());

@@ -32,7 +32,6 @@
 */
 
 #include "task.h"
-#include "utils/porting.h"
 #include "pimkolab_debug.h"
 
 #include <kcalcore/todo.h>
@@ -101,7 +100,7 @@ QString Task::parent() const
     return mParent;
 }
 
-void Task::setDueDate(const KDateTime &date)
+void Task::setDueDate(const QDateTime &date)
 {
     mDueDate = date;
     mHasDueDate = true;
@@ -109,7 +108,7 @@ void Task::setDueDate(const KDateTime &date)
 
 void Task::setDueDate(const QDate &date)
 {
-    mDueDate = KDateTime(date);
+    mDueDate = QDateTime(date, QTime());
     mHasDueDate = true;
     mFloatingStatus = AllDay;
 }
@@ -118,14 +117,14 @@ void Task::setDueDate(const QString &date)
 {
     if (date.length() > 10) {
         // This is a date + time
-        setDueDate(stringToKDateTime(date));
+        setDueDate(stringToDateTime(date));
     } else {
         // This is only a date
         setDueDate(stringToDate(date));
     }
 }
 
-KDateTime Task::dueDate() const
+QDateTime Task::dueDate() const
 {
     return mDueDate;
 }
@@ -145,13 +144,13 @@ bool Task::hasDueDate() const
     return mHasDueDate;
 }
 
-void Task::setCompletedDate(const KDateTime &date)
+void Task::setCompletedDate(const QDateTime &date)
 {
     mCompletedDate = date;
     mHasCompletedDate = true;
 }
 
-KDateTime Task::completedDate() const
+QDateTime Task::completedDate() const
 {
     return mCompletedDate;
 }
@@ -191,7 +190,7 @@ bool Task::loadAttribute(QDomElement &element)
     } else if (tagName == QLatin1String("parent")) {
         setParent(element.text());
     } else if (tagName == QLatin1String("x-completed-date")) {
-        setCompletedDate(stringToKDateTime(element.text()));
+        setCompletedDate(stringToDateTime(element.text()));
     } else if (tagName == QLatin1String("start-date")) {
         setHasStartDate(true);
         setStartDate(element.text());
@@ -313,10 +312,10 @@ void Task::setFields(const KCalCore::Todo::Ptr &task)
         if (task->allDay()) {
             // This is a floating task. Don't timezone move this one
             mFloatingStatus = AllDay;
-            setDueDate(KDateTime(task->dtDue().date()));
+            setDueDate(task->dtDue().date());
         } else {
             mFloatingStatus = HasTime;
-            setDueDate(Porting::q2k(localToUTC(task->dtDue())));
+            setDueDate(localToUTC(task->dtDue()));
         }
     } else {
         mHasDueDate = false;
@@ -329,7 +328,7 @@ void Task::setFields(const KCalCore::Todo::Ptr &task)
     }
 
     if (task->hasCompletedDate() && task->percentComplete() == 100) {
-        setCompletedDate(Porting::q2k(localToUTC(task->completed())));
+        setCompletedDate(localToUTC(task->completed()));
     } else {
         mHasCompletedDate = false;
     }
@@ -344,7 +343,7 @@ void Task::saveTo(const KCalCore::Todo::Ptr &task)
     //PORT KF5 task->setHasStartDate( hasStartDate() );
     //PORT KF5 task->setHasDueDate( hasDueDate() );
     if (hasDueDate()) {
-        task->setDtDue(utcToLocal(Porting::k2q(dueDate())));
+        task->setDtDue(utcToLocal(dueDate()));
     }
 
     if (!parent().isEmpty()) {
@@ -352,6 +351,6 @@ void Task::saveTo(const KCalCore::Todo::Ptr &task)
     }
 
     if (hasCompletedDate() && task->percentComplete() == 100) {
-        task->setCompleted(utcToLocal(Porting::k2q(mCompletedDate)));
+        task->setCompleted(utcToLocal(mCompletedDate));
     }
 }

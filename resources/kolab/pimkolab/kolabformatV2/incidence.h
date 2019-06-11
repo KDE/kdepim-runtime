@@ -94,10 +94,10 @@ public:
     virtual void setOrganizer(const Email &organizer);
     virtual Email organizer() const;
 
-    virtual void setStartDate(const KDateTime &startDate);
+    virtual void setStartDate(const QDateTime &startDate);
     virtual void setStartDate(const QDate &startDate);
     virtual void setStartDate(const QString &startDate);
-    virtual KDateTime startDate() const;
+    virtual QDateTime startDate() const;
 
     virtual void setAlarm(float alarm);
     virtual float alarm() const;
@@ -155,7 +155,7 @@ protected:
     QString mSummary;
     QString mLocation;
     Email mOrganizer;
-    KDateTime mStartDate;
+    QDateTime mStartDate;
     FloatingStatus mFloatingStatus;
     float mAlarm = 0.0;
     bool mHasAlarm;
