@@ -70,11 +70,11 @@ public:
     virtual void setSummary(const QString &summary);
     virtual QString summary() const;
 
-    virtual void setStartDate(const KDateTime &startDate);
-    virtual KDateTime startDate() const;
+    virtual void setStartDate(const QDateTime &startDate);
+    virtual QDateTime startDate() const;
 
-    virtual void setEndDate(const KDateTime &endDate);
-    virtual KDateTime endDate() const;
+    virtual void setEndDate(const QDateTime &endDate);
+    virtual QDateTime endDate() const;
 
     // Load the attributes of this class
     bool loadAttribute(QDomElement &) override;
@@ -95,8 +95,9 @@ protected:
     QString productID() const override;
 
     QString mSummary;
-    KDateTime mStartDate;
-    KDateTime mEndDate;
+    QDateTime mStartDate;
+    QDateTime mEndDate;
+    bool mDateOnly = false;
 };
 }
 

@@ -75,22 +75,22 @@ QString Journal::summary() const
     return mSummary;
 }
 
-void Journal::setStartDate(const KDateTime &startDate)
+void Journal::setStartDate(const QDateTime &startDate)
 {
     mStartDate = startDate;
 }
 
-KDateTime Journal::startDate() const
+QDateTime Journal::startDate() const
 {
     return mStartDate;
 }
 
-void Journal::setEndDate(const KDateTime &endDate)
+void Journal::setEndDate(const QDateTime &endDate)
 {
     mEndDate = endDate;
 }
 
-KDateTime Journal::endDate() const
+QDateTime Journal::endDate() const
 {
     return mEndDate;
 }
@@ -102,7 +102,9 @@ bool Journal::loadAttribute(QDomElement &element)
     if (tagName == QLatin1String("summary")) {
         setSummary(element.text());
     } else if (tagName == QLatin1String("start-date")) {
-        setStartDate(stringToKDateTime(element.text()));
+        const auto t = element.text();
+        setStartDate(stringToDateTime(t));
+        mDateOnly = t.size() <= 10;
     } else {
         // Not handled here
         return KolabBase::loadAttribute(element);
@@ -118,7 +120,11 @@ bool Journal::saveAttributes(QDomElement &element) const
     KolabBase::saveAttributes(element);
 
     writeString(element, QStringLiteral("summary"), summary());
-    writeString(element, QStringLiteral("start-date"), dateTimeToString(startDate()));
+    if (mDateOnly) {
+        writeString(element, QStringLiteral("start-date"), dateToString(startDate().date()));
+    } else {
+        writeString(element, QStringLiteral("start-date"), dateTimeToString(startDate()));
+    }
 
     return true;
 }
@@ -165,8 +171,8 @@ void Journal::saveTo(const KCalCore::Journal::Ptr &journal) const
     KolabBase::saveTo(journal);
 
     journal->setSummary(summary());
-    journal->setDtStart(utcToLocal(Porting::k2q(startDate())));
-    journal->setAllDay(startDate().isDateOnly());
+    journal->setDtStart(utcToLocal(startDate()));
+    journal->setAllDay(mDateOnly);
 }
 
 void Journal::setFields(const KCalCore::Journal::Ptr &journal)
@@ -176,7 +182,7 @@ void Journal::setFields(const KCalCore::Journal::Ptr &journal)
 
     // Set our own fields
     setSummary(journal->summary());
-    setStartDate(Porting::q2k(localToUTC(journal->dtStart())));
+    setStartDate(localToUTC(journal->dtStart()));
 }
 
 QString Journal::productID() const
