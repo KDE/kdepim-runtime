@@ -100,9 +100,11 @@ public:
     virtual int pilotSyncStatus() const;
 
     // String - Date conversion methods
+    static QString dateTimeToString(const QDateTime &time);
     static QString dateTimeToString(const KDateTime &time);
     static QString dateToString(const QDate &date);
-    static KDateTime stringToDateTime(const QString &time);
+    static QDateTime stringToDateTime(const QString &time);
+    static KDateTime stringToKDateTime(const QString &time);
     static QDate stringToDate(const QString &date);
 
     // String - Sensitivity conversion methods

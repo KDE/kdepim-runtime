@@ -120,7 +120,7 @@ void Incidence::setStartDate(const QString &startDate)
 {
     if (startDate.length() > 10) {
         // This is a date + time
-        setStartDate(stringToDateTime(startDate));
+        setStartDate(stringToKDateTime(startDate));
     } else {
         // This is only a date
         setStartDate(stringToDate(startDate));

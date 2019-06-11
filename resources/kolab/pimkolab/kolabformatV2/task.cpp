@@ -118,7 +118,7 @@ void Task::setDueDate(const QString &date)
 {
     if (date.length() > 10) {
         // This is a date + time
-        setDueDate(stringToDateTime(date));
+        setDueDate(stringToKDateTime(date));
     } else {
         // This is only a date
         setDueDate(stringToDate(date));
@@ -191,7 +191,7 @@ bool Task::loadAttribute(QDomElement &element)
     } else if (tagName == QLatin1String("parent")) {
         setParent(element.text());
     } else if (tagName == QLatin1String("x-completed-date")) {
-        setCompletedDate(stringToDateTime(element.text()));
+        setCompletedDate(stringToKDateTime(element.text()));
     } else if (tagName == QLatin1String("start-date")) {
         setHasStartDate(true);
         setStartDate(element.text());

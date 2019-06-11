@@ -110,7 +110,7 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
         creationDate = KDateTime::currentDateTime(KDateTime::Spec(mTimeZone));
         qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time";
     } else {
-        creationDate = stringToDateTime(creationString);
+        creationDate = stringToKDateTime(creationString);
         qCDebug(PIMKOLAB_LOG) <<"Creation date loaded";
     }
     KDateTime modified = KDateTime(addressee->revision(), mTimeZone);
@@ -343,13 +343,13 @@ bool KolabBase::loadAttribute(QDomElement &element)
             return true;
         }
         if (tagName == QLatin1String("creation-date")) {
-            setCreationDate(stringToDateTime(element.text()));
+            setCreationDate(stringToKDateTime(element.text()));
             return true;
         }
         break;
     case 'l':
         if (tagName == QLatin1String("last-modification-date")) {
-            setLastModified(stringToDateTime(element.text()));
+            setLastModified(stringToKDateTime(element.text()));
             return true;
         }
         break;
@@ -431,6 +431,11 @@ QDomDocument KolabBase::domTree()
     return document;
 }
 
+QString KolabBase::dateTimeToString(const QDateTime &time)
+{
+    return time.toString(Qt::ISODate);
+}
+
 QString KolabBase::dateTimeToString(const KDateTime &time)
 {
     return time.toString(KDateTime::ISODate);
@@ -441,7 +446,12 @@ QString KolabBase::dateToString(const QDate &date)
     return date.toString(Qt::ISODate);
 }
 
-KDateTime KolabBase::stringToDateTime(const QString &_date)
+QDateTime KolabBase::stringToDateTime(const QString &time)
+{
+    return QDateTime::fromString(time, Qt::ISODate);
+}
+
+KDateTime KolabBase::stringToKDateTime(const QString &_date)
 {
     const QString date(_date);
     return KDateTime::fromString(date, KDateTime::ISODate);

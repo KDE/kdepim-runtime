@@ -102,7 +102,7 @@ void Event::setEndDate(const QString &endDate)
 {
     if (endDate.length() > 10) {
         // This is a date + time
-        setEndDate(stringToDateTime(endDate));
+        setEndDate(stringToKDateTime(endDate));
     } else {
         // This is only a date
         setEndDate(stringToDate(endDate));

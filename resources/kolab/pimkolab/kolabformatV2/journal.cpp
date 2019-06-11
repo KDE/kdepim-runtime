@@ -102,7 +102,7 @@ bool Journal::loadAttribute(QDomElement &element)
     if (tagName == QLatin1String("summary")) {
         setSummary(element.text());
     } else if (tagName == QLatin1String("start-date")) {
-        setStartDate(stringToDateTime(element.text()));
+        setStartDate(stringToKDateTime(element.text()));
     } else {
         // Not handled here
         return KolabBase::loadAttribute(element);
