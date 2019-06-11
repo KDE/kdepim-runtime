@@ -164,7 +164,11 @@ if (NOT NO_REGENERATE_MIME)
 endif()   
 
 
-install( FILES kdepim-runtime.renamecategories kdepim-runtime.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
+if (${ECM_VERSION} STRGREATER "5.58.0")
+    install(FILES kdepim-runtime.renamecategories kdepim-runtime.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
+else()
+    install(FILES kdepim-runtime.renamecategories kdepim-runtime.categories  DESTINATION ${KDE_INSTALL_CONFDIR})
+endif()
 
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
