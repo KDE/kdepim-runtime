@@ -65,7 +65,7 @@ void KolabBase::setFields(const KCalCore::Incidence::Ptr &incidence)
     setUid(incidence->uid());
     setBody(incidence->description());
     setCategories(incidence->categoriesStr());
-    setCreationDate(localToUTC(Porting::q2k(incidence->created())));
+    setCreationDate(Porting::q2k(localToUTC(incidence->created())));
     setLastModified(Porting::q2k(incidence->lastModified()));
     setSensitivity(static_cast<Sensitivity>(incidence->secrecy()));
     // TODO: Attachments
@@ -76,7 +76,7 @@ void KolabBase::saveTo(const KCalCore::Incidence::Ptr &incidence) const
     incidence->setUid(uid());
     incidence->setDescription(body());
     incidence->setCategories(categories());
-    incidence->setCreated(Porting::k2q(utcToLocal(creationDate())));
+    incidence->setCreated(utcToLocal(Porting::k2q(creationDate())));
     incidence->setLastModified(Porting::k2q(lastModified()));
     switch (sensitivity()) {
     case 1:
@@ -498,14 +498,14 @@ void KolabBase::writeString(QDomElement &element, const QString &tag, const QStr
     }
 }
 
-KDateTime KolabBase::localToUTC(const KDateTime &time) const
+QDateTime KolabBase::localToUTC(const QDateTime &time) const
 {
-    return time.toUtc();
+    return time.toUTC();
 }
 
-KDateTime KolabBase::utcToLocal(const KDateTime &time) const
+QDateTime KolabBase::utcToLocal(const QDateTime &time) const
 {
-    KDateTime dt = time;
-    dt.setTimeSpec(KDateTime::UTC);
+    QDateTime dt = time;
+    dt.setTimeSpec(Qt::UTC);
     return dt;
 }

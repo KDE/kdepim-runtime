@@ -316,7 +316,7 @@ void Task::setFields(const KCalCore::Todo::Ptr &task)
             setDueDate(KDateTime(task->dtDue().date()));
         } else {
             mFloatingStatus = HasTime;
-            setDueDate(localToUTC(Porting::q2k(task->dtDue())));
+            setDueDate(Porting::q2k(localToUTC(task->dtDue())));
         }
     } else {
         mHasDueDate = false;
@@ -329,7 +329,7 @@ void Task::setFields(const KCalCore::Todo::Ptr &task)
     }
 
     if (task->hasCompletedDate() && task->percentComplete() == 100) {
-        setCompletedDate(localToUTC(Porting::q2k(task->completed())));
+        setCompletedDate(Porting::q2k(localToUTC(task->completed())));
     } else {
         mHasCompletedDate = false;
     }
@@ -344,7 +344,7 @@ void Task::saveTo(const KCalCore::Todo::Ptr &task)
     //PORT KF5 task->setHasStartDate( hasStartDate() );
     //PORT KF5 task->setHasDueDate( hasDueDate() );
     if (hasDueDate()) {
-        task->setDtDue(Porting::k2q(utcToLocal(dueDate())));
+        task->setDtDue(utcToLocal(Porting::k2q(dueDate())));
     }
 
     if (!parent().isEmpty()) {
@@ -352,6 +352,6 @@ void Task::saveTo(const KCalCore::Todo::Ptr &task)
     }
 
     if (hasCompletedDate() && task->percentComplete() == 100) {
-        task->setCompleted(Porting::k2q(utcToLocal(mCompletedDate)));
+        task->setCompleted(utcToLocal(Porting::k2q(mCompletedDate)));
     }
 }

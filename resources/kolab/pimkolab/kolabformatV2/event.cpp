@@ -205,7 +205,7 @@ void Event::setFields(const KCalCore::Event::Ptr &event)
             setEndDate(event->dtEnd().date());
         } else {
             mFloatingStatus = HasTime;
-            setEndDate(localToUTC(Porting::q2k(event->dtEnd())));
+            setEndDate(Porting::q2k(localToUTC(event->dtEnd())));
         }
     } else {
         mHasEndDate = false;
@@ -223,7 +223,7 @@ void Event::saveTo(const KCalCore::Event::Ptr &event)
             // This is an all-day event. Don't timezone move this one
             event->setDtEnd(Porting::k2q(endDate()));
         } else {
-            event->setDtEnd(Porting::k2q(utcToLocal(endDate())));
+            event->setDtEnd(utcToLocal(Porting::k2q(endDate())));
         }
     }
     event->setTransparency(transparency());

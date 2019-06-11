@@ -161,8 +161,8 @@ protected:
     // Write a string tag
     static void writeString(QDomElement &, const QString &, const QString &);
 
-    KDateTime localToUTC(const KDateTime &time) const;
-    KDateTime utcToLocal(const KDateTime &time) const;
+    QDateTime localToUTC(const QDateTime &time) const;
+    QDateTime utcToLocal(const QDateTime &time) const;
 
     QString mUid;
     QString mBody;

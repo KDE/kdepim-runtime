@@ -819,7 +819,7 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
         setStartDate(incidence->dtStart().date());
     } else {
         mFloatingStatus = HasTime;
-        setStartDate(localToUTC(Porting::q2k(incidence->dtStart())));
+        setStartDate(Porting::q2k(localToUTC(incidence->dtStart())));
     }
 
     setSummary(incidence->summary());
@@ -933,7 +933,7 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
         incidence->setDtStart(Porting::k2q(startDate()));
         incidence->setAllDay(true);
     } else {
-        incidence->setDtStart(Porting::k2q(utcToLocal(startDate())));
+        incidence->setDtStart(utcToLocal(Porting::k2q(startDate())));
         incidence->setAllDay(false);
     }
 

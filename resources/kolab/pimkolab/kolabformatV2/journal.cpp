@@ -165,7 +165,7 @@ void Journal::saveTo(const KCalCore::Journal::Ptr &journal) const
     KolabBase::saveTo(journal);
 
     journal->setSummary(summary());
-    journal->setDtStart(Porting::k2q(utcToLocal(startDate())));
+    journal->setDtStart(utcToLocal(Porting::k2q(startDate())));
     journal->setAllDay(startDate().isDateOnly());
 }
 
@@ -176,7 +176,7 @@ void Journal::setFields(const KCalCore::Journal::Ptr &journal)
 
     // Set our own fields
     setSummary(journal->summary());
-    setStartDate(localToUTC(Porting::q2k(journal->dtStart())));
+    setStartDate(Porting::q2k(localToUTC(journal->dtStart())));
 }
 
 QString Journal::productID() const
