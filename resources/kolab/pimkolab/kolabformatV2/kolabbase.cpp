@@ -32,25 +32,26 @@
 */
 
 #include "kolabbase.h"
-#include "utils/porting.h"
 #include "pimkolab_debug.h"
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
 #include <kcalcore/incidence.h>
 #include <kcalcore/journal.h>
-#include <KTimeZone>
 
 using namespace KolabV2;
 
 KolabBase::KolabBase(const QString &tz)
     : mCreationDate(QDateTime::currentDateTime())
-    , mLastModified(KDateTime::currentUtcDateTime())
+    , mLastModified(QDateTime::currentDateTimeUtc())
     , mSensitivity(Public)
-    , mTimeZone(KTimeZone(tz))
     , mHasPilotSyncId(false)
     , mHasPilotSyncStatus(false)
 {
+    // unlike the previously used KTimeZone here, QTimeZone defaults to local time zone if tz.isEmpty()
+    // we therefore force it to invalid, which however is unsafe to use (unlike KTimeZone)
+    // therefore all usage of mTimeZone must be preceeded by a validity check
+    mTimeZone = tz.isEmpty() ? QTimeZone() : QTimeZone(tz.toUtf8());
 }
 
 KolabBase::~KolabBase()
@@ -65,8 +66,8 @@ void KolabBase::setFields(const KCalCore::Incidence::Ptr &incidence)
     setUid(incidence->uid());
     setBody(incidence->description());
     setCategories(incidence->categoriesStr());
-    setCreationDate(Porting::q2k(localToUTC(incidence->created())));
-    setLastModified(Porting::q2k(incidence->lastModified()));
+    setCreationDate(localToUTC(incidence->created()));
+    setLastModified(incidence->lastModified());
     setSensitivity(static_cast<Sensitivity>(incidence->secrecy()));
     // TODO: Attachments
 }
@@ -76,8 +77,8 @@ void KolabBase::saveTo(const KCalCore::Incidence::Ptr &incidence) const
     incidence->setUid(uid());
     incidence->setDescription(body());
     incidence->setCategories(categories());
-    incidence->setCreated(utcToLocal(Porting::k2q(creationDate())));
-    incidence->setLastModified(Porting::k2q(lastModified()));
+    incidence->setCreated(utcToLocal(creationDate()));
+    incidence->setLastModified(lastModified());
     switch (sensitivity()) {
     case 1:
         incidence->setSecrecy(KCalCore::Incidence::SecrecyPrivate);
@@ -105,17 +106,20 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
     // Set creation-time and last-modification-time
     const QString creationString = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));
     qCDebug(PIMKOLAB_LOG) <<"Creation time string:" << creationString;
-    KDateTime creationDate;
-    if (creationString.isEmpty()) {
-        creationDate = KDateTime::currentDateTime(KDateTime::Spec(mTimeZone));
-        qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time";
+    QDateTime creationDate;
+    if (creationString.isEmpty() && mTimeZone.isValid()) {
+        creationDate = QDateTime::currentDateTime().toTimeZone(mTimeZone);
+        qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time" << mTimeZone;
     } else {
-        creationDate = stringToKDateTime(creationString);
+        creationDate = stringToDateTime(creationString);
         qCDebug(PIMKOLAB_LOG) <<"Creation date loaded";
     }
-    KDateTime modified = KDateTime(addressee->revision(), mTimeZone);
+    QDateTime modified;
+    if (mTimeZone.isValid()) {
+        modified = addressee->revision().toTimeZone(mTimeZone);
+    }
     if (!modified.isValid()) {
-        modified = KDateTime::currentUtcDateTime();
+        modified = QDateTime::currentDateTimeUtc();
     }
     setLastModified(modified);
     if (modified < creationDate) {
@@ -151,7 +155,9 @@ void KolabBase::saveTo(KContacts::Addressee *addressee) const
     addressee->setUid(uid());
     addressee->setNote(body());
     addressee->setCategories(categories().split(QLatin1Char(','), QString::SkipEmptyParts));
-    addressee->setRevision(lastModified().toZone(mTimeZone).dateTime());
+    if (mTimeZone.isValid()) {
+        addressee->setRevision(lastModified().toTimeZone(mTimeZone));
+    }
     addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"),
                             dateTimeToString(creationDate()));
 
@@ -177,10 +183,13 @@ void KolabBase::setFields(const KContacts::ContactGroup *contactGroup)
     setUid(contactGroup->id());
 
     // Set creation-time and last-modification-time
-    KDateTime creationDate = KDateTime::currentDateTime(KDateTime::Spec(mTimeZone));
+    QDateTime creationDate;
+    if (mTimeZone.isValid()) {
+        creationDate = QDateTime::currentDateTime().toTimeZone(mTimeZone);
+    }
     qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time";
 
-    KDateTime modified = KDateTime::currentUtcDateTime();
+    QDateTime modified = QDateTime::currentDateTimeUtc();
     setLastModified(modified);
     if (modified < creationDate) {
         // It's not possible that the modification date is earlier than creation
@@ -225,22 +234,22 @@ QString KolabBase::categories() const
     return mCategories;
 }
 
-void KolabBase::setCreationDate(const KDateTime &date)
+void KolabBase::setCreationDate(const QDateTime &date)
 {
     mCreationDate = date;
 }
 
-KDateTime KolabBase::creationDate() const
+QDateTime KolabBase::creationDate() const
 {
     return mCreationDate;
 }
 
-void KolabBase::setLastModified(const KDateTime &date)
+void KolabBase::setLastModified(const QDateTime &date)
 {
     mLastModified = date;
 }
 
-KDateTime KolabBase::lastModified() const
+QDateTime KolabBase::lastModified() const
 {
     return mLastModified;
 }
@@ -343,13 +352,13 @@ bool KolabBase::loadAttribute(QDomElement &element)
             return true;
         }
         if (tagName == QLatin1String("creation-date")) {
-            setCreationDate(stringToKDateTime(element.text()));
+            setCreationDate(stringToDateTime(element.text()));
             return true;
         }
         break;
     case 'l':
         if (tagName == QLatin1String("last-modification-date")) {
-            setLastModified(stringToKDateTime(element.text()));
+            setLastModified(stringToDateTime(element.text()));
             return true;
         }
         break;
@@ -384,8 +393,8 @@ bool KolabBase::saveAttributes(QDomElement &element) const
     writeString(element, QStringLiteral("uid"), uid());
     writeString(element, QStringLiteral("body"), body());
     writeString(element, QStringLiteral("categories"), categories());
-    writeString(element, QStringLiteral("creation-date"), dateTimeToString(creationDate().toUtc()));
-    writeString(element, QStringLiteral("last-modification-date"), dateTimeToString(lastModified().toUtc()));
+    writeString(element, QStringLiteral("creation-date"), dateTimeToString(creationDate().toUTC()));
+    writeString(element, QStringLiteral("last-modification-date"), dateTimeToString(lastModified().toUTC()));
     writeString(element, QStringLiteral("sensitivity"), sensitivityToString(sensitivity()));
     if (hasPilotSyncId()) {
         writeString(element, QStringLiteral("pilot-sync-id"), QString::number(pilotSyncId()));

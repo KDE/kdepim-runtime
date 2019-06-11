@@ -20,6 +20,8 @@
 
 #include <contact.h>
 
+#include <ktimezone.h>
+
 #include <QObject>
 #include <QtTest>
 #include <kcalcore/recurrence.h>

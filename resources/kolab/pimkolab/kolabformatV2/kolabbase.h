@@ -37,10 +37,11 @@
 #include <kcalcore/incidence.h>
 
 #include <kdatetime.h>
-#include <ktimezone.h>
 
 #include <QColor>
+#include <QDateTime>
 #include <qdom.h>
+#include <QTimeZone>
 
 namespace KContacts {
 class Addressee;
@@ -82,11 +83,11 @@ public:
     virtual void setCategories(const QString &categories);
     virtual QString categories() const;
 
-    virtual void setCreationDate(const KDateTime &date);
-    virtual KDateTime creationDate() const;
+    virtual void setCreationDate(const QDateTime &date);
+    virtual QDateTime creationDate() const;
 
-    virtual void setLastModified(const KDateTime &date);
-    virtual KDateTime lastModified() const;
+    virtual void setLastModified(const QDateTime &date);
+    virtual QDateTime lastModified() const;
 
     virtual void setSensitivity(Sensitivity sensitivity);
     virtual Sensitivity sensitivity() const;
@@ -169,10 +170,10 @@ protected:
     QString mUid;
     QString mBody;
     QString mCategories;
-    KDateTime mCreationDate;
-    KDateTime mLastModified;
+    QDateTime mCreationDate;
+    QDateTime mLastModified;
     Sensitivity mSensitivity;
-    KTimeZone mTimeZone;
+    QTimeZone mTimeZone;
 
     // KPilot synchronization stuff
     bool mHasPilotSyncId, mHasPilotSyncStatus;
