@@ -20,8 +20,6 @@
 
 #include <contact.h>
 
-#include <ktimezone.h>
-
 #include <QObject>
 #include <QtTest>
 #include <kcalcore/recurrence.h>
@@ -55,16 +53,6 @@ char *toString(const Kolab::cDateTime &dt)
     ba += QByteArray::number(dt.year()) + ", " + QByteArray::number(dt.month())+ ", " + QByteArray::number(dt.day()) + ", ";
     ba += QByteArray::number(dt.hour()) + ", " + QByteArray::number(dt.minute()) + ", " + QByteArray::number(dt.second())+ ", ";
     ba += QByteArray(dt.isUTC() ? QByteArray("UTC") : QByteArray("TZ: "+QByteArray::fromStdString(dt.timezone())));
-    ba += ")";
-    return qstrdup(ba.data());
-}
-
-template<>
-char *toString(const KDateTime &dt)
-{
-    QByteArray ba = "KDateTime(";
-    ba += dt.toString().toAscii();
-    ba += dt.timeZone().name().toAscii();
     ba += ")";
     return qstrdup(ba.data());
 }

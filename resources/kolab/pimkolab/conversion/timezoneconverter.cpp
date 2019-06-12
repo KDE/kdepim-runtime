@@ -16,7 +16,6 @@
  */
 
 #include "timezoneconverter.h"
-#include <ktimezone.h>
 #include <QRegExp>
 
 #include <QTimeZone>

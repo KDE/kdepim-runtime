@@ -34,7 +34,6 @@
 #include "journal.h"
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
-#include "utils/porting.h"
 
 using namespace KolabV2;
 

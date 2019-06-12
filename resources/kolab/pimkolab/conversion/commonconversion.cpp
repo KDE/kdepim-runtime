@@ -18,10 +18,8 @@
 #include "commonconversion.h"
 #include "pimkolab_debug.h"
 #include "timezoneconverter.h"
-#include "utils/porting.h"
 
 #include <iostream>
-#include <KTimeZone>
 #include <QUrl>
 #include <QTimeZone>
 
@@ -72,48 +70,6 @@ QDateTime toDate(const Kolab::cDateTime &dt)
             date.setTimeSpec(Qt::UTC);
         } else {
             date.setTimeZone(getTimeZone(dt.timezone()));
-        }
-    }
-    Q_ASSERT(date.isValid());
-    return date;
-}
-
-cDateTime fromDate(const KDateTime &dt)
-{
-    if (!dt.isValid()) {
-        return cDateTime();
-    }
-    cDateTime date;
-    if (dt.isDateOnly()) { //Date only
-        const QDate &d = dt.date();
-        date.setDate(d.year(), d.month(), d.day());
-    } else {
-        const QDate &d = dt.date();
-        date.setDate(d.year(), d.month(), d.day());
-        const QTime &t = dt.time();
-        date.setTime(t.hour(), t.minute(), t.second());
-        if (dt.timeType() == KDateTime::UTC) { //UTC
-            date.setUTC(true);
-        } else if (dt.timeType() == KDateTime::OffsetFromUTC) {
-            const KDateTime utcDate = dt.toUtc();
-            const QDate &d = utcDate.date();
-            date.setDate(d.year(), d.month(), d.day());
-            const QTime &t = utcDate.time();
-            date.setTime(t.hour(), t.minute(), t.second());
-            date.setUTC(true);
-        } else if (dt.timeType() == KDateTime::TimeZone) { //Timezone
-            //TODO handle local timezone?
-            //Convert non-olson timezones if necessary
-            const QString timezone = TimezoneConverter::normalizeTimezone(dt.timeZone().name());
-            if (!timezone.isEmpty()) {
-                date.setTimezone(toStdString(timezone));
-            } else {
-                qCWarning(PIMKOLAB_LOG) << "invalid timezone: " << dt.timeZone().name() << ", assuming floating time";
-                return date;
-            }
-        } else if (dt.timeType() != KDateTime::ClockTime) {
-            qCCritical(PIMKOLAB_LOG) << "invalid timespec, assuming floating time. Type: " << dt.timeType() << "dt: " << dt.toString();
-            return date;
         }
     }
     Q_ASSERT(date.isValid());

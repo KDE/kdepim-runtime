@@ -33,7 +33,6 @@ set(KOLAB_SRCS
     kolabformat/v2helpers.cpp
     kolabformat/mimeobject.cpp
     mime/mimeutils.cpp
-    utils/porting.cpp
     conversion/kcalconversion.cpp
     conversion/kabcconversion.cpp
     conversion/commonconversion.cpp
@@ -66,7 +65,6 @@ set(KOLAB_LINK_LIBRARIES
     KF5::AkonadiNotes
     KF5::Codecs
     KF5::I18n
-    KF5::KDELibs4Support
     ${Libkolabxml_LIBRARIES}
     Qt5::Core
     Qt5::Xml
