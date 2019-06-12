@@ -35,7 +35,7 @@
 class UpgradeTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
 
     void testIncidence_data();
     void testIncidence();

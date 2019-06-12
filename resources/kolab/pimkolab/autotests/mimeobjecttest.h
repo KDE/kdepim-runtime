@@ -29,7 +29,7 @@ class MIMEObjectTest : public QObject
 {
     Q_OBJECT
 
-private slots:
+private Q_SLOTS:
     void testEvent_data();
     void testEvent();
     void testTodo_data();

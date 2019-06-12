@@ -24,7 +24,7 @@
 class BenchmarkTests : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
 
     void parsingBenchmarkComparison_data();
     void parsingBenchmarkComparison();

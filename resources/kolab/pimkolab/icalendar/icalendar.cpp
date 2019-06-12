@@ -133,13 +133,13 @@ std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, c
         || method == KCalCore::iTIPCancel
         || method == KCalCore::iTIPAdd
         || method == KCalCore::iTIPDeclineCounter) {
-        return Conversion::toStdString(QString(mailAttendees(e, bccMe, messageText)));
+        return Conversion::toStdString(QString::fromUtf8(mailAttendees(e, bccMe, messageText)));
     } else {
         QString subject;
         if (e && method == KCalCore::iTIPCounter) {
             subject = i18n("Counter proposal: %1", e->summary());
         }
-        return Conversion::toStdString(QString(mailOrganizer(e, Conversion::fromStdString(from), bccMe, messageText, subject)));
+        return Conversion::toStdString(QString::fromUtf8(mailOrganizer(e, Conversion::fromStdString(from), bccMe, messageText, subject)));
     }
 }
 
@@ -155,6 +155,6 @@ std::vector< Event > ITipHandler::fromIMip(const std::string &input)
         qCWarning(PIMKOLAB_LOG) << "could not find text/calendar part";
         return std::vector< Event >();
     }
-    return fromITip(Conversion::toStdString(QString(c->decodedContent())));
+    return fromITip(Conversion::toStdString(QString::fromUtf8(c->decodedContent())));
 }
 }

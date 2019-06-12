@@ -22,7 +22,7 @@
 class ICalendarTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
 
 //     void testEventConflict_data();
     void testToICal();

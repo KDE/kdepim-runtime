@@ -62,9 +62,9 @@ static bool compareMimeMessage(const KMime::Message::Ptr &msg, const KMime::Mess
 
         KCOMPARE(part->decodedContent().isEmpty(), false);
 
-        QString content(part->decodedContent());
+        QString content(QString::fromUtf8(part->decodedContent()));
         normalizeMimemessage(content);
-        QString expected(expectedPart->decodedContent());
+        QString expected(QString::fromUtf8(expectedPart->decodedContent()));
         normalizeMimemessage(expected);
 //         showDiff(expected, content);
 
@@ -157,7 +157,7 @@ void FormatTest::testIncidence()
     KMime::Message::Ptr convertedMime = Kolab::KolabObjectWriter::writeIncidence(realIncidence, version);
 
     if (!compareMimeMessage(convertedMime, msg)) {
-        showDiff(msg->encodedContent(), convertedMime->encodedContent());
+        showDiff(QString::fromUtf8(msg->encodedContent()), QString::fromUtf8(convertedMime->encodedContent()));
         QVERIFY(false);
     }
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
@@ -251,7 +251,7 @@ void FormatTest::testContact()
     // fix up the converted addressee for comparisson
     convertedAddressee.setName(realAddressee.name());   // name() apparently is something strange
     if (version == Kolab::KolabV2) { //No creation date in xcal
-        QVERIFY(!convertedAddressee.custom("KOLAB", "CreationDate").isEmpty());
+        QVERIFY(!convertedAddressee.custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate")).isEmpty());
         convertedAddressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));   // that's conversion time !?
     } else {
         normalizeContact(convertedAddressee);
@@ -261,7 +261,7 @@ void FormatTest::testContact()
     QVERIFY(normalizeAddresses(convertedAddressee, realAddressee));     // same here
     QCOMPARE(realAddressee.photo().type(), convertedAddressee.photo().type());
     if (realAddressee != convertedAddressee) {
-        showDiff(normalizeVCardMessage(converter.createVCard(realAddressee)), normalizeVCardMessage(converter.createVCard(convertedAddressee)));
+        showDiff(normalizeVCardMessage(QString::fromUtf8(converter.createVCard(realAddressee))), normalizeVCardMessage(QString::fromUtf8(converter.createVCard(convertedAddressee))));
     }
     QEXPECT_FAIL("v2contactBug238996", "Currently fails due to missing type=pref attribute of preffered email address. Requires fix in KContacts.", Continue);
     QEXPECT_FAIL("v2contactEmails", "Currently fails due to missing type=pref attribute of preffered email address. Requires fix in KContacts.", Continue);
@@ -274,9 +274,9 @@ void FormatTest::testContact()
         const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeContact(realAddressee, version);
 
         if (!compareMimeMessage(convertedMime, msg)) {
-            QString expected = msg->encodedContent();
+            QString expected = QString::fromUtf8(msg->encodedContent());
             normalizeMimemessage(expected);
-            QString converted = convertedMime->encodedContent();
+            QString converted = QString::fromUtf8(convertedMime->encodedContent());
             normalizeMimemessage(converted);
             showDiff(expected, converted);
             QEXPECT_FAIL("v2contactSimple", "The kolab v3 containers don't support postbox, and we therefore loose it in the transformations.", Continue);
@@ -337,7 +337,7 @@ void FormatTest::testDistlist()
         converted.open(QIODevice::WriteOnly);
         KContacts::ContactGroupTool::convertToXml(convertedAddressee, &converted);
 
-        showDiff(expected.buffer(), converted.buffer());
+        showDiff(QString::fromUtf8(expected.buffer()), QString::fromUtf8(converted.buffer()));
     }
     QCOMPARE(realAddressee, convertedAddressee);
 
@@ -345,9 +345,9 @@ void FormatTest::testDistlist()
     const KMime::Message::Ptr &convertedMime = Kolab::KolabObjectWriter::writeDistlist(realAddressee, version);
 
     if (!compareMimeMessage(convertedMime, msg)) {
-        QString expected = msg->encodedContent();
+        QString expected = QString::fromUtf8(msg->encodedContent());
         normalizeMimemessage(expected);
-        QString converted = convertedMime->encodedContent();
+        QString converted = QString::fromUtf8(convertedMime->encodedContent());
         normalizeMimemessage(converted);
         showDiff(expected, converted);
         QVERIFY(false);
@@ -390,9 +390,9 @@ void FormatTest::testNote()
     QVERIFY(ok);
     QVERIFY(realNote.data());
 
-    QString expected = realNote->encodedContent();
+    QString expected = QString::fromUtf8(realNote->encodedContent());
     normalizeMimemessage(expected);
-    QString converted = convertedNote->encodedContent();
+    QString converted = QString::fromUtf8(convertedNote->encodedContent());
     normalizeMimemessage(converted);
     QEXPECT_FAIL("", "Header sorting is off", Continue);
     QCOMPARE(expected, converted);
@@ -403,9 +403,9 @@ void FormatTest::testNote()
     QVERIFY(convertedMime.data());
     QVERIFY(msg.data());
 
-    QString expected2 = msg->encodedContent();
+    QString expected2 = QString::fromUtf8(msg->encodedContent());
     normalizeMimemessage(expected2);
-    QString converted2 = convertedMime->encodedContent();
+    QString converted2 = QString::fromUtf8(convertedMime->encodedContent());
     normalizeMimemessage(converted2);
     QEXPECT_FAIL("", "Header sorting is off", Continue);
     QCOMPARE(expected2, converted2);

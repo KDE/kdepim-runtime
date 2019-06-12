@@ -22,7 +22,7 @@
 class KolabObjectTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void preserveLatin1();
     void preserveUnicode();
     void dontCrashWithEmptyOrganizer();

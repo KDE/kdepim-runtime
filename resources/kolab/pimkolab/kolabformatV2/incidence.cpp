@@ -38,7 +38,6 @@
 #include <QList>
 
 #include <kcalcore/journal.h>
-#include <kurl.h>
 
 #include <QBitArray>
 
@@ -605,7 +604,7 @@ bool Incidence::saveAttributes(QDomElement &element) const
 void Incidence::saveCustomAttributes(QDomElement &element) const
 {
     foreach (const Custom &custom, mCustomList) {
-        QString key(custom.key);
+        QString key(QString::fromUtf8(custom.key));
         Q_ASSERT(!key.isEmpty());
         if (key.startsWith(QLatin1String("X-KDE-KolabUnhandled-"))) {
             key = key.mid(strlen("X-KDE-KolabUnhandled-"));
@@ -728,7 +727,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
             QBitArray arr = recur->days();
             for (int idx = 0; idx < 7; ++idx) {
                 if (arr.testBit(idx)) {
-                    mRecurrence.days.append(s_weekDayName[idx]);
+                    mRecurrence.days.append(QString::fromUtf8(s_weekDayName[idx]));
                 }
             }
         }
@@ -742,7 +741,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
             KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
             // TODO: Handle multiple days in the same week
             mRecurrence.dayNumber = QString::number(monthPos.pos());
-            mRecurrence.days.append(s_weekDayName[ monthPos.day()-1 ]);
+            mRecurrence.days.append(QString::fromUtf8(s_weekDayName[ monthPos.day()-1 ]));
             // Not (properly) handled(?): monthPos.negative (nth days before end of month)
         }
         break;
@@ -767,7 +766,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
         mRecurrence.dayNumber = QString::number(day);
         QList<int> months = recur->yearMonths();
         if (!months.isEmpty()) {
-            mRecurrence.month = s_monthName[ months.first() - 1 ]; // #### Kolab XML limitation: only one month specified
+            mRecurrence.month = QString::fromUtf8(s_monthName[ months.first() - 1 ]); // #### Kolab XML limitation: only one month specified
         }
         break;
     }
@@ -781,14 +780,14 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
         mRecurrence.type = QStringLiteral("weekday");
         QList<int> months = recur->yearMonths();
         if (!months.isEmpty()) {
-            mRecurrence.month = s_monthName[ months.first() - 1 ]; // #### Kolab XML limitation: only one month specified
+            mRecurrence.month = QString::fromUtf8(s_monthName[ months.first() - 1 ]); // #### Kolab XML limitation: only one month specified
         }
         QList<KCalCore::RecurrenceRule::WDayPos> monthPositions = recur->yearPositions();
         if (!monthPositions.isEmpty()) {
             KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
             // TODO: Handle multiple days in the same week
             mRecurrence.dayNumber = QString::number(monthPos.pos());
-            mRecurrence.days.append(s_weekDayName[ monthPos.day()-1 ]);
+            mRecurrence.days.append(QString::fromUtf8(s_weekDayName[ monthPos.day()-1 ]));
 
             //mRecurrence.dayNumber = QString::number( *recur->yearNums().getFirst() );
             // Not handled: monthPos.negative (nth days before end of month)
@@ -914,7 +913,7 @@ static QBitArray daysListToBitArray(const QStringList &days)
     arr.fill(false);
     foreach (const QString &day, days) {
         for (int i = 0; i < 7; ++i) {
-            if (day == s_weekDayName[i]) {
+            if (day == QLatin1String(s_weekDayName[i])) {
                 arr.setBit(i, true);
             }
         }
@@ -1003,7 +1002,7 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
             if (mRecurrence.type == QLatin1String("monthday")) {
                 recur->addYearlyDate(mRecurrence.dayNumber.toInt());
                 for (int i = 0; i < 12; ++i) {
-                    if (s_monthName[ i ] == mRecurrence.month) {
+                    if (QLatin1String(s_monthName[ i ]) == mRecurrence.month) {
                         recur->addYearlyMonth(i+1);
                     }
                 }
@@ -1011,7 +1010,7 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
                 recur->addYearlyDay(mRecurrence.dayNumber.toInt());
             } else if (mRecurrence.type == QLatin1String("weekday")) {
                 for (int i = 0; i < 12; ++i) {
-                    if (s_monthName[ i ] == mRecurrence.month) {
+                    if (QLatin1String(s_monthName[ i ]) == mRecurrence.month) {
                         recur->addYearlyMonth(i+1);
                     }
                 }
@@ -1047,7 +1046,7 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
 
 QString Incidence::productID() const
 {
-    return QStringLiteral("%1, Kolab resource").arg(LIBKOLAB_LIB_VERSION_STRING);
+    return QStringLiteral("%1, Kolab resource").arg(QString::fromUtf8(LIBKOLAB_LIB_VERSION_STRING));
 }
 
 // Unhandled KCalCore::Incidence fields:

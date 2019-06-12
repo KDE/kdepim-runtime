@@ -73,14 +73,14 @@ template<>
 char *toString(const KCalCore::Attendee &at)
 {
     QByteArray ba = "Attendee(";
-    ba += at.name().toAscii() + ", ";
-    ba += at.email().toAscii() + ", ";
+    ba += at.name().toLatin1() + ", ";
+    ba += at.email().toLatin1() + ", ";
     ba += QByteArray::number(at.role()) + ", ";
     ba += QByteArray::number(at.status()) + ", ";
     ba += QByteArray::number(at.RSVP()) + ", ";
-    ba += at.delegate().toAscii() + ", ";
-    ba += at.delegator().toAscii() + ", ";
-    ba += at.uid().toAscii() + ", ";
+    ba += at.delegate().toLatin1() + ", ";
+    ba += at.delegator().toLatin1() + ", ";
+    ba += at.uid().toLatin1() + ", ";
     ba += ")";
     return qstrdup(ba.data());
 }

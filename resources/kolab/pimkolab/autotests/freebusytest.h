@@ -22,7 +22,7 @@
 class FreebusyTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
 
     void testFB_data();
     void testFB();

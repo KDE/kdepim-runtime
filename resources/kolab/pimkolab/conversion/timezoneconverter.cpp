@@ -28,7 +28,7 @@ QString TimezoneConverter::normalizeTimezone(const QString &tz)
     }
     auto normalizedId = QTimeZone::windowsIdToDefaultIanaId(tz.toLatin1());
     if (!normalizedId.isEmpty()) {
-        return normalizedId;
+        return QString::fromUtf8(normalizedId);
     }
     //We're dealing with an invalid or unknown timezone, try to parse it
     QString guessedTimezone = fromCityName(tz);
@@ -53,9 +53,9 @@ QString TimezoneConverter::fromCityName(const QString &tz)
     const auto zones = QTimeZone::availableTimeZoneIds();
     QHash<QString, QString> countryMap;
     for (const auto &zone : zones) {
-        const QString cityName = zone.split('/').last();
+        const QString cityName = QString::fromUtf8(zone.split('/').last());
         Q_ASSERT(!countryMap.contains(cityName));
-        countryMap.insert(cityName, zone);
+        countryMap.insert(cityName, QString::fromUtf8(zone));
     }
 
     QRegExp locationFinder(QLatin1String("\\b([a-zA-Z])+\\b"), Qt::CaseSensitive, QRegExp::RegExp2);
@@ -206,8 +206,8 @@ QString TimezoneConverter::fromHardcodedList(const QString &tz)
         const WindowsTimezone &windowsTimezone = windowsTimezones[i];
         const QByteArray specifier(windowsTimezone.timezoneSpecifier);
         const QByteArray windowsName(windowsTimezone.name);
-        if ((!specifier.isEmpty() && tz.contains(specifier))
-            || (!windowsName.isEmpty() && tz.contains(windowsName))) {
+        if ((!specifier.isEmpty() && tz.contains(QString::fromUtf8(specifier)))
+            || (!windowsName.isEmpty() && tz.contains(QString::fromUtf8(windowsName)))) {
             //TODO find the olson timezone matching the local timezone if we have multiple to map to
             return QString::fromLatin1(windowsTimezone.olson[0]);
         }

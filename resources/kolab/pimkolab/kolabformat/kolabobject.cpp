@@ -37,6 +37,8 @@
 #include <kolabformat/mimeobject.h>
 #include <kolabformat.h>
 
+#include <QUrlQuery>
+
 namespace Kolab {
 static inline QString eventKolabType()
 {
@@ -151,13 +153,14 @@ RelationMember parseMemberUrl(const QString &string)
     }
     RelationMember member;
     if (!isShared) {
-        member.user = path.takeFirst();
+        member.user = QString::fromUtf8(path.takeFirst());
     }
     member.uid = path.takeLast().toLong();
     member.mailbox = path;
-    member.messageId = ownUrlDecode(url.encodedQueryItemValue("message-id"));
-    member.subject = ownUrlDecode(url.encodedQueryItemValue("subject"));
-    member.date = ownUrlDecode(url.encodedQueryItemValue("date"));
+    QUrlQuery query(url);
+    member.messageId = ownUrlDecode(query.queryItemValue(QStringLiteral("message-id"), QUrl::FullyEncoded).toUtf8());
+    member.subject = ownUrlDecode(query.queryItemValue(QStringLiteral("subject"), QUrl::FullyEncoded).toUtf8());
+    member.date = ownUrlDecode(query.queryItemValue(QStringLiteral("date"), QUrl::FullyEncoded).toUtf8());
     // qCDebug(PIMKOLAB_LOG) << member.uid << member.mailbox;
     return member;
 }
@@ -188,16 +191,16 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
         path << "shared";
     }
     Q_FOREACH (const QByteArray &mb, member.mailbox) {
-        path << QUrl::toPercentEncoding(mb);
+        path << QUrl::toPercentEncoding(QString::fromUtf8(mb));
     }
     path << QByteArray::number(member.uid);
-    url.setEncodedPath('/' + join(path, "/"));
+    url.setPath(QString::fromUtf8('/' + join(path, "/")), QUrl::TolerantMode);
 
-    QList<QPair<QByteArray, QByteArray> > queryItems;
-    queryItems.append(qMakePair(QStringLiteral("message-id").toLatin1(), QUrl::toPercentEncoding(member.messageId)));
-    queryItems.append(qMakePair(QStringLiteral("subject").toLatin1(), QUrl::toPercentEncoding(member.subject)));
-    queryItems.append(qMakePair(QStringLiteral("date").toLatin1(), QUrl::toPercentEncoding(member.date)));
-    url.setEncodedQueryItems(queryItems);
+    QUrlQuery query;
+    query.addQueryItem(QStringLiteral("message-id"), member.messageId);
+    query.addQueryItem(QStringLiteral("subject"), member.subject);
+    query.addQueryItem(QStringLiteral("date"), member.date);
+    url.setQuery(query);
 
     return QString::fromLatin1(url.toEncoded());
 }

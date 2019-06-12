@@ -23,7 +23,7 @@
 class DebugStreamTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     void testDebugstream();
     void testDebugNotLogged();
     void testHasError();

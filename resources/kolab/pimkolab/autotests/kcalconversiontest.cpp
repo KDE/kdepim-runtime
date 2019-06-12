@@ -199,7 +199,7 @@ void KCalConversionTest::testConversion_data()
         kcal.setNonKDECustomProperty("X-KOLAB-key1", QStringLiteral("value1"));
         kcal.setNonKDECustomProperty("X-KOLAB-key2", QStringLiteral("value2"));
         kcal.setCustomProperty("SOMEOTHERAPP", "key2", QStringLiteral("value2"));
-        Q_ASSERT(kcal.nonKDECustomProperty("X-KOLAB-key1") == "value1");
+        Q_ASSERT(kcal.nonKDECustomProperty("X-KOLAB-key1") == QLatin1String("value1"));
 
         Kolab::Event kolab;
         kolab.setUid("uid");

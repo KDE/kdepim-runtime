@@ -75,7 +75,7 @@ bool Event::fromMime(const std::string &input)
 
 std::string Event::toMime() const
 {
-    return std::string(QString(KolabObjectWriter::writeEvent(Kolab::Conversion::toKCalCore(*this))->encodedContent()).toUtf8().constData());
+    return std::string(KolabObjectWriter::writeEvent(Kolab::Conversion::toKCalCore(*this))->encodedContent().constData());
 }
 
 bool Event::fromICal(const std::string &input)

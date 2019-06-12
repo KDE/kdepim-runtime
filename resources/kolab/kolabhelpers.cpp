@@ -458,7 +458,7 @@ QColor KolabHelpers::getFolderColor(const QMap<QByteArray, QByteArray> &annotati
 void KolabHelpers::setFolderColor(QMap<QByteArray, QByteArray> &annotations, const QColor &color)
 {
     // kolab saves the color without a "#", so we need to delete the prefix "#" if we save it to the annotations
-    annotations["/shared" KOLAB_COLOR_ANNOTATION] = color.name().toAscii().remove(0, 1);
+    annotations["/shared" KOLAB_COLOR_ANNOTATION] = color.name().toLatin1().remove(0, 1);
 }
 
 QString KolabHelpers::getIcon(Kolab::FolderType type)

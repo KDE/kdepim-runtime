@@ -170,7 +170,7 @@ void UpgradeTest::testContact()
 
     KContacts::VCardConverter converter;
     if (v2Addressee != v3result) {
-        showDiff(converter.createVCard(v2Addressee), converter.createVCard(v3result));
+        showDiff(QString::fromUtf8(converter.createVCard(v2Addressee)), QString::fromUtf8(converter.createVCard(v3result)));
         QVERIFY(false);
     }
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);

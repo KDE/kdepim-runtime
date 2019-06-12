@@ -49,7 +49,7 @@ void V2Test::testWriteDistlistUID()
 
     Kolab::XMLObject xo;
     const std::string xml = xo.writeDistlist(distlist, Kolab::KolabV2);
-    QVERIFY(QString::fromStdString(xml).contains("memberuid"));
+    QVERIFY(QString::fromStdString(xml).contains(QLatin1String("memberuid")));
     QVERIFY(!Kolab::ErrorHandler::errorOccured());
 }
 

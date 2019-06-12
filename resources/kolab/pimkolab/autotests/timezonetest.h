@@ -22,7 +22,7 @@
 class TimezoneTest : public QObject
 {
     Q_OBJECT
-private slots:
+private Q_SLOTS:
     /**
      * If this unittest fails, many others will follow.
      */

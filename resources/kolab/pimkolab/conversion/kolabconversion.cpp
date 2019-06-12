@@ -61,7 +61,7 @@ Note fromNote(const KMime::Message::Ptr &m)
         if (a.url().isValid()) {
             attachment.setUri(toStdString(a.url().toString()), toStdString(a.mimetype()));
         } else {
-            attachment.setData(toStdString(QString(a.data())), toStdString(a.mimetype()));
+            attachment.setData(toStdString(QString::fromUtf8(a.data())), toStdString(a.mimetype()));
         }
         attachment.setLabel(toStdString(a.label()));
         attachments.push_back(attachment);

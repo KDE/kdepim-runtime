@@ -26,9 +26,9 @@ void DebugStreamTest::testDebugstream()
     Error() << "test1";
     Error() << "test2" << "bla" << 3 << QMap<QString, int>();
     QCOMPARE(Kolab::ErrorHandler::instance().getErrors().size(), 2);
-    QVERIFY(Kolab::ErrorHandler::instance().getErrors().first().message.contains("test1"));
+    QVERIFY(Kolab::ErrorHandler::instance().getErrors().first().message.contains(QLatin1String("test1")));
     QCOMPARE(Kolab::ErrorHandler::instance().getErrors().first().severity, Kolab::ErrorHandler::Error);
-    QVERIFY(Kolab::ErrorHandler::instance().getErrors().last().message.contains("bla"));
+    QVERIFY(Kolab::ErrorHandler::instance().getErrors().last().message.contains(QLatin1String("bla")));
 }
 
 void DebugStreamTest::testDebugNotLogged()
