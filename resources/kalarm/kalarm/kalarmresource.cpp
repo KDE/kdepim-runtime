@@ -70,9 +70,20 @@ KAlarmResource::~KAlarmResource()
 void KAlarmResource::retrieveCollections()
 {
     qCDebug(KALARMRESOURCE_LOG) << "retrieveCollections";
+    mSettings->load();
     mSupportedMimetypes = mSettings->alarmTypes();
-    ICalResourceBase::retrieveCollections();
-    fetchCollection(SLOT(collectionFetchResult(KJob*)));
+    if(mSettings->path().isEmpty()) {
+        // Don't configure the collection when no calendar file is defined.
+	// Otherwise, multiple collections may be created for the resource.
+        collectionsRetrieved({});
+    } else {
+        qCDebug(KALARMRESOURCE_LOG) << "retrieveCollections:" << mSettings->displayName() << mSettings->path();
+        if (!mSettings->displayName().isEmpty()) {
+            setName(mSettings->displayName());
+        }
+        ICalResourceBase::retrieveCollections();
+        fetchCollection(SLOT(collectionFetchResult(KJob*)));
+    }
 }
 
 /******************************************************************************
@@ -93,6 +104,9 @@ void KAlarmResource::collectionFetchResult(KJob *j)
         if (collections.isEmpty()) {
             qCDebug(KALARMRESOURCE_LOG) << "collectionFetchResult: resource's collection not found";
         } else {
+            if (collections.count() > 1) {
+                qCCritical(KALARMRESOURCE_LOG) << "Error! Resource contains multiple collections!" << identifier();
+            }
             // Check whether calendar file format needs to be updated
             const Collection &c(collections[0]);
             qCDebug(KALARMRESOURCE_LOG) << "collectionFetchResult: Fetched collection" << c.id();
@@ -410,6 +424,7 @@ void KAlarmResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArra
 */
 void KAlarmResource::collectionChanged(const Akonadi::Collection &collection)
 {
+    qCDebug(KALARMRESOURCE_LOG) << "collectionChanged:" << identifier();
     ICalResourceBase::collectionChanged(collection);
 
     mFetchedAttributes = true;
