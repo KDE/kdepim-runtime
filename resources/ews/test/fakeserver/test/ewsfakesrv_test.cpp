@@ -794,7 +794,6 @@ void UtEwsFakeSrvTest::badAuthentication()
 
 void UtEwsFakeSrvTest::xqueryResultsInCallback()
 {
-    bool callbackOk = false;
     const FakeEwsServer::DialogEntry::List dialog = {
         {
             QStringLiteral("if (//test1/a = <a />) then (<b>test</b>) else ()"),
