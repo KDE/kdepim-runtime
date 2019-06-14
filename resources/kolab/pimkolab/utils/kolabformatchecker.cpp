@@ -16,7 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <boost/program_options.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -26,7 +25,6 @@
 #include "kolabformat/errorhandler.h"
 #include "kolabformat/kolabobject.h"
 #include "pimkolab_debug.h"
-namespace po = boost::program_options;
 using namespace std;
 
 KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
@@ -46,30 +44,11 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
 
 int main(int argc, char *argv[])
 {
-    // Declare the supported options.
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help", "produce help message")
-        ("input-file", po::value<std::vector<std::string> >(), "input files")
-    ;
-
-    po::positional_options_description p;
-    p.add("input-file", -1);
-
-    po::variables_map vm;
-    po::store(po::command_line_parser(argc, argv).
-              options(desc).positional(p).run(), vm);
-    po::notify(vm);
-
-    if (vm.count("help")) {
-        cout << desc << "\n";
-        return 1;
-    }
-
     vector<string> inputFiles;
-    if (vm.count("input-file")) {
-        inputFiles = vm["input-file"].as< vector<string> >();
-    } else {
+    for (int i = 1; i < argc; ++i) {
+        inputFiles.push_back(argv[i]);
+    }
+    if (inputFiles.empty()) {
         cout << "Specify input-file\n";
         return -1;
     }

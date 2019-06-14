@@ -27,10 +27,12 @@
 #include "kolabformat/v2helpers.h"
 #include "mime/mimeutils.h"
 #include "libkolab-version.h"
+#include "pimkolab_debug.h"
+
 #include <QString>
 #include <KRandom>
-#include <boost/algorithm/string/predicate.hpp>
-#include "pimkolab_debug.h"
+#include <cstring>
+
 Q_DECLARE_METATYPE(Kolab::Event)
 Q_DECLARE_METATYPE(Kolab::Todo)
 Q_DECLARE_METATYPE(Kolab::Journal)
@@ -135,7 +137,7 @@ static Kolab::ObjectType getObjectType(const std::string &type)
         return NoteObject;
     } else if (type == freebusyKolabType()) {
         return FreebusyObject;
-    } else if (boost::contains(type, dictKolabType())) { //Previous versions appended the language to the type
+    } else if (strstr(type.c_str(), KOLAB_TYPE_DICT)) { //Previous versions appended the language to the type
         return DictionaryConfigurationObject;
     } else if (type == relationKolabType()) {
         return RelationConfigurationObject;

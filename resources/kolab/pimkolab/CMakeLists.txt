@@ -12,10 +12,7 @@ if (Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
 
-find_package(Boost REQUIRED)
-
 include_directories(
-    ${Boost_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/kolabformatV2
     ${Libkolabxml_INCLUDES}
     ./

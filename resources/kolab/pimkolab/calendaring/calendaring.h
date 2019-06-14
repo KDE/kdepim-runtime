@@ -22,8 +22,8 @@
 
 #include <kcalcore/event.h>
 #include <kcalcore/memorycalendar.h>
-#include <boost/scoped_ptr.hpp>
 #include <kolabevent.h>
+#include <memory>
 
 namespace Kolab {
 namespace Calendaring {
@@ -73,7 +73,7 @@ public:
 private:
     Calendar(const Calendar &);
     void operator=(const Calendar &);
-    boost::scoped_ptr<KCalCore::MemoryCalendar> mCalendar;
+    std::unique_ptr<KCalCore::MemoryCalendar> mCalendar;
 };
 }     //Namespace
 } //Namespace
