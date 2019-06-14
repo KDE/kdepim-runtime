@@ -74,7 +74,7 @@ void KAlarmResource::retrieveCollections()
     mSupportedMimetypes = mSettings->alarmTypes();
     if(mSettings->path().isEmpty()) {
         // Don't configure the collection when no calendar file is defined.
-	// Otherwise, multiple collections may be created for the resource.
+        // Otherwise, multiple collections may be created for the resource.
         collectionsRetrieved({});
     } else {
         qCDebug(KALARMRESOURCE_LOG) << "retrieveCollections:" << mSettings->displayName() << mSettings->path();
@@ -107,6 +107,7 @@ void KAlarmResource::collectionFetchResult(KJob *j)
             if (collections.count() > 1) {
                 qCCritical(KALARMRESOURCE_LOG) << "Error! Resource contains multiple collections!" << identifier();
             }
+
             // Check whether calendar file format needs to be updated
             const Collection &c(collections[0]);
             qCDebug(KALARMRESOURCE_LOG) << "collectionFetchResult: Fetched collection" << c.id();
@@ -122,6 +123,13 @@ void KAlarmResource::collectionFetchResult(KJob *j)
                 mSettings->save();
                 synchronize();   // tell the server to use the new config
             }
+
+            // Read the file if it already exists. If it's a new file, this will
+            // trigger it to be written later.
+            if (!mHaveReadFile) {
+                readFile();
+            }
+
             checkFileCompatibility(c, true);
         }
     }
