@@ -199,7 +199,7 @@ void MaildirTest::testMaildirCreation()
     QString p(QStringLiteral("CREATETEST"));
     QString tmpPath(QDir::tempPath() + QLatin1Char('/') +  p);
     QDir().mkpath(tmpPath);
-    std::auto_ptr<QTemporaryDir> temp(new QTemporaryDir(tmpPath));
+    std::unique_ptr<QTemporaryDir> temp(new QTemporaryDir(tmpPath));
     Maildir d(temp->path() + p);
     QVERIFY(!d.isValid(false));
     d.create();
