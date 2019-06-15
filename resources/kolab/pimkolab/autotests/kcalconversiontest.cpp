@@ -43,11 +43,11 @@ void compareAttendeesVectors(const KCalCore::Attendee::List &list, const KCalCor
 {
     QCOMPARE(list.size(), other.size());
     for (int i = 0; i < list.size(); i++) {
-        KCalCore::Attendee::Ptr at1 = list.at(i).constCast<KCalCore::Attendee>();
-        at1->setUid(QString());
-        KCalCore::Attendee::Ptr at2 = other.at(i).constCast<KCalCore::Attendee>();
-        at2->setUid(QString());
-        QCOMPARE(*at1, *at2);
+        KCalCore::Attendee at1 = list.at(i);
+        at1.setUid(QString());
+        KCalCore::Attendee at2 = other.at(i);
+        at2.setUid(QString());
+        QCOMPARE(at1, at2);
     }
 }
 
@@ -183,9 +183,9 @@ void KCalConversionTest::testConversion_data()
         kcal.setOrganizer(KCalCore::Person(QStringLiteral("organizer"), QStringLiteral("organizer@email")));
         //Url
         kcal.setNonKDECustomProperty("X-KOLAB-URL", QStringLiteral("http://test.org"));
-        KCalCore::Attendee::Ptr att(new KCalCore::Attendee(QStringLiteral("attendee"), QStringLiteral("attendee@email"), false, KCalCore::Attendee::NeedsAction, KCalCore::Attendee::ReqParticipant));
-        att->setDelegate(QStringLiteral("mailto:delegatee<delegatee@email>"));
-        att->setDelegator(QStringLiteral("mailto:delegator<delegator@email>"));
+        KCalCore::Attendee att(QStringLiteral("attendee"), QStringLiteral("attendee@email"), false, KCalCore::Attendee::NeedsAction, KCalCore::Attendee::ReqParticipant);
+        att.setDelegate(QStringLiteral("mailto:delegatee<delegatee@email>"));
+        att.setDelegator(QStringLiteral("mailto:delegator<delegator@email>"));
         kcal.addAttendee(att);
         kcal.addAttachment(KCalCore::Attachment::Ptr(new KCalCore::Attachment(QStringLiteral("uri"), QStringLiteral("mimetype/mime"))));
         KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&kcal));

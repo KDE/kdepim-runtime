@@ -843,19 +843,19 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
 
     // Attendees:
     const KCalCore::Attendee::List attendees = incidence->attendees();
-    foreach (const KCalCore::Attendee::Ptr &kcalAttendee, attendees) {
+    foreach (const KCalCore::Attendee &kcalAttendee, attendees) {
         Attendee attendee;
 
-        attendee.displayName = kcalAttendee->name();
-        attendee.smtpAddress = kcalAttendee->email();
-        attendee.status = attendeeStatusToString(kcalAttendee->status());
-        attendee.requestResponse = kcalAttendee->RSVP();
+        attendee.displayName = kcalAttendee.name();
+        attendee.smtpAddress = kcalAttendee.email();
+        attendee.status = attendeeStatusToString(kcalAttendee.status());
+        attendee.requestResponse = kcalAttendee.RSVP();
         // TODO: KCalCore::Attendee::mFlag is not accessible
         // attendee.invitationSent = kcalAttendee->mFlag;
         // DF: Hmm? mFlag is set to true and never used at all.... Did you mean another field?
-        attendee.role = attendeeRoleToString(kcalAttendee->role());
-        attendee.delegate = kcalAttendee->delegate();
-        attendee.delegator = kcalAttendee->delegator();
+        attendee.role = attendeeRoleToString(kcalAttendee.role());
+        attendee.delegate = kcalAttendee.delegate();
+        attendee.delegator = kcalAttendee.delegator();
 
         addAttendee(attendee);
     }
@@ -961,12 +961,12 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     foreach (const Attendee &attendee, mAttendees) {
         KCalCore::Attendee::PartStat status = attendeeStringToStatus(attendee.status);
         KCalCore::Attendee::Role role = attendeeStringToRole(attendee.role);
-        KCalCore::Attendee::Ptr a(new KCalCore::Attendee(attendee.displayName,
+        KCalCore::Attendee a(attendee.displayName,
                                                          attendee.smtpAddress,
                                                          attendee.requestResponse,
-                                                         status, role));
-        a->setDelegate(attendee.delegate);
-        a->setDelegator(attendee.delegator);
+                                                         status, role);
+        a.setDelegate(attendee.delegate);
+        a.setDelegator(attendee.delegator);
         incidence->addAttendee(a);
     }
 

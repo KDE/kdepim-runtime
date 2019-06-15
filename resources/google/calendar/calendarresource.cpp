@@ -775,7 +775,7 @@ void CalendarResource::slotRetrieveFreeBusyJobFinished(KGAPI2::Job *job)
     KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy);
     fb->setUid(QStringLiteral("%1%2@google.com").arg(QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMddTHHmmssZ"))));
     fb->setOrganizer(account()->accountName());
-    fb->addAttendee(KCalCore::Attendee::Ptr(new KCalCore::Attendee(QString(), queryJob->id())));
+    fb->addAttendee(KCalCore::Attendee(QString(), queryJob->id()));
     // FIXME: is it really sort?
     fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalCore::IncidenceBase::RoleSort);
 

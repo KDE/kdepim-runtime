@@ -48,9 +48,9 @@ static void parseMembersAttribute(const QDomElement &element, const KCalCore::In
 
             QString name;
             QString email;
-            KCalCore::Attendee::Ptr attendee = incidence->attendeeByUid(uid);
+            KCalCore::Attendee attendee = incidence->attendeeByUid(uid);
             if (!user.isValid()) {
-                if (attendee) {
+                if (!attendee.isNull()) {
                     continue;
                 }
 
@@ -61,23 +61,23 @@ static void parseMembersAttribute(const QDomElement &element, const KCalCore::In
                 email = user.email();
             }
 
-            if (attendee) {
-                attendee->setName(name);
-                attendee->setEmail(email);
+            if (!attendee.isNull()) {
+                attendee.setName(name);
+                attendee.setEmail(email);
             } else {
-                attendee = KCalCore::Attendee::Ptr(new KCalCore::Attendee(name, email));
-                attendee->setUid(uid);
+                attendee = KCalCore::Attendee(name, email);
+                attendee.setUid(uid);
                 incidence->addAttendee(attendee);
             }
 
             const QString status = child.attribute(QStringLiteral("confirm"));
             if (!status.isEmpty()) {
                 if (status == QLatin1String("accept")) {
-                    attendee->setStatus(KCalCore::Attendee::Accepted);
+                    attendee.setStatus(KCalCore::Attendee::Accepted);
                 } else if (status == QLatin1String("decline")) {
-                    attendee->setStatus(KCalCore::Attendee::Declined);
+                    attendee.setStatus(KCalCore::Attendee::Declined);
                 } else {
-                    attendee->setStatus(KCalCore::Attendee::NeedsAction);
+                    attendee.setStatus(KCalCore::Attendee::NeedsAction);
                 }
             }
         }
@@ -311,15 +311,15 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     if (incidence->attendeeCount() > 0) {
         QDomElement members = DAVUtils::addOxElement(document, parent, QStringLiteral("participants"));
         const KCalCore::Attendee::List attendees = incidence->attendees();
-        for (const KCalCore::Attendee::Ptr &attendee : attendees) {
-            const User user = Users::self()->lookupEmail(attendee->email());
+        for (const KCalCore::Attendee &attendee : attendees) {
+            const User user = Users::self()->lookupEmail(attendee.email());
 
             if (!user.isValid()) {
                 continue;
             }
 
             QString status;
-            switch (attendee->status()) {
+            switch (attendee.status()) {
             case KCalCore::Attendee::Accepted:
                 status = QStringLiteral("accept");
                 break;

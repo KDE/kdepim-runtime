@@ -283,28 +283,28 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
          * KCalCore always sets a UID if empty, but that's just a pointer, and not the uid of a real contact.
          * Since that means the semantics of the two are different, we have to store the kolab uid as a custom property.
          */
-        KCalCore::Attendee::Ptr attendee = KCalCore::Attendee::Ptr(new KCalCore::Attendee(fromStdString(a.contact().name()),
+        KCalCore::Attendee attendee(fromStdString(a.contact().name()),
                                                                                           fromStdString(a.contact().email()),
                                                                                           a.rsvp(),
                                                                                           toPartStat(a.partStat()),
-                                                                                          toRole(a.role())));
+                                                                                          toRole(a.role()));
         if (!a.contact().uid().empty()) { //TODO Identify contact from addressbook based on uid
-            attendee->customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID, fromStdString(a.contact().uid()));
+            attendee.customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID, fromStdString(a.contact().uid()));
         }
         if (!a.delegatedTo().empty()) {
             if (a.delegatedTo().size() > 1) {
                 qCWarning(PIMKOLAB_LOG) << "multiple delegatees are not supported";
             }
-            attendee->setDelegate(toMailto(a.delegatedTo().front().email(), a.delegatedTo().front().name()).toString());
+            attendee.setDelegate(toMailto(a.delegatedTo().front().email(), a.delegatedTo().front().name()).toString());
         }
         if (!a.delegatedFrom().empty()) {
             if (a.delegatedFrom().size() > 1) {
                 qCWarning(PIMKOLAB_LOG) << "multiple delegators are not supported";
             }
-            attendee->setDelegator(toMailto(a.delegatedFrom().front().email(), a.delegatedFrom().front().name()).toString());
+            attendee.setDelegator(toMailto(a.delegatedFrom().front().email(), a.delegatedFrom().front().name()).toString());
         }
         if (a.cutype() != Kolab::CutypeIndividual) {
-            attendee->customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_CUTYPE, QString::number(a.cutype()));
+            attendee.customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_CUTYPE, QString::number(a.cutype()));
         }
         i.addAttendee(attendee);
     }
@@ -349,23 +349,23 @@ void getIncidence(T &i, const I &e)
     i.setDescription(toStdString(e.description()));
     i.setStatus(fromStatus(e.status()));
     std::vector<Kolab::Attendee> attendees;
-    foreach (const KCalCore::Attendee::Ptr &ptr, e.attendees()) {
-        const QString &uid = ptr->customProperties().nonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID);
-        Kolab::Attendee a(Kolab::ContactReference(toStdString(ptr->email()), toStdString(ptr->name()), toStdString(uid)));
-        a.setRSVP(ptr->RSVP());
-        a.setPartStat(fromPartStat(ptr->status()));
-        a.setRole(fromRole(ptr->role()));
-        if (!ptr->delegate().isEmpty()) {
+    foreach (const KCalCore::Attendee &ptr, e.attendees()) {
+        const QString &uid = ptr.customProperties().nonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID);
+        Kolab::Attendee a(Kolab::ContactReference(toStdString(ptr.email()), toStdString(ptr.name()), toStdString(uid)));
+        a.setRSVP(ptr.RSVP());
+        a.setPartStat(fromPartStat(ptr.status()));
+        a.setRole(fromRole(ptr.role()));
+        if (!ptr.delegate().isEmpty()) {
             std::string name;
-            const std::string &email = fromMailto(QUrl(ptr->delegate()), name);
+            const std::string &email = fromMailto(QUrl(ptr.delegate()), name);
             a.setDelegatedTo(std::vector<Kolab::ContactReference>() << Kolab::ContactReference(email, name));
         }
-        if (!ptr->delegator().isEmpty()) {
+        if (!ptr.delegator().isEmpty()) {
             std::string name;
-            const std::string &email = fromMailto(QUrl(ptr->delegator()), name);
+            const std::string &email = fromMailto(QUrl(ptr.delegator()), name);
             a.setDelegatedFrom(std::vector<Kolab::ContactReference>() << Kolab::ContactReference(email, name));
         }
-        const QString &cutype = ptr->customProperties().nonKDECustomProperty(CUSTOM_KOLAB_CONTACT_CUTYPE);
+        const QString &cutype = ptr.customProperties().nonKDECustomProperty(CUSTOM_KOLAB_CONTACT_CUTYPE);
         if (!cutype.isEmpty()) {
             a.setCutype(static_cast<Kolab::Cutype>(cutype.toInt()));
         }

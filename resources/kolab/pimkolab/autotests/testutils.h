@@ -135,7 +135,7 @@ void normalizeIncidence(KCalCore::Incidence::Ptr incidence)
     //TODO make sure that the UID does really not need to be persistent
     auto attendees = incidence->attendees();
     for (auto &attendee : attendees) {
-        attendee->setUid(attendee->email());
+        attendee.setUid(attendee.email());
     }
     incidence->setAttendees(attendees);
 
