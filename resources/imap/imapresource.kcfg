@@ -34,6 +34,11 @@
     <entry name="SessionTimeout" type="Int">
       <default>30</default>
     </entry>
+    <entry name="UseProxy" type="Bool">
+      <label>Connect using the system proxy settings</label>
+​      <whatsthis>If checked, the system proxy settings will be used to connect to the mail server.</whatsthis>
+      <default>false</default>
+    </entry>
   </group>
   <group name="cache">
     <entry name="DisconnectedModeEnabled" type="Bool">

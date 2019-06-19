@@ -365,6 +365,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         QObject::connect(session, &QObject::destroyed, this, &SessionPool::onSessionDestroyed);
         session->setUiProxy(m_sessionUiProxy);
         session->setTimeout(m_account->timeout());
+        session->setUseNetworkProxy(m_account->useNetworkProxy());
         m_connectingPool << session;
     }
 

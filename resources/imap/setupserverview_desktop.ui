@@ -605,6 +605,13 @@ p, li { white-space: pre-wrap; }
               </item>
              </widget>
             </item>
+            <item row="4" column="0" colspan="2">
+             <widget class="QCheckBox" name="useProxyCheck">
+              <property name="text">
+               <string>Connect using the system proxy settings</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>

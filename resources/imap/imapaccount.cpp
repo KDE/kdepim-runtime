@@ -104,3 +104,13 @@ int ImapAccount::timeout() const
 {
     return m_timeout;
 }
+
+void ImapAccount::setUseNetworkProxy(bool useProxy)
+{
+    m_useProxy = useProxy;
+}
+
+bool ImapAccount::useNetworkProxy() const
+{
+    return m_useProxy;
+}

@@ -317,6 +317,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
     m_parentResource->settings()->setIntervalCheckTime(m_ui->checkInterval->value());
     m_parentResource->settings()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
+    m_parentResource->settings()->setUseProxy(m_ui->useProxyCheck->isChecked());
 
     MailTransport::Transport::EnumAuthenticationType::type alternateAuthtype = getCurrentAuthMode(m_ui->authenticationAlternateCombo);
     qCDebug(IMAPRESOURCE_LOG) << "saving Alternate server sieve auth mode: " << authenticationModeString(alternateAuthtype);
@@ -433,6 +434,7 @@ void SetupServer::readSettings()
 
     m_ui->checkInterval->setValue(m_parentResource->settings()->intervalCheckTime());
     m_ui->disconnectedModeEnabled->setChecked(m_parentResource->settings()->disconnectedModeEnabled());
+    m_ui->useProxyCheck->setChecked(m_parentResource->settings()->useProxy());
 
     m_ui->managesieveCheck->setChecked(m_parentResource->settings()->sieveSupport());
     m_ui->sameConfigCheck->setChecked(m_parentResource->settings()->sieveReuseConfig());

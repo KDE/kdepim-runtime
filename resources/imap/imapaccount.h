@@ -55,12 +55,16 @@ public:
     void setTimeout(int timeout);
     int timeout() const;
 
+    void setUseNetworkProxy(bool useProxy);
+    bool useNetworkProxy() const;
+
 private:
     QString m_name;
     QString m_server;
     quint16 m_port = 0;
     QString m_userName;
     int m_timeout = 30;
+    bool m_useProxy = false;
     KIMAP::LoginJob::EncryptionMode m_encryption;
     KIMAP::LoginJob::AuthenticationMode m_authentication;
     bool m_subscriptionEnabled = false;

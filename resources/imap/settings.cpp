@@ -240,6 +240,7 @@ void Settings::loadAccount(ImapAccount *account) const
 
     account->setUserName(userName());
     account->setSubscriptionEnabled(subscriptionEnabled());
+    account->setUseNetworkProxy(useProxy());
 
     const QString encryption = safety();
     if (encryption == QLatin1String("SSL")) {
