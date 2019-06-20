@@ -36,7 +36,7 @@
     </entry>
     <entry name="UseProxy" type="Bool">
       <label>Connect using the system proxy settings</label>
-​      <whatsthis>If checked, the system proxy settings will be used to connect to the mail server.</whatsthis>
+      <whatsthis>If checked, the system proxy settings will be used to connect to the mail server.</whatsthis>
       <default>false</default>
     </entry>
   </group>
