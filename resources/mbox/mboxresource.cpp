@@ -29,7 +29,6 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
-#include <QIcon>
 #include <AkonadiCore/SpecialCollectionAttribute>
 
 #include "compactpage.h"

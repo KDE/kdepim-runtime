@@ -30,7 +30,6 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/FileStorage>
 #include <KCalCore/ICalFormat>
-#include <QIcon>
 #include <KLocalizedString>
 #include <QDebug>
 

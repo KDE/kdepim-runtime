@@ -19,7 +19,6 @@
 #define BENCHMARK_TEST_H
 
 #include <QObject>
-#include <QtTest>
 
 class BenchmarkTests : public QObject
 {

@@ -23,12 +23,10 @@
 #include <QPushButton>
 #include <KDateComboBox>
 
-#include <QPixmap>
 #include <QIcon>
 #include <QGroupBox>
-#include <QLayout>
 #include <QLabel>
-#include <QPointer>
+#include <QVBoxLayout>
 
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>

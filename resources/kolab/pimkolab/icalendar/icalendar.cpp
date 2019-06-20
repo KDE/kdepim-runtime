@@ -30,7 +30,6 @@
 #include <kmime/kmime_message.h>
 #include <klocalizedstring.h>
 #include <iostream>
-#include <QDebug>
 #include <QTimeZone>
 
 namespace Kolab {

@@ -18,9 +18,8 @@
 #ifndef TESTUTILS_H
 #define TESTUTILS_H
 
-#include <QTemporaryFile>
-#include <QProcess>
 #include <QUuid>
+#include <QFile>
 #include <kolabevent.h>
 #include <kmime/kmime_message.h>
 

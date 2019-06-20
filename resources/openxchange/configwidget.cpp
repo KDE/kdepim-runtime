@@ -27,9 +27,7 @@
 #include <kmessagebox.h>
 
 #include <KLocalizedString>
-#include <QDialogButtonBox>
 #include <QPushButton>
-#include <QVBoxLayout>
 
 ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)
     : QWidget(parent)

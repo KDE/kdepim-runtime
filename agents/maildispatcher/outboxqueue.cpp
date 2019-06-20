@@ -19,8 +19,6 @@
 
 #include "outboxqueue.h"
 
-#include <QMultiMap>
-#include <QSet>
 #include <QTimer>
 
 #include "maildispatcher_debug.h"

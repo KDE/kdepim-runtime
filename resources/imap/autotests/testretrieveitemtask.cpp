@@ -20,7 +20,7 @@
 #include "imaptestbase.h"
 
 #include "retrieveitemtask.h"
-
+#include <QTest>
 class TestRetrieveItemTask : public ImapTestBase
 {
     Q_OBJECT

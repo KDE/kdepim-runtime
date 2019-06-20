@@ -26,10 +26,7 @@
 #include <QTimer>
 #include <KSharedConfig>
 #include <QUrl>
-#include <QDialogButtonBox>
-#include <KConfigGroup>
 #include <QPushButton>
-#include <QVBoxLayout>
 
 namespace {
 static const char myConfigGroupName[] = "ContactsSettingsDialog";

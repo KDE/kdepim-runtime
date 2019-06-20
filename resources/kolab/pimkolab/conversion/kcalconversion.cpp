@@ -18,9 +18,7 @@
 #include "kcalconversion.h"
 
 #include <kcalcore/recurrence.h>
-#include <QBitArray>
 #include <QVector>
-#include <QDebug>
 #include <QUrl>
 #include <QDate>
 #include <vector>

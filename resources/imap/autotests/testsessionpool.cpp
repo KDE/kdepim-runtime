@@ -20,7 +20,7 @@
 #include "imaptestbase.h"
 #include <QSignalSpy>
 #include <kimap/capabilitiesjob.h>
-
+#include <QTest>
 class TestSessionPool : public ImapTestBase
 {
     Q_OBJECT

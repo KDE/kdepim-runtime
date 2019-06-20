@@ -26,7 +26,6 @@
 
 #include "ui_singlefileresourceconfigwidget_desktop.h"
 
-#include <QDialog>
 #include <QUrl>
 class KConfigDialogManager;
 class KJob;

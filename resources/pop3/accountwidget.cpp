@@ -41,7 +41,6 @@
 #include "pop3resource_debug.h"
 
 #include <QButtonGroup>
-#include <QDialogButtonBox>
 #include <QPushButton>
 #include <QVBoxLayout>
 

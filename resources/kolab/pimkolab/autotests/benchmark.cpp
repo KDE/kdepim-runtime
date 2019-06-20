@@ -21,7 +21,7 @@
 #include <kmime/kmime_message.h>
 #include <kolabformat.h>
 #include "testutils.h"
-
+#include <QTest>
 KMime::Message::Ptr readMimeFile(const QString &fileName)
 {
     QFile file(fileName);

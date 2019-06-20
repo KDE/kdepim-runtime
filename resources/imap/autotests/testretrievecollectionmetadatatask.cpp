@@ -28,7 +28,7 @@
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include <noinferiorsattribute.h>
-
+#include <QTest>
 typedef QMap<QByteArray, QByteArray> QBYTEARRAYMAP;
 typedef QMap<QByteArray, qint64> QBYTEARRAYINT64MAP;
 

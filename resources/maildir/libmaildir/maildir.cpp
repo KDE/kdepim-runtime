@@ -30,7 +30,6 @@
 #include "libmaildir_debug.h"
 #include <KLocalizedString>
 #include <Akonadi/KMime/MessageFlags>
-#include <QCoreApplication>
 #include <fcntl.h>
 
 //Define it to get more debug output to expense of operating speed

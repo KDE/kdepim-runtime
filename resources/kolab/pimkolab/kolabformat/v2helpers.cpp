@@ -33,7 +33,6 @@
 
 #include <qdom.h>
 #include <QBuffer>
-#include <QDebug>
 #include <akonadi/notes/noteutils.h>
 
 namespace Kolab {

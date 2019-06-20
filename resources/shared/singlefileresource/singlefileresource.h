@@ -33,7 +33,6 @@
 
 #include <QFile>
 #include <QDir>
-#include <QPointer>
 #include <QDebug>
 #include <QEventLoopLocker>
 

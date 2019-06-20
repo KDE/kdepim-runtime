@@ -31,7 +31,6 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <QIcon>
 #include <KLocalizedString>
 
 using namespace Akonadi;

@@ -20,6 +20,7 @@
 #include "imaptestbase.h"
 #include <QSignalSpy>
 #include "resourcetask.h"
+#include <QTest>
 
 Q_DECLARE_METATYPE(ResourceTask::ActionIfNoSession)
 

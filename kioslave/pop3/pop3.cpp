@@ -37,7 +37,6 @@ extern "C" {
 #include <QRegExp>
 #include "pop3_debug.h"
 
-#include <QDebug>
 #include <KLocalizedString>
 #include <QCryptographicHash>
 #include <QNetworkProxy>

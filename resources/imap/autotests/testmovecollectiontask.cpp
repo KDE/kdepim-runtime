@@ -20,7 +20,7 @@
 #include "imaptestbase.h"
 
 #include "movecollectiontask.h"
-
+#include <QTest>
 class TestMoveCollectionTask : public ImapTestBase
 {
     Q_OBJECT

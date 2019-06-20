@@ -16,8 +16,6 @@
  */
 
 #include "mimeutils.h"
-#include <QUuid>
-#include <QFile>
 #include <qdom.h>
 #include <QDateTime>
 #include "kolabformat/kolabdefinitions.h"

@@ -27,9 +27,7 @@
 #include <QUrl>
 
 #include <QTimer>
-#include <QDialogButtonBox>
 #include <QPushButton>
-#include <QVBoxLayout>
 
 VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)

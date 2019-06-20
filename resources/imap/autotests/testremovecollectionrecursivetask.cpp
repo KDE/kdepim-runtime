@@ -20,7 +20,7 @@
 #include "imaptestbase.h"
 
 #include "removecollectionrecursivetask.h"
-
+#include <QTest>
 class TestRemoveCollectionRecursiveTask : public ImapTestBase
 {
     Q_OBJECT

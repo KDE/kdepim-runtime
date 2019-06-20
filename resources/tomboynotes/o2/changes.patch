@@ -1541,9 +1541,7 @@ index 210ae12..4a8584c 100644
 -#include "o0simplecrypt.h"
 +#include "o2/o0simplecrypt.h"
  #include <QByteArray>
- #include <QtDebug>
- #include <QtGlobal>
-@@ -61,16 +61,17 @@ void O0SimpleCrypt::splitKey()
+  @@ -61,16 +61,17 @@ void O0SimpleCrypt::splitKey()
  {
      m_keyParts.clear();
      m_keyParts.resize(8);

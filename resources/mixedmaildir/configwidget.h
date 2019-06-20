@@ -20,7 +20,6 @@
 #ifndef CONFIGWIDGET_H
 #define CONFIGWIDGET_H
 
-#include <QDialog>
 
 #include "ui_settings.h"
 class QPushButton;

@@ -35,7 +35,6 @@
 #include <KLocalizedString>
 #include <QIcon>
 
-#include <QPointer>
 
 #include <KGAPI/Types>
 #include <KGAPI/Account>

@@ -20,7 +20,7 @@
 #include "imaptestbase.h"
 
 #include "expungecollectiontask.h"
-
+#include <QTest>
 class TestExpungeCollectionTask : public ImapTestBase
 {
     Q_OBJECT

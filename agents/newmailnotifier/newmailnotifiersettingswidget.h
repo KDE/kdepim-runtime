@@ -20,7 +20,6 @@
 #ifndef NEWMAILNOTIFIERSETTINGSWIDGET_H
 #define NEWMAILNOTIFIERSETTINGSWIDGET_H
 
-#include <QDialog>
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/AgentConfigurationBase>

@@ -22,7 +22,6 @@
 
 #include <AkonadiCore/AgentConfigurationBase>
 
-#include <QVBoxLayout>
 
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourceconfigwidget.h"

@@ -23,7 +23,7 @@
 
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
-
+#include <QTest>
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 
 class TestChangeCollectionTask : public ImapTestBase

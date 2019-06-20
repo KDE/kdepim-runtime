@@ -25,11 +25,10 @@
 #include <QUrl>
 #include <QTimer>
 
-#include <KConfigDialogManager>
 #include <KLocalizedString>
 #include <KSharedConfig>
-#include <QDialogButtonBox>
-#include <KConfigGroup>
+#include <KConfigDialogManager>
+
 #include <QPushButton>
 #include <QTabBar>
 #include <QVBoxLayout>

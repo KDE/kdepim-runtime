@@ -24,6 +24,7 @@
 #include "uidnextattribute.h"
 
 #include <kmime/kmime_message.h>
+#include <QTest>
 
 class TestAddItemTask : public ImapTestBase
 {

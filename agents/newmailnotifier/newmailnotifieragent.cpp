@@ -46,9 +46,6 @@
 #include <KNotification>
 #include <Kdelibs4ConfigMigrator>
 #include "newmailnotifier_debug.h"
-#include <KToolInvocation>
-#include <QIcon>
-#include <KIconLoader>
 #include <QTextToSpeech>
 
 using namespace Akonadi;

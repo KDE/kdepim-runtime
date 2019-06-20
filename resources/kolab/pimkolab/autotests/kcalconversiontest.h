@@ -19,7 +19,6 @@
 #define KCALCONVERSIONTEST_H
 
 #include <QObject>
-#include <QtTest>
 
 class KCalConversionTest : public QObject
 {

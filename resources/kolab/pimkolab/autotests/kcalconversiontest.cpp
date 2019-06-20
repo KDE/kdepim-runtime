@@ -18,7 +18,6 @@
 #include "kcalconversiontest.h"
 #include <contact.h>
 
-#include <QObject>
 #include <QtTest>
 #include <kolabcontact.h>
 #include <kcalcore/recurrence.h>

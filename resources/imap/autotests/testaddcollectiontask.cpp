@@ -22,7 +22,7 @@
 #include "addcollectiontask.h"
 #include <collectionannotationsattribute.h>
 #include <QDebug>
-
+#include <QTest>
 class TestAddCollectionTask : public ImapTestBase
 {
     Q_OBJECT

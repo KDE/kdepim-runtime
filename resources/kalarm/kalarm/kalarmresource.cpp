@@ -34,7 +34,6 @@
 #include <KCalCore/MemoryCalendar>
 #include <KCalCore/Incidence>
 
-#include <KLocalizedString>
 #include "kalarmresource_debug.h"
 
 using namespace Akonadi;

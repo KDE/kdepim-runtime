@@ -52,7 +52,6 @@
 #include <oxa/updateusersjob.h>
 #include <oxa/users.h>
 #include <QStandardPaths>
-#include <QIcon>
 
 using namespace Akonadi;
 

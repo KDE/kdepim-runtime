@@ -27,7 +27,7 @@
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
 #include <akonadi/kmime/messageparts.h>
-
+#include <QTest>
 class TestRetrieveItemsTask : public ImapTestBase
 {
     Q_OBJECT

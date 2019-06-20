@@ -27,7 +27,6 @@
 #include <kurlrequester.h>
 #include <klineedit.h>
 #include <QVBoxLayout>
-#include <QDialogButtonBox>
 
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;

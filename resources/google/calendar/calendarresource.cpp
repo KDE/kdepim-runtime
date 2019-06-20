@@ -40,7 +40,6 @@
 #include <KCalCore/FreeBusy>
 
 #include <KLocalizedString>
-#include <QDialog>
 #include <QIcon>
 
 #include <KGAPI/Calendar/Calendar>

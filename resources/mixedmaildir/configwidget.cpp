@@ -25,8 +25,6 @@
 #include <kconfigdialogmanager.h>
 #include <kurlrequester.h>
 #include <klineedit.h>
-#include <QVBoxLayout>
-#include <QDialogButtonBox>
 using KPIM::Maildir;
 
 ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)

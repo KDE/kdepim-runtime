@@ -27,9 +27,7 @@
 #include <KNotifyConfigWidget>
 #include <QLineEdit>
 #include <QPushButton>
-#include <KHelpMenu>
 #include <kaboutdata.h>
-#include <QIcon>
 
 #include <QTabWidget>
 #include <QCheckBox>
@@ -37,10 +35,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QWhatsThis>
-#include <QAction>
 
 #include <KSharedConfig>
-#include <KConfigGroup>
 
 static const char *textToSpeakMessage
     = I18N_NOOP("<qt>"

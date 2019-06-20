@@ -68,7 +68,6 @@
 #include "davresource_debug.h"
 
 #include <QSet>
-#include <QDBusConnection>
 
 using namespace Akonadi;
 

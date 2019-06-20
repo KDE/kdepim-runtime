@@ -20,7 +20,6 @@
 
 #include <kcalcore/event.h>
 #include <kcalcore/todo.h>
-#include <QDebug>
 #include <kolabevent.h>
 #include <QDate>
 #include <QTimeZone>

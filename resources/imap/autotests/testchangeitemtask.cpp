@@ -23,6 +23,7 @@
 #include "uidnextattribute.h"
 
 #include <kmime/kmime_message.h>
+#include <QTest>
 
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 

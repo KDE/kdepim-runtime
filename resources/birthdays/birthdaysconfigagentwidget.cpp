@@ -25,7 +25,6 @@
 #include <QIcon>
 #include <KLocalizedString>
 #include <QPushButton>
-#include <KConfigGroup>
 #include <KSharedConfig>
 
 namespace {

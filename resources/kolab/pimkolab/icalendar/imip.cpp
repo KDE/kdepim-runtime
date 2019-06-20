@@ -23,7 +23,6 @@
 #include <kcalutils/incidenceformatter.h>
 #include <KEmailAddress>
 #include <kmime/kmime_message.h>
-#include <QTime>
 /*
  * The code in here is copy paste work from kdepim/calendarsupport.
  *
