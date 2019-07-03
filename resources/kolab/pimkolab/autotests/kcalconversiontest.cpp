@@ -187,7 +187,7 @@ void KCalConversionTest::testConversion_data()
         att.setDelegate(QStringLiteral("mailto:delegatee<delegatee@email>"));
         att.setDelegator(QStringLiteral("mailto:delegator<delegator@email>"));
         kcal.addAttendee(att);
-        kcal.addAttachment(KCalCore::Attachment::Ptr(new KCalCore::Attachment(QStringLiteral("uri"), QStringLiteral("mimetype/mime"))));
+        kcal.addAttachment(KCalCore::Attachment(QStringLiteral("uri"), QStringLiteral("mimetype/mime")));
         KCalCore::Alarm::Ptr alarm = KCalCore::Alarm::Ptr(new KCalCore::Alarm(&kcal));
         KCalCore::Person::List addressees;
         addressees.append(KCalCore::Person(QStringLiteral("name"), QStringLiteral("email@email")));
@@ -370,7 +370,7 @@ void KCalConversionTest::testConversion()
     e->removeNonKDECustomProperty("X-KOLAB-URL");
     kcal.removeNonKDECustomProperty("X-KOLAB-URL");
     compareAttendeesVectors(e->attendees(), kcal.attendees());
-    comparePointerVectors(e->attachments(), kcal.attachments());
+    QCOMPARE(e->attachments(), kcal.attachments());
 
 //     QCOMPARE(e->alarms(), kcal.alarms()); //TODO
     QCOMPARE(e->customProperties(), kcal.customProperties());

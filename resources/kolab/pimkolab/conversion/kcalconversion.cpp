@@ -309,16 +309,16 @@ void setIncidence(KCalCore::Incidence &i, const T &e)
         i.addAttendee(attendee);
     }
     foreach (const Kolab::Attachment &a, e.attachments()) {
-        KCalCore::Attachment::Ptr ptr;
+        KCalCore::Attachment att;
         if (!a.uri().empty()) {
-            ptr = KCalCore::Attachment::Ptr(new KCalCore::Attachment(fromStdString(a.uri()), fromStdString(a.mimetype())));
+            att = KCalCore::Attachment(fromStdString(a.uri()), fromStdString(a.mimetype()));
         } else {
-            ptr = KCalCore::Attachment::Ptr(new KCalCore::Attachment(QByteArray::fromRawData(a.data().c_str(), a.data().size()).toBase64(), fromStdString(a.mimetype())));
+            att = KCalCore::Attachment(QByteArray::fromRawData(a.data().c_str(), a.data().size()).toBase64(), fromStdString(a.mimetype()));
         }
         if (!a.label().empty()) {
-            ptr->setLabel(fromStdString(a.label()));
+            att.setLabel(fromStdString(a.label()));
         }
-        i.addAttachment(ptr);
+        i.addAttachment(att);
     }
 
     QMap<QByteArray, QString> props;
@@ -374,14 +374,14 @@ void getIncidence(T &i, const I &e)
     }
     i.setAttendees(attendees);
     std::vector<Kolab::Attachment> attachments;
-    foreach (const KCalCore::Attachment::Ptr &ptr, e.attachments()) {
+    foreach (const KCalCore::Attachment &att, e.attachments()) {
         Kolab::Attachment a;
-        if (ptr->isUri()) {
-            a.setUri(toStdString(ptr->uri()), toStdString(ptr->mimeType()));
+        if (att.isUri()) {
+            a.setUri(toStdString(att.uri()), toStdString(att.mimeType()));
         } else {
-            a.setData(std::string(ptr->decodedData().data(), ptr->decodedData().size()), toStdString(ptr->mimeType()));
+            a.setData(std::string(att.decodedData().data(), att.decodedData().size()), toStdString(att.mimeType()));
         }
-        a.setLabel(toStdString(ptr->label()));
+        a.setLabel(toStdString(att.label()));
         attachments.push_back(a);
     }
     i.setAttachments(attachments);

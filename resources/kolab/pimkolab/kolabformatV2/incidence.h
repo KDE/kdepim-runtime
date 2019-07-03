@@ -162,7 +162,7 @@ protected:
     Recurrence mRecurrence;
     QList<Attendee> mAttendees;
     QList<KCalCore::Alarm::Ptr> mAlarms;
-    QList<KCalCore::Attachment::Ptr> mAttachments;
+    QList<KCalCore::Attachment> mAttachments;
     QString mInternalUID;
 
     struct Custom {

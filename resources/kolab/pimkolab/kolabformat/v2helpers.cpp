@@ -50,8 +50,8 @@ void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attac
             continue;
         }
         const QByteArray c = content->decodedContent().toBase64();
-        KCalCore::Attachment::Ptr attachment(new KCalCore::Attachment(c, QString::fromLatin1(type)));
-        attachment->setLabel(name);
+        KCalCore::Attachment attachment(c, QString::fromLatin1(type));
+        attachment.setLabel(name);
         incidence->addAttachment(attachment);
         qCDebug(PIMKOLAB_LOG) << "ATTACHMENT NAME" << name << type;
     }

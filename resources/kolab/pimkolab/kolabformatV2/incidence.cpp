@@ -237,11 +237,11 @@ void Incidence::saveAttendees(QDomElement &element) const
 
 void Incidence::saveAttachments(QDomElement &element) const
 {
-    foreach (KCalCore::Attachment::Ptr a, mAttachments) {
-        if (a->isUri()) {
-            writeString(element, QStringLiteral("link-attachment"), a->uri());
-        } else if (a->isBinary()) {
-            writeString(element, QStringLiteral("inline-attachment"), a->label());
+    foreach (const KCalCore::Attachment &a, mAttachments) {
+        if (a.isUri()) {
+            writeString(element, QStringLiteral("link-attachment"), a.uri());
+        } else if (a.isBinary()) {
+            writeString(element, QStringLiteral("inline-attachment"), a.label());
         }
     }
 }
@@ -541,7 +541,7 @@ bool Incidence::loadAttribute(QDomElement &element)
             return false;
         }
     } else if (tagName == QLatin1String("link-attachment")) {
-        mAttachments.push_back(KCalCore::Attachment::Ptr(new KCalCore::Attachment(element.text())));
+        mAttachments.push_back(KCalCore::Attachment(element.text()));
     } else if (tagName == QLatin1String("alarm")) {
         // Alarms should be minutes before. Libkcal uses event time + alarm time
         setAlarm(-element.text().toInt());
@@ -865,7 +865,7 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
     // Attachments
     const KCalCore::Attachment::List attachments = incidence->attachments();
     mAttachments.reserve(attachments.size());
-    for (const KCalCore::Attachment::Ptr &a : attachments) {
+    for (const KCalCore::Attachment &a : attachments) {
         mAttachments.push_back(a);
     }
 
@@ -971,8 +971,7 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     }
 
     incidence->clearAttachments();
-    foreach (const KCalCore::Attachment::Ptr &a, mAttachments) {
-        // TODO should we copy?
+    foreach (const KCalCore::Attachment &a, mAttachments) {
         incidence->addAttachment(a);
     }
 
