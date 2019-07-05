@@ -63,7 +63,7 @@ include(ECMQtDeclareLoggingCategory)
 include(GenerateExportHeader)
 
 
-set(QT_REQUIRED_VERSION "5.10.0")
+set(QT_REQUIRED_VERSION "5.11.0")
 
 set(KDEPIMRUNTIME_LIB_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
