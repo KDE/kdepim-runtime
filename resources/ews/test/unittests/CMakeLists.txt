@@ -59,6 +59,7 @@ if (Qt5NetworkAuth_FOUND)
   target_link_libraries(ewsoauth_ut
     Qt5::Widgets
     KF5::I18n
+    Qt5::WebEngineWidgets
     )
   target_compile_definitions(ewsoauth_ut PUBLIC -DEWSOAUTH_UNITTEST)
 endif ()

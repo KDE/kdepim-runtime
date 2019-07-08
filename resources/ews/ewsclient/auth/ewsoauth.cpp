@@ -43,7 +43,7 @@ using namespace Mock;
 #include "ewspkeyauthjob.h"
 #endif
 #endif
-
+#include <qtwebenginewidgetsversion.h>
 #include "ewsclient_debug.h"
 
 static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/authorize"));
@@ -252,7 +252,7 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
     mOAuth2.setAccessTokenUrl(o365AccessTokenUrl);
     mOAuth2.setClientIdentifier(appId);
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#if QTWEBENGINEWIDGETS_VERSION < QT_VERSION_CHECK(5, 13, 0)
     mWebProfile.setRequestInterceptor(&mRequestInterceptor);
 #else
     mWebProfile.setUrlRequestInterceptor(&mRequestInterceptor);
