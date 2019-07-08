@@ -21,7 +21,7 @@
 
 #include <QUrl>
 #include <QUrlQuery>
-
+#include <qtwebenginewidgetsversion.h>
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
 namespace Mock {
@@ -76,7 +76,7 @@ void QWebEngineProfile::setHttpUserAgent(const QString &ua)
 {
     mUserAgent = ua;
 }
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#if QTWEBENGINEWIDGETS_VERSION < QT_VERSION_CHECK(5, 13, 0)
 void QWebEngineProfile::setRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor)
 {
     mInterceptor = interceptor;

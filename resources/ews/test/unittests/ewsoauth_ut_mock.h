@@ -34,7 +34,7 @@
 #include <QWidget>
 
 #include <KLocalizedString>
-
+#include <qtwebenginewidgetsversion.h>
 Q_DECLARE_LOGGING_CATEGORY(EWSCLI_LOG)
 
 namespace Mock {
@@ -101,7 +101,7 @@ public:
     ~QWebEngineProfile() override;
 
     void setHttpUserAgent(const QString &ua);
-#if QT_VERSION < QT_VERSION_CHECK(5, 13, 0)
+#if QTWEBENGINEWIDGETS_VERSION < QT_VERSION_CHECK(5, 13, 0)
     void setRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor);
 #else
     void setUrlRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor);
