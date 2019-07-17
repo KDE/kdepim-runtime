@@ -174,6 +174,7 @@ void NewMailNotifierSettingsWidget::load()
 
 bool NewMailNotifierSettingsWidget::save() const
 {
+    mSelectCollection->updateCollectionsRecursive();
     auto settings = NewMailNotifierAgentSettings::self();
     settings->setShowPhoto(mShowPhoto->isChecked());
     settings->setShowFrom(mShowFrom->isChecked());
