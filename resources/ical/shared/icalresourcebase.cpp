@@ -23,17 +23,17 @@
 
 #include <kdbusconnectionpool.h>
 
-#include <KCalCore/FileStorage>
-#include <KCalCore/MemoryCalendar>
-#include <KCalCore/Incidence>
-#include <KCalCore/ICalFormat>
+#include <KCalendarCore/FileStorage>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/Incidence>
+#include <KCalendarCore/ICalFormat>
 
 #include <KLocalizedString>
 #include <QDebug>
 #include <QTimeZone>
 
 using namespace Akonadi;
-using namespace KCalCore;
+using namespace KCalendarCore;
 using namespace SETTINGS_NAMESPACE;
 
 ICalResourceBase::ICalResourceBase(const QString &id)
@@ -76,9 +76,9 @@ void ICalResourceBase::aboutToQuit()
 
 bool ICalResourceBase::readFromFile(const QString &fileName)
 {
-    mCalendar = KCalCore::MemoryCalendar::Ptr(new KCalCore::MemoryCalendar(QTimeZone::utc()));
-    mFileStorage = KCalCore::FileStorage::Ptr(new KCalCore::FileStorage(mCalendar, fileName,
-                                                                        new KCalCore::ICalFormat()));
+    mCalendar = KCalendarCore::MemoryCalendar::Ptr(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
+    mFileStorage = KCalendarCore::FileStorage::Ptr(new KCalendarCore::FileStorage(mCalendar, fileName,
+                                                                        new KCalendarCore::ICalFormat()));
     const bool result = mFileStorage->load();
     if (!result) {
         qCritical() << "akonadi_ical_resource: Error loading file " << fileName;
@@ -128,11 +128,11 @@ bool ICalResourceBase::writeToFile(const QString &fileName)
         return false;
     }
 
-    KCalCore::FileStorage *fileStorage = mFileStorage.data();
+    KCalendarCore::FileStorage *fileStorage = mFileStorage.data();
     if (fileName != mFileStorage->fileName()) {
-        fileStorage = new KCalCore::FileStorage(mCalendar,
+        fileStorage = new KCalendarCore::FileStorage(mCalendar,
                                                 fileName,
-                                                new KCalCore::ICalFormat());
+                                                new KCalendarCore::ICalFormat());
     }
 
     bool success = true;
@@ -149,12 +149,12 @@ bool ICalResourceBase::writeToFile(const QString &fileName)
     return success;
 }
 
-KCalCore::MemoryCalendar::Ptr ICalResourceBase::calendar() const
+KCalendarCore::MemoryCalendar::Ptr ICalResourceBase::calendar() const
 {
     return mCalendar;
 }
 
-KCalCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
+KCalendarCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
 {
     return mFileStorage;
 }

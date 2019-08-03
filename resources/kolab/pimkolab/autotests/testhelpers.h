@@ -22,10 +22,10 @@
 
 #include <QObject>
 #include <QtTest>
-#include <kcalcore/recurrence.h>
-#include <kcalcore/event.h>
-#include <kcalcore/todo.h>
-#include <kcalcore/journal.h>
+#include <kcalendarcore/recurrence.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/todo.h>
+#include <kcalendarcore/journal.h>
 #include <kcontacts/addressee.h>
 
 #include <kolabformat.h>
@@ -41,9 +41,9 @@ Q_DECLARE_METATYPE(Kolab::Contact)
 Q_DECLARE_METATYPE(Kolab::Period)
 Q_DECLARE_METATYPE(std::vector<Kolab::FreebusyPeriod>)
 
-Q_DECLARE_METATYPE(KCalCore::Event)
-Q_DECLARE_METATYPE(KCalCore::Todo)
-Q_DECLARE_METATYPE(KCalCore::Journal)
+Q_DECLARE_METATYPE(KCalendarCore::Event)
+Q_DECLARE_METATYPE(KCalendarCore::Todo)
+Q_DECLARE_METATYPE(KCalendarCore::Journal)
 
 namespace QTest {
 template<>
@@ -58,7 +58,7 @@ char *toString(const Kolab::cDateTime &dt)
 }
 
 template<>
-char *toString(const KCalCore::Attendee &at)
+char *toString(const KCalendarCore::Attendee &at)
 {
     QByteArray ba = "Attendee(";
     ba += at.name().toLatin1() + ", ";
@@ -85,10 +85,10 @@ char *toString(const QList<int> &l)
 }
 
 template<>
-char *toString(const QList<KCalCore::RecurrenceRule::WDayPos> &l)
+char *toString(const QList<KCalendarCore::RecurrenceRule::WDayPos> &l)
 {
     QByteArray ba = "QList<int>(";
-    foreach (const KCalCore::RecurrenceRule::WDayPos &i, l) {
+    foreach (const KCalendarCore::RecurrenceRule::WDayPos &i, l) {
         ba += QByteArray::number(i.pos()) + " ";
         ba += QByteArray::number(i.day()) + ", ";
     }
@@ -97,9 +97,9 @@ char *toString(const QList<KCalCore::RecurrenceRule::WDayPos> &l)
 }
 
 template<>
-char *toString(const KCalCore::DateList &l)
+char *toString(const KCalendarCore::DateList &l)
 {
-    QByteArray ba = "KCalCore::DateList(";
+    QByteArray ba = "KCalendarCore::DateList(";
     foreach (const QDate &i, l) {
         ba += i.toString().toLatin1();
     }
@@ -108,9 +108,9 @@ char *toString(const KCalCore::DateList &l)
 }
 
 template<>
-char *toString(const KCalCore::DateTimeList &l)
+char *toString(const KCalendarCore::DateTimeList &l)
 {
-    QByteArray ba = "KCalCore::DateTimeList(";
+    QByteArray ba = "KCalendarCore::DateTimeList(";
     foreach (const QDateTime &i, l) {
         ba += toString(i);
     }
@@ -119,10 +119,10 @@ char *toString(const KCalCore::DateTimeList &l)
 }
 
 template<>
-char *toString(const KCalCore::Recurrence &at)
+char *toString(const KCalendarCore::Recurrence &at)
 {
     // at.dump();
-    KCalCore::RecurrenceRule *r = at.defaultRRule();
+    KCalendarCore::RecurrenceRule *r = at.defaultRRule();
     QByteArray ba;
     if (!r) {
         ba += "Recurrence( )";
@@ -175,10 +175,10 @@ char *toString(const Kolab::RecurrenceRule &at)
 }
 
 template<>
-char *toString(const KCalCore::Duration &d)
+char *toString(const KCalendarCore::Duration &d)
 {
     QByteArray ba;
-    ba += "KCalCore::Duration(";
+    ba += "KCalendarCore::Duration(";
     ba += QByteArray::number(d.isDaily()) + ", ";
     ba += QByteArray::number(d.value()) + " ";
     ba += ")";

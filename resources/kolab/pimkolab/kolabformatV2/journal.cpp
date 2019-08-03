@@ -37,22 +37,22 @@
 
 using namespace KolabV2;
 
-KCalCore::Journal::Ptr Journal::fromXml(const QDomDocument &xmlDoc, const QString &tz)
+KCalendarCore::Journal::Ptr Journal::fromXml(const QDomDocument &xmlDoc, const QString &tz)
 {
     Journal journal(tz);
     journal.loadXML(xmlDoc);
-    KCalCore::Journal::Ptr kcalJournal(new KCalCore::Journal());
+    KCalendarCore::Journal::Ptr kcalJournal(new KCalendarCore::Journal());
     journal.saveTo(kcalJournal);
     return kcalJournal;
 }
 
-QString Journal::journalToXML(const KCalCore::Journal::Ptr &kcalJournal, const QString &tz)
+QString Journal::journalToXML(const KCalendarCore::Journal::Ptr &kcalJournal, const QString &tz)
 {
     Journal journal(tz, kcalJournal);
     return journal.saveXML();
 }
 
-Journal::Journal(const QString &tz, const KCalCore::Journal::Ptr &journal)
+Journal::Journal(const QString &tz, const KCalendarCore::Journal::Ptr &journal)
     : KolabBase(tz)
 {
     if (journal) {
@@ -165,7 +165,7 @@ QString Journal::saveXML() const
     return document.toString();
 }
 
-void Journal::saveTo(const KCalCore::Journal::Ptr &journal) const
+void Journal::saveTo(const KCalendarCore::Journal::Ptr &journal) const
 {
     KolabBase::saveTo(journal);
 
@@ -174,7 +174,7 @@ void Journal::saveTo(const KCalCore::Journal::Ptr &journal) const
     journal->setAllDay(mDateOnly);
 }
 
-void Journal::setFields(const KCalCore::Journal::Ptr &journal)
+void Journal::setFields(const KCalendarCore::Journal::Ptr &journal)
 {
     // Set baseclass fields
     KolabBase::setFields(journal);

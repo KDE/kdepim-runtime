@@ -23,8 +23,8 @@
 #include "testutils.h"
 
 #include <QTest>
-#include <kcalcore/event.h>
-#include <kcalcore/icalformat.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/icalformat.h>
 
 void TimezoneTest::initTestCase()
 {
@@ -73,11 +73,11 @@ void TimezoneTest::testFromHardcodedList()
 
 void TimezoneTest::testKolabObjectWriter()
 {
-    KCalCore::Event::Ptr event(new KCalCore::Event());
+    KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
     event->setDtStart(QDateTime(QDate(2012, 11, 11), QTime(1, 1), QTimeZone(QTimeZone::windowsIdToDefaultIanaId("(GMT+01:00) West Central Africa"))));
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
     Kolab::KolabObjectReader reader(msg);
-    KCalCore::Event::Ptr result = reader.getEvent();
+    KCalendarCore::Event::Ptr result = reader.getEvent();
     qDebug() << result->dtStart().timeZone().id();
     QCOMPARE(result->dtStart().timeZone().id(), QTimeZone("Africa/Lagos").id());
 }
@@ -99,20 +99,20 @@ void TimezoneTest::testKolabObjectWriter()
 //     QCOMPARE(reader.getVersion(), version);
 //     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
 //
-//     KCalCore::Incidence::Ptr convertedIncidence = reader.getIncidence();
+//     KCalendarCore::Incidence::Ptr convertedIncidence = reader.getIncidence();
 //     qDebug() << "read incidence";
 //
 //     //Parse ICalFile for comparison
 //     QFile icalFile( icalFileName );
 //     QVERIFY( icalFile.open( QFile::ReadOnly ) );
-//     KCalCore::ICalFormat format;
-//     KCalCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
+//     KCalendarCore::ICalFormat format;
+//     KCalendarCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 //
 //     // fix up the converted incidence for comparisson
 //     normalizeIncidence(convertedIncidence);
 //     normalizeIncidence(realIncidence);
 //
-//     // recurrence objects are created on demand, but KCalCore::Incidence::operator==() doesn't take that into account
+//     // recurrence objects are created on demand, but KCalendarCore::Incidence::operator==() doesn't take that into account
 //     // so make sure both incidences have one
 //     realIncidence->recurrence();
 //     convertedIncidence->recurrence();

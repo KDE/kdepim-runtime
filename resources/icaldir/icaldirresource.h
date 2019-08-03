@@ -23,7 +23,7 @@
 
 #include <resourcebase.h>
 
-#include <KCalCore/Incidence>
+#include <KCalendarCore/Incidence>
 
 #include <QHash>
 
@@ -61,7 +61,7 @@ private:
     void slotReloadConfig();
 
 private:
-    QHash<QString, KCalCore::Incidence::Ptr> mIncidences;
+    QHash<QString, KCalendarCore::Incidence::Ptr> mIncidences;
 };
 
 #endif

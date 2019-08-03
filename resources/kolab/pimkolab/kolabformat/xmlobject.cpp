@@ -50,7 +50,7 @@ std::string XMLObject::writeEvent(const Event &event, Version version, const std
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
-        const KCalCore::Event::Ptr i = Conversion::toKCalCore(event);
+        const KCalendarCore::Event::Ptr i = Conversion::toKCalendarCore(event);
         if (!i) {
             qCCritical(PIMKOLAB_LOG) << "invalid incidence";
             return std::string();
@@ -73,7 +73,7 @@ Event XMLObject::readEvent(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
-        const KCalCore::Event::Ptr event = Kolab::fromXML<KCalCore::Event::Ptr, KolabV2::Event>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
+        const KCalendarCore::Event::Ptr event = Kolab::fromXML<KCalendarCore::Event::Ptr, KolabV2::Event>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Event();
@@ -83,7 +83,7 @@ Event XMLObject::readEvent(const std::string &s, Version version)
         foreach (const QString &attachment, attachments) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
-        return Conversion::fromKCalCore(*event);
+        return Conversion::fromKCalendarCore(*event);
     }
     const Kolab::Event event = Kolab::readEvent(s, false);
     ErrorHandler::handleLibkolabxmlErrors();
@@ -94,7 +94,7 @@ std::string XMLObject::writeTodo(const Todo &event, Version version, const std::
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
-        const KCalCore::Todo::Ptr i = Conversion::toKCalCore(event);
+        const KCalendarCore::Todo::Ptr i = Conversion::toKCalendarCore(event);
         if (!i) {
             qCCritical(PIMKOLAB_LOG) << "invalid incidence";
             return std::string();
@@ -117,7 +117,7 @@ Todo XMLObject::readTodo(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
-        const KCalCore::Todo::Ptr event = Kolab::fromXML<KCalCore::Todo::Ptr, KolabV2::Task>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
+        const KCalendarCore::Todo::Ptr event = Kolab::fromXML<KCalendarCore::Todo::Ptr, KolabV2::Task>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Todo();
@@ -127,7 +127,7 @@ Todo XMLObject::readTodo(const std::string &s, Version version)
         foreach (const QString &attachment, attachments) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
-        return Conversion::fromKCalCore(*event);
+        return Conversion::fromKCalendarCore(*event);
     }
     const Kolab::Todo todo = Kolab::readTodo(s, false);
     ErrorHandler::handleLibkolabxmlErrors();
@@ -138,7 +138,7 @@ std::string XMLObject::writeJournal(const Journal &event, Version version, const
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
-        const KCalCore::Journal::Ptr i = Conversion::toKCalCore(event);
+        const KCalendarCore::Journal::Ptr i = Conversion::toKCalendarCore(event);
         if (!i) {
             qCCritical(PIMKOLAB_LOG) << "invalid journal";
             return std::string();
@@ -160,7 +160,7 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
-        const KCalCore::Journal::Ptr event = Kolab::fromXML<KCalCore::Journal::Ptr, KolabV2::Journal>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
+        const KCalendarCore::Journal::Ptr event = Kolab::fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Journal();
@@ -170,7 +170,7 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
         foreach (const QString &attachment, attachments) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
-        return Conversion::fromKCalCore(*event);
+        return Conversion::fromKCalendarCore(*event);
     }
     const Kolab::Journal journal = Kolab::readJournal(s, false);
     ErrorHandler::handleLibkolabxmlErrors();

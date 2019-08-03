@@ -20,8 +20,8 @@
 #include "ewsfetchfoldersincrjob.h"
 
 #include <KMime/Message>
-#include <KCalCore/Event>
-#include <KCalCore/Todo>
+#include <KCalendarCore/Event>
+#include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
 #include <AkonadiCore/CollectionStatistics>
@@ -502,14 +502,14 @@ void EwsFetchFoldersIncrJobPrivate::updateFolderCollection(Collection &collectio
     mimeTypes.append(Collection::mimeType());
     switch (folder.type()) {
     case EwsFolderTypeCalendar:
-        mimeTypes.append(KCalCore::Event::eventMimeType());
+        mimeTypes.append(KCalendarCore::Event::eventMimeType());
         break;
     case EwsFolderTypeContacts:
         mimeTypes.append(KContacts::Addressee::mimeType());
         mimeTypes.append(KContacts::ContactGroup::mimeType());
         break;
     case EwsFolderTypeTasks:
-        mimeTypes.append(KCalCore::Todo::todoMimeType());
+        mimeTypes.append(KCalendarCore::Todo::todoMimeType());
         break;
     case EwsFolderTypeMail:
         if (contClass == QStringLiteral("IPF.Note") || contClass.isEmpty()) {

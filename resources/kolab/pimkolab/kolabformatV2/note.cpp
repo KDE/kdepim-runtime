@@ -35,26 +35,26 @@
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
 
-#include <kcalcore/journal.h>
+#include <kcalendarcore/journal.h>
 
 using namespace KolabV2;
 
-KCalCore::Journal::Ptr Note::xmlToJournal(const QString &xml)
+KCalendarCore::Journal::Ptr Note::xmlToJournal(const QString &xml)
 {
     Note note;
     note.load(xml);
-    KCalCore::Journal::Ptr journal(new KCalCore::Journal());
+    KCalendarCore::Journal::Ptr journal(new KCalendarCore::Journal());
     note.saveTo(journal);
     return journal;
 }
 
-QString Note::journalToXML(const KCalCore::Journal::Ptr &journal)
+QString Note::journalToXML(const KCalendarCore::Journal::Ptr &journal)
 {
     Note note(journal);
     return note.saveXML();
 }
 
-Note::Note(const KCalCore::Journal::Ptr &journal) : mRichText(false)
+Note::Note(const KCalendarCore::Journal::Ptr &journal) : mRichText(false)
 {
     if (journal) {
         setFields(journal);
@@ -184,7 +184,7 @@ QString Note::saveXML() const
     return document.toString();
 }
 
-void Note::setFields(const KCalCore::Journal::Ptr &journal)
+void Note::setFields(const KCalendarCore::Journal::Ptr &journal)
 {
     KolabBase::setFields(journal);
 
@@ -212,7 +212,7 @@ void Note::setFields(const KCalCore::Journal::Ptr &journal)
     }
 }
 
-void Note::saveTo(const KCalCore::Journal::Ptr &journal) const
+void Note::saveTo(const KCalendarCore::Journal::Ptr &journal) const
 {
     KolabBase::saveTo(journal);
 

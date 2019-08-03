@@ -21,7 +21,7 @@
 #ifndef BIRTHDAYSRESOURCE_H
 #define BIRTHDAYSRESOURCE_H
 
-#include <KCalCore/Event>
+#include <KCalendarCore/Event>
 
 #include <resourcebase.h>
 
@@ -46,12 +46,12 @@ protected:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 private:
-    void addPendingEvent(const KCalCore::Event::Ptr &event, const QString &remoteId);
-    void checkForUnknownCategories(const QString &categoryToCheck, KCalCore::Event::Ptr &event);
+    void addPendingEvent(const KCalendarCore::Event::Ptr &event, const QString &remoteId);
+    void checkForUnknownCategories(const QString &categoryToCheck, KCalendarCore::Event::Ptr &event);
 
-    KCalCore::Event::Ptr createBirthday(const Akonadi::Item &contactItem);
-    KCalCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
-    KCalCore::Event::Ptr createEvent(const QDate &date);
+    KCalendarCore::Event::Ptr createBirthday(const Akonadi::Item &contactItem);
+    KCalendarCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
+    KCalendarCore::Event::Ptr createEvent(const QDate &date);
 
 private Q_SLOTS:
     void doFullSearch();

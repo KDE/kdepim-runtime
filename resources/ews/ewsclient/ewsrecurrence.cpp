@@ -26,7 +26,7 @@
 #include "ewsclient_debug.h"
 #include "ewstypes.h"
 
-using namespace KCalCore;
+using namespace KCalendarCore;
 
 static const QString dayOfWeekNames[] = {
     QStringLiteral("Monday"),

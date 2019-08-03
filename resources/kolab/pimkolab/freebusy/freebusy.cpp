@@ -20,12 +20,12 @@
 #include "conversion/kcalconversion.h"
 #include "conversion/commonconversion.h"
 #include "libkolab-version.h"
-#include <kcalcore/freebusy.h>
-#include <kcalcore/icalformat.h>
+#include <kcalendarcore/freebusy.h>
+#include <kcalendarcore/icalformat.h>
 #include <QUuid>
 #include <QTime>
 
-// namespace KCalCore {
+// namespace KCalendarCore {
 //     struct KCalFreebusy
 // {
 //
@@ -52,8 +52,8 @@
 //     const KDateTime eventEnd = event->dtEnd().toUtc();
 //
 //     if ( event->recurs() ) {
-//         const KCalCore::Duration duration( eventStart, eventEnd );
-//         const KCalCore::DateTimeList list = event->recurrence()->timesInInterval(start, end);
+//         const KCalendarCore::Duration duration( eventStart, eventEnd );
+//         const KCalendarCore::DateTimeList list = event->recurrence()->timesInInterval(start, end);
 //         foreach (const KDateTime &dt, list) {
 //             const KDateTime utc = dt.toUtc();
 //             addLocalPeriod(utc, duration.end(utc) );
@@ -166,16 +166,16 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
 
 Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &startDate, const cDateTime &endDate)
 {
-    QList<KCalCore::Event::Ptr> list;
+    QList<KCalendarCore::Event::Ptr> list;
     list.reserve(events.size());
     for (const Kolab::Event &e : events) {
-        list.append(Kolab::Conversion::toKCalCore(e));
+        list.append(Kolab::Conversion::toKCalendarCore(e));
     }
-    KCalCore::Person person(QStringLiteral("dummyname"), QStringLiteral("dummyemail"));
+    KCalendarCore::Person person(QStringLiteral("dummyname"), QStringLiteral("dummyemail"));
     return generateFreeBusy(list, Kolab::Conversion::toDate(startDate), Kolab::Conversion::toDate(endDate), person, startDate.isDateOnly());
 }
 
-Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalCore::Person &organizer, bool allDay)
+Freebusy generateFreeBusy(const QList<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay)
 {
     /*
      * TODO the conversion of date-only values to date-time is only necessary because xCal doesn't allow date only. iCalendar doesn't seem to make this restriction so it looks like a bug.
@@ -190,11 +190,11 @@ Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDate
         end.setTime(QTime(0, 0, 0, 0)); //The window is inclusive
     }
 
-    //TODO try to merge that with KCalCore::Freebusy
+    //TODO try to merge that with KCalendarCore::Freebusy
     std::vector<Kolab::FreebusyPeriod> freebusyPeriods;
-    Q_FOREACH (const KCalCore::Event::Ptr &event, events) {
+    Q_FOREACH (const KCalendarCore::Event::Ptr &event, events) {
         // If this event is transparent it shouldn't be in the freebusy list.
-        if (event->transparency() == KCalCore::Event::Transparent) {
+        if (event->transparency() == KCalendarCore::Event::Transparent) {
             continue;
         }
 
@@ -207,7 +207,7 @@ Freebusy generateFreeBusy(const QList<KCalCore::Event::Ptr> &events, const QDate
 
         std::vector <Kolab::Period> periods;
         if (event->recurs()) {
-            const KCalCore::Duration duration(eventStart, eventEnd);
+            const KCalendarCore::Duration duration(eventStart, eventEnd);
             const auto list = event->recurrence()->timesInInterval(start, end);
             for (const auto &dt : list) {
                 const auto utc = dt.toUTC();
@@ -289,11 +289,11 @@ Freebusy aggregateFreeBusy(const std::vector< Freebusy > &fbList, const std::str
 
 std::string toIFB(const Kolab::Freebusy &freebusy)
 {
-    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy(Kolab::Conversion::toDate(freebusy.start()), Kolab::Conversion::toDate(freebusy.end())));
-    KCalCore::FreeBusyPeriod::List list;
+    KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy(Kolab::Conversion::toDate(freebusy.start()), Kolab::Conversion::toDate(freebusy.end())));
+    KCalendarCore::FreeBusyPeriod::List list;
     Q_FOREACH (const Kolab::FreebusyPeriod &fbPeriod, freebusy.periods()) {
         Q_FOREACH (const Kolab::Period &p, fbPeriod.periods()) {
-            KCalCore::FreeBusyPeriod period(Kolab::Conversion::toDate(p.start), Kolab::Conversion::toDate(p.end));
+            KCalendarCore::FreeBusyPeriod period(Kolab::Conversion::toDate(p.start), Kolab::Conversion::toDate(p.end));
 //             period.setSummary("summary"); Doesn't even work. X-SUMMARY is read though (just not written out)s
             //TODO
             list.append(period);
@@ -302,12 +302,12 @@ std::string toIFB(const Kolab::Freebusy &freebusy)
     fb->addPeriods(list);
 
     fb->setUid(QString::fromStdString(freebusy.uid()));
-    fb->setOrganizer(KCalCore::Person(Conversion::fromStdString(freebusy.organizer().name()), Conversion::fromStdString(freebusy.organizer().email())));
+    fb->setOrganizer(KCalendarCore::Person(Conversion::fromStdString(freebusy.organizer().name()), Conversion::fromStdString(freebusy.organizer().email())));
     fb->setLastModified(Kolab::Conversion::toDate(freebusy.timestamp()));
 
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
-    QString data = format.createScheduleMessage(fb, KCalCore::iTIPPublish);
+    QString data = format.createScheduleMessage(fb, KCalendarCore::iTIPPublish);
     return Conversion::toStdString(data);
 }
 }

@@ -20,11 +20,11 @@
 #ifndef EWSRECURRENCE_H
 #define EWSRECURRENCE_H
 
-#include <KCalCore/Recurrence>
+#include <KCalendarCore/Recurrence>
 
 class QXmlStreamReader;
 
-class EwsRecurrence : public KCalCore::Recurrence
+class EwsRecurrence : public KCalendarCore::Recurrence
 {
 public:
     EwsRecurrence();

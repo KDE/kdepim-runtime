@@ -110,9 +110,9 @@ static inline QString kolabMimeType()
     return QStringLiteral(MIME_TYPE_KOLAB);
 }
 
-KCalCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments)
+KCalendarCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments)
 {
-    return fromXML<KCalCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
+    return fromXML<KCalendarCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
 }
 
 QString ownUrlDecode(QByteArray encodedParam)
@@ -217,7 +217,7 @@ public:
         mAddressee = KContacts::Addressee();
     }
 
-    KCalCore::Incidence::Ptr mIncidence;
+    KCalendarCore::Incidence::Ptr mIncidence;
     KContacts::Addressee mAddressee;
     KContacts::ContactGroup mContactGroup;
     KMime::Message::Ptr mNote;
@@ -291,19 +291,19 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
     case EventObject:
     {
         const Kolab::Event &event = mimeObject.getEvent();
-        d->mIncidence = Kolab::Conversion::toKCalCore(event);
+        d->mIncidence = Kolab::Conversion::toKCalendarCore(event);
         break;
     }
     case TodoObject:
     {
         const Kolab::Todo &event = mimeObject.getTodo();
-        d->mIncidence = Kolab::Conversion::toKCalCore(event);
+        d->mIncidence = Kolab::Conversion::toKCalendarCore(event);
         break;
     }
     case JournalObject:
     {
         const Kolab::Journal &event = mimeObject.getJournal();
-        d->mIncidence = Kolab::Conversion::toKCalCore(event);
+        d->mIncidence = Kolab::Conversion::toKCalendarCore(event);
         break;
     }
     case ContactObject:
@@ -396,22 +396,22 @@ ObjectType KolabObjectReader::getType() const
     return d->mObjectType;
 }
 
-KCalCore::Event::Ptr KolabObjectReader::getEvent() const
+KCalendarCore::Event::Ptr KolabObjectReader::getEvent() const
 {
-    return d->mIncidence.dynamicCast<KCalCore::Event>();
+    return d->mIncidence.dynamicCast<KCalendarCore::Event>();
 }
 
-KCalCore::Todo::Ptr KolabObjectReader::getTodo() const
+KCalendarCore::Todo::Ptr KolabObjectReader::getTodo() const
 {
-    return d->mIncidence.dynamicCast<KCalCore::Todo>();
+    return d->mIncidence.dynamicCast<KCalendarCore::Todo>();
 }
 
-KCalCore::Journal::Ptr KolabObjectReader::getJournal() const
+KCalendarCore::Journal::Ptr KolabObjectReader::getJournal() const
 {
-    return d->mIncidence.dynamicCast<KCalCore::Journal>();
+    return d->mIncidence.dynamicCast<KCalendarCore::Journal>();
 }
 
-KCalCore::Incidence::Ptr KolabObjectReader::getIncidence() const
+KCalendarCore::Incidence::Ptr KolabObjectReader::getIncidence() const
 {
     return d->mIncidence;
 }
@@ -475,58 +475,58 @@ static KMime::Message::Ptr createMimeMessage(const std::string &mimeMessage)
     return msg;
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeEvent(const KCalCore::Event::Ptr &i, Version v, const QString &productId, const QString &)
+KMime::Message::Ptr KolabObjectWriter::writeEvent(const KCalendarCore::Event::Ptr &i, Version v, const QString &productId, const QString &)
 {
     ErrorHandler::clearErrors();
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
-    const Kolab::Event &event = Kolab::Conversion::fromKCalCore(*i);
+    const Kolab::Event &event = Kolab::Conversion::fromKCalendarCore(*i);
     Kolab::MIMEObject mimeObject;
     const std::string mimeMessage = mimeObject.writeEvent(event, v, productId.toStdString());
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeTodo(const KCalCore::Todo::Ptr &i, Version v, const QString &productId, const QString &)
+KMime::Message::Ptr KolabObjectWriter::writeTodo(const KCalendarCore::Todo::Ptr &i, Version v, const QString &productId, const QString &)
 {
     ErrorHandler::clearErrors();
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
-    const Kolab::Todo &todo = Kolab::Conversion::fromKCalCore(*i);
+    const Kolab::Todo &todo = Kolab::Conversion::fromKCalendarCore(*i);
     Kolab::MIMEObject mimeObject;
     const std::string mimeMessage = mimeObject.writeTodo(todo, v, productId.toStdString());
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalCore::Journal::Ptr &i, Version v, const QString &productId, const QString &)
+KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalendarCore::Journal::Ptr &i, Version v, const QString &productId, const QString &)
 {
     ErrorHandler::clearErrors();
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
-    const Kolab::Journal &journal = Kolab::Conversion::fromKCalCore(*i);
+    const Kolab::Journal &journal = Kolab::Conversion::fromKCalendarCore(*i);
     Kolab::MIMEObject mimeObject;
     const std::string mimeMessage = mimeObject.writeJournal(journal, v, productId.toStdString());
     return createMimeMessage(mimeMessage);
 }
 
-KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalCore::Incidence::Ptr &i, Version v, const QString &productId, const QString &tz)
+KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalendarCore::Incidence::Ptr &i, Version v, const QString &productId, const QString &tz)
 {
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
         return KMime::Message::Ptr();
     }
     switch (i->type()) {
-    case KCalCore::IncidenceBase::TypeEvent:
-        return writeEvent(i.dynamicCast<KCalCore::Event>(), v, productId, tz);
-    case KCalCore::IncidenceBase::TypeTodo:
-        return writeTodo(i.dynamicCast<KCalCore::Todo>(), v, productId, tz);
-    case KCalCore::IncidenceBase::TypeJournal:
-        return writeJournal(i.dynamicCast<KCalCore::Journal>(), v, productId, tz);
+    case KCalendarCore::IncidenceBase::TypeEvent:
+        return writeEvent(i.dynamicCast<KCalendarCore::Event>(), v, productId, tz);
+    case KCalendarCore::IncidenceBase::TypeTodo:
+        return writeTodo(i.dynamicCast<KCalendarCore::Todo>(), v, productId, tz);
+    case KCalendarCore::IncidenceBase::TypeJournal:
+        return writeJournal(i.dynamicCast<KCalendarCore::Journal>(), v, productId, tz);
     default:
         qCCritical(PIMKOLAB_LOG) << "unknown incidence type";
     }

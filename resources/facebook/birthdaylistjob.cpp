@@ -27,8 +27,8 @@
 #include <KLocalizedString>
 #include <KCharsets>
 
-#include <KCalCore/MemoryCalendar>
-#include <KCalCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/ICalFormat>
 
 BirthdayListJob::BirthdayListJob(const QString &identifier, const Akonadi::Collection &collection, QObject *parent)
     : KJob(parent)
@@ -140,8 +140,8 @@ void BirthdayListJob::fetchBirthdayIcal(const QUrl &url)
             return;
         }
 
-        auto cal = KCalCore::MemoryCalendar::Ptr::create(QTimeZone::systemTimeZone());
-        KCalCore::ICalFormat format;
+        auto cal = KCalendarCore::MemoryCalendar::Ptr::create(QTimeZone::systemTimeZone());
+        KCalendarCore::ICalFormat format;
         if (!format.fromRawString(cal, job->data(), false)) {
             emitError(i18n("Failed to parse birthday calendar"));
             return;
@@ -156,13 +156,13 @@ void BirthdayListJob::fetchBirthdayIcal(const QUrl &url)
     });
 }
 
-void BirthdayListJob::processEvent(const KCalCore::Event::Ptr &event)
+void BirthdayListJob::processEvent(const KCalendarCore::Event::Ptr &event)
 {
     if (Settings::self()->birthdayReminders()) {
-        auto alarm = KCalCore::Alarm::Ptr::create(event.data());
+        auto alarm = KCalendarCore::Alarm::Ptr::create(event.data());
         alarm->setDisplayAlarm(event->summary());
         alarm->setStartOffset({ -Settings::self()->birthdayReminderDays(),
-                                KCalCore::Duration::Days });
+                                KCalendarCore::Duration::Days });
         alarm->setEnabled(true);
         event->addAlarm(alarm);
     }
@@ -175,7 +175,7 @@ void BirthdayListJob::processEvent(const KCalCore::Event::Ptr &event)
     Akonadi::Item item;
     item.setRemoteId(uid);
     item.setGid(uid);
-    item.setMimeType(KCalCore::Event::eventMimeType());
+    item.setMimeType(KCalendarCore::Event::eventMimeType());
     item.setParentCollection(mCollection);
     item.setPayload(event);
     mItems.push_back(item);

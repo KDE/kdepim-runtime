@@ -20,14 +20,14 @@
 
 #include "icalresource.h"
 
-#include <KCalCore/MemoryCalendar>
-#include <KCalCore/FreeBusy>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/FreeBusy>
 
 #include <QDebug>
 #include <KLocalizedString>
 
 using namespace Akonadi;
-using namespace KCalCore;
+using namespace KCalendarCore;
 
 ICalResource::ICalResource(const QString &id)
     : ICalResourceBase(id)
@@ -140,10 +140,10 @@ void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
 
 QStringList ICalResource::allMimeTypes() const
 {
-    return QStringList() << KCalCore::Event::eventMimeType()
-                         << KCalCore::Todo::todoMimeType()
-                         << KCalCore::Journal::journalMimeType()
-                         << KCalCore::FreeBusy::freeBusyMimeType();
+    return QStringList() << KCalendarCore::Event::eventMimeType()
+                         << KCalendarCore::Todo::todoMimeType()
+                         << KCalendarCore::Journal::journalMimeType()
+                         << KCalendarCore::FreeBusy::freeBusyMimeType();
 }
 
 QString ICalResource::mimeType(const IncidenceBase::Ptr &incidence) const

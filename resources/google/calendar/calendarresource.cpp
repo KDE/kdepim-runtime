@@ -34,10 +34,10 @@
 #include <AkonadiCore/CachePolicy>
 #include <AkonadiCore/VectorHelper>
 
-#include <KCalCore/Calendar>
-#include <KCalCore/Attendee>
-#include <KCalCore/ICalFormat>
-#include <KCalCore/FreeBusy>
+#include <KCalendarCore/Calendar>
+#include <KCalendarCore/Attendee>
+#include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/FreeBusy>
 
 #include <KLocalizedString>
 #include <QIcon>
@@ -134,7 +134,7 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     KGAPI2::Job *job = nullptr;
-    if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         if (!collection.hasAttribute<KGAPIVersionAttribute>() || collection.attribute<KGAPIVersionAttribute>()->version() != KGAPIEventVersion) {
             lastSyncDelta = -1;
         }
@@ -148,7 +148,7 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
             fetchJob->setTimeMin(QDateTime(date).toTime_t());
         }
         job = fetchJob;
-    } else if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
         TaskFetchJob *fetchJob = new TaskFetchJob(collection.remoteId(), account(), this);
         if (lastSyncDelta > -1 && lastSyncDelta < 25 * 25 * 3600) {
             fetchJob->setFetchOnlyUpdated(collection.remoteRevision().toULongLong());
@@ -176,10 +176,10 @@ void CalendarResource::retrieveCollections()
 
 void CalendarResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    if ((!collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())
-         && !collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType()))
-        || (!canPerformTask<KCalCore::Event::Ptr>(item, KCalCore::Event::eventMimeType())
-            && !canPerformTask<KCalCore::Todo::Ptr>(item, KCalCore::Todo::todoMimeType()))) {
+    if ((!collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())
+         && !collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType()))
+        || (!canPerformTask<KCalendarCore::Event::Ptr>(item, KCalendarCore::Event::eventMimeType())
+            && !canPerformTask<KCalendarCore::Todo::Ptr>(item, KCalendarCore::Todo::todoMimeType()))) {
         return;
     }
 
@@ -189,20 +189,20 @@ void CalendarResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
     }
 
     KGAPI2::Job *job = nullptr;
-    if (item.hasPayload<KCalCore::Event::Ptr>()) {
-        KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
+    if (item.hasPayload<KCalendarCore::Event::Ptr>()) {
+        KCalendarCore::Event::Ptr event = item.payload<KCalendarCore::Event::Ptr>();
         EventPtr kevent(new Event(*event));
         auto cjob = new EventCreateJob(kevent, collection.remoteId(), account(), this);
         cjob->setSendUpdates(SendUpdatesPolicy::None);
         job = cjob;
-    } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
-        KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
+    } else if (item.hasPayload<KCalendarCore::Todo::Ptr>()) {
+        KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
         TaskPtr ktodo(new Task(*todo));
         ktodo->setUid(QLatin1String(""));
 
-        if (!ktodo->relatedTo(KCalCore::Incidence::RelTypeParent).isEmpty()) {
+        if (!ktodo->relatedTo(KCalendarCore::Incidence::RelTypeParent).isEmpty()) {
             Akonadi::Item parentItem;
-            parentItem.setGid(ktodo->relatedTo(KCalCore::Incidence::RelTypeParent));
+            parentItem.setGid(ktodo->relatedTo(KCalendarCore::Incidence::RelTypeParent));
 
             ItemFetchJob *fetchJob = new ItemFetchJob(parentItem, this);
             fetchJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
@@ -226,25 +226,25 @@ void CalendarResource::itemChanged(const Akonadi::Item &item, const QSet< QByteA
 {
     Q_UNUSED(partIdentifiers);
 
-    if (!canPerformTask<KCalCore::Event::Ptr>(item, KCalCore::Event::eventMimeType())
-        && !canPerformTask<KCalCore::Todo::Ptr>(item, KCalCore::Todo::todoMimeType())) {
+    if (!canPerformTask<KCalendarCore::Event::Ptr>(item, KCalendarCore::Event::eventMimeType())
+        && !canPerformTask<KCalendarCore::Todo::Ptr>(item, KCalendarCore::Todo::todoMimeType())) {
         return;
     }
 
     KGAPI2::Job *job = nullptr;
-    if (item.hasPayload<KCalCore::Event::Ptr>()) {
-        KCalCore::Event::Ptr event = item.payload<KCalCore::Event::Ptr>();
+    if (item.hasPayload<KCalendarCore::Event::Ptr>()) {
+        KCalendarCore::Event::Ptr event = item.payload<KCalendarCore::Event::Ptr>();
         EventPtr kevent(new Event(*event));
 
         auto mjob = new EventModifyJob(kevent, item.parentCollection().remoteId(), account(), this);
         mjob->setSendUpdates(SendUpdatesPolicy::None);
         connect(mjob, &EventModifyJob::finished, this, &CalendarResource::slotGenericJobFinished);
         job = mjob;
-    } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
-        KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
+    } else if (item.hasPayload<KCalendarCore::Todo::Ptr>()) {
+        KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
         //FIXME unused ktodo ?
         //TaskPtr ktodo(new Task(*todo));
-        QString parentUid = todo->relatedTo(KCalCore::Incidence::RelTypeParent);
+        QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
         job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, account(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
         connect(job, &TaskMoveJob::finished, this, &CalendarResource::slotModifyTaskReparentFinished);
@@ -262,11 +262,11 @@ void CalendarResource::itemRemoved(const Akonadi::Item &item)
         return;
     }
 
-    if (item.mimeType() == KCalCore::Event::eventMimeType()) {
+    if (item.mimeType() == KCalendarCore::Event::eventMimeType()) {
         KGAPI2::Job *job = new EventDeleteJob(item.remoteId(), item.parentCollection().remoteId(), account(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
         connect(job, &EventDeleteJob::finished, this, &CalendarResource::slotGenericJobFinished);
-    } else if (item.mimeType() == KCalCore::Todo::todoMimeType()) {
+    } else if (item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
         /* Google always automatically removes tasks with all their subtasks. In KOrganizer
          * by default we only remove the item we are given. For this reason we have to first
          * fetch all tasks, find all sub-tasks for the task being removed and detach them
@@ -293,7 +293,7 @@ void CalendarResource::itemMoved(const Item &item, const Collection &collectionS
         return;
     }
 
-    if (item.mimeType() != KCalCore::Event::eventMimeType()) {
+    if (item.mimeType() != KCalendarCore::Event::eventMimeType()) {
         cancelTask(i18n("Moving tasks between task lists is not supported"));
         return;
     }
@@ -314,13 +314,13 @@ void CalendarResource::collectionAdded(const Collection &collection, const Colle
     }
 
     KGAPI2::Job *job = nullptr;
-    if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         CalendarPtr calendar(new Calendar());
         calendar->setTitle(collection.displayName());
         calendar->setEditable(true);
         job = new CalendarCreateJob(calendar, account(), this);
     }
-    if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
         TaskListPtr taskList(new TaskList());
         taskList->setTitle(collection.displayName());
 
@@ -341,14 +341,14 @@ void CalendarResource::collectionChanged(const Collection &collection)
     }
 
     KGAPI2::Job *job = nullptr;
-    if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         CalendarPtr calendar(new Calendar());
         calendar->setUid(collection.remoteId());
         calendar->setTitle(collection.displayName());
         calendar->setEditable(true);
         job = new CalendarModifyJob(calendar, account(), this);
     }
-    if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
         TaskListPtr taskList(new TaskList());
         taskList->setUid(collection.remoteId());
         taskList->setTitle(collection.displayName());
@@ -369,9 +369,9 @@ void CalendarResource::collectionRemoved(const Collection &collection)
     }
 
     KGAPI2::Job *job = nullptr;
-    if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         job = new CalendarDeleteJob(collection.remoteId(), account(), this);
-    } else if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
         job = new TaskListDeleteJob(collection.remoteId(), account(), this);
     } else {
         cancelTask(i18n("Unknown collection mimetype"));
@@ -436,7 +436,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         }
 
         Collection collection;
-        collection.setContentMimeTypes(QStringList() << KCalCore::Event::eventMimeType());
+        collection.setContentMimeTypes(QStringList() << KCalendarCore::Event::eventMimeType());
         collection.setName(calendar->uid());
         collection.setParentCollection(m_rootCollection);
         collection.setRemoteId(calendar->uid());
@@ -461,9 +461,9 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
 
         // Block email reminders, since Google sends them for us
         BlockAlarmsAttribute *blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
-        blockAlarms->blockAlarmType(KCalCore::Alarm::Audio, false);
-        blockAlarms->blockAlarmType(KCalCore::Alarm::Display, false);
-        blockAlarms->blockAlarmType(KCalCore::Alarm::Procedure, false);
+        blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
+        blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
+        blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
 
         m_collections[ collection.remoteId() ] = collection;
     }
@@ -477,7 +477,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         }
 
         Collection collection;
-        collection.setContentMimeTypes(QStringList() << KCalCore::Todo::todoMimeType());
+        collection.setContentMimeTypes(QStringList() << KCalendarCore::Todo::todoMimeType());
         collection.setName(taskList->uid());
         collection.setParentCollection(m_rootCollection);
         collection.setRemoteId(taskList->uid());
@@ -510,25 +510,25 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
     bool isIncremental = false;
 
     ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
-    if (collection.contentMimeTypes().contains(KCalCore::Event::eventMimeType())) {
+    if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         QMap< QString, EventPtr > recurrentEvents;
 
         isIncremental = (qobject_cast<EventFetchJob *>(job)->fetchOnlyUpdated() > 0);
         Q_FOREACH (const ObjectPtr &object, objects) {
             EventPtr event = object.dynamicCast<Event>();
             if (event->useDefaultReminders() && attr) {
-                const KCalCore::Alarm::List alarms = attr->alarms(event.data());
-                for (const KCalCore::Alarm::Ptr &alarm : alarms) {
+                const KCalendarCore::Alarm::List alarms = attr->alarms(event.data());
+                for (const KCalendarCore::Alarm::Ptr &alarm : alarms) {
                     event->addAlarm(alarm);
                 }
             }
 
             Item item;
-            item.setMimeType(KCalCore::Event::eventMimeType());
+            item.setMimeType(KCalendarCore::Event::eventMimeType());
             item.setParentCollection(collection);
             item.setRemoteId(event->id());
             item.setRemoteRevision(event->etag());
-            item.setPayload<KCalCore::Event::Ptr>(event.dynamicCast<KCalCore::Event>());
+            item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
 
             if (event->deleted()) {
                 removedItems << item;
@@ -540,18 +540,18 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
         if (!isIncremental) {
             collection.attribute<KGAPIVersionAttribute>(Collection::AddIfMissing)->setVersion(KGAPIEventVersion);
         }
-    } else if (collection.contentMimeTypes().contains(KCalCore::Todo::todoMimeType())) {
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
         isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
 
         Q_FOREACH (const ObjectPtr &object, objects) {
             TaskPtr task = object.dynamicCast<Task>();
 
             Item item;
-            item.setMimeType(KCalCore::Todo::todoMimeType());
+            item.setMimeType(KCalendarCore::Todo::todoMimeType());
             item.setParentCollection(collection);
             item.setRemoteId(task->uid());
             item.setRemoteRevision(task->etag());
-            item.setPayload<KCalCore::Todo::Ptr>(task.dynamicCast<KCalCore::Todo>());
+            item.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
 
             if (task->deleted()) {
                 removedItems << item;
@@ -582,7 +582,7 @@ void CalendarResource::slotModifyTaskReparentFinished(KGAPI2::Job *job)
     }
 
     Item item = job->property(ITEM_PROPERTY).value<Item>();
-    KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
+    KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
     TaskPtr ktodo(new Task(*todo.data()));
 
     job = new TaskModifyJob(ktodo, item.parentCollection().remoteId(), job->account(), this);
@@ -604,15 +604,15 @@ void CalendarResource::slotRemoveTaskFetchJobFinished(KJob *job)
 
     const Item::List items = fetchJob->items();
     for (Item item : items) {
-        if (!item.hasPayload<KCalCore::Todo::Ptr>()) {
+        if (!item.hasPayload<KCalendarCore::Todo::Ptr>()) {
             qCDebug(GOOGLE_CALENDAR_LOG) << "Item " << item.remoteId() << " does not have Todo payload";
             continue;
         }
 
-        KCalCore::Todo::Ptr todo = item.payload<KCalCore::Todo::Ptr>();
+        KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
         /* If this item is child of the item we want to remove then add it to detach list */
-        if (todo->relatedTo(KCalCore::Incidence::RelTypeParent) == removedItem.remoteId()) {
-            todo->setRelatedTo(QString(), KCalCore::Incidence::RelTypeParent);
+        if (todo->relatedTo(KCalendarCore::Incidence::RelTypeParent) == removedItem.remoteId()) {
+            todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
             item.setPayload(todo);
             detachItems << item;
         }
@@ -672,12 +672,12 @@ void CalendarResource::slotTaskAddedSearchFinished(KJob *job)
     // The parent is not known, so give up and just store the item in Google
     // without the information about parent.
     if (items.isEmpty()) {
-        task->setRelatedTo(QString(), KCalCore::Incidence::RelTypeParent);
+        task->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
         newJob = new TaskCreateJob(task, tasksListId, account(), this);
     } else {
         Item matchedItem = items.first();
 
-        task->setRelatedTo(matchedItem.remoteId(), KCalCore::Incidence::RelTypeParent);
+        task->setRelatedTo(matchedItem.remoteId(), KCalendarCore::Incidence::RelTypeParent);
         TaskCreateJob *createJob = new TaskCreateJob(task, tasksListId, account(), this);
         createJob->setParentItem(matchedItem.remoteId());
         newJob = createJob;
@@ -699,21 +699,21 @@ void CalendarResource::slotCreateJobFinished(KGAPI2::Job *job)
     ObjectsList objects = createJob->items();
     Q_ASSERT(objects.count() > 0);
 
-    if (item.mimeType() == KCalCore::Event::eventMimeType()) {
+    if (item.mimeType() == KCalendarCore::Event::eventMimeType()) {
         EventPtr event = objects.first().dynamicCast<Event>();
         item.setRemoteId(event->id());
         item.setRemoteRevision(event->etag());
         item.setGid(event->uid());
         changeCommitted(item);
-        item.setPayload<KCalCore::Event::Ptr>(event.dynamicCast<KCalCore::Event>());
+        item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
         new ItemModifyJob(item, this);
-    } else if (item.mimeType() == KCalCore::Todo::todoMimeType()) {
+    } else if (item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
         TaskPtr task = objects.first().dynamicCast<Task>();
         item.setRemoteId(task->uid());
         item.setRemoteRevision(task->etag());
         item.setGid(task->uid());
         changeCommitted(item);
-        item.setPayload<KCalCore::Todo::Ptr>(task.dynamicCast<KCalCore::Todo>());
+        item.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
         new ItemModifyJob(item, this);
     }
 }
@@ -772,19 +772,19 @@ void CalendarResource::slotRetrieveFreeBusyJobFinished(KGAPI2::Job *job)
         return;
     }
 
-    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy);
+    KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy);
     fb->setUid(QStringLiteral("%1%2@google.com").arg(QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMddTHHmmssZ"))));
     fb->setOrganizer(account()->accountName());
-    fb->addAttendee(KCalCore::Attendee(QString(), queryJob->id()));
+    fb->addAttendee(KCalendarCore::Attendee(QString(), queryJob->id()));
     // FIXME: is it really sort?
-    fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalCore::IncidenceBase::RoleSort);
+    fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalendarCore::IncidenceBase::RoleSort);
 
     Q_FOREACH (const KGAPI2::FreeBusyQueryJob::BusyRange &range, queryJob->busy()) {
         fb->addPeriod(range.busyStart, range.busyEnd);
     }
 
-    KCalCore::ICalFormat format;
-    const QString fbStr = format.createScheduleMessage(fb, KCalCore::iTIPRequest);
+    KCalendarCore::ICalFormat format;
+    const QString fbStr = format.createScheduleMessage(fb, KCalendarCore::iTIPRequest);
 
     freeBusyRetrieved(queryJob->id(), fbStr, true, QString());
 }

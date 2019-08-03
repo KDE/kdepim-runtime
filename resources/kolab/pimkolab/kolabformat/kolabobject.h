@@ -25,10 +25,10 @@
 #include <AkonadiCore/Relation>
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <kcalcore/incidence.h>
-#include <kcalcore/event.h>
-#include <kcalcore/journal.h>
-#include <kcalcore/todo.h>
+#include <kcalendarcore/incidence.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/journal.h>
+#include <kcalendarcore/todo.h>
 #include <kmime/kmime_message.h>
 
 #include "kolabdefinitions.h"
@@ -36,7 +36,7 @@
 namespace Kolab {
 class Freebusy;
 
-KOLAB_EXPORT KCalCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments);
+KOLAB_EXPORT KCalendarCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments);
 
 struct KOLAB_EXPORT RelationMember {
     QString messageId;
@@ -92,10 +92,10 @@ public:
      *
      * Use getType() to determine the correct one to call.
      */
-    KCalCore::Event::Ptr getEvent() const;
-    KCalCore::Todo::Ptr getTodo() const;
-    KCalCore::Journal::Ptr getJournal() const;
-    KCalCore::Incidence::Ptr getIncidence() const;
+    KCalendarCore::Event::Ptr getEvent() const;
+    KCalendarCore::Todo::Ptr getTodo() const;
+    KCalendarCore::Journal::Ptr getJournal() const;
+    KCalendarCore::Incidence::Ptr getIncidence() const;
     KContacts::Addressee getContact() const;
     KContacts::ContactGroup getDistlist() const;
     KMime::Message::Ptr getNote() const;
@@ -124,10 +124,10 @@ class KOLAB_EXPORT KolabObjectWriter
 {
 public:
 
-    static KMime::Message::Ptr writeEvent(const KCalCore::Event::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeTodo(const KCalCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeJournal(const KCalCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeIncidence(const KCalCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr writeEvent(const KCalendarCore::Event::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr writeTodo(const KCalendarCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr writeJournal(const KCalendarCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr writeIncidence(const KCalendarCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
     static KMime::Message::Ptr writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());

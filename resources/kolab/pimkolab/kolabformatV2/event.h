@@ -36,14 +36,14 @@
 
 #include "incidence.h"
 
-#include <kcalcore/event.h>
+#include <kcalendarcore/event.h>
 
 class QDomElement;
 
 namespace KolabV2 {
 /**
  * This class represents an event, and knows how to load/save it
- * from/to XML, and from/to a KCalCore::Event.
+ * from/to XML, and from/to a KCalendarCore::Event.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -52,24 +52,24 @@ class Event : public Incidence
 public:
     /// Use this to parse an xml string to a event entry
     /// The caller is responsible for deleting the returned event
-    static KCalCore::Event::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz);
+    static KCalendarCore::Event::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz);
 
     /// Use this to get an xml string describing this event entry
-    static QString eventToXML(const KCalCore::Event::Ptr &, const QString &tz);
+    static QString eventToXML(const KCalendarCore::Event::Ptr &, const QString &tz);
 
     /// Create a event object and
-    explicit Event(const QString &tz, const KCalCore::Event::Ptr &event = KCalCore::Event::Ptr());
+    explicit Event(const QString &tz, const KCalendarCore::Event::Ptr &event = KCalendarCore::Event::Ptr());
     virtual ~Event();
 
-    void saveTo(const KCalCore::Event::Ptr &event);
+    void saveTo(const KCalendarCore::Event::Ptr &event);
 
     QString type() const override
     {
         return QStringLiteral("Event");
     }
 
-    virtual void setTransparency(KCalCore::Event::Transparency transparency);
-    virtual KCalCore::Event::Transparency transparency() const;
+    virtual void setTransparency(KCalendarCore::Event::Transparency transparency);
+    virtual KCalendarCore::Event::Transparency transparency() const;
 
     virtual void setEndDate(const QDateTime &date);
     virtual void setEndDate(const QDate &date);
@@ -90,9 +90,9 @@ public:
 
 protected:
     // Read all known fields from this ical incidence
-    void setFields(const KCalCore::Event::Ptr &);
+    void setFields(const KCalendarCore::Event::Ptr &);
 
-    KCalCore::Event::Transparency mShowTimeAs;
+    KCalendarCore::Event::Transparency mShowTimeAs;
     QDateTime mEndDate;
     bool mHasEndDate;
 };

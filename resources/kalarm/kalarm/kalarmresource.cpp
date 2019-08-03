@@ -31,8 +31,8 @@
 #include <collectionfetchscope.h>
 #include <collectionmodifyjob.h>
 
-#include <KCalCore/MemoryCalendar>
-#include <KCalCore/Incidence>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/Incidence>
 
 #include "kalarmresource_debug.h"
 
@@ -239,7 +239,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteA
 {
     Q_UNUSED(parts);
     const QString rid = item.remoteId();
-    const KCalCore::Event::Ptr kcalEvent = calendar()->event(rid);
+    const KCalendarCore::Event::Ptr kcalEvent = calendar()->event(rid);
     if (!kcalEvent) {
         qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: Event not found:" << rid;
         Q_EMIT error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
@@ -247,7 +247,7 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteA
     }
 
     if (kcalEvent->alarms().isEmpty()) {
-        qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: KCalCore::Event has no alarms:" << rid;
+        qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: KCalendarCore::Event has no alarms:" << rid;
         Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
         return false;
     }
@@ -359,7 +359,7 @@ void KAlarmResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
         return;
     }
     const KAEvent event = item.payload<KAEvent>();
-    KCalCore::Event::Ptr kcalEvent(new KCalCore::Event);
+    KCalendarCore::Event::Ptr kcalEvent(new KCalendarCore::Event);
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
     if (!calendar()->addIncidence(kcalEvent)) {
         qCritical() << "Error adding event with id" << event.id() << ", item id" << item.id();
@@ -399,25 +399,25 @@ void KAlarmResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArra
         return;
     }
 
-    KCalCore::Incidence::Ptr incidence = calendar()->incidence(item.remoteId());
+    KCalendarCore::Incidence::Ptr incidence = calendar()->incidence(item.remoteId());
     if (incidence) {
         if (incidence->isReadOnly()) {
             qCWarning(KALARMRESOURCE_LOG) << identifier() << "itemChanged: Event is read only:" << event.id();
             cancelTask(errorMessage(KAlarmResourceCommon::EventReadOnly, event.id()));
             return;
         }
-        if (incidence->type() == KCalCore::Incidence::TypeEvent) {
+        if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
             calendar()->deleteIncidence(incidence);   // it's not an Event
             incidence.clear();
         } else {
-            KCalCore::Event::Ptr ev(incidence.staticCast<KCalCore::Event>());
+            KCalendarCore::Event::Ptr ev(incidence.staticCast<KCalendarCore::Event>());
             event.updateKCalEvent(ev, KAEvent::UID_SET);
             calendar()->setModified(true);
         }
     }
     if (!incidence) {
         // not in the calendar yet, should not happen -> add it
-        KCalCore::Event::Ptr kcalEvent(new KCalCore::Event);
+        KCalendarCore::Event::Ptr kcalEvent(new KCalendarCore::Event);
         event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
         calendar()->addIncidence(kcalEvent);
     }
@@ -457,11 +457,11 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection &collection)
     KAlarmResourceCommon::setCollectionCompatibility(collection, mCompatibility, mVersion);
 
     // Retrieve events from the calendar
-    const KCalCore::Event::List events = calendar()->events();
+    const KCalendarCore::Event::List events = calendar()->events();
     Item::List items;
-    for (const KCalCore::Event::Ptr &kcalEvent : qAsConst(events)) {
+    for (const KCalendarCore::Event::Ptr &kcalEvent : qAsConst(events)) {
         if (kcalEvent->alarms().isEmpty()) {
-            qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItems: KCalCore::Event has no alarms:" << kcalEvent->uid();
+            qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItems: KCalendarCore::Event has no alarms:" << kcalEvent->uid();
             continue;    // ignore events without alarms
         }
 

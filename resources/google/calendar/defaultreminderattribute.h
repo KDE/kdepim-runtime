@@ -22,8 +22,8 @@
 
 #include <KGAPI/Types>
 
-#include <KCalCore/Alarm>
-#include <KCalCore/Incidence>
+#include <KCalendarCore/Alarm>
+#include <KCalendarCore/Incidence>
 
 class DefaultReminderAttribute : public Akonadi::Attribute
 {
@@ -36,7 +36,7 @@ public:
     QByteArray type() const override;
 
     void setReminders(const KGAPI2::RemindersList &reminders);
-    KCalCore::Alarm::List alarms(KCalCore::Incidence *incidence) const;
+    KCalendarCore::Alarm::List alarms(KCalendarCore::Incidence *incidence) const;
 
 private:
     KGAPI2::RemindersList m_reminders;

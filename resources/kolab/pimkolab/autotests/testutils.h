@@ -129,7 +129,7 @@ QString normalizeVCardMessage(QString content)
 }
 
 //Normalize incidences for comparison
-void normalizeIncidence(KCalCore::Incidence::Ptr incidence)
+void normalizeIncidence(KCalendarCore::Incidence::Ptr incidence)
 {
     //The UID is not persistent (it's just the internal pointer), therefore we clear it
     //TODO make sure that the UID does really not need to be persistent
@@ -140,8 +140,8 @@ void normalizeIncidence(KCalCore::Incidence::Ptr incidence)
     incidence->setAttendees(attendees);
 
     //FIXME even if hasDueDate can differ, it shouldn't because it breaks equality. Check why they differ in the first place.
-    if (incidence->type() == KCalCore::IncidenceBase::TypeTodo) {
-        KCalCore::Todo::Ptr todo = incidence.dynamicCast<KCalCore::Todo>();
+    if (incidence->type() == KCalendarCore::IncidenceBase::TypeTodo) {
+        KCalendarCore::Todo::Ptr todo = incidence.dynamicCast<KCalendarCore::Todo>();
         Q_ASSERT(todo.data());
         if (!todo->hasDueDate() && !todo->hasStartDate()) {
             todo->setAllDay(false);   // all day has no meaning if there are no start and due dates but may differ nevertheless

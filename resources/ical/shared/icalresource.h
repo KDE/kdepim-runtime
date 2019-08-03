@@ -23,7 +23,7 @@
 
 #include "icalresourcebase.h"
 
-#include <KCalCore/IncidenceBase>
+#include <KCalendarCore/IncidenceBase>
 
 class ICalResource : public ICalResourceBase
 {
@@ -50,7 +50,7 @@ protected:
     /**
       Returns the Akonadi specific @c text/calendar sub MIME type of the given @p incidence.
     */
-    virtual QString mimeType(const KCalCore::IncidenceBase::Ptr &incidence) const;
+    virtual QString mimeType(const KCalendarCore::IncidenceBase::Ptr &incidence) const;
 
     /**
       Returns a list of all calendar component sub MIME types.

@@ -19,7 +19,7 @@
 
 #include "ewstaskhandler.h"
 
-#include <KCalCore/Todo>
+#include <KCalendarCore/Todo>
 
 #include "ewsfetchtaskdetailjob.h"
 #include "ewsmodifytaskjob.h"
@@ -53,7 +53,7 @@ void EwsTaskHandler::setSeenFlag(Item &item, bool value)
 
 QString EwsTaskHandler::mimeType()
 {
-    return KCalCore::Todo::todoMimeType();
+    return KCalendarCore::Todo::todoMimeType();
 }
 
 bool EwsTaskHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)

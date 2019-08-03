@@ -34,29 +34,29 @@
 #include "task.h"
 #include "pimkolab_debug.h"
 
-#include <kcalcore/todo.h>
+#include <kcalendarcore/todo.h>
 
 using namespace KolabV2;
 
-KCalCore::Todo::Ptr Task::fromXml(const QDomDocument &xmlDoc, const QString &tz)
+KCalendarCore::Todo::Ptr Task::fromXml(const QDomDocument &xmlDoc, const QString &tz)
 {
     Task task(tz);
     task.loadXML(xmlDoc);
-    KCalCore::Todo::Ptr todo(new KCalCore::Todo());
+    KCalendarCore::Todo::Ptr todo(new KCalendarCore::Todo());
     task.saveTo(todo);
     return todo;
 }
 
-QString Task::taskToXML(const KCalCore::Todo::Ptr &todo, const QString &tz)
+QString Task::taskToXML(const KCalendarCore::Todo::Ptr &todo, const QString &tz)
 {
     Task task(tz, todo);
     return task.saveXML();
 }
 
-Task::Task(const QString &tz, const KCalCore::Todo::Ptr &task)
+Task::Task(const QString &tz, const KCalendarCore::Todo::Ptr &task)
     : Incidence(tz, task)
     , mPercentCompleted(0)
-    , mStatus(KCalCore::Incidence::StatusNone)
+    , mStatus(KCalendarCore::Incidence::StatusNone)
     , mHasStartDate(false)
     , mHasDueDate(false)
     , mHasCompletedDate(false)
@@ -80,12 +80,12 @@ int Task::percentCompleted() const
     return mPercentCompleted;
 }
 
-void Task::setStatus(KCalCore::Incidence::Status status)
+void Task::setStatus(KCalendarCore::Incidence::Status status)
 {
     mStatus = status;
 }
 
-KCalCore::Incidence::Status Task::status() const
+KCalendarCore::Incidence::Status Task::status() const
 {
     return mStatus;
 }
@@ -173,17 +173,17 @@ bool Task::loadAttribute(QDomElement &element)
         setPercentCompleted(percent);
     } else if (tagName == QLatin1String("status")) {
         if (element.text() == QLatin1String("in-progress")) {
-            setStatus(KCalCore::Incidence::StatusInProcess);
+            setStatus(KCalendarCore::Incidence::StatusInProcess);
         } else if (element.text() == QLatin1String("completed")) {
-            setStatus(KCalCore::Incidence::StatusCompleted);
+            setStatus(KCalendarCore::Incidence::StatusCompleted);
         } else if (element.text() == QLatin1String("waiting-on-someone-else")) {
-            setStatus(KCalCore::Incidence::StatusNeedsAction);
+            setStatus(KCalendarCore::Incidence::StatusNeedsAction);
         } else if (element.text() == QLatin1String("deferred")) {
             // Guessing a status here
-            setStatus(KCalCore::Incidence::StatusCanceled);
+            setStatus(KCalendarCore::Incidence::StatusCanceled);
         } else {
             // Default
-            setStatus(KCalCore::Incidence::StatusNone);
+            setStatus(KCalendarCore::Incidence::StatusNone);
         }
     } else if (tagName == QLatin1String("due-date")) {
         setDueDate(element.text());
@@ -210,26 +210,26 @@ bool Task::saveAttributes(QDomElement &element) const
     writeString(element, QStringLiteral("completed"), QString::number(percentCompleted()));
 
     switch (status()) {
-    case KCalCore::Incidence::StatusInProcess:
+    case KCalendarCore::Incidence::StatusInProcess:
         writeString(element, QStringLiteral("status"), QStringLiteral("in-progress"));
         break;
-    case KCalCore::Incidence::StatusCompleted:
+    case KCalendarCore::Incidence::StatusCompleted:
         writeString(element, QStringLiteral("status"), QStringLiteral("completed"));
         break;
-    case KCalCore::Incidence::StatusNeedsAction:
+    case KCalendarCore::Incidence::StatusNeedsAction:
         writeString(element, QStringLiteral("status"), QStringLiteral("waiting-on-someone-else"));
         break;
-    case KCalCore::Incidence::StatusCanceled:
+    case KCalendarCore::Incidence::StatusCanceled:
         writeString(element, QStringLiteral("status"), QStringLiteral("deferred"));
         break;
-    case KCalCore::Incidence::StatusNone:
+    case KCalendarCore::Incidence::StatusNone:
         writeString(element, QStringLiteral("status"), QStringLiteral("not-started"));
         break;
-    case KCalCore::Incidence::StatusTentative:
-    case KCalCore::Incidence::StatusConfirmed:
-    case KCalCore::Incidence::StatusDraft:
-    case KCalCore::Incidence::StatusFinal:
-    case KCalCore::Incidence::StatusX:
+    case KCalendarCore::Incidence::StatusTentative:
+    case KCalendarCore::Incidence::StatusConfirmed:
+    case KCalendarCore::Incidence::StatusDraft:
+    case KCalendarCore::Incidence::StatusFinal:
+    case KCalendarCore::Incidence::StatusX:
         // All of these are saved as StatusNone.
         writeString(element, QStringLiteral("status"), QStringLiteral("not-started"));
         break;
@@ -300,7 +300,7 @@ QString Task::saveXML() const
     return document.toString();
 }
 
-void Task::setFields(const KCalCore::Todo::Ptr &task)
+void Task::setFields(const KCalendarCore::Todo::Ptr &task)
 {
     Incidence::setFields(task);
 
@@ -334,7 +334,7 @@ void Task::setFields(const KCalCore::Todo::Ptr &task)
     }
 }
 
-void Task::saveTo(const KCalCore::Todo::Ptr &task)
+void Task::saveTo(const KCalendarCore::Todo::Ptr &task)
 {
     Incidence::saveTo(task);
 

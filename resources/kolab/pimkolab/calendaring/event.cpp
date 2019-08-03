@@ -68,14 +68,14 @@ bool Event::fromMime(const std::string &input)
         std::cout << "not an event ";
         return false;
     }
-    const Kolab::Event &e = Kolab::Conversion::fromKCalCore(*reader.getEvent());
+    const Kolab::Event &e = Kolab::Conversion::fromKCalendarCore(*reader.getEvent());
     Kolab::Event::operator=(e);
     return true;
 }
 
 std::string Event::toMime() const
 {
-    return std::string(KolabObjectWriter::writeEvent(Kolab::Conversion::toKCalCore(*this))->encodedContent().constData());
+    return std::string(KolabObjectWriter::writeEvent(Kolab::Conversion::toKCalendarCore(*this))->encodedContent().constData());
 }
 
 bool Event::fromICal(const std::string &input)
@@ -197,7 +197,7 @@ Attendee Event::getAttendee(const std::string &s)
 
 cDateTime Calendaring::Event::getNextOccurence(const cDateTime &date)
 {
-    KCalCore::Event::Ptr event = Kolab::Conversion::toKCalCore(*this);
+    KCalendarCore::Event::Ptr event = Kolab::Conversion::toKCalendarCore(*this);
     if (!event->recurs()) {
         return cDateTime();
     }
@@ -207,14 +207,14 @@ cDateTime Calendaring::Event::getNextOccurence(const cDateTime &date)
 
 cDateTime Calendaring::Event::getOccurenceEndDate(const cDateTime &startDate)
 {
-    KCalCore::Event::Ptr event = Kolab::Conversion::toKCalCore(*this);
+    KCalendarCore::Event::Ptr event = Kolab::Conversion::toKCalendarCore(*this);
     const QDateTime start = Kolab::Conversion::toDate(startDate);
     return Kolab::Conversion::fromDate(event->endDateForStart(start), event->allDay());
 }
 
 cDateTime Calendaring::Event::getLastOccurrence() const
 {
-    KCalCore::Event::Ptr event = Kolab::Conversion::toKCalCore(*this);
+    KCalendarCore::Event::Ptr event = Kolab::Conversion::toKCalendarCore(*this);
     if (!event->recurs()) {
         return cDateTime();
     }

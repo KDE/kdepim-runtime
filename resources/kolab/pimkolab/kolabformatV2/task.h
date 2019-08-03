@@ -36,8 +36,8 @@
 
 #include "incidence.h"
 
-#include <kcalcore/todo.h>
-#include <kcalcore/incidence.h>
+#include <kcalendarcore/todo.h>
+#include <kcalendarcore/incidence.h>
 
 class QDomElement;
 
@@ -48,7 +48,7 @@ class ResourceKolab;
 namespace KolabV2 {
 /**
  * This class represents a task, and knows how to load/save it
- * from/to XML, and from/to a KCalCore::Todo.
+ * from/to XML, and from/to a KCalendarCore::Todo.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -57,14 +57,14 @@ class Task : public Incidence
 public:
     /// Use this to parse an xml string to a task entry
     /// The caller is responsible for deleting the returned task
-    static KCalCore::Todo::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz /*, KCalCore::ResourceKolab *res = 0,
+    static KCalendarCore::Todo::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz /*, KCalendarCore::ResourceKolab *res = 0,
                                 const QString& subResource = QString(), quint32 sernum = 0 */);
 
     /// Use this to get an xml string describing this task entry
-    static QString taskToXML(const KCalCore::Todo::Ptr &, const QString &tz);
+    static QString taskToXML(const KCalendarCore::Todo::Ptr &, const QString &tz);
 
-    explicit Task( /*KCalCore::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
-        const QString &tz, const KCalCore::Todo::Ptr &todo = KCalCore::Todo::Ptr());
+    explicit Task( /*KCalendarCore::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
+        const QString &tz, const KCalendarCore::Todo::Ptr &todo = KCalendarCore::Todo::Ptr());
     ~Task() override;
 
     QString type() const override
@@ -72,13 +72,13 @@ public:
         return QStringLiteral("Task");
     }
 
-    void saveTo(const KCalCore::Todo::Ptr &todo);
+    void saveTo(const KCalendarCore::Todo::Ptr &todo);
 
     virtual void setPercentCompleted(int percent);
     virtual int percentCompleted() const;
 
-    virtual void setStatus(KCalCore::Incidence::Status status);
-    virtual KCalCore::Incidence::Status status() const;
+    virtual void setStatus(KCalendarCore::Incidence::Status status);
+    virtual KCalendarCore::Incidence::Status status() const;
 
     virtual void setParent(const QString &parentUid);
     virtual QString parent() const;
@@ -110,10 +110,10 @@ public:
 
 protected:
     // Read all known fields from this ical todo
-    void setFields(const KCalCore::Todo::Ptr &);
+    void setFields(const KCalendarCore::Todo::Ptr &);
 
     int mPercentCompleted;
-    KCalCore::Incidence::Status mStatus;
+    KCalendarCore::Incidence::Status mStatus;
     QString mParent;
 
     bool mHasStartDate;

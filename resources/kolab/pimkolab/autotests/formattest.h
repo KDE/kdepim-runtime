@@ -20,7 +20,7 @@
 #include <QObject>
 
 /**
- * Test complete serialization from mime message to KCalCore/KContacts containers.
+ * Test complete serialization from mime message to KCalendarCore/KContacts containers.
  *
  * The .ics .vcf files serve as reference, under the assumption that the iCal/vCard implementations don't have bugs.
  *

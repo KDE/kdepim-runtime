@@ -23,7 +23,7 @@
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
 
-#include <KCalCore/Event>
+#include <KCalendarCore/Event>
 
 class QUrl;
 namespace KIO {
@@ -48,7 +48,7 @@ private:
     void fetchFacebookEventsPage();
     QUrl findBirthdayIcalLink(const QByteArray &data);
     void fetchBirthdayIcal(const QUrl &url);
-    void processEvent(const KCalCore::Event::Ptr &event);
+    void processEvent(const KCalendarCore::Event::Ptr &event);
 
     Akonadi::Collection mCollection;
     QVector<Akonadi::Item> mItems;

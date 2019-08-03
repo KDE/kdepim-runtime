@@ -24,7 +24,7 @@
 
 void KolabObjectTest::preserveLatin1()
 {
-    KCalCore::Event::Ptr event(new KCalCore::Event());
+    KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
     event->setDtStart(QDateTime(QDate(2014, 1, 1), {}));
     event->setAllDay(true);
     const QString summary(QLatin1String("äöü%@$£é¤¼²°"));
@@ -33,7 +33,7 @@ void KolabObjectTest::preserveLatin1()
     //std::cout << event->summary().toStdString() << std::endl;
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
 //     qDebug() << msg->encodedContent();
-    KCalCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
+    KCalendarCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
     QVERIFY(readEvent);
 //     std::cout << readEvent->summary().toStdString() << std::endl;
     QCOMPARE(readEvent->summary(), summary);
@@ -41,7 +41,7 @@ void KolabObjectTest::preserveLatin1()
 
 void KolabObjectTest::preserveUnicode()
 {
-    KCalCore::Event::Ptr event(new KCalCore::Event());
+    KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
     event->setDtStart(QDateTime(QDate(2014, 1, 1), {}));
     event->setAllDay(true);
     QString summary(QStringLiteral("€Š�ـأبـ☺"));
@@ -50,7 +50,7 @@ void KolabObjectTest::preserveUnicode()
 //     std::cout << event->summary().toStdString() << std::endl;
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
 //     qDebug() << msg->encodedContent();
-    KCalCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
+    KCalendarCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
     QVERIFY(readEvent);
 //     std::cout << readEvent->summary().toStdString() << std::endl;
     QCOMPARE(readEvent->summary(), summary);
@@ -58,7 +58,7 @@ void KolabObjectTest::preserveUnicode()
 
 void KolabObjectTest::dontCrashWithEmptyOrganizer()
 {
-    KCalCore::Event::Ptr event(new KCalCore::Event());
+    KCalendarCore::Event::Ptr event(new KCalendarCore::Event());
     event->setDtStart(QDateTime(QDate(2012, 11, 11), {}));
     event->setAllDay(true);
     Kolab::KolabObjectWriter::writeEvent(event, Kolab::KolabV2);
@@ -70,13 +70,13 @@ void KolabObjectTest::dontCrashWithEmptyOrganizer()
 
 void KolabObjectTest::dontCrashWithEmptyIncidence()
 {
-    Kolab::KolabObjectWriter::writeEvent(KCalCore::Event::Ptr());
+    Kolab::KolabObjectWriter::writeEvent(KCalendarCore::Event::Ptr());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
-    Kolab::KolabObjectWriter::writeTodo(KCalCore::Todo::Ptr());
+    Kolab::KolabObjectWriter::writeTodo(KCalendarCore::Todo::Ptr());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
-    Kolab::KolabObjectWriter::writeJournal(KCalCore::Journal::Ptr());
+    Kolab::KolabObjectWriter::writeJournal(KCalendarCore::Journal::Ptr());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
-    Kolab::KolabObjectWriter::writeIncidence(KCalCore::Event::Ptr());
+    Kolab::KolabObjectWriter::writeIncidence(KCalendarCore::Event::Ptr());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);
     Kolab::KolabObjectWriter::writeNote(KMime::Message::Ptr());
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Critical);

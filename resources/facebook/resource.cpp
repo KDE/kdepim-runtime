@@ -26,7 +26,7 @@
 
 #include <KLocalizedString>
 
-#include <KCalCore/Event>
+#include <KCalendarCore/Event>
 
 FacebookResource::FacebookResource(const QString &id)
     : Akonadi::ResourceBase(id)
@@ -58,7 +58,7 @@ Akonadi::Collection FacebookResource::makeCollection(Graph::RSVP rsvp, const QSt
     Akonadi::Collection col;
     col.setName(name);
     col.setRemoteId(Graph::rsvpToString(rsvp));
-    col.setContentMimeTypes({ KCalCore::Event::eventMimeType() });
+    col.setContentMimeTypes({ KCalendarCore::Event::eventMimeType() });
     col.setRights(Akonadi::Collection::ReadOnly);
     col.setParentCollection(parent);
     auto attr = col.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);

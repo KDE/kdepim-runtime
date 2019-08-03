@@ -34,7 +34,7 @@
 #ifndef KOLABV2_KOLABBASE_H
 #define KOLABV2_KOLABBASE_H
 
-#include <kcalcore/incidence.h>
+#include <kcalendarcore/incidence.h>
 
 #include <QColor>
 #include <QDateTime>
@@ -124,10 +124,10 @@ public:
 
 protected:
     /// Read all known fields from this ical incidence
-    void setFields(const KCalCore::Incidence::Ptr &);
+    void setFields(const KCalendarCore::Incidence::Ptr &);
 
     /// Save all known fields into this ical incidence
-    void saveTo(const KCalCore::Incidence::Ptr &) const;
+    void saveTo(const KCalendarCore::Incidence::Ptr &) const;
 
     /// Read all known fields from this contact
     void setFields(const KContacts::Addressee *);

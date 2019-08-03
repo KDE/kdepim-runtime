@@ -20,10 +20,10 @@
 #ifndef IMIP_H
 #define IMIP_H
 #include <QByteArray>
-#include <kcalcore/incidencebase.h>
+#include <kcalendarcore/incidencebase.h>
 
-QByteArray mailAttendees(const KCalCore::IncidenceBase::Ptr &incidence, bool bccMe, const QString &attachment);
+QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence, bool bccMe, const QString &attachment);
 
-QByteArray mailOrganizer(const KCalCore::IncidenceBase::Ptr &incidence, const QString &from, bool bccMe, const QString &attachment, const QString &sub);
+QByteArray mailOrganizer(const KCalendarCore::IncidenceBase::Ptr &incidence, const QString &from, bool bccMe, const QString &attachment, const QString &sub);
 
 #endif // IMIP_H

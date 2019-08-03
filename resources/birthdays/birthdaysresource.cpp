@@ -41,7 +41,7 @@
 
 using namespace Akonadi;
 using namespace KContacts;
-using namespace KCalCore;
+using namespace KCalendarCore;
 
 BirthdaysResource::BirthdaysResource(const QString &id)
     : ResourceBase(id)
@@ -116,7 +116,7 @@ void BirthdaysResource::contactRetrieved(KJob *job)
     } else if (fj->items().count() != 1) {
         cancelTask();
     } else {
-        KCalCore::Incidence::Ptr ev;
+        KCalendarCore::Incidence::Ptr ev;
         if (currentItem().remoteId().startsWith(QLatin1Char('b'))) {
             ev = createBirthday(fj->items().at(0));
         } else if (currentItem().remoteId().startsWith(QLatin1Char('a'))) {
@@ -160,7 +160,7 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
     if (event) {
         addPendingEvent(event, QStringLiteral("b%1").arg(item.id()));
     } else {
-        Item i(KCalCore::Event::eventMimeType());
+        Item i(KCalendarCore::Event::eventMimeType());
         i.setRemoteId(QStringLiteral("b%1").arg(item.id()));
         mDeletedItems[ i.remoteId() ] = i;
     }
@@ -169,17 +169,17 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
     if (event) {
         addPendingEvent(event, QStringLiteral("a%1").arg(item.id()));
     } else {
-        Item i(KCalCore::Event::eventMimeType());
+        Item i(KCalendarCore::Event::eventMimeType());
         i.setRemoteId(QStringLiteral("a%1").arg(item.id()));
         mDeletedItems[ i.remoteId() ] = i;
     }
     synchronize();
 }
 
-void BirthdaysResource::addPendingEvent(const KCalCore::Event::Ptr &event, const QString &remoteId)
+void BirthdaysResource::addPendingEvent(const KCalendarCore::Event::Ptr &event, const QString &remoteId)
 {
-    KCalCore::Incidence::Ptr evptr(event);
-    Item i(KCalCore::Event::eventMimeType());
+    KCalendarCore::Incidence::Ptr evptr(event);
+    Item i(KCalendarCore::Event::eventMimeType());
     i.setRemoteId(remoteId);
     i.setPayload(evptr);
     mPendingItems[ remoteId ] = i;
@@ -187,7 +187,7 @@ void BirthdaysResource::addPendingEvent(const KCalCore::Event::Ptr &event, const
 
 void BirthdaysResource::contactRemoved(const Akonadi::Item &item)
 {
-    Item i(KCalCore::Event::eventMimeType());
+    Item i(KCalendarCore::Event::eventMimeType());
     i.setRemoteId(QStringLiteral("b%1").arg(item.id()));
     mDeletedItems[ i.remoteId() ] = i;
     i.setRemoteId(QStringLiteral("a%1").arg(item.id()));
@@ -222,17 +222,17 @@ void BirthdaysResource::createEvents(const Akonadi::Item::List &items)
     }
 }
 
-KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item &contactItem)
+KCalendarCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item &contactItem)
 {
     if (!contactItem.hasPayload<KContacts::Addressee>()) {
-        return KCalCore::Event::Ptr();
+        return KCalendarCore::Event::Ptr();
     }
     KContacts::Addressee contact = contactItem.payload<KContacts::Addressee>();
 
     const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
     if (name.isEmpty()) {
         qCDebug(BIRTHDAYS_LOG) << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
-        return KCalCore::Event::Ptr();
+        return KCalendarCore::Event::Ptr();
     }
 
     const QDate birthdate = contact.birthday().date();
@@ -251,25 +251,25 @@ KCalCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item &cont
         checkForUnknownCategories(i18n("Birthday"), ev);
         return ev;
     }
-    return KCalCore::Event::Ptr();
+    return KCalendarCore::Event::Ptr();
 }
 
-KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &contactItem)
+KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &contactItem)
 {
     if (!contactItem.hasPayload<KContacts::Addressee>()) {
-        return KCalCore::Event::Ptr();
+        return KCalendarCore::Event::Ptr();
     }
     KContacts::Addressee contact = contactItem.payload<KContacts::Addressee>();
 
     const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
     if (name.isEmpty()) {
         qCDebug(BIRTHDAYS_LOG) << "contact " << contact.uid() << contactItem.id() << " has no name, skipping.";
-        return KCalCore::Event::Ptr();
+        return KCalendarCore::Event::Ptr();
     }
 
     const QString anniversary_string = contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"));
     if (anniversary_string.isEmpty()) {
-        return KCalCore::Event::Ptr();
+        return KCalendarCore::Event::Ptr();
     }
     const QDate anniversary = QDate::fromString(anniversary_string, Qt::ISODate);
     if (anniversary.isValid()) {
@@ -310,10 +310,10 @@ KCalCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::Item &c
         checkForUnknownCategories(i18n("Anniversary"), event);
         return event;
     }
-    return KCalCore::Event::Ptr();
+    return KCalendarCore::Event::Ptr();
 }
 
-KCalCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
+KCalendarCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
 {
     Event::Ptr event(new Event());
     event->setDtStart(QDateTime(date, {}));

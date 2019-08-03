@@ -42,11 +42,11 @@
 #include <KDAV/DavManager>
 #include <KDAV/DavProtocolBase>
 
-#include <KCalCore/FreeBusy>
-#include <KCalCore/Incidence>
-#include <KCalCore/ICalFormat>
-#include <KCalCore/MemoryCalendar>
-#include <KCalCore/Todo>
+#include <KCalendarCore/FreeBusy>
+#include <KCalendarCore/Incidence>
+#include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/Todo>
 #include <kjob.h>
 
 #include <attributefactory.h>
@@ -71,7 +71,7 @@
 
 using namespace Akonadi;
 
-typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
+typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)
@@ -718,11 +718,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         }
 
         if (contentTypes & KDAV::DavCollection::Events) {
-            mimeTypes << KCalCore::Event::eventMimeType();
+            mimeTypes << KCalendarCore::Event::eventMimeType();
         }
 
         if (contentTypes & KDAV::DavCollection::Todos) {
-            mimeTypes << KCalCore::Todo::todoMimeType();
+            mimeTypes << KCalendarCore::Todo::todoMimeType();
         }
 
         if (contentTypes & KDAV::DavCollection::Contacts) {
@@ -730,11 +730,11 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         }
 
         if (contentTypes & KDAV::DavCollection::FreeBusy) {
-            mimeTypes << KCalCore::FreeBusy::freeBusyMimeType();
+            mimeTypes << KCalendarCore::FreeBusy::freeBusyMimeType();
         }
 
         if (contentTypes & KDAV::DavCollection::Journal) {
-            mimeTypes << KCalCore::Journal::journalMimeType();
+            mimeTypes << KCalendarCore::Journal::journalMimeType();
         }
 
         collection.setContentMimeTypes(mimeTypes);
@@ -1347,9 +1347,9 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
     const QStringList mimeTypes = collection.contentMimeTypes();
     if (mimeTypes.count() == 1) {
         QHash<QString, QString> mapping;
-        mapping.insert(KCalCore::Event::eventMimeType(), QStringLiteral("view-calendar"));
-        mapping.insert(KCalCore::Todo::todoMimeType(), QStringLiteral("view-calendar-tasks"));
-        mapping.insert(KCalCore::Journal::journalMimeType(), QStringLiteral("view-pim-journal"));
+        mapping.insert(KCalendarCore::Event::eventMimeType(), QStringLiteral("view-calendar"));
+        mapping.insert(KCalendarCore::Todo::todoMimeType(), QStringLiteral("view-calendar-tasks"));
+        mapping.insert(KCalendarCore::Journal::journalMimeType(), QStringLiteral("view-pim-journal"));
         mapping.insert(KContacts::Addressee::mimeType(), QStringLiteral("view-pim-contacts"));
 
         const QString mimetypeFirst = mimeTypes.first();

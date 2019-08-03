@@ -34,28 +34,28 @@
 #include "event.h"
 #include "pimkolab_debug.h"
 
-#include <kcalcore/event.h>
+#include <kcalendarcore/event.h>
 
 using namespace KolabV2;
 
-KCalCore::Event::Ptr Event::fromXml(const QDomDocument &xmlDoc, const QString &tz)
+KCalendarCore::Event::Ptr Event::fromXml(const QDomDocument &xmlDoc, const QString &tz)
 {
     Event event(tz);
     event.loadXML(xmlDoc);
-    KCalCore::Event::Ptr kcalEvent(new KCalCore::Event());
+    KCalendarCore::Event::Ptr kcalEvent(new KCalendarCore::Event());
     event.saveTo(kcalEvent);
     return kcalEvent;
 }
 
-QString Event::eventToXML(const KCalCore::Event::Ptr &kcalEvent, const QString &tz)
+QString Event::eventToXML(const KCalendarCore::Event::Ptr &kcalEvent, const QString &tz)
 {
     Event event(tz, kcalEvent);
     return event.saveXML();
 }
 
-Event::Event(const QString &tz, const KCalCore::Event::Ptr &event)
+Event::Event(const QString &tz, const KCalendarCore::Event::Ptr &event)
     : Incidence(tz, event)
-    , mShowTimeAs(KCalCore::Event::Opaque)
+    , mShowTimeAs(KCalendarCore::Event::Opaque)
     , mHasEndDate(false)
 {
     if (event) {
@@ -67,12 +67,12 @@ Event::~Event()
 {
 }
 
-void Event::setTransparency(KCalCore::Event::Transparency transparency)
+void Event::setTransparency(KCalendarCore::Event::Transparency transparency)
 {
     mShowTimeAs = transparency;
 }
 
-KCalCore::Event::Transparency Event::transparency() const
+KCalendarCore::Event::Transparency Event::transparency() const
 {
     return mShowTimeAs;
 }
@@ -121,9 +121,9 @@ bool Event::loadAttribute(QDomElement &element)
     if (tagName == QLatin1String("show-time-as")) {
         // TODO: Support tentative and outofoffice
         if (element.text() == QLatin1String("free")) {
-            setTransparency(KCalCore::Event::Transparent);
+            setTransparency(KCalendarCore::Event::Transparent);
         } else {
-            setTransparency(KCalCore::Event::Opaque);
+            setTransparency(KCalendarCore::Event::Opaque);
         }
     } else if (tagName == QLatin1String("end-date")) {
         setEndDate(element.text());
@@ -141,7 +141,7 @@ bool Event::saveAttributes(QDomElement &element) const
     Incidence::saveAttributes(element);
 
     // TODO: Support tentative and outofoffice
-    if (transparency() == KCalCore::Event::Transparent) {
+    if (transparency() == KCalendarCore::Event::Transparent) {
         writeString(element, QStringLiteral("show-time-as"), QStringLiteral("free"));
     } else {
         writeString(element, QStringLiteral("show-time-as"), QStringLiteral("busy"));
@@ -191,7 +191,7 @@ QString Event::saveXML() const
     return document.toString();
 }
 
-void Event::setFields(const KCalCore::Event::Ptr &event)
+void Event::setFields(const KCalendarCore::Event::Ptr &event)
 {
     Incidence::setFields(event);
 
@@ -212,7 +212,7 @@ void Event::setFields(const KCalCore::Event::Ptr &event)
     setTransparency(event->transparency());
 }
 
-void Event::saveTo(const KCalCore::Event::Ptr &event)
+void Event::saveTo(const KCalendarCore::Event::Ptr &event)
 {
     Incidence::saveTo(event);
 
