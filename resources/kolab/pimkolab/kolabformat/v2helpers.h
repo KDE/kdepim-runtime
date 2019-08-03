@@ -32,8 +32,8 @@
 
 #include <kcontacts/contactgroup.h>
 #include <kcontacts/addressee.h>
-#include <kcalcore/incidence.h>
-#include <kcalcore/event.h>
+#include <kcalendarcore/incidence.h>
+#include <kcalendarcore/event.h>
 #include <kmime/kmime_message.h>
 
 #include <qdom.h>
@@ -41,7 +41,7 @@
 
 namespace Kolab {
 /*
- * Parse XML, create KCalCore container and extract attachments
+ * Parse XML, create KCalendarCore container and extract attachments
  */
 template<typename KCalPtr, typename Container>
 static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
@@ -60,7 +60,7 @@ static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
     return i;
 }
 
-void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData);
+void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData);
 
 template<typename IncidencePtr, typename Converter>
 static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &data, const QByteArray &mimetype, const QString &timezoneId)

@@ -37,13 +37,13 @@
 
 #include <QList>
 
-#include <kcalcore/journal.h>
+#include <kcalendarcore/journal.h>
 
 #include <QBitArray>
 
 using namespace KolabV2;
 
-Incidence::Incidence(const QString &tz, const KCalCore::Incidence::Ptr &incidence)
+Incidence::Incidence(const QString &tz, const KCalendarCore::Incidence::Ptr &incidence)
     : KolabBase(tz)
     , mFloatingStatus(Unset)
     , mHasAlarm(false)
@@ -237,7 +237,7 @@ void Incidence::saveAttendees(QDomElement &element) const
 
 void Incidence::saveAttachments(QDomElement &element) const
 {
-    foreach (const KCalCore::Attachment &a, mAttachments) {
+    foreach (const KCalendarCore::Attachment &a, mAttachments) {
         if (a.isUri()) {
             writeString(element, QStringLiteral("link-attachment"), a.uri());
         } else if (a.isBinary()) {
@@ -254,7 +254,7 @@ void Incidence::saveAlarms(QDomElement &element) const
 
     QDomElement list = element.ownerDocument().createElement(QStringLiteral("advanced-alarms"));
     element.appendChild(list);
-    foreach (KCalCore::Alarm::Ptr a, mAlarms) {
+    foreach (KCalendarCore::Alarm::Ptr a, mAlarms) {
         QDomElement e = list.ownerDocument().createElement(QStringLiteral("alarm"));
         list.appendChild(e);
 
@@ -271,23 +271,23 @@ void Incidence::saveAlarms(QDomElement &element) const
         }
 
         switch (a->type()) {
-        case KCalCore::Alarm::Invalid:
+        case KCalendarCore::Alarm::Invalid:
             break;
-        case KCalCore::Alarm::Display:
+        case KCalendarCore::Alarm::Display:
             e.setAttribute(QStringLiteral("type"), QStringLiteral("display"));
             writeString(e, QStringLiteral("text"), a->text());
             break;
-        case KCalCore::Alarm::Procedure:
+        case KCalendarCore::Alarm::Procedure:
             e.setAttribute(QStringLiteral("type"), QStringLiteral("procedure"));
             writeString(e, QStringLiteral("program"), a->programFile());
             writeString(e, QStringLiteral("arguments"), a->programArguments());
             break;
-        case KCalCore::Alarm::Email:
+        case KCalendarCore::Alarm::Email:
         {
             e.setAttribute(QStringLiteral("type"), QStringLiteral("email"));
             QDomElement addresses = e.ownerDocument().createElement(QStringLiteral("addresses"));
             e.appendChild(addresses);
-            foreach (const KCalCore::Person &person, a->mailAddresses()) {
+            foreach (const KCalendarCore::Person &person, a->mailAddresses()) {
                 writeString(addresses, QStringLiteral("address"), person.fullName());
             }
             writeString(e, QStringLiteral("subject"), a->mailSubject());
@@ -299,7 +299,7 @@ void Incidence::saveAlarms(QDomElement &element) const
             }
             break;
         }
-        case KCalCore::Alarm::Audio:
+        case KCalendarCore::Alarm::Audio:
             e.setAttribute(QStringLiteral("type"), QStringLiteral("audio"));
             writeString(e, QStringLiteral("file"), a->audioFile());
             break;
@@ -378,7 +378,7 @@ void Incidence::loadRecurrence(const QDomElement &element)
     }
 }
 
-static void loadAddressesHelper(const QDomElement &element, const KCalCore::Alarm::Ptr &a)
+static void loadAddressesHelper(const QDomElement &element, const KCalendarCore::Alarm::Ptr &a)
 {
     for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
         if (n.isComment()) {
@@ -389,7 +389,7 @@ static void loadAddressesHelper(const QDomElement &element, const KCalCore::Alar
             QString tagName = e.tagName();
 
             if (tagName == QLatin1String("address")) {
-                a->addMailAddress(KCalCore::Person::fromFullName(e.text()));
+                a->addMailAddress(KCalendarCore::Person::fromFullName(e.text()));
             } else {
                 qCWarning(PIMKOLAB_LOG) << "Unhandled tag" << tagName;
             }
@@ -397,7 +397,7 @@ static void loadAddressesHelper(const QDomElement &element, const KCalCore::Alar
     }
 }
 
-static void loadAttachmentsHelper(const QDomElement &element, const KCalCore::Alarm::Ptr &a)
+static void loadAttachmentsHelper(const QDomElement &element, const KCalendarCore::Alarm::Ptr &a)
 {
     for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
         if (n.isComment()) {
@@ -416,7 +416,7 @@ static void loadAttachmentsHelper(const QDomElement &element, const KCalCore::Al
     }
 }
 
-static void loadAlarmHelper(const QDomElement &element, const KCalCore::Alarm::Ptr &a)
+static void loadAlarmHelper(const QDomElement &element, const KCalendarCore::Alarm::Ptr &a)
 {
     for (QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
         if (n.isComment()) {
@@ -470,17 +470,17 @@ void Incidence::loadAlarms(const QDomElement &element)
             QString tagName = e.tagName();
 
             if (tagName == QLatin1String("alarm")) {
-                KCalCore::Alarm::Ptr a = KCalCore::Alarm::Ptr(new KCalCore::Alarm(nullptr));
+                KCalendarCore::Alarm::Ptr a = KCalendarCore::Alarm::Ptr(new KCalendarCore::Alarm(nullptr));
                 a->setEnabled(true); // default to enabled, unless some XML attribute says otherwise.
                 QString type = e.attribute(QStringLiteral("type"));
                 if (type == QLatin1String("display")) {
-                    a->setType(KCalCore::Alarm::Display);
+                    a->setType(KCalendarCore::Alarm::Display);
                 } else if (type == QLatin1String("procedure")) {
-                    a->setType(KCalCore::Alarm::Procedure);
+                    a->setType(KCalendarCore::Alarm::Procedure);
                 } else if (type == QLatin1String("email")) {
-                    a->setType(KCalCore::Alarm::Email);
+                    a->setType(KCalendarCore::Alarm::Email);
                 } else if (type == QLatin1String("audio")) {
-                    a->setType(KCalCore::Alarm::Audio);
+                    a->setType(KCalendarCore::Alarm::Audio);
                 } else {
                     qCWarning(PIMKOLAB_LOG) << "Unhandled alarm type:" << type;
                 }
@@ -541,7 +541,7 @@ bool Incidence::loadAttribute(QDomElement &element)
             return false;
         }
     } else if (tagName == QLatin1String("link-attachment")) {
-        mAttachments.push_back(KCalCore::Attachment(element.text()));
+        mAttachments.push_back(KCalendarCore::Attachment(element.text()));
     } else if (tagName == QLatin1String("alarm")) {
         // Alarms should be minutes before. Libkcal uses event time + alarm time
         setAlarm(-element.text().toInt());
@@ -627,40 +627,40 @@ void Incidence::loadCustomAttributes(QDomElement &element)
     mCustomList.append(custom);
 }
 
-static KCalCore::Attendee::PartStat attendeeStringToStatus(const QString &s)
+static KCalendarCore::Attendee::PartStat attendeeStringToStatus(const QString &s)
 {
     if (s == QLatin1String("none")) {
-        return KCalCore::Attendee::NeedsAction;
+        return KCalendarCore::Attendee::NeedsAction;
     }
     if (s == QLatin1String("tentative")) {
-        return KCalCore::Attendee::Tentative;
+        return KCalendarCore::Attendee::Tentative;
     }
     if (s == QLatin1String("declined")) {
-        return KCalCore::Attendee::Declined;
+        return KCalendarCore::Attendee::Declined;
     }
     if (s == QLatin1String("delegated")) {
-        return KCalCore::Attendee::Delegated;
+        return KCalendarCore::Attendee::Delegated;
     }
 
     // Default:
-    return KCalCore::Attendee::Accepted;
+    return KCalendarCore::Attendee::Accepted;
 }
 
-static QString attendeeStatusToString(KCalCore::Attendee::PartStat status)
+static QString attendeeStatusToString(KCalendarCore::Attendee::PartStat status)
 {
     switch (status) {
-    case KCalCore::Attendee::NeedsAction:
+    case KCalendarCore::Attendee::NeedsAction:
         return QStringLiteral("none");
-    case KCalCore::Attendee::Accepted:
+    case KCalendarCore::Attendee::Accepted:
         return QStringLiteral("accepted");
-    case KCalCore::Attendee::Declined:
+    case KCalendarCore::Attendee::Declined:
         return QStringLiteral("declined");
-    case KCalCore::Attendee::Tentative:
+    case KCalendarCore::Attendee::Tentative:
         return QStringLiteral("tentative");
-    case KCalCore::Attendee::Delegated:
+    case KCalendarCore::Attendee::Delegated:
         return QStringLiteral("delegated");
-    case KCalCore::Attendee::Completed:
-    case KCalCore::Attendee::InProcess:
+    case KCalendarCore::Attendee::Completed:
+    case KCalendarCore::Attendee::InProcess:
         // These don't have any meaning in the Kolab format, so just use:
         return QStringLiteral("accepted");
     default:
@@ -669,28 +669,28 @@ static QString attendeeStatusToString(KCalCore::Attendee::PartStat status)
     }
 }
 
-static KCalCore::Attendee::Role attendeeStringToRole(const QString &s)
+static KCalendarCore::Attendee::Role attendeeStringToRole(const QString &s)
 {
     if (s == QLatin1String("optional")) {
-        return KCalCore::Attendee::OptParticipant;
+        return KCalendarCore::Attendee::OptParticipant;
     }
     if (s == QLatin1String("resource")) {
-        return KCalCore::Attendee::NonParticipant;
+        return KCalendarCore::Attendee::NonParticipant;
     }
-    return KCalCore::Attendee::ReqParticipant;
+    return KCalendarCore::Attendee::ReqParticipant;
 }
 
-static QString attendeeRoleToString(KCalCore::Attendee::Role role)
+static QString attendeeRoleToString(KCalendarCore::Attendee::Role role)
 {
     switch (role) {
-    case KCalCore::Attendee::ReqParticipant:
+    case KCalendarCore::Attendee::ReqParticipant:
         return QStringLiteral("required");
-    case KCalCore::Attendee::OptParticipant:
+    case KCalendarCore::Attendee::OptParticipant:
         return QStringLiteral("optional");
-    case KCalCore::Attendee::Chair:
+    case KCalendarCore::Attendee::Chair:
         // We don't have the notion of chair, so use
         return QStringLiteral("required");
-    case KCalCore::Attendee::NonParticipant:
+    case KCalendarCore::Attendee::NonParticipant:
         // In Kolab, a non-participant is a resource
         return QStringLiteral("resource");
     }
@@ -708,20 +708,20 @@ static const char *s_monthName[] = {
     "august", "september", "october", "november", "december"
 };
 
-void Incidence::setRecurrence(KCalCore::Recurrence *recur)
+void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
 {
     mRecurrence.interval = recur->frequency();
     switch (recur->recurrenceType()) {
-    case KCalCore::Recurrence::rMinutely: // Not handled by the kolab XML
+    case KCalendarCore::Recurrence::rMinutely: // Not handled by the kolab XML
         mRecurrence.cycle = QStringLiteral("minutely");
         break;
-    case KCalCore::Recurrence::rHourly: // Not handled by the kolab XML
+    case KCalendarCore::Recurrence::rHourly: // Not handled by the kolab XML
         mRecurrence.cycle = QStringLiteral("hourly");
         break;
-    case KCalCore::Recurrence::rDaily:
+    case KCalendarCore::Recurrence::rDaily:
         mRecurrence.cycle = QStringLiteral("daily");
         break;
-    case KCalCore::Recurrence::rWeekly: // every X weeks
+    case KCalendarCore::Recurrence::rWeekly: // every X weeks
         mRecurrence.cycle = QStringLiteral("weekly");
         {
             QBitArray arr = recur->days();
@@ -732,13 +732,13 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
             }
         }
         break;
-    case KCalCore::Recurrence::rMonthlyPos:
+    case KCalendarCore::Recurrence::rMonthlyPos:
     {
         mRecurrence.cycle = QStringLiteral("monthly");
         mRecurrence.type = QStringLiteral("weekday");
-        QList<KCalCore::RecurrenceRule::WDayPos> monthPositions = recur->monthPositions();
+        QList<KCalendarCore::RecurrenceRule::WDayPos> monthPositions = recur->monthPositions();
         if (!monthPositions.isEmpty()) {
-            KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
+            KCalendarCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
             // TODO: Handle multiple days in the same week
             mRecurrence.dayNumber = QString::number(monthPos.pos());
             mRecurrence.days.append(QString::fromUtf8(s_weekDayName[ monthPos.day()-1 ]));
@@ -746,7 +746,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
         }
         break;
     }
-    case KCalCore::Recurrence::rMonthlyDay:
+    case KCalendarCore::Recurrence::rMonthlyDay:
     {
         mRecurrence.cycle = QStringLiteral("monthly");
         mRecurrence.type = QStringLiteral("daynumber");
@@ -757,7 +757,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
         }
         break;
     }
-    case KCalCore::Recurrence::rYearlyMonth: // (day n of Month Y)
+    case KCalendarCore::Recurrence::rYearlyMonth: // (day n of Month Y)
     {
         mRecurrence.cycle = QStringLiteral("yearly");
         mRecurrence.type = QStringLiteral("monthday");
@@ -770,21 +770,21 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
         }
         break;
     }
-    case KCalCore::Recurrence::rYearlyDay: // YearlyDay (day N of the year). Not supported by Outlook
+    case KCalendarCore::Recurrence::rYearlyDay: // YearlyDay (day N of the year). Not supported by Outlook
         mRecurrence.cycle = QStringLiteral("yearly");
         mRecurrence.type = QStringLiteral("yearday");
         mRecurrence.dayNumber = QString::number(recur->yearDays().first());
         break;
-    case KCalCore::Recurrence::rYearlyPos: // (weekday X of week N of month Y)
+    case KCalendarCore::Recurrence::rYearlyPos: // (weekday X of week N of month Y)
         mRecurrence.cycle = QStringLiteral("yearly");
         mRecurrence.type = QStringLiteral("weekday");
         QList<int> months = recur->yearMonths();
         if (!months.isEmpty()) {
             mRecurrence.month = QString::fromUtf8(s_monthName[ months.first() - 1 ]); // #### Kolab XML limitation: only one month specified
         }
-        QList<KCalCore::RecurrenceRule::WDayPos> monthPositions = recur->yearPositions();
+        QList<KCalendarCore::RecurrenceRule::WDayPos> monthPositions = recur->yearPositions();
         if (!monthPositions.isEmpty()) {
-            KCalCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
+            KCalendarCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
             // TODO: Handle multiple days in the same week
             mRecurrence.dayNumber = QString::number(monthPos.pos());
             mRecurrence.days.append(QString::fromUtf8(s_weekDayName[ monthPos.day()-1 ]));
@@ -806,7 +806,7 @@ void Incidence::setRecurrence(KCalCore::Recurrence *recur)
     }
 }
 
-void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
+void Incidence::setFields(const KCalendarCore::Incidence::Ptr &incidence)
 {
     KolabBase::setFields(incidence);
 
@@ -826,9 +826,9 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
     // Alarm
     mHasAlarm = false; // Will be set to true, if we actually have one
     if (incidence->hasEnabledAlarms()) {
-        const KCalCore::Alarm::List &alarms = incidence->alarms();
+        const KCalendarCore::Alarm::List &alarms = incidence->alarms();
         if (!alarms.isEmpty()) {
-            const KCalCore::Alarm::Ptr alarm = alarms.first();
+            const KCalendarCore::Alarm::Ptr alarm = alarms.first();
             if (alarm->hasStartOffset()) {
                 int dur = alarm->startOffset().asSeconds();
                 setAlarm((float)dur / 60.0);
@@ -842,15 +842,15 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
     }
 
     // Attendees:
-    const KCalCore::Attendee::List attendees = incidence->attendees();
-    foreach (const KCalCore::Attendee &kcalAttendee, attendees) {
+    const KCalendarCore::Attendee::List attendees = incidence->attendees();
+    foreach (const KCalendarCore::Attendee &kcalAttendee, attendees) {
         Attendee attendee;
 
         attendee.displayName = kcalAttendee.name();
         attendee.smtpAddress = kcalAttendee.email();
         attendee.status = attendeeStatusToString(kcalAttendee.status());
         attendee.requestResponse = kcalAttendee.RSVP();
-        // TODO: KCalCore::Attendee::mFlag is not accessible
+        // TODO: KCalendarCore::Attendee::mFlag is not accessible
         // attendee.invitationSent = kcalAttendee->mFlag;
         // DF: Hmm? mFlag is set to true and never used at all.... Did you mean another field?
         attendee.role = attendeeRoleToString(kcalAttendee.role());
@@ -863,18 +863,18 @@ void Incidence::setFields(const KCalCore::Incidence::Ptr &incidence)
     mAttachments.clear();
 
     // Attachments
-    const KCalCore::Attachment::List attachments = incidence->attachments();
+    const KCalendarCore::Attachment::List attachments = incidence->attachments();
     mAttachments.reserve(attachments.size());
-    for (const KCalCore::Attachment &a : attachments) {
+    for (const KCalendarCore::Attachment &a : attachments) {
         mAttachments.push_back(a);
     }
 
     mAlarms.clear();
 
     // Alarms
-    const KCalCore::Alarm::List alarms = incidence->alarms();
+    const KCalendarCore::Alarm::List alarms = incidence->alarms();
     mAlarms.reserve(alarms.count());
-    for (const KCalCore::Alarm::Ptr &a : alarms) {
+    for (const KCalendarCore::Alarm::Ptr &a : alarms) {
         mAlarms.push_back(a);
     }
 
@@ -921,7 +921,7 @@ static QBitArray daysListToBitArray(const QStringList &days)
     return arr;
 }
 
-void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
+void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
 {
     KolabBase::saveTo(incidence);
 
@@ -939,12 +939,12 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     incidence->setLocation(location());
 
     if (mHasAlarm && mAlarms.isEmpty()) {
-        KCalCore::Alarm::Ptr alarm = incidence->newAlarm();
+        KCalendarCore::Alarm::Ptr alarm = incidence->newAlarm();
         alarm->setStartOffset(qRound(mAlarm * 60.0));
         alarm->setEnabled(true);
-        alarm->setType(KCalCore::Alarm::Display);
+        alarm->setType(KCalendarCore::Alarm::Display);
     } else if (!mAlarms.isEmpty()) {
-        foreach (KCalCore::Alarm::Ptr a, mAlarms) {
+        foreach (KCalendarCore::Alarm::Ptr a, mAlarms) {
             a->setParent(incidence.data());
             incidence->addAlarm(a);
         }
@@ -959,9 +959,9 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
 
     incidence->clearAttendees();
     foreach (const Attendee &attendee, mAttendees) {
-        KCalCore::Attendee::PartStat status = attendeeStringToStatus(attendee.status);
-        KCalCore::Attendee::Role role = attendeeStringToRole(attendee.role);
-        KCalCore::Attendee a(attendee.displayName,
+        KCalendarCore::Attendee::PartStat status = attendeeStringToStatus(attendee.status);
+        KCalendarCore::Attendee::Role role = attendeeStringToRole(attendee.role);
+        KCalendarCore::Attendee a(attendee.displayName,
                                                          attendee.smtpAddress,
                                                          attendee.requestResponse,
                                                          status, role);
@@ -971,12 +971,12 @@ void Incidence::saveTo(const KCalCore::Incidence::Ptr &incidence)
     }
 
     incidence->clearAttachments();
-    foreach (const KCalCore::Attachment &a, mAttachments) {
+    foreach (const KCalendarCore::Attachment &a, mAttachments) {
         incidence->addAttachment(a);
     }
 
     if (!mRecurrence.cycle.isEmpty()) {
-        KCalCore::Recurrence *recur = incidence->recurrence(); // yeah, this creates it
+        KCalendarCore::Recurrence *recur = incidence->recurrence(); // yeah, this creates it
         // done below recur->setFrequency( mRecurrence.interval );
         if (mRecurrence.cycle == QLatin1String("minutely")) {
             recur->setMinutely(mRecurrence.interval);
@@ -1048,6 +1048,6 @@ QString Incidence::productID() const
     return QStringLiteral("%1, Kolab resource").arg(QString::fromUtf8(LIBKOLAB_LIB_VERSION_STRING));
 }
 
-// Unhandled KCalCore::Incidence fields:
+// Unhandled KCalendarCore::Incidence fields:
 // revision, status (unused), attendee.uid,
 // mComments, mReadOnly

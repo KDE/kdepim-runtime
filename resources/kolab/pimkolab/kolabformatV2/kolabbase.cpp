@@ -36,8 +36,8 @@
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <kcalcore/incidence.h>
-#include <kcalcore/journal.h>
+#include <kcalendarcore/incidence.h>
+#include <kcalendarcore/journal.h>
 
 using namespace KolabV2;
 
@@ -58,9 +58,9 @@ KolabBase::~KolabBase()
 {
 }
 
-void KolabBase::setFields(const KCalCore::Incidence::Ptr &incidence)
+void KolabBase::setFields(const KCalendarCore::Incidence::Ptr &incidence)
 {
-    // So far unhandled KCalCore::IncidenceBase fields:
+    // So far unhandled KCalendarCore::IncidenceBase fields:
     // mPilotID, mSyncStatus, mFloats
 
     setUid(incidence->uid());
@@ -72,7 +72,7 @@ void KolabBase::setFields(const KCalCore::Incidence::Ptr &incidence)
     // TODO: Attachments
 }
 
-void KolabBase::saveTo(const KCalCore::Incidence::Ptr &incidence) const
+void KolabBase::saveTo(const KCalendarCore::Incidence::Ptr &incidence) const
 {
     incidence->setUid(uid());
     incidence->setDescription(body());
@@ -81,13 +81,13 @@ void KolabBase::saveTo(const KCalCore::Incidence::Ptr &incidence) const
     incidence->setLastModified(lastModified());
     switch (sensitivity()) {
     case 1:
-        incidence->setSecrecy(KCalCore::Incidence::SecrecyPrivate);
+        incidence->setSecrecy(KCalendarCore::Incidence::SecrecyPrivate);
         break;
     case 2:
-        incidence->setSecrecy(KCalCore::Incidence::SecrecyConfidential);
+        incidence->setSecrecy(KCalendarCore::Incidence::SecrecyConfidential);
         break;
     default:
-        incidence->setSecrecy(KCalCore::Incidence::SecrecyPublic);
+        incidence->setSecrecy(KCalendarCore::Incidence::SecrecyPublic);
         break;
     }
 

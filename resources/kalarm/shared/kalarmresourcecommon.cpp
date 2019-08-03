@@ -27,8 +27,8 @@
 #include <attributefactory.h>
 #include <collectionmodifyjob.h>
 
-#include <KCalCore/FileStorage>
-#include <KCalCore/MemoryCalendar>
+#include <KCalendarCore/FileStorage>
+#include <KCalendarCore/MemoryCalendar>
 
 #include <KLocalizedString>
 
@@ -36,7 +36,7 @@
 #include <QDebug>
 
 using namespace Akonadi;
-using namespace KCalCore;
+using namespace KCalendarCore;
 using namespace KAlarmCal;
 
 class Private : public QObject

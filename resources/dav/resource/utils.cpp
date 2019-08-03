@@ -27,9 +27,9 @@
 #include <AkonadiCore/Item>
 #include <KContacts/Addressee>
 #include <KContacts/VCardConverter>
-#include <KCalCore/ICalFormat>
-#include <KCalCore/Incidence>
-#include <KCalCore/MemoryCalendar>
+#include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/Incidence>
+#include <KCalendarCore/MemoryCalendar>
 
 #include <KLocalizedString>
 
@@ -39,7 +39,7 @@
 
 #include "davresource_debug.h"
 
-typedef QSharedPointer<KCalCore::Incidence> IncidencePtr;
+typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
 
 QString Utils::translatedProtocolName(KDAV::Protocol protocol)
 {
@@ -100,7 +100,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         // rawData is already UTF-8
         rawData = converter.exportVCard(contact, KContacts::VCardConverter::v3_0);
     } else if (item.hasPayload<IncidencePtr>()) {
-        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::systemTimeZone()));
+        const KCalendarCore::MemoryCalendar::Ptr calendar(new KCalendarCore::MemoryCalendar(QTimeZone::systemTimeZone()));
         calendar->addIncidence(item.payload<IncidencePtr>());
         for (const Akonadi::Item &dependentItem : qAsConst(dependentItems)) {
             calendar->addIncidence(dependentItem.payload<IncidencePtr>());
@@ -111,7 +111,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".ics"));
         mimeType = QStringLiteral("text/calendar");
 
-        KCalCore::ICalFormat formatter;
+        KCalendarCore::ICalFormat formatter;
         rawData = formatter.toString(calendar, QString()).toUtf8();
     }
 
@@ -137,10 +137,10 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
 
         target.setPayloadFromData(source.data());
     } else {
-        KCalCore::ICalFormat formatter;
-        const KCalCore::MemoryCalendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::systemTimeZone()));
+        KCalendarCore::ICalFormat formatter;
+        const KCalendarCore::MemoryCalendar::Ptr calendar(new KCalendarCore::MemoryCalendar(QTimeZone::systemTimeZone()));
         formatter.fromString(calendar, data);
-        KCalCore::Incidence::List incidences = calendar->incidences();
+        KCalendarCore::Incidence::List incidences = calendar->incidences();
 
         if (incidences.isEmpty()) {
             return false;
@@ -151,7 +151,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
         // could be a VTODO or a VJOURNAL but that doesn't matter)
         // and then apply the recurrence exceptions
         IncidencePtr mainIncidence;
-        KCalCore::Incidence::List exceptions;
+        KCalendarCore::Incidence::List exceptions;
 
         for (const IncidencePtr &incidence : qAsConst(incidences)) {
             if (incidence->hasRecurrenceId()) {
@@ -167,7 +167,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
         }
 
         for (const IncidencePtr &exception : qAsConst(exceptions)) {
-            if (exception->status() == KCalCore::Incidence::StatusCanceled) {
+            if (exception->status() == KCalendarCore::Incidence::StatusCanceled) {
                 QDateTime exDateTime(exception->recurrenceId());
                 mainIncidence->recurrence()->addExDateTime(exDateTime);
             } else {

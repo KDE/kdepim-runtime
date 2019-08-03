@@ -56,12 +56,12 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
         KGAPI2::ReminderPtr rem(new KGAPI2::Reminder);
 
         if (reminder[QStringLiteral("type")].toString() == QLatin1String("display")) {
-            rem->setType(KCalCore::Alarm::Display);
+            rem->setType(KCalendarCore::Alarm::Display);
         } else if (reminder[QStringLiteral("type")].toString() == QLatin1String("email")) {
-            rem->setType(KCalCore::Alarm::Email);
+            rem->setType(KCalendarCore::Alarm::Email);
         }
 
-        KCalCore::Duration offset(reminder[QStringLiteral("time")].toInt(), KCalCore::Duration::Seconds);
+        KCalendarCore::Duration offset(reminder[QStringLiteral("time")].toInt(), KCalendarCore::Duration::Seconds);
         rem->setStartOffset(offset);
 
         m_reminders << rem;
@@ -76,9 +76,9 @@ QByteArray DefaultReminderAttribute::serialized() const
     for (const ReminderPtr &rem : qAsConst(m_reminders)) {
         QVariantMap reminder;
 
-        if (rem->type() == KCalCore::Alarm::Display) {
+        if (rem->type() == KCalendarCore::Alarm::Display) {
             reminder[QStringLiteral("type")] = QLatin1String("display");
-        } else if (rem->type() == KCalCore::Alarm::Email) {
+        } else if (rem->type() == KCalendarCore::Alarm::Email) {
             reminder[QStringLiteral("type")] = QLatin1String("email");
         }
 
@@ -90,12 +90,12 @@ QByteArray DefaultReminderAttribute::serialized() const
     return serialized.toJson();
 }
 
-KCalCore::Alarm::List DefaultReminderAttribute::alarms(KCalCore::Incidence *incidence) const
+KCalendarCore::Alarm::List DefaultReminderAttribute::alarms(KCalendarCore::Incidence *incidence) const
 {
-    KCalCore::Alarm::List alarms;
+    KCalendarCore::Alarm::List alarms;
     alarms.reserve(m_reminders.count());
     for (const ReminderPtr &reminder : qAsConst(m_reminders)) {
-        KCalCore::Alarm::Ptr alarm(new KCalCore::Alarm(incidence));
+        KCalendarCore::Alarm::Ptr alarm(new KCalendarCore::Alarm(incidence));
 
         alarm->setType(reminder->type());
         alarm->setTime(incidence->dtStart());

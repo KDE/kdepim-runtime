@@ -19,7 +19,7 @@
 #ifndef DAVFREEBUSYHANDLER_H
 #define DAVFREEBUSYHANDLER_H
 
-#include <KCalCore/FreeBusy>
+#include <KCalendarCore/FreeBusy>
 
 #include <QMap>
 #include <QObject>
@@ -84,7 +84,7 @@ private:
         bool handlingJobSuccessful = false;
         int retrievalJobCount = 0;
         bool retrievalJobSuccessful = false;
-        QMap<uint, KCalCore::FreeBusy::Ptr> resultingFreeBusy;
+        QMap<uint, KCalendarCore::FreeBusy::Ptr> resultingFreeBusy;
     };
 
     QMap<QString, RequestTracker> mRequestsTracker;

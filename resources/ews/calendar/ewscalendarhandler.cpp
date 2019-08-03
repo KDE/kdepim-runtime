@@ -19,7 +19,7 @@
 
 #include "ewscalendarhandler.h"
 
-#include <KCalCore/Event>
+#include <KCalendarCore/Event>
 
 #include "ewsfetchcalendardetailjob.h"
 #include "ewsmodifycalendarjob.h"
@@ -53,7 +53,7 @@ void EwsCalendarHandler::setSeenFlag(Item &item, bool value)
 
 QString EwsCalendarHandler::mimeType()
 {
-    return KCalCore::Event::eventMimeType();
+    return KCalendarCore::Event::eventMimeType();
 }
 
 bool EwsCalendarHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)

@@ -29,9 +29,9 @@
 
 #include <kalarmcal/kacalendar.h>
 
-#include <KCalCore/FileStorage>
-#include <KCalCore/ICalFormat>
-#include <KCalCore/MemoryCalendar>
+#include <KCalendarCore/FileStorage>
+#include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
 #include <changerecorder.h>
 #include <kdbusconnectionpool.h>
 #include <entitydisplayattribute.h>
@@ -54,7 +54,7 @@
 #include "kalarmdirresource_debug.h"
 
 using namespace Akonadi;
-using namespace KCalCore;
+using namespace KCalendarCore;
 using namespace Akonadi_KAlarm_Dir_Resource;
 using KAlarmResourceCommon::errorMessage;
 

@@ -22,7 +22,7 @@
 #include <QJsonObject>
 #include <QDateTime>
 
-#include <KCalCore/Event>
+#include <KCalendarCore/Event>
 
 EventsListJob::EventsListJob(const QString &identifier, const Akonadi::Collection &col, QObject *parent)
     : ListJob(identifier, col, parent)
@@ -43,28 +43,28 @@ EventsListJob::~EventsListJob()
 {
 }
 
-KCalCore::Incidence::Status EventsListJob::parseStatus(const QJsonObject &data) const
+KCalendarCore::Incidence::Status EventsListJob::parseStatus(const QJsonObject &data) const
 {
     const auto isCanceled = data.constFind(QLatin1String("is_canceled"));
     if (isCanceled != data.constEnd()) {
         if (isCanceled->toBool() == true) {
-            return KCalCore::Incidence::StatusCanceled;
+            return KCalendarCore::Incidence::StatusCanceled;
         }
     }
 
     switch (Graph::rsvpFromString(collection().remoteId())) {
     case Graph::Attending:
-        return KCalCore::Incidence::StatusConfirmed;
+        return KCalendarCore::Incidence::StatusConfirmed;
     case Graph::MaybeAttending:
-        return KCalCore::Incidence::StatusTentative;
+        return KCalendarCore::Incidence::StatusTentative;
     case Graph::NotResponded:
-        return KCalCore::Incidence::StatusNeedsAction;
+        return KCalendarCore::Incidence::StatusNeedsAction;
     case Graph::Declined:
     case Graph::Birthday:
         break;
     }
 
-    return KCalCore::Incidence::StatusNone;
+    return KCalendarCore::Incidence::StatusNone;
 }
 
 bool EventsListJob::shouldHaveAlarm(const Akonadi::Collection &col) const
@@ -93,7 +93,7 @@ QDateTime EventsListJob::parseDateTime(const QString &str) const
 
 Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
 {
-    auto event = KCalCore::Event::Ptr::create();
+    auto event = KCalendarCore::Event::Ptr::create();
     event->setSummary(data.value(QLatin1String("name")).toString());
 
     const auto dataEnd = data.constEnd();
@@ -147,10 +147,10 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
 
     const auto status = parseStatus(data);
     event->setStatus(status);
-    if (status == KCalCore::Incidence::StatusCanceled) {
-        event->setTransparency(KCalCore::Event::Transparent);
+    if (status == KCalendarCore::Incidence::StatusCanceled) {
+        event->setTransparency(KCalendarCore::Event::Transparent);
     } else {
-        event->setTransparency(KCalCore::Event::Opaque);
+        event->setTransparency(KCalendarCore::Event::Opaque);
     }
 
     event->setUid(data.value(QLatin1String("id")).toString());
@@ -161,16 +161,16 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
     }
 
     if (shouldHaveAlarm(collection())) {
-        auto alarm = KCalCore::Alarm::Ptr::create(event.data());
+        auto alarm = KCalendarCore::Alarm::Ptr::create(event.data());
         alarm->setDisplayAlarm(event->summary());
         alarm->setStartOffset({ -Settings::self()->eventReminderHours() * 3600,
-                                KCalCore::Duration::Seconds });
+                                KCalendarCore::Duration::Seconds });
         alarm->setEnabled(true);
         event->addAlarm(alarm);
     }
 
     Akonadi::Item item;
-    item.setMimeType(KCalCore::Event::eventMimeType());
+    item.setMimeType(KCalendarCore::Event::eventMimeType());
     item.setRemoteId(event->uid());
     item.setGid(event->uid());
     item.setParentCollection(collection());

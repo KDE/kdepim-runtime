@@ -34,7 +34,7 @@
 #ifndef KOLABV2_JOURNAL_H
 #define KOLABV2_JOURNAL_H
 
-#include <kcalcore/journal.h>
+#include <kcalendarcore/journal.h>
 
 #include "kolabbase.h"
 
@@ -43,7 +43,7 @@ class QDomElement;
 namespace KolabV2 {
 /**
  * This class represents a journal entry, and knows how to load/save it
- * from/to XML, and from/to a KCalCore::Journal.
+ * from/to XML, and from/to a KCalendarCore::Journal.
  * The instances of this class are temporary, only used to convert
  * one to the other.
  */
@@ -52,12 +52,12 @@ class Journal : public KolabBase
 public:
     /// Use this to parse an xml string to a journal entry
     /// The caller is responsible for deleting the returned journal
-    static KCalCore::Journal::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz);
+    static KCalendarCore::Journal::Ptr fromXml(const QDomDocument &xmlDoc, const QString &tz);
 
     /// Use this to get an xml string describing this journal entry
-    static QString journalToXML(const KCalCore::Journal::Ptr &, const QString &tz);
+    static QString journalToXML(const KCalendarCore::Journal::Ptr &, const QString &tz);
 
-    explicit Journal(const QString &tz, const KCalCore::Journal::Ptr &journal = KCalCore::Journal::Ptr());
+    explicit Journal(const QString &tz, const KCalendarCore::Journal::Ptr &journal = KCalendarCore::Journal::Ptr());
     ~Journal() override;
 
     QString type() const override
@@ -65,7 +65,7 @@ public:
         return QStringLiteral("Journal");
     }
 
-    void saveTo(const KCalCore::Journal::Ptr &journal) const;
+    void saveTo(const KCalendarCore::Journal::Ptr &journal) const;
 
     virtual void setSummary(const QString &summary);
     virtual QString summary() const;
@@ -90,7 +90,7 @@ public:
 
 protected:
     // Read all known fields from this ical journal
-    void setFields(const KCalCore::Journal::Ptr &);
+    void setFields(const KCalendarCore::Journal::Ptr &);
 
     QString productID() const override;
 

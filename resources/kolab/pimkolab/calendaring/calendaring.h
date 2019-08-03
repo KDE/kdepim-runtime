@@ -20,8 +20,8 @@
 
 #include "kolab_export.h"
 
-#include <kcalcore/event.h>
-#include <kcalcore/memorycalendar.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/memorycalendar.h>
 #include <kolabevent.h>
 #include <memory>
 
@@ -73,7 +73,7 @@ public:
 private:
     Calendar(const Calendar &);
     void operator=(const Calendar &);
-    std::unique_ptr<KCalCore::MemoryCalendar> mCalendar;
+    std::unique_ptr<KCalendarCore::MemoryCalendar> mCalendar;
 };
 }     //Namespace
 } //Namespace

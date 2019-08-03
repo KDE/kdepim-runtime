@@ -34,7 +34,7 @@
 #ifndef KOLABV2_INCIDENCE_H
 #define KOLABV2_INCIDENCE_H
 
-#include <kcalcore/incidence.h>
+#include <kcalendarcore/incidence.h>
 
 #include "kolabbase.h"
 
@@ -44,7 +44,7 @@ namespace KolabV2 {
 /**
  * This abstract class represents an incidence which has the shared
  * fields, of events and tasks and knows how to load/save these
- * from/to XML, and from/to a KCalCore::Incidence.
+ * from/to XML, and from/to a KCalendarCore::Incidence.
  */
 class Incidence : public KolabBase
 {
@@ -75,12 +75,12 @@ public:
         QString delegator;
     };
 
-    explicit Incidence(const QString &tz, const KCalCore::Incidence::Ptr &incidence = KCalCore::Incidence::Ptr());
+    explicit Incidence(const QString &tz, const KCalendarCore::Incidence::Ptr &incidence = KCalendarCore::Incidence::Ptr());
 
 public:
     ~Incidence() override;
 
-    void saveTo(const KCalCore::Incidence::Ptr &incidence);
+    void saveTo(const KCalendarCore::Incidence::Ptr &incidence);
 
     virtual void setPriority(int priority);
     virtual int priority() const;
@@ -102,7 +102,7 @@ public:
     virtual void setAlarm(float alarm);
     virtual float alarm() const;
 
-    virtual void setRecurrence(KCalCore::Recurrence *recur);
+    virtual void setRecurrence(KCalendarCore::Recurrence *recur);
     virtual Recurrence recurrence() const;
 
     virtual void addAttendee(const Attendee &attendee);
@@ -135,7 +135,7 @@ protected:
     };
 
     // Read all known fields from this ical incidence
-    void setFields(const KCalCore::Incidence::Ptr &);
+    void setFields(const KCalendarCore::Incidence::Ptr &);
 
     bool loadAttendeeAttribute(QDomElement &, Attendee &);
     void saveAttendeeAttribute(QDomElement &element, const Attendee &attendee) const;
@@ -161,8 +161,8 @@ protected:
     bool mHasAlarm;
     Recurrence mRecurrence;
     QList<Attendee> mAttendees;
-    QList<KCalCore::Alarm::Ptr> mAlarms;
-    QList<KCalCore::Attachment> mAttachments;
+    QList<KCalendarCore::Alarm::Ptr> mAlarms;
+    QList<KCalendarCore::Attachment> mAttachments;
     QString mInternalUID;
 
     struct Custom {

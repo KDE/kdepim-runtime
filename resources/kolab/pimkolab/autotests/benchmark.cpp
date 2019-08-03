@@ -62,9 +62,9 @@ void BenchmarkTests::parsingBenchmarkComparison()
     //     qDebug() << xmlData;
     const QDomDocument xmlDoc = KolabV2::Event::loadDocument(QString::fromUtf8(xmlData));
     QVERIFY(!xmlDoc.isNull());
-    const KCalCore::Event::Ptr i = KolabV2::Event::fromXml(xmlDoc, QStringLiteral("Europe/Berlin"));
+    const KCalendarCore::Event::Ptr i = KolabV2::Event::fromXml(xmlDoc, QStringLiteral("Europe/Berlin"));
     QVERIFY(i);
-    const Kolab::Event &event = Kolab::Conversion::fromKCalCore(*i);
+    const Kolab::Event &event = Kolab::Conversion::fromKCalendarCore(*i);
     const std::string &v3String = Kolab::writeEvent(event);
 
     QFETCH(bool, v2Parser);

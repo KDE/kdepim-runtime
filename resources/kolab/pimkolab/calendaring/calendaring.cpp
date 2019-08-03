@@ -18,8 +18,8 @@
 #include "calendaring.h"
 #include "pimkolab_debug.h"
 
-#include <kcalcore/event.h>
-#include <kcalcore/todo.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/todo.h>
 #include <kolabevent.h>
 #include <QDate>
 #include <QTimeZone>
@@ -31,8 +31,8 @@ namespace Kolab {
 namespace Calendaring {
 bool conflicts(const Kolab::Event &e1, const Kolab::Event &e2)
 {
-    KCalCore::Event::Ptr k1 = Kolab::Conversion::toKCalCore(e1);
-    KCalCore::Event::Ptr k2 = Kolab::Conversion::toKCalCore(e2);
+    KCalendarCore::Event::Ptr k1 = Kolab::Conversion::toKCalendarCore(e1);
+    KCalendarCore::Event::Ptr k2 = Kolab::Conversion::toKCalendarCore(e2);
     if (k2->dtEnd() < k1->dtStart()) {
         return false;
     } else if (k1->dtEnd() < k2->dtStart()) {
@@ -69,8 +69,8 @@ std::vector< std::vector< Event > > getConflictingSets(const std::vector< Event 
 
 std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab::cDateTime &start, const Kolab::cDateTime &end)
 {
-    KCalCore::Event::Ptr k = Kolab::Conversion::toKCalCore(e);
-    const KCalCore::DateTimeList list = k->recurrence()->timesInInterval(Kolab::Conversion::toDate(start), Kolab::Conversion::toDate(end));
+    KCalendarCore::Event::Ptr k = Kolab::Conversion::toKCalendarCore(e);
+    const KCalendarCore::DateTimeList list = k->recurrence()->timesInInterval(Kolab::Conversion::toDate(start), Kolab::Conversion::toDate(end));
     std::vector<Kolab::cDateTime> dtList;
     dtList.reserve(list.count());
     for (const QDateTime &dt : list) {
@@ -80,13 +80,13 @@ std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab:
 }
 
 Calendar::Calendar()
-    :   mCalendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())))//Always utc as it doesn't change anything anyways
+    :   mCalendar(new KCalendarCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())))//Always utc as it doesn't change anything anyways
 {
 }
 
 void Calendar::addEvent(const Kolab::Event &event)
 {
-    KCalCore::Event::Ptr k = Kolab::Conversion::toKCalCore(event);
+    KCalendarCore::Event::Ptr k = Kolab::Conversion::toKCalendarCore(event);
     if (!mCalendar->addEvent(k)) {
         qCWarning(PIMKOLAB_LOG) << "failed to add event";
     }
@@ -97,15 +97,15 @@ std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime &start, con
     const QDateTime s = Kolab::Conversion::toDate(start);
     const QDateTime e = Kolab::Conversion::toDate(end);
     const QTimeZone tz = s.timeZone();
-    KCalCore::Event::List list = mCalendar->events(s.date(), e.date(), tz, true);
+    KCalendarCore::Event::List list = mCalendar->events(s.date(), e.date(), tz, true);
     if (sort) {
-        list = mCalendar->sortEvents(list, KCalCore::EventSortStartDate, KCalCore::SortDirectionAscending);
+        list = mCalendar->sortEvents(list, KCalendarCore::EventSortStartDate, KCalendarCore::SortDirectionAscending);
     }
     std::vector<Kolab::Event> eventlist;
-    for (const KCalCore::Event::Ptr &event : qAsConst(list)) {
+    for (const KCalendarCore::Event::Ptr &event : qAsConst(list)) {
         //We have to filter the list by time
         if (event->dtEnd() >= s && e >= event->dtStart()) {
-            eventlist.push_back(Kolab::Conversion::fromKCalCore(*event));
+            eventlist.push_back(Kolab::Conversion::fromKCalendarCore(*event));
         }
     }
     return eventlist;

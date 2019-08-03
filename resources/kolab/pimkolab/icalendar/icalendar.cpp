@@ -24,9 +24,9 @@
 #include <conversion/kcalconversion.h>
 #include <conversion/commonconversion.h>
 #include <mime/mimeutils.h>
-#include <kcalcore/event.h>
-#include <kcalcore/memorycalendar.h>
-#include <kcalcore/icalformat.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/memorycalendar.h>
+#include <kcalendarcore/icalformat.h>
 #include <kmime/kmime_message.h>
 #include <klocalizedstring.h>
 #include <iostream>
@@ -35,28 +35,28 @@
 namespace Kolab {
 std::string toICal(const std::vector<Event> &events)
 {
-    KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
+    KCalendarCore::Calendar::Ptr calendar(new KCalendarCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
     for (const Event &event : events) {
-        KCalCore::Event::Ptr kcalEvent = Conversion::toKCalCore(event);
+        KCalendarCore::Event::Ptr kcalEvent = Conversion::toKCalendarCore(event);
         kcalEvent->setCreated(QDateTime::currentDateTimeUtc()); //sets dtstamp
         calendar->addEvent(kcalEvent);
     }
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
-//     qCDebug(PIMKOLAB_LOG) << format.createScheduleMessage(calendar->events().first(), KCalCore::iTIPRequest);
+//     qCDebug(PIMKOLAB_LOG) << format.createScheduleMessage(calendar->events().first(), KCalendarCore::iTIPRequest);
 
     return Conversion::toStdString(format.toString(calendar));
 }
 
 std::vector< Event > fromICalEvents(const std::string &input)
 {
-    KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
-    KCalCore::ICalFormat format;
+    KCalendarCore::Calendar::Ptr calendar(new KCalendarCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())));
+    KCalendarCore::ICalFormat format;
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
     format.fromString(calendar, Conversion::fromStdString(input));
     std::vector<Event> events;
-    foreach (const KCalCore::Event::Ptr &event, calendar->events()) {
-        events.push_back(Conversion::fromKCalCore(*event));
+    foreach (const KCalendarCore::Event::Ptr &event, calendar->events()) {
+        events.push_back(Conversion::fromKCalendarCore(*event));
     }
     return events;
 }
@@ -66,26 +66,26 @@ ITipHandler::ITipHandler()
 {
 }
 
-ITipHandler::ITipMethod mapFromKCalCore(KCalCore::iTIPMethod method)
+ITipHandler::ITipMethod mapFromKCalendarCore(KCalendarCore::iTIPMethod method)
 {
-    Q_ASSERT((int)KCalCore::iTIPPublish == (int)ITipHandler::iTIPPublish);
-    Q_ASSERT((int)KCalCore::iTIPNoMethod == (int)ITipHandler::iTIPNoMethod);
+    Q_ASSERT((int)KCalendarCore::iTIPPublish == (int)ITipHandler::iTIPPublish);
+    Q_ASSERT((int)KCalendarCore::iTIPNoMethod == (int)ITipHandler::iTIPNoMethod);
     return static_cast<ITipHandler::ITipMethod>(method);
 }
 
-KCalCore::iTIPMethod mapToKCalCore(ITipHandler::ITipMethod method)
+KCalendarCore::iTIPMethod mapToKCalendarCore(ITipHandler::ITipMethod method)
 {
-    Q_ASSERT((int)KCalCore::iTIPPublish == (int)ITipHandler::iTIPPublish);
-    Q_ASSERT((int)KCalCore::iTIPNoMethod == (int)ITipHandler::iTIPNoMethod);
-    return static_cast<KCalCore::iTIPMethod>(method);
+    Q_ASSERT((int)KCalendarCore::iTIPPublish == (int)ITipHandler::iTIPPublish);
+    Q_ASSERT((int)KCalendarCore::iTIPNoMethod == (int)ITipHandler::iTIPNoMethod);
+    return static_cast<KCalendarCore::iTIPMethod>(method);
 }
 
 std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod method) const
 {
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
-    KCalCore::iTIPMethod m = mapToKCalCore(method);
-    if (m == KCalCore::iTIPNoMethod) {
+    KCalendarCore::iTIPMethod m = mapToKCalendarCore(method);
+    if (m == KCalendarCore::iTIPNoMethod) {
         return std::string();
     }
 //     qCDebug(PIMKOLAB_LOG) << event.start().
@@ -98,19 +98,19 @@ std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod meth
  *
  * I think DTSTAMP should be the current timestamp, and CREATED should be the creation date.
  */
-    KCalCore::Event::Ptr e = Conversion::toKCalCore(event);
+    KCalendarCore::Event::Ptr e = Conversion::toKCalendarCore(event);
     return Conversion::toStdString(format.createScheduleMessage(e, m));
 }
 
 std::vector< Event > ITipHandler::fromITip(const std::string &string)
 {
-    KCalCore::Calendar::Ptr calendar(new KCalCore::MemoryCalendar(QTimeZone::utc()));
-    KCalCore::ICalFormat format;
-    KCalCore::ScheduleMessage::Ptr msg = format.parseScheduleMessage(calendar, Conversion::fromStdString(string));
-    KCalCore::Event::Ptr event = msg->event().dynamicCast<KCalCore::Event>();
+    KCalendarCore::Calendar::Ptr calendar(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
+    KCalendarCore::ICalFormat format;
+    KCalendarCore::ScheduleMessage::Ptr msg = format.parseScheduleMessage(calendar, Conversion::fromStdString(string));
+    KCalendarCore::Event::Ptr event = msg->event().dynamicCast<KCalendarCore::Event>();
     std::vector< Event > events;
-    events.push_back(Conversion::fromKCalCore(*event));
-    mMethod = mapFromKCalCore(msg->method());
+    events.push_back(Conversion::fromKCalendarCore(*event));
+    mMethod = mapFromKCalendarCore(msg->method());
     return events;
 }
 
@@ -121,21 +121,21 @@ ITipHandler::ITipMethod ITipHandler::method() const
 
 std::string ITipHandler::toIMip(const Event &event, ITipHandler::ITipMethod m, const std::string &from, bool bccMe) const
 {
-    KCalCore::Event::Ptr e = Conversion::toKCalCore(event);
+    KCalendarCore::Event::Ptr e = Conversion::toKCalendarCore(event);
 //     e->recurrence()->addRDateTime(e->dtStart()); //FIXME The createScheduleMessage converts everything to utc without a recurrence.
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
-    KCalCore::iTIPMethod method = mapToKCalCore(m);
+    KCalendarCore::iTIPMethod method = mapToKCalendarCore(m);
     const QString &messageText = format.createScheduleMessage(e, method);
     //This code is mostly from MailScheduler::performTransaction
-    if (method == KCalCore::iTIPRequest
-        || method == KCalCore::iTIPCancel
-        || method == KCalCore::iTIPAdd
-        || method == KCalCore::iTIPDeclineCounter) {
+    if (method == KCalendarCore::iTIPRequest
+        || method == KCalendarCore::iTIPCancel
+        || method == KCalendarCore::iTIPAdd
+        || method == KCalendarCore::iTIPDeclineCounter) {
         return Conversion::toStdString(QString::fromUtf8(mailAttendees(e, bccMe, messageText)));
     } else {
         QString subject;
-        if (e && method == KCalCore::iTIPCounter) {
+        if (e && method == KCalendarCore::iTIPCounter) {
             subject = i18n("Counter proposal: %1", e->summary());
         }
         return Conversion::toStdString(QString::fromUtf8(mailOrganizer(e, Conversion::fromStdString(from), bccMe, messageText, subject)));

@@ -23,24 +23,24 @@
 #include <kolabevent.h>
 #include <kolabtodo.h>
 #include <kolabjournal.h>
-#include <kcalcore/event.h>
-#include <kcalcore/todo.h>
-#include <kcalcore/journal.h>
+#include <kcalendarcore/event.h>
+#include <kcalendarcore/todo.h>
+#include <kcalendarcore/journal.h>
 
 namespace Kolab {
 /**
- * Conversion of Kolab-Containers to/from KCalCore Containers.
+ * Conversion of Kolab-Containers to/from KCalendarCore Containers.
  *
  */
 namespace Conversion {
-KOLAB_EXPORT KCalCore::Event::Ptr toKCalCore(const Kolab::Event &);
-KOLAB_EXPORT Kolab::Event fromKCalCore(const KCalCore::Event &);
+KOLAB_EXPORT KCalendarCore::Event::Ptr toKCalendarCore(const Kolab::Event &);
+KOLAB_EXPORT Kolab::Event fromKCalendarCore(const KCalendarCore::Event &);
 
-KOLAB_EXPORT KCalCore::Todo::Ptr toKCalCore(const Kolab::Todo &);
-KOLAB_EXPORT Kolab::Todo fromKCalCore(const KCalCore::Todo &);
+KOLAB_EXPORT KCalendarCore::Todo::Ptr toKCalendarCore(const Kolab::Todo &);
+KOLAB_EXPORT Kolab::Todo fromKCalendarCore(const KCalendarCore::Todo &);
 
-KOLAB_EXPORT KCalCore::Journal::Ptr toKCalCore(const Kolab::Journal &);
-KOLAB_EXPORT Kolab::Journal fromKCalCore(const KCalCore::Journal &);
+KOLAB_EXPORT KCalendarCore::Journal::Ptr toKCalendarCore(const Kolab::Journal &);
+KOLAB_EXPORT Kolab::Journal fromKCalendarCore(const KCalendarCore::Journal &);
 }
 }
 

@@ -21,9 +21,9 @@
 
 #include <QTimeZone>
 
-#include <KCalCore/Event>
-#include <KCalCore/ICalFormat>
-#include <KCalCore/MemoryCalendar>
+#include <KCalendarCore/Event>
+#include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
 
 #include "ewsresource_debug.h"
 #include "ewsgetitemrequest.h"
@@ -79,7 +79,7 @@ EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob()
 void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Response> &responses)
 {
     Item::List::iterator it = mChangedItems.begin();
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
 
     EwsId::List addItems;
 
@@ -93,12 +93,12 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
 
         const EwsItem &ewsItem = resp.item();
         QString mimeContent = ewsItem[EwsItemFieldMimeContent].toString();
-        KCalCore::Calendar::Ptr memcal(new KCalCore::MemoryCalendar(QTimeZone::utc()));
+        KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 events").arg(memcal->events().count());
-        KCalCore::Incidence::Ptr incidence;
+        KCalendarCore::Incidence::Ptr incidence;
         if (memcal->events().count() > 1) {
-            Q_FOREACH (const KCalCore::Event::Ptr &event, memcal->events()) {
+            Q_FOREACH (const KCalendarCore::Event::Ptr &event, memcal->events()) {
                 qCDebugNC(EWSRES_LOG) << QString::number(event->recurrence()->recurrenceType(), 16) << event->recurrenceId() << event->recurrenceId().isValid();
                 if (!event->recurrenceId().isValid()) {
                     incidence = event;
@@ -111,15 +111,15 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
         } else if (memcal->events().count() == 1) {
             incidence = memcal->events()[0];
         }
-        //KCalCore::Incidence::Ptr incidence(format.fromString(mimeContent));
+        //KCalendarCore::Incidence::Ptr incidence(format.fromString(mimeContent));
 
         if (incidence) {
             QDateTime dt(incidence->dtStart());
             if (dt.isValid()) {
                 incidence->setDtStart(dt);
             }
-            if (incidence->type() == KCalCore::Incidence::TypeEvent) {
-                KCalCore::Event *event = reinterpret_cast<KCalCore::Event *>(incidence.data());
+            if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
+                KCalendarCore::Event *event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
                 dt = event->dtEnd();
                 if (dt.isValid()) {
                     event->setDtEnd(dt);
@@ -130,7 +130,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
                 incidence->setRecurrenceId(dt);
             }
 
-            item.setPayload<KCalCore::Incidence::Ptr>(incidence);
+            item.setPayload<KCalendarCore::Incidence::Ptr>(incidence);
         }
 
         ++it;
@@ -172,7 +172,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         return;
     }
 
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
     Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
         if (!resp.isSuccess()) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to fetch item.");
@@ -180,24 +180,24 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         }
         const EwsItem &ewsItem = resp.item();
 
-        Item item(KCalCore::Event::eventMimeType());
+        Item item(KCalendarCore::Event::eventMimeType());
         item.setParentCollection(mCollection);
         EwsId id = ewsItem[EwsItemFieldItemId].value<EwsId>();
         item.setRemoteId(id.id());
         item.setRemoteRevision(id.changeKey());
 
         QString mimeContent = ewsItem[EwsItemFieldMimeContent].toString();
-        KCalCore::Calendar::Ptr memcal(new KCalCore::MemoryCalendar(QTimeZone::utc()));
+        KCalendarCore::Calendar::Ptr memcal(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
         format.fromString(memcal, mimeContent);
-        KCalCore::Incidence::Ptr incidence(memcal->events().last());
+        KCalendarCore::Incidence::Ptr incidence(memcal->events().last());
         incidence->clearRecurrence();
 
         QDateTime dt(incidence->dtStart());
         if (dt.isValid()) {
             incidence->setDtStart(dt);
         }
-        if (incidence->type() == KCalCore::Incidence::TypeEvent) {
-            KCalCore::Event *event = reinterpret_cast<KCalCore::Event *>(incidence.data());
+        if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
+            KCalendarCore::Event *event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
             dt = event->dtEnd();
             if (dt.isValid()) {
                 event->setDtEnd(dt);
@@ -208,7 +208,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
             incidence->setRecurrenceId(dt);
         }
 
-        item.setPayload<KCalCore::Incidence::Ptr>(incidence);
+        item.setPayload<KCalendarCore::Incidence::Ptr>(incidence);
 
         mChangedItems.append(item);
     }

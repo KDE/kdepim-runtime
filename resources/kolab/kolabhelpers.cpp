@@ -21,7 +21,7 @@
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
 #include <KMime/KMimeMessage>
-#include <KCalCore/Incidence>
+#include <KCalendarCore/Incidence>
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
@@ -57,34 +57,34 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
     switch (folderType) {
     case Kolab::EventType:
     {
-        KCalCore::Event::Ptr event(new KCalCore::Event);
+        KCalendarCore::Event::Ptr event(new KCalendarCore::Event);
         //FIXME Use message creation date time
         event->setDtStart(QDateTime::currentDateTimeUtc());
         event->setSummary(i18n("Corrupt Event"));
         event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server. Technical information: remote identifier %1", remoteId));
-        item.setMimeType(KCalCore::Event::eventMimeType());
+        item.setMimeType(KCalendarCore::Event::eventMimeType());
         item.setPayload(event);
         break;
     }
     case Kolab::TaskType:
     {
-        KCalCore::Todo::Ptr task(new KCalCore::Todo);
+        KCalendarCore::Todo::Ptr task(new KCalendarCore::Todo);
         //FIXME Use message creation date time
         task->setDtStart(QDateTime::currentDateTimeUtc());
         task->setSummary(i18n("Corrupt Task"));
         task->setDescription(i18n("Task could not be read. Delete this task to remove it from the server."));
-        item.setMimeType(KCalCore::Todo::todoMimeType());
+        item.setMimeType(KCalendarCore::Todo::todoMimeType());
         item.setPayload(task);
         break;
     }
     case Kolab::JournalType:
     {
-        KCalCore::Journal::Ptr journal(new KCalCore::Journal);
+        KCalendarCore::Journal::Ptr journal(new KCalendarCore::Journal);
         //FIXME Use message creation date time
         journal->setDtStart(QDateTime::currentDateTimeUtc());
         journal->setSummary(i18n("Corrupt journal"));
         journal->setDescription(i18n("Journal could not be read. Delete this journal to remove it from the server."));
-        item.setMimeType(KCalCore::Journal::journalMimeType());
+        item.setMimeType(KCalendarCore::Journal::journalMimeType());
         item.setPayload(journal);
         break;
     }
@@ -144,7 +144,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
     case Kolab::TodoObject:
     case Kolab::JournalObject:
     {
-        const KCalCore::Incidence::Ptr incidencePtr = reader.getIncidence();
+        const KCalendarCore::Incidence::Ptr incidencePtr = reader.getIncidence();
         if (!incidencePtr) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read incidence.";
             ok = false;
@@ -291,7 +291,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         {
             qCDebug(KOLABRESOURCE_LOG) << "converted event";
             const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
-                item.payload<KCalCore::Incidence::Ptr>(),
+                item.payload<KCalendarCore::Incidence::Ptr>(),
                 Kolab::KolabV3, productId, QStringLiteral("UTC"));
             imapItem.setPayload(message);
             break;
@@ -344,11 +344,11 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
 {
     if (contentMimeTypes.contains(KContacts::Addressee::mimeType())) {
         return QByteArrayLiteral("contact");
-    } else if (contentMimeTypes.contains(KCalCore::Event::eventMimeType())) {
+    } else if (contentMimeTypes.contains(KCalendarCore::Event::eventMimeType())) {
         return QByteArrayLiteral("event");
-    } else if (contentMimeTypes.contains(KCalCore::Todo::todoMimeType())) {
+    } else if (contentMimeTypes.contains(KCalendarCore::Todo::todoMimeType())) {
         return QByteArrayLiteral("task");
-    } else if (contentMimeTypes.contains(KCalCore::Journal::journalMimeType())) {
+    } else if (contentMimeTypes.contains(KCalendarCore::Journal::journalMimeType())) {
         return QByteArrayLiteral("journal");
     } else if (contentMimeTypes.contains(QLatin1String("application/x-vnd.akonadi.note"))
                || contentMimeTypes.contains(QLatin1String("text/x-vnd.akonadi.note"))) {
@@ -359,11 +359,11 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
 
 Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
 {
-    if (type == KCalCore::Event::eventMimeType()) {
+    if (type == KCalendarCore::Event::eventMimeType()) {
         return Kolab::EventObject;
-    } else if (type == KCalCore::Todo::todoMimeType()) {
+    } else if (type == KCalendarCore::Todo::todoMimeType()) {
         return Kolab::TodoObject;
-    } else if (type == KCalCore::Journal::journalMimeType()) {
+    } else if (type == KCalendarCore::Journal::journalMimeType()) {
         return Kolab::JournalObject;
     } else if (type == KContacts::Addressee::mimeType()) {
         return Kolab::ContactObject;
@@ -395,13 +395,13 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
     contentTypes << Akonadi::Collection::mimeType();
     switch (type) {
     case Kolab::EventType:
-        contentTypes <<  KCalCore::Event().mimeType();
+        contentTypes <<  KCalendarCore::Event().mimeType();
         break;
     case Kolab::TaskType:
-        contentTypes <<  KCalCore::Todo().mimeType();
+        contentTypes <<  KCalendarCore::Todo().mimeType();
         break;
     case Kolab::JournalType:
-        contentTypes <<  KCalCore::Journal().mimeType();
+        contentTypes <<  KCalendarCore::Journal().mimeType();
         break;
     case Kolab::ContactType:
         contentTypes << KContacts::Addressee::mimeType() << KContacts::ContactGroup::mimeType();

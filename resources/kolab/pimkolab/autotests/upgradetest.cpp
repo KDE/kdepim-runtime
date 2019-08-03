@@ -25,7 +25,7 @@
 #include "testutils.h"
 #include "kolabformat/kolabobject.h"
 #include <conversion/commonconversion.h>
-#include <kcalcore/icalformat.h>
+#include <kcalendarcore/icalformat.h>
 #include <kcontacts/vcardconverter.h>
 
 void UpgradeTest::testIncidence_data()
@@ -72,23 +72,23 @@ void UpgradeTest::testIncidence()
     QCOMPARE(reader.getVersion(), Kolab::KolabV2);
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
 
-    KCalCore::Incidence::Ptr v2result = reader.getIncidence();
+    KCalendarCore::Incidence::Ptr v2result = reader.getIncidence();
     QVERIFY(!v2result.isNull());
 
-    //write KCalCore V3
+    //write KCalendarCore V3
     KMime::Message::Ptr v3message = Kolab::KolabObjectWriter::writeIncidence(v2result, Kolab::KolabV3);
     QVERIFY(Kolab::error() == Kolab::NoError);
 //     qDebug() << v3message->encodedContent();
-    //load KCalCore V3
+    //load KCalendarCore V3
     Kolab::KolabObjectReader reader2;
     QCOMPARE(reader2.parseMimeMessage(v3message), type);
-    KCalCore::Incidence::Ptr v3result = reader2.getIncidence();
+    KCalendarCore::Incidence::Ptr v3result = reader2.getIncidence();
     QVERIFY(!v3result.isNull());
     normalizeIncidence(v2result);
     //We have to override the last modified time with a specific value, so we normalize the input to the same
     normalizeIncidence(v3result);
     qDebug() <<"--------------------------------------------------------";
-    KCalCore::ICalFormat format;
+    KCalendarCore::ICalFormat format;
     const QString v2 = format.toString(v2result);
     const QString v3 = format.toString(v3result);
     if (*v2result != *v3result) {
@@ -101,9 +101,9 @@ void UpgradeTest::testIncidence()
     QCOMPARE(v2, v3);
     qDebug() <<"--------------------------------------------------------";
 
-//     if (v2result->type() == KCalCore::IncidenceBase::TypeTodo) {
-//         KCalCore::Todo::Ptr t1 = v2result.dynamicCast<KCalCore::Todo>();
-//         KCalCore::Todo::Ptr t2 = v3result.dynamicCast<KCalCore::Todo>();
+//     if (v2result->type() == KCalendarCore::IncidenceBase::TypeTodo) {
+//         KCalendarCore::Todo::Ptr t1 = v2result.dynamicCast<KCalendarCore::Todo>();
+//         KCalendarCore::Todo::Ptr t2 = v3result.dynamicCast<KCalendarCore::Todo>();
 //         QCOMPARE(t1->percentComplete(), t2->percentComplete());
 //         QCOMPARE(t1->priority(), t2->priority());
 //         QCOMPARE(t1->uid(), t2->uid());

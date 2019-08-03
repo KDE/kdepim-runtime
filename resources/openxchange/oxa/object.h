@@ -26,7 +26,7 @@
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <KCalCore/Incidence>
+#include <KCalendarCore/Incidence>
 
 #include <QVector>
 #include <QString>
@@ -71,11 +71,11 @@ public:
     void setContactGroup(const KContacts::ContactGroup &group);
     KContacts::ContactGroup contactGroup() const;
 
-    void setEvent(const KCalCore::Incidence::Ptr &event);
-    KCalCore::Incidence::Ptr event() const;
+    void setEvent(const KCalendarCore::Incidence::Ptr &event);
+    KCalendarCore::Incidence::Ptr event() const;
 
-    void setTask(const KCalCore::Incidence::Ptr &task);
-    KCalCore::Incidence::Ptr task() const;
+    void setTask(const KCalendarCore::Incidence::Ptr &task);
+    KCalendarCore::Incidence::Ptr task() const;
 
 private:
     ObjectStatus mObjectStatus;
@@ -85,8 +85,8 @@ private:
     Folder::Module mModule;
     KContacts::Addressee mContact;
     KContacts::ContactGroup mContactGroup;
-    KCalCore::Incidence::Ptr mEvent;
-    KCalCore::Incidence::Ptr mTask;
+    KCalendarCore::Incidence::Ptr mEvent;
+    KCalendarCore::Incidence::Ptr mTask;
 };
 }
 

@@ -102,24 +102,24 @@ KContacts::ContactGroup Object::contactGroup() const
     return mContactGroup;
 }
 
-void Object::setEvent(const KCalCore::Incidence::Ptr &event)
+void Object::setEvent(const KCalendarCore::Incidence::Ptr &event)
 {
     mModule = Folder::Calendar;
     mEvent = event;
 }
 
-KCalCore::Incidence::Ptr Object::event() const
+KCalendarCore::Incidence::Ptr Object::event() const
 {
     return mEvent;
 }
 
-void Object::setTask(const KCalCore::Incidence::Ptr &task)
+void Object::setTask(const KCalendarCore::Incidence::Ptr &task)
 {
     mModule = Folder::Tasks;
     mTask = task;
 }
 
-KCalCore::Incidence::Ptr Object::task() const
+KCalendarCore::Incidence::Ptr Object::task() const
 {
     return mTask;
 }

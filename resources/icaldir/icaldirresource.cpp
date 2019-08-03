@@ -27,9 +27,9 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <KCalCore/MemoryCalendar>
-#include <KCalCore/FileStorage>
-#include <KCalCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/FileStorage>
+#include <KCalendarCore/ICalFormat>
 #include <KLocalizedString>
 #include <QDebug>
 
@@ -39,7 +39,7 @@
 #include <QTimeZone>
 
 using namespace Akonadi;
-using namespace KCalCore;
+using namespace KCalendarCore;
 
 static Incidence::Ptr readFromFile(const QString &fileName, const QString &expectedIdentifier)
 {
@@ -117,7 +117,7 @@ bool ICalDirResource::loadIncidences()
     while (it.hasNext()) {
         it.next();
         if (it.fileName() != QLatin1String(".") && it.fileName() != QLatin1String("..") && it.fileName() != QLatin1String("WARNING_README.txt")) {
-            const KCalCore::Incidence::Ptr incidence = readFromFile(it.filePath(), it.fileName());
+            const KCalendarCore::Incidence::Ptr incidence = readFromFile(it.filePath(), it.fileName());
             if (incidence) {
                 mIncidences.insert(incidence->instanceIdentifier(), incidence);
             }
@@ -137,7 +137,7 @@ bool ICalDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteAr
     }
 
     Item newItem(item);
-    newItem.setPayload<KCalCore::Incidence::Ptr>(mIncidences.value(remoteId));
+    newItem.setPayload<KCalendarCore::Incidence::Ptr>(mIncidences.value(remoteId));
     itemRetrieved(newItem);
 
     return true;
@@ -151,9 +151,9 @@ void ICalDirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
         return;
     }
 
-    KCalCore::Incidence::Ptr incidence;
-    if (item.hasPayload<KCalCore::Incidence::Ptr>()) {
-        incidence = item.payload<KCalCore::Incidence::Ptr>();
+    KCalendarCore::Incidence::Ptr incidence;
+    if (item.hasPayload<KCalendarCore::Incidence::Ptr>()) {
+        incidence = item.payload<KCalendarCore::Incidence::Ptr>();
     }
 
     if (incidence) {
@@ -184,9 +184,9 @@ void ICalDirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
         return;
     }
 
-    KCalCore::Incidence::Ptr incidence;
-    if (item.hasPayload<KCalCore::Incidence::Ptr>()) {
-        incidence = item.payload<KCalCore::Incidence::Ptr>();
+    KCalendarCore::Incidence::Ptr incidence;
+    if (item.hasPayload<KCalendarCore::Incidence::Ptr>()) {
+        incidence = item.payload<KCalendarCore::Incidence::Ptr>();
     }
 
     if (incidence) {
@@ -245,7 +245,7 @@ void ICalDirResource::retrieveCollections()
     c.setName(name());
 
     QStringList mimetypes;
-    mimetypes << KCalCore::Event::eventMimeType() << KCalCore::Todo::todoMimeType() << KCalCore::Journal::journalMimeType() << QStringLiteral("text/calendar");
+    mimetypes << KCalendarCore::Event::eventMimeType() << KCalendarCore::Todo::todoMimeType() << KCalendarCore::Journal::journalMimeType() << QStringLiteral("text/calendar");
     c.setContentMimeTypes(mimetypes);
 
     if (IcalDirResourceSettings::self()->readOnly()) {
@@ -274,7 +274,7 @@ void ICalDirResource::retrieveItems(const Akonadi::Collection &)
     Item::List items;
     items.reserve(mIncidences.count());
 
-    for (const KCalCore::Incidence::Ptr &incidence : qAsConst(mIncidences)) {
+    for (const KCalendarCore::Incidence::Ptr &incidence : qAsConst(mIncidences)) {
         Item item;
         item.setRemoteId(incidence->instanceIdentifier());
         item.setMimeType(incidence->mimeType());

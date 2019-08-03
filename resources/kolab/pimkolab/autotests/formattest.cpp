@@ -24,7 +24,7 @@
 #include <kolabcontainers.h>
 #include <kolabformat.h>
 
-#include <kcalcore/icalformat.h>
+#include <kcalendarcore/icalformat.h>
 #include <kcontacts/vcardconverter.h>
 #include <kcontacts/contactgrouptool.h>
 #include <akonadi/notes/noteutils.h>
@@ -125,19 +125,19 @@ void FormatTest::testIncidence()
     QCOMPARE(reader.getVersion(), version);
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
 
-    KCalCore::Incidence::Ptr convertedIncidence = reader.getIncidence();
+    KCalendarCore::Incidence::Ptr convertedIncidence = reader.getIncidence();
 
     //Parse ICalFile for comparison
     QFile icalFile(icalFileName);
     QVERIFY(icalFile.open(QFile::ReadOnly));
-    KCalCore::ICalFormat format;
-    KCalCore::Incidence::Ptr realIncidence(format.fromString(QString::fromUtf8(icalFile.readAll())));
+    KCalendarCore::ICalFormat format;
+    KCalendarCore::Incidence::Ptr realIncidence(format.fromString(QString::fromUtf8(icalFile.readAll())));
 
     // fix up the converted incidence for comparisson
     normalizeIncidence(convertedIncidence);
     normalizeIncidence(realIncidence);
 
-    // recurrence objects are created on demand, but KCalCore::Incidence::operator==() doesn't take that into account
+    // recurrence objects are created on demand, but KCalendarCore::Incidence::operator==() doesn't take that into account
     // so make sure both incidences have one
     realIncidence->recurrence();
     convertedIncidence->recurrence();
@@ -417,8 +417,8 @@ void FormatTest::generateMimefile()
 {
 //     QFile icalFile( getPath("v3/journal/complex.ics") );
 //     QVERIFY( icalFile.open( QFile::ReadOnly ) );
-//     KCalCore::ICalFormat format;
-//     const KCalCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
+//     KCalendarCore::ICalFormat format;
+//     const KCalendarCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 //
 //     QString result;
 //     QTextStream s(&result);

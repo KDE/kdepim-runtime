@@ -25,7 +25,7 @@
 #include <KDAV/DavManager>
 #include <KDAV/Utils>
 
-#include <KCalCore/ICalFormat>
+#include <KCalendarCore/ICalFormat>
 #include <KLocalizedString>
 #include <kio/davjob.h>
 #include <kio/job.h>
@@ -60,12 +60,12 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime 
         return;
     }
 
-    KCalCore::FreeBusy::Ptr fb(new KCalCore::FreeBusy(start, end));
-    KCalCore::Attendee att(QString(), email);
+    KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy(start, end));
+    KCalendarCore::Attendee att(QString(), email);
     fb->addAttendee(att);
 
-    KCalCore::ICalFormat formatter;
-    QByteArray fbData = formatter.createScheduleMessage(fb, KCalCore::iTIPRequest).toUtf8();
+    KCalendarCore::ICalFormat formatter;
+    QByteArray fbData = formatter.createScheduleMessage(fb, KCalendarCore::iTIPRequest).toUtf8();
 
     foreach (const QString &outbox, mPrincipalScheduleOutbox[email]) {
         ++mRequestsTracker[email].retrievalJobCount;
@@ -202,8 +202,8 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 
     QString rawData = calendarDataElement.text();
 
-    KCalCore::ICalFormat format;
-    KCalCore::FreeBusy::Ptr fb = format.parseFreeBusy(rawData);
+    KCalendarCore::ICalFormat format;
+    KCalendarCore::FreeBusy::Ptr fb = format.parseFreeBusy(rawData);
     if (fb.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
             Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Unable to parse free-busy data received")));
@@ -223,7 +223,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 
     if (retrievalJobCount == 0) {
         QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId],
-                                                     KCalCore::iTIPRequest);
+                                                     KCalendarCore::iTIPRequest);
         Q_EMIT freeBusyRetrieved(email, fbStr, true, QString());
     }
 }

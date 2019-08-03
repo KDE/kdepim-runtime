@@ -36,7 +36,7 @@
 #include <akonadi/notes/noteutils.h>
 
 namespace Kolab {
-void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData)
+void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData)
 {
     if (!incidence) {
         qCCritical(PIMKOLAB_LOG) << "Invalid incidence";
@@ -50,7 +50,7 @@ void getAttachments(KCalCore::Incidence::Ptr incidence, const QStringList &attac
             continue;
         }
         const QByteArray c = content->decodedContent().toBase64();
-        KCalCore::Attachment attachment(c, QString::fromLatin1(type));
+        KCalendarCore::Attachment attachment(c, QString::fromLatin1(type));
         attachment.setLabel(name);
         incidence->addAttachment(attachment);
         qCDebug(PIMKOLAB_LOG) << "ATTACHMENT NAME" << name << type;

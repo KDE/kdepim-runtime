@@ -30,8 +30,8 @@
 #include <AkonadiCore/vectorhelper.h>
 
 #include <kcontacts/addressee.h>
-#include <KCalCore/Event>
-#include <KCalCore/Todo>
+#include <KCalendarCore/Event>
+#include <KCalendarCore/Todo>
 #include <KLocalizedString>
 
 #include <oxa/davmanager.h>
@@ -450,10 +450,10 @@ void OpenXchangeResource::itemAdded(const Akonadi::Item &item, const Akonadi::Co
         object.setContact(item.payload<KContacts::Addressee>());
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
         object.setContactGroup(item.payload<KContacts::ContactGroup>());
-    } else if (item.hasPayload<KCalCore::Event::Ptr>()) {
-        object.setEvent(item.payload<KCalCore::Incidence::Ptr>());
-    } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
-        object.setTask(item.payload<KCalCore::Incidence::Ptr>());
+    } else if (item.hasPayload<KCalendarCore::Event::Ptr>()) {
+        object.setEvent(item.payload<KCalendarCore::Incidence::Ptr>());
+    } else if (item.hasPayload<KCalendarCore::Todo::Ptr>()) {
+        object.setTask(item.payload<KCalendarCore::Incidence::Ptr>());
     } else {
         Q_ASSERT(false);
     }
@@ -479,10 +479,10 @@ void OpenXchangeResource::itemChanged(const Akonadi::Item &item, const QSet<QByt
         object.setContact(item.payload<KContacts::Addressee>());
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
         object.setContactGroup(item.payload<KContacts::ContactGroup>());
-    } else if (item.hasPayload<KCalCore::Event::Ptr>()) {
-        object.setEvent(item.payload<KCalCore::Incidence::Ptr>());
-    } else if (item.hasPayload<KCalCore::Todo::Ptr>()) {
-        object.setTask(item.payload<KCalCore::Incidence::Ptr>());
+    } else if (item.hasPayload<KCalendarCore::Event::Ptr>()) {
+        object.setEvent(item.payload<KCalendarCore::Incidence::Ptr>());
+    } else if (item.hasPayload<KCalendarCore::Todo::Ptr>()) {
+        object.setTask(item.payload<KCalendarCore::Incidence::Ptr>());
     } else {
         Q_ASSERT(false);
     }
@@ -667,12 +667,12 @@ void OpenXchangeResource::onObjectsRequestJobFinished(KJob *job)
             }
             break;
         case OXA::Folder::Calendar:
-            item.setMimeType(KCalCore::Event::eventMimeType());
-            item.setPayload<KCalCore::Incidence::Ptr>(object.event());
+            item.setMimeType(KCalendarCore::Event::eventMimeType());
+            item.setPayload<KCalendarCore::Incidence::Ptr>(object.event());
             break;
         case OXA::Folder::Tasks:
-            item.setMimeType(KCalCore::Todo::todoMimeType());
-            item.setPayload<KCalCore::Incidence::Ptr>(object.task());
+            item.setMimeType(KCalendarCore::Todo::todoMimeType());
+            item.setPayload<KCalendarCore::Incidence::Ptr>(object.task());
             break;
         case OXA::Folder::Unbound:
             Q_ASSERT(false);
@@ -719,12 +719,12 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished(KJob *job)
             }
             break;
         case OXA::Folder::Calendar:
-            item.setMimeType(KCalCore::Event::eventMimeType());
-            item.setPayload<KCalCore::Incidence::Ptr>(object.event());
+            item.setMimeType(KCalendarCore::Event::eventMimeType());
+            item.setPayload<KCalendarCore::Incidence::Ptr>(object.event());
             break;
         case OXA::Folder::Tasks:
-            item.setMimeType(KCalCore::Todo::todoMimeType());
-            item.setPayload<KCalCore::Incidence::Ptr>(object.task());
+            item.setMimeType(KCalendarCore::Todo::todoMimeType());
+            item.setPayload<KCalendarCore::Incidence::Ptr>(object.task());
             break;
         case OXA::Folder::Unbound:
             Q_ASSERT(false);
@@ -794,12 +794,12 @@ void OpenXchangeResource::onObjectRequestJobFinished(KJob *job)
         }
         break;
     case OXA::Folder::Calendar:
-        item.setMimeType(KCalCore::Event::eventMimeType());
-        item.setPayload<KCalCore::Incidence::Ptr>(object.event());
+        item.setMimeType(KCalendarCore::Event::eventMimeType());
+        item.setPayload<KCalendarCore::Incidence::Ptr>(object.event());
         break;
     case OXA::Folder::Tasks:
-        item.setMimeType(KCalCore::Todo::todoMimeType());
-        item.setPayload<KCalCore::Incidence::Ptr>(object.task());
+        item.setMimeType(KCalendarCore::Todo::todoMimeType());
+        item.setPayload<KCalendarCore::Incidence::Ptr>(object.task());
         break;
     case OXA::Folder::Unbound:
         Q_ASSERT(false);
@@ -931,7 +931,7 @@ static Collection folderToCollection(const OXA::Folder &folder, const Collection
     mimeTypes.append(Collection::mimeType());
     switch (folder.module()) {
     case OXA::Folder::Calendar:
-        mimeTypes.append(KCalCore::Event::eventMimeType());
+        mimeTypes.append(KCalendarCore::Event::eventMimeType());
         attribute->setIconName(QStringLiteral("view-calendar"));
         break;
     case OXA::Folder::Contacts:
@@ -940,7 +940,7 @@ static Collection folderToCollection(const OXA::Folder &folder, const Collection
         attribute->setIconName(QStringLiteral("view-pim-contacts"));
         break;
     case OXA::Folder::Tasks:
-        mimeTypes.append(KCalCore::Todo::todoMimeType());
+        mimeTypes.append(KCalendarCore::Todo::todoMimeType());
         attribute->setIconName(QStringLiteral("view-pim-tasks"));
         break;
     case OXA::Folder::Unbound:

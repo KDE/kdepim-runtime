@@ -20,7 +20,7 @@
 
 #include "listjob.h"
 
-#include <KCalCore/Incidence>
+#include <KCalendarCore/Incidence>
 
 class EventsListJob : public ListJob
 {
@@ -36,7 +36,7 @@ protected:
 private:
     QDateTime parseDateTime(const QString &dt) const;
     bool shouldHaveAlarm(const Akonadi::Collection &collection) const;
-    KCalCore::Incidence::Status parseStatus(const QJsonObject &data) const;
+    KCalendarCore::Incidence::Status parseStatus(const QJsonObject &data) const;
 };
 
 #endif

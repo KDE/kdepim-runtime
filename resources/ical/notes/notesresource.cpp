@@ -19,13 +19,13 @@
 
 #include "notesresource.h"
 
-#include <KCalCore/Incidence>
+#include <KCalendarCore/Incidence>
 
 #include <kconfigskeleton.h>
 #include <QStandardPaths>
 
 using namespace Akonadi;
-using namespace KCalCore;
+using namespace KCalendarCore;
 
 static const QLatin1String sNotesType("application/x-vnd.kde.notes");
 
@@ -47,7 +47,7 @@ QStringList NotesResource::allMimeTypes() const
     return QStringList() << sNotesType;
 }
 
-QString NotesResource::mimeType(const KCalCore::IncidenceBase::Ptr &) const
+QString NotesResource::mimeType(const KCalendarCore::IncidenceBase::Ptr &) const
 {
     return sNotesType;
 }

@@ -19,7 +19,7 @@
 
 #include "ewsabchpersonhandler.h"
 
-#include <KCalCore/Todo>
+#include <KCalendarCore/Todo>
 
 #include "ewsfetchabchpersondetailjob.h"
 #include "ewsmodifyabchpersonjob.h"
@@ -53,7 +53,7 @@ void EwsAbchPersonHandler::setSeenFlag(Item &item, bool value)
 
 QString EwsAbchPersonHandler::mimeType()
 {
-    return KCalCore::Todo::todoMimeType();
+    return KCalendarCore::Todo::todoMimeType();
 }
 
 bool EwsAbchPersonHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem)
