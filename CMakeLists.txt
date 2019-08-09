@@ -144,7 +144,7 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 
 
-#add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
+add_definitions( -DQT_DISABLE_DEPRECATED_BEFORE=0x060000 )
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 

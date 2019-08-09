@@ -130,7 +130,7 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
     // max. last 25 days, otherwise we get an error.
     int lastSyncDelta = -1;
     if (!collection.remoteRevision().isEmpty()) {
-        lastSyncDelta = QDateTime::currentDateTimeUtc().toTime_t() - collection.remoteRevision().toULongLong();
+        lastSyncDelta = QDateTime::currentDateTimeUtc().toSecsSinceEpoch() - collection.remoteRevision().toULongLong();
     }
 
     KGAPI2::Job *job = nullptr;
@@ -145,7 +145,7 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
         }
         if (!Settings::self()->eventsSince().isEmpty()) {
             const QDate date = QDate::fromString(Settings::self()->eventsSince(), Qt::ISODate);
-            fetchJob->setTimeMin(QDateTime(date).toTime_t());
+            fetchJob->setTimeMin(QDateTime(date).toSecsSinceEpoch());
         }
         job = fetchJob;
     } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
@@ -569,7 +569,7 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
     const QDateTime local(QDateTime::currentDateTime());
     const QDateTime UTC(local.toUTC());
 
-    collection.setRemoteRevision(QString::number(UTC.toTime_t()));
+    collection.setRemoteRevision(QString::number(UTC.toSecsSinceEpoch()));
     new CollectionModifyJob(collection, this);
 
     job->deleteLater();

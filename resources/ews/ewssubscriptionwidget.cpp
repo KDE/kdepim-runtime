@@ -125,14 +125,14 @@ bool EwsSubscriptionFilterModel::hasCheckedChildren(const QModelIndex &index) co
 {
     QModelIndex child;
     int row = 0;
-    child = index.child(row, 0);
+    child = sourceModel()->index(row, 0, index);
     while (child.isValid()) {
         if (child.data(Qt::CheckStateRole).toInt() == Qt::Checked) {
             return true;
         } else if (hasCheckedChildren(child)) {
             return true;
         }
-        child = index.child(++row, 0);
+        child = sourceModel()->index(++row, 0, index);
     }
 
     return false;
