@@ -17,6 +17,7 @@ set( mboxresource_SRCS
 # Fix a race condition. mboxresource.cpp needs compactpage.h which includes ui_compactpage.h.
 # Make sure the ui file is generated before building the akonadi_mbox_resource target.
 set_source_files_properties(mboxresource.cpp PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ui_compactpage.h)
+set_source_files_properties(mboxresource.cpp PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ui_lockfilepage.h)
 
 ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME org.kde.pim.mboxresource)
 
