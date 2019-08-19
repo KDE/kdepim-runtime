@@ -43,7 +43,9 @@ add_subdirectory( imap )
 if (Libkolabxml_FOUND)
     add_subdirectory( kolab )
 endif()
-add_subdirectory( facebook )
+
+#Disable it as it seems Facebook disabled the login and event API has been crippled
+#add_subdirectory( facebook )
 add_subdirectory( maildir )
 
 add_subdirectory( openxchange )
