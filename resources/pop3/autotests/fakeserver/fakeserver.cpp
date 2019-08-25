@@ -81,7 +81,7 @@ QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData, const QBy
         Q_ASSERT(!mAllowedDeletions.isEmpty());
         for (int i = 0; i < mAllowedDeletions.size(); i++) {
             QByteArray substituted = expectedData;
-            substituted = substituted.replace(deleteMark, mAllowedDeletions[i]);
+            substituted.replace(deleteMark, mAllowedDeletions[i]);
             if (substituted == dataReceived) {
                 mAllowedDeletions.removeAt(i);
                 return substituted;
@@ -105,7 +105,7 @@ QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData, const QByte
         Q_ASSERT(!mAllowedRetrieves.isEmpty());
         for (int i = 0; i < mAllowedRetrieves.size(); i++) {
             QByteArray substituted = expectedData;
-            substituted = substituted.replace(retrMark, mAllowedRetrieves[i]);
+            substituted.replace(retrMark, mAllowedRetrieves[i]);
             if (substituted == dataReceived) {
                 mAllowedRetrieves.removeAt(i);
                 return substituted;
