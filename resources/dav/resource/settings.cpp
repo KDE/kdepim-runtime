@@ -276,7 +276,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
     }
 
     mUrls[ key ] = urlConfig;
-    if (urlConfig->mUser != QStringLiteral("$default$")) {
+    if (urlConfig->mUser != QLatin1String("$default$")) {
         savePassword(key, urlConfig->mUser, urlConfig->mPassword);
     }
     updateRemoteUrls();

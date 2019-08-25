@@ -165,7 +165,7 @@ EwsUpdateItemRequest::Response::Response(QXmlStreamReader &reader)
                 return;
             }
 
-            if (reader.name() != QStringLiteral("Count")) {
+            if (reader.name() != QLatin1String("Count")) {
                 setErrorMsg(QStringLiteral("Failed to read EWS request - expected a %1 element inside %2 element.")
                             .arg(QStringLiteral("Count")).arg(QStringLiteral("ConflictResults")));
                 return;

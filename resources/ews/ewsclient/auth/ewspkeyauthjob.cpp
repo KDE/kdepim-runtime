@@ -130,7 +130,7 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
         return QByteArray();
     }
 
-    if (params[QStringLiteral("version")] != QStringLiteral("1.0")) {
+    if (params[QStringLiteral("version")] != QLatin1String("1.0")) {
         setErrorMsg(QStringLiteral("Unknown version of PKey Authentication: %1").arg(params[QStringLiteral("version")]));
         return QByteArray();
     }

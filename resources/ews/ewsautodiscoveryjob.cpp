@@ -101,7 +101,7 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
 
     if (req->error()) {
         if (req->error() == 401 && !mUsedCreds
-            && req->lastHttpUrl().scheme() != QStringLiteral("http")) { // Don't try authentication over HTTP
+            && req->lastHttpUrl().scheme() != QLatin1String("http")) { // Don't try authentication over HTTP
             /* The 401 error may have come from an URL different to the original one (due to
              * redirections). When the original URL is retried with credentials KIO HTTP will issue
              * a warning that an authenticated request is made to a host that never asked for it.

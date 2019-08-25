@@ -128,7 +128,7 @@ EwsGetItemRequest::Response::Response(QXmlStreamReader &reader)
 
 bool EwsGetItemRequest::Response::parseItems(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QStringLiteral("Items")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("Items")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected Items element (got %1).")
                            .arg(reader.qualifiedName().toString()));
     }

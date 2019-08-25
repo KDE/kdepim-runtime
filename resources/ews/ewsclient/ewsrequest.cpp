@@ -170,7 +170,7 @@ bool EwsRequest::readResponse(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read EWS request XML"));
     }
 
-    if ((reader.name() != QStringLiteral("Envelope")) || (reader.namespaceUri() != soapEnvNsUri)) {
+    if ((reader.name() != QLatin1String("Envelope")) || (reader.namespaceUri() != soapEnvNsUri)) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - not a SOAP XML"));
     }
 
@@ -252,7 +252,7 @@ bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &r
                            .arg(reqName + QStringLiteral("Response")));
     }
 
-    if (reader.name() != QStringLiteral("ResponseMessages")
+    if (reader.name() != QLatin1String("ResponseMessages")
         || reader.namespaceUri() != ewsMsgNsUri) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.")
                            .arg(QStringLiteral("ResponseMessages")));

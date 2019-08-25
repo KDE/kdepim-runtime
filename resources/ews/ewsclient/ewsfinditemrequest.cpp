@@ -186,7 +186,7 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
 
 bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 {
-    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QStringLiteral("RootFolder")) {
+    if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("RootFolder")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
                            .arg(QStringLiteral("RootFolder")).arg(reader.qualifiedName().toString()));
     }
@@ -234,7 +234,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
                            .arg(QStringLiteral("RootFolder")));
     }
 
-    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QStringLiteral("Items")) {
+    if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1String("Items")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
                            .arg(QStringLiteral("Items")).arg(reader.qualifiedName().toString()));
     }

@@ -151,7 +151,7 @@ bool EwsPoxAutodiscoverRequest::readResponse(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read POX response XML"));
     }
 
-    if ((reader.name() != QStringLiteral("Autodiscover")) || (reader.namespaceUri() != poxAdRespNsUri)) {
+    if ((reader.name() != QLatin1String("Autodiscover")) || (reader.namespaceUri() != poxAdRespNsUri)) {
         return setErrorMsg(QStringLiteral("Failed to read POX response - not an Autodiscover response"));
     }
 
@@ -160,7 +160,7 @@ bool EwsPoxAutodiscoverRequest::readResponse(QXmlStreamReader &reader)
                            .arg(QStringLiteral("Response")));
     }
 
-    if ((reader.name() != QStringLiteral("Response")) || (reader.namespaceUri() != poxAdOuRespNsUri)) {
+    if ((reader.name() != QLatin1String("Response")) || (reader.namespaceUri() != poxAdOuRespNsUri)) {
         return setErrorMsg(QStringLiteral("Failed to read POX response - expected %1 element, found %2")
                            .arg(QStringLiteral("Response").arg(reader.name().toString())));
     }
