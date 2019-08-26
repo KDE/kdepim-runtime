@@ -119,7 +119,7 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("RootFolder")) {
+        if (reader.name() == QLatin1String("RootFolder")) {
             if (!parseRootFolder(reader)) {
                 return;
             }
@@ -200,11 +200,11 @@ EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
     const QStringRef readerName = reader.name();
-    if (readerName == QStringLiteral("Folder")
-        || readerName == QStringLiteral("CalendarFolder")
-        || readerName == QStringLiteral("ContactsFolder")
-        || readerName == QStringLiteral("TasksFolder")
-        || readerName == QStringLiteral("SearchFolder")) {
+    if (readerName == QLatin1String("Folder")
+        || readerName == QLatin1String("CalendarFolder")
+        || readerName == QLatin1String("ContactsFolder")
+        || readerName == QLatin1String("TasksFolder")
+        || readerName == QLatin1String("SearchFolder")) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")

@@ -100,7 +100,7 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("Notification")) {
+        if (reader.name() == QLatin1String("Notification")) {
             Notification nfy(reader);
             if (!nfy.isValid()) {
                 setErrorMsg(QStringLiteral("Failed to process notification."));
@@ -108,9 +108,9 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
                 return;
             }
             mNotifications.append(nfy);
-        } else if (reader.name() == QStringLiteral("Notifications")) {
+        } else if (reader.name() == QLatin1String("Notifications")) {
             while (reader.readNextStartElement()) {
-                if (reader.name() == QStringLiteral("Notification")) {
+                if (reader.name() == QLatin1String("Notification")) {
                     Notification nfy(reader);
                     if (!nfy.isValid()) {
                         setErrorMsg(QStringLiteral("Failed to process notification."));
@@ -122,7 +122,7 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
                     setErrorMsg(QStringLiteral("Failed to read EWS request - expected Notification inside Notifications"));
                 }
             }
-        } else if (reader.name() == QStringLiteral("ConnectionStatus")) {
+        } else if (reader.name() == QLatin1String("ConnectionStatus")) {
             reader.skipCurrentElement();
         } else if (!readResponseElement(reader)) {
             setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element '%1'")
@@ -199,21 +199,21 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     EventReader ewsreader(staticReader);
 
     QStringRef elmName = reader.name();
-    if (elmName == QStringLiteral("CopiedEvent")) {
+    if (elmName == QLatin1String("CopiedEvent")) {
         mType = EwsCopiedEvent;
-    } else if (elmName == QStringLiteral("CreatedEvent")) {
+    } else if (elmName == QLatin1String("CreatedEvent")) {
         mType = EwsCreatedEvent;
-    } else if (elmName == QStringLiteral("DeletedEvent")) {
+    } else if (elmName == QLatin1String("DeletedEvent")) {
         mType = EwsDeletedEvent;
-    } else if (elmName == QStringLiteral("ModifiedEvent")) {
+    } else if (elmName == QLatin1String("ModifiedEvent")) {
         mType = EwsModifiedEvent;
-    } else if (elmName == QStringLiteral("MovedEvent")) {
+    } else if (elmName == QLatin1String("MovedEvent")) {
         mType = EwsMovedEvent;
-    } else if (elmName == QStringLiteral("NewMailEvent")) {
+    } else if (elmName == QLatin1String("NewMailEvent")) {
         mType = EwsNewMailEvent;
-    } else if (elmName == QStringLiteral("StatusEvent")) {
+    } else if (elmName == QLatin1String("StatusEvent")) {
         mType = EwsStatusEvent;
-    } else if (elmName == QStringLiteral("FreeBusyChangedEvent")) {
+    } else if (elmName == QLatin1String("FreeBusyChangedEvent")) {
         mType = EwsFreeBusyChangedEvent;
     } else {
         qCWarning(EWSCLI_LOG) << QStringLiteral("Unknown notification event type: %1")

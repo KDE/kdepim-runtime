@@ -179,19 +179,19 @@ const char *signingPreferenceToString(SigningPreference pref)
 
 SigningPreference stringToSigningPreference(const QString &str)
 {
-    if (str == QStringLiteral("never")) {
+    if (str == QLatin1String("never")) {
         return NeverSign;
     }
-    if (str == QStringLiteral("always")) {
+    if (str == QLatin1String("always")) {
         return AlwaysSign;
     }
-    if (str == QStringLiteral("alwaysIfPossible")) {
+    if (str == QLatin1String("alwaysIfPossible")) {
         return AlwaysSignIfPossible;
     }
-    if (str == QStringLiteral("askAlways")) {
+    if (str == QLatin1String("askAlways")) {
         return AlwaysAskForSigning;
     }
-    if (str == QStringLiteral("askWhenPossible")) {
+    if (str == QLatin1String("askWhenPossible")) {
         return AskSigningWheneverPossible;
     }
     return UnknownSigningPreference;

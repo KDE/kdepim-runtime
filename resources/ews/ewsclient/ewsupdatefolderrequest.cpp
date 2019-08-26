@@ -114,7 +114,7 @@ EwsUpdateFolderRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("Folders")) {
+        if (reader.name() == QLatin1String("Folders")) {
             if (reader.readNextStartElement()) {
                 EwsFolder folder(reader);
                 if (!folder.isValid()) {

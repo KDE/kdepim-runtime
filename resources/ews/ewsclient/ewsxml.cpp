@@ -72,9 +72,9 @@ bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val)
         reader.skipCurrentElement();
         return false;
     }
-    if (elmText == QStringLiteral("true")) {
+    if (elmText == QLatin1String("true")) {
         val = true;
-    } else if (elmText == QStringLiteral("false")) {
+    } else if (elmText == QLatin1String("false")) {
         val = false;
     } else {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected invalid boolean value in %1 element:")
@@ -350,9 +350,9 @@ bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &pare
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     bool val = false;
     if (ok) {
-        if (valStr == QStringLiteral("true")) {
+        if (valStr == QLatin1String("true")) {
             val = true;
-        } else if (valStr == QStringLiteral("false")) {
+        } else if (valStr == QLatin1String("false")) {
             val = false;
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")

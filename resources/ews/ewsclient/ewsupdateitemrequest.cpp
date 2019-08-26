@@ -147,7 +147,7 @@ EwsUpdateItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("Items")) {
+        if (reader.name() == QLatin1String("Items")) {
             if (reader.readNextStartElement()) {
                 EwsItem item(reader);
                 if (!item.isValid()) {
@@ -158,7 +158,7 @@ EwsUpdateItemRequest::Response::Response(QXmlStreamReader &reader)
 
             // Finish the Items element.
             reader.skipCurrentElement();
-        } else if (reader.name() == QStringLiteral("ConflictResults")) {
+        } else if (reader.name() == QLatin1String("ConflictResults")) {
             if (!reader.readNextStartElement()) {
                 setErrorMsg(QStringLiteral("Failed to read EWS request - expected a %1 element inside %2 element.")
                             .arg(QStringLiteral("Value")).arg(QStringLiteral("ConflictResults")));

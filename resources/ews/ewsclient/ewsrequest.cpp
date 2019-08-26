@@ -179,11 +179,11 @@ bool EwsRequest::readResponse(QXmlStreamReader &reader)
             return setErrorMsg(QStringLiteral("Failed to read EWS request - not a SOAP XML"));
         }
 
-        if (reader.name() == QStringLiteral("Body")) {
+        if (reader.name() == QLatin1String("Body")) {
             if (!readSoapBody(reader)) {
                 return false;
             }
-        } else if (reader.name() == QStringLiteral("Header")) {
+        } else if (reader.name() == QLatin1String("Header")) {
             if (!readHeader(reader)) {
                 return false;
             }
@@ -195,7 +195,7 @@ bool EwsRequest::readResponse(QXmlStreamReader &reader)
 bool EwsRequest::readSoapBody(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
-        if ((reader.name() == QStringLiteral("Fault"))
+        if ((reader.name() == QLatin1String("Fault"))
             && (reader.namespaceUri() == soapEnvNsUri)) {
             return readSoapFault(reader);
         }
@@ -215,9 +215,9 @@ bool EwsRequest::readSoapFault(QXmlStreamReader &reader)
     QString faultCode;
     QString faultString;
     while (reader.readNextStartElement()) {
-        if (reader.name() == QStringLiteral("faultcode")) {
+        if (reader.name() == QLatin1String("faultcode")) {
             faultCode = reader.readElementText();
-        } else if (reader.name() == QStringLiteral("faultstring")) {
+        } else if (reader.name() == QLatin1String("faultstring")) {
             faultString = reader.readElementText();
         }
     }
@@ -307,15 +307,15 @@ bool EwsRequest::Response::readResponseElement(QXmlStreamReader &reader)
     if (reader.namespaceUri() != ewsMsgNsUri) {
         return false;
     }
-    if (reader.name() == QStringLiteral("ResponseCode")) {
+    if (reader.name() == QLatin1String("ResponseCode")) {
         mCode = reader.readElementText();
-    } else if (reader.name() == QStringLiteral("MessageText")) {
+    } else if (reader.name() == QLatin1String("MessageText")) {
         mMessage = reader.readElementText();
-    } else if (reader.name() == QStringLiteral("DescriptiveLinkKey")) {
+    } else if (reader.name() == QLatin1String("DescriptiveLinkKey")) {
         reader.skipCurrentElement();
-    } else if (reader.name() == QStringLiteral("MessageXml")) {
+    } else if (reader.name() == QLatin1String("MessageXml")) {
         reader.skipCurrentElement();
-    } else if (reader.name() == QStringLiteral("ErrorSubscriptionIds")) {
+    } else if (reader.name() == QLatin1String("ErrorSubscriptionIds")) {
         reader.skipCurrentElement();
     } else {
         return false;
@@ -326,7 +326,7 @@ bool EwsRequest::Response::readResponseElement(QXmlStreamReader &reader)
 bool EwsRequest::readHeader(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
-        if (reader.name() == QStringLiteral("ServerVersionInfo") && reader.namespaceUri() == ewsTypeNsUri) {
+        if (reader.name() == QLatin1String("ServerVersionInfo") && reader.namespaceUri() == ewsTypeNsUri) {
             EwsServerVersion version(reader);
             if (!version.isValid()) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - error parsing server version.");

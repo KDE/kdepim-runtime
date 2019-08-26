@@ -140,7 +140,7 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("SubscriptionId")) {
+        if (reader.name() == QLatin1String("SubscriptionId")) {
             mId = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {
@@ -148,7 +148,7 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
                             .arg(QStringLiteral("SubscriptionId")));
                 return;
             }
-        } else if (reader.name() == QStringLiteral("Watermark")) {
+        } else if (reader.name() == QLatin1String("Watermark")) {
             mWatermark = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {

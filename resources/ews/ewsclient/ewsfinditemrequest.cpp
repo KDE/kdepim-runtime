@@ -173,7 +173,7 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("RootFolder")) {
+        if (reader.name() == QLatin1String("RootFolder")) {
             if (!parseRootFolder(reader)) {
                 return;
             }
@@ -203,7 +203,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
         return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.")
                            .arg(QStringLiteral("TotalItemsInView")));
     }
-    mIncludesLastItem = attrs.value(QStringLiteral("IncludesLastItemInRange")) == QStringLiteral("true");
+    mIncludesLastItem = attrs.value(QStringLiteral("IncludesLastItemInRange")) == QLatin1String("true");
 
     if (attrs.hasAttribute(QStringLiteral("IndexedPagingOffset"))) {
         mNextOffset = attrs.value(QStringLiteral("IndexedPagingOffset")).toInt(&ok);
@@ -269,16 +269,16 @@ EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
     const QStringRef readerName = reader.name();
-    if (readerName == QStringLiteral("Item")
-        || readerName == QStringLiteral("Message")
-        || readerName == QStringLiteral("CalendarItem")
-        || readerName == QStringLiteral("Contact")
-        || readerName == QStringLiteral("DistributionList")
-        || readerName == QStringLiteral("MeetingMessage")
-        || readerName == QStringLiteral("MeetingRequest")
-        || readerName == QStringLiteral("MeetingResponse")
-        || readerName == QStringLiteral("MeetingCancellation")
-        || readerName == QStringLiteral("Task")) {
+    if (readerName == QLatin1String("Item")
+        || readerName == QLatin1String("Message")
+        || readerName == QLatin1String("CalendarItem")
+        || readerName == QLatin1String("Contact")
+        || readerName == QLatin1String("DistributionList")
+        || readerName == QLatin1String("MeetingMessage")
+        || readerName == QLatin1String("MeetingRequest")
+        || readerName == QLatin1String("MeetingResponse")
+        || readerName == QLatin1String("MeetingCancellation")
+        || readerName == QLatin1String("Task")) {
         qCDebug(EWSCLI_LOG).noquote() << QStringLiteral("Processing %1").arg(readerName.toString());
         item = new EwsItem(reader);
         if (!item->isValid()) {

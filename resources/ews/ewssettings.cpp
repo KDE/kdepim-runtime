@@ -319,12 +319,12 @@ EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
 
     EwsAbstractAuth *auth = nullptr;
     const auto mode = authMode();
-    if (mode == QStringLiteral("oauth2")) {
+    if (mode == QLatin1String("oauth2")) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Using OAuth2 authentication");
 
         auth = new EwsOAuth(parent, email(), oAuth2AppId(), oAuth2ReturnUri());
     }
-    if (mode == QStringLiteral("username-password")) {
+    if (mode == QLatin1String("username-password")) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Using password-based authentication");
 
         QString user;

@@ -60,24 +60,24 @@ EwsOccurrence::EwsOccurrence(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("ItemId")) {
+        if (reader.name() == QLatin1String("ItemId")) {
             d->mItemId = EwsId(reader);
             reader.skipCurrentElement();
-        } else if (reader.name() == QStringLiteral("Start")) {
+        } else if (reader.name() == QLatin1String("Start")) {
             d->mStart = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
                     .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("Start"));
                 return;
             }
-        } else if (reader.name() == QStringLiteral("End")) {
+        } else if (reader.name() == QLatin1String("End")) {
             d->mEnd = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
                     .arg(QStringLiteral("Occurrence")).arg(QStringLiteral("End"));
                 return;
             }
-        } else if (reader.name() == QStringLiteral("OriginalStart")) {
+        } else if (reader.name() == QLatin1String("OriginalStart")) {
             d->mStart = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")

@@ -120,9 +120,9 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mSettings->requestPassword(false);
     mUi->authOAuth2RadioButton->setEnabled(true);
     const auto authMode = mSettings->authMode();
-    if (authMode == QStringLiteral("username-password")) {
+    if (authMode == QLatin1String("username-password")) {
         mUi->authUsernameRadioButton->setChecked(true);
-    } else if (authMode == QStringLiteral("oauth2")) {
+    } else if (authMode == QLatin1String("oauth2")) {
         mUi->authOAuth2RadioButton->setChecked(true);
         mUi->pkeyAuthGroupBox->setEnabled(true);
     }

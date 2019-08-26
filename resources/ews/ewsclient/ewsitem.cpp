@@ -152,9 +152,9 @@ bool EwsItemPrivate::bodyReader(QXmlStreamReader &reader, QVariant &val)
         return false;
     }
     bool isHtml;
-    if (bodyType == QStringLiteral("HTML")) {
+    if (bodyType == QLatin1String("HTML")) {
         isHtml = true;
-    } else if (bodyType == QStringLiteral("Text")) {
+    } else if (bodyType == QLatin1String("Text")) {
         isHtml = false;
     } else {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read Body element- unknown body type");
@@ -182,7 +182,7 @@ bool EwsItemPrivate::messageHeadersReader(QXmlStreamReader &reader, QVariant &va
             return false;
         }
 
-        if (reader.name() == QStringLiteral("InternetMessageHeader")) {
+        if (reader.name() == QLatin1String("InternetMessageHeader")) {
             QStringRef nameRef = reader.attributes().value(QStringLiteral("HeaderName"));
             if (nameRef.isNull()) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Missing HeaderName attribute in InternetMessageHeader element.");
@@ -337,7 +337,7 @@ bool EwsItemPrivate::categoriesReader(QXmlStreamReader &reader, QVariant &val)
             return false;
         }
 
-        if (reader.name() == QStringLiteral("String")) {
+        if (reader.name() == QLatin1String("String")) {
             categories.append(reader.readElementText());
             if (reader.error() != QXmlStreamReader::NoError) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid %1 element.")
@@ -421,35 +421,35 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
 
     // Check what item type are we
     const QStringRef elmName = reader.name();
-    if (elmName == QStringLiteral("Item")) {
+    if (elmName == QLatin1String("Item")) {
         d->mType = EwsItemTypeItem;
         const QStringRef subtype = reader.attributes().value(QStringLiteral("xsi:type"));
         if (!subtype.isEmpty()) {
             auto tokens = subtype.split(QLatin1Char(':'));
             const QStringRef type = tokens.size() == 1 ? tokens[0] : tokens[1];
-            if (type == QStringLiteral("AbchPersonItemType")) {
+            if (type == QLatin1String("AbchPersonItemType")) {
                 d->mType = EwsItemTypeAbchPerson;
             }
         }
-    } else if (elmName == QStringLiteral("Message")) {
+    } else if (elmName == QLatin1String("Message")) {
         d->mType = EwsItemTypeMessage;
-    } else if (elmName == QStringLiteral("CalendarItem")) {
+    } else if (elmName == QLatin1String("CalendarItem")) {
         d->mType = EwsItemTypeCalendarItem;
-    } else if (elmName == QStringLiteral("Contact")) {
+    } else if (elmName == QLatin1String("Contact")) {
         d->mType = EwsItemTypeContact;
-    } else if (elmName == QStringLiteral("DistributionList")) {
+    } else if (elmName == QLatin1String("DistributionList")) {
         d->mType = EwsItemTypeDistributionList;
-    } else if (elmName == QStringLiteral("MeetingMessage")) {
+    } else if (elmName == QLatin1String("MeetingMessage")) {
         d->mType = EwsItemTypeMeetingMessage;
-    } else if (elmName == QStringLiteral("MeetingRequest")) {
+    } else if (elmName == QLatin1String("MeetingRequest")) {
         d->mType = EwsItemTypeMeetingRequest;
-    } else if (elmName == QStringLiteral("MeetingResponse")) {
+    } else if (elmName == QLatin1String("MeetingResponse")) {
         d->mType = EwsItemTypeMeetingResponse;
-    } else if (elmName == QStringLiteral("MeetingCancellation")) {
+    } else if (elmName == QLatin1String("MeetingCancellation")) {
         d->mType = EwsItemTypeMeetingCancellation;
-    } else if (elmName == QStringLiteral("PostItem")) {
+    } else if (elmName == QLatin1String("PostItem")) {
         d->mType = EwsItemTypePostItem;
-    } else if (elmName == QStringLiteral("Task")) {
+    } else if (elmName == QLatin1String("Task")) {
         d->mType = EwsItemTypeTask;
     }
 

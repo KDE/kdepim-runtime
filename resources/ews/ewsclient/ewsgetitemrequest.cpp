@@ -115,7 +115,7 @@ EwsGetItemRequest::Response::Response(QXmlStreamReader &reader)
             return;
         }
 
-        if (reader.name() == QStringLiteral("Items")) {
+        if (reader.name() == QLatin1String("Items")) {
             if (!parseItems(reader)) {
                 return;
             }
