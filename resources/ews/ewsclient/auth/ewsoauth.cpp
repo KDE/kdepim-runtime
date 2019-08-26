@@ -179,15 +179,15 @@ void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
     }
     Q_EMIT replyDataReceived(data);
     QVariantMap tokens;
-    if (ct.startsWith(QStringLiteral("text/html"))
-        || ct.startsWith(QStringLiteral("application/x-www-form-urlencoded"))) {
+    if (ct.startsWith(QLatin1String("text/html"))
+        || ct.startsWith(QLatin1String("application/x-www-form-urlencoded"))) {
         QUrlQuery q(QString::fromUtf8(data));
         const auto items = q.queryItems(QUrl::FullyDecoded);
         for (const auto &it : items) {
             tokens.insert(it.first, it.second);
         }
-    } else if (ct.startsWith(QStringLiteral("application/json"))
-               || ct.startsWith(QStringLiteral("text/javascript"))) {
+    } else if (ct.startsWith(QLatin1String("application/json"))
+               || ct.startsWith(QLatin1String("text/javascript"))) {
         const auto document = QJsonDocument::fromJson(data);
         if (!document.isObject()) {
             Q_EMIT replyError(QStringLiteral("Invalid JSON data received"));

@@ -353,7 +353,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             mNewMails.clear();
             return;
         } else {
-            message = texts.join(QStringLiteral("<br>"));
+            message = texts.join(QLatin1String("<br>"));
         }
     } else {
         message = i18n("New mail arrived");

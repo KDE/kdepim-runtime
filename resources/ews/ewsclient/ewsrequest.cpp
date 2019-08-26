@@ -103,7 +103,7 @@ void EwsRequest::prepare(const QString &body)
     job->addMetaData(mMd);
 
     if (!customHeaders.isEmpty()) {
-        job->addMetaData(QStringLiteral("customHTTPHeader"), customHeaders.join(QStringLiteral("\r\n")));
+        job->addMetaData(QStringLiteral("customHTTPHeader"), customHeaders.join(QLatin1String("\r\n")));
     }
 
     job->addMetaData(QStringLiteral("no-auth-prompt"), QStringLiteral("true"));

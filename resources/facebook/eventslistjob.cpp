@@ -129,7 +129,7 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
             }
         }
         if (!locationStr.isEmpty()) {
-            event->setLocation(locationStr.join(QStringLiteral(", ")));
+            event->setLocation(locationStr.join(QLatin1String(", ")));
         }
     }
 

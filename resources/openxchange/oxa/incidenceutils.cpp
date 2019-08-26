@@ -353,7 +353,7 @@ static void createIncidenceAttributes(QDomDocument &document, QDomElement &paren
     }
 
     // categories
-    DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QStringLiteral(", "))));
+    DAVUtils::addOxElement(document, parent, QStringLiteral("categories"), OXUtils::writeString(incidence->categories().join(QLatin1String(", "))));
 }
 
 static void createEventAttributes(QDomDocument &document, QDomElement &parent, const KCalendarCore::Event::Ptr &event)

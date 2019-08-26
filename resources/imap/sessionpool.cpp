@@ -467,7 +467,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
                                    "some mandatory capabilities are missing: %2. "
                                    "Please ask your sysadmin to upgrade the server.",
                                    m_account->server(),
-                                   missing.join(QStringLiteral(", "))));
+                                   missing.join(QLatin1String(", "))));
         return;
     }
 
