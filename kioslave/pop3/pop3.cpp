@@ -661,7 +661,7 @@ bool POP3Protocol::pop3_open()
         delete[] greeting_buf;
 
         if (!greeting.isEmpty()) {
-            greeting.truncate(greeting.length() - 2);
+            greeting.chop(2);
         }
 
         // Does the server support APOP?

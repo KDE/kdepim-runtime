@@ -282,7 +282,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::It
             tname = KEmailAddress::quoteNameIfNecessary(tname);
             if ((tname[0] == QLatin1Char('"')) && (tname[tname.length() - 1] == QLatin1Char('"'))) {
                 tname.remove(0, 1);
-                tname.truncate(tname.length() - 1);
+                tname.chop(1);
             }
             tname.remove(QLatin1Char('\\'));   // remove escape chars
             KContacts::Addressee spouse;
