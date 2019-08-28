@@ -870,15 +870,15 @@ QString MaildirResource::maildirPathForCollection(const Collection &collection) 
 void MaildirResource::stopMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->removeDir(path + QLatin1Literal("/new"));
-    mFsWatcher->removeDir(path + QLatin1Literal("/cur"));
+    mFsWatcher->removeDir(path + QLatin1String("/new"));
+    mFsWatcher->removeDir(path + QLatin1String("/cur"));
 }
 
 void MaildirResource::restartMaildirScan(const Maildir &maildir)
 {
     const QString path = maildir.path();
-    mFsWatcher->addDir(path + QLatin1Literal("/new"));
-    mFsWatcher->addDir(path + QLatin1Literal("/cur"));
+    mFsWatcher->addDir(path + QLatin1String("/new"));
+    mFsWatcher->addDir(path + QLatin1String("/cur"));
 }
 
 void MaildirResource::changedCleaner()

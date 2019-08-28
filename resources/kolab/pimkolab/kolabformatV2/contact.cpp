@@ -1138,7 +1138,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
             continue;
         }
         QString value = name.mid(pos + 1);
-        name = name.left(pos);
+        name.truncate(pos);
         if (!knownCustoms.contains(name)) {
             //qCDebug(PIMKOLAB_LOG) <<"app=" << app <<" name=" << name <<" value=" << value;
             Custom c;
