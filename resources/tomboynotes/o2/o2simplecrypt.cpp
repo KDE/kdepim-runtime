@@ -199,7 +199,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
 
     CryptoFlags flags = CryptoFlags(ba.at(1));
 
-    ba = ba.mid(2);
+    ba.remove(0, 2);
     int pos(0);
     int cnt(ba.count());
     char lastChar = 0;
@@ -211,7 +211,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
         ++pos;
     }
 
-    ba = ba.mid(1); //chop off the random number at the start
+    ba.remove(0, 1); //chop off the random number at the start
 
     bool integrityOk(true);
     if (flags.testFlag(CryptoFlagChecksum)) {
@@ -224,7 +224,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
             QDataStream s(&ba, QIODevice::ReadOnly);
             s >> storedChecksum;
         }
-        ba = ba.mid(2);
+        ba.remove(0, 2);
         quint16 checksum = qChecksum(ba.constData(), ba.length());
         integrityOk = (checksum == storedChecksum);
     } else if (flags.testFlag(CryptoFlagHash)) {
@@ -233,7 +233,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
             return QByteArray();
         }
         QByteArray storedHash = ba.left(20);
-        ba = ba.mid(20);
+        ba.remove(0, 20);
         QCryptographicHash hash(QCryptographicHash::Sha1);
         hash.addData(ba);
         integrityOk = (hash.result() == storedHash);

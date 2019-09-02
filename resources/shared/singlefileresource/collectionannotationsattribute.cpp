@@ -79,7 +79,7 @@ void CollectionAnnotationsAttribute::deserialize(const QByteArray &data)
     for (int i = 0; i < lines.size(); ++i) {
         QByteArray line = lines[i];
         if (i != 0 && line.startsWith(' ')) {
-            line = line.mid(1);
+            line.remove(0, 1);
         }
         if (i != lines.size() - 1 && line.endsWith(' ')) {
             line.chop(1);

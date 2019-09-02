@@ -40,7 +40,7 @@ ConnectionTestJob::ConnectionTestJob(const QString &url, const QString &user, co
 void ConnectionTestJob::start()
 {
     if (!mUrl.startsWith(QLatin1String("https://"))) {
-        mUrl = QStringLiteral("https://") + mUrl;
+        mUrl = QLatin1String("https://") + mUrl;
     }
     const QUrl url(mUrl + QStringLiteral("/ajax/login?action=login&name=%1&password=%2").arg(mUser, mPassword));
 

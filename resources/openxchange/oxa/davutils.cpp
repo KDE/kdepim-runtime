@@ -25,7 +25,7 @@ using namespace OXA;
 
 QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode, const QString &tag)
 {
-    const QDomElement element = document.createElementNS(QStringLiteral("DAV:"), QStringLiteral("D:") + tag);
+    const QDomElement element = document.createElementNS(QLatin1String("DAV:"), QLatin1String("D:") + tag);
     parentNode.appendChild(element);
 
     return element;
@@ -33,7 +33,7 @@ QDomElement DAVUtils::addDavElement(QDomDocument &document, QDomNode &parentNode
 
 QDomElement DAVUtils::addOxElement(QDomDocument &document, QDomNode &parentNode, const QString &tag, const QString &text)
 {
-    QDomElement element = document.createElementNS(QStringLiteral("http://www.open-xchange.org"), QStringLiteral("ox:") + tag);
+    QDomElement element = document.createElementNS(QLatin1String("http://www.open-xchange.org"), QLatin1String("ox:") + tag);
 
     if (!text.isEmpty()) {
         const QDomText textNode = document.createTextNode(text);

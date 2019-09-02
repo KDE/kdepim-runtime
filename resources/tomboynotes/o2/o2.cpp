@@ -242,7 +242,7 @@ void O2::onVerificationReceived(const QMap<QString, QString> &response)
         // Exchange access code for access/refresh tokens
         QString query;
         if (!apiKey_.isEmpty()) {
-            query = QString(QStringLiteral("?") + QLatin1String(O2_OAUTH2_API_KEY) + QStringLiteral("=") + apiKey_);
+            query = QString(QLatin1String("?") + QLatin1String(O2_OAUTH2_API_KEY) + QLatin1String("=") + apiKey_);
         }
         QNetworkRequest tokenRequest(QUrl(tokenUrl_.toString() + query));
         tokenRequest.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String(O2_MIME_TYPE_XFORM));

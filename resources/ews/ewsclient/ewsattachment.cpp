@@ -168,10 +168,10 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         } else if (d->mType == FileAttachment && elmName == QLatin1String("Content")) {
             d->mContent = readXmlElementValue<QByteArray>(reader, ok, QStringLiteral("Attachment"));
             d->mValidFields.setBit(EwsAttachmentPrivate::Content, ok);
-        } else if (d->mType == ItemAttachment && (elmName == QLatin1String("Item") || elmName == QStringLiteral("Message")
-                                                  || elmName == QLatin1String("CalendarItem") || elmName == QStringLiteral("Contact")
-                                                  || elmName == QLatin1String("MeetingMessage") || elmName == QStringLiteral("MeetingRequest")
-                                                  || elmName == QLatin1String("MeetingResponse") || elmName == QStringLiteral("MeetingCancellation")
+        } else if (d->mType == ItemAttachment && (elmName == QLatin1String("Item") || elmName == QLatin1String("Message")
+                                                  || elmName == QLatin1String("CalendarItem") || elmName == QLatin1String("Contact")
+                                                  || elmName == QLatin1String("MeetingMessage") || elmName == QLatin1String("MeetingRequest")
+                                                  || elmName == QLatin1String("MeetingResponse") || elmName == QLatin1String("MeetingCancellation")
                                                   || elmName == QLatin1String("Task"))) {
             d->mItem = EwsItem(reader);
             if (!d->mItem.isValid()) {

@@ -316,8 +316,8 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
         return {errorResp, 200};
     }
 
-    resp += QStringLiteral("<SubscriptionId>") + match.captured(QStringLiteral("subid")) + QStringLiteral("<SubscriptionId>");
-    resp += QStringLiteral("<PreviousWatermark>") + match.captured(QStringLiteral("watermark")) + QStringLiteral("<PreviousWatermark>");
+    resp += QLatin1String("<SubscriptionId>") + match.captured(QLatin1String("subid")) + QLatin1String("<SubscriptionId>");
+    resp += QLatin1String("<PreviousWatermark>") + match.captured(QLatin1String("watermark")) + QLatin1String("<PreviousWatermark>");
     resp += QStringLiteral("<MoreEvents>false<MoreEvents>");
 
     FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());
@@ -352,7 +352,7 @@ QString FakeEwsConnection::prepareEventsResponse(const QStringList &events)
                                   "<m:ConnectionStatus>OK</m:ConnectionStatus>");
 
     if (!events.isEmpty()) {
-        resp += QStringLiteral("<m:Notifications><m:Notification><SubscriptionId>") + mStreamingSubId + QStringLiteral("<SubscriptionId>");
+        resp += QLatin1String("<m:Notifications><m:Notification><SubscriptionId>") + mStreamingSubId + QLatin1String("<SubscriptionId>");
 
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning %1 events.").arg(events.size());
         Q_FOREACH (const QString &eventXml, events) {
