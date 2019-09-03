@@ -351,7 +351,7 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
     ctx.addData(m_sPass.toLatin1());
 
     // Genenerate APOP command
-    apop_string.append(QLatin1String(" "));
+    apop_string.append(QLatin1Char(' '));
     apop_string.append(QLatin1String(ctx.result().toHex()));
 
     if (command(apop_string.toLocal8Bit(), buf, sizeof(buf)) == Ok) {

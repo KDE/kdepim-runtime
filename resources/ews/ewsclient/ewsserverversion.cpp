@@ -137,7 +137,7 @@ QString EwsServerVersion::toString() const
 
     for (const EwsServerVersion &ver : knownVersions) {
         if (*this == ver) {
-            version.append(QStringLiteral(" (") + ver.mFriendlyName + QStringLiteral(")"));
+            version.append(QStringLiteral(" (") + ver.mFriendlyName + QLatin1Char(')'));
         }
     }
 

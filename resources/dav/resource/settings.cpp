@@ -351,11 +351,11 @@ QDateTime Settings::getSyncRangeStart() const
     start.setTime(QTime());
     const int delta = -syncRangeStartNumber().toUInt();
 
-    if (syncRangeStartType() == QLatin1String("D")) {
+    if (syncRangeStartType() == QLatin1Char('D')) {
         start = start.addDays(delta);
-    } else if (syncRangeStartType() == QLatin1String("M")) {
+    } else if (syncRangeStartType() == QLatin1Char('M')) {
         start = start.addMonths(delta);
-    } else if (syncRangeStartType() == QLatin1String("Y")) {
+    } else if (syncRangeStartType() == QLatin1Char('Y')) {
         start = start.addYears(delta);
     } else {
         start = QDateTime();

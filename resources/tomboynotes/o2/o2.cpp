@@ -41,7 +41,7 @@ static QVariantMap parseTokenResponse(const QByteArray &data)
     return doc.object().toVariantMap();
 #else
     QScriptEngine engine;
-    QScriptValue value = engine.evaluate("(" + QString(data) + ")");
+    QScriptValue value = engine.evaluate("(" + QString(data) + QLatin1Char(')'));
     QScriptValueIterator it(value);
     QVariantMap map;
 
