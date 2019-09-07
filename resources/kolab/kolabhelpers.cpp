@@ -41,7 +41,7 @@ bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
     QString errorMsg;
     foreach (const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
         errorMsg.append(error.message);
-        errorMsg.append(QLatin1String("\n"));
+        errorMsg.append(QLatin1Char('\n'));
     }
 
     qCWarning(KOLABRESOURCE_LOG) << "Error on item with id: " << item.id() << " remote id: " << item.remoteId() << ":\n" << errorMsg;
