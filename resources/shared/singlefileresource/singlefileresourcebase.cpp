@@ -128,7 +128,7 @@ QString SingleFileResourceBase::cacheFile() const
 {
     const QString currentDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     QDir().mkpath(currentDir);
-    return currentDir + QLatin1String("/") + identifier();
+    return currentDir + QLatin1Char('/') + identifier();
 }
 
 QByteArray SingleFileResourceBase::calculateHash(const QString &fileName) const
