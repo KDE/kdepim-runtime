@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -26,6 +26,7 @@ private Q_SLOTS:
     void invalidMethod();
     void emptyRequest();
     void defaultCallback();
+    void overrideCallback();
     void simpleResponse();
     void callbackResponse();
     void multipleResponses();
@@ -147,6 +148,25 @@ void UtEwsFakeSrvTest::defaultCallback()
 
     auto resp = synchronousHttpReq(QStringLiteral("testreq"), srv->portNumber());
     QCOMPARE(receivedReq, QStringLiteral("testreq"));
+    QCOMPARE(resp.first, QStringLiteral("testresp"));
+    QCOMPARE(resp.second, static_cast<ushort>(200));
+}
+
+void UtEwsFakeSrvTest::overrideCallback()
+{
+    const FakeEwsServer::DialogEntry::List dialog = {
+        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
+
+    QString receivedReq;
+    QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
+    srv->setDialog(dialog);
+    srv->setOverrideReplyCallback([&receivedReq](const QString &req, QXmlResultItems &, const QXmlNamePool &) {
+        receivedReq = req;
+        return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("testresp"), 200);
+    });
+    QVERIFY(srv->start());
+
+    auto resp = synchronousHttpReq(QStringLiteral("<test1><a /></test1>"), srv->portNumber());
     QCOMPARE(resp.first, QStringLiteral("testresp"));
     QCOMPARE(resp.second, static_cast<ushort>(200));
 }

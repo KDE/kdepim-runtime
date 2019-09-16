@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -61,6 +61,13 @@ void FakeEwsServer::setDefaultReplyCallback(const DialogEntry::ReplyCallback &de
     mDefaultReplyCallback = defaultReplyCallback;
 }
 
+void FakeEwsServer::setOverrideReplyCallback(const DialogEntry::ReplyCallback &overrideReplyCallback)
+{
+    QMutexLocker lock(&mMutex);
+
+    mOverrideReplyCallback = overrideReplyCallback;
+}
+
 void FakeEwsServer::queueEventsXml(const QStringList &events)
 {
     if (QThread::currentThread() != thread()) {
@@ -105,6 +112,13 @@ const FakeEwsServer::DialogEntry::ReplyCallback FakeEwsServer::defaultReplyCallb
     QMutexLocker lock(&mMutex);
 
     return mDefaultReplyCallback;
+}
+
+const FakeEwsServer::DialogEntry::ReplyCallback FakeEwsServer::overrideReplyCallback() const
+{
+    QMutexLocker lock(&mMutex);
+
+    return mOverrideReplyCallback;
 }
 
 void FakeEwsServer::streamingConnectionStarted(FakeEwsConnection *conn)

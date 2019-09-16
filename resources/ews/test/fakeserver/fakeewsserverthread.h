@@ -32,6 +32,7 @@ public:
 
     void setDialog(const FakeEwsServer::DialogEntry::List &dialog);
     void setDefaultReplyCallback(const FakeEwsServer::DialogEntry::ReplyCallback &defaultReplyCallback);
+    void setOverrideReplyCallback(const FakeEwsServer::DialogEntry::ReplyCallback &overrideReplyCallback);
     void queueEventsXml(const QStringList &events);
     bool waitServerStarted() const;
 Q_SIGNALS:

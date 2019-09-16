@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2017 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2017-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -61,6 +61,15 @@ void FakeEwsServerThread::setDefaultReplyCallback(const FakeEwsServer::DialogEnt
 
     if (mServer) {
         mServer->setDefaultReplyCallback(defaultReplyCallback);
+    }
+}
+
+void FakeEwsServerThread::setOverrideReplyCallback(const FakeEwsServer::DialogEntry::ReplyCallback &overrideReplyCallback)
+{
+    QMutexLocker lock(&mMutex);
+
+    if (mServer) {
+        mServer->setOverrideReplyCallback(overrideReplyCallback);
     }
 }
 

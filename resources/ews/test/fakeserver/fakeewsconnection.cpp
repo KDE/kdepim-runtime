@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -126,7 +126,19 @@ void FakeEwsConnection::dataAvailable()
                 return;
             }
 
-            FakeEwsServer::DialogEntry::HttpResponse resp = parseRequest(QString::fromUtf8(mContent));
+            FakeEwsServer::DialogEntry::HttpResponse resp = FakeEwsServer::EmptyResponse;
+
+            const auto server = qobject_cast<FakeEwsServer *>(parent());
+            const auto overrideReplyCallback = server->overrideReplyCallback();
+            if (overrideReplyCallback) {
+                QXmlResultItems ri;
+                QXmlNamePool namePool;
+                resp = overrideReplyCallback(QString::fromUtf8(mContent), ri, namePool);
+            }
+
+            if (resp == FakeEwsServer::EmptyResponse) {
+                resp = parseRequest(QString::fromUtf8(mContent));
+            }
             bool chunked = false;
 
             if (resp == FakeEwsServer::EmptyResponse) {
@@ -141,7 +153,6 @@ void FakeEwsConnection::dataAvailable()
                 }
             }
 
-            auto server = qobject_cast<FakeEwsServer *>(parent());
             auto defaultReplyCallback = server->defaultReplyCallback();
             if (defaultReplyCallback && (resp == FakeEwsServer::EmptyResponse)) {
                 QXmlResultItems ri;

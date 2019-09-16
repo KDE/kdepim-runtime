@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -41,6 +41,7 @@ public:
     ~FakeEwsServer() override;
     bool start();
     void setDefaultReplyCallback(const DialogEntry::ReplyCallback &defaultReplyCallback);
+    void setOverrideReplyCallback(const DialogEntry::ReplyCallback &overrideReplyCallback);
     void queueEventsXml(const QStringList &events);
     void setDialog(const DialogEntry::List &dialog);
     ushort portNumber() const;
@@ -53,10 +54,12 @@ private:
     void sendError(QTcpSocket *sock, const QString &msg, ushort code = 500);
     const DialogEntry::List dialog() const;
     const DialogEntry::ReplyCallback defaultReplyCallback() const;
+    const DialogEntry::ReplyCallback overrideReplyCallback() const;
     QStringList retrieveEventsXml();
 
     DialogEntry::List mDialog;
     DialogEntry::ReplyCallback mDefaultReplyCallback;
+    DialogEntry::ReplyCallback mOverrideReplyCallback;
     QStringList mEventQueue;
     QPointer<FakeEwsConnection> mStreamingEventsConnection;
     ushort mPortNumber;
