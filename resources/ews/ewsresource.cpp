@@ -1394,10 +1394,12 @@ void EwsResource::requestAuthFailed()
 {
     qCWarningNC(EWSRES_LOG) << "requestAuthFailed - going offline";
 
-    setTemporaryOffline(reconnectTimeout());
-    Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
+    if (mAuthStage == 0) {
+        QTimer::singleShot(0, [&]() { setTemporaryOffline(reconnectTimeout()); });
+        Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
 
-    reauthenticate();
+        reauthenticate();
+    }
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)
