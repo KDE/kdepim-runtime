@@ -28,7 +28,7 @@
 #include <AkonadiCore/Collection>
 
 #include <kimap/listjob.h>
-
+#include <QElapsedTimer>
 class KolabRetrieveCollectionsTask : public ResourceTask
 {
     Q_OBJECT
@@ -60,7 +60,7 @@ private:
     QSet<QString> mSubscribedMailboxes;
     QSet<QByteArray> mRequestedMetadata;
     KIMAP::Session *mSession = nullptr;
-    QTime mTime;
+    QElapsedTimer mTime;
     //For implicit sharing
     const QByteArray cContentMimeTypes;
     const QByteArray cAccessRights;

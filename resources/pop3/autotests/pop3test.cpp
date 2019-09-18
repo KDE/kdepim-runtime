@@ -29,6 +29,7 @@
 #include <AkonadiCore/ServerManager>
 #include <qtest_akonadi.h>
 #include <KMime/Message>
+#include <QElapsedTimer>
 
 #include <sys/signal.h>
 #include <QStandardPaths>
@@ -96,7 +97,7 @@ void Pop3Test::initTestCase()
     // Find the root maildir collection
     //
     bool found = false;
-    QTime time;
+    QElapsedTimer time;
     time.start();
     while (!found) {
         CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
@@ -224,7 +225,7 @@ void Pop3Test::cleanupMaildir(const Akonadi::Item::List &items)
         QVERIFY(job->exec());
     }
 
-    QTime time;
+    QElapsedTimer time;
     time.start();
     int lastCount = -1;
     forever {
@@ -253,7 +254,7 @@ void Pop3Test::checkMailsInMaildir(const QList<QByteArray> &mails)
 {
     // Now, test that all mails actually ended up in the maildir. Since the maildir resource
     // might be slower, give it a timeout so it can write the files to disk
-    QTime time;
+    QElapsedTimer time;
     time.start();
     int lastCount = -1;
     forever {
@@ -324,7 +325,7 @@ void Pop3Test::syncAndWaitForFinish()
     // We simply wait until the FakeServer got disconnected or until a timeout.
     // Since POP3 fetching can take longer, we reset the timeout timer when the FakeServer
     // does some processing.
-    QTime time;
+    QElapsedTimer time;
     time.start();
     int lastProgress = -1;
     forever {

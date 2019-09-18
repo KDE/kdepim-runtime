@@ -26,7 +26,7 @@
 #include <kimap/fetchjob.h>
 
 #include "resourcetask.h"
-
+#include <QElapsedTimer>
 class BatchFetcher;
 namespace Akonadi {
 class Session;
@@ -80,7 +80,7 @@ private:
     Akonadi::Collection m_modifiedCollection;
     bool m_uidBasedFetch;
     bool m_flagsChanged;
-    QTime m_time;
+    QElapsedTimer m_time;
 
     // Results of SELECT
     QString m_mailBox;
