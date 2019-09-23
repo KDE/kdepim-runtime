@@ -40,7 +40,7 @@
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
 #include <KDAV/DavManager>
-#include <KDAV/DavProtocolBase>
+#include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>
 #include <KCalendarCore/Incidence>
@@ -814,7 +814,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
 
     Collection collection = job->property("collection").value<Collection>();
     const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
-    const bool protocolSupportsMultiget = KDAV::DavManager::self()->davProtocol(davUrl.protocol())->useMultiget();
+    const bool protocolSupportsMultiget = KDAV::ProtocolInfo::useMultiget(davUrl.protocol());
 
     const KDAV::DavItemsListJob *listJob = qobject_cast< KDAV::DavItemsListJob *>(job);
     auto cache = mEtagCaches.value(collection.remoteId());

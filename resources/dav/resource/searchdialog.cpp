@@ -21,7 +21,7 @@
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavManager>
 #include <KDAV/DavPrincipalSearchJob>
-#include <KDAV/DavProtocolBase>
+#include <KDAV/ProtocolInfo>
 #include <KDAV/Utils>
 
 #include "davresource_debug.h"
@@ -130,12 +130,8 @@ void SearchDialog::search()
     davUrl.setUrl(url);
 
     KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text(), this);
-
-    const KDAV::DavProtocolBase *proto = KDAV::DavManager::self()->davProtocol(KDAV::CalDav);
-    job->fetchProperty(proto->principalHomeSet(), proto->principalHomeSetNS());
-
-    proto = KDAV::DavManager::self()->davProtocol(KDAV::CardDav);
-    job->fetchProperty(proto->principalHomeSet(), proto->principalHomeSetNS());
+    job->fetchProperty(KDAV::ProtocolInfo::principalHomeSet(KDAV::CalDav), KDAV::ProtocolInfo::principalHomeSetNS(KDAV::CalDav));
+    job->fetchProperty(KDAV::ProtocolInfo::principalHomeSet(KDAV::CardDav), KDAV::ProtocolInfo::principalHomeSetNS(KDAV::CardDav));
 
     connect(job, &KDAV::DavPrincipalSearchJob::result, this, &SearchDialog::onSearchJobFinished);
     job->start();
@@ -150,7 +146,6 @@ void SearchDialog::onSearchJobFinished(KJob *job)
 
     KDAV::DavPrincipalSearchJob *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
 
-    const KDAV::DavProtocolBase *caldav = KDAV::DavManager::self()->davProtocol(KDAV::CalDav);
     KDAV::DavUrl davUrl = davJob->davUrl();
     QUrl url = davUrl.url();
 
@@ -165,7 +160,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
         }
         davUrl.setUrl(url);
 
-        if (result.property == caldav->principalHomeSet()) {
+        if (result.property == KDAV::ProtocolInfo::principalHomeSet(KDAV::CalDav)) {
             davUrl.setProtocol(KDAV::CalDav);
         } else {
             davUrl.setProtocol(KDAV::CardDav);
