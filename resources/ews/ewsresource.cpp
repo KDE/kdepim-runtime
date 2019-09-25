@@ -556,6 +556,13 @@ void EwsResource::itemModifyFlagsRequestFinished(KJob *job)
 
     emitReadyStatus();
 
+    for (const auto &item : req->items()) {
+        if (mSubManager) {
+            mSubManager->queueUpdate(EwsModifiedEvent, item.remoteId(), item.remoteRevision());
+        }
+        mQueuedUpdates[item.parentCollection().remoteId()].append({item.remoteId(), item.remoteRevision(), EwsModifiedEvent});
+    }
+
     qCDebug(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged: done";
     changesCommitted(req->items());
 }
@@ -1220,6 +1227,13 @@ void EwsResource::itemsTagChangeFinished(KJob *job)
     if (!updJob) {
         cancelTask(i18nc("@info:status", "Failed to update item tags - internal error"));
         return;
+    }
+
+    for (const auto &item : updJob->items()) {
+        if (mSubManager) {
+            mSubManager->queueUpdate(EwsModifiedEvent, item.remoteId(), item.remoteRevision());
+        }
+        mQueuedUpdates[item.parentCollection().remoteId()].append({item.remoteId(), item.remoteRevision(), EwsModifiedEvent});
     }
 
     changesCommitted(updJob->items());

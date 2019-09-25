@@ -260,6 +260,11 @@ bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &
             emitResult();
             return false;
         }
+        const auto qitup = mQueuedUpdates[EwsModifiedEvent].find(id.id());
+        if (qitup != mQueuedUpdates[EwsModifiedEvent].end() && *qitup == id.changeKey()) {
+            qCDebugNC(EWSRES_LOG) << QStringLiteral("Match for queued modification of item %1").arg(ewsHash(id.id()));
+            continue;
+        }
         Item &item = *it;
         item.clearPayload();
         item.setRemoteRevision(id.changeKey());
