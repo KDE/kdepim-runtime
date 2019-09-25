@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2018 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -193,17 +193,52 @@ bool EwsRequest::readSoapBody(QXmlStreamReader &reader)
     return true;
 }
 
+QPair<QStringRef, QString> EwsRequest::parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces)
+{
+    const auto tokens = str.split(QLatin1Char(':'));
+    switch (tokens.count()) {
+    case 1:
+        return {QStringRef(), str};
+        break;
+    case 2:
+        for (const auto &ns : namespaces) {
+            if (ns.prefix() == tokens[0]) {
+                return {ns.namespaceUri(), tokens[1]};
+            }
+        }
+        /* fall through */
+    default:
+        return {};
+    }
+}
+
+EwsResponseCode EwsRequest::parseEwsResponseCode(const QPair<QStringRef, QString> &code)
+{
+    if (code.first == ewsTypeNsUri) {
+        return decodeEwsResponseCode(code.second);
+    } else {
+        return EwsResponseCodeUnknown;
+    }
+}
+
 bool EwsRequest::readSoapFault(QXmlStreamReader &reader)
 {
     QString faultCode;
     QString faultString;
     while (reader.readNextStartElement()) {
         if (reader.name() == QLatin1String("faultcode")) {
-            faultCode = reader.readElementText();
+            const auto rawCode = reader.readElementText();
+            const auto parsedCode = parseEwsResponseCode(parseNamespacedString(rawCode, reader.namespaceDeclarations()));
+            if (parsedCode != EwsResponseCodeUnknown) {
+                setEwsResponseCode(parsedCode);
+            }
+            faultCode = rawCode;
         } else if (reader.name() == QLatin1String("faultstring")) {
             faultString = reader.readElementText();
         }
     }
+
+    qCWarning(EWSCLI_LOG) << "readSoapFault" << faultCode;
 
     setErrorMsg(faultCode + QStringLiteral(": ") + faultString);
 

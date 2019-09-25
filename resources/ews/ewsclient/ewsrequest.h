@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2018 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -95,6 +95,8 @@ private:
     bool readHeader(QXmlStreamReader &reader);
     bool readResponseAttr(const QXmlStreamAttributes &attrs, EwsResponseClass &responseClass);
     QString getOAuthToken();
+    QPair<QStringRef, QString> parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces);
+    EwsResponseCode parseEwsResponseCode(const QPair<QStringRef, QString> &code);
 
     QString mBody;
     EwsClient &mClient;

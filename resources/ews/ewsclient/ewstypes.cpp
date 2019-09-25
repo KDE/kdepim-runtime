@@ -1,8 +1,10 @@
 /*
-    SPDX-FileCopyrightText: 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
+
+#include <QMap>
 
 #include "ewstypes.h"
 
@@ -22,3 +24,15 @@ const QVector<QString> ewsItemTypeNames = {
     QStringLiteral("MeetingCancellation"),
     QStringLiteral("Task"),
 };
+
+static const QMap<QString, EwsResponseCode> ewsResponseCodeMapping = {{QLatin1String("NoError"), EwsResponseCodeNoError},
+                                                                      {QLatin1String("ErrorServerBusy"), EwsResponseCodeErrorServerBusy}};
+
+EwsResponseCode decodeEwsResponseCode(const QString &code)
+{
+    if (ewsResponseCodeMapping.contains(code)) {
+        return ewsResponseCodeMapping[code];
+    } else {
+        return EwsResponseCodeUnknown;
+    }
+}

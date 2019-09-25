@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -9,6 +9,7 @@
 
 EwsJob::EwsJob(QObject *parent)
     : KCompositeJob(parent)
+    , m_ewsRespCode(EwsResponseCodeUnknown)
 {
 }
 
