@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2018 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -532,6 +532,8 @@ void EwsResource::itemsFlagsChanged(const Akonadi::Item::List &items, const QSet
 {
     qCDebug(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged: start" << items << addedFlags << removedFlags;
 
+    Q_EMIT status(Running, i18nc("@info:status", "Updating item flags"));
+
     auto job = new EwsModifyItemFlagsJob(mEwsClient, this, items, addedFlags, removedFlags);
     connect(job, &EwsModifyItemFlagsJob::result, this, &EwsResource::itemModifyFlagsRequestFinished);
     job->start();
@@ -551,6 +553,8 @@ void EwsResource::itemModifyFlagsRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to update item flags - internal error"));
         return;
     }
+
+    emitReadyStatus();
 
     qCDebug(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged: done";
     changesCommitted(req->items());
