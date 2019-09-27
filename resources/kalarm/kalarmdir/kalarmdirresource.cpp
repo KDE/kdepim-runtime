@@ -27,6 +27,7 @@
 #include "kalarmdirsettingsadaptor.h"
 #include "settingsdialog.h"
 
+#include <kalarmcal/akonadi.h>
 #include <kalarmcal/kacalendar.h>
 
 #include <KCalendarCore/FileStorage>
@@ -977,7 +978,7 @@ bool KAlarmDirResource::createItemAndIndex(const QString &path, const QString &f
 bool KAlarmDirResource::createItem(const KAEvent &event)
 {
     Item item;
-    if (!event.setItemPayload(item, mSettings->alarmTypes())) {
+    if (!KAlarmCal::setItemPayload(item, event, mSettings->alarmTypes())) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "createItem: Invalid mime type for collection";
         return false;
     }
@@ -995,7 +996,7 @@ bool KAlarmDirResource::createItem(const KAEvent &event)
 bool KAlarmDirResource::modifyItem(const KAEvent &event)
 {
     Item item;
-    if (!event.setItemPayload(item, mSettings->alarmTypes())) {
+    if (!KAlarmCal::setItemPayload(item, event, mSettings->alarmTypes())) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "modifyItem: Invalid mime type for collection";
         return false;
     }
