@@ -22,7 +22,6 @@
 
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavPrincipalSearchJob>
-#include <KDAV/DavManager>
 #include <KDAV/Utils>
 
 #include <KCalendarCore/ICalFormat>

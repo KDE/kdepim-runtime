@@ -39,7 +39,6 @@
 #include <KDAV/DavItemModifyJob>
 #include <KDAV/DavItemsFetchJob>
 #include <KDAV/DavItemsListJob>
-#include <KDAV/DavManager>
 #include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>

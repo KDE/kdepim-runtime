@@ -19,7 +19,6 @@
 #include "searchdialog.h"
 
 #include <KDAV/DavCollectionsFetchJob>
-#include <KDAV/DavManager>
 #include <KDAV/DavPrincipalSearchJob>
 #include <KDAV/ProtocolInfo>
 #include <KDAV/Utils>
