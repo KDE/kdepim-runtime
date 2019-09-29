@@ -21,7 +21,7 @@
 
 #include "ui_configdialog.h"
 
-#include <KDAV/Utils>
+#include <KDAV/Enums>
 
 #include <QDialog>
 

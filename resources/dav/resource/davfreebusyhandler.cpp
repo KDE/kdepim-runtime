@@ -22,13 +22,26 @@
 
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavPrincipalSearchJob>
-#include <KDAV/Utils>
 
 #include <KCalendarCore/ICalFormat>
 #include <KLocalizedString>
 #include <kio/davjob.h>
 #include <kio/job.h>
 #include "davresource_debug.h"
+
+static QDomElement firstChildElementNS(const QDomElement &parent, const QString &namespaceUri, const QString &tagName)
+{
+    for (QDomNode child = parent.firstChild(); !child.isNull(); child = child.nextSibling()) {
+        if (child.isElement()) {
+            const QDomElement elt = child.toElement();
+            if (tagName.isEmpty() || (elt.tagName() == tagName && elt.namespaceURI() == namespaceUri)) {
+                return elt;
+            }
+        }
+    }
+
+    return QDomElement();
+}
 
 DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)
     : QObject(parent)
@@ -180,7 +193,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     QDomElement scheduleResponse = response.documentElement();
 
     // We are only expecting one response tag
-    QDomElement responseElement = KDAV::Utils::firstChildElementNS(scheduleResponse, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("response"));
+    QDomElement responseElement = firstChildElementNS(scheduleResponse, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("response"));
     if (responseElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
             Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
@@ -191,7 +204,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     // We can load directly the calendar-data and use its content to create
     // an incidence base that will give us everything we need to test
     // the success
-    QDomElement calendarDataElement = KDAV::Utils::firstChildElementNS(responseElement, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data"));
+    QDomElement calendarDataElement = firstChildElementNS(responseElement, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data"));
     if (calendarDataElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
             Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));

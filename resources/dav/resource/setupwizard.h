@@ -19,7 +19,7 @@
 #ifndef SETUPWIZARD_H
 #define SETUPWIZARD_H
 
-#include <KDAV/Utils>
+#include <KDAV/Enums>
 
 #include <QWizard>
 #include <QWizardPage>

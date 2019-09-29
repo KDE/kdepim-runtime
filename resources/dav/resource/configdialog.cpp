@@ -22,6 +22,8 @@
 #include "utils.h"
 #include "urlconfigurationdialog.h"
 
+#include <KDAV/ProtocolInfo>
+
 #include <kconfigdialogmanager.h>
 #include <kconfigskeleton.h>
 #include <KLocalizedString>
@@ -180,7 +182,7 @@ void ConfigDialog::onSearchButtonClicked()
         const QStringList results = dlg->selection();
         for (const QString &result : results) {
             const QStringList split = result.split(QLatin1Char('|'));
-            KDAV::Protocol protocol = KDAV::Utils::protocolByName(split.at(0));
+            KDAV::Protocol protocol = KDAV::ProtocolInfo::protocolByName(split.at(0));
             if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {
                 Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
 

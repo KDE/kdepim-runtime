@@ -21,7 +21,7 @@
 
 #include <KDAV/DavItem>
 #include <KDAV/DavUrl>
-#include <KDAV/Utils>
+#include <KDAV/ProtocolInfo>
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
@@ -40,6 +40,15 @@
 #include "davresource_debug.h"
 
 typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
+
+static QString createUniqueId()
+{
+    const qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
+    const int r = qrand() % 1000;
+    const QString id = QLatin1Char('R') + QString::number(r);
+    const QString uid = QString::number(time) + QLatin1Char('.') + id;
+    return uid;
+}
 
 QString Utils::translatedProtocolName(KDAV::Protocol protocol)
 {
@@ -85,13 +94,13 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
 
     if (item.hasPayload<KContacts::Addressee>()) {
         const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
-        const QString fileName = KDAV::Utils::createUniqueId();
+        const QString fileName = createUniqueId();
 
         url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".vcf"));
 
         const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
         if (protoAttr) {
-            mimeType = KDAV::Utils::contactsMimeType(KDAV::Protocol(protoAttr->davProtocol()));
+            mimeType = KDAV::ProtocolInfo::contactsMimeType(KDAV::Protocol(protoAttr->davProtocol()));
         } else {
             mimeType = KContacts::Addressee::mimeType();
         }
@@ -106,7 +115,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
             calendar->addIncidence(dependentItem.payload<IncidencePtr>());
         }
 
-        const QString fileName = KDAV::Utils::createUniqueId();
+        const QString fileName = createUniqueId();
 
         url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".ics"));
         mimeType = QStringLiteral("text/calendar");

@@ -21,7 +21,6 @@
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavPrincipalSearchJob>
 #include <KDAV/ProtocolInfo>
-#include <KDAV/Utils>
 
 #include "davresource_debug.h"
 #include <QIcon>
@@ -192,7 +191,7 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
 
     for (const KDAV::DavCollection &collection : collections) {
         QStandardItem *item = new QStandardItem(collection.displayName());
-        QString data(KDAV::Utils::protocolName(collection.url().protocol()) + QLatin1Char('|') + collection.url().toDisplayString());
+        QString data(KDAV::ProtocolInfo::protocolName(collection.url().protocol()) + QLatin1Char('|') + collection.url().toDisplayString());
         item->setData(data, Qt::UserRole + 1);
         item->setToolTip(collection.url().toDisplayString());
         if (collection.url().protocol() == KDAV::CalDav) {

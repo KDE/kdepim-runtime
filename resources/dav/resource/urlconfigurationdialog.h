@@ -21,7 +21,7 @@
 
 #include "ui_urlconfigurationdialog.h"
 
-#include <KDAV/Utils>
+#include <KDAV/Enums>
 
 #include <QString>
 #include <QDialog>

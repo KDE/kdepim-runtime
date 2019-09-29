@@ -20,7 +20,6 @@
 
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
-#include <KDAV/Utils>
 #include "settings.h"
 
 #include <kmessagebox.h>
