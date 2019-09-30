@@ -124,6 +124,8 @@ private Q_SLOTS:
 #endif
 
 private:
+    enum AuthStage { AuthIdle, AuthRefreshToken, AuthAccessToken, AuthFailure };
+
     void finishItemsFetch(FetchItemState *state);
     void fetchSpecialFolders();
     void specialFoldersCollectionsRetrieved(const Akonadi::Collection::List &folders);
@@ -147,7 +149,7 @@ private:
     QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
     QString mPassword;
     QScopedPointer<EwsAbstractAuth> mAuth;
-    int mAuthStage = 0;
+    AuthStage mAuthStage;
     QPointer<KNotification> mReauthNotification;
 
     bool mTagsRetrieved = false;

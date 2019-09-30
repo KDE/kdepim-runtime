@@ -78,6 +78,8 @@ static Q_CONSTEXPR int ReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
     : Akonadi::ResourceBase(id)
+    , mAuthStage(AuthIdle)
+    , mTagsRetrieved(false)
     , mReconnectTimeout(InitialReconnectTimeout)
     , mSettings(new EwsSettings(winIdForDialogs()))
 {
@@ -1291,7 +1293,7 @@ void EwsResource::setUpAuth()
 
 void EwsResource::authSucceeded()
 {
-    mAuthStage = 0;
+    mAuthStage = AuthIdle;
 
     resetUrl();
 }
@@ -1318,14 +1320,15 @@ void EwsResource::authFailed(const QString &error)
 void EwsResource::reauthenticate()
 {
     switch (mAuthStage) {
-    case 0:
+    case AuthIdle:
+        mAuthStage = AuthRefreshToken;
+        qCWarningNC(EWSRES_LOG) << "reauthenticate: trying to refresh";
         if (mAuth->authenticate(false)) {
             break;
-        } else {
-            ++mAuthStage;
         }
     /* fall through */
-    case 1: {
+    case AuthRefreshToken: {
+        mAuthStage = AuthAccessToken;
         const auto reauthPrompt = mAuth->reauthPrompt();
         if (!reauthPrompt.isNull()) {
             mReauthNotification = new KNotification(QStringLiteral("auth-expired"), KNotification::Persistent, this);
@@ -1343,19 +1346,21 @@ void EwsResource::reauthenticate()
         }
     }
     /* fall through */
-    case 2:
+    case AuthAccessToken:
+        mAuthStage = AuthFailure;
         Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
+        break;
+    case AuthFailure:
         break;
     }
 
-    ++mAuthStage;
 }
 
 void EwsResource::requestAuthFailed()
 {
     qCWarningNC(EWSRES_LOG) << "requestAuthFailed - going offline";
 
-    if (mAuthStage == 0) {
+    if (mAuthStage == AuthIdle) {
         QTimer::singleShot(0, this, [&]() {
             setTemporaryOffline(reconnectTimeout());
         });
