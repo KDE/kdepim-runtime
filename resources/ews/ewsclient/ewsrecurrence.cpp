@@ -130,13 +130,6 @@ EwsRecurrence::EwsRecurrence(const EwsRecurrence &other)
 {
 }
 
-EwsRecurrence &EwsRecurrence::operator=(const EwsRecurrence &other)
-{
-    *static_cast<Recurrence *>(this) = static_cast<Recurrence>(other);
-
-    return *this;
-}
-
 bool EwsRecurrence::readRelativeYearlyRecurrence(QXmlStreamReader &reader)
 {
     QBitArray dow(7);
