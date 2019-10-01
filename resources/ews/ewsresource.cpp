@@ -73,8 +73,8 @@ const EwsPropertyField EwsResource::globalTagsVersionProperty(EwsResource::akona
 const EwsPropertyField EwsResource::tagsProperty(EwsResource::akonadiEwsPropsetUuid, QStringLiteral("Tags"), EwsPropTypeStringArray);
 const EwsPropertyField EwsResource::flagsProperty(EwsResource::akonadiEwsPropsetUuid, QStringLiteral("Flags"), EwsPropTypeStringArray);
 
-static Q_CONSTEXPR int InitialReconnectTimeout = 60;
-static Q_CONSTEXPR int ReconnectTimeout = 300;
+static constexpr int InitialReconnectTimeout = 15;
+static constexpr int MaxReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
     : Akonadi::ResourceBase(id)
@@ -214,6 +214,7 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
         mRootCollection.setRemoteRevision(id.changeKey());
         qCDebug(EWSRES_LOG) << "Root folder is " << id;
         emitReadyStatus();
+        mReconnectTimeout = InitialReconnectTimeout;
 
         if (mSettings->serverSubscription()) {
             mSubManager.reset(new EwsSubscriptionManager(mEwsClient, id, mSettings.data(), this));
@@ -1200,9 +1201,10 @@ void EwsResource::doSetOnline(bool online)
 
 int EwsResource::reconnectTimeout()
 {
-    // Return InitialReconnectTimeout for the first time, then ReconnectTimeout.
     int timeout = mReconnectTimeout;
-    mReconnectTimeout = ReconnectTimeout;
+    if (mReconnectTimeout < MaxReconnectTimeout) {
+        mReconnectTimeout *= 2;
+    }
     return timeout;
 }
 
