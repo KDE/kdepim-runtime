@@ -14,10 +14,18 @@ set( mboxresource_SRCS
   ${mboxresource_common_SRCS}
 )
 
-# Fix a race condition. mboxresource.cpp needs compactpage.h which includes ui_compactpage.h.
-# Make sure the ui file is generated before building the akonadi_mbox_resource target.
-set_source_files_properties(mboxresource.cpp PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ui_compactpage.h)
-set_source_files_properties(mboxresource.cpp PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ui_lockfilepage.h)
+# mboxresource.cpp needs UI files generated for another target. We must be sure the files
+# were created before building the akonadi_mbox_resource target.
+add_custom_target(generated_headers
+  DEPENDS
+  ${CMAKE_CURRENT_BINARY_DIR}/ui_compactpage.h
+  ${CMAKE_CURRENT_BINARY_DIR}/ui_lockfilepage.h
+)
+set_source_files_properties(
+  ${CMAKE_CURRENT_BINARY_DIR}/ui_compactpage.h
+  ${CMAKE_CURRENT_BINARY_DIR}/ui_lockfilepage.h
+  PROPERTIES GENERATED TRUE
+)
 
 ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME org.kde.pim.mboxresource)
 
@@ -29,6 +37,7 @@ qt5_add_dbus_adaptor(mboxresource_SRCS
 )
 
 add_executable(akonadi_mbox_resource ${mboxresource_SRCS})
+add_dependencies(akonadi_mbox_resource generated_headers)
 
 if( APPLE )
   set_target_properties(akonadi_mbox_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
