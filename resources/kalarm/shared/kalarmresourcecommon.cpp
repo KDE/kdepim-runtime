@@ -97,8 +97,7 @@ KACalendar::Compat getCompatibility(const FileStorage::Ptr &fileStorage, int &ve
 */
 Item retrieveItem(const Akonadi::Item &item, KAEvent &event)
 {
-    QString mime = CalEvent::mimeType(event.category());
-    event.setItemId(item.id());
+    const QString mime = CalEvent::mimeType(event.category());
     if (item.hasAttribute<EventAttribute>()) {
         event.setCommandError(item.attribute<EventAttribute>()->commandError());
     }
@@ -142,7 +141,7 @@ KAEvent checkItemChanged(const Akonadi::Item &item, QString &errorMsg)
 */
 void setCollectionCompatibility(const Collection &collection, KACalendar::Compat compatibility, int version)
 {
-    qDebug() << collection.id() << "->" << compatibility << version;
+    qDebug() << "setCollectionCompatibility:" << collection.id() << "->" << compatibility << version;
     // Update the CompatibilityAttribute value only.
     // Note that we can't supply 'collection' to CollectionModifyJob since
     // that may also contain the CollectionAttribute value, which is read-only
@@ -189,7 +188,7 @@ QString errorMessage(ErrorCode code, const QString &param)
 */
 void Private::modifyCollectionJobDone(KJob *j)
 {
-    qDebug();
+    qDebug() << "modifyCollectionJobDone";
     if (j->error()) {
         Collection collection = static_cast<CollectionModifyJob *>(j)->collection();
         qCritical() << "Error: modifyCollectionJobDone: collection" << collection.id() << ":" << j->errorString();
