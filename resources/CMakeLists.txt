@@ -41,6 +41,7 @@ add_subdirectory( dav )
 add_subdirectory( ical )
 add_subdirectory( imap )
 if (Libkolabxml_FOUND)
+    find_package(Boost REQUIRED COMPONENTS thread system)
     add_subdirectory( kolab )
 endif()
 
