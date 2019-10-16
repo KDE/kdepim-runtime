@@ -95,7 +95,7 @@ QByteArray KolabResource::clientId() const
 QDialog *KolabResource::createConfigureDialog(WId windowId)
 {
     SetupServer *dlg = new SetupServer(this, windowId);
-    KWindowSystem::setMainWindow(dlg, windowId);
+    KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     dlg->setWindowTitle(i18n("Kolab Account Settings"));
     dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("kolab")));
     connect(dlg, &QDialog::finished, this, &KolabResource::onConfigurationDone);

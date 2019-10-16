@@ -47,7 +47,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     , m_parentResource(parent)
     , m_accountManager(accountManager)
 {
-    KWindowSystem::setMainWindow(this, wId);
+    KWindowSystem::setMainWindow(windowHandle(), wId);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QVBoxLayout *topLayout = new QVBoxLayout(this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);

@@ -67,7 +67,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     , mSettings(settings)
 {
     if (wId) {
-        KWindowSystem::setMainWindow(this, wId);
+        KWindowSystem::setMainWindow(windowHandle(), wId);
     }
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);

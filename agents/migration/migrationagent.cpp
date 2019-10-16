@@ -57,7 +57,7 @@ void MigrationAgent::configure(WId windowId)
     dlg->resize(600, 300);
 
     if (windowId) {
-        KWindowSystem::setMainWindow(dlg, windowId);
+        KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     }
     dlg->show();
 }

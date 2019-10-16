@@ -54,7 +54,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     setWindowTitle(i18nc("@title", "Configure Calendar"));
 
     if (windowId) {
-        KWindowSystem::setMainWindow(this, windowId);
+        KWindowSystem::setMainWindow(windowHandle(), windowId);
     }
 
     // Make directory path read-only if the resource already exists

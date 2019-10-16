@@ -40,7 +40,7 @@ EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     , mParentResource(parentResource)
 {
     if (wId) {
-        KWindowSystem::setMainWindow(this, wId);
+        KWindowSystem::setMainWindow(windowHandle(), wId);
     }
 
     QWidget *mainWidget = new QWidget(this);

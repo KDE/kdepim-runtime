@@ -193,7 +193,7 @@ void DavGroupwareResource::configure(WId windowId)
         SetupWizard wizard;
 
         if (windowId) {
-            KWindowSystem::setMainWindow(&wizard, windowId);
+            KWindowSystem::setMainWindow(wizard.windowHandle(), windowId);
         }
 
         const int result = wizard.exec();
@@ -226,7 +226,7 @@ void DavGroupwareResource::configure(WId windowId)
     ConfigDialog dialog;
 
     if (windowId) {
-        KWindowSystem::setMainWindow(&dialog, windowId);
+        KWindowSystem::setMainWindow(dialog.windowHandle(), windowId);
     }
 
     if (!Settings::self()->defaultUsername().isEmpty()) {

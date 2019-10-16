@@ -264,7 +264,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 
     mSubscriptions = new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription);
     if (windowId) {
-        KWindowSystem::setMainWindow(mSubscriptions, windowId);
+        KWindowSystem::setMainWindow(mSubscriptions->windowHandle(), windowId);
     }
     mSubscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));
     mSubscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
