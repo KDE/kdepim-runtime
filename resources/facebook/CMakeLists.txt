@@ -21,7 +21,6 @@ add_library(facebookresourcelib STATIC ${fbresource_SRCS})
 
 target_link_libraries(facebookresourcelib
     KF5::KIOWidgets
-    KF5::IconThemes
     KF5::I18n
     KF5::ConfigGui
     KF5::CalendarCore
