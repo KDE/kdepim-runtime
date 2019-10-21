@@ -47,8 +47,6 @@ KAlarmResource::KAlarmResource(const QString &id)
     , mFileCompatibility(KACalendar::Incompatible)
     , mVersion(KACalendar::MixedFormat)
     , mFileVersion(KACalendar::IncompatibleFormat)
-    , mHaveReadFile(false)
-    , mFetchedAttributes(false)
 {
     qCDebug(KALARMRESOURCE_LOG) << id << "Starting";
     KAlarmResourceCommon::initialise(this);
@@ -222,6 +220,10 @@ void KAlarmResource::setCompatibility(KJob *j)
 bool KAlarmResource::writeToFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "writeToFile:" << fileName;
+    if (mCompatibility != KACalendar::Current  &&  !mUpdatingFormat) {
+        qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: writeToFile: wrong format";
+        return false;
+    }
     if (calendar() && calendar()->incidences().isEmpty()) {
         // It's an empty file. Set up the KAlarm custom property.
         KACalendar::setKAlarmVersion(calendar());
@@ -324,7 +326,10 @@ void KAlarmResource::updateFormat(KJob *j)
             const QString filename = fileStorage()->fileName();
             qCDebug(KALARMRESOURCE_LOG) << identifier() << "updateFormat: Updating storage for" << filename;
             KACalendar::setKAlarmVersion(fileStorage()->calendar());
-            if (!writeToFile(filename)) {
+            mUpdatingFormat = true;
+            bool ok = writeToFile(filename);
+            mUpdatingFormat = false;
+            if (!ok) {
                 qCWarning(KALARMRESOURCE_LOG) << identifier() << "updateFormat: Error updating calendar storage format";
                 break;
             }

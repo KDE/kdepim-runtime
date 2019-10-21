@@ -1,7 +1,7 @@
 /*
  *  kalarmresourcecommon.cpp  -  common functions for KAlarm Akonadi resources
  *  Program:  kalarm
- *  Copyright © 2009-2014 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2019 David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -141,7 +141,7 @@ KAEvent checkItemChanged(const Akonadi::Item &item, QString &errorMsg)
 */
 void setCollectionCompatibility(const Collection &collection, KACalendar::Compat compatibility, int version)
 {
-    qDebug() << "setCollectionCompatibility:" << collection.id() << "->" << compatibility << version;
+    qDebug() << "KAlarmResourceCommon::setCollectionCompatibility:" << collection.id() << "->" << compatibility << version;
     // Update the CompatibilityAttribute value only.
     // Note that we can't supply 'collection' to CollectionModifyJob since
     // that may also contain the CollectionAttribute value, which is read-only
@@ -188,7 +188,7 @@ QString errorMessage(ErrorCode code, const QString &param)
 */
 void Private::modifyCollectionJobDone(KJob *j)
 {
-    qDebug() << "modifyCollectionJobDone";
+    qDebug() << "KAlarmResourceCommon::modifyCollectionJobDone";
     if (j->error()) {
         Collection collection = static_cast<CollectionModifyJob *>(j)->collection();
         qCritical() << "Error: modifyCollectionJobDone: collection" << collection.id() << ":" << j->errorString();
