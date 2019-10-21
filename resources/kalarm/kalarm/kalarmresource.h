@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.h  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2019 by David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2019 David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -64,8 +64,9 @@ private:
     KACalendar::Compat mFileCompatibility;  // calendar file compatibility found by readFromFile()
     int mVersion;                           // calendar format version
     int mFileVersion;                       // calendar format version found by readFromFile()
-    bool mHaveReadFile;                     // the calendar file has been read
-    bool mFetchedAttributes;                // attributes have been fetched after initialisation
+    bool mHaveReadFile{false};              // the calendar file has been read
+    bool mFetchedAttributes{false};         // attributes have been fetched after initialisation
+    bool mUpdatingFormat{false};            // writeToFile() can ignore mCompatibility
 };
 
 #endif
