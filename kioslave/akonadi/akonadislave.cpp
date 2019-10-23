@@ -211,30 +211,30 @@ void AkonadiSlave::listDir(const QUrl &url)
 KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item &item)
 {
     KIO::UDSEntry entry;
-    entry.insert(KIO::UDSEntry::UDS_NAME, QString::number(item.id()));
-    entry.insert(KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType());
-    entry.insert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG);
-    entry.insert(KIO::UDSEntry::UDS_URL, item.url().url());
-    entry.insert(KIO::UDSEntry::UDS_SIZE, item.size());
-    entry.insert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
-    entry.insert(KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toSecsSinceEpoch());
+    entry.fastInsert(KIO::UDSEntry::UDS_NAME, QString::number(item.id()));
+    entry.fastInsert(KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType());
+    entry.fastInsert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG);
+    entry.fastInsert(KIO::UDSEntry::UDS_URL, item.url().url());
+    entry.fastInsert(KIO::UDSEntry::UDS_SIZE, item.size());
+    entry.fastInsert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
+    entry.fastInsert(KIO::UDSEntry::UDS_MODIFICATION_TIME, item.modificationTime().toSecsSinceEpoch());
     return entry;
 }
 
 KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection &collection)
 {
     KIO::UDSEntry entry;
-    entry.insert(KIO::UDSEntry::UDS_NAME, collection.name());
-    entry.insert(KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType());
-    entry.insert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR);
-    entry.insert(KIO::UDSEntry::UDS_URL, collection.url().url());
-    entry.insert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
+    entry.fastInsert(KIO::UDSEntry::UDS_NAME, collection.name());
+    entry.fastInsert(KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType());
+    entry.fastInsert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR);
+    entry.fastInsert(KIO::UDSEntry::UDS_URL, collection.url().url());
+    entry.fastInsert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
     if (const EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>()) {
         if (!attr->iconName().isEmpty()) {
-            entry.insert(KIO::UDSEntry::UDS_ICON_NAME, attr->iconName());
+            entry.fastInsert(KIO::UDSEntry::UDS_ICON_NAME, attr->iconName());
         }
         if (!attr->displayName().isEmpty()) {
-            entry.insert(KIO::UDSEntry::UDS_DISPLAY_NAME, attr->displayName());
+            entry.fastInsert(KIO::UDSEntry::UDS_DISPLAY_NAME, attr->displayName());
         }
     }
     return entry;

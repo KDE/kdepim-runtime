@@ -499,7 +499,7 @@ void POP3Resource::loginJobResult(KJob *job)
 {
     if (job->error()) {
         qCDebug(POP3RESOURCE_LOG) << job->error() << job->errorText();
-        if (job->error() == KIO::ERR_COULD_NOT_LOGIN) {
+        if (job->error() == KIO::ERR_CANNOT_LOGIN) {
             mAskAgain = true;
         }
         cancelSync(i18n("Unable to login to the server %1.", Settings::self()->host())
