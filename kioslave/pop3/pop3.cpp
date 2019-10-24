@@ -41,8 +41,13 @@ extern "C" {
 #include <QCryptographicHash>
 #include <QNetworkProxy>
 
+#include <QSslSocket>
+
+// remove this include when we can require KF 5.65 (TCPSlaveBase will use QSslSocket internally)
+#include <KTcpSocket>
+
+
 #include <kio/slaveinterface.h>
-#include <ktcpsocket.h>
 
 #define GREETING_BUF_LEN 1024
 #define MAX_RESPONSE_LEN 512
@@ -622,11 +627,14 @@ bool POP3Protocol::pop3_open()
         || metaData(QStringLiteral("useProxy")) != QLatin1String("on")) {
         qCDebug(POP3_LOG) << "requested to use no proxy";
 
-        KTcpSocket *sock = qobject_cast<KTcpSocket *>(socket());
-        if (sock) {
-            QNetworkProxy proxy;
-            proxy.setType(QNetworkProxy::NoProxy);
+        // the KTcpSocket branch can be removed once we can require KF >= 5.65 as TCPSlaveBase will
+        // use QSslSocket internally
+        QNetworkProxy proxy;
+        proxy.setType(QNetworkProxy::NoProxy);
+        if (QSslSocket *sock = qobject_cast<QSslSocket *>(socket())) {
             sock->setProxy(proxy);
+        } else if (KTcpSocket *sock = qobject_cast<KTcpSocket *>(socket())) {
+                sock->setProxy(proxy);
         } else {
             qCWarning(POP3_LOG) << "no socket, cannot set no proxy";
         }

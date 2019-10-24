@@ -75,8 +75,8 @@ private:
 
     // We use one big mutex to protect everything
     // There shouldn't be deadlocks, as there are only 2 places where the functions
-    // are called: From the KTcpSocket signals, which are triggered by the POP3 ioslave,
-    //             and from the actual test.
+    // are called: From the KTcpSocket (or QSslSocket with KIO >= 5.65) signals, which
+    // are triggered by the POP3 ioslave, and from the actual test.
     mutable QMutex mMutex;
 };
 
