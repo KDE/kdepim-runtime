@@ -17,8 +17,8 @@
     02110-1301, USA.
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef CONFIGWIDGET_H
+#define CONFIGWIDGET_H
 
 #include <QWidget>
 

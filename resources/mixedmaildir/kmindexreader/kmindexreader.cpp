@@ -355,7 +355,7 @@ bool KMIndexReader::readIndex()
             //////////////////////
             //BEGIN UNTESTED CODE
             //////////////////////
-            //parse verions < 1505
+            //parse versions < 1505
             QByteArray line(MAX_LINE, '\0');
             if (fgets(line.data(), MAX_LINE, mFp) == nullptr) {
                 break;

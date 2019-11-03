@@ -406,7 +406,7 @@ void MaildirTest::testMaildirFlagsWriting()
     QFETCH(QString, origDir);
     QFETCH(QString, origFileName);
 
-    // create an initialy new mail
+    // create an initially new mail
     QFile file;
     QDir::setCurrent(m_temp->path());
     file.setFileName(origDir + QLatin1Char('/') + origFileName);

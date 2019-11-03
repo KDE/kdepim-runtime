@@ -34,7 +34,7 @@ class EwsResource;
  *  the items.
  *
  *  The job relies on the tag store to retrieve tag identifiers and names that can be stored in
- *  Exchange. Due to buggy tag implementation in Akonad it can happen that items contain tags not
+ *  Exchange. Due to buggy tag implementation in Akonadi it can happen that items contain tags not
  *  yet known to the EWS resource. In such case an additional tag fetch job is issues to fetch
  *  information about those tags so that they can be added to the tag store.
  */

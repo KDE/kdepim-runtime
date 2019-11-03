@@ -71,7 +71,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
 
     if (isDisconnectedModeEnabled()) {
         // For disconnected mode we also cache the body
-        // and we keep all data indifinitely
+        // and we keep all data indefinitely
         localParts << QLatin1String(Akonadi::MessagePart::Body);
         cacheTimeout = -1;
     }

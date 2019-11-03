@@ -65,7 +65,7 @@ void TomboyItemsDownloadJob::onRequestFinished()
         Akonadi::Item item(Akonadi::NoteUtils::noteMimeType());
         item.setRemoteId(note.toObject()[QLatin1String("guid")].toString());
         mResultItems << item;
-        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemsDownloadJob: Retriving note with id" << item.remoteId();
+        qCDebug(TOMBOYNOTESRESOURCE_LOG) << "TomboyItemsDownloadJob: Retrieving note with id" << item.remoteId();
     }
 
     setError(TomboyJobError::NoError);

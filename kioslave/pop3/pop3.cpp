@@ -311,7 +311,7 @@ void POP3Protocol::closeConnection()
     // and to make sure that the server doesn't magically undo any of
     // our deletions and so-on, we should send a QUIT and wait for a
     // response.  We don't care if it's positive or negative.  Also
-    // flush out any semblance of a persistant connection, i.e.: the
+    // flush out any semblance of a persistent connection, i.e.: the
     // old username and password are now invalid.
     if (!opened) {
         return;

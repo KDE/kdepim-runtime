@@ -261,9 +261,9 @@ void FormatTest::testContact()
     if (realAddressee != convertedAddressee) {
         showDiff(normalizeVCardMessage(QString::fromUtf8(converter.createVCard(realAddressee))), normalizeVCardMessage(QString::fromUtf8(converter.createVCard(convertedAddressee))));
     }
-    QEXPECT_FAIL("v2contactBug238996", "Currently fails due to missing type=pref attribute of preffered email address. Requires fix in KContacts.", Continue);
-    QEXPECT_FAIL("v2contactEmails", "Currently fails due to missing type=pref attribute of preffered email address. Requires fix in KContacts.", Continue);
-    QEXPECT_FAIL("v3contactComplex", "Currently fails due to missing type=pref attribute of preffered email address. Requires fix in KContacts.", Continue);
+    QEXPECT_FAIL("v2contactBug238996", "Currently fails due to missing type=pref attribute of preferred email address. Requires fix in KContacts.", Continue);
+    QEXPECT_FAIL("v2contactEmails", "Currently fails due to missing type=pref attribute of preferred email address. Requires fix in KContacts.", Continue);
+    QEXPECT_FAIL("v3contactComplex", "Currently fails due to missing type=pref attribute of preferred email address. Requires fix in KContacts.", Continue);
     QCOMPARE(realAddressee, convertedAddressee);
 
     //Write

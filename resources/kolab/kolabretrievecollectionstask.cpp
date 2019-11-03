@@ -75,7 +75,7 @@ RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringL
 void RetrieveMetadataJob::start()
 {
     qCDebug(KOLABRESOURCE_TRACE);
-    //Fill the map with empty entires so we set the mimetype to mail if no metadata is retrieved
+    //Fill the map with empty entries so we set the mimetype to mail if no metadata is retrieved
     for (const QString &mailbox : qAsConst(mMailboxes)) {
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
@@ -229,7 +229,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 
     if (isDisconnectedModeEnabled()) {
         // For disconnected mode we also cache the body
-        // and we keep all data indifinitely
+        // and we keep all data indefinitely
         localParts << QLatin1String(Akonadi::MessagePart::Body);
         cacheTimeout = -1;
     }

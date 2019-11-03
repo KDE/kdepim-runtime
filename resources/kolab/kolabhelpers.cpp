@@ -446,7 +446,7 @@ void KolabHelpers::setFolderTypeAnnotation(QMap< QByteArray, QByteArray > &annot
 
 QColor KolabHelpers::getFolderColor(const QMap<QByteArray, QByteArray> &annotations)
 {
-    // kolab saves the color without a "#", so we need to add it to the rgb string to have a propper QColor
+    // kolab saves the color without a "#", so we need to add it to the rgb string to have a proper QColor
     if (annotations.contains("/shared" KOLAB_COLOR_ANNOTATION) && !annotations.value("/shared" KOLAB_COLOR_ANNOTATION).isEmpty()) {
         return QColor(QStringLiteral("#").append(QString::fromUtf8(annotations.value("/shared" KOLAB_COLOR_ANNOTATION))));
     } else if (annotations.contains("/private" KOLAB_COLOR_ANNOTATION) && !annotations.value("/private" KOLAB_COLOR_ANNOTATION).isEmpty()) {

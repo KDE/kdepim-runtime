@@ -41,7 +41,7 @@ void addObjectElements(QDomDocument &document, QDomElement &propElement, const O
 QString davPath(Folder::Module module);
 
 /**
- * On some actions (e.g. creating or modifiying items) we have to preload
+ * On some actions (e.g. creating or modifying items) we have to preload
  * data asynchronously. The following methods allow to do that in a generic way.
  */
 

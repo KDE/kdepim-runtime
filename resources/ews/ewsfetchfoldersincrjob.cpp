@@ -80,7 +80,7 @@ using namespace Akonadi;
  * Two types of folders are of main interest:
  *
  *  * For created folders the Akonadi collection object is created and populated with data obtained
- *    from Exchange. If the parent collection has alredy been processed in this pass the parent is
+ *    from Exchange. If the parent collection has already been processed in this pass the parent is
  *    set on the newly created collection.
  *  * For modified folders the Akonadi collection object that was retrieved previously is updated
  *    with data obtained from Exchange. If the folder was moved (the Akonadi parent differs from the

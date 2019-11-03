@@ -18,8 +18,8 @@
     02110-1301, USA.
 */
 
-#ifndef DIRSETTINGSDIALOG_H
-#define DIRSETTINGSDIALOG_H
+#ifndef ICALDIRSETTINGSWIDGET_H
+#define ICALDIRSETTINGSWIDGET_H
 
 #include "ui_icaldirsagentsettingswidget.h"
 #include <AkonadiCore/AgentConfigurationBase>

@@ -50,7 +50,7 @@ KolabBase::KolabBase(const QString &tz)
 {
     // unlike the previously used KTimeZone here, QTimeZone defaults to local time zone if tz.isEmpty()
     // we therefore force it to invalid, which however is unsafe to use (unlike KTimeZone)
-    // therefore all usage of mTimeZone must be preceeded by a validity check
+    // therefore all usage of mTimeZone must be preceded by a validity check
     mTimeZone = tz.isEmpty() ? QTimeZone() : QTimeZone(tz.toUtf8());
 }
 

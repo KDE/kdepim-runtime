@@ -27,9 +27,9 @@
  *  This class forms an interface for authentication modules. It abstracts
  *  all actions needed to authenticate HTTP requests.
  *
- *  The goal is for the EwsResource class to instanciate a concrete class
+ *  The goal is for the EwsResource class to instantiate a concrete class
  *  derived from this one depending on the configured authentication setting.
- *  Once the class is instanciated the resource class must connect the
+ *  Once the class is instantiated the resource class must connect the
  *  requestWalletPassword(), requestWalletMap(), walletPasswordReqiestFinished()
  *  and walletMapRequestFinished() methods to the appropriate signals/slots of
  *  the settings object. Once that is done the resource shall call the init()
@@ -39,8 +39,8 @@
  *  getAuthData() method on every HTTP request it issues. This method shall
  *  return all the necessary information needed to authenticate, which could
  *  be a username/password set and/or custom HTTP headers. At this stage the
- *  getAuthData() method must return imediatelly - it must not perform any
- *  lengtly operations such as external requests. In case no authentication
+ *  getAuthData() method must return immediately - it must not perform any
+ *  long operations such as external requests. In case no authentication
  *  information is available the method returns false, which causes the request
  *  to be aborted.
  *

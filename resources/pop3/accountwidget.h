@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef ACCOUNT_DIALOG_H
-#define ACCOUNT_DIALOG_H
+#ifndef ACCOUNT_WIDGET_H
+#define ACCOUNT_WIDGET_H
 
 #include "ui_popsettings.h"
 

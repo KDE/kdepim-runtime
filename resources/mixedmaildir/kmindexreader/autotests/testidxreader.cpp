@@ -29,7 +29,6 @@ using Akonadi::MessageStatus;
 #include <QTemporaryFile>
 
 #include <QTest>
-#include <QTest>
 #include <QDebug>
 
 QTEST_MAIN(TestIdxReader)

@@ -597,7 +597,7 @@ void SetupServer::slotEnableWidgets()
     m_ui->sameConfigCheck->setEnabled(haveSieve);
     m_ui->sievePortSpin->setEnabled(haveSieve);
     m_ui->alternateURL->setEnabled(haveSieve && !reuseConfig);
-    m_ui->authentification->setEnabled(haveSieve && !reuseConfig);
+    m_ui->authentication->setEnabled(haveSieve && !reuseConfig);
 }
 
 void SetupServer::slotComplete()

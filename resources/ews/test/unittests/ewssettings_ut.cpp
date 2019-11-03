@@ -109,7 +109,7 @@ Wallet *Wallet::openWallet(const QString &name, WId, OpenType ot)
     }
 
     if (ot != Asynchronous) {
-        qDebug() << "Unsopported open type";
+        qDebug() << "Unsupported open type";
         reportError();
     }
 

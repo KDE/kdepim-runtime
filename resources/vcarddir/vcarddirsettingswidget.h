@@ -18,8 +18,8 @@
     02110-1301, USA.
 */
 
-#ifndef DIRSETTINGSDIALOG_H
-#define DIRSETTINGSDIALOG_H
+#ifndef VCARDDIRSETTINGSWIDGET_H
+#define VCARDDIRSETTINGSWIDGET_H
 
 #include "ui_vcarddiragentsettingswidget.h"
 #include <AkonadiCore/AgentConfigurationBase>

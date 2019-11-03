@@ -163,7 +163,7 @@ QVariant MigratorModel::headerData(int section, Qt::Orientation /*orientation*/,
         case Name:
             return i18nc("Name of the migrator in this row", "Name");
         case Progress:
-            return i18nc("Progress of the mgirator in %", "Progress");
+            return i18nc("Progress of the migrator in %", "Progress");
         case State:
             return i18nc("Current status of the migrator (done, in progress, ...)", "Status");
         default:

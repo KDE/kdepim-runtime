@@ -39,7 +39,7 @@ void KolabChangeItemsTagsTask::startRelationTask(KIMAP::Session *session)
 {
     mSession = session;
 
-    //It's entierly possible that we don't have an rid yet
+    //It's entirely possible that we don't have an rid yet
 
     // compile a set of changed tags
     Q_FOREACH (const Akonadi::Tag &tag, resourceState()->addedTags()) {

@@ -117,7 +117,7 @@ public:
     /**
       * The internal uid is used as the uid inside KOrganizer whenever
       * two or more events with the same uid appear, which KOrganizer
-      * can't handle. To avoid keep that interal uid from changing all the
+      * can't handle. To avoid keep that internal uid from changing all the
       * time, it is persisted in the XML between a save and the next load.
       */
     void setInternalUID(const QString &iuid);

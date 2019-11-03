@@ -113,7 +113,7 @@ void EwsPKeyAuthJob::authRequestFinished()
     if (mAuthReply->error() == QNetworkReply::NoError) {
         mResultUri = mAuthReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
         if (!mResultUri.isValid()) {
-            setErrorMsg(QStringLiteral("Incorect or missing redirect URI in PKeyAuth response"));
+            setErrorMsg(QStringLiteral("Incorrect or missing redirect URI in PKeyAuth response"));
         }
     } else {
         setErrorMsg(QStringLiteral("Failed to process PKeyAuth request: %1").arg(mAuthReply->errorString()));

@@ -88,7 +88,7 @@ void TomboyNotesResource::retrieveCollections()
     // connect to its result() signal
     connect(job, &KJob::result, this, &TomboyNotesResource::onCollectionsRetrieved);
     job->start();
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving collections job started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retrieving collections job started";
 }
 
 void TomboyNotesResource::retrieveItems(const Akonadi::Collection &collection)
@@ -105,7 +105,7 @@ void TomboyNotesResource::retrieveItems(const Akonadi::Collection &collection)
     // connect to its result() signal
     connect(job, &KJob::result, this, &TomboyNotesResource::onItemsRetrieved);
     job->start();
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving items job started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retrieving items job started";
 }
 
 bool TomboyNotesResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
@@ -124,7 +124,7 @@ bool TomboyNotesResource::retrieveItem(const Akonadi::Item &item, const QSet<QBy
     // connect to its result() signal
     connect(job, &KJob::result, this, &TomboyNotesResource::onItemRetrieved);
     job->start();
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving item data job started";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retrieving item data job started";
 
     return true;
 }
@@ -190,7 +190,7 @@ void TomboyNotesResource::onItemRetrieved(KJob *kjob)
     }
 
     itemRetrieved(job->item());
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving item data job with remoteId " << job->item().remoteId() << " finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retrieving item data job with remoteId " << job->item().remoteId() << " finished";
 }
 
 void TomboyNotesResource::onItemsRetrieved(KJob *kjob)
@@ -203,7 +203,7 @@ void TomboyNotesResource::onItemsRetrieved(KJob *kjob)
     }
 
     itemsRetrieved(job->items());
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retriving items job finished";
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Retrieving items job finished";
 }
 
 void TomboyNotesResource::onSslError(QNetworkReply *reply, const QList<QSslError> &errors)

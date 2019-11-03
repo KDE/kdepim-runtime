@@ -536,7 +536,7 @@ void AccountWidget::checkHighest(QButtonGroup *btnGroup)
 void AccountWidget::slotAccepted()
 {
     saveSettings();
-    // Don't call accept() yet, saveSettings() triggers an asnychronous wallet operation,
+    // Don't call accept() yet, saveSettings() triggers an asynchronous wallet operation,
     // which will call accept() when it is finished
 }
 
