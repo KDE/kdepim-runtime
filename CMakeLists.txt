@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-set(PIM_VERSION "5.12.40")
+set(PIM_VERSION "5.12.80")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
@@ -21,7 +21,7 @@ endif()
 #
 # KDEPIM_DEV_VERSION
 # is empty for final versions. For development versions "build" is
-# something like "pre", "", "alpha2", "beta1", "beta2", "rc1", "rc2".
+# something like "pre", "", "alpha", "beta1", "beta2", "rc1", "rc2".
 #
 # Examples in chronological order:
 #
@@ -36,8 +36,8 @@ endif()
 #    3.2 pre
 #    3.2 
 
-set(KDEPIM_DEV_VERSION alpha)
-set(KDE_APPLICATIONS_VERSION "19.11.70")
+set(KDEPIM_DEV_VERSION beta1)
+set(KDE_APPLICATIONS_VERSION "19.11.80")
 
 # add an extra space
 if(DEFINED KDEPIM_DEV_VERSION)
