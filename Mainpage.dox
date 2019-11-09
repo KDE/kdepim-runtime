@@ -13,8 +13,8 @@ blocks section below.
 - Design and Concepts
   - \ref akonadi_design_communication
 - \ref akonadi_usage
-- <a href="http://pim.kde.org/akonadi">Website</a>
-- <a href="http://techbase.kde.org/index.php?title=Projects/PIM/Akonadi">Wiki</a>
+- <a href="https://community.kde.org/KDE_PIM/Akonadi">Website</a>
+- <a href="https://techbase.kde.org/index.php?title=Projects/PIM/Akonadi">Wiki</a>
 - \ref akonadi_todos
 
 \section akonadi_building_blocks Building Blocks
