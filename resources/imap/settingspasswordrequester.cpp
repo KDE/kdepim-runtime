@@ -83,6 +83,7 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
 
     connect(dialog, &QDialog::destroyed, this, &SettingsPasswordRequester::onDialogDestroyed);
     m_requestDialog = dialog;
+    dialog->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dialog->windowHandle(), m_resource->winIdForDialogs());
     bool checkboxResult = false;
     KMessageBox::createKMessageBox(dialog, buttonBox, QMessageBox::Information,

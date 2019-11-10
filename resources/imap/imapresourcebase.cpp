@@ -264,6 +264,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
 
     mSubscriptions = new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription);
     if (windowId) {
+        mSubscriptions->setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(mSubscriptions->windowHandle(), windowId);
     }
     mSubscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));

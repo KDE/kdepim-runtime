@@ -40,6 +40,7 @@ EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     , mParentResource(parentResource)
 {
     if (wId) {
+        setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(windowHandle(), wId);
     }
 

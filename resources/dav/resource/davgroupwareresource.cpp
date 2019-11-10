@@ -193,6 +193,7 @@ void DavGroupwareResource::configure(WId windowId)
         SetupWizard wizard;
 
         if (windowId) {
+            wizard.setAttribute(Qt::WA_NativeWindow, true);
             KWindowSystem::setMainWindow(wizard.windowHandle(), windowId);
         }
 
@@ -226,6 +227,7 @@ void DavGroupwareResource::configure(WId windowId)
     ConfigDialog dialog;
 
     if (windowId) {
+        dialog.setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(dialog.windowHandle(), windowId);
     }
 

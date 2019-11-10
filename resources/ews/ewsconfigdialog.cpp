@@ -67,6 +67,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     , mSettings(settings)
 {
     if (wId) {
+        setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(windowHandle(), wId);
     }
 

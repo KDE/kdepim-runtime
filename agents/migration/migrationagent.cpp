@@ -57,6 +57,7 @@ void MigrationAgent::configure(WId windowId)
     dlg->resize(600, 300);
 
     if (windowId) {
+        dlg->setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     }
     dlg->show();

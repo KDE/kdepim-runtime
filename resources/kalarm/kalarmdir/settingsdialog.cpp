@@ -54,6 +54,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     setWindowTitle(i18nc("@title", "Configure Calendar"));
 
     if (windowId) {
+        setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(windowHandle(), windowId);
     }
 

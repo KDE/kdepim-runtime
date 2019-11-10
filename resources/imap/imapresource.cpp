@@ -72,6 +72,7 @@ QByteArray ImapResource::clientId() const
 QDialog *ImapResource::createConfigureDialog(WId windowId)
 {
     SetupServer *dlg = new SetupServer(this, windowId);
+    dlg->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     dlg->setWindowTitle(i18n("IMAP Account Settings"));
     dlg->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
