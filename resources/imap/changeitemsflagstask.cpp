@@ -99,7 +99,7 @@ KIMAP::StoreJob *ChangeItemsFlagsTask::prepareJob(KIMAP::Session *session)
 
 void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session *session)
 {
-    const auto supportedFlags = fromAkonadiToSupportedImapFlags(addedFlags().toList(), items().at(0).parentCollection());
+    const auto supportedFlags = fromAkonadiToSupportedImapFlags(addedFlags().values(), items().at(0).parentCollection());
     if (supportedFlags.isEmpty()) {
         if (!removedFlags().isEmpty()) {
             m_processedItems = 0;
@@ -118,7 +118,7 @@ void ChangeItemsFlagsTask::triggerAppendFlagsJob(KIMAP::Session *session)
 
 void ChangeItemsFlagsTask::triggerRemoveFlagsJob(KIMAP::Session *session)
 {
-    const auto supportedFlags = fromAkonadiToSupportedImapFlags(removedFlags().toList(), items().at(0).parentCollection());
+    const auto supportedFlags = fromAkonadiToSupportedImapFlags(removedFlags().values(), items().at(0).parentCollection());
     if (supportedFlags.isEmpty()) {
         changeProcessed();
     } else {
