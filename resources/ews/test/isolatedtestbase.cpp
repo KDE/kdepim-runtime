@@ -178,6 +178,21 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
     }
 }
 
+OrgKdeAkonadiEwsSettingsInterface &TestAgentInstance::settingsInterface() const
+{
+    return *mEwsSettingsInterface;
+}
+
+OrgKdeAkonadiEwsWalletInterface &TestAgentInstance::walletInterface() const
+{
+    return *mEwsWalletInterface;
+}
+
+Akonadi::AgentInstance &TestAgentInstance::instance() const
+{
+    return *mEwsInstance;
+}
+
 MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {

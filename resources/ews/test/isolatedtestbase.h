@@ -75,6 +75,10 @@ public:
     bool setOnline(bool online, bool wait);
     bool isValid() const;
 
+    OrgKdeAkonadiEwsSettingsInterface &settingsInterface() const;
+    OrgKdeAkonadiEwsWalletInterface &walletInterface() const;
+    Akonadi::AgentInstance &instance() const;
+
 private:
     QScopedPointer<Akonadi::AgentInstance> mEwsInstance;
     QScopedPointer<OrgKdeAkonadiEwsSettingsInterface> mEwsSettingsInterface;
