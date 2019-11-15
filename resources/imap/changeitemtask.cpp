@@ -68,7 +68,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
 
         job->setMailBox(mailBox);
         job->setContent(msg->encodedContent(true));
-        const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().toList(), item().parentCollection());
+        const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().values(), item().parentCollection());
         job->setFlags(flags);
         qCDebug(IMAPRESOURCE_LOG) << "Appending new message: " << flags;
 
@@ -104,7 +104,7 @@ void ChangeItemTask::onPreStoreSelectDone(KJob *job)
 
 void ChangeItemTask::triggerStoreJob()
 {
-    const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().toList(), item().parentCollection());
+    const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().values(), item().parentCollection());
     qCDebug(IMAPRESOURCE_LOG) << flags;
 
     KIMAP::StoreJob *store = new KIMAP::StoreJob(m_session);

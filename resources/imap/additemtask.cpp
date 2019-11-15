@@ -66,7 +66,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
     KIMAP::AppendJob *job = new KIMAP::AppendJob(session);
     job->setMailBox(mailBox);
     job->setContent(msg->encodedContent(true));
-    job->setFlags(fromAkonadiToSupportedImapFlags(item().flags().toList(), collection()));
+    job->setFlags(fromAkonadiToSupportedImapFlags(item().flags().values(), collection()));
     job->setInternalDate(msg->date()->dateTime());
     connect(job, &KIMAP::AppendJob::result, this, &AddItemTask::onAppendMessageDone);
     job->start();
