@@ -20,6 +20,7 @@ class AgentInstance;
 class FakeEwsServerThread;
 class OrgKdeAkonadiEwsSettingsInterface;
 class OrgKdeAkonadiEwsWalletInterface;
+class OrgKdeAkonadiEwsResourceInterface;
 
 class IsolatedTestBase : public QObject
 {
@@ -77,12 +78,14 @@ public:
 
     OrgKdeAkonadiEwsSettingsInterface &settingsInterface() const;
     OrgKdeAkonadiEwsWalletInterface &walletInterface() const;
+    OrgKdeAkonadiEwsResourceInterface &resourceInterface() const;
     Akonadi::AgentInstance &instance() const;
 
 private:
     QScopedPointer<Akonadi::AgentInstance> mEwsInstance;
     QScopedPointer<OrgKdeAkonadiEwsSettingsInterface> mEwsSettingsInterface;
     QScopedPointer<OrgKdeAkonadiEwsWalletInterface> mEwsWalletInterface;
+    QScopedPointer<OrgKdeAkonadiEwsResourceInterface> mEwsResourceInterface;
     QString mIdentifier;
 };
 

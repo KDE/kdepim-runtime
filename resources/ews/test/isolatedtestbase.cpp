@@ -12,6 +12,7 @@
 #include <AkonadiCore/AgentManager>
 #include <AkonadiCore/Control>
 
+#include "ewsresourceinterface.h"
 #include "ewssettings.h"
 #include "ewswallet.h"
 #include "fakeewsserverthread.h"
@@ -103,6 +104,13 @@ TestAgentInstance::TestAgentInstance(const QString &url)
                                             this));
     QVERIFY(mEwsWalletInterface->isValid());
 
+    mEwsResourceInterface.reset(
+        new OrgKdeAkonadiEwsResourceInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + QLatin1Char('.') + akonadiInstanceIdentifier,
+                                              QStringLiteral("/"),
+                                              QDBusConnection::sessionBus(),
+                                              this));
+    QVERIFY(mEwsResourceInterface->isValid());
+
     /* The EWS resource initializes its DBus adapters asynchronously. Therefore it can happen that
      * due to a race access is attempted prior to their initialization. To fix this retry the DBus
      * communication a few times before declaring failure. */
@@ -186,6 +194,11 @@ OrgKdeAkonadiEwsSettingsInterface &TestAgentInstance::settingsInterface() const
 OrgKdeAkonadiEwsWalletInterface &TestAgentInstance::walletInterface() const
 {
     return *mEwsWalletInterface;
+}
+
+OrgKdeAkonadiEwsResourceInterface &TestAgentInstance::resourceInterface() const
+{
+    return *mEwsResourceInterface;
 }
 
 Akonadi::AgentInstance &TestAgentInstance::instance() const
