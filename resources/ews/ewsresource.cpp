@@ -81,6 +81,7 @@ EwsResource::EwsResource(const QString &id)
     , mAuthStage(AuthIdle)
     , mTagsRetrieved(false)
     , mReconnectTimeout(InitialReconnectTimeout)
+    , mInitialReconnectTimeout(InitialReconnectTimeout)
     , mSettings(new EwsSettings(winIdForDialogs()))
 {
     mEwsClient.setUserAgent(mSettings->userAgent());
@@ -214,7 +215,7 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
         mRootCollection.setRemoteRevision(id.changeKey());
         qCDebug(EWSRES_LOG) << "Root folder is " << id;
         emitReadyStatus();
-        mReconnectTimeout = InitialReconnectTimeout;
+        mReconnectTimeout = mInitialReconnectTimeout;
 
         if (mSettings->serverSubscription()) {
             mSubManager.reset(new EwsSubscriptionManager(mEwsClient, id, mSettings.data(), this));
@@ -1405,6 +1406,11 @@ void EwsResource::adjustRootCollectionName(const QString &newName)
             new CollectionModifyJob(mRootCollection);
         }
     }
+}
+
+void EwsResource::setInitialReconnectTimeout(int timeout)
+{
+    mInitialReconnectTimeout = mReconnectTimeout = timeout;
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)

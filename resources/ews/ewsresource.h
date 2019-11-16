@@ -75,6 +75,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE void clearFolderSyncState(const QString &folderId);
     Q_SCRIPTABLE void clearFolderSyncState();
     Q_SCRIPTABLE void clearFolderTreeSyncState();
+    Q_SCRIPTABLE void setInitialReconnectTimeout(int timeout);
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
@@ -154,6 +155,7 @@ private:
 
     bool mTagsRetrieved = false;
     int mReconnectTimeout;
+    int mInitialReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;
     QScopedPointer<EwsSettings> mSettings;
 };
