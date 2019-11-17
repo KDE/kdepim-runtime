@@ -399,8 +399,12 @@ void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
         return;
     }
 
-    QDir collectionDir = directoryForCollection(collection);
-    if (!collectionDir.removeRecursively()) {
+    const QString collectionDir = directoryForCollection(collection);
+    if (collectionDir.isEmpty()) {
+        cancelTask(i18n("Unknown folder to delete."));
+        return;
+    }
+    if (!QDir(collectionDir).removeRecursively()) {
         cancelTask(i18n("Unable to delete folder '%1'.", collection.name()));
         return;
     }
