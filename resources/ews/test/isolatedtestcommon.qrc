@@ -10,4 +10,7 @@
     <file alias="unsubscribe">resources/unsubscribe.xq</file>
     <file alias="getfolder-validateids">resources/getfolder-validateids.xq</file>
 </qresource>
+<qresource prefix="/xml">
+    <file alias="errorserverbusy">resources/errorserverbusy.xml</file>
+</qresource>
 </RCC>
