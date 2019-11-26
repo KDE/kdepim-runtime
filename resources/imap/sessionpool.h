@@ -113,6 +113,7 @@ private:
     void killSession(KIMAP::Session *session, SessionTermination termination);
     void declareSessionReady(KIMAP::Session *session);
     void cancelSessionCreation(KIMAP::Session *session, int errorCode, const QString &errorString);
+    void requestPassword();
 
     static qint64 m_requestCounter;
 

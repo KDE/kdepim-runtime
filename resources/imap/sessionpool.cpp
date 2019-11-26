@@ -83,13 +83,8 @@ bool SessionPool::isConnected() const
     return m_initialConnectDone;
 }
 
-bool SessionPool::connect(ImapAccount *account)
+void SessionPool::requestPassword()
 {
-    if (m_account) {
-        return false;
-    }
-
-    m_account = account;
     if (m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI) {
         // for GSSAPI we don't have to ask for username/password, because it uses session wide tickets
         QMetaObject::invokeMethod(this, "onPasswordRequestDone", Qt::QueuedConnection,
@@ -98,6 +93,16 @@ bool SessionPool::connect(ImapAccount *account)
     } else {
         m_passwordRequester->requestPassword();
     }
+}
+
+bool SessionPool::connect(ImapAccount *account)
+{
+    if (m_account) {
+        return false;
+    }
+
+    m_account = account;
+    requestPassword();
 
     return true;
 }
@@ -294,7 +299,7 @@ void SessionPool::processPendingRequests()
         }
     } else if (m_unusedPool.size() + m_reservedPool.size() < m_maxPoolSize) {
         // We didn't reach the max pool size yet so create a new one
-        m_passwordRequester->requestPassword();
+        requestPassword();
     } else {
         // No session available, and max pool size reached
         if (!m_pendingRequests.isEmpty()) {
