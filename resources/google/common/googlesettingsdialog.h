@@ -31,7 +31,7 @@ class GoogleSettings;
 class GoogleAccountManager;
 
 class QGroupBox;
-class KComboBox;
+class QComboBox;
 class QCheckBox;
 class KPluralHandlingSpinBox;
 class QPushButton;
@@ -73,7 +73,7 @@ private:
     QGroupBox *m_accGroupBox = nullptr;
     QPushButton *m_addAccButton = nullptr;
     QPushButton *m_removeAccButton = nullptr;
-    KComboBox *m_accComboBox = nullptr;
+    QComboBox *m_accComboBox = nullptr;
     QCheckBox *m_enableRefresh = nullptr;
     KPluralHandlingSpinBox *m_refreshSpinBox = nullptr;
     QVBoxLayout *m_mainLayout = nullptr;

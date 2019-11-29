@@ -27,7 +27,7 @@
 #include <QCheckBox>
 
 #include <KLocalizedString>
-#include <KComboBox>
+#include <QComboBox>
 #include <QPushButton>
 #include <QDebug>
 #include <KMessageBox>
@@ -68,9 +68,9 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     mainLayout->addWidget(m_accGroupBox);
     QHBoxLayout *accLayout = new QHBoxLayout(m_accGroupBox);
 
-    m_accComboBox = new KComboBox(m_accGroupBox);
+    m_accComboBox = new QComboBox(m_accGroupBox);
     accLayout->addWidget(m_accComboBox, 1);
-    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
+    connect(m_accComboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_addAccButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add-user")), i18n("&Add"), m_accGroupBox);
     accLayout->addWidget(m_addAccButton);
@@ -128,7 +128,7 @@ KGAPI2::AccountPtr GoogleSettingsDialog::currentAccount() const
 
 void GoogleSettingsDialog::reloadAccounts()
 {
-    disconnect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
+    disconnect(m_accComboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_accComboBox->clear();
 
@@ -142,7 +142,7 @@ void GoogleSettingsDialog::reloadAccounts()
         m_accComboBox->setCurrentIndex(index);
     }
 
-    connect(m_accComboBox, QOverload<const QString &>::of(&KComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
+    connect(m_accComboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
 
     m_removeAccButton->setEnabled(m_accComboBox->count() > 0);
     Q_EMIT currentAccountChanged(m_accComboBox->currentText());
