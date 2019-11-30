@@ -24,19 +24,19 @@
 #include <QHeaderView>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 #include <QTreeView>
 #include <QVBoxLayout>
 
 #include <KMessageWidget>
 #include <KLocalizedString>
-#include <KRecursiveFilterProxyModel>
 #include "ewsclient.h"
 #include "ewsfindfolderrequest.h"
 #include "ewssubscribedfoldersjob.h"
 #include "ewssettings.h"
 
-class EwsSubscriptionFilterModel : public KRecursiveFilterProxyModel
+class EwsSubscriptionFilterModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
@@ -95,9 +95,10 @@ public:
 };
 
 EwsSubscriptionFilterModel::EwsSubscriptionFilterModel(QObject *parent)
-    : KRecursiveFilterProxyModel(parent)
+    : QSortFilterProxyModel(parent)
     , mFilterSelected(false)
 {
+    setRecursiveFilteringEnabled(true);
 }
 
 EwsSubscriptionFilterModel::~EwsSubscriptionFilterModel()
@@ -117,7 +118,7 @@ bool EwsSubscriptionFilterModel::filterAcceptsRow(int sourceRow, const QModelInd
     if (!show) {
         return false;
     } else {
-        return KRecursiveFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
+        return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
     }
 }
 

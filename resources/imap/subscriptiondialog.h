@@ -23,8 +23,8 @@
 #define SUBSCRIPTIONDIALOG_H
 
 #include <QDialog>
+#include <QSortFilterProxyModel>
 
-#include <krecursivefilterproxymodel.h>
 #include <kimap/listjob.h>
 
 #include <QMap>
@@ -38,7 +38,7 @@ class ImapAccount;
 class QTreeView;
 class QPushButton;
 
-class SubscriptionFilterProxyModel : public KRecursiveFilterProxyModel
+class SubscriptionFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
@@ -50,7 +50,7 @@ public Q_SLOTS:
     void setIncludeCheckedOnly(int checkedOnlyState);
 
 protected:
-    bool acceptRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 private:
     QString m_pattern;

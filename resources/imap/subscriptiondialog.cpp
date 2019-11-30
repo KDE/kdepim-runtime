@@ -325,8 +325,9 @@ void SubscriptionDialog::applyChanges()
 }
 
 SubscriptionFilterProxyModel::SubscriptionFilterProxyModel(QObject *parent)
-    : KRecursiveFilterProxyModel(parent)
+    : QSortFilterProxyModel(parent)
 {
+    setRecursiveFilteringEnabled(true);
 }
 
 void SubscriptionFilterProxyModel::setSearchPattern(const QString &pattern)
@@ -351,7 +352,7 @@ void SubscriptionFilterProxyModel::setIncludeCheckedOnly(int checkedOnlyState)
     invalidate();
 }
 
-bool SubscriptionFilterProxyModel::acceptRow(int sourceRow, const QModelIndex &sourceParent) const
+bool SubscriptionFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
 
