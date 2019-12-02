@@ -22,7 +22,7 @@
 #ifndef OXA_USERSREQUESTJOB_H
 #define OXA_USERSREQUESTJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 #include "user.h"
 

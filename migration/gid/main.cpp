@@ -18,10 +18,10 @@
 */
 
 #include <AkonadiWidgets/ControlGui>
-#include <kaboutdata.h>
+#include <KAboutData>
 
-#include <kconfig.h>
-#include <kconfiggroup.h>
+#include <KConfig>
+#include <KConfigGroup>
 #include <KLocalizedString>
 
 #include <QDebug>

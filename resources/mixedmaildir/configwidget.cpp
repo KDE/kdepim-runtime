@@ -22,9 +22,9 @@
 
 #include "libmaildir/maildir.h"
 
-#include <kconfigdialogmanager.h>
-#include <kurlrequester.h>
-#include <klineedit.h>
+#include <KConfigDialogManager>
+#include <KUrlRequester>
+#include <KLineEdit>
 using KPIM::Maildir;
 
 ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)

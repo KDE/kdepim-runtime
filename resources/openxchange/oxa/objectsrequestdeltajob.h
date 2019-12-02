@@ -22,7 +22,7 @@
 #ifndef OXA_OBJECTSREQUESTDELTAJOB_H
 #define OXA_OBJECTSREQUESTDELTAJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 #include "object.h"
 

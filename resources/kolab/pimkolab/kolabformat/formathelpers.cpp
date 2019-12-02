@@ -16,7 +16,7 @@
  */
 
 #include "formathelpers.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include "kolabdefinitions.h"
 
 namespace Kolab {

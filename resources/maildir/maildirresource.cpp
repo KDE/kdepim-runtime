@@ -34,13 +34,13 @@
 #include <collectionfetchscope.h>
 #include <cachepolicy.h>
 #include <collectionfetchjob.h>
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 #include <Akonadi/KMime/MessageFlags>
 #include <kmime/kmime_message.h>
 #include <AkonadiCore/SpecialCollectionAttribute>
 
 #include "maildirresource_debug.h"
-#include <kdirwatch.h>
+#include <KDirWatch>
 #include <KLocalizedString>
 
 #include "libmaildir/maildir.h"

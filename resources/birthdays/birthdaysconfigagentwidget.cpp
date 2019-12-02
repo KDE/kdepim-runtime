@@ -21,7 +21,7 @@
 #include "birthdaysconfigagentwidget.h"
 #include "settings.h"
 #include <AkonadiCore/Tag>
-#include <kconfigdialogmanager.h>
+#include <KConfigDialogManager>
 #include <QIcon>
 #include <KLocalizedString>
 #include <QPushButton>

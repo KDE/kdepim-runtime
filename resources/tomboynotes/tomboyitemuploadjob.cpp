@@ -19,7 +19,7 @@
 
 #include "tomboyitemuploadjob.h"
 #include "debug.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>

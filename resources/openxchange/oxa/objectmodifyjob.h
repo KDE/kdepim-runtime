@@ -22,7 +22,7 @@
 #ifndef OXA_OBJECTMODIFYJOB_H
 #define OXA_OBJECTMODIFYJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 #include "object.h"
 

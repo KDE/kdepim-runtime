@@ -22,7 +22,7 @@
 #ifndef OXA_OBJECTMOVEJOB_H
 #define OXA_OBJECTMOVEJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 #include "folder.h"
 #include "object.h"

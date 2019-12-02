@@ -27,7 +27,7 @@
 #include <KNotifyConfigWidget>
 #include <QLineEdit>
 #include <QPushButton>
-#include <kaboutdata.h>
+#include <KAboutData>
 
 #include <QTabWidget>
 #include <QCheckBox>

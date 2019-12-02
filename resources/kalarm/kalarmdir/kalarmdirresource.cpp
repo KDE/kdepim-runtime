@@ -34,7 +34,7 @@
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 #include <changerecorder.h>
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 #include <entitydisplayattribute.h>
 #include <collectionfetchjob.h>
 #include <collectionfetchscope.h>
@@ -44,7 +44,7 @@
 #include <itemdeletejob.h>
 #include <itemmodifyjob.h>
 
-#include <kdirwatch.h>
+#include <KDirWatch>
 #include <KLocalizedString>
 
 #include <QDir>

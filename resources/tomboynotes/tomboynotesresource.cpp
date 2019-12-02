@@ -28,8 +28,8 @@
 #include "tomboyitemuploadjob.h"
 #include <changerecorder.h>
 #include <ItemFetchScope>
-#include <klocalizedstring.h>
-#include <ksslinfodialog.h>
+#include <KLocalizedString>
+#include <KSslInfoDialog>
 #include <QSslCipher>
 #include <QDBusConnection>
 

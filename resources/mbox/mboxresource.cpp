@@ -24,7 +24,7 @@
 #include <changerecorder.h>
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 #include <itemfetchscope.h>
 #include <Akonadi/KMime/MessageFlags>
 #include <kmbox/mbox.h>

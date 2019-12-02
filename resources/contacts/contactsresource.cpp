@@ -29,7 +29,7 @@
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 #include "contacts_resources_debug.h"
 
 #include <KLocalizedString>

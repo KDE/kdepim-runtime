@@ -21,8 +21,8 @@
 #include "tomboynotesconfigwidget.h"
 #include "ui_tomboynotesagentconfigwidget.h"
 #include "settings.h"
-#include <kconfigdialogmanager.h>
-#include <klocalizedstring.h>
+#include <KConfigDialogManager>
+#include <KLocalizedString>
 
 TomboyNotesConfigWidget::TomboyNotesConfigWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)

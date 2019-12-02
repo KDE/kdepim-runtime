@@ -21,7 +21,7 @@
 
 #include <KCalendarCore/Incidence>
 
-#include <kconfigskeleton.h>
+#include <KConfigSkeleton>
 #include <QStandardPaths>
 
 using namespace Akonadi;

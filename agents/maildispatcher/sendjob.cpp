@@ -24,7 +24,7 @@
 #include <agentinstance.h>
 #include <agentmanager.h>
 #include <collection.h>
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 #include <item.h>
 #include <itemdeletejob.h>
 #include <itemmodifyjob.h>
@@ -35,7 +35,7 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <transportresourcebase.h>
 #include "maildispatcher_debug.h"
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <kmime/kmime_message.h>
 #include <mailtransportakonadi/sentbehaviourattribute.h>
 #include <mailtransport/transport.h>

@@ -24,7 +24,7 @@
 
 #include "object.h"
 
-#include <kjob.h>
+#include <KJob>
 
 namespace OXA {
 class ObjectDeleteJob : public KJob

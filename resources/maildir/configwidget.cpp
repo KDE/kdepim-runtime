@@ -23,9 +23,9 @@
 
 #include <maildir.h>
 
-#include <kconfigdialogmanager.h>
-#include <kurlrequester.h>
-#include <klineedit.h>
+#include <KConfigDialogManager>
+#include <KUrlRequester>
+#include <KLineEdit>
 #include <QVBoxLayout>
 
 using KPIM::Maildir;

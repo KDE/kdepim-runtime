@@ -21,7 +21,7 @@
 #include "icalresourcebase.h"
 #include "icalsettingsadaptor.h"
 
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/MemoryCalendar>

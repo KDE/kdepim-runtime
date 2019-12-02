@@ -46,7 +46,7 @@
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/Todo>
-#include <kjob.h>
+#include <KJob>
 
 #include <attributefactory.h>
 #include <collectioncolorattribute.h>

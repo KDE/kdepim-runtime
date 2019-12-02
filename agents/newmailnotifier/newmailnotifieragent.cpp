@@ -29,7 +29,7 @@
 #include <AkonadiCore/ServerManager>
 #include <KIdentityManagement/IdentityManager>
 
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 
 #include <changerecorder.h>
 #include <entitydisplayattribute.h>

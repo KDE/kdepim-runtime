@@ -22,7 +22,7 @@
 #include <KDAV/DavCollectionsFetchJob>
 #include "settings.h"
 
-#include <kmessagebox.h>
+#include <KMessageBox>
 #include <KLocalizedString>
 
 #include <QButtonGroup>

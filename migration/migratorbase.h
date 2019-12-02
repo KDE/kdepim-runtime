@@ -24,7 +24,7 @@
 
 #include <QObject>
 #include <QFile>
-#include <kconfig.h>
+#include <KConfig>
 #include <KConfigGroup>
 
 class QFile;

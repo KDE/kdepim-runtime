@@ -22,7 +22,7 @@
 
 #include "o1tomboy.h"
 #include "o2/o1requestor.h"
-#include <kcompositejob.h>
+#include <KCompositeJob>
 #include <KIO/AccessManager>
 #include <QString>
 

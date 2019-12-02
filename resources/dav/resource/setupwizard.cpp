@@ -22,9 +22,9 @@
 #include <KPasswordLineEdit>
 #include <QIcon>
 #include <KLocalizedString>
-#include <klineedit.h>
+#include <KLineEdit>
 #include <kservice.h>
-#include <kservicetypetrader.h>
+#include <KServiceTypeTrader>
 #include <QTextBrowser>
 
 #include <QUrl>

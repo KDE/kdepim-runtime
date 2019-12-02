@@ -22,7 +22,7 @@
 #ifndef OXA_CONNECTIONTESTJOB_H
 #define OXA_CONNECTIONTESTJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 namespace OXA {
 class ConnectionTestJob : public KJob

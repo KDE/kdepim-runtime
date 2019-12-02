@@ -21,7 +21,7 @@
 #ifndef SETUPSERVER_H
 #define SETUPSERVER_H
 
-#include <klineedit.h>
+#include <KLineEdit>
 #include <QDialog>
 #include <collection.h>
 #include <KJob>

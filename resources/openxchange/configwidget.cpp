@@ -23,8 +23,8 @@
 #include "settings.h"
 #include "ui_configwidget.h"
 
-#include <kconfigdialogmanager.h>
-#include <kmessagebox.h>
+#include <KConfigDialogManager>
+#include <KMessageBox>
 
 #include <KLocalizedString>
 #include <QPushButton>

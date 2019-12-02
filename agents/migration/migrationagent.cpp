@@ -27,7 +27,7 @@
 #include <KWindowSystem>
 #include <QDialog>
 #include <KLocalizedString>
-#include <kuiserverjobtracker.h>
+#include <KUiServerJobTracker>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 

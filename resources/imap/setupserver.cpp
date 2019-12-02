@@ -47,11 +47,11 @@
 #include <resourcesettings.h>
 #include <entitydisplayattribute.h>
 #include <CollectionModifyJob>
-#include <kemailsettings.h>
+#include <KEMailSettings>
 #include <KLocalizedString>
 #include <QPushButton>
-#include <kmessagebox.h>
-#include <kuser.h>
+#include <KMessageBox>
+#include <KUser>
 #include "imapresource_debug.h"
 #include <QNetworkConfigurationManager>
 

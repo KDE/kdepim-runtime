@@ -24,10 +24,10 @@
 
 #include <KDAV/ProtocolInfo>
 
-#include <kconfigdialogmanager.h>
-#include <kconfigskeleton.h>
+#include <KConfigDialogManager>
+#include <KConfigSkeleton>
 #include <KLocalizedString>
-#include <kmessagebox.h>
+#include <KMessageBox>
 
 #include <QList>
 #include <QPointer>

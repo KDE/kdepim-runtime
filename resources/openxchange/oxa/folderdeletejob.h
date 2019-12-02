@@ -24,7 +24,7 @@
 
 #include "folder.h"
 
-#include <kjob.h>
+#include <KJob>
 
 namespace OXA {
 /**

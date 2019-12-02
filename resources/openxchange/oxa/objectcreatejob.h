@@ -22,7 +22,7 @@
 #ifndef OXA_OBJECTCREATEJOB_H
 #define OXA_OBJECTCREATEJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 #include "object.h"
 

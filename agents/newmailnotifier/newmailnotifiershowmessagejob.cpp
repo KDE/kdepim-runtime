@@ -25,7 +25,7 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QDBusConnectionInterface>
-#include <ktoolinvocation.h>
+#include <KToolInvocation>
 
 NewMailNotifierShowMessageJob::NewMailNotifierShowMessageJob(Akonadi::Item::Id id, QObject *parent)
     : KJob(parent)

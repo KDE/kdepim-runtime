@@ -28,7 +28,7 @@
 #include <kcalendarcore/memorycalendar.h>
 #include <kcalendarcore/icalformat.h>
 #include <kmime/kmime_message.h>
-#include <klocalizedstring.h>
+#include <KLocalizedString>
 #include <iostream>
 #include <QTimeZone>
 

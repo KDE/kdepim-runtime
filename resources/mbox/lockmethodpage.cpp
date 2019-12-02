@@ -20,9 +20,9 @@
 #include "lockmethodpage.h"
 #include "settings.h"
 
-#include <kconfigdialogmanager.h>
+#include <KConfigDialogManager>
 
-#include <kurlrequester.h>
+#include <KUrlRequester>
 #include <QStandardPaths>
 
 LockMethodPage::LockMethodPage(QWidget *parent) : QWidget(parent)

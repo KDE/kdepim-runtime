@@ -22,7 +22,7 @@
 #ifndef OXA_USERIDREQUESTJOB_H
 #define OXA_USERIDREQUESTJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 namespace OXA {
 class UserIdRequestJob : public KJob

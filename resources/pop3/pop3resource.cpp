@@ -37,7 +37,7 @@
 #include <kio/job.h>
 #include <KPasswordDialog>
 #include <KMessageBox>
-#include <knotification.h>
+#include <KNotification>
 #include <kwallet.h>
 #include "pop3resource_debug.h"
 

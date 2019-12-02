@@ -28,7 +28,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 #include <itemfetchscope.h>
 #include <mailtransportakonadi/sentactionattribute.h>
 #include <mailtransportakonadi/sentbehaviourattribute.h>

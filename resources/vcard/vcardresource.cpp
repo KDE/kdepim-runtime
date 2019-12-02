@@ -21,7 +21,7 @@
 #include "vcardresource.h"
 #include "vcardsettingsadaptor.h"
 
-#include <kdbusconnectionpool.h>
+#include <KDBusConnectionPool>
 
 #include <KLocalizedString>
 

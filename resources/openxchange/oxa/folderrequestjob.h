@@ -22,7 +22,7 @@
 #ifndef OXA_FOLDERREQUESTJOB_H
 #define OXA_FOLDERREQUESTJOB_H
 
-#include <kjob.h>
+#include <KJob>
 
 #include "folder.h"
 
