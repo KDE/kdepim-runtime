@@ -446,7 +446,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
                                  |Collection::CanChangeItem
                                  |Collection::CanDeleteItem);
         } else {
-            collection.setRights(nullptr);
+            collection.setRights(Collection::ReadOnly);
         }
 
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);

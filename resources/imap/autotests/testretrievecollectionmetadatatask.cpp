@@ -73,7 +73,7 @@ private Q_SLOTS:
         expectedUsages.clear();
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        collection.setRights(nullptr);
+        collection.setRights(Akonadi::Collection::ReadOnly);
 
         capabilities.clear();
         capabilities << QStringLiteral("ANNOTATEMORE") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
@@ -225,7 +225,7 @@ private Q_SLOTS:
                                      << expectedRoots << expectedLimits << expectedUsages;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        collection.setRights(nullptr);
+        collection.setRights(Akonadi::Collection::ReadOnly);
 
         capabilities.clear();
         capabilities << QStringLiteral("METADATA") << QStringLiteral("ACL") << QStringLiteral("QUOTA");
@@ -261,7 +261,7 @@ private Q_SLOTS:
                                   << expectedRoots << expectedLimits << expectedUsages;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        collection.setRights(nullptr);
+        collection.setRights(Akonadi::Collection::ReadOnly);
 
         capabilities.clear();
         expectedAnnotations.clear();
@@ -269,7 +269,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("collectionAttributesRetrieved");
 
-        rights = nullptr;
+        rights = Akonadi::Collection::ReadOnly;
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario();
@@ -282,12 +282,12 @@ private Q_SLOTS:
         // Test for GETQUOTAROOT with multiple IMAP quota roots but only one QUOTA response.
         //
         collection = createCollectionChain(QStringLiteral("/INBOX"));
-        collection.setRights(nullptr);
+        collection.setRights(Akonadi::Collection::ReadOnly);
 
         capabilities.clear();
         capabilities << QStringLiteral("QUOTA");
 
-        rights = nullptr;
+        rights = Akonadi::Collection::ReadOnly;
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
@@ -315,12 +315,12 @@ private Q_SLOTS:
         // but only (not the first on the list) matches the mailbox name.
         //
         collection = createCollectionChain(QStringLiteral("/INBOX"));
-        collection.setRights(nullptr);
+        collection.setRights(Akonadi::Collection::ReadOnly);
 
         capabilities.clear();
         capabilities << QStringLiteral("QUOTA");
 
-        rights = nullptr;
+        rights = Akonadi::Collection::ReadOnly;
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
