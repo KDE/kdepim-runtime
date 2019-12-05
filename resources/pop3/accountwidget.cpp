@@ -334,12 +334,12 @@ void AccountWidget::slotPipeliningClicked()
         KMessageBox::information(topLevelWidget(),
                                  i18n("Please note that this feature can cause some POP3 servers "
                                       "that do not support pipelining to send corrupted mail;\n"
-                                      "this is configurable, though, because some servers support pipelining "
-                                      "but do not announce their capabilities. To check whether your POP3 server "
+                                      "this is configurable, though, because some servers support pipelining\n"
+                                      "but do not announce their capabilities. To check whether your POP3 server\n"
                                       "announces pipelining support use the \"Auto Detect\""
                                       " button at the bottom of the dialog;\n"
-                                      "if your server does not announce it, but you want more speed, then "
-                                      "you should do some testing first by sending yourself a batch "
+                                      "if your server does not announce it, but you want more speed, then\n"
+                                      "you should do some testing first by sending yourself a batch\n"
                                       "of mail and downloading it."), QString(),
                                  QStringLiteral("pipelining"));
     }

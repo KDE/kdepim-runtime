@@ -65,7 +65,7 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
         return;
     }
     QWidget *parent = QWidget::find(m_resource->winIdForDialogs());
-    QString text = i18n("The server for account \"%2\" refused the supplied username and password. "
+    QString text = i18n("The server for account \"%2\" refused the supplied username and password.\n"
                         "Do you want to go to the settings, have another attempt "
                         "at logging in, or do nothing?\n\n"
                         "%1", serverError, m_resource->name());
