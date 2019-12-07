@@ -28,7 +28,7 @@
 #include <KLineEdit>
 #include <KLocalizedString>
 
-#include <kwallet.h>
+#include <KWallet>
 
 #include <KDAV/ProtocolInfo>
 

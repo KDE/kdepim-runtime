@@ -37,7 +37,7 @@
 #include <KEMailSettings>
 #include <KMessageBox>
 #include <KUser>
-#include <kwallet.h>
+#include <KWallet>
 #include "pop3resource_debug.h"
 
 #include <QButtonGroup>

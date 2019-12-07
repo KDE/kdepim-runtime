@@ -38,7 +38,7 @@
 #include <KPasswordDialog>
 #include <KMessageBox>
 #include <KNotification>
-#include <kwallet.h>
+#include <KWallet>
 #include "pop3resource_debug.h"
 
 #include <QTimer>

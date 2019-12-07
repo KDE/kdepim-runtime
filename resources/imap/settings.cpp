@@ -24,7 +24,7 @@
 #include "imapaccount.h"
 #include <config-imap.h>
 
-#include <kwallet.h>
+#include <KWallet>
 using KWallet::Wallet;
 
 #include "imapresource_debug.h"

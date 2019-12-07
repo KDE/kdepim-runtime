@@ -19,7 +19,7 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <kwallet.h>
+#include <KWallet>
 #include "pop3resource_debug.h"
 
 class SettingsHelper

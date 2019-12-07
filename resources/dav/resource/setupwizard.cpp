@@ -23,7 +23,7 @@
 #include <QIcon>
 #include <KLocalizedString>
 #include <KLineEdit>
-#include <kservice.h>
+#include <KService>
 #include <KServiceTypeTrader>
 #include <QTextBrowser>
 
