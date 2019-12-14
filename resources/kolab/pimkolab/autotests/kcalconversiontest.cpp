@@ -18,7 +18,7 @@
 #include "kcalconversiontest.h"
 #include <contact.h>
 
-#include <QtTest>
+#include <QTest>
 #include <kolabcontact.h>
 #include <kcalendarcore/recurrence.h>
 #include <kcontacts/addressee.h>

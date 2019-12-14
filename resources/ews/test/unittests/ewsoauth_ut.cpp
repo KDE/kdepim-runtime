@@ -18,8 +18,8 @@
 */
 
 #include <functional>
-#include <QtTest>
-
+#include <QTest>
+#include <QTimer>
 #include "auth/ewsoauth.h"
 
 #include "ewsoauth_ut_mock.h"

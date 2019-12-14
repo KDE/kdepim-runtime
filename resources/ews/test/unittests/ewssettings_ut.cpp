@@ -18,7 +18,7 @@
 */
 
 #include <functional>
-#include <QtTest>
+#include <QTest>
 #include <KWallet/KWallet>
 
 #include "ewssettings.h"

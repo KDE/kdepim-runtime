@@ -25,7 +25,7 @@
 #include <QXmlItem>
 #include <QXmlNamePool>
 #include <QXmlResultItems>
-#include <QtTest>
+#include <QTest>
 
 #include "fakeewsserver.h"
 #include "fakeewsserverthread.h"

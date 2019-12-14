@@ -18,7 +18,8 @@
 */
 
 #include <QXmlStreamReader>
-#include <QtTest>
+#include <QTest>
+#include <QTimeZone>
 
 #include "ewsattachment.h"
 #include "fakehttppost.h"

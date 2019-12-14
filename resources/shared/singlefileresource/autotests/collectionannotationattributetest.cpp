@@ -17,7 +17,7 @@
     02110-1301, USA.
 */
 
-#include <QtTest>
+#include <QTest>
 #include <QTest>
 #include "../collectionannotationsattribute.h"
 

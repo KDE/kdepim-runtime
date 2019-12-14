@@ -21,7 +21,7 @@
 #include <contact.h>
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
 #include <kcalendarcore/recurrence.h>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/todo.h>
