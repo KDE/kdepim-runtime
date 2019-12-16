@@ -26,6 +26,7 @@
 #include <QHostInfo>
 #include <QUuid>
 #include <QRegularExpression>
+#include <QRandomGenerator>
 
 #include "libmaildir_debug.h"
 #include <KLocalizedString>
@@ -549,7 +550,7 @@ QByteArray Maildir::readEntryHeaders(const QString &key) const
 static QString createUniqueFileName()
 {
     const qint64 time = QDateTime::currentMSecsSinceEpoch();
-    const int r = qrand() % 1000;
+    const int r = QRandomGenerator::global()->bounded(1000);
     const QString identifier = QLatin1String("R") + QString::number(r);
 
     QString fileName = QString::number(time) + QLatin1Char('.') + identifier + QLatin1Char('.');

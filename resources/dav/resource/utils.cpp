@@ -36,6 +36,7 @@
 #include <QByteArray>
 #include <QString>
 #include <QTimeZone>
+#include <QRandomGenerator>
 
 #include "davresource_debug.h"
 
@@ -44,7 +45,7 @@ typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
 static QString createUniqueId()
 {
     const qint64 time = QDateTime::currentMSecsSinceEpoch() / 1000;
-    const int r = qrand() % 1000;
+    const int r = QRandomGenerator::global()->bounded(1000);
     const QString id = QLatin1Char('R') + QString::number(r);
     const QString uid = QString::number(time) + QLatin1Char('.') + id;
     return uid;
