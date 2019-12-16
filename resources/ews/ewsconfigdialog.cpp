@@ -83,7 +83,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mButtonBox, &QDialogButtonBox::rejected, this, &EwsConfigDialog::reject);
     mainLayout->addWidget(mButtonBox);
 
-    setWindowTitle(i18n("Microsoft Exchange Configuration"));
+    setWindowTitle(i18nc("@title:window", "Microsoft Exchange Configuration"));
 
     mUi = new Ui::SetupServerView;
     mUi->setupUi(mainWidget);

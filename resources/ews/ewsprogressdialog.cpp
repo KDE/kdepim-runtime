@@ -58,11 +58,11 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
 
     switch (type) {
     case AutoDiscovery:
-        setWindowTitle(i18n("Exchange server autodiscovery"));
+        setWindowTitle(i18nc("@title:window", "Exchange server autodiscovery"));
         statusLabel->setText(i18n("Performing Microsoft Exchange server autodiscovery..."));
         break;
     case TryConnect:
-        setWindowTitle(i18n("Connecting to Exchange"));
+        setWindowTitle(i18nc("@title:window", "Connecting to Exchange"));
         statusLabel->setText(i18n("Connecting to Microsoft Exchange server..."));
         break;
     }

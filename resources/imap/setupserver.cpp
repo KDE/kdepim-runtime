@@ -660,7 +660,7 @@ void SetupServer::slotManageSubscriptions()
     account.setAuthenticationMode(Settings::mapTransportAuthToKimap(getCurrentAuthMode(m_ui->authenticationCombo)));
 
     QPointer<SubscriptionDialog> subscriptions = new SubscriptionDialog(this);
-    subscriptions->setWindowTitle(i18n("Serverside Subscription"));
+    subscriptions->setWindowTitle(i18nc("@title:window", "Serverside Subscription"));
     subscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     subscriptions->connectAccount(account, m_ui->password->password());
     m_subscriptionsChanged = subscriptions->isSubscriptionChanged();

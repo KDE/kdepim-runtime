@@ -36,7 +36,7 @@ SearchDialog::SearchDialog(QWidget *parent)
     : QDialog(parent)
     , mModel(new QStandardItemModel(this))
 {
-    setWindowTitle(i18n("Search"));
+    setWindowTitle(i18nc("@title:window", "Search"));
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);

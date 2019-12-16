@@ -55,7 +55,7 @@ EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     connect(mButtonBox, &QDialogButtonBox::rejected, this, &EwsMtaConfigDialog::reject);
     mainLayout->addWidget(mButtonBox);
 
-    setWindowTitle(i18n("Microsoft Exchange Mail Transport Configuration"));
+    setWindowTitle(i18nc("@title:window", "Microsoft Exchange Mail Transport Configuration"));
 
     mUi = new Ui::SetupServerView;
     mUi->setupUi(mainWidget);

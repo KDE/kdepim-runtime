@@ -148,7 +148,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 SetupWizard::SetupWizard(QWidget *parent)
     : QWizard(parent)
 {
-    setWindowTitle(i18n("DAV groupware configuration wizard"));
+    setWindowTitle(i18nc("@title:window", "DAV groupware configuration wizard"));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
     setPage(W_CredentialsPage, new CredentialsPage);
     setPage(W_PredefinedProviderPage, new PredefinedProviderPage);
