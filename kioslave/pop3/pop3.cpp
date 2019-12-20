@@ -43,8 +43,6 @@ extern "C" {
 
 #include <QSslSocket>
 
-// remove this include when we can require KF 5.65 (TCPSlaveBase will use QSslSocket internally)
-#include <kio_version.h>
 #include <KTcpSocket>
 
 #include <kio/slaveinterface.h>
@@ -633,10 +631,6 @@ bool POP3Protocol::pop3_open()
         proxy.setType(QNetworkProxy::NoProxy);
         if (QSslSocket *sock = qobject_cast<QSslSocket *>(socket())) {
             sock->setProxy(proxy);
-#if KIO_VERSION < QT_VERSION_CHECK(5, 65, 0)
-        } else if (KTcpSocket *sock = qobject_cast<KTcpSocket *>(socket())) {
-                sock->setProxy(proxy);
-#endif
         } else {
             qCWarning(POP3_LOG) << "no socket, cannot set no proxy";
         }
