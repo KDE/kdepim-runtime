@@ -59,7 +59,8 @@ static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDes
     return false;
 }
 
-RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace, const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
+RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace,
+                                         const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
     : KJob(parent)
     , mJobs(0)
     , mRequestedMetadata(requestedMetadata)

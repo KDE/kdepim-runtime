@@ -76,16 +76,19 @@ void QWebEngineProfile::setHttpUserAgent(const QString &ua)
 {
     mUserAgent = ua;
 }
+
 #if QTWEBENGINEWIDGETS_VERSION < QT_VERSION_CHECK(5, 13, 0)
 void QWebEngineProfile::setRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor)
 {
     mInterceptor = interceptor;
 }
+
 #else
 void QWebEngineProfile::setUrlRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor)
 {
     mInterceptor = interceptor;
 }
+
 #endif
 void QWebEngineProfile::installUrlSchemeHandler(QByteArray const &scheme, QWebEngineUrlSchemeHandler *handler)
 {

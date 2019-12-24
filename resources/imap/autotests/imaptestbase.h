@@ -20,7 +20,6 @@
 #ifndef IMAPTESTBASE_H
 #define IMAPTESTBASE_H
 
-
 #include <kimaptest/fakeserver.h>
 
 #include "dummypasswordrequester.h"

@@ -18,7 +18,6 @@
 #include "settingsdialog.h"
 #include "settings.h"
 
-
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>
 

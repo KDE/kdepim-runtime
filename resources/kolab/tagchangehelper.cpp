@@ -38,7 +38,6 @@
 #include <replacemessagejob.h>
 #include <AkonadiCore/TagModifyJob>
 
-
 KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
 {
     QStringList itemRemoteIds;

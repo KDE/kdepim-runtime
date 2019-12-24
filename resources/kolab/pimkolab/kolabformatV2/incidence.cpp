@@ -962,9 +962,9 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
         KCalendarCore::Attendee::PartStat status = attendeeStringToStatus(attendee.status);
         KCalendarCore::Attendee::Role role = attendeeStringToRole(attendee.role);
         KCalendarCore::Attendee a(attendee.displayName,
-                                                         attendee.smtpAddress,
-                                                         attendee.requestResponse,
-                                                         status, role);
+                                  attendee.smtpAddress,
+                                  attendee.requestResponse,
+                                  status, role);
         a.setDelegate(attendee.delegate);
         a.setDelegator(attendee.delegator);
         incidence->addAttendee(a);

@@ -219,8 +219,8 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
                 compareItemLists();
             }
         }
-        const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size() +
-            mRemoteFlagChangedIds.size();
+        const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size()
+                                +mRemoteFlagChangedIds.size();
         Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(),
                                                 totalItems));
     }
@@ -260,8 +260,7 @@ void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
     }
 }
 
-bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List& items, QHash<QString, Item> &itemHash,
-                                                           QHash<EwsItemType, Item::List> &toFetchItems)
+bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &items, QHash<QString, Item> &itemHash, QHash<EwsItemType, Item::List> &toFetchItems)
 {
     Q_FOREACH (const EwsItem &ewsItem, items) {
         EwsId id(ewsItem[EwsItemFieldItemId].value<EwsId>());
@@ -393,7 +392,6 @@ void EwsFetchItemsJob::compareItemLists()
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Changed %2, deleted %3, new %4")
         .arg(mRemoteChangedItems.size())
         .arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
-
 
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
 

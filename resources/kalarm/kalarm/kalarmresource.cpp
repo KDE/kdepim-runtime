@@ -69,7 +69,7 @@ void KAlarmResource::retrieveCollections()
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "retrieveCollections";
     mSettings->load();
     mSupportedMimetypes = mSettings->alarmTypes();
-    if(mSettings->path().isEmpty()) {
+    if (mSettings->path().isEmpty()) {
         // Don't configure the collection when no calendar file is defined.
         // Otherwise, multiple collections may be created for the resource.
         collectionsRetrieved({});
@@ -220,7 +220,7 @@ void KAlarmResource::setCompatibility(KJob *j)
 bool KAlarmResource::writeToFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "writeToFile:" << fileName;
-    if (mCompatibility != KACalendar::Current  &&  !mUpdatingFormat) {
+    if (mCompatibility != KACalendar::Current && !mUpdatingFormat) {
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: writeToFile: wrong format";
         return false;
     }

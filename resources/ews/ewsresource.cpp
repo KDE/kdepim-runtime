@@ -1393,7 +1393,9 @@ void EwsResource::requestAuthFailed()
     qCWarningNC(EWSRES_LOG) << "requestAuthFailed - going offline";
 
     if (mAuthStage == 0) {
-        QTimer::singleShot(0, [&]() { setTemporaryOffline(reconnectTimeout()); });
+        QTimer::singleShot(0, [&]() {
+            setTemporaryOffline(reconnectTimeout());
+        });
         Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
 
         reauthenticate();

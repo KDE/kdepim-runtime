@@ -46,7 +46,7 @@ protected:
     QString mIdentifier;
 
 Q_SIGNALS:
-    void itemsAvailable(KJob *self, const Akonadi::Item::List & items, QPrivateSignal);
+    void itemsAvailable(KJob *self, const Akonadi::Item::List &items, QPrivateSignal);
 
 private Q_SLOTS:
     void tokenJobResult(KJob *job);

@@ -284,10 +284,10 @@ void setIncidence(KCalendarCore::Incidence &i, const T &e)
          * Since that means the semantics of the two are different, we have to store the kolab uid as a custom property.
          */
         KCalendarCore::Attendee attendee(fromStdString(a.contact().name()),
-                                                                                          fromStdString(a.contact().email()),
-                                                                                          a.rsvp(),
-                                                                                          toPartStat(a.partStat()),
-                                                                                          toRole(a.role()));
+                                         fromStdString(a.contact().email()),
+                                         a.rsvp(),
+                                         toPartStat(a.partStat()),
+                                         toRole(a.role()));
         if (!a.contact().uid().empty()) { //TODO Identify contact from addressbook based on uid
             attendee.customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID, fromStdString(a.contact().uid()));
         }

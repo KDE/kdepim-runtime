@@ -78,7 +78,7 @@ bool ICalResourceBase::readFromFile(const QString &fileName)
 {
     mCalendar = KCalendarCore::MemoryCalendar::Ptr(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
     mFileStorage = KCalendarCore::FileStorage::Ptr(new KCalendarCore::FileStorage(mCalendar, fileName,
-                                                                        new KCalendarCore::ICalFormat()));
+                                                                                  new KCalendarCore::ICalFormat()));
     const bool result = mFileStorage->load();
     if (!result) {
         qCritical() << "akonadi_ical_resource: Error loading file " << fileName;
@@ -131,8 +131,8 @@ bool ICalResourceBase::writeToFile(const QString &fileName)
     KCalendarCore::FileStorage *fileStorage = mFileStorage.data();
     if (fileName != mFileStorage->fileName()) {
         fileStorage = new KCalendarCore::FileStorage(mCalendar,
-                                                fileName,
-                                                new KCalendarCore::ICalFormat());
+                                                     fileName,
+                                                     new KCalendarCore::ICalFormat());
     }
 
     bool success = true;

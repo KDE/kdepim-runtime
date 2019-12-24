@@ -22,7 +22,6 @@
 
 #include <AkonadiCore/AgentConfigurationBase>
 
-
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourceconfigwidget.h"
 

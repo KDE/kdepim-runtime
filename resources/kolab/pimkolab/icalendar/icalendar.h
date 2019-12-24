@@ -51,7 +51,7 @@ public:
         iTIPNoMethod           /**< No method */
     };
 
-    std::string toIMip(const Kolab::Event &, ITipMethod, const std::string & from, bool bbcMe = false) const;
+    std::string toIMip(const Kolab::Event &, ITipMethod, const std::string &from, bool bbcMe = false) const;
     std::vector<Kolab::Event> fromIMip(const std::string &);
 
     /**

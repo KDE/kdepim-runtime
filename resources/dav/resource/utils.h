@@ -21,7 +21,6 @@
 
 #include <KDAV/Enums>
 
-
 #include <AkonadiCore/Item>
 
 namespace KDAV {

@@ -35,7 +35,6 @@
 #include <KLocalizedString>
 #include <QIcon>
 
-
 #include <KGAPI/Types>
 #include <KGAPI/Account>
 #include <KGAPI/AuthJob>
