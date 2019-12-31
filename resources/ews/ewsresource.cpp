@@ -521,6 +521,7 @@ void EwsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> 
     } else {
         EwsModifyItemJob *job = EwsItemHandler::itemHandler(type)->modifyItemJob(mEwsClient, Item::List() << item, partIdentifiers, this);
         connect(job, &KJob::result, this, &EwsResource::itemChangeRequestFinished);
+        connectStatusSignals(job);
         job->start();
     }
 }
@@ -533,6 +534,7 @@ void EwsResource::itemsFlagsChanged(const Akonadi::Item::List &items, const QSet
 
     auto job = new EwsModifyItemFlagsJob(mEwsClient, this, items, addedFlags, removedFlags);
     connect(job, &EwsModifyItemFlagsJob::result, this, &EwsResource::itemModifyFlagsRequestFinished);
+    connectStatusSignals(job);
     job->start();
 }
 

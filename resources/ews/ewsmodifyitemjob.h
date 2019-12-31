@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -21,6 +21,9 @@ public:
     void setModifiedFlags(const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags);
 
     const Akonadi::Item::List &items() const;
+Q_SIGNALS:
+    void status(int status, const QString &message = QString());
+    void percent(int progress);
 
 protected:
     Akonadi::Item::List mItems;
