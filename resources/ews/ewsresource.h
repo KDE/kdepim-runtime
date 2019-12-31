@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2018 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -140,6 +140,9 @@ private:
     void setUpAuth();
     void reauthNotificationDismissed(bool accepted);
     void reauthenticate();
+
+    template<class Job>
+    void connectStatusSignals(Job *job);
 
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;

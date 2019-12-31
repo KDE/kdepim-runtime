@@ -321,12 +321,7 @@ void EwsResource::retrieveItems(const Collection &collection)
     job->setQueuedUpdates(mQueuedUpdates.value(collection.remoteId()));
     mQueuedUpdates.remove(collection.remoteId());
     connect(job, &EwsFetchItemsJob::result, this, &EwsResource::itemFetchJobFinished);
-    connect(job, &EwsFetchItemsJob::status, this, [this](int s, const QString &message) {
-        Q_EMIT status(s, message);
-    });
-    connect(job, &EwsFetchItemsJob::percent, this, [this](int p) {
-        Q_EMIT percent(p);
-    });
+    connectStatusSignals(job);
     job->start();
 }
 
@@ -1411,6 +1406,17 @@ void EwsResource::adjustRootCollectionName(const QString &newName)
 void EwsResource::setInitialReconnectTimeout(int timeout)
 {
     mInitialReconnectTimeout = mReconnectTimeout = timeout;
+}
+
+template<class Job>
+void EwsResource::connectStatusSignals(Job *job)
+{
+    connect(job, &Job::status, this, [this](int s, const QString &message) {
+        Q_EMIT status(s, message);
+    });
+    connect(job, &Job::percent, this, [this](int p) {
+        Q_EMIT percent(p);
+    });
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)
