@@ -210,6 +210,9 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
             }
         }
         const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size() + mRemoteFlagChangedIds.size();
+        if (!mLocalItems.empty()) {
+            Q_EMIT percent(qMin(totalItems * 50 / mLocalItems.size(), 50));
+        }
         Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(), totalItems));
     }
 }
@@ -431,7 +434,7 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
         }
 
         mTotalItemsFetched = mChangedItems.size();
-        Q_EMIT percent((mTotalItemsFetched * 100) / mTotalItemsToFetch);
+        Q_EMIT percent(50 + (mTotalItemsFetched * 50) / mTotalItemsToFetch);
 
         if (subjobs().isEmpty()) {
             emitResult();
