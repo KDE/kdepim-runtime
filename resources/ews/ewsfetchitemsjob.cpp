@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2016 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -318,15 +318,21 @@ void EwsFetchItemsJob::compareItemLists()
             ++mTotalItemsToFetch;
         } else {
             Item &item = *it;
-            item.clearPayload();
-            item.setRemoteRevision(id.changeKey());
-            if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
-                qCDebugNC(EWSRES_LOG) << QStringLiteral("Missing tags encountered - forcing sync");
-                syncTags();
-                return;
+            /* In case of a full sync even unchanged items appear as new. Compare the change keys
+             * to determine if a fetch is needed. */
+            if (item.remoteRevision() != id.changeKey()) {
+                item.clearPayload();
+                item.setRemoteRevision(id.changeKey());
+                if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
+                    qCDebugNC(EWSRES_LOG) << QStringLiteral("Missing tags encountered - forcing sync");
+                    syncTags();
+                    return;
+                }
+                toFetchItems[type].append(item);
+                ++mTotalItemsToFetch;
+            } else {
+                qCDebugNC(EWSRES_LOG) << QStringLiteral("Matching change key for item %1 - not syncing").arg(ewsHash(id.id()));
             }
-            toFetchItems[type].append(item);
-            ++mTotalItemsToFetch;
             itemHash.erase(it);
         }
     }
