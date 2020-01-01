@@ -1,7 +1,7 @@
 /*
     Copyright (c) 2003 Cornelius Schumacher <schumacher@kde.org>
     Copyright (c) 2009 Volker Krause <vkrause@kde.org>
-    Copyright (c) 2018-2019 Laurent Montel <montel@kde.org>
+    Copyright (c) 2018-2020 Laurent Montel <montel@kde.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public

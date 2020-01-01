@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2013-2019 Laurent Montel <montel@kde.org>
+    Copyright (c) 2013-2020 Laurent Montel <montel@kde.org>
 
     Copyright (c) 2010 Volker Krause <vkrause@kde.org>
 
