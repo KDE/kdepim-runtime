@@ -24,10 +24,14 @@
 #include "ewsconfigdialog.h"
 #include "ewscreatefolderrequest.h"
 #include "ewscreateitemjob.h"
+#ifdef HAVE_SEPARATE_MTA_RESOURCE
+#include "ewscreateitemrequest.h"
+#endif
 #include "ewsdeletefolderrequest.h"
 #include "ewsdeleteitemrequest.h"
 #include "ewsfetchfoldersincrjob.h"
 #include "ewsfetchfoldersjob.h"
+#include "ewsfetchitemsjob.h"
 #include "ewsgetfolderrequest.h"
 #include "ewsgetitemrequest.h"
 #include "ewsitemhandler.h"
@@ -35,14 +39,11 @@
 #include "ewsmodifyitemjob.h"
 #include "ewsmovefolderrequest.h"
 #include "ewsmoveitemrequest.h"
+#include "ewsresource_debug.h"
 #include "ewssettings.h"
 #include "ewssubscriptionmanager.h"
 #include "ewsupdatefolderrequest.h"
 #include "ewsupdateitemrequest.h"
-#ifdef HAVE_SEPARATE_MTA_RESOURCE
-#include "ewscreateitemrequest.h"
-#endif
-#include "ewsresource_debug.h"
 #include "tags/ewsglobaltagsreadjob.h"
 #include "tags/ewsglobaltagswritejob.h"
 #include "tags/ewstagstore.h"
