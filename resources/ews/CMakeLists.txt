@@ -50,6 +50,7 @@ set(ewsresource_SRCS
     ewsfetchfoldersincrjob.cpp
     ewsfetchfoldersjob.cpp
     ewsfetchitemdetailjob.cpp
+    ewsfetchitempayloadjob.cpp
     ewsfetchitemsjob.cpp
     ewsitemhandler.cpp
     ewsmodifyitemflagsjob.cpp
