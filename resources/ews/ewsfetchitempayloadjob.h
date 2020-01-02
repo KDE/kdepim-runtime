@@ -21,7 +21,7 @@ public:
 
     Akonadi::Item::List items() const
     {
-        return mResultItems;
+        return mItems;
     }
     void start() override;
 Q_SIGNALS:
@@ -31,6 +31,5 @@ Q_SIGNALS:
 private:
     void itemFetchFinished(KJob *job);
     Akonadi::Item::List mItems;
-    Akonadi::Item::List mResultItems;
     EwsClient &mClient;
 };

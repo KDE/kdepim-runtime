@@ -53,12 +53,6 @@ void EwsFetchItemPayloadJob::itemFetchFinished(KJob *job)
         return;
     }
 
-    QHash<QString, Item> itemHash;
-    itemHash.reserve(mItems.count());
-    for (const Item &item : mItems) {
-        itemHash.insert(item.remoteId(), item);
-    }
-
     const EwsGetItemRequest::Response &resp = req->responses()[0];
     if (!resp.isSuccess()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: Item fetch failed.");
@@ -74,11 +68,13 @@ void EwsFetchItemPayloadJob::itemFetchFinished(KJob *job)
         return;
     }
 
-    Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
+    /* In general EWS guarantees that the order of response items will match the order of request items.
+     * It is therefore safe to iterate these in parallel. */
+    auto it = mItems.begin();
+    for (const auto &resp : req->responses()) {
         const EwsItem &ewsItem = resp.item();
         auto id = ewsItem[EwsItemFieldItemId].value<EwsId>();
-        auto it = itemHash.find(id.id());
-        if (it == itemHash.end()) {
+        if (it->remoteId() != id.id()) {
             qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: Akonadi item not found for item %1.").arg(id.id());
             setErrorText(i18nc("@info:status", "Failed to retrieve items - Akonadi item not found for item %1", id.id()));
             emitResult();
@@ -97,9 +93,8 @@ void EwsFetchItemPayloadJob::itemFetchFinished(KJob *job)
             emitResult();
             return;
         }
+        ++it;
     }
-
-    mResultItems = itemHash.values().toVector();
 
     emitResult();
 }
