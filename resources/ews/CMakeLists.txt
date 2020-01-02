@@ -1,5 +1,5 @@
 #
-#  SPDX-FileCopyrightText: 2015-2018 Krzysztof Nowicki <krissn@op.pl>
+#  SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
 #
 #  SPDX-License-Identifier: LGPL-2.0-or-later
 
@@ -47,13 +47,13 @@ set(ewsresource_SRCS
     ewsautodiscoveryjob.cpp
     ewsconfigdialog.cpp
     ewscreateitemjob.cpp
-    ewsfetchfoldersjob.cpp
     ewsfetchfoldersincrjob.cpp
-    ewsfetchitemsjob.cpp
+    ewsfetchfoldersjob.cpp
     ewsfetchitemdetailjob.cpp
+    ewsfetchitemsjob.cpp
     ewsitemhandler.cpp
-    ewsmodifyitemjob.cpp
     ewsmodifyitemflagsjob.cpp
+    ewsmodifyitemjob.cpp
     ewsprogressdialog.cpp
     ewsresource.cpp
     ewssettings.cpp
