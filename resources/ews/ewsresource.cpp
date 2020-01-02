@@ -1165,13 +1165,18 @@ void EwsResource::itemsTagsChanged(const Item::List &items, const QSet<Tag> &add
     Q_UNUSED(addedTags)
     Q_UNUSED(removedTags)
 
+    Q_EMIT status(Running, i18nc("@info:status", "Updating item tags"));
+
     auto job = new EwsUpdateItemsTagsJob(items, mTagStore, mEwsClient, this);
     connect(job, &EwsUpdateItemsTagsJob::result, this, &EwsResource::itemsTagChangeFinished);
+    connectStatusSignals(job);
     job->start();
 }
 
 void EwsResource::itemsTagChangeFinished(KJob *job)
 {
+    emitReadyStatus();
+
     if (job->error()) {
         cancelTask(i18nc("@info:status", "Failed to process item tags update request"));
         return;

@@ -6,7 +6,10 @@
 
 #pragma once
 
+#include "ewsabstractchunkedjob.h"
 #include "ewsjob.h"
+#include "ewsupdateitemrequest.h"
+
 #include <AkonadiCore/Item>
 
 class EwsTagStore;
@@ -40,14 +43,20 @@ public:
 
 private Q_SLOTS:
     void itemsTagsChangedTagsFetched(KJob *job);
-    void updateItemsTagsRequestFinished(KJob *job);
     void globalTagsWriteFinished(KJob *job);
 
+Q_SIGNALS:
+    void status(int status, const QString &message = QString());
+    void percent(int progress);
+
 private:
+    void updateItemsTagsRequestFinished(bool success, const QString &error);
     void doUpdateItemsTags();
 
     Akonadi::Item::List mItems;
     EwsTagStore *mTagStore = nullptr;
     EwsClient &mClient;
+
+    EwsAbstractChunkedJob<EwsUpdateItemRequest, EwsUpdateItemRequest::ItemChange, EwsUpdateItemRequest::Response> mChunkedJob;
 };
 

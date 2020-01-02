@@ -22,11 +22,14 @@
 
 using namespace Akonadi;
 
+constexpr unsigned ChunkSize = 10;
+
 EwsUpdateItemsTagsJob::EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, EwsTagStore *tagStore, EwsClient &client, EwsResource *parent)
     : EwsJob(parent)
     , mItems(items)
     , mTagStore(tagStore)
     , mClient(client)
+    , mChunkedJob(ChunkSize)
 {
 }
 
@@ -99,7 +102,9 @@ void EwsUpdateItemsTagsJob::globalTagsWriteFinished(KJob *job)
 
 void EwsUpdateItemsTagsJob::doUpdateItemsTags()
 {
-    auto req = new EwsUpdateItemRequest(mClient, this);
+    QVector<EwsUpdateItemRequest::ItemChange> itemChanges;
+    itemChanges.reserve(mItems.size());
+
     Q_FOREACH (const Item &item, mItems) {
         EwsUpdateItemRequest::ItemChange ic(EwsId(item.remoteId(), item.remoteRevision()), EwsItemHandler::mimeToItemType(item.mimeType()));
         if (!item.tags().isEmpty()) {
@@ -124,34 +129,46 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
             upd = new EwsUpdateItemRequest::DeleteUpdate(EwsPropertyField(QStringLiteral("item:Categories")));
             ic.addUpdate(upd);
         }
-        req->addItemChange(ic);
+        itemChanges.append(ic);
     }
 
-    connect(req, &EwsUpdateItemRequest::result, this, &EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished);
-    req->start();
+    mChunkedJob.setItems(itemChanges);
+    mChunkedJob.start(
+        [this](EwsUpdateItemRequest::ItemChange::List::const_iterator firstChange, EwsUpdateItemRequest::ItemChange::List::const_iterator lastChange) {
+            auto req = new EwsUpdateItemRequest(mClient, this);
+            for (auto it = firstChange; it != lastChange; ++it) {
+                req->addItemChange(*it);
+            }
+            return req;
+        },
+        [](EwsUpdateItemRequest *req) {
+            return req->responses();
+        },
+        [this](unsigned int progress) {
+            Q_EMIT percent(progress);
+        },
+        [this](bool success, const QString &error) {
+            updateItemsTagsRequestFinished(success, error);
+        });
 }
 
-void EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished(KJob *job)
+void EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished(bool success, const QString &error)
 {
-    if (job->error()) {
-        setErrorMsg(job->errorString());
+    if (!success) {
+        setErrorMsg(error);
         emitResult();
         return;
     }
 
-    auto req = qobject_cast<EwsUpdateItemRequest *>(job);
-    if (!req) {
-        setErrorMsg(QStringLiteral("Invalid EwsUpdateItemRequest job object"));
-        return;
-    }
-
-    Q_ASSERT(mItems.count() == req->responses().count());
+    auto responses = mChunkedJob.responses();
+    Q_ASSERT(mItems.count() == responses.count());
 
     auto itemIt = mItems.begin();
-    Q_FOREACH (const EwsUpdateItemRequest::Response &resp, req->responses()) {
+    for (const auto &resp : responses) {
         if (resp.isSuccess()) {
             itemIt->setRemoteRevision(resp.itemId().changeKey());
         }
+        ++itemIt;
     }
 
     emitResult();
