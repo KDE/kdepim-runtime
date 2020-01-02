@@ -15,45 +15,58 @@
 
 using namespace Akonadi;
 
+constexpr unsigned ChunkSize = 10;
+
 EwsFetchItemPayloadJob::EwsFetchItemPayloadJob(EwsClient &client, QObject *parent, const Akonadi::Item::List &items)
     : EwsJob(parent)
     , mItems(items)
     , mClient(client)
+    , mChunkedJob(ChunkSize)
 {
 }
 
 void EwsFetchItemPayloadJob::start()
 {
-    auto req = new EwsGetItemRequest(mClient, this);
     EwsId::List ids;
     ids.reserve(mItems.count());
     for (const Item &item : std::as_const(mItems)) {
         ids << EwsId(item.remoteId(), item.remoteRevision());
     }
-    req->setItemIds(ids);
-    EwsItemShape shape(EwsShapeIdOnly);
-    shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
-    req->setItemShape(shape);
-    connect(req, &EwsGetItemRequest::result, this, &EwsFetchItemPayloadJob::itemFetchFinished);
-    req->start();
+
+    mChunkedJob.setItems(ids);
+    mChunkedJob.start(
+        [this](EwsId::List::const_iterator firstId, EwsId::List::const_iterator lastId) {
+            auto req = new EwsGetItemRequest(mClient, this);
+            EwsId::List ids;
+            for (auto it = firstId; it != lastId; ++it) {
+                ids.append(*it);
+            }
+            req->setItemIds(ids);
+            EwsItemShape shape(EwsShapeIdOnly);
+            shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
+            req->setItemShape(shape);
+            return req;
+        },
+        [](EwsGetItemRequest *req) {
+            return req->responses();
+        },
+        [this](unsigned int progress) {
+            Q_EMIT percent(progress);
+        },
+        [this](bool success, const QString &error) {
+            itemFetchFinished(success, error);
+        });
 }
 
-void EwsFetchItemPayloadJob::itemFetchFinished(KJob *job)
+void EwsFetchItemPayloadJob::itemFetchFinished(bool success, const QString &error)
 {
     if (!success) {
         setErrorText(i18nc("@info:status", "Failed to process items retrieval request"));
         emitResult();
         return;
     }
-    auto req = qobject_cast<EwsGetItemRequest *>(job);
-    if (!req) {
-        qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsGetItemRequest job object");
-        setErrorText(i18nc("@info:status", "Failed to retrieve items - internal error"));
-        emitResult();
-        return;
-    }
 
-    const EwsGetItemRequest::Response &resp = req->responses()[0];
+    const EwsGetItemRequest::Response &resp = mChunkedJob.responses()[0];
     if (!resp.isSuccess()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: Item fetch failed.");
         setErrorText(i18nc("@info:status", "Failed to retrieve items"));
@@ -61,7 +74,7 @@ void EwsFetchItemPayloadJob::itemFetchFinished(KJob *job)
         return;
     }
 
-    if (mItems.size() != req->responses().size()) {
+    if (mItems.size() != mChunkedJob.responses().size()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: incorrect number of responses.");
         setErrorText(i18nc("@info:status", "Failed to retrieve items - incorrect number of responses"));
         emitResult();
@@ -71,7 +84,7 @@ void EwsFetchItemPayloadJob::itemFetchFinished(KJob *job)
     /* In general EWS guarantees that the order of response items will match the order of request items.
      * It is therefore safe to iterate these in parallel. */
     auto it = mItems.begin();
-    for (const auto &resp : req->responses()) {
+    for (const auto &resp : mChunkedJob.responses()) {
         const EwsItem &ewsItem = resp.item();
         auto id = ewsItem[EwsItemFieldItemId].value<EwsId>();
         if (it->remoteId() != id.id()) {

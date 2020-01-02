@@ -8,7 +8,9 @@
 
 #include <AkonadiCore/Item>
 
+#include "ewsabstractchunkedjob.h"
 #include "ewsclient.h"
+#include "ewsgetitemrequest.h"
 #include "ewsjob.h"
 #include "ewstypes.h"
 
@@ -29,7 +31,8 @@ Q_SIGNALS:
     void percent(int progress);
 
 private:
-    void itemFetchFinished(KJob *job);
+    void itemFetchFinished(bool success, const QString &error);
     Akonadi::Item::List mItems;
     EwsClient &mClient;
+    EwsAbstractChunkedJob<EwsGetItemRequest, EwsId, EwsGetItemRequest::Response> mChunkedJob;
 };
