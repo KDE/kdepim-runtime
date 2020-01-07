@@ -20,7 +20,7 @@
 #include "fakeewsserver.h"
 
 #include <QThread>
-
+#include <QRandomGenerator>
 #include "fakeewsconnection.h"
 #include "fakeewsserver_debug.h"
 
@@ -43,8 +43,9 @@ bool FakeEwsServer::start()
 
     int retries = 3;
     bool ok;
+    auto *generator = QRandomGenerator::global();
     do {
-        mPortNumber = (qrand() % 10000) + 10000;
+        mPortNumber = (generator->bounded(10000)) + 10000;
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Starting fake EWS server at 127.0.0.1:%1").arg(mPortNumber);
         ok = listen(QHostAddress::LocalHost, mPortNumber);
         if (!ok) {

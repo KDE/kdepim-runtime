@@ -37,7 +37,6 @@ IsolatedTestBase::IsolatedTestBase(QObject *parent)
     : QObject(parent)
     , mFakeServerThread(new FakeEwsServerThread(this))
 {
-    qsrand(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
 }
 
 IsolatedTestBase::~IsolatedTestBase()
