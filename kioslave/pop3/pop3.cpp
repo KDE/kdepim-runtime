@@ -701,7 +701,7 @@ bool POP3Protocol::pop3_open()
             if (startSsl()) {
                 qCDebug(POP3_LOG) << "TLS mode has been enabled.";
             } else {
-                qCDebug(POP3_LOG) << "TLS mode setup has failed. Aborting." << endl;
+                qCDebug(POP3_LOG) << "TLS mode setup has failed. Aborting.";
                 error(ERR_SLAVE_DEFINED,
                       i18n("Your POP3 server claims to "
                            "support TLS but negotiation "
