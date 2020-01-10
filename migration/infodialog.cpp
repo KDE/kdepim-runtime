@@ -19,7 +19,7 @@
 
 #include "infodialog.h"
 
-#include <QDebug>
+#include "migration_debug.h"
 #include <QIcon>
 
 #include <QApplication>
@@ -107,19 +107,19 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
     case KMigratorBase::Success:
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
         mChange = true;
-        qDebug() << msg;
+        qCDebug(MIGRATION_LOG) << msg;
         break;
     case KMigratorBase::Skip:
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok")));
-        qDebug() << msg;
+        qCDebug(MIGRATION_LOG) << msg;
         break;
     case KMigratorBase::Info:
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-information")));
-        qDebug() << msg;
+        qCDebug(MIGRATION_LOG) << msg;
         break;
     case KMigratorBase::Warning:
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-warning")));
-        qDebug() << msg;
+        qCDebug(MIGRATION_LOG) << msg;
         break;
     case KMigratorBase::Error:
     {
@@ -128,11 +128,11 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
         currentFont.setBold(true);
         item->setFont(currentFont);
         mError = true;
-        qCritical() << msg;
+        qCCritical(MIGRATION_LOG) << msg;
         break;
     }
     default:
-        qCritical() << "WTF?";
+        qCCritical(MIGRATION_LOG) << "WTF?";
     }
 
     mAutoScrollList = autoScroll;

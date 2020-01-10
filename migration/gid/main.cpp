@@ -24,7 +24,7 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 
-#include <QDebug>
+#include "migration_debug.h"
 #include <QIcon>
 #include <QApplication>
 #include <infodialog.h>
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
     const QString mimeType = parser.value(QStringLiteral("mimetype"));
     if (mimeType.isEmpty()) {
-        qWarning() << "set the mimetype to migrate";
+        qCWarning(MIGRATION_LOG) << "set the mimetype to migrate";
         return 5;
     }
 

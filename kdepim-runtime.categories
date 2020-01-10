@@ -30,3 +30,4 @@ org.kde.pim.imapresource.trace resource imap trace (kdepim-runtime) IDENTIFIER [
 org.kde.pim.kolabresource.trace resource kolab trace (kdepim-runtime) IDENTIFIER [KOLABRESOURCE_TRACE]
 org.kde.pim.google.calendar resource google calendar (kdepim-runtime) IDENTIFIER [GOOGLE_CALENDAR_LOG]
 org.kde.pim.vcarddirresource vcarddir resource (kdepim-runtime) IDENTIFIER [VCARDDIRRESOURCE_LOG]
+org.kde.pim.migration migration (kdepim-runtime) IDENTIFIER [MIGRATION_LOG]

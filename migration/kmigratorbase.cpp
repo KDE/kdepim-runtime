@@ -26,7 +26,7 @@
 #include <KSharedConfig>
 #include <KConfigGroup>
 #include <KLocalizedString>
-#include <QDebug>
+#include "migration_debug.h"
 #include <QCoreApplication>
 #include <QFile>
 #include <QMetaEnum>
@@ -67,7 +67,7 @@ KMigratorBase::KMigratorBase() : m_logFile(nullptr)
     if (!m_logFile->open(QFile::Append)) {
         delete m_logFile;
         m_logFile = nullptr;
-        qWarning() << "Unable to open log file: " << logFileName;
+        qCWarning(MIGRATION_LOG) << "Unable to open log file: " << logFileName;
     }
     logMessage(Info, QStringLiteral("Starting migration..."));
     connect(this, &KMigratorBase::message, this, &KMigratorBase::logMessage);

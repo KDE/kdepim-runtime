@@ -4,6 +4,8 @@ set(gid_SRCS
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
+ecm_qt_declare_logging_category(gid_SRCS HEADER migration_debug.h IDENTIFIER MIGRATION_LOG CATEGORY_NAME org.kde.pim.migration)
+
 add_library(gidmigration STATIC ${gid_SRCS})
 target_link_libraries(gidmigration
   KF5::AkonadiCore

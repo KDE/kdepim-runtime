@@ -22,7 +22,7 @@
 #include <AkonadiCore/CollectionCreateJob>
 #include <AkonadiCore/ItemCreateJob>
 
-#include <QDebug>
+#include "migration_debug.h"
 
 using namespace Akonadi;
 
@@ -81,7 +81,7 @@ void EntityTreeCreateJob::collectionCreateJobDone(KJob *job)
     Collection createdCollection = collectionCreateJob->collection();
 
     if (job->error()) {
-        qDebug() << job->errorString();
+        qCDebug(MIGRATION_LOG) << job->errorString();
         return;
     }
 
@@ -90,7 +90,7 @@ void EntityTreeCreateJob::collectionCreateJobDone(KJob *job)
     Item::List::iterator it;
     const Item::List::iterator end = m_items.end();
     for (it = m_items.begin(); it != end; ++it) {
-        qDebug() << "updating items";
+        qCDebug(MIGRATION_LOG) << "updating items";
         if (it->parentCollection().id() == creationId) {
             it->setParentCollection(createdCollection);
         }
