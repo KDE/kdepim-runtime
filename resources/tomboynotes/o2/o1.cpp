@@ -275,8 +275,13 @@ void O1::onTokenRequestFinished()
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished";
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-    reply->deleteLater();
-    if (reply->error() != QNetworkReply::NoError) {
+    reply->deleteLater();    
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+    const auto networkError = reply->error();
+#else
+    const auto networkError = reply->networkError();
+#endif
+    if (networkError != QNetworkReply::NoError) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished: " << reply->errorString();
         return;
     }
@@ -362,7 +367,12 @@ void O1::onTokenExchangeFinished()
 
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
-    if (reply->error() != QNetworkReply::NoError) {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+    const auto networkError = reply->error();
+#else
+    const auto networkError = reply->networkError();
+#endif
+    if (networkError != QNetworkReply::NoError) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeFinished: " << reply->errorString();
         return;
     }

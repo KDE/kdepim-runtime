@@ -279,7 +279,12 @@ void O2::onTokenReplyFinished()
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyFinished";
     QNetworkReply *tokenReply = qobject_cast<QNetworkReply *>(sender());
-    if (tokenReply->error() == QNetworkReply::NoError) {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+    const auto networkError = tokenReply->error();
+#else
+    const auto networkError = tokenReply->networkError();
+#endif
+    if (networkError == QNetworkReply::NoError) {
         QByteArray replyData = tokenReply->readAll();
         QVariantMap tokens = parseTokenResponse(replyData);
 
@@ -390,8 +395,13 @@ void O2::refresh()
 void O2::onRefreshFinished()
 {
     QNetworkReply *refreshReply = qobject_cast<QNetworkReply *>(sender());
-    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onRefreshFinished: Error" << (int)refreshReply->error() << refreshReply->errorString();
-    if (refreshReply->error() == QNetworkReply::NoError) {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+    const auto networkError = refreshReply->error();
+#else
+    const auto networkError = refreshReply->networkError();
+#endif
+    qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onRefreshFinished: Error" << (int)networkError << refreshReply->errorString();
+    if (networkError == QNetworkReply::NoError) {
         QByteArray reply = refreshReply->readAll();
         QVariantMap tokens = parseTokenResponse(reply);
         setToken(tokens.value(QLatin1String(O2_OAUTH2_ACCESS_TOKEN)).toString());

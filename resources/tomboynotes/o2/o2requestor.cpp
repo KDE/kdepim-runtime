@@ -82,14 +82,18 @@ void O2Requestor::onRefreshFinished(QNetworkReply::NetworkError error)
 void O2Requestor::onRequestFinished()
 {
     QNetworkReply *senderReply = qobject_cast<QNetworkReply *>(sender());
-    QNetworkReply::NetworkError error = senderReply->error();
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+    const auto networkError = senderReply->error();
+#else
+    const auto networkError = senderReply->networkError();
+#endif
     if (status_ == Idle) {
         return;
     }
     if (reply_ != senderReply) {
         return;
     }
-    if (error == QNetworkReply::NoError) {
+    if (networkError == QNetworkReply::NoError) {
         QTimer::singleShot(10, this, &O2Requestor::finish);
     }
 }
