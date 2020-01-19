@@ -68,7 +68,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF5::ConfigCore
     KF5::ConfigWidgets
     KF5::WindowSystem
-    KPim::KDAV
+    KF5::DAV
     Qt5::Xml
     )
 
