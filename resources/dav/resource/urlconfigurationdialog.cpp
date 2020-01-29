@@ -59,7 +59,7 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     mRemoteProtocolGroup->addButton(mUi.caldav, KDAV::CalDav);
     mRemoteProtocolGroup->addButton(mUi.carddav, KDAV::CardDav);
     mRemoteProtocolGroup->addButton(mUi.groupdav, KDAV::GroupDav);
-    connect(mRemoteProtocolGroup, QOverload<int, bool>::of(&QButtonGroup::buttonToggled), this, &UrlConfigurationDialog::onConfigChanged);
+    connect(mRemoteProtocolGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.remoteUrl, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.useDefaultCreds, &QRadioButton::toggled, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.username, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);

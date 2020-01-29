@@ -186,8 +186,8 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 
     connect(m_ui->useDefaultIdentityCheck, &QCheckBox::toggled, this, &SetupServer::slotIdentityCheckboxChanged);
     connect(m_ui->enableMailCheckBox, &QCheckBox::toggled, this, &SetupServer::slotMailCheckboxChanged);
-    connect(m_ui->safeImapGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &SetupServer::slotEncryptionRadioChanged);
-    connect(m_ui->customSieveGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &SetupServer::slotCustomSieveChanged);
+    connect(m_ui->safeImapGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, &SetupServer::slotEncryptionRadioChanged);
+    connect(m_ui->customSieveGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, &SetupServer::slotCustomSieveChanged);
     connect(m_ui->showServerInfo, &QPushButton::pressed, this, &SetupServer::slotShowServerInfo);
 
     readSettings();

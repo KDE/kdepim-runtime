@@ -57,7 +57,7 @@ private Q_SLOTS:
     void slotEnableLeaveOnServerSize(bool state);
     void slotFilterOnServerClicked();
     void slotPipeliningClicked();
-    void slotPopEncryptionChanged(int);
+    void slotPopEncryptionChanged(QAbstractButton *button);
     void slotCheckPopCapabilities();
     void slotPopCapabilities(const QVector<int> &);
     void slotLeaveOnServerDaysChanged(int value);

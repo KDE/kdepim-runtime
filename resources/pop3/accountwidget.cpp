@@ -124,7 +124,7 @@ void AccountWidget::setupWidgets()
     encryptionButtonGroup->addButton(encryptionTLS,
                                      Transport::EnumEncryption::TLS);
 
-    connect(encryptionButtonGroup, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
+    connect(encryptionButtonGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
     connect(intervalCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnablePopInterval);
 
     populateDefaultAuthenticationOptions();
@@ -345,16 +345,19 @@ void AccountWidget::slotPipeliningClicked()
     }
 }
 
-void AccountWidget::slotPopEncryptionChanged(int id)
+void AccountWidget::slotPopEncryptionChanged(QAbstractButton *button)
 {
-    qCDebug(POP3RESOURCE_LOG) << "setting port";
-    // adjust port
-    if (id == Transport::EnumEncryption::SSL || portEdit->value() == 995) {
-        portEdit->setValue((id == Transport::EnumEncryption::SSL) ? 995 : 110);
-    }
+    if (button) {
+        const int id = encryptionButtonGroup->id(button);
+        qCDebug(POP3RESOURCE_LOG) << "setting port";
+        // adjust port
+        if (id == Transport::EnumEncryption::SSL || portEdit->value() == 995) {
+            portEdit->setValue((id == Transport::EnumEncryption::SSL) ? 995 : 110);
+        }
 
-    qCDebug(POP3RESOURCE_LOG) << "port set ";
-    enablePopFeatures(); // removes invalid auth options from the combobox
+        qCDebug(POP3RESOURCE_LOG) << "port set ";
+        enablePopFeatures(); // removes invalid auth options from the combobox
+    }
 }
 
 void AccountWidget::slotCheckPopCapabilities()
