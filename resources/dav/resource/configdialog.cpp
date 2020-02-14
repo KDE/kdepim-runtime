@@ -81,7 +81,11 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     connect(mUi.configuredUrls->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ConfigDialog::checkConfiguredUrlsButtonsState);
     connect(mUi.configuredUrls, &QAbstractItemView::doubleClicked, this, &ConfigDialog::onEditButtonClicked);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
     connect(mUi.syncRangeStartType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ConfigDialog::onSyncRangeStartTypeChanged);
+#else
+    connect(mUi.syncRangeStartType, QOverload<int, const QString &>::of(&QComboBox::currentIndexChanged), this, &ConfigDialog::onSyncRangeStartTypeChanged);
+#endif
     connect(mUi.addButton, &QPushButton::clicked, this, &ConfigDialog::onAddButtonClicked);
     connect(mUi.searchButton, &QPushButton::clicked, this, &ConfigDialog::onSearchButtonClicked);
     connect(mUi.removeButton, &QPushButton::clicked, this, &ConfigDialog::onRemoveButtonClicked);
