@@ -145,7 +145,11 @@ void CalendarResource::retrieveItems(const Akonadi::Collection &collection)
         }
         if (!Settings::self()->eventsSince().isEmpty()) {
             const QDate date = QDate::fromString(Settings::self()->eventsSince(), Qt::ISODate);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
             fetchJob->setTimeMin(QDateTime(date).toSecsSinceEpoch());
+#else
+            fetchJob->setTimeMin(QDateTime(date.startOfDay()).toSecsSinceEpoch());
+#endif
         }
         job = fetchJob;
     } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
