@@ -26,7 +26,7 @@ qt5_add_dbus_adaptor(notesresource_SRCS
 
 add_executable(akonadi_notes_resource ${notesresource_SRCS})
 
-target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase KF5::DBusAddons akonadi-singlefileresource)
+target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
 install(TARGETS akonadi_notes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

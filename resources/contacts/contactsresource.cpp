@@ -29,7 +29,7 @@
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <KDBusConnectionPool>
+#include <QDBusConnection>
 #include "contacts_resources_debug.h"
 
 #include <KLocalizedString>
@@ -42,7 +42,7 @@ ContactsResource::ContactsResource(const QString &id)
     // setup the resource
     ContactsResourceSettings::instance(KSharedConfig::openConfig());
     new ContactsResourceSettingsAdaptor(ContactsResourceSettings::self());
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                            ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);

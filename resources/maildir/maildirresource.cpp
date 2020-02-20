@@ -34,7 +34,6 @@
 #include <collectionfetchscope.h>
 #include <cachepolicy.h>
 #include <collectionfetchjob.h>
-#include <KDBusConnectionPool>
 #include <Akonadi/KMime/MessageFlags>
 #include <kmime/kmime_message.h>
 #include <AkonadiCore/SpecialCollectionAttribute>
@@ -115,7 +114,7 @@ MaildirResource::MaildirResource(const QString &id)
         job->start();
     }
     new MaildirSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                            mSettings, QDBusConnection::ExportAdaptors);
     connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 

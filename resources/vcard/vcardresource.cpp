@@ -21,8 +21,6 @@
 #include "vcardresource.h"
 #include "vcardsettingsadaptor.h"
 
-#include <KDBusConnectionPool>
-
 #include <KLocalizedString>
 
 #include <QDBusConnection>
@@ -36,7 +34,7 @@ VCardResource::VCardResource(const QString &id)
     setSupportedMimetypes(QStringList() << KContacts::Addressee::mimeType(), QStringLiteral("office-address-book"));
 
     new VCardSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                            mSettings, QDBusConnection::ExportAdaptors);
 }
 

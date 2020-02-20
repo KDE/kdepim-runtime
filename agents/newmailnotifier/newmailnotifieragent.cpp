@@ -29,7 +29,7 @@
 #include <AkonadiCore/ServerManager>
 #include <KIdentityManagement/IdentityManager>
 
-#include <KDBusConnectionPool>
+#include <QDBusConnection>
 
 #include <changerecorder.h>
 #include <entitydisplayattribute.h>
@@ -67,14 +67,14 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     slotIdentitiesChanged();
     mDefaultIconName = QStringLiteral("kmail");
 
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/NewMailNotifierAgent"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/NewMailNotifierAgent"),
                                                            this, QDBusConnection::ExportAdaptors);
 
     QString service = QStringLiteral("org.freedesktop.Akonadi.NewMailNotifierAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
     }
-    KDBusConnectionPool::threadConnection().registerService(service);
+    QDBusConnection::sessionBus().registerService(service);
 
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceStatusChanged, this, &NewMailNotifierAgent::slotInstanceStatusChanged);
     connect(Akonadi::AgentManager::self(), &Akonadi::AgentManager::instanceRemoved, this, &NewMailNotifierAgent::slotInstanceRemoved);

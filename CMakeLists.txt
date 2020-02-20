@@ -116,7 +116,6 @@ find_package(KF5TextWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED) # for KPluralHan
 find_package(KF5Notifications ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF5DocTools ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3
 find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5DBusAddons ${KF5_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)

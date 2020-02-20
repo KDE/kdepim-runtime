@@ -53,7 +53,6 @@ target_link_libraries(akonadi_mbox_resource
     KF5::KIOCore
     KF5::Mime
     KF5::AkonadiAgentBase
-    KF5::DBusAddons
     KF5::Completion
     akonadi-singlefileresource
 )

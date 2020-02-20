@@ -35,7 +35,6 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_kalarm_dir_resource
-                      KF5::DBusAddons
                       KF5::KIOCore
                       KF5::KIOWidgets
                       KF5::ConfigWidgets

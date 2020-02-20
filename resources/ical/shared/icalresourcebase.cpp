@@ -21,7 +21,7 @@
 #include "icalresourcebase.h"
 #include "icalsettingsadaptor.h"
 
-#include <KDBusConnectionPool>
+#include <QDBusConnection>
 
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/MemoryCalendar>
@@ -45,7 +45,7 @@ void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &i
 {
     setSupportedMimetypes(mimeTypes, icon);
     new ICalSettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                            mSettings, QDBusConnection::ExportAdaptors);
 }
 

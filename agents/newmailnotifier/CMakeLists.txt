@@ -30,7 +30,6 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::Codecs
   KF5::IdentityManagement
   KF5::AkonadiAgentBase
-  KF5::DBusAddons
   KF5::Notifications
   KF5::Service
   KF5::I18n

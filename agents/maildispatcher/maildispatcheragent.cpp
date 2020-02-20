@@ -28,7 +28,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <KDBusConnectionPool>
 #include <itemfetchscope.h>
 #include <mailtransportakonadi/sentactionattribute.h>
 #include <mailtransportakonadi/sentbehaviourattribute.h>
@@ -143,17 +142,17 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     new SettingsAdaptor(Settings::self());
     new MailDispatcherAgentAdaptor(this);
 
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                            Settings::self(), QDBusConnection::ExportAdaptors);
 
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/MailDispatcherAgent"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/MailDispatcherAgent"),
                                                            this, QDBusConnection::ExportAdaptors);
     QString service = QStringLiteral("org.freedesktop.Akonadi.MailDispatcherAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
     }
 
-    KDBusConnectionPool::threadConnection().registerService(service);
+    QDBusConnection::sessionBus().registerService(service);
 
     mQueue = new OutboxQueue(this);
     connect(mQueue, &OutboxQueue::newItems,

@@ -24,7 +24,7 @@
 #include <changerecorder.h>
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
-#include <KDBusConnectionPool>
+#include <QDBusConnection>
 #include <itemfetchscope.h>
 #include <Akonadi/KMime/MessageFlags>
 #include <kmbox/mbox.h>
@@ -66,7 +66,7 @@ MboxResource::MboxResource(const QString &id)
     : SingleFileResource<Settings>(id)
 {
     new SettingsAdaptor(mSettings);
-    KDBusConnectionPool::threadConnection().registerObject(QStringLiteral("/Settings"),
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                            mSettings, QDBusConnection::ExportAdaptors);
 
     QStringList mimeTypes;

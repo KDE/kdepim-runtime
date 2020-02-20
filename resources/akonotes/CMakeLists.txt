@@ -36,7 +36,6 @@ target_link_libraries(akonadi_akonotes_resource
     KF5::AkonadiMime
     KF5::Mime
     KF5::AkonadiAgentBase
-    KF5::DBusAddons
     KF5::I18n
     maildir
     folderarchivesettings
