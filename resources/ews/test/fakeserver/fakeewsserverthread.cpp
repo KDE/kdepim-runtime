@@ -69,7 +69,7 @@ void FakeEwsServerThread::setDialog(const FakeEwsServer::DialogEntry::List &dial
     }
 }
 
-void FakeEwsServerThread::setDefaultReplyCallback(FakeEwsServer::DialogEntry::ReplyCallback defaultReplyCallback)
+void FakeEwsServerThread::setDefaultReplyCallback(const FakeEwsServer::DialogEntry::ReplyCallback &defaultReplyCallback)
 {
     QMutexLocker lock(&mMutex);
 

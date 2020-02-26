@@ -432,7 +432,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     m_collections[ ROOT_COLLECTION_REMOTEID ] = m_rootCollection;
 
     const QStringList activeCalendars = Settings::self()->calendars();
-    for (const ObjectPtr &object : calendars) {
+    for (const ObjectPtr &object : qAsConst(calendars)) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
 
         if (!activeCalendars.contains(calendar->uid())) {
@@ -473,7 +473,7 @@ void CalendarResource::slotCollectionsRetrieved(KGAPI2::Job *job)
     }
 
     const QStringList activeTaskLists = Settings::self()->taskLists();
-    for (const ObjectPtr &object : taskLists) {
+    for (const ObjectPtr &object : qAsConst(taskLists)) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();
 
         if (!activeTaskLists.contains(taskList->uid())) {
@@ -515,8 +515,6 @@ void CalendarResource::slotItemsRetrieved(KGAPI2::Job *job)
 
     ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
     if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-        QMap< QString, EventPtr > recurrentEvents;
-
         isIncremental = (qobject_cast<EventFetchJob *>(job)->fetchOnlyUpdated() > 0);
         Q_FOREACH (const ObjectPtr &object, objects) {
             EventPtr event = object.dynamicCast<Event>();

@@ -61,10 +61,10 @@ public:
         VerifierFn fn;
     };
 
-    FakeTransferJob(const QByteArray &postData, VerifierFn fn, QObject *parent = nullptr);
+    FakeTransferJob(const QByteArray &postData, const VerifierFn &fn, QObject *parent = nullptr);
     ~FakeTransferJob();
 
-    static void addVerifier(QObject *obj, VerifierFn fn);
+    static void addVerifier(QObject *obj, const VerifierFn &fn);
     static Verifier getVerifier();
 public Q_SLOTS:
     void postResponse(const QByteArray &resp);

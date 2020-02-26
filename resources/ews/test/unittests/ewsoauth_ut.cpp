@@ -52,7 +52,7 @@ private:
     static void setUpTokenFunction(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, int tokenLifetime, int extTokenLifetime, QString &tokenReplyData);
     static void dumpEvents(const QStringList &events, const QStringList &expectedEvents);
 
-    void setUpOAuth(EwsOAuth &oAuth, QStringList &events, QString password, QMap<QString, QString> map);
+    void setUpOAuth(EwsOAuth &oAuth, QStringList &events, const QString &password, const QMap<QString, QString> &map);
 };
 
 void UtEwsOAuth::initialInteractiveSuccessful()
@@ -322,7 +322,7 @@ void UtEwsOAuth::dumpEvents(const QStringList &events, const QStringList &expect
     }
 }
 
-void UtEwsOAuth::setUpOAuth(EwsOAuth &oAuth, QStringList &events, QString password, QMap<QString, QString> map)
+void UtEwsOAuth::setUpOAuth(EwsOAuth &oAuth, QStringList &events, const QString &password, const QMap<QString, QString> &map)
 {
     connect(Mock::QWebEngineView::instance.data(), &Mock::QWebEngineView::logEvent, this, [&events](const QString &event) {
         events.append(event);

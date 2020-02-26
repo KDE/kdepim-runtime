@@ -59,9 +59,9 @@ private Q_SLOTS:
     void slotWalletOpened(bool success);
     void slotWalletClosed();
     void slotFolderUpdated(const QString &folder);
-    KGAPI2::AccountPtr findAccountInWallet(const QString &accountName) const;
 
 private:
+    KGAPI2::AccountPtr findAccountInWallet(const QString &accountName) const;
     bool m_isReady;
     QPointer<KWallet::Wallet> m_wallet;
     mutable QMap<QString, KGAPI2::AccountPtr> m_accounts;

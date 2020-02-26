@@ -68,7 +68,7 @@ void EwsModifyItemFlagsJob::start()
     Q_FOREACH (const Item &item, mItems) {
         EwsItemType type = EwsItemHandler::mimeToItemType(item.mimeType());
         if (type == EwsItemTypeUnknown) {
-            setErrorText(QStringLiteral("Unknown item type %1 for item %2").arg(item.mimeType()).arg(item.remoteId()));
+            setErrorText(QStringLiteral("Unknown item type %1 for item %2").arg(item.mimeType(), item.remoteId()));
             emitResult();
             return;
         } else {

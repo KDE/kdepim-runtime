@@ -178,7 +178,7 @@ bool EwsPoxAutodiscoverRequest::readResponse(QXmlStreamReader &reader)
             }
         } else {
             return setErrorMsg(QStringLiteral("Failed to read POX response - unknown element '%1' inside '%2'")
-                               .arg(reader.name().toString()).arg(QStringLiteral("Response")));
+                               .arg(reader.name().toString(), QStringLiteral("Response")));
         }
     }
     return true;

@@ -260,7 +260,7 @@ bool EwsItemPrivate::timezoneReader(QXmlStreamReader &reader, QVariant &val)
     QStringRef idRef = reader.attributes().value(QStringLiteral("Id"));
     if (idRef.isNull()) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading %1 element - missing %2 attribute")
-            .arg(reader.name().toString()).arg(QStringLiteral("Id"));
+            .arg(reader.name().toString(), QStringLiteral("Id"));
         reader.skipCurrentElement();
         return false;
     } else {

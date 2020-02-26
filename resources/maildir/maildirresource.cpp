@@ -392,7 +392,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
         changeCommitted(newItem);
     } else {
-        Q_EMIT changeProcessed();
+        changeProcessed();
     }
 }
 

@@ -118,6 +118,7 @@ void logMessage(const QString &, const QString &, int, ErrorHandler::Severity s)
 
 class DebugStream : public QIODevice
 {
+    Q_OBJECT
 public:
     QString m_location;
     ErrorHandler::Severity m_severity;

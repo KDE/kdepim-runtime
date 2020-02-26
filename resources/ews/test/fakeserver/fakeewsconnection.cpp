@@ -165,7 +165,7 @@ void FakeEwsConnection::dataAvailable()
 
             if (resp == FakeEwsServer::EmptyResponse) {
                 qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning default response 500.");
-                resp = { QStringLiteral(""), 500 };
+                resp = { QLatin1String(""), 500 };
             }
 
             QByteArray buffer;

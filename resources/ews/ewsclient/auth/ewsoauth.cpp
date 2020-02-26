@@ -158,7 +158,7 @@ public:
 
 void EwsOAuthUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
 {
-    returnUriReceived(request->requestUrl());
+    Q_EMIT returnUriReceived(request->requestUrl());
 }
 
 void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
@@ -236,7 +236,7 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
         ) {
         qCDebug(EWSCLI_LOG) << QStringLiteral("Found redirect URI - blocking request");
 
-        redirectUriIntercepted(url);
+        Q_EMIT redirectUriIntercepted(url);
         info.block(true);
     }
 }
@@ -356,7 +356,8 @@ QVariantMap EwsOAuthPrivate::queryToVarmap(const QUrl &url)
 {
     QUrlQuery query(url);
     QVariantMap varmap;
-    for (const auto &item : query.queryItems()) {
+    const auto items = query.queryItems();
+    for (const auto &item : items) {
         varmap[item.first] = item.second;
     }
     return varmap;
@@ -383,7 +384,7 @@ void EwsOAuthPrivate::redirectUriIntercepted(const QUrl &url)
         return;
     }
 #endif
-    mOAuth2.authorizationCallbackReceived(queryToVarmap(url));
+    Q_EMIT mOAuth2.authorizationCallbackReceived(queryToVarmap(url));
 }
 
 #ifdef HAVE_QCA
@@ -398,7 +399,7 @@ void EwsOAuthPrivate::pkeyAuthResult(KJob *j)
     } else {
         varmap[QStringLiteral("error")] = job->errorString();
     }
-    mOAuth2.authorizationCallbackReceived(varmap);
+    Q_EMIT mOAuth2.authorizationCallbackReceived(varmap);
 }
 
 #endif
@@ -445,7 +446,7 @@ EwsOAuth::~EwsOAuth()
 
 void EwsOAuth::init()
 {
-    requestWalletMap();
+    Q_EMIT requestWalletMap();
 }
 
 bool EwsOAuth::getAuthData(QString &username, QString &password, QStringList &customHeaders)

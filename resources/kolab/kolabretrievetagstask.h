@@ -25,7 +25,7 @@
 
 namespace Kolab {
 class KolabObjectReader;
-class RelationMember;
+struct RelationMember;
 } // namespace Kolab
 
 class KolabRetrieveTagTask : public KolabRelationResourceTask

@@ -119,7 +119,7 @@ EwsRecurrence::EwsRecurrence(QXmlStreamReader &reader)
             }
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                .arg(QStringLiteral("Recurrence")).arg(elmName);
+                .arg(QStringLiteral("Recurrence"), elmName);
             return;
         }
     }
@@ -171,13 +171,13 @@ bool EwsRecurrence::readRelativeYearlyRecurrence(QXmlStreamReader &reader)
             month = decodeEnumString<short>(text, monthNames, monthNameCount, &ok);
             if (reader.error() != QXmlStreamReader::NoError || !ok) {
                 qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read EWS request - invalid %1 element (value: %2).")
-                    .arg(QStringLiteral("Month").arg(text));
+                    .arg(QStringLiteral("Month"), text);
                 return false;
             }
             hasMonth = true;
         } else {
             qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                .arg(QStringLiteral("RelativeYearlyRecurrence")).arg(elmName);
+                .arg(QStringLiteral("RelativeYearlyRecurrence"), elmName);
             return false;
         }
     }
@@ -413,7 +413,7 @@ bool EwsRecurrence::readWeeklyRecurrence(QXmlStreamReader &reader)
             hasWeekStart = true;
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                .arg(QStringLiteral("WeeklyRecurrence")).arg(elmName);
+                .arg(QStringLiteral("WeeklyRecurrence"), elmName);
             return false;
         }
     }
@@ -493,7 +493,7 @@ bool EwsRecurrence::readEndDateRecurrence(QXmlStreamReader &reader)
             reader.skipCurrentElement();
         } else {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                .arg(QStringLiteral("EndDateRecurrence")).arg(elmName);
+                .arg(QStringLiteral("EndDateRecurrence"), elmName);
             return false;
         }
     }

@@ -143,7 +143,7 @@ EwsUpdateItemRequest::Response::Response(QXmlStreamReader &reader)
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
             setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage")).arg(reader.namespaceUri().toString()));
+                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 
@@ -161,13 +161,13 @@ EwsUpdateItemRequest::Response::Response(QXmlStreamReader &reader)
         } else if (reader.name() == QLatin1String("ConflictResults")) {
             if (!reader.readNextStartElement()) {
                 setErrorMsg(QStringLiteral("Failed to read EWS request - expected a %1 element inside %2 element.")
-                            .arg(QStringLiteral("Value")).arg(QStringLiteral("ConflictResults")));
+                            .arg(QStringLiteral("Value"), QStringLiteral("ConflictResults")));
                 return;
             }
 
             if (reader.name() != QLatin1String("Count")) {
                 setErrorMsg(QStringLiteral("Failed to read EWS request - expected a %1 element inside %2 element.")
-                            .arg(QStringLiteral("Count")).arg(QStringLiteral("ConflictResults")));
+                            .arg(QStringLiteral("Count"), QStringLiteral("ConflictResults")));
                 return;
             }
 

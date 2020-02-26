@@ -662,7 +662,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
         Item &item = *it;
         if (resp.isSuccess()) {
             qCDebugNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsMoved: succeeded for item %1 (new id: %2)")
-                .arg(ewsHash(item.remoteId())).arg(ewsHash(resp.itemId().id()));
+                .arg(ewsHash(item.remoteId()), ewsHash(resp.itemId().id()));
             if (item.isValid()) {
                 /* Log item deletion in the source folder so that the next sync doesn't trip over
                  * non-existent items. Use old remote ids for that. */
@@ -1339,7 +1339,7 @@ void EwsResource::reauthNotificationDismissed(bool accepted)
         if (accepted) {
             mAuth->authenticate(true);
         } else {
-            Q_EMIT authFailed(QStringLiteral("Interactive authentication request denied"));
+            authFailed(QStringLiteral("Interactive authentication request denied"));
         }
     }
 }

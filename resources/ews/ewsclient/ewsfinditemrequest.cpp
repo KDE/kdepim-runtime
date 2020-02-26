@@ -169,7 +169,7 @@ EwsFindItemResponse::EwsFindItemResponse(QXmlStreamReader &reader)
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
             setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage")).arg(reader.namespaceUri().toString()));
+                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 
@@ -188,7 +188,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 {
     if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("RootFolder")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
-                           .arg(QStringLiteral("RootFolder")).arg(reader.qualifiedName().toString()));
+                           .arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
 
     if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))
@@ -236,7 +236,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 
     if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1String("Items")) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
-                           .arg(QStringLiteral("Items")).arg(reader.qualifiedName().toString()));
+                           .arg(QStringLiteral("Items"), reader.qualifiedName().toString()));
     }
 
     if (!reader.readNextStartElement()) {

@@ -41,7 +41,7 @@ public:
 
     void start() override;
 public Q_SLOTS:
-    void eventsProcessed(const Response &response);
+    void eventsProcessed(const EwsEventRequestBase::Response &response);
 Q_SIGNALS:
     void eventsReceived(KJob *job);
 protected Q_SLOTS:

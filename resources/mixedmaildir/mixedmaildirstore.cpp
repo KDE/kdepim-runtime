@@ -2409,7 +2409,8 @@ void MixedMaildirStore::checkItemFetch(FileStore::ItemFetchJob *job, int &errorC
     Q_UNUSED(errorText);
     if (!job->requestedItems().isEmpty()) {
         // Requesting items
-        for (const Item &item : job->requestedItems()) {
+        const auto items = job->requestedItems();
+        for (const Item &item : items) {
             const Collection coll = item.parentCollection();
             Q_ASSERT(!coll.remoteId().isEmpty());
         }

@@ -25,7 +25,7 @@
 
 QQueue<FakeTransferJob::Verifier> FakeTransferJob::mVerifierQueue;
 
-FakeTransferJob::FakeTransferJob(const QByteArray &postData, VerifierFn fn, QObject *parent)
+FakeTransferJob::FakeTransferJob(const QByteArray &postData, const VerifierFn &fn, QObject *parent)
     : KIO::SpecialJob(QUrl(QStringLiteral("file:///tmp/")), QByteArray())
     , mPostData(postData)
     , mVerifier(fn)
@@ -62,7 +62,7 @@ void FakeTransferJob::doEmitResult()
     emitResult();
 }
 
-void FakeTransferJob::addVerifier(QObject *obj, VerifierFn fn)
+void FakeTransferJob::addVerifier(QObject *obj, const VerifierFn &fn)
 {
     Verifier vfy = {obj, fn};
     mVerifierQueue.enqueue(vfy);
