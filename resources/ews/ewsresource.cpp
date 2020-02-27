@@ -319,7 +319,7 @@ void EwsResource::connectionError()
 void EwsResource::retrieveItems(const Collection &collection)
 {
     QString rid = collection.remoteId();
-    auto job = new EwsFetchItemsJob(collection, mEwsClient, mSyncState.value(rid), mItemsToCheck.value(rid), mTagStore, this);
+    auto job = new EwsFetchItemsJob(collection, mEwsClient, getCollectionSyncState(collection), mItemsToCheck.value(rid), mTagStore, this);
     job->setQueuedUpdates(mQueuedUpdates.value(collection.remoteId()));
     mQueuedUpdates.remove(collection.remoteId());
     connect(job, &EwsFetchItemsJob::result, this, &EwsResource::itemFetchJobFinished);
@@ -442,13 +442,15 @@ void EwsResource::itemFetchJobFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to retrieve items - internal error"));
         return;
     }
+    auto col = fetchJob->collection();
     if (job->error()) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << job->errorString();
-        if (mSyncState.contains(fetchJob->collection().remoteId())) {
+        const auto syncState = getCollectionSyncState(fetchJob->collection());
+        if (!syncState.isEmpty()) {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Retrying with empty state.");
             // Retry with a clear sync state.
-            mSyncState.remove(fetchJob->collection().remoteId());
-            retrieveItems(fetchJob->collection());
+            saveCollectionSyncState(col, QString());
+            retrieveItems(col);
         } else {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Clean sync failed.");
             // No more hope
@@ -456,7 +458,7 @@ void EwsResource::itemFetchJobFinished(KJob *job)
             return;
         }
     } else {
-        mSyncState[fetchJob->collection().remoteId()] = fetchJob->syncState();
+        saveCollectionSyncState(col, fetchJob->syncState());
         itemsRetrievedIncremental(fetchJob->changedItems(), fetchJob->deletedItems());
     }
     saveState();
@@ -1378,6 +1380,16 @@ void EwsResource::connectStatusSignals(Job *job)
     connect(job, &Job::percent, this, [this](int p) {
         Q_EMIT percent(p);
     });
+}
+
+QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col) const
+{
+    return mSyncState.value(col.remoteId());
+}
+
+void EwsResource::saveCollectionSyncState(Akonadi::Collection &col, const QString &state)
+{
+    mSyncState[col.remoteId()] = state;
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)

@@ -141,6 +141,9 @@ private:
     void reauthNotificationDismissed(bool accepted);
     void reauthenticate();
 
+    QString getCollectionSyncState(const Akonadi::Collection &col) const;
+    void saveCollectionSyncState(Akonadi::Collection &col, const QString &state);
+
     template<class Job>
     void connectStatusSignals(Job *job);
 
