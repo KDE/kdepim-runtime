@@ -36,7 +36,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &me
     if (scope.mode == KIMAP::FetchJob::FetchScope::Flags) {
         i.setRemoteId(QString::number(uid));
         i.setMimeType(KMime::Message::mimeType());
-        i.setFlags(Akonadi::Item::Flags::fromList(ResourceTask::toAkonadiFlags(flags)));
+        i.setFlags(ResourceTask::toAkonadiFlags(flags));
     } else {
         if (!message) {
             qCWarning(IMAPRESOURCE_LOG) << "Got empty message: " << uid;

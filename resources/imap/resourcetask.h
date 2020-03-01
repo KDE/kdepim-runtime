@@ -58,7 +58,7 @@ public:
 
     static QList<QByteArray> fromAkonadiToSupportedImapFlags(const QList<QByteArray> &flags, const Akonadi::Collection &collection);
 
-    static QList<QByteArray> toAkonadiFlags(const QList<QByteArray> &flags);
+    static QSet<QByteArray> toAkonadiFlags(const QList<QByteArray> &flags);
 
 Q_SIGNALS:
     void status(int status, const QString &message = QString());

@@ -464,24 +464,24 @@ QList<QByteArray> ResourceTask::fromAkonadiFlags(const QList<QByteArray> &flags)
     return newFlags;
 }
 
-QList<QByteArray> ResourceTask::toAkonadiFlags(const QList<QByteArray> &flags)
+QSet<QByteArray> ResourceTask::toAkonadiFlags(const QList<QByteArray> &flags)
 {
-    QList<QByteArray> newFlags;
+    QSet<QByteArray> newFlags;
 
     for (const QByteArray &oldFlag : flags) {
         if (oldFlag == ImapFlags::Seen) {
-            newFlags.append(Akonadi::MessageFlags::Seen);
+            newFlags.insert(Akonadi::MessageFlags::Seen);
         } else if (oldFlag == ImapFlags::Deleted) {
-            newFlags.append(Akonadi::MessageFlags::Deleted);
+            newFlags.insert(Akonadi::MessageFlags::Deleted);
         } else if (oldFlag == ImapFlags::Answered) {
-            newFlags.append(Akonadi::MessageFlags::Answered);
+            newFlags.insert(Akonadi::MessageFlags::Answered);
         } else if (oldFlag == ImapFlags::Flagged) {
-            newFlags.append(Akonadi::MessageFlags::Flagged);
+            newFlags.insert(Akonadi::MessageFlags::Flagged);
         } else if (oldFlag.isEmpty()) {
             // filter out empty flags, to avoid isNull/isEmpty confusions higher up
             continue;
         } else {
-            newFlags.append(oldFlag);
+            newFlags.insert(oldFlag);
         }
     }
 
