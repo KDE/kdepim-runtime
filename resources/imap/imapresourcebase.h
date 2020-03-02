@@ -159,7 +159,7 @@ private:
     friend class ImapIdleManager;
 
     QList<ResourceTask *> m_taskList; //used to be able to kill tasks
-    QPointer<SubscriptionDialog> mSubscriptions;
+    QScopedPointer<SubscriptionDialog, QScopedPointerDeleteLater> mSubscriptions;
     ImapIdleManager *m_idle = nullptr;
     QTimer *m_statusMessageTimer = nullptr;
     QChar m_separatorCharacter;

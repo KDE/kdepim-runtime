@@ -98,7 +98,6 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     : ResourceBase(id)
     , m_pool(new SessionPool(2, this))
     , m_settings(nullptr)
-    , mSubscriptions(nullptr)
     , m_idle(nullptr)
 {
     QTimer::singleShot(0, this, &ImapResourceBase::updateResourceName);
@@ -262,7 +261,7 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
         return -1;
     }
 
-    mSubscriptions = new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription);
+    mSubscriptions.reset(new SubscriptionDialog(nullptr, SubscriptionDialog::AllowToEnableSubscription));
     if (windowId) {
         mSubscriptions->setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(mSubscriptions->windowHandle(), windowId);
@@ -271,14 +270,18 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
     mSubscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     mSubscriptions->connectAccount(*m_pool->account(), password);
     mSubscriptions->setSubscriptionEnabled(settings()->subscriptionEnabled());
-
-    if (mSubscriptions->exec()) {
-        settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
-        settings()->save();
-        Q_EMIT configurationDialogAccepted();
-        reconnect();
-    }
-    delete mSubscriptions;
+    connect(mSubscriptions.get(), &SubscriptionDialog::accepted,
+            this, [this]() {
+                settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
+                settings()->save();
+                Q_EMIT configurationDialogAccepted();
+                reconnect();
+            });
+    connect(mSubscriptions.get(), &SubscriptionDialog::finished,
+            this, [this]() {
+                mSubscriptions.reset();
+            });
+    mSubscriptions->show();
 
     return 0;
 }
