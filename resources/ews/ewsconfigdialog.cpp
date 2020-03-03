@@ -242,6 +242,7 @@ void EwsConfigDialog::save()
     if (!mAuthMap.isEmpty()) {
         mSettings->setMap(mAuthMap);
     }
+    mSettings->setPassword(mUi->passwordEdit->password());
     mSettings->save();
 }
 
