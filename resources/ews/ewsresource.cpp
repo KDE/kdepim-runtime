@@ -145,6 +145,7 @@ EwsResource::EwsResource(const QString &id)
     QMetaObject::invokeMethod(this, &EwsResource::delayedInit, Qt::QueuedConnection);
 
     connect(this, &AgentBase::reloadConfiguration, this, &EwsResource::reloadConfig);
+    connect(this, &ResourceBase::nameChanged, this, &EwsResource::adjustRootCollectionName);
 }
 
 EwsResource::~EwsResource()
@@ -302,6 +303,7 @@ void EwsResource::rootCollectionFetched(KJob *job)
         CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
         if (fetchJob && !fetchJob->collections().isEmpty()) {
             mRootCollection = fetchJob->collections().first();
+            adjustRootCollectionName(name());
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Root collection fetched: ") << mRootCollection;
         }
     }
@@ -1406,6 +1408,17 @@ void EwsResource::emitReadyStatus()
 {
     Q_EMIT status(Idle, i18nc("@info:status Resource is ready", "Ready"));
     Q_EMIT percent(0);
+}
+
+void EwsResource::adjustRootCollectionName(const QString &newName)
+{
+    if (mRootCollection.isValid()) {
+        auto *attr = mRootCollection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        if (attr->displayName() != newName) {
+            attr->setDisplayName(newName);
+            new CollectionModifyJob(mRootCollection);
+        }
+    }
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)
