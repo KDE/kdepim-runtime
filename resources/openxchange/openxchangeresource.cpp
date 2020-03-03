@@ -109,7 +109,11 @@ private:
     template<typename T>
     static inline RemoteInformation loadImpl(const T &entity)
     {
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
         const QStringList parts = entity.remoteRevision().split(QLatin1Char(':'), QString::KeepEmptyParts);
+#else
+        const QStringList parts = entity.remoteRevision().split(QLatin1Char(':'), Qt::KeepEmptyParts);
+#endif
 
         OXA::Folder::Module module = OXA::Folder::Unbound;
 
@@ -170,9 +174,17 @@ public:
     ObjectsLastSync()
     {
         if (!Settings::self()->objectsLastSync().isEmpty()) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
             const QStringList pairs = Settings::self()->objectsLastSync().split(QLatin1Char(':'), QString::KeepEmptyParts);
+#else
+            const QStringList pairs = Settings::self()->objectsLastSync().split(QLatin1Char(':'), Qt::KeepEmptyParts);
+#endif
             for (const QString &pair : pairs) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
                 const QStringList entry = pair.split(QLatin1Char('='), QString::KeepEmptyParts);
+#else
+                const QStringList entry = pair.split(QLatin1Char('='), Qt::KeepEmptyParts);
+#endif
                 mObjectsMap.insert(entry.at(0).toLongLong(), entry.at(1).toULongLong());
             }
         }

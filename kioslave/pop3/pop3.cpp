@@ -879,7 +879,11 @@ void POP3Protocol::get(const QUrl &url)
         finished();
         //m_cmd = CMD_NONE;
     } else if (cmd == QLatin1String("download") || cmd == QLatin1String("headers")) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
         const QStringList waitingCommands = path.split(QLatin1Char(','), QString::SkipEmptyParts);
+#else
+        const QStringList waitingCommands = path.split(QLatin1Char(','), Qt::SkipEmptyParts);
+#endif
         if (waitingCommands.isEmpty()) {
             qCDebug(POP3_LOG) << "tried to request" << cmd << "for" << path << "with no specific item to get";
             closeConnection();

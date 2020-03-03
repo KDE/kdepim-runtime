@@ -776,7 +776,11 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
 
     Kolab::Crypto crypto;
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
     const QStringList protocolPrefs = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(QLatin1Char(','), QString::SkipEmptyParts);
+#else
+    const QStringList protocolPrefs = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(QLatin1Char(','), Qt::SkipEmptyParts);
+#endif
     const uint cryptoFormats = stringListToCryptoMessageFormats(protocolPrefs);
     int formats = 0;
     if (cryptoFormats & InlineOpenPGPFormat) {

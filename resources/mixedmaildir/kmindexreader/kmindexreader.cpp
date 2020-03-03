@@ -153,7 +153,11 @@ MessageStatus &KMIndexData::status()
 
 QStringList KMIndexData::tagList() const
 {
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
     return mCachedStringParts[KMIndexReader::MsgTagPart].split(QLatin1Char(','), QString::SkipEmptyParts);
+#else
+    return mCachedStringParts[KMIndexReader::MsgTagPart].split(QLatin1Char(','), Qt::SkipEmptyParts);
+#endif
 }
 
 quint64 KMIndexData::uid() const
