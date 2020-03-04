@@ -109,15 +109,7 @@ EwsResource::EwsResource(const QString &id)
     setScheduleAttributeSyncBeforeItemSync(true);
 
     // Load the sync state
-    QByteArray data = QByteArray::fromBase64(mSettings->syncState().toLatin1());
-    if (!data.isEmpty()) {
-        data = qUncompress(data);
-        if (!data.isEmpty()) {
-            QDataStream stream(data);
-            stream >> mSyncState;
-        }
-    }
-    data = QByteArray::fromBase64(mSettings->folderSyncState().toLatin1());
+    QByteArray data = QByteArray::fromBase64(mSettings->folderSyncState().toLatin1());
     if (!data.isEmpty()) {
         data = qUncompress(data);
         if (!data.isEmpty()) {
@@ -1044,12 +1036,6 @@ void EwsResource::fullSyncRequestedEvent()
     synchronize();
 }
 
-void EwsResource::clearFolderSyncState()
-{
-    mSyncState.clear();
-    saveState();
-}
-
 void EwsResource::clearCollectionSyncState(int collectionId)
 {
     Collection col(collectionId);
@@ -1146,8 +1132,6 @@ void EwsResource::saveState()
 {
     QByteArray str;
     QDataStream dataStream(&str, QIODevice::WriteOnly);
-    dataStream << mSyncState;
-    mSettings->setSyncState(QString::fromLatin1(qCompress(str, 9).toBase64()));
     mSettings->setFolderSyncState(QString::fromLatin1(qCompress(mFolderSyncState.toLatin1(), 9).toBase64()));
     mSettings->save();
 }
@@ -1398,8 +1382,6 @@ QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col) cons
 
 void EwsResource::saveCollectionSyncState(Akonadi::Collection &col, const QString &state)
 {
-    mSyncState[col.remoteId()] = state;
-
     col.addAttribute(new EwsSyncStateAttribute(state));
     CollectionModifyJob *job = new CollectionModifyJob(col);
     job->start();

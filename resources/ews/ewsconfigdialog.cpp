@@ -171,7 +171,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource, &EwsResource::clearFolderTreeSyncState);
-    connect(mUi->clearFolderItemSyncStateButton, &QPushButton::clicked, mParentResource, QOverload<>::of(&EwsResource::clearFolderSyncState));
 }
 
 EwsConfigDialog::~EwsConfigDialog()

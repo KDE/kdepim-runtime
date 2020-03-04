@@ -73,7 +73,6 @@ protected:
 public Q_SLOTS:
     void configure(WId windowId) override;
     Q_SCRIPTABLE void clearCollectionSyncState(int collectionId);
-    Q_SCRIPTABLE void clearFolderSyncState();
     Q_SCRIPTABLE void clearFolderTreeSyncState();
     Q_SCRIPTABLE void setInitialReconnectTimeout(int timeout);
 protected Q_SLOTS:
@@ -150,7 +149,6 @@ private:
     EwsClient mEwsClient;
     Akonadi::Collection mRootCollection;
     QScopedPointer<EwsSubscriptionManager> mSubManager;
-    QHash<QString, QString> mSyncState;
     QString mFolderSyncState;
     QHash<QString, EwsId::List> mItemsToCheck;
     QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
