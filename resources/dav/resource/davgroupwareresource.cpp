@@ -998,6 +998,13 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
     Akonadi::Item::List extraItems;
     if (!Utils::parseDavData(davItem, item, extraItems)) {
         qCWarning(DAVRESOURCE_LOG) << "DavGroupwareResource::onItemFetched: Failed to parse item data. " << item.remoteId();
+        // We get some XML error when the item doesn't exist:
+        // <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+        //  <s:sabredav-version>2.1.11</s:sabredav-version>
+        //  <s:exception>Sabre\DAV\Exception\NotFound</s:exception>
+        //  <s:message>Calendar object not found</s:message>
+        //</d:error>
+        cancelTask(i18n("Unable to retrieve item: failed to parse item data. Maybe it was deleted already."));
         return;
     }
 
