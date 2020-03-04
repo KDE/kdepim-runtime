@@ -60,7 +60,8 @@ set(ewsresource_SRCS
     ewssettings.cpp
     ewssubscribedfoldersjob.cpp
     ewssubscriptionmanager.cpp
-    ewssubscriptionwidget.cpp)
+    ewssubscriptionwidget.cpp
+    ewssyncstateattribute.cpp)
 
 ecm_qt_declare_logging_category(ewsresource_SRCS
     HEADER ewsres_debug.h

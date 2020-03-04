@@ -9,6 +9,7 @@
 #include <QDebug>
 
 #include <Akonadi/KMime/SpecialMailCollections>
+#include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/ChangeRecorder>
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/CollectionFetchScope>
@@ -43,6 +44,7 @@
 #include "ewsresource_debug.h"
 #include "ewssettings.h"
 #include "ewssubscriptionmanager.h"
+#include "ewssyncstateattribute.h"
 #include "ewsupdatefolderrequest.h"
 #include "ewsupdateitemrequest.h"
 #include "tags/ewsglobaltagsreadjob.h"
@@ -86,11 +88,14 @@ EwsResource::EwsResource(const QString &id)
     , mInitialReconnectTimeout(InitialReconnectTimeout)
     , mSettings(new EwsSettings(winIdForDialogs()))
 {
+    AttributeFactory::registerAttribute<EwsSyncStateAttribute>();
+
     mEwsClient.setUserAgent(mSettings->userAgent());
     mEwsClient.setEnableNTLMv2(mSettings->enableNTLMv2());
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::Parent);
+    changeRecorder()->collectionFetchScope().fetchAttribute<EwsSyncStateAttribute>();
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::Parent);
     changeRecorder()->itemFetchScope().setFetchModificationTime(false);
@@ -1384,12 +1389,17 @@ void EwsResource::connectStatusSignals(Job *job)
 
 QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col) const
 {
-    return mSyncState.value(col.remoteId());
+    auto attr = col.attribute<EwsSyncStateAttribute>();
+    return attr ? attr->syncState() : QString();
 }
 
 void EwsResource::saveCollectionSyncState(Akonadi::Collection &col, const QString &state)
 {
     mSyncState[col.remoteId()] = state;
+
+    col.addAttribute(new EwsSyncStateAttribute(state));
+    CollectionModifyJob *job = new CollectionModifyJob(col);
+    job->start();
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)
