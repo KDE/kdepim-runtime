@@ -72,7 +72,7 @@ protected:
     void doSetOnline(bool online) override;
 public Q_SLOTS:
     void configure(WId windowId) override;
-    Q_SCRIPTABLE void clearFolderSyncState(const QString &folderId);
+    Q_SCRIPTABLE void clearCollectionSyncState(int collectionId);
     Q_SCRIPTABLE void clearFolderSyncState();
     Q_SCRIPTABLE void clearFolderTreeSyncState();
     Q_SCRIPTABLE void setInitialReconnectTimeout(int timeout);

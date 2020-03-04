@@ -1050,10 +1050,13 @@ void EwsResource::clearFolderSyncState()
     saveState();
 }
 
-void EwsResource::clearFolderSyncState(const QString &folderId)
+void EwsResource::clearCollectionSyncState(int collectionId)
 {
-    mSyncState.remove(folderId);
-    saveState();
+    Collection col(collectionId);
+    auto attr = col.attribute<EwsSyncStateAttribute>();
+    col.addAttribute(attr);
+    CollectionModifyJob *job = new CollectionModifyJob(col);
+    job->start();
 }
 
 void EwsResource::clearFolderTreeSyncState()
