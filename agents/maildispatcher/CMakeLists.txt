@@ -9,7 +9,15 @@ set( maildispatcheragent_SRCS
   storeresultjob.cpp
 )
 
-ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME org.kde.pim.maildispatcher)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME org.kde.pim.maildispatcher)
+else()
+    ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME org.kde.pim.maildispatcher
+        DESCRIPTION "maildispacher agent (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_maildispatcher
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
 
 kconfig_add_kcfg_files(maildispatcheragent_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildispatcheragent.kcfg org.kde.Akonadi.MailDispatcher.Settings)

@@ -9,7 +9,16 @@ kconfig_add_kcfg_files(newmailnotifier_common_SRCS
     newmailnotifieragentsettings.kcfgc
   )
 
-ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier)
+else()
+    ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifier_debug.h IDENTIFIER NEWMAILNOTIFIER_LOG CATEGORY_NAME org.kde.pim.newmailnotifier
+        DESCRIPTION "mailnotifier agent (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_newmailnotifier
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 set(newmailnotifieragent_SRCS
   newmailnotifieragent.cpp

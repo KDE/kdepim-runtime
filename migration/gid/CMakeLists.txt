@@ -4,7 +4,15 @@ set(gid_SRCS
   ${MIGRATION_AKONADI_SHARED_SOURCES}
 )
 
-ecm_qt_declare_logging_category(gid_SRCS HEADER migration_debug.h IDENTIFIER MIGRATION_LOG CATEGORY_NAME org.kde.pim.migration)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(gid_SRCS HEADER migration_debug.h IDENTIFIER MIGRATION_LOG CATEGORY_NAME org.kde.pim.migration)
+else()
+    ecm_qt_declare_logging_category(gid_SRCS HEADER migration_debug.h IDENTIFIER MIGRATION_LOG CATEGORY_NAME org.kde.pim.migration
+        DESCRIPTION "migration (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 add_library(gidmigration STATIC ${gid_SRCS})
 target_link_libraries(gidmigration

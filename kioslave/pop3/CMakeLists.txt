@@ -2,7 +2,17 @@
 
 set(kio_pop3_PART_SRCS pop3.cpp pop3_debug.cpp )
 
-ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3)
+else()
+    ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3
+        DESCRIPTION "kioslave (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_pop3resource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+
 
 add_library(kio_pop3 MODULE ${kio_pop3_PART_SRCS})
 

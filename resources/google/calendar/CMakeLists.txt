@@ -14,7 +14,16 @@ set(calendarresource_SRCS
   ../common/kgapiversionattribute.cpp
   ${accounts_SRCS}
 )
-ecm_qt_declare_logging_category(calendarresource_SRCS HEADER googlecalendarresource_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(calendarresource_SRCS HEADER googlecalendarresource_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar)
+else()
+    ecm_qt_declare_logging_category(calendarresource_SRCS HEADER googlecalendarresource_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar
+        DESCRIPTION "resource google calendar (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+
 kconfig_add_kcfg_files(calendarresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
 
 kcfg_generate_dbus_interface(
