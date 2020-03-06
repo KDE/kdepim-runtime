@@ -27,7 +27,16 @@ set_source_files_properties(
   PROPERTIES GENERATED TRUE
 )
 
-ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME org.kde.pim.mboxresource)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME org.kde.pim.mboxresource)
+else()
+    ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h IDENTIFIER MBOXRESOURCE_LOG CATEGORY_NAME org.kde.pim.mboxresource
+        DESCRIPTION "mbox resource (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_mboxresource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 install( FILES mboxresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 

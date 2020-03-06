@@ -6,7 +6,17 @@ endif()
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
 set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
-ecm_qt_declare_logging_category(maildir_LIB_SRCS HEADER libmaildir_debug.h IDENTIFIER LIBMAILDIR_LOG CATEGORY_NAME org.kde.pim.libmaildir)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(maildir_LIB_SRCS HEADER libmaildir_debug.h IDENTIFIER LIBMAILDIR_LOG CATEGORY_NAME org.kde.pim.libmaildir)
+else()
+    ecm_qt_declare_logging_category(maildir_LIB_SRCS HEADER libmaildir_debug.h IDENTIFIER LIBMAILDIR_LOG CATEGORY_NAME org.kde.pim.libmaildir
+        DESCRIPTION "libmaildir (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_libmaildir
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+
 
 add_library(maildir  ${maildir_LIB_SRCS})
 generate_export_header(maildir BASE_NAME maildir)

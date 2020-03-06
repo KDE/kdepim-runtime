@@ -5,7 +5,16 @@ set(pop3_common_SRCS
     settings.cpp
 )
 kconfig_add_kcfg_files(pop3_common_SRCS settingsbase.kcfgc)
-ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME org.kde.pim.pop3resource)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME org.kde.pim.pop3resource)
+else()
+    ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3resource_debug.h IDENTIFIER POP3RESOURCE_LOG CATEGORY_NAME org.kde.pim.pop3resource
+        DESCRIPTION "pop3 resource (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_pop3resource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
 qt5_add_dbus_adaptor(pop3_common_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml settings.h Settings

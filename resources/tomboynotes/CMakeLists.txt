@@ -32,11 +32,23 @@ set(tomboynotesresource_SRCS
     o2/o2simplecrypt.cpp
 )
 
-ecm_qt_declare_logging_category(tomboynotesresource_SRCS
-    HEADER debug.h
-    IDENTIFIER TOMBOYNOTESRESOURCE_LOG
-    CATEGORY_NAME org.kde.pim.tomboynotesresource
-)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(tomboynotesresource_SRCS
+        HEADER debug.h
+        IDENTIFIER TOMBOYNOTESRESOURCE_LOG
+        CATEGORY_NAME org.kde.pim.tomboynotesresource
+    )
+else()
+    ecm_qt_declare_logging_category(tomboynotesresource_SRCS
+        HEADER debug.h
+        IDENTIFIER TOMBOYNOTESRESOURCE_LOG
+        CATEGORY_NAME org.kde.pim.tomboynotesresource
+        DESCRIPTION "tomboynote resource  (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_tomboynotesresource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 
 

@@ -51,7 +51,15 @@ set(KOLAB_SRCS
     freebusy/freebusy.cpp
 )
 
-ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PIMKOLAB_LOG CATEGORY_NAME org.kde.pim.pimkolab)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PIMKOLAB_LOG CATEGORY_NAME org.kde.pim.pimkolab)
+else()
+    ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PIMKOLAB_LOG CATEGORY_NAME org.kde.pim.pimkolab
+        DESCRIPTION "pimkolab lib (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 set(KOLAB_LINK_LIBRARIES
     KF5::CalendarCore
