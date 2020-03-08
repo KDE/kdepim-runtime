@@ -25,7 +25,6 @@
 
 #include "ewsabstractauth.h"
 
-class QWidget;
 class EwsOAuthPrivate;
 
 class EwsOAuth : public EwsAbstractAuth

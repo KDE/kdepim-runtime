@@ -32,7 +32,6 @@ namespace KWallet {
 class Wallet;
 }
 
-class POP3Resource;
 class KJob;
 
 class AccountWidget : public QWidget, private Ui::PopPage
