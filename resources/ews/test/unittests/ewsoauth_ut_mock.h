@@ -34,7 +34,7 @@
 #include <QWidget>
 
 #include <KLocalizedString>
-#include <qtwebenginewidgetsversion.h>
+#include <QtWebEngineWidgetsVersion>
 Q_DECLARE_LOGGING_CATEGORY(EWSCLI_LOG)
 
 namespace Mock {

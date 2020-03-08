@@ -43,7 +43,7 @@ using namespace Mock;
 #include "ewspkeyauthjob.h"
 #endif
 #endif
-#include <qtwebenginewidgetsversion.h>
+#include <QtWebEngineWidgetsVersion>
 #include "ewsclient_debug.h"
 
 static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/authorize"));

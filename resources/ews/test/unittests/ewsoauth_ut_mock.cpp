@@ -21,7 +21,7 @@
 
 #include <QUrl>
 #include <QUrlQuery>
-#include <qtwebenginewidgetsversion.h>
+#include <QtWebEngineWidgetsVersion>
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
 namespace Mock {
