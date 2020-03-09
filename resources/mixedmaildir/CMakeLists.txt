@@ -23,9 +23,24 @@ set( mixedmaildirresource_SRCS
   retrieveitemsjob.cpp
   ${mixedmaildir_common_SRCS}
 )
-
-ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildirresource_debug.h IDENTIFIER MIXEDMAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.mixedmaildirresource)
-ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildir_debug.h IDENTIFIER MIXEDMAILDIR_LOG CATEGORY_NAME org.kde.pim.mixedmaildir)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildirresource_debug.h IDENTIFIER MIXEDMAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.mixedmaildirresource)
+else()
+    ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildirresource_debug.h IDENTIFIER MIXEDMAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.mixedmaildirresource
+        DESCRIPTION "mixed maildir resource (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_mixedmaildir
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildir_debug.h IDENTIFIER MIXEDMAILDIR_LOG CATEGORY_NAME org.kde.pim.mixedmaildir)
+else()
+    ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildir_debug.h IDENTIFIER MIXEDMAILDIR_LOG CATEGORY_NAME org.kde.pim.mixedmaildir
+        DESCRIPTION "mixedmaildir resource (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_mixedmaildirresource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
 
 install( FILES mixedmaildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 

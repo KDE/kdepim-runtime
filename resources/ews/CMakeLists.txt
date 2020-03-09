@@ -74,14 +74,36 @@ set(ewsresource_SRCS
     ewssubscriptionmanager.cpp
     ewssubscriptionwidget.cpp)
 
-ecm_qt_declare_logging_category(ewsresource_SRCS
-  HEADER ewsres_debug.h
-  IDENTIFIER EWSRES_LOG
-  CATEGORY_NAME org.kde.pim.ews)
-ecm_qt_declare_logging_category(ewsresource_SRCS
-  HEADER ewsres_agentif_debug.h
-  IDENTIFIER EWSRES_AGENTIF_LOG
-  CATEGORY_NAME org.kde.pim.ews.agentif)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(ewsresource_SRCS
+      HEADER ewsres_debug.h
+      IDENTIFIER EWSRES_LOG
+      CATEGORY_NAME org.kde.pim.ews)
+else()
+    ecm_qt_declare_logging_category(ewsresource_SRCS
+      HEADER ewsres_debug.h
+      IDENTIFIER EWSRES_LOG
+      CATEGORY_NAME org.kde.pim.ews
+        DESCRIPTION "ews resource (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(ewsresource_SRCS
+      HEADER ewsres_agentif_debug.h
+      IDENTIFIER EWSRES_AGENTIF_LOG
+      CATEGORY_NAME org.kde.pim.ews.agentif)
+else()
+    ecm_qt_declare_logging_category(ewsresource_SRCS
+      HEADER ewsres_agentif_debug.h
+      IDENTIFIER EWSRES_AGENTIF_LOG
+      CATEGORY_NAME org.kde.pim.ews.agentif
+        DESCRIPTION "exchange ews agent (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
 
 
 ki18n_wrap_ui(ewsresource_SRCS ewsconfigdialog.ui)
@@ -124,11 +146,21 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
   set(ewsmtaresource_SRCS
     ewsmtaconfigdialog.cpp
     ewsmtaresource.cpp)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(ewsmtaresource_SRCS
+        HEADER ewsres_mta_debug.h
+        IDENTIFIER EWSRES_MTA_LOG
+        CATEGORY_NAME org.kde.pim.ews.mta)
+else()
+    ecm_qt_declare_logging_category(ewsmtaresource_SRCS
+        HEADER ewsres_mta_debug.h
+        IDENTIFIER EWSRES_MTA_LOG
+        CATEGORY_NAME org.kde.pim.ews.mta
+        DESCRIPTION "ews mta (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+        )
+endif()
 
-  ecm_qt_declare_logging_category(ewsmtaresource_SRCS
-     HEADER ewsres_mta_debug.h
-     IDENTIFIER EWSRES_MTA_LOG
-     CATEGORY_NAME org.kde.pim.ews.mta)
 
   ki18n_wrap_ui(ewsmtaresource_SRCS ewsmtaconfigdialog.ui)
 

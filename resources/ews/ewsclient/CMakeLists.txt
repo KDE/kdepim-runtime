@@ -72,25 +72,72 @@ if (Qca-qt5_FOUND)
     auth/ewspkeyauthjob.cpp)
 endif ()
 
-ecm_qt_declare_logging_category(EWSCLIENT_SRCS
-  HEADER ewscli_debug.h
-  IDENTIFIER EWSCLI_LOG
-  CATEGORY_NAME org.kde.pim.ews.client)
-ecm_qt_declare_logging_category(EWSCLIENT_SRCS
-  HEADER ewscli_proto_debug.h
-  IDENTIFIER EWSCLI_PROTO_LOG
-  CATEGORY_NAME org.kde.pim.ews.client.proto
-  DEFAULT_SEVERITY Warning)
-ecm_qt_declare_logging_category(EWSCLIENT_SRCS
-  HEADER ewscli_req_debug.h
-  IDENTIFIER EWSCLI_REQUEST_LOG
-  CATEGORY_NAME org.kde.pim.ews.client.request
-  DEFAULT_SEVERITY Warning)
-ecm_qt_declare_logging_category(EWSCLIENT_SRCS
-  HEADER ewscli_failedreq_debug.h
-  IDENTIFIER EWSCLI_FAILEDREQUEST_LOG
-  CATEGORY_NAME org.kde.pim.ews.client.failedrequest
-  DEFAULT_SEVERITY Warning)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_debug.h
+      IDENTIFIER EWSCLI_LOG
+      CATEGORY_NAME org.kde.pim.ews.client)
+else()
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_debug.h
+      IDENTIFIER EWSCLI_LOG
+      CATEGORY_NAME org.kde.pim.ews.client
+        DESCRIPTION "ews client (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_proto_debug.h
+      IDENTIFIER EWSCLI_PROTO_LOG
+      CATEGORY_NAME org.kde.pim.ews.client.proto
+      DEFAULT_SEVERITY Warning)
+else()
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_proto_debug.h
+      IDENTIFIER EWSCLI_PROTO_LOG
+      CATEGORY_NAME org.kde.pim.ews.client.proto
+      DEFAULT_SEVERITY Warning
+        DESCRIPTION "ews client proto (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_req_debug.h
+      IDENTIFIER EWSCLI_REQUEST_LOG
+      CATEGORY_NAME org.kde.pim.ews.client.request
+      DEFAULT_SEVERITY Warning)
+else()
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_req_debug.h
+      IDENTIFIER EWSCLI_REQUEST_LOG
+      CATEGORY_NAME org.kde.pim.ews.client.request
+      DEFAULT_SEVERITY Warning
+        DESCRIPTION "ews client request (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_failedreq_debug.h
+      IDENTIFIER EWSCLI_FAILEDREQUEST_LOG
+      CATEGORY_NAME org.kde.pim.ews.client.failedrequest
+      DEFAULT_SEVERITY Warning)
+else()
+    ecm_qt_declare_logging_category(EWSCLIENT_SRCS
+      HEADER ewscli_failedreq_debug.h
+      IDENTIFIER EWSCLI_FAILEDREQUEST_LOG
+      CATEGORY_NAME org.kde.pim.ews.client.failedrequest
+      DEFAULT_SEVERITY Warning
+        DESCRIPTION "ews client failed request (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
 target_link_libraries(ewsclient

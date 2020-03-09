@@ -32,16 +32,39 @@ set(kolabresource_SRCS
     updatemessagejob.cpp
 )
 
-ecm_qt_declare_logging_category(kolabresource_SRCS
-    HEADER kolabresource_debug.h
-    IDENTIFIER KOLABRESOURCE_LOG
-    CATEGORY_NAME org.kde.pim.kolabresource
-)
-ecm_qt_declare_logging_category(kolabresource_SRCS
-    HEADER kolabresource_trace.h
-    IDENTIFIER KOLABRESOURCE_TRACE
-    CATEGORY_NAME org.kde.pim.kolabresource.trace
-)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(kolabresource_SRCS
+        HEADER kolabresource_debug.h
+        IDENTIFIER KOLABRESOURCE_LOG
+        CATEGORY_NAME org.kde.pim.kolabresource
+    )
+else()
+    ecm_qt_declare_logging_category(kolabresource_SRCS
+        HEADER kolabresource_debug.h
+        IDENTIFIER KOLABRESOURCE_LOG
+        CATEGORY_NAME org.kde.pim.kolabresource
+        DESCRIPTION "kolab resource (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_kolabresource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(kolabresource_SRCS
+        HEADER kolabresource_trace.h
+        IDENTIFIER KOLABRESOURCE_TRACE
+        CATEGORY_NAME org.kde.pim.kolabresource.trace
+    )
+else()
+    ecm_qt_declare_logging_category(kolabresource_SRCS
+        HEADER kolabresource_trace.h
+        IDENTIFIER KOLABRESOURCE_TRACE
+        CATEGORY_NAME org.kde.pim.kolabresource.trace
+        DESCRIPTION "resource kolab trace (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
 

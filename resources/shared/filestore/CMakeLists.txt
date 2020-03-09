@@ -20,7 +20,14 @@ set(akonadi-filestore_SRCS
   storecompactjob.cpp
 )
 
-ecm_qt_declare_logging_category(akonadi-filestore_SRCS HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore)
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(akonadi-filestore_SRCS HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore)
+else()
+    ecm_qt_declare_logging_category(akonadi-filestore_SRCS HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore
+        DESCRIPTION "resource filestore lib (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
 
 
 add_library(akonadi-filestore  ${akonadi-filestore_SRCS} )

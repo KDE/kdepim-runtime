@@ -45,12 +45,28 @@ set( imapresource_LIB_SRCS
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
 
-
-ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME org.kde.pim.imapresource)
-ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME org.kde.pim.imapresource)
+else()
+    ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_debug.h IDENTIFIER IMAPRESOURCE_LOG CATEGORY_NAME org.kde.pim.imapresource
+        DESCRIPTION "imap resource (kdepim-runtime)"
+        OLD_CATEGORY_NAMES log_imapresource
+        EXPORT KDEPIMRUNTIME
+    )
+endif()
+if (ECM_VERSION VERSION_LESS "5.68.0")
+    ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
         IDENTIFIER IMAPRESOURCE_TRACE
         CATEGORY_NAME org.kde.pim.imapresource.trace
-)
+        )
+else()
+    ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.h
+        IDENTIFIER IMAPRESOURCE_TRACE
+        CATEGORY_NAME org.kde.pim.imapresource.trace
+        DESCRIPTION "resource kolab trace (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME
+        )
+endif()
 
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
