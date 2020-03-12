@@ -74,36 +74,22 @@ set(ewsresource_SRCS
     ewssubscriptionmanager.cpp
     ewssubscriptionwidget.cpp)
 
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(ewsresource_SRCS
-      HEADER ewsres_debug.h
-      IDENTIFIER EWSRES_LOG
-      CATEGORY_NAME org.kde.pim.ews)
-else()
-    ecm_qt_declare_logging_category(ewsresource_SRCS
-      HEADER ewsres_debug.h
-      IDENTIFIER EWSRES_LOG
-      CATEGORY_NAME org.kde.pim.ews
-        DESCRIPTION "ews resource (kdepim-runtime)"
-        EXPORT KDEPIMRUNTIME
+ecm_qt_declare_logging_category(ewsresource_SRCS
+    HEADER ewsres_debug.h
+    IDENTIFIER EWSRES_LOG
+    CATEGORY_NAME org.kde.pim.ews
+    DESCRIPTION "ews resource (kdepim-runtime)"
+    EXPORT KDEPIMRUNTIME
     )
-endif()
 
 
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(ewsresource_SRCS
-      HEADER ewsres_agentif_debug.h
-      IDENTIFIER EWSRES_AGENTIF_LOG
-      CATEGORY_NAME org.kde.pim.ews.agentif)
-else()
-    ecm_qt_declare_logging_category(ewsresource_SRCS
-      HEADER ewsres_agentif_debug.h
-      IDENTIFIER EWSRES_AGENTIF_LOG
-      CATEGORY_NAME org.kde.pim.ews.agentif
-        DESCRIPTION "exchange ews agent (kdepim-runtime)"
-        EXPORT KDEPIMRUNTIME
+ecm_qt_declare_logging_category(ewsresource_SRCS
+    HEADER ewsres_agentif_debug.h
+    IDENTIFIER EWSRES_AGENTIF_LOG
+    CATEGORY_NAME org.kde.pim.ews.agentif
+    DESCRIPTION "exchange ews agent (kdepim-runtime)"
+    EXPORT KDEPIMRUNTIME
     )
-endif()
 
 
 ki18n_wrap_ui(ewsresource_SRCS ewsconfigdialog.ui)
@@ -111,17 +97,17 @@ ki18n_wrap_ui(ewsresource_SRCS ewsconfigdialog.ui)
 kconfig_add_kcfg_files(ewsresource_SRCS ewssettingsbase.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.kcfg org.kde.Akonadi.Ews.Settings)
 qt5_add_dbus_adaptor(ewsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml ewssettings.h EwsSettings ewssettingsadaptor EwsSettingsAdaptor
-)
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml ewssettings.h EwsSettings ewssettingsadaptor EwsSettingsAdaptor
+    )
 
 qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.h org.kde.Akonadi.Ews.Resource.xml OPTIONS -a )
 qt5_add_dbus_adaptor(ewsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresource.h EwsResource ewsresourceadaptor EwsResourceAdaptor
-)
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresource.h EwsResource ewsresourceadaptor EwsResourceAdaptor
+    )
 qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/ewssettings.h org.kde.Akonadi.Ews.Wallet.xml OPTIONS -a )
 qt5_add_dbus_adaptor(ewsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Wallet.xml ewssettings.h EwsSettings ewswalletadaptor EwsWalletAdaptor
-)
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Wallet.xml ewssettings.h EwsSettings ewswalletadaptor EwsWalletAdaptor
+    )
 
 
 
@@ -143,15 +129,9 @@ target_link_libraries(akonadi_ews_resource
     ewsclient)
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
-  set(ewsmtaresource_SRCS
-    ewsmtaconfigdialog.cpp
-    ewsmtaresource.cpp)
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(ewsmtaresource_SRCS
-        HEADER ewsres_mta_debug.h
-        IDENTIFIER EWSRES_MTA_LOG
-        CATEGORY_NAME org.kde.pim.ews.mta)
-else()
+    set(ewsmtaresource_SRCS
+        ewsmtaconfigdialog.cpp
+        ewsmtaresource.cpp)
     ecm_qt_declare_logging_category(ewsmtaresource_SRCS
         HEADER ewsres_mta_debug.h
         IDENTIFIER EWSRES_MTA_LOG
@@ -159,63 +139,62 @@ else()
         DESCRIPTION "ews mta (kdepim-runtime)"
         EXPORT KDEPIMRUNTIME
         )
-endif()
 
 
-  ki18n_wrap_ui(ewsmtaresource_SRCS ewsmtaconfigdialog.ui)
+    ki18n_wrap_ui(ewsmtaresource_SRCS ewsmtaconfigdialog.ui)
 
-  kconfig_add_kcfg_files(ewsmtaresource_SRCS ewsmtasettings.kcfgc)
-  kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/ewsmtaresource.kcfg org.kde.Akonadi.EwsMta.Settings)
-  qt5_add_dbus_adaptor(ewsmtaresource_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.EwsMta.Settings.xml ewsmtasettings.h EwsMtaSettings ewsmtasettingsadaptor
-  )
-  qt5_add_dbus_interface(ewsmtaresource_SRCS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresourceinterface)
+    kconfig_add_kcfg_files(ewsmtaresource_SRCS ewsmtasettings.kcfgc)
+    kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/ewsmtaresource.kcfg org.kde.Akonadi.EwsMta.Settings)
+    qt5_add_dbus_adaptor(ewsmtaresource_SRCS
+        ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.EwsMta.Settings.xml ewsmtasettings.h EwsMtaSettings ewsmtasettingsadaptor
+        )
+    qt5_add_dbus_interface(ewsmtaresource_SRCS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Resource.xml ewsresourceinterface)
 
-  add_executable(akonadi_ewsmta_resource ${ewsmtaresource_SRCS})
-  target_link_libraries(akonadi_ewsmta_resource
-      KF5::AkonadiAgentBase
-      KF5::AkonadiCore
-      KF5::AkonadiWidgets
-      KF5::I18n
-      KF5::WindowSystem
-      KF5::Mime)
+    add_executable(akonadi_ewsmta_resource ${ewsmtaresource_SRCS})
+    target_link_libraries(akonadi_ewsmta_resource
+        KF5::AkonadiAgentBase
+        KF5::AkonadiCore
+        KF5::AkonadiWidgets
+        KF5::I18n
+        KF5::WindowSystem
+        KF5::Mime)
 
-  set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
+    set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
 else ()
-  set(EWS_MTA_CAPABILITIES "MailTransport,Synchronizable")
+    set(EWS_MTA_CAPABILITIES "MailTransport,Synchronizable")
 endif ()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop)
 
 if (BUILD_TESTING)
-  add_subdirectory(test)
+    add_subdirectory(test)
 endif ()
 
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop
-  DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+    DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 install(TARGETS akonadi_ews_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
-  install(FILES ewsmtaresource.desktop
-    DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-  install(TARGETS akonadi_ewsmta_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
+    install(FILES ewsmtaresource.desktop
+        DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
+    install(TARGETS akonadi_ewsmta_resource ${INSTALL_TARGETS_DEFAULT_ARGS})
 endif ()
 
 ecm_install_icons(
     ICONS
-        icons/16-apps-akonadi-ews.png
-        icons/22-apps-akonadi-ews.png
-        icons/24-apps-akonadi-ews.png
-        icons/32-apps-akonadi-ews.png
-        icons/48-apps-akonadi-ews.png
-        icons/64-apps-akonadi-ews.png
-        icons/72-apps-akonadi-ews.png
-        icons/96-apps-akonadi-ews.png
-        icons/128-apps-akonadi-ews.png
+    icons/16-apps-akonadi-ews.png
+    icons/22-apps-akonadi-ews.png
+    icons/24-apps-akonadi-ews.png
+    icons/32-apps-akonadi-ews.png
+    icons/48-apps-akonadi-ews.png
+    icons/64-apps-akonadi-ews.png
+    icons/72-apps-akonadi-ews.png
+    icons/96-apps-akonadi-ews.png
+    icons/128-apps-akonadi-ews.png
     DESTINATION ${KDE_INSTALL_ICONDIR}
     THEME hicolor
-)
+    )
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/akonadi_ews_resource.notifyrc
     DESTINATION "${KNOTIFYRC_INSTALL_DIR}")

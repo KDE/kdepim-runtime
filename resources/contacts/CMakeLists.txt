@@ -9,28 +9,24 @@ set(contactsresource_common_SRCS)
 
 kconfig_add_kcfg_files(contactsresource_common_SRCS
     settings.kcfgc
-  )
+    )
 ########### next target ###############
 
 set( contactsresource_SRCS
-  contactsresource.cpp
-  ${contactsresource_common_SRCS}
-)
+    contactsresource.cpp
+    ${contactsresource_common_SRCS}
+    )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/contactsresource.kcfg org.kde.Akonadi.Contacts.Settings)
 qt5_add_dbus_adaptor(contactsresource_SRCS
-  ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Contacts.Settings.xml settings.h ContactsResourceSettings contactsresourcesettingsadaptor ContactsResourceSettingsAdaptor
-)
-
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(contactsresource_SRCS HEADER contacts_resources_debug.h IDENTIFIER CONTACTSRESOURCES_LOG CATEGORY_NAME org.kde.pim.resources_contacts)
-else()
-    ecm_qt_declare_logging_category(contactsresource_SRCS HEADER contacts_resources_debug.h IDENTIFIER CONTACTSRESOURCES_LOG CATEGORY_NAME org.kde.pim.resources_contacts
-        DESCRIPTION "contacts resource (kdepim-runtime)"
-        OLD_CATEGORY_NAMES log_resources_contacts
-        EXPORT KDEPIMRUNTIME
+    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Contacts.Settings.xml settings.h ContactsResourceSettings contactsresourcesettingsadaptor ContactsResourceSettingsAdaptor
     )
-endif()
+
+ecm_qt_declare_logging_category(contactsresource_SRCS HEADER contacts_resources_debug.h IDENTIFIER CONTACTSRESOURCES_LOG CATEGORY_NAME org.kde.pim.resources_contacts
+    DESCRIPTION "contacts resource (kdepim-runtime)"
+    OLD_CATEGORY_NAMES log_resources_contacts
+    EXPORT KDEPIMRUNTIME
+    )
 
 
 install( FILES contactsresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
@@ -38,13 +34,13 @@ install( FILES contactsresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/
 add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
 
 target_link_libraries(akonadi_contacts_resource
-  KF5::AkonadiCore
-  KF5::AkonadiAgentBase
-  KF5::Contacts
-  KF5::I18n
-  KF5::KIOWidgets
-  KF5::ConfigWidgets
-)
+    KF5::AkonadiCore
+    KF5::AkonadiAgentBase
+    KF5::Contacts
+    KF5::I18n
+    KF5::KIOWidgets
+    KF5::ConfigWidgets
+    )
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

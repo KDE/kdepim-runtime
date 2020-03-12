@@ -7,7 +7,7 @@ set(tomboynotesresource_common_SRCS)
 
 kconfig_add_kcfg_files(tomboynotesresource_common_SRCS
     settings.kcfgc
-)
+    )
 
 set(tomboynotesresource_SRCS
     tomboynotesresource.cpp
@@ -30,42 +30,34 @@ set(tomboynotesresource_SRCS
     o2/o2replyserver.cpp
     o2/o2requestor.cpp
     o2/o2simplecrypt.cpp
-)
+    )
 
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(tomboynotesresource_SRCS
-        HEADER debug.h
-        IDENTIFIER TOMBOYNOTESRESOURCE_LOG
-        CATEGORY_NAME org.kde.pim.tomboynotesresource
+ecm_qt_declare_logging_category(tomboynotesresource_SRCS
+    HEADER debug.h
+    IDENTIFIER TOMBOYNOTESRESOURCE_LOG
+    CATEGORY_NAME org.kde.pim.tomboynotesresource
+    DESCRIPTION "tomboynote resource  (kdepim-runtime)"
+    OLD_CATEGORY_NAMES log_tomboynotesresource
+    EXPORT KDEPIMRUNTIME
     )
-else()
-    ecm_qt_declare_logging_category(tomboynotesresource_SRCS
-        HEADER debug.h
-        IDENTIFIER TOMBOYNOTESRESOURCE_LOG
-        CATEGORY_NAME org.kde.pim.tomboynotesresource
-        DESCRIPTION "tomboynote resource  (kdepim-runtime)"
-        OLD_CATEGORY_NAMES log_tomboynotesresource
-        EXPORT KDEPIMRUNTIME
-    )
-endif()
 
 
 
 
 kconfig_add_kcfg_files(tomboynotesresource_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfgc
-)
+    )
 
 kcfg_generate_dbus_interface(
     ${CMAKE_CURRENT_SOURCE_DIR}/tomboynotesresource.kcfg
     org.kde.Akonadi.TomboyNotes.Settings
-)
+    )
 
 qt5_add_dbus_adaptor(tomboynotesresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.TomboyNotes.Settings.xml
     ${CMAKE_CURRENT_BINARY_DIR}/settings.h
     Settings
-)
+    )
 
 
 add_executable(akonadi_tomboynotes_resource ${tomboynotesresource_SRCS})
@@ -84,13 +76,13 @@ target_link_libraries(akonadi_tomboynotes_resource
     KF5::KIONTLM
     KF5::KIOWidgets
     KF5::Mime
-)
+    )
 
 install(TARGETS akonadi_tomboynotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES tomboynotesresource.desktop
-        DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
-)
+    DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
+    )
 
 ############################# Config plugin ################################
 set(tomboynotesconfig_ui_SRCS)

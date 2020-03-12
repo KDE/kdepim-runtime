@@ -4,7 +4,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/../imap
     ${CMAKE_CURRENT_SOURCE_DIR}/pimkolab/
     ${Libkolabxml_INCLUDES}
-)
+    )
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
@@ -30,40 +30,23 @@ set(kolabresource_SRCS
     kolabchangeitemsrelationstask.cpp
     kolabchangeitemstagstask.cpp
     updatemessagejob.cpp
-)
+    )
 
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(kolabresource_SRCS
-        HEADER kolabresource_debug.h
-        IDENTIFIER KOLABRESOURCE_LOG
-        CATEGORY_NAME org.kde.pim.kolabresource
+ecm_qt_declare_logging_category(kolabresource_SRCS
+    HEADER kolabresource_debug.h
+    IDENTIFIER KOLABRESOURCE_LOG
+    CATEGORY_NAME org.kde.pim.kolabresource
+    DESCRIPTION "kolab resource (kdepim-runtime)"
+    OLD_CATEGORY_NAMES log_kolabresource
+    EXPORT KDEPIMRUNTIME
     )
-else()
-    ecm_qt_declare_logging_category(kolabresource_SRCS
-        HEADER kolabresource_debug.h
-        IDENTIFIER KOLABRESOURCE_LOG
-        CATEGORY_NAME org.kde.pim.kolabresource
-        DESCRIPTION "kolab resource (kdepim-runtime)"
-        OLD_CATEGORY_NAMES log_kolabresource
-        EXPORT KDEPIMRUNTIME
+ecm_qt_declare_logging_category(kolabresource_SRCS
+    HEADER kolabresource_trace.h
+    IDENTIFIER KOLABRESOURCE_TRACE
+    CATEGORY_NAME org.kde.pim.kolabresource.trace
+    DESCRIPTION "resource kolab trace (kdepim-runtime)"
+    EXPORT KDEPIMRUNTIME
     )
-endif()
-
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(kolabresource_SRCS
-        HEADER kolabresource_trace.h
-        IDENTIFIER KOLABRESOURCE_TRACE
-        CATEGORY_NAME org.kde.pim.kolabresource.trace
-    )
-else()
-    ecm_qt_declare_logging_category(kolabresource_SRCS
-        HEADER kolabresource_trace.h
-        IDENTIFIER KOLABRESOURCE_TRACE
-        CATEGORY_NAME org.kde.pim.kolabresource.trace
-        DESCRIPTION "resource kolab trace (kdepim-runtime)"
-        EXPORT KDEPIMRUNTIME
-    )
-endif()
 
 
 kconfig_add_kcfg_files(kolabresource_SRCS ../imap/settingsbase.kcfgc)
@@ -89,7 +72,7 @@ target_link_libraries(akonadi_kolab_resource
     KF5::PimCommon
     KF5::TextWidgets
     KF5::I18n
-)
+    )
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

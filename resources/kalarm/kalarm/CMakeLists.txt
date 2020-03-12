@@ -2,7 +2,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../shared
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared
-)
+    )
 
 set(kalarmresource_common_SRCS)
 kconfig_add_kcfg_files(kalarmresource_common_SRCS settings.kcfgc)
@@ -13,9 +13,9 @@ add_definitions(-DSETTINGS_NAMESPACE=Akonadi_KAlarm_Resource)
 # Fix a race condition. alarmtyperadiowidget.cpp is used by two targets, we have
 # to be sure the ui file was generated before building them.
 set_source_files_properties(
-  ../shared/alarmtyperadiowidget.cpp
-  PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ui_alarmtyperadiowidget.h
-)
+    ../shared/alarmtyperadiowidget.cpp
+    PROPERTIES OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ui_alarmtyperadiowidget.h
+    )
 
 set(kalarmresource_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ical/shared/icalresourcebase.cpp
@@ -23,7 +23,7 @@ set(kalarmresource_SRCS
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtyperadiowidget.cpp
     ${kalarmresource_common_SRCS}
-)
+    )
 
 install(FILES kalarmresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 
@@ -32,15 +32,11 @@ kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org
 qt5_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
 
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(kalarmresource_SRCS HEADER kalarmresource_debug.h IDENTIFIER KALARMRESOURCE_LOG CATEGORY_NAME org.kde.pim.kalarmresource)
-else()
-    ecm_qt_declare_logging_category(kalarmresource_SRCS HEADER kalarmresource_debug.h IDENTIFIER KALARMRESOURCE_LOG CATEGORY_NAME org.kde.pim.kalarmresource
-        DESCRIPTION "kalarm file resource (kdepim-runtime)"
-        OLD_CATEGORY_NAMES log_kalarmresource
-        EXPORT KDEPIMRUNTIME
+ecm_qt_declare_logging_category(kalarmresource_SRCS HEADER kalarmresource_debug.h IDENTIFIER KALARMRESOURCE_LOG CATEGORY_NAME org.kde.pim.kalarmresource
+    DESCRIPTION "kalarm file resource (kdepim-runtime)"
+    OLD_CATEGORY_NAMES log_kalarmresource
+    EXPORT KDEPIMRUNTIME
     )
-endif()
 
 add_custom_target(kalarm_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml)
 
@@ -53,14 +49,14 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_kalarm_resource
-                      KF5::AlarmCalendar
-                      KF5::AkonadiCore
-                      KF5::CalendarCore
-                      KF5::KIOCore
-                      KF5::AkonadiAgentBase
-                      KF5::I18n
-                      akonadi-singlefileresource
-                     )
+    KF5::AlarmCalendar
+    KF5::AkonadiCore
+    KF5::CalendarCore
+    KF5::KIOCore
+    KF5::AkonadiAgentBase
+    KF5::I18n
+    akonadi-singlefileresource
+    )
 
 install(TARGETS akonadi_kalarm_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -71,16 +67,16 @@ set(kalarmconfig_SRCS
     kalarmconfig.cpp
     ../shared/alarmtyperadiowidget.cpp
     ${kalarmresource_common_SRCS}
-)
+    )
 
 kcoreaddons_add_plugin(kalarmconfig
     SOURCES ${kalarmconfig_SRCS}
     JSON "kalarmconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
-)
+    )
 
 target_link_libraries(kalarmconfig
     KF5::AkonadiCore
     KF5::AlarmCalendar
     akonadi-singlefileresource
-)
+    )

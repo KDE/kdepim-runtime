@@ -159,15 +159,11 @@ install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
 if (NOT NO_REGENERATE_MIME)
    update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
 endif()   
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    install(FILES kdepim-runtime.renamecategories kdepim-runtime.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
-else ()
-    ecm_qt_install_logging_categories(
+ecm_qt_install_logging_categories(
         EXPORT KDEPIMRUNTIME
         FILE kdepim-runtime.categories
         DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
         )
-endif()
 
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES

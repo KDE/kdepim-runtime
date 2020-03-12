@@ -35,15 +35,11 @@ set( davgroupwareresource_SRCS
     davgroupwareresource.cpp
     )
 
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource)
-else()
-    ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource
-        DESCRIPTION "dav resource (kdepim-runtime)"
-        OLD_CATEGORY_NAMES log_davresource
-        EXPORT KDEPIMRUNTIME
+ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource
+    DESCRIPTION "dav resource (kdepim-runtime)"
+    OLD_CATEGORY_NAMES log_davresource
+    EXPORT KDEPIMRUNTIME
     )
-endif()
 
 
 install( FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )

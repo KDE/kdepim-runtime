@@ -12,14 +12,10 @@ set( vcarddirresource_SRCS
     ${vcarddirresource_common_SRCS}
   vcarddirresource.cpp
 )
-if (ECM_VERSION VERSION_LESS "5.68.0")
-    ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource)
-else()
-    ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource
+ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource
         DESCRIPTION "vcarddir resource (kdepim-runtime)"
         EXPORT KDEPIMRUNTIME
     )
-endif()
 
 
 
