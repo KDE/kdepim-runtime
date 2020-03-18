@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Google Groupware
+Comment=Access your Google Calendars, Contacts and Tasks from KDE
+Type=AkonadiResource
+Exec=akonadi_google_resource
+X-Akonadi-MimeTypes=text/calendar,text/directory,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo,application/x-vnd.akonadi.calendar.freebusy
+X-Akonadi-Capabilities=Resource,FreeBusyProvider
+X-Akonadi-Identifier=akonadi_google_resource
+X-Akonadi-Custom-KAccounts=google-contacts,google-calendar
+Icon=im-google
