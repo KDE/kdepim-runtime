@@ -375,6 +375,31 @@ void ContactHandler::itemMoved(const Item &item, const Collection &collectionSou
     connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
+void ContactHandler::itemLinked(const Item &item, const Collection &collection)
+{
+    KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
+    ContactPtr contact(new Contact(addressee));
+
+    contact->addGroup(collection.remoteId());
+
+    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_resource->account(), this);
+    modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+}
+
+void ContactHandler::itemUnlinked(const Item &item, const Collection &collection)
+{
+    KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
+    ContactPtr contact(new Contact(addressee));
+
+    contact->removeGroup(collection.remoteId());
+
+    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_resource->account(), this);
+    modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+}
+
+
 void ContactHandler::collectionAdded(const Collection &collection, const Collection &parent)
 {
     Q_UNUSED(parent);
