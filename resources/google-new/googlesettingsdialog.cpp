@@ -1,5 +1,6 @@
 /*
    Copyright (C) 2013 Daniel Vrátil <dvratil@redhat.com>
+                 2020 Igor Poboiko <igor.poboiko@gmail.com>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,192 +17,79 @@
 */
 
 #include "googlesettingsdialog.h"
-#include "googleaccountmanager.h"
+#include "ui_googlesettingsdialog.h"
 #include "googlesettings.h"
+#include "googleaccountmanager.h"
 #include "googleresource.h"
+#include "googleresource_debug.h"
 
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QCheckBox>
-
-#include <KLocalizedString>
-#include <QComboBox>
-#include <QPushButton>
-#include <QDebug>
-#include <KMessageBox>
-#include <KWindowSystem>
-#include <KPluralHandlingSpinBox>
+#include <QDialogButtonBox>
 
 #include <KGAPI/AuthJob>
-#include <QDialogButtonBox>
-#include <QVBoxLayout>
-
-Q_DECLARE_METATYPE(KGAPI2::Job *)
+#include <KGAPI/Calendar/Calendar>
+#include <KGAPI/Calendar/CalendarFetchJob>
+#include <KGAPI/Tasks/TaskList>
+#include <KGAPI/Tasks/TaskListFetchJob>
+#include <KMessageBox>
+#include <KWindowSystem>
 
 using namespace KGAPI2;
 
-GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager, WId wId, GoogleResource *parent)
+GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, WId wId)
     : QDialog()
-    , m_parentResource(parent)
-    , m_accountManager(accountManager)
+    , m_resource(resource)
 {
-    setAttribute(Qt::WA_NativeWindow, true);
-    KWindowSystem::setMainWindow(windowHandle(), wId);
+    if (wId) {
+        setAttribute(Qt::WA_NativeWindow, true);
+        KWindowSystem::setMainWindow(windowHandle(), wId);
+    }
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+    QWidget *mainWidget = new QWidget(this);
+    mainLayout->addWidget(mainWidget);
+
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
-    QVBoxLayout *topLayout = new QVBoxLayout(this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
+    mainLayout->addWidget(buttonBox);
+
+    m_ui = new Ui::GoogleSettingsDialog;
+    m_ui->setupUi(mainWidget);
+    
+    m_ui->refreshSpinBox->setSuffix(ki18np(" minute", " minutes"));
+    m_ui->enableRefresh->setChecked(GoogleSettings::self()->enableIntervalCheck());
+    m_ui->refreshSpinBox->setEnabled(GoogleSettings::self()->enableIntervalCheck());
+    if (GoogleSettings::self()->enableIntervalCheck()) {
+        m_ui->refreshSpinBox->setValue(GoogleSettings::self()->intervalCheckTime());
+    } else {
+        m_ui->refreshSpinBox->setValue(30);
+    }
+
+    m_ui->eventsLimitCombo->setMaximumDate(QDate::currentDate());
+    m_ui->eventsLimitCombo->setMinimumDate(QDate::fromString(QStringLiteral("2000-01-01"), Qt::ISODate));
+    m_ui->eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate
+                                   |KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
+    if (GoogleSettings::self()->eventsSince().isEmpty()) {
+        const QString ds = QStringLiteral("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
+        m_ui->eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
+    } else {
+        m_ui->eventsLimitCombo->setDate(QDate::fromString(GoogleSettings::self()->eventsSince(), Qt::ISODate));
+    }
+
     connect(buttonBox, &QDialogButtonBox::accepted, this, &GoogleSettingsDialog::slotSaveSettings);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &GoogleSettingsDialog::reject);
-
-    QWidget *widget = new QWidget(this);
-    topLayout->addWidget(widget);
-    topLayout->addWidget(buttonBox);
-    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    m_mainLayout = mainLayout;
-
-    m_accGroupBox = new QGroupBox(i18n("Accounts"), this);
-    mainLayout->addWidget(m_accGroupBox);
-    QHBoxLayout *accLayout = new QHBoxLayout(m_accGroupBox);
-
-    m_accComboBox = new QComboBox(m_accGroupBox);
-    accLayout->addWidget(m_accComboBox, 1);
-    connect(m_accComboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
-
-    m_addAccButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-add-user")), i18n("&Add"), m_accGroupBox);
-    accLayout->addWidget(m_addAccButton);
-    connect(m_addAccButton, &QPushButton::clicked, this, &GoogleSettingsDialog::slotAddAccountClicked);
-
-    m_removeAccButton = new QPushButton(QIcon::fromTheme(QStringLiteral("list-remove-user")), i18n("&Remove"), m_accGroupBox);
-    accLayout->addWidget(m_removeAccButton);
-    connect(m_removeAccButton, &QPushButton::clicked, this, &GoogleSettingsDialog::slotRemoveAccountClicked);
-
-    QGroupBox *refreshBox = new QGroupBox(i18n("Refresh"), this);
-    mainLayout->addWidget(refreshBox);
-    QGridLayout *refreshLayout = new QGridLayout(refreshBox);
-
-    m_enableRefresh = new QCheckBox(i18n("Enable interval refresh"), refreshBox);
-    m_enableRefresh->setChecked(GoogleSettings::self()->enableIntervalCheck());
-    refreshLayout->addWidget(m_enableRefresh, 0, 0, 1, 2);
-
-    QLabel *label = new QLabel(i18n("Refresh interval:"));
-    refreshLayout->addWidget(label, 1, 0);
-    m_refreshSpinBox = new KPluralHandlingSpinBox(this);
-    m_refreshSpinBox->setMaximum(720);
-    m_refreshSpinBox->setMinimum(10);
-    m_refreshSpinBox->setSingleStep(1);
-    m_refreshSpinBox->setValue(30);
-    m_refreshSpinBox->setDisplayIntegerBase(10);
-    m_refreshSpinBox->setSuffix(ki18np(" minute", " minutes"));
-    m_refreshSpinBox->setEnabled(GoogleSettings::self()->enableIntervalCheck());
-    refreshLayout->addWidget(m_refreshSpinBox, 1, 1);
-    connect(m_enableRefresh, &QCheckBox::toggled, m_refreshSpinBox, &KPluralHandlingSpinBox::setEnabled);
-
-    if (m_enableRefresh->isEnabled()) {
-        m_refreshSpinBox->setValue(GoogleSettings::self()->intervalCheckTime());
+    connect(m_ui->reloadCalendarsBtn, &QPushButton::clicked, this, &GoogleSettingsDialog::slotReloadCalendars);
+    connect(m_ui->reloadTaskListsBtn, &QPushButton::clicked, this, &GoogleSettingsDialog::slotReloadTaskLists);
+    connect(m_ui->configureBtn, &QPushButton::clicked, this, &GoogleSettingsDialog::slotConfigure);
+    if (!GoogleSettings::self()->account().isEmpty()) {
+        m_account = m_resource->accountManager()->findAccount(GoogleSettings::self()->account());
     }
-    QMetaObject::invokeMethod(this, &GoogleSettingsDialog::reloadAccounts, Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &GoogleSettingsDialog::accountChanged, Qt::QueuedConnection);
 }
 
 GoogleSettingsDialog::~GoogleSettingsDialog()
 {
-}
-
-QVBoxLayout *GoogleSettingsDialog::mainLayout() const
-{
-    return m_mainLayout;
-}
-
-GoogleAccountManager *GoogleSettingsDialog::accountManager() const
-{
-    return m_accountManager;
-}
-
-KGAPI2::AccountPtr GoogleSettingsDialog::currentAccount() const
-{
-    return m_accountManager->findAccount(m_accComboBox->currentText());
-}
-
-void GoogleSettingsDialog::reloadAccounts()
-{
-    disconnect(m_accComboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
-
-    m_accComboBox->clear();
-
-    const AccountsList accounts = m_accountManager->listAccounts();
-    for (const AccountPtr &account : accounts) {
-        m_accComboBox->addItem(account->accountName());
-    }
-
-    int index = m_accComboBox->findText(GoogleSettings::self()->account(), Qt::MatchExactly);
-    if (index > -1) {
-        m_accComboBox->setCurrentIndex(index);
-    }
-
-    connect(m_accComboBox, QOverload<const QString &>::of(&QComboBox::currentTextChanged), this, &GoogleSettingsDialog::currentAccountChanged);
-
-    m_removeAccButton->setEnabled(m_accComboBox->count() > 0);
-    Q_EMIT currentAccountChanged(m_accComboBox->currentText());
-}
-
-void GoogleSettingsDialog::slotAddAccountClicked()
-{
-    AccountPtr account(new Account());
-    // FIXME: We need a proper API for this
-    account->addScope(Account::contactsScopeUrl());
-    account->addScope(Account::calendarScopeUrl());
-    account->addScope(Account::tasksScopeUrl());
-    account->addScope(Account::accountInfoEmailScopeUrl());
-    account->addScope(Account::accountInfoScopeUrl());
-
-    AuthJob *authJob = new AuthJob(account,
-                                   GoogleSettings::self()->clientId(),
-                                   GoogleSettings::self()->clientSecret());
-    connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAccountAuthenticated);
-}
-
-void GoogleSettingsDialog::slotRemoveAccountClicked()
-{
-    const AccountPtr account = currentAccount();
-    if (!account) {
-        return;
-    }
-
-    if (KMessageBox::warningYesNo(
-            this,
-            i18n("Do you really want to revoke access to account <b>%1</b>?"
-                 "<p>This will revoke access to all resources using this account!</p>",
-                 account->accountName()),
-            i18n("Revoke Access?"),
-            KStandardGuiItem::yes(),
-            KStandardGuiItem::no(),
-            QString(),
-            KMessageBox::Dangerous) != KMessageBox::Yes) {
-        return;
-    }
-
-    m_accountManager->removeAccount(account->accountName());
-    reloadAccounts();
-}
-
-void GoogleSettingsDialog::slotAccountAuthenticated(Job *job)
-{
-    AuthJob *authJob = qobject_cast<AuthJob *>(job);
-    const AccountPtr account = authJob->account();
-
-    if (authJob->error() != KGAPI2::NoError) {
-        KMessageBox::sorry(this, authJob->errorString());
-        return;
-    }
-
-    if (!m_accountManager->storeAccount(account)) {
-        qWarning() << "Failed to add account to KWallet";
-    }
-
-    reloadAccounts();
 }
 
 bool GoogleSettingsDialog::handleError(Job *job)
@@ -211,16 +99,15 @@ bool GoogleSettingsDialog::handleError(Job *job)
     }
 
     if (job->error() == KGAPI2::Unauthorized) {
-        qDebug() << job << job->errorString();
-        const AccountPtr account = currentAccount();
-        const QList<QUrl> resourceScopes = m_parentResource->scopes();
+        qCDebug(GOOGLE_LOG) << job << job->errorString();
+        const QList<QUrl> resourceScopes = m_resource->scopes();
         for (const QUrl &scope : resourceScopes) {
-            if (!account->scopes().contains(scope)) {
-                account->addScope(scope);
+            if (!m_account->scopes().contains(scope)) {
+                m_account->addScope(scope);
             }
         }
 
-        AuthJob *authJob = new AuthJob(account, GoogleSettings::self()->clientId(),
+        AuthJob *authJob = new AuthJob(m_account, GoogleSettings::self()->clientId(),
                                        GoogleSettings::self()->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
         connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
@@ -229,37 +116,173 @@ bool GoogleSettingsDialog::handleError(Job *job)
     }
 
     KMessageBox::sorry(this, job->errorString());
-    job->deleteLater();
     return false;
 }
 
-void GoogleSettingsDialog::slotAuthJobFinished(Job *job)
+void GoogleSettingsDialog::accountChanged()
 {
-    qDebug();
-
-    if (job->error() != KGAPI2::NoError) {
-        KMessageBox::sorry(this, job->errorString());
+    if (!m_account) {
+        m_ui->accountLabel->setText(i18n("<b>not configured</b>"));
+        m_ui->calendarsBox->setDisabled(true);
+        m_ui->calendarsList->clear();
+        m_ui->taskListsBox->setDisabled(true);
+        m_ui->taskListsList->clear();
         return;
     }
+    m_ui->accountLabel->setText(QStringLiteral("<b>%1</b>").arg(m_account->accountName()));
+    slotReloadCalendars();
+    slotReloadTaskLists();
+}
 
-    AuthJob *authJob = qobject_cast<AuthJob *>(job);
-    const AccountPtr account = authJob->account();
-    if (!m_accountManager->storeAccount(account)) {
-        qWarning() << "Failed to store account in KWallet";
+void GoogleSettingsDialog::slotConfigure()
+{
+    m_account = AccountPtr(new Account());
+    const QList<QUrl> resourceScopes = m_resource->scopes();
+    for (const QUrl &scope : resourceScopes) {
+        if (!m_account->scopes().contains(scope)) {
+            m_account->addScope(scope);
+        }
     }
+    AuthJob *authJob = new AuthJob(m_account,
+                                   GoogleSettings::self()->clientId(),
+                                   GoogleSettings::self()->clientSecret());
+    connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
+}
 
-    KGAPI2::Job *otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
-    otherJob->setAccount(account);
-    otherJob->restart();
+void GoogleSettingsDialog::slotAuthJobFinished(Job* job)
+{
+    auto authJob = qobject_cast<AuthJob *>(job);
+    m_account = authJob->account();
+    if (authJob->error() != KGAPI2::NoError) {
+        KMessageBox::sorry(this, authJob->errorString());
+        return;
+    }
+    if (!m_resource->accountManager()->storeAccount(m_account)) {
+        qCWarning(GOOGLE_LOG) << "Failed to add account to KWallet";
+        return;
+    }
+    accountChanged();
 
-    job->deleteLater();
+    auto otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
+    if (otherJob) {
+        otherJob->setAccount(m_account);
+        otherJob->restart();
+    }
 }
 
 void GoogleSettingsDialog::slotSaveSettings()
 {
-    GoogleSettings::self()->setEnableIntervalCheck(m_enableRefresh->isChecked());
-    GoogleSettings::self()->setIntervalCheckTime(m_refreshSpinBox->value());
+    if (!m_account) {
+        GoogleSettings::self()->setAccount(QString());
+        GoogleSettings::self()->setEnableIntervalCheck(m_ui->enableRefresh->isChecked());
+        GoogleSettings::self()->setIntervalCheckTime(m_ui->refreshSpinBox->value());
+        GoogleSettings::self()->setCalendars({});
+        GoogleSettings::self()->setTaskLists({});
+        GoogleSettings::self()->setEventsSince(QString());
+        return;
+    }
+    GoogleSettings::self()->setAccount(m_account->accountName());
+    GoogleSettings::self()->setEnableIntervalCheck(m_ui->enableRefresh->isChecked());
+    GoogleSettings::self()->setIntervalCheckTime(m_ui->refreshSpinBox->value());
 
-    saveSettings();
+    QStringList calendars;
+    for (int i = 0; i < m_ui->calendarsList->count(); i++) {
+        QListWidgetItem *item = m_ui->calendarsList->item(i);
+
+        if (item->checkState() == Qt::Checked) {
+            calendars.append(item->data(Qt::UserRole).toString());
+        }
+    }
+    GoogleSettings::self()->setCalendars(calendars);
+
+    if (m_ui->eventsLimitCombo->isValid()) {
+        GoogleSettings::self()->setEventsSince(m_ui->eventsLimitCombo->date().toString(Qt::ISODate));
+    }
+
+    QStringList taskLists;
+    for (int i = 0; i < m_ui->taskListsList->count(); i++) {
+        QListWidgetItem *item = m_ui->taskListsList->item(i);
+
+        if (item->checkState() == Qt::Checked) {
+            taskLists.append(item->data(Qt::UserRole).toString());
+        }
+    }
+    GoogleSettings::self()->setTaskLists(taskLists);
+
     accept();
+}
+
+void GoogleSettingsDialog::slotReloadCalendars()
+{
+    m_ui->calendarsBox->setDisabled(true);
+    m_ui->calendarsList->clear();
+
+    if (!m_account) {
+        return;
+    }
+
+    auto fetchJob = new CalendarFetchJob(m_account, this);
+    connect(fetchJob, &CalendarFetchJob::finished, [this](Job* job){
+                if (!handleError(job) || !m_account) {
+                    m_ui->calendarsBox->setEnabled(false);
+                    return;
+                }
+
+                const ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
+
+                QStringList activeCalendars;
+                if (m_account->accountName() == GoogleSettings::self()->account()) {
+                    activeCalendars = GoogleSettings::self()->calendars();
+                }
+                m_ui->calendarsList->clear();
+                for (const ObjectPtr &object : objects) {
+                    const CalendarPtr calendar = object.dynamicCast<Calendar>();
+
+                    QListWidgetItem *item = new QListWidgetItem(calendar->title());
+                    item->setData(Qt::UserRole, calendar->uid());
+                    item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+                    item->setCheckState((activeCalendars.isEmpty() || activeCalendars.contains(calendar->uid())) ? Qt::Checked : Qt::Unchecked);
+                    m_ui->calendarsList->addItem(item);
+                }
+
+                m_ui->calendarsBox->setEnabled(true);
+            });
+}
+
+void GoogleSettingsDialog::slotReloadTaskLists()
+{
+    if (!m_account) {
+        return;
+    }
+
+    m_ui->taskListsBox->setDisabled(true);
+    m_ui->taskListsList->clear();
+
+    auto job = new TaskListFetchJob(m_account, this);
+    connect(job, &TaskListFetchJob::finished, [this](KGAPI2::Job *job){
+                if (!handleError(job) || !m_account) {
+                    m_ui->taskListsBox->setDisabled(true);
+                    return;
+                }
+
+                const ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
+
+                QStringList activeTaskLists;
+                if (m_account->accountName() == GoogleSettings::self()->account()) {
+                    activeTaskLists = GoogleSettings::self()->taskLists();
+                }
+                m_ui->taskListsList->clear();
+                for (const ObjectPtr &object : objects) {
+                    const TaskListPtr taskList = object.dynamicCast<TaskList>();
+
+                    QListWidgetItem *item = new QListWidgetItem(taskList->title());
+                    item->setData(Qt::UserRole, taskList->uid());
+                    item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+                    item->setCheckState((activeTaskLists.isEmpty() || activeTaskLists.contains(taskList->uid())) ? Qt::Checked : Qt::Unchecked);
+                    m_ui->taskListsList->addItem(item);
+                }
+
+                m_ui->taskListsBox->setEnabled(true);
+
+            });
 }

@@ -2,7 +2,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_google_resource\")
 
 set(googleresource_SRCS
     googleresource.cpp
-    settingsdialog.cpp
     googleaccountmanager.cpp
     googlesettings.cpp
     googlesettingsdialog.cpp
@@ -23,6 +22,8 @@ else()
         EXPORT KDEPIMRUNTIME
     )
 endif()
+
+ki18n_wrap_ui(googleresource_SRCS googlesettingsdialog.ui)
 
 kconfig_add_kcfg_files(googleresource_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/settingsbase.kcfgc)
 
