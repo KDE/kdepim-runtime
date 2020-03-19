@@ -1,10 +1,27 @@
+/*
+    Copyright (C) 2020  Igor Poboiko <igor.poboiko@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #ifndef GENERICHANDLER_H
 #define GENERICHANDLER_H
 
 #include <KGAPI/Types>
 
-#include <QSharedPointer>
 #include <QObject>
+#include <QSharedPointer>
 
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Collection>
@@ -26,7 +43,7 @@ public:
 
     virtual QString mimetype() = 0;
     virtual bool canPerformTask(const Akonadi::Item &item) = 0;
-    
+
     virtual void retrieveCollections() = 0;
     virtual void retrieveItems(const Akonadi::Collection &collection) = 0;
 

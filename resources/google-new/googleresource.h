@@ -26,6 +26,7 @@
 
 #include "googleaccountmanager.h"
 #include "generichandler.h"
+#include "calendarhandler.h"
 
 #include <KGAPI/Types>
 
@@ -118,6 +119,7 @@ private:
     Akonadi::Collection::List m_collections;
 
     QList<GenericHandler::Ptr> m_handlers;
+    CalendarHandler::Ptr m_freeBusyHandler;
     int m_jobs;
 
     friend class CalendarHandler;

@@ -1,5 +1,6 @@
 /*
    Copyright (C) 2011-2013 Daniel Vrátil <dvratil@redhat.com>
+                 2020  Igor Poboiko <igor.poboiko@gmail.com>
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -64,7 +65,7 @@ GoogleResource::GoogleResource(const QString &id)
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
     AttributeFactory::registerAttribute<KGAPIVersionAttribute>();
 
-    connect(this, &GoogleResource::abortRequested, this, 
+    connect(this, &GoogleResource::abortRequested, this,
             [this](){ cancelTask(i18n("Aborted")); });
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
@@ -114,11 +115,12 @@ GoogleResource::GoogleResource(const QString &id)
             Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
             synchronize();
         });
-    
+
     Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
     updateResourceName();
 
-    m_handlers << GenericHandler::Ptr(new CalendarHandler(this));
+    m_freeBusyHandler.reset(new CalendarHandler(this));
+    m_handlers << m_freeBusyHandler;
     m_handlers << GenericHandler::Ptr(new ContactHandler(this));
     m_handlers << GenericHandler::Ptr(new TaskHandler(this));
 
@@ -166,7 +168,7 @@ void GoogleResource::configure(WId windowId)
     }
 
     m_isConfiguring = true;
-    
+
     QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(accountManager(), windowId, this));
     settingsDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("im-google")));
     if (settingsDialog->exec() == QDialog::Accepted) {
@@ -194,10 +196,10 @@ void GoogleResource::configure(WId windowId)
 QList<QUrl> GoogleResource::scopes() const
 {
     // TODO: determine it based on what user wants?
-    const QList< QUrl > scopes = {Account::accountInfoScopeUrl(), Account::calendarScopeUrl(), 
+    const QList< QUrl > scopes = {Account::accountInfoScopeUrl(), Account::calendarScopeUrl(),
         Account::contactsScopeUrl(), Account::tasksScopeUrl()};
     return scopes;
-}    
+}
 
 void GoogleResource::updateResourceName()
 {
@@ -317,23 +319,33 @@ int GoogleResource::accountId() const
 
 QDateTime GoogleResource::lastCacheUpdate() const
 {
-    // TODO
+    if (m_freeBusyHandler) {
+        return m_freeBusyHandler->lastCacheUpdate();
+    }
+    return QDateTime();
 }
 
 void GoogleResource::canHandleFreeBusy(const QString &email) const
 {
-    // TODO
+    if (m_freeBusyHandler) {
+        m_freeBusyHandler->canHandleFreeBusy(email);
+    } else {
+        handlesFreeBusy(email, false);
+    }
 }
 
 void GoogleResource::retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end)
 {
-    // TODO
+    if (m_freeBusyHandler) {
+        m_freeBusyHandler->retrieveFreeBusy(email, start, end);
+    } else {
+        freeBusyRetrieved(email, QString(), false, QString());
+    }
 }
 
-/* 
+/*
  * Collection handling
  */
-
 void GoogleResource::retrieveCollections()
 {
     qCDebug(GOOGLE_LOG) << "Retrieve Collections";
@@ -355,7 +367,7 @@ void GoogleResource::retrieveCollections()
     m_rootCollection.setParentCollection(Collection::root());
     m_rootCollection.setRights(Collection::CanCreateCollection);
     m_rootCollection.setCachePolicy(cachePolicy);
-    
+
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(account()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
@@ -397,7 +409,7 @@ void GoogleResource::retrieveItems(const Akonadi::Collection &collection)
         qCWarning(GOOGLE_LOG) << "Unknown collection" << collection.name();
         itemsRetrieved({});
     }
-}    
+}
 
 void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
@@ -409,10 +421,10 @@ void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
         cancelTask(i18n("The top-level collection cannot contain anything"));
         return;
     }
-    
+
     bool found = false;
     for (auto handler : m_handlers) {
-        if (collection.contentMimeTypes().contains(handler->mimetype()) 
+        if (collection.contentMimeTypes().contains(handler->mimetype())
                 && handler->canPerformTask(item)) {
             handler->itemAdded(item, collection);
             found = true;
@@ -424,7 +436,7 @@ void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
     }
 }
 
-void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) 
+void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
     if (!canPerformTask()) {
@@ -444,7 +456,7 @@ void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArr
     }
 }
 
-void GoogleResource::itemRemoved(const Akonadi::Item &item) 
+void GoogleResource::itemRemoved(const Akonadi::Item &item)
 {
     if (!canPerformTask()) {
         return;
@@ -463,12 +475,12 @@ void GoogleResource::itemRemoved(const Akonadi::Item &item)
     }
 }
 
-void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) 
+void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     if (!canPerformTask()) {
         return;
     }
- 
+
     if (collectionDestination.parentCollection() == Akonadi::Collection::root()) {
         cancelTask(i18n("The top-level collection cannot contain anything"));
         return;
@@ -487,35 +499,35 @@ void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collect
     }
 }
 
-void GoogleResource::itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection) 
+void GoogleResource::itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
     }
 }
 
-void GoogleResource::itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection) 
+void GoogleResource::itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
     }
 }
 
-void GoogleResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) 
+void GoogleResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     if (!canPerformTask()) {
         return;
     }
 }
 
-void GoogleResource::collectionChanged(const Akonadi::Collection &collection) 
+void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
     }
 }
 
-void GoogleResource::collectionRemoved(const Akonadi::Collection &collection) 
+void GoogleResource::collectionRemoved(const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
