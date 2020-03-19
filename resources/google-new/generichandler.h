@@ -51,6 +51,8 @@ public:
     virtual void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) = 0;
     virtual void itemRemoved(const Akonadi::Item &item) = 0;
     virtual void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) = 0;
+    virtual void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection);
+    virtual void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection);
 
     virtual void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) = 0;
     virtual void collectionChanged(const Akonadi::Collection &collection) = 0;

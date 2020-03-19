@@ -504,12 +504,36 @@ void GoogleResource::itemLinked(const Akonadi::Item &item, const Akonadi::Collec
     if (!canPerformTask()) {
         return;
     }
+
+    bool found = false;
+    for (auto handler : m_handlers) {
+        if (handler->canPerformTask(item)) {
+            handler->itemLinked(item, collection);
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cancelTask(i18n("Invalid payload type"));
+    }
 }
 
 void GoogleResource::itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
+    }
+
+    bool found = false;
+    for (auto handler : m_handlers) {
+        if (handler->canPerformTask(item)) {
+            handler->itemUnlinked(item, collection);
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cancelTask(i18n("Invalid payload type"));
     }
 }
 
