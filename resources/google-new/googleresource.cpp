@@ -18,15 +18,16 @@
 
 #include "googleresource.h"
 #include "googlesettings.h"
+#include "googlesettingsdialog.h"
+#include "googleresource_debug.h"
+#include "settingsadaptor.h"
 
 #include "calendarhandler.h"
 #include "contacthandler.h"
 #include "taskhandler.h"
+
 #include "defaultreminderattribute.h"
-#include "googleresource_debug.h"
 #include "kgapiversionattribute.h"
-#include "settingsadaptor.h"
-#include "settingsdialog.h"
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CachePolicy>
@@ -166,14 +167,14 @@ Akonadi::Collection GoogleResource::rootCollection() const
 
 void GoogleResource::configure(WId windowId)
 {
-    if (!m_accountMgr->isReady() || m_isConfiguring) {
+/*    if (!m_accountMgr->isReady() || m_isConfiguring) {
         Q_EMIT configurationDialogAccepted();
         return;
-    }
+    }*/
 
     m_isConfiguring = true;
 
-    QScopedPointer<SettingsDialog> settingsDialog(new SettingsDialog(accountManager(), windowId, this));
+    QScopedPointer<GoogleSettingsDialog> settingsDialog(new GoogleSettingsDialog(this, windowId));
     settingsDialog->setWindowIcon(QIcon::fromTheme(QStringLiteral("im-google")));
     if (settingsDialog->exec() == QDialog::Accepted) {
         updateResourceName();
@@ -194,6 +195,7 @@ void GoogleResource::configure(WId windowId)
 
         Q_EMIT configurationDialogRejected();
     }
+
     m_isConfiguring = false;
 }
 

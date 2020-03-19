@@ -122,6 +122,7 @@ private:
     CalendarHandler::Ptr m_freeBusyHandler;
     int m_jobs;
 
+    friend class GoogleSettingsDialog;
     friend class GenericHandler;
     friend class CalendarHandler;
     friend class ContactHandler;
