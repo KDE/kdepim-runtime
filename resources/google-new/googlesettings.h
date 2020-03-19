@@ -32,6 +32,7 @@
 class GoogleSettings : public SettingsBase
 {
     Q_OBJECT
+    Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Google.ExtendedSettings")
 
 public:
     GoogleSettings();
@@ -46,6 +47,7 @@ public:
     virtual QString account() const;
     virtual void setAccount(const QString &account);
 
+    static GoogleSettings *self();
 private:
     WId m_winId;
     QString m_resourceId;

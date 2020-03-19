@@ -19,7 +19,6 @@
 #include "googleaccountmanager.h"
 #include "googlesettings.h"
 #include "googleresource.h"
-#include "settings.h"
 
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -85,7 +84,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     QGridLayout *refreshLayout = new QGridLayout(refreshBox);
 
     m_enableRefresh = new QCheckBox(i18n("Enable interval refresh"), refreshBox);
-    m_enableRefresh->setChecked(Settings::self()->enableIntervalCheck());
+    m_enableRefresh->setChecked(GoogleSettings::self()->enableIntervalCheck());
     refreshLayout->addWidget(m_enableRefresh, 0, 0, 1, 2);
 
     QLabel *label = new QLabel(i18n("Refresh interval:"));
@@ -97,12 +96,12 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleAccountManager *accountManager,
     m_refreshSpinBox->setValue(30);
     m_refreshSpinBox->setDisplayIntegerBase(10);
     m_refreshSpinBox->setSuffix(ki18np(" minute", " minutes"));
-    m_refreshSpinBox->setEnabled(Settings::self()->enableIntervalCheck());
+    m_refreshSpinBox->setEnabled(GoogleSettings::self()->enableIntervalCheck());
     refreshLayout->addWidget(m_refreshSpinBox, 1, 1);
     connect(m_enableRefresh, &QCheckBox::toggled, m_refreshSpinBox, &KPluralHandlingSpinBox::setEnabled);
 
     if (m_enableRefresh->isEnabled()) {
-        m_refreshSpinBox->setValue(Settings::self()->intervalCheckTime());
+        m_refreshSpinBox->setValue(GoogleSettings::self()->intervalCheckTime());
     }
     QMetaObject::invokeMethod(this, &GoogleSettingsDialog::reloadAccounts, Qt::QueuedConnection);
 }
@@ -137,7 +136,7 @@ void GoogleSettingsDialog::reloadAccounts()
         m_accComboBox->addItem(account->accountName());
     }
 
-    int index = m_accComboBox->findText(Settings::self()->account(), Qt::MatchExactly);
+    int index = m_accComboBox->findText(GoogleSettings::self()->account(), Qt::MatchExactly);
     if (index > -1) {
         m_accComboBox->setCurrentIndex(index);
     }
@@ -159,8 +158,8 @@ void GoogleSettingsDialog::slotAddAccountClicked()
     account->addScope(Account::accountInfoScopeUrl());
 
     AuthJob *authJob = new AuthJob(account,
-                                   Settings::self()->clientId(),
-                                   Settings::self()->clientSecret());
+                                   GoogleSettings::self()->clientId(),
+                                   GoogleSettings::self()->clientSecret());
     connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAccountAuthenticated);
 }
 
@@ -221,8 +220,8 @@ bool GoogleSettingsDialog::handleError(Job *job)
             }
         }
 
-        AuthJob *authJob = new AuthJob(account, Settings::self()->clientId(),
-                                       Settings::self()->clientSecret(), this);
+        AuthJob *authJob = new AuthJob(account, GoogleSettings::self()->clientId(),
+                                       GoogleSettings::self()->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
         connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 
@@ -258,8 +257,8 @@ void GoogleSettingsDialog::slotAuthJobFinished(Job *job)
 
 void GoogleSettingsDialog::slotSaveSettings()
 {
-    Settings::self()->setEnableIntervalCheck(m_enableRefresh->isChecked());
-    Settings::self()->setIntervalCheckTime(m_refreshSpinBox->value());
+    GoogleSettings::self()->setEnableIntervalCheck(m_enableRefresh->isChecked());
+    GoogleSettings::self()->setIntervalCheckTime(m_refreshSpinBox->value());
 
     saveSettings();
     accept();

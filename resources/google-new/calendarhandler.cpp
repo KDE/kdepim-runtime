@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "defaultreminderattribute.h"
 #include "calendarhandler.h"
+#include "defaultreminderattribute.h"
 #include "googleresource.h"
+#include "googlesettings.h"
 #include "kgapiversionattribute.h"
-#include "settings.h"
 
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
@@ -81,7 +81,7 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     const ObjectsList calendars = qobject_cast<CalendarFetchJob *>(job)->items();
     Collection::List collections;
 
-    const QStringList activeCalendars = Settings::self()->calendars();
+    const QStringList activeCalendars = GoogleSettings::self()->calendars();
     for (const auto &object : calendars) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
         qCDebug(GOOGLE_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
@@ -143,8 +143,8 @@ void CalendarHandler::retrieveItems(const Collection &collection)
     if (lastSyncDelta > -1 && lastSyncDelta < 25 * 24 * 3600) {
         job->setFetchOnlyUpdated(collection.remoteRevision().toULongLong());
     }
-    if (!Settings::self()->eventsSince().isEmpty()) {
-        const QDate date = QDate::fromString(Settings::self()->eventsSince(), Qt::ISODate);
+    if (!GoogleSettings::self()->eventsSince().isEmpty()) {
+        const QDate date = QDate::fromString(GoogleSettings::self()->eventsSince(), Qt::ISODate);
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
         job->setTimeMin(QDateTime(date).toSecsSinceEpoch());
 #else
