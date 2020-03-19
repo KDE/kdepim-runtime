@@ -19,7 +19,7 @@
 #include "taskhandler.h"
 #include "googleresource.h"
 #include "kgapiversionattribute.h"
-#include "settings.h"
+#include "googlesettings.h"
 
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
@@ -79,7 +79,7 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     qCDebug(GOOGLE_LOG) << "Task lists retrieved";
 
     const ObjectsList taskLists = qobject_cast<TaskListFetchJob *>(job)->items();
-    const QStringList activeTaskLists = Settings::self()->taskLists();
+    const QStringList activeTaskLists = GoogleSettings::self()->taskLists();
     Collection::List collections;
     for (const ObjectPtr &object : taskLists) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();

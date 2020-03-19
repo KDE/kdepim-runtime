@@ -2,7 +2,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_google_resource\")
 
 set(googleresource_SRCS
     googleresource.cpp
-    settings.cpp
     settingsdialog.cpp
     googleaccountmanager.cpp
     googlesettings.cpp
@@ -34,7 +33,7 @@ kcfg_generate_dbus_interface(
 
 qt5_add_dbus_adaptor(googleresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Google.Settings.xml
-  ${CMAKE_CURRENT_SOURCE_DIR}/settings.h Settings
+  ${CMAKE_CURRENT_SOURCE_DIR}/googlesettings.h GoogleSettings
 )
 
 add_executable(akonadi_google_resource ${googleresource_SRCS})

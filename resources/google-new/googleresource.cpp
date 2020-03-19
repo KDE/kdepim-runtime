@@ -25,7 +25,7 @@
 #include "defaultreminderattribute.h"
 #include "googleresource_debug.h"
 #include "kgapiversionattribute.h"
-#include "settings.h"
+#include "settingsadaptor.h"
 #include "settingsdialog.h"
 
 #include <AkonadiCore/AttributeFactory>
@@ -92,7 +92,7 @@ GoogleResource::GoogleResource(const QString &id)
             }
             Q_EMIT status(NotConfigured, i18n("Configured account has been removed"));
             m_account.clear();
-            Settings::self()->setAccount(QString());
+            GoogleSettings::self()->setAccount(QString());
         });
     connect(m_accountMgr, &GoogleAccountManager::managerReady, this, [this](bool ready){
             if (accountId() > 0) {
@@ -102,7 +102,7 @@ GoogleResource::GoogleResource(const QString &id)
                 Q_EMIT status(Broken, i18n("Can't access KWallet"));
                 return;
             }
-            const QString accountName = Settings::self()->account();
+            const QString accountName = GoogleSettings::self()->account();
             if (accountName.isEmpty()) {
                 Q_EMIT status(NotConfigured);
                 return;
@@ -133,6 +133,10 @@ GoogleResource::GoogleResource(const QString &id)
             });
         connect(handler.data(), &GenericHandler::collectionsRetrieved, this, &GoogleResource::collectionsPartiallyRetrieved);
     }
+
+    new SettingsAdaptor(GoogleSettings::self());
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                 GoogleSettings::self(), QDBusConnection::ExportAdaptors);
 }
 
 GoogleResource::~GoogleResource()
@@ -141,7 +145,7 @@ GoogleResource::~GoogleResource()
 
 void GoogleResource::cleanup()
 {
-    accountManager()->cleanup(Settings::self()->account());
+    accountManager()->cleanup(GoogleSettings::self()->account());
     ResourceBase::cleanup();
 }
 
@@ -176,7 +180,7 @@ void GoogleResource::configure(WId windowId)
 
         Q_EMIT configurationDialogAccepted();
 
-        m_account = accountManager()->findAccount(Settings::self()->account());
+        m_account = accountManager()->findAccount(GoogleSettings::self()->account());
         if (m_account.isNull()) {
             Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
             m_isConfiguring = false;
@@ -203,14 +207,14 @@ QList<QUrl> GoogleResource::scopes() const
 
 void GoogleResource::updateResourceName()
 {
-    const QString accountName = Settings::self()->account();
+    const QString accountName = GoogleSettings::self()->account();
     setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("not configured") : accountName));
 }
 
 void GoogleResource::updateAccountToken(const AccountPtr &account, KGAPI2::Job *restartJob)
 {
-    if (!Settings::self()->account().isEmpty()) {
-        AuthJob *authJob = new AuthJob(account, Settings::self()->clientId(), Settings::self()->clientSecret(), this);
+    if (!GoogleSettings::self()->account().isEmpty()) {
+        AuthJob *authJob = new AuthJob(account, GoogleSettings::self()->clientId(), GoogleSettings::self()->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(restartJob));
         connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
     }
@@ -218,7 +222,7 @@ void GoogleResource::updateAccountToken(const AccountPtr &account, KGAPI2::Job *
 
 void GoogleResource::reloadConfig()
 {
-    const QString accountName = Settings::self()->account();
+    const QString accountName = GoogleSettings::self()->account();
 
     if (!accountName.isEmpty()) {
         m_account = m_accountMgr->findAccount(accountName);
@@ -354,9 +358,9 @@ void GoogleResource::retrieveCollections()
     }
 
     CachePolicy cachePolicy;
-    if (Settings::self()->enableIntervalCheck()) {
+    if (GoogleSettings::self()->enableIntervalCheck()) {
         cachePolicy.setInheritFromParent(false);
-        cachePolicy.setIntervalCheckTime(Settings::self()->intervalCheckTime());
+        cachePolicy.setIntervalCheckTime(GoogleSettings::self()->intervalCheckTime());
     }
 
     // Setting up root collection

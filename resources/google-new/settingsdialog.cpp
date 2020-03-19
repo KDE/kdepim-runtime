@@ -16,7 +16,7 @@
 */
 
 #include "settingsdialog.h"
-#include "settings.h"
+#include "googlesettings.h"
 
 #include <KLocalizedString>
 #include <QListWidget>
@@ -66,11 +66,11 @@ SettingsDialog::SettingsDialog(GoogleAccountManager *accountManager, WId windowI
     m_eventsLimitCombo->setMinimumDate(QDate::fromString(QStringLiteral("2000-01-01"), Qt::ISODate));
     m_eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate
                                    |KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
-    if (Settings::self()->eventsSince().isEmpty()) {
+    if (GoogleSettings::self()->eventsSince().isEmpty()) {
         const QString ds = QStringLiteral("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
         m_eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
     } else {
-        m_eventsLimitCombo->setDate(QDate::fromString(Settings::self()->eventsSince(), Qt::ISODate));
+        m_eventsLimitCombo->setDate(QDate::fromString(GoogleSettings::self()->eventsSince(), Qt::ISODate));
     }
     hbox->addWidget(m_eventsLimitCombo);
 
@@ -95,15 +95,15 @@ void SettingsDialog::saveSettings()
 {
     const AccountPtr account = currentAccount();
     if (!currentAccount()) {
-        Settings::self()->setAccount(QString());
-        Settings::self()->setCalendars(QStringList());
-        Settings::self()->setTaskLists(QStringList());
-        Settings::self()->setEventsSince(QString());
-        Settings::self()->save();
+        GoogleSettings::self()->setAccount(QString());
+        GoogleSettings::self()->setCalendars(QStringList());
+        GoogleSettings::self()->setTaskLists(QStringList());
+        GoogleSettings::self()->setEventsSince(QString());
+        GoogleSettings::self()->save();
         return;
     }
 
-    Settings::self()->setAccount(account->accountName());
+    GoogleSettings::self()->setAccount(account->accountName());
 
     QStringList calendars;
     for (int i = 0; i < m_calendarsList->count(); i++) {
@@ -113,9 +113,9 @@ void SettingsDialog::saveSettings()
             calendars.append(item->data(Qt::UserRole).toString());
         }
     }
-    Settings::self()->setCalendars(calendars);
+    GoogleSettings::self()->setCalendars(calendars);
     if (m_eventsLimitCombo->isValid()) {
-        Settings::self()->setEventsSince(m_eventsLimitCombo->date().toString(Qt::ISODate));
+        GoogleSettings::self()->setEventsSince(m_eventsLimitCombo->date().toString(Qt::ISODate));
     }
 
     QStringList taskLists;
@@ -126,9 +126,9 @@ void SettingsDialog::saveSettings()
             taskLists.append(item->data(Qt::UserRole).toString());
         }
     }
-    Settings::self()->setTaskLists(taskLists);
+    GoogleSettings::self()->setTaskLists(taskLists);
 
-    Settings::self()->save();
+    GoogleSettings::self()->save();
 }
 
 void SettingsDialog::slotCurrentAccountChanged(const QString &accountName)
@@ -184,8 +184,8 @@ void SettingsDialog::slotCalendarsRetrieved(Job *job)
     const ObjectsList objects = fetchJob->items();
 
     QStringList activeCalendars;
-    if (currentAccount()->accountName() == Settings::self()->account()) {
-        activeCalendars = Settings::self()->calendars();
+    if (currentAccount()->accountName() == GoogleSettings::self()->account()) {
+        activeCalendars = GoogleSettings::self()->calendars();
     }
     m_calendarsList->clear();
     for (const ObjectPtr &object : objects) {
@@ -212,8 +212,8 @@ void SettingsDialog::slotTaskListsRetrieved(Job *job)
     const ObjectsList objects = fetchJob->items();
 
     QStringList activeTaskLists;
-    if (currentAccount()->accountName() == Settings::self()->account()) {
-        activeTaskLists = Settings::self()->taskLists();
+    if (currentAccount()->accountName() == GoogleSettings::self()->account()) {
+        activeTaskLists = GoogleSettings::self()->taskLists();
     }
     m_taskListsList->clear();
     for (const ObjectPtr &object : objects) {

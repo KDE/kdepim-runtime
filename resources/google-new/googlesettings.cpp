@@ -16,11 +16,18 @@
 */
 
 #include "googlesettings.h"
+#include "settingsadaptor.h"
 #include "settingsbase.h"
+
+#include <QGlobalStatic>
+
+Q_GLOBAL_STATIC(GoogleSettings, s_globalSettings);
 
 GoogleSettings::GoogleSettings()
     : m_winId(0)
 {
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
+                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
 QString GoogleSettings::clientId() const
@@ -51,4 +58,9 @@ QString GoogleSettings::account() const
 void GoogleSettings::setAccount(const QString &account)
 {
     SettingsBase::setAccount(account);
+}
+
+GoogleSettings* GoogleSettings::self()
+{
+    return s_globalSettings();
 }

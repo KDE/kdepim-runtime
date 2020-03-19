@@ -19,7 +19,6 @@
 #include "contacthandler.h"
 #include "googleresource.h"
 #include "kgapiversionattribute.h"
-#include "settings.h"
 
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
