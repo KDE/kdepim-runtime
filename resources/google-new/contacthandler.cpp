@@ -23,6 +23,7 @@
 
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/EntityHiddenAttribute>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <AkonadiCore/ItemModifyJob>
@@ -77,7 +78,7 @@ void ContactHandler::retrieveCollections()
     m_allCollection.setName(i18n("All Contacts"));
     m_allCollection.setParentCollection(m_resource->rootCollection());
     m_allCollection.setRemoteId(ALLCONTACTS_REMOTEID);
-    // TODO: make it hidden
+    m_allCollection.attribute<EntityHiddenAttribute>(Collection::AddIfMissing);
     m_allCollection.setRights(Collection::ReadOnly);
     m_collections[ ALLCONTACTS_REMOTEID ] = m_allCollection;
 
