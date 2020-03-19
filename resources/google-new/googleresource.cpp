@@ -542,6 +542,18 @@ void GoogleResource::collectionAdded(const Akonadi::Collection &collection, cons
     if (!canPerformTask()) {
         return;
     }
+
+    bool found = false;
+    for (auto handler : m_handlers) {
+        if (collection.contentMimeTypes().contains(handler->mimetype())) {
+            handler->retrieveItems(collection);
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cancelTask(i18n("Unknown collection mimetype"));
+    }
 }
 
 void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
@@ -549,12 +561,36 @@ void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
     if (!canPerformTask()) {
         return;
     }
+
+    bool found = false;
+    for (auto handler : m_handlers) {
+        if (collection.contentMimeTypes().contains(handler->mimetype())) {
+            handler->retrieveItems(collection);
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cancelTask(i18n("Unknown collection mimetype"));
+    }
 }
 
 void GoogleResource::collectionRemoved(const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
+    }
+
+    bool found = false;
+    for (auto handler : m_handlers) {
+        if (collection.contentMimeTypes().contains(handler->mimetype())) {
+            handler->retrieveItems(collection);
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        cancelTask(i18n("Unknown collection mimetype"));
     }
 }
 
