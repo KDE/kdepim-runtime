@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
+                  2020  Igor Poboiko <igor.poboiko@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "contacthandler.h"
 #include "googleresource.h"
 #include "kgapiversionattribute.h"
@@ -35,7 +53,7 @@
 using namespace KGAPI2;
 using namespace Akonadi;
 
-QString ContactHandler::mimetype() 
+QString ContactHandler::mimetype()
 {
     return KContacts::Addressee::mimeType();
 }
@@ -50,9 +68,9 @@ QString ContactHandler::myContactsRemoteId()
     return QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_resource->account()->accountName())));
 }
 
-void ContactHandler::retrieveCollections() 
+void ContactHandler::retrieveCollections()
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups")); 
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups"));
     qCDebug(GOOGLE_LOG) << "Retrieving contacts groups...";
 
     m_allCollection.setContentMimeTypes({ KContacts::Addressee::mimeType() });
@@ -76,7 +94,7 @@ void ContactHandler::retrieveCollections()
     auto attr = otherCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(i18n("Other Contacts"));
     attr->setIconName(QStringLiteral("view-pim-contacts"));
-    
+
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
     auto job = new ContactsGroupFetchJob(m_resource->account(), this);
@@ -122,7 +140,7 @@ void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
                                  |Collection::CanDeleteCollection);
         }
         if (group->id() == myContactsRemoteId()) {
-            collection.setRights(collection.rights() 
+            collection.setRights(collection.rights()
                                  |Collection::CanCreateItem
                                  |Collection::CanChangeItem
                                  |Collection::CanDeleteItem);
@@ -308,7 +326,7 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
         });
 }
 
-void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers) 
+void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing contact"));
@@ -321,7 +339,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void ContactHandler::itemRemoved(const Item &item) 
+void ContactHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact"));
     qCDebug(GOOGLE_LOG) << "Removing contact" << item.remoteId();
@@ -330,7 +348,7 @@ void ContactHandler::itemRemoved(const Item &item)
     connect(job, &ContactDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void ContactHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination) 
+void ContactHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving contact"));
     qCDebug(GOOGLE_LOG) << "Moving contact" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
@@ -376,7 +394,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
             Collection newCollection = collection;
             newCollection.setRemoteId(group->id());
             newCollection.setContentMimeTypes(QStringList() << KContacts::Addressee::mimeType());
-            
+
             auto attr = newCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
             attr->setDisplayName(group->title());
             attr->setIconName(QStringLiteral("view-pim-contacts"));
@@ -387,7 +405,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
         });
 }
 
-void ContactHandler::collectionChanged(const Collection &collection) 
+void ContactHandler::collectionChanged(const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Changing contact group" << collection.remoteId();
@@ -401,7 +419,7 @@ void ContactHandler::collectionChanged(const Collection &collection)
     connect(job, &ContactsGroupModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void ContactHandler::collectionRemoved(const Collection &collection) 
+void ContactHandler::collectionRemoved(const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Removing contact group" << collection.remoteId();

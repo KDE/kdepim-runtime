@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
+                  2020       Igor Poboiko <igor.poboiko@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "defaultreminderattribute.h"
 #include "calendarhandler.h"
 #include "googleresource.h"
@@ -21,7 +39,11 @@
 #include <KGAPI/Calendar/EventFetchJob>
 #include <KGAPI/Calendar/EventModifyJob>
 #include <KGAPI/Calendar/EventMoveJob>
+#include <KGAPI/Calendar/FreeBusyQueryJob>
+
 #include <KCalendarCore/Calendar>
+#include <KCalendarCore/FreeBusy>
+#include <KCalendarCore/ICalFormat>
 
 #include "googleresource_debug.h"
 
@@ -30,7 +52,7 @@ using namespace Akonadi;
 
 static constexpr uint32_t KGAPIEventVersion = 1;
 
-QString CalendarHandler::mimetype() 
+QString CalendarHandler::mimetype()
 {
     return KCalendarCore::Event::eventMimeType();
 }
@@ -40,13 +62,13 @@ bool CalendarHandler::canPerformTask(const Akonadi::Item &item)
     return m_resource->canPerformTask<KCalendarCore::Event::Ptr>(item, mimetype());
 }
 
-void CalendarHandler::retrieveCollections() 
+void CalendarHandler::retrieveCollections()
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving calendars"));
     qCDebug(GOOGLE_LOG) << "Retrieving calendars...";
     auto job = new CalendarFetchJob(m_resource->account(), this);
     connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotCollectionsRetrieved);
-    
+
 }
 
 void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
@@ -58,16 +80,16 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
 
     const ObjectsList calendars = qobject_cast<CalendarFetchJob *>(job)->items();
     Collection::List collections;
-    
+
     const QStringList activeCalendars = Settings::self()->calendars();
     for (const auto &object : calendars) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
         qCDebug(GOOGLE_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
-        
+
         if (!activeCalendars.contains(calendar->uid())) {
             continue;
         }
-        
+
         Collection collection;
         collection.setContentMimeTypes(QStringList() << mimetype());
         collection.setName(calendar->uid());
@@ -81,17 +103,17 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
         } else {
             collection.setRights(Collection::ReadOnly);
         }
-        
+
         EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(calendar->title());
         attr->setIconName(QStringLiteral("view-calendar"));
-        
+
         auto colorAttr = collection.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
         colorAttr->setColor(calendar->backgroundColor());
-        
+
         DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
         reminderAttr->setReminders(calendar->defaultReminders());
-        
+
         // Block email reminders, since Google sends them for us
         BlockAlarmsAttribute *blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
         blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
@@ -221,11 +243,11 @@ void CalendarHandler::slotCreateJobFinished(KGAPI2::Job* job)
 
     item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
     new ItemModifyJob(item, this);
-    
+
     emitReadyStatus();
 }
 
-void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers) 
+void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing event in calendar '%1'", item.parentCollection().displayName()));
@@ -238,7 +260,7 @@ void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &pa
     connect(job, &EventModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void CalendarHandler::itemRemoved(const Item &item) 
+void CalendarHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing event from calendar '%1'", item.parentCollection().displayName()));
     qCDebug(GOOGLE_LOG) << "Removing event" << item.remoteId();
@@ -247,8 +269,8 @@ void CalendarHandler::itemRemoved(const Item &item)
     connect(job, &EventDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 
 }
-    
-void CalendarHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination) 
+
+void CalendarHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
     qCDebug(GOOGLE_LOG) << "Moving" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     KGAPI2::Job *job = new EventMoveJob(item.remoteId(), collectionSource.remoteId(), collectionDestination.remoteId(), m_resource->account(), this);
@@ -271,7 +293,7 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void CalendarHandler::collectionChanged(const Akonadi::Collection &collection) 
+void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Changing calendar" << collection.remoteId();
@@ -284,11 +306,72 @@ void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void CalendarHandler::collectionRemoved(const Akonadi::Collection &collection) 
+void CalendarHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Removing calendar" << collection.remoteId();
     auto job = new CalendarDeleteJob(collection.remoteId(), m_resource->account(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+}
+
+QDateTime CalendarHandler::lastCacheUpdate() const
+{
+    return QDateTime();
+}
+
+void CalendarHandler::canHandleFreeBusy(const QString &email) const
+{
+    if (m_resource->canPerformTask()) {
+        m_resource->handlesFreeBusy(email, false);
+        return;
+    }
+
+    auto job = new FreeBusyQueryJob(email,
+                                    QDateTime::currentDateTimeUtc(),
+                                    QDateTime::currentDateTimeUtc().addSecs(3600),
+                                    m_resource->account(),
+                                    const_cast<CalendarHandler*>(this));
+    connect(job, &KGAPI2::Job::finished, [this](KGAPI2::Job *job){
+                auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
+                if (!m_resource->handleError(job, false)) {
+                    m_resource->handlesFreeBusy(queryJob->id(), false);
+                    return;
+                }
+                m_resource->handlesFreeBusy(queryJob->id(), true);
+            });
+}
+
+void CalendarHandler::retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end)
+{
+    if (m_resource->canPerformTask()) {
+        m_resource->freeBusyRetrieved(email, QString(), false, QString());
+        return;
+    }
+
+    auto job = new FreeBusyQueryJob(email, start, end, m_resource->account(), this);
+    connect(job, &KGAPI2::Job::finished, [this](KGAPI2::Job *job) {
+                auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
+
+                if (!m_resource->handleError(job, false)) {
+                    m_resource->freeBusyRetrieved(queryJob->id(), QString(), false, QString());
+                    return;
+                }
+
+                KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy);
+                fb->setUid(QStringLiteral("%1%2@google.com").arg(QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMddTHHmmssZ"))));
+                fb->setOrganizer(m_resource->account()->accountName());
+                fb->addAttendee(KCalendarCore::Attendee(QString(), queryJob->id()));
+                // FIXME: is it really sort?
+                fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalendarCore::IncidenceBase::RoleSort);
+
+                for (const auto range : queryJob->busy()) {
+                    fb->addPeriod(range.busyStart, range.busyEnd);
+                }
+
+                KCalendarCore::ICalFormat format;
+                const QString fbStr = format.createScheduleMessage(fb, KCalendarCore::iTIPRequest);
+
+                m_resource->freeBusyRetrieved(queryJob->id(), fbStr, true, QString());
+            });
 }

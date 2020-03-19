@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
+                  2020  Igor Poboiko <igor.poboiko@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "taskhandler.h"
 #include "googleresource.h"
 #include "kgapiversionattribute.h"
@@ -35,7 +53,7 @@ using namespace Akonadi;
 
 Q_DECLARE_METATYPE(KGAPI2::TaskPtr)
 
-QString TaskHandler::mimetype() 
+QString TaskHandler::mimetype()
 {
     return KCalendarCore::Todo::todoMimeType();
 }
@@ -45,9 +63,9 @@ bool TaskHandler::canPerformTask(const Akonadi::Item &item)
     return m_resource->canPerformTask<KCalendarCore::Todo::Ptr>(item, mimetype());
 }
 
-void TaskHandler::retrieveCollections() 
+void TaskHandler::retrieveCollections()
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving task lists")); 
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving task lists"));
     qCDebug(GOOGLE_LOG) << "Retrieving tasks...";
     auto job = new TaskListFetchJob(m_resource->account(), this);
     connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCollectionsRetrieved);
@@ -66,7 +84,7 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     for (const ObjectPtr &object : taskLists) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();
         qCDebug(GOOGLE_LOG) << "Retrieved task list:" << taskList->uid();
-        
+
         if (!activeTaskLists.contains(taskList->uid())) {
             continue;
         }
@@ -243,7 +261,7 @@ void TaskHandler::slotCreateJobFinished(KGAPI2::Job* job)
     emitReadyStatus();
 }
 
-void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers) 
+void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing task in list '%1'", item.parentCollection().displayName()));
@@ -264,7 +282,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
             });
 }
 
-void TaskHandler::itemRemoved(const Item &item) 
+void TaskHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing task from list '%1'", item.parentCollection().displayName()));
     qCDebug(GOOGLE_LOG) << "Removing task" << item.remoteId();
@@ -340,8 +358,8 @@ void TaskHandler::slotDoRemoveTask(KJob *job)
     deleteJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(deleteJob, &TaskDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
-    
-void TaskHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination) 
+
+void TaskHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
     m_resource->cancelTask(i18n("Moving tasks between task lists is not supported"));
 }
@@ -359,7 +377,7 @@ void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const A
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void TaskHandler::collectionChanged(const Akonadi::Collection &collection) 
+void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Changing task list" << collection.remoteId();
@@ -372,7 +390,7 @@ void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void TaskHandler::collectionRemoved(const Akonadi::Collection &collection) 
+void TaskHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Removing task list" << collection.remoteId();
