@@ -86,8 +86,7 @@ GoogleResource::GoogleResource(const QString &id)
                     Q_EMIT status(Broken, i18n("Can't access KWallet"));
                     return;
                 }
-                m_account = m_settings->accountPtr();
-                if (m_account.isNull()) {
+                if (m_settings->accountPtr().isNull()) {
                     Q_EMIT status(NotConfigured);
                     return;
                 }
@@ -128,11 +127,6 @@ void GoogleResource::cleanup()
     ResourceBase::cleanup();
 }
 
-AccountPtr GoogleResource::account() const
-{
-    return m_account;
-}
-
 Akonadi::Collection GoogleResource::rootCollection() const
 {
     return m_rootCollection;
@@ -154,8 +148,7 @@ void GoogleResource::configure(WId windowId)
 
         Q_EMIT configurationDialogAccepted();
 
-        m_account = m_settings->accountPtr();
-        if (m_account.isNull()) {
+        if (m_settings->accountPtr().isNull()) {
             Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
             m_isConfiguring = false;
             return;
@@ -186,19 +179,10 @@ void GoogleResource::updateResourceName()
     setName(i18nc("%1 is account name (user@gmail.com)", "Google Groupware (%1)", accountName.isEmpty() ? i18n("not configured") : accountName));
 }
 
-void GoogleResource::updateAccountToken(const AccountPtr &account, KGAPI2::Job *restartJob)
-{
-    if (!m_settings->account().isEmpty()) {
-        AuthJob *authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
-        authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(restartJob));
-        connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
-    }
-}
-
 void GoogleResource::reloadConfig()
 {
-    m_account = m_settings->accountPtr();
-    if (m_account.isNull() || m_account->accountName().isEmpty()) {
+    const AccountPtr account = m_settings->accountPtr();
+    if (account.isNull() || account->accountName().isEmpty()) {
         Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
     } else {
         Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
@@ -211,16 +195,19 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
         return true;
     }
     qCDebug(GOOGLE_LOG) << job << job->errorString();
+    AccountPtr account = job->account();
 
     if (job->error() == KGAPI2::Unauthorized) {
         const QList<QUrl> resourceScopes = scopes();
         for (const QUrl &scope : resourceScopes) {
-            if (!m_account->scopes().contains(scope)) {
-                m_account->addScope(scope);
+            if (!account->scopes().contains(scope)) {
+                account->addScope(scope);
             }
         }
-
-        updateAccountToken(m_account, job);
+        
+        AuthJob *authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
+        authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
+        connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
         return false;
     }
 
@@ -232,7 +219,7 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
 
 bool GoogleResource::canPerformTask()
 {
-    if (!m_account && accountId() == 0) {
+    if (!m_settings->accountPtr() && accountId() == 0) {
         cancelTask(i18nc("@info:status", "Resource is not configured"));
         Q_EMIT status(NotConfigured, i18nc("@info:status", "Resource is not configured"));
         return false;
@@ -249,14 +236,14 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
     }
 
     AuthJob *authJob = qobject_cast<AuthJob *>(job);
-    m_account = authJob->account();
-    if (!m_settings->storeAccount(m_account)) {
+    AccountPtr account = authJob->account();
+    if (!m_settings->storeAccount(account)) {
         qCWarning(GOOGLE_LOG) << "Failed to store account in KWallet";
     }
 
     KGAPI2::Job *otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
     if (otherJob) {
-        otherJob->setAccount(m_account);
+        otherJob->setAccount(account);
         otherJob->restart();
     }
 }
@@ -332,13 +319,13 @@ void GoogleResource::retrieveCollections()
     m_rootCollection = Collection();
     m_rootCollection.setContentMimeTypes({ Collection::mimeType(), Collection::virtualMimeType() });
     m_rootCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
-    m_rootCollection.setName(account()->accountName());
+    m_rootCollection.setName(m_settings->accountPtr()->accountName());
     m_rootCollection.setParentCollection(Collection::root());
     m_rootCollection.setRights(Collection::CanCreateCollection);
     m_rootCollection.setCachePolicy(cachePolicy);
 
     EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-    attr->setDisplayName(account()->accountName());
+    attr->setDisplayName(m_settings->accountPtr()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 
     m_collections = { m_rootCollection };

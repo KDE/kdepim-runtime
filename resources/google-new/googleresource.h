@@ -63,7 +63,6 @@ protected:
     QDateTime lastCacheUpdate() const override;
     void canHandleFreeBusy(const QString &email) const override;
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end) override;
-    void updateAccountToken(const KGAPI2::AccountPtr &account, KGAPI2::Job *restartJob = nullptr);
 
     template<typename T>
     bool canPerformTask(const Akonadi::Item &item, const QString &mimeType = QString())
@@ -80,8 +79,6 @@ protected:
     }
 
     bool canPerformTask();
-
-    KGAPI2::AccountPtr account() const;
     /**
      * KAccounts support abstraction.
      *
@@ -113,7 +110,6 @@ protected Q_SLOTS:
 private:
     bool m_isConfiguring = false;
     GoogleSettings *m_settings = nullptr;
-    KGAPI2::AccountPtr m_account;
     Akonadi::Collection m_rootCollection;
     Akonadi::Collection::List m_collections;
 
