@@ -231,7 +231,6 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
     }
 
     if (!changedPhotos.isEmpty()) {
-        qCDebug(GOOGLE_LOG) << "Requesting photos for" << changedPhotos << "contacts...";
         m_resource->scheduleCustomTask(this, "retrieveContactsPhotos", QVariant::fromValue(changedPhotos));
     }
 
@@ -250,9 +249,17 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
         return;
     }
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts photos"));
-    qCDebug(GOOGLE_LOG) << "Retrieve contacts photos" << argument << "called";
-    auto job = new ItemFetchJob(m_allCollection, this);
-    job->setProperty(MODIFIED_PROPERTY, argument);
+    const QStringList changedPhotos = argument.value<QStringList>();
+
+    Item::List items;
+    items.reserve(changedPhotos.size());
+    for (const QString contact : changedPhotos) {
+        Item item;
+        item.setRemoteId(contact);
+        items << item;
+    }
+    auto job = new ItemFetchJob(items, this);
+    job->setCollection(m_allCollection);
     job->fetchScope().fetchFullPayload(true);
     connect(job, &ItemFetchJob::finished, this, &ContactHandler::slotUpdatePhotosItemsRetrieved);
 }
@@ -260,17 +267,14 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
 void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
 {
     auto fetchJob = qobject_cast<ItemFetchJob *>(job);
-    const auto modifiedItems = fetchJob->property(MODIFIED_PROPERTY).value<QStringList>();
     ContactsList contacts;
     const Item::List items = fetchJob->items();
     qCDebug(GOOGLE_LOG) << "Fetched" << items.count() << "contacts for photo update";
     for (const Item &item : items) {
-        if (modifiedItems.contains(item.remoteId())) {
-            const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
-            const ContactPtr contact(new Contact(addressee));
-            contacts << contact;
-            qCDebug(GOOGLE_LOG) << " -" << contact->uid();
-        }
+        const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
+        const ContactPtr contact(new Contact(addressee));
+        contacts << contact;
+        qCDebug(GOOGLE_LOG) << " -" << contact->uid();
     }
 
     // Make sure account is still valid
@@ -281,7 +285,7 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
     qCDebug(GOOGLE_LOG) << "Starting fetching photos...";
     auto photoJob = new ContactFetchPhotoJob(contacts, m_settings->accountPtr(), this);
     photoJob->setProperty("processedItems", 0);
-    connect(photoJob, &ContactFetchPhotoJob::photoFetched, [this, &items](KGAPI2::Job *job, const ContactPtr &contact){
+    connect(photoJob, &ContactFetchPhotoJob::photoFetched, [this, items](KGAPI2::Job *job, const ContactPtr &contact){
             qCDebug(GOOGLE_LOG) << " - fetched photo for contact" << contact->uid();
             int processedItems = job->property("processedItems").toInt();
             processedItems++;
