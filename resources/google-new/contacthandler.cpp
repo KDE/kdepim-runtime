@@ -32,6 +32,7 @@
 #include <KContacts/Addressee>
 #include <KContacts/Picture>
 
+#include <KGAPI/Account>
 #include <KGAPI/Contacts/Contact>
 #include <KGAPI/Contacts/ContactCreateJob>
 #include <KGAPI/Contacts/ContactDeleteJob>
@@ -65,13 +66,14 @@ bool ContactHandler::canPerformTask(const Item &item)
 
 QString ContactHandler::myContactsRemoteId()
 {
-    return QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_resource->account()->accountName())));
+    return QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_settings->accountPtr()->accountName())));
 }
 
 void ContactHandler::retrieveCollections()
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups"));
     qCDebug(GOOGLE_LOG) << "Retrieving contacts groups...";
+    m_collections.clear();
 
     m_allCollection.setContentMimeTypes({ KContacts::Addressee::mimeType() });
     m_allCollection.setName(i18n("All Contacts"));
@@ -97,7 +99,7 @@ void ContactHandler::retrieveCollections()
 
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
-    auto job = new ContactsGroupFetchJob(m_resource->account(), this);
+    auto job = new ContactsGroupFetchJob(m_settings->accountPtr(), this);
     connect(job, &ContactFetchJob::finished, this, &ContactHandler::slotCollectionsRetrieved);
 }
 
@@ -169,7 +171,7 @@ void ContactHandler::retrieveItems(const Collection &collection)
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts"));
     qCDebug(GOOGLE_LOG) << "Retreiving contacts...";
 
-    auto job = new ContactFetchJob(m_resource->account(), this);
+    auto job = new ContactFetchJob(m_settings->accountPtr(), this);
     job->setFetchDeleted(true);
     if (!collection.remoteRevision().isEmpty()) {
         job->setFetchOnlyUpdated(collection.remoteRevision().toLongLong());
@@ -277,7 +279,7 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
     }
 
     qCDebug(GOOGLE_LOG) << "Starting fetching photos...";
-    auto photoJob = new ContactFetchPhotoJob(contacts, m_resource->account(), this);
+    auto photoJob = new ContactFetchPhotoJob(contacts, m_settings->accountPtr(), this);
     photoJob->setProperty("processedItems", 0);
     connect(photoJob, &ContactFetchPhotoJob::photoFetched, [this, &items](KGAPI2::Job *job, const ContactPtr &contact){
             qCDebug(GOOGLE_LOG) << " - fetched photo for contact" << contact->uid();
@@ -311,7 +313,7 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
         contact->addGroup(myContactsRemoteId());
     }
 
-    auto job = new ContactCreateJob(contact, m_resource->account(), this);
+    auto job = new ContactCreateJob(contact, m_settings->accountPtr(), this);
     connect(job, &ContactCreateJob::finished, [this, item](KGAPI2::Job* job){
             if (!m_resource->handleError(job)) {
                 return;
@@ -334,7 +336,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
     KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
 
-    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_resource->account(), this);
+    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
     modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -343,7 +345,7 @@ void ContactHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact"));
     qCDebug(GOOGLE_LOG) << "Removing contact" << item.remoteId();
-    auto job = new ContactDeleteJob(item.remoteId(), m_resource->account(), this);
+    auto job = new ContactDeleteJob(item.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &ContactDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -358,18 +360,18 @@ void ContactHandler::itemMoved(const Item &item, const Collection &collectionSou
 /*    // MyContacts -> OtherContacts
     if (collectionSource.remoteId() == MYCONTACTS_REMOTEID
         && collectionDestination.remoteId() == OTHERCONTACTS_REMOTEID) {
-        contact->removeGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_resource->account()->accountName()))));
+        contact->removeGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_settings->accountPtr()->accountName()))));
 
         // OtherContacts -> MyContacts
     } else if (collectionSource.remoteId() == OTHERCONTACTS_REMOTEID
                && collectionDestination.remoteId() == MYCONTACTS_REMOTEID) {
-        contact->addGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_resource->account()->accountName()))));
+        contact->addGroup(QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_settings->accountPtr()->accountName()))));
     } else {*/
         m_resource->cancelTask(i18n("Invalid source or destination collection"));
         return;
 //    }
 
-    auto job = new ContactModifyJob(contact, m_resource->account(), this);
+    auto job = new ContactModifyJob(contact, m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -381,7 +383,7 @@ void ContactHandler::itemLinked(const Item &item, const Collection &collection)
 
     contact->addGroup(collection.remoteId());
 
-    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_resource->account(), this);
+    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
     modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -393,7 +395,7 @@ void ContactHandler::itemUnlinked(const Item &item, const Collection &collection
 
     contact->removeGroup(collection.remoteId());
 
-    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_resource->account(), this);
+    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
     modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -408,7 +410,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
     group->setTitle(collection.name());
     group->setIsSystemGroup(false);
 
-    auto job = new ContactsGroupCreateJob(group, m_resource->account(), this);
+    auto job = new ContactsGroupCreateJob(group, m_settings->accountPtr(), this);
     connect(job, &ContactsGroupCreateJob::finished, [this, &collection](KGAPI2::Job* job){
             if (!m_resource->handleError(job)) {
                 return;
@@ -439,7 +441,7 @@ void ContactHandler::collectionChanged(const Collection &collection)
     group->setId(collection.remoteId());
     group->setTitle(collection.displayName());
 
-    auto job = new ContactsGroupModifyJob(group, m_resource->account(), this);
+    auto job = new ContactsGroupModifyJob(group, m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &ContactsGroupModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -448,7 +450,7 @@ void ContactHandler::collectionRemoved(const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Removing contact group" << collection.remoteId();
-    auto job = new ContactsGroupDeleteJob(collection.remoteId(), m_resource->account(), this);
+    auto job = new ContactsGroupDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &ContactsGroupDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }

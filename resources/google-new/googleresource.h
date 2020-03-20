@@ -24,7 +24,7 @@
 
 #include <qwindowdefs.h>
 
-#include "googleaccountmanager.h"
+#include "googlesettings.h"
 #include "generichandler.h"
 #include "calendarhandler.h"
 
@@ -89,7 +89,6 @@ protected:
      */
     int accountId() const;
 
-    GoogleAccountManager *accountManager() const;
     Akonadi::Collection rootCollection() const;
 protected Q_SLOTS:
     void retrieveCollections() override;
@@ -113,7 +112,7 @@ protected Q_SLOTS:
     virtual void slotGenericJobFinished(KGAPI2::Job *job);
 private:
     bool m_isConfiguring = false;
-    GoogleAccountManager *m_accountMgr = nullptr;
+    GoogleSettings *m_settings = nullptr;
     KGAPI2::AccountPtr m_account;
     Akonadi::Collection m_rootCollection;
     Akonadi::Collection::List m_collections;

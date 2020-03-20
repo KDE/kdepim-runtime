@@ -31,6 +31,7 @@ namespace KGAPI2 {
 }
 
 class GoogleResource;
+class GoogleSettings;
 
 class GenericHandler : public QObject
 {
@@ -38,7 +39,7 @@ class GenericHandler : public QObject
 public:
     typedef QSharedPointer<GenericHandler> Ptr;
 
-    GenericHandler(GoogleResource* resource);
+    GenericHandler(GoogleResource *resource, GoogleSettings *settings);
     virtual ~GenericHandler();
 
     virtual QString mimetype() = 0;
@@ -59,6 +60,7 @@ public:
     virtual void collectionRemoved(const Akonadi::Collection &collection) = 0;
 protected:
     GoogleResource* m_resource;
+    GoogleSettings* m_settings;
     void emitReadyStatus();
 Q_SIGNALS:
     void status(int code, const QString& message = QString());

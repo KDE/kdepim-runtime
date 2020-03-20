@@ -29,18 +29,20 @@ namespace KGAPI2 {
     class Job;
 }
 class GoogleResource;
+class GoogleSettings;
 
 class GoogleSettingsDialog : public QDialog 
 {
     Q_OBJECT
 public:
-    explicit GoogleSettingsDialog(GoogleResource *resource, WId wId);
+    explicit GoogleSettingsDialog(GoogleResource *resource, GoogleSettings *settings, WId wId);
     ~GoogleSettingsDialog();
 protected:
     bool handleError(KGAPI2::Job *job);
     void accountChanged();
 private:
-    GoogleResource *m_resource = nullptr;
+    GoogleResource *m_resource;
+    GoogleSettings *m_settings;
     Ui::GoogleSettingsDialog *m_ui = nullptr;
     KGAPI2::AccountPtr m_account;
 private Q_SLOTS:
