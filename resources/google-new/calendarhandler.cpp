@@ -273,12 +273,11 @@ void CalendarHandler::itemRemoved(const Item &item)
 
 void CalendarHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving event from calendar '%1' to calendar '%2'", collectionSource.displayName(), collectionDestination.displayName()));
     qCDebug(GOOGLE_LOG) << "Moving" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     KGAPI2::Job *job = new EventMoveJob(item.remoteId(), collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &EventMoveJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
-
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving event from calendar '%1' to calendar '%2'", collectionSource.displayName(), collectionDestination.displayName()));
 }
 
 void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
