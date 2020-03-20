@@ -386,11 +386,6 @@ void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
         return;
     }
 
-    if (collection.parentCollection() == Akonadi::Collection::root()) {
-        cancelTask(i18n("The top-level collection cannot contain anything"));
-        return;
-    }
-
     bool found = false;
     for (auto handler : m_handlers) {
         if (collection.contentMimeTypes().contains(handler->mimetype())
@@ -401,6 +396,7 @@ void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not add item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
 }
@@ -421,6 +417,7 @@ void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArr
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not change item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
 }
@@ -440,6 +437,7 @@ void GoogleResource::itemRemoved(const Akonadi::Item &item)
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not remove item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
 }
@@ -447,11 +445,6 @@ void GoogleResource::itemRemoved(const Akonadi::Item &item)
 void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     if (!canPerformTask()) {
-        return;
-    }
-
-    if (collectionDestination.parentCollection() == Akonadi::Collection::root()) {
-        cancelTask(i18n("The top-level collection cannot contain anything"));
         return;
     }
 
@@ -464,6 +457,7 @@ void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collect
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not move item" << item.mimeType() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }
@@ -483,6 +477,7 @@ void GoogleResource::itemLinked(const Akonadi::Item &item, const Akonadi::Collec
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not link item" << item.mimeType() << "to" << collection.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }
@@ -502,6 +497,7 @@ void GoogleResource::itemUnlinked(const Akonadi::Item &item, const Akonadi::Coll
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not unlink item mimetype" << item.mimeType() << "from" << collection.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }
@@ -511,16 +507,16 @@ void GoogleResource::collectionAdded(const Akonadi::Collection &collection, cons
     if (!canPerformTask()) {
         return;
     }
-
     bool found = false;
     for (auto handler : m_handlers) {
         if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->retrieveItems(collection);
+            handler->collectionAdded(collection, parent);
             found = true;
             break;
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not add collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
 }
@@ -534,12 +530,13 @@ void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
     bool found = false;
     for (auto handler : m_handlers) {
         if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->retrieveItems(collection);
+            handler->collectionChanged(collection);
             found = true;
             break;
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not change collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
 }
@@ -553,12 +550,13 @@ void GoogleResource::collectionRemoved(const Akonadi::Collection &collection)
     bool found = false;
     for (auto handler : m_handlers) {
         if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->retrieveItems(collection);
+            handler->collectionRemoved(collection);
             found = true;
             break;
         }
     }
     if (!found) {
+        qCWarning(GOOGLE_LOG) << "Could not remove collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
 }
