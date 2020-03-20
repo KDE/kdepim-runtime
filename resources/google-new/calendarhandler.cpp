@@ -88,6 +88,7 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
         qCDebug(GOOGLE_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
 
         if (!activeCalendars.contains(calendar->uid())) {
+            qCDebug(GOOGLE_LOG) << "Skipping, not subscribed";
             continue;
         }
 

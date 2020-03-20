@@ -87,6 +87,7 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
         qCDebug(GOOGLE_LOG) << "Retrieved task list:" << taskList->uid();
 
         if (!activeTaskLists.contains(taskList->uid())) {
+            qCDebug(GOOGLE_LOG) << "Skipping, not subscribed";
             continue;
         }
 
