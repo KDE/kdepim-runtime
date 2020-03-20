@@ -18,7 +18,6 @@
 
 #include "taskhandler.h"
 #include "googleresource.h"
-#include "kgapiversionattribute.h"
 #include "googlesettings.h"
 
 #include <AkonadiCore/CollectionColorAttribute>

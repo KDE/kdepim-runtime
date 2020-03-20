@@ -20,7 +20,6 @@
 #include "defaultreminderattribute.h"
 #include "googleresource.h"
 #include "googlesettings.h"
-#include "kgapiversionattribute.h"
 
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
@@ -131,21 +130,12 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
 void CalendarHandler::retrieveItems(const Collection &collection)
 {
     qCDebug(GOOGLE_LOG) << "Retrieving events for calendar" << collection.remoteId();
-    // https://bugs.kde.org/show_bug.cgi?id=308122: we can only request changes in
-    // max. last 25 days, otherwise we get an error.
-    int lastSyncDelta = -1;
-    if (!collection.remoteRevision().isEmpty()) {
-        lastSyncDelta = QDateTime::currentDateTimeUtc().toSecsSinceEpoch() - collection.remoteRevision().toULongLong();
-    }
-
-    if (!collection.hasAttribute<KGAPIVersionAttribute>() || collection.attribute<KGAPIVersionAttribute>()->version() != KGAPIEventVersion) {
-        lastSyncDelta = -1;
-    }
+    QString syncToken = collection.remoteRevision();
     auto job = new EventFetchJob(collection.remoteId(), m_settings->accountPtr(), this);
-    if (lastSyncDelta > -1 && lastSyncDelta < 25 * 24 * 3600) {
-        job->setFetchOnlyUpdated(collection.remoteRevision().toULongLong());
-    }
-    if (!m_settings->eventsSince().isEmpty()) {
+    if (!syncToken.isEmpty()) {
+        qCDebug(GOOGLE_LOG) << "Using sync token" << syncToken;
+        job->setSyncToken(syncToken);
+    } else if (!m_settings->eventsSince().isEmpty()) {
         const QDate date = QDate::fromString(m_settings->eventsSince(), Qt::ISODate);
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
         job->setTimeMin(QDateTime(date).toSecsSinceEpoch());
@@ -171,7 +161,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
 
     auto fetchJob = qobject_cast<EventFetchJob *>(job);
     const ObjectsList objects = fetchJob->items();
-    bool isIncremental = (fetchJob->fetchOnlyUpdated() > 0);
+    bool isIncremental = !fetchJob->syncToken().isEmpty();
     qCDebug(GOOGLE_LOG) << "Retrieved" << objects.count() << "events for calendar" << collection.remoteId();
     for (const ObjectPtr &object : objects) {
         const EventPtr event = object.dynamicCast<Event>();
@@ -199,7 +189,6 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     }
 
     if (!isIncremental) {
-        collection.attribute<KGAPIVersionAttribute>(Collection::AddIfMissing)->setVersion(KGAPIEventVersion);
         m_resource->itemsRetrieved(changedItems);
     } else {
         m_resource->itemsRetrievedIncremental(changedItems, removedItems);
@@ -207,7 +196,8 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     const QDateTime local(QDateTime::currentDateTime());
     const QDateTime UTC(local.toUTC());
 
-    collection.setRemoteRevision(QString::number(UTC.toSecsSinceEpoch()));
+    qCDebug(GOOGLE_LOG) << "Next sync token:" << fetchJob->syncToken();
+    collection.setRemoteRevision(fetchJob->syncToken());
     new CollectionModifyJob(collection, this);
 
     emitReadyStatus();
