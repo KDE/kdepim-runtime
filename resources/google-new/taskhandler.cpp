@@ -29,6 +29,7 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
 
+#include <KGAPI/Account>
 #include <KGAPI/Tasks/TaskList>
 #include <KGAPI/Tasks/TaskListCreateJob>
 #include <KGAPI/Tasks/TaskListDeleteJob>
@@ -67,7 +68,7 @@ void TaskHandler::retrieveCollections()
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving task lists"));
     qCDebug(GOOGLE_LOG) << "Retrieving tasks...";
-    auto job = new TaskListFetchJob(m_resource->account(), this);
+    auto job = new TaskListFetchJob(m_settings->accountPtr(), this);
     connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCollectionsRetrieved);
 }
 
@@ -79,7 +80,7 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     qCDebug(GOOGLE_LOG) << "Task lists retrieved";
 
     const ObjectsList taskLists = qobject_cast<TaskListFetchJob *>(job)->items();
-    const QStringList activeTaskLists = GoogleSettings::self()->taskLists();
+    const QStringList activeTaskLists = m_settings->taskLists();
     Collection::List collections;
     for (const ObjectPtr &object : taskLists) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();
@@ -119,7 +120,7 @@ void TaskHandler::retrieveItems(const Collection &collection)
         lastSyncDelta = QDateTime::currentDateTimeUtc().toSecsSinceEpoch() - collection.remoteRevision().toULongLong();
     }
 
-    auto job = new TaskFetchJob(collection.remoteId(), m_resource->account(), this);
+    auto job = new TaskFetchJob(collection.remoteId(), m_settings->accountPtr(), this);
     if (lastSyncDelta > -1 && lastSyncDelta < 25 * 25 * 3600) {
         job->setFetchOnlyUpdated(collection.remoteRevision().toULongLong());
     }
@@ -193,7 +194,7 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
         connect(job, &ItemFetchJob::finished, this, &TaskHandler::slotTaskAddedSearchFinished);
         return;
     } else {
-        auto job = new TaskCreateJob(ktodo, collection.remoteId(), m_resource->account(), this);
+        auto job = new TaskCreateJob(ktodo, collection.remoteId(), m_settings->accountPtr(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
         connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCreateJobFinished);
     }
@@ -225,13 +226,13 @@ void TaskHandler::slotTaskAddedSearchFinished(KJob* job)
     // TODO: this is not necessary
     if (items.isEmpty()) {
         task->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
-        newJob = new TaskCreateJob(task, tasksListId, m_resource->account(), this);
+        newJob = new TaskCreateJob(task, tasksListId, m_settings->accountPtr(), this);
     } else {
         Item matchedItem = items.first();
         qCDebug(GOOGLE_LOG) << "Adding task with parent" << matchedItem.remoteId();
 
         task->setRelatedTo(matchedItem.remoteId(), KCalendarCore::Incidence::RelTypeParent);
-        TaskCreateJob *createJob = new TaskCreateJob(task, tasksListId, m_resource->account(), this);
+        TaskCreateJob *createJob = new TaskCreateJob(task, tasksListId, m_settings->accountPtr(), this);
         createJob->setParentItem(matchedItem.remoteId());
         newJob = createJob;
     }
@@ -270,7 +271,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
     KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
     TaskPtr ktodo(new Task(*todo));
     QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
-    auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_resource->account(), this);
+    auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
     connect(job, &TaskMoveJob::finished, [ktodo, item, this](KGAPI2::Job* job){
                 if (!m_resource->handleError(job)) {
                     return;
@@ -354,7 +355,7 @@ void TaskHandler::slotDoRemoveTask(KJob *job)
     Item item = job->property(ITEM_PROPERTY).value< Item >();
 
     /* Now finally we can safely remove the task we wanted to */
-    auto deleteJob = new TaskDeleteJob(item.remoteId(), item.parentCollection().remoteId(), m_resource->account(), this);
+    auto deleteJob = new TaskDeleteJob(item.remoteId(), item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     deleteJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(deleteJob, &TaskDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -372,7 +373,7 @@ void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const A
     TaskListPtr taskList(new TaskList());
     taskList->setTitle(collection.displayName());
 
-    auto job = new TaskListCreateJob(taskList, m_resource->account(), this);
+    auto job = new TaskListCreateJob(taskList, m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -385,7 +386,7 @@ void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
     TaskListPtr taskList(new TaskList());
     taskList->setUid(collection.remoteId());
     taskList->setTitle(collection.displayName());
-    auto job = new TaskListModifyJob(taskList, m_resource->account(), this);
+    auto job = new TaskListModifyJob(taskList, m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
@@ -394,7 +395,7 @@ void TaskHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_LOG) << "Removing task list" << collection.remoteId();
-    auto job = new TaskListDeleteJob(collection.remoteId(), m_resource->account(), this);
+    auto job = new TaskListDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }

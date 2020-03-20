@@ -19,8 +19,9 @@
 #include "generichandler.h"
 #include "googleresource.h"
 
-GenericHandler::GenericHandler(GoogleResource* resource)
+GenericHandler::GenericHandler(GoogleResource *resource, GoogleSettings *settings)
     : m_resource(resource)
+    , m_settings(settings)
 {
 }
 

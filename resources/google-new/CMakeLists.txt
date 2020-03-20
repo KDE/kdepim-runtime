@@ -2,7 +2,6 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_google_resource\")
 
 set(googleresource_SRCS
     googleresource.cpp
-    googleaccountmanager.cpp
     googlesettings.cpp
     googlesettingsdialog.cpp
     kgapiversionattribute.cpp
