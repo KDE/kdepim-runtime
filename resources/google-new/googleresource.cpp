@@ -27,7 +27,6 @@
 #include "taskhandler.h"
 
 #include "defaultreminderattribute.h"
-#include "kgapiversionattribute.h"
 
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CachePolicy>
@@ -63,7 +62,6 @@ GoogleResource::GoogleResource(const QString &id)
     , AgentBase::ObserverV2()
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
-    AttributeFactory::registerAttribute< KGAPIVersionAttribute >();
 
     connect(this, &GoogleResource::abortRequested, this,
             [this](){ cancelTask(i18n("Aborted")); });

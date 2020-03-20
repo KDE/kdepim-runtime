@@ -4,7 +4,6 @@ set(googleresource_SRCS
     googleresource.cpp
     googlesettings.cpp
     googlesettingsdialog.cpp
-    kgapiversionattribute.cpp
     defaultreminderattribute.cpp
 
     generichandler.cpp
