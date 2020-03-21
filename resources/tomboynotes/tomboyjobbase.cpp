@@ -42,12 +42,7 @@ void TomboyJobBase::setAuthentication(const QString &token, const QString &secre
 
 void TomboyJobBase::checkReplyError()
 {
-#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
-    const auto networkError = mReply->error();
-#else
-    const auto networkError = mReply->networkError();
-#endif
-    switch (networkError) {
+    switch (mReply->error()) {
     case QNetworkReply::NoError:
         setError(TomboyJobError::NoError);
         break;

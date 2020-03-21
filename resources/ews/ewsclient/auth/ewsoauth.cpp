@@ -163,12 +163,7 @@ void EwsOAuthUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request)
 
 void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
 {
-#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
-    const auto networkError = reply->error();
-#else
-    const auto networkError = reply->networkError();
-#endif
-    if (networkError != QNetworkReply::NoError) {
+    if (reply->error() != QNetworkReply::NoError) {
         Q_EMIT replyError(reply->errorString());
         return;
     } else if (reply->header(QNetworkRequest::ContentTypeHeader).isNull()) {
