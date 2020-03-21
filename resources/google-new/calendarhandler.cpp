@@ -224,18 +224,13 @@ void CalendarHandler::slotCreateJobFinished(KGAPI2::Job* job)
     Item item = job->property(ITEM_PROPERTY).value<Item>();
 
     ObjectsList objects = qobject_cast<CreateJob *>(job)->items();
-    Q_ASSERT(objects.count() > 0);
-
     EventPtr event = objects.first().dynamicCast<Event>();
     qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
     item.setRemoteId(event->id());
     item.setRemoteRevision(event->etag());
     item.setGid(event->uid());
-    m_resource->changeCommitted(item);
-
     item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
-    new ItemModifyJob(item, this);
-
+    m_resource->changeCommitted(item);
     emitReadyStatus();
 }
 
