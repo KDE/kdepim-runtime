@@ -158,7 +158,7 @@ void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
 
 void ContactHandler::retrieveItems(const Collection &collection)
 {
-    // All items are stored in "Everything" collection
+    // All items are stored in "All Contacts" collection
     if (collection.remoteId() != ALLCONTACTS_REMOTEID) {
         m_resource->itemsRetrievalDone();
         return;
@@ -269,7 +269,6 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
         const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
         const ContactPtr contact(new Contact(addressee));
         contacts << contact;
-        qCDebug(GOOGLE_CONTACTS_LOG) << " -" << contact->uid();
     }
 
     // Make sure account is still valid
@@ -285,7 +284,7 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
             int processedItems = job->property("processedItems").toInt();
             processedItems++;
             job->setProperty("processedItems", processedItems);
-            Q_EMIT percent((float)processedItems / items.count());
+            Q_EMIT percent(100.0f*processedItems / items.count());
 
             for (const Item item : items) {
                 if (item.remoteId() == contact->uid()) {

@@ -46,6 +46,8 @@
 #include <KGAPI/AccountInfo>
 #include <KGAPI/AuthJob>
 
+#include <algorithm>
+
 
 #define ACCESS_TOKEN_PROPERTY "AccessToken"
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
@@ -202,7 +204,7 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
                 account->addScope(scope);
             }
         }
-        
+
         AuthJob *authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
         connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
@@ -351,15 +353,14 @@ void GoogleResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->retrieveItems(collection);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&collection](const GenericHandler::Ptr &handler){
+                return collection.contentMimeTypes().contains(handler->mimetype());
+            });
+
+    if (it != m_handlers.end()) {
+        (*it)->retrieveItems(collection);
+    } else {
         qCWarning(GOOGLE_LOG) << "Unknown collection" << collection.name();
         itemsRetrieved({});
     }
@@ -371,16 +372,14 @@ void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
         return;
     }
 
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (collection.contentMimeTypes().contains(handler->mimetype())
-                && handler->canPerformTask(item)) {
-            handler->itemAdded(item, collection);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&collection, &item](const GenericHandler::Ptr &handler){
+                return collection.contentMimeTypes().contains(handler->mimetype())
+                    && handler->canPerformTask(item);
+            });
+    if (it != m_handlers.end()) {
+        (*it)->itemAdded(item, collection);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not add item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
@@ -392,16 +391,13 @@ void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArr
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (handler->canPerformTask(item)) {
-            handler->itemChanged(item, partIdentifiers);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&item](const GenericHandler::Ptr &handler){
+                return handler->canPerformTask(item);
+            });
+    if (it != m_handlers.end()) {
+        (*it)->itemChanged(item, partIdentifiers);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not change item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
@@ -412,16 +408,13 @@ void GoogleResource::itemRemoved(const Akonadi::Item &item)
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (item.mimeType() == handler->mimetype()) {
-            handler->itemRemoved(item);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&item](const GenericHandler::Ptr &handler){
+                return handler->mimetype() == item.mimeType();
+            });
+    if (it != m_handlers.end()) {
+        (*it)->itemRemoved(item);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not remove item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
@@ -432,16 +425,13 @@ void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collect
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (handler->canPerformTask(item)) {
-            handler->itemMoved(item, collectionSource, collectionDestination);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&item](const GenericHandler::Ptr &handler){
+                return handler->canPerformTask(item);
+            });
+    if (it != m_handlers.end()) {
+        (*it)->itemMoved(item, collectionSource, collectionDestination);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not move item" << item.mimeType() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
@@ -452,16 +442,13 @@ void GoogleResource::itemLinked(const Akonadi::Item &item, const Akonadi::Collec
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (handler->canPerformTask(item)) {
-            handler->itemLinked(item, collection);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&item](const GenericHandler::Ptr &handler){
+                return handler->canPerformTask(item);
+            });
+    if (it != m_handlers.end()) {
+        (*it)->itemLinked(item, collection);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not link item" << item.mimeType() << "to" << collection.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
@@ -472,16 +459,13 @@ void GoogleResource::itemUnlinked(const Akonadi::Item &item, const Akonadi::Coll
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (handler->canPerformTask(item)) {
-            handler->itemUnlinked(item, collection);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&item](const GenericHandler::Ptr &handler){
+                return handler->canPerformTask(item);
+            });
+    if (it != m_handlers.end()) {
+        (*it)->itemUnlinked(item, collection);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not unlink item mimetype" << item.mimeType() << "from" << collection.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
@@ -492,15 +476,13 @@ void GoogleResource::collectionAdded(const Akonadi::Collection &collection, cons
     if (!canPerformTask()) {
         return;
     }
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->collectionAdded(collection, parent);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&collection](const GenericHandler::Ptr &handler){
+                return collection.contentMimeTypes().contains(handler->mimetype());
+            });
+    if (it != m_handlers.end()) {
+        (*it)->collectionAdded(collection, parent);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not add collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
@@ -511,16 +493,13 @@ void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->collectionChanged(collection);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&collection](const GenericHandler::Ptr &handler){
+                return collection.contentMimeTypes().contains(handler->mimetype());
+            });
+    if (it != m_handlers.end()) {
+        (*it)->collectionChanged(collection);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not change collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
@@ -531,16 +510,13 @@ void GoogleResource::collectionRemoved(const Akonadi::Collection &collection)
     if (!canPerformTask()) {
         return;
     }
-
-    bool found = false;
-    for (auto handler : m_handlers) {
-        if (collection.contentMimeTypes().contains(handler->mimetype())) {
-            handler->collectionRemoved(collection);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
+    auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
+            [&collection](const GenericHandler::Ptr &handler){
+                return collection.contentMimeTypes().contains(handler->mimetype());
+            });
+    if (it != m_handlers.end()) {
+        (*it)->collectionRemoved(collection);
+    } else {
         qCWarning(GOOGLE_LOG) << "Could not remove collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
