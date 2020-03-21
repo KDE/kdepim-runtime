@@ -255,10 +255,8 @@ void TaskHandler::slotCreateJobFinished(KGAPI2::Job* job)
     item.setRemoteId(task->uid());
     item.setRemoteRevision(task->etag());
     item.setGid(task->uid());
-    m_resource->changeCommitted(item);
     item.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
-    new ItemModifyJob(item, this);
-
+    m_resource->changeCommitted(item);
     emitReadyStatus();
 }
 

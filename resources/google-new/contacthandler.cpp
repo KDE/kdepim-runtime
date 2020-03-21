@@ -320,13 +320,8 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
             qCDebug(GOOGLE_CONTACTS_LOG) << "Contact" << contact->uid() << "created";
             newItem.setRemoteId(contact->uid());
             newItem.setRemoteRevision(contact->etag());
-            qCDebug(GOOGLE_CONTACTS_LOG) << newItem.parentCollection().remoteId();
-//            newItem.setParentCollection(m_collections[myContactRemoteId()]);
+            newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
             m_resource->changeCommitted(newItem);
-
-//            newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
-//            new ItemModifyJob(newItem, this);
-
             emitReadyStatus();
         });
 }
