@@ -14,11 +14,22 @@ set(googleresource_SRCS
 
 if (ECM_VERSION VERSION_LESS "5.68.0")
     ecm_qt_declare_logging_category(googleresource_SRCS HEADER googleresource_debug.h IDENTIFIER GOOGLE_LOG CATEGORY_NAME org.kde.pim.google)
+    ecm_qt_declare_logging_category(googleresource_SRCS HEADER googlecalendar_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar)
+    ecm_qt_declare_logging_category(googleresource_SRCS HEADER googletasks_debug.h IDENTIFIER GOOGLE_TASKS_LOG CATEGORY_NAME org.kde.pim.google.tasks)
+    ecm_qt_declare_logging_category(googleresource_SRCS HEADER googlecontacts_debug.h IDENTIFIER GOOGLE_CONTACTS_LOG CATEGORY_NAME org.kde.pim.google.contacts)
 else()
     ecm_qt_declare_logging_category(googleresource_SRCS HEADER googleresource_debug.h IDENTIFIER GOOGLE_LOG CATEGORY_NAME org.kde.pim.google
         DESCRIPTION "resource google (kdepim-runtime)"
-        EXPORT KDEPIMRUNTIME
-    )
+        EXPORT KDEPIMRUNTIME)
+    ecm_qt_declare_logging_category(googleresource_SRCS HEADER googlecalendar_debug.h IDENTIFIER GOOGLE_CALENDAR_LOG CATEGORY_NAME org.kde.pim.google.calendar
+        DESCRIPTION "resource google calendar (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME)
+    ecm_qt_declare_logging_category(googleresource_SRCS HEADER googletasks_debug.h IDENTIFIER GOOGLE_TASKS_LOG CATEGORY_NAME org.kde.pim.google.tasks
+        DESCRIPTION "resource google tasks (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME)
+    ecm_qt_declare_logging_category(googleresource_SRCS HEADER googlecontacts_debug.h IDENTIFIER GOOGLE_CONTACTS_LOG CATEGORY_NAME org.kde.pim.google.contacts
+        DESCRIPTION "resource google contacts (kdepim-runtime)"
+        EXPORT KDEPIMRUNTIME)
 endif()
 
 ki18n_wrap_ui(googleresource_SRCS googlesettingsdialog.ui)

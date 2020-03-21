@@ -43,7 +43,7 @@
 
 #include <KCalendarCore/Todo>
 
-#include "googleresource_debug.h"
+#include "googletasks_debug.h"
 
 #define TASK_PROPERTY "_KGAPI2::TaskPtr"
 
@@ -66,7 +66,7 @@ bool TaskHandler::canPerformTask(const Akonadi::Item &item)
 void TaskHandler::retrieveCollections()
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving task lists"));
-    qCDebug(GOOGLE_LOG) << "Retrieving tasks...";
+    qCDebug(GOOGLE_TASKS_LOG) << "Retrieving tasks...";
     auto job = new TaskListFetchJob(m_settings->accountPtr(), this);
     connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCollectionsRetrieved);
 }
@@ -76,17 +76,17 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     if (!m_resource->handleError(job)) {
         return;
     }
-    qCDebug(GOOGLE_LOG) << "Task lists retrieved";
+    qCDebug(GOOGLE_TASKS_LOG) << "Task lists retrieved";
 
     const ObjectsList taskLists = qobject_cast<TaskListFetchJob *>(job)->items();
     const QStringList activeTaskLists = m_settings->taskLists();
     Collection::List collections;
     for (const ObjectPtr &object : taskLists) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();
-        qCDebug(GOOGLE_LOG) << "Retrieved task list:" << taskList->uid();
+        qCDebug(GOOGLE_TASKS_LOG) << "Retrieved task list:" << taskList->uid();
 
         if (!activeTaskLists.contains(taskList->uid())) {
-            qCDebug(GOOGLE_LOG) << "Skipping, not subscribed";
+            qCDebug(GOOGLE_TASKS_LOG) << "Skipping, not subscribed";
             continue;
         }
 
@@ -112,7 +112,7 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
 void TaskHandler::retrieveItems(const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving tasks for list '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Retrieving tasks for list" << collection.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Retrieving tasks for list" << collection.remoteId();
     // https://bugs.kde.org/show_bug.cgi?id=308122: we can only request changes in
     // max. last 25 days, otherwise we get an error.
     int lastSyncDelta = -1;
@@ -139,7 +139,7 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
     const ObjectsList& objects = qobject_cast<FetchJob *>(job)->items();
     Collection collection = job->property(COLLECTION_PROPERTY).value<Collection>();
     bool isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
-    qCDebug(GOOGLE_LOG) << "Retrieved" << objects.count() << "tasks for list" << collection.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Retrieved" << objects.count() << "tasks for list" << collection.remoteId();
     for (const auto &object : objects) {
         TaskPtr task = object.dynamicCast<Task>();
 
@@ -151,10 +151,10 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
         item.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
 
         if (task->deleted()) {
-            qCDebug(GOOGLE_LOG) << " - removed" << task->uid();
+            qCDebug(GOOGLE_TASKS_LOG) << " - removed" << task->uid();
             removedItems << item;
         } else {
-            qCDebug(GOOGLE_LOG) << " - changed" << task->uid();
+            qCDebug(GOOGLE_TASKS_LOG) << " - changed" << task->uid();
             changedItems << item;
         }
     }
@@ -176,7 +176,7 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
 void TaskHandler::itemAdded(const Item &item, const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Task added to list" << collection.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId();
     KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
     TaskPtr ktodo(new Task(*todo));
     ktodo->setUid(QLatin1String(""));
@@ -184,7 +184,7 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     if (!ktodo->relatedTo(KCalendarCore::Incidence::RelTypeParent).isEmpty()) {
         Akonadi::Item parentItem;
         parentItem.setRemoteId(ktodo->relatedTo(KCalendarCore::Incidence::RelTypeParent));
-        qCDebug(GOOGLE_LOG) << "Fetching task parent" << parentItem.remoteId();
+        qCDebug(GOOGLE_TASKS_LOG) << "Fetching task parent" << parentItem.remoteId();
 
         auto job = new ItemFetchJob(parentItem, this);
         job->setCollection(collection);
@@ -211,7 +211,7 @@ void TaskHandler::slotTaskAddedSearchFinished(KJob* job)
     TaskPtr task = job->property(TASK_PROPERTY).value<TaskPtr>();
 
     Item::List items = fetchJob->items();
-    qCDebug(GOOGLE_LOG) << "Received" << items.count() << "parents for task";
+    qCDebug(GOOGLE_TASKS_LOG) << "Received" << items.count() << "parents for task";
 
     const QString tasksListId = item.parentCollection().remoteId();
 
@@ -229,7 +229,7 @@ void TaskHandler::slotTaskAddedSearchFinished(KJob* job)
         newJob = new TaskCreateJob(task, tasksListId, m_settings->accountPtr(), this);
     } else {
         Item matchedItem = items.first();
-        qCDebug(GOOGLE_LOG) << "Adding task with parent" << matchedItem.remoteId();
+        qCDebug(GOOGLE_TASKS_LOG) << "Adding task with parent" << matchedItem.remoteId();
 
         task->setRelatedTo(matchedItem.remoteId(), KCalendarCore::Incidence::RelTypeParent);
         TaskCreateJob *createJob = new TaskCreateJob(task, tasksListId, m_settings->accountPtr(), this);
@@ -266,7 +266,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
 {
     Q_UNUSED(partIdentifiers);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing task in list '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_LOG) << "Changing task" << item.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Changing task" << item.remoteId();
 
     KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
     TaskPtr ktodo(new Task(*todo));
@@ -276,7 +276,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
                 if (!m_resource->handleError(job)) {
                     return;
                 }
-                qCDebug(GOOGLE_LOG) << "Move task" << item.remoteId() << "finished, modifying...";
+                qCDebug(GOOGLE_TASKS_LOG) << "Move task" << item.remoteId() << "finished, modifying...";
                 auto newJob = new TaskModifyJob(ktodo, item.parentCollection().remoteId(), job->account(), this);
                 newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
                 connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
@@ -286,7 +286,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
 void TaskHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing task from list '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_LOG) << "Removing task" << item.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Removing task" << item.remoteId();
     /* Google always automatically removes tasks with all their subtasks. In KOrganizer
      * by default we only remove the item we are given. For this reason we have to first
      * fetch all tasks, find all sub-tasks for the task being removed and detach them
@@ -304,7 +304,7 @@ void TaskHandler::slotRemoveTaskFetchJobFinished(KJob* job)
         m_resource->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
         return;
     }
-    qCDebug(GOOGLE_LOG) << "Item fetched, removing...";
+    qCDebug(GOOGLE_TASKS_LOG) << "Item fetched, removing...";
 
     ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Item removedItem = fetchJob->property(ITEM_PROPERTY).value<Item>();
@@ -313,7 +313,7 @@ void TaskHandler::slotRemoveTaskFetchJobFinished(KJob* job)
     Item::List detachItems;
     for (Item item : items) {
         if (!item.hasPayload<KCalendarCore::Todo::Ptr>()) {
-            qCDebug(GOOGLE_LOG) << "Item " << item.remoteId() << " does not have Todo payload";
+            qCDebug(GOOGLE_TASKS_LOG) << "Item " << item.remoteId() << " does not have Todo payload";
             continue;
         }
 
@@ -369,7 +369,7 @@ void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const A
 {
     Q_UNUSED(parent);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Creating new task list '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Adding task list" << collection.displayName();
+    qCDebug(GOOGLE_TASKS_LOG) << "Adding task list" << collection.displayName();
     TaskListPtr taskList(new TaskList());
     taskList->setTitle(collection.displayName());
 
@@ -381,7 +381,7 @@ void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const A
 void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing task list '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Changing task list" << collection.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Changing task list" << collection.remoteId();
 
     TaskListPtr taskList(new TaskList());
     taskList->setUid(collection.remoteId());
@@ -394,7 +394,7 @@ void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
 void TaskHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing task list '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Removing task list" << collection.remoteId();
+    qCDebug(GOOGLE_TASKS_LOG) << "Removing task list" << collection.remoteId();
     auto job = new TaskListDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);

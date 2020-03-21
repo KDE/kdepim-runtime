@@ -44,7 +44,7 @@
 #include <KGAPI/Contacts/ContactsGroupFetchJob>
 #include <KGAPI/Contacts/ContactsGroupModifyJob>
 
-#include "googleresource_debug.h"
+#include "googlecontacts_debug.h"
 
 #define ALLCONTACTS_REMOTEID QStringLiteral("AllContacts")
 #define OTHERCONTACTS_REMOTEID QStringLiteral("OtherContacts")
@@ -71,7 +71,7 @@ QString ContactHandler::myContactsRemoteId()
 void ContactHandler::retrieveCollections()
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups"));
-    qCDebug(GOOGLE_LOG) << "Retrieving contacts groups...";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieving contacts groups...";
     m_collections.clear();
 
     m_allCollection.setContentMimeTypes({ KContacts::Addressee::mimeType() });
@@ -109,12 +109,12 @@ void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     if (!m_resource->handleError(job)) {
         return;
     }
-    qCDebug(GOOGLE_LOG) << "Contacts groups retrieved";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Contacts groups retrieved";
 
     const ObjectsList objects = qobject_cast<ContactsGroupFetchJob *>(job)->items();
     for (const auto &object : objects) {
         const ContactsGroupPtr group = object.dynamicCast<ContactsGroup>();
-        qCDebug(GOOGLE_LOG) << "Retrieved contact group:" << group->id() << "(" << group->title() << ")";
+        qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieved contact group:" << group->id() << "(" << group->title() << ")";
 
         QString realName = group->title();
 
@@ -164,7 +164,7 @@ void ContactHandler::retrieveItems(const Collection &collection)
         return;
     }
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts"));
-    qCDebug(GOOGLE_LOG) << "Retreiving contacts...";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Retreiving contacts...";
 
     auto job = new ContactFetchJob(m_settings->accountPtr(), this);
     job->setFetchDeleted(true);
@@ -186,7 +186,7 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
     auto fetchJob = qobject_cast<ContactFetchJob *>(job);
     bool isIncremental = (fetchJob->fetchOnlyUpdated() > 0);
     const ObjectsList objects = fetchJob->items();
-    qCDebug(GOOGLE_LOG) << "Retrieved" << objects.count() << "contacts";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieved" << objects.count() << "contacts";
     for (const ObjectPtr &object : objects) {
         const ContactPtr contact = object.dynamicCast<Contact>();
 
@@ -198,10 +198,10 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
         item.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
 
         if (contact->deleted()) {
-            qCDebug(GOOGLE_LOG) << " - removed" << contact->uid();
+            qCDebug(GOOGLE_CONTACTS_LOG) << " - removed" << contact->uid();
             removedItems << item;
         } else {
-            qCDebug(GOOGLE_LOG) << " - changed" << contact->uid();
+            qCDebug(GOOGLE_CONTACTS_LOG) << " - changed" << contact->uid();
             changedItems << item;
             changedPhotos << contact->uid();
         }
@@ -264,12 +264,12 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
     auto fetchJob = qobject_cast<ItemFetchJob *>(job);
     ContactsList contacts;
     const Item::List items = fetchJob->items();
-    qCDebug(GOOGLE_LOG) << "Fetched" << items.count() << "contacts for photo update";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Fetched" << items.count() << "contacts for photo update";
     for (const Item &item : items) {
         const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
         const ContactPtr contact(new Contact(addressee));
         contacts << contact;
-        qCDebug(GOOGLE_LOG) << " -" << contact->uid();
+        qCDebug(GOOGLE_CONTACTS_LOG) << " -" << contact->uid();
     }
 
     // Make sure account is still valid
@@ -277,11 +277,11 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
         return;
     }
 
-    qCDebug(GOOGLE_LOG) << "Starting fetching photos...";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Starting fetching photos...";
     auto photoJob = new ContactFetchPhotoJob(contacts, m_settings->accountPtr(), this);
     photoJob->setProperty("processedItems", 0);
     connect(photoJob, &ContactFetchPhotoJob::photoFetched, [this, items](KGAPI2::Job *job, const ContactPtr &contact){
-            qCDebug(GOOGLE_LOG) << " - fetched photo for contact" << contact->uid();
+            qCDebug(GOOGLE_CONTACTS_LOG) << " - fetched photo for contact" << contact->uid();
             int processedItems = job->property("processedItems").toInt();
             processedItems++;
             job->setProperty("processedItems", processedItems);
@@ -305,7 +305,7 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding contact"));
     auto addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
-    qCDebug(GOOGLE_LOG) << "Creating contact";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Creating contact";
     /* Adding contact to "My Contacts" system group explicitly */
     contact->addGroup(myContactsRemoteId());
     new LinkJob(m_collections[myContactsRemoteId()], { item });
@@ -317,13 +317,15 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
             }
             ContactPtr contact = qobject_cast<ContactCreateJob *>(job)->items().first().dynamicCast<Contact>();
             Item newItem = item;
-            qCDebug(GOOGLE_LOG) << "Contact created";
+            qCDebug(GOOGLE_CONTACTS_LOG) << "Contact" << contact->uid() << "created";
             newItem.setRemoteId(contact->uid());
             newItem.setRemoteRevision(contact->etag());
+            qCDebug(GOOGLE_CONTACTS_LOG) << newItem.parentCollection().remoteId();
+//            newItem.setParentCollection(m_collections[myContactRemoteId()]);
             m_resource->changeCommitted(newItem);
 
-            newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
-            new ItemModifyJob(newItem, this);
+//            newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
+//            new ItemModifyJob(newItem, this);
 
             emitReadyStatus();
         });
@@ -333,7 +335,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
 {
     Q_UNUSED(partIdentifiers);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing contact"));
-    qCDebug(GOOGLE_LOG) << "Changing contact" << item.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Changing contact" << item.remoteId();
     KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
     ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
@@ -344,7 +346,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
 void ContactHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact"));
-    qCDebug(GOOGLE_LOG) << "Removing contact" << item.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Removing contact" << item.remoteId();
     auto job = new ContactDeleteJob(item.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &ContactDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
@@ -354,7 +356,7 @@ void ContactHandler::itemMoved(const Item &item, const Collection &collectionSou
 {
     m_resource->cancelTask(i18n("Moving contacts is not supported, need to link them instead."));
 /*    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving contact"));
-    qCDebug(GOOGLE_LOG) << "Moving contact" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Moving contact" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
 
@@ -379,7 +381,7 @@ void ContactHandler::itemMoved(const Item &item, const Collection &collectionSou
 
 void ContactHandler::itemLinked(const Item &item, const Collection &collection)
 {
-    qCDebug(GOOGLE_LOG) << "Linking contact" << item.remoteId() << "to group" << collection.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Linking contact" << item.remoteId() << "to group" << collection.remoteId();
     KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
     ContactPtr contact(new Contact(addressee));
     if (collection.remoteId() == OTHERCONTACTS_REMOTEID) {
@@ -396,7 +398,7 @@ void ContactHandler::itemLinked(const Item &item, const Collection &collection)
 
 void ContactHandler::itemUnlinked(const Item &item, const Collection &collection)
 {
-    qCDebug(GOOGLE_LOG) << "Unlinking contact" << item.remoteId() << "from group" << collection.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Unlinking contact" << item.remoteId() << "from group" << collection.remoteId();
     KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
     ContactPtr contact(new Contact(addressee));
     if (collection.remoteId() == OTHERCONTACTS_REMOTEID) {
@@ -417,7 +419,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
 {
     Q_UNUSED(parent);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Creating new contact group '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Adding contact group" << collection.displayName();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Adding contact group" << collection.displayName();
     ContactsGroupPtr group(new ContactsGroup);
     group->setTitle(collection.name());
     group->setIsSystemGroup(false);
@@ -429,7 +431,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
             }
 
             ContactsGroupPtr group = qobject_cast<ContactsGroupCreateJob *>(job)->items().first().dynamicCast<ContactsGroup>();
-            qCDebug(GOOGLE_LOG) << "Contact group created:" << group->id();
+            qCDebug(GOOGLE_CONTACTS_LOG) << "Contact group created:" << group->id();
             Collection newCollection = collection;
             newCollection.setRemoteId(group->id());
             newCollection.setContentMimeTypes(QStringList() << KContacts::Addressee::mimeType());
@@ -447,7 +449,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
 void ContactHandler::collectionChanged(const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing contact group '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Changing contact group" << collection.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Changing contact group" << collection.remoteId();
 
     ContactsGroupPtr group(new ContactsGroup());
     group->setId(collection.remoteId());
@@ -461,7 +463,7 @@ void ContactHandler::collectionChanged(const Collection &collection)
 void ContactHandler::collectionRemoved(const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact group '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Removing contact group" << collection.remoteId();
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Removing contact group" << collection.remoteId();
     auto job = new ContactsGroupDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &ContactsGroupDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);

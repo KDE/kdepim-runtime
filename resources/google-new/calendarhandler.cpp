@@ -45,7 +45,7 @@
 #include <KCalendarCore/FreeBusy>
 #include <KCalendarCore/ICalFormat>
 
-#include "googleresource_debug.h"
+#include "googlecalendar_debug.h"
 
 using namespace KGAPI2;
 using namespace Akonadi;
@@ -65,7 +65,7 @@ bool CalendarHandler::canPerformTask(const Akonadi::Item &item)
 void CalendarHandler::retrieveCollections()
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving calendars"));
-    qCDebug(GOOGLE_LOG) << "Retrieving calendars...";
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieving calendars...";
     auto job = new CalendarFetchJob(m_settings->accountPtr(), this);
     connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotCollectionsRetrieved);
 
@@ -76,7 +76,7 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     if (!m_resource->handleError(job)) {
         return;
     }
-    qCDebug(GOOGLE_LOG) << "Calendars retrieved";
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Calendars retrieved";
 
     const ObjectsList calendars = qobject_cast<CalendarFetchJob *>(job)->items();
     Collection::List collections;
@@ -84,15 +84,15 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     const QStringList activeCalendars = m_settings->calendars();
     for (const auto &object : calendars) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
-        qCDebug(GOOGLE_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
+        qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
 
         if (!activeCalendars.contains(calendar->uid())) {
-            qCDebug(GOOGLE_LOG) << "Skipping, not subscribed";
+            qCDebug(GOOGLE_CALENDAR_LOG) << "Skipping, not subscribed";
             continue;
         }
 
         Collection collection;
-        collection.setContentMimeTypes(QStringList() << mimetype());
+        collection.setContentMimeTypes({ mimetype() });
         collection.setName(calendar->uid());
         collection.setParentCollection(m_resource->rootCollection());
         collection.setRemoteId(calendar->uid());
@@ -129,11 +129,11 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
 
 void CalendarHandler::retrieveItems(const Collection &collection)
 {
-    qCDebug(GOOGLE_LOG) << "Retrieving events for calendar" << collection.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieving events for calendar" << collection.remoteId();
     QString syncToken = collection.remoteRevision();
     auto job = new EventFetchJob(collection.remoteId(), m_settings->accountPtr(), this);
     if (!syncToken.isEmpty()) {
-        qCDebug(GOOGLE_LOG) << "Using sync token" << syncToken;
+        qCDebug(GOOGLE_CALENDAR_LOG) << "Using sync token" << syncToken;
         job->setSyncToken(syncToken);
     } else if (!m_settings->eventsSince().isEmpty()) {
         const QDate date = QDate::fromString(m_settings->eventsSince(), Qt::ISODate);
@@ -162,7 +162,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     auto fetchJob = qobject_cast<EventFetchJob *>(job);
     const ObjectsList objects = fetchJob->items();
     bool isIncremental = !fetchJob->syncToken().isEmpty();
-    qCDebug(GOOGLE_LOG) << "Retrieved" << objects.count() << "events for calendar" << collection.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieved" << objects.count() << "events for calendar" << collection.remoteId();
     for (const ObjectPtr &object : objects) {
         const EventPtr event = object.dynamicCast<Event>();
         if (event->useDefaultReminders() && attr) {
@@ -180,10 +180,10 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
         item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
 
         if (event->deleted()) {
-            qCDebug(GOOGLE_LOG) << " - removed" << event->uid();
+            qCDebug(GOOGLE_CALENDAR_LOG) << " - removed" << event->uid();
             removedItems << item;
         } else {
-            qCDebug(GOOGLE_LOG) << " - changed" << event->uid();
+            qCDebug(GOOGLE_CALENDAR_LOG) << " - changed" << event->uid();
             changedItems << item;
         }
     }
@@ -196,7 +196,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     const QDateTime local(QDateTime::currentDateTime());
     const QDateTime UTC(local.toUTC());
 
-    qCDebug(GOOGLE_LOG) << "Next sync token:" << fetchJob->syncToken();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Next sync token:" << fetchJob->syncToken();
     collection.setRemoteRevision(fetchJob->syncToken());
     new CollectionModifyJob(collection, this);
 
@@ -206,7 +206,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
 void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.name()));
-    qCDebug(GOOGLE_LOG) << "Event added to calendar" << collection.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Event added to calendar" << collection.remoteId();
     KCalendarCore::Event::Ptr event = item.payload<KCalendarCore::Event::Ptr>();
     EventPtr kevent(new Event(*event));
     auto *job = new EventCreateJob(kevent, collection.remoteId(), m_settings->accountPtr(), this);
@@ -227,7 +227,7 @@ void CalendarHandler::slotCreateJobFinished(KGAPI2::Job* job)
     Q_ASSERT(objects.count() > 0);
 
     EventPtr event = objects.first().dynamicCast<Event>();
-    qCDebug(GOOGLE_LOG) << "Event added";
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
     item.setRemoteId(event->id());
     item.setRemoteRevision(event->etag());
     item.setGid(event->uid());
@@ -243,7 +243,7 @@ void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &pa
 {
     Q_UNUSED(partIdentifiers);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing event in calendar '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_LOG) << "Changing event" << item.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Changing event" << item.remoteId();
     KCalendarCore::Event::Ptr event = item.payload<KCalendarCore::Event::Ptr>();
     EventPtr kevent(new Event(*event));
     auto job = new EventModifyJob(kevent, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
@@ -255,7 +255,7 @@ void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &pa
 void CalendarHandler::itemRemoved(const Item &item)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing event from calendar '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_LOG) << "Removing event" << item.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Removing event" << item.remoteId();
     KGAPI2::Job *job = new EventDeleteJob(item.remoteId(), item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &EventDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
@@ -265,7 +265,7 @@ void CalendarHandler::itemRemoved(const Item &item)
 void CalendarHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving event from calendar '%1' to calendar '%2'", collectionSource.displayName(), collectionDestination.displayName()));
-    qCDebug(GOOGLE_LOG) << "Moving" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Moving" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     KGAPI2::Job *job = new EventMoveJob(item.remoteId(), collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &EventMoveJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
@@ -275,7 +275,7 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
 {
     Q_UNUSED(parent);
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Creating calendar '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Adding calendar" << collection.displayName();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Adding calendar" << collection.displayName();
     CalendarPtr calendar(new Calendar());
     calendar->setTitle(collection.displayName());
     calendar->setEditable(true);
@@ -287,7 +287,7 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
 void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing calendar '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Changing calendar" << collection.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Changing calendar" << collection.remoteId();
     CalendarPtr calendar(new Calendar());
     calendar->setUid(collection.remoteId());
     calendar->setTitle(collection.displayName());
@@ -300,7 +300,7 @@ void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
 void CalendarHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing calendar '%1'", collection.displayName()));
-    qCDebug(GOOGLE_LOG) << "Removing calendar" << collection.remoteId();
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Removing calendar" << collection.remoteId();
     auto job = new CalendarDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
