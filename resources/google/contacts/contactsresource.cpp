@@ -523,6 +523,14 @@ void ContactsResource::slotCreateJobFinished(KGAPI2::Job *job)
         item.setRemoteId(contact->uid());
         item.setRemoteRevision(contact->etag());
         changeCommitted(item);
+        /**
+         * An Addressee inside Akonadi DB has a default UID, which differs from
+         * one obtained from Google, so we end up having a confision between remoteId
+         * and UID. Since changeCommitted does not update the payload, we need to
+         * update it here explicitly.
+         */
+        item.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
+        new ItemModifyJob(item);
     } else if (collection.isValid()) {
         ContactsGroupCreateJob *createJob = qobject_cast<ContactsGroupCreateJob *>(job);
         Q_ASSERT(createJob->items().count() == 1);
