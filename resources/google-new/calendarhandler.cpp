@@ -98,6 +98,7 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
         collection.setRemoteId(calendar->uid());
         if (calendar->editable()) {
             collection.setRights(Collection::CanChangeCollection
+            |Collection::CanDeleteCollection
             |Collection::CanCreateItem
             |Collection::CanChangeItem
             |Collection::CanDeleteItem);
