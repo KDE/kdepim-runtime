@@ -140,7 +140,7 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 
 if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
-   add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
+   #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
    add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x600000)
 endif()
 find_package(Xsltproc)
