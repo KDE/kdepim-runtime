@@ -61,7 +61,7 @@ using namespace Akonadi;
 
 GoogleResource::GoogleResource(const QString &id)
     : ResourceBase(id)
-    , AgentBase::ObserverV2()
+    , AgentBase::ObserverV3()
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
 
@@ -403,70 +403,75 @@ void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArr
     }
 }
 
-void GoogleResource::itemRemoved(const Akonadi::Item &item)
+void GoogleResource::itemsRemoved(const Item::List &items)
 {
     if (!canPerformTask()) {
         return;
     }
+    // TODO: what if items have different mimetypes?
+    const QString mimeType = items.first().mimeType();
     auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
-            [&item](const GenericHandler::Ptr &handler){
-                return handler->mimetype() == item.mimeType();
+            [&mimeType](const GenericHandler::Ptr &handler){
+                return handler->mimetype() == mimeType;
             });
     if (it != m_handlers.end()) {
-        (*it)->itemRemoved(item);
+        (*it)->itemsRemoved(items);
     } else {
-        qCWarning(GOOGLE_LOG) << "Could not remove item" << item.mimeType();
+        qCWarning(GOOGLE_LOG) << "Could not remove item" << mimeType;
         cancelTask(i18n("Invalid payload type"));
     }
 }
 
-void GoogleResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
+void GoogleResource::itemsMoved(const Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
     if (!canPerformTask()) {
         return;
     }
+    // TODO: what if items have different mimetypes?
     auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
-            [&item](const GenericHandler::Ptr &handler){
+            [&item = items.first()](const GenericHandler::Ptr &handler){
                 return handler->canPerformTask(item);
             });
     if (it != m_handlers.end()) {
-        (*it)->itemMoved(item, collectionSource, collectionDestination);
+        (*it)->itemsMoved(items, collectionSource, collectionDestination);
     } else {
-        qCWarning(GOOGLE_LOG) << "Could not move item" << item.mimeType() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
+        qCWarning(GOOGLE_LOG) << "Could not move item" << items.first().mimeType() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }
 
-void GoogleResource::itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void GoogleResource::itemsLinked(const Item::List &items, const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
     }
+    // TODO: what if items have different mimetypes?
     auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
-            [&item](const GenericHandler::Ptr &handler){
+            [&item = items.first()](const GenericHandler::Ptr &handler){
                 return handler->canPerformTask(item);
             });
     if (it != m_handlers.end()) {
-        (*it)->itemLinked(item, collection);
+        (*it)->itemsLinked(items, collection);
     } else {
-        qCWarning(GOOGLE_LOG) << "Could not link item" << item.mimeType() << "to" << collection.remoteId();
+        qCWarning(GOOGLE_LOG) << "Could not link item" << items.first().mimeType() << "to" << collection.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }
 
-void GoogleResource::itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void GoogleResource::itemsUnlinked(const Item::List &items, const Akonadi::Collection &collection)
 {
     if (!canPerformTask()) {
         return;
     }
+    // TODO: what if items have different mimetypes?
     auto it = std::find_if(m_handlers.begin(), m_handlers.end(),
-            [&item](const GenericHandler::Ptr &handler){
+            [&item = items.first()](const GenericHandler::Ptr &handler){
                 return handler->canPerformTask(item);
             });
     if (it != m_handlers.end()) {
-        (*it)->itemUnlinked(item, collection);
+        (*it)->itemsUnlinked(items, collection);
     } else {
-        qCWarning(GOOGLE_LOG) << "Could not unlink item mimetype" << item.mimeType() << "from" << collection.remoteId();
+        qCWarning(GOOGLE_LOG) << "Could not unlink item mimetype" << items.first().mimeType() << "from" << collection.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }

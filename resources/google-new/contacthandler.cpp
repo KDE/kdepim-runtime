@@ -337,16 +337,21 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void ContactHandler::itemRemoved(const Item &item)
+void ContactHandler::itemsRemoved(const Item::List &items)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact"));
-    qCDebug(GOOGLE_CONTACTS_LOG) << "Removing contact" << item.remoteId();
-    auto job = new ContactDeleteJob(item.remoteId(), m_settings->accountPtr(), this);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Removing contact", "Removing contacts", items.count()));
+    QStringList contactIds;
+    contactIds.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(contactIds),
+            [](const Item &item){
+                return item.remoteId();
+            });
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Removing contacts" << contactIds;
+    auto job = new ContactDeleteJob(contactIds, m_settings->accountPtr(), this);
     connect(job, &ContactDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void ContactHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
+void ContactHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
     m_resource->cancelTask(i18n("Moving contacts is not supported, need to link them instead."));
 /*    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving contact"));
@@ -373,38 +378,50 @@ void ContactHandler::itemMoved(const Item &item, const Collection &collectionSou
     connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);*/
 }
 
-void ContactHandler::itemLinked(const Item &item, const Collection &collection)
+void ContactHandler::itemsLinked(const Item::List &items, const Collection &collection)
 {
-    qCDebug(GOOGLE_CONTACTS_LOG) << "Linking contact" << item.remoteId() << "to group" << collection.remoteId();
-    KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
-    ContactPtr contact(new Contact(addressee));
-    if (collection.remoteId() == OTHERCONTACTS_REMOTEID) {
-        contact->clearGroups();
-    } else {
-        contact->addGroup(myContactsRemoteId());
-        contact->addGroup(collection.remoteId());
-    }
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Linking %1 contact", "Linking %1 contacts", items.count()));
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Linking" << items.count() << "contacts to group" << collection.remoteId();
 
-    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
-    modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    ContactsList contacts;
+    contacts.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
+            [this, &collection](const Akonadi::Item &item){
+                KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
+                ContactPtr contact(new Contact(addressee));
+                if (collection.remoteId() == OTHERCONTACTS_REMOTEID) {
+                    contact->clearGroups();
+                } else {
+                    contact->addGroup(myContactsRemoteId());
+                    contact->addGroup(collection.remoteId());
+                }
+                return contact;
+            });
+    ContactModifyJob *modifyJob = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void ContactHandler::itemUnlinked(const Item &item, const Collection &collection)
+void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &collection)
 {
-    qCDebug(GOOGLE_CONTACTS_LOG) << "Unlinking contact" << item.remoteId() << "from group" << collection.remoteId();
-    KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
-    ContactPtr contact(new Contact(addressee));
-    if (collection.remoteId() == OTHERCONTACTS_REMOTEID) {
-        contact->addGroup(myContactsRemoteId());
-    } else {
-        if (collection.remoteId() != myContactsRemoteId()) {
-            contact->removeGroup(collection.remoteId());
-        }
-    }
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Unlinking %1 contact", "Unlinking %1 contacts", items.count()));
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Unlinking" << items.count() << "contacts from group" << collection.remoteId();
 
-    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
-    modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    ContactsList contacts;
+    contacts.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
+            [this, &collection](const Akonadi::Item &item){
+                KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
+                ContactPtr contact(new Contact(addressee));
+                if (collection.remoteId() == OTHERCONTACTS_REMOTEID) {
+                    contact->addGroup(myContactsRemoteId());
+                } else {
+                    if (collection.remoteId() != myContactsRemoteId()) {
+                        contact->removeGroup(collection.remoteId());
+                    }
+                }
+                return contact;
+            });
+    ContactModifyJob *modifyJob = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
     connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 

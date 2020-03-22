@@ -176,69 +176,14 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
 void TaskHandler::itemAdded(const Item &item, const Collection &collection)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.displayName()));
-    qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId();
     KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
-    TaskPtr ktodo(new Task(*todo));
-    ktodo->setUid(QLatin1String(""));
-
-    if (!ktodo->relatedTo(KCalendarCore::Incidence::RelTypeParent).isEmpty()) {
-        Akonadi::Item parentItem;
-        parentItem.setRemoteId(ktodo->relatedTo(KCalendarCore::Incidence::RelTypeParent));
-        qCDebug(GOOGLE_TASKS_LOG) << "Fetching task parent" << parentItem.remoteId();
-
-        auto job = new ItemFetchJob(parentItem, this);
-        job->setCollection(collection);
-        job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-        job->setProperty(TASK_PROPERTY, QVariant::fromValue(ktodo));
-
-        connect(job, &ItemFetchJob::finished, this, &TaskHandler::slotTaskAddedSearchFinished);
-        return;
-    } else {
-        auto job = new TaskCreateJob(ktodo, collection.remoteId(), m_settings->accountPtr(), this);
-        job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-        connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCreateJobFinished);
-    }
-}
-
-void TaskHandler::slotTaskAddedSearchFinished(KJob* job)
-{
-    if (job->error()) {
-        m_resource->cancelTask(i18n("Failed to add task: %1", job->errorString()));
-        return;
-    }
-    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
-    Item item = job->property(ITEM_PROPERTY).value<Item>();
-    TaskPtr task = job->property(TASK_PROPERTY).value<TaskPtr>();
-
-    Item::List items = fetchJob->items();
-    qCDebug(GOOGLE_TASKS_LOG) << "Received" << items.count() << "parents for task";
-
-    const QString tasksListId = item.parentCollection().remoteId();
-
-    // Make sure account is still valid
-    if (!m_resource->canPerformTask()) {
-        return;
-    }
-
-    KGAPI2::Job *newJob = nullptr;
-    // The parent is not known, so give up and just store the item in Google
-    // without the information about parent.
-    // TODO: this is not necessary
-    if (items.isEmpty()) {
-        task->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
-        newJob = new TaskCreateJob(task, tasksListId, m_settings->accountPtr(), this);
-    } else {
-        Item matchedItem = items.first();
-        qCDebug(GOOGLE_TASKS_LOG) << "Adding task with parent" << matchedItem.remoteId();
-
-        task->setRelatedTo(matchedItem.remoteId(), KCalendarCore::Incidence::RelTypeParent);
-        TaskCreateJob *createJob = new TaskCreateJob(task, tasksListId, m_settings->accountPtr(), this);
-        createJob->setParentItem(matchedItem.remoteId());
-        newJob = createJob;
-    }
-
-    newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(newJob, &KGAPI2::Job::finished, this, &TaskHandler::slotCreateJobFinished);
+    TaskPtr task(new Task(*todo));
+    const QString parentRemoteId = task->relatedTo(KCalendarCore::Incidence::RelTypeParent);
+    qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId() << "with parent" << parentRemoteId;
+    auto job = new TaskCreateJob(task, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
+    job->setParentItem(parentRemoteId);
+    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCreateJobFinished);
 }
 
 void TaskHandler::slotCreateJobFinished(KGAPI2::Job* job)
@@ -248,15 +193,14 @@ void TaskHandler::slotCreateJobFinished(KGAPI2::Job* job)
     }
 
     Item item = job->property(ITEM_PROPERTY).value<Item>();
-    ObjectsList objects = qobject_cast<CreateJob *>(job)->items();
-    Q_ASSERT(objects.count() > 0);
+    TaskPtr task = qobject_cast<TaskCreateJob *>(job)->items().first().dynamicCast<Task>();
 
-    TaskPtr task = objects.first().dynamicCast<Task>();
     item.setRemoteId(task->uid());
     item.setRemoteRevision(task->etag());
     item.setGid(task->uid());
     item.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
     m_resource->changeCommitted(item);
+
     emitReadyStatus();
 }
 
@@ -267,98 +211,92 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
     qCDebug(GOOGLE_TASKS_LOG) << "Changing task" << item.remoteId();
 
     KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
-    TaskPtr ktodo(new Task(*todo));
-    QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
+    const QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
+    TaskPtr task(new Task(*todo));
+    // First we move it to a new parent, if there is
     auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
-    connect(job, &TaskMoveJob::finished, [ktodo, item, this](KGAPI2::Job* job){
+    connect(job, &TaskMoveJob::finished, [this, task, item](KGAPI2::Job* job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
-                qCDebug(GOOGLE_TASKS_LOG) << "Move task" << item.remoteId() << "finished, modifying...";
-                auto newJob = new TaskModifyJob(ktodo, item.parentCollection().remoteId(), job->account(), this);
+                auto newJob = new TaskModifyJob(task, item.parentCollection().remoteId(), job->account(), this);
                 newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
                 connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
             });
 }
 
-void TaskHandler::itemRemoved(const Item &item)
+void TaskHandler::itemsRemoved(const Item::List &items)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing task from list '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_TASKS_LOG) << "Removing task" << item.remoteId();
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Removing %1 tasks", "Removing %1 task", items.count()));
+    qCDebug(GOOGLE_TASKS_LOG) << "Removing" << items.count() << "tasks";
     /* Google always automatically removes tasks with all their subtasks. In KOrganizer
      * by default we only remove the item we are given. For this reason we have to first
      * fetch all tasks, find all sub-tasks for the task being removed and detach them
      * from the task. Only then the task can be safely removed. */
-    auto job = new ItemFetchJob(item.parentCollection());
-    job->setAutoDelete(true);
+    // TODO: what if items belong to different collections?
+    auto job = new ItemFetchJob(items.first().parentCollection());
     job->fetchScope().fetchFullPayload(true);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &ItemFetchJob::finished, this, &TaskHandler::slotRemoveTaskFetchJobFinished);
+    connect(job, &ItemFetchJob::finished, [this, items](KJob *job){
+                if (job->error()) {
+                    m_resource->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
+                    return;
+                }
+                const Item::List fetchedItems = qobject_cast<ItemFetchJob *>(job)->items();
+                Item::List detachItems;
+                for (const Item &fetchedItem : fetchedItems) {
+                    auto todo = fetchedItem.payload<KCalendarCore::Todo::Ptr>();
+                    const QString parentId = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
+                    if (parentId.isEmpty()) {
+                        continue;
+                    }
+                    for (const Item &item : items) {
+                        if (item.remoteId() == parentId) {
+                            Item newItem = item;
+                            qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << item.remoteId() << "from" << parentId;
+                            todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
+                            newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
+                            detachItems << newItem;
+                        }
+                    }
+                }
+                /* If there are no items do detach, then delete the task right now */
+                if (detachItems.isEmpty()) {
+                    slotDoRemoveTasks(items);
+                    return;
+                }
+                qCDebug(GOOGLE_TASKS_LOG) << "Modifying" << detachItems.count() << "children...";
+                /* Send modify request to detach all the sub-tasks from the task that is about to be
+                 * removed. */
+                auto modifyJob = new ItemModifyJob(detachItems);
+                connect(modifyJob, &ItemModifyJob::finished, [this, items](KJob *job){
+                            if (job->error()) {
+                                m_resource->cancelTask(i18n("Failed to delete tasks:", job->errorString()));
+                            }
+                            slotDoRemoveTasks(items);
+                        });
+            });
 }
 
-void TaskHandler::slotRemoveTaskFetchJobFinished(KJob* job)
+void TaskHandler::slotDoRemoveTasks(const Item::List &items)
 {
-    if (job->error()) {
-        m_resource->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
-        return;
-    }
-    qCDebug(GOOGLE_TASKS_LOG) << "Item fetched, removing...";
-
-    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
-    Item removedItem = fetchJob->property(ITEM_PROPERTY).value<Item>();
-    const Item::List items = fetchJob->items();
-
-    Item::List detachItems;
-    for (Item item : items) {
-        if (!item.hasPayload<KCalendarCore::Todo::Ptr>()) {
-            qCDebug(GOOGLE_TASKS_LOG) << "Item " << item.remoteId() << " does not have Todo payload";
-            continue;
-        }
-
-        KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
-        /* If this item is child of the item we want to remove then add it to detach list */
-        if (todo->relatedTo(KCalendarCore::Incidence::RelTypeParent) == removedItem.remoteId()) {
-            todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
-            item.setPayload(todo);
-            detachItems << item;
-        }
-    }
-
-    /* If there are no items do detach, then delete the task right now */
-    if (detachItems.isEmpty()) {
-        slotDoRemoveTask(job);
-        return;
-    }
-
-    /* Send modify request to detach all the sub-tasks from the task that is about to be
-     * removed. */
-    auto modifyJob = new ItemModifyJob(detachItems);
-    modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(removedItem));
-    modifyJob->setAutoDelete(true);
-    connect(modifyJob, &ItemModifyJob::finished, this, &TaskHandler::slotDoRemoveTask);
-}
-
-void TaskHandler::slotDoRemoveTask(KJob *job)
-{
-    if (job->error()) {
-        m_resource->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
-        return;
-    }
-
     // Make sure account is still valid
     if (!m_resource->canPerformTask()) {
         return;
     }
-
-    Item item = job->property(ITEM_PROPERTY).value< Item >();
+    QStringList taskIds;
+    taskIds.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(taskIds),
+            [](const Item &item){
+                return item.remoteId();
+            });
 
     /* Now finally we can safely remove the task we wanted to */
-    auto deleteJob = new TaskDeleteJob(item.remoteId(), item.parentCollection().remoteId(), m_settings->accountPtr(), this);
-    deleteJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(deleteJob, &TaskDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    // TODO: what if tasks are deleted from different collections?
+    auto job = new TaskDeleteJob(taskIds, items.first().parentCollection().remoteId(), m_settings->accountPtr(), this);
+    connect(job, &TaskDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void TaskHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
+void TaskHandler::itemsMoved(const Item::List &item, const Collection &collectionSource, const Collection &collectionDestination)
 {
     m_resource->cancelTask(i18n("Moving tasks between task lists is not supported"));
 }
