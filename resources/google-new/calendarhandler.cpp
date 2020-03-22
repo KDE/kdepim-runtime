@@ -247,22 +247,35 @@ void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &pa
     connect(job, &EventModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void CalendarHandler::itemRemoved(const Item &item)
+void CalendarHandler::itemsRemoved(const Item::List &items)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing event from calendar '%1'", item.parentCollection().displayName()));
-    qCDebug(GOOGLE_CALENDAR_LOG) << "Removing event" << item.remoteId();
-    KGAPI2::Job *job = new EventDeleteJob(item.remoteId(), item.parentCollection().remoteId(), m_settings->accountPtr(), this);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Removing %1 events", "Removing %1 event", items.count()));
+    QStringList eventIds;
+    eventIds.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
+            [](const Item &item){
+                return item.remoteId();
+            });
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Removing events:" << eventIds;
+    // TODO: what if events are from diferent calendars?
+    auto job = new EventDeleteJob(eventIds, items.first().parentCollection().remoteId(), m_settings->accountPtr(), this);
     connect(job, &EventDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 
 }
 
-void CalendarHandler::itemMoved(const Item &item, const Collection &collectionSource, const Collection &collectionDestination)
+void CalendarHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving event from calendar '%1' to calendar '%2'", collectionSource.displayName(), collectionDestination.displayName()));
-    qCDebug(GOOGLE_CALENDAR_LOG) << "Moving" << item.remoteId() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
-    KGAPI2::Job *job = new EventMoveJob(item.remoteId(), collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'", 
+                                                             "Moving %1 event from calendar '%2' to calendar '%3'", 
+                                                             items.count(), collectionSource.displayName(), collectionDestination.displayName()));
+    QStringList eventIds;
+    eventIds.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
+            [](const Item &item){
+                return item.remoteId();
+            });
+    qCDebug(GOOGLE_CALENDAR_LOG) << "Moving events" << eventIds << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
+    auto job = new EventMoveJob(eventIds, collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
     connect(job, &EventMoveJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 

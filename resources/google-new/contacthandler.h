@@ -38,10 +38,10 @@ public:
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
-    void itemRemoved(const Akonadi::Item &item) override;
-    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
-    void itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
-    void itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemsRemoved(const Akonadi::Item::List &items) override;
+    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
+    void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;

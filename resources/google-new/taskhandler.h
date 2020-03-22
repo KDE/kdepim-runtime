@@ -36,8 +36,8 @@ public:
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
-    void itemRemoved(const Akonadi::Item &item) override;
-    void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void itemsRemoved(const Akonadi::Item::List &items) override;
+    void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
@@ -46,9 +46,7 @@ private Q_SLOTS:
     void slotCollectionsRetrieved(KGAPI2::Job* job);
     void slotItemsRetrieved(KGAPI2::Job* job);
     void slotCreateJobFinished(KGAPI2::Job* job);
-    void slotRemoveTaskFetchJobFinished(KJob *job);
-    void slotTaskAddedSearchFinished(KJob* job);
-    void slotDoRemoveTask(KJob *job);
+    void slotDoRemoveTasks(const Akonadi::Item::List &items);
 };
 
 #endif // TASKHANDLER_H

@@ -32,12 +32,12 @@ void GenericHandler::emitReadyStatus()
     Q_EMIT status(Akonadi::AgentBase::Idle, i18nc("@info:status", "Ready"));
 }
 
-void GenericHandler::itemLinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void GenericHandler::itemsLinked(const Akonadi::Item::List &/*items*/, const Akonadi::Collection &/*collection*/)
 {
     m_resource->cancelTask(i18n("Cannot handle item linking"));
 }
 
-void GenericHandler::itemUnlinked(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void GenericHandler::itemsUnlinked(const Akonadi::Item::List &/*items*/, const Akonadi::Collection &/*collection*/)
 {
     m_resource->cancelTask(i18n("Cannot handle item unlinking"));
 }
