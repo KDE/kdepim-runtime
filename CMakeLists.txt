@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-set(PIM_VERSION "5.13.80")
+set(PIM_VERSION "5.13.90")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
@@ -36,8 +36,8 @@ endif()
 #    3.2 pre
 #    3.2 
 
-set(KDEPIM_DEV_VERSION beta1)
-set(RELEASE_SERVICE_VERSION "20.03.80")
+set(KDEPIM_DEV_VERSION rc)
+set(RELEASE_SERVICE_VERSION "20.03.90")
 
 # add an extra space
 if(DEFINED KDEPIM_DEV_VERSION)
@@ -140,7 +140,7 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 
 if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
-   add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
+   #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
    add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x600000)
 endif()
 find_package(Xsltproc)
