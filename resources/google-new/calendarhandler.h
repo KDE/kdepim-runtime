@@ -52,8 +52,6 @@ public:
 private Q_SLOTS:
     void slotCollectionsRetrieved(KGAPI2::Job* job);
     void slotItemsRetrieved(KGAPI2::Job* job);
-
-    void slotCreateJobFinished(KGAPI2::Job* job);
 };
 
 #endif // CALENDARHANDLER_H

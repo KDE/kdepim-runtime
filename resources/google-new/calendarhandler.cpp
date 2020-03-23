@@ -212,27 +212,20 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
     EventPtr kevent(new Event(*event));
     auto *job = new EventCreateJob(kevent, collection.remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotCreateJobFinished);
-}
-
-void CalendarHandler::slotCreateJobFinished(KGAPI2::Job* job)
-{
-    if (!m_resource->handleError(job)) {
-        return;
-    }
-
-    Item item = job->property(ITEM_PROPERTY).value<Item>();
-
-    ObjectsList objects = qobject_cast<CreateJob *>(job)->items();
-    EventPtr event = objects.first().dynamicCast<Event>();
-    qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
-    item.setRemoteId(event->id());
-    item.setRemoteRevision(event->etag());
-    item.setGid(event->uid());
-    item.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
-    m_resource->changeCommitted(item);
-    emitReadyStatus();
+    connect(job, &KGAPI2::Job::finished, [this, item](KGAPI2::Job *job){
+                if (!m_resource->handleError(job)) {
+                    return;
+                }
+                Item newItem = item;
+                const EventPtr event = qobject_cast<EventCreateJob *>(job)->items().first().dynamicCast<Event>();
+                qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
+                newItem.setRemoteId(event->id());
+                newItem.setRemoteRevision(event->etag());
+                newItem.setGid(event->uid());
+                newItem.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
+                m_resource->changeCommitted(newItem);
+                emitReadyStatus();
+            });
 }
 
 void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
