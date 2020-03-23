@@ -141,7 +141,7 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
     bool isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
     qCDebug(GOOGLE_TASKS_LOG) << "Retrieved" << objects.count() << "tasks for list" << collection.remoteId();
     for (const auto &object : objects) {
-        TaskPtr task = object.dynamicCast<Task>();
+        const TaskPtr task = object.dynamicCast<Task>();
 
         Item item;
         item.setMimeType(KCalendarCore::Todo::todoMimeType());
@@ -182,26 +182,20 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId() << "with parent" << parentRemoteId;
     auto job = new TaskCreateJob(task, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setParentItem(parentRemoteId);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCreateJobFinished);
-}
-
-void TaskHandler::slotCreateJobFinished(KGAPI2::Job* job)
-{
-    if (!m_resource->handleError(job)) {
-        return;
-    }
-
-    Item item = job->property(ITEM_PROPERTY).value<Item>();
-    TaskPtr task = qobject_cast<TaskCreateJob *>(job)->items().first().dynamicCast<Task>();
-
-    item.setRemoteId(task->uid());
-    item.setRemoteRevision(task->etag());
-    item.setGid(task->uid());
-    item.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
-    m_resource->changeCommitted(item);
-
-    emitReadyStatus();
+    connect(job, &KGAPI2::Job::finished, [this, item](KGAPI2::Job *job){
+                if (!m_resource->handleError(job)) {
+                    return;
+                }
+                Item newItem = item;
+                const TaskPtr task = qobject_cast<TaskCreateJob *>(job)->items().first().dynamicCast<Task>();
+                qCDebug(GOOGLE_TASKS_LOG) << "Task added";
+                newItem.setRemoteId(task->uid());
+                newItem.setRemoteRevision(task->etag());
+                newItem.setGid(task->uid());
+                newItem.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
+                m_resource->changeCommitted(newItem);
+                emitReadyStatus();
+            });
 }
 
 void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
