@@ -216,7 +216,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
                 }
                 auto newJob = new TaskModifyJob(task, item.parentCollection().remoteId(), job->account(), this);
                 newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-                connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+                connect(newJob, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
             });
 }
 
@@ -288,6 +288,7 @@ void TaskHandler::slotDoRemoveTasks(const Item::List &items)
     /* Now finally we can safely remove the task we wanted to */
     // TODO: what if tasks are deleted from different collections?
     auto job = new TaskDeleteJob(taskIds, items.first().parentCollection().remoteId(), m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &TaskDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 

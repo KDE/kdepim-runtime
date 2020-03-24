@@ -352,9 +352,9 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
     qCDebug(GOOGLE_CONTACTS_LOG) << "Changing contact" << item.remoteId();
     KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
-    ContactModifyJob *modifyJob = new ContactModifyJob(contact, m_settings->accountPtr(), this);
-    modifyJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    auto job = new ContactModifyJob(contact, m_settings->accountPtr(), this);
+    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 void ContactHandler::itemsRemoved(const Item::List &items)
@@ -368,11 +368,13 @@ void ContactHandler::itemsRemoved(const Item::List &items)
             });
     qCDebug(GOOGLE_CONTACTS_LOG) << "Removing contacts" << contactIds;
     auto job = new ContactDeleteJob(contactIds, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &ContactDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 void ContactHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Moving contacts from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     if (!(((collectionSource.remoteId() == myContactsRemoteId()) && (collectionDestination.remoteId() == OTHERCONTACTS_REMOTEID)) ||
           ((collectionSource.remoteId() == OTHERCONTACTS_REMOTEID) && (collectionDestination.remoteId() == myContactsRemoteId())))) {
         m_resource->cancelTask(i18n("Invalid source or destination collection"));
@@ -401,6 +403,7 @@ void ContactHandler::itemsMoved(const Item::List &items, const Collection &colle
             });
     qCDebug(GOOGLE_CONTACTS_LOG) << "Moving contacts from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     auto job = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
@@ -418,8 +421,9 @@ void ContactHandler::itemsLinked(const Item::List &items, const Collection &coll
                 contact->addGroup(collection.remoteId());
                 return contact;
             });
-    ContactModifyJob *modifyJob = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
-    connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    auto job = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
+    connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &collection)
@@ -436,8 +440,9 @@ void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &co
                 contact->removeGroup(collection.remoteId());
                 return contact;
             });
-    ContactModifyJob *modifyJob = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
-    connect(modifyJob, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    auto job = new ContactModifyJob(contacts, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
+    connect(job, &ContactModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 
