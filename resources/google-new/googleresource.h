@@ -33,6 +33,7 @@
 #include <KLocalizedString>
 
 #define ITEM_PROPERTY "_AkonadiItem"
+#define ITEMS_PROPERTY "_AkonadiItems"
 #define COLLECTION_PROPERTY "_AkonadiCollection"
 #define JOB_PROPERTY "_KGAPI2Job"
 

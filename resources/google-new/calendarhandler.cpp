@@ -254,8 +254,8 @@ void CalendarHandler::itemsRemoved(const Item::List &items)
     qCDebug(GOOGLE_CALENDAR_LOG) << "Removing events:" << eventIds;
     // TODO: what if events are from diferent calendars?
     auto job = new EventDeleteJob(eventIds, items.first().parentCollection().remoteId(), m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &EventDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
-
 }
 
 void CalendarHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
@@ -271,6 +271,7 @@ void CalendarHandler::itemsMoved(const Item::List &items, const Collection &coll
             });
     qCDebug(GOOGLE_CALENDAR_LOG) << "Moving events" << eventIds << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     auto job = new EventMoveJob(eventIds, collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &EventMoveJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 

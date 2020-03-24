@@ -194,9 +194,8 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
     if ((job->error() == KGAPI2::NoError) || (job->error() == KGAPI2::OK)) {
         return true;
     }
-    qCDebug(GOOGLE_LOG) << job << job->errorString();
+    qCWarning(GOOGLE_LOG) << "Got error:" << job << job->errorString();
     AccountPtr account = job->account();
-
     if (job->error() == KGAPI2::Unauthorized) {
         const QList<QUrl> resourceScopes = scopes();
         for (const QUrl &scope : resourceScopes) {
@@ -255,12 +254,12 @@ void GoogleResource::slotGenericJobFinished(KGAPI2::Job *job)
     }
     qCDebug(GOOGLE_LOG) << "Job finished";
 
-    const Item item = job->property(ITEM_PROPERTY).value<Item>();
-    const Collection collection = job->property(COLLECTION_PROPERTY).value<Collection>();
-    if (item.isValid()) {
-        changeCommitted(item);
-    } else if (collection.isValid()) {
-        changeCommitted(collection);
+    if (job->property(ITEM_PROPERTY).isValid()) {
+        changeCommitted(job->property(ITEM_PROPERTY).value<Item>());
+    } else if (job->property(ITEMS_PROPERTY).isValid()) {
+        changesCommitted(job->property(ITEMS_PROPERTY).value<Item::List>());
+    } else if (job->property(COLLECTION_PROPERTY).isValid()) {
+        changeCommitted(job->property(COLLECTION_PROPERTY).value<Collection>());
     } else {
         taskDone();
     }
