@@ -192,8 +192,9 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
                 newItem.setRemoteId(task->uid());
                 newItem.setRemoteRevision(task->etag());
                 newItem.setGid(task->uid());
-                newItem.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
                 m_resource->changeCommitted(newItem);
+                newItem.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
+                new ItemModifyJob(newItem, this);
                 emitReadyStatus();
             });
 }
