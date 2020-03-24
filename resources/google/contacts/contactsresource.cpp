@@ -375,9 +375,9 @@ void ContactsResource::slotCollectionsRetrieved(KGAPI2::Job *job)
         collection.setRemoteId(group->id());
         collection.setVirtual(true);
 
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-        attr->setDisplayName(realName);
-        attr->setIconName(QStringLiteral("view-pim-contacts"));
+        EntityDisplayAttribute *collAttr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        collAttr->setDisplayName(realName);
+        collAttr->setIconName(QStringLiteral("view-pim-contacts"));
 
         m_collections[ collection.remoteId() ] = collection;
     }

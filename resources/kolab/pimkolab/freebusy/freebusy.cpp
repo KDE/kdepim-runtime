@@ -157,8 +157,6 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
     Q_ASSERT(tmpEnd.isValid());
     if (allDay) {
         tmpStart.setTime(QTime(0, 0, 0, 0));
-    }
-    if (allDay) {
         tmpEnd.setTime(QTime(23, 59, 59, 999)); //The window is inclusive
     }
     return Kolab::Period(Kolab::Conversion::fromDate(tmpStart, allDay), Kolab::Conversion::fromDate(tmpEnd, allDay));
