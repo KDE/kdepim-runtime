@@ -454,6 +454,9 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
         auth = new EwsOAuth(this, mUi->kcfg_Email->text(), mSettings->oAuth2AppId(), mSettings->oAuth2ReturnUri());
     } else if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
+    } else {
+        //Be sure that it will not crash.
+        return auth;
     }
     auth->setAuthParentWidget(this);
 
