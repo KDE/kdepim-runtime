@@ -21,6 +21,7 @@
 #define CONTACTHANDLER_H
 
 #include "generichandler.h"
+#include <KGAPI/Types>
 #include <QObject>
 
 
@@ -52,9 +53,9 @@ private Q_SLOTS:
     void slotUpdatePhotosItemsRetrieved(KJob *job);
     void retrieveContactsPhotos(const QVariant &arguments);
 private:
-    QString myContactsRemoteId();
+    QString myContactsRemoteId() const;
+    Akonadi::Collection setupCollection(const KGAPI2::ContactsGroupPtr& group, const QString &realName = QString());
     QMap<QString, Akonadi::Collection> m_collections;
-    Akonadi::Collection m_allCollection;
 };
 
 #endif // CONTACTHANDLER_H

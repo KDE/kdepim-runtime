@@ -222,8 +222,9 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
                 newItem.setRemoteId(event->id());
                 newItem.setRemoteRevision(event->etag());
                 newItem.setGid(event->uid());
-                newItem.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
                 m_resource->changeCommitted(newItem);
+                newItem.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
+                new ItemModifyJob(newItem, this);
                 emitReadyStatus();
             });
 }
