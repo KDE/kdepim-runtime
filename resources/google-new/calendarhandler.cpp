@@ -194,9 +194,6 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     } else {
         m_resource->itemsRetrievedIncremental(changedItems, removedItems);
     }
-    const QDateTime local(QDateTime::currentDateTime());
-    const QDateTime UTC(local.toUTC());
-
     qCDebug(GOOGLE_CALENDAR_LOG) << "Next sync token:" << fetchJob->syncToken();
     collection.setRemoteRevision(fetchJob->syncToken());
     new CollectionModifyJob(collection, this);
@@ -212,7 +209,7 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
     EventPtr kevent(new Event(*event));
     auto *job = new EventCreateJob(kevent, collection.remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
-    connect(job, &KGAPI2::Job::finished, [this, item](KGAPI2::Job *job){
+    connect(job, &KGAPI2::Job::finished, this, [this, item](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
@@ -327,7 +324,7 @@ void CalendarHandler::canHandleFreeBusy(const QString &email) const
                                     QDateTime::currentDateTimeUtc().addSecs(3600),
                                     m_settings->accountPtr(),
                                     const_cast<CalendarHandler*>(this));
-    connect(job, &KGAPI2::Job::finished, [this](KGAPI2::Job *job){
+    connect(job, &KGAPI2::Job::finished, this, [this](KGAPI2::Job *job){
                 auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
                 if (!m_resource->handleError(job, false)) {
                     m_resource->handlesFreeBusy(queryJob->id(), false);
@@ -345,7 +342,7 @@ void CalendarHandler::retrieveFreeBusy(const QString &email, const QDateTime &st
     }
 
     auto job = new FreeBusyQueryJob(email, start, end, m_settings->accountPtr(), this);
-    connect(job, &KGAPI2::Job::finished, [this](KGAPI2::Job *job) {
+    connect(job, &KGAPI2::Job::finished, this, [this](KGAPI2::Job *job) {
                 auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
 
                 if (!m_resource->handleError(job, false)) {
@@ -360,7 +357,7 @@ void CalendarHandler::retrieveFreeBusy(const QString &email, const QDateTime &st
                 // FIXME: is it really sort?
                 fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalendarCore::IncidenceBase::RoleSort);
 
-                for (const auto range : queryJob->busy()) {
+                for (const auto &range : queryJob->busy()) {
                     fb->addPeriod(range.busyStart, range.busyEnd);
                 }
 
