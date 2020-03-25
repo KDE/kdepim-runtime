@@ -182,7 +182,7 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId() << "with parent" << parentRemoteId;
     auto job = new TaskCreateJob(task, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setParentItem(parentRemoteId);
-    connect(job, &KGAPI2::Job::finished, [this, item](KGAPI2::Job *job){
+    connect(job, &KGAPI2::Job::finished, this, [this, item](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
@@ -210,7 +210,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
     TaskPtr task(new Task(*todo));
     // First we move it to a new parent, if there is
     auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
-    connect(job, &TaskMoveJob::finished, [this, task, item](KGAPI2::Job* job){
+    connect(job, &TaskMoveJob::finished, this, [this, task, item](KGAPI2::Job* job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
@@ -231,7 +231,7 @@ void TaskHandler::itemsRemoved(const Item::List &items)
     // TODO: what if items belong to different collections?
     auto job = new ItemFetchJob(items.first().parentCollection());
     job->fetchScope().fetchFullPayload(true);
-    connect(job, &ItemFetchJob::finished, [this, items](KJob *job){
+    connect(job, &ItemFetchJob::finished, this, [this, items](KJob *job){
                 if (job->error()) {
                     m_resource->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
                     return;
@@ -263,7 +263,7 @@ void TaskHandler::itemsRemoved(const Item::List &items)
                 /* Send modify request to detach all the sub-tasks from the task that is about to be
                  * removed. */
                 auto modifyJob = new ItemModifyJob(detachItems);
-                connect(modifyJob, &ItemModifyJob::finished, [this, items](KJob *job){
+                connect(modifyJob, &ItemModifyJob::finished, this, [this, items](KJob *job){
                             if (job->error()) {
                                 m_resource->cancelTask(i18n("Failed to delete tasks:", job->errorString()));
                             }
@@ -292,7 +292,7 @@ void TaskHandler::slotDoRemoveTasks(const Item::List &items)
     connect(job, &TaskDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void TaskHandler::itemsMoved(const Item::List &item, const Collection &collectionSource, const Collection &collectionDestination)
+void TaskHandler::itemsMoved(const Item::List &/*item*/, const Collection &/*collectionSource*/, const Collection &/*collectionDestination*/)
 {
     m_resource->cancelTask(i18n("Moving tasks between task lists is not supported"));
 }

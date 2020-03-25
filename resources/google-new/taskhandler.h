@@ -28,7 +28,7 @@ class TaskHandler : public GenericHandler
 public:
     using GenericHandler::GenericHandler;
 
-    QString mimetype();
+    QString mimetype() override;
     bool canPerformTask(const Akonadi::Item &item) override;
 
     void retrieveCollections() override;

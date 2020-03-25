@@ -78,7 +78,7 @@ GoogleResource::GoogleResource(const QString &id)
 
     m_settings = new GoogleSettings();
     m_settings->setWindowId(winIdForDialogs());
-    connect(m_settings, &GoogleSettings::accountReady, [this](bool ready){
+    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready){
                 if (accountId() > 0) {
                     return;
                 }
@@ -103,10 +103,10 @@ GoogleResource::GoogleResource(const QString &id)
     m_handlers << GenericHandler::Ptr(new TaskHandler(this, m_settings));
 
     for (auto handler : m_handlers) {
-        connect(handler.data(), &GenericHandler::status, [this](int code, QString message){
+        connect(handler.data(), &GenericHandler::status, this, [this](int code, QString message){
                 Q_EMIT status(code, message);
             });
-        connect(handler.data(), &GenericHandler::percent, [this](int value){
+        connect(handler.data(), &GenericHandler::percent, this, [this](int value){
                 Q_EMIT percent(value);
             });
         connect(handler.data(), &GenericHandler::collectionsRetrieved, this, &GoogleResource::collectionsPartiallyRetrieved);

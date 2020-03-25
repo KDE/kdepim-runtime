@@ -197,7 +197,7 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
         // Items inside "My Contacts" should have at least 1 group added,
         // otherwise contact belongs to "Other Contacts"
         if (((collection.remoteId() == myContactsRemoteId()) && contact->groups().isEmpty())
-                || (collection.remoteId() == OTHERCONTACTS_REMOTEID) && !contact->groups().isEmpty()) {
+         || ((collection.remoteId() == OTHERCONTACTS_REMOTEID) && !contact->groups().isEmpty())) {
             continue;
         }
 
@@ -259,14 +259,14 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
     }
     const auto map = argument.value<QVariantMap>();
     const auto collection = map[QStringLiteral("collection")].value<Collection>();
-    const auto changedPhotos = map[QStringLiteral("modified")].value<QStringList>();
+    const auto changedPhotos = map[QStringLiteral("modified")].toStringList();
     Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Retrieving %1 contacts photos for group '%2'",
                                                              "Retrieving %1 contact photo for group '%2'",
                                                              changedPhotos.count(), collection.displayName()));
 
     Item::List items;
     items.reserve(changedPhotos.size());
-    for (const QString contact : changedPhotos) {
+    for (const QString& contact : changedPhotos) {
         Item item;
         item.setRemoteId(contact);
         items << item;
@@ -297,14 +297,14 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
     qCDebug(GOOGLE_CONTACTS_LOG) << "Starting fetching photos...";
     auto photoJob = new ContactFetchPhotoJob(contacts, m_settings->accountPtr(), this);
     photoJob->setProperty("processedItems", 0);
-    connect(photoJob, &ContactFetchPhotoJob::photoFetched, [this, items](KGAPI2::Job *job, const ContactPtr &contact){
+    connect(photoJob, &ContactFetchPhotoJob::photoFetched, this, [this, items](KGAPI2::Job *job, const ContactPtr &contact){
             qCDebug(GOOGLE_CONTACTS_LOG) << " - fetched photo for contact" << contact->uid();
             int processedItems = job->property("processedItems").toInt();
             processedItems++;
             job->setProperty("processedItems", processedItems);
             Q_EMIT percent(100.0f*processedItems / items.count());
 
-            for (const Item item : items) {
+            for (const Item& item : items) {
                 if (item.remoteId() == contact->uid()) {
                     Item newItem = item;
                     newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
@@ -329,7 +329,7 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
     }
 
     auto job = new ContactCreateJob(contact, m_settings->accountPtr(), this);
-    connect(job, &ContactCreateJob::finished, [this, item](KGAPI2::Job* job){
+    connect(job, &ContactCreateJob::finished, this, [this, item](KGAPI2::Job* job){
             if (!m_resource->handleError(job)) {
                 return;
             }
@@ -456,7 +456,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
     group->setIsSystemGroup(false);
 
     auto job = new ContactsGroupCreateJob(group, m_settings->accountPtr(), this);
-    connect(job, &ContactsGroupCreateJob::finished, [this, &collection](KGAPI2::Job* job){
+    connect(job, &ContactsGroupCreateJob::finished, this, [this, &collection](KGAPI2::Job* job){
             if (!m_resource->handleError(job)) {
                 return;
             }

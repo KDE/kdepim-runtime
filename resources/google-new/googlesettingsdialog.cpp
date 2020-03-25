@@ -86,7 +86,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
     if (m_settings->isReady()) {
         m_account = m_settings->accountPtr();
     }
-    connect(m_settings, &GoogleSettings::accountReady, [this](bool ready){
+    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready){
                 if (ready) {
                     m_account = m_settings->accountPtr();
                     accountChanged();
@@ -227,7 +227,7 @@ void GoogleSettingsDialog::slotReloadCalendars()
     }
 
     auto fetchJob = new CalendarFetchJob(m_account, this);
-    connect(fetchJob, &CalendarFetchJob::finished, [this](Job* job){
+    connect(fetchJob, &CalendarFetchJob::finished, this, [this](Job* job){
                 if (!handleError(job) || !m_account) {
                     m_ui->calendarsBox->setEnabled(false);
                     return;
@@ -264,7 +264,7 @@ void GoogleSettingsDialog::slotReloadTaskLists()
     m_ui->taskListsList->clear();
 
     auto job = new TaskListFetchJob(m_account, this);
-    connect(job, &TaskListFetchJob::finished, [this](KGAPI2::Job *job){
+    connect(job, &TaskListFetchJob::finished, this, [this](KGAPI2::Job *job){
                 if (!handleError(job) || !m_account) {
                     m_ui->taskListsBox->setDisabled(true);
                     return;
