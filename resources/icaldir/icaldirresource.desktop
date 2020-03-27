@@ -55,6 +55,7 @@ Comment[pt_BR]=Fornece acesso aos itens do calendário, cada um armazenado em um
 Comment[ru]=Обеспечивает доступ к элементам календаря, каждый из которых хранится в отдельном файле в указанном каталоге
 Comment[se]=Dáinna beasat kaleandarmerkošidda, vurkejuvvon okta fiilan, dihto katalogas
 Comment[sk]=Poskytuje prístup k položkám kalendára, každý uložený v jednom súbore, v danom adresári
+Comment[sl]=Nudi dostop do koledarskih vnosov, ki so shranjeni vsak posebej v svoji datoteki, v dani mapi
 Comment[sv]=Ger tillgång till kalenderobjekt, vart och ett lagrat i en enda fil i en angiven katalog
 Comment[uk]=Надає доступ до записів календаря, кожен з яких зберігається у окремому файлі у вказаному каталозі
 Comment[x-test]=xxProvides access to calendar items, each stored in a single file, in a given directoryxx
