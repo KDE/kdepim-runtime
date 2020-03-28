@@ -36,7 +36,7 @@ endif()
 #    3.2 pre
 #    3.2 
 
-set(KDEPIM_DEV_VERSION rc)
+set(KDEPIM_DEV_VERSION alpha)
 set(RELEASE_SERVICE_VERSION "20.07.40")
 
 # add an extra space
