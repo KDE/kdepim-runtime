@@ -61,10 +61,7 @@ public:
 protected:
     GoogleResource* m_resource;
     GoogleSettings* m_settings;
-    void emitReadyStatus();
 Q_SIGNALS:
-    void status(int code, const QString& message = QString());
-    void percent(int progress);
     void collectionsRetrieved(const Akonadi::Collection::List& collections);
 };
 

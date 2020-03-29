@@ -88,6 +88,7 @@ protected:
     int accountId() const;
 
     Akonadi::Collection rootCollection() const;
+    void emitReadyStatus();
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
