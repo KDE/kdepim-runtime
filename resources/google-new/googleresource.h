@@ -89,6 +89,7 @@ protected:
 
     Akonadi::Collection rootCollection() const;
     void emitReadyStatus();
+    void collectionsRetrievedFromHandler(const Akonadi::Collection::List &collections);
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
@@ -105,7 +106,6 @@ protected Q_SLOTS:
     void collectionRemoved(const Akonadi::Collection &collection) override;
 
     bool handleError(KGAPI2::Job *job, bool cancelTask = true);
-    void collectionsPartiallyRetrieved(const Akonadi::Collection::List &collections);
 
     virtual void slotAuthJobFinished(KGAPI2::Job *job);
     virtual void slotGenericJobFinished(KGAPI2::Job *job);
@@ -113,7 +113,6 @@ private:
     bool m_isConfiguring = false;
     GoogleSettings *m_settings = nullptr;
     Akonadi::Collection m_rootCollection;
-    Akonadi::Collection::List m_collections;
 
     QList<GenericHandler::Ptr> m_handlers;
     CalendarHandler::Ptr m_freeBusyHandler;

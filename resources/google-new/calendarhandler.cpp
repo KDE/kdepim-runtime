@@ -62,6 +62,42 @@ bool CalendarHandler::canPerformTask(const Akonadi::Item &item)
     return m_resource->canPerformTask<KCalendarCore::Event::Ptr>(item, mimetype());
 }
 
+void CalendarHandler::setupCollection(Collection &collection, const CalendarPtr &calendar)
+{
+    collection.setContentMimeTypes({ mimetype() });
+    collection.setName(calendar->uid());
+    collection.setParentCollection(m_resource->rootCollection());
+    collection.setRemoteId(calendar->uid());
+    if (calendar->editable()) {
+        collection.setRights(Collection::CanChangeCollection
+        |Collection::CanDeleteCollection
+        |Collection::CanCreateItem
+        |Collection::CanChangeItem
+        |Collection::CanDeleteItem);
+    } else {
+        collection.setRights(Collection::ReadOnly);
+    }
+    // TODO: for some reason, KOrganizer creates virtual collections
+    //newCollection.setVirtual(false);
+    // Setting icon
+    auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    attr->setDisplayName(calendar->title());
+    attr->setIconName(QStringLiteral("view-calendar"));
+    // Setting color
+    if (calendar->backgroundColor().isValid()) {
+        auto colorAttr = collection.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
+        colorAttr->setColor(calendar->backgroundColor());
+    }
+    // Setting default remoinders
+    auto reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
+    reminderAttr->setReminders(calendar->defaultReminders());
+    // Block email reminders, since Google sends them for us
+    auto blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
+    blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
+    blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
+    blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
+}
+
 void CalendarHandler::retrieveCollections()
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving calendars"));
@@ -90,39 +126,11 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
             continue;
         }
         Collection collection;
-        collection.setContentMimeTypes({ mimetype() });
-        collection.setName(calendar->uid());
-        collection.setParentCollection(m_resource->rootCollection());
-        collection.setRemoteId(calendar->uid());
-        if (calendar->editable()) {
-            collection.setRights(Collection::CanChangeCollection
-            |Collection::CanDeleteCollection
-            |Collection::CanCreateItem
-            |Collection::CanChangeItem
-            |Collection::CanDeleteItem);
-        } else {
-            collection.setRights(Collection::ReadOnly);
-        }
-        // Setting icon
-        auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-        attr->setDisplayName(calendar->title());
-        attr->setIconName(QStringLiteral("view-calendar"));
-        // Setting color
-        auto colorAttr = collection.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
-        colorAttr->setColor(calendar->backgroundColor());
-        // Setting default remoinders
-        auto reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
-        reminderAttr->setReminders(calendar->defaultReminders());
-        // Block email reminders, since Google sends them for us
-        auto blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
-        blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
-        blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
-        blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
-
+        setupCollection(collection, calendar);
         collections << collection;
     }
 
-    Q_EMIT collectionsRetrieved(collections);
+    m_resource->collectionsRetrievedFromHandler(collections);
 }
 
 void CalendarHandler::retrieveItems(const Collection &collection)
@@ -284,29 +292,16 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
                 if (!m_resource->handleError(job)) {
                     return;
                 }
-                const CalendarPtr calendar = qobject_cast<CalendarCreateJob *>(job)->items().first().dynamicCast<Calendar>();
+                CalendarPtr calendar = qobject_cast<CalendarCreateJob *>(job)->items().first().dynamicCast<Calendar>();
+                // FIXME: for some reason, newly created calendars are not "editable"...
+                calendar->setEditable(true);
+
+                qCDebug(GOOGLE_CALENDAR_LOG) << "Calendar created:" << calendar->uid();
                 // Enable newly added calendar in settings
                 m_settings->addCalendar(calendar->uid());
-                Collection newCollection = collection;
-                newCollection.setName(calendar->uid());
-                newCollection.setRemoteId(calendar->uid());
-                newCollection.setRights(Collection::CanChangeCollection
-                    |Collection::CanDeleteCollection
-                    |Collection::CanCreateItem
-                    |Collection::CanChangeItem
-                    |Collection::CanDeleteItem);
-                // TODO: for some reason, KOrganizer creates virtual collections (???)
-                //newCollection.setVirtual(false);
-                // Setting icon
-                auto attr = newCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-                attr->setDisplayName(calendar->title());
-                attr->setIconName(QStringLiteral("view-calendar"));
-                // TODO: google does not return color on create, so probably we should ask for it (when LibKGAPI will add support for it)
-                // Block email reminders, since Google sends them for us
-                auto blockAlarms = newCollection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
-                blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
-                blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
-                blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
+                // Populate remoteId & other stuff
+                Collection newCollection(collection);
+                setupCollection(newCollection, calendar);
                 m_resource->changeCommitted(newCollection);
                 m_resource->emitReadyStatus();
             });

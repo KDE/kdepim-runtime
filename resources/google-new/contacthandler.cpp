@@ -67,9 +67,8 @@ QString ContactHandler::myContactsRemoteId() const
     return QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_settings->accountPtr()->accountName())));
 }
 
-Collection ContactHandler::setupCollection(const ContactsGroupPtr &group, const QString &realName)
+void ContactHandler::setupCollection(Akonadi::Collection &collection, const ContactsGroupPtr &group, const QString &realName)
 {
-    Collection collection;
     collection.setContentMimeTypes({ KContacts::Addressee::mimeType() });
     collection.setName(group->id());
     collection.setRemoteId(group->id());
@@ -94,8 +93,6 @@ Collection ContactHandler::setupCollection(const ContactsGroupPtr &group, const 
     auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(realName);
     attr->setIconName(QStringLiteral("view-pim-contacts"));
-
-    return collection;
 }
 
 void ContactHandler::retrieveCollections()
@@ -149,11 +146,12 @@ void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
             }
         }
 
-        Collection collection = setupCollection(group, realName);
+        Collection collection;
+        setupCollection(collection, group, realName);
         m_collections[ collection.remoteId() ] = collection;
     }
 
-    Q_EMIT collectionsRetrieved(valuesToVector(m_collections));
+    m_resource->collectionsRetrievedFromHandler(valuesToVector(m_collections));
 }
 
 void ContactHandler::retrieveItems(const Collection &collection)
@@ -445,9 +443,8 @@ void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &co
 }
 
 
-void ContactHandler::collectionAdded(const Collection &collection, const Collection &parent)
+void ContactHandler::collectionAdded(const Collection &collection, const Collection & /*parent*/)
 {
-    Q_UNUSED(parent);
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Creating new contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Adding contact group" << collection.displayName();
     ContactsGroupPtr group(new ContactsGroup);
@@ -455,14 +452,15 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
     group->setIsSystemGroup(false);
 
     auto job = new ContactsGroupCreateJob(group, m_settings->accountPtr(), this);
-    connect(job, &ContactsGroupCreateJob::finished, this, [this](KGAPI2::Job* job){
+    connect(job, &ContactsGroupCreateJob::finished, this, [this, collection](KGAPI2::Job* job){
             if (!m_resource->handleError(job)) {
                 return;
             }
 
             ContactsGroupPtr group = qobject_cast<ContactsGroupCreateJob *>(job)->items().first().dynamicCast<ContactsGroup>();
             qCDebug(GOOGLE_CONTACTS_LOG) << "Contact group created:" << group->id();
-            Collection newCollection = setupCollection(group, group->title());
+            Collection newCollection(collection);
+            setupCollection(newCollection, group, group->title());
             m_collections[ newCollection.remoteId() ] = newCollection;
             m_resource->changeCommitted(newCollection);
             m_resource->emitReadyStatus();

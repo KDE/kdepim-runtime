@@ -137,10 +137,19 @@ void GoogleSettings::cleanup()
 
 void GoogleSettings::addCalendar(const QString& calendar)
 {
-    if (calendars().isEmpty()) {
+    if (calendars().isEmpty() || calendars().contains(calendar)) {
         return;
     }
     setCalendars(calendars() << calendar);
+    save();
+}
+
+void GoogleSettings::addTaskList(const QString& taskList)
+{
+    if (calendars().isEmpty() || taskLists().contains(taskList)) {
+        return;
+    }
+    setTaskLists(taskLists() << taskList);
     save();
 }
 

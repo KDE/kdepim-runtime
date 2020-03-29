@@ -46,6 +46,8 @@ private Q_SLOTS:
     void slotCollectionsRetrieved(KGAPI2::Job* job);
     void slotItemsRetrieved(KGAPI2::Job* job);
     void slotDoRemoveTasks(const Akonadi::Item::List &items);
+private:
+    void setupCollection(Akonadi::Collection &colleciton, const KGAPI2::TaskListPtr &taskList);
 };
 
 #endif // TASKHANDLER_H
