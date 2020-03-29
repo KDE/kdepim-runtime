@@ -456,7 +456,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
     group->setIsSystemGroup(false);
 
     auto job = new ContactsGroupCreateJob(group, m_settings->accountPtr(), this);
-    connect(job, &ContactsGroupCreateJob::finished, this, [this, &collection](KGAPI2::Job* job){
+    connect(job, &ContactsGroupCreateJob::finished, this, [this](KGAPI2::Job* job){
             if (!m_resource->handleError(job)) {
                 return;
             }

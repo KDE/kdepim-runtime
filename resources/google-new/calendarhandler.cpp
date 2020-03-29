@@ -85,12 +85,10 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     for (const auto &object : calendars) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
         qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
-
         if (!activeCalendars.contains(calendar->uid())) {
             qCDebug(GOOGLE_CALENDAR_LOG) << "Skipping, not subscribed";
             continue;
         }
-
         Collection collection;
         collection.setContentMimeTypes({ mimetype() });
         collection.setName(calendar->uid());
@@ -105,19 +103,18 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
         } else {
             collection.setRights(Collection::ReadOnly);
         }
-
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        // Setting icon
+        auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attr->setDisplayName(calendar->title());
         attr->setIconName(QStringLiteral("view-calendar"));
-
+        // Setting color
         auto colorAttr = collection.attribute<CollectionColorAttribute>(Collection::AddIfMissing);
         colorAttr->setColor(calendar->backgroundColor());
-
-        DefaultReminderAttribute *reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
+        // Setting default remoinders
+        auto reminderAttr = collection.attribute<DefaultReminderAttribute>(Collection::AddIfMissing);
         reminderAttr->setReminders(calendar->defaultReminders());
-
         // Block email reminders, since Google sends them for us
-        BlockAlarmsAttribute *blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
+        auto blockAlarms = collection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
         blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
         blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
         blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
@@ -257,8 +254,8 @@ void CalendarHandler::itemsRemoved(const Item::List &items)
 
 void CalendarHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'", 
-                                                             "Moving %1 event from calendar '%2' to calendar '%3'", 
+    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'",
+                                                             "Moving %1 event from calendar '%2' to calendar '%3'",
                                                              items.count(), collectionSource.displayName(), collectionDestination.displayName()));
     QStringList eventIds;
     eventIds.reserve(items.count());
@@ -282,7 +279,37 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
     calendar->setEditable(true);
     auto job = new CalendarCreateJob(calendar, m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+
+    connect(job, &KGAPI2::Job::finished, this, [this, collection](KGAPI2::Job *job){
+                if (!m_resource->handleError(job)) {
+                    return;
+                }
+                const CalendarPtr calendar = qobject_cast<CalendarCreateJob *>(job)->items().first().dynamicCast<Calendar>();
+                // Enable newly added calendar in settings
+                m_settings->addCalendar(calendar->uid());
+                Collection newCollection = collection;
+                newCollection.setName(calendar->uid());
+                newCollection.setRemoteId(calendar->uid());
+                newCollection.setRights(Collection::CanChangeCollection
+                    |Collection::CanDeleteCollection
+                    |Collection::CanCreateItem
+                    |Collection::CanChangeItem
+                    |Collection::CanDeleteItem);
+                // TODO: for some reason, KOrganizer creates virtual collections (???)
+                //newCollection.setVirtual(false);
+                // Setting icon
+                auto attr = newCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+                attr->setDisplayName(calendar->title());
+                attr->setIconName(QStringLiteral("view-calendar"));
+                // TODO: google does not return color on create, so probably we should ask for it (when LibKGAPI will add support for it)
+                // Block email reminders, since Google sends them for us
+                auto blockAlarms = newCollection.attribute<BlockAlarmsAttribute>(Collection::AddIfMissing);
+                blockAlarms->blockAlarmType(KCalendarCore::Alarm::Audio, false);
+                blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
+                blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
+                m_resource->changeCommitted(newCollection);
+                emitReadyStatus();
+            });
 }
 
 void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
@@ -356,8 +383,8 @@ void CalendarHandler::retrieveFreeBusy(const QString &email, const QDateTime &st
                 fb->addAttendee(KCalendarCore::Attendee(QString(), queryJob->id()));
                 // FIXME: is it really sort?
                 fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalendarCore::IncidenceBase::RoleSort);
-
-                for (const auto &range : queryJob->busy()) {
+                const auto ranges = queryJob->busy();
+                for (const auto &range : ranges) {
                     fb->addPeriod(range.busyStart, range.busyEnd);
                 }
 

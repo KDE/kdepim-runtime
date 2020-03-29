@@ -102,7 +102,7 @@ GoogleResource::GoogleResource(const QString &id)
     m_handlers << GenericHandler::Ptr(new ContactHandler(this, m_settings));
     m_handlers << GenericHandler::Ptr(new TaskHandler(this, m_settings));
 
-    for (auto handler : m_handlers) {
+    for (const auto &handler : qAsConst(m_handlers)) {
         connect(handler.data(), &GenericHandler::status, this, [this](int code, QString message){
                 Q_EMIT status(code, message);
             });
@@ -330,7 +330,7 @@ void GoogleResource::retrieveCollections()
     m_collections = { m_rootCollection };
 
     m_jobs = 0;
-    for (auto handler : m_handlers) {
+    for (auto &handler : m_handlers) {
         handler->retrieveCollections();
         m_jobs++;
     }
