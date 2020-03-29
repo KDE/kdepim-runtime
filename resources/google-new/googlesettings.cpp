@@ -135,6 +135,15 @@ void GoogleSettings::cleanup()
     }
 }
 
+void GoogleSettings::addCalendar(const QString& calendar)
+{
+    if (calendars().isEmpty()) {
+        return;
+    }
+    setCalendars(calendars() << calendar);
+    save();
+}
+
 QString GoogleSettings::clientId() const
 {
     return QStringLiteral("554041944266.apps.googleusercontent.com");

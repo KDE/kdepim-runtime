@@ -51,6 +51,8 @@ public:
     QString clientId() const;
     QString clientSecret() const;
 
+    void addCalendar(const QString& calendar);
+
     KGAPI2::AccountPtr accountPtr();
     // Wallet
     bool isReady() const;
