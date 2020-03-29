@@ -27,11 +27,6 @@ GenericHandler::GenericHandler(GoogleResource *resource, GoogleSettings *setting
 
 GenericHandler::~GenericHandler() = default;
 
-void GenericHandler::emitReadyStatus()
-{
-    Q_EMIT status(Akonadi::AgentBase::Idle, i18nc("@info:status", "Ready"));
-}
-
 void GenericHandler::itemsLinked(const Akonadi::Item::List &/*items*/, const Akonadi::Collection &/*collection*/)
 {
     m_resource->cancelTask(i18n("Cannot handle item linking"));

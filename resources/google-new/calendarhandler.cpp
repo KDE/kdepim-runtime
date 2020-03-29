@@ -64,7 +64,7 @@ bool CalendarHandler::canPerformTask(const Akonadi::Item &item)
 
 void CalendarHandler::retrieveCollections()
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving calendars"));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving calendars"));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieving calendars...";
     auto job = new CalendarFetchJob(m_settings->accountPtr(), this);
     connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotCollectionsRetrieved);
@@ -145,7 +145,7 @@ void CalendarHandler::retrieveItems(const Collection &collection)
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotItemsRetrieved);
 
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving events for calendar '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving events for calendar '%1'", collection.displayName()));
 }
 
 void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
@@ -195,12 +195,12 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     collection.setRemoteRevision(fetchJob->syncToken());
     new CollectionModifyJob(collection, this);
 
-    emitReadyStatus();
+    m_resource->emitReadyStatus();
 }
 
 void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.name()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.name()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Event added to calendar" << collection.remoteId();
     KCalendarCore::Event::Ptr event = item.payload<KCalendarCore::Event::Ptr>();
     EventPtr kevent(new Event(*event));
@@ -219,14 +219,14 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
                 m_resource->changeCommitted(newItem);
                 newItem.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
                 new ItemModifyJob(newItem, this);
-                emitReadyStatus();
+                m_resource->emitReadyStatus();
             });
 }
 
 void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing event in calendar '%1'", item.parentCollection().displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Changing event in calendar '%1'", item.parentCollection().displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Changing event" << item.remoteId();
     KCalendarCore::Event::Ptr event = item.payload<KCalendarCore::Event::Ptr>();
     EventPtr kevent(new Event(*event));
@@ -238,7 +238,7 @@ void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &pa
 
 void CalendarHandler::itemsRemoved(const Item::List &items)
 {
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Removing %1 events", "Removing %1 event", items.count()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Removing %1 events", "Removing %1 event", items.count()));
     QStringList eventIds;
     eventIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
@@ -254,9 +254,9 @@ void CalendarHandler::itemsRemoved(const Item::List &items)
 
 void CalendarHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'",
-                                                             "Moving %1 event from calendar '%2' to calendar '%3'",
-                                                             items.count(), collectionSource.displayName(), collectionDestination.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'",
+                                                                         "Moving %1 event from calendar '%2' to calendar '%3'",
+                                                                         items.count(), collectionSource.displayName(), collectionDestination.displayName()));
     QStringList eventIds;
     eventIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
@@ -272,7 +272,7 @@ void CalendarHandler::itemsMoved(const Item::List &items, const Collection &coll
 void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     Q_UNUSED(parent);
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Creating calendar '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Creating calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Adding calendar" << collection.displayName();
     CalendarPtr calendar(new Calendar());
     calendar->setTitle(collection.displayName());
@@ -308,13 +308,13 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
                 blockAlarms->blockAlarmType(KCalendarCore::Alarm::Display, false);
                 blockAlarms->blockAlarmType(KCalendarCore::Alarm::Procedure, false);
                 m_resource->changeCommitted(newCollection);
-                emitReadyStatus();
+                m_resource->emitReadyStatus();
             });
 }
 
 void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing calendar '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Changing calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Changing calendar" << collection.remoteId();
     CalendarPtr calendar(new Calendar());
     calendar->setUid(collection.remoteId());
@@ -327,7 +327,7 @@ void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
 
 void CalendarHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing calendar '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Removing calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Removing calendar" << collection.remoteId();
     auto job = new CalendarDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));

@@ -100,7 +100,7 @@ Collection ContactHandler::setupCollection(const ContactsGroupPtr &group, const 
 
 void ContactHandler::retrieveCollections()
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups"));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups"));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieving contacts groups...";
     m_collections.clear();
 
@@ -154,7 +154,6 @@ void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     }
 
     Q_EMIT collectionsRetrieved(valuesToVector(m_collections));
-    emitReadyStatus();
 }
 
 void ContactHandler::retrieveItems(const Collection &collection)
@@ -165,7 +164,7 @@ void ContactHandler::retrieveItems(const Collection &collection)
         m_resource->itemsRetrievalDone();
         return;
     }
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts for group '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving contacts for group '%1'", collection.displayName()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Retreiving contacts for group" << collection.remoteId() << "...";
 
     auto job = new ContactFetchJob(m_settings->accountPtr(), this);
@@ -249,7 +248,7 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
     collection.setRemoteRevision(QString::number(UTC.toSecsSinceEpoch()));
     new CollectionModifyJob(collection, this);
 
-    emitReadyStatus();
+    m_resource->emitReadyStatus();
 }
 
 void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
@@ -260,9 +259,9 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
     const auto map = argument.value<QVariantMap>();
     const auto collection = map[QStringLiteral("collection")].value<Collection>();
     const auto changedPhotos = map[QStringLiteral("modified")].toStringList();
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Retrieving %1 contacts photos for group '%2'",
-                                                             "Retrieving %1 contact photo for group '%2'",
-                                                             changedPhotos.count(), collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Retrieving %1 contacts photos for group '%2'",
+                                                                         "Retrieving %1 contact photo for group '%2'",
+                                                                         changedPhotos.count(), collection.displayName()));
 
     Item::List items;
     items.reserve(changedPhotos.size());
@@ -302,7 +301,7 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
             int processedItems = job->property("processedItems").toInt();
             processedItems++;
             job->setProperty("processedItems", processedItems);
-            Q_EMIT percent(100.0f*processedItems / items.count());
+            Q_EMIT m_resource->percent(100.0f*processedItems / items.count());
 
             for (const Item& item : items) {
                 if (item.remoteId() == contact->uid()) {
@@ -319,7 +318,7 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
 
 void ContactHandler::itemAdded(const Item &item, const Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Adding contact to group '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Adding contact to group '%1'", collection.displayName()));
     auto addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Creating contact";
@@ -341,14 +340,14 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
             m_resource->changeCommitted(newItem);
             newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
             new ItemModifyJob(newItem, this);
-            emitReadyStatus();
+            m_resource->emitReadyStatus();
         });
 }
 
 void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing contact"));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Changing contact"));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Changing contact" << item.remoteId();
     KContacts::Addressee addressee = item.payload< KContacts::Addressee >();
     ContactPtr contact(new Contact(addressee));
@@ -359,7 +358,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
 
 void ContactHandler::itemsRemoved(const Item::List &items)
 {
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Removing contact", "Removing contacts", items.count()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Removing contact", "Removing contacts", items.count()));
     QStringList contactIds;
     contactIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contactIds),
@@ -380,9 +379,9 @@ void ContactHandler::itemsMoved(const Item::List &items, const Collection &colle
         m_resource->cancelTask(i18n("Invalid source or destination collection"));
     }
 
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Moving %1 contacts from group '%2' to '%3'",
-                                                             "Moving %1 contact from group '%2' to '%3'",
-                                                             items.count(), collectionSource.remoteId(), collectionDestination.remoteId()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Moving %1 contacts from group '%2' to '%3'",
+                                                                         "Moving %1 contact from group '%2' to '%3'",
+                                                                         items.count(), collectionSource.remoteId(), collectionDestination.remoteId()));
     ContactsList contacts;
     contacts.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
@@ -409,7 +408,7 @@ void ContactHandler::itemsMoved(const Item::List &items, const Collection &colle
 
 void ContactHandler::itemsLinked(const Item::List &items, const Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Linking %1 contact", "Linking %1 contacts", items.count()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Linking %1 contact", "Linking %1 contacts", items.count()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Linking" << items.count() << "contacts to group" << collection.remoteId();
 
     ContactsList contacts;
@@ -428,7 +427,7 @@ void ContactHandler::itemsLinked(const Item::List &items, const Collection &coll
 
 void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18ncp("@info:status", "Unlinking %1 contact", "Unlinking %1 contacts", items.count()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Unlinking %1 contact", "Unlinking %1 contacts", items.count()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Unlinking" << items.count() << "contacts from group" << collection.remoteId();
 
     ContactsList contacts;
@@ -449,7 +448,7 @@ void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &co
 void ContactHandler::collectionAdded(const Collection &collection, const Collection &parent)
 {
     Q_UNUSED(parent);
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Creating new contact group '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Creating new contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Adding contact group" << collection.displayName();
     ContactsGroupPtr group(new ContactsGroup);
     group->setTitle(collection.name());
@@ -466,13 +465,13 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
             Collection newCollection = setupCollection(group, group->title());
             m_collections[ newCollection.remoteId() ] = newCollection;
             m_resource->changeCommitted(newCollection);
-            emitReadyStatus();
+            m_resource->emitReadyStatus();
         });
 }
 
 void ContactHandler::collectionChanged(const Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Changing contact group '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Changing contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Changing contact group" << collection.remoteId();
 
     ContactsGroupPtr group(new ContactsGroup());
@@ -486,7 +485,7 @@ void ContactHandler::collectionChanged(const Collection &collection)
 
 void ContactHandler::collectionRemoved(const Collection &collection)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Removing contact group '%1'", collection.displayName()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Removing contact group '%1'", collection.displayName()));
     qCDebug(GOOGLE_CONTACTS_LOG) << "Removing contact group" << collection.remoteId();
     auto job = new ContactsGroupDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));

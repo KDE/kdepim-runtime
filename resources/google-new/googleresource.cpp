@@ -65,8 +65,6 @@ GoogleResource::GoogleResource(const QString &id)
 {
     AttributeFactory::registerAttribute< DefaultReminderAttribute >();
 
-    connect(this, &GoogleResource::abortRequested, this,
-            [this](){ cancelTask(i18n("Aborted")); });
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
     setNeedsNetwork(true);
@@ -90,7 +88,7 @@ GoogleResource::GoogleResource(const QString &id)
                     Q_EMIT status(NotConfigured);
                     return;
                 }
-                Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
+                emitReadyStatus();
                 synchronize();
             });
 
@@ -103,12 +101,6 @@ GoogleResource::GoogleResource(const QString &id)
     m_handlers << GenericHandler::Ptr(new TaskHandler(this, m_settings));
 
     for (const auto &handler : qAsConst(m_handlers)) {
-        connect(handler.data(), &GenericHandler::status, this, [this](int code, QString message){
-                Q_EMIT status(code, message);
-            });
-        connect(handler.data(), &GenericHandler::percent, this, [this](int value){
-                Q_EMIT percent(value);
-            });
         connect(handler.data(), &GenericHandler::collectionsRetrieved, this, &GoogleResource::collectionsPartiallyRetrieved);
     }
 
@@ -125,6 +117,11 @@ void GoogleResource::cleanup()
 {
     m_settings->cleanup();
     ResourceBase::cleanup();
+}
+
+void GoogleResource::emitReadyStatus()
+{
+    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
 
 Akonadi::Collection GoogleResource::rootCollection() const
@@ -154,7 +151,7 @@ void GoogleResource::configure(WId windowId)
             return;
         }
 
-        Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
+        emitReadyStatus();
         synchronize();
     } else {
         updateResourceName();
@@ -185,7 +182,7 @@ void GoogleResource::reloadConfig()
     if (account.isNull() || account->accountName().isEmpty()) {
         Q_EMIT status(NotConfigured, i18n("Configured account does not exist"));
     } else {
-        Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
+        emitReadyStatus();
     }
 }
 
@@ -264,7 +261,7 @@ void GoogleResource::slotGenericJobFinished(KGAPI2::Job *job)
         taskDone();
     }
 
-    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
+    emitReadyStatus();
 }
 
 int GoogleResource::accountId() const
@@ -341,8 +338,9 @@ void GoogleResource::collectionsPartiallyRetrieved(const Collection::List& colle
     m_jobs--;
     m_collections << collections;
     if (m_jobs == 0) {
-        qCDebug(GOOGLE_LOG) << "Collections retrieved!";
+        qCDebug(GOOGLE_LOG) << "All collections retrieved!";
         collectionsRetrieved(m_collections);
+        emitReadyStatus();
     }
 }
 
