@@ -63,6 +63,22 @@ bool TaskHandler::canPerformTask(const Akonadi::Item &item)
     return m_resource->canPerformTask<KCalendarCore::Todo::Ptr>(item, mimetype());
 }
 
+void TaskHandler::setupCollection(Collection& collection, const TaskListPtr& taskList)
+{
+    collection.setContentMimeTypes({ mimetype() });
+    collection.setName(taskList->uid());
+    collection.setParentCollection(m_resource->rootCollection());
+    collection.setRemoteId(taskList->uid());
+    collection.setRights(Collection::CanChangeCollection
+                         |Collection::CanCreateItem
+                         |Collection::CanChangeItem
+                         |Collection::CanDeleteItem);
+
+    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    attr->setDisplayName(taskList->title());
+    attr->setIconName(QStringLiteral("view-pim-tasks"));
+}
+
 void TaskHandler::retrieveCollections()
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving task lists"));
@@ -91,22 +107,11 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
         }
 
         Collection collection;
-        collection.setContentMimeTypes(QStringList() << KCalendarCore::Todo::todoMimeType());
-        collection.setName(taskList->uid());
-        collection.setParentCollection(m_resource->rootCollection());
-        collection.setRemoteId(taskList->uid());
-        collection.setRights(Collection::CanChangeCollection
-                             |Collection::CanCreateItem
-                             |Collection::CanChangeItem
-                             |Collection::CanDeleteItem);
-
-        EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-        attr->setDisplayName(taskList->title());
-        attr->setIconName(QStringLiteral("view-pim-tasks"));
+        setupCollection(collection, taskList);
         collections << collection;
     }
 
-    Q_EMIT collectionsRetrieved(collections);
+    m_resource->collectionsRetrievedFromHandler(collections);
 }
 
 void TaskHandler::retrieveItems(const Collection &collection)
@@ -297,17 +302,29 @@ void TaskHandler::itemsMoved(const Item::List &/*item*/, const Collection &/*col
     m_resource->cancelTask(i18n("Moving tasks between task lists is not supported"));
 }
 
-void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &/*parent*/)
 {
-    Q_UNUSED(parent);
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Creating new task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Adding task list" << collection.displayName();
     TaskListPtr taskList(new TaskList());
     taskList->setTitle(collection.displayName());
 
     auto job = new TaskListCreateJob(taskList, m_settings->accountPtr(), this);
-    job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    connect(job, &KGAPI2::Job::finished, this, [this, collection](KGAPI2::Job* job){
+                if (!m_resource->handleError(job)) {
+                    return;
+                }
+
+                TaskListPtr taskList = qobject_cast<TaskListCreateJob *>(job)->items().first().dynamicCast<TaskList>();
+                qCDebug(GOOGLE_TASKS_LOG) << "Task list created:" << taskList->uid();
+                // Enable newly added task list in settings
+                m_settings->addTaskList(taskList->uid());
+                // Populate remoteId & other stuff
+                Collection newCollection(collection);
+                setupCollection(newCollection, taskList);
+                m_resource->changeCommitted(newCollection);
+                m_resource->emitReadyStatus();
+            });
 }
 
 void TaskHandler::collectionChanged(const Akonadi::Collection &collection)

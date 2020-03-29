@@ -61,8 +61,6 @@ public:
 protected:
     GoogleResource* m_resource;
     GoogleSettings* m_settings;
-Q_SIGNALS:
-    void collectionsRetrieved(const Akonadi::Collection::List& collections);
 };
 
 #endif // GENERICHANDLER_H

@@ -54,7 +54,7 @@ private Q_SLOTS:
     void retrieveContactsPhotos(const QVariant &arguments);
 private:
     QString myContactsRemoteId() const;
-    Akonadi::Collection setupCollection(const KGAPI2::ContactsGroupPtr& group, const QString &realName = QString());
+    void setupCollection(Akonadi::Collection& collection, const KGAPI2::ContactsGroupPtr& group, const QString &realName = QString());
     QMap<QString, Akonadi::Collection> m_collections;
 };
 

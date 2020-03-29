@@ -49,7 +49,6 @@
 #include <algorithm>
 
 
-#define ACCESS_TOKEN_PROPERTY "AccessToken"
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("RootCollection")
 
@@ -99,10 +98,6 @@ GoogleResource::GoogleResource(const QString &id)
     m_handlers << m_freeBusyHandler;
     m_handlers << GenericHandler::Ptr(new ContactHandler(this, m_settings));
     m_handlers << GenericHandler::Ptr(new TaskHandler(this, m_settings));
-
-    for (const auto &handler : qAsConst(m_handlers)) {
-        connect(handler.data(), &GenericHandler::collectionsRetrieved, this, &GoogleResource::collectionsPartiallyRetrieved);
-    }
 
     new SettingsAdaptor(m_settings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
@@ -249,15 +244,17 @@ void GoogleResource::slotGenericJobFinished(KGAPI2::Job *job)
     if (!handleError(job)) {
         return;
     }
-    qCDebug(GOOGLE_LOG) << "Job finished";
-
     if (job->property(ITEM_PROPERTY).isValid()) {
+        qCDebug(GOOGLE_LOG) << "Item change committed";
         changeCommitted(job->property(ITEM_PROPERTY).value<Item>());
     } else if (job->property(ITEMS_PROPERTY).isValid()) {
+        qCDebug(GOOGLE_LOG) << "Items changes committed";
         changesCommitted(job->property(ITEMS_PROPERTY).value<Item::List>());
     } else if (job->property(COLLECTION_PROPERTY).isValid()) {
+        qCDebug(GOOGLE_LOG) << "Collection change committed";
         changeCommitted(job->property(COLLECTION_PROPERTY).value<Collection>());
     } else {
+        qCDebug(GOOGLE_LOG) << "Task done";
         taskDone();
     }
 
@@ -300,11 +297,12 @@ void GoogleResource::retrieveFreeBusy(const QString &email, const QDateTime &sta
  */
 void GoogleResource::retrieveCollections()
 {
-    qCDebug(GOOGLE_LOG) << "Retrieve Collections";
     if (!canPerformTask()) {
         return;
     }
+    qCDebug(GOOGLE_LOG) << "Retrieve Collections";
 
+    setCollectionStreamingEnabled(true);
     CachePolicy cachePolicy;
     if (m_settings->enableIntervalCheck()) {
         cachePolicy.setInheritFromParent(false);
@@ -324,7 +322,7 @@ void GoogleResource::retrieveCollections()
     attr->setDisplayName(m_settings->accountPtr()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 
-    m_collections = { m_rootCollection };
+    collectionsRetrieved({ m_rootCollection });
 
     m_jobs = 0;
     for (auto &handler : m_handlers) {
@@ -333,13 +331,14 @@ void GoogleResource::retrieveCollections()
     }
 }
 
-void GoogleResource::collectionsPartiallyRetrieved(const Collection::List& collections)
+void GoogleResource::collectionsRetrievedFromHandler(const Collection::List &collections)
 {
+    collectionsRetrieved(collections);
     m_jobs--;
-    m_collections << collections;
     if (m_jobs == 0) {
         qCDebug(GOOGLE_LOG) << "All collections retrieved!";
-        collectionsRetrieved(m_collections);
+        collectionsRetrievalDone();
+        //taskDone(); // ???
         emitReadyStatus();
     }
 }
