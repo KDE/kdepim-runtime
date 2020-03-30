@@ -57,7 +57,7 @@ QString CalendarHandler::mimetype()
     return KCalendarCore::Event::eventMimeType();
 }
 
-bool CalendarHandler::canPerformTask(const Akonadi::Item &item)
+bool CalendarHandler::canPerformTask(const Item &item)
 {
     return m_resource->canPerformTask<KCalendarCore::Event::Ptr>(item, mimetype());
 }
@@ -277,7 +277,7 @@ void CalendarHandler::itemsMoved(const Item::List &items, const Collection &coll
     connect(job, &EventMoveJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+void CalendarHandler::collectionAdded(const Collection &collection, const Collection &parent)
 {
     Q_UNUSED(parent);
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Creating calendar '%1'", collection.displayName()));
@@ -307,7 +307,7 @@ void CalendarHandler::collectionAdded(const Akonadi::Collection &collection, con
             });
 }
 
-void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
+void CalendarHandler::collectionChanged(const Collection &collection)
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Changing calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Changing calendar" << collection.remoteId();
@@ -320,7 +320,7 @@ void CalendarHandler::collectionChanged(const Akonadi::Collection &collection)
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void CalendarHandler::collectionRemoved(const Akonadi::Collection &collection)
+void CalendarHandler::collectionRemoved(const Collection &collection)
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Removing calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Removing calendar" << collection.remoteId();
