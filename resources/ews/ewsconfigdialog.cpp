@@ -127,7 +127,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         mUi->authOAuth2RadioButton->setChecked(true);
         mUi->pkeyAuthGroupBox->setEnabled(true);
     }
-#ifdef HAVE_QCA
     mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
     mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
     connect(mSettings.data(), &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &map) {
@@ -136,7 +135,6 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         }
     });
     mSettings->requestMap();
-#endif
 
     int selectedIndex = -1;
     int i = 0;
@@ -229,7 +227,6 @@ void EwsConfigDialog::save()
     if (mUi->authOAuth2RadioButton->isChecked()) {
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
-#ifdef HAVE_QCA
     if (mUi->pkeyAuthGroupBox->isEnabled()
         && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         mSettings->setPKeyCert(mUi->pkeyAuthCert->text());
@@ -237,7 +234,6 @@ void EwsConfigDialog::save()
         const QMap<QString, QString> map = {{pkeyPasswordMapKey, mUi->pkeyAuthPassword->password()}};
         mSettings->setMap(map);
     }
-#endif
 
     if (!mAuthMap.isEmpty()) {
         mSettings->setMap(mAuthMap);
@@ -461,13 +457,11 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
     }
     auth->setAuthParentWidget(this);
 
-#ifdef HAVE_QCA
     if (mUi->pkeyAuthGroupBox->isEnabled()
         && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         auth->setPKeyAuthCertificateFiles(mUi->pkeyAuthCert->text(), mUi->pkeyAuthKey->text());
         mAuthMap[pkeyPasswordMapKey] = mUi->pkeyAuthPassword->password();
     }
-#endif
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, [&](bool) {
         auth->walletPasswordRequestFinished(mUi->passwordEdit->password());

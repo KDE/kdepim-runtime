@@ -336,11 +336,9 @@ EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
         auth = new EwsPasswordAuth(user, parent);
     }
 
-#ifdef HAVE_QCA
     if (!pKeyCert().isNull() && !pKeyKey().isNull()) {
         auth->setPKeyAuthCertificateFiles(pKeyCert(), pKeyKey());
     }
-#endif
 
     connect(auth, &EwsAbstractAuth::requestWalletPassword, this, &EwsSettings::requestPassword);
     connect(auth, &EwsAbstractAuth::requestWalletMap, this, &EwsSettings::requestMap);

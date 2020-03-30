@@ -97,11 +97,6 @@ find_package(Qca-qt5 2.3.0 CONFIG REQUIRED)
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT5 package
 find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED TextToSpeech Network Widgets Test XmlPatterns DBus WebEngineWidgets NetworkAuth)
-if (NOT Qca-qt5_FOUND)
-    message(STATUS "QCA not found, public key authentication will not be supported")
-else()
-    add_definitions(-DHAVE_QCA)
-endif()
 
 
 # KF5 package
