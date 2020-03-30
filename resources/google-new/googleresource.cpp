@@ -119,7 +119,7 @@ void GoogleResource::emitReadyStatus()
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
 
-Akonadi::Collection GoogleResource::rootCollection() const
+Collection GoogleResource::rootCollection() const
 {
     return m_rootCollection;
 }
@@ -343,7 +343,7 @@ void GoogleResource::collectionsRetrievedFromHandler(const Collection::List &col
     }
 }
 
-void GoogleResource::retrieveItems(const Akonadi::Collection &collection)
+void GoogleResource::retrieveItems(const Collection &collection)
 {
     if (!canPerformTask()) {
         return;
@@ -362,7 +362,7 @@ void GoogleResource::retrieveItems(const Akonadi::Collection &collection)
     }
 }
 
-void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
+void GoogleResource::itemAdded(const Item &item, const Collection &collection)
 {
     if (!canPerformTask()) {
         return;
@@ -381,7 +381,7 @@ void GoogleResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
     }
 }
 
-void GoogleResource::itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers)
+void GoogleResource::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
 {
     Q_UNUSED(partIdentifiers);
     if (!canPerformTask()) {
@@ -418,7 +418,7 @@ void GoogleResource::itemsRemoved(const Item::List &items)
     }
 }
 
-void GoogleResource::itemsMoved(const Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
+void GoogleResource::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
     if (!canPerformTask()) {
         return;
@@ -436,7 +436,7 @@ void GoogleResource::itemsMoved(const Item::List &items, const Akonadi::Collecti
     }
 }
 
-void GoogleResource::itemsLinked(const Item::List &items, const Akonadi::Collection &collection)
+void GoogleResource::itemsLinked(const Item::List &items, const Collection &collection)
 {
     if (!canPerformTask()) {
         return;
@@ -454,7 +454,7 @@ void GoogleResource::itemsLinked(const Item::List &items, const Akonadi::Collect
     }
 }
 
-void GoogleResource::itemsUnlinked(const Item::List &items, const Akonadi::Collection &collection)
+void GoogleResource::itemsUnlinked(const Item::List &items, const Collection &collection)
 {
     if (!canPerformTask()) {
         return;
@@ -472,7 +472,7 @@ void GoogleResource::itemsUnlinked(const Item::List &items, const Akonadi::Colle
     }
 }
 
-void GoogleResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+void GoogleResource::collectionAdded(const Collection &collection, const Collection &parent)
 {
     if (!canPerformTask()) {
         return;
@@ -489,7 +489,7 @@ void GoogleResource::collectionAdded(const Akonadi::Collection &collection, cons
     }
 }
 
-void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
+void GoogleResource::collectionChanged(const Collection &collection)
 {
     if (!canPerformTask()) {
         return;
@@ -506,7 +506,7 @@ void GoogleResource::collectionChanged(const Akonadi::Collection &collection)
     }
 }
 
-void GoogleResource::collectionRemoved(const Akonadi::Collection &collection)
+void GoogleResource::collectionRemoved(const Collection &collection)
 {
     if (!canPerformTask()) {
         return;

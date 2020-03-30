@@ -47,18 +47,15 @@
 
 #define TASK_PROPERTY "_KGAPI2::TaskPtr"
 
-
 using namespace KGAPI2;
 using namespace Akonadi;
-
-Q_DECLARE_METATYPE(KGAPI2::TaskPtr)
 
 QString TaskHandler::mimetype()
 {
     return KCalendarCore::Todo::todoMimeType();
 }
 
-bool TaskHandler::canPerformTask(const Akonadi::Item &item)
+bool TaskHandler::canPerformTask(const Item &item)
 {
     return m_resource->canPerformTask<KCalendarCore::Todo::Ptr>(item, mimetype());
 }
@@ -251,8 +248,8 @@ void TaskHandler::itemsRemoved(const Item::List &items)
                     }
                     for (const Item &item : items) {
                         if (item.remoteId() == parentId) {
-                            Item newItem = item;
-                            qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << item.remoteId() << "from" << parentId;
+                            Item newItem(fetchedItem);
+                            qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << newItem.remoteId() << "from" << parentId;
                             todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
                             newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
                             detachItems << newItem;
@@ -302,7 +299,7 @@ void TaskHandler::itemsMoved(const Item::List &/*item*/, const Collection &/*col
     m_resource->cancelTask(i18n("Moving tasks between task lists is not supported"));
 }
 
-void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &/*parent*/)
+void TaskHandler::collectionAdded(const Collection &collection, const Collection &/*parent*/)
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Creating new task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Adding task list" << collection.displayName();
@@ -327,7 +324,7 @@ void TaskHandler::collectionAdded(const Akonadi::Collection &collection, const A
             });
 }
 
-void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
+void TaskHandler::collectionChanged(const Collection &collection)
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Changing task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Changing task list" << collection.remoteId();
@@ -340,7 +337,7 @@ void TaskHandler::collectionChanged(const Akonadi::Collection &collection)
     connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
-void TaskHandler::collectionRemoved(const Akonadi::Collection &collection)
+void TaskHandler::collectionRemoved(const Collection &collection)
 {
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Removing task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Removing task list" << collection.remoteId();

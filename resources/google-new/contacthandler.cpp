@@ -67,7 +67,7 @@ QString ContactHandler::myContactsRemoteId() const
     return QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_settings->accountPtr()->accountName())));
 }
 
-void ContactHandler::setupCollection(Akonadi::Collection &collection, const ContactsGroupPtr &group, const QString &realName)
+void ContactHandler::setupCollection(Collection &collection, const ContactsGroupPtr &group, const QString &realName)
 {
     collection.setContentMimeTypes({ KContacts::Addressee::mimeType() });
     collection.setName(group->id());
@@ -412,7 +412,7 @@ void ContactHandler::itemsLinked(const Item::List &items, const Collection &coll
     ContactsList contacts;
     contacts.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
-            [this, &collection](const Akonadi::Item &item){
+            [this, &collection](const Item &item){
                 KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
                 ContactPtr contact(new Contact(addressee));
                 contact->addGroup(collection.remoteId());
@@ -431,7 +431,7 @@ void ContactHandler::itemsUnlinked(const Item::List &items, const Collection &co
     ContactsList contacts;
     contacts.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
-            [this, &collection](const Akonadi::Item &item){
+            [this, &collection](const Item &item){
                 KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
                 ContactPtr contact(new Contact(addressee));
                 contact->removeGroup(collection.remoteId());
