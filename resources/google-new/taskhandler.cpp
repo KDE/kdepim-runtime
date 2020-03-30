@@ -209,13 +209,13 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
 
     KCalendarCore::Todo::Ptr todo = item.payload<KCalendarCore::Todo::Ptr>();
     const QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
-    TaskPtr task(new Task(*todo));
     // First we move it to a new parent, if there is
     auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
-    connect(job, &TaskMoveJob::finished, this, [this, task, item](KGAPI2::Job* job){
+    connect(job, &TaskMoveJob::finished, this, [this, todo, item](KGAPI2::Job* job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
+                TaskPtr task(new Task(*todo));
                 auto newJob = new TaskModifyJob(task, item.parentCollection().remoteId(), job->account(), this);
                 newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
                 connect(newJob, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
@@ -240,9 +240,11 @@ void TaskHandler::itemsRemoved(const Item::List &items)
                 }
                 const Item::List fetchedItems = qobject_cast<ItemFetchJob *>(job)->items();
                 Item::List detachItems;
+                TasksList detachTasks;
                 for (const Item &fetchedItem : fetchedItems) {
                     auto todo = fetchedItem.payload<KCalendarCore::Todo::Ptr>();
-                    const QString parentId = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
+                    TaskPtr task(new Task(*todo));
+                    const QString parentId = task->relatedTo(KCalendarCore::Incidence::RelTypeParent);
                     if (parentId.isEmpty()) {
                         continue;
                     }
@@ -253,28 +255,33 @@ void TaskHandler::itemsRemoved(const Item::List &items)
                             todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
                             newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
                             detachItems << newItem;
+                            detachTasks << task;
                         }
                     }
                 }
                 /* If there are no items do detach, then delete the task right now */
                 if (detachItems.isEmpty()) {
-                    slotDoRemoveTasks(items);
+                    doRemoveTasks(items);
                     return;
                 }
-                qCDebug(GOOGLE_TASKS_LOG) << "Modifying" << detachItems.count() << "children...";
-                /* Send modify request to detach all the sub-tasks from the task that is about to be
-                 * removed. */
-                auto modifyJob = new ItemModifyJob(detachItems);
-                connect(modifyJob, &ItemModifyJob::finished, this, [this, items](KJob *job){
+
+                qCDebug(GOOGLE_TASKS_LOG) << "Reparenting" << detachItems.count() << "children...";
+                auto moveJob = new TaskMoveJob(detachTasks, items.first().parentCollection().remoteId(),
+                        QString(), m_settings->accountPtr(), this);
+                connect(moveJob, &TaskMoveJob::finished, this, [this, items, detachItems](KGAPI2::Job *job){
                             if (job->error()) {
-                                m_resource->cancelTask(i18n("Failed to delete tasks:", job->errorString()));
+                                m_resource->cancelTask(i18n("Failed to reparent subtasks: %1", job->errorString()));
+                                return;
                             }
-                            slotDoRemoveTasks(items);
+                            // Update items inside Akonadi DB too
+                            new ItemModifyJob(detachItems);
+                            // Perform actual removal
+                            doRemoveTasks(items);
                         });
             });
 }
 
-void TaskHandler::slotDoRemoveTasks(const Item::List &items)
+void TaskHandler::doRemoveTasks(const Item::List &items)
 {
     // Make sure account is still valid
     if (!m_resource->canPerformTask()) {
