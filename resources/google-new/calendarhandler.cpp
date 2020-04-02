@@ -103,7 +103,7 @@ void CalendarHandler::retrieveCollections()
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving calendars"));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieving calendars...";
     auto job = new CalendarFetchJob(m_settings->accountPtr(), this);
-    connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotCollectionsRetrieved);
+    connect(job, &CalendarFetchJob::finished, this, &CalendarHandler::slotCollectionsRetrieved);
 
 }
 
@@ -151,7 +151,7 @@ void CalendarHandler::retrieveItems(const Collection &collection)
     }
 
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, this, &CalendarHandler::slotItemsRetrieved);
+    connect(job, &EventFetchJob::finished, this, &CalendarHandler::slotItemsRetrieved);
 
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving events for calendar '%1'", collection.displayName()));
 }
@@ -214,11 +214,11 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
     EventPtr kevent(new Event(*event));
     auto *job = new EventCreateJob(kevent, collection.remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
-    connect(job, &KGAPI2::Job::finished, this, [this, item](KGAPI2::Job *job){
+    connect(job, &EventCreateJob::finished, this, [this, item](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
-                Item newItem = item;
+                Item newItem(item);
                 const EventPtr event = qobject_cast<EventCreateJob *>(job)->items().first().dynamicCast<Event>();
                 qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
                 newItem.setRemoteId(event->id());
@@ -285,25 +285,25 @@ void CalendarHandler::collectionAdded(const Collection &collection, const Collec
     CalendarPtr calendar(new Calendar());
     calendar->setTitle(collection.displayName());
     calendar->setEditable(true);
-    auto job = new CalendarCreateJob(calendar, m_settings->accountPtr(), this);
-    job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
 
-    connect(job, &KGAPI2::Job::finished, this, [this, collection](KGAPI2::Job *job){
+    auto job = new CalendarCreateJob(calendar, m_settings->accountPtr(), this);
+    connect(job, &CalendarCreateJob::finished, this, [this, collection](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
                 CalendarPtr calendar = qobject_cast<CalendarCreateJob *>(job)->items().first().dynamicCast<Calendar>();
-                // FIXME: for some reason, newly created calendars are not "editable"...
-                calendar->setEditable(true);
-
-                qCDebug(GOOGLE_CALENDAR_LOG) << "Calendar created:" << calendar->uid();
-                // Enable newly added calendar in settings
+                qCDebug(GOOGLE_CALENDAR_LOG) << "Created calendar" << calendar->uid();
+                // Enable newly added calendar in settings, otherwise user won't see it
                 m_settings->addCalendar(calendar->uid());
+                // TODO: the calendar returned by google is almost empty, i.e. it's not "editable",
+                // does not contain the color, etc
+                calendar->setEditable(true);
                 // Populate remoteId & other stuff
                 Collection newCollection(collection);
                 setupCollection(newCollection, calendar);
                 m_resource->changeCommitted(newCollection);
                 m_resource->emitReadyStatus();
+
             });
 }
 
@@ -317,7 +317,7 @@ void CalendarHandler::collectionChanged(const Collection &collection)
     calendar->setEditable(true);
     auto job = new CalendarModifyJob(calendar, m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    connect(job, &CalendarModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 void CalendarHandler::collectionRemoved(const Collection &collection)
@@ -326,7 +326,7 @@ void CalendarHandler::collectionRemoved(const Collection &collection)
     qCDebug(GOOGLE_CALENDAR_LOG) << "Removing calendar" << collection.remoteId();
     auto job = new CalendarDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    connect(job, &CalendarDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 QDateTime CalendarHandler::lastCacheUpdate() const
@@ -346,7 +346,7 @@ void CalendarHandler::canHandleFreeBusy(const QString &email) const
                                     QDateTime::currentDateTimeUtc().addSecs(3600),
                                     m_settings->accountPtr(),
                                     const_cast<CalendarHandler*>(this));
-    connect(job, &KGAPI2::Job::finished, this, [this](KGAPI2::Job *job){
+    connect(job, &FreeBusyQueryJob::finished, this, [this](KGAPI2::Job *job){
                 auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
                 if (!m_resource->handleError(job, false)) {
                     m_resource->handlesFreeBusy(queryJob->id(), false);
@@ -364,7 +364,7 @@ void CalendarHandler::retrieveFreeBusy(const QString &email, const QDateTime &st
     }
 
     auto job = new FreeBusyQueryJob(email, start, end, m_settings->accountPtr(), this);
-    connect(job, &KGAPI2::Job::finished, this, [this](KGAPI2::Job *job) {
+    connect(job, &FreeBusyQueryJob::finished, this, [this](KGAPI2::Job *job) {
                 auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
 
                 if (!m_resource->handleError(job, false)) {
