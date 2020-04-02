@@ -81,7 +81,7 @@ void TaskHandler::retrieveCollections()
     Q_EMIT m_resource->status(AgentBase::Running, i18nc("@info:status", "Retrieving task lists"));
     qCDebug(GOOGLE_TASKS_LOG) << "Retrieving tasks...";
     auto job = new TaskListFetchJob(m_settings->accountPtr(), this);
-    connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotCollectionsRetrieved);
+    connect(job, &TaskListFetchJob::finished, this, &TaskHandler::slotCollectionsRetrieved);
 }
 
 void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
@@ -128,7 +128,7 @@ void TaskHandler::retrieveItems(const Collection &collection)
     }
 
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, this, &TaskHandler::slotItemsRetrieved);
+    connect(job, &TaskFetchJob::finished, this, &TaskHandler::slotItemsRetrieved);
 }
 
 void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
@@ -184,7 +184,7 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId() << "with parent" << parentRemoteId;
     auto job = new TaskCreateJob(task, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setParentItem(parentRemoteId);
-    connect(job, &KGAPI2::Job::finished, this, [this, item](KGAPI2::Job *job){
+    connect(job, &TaskCreateJob::finished, this, [this, item](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
@@ -218,7 +218,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
                 TaskPtr task(new Task(*todo));
                 auto newJob = new TaskModifyJob(task, item.parentCollection().remoteId(), job->account(), this);
                 newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-                connect(newJob, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+                connect(newJob, &TaskModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
             });
 }
 
@@ -314,7 +314,7 @@ void TaskHandler::collectionAdded(const Collection &collection, const Collection
     taskList->setTitle(collection.displayName());
 
     auto job = new TaskListCreateJob(taskList, m_settings->accountPtr(), this);
-    connect(job, &KGAPI2::Job::finished, this, [this, collection](KGAPI2::Job* job){
+    connect(job, &TaskListCreateJob::finished, this, [this, collection](KGAPI2::Job* job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
@@ -341,7 +341,7 @@ void TaskHandler::collectionChanged(const Collection &collection)
     taskList->setTitle(collection.displayName());
     auto job = new TaskListModifyJob(taskList, m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    connect(job, &TaskListModifyJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
 
 void TaskHandler::collectionRemoved(const Collection &collection)
@@ -350,5 +350,5 @@ void TaskHandler::collectionRemoved(const Collection &collection)
     qCDebug(GOOGLE_TASKS_LOG) << "Removing task list" << collection.remoteId();
     auto job = new TaskListDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
-    connect(job, &KGAPI2::Job::finished, m_resource, &GoogleResource::slotGenericJobFinished);
+    connect(job, &TaskListDeleteJob::finished, m_resource, &GoogleResource::slotGenericJobFinished);
 }
