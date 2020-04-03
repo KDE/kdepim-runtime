@@ -96,7 +96,7 @@ void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     Collection::List collections;
     for (const ObjectPtr &object : taskLists) {
         const TaskListPtr &taskList = object.dynamicCast<TaskList>();
-        qCDebug(GOOGLE_TASKS_LOG) << "Retrieved task list:" << taskList->uid();
+        qCDebug(GOOGLE_TASKS_LOG) << " -" << taskList->title() << "(" << taskList->uid() << ")";
 
         if (!activeTaskLists.contains(taskList->uid())) {
             qCDebug(GOOGLE_TASKS_LOG) << "Skipping, not subscribed";
@@ -125,8 +125,11 @@ void TaskHandler::retrieveItems(const Collection &collection)
     auto job = new TaskFetchJob(collection.remoteId(), m_settings->accountPtr(), this);
     if (lastSyncDelta > -1 && lastSyncDelta < 25 * 25 * 3600) {
         job->setFetchOnlyUpdated(collection.remoteRevision().toULongLong());
+        job->setFetchDeleted(true);
+    } else {
+        // No need to fetch deleted items for non-incremental update
+        job->setFetchDeleted(false);
     }
-
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &TaskFetchJob::finished, this, &TaskHandler::slotItemsRetrieved);
 }
@@ -248,15 +251,17 @@ void TaskHandler::itemsRemoved(const Item::List &items)
                     if (parentId.isEmpty()) {
                         continue;
                     }
-                    for (const Item &item : items) {
-                        if (item.remoteId() == parentId) {
-                            Item newItem(fetchedItem);
-                            qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << newItem.remoteId() << "from" << parentId;
-                            todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
-                            newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
-                            detachItems << newItem;
-                            detachTasks << task;
-                        }
+
+                    auto it = std::find_if(items.cbegin(), items.cend(), [&parentId](const Item &item){
+                                return item.remoteId() == parentId;
+                            });
+                    if (it != items.cend()) {
+                        Item newItem(fetchedItem);
+                        qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << newItem.remoteId() << "from" << parentId;
+                        todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
+                        newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
+                        detachItems << newItem;
+                        detachTasks << task;
                     }
                 }
                 /* If there are no items do detach, then delete the task right now */

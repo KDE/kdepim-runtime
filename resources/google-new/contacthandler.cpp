@@ -47,7 +47,6 @@
 #include "googlecontacts_debug.h"
 
 #define OTHERCONTACTS_REMOTEID QStringLiteral("OtherContacts")
-#define MODIFIED_PROPERTY "modifiedItems"
 
 using namespace KGAPI2;
 using namespace Akonadi;
@@ -67,12 +66,26 @@ QString ContactHandler::myContactsRemoteId() const
     return QStringLiteral("http://www.google.com/m8/feeds/groups/%1/base/6").arg(QString::fromLatin1(QUrl::toPercentEncoding(m_settings->accountPtr()->accountName())));
 }
 
-void ContactHandler::setupCollection(Collection &collection, const ContactsGroupPtr &group, const QString &realName)
+void ContactHandler::setupCollection(Collection &collection, const ContactsGroupPtr &group)
 {
     collection.setContentMimeTypes({ KContacts::Addressee::mimeType() });
     collection.setName(group->id());
     collection.setRemoteId(group->id());
     collection.setParentCollection(m_resource->rootCollection());
+
+    QString realName = group->title();
+    if (group->isSystemGroup()) {
+        if (group->title().contains(QLatin1String("Coworkers"))) {
+            realName = i18nc("Name of a group of contacts", "Coworkers");
+        } else if (group->title().contains(QLatin1String("Friends"))) {
+            realName = i18nc("Name of a group of contacts", "Friends");
+        } else if (group->title().contains(QLatin1String("Family"))) {
+            realName = i18nc("Name of a group of contacts", "Family");
+        } else if (group->title().contains(QLatin1String("My Contacts"))) {
+            realName = i18nc("Name of a group of contacts", "My Contacts");
+        }
+    }
+
     // "My Contacts" is the only one not virtual
     if (group->id() == myContactsRemoteId()) {
         collection.setRights(Collection::CanCreateItem
@@ -114,6 +127,7 @@ void ContactHandler::retrieveCollections()
     attr->setDisplayName(i18n("Other Contacts"));
     attr->setIconName(QStringLiteral("view-pim-contacts"));
 
+    m_resource->collectionsRetrieved({ otherCollection });
     m_collections[ OTHERCONTACTS_REMOTEID ] = otherCollection;
 
     auto job = new ContactsGroupFetchJob(m_settings->accountPtr(), this);
@@ -128,30 +142,18 @@ void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
     qCDebug(GOOGLE_CONTACTS_LOG) << "Contacts groups retrieved";
 
     const ObjectsList objects = qobject_cast<ContactsGroupFetchJob *>(job)->items();
-    for (const auto &object : objects) {
-        const ContactsGroupPtr group = object.dynamicCast<ContactsGroup>();
-        qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieved contact group:" << group->id() << "(" << group->title() << ")";
-
-        QString realName = group->title();
-
-        if (group->isSystemGroup()) {
-            if (group->title().contains(QLatin1String("Coworkers"))) {
-                realName = i18nc("Name of a group of contacts", "Coworkers");
-            } else if (group->title().contains(QLatin1String("Friends"))) {
-                realName = i18nc("Name of a group of contacts", "Friends");
-            } else if (group->title().contains(QLatin1String("Family"))) {
-                realName = i18nc("Name of a group of contacts", "Family");
-            } else if (group->title().contains(QLatin1String("My Contacts"))) {
-                realName = i18nc("Name of a group of contacts", "My Contacts");
-            }
-        }
-
-        Collection collection;
-        setupCollection(collection, group, realName);
-        m_collections[ collection.remoteId() ] = collection;
-    }
-
-    m_resource->collectionsRetrievedFromHandler(valuesToVector(m_collections));
+    Collection::List collections;
+    collections.reserve(objects.count());
+    std::transform(objects.cbegin(), objects.cend(), std::back_inserter(collections),
+            [this](const ObjectPtr &object){
+                const ContactsGroupPtr group = object.dynamicCast<ContactsGroup>();
+                qCDebug(GOOGLE_CONTACTS_LOG) << " -" << group->title() << "(" << group->id() << ")";
+                Collection collection;
+                setupCollection(collection, group);
+                m_collections[ collection.remoteId() ] = collection;
+                return collection;
+            });
+    m_resource->collectionsRetrievedFromHandler(collections);
 }
 
 void ContactHandler::retrieveItems(const Collection &collection)
@@ -166,9 +168,12 @@ void ContactHandler::retrieveItems(const Collection &collection)
     qCDebug(GOOGLE_CONTACTS_LOG) << "Retreiving contacts for group" << collection.remoteId() << "...";
 
     auto job = new ContactFetchJob(m_settings->accountPtr(), this);
-    job->setFetchDeleted(true);
     if (!collection.remoteRevision().isEmpty()) {
         job->setFetchOnlyUpdated(collection.remoteRevision().toLongLong());
+        job->setFetchDeleted(true);
+    } else {
+        // No need to fetch deleted items for a non-incremental update
+        job->setFetchDeleted(false);
     }
     connect(job, &ContactFetchJob::finished, this, &ContactHandler::slotItemsRetrieved);
 }
@@ -182,8 +187,8 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
     Collection collection = m_resource->currentCollection();
 
     Item::List changedItems, removedItems;
-    QMap<QString, Item::List> groupsMap;
-    QList<QString> changedPhotos;
+    QHash<QString, Item::List> groupsMap;
+    QStringList changedPhotos;
 
     auto fetchJob = qobject_cast<ContactFetchJob *>(job);
     bool isIncremental = (fetchJob->fetchOnlyUpdated() > 0);
@@ -263,11 +268,12 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
 
     Item::List items;
     items.reserve(changedPhotos.size());
-    for (const QString& contact : changedPhotos) {
-        Item item;
-        item.setRemoteId(contact);
-        items << item;
-    }
+    std::transform(changedPhotos.cbegin(), changedPhotos.cend(), std::back_inserter(items),
+            [](const QString &contact){
+                Item item;
+                item.setRemoteId(contact);
+                return item;
+            });
     auto job = new ItemFetchJob(items, this);
     job->setCollection(collection);
     job->fetchScope().fetchFullPayload(true);
@@ -276,20 +282,20 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
 
 void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
 {
-    auto fetchJob = qobject_cast<ItemFetchJob *>(job);
-    ContactsList contacts;
-    const Item::List items = fetchJob->items();
-    qCDebug(GOOGLE_CONTACTS_LOG) << "Fetched" << items.count() << "contacts for photo update";
-    for (const Item &item : items) {
-        const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
-        const ContactPtr contact(new Contact(addressee));
-        contacts << contact;
-    }
-
     // Make sure account is still valid
     if (!m_resource->canPerformTask()) {
         return;
     }
+    const Item::List items = qobject_cast<ItemFetchJob *>(job)->items();
+    ContactsList contacts;
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Fetched" << items.count() << "contacts for photo update";
+    contacts.reserve(items.size());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
+            [](const Item &item){
+                const KContacts::Addressee addressee = item.payload<KContacts::Addressee>();
+                const ContactPtr contact(new Contact(addressee));
+                return contact;
+            });
 
     qCDebug(GOOGLE_CONTACTS_LOG) << "Starting fetching photos...";
     auto photoJob = new ContactFetchPhotoJob(contacts, m_settings->accountPtr(), this);
@@ -301,13 +307,13 @@ void ContactHandler::slotUpdatePhotosItemsRetrieved(KJob *job)
             job->setProperty("processedItems", processedItems);
             Q_EMIT m_resource->percent(100.0f*processedItems / items.count());
 
-            for (const Item& item : items) {
-                if (item.remoteId() == contact->uid()) {
-                    Item newItem = item;
-                    newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
-                    new ItemModifyJob(newItem, this);
-                    return;
-                }
+            auto it = std::find_if(items.cbegin(), items.cend(), [&contact](const Item &item){
+                        return item.remoteId() == contact->uid();
+                    });
+            if (it != items.cend())  {
+                Item newItem(*it);
+                newItem.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
+                new ItemModifyJob(newItem, this);
             }
         });
 
@@ -356,7 +362,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > &par
 
 void ContactHandler::itemsRemoved(const Item::List &items)
 {
-    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Removing contact", "Removing contacts", items.count()));
+    Q_EMIT m_resource->status(AgentBase::Running, i18ncp("@info:status", "Removing %1 contacts", "Removing %1 contact", items.count()));
     QStringList contactIds;
     contactIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contactIds),
@@ -460,7 +466,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
             ContactsGroupPtr group = qobject_cast<ContactsGroupCreateJob *>(job)->items().first().dynamicCast<ContactsGroup>();
             qCDebug(GOOGLE_CONTACTS_LOG) << "Contact group created:" << group->id();
             Collection newCollection(collection);
-            setupCollection(newCollection, group, group->title());
+            setupCollection(newCollection, group);
             m_collections[ newCollection.remoteId() ] = newCollection;
             m_resource->changeCommitted(newCollection);
             m_resource->emitReadyStatus();

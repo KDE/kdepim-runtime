@@ -324,10 +324,9 @@ void GoogleResource::retrieveCollections()
 
     collectionsRetrieved({ m_rootCollection });
 
-    m_jobs = 0;
+    m_jobs = m_handlers.count();
     for (auto &handler : m_handlers) {
         handler->retrieveCollections();
-        m_jobs++;
     }
 }
 
