@@ -104,7 +104,6 @@ void CalendarHandler::retrieveCollections()
     qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieving calendars...";
     auto job = new CalendarFetchJob(m_settings->accountPtr(), this);
     connect(job, &CalendarFetchJob::finished, this, &CalendarHandler::slotCollectionsRetrieved);
-
 }
 
 void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
@@ -116,11 +115,11 @@ void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
 
     const ObjectsList calendars = qobject_cast<CalendarFetchJob *>(job)->items();
     Collection::List collections;
-
+    collections.reserve(calendars.count());
     const QStringList activeCalendars = m_settings->calendars();
     for (const auto &object : calendars) {
         const CalendarPtr &calendar = object.dynamicCast<Calendar>();
-        qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieved calendar:" << calendar->title() << "(" << calendar->uid() << ")";
+        qCDebug(GOOGLE_CALENDAR_LOG) << " -" << calendar->title() << "(" << calendar->uid() << ")";
         if (!activeCalendars.contains(calendar->uid())) {
             qCDebug(GOOGLE_CALENDAR_LOG) << "Skipping, not subscribed";
             continue;
@@ -141,13 +140,18 @@ void CalendarHandler::retrieveItems(const Collection &collection)
     if (!syncToken.isEmpty()) {
         qCDebug(GOOGLE_CALENDAR_LOG) << "Using sync token" << syncToken;
         job->setSyncToken(syncToken);
-    } else if (!m_settings->eventsSince().isEmpty()) {
-        const QDate date = QDate::fromString(m_settings->eventsSince(), Qt::ISODate);
+        job->setFetchDeleted(true);
+    } else {
+        // No need to fetch deleted items for non-incremental update
+        job->setFetchDeleted(false);
+        if (!m_settings->eventsSince().isEmpty()) {
+            const QDate date = QDate::fromString(m_settings->eventsSince(), Qt::ISODate);
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-        job->setTimeMin(QDateTime(date).toSecsSinceEpoch());
+            job->setTimeMin(QDateTime(date).toSecsSinceEpoch());
 #else
-        job->setTimeMin(QDateTime(date.startOfDay()).toSecsSinceEpoch());
+            job->setTimeMin(QDateTime(date.startOfDay()).toSecsSinceEpoch());
 #endif
+        }
     }
 
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
