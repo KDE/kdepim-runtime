@@ -196,21 +196,17 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
     qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieved" << objects.count() << "contacts";
     for (const ObjectPtr &object : objects) {
         const ContactPtr contact = object.dynamicCast<Contact>();
-        // Items inside "My Contacts" should have at least 1 group added,
-        // otherwise contact belongs to "Other Contacts"
-        if (((collection.remoteId() == myContactsRemoteId()) && contact->groups().isEmpty())
-         || ((collection.remoteId() == OTHERCONTACTS_REMOTEID) && !contact->groups().isEmpty())) {
-            continue;
-        }
 
         Item item;
-        item.setMimeType(KContacts::Addressee::mimeType());
+        item.setMimeType( mimetype() );
         item.setParentCollection(collection);
         item.setRemoteId(contact->uid());
         item.setRemoteRevision(contact->etag());
         item.setPayload<KContacts::Addressee>(*contact.dynamicCast<KContacts::Addressee>());
 
-        if (contact->deleted()) {
+        if (contact->deleted()
+                || (collection.remoteId() == OTHERCONTACTS_REMOTEID && !contact->groups().isEmpty())
+                || (collection.remoteId() == myContactsRemoteId() && contact->groups().isEmpty())) {
             qCDebug(GOOGLE_CONTACTS_LOG) << " - removed" << contact->uid();
             removedItems << item;
         } else {
@@ -237,6 +233,7 @@ void ContactHandler::slotItemsRetrieved(KGAPI2::Job *job)
     for (auto iter = groupsMap.constBegin(), iterEnd = groupsMap.constEnd(); iter != iterEnd; ++iter) {
         new LinkJob(m_collections[iter.key()], iter.value(), this);
     }
+    // TODO: unlink if the group was removed!
 
     if (!changedPhotos.isEmpty()) {
         QVariantMap map;
