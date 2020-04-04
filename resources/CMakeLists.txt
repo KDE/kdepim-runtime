@@ -52,7 +52,7 @@ add_subdirectory( maildir )
 add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
-add_subdirectory( google )
+add_subdirectory( google-groupware )
 
 add_subdirectory( shared )
 add_subdirectory( birthdays )
