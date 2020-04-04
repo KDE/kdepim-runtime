@@ -25,8 +25,8 @@
 #include <conversion/commonconversion.h>
 #include <mime/mimeutils.h>
 #include <kcalendarcore/event.h>
-#include <kcalendarcore/memorycalendar.h>
-#include <kcalendarcore/icalformat.h>
+#include <KCalendarCore/MemoryCalendar>
+#include <KCalendarCore/ICalFormat>
 #include <kmime/kmime_message.h>
 #include <KLocalizedString>
 #include <iostream>

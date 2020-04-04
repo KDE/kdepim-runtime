@@ -34,7 +34,7 @@
 #ifndef KOLABV2_KOLABBASE_H
 #define KOLABV2_KOLABBASE_H
 
-#include <kcalendarcore/incidence.h>
+#include <KCalendarCore/Incidence>
 
 #include <QColor>
 #include <QDateTime>

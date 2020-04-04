@@ -25,7 +25,7 @@
 #include "testutils.h"
 #include "kolabformat/kolabobject.h"
 #include <conversion/commonconversion.h>
-#include <kcalendarcore/icalformat.h>
+#include <KCalendarCore/ICalFormat>
 #include <kcontacts/vcardconverter.h>
 
 void UpgradeTest::testIncidence_data()

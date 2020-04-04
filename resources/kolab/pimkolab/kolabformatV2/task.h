@@ -37,7 +37,7 @@
 #include "incidence.h"
 
 #include <kcalendarcore/todo.h>
-#include <kcalendarcore/incidence.h>
+#include <KCalendarCore/Incidence>
 
 class QDomElement;
 

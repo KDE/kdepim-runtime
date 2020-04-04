@@ -22,7 +22,7 @@
 
 #include <QObject>
 #include <QTest>
-#include <kcalendarcore/recurrence.h>
+#include <KCalendarCore/Recurrence>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/todo.h>
 #include <kcalendarcore/journal.h>

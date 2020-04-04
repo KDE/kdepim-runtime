@@ -17,7 +17,7 @@
 
 #include "kcalconversion.h"
 
-#include <kcalendarcore/recurrence.h>
+#include <KCalendarCore/Recurrence>
 #include <QVector>
 #include <QUrl>
 #include <QDate>

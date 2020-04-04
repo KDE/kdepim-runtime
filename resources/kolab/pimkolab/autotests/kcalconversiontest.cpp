@@ -20,7 +20,7 @@
 
 #include <QTest>
 #include <kolabcontact.h>
-#include <kcalendarcore/recurrence.h>
+#include <KCalendarCore/Recurrence>
 #include <kcontacts/addressee.h>
 
 #include "conversion/kcalconversion.h"

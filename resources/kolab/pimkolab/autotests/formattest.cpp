@@ -24,7 +24,7 @@
 #include <kolabcontainers.h>
 #include <kolabformat.h>
 
-#include <kcalendarcore/icalformat.h>
+#include <KCalendarCore/ICalFormat>
 #include <kcontacts/vcardconverter.h>
 #include <kcontacts/contactgrouptool.h>
 #include <akonadi/notes/noteutils.h>

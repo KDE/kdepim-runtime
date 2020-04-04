@@ -37,11 +37,11 @@
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
 #include <kmime/kmime_message.h>
-#include <mailtransportakonadi/sentbehaviourattribute.h>
-#include <mailtransport/transport.h>
-#include <mailtransportakonadi/transportattribute.h>
-#include <mailtransport/transportjob.h>
-#include <mailtransport/transportmanager.h>
+#include <MailTransportAkonadi/SentBehaviourAttribute>
+#include <MailTransport/Transport>
+#include <MailTransportAkonadi/TransportAttribute>
+#include <MailTransport/TransportJob>
+#include <MailTransport/TransportManager>
 #include <AkonadiCore/ServerManager>
 
 #include <QTimer>

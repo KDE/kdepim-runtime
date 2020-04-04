@@ -19,11 +19,11 @@
 
 #include "kolabretrievetagstask.h"
 
-#include <akonadi/collectionquotaattribute.h>
-#include <akonadi/attributefactory.h>
+#include <Akonadi/CollectionQuotaAttribute>
+#include <Akonadi/AttributeFactory>
 #include <akonadi/qtest_akonadi.h>
-#include <akonadi/servermanager.h>
-#include <akonadi/collectioncreatejob.h>
+#include <Akonadi/ServerManager>
+#include <Akonadi/CollectionCreateJob>
 #include <akonadi/virtualresource.h>
 #include "kolabhelpers.h"
 #include <kolab/kolabobject.h>

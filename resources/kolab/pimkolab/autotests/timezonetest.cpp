@@ -24,7 +24,7 @@
 
 #include <QTest>
 #include <kcalendarcore/event.h>
-#include <kcalendarcore/icalformat.h>
+#include <KCalendarCore/ICalFormat>
 
 void TimezoneTest::initTestCase()
 {

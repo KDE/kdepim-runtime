@@ -29,8 +29,8 @@
 #include "settingsadaptor.h"
 
 #include <itemfetchscope.h>
-#include <mailtransportakonadi/sentactionattribute.h>
-#include <mailtransportakonadi/sentbehaviourattribute.h>
+#include <MailTransportAkonadi/SentActionAttribute>
+#include <MailTransportAkonadi/SentBehaviourAttribute>
 #include <AkonadiCore/ServerManager>
 
 #include "maildispatcher_debug.h"

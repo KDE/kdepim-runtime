@@ -21,7 +21,7 @@
 #define DELETEDITEMSATTRIBUTE_H
 
 #include <attribute.h>
-#include <kmbox/mboxentry.h>
+#include <KMbox/MBoxEntry>
 
 #include <QSet>
 

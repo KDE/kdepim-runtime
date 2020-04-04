@@ -36,7 +36,7 @@
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <kcalendarcore/incidence.h>
+#include <KCalendarCore/Incidence>
 #include <kcalendarcore/journal.h>
 
 using namespace KolabV2;

@@ -21,7 +21,7 @@
 #include "conversion/commonconversion.h"
 #include "libkolab-version.h"
 #include <kcalendarcore/freebusy.h>
-#include <kcalendarcore/icalformat.h>
+#include <KCalendarCore/ICalFormat>
 #include <QUuid>
 #include <QTime>
 

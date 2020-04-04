@@ -25,7 +25,7 @@
 
 #include <kimap/loginjob.h>
 
-#include <mailtransport/transport.h>
+#include <MailTransport/Transport>
 
 class ImapAccount;
 class KJob;

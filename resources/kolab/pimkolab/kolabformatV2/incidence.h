@@ -34,7 +34,7 @@
 #ifndef KOLABV2_INCIDENCE_H
 #define KOLABV2_INCIDENCE_H
 
-#include <kcalendarcore/incidence.h>
+#include <KCalendarCore/Incidence>
 
 #include "kolabbase.h"
 

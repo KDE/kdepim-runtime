@@ -21,7 +21,7 @@
 #include "kolab_export.h"
 
 #include <kcalendarcore/event.h>
-#include <kcalendarcore/memorycalendar.h>
+#include <KCalendarCore/MemoryCalendar>
 #include <kolabevent.h>
 #include <memory>
 

@@ -22,7 +22,7 @@
 #ifndef SENTACTIONHANDLER_H
 #define SENTACTIONHANDLER_H
 
-#include <mailtransportakonadi/sentactionattribute.h>
+#include <MailTransportAkonadi/SentActionAttribute>
 
 #include <QObject>
 

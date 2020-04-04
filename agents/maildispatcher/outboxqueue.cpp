@@ -35,9 +35,9 @@
 
 #include <kmime/kmime_message.h>
 
-#include <mailtransportakonadi/dispatchmodeattribute.h>
-#include <mailtransportakonadi/sentbehaviourattribute.h>
-#include <mailtransportakonadi/transportattribute.h>
+#include <MailTransportAkonadi/DispatchModeAttribute>
+#include <MailTransportAkonadi/SentBehaviourAttribute>
+#include <MailTransportAkonadi/TransportAttribute>
 
 using namespace Akonadi;
 using namespace MailTransport;

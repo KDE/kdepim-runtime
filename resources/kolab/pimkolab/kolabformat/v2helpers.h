@@ -32,7 +32,7 @@
 
 #include <kcontacts/contactgroup.h>
 #include <kcontacts/addressee.h>
-#include <kcalendarcore/incidence.h>
+#include <KCalendarCore/Incidence>
 #include <kcalendarcore/event.h>
 #include <kmime/kmime_message.h>
 

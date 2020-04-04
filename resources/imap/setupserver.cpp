@@ -36,8 +36,8 @@
 #include "utils.h"
 #include <config-imap.h>
 
-#include <mailtransport/transport.h>
-#include <mailtransport/servertest.h>
+#include <MailTransport/Transport>
+#include <MailTransport/ServerTest>
 
 #include <kmime/kmime_message.h>
 

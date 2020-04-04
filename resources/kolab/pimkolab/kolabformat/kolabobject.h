@@ -25,7 +25,7 @@
 #include <AkonadiCore/Relation>
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <kcalendarcore/incidence.h>
+#include <KCalendarCore/Incidence>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/journal.h>
 #include <kcalendarcore/todo.h>

@@ -20,7 +20,7 @@
 #include "imip.h"
 #include "pimkolab_debug.h"
 
-#include <kcalutils/incidenceformatter.h>
+#include <KCalUtils/IncidenceFormatter>
 #include <KEmailAddress>
 #include <kmime/kmime_message.h>
 /*
