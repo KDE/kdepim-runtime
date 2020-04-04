@@ -134,7 +134,7 @@ void ContactHandler::retrieveCollections()
     connect(job, &ContactFetchJob::finished, this, &ContactHandler::slotCollectionsRetrieved);
 }
 
-void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
+void ContactHandler::slotCollectionsRetrieved(KGAPI2::Job *job)
 {
     if (!m_resource->handleError(job)) {
         return;
@@ -329,7 +329,7 @@ void ContactHandler::itemAdded(const Item &item, const Collection &collection)
     }
 
     auto job = new ContactCreateJob(contact, m_settings->accountPtr(), this);
-    connect(job, &ContactCreateJob::finished, this, [this, item](KGAPI2::Job* job){
+    connect(job, &ContactCreateJob::finished, this, [this, item](KGAPI2::Job *job){
             if (!m_resource->handleError(job)) {
                 return;
             }
@@ -455,7 +455,7 @@ void ContactHandler::collectionAdded(const Collection &collection, const Collect
     group->setIsSystemGroup(false);
 
     auto job = new ContactsGroupCreateJob(group, m_settings->accountPtr(), this);
-    connect(job, &ContactsGroupCreateJob::finished, this, [this, collection](KGAPI2::Job* job){
+    connect(job, &ContactsGroupCreateJob::finished, this, [this, collection](KGAPI2::Job *job){
             if (!m_resource->handleError(job)) {
                 return;
             }

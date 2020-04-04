@@ -48,13 +48,13 @@ public:
     void collectionChanged(const Akonadi::Collection &collection) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;
 private Q_SLOTS:
-    void slotCollectionsRetrieved(KGAPI2::Job* job);
-    void slotItemsRetrieved(KGAPI2::Job* job);
+    void slotCollectionsRetrieved(KGAPI2::Job *job);
+    void slotItemsRetrieved(KGAPI2::Job *job);
     void slotUpdatePhotosItemsRetrieved(KJob *job);
     void retrieveContactsPhotos(const QVariant &arguments);
 private:
     QString myContactsRemoteId() const;
-    void setupCollection(Akonadi::Collection& collection, const KGAPI2::ContactsGroupPtr& group);
+    void setupCollection(Akonadi::Collection &collection, const KGAPI2::ContactsGroupPtr &group);
     QMap<QString, Akonadi::Collection> m_collections;
 };
 

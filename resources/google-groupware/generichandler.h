@@ -59,8 +59,8 @@ public:
     virtual void collectionChanged(const Akonadi::Collection &collection) = 0;
     virtual void collectionRemoved(const Akonadi::Collection &collection) = 0;
 protected:
-    GoogleResource* m_resource;
-    GoogleSettings* m_settings;
+    GoogleResource *m_resource = nullptr;
+    GoogleSettings *m_settings = nullptr;
 };
 
 #endif // GENERICHANDLER_H

@@ -48,7 +48,7 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
         return;
     }
 
-    QVariant var = json.toVariant();
+    const QVariant var = json.toVariant();
     const QVariantList list = var.toList();
     for (const QVariant &l : list) {
         QVariantMap reminder = l.toMap();

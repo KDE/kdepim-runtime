@@ -51,8 +51,8 @@ public:
     QString clientId() const;
     QString clientSecret() const;
 
-    void addCalendar(const QString& calendar);
-    void addTaskList(const QString& taskList);
+    void addCalendar(const QString &calendar);
+    void addTaskList(const QString &taskList);
 
     KGAPI2::AccountPtr accountPtr();
     // Wallet
@@ -67,7 +67,7 @@ private Q_SLOTS:
 private:
     WId m_winId;
     QString m_resourceId;
-    bool m_isReady;
+    bool m_isReady = false;
     KGAPI2::AccountPtr m_account;
     QPointer<KWallet::Wallet> m_wallet;
 

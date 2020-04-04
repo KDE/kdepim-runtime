@@ -43,8 +43,8 @@ public:
     void collectionChanged(const Akonadi::Collection &collection) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;
 private Q_SLOTS:
-    void slotCollectionsRetrieved(KGAPI2::Job* job);
-    void slotItemsRetrieved(KGAPI2::Job* job);
+    void slotCollectionsRetrieved(KGAPI2::Job *job);
+    void slotItemsRetrieved(KGAPI2::Job *job);
 private:
     void setupCollection(Akonadi::Collection &colleciton, const KGAPI2::TaskListPtr &taskList);
     void doRemoveTasks(const Akonadi::Item::List &items);

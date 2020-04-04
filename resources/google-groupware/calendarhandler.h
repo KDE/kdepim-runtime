@@ -50,10 +50,10 @@ public:
     void canHandleFreeBusy(const QString &email) const;
     void retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end);
 private Q_SLOTS:
-    void slotCollectionsRetrieved(KGAPI2::Job* job);
-    void slotItemsRetrieved(KGAPI2::Job* job);
+    void slotCollectionsRetrieved(KGAPI2::Job *job);
+    void slotItemsRetrieved(KGAPI2::Job *job);
 private:
-    void setupCollection(Akonadi::Collection& collection, const KGAPI2::CalendarPtr& group);
+    void setupCollection(Akonadi::Collection &collection, const KGAPI2::CalendarPtr &group);
 };
 
 #endif // CALENDARHANDLER_H

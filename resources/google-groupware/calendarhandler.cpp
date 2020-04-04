@@ -106,7 +106,7 @@ void CalendarHandler::retrieveCollections()
     connect(job, &CalendarFetchJob::finished, this, &CalendarHandler::slotCollectionsRetrieved);
 }
 
-void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
+void CalendarHandler::slotCollectionsRetrieved(KGAPI2::Job *job)
 {
     if (!m_resource->handleError(job)) {
         return;

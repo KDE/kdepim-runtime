@@ -60,7 +60,7 @@ bool TaskHandler::canPerformTask(const Item &item)
     return m_resource->canPerformTask<KCalendarCore::Todo::Ptr>(item, mimetype());
 }
 
-void TaskHandler::setupCollection(Collection& collection, const TaskListPtr& taskList)
+void TaskHandler::setupCollection(Collection &collection, const TaskListPtr &taskList)
 {
     collection.setContentMimeTypes({ mimetype() });
     collection.setName(taskList->uid());
@@ -84,7 +84,7 @@ void TaskHandler::retrieveCollections()
     connect(job, &TaskListFetchJob::finished, this, &TaskHandler::slotCollectionsRetrieved);
 }
 
-void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job* job)
+void TaskHandler::slotCollectionsRetrieved(KGAPI2::Job *job)
 {
     if (!m_resource->handleError(job)) {
         return;
@@ -141,7 +141,7 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
     }
     Item::List changedItems, removedItems;
 
-    const ObjectsList& objects = qobject_cast<FetchJob *>(job)->items();
+    const ObjectsList &objects = qobject_cast<FetchJob *>(job)->items();
     Collection collection = job->property(COLLECTION_PROPERTY).value<Collection>();
     bool isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
     qCDebug(GOOGLE_TASKS_LOG) << "Retrieved" << objects.count() << "tasks for list" << collection.remoteId();
@@ -214,7 +214,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &partId
     const QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
     // First we move it to a new parent, if there is
     auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
-    connect(job, &TaskMoveJob::finished, this, [this, todo, item](KGAPI2::Job* job){
+    connect(job, &TaskMoveJob::finished, this, [this, todo, item](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }
@@ -319,7 +319,7 @@ void TaskHandler::collectionAdded(const Collection &collection, const Collection
     taskList->setTitle(collection.displayName());
 
     auto job = new TaskListCreateJob(taskList, m_settings->accountPtr(), this);
-    connect(job, &TaskListCreateJob::finished, this, [this, collection](KGAPI2::Job* job){
+    connect(job, &TaskListCreateJob::finished, this, [this, collection](KGAPI2::Job *job){
                 if (!m_resource->handleError(job)) {
                     return;
                 }

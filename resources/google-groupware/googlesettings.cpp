@@ -31,7 +31,6 @@ static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 
 GoogleSettings::GoogleSettings()
     : m_winId(0)
-    , m_isReady(false)
 {
     m_wallet = Wallet::openWallet(Wallet::NetworkWallet(),
                                   m_winId, Wallet::Asynchronous);
@@ -135,7 +134,7 @@ void GoogleSettings::cleanup()
     }
 }
 
-void GoogleSettings::addCalendar(const QString& calendar)
+void GoogleSettings::addCalendar(const QString &calendar)
 {
     if (calendars().isEmpty() || calendars().contains(calendar)) {
         return;
@@ -144,7 +143,7 @@ void GoogleSettings::addCalendar(const QString& calendar)
     save();
 }
 
-void GoogleSettings::addTaskList(const QString& taskList)
+void GoogleSettings::addTaskList(const QString &taskList)
 {
     if (calendars().isEmpty() || taskLists().contains(taskList)) {
         return;
