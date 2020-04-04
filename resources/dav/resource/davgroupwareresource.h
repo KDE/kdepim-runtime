@@ -19,6 +19,7 @@
 #ifndef DAVGROUPWARERESOURCE_H
 #define DAVGROUPWARERESOURCE_H
 
+#include <KDAV/Enums>
 #include <KDAV/EtagCache>
 
 #include <memory>
@@ -105,7 +106,7 @@ private:
     void onItemRemovalPrepared(KJob *);
     void onItemRemovedFinished(KJob *);
 
-    void onCollectionDiscovered(int protocol, const QString &collectionUrl, const QString &configuredUrl);
+    void onCollectionDiscovered(KDAV::Protocol protocol, const QString &collectionUrl, const QString &configuredUrl);
     void onConflictModifyJobFinished(KJob *job);
     void onDeletedItemRecreated(KJob *job);
 

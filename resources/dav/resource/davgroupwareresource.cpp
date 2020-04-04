@@ -1182,9 +1182,9 @@ void DavGroupwareResource::onItemRemovedFinished(KJob *job)
     }
 }
 
-void DavGroupwareResource::onCollectionDiscovered(int protocol, const QString &collection, const QString &config)
+void DavGroupwareResource::onCollectionDiscovered(KDAV::Protocol protocol, const QString &collection, const QString &config)
 {
-    Settings::self()->addCollectionUrlMapping(KDAV::Protocol(protocol), collection, config);
+    Settings::self()->addCollectionUrlMapping(protocol, collection, config);
 }
 
 void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &localDependentItems, const KDAV::DavItem &rI, bool isLocalRemoval, int responseCode)
