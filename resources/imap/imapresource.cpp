@@ -53,6 +53,8 @@ ImapResource::ImapResource(const QString &id)
 #endif
     m_pool->setSessionUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
     m_pool->setClientId(clientId());
+
+    settings(); // make sure the D-Bus settings interface is up
 }
 
 ImapResource::~ImapResource()

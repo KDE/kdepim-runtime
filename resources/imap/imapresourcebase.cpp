@@ -146,13 +146,13 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     connect(m_statusMessageTimer, &QTimer::timeout, this, &ImapResourceBase::clearStatusMessage);
     connect(this, &AgentBase::error, this, &ImapResourceBase::showError);
 
+    new ImapResourceBaseAdaptor(this);
+
     QMetaObject::invokeMethod(this, &ImapResourceBase::delayedInit, Qt::QueuedConnection);
 }
 
 void ImapResourceBase::delayedInit()
 {
-    settings(); // make sure the D-Bus settings interface is up
-    new ImapResourceBaseAdaptor(this);
     setNeedsNetwork(needsNetwork());
 
     // Migration issue: trash folder had ID in config, but didn't have SpecialCollections attribute, fix that.
