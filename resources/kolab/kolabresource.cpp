@@ -60,6 +60,8 @@ KolabResource::KolabResource(const QString &id)
     //Ensure we have up-to date metadata before attempting to sync folder
     setScheduleAttributeSyncBeforeItemSync(true);
     setKeepLocalCollectionChanges(QSet<QByteArray>() << "ENTITYDISPLAY" << Akonadi::BlockAlarmsAttribute().type());
+
+    settings(); // make sure the D-Bus settings interface is up
 }
 
 KolabResource::~KolabResource()
