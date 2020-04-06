@@ -465,8 +465,8 @@ void MaildirResource::itemRemoved(const Akonadi::Item &item)
 Collection::List MaildirResource::listRecursive(const Collection &root, const Maildir &dir)
 {
     if (mSettings->monitorFilesystem()) {
-        mFsWatcher->addDir(dir.path() + QDir::separator() + QLatin1String("new"));
-        mFsWatcher->addDir(dir.path() + QDir::separator() + QLatin1String("cur"));
+        mFsWatcher->addDir(dir.path() + QStringLiteral("/new"));
+        mFsWatcher->addDir(dir.path() + QStringLiteral("/cur"));
         mFsWatcher->addDir(dir.subDirPath());
         if (dir.isRoot()) {
             mFsWatcher->addDir(dir.path());
@@ -576,7 +576,7 @@ void MaildirResource::collectionAdded(const Collection &collection, const Collec
         changeProcessed();
         return;
     } else {
-        const QString collectionName(collection.name().remove(QDir::separator()));
+        const QString collectionName(collection.name().remove(QLatin1Char('/')));
         const QString newFolderPath = md.addSubFolder(collectionName);
         if (newFolderPath.isEmpty()) {
             changeProcessed();
@@ -621,7 +621,7 @@ void MaildirResource::collectionChanged(const Collection &collection)
         md.create();
     }
 
-    const QString collectionName(collection.name().remove(QDir::separator()));
+    const QString collectionName(collection.name().remove(QLatin1Char('/')));
     if (!md.rename(collectionName)) {
         Q_EMIT error(i18n("Unable to rename maildir folder '%1'.", collection.name()));
         changeProcessed();

@@ -170,7 +170,7 @@ void ContactsResource::retrieveItems(const Akonadi::Collection &collection)
 
 bool ContactsResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    const QString filePath = directoryForCollection(item.parentCollection()) + QDir::separator() + item.remoteId();
+    const QString filePath = directoryForCollection(item.parentCollection()) + QLatin1Char('/') + item.remoteId();
 
     Item newItem(item);
 
@@ -227,7 +227,7 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
     if (item.hasPayload<KContacts::Addressee>()) {
         const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
 
-        const QString fileName = directoryPath + QDir::separator() + contact.uid() + QLatin1String(".vcf");
+        const QString fileName = directoryPath + QLatin1Char('/') + contact.uid() + QStringLiteral(".vcf");
 
         KContacts::VCardConverter converter;
         const QByteArray content = converter.createVCard(contact);
@@ -241,11 +241,11 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
         file.write(content);
         file.close();
 
-        newItem.setRemoteId(contact.uid() + QLatin1String(".vcf"));
+        newItem.setRemoteId(contact.uid() + QStringLiteral(".vcf"));
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
         const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
 
-        const QString fileName = directoryPath + QDir::separator() + group.id() + QLatin1String(".ctg");
+        const QString fileName = directoryPath + QLatin1Char('/') + group.id() + QStringLiteral(".ctg");
 
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly)) {
@@ -274,7 +274,7 @@ void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
 
     Item newItem(item);
 
-    const QString fileName = directoryForCollection(item.parentCollection()) + QDir::separator() + item.remoteId();
+    const QString fileName = directoryForCollection(item.parentCollection()) + QLatin1Char('/') + item.remoteId();
 
     if (item.hasPayload<KContacts::Addressee>()) {
         const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
@@ -328,7 +328,7 @@ void ContactsResource::itemRemoved(const Akonadi::Item &item)
         return;
     }
 
-    const QString fileName = directoryForCollection(item.parentCollection()) + QDir::separator() + item.remoteId();
+    const QString fileName = directoryForCollection(item.parentCollection()) + QLatin1Char('/') + item.remoteId();
 
     if (!QFile::remove(fileName)) {
         cancelTask(i18n("Unable to remove file '%1'", fileName));
@@ -345,7 +345,7 @@ void ContactsResource::collectionAdded(const Akonadi::Collection &collection, co
         return;
     }
 
-    const QString dirName = directoryForCollection(parent) + QDir::separator() + collection.name();
+    const QString dirName = directoryForCollection(parent) + QLatin1Char('/') + collection.name();
 
     if (!QDir::root().mkpath(dirName)) {
         cancelTask(i18n("Unable to create folder '%1'.", dirName));
@@ -382,7 +382,7 @@ void ContactsResource::collectionChanged(const Akonadi::Collection &collection)
     const QString dirName = directoryForCollection(collection);
 
     QFileInfo oldDirectory(dirName);
-    if (!QDir::root().rename(dirName, oldDirectory.absolutePath() + QDir::separator() + collection.name())) {
+    if (!QDir::root().rename(dirName, oldDirectory.absolutePath() + QLatin1Char('/') + collection.name())) {
         cancelTask(i18n("Unable to rename folder '%1'.", collection.name()));
         return;
     }
@@ -414,8 +414,8 @@ void ContactsResource::collectionRemoved(const Akonadi::Collection &collection)
 
 void ContactsResource::itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
-    const QString sourceFileName = directoryForCollection(collectionSource) + QDir::separator() + item.remoteId();
-    const QString targetFileName = directoryForCollection(collectionDestination) + QDir::separator() + item.remoteId();
+    const QString sourceFileName = directoryForCollection(collectionSource) + QLatin1Char('/') + item.remoteId();
+    const QString targetFileName = directoryForCollection(collectionDestination) + QLatin1Char('/') + item.remoteId();
 
     if (QFile::rename(sourceFileName, targetFileName)) {
         changeProcessed();
@@ -426,8 +426,8 @@ void ContactsResource::itemMoved(const Akonadi::Item &item, const Akonadi::Colle
 
 void ContactsResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
 {
-    const QString sourceDirectoryName = directoryForCollection(collectionSource) + QDir::separator() + collection.remoteId();
-    const QString targetDirectoryName = directoryForCollection(collectionDestination) + QDir::separator() + collection.remoteId();
+    const QString sourceDirectoryName = directoryForCollection(collectionSource) + QLatin1Char('/') + collection.remoteId();
+    const QString targetDirectoryName = directoryForCollection(collectionDestination) + QLatin1Char('/') + collection.remoteId();
 
     if (QFile::rename(sourceDirectoryName, targetDirectoryName)) {
         changeProcessed();
@@ -449,7 +449,7 @@ void ContactsResource::initializeDirectory(const QString &path) const
     QDir::root().mkpath(dir.absolutePath());
 
     // check whether warning file is in place...
-    QFile file(dir.absolutePath() + QDir::separator() + QLatin1String("WARNING_README.txt"));
+    QFile file(dir.absolutePath() + QStringLiteral("/WARNING_README.txt"));
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);
@@ -500,7 +500,7 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
 
     QString directory = parentDirectory;
     if (!directory.endsWith(QLatin1Char('/'))) {
-        directory += QDir::separator() + collection.remoteId();
+        directory += QLatin1Char('/') + collection.remoteId();
     } else {
         directory += collection.remoteId();
     }

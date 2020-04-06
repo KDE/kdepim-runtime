@@ -1027,7 +1027,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
         return false;
     }
 
-    const QString collectionName = job->collection().name().remove(QDir::separator());
+    const QString collectionName = job->collection().name().remove(QLatin1Char('/'));
     Maildir md;
     if (folderType == MBoxFolder) {
         const QString subDirPath = Maildir::subDirPathForFolderPath(path);
@@ -1209,7 +1209,7 @@ static Collection updateMBoxCollectionTree(const Collection &collection, const C
 bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
 {
     const Collection collection = job->collection();
-    const QString collectionName = collection.name().remove(QDir::separator());
+    const QString collectionName = collection.name().remove(QLatin1Char('/'));
 
     // we also only do renames
     if (collection.remoteId() == collection.name()) {

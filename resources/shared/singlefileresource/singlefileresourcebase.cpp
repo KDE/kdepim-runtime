@@ -239,7 +239,7 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         const QUrl prevUrl = mCurrentUrl;
         int i = 0;
         do {
-            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QDir::separator() + prevUrl.fileName() + QLatin1Char('-')
+            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QLatin1Char('/') + prevUrl.fileName() + QLatin1Char('-')
                                 + QString::number(++i);
         } while (QFileInfo::exists(lostFoundFileName));
 

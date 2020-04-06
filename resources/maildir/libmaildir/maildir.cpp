@@ -163,7 +163,7 @@ public:
             return false;
         }
 
-        path = dest.path() + QDir::separator() + newName;
+        path = dest.path() + QLatin1Char('/') + newName;
         return true;
     }
 
@@ -430,7 +430,7 @@ QString Maildir::subDirPath() const
 {
     QDir dir(d->path);
     dir.cdUp();
-    return dir.path() + QDir::separator() + d->subDirPath();
+    return dir.path() + QLatin1Char('/') + d->subDirPath();
 }
 
 QStringList Maildir::subFolderList() const
@@ -794,7 +794,7 @@ QString Maildir::moveEntryTo(const QString &key, const Maildir &destination)
     }
     QFile f(realKey);
     // ### is this safe regarding the maildir locking scheme?
-    const QString targetKey = destination.path() + QDir::separator() + QLatin1String("new") + QDir::separator() + key;
+    const QString targetKey = destination.path() + QStringLiteral("/new/") + key;
     if (!f.rename(targetKey)) {
         qCDebug(LIBMAILDIR_LOG) << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();
         d->lastError = f.errorString();

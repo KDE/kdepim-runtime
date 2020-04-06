@@ -248,7 +248,7 @@ QString VCardDirResource::vCardDirectoryName() const
 
 QString VCardDirResource::vCardDirectoryFileName(const QString &file) const
 {
-    return VcardDirResourceSettings::self()->path() + QDir::separator() + file;
+    return VcardDirResourceSettings::self()->path() + QLatin1Char('/') + file;
 }
 
 void VCardDirResource::initializeVCardDirectory() const
@@ -261,7 +261,7 @@ void VCardDirResource::initializeVCardDirectory() const
     }
 
     // check whether warning file is in place...
-    QFile file(dir.absolutePath() + QDir::separator() + QLatin1String("WARNING_README.txt"));
+    QFile file(dir.absolutePath() + QStringLiteral("/WARNING_README.txt"));
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);

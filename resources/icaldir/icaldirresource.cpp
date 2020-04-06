@@ -291,7 +291,7 @@ QString ICalDirResource::iCalDirectoryName() const
 
 QString ICalDirResource::iCalDirectoryFileName(const QString &file) const
 {
-    return IcalDirResourceSettings::self()->path() + QDir::separator() + file;
+    return IcalDirResourceSettings::self()->path() + QLatin1Char('/') + file;
 }
 
 void ICalDirResource::initializeICalDirectory() const
@@ -304,7 +304,7 @@ void ICalDirResource::initializeICalDirectory() const
     }
 
     // check whether warning file is in place...
-    QFile file(dir.absolutePath() + QDir::separator() + QStringLiteral("WARNING_README.txt"));
+    QFile file(dir.absolutePath() + QStringLiteral("/WARNING_README.txt"));
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);
