@@ -56,7 +56,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("akonadi_newmailnotifier_agentrc") << QStringLiteral("akonadi_newmailnotifier_agent.notifyrc"));
     migrate.migrate();
-    connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &NewMailNotifierAgent::reloadConfiguration);
+    connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &NewMailNotifierAgent::slotReloadConfiguration);
     KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     new NewMailNotifierAdaptor(this);
@@ -97,7 +97,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     }
 }
 
-void NewMailNotifierAgent::reloadConfiguration()
+void NewMailNotifierAgent::slotReloadConfiguration()
 {
     NewMailNotifierAgentSettings::self()->load();
 }

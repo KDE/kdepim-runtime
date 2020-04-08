@@ -131,7 +131,7 @@ QString EwsMailbox::emailWithName() const
     if (d->mName.isEmpty()) {
         return d->mEmail;
     } else {
-        return QStringLiteral("%1 <%2>").arg(d->mName).arg(d->mEmail);
+        return QStringLiteral("%1 <%2>").arg(d->mName, d->mEmail);
     }
 }
 

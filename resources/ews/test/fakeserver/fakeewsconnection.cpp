@@ -316,8 +316,8 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::handleGetEventsReque
         return {errorResp, 200};
     }
 
-    resp += QLatin1String("<SubscriptionId>") + match.captured(QLatin1String("subid")) + QLatin1String("<SubscriptionId>");
-    resp += QLatin1String("<PreviousWatermark>") + match.captured(QLatin1String("watermark")) + QLatin1String("<PreviousWatermark>");
+    resp += QLatin1String("<SubscriptionId>") + match.captured(QStringLiteral("subid")) + QLatin1String("<SubscriptionId>");
+    resp += QLatin1String("<PreviousWatermark>") + match.captured(QStringLiteral("watermark")) + QLatin1String("<PreviousWatermark>");
     resp += QStringLiteral("<MoreEvents>false<MoreEvents>");
 
     FakeEwsServer *server = qobject_cast<FakeEwsServer *>(parent());

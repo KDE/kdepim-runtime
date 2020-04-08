@@ -71,7 +71,7 @@ private:
     bool isActive() const;
     void clearAll();
     bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
-    void reloadConfiguration();
+    void slotReloadConfiguration();
     QString mDefaultIconName;
     QStringList mListEmails;
     QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;

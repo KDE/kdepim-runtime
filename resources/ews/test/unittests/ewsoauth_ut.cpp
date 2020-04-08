@@ -237,7 +237,7 @@ QString UtEwsOAuth::formatJsonSorted(const QVariantMap &map)
     QStringList keys = map.keys();
     keys.sort();
     QStringList elems;
-    for (const auto &key : keys) {
+    for (const auto &key : qAsConst(keys)) {
         QString val = map[key].toString();
         val.replace(QLatin1Char('"'), QStringLiteral("\\\""));
         elems.append(QStringLiteral("\"%1\":\"%2\"").arg(key, val));

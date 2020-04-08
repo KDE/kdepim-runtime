@@ -83,9 +83,9 @@ void EwsPKeyAuthJob::start()
         params[it.first.toLower()] = QUrl::fromPercentEncoding(it.second.toLatin1());
     }
 
-    if (params.contains(QLatin1String("submiturl")) && params.contains(QLatin1String("nonce"))
-        && params.contains(QLatin1String("certauthorities")) && params.contains(QLatin1String("context"))
-        && params.contains(QLatin1String("version"))) {
+    if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce"))
+        && params.contains(QStringLiteral("certauthorities")) && params.contains(QStringLiteral("context"))
+        && params.contains(QStringLiteral("version"))) {
         const auto respToken = buildAuthResponse(params);
 
         if (!respToken.isEmpty()) {
