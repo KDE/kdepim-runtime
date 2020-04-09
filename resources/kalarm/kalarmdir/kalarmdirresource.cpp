@@ -1050,7 +1050,7 @@ void KAlarmDirResource::initializeDirectory() const
     }
 
     // Check whether warning file is in place...
-    QFile file(dirPath + QLatin1Char('/') + QStringLiteral(warningFile));
+    QFile file(dirPath + QLatin1Char('/') + QLatin1String(warningFile));
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);
