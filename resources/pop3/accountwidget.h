@@ -25,6 +25,8 @@
 
 #include "ui_popsettings.h"
 
+class Settings;
+
 namespace MailTransport {
 class ServerTest;
 }
@@ -39,7 +41,7 @@ class AccountWidget : public QWidget, private Ui::PopPage
     Q_OBJECT
 
 public:
-    AccountWidget(const QString &identifier, QWidget *parent);
+    AccountWidget(Settings &settings, const QString &identifier, QWidget *parent);
     ~AccountWidget() override;
 
     void loadSettings();
@@ -82,6 +84,7 @@ private:
     KWallet::Wallet *mWallet = nullptr;
     QString mInitalPassword;
     QString mIdentifier;
+    Settings &mSettings;
 };
 
 #endif

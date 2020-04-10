@@ -24,6 +24,8 @@
 #include <KJob>
 #include <QSet>
 
+#include "settings.h"
+
 class DeleteJob;
 
 namespace Akonadi {
@@ -197,6 +199,8 @@ private:
 
     // Current deletion job in process
     DeleteJob *mDeleteJob = nullptr;
+
+    Settings mSettings;
 };
 
 #endif

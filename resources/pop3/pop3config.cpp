@@ -19,8 +19,8 @@
 
 #include <AkonadiCore/AgentConfigurationBase>
 
-#include "settings.h"
 #include "accountwidget.h"
+#include "settings.h"
 
 class Pop3Config : public Akonadi::AgentConfigurationBase
 {
@@ -28,26 +28,26 @@ class Pop3Config : public Akonadi::AgentConfigurationBase
 public:
     Pop3Config(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
         : Akonadi::AgentConfigurationBase(config, parent, args)
-        , mSettings(new Settings(config))
-        , mWidget(new AccountWidget(identifier(), parent))
+        , mSettings(config, Settings::Option::NoOption)
+        , mWidget(mSettings, identifier(), parent)
     {
-        connect(mWidget.data(), &AccountWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
+        connect(&mWidget, &AccountWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
     }
 
     void load() override
     {
         Akonadi::AgentConfigurationBase::load();
-        mWidget->loadSettings();
+        mWidget.loadSettings();
     }
 
     bool save() const override
     {
-        mWidget->saveSettings();
+        const_cast<Pop3Config*>(this)->mWidget.saveSettings();
         return Akonadi::AgentConfigurationBase::save();
     }
 
-    QScopedPointer<Settings> mSettings;
-    QScopedPointer<AccountWidget> mWidget;
+    Settings mSettings;
+    AccountWidget mWidget;
 };
 
 AKONADI_AGENTCONFIG_FACTORY(Pop3ConfigFactory, "pop3config.json", Pop3Config)

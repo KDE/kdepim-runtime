@@ -35,12 +35,13 @@ class TransferJob;
 }
 
 class SlaveBaseJob;
+class Settings;
 
 class POPSession : public QObject
 {
     Q_OBJECT
 public:
-    explicit POPSession(const QString &password);
+    explicit POPSession(Settings &settings, const QString &password);
     ~POPSession();
     bool connectSlave();
 
@@ -70,6 +71,7 @@ private:
     QPointer<KIO::Slave> mSlave;
     SlaveBaseJob *mCurrentJob = nullptr;
     QString mPassword;
+    Settings &mSettings;
 };
 
 class SlaveBaseJob : public KJob

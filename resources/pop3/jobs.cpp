@@ -29,9 +29,10 @@
 #include "pop3resource_debug.h"
 #include <KLocalizedString>
 
-POPSession::POPSession(const QString &password)
+POPSession::POPSession(Settings &settings, const QString &password)
     : mCurrentJob(nullptr)
     , mPassword(password)
+    , mSettings(settings)
 {
     KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
 }
@@ -78,10 +79,10 @@ KIO::MetaData POPSession::slaveConfig() const
     KIO::MetaData m;
 
     m.insert(QStringLiteral("progress"), QStringLiteral("off"));
-    m.insert(QStringLiteral("tls"), Settings::self()->useTLS() ? QStringLiteral("on") : QStringLiteral("off"));
-    m.insert(QStringLiteral("pipelining"), (Settings::self()->pipelining()) ? QStringLiteral("on") : QStringLiteral("off"));
-    m.insert(QStringLiteral("useProxy"), Settings::self()->useProxy() ? QStringLiteral("on") : QStringLiteral("off"));
-    int type = Settings::self()->authenticationMethod();
+    m.insert(QStringLiteral("tls"), mSettings.useTLS() ? QStringLiteral("on") : QStringLiteral("off"));
+    m.insert(QStringLiteral("pipelining"), (mSettings.pipelining()) ? QStringLiteral("on") : QStringLiteral("off"));
+    m.insert(QStringLiteral("useProxy"), mSettings.useProxy() ? QStringLiteral("on") : QStringLiteral("off"));
+    int type = mSettings.authenticationMethod();
     switch (type) {
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
     case MailTransport::Transport::EnumAuthenticationType::LOGIN:
@@ -132,16 +133,16 @@ QUrl POPSession::getUrl() const
 {
     QUrl url;
 
-    if (Settings::self()->useSSL()) {
+    if (mSettings.useSSL()) {
         url.setScheme(QStringLiteral("pop3s"));
     } else {
         url.setScheme(QStringLiteral("pop3"));
     }
 
-    url.setUserName(Settings::self()->login());
+    url.setUserName(mSettings.login());
     url.setPassword(mPassword);
-    url.setHost(Settings::self()->host());
-    url.setPort(Settings::self()->port());
+    url.setHost(mSettings.host());
+    url.setPort(mSettings.port());
     return url;
 }
 

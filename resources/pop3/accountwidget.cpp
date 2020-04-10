@@ -69,10 +69,11 @@ public:
 };
 }
 
-AccountWidget::AccountWidget(const QString &identifier, QWidget *parent)
+AccountWidget::AccountWidget(Settings &settings, const QString &identifier, QWidget *parent)
     : QWidget(parent)
     , mValidator(this)
     , mIdentifier(identifier)
+    , mSettings(settings)
 {
     mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
 
@@ -143,59 +144,59 @@ void AccountWidget::setupWidgets()
 
 void AccountWidget::loadSettings()
 {
-    if (Settings::self()->name().isEmpty()) {
+    if (mSettings.name().isEmpty()) {
         nameEdit->setText(i18n("POP3 Account"));
     } else {
-        nameEdit->setText(Settings::self()->name());
+        nameEdit->setText(mSettings.name());
     }
 
     nameEdit->setFocus();
-    loginEdit->setText(!Settings::self()->login().isEmpty() ? Settings::self()->login()
+    loginEdit->setText(!mSettings.login().isEmpty() ? mSettings.login()
                        : KUser().loginName());
 
     hostEdit->setText(
-        !Settings::self()->host().isEmpty() ? Settings::self()->host()
+        !mSettings.host().isEmpty() ? mSettings.host()
         : KEMailSettings().getSetting(KEMailSettings::InServer));
-    hostEdit->setText(Settings::self()->host());
-    portEdit->setValue(Settings::self()->port());
-    precommand->setText(Settings::self()->precommand());
-    usePipeliningCheck->setChecked(Settings::self()->pipelining());
-    leaveOnServerCheck->setChecked(Settings::self()->leaveOnServer());
-    leaveOnServerDaysCheck->setEnabled(Settings::self()->leaveOnServer());
-    leaveOnServerDaysCheck->setChecked(Settings::self()->leaveOnServerDays() >= 1);
-    leaveOnServerDaysSpin->setValue(Settings::self()->leaveOnServerDays() >= 1
-                                    ? Settings::self()->leaveOnServerDays() : 7);
-    leaveOnServerCountCheck->setEnabled(Settings::self()->leaveOnServer());
-    leaveOnServerCountCheck->setChecked(Settings::self()->leaveOnServerCount() >= 1);
-    leaveOnServerCountSpin->setValue(Settings::self()->leaveOnServerCount() >= 1
-                                     ? Settings::self()->leaveOnServerCount() : 100);
-    leaveOnServerSizeCheck->setEnabled(Settings::self()->leaveOnServer());
-    leaveOnServerSizeCheck->setChecked(Settings::self()->leaveOnServerSize() >= 1);
-    leaveOnServerSizeSpin->setValue(Settings::self()->leaveOnServerSize() >= 1
-                                    ? Settings::self()->leaveOnServerSize() : 10);
-    filterOnServerCheck->setChecked(Settings::self()->filterOnServer());
-    filterOnServerSizeSpin->setValue(Settings::self()->filterCheckSize());
-    intervalCheck->setChecked(Settings::self()->intervalCheckEnabled());
-    intervalSpin->setValue(Settings::self()->intervalCheckInterval());
-    intervalSpin->setEnabled(Settings::self()->intervalCheckEnabled());
+    hostEdit->setText(mSettings.host());
+    portEdit->setValue(mSettings.port());
+    precommand->setText(mSettings.precommand());
+    usePipeliningCheck->setChecked(mSettings.pipelining());
+    leaveOnServerCheck->setChecked(mSettings.leaveOnServer());
+    leaveOnServerDaysCheck->setEnabled(mSettings.leaveOnServer());
+    leaveOnServerDaysCheck->setChecked(mSettings.leaveOnServerDays() >= 1);
+    leaveOnServerDaysSpin->setValue(mSettings.leaveOnServerDays() >= 1
+                                    ? mSettings.leaveOnServerDays() : 7);
+    leaveOnServerCountCheck->setEnabled(mSettings.leaveOnServer());
+    leaveOnServerCountCheck->setChecked(mSettings.leaveOnServerCount() >= 1);
+    leaveOnServerCountSpin->setValue(mSettings.leaveOnServerCount() >= 1
+                                     ? mSettings.leaveOnServerCount() : 100);
+    leaveOnServerSizeCheck->setEnabled(mSettings.leaveOnServer());
+    leaveOnServerSizeCheck->setChecked(mSettings.leaveOnServerSize() >= 1);
+    leaveOnServerSizeSpin->setValue(mSettings.leaveOnServerSize() >= 1
+                                    ? mSettings.leaveOnServerSize() : 10);
+    filterOnServerCheck->setChecked(mSettings.filterOnServer());
+    filterOnServerSizeSpin->setValue(mSettings.filterCheckSize());
+    intervalCheck->setChecked(mSettings.intervalCheckEnabled());
+    intervalSpin->setValue(mSettings.intervalCheckInterval());
+    intervalSpin->setEnabled(mSettings.intervalCheckEnabled());
 
-    const int authenticationMethod = Settings::self()->authenticationMethod();
+    const int authenticationMethod = mSettings.authenticationMethod();
     authCombo->setCurrentIndex(authCombo->findData(authenticationMethod));
-    encryptionNone->setChecked(!Settings::self()->useSSL() && !Settings::self()->useTLS());
-    encryptionSSL->setChecked(Settings::self()->useSSL());
-    encryptionTLS->setChecked(Settings::self()->useTLS());
-    proxyCheck->setChecked(Settings::self()->useProxy());
+    encryptionNone->setChecked(!mSettings.useSSL() && !mSettings.useTLS());
+    encryptionSSL->setChecked(mSettings.useSSL());
+    encryptionTLS->setChecked(mSettings.useTLS());
+    proxyCheck->setChecked(mSettings.useProxy());
 
     slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled()
-                                ? Settings::self()->leaveOnServerDays() >= 1 : false);
+                                ? mSettings.leaveOnServerDays() >= 1 : false);
     slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled()
-                                 ? Settings::self()->leaveOnServerCount() >= 1 : false);
+                                 ? mSettings.leaveOnServerCount() >= 1 : false);
     slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled()
-                                ? Settings::self()->leaveOnServerSize() >= 1 : false);
+                                ? mSettings.leaveOnServerSize() >= 1 : false);
 
     // We need to fetch the collection, as the CollectionRequester needs the name
     // of it to work correctly
-    Collection targetCollection(Settings::self()->targetCollection());
+    Collection targetCollection(mSettings.targetCollection());
     if (targetCollection.isValid()) {
         CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
                                                               CollectionFetchJob::Base,
@@ -545,32 +546,32 @@ void AccountWidget::slotAccepted()
 
 void AccountWidget::saveSettings()
 {
-    Settings::self()->setName(nameEdit->text());
-    Settings::self()->setIntervalCheckEnabled(intervalCheck->checkState() == Qt::Checked);
-    Settings::self()->setIntervalCheckInterval(intervalSpin->value());
-    Settings::self()->setHost(hostEdit->text().trimmed());
-    Settings::self()->setPort(portEdit->value());
-    Settings::self()->setLogin(loginEdit->text().trimmed());
-    Settings::self()->setPrecommand(precommand->text());
-    Settings::self()->setUseSSL(encryptionSSL->isChecked());
-    Settings::self()->setUseTLS(encryptionTLS->isChecked());
-    Settings::self()->setAuthenticationMethod(authCombo->itemData(authCombo->currentIndex()).toInt());
-    Settings::self()->setUseProxy(proxyCheck->isChecked());
-    Settings::self()->setPipelining(usePipeliningCheck->isChecked());
-    Settings::self()->setLeaveOnServer(leaveOnServerCheck->isChecked());
-    Settings::self()->setLeaveOnServerDays(leaveOnServerCheck->isChecked()
+    mSettings.setName(nameEdit->text());
+    mSettings.setIntervalCheckEnabled(intervalCheck->checkState() == Qt::Checked);
+    mSettings.setIntervalCheckInterval(intervalSpin->value());
+    mSettings.setHost(hostEdit->text().trimmed());
+    mSettings.setPort(portEdit->value());
+    mSettings.setLogin(loginEdit->text().trimmed());
+    mSettings.setPrecommand(precommand->text());
+    mSettings.setUseSSL(encryptionSSL->isChecked());
+    mSettings.setUseTLS(encryptionTLS->isChecked());
+    mSettings.setAuthenticationMethod(authCombo->itemData(authCombo->currentIndex()).toInt());
+    mSettings.setUseProxy(proxyCheck->isChecked());
+    mSettings.setPipelining(usePipeliningCheck->isChecked());
+    mSettings.setLeaveOnServer(leaveOnServerCheck->isChecked());
+    mSettings.setLeaveOnServerDays(leaveOnServerCheck->isChecked()
                                            ? (leaveOnServerDaysCheck->isChecked()
                                               ? leaveOnServerDaysSpin->value() : -1) : 0);
-    Settings::self()->setLeaveOnServerCount(leaveOnServerCheck->isChecked()
+    mSettings.setLeaveOnServerCount(leaveOnServerCheck->isChecked()
                                             ? (leaveOnServerCountCheck->isChecked()
                                                ? leaveOnServerCountSpin->value() : -1) : 0);
-    Settings::self()->setLeaveOnServerSize(leaveOnServerCheck->isChecked()
+    mSettings.setLeaveOnServerSize(leaveOnServerCheck->isChecked()
                                            ? (leaveOnServerSizeCheck->isChecked()
                                               ? leaveOnServerSizeSpin->value() : -1) : 0);
-    Settings::self()->setFilterOnServer(filterOnServerCheck->isChecked());
-    Settings::self()->setFilterCheckSize(filterOnServerSizeSpin->value());
-    Settings::self()->setTargetCollection(folderRequester->collection().id());
-    Settings::self()->save();
+    mSettings.setFilterOnServer(filterOnServerCheck->isChecked());
+    mSettings.setFilterCheckSize(filterOnServerSizeSpin->value());
+    mSettings.setTargetCollection(folderRequester->collection().id());
+    mSettings.save();
 
     // Now, either save the password or delete it from the wallet. For both, we need
     // to open it.

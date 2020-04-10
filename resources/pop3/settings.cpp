@@ -22,39 +22,14 @@
 #include <KWallet>
 #include "pop3resource_debug.h"
 
-class SettingsHelper
-{
-public:
-    SettingsHelper() : q(nullptr)
-    {
-    }
-
-    ~SettingsHelper()
-    {
-        qCWarning(POP3RESOURCE_LOG) << q;
-        delete q;
-        q = nullptr;
-    }
-
-    Settings *q;
-};
-
-Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
-
-Settings *Settings::self()
-{
-    Q_ASSERT_X(s_globalSettings->q, "Settings::self()", "You must create an instance first!");
-    return s_globalSettings->q;
-}
-
-Settings::Settings(const KSharedConfigPtr &config)
+Settings::Settings(const KSharedConfigPtr &config, Options options)
     : SettingsBase(config)
 {
-    Q_ASSERT(!s_globalSettings->q);
-    s_globalSettings->q = this;
-    new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
-                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+    if (options & Option::ExportToDBus) {
+        new SettingsAdaptor(this);
+        QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
+                                                     QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+    }
 }
 
 void Settings::setWindowId(WId id)
