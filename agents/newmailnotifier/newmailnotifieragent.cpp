@@ -21,26 +21,26 @@
 
 #include "newmailnotifieragent.h"
 
-#include <AkonadiCore/NewMailNotifierAttribute>
 #include "specialnotifierjob.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
 
-#include <AkonadiCore/ServerManager>
 #include <KIdentityManagement/IdentityManager>
 
 #include <QDBusConnection>
 
-#include <changerecorder.h>
-#include <entitydisplayattribute.h>
-#include <entityhiddenattribute.h>
-#include <itemfetchscope.h>
-#include <session.h>
-#include <AttributeFactory>
-#include <CollectionFetchScope>
+#include <AkonadiCore/ServerManager>
+#include <AkonadiCore/ChangeRecorder>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/EntityHiddenAttribute>
+#include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/Session>
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/CollectionFetchScope>
+#include <AkonadiCore/AgentManager>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/MessageStatus>
-#include <AgentManager>
+#include <Akonadi/KMime/NewMailNotifierAttribute>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>

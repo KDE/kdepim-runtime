@@ -21,7 +21,6 @@
 #include "settings.h"
 #include "jobs.h"
 
-#include <AkonadiCore/Pop3ResourceAttribute>
 
 #include <CollectionFetchJob>
 #include <ItemCreateJob>
@@ -29,6 +28,7 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/KMime/Pop3ResourceAttribute>
 #include <kmime/kmime_util.h>
 #include <MailTransport/PrecommandJob>
 #include <MailTransport/Transport>

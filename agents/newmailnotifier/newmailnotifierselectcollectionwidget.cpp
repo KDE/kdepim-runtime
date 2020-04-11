@@ -18,12 +18,12 @@
 */
 
 #include "newmailnotifierselectcollectionwidget.h"
-#include <AkonadiCore/NewMailNotifierAttribute>
 
 #include <CollectionModifyJob>
 #include <CollectionFilterProxyModel>
 #include <QSortFilterProxyModel>
 #include <AkonadiCore/AttributeFactory>
+#include <Akonadi/KMime/NewMailNotifierAttribute>
 
 #include <ChangeRecorder>
 #include <EntityTreeModel>
