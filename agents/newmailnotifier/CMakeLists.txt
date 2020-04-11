@@ -59,13 +59,14 @@ install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_K
 ########################## Config plugin #################################
 
 kcoreaddons_add_plugin(newmailnotifierconfig
-    SOURCES newmailnotifiersettingswidget.cpp 
+    SOURCES newmailnotifiersettingswidget.cpp
             newmailnotifierselectcollectionwidget.cpp
             ${newmailnotifier_common_SRCS}
     JSON "newmailnotifierconfig.json"
     INSTALL_NAMESPACE "akonadi/config")
 target_link_libraries(newmailnotifierconfig
     KF5::AkonadiCore
+    KF5::AkonadiMime
     Qt5::Widgets
     KF5::NotifyConfig
     KF5::ConfigGui
