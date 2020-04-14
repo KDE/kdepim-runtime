@@ -22,7 +22,6 @@
 #include "singlefileresourceconfigwidgetbase.h"
 
 #include <KIO/Job>
-#include <kio_version.h>
 #include <QUrl>
 #include <QTimer>
 
@@ -140,11 +139,7 @@ void SingleFileResourceConfigWidgetBase::validate()
         if (mStatJob) {
             mStatJob->kill();
         }
-#if KIO_VERSION < QT_VERSION_CHECK(5, 69, 0)
-        mStatJob = KIO::stat(currentUrl, KIO::StatJob::SourceSide, 2, KIO::DefaultFlags | KIO::HideProgressInfo);
-#else
         mStatJob = KIO::statDetails(currentUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
-#endif
 
         connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
 
@@ -162,11 +157,7 @@ void SingleFileResourceConfigWidgetBase::slotStatJobResult(KJob *job)
         QUrl dirUrl(ui.kcfg_Path->url());
         dirUrl = KIO::upUrl(dirUrl);
 
-#if KIO_VERSION < QT_VERSION_CHECK(5, 69, 0)
-        mStatJob = KIO::stat(dirUrl, KIO::StatJob::SourceSide, 2, KIO::DefaultFlags | KIO::HideProgressInfo);
-#else
         mStatJob = KIO::statDetails(dirUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
-#endif
 
 
         connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
