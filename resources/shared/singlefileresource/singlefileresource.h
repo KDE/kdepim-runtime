@@ -71,7 +71,7 @@ public:
         if (mSettings->path().isEmpty()) {
             const QString message = i18n("No file selected.");
             qWarning() << message;
-            emit status(NotConfigured, i18n("The resource not configured yet"));
+            Q_EMIT status(NotConfigured, i18n("The resource not configured yet"));
             if (taskContext) {
                 cancelTask();
             }
@@ -103,11 +103,11 @@ public:
                 }
 
                 if (f.open(QIODevice::WriteOnly) && f.resize(0)) {
-                    emit status(Idle, i18nc("@info:status", "Ready"));
+                    Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
                 } else {
                     const QString message = i18n("Could not create file '%1'.", mCurrentUrl.toDisplayString());
                     qWarning() << message;
-                    emit status(Broken, message);
+                    Q_EMIT status(Broken, message);
                     mCurrentUrl.clear();
                     if (taskContext) {
                         cancelTask();
@@ -121,7 +121,7 @@ public:
             if (!readLocalFile(localFileName)) {
                 const QString message = i18n("Could not read file '%1'", localFileName);
                 qWarning() << message;
-                emit status(Broken, message);
+                Q_EMIT status(Broken, message);
                 if (taskContext) {
                     cancelTask();
                 }
@@ -132,12 +132,12 @@ public:
                 KDirWatch::self()->addFile(localFileName);
             }
 
-            emit status(Idle, i18nc("@info:status", "Ready"));
+            Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
         } else { // !mCurrentUrl.isLocalFile()
             if (mDownloadJob) {
                 const QString message = i18n("Another download is still in progress.");
                 qWarning() << message;
-                emit error(message);
+                Q_EMIT error(message);
                 if (taskContext) {
                     cancelTask();
                 }
@@ -147,7 +147,7 @@ public:
             if (mUploadJob) {
                 const QString message = i18n("Another file upload is still in progress.");
                 qWarning() << message;
-                emit error(message);
+                Q_EMIT error(message);
                 if (taskContext) {
                     cancelTask();
                 }
@@ -164,7 +164,7 @@ public:
             connect(mDownloadJob, SIGNAL(percent(KJob*,ulong)),
                     SLOT(handleProgress(KJob*,ulong)));
 
-            emit status(Running, i18n("Downloading remote file."));
+            Q_EMIT status(Running, i18n("Downloading remote file."));
         }
 
         const QString display = mSettings->displayName();
@@ -186,7 +186,7 @@ public:
         if (mSettings->readOnly()) {
             const QString message = i18n("Trying to write to a read-only file: '%1'.", mSettings->path());
             qWarning() << message;
-            emit error(message);
+            Q_EMIT error(message);
             if (taskContext) {
                 cancelTask();
             }
@@ -198,7 +198,7 @@ public:
         if (mCurrentUrl.isEmpty()) {
             const QString message = i18n("No file specified.");
             qWarning() << message;
-            emit status(Broken, message);
+            Q_EMIT status(Broken, message);
             if (taskContext) {
                 cancelTask();
             }
@@ -220,13 +220,13 @@ public:
                 }
                 return;
             }
-            emit status(Idle, i18nc("@info:status", "Ready"));
+            Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
         } else {
             // Check if there is a download or an upload in progress.
             if (mDownloadJob) {
                 const QString message = i18n("A download is still in progress.");
                 qWarning() << message;
-                emit error(message);
+                Q_EMIT error(message);
                 if (taskContext) {
                     cancelTask();
                 }
@@ -236,7 +236,7 @@ public:
             if (mUploadJob) {
                 const QString message = i18n("Another file upload is still in progress.");
                 qWarning() << message;
-                emit error(message);
+                Q_EMIT error(message);
                 if (taskContext) {
                     cancelTask();
                 }
@@ -266,7 +266,7 @@ public:
             connect(mUploadJob, SIGNAL(percent(KJob*,ulong)),
                     SLOT(handleProgress(KJob*,ulong)));
 
-            emit status(Running, i18n("Uploading cached file to remote location."));
+            Q_EMIT status(Running, i18n("Uploading cached file to remote location."));
         }
         if (taskContext) {
             taskDone();

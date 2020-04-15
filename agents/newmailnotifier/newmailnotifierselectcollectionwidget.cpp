@@ -73,7 +73,7 @@ bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, cons
             const Akonadi::Collection collection
                 = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             mNotificationCollection[collection] = (value == Qt::Checked);
-            emit dataChanged(index, index);
+            Q_EMIT dataChanged(index, index);
             return true;
         }
     }

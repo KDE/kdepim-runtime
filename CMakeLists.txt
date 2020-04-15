@@ -140,7 +140,8 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
 endif()
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
-
+add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS)
+add_definitions(-DQT_NO_EMIT)
 
 add_subdirectory(resources)
 add_subdirectory(agents)
