@@ -70,6 +70,7 @@ protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemRemoved(const Akonadi::Item &item) override;
+    void collectionChanged(const Akonadi::Collection &collection) override;
     void doSetOnline(bool online) override;
 
 private:
@@ -82,6 +83,7 @@ private:
     KJob *createRetrieveCollectionsJob();
     void onReloadConfig();
     void onCollectionRemovedFinished(KJob *);
+    void onCollectionChangedFinished(KJob *job, const Akonadi::Collection &collection);
 
     void onHandlesFreeBusy(const QString &email, bool handles);
     void onFreeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText);

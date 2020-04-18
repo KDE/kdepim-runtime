@@ -30,6 +30,7 @@
 
 #include <KDAV/DavCollection>
 #include <KDAV/DavCollectionDeleteJob>
+#include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavCollectionsMultiFetchJob>
 #include <KDAV/DavItem>
@@ -589,6 +590,42 @@ void DavGroupwareResource::doItemRemoval(const Akonadi::Item &item)
     job->setProperty("collection", QVariant::fromValue(item.parentCollection()));
     connect(job, &KDAV::DavItemDeleteJob::result, this, &DavGroupwareResource::onItemRemovedFinished);
     job->start();
+}
+
+void DavGroupwareResource::collectionChanged(const Collection &collection)
+{
+    qCDebug(DAVRESOURCE_LOG) << "Collection changed" << collection.remoteId();
+
+    const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
+
+    QColor color;
+    if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
+        const Akonadi::CollectionColorAttribute *colorAttr
+            = collection.attribute<Akonadi::CollectionColorAttribute>();
+        if (colorAttr) {
+            color = colorAttr->color();
+        }
+    }
+
+    KDAV::DavCollectionModifyJob *job = new KDAV::DavCollectionModifyJob(davUrl);
+    // TODO fix renaming calendars with parent folders, right now it makes a bit of a mess
+    //job->setProperty(QStringLiteral("displayname"), collection.displayName());
+    if (color.isValid()) {
+        job->setProperty(QStringLiteral("calendar-color"), color.name(), QStringLiteral("http://apple.com/ns/ical/"));
+    }
+    connect(job, &KDAV::DavCollectionModifyJob::result, this, [=](KJob *job) {
+            onCollectionChangedFinished(job, collection);
+            });
+    job->start();
+}
+
+void DavGroupwareResource::onCollectionChangedFinished(KJob *job, const Collection &collection)
+{
+    if (job->error()) {
+        cancelTask(i18n("Unable to modify collection: %1", job->errorText()));
+        return;
+    }
+    changeCommitted(collection);
 }
 
 void DavGroupwareResource::doSetOnline(bool online)
