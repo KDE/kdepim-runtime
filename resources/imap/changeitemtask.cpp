@@ -189,7 +189,8 @@ void ChangeItemTask::triggerSearchJob()
     if (!m_messageId.isEmpty()) {
         search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
-        UidNextAttribute *uidNext = item().parentCollection().attribute<UidNextAttribute>();
+        const auto parent = item().parentCollection();
+        const UidNextAttribute *uidNext = parent.attribute<UidNextAttribute>();
         if (!uidNext) {
             qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
