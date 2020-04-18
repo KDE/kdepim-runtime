@@ -232,18 +232,38 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
     }
 
     KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
-    KIMAP::SearchJob *search = new KIMAP::SearchJob(select->session());
-
-    search->setUidBased(true);
-
     if (!m_messageIds.isEmpty()) {
-        QVector<KIMAP::Term> subterms;
-        subterms.reserve(m_messageIds.size());
-        for (const QByteArray &messageId : qAsConst(m_messageIds)) {
-            subterms << KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(messageId));
+        // Use at most 250 search terms, otherwise the request might get too long and rejected
+        // by the server.
+        static const int batchSize = 250;
+        for (int batchIdx = 0;  batchIdx < m_messageIds.size(); batchIdx += batchSize) {
+            const auto count = std::min(batchSize, m_messageIds.size() - batchIdx);
+
+            KIMAP::SearchJob *search = new KIMAP::SearchJob(select->session());
+            search->setUidBased(true);
+            if (batchIdx == m_messageIds.size() - count) {
+                search->setProperty("IsLastSearchJob", true);
+            }
+
+            QVector<KIMAP::Term> subterms;
+            subterms.reserve(count);
+            auto it = m_messageIds.begin();
+            std::advance(it, batchIdx);
+            auto end = it;
+            std::advance(end, count);
+            for (; it != end; ++it) {
+                subterms.push_back(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(it.value())));
+            }
+            search->setTerm(KIMAP::Term(KIMAP::Term::Or, subterms));
+            connect(search, &KIMAP::SearchJob::result, this, &MoveItemsTask::onSearchDone);
+
+            search->start();
         }
-        search->setTerm(KIMAP::Term(KIMAP::Term::Or, subterms));
     } else {
+        KIMAP::SearchJob *search = new KIMAP::SearchJob(select->session());
+        search->setUidBased(true);
+        search->setProperty("IsLastSearchJob", true);
+
         Akonadi::Collection c = targetCollection();
         UidNextAttribute *uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
@@ -256,11 +276,9 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
             KIMAP::Term(KIMAP::Term::Uid,
                         KIMAP::ImapSet(uidNext->uidNext(), 0))
         }));
+        connect(search, &KIMAP::SearchJob::result, this, &MoveItemsTask::onSearchDone);
+        search->start();
     }
-
-    connect(search, &KIMAP::SearchJob::result, this, &MoveItemsTask::onSearchDone);
-
-    search->start();
 }
 
 void MoveItemsTask::onSearchDone(KJob *job)
@@ -272,9 +290,11 @@ void MoveItemsTask::onSearchDone(KJob *job)
     }
 
     KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
-    m_newUids = search->results();
+    m_newUids.append(search->results());
 
-    recordNewUid();
+    if (search->property("IsLastSearchJob").toBool() == true) {
+        recordNewUid();
+    }
 }
 
 void MoveItemsTask::recordNewUid()
