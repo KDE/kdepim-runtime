@@ -1,15 +1,12 @@
 
 include_directories(
-    ${kdepim-runtime_SOURCE_DIR}/migration
-    ${kdepim-runtime_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/migration
+    ${CMAKE_SOURCE_DIR}
 )
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_migration_agent\")
 
 kde_enable_exceptions()
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-endif()
 
 set(migrationagent_SRCS
     migrationagent.cpp

@@ -1,25 +1,13 @@
 set(gid_SRCS
     gidmigrator.cpp
     gidmigrationjob.cpp
-    ${MIGRATION_AKONADI_SHARED_SOURCES}
-    )
-
-ecm_qt_declare_logging_category(gid_SRCS HEADER migration_debug.h IDENTIFIER MIGRATION_LOG CATEGORY_NAME org.kde.pim.migration
-    DESCRIPTION "migration (kdepim-runtime)"
-    EXPORT KDEPIMRUNTIME
-    )
-
+)
 
 add_library(gidmigration STATIC ${gid_SRCS})
 target_link_libraries(gidmigration
-    KF5::AkonadiCore
-    KF5::Mime
-    KF5::ConfigCore
+    migrationshared
     KF5::I18n
-    Qt5::Core
-    Qt5::Widgets
-    KF5::WidgetsAddons
-    )
+)
 
 add_executable(gidmigrator main.cpp)
 target_link_libraries(gidmigrator
