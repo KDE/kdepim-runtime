@@ -49,7 +49,8 @@ MoveItemsTask::~MoveItemsTask()
 
 void MoveItemsTask::doStart(KIMAP::Session *session)
 {
-    if (item().remoteId().isEmpty()) {
+    const auto itemsToMove = items();
+    if (std::any_of(itemsToMove.begin(), itemsToMove.end(), [](const Akonadi::Item &item) { return item.remoteId().isEmpty(); })) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed: messages has no rid";
         emitError(i18n("Cannot move message, it does not exist on the server."));
         changeProcessed();
