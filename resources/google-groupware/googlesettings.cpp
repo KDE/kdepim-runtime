@@ -20,7 +20,6 @@
 #include "settingsbase.h"
 #include "googleresource_debug.h"
 
-#include <QGlobalStatic>
 #include <KGAPI/Account>
 #include <KWallet>
 

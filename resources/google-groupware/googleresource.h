@@ -27,7 +27,6 @@
 #include "calendarhandler.h"
 #include "generichandler.h"
 
-#include <KLocalizedString>
 
 #define JOB_PROPERTY "_KGAPI2Job"
 

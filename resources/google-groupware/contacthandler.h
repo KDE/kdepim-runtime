@@ -22,7 +22,6 @@
 
 #include "generichandler.h"
 #include <KGAPI/Types>
-#include <QObject>
 
 
 class ContactHandler : public GenericHandler

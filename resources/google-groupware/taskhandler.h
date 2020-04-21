@@ -20,7 +20,6 @@
 #define TASKHANDLER_H
 
 #include "generichandler.h"
-#include <QObject>
 
 
 class TaskHandler : public GenericHandler
