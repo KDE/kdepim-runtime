@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.cpp  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2019 David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2020 David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -21,10 +21,10 @@
 
 #include "kalarmresource.h"
 #include "kalarmresourcecommon.h"
+#include "kalarmresource_debug.h"
 
-#include <kalarmcal/compatibilityattribute.h>
-#include <kalarmcal/kacalendar.h>
-#include <kalarmcal/kaevent.h>
+#include <KAlarmCal/CompatibilityAttribute>
+#include <KAlarmCal/KAEvent>
 
 #include <attributefactory.h>
 #include <collectionfetchjob.h>
@@ -34,7 +34,7 @@
 #include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/Incidence>
 
-#include "kalarmresource_debug.h"
+#include <QRegularExpression>
 
 using namespace Akonadi;
 using namespace Akonadi_KAlarm_Resource;
@@ -143,6 +143,11 @@ void KAlarmResource::collectionFetchResult(KJob *j)
 bool KAlarmResource::readFromFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "readFromFile:" << fileName;
+    // Check if we're reading the calendar file after writing a backup file.
+    if (mBackupFile == fileName) {
+        mBackupFile.clear();   // the "backup" file was actually the calendar file
+    }
+
 //TODO Notify user if error occurs on next line
     if (!ICalResourceBase::readFromFile(fileName)) {
         return false;
@@ -220,6 +225,7 @@ void KAlarmResource::setCompatibility(KJob *j)
 bool KAlarmResource::writeToFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "writeToFile:" << fileName;
+    mBackupFile.clear();
     if (mCompatibility != KACalendar::Current && !mUpdatingFormat) {
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: writeToFile: wrong format";
         return false;
@@ -228,6 +234,14 @@ bool KAlarmResource::writeToFile(const QString &fileName)
         // It's an empty file. Set up the KAlarm custom property.
         KACalendar::setKAlarmVersion(calendar());
     }
+
+    // Check if the file being written seems to be a backup file, which happens
+    // when an external process changes the calendar file.
+    QRegularExpression re(QStringLiteral("-\\d+$"));
+    if (re.match(fileName).hasMatch()) {
+        mBackupFile = fileName;   // it looks like a backup file
+    }
+
     return ICalResourceBase::writeToFile(fileName);
 }
 
@@ -442,6 +456,38 @@ void KAlarmResource::collectionChanged(const Akonadi::Collection &collection)
     mFetchedAttributes = true;
     // Check whether calendar file format needs to be updated
     checkFileCompatibility(collection);
+}
+
+/******************************************************************************
+* Return whether the resource is read-only.
+*/
+bool KAlarmResource::readOnly() const
+{
+    return mFileChangedReadOnly || ICalResourceBase::readOnly();
+}
+
+/******************************************************************************
+* Retrieve all events from the calendar, and set each into a new item's
+* payload. Items are identified by their remote IDs. The Akonadi ID is not
+* used.
+* This overrides ICalResourceBase::retrieveItems(), so that if the calendar
+* file has been changed by another process, reloadFile() will not rewrite the
+* calendar file.
+*/
+void KAlarmResource::retrieveItems(const Akonadi::Collection &col)
+{
+    if (!mBackupFile.isEmpty()) {
+        // This is being called after the calendar file has been updated by
+        // another process. In this case, prevent the calendar file from being
+        // rewritten when ICalResourceBase::retrieveItems() calls reloadFile(),
+        // by making the file look as if it is read only.
+        mFileChangedReadOnly = true;
+        mBackupFile.clear();
+    }
+
+    ICalResourceBase::retrieveItems(col);
+
+    mFileChangedReadOnly = false;
 }
 
 /******************************************************************************

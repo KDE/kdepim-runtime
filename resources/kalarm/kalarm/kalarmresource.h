@@ -1,7 +1,7 @@
 /*
  *  kalarmresource.h  -  Akonadi resource for KAlarm
  *  Program:  kalarm
- *  Copyright © 2009-2019 David Jarvie <djarvie@kde.org>
+ *  Copyright © 2009-2020 by David Jarvie <djarvie@kde.org>
  *
  *  This library is free software; you can redistribute it and/or modify it
  *  under the terms of the GNU Library General Public License as published by
@@ -24,7 +24,7 @@
 
 #include "icalresourcebase.h"
 
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/KACalendar>
 
 using namespace KAlarmCal;
 
@@ -41,6 +41,8 @@ public:
     ~KAlarmResource() override;
 
 protected:
+    using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
+    void retrieveItems(const Akonadi::Collection &) override;
     void doRetrieveItems(const Akonadi::Collection &) override;
     bool doRetrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
     bool readFromFile(const QString &fileName) override;
@@ -49,6 +51,7 @@ protected:
     void itemChanged(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
     void collectionChanged(const Akonadi::Collection &) override;
     void retrieveCollections() override;
+    bool readOnly() const override;
 
 private Q_SLOTS:
     void settingsChanged();
@@ -64,9 +67,11 @@ private:
     KACalendar::Compat mFileCompatibility;  // calendar file compatibility found by readFromFile()
     int mVersion;                           // calendar format version
     int mFileVersion;                       // calendar format version found by readFromFile()
-    bool mHaveReadFile{false};              // the calendar file has been read
-    bool mFetchedAttributes{false};         // attributes have been fetched after initialisation
-    bool mUpdatingFormat{false};            // writeToFile() can ignore mCompatibility
+    bool mHaveReadFile {false};             // the calendar file has been read
+    bool mFetchedAttributes {false};        // attributes have been fetched after initialisation
+    bool mUpdatingFormat {false};           // writeToFile() can ignore mCompatibility
+    bool mFileChangedReadOnly {false};      // make readOnly() return true
+    QString mBackupFile;                    // backup file name, if another process has changed the calendar file
 };
 
 #endif
