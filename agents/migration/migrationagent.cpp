@@ -23,6 +23,8 @@
 #include "migrationstatuswidget.h"
 
 #include <migration/gid/gidmigrator.h>
+#include <migration/googlegroupware/googleresourcemigrator.h>
+
 #include <KContacts/Addressee>
 #include <KWindowSystem>
 #include <QDialog>
@@ -37,7 +39,8 @@ MigrationAgent::MigrationAgent(const QString &id)
     , mScheduler(new KUiServerJobTracker)
 {
     KLocalizedString::setApplicationDomain("akonadi_migration_agent");
-    mScheduler.addMigrator(QSharedPointer<GidMigrator>(new GidMigrator(KContacts::Addressee::mimeType())));
+    mScheduler.addMigrator(QSharedPointer<GidMigrator>::create(KContacts::Addressee::mimeType()));
+    mScheduler.addMigrator(QSharedPointer<GoogleResourceMigrator>::create());
 }
 
 void MigrationAgent::configure(WId windowId)

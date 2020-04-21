@@ -26,6 +26,7 @@ endif ()
 
 target_link_libraries(akonadi_migration_agent
     gidmigration
+    googlegroupwaremigration
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
     KF5::Contacts
