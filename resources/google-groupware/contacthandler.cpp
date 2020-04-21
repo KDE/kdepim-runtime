@@ -80,13 +80,13 @@ void ContactHandler::setupCollection(Collection &collection, const ContactsGroup
 
     QString realName = group->title();
     if (group->isSystemGroup()) {
-        if (group->title().contains(QLatin1String("Coworkers"))) {
+        if (realName.contains(QLatin1String("Coworkers"))) {
             realName = i18nc("Name of a group of contacts", "Coworkers");
-        } else if (group->title().contains(QLatin1String("Friends"))) {
+        } else if (realName.contains(QLatin1String("Friends"))) {
             realName = i18nc("Name of a group of contacts", "Friends");
-        } else if (group->title().contains(QLatin1String("Family"))) {
+        } else if (realName.contains(QLatin1String("Family"))) {
             realName = i18nc("Name of a group of contacts", "Family");
-        } else if (group->title().contains(QLatin1String("My Contacts"))) {
+        } else if (realName.contains(QLatin1String("My Contacts"))) {
             realName = i18nc("Name of a group of contacts", "My Contacts");
         }
     }

@@ -51,13 +51,14 @@ void DefaultReminderAttribute::deserialize(const QByteArray &data)
     const QVariant var = json.toVariant();
     const QVariantList list = var.toList();
     for (const QVariant &l : list) {
-        QVariantMap reminder = l.toMap();
+        const QVariantMap reminder = l.toMap();
 
         KGAPI2::ReminderPtr rem(new KGAPI2::Reminder);
 
-        if (reminder[QStringLiteral("type")].toString() == QLatin1String("display")) {
+        const QString reminderType = reminder[QStringLiteral("type")].toString();
+        if (reminderType == QLatin1String("display")) {
             rem->setType(KCalendarCore::Alarm::Display);
-        } else if (reminder[QStringLiteral("type")].toString() == QLatin1String("email")) {
+        } else if (reminderType == QLatin1String("email")) {
             rem->setType(KCalendarCore::Alarm::Email);
         }
 
