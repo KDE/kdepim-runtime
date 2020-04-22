@@ -226,7 +226,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &/*part
 
 void TaskHandler::itemsRemoved(const Item::List &items)
 {
-    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 tasks", "Removing %1 task", items.count()));
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 task", "Removing %1 tasks", items.count()));
     qCDebug(GOOGLE_TASKS_LOG) << "Removing" << items.count() << "tasks";
     /* Google always automatically removes tasks with all their subtasks. In KOrganizer
      * by default we only remove the item we are given. For this reason we have to first

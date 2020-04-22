@@ -26,7 +26,7 @@
      <item>
       <widget class="QLabel" name="accountLabel">
        <property name="text">
-        <string>&lt;b&gt;not confgured&lt;/b&gt;</string>
+        <string>&lt;b&gt;not configured&lt;/b&gt;</string>
        </property>
       </widget>
      </item>
