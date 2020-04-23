@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="KLineEdit" name="kcfg_DisplayName"/>
+             <widget class="QLineEdit" name="kcfg_DisplayName"/>
             </item>
            </layout>
           </item>
@@ -190,11 +190,6 @@ p, li { white-space: pre-wrap; }
    <class>KUrlRequester</class>
    <extends>QWidget</extends>
    <header>kurlrequester.h</header>
-  </customwidget>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

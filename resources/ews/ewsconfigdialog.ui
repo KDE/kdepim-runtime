@@ -50,7 +50,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="KLineEdit" name="accountName">
+           <widget class="QLineEdit" name="accountName">
             <property name="whatsThis">
              <string>This is the account name that will appear in all Akonadi applications</string>
             </property>
@@ -64,7 +64,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KLineEdit" name="kcfg_Email">
+           <widget class="QLineEdit" name="kcfg_Email">
             <property name="whatsThis">
              <string>The e-mail address of this account</string>
             </property>
@@ -139,7 +139,7 @@
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="KLineEdit" name="kcfg_Domain">
+                 <widget class="QLineEdit" name="kcfg_Domain">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
@@ -179,7 +179,7 @@
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="KLineEdit" name="kcfg_Username">
+                 <widget class="QLineEdit" name="kcfg_Username">
                   <property name="whatsThis">
                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The username used to login to the Exchange server.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; This can be left empty when using Kerberos authentication.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
@@ -246,7 +246,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KLineEdit" name="kcfg_BaseUrl">
+           <widget class="QLineEdit" name="kcfg_BaseUrl">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -751,11 +751,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
   <customwidget>
    <class>KPasswordLineEdit</class>
    <extends>QWidget</extends>

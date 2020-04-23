@@ -137,15 +137,12 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="KLineEdit" name="nameEdit">
+           <widget class="QLineEdit" name="nameEdit">
             <property name="toolTip">
              <string>Name displayed in the list of accounts</string>
             </property>
             <property name="whatsThis">
              <string>Account name: This defines the name displayed in the account list.</string>
-            </property>
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -160,15 +157,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KLineEdit" name="hostEdit">
+           <widget class="QLineEdit" name="hostEdit">
             <property name="toolTip">
              <string>Address of the mail POP3 server</string>
             </property>
             <property name="whatsThis">
              <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
-            </property>
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -183,15 +177,12 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="KLineEdit" name="loginEdit">
+           <widget class="QLineEdit" name="loginEdit">
             <property name="toolTip">
              <string>The username that identifies you against the mail server</string>
             </property>
             <property name="whatsThis">
              <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
-            </property>
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -399,7 +390,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="KLineEdit" name="precommand">
+             <widget class="QLineEdit" name="precommand">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -410,9 +401,6 @@
                <string>Command that is executed before checking mail</string>
               </property>
               <property name="showClearButton" stdset="0">
-               <bool>true</bool>
-              </property>
-              <property name="trapReturnKey" stdset="0">
                <bool>true</bool>
               </property>
              </widget>
@@ -578,12 +566,6 @@ p, li { white-space: pre-wrap; }
    <class>KSeparator</class>
    <extends>QFrame</extends>
    <header>kseparator.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

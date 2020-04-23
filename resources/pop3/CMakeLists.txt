@@ -83,4 +83,5 @@ target_link_libraries(pop3config
     KF5::AkonadiWidgets
     KF5::AkonadiAgentBase
     KF5::AkonadiMime
+    KF5::Libkdepim
     )

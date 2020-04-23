@@ -60,9 +60,9 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     mRemoteProtocolGroup->addButton(mUi.carddav, KDAV::CardDav);
     mRemoteProtocolGroup->addButton(mUi.groupdav, KDAV::GroupDav);
     connect(mRemoteProtocolGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this, &UrlConfigurationDialog::onConfigChanged);
-    connect(mUi.remoteUrl, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
+    connect(mUi.remoteUrl, &QLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.useDefaultCreds, &QRadioButton::toggled, this, &UrlConfigurationDialog::onConfigChanged);
-    connect(mUi.username, &KLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
+    connect(mUi.username, &QLineEdit::textChanged, this, &UrlConfigurationDialog::onConfigChanged);
     connect(mUi.password, &KPasswordLineEdit::passwordChanged, this, &UrlConfigurationDialog::onConfigChanged);
 
     connect(mUi.fetchButton, &QPushButton::clicked, this, &UrlConfigurationDialog::onFetchButtonClicked);

@@ -46,8 +46,8 @@ ConfigWidget::ConfigWidget(Settings *settings, QWidget *parent)
 
     mManager = new KConfigDialogManager(this, settings);
 
-    connect(mServerEdit, &KLineEdit::textChanged, this, &ConfigWidget::updateButtonState);
-    connect(mUserEdit, &KLineEdit::textChanged, this, &ConfigWidget::updateButtonState);
+    connect(mServerEdit, &QLineEdit::textChanged, this, &ConfigWidget::updateButtonState);
+    connect(mUserEdit, &QLineEdit::textChanged, this, &ConfigWidget::updateButtonState);
     connect(mCheckConnectionButton, &QPushButton::clicked, this, &ConfigWidget::checkConnection);
 
     resize(QSize(410, 200));

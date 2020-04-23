@@ -52,7 +52,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="KLineEdit" name="kcfg_BaseUrl">
+       <widget class="QLineEdit" name="kcfg_BaseUrl">
         <property name="toolTip">
          <string>The URL of the Open-Xchange server, should be something like https://myserver.org/</string>
         </property>
@@ -84,7 +84,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="KLineEdit" name="kcfg_Username">
+       <widget class="QLineEdit" name="kcfg_Username">
         <property name="toolTip">
          <string>The username that is used to log into the Open-Xchange server</string>
         </property>
@@ -113,7 +113,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="KLineEdit" name="kcfg_Password">
+       <widget class="QLineEdit" name="kcfg_Password">
         <property name="toolTip">
          <string>The password that is used to log into the Open-Xchange server</string>
         </property>
@@ -140,14 +140,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

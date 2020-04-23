@@ -167,14 +167,14 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
 
     connect(okButton, &QPushButton::clicked, this, &EwsConfigDialog::save);
     connect(mUi->autodiscoverButton, &QPushButton::clicked, this, &EwsConfigDialog::performAutoDiscovery);
-    connect(mUi->kcfg_Username, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Username, &QLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->passwordEdit, &KPasswordLineEdit::passwordChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_Domain, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Domain, &QLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_HasDomain, &QCheckBox::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_Email, &KLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
+    connect(mUi->kcfg_Email, &QLineEdit::textChanged, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->authUsernameRadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->authOAuth2RadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
-    connect(mUi->kcfg_BaseUrl, &KLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
+    connect(mUi->kcfg_BaseUrl, &QLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource,

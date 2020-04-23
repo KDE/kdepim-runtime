@@ -26,7 +26,7 @@
 #include <QLabel>
 
 class KJob;
-class KLineEdit;
+class QLineEdit;
 class QTextBrowser;
 
 class QButtonGroup;
@@ -89,7 +89,7 @@ public:
     int nextId() const override;
 
 private:
-    KLineEdit *mUserName = nullptr;
+    QLineEdit *mUserName = nullptr;
     KPasswordLineEdit *mPassword = nullptr;
 };
 
@@ -121,8 +121,8 @@ public:
 private:
     void urlElementChanged();
     QFormLayout *mLayout = nullptr;
-    KLineEdit *mHost = nullptr;
-    KLineEdit *mPath = nullptr;
+    QLineEdit *mHost = nullptr;
+    QLineEdit *mPath = nullptr;
     QCheckBox *mUseSecureConnection = nullptr;
     QFormLayout *mPreviewLayout = nullptr;
     QLabel *mCalDavUrlLabel = nullptr;

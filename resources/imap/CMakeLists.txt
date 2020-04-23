@@ -87,6 +87,7 @@ target_link_libraries(imapresource
     KF5::WindowSystem
     akonadi-singlefileresource
     KF5::PimCommon
+    KF5::Libkdepim
 )
 
 ########### next target ###############

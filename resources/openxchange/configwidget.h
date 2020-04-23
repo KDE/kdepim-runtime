@@ -24,7 +24,7 @@
 
 class KConfigDialogManager;
 class KJob;
-class KLineEdit;
+class QLineEdit;
 class QPushButton;
 class Settings;
 class ConfigWidget : public QWidget
@@ -44,9 +44,9 @@ private Q_SLOTS:
 
 private:
     KConfigDialogManager *mManager = nullptr;
-    KLineEdit *mServerEdit = nullptr;
-    KLineEdit *mUserEdit = nullptr;
-    KLineEdit *mPasswordEdit = nullptr;
+    QLineEdit *mServerEdit = nullptr;
+    QLineEdit *mUserEdit = nullptr;
+    QLineEdit *mPasswordEdit = nullptr;
     QPushButton *mCheckConnectionButton = nullptr;
 };
 

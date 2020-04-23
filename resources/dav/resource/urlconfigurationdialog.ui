@@ -81,7 +81,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <item row="0" column="1">
-       <widget class="KLineEdit" name="remoteUrl"/>
+       <widget class="QLineEdit" name="remoteUrl"/>
       </item>
       <item row="1" column="0" colspan="2">
        <widget class="QRadioButton" name="useDefaultCreds">
@@ -120,7 +120,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="KLineEdit" name="username"/>
+          <widget class="QLineEdit" name="username"/>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_5">
@@ -207,11 +207,6 @@
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
   <customwidget>
    <class>KPasswordLineEdit</class>
    <extends>QWidget</extends>

@@ -63,7 +63,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="KLineEdit" name="username"/>
+       <widget class="QLineEdit" name="username"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">
@@ -79,7 +79,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="KLineEdit" name="password">
+       <widget class="QLineEdit" name="password">
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
         </property>
@@ -98,7 +98,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="KLineEdit" name="searchUrl"/>
+      <widget class="QLineEdit" name="searchUrl"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
@@ -124,7 +124,7 @@
         </widget>
        </item>
        <item>
-        <widget class="KLineEdit" name="searchParam"/>
+        <widget class="QLineEdit" name="searchParam"/>
        </item>
       </layout>
      </item>
@@ -188,13 +188,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

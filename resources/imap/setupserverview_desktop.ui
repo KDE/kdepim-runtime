@@ -47,10 +47,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="KLineEdit" name="accountName">
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
-            </property>
+           <widget class="QLineEdit" name="accountName">
            </widget>
           </item>
           <item row="1" column="0">
@@ -67,10 +64,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="KLineEdit" name="imapServer">
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
-            </property>
+           <widget class="QLineEdit" name="imapServer">
            </widget>
           </item>
           <item row="2" column="0">
@@ -87,10 +81,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="KLineEdit" name="userName">
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
-            </property>
+           <widget class="QLineEdit" name="userName">
            </widget>
           </item>
           <item row="3" column="0">
@@ -229,10 +220,7 @@
           </widget>
          </item>
          <item>
-          <widget class="KLineEdit" name="alternateURL">
-           <property name="trapReturnKey" stdset="0">
-            <bool>true</bool>
-           </property>
+          <widget class="QLineEdit" name="alternateURL">
           </widget>
          </item>
         </layout>
@@ -244,10 +232,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="4" column="1">
-           <widget class="KLineEdit" name="customUsername">
-            <property name="trapReturnKey" stdset="0">
-             <bool>true</bool>
-            </property>
+           <widget class="QLineEdit" name="customUsername">
            </widget>
           </item>
           <item row="1" column="0" colspan="2">
@@ -670,12 +655,6 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>

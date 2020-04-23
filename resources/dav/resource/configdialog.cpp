@@ -77,7 +77,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     const int typeIndex = mUi.syncRangeStartType->findData(QVariant(Settings::self()->syncRangeStartType()));
     mUi.syncRangeStartType->setCurrentIndex(typeIndex);
 
-    connect(mUi.kcfg_displayName, &KLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
+    connect(mUi.kcfg_displayName, &QLineEdit::textChanged, this, &ConfigDialog::checkUserInput);
     connect(mUi.configuredUrls->selectionModel(), &QItemSelectionModel::selectionChanged, this, &ConfigDialog::checkConfiguredUrlsButtonsState);
     connect(mUi.configuredUrls, &QAbstractItemView::doubleClicked, this, &ConfigDialog::onEditButtonClicked);
 

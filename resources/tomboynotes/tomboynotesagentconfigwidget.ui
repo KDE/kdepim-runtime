@@ -44,7 +44,7 @@
         </widget>
        </item>
        <item>
-        <widget class="KLineEdit" name="kcfg_collectionName">
+        <widget class="QLineEdit" name="kcfg_collectionName">
          <property name="showClearButton" stdset="0">
           <bool>true</bool>
          </property>
@@ -58,7 +58,7 @@
         </widget>
        </item>
        <item>
-        <widget class="KLineEdit" name="kcfg_ServerURL">
+        <widget class="QLineEdit" name="kcfg_ServerURL">
          <property name="toolTip">
           <string>This value is not changeable after first setup</string>
          </property>
@@ -123,13 +123,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>klineedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

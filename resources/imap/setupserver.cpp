@@ -38,6 +38,7 @@
 
 #include <MailTransport/Transport>
 #include <MailTransport/ServerTest>
+#include <Libkdepim/LineEditCatchReturnKey>
 
 #include <kmime/kmime_message.h>
 
@@ -141,6 +142,13 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     mainLayout->addWidget(buttonBox);
 
     m_ui->setupUi(mainWidget);
+    new KPIM::LineEditCatchReturnKey(m_ui->accountName, this);
+    new KPIM::LineEditCatchReturnKey(m_ui->imapServer, this);
+    new KPIM::LineEditCatchReturnKey(m_ui->userName, this);
+    new KPIM::LineEditCatchReturnKey(m_ui->alternateURL, this);
+    new KPIM::LineEditCatchReturnKey(m_ui->customUsername, this);
+
+
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
     m_ui->safeImapGroup->setId(m_ui->noRadio, KIMAP::LoginJob::Unencrypted);
@@ -174,10 +182,10 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 
     connect(m_ui->testButton, &QPushButton::pressed, this, &SetupServer::slotTest);
 
-    connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotServerChanged);
-    connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotTestChanged);
-    connect(m_ui->imapServer, &KLineEdit::textChanged, this, &SetupServer::slotComplete);
-    connect(m_ui->userName, &KLineEdit::textChanged, this, &SetupServer::slotComplete);
+    connect(m_ui->imapServer, &QLineEdit::textChanged, this, &SetupServer::slotServerChanged);
+    connect(m_ui->imapServer, &QLineEdit::textChanged, this, &SetupServer::slotTestChanged);
+    connect(m_ui->imapServer, &QLineEdit::textChanged, this, &SetupServer::slotComplete);
+    connect(m_ui->userName, &QLineEdit::textChanged, this, &SetupServer::slotComplete);
     connect(m_ui->subscriptionEnabled, &QCheckBox::toggled, this, &SetupServer::slotSubcriptionCheckboxChanged);
     connect(m_ui->subscriptionButton, &QPushButton::pressed, this, &SetupServer::slotManageSubscriptions);
 

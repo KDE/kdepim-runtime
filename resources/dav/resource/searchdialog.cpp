@@ -53,8 +53,8 @@ SearchDialog::SearchDialog(QWidget *parent)
     mainLayout->addWidget(buttonBox);
     buttonBox->button(QDialogButtonBox::Ok)->setText(i18n("Add Selected Items"));
 
-    connect(mUi.searchUrl, &KLineEdit::textChanged, this, &SearchDialog::checkUserInput);
-    connect(mUi.searchParam, &KLineEdit::textChanged, this, &SearchDialog::checkUserInput);
+    connect(mUi.searchUrl, &QLineEdit::textChanged, this, &SearchDialog::checkUserInput);
+    connect(mUi.searchParam, &QLineEdit::textChanged, this, &SearchDialog::checkUserInput);
     connect(mUi.searchButton, &QPushButton::clicked, this, &SearchDialog::search);
 
     checkUserInput();

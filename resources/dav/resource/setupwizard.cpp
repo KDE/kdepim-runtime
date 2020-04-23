@@ -22,7 +22,7 @@
 #include <KPasswordLineEdit>
 #include <QIcon>
 #include <KLocalizedString>
-#include <KLineEdit>
+#include <QLineEdit>
 #include <KService>
 #include <KServiceTypeTrader>
 #include <QTextBrowser>
@@ -224,7 +224,7 @@ CredentialsPage::CredentialsPage(QWidget *parent)
 
     QFormLayout *layout = new QFormLayout(this);
 
-    mUserName = new KLineEdit;
+    mUserName = new QLineEdit;
     layout->addRow(i18n("User:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
@@ -390,12 +390,12 @@ ConnectionPage::ConnectionPage(QWidget *parent)
 
     mLayout = new QFormLayout(this);
     QRegExp hostnameRegexp(QStringLiteral("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
-    mHost = new KLineEdit;
+    mHost = new QLineEdit;
     registerField(QStringLiteral("connectionHost*"), mHost);
     mHost->setValidator(new QRegExpValidator(hostnameRegexp, this));
     mLayout->addRow(i18n("Host"), mHost);
 
-    mPath = new KLineEdit;
+    mPath = new QLineEdit;
     mLayout->addRow(i18n("Installation path"), mPath);
     registerField(QStringLiteral("installationPath"), mPath);
 
@@ -404,8 +404,8 @@ ConnectionPage::ConnectionPage(QWidget *parent)
     registerField(QStringLiteral("connectionUseSecureConnection"), mUseSecureConnection);
     mLayout->addRow(QString(), mUseSecureConnection);
 
-    connect(mHost, &KLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
-    connect(mPath, &KLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
+    connect(mHost, &QLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
+    connect(mPath, &QLineEdit::textChanged, this, &ConnectionPage::urlElementChanged);
     connect(mUseSecureConnection, &QCheckBox::toggled, this, &ConnectionPage::urlElementChanged);
 }
 

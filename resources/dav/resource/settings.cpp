@@ -25,7 +25,7 @@
 #include "utils.h"
 #include "davresource_debug.h"
 
-#include <KLineEdit>
+#include <QLineEdit>
 #include <KLocalizedString>
 
 #include <KWallet>
