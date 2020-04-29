@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Google Groupware
 Name[ca]=Google Groupware
+Name[cs]=Google Groupware
 Name[es]=Google Groupware
 Name[et]=Google Groupware
 Name[nl]=Google Groupware
@@ -12,6 +13,7 @@ Name[uk]=Групова робота у Google
 Name[x-test]=xxGoogle Groupwarexx
 Comment=Access your Google Calendars, Contacts and Tasks from KDE
 Comment[ca]=Accediu als calendaris, contactes i tasques de Google des del KDE
+Comment[cs]=Přistupujte ke k kalendářům, kontaktům a úkolům z KDE
 Comment[es]=Acceda a sus calendarios, contactos y tareas de Google desde KDE
 Comment[et]=Oma Google'i kalendrite, kontaktide ja ülesannete kasutamine otse KDE-st
 Comment[nl]=Heb toegang tot uw Google agenda's, contactpersonen en taken vanuit KDE
