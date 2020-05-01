@@ -51,8 +51,8 @@ void GoogleResourceState::itemsRetrievalDone()
 void GoogleResourceState::setTotalItems(int amount)
 {
     m_resource->setTotalItems(amount);
-
 }
+
 void GoogleResourceState::itemChangeCommitted(const Item &item)
 {
     m_resource->changeCommitted(item);
@@ -105,13 +105,11 @@ void GoogleResourceState::tagChangeCommitted(const Tag &tag)
     m_resource->changeCommitted(tag);
 }
 
-
 // Relations handling
 void GoogleResourceState::relationsRetrieved(const Relation::List &relations)
 {
     m_resource->relationsRetrieved(relations);
 }
-
 
 // FreeBusy handling
 void GoogleResourceState::freeBusyRetrieved(const QString &email, const QString &freeBusy, bool success, const QString &errorText = QString())
@@ -123,7 +121,6 @@ void GoogleResourceState::handlesFreeBusy(const QString &email, bool handles)
 {
     m_resource->handlesFreeBusy(email, handles);
 }
-
 
 // Result reporting
 void GoogleResourceState::changeProcessed()

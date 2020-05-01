@@ -43,7 +43,7 @@ ContactsResource::ContactsResource(const QString &id)
     ContactsResourceSettings::instance(KSharedConfig::openConfig());
     new ContactsResourceSettingsAdaptor(ContactsResourceSettings::self());
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
+                                                 ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);

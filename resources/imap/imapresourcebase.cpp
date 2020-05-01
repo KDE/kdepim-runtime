@@ -272,15 +272,15 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
     mSubscriptions->setSubscriptionEnabled(settings()->subscriptionEnabled());
     connect(mSubscriptions.get(), &SubscriptionDialog::accepted,
             this, [this]() {
-                settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
-                settings()->save();
-                Q_EMIT configurationDialogAccepted();
-                reconnect();
-            });
+        settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
+        settings()->save();
+        Q_EMIT configurationDialogAccepted();
+        reconnect();
+    });
     connect(mSubscriptions.get(), &SubscriptionDialog::finished,
             this, [this]() {
-                mSubscriptions.reset();
-            });
+        mSubscriptions.reset();
+    });
     mSubscriptions->show();
 
     return 0;

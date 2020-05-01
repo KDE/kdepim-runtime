@@ -564,14 +564,14 @@ void AccountWidget::saveSettings()
     mSettings.setPipelining(usePipeliningCheck->isChecked());
     mSettings.setLeaveOnServer(leaveOnServerCheck->isChecked());
     mSettings.setLeaveOnServerDays(leaveOnServerCheck->isChecked()
-                                           ? (leaveOnServerDaysCheck->isChecked()
-                                              ? leaveOnServerDaysSpin->value() : -1) : 0);
+                                   ? (leaveOnServerDaysCheck->isChecked()
+                                      ? leaveOnServerDaysSpin->value() : -1) : 0);
     mSettings.setLeaveOnServerCount(leaveOnServerCheck->isChecked()
-                                            ? (leaveOnServerCountCheck->isChecked()
-                                               ? leaveOnServerCountSpin->value() : -1) : 0);
+                                    ? (leaveOnServerCountCheck->isChecked()
+                                       ? leaveOnServerCountSpin->value() : -1) : 0);
     mSettings.setLeaveOnServerSize(leaveOnServerCheck->isChecked()
-                                           ? (leaveOnServerSizeCheck->isChecked()
-                                              ? leaveOnServerSizeSpin->value() : -1) : 0);
+                                   ? (leaveOnServerSizeCheck->isChecked()
+                                      ? leaveOnServerSizeSpin->value() : -1) : 0);
     mSettings.setFilterOnServer(filterOnServerCheck->isChecked());
     mSettings.setFilterCheckSize(filterOnServerSizeSpin->value());
     mSettings.setTargetCollection(folderRequester->collection().id());

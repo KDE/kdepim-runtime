@@ -16,13 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 #ifndef CONTACTHANDLER_H
 #define CONTACTHANDLER_H
 
 #include "generichandler.h"
 #include <KGAPI/Types>
-
 
 class ContactHandler : public GenericHandler
 {

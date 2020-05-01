@@ -85,31 +85,31 @@ void TaskHandler::retrieveCollections(const Collection &rootCollection)
     qCDebug(GOOGLE_TASKS_LOG) << "Retrieving tasks...";
     auto job = new TaskListFetchJob(m_settings->accountPtr(), this);
     connect(job, &TaskListFetchJob::finished, this, [this, rootCollection](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
-                qCDebug(GOOGLE_TASKS_LOG) << "Task lists retrieved";
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+        qCDebug(GOOGLE_TASKS_LOG) << "Task lists retrieved";
 
-                const ObjectsList taskLists = qobject_cast<TaskListFetchJob *>(job)->items();
-                const QStringList activeTaskLists = m_settings->taskLists();
-                Collection::List collections;
-                for (const ObjectPtr &object : taskLists) {
-                    const TaskListPtr &taskList = object.dynamicCast<TaskList>();
-                    qCDebug(GOOGLE_TASKS_LOG) << " -" << taskList->title() << "(" << taskList->uid() << ")";
+        const ObjectsList taskLists = qobject_cast<TaskListFetchJob *>(job)->items();
+        const QStringList activeTaskLists = m_settings->taskLists();
+        Collection::List collections;
+        for (const ObjectPtr &object : taskLists) {
+            const TaskListPtr &taskList = object.dynamicCast<TaskList>();
+            qCDebug(GOOGLE_TASKS_LOG) << " -" << taskList->title() << "(" << taskList->uid() << ")";
 
-                    if (!activeTaskLists.contains(taskList->uid())) {
-                        qCDebug(GOOGLE_TASKS_LOG) << "Skipping, not subscribed";
-                        continue;
-                    }
+            if (!activeTaskLists.contains(taskList->uid())) {
+                qCDebug(GOOGLE_TASKS_LOG) << "Skipping, not subscribed";
+                continue;
+            }
 
-                    Collection collection;
-                    setupCollection(collection, taskList);
-                    collection.setParentCollection(rootCollection);
-                    collections << collection;
-                }
+            Collection collection;
+            setupCollection(collection, taskList);
+            collection.setParentCollection(rootCollection);
+            collections << collection;
+        }
 
-                m_iface->collectionsRetrievedFromHandler(collections);
-            });
+        m_iface->collectionsRetrievedFromHandler(collections);
+    });
 }
 
 void TaskHandler::retrieveItems(const Collection &collection)
@@ -150,7 +150,7 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
         const TaskPtr task = object.dynamicCast<Task>();
 
         Item item;
-        item.setMimeType( mimeType() );
+        item.setMimeType(mimeType());
         item.setParentCollection(collection);
         item.setRemoteId(task->uid());
         item.setRemoteRevision(task->etag());
@@ -188,23 +188,23 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     auto job = new TaskCreateJob(task, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setParentItem(parentRemoteId);
     connect(job, &TaskCreateJob::finished, this, [this, item](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
-                Item newItem = item;
-                const TaskPtr task = qobject_cast<TaskCreateJob *>(job)->items().first().dynamicCast<Task>();
-                qCDebug(GOOGLE_TASKS_LOG) << "Task added";
-                newItem.setRemoteId(task->uid());
-                newItem.setRemoteRevision(task->etag());
-                newItem.setGid(task->uid());
-                m_iface->itemChangeCommitted(newItem);
-                newItem.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
-                new ItemModifyJob(newItem, this);
-                emitReadyStatus();
-            });
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+        Item newItem = item;
+        const TaskPtr task = qobject_cast<TaskCreateJob *>(job)->items().first().dynamicCast<Task>();
+        qCDebug(GOOGLE_TASKS_LOG) << "Task added";
+        newItem.setRemoteId(task->uid());
+        newItem.setRemoteRevision(task->etag());
+        newItem.setGid(task->uid());
+        m_iface->itemChangeCommitted(newItem);
+        newItem.setPayload<KCalendarCore::Todo::Ptr>(task.dynamicCast<KCalendarCore::Todo>());
+        new ItemModifyJob(newItem, this);
+        emitReadyStatus();
+    });
 }
 
-void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &/*partIdentifiers*/)
+void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > & /*partIdentifiers*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing task in list '%1'", item.parentCollection().displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Changing task" << item.remoteId();
@@ -214,14 +214,14 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > &/*part
     // First we move it to a new parent, if there is
     auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
     connect(job, &TaskMoveJob::finished, this, [this, todo, item](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
-                TaskPtr task(new Task(*todo));
-                auto newJob = new TaskModifyJob(task, item.parentCollection().remoteId(), job->account(), this);
-                newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-                connect(newJob, &TaskModifyJob::finished, this, &TaskHandler::slotGenericJobFinished);
-            });
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+        TaskPtr task(new Task(*todo));
+        auto newJob = new TaskModifyJob(task, item.parentCollection().remoteId(), job->account(), this);
+        newJob->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+        connect(newJob, &TaskModifyJob::finished, this, &TaskHandler::slotGenericJobFinished);
+    });
 }
 
 void TaskHandler::itemsRemoved(const Item::List &items)
@@ -235,53 +235,53 @@ void TaskHandler::itemsRemoved(const Item::List &items)
     auto job = new ItemFetchJob(items.first().parentCollection());
     job->fetchScope().fetchFullPayload(true);
     connect(job, &ItemFetchJob::finished, this, [this, items](KJob *job){
-                if (job->error()) {
-                    m_iface->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
-                    return;
-                }
-                const Item::List fetchedItems = qobject_cast<ItemFetchJob *>(job)->items();
-                Item::List detachItems;
-                TasksList detachTasks;
-                for (const Item &fetchedItem : fetchedItems) {
-                    auto todo = fetchedItem.payload<KCalendarCore::Todo::Ptr>();
-                    TaskPtr task(new Task(*todo));
-                    const QString parentId = task->relatedTo(KCalendarCore::Incidence::RelTypeParent);
-                    if (parentId.isEmpty()) {
-                        continue;
-                    }
+        if (job->error()) {
+            m_iface->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
+            return;
+        }
+        const Item::List fetchedItems = qobject_cast<ItemFetchJob *>(job)->items();
+        Item::List detachItems;
+        TasksList detachTasks;
+        for (const Item &fetchedItem : fetchedItems) {
+            auto todo = fetchedItem.payload<KCalendarCore::Todo::Ptr>();
+            TaskPtr task(new Task(*todo));
+            const QString parentId = task->relatedTo(KCalendarCore::Incidence::RelTypeParent);
+            if (parentId.isEmpty()) {
+                continue;
+            }
 
-                    auto it = std::find_if(items.cbegin(), items.cend(), [&parentId](const Item &item){
-                                return item.remoteId() == parentId;
-                            });
-                    if (it != items.cend()) {
-                        Item newItem(fetchedItem);
-                        qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << newItem.remoteId() << "from" << parentId;
-                        todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
-                        newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
-                        detachItems << newItem;
-                        detachTasks << task;
-                    }
-                }
-                /* If there are no items do detach, then delete the task right now */
-                if (detachItems.isEmpty()) {
-                    doRemoveTasks(items);
-                    return;
-                }
-
-                qCDebug(GOOGLE_TASKS_LOG) << "Reparenting" << detachItems.count() << "children...";
-                auto moveJob = new TaskMoveJob(detachTasks, items.first().parentCollection().remoteId(),
-                        QString(), m_settings->accountPtr(), this);
-                connect(moveJob, &TaskMoveJob::finished, this, [this, items, detachItems](KGAPI2::Job *job){
-                            if (job->error()) {
-                                m_iface->cancelTask(i18n("Failed to reparent subtasks: %1", job->errorString()));
-                                return;
-                            }
-                            // Update items inside Akonadi DB too
-                            new ItemModifyJob(detachItems);
-                            // Perform actual removal
-                            doRemoveTasks(items);
-                        });
+            auto it = std::find_if(items.cbegin(), items.cend(), [&parentId](const Item &item){
+                return item.remoteId() == parentId;
             });
+            if (it != items.cend()) {
+                Item newItem(fetchedItem);
+                qCDebug(GOOGLE_TASKS_LOG) << "Detaching child" << newItem.remoteId() << "from" << parentId;
+                todo->setRelatedTo(QString(), KCalendarCore::Incidence::RelTypeParent);
+                newItem.setPayload<KCalendarCore::Todo::Ptr>(todo);
+                detachItems << newItem;
+                detachTasks << task;
+            }
+        }
+        /* If there are no items do detach, then delete the task right now */
+        if (detachItems.isEmpty()) {
+            doRemoveTasks(items);
+            return;
+        }
+
+        qCDebug(GOOGLE_TASKS_LOG) << "Reparenting" << detachItems.count() << "children...";
+        auto moveJob = new TaskMoveJob(detachTasks, items.first().parentCollection().remoteId(),
+                                       QString(), m_settings->accountPtr(), this);
+        connect(moveJob, &TaskMoveJob::finished, this, [this, items, detachItems](KGAPI2::Job *job){
+            if (job->error()) {
+                m_iface->cancelTask(i18n("Failed to reparent subtasks: %1", job->errorString()));
+                return;
+            }
+            // Update items inside Akonadi DB too
+            new ItemModifyJob(detachItems);
+            // Perform actual removal
+            doRemoveTasks(items);
+        });
+    });
 }
 
 void TaskHandler::doRemoveTasks(const Item::List &items)
@@ -293,9 +293,9 @@ void TaskHandler::doRemoveTasks(const Item::List &items)
     QStringList taskIds;
     taskIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(taskIds),
-            [](const Item &item){
-                return item.remoteId();
-            });
+                   [](const Item &item){
+        return item.remoteId();
+    });
 
     /* Now finally we can safely remove the task we wanted to */
     auto job = new TaskDeleteJob(taskIds, items.first().parentCollection().remoteId(), m_settings->accountPtr(), this);
@@ -303,12 +303,12 @@ void TaskHandler::doRemoveTasks(const Item::List &items)
     connect(job, &TaskDeleteJob::finished, this, &TaskHandler::slotGenericJobFinished);
 }
 
-void TaskHandler::itemsMoved(const Item::List &/*item*/, const Collection &/*collectionSource*/, const Collection &/*collectionDestination*/)
+void TaskHandler::itemsMoved(const Item::List & /*item*/, const Collection & /*collectionSource*/, const Collection & /*collectionDestination*/)
 {
     m_iface->cancelTask(i18n("Moving tasks between task lists is not supported"));
 }
 
-void TaskHandler::collectionAdded(const Collection &collection, const Collection &/*parent*/)
+void TaskHandler::collectionAdded(const Collection &collection, const Collection & /*parent*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Creating new task list '%1'", collection.displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Adding task list" << collection.displayName();
@@ -317,20 +317,20 @@ void TaskHandler::collectionAdded(const Collection &collection, const Collection
 
     auto job = new TaskListCreateJob(taskList, m_settings->accountPtr(), this);
     connect(job, &TaskListCreateJob::finished, this, [this, collection](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
+        if (!m_iface->handleError(job)) {
+            return;
+        }
 
-                TaskListPtr taskList = qobject_cast<TaskListCreateJob *>(job)->items().first().dynamicCast<TaskList>();
-                qCDebug(GOOGLE_TASKS_LOG) << "Task list created:" << taskList->uid();
-                // Enable newly added task list in settings
-                m_settings->addTaskList(taskList->uid());
-                // Populate remoteId & other stuff
-                Collection newCollection(collection);
-                setupCollection(newCollection, taskList);
-                m_iface->collectionChangeCommitted(newCollection);
-                emitReadyStatus();
-            });
+        TaskListPtr taskList = qobject_cast<TaskListCreateJob *>(job)->items().first().dynamicCast<TaskList>();
+        qCDebug(GOOGLE_TASKS_LOG) << "Task list created:" << taskList->uid();
+        // Enable newly added task list in settings
+        m_settings->addTaskList(taskList->uid());
+        // Populate remoteId & other stuff
+        Collection newCollection(collection);
+        setupCollection(newCollection, taskList);
+        m_iface->collectionChangeCommitted(newCollection);
+        emitReadyStatus();
+    });
 }
 
 void TaskHandler::collectionChanged(const Collection &collection)

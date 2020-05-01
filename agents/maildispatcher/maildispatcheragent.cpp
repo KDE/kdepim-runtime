@@ -143,10 +143,10 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     new MailDispatcherAgentAdaptor(this);
 
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           Settings::self(), QDBusConnection::ExportAdaptors);
+                                                 Settings::self(), QDBusConnection::ExportAdaptors);
 
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/MailDispatcherAgent"),
-                                                           this, QDBusConnection::ExportAdaptors);
+                                                 this, QDBusConnection::ExportAdaptors);
     QString service = QStringLiteral("org.freedesktop.Akonadi.MailDispatcherAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();

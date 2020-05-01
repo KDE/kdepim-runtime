@@ -21,7 +21,6 @@
 
 #include "generichandler.h"
 
-
 class TaskHandler : public GenericHandler
 {
 public:

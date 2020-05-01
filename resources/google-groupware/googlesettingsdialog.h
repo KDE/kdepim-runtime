@@ -23,10 +23,10 @@
 #include <KGAPI/Types>
 
 namespace Ui {
-    class GoogleSettingsDialog;
+class GoogleSettingsDialog;
 }
 namespace KGAPI2 {
-    class Job;
+class Job;
 }
 class GoogleResource;
 class GoogleSettings;

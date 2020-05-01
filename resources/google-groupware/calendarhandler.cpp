@@ -73,10 +73,10 @@ void CalendarHandler::setupCollection(Collection &collection, const CalendarPtr 
     collection.setRemoteId(calendar->uid());
     if (calendar->editable()) {
         collection.setRights(Collection::CanChangeCollection
-        |Collection::CanDeleteCollection
-        |Collection::CanCreateItem
-        |Collection::CanChangeItem
-        |Collection::CanDeleteItem);
+                             |Collection::CanDeleteCollection
+                             |Collection::CanCreateItem
+                             |Collection::CanChangeItem
+                             |Collection::CanDeleteItem);
     } else {
         collection.setRights(Collection::ReadOnly);
     }
@@ -107,30 +107,30 @@ void CalendarHandler::retrieveCollections(const Collection &rootCollection)
     qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieving calendars...";
     auto job = new CalendarFetchJob(m_settings->accountPtr(), this);
     connect(job, &CalendarFetchJob::finished, this, [this, rootCollection](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
-                qCDebug(GOOGLE_CALENDAR_LOG) << "Calendars retrieved";
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+        qCDebug(GOOGLE_CALENDAR_LOG) << "Calendars retrieved";
 
-                const ObjectsList calendars = qobject_cast<CalendarFetchJob *>(job)->items();
-                Collection::List collections;
-                collections.reserve(calendars.count());
-                const QStringList activeCalendars = m_settings->calendars();
-                for (const auto &object : calendars) {
-                    const CalendarPtr &calendar = object.dynamicCast<Calendar>();
-                    qCDebug(GOOGLE_CALENDAR_LOG) << " -" << calendar->title() << "(" << calendar->uid() << ")";
-                    if (!activeCalendars.contains(calendar->uid())) {
-                        qCDebug(GOOGLE_CALENDAR_LOG) << "Skipping, not subscribed";
-                        continue;
-                    }
-                    Collection collection;
-                    setupCollection(collection, calendar);
-                    collection.setParentCollection(rootCollection);
-                    collections << collection;
-                }
+        const ObjectsList calendars = qobject_cast<CalendarFetchJob *>(job)->items();
+        Collection::List collections;
+        collections.reserve(calendars.count());
+        const QStringList activeCalendars = m_settings->calendars();
+        for (const auto &object : calendars) {
+            const CalendarPtr &calendar = object.dynamicCast<Calendar>();
+            qCDebug(GOOGLE_CALENDAR_LOG) << " -" << calendar->title() << "(" << calendar->uid() << ")";
+            if (!activeCalendars.contains(calendar->uid())) {
+                qCDebug(GOOGLE_CALENDAR_LOG) << "Skipping, not subscribed";
+                continue;
+            }
+            Collection collection;
+            setupCollection(collection, calendar);
+            collection.setParentCollection(rootCollection);
+            collections << collection;
+        }
 
-                m_iface->collectionsRetrievedFromHandler(collections);
-            });
+        m_iface->collectionsRetrievedFromHandler(collections);
+    });
 }
 
 void CalendarHandler::retrieveItems(const Collection &collection)
@@ -184,7 +184,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
         }
 
         Item item;
-        item.setMimeType( mimeType() );
+        item.setMimeType(mimeType());
         item.setParentCollection(collection);
         item.setRemoteId(event->id());
         item.setRemoteRevision(event->etag());
@@ -219,23 +219,23 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
     auto *job = new EventCreateJob(event, collection.remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
     connect(job, &EventCreateJob::finished, this, [this, item](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
-                Item newItem(item);
-                const EventPtr event = qobject_cast<EventCreateJob *>(job)->items().first().dynamicCast<Event>();
-                qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
-                newItem.setRemoteId(event->id());
-                newItem.setRemoteRevision(event->etag());
-                newItem.setGid(event->uid());
-                m_iface->itemChangeCommitted(newItem);
-                newItem.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
-                new ItemModifyJob(newItem, this);
-                emitReadyStatus();
-            });
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+        Item newItem(item);
+        const EventPtr event = qobject_cast<EventCreateJob *>(job)->items().first().dynamicCast<Event>();
+        qCDebug(GOOGLE_CALENDAR_LOG) << "Event added";
+        newItem.setRemoteId(event->id());
+        newItem.setRemoteRevision(event->etag());
+        newItem.setGid(event->uid());
+        m_iface->itemChangeCommitted(newItem);
+        newItem.setPayload<KCalendarCore::Event::Ptr>(event.dynamicCast<KCalendarCore::Event>());
+        new ItemModifyJob(newItem, this);
+        emitReadyStatus();
+    });
 }
 
-void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > &/*partIdentifiers*/)
+void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > & /*partIdentifiers*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing event in calendar '%1'", item.parentCollection().displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Changing event" << item.remoteId();
@@ -252,9 +252,9 @@ void CalendarHandler::itemsRemoved(const Item::List &items)
     QStringList eventIds;
     eventIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
-            [](const Item &item){
-                return item.remoteId();
-            });
+                   [](const Item &item){
+        return item.remoteId();
+    });
     qCDebug(GOOGLE_CALENDAR_LOG) << "Removing events:" << eventIds;
     auto job = new EventDeleteJob(eventIds, items.first().parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
@@ -264,21 +264,21 @@ void CalendarHandler::itemsRemoved(const Item::List &items)
 void CalendarHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
     m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'",
-                                                                   "Moving %1 event from calendar '%2' to calendar '%3'",
-                                                                   items.count(), collectionSource.displayName(), collectionDestination.displayName()));
+                                                   "Moving %1 event from calendar '%2' to calendar '%3'",
+                                                   items.count(), collectionSource.displayName(), collectionDestination.displayName()));
     QStringList eventIds;
     eventIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
-            [](const Item &item){
-                return item.remoteId();
-            });
+                   [](const Item &item){
+        return item.remoteId();
+    });
     qCDebug(GOOGLE_CALENDAR_LOG) << "Moving events" << eventIds << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
     auto job = new EventMoveJob(eventIds, collectionSource.remoteId(), collectionDestination.remoteId(), m_settings->accountPtr(), this);
     job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &EventMoveJob::finished, this, &CalendarHandler::slotGenericJobFinished);
 }
 
-void CalendarHandler::collectionAdded(const Collection &collection, const Collection &/*parent*/)
+void CalendarHandler::collectionAdded(const Collection &collection, const Collection & /*parent*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Creating calendar '%1'", collection.displayName()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Adding calendar" << collection.displayName();
@@ -288,22 +288,22 @@ void CalendarHandler::collectionAdded(const Collection &collection, const Collec
 
     auto job = new CalendarCreateJob(calendar, m_settings->accountPtr(), this);
     connect(job, &CalendarCreateJob::finished, this, [this, collection](KGAPI2::Job *job){
-                if (!m_iface->handleError(job)) {
-                    return;
-                }
-                CalendarPtr calendar = qobject_cast<CalendarCreateJob *>(job)->items().first().dynamicCast<Calendar>();
-                qCDebug(GOOGLE_CALENDAR_LOG) << "Created calendar" << calendar->uid();
-                // Enable newly added calendar in settings, otherwise user won't see it
-                m_settings->addCalendar(calendar->uid());
-                // TODO: the calendar returned by google is almost empty, i.e. it's not "editable",
-                // does not contain the color, etc
-                calendar->setEditable(true);
-                // Populate remoteId & other stuff
-                Collection newCollection(collection);
-                setupCollection(newCollection, calendar);
-                m_iface->collectionChangeCommitted(newCollection);
-                emitReadyStatus();
-            });
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+        CalendarPtr calendar = qobject_cast<CalendarCreateJob *>(job)->items().first().dynamicCast<Calendar>();
+        qCDebug(GOOGLE_CALENDAR_LOG) << "Created calendar" << calendar->uid();
+        // Enable newly added calendar in settings, otherwise user won't see it
+        m_settings->addCalendar(calendar->uid());
+        // TODO: the calendar returned by google is almost empty, i.e. it's not "editable",
+        // does not contain the color, etc
+        calendar->setEditable(true);
+        // Populate remoteId & other stuff
+        Collection newCollection(collection);
+        setupCollection(newCollection, calendar);
+        m_iface->collectionChangeCommitted(newCollection);
+        emitReadyStatus();
+    });
 }
 
 void CalendarHandler::collectionChanged(const Collection &collection)
@@ -327,7 +327,6 @@ void CalendarHandler::collectionRemoved(const Collection &collection)
     job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
     connect(job, &CalendarDeleteJob::finished, this, &CalendarHandler::slotGenericJobFinished);
 }
-
 
 /**
  * FreeBusy
@@ -356,13 +355,13 @@ void FreeBusyHandler::canHandleFreeBusy(const QString &email)
                                     m_settings->accountPtr(),
                                     this);
     connect(job, &FreeBusyQueryJob::finished, this, [this](KGAPI2::Job *job){
-                auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
-                if (!m_iface->handleError(job, false)) {
-                    m_iface->handlesFreeBusy(queryJob->id(), false);
-                    return;
-                }
-                m_iface->handlesFreeBusy(queryJob->id(), true);
-            });
+        auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
+        if (!m_iface->handleError(job, false)) {
+            m_iface->handlesFreeBusy(queryJob->id(), false);
+            return;
+        }
+        m_iface->handlesFreeBusy(queryJob->id(), true);
+    });
 }
 
 void FreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end)
@@ -374,27 +373,27 @@ void FreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime &st
 
     auto job = new FreeBusyQueryJob(email, start, end, m_settings->accountPtr(), this);
     connect(job, &FreeBusyQueryJob::finished, this, [this](KGAPI2::Job *job) {
-                auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
+        auto queryJob = qobject_cast<FreeBusyQueryJob *>(job);
 
-                if (!m_iface->handleError(job, false)) {
-                    m_iface->freeBusyRetrieved(queryJob->id(), QString(), false, QString());
-                    return;
-                }
+        if (!m_iface->handleError(job, false)) {
+            m_iface->freeBusyRetrieved(queryJob->id(), QString(), false, QString());
+            return;
+        }
 
-                KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy);
-                fb->setUid(QStringLiteral("%1%2@google.com").arg(QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMddTHHmmssZ"))));
-                fb->setOrganizer(job->account()->accountName());
-                fb->addAttendee(KCalendarCore::Attendee(QString(), queryJob->id()));
-                // FIXME: is it really sort?
-                fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalendarCore::IncidenceBase::RoleSort);
-                const auto ranges = queryJob->busy();
-                for (const auto &range : ranges) {
-                    fb->addPeriod(range.busyStart, range.busyEnd);
-                }
+        KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy);
+        fb->setUid(QStringLiteral("%1%2@google.com").arg(QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMddTHHmmssZ"))));
+        fb->setOrganizer(job->account()->accountName());
+        fb->addAttendee(KCalendarCore::Attendee(QString(), queryJob->id()));
+        // FIXME: is it really sort?
+        fb->setDateTime(QDateTime::currentDateTimeUtc(), KCalendarCore::IncidenceBase::RoleSort);
+        const auto ranges = queryJob->busy();
+        for (const auto &range : ranges) {
+            fb->addPeriod(range.busyStart, range.busyEnd);
+        }
 
-                KCalendarCore::ICalFormat format;
-                const QString fbStr = format.createScheduleMessage(fb, KCalendarCore::iTIPRequest);
+        KCalendarCore::ICalFormat format;
+        const QString fbStr = format.createScheduleMessage(fb, KCalendarCore::iTIPRequest);
 
-                m_iface->freeBusyRetrieved(queryJob->id(), fbStr, true, QString());
-            });
+        m_iface->freeBusyRetrieved(queryJob->id(), fbStr, true, QString());
+    });
 }

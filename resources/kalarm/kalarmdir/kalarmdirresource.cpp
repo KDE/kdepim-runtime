@@ -81,7 +81,7 @@ KAlarmDirResource::KAlarmDirResource(const QString &id)
     // Set up the resource
     new KAlarmDirSettingsAdaptor(mSettings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           mSettings, QDBusConnection::ExportAdaptors);
+                                                 mSettings, QDBusConnection::ExportAdaptors);
     connect(mSettings, &Akonadi_KAlarm_Dir_Resource::Settings::configChanged, this, &KAlarmDirResource::settingsChanged);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();

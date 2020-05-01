@@ -159,7 +159,6 @@ void SingleFileResourceConfigWidgetBase::slotStatJobResult(KJob *job)
 
         mStatJob = KIO::statDetails(dirUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
 
-
         connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
 
         // Make sure we don't check the whole path upwards.

@@ -167,8 +167,8 @@ bool normalizePhoneNumbers(KContacts::Addressee &addressee, KContacts::Addressee
     if (phoneNumbers.size() != refPhoneNumbers.size()) {
         return false;
     }
-    std::sort(phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCompare<std::less, KContacts::PhoneNumber> );
-    std::sort(refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCompare<std::less, KContacts::PhoneNumber> );
+    std::sort(phoneNumbers.begin(), phoneNumbers.end(), LexicographicalCompare<std::less, KContacts::PhoneNumber>);
+    std::sort(refPhoneNumbers.begin(), refPhoneNumbers.end(), LexicographicalCompare<std::less, KContacts::PhoneNumber>);
 
     for (int i = 0; i < phoneNumbers.size(); ++i) {
         KContacts::PhoneNumber phoneNumber = phoneNumbers.at(i);
@@ -197,8 +197,8 @@ bool normalizeAddresses(KContacts::Addressee &addressee, const KContacts::Addres
     if (addresses.size() != refAddresses.size()) {
         return false;
     }
-    std::sort(addresses.begin(), addresses.end(), LexicographicalCompare<std::less, KContacts::Address> );
-    std::sort(refAddresses.begin(), refAddresses.end(), LexicographicalCompare<std::less, KContacts::Address> );
+    std::sort(addresses.begin(), addresses.end(), LexicographicalCompare<std::less, KContacts::Address>);
+    std::sort(refAddresses.begin(), refAddresses.end(), LexicographicalCompare<std::less, KContacts::Address>);
 
     for (int i = 0; i < addresses.size(); ++i) {
         KContacts::Address address = addresses.at(i);

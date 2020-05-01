@@ -89,9 +89,9 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromWallet(const QString &account
         scopeUrls << QUrl(scope);
     }
     AccountPtr account(new Account(accountName,
-                       map[QStringLiteral("accessToken")],
-                       map[QStringLiteral("refreshToken")],
-                       scopeUrls));
+                                   map[QStringLiteral("accessToken")],
+                                   map[QStringLiteral("refreshToken")],
+                                   scopeUrls));
     return account;
 }
 

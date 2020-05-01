@@ -115,7 +115,7 @@ MaildirResource::MaildirResource(const QString &id)
     }
     new MaildirSettingsAdaptor(mSettings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           mSettings, QDBusConnection::ExportAdaptors);
+                                                 mSettings, QDBusConnection::ExportAdaptors);
     connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 
     // We need to enable this here, otherwise we neither get the remote ID of the

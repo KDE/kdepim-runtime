@@ -49,10 +49,8 @@
 
 #include <algorithm>
 
-
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("RootCollection")
-
 
 Q_DECLARE_METATYPE(KGAPI2::Job *)
 
@@ -78,20 +76,20 @@ GoogleResource::GoogleResource(const QString &id)
     m_settings = new GoogleSettings();
     m_settings->setWindowId(winIdForDialogs());
     connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready){
-                if (accountId() > 0) {
-                    return;
-                }
-                if (!ready) {
-                    Q_EMIT status(Broken, i18n("Can't access KWallet"));
-                    return;
-                }
-                if (m_settings->accountPtr().isNull()) {
-                    Q_EMIT status(NotConfigured);
-                    return;
-                }
-                emitReadyStatus();
-                synchronize();
-            });
+        if (accountId() > 0) {
+            return;
+        }
+        if (!ready) {
+            Q_EMIT status(Broken, i18n("Can't access KWallet"));
+            return;
+        }
+        if (m_settings->accountPtr().isNull()) {
+            Q_EMIT status(NotConfigured);
+            return;
+        }
+        emitReadyStatus();
+        synchronize();
+    });
 
     Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
     updateResourceName();
@@ -160,7 +158,7 @@ QList<QUrl> GoogleResource::scopes() const
 {
     // TODO: determine it based on what user wants?
     const QList< QUrl > scopes = {Account::accountInfoScopeUrl(), Account::calendarScopeUrl(),
-        Account::contactsScopeUrl(), Account::tasksScopeUrl()};
+                                  Account::contactsScopeUrl(), Account::tasksScopeUrl()};
     return scopes;
 }
 
@@ -246,9 +244,9 @@ int GoogleResource::accountId() const
 GenericHandler *GoogleResource::fetchHandlerByMimetype(const QString &mimeType)
 {
     auto it = std::find_if(m_handlers.cbegin(), m_handlers.cend(),
-            [&mimeType](const GenericHandler::Ptr &handler){
-                return handler->mimeType() == mimeType;
-            });
+                           [&mimeType](const GenericHandler::Ptr &handler){
+        return handler->mimeType() == mimeType;
+    });
 
     if (it != m_handlers.cend()) {
         return it->get();
@@ -260,9 +258,9 @@ GenericHandler *GoogleResource::fetchHandlerByMimetype(const QString &mimeType)
 GenericHandler *GoogleResource::fetchHandlerForCollection(const Akonadi::Collection &collection)
 {
     auto it = std::find_if(m_handlers.cbegin(), m_handlers.cend(),
-            [&collection](const GenericHandler::Ptr &handler){
-                return collection.contentMimeTypes().contains(handler->mimeType());
-            });
+                           [&collection](const GenericHandler::Ptr &handler){
+        return collection.contentMimeTypes().contains(handler->mimeType());
+    });
     if (it != m_handlers.cend()) {
         return it->get();
     } else {

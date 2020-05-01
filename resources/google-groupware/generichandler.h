@@ -35,7 +35,7 @@
 #define COLLECTION_PROPERTY "_AkonadiCollection"
 
 namespace KGAPI2 {
-    class Job;
+class Job;
 }
 
 class GoogleSettings;
@@ -82,8 +82,8 @@ public:
     bool canPerformTask(const Akonadi::Item::List &items)
     {
         if (std::any_of(items.cbegin(), items.cend(), [this](const Akonadi::Item &item){
-                    return item.isValid() && (!item.hasPayload<T>() || item.mimeType() != mimeType());
-                })) {
+            return item.isValid() && (!item.hasPayload<T>() || item.mimeType() != mimeType());
+        })) {
             m_iface->cancelTask(i18n("Invalid item."));
             return false;
         }

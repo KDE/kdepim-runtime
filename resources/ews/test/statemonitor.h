@@ -70,7 +70,9 @@ template<typename T>
 CollectionStateMonitor<T>::CollectionStateMonitor(QObject *parent, const QHash<QString, T> &stateHash, const QString &inboxId, const StateComparisonFunc &comparisonFunc, int recheckInterval)
     : StateMonitorBase(parent)
     , mMonitor(this)
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5 \
+                                  , 14 \
+                                  , 0)
     , mPending(stateHash.keys().toSet())
 #else
     , mPending(stateHash.keyBegin(), stateHash.keyEnd())

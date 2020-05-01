@@ -547,7 +547,6 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
             const QVector<int> stdVector = QVector<int>(byMinutes.begin(), byMinutes.end());
             defaultRR->setByMinutes(stdVector.toList());
 #endif
-
         }
         if (!rrule.byhour().empty()) {
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
@@ -557,7 +556,6 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
             const QVector<int> stdVector = QVector<int>(byHours.begin(), byHours.end());
             defaultRR->setByHours(stdVector.toList());
 #endif
-
         }
         if (!rrule.byday().empty()) {
             QList<KCalendarCore::RecurrenceRule::WDayPos> daypos;
@@ -601,7 +599,6 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
             const QVector<int> stdVector = QVector<int>(byMonths.begin(), byMonths.end());
             defaultRR->setByMonths(stdVector.toList());
 #endif
-
         }
     }
     foreach (const Kolab::cDateTime &dt, event.recurrenceDates()) {

@@ -21,7 +21,6 @@
 #include "settings.h"
 #include "jobs.h"
 
-
 #include <CollectionFetchJob>
 #include <ItemCreateJob>
 #include <AttributeFactory>
@@ -52,7 +51,6 @@ POP3Resource::POP3Resource(const QString &id)
     , mState(Idle)
     , mIntervalTimer(new QTimer(this))
     , mSettings(KSharedConfig::openConfig())
-
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::Pop3ResourceAttribute>();
     setNeedsNetwork(true);

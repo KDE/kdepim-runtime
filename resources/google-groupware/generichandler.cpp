@@ -31,12 +31,12 @@ GenericHandler::GenericHandler(GoogleResourceStateInterface *iface, GoogleSettin
 
 GenericHandler::~GenericHandler() = default;
 
-void GenericHandler::itemsLinked(const Akonadi::Item::List &/*items*/, const Akonadi::Collection &/*collection*/)
+void GenericHandler::itemsLinked(const Akonadi::Item::List & /*items*/, const Akonadi::Collection & /*collection*/)
 {
     m_iface->cancelTask(i18n("Cannot handle item linking"));
 }
 
-void GenericHandler::itemsUnlinked(const Akonadi::Item::List &/*items*/, const Akonadi::Collection &/*collection*/)
+void GenericHandler::itemsUnlinked(const Akonadi::Item::List & /*items*/, const Akonadi::Collection & /*collection*/)
 {
     m_iface->cancelTask(i18n("Cannot handle item unlinking"));
 }

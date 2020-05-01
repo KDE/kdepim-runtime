@@ -35,7 +35,7 @@ VCardResource::VCardResource(const QString &id)
 
     new VCardSettingsAdaptor(mSettings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           mSettings, QDBusConnection::ExportAdaptors);
+                                                 mSettings, QDBusConnection::ExportAdaptors);
 }
 
 VCardResource::~VCardResource()

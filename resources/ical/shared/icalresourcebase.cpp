@@ -46,7 +46,7 @@ void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &i
     setSupportedMimetypes(mimeTypes, icon);
     new ICalSettingsAdaptor(mSettings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           mSettings, QDBusConnection::ExportAdaptors);
+                                                 mSettings, QDBusConnection::ExportAdaptors);
 }
 
 ICalResourceBase::~ICalResourceBase()

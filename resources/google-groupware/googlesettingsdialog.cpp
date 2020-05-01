@@ -66,7 +66,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
     m_ui->eventsLimitCombo->setMaximumDate(QDate::currentDate());
     m_ui->eventsLimitCombo->setMinimumDate(QDate::fromString(QStringLiteral("2000-01-01"), Qt::ISODate));
     m_ui->eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate
-                                   |KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
+                                       |KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
     if (m_settings->eventsSince().isEmpty()) {
         const QString ds = QStringLiteral("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
         m_ui->eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
@@ -83,11 +83,11 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
         m_account = m_settings->accountPtr();
     }
     connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready){
-                if (ready) {
-                    m_account = m_settings->accountPtr();
-                    accountChanged();
-                }
-            });
+        if (ready) {
+            m_account = m_settings->accountPtr();
+            accountChanged();
+        }
+    });
     QMetaObject::invokeMethod(this, &GoogleSettingsDialog::accountChanged, Qt::QueuedConnection);
 }
 
@@ -225,30 +225,30 @@ void GoogleSettingsDialog::slotReloadCalendars()
 
     auto fetchJob = new CalendarFetchJob(m_account, this);
     connect(fetchJob, &CalendarFetchJob::finished, this, [this](Job *job){
-                if (!handleError(job) || !m_account) {
-                    m_ui->calendarsBox->setEnabled(false);
-                    return;
-                }
+        if (!handleError(job) || !m_account) {
+            m_ui->calendarsBox->setEnabled(false);
+            return;
+        }
 
-                const ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
+        const ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
 
-                QStringList activeCalendars;
-                if (m_account->accountName() == m_settings->account()) {
-                    activeCalendars = m_settings->calendars();
-                }
-                m_ui->calendarsList->clear();
-                for (const ObjectPtr &object : objects) {
-                    const CalendarPtr calendar = object.dynamicCast<Calendar>();
+        QStringList activeCalendars;
+        if (m_account->accountName() == m_settings->account()) {
+            activeCalendars = m_settings->calendars();
+        }
+        m_ui->calendarsList->clear();
+        for (const ObjectPtr &object : objects) {
+            const CalendarPtr calendar = object.dynamicCast<Calendar>();
 
-                    QListWidgetItem *item = new QListWidgetItem(calendar->title());
-                    item->setData(Qt::UserRole, calendar->uid());
-                    item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
-                    item->setCheckState((activeCalendars.isEmpty() || activeCalendars.contains(calendar->uid())) ? Qt::Checked : Qt::Unchecked);
-                    m_ui->calendarsList->addItem(item);
-                }
+            QListWidgetItem *item = new QListWidgetItem(calendar->title());
+            item->setData(Qt::UserRole, calendar->uid());
+            item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+            item->setCheckState((activeCalendars.isEmpty() || activeCalendars.contains(calendar->uid())) ? Qt::Checked : Qt::Unchecked);
+            m_ui->calendarsList->addItem(item);
+        }
 
-                m_ui->calendarsBox->setEnabled(true);
-            });
+        m_ui->calendarsBox->setEnabled(true);
+    });
 }
 
 void GoogleSettingsDialog::slotReloadTaskLists()
@@ -262,29 +262,28 @@ void GoogleSettingsDialog::slotReloadTaskLists()
 
     auto job = new TaskListFetchJob(m_account, this);
     connect(job, &TaskListFetchJob::finished, this, [this](KGAPI2::Job *job){
-                if (!handleError(job) || !m_account) {
-                    m_ui->taskListsBox->setDisabled(true);
-                    return;
-                }
+        if (!handleError(job) || !m_account) {
+            m_ui->taskListsBox->setDisabled(true);
+            return;
+        }
 
-                const ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
+        const ObjectsList objects = qobject_cast<FetchJob *>(job)->items();
 
-                QStringList activeTaskLists;
-                if (m_account->accountName() == m_settings->account()) {
-                    activeTaskLists = m_settings->taskLists();
-                }
-                m_ui->taskListsList->clear();
-                for (const ObjectPtr &object : objects) {
-                    const TaskListPtr taskList = object.dynamicCast<TaskList>();
+        QStringList activeTaskLists;
+        if (m_account->accountName() == m_settings->account()) {
+            activeTaskLists = m_settings->taskLists();
+        }
+        m_ui->taskListsList->clear();
+        for (const ObjectPtr &object : objects) {
+            const TaskListPtr taskList = object.dynamicCast<TaskList>();
 
-                    QListWidgetItem *item = new QListWidgetItem(taskList->title());
-                    item->setData(Qt::UserRole, taskList->uid());
-                    item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
-                    item->setCheckState((activeTaskLists.isEmpty() || activeTaskLists.contains(taskList->uid())) ? Qt::Checked : Qt::Unchecked);
-                    m_ui->taskListsList->addItem(item);
-                }
+            QListWidgetItem *item = new QListWidgetItem(taskList->title());
+            item->setData(Qt::UserRole, taskList->uid());
+            item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+            item->setCheckState((activeTaskLists.isEmpty() || activeTaskLists.contains(taskList->uid())) ? Qt::Checked : Qt::Unchecked);
+            m_ui->taskListsList->addItem(item);
+        }
 
-                m_ui->taskListsBox->setEnabled(true);
-
-            });
+        m_ui->taskListsBox->setEnabled(true);
+    });
 }

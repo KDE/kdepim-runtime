@@ -22,8 +22,7 @@
 
 #include "resourcestateinterface.h"
 
-namespace KGAPI2
-{
+namespace KGAPI2 {
 class Job;
 }
 

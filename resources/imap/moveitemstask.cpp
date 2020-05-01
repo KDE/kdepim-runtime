@@ -50,7 +50,9 @@ MoveItemsTask::~MoveItemsTask()
 void MoveItemsTask::doStart(KIMAP::Session *session)
 {
     const auto itemsToMove = items();
-    if (std::any_of(itemsToMove.begin(), itemsToMove.end(), [](const Akonadi::Item &item) { return item.remoteId().isEmpty(); })) {
+    if (std::any_of(itemsToMove.begin(), itemsToMove.end(), [](const Akonadi::Item &item) {
+        return item.remoteId().isEmpty();
+    })) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed: messages has no rid";
         emitError(i18n("Cannot move message, it does not exist on the server."));
         changeProcessed();
@@ -236,7 +238,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         // Use at most 250 search terms, otherwise the request might get too long and rejected
         // by the server.
         static const int batchSize = 250;
-        for (int batchIdx = 0;  batchIdx < m_messageIds.size(); batchIdx += batchSize) {
+        for (int batchIdx = 0; batchIdx < m_messageIds.size(); batchIdx += batchSize) {
             const auto count = std::min(batchSize, m_messageIds.size() - batchIdx);
 
             KIMAP::SearchJob *search = new KIMAP::SearchJob(select->session());

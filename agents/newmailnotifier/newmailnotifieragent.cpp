@@ -68,7 +68,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     mDefaultIconName = QStringLiteral("kmail");
 
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/NewMailNotifierAgent"),
-                                                           this, QDBusConnection::ExportAdaptors);
+                                                 this, QDBusConnection::ExportAdaptors);
 
     QString service = QStringLiteral("org.freedesktop.Akonadi.NewMailNotifierAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {

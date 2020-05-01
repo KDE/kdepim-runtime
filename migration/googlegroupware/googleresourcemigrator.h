@@ -54,8 +54,10 @@ private:
         explicit ResourceValues() = default;
         template<typename U, typename V>
         ResourceValues(U &&calendar, V &&contacts)
-            : calendar(calendar), contacts(contacts)
-        {}
+            : calendar(calendar)
+            , contacts(contacts)
+        {
+        }
 
         T calendar{};
         T contacts{};

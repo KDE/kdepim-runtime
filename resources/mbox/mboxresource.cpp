@@ -67,7 +67,7 @@ MboxResource::MboxResource(const QString &id)
 {
     new SettingsAdaptor(mSettings);
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                           mSettings, QDBusConnection::ExportAdaptors);
+                                                 mSettings, QDBusConnection::ExportAdaptors);
 
     QStringList mimeTypes;
     mimeTypes << QStringLiteral("message/rfc822");
