@@ -188,6 +188,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
             mSettings->setTopLevelIsContainer(root.isValid());
         }
         qCDebug(MAILDIRRESOURCE_LOG) << "synchronize";
+        mSettings->save();
         configurationChanged();
     }
 }
@@ -242,7 +243,7 @@ QString MaildirResource::itemMimeType() const
 
 void MaildirResource::configurationChanged()
 {
-    mSettings->save();
+    mSettings->load();
     bool configValid = ensureSaneConfiguration();
     configValid = configValid && ensureDirExists();
     if (configValid) {
