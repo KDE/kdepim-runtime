@@ -248,7 +248,7 @@ void CalendarHandler::itemChanged(const Item &item, const QSet< QByteArray > & /
 
 void CalendarHandler::itemsRemoved(const Item::List &items)
 {
-    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 events", "Removing %1 event", items.count()));
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 event", "Removing %1 events", items.count()));
     QStringList eventIds;
     eventIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(eventIds),
@@ -263,8 +263,8 @@ void CalendarHandler::itemsRemoved(const Item::List &items)
 
 void CalendarHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
 {
-    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Moving %1 events from calendar '%2' to calendar '%3'",
-                                                   "Moving %1 event from calendar '%2' to calendar '%3'",
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Moving %1 event from calendar '%2' to calendar '%3'",
+                                                   "Moving %1 events from calendar '%2' to calendar '%3'",
                                                    items.count(), collectionSource.displayName(), collectionDestination.displayName()));
     QStringList eventIds;
     eventIds.reserve(items.count());

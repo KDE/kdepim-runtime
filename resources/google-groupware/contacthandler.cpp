@@ -262,8 +262,8 @@ void ContactHandler::retrieveContactsPhotos(const QVariant &argument)
     const auto map = argument.value<QVariantMap>();
     const auto collection = map[QStringLiteral("collection")].value<Collection>();
     const auto changedPhotos = map[QStringLiteral("modified")].toStringList();
-    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Retrieving %1 contacts photos for group '%2'",
-                                                   "Retrieving %1 contact photo for group '%2'",
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Retrieving %1 contact photo for group '%2'",
+                                                   "Retrieving %1 contact photos for group '%2'",
                                                    changedPhotos.count(), collection.displayName()));
 
     Item::List items;
@@ -356,7 +356,7 @@ void ContactHandler::itemChanged(const Item &item, const QSet< QByteArray > & /*
 
 void ContactHandler::itemsRemoved(const Item::List &items)
 {
-    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 contacts", "Removing %1 contact", items.count()));
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 contact", "Removing %1 contacts", items.count()));
     QStringList contactIds;
     contactIds.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contactIds),
@@ -377,8 +377,8 @@ void ContactHandler::itemsMoved(const Item::List &items, const Collection &colle
         m_iface->cancelTask(i18n("Invalid source or destination collection"));
     }
 
-    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Moving %1 contacts from group '%2' to '%3'",
-                                                   "Moving %1 contact from group '%2' to '%3'",
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Moving %1 contact from group '%2' to '%3'",
+                                                   "Moving %1 contacts from group '%2' to '%3'",
                                                    items.count(), collectionSource.remoteId(), collectionDestination.remoteId()));
     ContactsList contacts;
     contacts.reserve(items.count());
