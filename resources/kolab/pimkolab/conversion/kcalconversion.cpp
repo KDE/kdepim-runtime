@@ -646,9 +646,29 @@ void getRecurrence(T &i, const I &e)
         rrule.setEnd(fromDate(defaultRR->endDt(), e.allDay()));
     }
 
-    rrule.setBysecond(defaultRR->bySeconds().toVector().toStdVector());
-    rrule.setByminute(defaultRR->byMinutes().toVector().toStdVector());
-    rrule.setByhour(defaultRR->byHours().toVector().toStdVector());
+    const QVector<int> bySecondsVector = defaultRR->bySeconds().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setBysecond(bySecondsVector.toStdVector());
+#else
+    const auto stdVectorBySeconds = std::vector<int>(bySecondsVector.begin(), bySecondsVector.end());
+    rrule.setBysecond(stdVectorBySeconds);
+#endif
+
+    const QVector<int> byMinutesVector = defaultRR->byMinutes().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setByminute(byMinutesVector.toStdVector());
+#else
+    const auto stdVectorByMinutes = std::vector<int>(byMinutesVector.begin(), byMinutesVector.end());
+    rrule.setByminute(stdVectorByMinutes);
+#endif
+
+    const QVector<int> byHoursVector = defaultRR->byHours().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setByhour(byHoursVector.toStdVector());
+#else
+    const auto stdVectorByHours = std::vector<int>(byHoursVector.begin(), byHoursVector.end());
+    rrule.setByhour(stdVectorByHours);
+#endif
 
     std::vector<Kolab::DayPos> daypos;
     daypos.reserve(defaultRR->byDays().count());
@@ -657,10 +677,42 @@ void getRecurrence(T &i, const I &e)
     }
     rrule.setByday(daypos);
 
-    rrule.setBymonthday(defaultRR->byMonthDays().toVector().toStdVector());
-    rrule.setByyearday(defaultRR->byYearDays().toVector().toStdVector());
-    rrule.setByweekno(defaultRR->byWeekNumbers().toVector().toStdVector());
-    rrule.setBymonth(defaultRR->byMonths().toVector().toStdVector());
+    const QVector<int> bymonthdayVector = defaultRR->byMonthDays().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setBymonthday(bymonthdayVector.toStdVector());
+#else
+    const auto stdByMonthDayVector = std::vector<int>(bymonthdayVector.begin(), bymonthdayVector.end());
+    rrule.setBymonthday(stdByMonthDayVector);
+#endif
+
+
+    const QVector<int> byYearDaysVector = defaultRR->byYearDays().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setByyearday(byYearDaysVector.toStdVector());
+#else
+    const auto stdByYearDayVector = std::vector<int>(byYearDaysVector.begin(), byYearDaysVector.end());
+    rrule.setByyearday(stdByYearDayVector);
+#endif
+
+
+    const QVector<int> byWeekNumberVector = defaultRR->byWeekNumbers().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setByweekno(byWeekNumberVector.toStdVector());
+#else
+    const auto stdWeekNumberVector = std::vector<int>(byWeekNumberVector.begin(), byWeekNumberVector.end());
+    rrule.setByweekno(stdWeekNumberVector);
+#endif
+
+
+    const QVector<int> byMonthVector = defaultRR->byMonths().toVector();
+#if QT_VERSION < QT_VERSION_CHECK(5, 12, 0)
+    rrule.setBymonth(byMonthVector.toStdVector());
+#else
+    const auto stdByMonthVector = std::vector<int>(byMonthVector.begin(), byMonthVector.end());
+    rrule.setBymonth(stdByMonthVector);
+#endif
+
+
     i.setRecurrenceRule(rrule);
 
     std::vector<Kolab::cDateTime> rdates;
