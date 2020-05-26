@@ -101,11 +101,7 @@ public:
     ~QWebEngineProfile() override;
 
     void setHttpUserAgent(const QString &ua);
-#if QTWEBENGINEWIDGETS_VERSION < QT_VERSION_CHECK(5, 13, 0)
-    void setRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor);
-#else
     void setUrlRequestInterceptor(QWebEngineUrlRequestInterceptor *interceptor);
-#endif
     void installUrlSchemeHandler(QByteArray const &scheme, QWebEngineUrlSchemeHandler *handler);
 Q_SIGNALS:
     void logEvent(const QString &event);
