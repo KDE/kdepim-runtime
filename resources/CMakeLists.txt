@@ -53,6 +53,7 @@ add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
 add_subdirectory( google-groupware )
+add_subdirectory( etesync )
 
 add_subdirectory( shared )
 add_subdirectory( birthdays )
