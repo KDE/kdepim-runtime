@@ -96,7 +96,7 @@ QSize ContactsSettingsWidget::restoreDialogSize() const
     return size;
 }
 
-void ContactsSettingsWidget::saveDialogSize(QSize size)
+void ContactsSettingsWidget::saveDialogSize(const QSize &size)
 {
     auto group = config()->group(myConfigGroupName);
     group.writeEntry("Size", size);
