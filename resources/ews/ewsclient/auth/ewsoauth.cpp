@@ -242,11 +242,7 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     mOAuth2.setAuthorizationUrl(o365AuthorizationUrl);
     mOAuth2.setAccessTokenUrl(o365AccessTokenUrl);
     mOAuth2.setClientIdentifier(appId);
-#if QTWEBENGINEWIDGETS_VERSION < QT_VERSION_CHECK(5, 13, 0)
-    mWebProfile.setRequestInterceptor(&mRequestInterceptor);
-#else
     mWebProfile.setUrlRequestInterceptor(&mRequestInterceptor);
-#endif
     mWebProfile.installUrlSchemeHandler("urn", &mSchemeHandler);
 
     mWebView.setPage(&mWebPage);
