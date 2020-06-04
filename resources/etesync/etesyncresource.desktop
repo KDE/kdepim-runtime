@@ -3,7 +3,7 @@ Name=Etesync Groupware Resource
 Comment=An Akonadi resource plugin for etesync
 Type=AkonadiResource
 Exec=akonadi_etesync_resource
-Icon=text-directory
+Icon=akonadi-etesync
 
 X-Akonadi-MimeTypes=text/directory
 X-Akonadi-Capabilities=Resource

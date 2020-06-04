@@ -38,6 +38,19 @@ target_link_libraries(akonadi_etesync_resource
     KF5::Contacts
 )
 
+ecm_install_icons(
+    ICONS
+    icons/16-apps-akonadi-etesync.png
+    icons/24-apps-akonadi-etesync.png
+    icons/32-apps-akonadi-etesync.png
+    icons/48-apps-akonadi-etesync.png
+    icons/64-apps-akonadi-etesync.png
+    icons/72-apps-akonadi-etesync.png
+    icons/128-apps-akonadi-etesync.png
+    DESTINATION ${KDE_INSTALL_ICONDIR}
+    THEME hicolor
+    )
+
 install(TARGETS akonadi_etesync_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES etesyncresource.desktop
