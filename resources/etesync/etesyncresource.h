@@ -18,33 +18,43 @@
 #ifndef ETESYNCRESOURCE_H
 #define ETESYNCRESOURCE_H
 
+#include <kcontacts/addressee.h>
+#include <kcontacts/vcardconverter.h>
+
 #include <AkonadiAgentBase/ResourceBase>
 
 class etesyncResource : public Akonadi::ResourceBase,
-                        public Akonadi::AgentBase::Observer {
-  Q_OBJECT
+                        public Akonadi::AgentBase::Observer
+{
+    Q_OBJECT
 
 public:
-  explicit etesyncResource(const QString &id);
-  ~etesyncResource() override;
+    explicit etesyncResource(const QString &id);
+    ~etesyncResource() override;
 
 public Q_SLOTS:
-  void configure(WId windowId) override;
+    void configure(WId windowId) override;
 
 protected Q_SLOTS:
-  void retrieveCollections() override;
-  void retrieveItems(const Akonadi::Collection &col) override;
-  bool retrieveItem(const Akonadi::Item &item,
-                    const QSet<QByteArray> &parts) override;
+    void retrieveCollections() override;
+    void retrieveItems(const Akonadi::Collection &col) override;
+    bool retrieveItem(const Akonadi::Item &item,
+                      const QSet<QByteArray> &parts) override;
 
 protected:
-  void aboutToQuit() override;
+    void aboutToQuit() override;
 
-  void itemAdded(const Akonadi::Item &item,
-                 const Akonadi::Collection &collection) override;
-  void itemChanged(const Akonadi::Item &item,
-                   const QSet<QByteArray> &parts) override;
-  void itemRemoved(const Akonadi::Item &item) override;
+    void itemAdded(const Akonadi::Item &item,
+                   const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item,
+                     const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
+
+private:
+    EteSync *etesync;
+    QString derived;
+    EteSyncJournalManager *journalManager;
+    EteSyncAsymmetricKeyPair *keypair;
 };
 
 #endif

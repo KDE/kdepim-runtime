@@ -4,8 +4,9 @@ set(etesyncresource_SRCS
 
 ecm_qt_declare_logging_category(etesyncresource_SRCS
     HEADER debug.h
-    IDENTIFIER log_etesyncresource
-    CATEGORY_NAME log_etesyncresource
+    IDENTIFIER ETESYNC_LOG
+    CATEGORY_NAME org.kde.pim.google
+    DESCRIPTION "resource etesync (kdepim-runtime)"
 )
 
 kconfig_add_kcfg_files(etesyncresource_SRCS
@@ -34,6 +35,7 @@ target_link_libraries(akonadi_etesync_resource
     Qt5::DBus
     KF5::AkonadiAgentBase
     KF5::ConfigCore
+    KF5::Contacts
 )
 
 install(TARGETS akonadi_etesync_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
