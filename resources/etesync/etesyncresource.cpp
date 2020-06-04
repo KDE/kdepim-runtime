@@ -26,7 +26,7 @@
 
 using namespace Akonadi;
 
-etesyncResource::etesyncResource(const QString& id)
+etesyncResource::etesyncResource(const QString &id)
     : ResourceBase(id)
 {
     new SettingsAdaptor(Settings::self());
@@ -43,16 +43,16 @@ etesyncResource::~etesyncResource() {}
 
 void etesyncResource::retrieveCollections()
 {
-    EteSyncJournal** journals = etesync_journal_manager_list(journalManager);
+    EteSyncJournal **journals = etesync_journal_manager_list(journalManager);
 
     Collection::List list;
 
-    for (EteSyncJournal** iter = journals; *iter; iter++) {
-        EteSyncJournal* journal = *iter;
+    for (EteSyncJournal **iter = journals; *iter; iter++) {
+        EteSyncJournal *journal = *iter;
 
-        EteSyncCryptoManager* cryptoManager = etesync_journal_get_crypto_manager(journal, derived, keypair);
+        EteSyncCryptoManager *cryptoManager = etesync_journal_get_crypto_manager(journal, derived, keypair);
 
-        EteSyncCollectionInfo* info = etesync_journal_get_info(journal, cryptoManager);
+        EteSyncCollectionInfo *info = etesync_journal_get_info(journal, cryptoManager);
 
         if (QStringFromCharArr(etesync_collection_info_get_type(info)) != QStringLiteral("ADDRESS_BOOK"))
             continue;
@@ -77,12 +77,66 @@ void etesyncResource::retrieveCollections()
     collectionsRetrieved(list);
 }
 
-void etesyncResource::retrieveItems(const Akonadi::Collection& collection)
+void etesyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
+    const QString journalUid = collection.remoteId();
+
+    EteSyncJournal *journal = etesync_journal_manager_fetch(journalManager, journalUid);
+
+    EteSyncCryptoManager *cryptoManager = etesync_journal_get_crypto_manager(journal, derived, keypair);
+
+    EteSyncEntryManager *entryManager = etesync_entry_manager_new(etesync, journalUid);
+
+    EteSyncEntry **entries = etesync_entry_manager_list(entryManager, NULL, 0);
+
+    char *prevUid = NULL;
+
+    Item::List items;
+
+    QMap<QString, KContacts::Addressee> contacts;
+    QMap<QString, QString> remoteIDs;
+
+    for (EteSyncEntry **iter = entries; *iter; iter++) {
+        EteSyncEntry *entry = *iter;
+
+        EteSyncSyncEntry *syncEntry = etesync_entry_get_sync_entry(entry, cryptoManager, prevUid);
+
+        QString action = QStringFromCharArr(etesync_sync_entry_get_action(syncEntry));
+        KContacts::VCardConverter converter;
+        const char *contentStr = etesync_sync_entry_get_content(syncEntry);
+        QByteArray content(contentStr);
+        const KContacts::Addressee contact = converter.parseVCard(content);
+
+        if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
+            qCDebug(ETESYNC_LOG) << action;
+            qCDebug(ETESYNC_LOG) << contact.uid();
+            contacts[contact.uid()] = contact;
+            remoteIDs[contact.uid()] = QStringFromCharArr(etesync_entry_get_uid(entry));
+        } else if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE)) {
+            contacts.remove(contact.uid());
+        }
+
+        free(prevUid);
+        prevUid = etesync_entry_get_uid(entry);
+
+        etesync_sync_entry_destroy(syncEntry);
+
+        etesync_entry_destroy(entry);
+    }
+
+    for (auto it = contacts.constBegin(); it != contacts.constEnd(); it++) {
+        Item item(it.key());
+        item.setMimeType(KContacts::Addressee::mimeType());
+        item.setRemoteId(remoteIDs[it.key()]);
+        item.setPayload<KContacts::Addressee>(it.value());
+        items << item;
+    }
+
+    itemsRetrieved(items);
 }
 
-bool etesyncResource::retrieveItem(const Akonadi::Item& item,
-                                   const QSet<QByteArray>& parts)
+bool etesyncResource::retrieveItem(const Akonadi::Item &item,
+                                   const QSet<QByteArray> &parts)
 {
     // TODO: this method is called when Akonadi wants more data for a given
     // item. You can only provide the parts that have been requested but you are
@@ -127,9 +181,9 @@ void etesyncResource::configure(WId windowId)
     journalManager = etesync_journal_manager_new(etesync);
 
     // Get user keypair
-    EteSyncUserInfoManager* userInfoManager = etesync_user_info_manager_new(etesync);
-    EteSyncUserInfo* userInfo = etesync_user_info_manager_fetch(userInfoManager, username);
-    EteSyncCryptoManager* userInfoCryptoManager = etesync_user_info_get_crypto_manager(userInfo, derived);
+    EteSyncUserInfoManager *userInfoManager = etesync_user_info_manager_new(etesync);
+    EteSyncUserInfo *userInfo = etesync_user_info_manager_fetch(userInfoManager, username);
+    EteSyncCryptoManager *userInfoCryptoManager = etesync_user_info_get_crypto_manager(userInfo, derived);
 
     keypair = etesync_user_info_get_keypair(userInfo, userInfoCryptoManager);
     etesync_crypto_manager_destroy(userInfoCryptoManager);
@@ -138,8 +192,8 @@ void etesyncResource::configure(WId windowId)
     synchronize();
 }
 
-void etesyncResource::itemAdded(const Akonadi::Item& item,
-                                const Akonadi::Collection& collection)
+void etesyncResource::itemAdded(const Akonadi::Item &item,
+                                const Akonadi::Collection &collection)
 {
     // TODO: this method is called when somebody else, e.g. a client
     // application, has created an item in a collection managed by your
@@ -149,8 +203,8 @@ void etesyncResource::itemAdded(const Akonadi::Item& item,
     // of this template code to keep it simple
 }
 
-void etesyncResource::itemChanged(const Akonadi::Item& item,
-                                  const QSet<QByteArray>& parts)
+void etesyncResource::itemChanged(const Akonadi::Item &item,
+                                  const QSet<QByteArray> &parts)
 {
     // TODO: this method is called when somebody else, e.g. a client
     // application, has changed an item managed by your resource.
@@ -159,7 +213,7 @@ void etesyncResource::itemChanged(const Akonadi::Item& item,
     // of this template code to keep it simple
 }
 
-void etesyncResource::itemRemoved(const Akonadi::Item& item)
+void etesyncResource::itemRemoved(const Akonadi::Item &item)
 {
     // TODO: this method is called when somebody else, e.g. a client
     // application, has deleted an item managed by your resource.
