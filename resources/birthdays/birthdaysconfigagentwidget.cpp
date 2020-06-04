@@ -73,7 +73,7 @@ QSize BirthdaysConfigAgentWidget::restoreDialogSize() const
     return size;
 }
 
-void BirthdaysConfigAgentWidget::saveDialogSize(const QSize &size)
+void BirthdaysConfigAgentWidget::saveDialogSize(QSize size)
 {
     auto group = config()->group(myConfigGroupName);
     group.writeEntry("Size", size);

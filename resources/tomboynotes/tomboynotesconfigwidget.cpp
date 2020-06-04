@@ -73,7 +73,7 @@ QSize TomboyNotesConfigWidget::restoreDialogSize() const
     return size;
 }
 
-void TomboyNotesConfigWidget::saveDialogSize(const QSize &size)
+void TomboyNotesConfigWidget::saveDialogSize(QSize size)
 {
     auto group = config()->group("TomboyNotesConfigWidget");
     group.writeEntry("Size", size);

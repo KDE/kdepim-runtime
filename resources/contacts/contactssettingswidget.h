@@ -36,7 +36,7 @@ public:
     void load() override;
     bool save() const override;
     QSize restoreDialogSize() const override;
-    void saveDialogSize(const QSize &size) override;
+    void saveDialogSize(QSize size) override;
 private:
     void validate();
     Ui::ContactAgentSettingsWidget ui;
