@@ -18,6 +18,7 @@
 #ifndef ETESYNCRESOURCE_H
 #define ETESYNCRESOURCE_H
 
+#include <etesync/etesync.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>
 
