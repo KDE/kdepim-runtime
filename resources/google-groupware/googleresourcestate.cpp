@@ -175,5 +175,5 @@ bool GoogleResourceState::handleError(KGAPI2::Job *job, bool _cancelTask)
 
 void GoogleResourceState::scheduleCustomTask(QObject *receiver, const char *method, const QVariant &argument)
 {
-    return m_resource->scheduleCustomTask(receiver, method, argument);
+    m_resource->scheduleCustomTask(receiver, method, argument);
 }

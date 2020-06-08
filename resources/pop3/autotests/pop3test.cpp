@@ -879,7 +879,9 @@ void Pop3Test::testMixedLeaveRules()
     // Generate 10 mails
     //
     QList<QByteArray> mails;
+    mails.reserve(10);
     QStringList uids;
+    uids.reserve(10);
     QString allowedRetrs;
     for (int i = 0; i < 10; i++) {
         QByteArray newMail = simpleMail1;

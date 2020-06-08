@@ -241,7 +241,7 @@ void GoogleResourceMigrator::migrateNextAccount()
     mMigrations.erase(mMigrations.begin());
 
     if (instances.alreadyExists) {
-        message(Info, i18n("Google Groupware Resource for account %1 already exists, skipping.", account));
+        Q_EMIT message(Info, i18n("Google Groupware Resource for account %1 already exists, skipping.", account));
         // Just to be sure, check that there are no left-over legacy instances
         removeLegacyInstances(account, instances);
 
@@ -251,15 +251,15 @@ void GoogleResourceMigrator::migrateNextAccount()
     }
 
     qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: starting migration of account" << account;
-    message(Info, i18n("Starting migration of account %1", account));
+    Q_EMIT message(Info, i18n("Starting migration of account %1", account));
     qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: creating new" << akonadiGoogleGroupwareResource;
-    message(Info, i18n("Creating new instance of Google Gropware Resource"));
+    Q_EMIT message(Info, i18n("Creating new instance of Google Gropware Resource"));
     auto job = new Akonadi::AgentInstanceCreateJob(akonadiGoogleGroupwareResource.toString(), this);
     connect(job, &Akonadi::AgentInstanceCreateJob::finished,
             this, [this, job, account, instances](KJob *) {
         if (job->error()) {
             qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: Failed to create new Google Groupware Resource:" << job->errorString();
-            message(Error, i18n("Failed to create a new Google Groupware Resource: %1", job->errorString()));
+            Q_EMIT message(Error, i18n("Failed to create a new Google Groupware Resource: %1", job->errorString()));
             setMigrationState(MigratorBase::Failed);
             return;
         }
@@ -267,7 +267,7 @@ void GoogleResourceMigrator::migrateNextAccount()
         const auto newInstance = job->instance();
         if (!migrateAccount(account, instances, newInstance)) {
             qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: failed to migrate account" << account;
-            message(Error, i18n("Failed to migrate account %1", account));
+            Q_EMIT message(Error, i18n("Failed to migrate account %1", account));
             setMigrationState(MigratorBase::Failed);
             return;
         }
@@ -290,7 +290,7 @@ void GoogleResourceMigrator::migrateNextAccount()
                                   << instances.contactResource.identifier() << "to"
                                   << newInstance.identifier();
         }
-        message(Success, i18n("Migrated account %1 to new Google Groupware Resource", account));
+        Q_EMIT message(Success, i18n("Migrated account %1 to new Google Groupware Resource", account));
 
         ++mMigrationsDone;
         migrateNextAccount();

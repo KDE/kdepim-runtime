@@ -84,7 +84,7 @@ EwsMtaConfigDialog::~EwsMtaConfigDialog()
 void EwsMtaConfigDialog::save()
 {
     if (!mUi->resourceWidget->selectedAgentInstances().isEmpty()) {
-        EwsMtaSettings::setEwsResource(mUi->resourceWidget->selectedAgentInstances().first().identifier());
+        EwsMtaSettings::setEwsResource(mUi->resourceWidget->selectedAgentInstances().constFirst().identifier());
         mParentResource->setName(mUi->accountName->text());
         EwsMtaSettings::self()->save();
     } else {
