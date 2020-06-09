@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Etesync Groupware Resource
-Comment=An Akonadi resource plugin for etesync
+Name=EteSync Groupware Resource
+Comment=Access your encrypted EteSync Calendars, Contacts and Tasks from KDE
 Type=AkonadiResource
 Exec=akonadi_etesync_resource
 Icon=akonadi-etesync

@@ -33,9 +33,6 @@ public:
     explicit etesyncResource(const QString &id);
     ~etesyncResource() override;
 
-public Q_SLOTS:
-    void configure(WId windowId) override;
-
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &col) override;
@@ -51,11 +48,17 @@ protected:
                      const QSet<QByteArray> &parts) override;
     void itemRemoved(const Akonadi::Item &item) override;
 
+    void initialise();
+
+private Q_SLOTS:
+    void onReloadConfiguration();
+
 private:
     EteSync *etesync;
     QString derived;
     EteSyncJournalManager *journalManager;
     EteSyncAsymmetricKeyPair *keypair;
+    QString username, password, serverUrl, encryptionPassword;
 };
 
 #endif

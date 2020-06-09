@@ -19,7 +19,7 @@
 
 #include <QDBusConnection>
 
-#include "debug.h"
+#include "etesync_debug.h"
 #include "etesyncadapter.h"
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -29,12 +29,25 @@ using namespace Akonadi;
 etesyncResource::etesyncResource(const QString &id)
     : ResourceBase(id)
 {
+    Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
+
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  Settings::self(),
                                                  QDBusConnection::ExportAdaptors);
 
-    QLoggingCategory::setFilterRules(QStringLiteral("ETESYNC_LOG.debug = true"));
+    serverUrl = Settings::self()->baseUrl();
+    username = Settings::self()->username();
+    password = Settings::self()->password();
+    encryptionPassword = Settings::self()->encryptionPassword();
+
+    /// TODO: Fix hack
+    QString emptyStr = QStringLiteral("");
+    if (serverUrl != emptyStr && username != emptyStr && password != emptyStr && encryptionPassword != emptyStr) initialise();
+
+    setNeedsNetwork(true);
+
+    connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &etesyncResource::onReloadConfiguration);
 
     qCDebug(ETESYNC_LOG) << "Resource started";
 }
@@ -151,29 +164,21 @@ void etesyncResource::aboutToQuit()
     // event loop. The resource will terminate after this method returns
 }
 
-void etesyncResource::configure(WId windowId)
+void etesyncResource::onReloadConfiguration()
 {
-    // TODO: this method is usually called when a new resource is being
-    // added to the Akonadi setup. You can do any kind of user interaction here,
-    // e.g. showing dialogs.
-    // The given window ID is usually useful to get the correct
-    // "on top of parent" behavior if the running window manager applies any
-    // kind of focus stealing prevention technique
-    //
-    // If the configuration dialog has been accepted by the user by clicking Ok,
-    // the signal configurationDialogAccepted() has to be emitted, otherwise, if
-    // the user canceled the dialog, configurationDialogRejected() has to be
-    // emitted.
+    serverUrl = Settings::self()->baseUrl();
+    username = Settings::self()->username();
+    password = Settings::self()->password();
+    encryptionPassword = Settings::self()->encryptionPassword();
 
-    /// TODO: Implement config dialog and move settings to kcfg
+    qCDebug(ETESYNC_LOG) << "Resource config reload";
 
-    QString username = QStringLiteral("test@localhost");
-    QString password = QStringLiteral("testetesync");
-    QString encryptionPassword = QStringLiteral("etesync");
-    QString serverUrl = QStringLiteral("http://192.168.29.145:9966");
+    initialise();
+}
 
+void etesyncResource::initialise()
+{
     // Initialise EteSync client state
-
     etesync = etesync_new(QStringLiteral("Akonadi EteSync Resource"), serverUrl);
     derived = etesync_crypto_derive_key(etesync, username, encryptionPassword);
     QString token = etesync_auth_get_token(etesync, username, password);
