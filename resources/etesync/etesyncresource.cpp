@@ -17,6 +17,7 @@
 
 #include "etesyncresource.h"
 
+#include <KLocalizedString>
 #include <QDBusConnection>
 
 #include "etesync_debug.h"
@@ -36,14 +37,7 @@ etesyncResource::etesyncResource(const QString &id)
                                                  Settings::self(),
                                                  QDBusConnection::ExportAdaptors);
 
-    serverUrl = Settings::self()->baseUrl();
-    username = Settings::self()->username();
-    password = Settings::self()->password();
-    encryptionPassword = Settings::self()->encryptionPassword();
-
-    /// TODO: Fix hack
-    QString emptyStr = QStringLiteral("");
-    if (serverUrl != emptyStr && username != emptyStr && password != emptyStr && encryptionPassword != emptyStr) initialise();
+    setName(i18n("EteSync Resource"));
 
     setNeedsNetwork(true);
 
@@ -121,8 +115,8 @@ void etesyncResource::retrieveItems(const Akonadi::Collection &collection)
         const KContacts::Addressee contact = converter.parseVCard(content);
 
         if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
-            qCDebug(ETESYNC_LOG) << action;
-            qCDebug(ETESYNC_LOG) << contact.uid();
+            // qCDebug(ETESYNC_LOG) << action;
+            // qCDebug(ETESYNC_LOG) << contact.uid();
             contacts[contact.uid()] = contact;
             remoteIDs[contact.uid()] = QStringFromCharArr(etesync_entry_get_uid(entry));
         } else if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE)) {
@@ -166,6 +160,7 @@ void etesyncResource::aboutToQuit()
 
 void etesyncResource::onReloadConfiguration()
 {
+    Settings::self()->load();
     serverUrl = Settings::self()->baseUrl();
     username = Settings::self()->username();
     password = Settings::self()->password();

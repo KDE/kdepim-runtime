@@ -15,40 +15,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include "etesyncconfig.h"
 
-#include "configwidget.h"
-#include "etesyncconfig_debug.h"
+#include <KConfigDialogManager>
+#include <KSharedConfig>
+
 #include "settings.h"
 
-class EteSyncConfig : public Akonadi::AgentConfigurationBase
+namespace {
+    static const char myConfigGroupName[] = "EteSyncConfigDialog";
+}
+
+EteSyncConfig::EteSyncConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
+    : Akonadi::AgentConfigurationBase(config, parent, args)
 {
-    Q_OBJECT
-public:
-    EteSyncConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
-        : Akonadi::AgentConfigurationBase(config, parent, args)
-    {
-        Settings::instance(config);
-        mSettings.reset(Settings::self());
-        mWidget.reset(new ConfigWidget(mSettings.data(), parent));
-    }
+    Settings::instance(config);
 
-    void load() override
-    {
-        Akonadi::AgentConfigurationBase::load();
-        mWidget->load();
-    }
+    QWidget *mainWidget = new QWidget(parent);
+    ui.setupUi(mainWidget);
+    parent->layout()->addWidget(mainWidget);
 
-    bool save() const override
-    {
-        mWidget->save();
-        return Akonadi::AgentConfigurationBase::save();
-    }
+    mManager = new KConfigDialogManager(mainWidget, Settings::self());
+    mManager->updateWidgets();
+}
 
-    QScopedPointer<Settings> mSettings;
-    QScopedPointer<ConfigWidget> mWidget;
-};
+bool EteSyncConfig::save() const
+{
+    mManager->updateSettings();
+    return Akonadi::AgentConfigurationBase::save();
+}
 
-AKONADI_AGENTCONFIG_FACTORY(EteSyncConfigFactory, "etesyncconfig.json", EteSyncConfig)
+QSize EteSyncConfig::restoreDialogSize() const
+{
+    auto group = config()->group(myConfigGroupName);
+    const QSize size = group.readEntry("Size", QSize(380, 180));
+    return size;
+}
 
-#include "etesyncconfig.moc"
+void EteSyncConfig::saveDialogSize(const QSize &size)
+{
+    auto group = config()->group(myConfigGroupName);
+    group.writeEntry("Size", size);
+}

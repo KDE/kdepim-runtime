@@ -64,7 +64,6 @@ install(FILES etesyncresource.desktop
 ################################### Config plugin ############################
 
 set(etesyncconfig_SRCS
-  configwidget.cpp
   etesyncconfig.cpp
   ${etesyncresource_common_SRCS}
 )
@@ -77,7 +76,7 @@ ecm_qt_declare_logging_category(etesyncconfig_SRCS
     EXPORT KDEPIMRUNTIME
 )
 
-ki18n_wrap_ui(etesyncconfig_SRCS configwidget.ui)
+ki18n_wrap_ui(etesyncconfig_SRCS etesyncconfigwidget.ui)
 
 kcoreaddons_add_plugin(etesyncconfig
     SOURCES ${etesyncconfig_SRCS}

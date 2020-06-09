@@ -15,31 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIGWIDGET_H
-#define CONFIGWIDGET_H
+#ifndef ETESYNCCONFIG_H
+#define ETESYNCCONFIG_H
 
-#include <QWidget>
+#include <AkonadiCore/AgentConfigurationBase>
+
+#include "ui_etesyncconfigwidget.h"
 
 class KConfigDialogManager;
-class QLineEdit;
-class QPushButton;
-class Settings;
-class ConfigWidget : public QWidget
+
+class EteSyncConfig : public Akonadi::AgentConfigurationBase
 {
     Q_OBJECT
-
 public:
-    explicit ConfigWidget(Settings *settings, QWidget *parent);
+    explicit EteSyncConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args);
 
-    void load();
-    void save() const;
+    bool save() const override;
+    QSize restoreDialogSize() const override;
+    void saveDialogSize(const QSize &size) override;
 
 private:
+    Ui::EteSyncConfigWidget ui;
     KConfigDialogManager *mManager = nullptr;
-    QLineEdit *mServerEdit = nullptr;
-    QLineEdit *mUserEdit = nullptr;
-    QLineEdit *mPasswordEdit = nullptr;
-    QLineEdit *mEncryptionPasswordEdit = nullptr;
 };
+AKONADI_AGENTCONFIG_FACTORY(EteSyncConfigFactory, "etesyncconfig.json", EteSyncConfig)
 
 #endif
