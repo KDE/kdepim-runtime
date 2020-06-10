@@ -30,9 +30,6 @@ qt5_add_dbus_adaptor(etesyncresource_SRCS
 add_executable(akonadi_etesync_resource ${etesyncresource_SRCS})
 set_target_properties(akonadi_etesync_resource PROPERTIES MACOSX_BUNDLE FALSE)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(ETESYNC REQUIRED etesync)
-
 target_link_libraries(akonadi_etesync_resource
     ${ETESYNC_LIBRARIES}
     Qt5::DBus

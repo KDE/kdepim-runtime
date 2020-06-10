@@ -108,7 +108,7 @@ void etesyncResource::retrieveItems(const Akonadi::Collection &collection)
 
         EteSyncSyncEntry *syncEntry = etesync_entry_get_sync_entry(entry, cryptoManager, prevUid);
 
-        QString action = QStringFromCharArr(etesync_sync_entry_get_action(syncEntry));
+        const QString action = QStringFromCharArr(etesync_sync_entry_get_action(syncEntry));
         KContacts::VCardConverter converter;
         const char *contentStr = etesync_sync_entry_get_content(syncEntry);
         QByteArray content(contentStr);
