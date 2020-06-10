@@ -262,7 +262,7 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
 
 bool EwsOAuthPrivate::authenticate(bool interactive)
 {
-    Q_Q(EwsOAuth);
+    //Q_Q(EwsOAuth);
 
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Starting OAuth2 authentication");
 
