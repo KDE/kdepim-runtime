@@ -1,3 +1,4 @@
-The KDE project kdepim-runtime contains the Akonadi resources from kdepim which can be used without the applications in kdepim.
+The kdepim-runtime project contains Akonadi resources which can be used without the Kontact applications.
 
-Here is the online code-repostitory of kdepim-runtime: https://cgit.kde.org/kdepim-runtime.git/log/
+Here is the online code-repository of kdepim-runtime: https://invent.kde.org/pim/kdepim-runtime/-/commits/master/
+
