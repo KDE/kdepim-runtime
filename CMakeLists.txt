@@ -63,6 +63,9 @@ include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 include(GenerateExportHeader)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 
 set(QT_REQUIRED_VERSION "5.13.0")
 
@@ -87,6 +90,7 @@ set(AKONADINOTE_LIB_VERSION "5.14.40")
 set(PIMCOMMON_LIB_VERSION "5.14.40")
 set(KGAPI_LIB_VERSION "5.14.40")
 set(LIBKDEPIM_LIB_VERSION_LIB "5.14.42")
+set(KLDAP_LIB_VERSION "5.14.40")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -112,6 +116,7 @@ find_package(KF5TextWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED) # for KPluralHan
 find_package(KF5Notifications ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF5DocTools ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3
 find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5KCMUtils ${KF5_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
@@ -132,6 +137,7 @@ find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5LibkdepimAkonadi ${LIBKDEPIM_LIB_VERSION_LIB} CONFIG REQUIRED)
+find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
@@ -150,6 +156,7 @@ add_subdirectory(agents)
 add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(migration)
+add_subdirectory(kcms)
 add_subdirectory(doc)
 
 ## install the MIME type spec file for KDEPIM specific MIME types
