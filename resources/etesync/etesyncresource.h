@@ -33,6 +33,10 @@ public:
     explicit etesyncResource(const QString &id);
     ~etesyncResource() override;
 
+Q_SIGNALS:
+
+    void initialiseDone(bool successful);
+
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &col) override;
@@ -49,6 +53,8 @@ protected:
     void itemRemoved(const Akonadi::Item &item) override;
 
     void initialise();
+
+    int setupCollection(Akonadi::Collection &collection, EteSyncJournal *journal);
 
 private Q_SLOTS:
     void onReloadConfiguration();

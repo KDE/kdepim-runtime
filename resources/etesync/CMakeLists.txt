@@ -5,6 +5,9 @@ kconfig_add_kcfg_files(etesyncresource_common_SRCS
 
 set(etesyncresource_SRCS
     etesyncresource.cpp
+    journalsfetchjob.cpp
+    entriesfetchjob.cpp
+    etesyncadapter.cpp
     ${etesyncresource_common_SRCS}
 )
 
@@ -36,6 +39,7 @@ target_link_libraries(akonadi_etesync_resource
     KF5::AkonadiAgentBase
     KF5::ConfigCore
     KF5::Contacts
+    KF5::KIOCore
     KF5::I18n
 )
 
