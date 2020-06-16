@@ -21,10 +21,76 @@
 #include <etesync/etesync.h>
 
 #include <QString>
+#include <memory>
 
-QString QStringFromCharArr(const char *str);
+#define charArrFromQString(str) str.isNull() ? NULL : qUtf8Printable(str)
 
-const char *charArrFromQString(const QString &str);
+struct EteSyncDeleter
+{
+    void operator()(EteSync *ptr)
+    {
+        etesync_destroy(ptr);
+    }
+    void operator()(EteSyncJournalManager *ptr)
+    {
+        etesync_journal_manager_destroy(ptr);
+    }
+    void operator()(EteSyncAsymmetricKeyPair *ptr)
+    {
+        etesync_keypair_destroy(ptr);
+    }
+    void operator()(EteSyncJournal *ptr)
+    {
+        etesync_journal_destroy(ptr);
+    }
+    void operator()(EteSyncEntry *ptr)
+    {
+        etesync_entry_destroy(ptr);
+    }
+    void operator()(EteSyncSyncEntry *ptr)
+    {
+        etesync_sync_entry_destroy(ptr);
+    }
+    void operator()(EteSyncCryptoManager *ptr)
+    {
+        etesync_crypto_manager_destroy(ptr);
+    }
+    void operator()(EteSyncUserInfoManager *ptr)
+    {
+        etesync_user_info_manager_destroy(ptr);
+    }
+    void operator()(EteSyncUserInfo *ptr)
+    {
+        etesync_user_info_destroy(ptr);
+    }
+    void operator()(EteSyncCollectionInfo *ptr)
+    {
+        etesync_collection_info_destroy(ptr);
+    }
+    void operator()(EteSyncEntryManager *ptr)
+    {
+        etesync_entry_manager_destroy(ptr);
+    }
+    void operator()(char *ptr)
+    {
+        std::free(ptr);
+    }
+};
+
+using EteSyncPtr = std::unique_ptr<EteSync, EteSyncDeleter>;
+using EteSyncJournalManagerPtr = std::unique_ptr<EteSyncJournalManager, EteSyncDeleter>;
+using EteSyncAsymmetricKeyPairPtr = std::unique_ptr<EteSyncAsymmetricKeyPair, EteSyncDeleter>;
+using EteSyncJournalPtr = std::unique_ptr<EteSyncJournal, EteSyncDeleter>;
+using EteSyncEntryPtr = std::unique_ptr<EteSyncEntry, EteSyncDeleter>;
+using EteSyncSyncEntryPtr = std::unique_ptr<EteSyncSyncEntry, EteSyncDeleter>;
+using EteSyncCryptoManagerPtr = std::unique_ptr<EteSyncCryptoManager, EteSyncDeleter>;
+using EteSyncUserInfoManagerPtr = std::unique_ptr<EteSyncUserInfoManager, EteSyncDeleter>;
+using EteSyncUserInfoPtr = std::unique_ptr<EteSyncUserInfo, EteSyncDeleter>;
+using EteSyncCollectionInfoPtr = std::unique_ptr<EteSyncCollectionInfo, EteSyncDeleter>;
+using EteSyncEntryManagerPtr = std::unique_ptr<EteSyncEntryManager, EteSyncDeleter>;
+using CharPtr = std::unique_ptr<char, EteSyncDeleter>;
+
+QString QStringFromCharPtr(const CharPtr &str);
 
 QString etesync_auth_get_token(const EteSync *etesync, const QString &username,
                                const QString &password);

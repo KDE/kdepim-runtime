@@ -18,20 +18,21 @@
 #ifndef ETESYNCRESOURCE_H
 #define ETESYNCRESOURCE_H
 
-#include <etesync/etesync.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>
 
 #include <AkonadiAgentBase/ResourceBase>
 
-class etesyncResource : public Akonadi::ResourceBase,
+#include "etesyncadapter.h"
+
+class EteSyncResource : public Akonadi::ResourceBase,
                         public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
 
 public:
-    explicit etesyncResource(const QString &id);
-    ~etesyncResource() override;
+    explicit EteSyncResource(const QString &id);
+    ~EteSyncResource() override;
 
 Q_SIGNALS:
 
@@ -60,10 +61,10 @@ private Q_SLOTS:
     void onReloadConfiguration();
 
 private:
-    EteSync *etesync;
+    EteSyncPtr mClient = nullptr;
     QString derived;
-    EteSyncJournalManager *journalManager;
-    EteSyncAsymmetricKeyPair *keypair;
+    EteSyncJournalManagerPtr journalManager = nullptr;
+    EteSyncAsymmetricKeyPairPtr keypair = nullptr;
     QString username, password, serverUrl, encryptionPassword;
 };
 

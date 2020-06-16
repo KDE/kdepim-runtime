@@ -39,7 +39,8 @@ void JournalsFetchJob::fetchJournals()
     mJournals = etesync_journal_manager_list(journalManager);
     if (!mJournals) {
         setError(UserDefinedError);
-        setErrorText(QStringLiteral("JournalsFetchJob failed to fetch journals"));
+        CharPtr err(etesync_get_error_message());
+        setErrorText(QStringFromCharPtr(err));
     }
     emitResult();
 }

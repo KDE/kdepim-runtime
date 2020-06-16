@@ -37,12 +37,13 @@ void EntriesFetchJob::start()
 
 void EntriesFetchJob::fetchEntries()
 {
-    EteSyncEntryManager *entryManager = etesync_entry_manager_new(mClient, mJournalUid);
-    mEntries = etesync_entry_manager_list(entryManager, mPrevUid, 0);
+    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient, mJournalUid));
+    mEntries = etesync_entry_manager_list(entryManager.get(), mPrevUid, 0);
 
     if (!mEntries) {
         setError(UserDefinedError);
-        setErrorText(QStringLiteral("EntriesFetchJob failed to fetch entries"));
+        CharPtr err(etesync_get_error_message());
+        setErrorText(QStringFromCharPtr(err));
     }
 
     emitResult();
