@@ -35,7 +35,6 @@ Name[sr@latin]=Agent selidbe
 Name[sv]=Överföringsmodul
 Name[tr]=Taşıma Yardımcısı
 Name[uk]=Агент перенесення
-Name[x-test]=xxMigration Agentxx
 Name[zh_CN]=迁移助手
 Name[zh_TW]=移植代理程式
 Type=AkonadiAgent

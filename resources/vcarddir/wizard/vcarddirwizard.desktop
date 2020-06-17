@@ -38,7 +38,6 @@ Name[sr@latin]=VCard fascikla
 Name[sv]=vCard-katalog
 Name[tr]=VCard Dizini
 Name[uk]=Каталог vCard
-Name[x-test]=xxvCard Directoryxx
 Name[zh_CN]=vCard 目录
 Name[zh_TW]=vCard 目錄
 Icon=text-directory
@@ -73,7 +72,6 @@ Comment[sr@latin]=Učitava kontakt iz vCard fascikle
 Comment[sv]=Laddar kontakter från en vCard-katalog
 Comment[tr]=vCard Dizininden kişiyi yükler
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
-Comment[x-test]=xxLoads contact from vCard Directoryxx
 Comment[zh_CN]=从 vCard 目录载入联系人
 Comment[zh_TW]=從 vCard 目錄載入聯絡人
 

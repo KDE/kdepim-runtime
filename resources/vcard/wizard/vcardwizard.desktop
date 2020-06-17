@@ -39,7 +39,6 @@ Name[sv]=vCard-fil
 Name[tr]=VCard Dosyası
 Name[ug]=vCard ھۆججىتى
 Name[uk]=Файл vCard
-Name[x-test]=xxvCard Filexx
 Name[zh_CN]=vCard 文件
 Name[zh_TW]=vCard 檔案
 Icon=text-directory
@@ -78,7 +77,6 @@ Comment[sr@latin]=Učitava kontakt iz vCard fajla
 Comment[sv]=Laddar kontakt från en vCard-fil
 Comment[tr]=VCard dosyasından bağlantı yükler
 Comment[uk]=Завантажує дані запису контакту із файла vCard
-Comment[x-test]=xxLoads contact from vCard Filexx
 Comment[zh_CN]=从 vCard 文件载入联系人
 Comment[zh_TW]=從 vCard 檔載入聯絡人
 
