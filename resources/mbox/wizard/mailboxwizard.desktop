@@ -45,7 +45,6 @@ Name[sv]=Mailbox
 Name[tr]=MailBox
 Name[ug]=خەت ساندۇقى
 Name[uk]=MailBox
-Name[x-test]=xxMailBoxxx
 Name[zh_CN]=MailBox
 Name[zh_TW]=信箱格式（Mailbox）
 Icon=message-rfc822
@@ -94,7 +93,6 @@ Comment[sr@latin]=Mbox nalog
 Comment[sv]=Mailbox-konto
 Comment[tr]=Mailbox hesabı
 Comment[uk]=Обліковий запис Mailbox
-Comment[x-test]=xxMailbox accountxx
 Comment[zh_CN]=MailBox 账户
 Comment[zh_TW]=Mailbox 帳號
 

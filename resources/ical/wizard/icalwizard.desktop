@@ -29,7 +29,6 @@ Name[sr@latin]=I‑kalendarski fajl
 Name[sv]=iCal-kalenderfil
 Name[tr]=iCal Takvim Dosyası
 Name[uk]=Файл календаря iCal
-Name[x-test]=xxiCal Calendar Filexx
 Name[zh_CN]=iCal 日历文件
 Name[zh_TW]=iCal 行事曆檔案
 Icon=text-calendar
@@ -78,7 +77,6 @@ Comment[sr@latin]=Učitava podatke iz i‑kalendarskog fajla
 Comment[sv]=Laddar data från en iCal-fil
 Comment[tr]=iCal dosyasından veri yükler
 Comment[uk]=Завантажує дані з файла iCal
-Comment[x-test]=xxLoads data from an iCal filexx
 Comment[zh_CN]=从 iCal 文件载入数据
 Comment[zh_TW]=從 iCal 檔載入資料
 

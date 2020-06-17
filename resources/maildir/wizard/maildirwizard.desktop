@@ -46,7 +46,6 @@ Name[sr@latin]=Maildir
 Name[sv]=Maildir
 Name[tr]=Maildir
 Name[uk]=Maildir
-Name[x-test]=xxMaildirxx
 Name[zh_CN]=邮件目录
 Name[zh_TW]=Maildir
 Icon=message-rfc822
@@ -95,7 +94,6 @@ Comment[sr@latin]=Maildir nalog
 Comment[sv]=Maildir-konto
 Comment[tr]=Maildir hesabı
 Comment[uk]=Обліковий запис Maildir
-Comment[x-test]=xxMaildir accountxx
 Comment[zh_CN]=Maildir 账户
 Comment[zh_TW]=Maildir 帳號
 
