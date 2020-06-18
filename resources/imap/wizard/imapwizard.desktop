@@ -42,6 +42,7 @@ Name[sr@latin]=Generički IMAP server e‑pošte
 Name[sv]=Generell IMAP e-postserver
 Name[tr]=Genel IMAP E-posta Sunucu
 Name[uk]=Типовий сервер пошти IMAP
+Name[x-test]=xxGeneric IMAP Email Serverxx
 Name[zh_CN]=普通 IMAP 电子邮件服务器
 Name[zh_TW]=一般 IMAP 信件伺服器
 Icon=network-server
@@ -90,6 +91,7 @@ Comment[sr@latin]=IMAP nalog
 Comment[sv]=Imap-konto
 Comment[tr]=Imap hesabı
 Comment[uk]=Обліковий запис IMAP
+Comment[x-test]=xxImap accountxx
 Comment[zh_CN]=IMAP 账户
 Comment[zh_TW]=Imap 帳號
 
