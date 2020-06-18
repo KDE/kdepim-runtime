@@ -43,6 +43,7 @@ Name[sr@latin]=Kolabov grupverski server
 Name[sv]=Kolab grupprogramserver
 Name[tr]=Kolab Groupware Sunucusu
 Name[uk]=Сервер групової роботи Kolab
+Name[x-test]=xxKolab Groupware Serverxx
 Name[zh_CN]=Kolab 群件服务器
 Name[zh_TW]=Kolab 群組伺服器
 Icon=network-server
@@ -90,6 +91,7 @@ Comment[sr@latin]=Kolabov grupverski server
 Comment[sv]=Kolab grupprogramserver
 Comment[tr]=Kolab Groupware Sunucusu
 Comment[uk]=Сервер групової роботи Kolab
+Comment[x-test]=xxKolab Groupware Serverxx
 Comment[zh_CN]=Kolab 群件服务器
 Comment[zh_TW]=Kolab 群組伺服器
 
