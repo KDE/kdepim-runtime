@@ -146,7 +146,6 @@ option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" F
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x600000)
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
-add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS)
 add_definitions(-DQT_NO_EMIT)
 
 add_subdirectory(resources)
