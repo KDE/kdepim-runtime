@@ -17,7 +17,10 @@
 
 #include "etesyncresource.h"
 
+#include <AkonadiCore/ChangeRecorder>
 #include <AkonadiCore/CollectionModifyJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemFetchScope>
 #include <KLocalizedString>
 #include <QDBusConnection>
 
@@ -45,10 +48,12 @@ EteSyncResource::EteSyncResource(const QString &id)
 
     setNeedsNetwork(true);
 
-    serverUrl = Settings::self()->baseUrl();
-    username = Settings::self()->username();
-    password = Settings::self()->password();
-    encryptionPassword = Settings::self()->encryptionPassword();
+    changeRecorder()->itemFetchScope().fetchFullPayload(true);
+
+    mServerUrl = Settings::self()->baseUrl();
+    mUsername = Settings::self()->username();
+    mPassword = Settings::self()->password();
+    mEncryptionPassword = Settings::self()->encryptionPassword();
 
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &EteSyncResource::onReloadConfiguration);
 
@@ -76,7 +81,9 @@ void EteSyncResource::retrieveCollections()
             Collection collection;
 
             /// TODO: Remove temporary hack to handle only addressbooks
-            if (setupCollection(collection, journal.get())) continue;
+            if (setupCollection(collection, journal.get())) {
+                continue;
+            }
 
             list << collection;
         }
@@ -90,7 +97,7 @@ void EteSyncResource::retrieveCollections()
 int EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
 {
     int typeNum;
-    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal, derived, keypair.get()));
+    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal, mDerived, mKeypair.get()));
 
     EteSyncCollectionInfoPtr info(etesync_journal_get_info(journal, cryptoManager.get()));
 
@@ -148,11 +155,10 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
         qCDebug(ETESYNC_LOG) << "Retrieving entries";
         EteSyncEntry **entries = qobject_cast<EntriesFetchJob *>(job)->entries();
 
-        EteSyncJournalPtr journal(etesync_journal_manager_fetch(journalManager.get(), journalUid));
-        EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), derived, keypair.get()));
+        EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), journalUid));
+        EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
 
         QMap<QString, KContacts::Addressee> contacts;
-        QMap<QString, QString> remoteIDs;
 
         Item::List changedItems;
         Item::List removedItems;
@@ -171,7 +177,6 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
             // qCDebug(ETESYNC_LOG) << contact.uid();
             if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
                 contacts[contact.uid()] = contact;
-                remoteIDs[contact.uid()] = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             } else if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE)) {
                 if (contacts.contains(contact.uid())) {
                     contacts.remove(contact.uid());
@@ -202,23 +207,14 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
             changedItems << item;
         }
 
-        if (isIncremental)
+        if (isIncremental) {
             itemsRetrievedIncremental(changedItems, removedItems);
-        else
+        } else {
             itemsRetrieved(changedItems);
+        }
     });
 
     job->start();
-}
-
-bool EteSyncResource::retrieveItem(const Akonadi::Item &item,
-                                   const QSet<QByteArray> &parts)
-{
-    // TODO: this method is called when Akonadi wants more data for a given
-    // item. You can only provide the parts that have been requested but you are
-    // allowed to provide all in one go
-
-    return true;
 }
 
 void EteSyncResource::aboutToQuit()
@@ -230,21 +226,23 @@ void EteSyncResource::aboutToQuit()
 void EteSyncResource::onReloadConfiguration()
 {
     Settings::self()->load();
-    serverUrl = Settings::self()->baseUrl();
-    username = Settings::self()->username();
-    password = Settings::self()->password();
-    encryptionPassword = Settings::self()->encryptionPassword();
+    mServerUrl = Settings::self()->baseUrl();
+    mUsername = Settings::self()->username();
+    mPassword = Settings::self()->password();
+    mEncryptionPassword = Settings::self()->encryptionPassword();
 
-    // serverUrl = QStringLiteral("http://0.0.0.0:9966");
-    // username = QStringLiteral("test@localhost");
-    // password = QStringLiteral("testetesync");
-    // encryptionPassword = QStringLiteral("etesync");
+    // mServerUrl = QStringLiteral("http://0.0.0.0:9966");
+    // mUsername = QStringLiteral("test@localhost");
+    // mPassword = QStringLiteral("testetesync");
+    // mEncryptionPassword = QStringLiteral("etesync");
 
     qCDebug(ETESYNC_LOG) << "Resource config reload";
 
     connect(this, &EteSyncResource::initialiseDone, this, [this](bool successful) {
         qCDebug(ETESYNC_LOG) << "Resource intialised";
-        if (successful) synchronize();
+        if (successful) {
+            synchronize();
+        }
     });
 
     initialise();
@@ -253,28 +251,28 @@ void EteSyncResource::onReloadConfiguration()
 void EteSyncResource::initialise()
 {
     // Initialise EteSync client state
-    mClient = EteSyncPtr(etesync_new(QStringLiteral("Akonadi EteSync Resource"), serverUrl));
-    QString token = etesync_auth_get_token(mClient.get(), username, password);
+    mClient = EteSyncPtr(etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl));
+    QString token = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
     if (token.isEmpty()) {
         qCWarning(ETESYNC_LOG) << "Unable to obtain token from server";
         Q_EMIT initialiseDone(false);
         return;
     }
     etesync_set_auth_token(mClient.get(), token);
-    journalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));
-    derived = etesync_crypto_derive_key(mClient.get(), username, encryptionPassword);
+    mJournalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));
+    mDerived = etesync_crypto_derive_key(mClient.get(), mUsername, mEncryptionPassword);
 
     // Get user keypair
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
-    EteSyncUserInfoPtr userInfo(etesync_user_info_manager_fetch(userInfoManager.get(), username));
+    EteSyncUserInfoPtr userInfo(etesync_user_info_manager_fetch(userInfoManager.get(), mUsername));
     if (!userInfo) {
         qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
         Q_EMIT initialiseDone(false);
         return;
     }
-    EteSyncCryptoManagerPtr userInfoCryptoManager(etesync_user_info_get_crypto_manager(userInfo.get(), derived));
+    EteSyncCryptoManagerPtr userInfoCryptoManager(etesync_user_info_get_crypto_manager(userInfo.get(), mDerived));
 
-    keypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(userInfo.get(), userInfoCryptoManager.get()));
+    mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(userInfo.get(), userInfoCryptoManager.get()));
 
     Q_EMIT initialiseDone(true);
 }
@@ -282,31 +280,92 @@ void EteSyncResource::initialise()
 void EteSyncResource::itemAdded(const Akonadi::Item &item,
                                 const Akonadi::Collection &collection)
 {
-    // TODO: this method is called when somebody else, e.g. a client
-    // application, has created an item in a collection managed by your
-    // resource.
+    qCDebug(ETESYNC_LOG) << "Item added";
 
-    // NOTE: There is an equivalent method for collections, but it isn't part
-    // of this template code to keep it simple
+    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), collection.remoteId()));
+    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
+
+    KContacts::VCardConverter converter;
+    QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
+
+    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_ADD, content.constData()));
+    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
+
+    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient.get(), collection.remoteId()));
+
+    EteSyncEntry *entries[] = {entry.get(), NULL};
+
+    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+
+    changeCommitted(item);
+
+    // Update last UID in collection remoteRevision
+    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
+    Collection col = collection;
+    col.setRemoteRevision(entryUid);
+    new CollectionModifyJob(col, this);
 }
 
 void EteSyncResource::itemChanged(const Akonadi::Item &item,
                                   const QSet<QByteArray> &parts)
 {
-    // TODO: this method is called when somebody else, e.g. a client
-    // application, has changed an item managed by your resource.
+    qCDebug(ETESYNC_LOG) << "Item changed";
 
-    // NOTE: There is an equivalent method for collections, but it isn't part
-    // of this template code to keep it simple
+    Collection collection = item.parentCollection();
+
+    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), collection.remoteId()));
+    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
+
+    KContacts::VCardConverter converter;
+    QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
+
+    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_CHANGE, content.constData()));
+    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
+
+    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient.get(), collection.remoteId()));
+
+    EteSyncEntry *entries[] = {entry.get(), NULL};
+
+    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+
+    changeCommitted(item);
+
+    // Update last UID in collection remoteRevision
+    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
+    collection.setRemoteRevision(entryUid);
+    new CollectionModifyJob(collection, this);
 }
 
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
 {
-    // TODO: this method is called when somebody else, e.g. a client
-    // application, has deleted an item managed by your resource.
+    qCDebug(ETESYNC_LOG) << "Item removed" << item.remoteId();
 
-    // NOTE: There is an equivalent method for collections, but it isn't part
-    // of this template code to keep it simple
+    // Collection collection = item.parentCollection();
+
+    // EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), collection.remoteId()));
+    // EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
+
+    // KContacts::VCardConverter converter;
+    // QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
+
+    // qCDebug(ETESYNC_LOG) << content.constData();
+
+    // EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, ""));
+    // EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
+
+    // EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient.get(), collection.remoteId()));
+
+    // EteSyncEntry *entries[] = {entry.get(), NULL};
+
+    // etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+
+    // changeCommitted(item);
+
+    // // Update last UID in collection remoteRevision
+    // const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
+    // collection.setRemoteRevision(entryUid);
+    // new CollectionModifyJob(collection, this);
+    // free(entries);
 }
 
 AKONADI_RESOURCE_MAIN(EteSyncResource)

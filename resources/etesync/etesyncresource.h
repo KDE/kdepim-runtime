@@ -41,8 +41,6 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &col) override;
-    bool retrieveItem(const Akonadi::Item &item,
-                      const QSet<QByteArray> &parts) override;
 
 protected:
     void aboutToQuit() override;
@@ -61,11 +59,13 @@ private Q_SLOTS:
     void onReloadConfiguration();
 
 private:
+    Akonadi::Collection mResourceCollection;
+
     EteSyncPtr mClient = nullptr;
-    QString derived;
-    EteSyncJournalManagerPtr journalManager = nullptr;
-    EteSyncAsymmetricKeyPairPtr keypair = nullptr;
-    QString username, password, serverUrl, encryptionPassword;
+    QString mDerived;
+    EteSyncJournalManagerPtr mJournalManager = nullptr;
+    EteSyncAsymmetricKeyPairPtr mKeypair = nullptr;
+    QString mUsername, mPassword, mServerUrl, mEncryptionPassword;
 };
 
 #endif
