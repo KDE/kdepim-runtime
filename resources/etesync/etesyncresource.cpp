@@ -18,7 +18,9 @@
 #include "etesyncresource.h"
 
 #include <AkonadiCore/ChangeRecorder>
+#include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/CollectionModifyJob>
+#include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <KLocalizedString>
@@ -33,6 +35,8 @@
 
 using namespace EteSyncAPI;
 using namespace Akonadi;
+
+#define ROOT_COLLECTION_REMOTEID QStringLiteral("EteSyncRootCollection")
 
 EteSyncResource::EteSyncResource(const QString &id)
     : ResourceBase(id)
@@ -49,6 +53,9 @@ EteSyncResource::EteSyncResource(const QString &id)
     setNeedsNetwork(true);
 
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
+    changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
+    changeRecorder()->fetchCollection(true);
+    changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
     mServerUrl = Settings::self()->baseUrl();
     mUsername = Settings::self()->username();
@@ -66,6 +73,18 @@ EteSyncResource::~EteSyncResource()
 
 void EteSyncResource::retrieveCollections()
 {
+    // Set up root collection for resource
+    mResourceCollection = Collection();
+    mResourceCollection.setContentMimeTypes({Collection::mimeType(), Collection::virtualMimeType()});
+    mResourceCollection.setName(mUsername);
+    mResourceCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
+    mResourceCollection.setParentCollection(Collection::root());
+    mResourceCollection.setRights(Collection::CanCreateCollection);
+
+    EntityDisplayAttribute *attr = mResourceCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    attr->setDisplayName(mUsername);
+    attr->setIconName(QStringLiteral("akonadi-etesync"));
+
     auto job = new JournalsFetchJob(mClient.get(), this);
     connect(job, &JournalsFetchJob::finished, this, [this](KJob *job) {
         if (job->error()) {
@@ -75,6 +94,7 @@ void EteSyncResource::retrieveCollections()
         qCDebug(ETESYNC_LOG) << "Retrieving collections";
         EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
         Collection::List list;
+        list << mResourceCollection;
         for (EteSyncJournal **iter = journals; *iter; iter++) {
             EteSyncJournalPtr journal(*iter);
 
@@ -121,10 +141,13 @@ int EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jou
     const QString journalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_uid(journal)));
     const QString displayName = QStringFromCharPtr(CharPtr(etesync_collection_info_get_display_name(info.get())));
 
-    collection.setParentCollection(Collection::root());
+    collection.setParentCollection(mResourceCollection);
     collection.setRemoteId(journalUid);
     collection.setName(displayName);
     collection.setContentMimeTypes(mimeTypes);
+
+    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    attr->setIconName(QStringLiteral("view-pim-contacts"));
 
     return typeNum;
 }
@@ -187,6 +210,8 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
                     item.setRemoteId(contact.uid());
                     item.setPayload<KContacts::Addressee>(contact);
                     removedItems << item;
+
+                    deleteLocalContact(contact);
                 }
             }
 
@@ -205,6 +230,8 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
             item.setRemoteId(it.key());
             item.setPayload<KContacts::Addressee>(it.value());
             changedItems << item;
+
+            updateLocalContact(it.value());
         }
 
         if (isIncremental) {
@@ -274,7 +301,70 @@ void EteSyncResource::initialise()
 
     mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(userInfo.get(), userInfoCryptoManager.get()));
 
+    // Make local contacts directory
+    initialiseDirectory(baseDirectoryPath());
+
     Q_EMIT initialiseDone(true);
+}
+
+QString EteSyncResource::baseDirectoryPath() const
+{
+    return Settings::self()->contactsPath();
+}
+
+QString EteSyncResource::getLocalContact(QString contactUid) const
+{
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + contactUid + QLatin1String(".vcf");
+
+    QFile file(path);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        qCDebug(ETESYNC_LOG) << "Unable to read " << path << file.errorString();
+        return QString();
+    }
+    QTextStream in(&file);
+    return in.readAll();
+}
+
+void EteSyncResource::updateLocalContact(const KContacts::Addressee &contact)
+{
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + contact.uid() + QLatin1String(".vcf");
+
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
+        return;
+    }
+    KContacts::VCardConverter converter;
+    file.write(converter.createVCard(contact));
+}
+
+void EteSyncResource::deleteLocalContact(const KContacts::Addressee &contact)
+{
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + contact.uid() + QLatin1String(".vcf");
+    QFile file(path);
+    if (!file.remove()) {
+        qCDebug(ETESYNC_LOG) << "Unable to remove " << path << file.errorString();
+        return;
+    }
+}
+
+void EteSyncResource::initialiseDirectory(const QString &path) const
+{
+    QDir dir(path);
+
+    // if folder does not exists, create it
+    QDir::root().mkpath(dir.absolutePath());
+
+    // check whether warning file is in place...
+    QFile file(dir.absolutePath() + QStringLiteral("/WARNING_README.txt"));
+    if (!file.exists()) {
+        // ... if not, create it
+        file.open(QIODevice::WriteOnly);
+        file.write(
+            "Important warning!\n\n"
+            "Do not create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
+        file.close();
+    }
 }
 
 void EteSyncResource::itemAdded(const Akonadi::Item &item,
@@ -298,6 +388,8 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
     etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
 
     changeCommitted(item);
+
+    updateLocalContact(item.payload<KContacts::Addressee>());
 
     // Update last UID in collection remoteRevision
     const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
@@ -330,6 +422,8 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
 
     changeCommitted(item);
 
+    updateLocalContact(item.payload<KContacts::Addressee>());
+
     // Update last UID in collection remoteRevision
     const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
     collection.setRemoteRevision(entryUid);
@@ -340,32 +434,48 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
 {
     qCDebug(ETESYNC_LOG) << "Item removed" << item.remoteId();
 
-    // Collection collection = item.parentCollection();
+    Collection collection = item.parentCollection();
 
-    // EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), collection.remoteId()));
-    // EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
+    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), collection.remoteId()));
+    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
 
-    // KContacts::VCardConverter converter;
-    // QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
+    QString contact = getLocalContact(item.remoteId());
 
-    // qCDebug(ETESYNC_LOG) << content.constData();
+    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(contact)));
+    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
 
-    // EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, ""));
-    // EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
+    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient.get(), collection.remoteId()));
 
-    // EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient.get(), collection.remoteId()));
+    EteSyncEntry *entries[] = {entry.get(), NULL};
 
-    // EteSyncEntry *entries[] = {entry.get(), NULL};
+    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
 
-    // etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    changeCommitted(item);
 
-    // changeCommitted(item);
+    // Update last UID in collection remoteRevision
+    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
+    collection.setRemoteRevision(entryUid);
+    new CollectionModifyJob(collection, this);
+}
 
-    // // Update last UID in collection remoteRevision
-    // const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    // collection.setRemoteRevision(entryUid);
-    // new CollectionModifyJob(collection, this);
-    // free(entries);
+void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+{
+    qCDebug(ETESYNC_LOG) << "Collection added" << collection.mimeType();
+
+    QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
+    EteSyncJournalPtr journal(etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION));
+
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
+
+    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
+
+    etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
+
+    etesync_journal_manager_create(mJournalManager.get(), journal.get());
+
+    Collection newCollection(collection);
+    newCollection.setRemoteId(journalUid);
+    changeCommitted(newCollection);
 }
 
 AKONADI_RESOURCE_MAIN(EteSyncResource)

@@ -26,7 +26,7 @@
 #include "etesyncadapter.h"
 
 class EteSyncResource : public Akonadi::ResourceBase,
-                        public Akonadi::AgentBase::Observer
+                        public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 
@@ -42,18 +42,28 @@ protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &col) override;
 
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
+
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
+
 protected:
     void aboutToQuit() override;
-
-    void itemAdded(const Akonadi::Item &item,
-                   const Akonadi::Collection &collection) override;
-    void itemChanged(const Akonadi::Item &item,
-                     const QSet<QByteArray> &parts) override;
-    void itemRemoved(const Akonadi::Item &item) override;
 
     void initialise();
 
     int setupCollection(Akonadi::Collection &collection, EteSyncJournal *journal);
+
+    void initialiseDirectory(const QString &path) const;
+
+    QString getLocalContact(QString contactUid) const;
+
+    void updateLocalContact(const KContacts::Addressee &contact);
+
+    void deleteLocalContact(const KContacts::Addressee &contact);
+
+    QString baseDirectoryPath() const;
 
 private Q_SLOTS:
     void onReloadConfiguration();

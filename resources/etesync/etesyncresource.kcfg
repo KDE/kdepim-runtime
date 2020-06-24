@@ -26,5 +26,9 @@
       <tooltip>Encryption password for your EteSync account</tooltip>
       <whatsthis>Encryption password for your EteSync account</whatsthis>
     </entry>
+    <entry name="ContactsPath" type="Path">
+      <label>Path to contacts directory</label>
+      <default>$HOME/.local/share/EteSyncContacts</default>
+    </entry>
   </group>
 </kcfg>
