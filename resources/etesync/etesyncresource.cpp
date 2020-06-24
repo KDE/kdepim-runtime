@@ -478,4 +478,34 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     changeCommitted(newCollection);
 }
 
+void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
+{
+    qCDebug(ETESYNC_LOG) << "Collection changed" << collection.mimeType();
+
+    QString journalUid = collection.remoteId();
+    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), journalUid));
+
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
+
+    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mDerived, mKeypair.get()));
+
+    etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
+
+    etesync_journal_manager_update(mJournalManager.get(), journal.get());
+
+    Collection newCollection(collection);
+    newCollection.setRemoteId(journalUid);
+    changeCommitted(newCollection);
+}
+
+void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
+{
+    qCDebug(ETESYNC_LOG) << "Collection removed" << collection.mimeType();
+
+    QString journalUid = collection.remoteId();
+    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mJournalManager.get(), journalUid));
+
+    etesync_journal_manager_delete(mJournalManager.get(), journal.get());
+}
+
 AKONADI_RESOURCE_MAIN(EteSyncResource)
