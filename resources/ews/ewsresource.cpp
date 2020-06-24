@@ -1374,7 +1374,7 @@ void EwsResource::connectStatusSignals(Job *job)
     });
 }
 
-QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col) const
+QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col)
 {
     auto attr = col.attribute<EwsSyncStateAttribute>();
     return attr ? attr->syncState() : QString();
