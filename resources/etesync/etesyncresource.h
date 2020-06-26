@@ -24,6 +24,7 @@
 #include <AkonadiAgentBase/ResourceBase>
 
 #include "etesyncadapter.h"
+#include "etesyncclientstate.h"
 
 class EteSyncResource : public Akonadi::ResourceBase,
                         public Akonadi::AgentBase::ObserverV2
@@ -72,12 +73,7 @@ private Q_SLOTS:
 
 private:
     Akonadi::Collection mResourceCollection;
-
-    EteSyncPtr mClient = nullptr;
-    QString mDerived;
-    EteSyncJournalManagerPtr mJournalManager = nullptr;
-    EteSyncAsymmetricKeyPairPtr mKeypair = nullptr;
-    QString mUsername, mPassword, mServerUrl, mEncryptionPassword;
+    EteSyncClientState *mClientState = nullptr;
 };
 
 #endif

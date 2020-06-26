@@ -7,6 +7,7 @@ set(etesyncresource_SRCS
     etesyncresource.cpp
     journalsfetchjob.cpp
     entriesfetchjob.cpp
+    etesyncclientstate.cpp
     etesyncadapter.cpp
     ${etesyncresource_common_SRCS}
 )
