@@ -15,7 +15,10 @@
 #include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
+#include <AkonadiCore/ItemCreateJob>
+#include <AkonadiCore/ItemDeleteJob>
 #include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/ItemModifyJob>
 #include <KMime/Message>
 #include <KNotification>
 #include <KWallet/KWallet>
@@ -1023,8 +1026,34 @@ void EwsResource::foldersModifiedCollectionSyncFinished(KJob *job)
         return;
     }
 
-    auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
-    synchronizeCollection(fetchJob->collections().at(0).id());
+    auto fetchColJob = qobject_cast<CollectionFetchJob *>(job);
+    const auto collection = fetchColJob->collections().at(0);
+    auto fetchJob =
+        new EwsFetchItemsJob(collection, mEwsClient, getCollectionSyncState(collection), mItemsToCheck.value(collection.remoteId()), mTagStore, this);
+    fetchJob->setQueuedUpdates(mQueuedUpdates.value(collection.remoteId()));
+    mQueuedUpdates.remove(collection.remoteId());
+    connect(fetchJob, &EwsFetchItemsJob::result, this, [this, fetchJob](KJob *) {
+        auto collection = fetchJob->collection();
+        if (fetchJob->error()) {
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error();
+            synchronizeCollection(collection.id());
+        } else {
+            const auto newItems = fetchJob->newItems();
+            for (const auto &newItem : newItems) {
+                new ItemCreateJob(newItem, collection, this);
+            }
+            if (!fetchJob->changedItems().isEmpty()) {
+                new ItemModifyJob(fetchJob->changedItems());
+            }
+            if (!fetchJob->deletedItems().isEmpty()) {
+                new ItemDeleteJob(fetchJob->deletedItems());
+            }
+            saveCollectionSyncState(collection, fetchJob->syncState());
+            emitReadyStatus();
+        }
+    });
+    connectStatusSignals(fetchJob);
+    fetchJob->start();
 }
 
 void EwsResource::folderTreeModifiedEvent()
