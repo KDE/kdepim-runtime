@@ -269,6 +269,10 @@ bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &
             continue;
         }
         Item &item = *it;
+        if (item.remoteRevision() == id.changeKey()) {
+            qCDebugNC(EWSRES_LOG) << QStringLiteral("Matching change key for item %1 - not syncing").arg(ewsHash(id.id()));
+            continue;
+        }
         item.clearPayload();
         item.setRemoteRevision(id.changeKey());
         if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {
