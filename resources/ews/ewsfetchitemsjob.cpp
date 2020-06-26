@@ -355,20 +355,12 @@ void EwsFetchItemsJob::compareItemLists()
         // In case of an incremental sync deleted items will be given explicitly. */
         Q_FOREACH (const EwsId &id, mRemoteDeletedIds) {
             QHash<QString, Item>::iterator it = itemHash.find(id.id());
-            /* If one or more items marked as deleted are not found it means that the folder is out
-             * of sync. The only way to fix this is to issue a full sync.
-             * The only exception is when an item is checked explicitly. In such case the absence
-             * of this item can be ignored. */
             if (it == itemHash.end()) {
-                QHash<QString, QString>::iterator qit = mQueuedUpdates[EwsDeletedEvent].find(id.id());
-                if (EWSRES_LOG().isDebugEnabled() && qit != mQueuedUpdates[EwsDeletedEvent].end()) {
-                    qCDebugNC(EWSRES_LOG) << QStringLiteral("Match for queued deletion of item %1").arg(ewsHash(id.id()));
-                }
-                if (!mItemsToCheck.contains(id) && qit == mQueuedUpdates[EwsDeletedEvent].end()) {
-                    setErrorMsg(QStringLiteral("Got delete for item %1, but item not found in local store.").arg(ewsHash(id.id())));
-                    emitResult();
-                    return;
-                }
+                /* If an item is not found locally, it can mean two things:
+                 *  1. The item got deleted earlier without the resource being told about it.
+                 *  2. The item was never known by Akonadi due to a sync problem.
+                 * Either way the item doesn't exist any more and there is no point crying about it. */
+                qCDebugNC(EWSRES_LOG) << QStringLiteral("Got delete for item %1, but item not found in local store.").arg(ewsHash(id.id()));
             } else {
                 mDeletedItems.append(*it);
             }
