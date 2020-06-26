@@ -39,6 +39,11 @@ public:
                      EwsResource *parent);
     ~EwsFetchItemsJob() override;
 
+    Akonadi::Item::List newItems() const
+    {
+        return mNewItems;
+    }
+
     Akonadi::Item::List changedItems() const
     {
         return mChangedItems;
@@ -102,6 +107,7 @@ private:
     EwsTagStore *mTagStore = nullptr;
     bool mTagsSynced;
 
+    Akonadi::Item::List mNewItems;
     Akonadi::Item::List mChangedItems;
     Akonadi::Item::List mDeletedItems;
 };

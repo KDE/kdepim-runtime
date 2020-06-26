@@ -430,7 +430,14 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
     if (!job->error()) {
         auto detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
         if (detailJob) {
-            mChangedItems += detailJob->changedItems();
+            const auto changedItems = detailJob->changedItems();
+            for (const auto &item : changedItems) {
+                if (item.isValid()) {
+                    mChangedItems.append(item);
+                } else {
+                    mNewItems.append(item);
+                }
+            }
         }
 
         mTotalItemsFetched = mChangedItems.size();

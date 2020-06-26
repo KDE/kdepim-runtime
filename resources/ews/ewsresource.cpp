@@ -456,7 +456,7 @@ void EwsResource::itemFetchJobFinished(KJob *job)
         }
     } else {
         saveCollectionSyncState(col, fetchJob->syncState());
-        itemsRetrievedIncremental(fetchJob->changedItems(), fetchJob->deletedItems());
+        itemsRetrievedIncremental(fetchJob->newItems() + fetchJob->changedItems(), fetchJob->deletedItems());
     }
     saveState();
     mItemsToCheck.remove(fetchJob->collection().remoteId());
