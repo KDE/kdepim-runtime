@@ -18,6 +18,7 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <KMime/Message>
 #include <KNotification>
+#include <KWallet/KWallet>
 
 #include <KLocalizedString>
 
