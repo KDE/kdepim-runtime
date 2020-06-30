@@ -34,6 +34,7 @@
 
 #include <KRandom>
 #include <QTemporaryDir>
+#include <QRandomGenerator>
 
 #include <QTest>
 #include <QFileInfo>
@@ -161,7 +162,7 @@ void ItemMoveTest::testExpectedFail()
 
     // test failure of moving from maildir to non-existent collection
     Item item1;
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
@@ -178,7 +179,7 @@ void ItemMoveTest::testExpectedFail()
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item2;
-    item2.setId(KRandom::random());
+    item2.setId(QRandomGenerator::global()->generate());
     item2.setRemoteId(QStringLiteral("0"));
     item2.setParentCollection(collection2);
 
@@ -226,7 +227,7 @@ void ItemMoveTest::testExpectedFail()
     // test failure of moving a non-existent mbox entry
     quint64 remoteId2;
     do {
-        remoteId2 = KRandom::random();
+        remoteId2 = QRandomGenerator::global()->generate();
     } while (entrySet2.contains(remoteId2));
 
     item2.setRemoteId(QString::number(remoteId2));
@@ -304,7 +305,7 @@ void ItemMoveTest::testMaildirItem()
     collection3.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
@@ -498,7 +499,7 @@ void ItemMoveTest::testMBoxItem()
     collection3.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setRemoteId(QString::number(entryList1.first().messageOffset()));
     item1.setParentCollection(collection1);
 
