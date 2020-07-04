@@ -15,10 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef CALENDARHANDLER_H
-#define CALENDARHANDLER_H
+#ifndef TASKHANDLER_H
+#define TASKHANDLER_H
 
-#include <KCalendarCore/Event>
+#include <KCalendarCore/Todo>
 
 #include "calendartaskbasehandler.h"
 #include "etesyncadapter.h"
@@ -26,12 +26,12 @@
 
 class EteSyncResource;
 
-class CalendarHandler : public CalendarTaskBaseHandler
+class TaskHandler : public CalendarTaskBaseHandler
 {
     Q_OBJECT
 public:
-    typedef std::unique_ptr<CalendarHandler> Ptr;
-    CalendarHandler(EteSyncResource *resource);
+    typedef std::unique_ptr<TaskHandler> Ptr;
+    TaskHandler(EteSyncResource *resource);
 
 protected:
     const QString mimeType();

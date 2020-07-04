@@ -9,7 +9,9 @@ set(etesyncresource_SRCS
     entriesfetchjob.cpp
     etesyncclientstate.cpp
     contacthandler.cpp
+    calendartaskbasehandler.cpp
     calendarhandler.cpp
+    taskhandler.cpp
     etesyncadapter.cpp
     ${etesyncresource_common_SRCS}
 )

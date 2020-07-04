@@ -67,6 +67,7 @@ EteSyncResource::EteSyncResource(const QString &id)
 
     mContactHandler = ContactHandler::Ptr(new ContactHandler(this));
     mCalendarHandler = CalendarHandler::Ptr(new CalendarHandler(this));
+    mTaskHandler = TaskHandler::Ptr(new TaskHandler(this));
 
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &EteSyncResource::onReloadConfiguration);
 
@@ -180,7 +181,10 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
         mContactHandler->setupItems(entries, collection);
     } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         mCalendarHandler->setupItems(entries, collection);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
+        mTaskHandler->setupItems(entries, collection);
     } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         itemsRetrieved({});
     }
 }
@@ -235,7 +239,10 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
         mContactHandler->itemAdded(item, collection);
     } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         mCalendarHandler->itemAdded(item, collection);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
+        mTaskHandler->itemAdded(item, collection);
     } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(item);
     }
 }
@@ -248,7 +255,10 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
         mContactHandler->itemChanged(item, parts);
     } else if (item.mimeType() == KCalendarCore::Event::eventMimeType()) {
         mCalendarHandler->itemChanged(item, parts);
+    } else if (item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
+        mTaskHandler->itemChanged(item, parts);
     } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(item);
     }
 }
@@ -260,7 +270,10 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
         mContactHandler->itemRemoved(item);
     } else if (item.mimeType() == KCalendarCore::Event::eventMimeType()) {
         mCalendarHandler->itemRemoved(item);
+    } else if (item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
+        mTaskHandler->itemRemoved(item);
     } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(item);
     }
 }
@@ -268,25 +281,31 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     qCDebug(ETESYNC_LOG) << "Collection added" << collection.mimeType();
-    // if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
-    //     mContactHandler->collectionAdded(collection, parent);
-    // } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-    mCalendarHandler->collectionAdded(collection, parent);
-    // } else {
-    // changeCommitted(collection);
-    // }
+    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
+        mContactHandler->collectionAdded(collection, parent);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
+        mCalendarHandler->collectionAdded(collection, parent);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
+        mTaskHandler->collectionAdded(collection, parent);
+    } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
+        changeCommitted(collection);
+    }
 }
 
 void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Collection changed" << collection.mimeType();
-    // if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
-    //     mContactHandler->collectionChanged(collection);
-    // } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-    mCalendarHandler->collectionChanged(collection);
-    // } else {
-    //     changeCommitted(collection);
-    // }
+    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
+        mContactHandler->collectionChanged(collection);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
+        mCalendarHandler->collectionChanged(collection);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
+        mTaskHandler->collectionChanged(collection);
+    } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
+        changeCommitted(collection);
+    }
 }
 
 void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -297,6 +316,10 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
         mContactHandler->collectionRemoved(collection);
     } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
         mCalendarHandler->collectionRemoved(collection);
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
+        mTaskHandler->collectionRemoved(collection);
+    } else {
+        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
     }
 }
 

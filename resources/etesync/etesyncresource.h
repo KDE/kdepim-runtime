@@ -27,6 +27,7 @@
 #include "contacthandler.h"
 #include "etesyncadapter.h"
 #include "etesyncclientstate.h"
+#include "taskhandler.h"
 
 class EteSyncResource : public Akonadi::ResourceBase,
                         public Akonadi::AgentBase::ObserverV2
@@ -80,9 +81,10 @@ private:
 
     ContactHandler::Ptr mContactHandler = nullptr;
     CalendarHandler::Ptr mCalendarHandler = nullptr;
+    TaskHandler::Ptr mTaskHandler = nullptr;
 
     friend class ContactHandler;
-    friend class CalendarHandler;
+    friend class CalendarTaskBaseHandler;
 };
 
 #endif

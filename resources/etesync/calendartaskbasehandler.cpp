@@ -15,11 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "contacthandler.h"
+#include "calendartaskbasehandler.h"
 
-#include <kcontacts/vcardconverter.h>
-
+#include <AkonadiCore/AttributeFactory>
+#include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
+#include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
 #include <QFile>
 
 #include "entriesfetchjob.h"
@@ -27,26 +29,18 @@
 #include "etesyncresource.h"
 
 using namespace Akonadi;
+using namespace KCalendarCore;
 
-ContactHandler::ContactHandler(EteSyncResource *resource)
+CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource)
     : mResource(resource), mClientState(resource->mClientState)
 {
     mResource->initialiseDirectory(baseDirectoryPath());
+    AttributeFactory::registerAttribute<CollectionColorAttribute>();
 }
 
-const QString ContactHandler::mimeType()
+void CalendarTaskBaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collection)
 {
-    return KContacts::Addressee::mimeType();
-}
-
-const QString ContactHandler::eteSyncCollectionType()
-{
-    return QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK);
-}
-
-void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collection)
-{
-    qCDebug(ETESYNC_LOG) << "Setting up items";
+    qCDebug(ETESYNC_LOG) << "CalendarTaskBaseHandler: Setting up items";
     QString prevUid = collection.remoteRevision();
     QString journalUid = collection.remoteId();
 
@@ -59,7 +53,7 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
-    QMap<QString, KContacts::Addressee> contacts;
+    QMap<QString, KCalendarCore::Incidence::Ptr> incidences;
 
     Item::List changedItems;
     Item::List removedItems;
@@ -68,26 +62,28 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
         EteSyncEntryPtr entry(*iter);
         EteSyncSyncEntryPtr syncEntry(etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid));
 
-        KContacts::VCardConverter converter;
         CharPtr contentStr(etesync_sync_entry_get_content(syncEntry.get()));
-        QByteArray content(contentStr.get());
-        const KContacts::Addressee contact = converter.parseVCard(content);
+
+        KCalendarCore::ICalFormat format;
+        KCalendarCore::Incidence::Ptr incidence = format.fromString(QStringFromCharPtr(contentStr));
 
         const QString action = QStringFromCharPtr(CharPtr(etesync_sync_entry_get_action(syncEntry.get())));
+        qCDebug(ETESYNC_LOG) << action;
+        qCDebug(ETESYNC_LOG) << incidence->created();
         if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
-            contacts[contact.uid()] = contact;
+            incidences[incidence->uid()] = incidence;
         } else if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE)) {
-            if (contacts.contains(contact.uid())) {
-                contacts.remove(contact.uid());
+            if (incidences.contains(incidence->uid())) {
+                incidences.remove(incidence->uid());
             } else {
                 Item item;
                 item.setMimeType(mimeType());
                 item.setParentCollection(collection);
-                item.setRemoteId(contact.uid());
-                item.setPayload<KContacts::Addressee>(contact);
+                item.setRemoteId(incidence->uid());
+                item.setPayload<KCalendarCore::Incidence::Ptr>(incidence);
                 removedItems << item;
 
-                deleteLocalContact(contact);
+                deleteLocalCalendar(incidence);
             }
         }
 
@@ -99,15 +95,15 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
     collection.setRemoteRevision(prevUid);
     new CollectionModifyJob(collection, this);
 
-    for (auto it = contacts.constBegin(); it != contacts.constEnd(); it++) {
+    for (auto it = incidences.constBegin(); it != incidences.constEnd(); it++) {
         Item item;
         item.setMimeType(mimeType());
         item.setParentCollection(collection);
         item.setRemoteId(it.key());
-        item.setPayload<KContacts::Addressee>(it.value());
+        item.setPayload<KCalendarCore::Incidence::Ptr>(it.value());
         changedItems << item;
 
-        updateLocalContact(it.value());
+        updateLocalCalendar(it.value());
     }
 
     if (isIncremental) {
@@ -117,14 +113,14 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
     }
 }
 
-QString ContactHandler::baseDirectoryPath() const
+QString CalendarTaskBaseHandler::baseDirectoryPath() const
 {
-    return mResource->baseDirectoryPath() + QStringLiteral("/Contacts");
+    return mResource->baseDirectoryPath() + QStringLiteral("/Calendar");
 }
 
-QString ContactHandler::getLocalContact(QString contactUid) const
+QString CalendarTaskBaseHandler::getLocalCalendar(const QString &incidenceUid) const
 {
-    const QString path = baseDirectoryPath() + QLatin1Char('/') + contactUid + QLatin1String(".vcf");
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + incidenceUid + QLatin1String(".ical");
 
     QFile file(path);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -135,22 +131,25 @@ QString ContactHandler::getLocalContact(QString contactUid) const
     return in.readAll();
 }
 
-void ContactHandler::updateLocalContact(const KContacts::Addressee &contact)
+bool CalendarTaskBaseHandler::updateLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence)
 {
-    const QString path = baseDirectoryPath() + QLatin1Char('/') + contact.uid() + QLatin1String(".vcf");
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + incidence->uid() + QLatin1String(".ical");
 
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly)) {
         qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
-        return;
+        return false;
     }
-    KContacts::VCardConverter converter;
-    file.write(converter.createVCard(contact));
+    KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
+    calendar->addIncidence(incidence);
+    KCalendarCore::ICalFormat format;
+    file.write(charArrFromQString(format.toString(calendar)));
+    return true;
 }
 
-void ContactHandler::deleteLocalContact(const KContacts::Addressee &contact)
+void CalendarTaskBaseHandler::deleteLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence)
 {
-    const QString path = baseDirectoryPath() + QLatin1Char('/') + contact.uid() + QLatin1String(".vcf");
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + incidence->uid() + QLatin1String(".ical");
     QFile file(path);
     if (!file.remove()) {
         qCDebug(ETESYNC_LOG) << "Unable to remove " << path << file.errorString();
@@ -158,16 +157,18 @@ void ContactHandler::deleteLocalContact(const KContacts::Addressee &contact)
     }
 }
 
-void ContactHandler::itemAdded(const Akonadi::Item &item,
-                               const Akonadi::Collection &collection)
+void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
+                                        const Akonadi::Collection &collection)
 {
+    KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
+    calendar->addIncidence(item.payload<Incidence::Ptr>());
+    KCalendarCore::ICalFormat format;
+    // qCDebug(ETESYNC_LOG) << "Calendar item added " << format.toString(calendar);
+
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
-    KContacts::VCardConverter converter;
-    QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
-
-    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_ADD, content.constData()));
+    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), format.toString(calendar)));
     EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
 
     EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
@@ -178,7 +179,7 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
 
     mResource->changeCommitted(item);
 
-    updateLocalContact(item.payload<KContacts::Addressee>());
+    updateLocalCalendar(item.payload<Incidence::Ptr>());
 
     // Update last UID in collection remoteRevision
     const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
@@ -187,18 +188,20 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     new CollectionModifyJob(col, this);
 }
 
-void ContactHandler::itemChanged(const Akonadi::Item &item,
-                                 const QSet<QByteArray> &parts)
+void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
+                                          const QSet<QByteArray> &parts)
 {
     Collection collection = item.parentCollection();
+
+    KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
+    calendar->addIncidence(item.payload<Incidence::Ptr>());
+    KCalendarCore::ICalFormat format;
+    // qCDebug(ETESYNC_LOG) << "Calendar item changed " << format.toString(calendar);
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
-    KContacts::VCardConverter converter;
-    QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
-
-    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_CHANGE, content.constData()));
+    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), format.toString(calendar)));
     EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
 
     EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
@@ -209,24 +212,25 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
 
     mResource->changeCommitted(item);
 
-    updateLocalContact(item.payload<KContacts::Addressee>());
+    updateLocalCalendar(item.payload<Incidence::Ptr>());
 
     // Update last UID in collection remoteRevision
     const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    collection.setRemoteRevision(entryUid);
-    new CollectionModifyJob(collection, this);
+    Collection col = collection;
+    col.setRemoteRevision(entryUid);
+    new CollectionModifyJob(col, this);
 }
 
-void ContactHandler::itemRemoved(const Akonadi::Item &item)
+void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
 {
     Collection collection = item.parentCollection();
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
-    QString contact = getLocalContact(item.remoteId());
+    QString calendar = getLocalCalendar(item.remoteId());
 
-    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(contact)));
+    EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(calendar)));
     EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
 
     EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
@@ -243,11 +247,12 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
     new CollectionModifyJob(collection, this);
 }
 
-void ContactHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
+void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
     EteSyncJournalPtr journal(etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION));
 
+    /// TODO: Description?
     EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
@@ -261,21 +266,31 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
     mResource->changeCommitted(newCollection);
 }
 
-void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
+void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     QString journalUid = collection.remoteId();
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
 
-    EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
+    auto journalColor = EteSyncDEFAULT_COLOR;
+    if (collection.hasAttribute<CollectionColorAttribute>()) {
+        const CollectionColorAttribute *colorAttr = collection.attribute<CollectionColorAttribute>();
+        if (colorAttr) {
+            journalColor = colorAttr->color().rgb();
+        }
+    }
+
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), journalColor));
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
 
     etesync_journal_manager_update(mClientState->journalManager(), journal.get());
+
+    mResource->changeCommitted(collection);
 }
 
-void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
+void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     QString journalUid = collection.remoteId();
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));

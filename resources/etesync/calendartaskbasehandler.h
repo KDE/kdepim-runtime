@@ -15,25 +15,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTACTHANDLER_H
-#define CONTACTHANDLER_H
-
-#include <kcontacts/addressee.h>
+#ifndef CALENDARTASKBASEHANDLER_H
+#define CALENDARTASKBASEHANDLER_H
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
+#include <KCalendarCore/Incidence>
 
 #include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
 class EteSyncResource;
 
-class ContactHandler : public QObject
+class CalendarTaskBaseHandler : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::unique_ptr<ContactHandler> Ptr;
-    ContactHandler(EteSyncResource *resource);
+    CalendarTaskBaseHandler(EteSyncResource *resource);
 
     void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection);
 
@@ -46,16 +44,15 @@ public:
     void collectionRemoved(const Akonadi::Collection &collection);
 
 protected:
-    QString getLocalContact(QString contactUid) const;
-    void updateLocalContact(const KContacts::Addressee &contact);
-    void deleteLocalContact(const KContacts::Addressee &contact);
+    QString getLocalCalendar(const QString &incidenceUid) const;
+    bool updateLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence);
+    void deleteLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence);
 
     QString baseDirectoryPath() const;
 
-    const QString mimeType();
-    const QString eteSyncCollectionType();
+    virtual const QString mimeType() = 0;
+    virtual const QString eteSyncCollectionType() = 0;
 
-private:
     EteSyncResource *mResource = nullptr;
     EteSyncClientState *mClientState = nullptr;
 };

@@ -15,27 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef CALENDARHANDLER_H
-#define CALENDARHANDLER_H
+#include "taskhandler.h"
 
-#include <KCalendarCore/Event>
-
-#include "calendartaskbasehandler.h"
-#include "etesyncadapter.h"
-#include "etesyncclientstate.h"
-
-class EteSyncResource;
-
-class CalendarHandler : public CalendarTaskBaseHandler
+TaskHandler::TaskHandler(EteSyncResource *resource) : CalendarTaskBaseHandler(resource)
 {
-    Q_OBJECT
-public:
-    typedef std::unique_ptr<CalendarHandler> Ptr;
-    CalendarHandler(EteSyncResource *resource);
+}
 
-protected:
-    const QString mimeType();
-    const QString eteSyncCollectionType();
-};
-
-#endif
+const QString TaskHandler::mimeType()
+{
+    return KCalendarCore::Todo::todoMimeType();
+}
+const QString TaskHandler::eteSyncCollectionType()
+{
+    return QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS);
+}
