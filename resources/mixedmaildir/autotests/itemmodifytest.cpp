@@ -39,6 +39,7 @@
 #include <QTemporaryDir>
 
 #include <QTest>
+#include <QRandomGenerator>
 #include <QFileInfo>
 #include <QDir>
 #include <QCryptographicHash>
@@ -166,7 +167,7 @@ void ItemModifyTest::testExpectedFail()
 
     qint64 remoteId2;
     do {
-        remoteId2 = KRandom::random();
+        remoteId2 = QRandomGenerator::global()->generate();
     } while (entrySet2.contains(remoteId2));
 
     Item item2;

@@ -30,7 +30,7 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
-#include <KRandom>
+#include <QRandomGenerator>
 #include <QTemporaryDir>
 
 #include <QTest>
@@ -183,7 +183,7 @@ void ItemCreateTest::testMBox()
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setMimeType(KMime::Message::mimeType());
     item1.setPayload<KMime::Message::Ptr>(msgPtr1);
 
@@ -207,7 +207,7 @@ void ItemCreateTest::testMBox()
     QCOMPARE((int)mbox2.entries().count(), 1);
 
     Item item2;
-    item2.setId(KRandom::random());
+    item2.setId(QRandomGenerator::global()->generate());
     item2.setMimeType(KMime::Message::mimeType());
     item2.setPayload<KMime::Message::Ptr>(msgPtr2);
 
@@ -382,7 +382,7 @@ void ItemCreateTest::testMaildir()
     collection2.setParentCollection(mStore->topLevelCollection());
 
     Item item1;
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setMimeType(KMime::Message::mimeType());
     item1.setPayload<KMime::Message::Ptr>(msgPtr1);
 
@@ -408,7 +408,7 @@ void ItemCreateTest::testMaildir()
     QCOMPARE((int)entrySet2.count(), 1);
 
     Item item2;
-    item2.setId(KRandom::random());
+    item2.setId(QRandomGenerator::global()->generate());
     item2.setMimeType(KMime::Message::mimeType());
     item2.setPayload<KMime::Message::Ptr>(msgPtr2);
 

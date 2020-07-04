@@ -32,7 +32,7 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
-#include <KRandom>
+#include <QRandomGenerator>
 #include <QTemporaryDir>
 
 #include <QSignalSpy>
@@ -159,7 +159,7 @@ void ItemDeleteTest::testMaildir()
 
     Item item1;
     item1.setMimeType(KMime::Message::mimeType());
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
@@ -226,7 +226,7 @@ void ItemDeleteTest::testMBox()
 
     Item item4;
     item4.setMimeType(KMime::Message::mimeType());
-    item4.setId(KRandom::random());
+    item4.setId(QRandomGenerator::global()->generate());
     item4.setRemoteId(QString::number(entryList1.value(3).messageOffset()));
     item4.setParentCollection(collection1);
 
@@ -291,7 +291,7 @@ void ItemDeleteTest::testMBox()
     // again, file stays untouched, message still accessible through MBox, but item gone
     Item item2;
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setId(KRandom::random());
+    item2.setId(QRandomGenerator::global()->generate());
     item2.setRemoteId(QString::number(entryList1.value(1).messageOffset()));
     item2.setParentCollection(collection1);
 
@@ -408,7 +408,7 @@ void ItemDeleteTest::testCachePreservation()
 
     Item item1;
     item1.setMimeType(KMime::Message::mimeType());
-    item1.setId(KRandom::random());
+    item1.setId(QRandomGenerator::global()->generate());
     item1.setRemoteId(*entrySet1.cbegin());
     item1.setParentCollection(collection1);
 
@@ -458,7 +458,7 @@ void ItemDeleteTest::testCachePreservation()
 
     Item item2;
     item2.setMimeType(KMime::Message::mimeType());
-    item2.setId(KRandom::random());
+    item2.setId(QRandomGenerator::global()->generate());
     item2.setRemoteId(QString::number(entryList2.value(1).messageOffset()));
     item2.setParentCollection(collection2);
 

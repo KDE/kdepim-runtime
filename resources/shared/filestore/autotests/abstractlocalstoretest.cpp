@@ -34,6 +34,7 @@
 #include "storecompactjob.h"
 
 #include <KRandom>
+#include <QRandomGenerator>
 
 #include <QTest>
 
@@ -290,7 +291,7 @@ void AbstractLocalStoreTest::testCreateCollection()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->createCollection(collection, targetParent);
@@ -357,7 +358,7 @@ void AbstractLocalStoreTest::testDeleteCollection()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->deleteCollection(collection);
@@ -411,7 +412,7 @@ void AbstractLocalStoreTest::testFetchCollection()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->fetchCollections(collection);
@@ -492,7 +493,7 @@ void AbstractLocalStoreTest::testModifyCollection()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->modifyCollection(collection);
@@ -571,7 +572,7 @@ void AbstractLocalStoreTest::testMoveCollection()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->moveCollection(collection, targetParent);
@@ -623,7 +624,7 @@ void AbstractLocalStoreTest::testFetchItems()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->fetchItems(collection);
@@ -677,7 +678,7 @@ void AbstractLocalStoreTest::testFetchItem()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->fetchItem(item);
@@ -731,7 +732,7 @@ void AbstractLocalStoreTest::testCreateItem()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->createItem(Item(), collection);
@@ -785,7 +786,7 @@ void AbstractLocalStoreTest::testDeleteItem()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->deleteItem(item);
@@ -839,7 +840,7 @@ void AbstractLocalStoreTest::testModifyItem()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->modifyItem(item);
@@ -918,7 +919,7 @@ void AbstractLocalStoreTest::testMoveItem()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->moveItem(item, targetParent);
@@ -958,7 +959,7 @@ void AbstractLocalStoreTest::testCompactStore()
     mStore->mLastProcessedJob = nullptr;
 
     // test template check method
-    mStore->mErrorCode = KRandom::random() + 1;
+    mStore->mErrorCode = QRandomGenerator::global()->generate() + 1;
     mStore->mErrorText = KRandom::randomString(10);
 
     job = mStore->compactStore();

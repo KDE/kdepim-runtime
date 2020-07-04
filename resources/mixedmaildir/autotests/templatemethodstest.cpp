@@ -40,6 +40,7 @@
 
 #include <KRandom>
 #include <QTemporaryDir>
+#include <QRandomGenerator>
 
 #include <QTest>
 
@@ -147,7 +148,7 @@ void TemplateMethodsTest::testMoveCollection()
     FileStore::CollectionMoveJob *job = nullptr;
 
     // test moving into itself
-    Collection collection(KRandom::random());
+    Collection collection(QRandomGenerator::global()->generate());
     collection.setParentCollection(mStore->topLevelCollection());
     collection.setRemoteId(QStringLiteral("collection"));
     job = mStore->moveCollection(collection, collection);
@@ -189,7 +190,7 @@ void TemplateMethodsTest::testMoveCollection()
     QVERIFY(!job->exec());
 
     // test moving into unrelated collection
-    Collection otherCollection(collection.id() + KRandom::random());
+    Collection otherCollection(collection.id() + QRandomGenerator::global()->generate());
     otherCollection.setParentCollection(mStore->topLevelCollection());
     otherCollection.setRemoteId(QStringLiteral("other"));
     job = mStore->moveCollection(collection, otherCollection);
@@ -206,7 +207,7 @@ void TemplateMethodsTest::testCreateItem()
 {
     mStore->setPath(mDir.path());
 
-    Collection collection(KRandom::random());
+    Collection collection(QRandomGenerator::global()->generate());
     collection.setParentCollection(mStore->topLevelCollection());
     collection.setRemoteId(QStringLiteral("collection"));
 
