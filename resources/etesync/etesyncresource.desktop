@@ -5,6 +5,6 @@ Type=AkonadiResource
 Exec=akonadi_etesync_resource
 Icon=akonadi-etesync
 
-X-Akonadi-MimeTypes=text/directory
+X-Akonadi-MimeTypes=text/calendar,text/directory,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo
 X-Akonadi-Capabilities=Resource
 X-Akonadi-Identifier=akonadi_etesync_resource

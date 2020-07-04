@@ -23,6 +23,8 @@
 
 #include <AkonadiAgentBase/ResourceBase>
 
+#include "calendarhandler.h"
+#include "contacthandler.h"
 #include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
@@ -56,7 +58,7 @@ protected:
 
     void initialise();
 
-    int setupCollection(Akonadi::Collection &collection, EteSyncJournal *journal);
+    void setupCollection(Akonadi::Collection &collection, EteSyncJournal *journal);
 
     void initialiseDirectory(const QString &path) const;
 
@@ -70,10 +72,17 @@ protected:
 
 private Q_SLOTS:
     void onReloadConfiguration();
+    void slotItemsRetrieved(KJob *job);
 
 private:
     Akonadi::Collection mResourceCollection;
     EteSyncClientState *mClientState = nullptr;
+
+    ContactHandler::Ptr mContactHandler = nullptr;
+    CalendarHandler::Ptr mCalendarHandler = nullptr;
+
+    friend class ContactHandler;
+    friend class CalendarHandler;
 };
 
 #endif
