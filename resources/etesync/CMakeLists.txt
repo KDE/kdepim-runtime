@@ -5,14 +5,16 @@ kconfig_add_kcfg_files(etesyncresource_common_SRCS
 
 set(etesyncresource_SRCS
     etesyncresource.cpp
+    etesyncclientstate.cpp
     journalsfetchjob.cpp
     entriesfetchjob.cpp
-    etesyncclientstate.cpp
     contacthandler.cpp
     calendartaskbasehandler.cpp
     calendarhandler.cpp
     taskhandler.cpp
     etesyncadapter.cpp
+    setupwizard.cpp
+
     ${etesyncresource_common_SRCS}
 )
 
@@ -46,6 +48,8 @@ target_link_libraries(akonadi_etesync_resource
     KF5::Contacts
     KF5::CalendarCore
     KF5::KIOCore
+    KF5::ConfigWidgets
+    KF5::WindowSystem
     KF5::I18n
 )
 

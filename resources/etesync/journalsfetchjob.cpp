@@ -38,7 +38,7 @@ void JournalsFetchJob::fetchJournals()
     EteSyncJournalManager *journalManager = etesync_journal_manager_new(mClient);
     mJournals = etesync_journal_manager_list(journalManager);
     if (!mJournals) {
-        setError(UserDefinedError);
+        setError(int(etesync_get_error_code()));
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));
     }

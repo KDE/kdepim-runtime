@@ -29,6 +29,9 @@ public:
     ~EteSyncClientState();
 
     void init();
+    bool initToken(QString &serverUrl, QString &username, QString &password);
+    bool initKeypair(const QString &encryptionPassword);
+    void saveCredentials();
 
     EteSync *client()
     {

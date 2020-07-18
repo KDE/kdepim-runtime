@@ -40,7 +40,7 @@ public:
 
 Q_SIGNALS:
 
-    void initialiseDone(bool successful);
+    void clientInitialised(bool successful);
 
 protected Q_SLOTS:
     void retrieveCollections() override;
@@ -53,6 +53,8 @@ protected Q_SLOTS:
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection);
     void collectionRemoved(const Akonadi::Collection &collection);
+
+    void configure(WId windowId) override;
 
 protected:
     void aboutToQuit() override;
@@ -73,6 +75,7 @@ protected:
 
 private Q_SLOTS:
     void onReloadConfiguration();
+    void initialiseDone(bool successful);
     void slotItemsRetrieved(KJob *job);
 
 private:

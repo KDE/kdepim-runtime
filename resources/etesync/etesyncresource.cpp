@@ -17,6 +17,9 @@
 
 #include "etesyncresource.h"
 
+#include <kwindowsystem.h>
+
+#include <AkonadiCore/CachePolicy>
 #include <AkonadiCore/ChangeRecorder>
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionFetchScope>
@@ -35,6 +38,7 @@
 #include "journalsfetchjob.h"
 #include "settings.h"
 #include "settingsadaptor.h"
+#include "setupwizard.h"
 
 using namespace EteSyncAPI;
 using namespace Akonadi;
@@ -64,6 +68,8 @@ EteSyncResource::EteSyncResource(const QString &id)
     initialiseDirectory(baseDirectoryPath());
 
     mClientState = new EteSyncClientState();
+    connect(mClientState, &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
+    mClientState->init();
 
     mContactHandler = ContactHandler::Ptr(new ContactHandler(this));
     mCalendarHandler = CalendarHandler::Ptr(new CalendarHandler(this));
@@ -78,15 +84,39 @@ EteSyncResource::~EteSyncResource()
 {
 }
 
+void EteSyncResource::configure(WId windowId)
+{
+    SetupWizard wizard(mClientState);
+
+    if (windowId) {
+        wizard.setAttribute(Qt::WA_NativeWindow, true);
+        KWindowSystem::setMainWindow(wizard.windowHandle(), windowId);
+    }
+    const int result = wizard.exec();
+    if (result == QDialog::Accepted) {
+        synchronize();
+        Q_EMIT configurationDialogAccepted();
+    } else {
+        Q_EMIT configurationDialogRejected();
+    }
+}
+
 void EteSyncResource::retrieveCollections()
 {
     // Set up root collection for resource
     mResourceCollection = Collection();
-    mResourceCollection.setContentMimeTypes({Collection::mimeType(), Collection::virtualMimeType()});
+    mResourceCollection.setContentMimeTypes({Collection::mimeType()});
     mResourceCollection.setName(mClientState->username());
     mResourceCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
     mResourceCollection.setParentCollection(Collection::root());
     mResourceCollection.setRights(Collection::CanCreateCollection);
+
+    Akonadi::CachePolicy cachePolicy;
+    cachePolicy.setInheritFromParent(false);
+    cachePolicy.setSyncOnDemand(false);
+    cachePolicy.setCacheTimeout(-1);
+    cachePolicy.setIntervalCheckTime(5);
+    mResourceCollection.setCachePolicy(cachePolicy);
 
     EntityDisplayAttribute *attr = mResourceCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(mClientState->username());
@@ -197,14 +227,15 @@ void EteSyncResource::aboutToQuit()
 void EteSyncResource::onReloadConfiguration()
 {
     qCDebug(ETESYNC_LOG) << "Resource config reload";
+    synchronize();
+}
 
-    connect(mClientState, &EteSyncClientState::clientInitialised, this, [this](bool successful) {
-        qCDebug(ETESYNC_LOG) << "Resource intialised";
-        if (successful) {
-            synchronize();
-        }
-    });
-    mClientState->init();
+void EteSyncResource::initialiseDone(bool successful)
+{
+    qCDebug(ETESYNC_LOG) << "Resource intialised";
+    if (successful) {
+        synchronize();
+    }
 }
 
 QString EteSyncResource::baseDirectoryPath() const
