@@ -63,6 +63,8 @@ public:
 private:
     QLineEdit *mUserName = nullptr;
     KPasswordLineEdit *mPassword = nullptr;
+    QCheckBox *mAdvancedSettings = nullptr;
+    QLineEdit *mServerUrl = nullptr;
     QLabel *mLoginLabel = nullptr;
 };
 
@@ -71,11 +73,13 @@ class EncryptionPasswordPage : public QWizardPage
 public:
     explicit EncryptionPasswordPage(QWidget *parent = nullptr);
     int nextId() const override;
+    void initializePage() override;
     bool validatePage() override;
 
 private:
     KPasswordLineEdit *mEncryptionPassword = nullptr;
     QLabel *mEncryptionPasswordLabel = nullptr;
+    bool mInitAccount = false;
 };
 
 #endif

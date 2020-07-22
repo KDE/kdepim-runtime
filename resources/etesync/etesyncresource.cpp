@@ -95,6 +95,7 @@ void EteSyncResource::configure(WId windowId)
     const int result = wizard.exec();
     if (result == QDialog::Accepted) {
         synchronize();
+        mClientState->saveSettings();
         Q_EMIT configurationDialogAccepted();
     } else {
         Q_EMIT configurationDialogRejected();

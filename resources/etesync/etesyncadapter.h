@@ -146,4 +146,6 @@ EteSyncCryptoManager *etesync_user_info_get_crypto_manager(const EteSyncUserInfo
 EteSyncUserInfo *etesync_user_info_manager_fetch(const EteSyncUserInfoManager *user_info_manager,
                                                  const QString &owner);
 
+EteSyncUserInfo *etesync_user_info_new(const QString &owner, uint8_t version);
+
 #endif

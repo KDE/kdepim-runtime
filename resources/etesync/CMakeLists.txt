@@ -1,6 +1,14 @@
-set(etesyncresource_common_SRCS)
+set(etesyncresource_common_SRCS
+    etesyncadapter.cpp
+)
+
 kconfig_add_kcfg_files(etesyncresource_common_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfgc
+)
+
+set(etesyncconfig_SRCS
+  setupwizard.cpp
+  ${etesyncresource_common_SRCS}
 )
 
 set(etesyncresource_SRCS
@@ -11,10 +19,10 @@ set(etesyncresource_SRCS
     contacthandler.cpp
     calendartaskbasehandler.cpp
     calendarhandler.cpp
-    taskhandler.cpp
-    etesyncadapter.cpp
+    taskhandler.cpp   
     setupwizard.cpp
 
+    ${etesyncconfig_SRCS}
     ${etesyncresource_common_SRCS}
 )
 
@@ -70,35 +78,4 @@ install(TARGETS akonadi_etesync_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES etesyncresource.desktop
     DESTINATION ${KDE_INSTALL_DATAROOTDIR}/akonadi/agents
-)
-
-################################### Config plugin ############################
-
-set(etesyncconfig_SRCS
-  etesyncconfig.cpp
-  ${etesyncresource_common_SRCS}
-)
-
-ecm_qt_declare_logging_category(etesyncconfig_SRCS
-    HEADER etesyncconfig_debug.h
-    IDENTIFIER ETESYNC_CONFIG_LOG
-    CATEGORY_NAME org.kde.pim.etesync.config
-    DESCRIPTION "resource etesync (kdepim-runtime)"
-    EXPORT KDEPIMRUNTIME
-)
-
-ki18n_wrap_ui(etesyncconfig_SRCS etesyncconfigwidget.ui)
-
-kcoreaddons_add_plugin(etesyncconfig
-    SOURCES ${etesyncconfig_SRCS}
-    JSON "etesyncconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-)
-
-target_link_libraries(etesyncconfig
-    KF5::AkonadiCore
-    KF5::I18n
-    KF5::Completion
-    KF5::ConfigWidgets
-    KF5::KIOCore
 )

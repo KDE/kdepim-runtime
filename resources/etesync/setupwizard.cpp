@@ -20,6 +20,7 @@
 
 #include <KLocalizedString>
 #include <KPasswordLineEdit>
+#include <QCheckBox>
 #include <QFormLayout>
 #include <QIcon>
 #include <QLabel>
@@ -46,15 +47,29 @@ LoginPage::LoginPage(QWidget *parent)
     QFormLayout *layout = new QFormLayout(this);
 
     mLoginLabel = new QLabel;
+    mLoginLabel->setWordWrap(true);
     layout->addWidget(mLoginLabel);
 
     mUserName = new QLineEdit;
-    layout->addRow(i18n("User:"), mUserName);
+    layout->addRow(i18n("Email:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
     mPassword = new KPasswordLineEdit;
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
+
+    mAdvancedSettings = new QCheckBox(i18n("Advanced settings"), this);
+    layout->addWidget(mAdvancedSettings);
+
+    mServerUrl = new QLineEdit;
+    mServerUrl->setVisible(false);
+    layout->addRow(i18n("Server:"), mServerUrl);
+    registerField(QStringLiteral("credentialsServerUrl"), mServerUrl);
+
+    layout->labelForField(mServerUrl)->setVisible(false);
+
+    connect(mAdvancedSettings, SIGNAL(toggled(bool)), mServerUrl, SLOT(setVisible(bool)));
+    connect(mAdvancedSettings, SIGNAL(toggled(bool)), layout->labelForField(mServerUrl), SLOT(setVisible(bool)));
 }
 
 int LoginPage::nextId() const
@@ -68,7 +83,11 @@ bool LoginPage::validatePage()
     qCDebug(ETESYNC_LOG) << "validate login page";
     QString username = field(QStringLiteral("credentialsUserName")).toString();
     QString password = field(QStringLiteral("credentialsPassword")).toString();
-    QString serverUrl = QStringLiteral("http://0.0.0.0:9966");
+    QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
+    QString serverUrl = QStringLiteral("https://api.etesync.com");
+    if (!advancedServerUrl.isNull() && !advancedServerUrl.isEmpty()) {
+        serverUrl = advancedServerUrl;
+    }
     // return true;
     bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
     if (!loginResult) {
@@ -86,6 +105,7 @@ EncryptionPasswordPage::EncryptionPasswordPage(QWidget *parent)
     QFormLayout *layout = new QFormLayout(this);
 
     mEncryptionPasswordLabel = new QLabel;
+    mEncryptionPasswordLabel->setWordWrap(true);
     layout->addWidget(mEncryptionPasswordLabel);
 
     mEncryptionPassword = new KPasswordLineEdit;
@@ -99,10 +119,23 @@ int EncryptionPasswordPage::nextId() const
     return -1;
 }
 
+void EncryptionPasswordPage::initializePage()
+{
+    bool userInfoResult = static_cast<SetupWizard *>(wizard())->mClientState->initUserInfo();
+    if (!userInfoResult) {
+        setSubTitle(i18n("Please set your encryption password below, and make sure you got it right, as it can't be recovered if lost!"));
+        mInitAccount = true;
+    }
+}
+
 bool EncryptionPasswordPage::validatePage()
 {
     qCDebug(ETESYNC_LOG) << "validate encryptionpassword page";
     QString encryptionPassword = field(QStringLiteral("credentialsEncryptionPassword")).toString();
+    if (mInitAccount) {
+        static_cast<SetupWizard *>(wizard())->mClientState->initAccount(encryptionPassword);
+        return true;
+    }
     // return true;
     bool keypairResult = static_cast<SetupWizard *>(wizard())->mClientState->initKeypair(encryptionPassword);
     if (!keypairResult) {

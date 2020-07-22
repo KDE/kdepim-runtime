@@ -134,3 +134,8 @@ EteSyncUserInfo *etesync_user_info_manager_fetch(const EteSyncUserInfoManager *u
 {
     return etesync_user_info_manager_fetch(user_info_manager, charArrFromQString(owner));
 }
+
+EteSyncUserInfo *etesync_user_info_new(const QString &owner, uint8_t version)
+{
+    return etesync_user_info_new(charArrFromQString(owner), version);
+}

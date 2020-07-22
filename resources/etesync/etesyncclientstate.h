@@ -30,8 +30,10 @@ public:
 
     void init();
     bool initToken(QString &serverUrl, QString &username, QString &password);
+    bool initUserInfo();
     bool initKeypair(const QString &encryptionPassword);
-    void saveCredentials();
+    void initAccount(const QString &encryptionPassword);
+    void saveSettings();
 
     EteSync *client()
     {
@@ -66,6 +68,7 @@ private:
     QString mDerived;
     QString mToken;
     EteSyncJournalManagerPtr mJournalManager = nullptr;
+    EteSyncUserInfoPtr mUserInfo = nullptr;
     EteSyncAsymmetricKeyPairPtr mKeypair = nullptr;
     QString mUsername, mPassword, mServerUrl, mEncryptionPassword;
 };
