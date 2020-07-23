@@ -99,6 +99,9 @@ find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
 
 find_package(Qca-qt5 2.3.0 CONFIG REQUIRED)
+set_package_properties(Qca-qt5 PROPERTIES DESCRIPTION "Qt Cryptographic Architecture"
+                   URL "https://invent.kde.org/libraries/qca" TYPE REQUIRED
+                   PURPOSE "Needed for ews resource.")
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT5 package
 find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED TextToSpeech Network Widgets Test XmlPatterns DBus WebEngineWidgets NetworkAuth)
