@@ -73,6 +73,8 @@ protected:
 
     QString baseDirectoryPath() const;
 
+    void checkTokenRefresh();
+
 private Q_SLOTS:
     void onReloadConfiguration();
     void initialiseDone(bool successful);

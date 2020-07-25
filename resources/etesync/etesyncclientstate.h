@@ -34,6 +34,7 @@ public:
     bool initKeypair(const QString &encryptionPassword);
     void initAccount(const QString &encryptionPassword);
     void saveSettings();
+    void refreshToken();
 
     EteSync *client()
     {

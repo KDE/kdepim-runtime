@@ -162,6 +162,11 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
                                const Akonadi::Collection &collection)
 {
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
+    if (lastJournalUid != collection.remoteRevision()) {
+        mResource->deferTask();
+        mResource->retrieveItems(collection);
+    }
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     KContacts::VCardConverter converter;
@@ -193,6 +198,11 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
     Collection collection = item.parentCollection();
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
+    if (lastJournalUid != collection.remoteRevision()) {
+        mResource->deferTask();
+        mResource->retrieveItems(collection);
+    }
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     KContacts::VCardConverter converter;
@@ -222,6 +232,11 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
     Collection collection = item.parentCollection();
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
+    if (lastJournalUid != collection.remoteRevision()) {
+        mResource->deferTask();
+        mResource->retrieveItems(collection);
+    }
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QString contact = getLocalContact(item.remoteId());

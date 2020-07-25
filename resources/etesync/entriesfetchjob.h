@@ -18,6 +18,7 @@
 #ifndef ETESYNCENTRIESFETCHJOB_H
 #define ETESYNCENTRIESFETCHJOB_H
 
+#include <AkonadiCore/Collection>
 #include <KJob>
 
 #include "etesyncadapter.h"
@@ -28,7 +29,7 @@ namespace EteSyncAPI {
         Q_OBJECT
 
     public:
-        EntriesFetchJob(const EteSync *client, const QString &journalUid, const QString &prevUid, QObject *parent = nullptr);
+        EntriesFetchJob(const EteSync *client, const Akonadi::Collection &collection, QObject *parent = nullptr);
 
         void start() override;
 
@@ -37,14 +38,18 @@ namespace EteSyncAPI {
             return mEntries;
         }
 
+        Akonadi::Collection collection()
+        {
+            return mCollection;
+        }
+
     protected:
         void fetchEntries();
 
     private:
         const EteSync *mClient = nullptr;
-        const QString mJournalUid;
-        const QString mPrevUid;
         EteSyncEntry **mEntries = nullptr;
+        Akonadi::Collection mCollection;
     };
 }  // namespace EteSyncAPI
 

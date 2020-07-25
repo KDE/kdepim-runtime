@@ -92,6 +92,17 @@ bool EteSyncClientState::initToken(QString &serverUrl, QString &username, QStrin
     return true;
 }
 
+void EteSyncClientState::refreshToken()
+{
+    mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
+    if (mToken.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Empty token";
+        return;
+    }
+    qCDebug(ETESYNC_LOG) << "Received token" << mToken;
+    etesync_set_auth_token(mClient.get(), mToken);
+}
+
 bool EteSyncClientState::initUserInfo()
 {
     mJournalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));

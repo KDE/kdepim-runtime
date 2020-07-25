@@ -146,6 +146,7 @@ void EteSyncResource::retrieveCollections()
         collectionsRetrieved(list);
     });
     job->start();
+    checkTokenRefresh();
 }
 
 void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
@@ -186,14 +187,12 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
 
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
-    QString journalUid = collection.remoteId();
-    QString prevUid = collection.remoteRevision();
-
-    auto job = new EntriesFetchJob(mClientState->client(), journalUid, prevUid, this);
+    auto job = new EntriesFetchJob(mClientState->client(), collection, this);
 
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);
 
     job->start();
+    checkTokenRefresh();
 }
 
 void EteSyncResource::slotItemsRetrieved(KJob *job)
@@ -206,13 +205,13 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     qCDebug(ETESYNC_LOG) << "Retrieving entries";
     EteSyncEntry **entries = qobject_cast<EntriesFetchJob *>(job)->entries();
 
-    Collection collection = currentCollection();
+    Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
 
-    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
+    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType()) || collection.contentMimeTypes().contains(QStringLiteral("text/directory"))) {
         mContactHandler->setupItems(entries, collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType()) || collection.contentMimeTypes().contains(QStringLiteral("application/x-vnd.akonadi.calendar.event"))) {
         mCalendarHandler->setupItems(entries, collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
+    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType()) || collection.contentMimeTypes().contains(QStringLiteral("application/x-vnd.akonadi.calendar.todo"))) {
         mTaskHandler->setupItems(entries, collection);
     } else {
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
@@ -236,6 +235,14 @@ void EteSyncResource::initialiseDone(bool successful)
     qCDebug(ETESYNC_LOG) << "Resource intialised";
     if (successful) {
         synchronize();
+    }
+}
+
+void EteSyncResource::checkTokenRefresh()
+{
+    if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
+        deferTask();
+        mClientState->refreshToken();
     }
 }
 
@@ -277,6 +284,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(item);
     }
+    checkTokenRefresh();
 }
 
 void EteSyncResource::itemChanged(const Akonadi::Item &item,
@@ -293,6 +301,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(item);
     }
+    checkTokenRefresh();
 }
 
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
@@ -308,6 +317,7 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(item);
     }
+    checkTokenRefresh();
 }
 
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -323,6 +333,7 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(collection);
     }
+    checkTokenRefresh();
 }
 
 void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
@@ -338,6 +349,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
         changeCommitted(collection);
     }
+    checkTokenRefresh();
 }
 
 void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -353,6 +365,7 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
     } else {
         qCDebug(ETESYNC_LOG) << "Unknown MIME type";
     }
+    checkTokenRefresh();
 }
 
 AKONADI_RESOURCE_MAIN(EteSyncResource)

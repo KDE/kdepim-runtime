@@ -25,8 +25,8 @@
 
 using namespace EteSyncAPI;
 
-EntriesFetchJob::EntriesFetchJob(const EteSync *client, const QString &journalUid, const QString &prevUid, QObject *parent)
-    : KJob(parent), mClient(client), mJournalUid(journalUid), mPrevUid(prevUid)
+EntriesFetchJob::EntriesFetchJob(const EteSync *client, const Akonadi::Collection &collection, QObject *parent)
+    : KJob(parent), mClient(client), mCollection(collection)
 {
 }
 
@@ -37,8 +37,10 @@ void EntriesFetchJob::start()
 
 void EntriesFetchJob::fetchEntries()
 {
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient, mJournalUid));
-    mEntries = etesync_entry_manager_list(entryManager.get(), mPrevUid, 0);
+    QString journalUid = mCollection.remoteId();
+    QString prevUid = mCollection.remoteRevision();
+    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient, journalUid));
+    mEntries = etesync_entry_manager_list(entryManager.get(), prevUid, 0);
 
     if (!mEntries) {
         setError(UserDefinedError);
