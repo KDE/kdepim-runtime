@@ -116,7 +116,7 @@ bool EwsSyncFolderItemsRequest::parseResult(QXmlStreamReader &reader)
 
 bool EwsSyncFolderItemsRequest::parseItemsResponse(QXmlStreamReader &reader)
 {
-    auto resp = new EwsSyncFolderItemsRequest::Response(reader);
+    QScopedPointer<EwsSyncFolderItemsRequest::Response> resp(new EwsSyncFolderItemsRequest::Response(reader));
     if (resp->responseClass() == EwsResponseUnknown) {
         return false;
     }
