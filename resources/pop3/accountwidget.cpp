@@ -77,10 +77,6 @@ AccountWidget::AccountWidget(Settings &settings, const QString &identifier, QWid
     , mSettings(settings)
 {
     mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
-    new KPIM::LineEditCatchReturnKey(nameEdit, this);
-    new KPIM::LineEditCatchReturnKey(hostEdit, this);
-    new KPIM::LineEditCatchReturnKey(loginEdit, this);
-    new KPIM::LineEditCatchReturnKey(precommand, this);
     setupWidgets();
 }
 
@@ -108,6 +104,11 @@ void AccountWidget::setupWidgets()
 
     intervalSpin->setRange(ResourceSettings::self()->minimumCheckInterval(), 10000);
     intervalSpin->setSingleStep(1);
+    new KPIM::LineEditCatchReturnKey(nameEdit, this);
+    new KPIM::LineEditCatchReturnKey(hostEdit, this);
+    new KPIM::LineEditCatchReturnKey(loginEdit, this);
+    new KPIM::LineEditCatchReturnKey(precommand, this);
+
 
     connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotLeaveOnServerClicked);
     connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerDays);
