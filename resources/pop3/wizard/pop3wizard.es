@@ -53,7 +53,7 @@ function setup()
   var smtp = SetupManager.createTransport( "smtp" );
   smtp.setName( SetupManager.name() );
   smtp.setHost( page.widget().outgoingAddress.text.trim() );
-  smtp.setEncryption( "NONE" );
+  smtp.setEncryption( "SSL" );
 
   SetupManager.execute();
 }
