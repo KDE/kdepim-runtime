@@ -64,7 +64,7 @@ EteSyncResource::EteSyncResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
-    // Make local contacts directory
+    // Make local resource directory
     initialiseDirectory(baseDirectoryPath());
 
     mClientState = new EteSyncClientState();
