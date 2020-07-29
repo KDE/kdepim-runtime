@@ -70,17 +70,17 @@ void OutboxQueue::addIfComplete(const Item &item)
     }
 
     if (!item.hasAttribute<AddressAttribute>()) {
-        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute Address.";
+        qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "does not have the required attribute Address.";
         return;
     }
 
     if (!item.hasAttribute<DispatchModeAttribute>()) {
-        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute DispatchMode.";
+        qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "does not have the required attribute DispatchMode.";
         return;
     }
 
     if (!item.hasAttribute<SentBehaviourAttribute>()) {
-        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "does not have the required attribute SentBehaviour.";
+        qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "does not have the required attribute SentBehaviour.";
         return;
     }
 
@@ -90,21 +90,21 @@ void OutboxQueue::addIfComplete(const Item &item)
     }
 
     if (!item.hasFlag(Akonadi::MessageFlags::Queued)) {
-        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "has no '$QUEUED' flag.";
+        qCDebug(MAILDISPATCHER_LOG) << "Item " << item.id() << "has no '$QUEUED' flag.";
         return;
     }
 
     const DispatchModeAttribute *dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
     Q_ASSERT(dispatchModeAttribute);
     if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Manual) {
-        qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is queued to be sent manually.";
+        qCDebug(MAILDISPATCHER_LOG) << "Item " << item.id() << "is queued to be sent manually.";
         return;
     }
 
     const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
     Q_ASSERT(transportAttribute);
     if (transportAttribute->transport() == nullptr) {
-        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid transport.";
+        qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid transport.";
         return;
     }
 
@@ -112,7 +112,7 @@ void OutboxQueue::addIfComplete(const Item &item)
     Q_ASSERT(sentBehaviourAttribute);
     if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection
         && !sentBehaviourAttribute->moveToCollection().isValid()) {
-        qCWarning(MAILDISPATCHER_LOG) << "Item" << item.id() << "has invalid sent-mail collection.";
+        qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid sent-mail collection.";
         return;
     }
 
@@ -136,7 +136,7 @@ void OutboxQueue::addIfComplete(const Item &item)
         return;
     }
 
-    qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted into the queue (size" << item.size() << ").";
+    qCDebug(MAILDISPATCHER_LOG) << "Item " << item.id() << "is accepted into the queue (size" << item.size() << ").";
     Q_ASSERT(!mQueue.contains(item));
     mTotalSize += item.size();
     mQueue.append(item);
