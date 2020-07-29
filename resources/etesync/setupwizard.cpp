@@ -80,7 +80,6 @@ int LoginPage::nextId() const
 
 bool LoginPage::validatePage()
 {
-    qCDebug(ETESYNC_LOG) << "validate login page";
     QString username = field(QStringLiteral("credentialsUserName")).toString();
     QString password = field(QStringLiteral("credentialsPassword")).toString();
     QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
@@ -88,7 +87,6 @@ bool LoginPage::validatePage()
     if (!advancedServerUrl.isNull() && !advancedServerUrl.isEmpty()) {
         serverUrl = advancedServerUrl;
     }
-    // return true;
     bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
     if (!loginResult) {
         mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
@@ -115,7 +113,6 @@ EncryptionPasswordPage::EncryptionPasswordPage(QWidget *parent)
 
 int EncryptionPasswordPage::nextId() const
 {
-    // Implement keypair job
     return -1;
 }
 
@@ -130,13 +127,11 @@ void EncryptionPasswordPage::initializePage()
 
 bool EncryptionPasswordPage::validatePage()
 {
-    qCDebug(ETESYNC_LOG) << "validate encryptionpassword page";
     QString encryptionPassword = field(QStringLiteral("credentialsEncryptionPassword")).toString();
     if (mInitAccount) {
         static_cast<SetupWizard *>(wizard())->mClientState->initAccount(encryptionPassword);
         return true;
     }
-    // return true;
     bool keypairResult = static_cast<SetupWizard *>(wizard())->mClientState->initKeypair(encryptionPassword);
     if (!keypairResult) {
         mEncryptionPasswordLabel->setText(i18n("Incorrect encryption password. Please try again."));
