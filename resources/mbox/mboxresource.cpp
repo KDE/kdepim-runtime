@@ -69,10 +69,8 @@ MboxResource::MboxResource(const QString &id)
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  mSettings, QDBusConnection::ExportAdaptors);
 
-    QStringList mimeTypes;
-    mimeTypes << QStringLiteral("message/rfc822");
+    const QStringList mimeTypes{QStringLiteral("message/rfc822")};
     setSupportedMimetypes(mimeTypes, QStringLiteral("message-rfc822"));
-
     // Register the list of deleted items as an attribute of the collection.
     AttributeFactory::registerAttribute<DeletedItemsAttribute>();
 }
