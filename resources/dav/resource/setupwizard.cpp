@@ -24,7 +24,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QRadioButton>
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 
 enum GroupwareServers {
     Citadel,
@@ -65,7 +65,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 
     QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
-    localPart.remove(QRegExp(QLatin1String("@.*$")));
+    localPart.remove(QRegularExpression(QStringLiteral("@.*$")));
     pathPattern.replace(QLatin1String("$user$"), username);
     pathPattern.replace(QLatin1String("$localpart$"), localPart);
     QString providerName;
@@ -377,10 +377,10 @@ ConnectionPage::ConnectionPage(QWidget *parent)
     setSubTitle(i18n("Enter the connection information for the groupware server"));
 
     mLayout = new QFormLayout(this);
-    QRegExp hostnameRegexp(QStringLiteral("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
+    const QRegularExpression hostnameRegexp(QStringLiteral("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
     mHost = new QLineEdit;
     registerField(QStringLiteral("connectionHost*"), mHost);
-    mHost->setValidator(new QRegExpValidator(hostnameRegexp, this));
+    mHost->setValidator(new QRegularExpressionValidator(hostnameRegexp, this));
     mLayout->addRow(i18n("Host"), mHost);
 
     mPath = new QLineEdit;

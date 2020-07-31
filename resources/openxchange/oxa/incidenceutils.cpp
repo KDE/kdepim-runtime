@@ -20,6 +20,7 @@
 
 #include <QBitArray>
 #include <QDebug>
+#include <QRegularExpression>
 
 using namespace OXA;
 
@@ -114,7 +115,7 @@ static void parseIncidenceAttribute(const QDomElement &element, const KCalendarC
             incidence->setSecrecy(KCalendarCore::Incidence::SecrecyPublic);
         }
     } else if (tagName == QLatin1String("categories")) {
-        incidence->setCategories(text.split(QRegExp(QLatin1String(",\\s*"))));
+        incidence->setCategories(text.split(QRegularExpression(QStringLiteral(",\\s*"))));
     }
 }
 

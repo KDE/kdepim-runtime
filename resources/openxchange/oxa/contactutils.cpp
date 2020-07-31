@@ -17,6 +17,7 @@
 #include <QBuffer>
 #include <QImage>
 #include <QDomElement>
+#include <QRegularExpression>
 
 using namespace OXA;
 
@@ -232,7 +233,7 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1String("pager")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Pager));
             } else if (tagName == QLatin1String("categories")) {
-                contact.setCategories(text.split(QRegExp(QLatin1String(",\\s*"))));
+                contact.setCategories(text.split(QRegularExpression(QStringLiteral(",\\s*"))));
             }
 
             element = element.nextSiblingElement();

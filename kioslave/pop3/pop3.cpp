@@ -15,7 +15,7 @@ extern "C" {
 
 #include <QCoreApplication>
 #include <QByteArray>
-#include <QRegExp>
+#include <QRegularExpression>
 #include "pop3_debug.h"
 
 #include <KLocalizedString>
@@ -654,7 +654,8 @@ bool POP3Protocol::pop3_open()
 
         // Does the server support APOP?
         //QString apop_cmd;
-        QRegExp re(QStringLiteral("<[A-Za-z0-9\\.\\-_]+@[A-Za-z0-9\\.\\-_]+>$"), Qt::CaseInsensitive);
+        const QRegularExpression re(QStringLiteral("<[A-Za-z0-9\\.\\-_]+@[A-Za-z0-9\\.\\-_]+>$"),
+                              QRegularExpression::CaseInsensitiveOption);
 
         qCDebug(POP3_LOG) << "greeting: " << greeting;
         int apop_pos = greeting.indexOf(re);

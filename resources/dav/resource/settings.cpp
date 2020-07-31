@@ -26,7 +26,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QPointer>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QUrl>
 #include <QDBusConnection>
 #include <QHBoxLayout>
@@ -517,7 +517,7 @@ void Settings::updateToV2()
 
     QString urlConfigStr = urls.at(0);
     UrlConfiguration urlConfig(urlConfigStr);
-    QRegExp regexp(QLatin1Char('^') + urlConfig.mUser);
+    const QRegularExpression regexp(QStringLiteral("^") + urlConfig.mUser);
 
     QMutableStringListIterator it(urls);
     while (it.hasNext()) {
