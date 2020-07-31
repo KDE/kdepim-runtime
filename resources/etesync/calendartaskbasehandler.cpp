@@ -31,18 +31,16 @@
 using namespace Akonadi;
 using namespace KCalendarCore;
 
-CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource)
-    : mResource(resource), mClientState(resource->mClientState)
+CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource) : BaseHandler(resource)
 {
-    mResource->initialiseDirectory(baseDirectoryPath());
-    AttributeFactory::registerAttribute<CollectionColorAttribute>();
+    initialiseBaseDirectory();
 }
 
 void CalendarTaskBaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "CalendarTaskBaseHandler: Setting up items";
     QString prevUid = collection.remoteRevision();
-    QString journalUid = collection.remoteId();
+    const QString journalUid = collection.remoteId();
 
     bool isIncremental = false;
 
@@ -174,23 +172,11 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), format.toString(calendar)));
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
-
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
-
-    EteSyncEntry *entries[] = {entry.get(), NULL};
-
-    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
 
     mResource->changeCommitted(item);
 
     updateLocalCalendar(item.payload<Incidence::Ptr>());
-
-    // Update last UID in collection remoteRevision
-    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    Collection col = collection;
-    col.setRemoteRevision(entryUid);
-    new CollectionModifyJob(col, this);
 }
 
 void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
@@ -214,23 +200,11 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), format.toString(calendar)));
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
-
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
-
-    EteSyncEntry *entries[] = {entry.get(), NULL};
-
-    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
 
     mResource->changeCommitted(item);
 
     updateLocalCalendar(item.payload<Incidence::Ptr>());
-
-    // Update last UID in collection remoteRevision
-    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    Collection col = collection;
-    col.setRemoteRevision(entryUid);
-    new CollectionModifyJob(col, this);
 }
 
 void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
@@ -251,20 +225,9 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
     QString calendar = getLocalCalendar(item.remoteId());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(calendar)));
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
-
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
-
-    EteSyncEntry *entries[] = {entry.get(), NULL};
-
-    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
 
     mResource->changeCommitted(item);
-
-    // Update last UID in collection remoteRevision
-    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    collection.setRemoteRevision(entryUid);
-    new CollectionModifyJob(collection, this);
 }
 
 void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -273,7 +236,7 @@ void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collect
     EteSyncJournalPtr journal(etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION));
 
     /// TODO: Description?
-    EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -299,7 +262,7 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
         }
     }
 
-    EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), journalColor));
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), journalColor));
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 

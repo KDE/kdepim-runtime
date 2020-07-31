@@ -28,10 +28,9 @@
 
 using namespace Akonadi;
 
-ContactHandler::ContactHandler(EteSyncResource *resource)
-    : mResource(resource), mClientState(resource->mClientState)
+ContactHandler::ContactHandler(EteSyncResource *resource) : BaseHandler(resource)
 {
-    mResource->initialiseDirectory(baseDirectoryPath());
+    initialiseBaseDirectory();
 }
 
 const QString ContactHandler::mimeType()
@@ -39,7 +38,7 @@ const QString ContactHandler::mimeType()
     return KContacts::Addressee::mimeType();
 }
 
-const QString ContactHandler::eteSyncCollectionType()
+const QString ContactHandler::etesyncCollectionType()
 {
     return QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK);
 }
@@ -176,23 +175,11 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_ADD, content.constData()));
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
-
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
-
-    EteSyncEntry *entries[] = {entry.get(), NULL};
-
-    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
 
     mResource->changeCommitted(item);
 
     updateLocalContact(item.payload<KContacts::Addressee>());
-
-    // Update last UID in collection remoteRevision
-    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    Collection col = collection;
-    col.setRemoteRevision(entryUid);
-    new CollectionModifyJob(col, this);
 }
 
 void ContactHandler::itemChanged(const Akonadi::Item &item,
@@ -215,22 +202,11 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
     QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_CHANGE, content.constData()));
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
-
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
-
-    EteSyncEntry *entries[] = {entry.get(), NULL};
-
-    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
 
     mResource->changeCommitted(item);
 
     updateLocalContact(item.payload<KContacts::Addressee>());
-
-    // Update last UID in collection remoteRevision
-    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    collection.setRemoteRevision(entryUid);
-    new CollectionModifyJob(collection, this);
 }
 
 void ContactHandler::itemRemoved(const Akonadi::Item &item)
@@ -251,20 +227,9 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
     QString contact = getLocalContact(item.remoteId());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(contact)));
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager.get(), syncEntry.get(), collection.remoteRevision()));
-
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
-
-    EteSyncEntry *entries[] = {entry.get(), NULL};
-
-    etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
+    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
 
     mResource->changeCommitted(item);
-
-    // Update last UID in collection remoteRevision
-    const QString entryUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
-    collection.setRemoteRevision(entryUid);
-    new CollectionModifyJob(collection, this);
 }
 
 void ContactHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -272,7 +237,7 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
     QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
     EteSyncJournalPtr journal(etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION));
 
-    EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -290,7 +255,7 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
     QString journalUid = collection.remoteId();
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
 
-    EteSyncCollectionInfoPtr info(etesync_collection_info_new(eteSyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
+    EteSyncCollectionInfoPtr info(etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 

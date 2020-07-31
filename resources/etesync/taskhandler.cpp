@@ -25,7 +25,7 @@ const QString TaskHandler::mimeType()
 {
     return KCalendarCore::Todo::todoMimeType();
 }
-const QString TaskHandler::eteSyncCollectionType()
+const QString TaskHandler::etesyncCollectionType()
 {
     return QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS);
 }

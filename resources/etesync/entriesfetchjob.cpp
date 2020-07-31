@@ -37,8 +37,8 @@ void EntriesFetchJob::start()
 
 void EntriesFetchJob::fetchEntries()
 {
-    QString journalUid = mCollection.remoteId();
-    QString prevUid = mCollection.remoteRevision();
+    const QString journalUid = mCollection.remoteId();
+    const QString prevUid = mCollection.remoteRevision();
     EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient, journalUid));
     mEntries = etesync_entry_manager_list(entryManager.get(), prevUid, 0);
 

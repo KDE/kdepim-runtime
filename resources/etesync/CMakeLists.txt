@@ -17,6 +17,7 @@ set(etesyncresource_SRCS
     journalsfetchjob.cpp
     entriesfetchjob.cpp
     contacthandler.cpp
+    basehandler.cpp
     calendartaskbasehandler.cpp
     calendarhandler.cpp
     taskhandler.cpp   

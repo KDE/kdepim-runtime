@@ -80,14 +80,14 @@ int LoginPage::nextId() const
 
 bool LoginPage::validatePage()
 {
-    QString username = field(QStringLiteral("credentialsUserName")).toString();
-    QString password = field(QStringLiteral("credentialsPassword")).toString();
-    QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
+    const QString username = field(QStringLiteral("credentialsUserName")).toString();
+    const QString password = field(QStringLiteral("credentialsPassword")).toString();
+    const QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
     QString serverUrl = QStringLiteral("https://api.etesync.com");
     if (!advancedServerUrl.isNull() && !advancedServerUrl.isEmpty()) {
         serverUrl = advancedServerUrl;
     }
-    bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
+    const bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
     if (!loginResult) {
         mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
     }

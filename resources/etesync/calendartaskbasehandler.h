@@ -22,39 +22,34 @@
 #include <AkonadiCore/Item>
 #include <KCalendarCore/Incidence>
 
+#include "basehandler.h"
 #include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
 class EteSyncResource;
 
-class CalendarTaskBaseHandler : public QObject
+class CalendarTaskBaseHandler : public BaseHandler
 {
     Q_OBJECT
 public:
-    CalendarTaskBaseHandler(EteSyncResource *resource);
+    explicit CalendarTaskBaseHandler(EteSyncResource *resource);
 
-    void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection);
+    void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection) override;
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    void itemRemoved(const Akonadi::Item &item);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
 
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
-    void collectionChanged(const Akonadi::Collection &collection);
-    void collectionRemoved(const Akonadi::Collection &collection);
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
+    void collectionChanged(const Akonadi::Collection &collection) override;
+    void collectionRemoved(const Akonadi::Collection &collection) override;
 
 protected:
     QString getLocalCalendar(const QString &incidenceUid) const;
     bool updateLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence);
     void deleteLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence);
 
-    QString baseDirectoryPath() const;
-
-    virtual const QString mimeType() = 0;
-    virtual const QString eteSyncCollectionType() = 0;
-
-    EteSyncResource *mResource = nullptr;
-    EteSyncClientState *mClientState = nullptr;
+    QString baseDirectoryPath() const override;
 };
 
 #endif

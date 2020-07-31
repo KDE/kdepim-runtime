@@ -28,7 +28,7 @@ namespace EteSyncAPI {
         Q_OBJECT
 
     public:
-        JournalsFetchJob(EteSync *client, QObject *parent = nullptr);
+        explicit JournalsFetchJob(EteSync *client, QObject *parent = nullptr);
 
         void start() override;
 

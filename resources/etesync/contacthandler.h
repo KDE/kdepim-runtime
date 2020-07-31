@@ -23,41 +23,38 @@
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
 
+#include "basehandler.h"
 #include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
 class EteSyncResource;
 
-class ContactHandler : public QObject
+class ContactHandler : public BaseHandler
 {
     Q_OBJECT
 public:
     typedef std::unique_ptr<ContactHandler> Ptr;
-    ContactHandler(EteSyncResource *resource);
+    explicit ContactHandler(EteSyncResource *resource);
 
-    void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection);
+    void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection) override;
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection);
-    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts);
-    void itemRemoved(const Akonadi::Item &item);
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    void itemRemoved(const Akonadi::Item &item) override;
 
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent);
-    void collectionChanged(const Akonadi::Collection &collection);
-    void collectionRemoved(const Akonadi::Collection &collection);
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
+    void collectionChanged(const Akonadi::Collection &collection) override;
+    void collectionRemoved(const Akonadi::Collection &collection) override;
 
 protected:
     QString getLocalContact(QString contactUid) const;
     void updateLocalContact(const KContacts::Addressee &contact);
     void deleteLocalContact(const KContacts::Addressee &contact);
 
-    QString baseDirectoryPath() const;
+    QString baseDirectoryPath() const override;
 
-    const QString mimeType();
-    const QString eteSyncCollectionType();
-
-private:
-    EteSyncResource *mResource = nullptr;
-    EteSyncClientState *mClientState = nullptr;
+    const QString mimeType() override;
+    const QString etesyncCollectionType() override;
 };
 
 #endif

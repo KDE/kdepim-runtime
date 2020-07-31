@@ -29,7 +29,7 @@ public:
     ~EteSyncClientState();
 
     void init();
-    bool initToken(QString &serverUrl, QString &username, QString &password);
+    bool initToken(const QString &serverUrl, const QString &username, const QString &password);
     bool initUserInfo();
     bool initKeypair(const QString &encryptionPassword);
     void initAccount(const QString &encryptionPassword);

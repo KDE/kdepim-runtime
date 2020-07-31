@@ -74,7 +74,7 @@ void EteSyncClientState::init()
     Q_EMIT clientInitialised(true);
 }
 
-bool EteSyncClientState::initToken(QString &serverUrl, QString &username, QString &password)
+bool EteSyncClientState::initToken(const QString &serverUrl, const QString &username, const QString &password)
 {
     mServerUrl = serverUrl;
     mUsername = username;

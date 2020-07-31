@@ -90,6 +90,7 @@ private:
 
     friend class ContactHandler;
     friend class CalendarTaskBaseHandler;
+    friend class BaseHandler;
 };
 
 #endif

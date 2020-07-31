@@ -35,7 +35,7 @@ public:
 
 protected:
     const QString mimeType();
-    const QString eteSyncCollectionType();
+    const QString etesyncCollectionType();
 };
 
 #endif

@@ -29,16 +29,16 @@ namespace EteSyncAPI {
         Q_OBJECT
 
     public:
-        EntriesFetchJob(const EteSync *client, const Akonadi::Collection &collection, QObject *parent = nullptr);
+        explicit EntriesFetchJob(const EteSync *client, const Akonadi::Collection &collection, QObject *parent = nullptr);
 
         void start() override;
 
-        EteSyncEntry **entries()
+        EteSyncEntry **entries() const
         {
             return mEntries;
         }
 
-        Akonadi::Collection collection()
+        Akonadi::Collection collection() const
         {
             return mCollection;
         }
