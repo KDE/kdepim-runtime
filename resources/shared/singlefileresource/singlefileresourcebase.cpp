@@ -43,8 +43,6 @@ using namespace Akonadi;
 
 SingleFileResourceBase::SingleFileResourceBase(const QString &id)
     : ResourceBase(id)
-    , mDownloadJob(nullptr)
-    , mUploadJob(nullptr)
 {
     connect(this, &SingleFileResourceBase::reloadConfiguration,
             this, [this]() {
