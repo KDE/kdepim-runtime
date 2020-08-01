@@ -73,6 +73,7 @@ MboxResource::MboxResource(const QString &id)
     setSupportedMimetypes(mimeTypes, QStringLiteral("message-rfc822"));
     // Register the list of deleted items as an attribute of the collection.
     AttributeFactory::registerAttribute<DeletedItemsAttribute>();
+    setName(mSettings->displayName());
 }
 
 MboxResource::~MboxResource()
@@ -103,8 +104,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     reloadFile();
 
     KMBox::MBoxEntry::List entryList;
-    if (col.hasAttribute<DeletedItemsAttribute>()) {
-        const DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
+    if (const DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>()) {
         entryList = mMBox->entries(attr->deletedItemEntries());
     } else { // No deleted items (yet)
         entryList = mMBox->entries();
@@ -113,8 +113,8 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     // readEntryHeaders() call.
 
     Item::List items;
-    QString colId = QString::number(col.id());
-    QString colRid = col.remoteId();
+    const QString colId = QString::number(col.id());
+    const QString colRid = col.remoteId();
     double count = 1;
     const int entryListSize(entryList.size());
     items.reserve(entryListSize);
