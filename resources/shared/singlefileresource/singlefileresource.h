@@ -35,6 +35,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QEventLoopLocker>
+#include <CollectionModifyJob>
 
 Q_DECLARE_METATYPE(QEventLoopLocker *)
 
@@ -307,7 +308,10 @@ public:
             c.setRights(rights);
         }
         EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-        attr->setDisplayName(name());
+        if (name() != attr->displayName()) {
+            attr->setDisplayName(name());
+            new CollectionModifyJob(c);
+        }
         attr->setIconName(mCollectionIcon);
         return c;
     }
