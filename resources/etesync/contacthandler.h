@@ -33,8 +33,9 @@ class ContactHandler : public BaseHandler
 {
     Q_OBJECT
 public:
-    typedef std::unique_ptr<ContactHandler> Ptr;
     explicit ContactHandler(EteSyncResource *resource);
+
+    const QString mimeType() override;
 
     void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection) override;
 
@@ -53,7 +54,6 @@ protected:
 
     QString baseDirectoryPath() const override;
 
-    const QString mimeType() override;
     const QString etesyncCollectionType() override;
 };
 

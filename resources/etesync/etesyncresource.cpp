@@ -71,6 +71,11 @@ EteSyncResource::EteSyncResource(const QString &id)
     connect(mClientState, &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
 
+    mHandlers.clear();
+    mHandlers.push_back(BaseHandler::Ptr(new CalendarHandler(this)));
+    mHandlers.push_back(BaseHandler::Ptr(new ContactHandler(this)));
+    mHandlers.push_back(BaseHandler::Ptr(new TaskHandler(this)));
+
     mContactHandler = ContactHandler::Ptr(new ContactHandler(this));
     mCalendarHandler = CalendarHandler::Ptr(new CalendarHandler(this));
     mTaskHandler = TaskHandler::Ptr(new TaskHandler(this));
@@ -185,6 +190,34 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     collection.setContentMimeTypes(mimeTypes);
 }
 
+BaseHandler *EteSyncResource::fetchHandlerForMimeType(const QString &mimeType)
+{
+    auto it = std::find_if(mHandlers.cbegin(), mHandlers.cend(),
+                           [&mimeType](const BaseHandler::Ptr &handler) {
+                               return handler->mimeType() == mimeType;
+                           });
+
+    if (it != mHandlers.cend()) {
+        return it->get();
+    } else {
+        return nullptr;
+    }
+}
+
+BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collection &collection)
+{
+    auto it = std::find_if(mHandlers.cbegin(), mHandlers.cend(),
+                           [&collection](const BaseHandler::Ptr &handler) {
+                               return collection.contentMimeTypes().contains(handler->mimeType());
+                           });
+
+    if (it != mHandlers.cend()) {
+        return it->get();
+    } else {
+        return nullptr;
+    }
+}
+
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
     auto job = new EntriesFetchJob(mClientState->client(), collection, this);
@@ -207,14 +240,12 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
 
     Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
 
-    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType()) || collection.contentMimeTypes().contains(QStringLiteral("text/directory"))) {
-        mContactHandler->setupItems(entries, collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType()) || collection.contentMimeTypes().contains(QStringLiteral("application/x-vnd.akonadi.calendar.event"))) {
-        mCalendarHandler->setupItems(entries, collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType()) || collection.contentMimeTypes().contains(QStringLiteral("application/x-vnd.akonadi.calendar.todo"))) {
-        mTaskHandler->setupItems(entries, collection);
+    auto handler = fetchHandlerForCollection(collection);
+
+    if (handler) {
+        handler->setupItems(entries, collection);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
+        qCWarning(ETESYNC_LOG) << "Unknown collection" << collection.name();
         itemsRetrieved({});
     }
 }
@@ -274,16 +305,15 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
                                 const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Item added" << item.mimeType();
-    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
-        mContactHandler->itemAdded(item, collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-        mCalendarHandler->itemAdded(item, collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
-        mTaskHandler->itemAdded(item, collection);
+
+    auto handler = fetchHandlerForMimeType(item.mimeType());
+    if (handler) {
+        handler->itemAdded(item, collection);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
-        changeCommitted(item);
+        qCWarning(ETESYNC_LOG) << "Could not add item" << item.mimeType();
+        cancelTask(i18n("Invalid payload type"));
     }
+
     checkTokenRefresh();
 }
 
@@ -291,64 +321,60 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
                                   const QSet<QByteArray> &parts)
 {
     qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType();
-    if (item.mimeType() == KContacts::Addressee::mimeType()) {
-        mContactHandler->itemChanged(item, parts);
-    } else if (item.mimeType() == KCalendarCore::Event::eventMimeType()) {
-        mCalendarHandler->itemChanged(item, parts);
-    } else if (item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
-        mTaskHandler->itemChanged(item, parts);
+
+    auto handler = fetchHandlerForMimeType(item.mimeType());
+    if (handler) {
+        handler->itemChanged(item, parts);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
-        changeCommitted(item);
+        qCWarning(ETESYNC_LOG) << "Could not change item" << item.mimeType();
+        cancelTask(i18n("Invalid payload type"));
     }
+
     checkTokenRefresh();
 }
 
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
 {
     qCDebug(ETESYNC_LOG) << "Item removed" << item.mimeType();
-    if (item.mimeType() == KContacts::Addressee::mimeType()) {
-        mContactHandler->itemRemoved(item);
-    } else if (item.mimeType() == KCalendarCore::Event::eventMimeType()) {
-        mCalendarHandler->itemRemoved(item);
-    } else if (item.mimeType() == KCalendarCore::Todo::todoMimeType()) {
-        mTaskHandler->itemRemoved(item);
+
+    auto handler = fetchHandlerForMimeType(item.mimeType());
+    if (handler) {
+        handler->itemRemoved(item);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
-        changeCommitted(item);
+        qCWarning(ETESYNC_LOG) << "Could not remove item" << item.mimeType();
+        cancelTask(i18n("Invalid payload type"));
     }
+
     checkTokenRefresh();
 }
 
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
     qCDebug(ETESYNC_LOG) << "Collection added" << collection.mimeType();
-    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
-        mContactHandler->collectionAdded(collection, parent);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-        mCalendarHandler->collectionAdded(collection, parent);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
-        mTaskHandler->collectionAdded(collection, parent);
+
+    auto handler = fetchHandlerForCollection(collection);
+    if (handler) {
+        handler->collectionAdded(collection, parent);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
-        changeCommitted(collection);
+        qCWarning(ETESYNC_LOG) << "Could not add collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
+        cancelTask(i18n("Unknown collection mimetype"));
     }
+
     checkTokenRefresh();
 }
 
 void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Collection changed" << collection.mimeType();
-    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
-        mContactHandler->collectionChanged(collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-        mCalendarHandler->collectionChanged(collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
-        mTaskHandler->collectionChanged(collection);
+
+    auto handler = fetchHandlerForCollection(collection);
+    if (handler) {
+        handler->collectionChanged(collection);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
-        changeCommitted(collection);
+        qCWarning(ETESYNC_LOG) << "Could not change collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
+        cancelTask(i18n("Unknown collection mimetype"));
     }
+
     checkTokenRefresh();
 }
 
@@ -356,15 +382,15 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
 {
     /// TODO: Remove local contacts for this collection
     qCDebug(ETESYNC_LOG) << "Collection removed" << collection.mimeType();
-    if (collection.contentMimeTypes().contains(KContacts::Addressee::mimeType())) {
-        mContactHandler->collectionRemoved(collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Event::eventMimeType())) {
-        mCalendarHandler->collectionRemoved(collection);
-    } else if (collection.contentMimeTypes().contains(KCalendarCore::Todo::todoMimeType())) {
-        mTaskHandler->collectionRemoved(collection);
+
+    auto handler = fetchHandlerForCollection(collection);
+    if (handler) {
+        handler->collectionRemoved(collection);
     } else {
-        qCDebug(ETESYNC_LOG) << "Unknown MIME type";
+        qCWarning(ETESYNC_LOG) << "Could not remove collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
+        cancelTask(i18n("Unknown collection mimetype"));
     }
+
     checkTokenRefresh();
 }
 

@@ -83,6 +83,7 @@ private Q_SLOTS:
 private:
     Akonadi::Collection mResourceCollection;
     EteSyncClientState *mClientState = nullptr;
+    std::vector<BaseHandler::Ptr> mHandlers;
 
     ContactHandler::Ptr mContactHandler = nullptr;
     CalendarHandler::Ptr mCalendarHandler = nullptr;
@@ -91,6 +92,9 @@ private:
     friend class ContactHandler;
     friend class CalendarTaskBaseHandler;
     friend class BaseHandler;
+
+    BaseHandler *fetchHandlerForMimeType(const QString &mimeType);
+    BaseHandler *fetchHandlerForCollection(const Akonadi::Collection &collection);
 };
 
 #endif

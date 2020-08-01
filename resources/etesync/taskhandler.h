@@ -30,11 +30,11 @@ class TaskHandler : public CalendarTaskBaseHandler
 {
     Q_OBJECT
 public:
-    typedef std::unique_ptr<TaskHandler> Ptr;
     TaskHandler(EteSyncResource *resource);
 
-protected:
     const QString mimeType();
+
+protected:
     const QString etesyncCollectionType();
 };
 
