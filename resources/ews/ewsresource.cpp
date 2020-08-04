@@ -384,8 +384,6 @@ void EwsResource::startFetchItemsJob(const Akonadi::Collection &col, std::functi
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Starting queued sync for collection ") << col;
 
     auto fetchJob = new EwsFetchItemsJob(col, mEwsClient, getCollectionSyncState(col), mItemsToCheck.value(col.remoteId()), mTagStore, this);
-    fetchJob->setQueuedUpdates(mQueuedUpdates.value(col.remoteId()));
-    mQueuedUpdates.remove(col.remoteId());
     connect(fetchJob, &EwsFetchItemsJob::result, this, [this, startFn, fetchJob](KJob *) {
         startFn(fetchJob);
         dequeueFetchItemsJob();
@@ -578,13 +576,6 @@ void EwsResource::itemModifyFlagsRequestFinished(KJob *job)
 
     emitReadyStatus();
 
-    for (const auto &item : req->items()) {
-        if (mSubManager) {
-            mSubManager->queueUpdate(EwsModifiedEvent, item.remoteId(), item.remoteRevision());
-        }
-        mQueuedUpdates[item.parentCollection().remoteId()].append({item.remoteId(), item.remoteRevision(), EwsModifiedEvent});
-    }
-
     qCDebug(EWSRES_AGENTIF_LOG) << "itemsFlagsChanged: done";
     changesCommitted(req->items());
 }
@@ -672,13 +663,6 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
             qCDebugNC(EWSRES_AGENTIF_LOG)
                 << QStringLiteral("itemsMoved: succeeded for item %1 (new id: %2)").arg(ewsHash(item.remoteId()), ewsHash(resp.itemId().id()));
             if (item.isValid()) {
-                /* Log item deletion in the source folder so that the next sync doesn't trip over
-                 * non-existent items. Use old remote ids for that. */
-                if (mSubManager) {
-                    mSubManager->queueUpdate(EwsDeletedEvent, item.remoteId(), QString());
-                }
-                mQueuedUpdates[srcCol.remoteId()].append({item.remoteId(), QString(), EwsDeletedEvent});
-
                 item.setRemoteId(resp.itemId().id());
                 item.setRemoteRevision(resp.itemId().changeKey());
                 movedItems.append(item);
@@ -757,10 +741,6 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
         Item &item = *it;
         if (resp.isSuccess()) {
             qCDebugNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsRemoved: succeeded for item %1").arg(ewsHash(item.remoteId()));
-            if (mSubManager) {
-                mSubManager->queueUpdate(EwsDeletedEvent, item.remoteId(), QString());
-            }
-            mQueuedUpdates[item.parentCollection().remoteId()].append({item.remoteId(), QString(), EwsDeletedEvent});
         } else {
             Q_EMIT warning(QStringLiteral("Delete failed for item %1").arg(item.remoteId()));
             qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsRemoved: failed for item %1").arg(ewsHash(item.remoteId()));
@@ -1270,13 +1250,6 @@ void EwsResource::itemsTagChangeFinished(KJob *job)
     if (!updJob) {
         cancelTask(i18nc("@info:status", "Failed to update item tags - internal error"));
         return;
-    }
-
-    for (const auto &item : updJob->items()) {
-        if (mSubManager) {
-            mSubManager->queueUpdate(EwsModifiedEvent, item.remoteId(), item.remoteRevision());
-        }
-        mQueuedUpdates[item.parentCollection().remoteId()].append({item.remoteId(), item.remoteRevision(), EwsModifiedEvent});
     }
 
     changesCommitted(updJob->items());

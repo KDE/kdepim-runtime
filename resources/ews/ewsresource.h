@@ -156,7 +156,6 @@ private:
     QScopedPointer<EwsSubscriptionManager> mSubManager;
     QString mFolderSyncState;
     QHash<QString, EwsId::List> mItemsToCheck;
-    QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
     QString mPassword;
     QScopedPointer<EwsAbstractAuth> mAuth;
     AuthStage mAuthStage;

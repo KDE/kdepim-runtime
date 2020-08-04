@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2017 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -44,12 +44,6 @@ class EwsSettings;
  *  itself are also notified back as update events. This means that when for ex. an item is deleted
  *  it is removed from Akonadi database, but subsequently a delete event is received which will try
  *  to delete an item that has already been deleted from Akonadi.
- *
- *  To reduce such feedback loops the class implements a queued update mechanism. Each time an
- *  operation is performed on the mailbox the resource class is responsible for informing the
- *  subscription manager about it by adding an entry about the performed operation and its subject.
- *  The subscription manager will in turn filter out update events that refer to oprerations that
- *  have already been made.
  */
 class EwsSubscriptionManager : public QObject
 {
@@ -58,7 +52,6 @@ public:
     EwsSubscriptionManager(EwsClient &client, const EwsId &rootId, EwsSettings *settings, QObject *parent);
     ~EwsSubscriptionManager() override;
     void start();
-    void queueUpdate(EwsEventType type, const QString &id, const QString &changeKey);
 Q_SIGNALS:
     void foldersModified(EwsId::List folders);
     void folderTreeModified();
@@ -81,11 +74,6 @@ private:
     void resetSubscription();
     void processEvents(EwsEventRequestBase *req, bool finished);
 
-    struct UpdateItem {
-        EwsEventType type;
-        QString changeKey;
-    };
-
     EwsClient &mEwsClient;
     QTimer mPollTimer;
     EwsId mMsgRootId;
@@ -93,7 +81,6 @@ private:
     QSet<EwsId> mUpdatedFolderIds;
     bool mFolderTreeChanged;
     bool mStreamingEvents;
-    QMultiHash<QString, UpdateItem> mQueuedUpdates;
     QTimer mStreamingTimer;
     EwsEventRequestBase *mEventReq = nullptr;
     EwsSettings *mSettings = nullptr;
