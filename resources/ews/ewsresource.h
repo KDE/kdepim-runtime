@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <QQueue>
 #include <QScopedPointer>
 
 #include <AkonadiAgentBase/ResourceBase>
@@ -143,6 +144,10 @@ private:
     static QString getCollectionSyncState(const Akonadi::Collection &col);
     static void saveCollectionSyncState(Akonadi::Collection &col, const QString &state);
 
+    void queueFetchItemsJob(const Akonadi::Collection &col, std::function<void(EwsFetchItemsJob *)> startFn);
+    void startFetchItemsJob(const Akonadi::Collection &col, std::function<void(EwsFetchItemsJob *)> startFn);
+    void dequeueFetchItemsJob();
+
     template<class Job>
     void connectStatusSignals(Job *job);
 
@@ -162,5 +167,11 @@ private:
     int mInitialReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;
     QScopedPointer<EwsSettings> mSettings;
+
+    struct QueuedFetchItemsJob {
+        Akonadi::Collection col;
+        std::function<void(EwsFetchItemsJob *)> startFn;
+    };
+    QQueue<QueuedFetchItemsJob> mFetchItemsJobQueue;
 };
 
