@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -81,6 +81,7 @@ protected Q_SLOTS:
     void retrieveItems(const Akonadi::Collection &collection) override;
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     void retrieveTags() override;
+    QString dumpResourceToString() const override;
 private Q_SLOTS:
     void fetchFoldersJobFinished(KJob *job);
     void fetchFoldersIncrJobFinished(KJob *job);

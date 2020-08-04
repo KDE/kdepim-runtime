@@ -1450,4 +1450,15 @@ void EwsResource::saveCollectionSyncState(Akonadi::Collection &col, const QStrin
     job->start();
 }
 
+QString EwsResource::dumpResourceToString() const
+{
+    QString dump = QStringLiteral("item sync queue (%1):\n").arg(mFetchItemsJobQueue.count());
+
+    for (const auto &item : std::as_const(mFetchItemsJobQueue)) {
+        dump += QStringLiteral(" %1:%2\n").arg(item.col.id()).arg(item.type);
+    }
+
+    return dump;
+}
+
 AKONADI_RESOURCE_MAIN(EwsResource)
