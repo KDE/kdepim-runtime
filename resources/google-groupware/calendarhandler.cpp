@@ -49,8 +49,6 @@
 using namespace KGAPI2;
 using namespace Akonadi;
 
-static constexpr uint32_t KGAPIEventVersion = 1;
-
 QString CalendarHandler::mimeType()
 {
     return KCalendarCore::Event::eventMimeType();
@@ -174,6 +172,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     const ObjectsList objects = fetchJob->items();
     bool isIncremental = !fetchJob->syncToken().isEmpty();
     qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieved" << objects.count() << "events for calendar" << collection.remoteId();
+    changedItems.reserve(objects.count());
     for (const ObjectPtr &object : objects) {
         const EventPtr event = object.dynamicCast<Event>();
         if (event->useDefaultReminders() && attr) {

@@ -59,7 +59,7 @@ void DummyPasswordRequester::setDelays(const QList<int> &delays)
 
 void DummyPasswordRequester::requestPassword(RequestType request, const QString & /*serverError*/)
 {
-    QVERIFY2(!m_expectedCalls.isEmpty(), QString::fromLatin1("Got unexpected call: %1").arg(request).toUtf8().constData());
+    QVERIFY2(!m_expectedCalls.isEmpty(), QStringLiteral("Got unexpected call: %1").arg(request).toUtf8().constData());
     QCOMPARE((int)request, (int)m_expectedCalls.takeFirst());
 
     int delay = 20;

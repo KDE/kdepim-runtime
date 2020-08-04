@@ -164,7 +164,7 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
 
 Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &startDate, const cDateTime &endDate)
 {
-    QList<KCalendarCore::Event::Ptr> list;
+    QVector<KCalendarCore::Event::Ptr> list;
     list.reserve(events.size());
     for (const Kolab::Event &e : events) {
         list.append(Kolab::Conversion::toKCalendarCore(e));
@@ -173,7 +173,7 @@ Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &s
     return generateFreeBusy(list, Kolab::Conversion::toDate(startDate), Kolab::Conversion::toDate(endDate), person, startDate.isDateOnly());
 }
 
-Freebusy generateFreeBusy(const QList<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay)
+Freebusy generateFreeBusy(const QVector<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay)
 {
     /*
      * TODO the conversion of date-only values to date-time is only necessary because xCal doesn't allow date only. iCalendar doesn't seem to make this restriction so it looks like a bug.

@@ -317,7 +317,7 @@ SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const Isolate
         xml += QStringLiteral("</t:Create>");
     }
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/syncfolderhierarhy-emptystate"))
-             .arg(syncState).arg(xml);
+             .arg(syncState, xml);
 }
 
 UnsubscribeDialogEntry::UnsubscribeDialogEntry(const QString &descr, const ReplyCallback &callback)

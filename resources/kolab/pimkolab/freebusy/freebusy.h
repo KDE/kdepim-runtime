@@ -25,7 +25,7 @@
 
 namespace Kolab {
 namespace FreebusyUtils {
-KOLAB_EXPORT Freebusy generateFreeBusy(const QList<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay);
+KOLAB_EXPORT Freebusy generateFreeBusy(const QVector<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay);
 KOLAB_EXPORT std::string toIFB(const Kolab::Freebusy &);
 
 Kolab::Freebusy generateFreeBusy(const std::vector<Kolab::Event> &events, const Kolab::cDateTime &startDate, const Kolab::cDateTime &endDate);

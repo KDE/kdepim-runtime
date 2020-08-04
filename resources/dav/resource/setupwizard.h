@@ -55,7 +55,7 @@ public:
     class Url
     {
     public:
-        typedef QList<Url> List;
+        typedef QVector<Url> List;
 
         KDAV::Protocol protocol;
         QString url;

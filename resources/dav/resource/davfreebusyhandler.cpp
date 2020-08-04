@@ -146,7 +146,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 
     if (job->error()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT (freeBusyRetrieved(email, QString(), false, job->errorString()));
+            Q_EMIT freeBusyRetrieved(email, QString(), false, job->errorString());
         }
         return;
     }
@@ -196,7 +196,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     QDomElement responseElement = firstChildElementNS(scheduleResponse, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("response"));
     if (responseElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
+            Q_EMIT freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server"));
         }
         return;
     }
@@ -207,7 +207,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     QDomElement calendarDataElement = firstChildElementNS(responseElement, QStringLiteral("urn:ietf:params:xml:ns:caldav"), QStringLiteral("calendar-data"));
     if (calendarDataElement.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server")));
+            Q_EMIT freeBusyRetrieved(email, QString(), false, i18n("Invalid response from the server"));
         }
         return;
     }
@@ -218,7 +218,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     KCalendarCore::FreeBusy::Ptr fb = format.parseFreeBusy(rawData);
     if (fb.isNull()) {
         if (retrievalJobCount == 0 && !mRequestsTracker[email].retrievalJobSuccessful) {
-            Q_EMIT (freeBusyRetrieved(email, QString(), false, i18n("Unable to parse free-busy data received")));
+            Q_EMIT freeBusyRetrieved(email, QString(), false, i18n("Unable to parse free-busy data received"));
         }
         return;
     }

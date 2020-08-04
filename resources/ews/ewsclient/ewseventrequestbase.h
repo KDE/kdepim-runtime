@@ -40,7 +40,7 @@ public:
     class Event
     {
     public:
-        typedef QList<Event> List;
+        typedef QVector<Event> List;
 
         EwsEventType type() const
         {

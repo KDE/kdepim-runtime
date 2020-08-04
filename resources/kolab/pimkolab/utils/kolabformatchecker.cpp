@@ -45,6 +45,7 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
 int main(int argc, char *argv[])
 {
     vector<string> inputFiles;
+    inputFiles.reserve(argc - 1);
     for (int i = 1; i < argc; ++i) {
         inputFiles.push_back(argv[i]);
     }

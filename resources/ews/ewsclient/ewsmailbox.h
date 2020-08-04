@@ -36,7 +36,7 @@ class Mailbox;
 class EwsMailbox
 {
 public:
-    typedef QList<EwsMailbox> List;
+    typedef QVector<EwsMailbox> List;
 
     EwsMailbox();
     explicit EwsMailbox(QXmlStreamReader &reader);

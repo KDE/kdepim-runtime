@@ -773,7 +773,7 @@ void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
     case KCalendarCore::Recurrence::rYearlyDay: // YearlyDay (day N of the year). Not supported by Outlook
         mRecurrence.cycle = QStringLiteral("yearly");
         mRecurrence.type = QStringLiteral("yearday");
-        mRecurrence.dayNumber = QString::number(recur->yearDays().first());
+        mRecurrence.dayNumber = QString::number(recur->yearDays().constFirst());
         break;
     case KCalendarCore::Recurrence::rYearlyPos: // (weekday X of week N of month Y)
         mRecurrence.cycle = QStringLiteral("yearly");

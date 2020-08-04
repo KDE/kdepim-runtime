@@ -493,6 +493,8 @@ void Pop3Test::testBigFetch()
     QList<QByteArray> mails;
     QStringList uids;
     QString allowedRetrs;
+    mails.reserve(1000);
+    uids.reserve(1000);
     for (int i = 0; i < 1000; i++) {
         QByteArray newMail = simpleMail1;
         newMail.append(QString::number(i + 1).toLatin1());

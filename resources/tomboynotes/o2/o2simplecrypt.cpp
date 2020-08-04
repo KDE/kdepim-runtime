@@ -182,7 +182,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
         return QByteArray();
     }
 
-    if (!cypher.length()) {
+    if (cypher.isEmpty()) {
         m_lastError = ErrorUnknownVersion;
         return QByteArray();
     }

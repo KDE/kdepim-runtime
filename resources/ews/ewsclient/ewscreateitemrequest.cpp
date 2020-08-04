@@ -125,7 +125,7 @@ EwsCreateItemRequest::Response::Response(QXmlStreamReader &reader)
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
             setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage")).arg(reader.namespaceUri().toString()));
+                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 
