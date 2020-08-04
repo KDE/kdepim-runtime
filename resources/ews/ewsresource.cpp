@@ -303,10 +303,12 @@ void EwsResource::doRetrieveCollections()
     if (mFolderSyncState.isEmpty()) {
         auto job = new EwsFetchFoldersJob(mEwsClient, mRootCollection, this);
         connect(job, &EwsFetchFoldersJob::result, this, &EwsResource::fetchFoldersJobFinished);
+        connectStatusSignals(job);
         job->start();
     } else {
         auto job = new EwsFetchFoldersIncrJob(mEwsClient, mFolderSyncState, mRootCollection, this);
         connect(job, &EwsFetchFoldersIncrJob::result, this, &EwsResource::fetchFoldersIncrJobFinished);
+        connectStatusSignals(job);
         job->start();
     }
 }
@@ -1429,10 +1431,10 @@ void EwsResource::setInitialReconnectTimeout(int timeout)
 template<class Job>
 void EwsResource::connectStatusSignals(Job *job)
 {
-    connect(job, &Job::status, this, [this](int s, const QString &message) {
+    connect(job, &Job::reportStatus, this, [this](int s, const QString &message) {
         Q_EMIT status(s, message);
     });
-    connect(job, &Job::percent, this, [this](int p) {
+    connect(job, &Job::reportPercent, this, [this](int p) {
         Q_EMIT percent(p);
     });
 }

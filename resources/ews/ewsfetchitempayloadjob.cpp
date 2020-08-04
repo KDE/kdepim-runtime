@@ -51,7 +51,7 @@ void EwsFetchItemPayloadJob::start()
             return req->responses();
         },
         [this](unsigned int progress) {
-            Q_EMIT percent(progress);
+            Q_EMIT reportPercent(progress);
         },
         [this](bool success, const QString &error) {
             itemFetchFinished(success, error);

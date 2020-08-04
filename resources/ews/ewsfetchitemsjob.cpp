@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -98,8 +98,8 @@ EwsFetchItemsJob::~EwsFetchItemsJob()
 
 void EwsFetchItemsJob::start()
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list", mCollection.name()));
-    Q_EMIT percent(0);
+    Q_EMIT reportStatus(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list", mCollection.name()));
+    Q_EMIT reportPercent(0);
 
     /* Begin stage 1 - query item list from local and remote side. */
     auto syncItemsReq = new EwsSyncFolderItemsRequest(mClient, this);
@@ -211,9 +211,9 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
         }
         const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size() + mRemoteFlagChangedIds.size();
         if (!mLocalItems.empty()) {
-            Q_EMIT percent(qMin(totalItems * 50 / mLocalItems.size(), 50));
+            Q_EMIT reportPercent(qMin(totalItems * 50 / mLocalItems.size(), 50));
         }
-        Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(), totalItems));
+        Q_EMIT reportStatus(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(), totalItems));
     }
 }
 
@@ -389,7 +389,7 @@ void EwsFetchItemsJob::compareItemLists()
     qCDebugNC(EWSRES_LOG)
         << QStringLiteral("Changed %2, deleted %3, new %4").arg(mRemoteChangedItems.size()).arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
 
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
+    Q_EMIT reportStatus(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
 
     bool fetch = false;
     for (const auto &iType : toFetchItems.keys()) {
@@ -437,7 +437,7 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
         }
 
         mTotalItemsFetched = mChangedItems.size();
-        Q_EMIT percent(50 + (mTotalItemsFetched * 50) / mTotalItemsToFetch);
+        Q_EMIT reportPercent(50 + (mTotalItemsFetched * 50) / mTotalItemsToFetch);
 
         if (subjobs().isEmpty()) {
             emitResult();

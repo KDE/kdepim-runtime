@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -73,11 +73,11 @@ void EwsModifyItemFlagsJob::start()
             EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(type));
             EwsModifyItemJob *job = handler->modifyItemJob(mClient, items[type], QSet<QByteArray>() << "FLAGS", this);
             connect(job, &EwsModifyItemJob::result, this, &EwsModifyItemFlagsJob::itemModifyFinished);
-            connect(job, &EwsModifyItemJob::status, this, [this](int s, const QString &message) {
-                Q_EMIT status(s, message);
+            connect(job, &EwsModifyItemJob::reportStatus, this, [this](int s, const QString &message) {
+                Q_EMIT reportStatus(s, message);
             });
-            connect(job, &EwsModifyItemJob::percent, this, [this](int p) {
-                Q_EMIT percent(p);
+            connect(job, &EwsModifyItemJob::reportPercent, this, [this](int p) {
+                Q_EMIT reportPercent(p);
             });
 
             addSubjob(job);

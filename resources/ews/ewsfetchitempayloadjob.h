@@ -27,8 +27,8 @@ public:
     }
     void start() override;
 Q_SIGNALS:
-    void status(int status, const QString &message = QString());
-    void percent(int progress);
+    void reportStatus(int status, const QString &message = QString());
+    void reportPercent(int progress);
 
 private:
     void itemFetchFinished(bool success, const QString &error);

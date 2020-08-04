@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2019 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -72,7 +72,7 @@ void EwsModifyMailJob::start()
                 return req->responses();
             },
             [this](unsigned int progress) {
-                Q_EMIT percent(progress);
+                Q_EMIT reportPercent(progress);
             },
             [this](bool success, const QString &error) {
                 updateItemsFinished(success, error);
