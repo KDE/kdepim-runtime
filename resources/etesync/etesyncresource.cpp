@@ -85,8 +85,12 @@ EteSyncResource::EteSyncResource(const QString &id)
     qCDebug(ETESYNC_LOG) << "Resource started";
 }
 
-EteSyncResource::~EteSyncResource()
+void EteSyncResource::cleanup()
 {
+    mClientState->invalidateToken();
+    QDir dir(baseDirectoryPath());
+    dir.removeRecursively();
+    ResourceBase::cleanup();
 }
 
 void EteSyncResource::configure(WId windowId)
@@ -151,7 +155,17 @@ void EteSyncResource::retrieveCollections()
         collectionsRetrieved(list);
     });
     job->start();
-    checkTokenRefresh();
+    // checkTokenRefresh();
+}
+
+bool EteSyncResource::handleTokenError()
+{
+    if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
+        deferTask();
+        scheduleCustomTask(mClientState, "refreshToken", QVariant(), ResourceBase::Prepend);
+        return false;
+    }
+    return true;
 }
 
 void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
@@ -185,6 +199,9 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>(Collection::AddIfMissing);
     colorAttr->setColor(collectionColor);
 
+    if (etesync_journal_is_read_only(journal)) {
+        collection.setRights(Collection::ReadOnly);
+    }
     collection.setRemoteId(journalUid);
     collection.setName(displayName);
     collection.setContentMimeTypes(mimeTypes);
@@ -314,7 +331,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
         cancelTask(i18n("Invalid payload type"));
     }
 
-    checkTokenRefresh();
+    // checkTokenRefresh();
 }
 
 void EteSyncResource::itemChanged(const Akonadi::Item &item,
@@ -330,7 +347,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
         cancelTask(i18n("Invalid payload type"));
     }
 
-    checkTokenRefresh();
+    // checkTokenRefresh();
 }
 
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
@@ -345,7 +362,7 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
         cancelTask(i18n("Invalid payload type"));
     }
 
-    checkTokenRefresh();
+    // checkTokenRefresh();
 }
 
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -360,7 +377,7 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
         cancelTask(i18n("Unknown collection mimetype"));
     }
 
-    checkTokenRefresh();
+    // checkTokenRefresh();
 }
 
 void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
@@ -375,7 +392,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
         cancelTask(i18n("Unknown collection mimetype"));
     }
 
-    checkTokenRefresh();
+    // checkTokenRefresh();
 }
 
 void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -391,7 +408,7 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
         cancelTask(i18n("Unknown collection mimetype"));
     }
 
-    checkTokenRefresh();
+    // checkTokenRefresh();
 }
 
 AKONADI_RESOURCE_MAIN(EteSyncResource)

@@ -25,7 +25,6 @@ EteSyncClientState::EteSyncClientState()
 
 EteSyncClientState::~EteSyncClientState()
 {
-    etesync_auth_invalidate_token(mClient.get(), mToken);
 }
 
 void EteSyncClientState::init()
@@ -64,6 +63,7 @@ void EteSyncClientState::init()
     EteSyncUserInfoPtr userInfo(etesync_user_info_manager_fetch(userInfoManager.get(), mUsername));
     if (!userInfo) {
         qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
+        invalidateToken();
         Q_EMIT clientInitialised(false);
         return;
     }
@@ -106,14 +106,19 @@ void EteSyncClientState::refreshToken()
 bool EteSyncClientState::initUserInfo()
 {
     mJournalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));
-    // Get user keypair
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
     mUserInfo = EteSyncUserInfoPtr(etesync_user_info_manager_fetch(userInfoManager.get(), mUsername));
     if (!mUserInfo) {
         qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
+        invalidateToken();
         return false;
     }
     return true;
+}
+
+void EteSyncClientState::invalidateToken()
+{
+    etesync_auth_invalidate_token(mClient.get(), mToken);
 }
 
 bool EteSyncClientState::initKeypair(const QString &encryptionPassword)
@@ -131,6 +136,7 @@ bool EteSyncClientState::initKeypair(const QString &encryptionPassword)
     return true;
 }
 
+/// TODO: Create default journals
 void EteSyncClientState::initAccount(const QString &encryptionPassword)
 {
     mEncryptionPassword = encryptionPassword;

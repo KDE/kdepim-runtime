@@ -43,25 +43,12 @@ const QString ContactHandler::etesyncCollectionType()
     return QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK);
 }
 
-void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collection)
+void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
-    qCDebug(ETESYNC_LOG) << "Setting up items";
-    QString prevUid = collection.remoteRevision();
-    QString journalUid = collection.remoteId();
-
-    bool isIncremental = false;
-
-    if (!prevUid.isEmpty() && !prevUid.isNull()) {
-        isIncremental = true;
-    }
-
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QMap<QString, KContacts::Addressee> contacts;
-
-    Item::List changedItems;
-    Item::List removedItems;
 
     for (EteSyncEntry **iter = entries; *iter; iter++) {
         EteSyncEntryPtr entry(*iter);
@@ -83,7 +70,6 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
                 item.setMimeType(mimeType());
                 item.setParentCollection(collection);
                 item.setRemoteId(contact.uid());
-                item.setPayload<KContacts::Addressee>(contact);
                 removedItems << item;
 
                 deleteLocalContact(contact);
@@ -95,9 +81,6 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
 
     free(entries);
 
-    collection.setRemoteRevision(prevUid);
-    new CollectionModifyJob(collection, this);
-
     for (auto it = contacts.constBegin(); it != contacts.constEnd(); it++) {
         Item item;
         item.setMimeType(mimeType());
@@ -107,12 +90,6 @@ void ContactHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &col
         changedItems << item;
 
         updateLocalContact(it.value());
-    }
-
-    if (isIncremental) {
-        mResource->itemsRetrievedIncremental(changedItems, removedItems);
-    } else {
-        mResource->itemsRetrieved(changedItems);
     }
 }
 
@@ -162,20 +139,16 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
 {
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
 
-    // Handle EteSync conflict error: If stored UID is old, sync and retry
-    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-    if (lastJournalUid != collection.remoteRevision()) {
-        mResource->deferTask();
-        mResource->retrieveItems(collection);
-    }
-
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     KContacts::VCardConverter converter;
     QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_ADD, content.constData()));
-    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
+
+    if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        return;
+    }
 
     mResource->changeCommitted(item);
 
@@ -189,20 +162,16 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
 
-    // Handle EteSync conflict error: If stored UID is old, sync and retry
-    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-    if (lastJournalUid != collection.remoteRevision()) {
-        mResource->deferTask();
-        mResource->retrieveItems(collection);
-    }
-
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     KContacts::VCardConverter converter;
     QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_CHANGE, content.constData()));
-    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
+
+    if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        return;
+    }
 
     mResource->changeCommitted(item);
 
@@ -215,19 +184,15 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
 
-    // Handle EteSync conflict error: If stored UID is old, sync and retry
-    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-    if (lastJournalUid != collection.remoteRevision()) {
-        mResource->deferTask();
-        mResource->retrieveItems(collection);
-    }
-
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QString contact = getLocalContact(item.remoteId());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(contact)));
-    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
+
+    if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        return;
+    }
 
     mResource->changeCommitted(item);
 }

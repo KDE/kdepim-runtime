@@ -36,8 +36,9 @@ class EteSyncResource : public Akonadi::ResourceBase,
 
 public:
     explicit EteSyncResource(const QString &id);
-    ~EteSyncResource() override;
+    ~EteSyncResource() override = default;
 
+    void cleanup() override;
 Q_SIGNALS:
 
     void clientInitialised(bool successful);
@@ -74,6 +75,8 @@ protected:
     QString baseDirectoryPath() const;
 
     void checkTokenRefresh();
+
+    bool handleTokenError();
 
 private Q_SLOTS:
     void onReloadConfiguration();

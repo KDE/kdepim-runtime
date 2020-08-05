@@ -36,25 +36,12 @@ CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource) : Ba
     initialiseBaseDirectory();
 }
 
-void CalendarTaskBaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collection)
+void CalendarTaskBaseHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
-    qCDebug(ETESYNC_LOG) << "CalendarTaskBaseHandler: Setting up items";
-    QString prevUid = collection.remoteRevision();
-    const QString journalUid = collection.remoteId();
-
-    bool isIncremental = false;
-
-    if (!prevUid.isEmpty() && !prevUid.isNull()) {
-        isIncremental = true;
-    }
-
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QMap<QString, KCalendarCore::Incidence::Ptr> incidences;
-
-    Item::List changedItems;
-    Item::List removedItems;
 
     for (EteSyncEntry **iter = entries; *iter; iter++) {
         EteSyncEntryPtr entry(*iter);
@@ -76,7 +63,6 @@ void CalendarTaskBaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collec
                 item.setMimeType(mimeType());
                 item.setParentCollection(collection);
                 item.setRemoteId(incidence->uid());
-                item.setPayload<KCalendarCore::Incidence::Ptr>(incidence);
                 removedItems << item;
 
                 deleteLocalCalendar(incidence);
@@ -88,9 +74,6 @@ void CalendarTaskBaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collec
 
     free(entries);
 
-    collection.setRemoteRevision(prevUid);
-    new CollectionModifyJob(collection, this);
-
     for (auto it = incidences.constBegin(); it != incidences.constEnd(); it++) {
         Item item;
         item.setMimeType(mimeType());
@@ -100,12 +83,6 @@ void CalendarTaskBaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collec
         changedItems << item;
 
         updateLocalCalendar(it.value());
-    }
-
-    if (isIncremental) {
-        mResource->itemsRetrievedIncremental(changedItems, removedItems);
-    } else {
-        mResource->itemsRetrieved(changedItems);
     }
 }
 
@@ -139,7 +116,7 @@ bool CalendarTaskBaseHandler::updateLocalCalendar(const KCalendarCore::Incidence
     KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
     calendar->addIncidence(incidence);
     KCalendarCore::ICalFormat format;
-    file.write(charArrFromQString(format.toString(calendar)));
+    file.write(format.toString(calendar).toUtf8());
     return true;
 }
 
@@ -162,17 +139,13 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
 
-    // Handle EteSync conflict error: If stored UID is old, sync and retry
-    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-    if (lastJournalUid != collection.remoteRevision()) {
-        mResource->deferTask();
-        mResource->retrieveItems(collection);
-    }
-
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), format.toString(calendar)));
-    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
+
+    if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        return;
+    }
 
     mResource->changeCommitted(item);
 
@@ -190,17 +163,13 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
 
-    // Handle EteSync conflict error: If stored UID is old, sync and retry
-    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-    if (lastJournalUid != collection.remoteRevision()) {
-        mResource->deferTask();
-        mResource->retrieveItems(collection);
-    }
-
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), format.toString(calendar)));
-    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
+
+    if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        return;
+    }
 
     mResource->changeCommitted(item);
 
@@ -213,19 +182,15 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
 
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
 
-    // Handle EteSync conflict error: If stored UID is old, sync and retry
-    QString lastJournalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-    if (lastJournalUid != collection.remoteRevision()) {
-        mResource->deferTask();
-        mResource->retrieveItems(collection);
-    }
-
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QString calendar = getLocalCalendar(item.remoteId());
 
     EteSyncSyncEntryPtr syncEntry(etesync_sync_entry_new(ETESYNC_SYNC_ENTRY_ACTION_DELETE, charArrFromQString(calendar)));
-    createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection);
+
+    if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        return;
+    }
 
     mResource->changeCommitted(item);
 }

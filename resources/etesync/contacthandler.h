@@ -37,7 +37,7 @@ public:
 
     const QString mimeType() override;
 
-    void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection) override;
+    void getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid);
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;

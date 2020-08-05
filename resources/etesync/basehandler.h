@@ -38,7 +38,7 @@ public:
 
     virtual const QString mimeType() = 0;
 
-    virtual void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection) = 0;
+    virtual void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection);
 
     virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) = 0;
     virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) = 0;
@@ -48,13 +48,22 @@ public:
     virtual void collectionChanged(const Akonadi::Collection &collection) = 0;
     virtual void collectionRemoved(const Akonadi::Collection &collection) = 0;
 
+protected Q_SLOTS:
+
+    void slotItemsRetrieved(KJob *job);
+    virtual void syncCollection(const QVariant &collectionVariant);
+    void taskDone();
+
 protected:
     void initialiseBaseDirectory();
-    void createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const EteSyncCryptoManager *cryptoManager, const Collection &collection);
+    bool createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const EteSyncCryptoManager *cryptoManager, const Collection &collection);
     void updateCollectionRevision(const EteSyncEntry *entry, const Collection &collection);
 
     virtual QString baseDirectoryPath() const = 0;
     virtual const QString etesyncCollectionType() = 0;
+    virtual void getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid) = 0;
+
+    bool handleConflictError(const Collection &collection);
 
     EteSyncResource *mResource = nullptr;
     EteSyncClientState *mClientState = nullptr;

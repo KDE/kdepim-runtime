@@ -35,6 +35,7 @@ public:
     void initAccount(const QString &encryptionPassword);
     void saveSettings();
     void refreshToken();
+    void invalidateToken();
 
     EteSync *client()
     {
