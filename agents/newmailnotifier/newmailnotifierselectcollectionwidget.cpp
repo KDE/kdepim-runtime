@@ -52,6 +52,10 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
         if (index.isValid()) {
             const Akonadi::Collection collection
                 = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            // Make top-level collections uncheckable
+            if (collection.parentCollection() == Akonadi::Collection::root()) {
+                return {};
+            }
             if (mNotificationCollection.contains(collection)) {
                 return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
