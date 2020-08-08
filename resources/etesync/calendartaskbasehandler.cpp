@@ -207,7 +207,11 @@ void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collect
 
     etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
 
-    etesync_journal_manager_create(mClientState->journalManager(), journal.get());
+    const auto result = etesync_journal_manager_create(mClientState->journalManager(), journal.get());
+    if (result) {
+        mResource->handleTokenError();
+        return;
+    }
 
     Collection newCollection(collection);
     mResource->setupCollection(newCollection, journal.get());
@@ -233,7 +237,11 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
 
     etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
 
-    etesync_journal_manager_update(mClientState->journalManager(), journal.get());
+    const auto result = etesync_journal_manager_update(mClientState->journalManager(), journal.get());
+    if (result) {
+        mResource->handleTokenError();
+        return;
+    }
 
     mResource->changeCommitted(collection);
 }
@@ -243,5 +251,9 @@ void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &colle
     QString journalUid = collection.remoteId();
     EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
 
-    etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
+    const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
+    if (result) {
+        mResource->handleTokenError();
+        return;
+    }
 }

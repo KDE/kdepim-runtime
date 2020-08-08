@@ -113,6 +113,7 @@ void EteSyncResource::configure(WId windowId)
 
 void EteSyncResource::retrieveCollections()
 {
+    setCollectionStreamingEnabled(true);
     // Set up root collection for resource
     mResourceCollection = Collection();
     mResourceCollection.setContentMimeTypes({Collection::mimeType()});
@@ -132,37 +133,52 @@ void EteSyncResource::retrieveCollections()
     attr->setDisplayName(mClientState->username());
     attr->setIconName(QStringLiteral("akonadi-etesync"));
 
+    collectionsRetrieved({mResourceCollection});
+
     auto job = new JournalsFetchJob(mClientState->client(), this);
-    connect(job, &JournalsFetchJob::finished, this, [this](KJob *job) {
-        if (job->error()) {
-            qCWarning(ETESYNC_LOG) << "Error in fetching journals";
-            return;
-        }
-        qCDebug(ETESYNC_LOG) << "Retrieving collections";
-        EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
-        Collection::List list;
-        list << mResourceCollection;
-        for (EteSyncJournal **iter = journals; *iter; iter++) {
-            EteSyncJournalPtr journal(*iter);
-
-            Collection collection;
-            collection.setParentCollection(mResourceCollection);
-            setupCollection(collection, journal.get());
-
-            list << collection;
-        }
-        free(journals);
-        collectionsRetrieved(list);
-    });
+    connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
     job->start();
-    // checkTokenRefresh();
 }
 
-bool EteSyncResource::handleTokenError()
+void EteSyncResource::slotCollectionsRetrieved(KJob *job)
+{
+    if (job->error()) {
+        qCWarning(ETESYNC_LOG) << "Error in fetching journals";
+        qCDebug(ETESYNC_LOG) << "Incorrect token in retrieveCollections()";
+        handleTokenError(true);
+        return;
+    }
+    qCDebug(ETESYNC_LOG) << "Retrieving collections";
+    EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
+    Collection::List list;
+    for (EteSyncJournal **iter = journals; *iter; iter++) {
+        EteSyncJournalPtr journal(*iter);
+
+        Collection collection;
+        collection.setParentCollection(mResourceCollection);
+        setupCollection(collection, journal.get());
+
+        list << collection;
+    }
+    free(journals);
+    collectionsRetrieved(list);
+    collectionsRetrievalDone();
+}
+
+bool EteSyncResource::handleTokenError(bool forRetrieveCollections)
 {
     if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
-        deferTask();
-        scheduleCustomTask(mClientState, "refreshToken", QVariant(), ResourceBase::Prepend);
+        qCDebug(ETESYNC_LOG) << "Invalid token";
+        if (forRetrieveCollections) {
+            mClientState->refreshToken();
+            auto job = new JournalsFetchJob(mClientState->client(), this);
+            connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
+            job->start();
+        } else {
+            deferTask();
+            connect(mClientState, &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
+            scheduleCustomTask(mClientState, "refreshToken", QVariant(), ResourceBase::Prepend);
+        }
         return false;
     }
     return true;
@@ -242,13 +258,14 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);
 
     job->start();
-    checkTokenRefresh();
 }
 
 void EteSyncResource::slotItemsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << job->errorText();
+        qCDebug(ETESYNC_LOG) << "Incorrect token in retrieveItems()";
+        handleTokenError();
         return;
     }
 
@@ -283,14 +300,6 @@ void EteSyncResource::initialiseDone(bool successful)
     qCDebug(ETESYNC_LOG) << "Resource intialised";
     if (successful) {
         synchronize();
-    }
-}
-
-void EteSyncResource::checkTokenRefresh()
-{
-    if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
-        deferTask();
-        mClientState->refreshToken();
     }
 }
 
@@ -330,8 +339,6 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
         qCWarning(ETESYNC_LOG) << "Could not add item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
-
-    // checkTokenRefresh();
 }
 
 void EteSyncResource::itemChanged(const Akonadi::Item &item,
@@ -346,8 +353,6 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
         qCWarning(ETESYNC_LOG) << "Could not change item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
-
-    // checkTokenRefresh();
 }
 
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
@@ -361,8 +366,6 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
         qCWarning(ETESYNC_LOG) << "Could not remove item" << item.mimeType();
         cancelTask(i18n("Invalid payload type"));
     }
-
-    // checkTokenRefresh();
 }
 
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -376,8 +379,6 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
         qCWarning(ETESYNC_LOG) << "Could not add collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
-
-    // checkTokenRefresh();
 }
 
 void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
@@ -391,8 +392,6 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
         qCWarning(ETESYNC_LOG) << "Could not change collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
-
-    // checkTokenRefresh();
 }
 
 void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
@@ -407,8 +406,6 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
         qCWarning(ETESYNC_LOG) << "Could not remove collection" << collection.displayName() << "mimetypes:" << collection.contentMimeTypes();
         cancelTask(i18n("Unknown collection mimetype"));
     }
-
-    // checkTokenRefresh();
 }
 
 AKONADI_RESOURCE_MAIN(EteSyncResource)

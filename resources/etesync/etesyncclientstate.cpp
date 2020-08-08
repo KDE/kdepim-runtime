@@ -101,6 +101,7 @@ void EteSyncClientState::refreshToken()
     }
     qCDebug(ETESYNC_LOG) << "Received token" << mToken;
     etesync_set_auth_token(mClient.get(), mToken);
+    tokenRefreshed();
 }
 
 bool EteSyncClientState::initUserInfo()

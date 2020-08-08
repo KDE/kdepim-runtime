@@ -68,6 +68,7 @@ bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const Et
     const auto result = etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
     if (result) {
         handleConflictError(collection);
+        mResource->handleTokenError();
         return false;
     }
     updateCollectionRevision(entry.get(), collection);
@@ -131,6 +132,7 @@ void BaseHandler::slotItemsRetrieved(KJob *job)
 bool BaseHandler::handleConflictError(const Collection &collection)
 {
     if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_CONFLICT) {
+        qCDebug(ETESYNC_LOG) << "Conflict error";
         mResource->deferTask();
         mResource->scheduleCustomTask(this, "syncCollection", QVariant::fromValue(collection), ResourceBase::Prepend);
         return false;

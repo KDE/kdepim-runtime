@@ -74,14 +74,13 @@ protected:
 
     QString baseDirectoryPath() const;
 
-    void checkTokenRefresh();
-
-    bool handleTokenError();
+    bool handleTokenError(bool forRetrieveCollections = false);
 
 private Q_SLOTS:
     void onReloadConfiguration();
     void initialiseDone(bool successful);
     void slotItemsRetrieved(KJob *job);
+    void slotCollectionsRetrieved(KJob *job);
 
 private:
     Akonadi::Collection mResourceCollection;

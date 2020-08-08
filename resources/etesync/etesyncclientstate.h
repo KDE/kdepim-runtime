@@ -34,7 +34,6 @@ public:
     bool initKeypair(const QString &encryptionPassword);
     void initAccount(const QString &encryptionPassword);
     void saveSettings();
-    void refreshToken();
     void invalidateToken();
 
     EteSync *client()
@@ -62,8 +61,12 @@ public:
         return mUsername;
     }
 
+public Q_SLOTS:
+    void refreshToken();
+
 Q_SIGNALS:
     void clientInitialised(bool successful);
+    void tokenRefreshed();
 
 private:
     EteSyncPtr mClient = nullptr;
