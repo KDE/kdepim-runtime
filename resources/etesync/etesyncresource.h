@@ -74,7 +74,12 @@ protected:
 
     QString baseDirectoryPath() const;
 
-    bool handleTokenError(bool forRetrieveCollections = false);
+    bool handleTokenError();
+
+    const EteSyncJournalPtr &getJournal(QString journalUid)
+    {
+        return mJournals[journalUid];
+    }
 
 private Q_SLOTS:
     void onReloadConfiguration();
@@ -86,6 +91,9 @@ private:
     Akonadi::Collection mResourceCollection;
     EteSyncClientState *mClientState = nullptr;
     std::vector<BaseHandler::Ptr> mHandlers;
+    std::map<QString, EteSyncJournalPtr> mJournals;
+    int mCollectionsToSync = 0;
+    bool mSyncing;
 
     ContactHandler::Ptr mContactHandler = nullptr;
     CalendarHandler::Ptr mCalendarHandler = nullptr;

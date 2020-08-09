@@ -75,7 +75,10 @@ private:
     EteSyncJournalManagerPtr mJournalManager = nullptr;
     EteSyncUserInfoPtr mUserInfo = nullptr;
     EteSyncAsymmetricKeyPairPtr mKeypair = nullptr;
-    QString mUsername, mPassword, mServerUrl, mEncryptionPassword;
+    QString mUsername;
+    QString mPassword;
+    QString mServerUrl;
+    QString mEncryptionPassword;
 };
 
 #endif  // ETESYNCSETTINGS_H

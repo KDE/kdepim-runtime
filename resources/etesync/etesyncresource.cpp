@@ -113,6 +113,10 @@ void EteSyncResource::configure(WId windowId)
 
 void EteSyncResource::retrieveCollections()
 {
+    if (!mSyncing) {
+        mCollectionsToSync = 0;
+    }
+    mSyncing = true;
     setCollectionStreamingEnabled(true);
     // Set up root collection for resource
     mResourceCollection = Collection();
@@ -145,19 +149,17 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
         qCDebug(ETESYNC_LOG) << "Incorrect token in retrieveCollections()";
-        handleTokenError(true);
+        handleTokenError();
         return;
     }
     qCDebug(ETESYNC_LOG) << "Retrieving collections";
     EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
     Collection::List list;
     for (EteSyncJournal **iter = journals; *iter; iter++) {
-        EteSyncJournalPtr journal(*iter);
-
         Collection collection;
         collection.setParentCollection(mResourceCollection);
-        setupCollection(collection, journal.get());
-
+        setupCollection(collection, *iter);
+        mCollectionsToSync++;
         list << collection;
     }
     free(journals);
@@ -165,20 +167,13 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     collectionsRetrievalDone();
 }
 
-bool EteSyncResource::handleTokenError(bool forRetrieveCollections)
+bool EteSyncResource::handleTokenError()
 {
     if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
         qCDebug(ETESYNC_LOG) << "Invalid token";
-        if (forRetrieveCollections) {
-            mClientState->refreshToken();
-            auto job = new JournalsFetchJob(mClientState->client(), this);
-            connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
-            job->start();
-        } else {
-            deferTask();
-            connect(mClientState, &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
-            scheduleCustomTask(mClientState, "refreshToken", QVariant(), ResourceBase::Prepend);
-        }
+        deferTask();
+        connect(mClientState, &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
+        scheduleCustomTask(mClientState, "refreshToken", QVariant(), ResourceBase::Prepend);
         return false;
     }
     return true;
@@ -221,6 +216,8 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     collection.setRemoteId(journalUid);
     collection.setName(displayName);
     collection.setContentMimeTypes(mimeTypes);
+
+    mJournals[journalUid] = EteSyncJournalPtr(journal);
 }
 
 BaseHandler *EteSyncResource::fetchHandlerForMimeType(const QString &mimeType)
@@ -253,6 +250,20 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
+    if (mSyncing) {
+        mCollectionsToSync--;
+        if (mCollectionsToSync == 0) {
+            mSyncing = false;
+        }
+        QString journalUid = collection.remoteId();
+        const EteSyncJournalPtr &journal = getJournal(journalUid);
+        QString lastEntryUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
+        if (lastEntryUid == collection.remoteRevision()) {
+            itemsRetrievalDone();
+            return;
+        }
+    }
+
     auto job = new EntriesFetchJob(mClientState->client(), collection, this);
 
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);

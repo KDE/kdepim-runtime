@@ -45,7 +45,8 @@ const QString ContactHandler::etesyncCollectionType()
 
 void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
+
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QMap<QString, KContacts::Addressee> contacts;
@@ -137,7 +138,8 @@ void ContactHandler::deleteLocalContact(const KContacts::Addressee &contact)
 void ContactHandler::itemAdded(const Akonadi::Item &item,
                                const Akonadi::Collection &collection)
 {
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString journalUid = collection.remoteId();
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -160,7 +162,8 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
 {
     Collection collection = item.parentCollection();
 
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString journalUid = collection.remoteId();
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -182,7 +185,8 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
 {
     Collection collection = item.parentCollection();
 
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString journalUid = collection.remoteId();
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -218,7 +222,7 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
 void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     QString journalUid = collection.remoteId();
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCollectionInfoPtr info(etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR));
 
@@ -232,7 +236,7 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
 void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     QString journalUid = collection.remoteId();
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
 }

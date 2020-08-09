@@ -38,7 +38,7 @@ CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource) : Ba
 
 void CalendarTaskBaseHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
     QMap<QString, KCalendarCore::Incidence::Ptr> incidences;
@@ -137,7 +137,8 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
     calendar->addIncidence(item.payload<Incidence::Ptr>());
     KCalendarCore::ICalFormat format;
 
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString journalUid = collection.remoteId();
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -161,7 +162,8 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
     calendar->addIncidence(item.payload<Incidence::Ptr>());
     KCalendarCore::ICalFormat format;
 
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString journalUid = collection.remoteId();
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -180,7 +182,8 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
 {
     Collection collection = item.parentCollection();
 
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), collection.remoteId()));
+    QString journalUid = collection.remoteId();
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair()));
 
@@ -221,7 +224,7 @@ void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collect
 void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &collection)
 {
     QString journalUid = collection.remoteId();
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     auto journalColor = EteSyncDEFAULT_COLOR;
     if (collection.hasAttribute<CollectionColorAttribute>()) {
@@ -249,7 +252,7 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
 void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &collection)
 {
     QString journalUid = collection.remoteId();
-    EteSyncJournalPtr journal(etesync_journal_manager_fetch(mClientState->journalManager(), journalUid));
+    const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
     if (result) {
