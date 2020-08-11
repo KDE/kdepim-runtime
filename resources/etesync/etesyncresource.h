@@ -52,8 +52,8 @@ protected Q_SLOTS:
     void itemRemoved(const Akonadi::Item &item) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionChanged(const Akonadi::Collection &collection);
-    void collectionRemoved(const Akonadi::Collection &collection);
+    void collectionChanged(const Akonadi::Collection &collection) override;
+    void collectionRemoved(const Akonadi::Collection &collection) override;
 
     void configure(WId windowId) override;
 
@@ -66,17 +66,11 @@ protected:
 
     void initialiseDirectory(const QString &path) const;
 
-    QString getLocalContact(QString contactUid) const;
-
-    void updateLocalContact(const KContacts::Addressee &contact);
-
-    void deleteLocalContact(const KContacts::Addressee &contact);
-
     QString baseDirectoryPath() const;
 
     bool handleTokenError();
 
-    const EteSyncJournalPtr &getJournal(QString journalUid)
+    const EteSyncJournalPtr &getJournal(const QString &journalUid)
     {
         return mJournalsCache[journalUid];
     }

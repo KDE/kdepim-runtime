@@ -32,10 +32,10 @@ class CalendarHandler : public CalendarTaskBaseHandler
 public:
     explicit CalendarHandler(EteSyncResource *resource);
 
-    const QString mimeType();
+    const QString mimeType() override;
 
 protected:
-    const QString etesyncCollectionType();
+    const QString etesyncCollectionType() override;
 };
 
 #endif

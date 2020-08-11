@@ -25,8 +25,7 @@ class EteSyncClientState : public QObject
 {
     Q_OBJECT
 public:
-    EteSyncClientState();
-    ~EteSyncClientState();
+    explicit EteSyncClientState() = default;
 
     void init();
     bool initToken(const QString &serverUrl, const QString &username, const QString &password);
@@ -36,27 +35,27 @@ public:
     void saveSettings();
     void invalidateToken();
 
-    EteSync *client()
+    EteSync *client() const
     {
         return mClient.get();
     }
 
-    QString derived()
+    QString derived() const
     {
         return mDerived;
     }
 
-    EteSyncJournalManager *journalManager()
+    EteSyncJournalManager *journalManager() const
     {
         return mJournalManager.get();
     }
 
-    EteSyncAsymmetricKeyPair *keypair()
+    EteSyncAsymmetricKeyPair *keypair() const
     {
         return mKeypair.get();
     }
 
-    QString username()
+    QString username() const
     {
         return mUsername;
     }

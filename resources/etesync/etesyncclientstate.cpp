@@ -19,14 +19,6 @@
 
 #include "etesync_debug.h"
 
-EteSyncClientState::EteSyncClientState()
-{
-}
-
-EteSyncClientState::~EteSyncClientState()
-{
-}
-
 void EteSyncClientState::init()
 {
     // Load settings

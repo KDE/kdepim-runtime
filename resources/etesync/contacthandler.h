@@ -37,7 +37,7 @@ public:
 
     const QString mimeType() override;
 
-    void getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid);
+    void getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid) override;
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
@@ -48,7 +48,7 @@ public:
     void collectionRemoved(const Akonadi::Collection &collection) override;
 
 protected:
-    QString getLocalContact(QString contactUid) const;
+    QString getLocalContact(const QString &contactUid) const;
     void updateLocalContact(const KContacts::Addressee &contact);
     void deleteLocalContact(const KContacts::Addressee &contact);
 

@@ -246,9 +246,9 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
-    int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
+    const int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
     if (timeSinceLastCacheUpdate <= 30) {
-        QString journalUid = collection.remoteId();
+        const QString journalUid = collection.remoteId();
         const EteSyncJournalPtr &journal = getJournal(journalUid);
         QString lastEntryUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
         if (lastEntryUid == collection.remoteRevision()) {

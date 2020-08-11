@@ -83,10 +83,7 @@ bool LoginPage::validatePage()
     const QString username = field(QStringLiteral("credentialsUserName")).toString();
     const QString password = field(QStringLiteral("credentialsPassword")).toString();
     const QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
-    QString serverUrl = QStringLiteral("https://api.etesync.com");
-    if (!advancedServerUrl.isNull() && !advancedServerUrl.isEmpty()) {
-        serverUrl = advancedServerUrl;
-    }
+    const QString serverUrl = advancedServerUrl.isEmpty() ? QStringLiteral("https://api.etesync.com") : advancedServerUrl;
     const bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
     if (!loginResult) {
         mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
@@ -118,7 +115,7 @@ int EncryptionPasswordPage::nextId() const
 
 void EncryptionPasswordPage::initializePage()
 {
-    bool userInfoResult = static_cast<SetupWizard *>(wizard())->mClientState->initUserInfo();
+    const bool userInfoResult = static_cast<SetupWizard *>(wizard())->mClientState->initUserInfo();
     if (!userInfoResult) {
         setSubTitle(i18n("Please set your encryption password below, and make sure you got it right, as it can't be recovered if lost!"));
         mInitAccount = true;
@@ -127,12 +124,12 @@ void EncryptionPasswordPage::initializePage()
 
 bool EncryptionPasswordPage::validatePage()
 {
-    QString encryptionPassword = field(QStringLiteral("credentialsEncryptionPassword")).toString();
+    const QString encryptionPassword = field(QStringLiteral("credentialsEncryptionPassword")).toString();
     if (mInitAccount) {
         static_cast<SetupWizard *>(wizard())->mClientState->initAccount(encryptionPassword);
         return true;
     }
-    bool keypairResult = static_cast<SetupWizard *>(wizard())->mClientState->initKeypair(encryptionPassword);
+    const bool keypairResult = static_cast<SetupWizard *>(wizard())->mClientState->initKeypair(encryptionPassword);
     if (!keypairResult) {
         mEncryptionPasswordLabel->setText(i18n("Incorrect encryption password. Please try again."));
     }

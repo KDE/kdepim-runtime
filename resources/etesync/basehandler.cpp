@@ -88,9 +88,7 @@ void BaseHandler::syncCollection(const QVariant &collectionVariant)
     const Collection collection = collectionVariant.value<Collection>();
 
     auto job = new EntriesFetchJob(mClientState->client(), collection, this);
-
     connect(job, &EntriesFetchJob::finished, this, &BaseHandler::slotItemsRetrieved);
-
     job->start();
 }
 
