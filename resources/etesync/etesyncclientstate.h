@@ -68,12 +68,12 @@ Q_SIGNALS:
     void tokenRefreshed();
 
 private:
-    EteSyncPtr mClient = nullptr;
+    EteSyncPtr mClient;
     QString mDerived;
     QString mToken;
-    EteSyncJournalManagerPtr mJournalManager = nullptr;
-    EteSyncUserInfoPtr mUserInfo = nullptr;
-    EteSyncAsymmetricKeyPairPtr mKeypair = nullptr;
+    EteSyncJournalManagerPtr mJournalManager;
+    EteSyncUserInfoPtr mUserInfo;
+    EteSyncAsymmetricKeyPairPtr mKeypair;
     QString mUsername;
     QString mPassword;
     QString mServerUrl;

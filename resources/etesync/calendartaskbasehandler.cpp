@@ -63,7 +63,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(EteSyncEntry **entries, Ite
                 item.setMimeType(mimeType());
                 item.setParentCollection(collection);
                 item.setRemoteId(incidence->uid());
-                removedItems << item;
+                removedItems.push_back(item);
 
                 deleteLocalCalendar(incidence);
             }
@@ -80,7 +80,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(EteSyncEntry **entries, Ite
         item.setParentCollection(collection);
         item.setRemoteId(it.key());
         item.setPayload<KCalendarCore::Incidence::Ptr>(it.value());
-        changedItems << item;
+        changedItems.push_back(item);
 
         updateLocalCalendar(it.value());
     }

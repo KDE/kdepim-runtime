@@ -114,30 +114,35 @@ void EteSyncResource::configure(WId windowId)
 void EteSyncResource::retrieveCollections()
 {
     setCollectionStreamingEnabled(true);
-    // Set up root collection for resource
-    mResourceCollection = Collection();
-    mResourceCollection.setContentMimeTypes({Collection::mimeType()});
-    mResourceCollection.setName(mClientState->username());
-    mResourceCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
-    mResourceCollection.setParentCollection(Collection::root());
-    mResourceCollection.setRights(Collection::CanCreateCollection);
+
+    auto job = new JournalsFetchJob(mClientState->client(), this);
+    connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
+    job->start();
+}
+
+Collection EteSyncResource::createRootCollection()
+{
+    Collection rootCollection = Collection();
+    rootCollection.setContentMimeTypes({Collection::mimeType()});
+    rootCollection.setName(mClientState->username());
+    rootCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
+    rootCollection.setParentCollection(Collection::root());
+    rootCollection.setRights(Collection::CanCreateCollection);
 
     Akonadi::CachePolicy cachePolicy;
     cachePolicy.setInheritFromParent(false);
     cachePolicy.setSyncOnDemand(false);
     cachePolicy.setCacheTimeout(-1);
     cachePolicy.setIntervalCheckTime(5);
-    mResourceCollection.setCachePolicy(cachePolicy);
+    rootCollection.setCachePolicy(cachePolicy);
 
-    EntityDisplayAttribute *attr = mResourceCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    EntityDisplayAttribute *attr = rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(mClientState->username());
     attr->setIconName(QStringLiteral("akonadi-etesync"));
 
-    collectionsRetrieved({mResourceCollection});
+    collectionsRetrieved({rootCollection});
 
-    auto job = new JournalsFetchJob(mClientState->client(), this);
-    connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
-    job->start();
+    return rootCollection;
 }
 
 void EteSyncResource::slotCollectionsRetrieved(KJob *job)
@@ -149,13 +154,14 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
         return;
     }
     qCDebug(ETESYNC_LOG) << "Retrieving collections";
+    const Collection &rootCollection = createRootCollection();
     EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
     Collection::List list;
     for (EteSyncJournal **iter = journals; *iter; iter++) {
         Collection collection;
-        collection.setParentCollection(mResourceCollection);
+        collection.setParentCollection(rootCollection);
         setupCollection(collection, *iter);
-        list << collection;
+        list.push_back(collection);
     }
     free(journals);
     collectionsRetrieved(list);
@@ -187,13 +193,13 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
 
     if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK)) {
-        mimeTypes << KContacts::Addressee::mimeType();
+        mimeTypes.push_back(KContacts::Addressee::mimeType());
         attr->setIconName(QStringLiteral("view-pim-contacts"));
     } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR)) {
-        mimeTypes << KCalendarCore::Event::eventMimeType();
+        mimeTypes.push_back(KCalendarCore::Event::eventMimeType());
         attr->setIconName(QStringLiteral("view-calendar"));
     } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS)) {
-        mimeTypes << KCalendarCore::Todo::todoMimeType();
+        mimeTypes.push_back(KCalendarCore::Todo::todoMimeType());
         attr->setIconName(QStringLiteral("view-pim-tasks"));
     } else {
         qCWarning(ETESYNC_LOG) << "Unknown journal type. Cannot set collection mime type.";

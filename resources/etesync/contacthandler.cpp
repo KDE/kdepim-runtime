@@ -71,7 +71,7 @@ void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &
                 item.setMimeType(mimeType());
                 item.setParentCollection(collection);
                 item.setRemoteId(contact.uid());
-                removedItems << item;
+                removedItems.push_back(item);
 
                 deleteLocalContact(contact);
             }
@@ -88,7 +88,7 @@ void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &
         item.setParentCollection(collection);
         item.setRemoteId(it.key());
         item.setPayload<KContacts::Addressee>(it.value());
-        changedItems << item;
+        changedItems.push_back(item);
 
         updateLocalContact(it.value());
     }

@@ -64,6 +64,8 @@ protected:
 
     void setupCollection(Akonadi::Collection &collection, EteSyncJournal *journal);
 
+    Collection createRootCollection();
+
     void initialiseDirectory(const QString &path) const;
 
     QString baseDirectoryPath() const;
@@ -82,15 +84,14 @@ private Q_SLOTS:
     void slotCollectionsRetrieved(KJob *job);
 
 private:
-    Akonadi::Collection mResourceCollection;
     EteSyncClientState *mClientState = nullptr;
     std::vector<BaseHandler::Ptr> mHandlers;
     std::map<QString, EteSyncJournalPtr> mJournalsCache;
     QDateTime mJournalsCacheUpdateTime;
 
-    ContactHandler::Ptr mContactHandler = nullptr;
-    CalendarHandler::Ptr mCalendarHandler = nullptr;
-    TaskHandler::Ptr mTaskHandler = nullptr;
+    ContactHandler::Ptr mContactHandler;
+    CalendarHandler::Ptr mCalendarHandler;
+    TaskHandler::Ptr mTaskHandler;
 
     friend class ContactHandler;
     friend class CalendarTaskBaseHandler;
