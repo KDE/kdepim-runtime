@@ -113,10 +113,6 @@ void EteSyncResource::configure(WId windowId)
 
 void EteSyncResource::retrieveCollections()
 {
-    if (!mSyncing) {
-        mCollectionsToSync = 0;
-    }
-    mSyncing = true;
     setCollectionStreamingEnabled(true);
     // Set up root collection for resource
     mResourceCollection = Collection();
@@ -159,7 +155,6 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
         Collection collection;
         collection.setParentCollection(mResourceCollection);
         setupCollection(collection, *iter);
-        mCollectionsToSync++;
         list << collection;
     }
     free(journals);
@@ -217,7 +212,8 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     collection.setName(displayName);
     collection.setContentMimeTypes(mimeTypes);
 
-    mJournals[journalUid] = EteSyncJournalPtr(journal);
+    mJournalsCache[journalUid] = EteSyncJournalPtr(journal);
+    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
 }
 
 BaseHandler *EteSyncResource::fetchHandlerForMimeType(const QString &mimeType)
@@ -250,11 +246,8 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
-    if (mSyncing) {
-        mCollectionsToSync--;
-        if (mCollectionsToSync == 0) {
-            mSyncing = false;
-        }
+    int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
+    if (timeSinceLastCacheUpdate <= 30) {
         QString journalUid = collection.remoteId();
         const EteSyncJournalPtr &journal = getJournal(journalUid);
         QString lastEntryUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));

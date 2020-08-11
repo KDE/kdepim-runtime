@@ -78,7 +78,7 @@ protected:
 
     const EteSyncJournalPtr &getJournal(QString journalUid)
     {
-        return mJournals[journalUid];
+        return mJournalsCache[journalUid];
     }
 
 private Q_SLOTS:
@@ -91,9 +91,8 @@ private:
     Akonadi::Collection mResourceCollection;
     EteSyncClientState *mClientState = nullptr;
     std::vector<BaseHandler::Ptr> mHandlers;
-    std::map<QString, EteSyncJournalPtr> mJournals;
-    int mCollectionsToSync = 0;
-    bool mSyncing;
+    std::map<QString, EteSyncJournalPtr> mJournalsCache;
+    QDateTime mJournalsCacheUpdateTime;
 
     ContactHandler::Ptr mContactHandler = nullptr;
     CalendarHandler::Ptr mCalendarHandler = nullptr;
