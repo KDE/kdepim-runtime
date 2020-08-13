@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011, Andre Somers
+SPDX-FileCopyrightText: 2011 Andre Somers 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
