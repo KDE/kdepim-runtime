@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #ifndef O2REQUESTOR_H
 #define O2REQUESTOR_H
 

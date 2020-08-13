@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #include "debug.h"
 #include <QTimer>
 #if QT_VERSION >= 0x050000

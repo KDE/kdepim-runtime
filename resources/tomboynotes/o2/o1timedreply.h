@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #ifndef O1TIMEDREPLY_H
 #define O1TIMEDREPLY_H
 
