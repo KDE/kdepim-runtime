@@ -84,7 +84,7 @@ private Q_SLOTS:
     void slotCollectionsRetrieved(KJob *job);
 
 private:
-    EteSyncClientState *mClientState = nullptr;
+    EteSyncClientState::Ptr mClientState;
     std::vector<BaseHandler::Ptr> mHandlers;
     std::map<QString, EteSyncJournalPtr> mJournalsCache;
     QDateTime mJournalsCacheUpdateTime;

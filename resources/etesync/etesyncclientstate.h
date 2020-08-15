@@ -25,6 +25,7 @@ class EteSyncClientState : public QObject
 {
     Q_OBJECT
 public:
+    typedef std::unique_ptr<EteSyncClientState> Ptr;
     explicit EteSyncClientState() = default;
 
     void init();

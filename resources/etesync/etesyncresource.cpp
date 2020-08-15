@@ -67,8 +67,8 @@ EteSyncResource::EteSyncResource(const QString &id)
     // Make local resource directory
     initialiseDirectory(baseDirectoryPath());
 
-    mClientState = new EteSyncClientState();
-    connect(mClientState, &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
+    mClientState = EteSyncClientState::Ptr(new EteSyncClientState());
+    connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
 
     mHandlers.clear();
@@ -95,7 +95,7 @@ void EteSyncResource::cleanup()
 
 void EteSyncResource::configure(WId windowId)
 {
-    SetupWizard wizard(mClientState);
+    SetupWizard wizard(mClientState.get());
 
     if (windowId) {
         wizard.setAttribute(Qt::WA_NativeWindow, true);
@@ -173,8 +173,8 @@ bool EteSyncResource::handleTokenError()
     if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
         qCDebug(ETESYNC_LOG) << "Invalid token";
         deferTask();
-        connect(mClientState, &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
-        scheduleCustomTask(mClientState, "refreshToken", QVariant(), ResourceBase::Prepend);
+        connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
+        scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
         return false;
     }
     return true;
@@ -182,7 +182,7 @@ bool EteSyncResource::handleTokenError()
 
 void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
 {
-    EteSyncCryptoManagerPtr cryptoManager(etesync_journal_get_crypto_manager(journal, mClientState->derived(), mClientState->keypair()));
+    EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal, mClientState->derived(), mClientState->keypair());
 
     EteSyncCollectionInfoPtr info(etesync_journal_get_info(journal, cryptoManager.get()));
 
@@ -296,7 +296,6 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
 
 void EteSyncResource::aboutToQuit()
 {
-    delete mClientState;
 }
 
 void EteSyncResource::onReloadConfiguration()

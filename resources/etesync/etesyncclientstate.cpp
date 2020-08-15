@@ -39,10 +39,10 @@ void EteSyncClientState::init()
     }
 
     // Initialise EteSync client state
-    mClient = EteSyncPtr(etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl));
+    mClient = etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
     mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
     if (mToken.isEmpty()) {
-        qCWarning(ETESYNC_LOG) << "Unable to obtain token from server" << QString::fromLatin1(etesync_get_error_message());
+        qCWarning(ETESYNC_LOG) << "Unable to obtain token from server" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         Q_EMIT clientInitialised(false);
         return;
     }
@@ -52,16 +52,16 @@ void EteSyncClientState::init()
 
     // Get user keypair
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
-    EteSyncUserInfoPtr userInfo(etesync_user_info_manager_fetch(userInfoManager.get(), mUsername));
-    if (!userInfo) {
+    mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
+    if (!mUserInfo) {
         qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
         invalidateToken();
         Q_EMIT clientInitialised(false);
         return;
     }
-    EteSyncCryptoManagerPtr userInfoCryptoManager(etesync_user_info_get_crypto_manager(userInfo.get(), mDerived));
+    EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
 
-    mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(userInfo.get(), userInfoCryptoManager.get()));
+    mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(mUserInfo.get(), userInfoCryptoManager.get()));
 
     Q_EMIT clientInitialised(true);
 }
@@ -73,7 +73,7 @@ bool EteSyncClientState::initToken(const QString &serverUrl, const QString &user
     mPassword = password;
 
     // Initialise EteSync client state
-    mClient = EteSyncPtr(etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl));
+    mClient = etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
     mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
     if (mToken.isEmpty()) {
         qCDebug(ETESYNC_LOG) << "Empty token";
@@ -100,7 +100,7 @@ bool EteSyncClientState::initUserInfo()
 {
     mJournalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
-    mUserInfo = EteSyncUserInfoPtr(etesync_user_info_manager_fetch(userInfoManager.get(), mUsername));
+    mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
     if (!mUserInfo) {
         qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
         invalidateToken();
@@ -119,7 +119,7 @@ bool EteSyncClientState::initKeypair(const QString &encryptionPassword)
     mEncryptionPassword = encryptionPassword;
     mDerived = etesync_crypto_derive_key(mClient.get(), mUsername, mEncryptionPassword);
 
-    EteSyncCryptoManagerPtr userInfoCryptoManager(etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived));
+    EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
     mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(mUserInfo.get(), userInfoCryptoManager.get()));
     if (!mKeypair) {
         qCDebug(ETESYNC_LOG) << "Empty keypair";
@@ -134,9 +134,9 @@ void EteSyncClientState::initAccount(const QString &encryptionPassword)
 {
     mEncryptionPassword = encryptionPassword;
     mDerived = etesync_crypto_derive_key(mClient.get(), mUsername, mEncryptionPassword);
-    mUserInfo = EteSyncUserInfoPtr(etesync_user_info_new(mUsername, ETESYNC_CURRENT_VERSION));
+    mUserInfo = etesync_user_info_new(mUsername, ETESYNC_CURRENT_VERSION);
     mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_crypto_generate_keypair(mClient.get()));
-    EteSyncCryptoManagerPtr userInfoCryptoManager(etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived));
+    EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
     etesync_user_info_set_keypair(mUserInfo.get(), userInfoCryptoManager.get(), mKeypair.get());
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
     etesync_user_info_manager_create(userInfoManager.get(), mUserInfo.get());

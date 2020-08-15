@@ -28,7 +28,7 @@ using namespace Akonadi;
 using namespace EteSyncAPI;
 
 BaseHandler::BaseHandler(EteSyncResource *resource)
-    : mResource(resource), mClientState(resource->mClientState)
+    : mResource(resource), mClientState((resource->mClientState).get())
 {
 }
 
@@ -62,8 +62,8 @@ void BaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collec
 
 bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const EteSyncCryptoManager *cryptoManager, const Collection &collection)
 {
-    EteSyncEntryPtr entry(etesync_entry_from_sync_entry(cryptoManager, syncEntry, collection.remoteRevision()));
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClientState->client(), collection.remoteId()));
+    EteSyncEntryPtr entry = etesync_entry_from_sync_entry(cryptoManager, syncEntry, collection.remoteRevision());
+    EteSyncEntryManagerPtr entryManager = etesync_entry_manager_new(mClientState->client(), collection.remoteId());
     EteSyncEntry *entries[] = {entry.get(), NULL};
     const auto result = etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
     if (result) {
