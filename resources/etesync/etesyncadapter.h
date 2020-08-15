@@ -18,7 +18,7 @@
 #ifndef ETESYNCADAPTER_H
 #define ETESYNCADAPTER_H
 
-#include <etesync/etesync.h>
+#include <etesync.h>
 
 #include <QString>
 #include <memory>
