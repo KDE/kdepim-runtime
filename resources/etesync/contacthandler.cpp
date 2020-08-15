@@ -43,7 +43,7 @@ const QString ContactHandler::etesyncCollectionType()
     return QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK);
 }
 
-void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
+void ContactHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
@@ -51,8 +51,7 @@ void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &
 
     QMap<QString, KContacts::Addressee> contacts;
 
-    for (EteSyncEntry **iter = entries; *iter; iter++) {
-        EteSyncEntryPtr entry(*iter);
+    for (auto &entry : entries) {
         EteSyncSyncEntryPtr syncEntry = etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid);
 
         KContacts::VCardConverter converter;
@@ -79,8 +78,6 @@ void ContactHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &
 
         prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
     }
-
-    free(entries);
 
     for (auto it = contacts.constBegin(); it != contacts.constEnd(); it++) {
         Item item;

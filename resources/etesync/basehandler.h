@@ -38,7 +38,7 @@ public:
 
     virtual const QString mimeType() = 0;
 
-    virtual void setupItems(EteSyncEntry **entries, Akonadi::Collection &collection);
+    virtual void setupItems(std::vector<EteSyncEntryPtr> &entries, Akonadi::Collection &collection, QString &prevUid);
 
     virtual void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) = 0;
     virtual void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) = 0;
@@ -61,7 +61,7 @@ protected:
 
     virtual QString baseDirectoryPath() const = 0;
     virtual const QString etesyncCollectionType() = 0;
-    virtual void getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid) = 0;
+    virtual void getItemListFromEntries(std::vector<EteSyncEntryPtr> &entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid) = 0;
 
     bool handleConflictError(const Collection &collection);
 

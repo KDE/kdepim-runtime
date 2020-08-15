@@ -22,6 +22,7 @@
 
 #include <QString>
 #include <memory>
+#include <vector>
 
 #define charArrFromQString(str) str.isNull() ? NULL : qUtf8Printable(str)
 
@@ -118,8 +119,8 @@ qint32 etesync_entry_manager_create(const EteSyncEntryManager *entry_manager,
                                     const EteSyncEntry *const *entries,
                                     const QString &prev_uid);
 
-EteSyncEntry **etesync_entry_manager_list(const EteSyncEntryManager *entry_manager,
-                                          const QString &prev_uid, uintptr_t limit);
+std::vector<EteSyncEntryPtr> etesync_entry_manager_list(const EteSyncEntryManager *entry_manager,
+                                                        const QString &prev_uid, uintptr_t limit);
 
 EteSyncEntryManagerPtr etesync_entry_manager_new(const EteSync *etesync,
                                                  const QString &journal_uid);

@@ -21,6 +21,7 @@
 
 #include <QTimer>
 
+#include "etesync_debug.h"
 #include "settings.h"
 
 using namespace EteSyncAPI;
@@ -38,15 +39,29 @@ void EntriesFetchJob::start()
 void EntriesFetchJob::fetchEntries()
 {
     const QString journalUid = mCollection.remoteId();
-    const QString prevUid = mCollection.remoteRevision();
-    EteSyncEntryManagerPtr entryManager(etesync_entry_manager_new(mClient, journalUid));
-    mEntries = etesync_entry_manager_list(entryManager.get(), prevUid, 0);
+    mPrevUid = mLastUid = mCollection.remoteRevision();
+    mEntryManager = etesync_entry_manager_new(mClient, journalUid);
 
-    if (!mEntries) {
+    while (fetchNextBatch()) {
+    }
+
+    if (etesync_get_error_code() != EteSyncErrorCode::ETESYNC_ERROR_CODE_NO_ERROR) {
         setError(UserDefinedError);
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));
+        emitResult();
+        return;
     }
-
     emitResult();
+}
+
+bool EntriesFetchJob::fetchNextBatch()
+{
+    std::vector<EteSyncEntryPtr> entries = etesync_entry_manager_list(mEntryManager.get(), mLastUid, 50);
+    if (entries.empty()) {
+        return false;
+    }
+    mEntries.insert(mEntries.end(), std::make_move_iterator(entries.begin()), std::make_move_iterator(entries.end()));
+    mLastUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(mEntries[mEntries.size() - 1].get())));
+    return true;
 }

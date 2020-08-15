@@ -256,7 +256,7 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
     if (timeSinceLastCacheUpdate <= 30) {
         const QString journalUid = collection.remoteId();
         const EteSyncJournalPtr &journal = getJournal(journalUid);
-        QString lastEntryUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
+        const QString lastEntryUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
         if (lastEntryUid == collection.remoteRevision()) {
             itemsRetrievalDone();
             return;
@@ -280,14 +280,16 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     }
 
     qCDebug(ETESYNC_LOG) << "Retrieving entries";
-    EteSyncEntry **entries = qobject_cast<EntriesFetchJob *>(job)->entries();
+    auto entries = qobject_cast<EntriesFetchJob *>(job)->getEntries();
 
     Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
+
+    QString prevUid = qobject_cast<EntriesFetchJob *>(job)->getPrevUid();
 
     auto handler = fetchHandlerForCollection(collection);
 
     if (handler) {
-        handler->setupItems(entries, collection);
+        handler->setupItems(entries, collection, prevUid);
     } else {
         qCWarning(ETESYNC_LOG) << "Unknown collection" << collection.name();
         itemsRetrieved({});

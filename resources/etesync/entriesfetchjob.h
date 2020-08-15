@@ -33,9 +33,14 @@ namespace EteSyncAPI {
 
         void start() override;
 
-        EteSyncEntry **entries() const
+        std::vector<EteSyncEntryPtr> getEntries()
         {
-            return mEntries;
+            return std::move(mEntries);
+        }
+
+        QString getPrevUid()
+        {
+            return mPrevUid;
         }
 
         Akonadi::Collection collection() const
@@ -45,10 +50,14 @@ namespace EteSyncAPI {
 
     protected:
         void fetchEntries();
+        bool fetchNextBatch();
 
     private:
         const EteSync *mClient = nullptr;
-        EteSyncEntry **mEntries = nullptr;
+        QString mPrevUid;
+        QString mLastUid;
+        EteSyncEntryManagerPtr mEntryManager;
+        std::vector<EteSyncEntryPtr> mEntries;
         Akonadi::Collection mCollection;
     };
 }  // namespace EteSyncAPI

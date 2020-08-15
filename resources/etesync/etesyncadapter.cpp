@@ -77,10 +77,16 @@ qint32 etesync_entry_manager_create(const EteSyncEntryManager *entry_manager,
     return etesync_entry_manager_create(entry_manager, entries, charArrFromQString(prev_uid));
 }
 
-EteSyncEntry **etesync_entry_manager_list(const EteSyncEntryManager *entry_manager,
-                                          const QString &prev_uid, uintptr_t limit)
+std::vector<EteSyncEntryPtr> etesync_entry_manager_list(const EteSyncEntryManager *entry_manager,
+                                                        const QString &prev_uid, uintptr_t limit)
 {
-    return etesync_entry_manager_list(entry_manager, charArrFromQString(prev_uid), limit);
+    auto entries = etesync_entry_manager_list(entry_manager, charArrFromQString(prev_uid), limit);
+    std::vector<EteSyncEntryPtr> rv;
+    while (*entries) {
+        rv.emplace_back(EteSyncEntryPtr{*entries});
+        ++entries;
+    }
+    return rv;
 }
 
 EteSyncEntryManagerPtr etesync_entry_manager_new(const EteSync *etesync,

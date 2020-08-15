@@ -36,15 +36,14 @@ CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource) : Ba
     initialiseBaseDirectory();
 }
 
-void CalendarTaskBaseHandler::getItemListFromEntries(EteSyncEntry **entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
+void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     QMap<QString, KCalendarCore::Incidence::Ptr> incidences;
 
-    for (EteSyncEntry **iter = entries; *iter; iter++) {
-        EteSyncEntryPtr entry(*iter);
+    for (auto &entry : entries) {
         EteSyncSyncEntryPtr syncEntry = etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid);
 
         CharPtr contentStr(etesync_sync_entry_get_content(syncEntry.get()));
@@ -71,8 +70,6 @@ void CalendarTaskBaseHandler::getItemListFromEntries(EteSyncEntry **entries, Ite
 
         prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
     }
-
-    free(entries);
 
     for (auto it = incidences.constBegin(); it != incidences.constEnd(); it++) {
         Item item;

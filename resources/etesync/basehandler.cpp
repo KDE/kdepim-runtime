@@ -37,10 +37,10 @@ void BaseHandler::initialiseBaseDirectory()
     mResource->initialiseDirectory(baseDirectoryPath());
 }
 
-void BaseHandler::setupItems(EteSyncEntry **entries, Akonadi::Collection &collection)
+void BaseHandler::setupItems(std::vector<EteSyncEntryPtr> &entries, Akonadi::Collection &collection, QString &prevUid)
 {
     qCDebug(ETESYNC_LOG) << "BaseHandler: Setting up items";
-    QString prevUid = collection.remoteRevision();
+
     const QString journalUid = collection.remoteId();
 
     const bool isIncremental = (prevUid.isEmpty() || prevUid.isNull()) ? false : true;
@@ -99,7 +99,7 @@ void BaseHandler::slotItemsRetrieved(KJob *job)
         return;
     }
 
-    EteSyncEntry **entries = qobject_cast<EntriesFetchJob *>(job)->entries();
+    std::vector<EteSyncEntryPtr> entries = qobject_cast<EntriesFetchJob *>(job)->getEntries();
 
     Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
 
