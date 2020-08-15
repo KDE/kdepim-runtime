@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #include <QDateTime>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>

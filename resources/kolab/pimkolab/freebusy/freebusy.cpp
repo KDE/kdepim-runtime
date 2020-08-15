@@ -1,18 +1,7 @@
 /*
- * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
+ * SPDX-FileCopyrightText: 2012 Christian Mollekopf <mollekopf@kolabsys.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
 #include "freebusy.h"
@@ -164,7 +153,7 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
 
 Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &startDate, const cDateTime &endDate)
 {
-    QList<KCalendarCore::Event::Ptr> list;
+    QVector<KCalendarCore::Event::Ptr> list;
     list.reserve(events.size());
     for (const Kolab::Event &e : events) {
         list.append(Kolab::Conversion::toKCalendarCore(e));
@@ -173,7 +162,7 @@ Freebusy generateFreeBusy(const std::vector< Event > &events, const cDateTime &s
     return generateFreeBusy(list, Kolab::Conversion::toDate(startDate), Kolab::Conversion::toDate(endDate), person, startDate.isDateOnly());
 }
 
-Freebusy generateFreeBusy(const QList<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay)
+Freebusy generateFreeBusy(const QVector<KCalendarCore::Event::Ptr> &events, const QDateTime &startDate, const QDateTime &endDate, const KCalendarCore::Person &organizer, bool allDay)
 {
     /*
      * TODO the conversion of date-only values to date-time is only necessary because xCal doesn't allow date only. iCalendar doesn't seem to make this restriction so it looks like a bug.

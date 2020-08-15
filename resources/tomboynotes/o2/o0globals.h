@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #ifndef O0GLOBALS_H
 #define O0GLOBALS_H
 

@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #ifndef O0ABSTRACTSTORE_H
 #define O0ABSTRACTSTORE_H
 

@@ -1,19 +1,8 @@
 /*
-    Copyright (C) 2011-2013  Daniel Vrátil <dvratil@redhat.com>
-                  2020       Igor Poboiko <igor.poboiko@gmail.com>
+    SPDX-FileCopyrightText: 2011-2013 Daniel Vrátil <dvratil@redhat.com>
+    SPDX-FileCopyrightText: 2020 Igor Poboiko <igor.poboiko@gmail.com>
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    SPDX-License-Identifier: GPL-3.0-or-later
 */
 
 #include "calendarhandler.h"
@@ -48,8 +37,6 @@
 
 using namespace KGAPI2;
 using namespace Akonadi;
-
-static constexpr uint32_t KGAPIEventVersion = 1;
 
 QString CalendarHandler::mimeType()
 {
@@ -174,6 +161,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     const ObjectsList objects = fetchJob->items();
     bool isIncremental = !fetchJob->syncToken().isEmpty();
     qCDebug(GOOGLE_CALENDAR_LOG) << "Retrieved" << objects.count() << "events for calendar" << collection.remoteId();
+    changedItems.reserve(objects.count());
     for (const ObjectPtr &object : objects) {
         const EventPtr event = object.dynamicCast<Event>();
         if (event->useDefaultReminders() && attr) {

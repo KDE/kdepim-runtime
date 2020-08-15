@@ -1,18 +1,7 @@
 /*
- * Copyright (C) 2012  Christian Mollekopf <mollekopf@kolabsys.com>
+ * SPDX-FileCopyrightText: 2012 Christian Mollekopf <mollekopf@kolabsys.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
 #ifndef TESTUTILS_H
@@ -20,6 +9,7 @@
 
 #include <QUuid>
 #include <QFile>
+#include <QRegularExpression>
 #include <kolabevent.h>
 #include <kmime/kmime_message.h>
 
@@ -95,36 +85,46 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
 
 void normalizeMimemessage(QString &content)
 {
-    content.replace(QRegExp(QStringLiteral("\\bLibkolab-\\d.\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
-    content.replace(QRegExp(QStringLiteral("\\bLibkolabxml-\\d.\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
-    content.replace(QRegExp(QStringLiteral("\\bLibkolab-\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
-    content.replace(QRegExp(QStringLiteral("\\bkdepim-runtime-\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolab-x.x.x"));
-    content.replace(QRegExp(QStringLiteral("\\bLibkolabxml-\\d.\\d\\b"), Qt::CaseSensitive), QStringLiteral("Libkolabxml-x.x.x"));
-    content.replace(QRegExp(QStringLiteral("<uri>cid:*@kolab.resource.akonadi</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>cid:id@kolab.resource.akonadi</uri>"));
-    content.replace(QRegExp(QStringLiteral("Content-ID: <*@kolab.resource.akonadi>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("Content-ID: <id@kolab.resource.akonadi>"));
-    content.replace(QRegExp(QStringLiteral("<uri>mailto:*</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>mailto:</uri>"));
-    content.replace(QRegExp(QStringLiteral("<cal-address>mailto:*</cal-address>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<cal-address>mailto:</cal-address>"));
-    content.replace(QRegExp(QStringLiteral("<uri>data:*</uri>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<uri>data:</uri>"));
-    content.replace(QRegExp(QStringLiteral("<last-modification-date>*</last-modification-date>"), Qt::CaseSensitive, QRegExp::Wildcard),
+    content.replace(QRegularExpression(QStringLiteral("\\bLibkolab-\\d.\\d.\\d\\b")), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegularExpression(QStringLiteral("\\bLibkolabxml-\\d.\\d.\\d\\b")), QStringLiteral("Libkolabxml-x.x.x"));
+    content.replace(QRegularExpression(QStringLiteral("\\bLibkolab-\\d.\\d\\b")), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegularExpression(QStringLiteral("\\bkdepim-runtime-\\d.\\d\\b")), QStringLiteral("Libkolab-x.x.x"));
+    content.replace(QRegularExpression(QStringLiteral("\\bLibkolabxml-\\d.\\d\\b")), QStringLiteral("Libkolabxml-x.x.x"));
+
+    content.replace(QRegularExpression(QStringLiteral("<uri>cid:.*@kolab.resource.akonadi</uri>")), QStringLiteral("<uri>cid:id@kolab.resource.akonadi</uri>"));
+
+    content.replace(QRegularExpression(QStringLiteral("Content-ID: <.*@kolab.resource.akonadi>")), QStringLiteral("Content-ID: <id@kolab.resource.akonadi>"));
+
+    content.replace(QRegularExpression(QStringLiteral("<uri>mailto:.*</uri>")), QStringLiteral("<uri>mailto:</uri>"));
+    content.replace(QRegularExpression(QStringLiteral("<cal-address>mailto:.*</cal-address>")), QStringLiteral("<cal-address>mailto:</cal-address>"));
+
+    content.replace(QRegularExpression(QStringLiteral("<uri>data:.*</uri>")), QStringLiteral("<uri>data:</uri>"));
+
+    content.replace(QRegularExpression(QStringLiteral("<last-modification-date>.*</last-modification-date>")),
                     QStringLiteral("<last-modification-date></last-modification-date>"));
     //We no longer support pobox, so remove pobox lines
-    content.replace(QRegExp(QStringLiteral("<pobox>*</pobox>"), Qt::CaseSensitive, QRegExp::Wildcard), QLatin1String(""));
-    content.replace(QRegExp(QStringLiteral("<timestamp>*</timestamp>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<timestamp></timestamp>"));
-    content.replace(QRegExp(QStringLiteral("<x-kolab-version>*</x-kolab-version>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-kolab-version></x-kolab-version>"));
+    content.remove(QRegularExpression(QStringLiteral("<pobox>.*</pobox>")));
 
-    content.replace(QRegExp(QStringLiteral("--nextPart\\S*"), Qt::CaseSensitive), QStringLiteral("--part"));
-    content.replace(QRegExp(QStringLiteral("\\bboundary=\"nextPart[^\\n]*"), Qt::CaseSensitive), QStringLiteral("boundary"));
-    content.replace(QRegExp(QStringLiteral("Date[^\\n]*"), Qt::CaseSensitive), QStringLiteral("Date"));
+    content.replace(QRegularExpression(QStringLiteral("<timestamp>.*</timestamp>")), QStringLiteral("<timestamp></timestamp>"));
+
+    // DotMatchesEverythingOption because <x-koblab-version> spans multiple lines
+    content.replace(QRegularExpression(QStringLiteral("<x-kolab-version>.*</x-kolab-version>"), QRegularExpression::DotMatchesEverythingOption),
+                    QStringLiteral("<x-kolab-version></x-kolab-version>"));
+
+    content.replace(QRegularExpression(QStringLiteral("--nextPart\\S*")), QStringLiteral("--part"));
+    content.replace(QRegularExpression(QStringLiteral("\\bboundary=\"nextPart[^\\n]*")), QStringLiteral("boundary"));
+
+    content.replace(QRegularExpression(QStringLiteral("Date[^\\n]*")), QStringLiteral("Date"));
     //The sort order of the attributes in kolabV2 is unpredictable
-    content.replace(QRegExp(QStringLiteral("<x-custom*/>"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("<x-custom/>"));
+    content.replace(QRegularExpression(QStringLiteral("<x-custom.*/>")), QStringLiteral("<x-custom/>"));
     //quoted-printable encoding changes where the linebreaks are every now and then (an all are valid), so we remove the linebreaks
-    content.replace(QRegExp(QStringLiteral("=\\n"), Qt::CaseSensitive), QLatin1String(""));
+    content.remove(QLatin1String("=\n"));
 }
 
 QString normalizeVCardMessage(QString content)
 {
     //The encoding changes every now and then
-    content.replace(QRegExp(QStringLiteral("ENCODING=b;TYPE=png:*"), Qt::CaseSensitive, QRegExp::Wildcard), QStringLiteral("ENCODING=b;TYPE=png:picturedata"));
+    content.replace(QRegularExpression(QStringLiteral("ENCODING=b;TYPE=png:.*")), QStringLiteral("ENCODING=b;TYPE=png:picturedata"));
     return content;
 }
 

@@ -1,20 +1,7 @@
 /*
-    Copyright (c) 2009 Bertjan Broeksem <broeksema@kde.org>
+    SPDX-FileCopyrightText: 2009 Bertjan Broeksem <broeksema@kde.org>
 
-    This library is free software; you can redistribute it and/or modify it
-    under the terms of the GNU Library General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
-
-    This library is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
-    License for more details.
-
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to the
-    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301, USA.
+    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
 #include "mboxresource.h"
@@ -69,12 +56,11 @@ MboxResource::MboxResource(const QString &id)
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
                                                  mSettings, QDBusConnection::ExportAdaptors);
 
-    QStringList mimeTypes;
-    mimeTypes << QStringLiteral("message/rfc822");
+    const QStringList mimeTypes{QStringLiteral("message/rfc822")};
     setSupportedMimetypes(mimeTypes, QStringLiteral("message-rfc822"));
-
     // Register the list of deleted items as an attribute of the collection.
     AttributeFactory::registerAttribute<DeletedItemsAttribute>();
+    setName(mSettings->displayName());
 }
 
 MboxResource::~MboxResource()
@@ -105,8 +91,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     reloadFile();
 
     KMBox::MBoxEntry::List entryList;
-    if (col.hasAttribute<DeletedItemsAttribute>()) {
-        const DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>();
+    if (const DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>()) {
         entryList = mMBox->entries(attr->deletedItemEntries());
     } else { // No deleted items (yet)
         entryList = mMBox->entries();
@@ -115,8 +100,8 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     // readEntryHeaders() call.
 
     Item::List items;
-    QString colId = QString::number(col.id());
-    QString colRid = col.remoteId();
+    const QString colId = QString::number(col.id());
+    const QString colRid = col.remoteId();
     double count = 1;
     const int entryListSize(entryList.size());
     items.reserve(entryListSize);

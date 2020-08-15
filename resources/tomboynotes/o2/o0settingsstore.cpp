@@ -1,3 +1,7 @@
+/*
+    SPDX-License-Identifier: BSD-2-Clause
+*/
+
 #include <QCryptographicHash>
 
 #include "o2/o0settingsstore.h"
