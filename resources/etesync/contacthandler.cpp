@@ -210,7 +210,7 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
     const QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
     EteSyncJournalPtr journal = etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION);
 
-    EteSyncCollectionInfoPtr info = etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR);
+    EteSyncCollectionInfoPtr info = etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), ETESYNC_COLLECTION_DEFAULT_COLOR);
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
@@ -224,6 +224,7 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
 
     Collection newCollection(collection);
     mResource->setupCollection(newCollection, journal.get());
+    mResource->mJournalsCache[newCollection.remoteId()] = std::move(journal);
     mResource->changeCommitted(newCollection);
 }
 

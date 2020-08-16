@@ -160,8 +160,10 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
         Collection collection;
         collection.setParentCollection(rootCollection);
         setupCollection(collection, *iter);
+        mJournalsCache[collection.remoteId()] = EteSyncJournalPtr(*iter);
         list.push_back(collection);
     }
+    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
     free(journals);
     collectionsRetrieved(list);
     collectionsRetrievalDone();
@@ -221,9 +223,6 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     collection.setRemoteId(journalUid);
     collection.setName(journalUid);
     collection.setContentMimeTypes(mimeTypes);
-
-    mJournalsCache[journalUid] = EteSyncJournalPtr(journal);
-    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
 }
 
 BaseHandler *EteSyncResource::fetchHandlerForMimeType(const QString &mimeType)
