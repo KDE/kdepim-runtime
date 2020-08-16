@@ -20,6 +20,7 @@
 #include <kcontacts/vcardconverter.h>
 
 #include <AkonadiCore/CollectionModifyJob>
+#include <KLocalizedString>
 #include <QFile>
 
 #include "entriesfetchjob.h"
@@ -58,6 +59,10 @@ void ContactHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entrie
         CharPtr contentStr(etesync_sync_entry_get_content(syncEntry.get()));
         QByteArray content(contentStr.get());
         const KContacts::Addressee contact = converter.parseVCard(content);
+
+        if ((contact.uid()).isEmpty()) {
+            continue;
+        }
 
         const QString action = QStringFromCharPtr(CharPtr(etesync_sync_entry_get_action(syncEntry.get())));
         if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
@@ -135,8 +140,19 @@ void ContactHandler::deleteLocalContact(const KContacts::Addressee &contact)
 void ContactHandler::itemAdded(const Akonadi::Item &item,
                                const Akonadi::Collection &collection)
 {
+    if (!item.hasPayload<KContacts::Addressee>()) {
+        qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
+        mResource->cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
+        return;
+    }
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
+
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
@@ -147,6 +163,8 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), QString::fromUtf8(content));
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        qCDebug(ETESYNC_LOG) << "Could not create EteSync entry";
+        mResource->cancelTask(i18n("Could not create EteSync entry"));
         return;
     }
 
@@ -161,10 +179,21 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
 void ContactHandler::itemChanged(const Akonadi::Item &item,
                                  const QSet<QByteArray> &parts)
 {
+    if (!item.hasPayload<KContacts::Addressee>()) {
+        qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
+        mResource->cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
+        return;
+    }
     Collection collection = item.parentCollection();
 
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
+
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
@@ -175,6 +204,8 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), QString::fromUtf8(content));
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        qCDebug(ETESYNC_LOG) << "Could not create EteSync entry";
+        mResource->cancelTask(i18n("Could not create EteSync entry"));
         return;
     }
 
@@ -192,6 +223,11 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        mResource->cancelTask();
+        return;
+    }
+
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     const QString contact = getLocalContact(item.remoteId());
@@ -199,10 +235,12 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE), contact);
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        qCDebug(ETESYNC_LOG) << "Could not create EteSync entry";
+        mResource->cancelTask(i18n("Could not create EteSync entry"));
         return;
     }
 
-    mResource->changeCommitted(item);
+    mResource->changeProcessed();
 }
 
 void ContactHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -233,6 +271,12 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
+
     EteSyncCollectionInfoPtr info = etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), EteSyncDEFAULT_COLOR);
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
@@ -255,10 +299,16 @@ void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
+
     const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
     if (result) {
         mResource->handleTokenError();
         return;
     }
-    mResource->changeCommitted(collection);
+    mResource->changeProcessed();
 }

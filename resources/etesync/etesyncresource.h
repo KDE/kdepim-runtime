@@ -18,9 +18,6 @@
 #ifndef ETESYNCRESOURCE_H
 #define ETESYNCRESOURCE_H
 
-#include <kcontacts/addressee.h>
-#include <kcontacts/vcardconverter.h>
-
 #include <AkonadiAgentBase/ResourceBase>
 
 #include "calendarhandler.h"

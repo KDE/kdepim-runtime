@@ -22,6 +22,7 @@
 #include <AkonadiCore/CollectionModifyJob>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
+#include <KLocalizedString>
 #include <QFile>
 
 #include "entriesfetchjob.h"
@@ -51,6 +52,10 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
 
         KCalendarCore::ICalFormat format;
         const KCalendarCore::Incidence::Ptr incidence = format.fromString(QStringFromCharPtr(contentStr));
+
+        if (!incidence || (incidence->uid()).isEmpty()) {
+            continue;
+        }
 
         qCDebug(ETESYNC_LOG) << "Entry parsed into incidence - UID" << incidence->uid();
 
@@ -133,19 +138,41 @@ void CalendarTaskBaseHandler::deleteLocalCalendar(const KCalendarCore::Incidence
 void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
                                         const Akonadi::Collection &collection)
 {
+    if (!item.hasPayload<Incidence::Ptr>()) {
+        qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
+        mResource->cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
+        return;
+    }
     KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
     const auto incidence = item.payload<Incidence::Ptr>();
+
+    qCDebug(ETESYNC_LOG) << "Incidence mime type" << incidence->mimeType();
+
+    if (!collection.contentMimeTypes().contains(incidence->mimeType())) {
+        qCDebug(ETESYNC_LOG) << "Received item of different type";
+        mResource->cancelTask(i18n("Received item of different type"));
+        return;
+    }
+
     calendar->addIncidence(incidence);
     KCalendarCore::ICalFormat format;
 
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
+
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), format.toString(calendar));
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        qCDebug(ETESYNC_LOG) << "Could not create EteSync entry";
+        mResource->cancelTask(i18n("Could not create EteSync entry"));
         return;
     }
 
@@ -160,6 +187,11 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
 void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
                                           const QSet<QByteArray> &parts)
 {
+    if (!item.hasPayload<Incidence::Ptr>()) {
+        qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
+        mResource->cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
+        return;
+    }
     Collection collection = item.parentCollection();
 
     KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
@@ -170,11 +202,19 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
+
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), format.toString(calendar));
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        qCDebug(ETESYNC_LOG) << "Could not create EteSync entry";
+        mResource->cancelTask(i18n("Could not create EteSync entry"));
         return;
     }
 
@@ -192,6 +232,11 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        mResource->cancelTask();
+        return;
+    }
+
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     const QString calendar = getLocalCalendar(item.remoteId());
@@ -199,10 +244,12 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE), calendar);
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
+        qCDebug(ETESYNC_LOG) << "Could not create EteSync entry";
+        mResource->cancelTask(i18n("Could not create EteSync entry"));
         return;
     }
 
-    mResource->changeCommitted(item);
+    mResource->changeProcessed();
 }
 
 void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
@@ -234,6 +281,12 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
+
     auto journalColor = ETESYNC_COLLECTION_DEFAULT_COLOR;
     if (collection.hasAttribute<CollectionColorAttribute>()) {
         const CollectionColorAttribute *colorAttr = collection.attribute<CollectionColorAttribute>();
@@ -264,10 +317,16 @@ void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &colle
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
+
     const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
     if (result) {
         mResource->handleTokenError();
         return;
     }
-    mResource->changeCommitted(collection);
+    mResource->changeProcessed();
 }

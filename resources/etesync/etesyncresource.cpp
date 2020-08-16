@@ -17,6 +17,8 @@
 
 #include "etesyncresource.h"
 
+#include <kcontacts/addressee.h>
+#include <kcontacts/contactgroup.h>
 #include <kwindowsystem.h>
 
 #include <AkonadiCore/CachePolicy>
@@ -115,6 +117,8 @@ void EteSyncResource::retrieveCollections()
 {
     setCollectionStreamingEnabled(true);
 
+    mJournalsCache.clear();
+
     auto job = new JournalsFetchJob(mClientState->client(), this);
     connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
     job->start();
@@ -183,6 +187,10 @@ bool EteSyncResource::handleTokenError()
 
 void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
 {
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "Unable to setup collection - journal is null";
+        return;
+    }
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal, mClientState->derived(), mClientState->keypair());
 
     EteSyncCollectionInfoPtr info(etesync_journal_get_info(journal, cryptoManager.get()));
@@ -197,6 +205,7 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
 
     if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK)) {
         mimeTypes.push_back(KContacts::Addressee::mimeType());
+        mimeTypes.push_back(KContacts::ContactGroup::mimeType());
         attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-pim-contacts"));
     } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR)) {
