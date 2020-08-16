@@ -34,6 +34,7 @@ using namespace KCalendarCore;
 CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource) : BaseHandler(resource)
 {
     initialiseBaseDirectory();
+    AttributeFactory::registerAttribute<CollectionColorAttribute>();
 }
 
 void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
@@ -256,4 +257,5 @@ void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &colle
         mResource->handleTokenError();
         return;
     }
+    mResource->changeCommitted(collection);
 }

@@ -42,26 +42,29 @@ void EntriesFetchJob::fetchEntries()
     mPrevUid = mLastUid = mCollection.remoteRevision();
     mEntryManager = etesync_entry_manager_new(mClient, journalUid);
 
-    while (fetchNextBatch()) {
-    }
+    EntriesFetchJob::Status status;
+    do {
+        status = fetchNextBatch();
+    } while (status != ERROR && status != ALL_ENTRIES_FETCHED);
 
-    if (etesync_get_error_code() != EteSyncErrorCode::ETESYNC_ERROR_CODE_NO_ERROR) {
+    if (status == ERROR) {
         setError(UserDefinedError);
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));
-        emitResult();
-        return;
     }
     emitResult();
 }
 
-bool EntriesFetchJob::fetchNextBatch()
+EntriesFetchJob::Status EntriesFetchJob::fetchNextBatch()
 {
-    std::vector<EteSyncEntryPtr> entries = etesync_entry_manager_list(mEntryManager.get(), mLastUid, 50);
-    if (entries.empty()) {
-        return false;
+    std::pair<std::vector<EteSyncEntryPtr>, bool> entries = etesync_entry_manager_list(mEntryManager.get(), mLastUid, 50);
+    if (entries.second) {
+        return ERROR;
     }
-    mEntries.insert(mEntries.end(), std::make_move_iterator(entries.begin()), std::make_move_iterator(entries.end()));
+    if (entries.first.empty()) {
+        return ALL_ENTRIES_FETCHED;
+    }
+    mEntries.insert(mEntries.end(), std::make_move_iterator(entries.first.begin()), std::make_move_iterator(entries.first.end()));
     mLastUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(mEntries[mEntries.size() - 1].get())));
-    return true;
+    return FETCH_OK;
 }

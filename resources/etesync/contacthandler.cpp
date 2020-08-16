@@ -209,7 +209,11 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
 
     etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
 
-    etesync_journal_manager_create(mClientState->journalManager(), journal.get());
+    const auto result = etesync_journal_manager_create(mClientState->journalManager(), journal.get());
+    if (result) {
+        mResource->handleTokenError();
+        return;
+    }
 
     Collection newCollection(collection);
     mResource->setupCollection(newCollection, journal.get());
@@ -227,7 +231,13 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
 
     etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
 
-    etesync_journal_manager_update(mClientState->journalManager(), journal.get());
+    const auto result = etesync_journal_manager_update(mClientState->journalManager(), journal.get());
+    if (result) {
+        mResource->handleTokenError();
+        return;
+    }
+
+    mResource->changeCommitted(collection);
 }
 
 void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
@@ -235,5 +245,10 @@ void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
-    etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
+    const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
+    if (result) {
+        mResource->handleTokenError();
+        return;
+    }
+    mResource->changeCommitted(collection);
 }

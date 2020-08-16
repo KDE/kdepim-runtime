@@ -49,8 +49,14 @@ namespace EteSyncAPI {
         }
 
     protected:
+        enum Status
+        {
+            FETCH_OK,
+            ERROR,
+            ALL_ENTRIES_FETCHED
+        };
         void fetchEntries();
-        bool fetchNextBatch();
+        Status fetchNextBatch();
 
     private:
         const EteSync *mClient = nullptr;

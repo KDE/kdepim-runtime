@@ -140,8 +140,6 @@ Collection EteSyncResource::createRootCollection()
     attr->setDisplayName(mClientState->username());
     attr->setIconName(QStringLiteral("akonadi-etesync"));
 
-    collectionsRetrieved({rootCollection});
-
     return rootCollection;
 }
 
@@ -154,9 +152,10 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
         return;
     }
     qCDebug(ETESYNC_LOG) << "Retrieving collections";
-    const Collection &rootCollection = createRootCollection();
     EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
     Collection::List list;
+    const Collection &rootCollection = createRootCollection();
+    list.push_back(rootCollection);
     for (EteSyncJournal **iter = journals; *iter; iter++) {
         Collection collection;
         collection.setParentCollection(rootCollection);
