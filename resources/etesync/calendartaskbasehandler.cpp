@@ -52,6 +52,8 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
         KCalendarCore::ICalFormat format;
         const KCalendarCore::Incidence::Ptr incidence = format.fromString(QStringFromCharPtr(contentStr));
 
+        qCDebug(ETESYNC_LOG) << "Entry parsed into incidence - UID" << incidence->uid();
+
         const QString action = QStringFromCharPtr(CharPtr(etesync_sync_entry_get_action(syncEntry.get())));
         if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
             incidences[incidence->uid()] = incidence;

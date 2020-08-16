@@ -191,21 +191,25 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
 
     auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
 
+    const QString displayName = QStringFromCharPtr(CharPtr(etesync_collection_info_get_display_name(info.get())));
+
     if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK)) {
         mimeTypes.push_back(KContacts::Addressee::mimeType());
+        attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-pim-contacts"));
     } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR)) {
         mimeTypes.push_back(KCalendarCore::Event::eventMimeType());
+        attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-calendar"));
     } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS)) {
         mimeTypes.push_back(KCalendarCore::Todo::todoMimeType());
+        attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-pim-tasks"));
     } else {
         qCWarning(ETESYNC_LOG) << "Unknown journal type. Cannot set collection mime type.";
     }
 
     const QString journalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_uid(journal)));
-    const QString displayName = QStringFromCharPtr(CharPtr(etesync_collection_info_get_display_name(info.get())));
     auto collectionColor = etesync_collection_info_get_color(info.get());
     auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>(Collection::AddIfMissing);
     colorAttr->setColor(collectionColor);
@@ -215,7 +219,7 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     }
 
     collection.setRemoteId(journalUid);
-    collection.setName(displayName);
+    collection.setName(journalUid);
     collection.setContentMimeTypes(mimeTypes);
 
     mJournalsCache[journalUid] = EteSyncJournalPtr(journal);
