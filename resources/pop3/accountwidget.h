@@ -67,7 +67,7 @@ private:
 private:
     QButtonGroup *encryptionButtonGroup = nullptr;
     MailTransport::ServerTest *mServerTest = nullptr;
-    QRegExpValidator mValidator;
+    QRegularExpressionValidator mValidator;
     bool mServerTestFailed = false;
     KWallet::Wallet *mWallet = nullptr;
     QString mInitalPassword;

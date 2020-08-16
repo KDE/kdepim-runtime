@@ -64,7 +64,7 @@ AccountWidget::AccountWidget(Settings &settings, const QString &identifier, QWid
     , mIdentifier(identifier)
     , mSettings(settings)
 {
-    mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
+    mValidator.setRegularExpression(QRegularExpression(QStringLiteral("[A-Za-z0-9_:.-]*")));
     setupWidgets();
 }
 
