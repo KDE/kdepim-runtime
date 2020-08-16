@@ -213,6 +213,7 @@ void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *jo
     if (etesync_journal_is_read_only(journal)) {
         collection.setRights(Collection::ReadOnly);
     }
+
     collection.setRemoteId(journalUid);
     collection.setName(displayName);
     collection.setContentMimeTypes(mimeTypes);

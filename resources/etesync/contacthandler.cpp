@@ -141,7 +141,8 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     KContacts::VCardConverter converter;
-    QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
+    const auto contact = item.payload<KContacts::Addressee>();
+    QByteArray content = converter.createVCard(contact);
 
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), QString::fromUtf8(content));
 
@@ -149,7 +150,10 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
         return;
     }
 
-    mResource->changeCommitted(item);
+    Item newItem(item);
+    newItem.setRemoteId(contact.uid());
+    newItem.setPayload<KContacts::Addressee>(contact);
+    mResource->changeCommitted(newItem);
 
     updateLocalContact(item.payload<KContacts::Addressee>());
 }
@@ -165,7 +169,8 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     KContacts::VCardConverter converter;
-    QByteArray content = converter.createVCard(item.payload<KContacts::Addressee>());
+    const auto contact = item.payload<KContacts::Addressee>();
+    QByteArray content = converter.createVCard(contact);
 
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), QString::fromUtf8(content));
 
@@ -173,7 +178,9 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
         return;
     }
 
-    mResource->changeCommitted(item);
+    Item newItem(item);
+    newItem.setPayload<KContacts::Addressee>(contact);
+    mResource->changeCommitted(newItem);
 
     updateLocalContact(item.payload<KContacts::Addressee>());
 }
@@ -237,7 +244,9 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
         return;
     }
 
-    mResource->changeCommitted(collection);
+    Collection newCollection(collection);
+    mResource->setupCollection(newCollection, journal.get());
+    mResource->changeCommitted(newCollection);
 }
 
 void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)

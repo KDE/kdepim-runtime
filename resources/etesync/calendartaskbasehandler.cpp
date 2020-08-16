@@ -132,7 +132,8 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
                                         const Akonadi::Collection &collection)
 {
     KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
-    calendar->addIncidence(item.payload<Incidence::Ptr>());
+    const auto incidence = item.payload<Incidence::Ptr>();
+    calendar->addIncidence(incidence);
     KCalendarCore::ICalFormat format;
 
     const QString journalUid = collection.remoteId();
@@ -146,7 +147,10 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
         return;
     }
 
-    mResource->changeCommitted(item);
+    Item newItem(item);
+    newItem.setRemoteId(incidence->uid());
+    newItem.setPayload<Incidence::Ptr>(incidence);
+    mResource->changeCommitted(newItem);
 
     updateLocalCalendar(item.payload<Incidence::Ptr>());
 }
@@ -157,7 +161,8 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
     Collection collection = item.parentCollection();
 
     KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
-    calendar->addIncidence(item.payload<Incidence::Ptr>());
+    const auto incidence = item.payload<Incidence::Ptr>();
+    calendar->addIncidence(incidence);
     KCalendarCore::ICalFormat format;
 
     const QString journalUid = collection.remoteId();
@@ -171,7 +176,9 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
         return;
     }
 
-    mResource->changeCommitted(item);
+    Item newItem(item);
+    newItem.setPayload<Incidence::Ptr>(incidence);
+    mResource->changeCommitted(newItem);
 
     updateLocalCalendar(item.payload<Incidence::Ptr>());
 }
@@ -244,7 +251,9 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
         return;
     }
 
-    mResource->changeCommitted(collection);
+    Collection newCollection(collection);
+    mResource->setupCollection(newCollection, journal.get());
+    mResource->changeCommitted(newCollection);
 }
 
 void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &collection)
