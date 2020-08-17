@@ -53,12 +53,14 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
     for (auto &entry : entries) {
         if (!entry) {
             qCDebug(ETESYNC_LOG) << "SetupItems: Entry is null";
+            prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             continue;
         }
         EteSyncSyncEntryPtr syncEntry = etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid);
 
         if (!syncEntry) {
             qCDebug(ETESYNC_LOG) << "SetupItems: syncEntry is null for entry" << etesync_entry_get_uid(entry.get());
+            prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             continue;
         }
 
@@ -69,6 +71,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
 
         if (!incidence || (incidence->uid()).isEmpty()) {
             qCDebug(ETESYNC_LOG) << "Couldn't parse entry with uid" << etesync_entry_get_uid(entry.get());
+            prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             continue;
         }
 

@@ -264,6 +264,7 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
+    qCDebug(ETESYNC_LOG) << "Retrieving entries for journal" << collection.remoteId();
     const int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
     if (timeSinceLastCacheUpdate <= 30) {
         const QString journalUid = collection.remoteId();
