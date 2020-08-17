@@ -41,11 +41,20 @@ CalendarTaskBaseHandler::CalendarTaskBaseHandler(EteSyncResource *resource) : Ba
 void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "SetupItems: Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     QMap<QString, KCalendarCore::Incidence::Ptr> incidences;
 
     for (auto &entry : entries) {
+        if (!entry) {
+            qCDebug(ETESYNC_LOG) << "SetupItems: Entry is null";
+            continue;
+        }
         EteSyncSyncEntryPtr syncEntry = etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid);
 
         CharPtr contentStr(etesync_sync_entry_get_content(syncEntry.get()));
@@ -54,6 +63,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
         const KCalendarCore::Incidence::Ptr incidence = format.fromString(QStringFromCharPtr(contentStr));
 
         if (!incidence || (incidence->uid()).isEmpty()) {
+            qCDebug(ETESYNC_LOG) << "Couldn't parse entry";
             continue;
         }
 
