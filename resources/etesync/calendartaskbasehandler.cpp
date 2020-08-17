@@ -60,6 +60,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
 
         if (!syncEntry) {
             qCDebug(ETESYNC_LOG) << "SetupItems: syncEntry is null for entry" << etesync_entry_get_uid(entry.get());
+            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
             prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             continue;
         }
@@ -259,6 +260,12 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
 
     const QString calendar = getLocalCalendar(item.remoteId());
 
+    if (calendar.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Could not get local calendar";
+        mResource->cancelTask(i18n("Could not get local calendar"));
+        return;
+    }
+
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE), calendar);
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
@@ -280,10 +287,16 @@ void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collect
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
-    etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
+    if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not set journal info";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        mResource->cancelTask(i18n("Could not set journal info"));
+        return;
+    };
 
-    const auto result = etesync_journal_manager_create(mClientState->journalManager(), journal.get());
-    if (result) {
+    if (etesync_journal_manager_create(mClientState->journalManager(), journal.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not create journal";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
         mResource->handleTokenError();
         return;
     }
@@ -317,10 +330,16 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
-    etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
+    if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not set journal info";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        mResource->cancelTask(i18n("Could not set journal info"));
+        return;
+    };
 
-    const auto result = etesync_journal_manager_update(mClientState->journalManager(), journal.get());
-    if (result) {
+    if (etesync_journal_manager_update(mClientState->journalManager(), journal.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not update journal";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
         mResource->handleTokenError();
         return;
     }
@@ -341,8 +360,9 @@ void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &colle
         return;
     }
 
-    const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
-    if (result) {
+    if (etesync_journal_manager_delete(mClientState->journalManager(), journal.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not delete journal";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
         mResource->handleTokenError();
         return;
     }

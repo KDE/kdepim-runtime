@@ -63,10 +63,14 @@ void BaseHandler::setupItems(std::vector<EteSyncEntryPtr> &entries, Akonadi::Col
 bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const EteSyncCryptoManager *cryptoManager, const Collection &collection)
 {
     EteSyncEntryPtr entry = etesync_entry_from_sync_entry(cryptoManager, syncEntry, collection.remoteRevision());
+    if (!entry) {
+        qCDebug(ETESYNC_LOG) << "Could not create entry from sync entry";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+        return false;
+    }
     EteSyncEntryManagerPtr entryManager = etesync_entry_manager_new(mClientState->client(), collection.remoteId());
     EteSyncEntry *entries[] = {entry.get(), NULL};
-    const auto result = etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision());
-    if (result) {
+    if (etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision())) {
         handleConflictError(collection);
         mResource->handleTokenError();
         return false;
@@ -86,6 +90,8 @@ void BaseHandler::updateCollectionRevision(const EteSyncEntry *entry, const Coll
 void BaseHandler::syncCollection(const QVariant &collectionVariant)
 {
     const Collection collection = collectionVariant.value<Collection>();
+
+    qCDebug(ETESYNC_LOG) << "Syncing journal" << collection.remoteId();
 
     auto job = new EntriesFetchJob(mClientState->client(), collection, this);
     connect(job, &EntriesFetchJob::finished, this, &BaseHandler::slotItemsRetrieved);

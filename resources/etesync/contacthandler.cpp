@@ -47,13 +47,29 @@ const QString ContactHandler::etesyncCollectionType()
 void ContactHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entries, Item::List &changedItems, Item::List &removedItems, Collection &collection, const QString &journalUid, QString &prevUid)
 {
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
-
+    if (!journal) {
+        qCDebug(ETESYNC_LOG) << "SetupItems: Could not get journal";
+        mResource->cancelTask(i18n("Could not get journal"));
+        return;
+    }
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     QMap<QString, KContacts::Addressee> contacts;
 
     for (auto &entry : entries) {
+        if (!entry) {
+            qCDebug(ETESYNC_LOG) << "SetupItems: Entry is null";
+            prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
+            continue;
+        }
         EteSyncSyncEntryPtr syncEntry = etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid);
+
+        if (!syncEntry) {
+            qCDebug(ETESYNC_LOG) << "SetupItems: syncEntry is null for entry" << etesync_entry_get_uid(entry.get());
+            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+            prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
+            continue;
+        }
 
         KContacts::VCardConverter converter;
         CharPtr contentStr(etesync_sync_entry_get_content(syncEntry.get()));
@@ -61,8 +77,12 @@ void ContactHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entrie
         const KContacts::Addressee contact = converter.parseVCard(content);
 
         if ((contact.uid()).isEmpty()) {
+            qCDebug(ETESYNC_LOG) << "Couldn't parse entry with uid" << etesync_entry_get_uid(entry.get());
+            prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             continue;
         }
+
+        qCDebug(ETESYNC_LOG) << "Entry parsed into contact - UID" << contact.uid();
 
         const QString action = QStringFromCharPtr(CharPtr(etesync_sync_entry_get_action(syncEntry.get())));
         if (action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD) || action == QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE)) {
@@ -160,6 +180,12 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     const auto contact = item.payload<KContacts::Addressee>();
     QByteArray content = converter.createVCard(contact);
 
+    if (content.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Could not create vcard from payload";
+        mResource->cancelTask(i18n("Could not create vcard from payload"));
+        return;
+    }
+
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_ADD), QString::fromUtf8(content));
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
@@ -201,6 +227,12 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
     const auto contact = item.payload<KContacts::Addressee>();
     QByteArray content = converter.createVCard(contact);
 
+    if (content.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Could not create vcard from content";
+        mResource->cancelTask(i18n("Could not create vcard from content"));
+        return;
+    }
+
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_CHANGE), QString::fromUtf8(content));
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
@@ -232,6 +264,12 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
 
     const QString contact = getLocalContact(item.remoteId());
 
+    if (contact.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Could not get local contact";
+        mResource->cancelTask(i18n("Could not get local contact"));
+        return;
+    }
+
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE), contact);
 
     if (!createEteSyncEntry(syncEntry.get(), cryptoManager.get(), collection)) {
@@ -252,10 +290,16 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
-    etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
+    if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not set journal info";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        mResource->cancelTask(i18n("Could not set journal info"));
+        return;
+    };
 
-    const auto result = etesync_journal_manager_create(mClientState->journalManager(), journal.get());
-    if (result) {
+    if (etesync_journal_manager_create(mClientState->journalManager(), journal.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not create journal";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
         mResource->handleTokenError();
         return;
     }
@@ -281,10 +325,16 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
-    etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get());
+    if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not set journal info";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        mResource->cancelTask(i18n("Could not set journal info"));
+        return;
+    };
 
-    const auto result = etesync_journal_manager_update(mClientState->journalManager(), journal.get());
-    if (result) {
+    if (etesync_journal_manager_update(mClientState->journalManager(), journal.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not update journal";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
         mResource->handleTokenError();
         return;
     }
@@ -305,8 +355,9 @@ void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
         return;
     }
 
-    const auto result = etesync_journal_manager_delete(mClientState->journalManager(), journal.get());
-    if (result) {
+    if (etesync_journal_manager_delete(mClientState->journalManager(), journal.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not delete journal";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
         mResource->handleTokenError();
         return;
     }
