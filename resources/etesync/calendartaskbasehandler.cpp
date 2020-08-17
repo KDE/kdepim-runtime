@@ -57,13 +57,18 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
         }
         EteSyncSyncEntryPtr syncEntry = etesync_entry_get_sync_entry(entry.get(), cryptoManager.get(), prevUid);
 
+        if (!syncEntry) {
+            qCDebug(ETESYNC_LOG) << "SetupItems: syncEntry is null for entry" << etesync_entry_get_uid(entry.get());
+            continue;
+        }
+
         CharPtr contentStr(etesync_sync_entry_get_content(syncEntry.get()));
 
         KCalendarCore::ICalFormat format;
         const KCalendarCore::Incidence::Ptr incidence = format.fromString(QStringFromCharPtr(contentStr));
 
         if (!incidence || (incidence->uid()).isEmpty()) {
-            qCDebug(ETESYNC_LOG) << "Couldn't parse entry";
+            qCDebug(ETESYNC_LOG) << "Couldn't parse entry with uid" << etesync_entry_get_uid(entry.get());
             continue;
         }
 
