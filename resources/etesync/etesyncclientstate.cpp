@@ -56,7 +56,7 @@ void EteSyncClientState::init()
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
     mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
     if (!mUserInfo) {
-        qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
+        qCWarning(ETESYNC_LOG) << "init() - User info obtained from server is NULL";
         invalidateToken();
         Q_EMIT clientInitialised(false);
         return;
@@ -104,9 +104,8 @@ bool EteSyncClientState::initUserInfo()
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
     mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
     if (!mUserInfo) {
-        qCWarning(ETESYNC_LOG) << "User info obtained from server is NULL";
+        qCWarning(ETESYNC_LOG) << "initUserInfo() - User info obtained from server is NULL";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        invalidateToken();
         return false;
     }
     return true;
@@ -142,7 +141,7 @@ void EteSyncClientState::initAccount(const QString &encryptionPassword)
     EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
     etesync_user_info_set_keypair(mUserInfo.get(), userInfoCryptoManager.get(), mKeypair.get());
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
-    if (!etesync_user_info_manager_create(userInfoManager.get(), mUserInfo.get())) {
+    if (etesync_user_info_manager_create(userInfoManager.get(), mUserInfo.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create user info";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         return;

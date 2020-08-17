@@ -86,7 +86,12 @@ bool LoginPage::validatePage()
     const QString serverUrl = advancedServerUrl.isEmpty() ? QStringLiteral("https://api.etesync.com") : advancedServerUrl;
     const bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
     if (!loginResult) {
-        mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
+            mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
+        } else {
+            mLoginLabel->setText(i18n(etesync_get_error_message()));
+        }
     }
     return loginResult;
 }
@@ -117,8 +122,13 @@ void EncryptionPasswordPage::initializePage()
 {
     const bool userInfoResult = static_cast<SetupWizard *>(wizard())->mClientState->initUserInfo();
     if (!userInfoResult) {
-        setSubTitle(i18n("Please set your encryption password below, and make sure you got it right, as it can't be recovered if lost!"));
-        mInitAccount = true;
+        if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_NOT_FOUND) {
+            setSubTitle(i18n("Please set your encryption password below, and make sure you got it right, as it can't be recovered if lost!"));
+            mInitAccount = true;
+        } else {
+            qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+            setSubTitle(i18n("An error occured! Please try again."));
+        }
     }
 }
 
