@@ -65,7 +65,7 @@ bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const Et
     EteSyncEntryPtr entry = etesync_entry_from_sync_entry(cryptoManager, syncEntry, collection.remoteRevision());
     if (!entry) {
         qCDebug(ETESYNC_LOG) << "Could not create entry from sync entry";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         return false;
     }
     EteSyncEntryManagerPtr entryManager = etesync_entry_manager_new(mClientState->client(), collection.remoteId());

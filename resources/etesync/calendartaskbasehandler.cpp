@@ -60,7 +60,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
 
         if (!syncEntry) {
             qCDebug(ETESYNC_LOG) << "SetupItems: syncEntry is null for entry" << etesync_entry_get_uid(entry.get());
-            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+            qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
             prevUid = QStringFromCharPtr(CharPtr(etesync_entry_get_uid(entry.get())));
             continue;
         }
@@ -91,7 +91,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
                 item.setRemoteId(incidence->uid());
                 removedItems.push_back(item);
 
-                deleteLocalCalendar(incidence);
+                deleteLocalCalendar(incidence->uid());
             }
         }
 
@@ -144,9 +144,9 @@ bool CalendarTaskBaseHandler::updateLocalCalendar(const KCalendarCore::Incidence
     return true;
 }
 
-void CalendarTaskBaseHandler::deleteLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence)
+void CalendarTaskBaseHandler::deleteLocalCalendar(const QString &incidenceUid)
 {
-    const QString path = baseDirectoryPath() + QLatin1Char('/') + incidence->uid() + QLatin1String(".ical");
+    const QString path = baseDirectoryPath() + QLatin1Char('/') + incidenceUid + QLatin1String(".ical");
     QFile file(path);
     if (!file.remove()) {
         qCDebug(ETESYNC_LOG) << "Unable to remove " << path << file.errorString();
@@ -158,7 +158,7 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
                                         const Akonadi::Collection &collection)
 {
     if (!item.hasPayload<Incidence::Ptr>()) {
-        qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
+        qCDebug(ETESYNC_LOG) << "Received item with unknown payload - Remote ID: " << item.remoteId();
         mResource->cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
         return;
     }
@@ -248,6 +248,16 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
 {
     Collection collection = item.parentCollection();
 
+    const QString calendar = getLocalCalendar(item.remoteId());
+    if (calendar.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Could not get local calendar";
+        mResource->cancelTask(i18n("Could not get local calendar"));
+        return;
+    }
+
+    // Delete now, because itemRemoved() may be called when collection is removed
+    deleteLocalCalendar(item.remoteId());
+
     const QString journalUid = collection.remoteId();
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
@@ -257,14 +267,6 @@ void CalendarTaskBaseHandler::itemRemoved(const Akonadi::Item &item)
     }
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
-
-    const QString calendar = getLocalCalendar(item.remoteId());
-
-    if (calendar.isEmpty()) {
-        qCDebug(ETESYNC_LOG) << "Could not get local calendar";
-        mResource->cancelTask(i18n("Could not get local calendar"));
-        return;
-    }
 
     EteSyncSyncEntryPtr syncEntry = etesync_sync_entry_new(QStringLiteral(ETESYNC_SYNC_ENTRY_ACTION_DELETE), calendar);
 
@@ -282,21 +284,20 @@ void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collect
     const QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
     EteSyncJournalPtr journal = etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION);
 
-    /// TODO: Description?
     EteSyncCollectionInfoPtr info = etesync_collection_info_new(etesyncCollectionType(), collection.displayName(), QString(), ETESYNC_COLLECTION_DEFAULT_COLOR);
 
     EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal.get(), mClientState->derived(), mClientState->keypair());
 
     if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
         qCDebug(ETESYNC_LOG) << "Could not set journal info";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->cancelTask(i18n("Could not set journal info"));
         return;
     };
 
     if (etesync_journal_manager_create(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create journal";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->handleTokenError();
         return;
     }
@@ -332,14 +333,14 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
 
     if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
         qCDebug(ETESYNC_LOG) << "Could not set journal info";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->cancelTask(i18n("Could not set journal info"));
         return;
     };
 
     if (etesync_journal_manager_update(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not update journal";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->handleTokenError();
         return;
     }
@@ -362,7 +363,7 @@ void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &colle
 
     if (etesync_journal_manager_delete(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not delete journal";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message;
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->handleTokenError();
         return;
     }

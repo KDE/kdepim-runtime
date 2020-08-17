@@ -47,7 +47,7 @@ public:
 protected:
     QString getLocalCalendar(const QString &incidenceUid) const;
     bool updateLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence);
-    void deleteLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence);
+    void deleteLocalCalendar(const QString &incidenceUid);
 
     QString baseDirectoryPath() const override;
 };

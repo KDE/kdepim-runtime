@@ -69,6 +69,7 @@ Q_SIGNALS:
     void tokenRefreshed();
 
 private:
+    void createDefaultJournal(const QString &journalType, const QString &journalName);
     EteSyncPtr mClient;
     QString mDerived;
     QString mToken;

@@ -151,7 +151,6 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
-        qCDebug(ETESYNC_LOG) << "Incorrect token in retrieveCollections()";
         handleTokenError();
         return;
     }
@@ -287,7 +286,6 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << job->errorText();
-        qCDebug(ETESYNC_LOG) << "Incorrect token in retrieveItems()";
         handleTokenError();
         return;
     }
@@ -355,6 +353,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
                                 const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Item added" << item.mimeType();
+    qCDebug(ETESYNC_LOG) << "Journal UID" << collection.remoteId();
 
     auto handler = fetchHandlerForMimeType(item.mimeType());
     if (handler) {
@@ -369,6 +368,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
                                   const QSet<QByteArray> &parts)
 {
     qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType();
+    qCDebug(ETESYNC_LOG) << "Journal UID" << item.parentCollection().remoteId();
 
     auto handler = fetchHandlerForMimeType(item.mimeType());
     if (handler) {
@@ -420,7 +420,6 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
 
 void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
 {
-    /// TODO: Remove local contacts for this collection
     qCDebug(ETESYNC_LOG) << "Collection removed" << collection.mimeType();
 
     auto handler = fetchHandlerForCollection(collection);

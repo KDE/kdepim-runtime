@@ -50,7 +50,7 @@ public:
 protected:
     QString getLocalContact(const QString &contactUid) const;
     void updateLocalContact(const KContacts::Addressee &contact);
-    void deleteLocalContact(const KContacts::Addressee &contact);
+    void deleteLocalContact(const QString &incidenceUid);
 
     QString baseDirectoryPath() const override;
 
