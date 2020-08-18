@@ -98,6 +98,25 @@ void EteSyncClientState::refreshToken()
     tokenRefreshed();
 }
 
+void EteSyncClientState::refreshUserInfo()
+{
+    EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
+    mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
+    if (!mUserInfo) {
+        qCWarning(ETESYNC_LOG) << "initUserInfo() - User info obtained from server is NULL";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        return;
+    }
+    EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
+    mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(mUserInfo.get(), userInfoCryptoManager.get()));
+    if (!mKeypair) {
+        qCDebug(ETESYNC_LOG) << "Empty keypair";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        return;
+    }
+    qCDebug(ETESYNC_LOG) << "Received keypair";
+}
+
 bool EteSyncClientState::initUserInfo()
 {
     mJournalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));

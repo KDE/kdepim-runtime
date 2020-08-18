@@ -241,9 +241,12 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
         return;
     }
 
+    // Using ItemModifyJob + changeProcessed() instead of changeCommitted to handle conflict error - ItemSync modifies local item payload
     Item newItem(item);
     newItem.setPayload<KContacts::Addressee>(contact);
-    mResource->changeCommitted(newItem);
+    Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(newItem);
+    modifyJob->disableRevisionCheck();
+    mResource->changeProcessed();
 
     updateLocalContact(item.payload<KContacts::Addressee>());
 }

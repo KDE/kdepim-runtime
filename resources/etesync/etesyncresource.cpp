@@ -27,7 +27,6 @@
 #include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
@@ -118,6 +117,7 @@ void EteSyncResource::retrieveCollections()
     setCollectionStreamingEnabled(true);
 
     mJournalsCache.clear();
+    mClientState->refreshUserInfo();
 
     auto job = new JournalsFetchJob(mClientState->client(), this);
     connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);

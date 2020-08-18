@@ -20,6 +20,8 @@
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
+#include <AkonadiCore/ItemFetchJob>
+#include <AkonadiCore/ItemModifyJob>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 #include <KLocalizedString>
@@ -237,9 +239,12 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
         return;
     }
 
+    // Using ItemModifyJob + changeProcessed() instead of changeCommitted to handle conflict error - ItemSync modifies local item payload
     Item newItem(item);
     newItem.setPayload<Incidence::Ptr>(incidence);
-    mResource->changeCommitted(newItem);
+    Akonadi::ItemModifyJob *modifyJob = new Akonadi::ItemModifyJob(newItem);
+    modifyJob->disableRevisionCheck();
+    mResource->changeProcessed();
 
     updateLocalCalendar(item.payload<Incidence::Ptr>());
 }

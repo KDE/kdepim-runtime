@@ -64,7 +64,6 @@ protected:
     Collection createRootCollection();
 
     void initialiseDirectory(const QString &path) const;
-
     QString baseDirectoryPath() const;
 
     bool handleTokenError();
