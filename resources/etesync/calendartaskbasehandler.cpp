@@ -20,7 +20,6 @@
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
-#include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemModifyJob>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>

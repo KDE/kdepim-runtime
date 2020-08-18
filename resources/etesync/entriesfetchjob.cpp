@@ -42,12 +42,13 @@ void EntriesFetchJob::fetchEntries()
     mPrevUid = mLastUid = mCollection.remoteRevision();
     mEntryManager = etesync_entry_manager_new(mClient, journalUid);
 
-    EntriesFetchJob::Status status;
-    do {
+    EntriesFetchJob::Status status = FETCH_OK;
+    while (status != ERROR && status != ALL_ENTRIES_FETCHED) {
         status = fetchNextBatch();
-    } while (status != ERROR && status != ALL_ENTRIES_FETCHED);
+    }
 
     if (status == ERROR) {
+        qCDebug(ETESYNC_LOG) << "Returning error from entries fetch job";
         setError(UserDefinedError);
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));

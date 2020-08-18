@@ -20,6 +20,7 @@
 #include <kcontacts/vcardconverter.h>
 
 #include <AkonadiCore/CollectionModifyJob>
+#include <AkonadiCore/ItemModifyJob>
 #include <KLocalizedString>
 #include <QFile>
 

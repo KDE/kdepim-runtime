@@ -114,6 +114,7 @@ void EteSyncResource::configure(WId windowId)
 
 void EteSyncResource::retrieveCollections()
 {
+    qCDebug(ETESYNC_LOG) << "Retrieving collections";
     setCollectionStreamingEnabled(true);
 
     mJournalsCache.clear();
@@ -154,7 +155,6 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
         handleTokenError();
         return;
     }
-    qCDebug(ETESYNC_LOG) << "Retrieving collections";
     EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
     Collection::List list;
     const Collection &rootCollection = createRootCollection();
