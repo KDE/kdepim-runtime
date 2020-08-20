@@ -50,14 +50,14 @@ void BaseHandler::setupItems(std::vector<EteSyncEntryPtr> &entries, Akonadi::Col
 
     getItemListFromEntries(entries, changedItems, removedItems, collection, journalUid, prevUid);
 
-    collection.setRemoteRevision(prevUid);
-    new CollectionModifyJob(collection, this);
-
     if (isIncremental) {
         mResource->itemsRetrievedIncremental(changedItems, removedItems);
     } else {
         mResource->itemsRetrieved(changedItems);
     }
+
+    collection.setRemoteRevision(prevUid);
+    new CollectionModifyJob(collection, this);
 }
 
 bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const EteSyncCryptoManager *cryptoManager, const Collection &collection)
@@ -72,7 +72,7 @@ bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const Et
     EteSyncEntry *entries[] = {entry.get(), NULL};
     if (etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision())) {
         handleConflictError(collection);
-        mResource->handleTokenError();
+        mResource->handleError();
         return false;
     }
     updateCollectionRevision(entry.get(), collection);
@@ -139,9 +139,9 @@ bool BaseHandler::handleConflictError(const Collection &collection)
         qCDebug(ETESYNC_LOG) << "Conflict error";
         mResource->deferTask();
         mResource->scheduleCustomTask(this, "syncCollection", QVariant::fromValue(collection), ResourceBase::Prepend);
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 void BaseHandler::taskDone()

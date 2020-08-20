@@ -152,7 +152,8 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
-        handleTokenError();
+        qCWarning(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+        handleError();
         return;
     }
     EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
@@ -172,16 +173,38 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     collectionsRetrievalDone();
 }
 
-bool EteSyncResource::handleTokenError()
+/** 
+ * Handles all EteSync errors (except CONFLICT).
+ * To be called immediatey after an EteSync operation.
+ * CONFLICT error has been handled seperately in BaseHandler.
+ */
+bool EteSyncResource::handleError()
 {
-    if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED) {
-        qCDebug(ETESYNC_LOG) << "Invalid token";
-        deferTask();
-        connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
-        scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
-        return false;
+    switch (etesync_get_error_code()) {
+        case ETESYNC_ERROR_CODE_UNAUTHORIZED: {
+            qCDebug(ETESYNC_LOG) << "Invalid token";
+            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+            deferTask();
+            connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
+            scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
+            return true;
+        }
+        case ETESYNC_ERROR_CODE_GENERIC:
+        case ETESYNC_ERROR_CODE_ENCODING:
+        case ETESYNC_ERROR_CODE_INTEGRITY:
+        case ETESYNC_ERROR_CODE_ENCRYPTION:
+        case ETESYNC_ERROR_CODE_ENCRYPTION_MAC:
+        case ETESYNC_ERROR_CODE_PERMISSION_DENIED:
+        case ETESYNC_ERROR_CODE_INVALID_DATA:
+        case ETESYNC_ERROR_CODE_CONNECTION:
+        case ETESYNC_ERROR_CODE_HTTP: {
+            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+            qCDebug(ETESYNC_LOG) << "Cancelling task";
+            cancelTask();
+            return true;
+        }
     }
-    return true;
+    return false;
 }
 
 void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
@@ -285,8 +308,9 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 void EteSyncResource::slotItemsRetrieved(KJob *job)
 {
     if (job->error()) {
+        qCDebug(ETESYNC_LOG) << "Error in fetching entries";
         qCWarning(ETESYNC_LOG) << job->errorText();
-        handleTokenError();
+        handleError();
         return;
     }
 

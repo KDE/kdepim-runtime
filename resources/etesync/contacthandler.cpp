@@ -307,7 +307,7 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
     if (etesync_journal_manager_create(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create journal";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        mResource->handleTokenError();
+        mResource->handleError();
         return;
     }
 
@@ -342,7 +342,7 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
     if (etesync_journal_manager_update(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not update journal";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        mResource->handleTokenError();
+        mResource->handleError();
         return;
     }
 
@@ -365,7 +365,7 @@ void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
     if (etesync_journal_manager_delete(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not delete journal";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        mResource->handleTokenError();
+        mResource->handleError();
         return;
     }
     mResource->changeProcessed();

@@ -66,7 +66,7 @@ protected:
     void initialiseDirectory(const QString &path) const;
     QString baseDirectoryPath() const;
 
-    bool handleTokenError();
+    bool handleError();
 
     const EteSyncJournalPtr &getJournal(const QString &journalUid)
     {

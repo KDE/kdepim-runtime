@@ -103,7 +103,7 @@ void EteSyncClientState::refreshUserInfo()
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
     mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
     if (!mUserInfo) {
-        qCWarning(ETESYNC_LOG) << "initUserInfo() - User info obtained from server is NULL";
+        qCWarning(ETESYNC_LOG) << "refreshUserInfo() - User info obtained from server is NULL";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         return;
     }
