@@ -273,6 +273,15 @@ void SessionPool::cancelSessionCreation(KIMAP::Session *session, int errorCode, 
 
 void SessionPool::processPendingRequests()
 {
+    if (!m_account) {
+        // The connection to the server is lost; no point processing pending requests
+        for (int request : qAsConst(m_pendingRequests)) {
+            Q_EMIT sessionRequestDone(request, nullptr,
+                                      LoginFailError, i18n("Disconnected from server during login."));
+        }
+        return;
+    }
+
     if (!m_unusedPool.isEmpty()) {
         // We have a session ready to give out
         KIMAP::Session *session = m_unusedPool.takeFirst();
