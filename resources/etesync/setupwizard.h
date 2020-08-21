@@ -79,7 +79,6 @@ public:
 private:
     KPasswordLineEdit *mEncryptionPassword = nullptr;
     QLabel *mEncryptionPasswordLabel = nullptr;
-    bool mInitAccount = false;
 };
 
 #endif

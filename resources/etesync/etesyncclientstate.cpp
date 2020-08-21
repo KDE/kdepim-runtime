@@ -76,9 +76,15 @@ bool EteSyncClientState::initToken(const QString &serverUrl, const QString &user
 
     // Initialise EteSync client state
     mClient = etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
+    if (!mClient) {
+        qCDebug(ETESYNC_LOG) << "Could not initialize EteSync client";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        return false;
+    }
     mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
     if (mToken.isEmpty()) {
         qCDebug(ETESYNC_LOG) << "Empty token";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         return false;
     }
     qCDebug(ETESYNC_LOG) << "Received token" << mToken;
@@ -88,14 +94,17 @@ bool EteSyncClientState::initToken(const QString &serverUrl, const QString &user
 
 void EteSyncClientState::refreshToken()
 {
+    qCDebug(ETESYNC_LOG) << "Refreshing token";
     mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
     if (mToken.isEmpty()) {
         qCDebug(ETESYNC_LOG) << "Empty token";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        tokenRefreshed(false);
         return;
     }
     qCDebug(ETESYNC_LOG) << "Received token" << mToken;
     etesync_set_auth_token(mClient.get(), mToken);
-    tokenRefreshed();
+    tokenRefreshed(true);
 }
 
 void EteSyncClientState::refreshUserInfo()
@@ -151,27 +160,38 @@ bool EteSyncClientState::initKeypair(const QString &encryptionPassword)
     return true;
 }
 
-void EteSyncClientState::initAccount(const QString &encryptionPassword)
+bool EteSyncClientState::initAccount(const QString &encryptionPassword)
 {
     mEncryptionPassword = encryptionPassword;
     mDerived = etesync_crypto_derive_key(mClient.get(), mUsername, mEncryptionPassword);
+    if (mDerived.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Could not derive key from encryption password";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        return false;
+    }
     mUserInfo = etesync_user_info_new(mUsername, ETESYNC_CURRENT_VERSION);
     mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_crypto_generate_keypair(mClient.get()));
     EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
-    etesync_user_info_set_keypair(mUserInfo.get(), userInfoCryptoManager.get(), mKeypair.get());
+    if (etesync_user_info_set_keypair(mUserInfo.get(), userInfoCryptoManager.get(), mKeypair.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not create set user info keypair";
+        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        return false;
+    }
     EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
     if (etesync_user_info_manager_create(userInfoManager.get(), mUserInfo.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create user info";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        return;
+        return false;
     };
 
-    createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR), i18n("My Calendar"));
-    createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK), i18n("My Contacts"));
-    createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS), i18n("My Tasks"));
+    const auto calendarResult = createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR), i18n("My Calendar"));
+    const auto contactsResult = createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK), i18n("My Contacts"));
+    const auto tasksResult = createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS), i18n("My Tasks"));
+
+    return calendarResult && contactsResult && tasksResult;
 }
 
-void EteSyncClientState::createDefaultJournal(const QString &journalType, const QString &journalName)
+bool EteSyncClientState::createDefaultJournal(const QString &journalType, const QString &journalName)
 {
     const QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
     EteSyncJournalPtr journal = etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION);
@@ -183,14 +203,15 @@ void EteSyncClientState::createDefaultJournal(const QString &journalType, const 
     if (etesync_journal_set_info(journal.get(), cryptoManager.get(), info.get())) {
         qCDebug(ETESYNC_LOG) << "Could not set journal info";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        return;
+        return false;
     };
 
     if (etesync_journal_manager_create(mJournalManager.get(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create journal";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        return;
+        return false;
     }
+    return true;
 }
 
 void EteSyncClientState::saveSettings()

@@ -78,6 +78,8 @@ private Q_SLOTS:
     void initialiseDone(bool successful);
     void slotItemsRetrieved(KJob *job);
     void slotCollectionsRetrieved(KJob *job);
+    void slotTokenRefreshed(bool successful);
+    void showErrorDialog(const QString &errorText, const QString &errorDetails = QString(), const QString &title = QStringLiteral("Something went wrong"));
 
 private:
     EteSyncClientState::Ptr mClientState;

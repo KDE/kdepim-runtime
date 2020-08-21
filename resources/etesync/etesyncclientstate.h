@@ -32,7 +32,7 @@ public:
     bool initToken(const QString &serverUrl, const QString &username, const QString &password);
     bool initUserInfo();
     bool initKeypair(const QString &encryptionPassword);
-    void initAccount(const QString &encryptionPassword);
+    bool initAccount(const QString &encryptionPassword);
     void saveSettings();
     void invalidateToken();
     void refreshUserInfo();
@@ -67,10 +67,10 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void clientInitialised(bool successful);
-    void tokenRefreshed();
+    void tokenRefreshed(bool successful);
 
 private:
-    void createDefaultJournal(const QString &journalType, const QString &journalName);
+    bool createDefaultJournal(const QString &journalType, const QString &journalName);
     EteSyncPtr mClient;
     QString mDerived;
     QString mToken;

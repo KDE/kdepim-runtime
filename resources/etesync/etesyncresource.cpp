@@ -31,6 +31,7 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KLocalizedString>
+#include <KMessageBox>
 #include <QDBusConnection>
 
 #include "entriesfetchjob.h"
@@ -107,6 +108,7 @@ void EteSyncResource::configure(WId windowId)
         synchronize();
         mClientState->saveSettings();
         Q_EMIT configurationDialogAccepted();
+        setOnline(true);
     } else {
         Q_EMIT configurationDialogRejected();
     }
@@ -152,7 +154,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
-        qCWarning(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+        qCWarning(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         handleError();
         return;
     }
@@ -175,7 +177,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
 
 /** 
  * Handles all EteSync errors (except CONFLICT).
- * To be called immediatey after an EteSync operation.
+ * To be called immediately after an EteSync operation.
  * CONFLICT error has been handled seperately in BaseHandler.
  */
 bool EteSyncResource::handleError()
@@ -183,9 +185,9 @@ bool EteSyncResource::handleError()
     switch (etesync_get_error_code()) {
         case ETESYNC_ERROR_CODE_UNAUTHORIZED: {
             qCDebug(ETESYNC_LOG) << "Invalid token";
-            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+            qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
             deferTask();
-            connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::taskDone);
+            connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::slotTokenRefreshed);
             scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
             return true;
         }
@@ -198,13 +200,36 @@ bool EteSyncResource::handleError()
         case ETESYNC_ERROR_CODE_INVALID_DATA:
         case ETESYNC_ERROR_CODE_CONNECTION:
         case ETESYNC_ERROR_CODE_HTTP: {
-            qCDebug(ETESYNC_LOG) << "EteSync error" << etesync_get_error_message();
+            qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
             qCDebug(ETESYNC_LOG) << "Cancelling task";
             cancelTask();
             return true;
         }
     }
     return false;
+}
+
+void EteSyncResource::slotTokenRefreshed(bool successful)
+{
+    if (!successful) {
+        if (etesync_get_error_code() == ETESYNC_ERROR_CODE_HTTP) {
+            qCDebug(ETESYNC_LOG) << "HTTP Error while tokenRefresh - calling reconfigure";
+            showErrorDialog(QStringLiteral("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), QStringFromCharPtr(CharPtr(etesync_get_error_message())), QStringLiteral("Credentials Changed"));
+            qCDebug(ETESYNC_LOG) << "Setting offline";
+            setOnline(false);
+            configure(winIdForDialogs());
+        }
+    }
+    taskDone();
+}
+
+void EteSyncResource::showErrorDialog(const QString &errorText, const QString &errorDetails, const QString &title)
+{
+    QWidget *parent = QWidget::find(winIdForDialogs());
+    QDialog *dialog = new QDialog(parent, Qt::Dialog);
+    dialog->setAttribute(Qt::WA_NativeWindow, true);
+    KWindowSystem::setMainWindow(dialog->windowHandle(), winIdForDialogs());
+    KMessageBox::detailedSorry(dialog, errorText, errorDetails, title);
 }
 
 void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
