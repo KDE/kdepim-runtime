@@ -19,6 +19,7 @@
 #define ETESYNCRESOURCE_H
 
 #include <AkonadiAgentBase/ResourceBase>
+#include <KLocalizedString>
 
 #include "calendarhandler.h"
 #include "contacthandler.h"
@@ -79,7 +80,7 @@ private Q_SLOTS:
     void slotItemsRetrieved(KJob *job);
     void slotCollectionsRetrieved(KJob *job);
     void slotTokenRefreshed(bool successful);
-    void showErrorDialog(const QString &errorText, const QString &errorDetails = QString(), const QString &title = QStringLiteral("Something went wrong"));
+    void showErrorDialog(const QString &errorText, const QString &errorDetails = QString(), const QString &title = i18n("Something went wrong"));
 
 private:
     EteSyncClientState::Ptr mClientState;

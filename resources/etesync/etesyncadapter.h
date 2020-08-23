@@ -24,7 +24,7 @@
 #include <memory>
 #include <vector>
 
-#define charArrFromQString(str) str.isNull() ? NULL : qUtf8Printable(str)
+#define charArrFromQString(str) ((str).isNull() ? nullptr : qUtf8Printable((str)))
 
 struct EteSyncDeleter
 {

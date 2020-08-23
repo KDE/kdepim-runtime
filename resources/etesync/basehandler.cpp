@@ -69,7 +69,7 @@ bool BaseHandler::createEteSyncEntry(const EteSyncSyncEntry *syncEntry, const Et
         return false;
     }
     EteSyncEntryManagerPtr entryManager = etesync_entry_manager_new(mClientState->client(), collection.remoteId());
-    EteSyncEntry *entries[] = {entry.get(), NULL};
+    EteSyncEntry *entries[] = {entry.get(), nullptr};
     if (etesync_entry_manager_create(entryManager.get(), entries, collection.remoteRevision())) {
         handleConflictError(collection);
         mResource->handleError();

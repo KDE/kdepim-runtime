@@ -19,7 +19,7 @@
 
 #include <kio/job.h>
 
-#include <QTimer>
+#include <QtConcurrent>
 
 using namespace EteSyncAPI;
 
@@ -30,7 +30,7 @@ JournalsFetchJob::JournalsFetchJob(EteSync *client, QObject *parent)
 
 void JournalsFetchJob::start()
 {
-    QTimer::singleShot(0, this, &JournalsFetchJob::fetchJournals);
+    QtConcurrent::run(this, &JournalsFetchJob::fetchJournals);
 }
 
 void JournalsFetchJob::fetchJournals()

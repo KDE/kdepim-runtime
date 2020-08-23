@@ -30,7 +30,6 @@
 #include <AkonadiCore/ItemFetchScope>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
-#include <KLocalizedString>
 #include <KMessageBox>
 #include <QDBusConnection>
 
@@ -214,7 +213,7 @@ void EteSyncResource::slotTokenRefreshed(bool successful)
     if (!successful) {
         if (etesync_get_error_code() == ETESYNC_ERROR_CODE_HTTP) {
             qCDebug(ETESYNC_LOG) << "HTTP Error while tokenRefresh - calling reconfigure";
-            showErrorDialog(QStringLiteral("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), QStringFromCharPtr(CharPtr(etesync_get_error_message())), QStringLiteral("Credentials Changed"));
+            showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(CharPtr(etesync_get_error_message()).get()), i18n("Credentials Changed"));
             qCDebug(ETESYNC_LOG) << "Setting offline";
             setOnline(false);
             configure(winIdForDialogs());

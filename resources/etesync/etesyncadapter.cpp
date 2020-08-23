@@ -21,7 +21,7 @@
 
 QString QStringFromCharPtr(const CharPtr &str)
 {
-    if (str.get() == NULL) {
+    if (str.get() == nullptr) {
         return QString();
     }
     QString ret = QString::fromUtf8(str.get());

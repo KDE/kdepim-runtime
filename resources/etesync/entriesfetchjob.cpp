@@ -19,7 +19,7 @@
 
 #include <kio/job.h>
 
-#include <QTimer>
+#include <QtConcurrent>
 
 #include "etesync_debug.h"
 #include "settings.h"
@@ -33,7 +33,7 @@ EntriesFetchJob::EntriesFetchJob(const EteSync *client, const Akonadi::Collectio
 
 void EntriesFetchJob::start()
 {
-    QTimer::singleShot(0, this, &EntriesFetchJob::fetchEntries);
+    QtConcurrent::run(this, &EntriesFetchJob::fetchEntries);
 }
 
 void EntriesFetchJob::fetchEntries()
