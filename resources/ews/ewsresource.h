@@ -11,7 +11,6 @@
 
 #include <AkonadiAgentBase/ResourceBase>
 #include <AkonadiAgentBase/TransportResourceBase>
-#include <akonadi_version.h>
 
 #include "ewsclient.h"
 #include "ewsfetchitemsjob.h"
