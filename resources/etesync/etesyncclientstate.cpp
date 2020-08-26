@@ -95,16 +95,12 @@ bool EteSyncClientState::initToken(const QString &serverUrl, const QString &user
 void EteSyncClientState::refreshToken()
 {
     qCDebug(ETESYNC_LOG) << "Refreshing token";
-    mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
-    if (mToken.isEmpty()) {
-        qCDebug(ETESYNC_LOG) << "Empty token";
-        qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        tokenRefreshed(false);
+    if (initToken(mServerUrl, mUsername, mPassword)) {
+        tokenRefreshed(true);
         return;
     }
-    qCDebug(ETESYNC_LOG) << "Received token" << mToken;
-    etesync_set_auth_token(mClient.get(), mToken);
-    tokenRefreshed(true);
+    tokenRefreshed(false);
+    return;
 }
 
 void EteSyncClientState::refreshUserInfo()
