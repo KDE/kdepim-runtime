@@ -489,12 +489,12 @@ Kolab::RecurrenceRule::Frequency fromRecurrenceType(KCalendarCore::RecurrenceRul
     return Kolab::RecurrenceRule::FreqNone;
 }
 
-KCalendarCore::RecurrenceRule::WDayPos toWeekDayPos(const Kolab::DayPos &dp)
+KCalendarCore::RecurrenceRule::WDayPos toWeekDayPos(Kolab::DayPos dp)
 {
     return KCalendarCore::RecurrenceRule::WDayPos(dp.occurence(), toWeekDay(dp.weekday()));
 }
 
-Kolab::DayPos fromWeekDayPos(const KCalendarCore::RecurrenceRule::WDayPos &dp)
+Kolab::DayPos fromWeekDayPos(KCalendarCore::RecurrenceRule::WDayPos dp)
 {
     return Kolab::DayPos(dp.pos(), fromWeekDay(dp.day()));
 }

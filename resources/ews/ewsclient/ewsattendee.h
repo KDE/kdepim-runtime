@@ -20,7 +20,7 @@ class QXmlStreamReader;
 class EwsAttendee
 {
 public:
-    typedef QList<EwsAttendee> List;
+    typedef QVector<EwsAttendee> List;
 
     EwsAttendee();
     explicit EwsAttendee(QXmlStreamReader &reader);

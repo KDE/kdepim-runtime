@@ -29,7 +29,7 @@ public:
     class Change
     {
     public:
-        typedef QList<Change> List;
+        typedef QVector<Change> List;
 
         ChangeType type() const
         {

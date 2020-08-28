@@ -400,7 +400,7 @@ void ContactHandler::itemsLinked(const Item::List &items, const Collection &coll
     ContactsList contacts;
     contacts.reserve(items.count());
     std::transform(items.cbegin(), items.cend(), std::back_inserter(contacts),
-                   [this, &collection](const Item &item){
+                   [&collection](const Item &item){
         ContactPtr contact(new Contact(item.payload<KContacts::Addressee>()));
         contact->addGroup(collection.remoteId());
         return contact;

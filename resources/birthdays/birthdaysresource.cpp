@@ -300,7 +300,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::It
     return KCalendarCore::Event::Ptr();
 }
 
-KCalendarCore::Event::Ptr BirthdaysResource::createEvent(const QDate &date)
+KCalendarCore::Event::Ptr BirthdaysResource::createEvent(QDate date)
 {
     Event::Ptr event(new Event());
     event->setDtStart(QDateTime(date, {}));

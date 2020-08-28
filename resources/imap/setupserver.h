@@ -14,7 +14,7 @@
 #include <collection.h>
 #include <KJob>
 
-#include <QRegExpValidator>
+#include <QRegularExpressionValidator>
 class QPushButton;
 class QComboBox;
 namespace Ui {
@@ -76,7 +76,7 @@ private:
     QString m_vacationFileName;
     KIdentityManagement::IdentityCombo *m_identityCombobox = nullptr;
     QString m_oldResourceName;
-    QRegExpValidator mValidator;
+    QRegularExpressionValidator mValidator;
     Akonadi::Collection mOldTrash;
     FolderArchiveSettingPage *m_folderArchiveSettingPage = nullptr;
     QPushButton *mOkButton = nullptr;

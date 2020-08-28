@@ -114,10 +114,10 @@ public:
     void setSpouseName(const QString &name);
     QString spouseName() const;
 
-    void setBirthday(const QDate &date);
+    void setBirthday(QDate date);
     QDate birthday() const;
 
-    void setAnniversary(const QDate &date);
+    void setAnniversary(QDate date);
     QDate anniversary() const;
 
     void setPicture(const QImage &image, const QString &format)

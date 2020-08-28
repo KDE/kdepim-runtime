@@ -144,10 +144,10 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     QIcon ewsIcon = QIcon::fromTheme(QStringLiteral("akonadi-ews"));
     mUi->aboutIconLabel->setPixmap(ewsIcon.pixmap(96, 96, QIcon::Normal, QIcon::On));
     mUi->aboutTextLabel->setText(i18nc("@info", "Akonadi Resource for Microsoft Exchange Web Services (EWS)"));
-    mUi->aboutCopyrightLabel->setText(i18nc("@info", "Copyright (c) Krzysztof Nowicki 2015-2017"));
+    mUi->aboutCopyrightLabel->setText(i18nc("@info", "Copyright (c) Krzysztof Nowicki 2015-2020"));
     mUi->aboutVersionLabel->setText(i18nc("@info", "Version %1", QStringLiteral(AKONADI_EWS_VERSION)));
     mUi->aboutLicenseLabel->setText(i18nc("@info", "Distributed under the GNU Library General Public License version 2.0 or later."));
-    mUi->aboutUrlLabel->setText(QStringLiteral("<a href=\"https://github.com/KrissN/akonadi-ews\">https://github.com/KrissN/akonadi-ews</a>"));
+    mUi->aboutUrlLabel->setText(QStringLiteral("<a href=\"https://invent.kde.org/pim/kdepim-runtime/-/tree/master/resources/ews\">https://invent.kde.org/pim/kdepim-runtime/-/tree/master/resources/ews</a>"));
 
     mUi->pkeyAuthCert->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
     mUi->pkeyAuthKey->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);

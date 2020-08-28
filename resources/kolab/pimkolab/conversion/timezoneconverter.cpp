@@ -5,7 +5,7 @@
  */
 
 #include "timezoneconverter.h"
-#include <QRegExp>
+#include <QRegularExpression>
 
 #include <QTimeZone>
 #include "pimkolab_debug.h"
@@ -46,14 +46,11 @@ QString TimezoneConverter::fromCityName(const QString &tz)
         countryMap.insert(cityName, QString::fromUtf8(zone));
     }
 
-    QRegExp locationFinder(QLatin1String("\\b([a-zA-Z])+\\b"), Qt::CaseSensitive, QRegExp::RegExp2);
-    int pos = 0;
-    while (pos >= 0) {
-        pos = locationFinder.indexIn(tz, pos);
-        if (pos >= 0) {
-            ++pos;
-        }
-        const QString location = locationFinder.capturedTexts().first();
+    const QRegularExpression locationFinder(QStringLiteral("\\b([a-zA-Z])+\\b"));
+    QRegularExpressionMatchIterator iter = locationFinder.globalMatch(tz);
+    while (iter.hasNext()) {
+        QRegularExpressionMatch match = iter.next();
+        const QString location = match.captured(0);
         qCDebug(PIMKOLAB_LOG) << "location " << location;
         if (countryMap.contains(location)) {
             qCDebug(PIMKOLAB_LOG) << "found match " << countryMap.value(location);

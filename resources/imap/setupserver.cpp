@@ -154,7 +154,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->checkInterval->setSingleStep(1);
 
     // regex for evaluating a valid server name/ip
-    mValidator.setRegExp(QRegExp(QLatin1String("[A-Za-z0-9-_:.]*")));
+    mValidator.setRegularExpression(QRegularExpression(QStringLiteral("[A-Za-z0-9_:.-]*")));
     m_ui->imapServer->setValidator(&mValidator);
 
     m_ui->folderRequester->setMimeTypeFilter(

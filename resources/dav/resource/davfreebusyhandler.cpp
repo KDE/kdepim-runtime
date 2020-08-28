@@ -65,9 +65,10 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime 
     fb->addAttendee(att);
 
     KCalendarCore::ICalFormat formatter;
-    QByteArray fbData = formatter.createScheduleMessage(fb, KCalendarCore::iTIPRequest).toUtf8();
+    const QByteArray fbData = formatter.createScheduleMessage(fb, KCalendarCore::iTIPRequest).toUtf8();
 
-    foreach (const QString &outbox, mPrincipalScheduleOutbox[email]) {
+    const QStringList principalScheduleOutboxFromEmail = mPrincipalScheduleOutbox[email];
+    for (const QString &outbox : principalScheduleOutboxFromEmail) {
         ++mRequestsTracker[email].retrievalJobCount;
         uint requestId = mNextRequestId++;
 

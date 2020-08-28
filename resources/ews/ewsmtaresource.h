@@ -7,7 +7,6 @@
 #ifndef EWSMTARESOURCE_H
 #define EWSMTARESOURCE_H
 
-#include <akonadi_version.h>
 #include <AkonadiAgentBase/ResourceBase>
 #include <AkonadiAgentBase/TransportResourceBase>
 #include <AkonadiCore/Item>

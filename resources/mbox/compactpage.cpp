@@ -61,7 +61,7 @@ void CompactPage::onCollectionFetchCheck(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob *>(job);
+    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
