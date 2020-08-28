@@ -54,6 +54,7 @@ void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &
 template<typename IncidencePtr, typename Converter>
 static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &data, const QByteArray &mimetype, const QString &timezoneId)
 {
+    Q_UNUSED(timezoneId)
     KMime::Content *xmlContent = Mime::findContentByType(data, mimetype);
     if (!xmlContent) {
         Critical() << "couldn't find part";

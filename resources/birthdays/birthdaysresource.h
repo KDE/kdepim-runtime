@@ -38,7 +38,7 @@ private:
 
     KCalendarCore::Event::Ptr createBirthday(const Akonadi::Item &contactItem);
     KCalendarCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
-    KCalendarCore::Event::Ptr createEvent(const QDate &date);
+    KCalendarCore::Event::Ptr createEvent(QDate date);
 
 private Q_SLOTS:
     void doFullSearch();

@@ -76,7 +76,7 @@ public:
 
     // String - Date conversion methods
     static QString dateTimeToString(const QDateTime &time);
-    static QString dateToString(const QDate &date);
+    static QString dateToString(QDate date);
     static QDateTime stringToDateTime(const QString &time);
     static QDate stringToDate(const QString &date);
 

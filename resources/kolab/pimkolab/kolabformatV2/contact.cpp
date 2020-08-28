@@ -253,7 +253,7 @@ QString Contact::spouseName() const
     return mSpouseName;
 }
 
-void Contact::setBirthday(const QDate &date)
+void Contact::setBirthday(QDate date)
 {
     mBirthday = date;
 }
@@ -263,7 +263,7 @@ QDate Contact::birthday() const
     return mBirthday;
 }
 
-void Contact::setAnniversary(const QDate &date)
+void Contact::setAnniversary(QDate date)
 {
     mAnniversary = date;
 }

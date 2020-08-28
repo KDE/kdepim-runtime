@@ -1021,7 +1021,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
 
 QString Incidence::productID() const
 {
-    return QStringLiteral("%1, Kolab resource").arg(QString::fromUtf8(LIBKOLAB_LIB_VERSION_STRING));
+    return QStringLiteral("%1, Kolab resource").arg(QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
 }
 
 // Unhandled KCalendarCore::Incidence fields:

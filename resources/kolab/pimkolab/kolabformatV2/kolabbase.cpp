@@ -425,7 +425,7 @@ QString KolabBase::dateTimeToString(const QDateTime &time)
     return time.toString(Qt::ISODate);
 }
 
-QString KolabBase::dateToString(const QDate &date)
+QString KolabBase::dateToString(QDate date)
 {
     return date.toString(Qt::ISODate);
 }

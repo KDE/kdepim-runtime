@@ -201,10 +201,10 @@ KDAV::DavUrl Settings::davUrlFromCollectionUrl(const QString &collectionUrl, con
     }
 
     KDAV::DavUrl davUrl;
-    QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
+    const QString targetUrl = finalUrl.isEmpty() ? collectionUrl : finalUrl;
 
     if (mCollectionsUrlsMapping.contains(collectionUrl)) {
-        QStringList split = mCollectionsUrlsMapping[ collectionUrl ].split(QLatin1Char(','));
+        const QStringList split = mCollectionsUrlsMapping.value(collectionUrl).split(QLatin1Char(','));
         if (split.size() == 2) {
             davUrl = configuredDavUrl(KDAV::ProtocolInfo::protocolByName(split.at(1)), split.at(0), targetUrl);
         }
@@ -219,7 +219,7 @@ void Settings::addCollectionUrlMapping(KDAV::Protocol proto, const QString &coll
         loadMappings();
     }
 
-    QString value = configuredUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString value = configuredUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
     mCollectionsUrlsMapping.insert(collectionUrl, value);
 
     // Update the cache now
@@ -244,7 +244,7 @@ QStringList Settings::mappedCollections(KDAV::Protocol proto, const QString &con
         loadMappings();
     }
 
-    QString value = configuredUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString value = configuredUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
     return mCollectionsUrlsMapping.keys(value);
 }
 
@@ -257,7 +257,7 @@ void Settings::reloadConfig()
 
 void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
 {
-    QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
+    const QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
 
     if (mUrls.contains(key)) {
         removeUrlConfiguration(KDAV::Protocol(urlConfig->mProtocol), urlConfig->mUrl);
@@ -272,7 +272,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
 
 void Settings::removeUrlConfiguration(KDAV::Protocol proto, const QString &url)
 {
-    QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (!mUrls.contains(key)) {
         return;
@@ -285,7 +285,7 @@ void Settings::removeUrlConfiguration(KDAV::Protocol proto, const QString &url)
 
 Settings::UrlConfiguration *Settings::urlConfiguration(KDAV::Protocol proto, const QString &url)
 {
-    QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     UrlConfiguration *ret = nullptr;
     if (mUrls.contains(key)) {
@@ -305,7 +305,7 @@ Settings::UrlConfiguration *Settings::urlConfiguration(KDAV::Protocol proto, con
 
 QString Settings::username(KDAV::Protocol proto, const QString &url) const
 {
-    QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
         if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
@@ -320,7 +320,7 @@ QString Settings::username(KDAV::Protocol proto, const QString &url) const
 
 QString Settings::password(KDAV::Protocol proto, const QString &url)
 {
-    QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
+    const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
         if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
@@ -356,8 +356,8 @@ void Settings::buildUrlsList()
 {
     foreach (const QString &serializedUrl, remoteUrls()) {
         UrlConfiguration *urlConfig = new UrlConfiguration(serializedUrl);
-        QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
-        QString pass = loadPassword(key, urlConfig->mUser);
+        const QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
+        const QString pass = loadPassword(key, urlConfig->mUser);
         if (!pass.isNull()) {
             urlConfig->mPassword = pass;
             mUrls[ key ] = urlConfig;
@@ -369,7 +369,7 @@ void Settings::buildUrlsList()
 
 void Settings::loadMappings()
 {
-    QString collectionsMappingCacheBase = QStringLiteral("akonadi-davgroupware/%1_c2u.dat").arg(QCoreApplication::applicationName());
+    const QString collectionsMappingCacheBase = QStringLiteral("akonadi-davgroupware/%1_c2u.dat").arg(QCoreApplication::applicationName());
     mCollectionsUrlsMappingCache = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + collectionsMappingCacheBase;
     QFile collectionsMappingsCache(mCollectionsUrlsMappingCache);
 
@@ -403,7 +403,7 @@ void Settings::updateRemoteUrls()
 
 void Settings::savePassword(const QString &key, const QString &user, const QString &password)
 {
-    QString entry = key + QLatin1Char(',') + user;
+    const QString entry = key + QLatin1Char(',') + user;
     mPasswordsCache[entry] = password;
 
     KWallet::Wallet *wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), mWinId);
@@ -515,7 +515,7 @@ void Settings::updateToV2()
         return;
     }
 
-    QString urlConfigStr = urls.at(0);
+    const QString urlConfigStr = urls.at(0);
     UrlConfiguration urlConfig(urlConfigStr);
     const QRegularExpression regexp(QStringLiteral("^") + urlConfig.mUser);
 
@@ -544,7 +544,7 @@ void Settings::updateToV3()
         QStringList splitUrl = url.split(QLatin1Char('|'));
 
         if (splitUrl.size() == 3) {
-            KDAV::Protocol protocol = Utils::protocolByTranslatedName(splitUrl.at(1));
+            const KDAV::Protocol protocol = Utils::protocolByTranslatedName(splitUrl.at(1));
             splitUrl[1] = KDAV::ProtocolInfo::protocolName(protocol);
             updatedUrls << splitUrl.join(QLatin1Char('|'));
         }
