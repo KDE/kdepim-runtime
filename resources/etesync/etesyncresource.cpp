@@ -106,8 +106,9 @@ void EteSyncResource::configure(WId windowId)
     if (result == QDialog::Accepted) {
         synchronize();
         mClientState->saveSettings();
-        Q_EMIT configurationDialogAccepted();
+        mCredentialsRequired = false;
         setOnline(true);
+        Q_EMIT configurationDialogAccepted();
     } else {
         Q_EMIT configurationDialogRejected();
     }
@@ -116,6 +117,11 @@ void EteSyncResource::configure(WId windowId)
 void EteSyncResource::retrieveCollections()
 {
     qCDebug(ETESYNC_LOG) << "Retrieving collections";
+
+    if (credentialsRequired()) {
+        return;
+    }
+
     setCollectionStreamingEnabled(true);
 
     mJournalsCache.clear();
@@ -154,7 +160,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
         qCWarning(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
-        handleError();
+        handleError(job->error());
         return;
     }
     EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
@@ -179,9 +185,10 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
  * To be called immediately after an EteSync operation.
  * CONFLICT error has been handled seperately in BaseHandler.
  */
-bool EteSyncResource::handleError()
+bool EteSyncResource::handleError(int errorCode)
 {
-    switch (etesync_get_error_code()) {
+    qCDebug(ETESYNC_LOG) << "handleError - code" << errorCode;
+    switch (errorCode) {
         case ETESYNC_ERROR_CODE_UNAUTHORIZED: {
             qCDebug(ETESYNC_LOG) << "Invalid token";
             qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
@@ -208,15 +215,28 @@ bool EteSyncResource::handleError()
     return false;
 }
 
+bool EteSyncResource::handleError()
+{
+    return handleError(etesync_get_error_code());
+}
+
+bool EteSyncResource::credentialsRequired()
+{
+    if (mCredentialsRequired) {
+        showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(CharPtr(etesync_get_error_message()).get()), i18n("Credentials Changed"));
+        configure(winIdForDialogs());
+        setOnline(false);
+        deferTask();
+    }
+    return mCredentialsRequired;
+}
+
 void EteSyncResource::slotTokenRefreshed(bool successful)
 {
     if (!successful) {
         if (etesync_get_error_code() == ETESYNC_ERROR_CODE_HTTP) {
             qCDebug(ETESYNC_LOG) << "HTTP Error while tokenRefresh - calling reconfigure";
-            showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(CharPtr(etesync_get_error_message()).get()), i18n("Credentials Changed"));
-            qCDebug(ETESYNC_LOG) << "Setting offline";
-            setOnline(false);
-            configure(winIdForDialogs());
+            mCredentialsRequired = true;
         }
     }
     taskDone();
@@ -322,6 +342,10 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
         }
     }
 
+    if (credentialsRequired()) {
+        return;
+    }
+
     auto job = new EntriesFetchJob(mClientState->client(), collection, this);
 
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);
@@ -334,7 +358,7 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     if (job->error()) {
         qCDebug(ETESYNC_LOG) << "Error in fetching entries";
         qCWarning(ETESYNC_LOG) << job->errorText();
-        handleError();
+        handleError(job->error());
         return;
     }
 
@@ -403,6 +427,10 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
     qCDebug(ETESYNC_LOG) << "Item added" << item.mimeType();
     qCDebug(ETESYNC_LOG) << "Journal UID" << collection.remoteId();
 
+    if (credentialsRequired()) {
+        return;
+    }
+
     auto handler = fetchHandlerForMimeType(item.mimeType());
     if (handler) {
         handler->itemAdded(item, collection);
@@ -418,6 +446,10 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
     qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType();
     qCDebug(ETESYNC_LOG) << "Journal UID" << item.parentCollection().remoteId();
 
+    if (credentialsRequired()) {
+        return;
+    }
+
     auto handler = fetchHandlerForMimeType(item.mimeType());
     if (handler) {
         handler->itemChanged(item, parts);
@@ -430,6 +462,10 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
 {
     qCDebug(ETESYNC_LOG) << "Item removed" << item.mimeType();
+
+    if (credentialsRequired()) {
+        return;
+    }
 
     auto handler = fetchHandlerForMimeType(item.mimeType());
     if (handler) {
@@ -444,6 +480,10 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
 {
     qCDebug(ETESYNC_LOG) << "Collection added" << collection.mimeType();
 
+    if (credentialsRequired()) {
+        return;
+    }
+
     auto handler = fetchHandlerForCollection(collection);
     if (handler) {
         handler->collectionAdded(collection, parent);
@@ -457,6 +497,10 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Collection changed" << collection.mimeType();
 
+    if (credentialsRequired()) {
+        return;
+    }
+
     auto handler = fetchHandlerForCollection(collection);
     if (handler) {
         handler->collectionChanged(collection);
@@ -469,6 +513,10 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
 void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Collection removed" << collection.mimeType();
+
+    if (credentialsRequired()) {
+        return;
+    }
 
     auto handler = fetchHandlerForCollection(collection);
     if (handler) {

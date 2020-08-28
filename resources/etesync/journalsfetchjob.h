@@ -32,7 +32,7 @@ namespace EteSyncAPI {
 
         void start() override;
 
-        EteSyncJournal **journals()
+        EteSyncJournal **journals() const
         {
             return mJournals;
         }

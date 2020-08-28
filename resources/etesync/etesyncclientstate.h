@@ -62,6 +62,16 @@ public:
         return mUsername;
     }
 
+    QString serverUrl() const
+    {
+        return mServerUrl;
+    }
+
+    bool isInitialized()
+    {
+        return !mServerUrl.isEmpty();
+    }
+
 public Q_SLOTS:
     void refreshToken();
 

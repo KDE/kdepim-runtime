@@ -49,7 +49,7 @@ void EntriesFetchJob::fetchEntries()
 
     if (status == ERROR) {
         qCDebug(ETESYNC_LOG) << "Returning error from entries fetch job";
-        setError(UserDefinedError);
+        setError(etesync_get_error_code());
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));
     }

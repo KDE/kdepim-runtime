@@ -58,6 +58,7 @@ class LoginPage : public QWizardPage
 public:
     explicit LoginPage(QWidget *parent = nullptr);
     int nextId() const override;
+    void initializePage() override;
     bool validatePage() override;
 
 private:
@@ -66,6 +67,7 @@ private:
     QCheckBox *mAdvancedSettings = nullptr;
     QLineEdit *mServerUrl = nullptr;
     QLabel *mLoginLabel = nullptr;
+    bool mIsInitialized;
 };
 
 class EncryptionPasswordPage : public QWizardPage

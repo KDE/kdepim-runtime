@@ -72,8 +72,23 @@ LoginPage::LoginPage(QWidget *parent)
     connect(mAdvancedSettings, SIGNAL(toggled(bool)), layout->labelForField(mServerUrl), SLOT(setVisible(bool)));
 }
 
+void LoginPage::initializePage()
+{
+    qCDebug(ETESYNC_LOG) << "Login page - isInitialized" << mIsInitialized;
+    mIsInitialized = static_cast<SetupWizard *>(wizard())->mClientState->isInitialized();
+    if (mIsInitialized) {
+        mAdvancedSettings->setVisible(false);
+        setField(QStringLiteral("credentialsServerUrl"), static_cast<SetupWizard *>(wizard())->mClientState->serverUrl());
+        QString username = static_cast<SetupWizard *>(wizard())->mClientState->username();
+        mUserName->setText(username);
+    }
+}
+
 int LoginPage::nextId() const
 {
+    if (mIsInitialized) {
+        return -1;
+    }
     return SetupWizard::W_EncryptionPasswordPage;
 }
 

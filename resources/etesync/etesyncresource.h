@@ -68,6 +68,8 @@ protected:
     QString baseDirectoryPath() const;
 
     bool handleError();
+    bool handleError(int errorCode);
+    bool credentialsRequired();
 
     const EteSyncJournalPtr &getJournal(const QString &journalUid)
     {
@@ -87,6 +89,7 @@ private:
     std::vector<BaseHandler::Ptr> mHandlers;
     std::map<QString, EteSyncJournalPtr> mJournalsCache;
     QDateTime mJournalsCacheUpdateTime;
+    bool mCredentialsRequired;
 
     ContactHandler::Ptr mContactHandler;
     CalendarHandler::Ptr mCalendarHandler;
