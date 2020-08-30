@@ -28,6 +28,9 @@
 #include <QPushButton>
 
 #include "etesync_debug.h"
+#include "loginjob.h"
+
+using namespace EteSyncAPI;
 
 SetupWizard::SetupWizard(EteSyncClientState *clientState, QWidget *parent)
     : QWizard(parent), mClientState(clientState)
@@ -36,6 +39,36 @@ SetupWizard::SetupWizard(EteSyncClientState *clientState, QWidget *parent)
     setWindowIcon(QIcon::fromTheme(QStringLiteral("akonadi-etesync")));
     setPage(W_LoginPage, new LoginPage);
     setPage(W_EncryptionPasswordPage, new EncryptionPasswordPage);
+
+    disconnect(button(QWizard::NextButton), SIGNAL(clicked()), this, SLOT(next()));
+    connect(button(QWizard::NextButton), SIGNAL(clicked()), this, SLOT(manualNext()));
+    disconnect(button(QWizard::FinishButton), SIGNAL(clicked()), this, SLOT(accept()));
+    connect(button(QWizard::FinishButton), SIGNAL(clicked()), this, SLOT(manualNext()));
+}
+
+void SetupWizard::manualNext()
+{
+    qCDebug(ETESYNC_LOG) << "Manual next";
+    if (currentId() == W_LoginPage) {
+        static_cast<LoginPage *>(page(W_LoginPage))->showProgressBar();
+        const QString username = field(QStringLiteral("credentialsUserName")).toString();
+        const QString password = field(QStringLiteral("credentialsPassword")).toString();
+        const QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
+        const QString serverUrl = advancedServerUrl.isEmpty() ? QStringLiteral("https://api.etesync.com") : advancedServerUrl;
+        auto job = new LoginJob(mClientState, serverUrl, username, password, this);
+        connect(job, &LoginJob::finished, this, [this](KJob *job) {
+            qCDebug(ETESYNC_LOG) << "Login finished";
+            static_cast<LoginPage *>(page(W_LoginPage))->setLoginResult(static_cast<LoginJob *>(job)->getLoginResult());
+            static_cast<LoginPage *>(page(W_LoginPage))->setUserInfoResult(static_cast<LoginJob *>(job)->getUserInfoResult());
+            static_cast<LoginPage *>(page(W_LoginPage))->setErrorCode(job->error());
+            static_cast<LoginPage *>(page(W_LoginPage))->setErrorMessage(job->errorText());
+            static_cast<LoginPage *>(page(W_LoginPage))->hideProgressBar();
+            nextId() == -1 ? QWizard::accept() : QWizard::next();
+        });
+        job->start();
+        return;
+    }
+    nextId() == -1 ? QWizard::accept() : QWizard::next();
 }
 
 LoginPage::LoginPage(QWidget *parent)
@@ -68,14 +101,19 @@ LoginPage::LoginPage(QWidget *parent)
 
     layout->labelForField(mServerUrl)->setVisible(false);
 
+    mProgressBar = new QProgressBar;
+    mProgressBar->setVisible(false);
+    mProgressBar->setRange(0, 0);
+    layout->addWidget(mProgressBar);
+
     connect(mAdvancedSettings, SIGNAL(toggled(bool)), mServerUrl, SLOT(setVisible(bool)));
     connect(mAdvancedSettings, SIGNAL(toggled(bool)), layout->labelForField(mServerUrl), SLOT(setVisible(bool)));
 }
 
 void LoginPage::initializePage()
 {
-    qCDebug(ETESYNC_LOG) << "Login page - isInitialized" << mIsInitialized;
     mIsInitialized = static_cast<SetupWizard *>(wizard())->mClientState->isInitialized();
+    qCDebug(ETESYNC_LOG) << "Login page - isInitialized" << mIsInitialized;
     if (mIsInitialized) {
         mAdvancedSettings->setVisible(false);
         setField(QStringLiteral("credentialsServerUrl"), static_cast<SetupWizard *>(wizard())->mClientState->serverUrl());
@@ -94,33 +132,26 @@ int LoginPage::nextId() const
 
 bool LoginPage::validatePage()
 {
-    const QString username = field(QStringLiteral("credentialsUserName")).toString();
-    const QString password = field(QStringLiteral("credentialsPassword")).toString();
-    const QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
-    const QString serverUrl = advancedServerUrl.isEmpty() ? QStringLiteral("https://api.etesync.com") : advancedServerUrl;
-    const bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
-    if (!loginResult) {
-        auto err = etesync_get_error_code();
-        qCDebug(ETESYNC_LOG) << "loginResult error" << err;
-        if (err == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED || err == EteSyncErrorCode::ETESYNC_ERROR_CODE_HTTP) {
+    if (!mLoginResult) {
+        qCDebug(ETESYNC_LOG) << "loginResult error" << mErrorCode;
+        if (mErrorCode == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED || mErrorCode == EteSyncErrorCode::ETESYNC_ERROR_CODE_HTTP) {
             mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
-        } else if (err == EteSyncErrorCode::ETESYNC_ERROR_CODE_ENCODING) {
+        } else if (mErrorCode == EteSyncErrorCode::ETESYNC_ERROR_CODE_ENCODING) {
             mLoginLabel->setText(i18n("Please ensure that the server URL is correct. The URL should start with http:// or https://."));
-        } else if (err == EteSyncErrorCode::ETESYNC_ERROR_CODE_CONNECTION) {
+        } else if (mErrorCode == EteSyncErrorCode::ETESYNC_ERROR_CODE_CONNECTION) {
             mLoginLabel->setText(i18n("Could not connect to the server. Please ensure that the server URL is correct."));
         } else {
-            mLoginLabel->setText(i18n(CharPtr(etesync_get_error_message()).get()));
+            mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
         }
         return false;
     }
 
-    const bool userInfoResult = static_cast<SetupWizard *>(wizard())->mClientState->initUserInfo();
-    if (!userInfoResult) {
-        if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_NOT_FOUND) {
+    if (!mUserInfoResult) {
+        if (mErrorCode == EteSyncErrorCode::ETESYNC_ERROR_CODE_NOT_FOUND) {
             wizard()->setProperty("initAccount", true);
             return true;
         }
-        mLoginLabel->setText(i18n(CharPtr(etesync_get_error_message()).get()));
+        mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
         return false;
     }
     return true;

@@ -104,12 +104,15 @@ void EteSyncResource::configure(WId windowId)
     }
     const int result = wizard.exec();
     if (result == QDialog::Accepted) {
-        synchronize();
         mClientState->saveSettings();
         mCredentialsRequired = false;
+        qCDebug(ETESYNC_LOG) << "Setting online";
         setOnline(true);
+        synchronize();
         Q_EMIT configurationDialogAccepted();
     } else {
+        qCDebug(ETESYNC_LOG) << "Setting offline";
+        setOnline(false);
         Q_EMIT configurationDialogRejected();
     }
 }
@@ -119,10 +122,9 @@ void EteSyncResource::retrieveCollections()
     qCDebug(ETESYNC_LOG) << "Retrieving collections";
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
-
-    setCollectionStreamingEnabled(true);
 
     mJournalsCache.clear();
     mClientState->refreshUserInfo();
@@ -177,7 +179,6 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     mJournalsCacheUpdateTime = QDateTime::currentDateTime();
     free(journals);
     collectionsRetrieved(list);
-    collectionsRetrievalDone();
 }
 
 /** 
@@ -226,8 +227,6 @@ bool EteSyncResource::credentialsRequired()
         qCDebug(ETESYNC_LOG) << "Credentials required";
         showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(CharPtr(etesync_get_error_message()).get()), i18n("Credentials Changed"));
         configure(winIdForDialogs());
-        setOnline(false);
-        deferTask();
     }
     return mCredentialsRequired;
 }
@@ -236,7 +235,7 @@ void EteSyncResource::slotTokenRefreshed(bool successful)
 {
     if (!successful) {
         if (etesync_get_error_code() == ETESYNC_ERROR_CODE_HTTP) {
-            qCDebug(ETESYNC_LOG) << "HTTP Error while tokenRefresh - calling reconfigure";
+            qCDebug(ETESYNC_LOG) << "HTTP Error while tokenRefresh";
             mCredentialsRequired = true;
         }
     }
@@ -344,6 +343,7 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 
@@ -429,6 +429,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
     qCDebug(ETESYNC_LOG) << "Journal UID" << collection.remoteId();
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 
@@ -448,6 +449,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item,
     qCDebug(ETESYNC_LOG) << "Journal UID" << item.parentCollection().remoteId();
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 
@@ -465,6 +467,7 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
     qCDebug(ETESYNC_LOG) << "Item removed" << item.mimeType();
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 
@@ -482,6 +485,7 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     qCDebug(ETESYNC_LOG) << "Collection added" << collection.mimeType();
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 
@@ -499,6 +503,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
     qCDebug(ETESYNC_LOG) << "Collection changed" << collection.mimeType();
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 
@@ -516,6 +521,7 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
     qCDebug(ETESYNC_LOG) << "Collection removed" << collection.mimeType();
 
     if (credentialsRequired()) {
+        deferTask();
         return;
     }
 

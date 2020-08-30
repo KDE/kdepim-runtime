@@ -17,8 +17,6 @@
 
 #include "entriesfetchjob.h"
 
-#include <kio/job.h>
-
 #include <QtConcurrent>
 
 #include "etesync_debug.h"

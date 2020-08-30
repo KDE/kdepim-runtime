@@ -17,8 +17,6 @@
 
 #include "journalsfetchjob.h"
 
-#include <kio/job.h>
-
 #include <QtConcurrent>
 
 using namespace EteSyncAPI;

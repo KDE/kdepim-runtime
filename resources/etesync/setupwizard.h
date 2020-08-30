@@ -20,6 +20,7 @@
 #define SETUPWIZARD_H
 
 #include <QLabel>
+#include <QProgressBar>
 #include <QWizard>
 #include <QWizardPage>
 
@@ -51,6 +52,9 @@ public:
     };
 
     EteSyncClientState *mClientState = nullptr;
+
+public Q_SLOTS:
+    void manualNext();
 };
 
 class LoginPage : public QWizardPage
@@ -61,13 +65,48 @@ public:
     void initializePage() override;
     bool validatePage() override;
 
+    void showProgressBar()
+    {
+        mProgressBar->setVisible(true);
+    }
+
+    void hideProgressBar()
+    {
+        mProgressBar->setVisible(false);
+    }
+
+    void setLoginResult(bool loginResult)
+    {
+        mLoginResult = loginResult;
+    }
+
+    void setUserInfoResult(bool userInfoResult)
+    {
+        mUserInfoResult = userInfoResult;
+    }
+
+    void setErrorCode(int errorCode)
+    {
+        mErrorCode = errorCode;
+    }
+
+    void setErrorMessage(QString errorMessage)
+    {
+        mErrorMessage = errorMessage;
+    }
+
 private:
     QLineEdit *mUserName = nullptr;
     KPasswordLineEdit *mPassword = nullptr;
     QCheckBox *mAdvancedSettings = nullptr;
     QLineEdit *mServerUrl = nullptr;
     QLabel *mLoginLabel = nullptr;
+    QProgressBar *mProgressBar;
     bool mIsInitialized = false;
+    bool mLoginResult = false;
+    bool mUserInfoResult = false;
+    int mErrorCode;
+    QString mErrorMessage;
 };
 
 class EncryptionPasswordPage : public QWizardPage
