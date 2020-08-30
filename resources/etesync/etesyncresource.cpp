@@ -223,6 +223,7 @@ bool EteSyncResource::handleError()
 bool EteSyncResource::credentialsRequired()
 {
     if (mCredentialsRequired) {
+        qCDebug(ETESYNC_LOG) << "Credentials required";
         showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(CharPtr(etesync_get_error_message()).get()), i18n("Credentials Changed"));
         configure(winIdForDialogs());
         setOnline(false);

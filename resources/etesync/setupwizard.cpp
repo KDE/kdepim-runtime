@@ -101,8 +101,13 @@ bool LoginPage::validatePage()
     const bool loginResult = static_cast<SetupWizard *>(wizard())->mClientState->initToken(serverUrl, username, password);
     if (!loginResult) {
         auto err = etesync_get_error_code();
+        qCDebug(ETESYNC_LOG) << "loginResult error" << err;
         if (err == EteSyncErrorCode::ETESYNC_ERROR_CODE_UNAUTHORIZED || err == EteSyncErrorCode::ETESYNC_ERROR_CODE_HTTP) {
             mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
+        } else if (err == EteSyncErrorCode::ETESYNC_ERROR_CODE_ENCODING) {
+            mLoginLabel->setText(i18n("Please ensure that the server URL is correct. The URL should start with http:// or https://."));
+        } else if (err == EteSyncErrorCode::ETESYNC_ERROR_CODE_CONNECTION) {
+            mLoginLabel->setText(i18n("Could not connect to the server. Please ensure that the server URL is correct."));
         } else {
             mLoginLabel->setText(i18n(CharPtr(etesync_get_error_message()).get()));
         }

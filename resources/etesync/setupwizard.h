@@ -67,7 +67,7 @@ private:
     QCheckBox *mAdvancedSettings = nullptr;
     QLineEdit *mServerUrl = nullptr;
     QLabel *mLoginLabel = nullptr;
-    bool mIsInitialized;
+    bool mIsInitialized = false;
 };
 
 class EncryptionPasswordPage : public QWizardPage

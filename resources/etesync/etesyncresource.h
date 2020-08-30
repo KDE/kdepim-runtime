@@ -89,7 +89,7 @@ private:
     std::vector<BaseHandler::Ptr> mHandlers;
     std::map<QString, EteSyncJournalPtr> mJournalsCache;
     QDateTime mJournalsCacheUpdateTime;
-    bool mCredentialsRequired;
+    bool mCredentialsRequired = false;
 
     ContactHandler::Ptr mContactHandler;
     CalendarHandler::Ptr mCalendarHandler;
