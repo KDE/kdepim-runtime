@@ -141,10 +141,6 @@ find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Libkdepim ${LIBKDEPIM_LIB_VERSION_LIB} CONFIG REQUIRED)
 find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 
-# EteSync package
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(ETESYNC REQUIRED etesync)
-
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 

@@ -2,6 +2,10 @@
 find_package(Libkolabxml 1.1 QUIET CONFIG)
 set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http://mirror.kolabsys.com/pub/releases" TYPE OPTIONAL PURPOSE "The Kolab XML Format Schema Definitions Library is required to build the Kolab Groupware Resource")
 
+# EteSync package
+find_package(EteSync CONFIG)
+set_package_properties(EteSync PROPERTIES DESCRIPTION "EteSync" URL "https://github.com/etesync/etesync-rs" TYPE OPTIONAL PURPOSE "The EteSync library is required to build the EteSync Groupware Resource")
+
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresource/
   ${CMAKE_CURRENT_BINARY_DIR}/shared/singlefileresource/
@@ -45,6 +49,10 @@ if (Libkolabxml_FOUND)
     add_subdirectory( kolab )
 endif()
 
+if (EteSync_FOUND)
+    add_subdirectory( etesync )
+endif()
+
 #Disable it as it seems Facebook disabled the login and event API has been crippled
 #add_subdirectory( facebook )
 add_subdirectory( maildir )
@@ -53,7 +61,6 @@ add_subdirectory( openxchange )
 add_subdirectory( pop3 )
 
 add_subdirectory( google-groupware )
-add_subdirectory( etesync )
 
 add_subdirectory( shared )
 add_subdirectory( birthdays )
