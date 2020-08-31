@@ -161,7 +161,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
-        qCWarning(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+        qCWarning(ETESYNC_LOG) << "EteSync error" << job->error() << job->errorText();
         handleError(job->error());
         return;
     }
@@ -192,7 +192,6 @@ bool EteSyncResource::handleError(int errorCode)
     switch (errorCode) {
         case ETESYNC_ERROR_CODE_UNAUTHORIZED: {
             qCDebug(ETESYNC_LOG) << "Invalid token";
-            qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
             deferTask();
             connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::slotTokenRefreshed);
             scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
@@ -207,7 +206,6 @@ bool EteSyncResource::handleError(int errorCode)
         case ETESYNC_ERROR_CODE_INVALID_DATA:
         case ETESYNC_ERROR_CODE_CONNECTION:
         case ETESYNC_ERROR_CODE_HTTP: {
-            qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
             qCDebug(ETESYNC_LOG) << "Cancelling task";
             cancelTask();
             return true;
@@ -358,7 +356,7 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
 {
     if (job->error()) {
         qCDebug(ETESYNC_LOG) << "Error in fetching entries";
-        qCWarning(ETESYNC_LOG) << job->errorText();
+        qCWarning(ETESYNC_LOG) << "EteSync error" << job->error() << job->errorText();
         handleError(job->error());
         return;
     }
