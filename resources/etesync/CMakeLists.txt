@@ -25,7 +25,6 @@ set(etesyncresource_SRCS
     setupwizard.cpp
 
     ${etesyncconfig_SRCS}
-    ${etesyncresource_common_SRCS}
 )
 
 ecm_qt_declare_logging_category(etesyncresource_SRCS
