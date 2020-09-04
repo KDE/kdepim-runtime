@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-set(PIM_VERSION "5.15.1")
+set(PIM_VERSION "5.15.2")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
@@ -37,7 +37,7 @@ endif()
 #    3.2 
 
 set(KDEPIM_DEV_VERSION)
-set(RELEASE_SERVICE_VERSION "20.08.1")
+set(RELEASE_SERVICE_VERSION "20.08.2")
 
 # add an extra space
 if(DEFINED KDEPIM_DEV_VERSION)
