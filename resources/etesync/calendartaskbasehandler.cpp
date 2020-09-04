@@ -10,6 +10,7 @@
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/ItemModifyJob>
+#include <KCalendarCore/FileStorage>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 #include <KLocalizedString>
@@ -109,28 +110,29 @@ QString CalendarTaskBaseHandler::getLocalCalendar(const QString &incidenceUid) c
 {
     const QString path = baseDirectoryPath() + QLatin1Char('/') + incidenceUid + QLatin1String(".ical");
 
-    QFile file(path);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        qCDebug(ETESYNC_LOG) << "Unable to read " << path << file.errorString();
+    const auto calendar = Calendar::Ptr(new MemoryCalendar(QTimeZone::utc()));
+    const auto fileStorage = FileStorage::Ptr(new FileStorage(calendar, path, new ICalFormat()));
+
+    if (!fileStorage->load()) {
+        qCDebug(ETESYNC_LOG) << "Unable to read " << path;
         return QString();
     }
-    QTextStream in(&file);
-    return in.readAll();
+    KCalendarCore::ICalFormat format;
+    return format.toString(calendar);
 }
 
 bool CalendarTaskBaseHandler::updateLocalCalendar(const KCalendarCore::Incidence::Ptr &incidence)
 {
     const QString path = baseDirectoryPath() + QLatin1Char('/') + incidence->uid() + QLatin1String(".ical");
 
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
+    const auto calendar = Calendar::Ptr(new MemoryCalendar(QTimeZone::utc()));
+    calendar->addIncidence(incidence);
+    const auto fileStorage = FileStorage::Ptr(new FileStorage(calendar, path, new ICalFormat()));
+
+    if (!fileStorage->save()) {
+        qCDebug(ETESYNC_LOG) << "Unable to read " << path;
         return false;
     }
-    KCalendarCore::Calendar::Ptr calendar(new MemoryCalendar(QTimeZone::utc()));
-    calendar->addIncidence(incidence);
-    KCalendarCore::ICalFormat format;
-    file.write(format.toString(calendar).toUtf8());
     return true;
 }
 
