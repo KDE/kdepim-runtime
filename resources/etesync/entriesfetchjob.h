@@ -27,7 +27,7 @@ namespace EteSyncAPI {
             return std::move(mEntries);
         }
 
-        QString getPrevUid()
+        QString getPrevUid() const
         {
             return mPrevUid;
         }

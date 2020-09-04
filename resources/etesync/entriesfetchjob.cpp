@@ -20,7 +20,13 @@ EntriesFetchJob::EntriesFetchJob(const EteSync *client, const Akonadi::Collectio
 
 void EntriesFetchJob::start()
 {
-    QtConcurrent::run(this, &EntriesFetchJob::fetchEntries);
+    QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this);
+    connect(watcher, &QFutureWatcher<int>::finished, this, [this] {
+        qCDebug(ETESYNC_LOG) << "emitResult from EntriesFetchJob";
+        emitResult();
+    });
+    QFuture<void> fetchEntriesFuture = QtConcurrent::run(this, &EntriesFetchJob::fetchEntries);
+    watcher->setFuture(fetchEntriesFuture);
 }
 
 void EntriesFetchJob::fetchEntries()
@@ -40,7 +46,7 @@ void EntriesFetchJob::fetchEntries()
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));
     }
-    emitResult();
+    qCDebug(ETESYNC_LOG) << "Entries fetched";
 }
 
 EntriesFetchJob::Status EntriesFetchJob::fetchNextBatch()

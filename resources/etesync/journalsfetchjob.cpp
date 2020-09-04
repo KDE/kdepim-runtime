@@ -8,6 +8,8 @@
 
 #include <QtConcurrent>
 
+#include "etesync_debug.h"
+
 using namespace EteSyncAPI;
 
 JournalsFetchJob::JournalsFetchJob(EteSync *client, QObject *parent)
@@ -17,7 +19,13 @@ JournalsFetchJob::JournalsFetchJob(EteSync *client, QObject *parent)
 
 void JournalsFetchJob::start()
 {
-    QtConcurrent::run(this, &JournalsFetchJob::fetchJournals);
+    QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this);
+    connect(watcher, &QFutureWatcher<void>::finished, this, [this] {
+        qCDebug(ETESYNC_LOG) << "emitResult from JournalsFetchJob";
+        emitResult();
+    });
+    QFuture<void> fetchJournalsFuture = QtConcurrent::run(this, &JournalsFetchJob::fetchJournals);
+    watcher->setFuture(fetchJournalsFuture);
 }
 
 void JournalsFetchJob::fetchJournals()
@@ -29,5 +37,5 @@ void JournalsFetchJob::fetchJournals()
         CharPtr err(etesync_get_error_message());
         setErrorText(QStringFromCharPtr(err));
     }
-    emitResult();
+    qCDebug(ETESYNC_LOG) << "Journals fetched";
 }

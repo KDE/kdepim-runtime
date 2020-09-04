@@ -13,7 +13,7 @@ QString QStringFromCharPtr(const CharPtr &str)
     if (str.get() == nullptr) {
         return QString();
     }
-    QString ret = QString::fromUtf8(str.get());
+    const QString ret = QString::fromUtf8(str.get());
     return ret;
 }
 
