@@ -29,7 +29,6 @@ EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &r
     , mPollTimer(this)
     , mMsgRootId(rootId)
     , mFolderTreeChanged(false)
-    , mEventReq(nullptr)
     , mSettings(settings)
 {
     mStreamingEvents = mEwsClient.serverVersion().supports(EwsServerVersion::StreamingSubscription);

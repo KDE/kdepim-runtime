@@ -44,7 +44,7 @@ QString messageTypeToString(KMigratorBase::MessageType type)
 }
 }
 
-KMigratorBase::KMigratorBase() : m_logFile(nullptr)
+KMigratorBase::KMigratorBase()
 {
     const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1String("/migration.log");
     QFileInfo fileInfo(logFileName);

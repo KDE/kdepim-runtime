@@ -39,13 +39,13 @@ private:
     void slotActivateNotificationAction(unsigned int index);
     void emitNotification(const QPixmap &pixmap = QPixmap());
     void deleteItemDone(KJob *job);
-    QStringList mListEmails;
+    const QStringList mListEmails;
     QString mDefaultIconName;
     QString mSubject;
     QString mFrom;
-    QString mPath;
+    const QString mPath;
     Akonadi::Item mItem;
-    Akonadi::Item::Id mItemId;
+    const Akonadi::Item::Id mItemId;
 };
 
 #endif // SPECIALNOTIFIERJOB_H

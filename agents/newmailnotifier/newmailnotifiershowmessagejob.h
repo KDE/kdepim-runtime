@@ -20,7 +20,7 @@ public:
     void start() override;
 
 private:
-    Akonadi::Item::Id mId;
+    const Akonadi::Item::Id mId;
 };
 
 #endif // NEWMAILNOTIFIERSHOWMESSAGEJOB_H

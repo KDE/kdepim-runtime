@@ -59,9 +59,8 @@ static MigratorBase::MigrationState identifierToState(const QString &identifier)
 }
 
 MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
-    :   QObject(parent)
+    : QObject(parent)
     , mIdentifier(identifier)
-    , mMigrationState(None)
     , mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
 {
     const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1Char('/') + identifier

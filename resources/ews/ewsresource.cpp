@@ -86,8 +86,6 @@ static Q_CONSTEXPR int ReconnectTimeout = 300;
 
 EwsResource::EwsResource(const QString &id)
     : Akonadi::ResourceBase(id)
-    , mAuthStage(0)
-    , mTagsRetrieved(false)
     , mReconnectTimeout(InitialReconnectTimeout)
     , mSettings(new EwsSettings(winIdForDialogs()))
 {

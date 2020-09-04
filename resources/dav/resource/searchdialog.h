@@ -39,7 +39,7 @@ private:
     void onCollectionsFetchJobFinished(KJob *job);
 
     Ui::SearchDialog mUi;
-    QStandardItemModel *mModel = nullptr;
+    QStandardItemModel *const mModel;
     int mSubJobCount = 0;
 };
 

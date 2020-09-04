@@ -15,8 +15,8 @@ QString translateErrorString(const Error &error)
     QString result;
 
     ErrorNumber errorNumber = error.errorNumber();
-    int responseCode = error.responseCode();
-    QString errorText = error.errorText();
+    const int responseCode = error.responseCode();
+    const QString errorText = error.errorText();
     QString err = error.translatedJobError();
 
     switch (errorNumber) {

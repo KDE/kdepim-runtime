@@ -28,10 +28,7 @@ enum {
 bool InfoDialog::mError = false;
 
 InfoDialog::InfoDialog(bool closeWhenDone)
-    : mMigratorCount(0)
-    , mChange(false)
-    , mCloseWhenDone(closeWhenDone)
-    , mAutoScrollList(true)
+    : mCloseWhenDone(closeWhenDone)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
