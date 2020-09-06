@@ -114,7 +114,7 @@ QString CalendarTaskBaseHandler::getLocalCalendar(const QString &incidenceUid) c
     const auto fileStorage = FileStorage::Ptr(new FileStorage(calendar, path, new ICalFormat()));
 
     if (!fileStorage->load()) {
-        qCDebug(ETESYNC_LOG) << "Unable to read " << path;
+        qCDebug(ETESYNC_LOG) << "Unable to read" << path;
         return QString();
     }
     KCalendarCore::ICalFormat format;
@@ -130,7 +130,7 @@ bool CalendarTaskBaseHandler::updateLocalCalendar(const KCalendarCore::Incidence
     const auto fileStorage = FileStorage::Ptr(new FileStorage(calendar, path, new ICalFormat()));
 
     if (!fileStorage->save()) {
-        qCDebug(ETESYNC_LOG) << "Unable to read " << path;
+        qCDebug(ETESYNC_LOG) << "Unable to write" << path;
         return false;
     }
     return true;
