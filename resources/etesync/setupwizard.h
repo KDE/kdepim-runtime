@@ -14,16 +14,9 @@
 
 #include "etesyncclientstate.h"
 
-class KJob;
 class QLineEdit;
-class QTextBrowser;
-
-class QButtonGroup;
 class QCheckBox;
-class QComboBox;
-class QFormLayout;
 class QLabel;
-class QRadioButton;
 class KPasswordLineEdit;
 
 class SetupWizard : public QWizard
