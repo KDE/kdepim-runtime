@@ -195,6 +195,8 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
 void ContactHandler::itemChanged(const Akonadi::Item &item,
                                  const QSet<QByteArray> &parts)
 {
+    Q_UNUSED(parts);
+
     if (!item.hasPayload<KContacts::Addressee>()) {
         qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
         mResource->cancelTask(i18n("Received item with unknown payload %1", item.mimeType()));
@@ -279,6 +281,8 @@ void ContactHandler::itemRemoved(const Akonadi::Item &item)
 
 void ContactHandler::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
+    Q_UNUSED(parent);
+
     const QString journalUid = QStringFromCharPtr(CharPtr(etesync_gen_uid()));
     EteSyncJournalPtr journal = etesync_journal_new(journalUid, ETESYNC_CURRENT_VERSION);
 
