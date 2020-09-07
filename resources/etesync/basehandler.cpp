@@ -127,7 +127,7 @@ bool BaseHandler::handleConflictError(const Collection &collection)
     if (etesync_get_error_code() == EteSyncErrorCode::ETESYNC_ERROR_CODE_CONFLICT) {
         qCDebug(ETESYNC_LOG) << "Conflict error";
         mResource->deferTask();
-        mResource->scheduleCustomTask(this, "syncCollection", QVariant::fromValue(collection), ResourceBase::Prepend);
+        mResource->scheduleCustomTask(this, "syncCollection", QVariant::fromValue(collection), EteSyncResource::Prepend);
         return true;
     }
     return false;

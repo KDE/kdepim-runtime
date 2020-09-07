@@ -33,7 +33,7 @@ void CalendarTaskBaseHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr
 {
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "SetupItems: Could not get journal";
+        qCDebug(ETESYNC_LOG) << "SetupItems: Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -172,7 +172,7 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -214,7 +214,7 @@ void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -309,7 +309,7 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -351,7 +351,7 @@ void CalendarTaskBaseHandler::collectionRemoved(const Akonadi::Collection &colle
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }

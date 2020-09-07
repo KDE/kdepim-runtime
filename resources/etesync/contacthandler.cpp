@@ -38,7 +38,7 @@ void ContactHandler::getItemListFromEntries(std::vector<EteSyncEntryPtr> &entrie
 {
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "SetupItems: Could not get journal";
+        qCDebug(ETESYNC_LOG) << "SetupItems: Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -159,7 +159,7 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -206,7 +206,7 @@ void ContactHandler::itemChanged(const Akonadi::Item &item,
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -312,7 +312,7 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
@@ -346,7 +346,7 @@ void ContactHandler::collectionRemoved(const Akonadi::Collection &collection)
     const EteSyncJournalPtr &journal = mResource->getJournal(journalUid);
 
     if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Could not get journal";
+        qCDebug(ETESYNC_LOG) << "Could not get journal" << journalUid;
         mResource->cancelTask(i18n("Could not get journal"));
         return;
     }
