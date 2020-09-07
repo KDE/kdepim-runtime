@@ -58,7 +58,7 @@ void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 }
 
 Row::Row(const QSharedPointer<MigratorBase> &migrator, MigratorModel &model)
-    :   QObject()
+    : QObject()
     , mMigrator(migrator)
     , mModel(model)
 {

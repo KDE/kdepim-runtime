@@ -10,7 +10,6 @@
 
 EwsFetchItemDetailJob::EwsFetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
     : KCompositeJob(parent)
-    , mDeletedItems(nullptr)
     , mClient(client)
     , mCollection(collection)
 {

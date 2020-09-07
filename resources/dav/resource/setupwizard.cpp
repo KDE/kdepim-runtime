@@ -39,7 +39,7 @@ enum GroupwareServers {
 
 static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 {
-    QString desktopFilePath = wizard->property("providerDesktopFilePath").toString();
+    const QString desktopFilePath = wizard->property("providerDesktopFilePath").toString();
     if (desktopFilePath.isEmpty()) {
         return QString();
     }
@@ -49,14 +49,14 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return QString();
     }
 
-    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
     if (!supportedProtocols.contains(protocol)) {
         return QString();
     }
 
     QString pathPattern;
 
-    QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
+    const QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
     if (service->property(pathPropertyName).isNull()) {
         return QString();
     }

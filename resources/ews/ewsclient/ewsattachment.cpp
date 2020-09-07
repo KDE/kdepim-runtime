@@ -38,22 +38,18 @@ public:
     QString mContentType;
     QString mContentId;
     QString mContentLocation;
-    long mSize;
+    long mSize = 0;
     QDateTime mLastModifiedTime;
-    bool mIsInline;
-    bool mIsContactPhoto;
+    bool mIsInline = false;
+    bool mIsContactPhoto = false;
     QByteArray mContent;
     EwsItem mItem;
-    bool mValid;
+    bool mValid = false;
     QBitArray mValidFields;
 };
 
 EwsAttachmentPrivate::EwsAttachmentPrivate()
     : mType(EwsAttachment::UnknownAttachment)
-    , mSize(0)
-    , mIsInline(false)
-    , mIsContactPhoto(false)
-    , mValid(false)
     , mValidFields(NumFields)
 {
 }

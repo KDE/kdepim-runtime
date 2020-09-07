@@ -57,7 +57,7 @@ private:
     static bool mError;
     bool mChange = false;
     bool mCloseWhenDone = false;
-    bool mAutoScrollList = false;
+    bool mAutoScrollList = true;
 };
 
 #endif

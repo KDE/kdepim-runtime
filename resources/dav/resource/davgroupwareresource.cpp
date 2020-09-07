@@ -64,7 +64,6 @@ typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)
     , FreeBusyProviderBase()
-    , mSyncErrorNotified(false)
 {
     AttributeFactory::registerAttribute<EntityDisplayAttribute>();
     AttributeFactory::registerAttribute<DavProtocolAttribute>();

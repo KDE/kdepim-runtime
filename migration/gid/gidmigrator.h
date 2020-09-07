@@ -17,19 +17,19 @@ public:
     GidMigrator(const QString &mimeType);
     ~GidMigrator() override;
 
-    QString displayName() const override;
-    QString description() const override;
+    Q_REQUIRED_RESULT QString displayName() const override;
+    Q_REQUIRED_RESULT QString description() const override;
 
-    bool canStart() override;
+    Q_REQUIRED_RESULT bool canStart() override;
 
-    bool shouldAutostart() const override;
+    Q_REQUIRED_RESULT bool shouldAutostart() const override;
 
 protected:
     void startWork() override;
 private Q_SLOTS:
     void migrationFinished(KJob *);
 private:
-    QString mMimeType;
+    const QString mMimeType;
 };
 
 #endif // GIDMIGRATOR_H

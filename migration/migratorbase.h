@@ -211,7 +211,7 @@ private:
     void setLogfile(const QString &);
 
     const QString mIdentifier;
-    MigrationState mMigrationState;
+    MigrationState mMigrationState = None;
     QScopedPointer<QFile> mLogFile;
     QScopedPointer<KConfig> mConfig;
     int mProgress;

@@ -55,12 +55,12 @@ private:
     WId mWindowId;
 
     QString mPassword;
-    bool mPasswordReadPending;
-    bool mPasswordWritePending;
+    bool mPasswordReadPending = false;
+    bool mPasswordWritePending = false;
 
     QMap<QString, QString> mMap;
-    bool mMapReadPending;
-    bool mMapWritePending;
+    bool mMapReadPending = false;
+    bool mMapWritePending = false;
 
     QPointer<KWallet::Wallet> mWallet;
     QTimer mWalletTimer;

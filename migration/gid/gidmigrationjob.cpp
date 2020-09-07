@@ -14,7 +14,7 @@
 using namespace Akonadi;
 
 UpdateJob::UpdateJob(const Collection &col, QObject *parent)
-    :   Job(parent)
+    : Job(parent)
     , mCollection(col)
     , mModJobRunning(false)
 {

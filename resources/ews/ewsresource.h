@@ -146,10 +146,10 @@ private:
     QHash<QString, EwsFetchItemsJob::QueuedUpdateList> mQueuedUpdates;
     QString mPassword;
     QScopedPointer<EwsAbstractAuth> mAuth;
-    int mAuthStage;
+    int mAuthStage = 0;
     QPointer<KNotification> mReauthNotification;
 
-    bool mTagsRetrieved;
+    bool mTagsRetrieved = false;
     int mReconnectTimeout;
     EwsTagStore *mTagStore = nullptr;
     QScopedPointer<EwsSettings> mSettings;

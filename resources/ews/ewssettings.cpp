@@ -29,10 +29,6 @@ using namespace KWallet;
 EwsSettings::EwsSettings(WId windowId)
     : EwsSettingsBase()
     , mWindowId(windowId)
-    , mPasswordReadPending(false)
-    , mPasswordWritePending(false)
-    , mMapReadPending(false)
-    , mMapWritePending(false)
     , mWalletTimer(this)
 {
     mWalletTimer.setInterval(walletTimeout);
