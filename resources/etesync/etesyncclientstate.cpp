@@ -19,11 +19,6 @@ void EteSyncClientState::init()
     mPassword = Settings::self()->password();
     mEncryptionPassword = Settings::self()->encryptionPassword();
 
-    // mServerUrl = QStringLiteral("http://0.0.0.0:9966");
-    // mUsername = QStringLiteral("test@localhost");
-    // mPassword = QStringLiteral("testetesync");
-    // mEncryptionPassword = QStringLiteral("etesync");
-
     if (mServerUrl.isEmpty() || mUsername.isEmpty() || mPassword.isEmpty() || mEncryptionPassword.isEmpty()) {
         Q_EMIT clientInitialised(false);
         return;
