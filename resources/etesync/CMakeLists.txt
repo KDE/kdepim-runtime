@@ -1,3 +1,5 @@
+add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_etesync_resource\")
+
 set(etesyncresource_common_SRCS
     etesyncadapter.cpp
 )
