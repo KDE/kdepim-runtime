@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -147,8 +147,7 @@ void ContactHandler::deleteLocalContact(const QString &contactUid)
     }
 }
 
-void ContactHandler::itemAdded(const Akonadi::Item &item,
-                               const Akonadi::Collection &collection)
+void ContactHandler::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     if (!item.hasPayload<KContacts::Addressee>()) {
         qCDebug(ETESYNC_LOG) << "Received item with unknown payload";
@@ -192,8 +191,7 @@ void ContactHandler::itemAdded(const Akonadi::Item &item,
     updateLocalContact(item.payload<KContacts::Addressee>());
 }
 
-void ContactHandler::itemChanged(const Akonadi::Item &item,
-                                 const QSet<QByteArray> &parts)
+void ContactHandler::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts);
 
@@ -295,7 +293,7 @@ void ContactHandler::collectionAdded(const Akonadi::Collection &collection, cons
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->cancelTask(i18n("Could not set journal info"));
         return;
-    };
+    }
 
     if (etesync_journal_manager_create(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create journal";
@@ -330,7 +328,7 @@ void ContactHandler::collectionChanged(const Akonadi::Collection &collection)
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->cancelTask(i18n("Could not set journal info"));
         return;
-    };
+    }
 
     if (etesync_journal_manager_update(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not update journal";

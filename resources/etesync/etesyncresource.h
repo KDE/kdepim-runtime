@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -16,8 +16,7 @@
 #include "etesyncclientstate.h"
 #include "taskhandler.h"
 
-class EteSyncResource : public Akonadi::ResourceBase,
-                        public Akonadi::AgentBase::ObserverV2
+class EteSyncResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
     Q_OBJECT
 

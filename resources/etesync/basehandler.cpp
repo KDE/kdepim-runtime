@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -17,7 +17,8 @@ using namespace Akonadi;
 using namespace EteSyncAPI;
 
 BaseHandler::BaseHandler(EteSyncResource *resource)
-    : mResource(resource), mClientState((resource->mClientState).get())
+    : mResource(resource)
+    , mClientState((resource->mClientState).get())
 {
 }
 
@@ -119,7 +120,7 @@ void BaseHandler::slotItemsRetrieved(KJob *job)
     } else {
         syncer->setFullSyncItems(changedItems);
     }
-    connect(syncer, SIGNAL(result(KJob *)), this, SLOT(taskDone()));
+    connect(syncer, SIGNAL(result(KJob*)), this, SLOT(taskDone()));
 }
 
 bool BaseHandler::handleConflictError(const Collection &collection)

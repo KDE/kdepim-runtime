@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -162,7 +162,7 @@ bool EteSyncClientState::initAccount(const QString &encryptionPassword)
         qCDebug(ETESYNC_LOG) << "Could not create user info";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         return false;
-    };
+    }
 
     const auto calendarResult = createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR), i18n("My Calendar"));
     const auto contactsResult = createDefaultJournal(QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK), i18n("My Contacts"));
@@ -184,7 +184,7 @@ bool EteSyncClientState::createDefaultJournal(const QString &journalType, const 
         qCDebug(ETESYNC_LOG) << "Could not set journal info";
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         return false;
-    };
+    }
 
     if (etesync_journal_manager_create(mJournalManager.get(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create journal";

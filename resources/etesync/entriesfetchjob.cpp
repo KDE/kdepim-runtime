@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -14,7 +14,9 @@
 using namespace EteSyncAPI;
 
 EntriesFetchJob::EntriesFetchJob(const EteSync *client, const Akonadi::Collection &collection, QObject *parent)
-    : KJob(parent), mClient(client), mCollection(collection)
+    : KJob(parent)
+    , mClient(client)
+    , mCollection(collection)
 {
 }
 

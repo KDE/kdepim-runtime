@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -21,7 +21,8 @@
 using namespace EteSyncAPI;
 
 SetupWizard::SetupWizard(EteSyncClientState *clientState, QWidget *parent)
-    : QWizard(parent), mClientState(clientState)
+    : QWizard(parent)
+    , mClientState(clientState)
 {
     setWindowTitle(i18nc("@title:window", "EteSync configuration wizard"));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("akonadi-etesync")));

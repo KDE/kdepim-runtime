@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -146,8 +146,7 @@ void CalendarTaskBaseHandler::deleteLocalCalendar(const QString &incidenceUid)
     }
 }
 
-void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
-                                        const Akonadi::Collection &collection)
+void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     if (!item.hasPayload<Incidence::Ptr>()) {
         qCDebug(ETESYNC_LOG) << "Received item with unknown payload - Remote ID: " << item.remoteId();
@@ -195,8 +194,7 @@ void CalendarTaskBaseHandler::itemAdded(const Akonadi::Item &item,
     updateLocalCalendar(item.payload<Incidence::Ptr>());
 }
 
-void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item,
-                                          const QSet<QByteArray> &parts)
+void CalendarTaskBaseHandler::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts);
 
@@ -292,7 +290,7 @@ void CalendarTaskBaseHandler::collectionAdded(const Akonadi::Collection &collect
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->cancelTask(i18n("Could not set journal info"));
         return;
-    };
+    }
 
     if (etesync_journal_manager_create(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not create journal";
@@ -335,7 +333,7 @@ void CalendarTaskBaseHandler::collectionChanged(const Akonadi::Collection &colle
         qCDebug(ETESYNC_LOG) << "EteSync error" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
         mResource->cancelTask(i18n("Could not set journal info"));
         return;
-    };
+    }
 
     if (etesync_journal_manager_update(mClientState->journalManager(), journal.get())) {
         qCDebug(ETESYNC_LOG) << "Could not update journal";

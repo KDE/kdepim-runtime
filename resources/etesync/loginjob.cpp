@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -13,7 +13,11 @@
 using namespace EteSyncAPI;
 
 LoginJob::LoginJob(EteSyncClientState *clientState, const QString &serverUrl, const QString &username, const QString &password, QObject *parent)
-    : KJob(parent), mClientState(clientState), mServerUrl(serverUrl), mUsername(username), mPassword(password)
+    : KJob(parent)
+    , mClientState(clientState)
+    , mServerUrl(serverUrl)
+    , mUsername(username)
+    , mPassword(password)
 {
 }
 

@@ -1,6 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2020 Shashwat Jolly <shashwat.jolly@gmail.com>
- * 
+ *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
@@ -170,7 +170,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     collectionsRetrieved(list);
 }
 
-/** 
+/**
  * Handles all EteSync errors (except CONFLICT).
  * To be called immediately after an EteSync operation.
  * CONFLICT error has been handled seperately in BaseHandler.
@@ -179,26 +179,24 @@ bool EteSyncResource::handleError(int errorCode)
 {
     qCDebug(ETESYNC_LOG) << "handleError - code" << errorCode;
     switch (errorCode) {
-        case ETESYNC_ERROR_CODE_UNAUTHORIZED: {
-            qCDebug(ETESYNC_LOG) << "Invalid token";
-            deferTask();
-            connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::slotTokenRefreshed);
-            scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
-            return true;
-        }
-        case ETESYNC_ERROR_CODE_GENERIC:
-        case ETESYNC_ERROR_CODE_ENCODING:
-        case ETESYNC_ERROR_CODE_INTEGRITY:
-        case ETESYNC_ERROR_CODE_ENCRYPTION:
-        case ETESYNC_ERROR_CODE_ENCRYPTION_MAC:
-        case ETESYNC_ERROR_CODE_PERMISSION_DENIED:
-        case ETESYNC_ERROR_CODE_INVALID_DATA:
-        case ETESYNC_ERROR_CODE_CONNECTION:
-        case ETESYNC_ERROR_CODE_HTTP: {
-            qCDebug(ETESYNC_LOG) << "Cancelling task";
-            cancelTask();
-            return true;
-        }
+    case ETESYNC_ERROR_CODE_UNAUTHORIZED:
+        qCDebug(ETESYNC_LOG) << "Invalid token";
+        deferTask();
+        connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::slotTokenRefreshed);
+        scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
+        return true;
+    case ETESYNC_ERROR_CODE_GENERIC:
+    case ETESYNC_ERROR_CODE_ENCODING:
+    case ETESYNC_ERROR_CODE_INTEGRITY:
+    case ETESYNC_ERROR_CODE_ENCRYPTION:
+    case ETESYNC_ERROR_CODE_ENCRYPTION_MAC:
+    case ETESYNC_ERROR_CODE_PERMISSION_DENIED:
+    case ETESYNC_ERROR_CODE_INVALID_DATA:
+    case ETESYNC_ERROR_CODE_CONNECTION:
+    case ETESYNC_ERROR_CODE_HTTP:
+        qCDebug(ETESYNC_LOG) << "Cancelling task";
+        cancelTask();
+        return true;
     }
     return false;
 }
@@ -291,8 +289,8 @@ BaseHandler *EteSyncResource::fetchHandlerForMimeType(const QString &mimeType)
 {
     auto it = std::find_if(mHandlers.cbegin(), mHandlers.cend(),
                            [&mimeType](const BaseHandler::Ptr &handler) {
-                               return handler->mimeType() == mimeType;
-                           });
+        return handler->mimeType() == mimeType;
+    });
 
     if (it != mHandlers.cend()) {
         return it->get();
@@ -305,8 +303,8 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 {
     auto it = std::find_if(mHandlers.cbegin(), mHandlers.cend(),
                            [&collection](const BaseHandler::Ptr &handler) {
-                               return collection.contentMimeTypes().contains(handler->mimeType());
-                           });
+        return collection.contentMimeTypes().contains(handler->mimeType());
+    });
 
     if (it != mHandlers.cend()) {
         return it->get();
@@ -409,8 +407,7 @@ void EteSyncResource::initialiseDirectory(const QString &path) const
     }
 }
 
-void EteSyncResource::itemAdded(const Akonadi::Item &item,
-                                const Akonadi::Collection &collection)
+void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Item added" << item.mimeType();
     qCDebug(ETESYNC_LOG) << "Journal UID" << collection.remoteId();
@@ -429,8 +426,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item,
     }
 }
 
-void EteSyncResource::itemChanged(const Akonadi::Item &item,
-                                  const QSet<QByteArray> &parts)
+void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType();
     qCDebug(ETESYNC_LOG) << "Journal UID" << item.parentCollection().remoteId();
