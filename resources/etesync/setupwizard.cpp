@@ -48,7 +48,6 @@ void SetupWizard::manualNext()
         connect(job, &LoginJob::finished, this, [this](KJob *job) {
             qCDebug(ETESYNC_LOG) << "Login finished";
             static_cast<LoginPage *>(page(W_LoginPage))->setLoginResult(static_cast<LoginJob *>(job)->getLoginResult());
-            static_cast<LoginPage *>(page(W_LoginPage))->setUserInfoResult(static_cast<LoginJob *>(job)->getUserInfoResult());
             static_cast<LoginPage *>(page(W_LoginPage))->setErrorCode(job->error());
             static_cast<LoginPage *>(page(W_LoginPage))->setErrorMessage(job->errorText());
             static_cast<LoginPage *>(page(W_LoginPage))->hideProgressBar();

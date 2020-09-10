@@ -7,6 +7,7 @@
 #ifndef ETESYNCCLIENTSTATE_H
 #define ETESYNCCLIENTSTATE_H
 
+#include "etebaseadapter.h"
 #include "etesyncadapter.h"
 #include "settings.h"
 
@@ -25,6 +26,7 @@ public:
     void saveSettings();
     void invalidateToken();
     void refreshUserInfo();
+    bool login(const QString &serverUrl, const QString &username, const QString &password);
 
     EteSync *client() const
     {
@@ -70,6 +72,10 @@ Q_SIGNALS:
 
 private:
     bool createDefaultJournal(const QString &journalType, const QString &journalName);
+
+    EtebaseClientPtr mClientXXX;
+    EtebaseAccountPtr mAccountXXX;
+
     EteSyncPtr mClient;
     QString mDerived;
     QString mToken;
@@ -82,4 +88,4 @@ private:
     QString mEncryptionPassword;
 };
 
-#endif  // ETESYNCSETTINGS_H
+#endif // ETESYNCSETTINGS_H

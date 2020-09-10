@@ -89,7 +89,10 @@ using EteSyncUserInfoManagerPtr = std::unique_ptr<EteSyncUserInfoManager, EteSyn
 using EteSyncUserInfoPtr = std::unique_ptr<EteSyncUserInfo, EteSyncDeleter>;
 using EteSyncCollectionInfoPtr = std::unique_ptr<EteSyncCollectionInfo, EteSyncDeleter>;
 using EteSyncEntryManagerPtr = std::unique_ptr<EteSyncEntryManager, EteSyncDeleter>;
+
+#ifndef ETEBASEADAPTER_H
 using CharPtr = std::unique_ptr<char, EteSyncDeleter>;
+#endif
 
 QString QStringFromCharPtr(const CharPtr &str);
 

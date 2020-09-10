@@ -9,6 +9,7 @@
 
 #include <KJob>
 
+#include "etebaseadapter.h"
 #include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
@@ -27,11 +28,6 @@ public:
         return mLoginResult;
     }
 
-    bool getUserInfoResult() const
-    {
-        return mUserInfoResult;
-    }
-
 private:
     void login();
 
@@ -42,6 +38,6 @@ private:
     bool mLoginResult;
     bool mUserInfoResult;
 };
-}  // namespace EteSyncAPI
+} // namespace EteSyncAPI
 
 #endif

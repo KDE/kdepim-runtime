@@ -17,12 +17,12 @@ QString QStringFromCharPtr(const CharPtr &str)
     return ret;
 }
 
-EtebaseClient *etebase_client_new(const QString &client_name, const QString &server_url)
+EtebaseClientPtr etebase_client_new(const QString &client_name, const QString &server_url)
 {
-    return etebase_client_new(charArrFromQString(client_name), charArrFromQString(server_url));
+    return EtebaseClientPtr(etebase_client_new(charArrFromQString(client_name), charArrFromQString(server_url)));
 }
 
-EtebaseAccount *etebase_account_login(const EtebaseClient *client, const QString &username, const QString &password)
+EtebaseAccountPtr etebase_account_login(const EtebaseClient *client, const QString &username, const QString &password)
 {
-    return etebase_account_login(client, charArrFromQString(username), charArrFromQString(password));
+    return EtebaseAccountPtr(etebase_account_login(client, charArrFromQString(username), charArrFromQString(password)));
 }

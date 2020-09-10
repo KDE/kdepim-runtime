@@ -11,7 +11,6 @@
 #include <AkonadiCore/Item>
 #include <KCalendarCore/Incidence>
 
-#include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
 using namespace Akonadi;

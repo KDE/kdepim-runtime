@@ -39,8 +39,8 @@ using CharPtr = std::unique_ptr<char, EtebaseDeleter>;
 
 QString QStringFromCharPtr(const CharPtr &str);
 
-EtebaseClient *etebase_client_new(const QString &client_name, const QString &server_url);
+EtebaseClientPtr etebase_client_new(const QString &client_name, const QString &server_url);
 
-EtebaseAccount *etebase_account_login(const EtebaseClient *client, const QString &username, const QString &password);
+EtebaseAccountPtr etebase_account_login(const EtebaseClient *client, const QString &username, const QString &password);
 
 #endif

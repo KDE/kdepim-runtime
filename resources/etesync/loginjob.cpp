@@ -23,28 +23,24 @@ LoginJob::LoginJob(EteSyncClientState *clientState, const QString &serverUrl, co
 
 void LoginJob::start()
 {
-    QtConcurrent::run(this, &LoginJob::login);
+    QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this);
+    connect(watcher, &QFutureWatcher<void>::finished, this, [this] {
+        qCDebug(ETESYNC_LOG) << "emitResult from LoginJob";
+        emitResult();
+    });
+    QFuture<void> loginFuture = QtConcurrent::run(this, &LoginJob::login);
+    watcher->setFuture(loginFuture);
 }
 
 void LoginJob::login()
 {
-    mLoginResult = mClientState->initToken(mServerUrl, mUsername, mPassword);
+    qCDebug(ETESYNC_LOG) << "Logging in" << mServerUrl << mUsername << mPassword;
+    mLoginResult = mClientState->login(mServerUrl, mUsername, mPassword);
+    qCDebug(ETESYNC_LOG) << "Login result" << mLoginResult;
     if (!mLoginResult) {
         qCDebug(ETESYNC_LOG) << "Returning error from LoginJob";
-        setError(etesync_get_error_code());
-        CharPtr err(etesync_get_error_message());
-        setErrorText(QStringFromCharPtr(err));
-        emitResult();
-        return;
+        setError(etebase_error_get_code());
+        const char *err = etebase_error_get_message();
+        setErrorText(QString::fromUtf8(err));
     }
-    mUserInfoResult = mClientState->initUserInfo();
-    if (!mUserInfoResult) {
-        qCDebug(ETESYNC_LOG) << "Returning error from LoginJob";
-        setError(etesync_get_error_code());
-        CharPtr err(etesync_get_error_message());
-        setErrorText(QStringFromCharPtr(err));
-        emitResult();
-        return;
-    }
-    emitResult();
 }
