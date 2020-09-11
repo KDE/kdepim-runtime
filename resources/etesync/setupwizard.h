@@ -28,8 +28,7 @@ public:
 
     enum
     {
-        W_LoginPage,
-        W_EncryptionPasswordPage
+        W_LoginPage
     };
 
     EteSyncClientState *mClientState = nullptr;
@@ -61,11 +60,6 @@ public:
         mLoginResult = loginResult;
     }
 
-    void setUserInfoResult(bool userInfoResult)
-    {
-        mUserInfoResult = userInfoResult;
-    }
-
     void setErrorCode(int errorCode)
     {
         mErrorCode = errorCode;
@@ -85,22 +79,8 @@ private:
     QProgressBar *mProgressBar;
     bool mIsInitialized = false;
     bool mLoginResult = false;
-    bool mUserInfoResult = false;
     int mErrorCode;
     QString mErrorMessage;
-};
-
-class EncryptionPasswordPage : public QWizardPage
-{
-public:
-    explicit EncryptionPasswordPage(QWidget *parent = nullptr);
-    int nextId() const override;
-    void initializePage() override;
-    bool validatePage() override;
-
-private:
-    KPasswordLineEdit *mEncryptionPassword = nullptr;
-    QLabel *mEncryptionPasswordLabel = nullptr;
 };
 
 #endif

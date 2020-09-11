@@ -27,7 +27,6 @@ SetupWizard::SetupWizard(EteSyncClientState *clientState, QWidget *parent)
     setWindowTitle(i18nc("@title:window", "EteSync configuration wizard"));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("akonadi-etesync")));
     setPage(W_LoginPage, new LoginPage);
-    setPage(W_EncryptionPasswordPage, new EncryptionPasswordPage);
 
     disconnect(button(QWizard::NextButton), SIGNAL(clicked()), this, SLOT(next()));
     connect(button(QWizard::NextButton), SIGNAL(clicked()), this, SLOT(manualNext()));
@@ -72,7 +71,7 @@ LoginPage::LoginPage(QWidget *parent)
     layout->addWidget(mLoginLabel);
 
     mUserName = new QLineEdit;
-    layout->addRow(i18n("Email:"), mUserName);
+    layout->addRow(i18n("Username:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
     mPassword = new KPasswordLineEdit;
@@ -112,10 +111,7 @@ void LoginPage::initializePage()
 
 int LoginPage::nextId() const
 {
-    if (mIsInitialized) {
-        return -1;
-    }
-    return SetupWizard::W_EncryptionPasswordPage;
+    return -1;
 }
 
 bool LoginPage::validatePage()
@@ -134,61 +130,5 @@ bool LoginPage::validatePage()
         return false;
     }
 
-    if (!mUserInfoResult) {
-        if (mErrorCode == EteSyncErrorCode::ETESYNC_ERROR_CODE_NOT_FOUND) {
-            wizard()->setProperty("initAccount", true);
-            return true;
-        }
-        mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
-        return false;
-    }
     return true;
-}
-
-EncryptionPasswordPage::EncryptionPasswordPage(QWidget *parent)
-    : QWizardPage(parent)
-{
-    setTitle(i18n("Encryption password"));
-    setSubTitle(i18n("Enter the encryption password for your EteSync account"));
-
-    QFormLayout *layout = new QFormLayout(this);
-
-    mEncryptionPasswordLabel = new QLabel;
-    mEncryptionPasswordLabel->setWordWrap(true);
-    layout->addWidget(mEncryptionPasswordLabel);
-
-    mEncryptionPassword = new KPasswordLineEdit;
-    layout->addRow(i18n("Encryption Password:"), mEncryptionPassword);
-    registerField(QStringLiteral("credentialsEncryptionPassword*"), mEncryptionPassword, "password", SIGNAL(passwordChanged(QString)));
-}
-
-int EncryptionPasswordPage::nextId() const
-{
-    return -1;
-}
-
-void EncryptionPasswordPage::initializePage()
-{
-    const auto initAccount = wizard()->property("initAccount");
-    if (initAccount.isValid() && initAccount.toBool()) {
-        setSubTitle(i18n("Welcome to EteSync! Please set your encryption password below, and make sure you got it right, as it can't be recovered if lost!"));
-    }
-}
-
-bool EncryptionPasswordPage::validatePage()
-{
-    const QString encryptionPassword = field(QStringLiteral("credentialsEncryptionPassword")).toString();
-    const auto initAccount = wizard()->property("initAccount");
-    if (initAccount.isValid() && initAccount.toBool()) {
-        return static_cast<SetupWizard *>(wizard())->mClientState->initAccount(encryptionPassword);
-    }
-    const bool keypairResult = static_cast<SetupWizard *>(wizard())->mClientState->initKeypair(encryptionPassword);
-    if (!keypairResult) {
-        if (etesync_get_error_code() == ETESYNC_ERROR_CODE_ENCRYPTION_MAC) {
-            mEncryptionPasswordLabel->setText(i18n("Incorrect encryption password. Please try again."));
-        } else {
-            mEncryptionPasswordLabel->setText(i18n(CharPtr(etesync_get_error_message()).get()));
-        }
-    }
-    return keypairResult;
 }
