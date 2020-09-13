@@ -71,6 +71,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().values(), item().parentCollection());
         job->setFlags(flags);
         qCDebug(IMAPRESOURCE_LOG) << "Appending new message: " << flags;
+        job->setInternalDate(msg->date()->dateTime());
 
         connect(job, &KIMAP::AppendJob::result, this, &ChangeItemTask::onAppendMessageDone);
 
