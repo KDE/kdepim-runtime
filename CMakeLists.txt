@@ -164,7 +164,7 @@ add_subdirectory(doc)
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
 if (NOT NO_REGENERATE_MIME)
    update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
-endif()   
+endif()
 ecm_qt_install_logging_categories(
         EXPORT KDEPIMRUNTIME
         FILE kdepim-runtime.categories
