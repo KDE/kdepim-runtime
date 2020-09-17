@@ -78,6 +78,7 @@ private:
     std::map<QString, EteSyncJournalPtr> mJournalsCache;
     QDateTime mJournalsCacheUpdateTime;
     bool mCredentialsRequired = false;
+    Akonadi::Collection mRootCollection;
 
     ContactHandler::Ptr mContactHandler;
     CalendarHandler::Ptr mCalendarHandler;

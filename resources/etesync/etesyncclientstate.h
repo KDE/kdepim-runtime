@@ -33,6 +33,11 @@ public:
         return mClient.get();
     }
 
+    EtebaseAccount *account() const
+    {
+        return mAccountXXX.get();
+    }
+
     QString derived() const
     {
         return mDerived;

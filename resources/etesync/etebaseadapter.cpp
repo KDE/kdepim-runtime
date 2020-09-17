@@ -26,3 +26,8 @@ EtebaseAccountPtr etebase_account_login(const EtebaseClient *client, const QStri
 {
     return EtebaseAccountPtr(etebase_account_login(client, charArrFromQString(username), charArrFromQString(password)));
 }
+
+void etebase_fetch_options_set_stoken(EtebaseFetchOptions *fetch_options, const QString &stoken)
+{
+    etebase_fetch_options_set_stoken(fetch_options, charArrFromQString(stoken));
+}

@@ -115,10 +115,11 @@ void EteSyncResource::retrieveCollections()
         return;
     }
 
-    mJournalsCache.clear();
-    mClientState->refreshUserInfo();
+    mRootCollection = createRootCollection();
 
-    auto job = new JournalsFetchJob(mClientState->client(), this);
+    mJournalsCache.clear();
+
+    auto job = new JournalsFetchJob(mClientState->account(), mRootCollection, this);
     connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
     job->start();
 }
@@ -154,20 +155,19 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
         handleError(job->error());
         return;
     }
-    EteSyncJournal **journals = qobject_cast<JournalsFetchJob *>(job)->journals();
-    Collection::List list;
-    const Collection &rootCollection = createRootCollection();
-    list.push_back(rootCollection);
-    for (EteSyncJournal **iter = journals; *iter; iter++) {
-        Collection collection;
-        collection.setParentCollection(rootCollection);
-        setupCollection(collection, *iter);
-        mJournalsCache[collection.remoteId()] = EteSyncJournalPtr(*iter);
-        list.push_back(collection);
-    }
-    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
-    free(journals);
-    collectionsRetrieved(list);
+
+    qCDebug(ETESYNC_LOG) << "slotCollectionsRetrieved()";
+
+    QString sToken = qobject_cast<JournalsFetchJob *>(job)->syncToken();
+    mRootCollection.setRemoteRevision(sToken);
+
+    Collection::List collections = {mRootCollection};
+    collections.append(qobject_cast<JournalsFetchJob *>(job)->collections());
+    Collection::List removedCollections = qobject_cast<JournalsFetchJob *>(job)->removedCollections();
+
+    collectionsRetrievedIncremental(collections, removedCollections);
+
+    qCDebug(ETESYNC_LOG) << "Collections retrieval done";
 }
 
 /**
