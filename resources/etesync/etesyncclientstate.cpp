@@ -83,6 +83,11 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
     mPassword = password;
 
     mClientXXX = etebase_client_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
+    if (!mClientXXX) {
+        qCDebug(ETESYNC_LOG) << "Could not initialise Etebase client";
+        qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
+        return false;
+    }
     mAccountXXX = etebase_account_login(mClientXXX.get(), mUsername, mPassword);
     if (!mAccountXXX) {
         qCDebug(ETESYNC_LOG) << "Could not fetch Etebase account";
