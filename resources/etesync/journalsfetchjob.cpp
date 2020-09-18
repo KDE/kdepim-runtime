@@ -14,6 +14,7 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 
+#include "collectioncacheattribute.h"
 #include "etesync_debug.h"
 
 using namespace EteSyncAPI;
@@ -42,14 +43,14 @@ void JournalsFetchJob::fetchJournals()
 {
     QString stoken;
     bool done = 0;
-    EtebaseCollectionManager *collectionManager = etebase_account_get_collection_manager(mAccount);
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
 
     while (!done) {
-        EtebaseFetchOptions *fetchOptions = etebase_fetch_options_new();
-        etebase_fetch_options_set_stoken(fetchOptions, stoken);
-        etebase_fetch_options_set_limit(fetchOptions, 30);
+        EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
+        etebase_fetch_options_set_stoken(fetchOptions.get(), stoken);
+        etebase_fetch_options_set_limit(fetchOptions.get(), 30);
 
-        EtebaseCollectionListResponse *collectionList = etebase_collection_manager_list(collectionManager, fetchOptions);
+        EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
         if (!collectionList) {
             setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();
@@ -57,28 +58,31 @@ void JournalsFetchJob::fetchJournals()
             return;
         }
 
-        stoken = QString::fromUtf8(etebase_collection_list_response_get_stoken(collectionList));
-        done = etebase_collection_list_response_is_done(collectionList);
+        stoken = QString::fromUtf8(etebase_collection_list_response_get_stoken(collectionList.get()));
+        done = etebase_collection_list_response_is_done(collectionList.get());
 
-        uintptr_t dataLength = etebase_collection_list_response_get_data_length(collectionList);
+        uintptr_t dataLength = etebase_collection_list_response_get_data_length(collectionList.get());
 
         qCDebug(ETESYNC_LOG) << "Retrieved collection list length" << dataLength;
 
         const EtebaseCollection *etesyncCollections[dataLength];
-        if (etebase_collection_list_response_get_data(collectionList, etesyncCollections)) {
+        if (etebase_collection_list_response_get_data(collectionList.get(), etesyncCollections)) {
             setError(int(etesync_get_error_code()));
             const char *err = etebase_error_get_message();
             setErrorText(QString::fromUtf8(err));
         }
 
+        Collection collection;
+
         for (int i = 0; i < dataLength; i++) {
-            setupCollection(etesyncCollections[i]);
+            setupCollection(collection, etesyncCollections[i]);
+            saveCollectionCache(collectionManager.get(), etesyncCollections[i], collection);
         }
 
-        int removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList);
+        int removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList.get());
         if (removedCollectionsLength) {
             const EtebaseRemovedCollection *removedEtesyncCollections[removedCollectionsLength];
-            etebase_collection_list_response_get_removed_memberships(collectionList, removedEtesyncCollections);
+            etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections);
             for (int i = 0; i < removedCollectionsLength; i++) {
                 Collection collection;
                 const QString journalUid = QString::fromUtf8(etebase_removed_collection_get_uid(removedEtesyncCollections[i]));
@@ -89,7 +93,7 @@ void JournalsFetchJob::fetchJournals()
     }
 }
 
-void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollection)
+void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const EtebaseCollection *etesyncCollection)
 {
     qCDebug(ETESYNC_LOG) << "Setting up collection" << etebase_collection_get_uid(etesyncCollection);
     if (!etesyncCollection) {
@@ -104,8 +108,6 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
     qCDebug(ETESYNC_LOG) << "Type" << type;
 
     QStringList mimeTypes;
-
-    Collection collection;
 
     auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
 
@@ -153,4 +155,13 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
     collection.setParentCollection(mResourceCollection);
 
     mCollections.push_back(collection);
+}
+
+void JournalsFetchJob::saveCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etebaseCollection, Collection &collection)
+{
+    uintptr_t ret_size;
+    EtebaseCachePtr cache(etebase_collection_manager_cache_save(collectionManager, etebaseCollection, &ret_size));
+    QByteArray cacheData((char *)cache.get(), ret_size);
+    CollectionCacheAttribute *collectionCacheAttribute = collection.attribute<CollectionCacheAttribute>(Collection::AddIfMissing);
+    collectionCacheAttribute->setCollectionCache(cacheData);
 }

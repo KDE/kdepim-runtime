@@ -25,6 +25,7 @@ set(etesyncresource_SRCS
     calendartaskbasehandler.cpp
     calendarhandler.cpp
     taskhandler.cpp   
+    collectioncacheattribute.cpp
     setupwizard.cpp
 
     ${etesyncconfig_SRCS}

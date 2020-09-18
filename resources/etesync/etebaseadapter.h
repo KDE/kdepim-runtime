@@ -57,14 +57,21 @@ struct EtebaseDeleter
     {
         std::free(ptr);
     }
+
+    void operator()(void *ptr)
+    {
+        std::free(ptr);
+    }
 };
 
 using EtebaseClientPtr = std::unique_ptr<EtebaseClient, EtebaseDeleter>;
 using EtebaseAccountPtr = std::unique_ptr<EtebaseAccount, EtebaseDeleter>;
 using EtebaseFetchOptionsPtr = std::unique_ptr<EtebaseFetchOptions, EtebaseDeleter>;
 using EtebaseCollectionListResponsePtr = std::unique_ptr<EtebaseCollectionListResponse, EtebaseDeleter>;
+using EtebaseCollectionManagerPtr = std::unique_ptr<EtebaseCollectionManager, EtebaseDeleter>;
 using EtebaseCollectionPtr = std::unique_ptr<EtebaseCollection, EtebaseDeleter>;
 using EtebaseCollectionMetadataPtr = std::unique_ptr<EtebaseCollectionMetadata, EtebaseDeleter>;
+using EtebaseCachePtr = std::unique_ptr<void, EtebaseDeleter>;
 using CharPtr = std::unique_ptr<char, EtebaseDeleter>;
 
 QString QStringFromCharPtr(const CharPtr &str);

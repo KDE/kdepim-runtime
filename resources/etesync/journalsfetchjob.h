@@ -41,8 +41,8 @@ public:
 
 protected:
     void fetchJournals();
-    void setupCollection(const EtebaseCollection *etesyncCollection);
-
+    void setupCollection(Akonadi::Collection &collection, const EtebaseCollection *etesyncCollection);
+    void saveCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etebaseCollection, Akonadi::Collection &collection);
 private:
     const EtebaseAccount *mAccount = nullptr;
     Akonadi::Collection::List mCollections;
