@@ -1,5 +1,6 @@
 /*
    SPDX-FileCopyrightText: 2011-2013 Daniel Vrátil <dvratil@redhat.com>
+   SPDX-FileCopyrightText: 2015-2020 Daniel Vrátil <dvratil@kde.org>
    SPDX-FileCopyrightText: 2020 Igor Pobiko <igor.poboiko@gmail.com>
 
    SPDX-License-Identifier: GPL-3.0-or-later
@@ -30,6 +31,7 @@
 #include <QDialog>
 #include <QIcon>
 #include <KLocalizedString>
+#include <KNotification>
 
 #include <KGAPI/Account>
 #include <KGAPI/AccountInfoFetchJob>
@@ -45,6 +47,19 @@ Q_DECLARE_METATYPE(KGAPI2::Job *)
 
 using namespace KGAPI2;
 using namespace Akonadi;
+
+namespace {
+
+bool accountIsValid(const KGAPI2::AccountPtr &account)
+{
+    return account
+            && !account->accessToken().isEmpty()
+            && !account->refreshToken().isEmpty()
+            && !account->accountName().isEmpty()
+            && !account->scopes().isEmpty();
+}
+
+} // namespace
 
 GoogleResource::GoogleResource(const QString &id)
     : ResourceBase(id)
@@ -72,12 +87,19 @@ GoogleResource::GoogleResource(const QString &id)
             Q_EMIT status(Broken, i18n("Can't access KWallet"));
             return;
         }
-        if (m_settings->accountPtr().isNull()) {
+
+        const auto account = m_settings->accountPtr();
+        if (account.isNull()) {
             Q_EMIT status(NotConfigured);
             return;
         }
-        emitReadyStatus();
-        synchronize();
+
+        if (!accountIsValid(account)) {
+            requestAuthenticationFromUser(account);
+        } else {
+            emitReadyStatus();
+            synchronize();
+        }
     });
 
     Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
@@ -176,15 +198,19 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
     AccountPtr account = job->account();
     if (job->error() == KGAPI2::Unauthorized) {
         const QList<QUrl> resourceScopes = scopes();
+        bool scopesChanged = false;
         for (const QUrl &scope : resourceScopes) {
             if (!account->scopes().contains(scope)) {
                 account->addScope(scope);
+                scopesChanged = true;
             }
         }
 
-        AuthJob *authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
-        authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
-        connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
+        if (scopesChanged || !accountIsValid(account)) {
+            requestAuthenticationFromUser(account, QVariant::fromValue(job));
+        } else {
+            runAuthJob(account, QVariant::fromValue(job));
+        }
         return false;
     }
 
@@ -192,6 +218,39 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
         cancelTask(job->errorString());
     }
     return false;
+}
+
+
+void GoogleResource::runAuthJob(const KGAPI2::AccountPtr &account, const QVariant &args)
+{
+    AuthJob *authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
+    authJob->setProperty(JOB_PROPERTY, args);
+    connect(authJob, &AuthJob::finished, this, &GoogleResource::slotAuthJobFinished);
+}
+
+void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &account, const QVariant &args)
+{
+    Q_EMIT status(Broken, i18n("Account has been logged out."));
+
+    const QString msg = account->accountName().isEmpty()
+            ?  i18n("Google Groupware has been logged out from your account. Please log in to enable Google Contacts and Calendar sync again.")
+            :  i18n("Google Groupware has been logged out from account %1. Please log in to enable Google Contacts and Calendar sync again.", account->accountName());
+
+    auto *ntf = KNotification::event(QStringLiteral("authNeeded"),
+                                     i18nc("@title", "%1 needs your attention.", agentName()),
+                                     msg,
+                                     QStringLiteral("im-google"),
+                                     /*widget=*/nullptr,
+                                     KNotification::Persistent | KNotification::SkipGrouping);
+    ntf->setActions({i18nc("@action", "Log in")});
+    ntf->setComponentName(QStringLiteral("akonadi_google_resource"));
+    connect(ntf, &KNotification::action1Activated, this, [this, ntf, account, args]() {
+        runAuthJob(account, args);
+        ntf->close();
+    });
+    connect(ntf, &KNotification::ignored, ntf, &KNotification::close);
+    ntf->sendEvent();
+    qCDebug(GOOGLE_LOG) << "Prompting notification" << ntf->id() << " to ask user to reauthenticate";
 }
 
 bool GoogleResource::canPerformTask()
@@ -207,10 +266,17 @@ bool GoogleResource::canPerformTask()
 
 void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
 {
-    if (job->error() != KGAPI2::NoError) {
+    if (job->error() == KGAPI2::BadRequest) {
+        auto account = KGAPI2::AccountPtr::create();
+        account->setScopes(scopes());
+        requestAuthenticationFromUser(account, job->property(JOB_PROPERTY));
+        return;
+    } else if (job->error() != KGAPI2::NoError) {
         cancelTask(i18n("Failed to refresh tokens"));
         return;
     }
+
+    Q_EMIT status(Running);
 
     AuthJob *authJob = qobject_cast<AuthJob *>(job);
     AccountPtr account = authJob->account();

@@ -57,6 +57,10 @@ protected:
 
     void emitReadyStatus();
     void collectionsRetrievedFromHandler(const Akonadi::Collection::List &collections);
+
+    void requestAuthenticationFromUser(const KGAPI2::AccountPtr &account, const QVariant &args = {});
+    void runAuthJob(const KGAPI2::AccountPtr &account, const QVariant &args);
+
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;

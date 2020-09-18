@@ -1,0 +1,11 @@
+[Global]
+IconName=im-google
+Name=Google Groupware
+Comment=Access your Google Calendars, Contacts and Tasks from KDE
+
+[Event/authNeeded]
+Name=Google Groupware needs to authenticate
+Comment=Google Groupware has been logged off and needs to be reauthenticated
+Urgency=Normal
+Action=Popup
+
