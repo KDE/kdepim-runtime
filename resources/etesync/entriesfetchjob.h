@@ -8,8 +8,10 @@
 #define ETESYNCENTRIESFETCHJOB_H
 
 #include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 #include <KJob>
 
+#include "etebaseadapter.h"
 #include "etesyncadapter.h"
 
 namespace EteSyncAPI {
@@ -18,18 +20,18 @@ class EntriesFetchJob : public KJob
     Q_OBJECT
 
 public:
-    explicit EntriesFetchJob(const EteSync *client, const Akonadi::Collection &collection, QObject *parent = nullptr);
+    explicit EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, QObject *parent = nullptr);
 
     void start() override;
 
-    std::vector<EteSyncEntryPtr> getEntries()
+    Akonadi::Item::List items() const
     {
-        return std::move(mEntries);
+        return mItems;
     }
 
-    QString getPrevUid() const
+    Akonadi::Item::List removedItems() const
     {
-        return mPrevUid;
+        return mRemovedItems;
     }
 
     Akonadi::Collection collection() const
@@ -38,22 +40,15 @@ public:
     }
 
 protected:
-    enum Status
-    {
-        FETCH_OK,
-        ERROR,
-        ALL_ENTRIES_FETCHED
-    };
     void fetchEntries();
-    Status fetchNextBatch();
+    void setupItem(Akonadi::Item &item, const EtebaseItem *etebaseItem, const QString &type);
+    void saveItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etebaseItem, Akonadi::Item &item);
 
 private:
-    const EteSync *mClient = nullptr;
-    QString mPrevUid;
-    QString mLastUid;
-    EteSyncEntryManagerPtr mEntryManager;
-    std::vector<EteSyncEntryPtr> mEntries;
+    const EtebaseAccount *mAccount = nullptr;
     Akonadi::Collection mCollection;
+    Akonadi::Item::List mItems;
+    Akonadi::Item::List mRemovedItems;
 };
 }  // namespace EteSyncAPI
 

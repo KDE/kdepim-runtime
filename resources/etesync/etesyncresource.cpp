@@ -10,6 +10,7 @@
 #include <kcontacts/contactgroup.h>
 #include <kwindowsystem.h>
 
+#include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/CachePolicy>
 #include <AkonadiCore/ChangeRecorder>
 #include <AkonadiCore/CollectionColorAttribute>
@@ -22,6 +23,7 @@
 #include <KMessageBox>
 #include <QDBusConnection>
 
+#include "etebasecacheattribute.h"
 #include "entriesfetchjob.h"
 #include "etesync_debug.h"
 #include "etesyncadapter.h"
@@ -69,6 +71,8 @@ EteSyncResource::EteSyncResource(const QString &id)
     mContactHandler = ContactHandler::Ptr(new ContactHandler(this));
     mCalendarHandler = CalendarHandler::Ptr(new CalendarHandler(this));
     mTaskHandler = TaskHandler::Ptr(new TaskHandler(this));
+
+    AttributeFactory::registerAttribute<EtebaseCacheAttribute>();
 
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &EteSyncResource::onReloadConfiguration);
 
@@ -164,6 +168,8 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     Collection::List collections = {mRootCollection};
     collections.append(qobject_cast<JournalsFetchJob *>(job)->collections());
     Collection::List removedCollections = qobject_cast<JournalsFetchJob *>(job)->removedCollections();
+
+    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
 
     collectionsRetrievedIncremental(collections, removedCollections);
 
@@ -318,10 +324,17 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
     qCDebug(ETESYNC_LOG) << "Retrieving entries for journal" << collection.remoteId();
     const int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
     if (timeSinceLastCacheUpdate <= 30) {
-        const QString journalUid = collection.remoteId();
-        const EteSyncJournalPtr &journal = getJournal(journalUid);
-        const QString lastEntryUid = QStringFromCharPtr(CharPtr(etesync_journal_get_last_uid(journal.get())));
-        if (lastEntryUid == collection.remoteRevision()) {
+        if (!collection.hasAttribute<EtebaseCacheAttribute>()) {
+            qCDebug(ETESYNC_LOG) << "No cache for collection" << collection.remoteId();
+            cancelTask(i18n("No cache for collection '%1'", collection.remoteId()));
+            return;
+        }
+        EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
+        const QByteArray collectionCache = collection.attribute<EtebaseCacheAttribute>()->etebaseCache();
+        EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
+
+        const QString sToken = QString::fromUtf8(etebase_collection_get_stoken(etesyncCollection.get()));
+        if (sToken == collection.remoteRevision()) {
             itemsRetrievalDone();
             return;
         }
@@ -332,7 +345,7 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    auto job = new EntriesFetchJob(mClientState->client(), collection, this);
+    auto job = new EntriesFetchJob(mClientState->account(), collection, this);
 
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);
 
@@ -345,24 +358,18 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
         qCDebug(ETESYNC_LOG) << "Error in fetching entries";
         qCWarning(ETESYNC_LOG) << "EteSync error" << job->error() << job->errorText();
         handleError(job->error());
-        return;
     }
 
-    qCDebug(ETESYNC_LOG) << "Retrieving entries";
-    auto entries = qobject_cast<EntriesFetchJob *>(job)->getEntries();
+    Item::List items = qobject_cast<EntriesFetchJob *>(job)->items();
+    Item::List removedItems = qobject_cast<EntriesFetchJob *>(job)->removedItems();
 
+    itemsRetrievedIncremental(items, removedItems);
+
+    qCDebug(ETESYNC_LOG) << "Updating collection sync token";
     Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
+    new CollectionModifyJob(collection, this);
 
-    QString prevUid = qobject_cast<EntriesFetchJob *>(job)->getPrevUid();
-
-    auto handler = fetchHandlerForCollection(collection);
-
-    if (handler) {
-        handler->setupItems(entries, collection, prevUid);
-    } else {
-        qCWarning(ETESYNC_LOG) << "Unknown collection" << collection.name();
-        itemsRetrieved({});
-    }
+    qCDebug(ETESYNC_LOG) << "Items retrieval done";
 }
 
 void EteSyncResource::aboutToQuit()

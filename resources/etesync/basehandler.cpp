@@ -79,48 +79,48 @@ void BaseHandler::updateCollectionRevision(const EteSyncEntry *entry, const Coll
 
 void BaseHandler::syncCollection(const QVariant &collectionVariant)
 {
-    const Collection collection = collectionVariant.value<Collection>();
+    // const Collection collection = collectionVariant.value<Collection>();
 
-    qCDebug(ETESYNC_LOG) << "Syncing journal" << collection.remoteId();
+    // qCDebug(ETESYNC_LOG) << "Syncing journal" << collection.remoteId();
 
-    auto job = new EntriesFetchJob(mClientState->client(), collection, this);
-    connect(job, &EntriesFetchJob::finished, this, &BaseHandler::slotItemsRetrieved);
-    job->start();
+    // auto job = new EntriesFetchJob(mClientState->client(), collection, this);
+    // connect(job, &EntriesFetchJob::finished, this, &BaseHandler::slotItemsRetrieved);
+    // job->start();
 }
 
 void BaseHandler::slotItemsRetrieved(KJob *job)
 {
-    if (job->error()) {
-        qCWarning(ETESYNC_LOG) << job->errorText();
-        return;
-    }
+    // if (job->error()) {
+    //     qCWarning(ETESYNC_LOG) << job->errorText();
+    //     return;
+    // }
 
-    std::vector<EteSyncEntryPtr> entries = qobject_cast<EntriesFetchJob *>(job)->getEntries();
+    // std::vector<EteSyncEntryPtr> entries = qobject_cast<EntriesFetchJob *>(job)->getEntries();
 
-    Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
+    // Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
 
-    qCDebug(ETESYNC_LOG) << "BaseHandler: Syncing items";
-    QString prevUid = collection.remoteRevision();
-    const QString journalUid = collection.remoteId();
+    // qCDebug(ETESYNC_LOG) << "BaseHandler: Syncing items";
+    // QString prevUid = collection.remoteRevision();
+    // const QString journalUid = collection.remoteId();
 
-    const bool isIncremental = (prevUid.isEmpty() || prevUid.isNull()) ? false : true;
+    // const bool isIncremental = (prevUid.isEmpty() || prevUid.isNull()) ? false : true;
 
-    Item::List changedItems;
-    Item::List removedItems;
+    // Item::List changedItems;
+    // Item::List removedItems;
 
-    getItemListFromEntries(entries, changedItems, removedItems, collection, journalUid, prevUid);
+    // getItemListFromEntries(entries, changedItems, removedItems, collection, journalUid, prevUid);
 
-    collection.setRemoteRevision(prevUid);
-    new CollectionModifyJob(collection, this);
+    // collection.setRemoteRevision(prevUid);
+    // new CollectionModifyJob(collection, this);
 
-    ItemSync *syncer = new ItemSync(collection);
+    // ItemSync *syncer = new ItemSync(collection);
 
-    if (isIncremental) {
-        syncer->setIncrementalSyncItems(changedItems, removedItems);
-    } else {
-        syncer->setFullSyncItems(changedItems);
-    }
-    connect(syncer, SIGNAL(result(KJob*)), this, SLOT(taskDone()));
+    // if (isIncremental) {
+    //     syncer->setIncrementalSyncItems(changedItems, removedItems);
+    // } else {
+    //     syncer->setFullSyncItems(changedItems);
+    // }
+    // connect(syncer, SIGNAL(result(KJob*)), this, SLOT(taskDone()));
 }
 
 bool BaseHandler::handleConflictError(const Collection &collection)

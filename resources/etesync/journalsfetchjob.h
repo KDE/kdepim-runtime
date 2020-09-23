@@ -36,7 +36,7 @@ public:
 
     QString syncToken() const
     {
-        return sToken;
+        return mSyncToken;
     }
 
 protected:
@@ -48,7 +48,7 @@ private:
     Akonadi::Collection::List mCollections;
     Akonadi::Collection::List mRemovedCollections;
     const Akonadi::Collection mResourceCollection;
-    QString sToken;
+    QString mSyncToken;
 };
 } // namespace EteSyncAPI
 

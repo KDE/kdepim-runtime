@@ -4,25 +4,27 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef COLLECTIONCACHEATTRIBUTE_H
-#define COLLECTIONCACHEATTRIBUTE_H
+#ifndef ETEBASECACHEATTRIBUTE_H
+#define ETEBASECACHEATTRIBUTE_H
 
 #include "etebaseadapter.h"
 #include <AkonadiCore/Attribute>
 
-class CollectionCacheAttribute : public Akonadi::Attribute
+class EtebaseCacheAttribute : public Akonadi::Attribute
 {
 public:
-    explicit CollectionCacheAttribute(QByteArray collectionCache = nullptr);
-    void setCollectionCache(const QByteArray &collectionCache);
-    QByteArray collectionCache() const;
+    explicit EtebaseCacheAttribute(QByteArray etebaseCache = QByteArray());
+
+    void setEtebaseCache(const QByteArray etebaseCache);
+    QByteArray etebaseCache() const;
+
     QByteArray type() const override;
     Attribute *clone() const override;
     QByteArray serialized() const override;
     void deserialize(const QByteArray &data) override;
 
 private:
-    QByteArray mCollectionCache;
+    QByteArray mEtebaseCache;
 };
 
 #endif

@@ -14,7 +14,7 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 
-#include "collectioncacheattribute.h"
+#include "etebasecacheattribute.h"
 #include "etesync_debug.h"
 
 using namespace EteSyncAPI;
@@ -75,8 +75,8 @@ void JournalsFetchJob::fetchJournals()
         Collection collection;
 
         for (int i = 0; i < dataLength; i++) {
-            setupCollection(collection, etesyncCollections[i]);
             saveCollectionCache(collectionManager.get(), etesyncCollections[i], collection);
+            setupCollection(collection, etesyncCollections[i]);
         }
 
         int removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList.get());
@@ -147,21 +147,22 @@ void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const Et
     collection.setRemoteId(journalUid);
     collection.setName(journalUid);
     collection.setContentMimeTypes(mimeTypes);
+    collection.setParentCollection(mResourceCollection);
 
     if (etebase_collection_is_deleted(etesyncCollection)) {
         mRemovedCollections.push_back(collection);
+        return;
     }
-
-    collection.setParentCollection(mResourceCollection);
 
     mCollections.push_back(collection);
 }
 
 void JournalsFetchJob::saveCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etebaseCollection, Collection &collection)
 {
+    qCDebug(ETESYNC_LOG) << "Saving cache for collection" << etebase_collection_get_uid(etebaseCollection);
     uintptr_t ret_size;
     EtebaseCachePtr cache(etebase_collection_manager_cache_save(collectionManager, etebaseCollection, &ret_size));
     QByteArray cacheData((char *)cache.get(), ret_size);
-    CollectionCacheAttribute *collectionCacheAttribute = collection.attribute<CollectionCacheAttribute>(Collection::AddIfMissing);
-    collectionCacheAttribute->setCollectionCache(cacheData);
+    EtebaseCacheAttribute *etebaseCacheAttribute = collection.attribute<EtebaseCacheAttribute>(Collection::AddIfMissing);
+    etebaseCacheAttribute->setEtebaseCache(cacheData);
 }
