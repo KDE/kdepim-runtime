@@ -79,8 +79,6 @@ void AkonadiSlave::get(const QUrl &url)
         data(QByteArray());
         finished();
     }
-
-    finished();
 }
 
 void AkonadiSlave::stat(const QUrl &url)
