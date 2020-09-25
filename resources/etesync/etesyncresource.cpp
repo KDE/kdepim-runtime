@@ -137,6 +137,9 @@ Collection EteSyncResource::createRootCollection()
     rootCollection.setParentCollection(Collection::root());
     rootCollection.setRights(Collection::CanCreateCollection);
 
+    // Keep collection list stoken preserved
+    rootCollection.setRemoteRevision(mRootCollection.remoteRevision());
+
     Akonadi::CachePolicy cachePolicy;
     cachePolicy.setInheritFromParent(false);
     cachePolicy.setSyncOnDemand(false);
@@ -169,9 +172,9 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     collections.append(qobject_cast<JournalsFetchJob *>(job)->collections());
     Collection::List removedCollections = qobject_cast<JournalsFetchJob *>(job)->removedCollections();
 
-    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
-
     collectionsRetrievedIncremental(collections, removedCollections);
+
+    mJournalsCacheUpdateTime = QDateTime::currentDateTime();
 
     qCDebug(ETESYNC_LOG) << "Collections retrieval done";
 }
@@ -321,9 +324,10 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
-    qCDebug(ETESYNC_LOG) << "Retrieving entries for journal" << collection.remoteId();
+    qCDebug(ETESYNC_LOG) << "Retrieving items for collection" << collection.remoteId();
     const int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
     if (timeSinceLastCacheUpdate <= 30) {
+        qCDebug(ETESYNC_LOG) << "Retrieve items called immediately after collection fetch";
         if (!collection.hasAttribute<EtebaseCacheAttribute>()) {
             qCDebug(ETESYNC_LOG) << "No cache for collection" << collection.remoteId();
             cancelTask(i18n("No cache for collection '%1'", collection.remoteId()));
@@ -334,7 +338,9 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
         EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
 
         const QString sToken = QString::fromUtf8(etebase_collection_get_stoken(etesyncCollection.get()));
+        qCDebug(ETESYNC_LOG) << "Comparing" << sToken << "and" << collection.remoteRevision();
         if (sToken == collection.remoteRevision()) {
+            qCDebug(ETESYNC_LOG) << "Already up-to-date: Fetched collection and cached collection have the same stoken";
             itemsRetrievalDone();
             return;
         }
@@ -363,11 +369,12 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     Item::List items = qobject_cast<EntriesFetchJob *>(job)->items();
     Item::List removedItems = qobject_cast<EntriesFetchJob *>(job)->removedItems();
 
-    itemsRetrievedIncremental(items, removedItems);
-
     qCDebug(ETESYNC_LOG) << "Updating collection sync token";
     Collection collection = qobject_cast<EntriesFetchJob *>(job)->collection();
+    qCDebug(ETESYNC_LOG) << "Setting collection" << collection.remoteId() << "'s sync token to" << collection.remoteRevision();
     new CollectionModifyJob(collection, this);
+
+    itemsRetrievedIncremental(items, removedItems);
 
     qCDebug(ETESYNC_LOG) << "Items retrieval done";
 }

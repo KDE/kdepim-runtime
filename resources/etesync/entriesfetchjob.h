@@ -41,8 +41,8 @@ public:
 
 protected:
     void fetchEntries();
-    void setupItem(Akonadi::Item &item, const EtebaseItem *etebaseItem, const QString &type);
-    void saveItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etebaseItem, Akonadi::Item &item);
+    void setupItem(Akonadi::Item &item, const EtebaseItem *etesyncItem, const QString &type);
+    void saveItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etesyncItem, Akonadi::Item &item);
 
 private:
     const EtebaseAccount *mAccount = nullptr;

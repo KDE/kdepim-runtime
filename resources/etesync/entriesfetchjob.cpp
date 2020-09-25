@@ -16,6 +16,9 @@
 #include "etesync_debug.h"
 #include "settings.h"
 
+#define ITEMS_FETCH_BATCH_SIZE 50
+#define ITEM_SIZE_INITIAL_TRY 2000
+
 using namespace Akonadi;
 using namespace EteSyncAPI;
 
@@ -44,6 +47,11 @@ void EntriesFetchJob::fetchEntries()
         setErrorText(QStringLiteral("No cache for collection ") + mCollection.remoteId());
         return;
     }
+    if (!mAccount) {
+        setError(UserDefinedError);
+        setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is empty"));
+        return;
+    }
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
     const QByteArray collectionCache = mCollection.attribute<EtebaseCacheAttribute>()->etebaseCache();
     EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
@@ -59,7 +67,7 @@ void EntriesFetchJob::fetchEntries()
     while (!done) {
         EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
         etebase_fetch_options_set_stoken(fetchOptions.get(), sToken);
-        etebase_fetch_options_set_limit(fetchOptions.get(), 50);
+        etebase_fetch_options_set_limit(fetchOptions.get(), ITEMS_FETCH_BATCH_SIZE);
 
         EtebaseItemListResponsePtr itemList(etebase_item_manager_list(itemManager.get(), fetchOptions.get()));
         if (!itemList) {
@@ -70,6 +78,7 @@ void EntriesFetchJob::fetchEntries()
         }
 
         sToken = QString::fromUtf8(etebase_item_list_response_get_stoken(itemList.get()));
+
         done = etebase_item_list_response_is_done(itemList.get());
 
         uintptr_t dataLength = etebase_item_list_response_get_data_length(itemList.get());
@@ -91,16 +100,17 @@ void EntriesFetchJob::fetchEntries()
         }
     }
 
-    mCollection.setRemoteRevision(QString::fromUtf8(etebase_collection_get_stoken(etesyncCollection.get())));
+    mCollection.setRemoteRevision(sToken);
 }
 
 void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncItem, const QString &type)
 {
-    qCDebug(ETESYNC_LOG) << "Setting up item" << etebase_item_get_uid(etesyncItem);
     if (!etesyncItem) {
         qCDebug(ETESYNC_LOG) << "Unable to setup item - etesyncItem is null";
         return;
     }
+
+    qCDebug(ETESYNC_LOG) << "Setting up item" << etebase_item_get_uid(etesyncItem);
 
     if (type == ETEBASE_COLLECTION_TYPE_ADDRESS_BOOK) {
         item.setMimeType(KContacts::Addressee::mimeType());
@@ -117,9 +127,9 @@ void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncI
     item.setParentCollection(mCollection);
     item.setRemoteId(itemUid);
 
-    QByteArray content(2000, '\0');
-    auto const len = etebase_item_get_content(etesyncItem, content.data(), 2000);
-    if (len > 2000) {
+    QByteArray content(ITEM_SIZE_INITIAL_TRY, '\0');
+    auto const len = etebase_item_get_content(etesyncItem, content.data(), ITEM_SIZE_INITIAL_TRY);
+    if (len > ITEM_SIZE_INITIAL_TRY) {
         QByteArray content(len, '\0');
         etebase_item_get_content(etesyncItem, content.data(), len);
         item.setPayloadFromData(content);
@@ -135,11 +145,16 @@ void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncI
     mItems.push_back(item);
 }
 
-void EntriesFetchJob::saveItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etebaseItem, Item &item)
+void EntriesFetchJob::saveItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etesyncItem, Item &item)
 {
-    qCDebug(ETESYNC_LOG) << "Saving cache for item" << etebase_item_get_uid(etebaseItem);
+    if (!etesyncItem) {
+        qCDebug(ETESYNC_LOG) << "Unable to save item cache - etesyncItem is null";
+        return;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Saving cache for item" << etebase_item_get_uid(etesyncItem);
     uintptr_t ret_size;
-    EtebaseCachePtr cache(etebase_item_manager_cache_save(itemManager, etebaseItem, &ret_size));
+    EtebaseCachePtr cache(etebase_item_manager_cache_save(itemManager, etesyncItem, &ret_size));
     QByteArray cacheData((char *)cache.get(), ret_size);
     EtebaseCacheAttribute *etebaseCacheAttribute = item.attribute<EtebaseCacheAttribute>(Item::AddIfMissing);
     etebaseCacheAttribute->setEtebaseCache(cacheData);

@@ -17,6 +17,8 @@
 #include "etebasecacheattribute.h"
 #include "etesync_debug.h"
 
+#define COLLECTIONS_FETCH_BATCH_SIZE 50
+
 using namespace EteSyncAPI;
 using namespace Akonadi;
 
@@ -41,14 +43,20 @@ void JournalsFetchJob::start()
 
 void JournalsFetchJob::fetchJournals()
 {
-    QString stoken;
+    if (!mAccount) {
+        setError(UserDefinedError);
+        setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is empty"));
+        return;
+    }
+
+    mSyncToken = mResourceCollection.remoteRevision();
     bool done = 0;
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
 
     while (!done) {
         EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
-        etebase_fetch_options_set_stoken(fetchOptions.get(), stoken);
-        etebase_fetch_options_set_limit(fetchOptions.get(), 30);
+        etebase_fetch_options_set_stoken(fetchOptions.get(), mSyncToken);
+        etebase_fetch_options_set_limit(fetchOptions.get(), COLLECTIONS_FETCH_BATCH_SIZE);
 
         EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
         if (!collectionList) {
@@ -58,7 +66,7 @@ void JournalsFetchJob::fetchJournals()
             return;
         }
 
-        stoken = QString::fromUtf8(etebase_collection_list_response_get_stoken(collectionList.get()));
+        mSyncToken = QString::fromUtf8(etebase_collection_list_response_get_stoken(collectionList.get()));
         done = etebase_collection_list_response_is_done(collectionList.get());
 
         uintptr_t dataLength = etebase_collection_list_response_get_data_length(collectionList.get());
@@ -82,7 +90,11 @@ void JournalsFetchJob::fetchJournals()
         int removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList.get());
         if (removedCollectionsLength) {
             const EtebaseRemovedCollection *removedEtesyncCollections[removedCollectionsLength];
-            etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections);
+            if (etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections)) {
+                setError(int(etesync_get_error_code()));
+                const char *err = etebase_error_get_message();
+                setErrorText(QString::fromUtf8(err));
+            }
             for (int i = 0; i < removedCollectionsLength; i++) {
                 Collection collection;
                 const QString journalUid = QString::fromUtf8(etebase_removed_collection_get_uid(removedEtesyncCollections[i]));
@@ -95,11 +107,12 @@ void JournalsFetchJob::fetchJournals()
 
 void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const EtebaseCollection *etesyncCollection)
 {
-    qCDebug(ETESYNC_LOG) << "Setting up collection" << etebase_collection_get_uid(etesyncCollection);
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Unable to setup collection - etesyncCollection is null";
         return;
     }
+
+    qCDebug(ETESYNC_LOG) << "Setting up collection" << etebase_collection_get_uid(etesyncCollection);
 
     EtebaseCollectionMetadataPtr metaData(etebase_collection_get_meta(etesyncCollection));
 
@@ -157,11 +170,16 @@ void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const Et
     mCollections.push_back(collection);
 }
 
-void JournalsFetchJob::saveCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etebaseCollection, Collection &collection)
+void JournalsFetchJob::saveCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etesyncCollection, Collection &collection)
 {
-    qCDebug(ETESYNC_LOG) << "Saving cache for collection" << etebase_collection_get_uid(etebaseCollection);
+    if (!etesyncCollection) {
+        qCDebug(ETESYNC_LOG) << "Unable to save collection cache - etesyncCollection is null";
+        return;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Saving cache for collection" << etebase_collection_get_uid(etesyncCollection);
     uintptr_t ret_size;
-    EtebaseCachePtr cache(etebase_collection_manager_cache_save(collectionManager, etebaseCollection, &ret_size));
+    EtebaseCachePtr cache(etebase_collection_manager_cache_save(collectionManager, etesyncCollection, &ret_size));
     QByteArray cacheData((char *)cache.get(), ret_size);
     EtebaseCacheAttribute *etebaseCacheAttribute = collection.attribute<EtebaseCacheAttribute>(Collection::AddIfMissing);
     etebaseCacheAttribute->setEtebaseCache(cacheData);
