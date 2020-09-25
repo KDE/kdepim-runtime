@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2011 Andre Somers 
+    SPDX-FileCopyrightText: 2011 Andre Somers
 
     SPDX-License-Identifier: BSD-3-Clause
 */

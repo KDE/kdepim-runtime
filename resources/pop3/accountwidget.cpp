@@ -97,7 +97,6 @@ void AccountWidget::setupWidgets()
     new KPIM::LineEditCatchReturnKey(loginEdit, this);
     new KPIM::LineEditCatchReturnKey(precommand, this);
 
-
     connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotLeaveOnServerClicked);
     connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerDays);
     connect(leaveOnServerDaysSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerDaysChanged);
