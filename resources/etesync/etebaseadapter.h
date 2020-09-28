@@ -68,6 +68,11 @@ struct EtebaseDeleter
         etebase_item_metadata_destroy(ptr);
     }
 
+    void operator()(EtebaseItem *ptr)
+    {
+        etebase_item_destroy(ptr);
+    }
+
     void operator()(char *ptr)
     {
         std::free(ptr);
@@ -89,6 +94,7 @@ using EtebaseCollectionMetadataPtr = std::unique_ptr<EtebaseCollectionMetadata, 
 using EtebaseItemManagerPtr = std::unique_ptr<EtebaseItemManager, EtebaseDeleter>;
 using EtebaseItemListResponsePtr = std::unique_ptr<EtebaseItemListResponse, EtebaseDeleter>;
 using EtebaseItemMetadataPtr = std::unique_ptr<EtebaseItemMetadata, EtebaseDeleter>;
+using EtebaseItemPtr = std::unique_ptr<EtebaseItem, EtebaseDeleter>;
 using EtebaseCachePtr = std::unique_ptr<void, EtebaseDeleter>;
 using CharPtr = std::unique_ptr<char, EtebaseDeleter>;
 

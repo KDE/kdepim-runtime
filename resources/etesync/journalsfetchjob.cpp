@@ -14,7 +14,6 @@
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 
-#include "etebasecacheattribute.h"
 #include "etesync_debug.h"
 
 #define COLLECTIONS_FETCH_BATCH_SIZE 50
@@ -22,10 +21,11 @@
 using namespace EteSyncAPI;
 using namespace Akonadi;
 
-JournalsFetchJob::JournalsFetchJob(const EtebaseAccount *account, const Akonadi::Collection &resourceCollection, QObject *parent)
+JournalsFetchJob::JournalsFetchJob(const EtebaseAccount *account, const Akonadi::Collection &resourceCollection, const QString &cacheDir, QObject *parent)
     : KJob(parent)
     , mAccount(account)
     , mResourceCollection(resourceCollection)
+    , mCacheDir(cacheDir)
 {
 }
 
@@ -177,10 +177,18 @@ void JournalsFetchJob::saveCollectionCache(const EtebaseCollectionManager *colle
         return;
     }
 
-    qCDebug(ETESYNC_LOG) << "Saving cache for collection" << etebase_collection_get_uid(etesyncCollection);
+    QString etesyncCollectionUid = QString::fromUtf8(etebase_collection_get_uid(etesyncCollection));
+
+    qCDebug(ETESYNC_LOG) << "Saving cache for collection" << etesyncCollectionUid;
     uintptr_t ret_size;
     EtebaseCachePtr cache(etebase_collection_manager_cache_save(collectionManager, etesyncCollection, &ret_size));
     QByteArray cacheData((char *)cache.get(), ret_size);
-    EtebaseCacheAttribute *etebaseCacheAttribute = collection.attribute<EtebaseCacheAttribute>(Collection::AddIfMissing);
-    etebaseCacheAttribute->setEtebaseCache(cacheData);
+
+    const QString path = mCacheDir + QLatin1Char('/') + etesyncCollectionUid;
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
+        return;
+    }
+    file.write(cacheData);
 }

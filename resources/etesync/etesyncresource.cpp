@@ -23,7 +23,6 @@
 #include <KMessageBox>
 #include <QDBusConnection>
 
-#include "etebasecacheattribute.h"
 #include "entriesfetchjob.h"
 #include "etesync_debug.h"
 #include "etesyncadapter.h"
@@ -56,8 +55,10 @@ EteSyncResource::EteSyncResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
-    // Make local resource directory
+    // Make resource directories
     initialiseDirectory(baseDirectoryPath());
+    initialiseDirectory(collectionsCacheDirectoryPath());
+    initialiseDirectory(itemsCacheDirectoryPath());
 
     mClientState = EteSyncClientState::Ptr(new EteSyncClientState());
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
@@ -71,8 +72,6 @@ EteSyncResource::EteSyncResource(const QString &id)
     mContactHandler = ContactHandler::Ptr(new ContactHandler(this));
     mCalendarHandler = CalendarHandler::Ptr(new CalendarHandler(this));
     mTaskHandler = TaskHandler::Ptr(new TaskHandler(this));
-
-    AttributeFactory::registerAttribute<EtebaseCacheAttribute>();
 
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &EteSyncResource::onReloadConfiguration);
 
@@ -123,7 +122,7 @@ void EteSyncResource::retrieveCollections()
 
     mJournalsCache.clear();
 
-    auto job = new JournalsFetchJob(mClientState->account(), mRootCollection, this);
+    auto job = new JournalsFetchJob(mClientState->account(), mRootCollection, collectionsCacheDirectoryPath(), this);
     connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
     job->start();
 }
@@ -325,17 +324,16 @@ BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collectio
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Retrieving items for collection" << collection.remoteId();
+
+    EtebaseCollectionPtr etesyncCollection = getEtesyncCollectionFromCache(collection.remoteId());
+    if (!etesyncCollection) {
+        cancelTask(i18n("No cache for collection '%1'", collection.remoteId()));
+        return;
+    }
+
     const int timeSinceLastCacheUpdate = mJournalsCacheUpdateTime.secsTo(QDateTime::currentDateTime());
     if (timeSinceLastCacheUpdate <= 30) {
         qCDebug(ETESYNC_LOG) << "Retrieve items called immediately after collection fetch";
-        if (!collection.hasAttribute<EtebaseCacheAttribute>()) {
-            qCDebug(ETESYNC_LOG) << "No cache for collection" << collection.remoteId();
-            cancelTask(i18n("No cache for collection '%1'", collection.remoteId()));
-            return;
-        }
-        EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-        const QByteArray collectionCache = collection.attribute<EtebaseCacheAttribute>()->etebaseCache();
-        EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
 
         const QString sToken = QString::fromUtf8(etebase_collection_get_stoken(etesyncCollection.get()));
         qCDebug(ETESYNC_LOG) << "Comparing" << sToken << "and" << collection.remoteRevision();
@@ -351,7 +349,7 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    auto job = new EntriesFetchJob(mClientState->account(), collection, this);
+    auto job = new EntriesFetchJob(mClientState->account(), collection, std::move(etesyncCollection), itemsCacheDirectoryPath(), this);
 
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);
 
@@ -379,6 +377,42 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     qCDebug(ETESYNC_LOG) << "Items retrieval done";
 }
 
+EtebaseCollectionPtr EteSyncResource::getEtesyncCollectionFromCache(const QString &collectionUid)
+{
+    if (collectionUid.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Unable to get collection cache - uid is empty";
+        return nullptr;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Getting cache for collection" << collectionUid;
+
+    QString collectionCachePath = collectionsCacheDirectoryPath() + QLatin1Char('/') + collectionUid;
+
+    QFile collectionCacheFile(collectionCachePath);
+
+    if (!collectionCacheFile.exists()) {
+        qCDebug(ETESYNC_LOG) << "No cache file for collection" << collectionUid;
+        return nullptr;
+    }
+
+    if (!collectionCacheFile.open(QIODevice::ReadOnly)) {
+        qCDebug(ETESYNC_LOG) << "Unable to open " << collectionCachePath << collectionCacheFile.errorString();
+        return nullptr;
+    }
+
+    QByteArray collectionCache = collectionCacheFile.readAll();
+
+    if (collectionCache.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Empty cache file for collection" << collectionUid;
+        return nullptr;
+    }
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
+    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
+
+    return etesyncCollection;
+}
+
 void EteSyncResource::aboutToQuit()
 {
 }
@@ -400,6 +434,16 @@ void EteSyncResource::initialiseDone(bool successful)
 QString EteSyncResource::baseDirectoryPath() const
 {
     return Settings::self()->basePath();
+}
+
+QString EteSyncResource::collectionsCacheDirectoryPath() const
+{
+    return baseDirectoryPath() + QStringLiteral("/CollectionCache");
+}
+
+QString EteSyncResource::itemsCacheDirectoryPath() const
+{
+    return baseDirectoryPath() + QStringLiteral("/ItemCache");
 }
 
 void EteSyncResource::initialiseDirectory(const QString &path) const

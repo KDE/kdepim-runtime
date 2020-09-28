@@ -20,7 +20,7 @@ class JournalsFetchJob : public KJob
     Q_OBJECT
 
 public:
-    explicit JournalsFetchJob(const EtebaseAccount *account, const Akonadi::Collection &resourceCollection, QObject *parent = nullptr);
+    explicit JournalsFetchJob(const EtebaseAccount *account, const Akonadi::Collection &resourceCollection, const QString &cacheDir = QString(), QObject *parent = nullptr);
 
     void start() override;
 
@@ -49,6 +49,7 @@ private:
     Akonadi::Collection::List mRemovedCollections;
     const Akonadi::Collection mResourceCollection;
     QString mSyncToken;
+    QString mCacheDir;
 };
 } // namespace EteSyncAPI
 

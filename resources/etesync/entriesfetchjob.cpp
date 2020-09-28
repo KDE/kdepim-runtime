@@ -5,7 +5,6 @@
  */
 
 #include "entriesfetchjob.h"
-#include "etebasecacheattribute.h"
 
 #include <kcontacts/addressee.h>
 #include <KCalendarCore/Event>
@@ -22,10 +21,12 @@
 using namespace Akonadi;
 using namespace EteSyncAPI;
 
-EntriesFetchJob::EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, QObject *parent)
+EntriesFetchJob::EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, const QString &cacheDir, QObject *parent)
     : KJob(parent)
     , mAccount(account)
     , mCollection(collection)
+    , mEtesyncCollection(std::move(etesyncCollection))
+    , mCacheDir(cacheDir)
 {
 }
 
@@ -42,27 +43,26 @@ void EntriesFetchJob::start()
 
 void EntriesFetchJob::fetchEntries()
 {
-    if (!mCollection.hasAttribute<EtebaseCacheAttribute>()) {
-        setError(UserDefinedError);
-        setErrorText(QStringLiteral("No cache for collection ") + mCollection.remoteId());
-        return;
-    }
     if (!mAccount) {
         setError(UserDefinedError);
-        setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is empty"));
+        setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is null"));
         return;
     }
-    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
-    const QByteArray collectionCache = mCollection.attribute<EtebaseCacheAttribute>()->etebaseCache();
-    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
 
-    EtebaseCollectionMetadataPtr metaData(etebase_collection_get_meta(etesyncCollection.get()));
+    if (!mEtesyncCollection) {
+        setError(UserDefinedError);
+        setErrorText(QStringLiteral("EntriesFetchJob: Etebase collection is null"));
+        return;
+    }
+
+    EtebaseCollectionMetadataPtr metaData(etebase_collection_get_meta(mEtesyncCollection.get()));
     const QString type = QString::fromUtf8(etebase_collection_metadata_get_collection_type(metaData.get()));
     qCDebug(ETESYNC_LOG) << "Type:" << type;
 
     QString sToken = mCollection.remoteRevision();
     bool done = 0;
-    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), etesyncCollection.get()));
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), mEtesyncCollection.get()));
 
     while (!done) {
         EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
@@ -152,10 +152,18 @@ void EntriesFetchJob::saveItemCache(const EtebaseItemManager *itemManager, const
         return;
     }
 
-    qCDebug(ETESYNC_LOG) << "Saving cache for item" << etebase_item_get_uid(etesyncItem);
+    QString etesyncItemUid = QString::fromUtf8(etebase_item_get_uid(etesyncItem));
+
+    qCDebug(ETESYNC_LOG) << "Saving cache for item" << etesyncItemUid;
     uintptr_t ret_size;
     EtebaseCachePtr cache(etebase_item_manager_cache_save(itemManager, etesyncItem, &ret_size));
     QByteArray cacheData((char *)cache.get(), ret_size);
-    EtebaseCacheAttribute *etebaseCacheAttribute = item.attribute<EtebaseCacheAttribute>(Item::AddIfMissing);
-    etebaseCacheAttribute->setEtebaseCache(cacheData);
+
+    const QString path = mCacheDir + QLatin1Char('/') + etesyncItemUid;
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
+        return;
+    }
+    file.write(cacheData);
 }

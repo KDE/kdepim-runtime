@@ -20,7 +20,7 @@ class EntriesFetchJob : public KJob
     Q_OBJECT
 
 public:
-    explicit EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, QObject *parent = nullptr);
+    explicit EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, const QString &cacheDir, QObject *parent = nullptr);
 
     void start() override;
 
@@ -47,8 +47,10 @@ protected:
 private:
     const EtebaseAccount *mAccount = nullptr;
     Akonadi::Collection mCollection;
+    const EtebaseCollectionPtr mEtesyncCollection;
     Akonadi::Item::List mItems;
     Akonadi::Item::List mRemovedItems;
+    QString mCacheDir;
 };
 }  // namespace EteSyncAPI
 
