@@ -325,9 +325,10 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Retrieving items for collection" << collection.remoteId();
 
-    EtebaseCollectionPtr etesyncCollection = getEtesyncCollectionFromCache(collection.remoteId());
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
+    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
     if (!etesyncCollection) {
-        cancelTask(i18n("No cache for collection '%1'", collection.remoteId()));
+        cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
         return;
     }
 
@@ -375,42 +376,6 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     itemsRetrievedIncremental(items, removedItems);
 
     qCDebug(ETESYNC_LOG) << "Items retrieval done";
-}
-
-EtebaseCollectionPtr EteSyncResource::getEtesyncCollectionFromCache(const QString &collectionUid)
-{
-    if (collectionUid.isEmpty()) {
-        qCDebug(ETESYNC_LOG) << "Unable to get collection cache - uid is empty";
-        return nullptr;
-    }
-
-    qCDebug(ETESYNC_LOG) << "Getting cache for collection" << collectionUid;
-
-    QString collectionCachePath = collectionsCacheDirectoryPath() + QLatin1Char('/') + collectionUid;
-
-    QFile collectionCacheFile(collectionCachePath);
-
-    if (!collectionCacheFile.exists()) {
-        qCDebug(ETESYNC_LOG) << "No cache file for collection" << collectionUid;
-        return nullptr;
-    }
-
-    if (!collectionCacheFile.open(QIODevice::ReadOnly)) {
-        qCDebug(ETESYNC_LOG) << "Unable to open " << collectionCachePath << collectionCacheFile.errorString();
-        return nullptr;
-    }
-
-    QByteArray collectionCache = collectionCacheFile.readAll();
-
-    if (collectionCache.isEmpty()) {
-        qCDebug(ETESYNC_LOG) << "Empty cache file for collection" << collectionUid;
-        return nullptr;
-    }
-
-    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_cache_load(collectionManager.get(), collectionCache.constData(), collectionCache.size()));
-
-    return etesyncCollection;
 }
 
 void EteSyncResource::aboutToQuit()
@@ -475,18 +440,67 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
         return;
     }
 
-    auto handler = fetchHandlerForMimeType(item.mimeType());
-    if (handler) {
-        handler->itemAdded(item, collection);
-    } else {
-        qCWarning(ETESYNC_LOG) << "Could not add item" << item.mimeType();
-        cancelTask(i18n("Invalid payload type"));
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
+    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    if (!etesyncCollection) {
+        qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
+        cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
+        return;
     }
+    EtebaseCollectionMetadataPtr collectionMetadata(etebase_collection_get_meta(etesyncCollection.get()));
+    const QString type = QString::fromUtf8(etebase_collection_metadata_get_collection_type(collectionMetadata.get()));
+
+    // Create metadata
+    int64_t modificationTimeSinceEpoch = item.modificationTime().toMSecsSinceEpoch();
+    EtebaseItemMetadataPtr itemMetaData(etebase_item_metadata_new());
+    etebase_item_metadata_set_item_type(itemMetaData.get(), "file");
+    QString uid;
+    if (type == ETEBASE_COLLECTION_TYPE_ADDRESS_BOOK) {
+        uid = item.payload<KContacts::Addressee>().uid();
+    } else {
+        uid = item.payload<KCalendarCore::Incidence::Ptr>()->uid();
+    }
+    etebase_item_metadata_set_name(itemMetaData.get(), charArrFromQString(uid));
+    etebase_item_metadata_set_mtime(itemMetaData.get(), &modificationTimeSinceEpoch);
+
+    qCDebug(ETESYNC_LOG) << "Created metadata";
+
+    // Get item manager
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), etesyncCollection.get()));
+
+    // Create Etesync item
+    QByteArray payloadData = item.payloadData();
+    EtebaseItemPtr etesyncItem(etebase_item_manager_create(itemManager.get(), itemMetaData.get(), payloadData.constData(), payloadData.size()));
+    if (!etesyncItem) {
+        qCDebug(ETESYNC_LOG) << "Could not create new etesyncItem" << uid;
+        cancelTask(i18n("Could not create new etesyncItem '%1'", uid));
+        return;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Created EteSync item";
+
+    // Save to cache
+    saveEtebaseItemCache(itemManager.get(), etesyncItem.get(), itemsCacheDirectoryPath());
+
+    // Upload to server
+    const EtebaseItem *items[] = {etesyncItem.get()};
+
+    if (etebase_item_manager_batch(itemManager.get(), items, ETEBASE_UTILS_C_ARRAY_LEN(items), NULL)) {
+        qCDebug(ETESYNC_LOG) << "Error uploading item addition";
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
+    } else {
+        qCDebug(ETESYNC_LOG) << "Uploaded item addition to server";
+    }
+
+    Item newItem(item);
+    newItem.setRemoteId(QString::fromUtf8(etebase_item_get_uid(etesyncItem.get())));
+    newItem.setPayloadFromData(payloadData);
+    changeCommitted(newItem);
 }
 
 void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType();
+    qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType() << item.remoteId();
     qCDebug(ETESYNC_LOG) << "Journal UID" << item.parentCollection().remoteId();
 
     if (credentialsRequired()) {
@@ -494,13 +508,52 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
         return;
     }
 
-    auto handler = fetchHandlerForMimeType(item.mimeType());
-    if (handler) {
-        handler->itemChanged(item, parts);
-    } else {
-        qCWarning(ETESYNC_LOG) << "Could not change item" << item.mimeType();
-        cancelTask(i18n("Invalid payload type"));
+    Collection collection = item.parentCollection();
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
+    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    if (!etesyncCollection) {
+        qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
+        cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
+        return;
     }
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), etesyncCollection.get()));
+    EtebaseItemPtr etesyncItem = getEtebaseItemFromCache(itemManager.get(), item.remoteId(), itemsCacheDirectoryPath());
+    if (!etesyncItem) {
+        qCDebug(ETESYNC_LOG) << "Could not get etesyncItem from cache" << item.remoteId();
+        cancelTask(i18n("Could not get etesyncItem from cache '%1'", item.remoteId()));
+        return;
+    }
+
+    // Update metadata (only mtime in this case)
+    int64_t modificationTimeSinceEpoch = item.modificationTime().toMSecsSinceEpoch();
+
+    EtebaseItemMetadataPtr itemMetadata(etebase_item_get_meta(etesyncItem.get()));
+    etebase_item_metadata_set_mtime(itemMetadata.get(), &modificationTimeSinceEpoch);
+    etebase_item_set_meta(etesyncItem.get(), itemMetadata.get());
+
+    qCDebug(ETESYNC_LOG) << "Updated metadata mtime";
+
+    // Update content
+    QByteArray payloadData = item.payloadData();
+    etebase_item_set_content(etesyncItem.get(), payloadData.constData(), payloadData.size());
+
+    qCDebug(ETESYNC_LOG) << "Updated item content";
+
+    // Upload to server
+    const EtebaseItem *items[] = {etesyncItem.get()};
+
+    if (etebase_item_manager_batch(itemManager.get(), items, ETEBASE_UTILS_C_ARRAY_LEN(items), NULL)) {
+        qCDebug(ETESYNC_LOG) << "Error uploading item deletion ";
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
+    } else {
+        qCDebug(ETESYNC_LOG) << "Uploaded item modifications to server";
+    }
+
+    //Update cache
+    saveEtebaseItemCache(itemManager.get(), etesyncItem.get(), itemsCacheDirectoryPath());
+
+    changeProcessed();
 }
 
 void EteSyncResource::itemRemoved(const Akonadi::Item &item)
@@ -512,13 +565,51 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
         return;
     }
 
-    auto handler = fetchHandlerForMimeType(item.mimeType());
-    if (handler) {
-        handler->itemRemoved(item);
-    } else {
-        qCWarning(ETESYNC_LOG) << "Could not remove item" << item.mimeType();
-        cancelTask(i18n("Invalid payload type"));
+    Collection collection = item.parentCollection();
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
+    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    if (!etesyncCollection) {
+        qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
+        cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
+        return;
     }
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), etesyncCollection.get()));
+    EtebaseItemPtr etesyncItem = getEtebaseItemFromCache(itemManager.get(), item.remoteId(), itemsCacheDirectoryPath());
+    if (!etesyncItem) {
+        qCDebug(ETESYNC_LOG) << "Could not get etesyncItem from cache" << item.remoteId();
+        cancelTask(i18n("Could not get etesyncItem from cache '%1'", item.remoteId()));
+        return;
+    }
+
+    // Update metadata (only mtime in this case)
+    int64_t modificationTimeSinceEpoch = item.modificationTime().toMSecsSinceEpoch();
+
+    EtebaseItemMetadataPtr itemMetadata(etebase_item_get_meta(etesyncItem.get()));
+    etebase_item_metadata_set_mtime(itemMetadata.get(), &modificationTimeSinceEpoch);
+    etebase_item_set_meta(etesyncItem.get(), itemMetadata.get());
+
+    qCDebug(ETESYNC_LOG) << "Updated metadata mtime";
+
+    // Set item deleted
+    etebase_item_delete(etesyncItem.get());
+
+    qCDebug(ETESYNC_LOG) << "Set item deleted";
+
+    // Upload to server
+    const EtebaseItem *items[] = {etesyncItem.get()};
+
+    if (etebase_item_manager_batch(itemManager.get(), items, ETEBASE_UTILS_C_ARRAY_LEN(items), NULL)) {
+        qCDebug(ETESYNC_LOG) << "Error uploading item deletion ";
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
+    } else {
+        qCDebug(ETESYNC_LOG) << "Uploaded item deletion to server";
+    }
+
+    // Delete cache
+    deleteCacheFile(item.remoteId(), itemsCacheDirectoryPath());
+
+    changeProcessed();
 }
 
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)

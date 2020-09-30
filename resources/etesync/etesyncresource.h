@@ -56,8 +56,6 @@ protected:
     QString baseDirectoryPath() const;
     QString collectionsCacheDirectoryPath() const;
     QString itemsCacheDirectoryPath() const;
-    EtebaseCollectionPtr getEtesyncCollectionFromCache(const QString &collectionUid);
-    EtebaseItemPtr getEtesyncItemFromCache(const QString &itemUid, const EtebaseCollection *parentCollection);
 
     bool handleError();
     bool handleError(int errorCode);
