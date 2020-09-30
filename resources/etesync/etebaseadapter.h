@@ -8,7 +8,6 @@
 #define ETEBASEADAPTER_H
 
 #include <etebase.h>
-
 #include <QString>
 #include <memory>
 #include <vector>
@@ -99,6 +98,11 @@ using EtebaseCachePtr = std::unique_ptr<void, EtebaseDeleter>;
 using CharPtr = std::unique_ptr<char, EtebaseDeleter>;
 
 QString QStringFromCharPtr(const CharPtr &str);
+void saveEtebaseCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etesyncCollection, const QString &cacheDir);
+void saveEtebaseItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etesyncItem, const QString &cacheDir);
+EtebaseCollectionPtr getEtebaseCollectionFromCache(const EtebaseCollectionManager *collectionManager, const QString &collectionUid, const QString &cacheDir);
+EtebaseItemPtr getEtebaseItemFromCache(const EtebaseItemManager *itemManager, const QString &itemUid, const QString &cacheDir);
+void deleteCacheFile(const QString &etebaseUid, const QString &cacheDir);
 
 EtebaseClientPtr etebase_client_new(const QString &client_name, const QString &server_url);
 

@@ -95,7 +95,7 @@ void EntriesFetchJob::fetchEntries()
         Item item;
 
         for (int i = 0; i < dataLength; i++) {
-            saveItemCache(itemManager.get(), etesyncItems[i], item);
+            saveEtebaseItemCache(itemManager.get(), etesyncItems[i], mCacheDir);
             setupItem(item, etesyncItems[i], type);
         }
     }
@@ -143,27 +143,4 @@ void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncI
     }
 
     mItems.push_back(item);
-}
-
-void EntriesFetchJob::saveItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etesyncItem, Item &item)
-{
-    if (!etesyncItem) {
-        qCDebug(ETESYNC_LOG) << "Unable to save item cache - etesyncItem is null";
-        return;
-    }
-
-    QString etesyncItemUid = QString::fromUtf8(etebase_item_get_uid(etesyncItem));
-
-    qCDebug(ETESYNC_LOG) << "Saving cache for item" << etesyncItemUid;
-    uintptr_t ret_size;
-    EtebaseCachePtr cache(etebase_item_manager_cache_save(itemManager, etesyncItem, &ret_size));
-    QByteArray cacheData((char *)cache.get(), ret_size);
-
-    const QString path = mCacheDir + QLatin1Char('/') + etesyncItemUid;
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
-        return;
-    }
-    file.write(cacheData);
 }

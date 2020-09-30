@@ -83,7 +83,7 @@ void JournalsFetchJob::fetchJournals()
         Collection collection;
 
         for (int i = 0; i < dataLength; i++) {
-            saveCollectionCache(collectionManager.get(), etesyncCollections[i], collection);
+            saveEtebaseCollectionCache(collectionManager.get(), etesyncCollections[i], mCacheDir);
             setupCollection(collection, etesyncCollections[i]);
         }
 
@@ -168,27 +168,4 @@ void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const Et
     }
 
     mCollections.push_back(collection);
-}
-
-void JournalsFetchJob::saveCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etesyncCollection, Collection &collection)
-{
-    if (!etesyncCollection) {
-        qCDebug(ETESYNC_LOG) << "Unable to save collection cache - etesyncCollection is null";
-        return;
-    }
-
-    QString etesyncCollectionUid = QString::fromUtf8(etebase_collection_get_uid(etesyncCollection));
-
-    qCDebug(ETESYNC_LOG) << "Saving cache for collection" << etesyncCollectionUid;
-    uintptr_t ret_size;
-    EtebaseCachePtr cache(etebase_collection_manager_cache_save(collectionManager, etesyncCollection, &ret_size));
-    QByteArray cacheData((char *)cache.get(), ret_size);
-
-    const QString path = mCacheDir + QLatin1Char('/') + etesyncCollectionUid;
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qCDebug(ETESYNC_LOG) << "Unable to open " << path << file.errorString();
-        return;
-    }
-    file.write(cacheData);
 }
