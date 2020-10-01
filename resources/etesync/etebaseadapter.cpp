@@ -161,3 +161,18 @@ void etebase_fetch_options_set_stoken(EtebaseFetchOptions *fetch_options, const 
 {
     etebase_fetch_options_set_stoken(fetch_options, charArrFromQString(stoken));
 }
+
+EtebaseCollectionMetadataPtr etebase_collection_metadata_new(const QString &type, const QString &name)
+{
+    return EtebaseCollectionMetadataPtr(etebase_collection_metadata_new(charArrFromQString(type), charArrFromQString(name)));
+}
+
+void etebase_collection_metadata_set_color(EtebaseCollectionMetadata *meta_data, const QString &color)
+{
+    etebase_collection_metadata_set_color(meta_data, charArrFromQString(color));
+}
+
+void etebase_collection_metadata_set_name(EtebaseCollectionMetadata *meta_data, const QString &name)
+{
+    etebase_collection_metadata_set_name(meta_data, charArrFromQString(name));
+}
