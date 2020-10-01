@@ -144,7 +144,6 @@ find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5GrantleeTheme ${GRANTLEETHEME_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
-option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 
 #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054B00)
@@ -162,9 +161,7 @@ add_subdirectory(doc)
 
 ## install the MIME type spec file for KDEPIM specific MIME types
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
-if (NOT NO_REGENERATE_MIME)
-   update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
-endif()
+update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
 ecm_qt_install_logging_categories(
         EXPORT KDEPIMRUNTIME
         FILE kdepim-runtime.categories
