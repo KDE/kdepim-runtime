@@ -60,6 +60,11 @@ public:
         mLoginResult = loginResult;
     }
 
+    void setAccountStatusResult(bool accountStatusResult)
+    {
+        mAccountStatusResult = accountStatusResult;
+    }
+
     void setErrorCode(int errorCode)
     {
         mErrorCode = errorCode;
@@ -79,6 +84,7 @@ private:
     QProgressBar *mProgressBar;
     bool mIsInitialized = false;
     bool mLoginResult = false;
+    bool mAccountStatusResult = false;
     int mErrorCode;
     QString mErrorMessage;
 };

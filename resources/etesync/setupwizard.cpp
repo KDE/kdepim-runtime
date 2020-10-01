@@ -47,6 +47,7 @@ void SetupWizard::manualNext()
         connect(job, &LoginJob::finished, this, [this](KJob *job) {
             qCDebug(ETESYNC_LOG) << "Login finished";
             static_cast<LoginPage *>(page(W_LoginPage))->setLoginResult(static_cast<LoginJob *>(job)->getLoginResult());
+            static_cast<LoginPage *>(page(W_LoginPage))->setAccountStatusResult(static_cast<LoginJob *>(job)->getAccountStatusResult());
             static_cast<LoginPage *>(page(W_LoginPage))->setErrorCode(job->error());
             static_cast<LoginPage *>(page(W_LoginPage))->setErrorMessage(job->errorText());
             static_cast<LoginPage *>(page(W_LoginPage))->hideProgressBar();
@@ -129,6 +130,10 @@ bool LoginPage::validatePage()
         }
         return false;
     }
-
+    if (!mAccountStatusResult) {
+        qCDebug(ETESYNC_LOG) << "accountStatus error" << mErrorCode;
+        mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
+        return false;
+    }
     return true;
 }

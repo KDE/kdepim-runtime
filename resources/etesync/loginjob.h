@@ -28,6 +28,11 @@ public:
         return mLoginResult;
     }
 
+    bool getAccountStatusResult() const
+    {
+        return mAccountStatusResult;
+    }
+
 private:
     void login();
 
@@ -36,6 +41,7 @@ private:
     QString mUsername;
     QString mPassword;
     bool mLoginResult;
+    bool mAccountStatusResult;
     bool mUserInfoResult;
 };
 } // namespace EteSyncAPI

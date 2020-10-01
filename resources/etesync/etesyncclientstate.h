@@ -27,6 +27,7 @@ public:
     void invalidateToken();
     void refreshUserInfo();
     bool login(const QString &serverUrl, const QString &username, const QString &password);
+    bool accountStatus();
 
     EteSync *client() const
     {

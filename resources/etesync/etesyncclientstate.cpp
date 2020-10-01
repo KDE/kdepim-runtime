@@ -97,14 +97,34 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
     return true;
 }
 
+bool EteSyncClientState::accountStatus()
+{
+    if (!mAccountXXX) {
+        qCDebug(ETESYNC_LOG) << "Could not fetch collection list with limit 1";
+        qCDebug(ETESYNC_LOG) << "Etebase account is null";
+        return false;
+    }
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccountXXX.get()));
+    EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
+    etebase_fetch_options_set_limit(fetchOptions.get(), 1);
+
+    EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
+    if (!collectionList) {
+        qCDebug(ETESYNC_LOG) << "Could not fetch collection list with limit 1";
+        qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
+        return false;
+    }
+    return true;
+}
+
 void EteSyncClientState::refreshToken()
 {
     qCDebug(ETESYNC_LOG) << "Refreshing token";
-    if (initToken(mServerUrl, mUsername, mPassword)) {
-        tokenRefreshed(true);
+    if (etebase_account_fetch_token(mAccountXXX.get())) {
+        tokenRefreshed(false);
         return;
     }
-    tokenRefreshed(false);
+    tokenRefreshed(true);
     return;
 }
 
