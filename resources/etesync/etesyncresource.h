@@ -58,7 +58,7 @@ protected:
     QString itemsCacheDirectoryPath() const;
 
     bool handleError();
-    bool handleError(int errorCode);
+    bool handleError(const int errorCode, QString errorMessage);
     bool credentialsRequired();
 
     const EteSyncJournalPtr &getJournal(const QString &journalUid)

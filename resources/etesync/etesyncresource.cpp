@@ -158,7 +158,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     if (job->error()) {
         qCWarning(ETESYNC_LOG) << "Error in fetching journals";
         qCWarning(ETESYNC_LOG) << "EteSync error" << job->error() << job->errorText();
-        handleError(job->error());
+        handleError(job->error(), job->errorText());
         return;
     }
 
@@ -178,30 +178,24 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     qCDebug(ETESYNC_LOG) << "Collections retrieval done";
 }
 
-/**
- * Handles all EteSync errors (except CONFLICT).
- * To be called immediately after an EteSync operation.
- * CONFLICT error has been handled seperately in BaseHandler.
- */
-bool EteSyncResource::handleError(int errorCode)
+bool EteSyncResource::handleError(const int errorCode, QString errorMessage)
 {
-    qCDebug(ETESYNC_LOG) << "handleError - code" << errorCode;
+    qCDebug(ETESYNC_LOG) << "handleError" << errorCode << errorMessage;
     switch (errorCode) {
-    case ETESYNC_ERROR_CODE_UNAUTHORIZED:
+    case ETEBASE_ERROR_CODE_UNAUTHORIZED:
         qCDebug(ETESYNC_LOG) << "Invalid token";
         deferTask();
         connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::slotTokenRefreshed);
         scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
         return true;
-    case ETESYNC_ERROR_CODE_GENERIC:
-    case ETESYNC_ERROR_CODE_ENCODING:
-    case ETESYNC_ERROR_CODE_INTEGRITY:
-    case ETESYNC_ERROR_CODE_ENCRYPTION:
-    case ETESYNC_ERROR_CODE_ENCRYPTION_MAC:
-    case ETESYNC_ERROR_CODE_PERMISSION_DENIED:
-    case ETESYNC_ERROR_CODE_INVALID_DATA:
-    case ETESYNC_ERROR_CODE_CONNECTION:
-    case ETESYNC_ERROR_CODE_HTTP:
+    case ETEBASE_ERROR_CODE_PERMISSION_DENIED:
+        qCDebug(ETESYNC_LOG) << "Permission denied";
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << errorMessage;
+        showErrorDialog(i18n("You do not have permission to perform this action."), i18n(charArrFromQString(errorMessage)));
+        setOnline(false);
+        cancelTask(i18n("Permission denied"));
+        return true;
+    default:
         qCDebug(ETESYNC_LOG) << "Cancelling task";
         cancelTask();
         return true;
@@ -211,14 +205,14 @@ bool EteSyncResource::handleError(int errorCode)
 
 bool EteSyncResource::handleError()
 {
-    return handleError(etesync_get_error_code());
+    return handleError(etebase_error_get_code(), QString::fromUtf8(etebase_error_get_message()));
 }
 
 bool EteSyncResource::credentialsRequired()
 {
     if (mCredentialsRequired) {
         qCDebug(ETESYNC_LOG) << "Credentials required";
-        showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(CharPtr(etesync_get_error_message()).get()), i18n("Credentials Changed"));
+        showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(etebase_error_get_message()), i18n("Credentials Changed"));
         configure(winIdForDialogs());
     }
     return mCredentialsRequired;
@@ -226,9 +220,10 @@ bool EteSyncResource::credentialsRequired()
 
 void EteSyncResource::slotTokenRefreshed(bool successful)
 {
+    qCDebug(ETESYNC_LOG) << "slotTokenRefreshed" << successful;
     if (!successful) {
-        if (etesync_get_error_code() == ETESYNC_ERROR_CODE_HTTP) {
-            qCDebug(ETESYNC_LOG) << "HTTP Error while tokenRefresh";
+        if (etebase_error_get_code() == ETEBASE_ERROR_CODE_UNAUTHORIZED) {
+            qCDebug(ETESYNC_LOG) << "Unauthorized for tokenRefresh";
             mCredentialsRequired = true;
         }
     }
@@ -377,7 +372,7 @@ void EteSyncResource::slotItemsRetrieved(KJob *job)
     if (job->error()) {
         qCDebug(ETESYNC_LOG) << "Error in fetching entries";
         qCWarning(ETESYNC_LOG) << "EteSync error" << job->error() << job->errorText();
-        handleError(job->error());
+        handleError(job->error(), job->errorText());
     }
 
     Item::List items = qobject_cast<EntriesFetchJob *>(job)->items();
@@ -501,7 +496,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     if (etebase_item_manager_batch(itemManager.get(), items, ETEBASE_UTILS_C_ARRAY_LEN(items), NULL)) {
         qCDebug(ETESYNC_LOG) << "Error uploading item addition" << uid;
         qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        cancelTask(i18n("Error uploading item addition '%1'", uid));
+        handleError();
         return;
     } else {
         qCDebug(ETESYNC_LOG) << "Uploaded item addition to server";
@@ -564,7 +559,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
     if (etebase_item_manager_batch(itemManager.get(), items, ETEBASE_UTILS_C_ARRAY_LEN(items), NULL)) {
         qCDebug(ETESYNC_LOG) << "Error uploading item modifications" << item.remoteId();
         qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        cancelTask(i18n("Error uploading item modifications '%1'", item.remoteId()));
+        handleError();
         return;
     } else {
         qCDebug(ETESYNC_LOG) << "Uploaded item modifications to server";
@@ -622,7 +617,7 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
     if (etebase_item_manager_batch(itemManager.get(), items, ETEBASE_UTILS_C_ARRAY_LEN(items), NULL)) {
         qCDebug(ETESYNC_LOG) << "Error uploading item deletion" << item.remoteId();
         qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        cancelTask(i18n("Error uploading item deletion '%1'", item.remoteId()));
+        handleError();
         return;
     } else {
         qCDebug(ETESYNC_LOG) << "Uploaded item deletion to server";
@@ -667,7 +662,7 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     if (etebase_collection_manager_upload(collectionManager.get(), etesyncCollection.get(), NULL)) {
         qCDebug(ETESYNC_LOG) << "Error uploading collection addition";
         qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        cancelTask(i18n("Error uploading collection addition"));
+        handleError();
         return;
     } else {
         qCDebug(ETESYNC_LOG) << "Uploaded collection addition to server";
@@ -744,7 +739,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
     if (etebase_collection_manager_upload(collectionManager.get(), etesyncCollection.get(), NULL)) {
         qCDebug(ETESYNC_LOG) << "Error uploading collection modifications" << collection.remoteId();
         qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        cancelTask(i18n("Error uploading collection modifications %1", collection.remoteId()));
+        handleError();
         return;
     } else {
         qCDebug(ETESYNC_LOG) << "Uploaded collection modifications to server";
@@ -782,7 +777,7 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
     if (etebase_collection_manager_upload(collectionManager.get(), etesyncCollection.get(), NULL)) {
         qCDebug(ETESYNC_LOG) << "Error uploading collection deletion" << collection.remoteId();
         qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        cancelTask(i18n("Error uploading collection deletion %1", collection.remoteId()));
+        handleError();
         return;
     } else {
         qCDebug(ETESYNC_LOG) << "Uploaded collection deletion to server";
