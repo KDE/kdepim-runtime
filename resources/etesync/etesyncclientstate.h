@@ -11,6 +11,9 @@
 #include "etesyncadapter.h"
 #include "settings.h"
 
+#include <KWallet/KWallet>
+#include <QPointer>
+
 class EteSyncClientState : public QObject
 {
     Q_OBJECT
@@ -27,7 +30,10 @@ public:
     void invalidateToken();
     void refreshUserInfo();
     bool login(const QString &serverUrl, const QString &username, const QString &password);
+    void logout();
     bool accountStatus();
+    bool openWalletFolder();
+    void deleteWalletEntry();
     void saveAccount();
     void getAccount();
 
@@ -95,6 +101,7 @@ private:
     QString mServerUrl;
     QString mEncryptionPassword;
     WId mWinId;
+    QPointer<KWallet::Wallet> mWallet;
 };
 
 #endif // ETESYNCSETTINGS_H

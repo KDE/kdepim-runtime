@@ -6,7 +6,6 @@
 
 #include "etesyncclientstate.h"
 
-#include <KWallet/KWallet>
 #include <KLocalizedString>
 
 #include "etesync_debug.h"
@@ -44,6 +43,28 @@ void EteSyncClientState::init()
     getAccount();
 
     Q_EMIT clientInitialised(true);
+}
+
+bool EteSyncClientState::openWalletFolder()
+{
+    mWallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId, Wallet::Synchronous);
+    if (mWallet) {
+        qCDebug(ETESYNC_LOG) << "Wallet opened";
+    } else {
+        qCWarning(ETESYNC_LOG) << "Failed to open wallet!";
+        return false;
+    }
+    if (!mWallet->hasFolder(etebaseWalletFolder) && !mWallet->createFolder(etebaseWalletFolder)) {
+        qCWarning(ETESYNC_LOG) << "Failed to create wallet folder" << etebaseWalletFolder;
+        return false;
+    }
+
+    if (!mWallet->setFolder(etebaseWalletFolder)) {
+        qWarning() << "Failed to open wallet folder" << etebaseWalletFolder;
+        return false;
+    }
+    qCDebug(ETESYNC_LOG) << "Wallet opened" << etebaseWalletFolder;
+    return true;
 }
 
 bool EteSyncClientState::initToken(const QString &serverUrl, const QString &username, const QString &password)
@@ -88,6 +109,14 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
         return false;
     }
     return true;
+}
+
+void EteSyncClientState::logout()
+{
+    if (etebase_account_logout(mAccountXXX.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not logout";
+    }
+    deleteWalletEntry();
 }
 
 bool EteSyncClientState::accountStatus()
@@ -241,27 +270,16 @@ void EteSyncClientState::saveSettings()
 
 void EteSyncClientState::saveAccount()
 {
-    KWallet::Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId, Wallet::Synchronous);
-    if (wallet) {
-        qCDebug(ETESYNC_LOG) << "Wallet opened";
-    } else {
-        qCWarning(ETESYNC_LOG) << "Failed to open wallet!";
-        return;
+    if (!mWallet) {
+        qCDebug(ETESYNC_LOG) << "Save account - wallet not opened";
+        if (!openWalletFolder()) {
+            return;
+        }
     }
-    if (!wallet->hasFolder(etebaseWalletFolder) && !wallet->createFolder(etebaseWalletFolder)) {
-        qCWarning(ETESYNC_LOG) << "Failed to create wallet folder" << etebaseWalletFolder;
-        return;
-    }
-
-    if (!wallet->setFolder(etebaseWalletFolder)) {
-        qWarning() << "Failed to open wallet folder" << etebaseWalletFolder;
-        return;
-    }
-    qCDebug(ETESYNC_LOG) << "Wallet opened, writing to" << etebaseWalletFolder;
 
     QByteArray encryptionKey(32, '\0');
     etebase_utils_randombytes(encryptionKey.data(), encryptionKey.size());
-    if (wallet->writeEntry(mUsername, encryptionKey)) {
+    if (mWallet->writeEntry(mUsername, encryptionKey)) {
         qCDebug(ETESYNC_LOG) << "Could not store encryption key for account" << mUsername << "in KWallet";
         return;
     }
@@ -273,30 +291,20 @@ void EteSyncClientState::saveAccount()
 
 void EteSyncClientState::getAccount()
 {
-    KWallet::Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId, Wallet::Synchronous);
-    if (wallet) {
-        qCDebug(ETESYNC_LOG) << "Wallet opened";
-    } else {
-        qCWarning(ETESYNC_LOG) << "Failed to open wallet!";
-        return;
-    }
-    if (!wallet->hasFolder(etebaseWalletFolder)) {
-        qCWarning(ETESYNC_LOG) << "Wallet does not have folder" << etebaseWalletFolder;
-        return;
+    if (!mWallet) {
+        qCDebug(ETESYNC_LOG) << "Get account - wallet not opened";
+        if (!openWalletFolder()) {
+            return;
+        }
     }
 
-    if (!wallet->setFolder(etebaseWalletFolder)) {
-        qWarning() << "Failed to open wallet folder" << etebaseWalletFolder;
-        return;
-    }
-    qCDebug(ETESYNC_LOG) << "Wallet opened, reading" << etebaseWalletFolder;
-    if (!wallet->entryList().contains(mUsername)) {
+    if (!mWallet->entryList().contains(mUsername)) {
         qCDebug(ETESYNC_LOG) << "Encryption key for account" << mUsername << "not found in KWallet";
         return;
     }
 
     QByteArray encryptionKey;
-    if (wallet->readEntry(mUsername, encryptionKey)) {
+    if (mWallet->readEntry(mUsername, encryptionKey)) {
         qCDebug(ETESYNC_LOG) << "Could not read encryption key for account" << mUsername << "from KWallet";
         return;
     }
@@ -304,4 +312,22 @@ void EteSyncClientState::getAccount()
     qCDebug(ETESYNC_LOG) << "Read encryption key from wallet";
 
     mAccountXXX = getEtebaseAccountFromCache(mClientXXX.get(), mUsername, encryptionKey, Settings::self()->cacheDir());
+}
+
+void EteSyncClientState::deleteWalletEntry()
+{
+    qCDebug(ETESYNC_LOG) << "Deleting wallet entry";
+
+    if (!mWallet) {
+        qCDebug(ETESYNC_LOG) << "Delete wallet entry - wallet not opened";
+        if (!openWalletFolder()) {
+            return;
+        }
+    }
+
+    if (mWallet->removeEntry(mUsername)) {
+        qCDebug(ETESYNC_LOG) << "Unable to delete wallet entry";
+    }
+
+    qCDebug(ETESYNC_LOG) << "Deleted wallet entry";
 }

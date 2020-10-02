@@ -78,8 +78,8 @@ EteSyncResource::EteSyncResource(const QString &id)
 
 void EteSyncResource::cleanup()
 {
-    mClientState->invalidateToken();
-    QDir dir(baseDirectoryPath());
+    mClientState->logout();
+    QDir dir(cacheDirectoryPath());
     dir.removeRecursively();
     ResourceBase::cleanup();
 }
