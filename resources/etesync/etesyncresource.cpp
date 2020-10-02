@@ -442,6 +442,8 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
 
 void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
+    Q_UNUSED(parts)
+
     qCDebug(ETESYNC_LOG) << "Item changed" << item.mimeType() << item.remoteId();
     qCDebug(ETESYNC_LOG) << "Journal UID" << item.parentCollection().remoteId();
 
@@ -560,6 +562,8 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
 
 void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent)
 {
+    Q_UNUSED(parent)
+
     qCDebug(ETESYNC_LOG) << "Collection added" << collection.mimeType();
 
     if (credentialsRequired()) {

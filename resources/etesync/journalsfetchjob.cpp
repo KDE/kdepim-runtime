@@ -73,8 +73,8 @@ void JournalsFetchJob::fetchJournals()
 
         qCDebug(ETESYNC_LOG) << "Retrieved collection list length" << dataLength;
 
-        const EtebaseCollection *etesyncCollections[dataLength];
-        if (etebase_collection_list_response_get_data(collectionList.get(), etesyncCollections)) {
+        std::vector<const EtebaseCollection *> etesyncCollections(dataLength, nullptr);
+        if (etebase_collection_list_response_get_data(collectionList.get(), etesyncCollections.data())) {
             setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();
             setErrorText(QString::fromUtf8(err));
@@ -82,20 +82,20 @@ void JournalsFetchJob::fetchJournals()
 
         Collection collection;
 
-        for (int i = 0; i < dataLength; i++) {
+        for (uintptr_t i = 0; i < dataLength; i++) {
             saveEtebaseCollectionCache(collectionManager.get(), etesyncCollections[i], mCacheDir);
             setupCollection(collection, etesyncCollections[i]);
         }
 
-        int removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList.get());
+        uintptr_t removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList.get());
         if (removedCollectionsLength) {
-            const EtebaseRemovedCollection *removedEtesyncCollections[removedCollectionsLength];
-            if (etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections)) {
+            std::vector<const EtebaseRemovedCollection *> removedEtesyncCollections(removedCollectionsLength, nullptr);
+            if (etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections.data())) {
                 setError(int(etebase_error_get_code()));
                 const char *err = etebase_error_get_message();
                 setErrorText(QString::fromUtf8(err));
             }
-            for (int i = 0; i < removedCollectionsLength; i++) {
+            for (uintptr_t i = 0; i < removedCollectionsLength; i++) {
                 Collection collection;
                 const QString journalUid = QString::fromUtf8(etebase_removed_collection_get_uid(removedEtesyncCollections[i]));
                 collection.setRemoteId(journalUid);

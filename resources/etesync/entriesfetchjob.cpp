@@ -85,8 +85,8 @@ void EntriesFetchJob::fetchEntries()
 
         qCDebug(ETESYNC_LOG) << "Retrieved item list length" << dataLength;
 
-        const EtebaseItem *etesyncItems[dataLength];
-        if (etebase_item_list_response_get_data(itemList.get(), etesyncItems)) {
+        std::vector<const EtebaseItem *> etesyncItems(dataLength, nullptr);
+        if (etebase_item_list_response_get_data(itemList.get(), etesyncItems.data())) {
             setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();
             setErrorText(QString::fromUtf8(err));
@@ -94,7 +94,7 @@ void EntriesFetchJob::fetchEntries()
 
         Item item;
 
-        for (int i = 0; i < dataLength; i++) {
+        for (uintptr_t i = 0; i < dataLength; i++) {
             saveEtebaseItemCache(itemManager.get(), etesyncItems[i], mCacheDir);
             setupItem(item, etesyncItems[i], type);
         }
