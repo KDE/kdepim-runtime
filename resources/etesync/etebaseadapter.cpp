@@ -19,6 +19,25 @@ QString QStringFromCharPtr(const CharPtr &str)
     return ret;
 }
 
+void saveEtebaseAccountCache(EtebaseAccount *account, const QString &username, const QString &cacheDir)
+{
+    if (!account) {
+        qCDebug(ETESYNC_LOG) << "Unable to save etebase account cache - account is null";
+        return;
+    }
+    qCDebug(ETESYNC_LOG) << "Saving cache for account" << username;
+
+    CharPtr cacheData(etebase_account_save(account, nullptr, 0));
+
+    QString filePath = cacheDir + QStringLiteral("/") + username;
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qCDebug(ETESYNC_LOG) << "Unable to open " << filePath << file.errorString();
+        return;
+    }
+    file.write(QByteArray(cacheData.get()));
+}
+
 void saveEtebaseCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etesyncCollection, const QString &cacheDir)
 {
     if (!etesyncCollection) {
@@ -66,7 +85,37 @@ void saveEtebaseItemCache(const EtebaseItemManager *itemManager, const EtebaseIt
     file.write(cacheData);
 }
 
-EtebaseCollectionPtr getEtebaseCollectionFromCache(const EtebaseCollectionManager *collectionManager, const QString &collectionUid, const QString &cachePath)
+EtebaseAccountPtr getEtebaseAccountFromCache(const EtebaseClient *client, const QString &username, const QString &cacheDir)
+{
+    if (!client) {
+        qCDebug(ETESYNC_LOG) << "Unable to get account from cache - client is null";
+        return nullptr;
+    }
+
+    QString accountCachePath = cacheDir + QStringLiteral("/") + username;
+
+    qCDebug(ETESYNC_LOG) << "accountCachePath" << accountCachePath;
+
+    QFile accountCacheFile(accountCachePath);
+
+    if (!accountCacheFile.exists()) {
+        qCDebug(ETESYNC_LOG) << "No cache file for account" << username;
+        return nullptr;
+    }
+
+    if (!accountCacheFile.open(QIODevice::ReadOnly)) {
+        qCDebug(ETESYNC_LOG) << "Unable to open " << accountCachePath << accountCacheFile.errorString();
+        return nullptr;
+    }
+
+    QByteArray accountCache = accountCacheFile.readAll();
+
+    EtebaseAccountPtr etebaseAccount(etebase_account_restore(client, accountCache.constData(), nullptr, 0));
+
+    return etebaseAccount;
+}
+
+EtebaseCollectionPtr getEtebaseCollectionFromCache(const EtebaseCollectionManager *collectionManager, const QString &collectionUid, const QString &cacheDir)
 {
     if (collectionUid.isEmpty()) {
         qCDebug(ETESYNC_LOG) << "Unable to get collection cache - uid is empty";
@@ -75,7 +124,7 @@ EtebaseCollectionPtr getEtebaseCollectionFromCache(const EtebaseCollectionManage
 
     qCDebug(ETESYNC_LOG) << "Getting cache for collection" << collectionUid;
 
-    QString collectionCachePath = cachePath + QLatin1Char('/') + collectionUid;
+    QString collectionCachePath = cacheDir + QLatin1Char('/') + collectionUid;
 
     QFile collectionCacheFile(collectionCachePath);
 

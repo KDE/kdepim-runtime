@@ -55,10 +55,8 @@ EteSyncResource::EteSyncResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
-    // Make resource directories
+    // Make resource directory
     initialiseDirectory(baseDirectoryPath());
-    initialiseDirectory(collectionsCacheDirectoryPath());
-    initialiseDirectory(itemsCacheDirectoryPath());
 
     mClientState = EteSyncClientState::Ptr(new EteSyncClientState());
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
@@ -97,6 +95,15 @@ void EteSyncResource::configure(WId windowId)
     const int result = wizard.exec();
     if (result == QDialog::Accepted) {
         mClientState->saveSettings();
+
+        // Init cache directories
+        initialiseDirectory(cacheDirectoryPath());
+        initialiseDirectory(collectionsCacheDirectoryPath());
+        initialiseDirectory(itemsCacheDirectoryPath());
+
+        // Save account cache
+        saveEtebaseAccountCache(mClientState->account(), mClientState->username(), cacheDirectoryPath());
+
         mCredentialsRequired = false;
         qCDebug(ETESYNC_LOG) << "Setting online";
         setOnline(true);
@@ -411,14 +418,19 @@ QString EteSyncResource::baseDirectoryPath() const
     return Settings::self()->basePath();
 }
 
+QString EteSyncResource::cacheDirectoryPath() const
+{
+    return Settings::self()->cacheDir();
+}
+
 QString EteSyncResource::collectionsCacheDirectoryPath() const
 {
-    return baseDirectoryPath() + QStringLiteral("/CollectionCache");
+    return cacheDirectoryPath() + QStringLiteral("/CollectionCache");
 }
 
 QString EteSyncResource::itemsCacheDirectoryPath() const
 {
-    return baseDirectoryPath() + QStringLiteral("/ItemCache");
+    return cacheDirectoryPath() + QStringLiteral("/ItemCache");
 }
 
 void EteSyncResource::initialiseDirectory(const QString &path) const

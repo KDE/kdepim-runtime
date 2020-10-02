@@ -16,38 +16,23 @@ void EteSyncClientState::init()
     Settings::self()->load();
     mServerUrl = Settings::self()->baseUrl();
     mUsername = Settings::self()->username();
-    mPassword = Settings::self()->password();
-    mEncryptionPassword = Settings::self()->encryptionPassword();
 
-    if (mServerUrl.isEmpty() || mUsername.isEmpty() || mPassword.isEmpty() || mEncryptionPassword.isEmpty()) {
+    if (mServerUrl.isEmpty() || mUsername.isEmpty()) {
         Q_EMIT clientInitialised(false);
         return;
     }
 
-    // Initialise EteSync client state
-    mClient = etesync_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
-    mToken = etesync_auth_get_token(mClient.get(), mUsername, mPassword);
-    if (mToken.isEmpty()) {
-        qCWarning(ETESYNC_LOG) << "Unable to obtain token from server" << QStringFromCharPtr(CharPtr(etesync_get_error_message()));
+    // Initialize client object
+    mClientXXX = etebase_client_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
+    if (!mClientXXX) {
+        qCDebug(ETESYNC_LOG) << "Could not initialise Etebase client";
+        qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
         Q_EMIT clientInitialised(false);
         return;
     }
-    etesync_set_auth_token(mClient.get(), mToken);
-    mJournalManager = EteSyncJournalManagerPtr(etesync_journal_manager_new(mClient.get()));
-    mDerived = etesync_crypto_derive_key(mClient.get(), mUsername, mEncryptionPassword);
 
-    // Get user keypair
-    EteSyncUserInfoManagerPtr userInfoManager(etesync_user_info_manager_new(mClient.get()));
-    mUserInfo = etesync_user_info_manager_fetch(userInfoManager.get(), mUsername);
-    if (!mUserInfo) {
-        qCWarning(ETESYNC_LOG) << "init() - User info obtained from server is NULL";
-        invalidateToken();
-        Q_EMIT clientInitialised(false);
-        return;
-    }
-    EteSyncCryptoManagerPtr userInfoCryptoManager = etesync_user_info_get_crypto_manager(mUserInfo.get(), mDerived);
-
-    mKeypair = EteSyncAsymmetricKeyPairPtr(etesync_user_info_get_keypair(mUserInfo.get(), userInfoCryptoManager.get()));
+    // Load Etebase account from cache
+    mAccountXXX = getEtebaseAccountFromCache(mClientXXX.get(), mUsername, Settings::self()->cacheDir());
 
     Q_EMIT clientInitialised(true);
 }
@@ -80,7 +65,6 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
 {
     mServerUrl = serverUrl;
     mUsername = username;
-    mPassword = password;
 
     mClientXXX = etebase_client_new(QStringLiteral("Akonadi EteSync Resource"), mServerUrl);
     if (!mClientXXX) {
@@ -88,7 +72,7 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
         return false;
     }
-    mAccountXXX = etebase_account_login(mClientXXX.get(), mUsername, mPassword);
+    mAccountXXX = etebase_account_login(mClientXXX.get(), mUsername, password);
     if (!mAccountXXX) {
         qCDebug(ETESYNC_LOG) << "Could not fetch Etebase account";
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
@@ -239,7 +223,9 @@ void EteSyncClientState::saveSettings()
 {
     Settings::self()->setBaseUrl(mServerUrl);
     Settings::self()->setUsername(mUsername);
-    Settings::self()->setPassword(mPassword);
-    Settings::self()->setEncryptionPassword(mEncryptionPassword);
+
+    const QString cacheDir = Settings::self()->basePath() + QStringLiteral("/") + mUsername;
+    Settings::self()->setCacheDir(cacheDir);
+
     Settings::self()->save();
 }

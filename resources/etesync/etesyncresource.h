@@ -54,6 +54,7 @@ protected:
 
     void initialiseDirectory(const QString &path) const;
     QString baseDirectoryPath() const;
+    QString cacheDirectoryPath() const;
     QString collectionsCacheDirectoryPath() const;
     QString itemsCacheDirectoryPath() const;
 

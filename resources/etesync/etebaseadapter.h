@@ -98,8 +98,10 @@ using EtebaseCachePtr = std::unique_ptr<void, EtebaseDeleter>;
 using CharPtr = std::unique_ptr<char, EtebaseDeleter>;
 
 QString QStringFromCharPtr(const CharPtr &str);
+void saveEtebaseAccountCache(EtebaseAccount *account, const QString &username, const QString &cacheDir);
 void saveEtebaseCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etesyncCollection, const QString &cacheDir);
 void saveEtebaseItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etesyncItem, const QString &cacheDir);
+EtebaseAccountPtr getEtebaseAccountFromCache(const EtebaseClient *client, const QString &username, const QString &cacheDir);
 EtebaseCollectionPtr getEtebaseCollectionFromCache(const EtebaseCollectionManager *collectionManager, const QString &collectionUid, const QString &cacheDir);
 EtebaseItemPtr getEtebaseItemFromCache(const EtebaseItemManager *itemManager, const QString &itemUid, const QString &cacheDir);
 void deleteCacheFile(const QString &etebaseUid, const QString &cacheDir);
