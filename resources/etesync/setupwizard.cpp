@@ -125,6 +125,8 @@ bool LoginPage::validatePage()
             mLoginLabel->setText(i18n("Please ensure that the server URL is correct. The URL should start with http:// or https://."));
         } else if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_CONNECTION) {
             mLoginLabel->setText(i18n("Could not connect to the server. Please ensure that the server URL is correct."));
+        } else if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_NOT_FOUND) {
+            mLoginLabel->setText(i18n("Account does not exist. Please sign up for the service first."));
         } else {
             mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
         }

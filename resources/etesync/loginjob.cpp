@@ -42,6 +42,7 @@ void LoginJob::login()
         setError(etebase_error_get_code());
         const char *err = etebase_error_get_message();
         setErrorText(QString::fromUtf8(err));
+        return;
     }
     mAccountStatusResult = mClientState->accountStatus();
     qCDebug(ETESYNC_LOG) << "Account status result" << mAccountStatusResult;
