@@ -88,6 +88,7 @@ void JournalsFetchJob::fetchJournals()
         }
 
         uintptr_t removedCollectionsLength = etebase_collection_list_response_get_removed_memberships_length(collectionList.get());
+        qCDebug(ETESYNC_LOG) << "Removed collection membership list length" << removedCollectionsLength;
         if (removedCollectionsLength) {
             std::vector<const EtebaseRemovedCollection *> removedEtesyncCollections(removedCollectionsLength, nullptr);
             if (etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections.data())) {
@@ -99,6 +100,8 @@ void JournalsFetchJob::fetchJournals()
                 Collection collection;
                 const QString journalUid = QString::fromUtf8(etebase_removed_collection_get_uid(removedEtesyncCollections[i]));
                 collection.setRemoteId(journalUid);
+                collection.setParentCollection(mResourceCollection);
+                qCDebug(ETESYNC_LOG) << "Removed collection membership" << journalUid;
                 mRemovedCollections.push_back(collection);
             }
         }
