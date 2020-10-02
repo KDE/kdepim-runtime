@@ -19,7 +19,7 @@ QString QStringFromCharPtr(const CharPtr &str)
     return ret;
 }
 
-void saveEtebaseAccountCache(EtebaseAccount *account, const QString &username, const QString &cacheDir)
+void saveEtebaseAccountCache(EtebaseAccount *account, const QString &username, const QByteArray &encryptionKey, const QString &cacheDir)
 {
     if (!account) {
         qCDebug(ETESYNC_LOG) << "Unable to save etebase account cache - account is null";
@@ -27,7 +27,7 @@ void saveEtebaseAccountCache(EtebaseAccount *account, const QString &username, c
     }
     qCDebug(ETESYNC_LOG) << "Saving cache for account" << username;
 
-    CharPtr cacheData(etebase_account_save(account, nullptr, 0));
+    CharPtr cacheData(etebase_account_save(account, encryptionKey.constData(), encryptionKey.size()));
 
     QString filePath = cacheDir + QStringLiteral("/") + username;
     QFile file(filePath);
@@ -85,7 +85,7 @@ void saveEtebaseItemCache(const EtebaseItemManager *itemManager, const EtebaseIt
     file.write(cacheData);
 }
 
-EtebaseAccountPtr getEtebaseAccountFromCache(const EtebaseClient *client, const QString &username, const QString &cacheDir)
+EtebaseAccountPtr getEtebaseAccountFromCache(const EtebaseClient *client, const QString &username, const QByteArray &encryptionKey, const QString &cacheDir)
 {
     if (!client) {
         qCDebug(ETESYNC_LOG) << "Unable to get account from cache - client is null";
@@ -110,7 +110,7 @@ EtebaseAccountPtr getEtebaseAccountFromCache(const EtebaseClient *client, const 
 
     QByteArray accountCache = accountCacheFile.readAll();
 
-    EtebaseAccountPtr etebaseAccount(etebase_account_restore(client, accountCache.constData(), nullptr, 0));
+    EtebaseAccountPtr etebaseAccount(etebase_account_restore(client, accountCache.constData(), encryptionKey.constData(), encryptionKey.size()));
 
     return etebaseAccount;
 }

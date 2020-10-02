@@ -65,6 +65,7 @@ target_link_libraries(akonadi_etesync_resource
     KF5::KIOCore
     KF5::ConfigWidgets
     KF5::WindowSystem
+    KF5::Wallet
     KF5::I18n
 )
 

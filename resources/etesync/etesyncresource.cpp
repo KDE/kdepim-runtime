@@ -58,7 +58,7 @@ EteSyncResource::EteSyncResource(const QString &id)
     // Make resource directory
     initialiseDirectory(baseDirectoryPath());
 
-    mClientState = EteSyncClientState::Ptr(new EteSyncClientState());
+    mClientState = EteSyncClientState::Ptr(new EteSyncClientState(winIdForDialogs()));
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
 
@@ -102,7 +102,7 @@ void EteSyncResource::configure(WId windowId)
         initialiseDirectory(itemsCacheDirectoryPath());
 
         // Save account cache
-        saveEtebaseAccountCache(mClientState->account(), mClientState->username(), cacheDirectoryPath());
+        mClientState->saveAccount();
 
         mCredentialsRequired = false;
         qCDebug(ETESYNC_LOG) << "Setting online";
@@ -341,6 +341,12 @@ QString getEtebaseTypeForCollection(const Akonadi::Collection &collection)
 void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
 {
     qCDebug(ETESYNC_LOG) << "Retrieving items for collection" << collection.remoteId();
+
+    if (!mClientState->account()) {
+        qCDebug(ETESYNC_LOG) << "Cannot retrieve items - account is null";
+        cancelTask(i18n("Cannot retrieve items - account is null"));
+        return;
+    }
 
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
     EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());

@@ -16,7 +16,7 @@ class EteSyncClientState : public QObject
     Q_OBJECT
 public:
     typedef std::unique_ptr<EteSyncClientState> Ptr;
-    explicit EteSyncClientState() = default;
+    explicit EteSyncClientState(WId winId);
 
     void init();
     bool initToken(const QString &serverUrl, const QString &username, const QString &password);
@@ -28,6 +28,8 @@ public:
     void refreshUserInfo();
     bool login(const QString &serverUrl, const QString &username, const QString &password);
     bool accountStatus();
+    void saveAccount();
+    void getAccount();
 
     EteSync *client() const
     {
@@ -92,6 +94,7 @@ private:
     QString mPassword;
     QString mServerUrl;
     QString mEncryptionPassword;
+    WId mWinId;
 };
 
 #endif // ETESYNCSETTINGS_H
