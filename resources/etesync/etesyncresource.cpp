@@ -61,6 +61,8 @@ EteSyncResource::EteSyncResource(const QString &id)
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
 
+    AttributeFactory::registerAttribute<CollectionColorAttribute>();
+
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &EteSyncResource::onReloadConfiguration);
 
     qCDebug(ETESYNC_LOG) << "Resource started";
