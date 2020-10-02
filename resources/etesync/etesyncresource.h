@@ -10,11 +10,8 @@
 #include <AkonadiAgentBase/ResourceBase>
 #include <KLocalizedString>
 
-#include "calendarhandler.h"
-#include "contacthandler.h"
-#include "etesyncadapter.h"
+#include "etebaseadapter.h"
 #include "etesyncclientstate.h"
-#include "taskhandler.h"
 
 class EteSyncResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {
@@ -48,9 +45,7 @@ protected:
 
     void initialise();
 
-    void setupCollection(Akonadi::Collection &collection, EteSyncJournal *journal);
-
-    Collection createRootCollection();
+    Akonadi::Collection createRootCollection();
 
     void initialiseDirectory(const QString &path) const;
     QString baseDirectoryPath() const;
@@ -62,11 +57,6 @@ protected:
     bool handleError(const int errorCode, QString errorMessage);
     bool credentialsRequired();
 
-    const EteSyncJournalPtr &getJournal(const QString &journalUid)
-    {
-        return mJournalsCache[journalUid];
-    }
-
 private Q_SLOTS:
     void onReloadConfiguration();
     void initialiseDone(bool successful);
@@ -77,22 +67,9 @@ private Q_SLOTS:
 
 private:
     EteSyncClientState::Ptr mClientState;
-    std::vector<BaseHandler::Ptr> mHandlers;
-    std::map<QString, EteSyncJournalPtr> mJournalsCache;
     QDateTime mJournalsCacheUpdateTime;
     bool mCredentialsRequired = false;
     Akonadi::Collection mRootCollection;
-
-    ContactHandler::Ptr mContactHandler;
-    CalendarHandler::Ptr mCalendarHandler;
-    TaskHandler::Ptr mTaskHandler;
-
-    friend class ContactHandler;
-    friend class CalendarTaskBaseHandler;
-    friend class BaseHandler;
-
-    BaseHandler *fetchHandlerForMimeType(const QString &mimeType);
-    BaseHandler *fetchHandlerForCollection(const Akonadi::Collection &collection);
 };
 
 #endif

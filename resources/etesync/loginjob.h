@@ -10,7 +10,6 @@
 #include <KJob>
 
 #include "etebaseadapter.h"
-#include "etesyncadapter.h"
 #include "etesyncclientstate.h"
 
 namespace EteSyncAPI {

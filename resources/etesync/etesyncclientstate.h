@@ -8,7 +8,6 @@
 #define ETESYNCCLIENTSTATE_H
 
 #include "etebaseadapter.h"
-#include "etesyncadapter.h"
 #include "settings.h"
 
 #include <KWallet/KWallet>
@@ -22,13 +21,8 @@ public:
     explicit EteSyncClientState(WId winId);
 
     void init();
-    bool initToken(const QString &serverUrl, const QString &username, const QString &password);
-    bool initUserInfo();
-    bool initKeypair(const QString &encryptionPassword);
-    bool initAccount(const QString &encryptionPassword);
     void saveSettings();
     void invalidateToken();
-    void refreshUserInfo();
     bool login(const QString &serverUrl, const QString &username, const QString &password);
     void logout();
     bool accountStatus();
@@ -37,29 +31,9 @@ public:
     void saveAccount();
     void getAccount();
 
-    EteSync *client() const
-    {
-        return mClient.get();
-    }
-
     EtebaseAccount *account() const
     {
-        return mAccountXXX.get();
-    }
-
-    QString derived() const
-    {
-        return mDerived;
-    }
-
-    EteSyncJournalManager *journalManager() const
-    {
-        return mJournalManager.get();
-    }
-
-    EteSyncAsymmetricKeyPair *keypair() const
-    {
-        return mKeypair.get();
+        return mAccount.get();
     }
 
     QString username() const
@@ -87,19 +61,11 @@ Q_SIGNALS:
 private:
     bool createDefaultJournal(const QString &journalType, const QString &journalName);
 
-    EtebaseClientPtr mClientXXX;
-    EtebaseAccountPtr mAccountXXX;
-
-    EteSyncPtr mClient;
-    QString mDerived;
-    QString mToken;
-    EteSyncJournalManagerPtr mJournalManager;
-    EteSyncUserInfoPtr mUserInfo;
-    EteSyncAsymmetricKeyPairPtr mKeypair;
+    EtebaseClientPtr mClient;
+    EtebaseAccountPtr mAccount;
     QString mUsername;
     QString mPassword;
     QString mServerUrl;
-    QString mEncryptionPassword;
     WId mWinId;
     QPointer<KWallet::Wallet> mWallet;
 };

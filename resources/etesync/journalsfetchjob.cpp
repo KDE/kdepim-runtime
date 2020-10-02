@@ -75,7 +75,7 @@ void JournalsFetchJob::fetchJournals()
 
         const EtebaseCollection *etesyncCollections[dataLength];
         if (etebase_collection_list_response_get_data(collectionList.get(), etesyncCollections)) {
-            setError(int(etesync_get_error_code()));
+            setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();
             setErrorText(QString::fromUtf8(err));
         }
@@ -91,7 +91,7 @@ void JournalsFetchJob::fetchJournals()
         if (removedCollectionsLength) {
             const EtebaseRemovedCollection *removedEtesyncCollections[removedCollectionsLength];
             if (etebase_collection_list_response_get_removed_memberships(collectionList.get(), removedEtesyncCollections)) {
-                setError(int(etesync_get_error_code()));
+                setError(int(etebase_error_get_code()));
                 const char *err = etebase_error_get_message();
                 setErrorText(QString::fromUtf8(err));
             }

@@ -12,7 +12,6 @@
 #include <KJob>
 
 #include "etebaseadapter.h"
-#include "etesyncadapter.h"
 
 namespace EteSyncAPI {
 class EntriesFetchJob : public KJob

@@ -87,7 +87,7 @@ void EntriesFetchJob::fetchEntries()
 
         const EtebaseItem *etesyncItems[dataLength];
         if (etebase_item_list_response_get_data(itemList.get(), etesyncItems)) {
-            setError(int(etesync_get_error_code()));
+            setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();
             setErrorText(QString::fromUtf8(err));
         }

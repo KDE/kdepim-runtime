@@ -25,7 +25,6 @@
 
 #include "entriesfetchjob.h"
 #include "etesync_debug.h"
-#include "etesyncadapter.h"
 #include "journalsfetchjob.h"
 #include "settings.h"
 #include "settingsadaptor.h"
@@ -61,15 +60,6 @@ EteSyncResource::EteSyncResource(const QString &id)
     mClientState = EteSyncClientState::Ptr(new EteSyncClientState(winIdForDialogs()));
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
-
-    mHandlers.clear();
-    mHandlers.push_back(BaseHandler::Ptr(new CalendarHandler(this)));
-    mHandlers.push_back(BaseHandler::Ptr(new ContactHandler(this)));
-    mHandlers.push_back(BaseHandler::Ptr(new TaskHandler(this)));
-
-    mContactHandler = ContactHandler::Ptr(new ContactHandler(this));
-    mCalendarHandler = CalendarHandler::Ptr(new CalendarHandler(this));
-    mTaskHandler = TaskHandler::Ptr(new TaskHandler(this));
 
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &EteSyncResource::onReloadConfiguration);
 
@@ -126,8 +116,6 @@ void EteSyncResource::retrieveCollections()
     }
 
     mRootCollection = createRootCollection();
-
-    mJournalsCache.clear();
 
     auto job = new JournalsFetchJob(mClientState->account(), mRootCollection, collectionsCacheDirectoryPath(), this);
     connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
@@ -244,83 +232,6 @@ void EteSyncResource::showErrorDialog(const QString &errorText, const QString &e
     dialog->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dialog->windowHandle(), winIdForDialogs());
     KMessageBox::detailedSorry(dialog, errorText, errorDetails, title);
-}
-
-void EteSyncResource::setupCollection(Collection &collection, EteSyncJournal *journal)
-{
-    if (!journal) {
-        qCDebug(ETESYNC_LOG) << "Unable to setup collection - journal is null";
-        return;
-    }
-    EteSyncCryptoManagerPtr cryptoManager = etesync_journal_get_crypto_manager(journal, mClientState->derived(), mClientState->keypair());
-
-    EteSyncCollectionInfoPtr info(etesync_journal_get_info(journal, cryptoManager.get()));
-
-    const QString type = QStringFromCharPtr(CharPtr(etesync_collection_info_get_type(info.get())));
-
-    QStringList mimeTypes;
-
-    auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
-
-    const QString displayName = QStringFromCharPtr(CharPtr(etesync_collection_info_get_display_name(info.get())));
-
-    if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_ADDRESS_BOOK)) {
-        mimeTypes.push_back(KContacts::Addressee::mimeType());
-        mimeTypes.push_back(KContacts::ContactGroup::mimeType());
-        attr->setDisplayName(displayName);
-        attr->setIconName(QStringLiteral("view-pim-contacts"));
-    } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_CALENDAR)) {
-        mimeTypes.push_back(KCalendarCore::Event::eventMimeType());
-        attr->setDisplayName(displayName);
-        attr->setIconName(QStringLiteral("view-calendar"));
-    } else if (type == QStringLiteral(ETESYNC_COLLECTION_TYPE_TASKS)) {
-        mimeTypes.push_back(KCalendarCore::Todo::todoMimeType());
-        attr->setDisplayName(displayName);
-        attr->setIconName(QStringLiteral("view-pim-tasks"));
-    } else {
-        qCWarning(ETESYNC_LOG) << "Unknown journal type. Cannot set collection mime type.";
-    }
-
-    const QString journalUid = QStringFromCharPtr(CharPtr(etesync_journal_get_uid(journal)));
-    auto collectionColor = etesync_collection_info_get_color(info.get());
-    auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>(Collection::AddIfMissing);
-    colorAttr->setColor(collectionColor);
-
-    if (etesync_journal_is_read_only(journal)) {
-        collection.setRights(Collection::ReadOnly);
-    }
-
-    collection.setRemoteId(journalUid);
-    collection.setName(journalUid);
-    collection.setContentMimeTypes(mimeTypes);
-}
-
-BaseHandler *EteSyncResource::fetchHandlerForMimeType(const QString &mimeType)
-{
-    auto it = std::find_if(mHandlers.cbegin(), mHandlers.cend(),
-                           [&mimeType](const BaseHandler::Ptr &handler) {
-        return handler->mimeType() == mimeType;
-    });
-
-    if (it != mHandlers.cend()) {
-        return it->get();
-    } else {
-        return nullptr;
-    }
-}
-
-BaseHandler *EteSyncResource::fetchHandlerForCollection(const Akonadi::Collection &collection)
-{
-    auto it = std::find_if(mHandlers.cbegin(), mHandlers.cend(),
-                           [&collection](const BaseHandler::Ptr &handler) {
-        return collection.contentMimeTypes().contains(handler->mimeType());
-    });
-
-    if (it != mHandlers.cend()) {
-        return it->get();
-    } else {
-        return nullptr;
-    }
 }
 
 QString getEtebaseTypeForCollection(const Akonadi::Collection &collection)

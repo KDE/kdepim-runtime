@@ -1,7 +1,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_etesync_resource\")
 
 set(etesyncresource_common_SRCS
-    etesyncadapter.cpp
     etebaseadapter.cpp
 )
 
@@ -19,12 +18,7 @@ set(etesyncresource_SRCS
     etesyncclientstate.cpp
     journalsfetchjob.cpp
     entriesfetchjob.cpp
-    loginjob.cpp
-    contacthandler.cpp
-    basehandler.cpp
-    calendartaskbasehandler.cpp
-    calendarhandler.cpp
-    taskhandler.cpp   
+    loginjob.cpp 
     setupwizard.cpp
 
     ${etesyncconfig_SRCS}
