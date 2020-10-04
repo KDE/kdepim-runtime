@@ -1,7 +1,47 @@
 [Global]
 IconName=im-google
 Name=Google Groupware
+Name[ca]=Google Groupware
+Name[ca@valencia]=Google Groupware
+Name[cs]=Google Groupware
+Name[de]=Google Groupware
+Name[en_GB]=Google Groupware
+Name[es]=Google Groupware
+Name[et]=Google Groupware
+Name[fi]=Google Groupware
+Name[fr]=Logiciel de groupe de travail « Google Groupware »
+Name[ia]=Google Groupware
+Name[it]=Google Groupware
+Name[ko]=Google 그룹웨어
+Name[nl]=Google Groupware
+Name[pt]='Groupware' do Google
+Name[pt_BR]=Google Groupware
+Name[ru]=Службы совместной работы Google
+Name[sl]=Google Groupware
+Name[sv]=Google grupprogram
+Name[uk]=Групова робота у Google
+Name[x-test]=xxGoogle Groupwarexx
 Comment=Access your Google Calendars, Contacts and Tasks from KDE
+Comment[ca]=Accediu als calendaris, contactes i tasques de Google des del KDE
+Comment[ca@valencia]=Accediu als calendaris, contactes i tasques de Google des del KDE
+Comment[cs]=Přistupujte ke k kalendářům, kontaktům a úkolům z KDE
+Comment[de]=Greifen Sie in KDE auf Ihre Google-Kalender, -Kontakte und -Aufgaben zu
+Comment[en_GB]=Access your Google Calendars, Contacts and Tasks from KDE
+Comment[es]=Acceda a sus calendarios, contactos y tareas de Google desde KDE
+Comment[et]=Oma Google'i kalendrite, kontaktide ja ülesannete kasutamine otse KDE-st
+Comment[fi]=Pääsy Googlen kalentereihin ja tehtäviin KDE:sta
+Comment[fr]=Accès à vos agendas, contacts et tâches Google depuis KDE
+Comment[ia]=Accede a tu Calendarios, Contactos  e Cargas de Google ab KDE
+Comment[it]=Accedi ai tuoi calendari, contatti e attività Google da KDE
+Comment[ko]=KDE에서 Google 캘린더, 연락처, 할 일에 접근합니다
+Comment[nl]=Heb toegang tot uw Google agenda's, contactpersonen en taken vanuit KDE
+Comment[pt]=Aceda aos seus calendários, contactos e tarefas da Google a partir do KDE
+Comment[pt_BR]=Acesse seus calendários, contatos e tarefas do Google a partir do KDE
+Comment[ru]=Доступ к контактам, задачам и календарям Google из KDE
+Comment[sl]=Dostopajte do svojih Googlovih koledarjev, stikov in opravil iz okolja KDE
+Comment[sv]=Kom åt Google kalendrar, kontakter och uppgifter från KDE
+Comment[uk]=Доступ до ваших календарів, записів контактів і завдань Google з KDE
+Comment[x-test]=xxAccess your Google Calendars, Contacts and Tasks from KDExx
 
 [Event/authNeeded]
 Name=Google Groupware needs to authenticate
