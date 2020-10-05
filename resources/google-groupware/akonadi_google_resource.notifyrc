@@ -45,7 +45,25 @@ Comment[x-test]=xxAccess your Google Calendars, Contacts and Tasks from KDExx
 
 [Event/authNeeded]
 Name=Google Groupware needs to authenticate
+Name[ca]=Google Groupware s'ha d'autenticar
+Name[ca@valencia]=Google Groupware s'ha d'autenticar
+Name[en_GB]=Google Groupware needs to authenticate
+Name[es]=Google Groupware necesita autenticación
+Name[ko]=Google 그룹웨어에 인증해야 함
+Name[nl]=Google Groupware heeft authenticatie nodig
+Name[pt]=O Google Groupware necessita de se autenticar
+Name[uk]=Потрібне розпізнавання на Google Groupware
+Name[x-test]=xxGoogle Groupware needs to authenticatexx
 Comment=Google Groupware has been logged off and needs to be reauthenticated
+Comment[ca]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
+Comment[ca@valencia]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
+Comment[en_GB]=Google Groupware has been logged off and needs to be re-authenticated
+Comment[es]=Se ha cerrado la sesión de Google Groupware y necesita volver a autenticarse
+Comment[ko]=Google 그룹웨어에서 로그아웃되어서 다시 인증해야 함
+Comment[nl]=Google Groupware is afgemeld en opnieuw er is opnieuw authenticatie nodig
+Comment[pt]=A sessão do Google Groupware foi encerrada e necessita de se autenticar de novo
+Comment[uk]=Було здійснено вихід із Google Groupware — потрібне повторне розпізнавання
+Comment[x-test]=xxGoogle Groupware has been logged off and needs to be reauthenticatedxx
 Urgency=Normal
 Action=Popup
 
