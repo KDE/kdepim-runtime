@@ -576,9 +576,11 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
 
     // Create metadata
+    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     const QString type = getEtebaseTypeForCollection(collection);
     EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_metadata_new(type, collection.displayName()));
     etebase_collection_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
+    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     qCDebug(ETESYNC_LOG) << "Created metadata";
 
@@ -652,10 +654,14 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
     }
 
     // Update metadata
-    EtebaseCollectionMetadataPtr collectionMetadata(etebase_collection_get_meta(etesyncCollection.get()));
+    EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_get_meta(etesyncCollection.get()));
+
+    // mtime
+    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     // Name
-    etebase_collection_metadata_set_name(collectionMetadata.get(), collection.displayName());
+    etebase_collection_metadata_set_name(collectionMetaData.get(), collection.displayName());
 
     // Color
     auto journalColor = ETESYNC_DEFAULT_COLLECTION_COLOR;
@@ -665,10 +671,10 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
             journalColor = colorAttr->color().name();
         }
     }
-    etebase_collection_metadata_set_color(collectionMetadata.get(), journalColor);
+    etebase_collection_metadata_set_color(collectionMetaData.get(), journalColor);
 
     // Set metadata
-    etebase_collection_set_meta(etesyncCollection.get(), collectionMetadata.get());
+    etebase_collection_set_meta(etesyncCollection.get(), collectionMetaData.get());
 
     // Upload to server
     if (etebase_collection_manager_upload(collectionManager.get(), etesyncCollection.get(), NULL)) {
@@ -704,6 +710,13 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
         return;
     }
+
+    // Update metadata
+    EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_get_meta(etesyncCollection.get()));
+
+    // mtime
+    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     // Set collection deleted
     etebase_collection_delete(etesyncCollection.get());
