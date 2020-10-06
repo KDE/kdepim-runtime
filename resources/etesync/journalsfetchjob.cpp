@@ -155,6 +155,10 @@ void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const Et
     if (collectionColor.isEmpty()) {
         collectionColor = ETESYNC_DEFAULT_COLLECTION_COLOR;
     }
+    // Convert #RRGGBBAA strings to #AARRGGBB, which is required by Qt
+    if (collectionColor.length() == 9) {
+        collectionColor = collectionColor.left(1) + collectionColor.right(2) + collectionColor.mid(1, 6);
+    }
     colorAttr->setColor(collectionColor);
 
     if (etebase_collection_get_access_level(etesyncCollection) == ETEBASE_COLLECTION_ACCESS_LEVEL_READ_ONLY) {
