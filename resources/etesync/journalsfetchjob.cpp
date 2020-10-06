@@ -146,7 +146,8 @@ void JournalsFetchJob::setupCollection(Akonadi::Collection &collection, const Et
         attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-pim-tasks"));
     } else {
-        qCWarning(ETESYNC_LOG) << "Unknown journal type. Cannot set collection mime type.";
+        qCInfo(ETESYNC_LOG) << "Unknown collection type. Cannot set collection mime type.";
+        return;
     }
 
     const QString journalUid = QString::fromUtf8(etebase_collection_get_uid(etesyncCollection));
