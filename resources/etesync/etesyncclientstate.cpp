@@ -105,6 +105,7 @@ bool EteSyncClientState::accountStatus()
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
     EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
     etebase_fetch_options_set_limit(fetchOptions.get(), 1);
+    etebase_fetch_options_set_prefetch(fetchOptions.get(), ETEBASE_PREFETCH_OPTION_MEDIUM);
 
     EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
     if (!collectionList) {

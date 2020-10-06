@@ -57,6 +57,7 @@ void JournalsFetchJob::fetchJournals()
         EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
         etebase_fetch_options_set_stoken(fetchOptions.get(), mSyncToken);
         etebase_fetch_options_set_limit(fetchOptions.get(), COLLECTIONS_FETCH_BATCH_SIZE);
+        etebase_fetch_options_set_prefetch(fetchOptions.get(), ETEBASE_PREFETCH_OPTION_MEDIUM);
 
         EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
         if (!collectionList) {
