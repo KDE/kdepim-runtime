@@ -122,6 +122,7 @@ protected:
 
     virtual bool serverSupportsAnnotations() const;
     virtual bool serverSupportsCondstore() const;
+    virtual bool serverSupportsQResync() const;
 
     int batchSize() const;
     void setItemMergingMode(Akonadi::ItemSync::MergeMode mode);

@@ -13,13 +13,12 @@
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
-#include <kimap/capabilitiesjob.h>
 #include <kimap/logoutjob.h>
-#include <kimap/namespacejob.h>
-#include <kimap/idjob.h>
+#include <kimap/enablejob.h>
 
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"
+#include "preparesessionjob.h"
 
 qint64 SessionPool::m_requestCounter = 0;
 
@@ -112,6 +111,7 @@ void SessionPool::disconnect(SessionTermination termination)
     m_account = nullptr;
     m_namespaces.clear();
     m_capabilities.clear();
+    m_effectiveCapabilities.clear();
 
     m_initialConnectDone = false;
     Q_EMIT disconnectDone();
@@ -157,6 +157,11 @@ ImapAccount *SessionPool::account() const
 QStringList SessionPool::serverCapabilities() const
 {
     return m_capabilities;
+}
+
+QStringList SessionPool::effectiveServerCapabilities() const
+{
+    return m_effectiveCapabilities;
 }
 
 QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces() const
@@ -394,12 +399,12 @@ void SessionPool::onLoginDone(KJob *job)
 
     if (job->error() == 0) {
         if (m_initialConnectDone) {
-            declareSessionReady(login->session());
+            enableSessionCapabilities(login->session());
         } else {
-            // On initial connection we ask for capabilities
-            KIMAP::CapabilitiesJob *capJob = new KIMAP::CapabilitiesJob(login->session());
-            QObject::connect(capJob, &KIMAP::CapabilitiesJob::result, this, &SessionPool::onCapabilitiesTestDone);
-            capJob->start();
+            // On initial connection we need to prepare the session (and ourselves)
+            auto *prepJob = new PrepareSessionJob(login->session(), m_clientId);
+            QObject::connect(prepJob, &KJob::result, this, &SessionPool::onPrepareSessionDone);
+            prepJob->start();
         }
     } else {
         if (job->error() == KIMAP::LoginJob::ERR_COULD_NOT_CONNECT) {
@@ -424,33 +429,50 @@ void SessionPool::onLoginDone(KJob *job)
     }
 }
 
-void SessionPool::onCapabilitiesTestDone(KJob *job)
+void SessionPool::onPrepareSessionDone(KJob *job)
 {
-    KIMAP::CapabilitiesJob *capJob = qobject_cast<KIMAP::CapabilitiesJob *>(job);
+    auto *prepareJob = qobject_cast<PrepareSessionJob *>(job);
+
     // Can happen if we disconnected meanwhile
-    if (!m_connectingPool.contains(capJob->session())) {
+    if (!m_connectingPool.contains(prepareJob->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
         return;
     }
 
     if (job->error()) {
-        if (m_account) {
-            cancelSessionCreation(capJob->session(),
-                                  CapabilitiesTestError,
-                                  i18n("Could not test the capabilities supported by the "
-                                       "IMAP server %1.\n%2",
-                                       m_account->server(), job->errorString()));
-        } else {
-            // Can happen when we lose all ready connections while trying to check capabilities.
-            cancelSessionCreation(capJob->session(),
-                                  CapabilitiesTestError,
-                                  i18n("Could not test the capabilities supported by the "
-                                       "IMAP server.\n%1", job->errorString()));
+        QString msg;
+        int code = KJob::NoError;
+        switch (job->error()) {
+        case PrepareSessionJob::CapabilitiesTestError:
+            code = CapabilitiesTestError;
+            msg = m_account ? i18n("Could not test the capabilities supported by the IMAP server %1.\n%2", m_account->server(), job->errorString())
+                            : i18n("Could not test the capabilities supported by the IMAP server.\n%1", job->errorString());
+            break;
+        case PrepareSessionJob::NamespaceFetchError:
+            code = job->error();
+            msg = m_account ? i18n("Could not retrieve namespaces from the IMAP server %1.\n%2", m_account->server(), job->errorString())
+                            : i18n("Could not retrieve namespaces from the IMAP server.\n%1", job->errorString());
+            break;
+        case PrepareSessionJob::IdentificationError:
+            code = job->error();
+            msg = m_account ? i18n("Could not send client ID to the IMAP server %1.\n%2", m_account->server(), job->errorString())
+                            : i18n("Could not send client ID to the IMAP server.\n%1", job->errorString());
+            break;
+        default:
+            code = job->error();
+            msg = job->errorString();
         }
+
+        cancelSessionCreation(prepareJob->session(), code, msg);
         return;
     }
 
-    m_capabilities = capJob->capabilities();
+    m_capabilities = prepareJob->capabilities();
+    m_effectiveCapabilities = prepareJob->capabilities();
+    m_namespaces = prepareJob->namespaces();
+    m_personalNamespaces = prepareJob->personalNamespaces();
+    m_userNamespaces = prepareJob->userNamespaces();
+    m_sharedNamespaces = prepareJob->sharedNamespaces();
 
     QStringList missing;
     const QStringList expected = {QStringLiteral("IMAP4REV1")};
@@ -461,7 +483,7 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
     }
 
     if (!missing.isEmpty()) {
-        cancelSessionCreation(capJob->session(),
+        cancelSessionCreation(prepareJob->session(),
                               IncompatibleServerError,
                               i18n("Cannot use the IMAP server %1, "
                                    "some mandatory capabilities are missing: %2. "
@@ -471,76 +493,50 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
         return;
     }
 
-    // If the extension is supported, grab the namespaces from the server
-    if (m_capabilities.contains(QLatin1String("NAMESPACE"))) {
-        KIMAP::NamespaceJob *nsJob = new KIMAP::NamespaceJob(capJob->session());
-        QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
-        nsJob->start();
-        return;
-    } else if (m_capabilities.contains(QLatin1String("ID"))) {
-        KIMAP::IdJob *idJob = new KIMAP::IdJob(capJob->session());
-        idJob->setField("name", m_clientId);
-        QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
-        idJob->start();
-        return;
-    } else {
-        declareSessionReady(capJob->session());
+    enableSessionCapabilities(prepareJob->session());
+}
+
+void SessionPool::enableSessionCapabilities(KIMAP::Session *session)
+{
+    QStringList capsToEnable;
+
+    if (m_capabilities.contains(QStringView{u"CONDSTORE"})
+        && m_capabilities.contains(QStringView{u"QRESYNC"})) {
+        capsToEnable.push_back(QStringLiteral("QRESYNC"));
     }
+
+    if (!capsToEnable.empty()) {
+        qCDebug(IMAPRESOURCE_LOG) << "Capabilities to ENABLE on the server:" << capsToEnable;
+        auto *job = new KIMAP::EnableJob(session);
+        job->setCapabilities(capsToEnable);
+        QObject::connect(job, &KJob::result, this, &SessionPool::onEnableDone);
+        job->start();
+    } else {
+        declareSessionReady(session);
+    }
+}
+
+void SessionPool::onEnableDone(KJob *job)
+{
+    auto *enableJob = qobject_cast<KIMAP::EnableJob *>(job);
+
+    // Can happen if we disconnected meanwhile
+    if (!m_connectingPool.contains(enableJob->session())) {
+        Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
+        return;
+    }
+
+    if (!enableJob->enabledCapabilities().contains(QStringView{u"QRESYNC"})) {
+        qCWarning(IMAPRESOURCE_LOG) << "Failed to enable QRESYNC!";
+        m_effectiveCapabilities.removeOne(QStringLiteral("QRESYNC"));
+    }
+
+    declareSessionReady(enableJob->session());
 }
 
 void SessionPool::setClientId(const QByteArray &clientId)
 {
     m_clientId = clientId;
-}
-
-void SessionPool::onNamespacesTestDone(KJob *job)
-{
-    KIMAP::NamespaceJob *nsJob = qobject_cast<KIMAP::NamespaceJob *>(job);
-    // Can happen if we disconnect meanwhile
-    if (!m_connectingPool.contains(nsJob->session())) {
-        Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
-        return;
-    }
-
-    m_personalNamespaces = nsJob->personalNamespaces();
-    m_userNamespaces = nsJob->userNamespaces();
-    m_sharedNamespaces = nsJob->sharedNamespaces();
-
-    if (nsJob->containsEmptyNamespace()) {
-        // When we got the empty namespace here, we assume that the other
-        // ones can be freely ignored and that the server will give us all
-        // the mailboxes if we list from the empty namespace itself...
-
-        m_namespaces.clear();
-    } else {
-        // ... otherwise we assume that we have to list explicitly each
-        // namespace
-
-        m_namespaces = nsJob->personalNamespaces()
-                       +nsJob->userNamespaces()
-                       +nsJob->sharedNamespaces();
-    }
-
-    if (m_capabilities.contains(QLatin1String("ID"))) {
-        KIMAP::IdJob *idJob = new KIMAP::IdJob(nsJob->session());
-        idJob->setField("name", m_clientId);
-        QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
-        idJob->start();
-        return;
-    } else {
-        declareSessionReady(nsJob->session());
-    }
-}
-
-void SessionPool::onIdDone(KJob *job)
-{
-    KIMAP::IdJob *idJob = qobject_cast<KIMAP::IdJob *>(job);
-    // Can happen if we disconnected meanwhile
-    if (!m_connectingPool.contains(idJob->session())) {
-        Q_EMIT connectDone(CancelledError, i18n("Disconnected during login."));
-        return;
-    }
-    declareSessionReady(idJob->session());
 }
 
 void SessionPool::onConnectionLost()
@@ -557,6 +553,7 @@ void SessionPool::onConnectionLost()
         m_account = nullptr;
         m_namespaces.clear();
         m_capabilities.clear();
+        m_effectiveCapabilities.clear();
 
         m_initialConnectDone = false;
     }
