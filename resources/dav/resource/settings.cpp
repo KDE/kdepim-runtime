@@ -41,7 +41,6 @@ class SettingsHelper
 {
 public:
     SettingsHelper()
-        : q(nullptr)
     {
     }
 
@@ -50,7 +49,7 @@ public:
         delete q;
     }
 
-    Settings *q;
+    Settings *q = nullptr;
 };
 
 Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)

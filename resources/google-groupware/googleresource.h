@@ -84,7 +84,7 @@ private:
     GoogleSettings *m_settings = nullptr;
     Akonadi::Collection m_rootCollection;
 
-    GoogleResourceState *m_iface;
+    GoogleResourceState *const m_iface;
 
     std::vector<GenericHandler::Ptr> m_handlers;
     FreeBusyHandler::Ptr m_freeBusyHandler;

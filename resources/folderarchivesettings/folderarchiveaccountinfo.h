@@ -46,11 +46,11 @@ public:
     bool operator==(const FolderArchiveAccountInfo &other) const;
 
 private:
-    FolderArchiveAccountInfo::FolderArchiveType mArchiveType;
-    Akonadi::Collection::Id mArchiveTopLevelCollectionId;
+    FolderArchiveAccountInfo::FolderArchiveType mArchiveType = UniqueFolder;
+    Akonadi::Collection::Id mArchiveTopLevelCollectionId = -1;
     QString mInstanceName;
-    bool mEnabled;
-    bool mKeepExistingStructure;
+    bool mEnabled = false;
+    bool mKeepExistingStructure = false;
 };
 
 #endif // FOLDERARCHIVEACCOUNTINFO_H

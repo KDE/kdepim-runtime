@@ -63,7 +63,7 @@ private:
     QString mDefaultUsername;
     QString mDefaultPassword;
     QPushButton *mOkButton = nullptr;
-    QButtonGroup *mRemoteProtocolGroup = nullptr;
+    QButtonGroup *const mRemoteProtocolGroup;
 };
 
 #endif

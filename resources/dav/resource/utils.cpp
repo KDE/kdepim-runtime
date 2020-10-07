@@ -166,13 +166,13 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
 
         for (const IncidencePtr &exception : qAsConst(exceptions)) {
             if (exception->status() == KCalendarCore::Incidence::StatusCanceled) {
-                QDateTime exDateTime(exception->recurrenceId());
+                const QDateTime exDateTime(exception->recurrenceId());
                 mainIncidence->recurrence()->addExDateTime(exDateTime);
             } else {
                 // The exception remote id will contain a fragment pointing to
                 // its instance identifier to distinguish it from the main
                 // event.
-                QString rid = target.remoteId() + QLatin1String("#") + exception->instanceIdentifier();
+                const QString rid = target.remoteId() + QLatin1String("#") + exception->instanceIdentifier();
                 qCDebug(DAVRESOURCE_LOG) << "Extra incidence at" << rid;
                 Akonadi::Item extraItem = target;
                 extraItem.setRemoteId(rid);

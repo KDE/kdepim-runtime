@@ -111,11 +111,11 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
             url.setScheme(QStringLiteral("http"));
         }
 
-        QString host = wizard->field(QStringLiteral("connectionHost")).toString();
+        const QString host = wizard->field(QStringLiteral("connectionHost")).toString();
         if (host.isEmpty()) {
             return QString();
         }
-        QStringList hostParts = host.split(QLatin1Char(':'));
+        const QStringList hostParts = host.split(QLatin1Char(':'));
         url.setHost(hostParts.at(0));
         url.setPath(pathPattern);
 
