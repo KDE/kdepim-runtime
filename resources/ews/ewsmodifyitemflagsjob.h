@@ -32,7 +32,7 @@ protected:
     Akonadi::Item::List mResultItems;
     EwsClient &mClient;
     QSet<QByteArray> mAddedFlags;
-    QSet<QByteArray> mRemovedFlags;
+    const QSet<QByteArray> mRemovedFlags;
 private Q_SLOTS:
     void itemModifyFinished(KJob *job);
 };

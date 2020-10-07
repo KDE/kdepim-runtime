@@ -38,17 +38,17 @@ private:
     void parseEmail();
 
     QString mEmail;
-    QString mUsername;
-    QString mPassword;
+    const QString mUsername;
+    const QString mPassword;
 
-    QString mUserAgent;
-    bool mEnableNTLMv2;
+    const QString mUserAgent;
+    const bool mEnableNTLMv2;
 
     QQueue<QString> mUrlQueue;
 
     QString mEwsUrl;
     QString mOabUrl;
-    bool mUsedCreds;
+    bool mUsedCreds = false;
 };
 
 #endif

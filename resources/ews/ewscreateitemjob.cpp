@@ -13,7 +13,7 @@
 EwsCreateItemJob::EwsCreateItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
     : EwsJob(parent)
     , mItem(item)
-    , mCollection(collection)
+    , mCollection(collection) //never use
     , mClient(client)
     , mTagStore(tagStore)
 {
