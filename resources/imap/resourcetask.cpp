@@ -145,6 +145,11 @@ QStringList ResourceTask::serverCapabilities() const
     return m_resource->serverCapabilities();
 }
 
+QStringList ResourceTask::effectiveServerCapabilities() const
+{
+    return m_resource->effectiveServerCapabilities();
+}
+
 QList<KIMAP::MailBoxDescriptor> ResourceTask::serverNamespaces() const
 {
     return m_resource->serverNamespaces();
@@ -541,9 +546,9 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
     return m_resource;
 }
 
-KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
+KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col) const
 {
-    const Akonadi::ImapAclAttribute *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    const auto *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
     if (aclAttribute) {
         //HACK, only return myrights if they are available
         if (aclAttribute->myRights() != KIMAP::Acl::None) {

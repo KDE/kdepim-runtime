@@ -56,6 +56,7 @@ protected:
     QString userName() const;
     QString resourceName() const;
     QStringList serverCapabilities() const;
+    QStringList effectiveServerCapabilities() const;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
 
     bool isAutomaticExpungeEnabled() const;
@@ -122,14 +123,14 @@ protected:
 
     virtual bool serverSupportsAnnotations() const;
     virtual bool serverSupportsCondstore() const;
-    virtual bool serverSupportsQResync() const;
+    virtual bool isQResyncEnabled() const;
 
     int batchSize() const;
     void setItemMergingMode(Akonadi::ItemSync::MergeMode mode);
 
     ResourceStateInterface::Ptr resourceState();
 
-    KIMAP::Acl::Rights myRights(const Akonadi::Collection &);
+    KIMAP::Acl::Rights myRights(const Akonadi::Collection &) const;
 
 private:
     void abortTask(const QString &errorString);

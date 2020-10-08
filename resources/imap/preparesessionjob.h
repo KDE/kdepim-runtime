@@ -44,8 +44,8 @@ private:
     void idJobDone(KJob *job);
 
 private:
-    KIMAP::Session *m_session;
-    QByteArray m_clientId;
+    KIMAP::Session * const m_session;
+    const QByteArray m_clientId;
 
     QStringList m_capabilities;
 

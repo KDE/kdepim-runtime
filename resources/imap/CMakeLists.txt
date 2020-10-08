@@ -32,6 +32,7 @@ set( imapresource_LIB_SRCS
   retrievecollectionstask.cpp
   retrieveitemtask.cpp
   retrieveitemstask.cpp
+  retrieveitemstask_qresync.cpp
   searchtask.cpp
   sessionpool.cpp
   uidvalidityattribute.cpp

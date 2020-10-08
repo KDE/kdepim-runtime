@@ -52,6 +52,8 @@ void RetrieveItemsTask::setFetchMissingItemBodies(bool enabled)
 
 void RetrieveItemsTask::doStart(KIMAP::Session *session)
 {
+    m_time.start();
+
     emitPercent(0);
     // Prevent fetching items from noselect folders.
     if (collection().hasAttribute("noselect")) {
@@ -132,7 +134,6 @@ void RetrieveItemsTask::startRetrievalTasks()
 {
     const QString mailBox = mailBoxForCollection(collection());
     qCDebug(IMAPRESOURCE_LOG) << "Starting retrieval for " << mailBox;
-    m_time.start();
 
     // Now is the right time to expunge the messages marked \\Deleted from this mailbox.
     const bool hasACL = serverCapabilities().contains(QLatin1String("ACL"));
