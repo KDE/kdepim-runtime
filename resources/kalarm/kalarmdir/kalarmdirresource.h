@@ -95,12 +95,12 @@ private:
     QHash<QString, EventFile> mEvents;         // cached alarms and file names, indexed by ID
     QHash<QString, QString> mFileEventIds;     // alarm IDs, indexed by file name
     Akonadi_KAlarm_Dir_Resource::Settings *mSettings = nullptr;
-    Akonadi::Collection::Id mCollectionId;     // ID of this resource's collection
+    Akonadi::Collection::Id mCollectionId = -1;     // ID of this resource's collection
     KACalendar::Compat mCompatibility;
     int mVersion;                              // calendar format version
     QStringList mChangedFiles;                 // files being written to
-    bool mCollectionFetched;                       // mCollectionId has been initialised
-    bool mWaitingToRetrieve;                       // retrieveCollections() needs to be called
+    bool mCollectionFetched = false;                       // mCollectionId has been initialised
+    bool mWaitingToRetrieve = false;                       // retrieveCollections() needs to be called
 };
 
 #endif

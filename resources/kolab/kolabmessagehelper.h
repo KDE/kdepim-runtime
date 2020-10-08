@@ -18,7 +18,7 @@ public:
     Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message, const qint64 uid, const qint64 size, const QMap<QByteArray, QVariant> &attrs, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const override;
 
 private:
-    Akonadi::Collection mCollection;
+    const Akonadi::Collection mCollection;
 };
 
 #endif

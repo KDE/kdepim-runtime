@@ -41,17 +41,17 @@ private Q_SLOTS:
 private:
     //Batch fetching
     KIMAP::ImapSet m_currentSet;
-    KIMAP::FetchJob::FetchScope m_scope;
-    KIMAP::Session *m_session = nullptr;
-    int m_batchSize;
-    bool m_uidBased;
-    int m_fetchedItemsInCurrentBatch;
+    const KIMAP::FetchJob::FetchScope m_scope;
+    KIMAP::Session *const m_session;
+    const int m_batchSize;
+    bool m_uidBased = false;
+    int m_fetchedItemsInCurrentBatch = 0;
     const MessageHelper::Ptr m_messageHelper;
-    bool m_fetchInProgress;
-    bool m_continuationRequested;
+    bool m_fetchInProgress = false;
+    bool m_continuationRequested = false;
     KIMAP::ImapInterval m_searchUidInterval;
-    bool m_gmailEnabled;
-    bool m_searchInChunks;
+    bool m_gmailEnabled = false;
+    bool m_searchInChunks = false;
 };
 
 #endif // BATCHFETCHER_H

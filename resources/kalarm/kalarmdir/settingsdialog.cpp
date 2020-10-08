@@ -23,7 +23,6 @@ namespace Akonadi_KAlarm_Dir_Resource {
 SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     : QDialog()
     , mSettings(settings)
-    , mReadOnlySelected(false)
 {
     QWidget *mainWidget = new QWidget(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);

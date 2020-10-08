@@ -15,13 +15,7 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSe
     , m_scope(scope)
     , m_session(session)
     , m_batchSize(batchSize)
-    , m_uidBased(false)
-    , m_fetchedItemsInCurrentBatch(0)
     , m_messageHelper(messageHelper)
-    , m_fetchInProgress(false)
-    , m_continuationRequested(false)
-    , m_gmailEnabled(false)
-    , m_searchInChunks(false)
 {
 }
 

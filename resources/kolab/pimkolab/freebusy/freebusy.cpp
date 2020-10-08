@@ -240,7 +240,7 @@ Freebusy aggregateFreeBusy(const std::vector< Freebusy > &fbList, const std::str
     QDateTime start;
     QDateTime end;
     bool allDay = false;
-    Q_FOREACH (const Freebusy &fb, fbList) {
+    for (const Freebusy &fb : fbList) {
         const QDateTime &tmpStart = Kolab::Conversion::toDate(fb.start());
         if (!start.isValid() || tmpStart < start) {
             start = tmpStart;

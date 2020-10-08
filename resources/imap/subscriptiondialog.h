@@ -90,8 +90,8 @@ private:
 
     QLineEdit *m_lineEdit = nullptr;
     QCheckBox *m_enableSubscription = nullptr;
-    SubscriptionFilterProxyModel *m_filter = nullptr;
-    QStandardItemModel *m_model = nullptr;
+    SubscriptionFilterProxyModel *const m_filter;
+    QStandardItemModel *const m_model;
     QMap<QString, QStandardItem *> m_itemsMap;
     QPushButton *mUser1Button = nullptr;
 };

@@ -45,7 +45,8 @@ Note fromNote(const KMime::Message::Ptr &m)
 
     std::vector<Kolab::Attachment> attachments;
     attachments.reserve(note.attachments().count());
-    foreach (const Akonadi::NoteUtils::Attachment &a, note.attachments()) {
+    const auto noteAttachments = note.attachments();
+    for (const Akonadi::NoteUtils::Attachment &a : noteAttachments) {
         Kolab::Attachment attachment;
         if (a.url().isValid()) {
             attachment.setUri(toStdString(a.url().toString()), toStdString(a.mimetype()));
@@ -91,7 +92,8 @@ KMime::Message::Ptr toNote(const Note &n)
             note.attachments().append(attachment);
         }
     }
-    foreach (const Kolab::CustomProperty &a, n.customProperties()) {
+    const auto customProperties = n.customProperties();
+    for (const Kolab::CustomProperty &a : customProperties) {
         note.custom().insert(fromStdString(a.identifier), fromStdString(a.value));
     }
     return note.message();

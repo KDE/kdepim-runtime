@@ -49,7 +49,6 @@ static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDes
 RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace,
                                          const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
     : KJob(parent)
-    , mJobs(0)
     , mRequestedMetadata(requestedMetadata)
     , mServerCapabilities(serverCapabilities)
     , mMailboxes(mailboxes)
@@ -172,8 +171,6 @@ void RetrieveMetadataJob::checkDone()
 
 KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
-    , mJobs(0)
-    , mSession(nullptr)
     , cContentMimeTypes("CONTENTMIMETYPES")
     , cAccessRights("AccessRights")
     , cImapAcl("imapacl")

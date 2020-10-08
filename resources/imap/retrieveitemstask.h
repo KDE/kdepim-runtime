@@ -58,22 +58,22 @@ private:
 
     KIMAP::Session *m_session = nullptr;
     QVector<qint64> m_messageUidsMissingBody;
-    int m_fetchedMissingBodies;
-    bool m_fetchMissingBodies;
-    bool m_incremental;
-    qint64 m_localHighestModSeq;
+    int m_fetchedMissingBodies = -1;
+    bool m_fetchMissingBodies = false;
+    bool m_incremental = true;
+    qint64 m_localHighestModSeq = -1;
     BatchFetcher *m_batchFetcher = nullptr;
     Akonadi::Collection m_modifiedCollection;
-    bool m_uidBasedFetch;
-    bool m_flagsChanged;
+    bool m_uidBasedFetch = true;
+    bool m_flagsChanged = false;
     QElapsedTimer m_time;
 
     // Results of SELECT
     QString m_mailBox;
-    int m_messageCount;
-    int m_uidValidity;
-    qint64 m_nextUid;
-    qint64 m_highestModSeq;
+    int m_messageCount = -1;
+    int m_uidValidity = -1;
+    qint64 m_nextUid = -1;
+    qint64 m_highestModSeq = -1;
     QList<QByteArray> m_flags;
 };
 

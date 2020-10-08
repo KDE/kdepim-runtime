@@ -23,7 +23,6 @@ ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Sess
     , mMailbox(mailbox)
     , mUidNext(uidNext)
     , mOldUids(oldUids)
-    , mNewUid(-1)
     , mMessageId(msg->messageID()->asUnicodeString().toUtf8())
 {
 }

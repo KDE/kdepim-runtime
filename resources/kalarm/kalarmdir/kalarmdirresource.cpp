@@ -57,10 +57,7 @@ static const char warningFile[] = "WARNING_README.txt";
 KAlarmDirResource::KAlarmDirResource(const QString &id)
     : ResourceBase(id)
     , mSettings(new Settings(config()))
-    , mCollectionId(-1)
     , mCompatibility(KACalendar::Incompatible)
-    , mCollectionFetched(false)
-    , mWaitingToRetrieve(false)
 {
     qCDebug(KALARMDIRRESOURCE_LOG) << "Starting:" << id;
     KAlarmResourceCommon::initialise(this);

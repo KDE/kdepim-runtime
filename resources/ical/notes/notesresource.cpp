@@ -31,7 +31,7 @@ NotesResource::~NotesResource()
 
 QStringList NotesResource::allMimeTypes() const
 {
-    return QStringList() << sNotesType;
+    return {sNotesType};
 }
 
 QString NotesResource::mimeType(const KCalendarCore::IncidenceBase::Ptr &) const

@@ -41,7 +41,7 @@ private:
     const QString mMailbox;
     qint64 mUidNext;
     KIMAP::ImapSet mOldUids;
-    qint64 mNewUid;
+    qint64 mNewUid = -1;
     const QByteArray mMessageId;
 };
 

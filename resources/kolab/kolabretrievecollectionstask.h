@@ -42,7 +42,7 @@ private:
     void applyRights(const QHash<QString, KIMAP::Acl::Rights> &rights);
     void applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray> > &metadata);
 
-    int mJobs;
+    int mJobs = 0;
     QHash<QString, Akonadi::Collection> mMailCollections;
     QSet<QString> mSubscribedMailboxes;
     QSet<QByteArray> mRequestedMetadata;
@@ -71,7 +71,7 @@ public:
 
 private:
     void checkDone();
-    int mJobs;
+    int mJobs = 0;
     QSet<QByteArray> mRequestedMetadata;
     QStringList mServerCapabilities;
     QStringList mMailboxes;

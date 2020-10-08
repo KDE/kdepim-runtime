@@ -27,7 +27,7 @@ private Q_SLOTS:
 private:
     void doSearch(KIMAP::Session *session);
 
-    QString m_query;
+    const QString m_query;
 };
 
 #endif // SEARCHTASK_H

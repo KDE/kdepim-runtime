@@ -53,7 +53,7 @@ private:
     qint64 mUidNext;
     qint64 mOldUid;
     KIMAP::ImapSet mOldUids;
-    qint64 mNewUid;
+    qint64 mNewUid = -1;
     const QByteArray mMessageId;
     const QByteArray mKolabUid;
     QList<qint64> mFoundUids;

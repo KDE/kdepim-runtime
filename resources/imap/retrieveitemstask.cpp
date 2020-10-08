@@ -37,18 +37,7 @@
 
 RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
-    , m_session(nullptr)
     , m_fetchedMissingBodies(-1)
-    , m_fetchMissingBodies(false)
-    , m_incremental(true)
-    , m_localHighestModSeq(-1)
-    , m_batchFetcher(nullptr)
-    , m_uidBasedFetch(true)
-    , m_flagsChanged(false)
-    , m_messageCount(-1)
-    , m_uidValidity(-1)
-    , m_nextUid(-1)
-    , m_highestModSeq(-1)
 {
 }
 

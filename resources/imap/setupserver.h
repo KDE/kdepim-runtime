@@ -68,8 +68,8 @@ private:
     void readSettings();
     void populateDefaultAuthenticationOptions();
 
-    ImapResourceBase *m_parentResource = nullptr;
-    Ui::SetupServerView *m_ui = nullptr;
+    ImapResourceBase *const m_parentResource;
+    Ui::SetupServerView *const m_ui;
     MailTransport::ServerTest *m_serverTest = nullptr;
     bool m_subscriptionsChanged = false;
     bool m_shouldClearCache = false;
