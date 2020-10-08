@@ -17,8 +17,7 @@
 #include <KLocalizedString>
 
 POPSession::POPSession(Settings &settings, const QString &password)
-    : mCurrentJob(nullptr)
-    , mPassword(password)
+    : mPassword(password)
     , mSettings(settings)
 {
     KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));

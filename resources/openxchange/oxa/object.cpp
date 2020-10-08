@@ -11,9 +11,6 @@
 using namespace OXA;
 
 Object::Object()
-    : mObjectStatus(Created)
-    , mObjectId(-1)
-    , mFolderId(-1)
 {
 }
 

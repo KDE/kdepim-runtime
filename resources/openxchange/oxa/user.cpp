@@ -11,7 +11,6 @@
 using namespace OXA;
 
 User::User()
-    : mUid(-1)
 {
 }
 

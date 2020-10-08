@@ -123,7 +123,7 @@ public:
         ObjectReadPermission mObjectReadPermission;
         ObjectWritePermission mObjectWritePermission;
         ObjectDeletePermission mObjectDeletePermission;
-        bool mAdminFlag;
+        bool mAdminFlag = false;
     };
 
     typedef QMap<qlonglong, Permissions> UserPermissions;

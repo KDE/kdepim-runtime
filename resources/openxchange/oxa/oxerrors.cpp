@@ -12,9 +12,9 @@ using namespace OXA;
 
 OXErrors::EditErrorID OXErrors::getEditErrorID(const QString &errorText)
 {
-    int b1Pos = errorText.indexOf(QLatin1Char('['));
-    int b2Pos = errorText.indexOf(QLatin1Char(']'));
-    QString errorID = errorText.mid(b1Pos + 1, b2Pos - b1Pos - 1);
+    const int b1Pos = errorText.indexOf(QLatin1Char('['));
+    const int b2Pos = errorText.indexOf(QLatin1Char(']'));
+    const QString errorID = errorText.mid(b1Pos + 1, b2Pos - b1Pos - 1);
 
     bool ok;
     int eid = errorID.toInt(&ok);

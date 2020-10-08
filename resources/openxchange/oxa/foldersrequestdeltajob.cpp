@@ -15,7 +15,6 @@ using namespace OXA;
 FoldersRequestDeltaJob::FoldersRequestDeltaJob(qulonglong lastSync, QObject *parent)
     : KJob(parent)
     , mLastSync(lastSync)
-    , mJobFinishedCount(0)
 {
 }
 

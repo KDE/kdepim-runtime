@@ -71,7 +71,7 @@ private:
     bool mServerTestFailed = false;
     KWallet::Wallet *mWallet = nullptr;
     QString mInitalPassword;
-    QString mIdentifier;
+    const QString mIdentifier;
     Settings &mSettings;
 };
 

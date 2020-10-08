@@ -56,8 +56,8 @@ private Q_SLOTS:
     void davJobFinished(KJob *);
 
 private:
-    qulonglong mLastSync;
-    Mode mMode;
+    const qulonglong mLastSync;
+    const Mode mMode;
     Folder::List mFolders;
 };
 }

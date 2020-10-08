@@ -53,10 +53,10 @@ private Q_SLOTS:
     void fetchDeletedJobFinished(KJob *);
 
 private:
-    qulonglong mLastSync;
+    const qulonglong mLastSync;
     Folder::List mModifiedFolders;
     Folder::List mDeletedFolders;
-    int mJobFinishedCount;
+    int mJobFinishedCount = 0;
 };
 }
 

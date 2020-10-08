@@ -58,7 +58,7 @@ private:
     qulonglong mLastSync;
     Object::List mModifiedObjects;
     Object::List mDeletedObjects;
-    int mJobFinishedCount;
+    int mJobFinishedCount = 0;
 };
 }
 

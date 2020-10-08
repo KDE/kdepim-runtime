@@ -27,7 +27,7 @@ private Q_SLOTS:
     void davJobFinished(KJob *);
 
 private:
-    qlonglong mUserId;
+    qlonglong mUserId = -1;
 };
 }
 

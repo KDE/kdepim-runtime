@@ -30,10 +30,10 @@ private Q_SLOTS:
 private:
     void finish();
 
-    bool mUserIdRequestFinished;
-    bool mUsersRequestFinished;
+    bool mUserIdRequestFinished = false;
+    bool mUsersRequestFinished = false;
     User::List mUsers;
-    qlonglong mUserId;
+    qlonglong mUserId = -1;
 };
 }
 
