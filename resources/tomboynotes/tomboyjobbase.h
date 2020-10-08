@@ -29,9 +29,9 @@ public:
     void setAuthentication(const QString &token, const QString &secret);
 
 protected:
-    KIO::Integration::AccessManager *mManager = nullptr;
+    KIO::Integration::AccessManager *const mManager;
     O1Requestor *mRequestor = nullptr;
-    O1Tomboy *mO1 = nullptr;
+    O1Tomboy *const mO1;
     QNetworkReply *mReply = nullptr;
 
     QString mApiURL;
