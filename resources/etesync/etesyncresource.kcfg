@@ -20,8 +20,5 @@
       <label>Path to base directory</label>
       <default>$HOME/.local/share/akonadi_etesync_resource</default>
     </entry>
-    <entry name="CacheDir" type="Path">
-      <label>Path to cache directory specific to account</label>
-    </entry>
   </group>
 </kcfg>

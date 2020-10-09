@@ -57,7 +57,7 @@ EteSyncResource::EteSyncResource(const QString &id)
     // Make resource directory
     initialiseDirectory(baseDirectoryPath());
 
-    mClientState = EteSyncClientState::Ptr(new EteSyncClientState(winIdForDialogs()));
+    mClientState = EteSyncClientState::Ptr(new EteSyncClientState(identifier(), winIdForDialogs()));
     connect(mClientState.get(), &EteSyncClientState::clientInitialised, this, &EteSyncResource::initialiseDone);
     mClientState->init();
 
@@ -71,8 +71,7 @@ EteSyncResource::EteSyncResource(const QString &id)
 void EteSyncResource::cleanup()
 {
     mClientState->logout();
-    QDir dir(cacheDirectoryPath());
-    dir.removeRecursively();
+    mClientState->deleteEtebaseUserCache();
     ResourceBase::cleanup();
 }
 
@@ -87,11 +86,6 @@ void EteSyncResource::configure(WId windowId)
     const int result = wizard.exec();
     if (result == QDialog::Accepted) {
         mClientState->saveSettings();
-
-        // Init cache directories
-        initialiseDirectory(cacheDirectoryPath());
-        initialiseDirectory(collectionsCacheDirectoryPath());
-        initialiseDirectory(itemsCacheDirectoryPath());
 
         // Save account cache
         mClientState->saveAccount();
@@ -119,7 +113,7 @@ void EteSyncResource::retrieveCollections()
 
     mRootCollection = createRootCollection();
 
-    auto job = new JournalsFetchJob(mClientState->account(), mRootCollection, collectionsCacheDirectoryPath(), this);
+    auto job = new JournalsFetchJob(mClientState.get(), mRootCollection, this);
     connect(job, &JournalsFetchJob::finished, this, &EteSyncResource::slotCollectionsRetrieved);
     job->start();
 }
@@ -262,7 +256,7 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
     }
 
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    EtebaseCollectionPtr etesyncCollection = mClientState->getEtebaseCollectionFromCache(collection.remoteId());
     if (!etesyncCollection) {
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
         return;
@@ -286,7 +280,7 @@ void EteSyncResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    auto job = new EntriesFetchJob(mClientState->account(), collection, std::move(etesyncCollection), itemsCacheDirectoryPath(), this);
+    auto job = new EntriesFetchJob(mClientState.get(), collection, std::move(etesyncCollection), this);
 
     connect(job, &EntriesFetchJob::finished, this, &EteSyncResource::slotItemsRetrieved);
 
@@ -337,21 +331,6 @@ QString EteSyncResource::baseDirectoryPath() const
     return Settings::self()->basePath();
 }
 
-QString EteSyncResource::cacheDirectoryPath() const
-{
-    return Settings::self()->cacheDir();
-}
-
-QString EteSyncResource::collectionsCacheDirectoryPath() const
-{
-    return cacheDirectoryPath() + QStringLiteral("/CollectionCache");
-}
-
-QString EteSyncResource::itemsCacheDirectoryPath() const
-{
-    return cacheDirectoryPath() + QStringLiteral("/ItemCache");
-}
-
 void EteSyncResource::initialiseDirectory(const QString &path) const
 {
     QDir dir(path);
@@ -366,7 +345,7 @@ void EteSyncResource::initialiseDirectory(const QString &path) const
         file.open(QIODevice::WriteOnly);
         file.write(
             "Important warning!\n\n"
-            "Do not create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
+            "Do not create or copy files inside this folder manually, they are managed by the Akonadi framework!\n");
         file.close();
     }
 }
@@ -382,7 +361,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     }
 
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    EtebaseCollectionPtr etesyncCollection = mClientState->getEtebaseCollectionFromCache(collection.remoteId());
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
@@ -434,7 +413,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     }
 
     // Save to cache
-    saveEtebaseItemCache(itemManager.get(), etesyncItem.get(), itemsCacheDirectoryPath());
+    mClientState->saveEtebaseItemCache(etesyncItem.get(), etesyncCollection.get());
 
     Item newItem(item);
     newItem.setRemoteId(QString::fromUtf8(etebase_item_get_uid(etesyncItem.get())));
@@ -457,14 +436,14 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
     Collection collection = item.parentCollection();
 
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    EtebaseCollectionPtr etesyncCollection = mClientState->getEtebaseCollectionFromCache(collection.remoteId());
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
         return;
     }
     EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), etesyncCollection.get()));
-    EtebaseItemPtr etesyncItem = getEtebaseItemFromCache(itemManager.get(), item.remoteId(), itemsCacheDirectoryPath());
+    EtebaseItemPtr etesyncItem = mClientState->getEtebaseItemFromCache(item.remoteId(), etesyncCollection.get());
     if (!etesyncItem) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncItem from cache" << item.remoteId();
         cancelTask(i18n("Could not get etesyncItem from cache '%1'", item.remoteId()));
@@ -499,7 +478,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
     }
 
     // Update cache
-    saveEtebaseItemCache(itemManager.get(), etesyncItem.get(), itemsCacheDirectoryPath());
+    mClientState->saveEtebaseItemCache(etesyncItem.get(), etesyncCollection.get());
 
     changeProcessed();
 }
@@ -516,14 +495,14 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
     Collection collection = item.parentCollection();
 
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    EtebaseCollectionPtr etesyncCollection = mClientState->getEtebaseCollectionFromCache(collection.remoteId());
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
         return;
     }
     EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), etesyncCollection.get()));
-    EtebaseItemPtr etesyncItem = getEtebaseItemFromCache(itemManager.get(), item.remoteId(), itemsCacheDirectoryPath());
+    EtebaseItemPtr etesyncItem = mClientState->getEtebaseItemFromCache(item.remoteId(), etesyncCollection.get());
     if (!etesyncItem) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncItem from cache" << item.remoteId();
         cancelTask(i18n("Could not get etesyncItem from cache '%1'", item.remoteId()));
@@ -557,7 +536,7 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
     }
 
     // Delete cache
-    deleteCacheFile(item.remoteId(), itemsCacheDirectoryPath());
+    mClientState->deleteEtebaseItemCache(item.remoteId(), etesyncCollection.get());
 
     changeProcessed();
 }
@@ -606,7 +585,7 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     }
 
     // Save to cache
-    saveEtebaseCollectionCache(collectionManager.get(), etesyncCollection.get(), collectionsCacheDirectoryPath());
+    mClientState->saveEtebaseCollectionCache(etesyncCollection.get());
 
     // Setup icon, color and name of the new collection
     Collection newCollection(collection);
@@ -646,7 +625,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
 
     // Get EteSync collection from cache
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    EtebaseCollectionPtr etesyncCollection = mClientState->getEtebaseCollectionFromCache(collection.remoteId());
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
@@ -687,7 +666,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
     }
 
     // Update cache
-    saveEtebaseCollectionCache(collectionManager.get(), etesyncCollection.get(), collectionsCacheDirectoryPath());
+    mClientState->saveEtebaseCollectionCache(etesyncCollection.get());
 
     Collection newCollection(collection);
     changeCommitted(newCollection);
@@ -704,7 +683,7 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
 
     // Get EteSync collection from cache
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-    EtebaseCollectionPtr etesyncCollection = getEtebaseCollectionFromCache(collectionManager.get(), collection.remoteId(), collectionsCacheDirectoryPath());
+    EtebaseCollectionPtr etesyncCollection = mClientState->getEtebaseCollectionFromCache(collection.remoteId());
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not get etesyncCollection from cache" << collection.remoteId();
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
@@ -732,7 +711,7 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
     }
 
     // Delete cache
-    deleteCacheFile(collection.remoteId(), collectionsCacheDirectoryPath());
+    mClientState->deleteEtebaseCollectionCache(collection.remoteId());
 
     changeProcessed();
 }

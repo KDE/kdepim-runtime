@@ -21,12 +21,11 @@
 using namespace Akonadi;
 using namespace EteSyncAPI;
 
-EntriesFetchJob::EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, const QString &cacheDir, QObject *parent)
+EntriesFetchJob::EntriesFetchJob(const EteSyncClientState *clientState, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, QObject *parent)
     : KJob(parent)
-    , mAccount(account)
+    , mClientState(clientState)
     , mCollection(collection)
     , mEtesyncCollection(std::move(etesyncCollection))
-    , mCacheDir(cacheDir)
 {
 }
 
@@ -43,7 +42,15 @@ void EntriesFetchJob::start()
 
 void EntriesFetchJob::fetchEntries()
 {
-    if (!mAccount) {
+    if (!mClientState) {
+        setError(UserDefinedError);
+        setErrorText(QStringLiteral("EntriesFetchJob: EteSync client state is null"));
+        return;
+    }
+
+    EtebaseAccount *account = mClientState->account();
+
+    if (!account) {
         setError(UserDefinedError);
         setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is null"));
         return;
@@ -61,7 +68,7 @@ void EntriesFetchJob::fetchEntries()
 
     QString sToken = mCollection.remoteRevision();
     bool done = 0;
-    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(account));
     EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), mEtesyncCollection.get()));
 
     while (!done) {
@@ -95,7 +102,7 @@ void EntriesFetchJob::fetchEntries()
         Item item;
 
         for (uintptr_t i = 0; i < dataLength; i++) {
-            saveEtebaseItemCache(itemManager.get(), etesyncItems[i], mCacheDir);
+            mClientState->saveEtebaseItemCache(etesyncItems[i], mEtesyncCollection.get());
             setupItem(item, etesyncItems[i], type);
         }
     }

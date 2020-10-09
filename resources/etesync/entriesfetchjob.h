@@ -12,6 +12,7 @@
 #include <KJob>
 
 #include "etebaseadapter.h"
+#include "etesyncclientstate.h"
 
 namespace EteSyncAPI {
 class EntriesFetchJob : public KJob
@@ -19,7 +20,7 @@ class EntriesFetchJob : public KJob
     Q_OBJECT
 
 public:
-    explicit EntriesFetchJob(const EtebaseAccount *account, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, const QString &cacheDir, QObject *parent = nullptr);
+    explicit EntriesFetchJob(const EteSyncClientState *mClientState, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, QObject *parent = nullptr);
 
     void start() override;
 
@@ -43,12 +44,11 @@ protected:
     void setupItem(Akonadi::Item &item, const EtebaseItem *etesyncItem, const QString &type);
 
 private:
-    const EtebaseAccount *mAccount = nullptr;
+    const EteSyncClientState *mClientState = nullptr;
     Akonadi::Collection mCollection;
     const EtebaseCollectionPtr mEtesyncCollection;
     Akonadi::Item::List mItems;
     Akonadi::Item::List mRemovedItems;
-    QString mCacheDir;
 };
 }  // namespace EteSyncAPI
 

@@ -49,9 +49,6 @@ protected:
 
     void initialiseDirectory(const QString &path) const;
     QString baseDirectoryPath() const;
-    QString cacheDirectoryPath() const;
-    QString collectionsCacheDirectoryPath() const;
-    QString itemsCacheDirectoryPath() const;
 
     bool handleError();
     bool handleError(const int errorCode, QString errorMessage);

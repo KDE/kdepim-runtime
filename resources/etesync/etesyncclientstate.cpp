@@ -14,7 +14,8 @@ using namespace KWallet;
 
 static const QString etebaseWalletFolder = QStringLiteral("Akonadi Etebase");
 
-EteSyncClientState::EteSyncClientState(WId winId) : mWinId(winId)
+EteSyncClientState::EteSyncClientState(const QString &agentId, WId winId) : mAgentId(agentId)
+    , mWinId(winId)
 {
 }
 
@@ -39,8 +40,11 @@ void EteSyncClientState::init()
         return;
     }
 
+    // Initialize etebase file cache
+    mEtebaseCache = etebase_fs_cache_new(Settings::self()->basePath(), mUsername + QStringLiteral("_") + mAgentId);
+
     // Load Etebase account from cache
-    getAccount();
+    loadAccount();
 
     Q_EMIT clientInitialised(true);
 }
@@ -84,6 +88,7 @@ bool EteSyncClientState::login(const QString &serverUrl, const QString &username
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
         return false;
     }
+    mEtebaseCache = etebase_fs_cache_new(Settings::self()->basePath(), mUsername + QStringLiteral("_") + mAgentId);
     return true;
 }
 
@@ -132,9 +137,6 @@ void EteSyncClientState::saveSettings()
     Settings::self()->setBaseUrl(mServerUrl);
     Settings::self()->setUsername(mUsername);
 
-    const QString cacheDir = Settings::self()->basePath() + QStringLiteral("/") + mUsername;
-    Settings::self()->setCacheDir(cacheDir);
-
     Settings::self()->save();
 }
 
@@ -156,10 +158,13 @@ void EteSyncClientState::saveAccount()
 
     qCDebug(ETESYNC_LOG) << "Wrote encryption key to wallet";
 
-    saveEtebaseAccountCache(mAccount.get(), mUsername, encryptionKey, Settings::self()->cacheDir());
+    if (etebase_fs_cache_save_account(mEtebaseCache.get(), mAccount.get(), encryptionKey.constData(), encryptionKey.size())) {
+        qCDebug(ETESYNC_LOG) << "Could not save account to cache";
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_code() << etebase_error_get_message();
+    }
 }
 
-void EteSyncClientState::getAccount()
+void EteSyncClientState::loadAccount()
 {
     if (!mWallet) {
         qCDebug(ETESYNC_LOG) << "Get account - wallet not opened";
@@ -181,7 +186,11 @@ void EteSyncClientState::getAccount()
 
     qCDebug(ETESYNC_LOG) << "Read encryption key from wallet";
 
-    mAccount = getEtebaseAccountFromCache(mClient.get(), mUsername, encryptionKey, Settings::self()->cacheDir());
+    mAccount = EtebaseAccountPtr(etebase_fs_cache_load_account(mEtebaseCache.get(), mClient.get(), encryptionKey.constData(), encryptionKey.size()));
+
+    if (!mAccount) {
+        qCDebug(ETESYNC_LOG) << "Could not get etebase account from caache";
+    }
 }
 
 void EteSyncClientState::deleteWalletEntry()
@@ -200,4 +209,128 @@ void EteSyncClientState::deleteWalletEntry()
     }
 
     qCDebug(ETESYNC_LOG) << "Deleted wallet entry";
+}
+
+void EteSyncClientState::saveEtebaseCollectionCache(const EtebaseCollection *etesyncCollection) const
+{
+    if (!mAccount) {
+        qCDebug(ETESYNC_LOG) << "Unable to save collection cache - account is null";
+        return;
+    }
+
+    if (!etesyncCollection) {
+        qCDebug(ETESYNC_LOG) << "Unable to save collection cache - etesyncCollection is null";
+        return;
+    }
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
+    if (etebase_fs_cache_collection_set(mEtebaseCache.get(), collectionManager.get(), etesyncCollection)) {
+        qCDebug(ETESYNC_LOG) << "Could not save etebase collection cache for collection" << etebase_collection_get_uid(etesyncCollection);
+        return;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Saved cache for collection" << etebase_collection_get_uid(etesyncCollection);
+}
+
+void EteSyncClientState::saveEtebaseItemCache(const EtebaseItem *etesyncItem, const EtebaseCollection *parentCollection) const
+{
+    if (!mAccount) {
+        qCDebug(ETESYNC_LOG) << "Unable to save collection cache - account is null";
+        return;
+    }
+
+    if (!etesyncItem) {
+        qCDebug(ETESYNC_LOG) << "Unable to save item cache - etesyncItem is null";
+        return;
+    }
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), parentCollection));
+
+    QString collectionUid = QString::fromUtf8(etebase_collection_get_uid(parentCollection));
+
+    if (etebase_fs_cache_item_set(mEtebaseCache.get(), itemManager.get(), collectionUid, etesyncItem)) {
+        qCDebug(ETESYNC_LOG) << "Could not save etebase item cache for item" << etebase_item_get_uid(etesyncItem);
+        return;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Saved cache for item" << etebase_item_get_uid(etesyncItem);
+}
+
+EtebaseCollectionPtr EteSyncClientState::getEtebaseCollectionFromCache(const QString &collectionUid) const
+{
+    if (!mAccount) {
+        qCDebug(ETESYNC_LOG) << "Unable to get collection cache - account is null";
+        return nullptr;
+    }
+
+    if (collectionUid.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Unable to get collection cache - uid is empty";
+        return nullptr;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Getting cache for collection" << collectionUid;
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
+
+    return etebase_fs_cache_collection_get(mEtebaseCache.get(), collectionManager.get(), collectionUid);
+}
+
+EtebaseItemPtr EteSyncClientState::getEtebaseItemFromCache(const QString &itemUid, const EtebaseCollection *parentCollection) const
+{
+    if (!mAccount) {
+        qCDebug(ETESYNC_LOG) << "Unable to get item cache - account is null";
+        return nullptr;
+    }
+
+    if (!parentCollection) {
+        qCDebug(ETESYNC_LOG) << "Unable to get item cache - parentCollection is null";
+        return nullptr;
+    }
+
+    if (itemUid.isEmpty()) {
+        qCDebug(ETESYNC_LOG) << "Unable to get item cache - uid is empty";
+        return nullptr;
+    }
+
+    qCDebug(ETESYNC_LOG) << "Getting cache for item" << itemUid;
+
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), parentCollection));
+
+    QString collectionUid = QString::fromUtf8(etebase_collection_get_uid(parentCollection));
+
+    return etebase_fs_cache_item_get(mEtebaseCache.get(), itemManager.get(), collectionUid, itemUid);
+}
+
+void EteSyncClientState::deleteEtebaseCollectionCache(const QString &collectionUid)
+{
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
+    if (etebase_fs_cache_collection_unset(mEtebaseCache.get(), collectionManager.get(), collectionUid)) {
+        qCDebug(ETESYNC_LOG) << "Could not delete cache for collection" << collectionUid;
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_code() << etebase_error_get_message();
+        return;
+    }
+    qCDebug(ETESYNC_LOG) << "Deleted cache for collection" << collectionUid;
+}
+
+void EteSyncClientState::deleteEtebaseItemCache(const QString &itemUid, const EtebaseCollection *parentCollection)
+{
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
+    EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), parentCollection));
+
+    const QString collectionUid = QString::fromUtf8(etebase_collection_get_uid(parentCollection));
+    if (etebase_fs_cache_item_unset(mEtebaseCache.get(), itemManager.get(), collectionUid, itemUid)) {
+        qCDebug(ETESYNC_LOG) << "Could not delete cache for item" << itemUid;
+        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_code() << etebase_error_get_message();
+        return;
+    }
+    qCDebug(ETESYNC_LOG) << "Deleted cache for item" << itemUid;
+}
+
+void EteSyncClientState::deleteEtebaseUserCache()
+{
+    if (etebase_fs_cache_clear_user(mEtebaseCache.get())) {
+        qCDebug(ETESYNC_LOG) << "Could not remove cache for user";
+    }
 }

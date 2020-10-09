@@ -42,6 +42,11 @@ struct EtebaseDeleter
         etebase_collection_list_response_destroy(ptr);
     }
 
+    void operator()(EtebaseCollectionManager *ptr)
+    {
+        etebase_collection_manager_destroy(ptr);
+    }
+
     void operator()(EtebaseCollection *ptr)
     {
         etebase_collection_destroy(ptr);
@@ -72,11 +77,13 @@ struct EtebaseDeleter
         etebase_item_destroy(ptr);
     }
 
-    void operator()(char *ptr)
+    void operator()(EtebaseFileSystemCache *ptr)
     {
-        std::free(ptr);
+        etebase_fs_cache_destroy(ptr);
     }
+};
 
+struct VoidDeleter {
     void operator()(void *ptr)
     {
         std::free(ptr);
@@ -94,17 +101,11 @@ using EtebaseItemManagerPtr = std::unique_ptr<EtebaseItemManager, EtebaseDeleter
 using EtebaseItemListResponsePtr = std::unique_ptr<EtebaseItemListResponse, EtebaseDeleter>;
 using EtebaseItemMetadataPtr = std::unique_ptr<EtebaseItemMetadata, EtebaseDeleter>;
 using EtebaseItemPtr = std::unique_ptr<EtebaseItem, EtebaseDeleter>;
-using EtebaseCachePtr = std::unique_ptr<void, EtebaseDeleter>;
-using CharPtr = std::unique_ptr<char, EtebaseDeleter>;
+using EtebaseFileSystemCachePtr = std::unique_ptr<EtebaseFileSystemCache, EtebaseDeleter>;
+using EtebaseCachePtr = std::unique_ptr<void, VoidDeleter>;
+using CharPtr = std::unique_ptr<char, VoidDeleter>;
 
 QString QStringFromCharPtr(const CharPtr &str);
-void saveEtebaseAccountCache(EtebaseAccount *account, const QString &username, const QByteArray &encryptionKey, const QString &cacheDir);
-void saveEtebaseCollectionCache(const EtebaseCollectionManager *collectionManager, const EtebaseCollection *etesyncCollection, const QString &cacheDir);
-void saveEtebaseItemCache(const EtebaseItemManager *itemManager, const EtebaseItem *etesyncItem, const QString &cacheDir);
-EtebaseAccountPtr getEtebaseAccountFromCache(const EtebaseClient *client, const QString &username, const QByteArray &encryptionKey, const QString &cacheDir);
-EtebaseCollectionPtr getEtebaseCollectionFromCache(const EtebaseCollectionManager *collectionManager, const QString &collectionUid, const QString &cacheDir);
-EtebaseItemPtr getEtebaseItemFromCache(const EtebaseItemManager *itemManager, const QString &itemUid, const QString &cacheDir);
-void deleteCacheFile(const QString &etebaseUid, const QString &cacheDir);
 
 EtebaseClientPtr etebase_client_new(const QString &client_name, const QString &server_url);
 
@@ -117,5 +118,17 @@ EtebaseCollectionMetadataPtr etebase_collection_metadata_new(const QString &type
 void etebase_collection_metadata_set_color(EtebaseCollectionMetadata *meta_data, const QString &color);
 
 void etebase_collection_metadata_set_name(EtebaseCollectionMetadata *meta_data, const QString &name);
+
+EtebaseFileSystemCachePtr etebase_fs_cache_new(const QString &path, const QString &username);
+
+int32_t etebase_fs_cache_item_set(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const EtebaseItem *item);
+
+EtebaseCollectionPtr etebase_fs_cache_collection_get(const EtebaseFileSystemCache *fs_cache, const EtebaseCollectionManager *col_mgr, const QString &col_uid);
+
+EtebaseItemPtr etebase_fs_cache_item_get(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
+
+int32_t etebase_fs_cache_collection_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseCollectionManager *col_mgr, const QString &col_uid);
+
+int32_t etebase_fs_cache_item_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
 
 #endif

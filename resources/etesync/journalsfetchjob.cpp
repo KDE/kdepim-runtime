@@ -21,11 +21,10 @@
 using namespace EteSyncAPI;
 using namespace Akonadi;
 
-JournalsFetchJob::JournalsFetchJob(const EtebaseAccount *account, const Akonadi::Collection &resourceCollection, const QString &cacheDir, QObject *parent)
+JournalsFetchJob::JournalsFetchJob(const EteSyncClientState *clientState, const Akonadi::Collection &resourceCollection, QObject *parent)
     : KJob(parent)
-    , mAccount(account)
+    , mClientState(clientState)
     , mResourceCollection(resourceCollection)
-    , mCacheDir(cacheDir)
 {
 }
 
@@ -43,15 +42,23 @@ void JournalsFetchJob::start()
 
 void JournalsFetchJob::fetchJournals()
 {
-    if (!mAccount) {
+    if (!mClientState) {
         setError(UserDefinedError);
-        setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is empty"));
+        setErrorText(QStringLiteral("EntriesFetchJob: EteSync client state is null"));
+        return;
+    }
+
+    EtebaseAccount *account = mClientState->account();
+
+    if (!account) {
+        setError(UserDefinedError);
+        setErrorText(QStringLiteral("EntriesFetchJob: Etebase account is null"));
         return;
     }
 
     mSyncToken = mResourceCollection.remoteRevision();
     bool done = 0;
-    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount));
+    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(account));
 
     while (!done) {
         EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
@@ -84,7 +91,7 @@ void JournalsFetchJob::fetchJournals()
         Collection collection;
 
         for (uintptr_t i = 0; i < dataLength; i++) {
-            saveEtebaseCollectionCache(collectionManager.get(), etesyncCollections[i], mCacheDir);
+            mClientState->saveEtebaseCollectionCache(etesyncCollections[i]);
             setupCollection(collection, etesyncCollections[i]);
         }
 

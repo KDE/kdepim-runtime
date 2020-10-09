@@ -18,7 +18,7 @@ class EteSyncClientState : public QObject
     Q_OBJECT
 public:
     typedef std::unique_ptr<EteSyncClientState> Ptr;
-    explicit EteSyncClientState(WId winId);
+    explicit EteSyncClientState(const QString &agentId, WId winId);
 
     void init();
     void saveSettings();
@@ -29,7 +29,14 @@ public:
     bool openWalletFolder();
     void deleteWalletEntry();
     void saveAccount();
-    void getAccount();
+    void loadAccount();
+    void saveEtebaseCollectionCache(const EtebaseCollection *etesyncCollection) const;
+    void saveEtebaseItemCache(const EtebaseItem *etesyncItem, const EtebaseCollection *parentCollection) const;
+    EtebaseCollectionPtr getEtebaseCollectionFromCache(const QString &collectionUid) const;
+    EtebaseItemPtr getEtebaseItemFromCache(const QString &itemUid, const EtebaseCollection *parentCollection) const;
+    void deleteEtebaseCollectionCache(const QString &collectionUid);
+    void deleteEtebaseItemCache(const QString &itemUid, const EtebaseCollection *parentCollection);
+    void deleteEtebaseUserCache();
 
     EtebaseAccount *account() const
     {
@@ -59,13 +66,13 @@ Q_SIGNALS:
     void tokenRefreshed(bool successful);
 
 private:
-    bool createDefaultJournal(const QString &journalType, const QString &journalName);
-
     EtebaseClientPtr mClient;
     EtebaseAccountPtr mAccount;
+    EtebaseFileSystemCachePtr mEtebaseCache;
     QString mUsername;
     QString mPassword;
     QString mServerUrl;
+    const QString mAgentId;
     WId mWinId;
     QPointer<KWallet::Wallet> mWallet;
 };

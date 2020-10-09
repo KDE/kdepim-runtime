@@ -10,6 +10,7 @@
 #include <KJob>
 
 #include "etebaseadapter.h"
+#include "etesyncclientstate.h"
 
 #include <AkonadiCore/Collection>
 
@@ -19,7 +20,7 @@ class JournalsFetchJob : public KJob
     Q_OBJECT
 
 public:
-    explicit JournalsFetchJob(const EtebaseAccount *account, const Akonadi::Collection &resourceCollection, const QString &cacheDir = QString(), QObject *parent = nullptr);
+    explicit JournalsFetchJob(const EteSyncClientState *mClientState, const Akonadi::Collection &resourceCollection, QObject *parent = nullptr);
 
     void start() override;
 
@@ -43,12 +44,11 @@ protected:
     void setupCollection(Akonadi::Collection &collection, const EtebaseCollection *etesyncCollection);
 
 private:
-    const EtebaseAccount *mAccount = nullptr;
+    const EteSyncClientState *mClientState = nullptr;
     Akonadi::Collection::List mCollections;
     Akonadi::Collection::List mRemovedCollections;
     const Akonadi::Collection mResourceCollection;
     QString mSyncToken;
-    QString mCacheDir;
 };
 } // namespace EteSyncAPI
 
