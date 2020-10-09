@@ -137,10 +137,8 @@ void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncI
     QByteArray content(ITEM_SIZE_INITIAL_TRY, '\0');
     auto const len = etebase_item_get_content(etesyncItem, content.data(), ITEM_SIZE_INITIAL_TRY);
     if (len > ITEM_SIZE_INITIAL_TRY) {
-        QByteArray content(len, '\0');
+        content.resize(len);
         etebase_item_get_content(etesyncItem, content.data(), len);
-        item.setPayloadFromData(content);
-        return;
     }
     item.setPayloadFromData(content);
 
