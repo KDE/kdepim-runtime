@@ -119,14 +119,12 @@ bool LoginPage::validatePage()
 {
     if (!mLoginResult) {
         qCDebug(ETESYNC_LOG) << "loginResult error" << mErrorCode;
-        if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_UNAUTHORIZED) {
-            mLoginLabel->setText(i18n("Incorrect login credentials. Please try again."));
-        } else if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_URL_PARSE) {
+        if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_URL_PARSE) {
             mLoginLabel->setText(i18n("Please ensure that the server URL is correct. The URL should start with http:// or https://."));
         } else if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_CONNECTION) {
             mLoginLabel->setText(i18n("Could not connect to the server. Please ensure that the server URL is correct."));
         } else if (mErrorCode == EtebaseErrorCode::ETEBASE_ERROR_CODE_NOT_FOUND) {
-            mLoginLabel->setText(i18n("Account does not exist. Please sign up for the service first."));
+            mLoginLabel->setText(i18n("EteSync server not found. Please ensure that the server URL is correct."));
         } else {
             mLoginLabel->setText(i18n(charArrFromQString(mErrorMessage)));
         }
