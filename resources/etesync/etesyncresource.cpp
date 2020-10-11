@@ -371,7 +371,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     const QString type = QString::fromUtf8(etebase_collection_metadata_get_collection_type(collectionMetadata.get()));
 
     // Create metadata
-    int64_t modificationTimeSinceEpoch = item.modificationTime().toMSecsSinceEpoch();
+    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     EtebaseItemMetadataPtr itemMetaData(etebase_item_metadata_new());
     etebase_item_metadata_set_item_type(itemMetaData.get(), "file");
     QString uid;
@@ -451,8 +451,7 @@ void EteSyncResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
     }
 
     // Update metadata (only mtime in this case)
-    int64_t modificationTimeSinceEpoch = item.modificationTime().toMSecsSinceEpoch();
-
+    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     EtebaseItemMetadataPtr itemMetadata(etebase_item_get_meta(etesyncItem.get()));
     etebase_item_metadata_set_mtime(itemMetadata.get(), &modificationTimeSinceEpoch);
     etebase_item_set_meta(etesyncItem.get(), itemMetadata.get());
@@ -510,8 +509,7 @@ void EteSyncResource::itemRemoved(const Akonadi::Item &item)
     }
 
     // Update metadata (only mtime in this case)
-    int64_t modificationTimeSinceEpoch = item.modificationTime().toMSecsSinceEpoch();
-
+    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     EtebaseItemMetadataPtr itemMetadata(etebase_item_get_meta(etesyncItem.get()));
     etebase_item_metadata_set_mtime(itemMetadata.get(), &modificationTimeSinceEpoch);
     etebase_item_set_meta(etesyncItem.get(), itemMetadata.get());
