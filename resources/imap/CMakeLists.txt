@@ -24,7 +24,6 @@ set( imapresource_LIB_SRCS
   noselectattribute.cpp
   noinferiorsattribute.cpp
   passwordrequesterinterface.cpp
-  preparesessionjob.cpp
   removecollectionrecursivetask.cpp
   resourcestateinterface.cpp
   resourcetask.cpp

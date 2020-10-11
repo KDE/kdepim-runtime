@@ -524,13 +524,6 @@ bool ResourceTask::serverSupportsCondstore() const
            && !serverCapabilities().contains(QLatin1String("X-GM-EXT-1"));
 }
 
-bool ResourceTask::isQResyncEnabled() const
-{
-    // Check support for QRESYNC (RFC5162).
-    // QRESYNC must be enabled on each session, so check that has happened.
-    return effectiveServerCapabilities().contains(QLatin1String("QRESYNC"));
-}
-
 int ResourceTask::batchSize() const
 {
     return m_resource->batchSize();
