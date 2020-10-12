@@ -34,6 +34,10 @@ using namespace EteSyncAPI;
 using namespace Akonadi;
 
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("EteSyncRootCollection")
+// Resource offline time for temporary errors (30 min)
+#define SHORT_OFFLINE_TIME 30*60
+// Resource offline time for major errors (4 hours)
+#define LONG_OFFLINE_TIME 4*60*60
 
 EteSyncResource::EteSyncResource(const QString &id)
     : ResourceBase(id)
@@ -179,12 +183,25 @@ bool EteSyncResource::handleError(const int errorCode, QString errorMessage)
         connect(mClientState.get(), &EteSyncClientState::tokenRefreshed, this, &EteSyncResource::slotTokenRefreshed);
         scheduleCustomTask(mClientState.get(), "refreshToken", QVariant(), ResourceBase::Prepend);
         return true;
+    case ETEBASE_ERROR_CODE_TEMPORARY_SERVER_ERROR:
+        qCDebug(ETESYNC_LOG) << "Temporary server error";
+        qCDebug(ETESYNC_LOG) << "Setting resource offline for" << SHORT_OFFLINE_TIME << "seconds";
+        setTemporaryOffline(SHORT_OFFLINE_TIME);
+        cancelTask(i18n("Temporary server error"));
+        return true;
     case ETEBASE_ERROR_CODE_PERMISSION_DENIED:
         qCDebug(ETESYNC_LOG) << "Permission denied";
-        qCDebug(ETESYNC_LOG) << "Etebase error:" << errorMessage;
         showErrorDialog(i18n("You do not have permission to perform this action."), i18n(charArrFromQString(errorMessage)));
-        setOnline(false);
+        qCDebug(ETESYNC_LOG) << "Setting resource offline for" << LONG_OFFLINE_TIME << "seconds";
+        setTemporaryOffline(LONG_OFFLINE_TIME);
         cancelTask(i18n("Permission denied"));
+        return true;
+    case ETEBASE_ERROR_CODE_SERVER_ERROR:
+        qCDebug(ETESYNC_LOG) << "Server error";
+        showErrorDialog(i18n("A server error occurred."), i18n(charArrFromQString(errorMessage)));
+        qCDebug(ETESYNC_LOG) << "Setting resource offline for" << LONG_OFFLINE_TIME << "seconds";
+        setTemporaryOffline(LONG_OFFLINE_TIME);
+        cancelTask(i18n("Server error"));
         return true;
     default:
         qCDebug(ETESYNC_LOG) << "Cancelling task";
