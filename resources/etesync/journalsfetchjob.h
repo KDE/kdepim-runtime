@@ -41,14 +41,15 @@ public:
 
 protected:
     void fetchJournals();
-    void setupCollection(Akonadi::Collection &collection, const EtebaseCollection *etesyncCollection);
-
+    void setupCollection(const EtebaseCollection *etesyncCollection);
+    void createDefaultCollection(const QString &collectionType, const QString &collectionName);
 private:
     const EteSyncClientState *mClientState = nullptr;
     Akonadi::Collection::List mCollections;
     Akonadi::Collection::List mRemovedCollections;
     const Akonadi::Collection mResourceCollection;
     QString mSyncToken;
+    bool mHasPimCollections = false;
 };
 } // namespace EteSyncAPI
 
