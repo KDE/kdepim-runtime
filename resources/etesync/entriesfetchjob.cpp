@@ -99,18 +99,16 @@ void EntriesFetchJob::fetchEntries()
             setErrorText(QString::fromUtf8(err));
         }
 
-        Item item;
-
         for (uintptr_t i = 0; i < dataLength; i++) {
             mClientState->saveEtebaseItemCache(etesyncItems[i], mEtesyncCollection.get());
-            setupItem(item, etesyncItems[i], type);
+            setupItem(etesyncItems[i], type);
         }
     }
 
     mCollection.setRemoteRevision(sToken);
 }
 
-void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncItem, const QString &type)
+void EntriesFetchJob::setupItem(const EtebaseItem *etesyncItem, const QString &type)
 {
     if (!etesyncItem) {
         qCDebug(ETESYNC_LOG) << "Unable to setup item - etesyncItem is null";
@@ -118,6 +116,8 @@ void EntriesFetchJob::setupItem(Akonadi::Item &item, const EtebaseItem *etesyncI
     }
 
     qCDebug(ETESYNC_LOG) << "Setting up item" << etebase_item_get_uid(etesyncItem);
+
+    Item item;
 
     if (type == ETEBASE_COLLECTION_TYPE_ADDRESS_BOOK) {
         item.setMimeType(KContacts::Addressee::mimeType());

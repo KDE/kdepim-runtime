@@ -41,7 +41,7 @@ public:
 
 protected:
     void fetchEntries();
-    void setupItem(Akonadi::Item &item, const EtebaseItem *etesyncItem, const QString &type);
+    void setupItem(const EtebaseItem *etesyncItem, const QString &type);
 
 private:
     const EteSyncClientState *mClientState = nullptr;
