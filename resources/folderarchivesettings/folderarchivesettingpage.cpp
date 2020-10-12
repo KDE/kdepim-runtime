@@ -62,7 +62,6 @@ FolderArchiveAccountInfo::FolderArchiveType FolderArchiveComboBox::type() const
 FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, QWidget *parent)
     : QWidget(parent)
     , mInstanceName(instanceName)
-    , mInfo(nullptr)
 {
     QVBoxLayout *lay = new QVBoxLayout(this);
     mEnabled = new QCheckBox(i18n("Enable"));
@@ -74,7 +73,7 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
                                  "@label:chooser for the folder that messages will be archived under",
                                  "Archive into:"));
     hbox->addWidget(lab);
-    mArchiveFolder = new Akonadi::CollectionRequester;
+    mArchiveFolder = new Akonadi::CollectionRequester(this);
     mArchiveFolder->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
     hbox->addWidget(mArchiveFolder);
     lay->addLayout(hbox);

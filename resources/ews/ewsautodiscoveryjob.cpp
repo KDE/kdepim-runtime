@@ -18,7 +18,6 @@ EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email, const QString &us
     , mPassword(password)
     , mUserAgent(userAgent)
     , mEnableNTLMv2(enableNTLMv2)
-    , mUsedCreds(false)
 {
 }
 

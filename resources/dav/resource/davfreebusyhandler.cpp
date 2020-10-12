@@ -70,7 +70,7 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime 
     const QStringList principalScheduleOutboxFromEmail = mPrincipalScheduleOutbox[email];
     for (const QString &outbox : principalScheduleOutboxFromEmail) {
         ++mRequestsTracker[email].retrievalJobCount;
-        uint requestId = mNextRequestId++;
+        const uint requestId = mNextRequestId++;
 
         QUrl url(outbox);
         KIO::StoredTransferJob *job = KIO::storedHttpPost(fbData, url);

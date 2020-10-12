@@ -23,7 +23,7 @@ private Q_SLOTS:
     void mailCreateWorkaroundFinished(KJob *job);
     void mailMoveWorkaroundFinished(KJob *job);
 private:
-    bool mSend;
+    bool mSend = false;
 };
 
 #endif

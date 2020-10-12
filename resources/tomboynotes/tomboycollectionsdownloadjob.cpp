@@ -15,8 +15,8 @@
 TomboyCollectionsDownloadJob::TomboyCollectionsDownloadJob(const QString &collectionName, KIO::AccessManager *manager, int refreshInterval, QObject *parent)
     : TomboyJobBase(manager, parent)
     , mCollectionName(collectionName)
+    , mRefreshInterval(refreshInterval)
 {
-    mRefreshInterval = refreshInterval;
 }
 
 Akonadi::Collection::List TomboyCollectionsDownloadJob::collections() const

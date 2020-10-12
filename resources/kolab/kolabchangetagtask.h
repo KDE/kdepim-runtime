@@ -22,7 +22,7 @@ protected:
 
 private:
     KIMAP::Session *mSession = nullptr;
-    QSharedPointer<TagConverter> mTagConverter;
+    const QSharedPointer<TagConverter> mTagConverter;
 
 private Q_SLOTS:
     void onItemsFetchDone(KJob *job);

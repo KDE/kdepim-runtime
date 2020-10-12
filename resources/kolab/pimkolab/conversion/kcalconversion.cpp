@@ -658,21 +658,17 @@ void getRecurrence(T &i, const I &e)
     const auto stdByMonthDayVector = std::vector<int>(bymonthdayVector.begin(), bymonthdayVector.end());
     rrule.setBymonthday(stdByMonthDayVector);
 
-
     const QVector<int> byYearDaysVector = defaultRR->byYearDays().toVector();
     const auto stdByYearDayVector = std::vector<int>(byYearDaysVector.begin(), byYearDaysVector.end());
     rrule.setByyearday(stdByYearDayVector);
-
 
     const QVector<int> byWeekNumberVector = defaultRR->byWeekNumbers().toVector();
     const auto stdWeekNumberVector = std::vector<int>(byWeekNumberVector.begin(), byWeekNumberVector.end());
     rrule.setByweekno(stdWeekNumberVector);
 
-
     const QVector<int> byMonthVector = defaultRR->byMonths().toVector();
     const auto stdByMonthVector = std::vector<int>(byMonthVector.begin(), byMonthVector.end());
     rrule.setBymonth(stdByMonthVector);
-
 
     i.setRecurrenceRule(rrule);
 

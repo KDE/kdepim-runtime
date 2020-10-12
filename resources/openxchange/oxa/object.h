@@ -65,9 +65,9 @@ public:
     KCalendarCore::Incidence::Ptr task() const;
 
 private:
-    ObjectStatus mObjectStatus;
-    qlonglong mObjectId;
-    qlonglong mFolderId;
+    ObjectStatus mObjectStatus = Created;
+    qlonglong mObjectId = -1;
+    qlonglong mFolderId = -1;
     QString mLastModified;
     Folder::Module mModule;
     KContacts::Addressee mContact;

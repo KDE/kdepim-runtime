@@ -35,7 +35,7 @@ private:
     void onUserRequestFinished();
     QString mUserURL;
 
-    QWebEngineView *mWebView = nullptr;
+    QWebEngineView *const mWebView;
 };
 
 #endif // TOMBOYSERVERAUTHENTICATEJOB_H

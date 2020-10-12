@@ -58,7 +58,7 @@ private:
 
     QPointer<KIO::Slave> mSlave;
     SlaveBaseJob *mCurrentJob = nullptr;
-    QString mPassword;
+    const QString mPassword;
     Settings &mSettings;
 };
 

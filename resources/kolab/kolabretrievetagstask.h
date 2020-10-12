@@ -34,7 +34,7 @@ private:
     Akonadi::Tag::List mTags;
     QHash<QString, Akonadi::Item::List> mTagMembers;
     Akonadi::Relation::List mRelations;
-    RetrieveType mRetrieveType;
+    const RetrieveType mRetrieveType;
 
 private Q_SLOTS:
     void onFinalSelectDone(KJob *job);

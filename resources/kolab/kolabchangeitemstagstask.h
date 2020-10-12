@@ -23,7 +23,7 @@ protected:
 private:
     KIMAP::Session *mSession = nullptr;
     QList<Akonadi::Tag> mChangedTags;
-    QSharedPointer<TagConverter> mTagConverter;
+    const QSharedPointer<TagConverter> mTagConverter;
 
 private:
     void processNextTag();

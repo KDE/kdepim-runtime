@@ -133,16 +133,17 @@ void ContactsResource::retrieveItems(const Akonadi::Collection &collection)
     const QFileInfoList entries = directory.entryInfoList();
 
     for (const QFileInfo &entry : entries) {
-        if (entry.fileName() == QLatin1String("WARNING_README.txt")) {
+        const QString entryFileName = entry.fileName();
+        if (entryFileName == QLatin1String("WARNING_README.txt")) {
             continue;
         }
 
         Item item;
-        item.setRemoteId(entry.fileName());
+        item.setRemoteId(entryFileName);
 
-        if (entry.fileName().endsWith(QLatin1String(".vcf"))) {
+        if (entryFileName.endsWith(QLatin1String(".vcf"))) {
             item.setMimeType(KContacts::Addressee::mimeType());
-        } else if (entry.fileName().endsWith(QLatin1String(".ctg"))) {
+        } else if (entryFileName.endsWith(QLatin1String(".ctg"))) {
             item.setMimeType(KContacts::ContactGroup::mimeType());
         } else {
             cancelTask(i18n("Found file of unknown format: '%1'", entry.absoluteFilePath()));

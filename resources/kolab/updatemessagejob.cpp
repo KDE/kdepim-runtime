@@ -28,7 +28,6 @@ UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Sessio
     , mMailbox(mailbox)
     , mUidNext(uidNext)
     , mOldUid(oldUid)
-    , mNewUid(-1)
     , mMessageId(msg->messageID()->asUnicodeString().toUtf8())
     , mKolabUid(kolabUid)
     , mMerger(merger)

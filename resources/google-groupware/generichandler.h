@@ -86,8 +86,8 @@ protected Q_SLOTS:
 protected:
     void emitReadyStatus();
 
-    GoogleResourceStateInterface *m_iface = nullptr;
-    GoogleSettings *m_settings = nullptr;
+    GoogleResourceStateInterface *const m_iface;
+    GoogleSettings *const m_settings;
 };
 
 #endif // GENERICHANDLER_H

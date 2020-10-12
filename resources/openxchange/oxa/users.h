@@ -43,7 +43,7 @@ private:
     void loadFromCache();
     void saveToCache();
 
-    qlonglong mCurrentUserId;
+    qlonglong mCurrentUserId = -1;
     QMap<qlonglong, User> mUsers;
     QString mIdentifier;
 

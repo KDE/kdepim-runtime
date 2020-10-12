@@ -49,7 +49,7 @@ private Q_SLOTS:
 private:
     Folder mFolder;
     qulonglong mLastSync;
-    Mode mMode;
+    const Mode mMode;
     Object::List mObjects;
 };
 }

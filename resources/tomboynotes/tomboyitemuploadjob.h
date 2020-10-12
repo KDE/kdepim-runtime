@@ -40,7 +40,7 @@ private:
     Akonadi::Item mSourceItem;
     KMime::Message::Ptr mNoteContent;
 
-    JobType mJobType;
+    const JobType mJobType;
 
     int mRemoteRevision;
 };

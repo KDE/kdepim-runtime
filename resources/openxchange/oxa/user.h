@@ -32,7 +32,7 @@ public:
     QString name() const;
 
 private:
-    qlonglong mUid;
+    qlonglong mUid = -1;
     QString mEmail;
     QString mName;
 };

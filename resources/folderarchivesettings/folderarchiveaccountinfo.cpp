@@ -9,18 +9,10 @@
 #include <KConfigGroup>
 
 FolderArchiveAccountInfo::FolderArchiveAccountInfo()
-    : mArchiveType(UniqueFolder)
-    , mArchiveTopLevelCollectionId(-1)
-    , mEnabled(false)
-    , mKeepExistingStructure(false)
 {
 }
 
 FolderArchiveAccountInfo::FolderArchiveAccountInfo(const KConfigGroup &config)
-    : mArchiveType(UniqueFolder)
-    , mArchiveTopLevelCollectionId(-1)
-    , mEnabled(false)
-    , mKeepExistingStructure(false)
 {
     readConfig(config);
 }

@@ -35,7 +35,7 @@ protected:
     virtual void doStart() = 0;
 
     Akonadi::Item mItem;
-    Akonadi::Collection mCollection;
+    const Akonadi::Collection mCollection;
     EwsClient &mClient;
     EwsTagStore *const mTagStore;
 };

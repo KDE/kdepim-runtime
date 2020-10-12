@@ -293,7 +293,7 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
         itemMailBodies.insert(itemMailBody);
     }
 
-    foreach (const QByteArray &mail, mails) {
+    for (const QByteArray &mail : mails) {
         KMime::Message::Ptr ourMail(new KMime::Message());
         ourMail->setContent(KMime::CRLFtoLF(mail));
         ourMail->parse();

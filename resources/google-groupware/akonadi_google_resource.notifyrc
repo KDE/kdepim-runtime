@@ -1,4 +1,5 @@
-[Desktop Entry]
+[Global]
+IconName=im-google
 Name=Google Groupware
 Name[ca]=Google Groupware
 Name[ca@valencia]=Google Groupware
@@ -41,10 +42,34 @@ Comment[sl]=Dostopajte do svojih Googlovih koledarjev, stikov in opravil iz okol
 Comment[sv]=Kom åt Google kalendrar, kontakter och uppgifter från KDE
 Comment[uk]=Доступ до ваших календарів, записів контактів і завдань Google з KDE
 Comment[x-test]=xxAccess your Google Calendars, Contacts and Tasks from KDExx
-Type=AkonadiResource
-Exec=akonadi_google_resource
-X-Akonadi-MimeTypes=text/calendar,text/directory,application/x-vnd.akonadi.calendar.event,application/x-vnd.akonadi.calendar.todo,application/x-vnd.akonadi.calendar.freebusy
-X-Akonadi-Capabilities=Resource,FreeBusyProvider
-X-Akonadi-Identifier=akonadi_google_resource
-X-Akonadi-Custom-KAccounts=google-contacts,google-calendar
-Icon=im-google
+
+[Event/authNeeded]
+Name=Google Groupware needs to authenticate
+Name[ca]=Google Groupware s'ha d'autenticar
+Name[ca@valencia]=Google Groupware s'ha d'autenticar
+Name[en_GB]=Google Groupware needs to authenticate
+Name[es]=Google Groupware necesita autenticación
+Name[fr]=La suite de groupe de travail « Google Groupware » a besoin de s'authentifier
+Name[ko]=Google 그룹웨어에 인증해야 함
+Name[nl]=Google Groupware heeft authenticatie nodig
+Name[pt]=O Google Groupware necessita de se autenticar
+Name[sl]=Google Groupware se mora overiti
+Name[sv]=Google grupprogram behöver behörighetskontroll
+Name[uk]=Потрібне розпізнавання на Google Groupware
+Name[x-test]=xxGoogle Groupware needs to authenticatexx
+Comment=Google Groupware has been logged off and needs to be reauthenticated
+Comment[ca]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
+Comment[ca@valencia]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
+Comment[en_GB]=Google Groupware has been logged off and needs to be re-authenticated
+Comment[es]=Se ha cerrado la sesión de Google Groupware y necesita volver a autenticarse
+Comment[fr]=La suite de groupe de travail « Google Groupware » s'est déconnectée et doit de s'authentifier à nouveau
+Comment[ko]=Google 그룹웨어에서 로그아웃되어서 다시 인증해야 함
+Comment[nl]=Google Groupware is afgemeld en opnieuw er is opnieuw authenticatie nodig
+Comment[pt]=A sessão do Google Groupware foi encerrada e necessita de se autenticar de novo
+Comment[sl]=Google Groupware je bil odjavljen se mora ponovno overiti
+Comment[sv]=Google grupprogram har loggats ut och behöver ny behörighetskontroll
+Comment[uk]=Було здійснено вихід із Google Groupware — потрібне повторне розпізнавання
+Comment[x-test]=xxGoogle Groupware has been logged off and needs to be reauthenticatedxx
+Urgency=Normal
+Action=Popup
+

@@ -23,7 +23,7 @@ public:
     void start() override;
 
 private:
-    Akonadi::Collection::Id mCollectionId;
+    const Akonadi::Collection::Id mCollectionId;
     // This will be called once the request is finished.
     void onRequestFinished();
     Akonadi::Item::List mResultItems;

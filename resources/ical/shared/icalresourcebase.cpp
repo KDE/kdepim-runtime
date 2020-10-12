@@ -82,7 +82,7 @@ void ICalResourceBase::itemRemoved(const Akonadi::Item &item)
         return;
     }
 
-    Incidence::Ptr i = mCalendar->instance(item.remoteId());
+    const Incidence::Ptr i = mCalendar->instance(item.remoteId());
     if (i) {
         if (!mCalendar->deleteIncidence(i)) {
             qCritical() << "akonadi_ical_resource: Can't delete incidence with instance identifier "

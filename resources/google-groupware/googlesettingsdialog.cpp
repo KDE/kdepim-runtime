@@ -129,6 +129,7 @@ void GoogleSettingsDialog::accountChanged()
 
 void GoogleSettingsDialog::slotConfigure()
 {
+    const QString username = m_account && m_account->accountName().isEmpty() ? QString() : m_account->accountName();
     m_account = AccountPtr(new Account());
     const QList<QUrl> resourceScopes = m_resource->scopes();
     for (const QUrl &scope : resourceScopes) {
@@ -139,6 +140,7 @@ void GoogleSettingsDialog::slotConfigure()
     AuthJob *authJob = new AuthJob(m_account,
                                    m_settings->clientId(),
                                    m_settings->clientSecret());
+    authJob->setUsername(username);
     connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 }
 

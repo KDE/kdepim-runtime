@@ -57,6 +57,10 @@ protected:
 
     void emitReadyStatus();
     void collectionsRetrievedFromHandler(const Akonadi::Collection::List &collections);
+
+    void requestAuthenticationFromUser(const KGAPI2::AccountPtr &account, const QVariant &args = {});
+    void runAuthJob(const KGAPI2::AccountPtr &account, const QVariant &args);
+
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
@@ -80,7 +84,7 @@ private:
     GoogleSettings *m_settings = nullptr;
     Akonadi::Collection m_rootCollection;
 
-    GoogleResourceState *m_iface;
+    GoogleResourceState *const m_iface;
 
     std::vector<GenericHandler::Ptr> m_handlers;
     FreeBusyHandler::Ptr m_freeBusyHandler;

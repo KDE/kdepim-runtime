@@ -31,7 +31,7 @@ private Q_SLOTS:
     void onTokenRequestFinished(KGAPI2::AccountPromise *promise);
 
 private:
-    ImapResourceBase *mResource = nullptr;
+    ImapResourceBase *const mResource;
     QPointer<KGAPI2::AccountPromise> mPendingPromise;
 };
 

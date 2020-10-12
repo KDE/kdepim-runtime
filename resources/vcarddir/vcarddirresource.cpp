@@ -61,7 +61,8 @@ bool VCardDirResource::loadAddressees()
     QDirIterator it(vCardDirectoryName());
     while (it.hasNext()) {
         it.next();
-        if (it.fileName() != QLatin1String(".") && it.fileName() != QLatin1String("..") && it.fileName() != QLatin1String("WARNING_README.txt")) {
+        const QString filename = it.fileName();
+        if (filename != QLatin1String(".") && filename != QLatin1String("..") && filename != QLatin1String("WARNING_README.txt")) {
             QFile file(it.filePath());
             if (file.open(QIODevice::ReadOnly)) {
                 const QByteArray data = file.readAll();

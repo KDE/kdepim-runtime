@@ -26,8 +26,8 @@ private:
     // This will be called once the request is finished.
     void onRequestFinished();
     Akonadi::Collection::List mResultCollections;
-    QString mCollectionName;
-    int mRefreshInterval;
+    const QString mCollectionName;
+    const int mRefreshInterval;
 };
 
 #endif // TOMBOYCOLLECTIONSDOWNLOADJOB_H

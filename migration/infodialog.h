@@ -56,7 +56,7 @@ private:
     int mMigratorCount = 0;
     static bool mError;
     bool mChange = false;
-    bool mCloseWhenDone = false;
+    const bool mCloseWhenDone;
     bool mAutoScrollList = true;
 };
 

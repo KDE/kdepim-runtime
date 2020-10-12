@@ -103,7 +103,7 @@ private:
 
     static qint64 m_requestCounter;
 
-    int m_maxPoolSize;
+    const int m_maxPoolSize;
     ImapAccount *m_account = nullptr;
     PasswordRequesterInterface *m_passwordRequester = nullptr;
     KIMAP::SessionUiProxy::Ptr m_sessionUiProxy;

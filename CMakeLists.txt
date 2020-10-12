@@ -48,7 +48,7 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_MIN_VERSION "5.73.0")
+set(KF5_MIN_VERSION "5.75.0")
 
 find_package(ECM ${KF5_MIN_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
@@ -87,9 +87,10 @@ set(AKONADIMIME_LIB_VERSION "5.15.40")
 set(AKONADICONTACT_LIB_VERSION "5.15.40")
 set(AKONADINOTE_LIB_VERSION "5.15.40")
 set(PIMCOMMON_LIB_VERSION "5.15.40")
-set(KGAPI_LIB_VERSION "5.15.40")
+set(KGAPI_LIB_VERSION "5.15.41")
 set(LIBKDEPIM_LIB_VERSION "5.15.40")
 set(KLDAP_LIB_VERSION "5.15.40")
+set(GRANTLEETHEME_LIB_VERSION "5.15.40")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -140,12 +141,12 @@ find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Libkdepim ${LIBKDEPIM_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5GrantleeTheme ${GRANTLEETHEME_LIB_VERSION} CONFIG REQUIRED)
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
-option(NO_REGENERATE_MIME "Don't regenerate mime file (developer-only option)" FALSE )
 
 #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
-add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054A00)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054B00)
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 add_definitions(-DQT_NO_EMIT)
@@ -160,9 +161,7 @@ add_subdirectory(doc)
 
 ## install the MIME type spec file for KDEPIM specific MIME types
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
-if (NOT NO_REGENERATE_MIME)
-   update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
-endif()   
+update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
 ecm_qt_install_logging_categories(
         EXPORT KDEPIMRUNTIME
         FILE kdepim-runtime.categories

@@ -73,8 +73,8 @@ target_link_libraries(akonadi_google_resource
   KF5::Wallet
   KF5::I18n
   KF5::WindowSystem
-  KF5::Completion
   KF5::TextWidgets
+  KF5::Notifications
   KPim::GAPICalendar
   KPim::GAPIContacts
   KPim::GAPICore
@@ -86,4 +86,9 @@ install(TARGETS akonadi_google_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(
   FILES googleresource.desktop
   DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents"
+)
+
+install(
+  FILES akonadi_google_resource.notifyrc
+  DESTINATION ${KNOTIFYRC_INSTALL_DIR}
 )

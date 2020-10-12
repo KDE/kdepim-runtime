@@ -30,8 +30,8 @@ protected:
     bool handleError(KGAPI2::Job *job);
     void accountChanged();
 private:
-    GoogleResource *m_resource;
-    GoogleSettings *m_settings;
+    GoogleResource *const m_resource;
+    GoogleSettings *const m_settings;
     Ui::GoogleSettingsDialog *m_ui = nullptr;
     KGAPI2::AccountPtr m_account;
 private Q_SLOTS:
