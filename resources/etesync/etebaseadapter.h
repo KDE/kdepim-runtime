@@ -20,6 +20,9 @@
 
 #define ETESYNC_DEFAULT_COLLECTION_COLOR QStringLiteral("#8BC34A")
 
+static const char *ETESYNC_COLLECTION_TYPES[] = { "etebase.vevent", "etebase.vcard", "etebase.vtodo" };
+static const int ETESYNC_COLLECTION_TYPES_SIZE = ETEBASE_UTILS_C_ARRAY_LEN(ETESYNC_COLLECTION_TYPES);
+
 struct EtebaseDeleter
 {
     void operator()(EtebaseClient *ptr)
@@ -50,11 +53,6 @@ struct EtebaseDeleter
     void operator()(EtebaseCollection *ptr)
     {
         etebase_collection_destroy(ptr);
-    }
-
-    void operator()(EtebaseCollectionMetadata *ptr)
-    {
-        etebase_collection_metadata_destroy(ptr);
     }
 
     void operator()(EtebaseItemManager *ptr)
@@ -96,7 +94,6 @@ using EtebaseFetchOptionsPtr = std::unique_ptr<EtebaseFetchOptions, EtebaseDelet
 using EtebaseCollectionListResponsePtr = std::unique_ptr<EtebaseCollectionListResponse, EtebaseDeleter>;
 using EtebaseCollectionManagerPtr = std::unique_ptr<EtebaseCollectionManager, EtebaseDeleter>;
 using EtebaseCollectionPtr = std::unique_ptr<EtebaseCollection, EtebaseDeleter>;
-using EtebaseCollectionMetadataPtr = std::unique_ptr<EtebaseCollectionMetadata, EtebaseDeleter>;
 using EtebaseItemManagerPtr = std::unique_ptr<EtebaseItemManager, EtebaseDeleter>;
 using EtebaseItemListResponsePtr = std::unique_ptr<EtebaseItemListResponse, EtebaseDeleter>;
 using EtebaseItemMetadataPtr = std::unique_ptr<EtebaseItemMetadata, EtebaseDeleter>;
@@ -113,11 +110,13 @@ EtebaseAccountPtr etebase_account_login(const EtebaseClient *client, const QStri
 
 void etebase_fetch_options_set_stoken(EtebaseFetchOptions *fetch_options, const QString &stoken);
 
-EtebaseCollectionMetadataPtr etebase_collection_metadata_new(const QString &type, const QString &name);
+void etebase_item_metadata_set_item_type(EtebaseItemMetadata *meta_data, const QString &item_type);
 
-void etebase_collection_metadata_set_color(EtebaseCollectionMetadata *meta_data, const QString &color);
+void etebase_item_metadata_set_color(EtebaseItemMetadata *meta_data, const QString &color);
 
-void etebase_collection_metadata_set_name(EtebaseCollectionMetadata *meta_data, const QString &name);
+void etebase_item_metadata_set_name(EtebaseItemMetadata *meta_data, const QString &name);
+
+EtebaseCollectionPtr etebase_collection_manager_create(const EtebaseCollectionManager *col_mgr, const QString &collection_type, const EtebaseItemMetadata *meta, const void *content, uintptr_t content_size);
 
 EtebaseFileSystemCachePtr etebase_fs_cache_new(const QString &path, const QString &username);
 

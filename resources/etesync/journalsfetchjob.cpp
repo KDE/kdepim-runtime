@@ -73,7 +73,7 @@ void JournalsFetchJob::fetchJournals()
         etebase_fetch_options_set_limit(fetchOptions.get(), COLLECTIONS_FETCH_BATCH_SIZE);
         etebase_fetch_options_set_prefetch(fetchOptions.get(), ETEBASE_PREFETCH_OPTION_MEDIUM);
 
-        EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
+        EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list_multi(collectionManager.get(), ETESYNC_COLLECTION_TYPES, ETEBASE_UTILS_C_ARRAY_LEN(ETESYNC_COLLECTION_TYPES), fetchOptions.get()));
         if (!collectionList) {
             setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();
@@ -137,9 +137,10 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
 
     qCDebug(ETESYNC_LOG) << "Setting up collection" << etebase_collection_get_uid(etesyncCollection);
 
-    EtebaseCollectionMetadataPtr metaData(etebase_collection_get_meta(etesyncCollection));
+    EtebaseItemMetadataPtr metaData(etebase_collection_get_meta(etesyncCollection));
 
-    const QString type = QString::fromUtf8(etebase_collection_metadata_get_collection_type(metaData.get()));
+    const QString type = QString::fromUtf8(etebase_collection_get_collection_type(etesyncCollection));
+    qCDebug(ETESYNC_LOG) << ETEBASE_COLLECTION_TYPE_CALENDAR;
 
     qCDebug(ETESYNC_LOG) << "Type" << type;
 
@@ -149,7 +150,7 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
 
     auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
 
-    const QString displayName = QString::fromUtf8(etebase_collection_metadata_get_name(metaData.get()));
+    const QString displayName = QString::fromUtf8(etebase_item_metadata_get_name(metaData.get()));
 
     qCDebug(ETESYNC_LOG) << "Name:" << displayName;
 
@@ -175,7 +176,7 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
     }
 
     const QString journalUid = QString::fromUtf8(etebase_collection_get_uid(etesyncCollection));
-    auto collectionColor = QString::fromUtf8(etebase_collection_metadata_get_color(metaData.get()));
+    auto collectionColor = QString::fromUtf8(etebase_item_metadata_get_color(metaData.get()));
     auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>(Collection::AddIfMissing);
     if (collectionColor.isEmpty()) {
         collectionColor = ETESYNC_DEFAULT_COLLECTION_COLOR;
@@ -211,14 +212,16 @@ void JournalsFetchJob::createDefaultCollection(const QString &collectionType, co
 
     // Create metadata
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
-    EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_metadata_new(collectionType, collectionName));
-    etebase_collection_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
-    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
+    EtebaseItemMetadataPtr collectionMetaData(etebase_item_metadata_new());
+    etebase_item_metadata_set_item_type(collectionMetaData.get(), collectionType);
+    etebase_item_metadata_set_name(collectionMetaData.get(), collectionName);
+    etebase_item_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
+    etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     qCDebug(ETESYNC_LOG) << "Created metadata";
 
     // Create EteSync collection
-    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_create(collectionManager.get(), collectionMetaData.get(), nullptr, 0));
+    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_create(collectionManager.get(), collectionType, collectionMetaData.get(), nullptr, 0));
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not create new etesyncCollection";
         qCDebug(ETESYNC_LOG) << "Etebase error;" << etebase_error_get_message();

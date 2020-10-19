@@ -32,19 +32,24 @@ void etebase_fetch_options_set_stoken(EtebaseFetchOptions *fetch_options, const 
     etebase_fetch_options_set_stoken(fetch_options, charArrFromQString(stoken));
 }
 
-EtebaseCollectionMetadataPtr etebase_collection_metadata_new(const QString &type, const QString &name)
+void etebase_item_metadata_set_item_type(EtebaseItemMetadata *meta_data, const QString &item_type)
 {
-    return EtebaseCollectionMetadataPtr(etebase_collection_metadata_new(charArrFromQString(type), charArrFromQString(name)));
+    etebase_item_metadata_set_item_type(meta_data, charArrFromQString(item_type));
 }
 
-void etebase_collection_metadata_set_color(EtebaseCollectionMetadata *meta_data, const QString &color)
+void etebase_item_metadata_set_color(EtebaseItemMetadata *meta_data, const QString &color)
 {
-    etebase_collection_metadata_set_color(meta_data, charArrFromQString(color));
+    etebase_item_metadata_set_color(meta_data, charArrFromQString(color));
 }
 
-void etebase_collection_metadata_set_name(EtebaseCollectionMetadata *meta_data, const QString &name)
+void etebase_item_metadata_set_name(EtebaseItemMetadata *meta_data, const QString &name)
 {
-    etebase_collection_metadata_set_name(meta_data, charArrFromQString(name));
+    etebase_item_metadata_set_name(meta_data, charArrFromQString(name));
+}
+
+EtebaseCollectionPtr etebase_collection_manager_create(const EtebaseCollectionManager *col_mgr, const QString &collection_type, const EtebaseItemMetadata *meta, const void *content, uintptr_t content_size)
+{
+    return EtebaseCollectionPtr(etebase_collection_manager_create(col_mgr, charArrFromQString(collection_type), meta, content, content_size));
 }
 
 EtebaseFileSystemCachePtr etebase_fs_cache_new(const QString &path, const QString &username)

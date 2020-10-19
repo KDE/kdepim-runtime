@@ -384,8 +384,7 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
         cancelTask(i18n("Could not get etesyncCollection from cache '%1'", collection.remoteId()));
         return;
     }
-    EtebaseCollectionMetadataPtr collectionMetadata(etebase_collection_get_meta(etesyncCollection.get()));
-    const QString type = QString::fromUtf8(etebase_collection_metadata_get_collection_type(collectionMetadata.get()));
+    const QString type = QString::fromUtf8(etebase_collection_get_collection_type(etesyncCollection.get()));
 
     // Create metadata
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
@@ -572,14 +571,16 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     // Create metadata
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     const QString type = getEtebaseTypeForCollection(collection);
-    EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_metadata_new(type, collection.displayName()));
-    etebase_collection_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
-    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
+    EtebaseItemMetadataPtr collectionMetaData(etebase_item_metadata_new());
+    etebase_item_metadata_set_item_type(collectionMetaData.get(), type);
+    etebase_item_metadata_set_name(collectionMetaData.get(), collection.displayName());
+    etebase_item_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
+    etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     qCDebug(ETESYNC_LOG) << "Created metadata";
 
     // Create EteSync collection
-    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_create(collectionManager.get(), collectionMetaData.get(), nullptr, 0));
+    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_create(collectionManager.get(), type, collectionMetaData.get(), nullptr, 0));
     if (!etesyncCollection) {
         qCDebug(ETESYNC_LOG) << "Could not create new etesyncCollection";
         qCDebug(ETESYNC_LOG) << "Etebase error;" << etebase_error_get_message();
@@ -648,14 +649,14 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
     }
 
     // Update metadata
-    EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_get_meta(etesyncCollection.get()));
+    EtebaseItemMetadataPtr collectionMetaData(etebase_collection_get_meta(etesyncCollection.get()));
 
     // mtime
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
-    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
+    etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     // Name
-    etebase_collection_metadata_set_name(collectionMetaData.get(), collection.displayName());
+    etebase_item_metadata_set_name(collectionMetaData.get(), collection.displayName());
 
     // Color
     auto journalColor = ETESYNC_DEFAULT_COLLECTION_COLOR;
@@ -665,7 +666,7 @@ void EteSyncResource::collectionChanged(const Akonadi::Collection &collection)
             journalColor = colorAttr->color().name();
         }
     }
-    etebase_collection_metadata_set_color(collectionMetaData.get(), journalColor);
+    etebase_item_metadata_set_color(collectionMetaData.get(), journalColor);
 
     // Set metadata
     etebase_collection_set_meta(etesyncCollection.get(), collectionMetaData.get());
@@ -706,11 +707,11 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
     }
 
     // Update metadata
-    EtebaseCollectionMetadataPtr collectionMetaData(etebase_collection_get_meta(etesyncCollection.get()));
+    EtebaseItemMetadataPtr collectionMetaData(etebase_collection_get_meta(etesyncCollection.get()));
 
     // mtime
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
-    etebase_collection_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
+    etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     // Set collection deleted
     etebase_collection_delete(etesyncCollection.get());

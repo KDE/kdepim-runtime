@@ -62,8 +62,8 @@ void EntriesFetchJob::fetchEntries()
         return;
     }
 
-    EtebaseCollectionMetadataPtr metaData(etebase_collection_get_meta(mEtesyncCollection.get()));
-    const QString type = QString::fromUtf8(etebase_collection_metadata_get_collection_type(metaData.get()));
+    EtebaseItemMetadataPtr metaData(etebase_collection_get_meta(mEtesyncCollection.get()));
+    const QString type = QString::fromUtf8(etebase_collection_get_collection_type(mEtesyncCollection.get()));
     qCDebug(ETESYNC_LOG) << "Type:" << type;
 
     QString sToken = mCollection.remoteRevision();
@@ -141,6 +141,7 @@ void EntriesFetchJob::setupItem(const EtebaseItem *etesyncItem, const QString &t
         etebase_item_get_content(etesyncItem, content.data(), len);
     }
     item.setPayloadFromData(content);
+    // qCDebug(ETESYNC_LOG) << item.payloadData()<<endl;
 
     if (etebase_item_is_deleted(etesyncItem)) {
         mRemovedItems.push_back(item);

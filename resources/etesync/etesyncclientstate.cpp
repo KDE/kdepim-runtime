@@ -112,7 +112,7 @@ bool EteSyncClientState::accountStatus()
     etebase_fetch_options_set_limit(fetchOptions.get(), 1);
     etebase_fetch_options_set_prefetch(fetchOptions.get(), ETEBASE_PREFETCH_OPTION_MEDIUM);
 
-    EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list(collectionManager.get(), fetchOptions.get()));
+    EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list_multi(collectionManager.get(), ETESYNC_COLLECTION_TYPES, ETESYNC_COLLECTION_TYPES_SIZE, fetchOptions.get()));
     if (!collectionList) {
         qCDebug(ETESYNC_LOG) << "Could not fetch collection list with limit 1";
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
