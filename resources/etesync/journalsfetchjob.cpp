@@ -17,9 +17,6 @@
 #include "etesync_debug.h"
 
 #define COLLECTIONS_FETCH_BATCH_SIZE 50
-#define ETESYNC_DEFAULT_CALENDAR_NAME QStringLiteral("My Calendar")
-#define ETESYNC_DEFAULT_ADDRESS_BOOK_NAME QStringLiteral("My Contacts")
-#define ETESYNC_DEFAULT_TASKS_NAME QStringLiteral("My Tasks")
 
 using namespace EteSyncAPI;
 using namespace Akonadi;
@@ -60,10 +57,6 @@ void JournalsFetchJob::fetchJournals()
     }
 
     mSyncToken = mResourceCollection.remoteRevision();
-    bool firstSync = false;
-    if (mSyncToken.isEmpty()) {
-        firstSync = true;
-    }
     bool done = 0;
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(account));
 
@@ -119,13 +112,6 @@ void JournalsFetchJob::fetchJournals()
             }
         }
     }
-
-    // Create default collections if this is a new user and has no EteSync collections
-    if (firstSync && !mHasPimCollections) {
-        createDefaultCollection(ETEBASE_COLLECTION_TYPE_CALENDAR, ETESYNC_DEFAULT_CALENDAR_NAME);
-        createDefaultCollection(ETEBASE_COLLECTION_TYPE_ADDRESS_BOOK, ETESYNC_DEFAULT_ADDRESS_BOOK_NAME);
-        createDefaultCollection(ETEBASE_COLLECTION_TYPE_TASKS, ETESYNC_DEFAULT_TASKS_NAME);
-    }
 }
 
 void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollection)
@@ -159,17 +145,14 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
         mimeTypes.push_back(KContacts::ContactGroup::mimeType());
         attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-pim-contacts"));
-        mHasPimCollections = true;
     } else if (type == ETEBASE_COLLECTION_TYPE_CALENDAR) {
         mimeTypes.push_back(KCalendarCore::Event::eventMimeType());
         attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-calendar"));
-        mHasPimCollections = true;
     } else if (type == ETEBASE_COLLECTION_TYPE_TASKS) {
         mimeTypes.push_back(KCalendarCore::Todo::todoMimeType());
         attr->setDisplayName(displayName);
         attr->setIconName(QStringLiteral("view-pim-tasks"));
-        mHasPimCollections = true;
     } else {
         qCInfo(ETESYNC_LOG) << "Unknown collection type. Cannot set collection mime type.";
         return;
@@ -202,44 +185,4 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
     }
 
     mCollections.push_back(collection);
-}
-
-void JournalsFetchJob::createDefaultCollection(const QString &collectionType, const QString &collectionName)
-{
-    qCDebug(ETESYNC_LOG) << "Creating default collection" << collectionName;
-
-    EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mClientState->account()));
-
-    // Create metadata
-    int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
-    EtebaseItemMetadataPtr collectionMetaData(etebase_item_metadata_new());
-    etebase_item_metadata_set_item_type(collectionMetaData.get(), collectionType);
-    etebase_item_metadata_set_name(collectionMetaData.get(), collectionName);
-    etebase_item_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
-    etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
-
-    qCDebug(ETESYNC_LOG) << "Created metadata";
-
-    // Create EteSync collection
-    EtebaseCollectionPtr etesyncCollection(etebase_collection_manager_create(collectionManager.get(), collectionType, collectionMetaData.get(), nullptr, 0));
-    if (!etesyncCollection) {
-        qCDebug(ETESYNC_LOG) << "Could not create new etesyncCollection";
-        qCDebug(ETESYNC_LOG) << "Etebase error;" << etebase_error_get_message();
-        return;
-    }
-
-    qCDebug(ETESYNC_LOG) << "Created EteSync collection";
-
-    // Upload to server
-    if (etebase_collection_manager_upload(collectionManager.get(), etesyncCollection.get(), NULL)) {
-        qCDebug(ETESYNC_LOG) << "Error uploading collection addition";
-        qCDebug(ETESYNC_LOG) << "Etebase error:" << etebase_error_get_message();
-        return;
-    } else {
-        qCDebug(ETESYNC_LOG) << "Uploaded collection addition to server";
-    }
-
-    // Save to cache
-    mClientState->saveEtebaseCollectionCache(etesyncCollection.get());
-    setupCollection(etesyncCollection.get());
 }

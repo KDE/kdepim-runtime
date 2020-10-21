@@ -100,12 +100,12 @@ void EteSyncClientState::logout()
     deleteWalletEntry();
 }
 
-bool EteSyncClientState::accountStatus()
+EteSyncClientState::AccountStatus EteSyncClientState::accountStatus()
 {
     if (!mAccount) {
         qCDebug(ETESYNC_LOG) << "Could not fetch collection list with limit 1";
         qCDebug(ETESYNC_LOG) << "Etebase account is null";
-        return false;
+        return ERROR;
     }
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(mAccount.get()));
     EtebaseFetchOptionsPtr fetchOptions(etebase_fetch_options_new());
@@ -116,9 +116,14 @@ bool EteSyncClientState::accountStatus()
     if (!collectionList) {
         qCDebug(ETESYNC_LOG) << "Could not fetch collection list with limit 1";
         qCDebug(ETESYNC_LOG) << "Etebase error" << etebase_error_get_message();
-        return false;
+        return ERROR;
     }
-    return true;
+
+    uintptr_t dataLength = etebase_collection_list_response_get_data_length(collectionList.get());
+    if (dataLength == 0) {
+        return NEW_ACCOUNT;
+    }
+    return OK;
 }
 
 void EteSyncClientState::refreshToken()

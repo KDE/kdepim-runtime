@@ -20,12 +20,18 @@ public:
     typedef std::unique_ptr<EteSyncClientState> Ptr;
     explicit EteSyncClientState(const QString &agentId, WId winId);
 
+    enum AccountStatus {
+        OK,
+        NEW_ACCOUNT,
+        ERROR
+    };
+
     void init();
     void saveSettings();
     void invalidateToken();
     bool login(const QString &serverUrl, const QString &username, const QString &password);
     void logout();
-    bool accountStatus();
+    AccountStatus accountStatus();
     bool openWalletFolder();
     void deleteWalletEntry();
     void saveAccount();

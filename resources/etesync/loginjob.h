@@ -34,13 +34,14 @@ public:
 
 private:
     void login();
+    void createDefaultCollection(const QString &collectionType, const QString &collectionName);
 
     EteSyncClientState *mClientState = nullptr;
     QString mServerUrl;
     QString mUsername;
     QString mPassword;
     bool mLoginResult;
-    bool mAccountStatusResult;
+    bool mAccountStatusResult = false;
     bool mUserInfoResult;
 };
 } // namespace EteSyncAPI

@@ -141,7 +141,6 @@ void EntriesFetchJob::setupItem(const EtebaseItem *etesyncItem, const QString &t
         etebase_item_get_content(etesyncItem, content.data(), len);
     }
     item.setPayloadFromData(content);
-    // qCDebug(ETESYNC_LOG) << item.payloadData()<<endl;
 
     if (etebase_item_is_deleted(etesyncItem)) {
         mRemovedItems.push_back(item);
