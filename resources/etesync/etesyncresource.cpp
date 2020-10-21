@@ -572,7 +572,6 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     const QString type = getEtebaseTypeForCollection(collection);
     EtebaseItemMetadataPtr collectionMetaData(etebase_item_metadata_new());
     etebase_item_metadata_set_name(collectionMetaData.get(), collection.displayName());
-    etebase_item_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
     etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
 
     qCDebug(ETESYNC_LOG) << "Created metadata";
