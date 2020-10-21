@@ -32,11 +32,6 @@ void etebase_fetch_options_set_stoken(EtebaseFetchOptions *fetch_options, const 
     etebase_fetch_options_set_stoken(fetch_options, charArrFromQString(stoken));
 }
 
-void etebase_item_metadata_set_item_type(EtebaseItemMetadata *meta_data, const QString &item_type)
-{
-    etebase_item_metadata_set_item_type(meta_data, charArrFromQString(item_type));
-}
-
 void etebase_item_metadata_set_color(EtebaseItemMetadata *meta_data, const QString &color)
 {
     etebase_item_metadata_set_color(meta_data, charArrFromQString(color));

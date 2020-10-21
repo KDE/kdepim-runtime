@@ -389,7 +389,6 @@ void EteSyncResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
     // Create metadata
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     EtebaseItemMetadataPtr itemMetaData(etebase_item_metadata_new());
-    etebase_item_metadata_set_item_type(itemMetaData.get(), "file");
     QString uid;
     if (type == ETEBASE_COLLECTION_TYPE_ADDRESS_BOOK) {
         uid = item.payload<KContacts::Addressee>().uid();
@@ -572,7 +571,6 @@ void EteSyncResource::collectionAdded(const Akonadi::Collection &collection, con
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     const QString type = getEtebaseTypeForCollection(collection);
     EtebaseItemMetadataPtr collectionMetaData(etebase_item_metadata_new());
-    etebase_item_metadata_set_item_type(collectionMetaData.get(), type);
     etebase_item_metadata_set_name(collectionMetaData.get(), collection.displayName());
     etebase_item_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
     etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);

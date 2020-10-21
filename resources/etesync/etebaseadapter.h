@@ -110,8 +110,6 @@ EtebaseAccountPtr etebase_account_login(const EtebaseClient *client, const QStri
 
 void etebase_fetch_options_set_stoken(EtebaseFetchOptions *fetch_options, const QString &stoken);
 
-void etebase_item_metadata_set_item_type(EtebaseItemMetadata *meta_data, const QString &item_type);
-
 void etebase_item_metadata_set_color(EtebaseItemMetadata *meta_data, const QString &color);
 
 void etebase_item_metadata_set_name(EtebaseItemMetadata *meta_data, const QString &name);

@@ -77,7 +77,6 @@ void LoginJob::createDefaultCollection(const QString &collectionType, const QStr
     // Create metadata
     int64_t modificationTimeSinceEpoch = QDateTime::currentMSecsSinceEpoch();
     EtebaseItemMetadataPtr collectionMetaData(etebase_item_metadata_new());
-    etebase_item_metadata_set_item_type(collectionMetaData.get(), collectionType);
     etebase_item_metadata_set_name(collectionMetaData.get(), collectionName);
     etebase_item_metadata_set_color(collectionMetaData.get(), ETESYNC_DEFAULT_COLLECTION_COLOR);
     etebase_item_metadata_set_mtime(collectionMetaData.get(), &modificationTimeSinceEpoch);
