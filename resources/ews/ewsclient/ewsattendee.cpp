@@ -11,7 +11,6 @@
 
 #include "ewsclient_debug.h"
 #include "ewsmailbox.h"
-#include "ewstypes.h"
 
 class EwsAttendeePrivate : public QSharedData
 {

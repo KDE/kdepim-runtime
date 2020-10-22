@@ -6,7 +6,6 @@
 */
 
 #include "googlesettings.h"
-#include "settingsbase.h"
 #include "googleresource_debug.h"
 
 #include <KGAPI/Account>

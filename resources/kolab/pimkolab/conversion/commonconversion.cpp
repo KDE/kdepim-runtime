@@ -9,7 +9,6 @@
 #include "timezoneconverter.h"
 
 #include <iostream>
-#include <QUrl>
 #include <QTimeZone>
 
 namespace Kolab {

@@ -6,7 +6,6 @@
 
 #include "ewsid.h"
 
-#include <QString>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 #include <QDebug>

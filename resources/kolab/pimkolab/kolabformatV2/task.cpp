@@ -10,7 +10,6 @@
 #include "task.h"
 #include "pimkolab_debug.h"
 
-#include <kcalendarcore/todo.h>
 
 using namespace KolabV2;
 

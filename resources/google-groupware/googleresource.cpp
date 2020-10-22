@@ -13,7 +13,6 @@
 #include "googleresource_debug.h"
 #include "settingsadaptor.h"
 
-#include "calendarhandler.h"
 #include "contacthandler.h"
 #include "taskhandler.h"
 

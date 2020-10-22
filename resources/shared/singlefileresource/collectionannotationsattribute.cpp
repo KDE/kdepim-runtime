@@ -7,7 +7,6 @@
 #include "collectionannotationsattribute.h"
 
 #include <QByteArray>
-#include <attribute.h>
 
 using namespace Akonadi;
 

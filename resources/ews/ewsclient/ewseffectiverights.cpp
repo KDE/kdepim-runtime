@@ -11,7 +11,6 @@
 #include <QXmlStreamReader>
 
 #include "ewsclient_debug.h"
-#include "ewstypes.h"
 
 class EwsEffectiveRightsPrivate : public QSharedData
 {

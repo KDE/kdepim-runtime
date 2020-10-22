@@ -9,7 +9,6 @@
 #include "migration_debug.h"
 #include <KLocalizedString>
 #include <AkonadiCore/servermanager.h>
-#include <QFile>
 #include <QDateTime>
 #include <QStandardPaths>
 #include <QFileInfo>

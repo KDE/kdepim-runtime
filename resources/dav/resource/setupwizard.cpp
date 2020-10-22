@@ -21,7 +21,6 @@
 #include <QCheckBox>
 #include <QFormLayout>
 #include <QHBoxLayout>
-#include <QLabel>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QRegularExpressionValidator>

@@ -6,7 +6,6 @@
 
 #include "kolabobject.h"
 #include "v2helpers.h"
-#include "kolabdefinitions.h"
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
 

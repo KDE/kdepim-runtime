@@ -6,7 +6,6 @@
 
 #include "ewsclient.h"
 
-#include <QString>
 
 #include "auth/ewsabstractauth.h"
 #include "ewsclient_debug.h"

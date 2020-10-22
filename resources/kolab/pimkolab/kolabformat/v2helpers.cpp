@@ -6,23 +6,11 @@
 
 #include "v2helpers.h"
 
-#include "kolabdefinitions.h"
 
-#include "kolabformatV2/kolabbase.h"
-#include "kolabformatV2/journal.h"
-#include "kolabformatV2/task.h"
-#include "kolabformatV2/event.h"
-#include "kolabformatV2/contact.h"
-#include "kolabformatV2/distributionlist.h"
-#include "kolabformatV2/note.h"
-#include "mime/mimeutils.h"
 
 #include "pimkolab_debug.h"
-#include <kcontacts/contactgroup.h>
 
-#include <qdom.h>
 #include <QBuffer>
-#include <akonadi/notes/noteutils.h>
 
 namespace Kolab {
 void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData)

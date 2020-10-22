@@ -7,7 +7,6 @@
 #include "collectionflagsattribute.h"
 
 #include <QByteArray>
-#include <attribute.h>
 
 using namespace Akonadi;
 

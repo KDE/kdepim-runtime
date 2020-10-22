@@ -5,7 +5,6 @@
  */
 
 #include "event.h"
-#include <icalendar/icalendar.h>
 #include <kolabformat/kolabobject.h>
 #include <conversion/kcalconversion.h>
 #include <conversion/commonconversion.h>

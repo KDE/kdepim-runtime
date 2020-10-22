@@ -9,7 +9,6 @@
 #include "migration_debug.h"
 
 #include <AkonadiCore/AgentManager>
-#include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/ServerManager>
 #include <AkonadiCore/AgentInstanceCreateJob>
 

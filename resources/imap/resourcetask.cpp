@@ -17,7 +17,6 @@
 #include <imapaclattribute.h>
 #include "imapflags.h"
 #include "sessionpool.h"
-#include "resourcestateinterface.h"
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent)

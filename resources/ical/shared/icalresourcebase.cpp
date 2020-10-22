@@ -10,8 +10,6 @@
 
 #include <QDBusConnection>
 
-#include <KCalendarCore/FileStorage>
-#include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/Incidence>
 #include <KCalendarCore/ICalFormat>
 

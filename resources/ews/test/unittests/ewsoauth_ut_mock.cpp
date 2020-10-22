@@ -6,9 +6,7 @@
 
 #include "ewsoauth_ut_mock.h"
 
-#include <QUrl>
 #include <QUrlQuery>
-#include <QtWebEngineWidgetsVersion>
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
 namespace Mock {

@@ -8,7 +8,6 @@
 
 #include <QEventLoop>
 
-#include "fakeewsserver.h"
 #include "fakeewsserver_debug.h"
 
 FakeEwsServerThread::FakeEwsServerThread(QObject *parent)

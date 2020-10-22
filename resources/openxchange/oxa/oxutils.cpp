@@ -8,7 +8,6 @@
 
 #include "oxutils.h"
 
-#include <QDateTime>
 #include <QStringList>
 
 using namespace OXA;

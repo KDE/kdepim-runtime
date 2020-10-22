@@ -11,7 +11,6 @@
 
 #include "ewsclient_debug.h"
 #include "ewsid.h"
-#include "ewstypes.h"
 
 class EwsOccurrencePrivate : public QSharedData
 {

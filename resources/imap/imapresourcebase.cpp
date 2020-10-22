@@ -45,7 +45,6 @@
 #include "settings.h"
 #include "imapaccount.h"
 #include "imapidlemanager.h"
-#include "resourcestate.h"
 #include "subscriptiondialog.h"
 
 #include "addcollectiontask.h"

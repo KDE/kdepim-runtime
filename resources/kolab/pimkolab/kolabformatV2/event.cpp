@@ -10,7 +10,6 @@
 #include "event.h"
 #include "pimkolab_debug.h"
 
-#include <kcalendarcore/event.h>
 
 using namespace KolabV2;
 

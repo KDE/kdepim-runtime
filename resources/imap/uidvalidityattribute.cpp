@@ -8,7 +8,6 @@
 
 #include <QByteArray>
 
-#include <attribute.h>
 
 UidValidityAttribute::UidValidityAttribute(int uidvalidity)
     : mUidValidity(uidvalidity)

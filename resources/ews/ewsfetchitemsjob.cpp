@@ -9,10 +9,8 @@
 #include <KLocalizedString>
 
 #include <AkonadiAgentBase/AgentBase>
-#include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
 
-#include "ewsfinditemrequest.h"
 #include "ewssyncfolderitemsrequest.h"
 #include "ewsclient.h"
 #include "ewsmailbox.h"
