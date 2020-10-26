@@ -42,7 +42,7 @@ void SetupWizard::manualNext()
         const QString username = field(QStringLiteral("credentialsUserName")).toString();
         const QString password = field(QStringLiteral("credentialsPassword")).toString();
         const QString advancedServerUrl = field(QStringLiteral("credentialsServerUrl")).toString();
-        const QString serverUrl = advancedServerUrl.isEmpty() ? QStringLiteral("https://api.etesync.com") : advancedServerUrl;
+        const QString serverUrl = advancedServerUrl.isEmpty() ? QString::fromUtf8(etebase_get_default_server_url()) : advancedServerUrl;
         auto job = new LoginJob(mClientState, serverUrl, username, password, this);
         connect(job, &LoginJob::finished, this, [this](KJob *job) {
             qCDebug(ETESYNC_LOG) << "Login finished";
