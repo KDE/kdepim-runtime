@@ -159,12 +159,12 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
 
     qCDebug(ETESYNC_LOG) << "slotCollectionsRetrieved()";
 
-    QString sToken = qobject_cast<JournalsFetchJob *>(job)->syncToken();
+    const QString sToken = qobject_cast<JournalsFetchJob *>(job)->syncToken();
     mRootCollection.setRemoteRevision(sToken);
 
     Collection::List collections = {mRootCollection};
     collections.append(qobject_cast<JournalsFetchJob *>(job)->collections());
-    Collection::List removedCollections = qobject_cast<JournalsFetchJob *>(job)->removedCollections();
+    const Collection::List removedCollections = qobject_cast<JournalsFetchJob *>(job)->removedCollections();
 
     collectionsRetrievedIncremental(collections, removedCollections);
 
@@ -173,7 +173,7 @@ void EteSyncResource::slotCollectionsRetrieved(KJob *job)
     qCDebug(ETESYNC_LOG) << "Collections retrieval done";
 }
 
-bool EteSyncResource::handleError(const int errorCode, QString errorMessage)
+bool EteSyncResource::handleError(const int errorCode, const QString &errorMessage)
 {
     qCDebug(ETESYNC_LOG) << "handleError" << errorCode << errorMessage;
     switch (errorCode) {

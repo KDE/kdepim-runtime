@@ -51,7 +51,7 @@ protected:
     QString baseDirectoryPath() const;
 
     bool handleError();
-    bool handleError(const int errorCode, QString errorMessage);
+    bool handleError(const int errorCode, const QString &errorMessage);
     bool credentialsRequired();
 
 private Q_SLOTS:

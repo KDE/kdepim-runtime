@@ -57,7 +57,7 @@ void JournalsFetchJob::fetchJournals()
     }
 
     mSyncToken = mResourceCollection.remoteRevision();
-    bool done = 0;
+    bool done = false;
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(account));
 
     while (!done) {

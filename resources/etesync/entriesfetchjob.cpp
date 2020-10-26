@@ -67,7 +67,7 @@ void EntriesFetchJob::fetchEntries()
     qCDebug(ETESYNC_LOG) << "Type:" << type;
 
     QString sToken = mCollection.remoteRevision();
-    bool done = 0;
+    bool done = false;
     EtebaseCollectionManagerPtr collectionManager(etebase_account_get_collection_manager(account));
     EtebaseItemManagerPtr itemManager(etebase_collection_manager_get_item_manager(collectionManager.get(), mEtesyncCollection.get()));
 
