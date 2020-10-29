@@ -6,7 +6,6 @@
 
 #include "folderarchiveaccountinfo.h"
 
-
 FolderArchiveAccountInfo::FolderArchiveAccountInfo()
 {
 }

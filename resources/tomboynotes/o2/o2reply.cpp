@@ -2,7 +2,6 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-
 #include "o2/o2reply.h"
 
 O2Reply::O2Reply(QNetworkReply *r, int timeOut, QObject *parent) : QTimer(parent)

@@ -55,7 +55,6 @@
 #include <KLocalizedString>
 #include "davresource_debug.h"
 
-
 using namespace Akonadi;
 
 typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;

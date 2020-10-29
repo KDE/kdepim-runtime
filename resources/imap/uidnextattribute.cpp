@@ -8,7 +8,6 @@
 
 #include <QByteArray>
 
-
 UidNextAttribute::UidNextAttribute(int uidnext)
     : mUidNext(uidnext)
 {

@@ -10,7 +10,6 @@
 #include "event.h"
 #include "pimkolab_debug.h"
 
-
 using namespace KolabV2;
 
 KCalendarCore::Event::Ptr Event::fromXml(const QDomDocument &xmlDoc, const QString &tz)

@@ -48,16 +48,14 @@ using namespace KGAPI2;
 using namespace Akonadi;
 
 namespace {
-
 bool accountIsValid(const KGAPI2::AccountPtr &account)
 {
     return account
-            && !account->accessToken().isEmpty()
-            && !account->refreshToken().isEmpty()
-            && !account->accountName().isEmpty()
-            && !account->scopes().isEmpty();
+           && !account->accessToken().isEmpty()
+           && !account->refreshToken().isEmpty()
+           && !account->accountName().isEmpty()
+           && !account->scopes().isEmpty();
 }
-
 } // namespace
 
 GoogleResource::GoogleResource(const QString &id)
@@ -219,7 +217,6 @@ bool GoogleResource::handleError(KGAPI2::Job *job, bool _cancelTask)
     return false;
 }
 
-
 void GoogleResource::runAuthJob(const KGAPI2::AccountPtr &account, const QVariant &args)
 {
     AuthJob *authJob = new AuthJob(account, m_settings->clientId(), m_settings->clientSecret(), this);
@@ -232,14 +229,14 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
     Q_EMIT status(Broken, i18n("Account has been logged out."));
 
     const QString msg = account->accountName().isEmpty()
-            ?  i18n("Google Groupware has been logged out from your account. Please log in to enable Google Contacts and Calendar sync again.")
-            :  i18n("Google Groupware has been logged out from account %1. Please log in to enable Google Contacts and Calendar sync again.", account->accountName());
+                        ? i18n("Google Groupware has been logged out from your account. Please log in to enable Google Contacts and Calendar sync again.")
+                        : i18n("Google Groupware has been logged out from account %1. Please log in to enable Google Contacts and Calendar sync again.", account->accountName());
 
     auto *ntf = KNotification::event(QStringLiteral("authNeeded"),
                                      i18nc("@title", "%1 needs your attention.", agentName()),
                                      msg,
                                      QStringLiteral("im-google"),
-                                     /*widget=*/nullptr,
+                                     /*widget=*/ nullptr,
                                      KNotification::Persistent | KNotification::SkipGrouping);
     ntf->setActions({i18nc("@action", "Log in")});
     ntf->setComponentName(QStringLiteral("akonadi_google_resource"));

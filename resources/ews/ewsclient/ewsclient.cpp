@@ -6,7 +6,6 @@
 
 #include "ewsclient.h"
 
-
 #include "auth/ewsabstractauth.h"
 #include "ewsclient_debug.h"
 

@@ -6,8 +6,6 @@
 
 #include "v2helpers.h"
 
-
-
 #include "pimkolab_debug.h"
 
 #include <QBuffer>
