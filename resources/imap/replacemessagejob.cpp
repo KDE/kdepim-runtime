@@ -10,9 +10,7 @@
 #include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>
 #include <KIMAP/StoreJob>
-#include <KIMAP/ImapSet>
 #include "imapresource_debug.h"
-#include <KMime/Message>
 
 #include "imapflags.h"
 

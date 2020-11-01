@@ -9,7 +9,6 @@
 #include "singlefileresourceconfigwidgetbase.h"
 
 #include <KIO/Job>
-#include <QUrl>
 #include <QTimer>
 
 #include <KLocalizedString>

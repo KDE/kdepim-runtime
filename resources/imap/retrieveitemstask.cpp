@@ -29,7 +29,6 @@
 #include <KLocalizedString>
 
 #include <kimap/expungejob.h>
-#include <kimap/fetchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/searchjob.h>

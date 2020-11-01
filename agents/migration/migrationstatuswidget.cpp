@@ -6,7 +6,6 @@
  */
 
 #include "migrationstatuswidget.h"
-#include "migrationscheduler.h"
 #include <QVBoxLayout>
 #include <QTreeView>
 #include <QAction>

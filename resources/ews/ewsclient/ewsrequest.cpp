@@ -8,9 +8,7 @@
 
 #include <QTemporaryFile>
 
-#include "ewsclient.h"
 #include "ewsclient_debug.h"
-#include "ewsserverversion.h"
 #include "auth/ewsabstractauth.h"
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)

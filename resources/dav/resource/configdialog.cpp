@@ -17,7 +17,6 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
-#include <QList>
 #include <QPointer>
 #include <QStringList>
 #include <QStandardItem>

@@ -13,7 +13,6 @@
 #include "sessionuiproxy.h"
 #include "settingspasswordrequester.h"
 #include <resourcestateinterface.h>
-#include <resourcestate.h>
 #include <retrieveitemstask.h>
 #include <collectionannotationsattribute.h>
 #include <changecollectiontask.h>

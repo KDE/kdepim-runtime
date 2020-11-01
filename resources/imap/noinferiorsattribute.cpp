@@ -8,8 +8,6 @@
 
 #include <QByteArray>
 
-#include <attribute.h>
-
 NoInferiorsAttribute::NoInferiorsAttribute(bool noInferiors)
     : mNoInferiors(noInferiors)
 {

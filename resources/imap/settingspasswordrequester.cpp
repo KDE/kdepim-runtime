@@ -9,7 +9,6 @@
 
 #include <KMessageBox>
 #include <KLocalizedString>
-#include <QDialog>
 
 #include <mailtransport/transportbase.h>
 #include <kwindowsystem.h>

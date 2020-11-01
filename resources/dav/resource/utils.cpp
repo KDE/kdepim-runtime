@@ -12,7 +12,6 @@
 #include <KDAV/ProtocolInfo>
 
 #include <AkonadiCore/Collection>
-#include <AkonadiCore/Item>
 #include <KContacts/Addressee>
 #include <KContacts/VCardConverter>
 #include <KCalendarCore/ICalFormat>

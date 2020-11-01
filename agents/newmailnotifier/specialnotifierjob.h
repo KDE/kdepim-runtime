@@ -25,7 +25,6 @@ public:
     void setDefaultIconName(const QString &iconName);
 
 Q_SIGNALS:
-    void displayDefaultIconNotification(const QString &message);
     void displayNotification(const QPixmap &pixmap, const QString &message);
     void say(const QString &message);
 

@@ -14,7 +14,6 @@
 #include <QXmlSerializer>
 #include <QRegularExpression>
 
-#include "fakeewsserver.h"
 #include "fakeewsserver_debug.h"
 
 static const QHash<uint, QString> responseCodes = {

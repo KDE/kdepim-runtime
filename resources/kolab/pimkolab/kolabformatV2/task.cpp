@@ -10,8 +10,6 @@
 #include "task.h"
 #include "pimkolab_debug.h"
 
-#include <kcalendarcore/todo.h>
-
 using namespace KolabV2;
 
 KCalendarCore::Todo::Ptr Task::fromXml(const QDomDocument &xmlDoc, const QString &tz)

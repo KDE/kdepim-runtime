@@ -2,11 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#include <QTcpServer>
 #include <QTcpSocket>
-#include <QByteArray>
-#include <QString>
-#include <QMap>
 #include <QPair>
 #include <QUrl>
 #include "debug.h"

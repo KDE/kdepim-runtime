@@ -21,7 +21,6 @@
 
 #include <KLocalizedString>
 
-#include "ewsfetchitemsjob.h"
 #include "ewsfetchfoldersjob.h"
 #include "ewsfetchfoldersincrjob.h"
 #include "ewsgetitemrequest.h"

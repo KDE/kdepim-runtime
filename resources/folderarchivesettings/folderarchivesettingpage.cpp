@@ -5,7 +5,6 @@
 */
 
 #include "folderarchivesettingpage.h"
-#include "folderarchiveaccountinfo.h"
 #include "folderarchiveutil.h"
 
 #include <CollectionRequester>
@@ -19,7 +18,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QComboBox>
 #include <QDBusReply>
 #include <QDBusInterface>
 #include <QDBusConnectionInterface>

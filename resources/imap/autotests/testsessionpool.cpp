@@ -737,9 +737,9 @@ private Q_SLOTS:
     {
         QTest::addColumn<QList<QByteArray> >("scenario");
 
-        QTest::newRow("immediate_disconnect") << QList<QByteArray>{};
-        QTest::newRow("disconnect_after_greeting") << QList<QByteArray>{FakeServer::greeting()};
-        QTest::newRow("disconnect_after_login_command") << QList<QByteArray>{FakeServer::greeting(), "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""};
+        QTest::newRow("immediate_disconnect") << QList<QByteArray> {};
+        QTest::newRow("disconnect_after_greeting") << QList<QByteArray> {FakeServer::greeting()};
+        QTest::newRow("disconnect_after_login_command") << QList<QByteArray> {FakeServer::greeting(), "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""};
     }
 
     void shouldHandleDisconnectionDuringSecondLogin()

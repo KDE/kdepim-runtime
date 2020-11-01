@@ -10,10 +10,8 @@
 #include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>
 #include <KIMAP/StoreJob>
-#include <KIMAP/FetchJob>
 #include <KIMAP/ImapSet>
 #include "kolabresource_debug.h"
-#include <KMime/Message>
 #include <replacemessagejob.h>
 
 #include "imapflags.h"

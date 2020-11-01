@@ -6,8 +6,6 @@
 #include <QPair>
 #include <QMap>
 #include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
 #include <QDateTime>
 #include <QCryptographicHash>
 #include <QVariantMap>

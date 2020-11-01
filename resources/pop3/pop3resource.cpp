@@ -5,7 +5,6 @@
 */
 
 #include "pop3resource.h"
-#include "settings.h"
 #include "jobs.h"
 
 #include <CollectionFetchJob>

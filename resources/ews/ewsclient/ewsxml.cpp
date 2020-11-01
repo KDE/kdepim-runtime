@@ -8,7 +8,6 @@
 
 #include <QDateTime>
 
-#include "ewsclient_debug.h"
 #include "ewsfolder.h"
 #include "ewsid.h"
 #include "ewsitem.h"

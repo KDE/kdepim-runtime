@@ -7,7 +7,6 @@
 
 #include "kolabchangetagtask.h"
 #include "kolabresource_debug.h"
-#include "tagchangehelper.h"
 
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>

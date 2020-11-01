@@ -6,7 +6,6 @@
 
 #include "errorhandler.h"
 
-#include <QDebug>
 #include <QTime>
 #include <QMutex>
 #include <iostream>

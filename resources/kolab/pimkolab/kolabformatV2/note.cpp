@@ -11,8 +11,6 @@
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
 
-#include <kcalendarcore/journal.h>
-
 using namespace KolabV2;
 
 KCalendarCore::Journal::Ptr Note::xmlToJournal(const QString &xml)

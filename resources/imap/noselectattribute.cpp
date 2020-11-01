@@ -8,8 +8,6 @@
 
 #include <QByteArray>
 
-#include <attribute.h>
-
 NoSelectAttribute::NoSelectAttribute(bool noSelect)
     : mNoSelect(noSelect)
 {

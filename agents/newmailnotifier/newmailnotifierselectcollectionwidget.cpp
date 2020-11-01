@@ -14,7 +14,6 @@
 
 #include <ChangeRecorder>
 #include <EntityTreeModel>
-#include <Collection>
 #include <KMime/Message>
 
 #include <KLocalizedString>
@@ -23,7 +22,6 @@
 #include "newmailnotifier_debug.h"
 
 #include <QVBoxLayout>
-#include <QIdentityProxyModel>
 #include <QHBoxLayout>
 #include <QTreeView>
 #include <QLabel>

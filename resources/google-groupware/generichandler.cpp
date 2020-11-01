@@ -5,7 +5,6 @@
 */
 
 #include "generichandler.h"
-#include "googleresourcestateinterface.h"
 #include "googleresource_debug.h"
 
 #include <AkonadiAgentBase/AgentBase>
