@@ -19,7 +19,6 @@
 #include <KMime/Message>
 #include <QElapsedTimer>
 
-#include <sys/signal.h>
 #include <QStandardPaths>
 
 QTEST_AKONADIMAIN(Pop3Test)
