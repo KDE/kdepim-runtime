@@ -20,7 +20,7 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     setWindowTitle(
         i18nc("@title:window Dialog title for dialog showing information about a server",
               "Server Info"));
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
     mTextBrowser = new ServerInfoTextBrowser(this);

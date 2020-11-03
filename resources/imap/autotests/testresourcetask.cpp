@@ -48,7 +48,7 @@ private Q_SLOTS:
         state = DummyResourceState::Ptr(new DummyResourceState);
         scenario.clear();
         scenario << FakeServer::greeting()
-                 << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"

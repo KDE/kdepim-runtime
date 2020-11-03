@@ -28,7 +28,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     QWidget *mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
@@ -134,7 +134,7 @@ void ConfigDialog::onAddButtonClicked()
             KMessageBox::error(this, i18n("Another configuration entry already uses the same URL/protocol couple.\n"
                                           "Please use a different URL"));
         } else {
-            Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
+            auto *urlConfig = new Settings::UrlConfiguration();
 
             urlConfig->mUrl = dlg->remoteUrl();
             if (dlg->useDefaultCredentials()) {
@@ -171,7 +171,7 @@ void ConfigDialog::onSearchButtonClicked()
             const QStringList split = result.split(QLatin1Char('|'));
             KDAV::Protocol protocol = KDAV::ProtocolInfo::protocolByName(split.at(0));
             if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {
-                Settings::UrlConfiguration *urlConfig = new Settings::UrlConfiguration();
+                auto *urlConfig = new Settings::UrlConfiguration();
 
                 urlConfig->mUrl = split.at(1);
                 if (dlg->useDefaultCredentials()) {
@@ -244,7 +244,7 @@ void ConfigDialog::onEditButtonClicked()
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
         Settings::self()->removeUrlConfiguration(Utils::protocolByTranslatedName(proto), url);
-        Settings::UrlConfiguration *urlConfigAccepted = new Settings::UrlConfiguration();
+        auto *urlConfigAccepted = new Settings::UrlConfiguration();
         urlConfigAccepted->mUrl = dlg->remoteUrl();
         if (dlg->useDefaultCredentials()) {
             urlConfigAccepted->mUser = QStringLiteral("$default$");
@@ -302,11 +302,11 @@ void ConfigDialog::insertModelRow(int index, const QString &protocol, const QStr
     QStandardItem *rootItem = mModel->invisibleRootItem();
     QList<QStandardItem *> items;
 
-    QStandardItem *protocolStandardItem = new QStandardItem(protocol);
+    auto *protocolStandardItem = new QStandardItem(protocol);
     protocolStandardItem->setEditable(false);
     items << protocolStandardItem;
 
-    QStandardItem *urlStandardItem = new QStandardItem(url);
+    auto *urlStandardItem = new QStandardItem(url);
     urlStandardItem->setEditable(false);
     items << urlStandardItem;
 

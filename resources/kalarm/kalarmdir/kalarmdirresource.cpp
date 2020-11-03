@@ -105,7 +105,7 @@ void KAlarmDirResource::collectionFetchResult(KJob *j)
     if (j->error()) {
         qCritical() << "Error: collectionFetchResult: " << j->errorString();
     } else {
-        CollectionFetchJob *job = static_cast<CollectionFetchJob *>(j);
+        auto *job = static_cast<CollectionFetchJob *>(j);
         Collection::List collections = job->collections();
         int count = collections.count();
         qCDebug(KALARMDIRRESOURCE_LOG) << "collectionFetchResult: count:" << count;
@@ -207,7 +207,7 @@ void KAlarmDirResource::configure(WId windowId)
             }
             if (modify) {
                 // Update the Akonadi server with the changes
-                CollectionModifyJob *job = new CollectionModifyJob(c);
+                auto *job = new CollectionModifyJob(c);
                 connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
             }
         }
@@ -729,7 +729,7 @@ void KAlarmDirResource::setNameRights(Collection &c)
     qCDebug(KALARMDIRRESOURCE_LOG) << "setNameRights";
     const QString display = mSettings->displayName();
     c.setName(display.isEmpty() ? name() : display);
-    EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(name());
     attr->setIconName(QStringLiteral("kalarm"));
     if (mSettings->readOnly()) {
@@ -908,7 +908,7 @@ void KAlarmDirResource::fileDeleted(const QString &path)
 
         // Tell the Akonadi server to delete all Items in the collection
         Collection c(mCollectionId);
-        ItemDeleteJob *job = new ItemDeleteJob(c);
+        auto *job = new ItemDeleteJob(c);
         connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
     } else {
         // A single file has been deleted
@@ -969,7 +969,7 @@ bool KAlarmDirResource::createItem(const KAEvent &event)
     Collection c(mCollectionId);
     item.setParentCollection(c);
     item.setRemoteId(event.id());
-    ItemCreateJob *job = new ItemCreateJob(item, c);
+    auto *job = new ItemCreateJob(item, c);
     connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
     return true;
 }
@@ -987,7 +987,7 @@ bool KAlarmDirResource::modifyItem(const KAEvent &event)
     Collection c(mCollectionId);
     item.setParentCollection(c);
     item.setRemoteId(event.id());
-    ItemModifyJob *job = new ItemModifyJob(item);
+    auto *job = new ItemModifyJob(item);
     job->disableRevisionCheck();
     connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
     return true;
@@ -1002,7 +1002,7 @@ void KAlarmDirResource::deleteItem(const KAEvent &event)
     Collection c(mCollectionId);
     item.setParentCollection(c);
     item.setRemoteId(event.id());
-    ItemDeleteJob *job = new ItemDeleteJob(item);
+    auto *job = new ItemDeleteJob(item);
     connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::jobDone);
 }
 

@@ -62,7 +62,7 @@ AkonadiSlave::~AkonadiSlave()
 void AkonadiSlave::get(const QUrl &url)
 {
     const Item item = Item::fromUrl(url);
-    ItemFetchJob *job = new ItemFetchJob(item);
+    auto *job = new ItemFetchJob(item);
     job->fetchScope().fetchFullPayload();
 
     if (!job->exec()) {
@@ -91,7 +91,7 @@ void AkonadiSlave::stat(const QUrl &url)
 
         if (collection != Collection::root()) {
             // Check that the collection exists.
-            CollectionFetchJob *job = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+            auto *job = new CollectionFetchJob(collection, CollectionFetchJob::Base);
             if (!job->exec()) {
                 error(KIO::ERR_INTERNAL, job->errorString());
                 return;
@@ -134,7 +134,7 @@ void AkonadiSlave::del(const QUrl &url, bool isFile)
 
     if (!isFile) {                   // It's a directory
         Collection collection = Collection::fromUrl(url);
-        CollectionDeleteJob *job = new CollectionDeleteJob(collection);
+        auto *job = new CollectionDeleteJob(collection);
         if (!job->exec()) {
             error(KIO::ERR_INTERNAL, job->errorString());
             return;
@@ -165,7 +165,7 @@ void AkonadiSlave::listDir(const QUrl &url)
         error(KIO::ERR_DOES_NOT_EXIST, i18n("No such collection."));
         return;
     }
-    CollectionFetchJob *job = new CollectionFetchJob(collection, CollectionFetchJob::FirstLevel);
+    auto *job = new CollectionFetchJob(collection, CollectionFetchJob::FirstLevel);
     if (!job->exec()) {
         error(KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString());
         return;
@@ -178,7 +178,7 @@ void AkonadiSlave::listDir(const QUrl &url)
 
     // Fetching items
     if (collection != Collection::root()) {
-        ItemFetchJob *fjob = new ItemFetchJob(collection);
+        auto *fjob = new ItemFetchJob(collection);
         if (!fjob->exec()) {
             error(KIO::ERR_INTERNAL, job->errorString());
             return;
@@ -214,7 +214,7 @@ KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection &collec
     entry.fastInsert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR);
     entry.fastInsert(KIO::UDSEntry::UDS_URL, collection.url().url());
     entry.fastInsert(KIO::UDSEntry::UDS_ACCESS, S_IRUSR | S_IRGRP | S_IROTH);
-    if (const EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>()) {
+    if (const auto *attr = collection.attribute<EntityDisplayAttribute>()) {
         if (!attr->iconName().isEmpty()) {
             entry.fastInsert(KIO::UDSEntry::UDS_ICON_NAME, attr->iconName());
         }

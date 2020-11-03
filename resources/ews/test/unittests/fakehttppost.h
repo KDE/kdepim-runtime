@@ -18,7 +18,7 @@ TransferJob *http_post(const QUrl &url, const QByteArray &postData, JobFlags fla
     Q_UNUSED(flags);
 
     FakeTransferJob::Verifier vfy = FakeTransferJob::getVerifier();
-    FakeTransferJob *job = new FakeTransferJob(postData, vfy.fn, vfy.object);
+    auto *job = new FakeTransferJob(postData, vfy.fn, vfy.object);
     return reinterpret_cast<TransferJob *>(job);
 }
 }

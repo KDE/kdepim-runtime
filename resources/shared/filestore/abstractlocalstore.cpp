@@ -375,7 +375,7 @@ void FileStore::AbstractLocalStore::setPath(const QString &path)
     collection.setRemoteId(d->mPathFileInfo.absoluteFilePath());
     collection.setName(d->mPathFileInfo.fileName());
 
-    EntityDisplayAttribute *attribute = collection.attribute<EntityDisplayAttribute>();
+    auto *attribute = collection.attribute<EntityDisplayAttribute>();
     if (attribute) {
         attribute->setDisplayName(d->mPathFileInfo.fileName());
     }
@@ -395,7 +395,7 @@ Collection FileStore::AbstractLocalStore::topLevelCollection() const
 
 FileStore::CollectionCreateJob *FileStore::AbstractLocalStore::createCollection(const Collection &collection, const Collection &targetParent)
 {
-    FileStore::CollectionCreateJob *job = new FileStore::CollectionCreateJob(collection, targetParent, d->mSession);
+    auto *job = new FileStore::CollectionCreateJob(collection, targetParent, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -426,7 +426,7 @@ FileStore::CollectionCreateJob *FileStore::AbstractLocalStore::createCollection(
 
 FileStore::CollectionDeleteJob *FileStore::AbstractLocalStore::deleteCollection(const Collection &collection)
 {
-    FileStore::CollectionDeleteJob *job = new FileStore::CollectionDeleteJob(collection, d->mSession);
+    auto *job = new FileStore::CollectionDeleteJob(collection, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -458,7 +458,7 @@ FileStore::CollectionDeleteJob *FileStore::AbstractLocalStore::deleteCollection(
 
 FileStore::CollectionFetchJob *FileStore::AbstractLocalStore::fetchCollections(const Collection &collection, FileStore::CollectionFetchJob::Type type) const
 {
-    FileStore::CollectionFetchJob *job = new FileStore::CollectionFetchJob(collection, type, d->mSession);
+    auto *job = new FileStore::CollectionFetchJob(collection, type, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -484,7 +484,7 @@ FileStore::CollectionFetchJob *FileStore::AbstractLocalStore::fetchCollections(c
 
 FileStore::CollectionModifyJob *FileStore::AbstractLocalStore::modifyCollection(const Collection &collection)
 {
-    FileStore::CollectionModifyJob *job = new FileStore::CollectionModifyJob(collection, d->mSession);
+    auto *job = new FileStore::CollectionModifyJob(collection, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -515,7 +515,7 @@ FileStore::CollectionModifyJob *FileStore::AbstractLocalStore::modifyCollection(
 
 FileStore::CollectionMoveJob *FileStore::AbstractLocalStore::moveCollection(const Collection &collection, const Collection &targetParent)
 {
-    FileStore::CollectionMoveJob *job = new FileStore::CollectionMoveJob(collection, targetParent, d->mSession);
+    auto *job = new FileStore::CollectionMoveJob(collection, targetParent, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -548,7 +548,7 @@ FileStore::CollectionMoveJob *FileStore::AbstractLocalStore::moveCollection(cons
 
 FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Collection &collection) const
 {
-    FileStore::ItemFetchJob *job = new FileStore::ItemFetchJob(collection, d->mSession);
+    auto *job = new FileStore::ItemFetchJob(collection, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -574,7 +574,7 @@ FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Collect
 
 FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItems(const Item::List &items) const
 {
-    FileStore::ItemFetchJob *job = new FileStore::ItemFetchJob(items, d->mSession);
+    auto *job = new FileStore::ItemFetchJob(items, d->mSession);
 
     if (items.size() == 1) {
         const Akonadi::Item &item = items[0];
@@ -610,7 +610,7 @@ FileStore::ItemFetchJob *FileStore::AbstractLocalStore::fetchItem(const Item &it
 
 FileStore::ItemCreateJob *FileStore::AbstractLocalStore::createItem(const Item &item, const Collection &collection)
 {
-    FileStore::ItemCreateJob *job = new FileStore::ItemCreateJob(item, collection, d->mSession);
+    auto *job = new FileStore::ItemCreateJob(item, collection, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -647,7 +647,7 @@ FileStore::ItemCreateJob *FileStore::AbstractLocalStore::createItem(const Item &
 
 FileStore::ItemModifyJob *FileStore::AbstractLocalStore::modifyItem(const Item &item)
 {
-    FileStore::ItemModifyJob *job = new FileStore::ItemModifyJob(item, d->mSession);
+    auto *job = new FileStore::ItemModifyJob(item, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -681,7 +681,7 @@ FileStore::ItemModifyJob *FileStore::AbstractLocalStore::modifyItem(const Item &
 
 FileStore::ItemDeleteJob *FileStore::AbstractLocalStore::deleteItem(const Item &item)
 {
-    FileStore::ItemDeleteJob *job = new FileStore::ItemDeleteJob(item, d->mSession);
+    auto *job = new FileStore::ItemDeleteJob(item, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -715,7 +715,7 @@ FileStore::ItemDeleteJob *FileStore::AbstractLocalStore::deleteItem(const Item &
 
 FileStore::ItemMoveJob *FileStore::AbstractLocalStore::moveItem(const Item &item, const Collection &targetParent)
 {
-    FileStore::ItemMoveJob *job = new FileStore::ItemMoveJob(item, targetParent, d->mSession);
+    auto *job = new FileStore::ItemMoveJob(item, targetParent, d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");
@@ -767,7 +767,7 @@ FileStore::ItemMoveJob *FileStore::AbstractLocalStore::moveItem(const Item &item
 
 FileStore::StoreCompactJob *FileStore::AbstractLocalStore::compactStore()
 {
-    FileStore::StoreCompactJob *job = new FileStore::StoreCompactJob(d->mSession);
+    auto *job = new FileStore::StoreCompactJob(d->mSession);
 
     if (d->mTopLevelCollection.remoteId().isEmpty()) {
         const QString message = i18nc("@info:status", "Configured storage location is empty");

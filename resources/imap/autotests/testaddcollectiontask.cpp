@@ -87,7 +87,7 @@ private Q_SLOTS:
         collection = Akonadi::Collection(4);
         collection.setName(QStringLiteral("Bar"));
         collection.setParentCollection(parentCollection);
-        Akonadi::CollectionAnnotationsAttribute *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
         QMap<QByteArray, QByteArray> annotations;
         annotations.insert("/shared/vendor/foobar/foo", "value");
         attr->setAnnotations(annotations);
@@ -98,7 +98,7 @@ private Q_SLOTS:
                  << "S: A000003 OK create done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Foo/Bar\""
                  << "S: A000004 OK subscribe done"
-                 << "C: A000005 SETMETADATA \"INBOX/Foo/Bar\" (\"/shared/vendor/foobar/foo\" \"value\")"
+                 << R"(C: A000005 SETMETADATA "INBOX/Foo/Bar" ("/shared/vendor/foobar/foo" "value"))"
                  << "S: A000005 OK SETMETADATA complete";
 
         callNames.clear();

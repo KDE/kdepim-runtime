@@ -38,7 +38,7 @@ private Q_SLOTS:
         collection.setName(QStringLiteral("Bar"));
         collection.setRights(Akonadi::Collection::AllRights);
 
-        Akonadi::ImapAclAttribute *acls = new Akonadi::ImapAclAttribute;
+        auto *acls = new Akonadi::ImapAclAttribute;
         QMap<QByteArray, KIMAP::Acl::Rights> rights;
         // Old rights
         rights["test@kdab.com"] = KIMAP::Acl::rightsFromString("lrswipckxtda");
@@ -51,7 +51,7 @@ private Q_SLOTS:
         acls->setRights(rights);
         collection.addAttribute(acls);
 
-        Akonadi::CollectionAnnotationsAttribute *annotationsAttr = new Akonadi::CollectionAnnotationsAttribute;
+        auto *annotationsAttr = new Akonadi::CollectionAnnotationsAttribute;
         QMap<QByteArray, QByteArray> annotations;
         annotations["/vendor/kolab/folder-test"] = "false";
         annotations["/vendor/kolab/folder-test2"] = "true";
@@ -64,17 +64,17 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+                 << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000003 OK acl changed"
-                 << "C: A000004 SETANNOTATION \"Foo\" \"/vendor/kolab/folder-test\" (\"value.shared\" \"false\")"
+                 << R"(C: A000004 SETANNOTATION "Foo" "/vendor/kolab/folder-test" ("value.shared" "false"))"
                  << "S: A000004 OK annotations changed"
-                 << "C: A000005 SETANNOTATION \"Foo\" \"/vendor/kolab/folder-test2\" (\"value.shared\" \"true\")"
+                 << R"(C: A000005 SETANNOTATION "Foo" "/vendor/kolab/folder-test2" ("value.shared" "true"))"
                  << "S: A000005 OK annotations changed"
-                 << "C: A000006 SETACL \"Foo\" \"foo@kde.org\" \"lrswipcda\""
+                 << R"(C: A000006 SETACL "Foo" "foo@kde.org" "lrswipcda")"
                  << "S: A000006 OK acl changed"
-                 << "C: A000007 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+                 << R"(C: A000007 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000007 OK acl changed"
-                 << "C: A000008 RENAME \"Foo\" \"Bar\""
+                 << R"(C: A000008 RENAME "Foo" "Bar")"
                  << "S: A000008 OK rename done"
                  << "C: A000009 SUBSCRIBE \"Bar\""
                  << "S: A000009 OK mailbox subscribed";
@@ -88,13 +88,13 @@ private Q_SLOTS:
         caps << QStringLiteral("ACL");
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+                 << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000003 OK acl changed"
-                 << "C: A000004 SETACL \"Foo\" \"foo@kde.org\" \"lrswipcda\""
+                 << R"(C: A000004 SETACL "Foo" "foo@kde.org" "lrswipcda")"
                  << "S: A000004 OK acl changed"
-                 << "C: A000005 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+                 << R"(C: A000005 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000005 OK acl changed"
-                 << "C: A000006 RENAME \"Foo\" \"Bar\""
+                 << R"(C: A000006 RENAME "Foo" "Bar")"
                  << "S: A000006 OK rename done"
                  << "C: A000007 SUBSCRIBE \"Bar\""
                  << "S: A000007 OK mailbox subscribed";
@@ -106,7 +106,7 @@ private Q_SLOTS:
         caps << QStringLiteral("ACL") << QStringLiteral("ANNOTATEMORE");
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 RENAME \"Foo\" \"BarBaz\""
+                 << R"(C: A000003 RENAME "Foo" "BarBaz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"BarBaz\""
                  << "S: A000004 OK mailbox subscribed";
@@ -121,7 +121,7 @@ private Q_SLOTS:
         collection.setName(QStringLiteral("Bar"));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 RENAME \"INBOX.Foo\" \"INBOX.Bar\""
+                 << R"(C: A000003 RENAME "INBOX.Foo" "INBOX.Bar")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX.Bar\""
                  << "S: A000004 OK mailbox subscribed";
@@ -156,17 +156,17 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+                 << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000003 OK acl changed"
-                 << "C: A000004 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test\" \"false\")"
+                 << R"(C: A000004 SETMETADATA "Foo" ("/shared/vendor/kolab/folder-test" "false"))"
                  << "S: A000004 OK SETMETADATA complete"
-                 << "C: A000005 SETMETADATA \"Foo\" (\"/shared/vendor/kolab/folder-test2\" \"true\")"
+                 << R"(C: A000005 SETMETADATA "Foo" ("/shared/vendor/kolab/folder-test2" "true"))"
                  << "S: A000005 OK SETMETADATA complete"
-                 << "C: A000006 SETACL \"Foo\" \"foo@kde.org\" \"lrswipcda\""
+                 << R"(C: A000006 SETACL "Foo" "foo@kde.org" "lrswipcda")"
                  << "S: A000006 OK acl changed"
-                 << "C: A000007 SETACL \"Foo\" \"test@kdab.com\" \"lrswipckxtda\""
+                 << R"(C: A000007 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000007 OK acl changed"
-                 << "C: A000008 RENAME \"Foo\" \"Bar\""
+                 << R"(C: A000008 RENAME "Foo" "Bar")"
                  << "S: A000008 OK rename done"
                  << "C: A000009 SUBSCRIBE \"Bar\""
                  << "S: A000009 OK mailbox subscribed";

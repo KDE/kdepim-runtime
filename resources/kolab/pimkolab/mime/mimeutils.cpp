@@ -117,7 +117,7 @@ KMime::Message::Ptr createMessage(const QString &subject, const QString &mimetyp
 KMime::Content *createExplanationPart(bool v3)
 {
     Q_UNUSED(v3)
-    KMime::Content *content = new KMime::Content();
+    auto *content = new KMime::Content();
     content->contentType()->setMimeType("text/plain");
     content->contentType()->setCharset("us-ascii");
     content->contentTransferEncoding()->setEncoding(KMime::Headers::CE7Bit);
@@ -132,11 +132,11 @@ KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const Q
 {
     KMime::Message::Ptr message(new KMime::Message);
     message->date()->setDateTime(QDateTime::currentDateTimeUtc());
-    KMime::Headers::Generic *h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
+    auto *h = new KMime::Headers::Generic(X_KOLAB_TYPE_HEADER);
     h->fromUnicodeString(QString::fromUtf8(xKolabType), "utf-8");
     message->appendHeader(h);
     if (v3) {
-        KMime::Headers::Generic *hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
+        auto *hv3 = new KMime::Headers::Generic(X_KOLAB_MIME_VERSION_HEADER);
         hv3->fromUnicodeString(KOLAB_VERSION_V3, "utf-8");
         message->appendHeader(hv3);
     }
@@ -149,7 +149,7 @@ KMime::Message::Ptr createMessage(const QByteArray &xKolabType, bool v3, const Q
 
 KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &decodedContent)
 {
-    KMime::Content *content = new KMime::Content();
+    auto *content = new KMime::Content();
     content->contentType()->setMimeType(mimeType);
     content->contentType()->setName(KOLAB_OBJECT_FILENAME, "us-ascii");
     content->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
@@ -161,7 +161,7 @@ KMime::Content *createMainPart(const QByteArray &mimeType, const QByteArray &dec
 
 KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mimeType, const QString &fileName, const QByteArray &base64EncodedContent)
 {
-    KMime::Content *content = new KMime::Content();
+    auto *content = new KMime::Content();
     if (!cid.isEmpty()) {
         content->contentID()->setIdentifier(cid);
     }

@@ -48,7 +48,7 @@ void Pop3Test::initTestCase()
     // Create the maildir and pop3 resources
     //
     AgentType maildirType = AgentManager::self()->type(QStringLiteral("akonadi_maildir_resource"));
-    AgentInstanceCreateJob *agentCreateJob = new AgentInstanceCreateJob(maildirType);
+    auto *agentCreateJob = new AgentInstanceCreateJob(maildirType);
     QVERIFY(agentCreateJob->exec());
     mMaildirIdentifier = agentCreateJob->instance().identifier();
 
@@ -208,7 +208,7 @@ void Pop3Test::cleanupMaildir(const Akonadi::Item::List &items)
 {
     // Delete all mails so the maildir is clean for the next test
     if (!items.isEmpty()) {
-        ItemDeleteJob *job = new ItemDeleteJob(items);
+        auto *job = new ItemDeleteJob(items);
         QVERIFY(job->exec());
     }
 
@@ -272,7 +272,7 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
 {
     // The fake server got disconnected, which means the pop3 resource has entered the QUIT
     // stage. That means all messages should be on the server now, so test that.
-    ItemFetchJob *job = new ItemFetchJob(mMaildirCollection);
+    auto *job = new ItemFetchJob(mMaildirCollection);
     job->fetchScope().fetchFullPayload();
     Q_ASSERT(job->exec());
     Item::List items = job->items();

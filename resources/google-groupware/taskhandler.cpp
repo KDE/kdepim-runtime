@@ -63,7 +63,7 @@ void TaskHandler::setupCollection(Collection &collection, const TaskListPtr &tas
                          |Collection::CanChangeItem
                          |Collection::CanDeleteItem);
 
-    EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(taskList->title());
     attr->setIconName(QStringLiteral("view-pim-tasks"));
 }

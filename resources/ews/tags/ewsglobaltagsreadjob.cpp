@@ -29,7 +29,7 @@ EwsGlobalTagsReadJob::~EwsGlobalTagsReadJob()
 
 void EwsGlobalTagsReadJob::start()
 {
-    EwsGetFolderRequest *req = new EwsGetFolderRequest(mClient, this);
+    auto *req = new EwsGetFolderRequest(mClient, this);
     req->setFolderIds(EwsId::List() << EwsId(EwsDIdMsgFolderRoot));
     EwsFolderShape shape(EwsShapeIdOnly);
     shape << EwsResource::globalTagsProperty << EwsResource::globalTagsVersionProperty;
@@ -40,7 +40,7 @@ void EwsGlobalTagsReadJob::start()
 
 void EwsGlobalTagsReadJob::getFolderRequestFinished(KJob *job)
 {
-    EwsGetFolderRequest *req = qobject_cast<EwsGetFolderRequest *>(job);
+    auto *req = qobject_cast<EwsGetFolderRequest *>(job);
 
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsGetFolderRequest job object");

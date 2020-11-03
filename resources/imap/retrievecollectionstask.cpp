@@ -74,7 +74,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     // it also contains subscribed but currently not available (eg. deleted) mailboxes
     // so we need to use both and exclude mailboxes in LSUB but not in LIST
     if (isSubscriptionEnabled()) {
-        KIMAP::ListJob *fullListJob = new KIMAP::ListJob(session);
+        auto *fullListJob = new KIMAP::ListJob(session);
         fullListJob->setIncludeUnsubscribed(true);
         fullListJob->setQueriedNamespaces(serverNamespaces());
         connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -83,7 +83,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
         fullListJob->start();
     }
 
-    KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
+    auto *listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -158,7 +158,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
 
             // If the folder is the Inbox, make some special settings.
             if (currentPath.compare(separator + QLatin1String("INBOX"), Qt::CaseInsensitive) == 0) {
-                Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+                auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QStringLiteral("mail-folder-inbox"));
                 c.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
@@ -167,7 +167,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
 
             // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
             if (currentPath == (separator + QLatin1String("user")) && currentFlags.contains("\\noselect")) {
-                Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+                auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Shared Folders"));
                 attr->setIconName(QStringLiteral("x-mail-distribution-list"));
             }

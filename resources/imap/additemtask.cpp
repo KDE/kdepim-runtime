@@ -49,7 +49,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
     KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
     m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
-    KIMAP::AppendJob *job = new KIMAP::AppendJob(session);
+    auto *job = new KIMAP::AppendJob(session);
     job->setMailBox(mailBox);
     job->setContent(msg->encodedContent(true));
     job->setFlags(fromAkonadiToSupportedImapFlags(item().flags().values(), collection()));
@@ -60,7 +60,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
 
 void AddItemTask::onAppendMessageDone(KJob *job)
 {
-    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
+    auto *append = qobject_cast<KIMAP::AppendJob *>(job);
 
     if (append->error()) {
         qCWarning(IMAPRESOURCE_LOG) << append->errorString();
@@ -79,7 +79,7 @@ void AddItemTask::onAppendMessageDone(KJob *job)
         const QString mailBox = append->mailBox();
 
         if (session->selectedMailBox() != mailBox) {
-            KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+            auto *select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
             connect(select, &KJob::result,
@@ -98,14 +98,14 @@ void AddItemTask::onPreSearchSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        auto *select = static_cast<KIMAP::SelectJob *>(job);
         triggerSearchJob(select->session());
     }
 }
 
 void AddItemTask::triggerSearchJob(KIMAP::Session *session)
 {
-    KIMAP::SearchJob *search = new KIMAP::SearchJob(session);
+    auto *search = new KIMAP::SearchJob(session);
 
     search->setUidBased(true);
 
@@ -113,7 +113,7 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
         search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
         Akonadi::Collection c = collection();
-        UidNextAttribute *uidNext = c.attribute<UidNextAttribute>();
+        auto *uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
             search->deleteLater();
@@ -140,7 +140,7 @@ void AddItemTask::onSearchDone(KJob *job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
+    auto *search = static_cast<KIMAP::SearchJob *>(job);
 
     qint64 uid = 0;
     if (search->results().count() == 1) {

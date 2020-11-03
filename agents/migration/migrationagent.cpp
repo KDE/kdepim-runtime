@@ -32,9 +32,9 @@ MigrationAgent::MigrationAgent(const QString &id)
 void MigrationAgent::configure(WId windowId)
 {
     QDialog *dlg = new QDialog();
-    QVBoxLayout *topLayout = new QVBoxLayout(dlg);
+    auto *topLayout = new QVBoxLayout(dlg);
 
-    MigrationStatusWidget *widget = new MigrationStatusWidget(mScheduler, dlg);
+    auto *widget = new MigrationStatusWidget(mScheduler, dlg);
     topLayout->addWidget(widget);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);

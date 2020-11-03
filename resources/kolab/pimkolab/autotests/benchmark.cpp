@@ -18,7 +18,7 @@ KMime::Message::Ptr readMimeFile(const QString &fileName)
     const QByteArray data = file.readAll();
     Q_ASSERT(!data.isEmpty());
 
-    KMime::Message *msg = new KMime::Message;
+    auto *msg = new KMime::Message;
     msg->setContent(data);
     msg->parse();
     return KMime::Message::Ptr(msg);

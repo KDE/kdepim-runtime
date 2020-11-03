@@ -359,7 +359,7 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
 bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
 {
     qCDebug(POP3_LOG);
-    sasl_interact_t *interact = (sasl_interact_t *)in;
+    auto *interact = (sasl_interact_t *)in;
 
     //some mechanisms do not require username && pass, so don't need a popup
     //window for getting this info
@@ -610,7 +610,7 @@ bool POP3Protocol::pop3_open()
         // use QSslSocket internally
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::NoProxy);
-        if (QSslSocket *sock = qobject_cast<QSslSocket *>(socket())) {
+        if (auto *sock = qobject_cast<QSslSocket *>(socket())) {
             sock->setProxy(proxy);
         } else {
             qCWarning(POP3_LOG) << "no socket, cannot set no proxy";

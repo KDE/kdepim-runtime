@@ -49,7 +49,7 @@ void KolabChangeItemsTagsTask::processNextTag()
 
     //We have to fetch it again in case it changed since the notification was emitted (which is likely)
     //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
-    Akonadi::TagFetchJob *fetch = new Akonadi::TagFetchJob(tag);
+    auto *fetch = new Akonadi::TagFetchJob(tag);
     fetch->fetchScope().setFetchRemoteId(true);
     connect(fetch, &KJob::result, this, &KolabChangeItemsTagsTask::onTagFetchDone);
 }
@@ -71,7 +71,7 @@ void KolabChangeItemsTagsTask::onTagFetchDone(KJob *job)
         return;
     }
 
-    Akonadi::ItemFetchJob *fetch = new Akonadi::ItemFetchJob(tags.first());
+    auto *fetch = new Akonadi::ItemFetchJob(tags.first());
     fetch->fetchScope().setCacheOnly(true);
     fetch->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetch->fetchScope().setFetchGid(true);
@@ -89,7 +89,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
         return;
     }
 
-    TagChangeHelper *changeHelper = new TagChangeHelper(this);
+    auto *changeHelper = new TagChangeHelper(this);
 
     connect(changeHelper, &TagChangeHelper::applyCollectionChanges,
             this, &KolabChangeItemsTagsTask::onApplyCollectionChanged);

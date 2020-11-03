@@ -101,7 +101,7 @@ MessageStatus &KMIndexData::status()
             // status and merge it in.
             // This is kept to provide an upgrade path from the old single
             // status to the new multiple status scheme.
-            KMLegacyMsgStatus legacyMsgStatus = (KMLegacyMsgStatus)mCachedLongParts[KMIndexReader::MsgLegacyStatusPart];
+            auto legacyMsgStatus = (KMLegacyMsgStatus)mCachedLongParts[KMIndexReader::MsgLegacyStatusPart];
             mStatus.setRead();
             switch (legacyMsgStatus) {
             case KMLegacyMsgStatusUnknown:

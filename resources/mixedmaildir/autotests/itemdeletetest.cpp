@@ -337,7 +337,7 @@ void ItemDeleteTest::testMBox()
     QCOMPARE(item3.remoteId(), item.remoteId());
 
     QVERIFY(item.hasAttribute<FileStore::EntityCompactChangeAttribute>());
-    FileStore::EntityCompactChangeAttribute *attribute
+    auto *attribute
         = item.attribute<FileStore::EntityCompactChangeAttribute>();
 
     QString newRemoteId = attribute->remoteId();

@@ -78,7 +78,7 @@ AccountWidget::~AccountWidget()
 
 void AccountWidget::setupWidgets()
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
 
     QWidget *page = new QWidget(this);
     mainLayout->addWidget(page);
@@ -190,7 +190,7 @@ void AccountWidget::loadSettings()
     // of it to work correctly
     Collection targetCollection(mSettings.targetCollection());
     if (targetCollection.isValid()) {
-        CollectionFetchJob *fetchJob = new CollectionFetchJob(targetCollection,
+        auto *fetchJob = new CollectionFetchJob(targetCollection,
                                                               CollectionFetchJob::Base,
                                                               this);
         connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &AccountWidget::targetCollectionReceived);
@@ -198,7 +198,7 @@ void AccountWidget::loadSettings()
         // FIXME: This is a bit duplicated from POP3Resource...
 
         // No target collection set in the config? Try requesting a default inbox
-        SpecialMailCollectionsRequestJob *requestJob = new SpecialMailCollectionsRequestJob(this);
+        auto *requestJob = new SpecialMailCollectionsRequestJob(this);
         requestJob->requestDefaultCollection(SpecialMailCollections::Inbox);
         requestJob->start();
         connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &AccountWidget::localFolderRequestJobFinished);
@@ -362,7 +362,7 @@ void AccountWidget::slotCheckPopCapabilities()
     }
     delete mServerTest;
     mServerTest = new ServerTest(this);
-    BusyCursorHelper *busyCursorHelper = new BusyCursorHelper(mServerTest);
+    auto *busyCursorHelper = new BusyCursorHelper(mServerTest);
     mServerTest->setProgressBar(checkCapabilitiesProgress);
     Q_EMIT okEnabled(false);
     checkCapabilitiesStack->setCurrentIndex(1);

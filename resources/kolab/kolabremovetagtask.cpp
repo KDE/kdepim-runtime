@@ -30,7 +30,7 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
     qCDebug(KOLABRESOURCE_LOG) << "Deleting tag " << resourceState()->tag().name() << " from " << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
-        KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+        auto *select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
         connect(select, &KJob::result,
@@ -48,7 +48,7 @@ void KolabRemoveTagTask::triggerStoreJob(KIMAP::Session *session)
     set.add(resourceState()->tag().remoteId().toLong());
     qCDebug(KOLABRESOURCE_TRACE) << set.toImapSequenceSet();
 
-    KIMAP::StoreJob *store = new KIMAP::StoreJob(session);
+    auto *store = new KIMAP::StoreJob(session);
     store->setUidBased(true);
     store->setSequenceSet(set);
     store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);
@@ -63,7 +63,7 @@ void KolabRemoveTagTask::onSelectDone(KJob *job)
         qCWarning(KOLABRESOURCE_LOG) << "Failed to select mailbox: " << job->errorString();
         cancelTask(job->errorString());
     } else {
-        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        auto *select = static_cast<KIMAP::SelectJob *>(job);
         triggerStoreJob(select->session());
     }
 }

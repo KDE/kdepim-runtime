@@ -274,13 +274,13 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
 
     Q_EMIT status(Running);
 
-    AuthJob *authJob = qobject_cast<AuthJob *>(job);
+    auto *authJob = qobject_cast<AuthJob *>(job);
     AccountPtr account = authJob->account();
     if (!m_settings->storeAccount(account)) {
         qCWarning(GOOGLE_LOG) << "Failed to store account in KWallet";
     }
 
-    KGAPI2::Job *otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
+    auto *otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
     if (otherJob) {
         otherJob->setAccount(account);
         otherJob->restart();
@@ -375,7 +375,7 @@ void GoogleResource::retrieveCollections()
     m_rootCollection.setRights(Collection::CanCreateCollection);
     m_rootCollection.setCachePolicy(cachePolicy);
 
-    EntityDisplayAttribute *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto *attr = m_rootCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(m_settings->accountPtr()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 

@@ -28,7 +28,7 @@ void O2ReplyServer::onIncomingConnection()
 void O2ReplyServer::onBytesReady()
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2ReplyServer::onBytesReady";
-    QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
+    auto *socket = qobject_cast<QTcpSocket *>(sender());
     if (!socket) {
         return;
     }

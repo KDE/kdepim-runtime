@@ -85,7 +85,7 @@ void RetrieveMetadataJob::start()
         }
         //TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
         for (const QString &mailbox : qAsConst(toplevelMailboxes)) {
-            KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(mSession);
+            auto *meta = new KIMAP::GetMetaDataJob(mSession);
             meta->setMailBox(mailbox + QLatin1String("*"));
             if (mServerCapabilities.contains(QLatin1String("METADATA"))) {
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
@@ -109,7 +109,7 @@ void RetrieveMetadataJob::start()
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
                 continue;
             }
-            KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob(mSession);
+            auto *rights = new KIMAP::MyRightsJob(mSession);
             rights->setMailBox(mailbox);
             connect(rights, &KJob::result, this, &RetrieveMetadataJob::onRightsReceived);
             mJobs++;
@@ -122,7 +122,7 @@ void RetrieveMetadataJob::start()
 void RetrieveMetadataJob::onGetMetaDataDone(KJob *job)
 {
     mJobs--;
-    KIMAP::GetMetaDataJob *meta = static_cast<KIMAP::GetMetaDataJob *>(job);
+    auto *meta = static_cast<KIMAP::GetMetaDataJob *>(job);
     if (job->error()) {
         qCDebug(KOLABRESOURCE_LOG) << "No metadata for for mailbox: " << meta->mailBox();
         if (!isNamespaceFolder(meta->mailBox(), mSharedNamespace)) {
@@ -144,7 +144,7 @@ void RetrieveMetadataJob::onGetMetaDataDone(KJob *job)
 void RetrieveMetadataJob::onRightsReceived(KJob *job)
 {
     mJobs--;
-    KIMAP::MyRightsJob *rights = static_cast<KIMAP::MyRightsJob *>(job);
+    auto *rights = static_cast<KIMAP::MyRightsJob *>(job);
     if (job->error()) {
         qCDebug(KOLABRESOURCE_LOG) << "No rights for mailbox: " << rights->mailBox();
         if (!isNamespaceFolder(rights->mailBox(), mSharedNamespace)) {
@@ -230,7 +230,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     qCDebug(KOLABRESOURCE_TRACE) << "subscription enabled: " << isSubscriptionEnabled();
     //jobs are serialized by the session
     if (isSubscriptionEnabled()) {
-        KIMAP::ListJob *fullListJob = new KIMAP::ListJob(session);
+        auto *fullListJob = new KIMAP::ListJob(session);
         fullListJob->setOption(KIMAP::ListJob::NoOption);
         fullListJob->setQueriedNamespaces(serverNamespaces());
         connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -240,7 +240,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
         fullListJob->start();
     }
 
-    KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
+    auto *listJob = new KIMAP::ListJob(session);
     listJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -288,25 +288,25 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
 
 void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path)
 {
-    Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
     attr->setIdentifier(path.toLatin1());
 
     // If the folder is a other users folder block all alarms from default
     if (isNamespaceFolder(path, resourceState()->userNamespaces())) {
-        Akonadi::BlockAlarmsAttribute *attr = c.attribute<Akonadi::BlockAlarmsAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = c.attribute<Akonadi::BlockAlarmsAttribute>(Akonadi::Collection::AddIfMissing);
         attr->blockEverything(true);
     }
 
     // If the folder is a other users top-level folder mark it accordingly
     if (pathParts.size() == 1 && isNamespaceFolder(path, resourceState()->userNamespaces())) {
-        Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Other Users"));
         attr->setIconName(QStringLiteral("x-mail-distribution-list"));
     }
 
     //Mark user folders for searching
     if (pathParts.size() >= 2 && isNamespaceFolder(path, resourceState()->userNamespaces())) {
-        Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         if (pathParts.size() == 2) {
             attr->setCollectionNamespace("usertoplevel");
         } else {
@@ -316,14 +316,14 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
 
     // If the folder is a shared folders top-level folder mark it accordingly
     if (pathParts.size() == 1 && isNamespaceFolder(path, resourceState()->sharedNamespaces())) {
-        Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Shared Folders"));
         attr->setIconName(QStringLiteral("x-mail-distribution-list"));
     }
 
     //Mark shared folders for searching
     if (pathParts.size() >= 2 && isNamespaceFolder(path, resourceState()->sharedNamespaces())) {
-        Akonadi::CollectionIdentificationAttribute *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setCollectionNamespace("shared");
     }
 }
@@ -364,7 +364,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
     // If the folder is the Inbox, make some special settings.
     if (pathParts.size() == 1 && pathPart.compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
-        Akonadi::EntityDisplayAttribute *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setDisplayName(i18n("Inbox"));
         attr->setIconName(QStringLiteral("mail-folder-inbox"));
         c.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
@@ -443,7 +443,7 @@ void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::
             CollectionMetadataHelper::applyRights(collection, imapRights, parentImapRights);
 
             // Store the mailbox ACLs
-            Akonadi::ImapAclAttribute *aclAttribute = collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+            auto *aclAttribute = collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
             const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
             if (oldRights != imapRights) {
                 aclAttribute->setMyRights(imapRights);
@@ -485,7 +485,7 @@ void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
         qCWarning(KOLABRESOURCE_LOG) << "Error while retrieving metadata, aborting collection retrieval: " << job->errorString();
         cancelTask(i18n("Collection retrieval failed"));
     } else {
-        RetrieveMetadataJob *metadata = static_cast<RetrieveMetadataJob *>(job);
+        auto *metadata = static_cast<RetrieveMetadataJob *>(job);
         applyRights(metadata->mRights);
         applyMetadata(metadata->mMetadata);
         checkDone();

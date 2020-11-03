@@ -97,7 +97,7 @@ void EwsFetchItemsJob::start()
     Q_EMIT percent(0);
 
     /* Begin stage 1 - query item list from local and remote side. */
-    EwsSyncFolderItemsRequest *syncItemsReq = new EwsSyncFolderItemsRequest(mClient, this);
+    auto *syncItemsReq = new EwsSyncFolderItemsRequest(mClient, this);
     syncItemsReq->setFolderId(EwsId(mCollection.remoteId(), mCollection.remoteRevision()));
     EwsItemShape shape(EwsShapeIdOnly);
     shape << EwsResource::tagsProperty;
@@ -109,7 +109,7 @@ void EwsFetchItemsJob::start()
     connect(syncItemsReq, &EwsSyncFolderItemsRequest::result, this, &EwsFetchItemsJob::remoteItemFetchDone);
     addSubjob(syncItemsReq);
 
-    ItemFetchJob *itemJob = new ItemFetchJob(mCollection);
+    auto *itemJob = new ItemFetchJob(mCollection);
     ItemFetchScope itemScope;
     itemScope.setCacheOnly(true);
     itemScope.fetchFullPayload(false);
@@ -122,7 +122,7 @@ void EwsFetchItemsJob::start()
     itemJob->start();
 
     if (!mItemsToCheck.isEmpty()) {
-        EwsGetItemRequest *getItemReq = new EwsGetItemRequest(mClient, this);
+        auto *getItemReq = new EwsGetItemRequest(mClient, this);
         getItemReq->setItemIds(mItemsToCheck);
         getItemReq->setItemShape(EwsItemShape(EwsShapeIdOnly));
         connect(getItemReq, &EwsGetItemRequest::result, this, &EwsFetchItemsJob::checkedItemsFetchFinished);
@@ -133,7 +133,7 @@ void EwsFetchItemsJob::start()
 
 void EwsFetchItemsJob::localItemFetchDone(KJob *job)
 {
-    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
+    auto *fetchJob = qobject_cast<ItemFetchJob *>(job);
 
     qCDebug(EWSRES_LOG) << "EwsFetchItemsJob::localItemFetchDone";
     if (!fetchJob) {
@@ -155,7 +155,7 @@ void EwsFetchItemsJob::localItemFetchDone(KJob *job)
 
 void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
 {
-    EwsSyncFolderItemsRequest *itemReq = qobject_cast<EwsSyncFolderItemsRequest *>(job);
+    auto *itemReq = qobject_cast<EwsSyncFolderItemsRequest *>(job);
 
     qCDebug(EWSRES_LOG) << "EwsFetchItemsJob::remoteItemFetchDone";
     if (!itemReq) {
@@ -187,7 +187,7 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
         }
 
         if (!itemReq->includesLastItem()) {
-            EwsSyncFolderItemsRequest *syncItemsReq = new EwsSyncFolderItemsRequest(mClient, this);
+            auto *syncItemsReq = new EwsSyncFolderItemsRequest(mClient, this);
             syncItemsReq->setFolderId(EwsId(mCollection.remoteId(), mCollection.remoteRevision()));
             EwsItemShape shape(EwsShapeIdOnly);
             shape << EwsResource::tagsProperty;
@@ -213,7 +213,7 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
 
 void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
 {
-    EwsGetItemRequest *req = qobject_cast<EwsGetItemRequest *>(job);
+    auto *req = qobject_cast<EwsGetItemRequest *>(job);
 
     if (!req) {
         setErrorMsg(QStringLiteral("Invalid item fetch job pointer."));
@@ -414,7 +414,7 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
     removeSubjob(job);
 
     if (!job->error()) {
-        EwsFetchItemDetailJob *detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
+        auto *detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
         if (detailJob) {
             mChangedItems += detailJob->changedItems();
         }
@@ -445,7 +445,7 @@ void EwsFetchItemsJob::syncTags()
         setErrorMsg(QStringLiteral("Missing tags encountered despite previous sync."));
         emitResult();
     } else {
-        EwsAkonadiTagsSyncJob *job = new EwsAkonadiTagsSyncJob(mTagStore, mClient,
+        auto *job = new EwsAkonadiTagsSyncJob(mTagStore, mClient,
                                                                qobject_cast<EwsResource *>(parent())->rootCollection(), this);
         connect(job, &EwsAkonadiTagsSyncJob::result, this, &EwsFetchItemsJob::tagSyncFinished);
         job->start();

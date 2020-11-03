@@ -56,7 +56,7 @@ void AddCollectionTask::doStart(KIMAP::Session *session)
 
     qCDebug(IMAPRESOURCE_LOG) << "New folder: " << newMailBox;
 
-    KIMAP::CreateJob *job = new KIMAP::CreateJob(session);
+    auto *job = new KIMAP::CreateJob(session);
     job->setMailBox(newMailBox);
 
     connect(job, &KIMAP::CreateJob::result, this, &AddCollectionTask::onCreateDone);
@@ -73,9 +73,9 @@ void AddCollectionTask::onCreateDone(KJob *job)
         cancelTask(job->errorString());
     } else {
         // Automatically subscribe to newly created mailbox
-        KIMAP::CreateJob *create = static_cast<KIMAP::CreateJob *>(job);
+        auto *create = static_cast<KIMAP::CreateJob *>(job);
 
-        KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob(create->session());
+        auto *subscribe = new KIMAP::SubscribeJob(create->session());
         subscribe->setMailBox(create->mailBox());
 
         connect(subscribe, &KIMAP::SubscribeJob::result, this, &AddCollectionTask::onSubscribeDone);
@@ -104,7 +104,7 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
     QMapIterator<QByteArray, QByteArray> i(attribute->annotations());
     while (i.hasNext()) {
         i.next();
-        KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob(m_session);
+        auto *job = new KIMAP::SetMetaDataJob(m_session);
         if (serverCapabilities().contains(QLatin1String("METADATA"))) {
             job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
         } else {

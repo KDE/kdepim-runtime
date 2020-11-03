@@ -27,7 +27,7 @@ EwsModifyMailJob::~EwsModifyMailJob()
 void EwsModifyMailJob::start()
 {
     bool doSubmit = false;
-    EwsUpdateItemRequest *req = new EwsUpdateItemRequest(mClient, this);
+    auto *req = new EwsUpdateItemRequest(mClient, this);
     EwsId itemId;
 
     for (const Item &item : qAsConst(mItems)) {
@@ -69,7 +69,7 @@ void EwsModifyMailJob::updateItemFinished(KJob *job)
         return;
     }
 
-    EwsUpdateItemRequest *req = qobject_cast<EwsUpdateItemRequest *>(job);
+    auto *req = qobject_cast<EwsUpdateItemRequest *>(job);
     if (!req) {
         setErrorText(QStringLiteral("Invalid EwsUpdateItemRequest job object"));
         emitResult();

@@ -39,7 +39,7 @@ void ExpungeCollectionTask::doStart(KIMAP::Session *session)
     const QString mailBox = mailBoxForCollection(collection());
 
     if (session->selectedMailBox() != mailBox) {
-        KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+        auto *select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
         connect(select, &KIMAP::SelectJob::result, this, &ExpungeCollectionTask::onSelectDone);
@@ -55,7 +55,7 @@ void ExpungeCollectionTask::onSelectDone(KJob *job)
     if (job->error()) {
         cancelTask(job->errorString());
     } else {
-        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        auto *select = static_cast<KIMAP::SelectJob *>(job);
         if (select->isOpenReadOnly()) {
             qCDebug(IMAPRESOURCE_LOG) << "Mailbox is opened readonly, not expunging";
             taskDone();
@@ -67,7 +67,7 @@ void ExpungeCollectionTask::onSelectDone(KJob *job)
 
 void ExpungeCollectionTask::triggerExpungeJob(KIMAP::Session *session)
 {
-    KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob(session);
+    auto *expunge = new KIMAP::ExpungeJob(session);
 
     connect(expunge, &KIMAP::ExpungeJob::result, this, &ExpungeCollectionTask::onExpungeDone);
 

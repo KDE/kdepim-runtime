@@ -58,7 +58,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         KWindowSystem::setMainWindow(windowHandle(), wId);
     }
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     QWidget *mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
 

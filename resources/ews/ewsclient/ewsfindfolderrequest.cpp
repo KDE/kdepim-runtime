@@ -86,7 +86,7 @@ bool EwsFindFolderRequest::parseResult(QXmlStreamReader &reader)
 
 bool EwsFindFolderRequest::parseFoldersResponse(QXmlStreamReader &reader)
 {
-    EwsFindFolderResponse *resp = new EwsFindFolderResponse(reader);
+    auto *resp = new EwsFindFolderResponse(reader);
     if (resp->responseClass() == EwsResponseUnknown) {
         return false;
     }

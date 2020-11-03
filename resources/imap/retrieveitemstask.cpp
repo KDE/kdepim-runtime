@@ -80,7 +80,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
     if (m_fetchMissingBodies && col.cachePolicy()
         .localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) {      //disconnected mode, make sure we really have the body cached
         Akonadi::Session *session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
-        Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(col, session);
+        auto *fetchJob = new Akonadi::ItemFetchJob(col, session);
         fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
         fetchJob->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Body);
         fetchJob->fetchScope().setFetchModificationTime(false);
@@ -105,7 +105,7 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
         return;
     } else {
         int i = 0;
-        Akonadi::ItemFetchJob *fetch = static_cast<Akonadi::ItemFetchJob *>(job);
+        auto *fetch = static_cast<Akonadi::ItemFetchJob *>(job);
         const Akonadi::Item::List lstItems = fetch->items();
         for (const Akonadi::Item &item : lstItems) {
             if (!item.cachedPayloadParts().contains(Akonadi::MessagePart::Body)) {
@@ -150,7 +150,7 @@ void RetrieveItemsTask::startRetrievalTasks()
 
 void RetrieveItemsTask::triggerPreExpungeSelect(const QString &mailBox)
 {
-    KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+    auto *select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
     connect(select, &KJob::result,
@@ -164,7 +164,7 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+        auto *select = static_cast<KIMAP::SelectJob *>(job);
         if (select->isOpenReadOnly()) {
             qCDebug(IMAPRESOURCE_LOG) << "Mailbox is opened readonly, not expunging";
             // Treat this SELECT as if it was triggerFinalSelect()
@@ -178,7 +178,7 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
 void RetrieveItemsTask::triggerExpunge(const QString &mailBox)
 {
     Q_UNUSED(mailBox);
-    KIMAP::ExpungeJob *expunge = new KIMAP::ExpungeJob(m_session);
+    auto *expunge = new KIMAP::ExpungeJob(m_session);
     connect(expunge, &KJob::result,
             this, &RetrieveItemsTask::onExpungeDone);
     expunge->start();
@@ -204,7 +204,7 @@ void RetrieveItemsTask::onExpungeDone(KJob *job)
 
 void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
 {
-    KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+    auto *select = new KIMAP::SelectJob(m_session);
     select->setMailBox(mailBox);
     select->setCondstoreEnabled(serverSupportsCondstore());
     connect(select, &KJob::result,
@@ -214,7 +214,7 @@ void RetrieveItemsTask::triggerFinalSelect(const QString &mailBox)
 
 void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 {
-    KIMAP::SelectJob *select = qobject_cast<KIMAP::SelectJob *>(job);
+    auto *select = qobject_cast<KIMAP::SelectJob *>(job);
 
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << select->mailBox() << ":" << job->errorString();
@@ -231,7 +231,7 @@ void RetrieveItemsTask::onFinalSelectDone(KJob *job)
 
     //This is known to happen with Courier IMAP.
     if (m_nextUid < 0) {
-        KIMAP::StatusJob *status = new KIMAP::StatusJob(m_session);
+        auto *status = new KIMAP::StatusJob(m_session);
         status->setMailBox(m_mailBox);
         status->setDataItems({ "UIDNEXT" });
         connect(status, &KJob::result,
@@ -250,7 +250,7 @@ void RetrieveItemsTask::onStatusDone(KJob *job)
         return;
     }
 
-    KIMAP::StatusJob *status = qobject_cast<KIMAP::StatusJob *>(job);
+    auto *status = qobject_cast<KIMAP::StatusJob *>(job);
     const QList<QPair<QByteArray, qint64> > results = status->status();
     for (const auto &val : results) {
         if (val.first == "UIDNEXT") {
@@ -281,7 +281,7 @@ void RetrieveItemsTask::prepareRetrieval()
     // Get the current uid validity value and store it
     int oldUidValidity = 0;
     if (!col.hasAttribute("uidvalidity")) {
-        UidValidityAttribute *currentUidValidity = new UidValidityAttribute(m_uidValidity);
+        auto *currentUidValidity = new UidValidityAttribute(m_uidValidity);
         col.addAttribute(currentUidValidity);
         modifyNeeded = true;
     } else {
@@ -297,7 +297,7 @@ void RetrieveItemsTask::prepareRetrieval()
     // Get the current uid next value and store it
     int oldNextUid = 0;
     if (m_nextUid > 0) { //this can fail with faulty servers that don't deliver uidnext
-        if (UidNextAttribute *currentNextUid = col.attribute<UidNextAttribute>()) {
+        if (auto *currentNextUid = col.attribute<UidNextAttribute>()) {
             oldNextUid = currentNextUid->uidNext();
             if (oldNextUid != m_nextUid) {
                 currentNextUid->setUidNext(m_nextUid);
@@ -311,7 +311,7 @@ void RetrieveItemsTask::prepareRetrieval()
 
     // Store the mailbox flags
     if (!col.hasAttribute("collectionflags")) {
-        Akonadi::CollectionFlagsAttribute *flagsAttribute = new Akonadi::CollectionFlagsAttribute(m_flags);
+        auto *flagsAttribute = new Akonadi::CollectionFlagsAttribute(m_flags);
         col.addAttribute(flagsAttribute);
         modifyNeeded = true;
     } else {
@@ -327,11 +327,11 @@ void RetrieveItemsTask::prepareRetrieval()
     qint64 oldHighestModSeq = 0;
     if (serverSupportsCondstore() && m_highestModSeq > 0) {
         if (!col.hasAttribute("highestmodseq")) {
-            HighestModSeqAttribute *attr = new HighestModSeqAttribute(m_highestModSeq);
+            auto *attr = new HighestModSeqAttribute(m_highestModSeq);
             col.addAttribute(attr);
             modifyNeeded = true;
         } else {
-            HighestModSeqAttribute *attr = col.attribute<HighestModSeqAttribute>();
+            auto *attr = col.attribute<HighestModSeqAttribute>();
             if (attr->highestModSequence() < m_highestModSeq) {
                 oldHighestModSeq = attr->highestModSequence();
                 attr->setHighestModSeq(m_highestModSeq);
@@ -545,7 +545,7 @@ void RetrieveItemsTask::onRetrievalDone(KJob *job)
     }
 
     //This is the lowest sequence number that we just fetched.
-    const KIMAP::ImapSet::Id alreadyFetchedBegin = job->property("alreadyFetched").value<KIMAP::ImapSet::Id>();
+    const auto alreadyFetchedBegin = job->property("alreadyFetched").value<KIMAP::ImapSet::Id>();
 
     // If this is the first fetch of a folder, skip getting flags, we
     // already have them all from the previous full fetch. This is not

@@ -106,7 +106,7 @@ void ImapIdleManager::startIdle()
 {
     const auto idleMailBox = m_state->mailBoxForCollection(m_state->collection());
     if (m_session->selectedMailBox() != idleMailBox) {
-        KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+        auto *select = new KIMAP::SelectJob(m_session);
         select->setMailBox(idleMailBox);
         connect(select, &KIMAP::SelectJob::result, this, &ImapIdleManager::onSelectDone);
         select->start();
@@ -149,7 +149,7 @@ void ImapIdleManager::onPoolDisconnect()
 
 void ImapIdleManager::onSelectDone(KJob *job)
 {
-    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
+    auto *select = static_cast<KIMAP::SelectJob *>(job);
 
     m_lastMessageCount = select->messageCount();
     m_lastRecentCount = select->recentCount();

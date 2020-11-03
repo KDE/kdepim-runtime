@@ -47,7 +47,7 @@ void FolderDeleteJob::davJobFinished(KJob *job)
         return;
     }
 
-    KIO::DavJob *davJob = qobject_cast<KIO::DavJob *>(job);
+    auto *davJob = qobject_cast<KIO::DavJob *>(job);
 
     const QDomDocument document = davJob->response();
 

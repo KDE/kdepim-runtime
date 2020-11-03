@@ -67,7 +67,7 @@ void CompactChangeHelper::Private::processNextItem()
 {
     //qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
     if (mCurrentUpdate.items.isEmpty()) {
-        CollectionModifyJob *job = new CollectionModifyJob(mCurrentUpdate.collection, mSession);
+        auto *job = new CollectionModifyJob(mCurrentUpdate.collection, mSession);
         QObject::connect(job, &CollectionModifyJob::result, q, [this]() {
             processNextBatch();
         });
@@ -79,7 +79,7 @@ void CompactChangeHelper::Private::processNextItem()
     Item item;
     item.setRemoteId(nextItem.remoteId());
 
-    ItemFetchJob *job = new ItemFetchJob(item);
+    auto *job = new ItemFetchJob(item);
     job->setProperty("oldRemoteId", item.remoteId());
     job->setProperty("newRemoteId", nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId());
     QObject::connect(job, &ItemFetchJob::result, q, [this](KJob *job) {
@@ -89,7 +89,7 @@ void CompactChangeHelper::Private::processNextItem()
 
 void CompactChangeHelper::Private::itemFetchResult(KJob *job)
 {
-    ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
+    auto *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
 
     const QString oldRemoteId = fetchJob->property("oldRemoteId").toString();
@@ -117,7 +117,7 @@ void CompactChangeHelper::Private::itemFetchResult(KJob *job)
     Item updatedItem(item);
     updatedItem.setRemoteId(newRemoteId);
 
-    ItemModifyJob *modifyJob = new ItemModifyJob(updatedItem);
+    auto *modifyJob = new ItemModifyJob(updatedItem);
     QObject::connect(modifyJob, &ItemModifyJob::result, q, [this]() {
         processNextItem();
     });

@@ -164,7 +164,7 @@ void Event::delegate(const std::vector< Attendee > &delegators, const std::vecto
 
 Attendee *Event::getAttendee(const ContactReference &ref)
 {
-    for (std::vector <Kolab::Attendee >::iterator it = d->attendees.begin(), end = d->attendees.end();
+    for (auto it = d->attendees.begin(), end = d->attendees.end();
          it != end; ++it) {
         if (it->contact().uid() == ref.uid() || it->contact().email() == ref.email() || it->contact().name() == ref.name()) {
             return &*it;

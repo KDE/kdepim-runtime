@@ -32,7 +32,7 @@ void EwsGlobalTagsWriteJob::start()
 {
     QStringList tagList = mTagStore->serialize();
 
-    EwsUpdateFolderRequest *req = new EwsUpdateFolderRequest(mClient, this);
+    auto *req = new EwsUpdateFolderRequest(mClient, this);
     EwsUpdateFolderRequest::FolderChange fc(EwsId(mRootCollection.remoteId(), mRootCollection.remoteRevision()),
                                             EwsFolderTypeMail);
     EwsUpdateFolderRequest::Update *upd

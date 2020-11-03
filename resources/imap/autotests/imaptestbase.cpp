@@ -26,7 +26,7 @@ QString ImapTestBase::defaultPassword() const
 
 ImapAccount *ImapTestBase::createDefaultAccount() const
 {
-    ImapAccount *account = new ImapAccount;
+    auto *account = new ImapAccount;
 
     account->setServer(QStringLiteral("127.0.0.1"));
     account->setPort(5989);
@@ -40,7 +40,7 @@ ImapAccount *ImapTestBase::createDefaultAccount() const
 
 DummyPasswordRequester *ImapTestBase::createDefaultRequester()
 {
-    DummyPasswordRequester *requester = new DummyPasswordRequester(this);
+    auto *requester = new DummyPasswordRequester(this);
     requester->setPassword(defaultPassword());
     return requester;
 }
@@ -58,7 +58,7 @@ QList<QByteArray> ImapTestBase::defaultAuthScenario() const
     QList<QByteArray> scenario;
 
     scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+             << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
              << "S: A000001 OK User Logged in";
 
     return scenario;
