@@ -31,7 +31,7 @@ namespace Akonadi {
  * Base class for single file based resources.
  */
 template<typename Settings>
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileResourceBase
+class SingleFileResource : public SingleFileResourceBase
 {
 public:
     SingleFileResource(const QString &id)
