@@ -28,6 +28,19 @@ extern "C" {
 
 #include <kio/slaveinterface.h>
 
+#include <string.h>
+
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#endif
+
+#ifdef Q_OS_WIN
+// See kio/src/core/kioglobal_p.h
+#define S_IRUSR 0400
+#define S_IWUSR 0200
+#define S_IXUSR 0100
+#endif
+
 #define GREETING_BUF_LEN 1024
 #define MAX_RESPONSE_LEN 512
 #define MAX_COMMANDS 10

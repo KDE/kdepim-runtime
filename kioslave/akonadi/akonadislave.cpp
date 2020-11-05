@@ -22,6 +22,14 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
+
+#ifdef Q_OS_WIN
+// see kio/core/src/kioglobal_p.h
+#define S_IRUSR 0400
+#define S_IRGRP 0040
+#define S_IROTH 0004
+#endif
+
 extern "C" {
 int Q_DECL_EXPORT kdemain(int argc, char **argv);
 }
