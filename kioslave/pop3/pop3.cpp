@@ -84,8 +84,6 @@ POP3Protocol::POP3Protocol(const QByteArray &pool, const QByteArray &app, bool i
     qCDebug(POP3_LOG);
     //m_cmd = CMD_NONE;
     m_iOldPort = 0;
-    m_tTimeout.tv_sec = 10;
-    m_tTimeout.tv_usec = 0;
     supports_apop = false;
     m_try_apop = true;
     m_try_sasl = true;

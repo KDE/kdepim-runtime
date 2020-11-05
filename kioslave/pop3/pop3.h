@@ -13,7 +13,6 @@
 #include <QUrl>
 
 #include <sys/types.h>
-#include <sys/time.h>
 #include <stdio.h>
 
 #define MAX_PACKET_LEN 4096
@@ -105,7 +104,6 @@ protected:
     //int m_cmd;
     unsigned short int m_iOldPort;
     unsigned short int m_iPort;
-    struct timeval m_tTimeout;
     QString m_sOldServer, m_sOldPass, m_sOldUser;
     QString m_sServer, m_sPass, m_sUser;
     bool m_try_apop, m_try_sasl, opened, supports_apop;
