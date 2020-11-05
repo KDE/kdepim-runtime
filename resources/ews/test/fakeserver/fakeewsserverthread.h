@@ -11,8 +11,9 @@
 #include <QThread>
 
 #include "fakeewsserver.h"
+#include "fakeewsserver_export.h"
 
-class Q_DECL_EXPORT FakeEwsServerThread : public QThread
+class FAKEEWSSERVER_EXPORT FakeEwsServerThread : public QThread
 {
     Q_OBJECT
 public:

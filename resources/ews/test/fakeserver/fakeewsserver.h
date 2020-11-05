@@ -9,6 +9,8 @@
 
 #include <functional>
 
+#include "fakeewsserver_export.h"
+
 #include <QMutex>
 #include <QPointer>
 #include <QTcpServer>
@@ -18,11 +20,11 @@ class FakeEwsConnection;
 class QXmlResultItems;
 class QXmlNamePool;
 
-class Q_DECL_EXPORT FakeEwsServer : public QTcpServer
+class FAKEEWSSERVER_EXPORT FakeEwsServer : public QTcpServer
 {
     Q_OBJECT
 public:
-    class DialogEntry
+    class FAKEEWSSERVER_EXPORT DialogEntry
     {
     public:
         typedef QPair<QString, ushort> HttpResponse;

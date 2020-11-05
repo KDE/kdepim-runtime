@@ -3,6 +3,7 @@
 #
 #  SPDX-License-Identifier: LGPL-2.0-or-later
 
+
 set(fakeewsserver_SRCS
     fakeewsconnection.cpp
     fakeewsserver_debug.cpp
@@ -11,6 +12,7 @@ set(fakeewsserver_SRCS
 
 add_library(fakeewsserver ${fakeewsserver_SRCS})
 
+generate_export_header(fakeewsserver BASE_NAME fakeewsserver)
 target_link_libraries(fakeewsserver Qt5::Core Qt5::Network Qt5::XmlPatterns)
 
 add_subdirectory(test)

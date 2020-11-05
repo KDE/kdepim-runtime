@@ -113,6 +113,7 @@ target_link_libraries(akonadi_ews_resource
     KF5::I18n
     KF5::WindowSystem
     KF5::Notifications
+    KF5::ConfigWidgets
     ewsclient)
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
