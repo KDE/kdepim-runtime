@@ -111,6 +111,7 @@ public:
     QString resourceName() const override;
     QString resourceIdentifier() const override;
     QStringList serverCapabilities() const override;
+    QStringList effectiveServerCapabilities() const override;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const override;
     QList<KIMAP::MailBoxDescriptor> personalNamespaces() const override;
     QList<KIMAP::MailBoxDescriptor> userNamespaces() const override;

@@ -144,6 +144,11 @@ QStringList ResourceTask::serverCapabilities() const
     return m_resource->serverCapabilities();
 }
 
+QStringList ResourceTask::effectiveServerCapabilities() const
+{
+    return m_resource->effectiveServerCapabilities();
+}
+
 QList<KIMAP::MailBoxDescriptor> ResourceTask::serverNamespaces() const
 {
     return m_resource->serverNamespaces();
@@ -523,6 +528,13 @@ bool ResourceTask::serverSupportsCondstore() const
            && !serverCapabilities().contains(QLatin1String("X-GM-EXT-1"));
 }
 
+bool ResourceTask::isQResyncEnabled() const
+{
+    // Check support for QRESYNC (RFC5162).
+    // QRESYNC must be enabled on each session, so check that has happened.
+    return effectiveServerCapabilities().contains(QLatin1String("QRESYNC"));
+}
+
 int ResourceTask::batchSize() const
 {
     return m_resource->batchSize();
@@ -533,7 +545,7 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
     return m_resource;
 }
 
-KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
+KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col) const
 {
     const auto *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
     if (aclAttribute) {

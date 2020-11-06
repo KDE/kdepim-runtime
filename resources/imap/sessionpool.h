@@ -68,6 +68,7 @@ public:
 
     ImapAccount *account() const;
     QStringList serverCapabilities() const;
+    QStringList effectiveServerCapabilities() const;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
     enum Namespace {
         Personal,
@@ -88,18 +89,19 @@ private Q_SLOTS:
 
     void onPasswordRequestDone(int resultType, const QString &password);
     void onLoginDone(KJob *job);
-    void onCapabilitiesTestDone(KJob *job);
-    void onNamespacesTestDone(KJob *job);
-    void onIdDone(KJob *job);
+    void onPrepareSessionDone(KJob *job);
+    void onEnableDone(KJob *job);
 
     void onSessionDestroyed(QObject *);
 
 private:
     void onConnectionLost();
     void killSession(KIMAP::Session *session, SessionTermination termination);
+    void enableSessionCapabilities(KIMAP::Session *session);
     void declareSessionReady(KIMAP::Session *session);
     void cancelSessionCreation(KIMAP::Session *session, int errorCode, const QString &errorString);
     void requestPassword();
+    void enableQResync(KIMAP::Session *session);
 
     static qint64 m_requestCounter;
 
@@ -117,6 +119,7 @@ private:
     QList<KIMAP::Session *> m_reservedPool;  // currently used
 
     QStringList m_capabilities;
+    QStringList m_effectiveCapabilities;
     QList<KIMAP::MailBoxDescriptor> m_namespaces;
     QList<KIMAP::MailBoxDescriptor> m_personalNamespaces;
     QList<KIMAP::MailBoxDescriptor> m_userNamespaces;

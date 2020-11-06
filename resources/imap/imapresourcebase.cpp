@@ -60,6 +60,7 @@
 #include "retrievecollectionstask.h"
 #include "retrieveitemtask.h"
 #include "retrieveitemstask.h"
+#include "retrieveitemstask_qresync.h"
 #include "searchtask.h"
 
 #include "settingspasswordrequester.h"
@@ -416,9 +417,18 @@ void ImapResourceBase::retrieveItems(const Collection &col)
 
     setItemStreamingEnabled(true);
 
-    RetrieveItemsTask *task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
+    ResourceTask *task;
+    if (m_pool->effectiveServerCapabilities().contains(QStringView{u"QRESYNC"})) {
+        auto *t = new RetrieveItemsTaskQResync(createResourceState(TaskArguments(col)), this);
+        connect(this, &ResourceBase::retrieveNextItemSyncBatch, t, &RetrieveItemsTaskQResync::onReadyForNextBatch);
+        task = t;
+    } else {
+        auto t = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
+        connect(this, &ResourceBase::retrieveNextItemSyncBatch, t, &RetrieveItemsTask::onReadyForNextBatch);
+        task = t;
+    }
+
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-    connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
 }
 
