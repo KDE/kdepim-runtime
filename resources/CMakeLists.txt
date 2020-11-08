@@ -4,7 +4,7 @@ set_package_properties(Libkolabxml PROPERTIES DESCRIPTION "Kolabxml" URL "http:/
 
 # Etebase library
 find_package(Etebase CONFIG)
-set_package_properties(Etebase PROPERTIES DESCRIPTION "EteSync" URL "https://github.com/etesync/libetebase/releases" TYPE OPTIONAL PURPOSE "The Etebase library is required to build the EteSync Groupware Resource")
+set_package_properties(Etebase PROPERTIES URL "https://github.com/etesync/libetebase/releases" TYPE OPTIONAL PURPOSE "The Etebase library is required to build the EteSync Groupware Resource")
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/shared/singlefileresource/
