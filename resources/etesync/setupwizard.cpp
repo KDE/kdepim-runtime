@@ -93,6 +93,14 @@ LoginPage::LoginPage(QWidget *parent)
     mProgressBar->setRange(0, 0);
     layout->addWidget(mProgressBar);
 
+    layout->addItem(new QSpacerItem(0,10, QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    mPasswordInfo = new QLabel;
+    mPasswordInfo->setText(i18n("🛈 The password field is empty because EteSync does not store it for security reasons."));
+    mPasswordInfo->setWordWrap(true);
+    layout->addRow(mPasswordInfo);
+    mPasswordInfo->setVisible(false);
+
     connect(mAdvancedSettings, SIGNAL(toggled(bool)), mServerUrl, SLOT(setVisible(bool)));
     connect(mAdvancedSettings, SIGNAL(toggled(bool)), layout->labelForField(mServerUrl), SLOT(setVisible(bool)));
 }
@@ -106,6 +114,7 @@ void LoginPage::initializePage()
         setField(QStringLiteral("credentialsServerUrl"), static_cast<SetupWizard *>(wizard())->mClientState->serverUrl());
         QString username = static_cast<SetupWizard *>(wizard())->mClientState->username();
         mUserName->setText(username);
+        mPasswordInfo->setVisible(true);
     }
 }
 
