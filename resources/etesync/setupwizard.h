@@ -81,6 +81,7 @@ private:
     QCheckBox *mAdvancedSettings = nullptr;
     QLineEdit *mServerUrl = nullptr;
     QLabel *mLoginLabel = nullptr;
+    QLabel *mPasswordInfo = nullptr;
     QProgressBar *mProgressBar;
     bool mIsInitialized = false;
     bool mLoginResult = false;
