@@ -280,7 +280,7 @@ void O2::setCode(const QString &c)
 void O2::onTokenReplyFinished()
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyFinished";
-    QNetworkReply *tokenReply = qobject_cast<QNetworkReply *>(sender());
+    auto *tokenReply = qobject_cast<QNetworkReply *>(sender());
     if (tokenReply->error() == QNetworkReply::NoError) {
         QByteArray replyData = tokenReply->readAll();
         QVariantMap tokens = parseTokenResponse(replyData);
@@ -309,7 +309,7 @@ void O2::onTokenReplyFinished()
 
 void O2::onTokenReplyError(QNetworkReply::NetworkError error)
 {
-    QNetworkReply *tokenReply = qobject_cast<QNetworkReply *>(sender());
+    auto *tokenReply = qobject_cast<QNetworkReply *>(sender());
     qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyError: " << error << ": " << tokenReply->errorString();
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onTokenReplyError: " << tokenReply->readAll();
     setToken(QString());
@@ -391,7 +391,7 @@ void O2::refresh()
 
 void O2::onRefreshFinished()
 {
-    QNetworkReply *refreshReply = qobject_cast<QNetworkReply *>(sender());
+    auto *refreshReply = qobject_cast<QNetworkReply *>(sender());
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onRefreshFinished: Error" << (int)refreshReply->error() << refreshReply->errorString();
     if (refreshReply->error() == QNetworkReply::NoError) {
         QByteArray reply = refreshReply->readAll();
@@ -410,7 +410,7 @@ void O2::onRefreshFinished()
 
 void O2::onRefreshError(QNetworkReply::NetworkError error)
 {
-    QNetworkReply *refreshReply = qobject_cast<QNetworkReply *>(sender());
+    auto *refreshReply = qobject_cast<QNetworkReply *>(sender());
     qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2::onRefreshError: " << error;
     unlink();
     timedReplies_.remove(refreshReply);

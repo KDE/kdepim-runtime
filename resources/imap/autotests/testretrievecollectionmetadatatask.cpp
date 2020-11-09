@@ -68,7 +68,7 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
+                 << R"(C: A000003 GETANNOTATION "INBOX/Foo" "*" "value.shared")"
                  << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
                  << "C: A000004 MYRIGHTS \"INBOX/Foo\""
@@ -102,7 +102,7 @@ private Q_SLOTS:
         rightsMap.insert("Hans", KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen
                          |KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post
                          |KIMAP::Acl::Delete);
-        Akonadi::ImapAclAttribute *aclAttribute = new Akonadi::ImapAclAttribute();
+        auto *aclAttribute = new Akonadi::ImapAclAttribute();
         aclAttribute->setRights(rightsMap);
         parentCollection.addAttribute(aclAttribute);
         collection.setParentCollection(parentCollection);
@@ -117,7 +117,7 @@ private Q_SLOTS:
         // rename (CanChangeCollection) permission.
         //
         parentCollection = createCollectionChain(QStringLiteral("/INBOX"));
-        NoSelectAttribute *noSelectAttribute = new NoSelectAttribute();
+        auto *noSelectAttribute = new NoSelectAttribute();
         parentCollection.addAttribute(noSelectAttribute);
         collection.setParentCollection(parentCollection);
         QTest::newRow("parent wit noselect") << collection << capabilities << scenario
@@ -132,7 +132,7 @@ private Q_SLOTS:
         collection.setParentCollection(createCollectionChain(QStringLiteral("/INBOX")));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
+                 << R"(C: A000003 GETANNOTATION "INBOX/Foo" "*" "value.shared")"
                  << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
                  << "C: A000004 MYRIGHTS \"INBOX/Foo\""
@@ -162,7 +162,7 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 GETANNOTATION \"INBOX/Foo\" \"*\" \"value.shared\""
+                 << R"(C: A000003 GETANNOTATION "INBOX/Foo" "*" "value.shared")"
                  << "S: * ANNOTATION INBOX/Foo /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
                  << "C: A000004 MYRIGHTS \"INBOX/Foo\""
@@ -192,7 +192,7 @@ private Q_SLOTS:
         collection.addAttribute(new NoInferiorsAttribute(true));
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 GETANNOTATION \"INBOX\" \"*\" \"value.shared\""
+                 << R"(C: A000003 GETANNOTATION "INBOX" "*" "value.shared")"
                  << "S: * ANNOTATION INBOX /vendor/kolab/folder-test ( value.shared true )"
                  << "S: A000003 OK annotations retrieved"
                  << "C: A000004 MYRIGHTS \"INBOX\""
@@ -225,9 +225,9 @@ private Q_SLOTS:
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
                  << "C: A000003 GETMETADATA (DEPTH infinity) \"INBOX/Foo\" (/shared)"
-                 << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test \"true\")"
-                 << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/kolab/folder-test2 \"NIL\")"
-                 << "S: * METADATA \"INBOX/Foo\" (/shared/vendor/cmu/cyrus-imapd/lastupdate \"true\")"
+                 << R"(S: * METADATA "INBOX/Foo" (/shared/vendor/kolab/folder-test "true"))"
+                 << R"(S: * METADATA "INBOX/Foo" (/shared/vendor/kolab/folder-test2 "NIL"))"
+                 << R"(S: * METADATA "INBOX/Foo" (/shared/vendor/cmu/cyrus-imapd/lastupdate "true"))"
                  << "S: A000003 OK GETMETADATA complete"
                  << "C: A000004 MYRIGHTS \"INBOX/Foo\""
                  << "S: * MYRIGHTS \"INBOX/Foo\" lrswipkxtecda"

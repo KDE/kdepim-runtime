@@ -26,7 +26,7 @@ SearchDialog::SearchDialog(QWidget *parent)
 {
     setWindowTitle(i18nc("@title:window", "Search"));
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
@@ -130,7 +130,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
         return;
     }
 
-    KDAV::DavPrincipalSearchJob *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
+    auto *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
 
     KDAV::DavUrl davUrl = davJob->davUrl();
     QUrl url = davUrl.url();
@@ -152,7 +152,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
             davUrl.setProtocol(KDAV::CardDav);
         }
 
-        KDAV::DavCollectionsFetchJob *fetchJob = new KDAV::DavCollectionsFetchJob(davUrl);
+        auto *fetchJob = new KDAV::DavCollectionsFetchJob(davUrl);
         connect(fetchJob, &KDAV::DavCollectionsFetchJob::result, this, &SearchDialog::onCollectionsFetchJobFinished);
         fetchJob->start();
         ++mSubJobCount;
@@ -174,7 +174,7 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
         return;
     }
 
-    KDAV::DavCollectionsFetchJob *davJob = qobject_cast<KDAV::DavCollectionsFetchJob *>(job);
+    auto *davJob = qobject_cast<KDAV::DavCollectionsFetchJob *>(job);
     const KDAV::DavCollection::List collections = davJob->collections();
 
     for (const KDAV::DavCollection &collection : collections) {

@@ -18,6 +18,7 @@ extern "C" {
 inline bool initSASL()
 {
 #ifdef Q_OS_WIN32  //krazy:exclude=cpp
+#if 0
     QByteArray libInstallPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("lib") + QLatin1String("sasl2"))));
     QByteArray configPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("config") + QLatin1String("sasl2"))));
     if (sasl_set_path(SASL_PATH_TYPE_PLUGIN, libInstallPath.data()) != SASL_OK
@@ -25,6 +26,7 @@ inline bool initSASL()
         fprintf(stderr, "SASL path initialization failed!\n");
         return false;
     }
+#endif
 #endif
 
     if (sasl_client_init(nullptr) != SASL_OK) {

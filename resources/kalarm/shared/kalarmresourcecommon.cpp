@@ -139,11 +139,11 @@ void setCollectionCompatibility(const Collection &collection, KACalendar::Compat
         col.setParentCollection(collection.parentCollection());
         col.setRemoteId(collection.remoteId());
     }
-    CompatibilityAttribute *attr = col.attribute<CompatibilityAttribute>(Collection::AddIfMissing);
+    auto *attr = col.attribute<CompatibilityAttribute>(Collection::AddIfMissing);
     attr->setCompatibility(compatibility);
     attr->setVersion(version);
     Q_ASSERT(Private::mInstance);
-    CollectionModifyJob *job = new CollectionModifyJob(col, Private::mInstance->parent());
+    auto *job = new CollectionModifyJob(col, Private::mInstance->parent());
     Private::mInstance->connect(job, SIGNAL(result(KJob*)), SLOT(modifyCollectionJobDone(KJob*)));
 }
 

@@ -34,7 +34,7 @@ void CompactPage::checkCollectionId()
     if (!mCollectionId.isEmpty()) {
         Collection collection;
         collection.setRemoteId(mCollectionId);
-        CollectionFetchJob *fetchJob
+        auto *fetchJob
             = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
         connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
@@ -47,7 +47,7 @@ void CompactPage::compact()
 
     Collection collection;
     collection.setRemoteId(mCollectionId);
-    CollectionFetchJob *fetchJob
+    auto *fetchJob
         = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
     connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
@@ -61,12 +61,12 @@ void CompactPage::onCollectionFetchCheck(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
+    auto *fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    DeletedItemsAttribute *attr
+    auto *attr
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     if (!attr->deletedItemOffsets().isEmpty()) {
@@ -84,12 +84,12 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
+    auto *fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    DeletedItemsAttribute *attr
+    auto *attr
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     KMBox::MBox mbox;
@@ -108,7 +108,7 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
             // doesn't matter here. We know the file is empty so we can get rid
             // of our stored DeletedItemsAttribute
             mboxCollection.removeAttribute<DeletedItemsAttribute>();
-            CollectionModifyJob *modifyJob = new CollectionModifyJob(mboxCollection);
+            auto *modifyJob = new CollectionModifyJob(mboxCollection);
             connect(modifyJob, &CollectionModifyJob::result, this, &CompactPage::onCollectionModify);
         } else {
             ui.messageLabel->setText(i18n("Failed to compact the mbox file."));

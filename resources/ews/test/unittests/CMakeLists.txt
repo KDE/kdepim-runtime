@@ -34,7 +34,8 @@ target_link_libraries(ewssettings_ut
   KF5::ConfigCore
   KF5::ConfigGui
   KF5::CoreAddons
-  KF5::Wallet)
+  KF5::Wallet
+  )
 target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
 
 if (Qt5NetworkAuth_FOUND)

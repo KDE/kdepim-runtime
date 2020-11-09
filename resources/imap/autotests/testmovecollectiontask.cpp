@@ -47,7 +47,7 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 RENAME \"INBOX/Foo/Baz\" \"INBOX/Bar/Baz\""
+                 << R"(C: A000003 RENAME "INBOX/Foo/Baz" "INBOX/Bar/Baz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Bar/Baz\""
                  << "S: A000004 OK subscribe done";
@@ -62,7 +62,7 @@ private Q_SLOTS:
 
             scenario.clear();
             scenario << defaultPoolConnectionScenario()
-                     << "C: A000003 RENAME \"Bar\" \"INBOX/Bar\""
+                     << R"(C: A000003 RENAME "Bar" "INBOX/Bar")"
                      << "S: A000003 OK rename done"
                      << "C: A000004 SUBSCRIBE \"INBOX/Bar\""
                      << "S: A000004 OK subscribe done";
@@ -78,7 +78,7 @@ private Q_SLOTS:
 
             scenario.clear();
             scenario << defaultPoolConnectionScenario()
-                     << "C: A000003 RENAME \"INBOX/Bar\" \"Bar\""
+                     << R"(C: A000003 RENAME "INBOX/Bar" "Bar")"
                      << "S: A000003 OK rename done"
                      << "C: A000004 SUBSCRIBE \"Bar\""
                      << "S: A000004 OK subscribe done";
@@ -94,7 +94,7 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 RENAME \"INBOX/Foo/Baz\" \"INBOX/Bar/Baz\""
+                 << R"(C: A000003 RENAME "INBOX/Foo/Baz" "INBOX/Bar/Baz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Bar/Baz\""
                  << "S: A000004 NO subscribe failed";
@@ -120,7 +120,7 @@ private Q_SLOTS:
 
         scenario.clear();
         scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 RENAME \"INBOX.Foo.Baz\" \"INBOX.Bar.Baz\""
+                 << R"(C: A000003 RENAME "INBOX.Foo.Baz" "INBOX.Bar.Baz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX.Bar.Baz\""
                  << "S: A000004 OK subscribe done";

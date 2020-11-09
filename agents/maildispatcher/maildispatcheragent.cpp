@@ -275,7 +275,7 @@ void MailDispatcherAgent::sendResult(KJob *job)
         qCDebug(MAILDISPATCHER_LOG) << "Sending succeeded.";
 
         // handle possible sent actions
-        const MailTransport::SentActionAttribute *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
+        const auto *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
         if (attribute) {
             const MailTransport::SentActionAttribute::Action::List lstAct = attribute->actions();
             for (const MailTransport::SentActionAttribute::Action &action : lstAct) {

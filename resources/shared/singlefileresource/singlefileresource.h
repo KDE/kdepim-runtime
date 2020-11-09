@@ -31,7 +31,7 @@ namespace Akonadi {
  * Base class for single file based resources.
  */
 template<typename Settings>
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResource : public SingleFileResourceBase
+class SingleFileResource : public SingleFileResourceBase
 {
 public:
     SingleFileResource(const QString &id)
@@ -265,7 +265,7 @@ public:
     {
         QString newName;
         if (collection.hasAttribute<EntityDisplayAttribute>()) {
-            const EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+            const auto *attr = collection.attribute<EntityDisplayAttribute>();
             newName = attr->displayName();
         }
         const QString oldName = mSettings->displayName();
@@ -294,7 +294,7 @@ public:
             rights |= Collection::CanChangeCollection;
             c.setRights(rights);
         }
-        EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        auto *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         if (name() != attr->displayName()) {
             attr->setDisplayName(name());
             new CollectionModifyJob(c);

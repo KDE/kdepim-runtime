@@ -25,7 +25,7 @@ void KolabRetrieveTagTask::startRelationTask(KIMAP::Session *session)
     mSession = session;
     const QString mailBox = mailBoxForCollection(relationCollection());
 
-    KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+    auto *select = new KIMAP::SelectJob(session);
     select->setMailBox(mailBox);
     connect(select, &KJob::result,
             this, &KolabRetrieveTagTask::onFinalSelectDone);
@@ -40,8 +40,8 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
         return;
     }
 
-    KIMAP::SelectJob *select = static_cast<KIMAP::SelectJob *>(job);
-    KIMAP::FetchJob *fetch = new KIMAP::FetchJob(select->session());
+    auto *select = static_cast<KIMAP::SelectJob *>(job);
+    auto *fetch = new KIMAP::FetchJob(select->session());
 
     if (select->messageCount() == 0) {
         taskComplete();
@@ -66,7 +66,7 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
 
 void KolabRetrieveTagTask::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
 {
-    KIMAP::FetchJob *fetch = static_cast<KIMAP::FetchJob *>(sender());
+    auto *fetch = static_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch);
 
     for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {

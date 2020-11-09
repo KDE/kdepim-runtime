@@ -32,7 +32,7 @@ void EwsModifyItemFlagsJob::itemModifyFinished(KJob *job)
         return;
     }
 
-    EwsModifyItemJob *req = qobject_cast<EwsModifyItemJob *>(job);
+    auto *req = qobject_cast<EwsModifyItemJob *>(job);
     if (!req) {
         setErrorText(QStringLiteral("Invalid EwsModifyItemJob job object"));
         emitResult();

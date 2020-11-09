@@ -28,6 +28,19 @@ extern "C" {
 
 #include <kio/slaveinterface.h>
 
+#include <string.h>
+
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#endif
+
+#ifdef Q_OS_WIN
+// See kio/src/core/kioglobal_p.h
+#define S_IRUSR 0400
+#define S_IWUSR 0200
+#define S_IXUSR 0100
+#endif
+
 #define GREETING_BUF_LEN 1024
 #define MAX_RESPONSE_LEN 512
 #define MAX_COMMANDS 10
@@ -84,8 +97,6 @@ POP3Protocol::POP3Protocol(const QByteArray &pool, const QByteArray &app, bool i
     qCDebug(POP3_LOG);
     //m_cmd = CMD_NONE;
     m_iOldPort = 0;
-    m_tTimeout.tv_sec = 10;
-    m_tTimeout.tv_usec = 0;
     supports_apop = false;
     m_try_apop = true;
     m_try_sasl = true;
@@ -359,7 +370,7 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
 bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
 {
     qCDebug(POP3_LOG);
-    sasl_interact_t *interact = (sasl_interact_t *)in;
+    auto *interact = (sasl_interact_t *)in;
 
     //some mechanisms do not require username && pass, so don't need a popup
     //window for getting this info
@@ -610,7 +621,7 @@ bool POP3Protocol::pop3_open()
         // use QSslSocket internally
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::NoProxy);
-        if (QSslSocket *sock = qobject_cast<QSslSocket *>(socket())) {
+        if (auto *sock = qobject_cast<QSslSocket *>(socket())) {
             sock->setProxy(proxy);
         } else {
             qCWarning(POP3_LOG) << "no socket, cannot set no proxy";

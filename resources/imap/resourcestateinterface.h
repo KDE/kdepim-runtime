@@ -30,6 +30,7 @@ public:
     virtual QString resourceName() const = 0;
     virtual QString resourceIdentifier() const = 0;
     virtual QStringList serverCapabilities() const = 0;
+    virtual QStringList effectiveServerCapabilities() const = 0;
     virtual QList<KIMAP::MailBoxDescriptor> serverNamespaces() const = 0;
     virtual QList<KIMAP::MailBoxDescriptor> personalNamespaces() const = 0;
     virtual QList<KIMAP::MailBoxDescriptor> userNamespaces() const = 0;

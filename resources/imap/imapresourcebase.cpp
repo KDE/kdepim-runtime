@@ -60,6 +60,7 @@
 #include "retrievecollectionstask.h"
 #include "retrieveitemtask.h"
 #include "retrieveitemstask.h"
+#include "retrieveitemstask_qresync.h"
 #include "searchtask.h"
 
 #include "settingspasswordrequester.h"
@@ -224,7 +225,7 @@ void ImapResourceBase::startConnect(const QVariant &)
     }
 
     m_pool->disconnect(); // reset all state, delete any old account
-    ImapAccount *account = new ImapAccount;
+    auto *account = new ImapAccount;
     settings()->loadAccount(account);
 
     const bool result = m_pool->connect(account);
@@ -416,9 +417,18 @@ void ImapResourceBase::retrieveItems(const Collection &col)
 
     setItemStreamingEnabled(true);
 
-    RetrieveItemsTask *task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
+    ResourceTask *task;
+    if (m_pool->effectiveServerCapabilities().contains(QStringView{u"QRESYNC"})) {
+        auto *t = new RetrieveItemsTaskQResync(createResourceState(TaskArguments(col)), this);
+        connect(this, &ResourceBase::retrieveNextItemSyncBatch, t, &RetrieveItemsTaskQResync::onReadyForNextBatch);
+        task = t;
+    } else {
+        auto t = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
+        connect(this, &ResourceBase::retrieveNextItemSyncBatch, t, &RetrieveItemsTask::onReadyForNextBatch);
+        task = t;
+    }
+
     connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
-    connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
 }
 
@@ -589,7 +599,7 @@ void ImapResourceBase::startIdle()
     scope.setResource(identifier());
     scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
 
-    Akonadi::CollectionFetchJob *fetch
+    auto *fetch
         = new Akonadi::CollectionFetchJob(c, Akonadi::CollectionFetchJob::Base, this);
     fetch->setFetchScope(scope);
 
@@ -605,7 +615,7 @@ void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)
                                     << ", errorString=" << job->errorString();
         return;
     }
-    Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
+    auto *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
     //Can be empty if collection is not subscribed locally
     if (!fetch->collections().isEmpty()) {
         delete m_idle;
@@ -627,7 +637,7 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
         scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
         scope.setListFilter(CollectionFetchScope::NoFilter);
 
-        Akonadi::CollectionFetchJob *fetch
+        auto *fetch
             = new Akonadi::CollectionFetchJob(collection,
                                               Akonadi::CollectionFetchJob::Base,
                                               this);
@@ -641,7 +651,7 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
 void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
 {
     if (job->error() == 0) {
-        Akonadi::CollectionFetchJob *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
+        auto *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
         Akonadi::Collection collection = fetch->collections().at(0);
 
         scheduleCustomTask(this, "triggerCollectionExpunge",
@@ -727,7 +737,7 @@ void ImapResourceBase::clearStatusMessage()
 
 void ImapResourceBase::modifyCollection(const Collection &col)
 {
-    Akonadi::CollectionModifyJob *modJob = new Akonadi::CollectionModifyJob(col, this);
+    auto *modJob = new Akonadi::CollectionModifyJob(col, this);
     connect(modJob, &KJob::result, this, &ImapResourceBase::onCollectionModifyDone);
 }
 

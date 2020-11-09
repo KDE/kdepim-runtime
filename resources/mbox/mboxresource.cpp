@@ -91,7 +91,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     reloadFile();
 
     KMBox::MBoxEntry::List entryList;
-    if (const DeletedItemsAttribute *attr = col.attribute<DeletedItemsAttribute>()) {
+    if (const auto *attr = col.attribute<DeletedItemsAttribute>()) {
         entryList = mMBox->entries(attr->deletedItemEntries());
     } else { // No deleted items (yet)
         entryList = mMBox->entries();
@@ -109,7 +109,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         // TODO: Use cache policy to see what actually has to been set as payload.
         //       Currently most views need a minimal amount of information so the
         //       Items get Envelopes as payload.
-        KMime::Message *mail = new KMime::Message();
+        auto *mail = new KMime::Message();
         mail->setHead(KMime::CRLFtoLF(mMBox->readMessageHeaders(entry)));
         mail->parse();
 
@@ -237,7 +237,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
 
     Q_ASSERT(fetchJob->collections().size() == 1);
     Collection mboxCollection = fetchJob->collections().at(0);
-    DeletedItemsAttribute *attr
+    auto *attr
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     if (mSettings->compactFrequency() == Settings::per_x_messages
@@ -250,7 +250,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
         attr->addDeletedItemOffset(itemOffset(item.remoteId()));
     }
 
-    CollectionModifyJob *modifyJob = new CollectionModifyJob(mboxCollection);
+    auto *modifyJob = new CollectionModifyJob(mboxCollection);
     if (!modifyJob->exec()) {
         cancelTask(modifyJob->errorString());
         return;
@@ -327,16 +327,16 @@ void MboxResource::onCollectionFetch(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = dynamic_cast<CollectionFetchJob *>(job);
+    auto *fetchJob = dynamic_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    DeletedItemsAttribute *attr
+    auto *attr
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
     attr->addDeletedItemOffset(itemOffset(item.remoteId()));
 
-    CollectionModifyJob *modifyJob = new CollectionModifyJob(mboxCollection);
+    auto *modifyJob = new CollectionModifyJob(mboxCollection);
     mCurrentItemDeletions.insert(modifyJob, item);
     connect(modifyJob, &CollectionModifyJob::result, this, &MboxResource::onCollectionModify);
     modifyJob->start();

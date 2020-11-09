@@ -155,7 +155,7 @@ void CalendarHandler::slotItemsRetrieved(KGAPI2::Job *job)
     }
     Item::List changedItems, removedItems;
     Collection collection = job->property(COLLECTION_PROPERTY).value<Collection>();
-    DefaultReminderAttribute *attr = collection.attribute<DefaultReminderAttribute>();
+    auto *attr = collection.attribute<DefaultReminderAttribute>();
 
     auto fetchJob = qobject_cast<EventFetchJob *>(job);
     const ObjectsList objects = fetchJob->items();

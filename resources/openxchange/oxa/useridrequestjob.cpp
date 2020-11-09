@@ -21,7 +21,7 @@ UserIdRequestJob::UserIdRequestJob(QObject *parent)
 
 void UserIdRequestJob::start()
 {
-    FoldersRequestJob *job = new FoldersRequestJob(0, FoldersRequestJob::Modified, this);
+    auto *job = new FoldersRequestJob(0, FoldersRequestJob::Modified, this);
     connect(job, &FoldersRequestJob::result, this, &UserIdRequestJob::davJobFinished);
 
     job->start();
@@ -41,7 +41,7 @@ void UserIdRequestJob::davJobFinished(KJob *job)
         return;
     }
 
-    FoldersRequestJob *requestJob = qobject_cast<FoldersRequestJob *>(job);
+    auto *requestJob = qobject_cast<FoldersRequestJob *>(job);
     Q_ASSERT(requestJob);
 
     const Folder::List folders = requestJob->folders();

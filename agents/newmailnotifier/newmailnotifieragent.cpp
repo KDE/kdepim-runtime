@@ -290,7 +290,7 @@ void NewMailNotifierAgent::slotShowNotifications()
 
         QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator end(mNewMails.constEnd());
         for (QHash< Akonadi::Collection, QList<Akonadi::Item::Id> >::const_iterator it = mNewMails.constBegin(); it != end; ++it) {
-            const Akonadi::EntityDisplayAttribute *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
+            const auto *attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;
             if (attr && !attr->displayName().isEmpty()) {
                 displayName = attr->displayName();
@@ -333,7 +333,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
         }
         if (hasUniqMessage) {
-            SpecialNotifierJob *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
+            auto *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);

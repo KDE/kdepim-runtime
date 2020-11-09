@@ -169,7 +169,7 @@ void SingleFileResourceBase::collectionChanged(const Akonadi::Collection &collec
 {
     const QString newName = collection.displayName();
     if (collection.hasAttribute<EntityDisplayAttribute>()) {
-        const EntityDisplayAttribute *attr = collection.attribute<EntityDisplayAttribute>();
+        const auto *attr = collection.attribute<EntityDisplayAttribute>();
         if (!attr->iconName().isEmpty()) {
             mCollectionIcon = attr->iconName();
         }

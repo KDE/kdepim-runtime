@@ -85,7 +85,7 @@ void O2Requestor::onRefreshFinished(QNetworkReply::NetworkError error)
 
 void O2Requestor::onRequestFinished()
 {
-    QNetworkReply *senderReply = qobject_cast<QNetworkReply *>(sender());
+    auto *senderReply = qobject_cast<QNetworkReply *>(sender());
     QNetworkReply::NetworkError error = senderReply->error();
     if (status_ == Idle) {
         return;

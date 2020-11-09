@@ -131,7 +131,7 @@ RelationMember parseMemberUrl(const QString &string)
         isShared = true;
     }
     if (start < 0) {
-        qCWarning(PIMKOLAB_LOG) <<"Couldn't find \"user\" or \"shared\" in path: " << path;
+        qCWarning(PIMKOLAB_LOG) <<R"(Couldn't find "user" or "shared" in path: )" << path;
         return RelationMember();
     }
     path = path.mid(start + 1);

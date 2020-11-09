@@ -27,7 +27,7 @@ ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Sess
 
 void ReplaceMessageJob::start()
 {
-    KIMAP::AppendJob *job = new KIMAP::AppendJob(mSession);
+    auto *job = new KIMAP::AppendJob(mSession);
     job->setMailBox(mMailbox);
     job->setContent(mMessage->encodedContent(true));
     job->setInternalDate(mMessage->date()->dateTime());
@@ -37,7 +37,7 @@ void ReplaceMessageJob::start()
 
 void ReplaceMessageJob::onAppendMessageDone(KJob *job)
 {
-    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
+    auto *append = qobject_cast<KIMAP::AppendJob *>(job);
 
     if (append->error()) {
         qCWarning(IMAPRESOURCE_LOG) << append->errorString();
@@ -57,7 +57,7 @@ void ReplaceMessageJob::onAppendMessageDone(KJob *job)
 
     if (mSession->selectedMailBox() != mMailbox) {
         //For search and delete we need to select the right mailbox first
-        KIMAP::SelectJob *select = new KIMAP::SelectJob(mSession);
+        auto *select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mMailbox);
         connect(select, &KJob::result, this, &ReplaceMessageJob::onSelectDone);
         select->start();
@@ -87,7 +87,7 @@ void ReplaceMessageJob::onSelectDone(KJob *job)
 
 void ReplaceMessageJob::triggerSearchJob()
 {
-    KIMAP::SearchJob *search = new KIMAP::SearchJob(mSession);
+    auto *search = new KIMAP::SearchJob(mSession);
 
     search->setUidBased(true);
 
@@ -123,7 +123,7 @@ void ReplaceMessageJob::onSearchDone(KJob *job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
+    auto *search = static_cast<KIMAP::SearchJob *>(job);
 
     if (search->results().count() == 1) {
         mNewUid = search->results().at(0);
@@ -142,7 +142,7 @@ void ReplaceMessageJob::triggerDeleteJobIfNecessary()
         //Nothing to do, we're done
         emitResult();
     } else {
-        KIMAP::StoreJob *store = new KIMAP::StoreJob(mSession);
+        auto *store = new KIMAP::StoreJob(mSession);
         store->setUidBased(true);
         store->setSequenceSet(mOldUids);
         store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);

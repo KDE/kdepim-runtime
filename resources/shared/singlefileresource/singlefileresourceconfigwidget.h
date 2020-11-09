@@ -18,7 +18,7 @@ namespace Akonadi {
  * Configuration widget for single file resources.
  */
 template<typename Settings>
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigWidget : public SingleFileResourceConfigWidgetBase
+class SingleFileResourceConfigWidget : public SingleFileResourceConfigWidgetBase
 {
     Settings *mSettings = nullptr;
 

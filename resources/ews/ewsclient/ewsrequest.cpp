@@ -126,7 +126,7 @@ void EwsRequest::requestResult(KJob *job)
         }
     }
 
-    KIO::TransferJob *trJob = qobject_cast<KIO::TransferJob *>(job);
+    auto *trJob = qobject_cast<KIO::TransferJob *>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
     if (resp == 401 && mClient.auth()) {

@@ -152,7 +152,7 @@ void EwsSubscriptionWidgetPrivate::enableCheckBoxToggled(bool checked)
 void EwsSubscriptionWidgetPrivate::reloadFolderList(bool)
 {
     if (mClient.isConfigured()) {
-        EwsFindFolderRequest *req = new EwsFindFolderRequest(mClient, this);
+        auto *req = new EwsFindFolderRequest(mClient, this);
         EwsFolderShape shape(EwsShapeIdOnly);
         shape << EwsPropertyField(QStringLiteral("folder:DisplayName"));
         shape << EwsPropertyField(QStringLiteral("folder:ParentFolderId"));
@@ -162,7 +162,7 @@ void EwsSubscriptionWidgetPrivate::reloadFolderList(bool)
         req->start();
         mFolderListPendingRequests = 1;
         if (!mSubscribedIdsRetrieved) {
-            EwsSubscribedFoldersJob *job = new EwsSubscribedFoldersJob(mClient, mSettings, this);
+            auto *job = new EwsSubscribedFoldersJob(mClient, mSettings, this);
             connect(job, &EwsRequest::result, this, &EwsSubscriptionWidgetPrivate::subscribedFoldersJobFinished);
             job->start();
             mFolderListPendingRequests++;
@@ -183,7 +183,7 @@ void EwsSubscriptionWidgetPrivate::readFolderListFinished(KJob *job)
         mMsgWidget->animatedShow();
         mRefreshButton->setEnabled(true);
     } else {
-        EwsFindFolderRequest *req = qobject_cast<EwsFindFolderRequest *>(job);
+        auto *req = qobject_cast<EwsFindFolderRequest *>(job);
         Q_ASSERT(req);
 
         mFolders = req->folders();
@@ -204,7 +204,7 @@ void EwsSubscriptionWidgetPrivate::subscribedFoldersJobFinished(KJob *job)
         mMsgWidget->animatedShow();
         mRefreshButton->setEnabled(true);
     } else {
-        EwsSubscribedFoldersJob *req = qobject_cast<EwsSubscribedFoldersJob *>(job);
+        auto *req = qobject_cast<EwsSubscribedFoldersJob *>(job);
         Q_ASSERT(req);
 
         mSubscribedIds = req->folders();
@@ -279,7 +279,7 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
 
     d->mEnabled = d->mSettings->serverSubscription();
 
-    QVBoxLayout *topLayout = new QVBoxLayout(this);
+    auto *topLayout = new QVBoxLayout(this);
 
     d->mMsgWidget = new KMessageWidget(this);
     d->mMsgWidget->setVisible(false);
@@ -288,14 +288,14 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
     d->mEnableCheckBox->setChecked(d->mEnabled);
 
     d->mSubContainer = new QWidget(this);
-    QVBoxLayout *subContainerLayout = new QVBoxLayout(d->mSubContainer);
+    auto *subContainerLayout = new QVBoxLayout(d->mSubContainer);
     subContainerLayout->setContentsMargins(0, 0, 0, 0);
 
-    QLineEdit *filterLineEdit = new QLineEdit(this);
+    auto *filterLineEdit = new QLineEdit(this);
     filterLineEdit->setPlaceholderText(i18nc("@label:textbox", "Filter folders"));
 
     QWidget *treeContainer = new QWidget(this);
-    QHBoxLayout *treeContainerLayout = new QHBoxLayout(treeContainer);
+    auto *treeContainerLayout = new QHBoxLayout(treeContainer);
     treeContainerLayout->setContentsMargins(0, 0, 0, 0);
 
     d->mFolderTreeView = new QTreeView(this);
@@ -308,13 +308,13 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
     d->mFolderTreeView->header()->hide();
 
     QWidget *buttonContainer = new QWidget(this);
-    QVBoxLayout *buttonContainerLayout = new QVBoxLayout(buttonContainer);
+    auto *buttonContainerLayout = new QVBoxLayout(buttonContainer);
     buttonContainerLayout->setContentsMargins(0, 0, 0, 0);
 
     d->mRefreshButton = new QPushButton(this);
     d->mRefreshButton->setText(i18nc("@action:button", "Reload &List"));
 
-    QPushButton *resetButton = new QPushButton(this);
+    auto *resetButton = new QPushButton(this);
     resetButton->setText(i18nc("@action:button", "&Reset"));
 
     buttonContainerLayout->addWidget(d->mRefreshButton);

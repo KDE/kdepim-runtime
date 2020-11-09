@@ -47,15 +47,15 @@ private Q_SLOTS:
     void testSerializeDeserialize()
     {
         QFETCH(Annotation, annotation);
-        CollectionAnnotationsAttribute *attr1 = new CollectionAnnotationsAttribute();
+        auto *attr1 = new CollectionAnnotationsAttribute();
         attr1->setAnnotations(annotation);
         QCOMPARE(attr1->annotations(), annotation);
 
-        CollectionAnnotationsAttribute *attr2 = new CollectionAnnotationsAttribute();
+        auto *attr2 = new CollectionAnnotationsAttribute();
         attr2->deserialize(attr1->serialized());
         QCOMPARE(attr2->annotations(), annotation);
 
-        CollectionAnnotationsAttribute *attr3 = new CollectionAnnotationsAttribute();
+        auto *attr3 = new CollectionAnnotationsAttribute();
         attr3->setAnnotations(attr2->annotations());
         QCOMPARE(attr3->serialized(), attr1->serialized());
 

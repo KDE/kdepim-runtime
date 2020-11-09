@@ -40,15 +40,15 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
 {
     NewMailNotifierAgentSettings::instance(config);
     setObjectName(QStringLiteral("NewMailNotifierSettingsWidget"));
-    QTabWidget *tab = new QTabWidget(parent);
+    auto *tab = new QTabWidget(parent);
     parent->layout()->addWidget(tab);
 
     QWidget *settings = new QWidget;
-    QVBoxLayout *vbox = new QVBoxLayout(settings);
+    auto *vbox = new QVBoxLayout(settings);
 
     QGroupBox *grp = new QGroupBox(i18n("Choose which fields to show:"), parent);
     vbox->addWidget(grp);
-    QVBoxLayout *groupboxLayout = new QVBoxLayout;
+    auto *groupboxLayout = new QVBoxLayout;
     grp->setLayout(groupboxLayout);
 
     mShowPhoto = new QCheckBox(i18n("Show Photo"), parent);
@@ -96,7 +96,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     vbox->addWidget(howIsItWork);
     connect(howIsItWork, &QLabel::linkActivated, this, &NewMailNotifierSettingsWidget::slotHelpLinkClicked);
 
-    QHBoxLayout *textToSpeakLayout = new QHBoxLayout;
+    auto *textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setContentsMargins(0, 0, 0, 0);
     QLabel *lab = new QLabel(i18n("Message:"), parent);
     lab->setObjectName(QStringLiteral("labmessage"));

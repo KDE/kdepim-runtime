@@ -114,11 +114,11 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     , m_ui(new Ui::SetupServerView)
     , mValidator(this)
 {
-    QNetworkConfigurationManager *networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
+    auto *networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
 
     m_parentResource->settings()->setWinId(parent);
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -325,7 +325,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setTrashCollection(m_ui->folderRequester->collection().id());
     Akonadi::Collection trash = m_ui->folderRequester->collection();
     Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
-    Akonadi::EntityDisplayAttribute *attribute = trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attribute = trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("user-trash"));
     new Akonadi::CollectionModifyJob(trash);
     if (mOldTrash != trash) {
@@ -374,7 +374,7 @@ void SetupServer::readSettings()
     m_ui->accountName->setText(m_parentResource->name());
     m_oldResourceName = m_ui->accountName->text();
 
-    KUser *currentUser = new KUser();
+    auto *currentUser = new KUser();
     KEMailSettings esetting;
 
     m_ui->imapServer->setText(
@@ -438,10 +438,10 @@ void SetupServer::readSettings()
 
     Akonadi::Collection trashCollection(m_parentResource->settings()->trashCollection());
     if (trashCollection.isValid()) {
-        Akonadi::CollectionFetchJob *fetchJob = new Akonadi::CollectionFetchJob(trashCollection, Akonadi::CollectionFetchJob::Base, this);
+        auto *fetchJob = new Akonadi::CollectionFetchJob(trashCollection, Akonadi::CollectionFetchJob::Base, this);
         connect(fetchJob, &Akonadi::CollectionFetchJob::collectionsReceived, this, &SetupServer::targetCollectionReceived);
     } else {
-        Akonadi::SpecialMailCollectionsRequestJob *requestJob = new Akonadi::SpecialMailCollectionsRequestJob(this);
+        auto *requestJob = new Akonadi::SpecialMailCollectionsRequestJob(this);
         connect(requestJob, &Akonadi::SpecialMailCollectionsRequestJob::result, this, &SetupServer::localFolderRequestJobFinished);
         requestJob->requestDefaultCollection(Akonadi::SpecialMailCollections::Trash);
         requestJob->start();
@@ -667,7 +667,7 @@ void SetupServer::slotManageSubscriptions()
 
 void SetupServer::slotShowServerInfo()
 {
-    ServerInfoDialog *dialog = new ServerInfoDialog(m_parentResource, this);
+    auto *dialog = new ServerInfoDialog(m_parentResource, this);
     dialog->show();
 }
 

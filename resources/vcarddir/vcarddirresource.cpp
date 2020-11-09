@@ -205,7 +205,7 @@ void VCardDirResource::retrieveCollections()
         c.setRights(rights);
     }
 
-    EntityDisplayAttribute *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(i18n("Contacts Folder"));
     attr->setIconName(QStringLiteral("x-office-address-book"));
 

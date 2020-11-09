@@ -40,7 +40,7 @@ void EwsCreateMailJob::doStart()
         emitResult();
     }
 
-    EwsCreateItemRequest *req = new EwsCreateItemRequest(mClient, this);
+    auto *req = new EwsCreateItemRequest(mClient, this);
 
     KMime::Message::Ptr msg = mItem.payload<KMime::Message::Ptr>();
     /* Exchange doesn't just store whatever MIME content that was sent to it - it will parse it and send
@@ -114,7 +114,7 @@ void EwsCreateMailJob::doStart()
 
 void EwsCreateMailJob::mailCreateFinished(KJob *job)
 {
-    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest *>(job);
+    auto *req = qobject_cast<EwsCreateItemRequest *>(job);
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();
@@ -148,7 +148,7 @@ void EwsCreateMailJob::mailCreateFinished(KJob *job)
 
 void EwsCreateMailJob::mailCreateWorkaroundFinished(KJob *job)
 {
-    EwsCreateItemRequest *req = qobject_cast<EwsCreateItemRequest *>(job);
+    auto *req = qobject_cast<EwsCreateItemRequest *>(job);
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();
@@ -170,7 +170,7 @@ void EwsCreateMailJob::mailCreateWorkaroundFinished(KJob *job)
     EwsCreateItemRequest::Response resp = req->responses().first();
     if (resp.isSuccess()) {
         EwsId id = resp.itemId();
-        EwsMoveItemRequest *req = new EwsMoveItemRequest(mClient, this);
+        auto *req = new EwsMoveItemRequest(mClient, this);
         req->setItemIds(EwsId::List() << id);
         req->setDestinationFolderId(EwsId(mCollection.remoteId()));
         connect(req, &EwsCreateItemRequest::finished, this, &EwsCreateMailJob::mailMoveWorkaroundFinished);
@@ -184,7 +184,7 @@ void EwsCreateMailJob::mailCreateWorkaroundFinished(KJob *job)
 
 void EwsCreateMailJob::mailMoveWorkaroundFinished(KJob *job)
 {
-    EwsMoveItemRequest *req = qobject_cast<EwsMoveItemRequest *>(job);
+    auto *req = qobject_cast<EwsMoveItemRequest *>(job);
     if (job->error()) {
         setErrorMsg(job->errorString());
         emitResult();

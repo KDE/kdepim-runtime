@@ -16,7 +16,7 @@ using namespace KDAV;
 AkonadiEtagCache::AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent)
     : KDAV::EtagCache(parent)
 {
-    Akonadi::ItemFetchJob *job = new Akonadi::ItemFetchJob(collection);
+    auto *job = new Akonadi::ItemFetchJob(collection);
     job->fetchScope().fetchFullPayload(false);   // We only need the remote id and the revision
     connect(job, &Akonadi::ItemFetchJob::result, this, &AkonadiEtagCache::onItemFetchJobFinished);
     job->start();

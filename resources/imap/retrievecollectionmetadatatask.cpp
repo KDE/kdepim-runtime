@@ -57,7 +57,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 
     // First get the annotations from the mailbox if it's supported
     if (capabilities.contains(QLatin1String("METADATA")) || capabilities.contains(QLatin1String("ANNOTATEMORE"))) {
-        KIMAP::GetMetaDataJob *meta = new KIMAP::GetMetaDataJob(session);
+        auto *meta = new KIMAP::GetMetaDataJob(session);
         meta->setMailBox(mailBox);
         if (capabilities.contains(QLatin1String("METADATA"))) {
             meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
@@ -74,7 +74,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 
     // Get the ACLs from the mailbox if it's supported
     if (capabilities.contains(QLatin1String("ACL"))) {
-        KIMAP::MyRightsJob *rights = new KIMAP::MyRightsJob(session);
+        auto *rights = new KIMAP::MyRightsJob(session);
         rights->setMailBox(mailBox);
         connect(rights, &KJob::result, this, &RetrieveCollectionMetadataTask::onRightsReceived);
         m_pendingMetaDataJobs++;
@@ -83,7 +83,7 @@ void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 
     // Get the QUOTA info from the mailbox if it's supported
     if (capabilities.contains(QLatin1String("QUOTA"))) {
-        KIMAP::GetQuotaRootJob *quota = new KIMAP::GetQuotaRootJob(session);
+        auto *quota = new KIMAP::GetQuotaRootJob(session);
         quota->setMailBox(mailBox);
         connect(quota, &KJob::result, this, &RetrieveCollectionMetadataTask::onQuotasReceived);
         m_pendingMetaDataJobs++;
@@ -106,7 +106,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetMetaDataJob *meta = qobject_cast<KIMAP::GetMetaDataJob *>(job);
+    auto *meta = qobject_cast<KIMAP::GetMetaDataJob *>(job);
     QMap<QByteArray, QByteArray> rawAnnotations = meta->allMetaData();
 
     // filter out unused and annoying Cyrus annotation /vendor/cmu/cyrus-imapd/lastupdate
@@ -116,7 +116,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
     rawAnnotations.remove("/private/vendor/cmu/cyrus-imapd/lastupdate");
 
     // Store the mailbox metadata
-    Akonadi::CollectionAnnotationsAttribute *annotationsAttribute
+    auto *annotationsAttribute
         = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
     if (oldAnnotations != rawAnnotations) {
@@ -135,10 +135,10 @@ void RetrieveCollectionMetadataTask::onGetAclDone(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetAclJob *acl = qobject_cast<KIMAP::GetAclJob *>(job);
+    auto *acl = qobject_cast<KIMAP::GetAclJob *>(job);
 
     // Store the mailbox ACLs
-    Akonadi::ImapAclAttribute *const aclAttribute
+    auto *const aclAttribute
         = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
     if (oldRights != acl->allRights()) {
@@ -157,7 +157,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::MyRightsJob *rightsJob = qobject_cast<KIMAP::MyRightsJob *>(job);
+    auto *rightsJob = qobject_cast<KIMAP::MyRightsJob *>(job);
 
     const KIMAP::Acl::Rights imapRights = rightsJob->rights();
 
@@ -187,7 +187,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
     }
 
     // Store the mailbox ACLs
-    Akonadi::ImapAclAttribute *aclAttribute
+    auto *aclAttribute
         = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
     if (oldRights != imapRights) {
@@ -196,7 +196,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
 
     //The a right is required to list acl's
     if (imapRights & KIMAP::Acl::Admin) {
-        KIMAP::GetAclJob *acl = new KIMAP::GetAclJob(m_session);
+        auto *acl = new KIMAP::GetAclJob(m_session);
         acl->setMailBox(mailBoxForCollection(m_collection));
         connect(acl, &KJob::result, this, &RetrieveCollectionMetadataTask::onGetAclDone);
         m_pendingMetaDataJobs++;
@@ -216,7 +216,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
         return; // Well, no metadata for us then...
     }
 
-    KIMAP::GetQuotaRootJob *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
+    auto *quotaJob = qobject_cast<KIMAP::GetQuotaRootJob *>(job);
 
     QList<QByteArray> allRoots = quotaJob->roots();
     QList<QByteArray> newRoots;
@@ -254,7 +254,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     }
 
     // Store the mailbox IMAP Quotas
-    Akonadi::ImapQuotaAttribute *imapQuotaAttribute
+    auto *imapQuotaAttribute
         = m_collection.attribute<Akonadi::ImapQuotaAttribute>(Akonadi::Collection::AddIfMissing);
     const QList<QByteArray> oldRoots = imapQuotaAttribute->roots();
     const QList< QMap<QByteArray, qint64> > oldLimits = imapQuotaAttribute->limits();
@@ -267,7 +267,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     }
 
     // Store the collection Quota
-    Akonadi::CollectionQuotaAttribute *quotaAttribute
+    auto *quotaAttribute
         = m_collection.attribute<Akonadi::CollectionQuotaAttribute>(Akonadi::Collection::AddIfMissing);
     qint64 oldCurrent = quotaAttribute->currentValue();
     qint64 oldMax = quotaAttribute->maximumValue();

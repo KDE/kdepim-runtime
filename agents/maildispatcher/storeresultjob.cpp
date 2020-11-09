@@ -33,7 +33,7 @@ StoreResultJob::~StoreResultJob()
 void StoreResultJob::doStart()
 {
     // Fetch item in case it was modified elsewhere.
-    ItemFetchJob *job = new ItemFetchJob(mItem, this);
+    auto *job = new ItemFetchJob(mItem, this);
     connect(job, &ItemFetchJob::result, this, &StoreResultJob::fetchDone);
 }
 
@@ -74,7 +74,7 @@ void StoreResultJob::fetchDone(KJob *job)
         item.removeAttribute<ErrorAttribute>();
     } else {
         item.setFlag(Akonadi::MessageFlags::HasError);
-        ErrorAttribute *errorAttribute = new ErrorAttribute(mMessage);
+        auto *errorAttribute = new ErrorAttribute(mMessage);
         item.addAttribute(errorAttribute);
 
         // If dispatch failed, set the DispatchModeAttribute to Manual.
@@ -87,7 +87,7 @@ void StoreResultJob::fetchDone(KJob *job)
         }
     }
 
-    ItemModifyJob *modifyJob = new ItemModifyJob(item, this);
+    auto *modifyJob = new ItemModifyJob(item, this);
     QObject::connect(modifyJob, &ItemModifyJob::result, this, &StoreResultJob::modifyDone);
 }
 

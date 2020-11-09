@@ -53,7 +53,7 @@ void EwsUpdateItemsTagsJob::start()
     }
 
     if (!unknownTags.empty()) {
-        TagFetchJob *job = new TagFetchJob(unknownTags, this);
+        auto *job = new TagFetchJob(unknownTags, this);
         job->fetchScope().setFetchRemoteId(true);
         connect(job, &TagFetchJob::result, this, &EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched);
     } else {
@@ -69,7 +69,7 @@ void EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched(KJob *job)
         return;
     }
 
-    TagFetchJob *tagJob = qobject_cast<TagFetchJob *>(job);
+    auto *tagJob = qobject_cast<TagFetchJob *>(job);
     if (!tagJob) {
         setErrorMsg(QStringLiteral("Invalid TagFetchJob job object"));
         emitResult();
@@ -79,9 +79,9 @@ void EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched(KJob *job)
     /* All unknown tags have been fetched and can be written to Exchange. */
     mTagStore->addTags(tagJob->tags());
 
-    EwsResource *res = qobject_cast<EwsResource *>(parent());
+    auto *res = qobject_cast<EwsResource *>(parent());
     Q_ASSERT(res);
-    EwsGlobalTagsWriteJob *writeJob = new EwsGlobalTagsWriteJob(mTagStore, mClient,
+    auto *writeJob = new EwsGlobalTagsWriteJob(mTagStore, mClient,
                                                                 res->rootCollection(), this);
     connect(writeJob, &EwsGlobalTagsWriteJob::result, this,
             &EwsUpdateItemsTagsJob::globalTagsWriteFinished);
@@ -101,7 +101,7 @@ void EwsUpdateItemsTagsJob::globalTagsWriteFinished(KJob *job)
 
 void EwsUpdateItemsTagsJob::doUpdateItemsTags()
 {
-    EwsUpdateItemRequest *req = new EwsUpdateItemRequest(mClient, this);
+    auto *req = new EwsUpdateItemRequest(mClient, this);
     Q_FOREACH (const Item &item, mItems) {
         EwsUpdateItemRequest::ItemChange ic(EwsId(item.remoteId(), item.remoteRevision()),
                                             EwsItemHandler::mimeToItemType(item.mimeType()));
@@ -145,7 +145,7 @@ void EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished(KJob *job)
         return;
     }
 
-    EwsUpdateItemRequest *req = qobject_cast<EwsUpdateItemRequest *>(job);
+    auto *req = qobject_cast<EwsUpdateItemRequest *>(job);
     if (!req) {
         setErrorMsg(QStringLiteral("Invalid EwsUpdateItemRequest job object"));
         return;

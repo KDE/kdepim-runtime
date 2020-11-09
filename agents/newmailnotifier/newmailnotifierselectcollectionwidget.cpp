@@ -44,7 +44,7 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
             if (mNotificationCollection.contains(collection)) {
                 return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
-                const Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+                const auto *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
                 if (!attr || !attr->ignoreNewMail()) {
                     return Qt::Checked;
                 }
@@ -88,7 +88,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     : QWidget(parent)
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
-    QVBoxLayout *vbox = new QVBoxLayout(this);
+    auto *vbox = new QVBoxLayout(this);
 
     QLabel *label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
     vbox->addWidget(label);
@@ -104,7 +104,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mModel->setItemPopulationStrategy(Akonadi::EntityTreeModel::NoItemPopulation);
     connect(mModel, &Akonadi::EntityTreeModel::collectionTreeFetched, this, &NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched);
 
-    Akonadi::CollectionFilterProxyModel *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel(this);
+    auto *mimeTypeProxy = new Akonadi::CollectionFilterProxyModel(this);
     mimeTypeProxy->setExcludeVirtualCollections(true);
     mimeTypeProxy->setDynamicSortFilter(true);
     mimeTypeProxy->addMimeTypeFilters(QStringList() << KMime::Message::mimeType());
@@ -122,7 +122,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mCollectionFilter->setSortCaseSensitivity(Qt::CaseSensitive);
     mCollectionFilter->setSortLocaleAware(true);
 
-    KLineEdit *searchLine = new KLineEdit(this);
+    auto *searchLine = new KLineEdit(this);
     searchLine->setPlaceholderText(i18n("Search..."));
     searchLine->setClearButtonEnabled(true);
     connect(searchLine, &QLineEdit::textChanged,
@@ -137,7 +137,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     mFolderView->setModel(mCollectionFilter);
 
-    QHBoxLayout *hbox = new QHBoxLayout;
+    auto *hbox = new QHBoxLayout;
     vbox->addLayout(hbox);
 
     QPushButton *button = new QPushButton(i18n("&Select All"), this);
@@ -192,7 +192,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
     while (i.hasNext()) {
         i.next();
         Akonadi::Collection collection = i.key();
-        Akonadi::NewMailNotifierAttribute *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+        auto *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = nullptr;
         const bool selected = i.value();
         if (selected && attr && attr->ignoreNewMail()) {
@@ -214,7 +214,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
 
 void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
 {
-    Akonadi::CollectionModifyJob *modifyJob = qobject_cast<Akonadi::CollectionModifyJob *>(job);
+    auto *modifyJob = qobject_cast<Akonadi::CollectionModifyJob *>(job);
     if (modifyJob && job->error()) {
         if (job->property("AttributeAdded").toBool()) {
             qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to append NewMailNotifierAttribute to collection"

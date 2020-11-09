@@ -86,7 +86,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
 
         url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".vcf"));
 
-        const DavProtocolAttribute *protoAttr = collection.attribute<DavProtocolAttribute>();
+        const auto *protoAttr = collection.attribute<DavProtocolAttribute>();
         if (protoAttr) {
             mimeType = KDAV::ProtocolInfo::contactsMimeType(KDAV::Protocol(protoAttr->davProtocol()));
         } else {

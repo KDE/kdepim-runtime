@@ -32,7 +32,7 @@ void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
     mSession = session;
 
     mFolderFound = false;
-    KIMAP::ListJob *listJob = new KIMAP::ListJob(session);
+    auto *listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -83,7 +83,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
     qCDebug(IMAPRESOURCE_LOG) << descriptor.name;
 
     // first select the mailbox
-    KIMAP::SelectJob *selectJob = new KIMAP::SelectJob(mSession);
+    auto *selectJob = new KIMAP::SelectJob(mSession);
     selectJob->setMailBox(descriptor.name);
     connect(selectJob, &KIMAP::SelectJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
     selectJob->start();
@@ -92,7 +92,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
     // This step shouldn't be required, but apparently some servers don't allow deleting, non empty mailboxes (although they should).
     KIMAP::ImapSet allItems;
     allItems.add(KIMAP::ImapInterval(1, 0));     // means 1:*
-    KIMAP::StoreJob *storeJob = new KIMAP::StoreJob(mSession);
+    auto *storeJob = new KIMAP::StoreJob(mSession);
     storeJob->setSequenceSet(allItems);
     storeJob->setFlags(KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted);
     storeJob->setMode(KIMAP::StoreJob::AppendFlags);
@@ -102,7 +102,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
     // Some IMAP servers don't allow deleting an opened mailbox, so make sure
     // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932). CLOSE will
     // also trigger EXPUNGE to take care of the messages deleted above
-    KIMAP::CloseJob *closeJob = new KIMAP::CloseJob(mSession);
+    auto *closeJob = new KIMAP::CloseJob(mSession);
     closeJob->setProperty("folderDescriptor", descriptor.name);
     connect(closeJob, &KIMAP::CloseJob::result, this, &RemoveCollectionRecursiveTask::onCloseJobDone);
     closeJob->start();
@@ -116,7 +116,7 @@ void RemoveCollectionRecursiveTask::onCloseJobDone(KJob *job)
         emitWarning(i18n("Failed to delete the folder, restoring folder list."));
         synchronizeCollectionTree();
     } else {
-        KIMAP::DeleteJob *deleteJob = new KIMAP::DeleteJob(mSession);
+        auto *deleteJob = new KIMAP::DeleteJob(mSession);
         deleteJob->setMailBox(job->property("folderDescriptor").toString());
         connect(deleteJob, &KIMAP::DeleteJob::result, this, &RemoveCollectionRecursiveTask::onDeleteJobDone);
         deleteJob->start();

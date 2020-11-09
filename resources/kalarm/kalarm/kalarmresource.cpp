@@ -83,7 +83,7 @@ void KAlarmResource::collectionFetchResult(KJob *j)
     } else {
         bool firstTime = !mFetchedAttributes;
         mFetchedAttributes = true;
-        CollectionFetchJob *job = static_cast<CollectionFetchJob *>(j);
+        auto *job = static_cast<CollectionFetchJob *>(j);
         const Collection::List collections = job->collections();
         if (collections.isEmpty()) {
             qCDebug(KALARMRESOURCE_LOG) << identifier() << "collectionFetchResult: resource's collection not found";
@@ -168,7 +168,7 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
     if (collection.isValid()
         && collection.hasAttribute<CompatibilityAttribute>()) {
         // Update our note of the calendar version and compatibility
-        const CompatibilityAttribute *attr = collection.attribute<CompatibilityAttribute>();
+        const auto *attr = collection.attribute<CompatibilityAttribute>();
         mCompatibility = attr->compatibility();
         mVersion = attr->version();
         createAttribute = false;
@@ -195,7 +195,7 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
 */
 void KAlarmResource::setCompatibility(KJob *j)
 {
-    CollectionFetchJob *job = static_cast<CollectionFetchJob *>(j);
+    auto *job = static_cast<CollectionFetchJob *>(j);
     if (j->error()) {
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: setCompatibility:" << j->errorString();
     } else if (job->collections().isEmpty()) {
@@ -295,7 +295,7 @@ void KAlarmResource::settingsChanged()
 */
 void KAlarmResource::updateFormat(KJob *j)
 {
-    CollectionFetchJob *job = static_cast<CollectionFetchJob *>(j);
+    auto *job = static_cast<CollectionFetchJob *>(j);
     if (j->error()) {
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: updateFormat:" << j->errorString();
     } else if (job->collections().isEmpty()) {
@@ -303,7 +303,7 @@ void KAlarmResource::updateFormat(KJob *j)
     } else {
         const Collection c(job->collections().at(0));
         if (c.hasAttribute<CompatibilityAttribute>()) {
-            const CompatibilityAttribute *attr = c.attribute<CompatibilityAttribute>();
+            const auto *attr = c.attribute<CompatibilityAttribute>();
             if (attr->compatibility() != mCompatibility) {
                 qCDebug(KALARMRESOURCE_LOG) << identifier() << "updateFormat: Compatibility changed:" << mCompatibility << "->" << attr->compatibility();
             }

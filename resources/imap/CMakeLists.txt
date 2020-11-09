@@ -24,6 +24,7 @@ set( imapresource_LIB_SRCS
   noselectattribute.cpp
   noinferiorsattribute.cpp
   passwordrequesterinterface.cpp
+  preparesessionjob.cpp
   removecollectionrecursivetask.cpp
   resourcestateinterface.cpp
   resourcetask.cpp
@@ -31,6 +32,7 @@ set( imapresource_LIB_SRCS
   retrievecollectionstask.cpp
   retrieveitemtask.cpp
   retrieveitemstask.cpp
+  retrieveitemstask_qresync.cpp
   searchtask.cpp
   sessionpool.cpp
   uidvalidityattribute.cpp

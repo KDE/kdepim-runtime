@@ -48,7 +48,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
     m_pendingJobs = 0;
 
     if (parts().contains("AccessRights")) {
-        Akonadi::ImapAclAttribute *aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>();
+        auto *aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>();
 
         if (aclAttribute == nullptr) {
             emitWarning(i18n("ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change",
@@ -99,7 +99,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             qCDebug(IMAPRESOURCE_LOG) << "imapRights:" << imapRights
                                       << "newRights:" << newRights;
 
-            KIMAP::SetAclJob *job = new KIMAP::SetAclJob(session);
+            auto *job = new KIMAP::SetAclJob(session);
             job->setMailBox(mailBoxForCollection(collection()));
             job->setRights(KIMAP::SetAclJob::Change, imapRights);
             job->setIdentifier(userName().toUtf8());
@@ -114,7 +114,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
     if (parts().contains("collectionannotations") && serverSupportsAnnotations()) {
         Akonadi::Collection c = collection();
-        Akonadi::CollectionAnnotationsAttribute *annotationsAttribute
+        auto *annotationsAttribute
             = c.attribute<Akonadi::CollectionAnnotationsAttribute>();
 
         if (annotationsAttribute) {   // No annotations it seems... server is lieing to us?
@@ -122,7 +122,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             qCDebug(IMAPRESOURCE_LOG) << "All annotations: " << annotations;
 
             foreach (const QByteArray &entry, annotations.keys()) {   //krazy:exclude=foreach
-                KIMAP::SetMetaDataJob *job = new KIMAP::SetMetaDataJob(session);
+                auto *job = new KIMAP::SetMetaDataJob(session);
                 if (serverCapabilities().contains(QLatin1String("METADATA"))) {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
                 } else {
@@ -150,7 +150,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
     if (parts().contains("imapacl")) {
         Akonadi::Collection c = collection();
-        Akonadi::ImapAclAttribute *aclAttribute = c.attribute<Akonadi::ImapAclAttribute>();
+        auto *aclAttribute = c.attribute<Akonadi::ImapAclAttribute>();
 
         if (aclAttribute) {
             const QMap<QByteArray, KIMAP::Acl::Rights> rights = aclAttribute->rights();
@@ -161,7 +161,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             // remove all ACL entries that have been deleted
             for (const QByteArray &oldId : oldIds) {
                 if (!ids.contains(oldId)) {
-                    KIMAP::SetAclJob *job = new KIMAP::SetAclJob(session);
+                    auto *job = new KIMAP::SetAclJob(session);
                     job->setMailBox(mailBoxForCollection(collection()));
                     job->setIdentifier(oldId);
                     job->setRights(KIMAP::SetAclJob::Remove, oldRights[oldId]);
@@ -175,7 +175,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
             }
 
             for (const QByteArray &id : ids) {
-                KIMAP::SetAclJob *job = new KIMAP::SetAclJob(session);
+                auto *job = new KIMAP::SetAclJob(session);
                 job->setMailBox(mailBoxForCollection(collection()));
                 job->setIdentifier(id);
                 job->setRights(KIMAP::SetAclJob::Change, rights[id]);
@@ -201,7 +201,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
         const QString newMailBox = mailBoxForCollection(m_collection);
 
         if (oldMailBox != newMailBox) {
-            KIMAP::RenameJob *renameJob = new KIMAP::RenameJob(session);
+            auto *renameJob = new KIMAP::RenameJob(session);
             renameJob->setSourceMailBox(oldMailBox);
             renameJob->setDestinationMailBox(newMailBox);
             connect(renameJob, &KIMAP::RenameJob::result, this, &ChangeCollectionTask::onRenameDone);
@@ -214,12 +214,12 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
     if (m_syncEnabledState && isSubscriptionEnabled() && parts().contains("ENABLED")) {
         if (collection().enabled()) {
-            KIMAP::SubscribeJob *job = new KIMAP::SubscribeJob(session);
+            auto *job = new KIMAP::SubscribeJob(session);
             job->setMailBox(mailBoxForCollection(collection()));
             connect(job, &KIMAP::SubscribeJob::result, this, &ChangeCollectionTask::onSubscribeDone);
             job->start();
         } else {
-            KIMAP::UnsubscribeJob *job = new KIMAP::UnsubscribeJob(session);
+            auto *job = new KIMAP::UnsubscribeJob(session);
             job->setMailBox(mailBoxForCollection(collection()));
             connect(job, &KIMAP::UnsubscribeJob::result, this, &ChangeCollectionTask::onSubscribeDone);
             job->start();
@@ -247,8 +247,8 @@ void ChangeCollectionTask::onRenameDone(KJob *job)
 
         endTaskIfNeeded();
     } else {
-        KIMAP::RenameJob *renameJob = static_cast<KIMAP::RenameJob *>(job);
-        KIMAP::SubscribeJob *subscribeJob = new KIMAP::SubscribeJob(renameJob->session());
+        auto *renameJob = static_cast<KIMAP::RenameJob *>(job);
+        auto *subscribeJob = new KIMAP::SubscribeJob(renameJob->session());
         subscribeJob->setMailBox(renameJob->destinationMailBox());
         connect(subscribeJob, &KIMAP::SubscribeJob::result, this, &ChangeCollectionTask::onSubscribeDone);
         subscribeJob->start();

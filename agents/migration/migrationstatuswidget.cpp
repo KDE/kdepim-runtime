@@ -21,7 +21,7 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
     : QWidget(parent)
     , mScheduler(scheduler)
 {
-    QVBoxLayout *vboxLayout = new QVBoxLayout(this);
+    auto *vboxLayout = new QVBoxLayout(this);
     QToolBar *toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
 
     QAction *start = toolbar->addAction(QStringLiteral("Start"));
@@ -37,7 +37,7 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
     connect(abort, &QAction::triggered, this, &MigrationStatusWidget::abortSelected);
 
     vboxLayout->addWidget(toolbar);
-    QTreeView *treeView = new QTreeView(this);
+    auto *treeView = new QTreeView(this);
     treeView->setModel(&mScheduler.model());
     mSelectionModel = treeView->selectionModel();
     Q_ASSERT(mSelectionModel);
@@ -75,7 +75,7 @@ void MigrationStatusWidget::abortSelected()
 void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
 {
     QDialog *dlg = new QDialog(this);
-    QVBoxLayout *topLayout = new QVBoxLayout(dlg);
+    auto *topLayout = new QVBoxLayout(dlg);
     dlg->setLayout(topLayout);
     QWidget *widget = new QWidget(dlg);
     topLayout->addWidget(widget);
@@ -84,16 +84,16 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
 
-    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    auto *vboxLayout = new QVBoxLayout;
     {
-        QListView *listView = new QListView(widget);
+        auto *listView = new QListView(widget);
         listView->setModel(&mScheduler.logModel(index.data(MigratorModel::IdentifierRole).toString()));
         listView->setAutoScroll(true);
         listView->scrollToBottom();
         vboxLayout->addWidget(listView);
     }
     {
-        QHBoxLayout *hboxLayout = new QHBoxLayout;
+        auto *hboxLayout = new QHBoxLayout;
         QLabel *label = new QLabel(QStringLiteral("<a href=\"%1\">%2</a>").arg(index.data(MigratorModel::LogfileRole).toString()).arg(ki18n("Logfile").toString()), widget);
         label->setOpenExternalLinks(true);
         hboxLayout->addWidget(label);

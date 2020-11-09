@@ -213,7 +213,7 @@ void SendJob::resourceResult(qlonglong itemId, int result, const QString &messag
     delete mInterface; // So that abort() knows the transport job is over.
     mInterface = nullptr;
 
-    const TransportResourceBase::TransportResult transportResult
+    const auto transportResult
         = static_cast<TransportResourceBase::TransportResult>(result);
 
     const bool success = (transportResult == TransportResourceBase::TransportSucceeded);
@@ -377,7 +377,7 @@ void SendJob::doEmitResult(KJob *job)
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Success storing result.";
         // It is still possible that the transport failed.
-        StoreResultJob *srJob = static_cast<StoreResultJob *>(job);
+        auto *srJob = static_cast<StoreResultJob *>(job);
         if (!srJob->success()) {
             setError(UserDefinedError);
             setErrorText(srJob->message());

@@ -50,7 +50,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
         m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
-        KIMAP::AppendJob *job = new KIMAP::AppendJob(session);
+        auto *job = new KIMAP::AppendJob(session);
 
         job->setMailBox(mailBox);
         job->setContent(msg->encodedContent(true));
@@ -64,7 +64,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         job->start();
     } else if (parts().contains("FLAGS")) {
         if (session->selectedMailBox() != mailBox) {
-            KIMAP::SelectJob *select = new KIMAP::SelectJob(session);
+            auto *select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
             connect(select, &KIMAP::SelectJob::result, this, &ChangeItemTask::onPreStoreSelectDone);
@@ -94,7 +94,7 @@ void ChangeItemTask::triggerStoreJob()
     const QList<QByteArray> flags = fromAkonadiToSupportedImapFlags(item().flags().values(), item().parentCollection());
     qCDebug(IMAPRESOURCE_LOG) << flags;
 
-    KIMAP::StoreJob *store = new KIMAP::StoreJob(m_session);
+    auto *store = new KIMAP::StoreJob(m_session);
 
     store->setUidBased(true);
     store->setSequenceSet(KIMAP::ImapSet(m_oldUid));
@@ -124,7 +124,7 @@ void ChangeItemTask::onAppendMessageDone(KJob *job)
         return;
     }
 
-    KIMAP::AppendJob *append = qobject_cast<KIMAP::AppendJob *>(job);
+    auto *append = qobject_cast<KIMAP::AppendJob *>(job);
 
     m_newUid = append->uid();
 
@@ -134,7 +134,7 @@ void ChangeItemTask::onAppendMessageDone(KJob *job)
 
     // APPEND does not require a SELECT, so we could be anywhere right now
     if (m_session->selectedMailBox() != append->mailBox()) {
-        KIMAP::SelectJob *select = new KIMAP::SelectJob(m_session);
+        auto *select = new KIMAP::SelectJob(m_session);
         select->setMailBox(append->mailBox());
 
         connect(select, &KIMAP::SelectJob::result, this, &ChangeItemTask::onPreDeleteSelectDone);
@@ -169,7 +169,7 @@ void ChangeItemTask::onPreDeleteSelectDone(KJob *job)
 
 void ChangeItemTask::triggerSearchJob()
 {
-    KIMAP::SearchJob *search = new KIMAP::SearchJob(m_session);
+    auto *search = new KIMAP::SearchJob(m_session);
 
     search->setUidBased(true);
 
@@ -177,7 +177,7 @@ void ChangeItemTask::triggerSearchJob()
         search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
         const auto parent = item().parentCollection();
-        const UidNextAttribute *uidNext = parent.attribute<UidNextAttribute>();
+        const auto *uidNext = parent.attribute<UidNextAttribute>();
         if (!uidNext) {
             qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
@@ -204,7 +204,7 @@ void ChangeItemTask::onSearchDone(KJob *job)
         return;
     }
 
-    KIMAP::SearchJob *search = static_cast<KIMAP::SearchJob *>(job);
+    auto *search = static_cast<KIMAP::SearchJob *>(job);
 
     if (search->results().count() != 1) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
@@ -218,7 +218,7 @@ void ChangeItemTask::onSearchDone(KJob *job)
 
 void ChangeItemTask::triggerDeleteJob()
 {
-    KIMAP::StoreJob *store = new KIMAP::StoreJob(m_session);
+    auto *store = new KIMAP::StoreJob(m_session);
 
     store->setUidBased(true);
     store->setSequenceSet(KIMAP::ImapSet(m_oldUid));

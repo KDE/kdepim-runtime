@@ -191,7 +191,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersIncrJob);
 
-    EwsSyncFolderHierarchyRequest *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
+    auto *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsSyncFolderHierarchyRequestjob object");
         q->setErrorMsg(QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object"));
@@ -292,7 +292,7 @@ void EwsFetchFoldersIncrJobPrivate::localFolderFetchDone(KJob *job)
         return;
     }
 
-    CollectionFetchJob *fetchJob = qobject_cast<CollectionFetchJob *>(job);
+    auto *fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
 
     Q_FOREACH (const Collection &col, fetchJob->collections()) {
@@ -546,7 +546,7 @@ void EwsFetchFoldersIncrJob::start()
 {
     Q_D(const EwsFetchFoldersIncrJob);
 
-    EwsSyncFolderHierarchyRequest *syncFoldersReq = new EwsSyncFolderHierarchyRequest(d->mClient, this);
+    auto *syncFoldersReq = new EwsSyncFolderHierarchyRequest(d->mClient, this);
     syncFoldersReq->setFolderId(EwsId(EwsDIdMsgFolderRoot));
     EwsFolderShape shape;
     shape << propPidTagContainerClass;

@@ -82,12 +82,12 @@ Wallet *openWallet(MyWallet *wallet)
 }
 
 static const QString networkWallet = QStringLiteral("test_network_wallet");
-const QString Wallet::NetworkWallet()
+inline const QString Wallet::NetworkWallet()
 {
     return networkWallet;
 }
 
-Wallet *Wallet::openWallet(const QString &name, WId, OpenType ot)
+inline Wallet *Wallet::openWallet(const QString &name, WId, OpenType ot)
 {
     qDebug() << "intercepted openWallet";
     if (name != networkWallet) {

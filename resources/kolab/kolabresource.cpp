@@ -82,7 +82,7 @@ QByteArray KolabResource::clientId() const
 
 QDialog *KolabResource::createConfigureDialog(WId windowId)
 {
-    SetupServer *dlg = new SetupServer(this, windowId);
+    auto *dlg = new SetupServer(this, windowId);
     dlg->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     dlg->setWindowTitle(i18nc("@title:window", "Kolab Account Settings"));
@@ -93,7 +93,7 @@ QDialog *KolabResource::createConfigureDialog(WId windowId)
 
 void KolabResource::onConfigurationDone(int result)
 {
-    SetupServer *dlg = qobject_cast<SetupServer *>(sender());
+    auto *dlg = qobject_cast<SetupServer *>(sender());
     if (result) {
         if (dlg->shouldClearCache()) {
             clearCache();
@@ -163,11 +163,11 @@ static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collecti
     //Set the annotations on new folders
     const QByteArray kolabType = KolabHelpers::kolabTypeForMimeType(collection.contentMimeTypes());
     Akonadi::Collection col = collection;
-    Akonadi::CollectionAnnotationsAttribute *attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
     QMap<QByteArray, QByteArray> annotations = attr->annotations();
 
     bool changed = false;
-    Akonadi::CollectionColorAttribute *colorAttribute = col.attribute<Akonadi::CollectionColorAttribute>();
+    auto *colorAttribute = col.attribute<Akonadi::CollectionColorAttribute>();
     if (colorAttribute) {
         const QColor color = colorAttribute->color();
         if (color.isValid()) {

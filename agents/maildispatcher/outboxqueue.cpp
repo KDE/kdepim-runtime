@@ -38,7 +38,7 @@ void OutboxQueue::initQueue()
     mQueue.clear();
 
     qCDebug(MAILDISPATCHER_LOG) << "Fetching items in collection" << mOutbox.id();
-    ItemFetchJob *job = new ItemFetchJob(mOutbox);
+    auto *job = new ItemFetchJob(mOutbox);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload(false);
     connect(job, &ItemFetchJob::result, this, &OutboxQueue::collectionFetched);
@@ -81,21 +81,21 @@ void OutboxQueue::addIfComplete(const Item &item)
         return;
     }
 
-    const DispatchModeAttribute *dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
+    const auto *dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
     Q_ASSERT(dispatchModeAttribute);
     if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Manual) {
         qCDebug(MAILDISPATCHER_LOG) << "Item " << item.id() << "is queued to be sent manually.";
         return;
     }
 
-    const TransportAttribute *transportAttribute = item.attribute<TransportAttribute>();
+    const auto *transportAttribute = item.attribute<TransportAttribute>();
     Q_ASSERT(transportAttribute);
     if (transportAttribute->transport() == nullptr) {
         qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid transport.";
         return;
     }
 
-    const SentBehaviourAttribute *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
+    const auto *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT(sentBehaviourAttribute);
     if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection
         && !sentBehaviourAttribute->moveToCollection().isValid()) {
@@ -227,7 +227,7 @@ void OutboxQueue::localFoldersChanged()
         mMonitor->setCollectionMonitored(mOutbox, false);
         mOutbox = Collection(-1);
 
-        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(this);
+        auto *job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::Outbox);
         connect(job, &SpecialMailCollectionsRequestJob::result, this, &OutboxQueue::localFoldersRequestResult);
 
@@ -237,7 +237,7 @@ void OutboxQueue::localFoldersChanged()
 
     // make sure we have a place to dump the sent mails as well
     if (!SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
-        SpecialMailCollectionsRequestJob *job = new SpecialMailCollectionsRequestJob(this);
+        auto *job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::SentMail);
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting sent-mail folder";
@@ -372,7 +372,7 @@ void OutboxQueue::fetchOne()
     Q_ASSERT(!mIgnore.contains(item.id()));
     mIgnore.insert(item.id());
 
-    ItemFetchJob *job = new ItemFetchJob(item);
+    auto *job = new ItemFetchJob(item);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload();
     connect(job, &ItemFetchJob::result, this, &OutboxQueue::itemFetched);

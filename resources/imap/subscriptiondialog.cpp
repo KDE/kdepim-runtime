@@ -37,7 +37,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     , m_filter(new SubscriptionFilterProxyModel(this))
     , m_model(new QStandardItemModel(this))
 {
-    QVBoxLayout *topLayout = new QVBoxLayout(this);
+    auto *topLayout = new QVBoxLayout(this);
     setModal(true);
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
@@ -53,7 +53,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     connect(mUser1Button, &QPushButton::clicked, this, &SubscriptionDialog::onReloadRequested);
 
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    auto *mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainWidget->setLayout(mainLayout);
     topLayout->addWidget(mainWidget);
@@ -63,7 +63,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
                                                "Enable server-side subscriptions"));
     mainLayout->addWidget(m_enableSubscription);
 
-    QHBoxLayout *filterBarLayout = new QHBoxLayout;
+    auto *filterBarLayout = new QHBoxLayout;
     mainLayout->addLayout(filterBarLayout);
 
     filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription",
@@ -143,7 +143,7 @@ void SubscriptionDialog::connectAccount(const ImapAccount &account, const QStrin
     m_session = new KIMAP::Session(account.server(), account.port(), this);
     m_session->setUiProxy(SessionUiProxy::Ptr(new SessionUiProxy));
 
-    KIMAP::LoginJob *login = new KIMAP::LoginJob(m_session);
+    auto *login = new KIMAP::LoginJob(m_session);
     login->setUserName(account.userName());
     login->setPassword(password);
     login->setEncryptionMode(account.encryptionMode());
@@ -179,7 +179,7 @@ void SubscriptionDialog::onReloadRequested()
         return;
     }
 
-    KIMAP::ListJob *list = new KIMAP::ListJob(m_session);
+    auto *list = new KIMAP::ListJob(m_session);
     list->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onFullListingDone);
@@ -216,14 +216,14 @@ void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescripto
 
                 QStandardItem *parentItem = m_itemsMap[parentPath];
 
-                QStandardItem *item = new QStandardItem(pathPart);
+                auto *item = new QStandardItem(pathPart);
                 item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
                 item->setCheckable(isCheckable);
                 item->setData(currentPath.mid(1), PathRole);
                 parentItem->appendRow(item);
                 m_itemsMap[currentPath] = item;
             } else {
-                QStandardItem *item = new QStandardItem(pathPart);
+                auto *item = new QStandardItem(pathPart);
                 item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
                 item->setCheckable(isCheckable);
                 item->setData(currentPath.mid(1), PathRole);
@@ -243,7 +243,7 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
         return;
     }
 
-    KIMAP::ListJob *list = new KIMAP::ListJob(m_session);
+    auto *list = new KIMAP::ListJob(m_session);
     list->setOption(KIMAP::ListJob::NoOption);
     connect(list, &KIMAP::ListJob::mailBoxesReceived, this, &SubscriptionDialog::onSubscribedMailBoxesReceived);
     connect(list, &KIMAP::ListJob::result, this, &SubscriptionDialog::onReloadDone);
@@ -295,12 +295,12 @@ void SubscriptionDialog::applyChanges()
         if (item->checkState() != item->data(InitialStateRole).toInt()) {
             if (item->checkState() == Qt::Checked) {
                 qCDebug(IMAPRESOURCE_LOG) << "Subscribing" << item->data(PathRole);
-                KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob(m_session);
+                auto *subscribe = new KIMAP::SubscribeJob(m_session);
                 subscribe->setMailBox(item->data(PathRole).toString());
                 subscribe->exec();
             } else {
                 qCDebug(IMAPRESOURCE_LOG) << "Unsubscribing" << item->data(PathRole);
-                KIMAP::UnsubscribeJob *unsubscribe = new KIMAP::UnsubscribeJob(m_session);
+                auto *unsubscribe = new KIMAP::UnsubscribeJob(m_session);
                 unsubscribe->setMailBox(item->data(PathRole).toString());
                 unsubscribe->exec();
             }

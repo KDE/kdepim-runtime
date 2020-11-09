@@ -25,7 +25,7 @@ SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     , mSettings(settings)
 {
     QWidget *mainWidget = new QWidget(this);
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    auto *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);

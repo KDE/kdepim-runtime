@@ -72,7 +72,7 @@ void EwsSubscriptionManager::cancelSubscription()
 
 void EwsSubscriptionManager::setupSubscription()
 {
-    EwsSubscribedFoldersJob *job = new EwsSubscribedFoldersJob(mEwsClient, mSettings, this);
+    auto *job = new EwsSubscribedFoldersJob(mEwsClient, mSettings, this);
     connect(job, &EwsRequest::result, this, &EwsSubscriptionManager::verifySubFoldersRequestFinished);
     job->start();
 }
@@ -80,7 +80,7 @@ void EwsSubscriptionManager::setupSubscription()
 void EwsSubscriptionManager::verifySubFoldersRequestFinished(KJob *job)
 {
     if (!job->error()) {
-        EwsSubscribedFoldersJob *folderJob = qobject_cast<EwsSubscribedFoldersJob *>(job);
+        auto *folderJob = qobject_cast<EwsSubscribedFoldersJob *>(job);
         Q_ASSERT(folderJob);
 
         setupSubscriptionReq(folderJob->folders());
@@ -91,7 +91,7 @@ void EwsSubscriptionManager::verifySubFoldersRequestFinished(KJob *job)
 
 void EwsSubscriptionManager::setupSubscriptionReq(const EwsId::List &ids)
 {
-    EwsSubscribeRequest *req = new EwsSubscribeRequest(mEwsClient, this);
+    auto *req = new EwsSubscribeRequest(mEwsClient, this);
     //req->setAllFolders(true);
     QList<EwsEventType> events;
     events << EwsNewMailEvent;
@@ -131,7 +131,7 @@ void EwsSubscriptionManager::resetSubscription()
 void EwsSubscriptionManager::subscribeRequestFinished(KJob *job)
 {
     if (!job->error()) {
-        EwsSubscribeRequest *req = qobject_cast<EwsSubscribeRequest *>(job);
+        auto *req = qobject_cast<EwsSubscribeRequest *>(job);
         if (req) {
             mSettings->setEventSubscriptionId(req->response().subscriptionId());
             if (mStreamingEvents) {
@@ -151,7 +151,7 @@ void EwsSubscriptionManager::subscribeRequestFinished(KJob *job)
 void EwsSubscriptionManager::getEvents()
 {
     if (mStreamingEvents) {
-        EwsGetStreamingEventsRequest *req = new EwsGetStreamingEventsRequest(mEwsClient, this);
+        auto *req = new EwsGetStreamingEventsRequest(mEwsClient, this);
         req->setSubscriptionId(mSettings->eventSubscriptionId());
         req->setTimeout(streamingTimeout);
         connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished);
@@ -161,7 +161,7 @@ void EwsSubscriptionManager::getEvents()
         mEventReq = req;
         mStreamingTimer.start();
     } else {
-        EwsGetEventsRequest *req = new EwsGetEventsRequest(mEwsClient, this);
+        auto *req = new EwsGetEventsRequest(mEwsClient, this);
         req->setSubscriptionId(mSettings->eventSubscriptionId());
         req->setWatermark(mSettings->eventSubscriptionWatermark());
         connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished);
@@ -177,7 +177,7 @@ void EwsSubscriptionManager::getEventsRequestFinished(KJob *job)
     mEventReq->deleteLater();
     mEventReq = nullptr;
 
-    EwsEventRequestBase *req = qobject_cast<EwsEventRequestBase *>(job);
+    auto *req = qobject_cast<EwsEventRequestBase *>(job);
     if (!req) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Invalid EwsEventRequestBase job object.");
         reset();
@@ -208,7 +208,7 @@ void EwsSubscriptionManager::streamingEventsReceived(KJob *job)
 {
     mStreamingTimer.stop();
 
-    EwsEventRequestBase *req = qobject_cast<EwsEventRequestBase *>(job);
+    auto *req = qobject_cast<EwsEventRequestBase *>(job);
     if (!req) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Invalid EwsEventRequestBase job object.");
         reset();
@@ -282,7 +282,7 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
             }
         }
         if (mStreamingEvents) {
-            EwsGetStreamingEventsRequest *req2 = qobject_cast<EwsGetStreamingEventsRequest *>(req);
+            auto *req2 = qobject_cast<EwsGetStreamingEventsRequest *>(req);
             if (req2) {
                 req2->eventsProcessed(resp);
             }

@@ -353,7 +353,7 @@ void EwsOAuthPrivate::redirectUriIntercepted(const QUrl &url)
 
 void EwsOAuthPrivate::pkeyAuthResult(KJob *j)
 {
-    EwsPKeyAuthJob *job = qobject_cast<EwsPKeyAuthJob *>(j);
+    auto *job = qobject_cast<EwsPKeyAuthJob *>(j);
 
     qCDebugNC(EWSCLI_LOG) << QStringLiteral("PKeyAuth result: %1").arg(job->error());
     QVariantMap varmap;

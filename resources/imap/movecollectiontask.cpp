@@ -59,7 +59,7 @@ void MoveCollectionTask::doStart(KIMAP::Session *session)
     // Some IMAP servers don't allow moving an opened mailbox, so make sure
     // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932) by examining
     // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
-    KIMAP::SelectJob *examine = new KIMAP::SelectJob(session);
+    auto *examine = new KIMAP::SelectJob(session);
     examine->setOpenReadOnly(true);   // use EXAMINE instead of SELECT
     examine->setMailBox(QStringLiteral("IMAP Resource non existing folder %1").arg(QUuid::createUuid().toString()));
     connect(examine, &KIMAP::SelectJob::result, this, &MoveCollectionTask::onExamineDone);
@@ -71,7 +71,7 @@ void MoveCollectionTask::onExamineDone(KJob *job)
     // We deliberately ignore any error here, because the SelectJob will always fail
     // when examining a non-existent mailbox
 
-    KIMAP::SelectJob *examine = static_cast<KIMAP::SelectJob *>(job);
+    auto *examine = static_cast<KIMAP::SelectJob *>(job);
     doRename(examine->session());
 }
 
@@ -91,7 +91,7 @@ void MoveCollectionTask::doRename(KIMAP::Session *session)
     const QString newMailBox = mailBoxForCollections(targetCollection(), collection());
 
     if (oldMailBox != newMailBox) {
-        KIMAP::RenameJob *job = new KIMAP::RenameJob(session);
+        auto *job = new KIMAP::RenameJob(session);
         job->setSourceMailBox(oldMailBox);
         job->setDestinationMailBox(newMailBox);
 
@@ -109,9 +109,9 @@ void MoveCollectionTask::onRenameDone(KJob *job)
         cancelTask(job->errorString());
     } else {
         // Automatically subscribe to the new mailbox name
-        KIMAP::RenameJob *rename = static_cast<KIMAP::RenameJob *>(job);
+        auto *rename = static_cast<KIMAP::RenameJob *>(job);
 
-        KIMAP::SubscribeJob *subscribe = new KIMAP::SubscribeJob(rename->session());
+        auto *subscribe = new KIMAP::SubscribeJob(rename->session());
         subscribe->setMailBox(rename->destinationMailBox());
 
         connect(subscribe, &KIMAP::SubscribeJob::result, this, &MoveCollectionTask::onSubscribeDone);

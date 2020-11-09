@@ -144,6 +144,11 @@ QStringList ResourceTask::serverCapabilities() const
     return m_resource->serverCapabilities();
 }
 
+QStringList ResourceTask::effectiveServerCapabilities() const
+{
+    return m_resource->effectiveServerCapabilities();
+}
+
 QList<KIMAP::MailBoxDescriptor> ResourceTask::serverNamespaces() const
 {
     return m_resource->serverNamespaces();
@@ -412,7 +417,7 @@ QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags(const QList<QByt
 {
     QList<QByteArray> imapFlags = fromAkonadiFlags(flags);
 
-    const Akonadi::CollectionFlagsAttribute *flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
+    const auto *flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
     // the server does not support arbitrary flags, so filter out those it can't handle
     if (flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains("\\*")) {
         for (QList< QByteArray >::iterator it = imapFlags.begin(); it != imapFlags.end();) {
@@ -523,6 +528,13 @@ bool ResourceTask::serverSupportsCondstore() const
            && !serverCapabilities().contains(QLatin1String("X-GM-EXT-1"));
 }
 
+bool ResourceTask::isQResyncEnabled() const
+{
+    // Check support for QRESYNC (RFC5162).
+    // QRESYNC must be enabled on each session, so check that has happened.
+    return effectiveServerCapabilities().contains(QLatin1String("QRESYNC"));
+}
+
 int ResourceTask::batchSize() const
 {
     return m_resource->batchSize();
@@ -533,9 +545,9 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
     return m_resource;
 }
 
-KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
+KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col) const
 {
-    const Akonadi::ImapAclAttribute *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    const auto *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
     if (aclAttribute) {
         //HACK, only return myrights if they are available
         if (aclAttribute->myRights() != KIMAP::Acl::None) {

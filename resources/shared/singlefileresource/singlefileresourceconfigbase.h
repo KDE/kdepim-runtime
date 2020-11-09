@@ -13,7 +13,7 @@
 #include "singlefileresourceconfigwidget.h"
 
 template<typename Settings>
-class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
+class SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
 {
 public:
     explicit SingleFileResourceConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &list)
