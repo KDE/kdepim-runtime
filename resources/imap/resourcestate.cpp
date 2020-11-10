@@ -49,11 +49,6 @@ QStringList ResourceState::serverCapabilities() const
     return m_resource->m_pool->serverCapabilities();
 }
 
-QStringList ResourceState::effectiveServerCapabilities() const
-{
-    return m_resource->m_pool->effectiveServerCapabilities();
-}
-
 QList<KIMAP::MailBoxDescriptor> ResourceState::serverNamespaces() const
 {
     return m_resource->m_pool->serverNamespaces();

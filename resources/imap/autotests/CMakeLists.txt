@@ -41,5 +41,4 @@ IMAP_RESOURCE_UNIT_TESTS(
   testretrievecollectionstask
   testretrieveitemtask
   testretrieveitemstask
-  testretrieveitemsqresynctask
 )
