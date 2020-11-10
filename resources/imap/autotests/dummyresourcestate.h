@@ -35,9 +35,6 @@ public:
     void setServerCapabilities(const QStringList &capabilities);
     QStringList serverCapabilities() const override;
 
-    void setEffectiveServerCapabilities(const QStringList &capabilities);
-    QStringList effectiveServerCapabilities() const override;
-
     void setServerNamespaces(const QList<KIMAP::MailBoxDescriptor> &namespaces);
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const override;
     QList<KIMAP::MailBoxDescriptor> personalNamespaces() const override;
@@ -145,7 +142,6 @@ private:
     QString m_resourceName;
     QString m_resourceIdentifier;
     QStringList m_capabilities;
-    QStringList m_effectiveCapabilities;
     QList<KIMAP::MailBoxDescriptor> m_namespaces;
 
     bool m_automaticExpunge;

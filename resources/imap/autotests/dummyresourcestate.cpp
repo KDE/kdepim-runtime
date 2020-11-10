@@ -67,16 +67,6 @@ QStringList DummyResourceState::serverCapabilities() const
     return m_capabilities;
 }
 
-void DummyResourceState::setEffectiveServerCapabilities(const QStringList &capabilities)
-{
-    m_effectiveCapabilities = capabilities;
-}
-
-QStringList DummyResourceState::effectiveServerCapabilities() const
-{
-    return m_effectiveCapabilities;
-}
-
 void DummyResourceState::setServerNamespaces(const QList<KIMAP::MailBoxDescriptor> &namespaces)
 {
     m_namespaces = namespaces;
