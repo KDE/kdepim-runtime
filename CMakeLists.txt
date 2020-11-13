@@ -143,6 +143,14 @@ find_package(KF5Libkdepim ${LIBKDEPIM_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5GrantleeTheme ${GRANTLEETHEME_LIB_VERSION} CONFIG REQUIRED)
 
+#it will replace kwallet support
+find_package(Qt5Keychain CONFIG)
+set_package_properties(Qt5Keychain PROPERTIES
+                                   DESCRIPTION "Provides support for secure credentials storage"
+                                   URL "https://github.com/frankosterfeld/qtkeychain"
+                                   TYPE OPTIONAL)
+
+
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
