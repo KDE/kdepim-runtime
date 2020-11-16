@@ -12,7 +12,7 @@
 #define ACCOUNT_WIDGET_H
 
 #include "ui_popsettings.h"
-
+#include <qt5keychain/keychain.h>
 class Settings;
 
 namespace MailTransport {
@@ -55,7 +55,7 @@ private Q_SLOTS:
 
     void targetCollectionReceived(Akonadi::Collection::List collections);
     void localFolderRequestJobFinished(KJob *job);
-    void walletOpenedForLoading(bool success);
+    void walletOpenedForLoading(QKeychain::Job *baseJob);
     void walletOpenedForSaving(bool success);
     void slotAccepted();
 private:
@@ -69,7 +69,6 @@ private:
     MailTransport::ServerTest *mServerTest = nullptr;
     QRegularExpressionValidator mValidator;
     bool mServerTestFailed = false;
-    KWallet::Wallet *mWallet = nullptr;
     QString mInitalPassword;
     const QString mIdentifier;
     Settings &mSettings;

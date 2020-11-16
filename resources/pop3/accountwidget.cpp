@@ -22,11 +22,11 @@
 #include <resourcesettings.h>
 #include <MailTransport/ServerTest>
 
+
 // KDELIBS includes
 #include <KEMailSettings>
 #include <KMessageBox>
 #include <KUser>
-#include <KWallet>
 #include "pop3resource_debug.h"
 
 #include <QButtonGroup>
@@ -35,8 +35,7 @@
 
 using namespace MailTransport;
 using namespace Akonadi;
-using namespace KWallet;
-
+using namespace QKeychain;
 namespace {
 class BusyCursorHelper : public QObject
 {
@@ -70,8 +69,6 @@ AccountWidget::AccountWidget(Settings &settings, const QString &identifier, QWid
 
 AccountWidget::~AccountWidget()
 {
-    delete mWallet;
-    mWallet = nullptr;
     delete mServerTest;
     mServerTest = nullptr;
 }
@@ -204,45 +201,33 @@ void AccountWidget::loadSettings()
         connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &AccountWidget::localFolderRequestJobFinished);
     }
 
-    mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winId(),
-                                 Wallet::Asynchronous);
-    if (mWallet) {
-        connect(mWallet, &KWallet::Wallet::walletOpened, this, &AccountWidget::walletOpenedForLoading);
-    } else {
-        passwordEdit->lineEdit()->setPlaceholderText(i18n("Wallet disabled in system settings"));
-    }
     passwordEdit->setEnabled(false);
     passwordLabel->setEnabled(false);
+    auto readJob = new ReadPasswordJob(QStringLiteral("pop3"), this);
+    connect(readJob, &QKeychain::Job::finished, this, &AccountWidget::walletOpenedForLoading);
+    readJob->setKey(mIdentifier);
+    readJob->start();
 }
 
-void AccountWidget::walletOpenedForLoading(bool success)
+void AccountWidget::walletOpenedForLoading(QKeychain::Job *baseJob)
 {
-    if (success) {
-        if (mWallet->isOpen()) {
-            passwordEdit->setEnabled(true);
-            passwordLabel->setEnabled(true);
-        }
-        if (mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
-            QString password;
-            mWallet->setFolder(QStringLiteral("pop3"));
-            mWallet->readPassword(mIdentifier, password);
-            passwordEdit->setPassword(password);
-            mInitalPassword = password;
-        } else {
-            qCWarning(POP3RESOURCE_LOG) << "Wallet not open or doesn't have pop3 folder.";
-        }
-    } else {
-        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for loading the password.";
-    }
+    auto *job = qobject_cast<ReadPasswordJob *>(baseJob);
+    Q_ASSERT(job);
+    if (!job->error()) {
+        passwordEdit->setPassword(job->textData());
+        passwordEdit->setEnabled(true);
+        passwordLabel->setEnabled(true);
 
-    const bool walletError = !success || !mWallet->isOpen();
-    if (walletError) {
+    } else {
+        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for loading the password." << job->errorString();
         passwordEdit->lineEdit()->setPlaceholderText(i18n("Unable to open wallet"));
     }
 }
 
 void AccountWidget::walletOpenedForSaving(bool success)
 {
+#if 0
+    //Move as async
     if (success) {
         if (mWallet && mWallet->isOpen()) {
             // Remove the password from the wallet if the user doesn't want to store it
@@ -268,6 +253,7 @@ void AccountWidget::walletOpenedForSaving(bool success)
 
     delete mWallet;
     mWallet = nullptr;
+#endif
 }
 
 void AccountWidget::slotLeaveOnServerClicked()
@@ -570,7 +556,8 @@ void AccountWidget::saveSettings()
     const bool userChangedPassword = mInitalPassword != passwordEdit->password();
     const bool userWantsToDeletePassword
         = passwordEdit->password().isEmpty() && userChangedPassword;
-
+    //Move to async
+#if 0
     if ((!passwordEdit->password().isEmpty() && userChangedPassword)
         || userWantsToDeletePassword) {
         qCDebug(POP3RESOURCE_LOG) << mWallet <<  mWallet->isOpen();
@@ -587,6 +574,7 @@ void AccountWidget::saveSettings()
             }
         }
     }
+#endif
 }
 
 void AccountWidget::slotEnableLeaveOnServerDays(bool state)

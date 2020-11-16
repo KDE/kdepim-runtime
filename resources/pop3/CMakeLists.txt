@@ -47,6 +47,7 @@ target_link_libraries( akonadi_pop3_resource
     KF5::Notifications
     Qt5::DBus
     KF5::PimCommon
+    qt5keychain
     )
 
 if(BUILD_TESTING)
@@ -84,4 +85,5 @@ target_link_libraries(pop3config
     KF5::AkonadiAgentBase
     KF5::AkonadiMime
     KF5::Libkdepim
+    qt5keychain
     )
