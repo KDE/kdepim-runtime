@@ -30,7 +30,7 @@ POPSession::~POPSession()
 
 void POPSession::slotSlaveError(KIO::Slave *slave, int errorCode, const QString &errorMessage)
 {
-    Q_UNUSED(slave);
+    Q_UNUSED(slave)
     qCWarning(POP3RESOURCE_LOG) << "Got a slave error:" << errorMessage;
 
     if (slave != mSlave) {
@@ -216,7 +216,7 @@ void SlaveBaseJob::slotSlaveResult(KJob *job)
 
 void SlaveBaseJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
     qCWarning(POP3RESOURCE_LOG) << "Got unexpected slave data:" << data.data();
 }
 
@@ -307,7 +307,7 @@ void ListJob::start()
 
 void ListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
 
     // Silly slave, why are you sending us empty data?
     if (data.isEmpty()) {
@@ -357,7 +357,7 @@ void UIDListJob::start()
 
 void UIDListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
 
     // Silly slave, why are you sending us empty data?
     if (data.isEmpty()) {
@@ -465,7 +465,7 @@ void FetchJob::connectJob()
 
 void FetchJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
     mCurrentMessage += data;
     mBytesDownloaded += data.size();
     mDataCounter++;
@@ -476,7 +476,7 @@ void FetchJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
 
 void FetchJob::slotInfoMessage(KJob *job, const QString &infoMessage, const QString &)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
     if (infoMessage != QLatin1String("message complete")) {
         return;
     }

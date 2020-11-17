@@ -22,7 +22,7 @@
 //From MailClient::send
 KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const QString &cc, const QString &subject, const QString &body, bool hidden, bool bccMe, const QString &attachment /*, const QString &mailTransport */)
 {
-    Q_UNUSED(hidden);
+    Q_UNUSED(hidden)
 
     const bool outlookConformInvitation = false;
     QString userAgent = QStringLiteral("libkolab");

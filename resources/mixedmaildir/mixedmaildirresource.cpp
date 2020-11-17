@@ -221,7 +221,7 @@ void MixedMaildirResource::retrieveItems(const Collection &col)
 
 bool MixedMaildirResource::retrieveItems(const Item::List &items, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
 
     FileStore::ItemFetchJob *job = mStore->fetchItems(items);
     if (parts.contains(Item::FullPayload)) {
@@ -299,7 +299,7 @@ void MixedMaildirResource::collectionChanged(const Collection &collection, const
 
     mCompactHelper->checkCollectionChanged(collection);
 
-    Q_UNUSED(changedAttributes);
+    Q_UNUSED(changedAttributes)
 
     FileStore::CollectionModifyJob *job = mStore->modifyCollection(collection);
     connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::collectionChangedResult);
@@ -469,7 +469,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
         // last item delete triggers mbox purge, i.e. store compact
         const bool connected = connect(deleteJob, &KJob::result, this, &MixedMaildirResource::itemsDeleted);
         Q_ASSERT(connected);
-        Q_UNUSED(connected);
+        Q_UNUSED(connected)
     }
 
     // if some items have tags, we need to complete the retrieval and schedule tagging
@@ -619,7 +619,7 @@ void MixedMaildirResource::itemRemovedResult(KJob *job)
 
 void MixedMaildirResource::itemsDeleted(KJob *job)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
     scheduleCustomTask(this, "compactStore", QVariant());
 }
 
@@ -689,7 +689,7 @@ void MixedMaildirResource::collectionRemovedResult(KJob *job)
 
 void MixedMaildirResource::compactStore(const QVariant &arg)
 {
-    Q_UNUSED(arg);
+    Q_UNUSED(arg)
 
     FileStore::StoreCompactJob *job = mStore->compactStore();
     connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::compactStoreResult);

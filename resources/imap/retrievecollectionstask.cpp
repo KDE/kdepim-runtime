@@ -212,7 +212,7 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
 
 void RetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList< QByteArray > > &flags)
 {
-    Q_UNUSED(flags);
+    Q_UNUSED(flags)
     for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {
         m_fullReportedCollections.insert(descriptor.name);
     }

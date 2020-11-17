@@ -1061,7 +1061,7 @@ void POP3Protocol::get(const QUrl &url)
 
 void POP3Protocol::listDir(const QUrl &url)
 {
-    Q_UNUSED(url);
+    Q_UNUSED(url)
 
     bool isINT;
     int num_messages = 0;

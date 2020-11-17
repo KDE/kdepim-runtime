@@ -177,7 +177,7 @@ void RetrieveItemsTask::onPreExpungeSelectDone(KJob *job)
 
 void RetrieveItemsTask::triggerExpunge(const QString &mailBox)
 {
-    Q_UNUSED(mailBox);
+    Q_UNUSED(mailBox)
     auto *expunge = new KIMAP::ExpungeJob(m_session);
     connect(expunge, &KJob::result,
             this, &RetrieveItemsTask::onExpungeDone);
@@ -511,7 +511,7 @@ void RetrieveItemsTask::retrieveItems(const KIMAP::ImapSet &set, const KIMAP::Fe
 
 void RetrieveItemsTask::onReadyForNextBatch(int size)
 {
-    Q_UNUSED(size);
+    Q_UNUSED(size)
     if (m_batchFetcher) {
         m_batchFetcher->fetchNextBatch();
     }

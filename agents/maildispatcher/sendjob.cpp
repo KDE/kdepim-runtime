@@ -208,7 +208,7 @@ void SendJob::resourceProgress(const AgentInstance &instance)
 
 void SendJob::resourceResult(qlonglong itemId, int result, const QString &message)
 {
-    Q_UNUSED(itemId);
+    Q_UNUSED(itemId)
     Q_ASSERT(mInterface);
     delete mInterface; // So that abort() knows the transport job is over.
     mInterface = nullptr;

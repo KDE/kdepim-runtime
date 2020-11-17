@@ -175,7 +175,7 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
 
 void NewMailNotifierAgent::itemsFlagsChanged(const Akonadi::Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
 {
-    Q_UNUSED(removedFlags);
+    Q_UNUSED(removedFlags)
 
     if (!isActive()) {
         return;

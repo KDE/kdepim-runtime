@@ -32,7 +32,7 @@ VCardResource::~VCardResource()
 
 bool VCardResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
     const QString rid = item.remoteId();
     if (!mAddressees.contains(rid)) {
         Q_EMIT error(i18n("Contact with uid '%1' not found.", rid));
@@ -104,7 +104,7 @@ void VCardResource::itemRemoved(const Akonadi::Item &item)
 void VCardResource::retrieveItems(const Akonadi::Collection &col)
 {
     // vCard does not support folders so we can safely ignore the collection
-    Q_UNUSED(col);
+    Q_UNUSED(col)
 
     Item::List items;
     items.reserve(mAddressees.count());

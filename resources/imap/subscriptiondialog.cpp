@@ -252,7 +252,7 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
 
 void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags)
 {
-    Q_UNUSED(flags);
+    Q_UNUSED(flags)
     const int numberOfMailBoxes(mailBoxes.size());
     for (int i = 0; i < numberOfMailBoxes; ++i) {
         KIMAP::MailBoxDescriptor mailBox = mailBoxes.at(i);
@@ -268,7 +268,7 @@ void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBo
 
 void SubscriptionDialog::onReloadDone(KJob *job)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
     mUser1Button->setEnabled(true);
 }
 

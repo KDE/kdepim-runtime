@@ -451,10 +451,10 @@ const QString &KJob::errorString() const
 EwsPKeyAuthJob::EwsPKeyAuthJob(const QUrl &pkeyUri, const QString &certFile, const QString &keyFile, const QString &keyPassword, QObject *parent)
     : KJob(parent)
 {
-    Q_UNUSED(pkeyUri);
-    Q_UNUSED(certFile);
-    Q_UNUSED(keyFile);
-    Q_UNUSED(keyPassword);
+    Q_UNUSED(pkeyUri)
+    Q_UNUSED(certFile)
+    Q_UNUSED(keyFile)
+    Q_UNUSED(keyPassword)
 }
 
 const QUrl &EwsPKeyAuthJob::resultUri() const

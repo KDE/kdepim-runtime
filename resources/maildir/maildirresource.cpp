@@ -187,7 +187,7 @@ MaildirResource::~MaildirResource()
 
 bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
 
     const Maildir md = maildirForCollection(items.at(0).parentCollection());
     if (!md.isValid()) {

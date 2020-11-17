@@ -78,7 +78,7 @@ void BirthdaysResource::retrieveCollections()
 
 void BirthdaysResource::retrieveItems(const Akonadi::Collection &collection)
 {
-    Q_UNUSED(collection);
+    Q_UNUSED(collection)
     itemsRetrievedIncremental(Akonadi::valuesToVector(mPendingItems), Akonadi::valuesToVector(mDeletedItems));
     mPendingItems.clear();
     mDeletedItems.clear();
@@ -86,7 +86,7 @@ void BirthdaysResource::retrieveItems(const Akonadi::Collection &collection)
 
 bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet< QByteArray > &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
     qint64 contactId = item.remoteId().mid(1).toLongLong();
     ItemFetchJob *job = new ItemFetchJob(Item(contactId), this);
     job->fetchScope().fetchFullPayload();

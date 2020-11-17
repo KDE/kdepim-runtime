@@ -78,7 +78,7 @@ Collection MboxResource::rootCollection() const
 
 void MboxResource::retrieveItems(const Akonadi::Collection &col)
 {
-    Q_UNUSED(col);
+    Q_UNUSED(col)
     if (!mMBox) {
         cancelTask();
         return;
@@ -130,7 +130,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
 
 bool MboxResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
 
     if (!mMBox) {
         Q_EMIT error(i18n("MBox not loaded."));

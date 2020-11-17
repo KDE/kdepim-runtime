@@ -61,7 +61,7 @@ void EwsGetStreamingEventsRequest::start()
 
 void EwsGetStreamingEventsRequest::requestData(KIO::Job *job, const QByteArray &data)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
 
     mRespTimer.stop();
     qCDebug(EWSCLI_PROTO_LOG) << "data" << job << data;

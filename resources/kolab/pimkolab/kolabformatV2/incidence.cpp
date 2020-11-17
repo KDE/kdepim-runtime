@@ -25,7 +25,7 @@ Incidence::Incidence(const QString &tz, const KCalendarCore::Incidence::Ptr &inc
     , mHasAlarm(false)
     , mPriority(0)
 {
-    Q_UNUSED(incidence);
+    Q_UNUSED(incidence)
 }
 
 Incidence::~Incidence()

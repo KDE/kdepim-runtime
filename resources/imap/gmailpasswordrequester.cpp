@@ -28,7 +28,7 @@ GmailPasswordRequester::~GmailPasswordRequester()
 
 void GmailPasswordRequester::requestPassword(RequestType request, const QString &serverError)
 {
-    Q_UNUSED(serverError); // we don't get anything useful from XOAUTH2 SASL
+    Q_UNUSED(serverError) // we don't get anything useful from XOAUTH2 SASL
 
     if (request == WrongPasswordRequest) {
         auto promise = KGAPI2::AccountManager::instance()->findAccount(GOOGLE_API_KEY, mResource->settings()->userName());

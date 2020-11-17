@@ -218,7 +218,7 @@ bool EwsRequest::readSoapFault(QXmlStreamReader &reader)
 
 void EwsRequest::requestData(KIO::Job *job, const QByteArray &data)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
 
     qCDebug(EWSCLI_PROTO_LOG) << "data" << job << data;
     mResponseData += QString::fromUtf8(data);

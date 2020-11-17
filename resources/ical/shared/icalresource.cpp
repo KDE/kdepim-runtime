@@ -37,7 +37,7 @@ ICalResource::~ICalResource()
 
 bool ICalResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
     const QString rid = item.remoteId();
     Incidence::Ptr incidence = calendar()->instance(rid);
     if (!incidence) {
@@ -112,7 +112,7 @@ void ICalResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
 
 void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
 {
-    Q_UNUSED(col);
+    Q_UNUSED(col)
     const Incidence::List incidences = calendar()->incidences();
     Item::List items;
     items.reserve(incidences.count());

@@ -23,7 +23,7 @@ void EwsPasswordAuth::init()
 
 bool EwsPasswordAuth::getAuthData(QString &username, QString &password, QStringList &customHeaders)
 {
-    Q_UNUSED(customHeaders);
+    Q_UNUSED(customHeaders)
 
     if (!mPassword.isNull()) {
         username = mUsername;
@@ -40,7 +40,7 @@ void EwsPasswordAuth::notifyRequestAuthFailed()
 
 bool EwsPasswordAuth::authenticate(bool interactive)
 {
-    Q_UNUSED(interactive);
+    Q_UNUSED(interactive)
 
     return false;
 }
@@ -70,7 +70,7 @@ void EwsPasswordAuth::walletPasswordRequestFinished(const QString &password)
 
 void EwsPasswordAuth::walletMapRequestFinished(const QMap<QString, QString> &map)
 {
-    Q_UNUSED(map);
+    Q_UNUSED(map)
 }
 
 void EwsPasswordAuth::setUsername(const QString &username)

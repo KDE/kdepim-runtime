@@ -2233,7 +2233,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
 
 bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
 
     Collection::List collections;
 
@@ -2392,8 +2392,8 @@ void MixedMaildirStore::checkItemModify(FileStore::ItemModifyJob *job, int &erro
 
 void MixedMaildirStore::checkItemFetch(FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
     if (!job->requestedItems().isEmpty()) {
         // Requesting items
         const auto items = job->requestedItems();

@@ -104,14 +104,14 @@ void POP3Resource::slotAbortRequested()
 
 void POP3Resource::retrieveItems(const Akonadi::Collection &collection)
 {
-    Q_UNUSED(collection);
+    Q_UNUSED(collection)
     qCWarning(POP3RESOURCE_LOG) << "This should never be called, we don't have a collection!";
 }
 
 bool POP3Resource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(item);
-    Q_UNUSED(parts);
+    Q_UNUSED(item)
+    Q_UNUSED(parts)
     qCWarning(POP3RESOURCE_LOG) << "This should never be called, we don't have any item!";
     return false;
 }
@@ -556,8 +556,8 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
 
 void POP3Resource::messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglong totalBytes)
 {
-    Q_UNUSED(totalBytes);
-    Q_UNUSED(unit);
+    Q_UNUSED(totalBytes)
+    Q_UNUSED(unit)
     Q_ASSERT(unit == KJob::Bytes);
     QString statusMessage;
     const int totalMessages = mIdsToDownload.size() + mDownloadedIDs.size();

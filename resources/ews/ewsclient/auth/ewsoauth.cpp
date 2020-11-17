@@ -385,7 +385,7 @@ void EwsOAuthPrivate::error(const QString &error, const QString &errorDescriptio
 {
     Q_Q(EwsOAuth);
 
-    Q_UNUSED(uri);
+    Q_UNUSED(uri)
 
     mAuthenticated = false;
 
@@ -414,8 +414,8 @@ bool EwsOAuth::getAuthData(QString &username, QString &password, QStringList &cu
 {
     Q_D(const EwsOAuth);
 
-    Q_UNUSED(username);
-    Q_UNUSED(password);
+    Q_UNUSED(username)
+    Q_UNUSED(password)
 
     if (d->mAuthenticated) {
         customHeaders.append(QStringLiteral("Authorization: Bearer ") + d->mOAuth2.token());
@@ -456,7 +456,7 @@ const QString &EwsOAuth::authFailedPrompt() const
 
 void EwsOAuth::walletPasswordRequestFinished(const QString &password)
 {
-    Q_UNUSED(password);
+    Q_UNUSED(password)
 }
 
 void EwsOAuth::walletMapRequestFinished(const QMap<QString, QString> &map)

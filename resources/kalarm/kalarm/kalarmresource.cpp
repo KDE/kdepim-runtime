@@ -240,7 +240,7 @@ bool KAlarmResource::writeToFile(const QString &fileName)
 */
 bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
     const QString rid = item.remoteId();
     const KCalendarCore::Event::Ptr kcalEvent = calendar()->event(rid);
     if (!kcalEvent) {

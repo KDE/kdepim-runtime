@@ -14,8 +14,8 @@
 namespace KIO {
 inline TransferJob *http_post(const QUrl &url, const QByteArray &postData, JobFlags flags)
 {
-    Q_UNUSED(url);
-    Q_UNUSED(flags);
+    Q_UNUSED(url)
+    Q_UNUSED(flags)
 
     FakeTransferJob::Verifier vfy = FakeTransferJob::getVerifier();
     auto *job = new FakeTransferJob(postData, vfy.fn, vfy.object);

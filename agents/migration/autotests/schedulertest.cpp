@@ -87,7 +87,7 @@ public:
 
     void percent(KJob *job, long unsigned int percent) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         mPercent = percent;
     }
 

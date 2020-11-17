@@ -502,7 +502,7 @@ void KolabRetrieveCollectionsTask::checkDone()
 
 void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList< QByteArray > > &flags)
 {
-    Q_UNUSED(flags);
+    Q_UNUSED(flags)
     for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {
         mSubscribedMailboxes.insert(descriptor.name);
     }

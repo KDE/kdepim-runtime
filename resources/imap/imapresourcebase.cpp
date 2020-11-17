@@ -457,14 +457,14 @@ void ImapResourceBase::collectionMoved(const Akonadi::Collection &collection, co
 
 void ImapResourceBase::addSearch(const QString &query, const QString &queryLanguage, const Collection &resultCollection)
 {
-    Q_UNUSED(query);
-    Q_UNUSED(queryLanguage);
-    Q_UNUSED(resultCollection);
+    Q_UNUSED(query)
+    Q_UNUSED(queryLanguage)
+    Q_UNUSED(resultCollection)
 }
 
 void ImapResourceBase::removeSearch(const Collection &resultCollection)
 {
-    Q_UNUSED(resultCollection);
+    Q_UNUSED(resultCollection)
 }
 
 void ImapResourceBase::search(const QString &query, const Collection &collection)

@@ -32,7 +32,7 @@ QString TimezoneConverter::normalizeTimezone(const QString &tz)
 
 QString TimezoneConverter::fromGMTOffsetTimezone(const QString &tz)
 {
-    Q_UNUSED(tz);
+    Q_UNUSED(tz)
     return QString();
 }
 

@@ -153,7 +153,7 @@ public:
 protected:
     void enqueue(FileStore::Job *job, const char *className) override
     {
-        Q_UNUSED(className);
+        Q_UNUSED(className)
         mJobQueue.enqueue(job);
 
 //       qDebug() << "adding" << className << ". Queue now with"

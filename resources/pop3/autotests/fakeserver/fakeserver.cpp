@@ -152,10 +152,10 @@ void FakeServer::dataAvailable()
     //qDebug() << "Going to write data:" << removeCRLF( toWrite );
     const bool allWritten = mTcpServerConnection->write(toWrite) == toWrite.size();
     Q_ASSERT(allWritten);
-    Q_UNUSED(allWritten);
+    Q_UNUSED(allWritten)
     const bool flushed = mTcpServerConnection->flush();
     Q_ASSERT(flushed);
-    Q_UNUSED(flushed);
+    Q_UNUSED(flushed)
 }
 
 void FakeServer::newConnection()

@@ -17,7 +17,7 @@ FakeTransferJob::FakeTransferJob(const QByteArray &postData, const VerifierFn &f
     , mPostData(postData)
     , mVerifier(fn)
 {
-    Q_UNUSED(parent);
+    Q_UNUSED(parent)
 
     metaObject()->invokeMethod(this, "callVerifier", Qt::QueuedConnection);
 }

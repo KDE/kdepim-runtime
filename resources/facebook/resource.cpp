@@ -101,8 +101,8 @@ void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
 
 bool FacebookResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(items);
-    Q_UNUSED(parts);
+    Q_UNUSED(items)
+    Q_UNUSED(parts)
 
     // We always do full re-sync, and we always retrieve the entire payload, so
     // there's no need to implement this function

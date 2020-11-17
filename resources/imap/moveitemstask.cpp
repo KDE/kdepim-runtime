@@ -112,7 +112,7 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
 
             set.add(item.remoteId().toLong());
         } catch (const Akonadi::PayloadException &e) {
-            Q_UNUSED(e);
+            Q_UNUSED(e)
             qCWarning(IMAPRESOURCE_LOG) << "Move failed, payload exception " << item.id() << item.remoteId();
             cancelTask(i18n("Failed to move item, it has no message payload. Remote id: %1", item.remoteId()));
             return;
