@@ -38,7 +38,7 @@ void Settings::setPassword(const QString &password)
             qCWarning(POP3RESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();
         }
     });
-    writeJob->setKey(mIdentifier);
+    writeJob->setKey(mResourceId);
     writeJob->setTextData(password);
     writeJob->start();
 }

@@ -27,7 +27,8 @@
 #include "pop3resource_debug.h"
 
 #include <QTimer>
-
+#include <qt5keychain/keychain.h>
+using namespace QKeychain;
 using namespace Akonadi;
 using namespace MailTransport;
 using namespace KWallet;
@@ -60,8 +61,6 @@ POP3Resource::POP3Resource(const QString &id)
 POP3Resource::~POP3Resource()
 {
     mSettings.save();
-    delete mWallet;
-    mWallet = nullptr;
 }
 
 void POP3Resource::configurationChanged()
@@ -126,24 +125,18 @@ QString POP3Resource::buildLabelForPasswordDialog(const QString &detailedError) 
     return queryText;
 }
 
-void POP3Resource::walletOpenedForLoading(bool success)
+void POP3Resource::walletOpenedForLoading(QKeychain::Job *baseJob)
 {
-    bool passwordLoaded = success;
-    if (success) {
-        if (mWallet && mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
-            mWallet->setFolder(QStringLiteral("pop3"));
-            if (mWallet->hasEntry(identifier())) {
-                mWallet->readPassword(identifier(), mPassword);
-            } else {
-                passwordLoaded = false;
-            }
-        } else {
-            passwordLoaded = false;
-        }
+    auto *job = qobject_cast<ReadPasswordJob *>(baseJob);
+    bool passwordLoaded = false;
+    Q_ASSERT(job);
+    if (!job->error()) {
+        mPassword = job->textData();
+        passwordLoaded = true;
+    } else {
+        passwordLoaded = false;
+        qCWarning(POP3RESOURCE_LOG) << "We have an error during reading password " << job->errorString();
     }
-    delete mWallet;
-    mWallet = nullptr;
-
     if (!passwordLoaded) {
         const QString queryText = buildLabelForPasswordDialog(
             i18n("You are asked here because the password could not be loaded from the wallet."));
@@ -151,25 +144,6 @@ void POP3Resource::walletOpenedForLoading(bool success)
     } else {
         advanceState(Connect);
     }
-}
-
-void POP3Resource::walletOpenedForSaving(bool success)
-{
-    if (success) {
-        if (mWallet && mWallet->isOpen()) {
-            if (!mWallet->hasFolder(QStringLiteral("pop3"))) {
-                mWallet->createFolder(QStringLiteral("pop3"));
-            }
-            mWallet->setFolder(QStringLiteral("pop3"));
-            mWallet->writePassword(identifier(), mPassword);
-        }
-    } else {
-        qCWarning(POP3RESOURCE_LOG) << "Unable to write the password to the wallet.";
-    }
-
-    delete mWallet;
-    mWallet = nullptr;
-    finish();
 }
 
 void POP3Resource::showPasswordDialog(const QString &queryText)
@@ -262,19 +236,16 @@ void POP3Resource::doStateStep()
         const bool loadPasswordFromWallet = !mAskAgain && passwordNeeded && !mSettings.login().isEmpty()
                                             && mPassword.isEmpty();
         if (loadPasswordFromWallet) {
-            mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winIdForDialogs(),
-                                         Wallet::Asynchronous);
-        }
-        if (loadPasswordFromWallet && mWallet) {
-            connect(mWallet, &KWallet::Wallet::walletOpened, this, &POP3Resource::walletOpenedForLoading);
+            auto readJob = new ReadPasswordJob(QStringLiteral("pop3"), this);
+            connect(readJob, &QKeychain::Job::finished, this, &POP3Resource::walletOpenedForLoading);
+            readJob->setKey(identifier());
+            readJob->start();
         } else if (passwordNeeded && (mPassword.isEmpty() || mAskAgain)) {
             QString detail;
             if (mAskAgain) {
                 detail = i18n("You are asked here because the previous login was not successful.");
             } else if (mSettings.login().isEmpty()) {
                 detail = i18n("You are asked here because the username you supplied is empty.");
-            } else if (!mWallet) {
-                detail = i18n("You are asked here because the wallet password storage is disabled.");
             }
 
             showPasswordDialog(buildLabelForPasswordDialog(detail));
@@ -384,13 +355,16 @@ void POP3Resource::doStateStep()
         if (mSavePassword) {
             qCDebug(POP3RESOURCE_LOG) << "Writing password back to the wallet.";
             Q_EMIT status(Running, i18n("Saving password to the wallet."));
-            mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winIdForDialogs(),
-                                         Wallet::Asynchronous);
-            if (mWallet) {
-                connect(mWallet, &KWallet::Wallet::walletOpened, this, &POP3Resource::walletOpenedForSaving);
-            } else {
+            auto writeJob = new WritePasswordJob(QStringLiteral("pop3"), this);
+            connect(writeJob, &QKeychain::Job::finished, this, [this](QKeychain::Job *baseJob) {
+                if (baseJob->error()) {
+                    qCWarning(POP3RESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();
+                }
                 finish();
-            }
+            });
+            writeJob->setKey(identifier());
+            writeJob->setTextData(mPassword);
+            writeJob->start();
         } else {
             finish();
         }
@@ -969,8 +943,6 @@ void POP3Resource::resetState()
     mIntervalCheckInProgress = false;
     mSavePassword = false;
     updateIntervalTimer();
-    delete mWallet;
-    mWallet = nullptr;
 
     if (mPopSession) {
         // Closing the POP session means the KIO slave will get disconnected, which
@@ -1007,12 +979,9 @@ void POP3Resource::clearCachedPassword()
 
 void POP3Resource::cleanup()
 {
-    if (mWallet && mWallet->isOpen() && mWallet->hasFolder(QStringLiteral("pop3"))) {
-        mWallet->setFolder(QStringLiteral("pop3"));
-        if (mWallet->hasEntry(identifier())) {
-            mWallet->removeEntry(identifier());
-        }
-    }
+    auto deleteJob = new DeletePasswordJob(QStringLiteral("pop3"));
+    deleteJob->setKey(identifier());
+    deleteJob->start();
     ResourceBase::cleanup();
 }
 
@@ -1026,8 +995,6 @@ void POP3Resource::doSetOnline(bool online)
             cancelSync(i18n("Mail check aborted after going offline."), false /* no error */);
         }
         Q_EMIT status(Idle, i18n("Offline"));
-        delete mWallet;
-        mWallet = nullptr;
         clearCachedPassword();
     }
 }

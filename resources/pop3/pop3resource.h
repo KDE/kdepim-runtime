@@ -19,13 +19,11 @@ class DeleteJob;
 namespace Akonadi {
 class ItemCreateJob;
 }
-namespace KWallet {
-class Wallet;
-}
-
 class POPSession;
 class QTimer;
-
+namespace QKeychain {
+class Job;
+}
 class POP3Resource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
     Q_OBJECT
@@ -68,7 +66,7 @@ private Q_SLOTS:
     void precommandResult(KJob *job);
 
     // For state RequestPassword
-    void walletOpenedForLoading(bool success);
+    void walletOpenedForLoading(QKeychain::Job *baseJob);
 
     // For state Login
     void loginJobResult(KJob *job);
@@ -92,9 +90,6 @@ private Q_SLOTS:
 
     // For state Quit
     void quitJobResult(KJob *job);
-
-    // For state SavePassword
-    void walletOpenedForSaving(bool success);
 
 private:
 
@@ -140,7 +135,6 @@ private:
     QString mPassword;
     bool mSavePassword = false;
     bool mTestLocalInbox = false;
-    KWallet::Wallet *mWallet = nullptr;
 
     // Maps IDs on the server to message sizes on the server
     QMap<int, int> mIdsToSizeMap;
