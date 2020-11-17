@@ -18,9 +18,6 @@ class Settings;
 namespace MailTransport {
 class ServerTest;
 }
-namespace KWallet {
-class Wallet;
-}
 
 class KJob;
 
@@ -56,7 +53,7 @@ private Q_SLOTS:
     void targetCollectionReceived(Akonadi::Collection::List collections);
     void localFolderRequestJobFinished(KJob *job);
     void walletOpenedForLoading(QKeychain::Job *baseJob);
-    void walletOpenedForSaving(bool success);
+    void walletOpenedForSaving();
     void slotAccepted();
 private:
     void setupWidgets();

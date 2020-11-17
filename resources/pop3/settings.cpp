@@ -6,8 +6,8 @@
 
 #include "settings.h"
 #include "settingsadaptor.h"
-
-#include <KWallet>
+#include <qt5keychain/keychain.h>
+using namespace QKeychain;
 #include "pop3resource_debug.h"
 
 Settings::Settings(const KSharedConfigPtr &config, Options options)
@@ -32,17 +32,13 @@ void Settings::setResourceId(const QString &resourceIdentifier)
 
 void Settings::setPassword(const QString &password)
 {
-    using namespace KWallet;
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), mWinId,
-                                        Wallet::Synchronous);
-    if (wallet && wallet->isOpen()) {
-        if (!wallet->hasFolder(QStringLiteral("pop3"))) {
-            wallet->createFolder(QStringLiteral("pop3"));
+    auto writeJob = new WritePasswordJob(QStringLiteral("pop3"), this);
+    connect(writeJob, &QKeychain::Job::finished, this, [](QKeychain::Job *baseJob) {
+        if (baseJob->error()) {
+            qCWarning(POP3RESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();
         }
-        wallet->setFolder(QStringLiteral("pop3"));
-        wallet->writePassword(mResourceId, password);
-    } else {
-        qCWarning(POP3RESOURCE_LOG) << "Unable to open wallet!";
-    }
-    delete wallet;
+    });
+    writeJob->setKey(mIdentifier);
+    writeJob->setTextData(password);
+    writeJob->start();
 }

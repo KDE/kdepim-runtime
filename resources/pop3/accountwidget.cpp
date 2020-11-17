@@ -224,36 +224,23 @@ void AccountWidget::walletOpenedForLoading(QKeychain::Job *baseJob)
     }
 }
 
-void AccountWidget::walletOpenedForSaving(bool success)
+void AccountWidget::walletOpenedForSaving()
 {
-#if 0
-    //Move as async
-    if (success) {
-        if (mWallet && mWallet->isOpen()) {
-            // Remove the password from the wallet if the user doesn't want to store it
-            if (passwordEdit->password().isEmpty() && mWallet->hasFolder(QStringLiteral("pop3"))) {
-                mWallet->setFolder(QStringLiteral("pop3"));
-                mWallet->removeEntry(mIdentifier);
-            }
-            // Store the password in the wallet if the user wants that
-            else if (!passwordEdit->password().isEmpty()) {
-                if (!mWallet->hasFolder(QStringLiteral("pop3"))) {
-                    mWallet->createFolder(QStringLiteral("pop3"));
-                }
-                mWallet->setFolder(QStringLiteral("pop3"));
-                mWallet->writePassword(mIdentifier, passwordEdit->password());
-            }
-        } else {
-            qCWarning(POP3RESOURCE_LOG) << "Wallet not open.";
-        }
+    if (passwordEdit->password().isEmpty()) {
+        auto deleteJob = new DeletePasswordJob(QStringLiteral("pop3"));
+        deleteJob->setKey(mIdentifier);
+        deleteJob->start();
     } else {
-        // Should we alert the user here?
-        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for saving the password.";
+        auto writeJob = new WritePasswordJob(QStringLiteral("pop3"), this);
+        connect(writeJob, &QKeychain::Job::finished, this, [](QKeychain::Job *baseJob) {
+            if (baseJob->error()) {
+                qCWarning(POP3RESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();
+            }
+        });
+        writeJob->setKey(mIdentifier);
+        writeJob->setTextData(passwordEdit->password());
+        writeJob->start();
     }
-
-    delete mWallet;
-    mWallet = nullptr;
-#endif
 }
 
 void AccountWidget::slotLeaveOnServerClicked()
@@ -557,24 +544,10 @@ void AccountWidget::saveSettings()
     const bool userWantsToDeletePassword
         = passwordEdit->password().isEmpty() && userChangedPassword;
     //Move to async
-#if 0
     if ((!passwordEdit->password().isEmpty() && userChangedPassword)
         || userWantsToDeletePassword) {
-        qCDebug(POP3RESOURCE_LOG) << mWallet <<  mWallet->isOpen();
-        if (mWallet && mWallet->isOpen()) {
-            // wallet is already open
-            walletOpenedForSaving(true);
-        } else {
-            // we need to open the wallet
-            qCDebug(POP3RESOURCE_LOG) << "we need to open the wallet";
-            mWallet = Wallet::openWallet(Wallet::NetworkWallet(), winId(),
-                                         Wallet::Synchronous);
-            if (mWallet) {
-                walletOpenedForSaving(true);
-            }
-        }
+        walletOpenedForSaving();
     }
-#endif
 }
 
 void AccountWidget::slotEnableLeaveOnServerDays(bool state)
