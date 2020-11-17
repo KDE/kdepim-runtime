@@ -7,7 +7,8 @@
 
 #include "settings.h"
 #include "settingsadaptor.h"
-
+#include <qt5keychain/keychain.h>
+using namespace QKeychain;
 #include "imapaccount.h"
 #include <config-imap.h>
 
@@ -80,15 +81,9 @@ void Settings::clearCachedPassword()
 
 void Settings::cleanup()
 {
-    //TODO move to async
-    Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
-    if (wallet && wallet->isOpen()) {
-        if (wallet->hasFolder(QStringLiteral("imap"))) {
-            wallet->setFolder(QStringLiteral("imap"));
-            wallet->removeEntry(config()->name());
-        }
-        delete wallet;
-    }
+    auto deleteJob = new DeletePasswordJob(QStringLiteral("imap"));
+    deleteJob->setKey(config()->name());
+    deleteJob->start();
 }
 
 void Settings::requestPassword()
