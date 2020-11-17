@@ -88,6 +88,7 @@ target_link_libraries(imapresource
     akonadi-singlefileresource
     KF5::PimCommon
     KF5::Libkdepim
+    qt5keychain
 )
 
 ########### next target ###############

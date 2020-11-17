@@ -80,6 +80,7 @@ void Settings::clearCachedPassword()
 
 void Settings::cleanup()
 {
+    //TODO move to async
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QStringLiteral("imap"))) {
