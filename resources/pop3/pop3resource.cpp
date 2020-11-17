@@ -23,7 +23,6 @@
 #include <KPasswordDialog>
 #include <KMessageBox>
 #include <KNotification>
-#include <KWallet>
 #include "pop3resource_debug.h"
 
 #include <QTimer>
@@ -31,7 +30,6 @@
 using namespace QKeychain;
 using namespace Akonadi;
 using namespace MailTransport;
-using namespace KWallet;
 
 POP3Resource::POP3Resource(const QString &id)
     : ResourceBase(id)
