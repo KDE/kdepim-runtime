@@ -213,14 +213,13 @@ void AccountWidget::walletOpenedForLoading(QKeychain::Job *baseJob)
 {
     auto *job = qobject_cast<ReadPasswordJob *>(baseJob);
     Q_ASSERT(job);
-    if (!job->error()) {
+    if (job->error()) {
+        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for loading the password." << job->errorString();
+        passwordEdit->lineEdit()->setPlaceholderText(i18n("Unable to open wallet"));
+    } else {
         passwordEdit->setPassword(job->textData());
         passwordEdit->setEnabled(true);
         passwordLabel->setEnabled(true);
-
-    } else {
-        qCWarning(POP3RESOURCE_LOG) << "Failed to open wallet for loading the password." << job->errorString();
-        passwordEdit->lineEdit()->setPlaceholderText(i18n("Unable to open wallet"));
     }
 }
 
