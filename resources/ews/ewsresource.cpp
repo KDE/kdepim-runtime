@@ -16,7 +16,6 @@
 #include <AkonadiCore/EntityDisplayAttribute>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <KMime/Message>
-#include <KWallet/KWallet>
 #include <KNotification>
 
 #include <KLocalizedString>
