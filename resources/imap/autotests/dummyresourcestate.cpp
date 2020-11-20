@@ -336,7 +336,7 @@ void DummyResourceState::changeProcessed()
 
 void DummyResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
 {
-    Q_UNUSED(isRid);
+    Q_UNUSED(isRid)
     recordCall("searchFinished", QVariant::fromValue(result));
 }
 
@@ -372,7 +372,7 @@ void DummyResourceState::emitWarning(const QString &message)
 
 void DummyResourceState::emitPercent(int percent)
 {
-    Q_UNUSED(percent);
+    Q_UNUSED(percent)
     // FIXME: Many tests need to be updated for this to be uncommented out.
     // recordCall( "emitPercent", QVariant::fromValue(percent) );
 }

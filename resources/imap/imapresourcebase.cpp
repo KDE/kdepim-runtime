@@ -229,7 +229,7 @@ void ImapResourceBase::startConnect(const QVariant &)
 
     const bool result = m_pool->connect(account);
     Q_ASSERT(result);
-    Q_UNUSED(result);
+    Q_UNUSED(result)
 }
 
 int ImapResourceBase::configureSubscription(qlonglong windowId)

@@ -246,7 +246,7 @@ bool EwsPoxAutodiscoverRequest::readProtocol(QXmlStreamReader &reader)
 
 void EwsPoxAutodiscoverRequest::requestRedirect(KIO::Job *job, const QUrl &url)
 {
-    Q_UNUSED(job);
+    Q_UNUSED(job)
 
     qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got HTTP redirect to: ") << mUrl;
 

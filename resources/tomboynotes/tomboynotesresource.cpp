@@ -97,7 +97,7 @@ void TomboyNotesResource::retrieveItems(const Akonadi::Collection &collection)
 
 bool TomboyNotesResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
 
     if (configurationNotValid()) {
         cancelTask(i18n("Resource configuration is not valid"));
@@ -195,7 +195,7 @@ void TomboyNotesResource::onItemsRetrieved(KJob *kjob)
 
 void TomboyNotesResource::onSslError(QNetworkReply *reply, const QList<QSslError> &errors)
 {
-    Q_UNUSED(errors);
+    Q_UNUSED(errors)
     if (Settings::ignoreSslErrors()) {
         reply->ignoreSslErrors();
     }
@@ -224,7 +224,7 @@ void TomboyNotesResource::slotReloadConfig()
 
 void TomboyNotesResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    Q_UNUSED(collection);
+    Q_UNUSED(collection)
     if (Settings::readOnly() || configurationNotValid()) {
         cancelTask(i18n("Resource is read-only"));
         return;
@@ -245,7 +245,7 @@ void TomboyNotesResource::itemAdded(const Akonadi::Item &item, const Akonadi::Co
 
 void TomboyNotesResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
-    Q_UNUSED(parts);
+    Q_UNUSED(parts)
     if (Settings::readOnly() || configurationNotValid()) {
         cancelTask(i18n("Resource is read-only"));
         return;

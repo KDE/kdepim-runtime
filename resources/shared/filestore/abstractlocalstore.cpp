@@ -40,73 +40,73 @@ public:
 public: // Job::Visitor interface implementation
     bool visit(FileStore::Job *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::CollectionCreateJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::CollectionDeleteJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::CollectionFetchJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::CollectionModifyJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::CollectionMoveJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::ItemCreateJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::ItemDeleteJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::ItemFetchJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::ItemModifyJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::ItemMoveJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
     bool visit(FileStore::StoreCompactJob *job) override
     {
-        Q_UNUSED(job);
+        Q_UNUSED(job)
         return false;
     }
 
@@ -822,79 +822,79 @@ void FileStore::AbstractLocalStore::setTopLevelCollection(const Collection &coll
 
 void FileStore::AbstractLocalStore::checkCollectionCreate(FileStore::CollectionCreateJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkCollectionDelete(FileStore::CollectionDeleteJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkCollectionFetch(FileStore::CollectionFetchJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkCollectionModify(FileStore::CollectionModifyJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkCollectionMove(FileStore::CollectionMoveJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkItemCreate(FileStore::ItemCreateJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkItemDelete(FileStore::ItemDeleteJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkItemFetch(FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkItemModify(FileStore::ItemModifyJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkItemMove(FileStore::ItemMoveJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 void FileStore::AbstractLocalStore::checkStoreCompact(FileStore::StoreCompactJob *job, int &errorCode, QString &errorText) const
 {
-    Q_UNUSED(job);
-    Q_UNUSED(errorCode);
-    Q_UNUSED(errorText);
+    Q_UNUSED(job)
+    Q_UNUSED(errorCode)
+    Q_UNUSED(errorText)
 }
 
 #include "moc_abstractlocalstore.cpp"
