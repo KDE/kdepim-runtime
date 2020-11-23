@@ -92,6 +92,7 @@ void Settings::requestPassword()
         || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         Q_EMIT passwordRequestCompleted(m_password, false);
     } else {
+        //Already async. Just port to ReadPassword
         Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
         if (wallet) {
             connect(wallet, &KWallet::Wallet::walletOpened,
@@ -133,6 +134,7 @@ QString Settings::password(bool *userRejected) const
         || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         return m_password;
     }
+    //Move as async
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QStringLiteral("imap"))) {
@@ -158,6 +160,7 @@ QString Settings::sieveCustomPassword(bool *userRejected) const
         return m_customSievePassword;
     }
 
+    //Move as async
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QStringLiteral("imap"))) {
