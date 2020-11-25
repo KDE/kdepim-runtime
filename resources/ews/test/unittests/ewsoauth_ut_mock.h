@@ -56,6 +56,8 @@ public:
 
     QUrl requestUrl() const;
     void block(bool shouldBlock);
+    void setHttpHeader(const QByteArray &name, const QByteArray &value);
+    void redirect(const QUrl &url);
 
     bool mBlocked;
     QUrl mUrl;
@@ -311,6 +313,7 @@ public:
     }
 
     const QUrl &resultUri() const;
+    QString getAuthHeader();
 };
 
 QString browserDisplayRequestString();

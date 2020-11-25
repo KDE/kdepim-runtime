@@ -24,6 +24,8 @@ public:
     const QUrl &resultUri() const;
     void start() override;
 
+    QString getAuthHeader();
+
 private:
     QByteArray buildAuthResponse(const QMap<QString, QString> &params);
     void sendAuthRequest(const QByteArray &respToken, const QUrl &submitUrl, const QString &context);

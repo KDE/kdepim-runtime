@@ -30,6 +30,8 @@ using namespace Mock;
 #include "ewsclient_debug.h"
 #include <KLocalizedString>
 #include <QJsonDocument>
+#include <QTcpServer>
+#include <QTcpSocket>
 
 static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/authorize"));
 static const auto o365AccessTokenUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/token"));
@@ -88,20 +90,24 @@ class EwsOAuthRequestInterceptor final : public QWebEngineUrlRequestInterceptor
 {
     Q_OBJECT
 public:
-    EwsOAuthRequestInterceptor(QObject *parent, const QString &redirectUri)
-        : QWebEngineUrlRequestInterceptor(parent)
-        , mRedirectUri(redirectUri)
-    {
-    }
-
+    EwsOAuthRequestInterceptor(QObject *parent, const QString &redirectUri, const QString &clientId);
     ~EwsOAuthRequestInterceptor() override = default;
 
     void interceptRequest(QWebEngineUrlRequestInfo &info) override;
+public Q_SLOTS:
+    void setPKeyAuthInputArguments(const QString &pkeyCertFile, const QString &pkeyKeyFile, const QString &pkeyPassword);
 Q_SIGNALS:
     void redirectUriIntercepted(const QUrl &url);
 
 private:
     const QString mRedirectUri;
+    const QString mClientId;
+    QString mPKeyCertFile;
+    QString mPKeyKeyFile;
+    QString mPKeyPassword;
+    QString mPKeyAuthResponse;
+    QString mPKeyAuthSubmitUrl;
+    QTcpServer mRedirectServer;
 };
 
 class EwsOAuthPrivate final : public QObject
@@ -199,18 +205,77 @@ void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
     Q_EMIT tokensReceived(tokens);
 }
 
+EwsOAuthRequestInterceptor::EwsOAuthRequestInterceptor(QObject *parent, const QString &redirectUri, const QString &clientId)
+    : QWebEngineUrlRequestInterceptor(parent)
+    , mRedirectUri(redirectUri)
+    , mClientId(clientId)
+{
+    /* Workaround for QTBUG-88861 - start a trivial HTTP server to serve the redirect.
+     * The redirection must be done using JavaScript as HTTP-protocol redirections (301, 302)
+     * do not cause QWebEngineUrlRequestInterceptor::interceptRequest() to fire. */
+    connect(&mRedirectServer, &QTcpServer::newConnection, this, [this]() {
+        const auto socket = mRedirectServer.nextPendingConnection();
+        if (socket) {
+            connect(socket, &QIODevice::readyRead, this, [this, socket]() {
+                const auto response = QStringLiteral(
+                                          "HTTP/1.1 200 OK\n\n<!DOCTYPE html>\n<html><body><p>You will be redirected "
+                                          "shortly.</p><script>window.location.href=\"%1\";</script></body></html>\n")
+                                          .arg(mPKeyAuthSubmitUrl);
+                socket->write(response.toLocal8Bit());
+            });
+            connect(socket, &QIODevice::bytesWritten, this, [socket]() {
+                socket->deleteLater();
+            });
+        }
+    });
+    mRedirectServer.listen(QHostAddress::LocalHost);
+}
+
 void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
 {
     const auto url = info.requestUrl();
 
     qCDebugNC(EWSCLI_LOG) << QStringLiteral("Intercepted browser navigation to ") << url;
 
-    if ((url.toString(QUrl::RemoveQuery) == mRedirectUri) || (url.toString(QUrl::RemoveQuery) == pkeyRedirectUri)) {
+    if (url.toString(QUrl::RemoveQuery) == pkeyRedirectUri) {
+        qCDebugNC(EWSCLI_LOG) << QStringLiteral("Found PKeyAuth URI");
+
+        auto pkeyAuthJob = new EwsPKeyAuthJob(url, mPKeyCertFile, mPKeyKeyFile, mPKeyPassword, this);
+        mPKeyAuthResponse = pkeyAuthJob->getAuthHeader();
+        QUrlQuery query(url.query());
+        if (!mPKeyAuthResponse.isEmpty() && query.hasQueryItem(QLatin1String("SubmitUrl"))) {
+            mPKeyAuthSubmitUrl = query.queryItemValue(QLatin1String("SubmitUrl"), QUrl::FullyDecoded);
+            /* Workaround for QTBUG-88861
+             * When the PKey authentication starts, the server issues a request for a "special" PKey URL
+             * containing the challenge arguments and expects that a response is composed and the browser
+             * then redirected to the URL found in the SubmitUrl argument with the response passed using
+             * the HTTP Authorization header.
+             * Unfortunately the Qt WebEngine request interception mechanism will ignore custom HTTP headers
+             * when issuing a redirect.
+             * To work around that the EWS Resource launches a minimalistic HTTP server to serve a
+             * simple webpage with redirection. This way the redirection happens externally to the
+             * Qt Web Engine and the submit URL can be captured by the request interceptor again, this time
+             * only to add the missing Authorization header. */
+            qCDebugNC(EWSCLI_LOG) << QStringLiteral("Redirecting to PKey SubmitUrl via QTBUG-88861 workaround");
+            info.redirect(QUrl(QStringLiteral("http://localhost:%1/").arg(mRedirectServer.serverPort())));
+        } else {
+            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to retrieve PKey authorization header");
+        }
+    } else if (url.toString(QUrl::RemoveQuery) == mPKeyAuthSubmitUrl) {
+        info.setHttpHeader(QByteArray("Authorization"), mPKeyAuthResponse.toLocal8Bit());
+    } else if (url.toString(QUrl::RemoveQuery) == mRedirectUri) {
         qCDebug(EWSCLI_LOG) << QStringLiteral("Found redirect URI - blocking request");
 
         Q_EMIT redirectUriIntercepted(url);
         info.block(true);
     }
+}
+
+void EwsOAuthRequestInterceptor::setPKeyAuthInputArguments(const QString &pkeyCertFile, const QString &pkeyKeyFile, const QString &pkeyPassword)
+{
+    mPKeyCertFile = pkeyCertFile;
+    mPKeyKeyFile = pkeyKeyFile;
+    mPKeyPassword = pkeyPassword;
 }
 
 EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const QString &appId, const QString &redirectUri)
@@ -219,7 +284,7 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     , mWebProfile()
     , mWebPage(&mWebProfile)
     , mReplyHandler(this, redirectUri)
-    , mRequestInterceptor(this, redirectUri)
+    , mRequestInterceptor(this, redirectUri, appId)
     , mEmail(email)
     , mRedirectUri(redirectUri)
     , mAuthenticated(false)
@@ -299,6 +364,8 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
         qCInfoNC(EWSCLI_LOG) << QStringLiteral("PKeyAuth certificates not found");
     }
     mWebProfile.setHttpUserAgent(userAgent);
+
+    mRequestInterceptor.setPKeyAuthInputArguments(q->mPKeyCertFile, q->mPKeyKeyFile, mPKeyPassword);
 
     mWebDialog = new QDialog(q->mAuthParentWidget);
     mWebDialog->setObjectName(QStringLiteral("Akonadi EWS Resource - Authentication"));

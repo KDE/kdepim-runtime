@@ -173,3 +173,26 @@ const QUrl &EwsPKeyAuthJob::resultUri() const
 {
     return mResultUri;
 }
+
+QString EwsPKeyAuthJob::getAuthHeader()
+{
+    const QUrlQuery query(mPKeyUri);
+    QMap<QString, QString> params;
+    for (const auto &it : query.queryItems()) {
+        params[it.first.toLower()] = QUrl::fromPercentEncoding(it.second.toLatin1());
+    }
+
+    if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce")) && params.contains(QStringLiteral("certauthorities"))
+        && params.contains(QStringLiteral("context")) && params.contains(QStringLiteral("version"))) {
+        const auto respToken = buildAuthResponse(params);
+
+        if (!respToken.isEmpty()) {
+            return QLatin1String("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"")
+                .arg(QString::fromLatin1(respToken), params[QStringLiteral("context")]);
+        } else {
+            return {};
+        }
+    } else {
+        return {};
+    }
+}

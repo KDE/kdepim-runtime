@@ -29,6 +29,14 @@ void QWebEngineUrlRequestInfo::block(bool)
     mBlocked = true;
 }
 
+void QWebEngineUrlRequestInfo::redirect(const QUrl &)
+{
+}
+
+void QWebEngineUrlRequestInfo::setHttpHeader(const QByteArray &header, const QByteArray &value)
+{
+}
+
 QWebEngineUrlRequestInterceptor::QWebEngineUrlRequestInterceptor(QObject *parent)
     : QObject(parent)
 {
@@ -483,5 +491,10 @@ const QUrl &EwsPKeyAuthJob::resultUri() const
 {
     static const QUrl empty;
     return empty;
+}
+
+QString EwsPKeyAuthJob::getAuthHeader()
+{
+    return QString();
 }
 }
