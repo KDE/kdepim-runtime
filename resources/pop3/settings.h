@@ -10,7 +10,6 @@
 #include "settingsbase.h"
 
 #include <qwindowdefs.h>
-#include <QFlag>
 
 /**
  * Extended settings class that allows setting the password over dbus, which is used by the

@@ -13,7 +13,6 @@
 #include "utils.h"
 #include "davresource_debug.h"
 
-#include <QLineEdit>
 #include <KLocalizedString>
 
 #include <KWallet>

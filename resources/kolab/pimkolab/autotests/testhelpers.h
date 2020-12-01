@@ -9,7 +9,6 @@
 
 #include <contact.h>
 
-#include <QObject>
 #include <QTest>
 #include <KCalendarCore/Recurrence>
 #include <kcalendarcore/event.h>

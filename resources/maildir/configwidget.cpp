@@ -11,7 +11,6 @@
 #include <maildir.h>
 
 #include <KConfigDialogManager>
-#include <KUrlRequester>
 #include <KLineEdit>
 #include <QVBoxLayout>
 

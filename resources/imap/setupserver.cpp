@@ -46,6 +46,7 @@
 #include <kidentitymanagement/identitymanager.h>
 #include <kidentitymanagement/identitycombo.h>
 #include <QVBoxLayout>
+#include <QPointer>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"

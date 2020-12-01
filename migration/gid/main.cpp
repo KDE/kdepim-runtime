@@ -8,7 +8,6 @@
 #include <KAboutData>
 
 #include <KConfig>
-#include <KConfigGroup>
 #include <KLocalizedString>
 
 #include "migration_debug.h"

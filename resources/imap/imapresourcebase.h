@@ -15,7 +15,6 @@
 #include <AkonadiAgentBase/resourcebase.h>
 #include <AkonadiAgentBase/agentsearchinterface.h>
 #include <QDialog>
-#include <QPointer>
 #include "resourcestateinterface.h"
 #include "resourcestate.h"
 

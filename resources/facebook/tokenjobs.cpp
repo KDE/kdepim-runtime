@@ -16,7 +16,6 @@
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QProgressBar>
-#include <QJsonObject>
 
 #include <QUrlQuery>
 #include <QJsonDocument>

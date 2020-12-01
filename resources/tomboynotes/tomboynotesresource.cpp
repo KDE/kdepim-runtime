@@ -16,7 +16,6 @@
 #include <changerecorder.h>
 #include <ItemFetchScope>
 #include <KLocalizedString>
-#include <KSslInfoDialog>
 #include <QSslCipher>
 #include <QDBusConnection>
 

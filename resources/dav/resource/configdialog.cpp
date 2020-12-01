@@ -13,7 +13,6 @@
 #include <KDAV/ProtocolInfo>
 
 #include <KConfigDialogManager>
-#include <KConfigSkeleton>
 #include <KLocalizedString>
 #include <KMessageBox>
 

@@ -11,9 +11,6 @@
 
 #include <QUrl>
 #include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QJsonArray>
 #include <QUrlQuery>
 
 #include <KLocalizedString>

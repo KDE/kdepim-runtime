@@ -10,7 +10,6 @@
 #include "libmaildir/maildir.h"
 
 #include <KConfigDialogManager>
-#include <KUrlRequester>
 #include <KLineEdit>
 using KPIM::Maildir;
 

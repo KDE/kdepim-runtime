@@ -6,7 +6,6 @@
 
 #include "etesyncclientstate.h"
 
-#include <KLocalizedString>
 
 #include "etesync_debug.h"
 
