@@ -129,7 +129,9 @@ void GoogleSettingsDialog::accountChanged()
 
 void GoogleSettingsDialog::slotConfigure()
 {
-    const QString username = m_account && m_account->accountName().isEmpty() ? QString() : m_account->accountName();
+    const QString username = m_account && !m_account->accountName().isEmpty()
+        ? m_account->accountName()
+        : QString();
     m_account = AccountPtr(new Account());
     const QList<QUrl> resourceScopes = m_resource->scopes();
     for (const QUrl &scope : resourceScopes) {
