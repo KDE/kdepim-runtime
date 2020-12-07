@@ -20,7 +20,7 @@ class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::
 
 public:
     explicit ICalResourceBase(const QString &id);
-    ~ICalResourceBase();
+    ~ICalResourceBase() override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual

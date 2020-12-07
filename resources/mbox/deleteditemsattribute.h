@@ -23,7 +23,7 @@ public:
 
     DeletedItemsAttribute(const DeletedItemsAttribute &other);
 
-    ~DeletedItemsAttribute();
+    ~DeletedItemsAttribute() override;
 
     void addDeletedItemOffset(quint64);
 

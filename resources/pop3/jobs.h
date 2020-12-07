@@ -68,7 +68,7 @@ class SlaveBaseJob : public KJob
 
 public:
     explicit SlaveBaseJob(POPSession *POPSession);
-    ~SlaveBaseJob();
+    ~SlaveBaseJob() override;
 
     virtual void slaveError(int errorCode, const QString &errorMessage);
 

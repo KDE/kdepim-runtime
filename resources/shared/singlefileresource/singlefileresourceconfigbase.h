@@ -23,7 +23,7 @@ public:
     {
     }
 
-    ~SingleFileResourceConfigBase()
+    ~SingleFileResourceConfigBase() override
     {
     }
 

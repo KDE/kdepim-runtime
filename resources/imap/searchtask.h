@@ -15,7 +15,7 @@ class SearchTask : public ResourceTask
     Q_OBJECT
 public:
     SearchTask(const ResourceStateInterface::Ptr &state, const QString &query, QObject *parent);
-    ~SearchTask();
+    ~SearchTask() override;
 
 protected:
     void doStart(KIMAP::Session *session) override;

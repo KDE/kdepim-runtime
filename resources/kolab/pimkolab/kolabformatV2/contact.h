@@ -45,7 +45,7 @@ public:
 
     explicit Contact(const KContacts::Addressee *address);
     Contact(const QString &xml);
-    ~Contact();
+    ~Contact() override;
 
     void saveTo(KContacts::Addressee *address);
 

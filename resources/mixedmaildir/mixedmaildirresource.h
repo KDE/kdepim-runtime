@@ -22,7 +22,7 @@ class MixedMaildirResource : public Akonadi::ResourceBase, public Akonadi::Agent
 
 public:
     explicit MixedMaildirResource(const QString &id);
-    ~MixedMaildirResource();
+    ~MixedMaildirResource() override;
 
 protected Q_SLOTS:
     void retrieveCollections() override;

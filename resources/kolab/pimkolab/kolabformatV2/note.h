@@ -35,7 +35,7 @@ public:
 
     /// Create a note object and
     explicit Note(const KCalendarCore::Journal::Ptr &journal = KCalendarCore::Journal::Ptr());
-    virtual ~Note();
+    ~Note() override;
 
     void saveTo(const KCalendarCore::Journal::Ptr &journal) const;
 

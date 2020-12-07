@@ -20,7 +20,7 @@ class DistributionList : public KolabBase
 public:
     explicit DistributionList(const KContacts::ContactGroup *contactGroup);
     DistributionList(const QString &xml);
-    ~DistributionList();
+    ~DistributionList() override;
 
     void saveTo(KContacts::ContactGroup *contactGroup);
 

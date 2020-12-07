@@ -42,7 +42,7 @@ public:
         setNeedsNetwork(!QUrl::fromUserInput(mSettings->path()).isLocalFile());
     }
 
-    ~SingleFileResource()
+    ~SingleFileResource() override
     {
         delete mSettings;
     }

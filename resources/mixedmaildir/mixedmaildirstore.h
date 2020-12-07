@@ -17,7 +17,7 @@ class MixedMaildirStore : public Akonadi::FileStore::AbstractLocalStore
 public:
     MixedMaildirStore();
 
-    ~MixedMaildirStore();
+    ~MixedMaildirStore() override;
 
 protected:
     void setTopLevelCollection(const Akonadi::Collection &collection) override;

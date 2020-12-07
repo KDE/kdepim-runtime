@@ -19,7 +19,7 @@ class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 public:
     EntityCompactChangeAttribute();
 
-    ~EntityCompactChangeAttribute();
+    ~EntityCompactChangeAttribute() override;
 
     void setRemoteId(const QString &remoteId);
 

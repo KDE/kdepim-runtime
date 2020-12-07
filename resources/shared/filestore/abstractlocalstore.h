@@ -27,7 +27,7 @@ class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public Store
 
 public:
     AbstractLocalStore();
-    ~AbstractLocalStore();
+    ~AbstractLocalStore() override;
 
     virtual void setPath(const QString &path);
     QString path() const;

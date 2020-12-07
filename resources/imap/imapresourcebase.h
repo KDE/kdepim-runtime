@@ -40,7 +40,7 @@ protected:
 
 public:
     explicit ImapResourceBase(const QString &id);
-    ~ImapResourceBase();
+    ~ImapResourceBase() override;
 
     virtual QDialog *createConfigureDialog(WId windowId) = 0;
 

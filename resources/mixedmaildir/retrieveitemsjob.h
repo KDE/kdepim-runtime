@@ -26,7 +26,7 @@ class RetrieveItemsJob : public Akonadi::Job
 public:
     RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent = nullptr);
 
-    ~RetrieveItemsJob();
+    ~RetrieveItemsJob() override;
 
     Akonadi::Collection collection() const;
 

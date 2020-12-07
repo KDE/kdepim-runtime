@@ -35,7 +35,7 @@ public:
 
     /// Create a event object and
     explicit Event(const QString &tz, const KCalendarCore::Event::Ptr &event = KCalendarCore::Event::Ptr());
-    virtual ~Event();
+    ~Event() override;
 
     void saveTo(const KCalendarCore::Event::Ptr &event);
 

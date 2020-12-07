@@ -21,7 +21,7 @@ public:
     typedef QSharedPointer<DummyResourceState> Ptr;
 
     explicit DummyResourceState();
-    ~DummyResourceState();
+    ~DummyResourceState() override;
 
     void setUserName(const QString &name);
     QString userName() const override;

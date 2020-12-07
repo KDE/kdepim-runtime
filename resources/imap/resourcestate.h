@@ -105,7 +105,7 @@ public:
     explicit ResourceState(ImapResourceBase *resource, const TaskArguments &arguments);
 
 public:
-    ~ResourceState();
+    ~ResourceState() override;
 
     QString userName() const override;
     QString resourceName() const override;

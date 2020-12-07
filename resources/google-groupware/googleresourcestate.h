@@ -15,7 +15,7 @@ class GoogleResourceState : public GoogleResourceStateInterface
 {
 public:
     explicit GoogleResourceState(GoogleResource *resource);
-    ~GoogleResourceState() = default;
+    ~GoogleResourceState() override = default;
 
     // Items handling
     void itemRetrieved(const Akonadi::Item &item) override;

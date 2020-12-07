@@ -19,7 +19,7 @@ class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource:
 
 public:
     explicit VCardResource(const QString &id);
-    ~VCardResource();
+    ~VCardResource() override;
 
 protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
