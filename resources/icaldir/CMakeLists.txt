@@ -61,7 +61,6 @@ kcoreaddons_add_plugin(icaldirconfig
 target_link_libraries(icaldirconfig
     KF5::AkonadiCore
     KF5::CalendarCore
-    KF5::Codecs
     KF5::AkonadiAgentBase
     KF5::Contacts
     KF5::AkonadiWidgets
