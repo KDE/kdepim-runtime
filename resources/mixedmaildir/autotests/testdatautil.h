@@ -9,7 +9,7 @@
 #define TESTDATAUTIL_H
 
 class QString;
-class QStringList;
+#include <QStringList>
 
 namespace TestDataUtil {
 enum FolderType {
