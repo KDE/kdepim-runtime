@@ -30,6 +30,9 @@ qt5_add_dbus_adaptor(akonotesresource_SRCS
 install( FILES akonotesresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 add_executable(akonadi_akonotes_resource ${akonotesresource_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_akonotes_resource PROPERTIES UNITY_BUILD ON)
+endif()
 
 target_link_libraries(akonadi_akonotes_resource
     KF5::AkonadiCore

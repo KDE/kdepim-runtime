@@ -27,6 +27,9 @@ ecm_qt_declare_logging_category(akonadi-filestore_SRCS HEADER akonadifilestore_d
 
 
 add_library(akonadi-filestore  ${akonadi-filestore_SRCS} )
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi-filestore PROPERTIES UNITY_BUILD ON)
+endif()
 generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 
 target_link_libraries(akonadi-filestore

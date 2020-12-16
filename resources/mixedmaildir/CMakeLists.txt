@@ -64,6 +64,9 @@ target_link_libraries(akonadi_mixedmaildir_resource
     KF5::I18n
     akonadi-singlefileresource
     )
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_mixedmaildir_resource PROPERTIES UNITY_BUILD ON)
+endif()
 
 install(TARGETS akonadi_mixedmaildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml

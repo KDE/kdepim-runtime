@@ -26,6 +26,9 @@ set(newmailnotifieragent_SRCS
 qt5_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 
 add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_newmailnotifier_agent PROPERTIES UNITY_BUILD ON)
+endif()
 
 target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiCore

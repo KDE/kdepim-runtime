@@ -61,6 +61,9 @@ qt5_add_dbus_adaptor(tomboynotesresource_SRCS
 
 
 add_executable(akonadi_tomboynotes_resource ${tomboynotesresource_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_tomboynotes_resource PROPERTIES UNITY_BUILD ON)
+endif()
 target_link_libraries(akonadi_tomboynotes_resource
     Qt5::DBus
     Qt5::Gui

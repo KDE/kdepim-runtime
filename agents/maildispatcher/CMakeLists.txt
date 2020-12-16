@@ -25,7 +25,9 @@ qt5_add_dbus_adaptor( maildispatcheragent_SRCS
 )
 
 add_executable(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_maildispatcher_agent PROPERTIES UNITY_BUILD ON)
+endif()
 
 if( APPLE )
   set_target_properties(akonadi_maildispatcher_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)

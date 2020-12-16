@@ -159,6 +159,17 @@ find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 add_definitions(-DQT_NO_EMIT)
 
+option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" FALSE)
+
+set(COMPILE_WITH_UNITY_CMAKE_SUPPORT false)
+if (USE_UNITY_CMAKE_SUPPORT)
+    if(${CMAKE_VERSION} VERSION_LESS "3.16.0")
+        message(STATUS "CMAKE version is less than 3.16.0 . We can't use cmake unify build support")
+    else()
+        set(COMPILE_WITH_UNITY_CMAKE_SUPPORT true)
+    endif()
+endif()
+
 add_subdirectory(resources)
 add_subdirectory(agents)
 add_subdirectory(defaultsetup)

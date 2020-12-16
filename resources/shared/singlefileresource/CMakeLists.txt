@@ -33,6 +33,9 @@ ki18n_wrap_ui(akonadi-singlefileresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARE
 
 add_library(akonadi-singlefileresource  ${akonadi-singlefileresource_SRCS} )
 generate_export_header(akonadi-singlefileresource BASE_NAME akonadi-singlefileresource)
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi-singlefileresource PROPERTIES UNITY_BUILD ON)
+endif()
 
 target_link_libraries(akonadi-singlefileresource
 PUBLIC

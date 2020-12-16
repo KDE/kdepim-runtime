@@ -20,6 +20,9 @@ ecm_qt_declare_logging_category(migrationshared_SRCS
 )
 
 add_library(migrationshared STATIC ${migrationshared_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(migrationshared PROPERTIES UNITY_BUILD ON)
+endif()
 target_link_libraries(migrationshared
     KF5::AkonadiCore
     KF5::ConfigCore

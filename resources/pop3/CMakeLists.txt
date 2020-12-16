@@ -49,6 +49,9 @@ target_link_libraries( akonadi_pop3_resource
     KF5::PimCommon
     qt5keychain
     )
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_pop3_resource PROPERTIES UNITY_BUILD ON)
+endif()
 
 if(BUILD_TESTING)
     add_subdirectory( autotests )
