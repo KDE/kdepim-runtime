@@ -672,11 +672,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
             mIdsToSaveValid = true;
             mIdsToSave.clear();
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-            const QSet<int> idsOnServer = QSet<int>::fromList(idsToDeleteFromServer);
-#else
             const QSet<int> idsOnServer(idsToDeleteFromServer.constBegin(), idsToDeleteFromServer.constEnd());
-#endif
 
             // If the time-limited leave rule is checked, add the newer messages to
             // the list of messages to keep
