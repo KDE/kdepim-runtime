@@ -40,7 +40,9 @@ qt5_add_dbus_adaptor(maildirresource_SRCS
 )
 
 add_executable(akonadi_maildir_resource ${maildirresource_SRCS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_maildir_resource PROPERTIES UNITY_BUILD ON)
+endif()
 target_link_libraries(akonadi_maildir_resource
     maildir
     folderarchivesettings

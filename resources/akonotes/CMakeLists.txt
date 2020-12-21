@@ -61,6 +61,9 @@ kcoreaddons_add_plugin(akonotesconfig
     JSON "akonotesconfig.json"
     INSTALL_NAMESPACE akonadi/config
 )
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonotesconfig PROPERTIES UNITY_BUILD ON)
+endif()
 
 target_link_libraries(akonotesconfig
     KF5::AkonadiCore

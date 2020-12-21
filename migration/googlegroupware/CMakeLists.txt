@@ -16,6 +16,9 @@ qt5_add_dbus_interface(googlegroupwaremigration_SRCS
 )
 
 add_library(googlegroupwaremigration STATIC ${googlegroupwaremigration_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(googlegroupwaremigration PROPERTIES UNITY_BUILD ON)
+endif()
 target_link_libraries(googlegroupwaremigration
     KF5::AkonadiCore
     KF5::ConfigGui

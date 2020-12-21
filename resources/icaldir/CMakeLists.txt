@@ -22,6 +22,9 @@ qt5_add_dbus_adaptor(icaldirresource_SRCS
 install( FILES icaldirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 add_executable(akonadi_icaldir_resource ${icaldirresource_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_icaldir_resource PROPERTIES UNITY_BUILD ON)
+endif()
 
 if( APPLE )
   set_target_properties(akonadi_icaldir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)

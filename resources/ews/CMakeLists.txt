@@ -99,7 +99,6 @@ qt5_add_dbus_adaptor(ewsresource_SRCS
 
 
 add_executable(akonadi_ews_resource ${ewsresource_SRCS})
-
 target_link_libraries(akonadi_ews_resource
     KF5::AkonadiAgentBase
     KF5::AkonadiCore

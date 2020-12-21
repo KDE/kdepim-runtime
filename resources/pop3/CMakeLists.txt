@@ -28,7 +28,9 @@ install( FILES pop3resource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akon
 
 #add_executable(akonadi_pop3_resource RUN_UNINSTALLED ${pop3resource_SRCS})
 add_executable(akonadi_pop3_resource ${pop3resource_SRCS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_pop3_resource PROPERTIES UNITY_BUILD ON)
+endif()
 if( APPLE )
     set_target_properties(akonadi_pop3_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
     set_target_properties(akonadi_pop3_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.POP3")

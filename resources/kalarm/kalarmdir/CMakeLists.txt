@@ -32,7 +32,9 @@ ecm_qt_declare_logging_category(kalarmdirresource_SRCS HEADER kalarmdirresource_
 add_custom_target(kalarmdir_resource_xml ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml)
 
 add_executable(akonadi_kalarm_dir_resource ${kalarmdirresource_SRCS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_kalarm_dir_resource PROPERTIES UNITY_BUILD ON)
+endif()
 if( APPLE )
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
     set_target_properties(akonadi_kalarm_dir_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.KAlarmDir")
