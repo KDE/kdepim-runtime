@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2013-2020 Laurent Montel <montel@kde.org>
+    SPDX-FileCopyrightText: 2013-2021 Laurent Montel <montel@kde.org>
 
     SPDX-FileCopyrightText: 2010 Volker Krause <vkrause@kde.org>
 
