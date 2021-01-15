@@ -108,11 +108,7 @@ Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId)
 
     Akonadi::Collection collection = parent;
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    const QStringList collections = remoteId.split(separator, QString::SkipEmptyParts);
-#else
     const QStringList collections = remoteId.split(separator, Qt::SkipEmptyParts);
-#endif
     Q_FOREACH (const QString &colId, collections) {
         collection = Akonadi::Collection(id);
         collection.setRemoteId(separator + colId);
