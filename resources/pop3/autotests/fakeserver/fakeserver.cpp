@@ -188,11 +188,7 @@ void FakeServer::setAllowedDeletions(const QString &deleteIds)
 {
     QMutexLocker locker(&mMutex);
     mAllowedDeletions.clear();
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    const QStringList ids = deleteIds.split(QLatin1Char(','), QString::SkipEmptyParts);
-#else
     const QStringList ids = deleteIds.split(QLatin1Char(','), Qt::SkipEmptyParts);
-#endif
     for (const QString &id : ids) {
         mAllowedDeletions.append(id.toUtf8());
     }
@@ -202,11 +198,7 @@ void FakeServer::setAllowedRetrieves(const QString &retrieveIds)
 {
     QMutexLocker locker(&mMutex);
     mAllowedRetrieves.clear();
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    const QStringList ids = retrieveIds.split(QLatin1Char(','), QString::SkipEmptyParts);
-#else
     const QStringList ids = retrieveIds.split(QLatin1Char(','), Qt::SkipEmptyParts);
-#endif
     for (const QString &id : ids) {
         mAllowedRetrieves.append(id.toUtf8());
     }
@@ -227,11 +219,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
     Q_ASSERT(!conversation.isEmpty());
 
     mGotDisconnected = false;
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    QStringList lines = conversation.split(QStringLiteral("\r\n"), QString::SkipEmptyParts);
-#else
     QStringList lines = conversation.split(QStringLiteral("\r\n"), Qt::SkipEmptyParts);
-#endif
     Q_ASSERT(lines.first().startsWith(QLatin1String("C:")));
 
     enum Mode {

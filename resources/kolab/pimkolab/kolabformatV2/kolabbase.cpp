@@ -129,11 +129,7 @@ void KolabBase::saveTo(KContacts::Addressee *addressee) const
 {
     addressee->setUid(uid());
     addressee->setNote(body());
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    addressee->setCategories(categories().split(QLatin1Char(','), QString::SkipEmptyParts));
-#else
     addressee->setCategories(categories().split(QLatin1Char(','), Qt::SkipEmptyParts));
-#endif
     if (mTimeZone.isValid()) {
         addressee->setRevision(lastModified().toTimeZone(mTimeZone));
     }

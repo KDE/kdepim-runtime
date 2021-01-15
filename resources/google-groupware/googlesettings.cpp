@@ -66,11 +66,7 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromWallet(const QString &account
     QMap<QString, QString> map;
     m_wallet->readMap(accountName, map);
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    const QStringList scopes = map[QStringLiteral("scopes")].split(QLatin1Char(','), QString::SkipEmptyParts);
-#else
     const QStringList scopes = map[QStringLiteral("scopes")].split(QLatin1Char(','), Qt::SkipEmptyParts);
-#endif
     QList<QUrl> scopeUrls;
     scopeUrls.reserve(scopes.count());
     for (const QString &scope : scopes) {
