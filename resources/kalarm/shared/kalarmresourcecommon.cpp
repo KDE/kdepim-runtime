@@ -143,7 +143,7 @@ void setCollectionCompatibility(const Collection &collection, KACalendar::Compat
     attr->setCompatibility(compatibility);
     attr->setVersion(version);
     Q_ASSERT(Private::mInstance);
-    auto *job = new CollectionModifyJob(col, Private::mInstance->parent());
+    auto job = new CollectionModifyJob(col, Private::mInstance->parent());
     Private::mInstance->connect(job, SIGNAL(result(KJob*)), SLOT(modifyCollectionJobDone(KJob*)));
 }
 

@@ -38,7 +38,7 @@ private Q_SLOTS:
         collection.setName(QStringLiteral("Bar"));
         collection.setRights(Akonadi::Collection::AllRights);
 
-        auto *acls = new Akonadi::ImapAclAttribute;
+        auto acls = new Akonadi::ImapAclAttribute;
         QMap<QByteArray, KIMAP::Acl::Rights> rights;
         // Old rights
         rights["test@kdab.com"] = KIMAP::Acl::rightsFromString("lrswipckxtda");
@@ -51,7 +51,7 @@ private Q_SLOTS:
         acls->setRights(rights);
         collection.addAttribute(acls);
 
-        auto *annotationsAttr = new Akonadi::CollectionAnnotationsAttribute;
+        auto annotationsAttr = new Akonadi::CollectionAnnotationsAttribute;
         QMap<QByteArray, QByteArray> annotations;
         annotations["/vendor/kolab/folder-test"] = "false";
         annotations["/vendor/kolab/folder-test2"] = "true";

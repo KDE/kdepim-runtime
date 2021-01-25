@@ -115,7 +115,7 @@ void EwsPoxAutodiscoverRequest::requestResult(KJob *job)
         }
     }
 
-    auto *trJob = qobject_cast<KIO::TransferJob *>(job);
+    auto trJob = qobject_cast<KIO::TransferJob *>(job);
     int resp = trJob->metaData()[QStringLiteral("responsecode")].toUInt();
 
     if (job->error() != 0) {

@@ -33,7 +33,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
         setAttribute(Qt::WA_NativeWindow, true);
         KWindowSystem::setMainWindow(windowHandle(), wId);
     }
-    auto *mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
 
     QWidget *mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);

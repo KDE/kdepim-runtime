@@ -83,7 +83,7 @@ void KAlarmResource::collectionFetchResult(KJob *j)
     } else {
         bool firstTime = !mFetchedAttributes;
         mFetchedAttributes = true;
-        auto *job = static_cast<CollectionFetchJob *>(j);
+        auto job = static_cast<CollectionFetchJob *>(j);
         const Collection::List collections = job->collections();
         if (collections.isEmpty()) {
             qCDebug(KALARMRESOURCE_LOG) << identifier() << "collectionFetchResult: resource's collection not found";
@@ -195,7 +195,7 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
 */
 void KAlarmResource::setCompatibility(KJob *j)
 {
-    auto *job = static_cast<CollectionFetchJob *>(j);
+    auto job = static_cast<CollectionFetchJob *>(j);
     if (j->error()) {
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: setCompatibility:" << j->errorString();
     } else if (job->collections().isEmpty()) {
@@ -295,7 +295,7 @@ void KAlarmResource::settingsChanged()
 */
 void KAlarmResource::updateFormat(KJob *j)
 {
-    auto *job = static_cast<CollectionFetchJob *>(j);
+    auto job = static_cast<CollectionFetchJob *>(j);
     if (j->error()) {
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Error: updateFormat:" << j->errorString();
     } else if (job->collections().isEmpty()) {

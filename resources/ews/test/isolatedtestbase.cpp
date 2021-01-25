@@ -84,7 +84,7 @@ QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::f
 TestAgentInstance::TestAgentInstance(const QString &url)
 {
     AgentType ewsType = AgentManager::self()->type(QStringLiteral("akonadi_ews_resource"));
-    auto *agentCreateJob = new AgentInstanceCreateJob(ewsType);
+    auto agentCreateJob = new AgentInstanceCreateJob(ewsType);
     QVERIFY(agentCreateJob->exec());
 
     mEwsInstance.reset(new AgentInstance(agentCreateJob->instance()));

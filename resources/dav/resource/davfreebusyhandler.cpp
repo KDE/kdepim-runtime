@@ -42,7 +42,7 @@ void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
     for (const KDAV::DavUrl &url : urls) {
         if (url.protocol() == KDAV::CalDav) {
             ++mRequestsTracker[email].handlingJobCount;
-            auto *job = new KDAV::DavPrincipalSearchJob(url, KDAV::DavPrincipalSearchJob::EmailAddress, email);
+            auto job = new KDAV::DavPrincipalSearchJob(url, KDAV::DavPrincipalSearchJob::EmailAddress, email);
             job->setProperty("email", QVariant::fromValue(email));
             job->setProperty("url", QVariant::fromValue(url.url().toString()));
             job->fetchProperty(QStringLiteral("schedule-inbox-URL"), QStringLiteral("urn:ietf:params:xml:ns:caldav"));
@@ -94,7 +94,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
         return;
     }
 
-    auto *davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
+    auto davJob = qobject_cast<KDAV::DavPrincipalSearchJob *>(job);
     const QVector<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
 
     if (results.isEmpty()) {
@@ -175,7 +175,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
      * </C:schedule-response>
      */
 
-    auto *postJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    auto postJob = qobject_cast<KIO::StoredTransferJob *>(job);
     QDomDocument response;
     response.setContent(postJob->data(), true);
 

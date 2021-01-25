@@ -74,7 +74,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     // it also contains subscribed but currently not available (eg. deleted) mailboxes
     // so we need to use both and exclude mailboxes in LSUB but not in LIST
     if (isSubscriptionEnabled()) {
-        auto *fullListJob = new KIMAP::ListJob(session);
+        auto fullListJob = new KIMAP::ListJob(session);
         fullListJob->setIncludeUnsubscribed(true);
         fullListJob->setQueriedNamespaces(serverNamespaces());
         connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -83,7 +83,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
         fullListJob->start();
     }
 
-    auto *listJob = new KIMAP::ListJob(session);
+    auto listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived,

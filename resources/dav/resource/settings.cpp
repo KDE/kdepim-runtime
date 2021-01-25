@@ -353,7 +353,7 @@ QDateTime Settings::getSyncRangeStart() const
 void Settings::buildUrlsList()
 {
     foreach (const QString &serializedUrl, remoteUrls()) {
-        auto *urlConfig = new UrlConfiguration(serializedUrl);
+        auto urlConfig = new UrlConfiguration(serializedUrl);
         const QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
         const QString pass = loadPassword(key, urlConfig->mUser);
         if (!pass.isNull()) {
@@ -468,7 +468,7 @@ QString Settings::promptForPassword(const QString &user)
     QString password;
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dlg);
-    auto *mainLayout = new QVBoxLayout(dlg);
+    auto mainLayout = new QVBoxLayout(dlg);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -478,17 +478,17 @@ QString Settings::promptForPassword(const QString &user)
     QWidget *mainWidget = new QWidget(dlg);
     mainLayout->addWidget(mainWidget);
     mainLayout->addWidget(buttonBox);
-    auto *vLayout = new QVBoxLayout();
+    auto vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
     QLabel *label = new QLabel(i18n("A password is required for user %1",
                                     (user == QLatin1String("$default$") ? defaultUsername() : user)),
                                mainWidget
                                );
     vLayout->addWidget(label);
-    auto *hLayout = new QHBoxLayout();
+    auto hLayout = new QHBoxLayout();
     label = new QLabel(i18n("Password: "), mainWidget);
     hLayout->addWidget(label);
-    auto *lineEdit = new KPasswordLineEdit();
+    auto lineEdit = new KPasswordLineEdit();
     hLayout->addWidget(lineEdit);
     vLayout->addLayout(hLayout);
     lineEdit->setFocus();

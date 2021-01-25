@@ -23,7 +23,7 @@ ConfigWidget::ConfigWidget(MaildirSettings *settings, const QString &identifier,
     , mToplevelIsContainer(false)
 {
     QWidget *mainWidget = new QWidget(this);
-    auto *mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mFolderArchiveSettingPage = new FolderArchiveSettingPage(identifier, this);

@@ -85,7 +85,7 @@ void RetrieveMetadataJob::start()
         }
         //TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
         for (const QString &mailbox : qAsConst(toplevelMailboxes)) {
-            auto *meta = new KIMAP::GetMetaDataJob(mSession);
+            auto meta = new KIMAP::GetMetaDataJob(mSession);
             meta->setMailBox(mailbox + QLatin1String("*"));
             if (mServerCapabilities.contains(QLatin1String("METADATA"))) {
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
@@ -109,7 +109,7 @@ void RetrieveMetadataJob::start()
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
                 continue;
             }
-            auto *rights = new KIMAP::MyRightsJob(mSession);
+            auto rights = new KIMAP::MyRightsJob(mSession);
             rights->setMailBox(mailbox);
             connect(rights, &KJob::result, this, &RetrieveMetadataJob::onRightsReceived);
             mJobs++;
@@ -122,7 +122,7 @@ void RetrieveMetadataJob::start()
 void RetrieveMetadataJob::onGetMetaDataDone(KJob *job)
 {
     mJobs--;
-    auto *meta = static_cast<KIMAP::GetMetaDataJob *>(job);
+    auto meta = static_cast<KIMAP::GetMetaDataJob *>(job);
     if (job->error()) {
         qCDebug(KOLABRESOURCE_LOG) << "No metadata for for mailbox: " << meta->mailBox();
         if (!isNamespaceFolder(meta->mailBox(), mSharedNamespace)) {
@@ -144,7 +144,7 @@ void RetrieveMetadataJob::onGetMetaDataDone(KJob *job)
 void RetrieveMetadataJob::onRightsReceived(KJob *job)
 {
     mJobs--;
-    auto *rights = static_cast<KIMAP::MyRightsJob *>(job);
+    auto rights = static_cast<KIMAP::MyRightsJob *>(job);
     if (job->error()) {
         qCDebug(KOLABRESOURCE_LOG) << "No rights for mailbox: " << rights->mailBox();
         if (!isNamespaceFolder(rights->mailBox(), mSharedNamespace)) {
@@ -230,7 +230,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     qCDebug(KOLABRESOURCE_TRACE) << "subscription enabled: " << isSubscriptionEnabled();
     //jobs are serialized by the session
     if (isSubscriptionEnabled()) {
-        auto *fullListJob = new KIMAP::ListJob(session);
+        auto fullListJob = new KIMAP::ListJob(session);
         fullListJob->setOption(KIMAP::ListJob::NoOption);
         fullListJob->setQueriedNamespaces(serverNamespaces());
         connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -240,7 +240,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
         fullListJob->start();
     }
 
-    auto *listJob = new KIMAP::ListJob(session);
+    auto listJob = new KIMAP::ListJob(session);
     listJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
     connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
@@ -485,7 +485,7 @@ void KolabRetrieveCollectionsTask::onMetadataRetrieved(KJob *job)
         qCWarning(KOLABRESOURCE_LOG) << "Error while retrieving metadata, aborting collection retrieval: " << job->errorString();
         cancelTask(i18n("Collection retrieval failed"));
     } else {
-        auto *metadata = static_cast<RetrieveMetadataJob *>(job);
+        auto metadata = static_cast<RetrieveMetadataJob *>(job);
         applyRights(metadata->mRights);
         applyMetadata(metadata->mMetadata);
         checkDone();

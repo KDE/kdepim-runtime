@@ -57,7 +57,7 @@ void KolabChangeItemsRelationsTask::processNextRelation()
 
     //We have to fetch it again in case it changed since the notification was emitted (which is likely)
     //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
-    auto *fetch = new Akonadi::RelationFetchJob(relation);
+    auto fetch = new Akonadi::RelationFetchJob(relation);
     connect(fetch, &KJob::result, this, &KolabChangeItemsRelationsTask::onRelationFetchDone);
 }
 
@@ -103,7 +103,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
         processNextRelation();
         return;
     }
-    auto *fetchJob = static_cast<Akonadi::ItemFetchJob *>(job);
+    auto fetchJob = static_cast<Akonadi::ItemFetchJob *>(job);
     if (fetchJob->items().size() != 2) {
         qCWarning(KOLABRESOURCE_LOG) << "Invalid number of items retrieved: " << fetchJob->items().size();
         processNextRelation();
@@ -128,7 +128,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
     const QLatin1String productId("Akonadi-Kolab-Resource");
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeRelation(relation, members, Kolab::KolabV3, productId);
 
-    auto *appendJob = new KIMAP::AppendJob(mSession);
+    auto appendJob = new KIMAP::AppendJob(mSession);
     appendJob->setMailBox(mailBoxForCollection(relationCollection()));
     appendJob->setContent(message->encodedContent(true));
     appendJob->setInternalDate(message->date()->dateTime());
@@ -143,7 +143,7 @@ void KolabChangeItemsRelationsTask::removeRelation(const Akonadi::Relation &rela
     const QString mailBox = mailBoxForCollection(relationCollection());
 
     if (mSession->selectedMailBox() != mailBox) {
-        auto *select = new KIMAP::SelectJob(mSession);
+        auto select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mailBox);
 
         connect(select, &KJob::result, this, &KolabChangeItemsRelationsTask::onSelectDone);
@@ -171,7 +171,7 @@ void KolabChangeItemsRelationsTask::triggerStoreJob()
 
     qCDebug(KOLABRESOURCE_TRACE) << set.toImapSequenceSet();
 
-    auto *store = new KIMAP::StoreJob(mSession);
+    auto store = new KIMAP::StoreJob(mSession);
     store->setUidBased(true);
     store->setSequenceSet(set);
     store->setFlags(QList<QByteArray>() << ImapFlags::Deleted);

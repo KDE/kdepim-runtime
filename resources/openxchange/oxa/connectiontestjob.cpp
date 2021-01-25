@@ -44,7 +44,7 @@ void ConnectionTestJob::httpJobFinished(KJob *job)
         return;
     }
 
-    auto *transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    auto transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
     Q_ASSERT(transferJob);
 
     const QJsonObject data = QJsonDocument::fromJson(transferJob->data()).object();

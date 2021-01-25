@@ -110,7 +110,7 @@ bool EwsSyncFolderHierarchyRequest::parseResult(QXmlStreamReader &reader)
 
 bool EwsSyncFolderHierarchyRequest::parseItemsResponse(QXmlStreamReader &reader)
 {
-    auto *resp = new EwsSyncFolderHierarchyRequest::Response(reader);
+    auto resp = new EwsSyncFolderHierarchyRequest::Response(reader);
     if (resp->responseClass() == EwsResponseUnknown) {
         return false;
     }

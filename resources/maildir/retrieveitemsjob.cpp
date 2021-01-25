@@ -40,7 +40,7 @@ void RetrieveItemsJob::setMimeType(const QString &mimeType)
 void RetrieveItemsJob::doStart()
 {
     Q_ASSERT(!m_mimeType.isEmpty());
-    auto *job = new Akonadi::ItemFetchJob(m_collection, this);
+    auto job = new Akonadi::ItemFetchJob(m_collection, this);
     connect(job, &Akonadi::ItemFetchJob::result, this, &RetrieveItemsJob::localListDone);
 }
 
@@ -102,7 +102,7 @@ void RetrieveItemsJob::processEntry()
             item.setSize(entrySize);
         }
 
-        auto *msg = new KMime::Message;
+        auto msg = new KMime::Message;
         msg->setHead(KMime::CRLFtoLF(m_maildir.readEntryHeadersFromFile(m_listingPath + fileName)));
         msg->parse();
 
@@ -155,7 +155,7 @@ void RetrieveItemsJob::entriesProcessed()
     if (m_highestMtime != m_previousMtime) {
         Akonadi::Collection newCol(m_collection);
         newCol.setRemoteRevision(QString::number(m_highestMtime));
-        auto *job = new Akonadi::CollectionModifyJob(newCol, transaction());
+        auto job = new Akonadi::CollectionModifyJob(newCol, transaction());
         m_transaction->setIgnoreJobFailure(job);
     }
 

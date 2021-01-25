@@ -38,7 +38,7 @@ void EwsSubscribedFoldersJob::start()
         }
     }
 
-    auto *req = new EwsGetFolderRequest(mClient, this);
+    auto req = new EwsGetFolderRequest(mClient, this);
     req->setFolderShape(EwsFolderShape(EwsShapeIdOnly));
     req->setFolderIds(ids);
     req->setProperty("ids", QVariant::fromValue<EwsId::List>(ids));
@@ -49,7 +49,7 @@ void EwsSubscribedFoldersJob::start()
 void EwsSubscribedFoldersJob::verifySubFoldersRequestFinished(KJob *job)
 {
     if (!job->error()) {
-        auto *req = qobject_cast<EwsGetFolderRequest *>(job);
+        auto req = qobject_cast<EwsGetFolderRequest *>(job);
         Q_ASSERT(req);
 
         mFolders.clear();

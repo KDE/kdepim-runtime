@@ -30,7 +30,7 @@ KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
                                        i18n("(c) 2009 - 2010 Tobias Koenig"));
     about->addAuthor(i18n("Tobias Koenig"), QString(), QStringLiteral("tokoe@kde.org"));
     setAboutData(about);
-    auto *layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
     mLdapConfigureWidget = new KLDAP::LdapConfigureWidget(this);

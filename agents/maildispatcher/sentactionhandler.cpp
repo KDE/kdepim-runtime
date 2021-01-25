@@ -24,7 +24,7 @@ void SentActionHandler::runAction(const SentActionAttribute::Action &action)
     if (action.type() == SentActionAttribute::Action::MarkAsReplied
         || action.type() == SentActionAttribute::Action::MarkAsForwarded) {
         const Akonadi::Item item(action.value().toLongLong());
-        auto *job = new Akonadi::ItemFetchJob(item);
+        auto job = new Akonadi::ItemFetchJob(item);
         connect(job, &Akonadi::ItemFetchJob::result, this, &SentActionHandler::itemFetchResult);
         job->setProperty("type", static_cast<int>(action.type()));
     }
@@ -37,7 +37,7 @@ void SentActionHandler::itemFetchResult(KJob *job)
         return;
     }
 
-    auto *fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
+    auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
     if (fetchJob->items().isEmpty()) {
         return;
     }
@@ -51,6 +51,6 @@ void SentActionHandler::itemFetchResult(KJob *job)
         item.setFlag(Akonadi::MessageFlags::Forwarded);
     }
 
-    auto *modifyJob = new Akonadi::ItemModifyJob(item);
+    auto modifyJob = new Akonadi::ItemModifyJob(item);
     modifyJob->setIgnorePayload(true);
 }

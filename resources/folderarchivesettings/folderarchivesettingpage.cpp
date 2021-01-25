@@ -61,12 +61,12 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
     : QWidget(parent)
     , mInstanceName(instanceName)
 {
-    auto *lay = new QVBoxLayout(this);
+    auto lay = new QVBoxLayout(this);
     mEnabled = new QCheckBox(i18n("Enable"));
     connect(mEnabled, &QCheckBox::toggled, this, &FolderArchiveSettingPage::slotEnableChanged);
     lay->addWidget(mEnabled);
 
-    auto *hbox = new QHBoxLayout;
+    auto hbox = new QHBoxLayout;
     QLabel *lab = new QLabel(i18nc(
                                  "@label:chooser for the folder that messages will be archived under",
                                  "Archive into:"));

@@ -61,7 +61,7 @@ void CompactPage::onCollectionFetchCheck(KJob *job)
         return;
     }
 
-    auto *fetchJob = qobject_cast<CollectionFetchJob *>(job);
+    auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
@@ -84,7 +84,7 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
         return;
     }
 
-    auto *fetchJob = qobject_cast<CollectionFetchJob *>(job);
+    auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
@@ -108,7 +108,7 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
             // doesn't matter here. We know the file is empty so we can get rid
             // of our stored DeletedItemsAttribute
             mboxCollection.removeAttribute<DeletedItemsAttribute>();
-            auto *modifyJob = new CollectionModifyJob(mboxCollection);
+            auto modifyJob = new CollectionModifyJob(mboxCollection);
             connect(modifyJob, &CollectionModifyJob::result, this, &CompactPage::onCollectionModify);
         } else {
             ui.messageLabel->setText(i18n("Failed to compact the mbox file."));

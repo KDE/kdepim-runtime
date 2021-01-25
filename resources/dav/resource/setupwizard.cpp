@@ -209,7 +209,7 @@ CredentialsPage::CredentialsPage(QWidget *parent)
     setTitle(i18n("Login Credentials"));
     setSubTitle(i18n("Enter your credentials to login to the groupware server"));
 
-    auto *layout = new QFormLayout(this);
+    auto layout = new QFormLayout(this);
 
     mUserName = new QLineEdit;
     layout->addRow(i18n("User:"), mUserName);
@@ -249,7 +249,7 @@ PredefinedProviderPage::PredefinedProviderPage(QWidget *parent)
     setTitle(i18n("Predefined provider found"));
     setSubTitle(i18n("Select if you want to use the auto-detected provider"));
 
-    auto *layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
 
     mLabel = new QLabel;
     layout->addWidget(mLabel);
@@ -319,12 +319,12 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     }
     registerField(QStringLiteral("provider"), mProvidersCombo, "currentText");
 
-    auto *layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
 
     mServerGroup = new QButtonGroup(this);
     mServerGroup->setExclusive(true);
 
-    auto *hLayout = new QHBoxLayout;
+    auto hLayout = new QHBoxLayout;
     QRadioButton *button = new QRadioButton(i18n("Use one of those servers:"));
     registerField(QStringLiteral("templateConfiguration"), button);
     mServerGroup->addButton(button);
@@ -491,7 +491,7 @@ CheckPage::CheckPage(QWidget *parent)
     setSubTitle(i18n("You can test now whether the groupware server can be accessed with the current configuration"));
     setFinalPage(true);
 
-    auto *layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
 
     QPushButton *button = new QPushButton(i18n("Test Connection"));
     layout->addWidget(button);
@@ -523,7 +523,7 @@ void CheckPage::checkConnection()
     }
 
     // start the dav collections fetch job to test connectivity
-    auto *job = new KDAV::DavCollectionsMultiFetchJob(davUrls, this);
+    auto job = new KDAV::DavCollectionsMultiFetchJob(davUrls, this);
     connect(job, &KDAV::DavCollectionsMultiFetchJob::result, this, &CheckPage::onFetchDone);
     job->start();
 }

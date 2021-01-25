@@ -119,7 +119,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
         return;    // handled by base class
     }
 
-    auto *itemFetch = qobject_cast<ItemFetchJob *>(job);
+    auto itemFetch = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(itemFetch != nullptr);
 
     Item::List items = itemFetch->items();
@@ -150,7 +150,7 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
 void RetrieveItemsJob::Private::storeListResult(KJob *job)
 {
     qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "storeList->error=" << job->error();
-    auto *storeList = qobject_cast<FileStore::ItemFetchJob *>(job);
+    auto storeList = qobject_cast<FileStore::ItemFetchJob *>(job);
     Q_ASSERT(storeList != nullptr);
 
     if (storeList->error() != 0) {
@@ -231,7 +231,7 @@ void RetrieveItemsJob::Private::processNewItem()
 
 void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 {
-    auto *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
+    auto fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
 
     if (fetchJob->items().count() != 1) {
@@ -251,7 +251,7 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
         mHighestModTime = qMax(modTime.toMSecsSinceEpoch(), mHighestModTime);
     }
 
-    auto *itemCreate = new ItemCreateJob(item, mCollection, transaction());
+    auto itemCreate = new ItemCreateJob(item, mCollection, transaction());
     mNumItemCreateJobs++;
     connect(itemCreate, &ItemCreateJob::result, q, [this](KJob *job) {
         itemCreateJobResult(job);
@@ -274,7 +274,7 @@ void RetrieveItemsJob::Private::processChangedItem()
         if (mHighestModTime > -1) {
             Collection collection(mCollection);
             collection.setRemoteRevision(QString::number(mHighestModTime));
-            auto *job = new CollectionModifyJob(collection, transaction());
+            auto job = new CollectionModifyJob(collection, transaction());
             transaction()->setIgnoreJobFailure(job);
         }
         transaction()->commit();
@@ -292,7 +292,7 @@ void RetrieveItemsJob::Private::processChangedItem()
 
 void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
 {
-    auto *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
+    auto fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
 
     if (fetchJob->items().count() != 1) {
@@ -312,7 +312,7 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
         mHighestModTime = qMax(modTime.toMSecsSinceEpoch(), mHighestModTime);
     }
 
-    auto *itemModify = new ItemModifyJob(item, transaction());
+    auto itemModify = new ItemModifyJob(item, transaction());
     connect(itemModify, &ItemModifyJob::result, q, [this](KJob *job) {
         itemModifyJobResult(job);
     });
@@ -362,7 +362,7 @@ Item::List RetrieveItemsJob::itemsMarkedAsDeleted() const
 
 void RetrieveItemsJob::doStart()
 {
-    auto *job = new Akonadi::ItemFetchJob(d->mCollection, this);
+    auto job = new Akonadi::ItemFetchJob(d->mCollection, this);
     connect(job, &ItemFetchJob::result, this, [this](KJob *job) {
         d->akonadiFetchResult(job);
     });

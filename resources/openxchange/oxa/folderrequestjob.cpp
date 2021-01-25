@@ -50,7 +50,7 @@ void FolderRequestJob::davJobFinished(KJob *job)
         return;
     }
 
-    auto *davJob = qobject_cast<KIO::DavJob *>(job);
+    auto davJob = qobject_cast<KIO::DavJob *>(job);
 
     const QDomDocument document = davJob->response();
 

@@ -102,7 +102,7 @@ private Q_SLOTS:
         rightsMap.insert("Hans", KIMAP::Acl::Lookup | KIMAP::Acl::Read | KIMAP::Acl::KeepSeen
                          |KIMAP::Acl::Write | KIMAP::Acl::Insert | KIMAP::Acl::Post
                          |KIMAP::Acl::Delete);
-        auto *aclAttribute = new Akonadi::ImapAclAttribute();
+        auto aclAttribute = new Akonadi::ImapAclAttribute();
         aclAttribute->setRights(rightsMap);
         parentCollection.addAttribute(aclAttribute);
         collection.setParentCollection(parentCollection);
@@ -117,7 +117,7 @@ private Q_SLOTS:
         // rename (CanChangeCollection) permission.
         //
         parentCollection = createCollectionChain(QStringLiteral("/INBOX"));
-        auto *noSelectAttribute = new NoSelectAttribute();
+        auto noSelectAttribute = new NoSelectAttribute();
         parentCollection.addAttribute(noSelectAttribute);
         collection.setParentCollection(parentCollection);
         QTest::newRow("parent wit noselect") << collection << capabilities << scenario

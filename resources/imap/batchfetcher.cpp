@@ -65,7 +65,7 @@ void BatchFetcher::start()
         }
 
         //Resolve the uid to sequence numbers
-        auto *search = new KIMAP::SearchJob(m_session);
+        auto search = new KIMAP::SearchJob(m_session);
         search->setUidBased(true);
         search->setTerm(KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(firstUidToSearch, lastUidToSearch)));
         connect(search, &KIMAP::SearchJob::result, this, &BatchFetcher::onUidSearchDone);
@@ -84,7 +84,7 @@ void BatchFetcher::onUidSearchDone(KJob *job)
         return;
     }
 
-    auto *search = static_cast<KIMAP::SearchJob *>(job);
+    auto search = static_cast<KIMAP::SearchJob *>(job);
     m_uidBased = search->isUidBased();
     m_currentSet.add(search->results());
 
@@ -106,7 +106,7 @@ void BatchFetcher::fetchNextBatch()
         return;
     }
 
-    auto *fetch = new KIMAP::FetchJob(m_session);
+    auto fetch = new KIMAP::FetchJob(m_session);
     if (m_scope.changedSince != 0) {
         qCDebug(IMAPRESOURCE_LOG) << "Fetching all messages in one batch.";
         fetch->setSequenceSet(m_currentSet);
@@ -157,7 +157,7 @@ void BatchFetcher::fetchNextBatch()
 
 void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
 {
-    auto *fetch = static_cast<KIMAP::FetchJob *>(sender());
+    auto fetch = static_cast<KIMAP::FetchJob *>(sender());
 
     Akonadi::Item::List addedItems;
     for (auto msg = messages.cbegin(), end = messages.cend(); msg != end; ++msg) {

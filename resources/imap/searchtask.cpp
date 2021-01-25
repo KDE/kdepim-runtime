@@ -35,7 +35,7 @@ void SearchTask::doStart(KIMAP::Session *session)
         return;
     }
 
-    auto *select = new KIMAP::SelectJob(session);
+    auto select = new KIMAP::SelectJob(session);
     select->setMailBox(mailbox);
     connect(select, &KJob::finished,
             this, &SearchTask::onSelectDone);
@@ -188,7 +188,7 @@ void SearchTask::doSearch(KIMAP::Session *session)
     qCDebug(IMAPRESOURCE_LOG) << m_query;
 
     Akonadi::SearchQuery query = Akonadi::SearchQuery::fromJSON(m_query.toLatin1());
-    auto *searchJob = new KIMAP::SearchJob(session);
+    auto searchJob = new KIMAP::SearchJob(session);
     searchJob->setUidBased(true);
 
     KIMAP::Term term = recursiveEmailTermMapping(query.term());
@@ -215,7 +215,7 @@ void SearchTask::onSearchDone(KJob *job)
         return;
     }
 
-    auto *searchJob = qobject_cast<KIMAP::SearchJob *>(job);
+    auto searchJob = qobject_cast<KIMAP::SearchJob *>(job);
     const QVector<qint64> result = searchJob->results();
     qCDebug(IMAPRESOURCE_LOG) << result.count() << "matches";
 

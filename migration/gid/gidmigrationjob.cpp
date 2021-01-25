@@ -26,7 +26,7 @@ UpdateJob::~UpdateJob()
 
 void UpdateJob::doStart()
 {
-    auto *fetchJob = new ItemFetchJob(mCollection, this);
+    auto fetchJob = new ItemFetchJob(mCollection, this);
     fetchJob->fetchScope().setCacheOnly(true);
     fetchJob->fetchScope().setIgnoreRetrievalErrors(true);
     fetchJob->fetchScope().setFetchModificationTime(false);
@@ -51,7 +51,7 @@ void UpdateJob::slotResult(KJob *job)
     //This slot is automatically called for all subjobs by KCompositeJob
     //FIXME the fetch job emits result before itemsReceived, because itemsReceived is triggered using the result signal (which is wrong IMO). See ItemFetchJob::timeout
     //If result was emitted at the end we could avoid having to call processNext in itemsReceived and locking it.
-    auto *const fetchJob = qobject_cast<ItemFetchJob *>(job);
+    auto const fetchJob = qobject_cast<ItemFetchJob *>(job);
     const bool fetchReturnedNoItems = fetchJob && fetchJob->items().isEmpty();
     Job::slotResult(job);
     if (fetchReturnedNoItems) {
@@ -73,7 +73,7 @@ bool UpdateJob::processNext()
     }
     const Akonadi::Item &item = mItemQueue.dequeue();
     //Only the single item modifyjob updates the gid
-    auto *modJob = new ItemModifyJob(item, this);
+    auto modJob = new ItemModifyJob(item, this);
     modJob->setUpdateGid(true);
     modJob->setIgnorePayload(true);
     mModJobRunning = true;
@@ -118,7 +118,7 @@ void GidMigrationJob::processCollection()
         return;
     }
     const Collection col = mCollections.takeLast();
-    auto *updateJob = new UpdateJob(col, this);
+    auto updateJob = new UpdateJob(col, this);
     connect(updateJob, &UpdateJob::result, this, &GidMigrationJob::itemsUpdated);
 }
 

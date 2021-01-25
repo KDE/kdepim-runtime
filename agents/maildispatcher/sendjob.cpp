@@ -377,7 +377,7 @@ void SendJob::doEmitResult(KJob *job)
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Success storing result.";
         // It is still possible that the transport failed.
-        auto *srJob = static_cast<StoreResultJob *>(job);
+        auto srJob = static_cast<StoreResultJob *>(job);
         if (!srJob->success()) {
             setError(UserDefinedError);
             setErrorText(srJob->message());

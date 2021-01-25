@@ -621,7 +621,7 @@ bool POP3Protocol::pop3_open()
         // use QSslSocket internally
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::NoProxy);
-        if (auto *sock = qobject_cast<QSslSocket *>(socket())) {
+        if (auto sock = qobject_cast<QSslSocket *>(socket())) {
             sock->setProxy(proxy);
         } else {
             qCWarning(POP3_LOG) << "no socket, cannot set no proxy";

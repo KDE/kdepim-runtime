@@ -64,7 +64,7 @@ void EntityTreeCreateJob::collectionCreateJobDone(KJob *job)
 {
     Q_ASSERT(m_pendingJobs > 0);
     --m_pendingJobs;
-    auto *collectionCreateJob = qobject_cast<CollectionCreateJob *>(job);
+    auto collectionCreateJob = qobject_cast<CollectionCreateJob *>(job);
     Collection createdCollection = collectionCreateJob->collection();
 
     if (job->error()) {

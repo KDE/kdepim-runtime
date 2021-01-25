@@ -213,7 +213,7 @@ void MixedMaildirResource::retrieveItems(const Collection &col)
         return;
     }
 
-    auto *job = new RetrieveItemsJob(col, mStore, this);
+    auto job = new RetrieveItemsJob(col, mStore, this);
     connect(job, &RetrieveItemsJob::result, this, &MixedMaildirResource::retrieveItemsResult);
 
     Q_EMIT status(Running, i18nc("@info:status", "Synchronizing email folder %1", col.name()));
@@ -430,7 +430,7 @@ void MixedMaildirResource::retrieveCollectionsResult(KJob *job)
         return;
     }
 
-    auto *fetchJob = qobject_cast<FileStore::CollectionFetchJob *>(job);
+    auto fetchJob = qobject_cast<FileStore::CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
 
     Collection topLevelCollection = mStore->topLevelCollection();
@@ -453,7 +453,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
         return;
     }
 
-    auto *retrieveJob = qobject_cast<RetrieveItemsJob *>(job);
+    auto retrieveJob = qobject_cast<RetrieveItemsJob *>(job);
     Q_ASSERT(retrieveJob != nullptr);
 
     // messages marked as deleted have been deleted from mbox files but never got purged
@@ -520,7 +520,7 @@ void MixedMaildirResource::retrieveItemResult(KJob *job)
         return;
     }
 
-    auto *fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
+    auto fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
     Q_ASSERT(!fetchJob->items().isEmpty());
 
@@ -536,7 +536,7 @@ void MixedMaildirResource::itemAddedResult(KJob *job)
         return;
     }
 
-    auto *itemJob = qobject_cast<FileStore::ItemCreateJob *>(job);
+    auto itemJob = qobject_cast<FileStore::ItemCreateJob *>(job);
     Q_ASSERT(itemJob != nullptr);
 
     /*  qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "item.id=" << itemJob->item().id() << "remoteId=" << itemJob->item().remoteId();*/
@@ -554,7 +554,7 @@ void MixedMaildirResource::itemChangedResult(KJob *job)
         return;
     }
 
-    auto *itemJob = qobject_cast<FileStore::ItemModifyJob *>(job);
+    auto itemJob = qobject_cast<FileStore::ItemModifyJob *>(job);
     Q_ASSERT(itemJob != nullptr);
 
     changeCommitted(itemJob->item());
@@ -578,7 +578,7 @@ void MixedMaildirResource::itemMovedResult(KJob *job)
         return;
     }
 
-    auto *itemJob = qobject_cast<FileStore::ItemMoveJob *>(job);
+    auto itemJob = qobject_cast<FileStore::ItemMoveJob *>(job);
     Q_ASSERT(itemJob != nullptr);
 
     changeCommitted(itemJob->item());
@@ -604,7 +604,7 @@ void MixedMaildirResource::itemRemovedResult(KJob *job)
         return;
     }
 
-    auto *itemJob = qobject_cast<FileStore::ItemDeleteJob *>(job);
+    auto itemJob = qobject_cast<FileStore::ItemDeleteJob *>(job);
     Q_ASSERT(itemJob != nullptr);
 
     changeCommitted(itemJob->item());
@@ -632,7 +632,7 @@ void MixedMaildirResource::collectionAddedResult(KJob *job)
         return;
     }
 
-    auto *colJob = qobject_cast<FileStore::CollectionCreateJob *>(job);
+    auto colJob = qobject_cast<FileStore::CollectionCreateJob *>(job);
     Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
@@ -647,7 +647,7 @@ void MixedMaildirResource::collectionChangedResult(KJob *job)
         return;
     }
 
-    auto *colJob = qobject_cast<FileStore::CollectionModifyJob *>(job);
+    auto colJob = qobject_cast<FileStore::CollectionModifyJob *>(job);
     Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
@@ -664,7 +664,7 @@ void MixedMaildirResource::collectionMovedResult(KJob *job)
         return;
     }
 
-    auto *colJob = qobject_cast<FileStore::CollectionMoveJob *>(job);
+    auto colJob = qobject_cast<FileStore::CollectionMoveJob *>(job);
     Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
@@ -681,7 +681,7 @@ void MixedMaildirResource::collectionRemovedResult(KJob *job)
         return;
     }
 
-    auto *colJob = qobject_cast<FileStore::CollectionDeleteJob *>(job);
+    auto colJob = qobject_cast<FileStore::CollectionDeleteJob *>(job);
     Q_ASSERT(colJob != nullptr);
 
     changeCommitted(colJob->collection());
@@ -704,7 +704,7 @@ void MixedMaildirResource::compactStoreResult(KJob *job)
         return;
     }
 
-    auto *compactJob = qobject_cast<FileStore::StoreCompactJob *>(job);
+    auto compactJob = qobject_cast<FileStore::StoreCompactJob *>(job);
     Q_ASSERT(compactJob != nullptr);
 
     const Item::List items = compactJob->changedItems();
@@ -749,7 +749,7 @@ void MixedMaildirResource::processNextTagContext()
     const TagContext tagContext = mPendingTagContexts.front();
     mPendingTagContexts.pop_front();
 
-    auto *fetchJob = new ItemFetchJob(tagContext.mItem);
+    auto fetchJob = new ItemFetchJob(tagContext.mItem);
     fetchJob->setProperty("tagList", tagContext.mTagList);
     connect(fetchJob, &ItemFetchJob::result, this, &MixedMaildirResource::tagFetchJobResult);
 }
@@ -762,7 +762,7 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
         return;
     }
 
-    auto *fetchJob = qobject_cast<ItemFetchJob *>(job);
+    auto fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
 
     Q_ASSERT(!fetchJob->items().isEmpty());

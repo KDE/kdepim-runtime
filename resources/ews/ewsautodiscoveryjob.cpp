@@ -69,7 +69,7 @@ void EwsAutodiscoveryJob::sendNextRequest(bool useCreds)
         url.setPassword(mPassword);
     }
     mUsedCreds = useCreds;
-    auto *req = new EwsPoxAutodiscoverRequest(url, mEmail, mUserAgent,
+    auto req = new EwsPoxAutodiscoverRequest(url, mEmail, mUserAgent,
                                                                    mEnableNTLMv2, this);
     connect(req, &EwsPoxAutodiscoverRequest::result, this,
             &EwsAutodiscoveryJob::autodiscoveryRequestFinished);
@@ -78,7 +78,7 @@ void EwsAutodiscoveryJob::sendNextRequest(bool useCreds)
 
 void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
 {
-    auto *req = qobject_cast<EwsPoxAutodiscoverRequest *>(job);
+    auto req = qobject_cast<EwsPoxAutodiscoverRequest *>(job);
     if (!req) {
         setErrorMsg(QStringLiteral("Invalid EwsPoxAutodiscoverRequest job object"));
         emitResult();

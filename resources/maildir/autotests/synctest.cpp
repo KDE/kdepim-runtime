@@ -29,7 +29,7 @@ void SyncTest::initTestCase()
 {
     AkonadiTest::checkTestIsIsolated();
     AgentType maildirType = AgentManager::self()->type(QStringLiteral("akonadi_maildir_resource"));
-    auto *agentCreateJob = new AgentInstanceCreateJob(maildirType);
+    auto agentCreateJob = new AgentInstanceCreateJob(maildirType);
     QVERIFY(agentCreateJob->exec());
     mMaildirIdentifier = agentCreateJob->instance().identifier();
 

@@ -29,7 +29,7 @@ SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QStr
     , mItemId(id)
 {
     Akonadi::Item item(mItemId);
-    auto *job = new Akonadi::ItemFetchJob(item, this);
+    auto job = new Akonadi::ItemFetchJob(item, this);
     job->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Envelope, true);
 
     connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotItemFetchJobDone);
@@ -64,7 +64,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
         if (NewMailNotifierAgentSettings::showPhoto()) {
-            auto *job = new Akonadi::ContactSearchJob(this);
+            auto job = new Akonadi::ContactSearchJob(this);
             job->setLimit(1);
             job->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
             connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
@@ -178,7 +178,7 @@ void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
 
 void SpecialNotifierJob::slotDeleteMessage()
 {
-    auto *job = new Akonadi::ItemDeleteJob(mItem);
+    auto job = new Akonadi::ItemDeleteJob(mItem);
     connect(job, &Akonadi::ItemDeleteJob::result, this, &SpecialNotifierJob::deleteItemDone);
 }
 
@@ -220,7 +220,7 @@ void SpecialNotifierJob::slotMarkAsResult(Akonadi::MarkAsCommand::Result result)
 
 void SpecialNotifierJob::slotOpenMail()
 {
-    auto *job = new NewMailNotifierShowMessageJob(mItem.id());
+    auto job = new NewMailNotifierShowMessageJob(mItem.id());
     job->start();
     deleteLater();
 }

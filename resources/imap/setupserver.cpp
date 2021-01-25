@@ -115,11 +115,11 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     , m_ui(new Ui::SetupServerView)
     , mValidator(this)
 {
-    auto *networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
+    auto networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
 
     m_parentResource->settings()->setWinId(parent);
     QWidget *mainWidget = new QWidget(this);
-    auto *mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
@@ -375,7 +375,7 @@ void SetupServer::readSettings()
     m_ui->accountName->setText(m_parentResource->name());
     m_oldResourceName = m_ui->accountName->text();
 
-    auto *currentUser = new KUser();
+    auto currentUser = new KUser();
     KEMailSettings esetting;
 
     m_ui->imapServer->setText(
@@ -439,10 +439,10 @@ void SetupServer::readSettings()
 
     Akonadi::Collection trashCollection(m_parentResource->settings()->trashCollection());
     if (trashCollection.isValid()) {
-        auto *fetchJob = new Akonadi::CollectionFetchJob(trashCollection, Akonadi::CollectionFetchJob::Base, this);
+        auto fetchJob = new Akonadi::CollectionFetchJob(trashCollection, Akonadi::CollectionFetchJob::Base, this);
         connect(fetchJob, &Akonadi::CollectionFetchJob::collectionsReceived, this, &SetupServer::targetCollectionReceived);
     } else {
-        auto *requestJob = new Akonadi::SpecialMailCollectionsRequestJob(this);
+        auto requestJob = new Akonadi::SpecialMailCollectionsRequestJob(this);
         connect(requestJob, &Akonadi::SpecialMailCollectionsRequestJob::result, this, &SetupServer::localFolderRequestJobFinished);
         requestJob->requestDefaultCollection(Akonadi::SpecialMailCollections::Trash);
         requestJob->start();
@@ -668,7 +668,7 @@ void SetupServer::slotManageSubscriptions()
 
 void SetupServer::slotShowServerInfo()
 {
-    auto *dialog = new ServerInfoDialog(m_parentResource, this);
+    auto dialog = new ServerInfoDialog(m_parentResource, this);
     dialog->show();
 }
 

@@ -365,7 +365,7 @@ void OpenXchangeResource::onReloadConfiguration()
     // user id to name as well, so the mapping must be loaded as well.
     // Both is done by UpdateUsersJob, so trigger it here before we continue
     // with synchronization in onUpdateUsersJobFinished.
-    auto *job = new OXA::UpdateUsersJob(this);
+    auto job = new OXA::UpdateUsersJob(this);
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onUpdateUsersJobFinished);
     job->start();
 }
@@ -375,11 +375,11 @@ void OpenXchangeResource::retrieveCollections()
     //qDebug("tokoe: retrieve collections called");
     if (Settings::self()->useIncrementalUpdates()) {
         //qDebug( "lastSync=%llu", Settings::self()->foldersLastSync() );
-        auto *job = new OXA::FoldersRequestDeltaJob(Settings::self()->foldersLastSync(), this);
+        auto job = new OXA::FoldersRequestDeltaJob(Settings::self()->foldersLastSync(), this);
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFoldersRequestDeltaJobFinished);
         job->start();
     } else {
-        auto *job = new OXA::FoldersRequestJob(0, OXA::FoldersRequestJob::Modified, this);
+        auto job = new OXA::FoldersRequestJob(0, OXA::FoldersRequestJob::Modified, this);
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFoldersRequestJobFinished);
         job->start();
     }
@@ -397,12 +397,12 @@ void OpenXchangeResource::retrieveItems(const Akonadi::Collection &collection)
     if (Settings::self()->useIncrementalUpdates()) {
         ObjectsLastSync lastSyncInfo;
         //qDebug( "lastSync=%llu", lastSyncInfo.lastSync( collection.id() ) );
-        auto *job = new OXA::ObjectsRequestDeltaJob(folder, lastSyncInfo.lastSync(collection.id()), this);
+        auto job = new OXA::ObjectsRequestDeltaJob(folder, lastSyncInfo.lastSync(collection.id()), this);
         job->setProperty("collection", QVariant::fromValue(collection));
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectsRequestDeltaJobFinished);
         job->start();
     } else {
-        auto *job = new OXA::ObjectsRequestJob(folder, 0, OXA::ObjectsRequestJob::Modified, this);
+        auto job = new OXA::ObjectsRequestJob(folder, 0, OXA::ObjectsRequestJob::Modified, this);
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectsRequestJobFinished);
         job->start();
     }
@@ -417,7 +417,7 @@ bool OpenXchangeResource::retrieveItem(const Akonadi::Item &item, const QSet<QBy
     object.setObjectId(remoteInformation.objectId());
     object.setModule(remoteInformation.module());
 
-    auto *job = new OXA::ObjectRequestJob(object, this);
+    auto job = new OXA::ObjectRequestJob(object, this);
     job->setProperty("item", QVariant::fromValue(item));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectRequestJobFinished);
     job->start();
@@ -445,7 +445,7 @@ void OpenXchangeResource::itemAdded(const Akonadi::Item &item, const Akonadi::Co
         Q_ASSERT(false);
     }
 
-    auto *job = new OXA::ObjectCreateJob(object, this);
+    auto job = new OXA::ObjectCreateJob(object, this);
     job->setProperty("item", QVariant::fromValue(item));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectCreateJobFinished);
     job->start();
@@ -474,7 +474,7 @@ void OpenXchangeResource::itemChanged(const Akonadi::Item &item, const QSet<QByt
         Q_ASSERT(false);
     }
 
-    auto *job = new OXA::ObjectModifyJob(object, this);
+    auto job = new OXA::ObjectModifyJob(object, this);
     job->setProperty("item", QVariant::fromValue(item));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectModifyJobFinished);
     job->start();
@@ -491,7 +491,7 @@ void OpenXchangeResource::itemRemoved(const Akonadi::Item &item)
     object.setModule(remoteInformation.module());
     object.setLastModified(remoteInformation.lastModified());
 
-    auto *job = new OXA::ObjectDeleteJob(object, this);
+    auto job = new OXA::ObjectDeleteJob(object, this);
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectDeleteJobFinished);
 
     job->start();
@@ -512,7 +512,7 @@ void OpenXchangeResource::itemMoved(const Akonadi::Item &item, const Akonadi::Co
     OXA::Folder destinationFolder;
     destinationFolder.setObjectId(newParentRemoteInformation.objectId());
 
-    auto *job = new OXA::ObjectMoveJob(object, destinationFolder, this);
+    auto job = new OXA::ObjectMoveJob(object, destinationFolder, this);
     job->setProperty("item", QVariant::fromValue(item));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectMoveJobFinished);
 
@@ -546,7 +546,7 @@ void OpenXchangeResource::collectionAdded(const Akonadi::Collection &collection,
     // set user permissions of folder
     folder.setUserPermissions(userPermissions);
 
-    auto *job = new OXA::FolderCreateJob(folder, this);
+    auto job = new OXA::FolderCreateJob(folder, this);
     job->setProperty("collection", QVariant::fromValue(collection));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFolderCreateJobFinished);
     job->start();
@@ -570,7 +570,7 @@ void OpenXchangeResource::collectionChanged(const Akonadi::Collection &collectio
     folder.setTitle(collection.name());
     folder.setLastModified(remoteInformation.lastModified());
 
-    auto *job = new OXA::FolderModifyJob(folder, this);
+    auto job = new OXA::FolderModifyJob(folder, this);
     job->setProperty("collection", QVariant::fromValue(collection));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFolderModifyJobFinished);
 }
@@ -583,7 +583,7 @@ void OpenXchangeResource::collectionRemoved(const Akonadi::Collection &collectio
     folder.setObjectId(remoteInformation.objectId());
     folder.setLastModified(remoteInformation.lastModified());
 
-    auto *job = new OXA::FolderDeleteJob(folder, this);
+    auto job = new OXA::FolderDeleteJob(folder, this);
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFolderDeleteJobFinished);
 
     job->start();
@@ -602,7 +602,7 @@ void OpenXchangeResource::collectionMoved(const Akonadi::Collection &collection,
     OXA::Folder destinationFolder;
     destinationFolder.setObjectId(newParentRemoteInformation.objectId());
 
-    auto *job = new OXA::FolderMoveJob(folder, destinationFolder, this);
+    auto job = new OXA::FolderMoveJob(folder, destinationFolder, this);
     job->setProperty("collection", QVariant::fromValue(collection));
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFolderMoveJobFinished);
 
@@ -635,7 +635,7 @@ void OpenXchangeResource::onObjectsRequestJobFinished(KJob *job)
         return;
     }
 
-    auto *requestJob = qobject_cast<OXA::ObjectsRequestJob *>(job);
+    auto requestJob = qobject_cast<OXA::ObjectsRequestJob *>(job);
     Q_ASSERT(requestJob);
 
     Item::List items;
@@ -681,7 +681,7 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished(KJob *job)
         return;
     }
 
-    auto *requestJob = qobject_cast<OXA::ObjectsRequestDeltaJob *>(job);
+    auto requestJob = qobject_cast<OXA::ObjectsRequestDeltaJob *>(job);
     Q_ASSERT(requestJob);
 
     const Akonadi::Collection collection = requestJob->property("collection").value<Collection>();
@@ -760,7 +760,7 @@ void OpenXchangeResource::onObjectRequestJobFinished(KJob *job)
         return;
     }
 
-    auto *requestJob = qobject_cast<OXA::ObjectRequestJob *>(job);
+    auto requestJob = qobject_cast<OXA::ObjectRequestJob *>(job);
     Q_ASSERT(requestJob);
 
     const OXA::Object object = requestJob->object();
@@ -832,7 +832,7 @@ void OpenXchangeResource::onObjectCreateJobFinished(KJob *job)
         return;
     }
 
-    auto *createJob = qobject_cast<OXA::ObjectCreateJob *>(job);
+    auto createJob = qobject_cast<OXA::ObjectCreateJob *>(job);
     Q_ASSERT(createJob);
 
     const OXA::Object object = createJob->object();
@@ -852,7 +852,7 @@ void OpenXchangeResource::onObjectModifyJobFinished(KJob *job)
         return;
     }
 
-    auto *modifyJob = qobject_cast<OXA::ObjectModifyJob *>(job);
+    auto modifyJob = qobject_cast<OXA::ObjectModifyJob *>(job);
     Q_ASSERT(modifyJob);
 
     const OXA::Object object = modifyJob->object();
@@ -874,7 +874,7 @@ void OpenXchangeResource::onObjectMoveJobFinished(KJob *job)
         return;
     }
 
-    auto *moveJob = qobject_cast<OXA::ObjectMoveJob *>(job);
+    auto moveJob = qobject_cast<OXA::ObjectMoveJob *>(job);
     Q_ASSERT(moveJob);
 
     const OXA::Object object = moveJob->object();
@@ -947,7 +947,7 @@ void OpenXchangeResource::onFoldersRequestJobFinished(KJob *job)
         return;
     }
 
-    auto *requestJob = qobject_cast<OXA::FoldersRequestJob *>(job);
+    auto requestJob = qobject_cast<OXA::FoldersRequestJob *>(job);
     Q_ASSERT(requestJob);
 
     Collection::List collections;
@@ -985,7 +985,7 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
         return;
     }
 
-    auto *requestJob = qobject_cast<OXA::FoldersRequestDeltaJob *>(job);
+    auto requestJob = qobject_cast<OXA::FoldersRequestDeltaJob *>(job);
     Q_ASSERT(requestJob);
 
     Collection::List changedCollections;
@@ -1047,7 +1047,7 @@ void OpenXchangeResource::onFolderCreateJobFinished(KJob *job)
         return;
     }
 
-    auto *createJob = qobject_cast<OXA::FolderCreateJob *>(job);
+    auto createJob = qobject_cast<OXA::FolderCreateJob *>(job);
     Q_ASSERT(createJob);
 
     const OXA::Folder folder = createJob->folder();
@@ -1083,7 +1083,7 @@ void OpenXchangeResource::onFolderModifyJobFinished(KJob *job)
         return;
     }
 
-    auto *modifyJob = qobject_cast<OXA::FolderModifyJob *>(job);
+    auto modifyJob = qobject_cast<OXA::FolderModifyJob *>(job);
     Q_ASSERT(modifyJob);
 
     const OXA::Folder folder = modifyJob->folder();
@@ -1105,7 +1105,7 @@ void OpenXchangeResource::onFolderMoveJobFinished(KJob *job)
         return;
     }
 
-    auto *moveJob = qobject_cast<OXA::FolderMoveJob *>(job);
+    auto moveJob = qobject_cast<OXA::FolderMoveJob *>(job);
     Q_ASSERT(moveJob);
 
     const OXA::Folder folder = moveJob->folder();
@@ -1146,7 +1146,7 @@ void OpenXchangeResource::syncCollectionsRemoteIdCache()
     // copy the standard collections
     mCollectionsMap = mStandardCollectionsMap;
 
-    auto *job = new CollectionFetchJob(mResourceCollection, CollectionFetchJob::Recursive, this);
+    auto job = new CollectionFetchJob(mResourceCollection, CollectionFetchJob::Recursive, this);
     connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFetchResourceCollectionsFinished);
 }
 

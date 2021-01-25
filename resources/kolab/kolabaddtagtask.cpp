@@ -32,7 +32,7 @@ void KolabAddTagTask::startRelationTask(KIMAP::Session *session)
     const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeTag(resourceState()->tag(), QStringList(), Kolab::KolabV3, productId);
     mMessageId = message->messageID()->asUnicodeString().toUtf8();
 
-    auto *job = new KIMAP::AppendJob(session);
+    auto job = new KIMAP::AppendJob(session);
     job->setMailBox(mailBoxForCollection(relationCollection()));
     job->setContent(message->encodedContent(true));
     job->setInternalDate(message->date()->dateTime());
@@ -80,7 +80,7 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
 
 void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
 {
-    auto *search = new KIMAP::SearchJob(session);
+    auto search = new KIMAP::SearchJob(session);
 
     search->setUidBased(true);
 
@@ -110,7 +110,7 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
 
 void KolabAddTagTask::onAppendMessageDone(KJob *job)
 {
-    auto *append = qobject_cast<KIMAP::AppendJob *>(job);
+    auto append = qobject_cast<KIMAP::AppendJob *>(job);
 
     if (append->error()) {
         qCWarning(KOLABRESOURCE_LOG) << append->errorString();
@@ -130,7 +130,7 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
         const QString mailBox = append->mailBox();
 
         if (session->selectedMailBox() != mailBox) {
-            auto *select = new KIMAP::SelectJob(session);
+            auto select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
             connect(select, &KJob::result,
@@ -149,7 +149,7 @@ void KolabAddTagTask::onPreSearchSelectDone(KJob *job)
         qCWarning(KOLABRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        auto *select = static_cast<KIMAP::SelectJob *>(job);
+        auto select = static_cast<KIMAP::SelectJob *>(job);
         triggerSearchJob(select->session());
     }
 }
@@ -162,7 +162,7 @@ void KolabAddTagTask::onSearchDone(KJob *job)
         return;
     }
 
-    auto *search = static_cast<KIMAP::SearchJob *>(job);
+    auto search = static_cast<KIMAP::SearchJob *>(job);
 
     qint64 uid = 0;
     if (search->results().count() == 1) {

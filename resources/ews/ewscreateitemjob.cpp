@@ -40,7 +40,7 @@ void EwsCreateItemJob::start()
     }
 
     if (syncNeeded) {
-        auto *job = new EwsAkonadiTagsSyncJob(mTagStore,
+        auto job = new EwsAkonadiTagsSyncJob(mTagStore,
                                                                mClient, qobject_cast<EwsResource *>(parent())->rootCollection(), this);
         connect(job, &EwsAkonadiTagsSyncJob::result, this, &EwsCreateItemJob::tagSyncFinished);
         job->start();

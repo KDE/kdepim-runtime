@@ -23,7 +23,7 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     , mRemoteProtocolGroup(new QButtonGroup(this))
 {
     QWidget *mainWidget = new QWidget(this);
-    auto *mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
@@ -197,7 +197,7 @@ void UrlConfigurationDialog::onFetchButtonClicked()
     }
 
     KDAV::DavUrl davUrl(url, protocol());
-    auto *job = new KDAV::DavCollectionsFetchJob(davUrl);
+    auto job = new KDAV::DavCollectionsFetchJob(davUrl);
     connect(job, &KDAV::DavCollectionsFetchJob::result, this, &UrlConfigurationDialog::onCollectionsFetchDone);
     job->start();
 }
@@ -218,7 +218,7 @@ void UrlConfigurationDialog::onCollectionsFetchDone(KJob *job)
         return;
     }
 
-    auto *davJob = qobject_cast< KDAV::DavCollectionsFetchJob *>(job);
+    auto davJob = qobject_cast< KDAV::DavCollectionsFetchJob *>(job);
 
     const KDAV::DavCollection::List collections = davJob->collections();
 
@@ -239,7 +239,7 @@ void UrlConfigurationDialog::onModelDataChanged(const QModelIndex &topLeft, cons
     fullUrl.setUserInfo(QString());
 
     KDAV::DavUrl davUrl(fullUrl, protocol());
-    auto *job = new KDAV::DavCollectionModifyJob(davUrl);
+    auto job = new KDAV::DavCollectionModifyJob(davUrl);
     job->setProperty(QStringLiteral("displayname"), newName);
     connect(job, &KDAV::DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);
     job->start();
@@ -273,11 +273,11 @@ void UrlConfigurationDialog::addModelRow(const QString &displayName, const QStri
 
     QList<QStandardItem *> items;
 
-    auto *displayNameStandardItem = new QStandardItem(displayName);
+    auto displayNameStandardItem = new QStandardItem(displayName);
     displayNameStandardItem->setEditable(true);
     items << displayNameStandardItem;
 
-    auto *urlStandardItem = new QStandardItem(url);
+    auto urlStandardItem = new QStandardItem(url);
     urlStandardItem->setEditable(false);
     items << urlStandardItem;
 

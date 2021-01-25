@@ -201,7 +201,7 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
     for (const Akonadi::Item &item : items) {
         const QByteArray data = md.readEntry(item.remoteId());
 
-        auto *mail = new KMime::Message();
+        auto mail = new KMime::Message();
         mail->setContent(KMime::CRLFtoLF(data));
         mail->parse();
         // Some messages may have an empty body
@@ -536,7 +536,7 @@ void MaildirResource::retrieveItems(const Akonadi::Collection &col)
         return;
     }
 
-    auto *job = new RetrieveItemsJob(col, md, this);
+    auto job = new RetrieveItemsJob(col, md, this);
     job->setMimeType(itemMimeType());
     connect(job, &RetrieveItemsJob::result, this, &MaildirResource::slotItemsRetrievalResult);
 }
@@ -742,7 +742,7 @@ void MaildirResource::slotDirChanged(const QString &dir)
         return;
     }
 
-    auto *job = new CollectionFetchJob(col, Akonadi::CollectionFetchJob::Base, this);
+    auto job = new CollectionFetchJob(col, Akonadi::CollectionFetchJob::Base, this);
     connect(job, &CollectionFetchJob::result, this, &MaildirResource::fsWatchDirFetchResult);
 }
 
@@ -789,7 +789,7 @@ void MaildirResource::slotFileChanged(const QFileInfo &fileInfo)
     item.setRemoteId(key);
     item.setParentCollection(col);
 
-    auto *job = new ItemFetchJob(item, this);
+    auto job = new ItemFetchJob(item, this);
     job->setProperty("entry", key);
     job->setProperty("dir", path);
     connect(job, &ItemFetchJob::result, this, &MaildirResource::fsWatchFileFetchResult);
@@ -823,14 +823,14 @@ void MaildirResource::fsWatchFileFetchResult(KJob *job)
     }
 
     const QByteArray data = md.readEntry(fileName);
-    auto *mail = new KMime::Message();
+    auto mail = new KMime::Message();
     mail->setContent(KMime::CRLFtoLF(data));
     mail->parse();
 
     item.setPayload(KMime::Message::Ptr(mail));
     Akonadi::MessageFlags::copyMessageFlags(*mail, item);
 
-    auto *mjob = new ItemModifyJob(item);
+    auto mjob = new ItemModifyJob(item);
     connect(mjob, &ItemModifyJob::result, this, &MaildirResource::fsWatchFileModifyResult);
 }
 

@@ -39,7 +39,7 @@ BirthdaysResource::BirthdaysResource(const QString &id)
                                                  Settings::self(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("Birthdays & Anniversaries"));
-    auto *monitor = new Monitor(this);
+    auto monitor = new Monitor(this);
     monitor->setMimeTypeMonitored(Addressee::mimeType());
     monitor->itemFetchScope().fetchFullPayload();
     connect(monitor, &Monitor::itemAdded, this, &BirthdaysResource::contactChanged);
@@ -96,7 +96,7 @@ bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet< QByt
 
 void BirthdaysResource::contactRetrieved(KJob *job)
 {
-    auto *fj = static_cast<ItemFetchJob *>(job);
+    auto fj = static_cast<ItemFetchJob *>(job);
     if (job->error()) {
         Q_EMIT error(job->errorText());
         cancelTask();
@@ -196,7 +196,7 @@ void BirthdaysResource::listContacts(const Akonadi::Collection::List &cols)
         if (!contactFilter.isWantedCollection(col)) {
             continue;
         }
-        auto *job = new ItemFetchJob(col, this);
+        auto job = new ItemFetchJob(col, this);
         job->fetchScope().fetchFullPayload();
         connect(job, &ItemFetchJob::itemsReceived, this, &BirthdaysResource::createEvents);
     }

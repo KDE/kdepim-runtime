@@ -88,7 +88,7 @@ void FakeEwsServer::newConnectionReceived()
 {
     QTcpSocket *sock = nextPendingConnection();
 
-    auto *conn = new FakeEwsConnection(sock, this);
+    auto conn = new FakeEwsConnection(sock, this);
     connect(conn, &FakeEwsConnection::streamingRequestStarted, this, &FakeEwsServer::streamingConnectionStarted);
 }
 

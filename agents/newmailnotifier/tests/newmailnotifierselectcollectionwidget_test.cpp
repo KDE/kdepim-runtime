@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    auto *w = new NewMailNotifierSelectCollectionWidget;
+    auto w = new NewMailNotifierSelectCollectionWidget;
     w->show();
     app.exec();
     delete w;

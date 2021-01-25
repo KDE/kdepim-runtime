@@ -39,7 +39,7 @@ void RetrieveItemTask::doStart(KIMAP::Session *session)
     }
 
     if (session->selectedMailBox() != mailBox) {
-        auto *select = new KIMAP::SelectJob(m_session);
+        auto select = new KIMAP::SelectJob(m_session);
         select->setMailBox(mailBox);
         connect(select, &KJob::result,
                 this, &RetrieveItemTask::onSelectDone);
@@ -60,7 +60,7 @@ void RetrieveItemTask::onSelectDone(KJob *job)
 
 void RetrieveItemTask::triggerFetchJob()
 {
-    auto *fetch = new KIMAP::FetchJob(m_session);
+    auto fetch = new KIMAP::FetchJob(m_session);
     KIMAP::FetchJob::FetchScope scope;
     fetch->setUidBased(true);
     fetch->setSequenceSet(KIMAP::ImapSet(m_uid));
@@ -76,7 +76,7 @@ void RetrieveItemTask::triggerFetchJob()
 
 void RetrieveItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &messages)
 {
-    auto *fetch = qobject_cast<KIMAP::FetchJob *>(sender());
+    auto fetch = qobject_cast<KIMAP::FetchJob *>(sender());
     Q_ASSERT(fetch != nullptr);
     if (messages.size() == 0) {
         qCDebug(IMAPRESOURCE_LOG) << "Requested message does not exist on the server anymore";

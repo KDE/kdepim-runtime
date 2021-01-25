@@ -36,7 +36,7 @@ UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Sessio
 void UpdateMessageJob::start()
 {
     if (mSession->selectedMailBox() != mMailbox) {
-        auto *select = new KIMAP::SelectJob(mSession);
+        auto select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mMailbox);
         connect(select, &KIMAP::SelectJob::result, this, [this](KJob *job) {
             onSelectDone(job);
@@ -60,7 +60,7 @@ void UpdateMessageJob::onSelectDone(KJob *job)
 
 void UpdateMessageJob::fetchHeaders()
 {
-    auto *fetchJob = new KIMAP::FetchJob(mSession);
+    auto fetchJob = new KIMAP::FetchJob(mSession);
 
     fetchJob->setSequenceSet(KIMAP::ImapSet(mOldUid));
     fetchJob->setUidBased(true);
@@ -102,7 +102,7 @@ void UpdateMessageJob::onHeadersFetchDone(KJob *job)
 
 void UpdateMessageJob::searchForLatestVersion()
 {
-    auto *search = new KIMAP::SearchJob(mSession);
+    auto search = new KIMAP::SearchJob(mSession);
     search->setUidBased(true);
     search->setTerm(KIMAP::Term(KIMAP::Term::Subject, QString::fromLatin1(mKolabUid)));
     connect(search, &KJob::result,
@@ -119,7 +119,7 @@ void UpdateMessageJob::onSearchDone(KJob *job)
         return;
     }
 
-    auto *search = static_cast<KIMAP::SearchJob *>(job);
+    auto search = static_cast<KIMAP::SearchJob *>(job);
 
     if (search->results().count() >= 1) {
         mOldUids = KIMAP::ImapSet();
@@ -127,7 +127,7 @@ void UpdateMessageJob::onSearchDone(KJob *job)
             mOldUids.add(id);
         }
 
-        auto *fetchJob = new KIMAP::FetchJob(mSession);
+        auto fetchJob = new KIMAP::FetchJob(mSession);
         fetchJob->setSequenceSet(mOldUids);
         fetchJob->setUidBased(true);
 
@@ -167,7 +167,7 @@ void UpdateMessageJob::onConflictingMessageFetchDone(KJob *job)
 void UpdateMessageJob::appendMessage()
 {
     const qint64 uidNext = -1;
-    auto *replace = new ReplaceMessageJob(mMessage, mSession, mMailbox, uidNext, mOldUids, this);
+    auto replace = new ReplaceMessageJob(mMessage, mSession, mMailbox, uidNext, mOldUids, this);
     connect(replace, &KJob::result, this, &UpdateMessageJob::onReplaceDone);
     replace->start();
 }
@@ -180,7 +180,7 @@ void UpdateMessageJob::onReplaceDone(KJob *job)
         emitResult();
         return;
     }
-    auto *replaceJob = static_cast<ReplaceMessageJob *>(job);
+    auto replaceJob = static_cast<ReplaceMessageJob *>(job);
     mNewUid = replaceJob->newUid();
     emitResult();
 }

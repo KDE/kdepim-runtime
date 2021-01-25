@@ -33,7 +33,7 @@ private Q_SLOTS:
         QStringList callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
-        auto *uidNext = new UidNextAttribute;
+        auto uidNext = new UidNextAttribute;
         uidNext->setUidNext(63);
         collection.addAttribute(uidNext);
 

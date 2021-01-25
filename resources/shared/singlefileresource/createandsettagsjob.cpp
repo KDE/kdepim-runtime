@@ -26,7 +26,7 @@ void CreateAndSetTagsJob::start()
         emitResult();
     }
     for (const Akonadi::Tag &tag : qAsConst(mTags)) {
-        auto *createJob = new Akonadi::TagCreateJob(tag, this);
+        auto createJob = new Akonadi::TagCreateJob(tag, this);
         createJob->setMergeIfExisting(true);
         connect(createJob, &Akonadi::TagCreateJob::result, this, &CreateAndSetTagsJob::onCreateDone);
     }
@@ -38,14 +38,14 @@ void CreateAndSetTagsJob::onCreateDone(KJob *job)
     if (job->error()) {
         qWarning() << "Failed to create tag " << job->errorString();
     } else {
-        auto *createJob = static_cast<Akonadi::TagCreateJob *>(job);
+        auto createJob = static_cast<Akonadi::TagCreateJob *>(job);
         mCreatedTags << createJob->tag();
     }
     if (mCount == mTags.size()) {
         for (const Akonadi::Tag &tag : qAsConst(mCreatedTags)) {
             mItem.setTag(tag);
         }
-        auto *modJob = new Akonadi::ItemModifyJob(mItem, this);
+        auto modJob = new Akonadi::ItemModifyJob(mItem, this);
         connect(modJob, &Akonadi::ItemModifyJob::result, this, &CreateAndSetTagsJob::onModifyDone);
     }
 }

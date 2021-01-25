@@ -359,7 +359,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.at(0).at(0).toLongLong(), requestId);
         auto *s = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
 
-        auto *job = new KIMAP::CapabilitiesJob(s);
+        auto job = new KIMAP::CapabilitiesJob(s);
         job->start();
         QTest::qWait(100);
         QCOMPARE(lostSpy.count(), 1);
@@ -618,7 +618,7 @@ private Q_SLOTS:
         QSignalSpy lostSpy(&pool, &SessionPool::connectionLost);
 
         // Make the first session drop
-        auto *job = new KIMAP::CapabilitiesJob(session1);
+        auto job = new KIMAP::CapabilitiesJob(session1);
         job->start();
         QTest::qWait(100);
         QCOMPARE(lostSpy.count(), 1);
@@ -711,7 +711,7 @@ private Q_SLOTS:
 
         // Make the first (and only) session drop while we wait for the requester
         // to reply
-        auto *job = new KIMAP::CapabilitiesJob(session);
+        auto job = new KIMAP::CapabilitiesJob(session);
         job->start();
         QTest::qWait(100);
         QCOMPARE(lostSpy.count(), 1);

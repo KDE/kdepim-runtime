@@ -233,7 +233,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
             // in the addressbook to get name+email from the UID.
 
             const Akonadi::Item item(reference.uid().toLongLong());
-            auto *job = new Akonadi::ItemFetchJob(item);
+            auto job = new Akonadi::ItemFetchJob(item);
             job->fetchScope().fetchFullPayload();
             if (!job->exec()) {
                 continue;

@@ -333,7 +333,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
         }
         if (hasUniqMessage) {
-            auto *job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
+            auto job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);

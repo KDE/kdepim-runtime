@@ -31,13 +31,13 @@ InfoDialog::InfoDialog(bool closeWhenDone)
     : mCloseWhenDone(closeWhenDone)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    auto *mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
 
     mList = new QListWidget(this);
     mList->setMinimumWidth(640);
     mainLayout->addWidget(mList);
 
-    auto *statusLayout = new QHBoxLayout;
+    auto statusLayout = new QHBoxLayout;
     mainLayout->addLayout(statusLayout);
 
     mStatusLabel = new QLabel(this);
@@ -86,7 +86,7 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
 {
     bool autoScroll = mAutoScrollList;
 
-    auto *item = new QListWidgetItem(msg, mList);
+    auto item = new QListWidgetItem(msg, mList);
     switch (type) {
     case KMigratorBase::Success:
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));

@@ -224,7 +224,7 @@ void ImapResourceBase::startConnect(const QVariant &)
     }
 
     m_pool->disconnect(); // reset all state, delete any old account
-    auto *account = new ImapAccount;
+    auto account = new ImapAccount;
     settings()->loadAccount(account);
 
     const bool result = m_pool->connect(account);
@@ -605,7 +605,7 @@ void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)
                                     << ", errorString=" << job->errorString();
         return;
     }
-    auto *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
+    auto fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
     //Can be empty if collection is not subscribed locally
     if (!fetch->collections().isEmpty()) {
         delete m_idle;
@@ -641,7 +641,7 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
 void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
 {
     if (job->error() == 0) {
-        auto *fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
+        auto fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
         Akonadi::Collection collection = fetch->collections().at(0);
 
         scheduleCustomTask(this, "triggerCollectionExpunge",
@@ -727,7 +727,7 @@ void ImapResourceBase::clearStatusMessage()
 
 void ImapResourceBase::modifyCollection(const Collection &col)
 {
-    auto *modJob = new Akonadi::CollectionModifyJob(col, this);
+    auto modJob = new Akonadi::CollectionModifyJob(col, this);
     connect(modJob, &KJob::result, this, &ImapResourceBase::onCollectionModifyDone);
 }
 

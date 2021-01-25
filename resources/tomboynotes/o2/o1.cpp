@@ -273,7 +273,7 @@ void O1::link()
 
 void O1::onTokenRequestError(QNetworkReply::NetworkError error)
 {
-    auto *reply = qobject_cast<QNetworkReply *>(sender());
+    auto reply = qobject_cast<QNetworkReply *>(sender());
     qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestError:" << (int)error << reply->errorString() << reply->readAll();
     Q_EMIT linkingFailed();
 }
@@ -281,7 +281,7 @@ void O1::onTokenRequestError(QNetworkReply::NetworkError error)
 void O1::onTokenRequestFinished()
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished";
-    auto *reply = qobject_cast<QNetworkReply *>(sender());
+    auto reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished: " << reply->errorString();
@@ -362,7 +362,7 @@ void O1::exchangeToken()
 
 void O1::onTokenExchangeError(QNetworkReply::NetworkError error)
 {
-    auto *reply = qobject_cast<QNetworkReply *>(sender());
+    auto reply = qobject_cast<QNetworkReply *>(sender());
     qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeError:" << (int)error << reply->errorString() << reply->readAll();
     Q_EMIT linkingFailed();
 }
@@ -371,7 +371,7 @@ void O1::onTokenExchangeFinished()
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeFinished";
 
-    auto *reply = qobject_cast<QNetworkReply *>(sender());
+    auto reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenExchangeFinished: " << reply->errorString();

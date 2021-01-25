@@ -108,7 +108,7 @@ void Settings::onWalletOpened(bool success)
     if (!success) {
         Q_EMIT passwordRequestCompleted(QString(), true);
     } else {
-        auto *wallet = qobject_cast<Wallet *>(sender());
+        auto wallet = qobject_cast<Wallet *>(sender());
         bool passwordNotStoredInWallet = true;
         if (wallet && wallet->hasFolder(QStringLiteral("imap"))) {
             wallet->setFolder(QStringLiteral("imap"));
@@ -289,7 +289,7 @@ void Settings::onRootCollectionFetched(KJob *job)
 {
     const QString newName = job->property("collectionName").toString();
     Q_ASSERT(!newName.isEmpty());
-    auto *fetchJob = static_cast<Akonadi::CollectionFetchJob *>(job);
+    auto fetchJob = static_cast<Akonadi::CollectionFetchJob *>(job);
     if (fetchJob->collections().size() == 1) {
         Akonadi::Collection rootCollection = fetchJob->collections().at(0);
         rootCollection.setName(newName);

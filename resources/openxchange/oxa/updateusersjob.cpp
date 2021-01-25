@@ -21,10 +21,10 @@ UpdateUsersJob::UpdateUsersJob(QObject *parent)
 
 void UpdateUsersJob::start()
 {
-    auto *userIdJob = new UserIdRequestJob(this);
+    auto userIdJob = new UserIdRequestJob(this);
     connect(userIdJob, &UserIdRequestJob::result, this, &UpdateUsersJob::userIdRequestJobFinished);
 
-    auto *usersJob = new UsersRequestJob(this);
+    auto usersJob = new UsersRequestJob(this);
     connect(usersJob, &UsersRequestJob::result, this, &UpdateUsersJob::usersRequestJobFinished);
 
     userIdJob->start();
@@ -39,7 +39,7 @@ void UpdateUsersJob::userIdRequestJobFinished(KJob *job)
     } else {
         mUserIdRequestFinished = true;
 
-        auto *requestJob = qobject_cast<UserIdRequestJob *>(job);
+        auto requestJob = qobject_cast<UserIdRequestJob *>(job);
         mUserId = requestJob->userId();
 
         finish();
@@ -54,7 +54,7 @@ void UpdateUsersJob::usersRequestJobFinished(KJob *job)
     } else {
         mUsersRequestFinished = true;
 
-        auto *requestJob = qobject_cast<UsersRequestJob *>(job);
+        auto requestJob = qobject_cast<UsersRequestJob *>(job);
         mUsers = requestJob->users();
 
         finish();

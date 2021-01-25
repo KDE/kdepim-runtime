@@ -27,7 +27,7 @@ EwsAkonadiTagsSyncJob::~EwsAkonadiTagsSyncJob()
 
 void EwsAkonadiTagsSyncJob::start()
 {
-    auto *job = new TagFetchJob(this);
+    auto job = new TagFetchJob(this);
     job->fetchScope().setFetchRemoteId(true);
     connect(job, &TagFetchJob::result, this, &EwsAkonadiTagsSyncJob::tagFetchFinished);
 }
@@ -40,11 +40,11 @@ void EwsAkonadiTagsSyncJob::tagFetchFinished(KJob *job)
         return;
     }
 
-    auto *tagJob = qobject_cast<TagFetchJob *>(job);
+    auto tagJob = qobject_cast<TagFetchJob *>(job);
     Q_ASSERT(tagJob);
 
     if (mTagStore->syncTags(tagJob->tags())) {
-        auto *tagJob = new EwsGlobalTagsWriteJob(mTagStore, mClient, mRootCollection, this);
+        auto tagJob = new EwsGlobalTagsWriteJob(mTagStore, mClient, mRootCollection, this);
         connect(tagJob, &EwsGlobalTagsWriteJob::result, this, &EwsAkonadiTagsSyncJob::tagWriteFinished);
         tagJob->start();
     } else {

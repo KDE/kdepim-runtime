@@ -71,7 +71,7 @@ void MoveItemsTask::doStart(KIMAP::Session *session)
     }
 
     if (session->selectedMailBox() != oldMailBox) {
-        auto *select = new KIMAP::SelectJob(session);
+        auto select = new KIMAP::SelectJob(session);
 
         select->setMailBox(oldMailBox);
         connect(select, &KIMAP::SelectJob::result, this, &MoveItemsTask::onSelectDone);
@@ -88,7 +88,7 @@ void MoveItemsTask::onSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Select failed: " << job->errorString();
         cancelTask(job->errorString());
     } else {
-        auto *select = static_cast<KIMAP::SelectJob *>(job);
+        auto select = static_cast<KIMAP::SelectJob *>(job);
         startMove(select->session());
     }
 }
@@ -144,12 +144,12 @@ void MoveItemsTask::onCopyDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        auto *copy = static_cast<KIMAP::CopyJob *>(job);
+        auto copy = static_cast<KIMAP::CopyJob *>(job);
 
         m_newUids = imapSetToList(copy->resultingUids());
 
         // Mark the old one ready for deletion
-        auto *store = new KIMAP::StoreJob(copy->session());
+        auto store = new KIMAP::StoreJob(copy->session());
 
         store->setUidBased(true);
         store->setSequenceSet(m_oldSet);
@@ -168,7 +168,7 @@ void MoveItemsTask::onMoveDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        auto *move = static_cast<KIMAP::MoveJob *>(job);
+        auto move = static_cast<KIMAP::MoveJob *>(job);
 
         m_newUids = imapSetToList(move->resultingUids());
 
@@ -178,7 +178,7 @@ void MoveItemsTask::onMoveDone(KJob *job)
             // Let's go for a search to find a new UID :-)
 
             // We did a move, so we're very likely not in the right mailbox
-            auto *select = new KIMAP::SelectJob(move->session());
+            auto select = new KIMAP::SelectJob(move->session());
             select->setMailBox(mailBoxForCollection(targetCollection()));
             connect(select, &KIMAP::SelectJob::result, this, &MoveItemsTask::onPreSearchSelectDone);
             select->start();
@@ -201,8 +201,8 @@ void MoveItemsTask::onStoreFlagsDone(KJob *job)
         // Let's go for a search to find the new UID :-)
 
         // We did a copy we're very likely not in the right mailbox
-        auto *store = static_cast<KIMAP::StoreJob *>(job);
-        auto *select = new KIMAP::SelectJob(store->session());
+        auto store = static_cast<KIMAP::StoreJob *>(job);
+        auto select = new KIMAP::SelectJob(store->session());
         select->setMailBox(mailBoxForCollection(targetCollection()));
 
         connect(select, &KIMAP::SelectJob::result, this, &MoveItemsTask::onPreSearchSelectDone);
@@ -219,7 +219,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         return;
     }
 
-    auto *select = static_cast<KIMAP::SelectJob *>(job);
+    auto select = static_cast<KIMAP::SelectJob *>(job);
     if (!m_messageIds.isEmpty()) {
         // Use at most 250 search terms, otherwise the request might get too long and rejected
         // by the server.
@@ -227,7 +227,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         for (int batchIdx = 0; batchIdx < m_messageIds.size(); batchIdx += batchSize) {
             const auto count = std::min(batchSize, m_messageIds.size() - batchIdx);
 
-            auto *search = new KIMAP::SearchJob(select->session());
+            auto search = new KIMAP::SearchJob(select->session());
             search->setUidBased(true);
             if (batchIdx == m_messageIds.size() - count) {
                 search->setProperty("IsLastSearchJob", true);
@@ -248,7 +248,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
             search->start();
         }
     } else {
-        auto *search = new KIMAP::SearchJob(select->session());
+        auto search = new KIMAP::SearchJob(select->session());
         search->setUidBased(true);
         search->setProperty("IsLastSearchJob", true);
 
@@ -277,7 +277,7 @@ void MoveItemsTask::onSearchDone(KJob *job)
         return;
     }
 
-    auto *search = static_cast<KIMAP::SearchJob *>(job);
+    auto search = static_cast<KIMAP::SearchJob *>(job);
     m_newUids.append(search->results());
 
     if (search->property("IsLastSearchJob").toBool() == true) {

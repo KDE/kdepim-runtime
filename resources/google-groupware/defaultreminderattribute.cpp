@@ -19,7 +19,7 @@ DefaultReminderAttribute::DefaultReminderAttribute()
 
 Akonadi::Attribute *DefaultReminderAttribute::clone() const
 {
-    auto *attr = new DefaultReminderAttribute();
+    auto attr = new DefaultReminderAttribute();
     attr->setReminders(m_reminders);
 
     return attr;

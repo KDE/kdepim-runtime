@@ -125,7 +125,7 @@ QString POP3Resource::buildLabelForPasswordDialog(const QString &detailedError) 
 
 void POP3Resource::walletOpenedForLoading(QKeychain::Job *baseJob)
 {
-    auto *job = qobject_cast<ReadPasswordJob *>(baseJob);
+    auto job = qobject_cast<ReadPasswordJob *>(baseJob);
     bool passwordLoaded = false;
     Q_ASSERT(job);
     if (!job->error()) {
@@ -195,13 +195,13 @@ void POP3Resource::doStateStep()
         Q_EMIT status(Running, i18n("Preparing transmission from \"%1\".", name()));
         Collection targetCollection(mSettings.targetCollection());
         if (targetCollection.isValid()) {
-            auto *fetchJob = new CollectionFetchJob(targetCollection,
+            auto fetchJob = new CollectionFetchJob(targetCollection,
                                                                   CollectionFetchJob::Base);
             fetchJob->start();
             connect(fetchJob, &CollectionFetchJob::result, this, &POP3Resource::targetCollectionFetchJobFinished);
         } else {
             // No target collection set in the config? Try requesting a default inbox
-            auto *requestJob = new SpecialMailCollectionsRequestJob(this);
+            auto requestJob = new SpecialMailCollectionsRequestJob(this);
             requestJob->requestDefaultCollection(SpecialMailCollections::Inbox);
             requestJob->start();
             connect(requestJob, &SpecialMailCollectionsRequestJob::result, this, &POP3Resource::localFolderRequestJobFinished);
@@ -265,7 +265,7 @@ void POP3Resource::doStateStep()
     {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Login ==========================";
 
-        auto *loginJob = new LoginJob(mPopSession);
+        auto loginJob = new LoginJob(mPopSession);
         connect(loginJob, &LoginJob::result, this, &POP3Resource::loginJobResult);
         loginJob->start();
         break;
@@ -274,7 +274,7 @@ void POP3Resource::doStateStep()
     {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state List ===========================";
         Q_EMIT status(Running, i18n("Fetching mail listing."));
-        auto *listJob = new ListJob(mPopSession);
+        auto listJob = new ListJob(mPopSession);
         connect(listJob, &ListJob::result, this, &POP3Resource::listJobResult);
         listJob->start();
         break;
@@ -282,7 +282,7 @@ void POP3Resource::doStateStep()
     case UIDList:
     {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state UIDList ========================";
-        auto *uidListJob = new UIDListJob(mPopSession);
+        auto uidListJob = new UIDListJob(mPopSession);
         connect(uidListJob, &UIDListJob::result, this, &POP3Resource::uidListJobResult);
         uidListJob->start();
         break;
@@ -317,7 +317,7 @@ void POP3Resource::doStateStep()
         if (mIdsToDownload.empty()) {
             advanceState(CheckRemovingMessage);
         } else {
-            auto *fetchJob = new FetchJob(mPopSession);
+            auto fetchJob = new FetchJob(mPopSession);
             fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
             connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
             connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
@@ -343,7 +343,7 @@ void POP3Resource::doStateStep()
     case Quit:
     {
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Quit ===========================";
-        auto *quitJob = new QuitJob(mPopSession);
+        auto quitJob = new QuitJob(mPopSession);
         connect(quitJob, &QuitJob::result, this, &POP3Resource::quitJobResult);
         quitJob->start();
         break;
@@ -472,7 +472,7 @@ void POP3Resource::listJobResult(KJob *job)
         cancelSync(i18n("Error while getting the list of messages on the server.")
                    +QLatin1Char('\n') + job->errorString());
     } else {
-        auto *listJob = qobject_cast<ListJob *>(job);
+        auto listJob = qobject_cast<ListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToSizeMap = listJob->idList();
         mIdsToSaveValid = false;
@@ -487,7 +487,7 @@ void POP3Resource::uidListJobResult(KJob *job)
         cancelSync(i18n("Error while getting list of unique mail identifiers from the server.")
                    +QLatin1Char('\n') + job->errorString());
     } else {
-        auto *listJob = qobject_cast<UIDListJob *>(job);
+        auto listJob = qobject_cast<UIDListJob *>(job);
         Q_ASSERT(listJob);
         mIdsToUidsMap = listJob->uidList();
         mUidsToIdsMap = listJob->idList();
@@ -545,7 +545,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
     auto *attr = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Item::AddIfMissing);
     attr->setPop3AccountName(identifier());
     Akonadi::MessageFlags::copyMessageFlags(*message, item);
-    auto *itemCreateJob = new ItemCreateJob(item, mTargetCollection);
+    auto itemCreateJob = new ItemCreateJob(item, mTargetCollection);
 
     mPendingCreateJobs.insert(itemCreateJob, messageId);
     connect(itemCreateJob, &ItemCreateJob::result, this, &POP3Resource::itemCreateJobResult);
@@ -594,7 +594,7 @@ void POP3Resource::itemCreateJobResult(KJob *job)
         return;
     }
 
-    auto *createJob = qobject_cast<ItemCreateJob *>(job);
+    auto createJob = qobject_cast<ItemCreateJob *>(job);
     Q_ASSERT(createJob);
 
     if (job->error()) {
@@ -752,7 +752,7 @@ void POP3Resource::deleteJobResult(KJob *job)
         return;
     }
 
-    auto *finishedDeleteJob = qobject_cast<DeleteJob *>(job);
+    auto finishedDeleteJob = qobject_cast<DeleteJob *>(job);
     Q_ASSERT(finishedDeleteJob);
     Q_ASSERT(finishedDeleteJob == mDeleteJob);
     mDeletedIDs = finishedDeleteJob->deletedIDs();

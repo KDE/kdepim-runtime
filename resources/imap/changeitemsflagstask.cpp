@@ -26,7 +26,7 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
     qCDebug(IMAPRESOURCE_LOG) << mailBox;
 
     if (session->selectedMailBox() != mailBox) {
-        auto *select = new KIMAP::SelectJob(session);
+        auto select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
         connect(select, &KJob::result,
@@ -51,7 +51,7 @@ void ChangeItemsFlagsTask::onSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Select failed: " << job->errorString();
         cancelTask(job->errorString());
     } else {
-        auto *select = static_cast<KIMAP::SelectJob *>(job);
+        auto select = static_cast<KIMAP::SelectJob *>(job);
         qCDebug(IMAPRESOURCE_LOG) << addedFlags();
         if (!addedFlags().isEmpty()) {
             triggerAppendFlagsJob(select->session());
@@ -77,7 +77,7 @@ KIMAP::StoreJob *ChangeItemsFlagsTask::prepareJob(KIMAP::Session *session)
         ++m_processedItems;
     }
 
-    auto *store = new KIMAP::StoreJob(session);
+    auto store = new KIMAP::StoreJob(session);
     store->setUidBased(true);
     store->setSequenceSet(set);
 

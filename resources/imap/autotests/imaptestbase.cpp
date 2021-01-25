@@ -26,7 +26,7 @@ QString ImapTestBase::defaultPassword() const
 
 ImapAccount *ImapTestBase::createDefaultAccount() const
 {
-    auto *account = new ImapAccount;
+    auto account = new ImapAccount;
 
     account->setServer(QStringLiteral("127.0.0.1"));
     account->setPort(5989);
@@ -40,7 +40,7 @@ ImapAccount *ImapTestBase::createDefaultAccount() const
 
 DummyPasswordRequester *ImapTestBase::createDefaultRequester()
 {
-    auto *requester = new DummyPasswordRequester(this);
+    auto requester = new DummyPasswordRequester(this);
     requester->setPassword(defaultPassword());
     return requester;
 }

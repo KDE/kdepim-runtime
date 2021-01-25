@@ -82,7 +82,7 @@ QByteArray KolabResource::clientId() const
 
 QDialog *KolabResource::createConfigureDialog(WId windowId)
 {
-    auto *dlg = new SetupServer(this, windowId);
+    auto dlg = new SetupServer(this, windowId);
     dlg->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     dlg->setWindowTitle(i18nc("@title:window", "Kolab Account Settings"));
@@ -93,7 +93,7 @@ QDialog *KolabResource::createConfigureDialog(WId windowId)
 
 void KolabResource::onConfigurationDone(int result)
 {
-    auto *dlg = qobject_cast<SetupServer *>(sender());
+    auto dlg = qobject_cast<SetupServer *>(sender());
     if (result) {
         if (dlg->shouldClearCache()) {
             clearCache();

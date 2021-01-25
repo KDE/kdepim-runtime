@@ -274,7 +274,7 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
 
     Q_EMIT status(Running);
 
-    auto *authJob = qobject_cast<AuthJob *>(job);
+    auto authJob = qobject_cast<AuthJob *>(job);
     AccountPtr account = authJob->account();
     if (!m_settings->storeAccount(account)) {
         qCWarning(GOOGLE_LOG) << "Failed to store account in KWallet";

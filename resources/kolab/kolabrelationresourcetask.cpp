@@ -37,7 +37,7 @@ void KolabRelationResourceTask::doStart(KIMAP::Session *session)
     topLevelCollection.setRemoteId(rootRemoteId());
     topLevelCollection.setParentCollection(Akonadi::Collection::root());
 
-    auto *fetchJob = new Akonadi::CollectionFetchJob(topLevelCollection, Akonadi::CollectionFetchJob::Recursive);
+    auto fetchJob = new Akonadi::CollectionFetchJob(topLevelCollection, Akonadi::CollectionFetchJob::Recursive);
     fetchJob->fetchScope().setResource(resourceState()->resourceIdentifier());
     fetchJob->fetchScope().setContentMimeTypes(QStringList() << KolabHelpers::getMimeType(Kolab::ConfigurationType));
     fetchJob->fetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
@@ -48,7 +48,7 @@ void KolabRelationResourceTask::doStart(KIMAP::Session *session)
 void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
 {
     if (job->error() == 0) {
-        auto *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+        auto fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
         Q_ASSERT(fetchJob != nullptr);
 
         const Akonadi::Collection::List lstCols = fetchJob->collections();
@@ -74,7 +74,7 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
     mRelationCollection.setContentMimeTypes(QStringList() << KolabHelpers::getMimeType(Kolab::ConfigurationType));
     mRelationCollection.setRemoteId(separator + mRelationCollection.name());
     const QString newMailBox = QStringLiteral("Configuration");
-    auto *imapCreateJob = new KIMAP::CreateJob(mImapSession);
+    auto imapCreateJob = new KIMAP::CreateJob(mImapSession);
     imapCreateJob->setMailBox(newMailBox);
     connect(imapCreateJob, &KJob::result,
             this, &KolabRelationResourceTask::onCreateDone);
@@ -89,7 +89,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
         return;
     }
 
-    auto *setMetadataJob = new KIMAP::SetMetaDataJob(mImapSession);
+    auto setMetadataJob = new KIMAP::SetMetaDataJob(mImapSession);
     if (serverCapabilities().contains(QLatin1String("METADATA"))) {
         setMetadataJob->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
     } else {
@@ -111,7 +111,7 @@ void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
         return;
     }
 
-    auto *createJob = new Akonadi::CollectionCreateJob(mRelationCollection, this);
+    auto createJob = new Akonadi::CollectionCreateJob(mRelationCollection, this);
     connect(createJob, &KJob::result, this, &KolabRelationResourceTask::onLocalCreateDone);
 }
 

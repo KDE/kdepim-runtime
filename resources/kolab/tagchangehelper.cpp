@@ -85,7 +85,7 @@ void TagChangeHelper::recordNewUid(qint64 newUid, const Akonadi::Tag &tag)
     Akonadi::Tag updateTag;
     updateTag.setId(tag.id());
     updateTag.setRemoteId(remoteId);
-    auto *modJob = new Akonadi::TagModifyJob(updateTag);
+    auto modJob = new Akonadi::TagModifyJob(updateTag);
     connect(modJob, &KJob::result, this, &TagChangeHelper::onModifyDone);
 }
 
@@ -94,7 +94,7 @@ void TagChangeHelper::onReplaceDone(KJob *job)
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << "Replace failed: " << job->errorString();
     }
-    auto *replaceJob = static_cast<UpdateMessageJob *>(job);
+    auto replaceJob = static_cast<UpdateMessageJob *>(job);
     const qint64 newUid = replaceJob->newUid();
     const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
     if (newUid > 0) {

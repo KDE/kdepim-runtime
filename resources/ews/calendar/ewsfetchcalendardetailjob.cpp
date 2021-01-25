@@ -126,7 +126,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
     if (addItems.isEmpty()) {
         emitResult();
     } else {
-        auto *req = new EwsGetItemRequest(mClient, this);
+        auto req = new EwsGetItemRequest(mClient, this);
         EwsItemShape shape(EwsShapeIdOnly);
 //        shape << EwsPropertyField(QStringLiteral("item:Attachments"));
         shape << EwsPropertyField(QStringLiteral("item:Body"));
@@ -150,7 +150,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
         return;
     }
 
-    auto *req = qobject_cast<EwsGetItemRequest *>(job);
+    auto req = qobject_cast<EwsGetItemRequest *>(job);
 
     if (!req) {
         setError(1);

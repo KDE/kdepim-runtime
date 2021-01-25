@@ -69,7 +69,7 @@ QByteArray FileStore::EntityCompactChangeAttribute::type() const
 
 FileStore::EntityCompactChangeAttribute *FileStore::EntityCompactChangeAttribute::clone() const
 {
-    auto *copy = new FileStore::EntityCompactChangeAttribute();
+    auto copy = new FileStore::EntityCompactChangeAttribute();
     *(copy->d) = *d;
     return copy;
 }

@@ -70,7 +70,7 @@ AkonadiSlave::~AkonadiSlave()
 void AkonadiSlave::get(const QUrl &url)
 {
     const Item item = Item::fromUrl(url);
-    auto *job = new ItemFetchJob(item);
+    auto job = new ItemFetchJob(item);
     job->fetchScope().fetchFullPayload();
 
     if (!job->exec()) {
@@ -99,7 +99,7 @@ void AkonadiSlave::stat(const QUrl &url)
 
         if (collection != Collection::root()) {
             // Check that the collection exists.
-            auto *job = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+            auto job = new CollectionFetchJob(collection, CollectionFetchJob::Base);
             if (!job->exec()) {
                 error(KIO::ERR_INTERNAL, job->errorString());
                 return;
@@ -142,7 +142,7 @@ void AkonadiSlave::del(const QUrl &url, bool isFile)
 
     if (!isFile) {                   // It's a directory
         Collection collection = Collection::fromUrl(url);
-        auto *job = new CollectionDeleteJob(collection);
+        auto job = new CollectionDeleteJob(collection);
         if (!job->exec()) {
             error(KIO::ERR_INTERNAL, job->errorString());
             return;
@@ -173,7 +173,7 @@ void AkonadiSlave::listDir(const QUrl &url)
         error(KIO::ERR_DOES_NOT_EXIST, i18n("No such collection."));
         return;
     }
-    auto *job = new CollectionFetchJob(collection, CollectionFetchJob::FirstLevel);
+    auto job = new CollectionFetchJob(collection, CollectionFetchJob::FirstLevel);
     if (!job->exec()) {
         error(KIO::ERR_CANNOT_ENTER_DIRECTORY, job->errorString());
         return;
@@ -186,7 +186,7 @@ void AkonadiSlave::listDir(const QUrl &url)
 
     // Fetching items
     if (collection != Collection::root()) {
-        auto *fjob = new ItemFetchJob(collection);
+        auto fjob = new ItemFetchJob(collection);
         if (!fjob->exec()) {
             error(KIO::ERR_INTERNAL, job->errorString());
             return;

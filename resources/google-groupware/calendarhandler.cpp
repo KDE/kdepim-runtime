@@ -204,7 +204,7 @@ void CalendarHandler::itemAdded(const Item &item, const Collection &collection)
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Adding event to calendar '%1'", collection.name()));
     qCDebug(GOOGLE_CALENDAR_LOG) << "Event added to calendar" << collection.remoteId();
     EventPtr event(new Event(*item.payload<KCalendarCore::Event::Ptr>()));
-    auto *job = new EventCreateJob(event, collection.remoteId(), m_settings->accountPtr(), this);
+    auto job = new EventCreateJob(event, collection.remoteId(), m_settings->accountPtr(), this);
     job->setSendUpdates(SendUpdatesPolicy::None);
     connect(job, &EventCreateJob::finished, this, [this, item](KGAPI2::Job *job){
         if (!m_iface->handleError(job)) {

@@ -109,7 +109,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
         // TODO: Use cache policy to see what actually has to been set as payload.
         //       Currently most views need a minimal amount of information so the
         //       Items get Envelopes as payload.
-        auto *mail = new KMime::Message();
+        auto mail = new KMime::Message();
         mail->setHead(KMime::CRLFtoLF(mMBox->readMessageHeaders(entry)));
         mail->parse();
 
@@ -250,7 +250,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
         attr->addDeletedItemOffset(itemOffset(item.remoteId()));
     }
 
-    auto *modifyJob = new CollectionModifyJob(mboxCollection);
+    auto modifyJob = new CollectionModifyJob(mboxCollection);
     if (!modifyJob->exec()) {
         cancelTask(modifyJob->errorString());
         return;
@@ -336,7 +336,7 @@ void MboxResource::onCollectionFetch(KJob *job)
         = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
     attr->addDeletedItemOffset(itemOffset(item.remoteId()));
 
-    auto *modifyJob = new CollectionModifyJob(mboxCollection);
+    auto modifyJob = new CollectionModifyJob(mboxCollection);
     mCurrentItemDeletions.insert(modifyJob, item);
     connect(modifyJob, &CollectionModifyJob::result, this, &MboxResource::onCollectionModify);
     modifyJob->start();

@@ -25,7 +25,7 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     : QWidget(parent)
 {
     QWidget *mainWidget = new QWidget(this);
-    auto *mainLayout = new QVBoxLayout(this);
+    auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     ui.setupUi(mainWidget);

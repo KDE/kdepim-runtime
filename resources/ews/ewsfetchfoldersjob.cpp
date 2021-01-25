@@ -78,7 +78,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    auto *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
+    auto req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object");
         q->setErrorMsg(QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object"));
@@ -92,7 +92,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
          * try to fallback to fetching just the folder identifiers and retrieve the details later. */
         qCDebug(EWSRES_LOG) << QStringLiteral("Full fetch failed. Trying to fetch ids only.");
 
-        auto *syncFoldersReq = new EwsSyncFolderHierarchyRequest(mClient, this);
+        auto syncFoldersReq = new EwsSyncFolderHierarchyRequest(mClient, this);
         syncFoldersReq->setFolderId(EwsId(EwsDIdMsgFolderRoot));
         EwsFolderShape shape(EwsShapeIdOnly);
         syncFoldersReq->setFolderShape(shape);
@@ -123,7 +123,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
 
         q->emitResult();
     } else {
-        auto *syncFoldersReq = new EwsSyncFolderHierarchyRequest(mClient, this);
+        auto syncFoldersReq = new EwsSyncFolderHierarchyRequest(mClient, this);
         syncFoldersReq->setFolderId(EwsId(EwsDIdMsgFolderRoot));
         EwsFolderShape shape;
         shape << propPidTagContainerClass;
@@ -141,7 +141,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    auto *req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
+    auto req = qobject_cast<EwsSyncFolderHierarchyRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object");
         q->setErrorMsg(QStringLiteral("Invalid EwsSyncFolderHierarchyRequest job object"));
@@ -171,7 +171,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
         mPendingFetchJobs = 0;
 
         for (int i = 0, total = mRemoteFolderIds.size(); i < total; i += fetchBatchSize) {
-            auto *req = new EwsGetFolderRequest(mClient, this);
+            auto req = new EwsGetFolderRequest(mClient, this);
             req->setFolderIds(mRemoteFolderIds.mid(i, fetchBatchSize));
             req->setFolderShape(shape);
             connect(req, &EwsSyncFolderHierarchyRequest::result, this,
@@ -185,7 +185,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
 
         q->mSyncState = req->syncState();
     } else {
-        auto *syncFoldersReq = new EwsSyncFolderHierarchyRequest(mClient, this);
+        auto syncFoldersReq = new EwsSyncFolderHierarchyRequest(mClient, this);
         syncFoldersReq->setFolderId(EwsId(EwsDIdMsgFolderRoot));
         EwsFolderShape shape(EwsShapeIdOnly);
         syncFoldersReq->setFolderShape(shape);
@@ -201,7 +201,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone(KJob *job)
 {
     Q_Q(EwsFetchFoldersJob);
 
-    auto *req = qobject_cast<EwsGetFolderRequest *>(job);
+    auto req = qobject_cast<EwsGetFolderRequest *>(job);
     if (!req) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsGetFolderRequest job object");
         q->setErrorMsg(QStringLiteral("Invalid EwsGetFolderRequest job object"));
@@ -351,7 +351,7 @@ void EwsFetchFoldersJob::start()
 {
     Q_D(const EwsFetchFoldersJob);
 
-    auto *syncFoldersReq = new EwsSyncFolderHierarchyRequest(d->mClient, this);
+    auto syncFoldersReq = new EwsSyncFolderHierarchyRequest(d->mClient, this);
     syncFoldersReq->setFolderId(EwsId(EwsDIdMsgFolderRoot));
     EwsFolderShape shape;
     shape << propPidTagContainerClass;

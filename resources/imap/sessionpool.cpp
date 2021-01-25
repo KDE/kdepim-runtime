@@ -196,7 +196,7 @@ void SessionPool::killSession(KIMAP::Session *session, SessionTermination termin
     m_connectingPool.removeAll(session);
 
     if (session->state() != KIMAP::Session::Disconnected && termination == LogoutSession) {
-        auto *logout = new KIMAP::LogoutJob(session);
+        auto logout = new KIMAP::LogoutJob(session);
         QObject::connect(logout, &KJob::result,
                          session, &QObject::deleteLater);
         logout->start();
@@ -372,7 +372,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     QObject::connect(session, &KIMAP::Session::connectionLost,
                      this, &SessionPool::onConnectionLost);
 
-    auto *loginJob = new KIMAP::LoginJob(session);
+    auto loginJob = new KIMAP::LoginJob(session);
     loginJob->setUserName(m_account->userName());
     loginJob->setPassword(password);
     loginJob->setEncryptionMode(m_account->encryptionMode());
@@ -385,7 +385,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
 
 void SessionPool::onLoginDone(KJob *job)
 {
-    auto *login = static_cast<KIMAP::LoginJob *>(job);
+    auto login = static_cast<KIMAP::LoginJob *>(job);
     // Can happen if we disconnected meanwhile
     if (!m_connectingPool.contains(login->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
@@ -397,7 +397,7 @@ void SessionPool::onLoginDone(KJob *job)
             declareSessionReady(login->session());
         } else {
             // On initial connection we ask for capabilities
-            auto *capJob = new KIMAP::CapabilitiesJob(login->session());
+            auto capJob = new KIMAP::CapabilitiesJob(login->session());
             QObject::connect(capJob, &KIMAP::CapabilitiesJob::result, this, &SessionPool::onCapabilitiesTestDone);
             capJob->start();
         }
@@ -426,7 +426,7 @@ void SessionPool::onLoginDone(KJob *job)
 
 void SessionPool::onCapabilitiesTestDone(KJob *job)
 {
-    auto *capJob = qobject_cast<KIMAP::CapabilitiesJob *>(job);
+    auto capJob = qobject_cast<KIMAP::CapabilitiesJob *>(job);
     // Can happen if we disconnected meanwhile
     if (!m_connectingPool.contains(capJob->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
@@ -473,12 +473,12 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
 
     // If the extension is supported, grab the namespaces from the server
     if (m_capabilities.contains(QLatin1String("NAMESPACE"))) {
-        auto *nsJob = new KIMAP::NamespaceJob(capJob->session());
+        auto nsJob = new KIMAP::NamespaceJob(capJob->session());
         QObject::connect(nsJob, &KIMAP::NamespaceJob::result, this, &SessionPool::onNamespacesTestDone);
         nsJob->start();
         return;
     } else if (m_capabilities.contains(QLatin1String("ID"))) {
-        auto *idJob = new KIMAP::IdJob(capJob->session());
+        auto idJob = new KIMAP::IdJob(capJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
         idJob->start();
@@ -495,7 +495,7 @@ void SessionPool::setClientId(const QByteArray &clientId)
 
 void SessionPool::onNamespacesTestDone(KJob *job)
 {
-    auto *nsJob = qobject_cast<KIMAP::NamespaceJob *>(job);
+    auto nsJob = qobject_cast<KIMAP::NamespaceJob *>(job);
     // Can happen if we disconnect meanwhile
     if (!m_connectingPool.contains(nsJob->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected from server during login."));
@@ -522,7 +522,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
     }
 
     if (m_capabilities.contains(QLatin1String("ID"))) {
-        auto *idJob = new KIMAP::IdJob(nsJob->session());
+        auto idJob = new KIMAP::IdJob(nsJob->session());
         idJob->setField("name", m_clientId);
         QObject::connect(idJob, &KIMAP::IdJob::result, this, &SessionPool::onIdDone);
         idJob->start();
@@ -534,7 +534,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
 
 void SessionPool::onIdDone(KJob *job)
 {
-    auto *idJob = qobject_cast<KIMAP::IdJob *>(job);
+    auto idJob = qobject_cast<KIMAP::IdJob *>(job);
     // Can happen if we disconnected meanwhile
     if (!m_connectingPool.contains(idJob->session())) {
         Q_EMIT connectDone(CancelledError, i18n("Disconnected during login."));
@@ -545,7 +545,7 @@ void SessionPool::onIdDone(KJob *job)
 
 void SessionPool::onConnectionLost()
 {
-    auto *session = static_cast<KIMAP::Session *>(sender());
+    auto session = static_cast<KIMAP::Session *>(sender());
 
     m_unusedPool.removeAll(session);
     m_reservedPool.removeAll(session);
@@ -576,7 +576,7 @@ void SessionPool::onConnectionLost()
 void SessionPool::onSessionDestroyed(QObject *object)
 {
     //Safety net for bugs that cause dangling session pointers
-    auto *session = static_cast<KIMAP::Session *>(object);
+    auto session = static_cast<KIMAP::Session *>(object);
     bool sessionInPool = false;
     if (m_unusedPool.contains(session)) {
         qCWarning(IMAPRESOURCE_LOG) << "Session" << object << "destroyed while still in unused pool!";

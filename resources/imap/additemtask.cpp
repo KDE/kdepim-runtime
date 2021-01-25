@@ -49,7 +49,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
     KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
     m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
-    auto *job = new KIMAP::AppendJob(session);
+    auto job = new KIMAP::AppendJob(session);
     job->setMailBox(mailBox);
     job->setContent(msg->encodedContent(true));
     job->setFlags(fromAkonadiToSupportedImapFlags(item().flags().values(), collection()));
@@ -60,7 +60,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
 
 void AddItemTask::onAppendMessageDone(KJob *job)
 {
-    auto *append = qobject_cast<KIMAP::AppendJob *>(job);
+    auto append = qobject_cast<KIMAP::AppendJob *>(job);
 
     if (append->error()) {
         qCWarning(IMAPRESOURCE_LOG) << append->errorString();
@@ -79,7 +79,7 @@ void AddItemTask::onAppendMessageDone(KJob *job)
         const QString mailBox = append->mailBox();
 
         if (session->selectedMailBox() != mailBox) {
-            auto *select = new KIMAP::SelectJob(session);
+            auto select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
             connect(select, &KJob::result,
@@ -98,14 +98,14 @@ void AddItemTask::onPreSearchSelectDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
     } else {
-        auto *select = static_cast<KIMAP::SelectJob *>(job);
+        auto select = static_cast<KIMAP::SelectJob *>(job);
         triggerSearchJob(select->session());
     }
 }
 
 void AddItemTask::triggerSearchJob(KIMAP::Session *session)
 {
-    auto *search = new KIMAP::SearchJob(session);
+    auto search = new KIMAP::SearchJob(session);
 
     search->setUidBased(true);
 
@@ -140,7 +140,7 @@ void AddItemTask::onSearchDone(KJob *job)
         return;
     }
 
-    auto *search = static_cast<KIMAP::SearchJob *>(job);
+    auto search = static_cast<KIMAP::SearchJob *>(job);
 
     qint64 uid = 0;
     if (search->results().count() == 1) {

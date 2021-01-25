@@ -125,7 +125,7 @@ bool EwsFindItemRequest::parseResult(QXmlStreamReader &reader)
 
 bool EwsFindItemRequest::parseItemsResponse(QXmlStreamReader &reader)
 {
-    auto *resp = new EwsFindItemResponse(reader);
+    auto resp = new EwsFindItemResponse(reader);
     if (resp->responseClass() == EwsResponseUnknown) {
         return false;
     }

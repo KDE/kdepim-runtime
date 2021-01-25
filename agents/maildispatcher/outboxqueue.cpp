@@ -38,7 +38,7 @@ void OutboxQueue::initQueue()
     mQueue.clear();
 
     qCDebug(MAILDISPATCHER_LOG) << "Fetching items in collection" << mOutbox.id();
-    auto *job = new ItemFetchJob(mOutbox);
+    auto job = new ItemFetchJob(mOutbox);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload(false);
     connect(job, &ItemFetchJob::result, this, &OutboxQueue::collectionFetched);
@@ -227,7 +227,7 @@ void OutboxQueue::localFoldersChanged()
         mMonitor->setCollectionMonitored(mOutbox, false);
         mOutbox = Collection(-1);
 
-        auto *job = new SpecialMailCollectionsRequestJob(this);
+        auto job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::Outbox);
         connect(job, &SpecialMailCollectionsRequestJob::result, this, &OutboxQueue::localFoldersRequestResult);
 
@@ -237,7 +237,7 @@ void OutboxQueue::localFoldersChanged()
 
     // make sure we have a place to dump the sent mails as well
     if (!SpecialMailCollections::self()->hasDefaultCollection(SpecialMailCollections::SentMail)) {
-        auto *job = new SpecialMailCollectionsRequestJob(this);
+        auto job = new SpecialMailCollectionsRequestJob(this);
         job->requestDefaultCollection(SpecialMailCollections::SentMail);
 
         qCDebug(MAILDISPATCHER_LOG) << "Requesting sent-mail folder";
@@ -372,7 +372,7 @@ void OutboxQueue::fetchOne()
     Q_ASSERT(!mIgnore.contains(item.id()));
     mIgnore.insert(item.id());
 
-    auto *job = new ItemFetchJob(item);
+    auto job = new ItemFetchJob(item);
     job->fetchScope().fetchAllAttributes();
     job->fetchScope().fetchFullPayload();
     connect(job, &ItemFetchJob::result, this, &OutboxQueue::itemFetched);

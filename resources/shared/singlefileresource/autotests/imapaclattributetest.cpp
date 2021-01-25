@@ -193,7 +193,7 @@ private Q_SLOTS:
         QFETCH(QByteArray, serialized);
         QFETCH(QByteArray, oldSerialized);
 
-        auto *attr = new ImapAclAttribute();
+        auto attr = new ImapAclAttribute();
         attr->setRights(rights);
         attr->setMyRights(myRights);
         QCOMPARE(attr->serialized(), serialized);
@@ -219,7 +219,7 @@ private Q_SLOTS:
         acls.insert("second_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
         acls.insert("third_user@host", KIMAP::Acl::Lookup | KIMAP::Acl::Read);
 
-        auto *attr = new ImapAclAttribute();
+        auto attr = new ImapAclAttribute();
         attr->setRights(acls);
 
         ImapAcl oldAcls = acls;

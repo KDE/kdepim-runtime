@@ -39,7 +39,7 @@ void KolabChangeTagTask::onItemsFetchDone(KJob *job)
 
     const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob *>(job)->items();
 
-    auto *changeHelper = new TagChangeHelper(this);
+    auto changeHelper = new TagChangeHelper(this);
 
     connect(changeHelper, &TagChangeHelper::applyCollectionChanges,
             this, &KolabChangeTagTask::onApplyCollectionChanged);

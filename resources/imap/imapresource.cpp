@@ -59,7 +59,7 @@ QByteArray ImapResource::clientId() const
 
 QDialog *ImapResource::createConfigureDialog(WId windowId)
 {
-    auto *dlg = new SetupServer(this, windowId);
+    auto dlg = new SetupServer(this, windowId);
     dlg->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dlg->windowHandle(), windowId);
     dlg->setWindowTitle(i18nc("@title:window", "IMAP Account Settings"));
@@ -70,7 +70,7 @@ QDialog *ImapResource::createConfigureDialog(WId windowId)
 
 void ImapResource::onConfigurationDone(int result)
 {
-    auto *dlg = qobject_cast<SetupServer *>(sender());
+    auto dlg = qobject_cast<SetupServer *>(sender());
     if (result) {
         if (dlg->shouldClearCache()) {
             clearCache();
