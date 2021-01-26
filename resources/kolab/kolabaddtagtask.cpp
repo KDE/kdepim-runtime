@@ -6,8 +6,8 @@
 */
 
 #include "kolabaddtagtask.h"
-#include "kolabresource_debug.h"
 #include "../imap/uidnextattribute.h"
+#include "kolabresource_debug.h"
 
 #include "pimkolab/kolabformat/kolabobject.h"
 
@@ -44,7 +44,7 @@ void KolabAddTagTask::applyFoundUid(qint64 uid)
 {
     Akonadi::Tag tag = resourceState()->tag();
 
-    //If we failed to get the remoteid the tag remains local only
+    // If we failed to get the remoteid the tag remains local only
     if (uid > 0) {
         tag.setRemoteId(QByteArray::number(uid));
     }
@@ -95,15 +95,10 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
         }
         KIMAP::ImapInterval interval(uidNext->uidNext());
 
-        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
-            KIMAP::Term(KIMAP::Term::New),
-            KIMAP::Term(KIMAP::Term::Uid,
-                        KIMAP::ImapSet(uidNext->uidNext(), 0))
-        }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {KIMAP::Term(KIMAP::Term::New), KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(uidNext->uidNext(), 0))}));
     }
 
-    connect(search, &KJob::result,
-            this, &KolabAddTagTask::onSearchDone);
+    connect(search, &KJob::result, this, &KolabAddTagTask::onSearchDone);
 
     search->start();
 }
@@ -133,8 +128,7 @@ void KolabAddTagTask::onAppendMessageDone(KJob *job)
             auto select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
-            connect(select, &KJob::result,
-                    this, &KolabAddTagTask::onPreSearchSelectDone);
+            connect(select, &KJob::result, this, &KolabAddTagTask::onPreSearchSelectDone);
 
             select->start();
         } else {

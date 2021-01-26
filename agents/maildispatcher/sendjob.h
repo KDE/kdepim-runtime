@@ -7,9 +7,10 @@
 #ifndef SENDJOB_H
 #define SENDJOB_H
 
-#include <KJob>
 #include <AkonadiCore/Item>
-namespace Akonadi {
+#include <KJob>
+namespace Akonadi
+{
 class Item;
 class AgentInstance;
 }
@@ -62,6 +63,7 @@ public:
 private Q_SLOTS:
     void transportPercent(KJob *job, unsigned long percent);
     void resourceResult(qlonglong itemId, int result, const QString &message);
+
 private:
     void doAkonadiTransport();
     void doTraditionalTransport();

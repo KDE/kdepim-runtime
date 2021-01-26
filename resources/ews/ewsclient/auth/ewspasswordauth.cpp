@@ -53,7 +53,8 @@ const QString &EwsPasswordAuth::reauthPrompt() const
 
 const QString &EwsPasswordAuth::authFailedPrompt() const
 {
-    static const QString prompt = i18nc("@info", "The username/password for the Microsoft Exchange EWS account <b>%1</b> is not valid. Please update it in the account settings page.");
+    static const QString prompt =
+        i18nc("@info", "The username/password for the Microsoft Exchange EWS account <b>%1</b> is not valid. Please update it in the account settings page.");
     return prompt;
 }
 

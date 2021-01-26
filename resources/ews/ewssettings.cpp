@@ -6,12 +6,12 @@
 
 #include "ewssettings.h"
 
+#include <KLocalizedString>
 #include <KPasswordDialog>
 #include <KWallet/KWallet>
-#include <KLocalizedString>
 
-#include "auth/ewspasswordauth.h"
 #include "auth/ewsoauth.h"
+#include "auth/ewspasswordauth.h"
 
 #include "ewsresource_debug.h"
 
@@ -46,11 +46,9 @@ EwsSettings::~EwsSettings()
 bool EwsSettings::requestWalletOpen()
 {
     if (!mWallet) {
-        mWallet = Wallet::openWallet(Wallet::NetworkWallet(),
-                                     mWindowId, Wallet::Asynchronous);
+        mWallet = Wallet::openWallet(Wallet::NetworkWallet(), mWindowId, Wallet::Asynchronous);
         if (mWallet) {
-            connect(mWallet.data(), &Wallet::walletOpened, this,
-                    &EwsSettings::onWalletOpened);
+            connect(mWallet.data(), &Wallet::walletOpened, this, &EwsSettings::onWalletOpened);
             mWalletTimer.start();
             return true;
         } else {
@@ -89,8 +87,7 @@ void EwsSettings::requestPassword(bool ask)
             qCDebug(EWSRES_LOG) << "requestPassword: Requesting interactively";
             mPasswordDlg = new KPasswordDialog(nullptr);
             mPasswordDlg->setModal(true);
-            mPasswordDlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.",
-                                         username(), email()));
+            mPasswordDlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.", username(), email()));
             if (mPasswordDlg->exec() == QDialog::Accepted) {
                 mPassword = mPasswordDlg->password();
                 setPassword(mPassword);

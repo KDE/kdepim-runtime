@@ -33,8 +33,7 @@ void KolabRemoveTagTask::startRelationTask(KIMAP::Session *session)
         auto select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
-        connect(select, &KJob::result,
-                this, &KolabRemoveTagTask::onSelectDone);
+        connect(select, &KJob::result, this, &KolabRemoveTagTask::onSelectDone);
 
         select->start();
     } else {
@@ -71,7 +70,7 @@ void KolabRemoveTagTask::onSelectDone(KJob *job)
 void KolabRemoveTagTask::onStoreFlagsDone(KJob *job)
 {
     qCDebug(KOLABRESOURCE_TRACE);
-    //TODO use UID EXPUNGE if available
+    // TODO use UID EXPUNGE if available
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << "Failed to append flags: " << job->errorString();
         cancelTask(job->errorString());

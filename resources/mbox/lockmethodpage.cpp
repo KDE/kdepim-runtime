@@ -7,10 +7,10 @@
 #include "lockmethodpage.h"
 #include "settings.h"
 
-
 #include <QStandardPaths>
 
-LockMethodPage::LockMethodPage(QWidget *parent) : QWidget(parent)
+LockMethodPage::LockMethodPage(QWidget *parent)
+    : QWidget(parent)
 {
     ui.setupUi(this);
     checkAvailableLockMethods();

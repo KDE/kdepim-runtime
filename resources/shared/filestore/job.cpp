@@ -17,7 +17,7 @@ public:
 
 FileStore::Job::Job(FileStore::AbstractJobSession *session)
     : KJob(session)
-    , d(nullptr /*new Private(this)*/)               // nullptr until it's needed
+    , d(nullptr /*new Private(this)*/) // nullptr until it's needed
 {
     setAutoDelete(true);
 }

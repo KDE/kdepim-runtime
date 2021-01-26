@@ -2,27 +2,27 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
+#include <QCryptographicHash>
+#include <QDateTime>
+#include <QJsonObject>
 #include <QList>
-#include <QPair>
 #include <QMap>
 #include <QNetworkRequest>
-#include <QDateTime>
-#include <QCryptographicHash>
+#include <QPair>
 #include <QVariantMap>
-#include <QJsonObject>
 #if QT_VERSION >= 0x050000
-#include <QUrlQuery>
 #include <QJsonDocument>
+#include <QUrlQuery>
 #else
 #include <QScriptEngine>
 #include <QScriptValueIterator>
 #endif
 
-#include "o2.h"
-#include "o2replyserver.h"
+#include "debug.h"
 #include "o0globals.h"
 #include "o0settingsstore.h"
-#include "debug.h"
+#include "o2.h"
+#include "o2replyserver.h"
 
 /// Parse JSON data into a QVariantMap
 static QVariantMap parseTokenResponse(const QByteArray &data)
@@ -57,7 +57,7 @@ static QVariantMap parseTokenResponse(const QByteArray &data)
 }
 
 /// Add query parameters to a query
-static void addQueryParametersToUrl(QUrl &url, const QList<QPair<QString, QString> > &parameters)
+static void addQueryParametersToUrl(QUrl &url, const QList<QPair<QString, QString>> &parameters)
 {
 #if QT_VERSION < 0x050000
     url.setQueryItems(parameters);
@@ -68,7 +68,8 @@ static void addQueryParametersToUrl(QUrl &url, const QList<QPair<QString, QStrin
 #endif
 }
 
-O2::O2(QObject *parent) : O0BaseAuth(parent)
+O2::O2(QObject *parent)
+    : O0BaseAuth(parent)
 {
     manager_ = new QNetworkAccessManager(this);
     replyServer_ = new O2ReplyServer(this);
@@ -180,9 +181,10 @@ void O2::link()
         redirectUri_ = localhostPolicy_.arg(replyServer_->serverPort());
 
         // Assemble initial authentication URL
-        QList<QPair<QString, QString> > parameters;
-        parameters.append(qMakePair(QLatin1String(O2_OAUTH2_RESPONSE_TYPE),
-                                    (grantFlow_ == GrantFlowAuthorizationCode) ? QLatin1String(O2_OAUTH2_GRANT_TYPE_CODE) : QLatin1String(O2_OAUTH2_GRANT_TYPE_TOKEN)));
+        QList<QPair<QString, QString>> parameters;
+        parameters.append(
+            qMakePair(QLatin1String(O2_OAUTH2_RESPONSE_TYPE),
+                      (grantFlow_ == GrantFlowAuthorizationCode) ? QLatin1String(O2_OAUTH2_GRANT_TYPE_CODE) : QLatin1String(O2_OAUTH2_GRANT_TYPE_TOKEN)));
         parameters.append(qMakePair(QLatin1String(O2_OAUTH2_CLIENT_ID), clientId_));
         parameters.append(qMakePair(QLatin1String(O2_OAUTH2_REDIRECT_URI), redirectUri_));
         parameters.append(qMakePair(QLatin1String(O2_OAUTH2_SCOPE), scope_));

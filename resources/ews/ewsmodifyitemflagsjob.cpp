@@ -6,12 +6,16 @@
 
 #include "ewsmodifyitemflagsjob.h"
 
-#include "ewsmodifyitemjob.h"
 #include "ewsitemhandler.h"
+#include "ewsmodifyitemjob.h"
 
 using namespace Akonadi;
 
-EwsModifyItemFlagsJob::EwsModifyItemFlagsJob(EwsClient &client, QObject *parent, const Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
+EwsModifyItemFlagsJob::EwsModifyItemFlagsJob(EwsClient &client,
+                                             QObject *parent,
+                                             const Item::List &items,
+                                             const QSet<QByteArray> &addedFlags,
+                                             const QSet<QByteArray> &removedFlags)
     : EwsJob(parent)
     , mItems(items)
     , mClient(client)
@@ -67,8 +71,7 @@ void EwsModifyItemFlagsJob::start()
     for (int type = 0; type < EwsItemTypeUnknown; type++) {
         if (!items[static_cast<EwsItemType>(type)].isEmpty()) {
             EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(type));
-            EwsModifyItemJob *job = handler->modifyItemJob(mClient, items[type],
-                                                           QSet<QByteArray>() << "FLAGS", this);
+            EwsModifyItemJob *job = handler->modifyItemJob(mClient, items[type], QSet<QByteArray>() << "FLAGS", this);
             connect(job, &EwsModifyItemJob::result, this, &EwsModifyItemFlagsJob::itemModifyFinished);
             addSubjob(job);
             job->start();

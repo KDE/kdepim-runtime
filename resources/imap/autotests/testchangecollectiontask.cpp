@@ -22,8 +22,8 @@ private Q_SLOTS:
     void shouldUpdateMetadataAclAndName_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");
-        QTest::addColumn< QSet<QByteArray> >("parts");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QSet<QByteArray>>("parts");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<QString>("collectionName");
         QTest::addColumn<QStringList>("caps");
@@ -58,13 +58,15 @@ private Q_SLOTS:
         annotationsAttr->setAnnotations(annotations);
         collection.addAttribute(annotationsAttr);
 
-        parts << "NAME" << "AccessRights" << "imapacl" << "collectionannotations";
+        parts << "NAME"
+              << "AccessRights"
+              << "imapacl"
+              << "collectionannotations";
 
         caps << QStringLiteral("ACL") << QStringLiteral("ANNOTATEMORE");
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000003 OK acl changed"
                  << R"(C: A000004 SETANNOTATION "Foo" "/vendor/kolab/folder-test" ("value.shared" "false"))"
                  << "S: A000004 OK annotations changed"
@@ -87,8 +89,7 @@ private Q_SLOTS:
         caps.clear();
         caps << QStringLiteral("ACL");
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000003 OK acl changed"
                  << R"(C: A000004 SETACL "Foo" "foo@kde.org" "lrswipcda")"
                  << "S: A000004 OK acl changed"
@@ -105,8 +106,7 @@ private Q_SLOTS:
         caps.clear();
         caps << QStringLiteral("ACL") << QStringLiteral("ANNOTATEMORE");
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 RENAME "Foo" "BarBaz")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "Foo" "BarBaz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"BarBaz\""
                  << "S: A000004 OK mailbox subscribed";
@@ -114,19 +114,16 @@ private Q_SLOTS:
         parts << "NAME";
         callNames.clear();
         callNames << QStringLiteral("collectionChangeCommitted");
-        QTest::newRow("rename with invalid separator") << collection << parts << scenario << callNames
-                                                       << "BarBaz" << caps;
+        QTest::newRow("rename with invalid separator") << collection << parts << scenario << callNames << "BarBaz" << caps;
 
         collection = createCollectionChain(QStringLiteral(".INBOX.Foo"));
         collection.setName(QStringLiteral("Bar"));
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 RENAME "INBOX.Foo" "INBOX.Bar")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "INBOX.Foo" "INBOX.Bar")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX.Bar\""
                  << "S: A000004 OK mailbox subscribed";
-        QTest::newRow("rename with non-standard separator") << collection << parts << scenario << callNames
-                                                            << "Bar" << caps;
+        QTest::newRow("rename with non-standard separator") << collection << parts << scenario << callNames << "Bar" << caps;
 
         collection = createCollectionChain(QStringLiteral("/Foo"));
         collection.setName(QStringLiteral("Bar"));
@@ -150,13 +147,15 @@ private Q_SLOTS:
         annotationsAttr->setAnnotations(annotations);
         collection.addAttribute(annotationsAttr);
 
-        parts << "NAME" << "AccessRights" << "imapacl" << "collectionannotations";
+        parts << "NAME"
+              << "AccessRights"
+              << "imapacl"
+              << "collectionannotations";
 
         caps << QStringLiteral("ACL") << QStringLiteral("METADATA");
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 SETACL "Foo" "test@kdab.com" "lrswipckxtda")"
                  << "S: A000003 OK acl changed"
                  << R"(C: A000004 SETMETADATA "Foo" ("/shared/vendor/kolab/folder-test" "false"))"
                  << "S: A000004 OK SETMETADATA complete"
@@ -190,7 +189,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setUserName(defaultUserName());
@@ -216,8 +215,7 @@ private Q_SLOTS:
             }
             if (command == QLatin1String("collectionChangeCommitted")) {
                 QCOMPARE(parameter.value<Akonadi::Collection>().name(), collectionName);
-                QCOMPARE(parameter.value<Akonadi::Collection>().remoteId().right(collectionName.length()),
-                         collectionName);
+                QCOMPARE(parameter.value<Akonadi::Collection>().remoteId().right(collectionName.length()), collectionName);
             }
         }
 

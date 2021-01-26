@@ -5,11 +5,11 @@
  */
 
 #include "freebusytest.h"
-#include "testutils.h"
 #include "testhelpers.h"
+#include "testutils.h"
 
-#include <QTest>
 #include "freebusy/freebusy.h"
+#include <QTest>
 #include <kolabfreebusy.h>
 
 #include <iostream>
@@ -18,10 +18,10 @@ void FreebusyTest::testFB_data()
 {
     QTest::addColumn<Kolab::cDateTime>("start");
     QTest::addColumn<Kolab::cDateTime>("end");
-    QTest::addColumn< std::vector<Kolab::Event> >("events");
-    QTest::addColumn< std::vector<Kolab::FreebusyPeriod> >("output");
+    QTest::addColumn<std::vector<Kolab::Event>>("events");
+    QTest::addColumn<std::vector<Kolab::FreebusyPeriod>>("output");
 
-    //UTC check
+    // UTC check
     {
         Kolab::Period p1(Kolab::cDateTime(2011, 10, 6, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 7, 12, 1, 1, true));
         Kolab::Period p2(Kolab::cDateTime(2011, 10, 8, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 9, 12, 1, 1, true));
@@ -61,14 +61,16 @@ void FreebusyTest::testFB_data()
             output.push_back(period2);
             output.push_back(period3);
 
-            QTest::newRow("limit utc below") << Kolab::cDateTime(2011, 10, 8, 12, 1, 1, true) << Kolab::cDateTime(2012, 1, 1, 1, 1, 1, true) << events << output;
+            QTest::newRow("limit utc below") << Kolab::cDateTime(2011, 10, 8, 12, 1, 1, true) << Kolab::cDateTime(2012, 1, 1, 1, 1, 1, true) << events
+                                             << output;
         }
         {
             std::vector<Kolab::FreebusyPeriod> output;
             output.push_back(period1);
             output.push_back(period2);
 
-            QTest::newRow("limit utc above") << Kolab::cDateTime(2010, 1, 1, 1, 1, 1, true) << Kolab::cDateTime(2011, 10, 9, 12, 1, 1, true) << events << output;
+            QTest::newRow("limit utc above") << Kolab::cDateTime(2010, 1, 1, 1, 1, 1, true) << Kolab::cDateTime(2011, 10, 9, 12, 1, 1, true) << events
+                                             << output;
         }
     }
     {
@@ -89,9 +91,9 @@ void FreebusyTest::testFB_data()
         Kolab::FreebusyPeriod period1;
         period1.setType(Kolab::FreebusyPeriod::Busy);
         period1.setEvent(event.uid(), event.summary(), event.location());
-        period1.setPeriods(std::vector<Kolab::Period>() << Kolab::Period(Kolab::cDateTime(2011, 1, 1, 0, 0, 0, true), Kolab::cDateTime(2011, 1, 1, 1, 0, 0, true))
-                                                        << Kolab::Period(Kolab::cDateTime(2011, 1, 2, 0, 0, 0, true), Kolab::cDateTime(2011, 1, 2, 1, 0, 0, true))
-                           );
+        period1.setPeriods(std::vector<Kolab::Period>()
+                           << Kolab::Period(Kolab::cDateTime(2011, 1, 1, 0, 0, 0, true), Kolab::cDateTime(2011, 1, 1, 1, 0, 0, true))
+                           << Kolab::Period(Kolab::cDateTime(2011, 1, 2, 0, 0, 0, true), Kolab::cDateTime(2011, 1, 2, 1, 0, 0, true)));
         output.push_back(period1);
 
         QTest::newRow("fullday recurrence") << Kolab::cDateTime(2010, 1, 1, 1, 1, 1, true) << Kolab::cDateTime(2012, 10, 9, 12, 1, 1, true) << events << output;

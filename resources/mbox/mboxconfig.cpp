@@ -4,10 +4,10 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "singlefileresourceconfigbase.h"
-#include "settings.h"
 #include "compactpage.h"
 #include "lockmethodpage.h"
+#include "settings.h"
+#include "singlefileresourceconfigbase.h"
 
 #include <KLocalizedString>
 

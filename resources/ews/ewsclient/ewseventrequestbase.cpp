@@ -5,28 +5,13 @@
 */
 
 #include "ewseventrequestbase.h"
-#include "ewsxml.h"
 #include "ewsclient_debug.h"
+#include "ewsxml.h"
 
-enum NotificationElementType {
-    SubscriptionId,
-    PreviousWatermark,
-    MoreEvents,
-    Events
-};
+enum NotificationElementType { SubscriptionId, PreviousWatermark, MoreEvents, Events };
 typedef EwsXml<NotificationElementType> NotificationReader;
 
-enum EventElementType {
-    Watermark,
-    Timestamp,
-    ItemId,
-    FolderId,
-    ParentFolderId,
-    OldItemId,
-    OldFolderId,
-    OldParentFolderId,
-    UnreadCount
-};
+enum EventElementType { Watermark, Timestamp, ItemId, FolderId, ParentFolderId, OldItemId, OldFolderId, OldParentFolderId, UnreadCount };
 typedef EwsXml<EventElementType> EventReader;
 
 EwsEventRequestBase::EwsEventRequestBase(EwsClient &client, const QString &reqName, QObject *parent)
@@ -42,8 +27,7 @@ EwsEventRequestBase::~EwsEventRequestBase()
 
 bool EwsEventRequestBase::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, mReqName,
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, mReqName, [this](QXmlStreamReader &reader) {
         return parseNotificationsResponse(reader);
     });
 }
@@ -61,11 +45,10 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
             Q_FOREACH (const Notification &nfy, resp.notifications()) {
                 numEv += nfy.events().size();
             }
-            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response (%2 notifications, %3 events)")
-                .arg(mReqName).arg(resp.notifications().size()).arg(numEv);
+            qCDebugNC(EWSCLI_REQUEST_LOG)
+                << QStringLiteral("Got %1 response (%2 notifications, %3 events)").arg(mReqName).arg(resp.notifications().size()).arg(numEv);
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response - %2")
-                .arg(mReqName, resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got %1 response - %2").arg(mReqName, resp.responseMessage());
         }
     }
 
@@ -82,8 +65,7 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 
@@ -112,8 +94,7 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
         } else if (reader.name() == QLatin1String("ConnectionStatus")) {
             reader.skipCurrentElement();
         } else if (!readResponseElement(reader)) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element '%1'")
-                        .arg(reader.name().toString()));
+            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element '%1'").arg(reader.name().toString()));
             return;
         }
     }
@@ -121,19 +102,17 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
 
 EwsEventRequestBase::Notification::Notification(QXmlStreamReader &reader)
 {
-    static const QVector<NotificationReader::Item> items = {
-        {SubscriptionId, QStringLiteral("SubscriptionId"), &ewsXmlTextReader},
-        {PreviousWatermark, QStringLiteral("PreviousWatermark"), &ewsXmlTextReader},
-        {MoreEvents, QStringLiteral("MoreEvents"), &ewsXmlBoolReader},
-        {Events, QStringLiteral("CopiedEvent"), &eventsReader},
-        {Events, QStringLiteral("CreatedEvent"), &eventsReader},
-        {Events, QStringLiteral("DeletedEvent"), &eventsReader},
-        {Events, QStringLiteral("ModifiedEvent"), &eventsReader},
-        {Events, QStringLiteral("MovedEvent"), &eventsReader},
-        {Events, QStringLiteral("NewMailEvent"), &eventsReader},
-        {Events, QStringLiteral("FreeBusyChangeEvent"), &eventsReader},
-        {Events, QStringLiteral("StatusEvent"), &eventsReader}
-    };
+    static const QVector<NotificationReader::Item> items = {{SubscriptionId, QStringLiteral("SubscriptionId"), &ewsXmlTextReader},
+                                                            {PreviousWatermark, QStringLiteral("PreviousWatermark"), &ewsXmlTextReader},
+                                                            {MoreEvents, QStringLiteral("MoreEvents"), &ewsXmlBoolReader},
+                                                            {Events, QStringLiteral("CopiedEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("CreatedEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("DeletedEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("ModifiedEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("MovedEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("NewMailEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("FreeBusyChangeEvent"), &eventsReader},
+                                                            {Events, QStringLiteral("StatusEvent"), &eventsReader}};
     static const NotificationReader staticReader(items);
 
     NotificationReader ewsreader(staticReader);
@@ -203,8 +182,7 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     } else if (elmName == QLatin1String("FreeBusyChangedEvent")) {
         mType = EwsFreeBusyChangedEvent;
     } else {
-        qCWarning(EWSCLI_LOG) << QStringLiteral("Unknown notification event type: %1")
-            .arg(elmName.toString());
+        qCWarning(EWSCLI_LOG) << QStringLiteral("Unknown notification event type: %1").arg(elmName.toString());
         return;
     }
 
@@ -233,8 +211,8 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     if (mType == EwsStatusEvent) {
         qCDebugNCS(EWSCLI_LOG) << QStringLiteral(" %1").arg(elmName.toString());
     } else {
-        qCDebugNCS(EWSCLI_LOG) << QStringLiteral(" %1, %2, parent: ").arg(elmName.toString()).arg(mIsFolder ? 'F' : 'I')
-                               << mParentFolderId << QStringLiteral(", id: ") << mId;
+        qCDebugNCS(EWSCLI_LOG) << QStringLiteral(" %1, %2, parent: ").arg(elmName.toString()).arg(mIsFolder ? 'F' : 'I') << mParentFolderId
+                               << QStringLiteral(", id: ") << mId;
     }
 }
 
@@ -245,15 +223,12 @@ bool EwsEventRequestBase::Response::operator==(const Response &other) const
 
 bool EwsEventRequestBase::Notification::operator==(const Notification &other) const
 {
-    return (mSubscriptionId == other.mSubscriptionId) && (mWatermark == other.mWatermark)
-           && (mMoreEvents == other.mMoreEvents) && (mEvents == other.mEvents);
+    return (mSubscriptionId == other.mSubscriptionId) && (mWatermark == other.mWatermark) && (mMoreEvents == other.mMoreEvents) && (mEvents == other.mEvents);
 }
 
 bool EwsEventRequestBase::Event::operator==(const Event &other) const
 {
-    return (mType == other.mType) && (mWatermark == other.mWatermark)
-           && (mTimestamp == other.mTimestamp) && (mId == other.mId)
-           && (mParentFolderId == other.mParentFolderId) && (mUnreadCount == other.mUnreadCount)
-           && (mOldId == other.mOldId) && (mOldParentFolderId == other.mOldParentFolderId)
-           && (mIsFolder == other.mIsFolder);
+    return (mType == other.mType) && (mWatermark == other.mWatermark) && (mTimestamp == other.mTimestamp) && (mId == other.mId)
+        && (mParentFolderId == other.mParentFolderId) && (mUnreadCount == other.mUnreadCount) && (mOldId == other.mOldId)
+        && (mOldParentFolderId == other.mOldParentFolderId) && (mIsFolder == other.mIsFolder);
 }

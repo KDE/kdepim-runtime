@@ -7,9 +7,9 @@
 #ifndef KOLABHELPERS_H
 #define KOLABHELPERS_H
 
-#include <AkonadiCore/Item>
-#include "pimkolab/kolabformat/kolabdefinitions.h"//libkolab
 #include "pimkolab/kolabformat/formathelpers.h" //libkolab
+#include "pimkolab/kolabformat/kolabdefinitions.h" //libkolab
+#include <AkonadiCore/Item>
 
 #define KOLAB_COLOR_ANNOTATION "/vendor/kolab/color"
 
@@ -31,7 +31,7 @@ public:
     static QByteArray kolabTypeForMimeType(const QStringList &contentMimeTypes);
     static QStringList getContentMimeTypes(Kolab::FolderType type);
     static QString getIcon(Kolab::FolderType type);
-    //Returns true if the folder type shouldn't be ignored
+    // Returns true if the folder type shouldn't be ignored
     static bool isHandledType(Kolab::FolderType type);
     static QString getMimeType(Kolab::FolderType type);
     static QList<QByteArray> ancestorChain(const Akonadi::Collection &col);

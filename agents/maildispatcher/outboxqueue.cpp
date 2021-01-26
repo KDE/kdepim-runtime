@@ -11,14 +11,14 @@
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
 
-#include <Attribute>
-#include <ItemFetchJob>
-#include <ItemFetchScope>
-#include <Monitor>
 #include <Akonadi/KMime/AddressAttribute>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Attribute>
+#include <ItemFetchJob>
+#include <ItemFetchScope>
+#include <Monitor>
 
 #include <kmime/kmime_message.h>
 
@@ -97,8 +97,7 @@ void OutboxQueue::addIfComplete(const Item &item)
 
     const auto *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT(sentBehaviourAttribute);
-    if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection
-        && !sentBehaviourAttribute->moveToCollection().isValid()) {
+    if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection && !sentBehaviourAttribute->moveToCollection().isValid()) {
         qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid sent-mail collection.";
         return;
     }
@@ -111,8 +110,7 @@ void OutboxQueue::addIfComplete(const Item &item)
     }
     */
 
-    if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Automatic
-        && dispatchModeAttribute->sendAfter().isValid()
+    if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Automatic && dispatchModeAttribute->sendAfter().isValid()
         && dispatchModeAttribute->sendAfter() > QDateTime::currentDateTime()) {
         // All the above was OK, so accept it for the future.
         qCDebug(MAILDISPATCHER_LOG) << "Item" << item.id() << "is accepted to be sent in the future.";
@@ -319,12 +317,9 @@ OutboxQueue::OutboxQueue(QObject *parent)
     mMonitor = new Monitor(this);
     mMonitor->itemFetchScope().fetchAllAttributes();
     mMonitor->itemFetchScope().fetchFullPayload(false);
-    connect(mMonitor, &Monitor::itemAdded,
-            this, &OutboxQueue::itemAdded);
-    connect(mMonitor, &Monitor::itemChanged,
-            this, &OutboxQueue::itemChanged);
-    connect(mMonitor, &Monitor::itemMoved,
-            this, &OutboxQueue::itemMoved);
+    connect(mMonitor, &Monitor::itemAdded, this, &OutboxQueue::itemAdded);
+    connect(mMonitor, &Monitor::itemChanged, this, &OutboxQueue::itemChanged);
+    connect(mMonitor, &Monitor::itemMoved, this, &OutboxQueue::itemMoved);
     connect(mMonitor, &Monitor::itemRemoved, this, &OutboxQueue::itemRemoved);
 
     connect(SpecialMailCollections::self(), &SpecialMailCollections::defaultCollectionsChanged, this, &OutboxQueue::localFoldersChanged);
@@ -332,7 +327,7 @@ OutboxQueue::OutboxQueue(QObject *parent)
 
     mFutureTimer = new QTimer(this);
     connect(mFutureTimer, &QTimer::timeout, this, &OutboxQueue::checkFuture);
-    mFutureTimer->start(60 * 60 * 1000);   // 1 hour
+    mFutureTimer->start(60 * 60 * 1000); // 1 hour
 }
 
 OutboxQueue::~OutboxQueue()

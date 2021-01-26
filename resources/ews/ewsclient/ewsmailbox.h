@@ -14,8 +14,10 @@
 
 class EwsMailboxPrivate;
 
-namespace KMime {
-namespace Types {
+namespace KMime
+{
+namespace Types
+{
 class Mailbox;
 }
 }
@@ -39,6 +41,7 @@ public:
     QString email() const;
     QString emailWithName() const;
     operator KMime::Types::Mailbox() const;
+
 protected:
     QSharedDataPointer<EwsMailboxPrivate> d;
 };

@@ -14,7 +14,8 @@
 
 class KJob;
 class QTimer;
-namespace Akonadi {
+namespace Akonadi
+{
 class Monitor;
 }
 

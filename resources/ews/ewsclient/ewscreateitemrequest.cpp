@@ -7,19 +7,13 @@
 #include "ewscreateitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> messageDispositionNames = {
-    QStringLiteral("SaveOnly"),
-    QStringLiteral("SendOnly"),
-    QStringLiteral("SendAndSaveCopy")
-};
+static const QVector<QString> messageDispositionNames = {QStringLiteral("SaveOnly"), QStringLiteral("SendOnly"), QStringLiteral("SendAndSaveCopy")};
 
-static const QVector<QString> meetingDispositionNames = {
-    QStringLiteral("SendToNone"),
-    QStringLiteral("SendOnlyToAll"),
-    QStringLiteral("SendOnlyToChanged"),
-    QStringLiteral("SendToAllAndSaveCopy"),
-    QStringLiteral("SendToChangedAndSaveCopy")
-};
+static const QVector<QString> meetingDispositionNames = {QStringLiteral("SendToNone"),
+                                                         QStringLiteral("SendOnlyToAll"),
+                                                         QStringLiteral("SendOnlyToChanged"),
+                                                         QStringLiteral("SendToAllAndSaveCopy"),
+                                                         QStringLiteral("SendToChangedAndSaveCopy")};
 
 EwsCreateItemRequest::EwsCreateItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -41,12 +35,10 @@ void EwsCreateItemRequest::start()
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("CreateItem"));
 
-    writer.writeAttribute(QStringLiteral("MessageDisposition"),
-                          messageDispositionNames[mMessageDisp]);
+    writer.writeAttribute(QStringLiteral("MessageDisposition"), messageDispositionNames[mMessageDisp]);
 
     if (mMeetingDisp != EwsMeetingDispUnspecified) {
-        writer.writeAttribute(QStringLiteral("SendMeetingInvitations"),
-                              meetingDispositionNames[mMeetingDisp]);
+        writer.writeAttribute(QStringLiteral("SendMeetingInvitations"), meetingDispositionNames[mMeetingDisp]);
     }
 
     if (mMessageDisp == EwsDispSaveOnly || mMessageDisp == EwsDispSendAndSaveCopy) {
@@ -65,8 +57,7 @@ void EwsCreateItemRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateItem request (%1 items, parent %2)")
-        .arg(mItems.size()).arg(mSavedFolderId.id());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateItem request (%1 items, parent %2)").arg(mItems.size()).arg(mSavedFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -77,8 +68,7 @@ void EwsCreateItemRequest::start()
 
 bool EwsCreateItemRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("CreateItem"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("CreateItem"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -94,8 +84,7 @@ bool EwsCreateItemRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateItem response - OK");
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateItem response - %1")
-                .arg(resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateItem response - %1").arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
@@ -111,8 +100,7 @@ EwsCreateItemRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

@@ -39,8 +39,7 @@ void IsolatedTestBase::init()
         agent.setIsOnline(false);
     }
 
-    connect(AgentManager::self(), &AgentManager::instanceAdded, this,
-            [](const Akonadi::AgentInstance &instance) {
+    connect(AgentManager::self(), &AgentManager::instanceAdded, this, [](const Akonadi::AgentInstance &instance) {
         qDebug() << "AgentInstanceAdded" << instance.identifier();
     });
 
@@ -64,8 +63,7 @@ QString IsolatedTestBase::loadResourceAsString(const QString &path)
     return QString();
 }
 
-template<typename T>
-QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc, const QString &name)
+template<typename T> QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc, const QString &name)
 {
     QDBusReply<T> reply;
     int retryCnt = 4;
@@ -91,40 +89,39 @@ TestAgentInstance::TestAgentInstance(const QString &url)
     mIdentifier = mEwsInstance->identifier();
     const QString akonadiInstanceIdentifier = QProcessEnvironment::systemEnvironment().value(QStringLiteral("AKONADI_INSTANCE"));
 
-    mEwsSettingsInterface.reset(new OrgKdeAkonadiEwsSettingsInterface(
-                                    QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier
-                                    + QLatin1Char('.') + akonadiInstanceIdentifier,
-                                    QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
+    mEwsSettingsInterface.reset(
+        new OrgKdeAkonadiEwsSettingsInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + QLatin1Char('.') + akonadiInstanceIdentifier,
+                                              QStringLiteral("/Settings"),
+                                              QDBusConnection::sessionBus(),
+                                              this));
     QVERIFY(mEwsSettingsInterface->isValid());
 
-    mEwsWalletInterface.reset(new OrgKdeAkonadiEwsWalletInterface(
-                                  QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier
-                                  + QLatin1Char('.') + akonadiInstanceIdentifier,
-                                  QStringLiteral("/Settings"), QDBusConnection::sessionBus(), this));
+    mEwsWalletInterface.reset(
+        new OrgKdeAkonadiEwsWalletInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + mIdentifier + QLatin1Char('.') + akonadiInstanceIdentifier,
+                                            QStringLiteral("/Settings"),
+                                            QDBusConnection::sessionBus(),
+                                            this));
     QVERIFY(mEwsWalletInterface->isValid());
 
     /* The EWS resource initializes its DBus adapters asynchronously. Therefore it can happen that
      * due to a race access is attempted prior to their initialization. To fix this retry the DBus
      * communication a few times before declaring failure. */
-    const auto baseUrlReply = dBusSetAndWaitReply<QString>(
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setBaseUrl, mEwsSettingsInterface.data(), url),
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::baseUrl, mEwsSettingsInterface.data()),
-        QStringLiteral("Base URL"));
+    const auto baseUrlReply = dBusSetAndWaitReply<QString>(std::bind(&OrgKdeAkonadiEwsSettingsInterface::setBaseUrl, mEwsSettingsInterface.data(), url),
+                                                           std::bind(&OrgKdeAkonadiEwsSettingsInterface::baseUrl, mEwsSettingsInterface.data()),
+                                                           QStringLiteral("Base URL"));
     QVERIFY(baseUrlReply.isValid());
     QVERIFY(baseUrlReply.value() == url);
 
-    const auto hasDomainReply = dBusSetAndWaitReply<bool>(
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setHasDomain, mEwsSettingsInterface.data(), false),
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::hasDomain, mEwsSettingsInterface.data()),
-        QStringLiteral("has domain"));
+    const auto hasDomainReply = dBusSetAndWaitReply<bool>(std::bind(&OrgKdeAkonadiEwsSettingsInterface::setHasDomain, mEwsSettingsInterface.data(), false),
+                                                          std::bind(&OrgKdeAkonadiEwsSettingsInterface::hasDomain, mEwsSettingsInterface.data()),
+                                                          QStringLiteral("has domain"));
     QVERIFY(hasDomainReply.isValid());
     QVERIFY(hasDomainReply.value() == false);
 
     const auto username = QStringLiteral("test");
-    const auto usernameReply = dBusSetAndWaitReply<QString>(
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::setUsername, mEwsSettingsInterface.data(), username),
-        std::bind(&OrgKdeAkonadiEwsSettingsInterface::username, mEwsSettingsInterface.data()),
-        QStringLiteral("Username"));
+    const auto usernameReply = dBusSetAndWaitReply<QString>(std::bind(&OrgKdeAkonadiEwsSettingsInterface::setUsername, mEwsSettingsInterface.data(), username),
+                                                            std::bind(&OrgKdeAkonadiEwsSettingsInterface::username, mEwsSettingsInterface.data()),
+                                                            QStringLiteral("Username"));
     QVERIFY(usernameReply.isValid());
     QVERIFY(usernameReply.value() == username);
 
@@ -153,13 +150,17 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
 {
     if (wait) {
         QEventLoop loop;
-        auto conn = connect(AgentManager::self(), &AgentManager::instanceOnline, this,
-                            [&](const AgentInstance &instance, bool state) {
-            if (instance == *mEwsInstance && state == online) {
-                qDebug() << "is online" << state;
-                loop.exit(0);
-            }
-        }, Qt::QueuedConnection);
+        auto conn = connect(
+            AgentManager::self(),
+            &AgentManager::instanceOnline,
+            this,
+            [&](const AgentInstance &instance, bool state) {
+                if (instance == *mEwsInstance && state == online) {
+                    qDebug() << "is online" << state;
+                    loop.exit(0);
+                }
+            },
+            Qt::QueuedConnection);
         QTimer timer;
         timer.setSingleShot(true);
         connect(&timer, &QTimer::timeout, this, [&]() {
@@ -180,20 +181,17 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
 MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-inbox-msgroot"))
-             .arg(rootId).arg(inboxId);
+    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-inbox-msgroot")).arg(rootId).arg(inboxId);
     description = QStringLiteral("GetFolder request for inbox and msgroot");
 }
 
 SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &list, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {
-        IsolatedTestBase::Folder::Inbox,
-        IsolatedTestBase::Folder::Calendar,
-        IsolatedTestBase::Folder::Tasks,
-        IsolatedTestBase::Folder::Contacts
-    };
+    static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {IsolatedTestBase::Folder::Inbox,
+                                                                                        IsolatedTestBase::Folder::Calendar,
+                                                                                        IsolatedTestBase::Folder::Tasks,
+                                                                                        IsolatedTestBase::Folder::Contacts};
     QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder *> folderHash;
     for (const auto &folder : list) {
         if (specialFolders.contains(folder.type)) {
@@ -220,13 +218,11 @@ SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBas
 SpecialFoldersDialogEntry::SpecialFoldersDialogEntry(const IsolatedTestBase::FolderList &list, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {
-        IsolatedTestBase::Folder::Inbox,
-        IsolatedTestBase::Folder::Outbox,
-        IsolatedTestBase::Folder::Sent,
-        IsolatedTestBase::Folder::Trash,
-        IsolatedTestBase::Folder::Drafts
-    };
+    static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {IsolatedTestBase::Folder::Inbox,
+                                                                                        IsolatedTestBase::Folder::Outbox,
+                                                                                        IsolatedTestBase::Folder::Sent,
+                                                                                        IsolatedTestBase::Folder::Trash,
+                                                                                        IsolatedTestBase::Folder::Drafts};
     QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder *> folderHash;
     for (const auto &folder : list) {
         if (specialFolders.contains(folder.type)) {
@@ -262,7 +258,10 @@ SubscribeStreamingDialogEntry::SubscribeStreamingDialogEntry(const QString &desc
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/subscribe-streaming"));
 }
 
-SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &list, const QString &syncState, const QString &descr, const ReplyCallback &callback)
+SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const IsolatedTestBase::FolderList &list,
+                                                                   const QString &syncState,
+                                                                   const QString &descr,
+                                                                   const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
     QHash<QString, int> childCount;
@@ -303,8 +302,7 @@ SyncFolderHierInitialDialogEntry::SyncFolderHierInitialDialogEntry(const Isolate
         xml += QStringLiteral("</t:Folder>");
         xml += QStringLiteral("</t:Create>");
     }
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/syncfolderhierarhy-emptystate"))
-             .arg(syncState, xml);
+    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/syncfolderhierarhy-emptystate")).arg(syncState, xml);
 }
 
 UnsubscribeDialogEntry::UnsubscribeDialogEntry(const QString &descr, const ReplyCallback &callback)
@@ -321,8 +319,7 @@ ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &id
     int folderIndex = 0;
 
     for (const auto &folderId : ids) {
-        xQueryFolderIds.append(QStringLiteral("//m:GetFolder/m:FolderIds/t:FolderId[position()=%1 and @Id=\"%2\"]")
-                               .arg(++folderIndex).arg(folderId));
+        xQueryFolderIds.append(QStringLiteral("//m:GetFolder/m:FolderIds/t:FolderId[position()=%1 and @Id=\"%2\"]").arg(++folderIndex).arg(folderId));
         responseXml += QStringLiteral("<m:GetFolderResponseMessage ResponseClass=\"Success\">");
         responseXml += QStringLiteral("<m:ResponseCode>NoError</m:ResponseCode>");
         responseXml += QStringLiteral("<m:Folders><t:Folder>");
@@ -332,5 +329,7 @@ ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &id
     }
 
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-validateids"))
-             .arg(folderIndex).arg(xQueryFolderIds.join(QStringLiteral(" and "))).arg(responseXml);
+                 .arg(folderIndex)
+                 .arg(xQueryFolderIds.join(QStringLiteral(" and ")))
+                 .arg(responseXml);
 }

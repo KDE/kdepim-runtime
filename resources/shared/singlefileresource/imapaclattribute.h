@@ -14,7 +14,8 @@
 
 #include <kimap/acl.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class AKONADI_SINGLEFILERESOURCE_EXPORT ImapAclAttribute : public Akonadi::Attribute
 {
 public:
@@ -31,6 +32,7 @@ public:
     void deserialize(const QByteArray &data) override;
 
     bool operator==(const ImapAclAttribute &other) const;
+
 private:
     QMap<QByteArray, KIMAP::Acl::Rights> mRights;
     QMap<QByteArray, KIMAP::Acl::Rights> mOldRights;

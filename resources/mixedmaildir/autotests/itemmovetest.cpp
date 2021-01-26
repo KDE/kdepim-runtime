@@ -20,20 +20,18 @@
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
-#include <QTemporaryDir>
 #include <QRandomGenerator>
+#include <QTemporaryDir>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 using namespace Akonadi;
 using namespace KMBox;
 
 static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset()
-           && a.separatorSize() == b.separatorSize()
-           && a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset() && a.separatorSize() == b.separatorSize() && a.messageSize() == b.messageSize();
 }
 
 static quint64 changedOffset(const Item &item)
@@ -514,9 +512,9 @@ void ItemMoveTest::testMBoxItem()
     QCOMPARE(QSet<QString>::fromList(md3.entryList()), entrySet3);
 
     entryList1.removeAt(0);
-    entryList1[ 0 ] = MBoxEntry(changedOffset(items[ 0 ]));
-    entryList1[ 1 ] = MBoxEntry(changedOffset(items[ 1 ]));
-    entryList1[ 2 ] = MBoxEntry(changedOffset(items[ 2 ]));
+    entryList1[0] = MBoxEntry(changedOffset(items[0]));
+    entryList1[1] = MBoxEntry(changedOffset(items[1]));
+    entryList1[2] = MBoxEntry(changedOffset(items[2]));
     QVERIFY(mbox1.load(mbox1.fileName()));
     QCOMPARE(mbox1.entries(), entryList1);
 
@@ -560,8 +558,8 @@ void ItemMoveTest::testMBoxItem()
     QCOMPARE(mbox5.entries().last().messageOffset(), movedItem.remoteId().toULongLong());
 
     entryList1.removeAt(0);
-    entryList1[ 0 ] = MBoxEntry(changedOffset(items[ 0 ]));
-    entryList1[ 1 ] = MBoxEntry(changedOffset(items[ 1 ]));
+    entryList1[0] = MBoxEntry(changedOffset(items[0]));
+    entryList1[1] = MBoxEntry(changedOffset(items[1]));
     QVERIFY(mbox1.load(mbox1.fileName()));
     QCOMPARE(mbox1.entries(), entryList1);
 
@@ -610,7 +608,7 @@ void ItemMoveTest::testMBoxItem()
     QCOMPARE(mbox4.entries().last().messageOffset(), movedItem.remoteId().toULongLong());
 
     entryList1.removeAt(0);
-    entryList1[ 0 ] = MBoxEntry(changedOffset(items[ 0 ]));
+    entryList1[0] = MBoxEntry(changedOffset(items[0]));
     QVERIFY(mbox1.load(mbox1.fileName()));
     QCOMPARE(mbox1.entries(), entryList1);
 

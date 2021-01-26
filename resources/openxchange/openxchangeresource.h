@@ -42,7 +42,9 @@ protected:
     // which just forwards to the one above
     using Akonadi::AgentBase::ObserverV2::collectionChanged;
     void collectionRemoved(const Akonadi::Collection &collection) override;
-    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void collectionMoved(const Akonadi::Collection &collection,
+                         const Akonadi::Collection &collectionSource,
+                         const Akonadi::Collection &collectionDestination) override;
 
 private Q_SLOTS:
     void onReloadConfiguration();

@@ -6,10 +6,10 @@
 
 #include "fakeewsserver.h"
 
-#include <QThread>
-#include <QRandomGenerator>
 #include "fakeewsconnection.h"
 #include "fakeewsserver_debug.h"
+#include <QRandomGenerator>
+#include <QThread>
 
 const FakeEwsServer::DialogEntry::HttpResponse FakeEwsServer::EmptyResponse = {QString(), 0};
 
@@ -64,9 +64,10 @@ void FakeEwsServer::setDefaultReplyCallback(const DialogEntry::ReplyCallback &de
 void FakeEwsServer::queueEventsXml(const QStringList &events)
 {
     if (QThread::currentThread() != thread()) {
-        qCWarningNC(EWSFAKE_LOG) << QStringLiteral("queueEventsXml called from wrong thread "
-                                                   "(called from ") << QThread::currentThread() << QStringLiteral(", should be ")
-                                 << thread() << QStringLiteral(")");
+        qCWarningNC(EWSFAKE_LOG) << QStringLiteral(
+            "queueEventsXml called from wrong thread "
+            "(called from ") << QThread::currentThread()
+                                 << QStringLiteral(", should be ") << thread() << QStringLiteral(")");
         return;
     }
     mEventQueue += events;

@@ -17,16 +17,11 @@ class EwsPropertyFieldPrivate;
 class EwsPropertyField
 {
 public:
-    enum Type {
-        Field,
-        ExtendedField,
-        IndexedField,
-        UnknownField
-    };
+    enum Type { Field, ExtendedField, IndexedField, UnknownField };
 
     EwsPropertyField();
-    explicit EwsPropertyField(const QString &uri);  // FieldURI
-    EwsPropertyField(const QString &uri, unsigned index);   // IndexedFieldURI
+    explicit EwsPropertyField(const QString &uri); // FieldURI
+    EwsPropertyField(const QString &uri, unsigned index); // IndexedFieldURI
     EwsPropertyField(EwsDistinguishedPropSetId psid, unsigned id, EwsPropertyType type);
     EwsPropertyField(EwsDistinguishedPropSetId psid, const QString &name, EwsPropertyType type);
     EwsPropertyField(const QString &psid, unsigned id, EwsPropertyType type);
@@ -50,6 +45,7 @@ public:
 
     Type type() const;
     QString uri() const;
+
 private:
     QSharedDataPointer<EwsPropertyFieldPrivate> d;
 

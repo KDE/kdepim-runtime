@@ -15,7 +15,7 @@ using namespace Akonadi;
 
 static const char collectionIdMappingProperty[] = "collectionIdMappingProperty";
 
-EntityTreeCreateJob::EntityTreeCreateJob(const QList< Akonadi::Collection::List > &collections, const Akonadi::Item::List &items, QObject *parent)
+EntityTreeCreateJob::EntityTreeCreateJob(const QList<Akonadi::Collection::List> &collections, const Akonadi::Item::List &items, QObject *parent)
     : Akonadi::TransactionSequence(parent)
     , m_collections(collections)
     , m_items(items)

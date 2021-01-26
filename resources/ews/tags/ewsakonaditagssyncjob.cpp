@@ -6,10 +6,10 @@
 
 #include "ewsakonaditagssyncjob.h"
 
+#include "ewsglobaltagswritejob.h"
+#include "ewstagstore.h"
 #include <AkonadiCore/TagFetchJob>
 #include <AkonadiCore/TagFetchScope>
-#include "ewstagstore.h"
-#include "ewsglobaltagswritejob.h"
 
 using namespace Akonadi;
 

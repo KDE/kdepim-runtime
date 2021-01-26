@@ -13,10 +13,12 @@
 class QTimer;
 class QFileInfo;
 class KDirWatch;
-namespace Akonadi_Maildir_Resource {
+namespace Akonadi_Maildir_Resource
+{
 class MaildirSettings;
 }
-namespace KPIM {
+namespace KPIM
+{
 class Maildir;
 }
 
@@ -82,7 +84,7 @@ private:
     Akonadi_Maildir_Resource::MaildirSettings *mSettings = nullptr;
     KDirWatch *mFsWatcher = nullptr;
     QHash<QString, KPIM::Maildir> mMaildirsForCollection;
-    QSet<QString> mChangedFiles; //files changed by the resource and that should be ignored in slotFileChanged
+    QSet<QString> mChangedFiles; // files changed by the resource and that should be ignored in slotFileChanged
     QTimer *mChangedCleanerTimer = nullptr;
 };
 

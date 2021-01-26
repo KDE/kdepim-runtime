@@ -7,8 +7,8 @@
 #ifndef EWSMODIFYITEMJOB_H
 #define EWSMODIFYITEMJOB_H
 
-#include <AkonadiCore/Item>
 #include "ewsjob.h"
+#include <AkonadiCore/Item>
 
 class EwsClient;
 

@@ -12,18 +12,19 @@
 
 #include <QMap>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class AKONADI_SINGLEFILERESOURCE_EXPORT ImapQuotaAttribute : public Akonadi::Attribute
 {
 public:
     ImapQuotaAttribute();
-    ImapQuotaAttribute(const QList<QByteArray> &roots, const QList< QMap<QByteArray, qint64> > &limits, const QList< QMap<QByteArray, qint64> > &usages);
+    ImapQuotaAttribute(const QList<QByteArray> &roots, const QList<QMap<QByteArray, qint64>> &limits, const QList<QMap<QByteArray, qint64>> &usages);
 
-    void setQuotas(const QList<QByteArray> &roots, const QList< QMap<QByteArray, qint64> > &limits, const QList< QMap<QByteArray, qint64> > &usages);
+    void setQuotas(const QList<QByteArray> &roots, const QList<QMap<QByteArray, qint64>> &limits, const QList<QMap<QByteArray, qint64>> &usages);
 
     QList<QByteArray> roots() const;
-    QList< QMap<QByteArray, qint64> > limits() const;
-    QList< QMap<QByteArray, qint64> > usages() const;
+    QList<QMap<QByteArray, qint64>> limits() const;
+    QList<QMap<QByteArray, qint64>> usages() const;
 
     QByteArray type() const override;
     Attribute *clone() const override;
@@ -32,8 +33,8 @@ public:
 
 private:
     QList<QByteArray> mRoots;
-    QList< QMap<QByteArray, qint64> > mLimits;
-    QList< QMap<QByteArray, qint64> > mUsages;
+    QList<QMap<QByteArray, qint64>> mLimits;
+    QList<QMap<QByteArray, qint64>> mUsages;
 };
 }
 

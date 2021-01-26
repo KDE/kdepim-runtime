@@ -34,6 +34,7 @@ Q_SIGNALS:
 protected Q_SLOTS:
     void requestData(KIO::Job *job, const QByteArray &data) override;
     void requestDataTimeout();
+
 protected:
     uint mTimeout;
     QTimer mRespTimer;

@@ -6,41 +6,39 @@
 
 #include "ewsid.h"
 
+#include <QDebug>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-#include <QDebug>
 
 #include "ewsclient.h"
 #include "ewsclient_debug.h"
 
-static const QString distinguishedIdNames[] = {
-    QStringLiteral("calendar"),
-    QStringLiteral("contacts"),
-    QStringLiteral("deleteditems"),
-    QStringLiteral("drafts"),
-    QStringLiteral("inbox"),
-    QStringLiteral("journal"),
-    QStringLiteral("notes"),
-    QStringLiteral("outbox"),
-    QStringLiteral("sentitems"),
-    QStringLiteral("tasks"),
-    QStringLiteral("msgfolderroot"),
-    QStringLiteral("root"),
-    QStringLiteral("junkemail"),
-    QStringLiteral("searchfolders"),
-    QStringLiteral("voicemail"),
-    QStringLiteral("recoverableitemsroot"),
-    QStringLiteral("recoverableitemsdeletions"),
-    QStringLiteral("recoverableitemsversions"),
-    QStringLiteral("recoverableitemspurges"),
-    QStringLiteral("archiveroot"),
-    QStringLiteral("archivemsgfolderroot"),
-    QStringLiteral("archivedeleteditems"),
-    QStringLiteral("archiverecoverableitemsroot"),
-    QStringLiteral("archiverecoverableitemsdeletions"),
-    QStringLiteral("archiverecoverableitemsversions"),
-    QStringLiteral("archiverecoverableitemspurges")
-};
+static const QString distinguishedIdNames[] = {QStringLiteral("calendar"),
+                                               QStringLiteral("contacts"),
+                                               QStringLiteral("deleteditems"),
+                                               QStringLiteral("drafts"),
+                                               QStringLiteral("inbox"),
+                                               QStringLiteral("journal"),
+                                               QStringLiteral("notes"),
+                                               QStringLiteral("outbox"),
+                                               QStringLiteral("sentitems"),
+                                               QStringLiteral("tasks"),
+                                               QStringLiteral("msgfolderroot"),
+                                               QStringLiteral("root"),
+                                               QStringLiteral("junkemail"),
+                                               QStringLiteral("searchfolders"),
+                                               QStringLiteral("voicemail"),
+                                               QStringLiteral("recoverableitemsroot"),
+                                               QStringLiteral("recoverableitemsdeletions"),
+                                               QStringLiteral("recoverableitemsversions"),
+                                               QStringLiteral("recoverableitemspurges"),
+                                               QStringLiteral("archiveroot"),
+                                               QStringLiteral("archivemsgfolderroot"),
+                                               QStringLiteral("archivedeleteditems"),
+                                               QStringLiteral("archiverecoverableitemsroot"),
+                                               QStringLiteral("archiverecoverableitemsdeletions"),
+                                               QStringLiteral("archiverecoverableitemsversions"),
+                                               QStringLiteral("archiverecoverableitemspurges")};
 
 class EwsIdComparatorRegistrar
 {
@@ -180,8 +178,7 @@ QDebug operator<<(QDebug debug, const EwsId &id)
     case EwsId::Distinguished:
         d << QStringLiteral("Distinguished: ") << distinguishedIdNames[id.mDid];
         break;
-    case EwsId::Real:
-    {
+    case EwsId::Real: {
         QString name = EwsClient::folderHash.value(id.mId, ewsHash(id.mId));
         d << name << QStringLiteral(", ") << ewsHash(id.mChangeKey);
         break;

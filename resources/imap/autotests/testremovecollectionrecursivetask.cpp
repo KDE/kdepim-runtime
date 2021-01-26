@@ -16,7 +16,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
     void shouldDeleteMailBoxRecursive_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection collection;
@@ -26,8 +26,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
         collection = createCollectionChain(QStringLiteral("/INBOX/test1"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LSUB \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LSUB \"\" *"
                  << "S: * LSUB ( \\HasChildren ) / INBOX"
                  << "S: * LSUB ( \\HasChildren ) / INBOX/test1"
                  << "S: * LSUB ( ) / INBOX/test1/test2"
@@ -83,8 +82,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
         QTest::newRow("normal case") << collection << scenario << callNames;
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LSUB \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LSUB \"\" *"
                  << "S: * LSUB ( \\HasChildren ) / INBOX"
                  << "S: * LSUB ( \\HasChildren ) / INBOX/test1"
                  << "S: * LSUB ( ) / INBOX/test1/test2"
@@ -97,8 +95,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
 
         collection = createCollectionChain(QStringLiteral(".INBOX.test1"));
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LSUB \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LSUB \"\" *"
                  << "S: * LSUB ( \\HasChildren ) . INBOX"
                  << "S: * LSUB ( \\HasChildren ) . INBOX.test1"
                  << "S: * LSUB ( ) . INBOX.test1.test2"
@@ -154,8 +151,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
 
         collection = createCollectionChain(QStringLiteral(".INBOX.test1"));
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LSUB \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LSUB \"\" *"
                  << "S: * LSUB ( \\HasChildren ) . INBOX"
                  << "S: * LSUB ( \\HasChildren ) . INBOX.test1"
                  << "S: * LSUB ( ) . INBOX.test1.test2"
@@ -198,7 +194,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);

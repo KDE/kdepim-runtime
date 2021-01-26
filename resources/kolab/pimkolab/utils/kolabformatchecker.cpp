@@ -5,15 +5,15 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <QString>
-#include <QFile>
-#include <kolabformat.h>
 #include "kolabformat/errorhandler.h"
 #include "kolabformat/kolabobject.h"
 #include "pimkolab_debug.h"
+#include <QFile>
+#include <QString>
+#include <iostream>
+#include <kolabformat.h>
+#include <string>
+#include <vector>
 using namespace std;
 
 KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
@@ -47,8 +47,7 @@ int main(int argc, char *argv[])
 
     cout << endl;
 
-    for (vector<string>::const_iterator it = inputFiles.begin();
-         it != inputFiles.end(); ++it) {
+    for (vector<string>::const_iterator it = inputFiles.begin(); it != inputFiles.end(); ++it) {
         cout << "File: " << *it << endl;
 
         bool ok;

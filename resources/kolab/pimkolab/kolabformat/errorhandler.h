@@ -9,11 +9,12 @@
 
 #include "kolab_export.h"
 
-#include <QString>
-#include <QList>
 #include <QDebug>
+#include <QList>
+#include <QString>
 
-namespace Kolab {
+namespace Kolab
+{
 class DebugStream;
 /**
  * Kolab Error Handler
@@ -34,9 +35,10 @@ class KOLAB_EXPORT ErrorHandler
 public:
     enum Severity {
         Debug,
-        Warning, //Warning, error could be corrected, object can be used without dataloss. This warning is also used if dataloss is acceptable because a feature is explicitly not supported.
-        Error, //Potentially corrupt object, writing the object back could result in dataloss. (Object could still be used to display the data readonly).
-        Critical //Critical error, produced object cannot be used and should be thrown away (writing back will result in dataloss).
+        Warning, // Warning, error could be corrected, object can be used without dataloss. This warning is also used if dataloss is acceptable because a
+                 // feature is explicitly not supported.
+        Error, // Potentially corrupt object, writing the object back could result in dataloss. (Object could still be used to display the data readonly).
+        Critical // Critical error, produced object cannot be used and should be thrown away (writing back will result in dataloss).
     };
 
     struct Err {
@@ -59,7 +61,7 @@ public:
     }
 
     void addError(Severity s, const QString &message, const QString &location);
-    const QList <Err> &getErrors() const;
+    const QList<Err> &getErrors() const;
     Severity error() const;
     QString errorMessage() const;
     void clear();
@@ -94,7 +96,7 @@ private:
 
     Severity m_worstError;
     QString m_worstErrorMessage;
-    QList <Err> m_errorQueue;
+    QList<Err> m_errorQueue;
     QScopedPointer<DebugStream> m_debugStream;
 };
 
@@ -120,15 +122,16 @@ public:
 
     qint64 readData(char *, qint64) override
     {
-        return 0;                                        /* eof */
+        return 0; /* eof */
     }
 
-    qint64 readLineData(char *, qint64)  override
+    qint64 readLineData(char *, qint64) override
     {
-        return 0;                                             /* eof */
+        return 0; /* eof */
     }
 
     qint64 writeData(const char *data, qint64 len) override;
+
 private:
     Q_DISABLE_COPY(DebugStream)
 };

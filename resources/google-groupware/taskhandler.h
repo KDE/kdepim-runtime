@@ -23,7 +23,7 @@ public:
     void retrieveItems(const Akonadi::Collection &collection) override;
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
-    void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override;
     void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
 
@@ -32,6 +32,7 @@ public:
     void collectionRemoved(const Akonadi::Collection &collection) override;
 private Q_SLOTS:
     void slotItemsRetrieved(KGAPI2::Job *job);
+
 private:
     void setupCollection(Akonadi::Collection &collection, const KGAPI2::TaskListPtr &taskList);
     void doRemoveTasks(const Akonadi::Item::List &items);

@@ -76,6 +76,7 @@ Q_SIGNALS:
     void requestWalletMap();
     void setWalletPassword(const QString &password);
     void setWalletMap(const QMap<QString, QString> &map);
+
 protected:
     QWidget *mAuthParentWidget = nullptr;
     QString mPKeyCertFile;

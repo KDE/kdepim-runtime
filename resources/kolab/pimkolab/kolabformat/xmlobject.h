@@ -13,7 +13,8 @@
 
 #include "kolabdefinitions.h"
 
-namespace Kolab {
+namespace Kolab
+{
 class KOLAB_EXPORT XMLObject
 {
 public:
@@ -21,7 +22,8 @@ public:
 
     std::string getSerializedUID() const;
 
-    ///List of attachment names to be retrieved from the mime message (only when reading v2, for v3 attachments containing the cid: of the attachment-part are created )
+    /// List of attachment names to be retrieved from the mime message (only when reading v2, for v3 attachments containing the cid: of the attachment-part are
+    /// created )
     std::vector<std::string> getAttachments() const;
 
     Kolab::Event readEvent(const std::string &s, Kolab::Version version);

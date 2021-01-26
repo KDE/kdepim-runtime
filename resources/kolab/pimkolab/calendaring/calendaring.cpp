@@ -7,15 +7,17 @@
 #include "calendaring.h"
 #include "pimkolab_debug.h"
 
-#include <kcalendarcore/todo.h>
 #include <QDate>
 #include <QTimeZone>
+#include <kcalendarcore/todo.h>
 
-#include "conversion/kcalconversion.h"
 #include "conversion/commonconversion.h"
+#include "conversion/kcalconversion.h"
 
-namespace Kolab {
-namespace Calendaring {
+namespace Kolab
+{
+namespace Calendaring
+{
 bool conflicts(const Kolab::Event &e1, const Kolab::Event &e2)
 {
     KCalendarCore::Event::Ptr k1 = Kolab::Conversion::toKCalendarCore(e1);
@@ -28,14 +30,14 @@ bool conflicts(const Kolab::Event &e1, const Kolab::Event &e2)
     return true;
 }
 
-std::vector< std::vector< Event > > getConflictingSets(const std::vector< Event > &events, const std::vector< Event > &events2)
+std::vector<std::vector<Event>> getConflictingSets(const std::vector<Event> &events, const std::vector<Event> &events2)
 {
-    std::vector< std::vector< Kolab::Event > > ret;
+    std::vector<std::vector<Kolab::Event>> ret;
     for (std::size_t i = 0; i < events.size(); i++) {
         std::vector<Kolab::Event> set;
         const Kolab::Event &event = events.at(i);
         set.push_back(event);
-        for (std::size_t q = i+1; q < events.size(); q++) {
+        for (std::size_t q = i + 1; q < events.size(); q++) {
             const Kolab::Event &e2 = events.at(q);
             if (conflicts(event, e2)) {
                 set.push_back(e2);
@@ -67,7 +69,7 @@ std::vector<Kolab::cDateTime> timeInInterval(const Kolab::Event &e, const Kolab:
 }
 
 Calendar::Calendar()
-    :   mCalendar(new KCalendarCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string())))//Always utc as it doesn't change anything anyways
+    : mCalendar(new KCalendarCore::MemoryCalendar(Kolab::Conversion::getTimeSpec(true, std::string()))) // Always utc as it doesn't change anything anyways
 {
 }
 
@@ -90,12 +92,12 @@ std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime &start, con
     }
     std::vector<Kolab::Event> eventlist;
     for (const KCalendarCore::Event::Ptr &event : qAsConst(list)) {
-        //We have to filter the list by time
+        // We have to filter the list by time
         if (event->dtEnd() >= s && e >= event->dtStart()) {
             eventlist.push_back(Kolab::Conversion::fromKCalendarCore(*event));
         }
     }
     return eventlist;
 }
-}     //Namespace
-} //Namespace
+} // Namespace
+} // Namespace

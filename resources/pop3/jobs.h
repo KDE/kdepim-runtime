@@ -7,16 +7,17 @@
 #ifndef JOBS_H
 #define JOBS_H
 
+#include <KIO/MetaData>
 #include <KJob>
 #include <QUrl>
-#include <KIO/MetaData>
 
 #include <KMime/Message>
 
 #include <QObject>
 #include <QPointer>
 
-namespace KIO {
+namespace KIO
+{
 class Slave;
 class Job;
 class TransferJob;
@@ -146,7 +147,6 @@ public:
     QList<int> deletedIDs() const;
 
 private:
-
     QList<int> mIdsToDelete;
 };
 
@@ -163,7 +163,6 @@ class FetchJob : public SlaveBaseJob
 {
     Q_OBJECT
 public:
-
     FetchJob(POPSession *session);
     void setFetchIds(const QList<int> &ids, const QList<int> &sizes);
     void start() override;
@@ -175,7 +174,6 @@ Q_SIGNALS:
     void messageFinished(int id, KMime::Message::Ptr message);
 
 private:
-
     void connectJob() override;
     void slotSlaveData(KIO::Job *job, const QByteArray &data) override;
 

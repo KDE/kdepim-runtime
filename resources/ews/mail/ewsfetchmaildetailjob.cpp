@@ -6,12 +6,12 @@
 
 #include "ewsfetchmaildetailjob.h"
 
-#include <KMime/Message>
-#include <KMime/HeaderParsing>
 #include <Akonadi/KMime/MessageFlags>
+#include <KMime/HeaderParsing>
+#include <KMime/Message>
 
-#include "ewsitemshape.h"
 #include "ewsgetitemrequest.h"
+#include "ewsitemshape.h"
 #include "ewsmailbox.h"
 #include "ewsmailhandler.h"
 #include "ewsresource_debug.h"

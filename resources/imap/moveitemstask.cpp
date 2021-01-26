@@ -13,11 +13,11 @@
 #include <KLocalizedString>
 
 #include <kimap/copyjob.h>
+#include <kimap/movejob.h>
 #include <kimap/searchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/storejob.h>
-#include <kimap/movejob.h>
 
 #include <kmime/kmime_message.h>
 
@@ -37,8 +37,8 @@ void MoveItemsTask::doStart(KIMAP::Session *session)
 {
     const auto itemsToMove = items();
     if (std::any_of(itemsToMove.begin(), itemsToMove.end(), [](const Akonadi::Item &item) {
-        return item.remoteId().isEmpty();
-    })) {
+            return item.remoteId().isEmpty();
+        })) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed: messages has no rid";
         emitError(i18n("Cannot move message, it does not exist on the server."));
         changeProcessed();
@@ -47,16 +47,14 @@ void MoveItemsTask::doStart(KIMAP::Session *session)
 
     if (sourceCollection().remoteId().isEmpty()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed: source collection has no rid";
-        emitError(i18n("Cannot move message out of '%1', '%1' does not exist on the server.",
-                       sourceCollection().name()));
+        emitError(i18n("Cannot move message out of '%1', '%1' does not exist on the server.", sourceCollection().name()));
         changeProcessed();
         return;
     }
 
     if (targetCollection().remoteId().isEmpty()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed: target collection has no rid";
-        emitError(i18n("Cannot move message to '%1', '%1' does not exist on the server.",
-                       targetCollection().name()));
+        emitError(i18n("Cannot move message to '%1', '%1' does not exist on the server.", targetCollection().name()));
         changeProcessed();
         return;
     }
@@ -190,9 +188,10 @@ void MoveItemsTask::onStoreFlagsDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to mark message as deleted on source server: " << job->errorString();
-        emitWarning(i18n("Failed to mark the message from '%1' for deletion on the IMAP server. "
-                         "It will reappear on next sync.",
-                         sourceCollection().name()));
+        emitWarning(
+            i18n("Failed to mark the message from '%1' for deletion on the IMAP server. "
+                 "It will reappear on next sync.",
+                 sourceCollection().name()));
     }
 
     if (!m_newUids.isEmpty()) {
@@ -259,11 +258,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
             search->deleteLater();
             return;
         }
-        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
-            KIMAP::Term(KIMAP::Term::New),
-            KIMAP::Term(KIMAP::Term::Uid,
-                        KIMAP::ImapSet(uidNext->uidNext(), 0))
-        }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {KIMAP::Term(KIMAP::Term::New), KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(uidNext->uidNext(), 0))}));
         connect(search, &KIMAP::SearchJob::result, this, &MoveItemsTask::onSearchDone);
         search->start();
     }

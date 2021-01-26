@@ -13,10 +13,7 @@ class EwsProgressDialog : public QDialog
 {
     Q_OBJECT
 public:
-    enum Type {
-        AutoDiscovery,
-        TryConnect
-    };
+    enum Type { AutoDiscovery, TryConnect };
 
     explicit EwsProgressDialog(QWidget *parent, Type type);
     ~EwsProgressDialog() override;

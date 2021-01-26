@@ -24,9 +24,9 @@
 
 #include <QSignalSpy>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 
 using namespace Akonadi;
 
@@ -34,7 +34,7 @@ static Collection::List collectionsFromSpy(QSignalSpy *spy)
 {
     Collection::List collections;
 
-    QListIterator<QList<QVariant> > it(*spy);
+    QListIterator<QList<QVariant>> it(*spy);
     while (it.hasNext()) {
         const QList<QVariant> invocation = it.next();
         Q_ASSERT(invocation.count() == 1);
@@ -49,7 +49,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 {
     Item::List items;
 
-    QListIterator<QList<QVariant> > it(*spy);
+    QListIterator<QList<QVariant>> it(*spy);
     while (it.hasNext()) {
         const QList<QVariant> invocation = it.next();
         Q_ASSERT(invocation.count() == 1);
@@ -62,9 +62,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 
 static bool fullEntryCompare(const KMBox::MBoxEntry &a, const KMBox::MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset()
-           && a.separatorSize() == b.separatorSize()
-           && a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset() && a.separatorSize() == b.separatorSize() && a.messageSize() == b.messageSize();
 }
 
 class ItemDeleteTest : public QObject
@@ -72,7 +70,8 @@ class ItemDeleteTest : public QObject
     Q_OBJECT
 
 public:
-    ItemDeleteTest() : QObject()
+    ItemDeleteTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -337,8 +336,7 @@ void ItemDeleteTest::testMBox()
     QCOMPARE(item3.remoteId(), item.remoteId());
 
     QVERIFY(item.hasAttribute<FileStore::EntityCompactChangeAttribute>());
-    auto *attribute
-        = item.attribute<FileStore::EntityCompactChangeAttribute>();
+    auto *attribute = item.attribute<FileStore::EntityCompactChangeAttribute>();
 
     QString newRemoteId = attribute->remoteId();
     QVERIFY(!newRemoteId.isEmpty());
@@ -425,7 +423,7 @@ void ItemDeleteTest::testCachePreservation()
     QCOMPARE((int)items.count(), 3);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
@@ -485,13 +483,13 @@ void ItemDeleteTest::testCachePreservation()
     QCOMPARE((int)items.count(), 3);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
     // we've deleted message 2, it flagged TODO and seen
-    QCOMPARE(flagCounts[ "\\SEEN" ], 1);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 1);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
     flagCounts.clear();
 }
 

@@ -15,8 +15,8 @@
 #include <Akonadi/Contact/ContactGroupExpandJob>
 
 #include <QBuffer>
-#include <QImage>
 #include <QDomElement>
+#include <QImage>
 #include <QRegularExpression>
 
 using namespace OXA;
@@ -49,7 +49,7 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
 
                     if (tagName == QLatin1String("email")) {
                         const int emailField = OXUtils::readNumber(emailElement.attribute(QStringLiteral("emailfield")));
-                        if (emailField == 0) {   // internal data
+                        if (emailField == 0) { // internal data
                             KContacts::ContactGroup::Data data;
                             data.setName(OXUtils::readString(emailElement.attribute(QStringLiteral("displayname"))));
                             data.setEmail(text);
@@ -111,7 +111,9 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
             } else if (tagName == QLatin1String("birthday")) {
                 contact.setBirthday(OXUtils::readDateTime(element.text()));
             } else if (tagName == QLatin1String("anniversary")) {
-                contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"), OXUtils::readDateTime(element.text()).toString(Qt::ISODate));
+                contact.insertCustom(QStringLiteral("KADDRESSBOOK"),
+                                     QStringLiteral("X-Anniversary"),
+                                     OXUtils::readDateTime(element.text()).toString(Qt::ISODate));
             } else if (tagName == QLatin1String("spouse_name")) {
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), text);
                 // addresses
@@ -182,8 +184,7 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                 // communication
             } else if (tagName == QLatin1String("email1")) {
                 contact.insertEmail(text, true);
-            } else if (tagName == QLatin1String("email2")
-                       || tagName == QLatin1String("email3")) {
+            } else if (tagName == QLatin1String("email2") || tagName == QLatin1String("email3")) {
                 contact.insertEmail(text);
             } else if (tagName == QLatin1String("mobile1")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Cell));
@@ -283,7 +284,10 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
         } else {
             DAVUtils::addOxElement(document, propElement, QStringLiteral("anniversary"));
         }
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("spouse_name"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"))));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("spouse_name"),
+                               OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"))));
 
         // addresses
         const KContacts::Address homeAddress = contact.address(KContacts::Address::Home);
@@ -342,11 +346,23 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
         // company information
         DAVUtils::addOxElement(document, propElement, QStringLiteral("company"), OXUtils::writeString(contact.organization()));
         DAVUtils::addOxElement(document, propElement, QStringLiteral("department"), OXUtils::writeString(contact.department()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("assistants_name"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"))));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("managers_name"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"))));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("assistants_name"),
+                               OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"))));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("managers_name"),
+                               OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"))));
         DAVUtils::addOxElement(document, propElement, QStringLiteral("position"), OXUtils::writeString(contact.role()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("profession"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession"))));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("room_number"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"))));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("profession"),
+                               OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession"))));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("room_number"),
+                               OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"))));
 
         // communication
         const QStringList emails = contact.emails();
@@ -354,18 +370,48 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             DAVUtils::addOxElement(document, propElement, QStringLiteral("email%1").arg(i + 1), OXUtils::writeString(emails.at(i)));
         }
 
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("mobile1"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Cell).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("instant_messenger"), OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"))));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("mobile1"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Cell).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("instant_messenger"),
+                               OXUtils::writeString(contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"))));
 
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("phone_business"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Work).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("phone_home"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Home).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("phone_other"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Voice).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("phone_car"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Car).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("fax_business"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Work).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("fax_home"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Home).number()));
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("fax_other"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Voice).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("phone_business"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Work).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("phone_home"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Home).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("phone_other"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Voice).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("phone_car"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Car).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("fax_business"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Work).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("fax_home"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Home).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("fax_other"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Fax | KContacts::PhoneNumber::Voice).number()));
 
-        DAVUtils::addOxElement(document, propElement, QStringLiteral("pager"), OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Pager).number()));
+        DAVUtils::addOxElement(document,
+                               propElement,
+                               QStringLiteral("pager"),
+                               OXUtils::writeString(contact.phoneNumber(KContacts::PhoneNumber::Pager).number()));
 
         DAVUtils::addOxElement(document, propElement, QStringLiteral("categories"), OXUtils::writeString(contact.categories().join(QLatin1Char(','))));
     } else {
@@ -383,8 +429,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             // the contact group contains contact references that has been preloaded
             auto contacts = static_cast<KContacts::Addressee::List *>(preloadedData);
             foreach (const KContacts::Addressee &contact, *contacts) {
-                QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"),
-                                                           OXUtils::writeString(contact.preferredEmail()));
+                QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"), OXUtils::writeString(contact.preferredEmail()));
 
                 DAVUtils::setOxAttribute(email, QStringLiteral("folder_id"), OXUtils::writeNumber(0));
                 DAVUtils::setOxAttribute(email, QStringLiteral("emailfield"), OXUtils::writeNumber(0));
@@ -397,8 +442,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
             // the contact group contains only internal contact data
             for (int i = 0; i < contactGroup.dataCount(); ++i) {
                 const KContacts::ContactGroup::Data &data = contactGroup.data(i);
-                QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"),
-                                                           OXUtils::writeString(data.email()));
+                QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"), OXUtils::writeString(data.email()));
 
                 DAVUtils::setOxAttribute(email, QStringLiteral("folder_id"), OXUtils::writeNumber(0));
                 DAVUtils::setOxAttribute(email, QStringLiteral("emailfield"), OXUtils::writeNumber(0));

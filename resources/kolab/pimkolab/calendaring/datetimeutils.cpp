@@ -6,15 +6,17 @@
 
 #include "datetimeutils.h"
 
-#include <QTimeZone>
 #include "conversion/commonconversion.h"
+#include <QTimeZone>
 
-namespace Kolab {
-namespace DateTimeUtils {
+namespace Kolab
+{
+namespace DateTimeUtils
+{
 KOLAB_EXPORT std::string getLocalTimezone()
 {
     const auto tz = QTimeZone::systemTimeZoneId();
     return tz.toStdString();
 }
-}     //Namespace
-} //Namespace
+} // Namespace
+} // Namespace

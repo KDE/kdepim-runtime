@@ -5,8 +5,8 @@
 */
 
 #include "ewsgeteventsrequest.h"
-#include "ewsxml.h"
 #include "ewsclient_debug.h"
+#include "ewsxml.h"
 
 EwsGetEventsRequest::EwsGetEventsRequest(EwsClient &client, QObject *parent)
     : EwsEventRequestBase(client, QStringLiteral("GetEvents"), parent)
@@ -34,8 +34,7 @@ void EwsGetEventsRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting GetEvents request (subId: %1, wmark: %2)")
-        .arg(mSubscriptionId, mWatermark);
+    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting GetEvents request (subId: %1, wmark: %2)").arg(mSubscriptionId, mWatermark);
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 

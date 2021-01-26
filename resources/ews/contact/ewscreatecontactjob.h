@@ -16,6 +16,7 @@ public:
     EwsCreateContactJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent);
     ~EwsCreateContactJob() override;
     bool setSend(bool send = true) override;
+
 protected:
     void doStart() override;
 };

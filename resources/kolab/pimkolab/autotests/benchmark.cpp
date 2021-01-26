@@ -5,12 +5,12 @@
  */
 
 #include "benchmark.h"
-#include "kolabformatV2/event.h"
 #include "conversion/kcalconversion.h"
-#include <kmime/kmime_message.h>
-#include <kolabformat.h>
+#include "kolabformatV2/event.h"
 #include "testutils.h"
 #include <QTest>
+#include <kmime/kmime_message.h>
+#include <kolabformat.h>
 KMime::Message::Ptr readMimeFile(const QString &fileName)
 {
     QFile file(fileName);
@@ -44,7 +44,7 @@ void BenchmarkTests::parsingBenchmarkComparison_data()
 
 void BenchmarkTests::parsingBenchmarkComparison()
 {
-    const KMime::Message::Ptr kolabItem = readMimeFile(TESTFILEDIR+QLatin1String("/v2/event/complex.ics.mime"));
+    const KMime::Message::Ptr kolabItem = readMimeFile(TESTFILEDIR + QLatin1String("/v2/event/complex.ics.mime"));
     KMime::Content *xmlContent = findContentByType(kolabItem, "application/x-vnd.kolab.event");
     QVERIFY(xmlContent);
     const QByteArray xmlData = xmlContent->decodedContent();

@@ -65,6 +65,7 @@ Q_SIGNALS:
     void folderTreeModified();
     void fullSyncRequested();
     void connectionError();
+
 private:
     void subscribeRequestFinished(KJob *job);
     void verifySubFoldersRequestFinished(KJob *job);
@@ -72,6 +73,7 @@ private:
     void streamingEventsReceived(KJob *job);
     void getEvents();
     void streamingConnectionTimeout();
+
 private:
     void cancelSubscription();
     void setupSubscription();

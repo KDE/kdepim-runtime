@@ -11,10 +11,10 @@
 #include "ctagattribute.h"
 #include "davfreebusyhandler.h"
 #include "davprotocolattribute.h"
-#include "utils.h"
 #include "settings.h"
 #include "settingsadaptor.h"
 #include "setupwizard.h"
+#include "utils.h"
 
 #include <KDAV/DavCollection>
 #include <KDAV/DavCollectionDeleteJob>
@@ -31,29 +31,29 @@
 #include <KDAV/ProtocolInfo>
 
 #include <KCalendarCore/FreeBusy>
-#include <KCalendarCore/Incidence>
 #include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/Incidence>
 #include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/Todo>
 #include <KJob>
 
+#include "davresource_debug.h"
+#include <AkonadiCore/collectionmodifyjob.h>
+#include <AkonadiCore/itemdeletejob.h>
+#include <AkonadiCore/itemmodifyjob.h>
+#include <AkonadiCore/recursiveitemfetchjob.h>
+#include <KLocalizedString>
 #include <attributefactory.h>
-#include <collectioncolorattribute.h>
 #include <cachepolicy.h>
 #include <changerecorder.h>
+#include <collectioncolorattribute.h>
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
-#include <AkonadiCore/recursiveitemfetchjob.h>
-#include <AkonadiCore/itemmodifyjob.h>
-#include <AkonadiCore/itemdeletejob.h>
-#include <AkonadiCore/collectionmodifyjob.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>
-#include <KLocalizedString>
-#include "davresource_debug.h"
 
 using namespace Akonadi;
 
@@ -311,7 +311,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
     if (!davUrl.url().isValid()) {
         qCCritical(DAVRESOURCE_LOG) << "Can't find a configured URL, collection.remoteId() is " << collection.remoteId();
         cancelTask(i18n("Asked to retrieve items for an unknown collection: %1", collection.remoteId()));
-        //Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
+        // Q_ASSERT_X( false, "DavGroupwareResource::retrieveItems", "Url is invalid" );
         return;
     }
 
@@ -358,8 +358,7 @@ bool DavGroupwareResource::retrieveItem(const Akonadi::Item &item, const QSet<QB
 
 void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)
 {
-    qCDebug(DAVRESOURCE_LOG) << "Received notification for added item. Local id = "
-                             << item.id() << ". Remote id = " << item.remoteId()
+    qCDebug(DAVRESOURCE_LOG) << "Received notification for added item. Local id = " << item.id() << ". Remote id = " << item.remoteId()
                              << ". Collection remote id = " << collection.remoteId();
 
     if (!configurationIsValid()) {
@@ -392,8 +391,7 @@ void DavGroupwareResource::itemAdded(const Akonadi::Item &item, const Akonadi::C
 
 void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    qCDebug(DAVRESOURCE_LOG) << "Received notification for changed item. Local id = " << item.id()
-                             << ". Remote id = " << item.remoteId();
+    qCDebug(DAVRESOURCE_LOG) << "Received notification for changed item. Local id = " << item.id() << ". Remote id = " << item.remoteId();
 
     if (!configurationIsValid()) {
         return;
@@ -585,8 +583,7 @@ void DavGroupwareResource::collectionChanged(const Collection &collection)
 
     QColor color;
     if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
-        const auto *colorAttr
-            = collection.attribute<Akonadi::CollectionColorAttribute>();
+        const auto *colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
         if (colorAttr) {
             color = colorAttr->color();
         }
@@ -594,7 +591,7 @@ void DavGroupwareResource::collectionChanged(const Collection &collection)
 
     auto job = new KDAV::DavCollectionModifyJob(davUrl);
     // TODO fix renaming calendars with parent folders, right now it makes a bit of a mess
-    //job->setProperty(QStringLiteral("displayname"), collection.displayName());
+    // job->setProperty(QStringLiteral("displayname"), collection.displayName());
     if (color.isValid()) {
         job->setProperty(QStringLiteral("calendar-color"), color.name(), QStringLiteral("http://apple.com/ns/ical/"));
     }
@@ -647,8 +644,7 @@ void DavGroupwareResource::onCreateInitialCacheReady(KJob *job)
 
         const Akonadi::Collection collection = item.parentCollection();
         if (collection.remoteId().isEmpty()) {
-            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item in a collection without remote ID. "
-                                     << item.remoteId();
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onCreateInitialCacheReady: Found an item in a collection without remote ID. " << item.remoteId();
             continue;
         }
 
@@ -693,7 +689,7 @@ void DavGroupwareResource::onCollectionRemovedFinished(KJob *job)
 
 void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 {
-    const KDAV::DavCollectionsMultiFetchJob *fetchJob = qobject_cast< KDAV::DavCollectionsMultiFetchJob *>(job);
+    const KDAV::DavCollectionsMultiFetchJob *fetchJob = qobject_cast<KDAV::DavCollectionsMultiFetchJob *>(job);
 
     if (job->error()) {
         qCWarning(DAVRESOURCE_LOG) << "Unable to fetch collections" << job->error() << job->errorText();
@@ -711,7 +707,8 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
 
     for (const KDAV::DavCollection &davCollection : davCollections) {
         if (seenCollectionsUrls.contains(davCollection.url().toDisplayString())) {
-            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. " << davCollection.url().toDisplayString();
+            qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Duplicate collection reported. "
+                                     << davCollection.url().toDisplayString();
             continue;
         } else {
             seenCollectionsUrls.insert(davCollection.url().toDisplayString());
@@ -839,7 +836,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
     const bool protocolSupportsMultiget = KDAV::ProtocolInfo::useMultiget(davUrl.protocol());
 
-    const KDAV::DavItemsListJob *listJob = qobject_cast< KDAV::DavItemsListJob *>(job);
+    const KDAV::DavItemsListJob *listJob = qobject_cast<KDAV::DavItemsListJob *>(job);
     auto cache = mEtagCaches.value(collection.remoteId());
     if (!cache) {
         qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
@@ -941,10 +938,10 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
     }
 
     const Akonadi::Item::List origItems = job->property("items").value<Akonadi::Item::List>();
-    const KDAV::DavItemsFetchJob *davJob = qobject_cast< KDAV::DavItemsFetchJob *>(job);
+    const KDAV::DavItemsFetchJob *davJob = qobject_cast<KDAV::DavItemsFetchJob *>(job);
 
     Akonadi::Item::List items;
-    for (Akonadi::Item item : qAsConst(origItems)) {   //krazy:exclude=foreach non-const is intended here
+    for (Akonadi::Item item : qAsConst(origItems)) { // krazy:exclude=foreach non-const is intended here
         const KDAV::DavItem davItem = davJob->item(item.remoteId());
 
         // No data was retrieved for this item, maybe because it is not out of date
@@ -1012,7 +1009,7 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
         return;
     }
 
-    const KDAV::DavItemFetchJob *fetchJob = qobject_cast< KDAV::DavItemFetchJob *>(job);
+    const KDAV::DavItemFetchJob *fetchJob = qobject_cast<KDAV::DavItemFetchJob *>(job);
     const KDAV::DavItem davItem = fetchJob->item();
     Akonadi::Item item = fetchJob->property("item").value<Akonadi::Item>();
     Akonadi::Collection collection = fetchJob->property("collection").value<Akonadi::Collection>();
@@ -1053,7 +1050,7 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
 
 void DavGroupwareResource::onItemAddedFinished(KJob *job)
 {
-    const KDAV::DavItemCreateJob *createJob = qobject_cast< KDAV::DavItemCreateJob *>(job);
+    const KDAV::DavItemCreateJob *createJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
     KDAV::DavItem davItem = createJob->item();
     Akonadi::Item item = createJob->property("item").value<Akonadi::Item>();
     item.setRemoteId(davItem.url().toDisplayString());
@@ -1087,7 +1084,7 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
 
 void DavGroupwareResource::onItemChangedFinished(KJob *job)
 {
-    const KDAV::DavItemModifyJob *modifyJob = qobject_cast< KDAV::DavItemModifyJob *>(job);
+    const KDAV::DavItemModifyJob *modifyJob = qobject_cast<KDAV::DavItemModifyJob *>(job);
     KDAV::DavItem davItem = modifyJob->item();
     Akonadi::Collection collection = modifyJob->property("collection").value<Akonadi::Collection>();
     Akonadi::Item item = modifyJob->property("item").value<Akonadi::Item>();
@@ -1151,7 +1148,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
 
 void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
 {
-    const KDAV::DavItemCreateJob *createJob = qobject_cast< KDAV::DavItemCreateJob *>(job);
+    const KDAV::DavItemCreateJob *createJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
     KDAV::DavItem davItem = createJob->item();
     Akonadi::Item item = createJob->property("item").value<Akonadi::Item>();
     Akonadi::Collection collection = item.parentCollection();
@@ -1186,7 +1183,7 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
 void DavGroupwareResource::onItemRemovedFinished(KJob *job)
 {
     if (job->error()) {
-        const KDAV::DavItemDeleteJob *deleteJob = qobject_cast< KDAV::DavItemDeleteJob *>(job);
+        const KDAV::DavItemDeleteJob *deleteJob = qobject_cast<KDAV::DavItemDeleteJob *>(job);
 
         if (deleteJob->hasConflict()) {
             // Use a shortcut here as we don't show a conflict dialog to the user.
@@ -1212,7 +1209,7 @@ void DavGroupwareResource::onCollectionDiscovered(KDAV::Protocol protocol, const
 void DavGroupwareResource::handleConflict(const Item &lI, const Item::List &localDependentItems, const KDAV::DavItem &rI, bool isLocalRemoval, int responseCode)
 {
     Akonadi::Item localItem(lI);
-    Akonadi::Item remoteItem, tmpRemoteItem;                           // The tmp* vars are here to store the result of the parseDavData() call
+    Akonadi::Item remoteItem, tmpRemoteItem; // The tmp* vars are here to store the result of the parseDavData() call
     Akonadi::Item::List remoteDependentItems, tmpRemoteDependentItems; // as we have no idea which item triggered the conflict.
     qCDebug(DAVRESOURCE_LOG) << "Fresh response code is" << responseCode;
     bool isRemoteRemoval = (responseCode == 404 || responseCode == 410);

@@ -6,14 +6,14 @@
 
 #include "ewssubscriptionmanager.h"
 
-#include "ewsresource_debug.h"
 #include "ewsgeteventsrequest.h"
 #include "ewsgetfolderrequest.h"
 #include "ewsgetstreamingeventsrequest.h"
+#include "ewsresource_debug.h"
+#include "ewssettings.h"
 #include "ewssubscribedfoldersjob.h"
 #include "ewssubscriberequest.h"
 #include "ewsunsubscriberequest.h"
-#include "ewssettings.h"
 #include <QPointer>
 
 // TODO: Allow customization
@@ -92,7 +92,7 @@ void EwsSubscriptionManager::verifySubFoldersRequestFinished(KJob *job)
 void EwsSubscriptionManager::setupSubscriptionReq(const EwsId::List &ids)
 {
     auto req = new EwsSubscribeRequest(mEwsClient, this);
-    //req->setAllFolders(true);
+    // req->setAllFolders(true);
     QList<EwsEventType> events;
     events << EwsNewMailEvent;
     events << EwsMovedEvent;
@@ -155,8 +155,7 @@ void EwsSubscriptionManager::getEvents()
         req->setSubscriptionId(mSettings->eventSubscriptionId());
         req->setTimeout(streamingTimeout);
         connect(req, &EwsRequest::result, this, &EwsSubscriptionManager::getEventsRequestFinished);
-        connect(req, &EwsGetStreamingEventsRequest::eventsReceived, this,
-                &EwsSubscriptionManager::streamingEventsReceived);
+        connect(req, &EwsGetStreamingEventsRequest::eventsReceived, this, &EwsSubscriptionManager::streamingEventsReceived);
         req->start();
         mEventReq = req;
         mStreamingTimer.start();
@@ -241,8 +240,7 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
                 bool skip = false;
                 EwsId id = event.itemId();
                 for (auto it = mQueuedUpdates.find(id.id()); it != mQueuedUpdates.end(); ++it) {
-                    if (it->type == event.type()
-                        && (it->type == EwsDeletedEvent || it->changeKey == id.changeKey())) {
+                    if (it->type == event.type() && (it->type == EwsDeletedEvent || it->changeKey == id.changeKey())) {
                         qCDebugNC(EWSRES_LOG) << QStringLiteral("Skipped queued update type %1 for item %2");
                         skip = true;
                         mQueuedUpdates.erase(it);
@@ -298,8 +296,7 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
             mFolderTreeChanged = false;
         }
         if (!mUpdatedFolderIds.isEmpty()) {
-            qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 modified folders")
-                .arg(mUpdatedFolderIds.size());
+            qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 modified folders").arg(mUpdatedFolderIds.size());
             Q_EMIT foldersModified(mUpdatedFolderIds.values());
             mUpdatedFolderIds.clear();
         }

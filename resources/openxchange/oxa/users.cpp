@@ -8,9 +8,9 @@
 
 #include "users.h"
 
+#include <QDataStream>
 #include <QFile>
 #include <QStandardPaths>
-#include <QDataStream>
 
 using namespace OXA;
 

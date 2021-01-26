@@ -6,8 +6,8 @@
 
 #include "defaultreminderattribute.h"
 
-#include <QVariant>
 #include <QJsonDocument>
+#include <QVariant>
 
 #include <KGAPI/Calendar/Reminder>
 

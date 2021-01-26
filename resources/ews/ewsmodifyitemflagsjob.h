@@ -7,18 +7,22 @@
 #ifndef EWSMODIFYITEMFLAGSJOB_H
 #define EWSMODIFYITEMFLAGSJOB_H
 
-#include <AkonadiCore/Item>
 #include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
-#include "ewstypes.h"
 #include "ewsclient.h"
 #include "ewsjob.h"
+#include "ewstypes.h"
 
 class EwsModifyItemFlagsJob : public EwsJob
 {
     Q_OBJECT
 public:
-    EwsModifyItemFlagsJob(EwsClient &client, QObject *parent, const Akonadi::Item::List &, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags);
+    EwsModifyItemFlagsJob(EwsClient &client,
+                          QObject *parent,
+                          const Akonadi::Item::List &,
+                          const QSet<QByteArray> &addedFlags,
+                          const QSet<QByteArray> &removedFlags);
     ~EwsModifyItemFlagsJob() override;
 
     Akonadi::Item::List items() const
@@ -27,6 +31,7 @@ public:
     }
 
     void start() override;
+
 protected:
     Akonadi::Item::List mItems;
     Akonadi::Item::List mResultItems;

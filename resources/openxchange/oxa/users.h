@@ -14,7 +14,8 @@
 #include <QMap>
 #include <QObject>
 
-namespace OXA {
+namespace OXA
+{
 class Users : public QObject
 {
     Q_OBJECT

@@ -20,14 +20,14 @@
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
-#include <cachepolicy.h>
 #include <akonadi/kmime/messageparts.h>
+#include <cachepolicy.h>
 
 #include <kmime/kmime_message.h>
 
 #include <KRandom>
-#include <QTemporaryDir>
 #include <QRandomGenerator>
+#include <QTemporaryDir>
 
 #include <QTest>
 
@@ -38,7 +38,8 @@ class TestStore : public MixedMaildirStore
     Q_OBJECT
 
 public:
-    TestStore() : mLastCheckedJob(nullptr)
+    TestStore()
+        : mLastCheckedJob(nullptr)
         , mErrorCode(0)
     {
     }
@@ -80,7 +81,8 @@ class TemplateMethodsTest : public QObject
     Q_OBJECT
 
 public:
-    TemplateMethodsTest() : QObject()
+    TemplateMethodsTest()
+        : QObject()
         , mStore(nullptr)
     {
     }
@@ -119,9 +121,7 @@ void TemplateMethodsTest::testSetTopLevelCollection()
     // check the adjustments on the top level collection
     const Collection collection = mStore->topLevelCollection();
     QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType());
-    QCOMPARE(collection.rights(), Collection::CanCreateCollection
-             |Collection::CanChangeCollection
-             |Collection::CanDeleteCollection);
+    QCOMPARE(collection.rights(), Collection::CanCreateCollection | Collection::CanChangeCollection | Collection::CanDeleteCollection);
     const CachePolicy cachePolicy = collection.cachePolicy();
     QVERIFY(!cachePolicy.inheritFromParent());
     QCOMPARE(cachePolicy.localParts(), QStringList() << QLatin1String(MessagePart::Envelope));

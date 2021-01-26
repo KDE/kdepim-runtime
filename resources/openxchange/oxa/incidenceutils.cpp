@@ -186,7 +186,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
     QDateTime endDate;
 
     int weeklyValue = -1;
-    QBitArray days(7);   // days, starting with monday
+    QBitArray days(7); // days, starting with monday
     bool daysSet = false;
 
     int monthlyValueDay = -1;
@@ -216,7 +216,7 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
             monthlyValueMonth = text.toInt();
             monthly2ValueMonth = text.toInt();
         } else if (tagName == QLatin1String("days")) {
-            int tmp = text.toInt();  // OX encodes days binary: 1=Su, 2=Mo, 4=Tu, ...
+            int tmp = text.toInt(); // OX encodes days binary: 1=Su, 2=Mo, 4=Tu, ...
             for (int i = 0; i < 7; ++i) {
                 if (tmp & (1 << i)) {
                     days.setBit((i + 6) % 7);
@@ -240,11 +240,11 @@ static void parseRecurrence(const QDomElement &element, const KCalendarCore::Inc
         } else if (tagName == QLatin1String("until")) {
             endDate = OXUtils::readDateTime(child.text());
         }
-        //TODO: notification
+        // TODO: notification
     }
 
     if (daysSet && type == QLatin1String("monthly")) {
-        type = QStringLiteral("monthly2");    // HACK: OX doesn't cleanly distinguish between monthly and monthly2
+        type = QStringLiteral("monthly2"); // HACK: OX doesn't cleanly distinguish between monthly and monthly2
     }
     if (daysSet && type == QLatin1String("yearly")) {
         type = QStringLiteral("yearly2");
@@ -419,8 +419,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("daily"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
         break;
-    case KCalendarCore::Recurrence::rWeekly:
-    {
+    case KCalendarCore::Recurrence::rWeekly: {
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("weekly"));
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
 
@@ -439,8 +438,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         DAVUtils::addOxElement(document, parent, QStringLiteral("interval"), OXUtils::writeNumber(recurrence->frequency()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->monthDays().first()));
         break;
-    case KCalendarCore::Recurrence::rMonthlyPos:
-    {
+    case KCalendarCore::Recurrence::rMonthlyPos: {
         const KCalendarCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("monthly"));
@@ -455,8 +453,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
         DAVUtils::addOxElement(document, parent, QStringLiteral("day_in_month"), OXUtils::writeNumber(recurrence->yearDates().constFirst()));
         DAVUtils::addOxElement(document, parent, QStringLiteral("month"), OXUtils::writeNumber(recurrence->yearMonths().constFirst() + monthOffset));
         break;
-    case KCalendarCore::Recurrence::rYearlyPos:
-    {
+    case KCalendarCore::Recurrence::rYearlyPos: {
         const KCalendarCore::RecurrenceRule::WDayPos wdp = recurrence->monthPositions().constFirst();
 
         DAVUtils::addOxElement(document, parent, QStringLiteral("recurrence_type"), QStringLiteral("yearly"));
@@ -487,7 +484,7 @@ static void createRecurrenceAttributes(QDomDocument &document, QDomElement &pare
 
     DAVUtils::addOxElement(document, parent, QStringLiteral("deleteexceptions"), dates.join(QLatin1Char(',')));
 
-    //TODO: changeexceptions
+    // TODO: changeexceptions
 }
 
 void OXA::IncidenceUtils::parseEvent(const QDomElement &propElement, Object &object)

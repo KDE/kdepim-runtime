@@ -12,14 +12,15 @@
 #include <migration/googlegroupware/googleresourcemigrator.h>
 
 #include <KContacts/Addressee>
-#include <KWindowSystem>
-#include <QDialog>
 #include <KLocalizedString>
 #include <KUiServerJobTracker>
+#include <KWindowSystem>
+#include <QDialog>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
 
-namespace Akonadi {
+namespace Akonadi
+{
 MigrationAgent::MigrationAgent(const QString &id)
     : AgentBase(id)
     , mScheduler(new KUiServerJobTracker)
@@ -42,7 +43,8 @@ void MigrationAgent::configure(WId windowId)
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
 
-    dlg->setWindowTitle(i18nc("Title of the window that shows the status of the migration agent and offers controls to start/stop individual migration jobs.", "Migration Status"));
+    dlg->setWindowTitle(i18nc("Title of the window that shows the status of the migration agent and offers controls to start/stop individual migration jobs.",
+                              "Migration Status"));
     dlg->resize(600, 300);
 
     if (windowId) {

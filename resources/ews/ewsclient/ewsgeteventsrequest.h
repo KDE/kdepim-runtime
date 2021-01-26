@@ -9,8 +9,8 @@
 
 #include <QSharedPointer>
 
-#include "ewsid.h"
 #include "ewseventrequestbase.h"
+#include "ewsid.h"
 #include "ewstypes.h"
 
 class EwsGetEventsRequest : public EwsEventRequestBase

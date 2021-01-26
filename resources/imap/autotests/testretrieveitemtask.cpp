@@ -18,7 +18,7 @@ private Q_SLOTS:
     {
         QTest::addColumn<Akonadi::Item>("item");
         QTest::addColumn<QString>("message");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QString>("callName");
 
         Akonadi::Collection collection;
@@ -34,8 +34,7 @@ private Q_SLOTS:
         message = QStringLiteral("From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...");
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID FETCH 42 (BODY.PEEK[] UID)"
                  << "S: * 10 FETCH (UID 42 BODY[] \"From: ervin\nTo: someone\nSubject: foo\n\nSpeechless...\")"
@@ -43,14 +42,12 @@ private Q_SLOTS:
         QTest::newRow("normal case") << item << message << scenario << "itemRetrieved";
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 NO select fail";
         QTest::newRow("select fail") << item << message << scenario << "cancelTask";
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID FETCH 42 (BODY.PEEK[] UID)"
                  << "S: A000004 NO fetch failed";
@@ -72,7 +69,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setItem(item);

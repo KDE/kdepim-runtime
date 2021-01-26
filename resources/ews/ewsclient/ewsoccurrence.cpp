@@ -41,8 +41,7 @@ EwsOccurrence::EwsOccurrence(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected namespace in mailbox element:")
-                                    << reader.namespaceUri();
+            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected namespace in mailbox element:") << reader.namespaceUri();
             return;
         }
 
@@ -52,27 +51,27 @@ EwsOccurrence::EwsOccurrence(QXmlStreamReader &reader)
         } else if (reader.name() == QLatin1String("Start")) {
             d->mStart = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
-                qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                    .arg(QStringLiteral("Occurrence"), QStringLiteral("Start"));
+                qCWarning(EWSCLI_LOG)
+                    << QStringLiteral("Failed to read %1 element - invalid %2 element.").arg(QStringLiteral("Occurrence"), QStringLiteral("Start"));
                 return;
             }
         } else if (reader.name() == QLatin1String("End")) {
             d->mEnd = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
-                qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                    .arg(QStringLiteral("Occurrence"), QStringLiteral("End"));
+                qCWarning(EWSCLI_LOG)
+                    << QStringLiteral("Failed to read %1 element - invalid %2 element.").arg(QStringLiteral("Occurrence"), QStringLiteral("End"));
                 return;
             }
         } else if (reader.name() == QLatin1String("OriginalStart")) {
             d->mStart = QDateTime::fromString(reader.readElementText(), Qt::ISODate);
             if (reader.error() != QXmlStreamReader::NoError || !d->mStart.isValid()) {
-                qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-                    .arg(QStringLiteral("Occurrence"), QStringLiteral("OriginalStart"));
+                qCWarning(EWSCLI_LOG)
+                    << QStringLiteral("Failed to read %1 element - invalid %2 element.").arg(QStringLiteral("Occurrence"), QStringLiteral("OriginalStart"));
                 return;
             }
         } else {
-            qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                .arg(QStringLiteral("Occurrence"), reader.name().toString());
+            qCWarning(EWSCLI_LOG)
+                << QStringLiteral("Failed to read %1 element - unknown element: %2.").arg(QStringLiteral("Occurrence"), reader.name().toString());
             return;
         }
     }

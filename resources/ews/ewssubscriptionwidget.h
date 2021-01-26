@@ -26,6 +26,7 @@ public:
     QStringList subscribedList() const;
     bool subscribedListValid() const;
     bool subscriptionEnabled() const;
+
 private:
     QScopedPointer<EwsSubscriptionWidgetPrivate> d_ptr;
     Q_DECLARE_PRIVATE(EwsSubscriptionWidget)

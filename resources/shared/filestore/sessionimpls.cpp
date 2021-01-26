@@ -156,8 +156,8 @@ protected:
         Q_UNUSED(className)
         mJobQueue.enqueue(job);
 
-//       qDebug() << "adding" << className << ". Queue now with"
-//                << mJobQueue.count() << "entries";
+        //       qDebug() << "adding" << className << ". Queue now with"
+        //                << mJobQueue.count() << "entries";
 
         mJobRunTimer.start(0);
     }

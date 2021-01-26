@@ -28,7 +28,8 @@ QString Note::journalToXML(const KCalendarCore::Journal::Ptr &journal)
     return note.saveXML();
 }
 
-Note::Note(const KCalendarCore::Journal::Ptr &journal) : mRichText(false)
+Note::Note(const KCalendarCore::Journal::Ptr &journal)
+    : mRichText(false)
 {
     if (journal) {
         setFields(journal);
@@ -138,10 +139,10 @@ bool Note::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -193,15 +194,12 @@ void Note::saveTo(const KCalendarCore::Journal::Ptr &journal) const
     // TODO: background and foreground
     journal->setSummary(summary());
     if (foregroundColor().isValid()) {
-        journal->setCustomProperty("KNotes", "FgColor",
-                                   colorToString(foregroundColor()));
+        journal->setCustomProperty("KNotes", "FgColor", colorToString(foregroundColor()));
     }
     if (backgroundColor().isValid()) {
-        journal->setCustomProperty("KNotes", "BgColor",
-                                   colorToString(backgroundColor()));
+        journal->setCustomProperty("KNotes", "BgColor", colorToString(backgroundColor()));
     }
-    journal->setCustomProperty("KNotes", "RichText",
-                               richText() ? QStringLiteral("true") : QStringLiteral("false"));
+    journal->setCustomProperty("KNotes", "RichText", richText() ? QStringLiteral("true") : QStringLiteral("false"));
 }
 
 QString Note::productID() const

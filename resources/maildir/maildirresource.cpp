@@ -5,25 +5,25 @@
 */
 
 #include "maildirresource.h"
-#include "settings.h"
-#include "maildirsettingsadaptor.h"
 #include "configdialog.h"
+#include "maildirsettingsadaptor.h"
 #include "retrieveitemsjob.h"
+#include "settings.h"
 
-#include <QDir>
 #include <QDBusConnection>
+#include <QDir>
 
-#include <Akonadi/KMime/MessageParts>
-#include <changerecorder.h>
-#include <itemfetchscope.h>
-#include <itemfetchjob.h>
-#include <itemmodifyjob.h>
-#include <collectionfetchscope.h>
-#include <cachepolicy.h>
-#include <collectionfetchjob.h>
 #include <Akonadi/KMime/MessageFlags>
-#include <kmime/kmime_message.h>
+#include <Akonadi/KMime/MessageParts>
 #include <AkonadiCore/SpecialCollectionAttribute>
+#include <cachepolicy.h>
+#include <changerecorder.h>
+#include <collectionfetchjob.h>
+#include <collectionfetchscope.h>
+#include <itemfetchjob.h>
+#include <itemfetchscope.h>
+#include <itemmodifyjob.h>
+#include <kmime/kmime_message.h>
 
 #include "maildirresource_debug.h"
 #include <KDirWatch>
@@ -36,7 +36,7 @@ using namespace Akonadi;
 using KPIM::Maildir;
 using namespace Akonadi_Maildir_Resource;
 
-#define CLEANER_TIMEOUT 2*6000
+#define CLEANER_TIMEOUT 2 * 6000
 
 Maildir MaildirResource::maildirForCollection(const Collection &col)
 {
@@ -101,8 +101,7 @@ MaildirResource::MaildirResource(const QString &id)
         job->start();
     }
     new MaildirSettingsAdaptor(mSettings);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 mSettings, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings, QDBusConnection::ExportAdaptors);
     connect(this, &MaildirResource::reloadConfiguration, this, &MaildirResource::configurationChanged);
 
     // We need to enable this here, otherwise we neither get the remote ID of the
@@ -162,7 +161,7 @@ void MaildirResource::attemptConfigRestoring(KJob *job)
             // we use "id" to get an unique path
             path = dataDir;
             if (!defaultResourceType().isEmpty()) {
-                path += defaultResourceType()  + QLatin1Char('/');
+                path += defaultResourceType() + QLatin1Char('/');
             }
             path += id;
             qCDebug(MAILDIRRESOURCE_LOG) << "set the path" << path;
@@ -191,8 +190,7 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
 
     const Maildir md = maildirForCollection(items.at(0).parentCollection());
     if (!md.isValid()) {
-        cancelTask(i18n("Unable to fetch item: The maildir folder \"%1\" is not valid.",
-                        md.path()));
+        cancelTask(i18n("Unable to fetch item: The maildir folder \"%1\" is not valid.", md.path()));
         return false;
     }
 
@@ -329,10 +327,10 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
     Item newItem(item);
 
-    if (flagsChanged || bodyChanged || headChanged) {   //something has changed that we can deal with
+    if (flagsChanged || bodyChanged || headChanged) { // something has changed that we can deal with
         stopMaildirScan(dir);
 
-        if (flagsChanged) {   //flags changed, store in file name and get back the new filename (id)
+        if (flagsChanged) { // flags changed, store in file name and get back the new filename (id)
             const QString newKey = dir.changeEntryFlags(item.remoteId(), item.flags());
             if (newKey.isEmpty()) {
                 restartMaildirScan(dir);
@@ -342,14 +340,14 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
             newItem.setRemoteId(newKey);
         }
 
-        if (bodyChanged || headChanged) {   //head or body changed
+        if (bodyChanged || headChanged) { // head or body changed
             // we can only deal with mail
             if (item.hasPayload<KMime::Message::Ptr>()) {
                 const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
                 QByteArray data = mail->encodedContent();
                 if (headChanged && !bodyChanged) {
-                    //only the head has changed, get the current version of the mail
-                    //replace the head and store the new mail in the file
+                    // only the head has changed, get the current version of the mail
+                    // replace the head and store the new mail in the file
                     const QByteArray currentData = dir.readEntry(newItem.remoteId());
                     if (currentData.isEmpty() && !dir.lastError().isEmpty()) {
                         restartMaildirScan(dir);
@@ -386,7 +384,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
 
 void MaildirResource::itemMoved(const Item &item, const Collection &source, const Collection &destination)
 {
-    if (source == destination) {   // should not happen but would confuse Maildir::moveEntryTo
+    if (source == destination) { // should not happen but would confuse Maildir::moveEntryTo
         changeProcessed();
         return;
     }
@@ -420,7 +418,8 @@ void MaildirResource::itemMoved(const Item &item, const Collection &source, cons
     restartMaildirScan(destDir);
 
     if (newRid.isEmpty()) {
-        cancelTask(i18n("Could not move message '%1' from '%2' to '%3'. The error was %4.", item.remoteId(), sourceDir.path(), destDir.path(), sourceDir.lastError()));
+        cancelTask(
+            i18n("Could not move message '%1' from '%2' to '%3'. The error was %4.", item.remoteId(), sourceDir.path(), destDir.path(), sourceDir.lastError()));
         return;
     }
 
@@ -504,8 +503,7 @@ void MaildirResource::retrieveCollections()
         if (mSettings->topLevelIsContainer()) {
             root.setRights(Collection::ReadOnly | Collection::CanCreateCollection);
         } else {
-            root.setRights(Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem
-                           | Collection::CanCreateCollection);
+            root.setRights(Collection::CanChangeItem | Collection::CanCreateItem | Collection::CanDeleteItem | Collection::CanCreateCollection);
         }
     }
 
@@ -603,7 +601,7 @@ void MaildirResource::collectionChanged(const Collection &collection)
 
     Maildir md = maildirForCollection(collection);
     if (!md.isValid()) {
-        assert(!collection.remoteId().isEmpty());   // caught in resourcebase
+        assert(!collection.remoteId().isEmpty()); // caught in resourcebase
         // we don't have a maildir for this collection yet, probably due to a race
         // make one, otherwise the rename below will fail
         md.create();
@@ -637,7 +635,7 @@ void MaildirResource::collectionMoved(const Collection &collection, const Collec
         return;
     }
 
-    if (source == dest) {   // should not happen, but who knows...
+    if (source == dest) { // should not happen, but who knows...
         changeProcessed();
         return;
     }
@@ -720,7 +718,7 @@ void MaildirResource::slotDirChanged(const QString &dir)
     }
 
     if (dir.endsWith(QLatin1String(".directory"))) {
-        synchronizeCollectionTree(); //might be too much, but this is not a common case anyway
+        synchronizeCollectionTree(); // might be too much, but this is not a common case anyway
         return;
     }
 

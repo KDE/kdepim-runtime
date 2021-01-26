@@ -5,35 +5,35 @@
 */
 
 #include "newmailnotifiersettingswidget.h"
-#include "newmailnotifierselectcollectionwidget.h"
 #include "newmailnotifieragentsettings.h"
+#include "newmailnotifierselectcollectionwidget.h"
 
 #include "kdepim-runtime-version.h"
 
+#include <KAboutData>
 #include <KLocalizedString>
 #include <KNotifyConfigWidget>
 #include <QLineEdit>
 #include <QPushButton>
-#include <KAboutData>
 
-#include <QTabWidget>
 #include <QCheckBox>
 #include <QGroupBox>
-#include <QVBoxLayout>
 #include <QLabel>
+#include <QTabWidget>
+#include <QVBoxLayout>
 #include <QWhatsThis>
 
 #include <KSharedConfig>
 
-static const char *textToSpeakMessage
-    = I18N_NOOP("<qt>"
-                "<p>Here you can define message. "
-                "You can use:</p>"
-                "<ul>"
-                "<li>%s set subject</li>"
-                "<li>%f set from</li>"
-                "</ul>"
-                "</qt>");
+static const char *textToSpeakMessage = I18N_NOOP(
+    "<qt>"
+    "<p>Here you can define message. "
+    "You can use:</p>"
+    "<ul>"
+    "<li>%s set subject</li>"
+    "<li>%f set from</li>"
+    "</ul>"
+    "</qt>");
 
 NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
@@ -120,18 +120,15 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     mSelectCollection->setObjectName(QStringLiteral("mSelectCollection"));
     tab->addTab(mSelectCollection, i18n("Folders"));
 
-    KAboutData aboutData = KAboutData(
-        QStringLiteral("newmailnotifieragent"),
-        i18n("New Mail Notifier Agent"),
-        QStringLiteral(KDEPIM_RUNTIME_VERSION),
-        i18n("Notify about new mails."),
-        KAboutLicense::GPL_V2,
-        i18n("Copyright (C) 2013-2020 Laurent Montel"));
+    KAboutData aboutData = KAboutData(QStringLiteral("newmailnotifieragent"),
+                                      i18n("New Mail Notifier Agent"),
+                                      QStringLiteral(KDEPIM_RUNTIME_VERSION),
+                                      i18n("Notify about new mails."),
+                                      KAboutLicense::GPL_V2,
+                                      i18n("Copyright (C) 2013-2020 Laurent Montel"));
 
-    aboutData.addAuthor(i18n("Laurent Montel"),
-                        i18n("Maintainer"), QStringLiteral("montel@kde.org"));
-    aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"),
-                            i18nc("EMAIL OF TRANSLATORS", "Your emails"));
+    aboutData.addAuthor(i18n("Laurent Montel"), i18n("Maintainer"), QStringLiteral("montel@kde.org"));
+    aboutData.setTranslator(i18nc("NAME OF TRANSLATORS", "Your names"), i18nc("EMAIL OF TRANSLATORS", "Your emails"));
     setKAboutData(aboutData);
 }
 
@@ -180,8 +177,7 @@ bool NewMailNotifierSettingsWidget::save() const
 
 void NewMailNotifierSettingsWidget::slotHelpLinkClicked(const QString &)
 {
-    const QString help
-        = i18n(textToSpeakMessage);
+    const QString help = i18n(textToSpeakMessage);
 
     QWhatsThis::showText(QCursor::pos(), help);
 }

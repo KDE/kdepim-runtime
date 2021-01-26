@@ -6,8 +6,8 @@
 
 #include "retrieveitemsjob.h"
 
-#include "mixedmaildirstore.h"
 #include "mixedmaildir_debug.h"
+#include "mixedmaildirstore.h"
 
 #include "filestore/itemfetchjob.h"
 
@@ -33,10 +33,7 @@
 
 using namespace Akonadi;
 
-enum {
-    MaxItemCreateJobs = 100,
-    MaxItemModifyJobs = 100
-};
+enum { MaxItemCreateJobs = 100, MaxItemModifyJobs = 100 };
 
 class RetrieveItemsJob::Private
 {
@@ -116,7 +113,7 @@ void RetrieveItemsJob::Private::itemModifyJobResult(KJob *job)
 void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
 {
     if (job->error() != 0) {
-        return;    // handled by base class
+        return; // handled by base class
     }
 
     auto itemFetch = qobject_cast<ItemFetchJob *>(job);
@@ -199,9 +196,8 @@ void RetrieveItemsJob::Private::storeListResult(KJob *job)
     }
 
     qCDebug(MIXEDMAILDIR_LOG) << "Store fetch got" << storedItems.count() << "items"
-                              << "of which" << mNewItems.count() << "are new and" << mChangedItems.count()
-                              << "are changed and" << mServerItemsByRemoteId.count()
-                              << "need to be removed";
+                              << "of which" << mNewItems.count() << "are new and" << mChangedItems.count() << "are changed and"
+                              << mServerItemsByRemoteId.count() << "need to be removed";
 
     // all items remaining in mServerItemsByRemoteId are no longer in the store
 
@@ -236,11 +232,9 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 
     if (fetchJob->items().count() != 1) {
         const Item item = fetchJob->item();
-        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for new item" << item.remoteId()
-                                            << "in collection" << item.parentCollection().id()
-                                            << "," << item.parentCollection().remoteId()
-                                            << "did not return the expected item. error="
-                                            << fetchJob->error() << "," << fetchJob->errorText();
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for new item" << item.remoteId() << "in collection" << item.parentCollection().id() << ","
+                                            << item.parentCollection().remoteId() << "did not return the expected item. error=" << fetchJob->error() << ","
+                                            << fetchJob->errorText();
         processNewItem();
         return;
     }
@@ -297,11 +291,9 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
 
     if (fetchJob->items().count() != 1) {
         const Item item = fetchJob->item();
-        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for changed item" << item.remoteId()
-                                            << "in collection" << item.parentCollection().id()
-                                            << "," << item.parentCollection().remoteId()
-                                            << "did not return the expected item. error="
-                                            << fetchJob->error() << "," << fetchJob->errorText();
+        qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "Store fetch for changed item" << item.remoteId() << "in collection" << item.parentCollection().id() << ","
+                                            << item.parentCollection().remoteId() << "did not return the expected item. error=" << fetchJob->error() << ","
+                                            << fetchJob->errorText();
         processChangedItem();
         return;
     }
@@ -325,7 +317,7 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
 void RetrieveItemsJob::Private::transactionResult(KJob *job)
 {
     if (job->error() != 0) {
-        return;    // handled by base class
+        return; // handled by base class
     }
 
     q->emitResult();

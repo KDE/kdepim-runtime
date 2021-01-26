@@ -35,6 +35,7 @@ public:
     const EwsMailbox &mailbox() const;
     EwsEventResponseType response() const;
     QDateTime responseTime() const;
+
 protected:
     QSharedDataPointer<EwsAttendeePrivate> d;
 };

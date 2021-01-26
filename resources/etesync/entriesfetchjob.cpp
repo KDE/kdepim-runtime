@@ -6,11 +6,11 @@
 
 #include "entriesfetchjob.h"
 
-#include <kcontacts/addressee.h>
+#include <AkonadiCore/CollectionModifyJob>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
-#include <AkonadiCore/CollectionModifyJob>
 #include <QtConcurrent>
+#include <kcontacts/addressee.h>
 
 #include "etesync_debug.h"
 #include "settings.h"
@@ -21,7 +21,10 @@
 using namespace Akonadi;
 using namespace EteSyncAPI;
 
-EntriesFetchJob::EntriesFetchJob(const EteSyncClientState *clientState, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, QObject *parent)
+EntriesFetchJob::EntriesFetchJob(const EteSyncClientState *clientState,
+                                 const Akonadi::Collection &collection,
+                                 EtebaseCollectionPtr etesyncCollection,
+                                 QObject *parent)
     : KJob(parent)
     , mClientState(clientState)
     , mCollection(collection)

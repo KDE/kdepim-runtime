@@ -9,19 +9,20 @@
 #include "settings.h"
 #include <AkonadiCore/Tag>
 #include <KConfigDialogManager>
-#include <QIcon>
 #include <KLocalizedString>
-#include <QPushButton>
 #include <KSharedConfig>
+#include <QIcon>
+#include <QPushButton>
 
-namespace {
+namespace
+{
 static const char myConfigGroupName[] = "BirthdaysSettingsDialog";
 }
 
 BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
 {
-    //setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
+    // setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
 
     Settings::instance(config);
 

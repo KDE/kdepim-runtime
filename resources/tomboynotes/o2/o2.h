@@ -8,9 +8,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
+#include "o0abstractstore.h"
 #include "o0baseauth.h"
 #include "o2reply.h"
-#include "o0abstractstore.h"
 
 class O2ReplyServer;
 

@@ -9,10 +9,10 @@
 #define MIGRATIONSCHEDULER_H
 
 #include "migratorbase.h"
-#include <QObject>
 #include <QAbstractItemModel>
-#include <QSharedPointer>
+#include <QObject>
 #include <QPointer>
+#include <QSharedPointer>
 #include <QStandardItemModel>
 
 class MigrationExecutor;
@@ -51,10 +51,7 @@ class MigratorModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    enum Roles {
-        IdentifierRole = Qt::UserRole + 1,
-        LogfileRole
-    };
+    enum Roles { IdentifierRole = Qt::UserRole + 1, LogfileRole };
     bool addMigrator(const QSharedPointer<MigratorBase> &migrator);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -65,26 +62,22 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     QSharedPointer<MigratorBase> migrator(const QString &identifier) const;
-    QList< QSharedPointer<MigratorBase> > migrators() const;
+    QList<QSharedPointer<MigratorBase>> migrators() const;
 
 private:
-    enum Columns {
-        Name = 0,
-        Progress = 1,
-        State = 2,
-        ColumnCount
-    };
+    enum Columns { Name = 0, Progress = 1, State = 2, ColumnCount };
     friend class Row;
     int positionOf(const Row &);
     void columnChanged(const Row &, int column);
-    QList< QSharedPointer<Row> > mMigrators;
+    QList<QSharedPointer<Row>> mMigrators;
 };
 
 /**
  * Scheduler for migration jobs.
  *
  * Status information is exposed via getModel, which returns a list model containing all migrators with basic information.
- * Additionally a logmodel is available via getLogModel for each migrator. The logmodel is continuously filled with information, and can be requested and displayed at any time.
+ * Additionally a logmodel is available via getLogModel for each migrator. The logmodel is continuously filled with information, and can be requested and
+ * displayed at any time.
  *
  * Migrators which return true on shouldAutostart() automatically enter a queue to be processed one after the other.
  * When manually triggered it is possible though to run multiple jobs in parallel.
@@ -98,11 +91,11 @@ public:
 
     void addMigrator(const QSharedPointer<MigratorBase> &migrator);
 
-    //A model for the view
+    // A model for the view
     QAbstractItemModel &model();
     QStandardItemModel &logModel(const QString &identifier);
 
-    //Control
+    // Control
     void start(const QString &identifier);
     void pause(const QString &identifier);
     void abort(const QString &identifier);
@@ -111,7 +104,7 @@ private:
     void checkForAutostart(const QSharedPointer<MigratorBase> &migrator);
 
     QScopedPointer<MigratorModel> mModel;
-    QHash<QString, QSharedPointer<LogModel> > mLogModel;
+    QHash<QString, QSharedPointer<LogModel>> mLogModel;
     QPointer<MigrationExecutor> mAutostartExecutor;
     KJobTrackerInterface *mJobTracker = nullptr;
 };

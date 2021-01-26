@@ -6,8 +6,8 @@
 
 #include "gidmigrator.h"
 
-#include <KLocalizedString>
 #include "gidmigrationjob.h"
+#include <KLocalizedString>
 
 GidMigrator::GidMigrator(const QString &mimeType)
     : MigratorBase(QLatin1String("gidmigrator") + mimeType)

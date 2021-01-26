@@ -9,13 +9,13 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include <AkonadiCore/vectorhelper.h>
 #include <collectionfetchjob.h>
+#include <entitydisplayattribute.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
 #include <mimetypechecker.h>
 #include <monitor.h>
-#include <entitydisplayattribute.h>
-#include <AkonadiCore/vectorhelper.h>
 
 #include <kcontacts/addressee.h>
 
@@ -35,8 +35,7 @@ BirthdaysResource::BirthdaysResource(const QString &id)
 {
     Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(), QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), Settings::self(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("Birthdays & Anniversaries"));
     auto monitor = new Monitor(this);
@@ -84,7 +83,7 @@ void BirthdaysResource::retrieveItems(const Akonadi::Collection &collection)
     mDeletedItems.clear();
 }
 
-bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet< QByteArray > &parts)
+bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
     qint64 contactId = item.remoteId().mid(1).toLongLong();
@@ -149,7 +148,7 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
     } else {
         Item i(KCalendarCore::Event::eventMimeType());
         i.setRemoteId(QStringLiteral("b%1").arg(item.id()));
-        mDeletedItems[ i.remoteId() ] = i;
+        mDeletedItems[i.remoteId()] = i;
     }
 
     event = createAnniversary(item);
@@ -158,7 +157,7 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
     } else {
         Item i(KCalendarCore::Event::eventMimeType());
         i.setRemoteId(QStringLiteral("a%1").arg(item.id()));
-        mDeletedItems[ i.remoteId() ] = i;
+        mDeletedItems[i.remoteId()] = i;
     }
     synchronize();
 }
@@ -169,16 +168,16 @@ void BirthdaysResource::addPendingEvent(const KCalendarCore::Event::Ptr &event, 
     Item i(KCalendarCore::Event::eventMimeType());
     i.setRemoteId(remoteId);
     i.setPayload(evptr);
-    mPendingItems[ remoteId ] = i;
+    mPendingItems[remoteId] = i;
 }
 
 void BirthdaysResource::contactRemoved(const Akonadi::Item &item)
 {
     Item i(KCalendarCore::Event::eventMimeType());
     i.setRemoteId(QStringLiteral("b%1").arg(item.id()));
-    mDeletedItems[ i.remoteId() ] = i;
+    mDeletedItems[i.remoteId()] = i;
     i.setRemoteId(QStringLiteral("a%1").arg(item.id()));
-    mDeletedItems[ i.remoteId() ] = i;
+    mDeletedItems[i.remoteId()] = i;
     synchronize();
 }
 
@@ -271,18 +270,16 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::It
                 tname.remove(0, 1);
                 tname.chop(1);
             }
-            tname.remove(QLatin1Char('\\'));   // remove escape chars
+            tname.remove(QLatin1Char('\\')); // remove escape chars
             KContacts::Addressee spouse;
             spouse.setNameFromString(tname);
             QString name_2 = spouse.nickName();
             if (name_2.isEmpty()) {
                 name_2 = spouse.realName();
             }
-            summary = i18nc("insert names of both spouses",
-                            "%1's & %2's anniversary", name, name_2);
+            summary = i18nc("insert names of both spouses", "%1's & %2's anniversary", name, name_2);
         } else {
-            summary = i18nc("only one spouse in addressbook, insert the name",
-                            "%1's anniversary", name);
+            summary = i18nc("only one spouse in addressbook, insert the name", "%1's anniversary", name);
         }
 
         Event::Ptr event = createEvent(anniversary);

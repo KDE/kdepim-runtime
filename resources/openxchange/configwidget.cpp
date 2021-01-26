@@ -57,8 +57,7 @@ void ConfigWidget::updateButtonState()
 
 void ConfigWidget::checkConnection()
 {
-    OXA::ConnectionTestJob *job = new OXA::ConnectionTestJob(mServerEdit->text(), mUserEdit->text(),
-                                                             mPasswordEdit->text(), this);
+    OXA::ConnectionTestJob *job = new OXA::ConnectionTestJob(mServerEdit->text(), mUserEdit->text(), mPasswordEdit->text(), this);
     connect(job, &OXA::ConnectionTestJob::result, this, &ConfigWidget::checkConnectionJobFinished);
     job->start();
 

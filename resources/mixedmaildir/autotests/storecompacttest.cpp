@@ -19,9 +19,9 @@
 
 #include <QSignalSpy>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 using namespace Akonadi;
 using namespace KMBox;
 
@@ -29,7 +29,7 @@ static Collection::List collectionsFromSpy(QSignalSpy *spy)
 {
     Collection::List collections;
 
-    QListIterator<QList<QVariant> > it(*spy);
+    QListIterator<QList<QVariant>> it(*spy);
     while (it.hasNext()) {
         const QList<QVariant> invocation = it.next();
         Q_ASSERT(invocation.count() == 1);
@@ -44,7 +44,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 {
     Item::List items;
 
-    QListIterator<QList<QVariant> > it(*spy);
+    QListIterator<QList<QVariant>> it(*spy);
     while (it.hasNext()) {
         const QList<QVariant> invocation = it.next();
         Q_ASSERT(invocation.count() == 1);
@@ -57,9 +57,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 
 static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset()
-           && a.separatorSize() == b.separatorSize()
-           && a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset() && a.separatorSize() == b.separatorSize() && a.messageSize() == b.messageSize();
 }
 
 static quint64 changedOffset(const Item &item)
@@ -81,7 +79,8 @@ class StoreCompactTest : public QObject
     Q_OBJECT
 
 public:
-    StoreCompactTest() : QObject()
+    StoreCompactTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -265,7 +264,7 @@ void StoreCompactTest::testCompact()
 
     entryList2.pop_front();
     for (int i = 0; i < items.count(); ++i) {
-        entryList2[ i ] = MBoxEntry(changedOffset(items[ i ]));
+        entryList2[i] = MBoxEntry(changedOffset(items[i]));
     }
     QCOMPARE(entryList, entryList2);
 
@@ -342,7 +341,7 @@ void StoreCompactTest::testCompact()
     QCOMPARE(compactedCollections.count(), 2);
 
     QVERIFY(compactedCollections.contains(collection3.remoteId()));
-    collection = compactedCollections[ collection3.remoteId() ];
+    collection = compactedCollections[collection3.remoteId()];
     QCOMPARE(collection, collection3);
     QVERIFY(collection.hasAttribute<FileStore::EntityCompactChangeAttribute>());
     attribute = collection.attribute<FileStore::EntityCompactChangeAttribute>();
@@ -353,21 +352,20 @@ void StoreCompactTest::testCompact()
 
     // The order of items depends on the order of iteration of a QHash in MixedMaildirStore.
     // This makes sure that the items are always sorted by collection and offset
-    std::sort(items.begin(), items.end(),
-              [](const Akonadi::Item &left, const Akonadi::Item &right) {
+    std::sort(items.begin(), items.end(), [](const Akonadi::Item &left, const Akonadi::Item &right) {
         return left.parentCollection().remoteId().compare(right.parentCollection().remoteId()) < 0
-        || (left.parentCollection().remoteId() == right.parentCollection().remoteId() && changedOffset(left) < changedOffset(right));
+            || (left.parentCollection().remoteId() == right.parentCollection().remoteId() && changedOffset(left) < changedOffset(right));
     });
 
     entryList3.pop_front();
     for (int i = 0; i < entryList3.count(); ++i) {
-        entryList3[ i ] = MBoxEntry(changedOffset(items.first()));
+        entryList3[i] = MBoxEntry(changedOffset(items.first()));
         items.pop_front();
     }
     QCOMPARE(entryList, entryList3);
 
     QVERIFY(compactedCollections.contains(collection4.remoteId()));
-    collection = compactedCollections[ collection4.remoteId() ];
+    collection = compactedCollections[collection4.remoteId()];
     QCOMPARE(collection, collection4);
     QVERIFY(collection.hasAttribute<FileStore::EntityCompactChangeAttribute>());
     attribute = collection.attribute<FileStore::EntityCompactChangeAttribute>();
@@ -378,7 +376,7 @@ void StoreCompactTest::testCompact()
 
     entryList4.removeAt(1);
     for (int i = 0; i < items.count(); ++i) {
-        entryList4[ i + 1 ] = MBoxEntry(changedOffset(items[ i ]));
+        entryList4[i + 1] = MBoxEntry(changedOffset(items[i]));
     }
     QCOMPARE(entryList, entryList4);
 

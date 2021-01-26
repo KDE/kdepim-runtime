@@ -8,21 +8,21 @@
 
 #include "settingsadaptor.h"
 
+#include <AkonadiCore/vectorhelper.h>
 #include <cachepolicy.h>
 #include <changerecorder.h>
 #include <collectionfetchjob.h>
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <AkonadiCore/vectorhelper.h>
 
-#include <kcontacts/addressee.h>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KLocalizedString>
+#include <kcontacts/addressee.h>
 
+#include <QStandardPaths>
 #include <oxa/davmanager.h>
-#include <oxa/oxerrors.h>
 #include <oxa/foldercreatejob.h>
 #include <oxa/folderdeletejob.h>
 #include <oxa/foldermodifyjob.h>
@@ -36,9 +36,9 @@
 #include <oxa/objectrequestjob.h>
 #include <oxa/objectsrequestdeltajob.h>
 #include <oxa/objectsrequestjob.h>
+#include <oxa/oxerrors.h>
 #include <oxa/updateusersjob.h>
 #include <oxa/users.h>
-#include <QStandardPaths>
 
 using namespace Akonadi;
 
@@ -93,8 +93,7 @@ public:
     }
 
 private:
-    template<typename T>
-    static inline RemoteInformation loadImpl(const T &entity)
+    template<typename T> static inline RemoteInformation loadImpl(const T &entity)
     {
         const QStringList parts = entity.remoteRevision().split(QLatin1Char(':'), Qt::KeepEmptyParts);
 
@@ -120,8 +119,7 @@ private:
         return RemoteInformation(entity.remoteId().toLongLong(), module, lastModified);
     }
 
-    template<typename T>
-    inline void storeImpl(T &entity) const
+    template<typename T> inline void storeImpl(T &entity) const
     {
         QString module;
         switch (mModule) {
@@ -239,8 +237,7 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     // setup the resource
     Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(), QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), Settings::self(), QDBusConnection::ExportAdaptors);
     mUseIncrementalUpdates = Settings::self()->useIncrementalUpdates();
 
     changeRecorder()->fetchCollection(true);
@@ -372,9 +369,9 @@ void OpenXchangeResource::onReloadConfiguration()
 
 void OpenXchangeResource::retrieveCollections()
 {
-    //qDebug("tokoe: retrieve collections called");
+    // qDebug("tokoe: retrieve collections called");
     if (Settings::self()->useIncrementalUpdates()) {
-        //qDebug( "lastSync=%llu", Settings::self()->foldersLastSync() );
+        // qDebug( "lastSync=%llu", Settings::self()->foldersLastSync() );
         auto job = new OXA::FoldersRequestDeltaJob(Settings::self()->foldersLastSync(), this);
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onFoldersRequestDeltaJobFinished);
         job->start();
@@ -387,7 +384,7 @@ void OpenXchangeResource::retrieveCollections()
 
 void OpenXchangeResource::retrieveItems(const Akonadi::Collection &collection)
 {
-    //qDebug( "tokoe: retrieveItems on %s called", qPrintable( collection.name() ) );
+    // qDebug( "tokoe: retrieveItems on %s called", qPrintable( collection.name() ) );
     const RemoteInformation remoteInformation = RemoteInformation::load(collection);
 
     OXA::Folder folder;
@@ -396,7 +393,7 @@ void OpenXchangeResource::retrieveItems(const Akonadi::Collection &collection)
 
     if (Settings::self()->useIncrementalUpdates()) {
         ObjectsLastSync lastSyncInfo;
-        //qDebug( "lastSync=%llu", lastSyncInfo.lastSync( collection.id() ) );
+        // qDebug( "lastSync=%llu", lastSyncInfo.lastSync( collection.id() ) );
         auto job = new OXA::ObjectsRequestDeltaJob(folder, lastSyncInfo.lastSync(collection.id()), this);
         job->setProperty("collection", QVariant::fromValue(collection));
         connect(job, &OXA::UpdateUsersJob::result, this, &OpenXchangeResource::onObjectsRequestDeltaJobFinished);
@@ -410,7 +407,7 @@ void OpenXchangeResource::retrieveItems(const Akonadi::Collection &collection)
 
 bool OpenXchangeResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    //qDebug( "tokoe: retrieveItem %lld called", item.id() );
+    // qDebug( "tokoe: retrieveItem %lld called", item.id() );
     const RemoteInformation remoteInformation = RemoteInformation::load(item);
 
     OXA::Object object;
@@ -589,7 +586,9 @@ void OpenXchangeResource::collectionRemoved(const Akonadi::Collection &collectio
     job->start();
 }
 
-void OpenXchangeResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
+void OpenXchangeResource::collectionMoved(const Akonadi::Collection &collection,
+                                          const Akonadi::Collection &collectionSource,
+                                          const Akonadi::Collection &collectionDestination)
 {
     const RemoteInformation remoteInformation = RemoteInformation::load(collection);
     const RemoteInformation parentRemoteInformation = RemoteInformation::load(collectionSource);
@@ -748,8 +747,8 @@ void OpenXchangeResource::onObjectsRequestDeltaJobFinished(KJob *job)
         lastSyncInfo.save();
     }
 
-    //qDebug( "changedObjects=%d removedObjects=%d", modifiedObjects.count(), deletedObjects.count() );
-    //qDebug( "changedItems=%d removedItems=%d", changedItems.count(), removedItems.count() );
+    // qDebug( "changedObjects=%d removedObjects=%d", modifiedObjects.count(), deletedObjects.count() );
+    // qDebug( "changedItems=%d removedItems=%d", changedItems.count(), removedItems.count() );
     itemsRetrievedIncremental(changedItems, removedItems);
 }
 
@@ -824,8 +823,7 @@ void OpenXchangeResource::onObjectCreateJobFinished(KJob *job)
                 errorText = i18n("Internal server error. Please contact your administrator.");
                 break;
             case OXA::OXErrors::EditErrorUndefined:
-            default:
-                ;
+            default:;
             }
         }
         cancelTask(errorText);
@@ -978,7 +976,7 @@ void OpenXchangeResource::onFoldersRequestJobFinished(KJob *job)
 
 void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
 {
-    //qDebug( "onFoldersRequestDeltaJobFinished mCollectionsMap.count() = %d", mCollectionsMap.count() );
+    // qDebug( "onFoldersRequestDeltaJobFinished mCollectionsMap.count() = %d", mCollectionsMap.count() );
 
     if (job->error()) {
         cancelTask(job->errorText());
@@ -1035,8 +1033,8 @@ void OpenXchangeResource::onFoldersRequestDeltaJobFinished(KJob *job)
         Settings::self()->save();
     }
 
-    //qDebug( "changedFolders=%d removedFolders=%d", modifiedFolders.count(), deletedFolders.count() );
-    //qDebug( "changedCollections=%d removedCollections=%d", changedCollections.count(), removedCollections.count() );
+    // qDebug( "changedFolders=%d removedFolders=%d", modifiedFolders.count(), deletedFolders.count() );
+    // qDebug( "changedCollections=%d removedCollections=%d", changedCollections.count(), removedCollections.count() );
     collectionsRetrievedIncremental(changedCollections, removedCollections);
 }
 

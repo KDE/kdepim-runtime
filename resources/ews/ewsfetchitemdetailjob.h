@@ -9,8 +9,8 @@
 
 #include <QPointer>
 
-#include <AkonadiCore/Item>
 #include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
 #include "ewsclient.h"
 #include "ewsgetitemrequest.h"
@@ -33,6 +33,7 @@ public:
     }
 
     void start() override;
+
 protected:
     virtual void processItems(const QList<EwsGetItemRequest::Response> &responses) = 0;
 

@@ -11,25 +11,26 @@
 /**
  * Contains constants for IMAP flags from KIMAP.
  */
-namespace ImapFlags {
+namespace ImapFlags
+{
 /**
-  * The flag for a message being seen (i.e. opened by user).
-  */
+ * The flag for a message being seen (i.e. opened by user).
+ */
 extern const char *Seen;
 
 /**
-  * The flag for a message being deleted by the user.
-  */
+ * The flag for a message being deleted by the user.
+ */
 extern const char *Deleted;
 
 /**
-  * The flag for a message being replied to by the user.
-  */
+ * The flag for a message being replied to by the user.
+ */
 extern const char *Answered;
 
 /**
-  * The flag for a message being marked as flagged.
-  */
+ * The flag for a message being marked as flagged.
+ */
 extern const char *Flagged;
 }
 

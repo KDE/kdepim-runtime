@@ -9,11 +9,13 @@
 #ifndef OXA_OXUTILS_H
 #define OXA_OXUTILS_H
 
-#include <QString>
 #include <QDateTime>
+#include <QString>
 
-namespace OXA {
-namespace OXUtils {
+namespace OXA
+{
+namespace OXUtils
+{
 QString writeBoolean(bool value);
 QString writeNumber(qlonglong value);
 QString writeString(const QString &value);

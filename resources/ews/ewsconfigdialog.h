@@ -15,7 +15,8 @@ class QDialogButtonBox;
 class EwsResource;
 class EwsClient;
 class KConfigDialogManager;
-namespace Ui {
+namespace Ui
+{
 class SetupServerView;
 }
 class KJob;
@@ -32,6 +33,7 @@ class EwsConfigDialog : public QDialog
 public:
     explicit EwsConfigDialog(EwsResource *parentResource, EwsClient &client, WId windowId, EwsSettings *settings);
     ~EwsConfigDialog() override;
+
 private:
     void save();
     void autoDiscoveryFinished(KJob *job);

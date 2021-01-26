@@ -12,7 +12,8 @@
 
 #include <KCModule>
 
-namespace KLDAP {
+namespace KLDAP
+{
 class LdapConfigureWidget;
 }
 

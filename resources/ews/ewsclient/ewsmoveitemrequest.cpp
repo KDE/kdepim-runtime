@@ -50,8 +50,7 @@ void EwsMoveItemRequest::start()
 
 bool EwsMoveItemRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("MoveItem"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("MoveItem"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -67,8 +66,7 @@ bool EwsMoveItemRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveItem response - OK");
         } else {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveItem response - %1")
-                .arg(resp.responseMessage());
+            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveItem response - %1").arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
@@ -84,8 +82,7 @@ EwsMoveItemRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

@@ -10,19 +10,20 @@
 #include <kolab_export.h>
 
 #include <AkonadiCore/Item>
-#include <AkonadiCore/Tag>
 #include <AkonadiCore/Relation>
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
+#include <AkonadiCore/Tag>
 #include <KCalendarCore/Incidence>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/journal.h>
 #include <kcalendarcore/todo.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/contactgroup.h>
 #include <kmime/kmime_message.h>
 
 #include "kolabdefinitions.h"
 
-namespace Kolab {
+namespace Kolab
+{
 class Freebusy;
 
 KOLAB_EXPORT KCalendarCore::Event::Ptr readV2EventXML(const QByteArray &xmlData, QStringList &attachments);
@@ -112,11 +113,14 @@ private:
 class KOLAB_EXPORT KolabObjectWriter
 {
 public:
-
-    static KMime::Message::Ptr writeEvent(const KCalendarCore::Event::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeTodo(const KCalendarCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeJournal(const KCalendarCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
-    static KMime::Message::Ptr writeIncidence(const KCalendarCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr
+    writeEvent(const KCalendarCore::Event::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr
+    writeTodo(const KCalendarCore::Todo::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr
+    writeJournal(const KCalendarCore::Journal::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
+    static KMime::Message::Ptr
+    writeIncidence(const KCalendarCore::Incidence::Ptr &, Version v = KolabV3, const QString &productId = QString(), const QString &tz = QString());
     static KMime::Message::Ptr writeContact(const KContacts::Addressee &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeDistlist(const KContacts::ContactGroup &, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeNote(const KMime::Message::Ptr &, Version v = KolabV3, const QString &productId = QString());
@@ -125,6 +129,6 @@ public:
     static KMime::Message::Ptr writeTag(const Akonadi::Tag &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
     static KMime::Message::Ptr writeRelation(const Akonadi::Relation &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
 };
-} //Namespace
+} // Namespace
 
 #endif // KOLABOBJECT_H

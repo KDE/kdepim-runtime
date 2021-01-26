@@ -2,17 +2,18 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#include <QTcpSocket>
-#include <QPair>
-#include <QUrl>
 #include "debug.h"
+#include <QPair>
+#include <QTcpSocket>
+#include <QUrl>
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
 #endif
 
 #include "o2/o2replyserver.h"
 
-O2ReplyServer::O2ReplyServer(QObject *parent) : QTcpServer(parent)
+O2ReplyServer::O2ReplyServer(QObject *parent)
+    : QTcpServer(parent)
 {
     connect(this, &QTcpServer::newConnection, this, &O2ReplyServer::onIncomingConnection);
     replyContent_ = QByteArrayLiteral("<HTML></HTML>");
@@ -57,7 +58,7 @@ QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
     splitGetLine.prepend(QStringLiteral("http://localhost"));
     QUrl getTokenUrl(splitGetLine);
 
-    QList< QPair<QString, QString> > tokens;
+    QList<QPair<QString, QString>> tokens;
 #if QT_VERSION < 0x050000
     tokens = getTokenUrl.queryItems();
 #else

@@ -10,9 +10,9 @@
 #include "kolabbase.h"
 #include "pimkolab_debug.h"
 
+#include <kcalendarcore/journal.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <kcalendarcore/journal.h>
 
 using namespace KolabV2;
 
@@ -80,14 +80,14 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
 
     // Set creation-time and last-modification-time
     const QString creationString = addressee->custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"));
-    qCDebug(PIMKOLAB_LOG) <<"Creation time string:" << creationString;
+    qCDebug(PIMKOLAB_LOG) << "Creation time string:" << creationString;
     QDateTime creationDate;
     if (creationString.isEmpty() && mTimeZone.isValid()) {
         creationDate = QDateTime::currentDateTime().toTimeZone(mTimeZone);
-        qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time" << mTimeZone;
+        qCDebug(PIMKOLAB_LOG) << "Creation date set to current time" << mTimeZone;
     } else {
         creationDate = stringToDateTime(creationString);
-        qCDebug(PIMKOLAB_LOG) <<"Creation date loaded";
+        qCDebug(PIMKOLAB_LOG) << "Creation date loaded";
     }
     QDateTime modified;
     if (mTimeZone.isValid()) {
@@ -100,15 +100,14 @@ void KolabBase::setFields(const KContacts::Addressee *addressee)
     if (modified < creationDate) {
         // It's not possible that the modification date is earlier than creation
         creationDate = modified;
-        qCDebug(PIMKOLAB_LOG) <<"Creation date set to modification date";
+        qCDebug(PIMKOLAB_LOG) << "Creation date set to modification date";
     }
     setCreationDate(creationDate);
     const QString newCreationDate = dateTimeToString(creationDate);
     if (creationString != newCreationDate) {
         // We modified the creation date, so store it for future reference
-        const_cast<KContacts::Addressee *>(addressee)
-        ->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"), newCreationDate);
-        qCDebug(PIMKOLAB_LOG) <<"Creation date modified. New one:" << newCreationDate;
+        const_cast<KContacts::Addressee *>(addressee)->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"), newCreationDate);
+        qCDebug(PIMKOLAB_LOG) << "Creation date modified. New one:" << newCreationDate;
     }
 
     switch (addressee->secrecy().type()) {
@@ -133,8 +132,7 @@ void KolabBase::saveTo(KContacts::Addressee *addressee) const
     if (mTimeZone.isValid()) {
         addressee->setRevision(lastModified().toTimeZone(mTimeZone));
     }
-    addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"),
-                            dateTimeToString(creationDate()));
+    addressee->insertCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate"), dateTimeToString(creationDate()));
 
     switch (sensitivity()) {
     case Private:
@@ -162,14 +160,14 @@ void KolabBase::setFields(const KContacts::ContactGroup *contactGroup)
     if (mTimeZone.isValid()) {
         creationDate = QDateTime::currentDateTime().toTimeZone(mTimeZone);
     }
-    qCDebug(PIMKOLAB_LOG) <<"Creation date set to current time";
+    qCDebug(PIMKOLAB_LOG) << "Creation date set to current time";
 
     QDateTime modified = QDateTime::currentDateTimeUtc();
     setLastModified(modified);
     if (modified < creationDate) {
         // It's not possible that the modification date is earlier than creation
         creationDate = modified;
-        qCDebug(PIMKOLAB_LOG) <<"Creation date set to modification date";
+        qCDebug(PIMKOLAB_LOG) << "Creation date set to modification date";
     }
     setCreationDate(creationDate);
 }
@@ -287,10 +285,10 @@ bool KolabBase::loadEmailAttribute(QDomElement &element, Email &email)
                 email.smtpAddress = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 

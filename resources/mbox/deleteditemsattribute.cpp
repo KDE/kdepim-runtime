@@ -68,7 +68,7 @@ QByteArray DeletedItemsAttribute::serialized() const
         serialized += QByteArray::number(offset) + ',';
     }
 
-    serialized.chop(1);   // Remove the last ','
+    serialized.chop(1); // Remove the last ','
 
     return serialized;
 }

@@ -16,37 +16,37 @@
 */
 
 #include "setupserver.h"
-#include "settings.h"
+#include "folderarchivesettingpage.h"
 #include "imapresource.h"
 #include "serverinfodialog.h"
-#include "folderarchivesettingpage.h"
+#include "settings.h"
 #include "utils.h"
 #include <config-imap.h>
 
-#include <MailTransport/Transport>
-#include <MailTransport/ServerTest>
 #include <Libkdepim/LineEditCatchReturnKey>
+#include <MailTransport/ServerTest>
+#include <MailTransport/Transport>
 
 #include <kmime/kmime_message.h>
 
-#include <collectionfetchjob.h>
+#include "imapresource_debug.h"
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
-#include <resourcesettings.h>
-#include <entitydisplayattribute.h>
 #include <CollectionModifyJob>
 #include <KEMailSettings>
 #include <KLocalizedString>
-#include <QPushButton>
 #include <KMessageBox>
 #include <KUser>
-#include "imapresource_debug.h"
 #include <QNetworkConfigurationManager>
+#include <QPushButton>
+#include <collectionfetchjob.h>
+#include <entitydisplayattribute.h>
+#include <resourcesettings.h>
 
-#include <kidentitymanagement/identitymanager.h>
-#include <kidentitymanagement/identitycombo.h>
-#include <QVBoxLayout>
 #include <QPointer>
+#include <QVBoxLayout>
+#include <kidentitymanagement/identitycombo.h>
+#include <kidentitymanagement/identitymanager.h>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
@@ -57,7 +57,7 @@
 static QString authenticationModeString(MailTransport::Transport::EnumAuthenticationType::type mode)
 {
     switch (mode) {
-    case  MailTransport::Transport::EnumAuthenticationType::LOGIN:
+    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
         return QStringLiteral("LOGIN");
     case MailTransport::Transport::EnumAuthenticationType::PLAIN:
         return QStringLiteral("PLAIN");
@@ -88,17 +88,19 @@ static void setCurrentAuthMode(QComboBox *authCombo, MailTransport::Transport::E
     if (index == -1) {
         qCWarning(IMAPRESOURCE_LOG) << "desired authmode not in the combo";
     }
-    qCDebug(IMAPRESOURCE_LOG) << "found corresponding index: " << index << "with data" << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(
-                                                                                                                       index).toInt());
+    qCDebug(IMAPRESOURCE_LOG) << "found corresponding index: " << index << "with data"
+                              << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(index).toInt());
     authCombo->setCurrentIndex(index);
-    MailTransport::Transport::EnumAuthenticationType::type t = (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
+    MailTransport::Transport::EnumAuthenticationType::type t =
+        (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
     qCDebug(IMAPRESOURCE_LOG) << "selected auth mode:" << authenticationModeString(t);
     Q_ASSERT(t == authtype);
 }
 
 static MailTransport::Transport::EnumAuthenticationType::type getCurrentAuthMode(QComboBox *authCombo)
 {
-    MailTransport::Transport::EnumAuthenticationType::type authtype = (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
+    MailTransport::Transport::EnumAuthenticationType::type authtype =
+        (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
     qCDebug(IMAPRESOURCE_LOG) << "current auth mode: " << authenticationModeString(authtype);
     return authtype;
 }
@@ -158,8 +160,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     mValidator.setRegularExpression(QRegularExpression(QStringLiteral("[A-Za-z0-9_:.-]*")));
     m_ui->imapServer->setValidator(&mValidator);
 
-    m_ui->folderRequester->setMimeTypeFilter(
-        QStringList() << KMime::Message::mimeType());
+    m_ui->folderRequester->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
     m_ui->folderRequester->setAccessRightsFilter(Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem);
     m_ui->folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
     m_identityCombobox = new KIdentityManagement::IdentityCombo(KIdentityManagement::IdentityManager::self(), this);
@@ -189,8 +190,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotTestChanged();
     slotComplete();
     slotCustomSieveChanged();
-    connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged,
-            this, &SetupServer::slotTestChanged);
+    connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged, this, &SetupServer::slotTestChanged);
 }
 
 SetupServer::~SetupServer()
@@ -238,8 +238,7 @@ void SetupServer::slotCustomSieveChanged()
 {
     QAbstractButton *checkedButton = m_ui->customSieveGroup->checkedButton();
 
-    if (checkedButton == m_ui->imapUserPassword
-        || checkedButton == m_ui->noAuthentification) {
+    if (checkedButton == m_ui->imapUserPassword || checkedButton == m_ui->noAuthentification) {
         m_ui->customUsername->setEnabled(false);
         m_ui->customPassword->setEnabled(false);
     } else if (checkedButton == m_ui->customUserPassword) {
@@ -250,34 +249,33 @@ void SetupServer::slotCustomSieveChanged()
 
 void SetupServer::applySettings()
 {
-    if (!m_parentResource->settings()->imapServer().isEmpty()
-        && m_ui->imapServer->text() != m_parentResource->settings()->imapServer()) {
-        if (KMessageBox::warningContinueCancel(
-                this, i18n("You have changed the address of the server. Even if this is the same server as before "
-                           "we will have to re-download all your emails from this account again. "
-                           "Are you sure you want to proceed?"),
-                i18n("Server address change")) == KMessageBox::Cancel) {
+    if (!m_parentResource->settings()->imapServer().isEmpty() && m_ui->imapServer->text() != m_parentResource->settings()->imapServer()) {
+        if (KMessageBox::warningContinueCancel(this,
+                                               i18n("You have changed the address of the server. Even if this is the same server as before "
+                                                    "we will have to re-download all your emails from this account again. "
+                                                    "Are you sure you want to proceed?"),
+                                               i18n("Server address change"))
+            == KMessageBox::Cancel) {
             return;
         }
     }
-    if (!m_parentResource->settings()->userName().isEmpty()
-        && m_ui->userName->text() != m_parentResource->settings()->userName()) {
-        if (KMessageBox::warningContinueCancel(
-                this, i18n("You have changed the user name. Even if this is a user name for the same account as before "
-                           "we will have to re-download all your emails from this account again. "
-                           "Are you sure you want to proceed?"),
-                i18n("User name change")) == KMessageBox::Cancel) {
+    if (!m_parentResource->settings()->userName().isEmpty() && m_ui->userName->text() != m_parentResource->settings()->userName()) {
+        if (KMessageBox::warningContinueCancel(this,
+                                               i18n("You have changed the user name. Even if this is a user name for the same account as before "
+                                                    "we will have to re-download all your emails from this account again. "
+                                                    "Are you sure you want to proceed?"),
+                                               i18n("User name change"))
+            == KMessageBox::Cancel) {
             return;
         }
     }
 
     m_folderArchiveSettingPage->writeSettings();
-    m_shouldClearCache = (m_parentResource->settings()->imapServer() != m_ui->imapServer->text())
-                         || (m_parentResource->settings()->userName() != m_ui->userName->text());
+    m_shouldClearCache =
+        (m_parentResource->settings()->imapServer() != m_ui->imapServer->text()) || (m_parentResource->settings()->userName() != m_ui->userName->text());
 
     const MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode(m_ui->authenticationCombo);
-    if (!m_ui->userName->text().contains(QLatin1Char('@'))
-        && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
+    if (!m_ui->userName->text().contains(QLatin1Char('@')) && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
         && m_ui->imapServer->text().contains(QLatin1String("gmail.com"))) {
         // Normalize gmail username so that it matches the JSON account info returned by GMail authentication.
         // If we don't do this, we will look up cached auth without @gmail.com and save it with @gmail.com => very frequent auth dialog popping up.
@@ -378,15 +376,12 @@ void SetupServer::readSettings()
     auto currentUser = new KUser();
     KEMailSettings esetting;
 
-    m_ui->imapServer->setText(
-        !m_parentResource->settings()->imapServer().isEmpty() ? m_parentResource->settings()->imapServer()
-        : esetting.getSetting(KEMailSettings::InServer));
+    m_ui->imapServer->setText(!m_parentResource->settings()->imapServer().isEmpty() ? m_parentResource->settings()->imapServer()
+                                                                                    : esetting.getSetting(KEMailSettings::InServer));
 
     m_ui->portSpin->setValue(m_parentResource->settings()->imapPort());
 
-    m_ui->userName->setText(
-        !m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName()
-        : currentUser->loginName());
+    m_ui->userName->setText(!m_parentResource->settings()->userName().isEmpty() ? m_parentResource->settings()->userName() : currentUser->loginName());
 
     const QString safety = m_parentResource->settings()->safety();
     int i = 0;
@@ -415,12 +410,14 @@ void SetupServer::readSettings()
     const QString password = m_parentResource->settings()->password(&rejected);
     if (rejected) {
         m_ui->password->setEnabled(false);
-        KMessageBox::information(nullptr, i18n("Could not access KWallet. "
-                                               "If you want to store the password permanently then you have to "
-                                               "activate it. If you do not "
-                                               "want to use KWallet, check the box below, but note that you will be "
-                                               "prompted for your password when needed."),
-                                 i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
+        KMessageBox::information(nullptr,
+                                 i18n("Could not access KWallet. "
+                                      "If you want to store the password permanently then you have to "
+                                      "activate it. If you do not "
+                                      "want to use KWallet, check the box below, but note that you will be "
+                                      "prompted for your password when needed."),
+                                 i18n("Do not use KWallet"),
+                                 QStringLiteral("warning_kwallet_disabled"));
     } else {
         m_ui->password->lineEdit()->insert(password);
     }
@@ -472,12 +469,14 @@ void SetupServer::readSettings()
     const QString customPassword = m_parentResource->settings()->sieveCustomPassword(&rejected);
     if (rejected) {
         m_ui->customPassword->setEnabled(false);
-        KMessageBox::information(nullptr, i18n("Could not access KWallet. "
-                                               "If you want to store the password permanently then you have to "
-                                               "activate it. If you do not "
-                                               "want to use KWallet, check the box below, but note that you will be "
-                                               "prompted for your password when needed."),
-                                 i18n("Do not use KWallet"), QStringLiteral("warning_kwallet_disabled"));
+        KMessageBox::information(nullptr,
+                                 i18n("Could not access KWallet. "
+                                      "If you want to store the password permanently then you have to "
+                                      "activate it. If you do not "
+                                      "want to use KWallet, check the box below, but note that you will be "
+                                      "prompted for your password when needed."),
+                                 i18n("Do not use KWallet"),
+                                 QStringLiteral("warning_kwallet_disabled"));
     } else {
         m_ui->customPassword->lineEdit()->insert(customPassword);
     }
@@ -559,8 +558,9 @@ void SetupServer::slotFinished(const QVector<int> &testResult)
         text = i18n("<qt><b>SSL/TLS is supported and recommended.</b></qt>");
     } else if (testResult.contains(Transport::EnumEncryption::None)) {
         m_ui->noRadio->setChecked(true);
-        text = i18n("<qt><b>No security is supported. It is not "
-                    "recommended to connect to this server.</b></qt>");
+        text = i18n(
+            "<qt><b>No security is supported. It is not "
+            "recommended to connect to this server.</b></qt>");
     } else {
         text = i18n("<qt><b>It is not possible to use this server.</b></qt>");
     }
@@ -648,9 +648,7 @@ void SetupServer::slotManageSubscriptions()
     account.setUserName(m_ui->userName->text());
     account.setSubscriptionEnabled(m_ui->subscriptionEnabled->isChecked());
 
-    account.setEncryptionMode(
-        static_cast<KIMAP::LoginJob::EncryptionMode>(m_ui->safeImapGroup->checkedId())
-        );
+    account.setEncryptionMode(static_cast<KIMAP::LoginJob::EncryptionMode>(m_ui->safeImapGroup->checkedId()));
 
     account.setAuthenticationMode(Settings::mapTransportAuthToKimap(getCurrentAuthMode(m_ui->authenticationCombo)));
 

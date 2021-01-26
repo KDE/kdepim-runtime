@@ -9,8 +9,8 @@
 
 #include "kmigratorbase.h"
 #include "migratorbase.h"
-#include <QEventLoopLocker>
 #include <QDialog>
+#include <QEventLoopLocker>
 
 class QLabel;
 class QListWidget;

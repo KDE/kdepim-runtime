@@ -6,8 +6,8 @@
 
 #include "errorhandler.h"
 
-#include <QTime>
 #include <QMutex>
+#include <QTime>
 #include <iostream>
 
 #include <kolabformat.h>
@@ -18,9 +18,10 @@ QDebug operator<<(QDebug dbg, const std::string &s)
     return dbg.space();
 }
 
-namespace Kolab {
+namespace Kolab
+{
 DebugStream::DebugStream()
-    :   QIODevice()
+    : QIODevice()
 {
     open(WriteOnly);
 }
@@ -32,7 +33,7 @@ DebugStream::~DebugStream()
 qint64 DebugStream::writeData(const char *data, qint64 len)
 {
     const QByteArray buf = QByteArray::fromRawData(data, len);
-//         qt_message_output(QtDebugMsg, buf.trimmed().constData());
+    //         qt_message_output(QtDebugMsg, buf.trimmed().constData());
     ErrorHandler::instance().addError(m_severity, QString::fromLatin1(buf), m_location);
     return len;
 }
@@ -90,7 +91,7 @@ QString ErrorHandler::errorMessage() const
     return m_worstErrorMessage;
 }
 
-const QList< ErrorHandler::Err > &ErrorHandler::getErrors() const
+const QList<ErrorHandler::Err> &ErrorHandler::getErrors() const
 {
     QMutexLocker locker(&mutex);
     return m_errorQueue;
@@ -116,7 +117,7 @@ void ErrorHandler::handleLibkolabxmlErrors()
         instance().addError(ErrorHandler::Critical, QString::fromStdString(Kolab::errorMessage()), QStringLiteral("libkolabxml"));
         break;
     default:
-        //Do nothing, there is no message available in this case
+        // Do nothing, there is no message available in this case
         break;
     }
 }

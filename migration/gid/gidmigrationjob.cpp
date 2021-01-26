@@ -8,8 +8,8 @@
 #include <AkonadiCore/collectionfetchjob.h>
 #include <AkonadiCore/collectionfetchscope.h>
 #include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/itemmodifyjob.h>
 #include <AkonadiCore/itemfetchscope.h>
+#include <AkonadiCore/itemmodifyjob.h>
 
 using namespace Akonadi;
 
@@ -32,14 +32,15 @@ void UpdateJob::doStart()
     fetchJob->fetchScope().setFetchModificationTime(false);
     fetchJob->fetchScope().setFetchRemoteIdentification(false);
     fetchJob->fetchScope().fetchFullPayload(true);
-    //Limit scope to envelope only for mail
+    // Limit scope to envelope only for mail
     connect(fetchJob, &ItemFetchJob::itemsReceived, this, &UpdateJob::itemsReceived);
 }
 
 void UpdateJob::itemsReceived(const Akonadi::Item::List &items)
 {
-    //We're queuing items rather than creating ItemModifyJobs directly due to memory concerns
-    //I'm not sure if that would indeed be a problem (a ModifyJob shouldn't be much larger than the item) but we'd have to compare memory usage first when creating large amounts of ItemModifyJobs.
+    // We're queuing items rather than creating ItemModifyJobs directly due to memory concerns
+    // I'm not sure if that would indeed be a problem (a ModifyJob shouldn't be much larger than the item) but we'd have to compare memory usage first when
+    // creating large amounts of ItemModifyJobs.
     for (const Akonadi::Item &item : items) {
         mItemQueue.enqueue(item);
     }
@@ -48,9 +49,9 @@ void UpdateJob::itemsReceived(const Akonadi::Item::List &items)
 
 void UpdateJob::slotResult(KJob *job)
 {
-    //This slot is automatically called for all subjobs by KCompositeJob
-    //FIXME the fetch job emits result before itemsReceived, because itemsReceived is triggered using the result signal (which is wrong IMO). See ItemFetchJob::timeout
-    //If result was emitted at the end we could avoid having to call processNext in itemsReceived and locking it.
+    // This slot is automatically called for all subjobs by KCompositeJob
+    // FIXME the fetch job emits result before itemsReceived, because itemsReceived is triggered using the result signal (which is wrong IMO). See
+    // ItemFetchJob::timeout If result was emitted at the end we could avoid having to call processNext in itemsReceived and locking it.
     auto const fetchJob = qobject_cast<ItemFetchJob *>(job);
     const bool fetchReturnedNoItems = fetchJob && fetchJob->items().isEmpty();
     Job::slotResult(job);
@@ -72,7 +73,7 @@ bool UpdateJob::processNext()
         return false;
     }
     const Akonadi::Item &item = mItemQueue.dequeue();
-    //Only the single item modifyjob updates the gid
+    // Only the single item modifyjob updates the gid
     auto modJob = new ItemModifyJob(item, this);
     modJob->setUpdateGid(true);
     modJob->setIgnorePayload(true);
@@ -81,7 +82,7 @@ bool UpdateJob::processNext()
 }
 
 GidMigrationJob::GidMigrationJob(const QStringList &mimeTypeFilter, QObject *parent)
-    :   Job(parent)
+    : Job(parent)
     , mMimeTypeFilter(mimeTypeFilter)
 {
 }
@@ -105,7 +106,7 @@ void GidMigrationJob::collectionsReceived(const Collection::List &collections)
 
 void GidMigrationJob::collectionsFetched(KJob *job)
 {
-    //Errors are propagated by KCompositeJob
+    // Errors are propagated by KCompositeJob
     if (!job->error()) {
         processCollection();
     }
@@ -124,7 +125,7 @@ void GidMigrationJob::processCollection()
 
 void GidMigrationJob::itemsUpdated(KJob *job)
 {
-    //Errors are propagated by KCompositeJob
+    // Errors are propagated by KCompositeJob
     if (!job->error()) {
         processCollection();
     }

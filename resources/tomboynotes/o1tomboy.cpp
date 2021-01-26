@@ -6,7 +6,8 @@
 
 #include "o1tomboy.h"
 
-O1Tomboy::O1Tomboy(QObject *parent) : O1(parent)
+O1Tomboy::O1Tomboy(QObject *parent)
+    : O1(parent)
 {
 }
 

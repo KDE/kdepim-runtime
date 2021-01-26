@@ -7,11 +7,7 @@
 #include "ewsdeletefolderrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> deleteTypes = {
-    QStringLiteral("HardDelete"),
-    QStringLiteral("SoftDelete"),
-    QStringLiteral("MoveToDeletedItems")
-};
+static const QVector<QString> deleteTypes = {QStringLiteral("HardDelete"), QStringLiteral("SoftDelete"), QStringLiteral("MoveToDeletedItems")};
 
 EwsDeleteFolderRequest::EwsDeleteFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -44,8 +40,7 @@ void EwsDeleteFolderRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting DeleteFolder request (%1 folders)")
-        .arg(mIds.size());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting DeleteFolder request (%1 folders)").arg(mIds.size());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -56,8 +51,7 @@ void EwsDeleteFolderRequest::start()
 
 bool EwsDeleteFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("DeleteFolder"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("DeleteFolder"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -73,8 +67,7 @@ bool EwsDeleteFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteFolder response - OK");
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteFolder response - %1")
-                .arg(resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteFolder response - %1").arg(resp.responseMessage());
         }
     }
 
@@ -91,8 +84,7 @@ EwsDeleteFolderRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

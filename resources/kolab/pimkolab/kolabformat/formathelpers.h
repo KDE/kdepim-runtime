@@ -10,19 +10,9 @@
 #include <kolab_export.h>
 #include <string>
 
-namespace Kolab {
-enum FolderType {
-    MailType = 0,
-    ContactType,
-    EventType,
-    TaskType,
-    JournalType,
-    NoteType,
-    ConfigurationType,
-    FreebusyType,
-    FileType,
-    LastType
-};
+namespace Kolab
+{
+enum FolderType { MailType = 0, ContactType, EventType, TaskType, JournalType, NoteType, ConfigurationType, FreebusyType, FileType, LastType };
 
 /**
  * Returns the FolderType from a KOLAB_FOLDER_TYPE_* folder type string

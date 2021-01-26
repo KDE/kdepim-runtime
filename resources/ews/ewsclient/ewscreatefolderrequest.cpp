@@ -40,8 +40,7 @@ void EwsCreateFolderRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateFolder request (%1 folders, parent %2)")
-        .arg(mFolders.size()).arg(mParentFolderId.id());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting CreateFolder request (%1 folders, parent %2)").arg(mFolders.size()).arg(mParentFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -52,8 +51,7 @@ void EwsCreateFolderRequest::start()
 
 bool EwsCreateFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("CreateFolder"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("CreateFolder"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -69,8 +67,7 @@ bool EwsCreateFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateFolder response - OK");
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateFolder response - %1")
-                .arg(resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got CreateFolder response - %1").arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
@@ -86,8 +83,7 @@ EwsCreateFolderRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

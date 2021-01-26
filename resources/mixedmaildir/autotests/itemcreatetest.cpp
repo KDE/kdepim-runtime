@@ -20,9 +20,9 @@
 #include <QRandomGenerator>
 #include <QTemporaryDir>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 
 using namespace Akonadi;
 
@@ -31,7 +31,8 @@ class ItemCreateTest : public QObject
     Q_OBJECT
 
 public:
-    ItemCreateTest() : QObject()
+    ItemCreateTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -256,13 +257,13 @@ void ItemCreateTest::testMBox()
     QCOMPARE((int)items.count(), 5);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     job = mStore->createItem(item2, collection1);
@@ -300,13 +301,13 @@ void ItemCreateTest::testMBox()
     QCOMPARE((int)items.count(), 6);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 }
 
@@ -465,13 +466,13 @@ void ItemCreateTest::testMaildir()
     QCOMPARE((int)items.count(), 5);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     job = mStore->createItem(item2, collection1);
@@ -513,13 +514,13 @@ void ItemCreateTest::testMaildir()
     QCOMPARE((int)items.count(), 6);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 }
 

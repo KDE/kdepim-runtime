@@ -16,12 +16,12 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-#include <KMessageWidget>
-#include <KLocalizedString>
 #include "ewsclient.h"
 #include "ewsfindfolderrequest.h"
-#include "ewssubscribedfoldersjob.h"
 #include "ewssettings.h"
+#include "ewssubscribedfoldersjob.h"
+#include <KLocalizedString>
+#include <KMessageWidget>
 
 class EwsSubscriptionFilterModel : public QSortFilterProxyModel
 {
@@ -31,8 +31,10 @@ public:
     ~EwsSubscriptionFilterModel() override;
 public Q_SLOTS:
     void setFilterSelected(bool enabled);
+
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+
 private:
     bool hasCheckedChildren(const QModelIndex &index) const;
     bool mFilterSelected;
@@ -45,9 +47,7 @@ public:
     EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings, QObject *parent);
     ~EwsSubscriptionWidgetPrivate();
 
-    enum TreeModelRoles {
-        ItemIdRole = Qt::UserRole + 1
-    };
+    enum TreeModelRoles { ItemIdRole = Qt::UserRole + 1 };
 
     void populateFolderTree();
 
@@ -59,6 +59,7 @@ public Q_SLOTS:
     void subscribedFoldersJobFinished(KJob *job);
     void treeItemChanged(QStandardItem *item);
     void filterTextChanged(const QString &text);
+
 public:
     bool mEnabled = true;
     QCheckBox *mEnableCheckBox = nullptr;

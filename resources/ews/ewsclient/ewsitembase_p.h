@@ -7,9 +7,9 @@
 #ifndef EWSITEMBASE_P_H
 #define EWSITEMBASE_P_H
 
-#include <QSharedData>
-#include <QHash>
 #include "ewsid.h"
+#include <QHash>
+#include <QSharedData>
 
 class EwsItemBasePrivate : public QSharedData
 {
@@ -34,8 +34,7 @@ public:
     bool operator==(const EwsItemBasePrivate &other) const;
 };
 
-template<>
-Q_INLINE_TEMPLATE EwsItemBasePrivate *QSharedDataPointer<EwsItemBasePrivate>::clone()
+template<> Q_INLINE_TEMPLATE EwsItemBasePrivate *QSharedDataPointer<EwsItemBasePrivate>::clone()
 {
     return d->clone();
 }

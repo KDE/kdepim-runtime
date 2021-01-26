@@ -6,16 +6,16 @@
  */
 
 #include "migrationstatuswidget.h"
-#include <QVBoxLayout>
-#include <QTreeView>
-#include <QAction>
-#include <QListView>
-#include <QLabel>
-#include <QToolBar>
-#include <QIcon>
-#include <QDialog>
 #include <KLocalizedString>
+#include <QAction>
+#include <QDialog>
 #include <QDialogButtonBox>
+#include <QIcon>
+#include <QLabel>
+#include <QListView>
+#include <QToolBar>
+#include <QTreeView>
+#include <QVBoxLayout>
 
 MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWidget *parent)
     : QWidget(parent)
@@ -41,7 +41,7 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
     treeView->setModel(&mScheduler.model());
     mSelectionModel = treeView->selectionModel();
     Q_ASSERT(mSelectionModel);
-    //Not sure why this is required, but otherwise the view doesn't load anything from the model
+    // Not sure why this is required, but otherwise the view doesn't load anything from the model
     treeView->update(QModelIndex());
     connect(treeView, &QTreeView::doubleClicked, this, &MigrationStatusWidget::onItemActivated);
 
@@ -94,7 +94,8 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     }
     {
         auto hboxLayout = new QHBoxLayout;
-        QLabel *label = new QLabel(QStringLiteral("<a href=\"%1\">%2</a>").arg(index.data(MigratorModel::LogfileRole).toString()).arg(ki18n("Logfile").toString()), widget);
+        QLabel *label =
+            new QLabel(QStringLiteral("<a href=\"%1\">%2</a>").arg(index.data(MigratorModel::LogfileRole).toString()).arg(ki18n("Logfile").toString()), widget);
         label->setOpenExternalLinks(true);
         hboxLayout->addWidget(label);
         hboxLayout->addStretch();

@@ -15,6 +15,7 @@ class EwsFetchAbchContactDetailsJob : public EwsFetchItemDetailJob
 public:
     EwsFetchAbchContactDetailsJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection);
     ~EwsFetchAbchContactDetailsJob() override;
+
 protected:
     void processItems(const QList<EwsGetItemRequest::Response> &responses) override;
 };

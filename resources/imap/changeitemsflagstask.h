@@ -9,7 +9,8 @@
 
 #include "resourcetask.h"
 
-namespace KIMAP {
+namespace KIMAP
+{
 class StoreJob;
 }
 

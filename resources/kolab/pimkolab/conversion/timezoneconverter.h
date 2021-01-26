@@ -13,6 +13,7 @@ class TimezoneConverter
 {
 public:
     static QString normalizeTimezone(const QString &tz);
+
 private:
     static QString fromCityName(const QString &tz);
     static QString fromHardcodedList(const QString &tz);

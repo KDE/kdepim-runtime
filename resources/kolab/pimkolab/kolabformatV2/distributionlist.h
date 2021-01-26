@@ -10,11 +10,13 @@
 
 #include "kolabbase.h"
 
-namespace KContacts {
+namespace KContacts
+{
 class ContactGroup;
 }
 
-namespace KolabV2 {
+namespace KolabV2
+{
 class DistributionList : public KolabBase
 {
 public:

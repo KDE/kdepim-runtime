@@ -19,7 +19,6 @@ class FakeEwsConnection : public QObject
 {
     Q_OBJECT
 public:
-
     FakeEwsConnection(QTcpSocket *sock, FakeEwsServer *parent);
     ~FakeEwsConnection() override;
     void sendEvents(const QStringList &events);
@@ -31,6 +30,7 @@ private Q_SLOTS:
     void streamingRequestHeartbeat();
 Q_SIGNALS:
     void streamingRequestStarted(FakeEwsConnection *conn);
+
 private:
     void sendError(const QString &msg, ushort code = 500);
     FakeEwsServer::DialogEntry::HttpResponse parseRequest(const QString &content);
@@ -38,11 +38,7 @@ private:
     FakeEwsServer::DialogEntry::HttpResponse handleGetStreamingEventsRequest(const QString &content);
     QString prepareEventsResponse(const QStringList &events);
 
-    enum HttpConnectionState {
-        Initial,
-        RequestReceived,
-        HeadersReceived
-    };
+    enum HttpConnectionState { Initial, RequestReceived, HeadersReceived };
 
     QPointer<QTcpSocket> mSock;
     uint mContentLength;

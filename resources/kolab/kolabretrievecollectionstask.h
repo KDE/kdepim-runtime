@@ -14,8 +14,8 @@
 
 #include <AkonadiCore/Collection>
 
-#include <kimap/listjob.h>
 #include <QElapsedTimer>
+#include <kimap/listjob.h>
 class KolabRetrieveCollectionsTask : public ResourceTask
 {
     Q_OBJECT
@@ -25,9 +25,9 @@ public:
     ~KolabRetrieveCollectionsTask() override;
 
 private Q_SLOTS:
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags);
     void onMailBoxesReceiveDone(KJob *job);
-    void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray> > &flags);
+    void onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags);
     void onFullMailBoxesReceiveDone(KJob *job);
     void onMetadataRetrieved(KJob *job);
 
@@ -40,7 +40,7 @@ private:
     void createCollection(const QString &mailbox, const QList<QByteArray> &flags, bool isSubscribed);
     void setAttributes(Akonadi::Collection &c, const QStringList &pathParts, const QString &path);
     void applyRights(const QHash<QString, KIMAP::Acl::Rights> &rights);
-    void applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray> > &metadata);
+    void applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray>> &metadata);
 
     int mJobs = 0;
     QHash<QString, Akonadi::Collection> mMailCollections;
@@ -48,7 +48,7 @@ private:
     QSet<QByteArray> mRequestedMetadata;
     KIMAP::Session *mSession = nullptr;
     QElapsedTimer mTime;
-    //For implicit sharing
+    // For implicit sharing
     const QByteArray cContentMimeTypes;
     const QByteArray cAccessRights;
     const QByteArray cImapAcl;
@@ -62,11 +62,17 @@ class RetrieveMetadataJob : public KJob
 {
     Q_OBJECT
 public:
-    RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList <KIMAP::MailBoxDescriptor > &sharedNamespace, const QList <KIMAP::MailBoxDescriptor > &userNamespace,
+    RetrieveMetadataJob(KIMAP::Session *session,
+                        const QStringList &mailboxes,
+                        const QStringList &serverCapabilities,
+                        const QSet<QByteArray> &requestedMetadata,
+                        const QString &separator,
+                        const QList<KIMAP::MailBoxDescriptor> &sharedNamespace,
+                        const QList<KIMAP::MailBoxDescriptor> &userNamespace,
                         QObject *parent = nullptr);
     void start() override;
 
-    QHash<QString, QMap<QByteArray, QByteArray> > mMetadata;
+    QHash<QString, QMap<QByteArray, QByteArray>> mMetadata;
     QHash<QString, KIMAP::Acl::Rights> mRights;
 
 private:
@@ -77,8 +83,8 @@ private:
     QStringList mMailboxes;
     KIMAP::Session *mSession = nullptr;
     QString mSeparator;
-    QList <KIMAP::MailBoxDescriptor > mSharedNamespace;
-    QList <KIMAP::MailBoxDescriptor > mUserNamespace;
+    QList<KIMAP::MailBoxDescriptor> mSharedNamespace;
+    QList<KIMAP::MailBoxDescriptor> mUserNamespace;
 
 private Q_SLOTS:
     void onGetMetaDataDone(KJob *job);

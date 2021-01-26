@@ -12,9 +12,9 @@
 #include <QVBoxLayout>
 
 #include <KAboutData>
-#include <KPluginFactory>
-#include <KLocalizedString>
 #include <KLDAP/LdapConfigureWidget>
+#include <KLocalizedString>
+#include <KPluginFactory>
 
 K_PLUGIN_CLASS_WITH_JSON(KCMLdap, "kcmldap.json")
 

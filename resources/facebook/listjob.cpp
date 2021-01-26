@@ -5,12 +5,12 @@
  */
 
 #include "listjob.h"
+#include "graph.h"
 #include "resource_debug.h"
 #include "tokenjobs.h"
-#include "graph.h"
 
-#include <QUrl>
 #include <QJsonDocument>
+#include <QUrl>
 #include <QUrlQuery>
 
 #include <KLocalizedString>
@@ -97,8 +97,7 @@ void ListJob::onGraphResponseReceived(KJob *job)
             // expired token
             auto tokenJob = new LoginJob(mIdentifier, parent());
             const QUrl url = tjob->url();
-            connect(tokenJob, &LoginJob::result,
-                    this, [this, tokenJob, url]() {
+            connect(tokenJob, &LoginJob::result, this, [this, tokenJob, url]() {
                 if (tokenJob->error()) {
                     emitError(tokenJob->errorText());
                     return;

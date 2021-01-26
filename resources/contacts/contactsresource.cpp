@@ -6,18 +6,18 @@
 
 #include "contactsresource.h"
 
-#include "settings.h"
 #include "contactsresourcesettingsadaptor.h"
+#include "settings.h"
 
 #include <QDir>
 #include <QFile>
 
+#include "contacts_resources_debug.h"
+#include <QDBusConnection>
 #include <changerecorder.h>
 #include <collectionfetchscope.h>
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
-#include <QDBusConnection>
-#include "contacts_resources_debug.h"
 
 #include <KLocalizedString>
 
@@ -29,8 +29,7 @@ ContactsResource::ContactsResource(const QString &id)
     // setup the resource
     ContactsResourceSettings::instance(KSharedConfig::openConfig());
     new ContactsResourceSettingsAdaptor(ContactsResourceSettings::self());
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), ContactsResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
@@ -412,7 +411,9 @@ void ContactsResource::itemMoved(const Akonadi::Item &item, const Akonadi::Colle
     }
 }
 
-void ContactsResource::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination)
+void ContactsResource::collectionMoved(const Akonadi::Collection &collection,
+                                       const Akonadi::Collection &collectionSource,
+                                       const Akonadi::Collection &collectionDestination)
 {
     const QString sourceDirectoryName = directoryForCollection(collectionSource) + QLatin1Char('/') + collection.remoteId();
     const QString targetDirectoryName = directoryForCollection(collectionDestination) + QLatin1Char('/') + collection.remoteId();
@@ -441,8 +442,9 @@ void ContactsResource::initializeDirectory(const QString &path) const
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);
-        file.write("Important Warning!!!\n\n"
-                   "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
+        file.write(
+            "Important Warning!!!\n\n"
+            "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
         file.close();
     }
 }
@@ -475,8 +477,7 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
 
     if (collection.parentCollection() == Collection::root()) {
         if (collection.remoteId() != baseDirectoryPath()) {
-            qCWarning(CONTACTSRESOURCES_LOG) << "RID mismatch, is " << collection.remoteId()
-                                             << " expected " << baseDirectoryPath();
+            qCWarning(CONTACTSRESOURCES_LOG) << "RID mismatch, is " << collection.remoteId() << " expected " << baseDirectoryPath();
         }
         return collection.remoteId();
     }

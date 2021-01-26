@@ -8,8 +8,8 @@
 #include "kolabchangeitemsrelationstask.h"
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
-#include <imapflags.h>
 #include "pimkolab/kolabformat/kolabobject.h"
+#include <imapflags.h>
 
 #include <kimap/appendjob.h>
 #include <kimap/imapset.h>
@@ -17,9 +17,9 @@
 #include <kimap/session.h>
 #include <kimap/storejob.h>
 
-#include <AkonadiCore/RelationFetchJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
+#include <AkonadiCore/RelationFetchJob>
 
 #include "kolabhelpers.h"
 
@@ -55,8 +55,8 @@ void KolabChangeItemsRelationsTask::processNextRelation()
     }
     qCDebug(KOLABRESOURCE_TRACE) << "Processing " << (mAdding ? " add " : " remove ") << relation;
 
-    //We have to fetch it again in case it changed since the notification was emitted (which is likely)
-    //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
+    // We have to fetch it again in case it changed since the notification was emitted (which is likely)
+    // Otherwise we get an empty remoteid for new tags that were immediately applied on an item
     auto fetch = new Akonadi::RelationFetchJob(relation);
     connect(fetch, &KJob::result, this, &KolabChangeItemsRelationsTask::onRelationFetchDone);
 }

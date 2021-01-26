@@ -13,7 +13,7 @@ class ICalendarTest : public QObject
     Q_OBJECT
 private Q_SLOTS:
 
-//     void testEventConflict_data();
+    //     void testEventConflict_data();
     void testToICal();
     void testFromICalEvent();
 

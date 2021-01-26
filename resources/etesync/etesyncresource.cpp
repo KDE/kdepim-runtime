@@ -35,9 +35,9 @@ using namespace Akonadi;
 
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("EteSyncRootCollection")
 // Resource offline time for temporary errors (30 min)
-#define SHORT_OFFLINE_TIME 30*60
+#define SHORT_OFFLINE_TIME 30 * 60
 // Resource offline time for major errors (4 hours)
-#define LONG_OFFLINE_TIME 4*60*60
+#define LONG_OFFLINE_TIME 4 * 60 * 60
 
 EteSyncResource::EteSyncResource(const QString &id)
     : ResourceBase(id)
@@ -45,9 +45,7 @@ EteSyncResource::EteSyncResource(const QString &id)
     Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
 
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(),
-                                                 QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), Settings::self(), QDBusConnection::ExportAdaptors);
 
     setName(i18n("EteSync Resource"));
 
@@ -220,7 +218,9 @@ bool EteSyncResource::credentialsRequired()
 {
     if (mCredentialsRequired) {
         qCDebug(ETESYNC_LOG) << "Credentials required";
-        showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."), i18n(etebase_error_get_message()), i18n("Credentials Changed"));
+        showErrorDialog(i18n("Your EteSync credentials were changed. Please click OK to re-enter your credentials."),
+                        i18n(etebase_error_get_message()),
+                        i18n("Credentials Changed"));
         configure(winIdForDialogs());
     }
     return mCredentialsRequired;

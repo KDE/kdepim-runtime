@@ -37,6 +37,7 @@ public:
     bool canModify() const;
     bool canRead() const;
     bool canViewPrivateItems() const;
+
 protected:
     QSharedDataPointer<EwsEffectiveRightsPrivate> d;
 };

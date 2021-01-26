@@ -37,7 +37,7 @@ private Q_SLOTS:
     void executeNext();
 
 private:
-    QQueue< QWeakPointer<MigratorBase> > mQueue;
+    QQueue<QWeakPointer<MigratorBase>> mQueue;
     QWeakPointer<MigratorBase> mCurrentMigrator;
     bool mSuspended = false;
     int mTotalAmount = 0;

@@ -26,10 +26,7 @@ class SetupWizard : public QWizard
 public:
     explicit SetupWizard(EteSyncClientState *clientState, QWidget *parent = nullptr);
 
-    enum
-    {
-        W_LoginPage
-    };
+    enum { W_LoginPage };
 
     EteSyncClientState *mClientState = nullptr;
 

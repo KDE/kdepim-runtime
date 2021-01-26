@@ -8,9 +8,9 @@
 #include "imaptestbase.h"
 
 #include "addcollectiontask.h"
-#include <collectionannotationsattribute.h>
 #include <QDebug>
 #include <QTest>
+#include <collectionannotationsattribute.h>
 class TestAddCollectionTask : public ImapTestBase
 {
     Q_OBJECT
@@ -20,7 +20,7 @@ private Q_SLOTS:
     {
         QTest::addColumn<Akonadi::Collection>("parentCollection");
         QTest::addColumn<Akonadi::Collection>("collection");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<QString>("collectionName");
         QTest::addColumn<QString>("remoteId");
@@ -36,8 +36,7 @@ private Q_SLOTS:
         collection.setParentCollection(parentCollection);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 CREATE \"INBOX/Foo/Bar\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 CREATE \"INBOX/Foo/Bar\""
                  << "S: A000003 OK create done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Foo/Bar\""
                  << "S: A000004 OK subscribe done";
@@ -45,8 +44,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
-        QTest::newRow("trivial case") << parentCollection << collection << scenario << callNames
-                                      << collection.name() << "/Bar";
+        QTest::newRow("trivial case") << parentCollection << collection << scenario << callNames << collection.name() << "/Bar";
 
         parentCollection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection = Akonadi::Collection(4);
@@ -54,8 +52,7 @@ private Q_SLOTS:
         collection.setParentCollection(parentCollection);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 CREATE \"INBOX/Foo/BarBaz\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 CREATE \"INBOX/Foo/BarBaz\""
                  << "S: A000003 OK create done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Foo/BarBaz\""
                  << "S: A000004 OK subscribe done";
@@ -63,8 +60,8 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
-        QTest::newRow("folder with invalid separator") << parentCollection << collection << scenario
-                                                       << callNames << "BarBaz" << "/BarBaz";
+        QTest::newRow("folder with invalid separator") << parentCollection << collection << scenario << callNames << "BarBaz"
+                                                       << "/BarBaz";
 
         parentCollection = createCollectionChain(QStringLiteral(".INBOX"));
         collection = Akonadi::Collection(3);
@@ -72,16 +69,15 @@ private Q_SLOTS:
         collection.setParentCollection(parentCollection);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 CREATE \"INBOX.Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 CREATE \"INBOX.Foo\""
                  << "S: A000003 OK create done"
                  << "C: A000004 SUBSCRIBE \"INBOX.Foo\""
                  << "S: A000004 OK subscribe done";
         callNames.clear();
         callNames << QStringLiteral("collectionChangeCommitted") << QStringLiteral("synchronizeCollectionTree");
 
-        QTest::newRow("folder with non-standard separator") << parentCollection << collection << scenario
-                                                            << callNames << "Foo" << ".Foo";
+        QTest::newRow("folder with non-standard separator") << parentCollection << collection << scenario << callNames << "Foo"
+                                                            << ".Foo";
 
         parentCollection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection = Akonadi::Collection(4);
@@ -93,8 +89,7 @@ private Q_SLOTS:
         attr->setAnnotations(annotations);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 CREATE \"INBOX/Foo/Bar\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 CREATE \"INBOX/Foo/Bar\""
                  << "S: A000003 OK create done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Foo/Bar\""
                  << "S: A000004 OK subscribe done"
@@ -104,8 +99,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("collectionChangeCommitted");
 
-        QTest::newRow("folder with annotations") << parentCollection << collection << scenario << callNames
-                                                 << collection.name() << "/Bar";
+        QTest::newRow("folder with annotations") << parentCollection << collection << scenario << callNames << collection.name() << "/Bar";
     }
 
     void shouldCreateAndSubscribe()
@@ -125,7 +119,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setParentCollection(parentCollection);
@@ -147,8 +141,7 @@ private Q_SLOTS:
 
             if (command == QLatin1String("collectionChangeCommitted")) {
                 QCOMPARE(parameter.value<Akonadi::Collection>().name(), collectionName);
-                QCOMPARE(parameter.value<Akonadi::Collection>().remoteId().right(collectionName.length()),
-                         collectionName);
+                QCOMPARE(parameter.value<Akonadi::Collection>().remoteId().right(collectionName.length()), collectionName);
                 QCOMPARE(parameter.value<Akonadi::Collection>().remoteId(), remoteId);
             }
 

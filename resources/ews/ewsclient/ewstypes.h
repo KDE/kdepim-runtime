@@ -27,8 +27,8 @@ typedef enum {
     EwsResponseSuccess = 0,
     EwsResponseWarning,
     EwsResponseError,
-    EwsResponseParseError,  // Internal - never returned by an Exchange server
-    EwsResponseUnknown      // Internal - never returned by an Exchange server
+    EwsResponseParseError, // Internal - never returned by an Exchange server
+    EwsResponseUnknown // Internal - never returned by an Exchange server
 } EwsResponseClass;
 
 typedef enum {
@@ -60,11 +60,7 @@ typedef enum {
     EwsDIdArchiveRecoverableItemsPurges
 } EwsDistinguishedId;
 
-typedef enum {
-    EwsShapeIdOnly = 0,
-    EwsShapeDefault,
-    EwsShapeAllProperties
-} EwsBaseShape;
+typedef enum { EwsShapeIdOnly = 0, EwsShapeDefault, EwsShapeAllProperties } EwsBaseShape;
 
 typedef enum {
     EwsPropSetMeeting = 0,
@@ -107,12 +103,7 @@ typedef enum {
     EwsPropTypeStringArray
 } EwsPropertyType;
 
-typedef enum {
-    EwsTraversalShallow = 0,
-    EwsTraversalDeep,
-    EwsTraversalSoftDeleted,
-    EwsTraversalAssociated
-} EwsTraversalType;
+typedef enum { EwsTraversalShallow = 0, EwsTraversalDeep, EwsTraversalSoftDeleted, EwsTraversalAssociated } EwsTraversalType;
 
 typedef enum {
     EwsItemTypeItem = 0,
@@ -130,12 +121,7 @@ typedef enum {
     EwsItemTypeUnknown
 } EwsItemType;
 
-typedef enum {
-    EwsItemSensitivityNormal,
-    EwsItemSensitivityPersonal,
-    EwsItemSensitivityPrivate,
-    EwsItemSensitivityConfidential
-} EwsItemSensitivity;
+typedef enum { EwsItemSensitivityNormal, EwsItemSensitivityPersonal, EwsItemSensitivityPrivate, EwsItemSensitivityConfidential } EwsItemSensitivity;
 
 /**
  *  @brief List of fields in EWS Item and its descendants
@@ -155,15 +141,15 @@ typedef enum {
     // Calendar folder
     EwsFolderFieldPermissionSet,
     // Contacts folder
-    //EwsFolderFieldPermissionSet,          DUPLICATE
+    // EwsFolderFieldPermissionSet,          DUPLICATE
     // Mail folder
     EwsFolderFieldUnreadCount,
-    //EwsFolderFieldPermissionSet,          DUPLICATE
+    // EwsFolderFieldPermissionSet,          DUPLICATE
     // Search folder
-    //EwsFolderFieldUnreadCount,            DUPLICATE
+    // EwsFolderFieldUnreadCount,            DUPLICATE
     EwsFolderFieldSearchParameters,
     // Tasks folder
-    //EwsFolderFieldUnreadCount,            DUPLICATE
+    // EwsFolderFieldUnreadCount,            DUPLICATE
 
     // Item
     EwsItemFieldMimeContent,
@@ -287,9 +273,9 @@ typedef enum {
     EwsItemFieldWhen,
     EwsItemFieldIsMeeting,
     EwsItemFieldIsCancelled,
-    //EwsItemFieldIsRecurring,              DUPLICATE
+    // EwsItemFieldIsRecurring,              DUPLICATE
     EwsItemFieldMeetingRequestWasSent,
-    //EwsItemFieldIsResponseRequested,      DUPLICATE
+    // EwsItemFieldIsResponseRequested,      DUPLICATE
     EwsItemFieldCalendarItemType,
     EwsItemFieldMyResponseType,
     EwsItemFieldOrganizer,
@@ -307,7 +293,7 @@ typedef enum {
     EwsItemFieldAppointmentReplyTime,
     EwsItemFieldAppointmentSequenceNumber,
     EwsItemFieldAppointmentState,
-    //EwsItemFieldRecurrence,               DUPLICATE
+    // EwsItemFieldRecurrence,               DUPLICATE
     EwsItemFieldFirstOccurrence,
     EwsItemFieldLastOccurrence,
     EwsItemFieldModifiedOccurrences,
@@ -335,49 +321,49 @@ typedef enum {
     EwsItemFieldIsOutOfDate,
     EwsItemFieldHasBeenProcessed,
     EwsItemFieldResponseType,
-    //EwsItemFieldUID,                      DUPLICATE
-    //EwsItemFieldRecurrenceId,             DUPLICATE
-    //EwsItemFieldDateTimeStamp,            DUPLICATE
+    // EwsItemFieldUID,                      DUPLICATE
+    // EwsItemFieldRecurrenceId,             DUPLICATE
+    // EwsItemFieldDateTimeStamp,            DUPLICATE
     // MeetingRequestMessage
     EwsItemFieldMeetingRequestType,
-    //EwsItemFieldIntendedFreeBusyStatus,   DUPLICATE
-    //EwsItemFieldStart,                    DUPLICATE
-    //EwsItemFieldEnd,                      DUPLICATE
-    //EwsItemFieldOriginalStart,            DUPLICATE
-    //EwsItemFieldIsAllDayEvent,            DUPLICATE
-    //EwsItemFieldLegacyFreeBusyStatus,     DUPLICATE
-    //EwsItemFieldLocation,                 DUPLICATE
-    //EwsItemFieldWhen,                     DUPLICATE
-    //EwsItemFieldIsMeeting,                DUPLICATE
-    //EwsItemFieldIsCancelled,              DUPLICATE
-    //EwsItemFieldIsRecurring,              DUPLICATE
-    //EwsItemFieldMeetingRequestWasSent,    DUPLICATE
-    //EwsItemFieldCalendarItemType,         DUPLICATE
-    //EwsItemFieldMyResponseType,           DUPLICATE
-    //EwsItemFieldOrganizer,                DUPLICATE
-    //EwsItemFieldRequiredAttendees,        DUPLICATE
-    //EwsItemFieldOptionalAttendees,        DUPLICATE
-    //EwsItemFieldResources,                DUPLICATE
-    //EwsItemFieldConflictingMeetingCount,  DUPLICATE
-    //EwsItemFieldAdjacentMeetingCount,     DUPLICATE
-    //EwsItemFieldConflictingMeetings,      DUPLICATE
-    //EwsItemFieldAdjacentMeetings,         DUPLICATE
-    //EwsItemFieldDuration,                 DUPLICATE
-    //EwsItemFieldTimeZone,                 DUPLICATE
-    //EwsItemFieldAppointmentReplyTime,     DUPLICATE
-    //EwsItemFieldAppointmentSequenceNumber,DUPLICATE
-    //EwsItemFieldAppointmentState,         DUPLICATE
-    //EwsItemFieldRecurrence,               DUPLICATE
-    //EwsItemFieldFirstOccurrence,          DUPLICATE
-    //EwsItemFieldLastOccurrence,           DUPLICATE
-    //EwsItemFieldModifiedOccurrences,      DUPLICATE
-    //EwsItemFieldDeletedOccurrences,       DUPLICATE
-    //EwsItemFieldMeetingTimeZone,          DUPLICATE
-    //EwsItemFieldConferenceType,           DUPLICATE
-    //EwsItemFieldAllowNewTimeProposal,     DUPLICATE
-    //EwsItemFieldIsOnlineMeeting,          DUPLICATE
-    //EwsItemFieldMeetingWorkspaceUrl,      DUPLICATE
-    //EwsItemFieldNetShowUrl,               DUPLICATE
+    // EwsItemFieldIntendedFreeBusyStatus,   DUPLICATE
+    // EwsItemFieldStart,                    DUPLICATE
+    // EwsItemFieldEnd,                      DUPLICATE
+    // EwsItemFieldOriginalStart,            DUPLICATE
+    // EwsItemFieldIsAllDayEvent,            DUPLICATE
+    // EwsItemFieldLegacyFreeBusyStatus,     DUPLICATE
+    // EwsItemFieldLocation,                 DUPLICATE
+    // EwsItemFieldWhen,                     DUPLICATE
+    // EwsItemFieldIsMeeting,                DUPLICATE
+    // EwsItemFieldIsCancelled,              DUPLICATE
+    // EwsItemFieldIsRecurring,              DUPLICATE
+    // EwsItemFieldMeetingRequestWasSent,    DUPLICATE
+    // EwsItemFieldCalendarItemType,         DUPLICATE
+    // EwsItemFieldMyResponseType,           DUPLICATE
+    // EwsItemFieldOrganizer,                DUPLICATE
+    // EwsItemFieldRequiredAttendees,        DUPLICATE
+    // EwsItemFieldOptionalAttendees,        DUPLICATE
+    // EwsItemFieldResources,                DUPLICATE
+    // EwsItemFieldConflictingMeetingCount,  DUPLICATE
+    // EwsItemFieldAdjacentMeetingCount,     DUPLICATE
+    // EwsItemFieldConflictingMeetings,      DUPLICATE
+    // EwsItemFieldAdjacentMeetings,         DUPLICATE
+    // EwsItemFieldDuration,                 DUPLICATE
+    // EwsItemFieldTimeZone,                 DUPLICATE
+    // EwsItemFieldAppointmentReplyTime,     DUPLICATE
+    // EwsItemFieldAppointmentSequenceNumber,DUPLICATE
+    // EwsItemFieldAppointmentState,         DUPLICATE
+    // EwsItemFieldRecurrence,               DUPLICATE
+    // EwsItemFieldFirstOccurrence,          DUPLICATE
+    // EwsItemFieldLastOccurrence,           DUPLICATE
+    // EwsItemFieldModifiedOccurrences,      DUPLICATE
+    // EwsItemFieldDeletedOccurrences,       DUPLICATE
+    // EwsItemFieldMeetingTimeZone,          DUPLICATE
+    // EwsItemFieldConferenceType,           DUPLICATE
+    // EwsItemFieldAllowNewTimeProposal,     DUPLICATE
+    // EwsItemFieldIsOnlineMeeting,          DUPLICATE
+    // EwsItemFieldMeetingWorkspaceUrl,      DUPLICATE
+    // EwsItemFieldNetShowUrl,               DUPLICATE
     // Contact
     EwsItemFieldFileAs,
     EwsItemFieldFileAsMapping,
@@ -395,14 +381,14 @@ typedef enum {
     EwsItemFieldBirthday,
     EwsItemFieldBusinessHomePage,
     EwsItemFieldChildren,
-    //EwsItemFieldCompanies,                DUPLICATE
+    // EwsItemFieldCompanies,                DUPLICATE
     EwsItemFieldContactSource,
     EwsItemFieldDepartment,
     EwsItemFieldGeneration,
     EwsItemFieldImAddresses,
     EwsItemFieldJobTitle,
     EwsItemFieldManager,
-    //EwsItemFieldMileage,                  DUPLICATE
+    // EwsItemFieldMileage,                  DUPLICATE
     EwsItemFieldOfficeLocation,
     EwsItemFieldPostalAddressIndex,
     EwsItemFieldProfession,
@@ -410,32 +396,20 @@ typedef enum {
     EwsItemFieldSurname,
     EwsItemFieldWeddingAnniversary,
     // DistributionList
-    //EwsItemFieldDisplayName,              DUPLICATE
-    //EwsItemFieldFileAs,                   DUPLICATE
-    //EwsItemFieldContactSource,            DUPLICATE
+    // EwsItemFieldDisplayName,              DUPLICATE
+    // EwsItemFieldFileAs,                   DUPLICATE
+    // EwsItemFieldContactSource,            DUPLICATE
     // Additional fields not in EWS specification
     EwsItemFieldBodyIsHtml,
     EwsItemFieldExtendedProperties,
     EwsItemFieldExchangePersonIdGuid,
 } EwsItemFields;
 
-typedef enum {
-    EwsItemImportanceLow,
-    EwsItemImportanceNormal,
-    EwsItemImportanceHigh
-} EwsItemImportance;
+typedef enum { EwsItemImportanceLow, EwsItemImportanceNormal, EwsItemImportanceHigh } EwsItemImportance;
 
-typedef enum {
-    EwsBasePointBeginning,
-    EwsBasePointEnd
-} EwsIndexedViewBasePoint;
+typedef enum { EwsBasePointBeginning, EwsBasePointEnd } EwsIndexedViewBasePoint;
 
-typedef enum {
-    EwsCalendarItemSingle = 0,
-    EwsCalendarItemOccurrence,
-    EwsCalendarItemException,
-    EwsCalendarItemRecurringMaster
-} EwsCalendarItemType;
+typedef enum { EwsCalendarItemSingle = 0, EwsCalendarItemOccurrence, EwsCalendarItemException, EwsCalendarItemRecurringMaster } EwsCalendarItemType;
 
 typedef enum {
     EwsEventResponseUnknown = 0,
@@ -446,13 +420,7 @@ typedef enum {
     EwsEventResponseNotReceived
 } EwsEventResponseType;
 
-typedef enum {
-    EwsLfbStatusFree = 0,
-    EwsLfbStatusTentative,
-    EwsLfbStatusBusy,
-    EwsLfbOutOfOffice,
-    EwsLfbNoData
-} EwsLegacyFreeBusyStatus;
+typedef enum { EwsLfbStatusFree = 0, EwsLfbStatusTentative, EwsLfbStatusBusy, EwsLfbOutOfOffice, EwsLfbNoData } EwsLegacyFreeBusyStatus;
 
 typedef enum {
     EwsDispSaveOnly = 0,

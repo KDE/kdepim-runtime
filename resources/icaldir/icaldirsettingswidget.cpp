@@ -13,8 +13,8 @@
 #include <KLocalizedString>
 #include <QUrl>
 
-#include <QTimer>
 #include <QPushButton>
+#include <QTimer>
 
 IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)

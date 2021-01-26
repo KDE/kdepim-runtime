@@ -104,7 +104,7 @@ QByteArray ImapAclAttribute::serialized() const
     return result;
 }
 
-static void fillRightsMap(const QList<QByteArray> &rights, QMap <QByteArray, KIMAP::Acl::Rights> &map)
+static void fillRightsMap(const QList<QByteArray> &rights, QMap<QByteArray, KIMAP::Acl::Rights> &map)
 {
     for (const QByteArray &right : rights) {
         const QByteArray trimmed = right.trimmed();
@@ -149,7 +149,5 @@ void ImapAclAttribute::deserialize(const QByteArray &data)
 
 bool ImapAclAttribute::operator==(const ImapAclAttribute &other) const
 {
-    return (oldRights() == other.oldRights())
-           && (rights() == other.rights())
-           && (myRights() == other.myRights());
+    return (oldRights() == other.oldRights()) && (rights() == other.rights()) && (myRights() == other.myRights());
 }

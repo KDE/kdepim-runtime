@@ -5,11 +5,11 @@
  */
 
 #include "eventslistjob.h"
-#include "settings.h"
 #include "graph.h"
+#include "settings.h"
 
-#include <QJsonObject>
 #include <QDateTime>
+#include <QJsonObject>
 
 #include <KCalendarCore/Event>
 
@@ -17,15 +17,15 @@ EventsListJob::EventsListJob(const QString &identifier, const Akonadi::Collectio
     : ListJob(identifier, col, parent)
 {
     setRequest(QStringLiteral("me/events"),
-               { QStringLiteral("id"),
-                 QStringLiteral("name"),
-                 QStringLiteral("description"),
-                 QStringLiteral("place"),
-                 QStringLiteral("start_time"),
-                 QStringLiteral("end_time"),
-                 QStringLiteral("owner"),
-                 QStringLiteral("is_canceled")},
-               { { QStringLiteral("type"), col.remoteId() } });
+               {QStringLiteral("id"),
+                QStringLiteral("name"),
+                QStringLiteral("description"),
+                QStringLiteral("place"),
+                QStringLiteral("start_time"),
+                QStringLiteral("end_time"),
+                QStringLiteral("owner"),
+                QStringLiteral("is_canceled")},
+               {{QStringLiteral("type"), col.remoteId()}});
 }
 
 EventsListJob::~EventsListJob()
@@ -60,10 +60,8 @@ bool EventsListJob::shouldHaveAlarm(const Akonadi::Collection &col) const
 {
     const auto s = Settings::self();
     const auto rsvp = Graph::rsvpFromString(col.remoteId());
-    return (rsvp == Graph::Attending && s->attendingReminders())
-           || (rsvp == Graph::MaybeAttending && s->maybeAttendingReminders())
-           || (rsvp == Graph::Declined && s->notAttendingReminders())
-           || (rsvp == Graph::NotResponded && s->notRespondedToReminders());
+    return (rsvp == Graph::Attending && s->attendingReminders()) || (rsvp == Graph::MaybeAttending && s->maybeAttendingReminders())
+        || (rsvp == Graph::Declined && s->notAttendingReminders()) || (rsvp == Graph::NotResponded && s->notRespondedToReminders());
 }
 
 QDateTime EventsListJob::parseDateTime(const QString &str) const
@@ -98,8 +96,7 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
         const auto locationIt = place.constFind(QLatin1String("location"));
         if (locationIt != placeEnd) {
             const auto location = locationIt->toObject();
-            for (const auto &loc : { QLatin1String("street"), QLatin1String("city"),
-                                     QLatin1String("zip"), QLatin1String("country") }) {
+            for (const auto &loc : {QLatin1String("street"), QLatin1String("city"), QLatin1String("zip"), QLatin1String("country")}) {
                 const auto it = location.constFind(loc);
                 if (it != placeEnd) {
                     locationStr << it->toString();
@@ -152,8 +149,7 @@ Akonadi::Item EventsListJob::handleResponse(const QJsonObject &data)
     if (shouldHaveAlarm(collection())) {
         auto alarm = KCalendarCore::Alarm::Ptr::create(event.data());
         alarm->setDisplayAlarm(event->summary());
-        alarm->setStartOffset({ -Settings::self()->eventReminderHours() * 3600,
-                                KCalendarCore::Duration::Seconds });
+        alarm->setStartOffset({-Settings::self()->eventReminderHours() * 3600, KCalendarCore::Duration::Seconds});
         alarm->setEnabled(true);
         event->addAlarm(alarm);
     }

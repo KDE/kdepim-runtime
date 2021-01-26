@@ -11,16 +11,16 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QHostInfo>
-#include <QUuid>
-#include <QRegularExpression>
 #include <QRandomGenerator>
+#include <QRegularExpression>
+#include <QUuid>
 
 #include "libmaildir_debug.h"
-#include <KLocalizedString>
 #include <Akonadi/KMime/MessageFlags>
+#include <KLocalizedString>
 #include <fcntl.h>
 
-//Define it to get more debug output to expense of operating speed
+// Define it to get more debug output to expense of operating speed
 // #define DEBUG_KEYCACHE_CONSITENCY
 
 using namespace KPIM;
@@ -40,8 +40,8 @@ public:
     {
         hostName = QHostInfo::localHostName();
 
-        //Cache object is created the first time this runs.
-        //It will live throughout the lifetime of the application
+        // Cache object is created the first time this runs.
+        // It will live throughout the lifetime of the application
         KeyCache::self()->addKeys(path);
     }
 
@@ -106,12 +106,12 @@ public:
 
         if (QFileInfo::exists(realKey)) {
             keyCache->addNewKey(path, key);
-        } else {  //not in "new", search in "cur"
+        } else { // not in "new", search in "cur"
             realKey = path + QLatin1String("/cur/") + key;
             if (QFileInfo::exists(realKey)) {
                 keyCache->addCurKey(path, key);
             } else {
-                realKey.clear(); //not in "cur" either
+                realKey.clear(); // not in "cur" either
             }
         }
 
@@ -197,7 +197,7 @@ Maildir::~Maildir()
 
 bool Maildir::Private::canAccess(const QString &path) const
 {
-    //return access( QFile::encodeName( path ), R_OK | W_OK | X_OK ) != 0;
+    // return access( QFile::encodeName( path ), R_OK | W_OK | X_OK ) != 0;
     // FIXME X_OK?
     QFileInfo d(path);
     return d.isReadable() && d.isWritable();
@@ -222,8 +222,10 @@ bool Maildir::Private::accessIsPossible(bool createMissingFolders)
             }
         }
         if (!canAccess(p)) {
-            lastError = i18n("Error opening %1; either this is not a valid "
-                             "maildir folder, or you do not have sufficient access permissions.", p);
+            lastError = i18n(
+                "Error opening %1; either this is not a valid "
+                "maildir folder, or you do not have sufficient access permissions.",
+                p);
             return false;
         }
     }
@@ -599,13 +601,13 @@ QString Maildir::addEntry(const QByteArray &data)
      * For reference: http://trolltech.com/developer/task-tracker/index_html?method=entry&id=211215
      */
     if (!f.rename(finalKey)) {
-        qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to add entry: " << finalKey  << "! Error: " << f.errorString();
+        qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to add entry: " << finalKey << "! Error: " << f.errorString();
         d->lastError = i18n("Failed to create mail file %1. The error was: %2", finalKey, f.errorString());
         return QString();
     }
     KeyCache *keyCache = KeyCache::self();
-    keyCache->removeKey(d->path, key);   //remove all keys, be it "cur" or "new" first
-    keyCache->addNewKey(d->path, key);   //and add a key for "new", as the mail was moved there
+    keyCache->removeKey(d->path, key); // remove all keys, be it "cur" or "new" first
+    keyCache->addNewKey(d->path, key); // and add a key for "new", as the mail was moved there
     return uniqueKey;
 }
 
@@ -656,7 +658,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
 #endif
     }
 
-    const QString newUniqueKey = finalKey; //key without path
+    const QString newUniqueKey = finalKey; // key without path
     finalKey.prepend(d->path + QLatin1String("/cur/"));
 
     if (realKey == finalKey) {
@@ -688,12 +690,12 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
             }
             finalKey = currentPath + newFinalKey;
         } else {
-            QFile::remove(finalKey);   //they are the same
+            QFile::remove(finalKey); // they are the same
         }
     }
 
     if (!f.rename(finalKey)) {
-        qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to rename entry: " << f.fileName() << " to "  << finalKey  << "! Error: " << f.errorString();
+        qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to rename entry: " << f.fileName() << " to " << finalKey << "! Error: " << f.errorString();
         d->lastError = i18n("Failed to update the file name %1 to %2 on the disk. The error was: %3.", f.fileName(), finalKey, f.errorString());
         return QString();
     }
@@ -712,7 +714,7 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
     const QRegularExpression rx = statusSeparatorRx();
     const int index = key.indexOf(rx);
     if (index != -1) {
-        const QStringRef mailDirFlags = key.midRef(index + 3);   // after "(:|!)2,"
+        const QStringRef mailDirFlags = key.midRef(index + 3); // after "(:|!)2,"
         const int flagSize(mailDirFlags.size());
         for (int i = 0; i < flagSize; ++i) {
             const QChar flag = mailDirFlags.at(i);
@@ -734,7 +736,7 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
 bool Maildir::moveTo(const Maildir &newParent)
 {
     if (d->isRoot) {
-        return false;    // not supported
+        return false; // not supported
     }
 
     QDir newDir(newParent.path());
@@ -762,7 +764,7 @@ bool Maildir::rename(const QString &newName)
         return true;
     }
     if (d->isRoot) {
-        return false;    // not (yet) supported
+        return false; // not (yet) supported
     }
 
     QDir dir(d->path);

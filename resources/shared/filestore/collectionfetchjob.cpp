@@ -15,7 +15,8 @@ using namespace Akonadi;
 class FileStore::CollectionFetchJob::Private
 {
 public:
-    Private() : mType(FileStore::CollectionFetchJob::Base)
+    Private()
+        : mType(FileStore::CollectionFetchJob::Base)
     {
     }
 

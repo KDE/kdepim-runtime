@@ -10,8 +10,8 @@
 #include "moveitemstask.h"
 #include "uidnextattribute.h"
 
-#include <kmime/kmime_message.h>
 #include <QTest>
+#include <kmime/kmime_message.h>
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 
 class TestMoveItemsTask : public ImapTestBase
@@ -24,7 +24,7 @@ private Q_SLOTS:
         QTest::addColumn<Akonadi::Item>("item");
         QTest::addColumn<Akonadi::Collection>("source");
         QTest::addColumn<Akonadi::Collection>("target");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Item item;
@@ -54,8 +54,7 @@ private Q_SLOTS:
         target.setParentCollection(inbox);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID COPY 5 \"INBOX/Bar\""
                  << "S: A000004 OK copy [ COPYUID 1239890035 5 65 ]"
@@ -71,8 +70,7 @@ private Q_SLOTS:
         // The scenario changes though
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID COPY 5 \"INBOX/Bar\""
                  << "S: A000004 OK copy [ COPYUID 1239890035 5 65 ]"
@@ -105,8 +103,7 @@ private Q_SLOTS:
         target.addAttribute(new UidNextAttribute(65));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID COPY 5 \"INBOX/Bar\""
                  << "S: A000004 OK copy done"
@@ -144,8 +141,7 @@ private Q_SLOTS:
         target.addAttribute(new UidNextAttribute(65));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID COPY 5 \"INBOX/Bar\""
                  << "S: A000004 OK copy done"
@@ -171,8 +167,7 @@ private Q_SLOTS:
         item.setPayload(message);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID COPY 5 \"INBOX/Bar\""
                  << "S: A000004 OK copy done"
@@ -187,7 +182,8 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("itemsChangesCommitted") << QStringLiteral("applyCollectionChanges");
 
-        QTest::newRow("moving mail, no COPYUID, message didn't have unique Message-ID, but last one matches old uidnext") << item << source << target << scenario << callNames;
+        QTest::newRow("moving mail, no COPYUID, message didn't have unique Message-ID, but last one matches old uidnext")
+            << item << source << target << scenario << callNames;
     }
 
     void shouldCopyAndDeleteMessage()
@@ -206,7 +202,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setItem(item);
@@ -241,7 +237,7 @@ private Q_SLOTS:
         QTest::addColumn<Akonadi::Item>("item");
         QTest::addColumn<Akonadi::Collection>("source");
         QTest::addColumn<Akonadi::Collection>("target");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Item item;
@@ -271,8 +267,7 @@ private Q_SLOTS:
         target.setParentCollection(inbox);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario({ "MOVE" })
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario({"MOVE"}) << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID MOVE 5 \"INBOX/Bar\""
                  << "S: A000004 OK move [ COPYUID 1239890035 5 65 ]";
@@ -303,8 +298,7 @@ private Q_SLOTS:
         target.addAttribute(new UidNextAttribute(65));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario({ "MOVE" })
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario({"MOVE"}) << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID MOVE 5 \"INBOX/Bar\""
                  << "S: A000004 OK MOVE done"
@@ -340,8 +334,7 @@ private Q_SLOTS:
         target.addAttribute(new UidNextAttribute(65));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario({ "MOVE" })
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario({"MOVE"}) << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID MOVE 5 \"INBOX/Bar\""
                  << "S: A000004 OK MOVE done"
@@ -365,8 +358,7 @@ private Q_SLOTS:
         item.setPayload(message);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario({ "MOVE" })
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario({"MOVE"}) << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID MOVE 5 \"INBOX/Bar\""
                  << "S: A000004 OK MOVE done"
@@ -379,7 +371,8 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("itemsChangesCommitted") << QStringLiteral("applyCollectionChanges");
 
-        QTest::newRow("moving mail, no COPYUID, message didn't have unique Message-ID, but last one matches old uidnext") << item << source << target << scenario << callNames;
+        QTest::newRow("moving mail, no COPYUID, message didn't have unique Message-ID, but last one matches old uidnext")
+            << item << source << target << scenario << callNames;
     }
 
     void shouldMoveMessage()
@@ -398,13 +391,13 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setItem(item);
         state->setSourceCollection(source);
         state->setTargetCollection(target);
-        state->setServerCapabilities({ QStringLiteral("MOVE") });
+        state->setServerCapabilities({QStringLiteral("MOVE")});
         MoveItemsTask *task = new MoveItemsTask(state);
         task->start(&pool);
 

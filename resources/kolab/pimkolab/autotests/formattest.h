@@ -52,7 +52,7 @@ private Q_SLOTS:
     void testNote_data();
     void testNote();
 
-    //Some pseudo tests and helper functions
+    // Some pseudo tests and helper functions
     void generateMimefile();
     void generateVCard();
     void proveJPGisLossy();

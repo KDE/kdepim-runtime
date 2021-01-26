@@ -43,6 +43,7 @@ private Q_SLOTS:
     void itemsTagsChangedTagsFetched(KJob *job);
     void updateItemsTagsRequestFinished(KJob *job);
     void globalTagsWriteFinished(KJob *job);
+
 private:
     void doUpdateItemsTags();
 

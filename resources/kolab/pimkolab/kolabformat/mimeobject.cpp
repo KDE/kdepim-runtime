@@ -6,20 +6,20 @@
  */
 
 #include "mimeobject.h"
+#include "conversion/commonconversion.h"
+#include "conversion/kabcconversion.h"
 #include "conversion/kcalconversion.h"
 #include "conversion/kolabconversion.h"
-#include "conversion/kabcconversion.h"
-#include "conversion/commonconversion.h"
 #include "kolabformat/kolabobject.h"
 #include "kolabformat/xmlobject.h"
 
 #include "kolabformat/v2helpers.h"
-#include "mime/mimeutils.h"
 #include "libkolab-version.h"
+#include "mime/mimeutils.h"
 #include "pimkolab_debug.h"
 
-#include <QString>
 #include <KRandom>
+#include <QString>
 #include <cstring>
 
 Q_DECLARE_METATYPE(Kolab::Event)
@@ -109,7 +109,8 @@ static std::string getProductId(const std::string &pId)
     return pId + ' ' + LIBKOLAB_LIB_VERSION_STRING;
 }
 
-namespace Kolab {
+namespace Kolab
+{
 static Kolab::ObjectType getObjectType(const std::string &type)
 {
     if (type == eventKolabType()) {
@@ -126,12 +127,12 @@ static Kolab::ObjectType getObjectType(const std::string &type)
         return NoteObject;
     } else if (type == freebusyKolabType()) {
         return FreebusyObject;
-    } else if (strstr(type.c_str(), KOLAB_TYPE_DICT)) { //Previous versions appended the language to the type
+    } else if (strstr(type.c_str(), KOLAB_TYPE_DICT)) { // Previous versions appended the language to the type
         return DictionaryConfigurationObject;
     } else if (type == relationKolabType()) {
         return RelationConfigurationObject;
     }
-    qCWarning(PIMKOLAB_LOG) <<"Unknown object type: " << type;
+    qCWarning(PIMKOLAB_LOG) << "Unknown object type: " << type;
     return Kolab::InvalidObject;
 }
 
@@ -157,7 +158,7 @@ static QByteArray getTypeString(Kolab::ObjectType type)
     case RelationConfigurationObject:
         return KOLAB_TYPE_RELATION;
     default:
-        qCCritical(PIMKOLAB_LOG) << "unknown type "<< type;
+        qCCritical(PIMKOLAB_LOG) << "unknown type " << type;
     }
     return QByteArray();
 }
@@ -178,7 +179,7 @@ static QByteArray getMimeType(Kolab::ObjectType type)
     case RelationConfigurationObject:
         return MIME_TYPE_KOLAB;
     default:
-        qCCritical(PIMKOLAB_LOG) << "unknown type "<< type;
+        qCCritical(PIMKOLAB_LOG) << "unknown type " << type;
     }
     return QByteArray();
 }
@@ -186,7 +187,7 @@ static QByteArray getMimeType(Kolab::ObjectType type)
 static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
 {
     Q_FOREACH (const QByteArray &type, Mime::getContentMimeTypeList(msg)) {
-        Kolab::ObjectType t = getObjectType(type.toStdString()); //works for v2 types
+        Kolab::ObjectType t = getObjectType(type.toStdString()); // works for v2 types
         if (t != InvalidObject) {
             return t;
         }
@@ -196,10 +197,10 @@ static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
 
 static void printMessageDebugInfo(const KMime::Message::Ptr &msg)
 {
-    //TODO replace by Debug stream for Mimemessage
+    // TODO replace by Debug stream for Mimemessage
     qCDebug(PIMKOLAB_LOG) << "MessageId: " << msg->messageID()->asUnicodeString();
     qCDebug(PIMKOLAB_LOG) << "Subject: " << msg->subject()->asUnicodeString();
-//     Debug() << msg->encodedContent();
+    //     Debug() << msg->encodedContent();
 }
 
 //@cond PRIVATE
@@ -289,8 +290,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
 
     QVariant variant;
     switch (objectType) {
-    case EventObject:
-    {
+    case EventObject: {
         QStringList attachments;
         KCalendarCore::Event::Ptr kEvent = fromXML<KCalendarCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
         if (kEvent) {
@@ -300,8 +300,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
         }
         break;
     }
-    case TodoObject:
-    {
+    case TodoObject: {
         QStringList attachments;
         KCalendarCore::Todo::Ptr kTodo = fromXML<KCalendarCore::Todo::Ptr, KolabV2::Task>(xmlData, attachments);
         if (kTodo) {
@@ -311,8 +310,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
         }
         break;
     }
-    case JournalObject:
-    {
+    case JournalObject: {
         QStringList attachments;
         KCalendarCore::Journal::Ptr kJournal = fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(xmlData, attachments);
         if (kJournal) {
@@ -322,22 +320,19 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
         }
         break;
     }
-    case ContactObject:
-    {
+    case ContactObject: {
         KContacts::Addressee kContact = addresseeFromKolab(xmlData, msg);
         Kolab::Contact contact = Kolab::Conversion::fromKABC(kContact);
         variant = QVariant::fromValue(contact);
         break;
     }
-    case DistlistObject:
-    {
+    case DistlistObject: {
         KContacts::ContactGroup kContactGroup = contactGroupFromKolab(xmlData);
         Kolab::DistList distlist = Kolab::Conversion::fromKABC(kContactGroup);
         variant = QVariant::fromValue(distlist);
         break;
     }
-    case NoteObject:
-    {
+    case NoteObject: {
         KMime::Message::Ptr kNote = noteFromKolab(xmlData, msg->date()->dateTime());
         Kolab::Note note = Kolab::Conversion::fromNote(kNote);
         variant = QVariant::fromValue(note);
@@ -367,22 +362,19 @@ QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab:
     const std::string xml = std::string(content.data(), content.size());
     QVariant variant;
     switch (objectType) {
-    case EventObject:
-    {
+    case EventObject: {
         Kolab::Event event = Kolab::readEvent(xml, false);
         event.setAttachments(getAttachments(event.attachments(), msg));
         variant = QVariant::fromValue<Kolab::Event>(event);
         break;
     }
-    case TodoObject:
-    {
+    case TodoObject: {
         Kolab::Todo todo = Kolab::readTodo(xml, false);
         todo.setAttachments(getAttachments(todo.attachments(), msg));
         variant = QVariant::fromValue<Kolab::Todo>(todo);
         break;
     }
-    case JournalObject:
-    {
+    case JournalObject: {
         Kolab::Journal journal = Kolab::readJournal(xml, false);
         journal.setAttachments(getAttachments(journal.attachments(), msg));
         variant = QVariant::fromValue<Kolab::Journal>(journal);
@@ -432,8 +424,8 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
         if (KMime::Headers::Base *xKolabHeader = msg->headerByType(X_KOLAB_TYPE_HEADER)) {
             objectType = getObjectType(xKolabHeader->asUnicodeString().trimmed().toStdString());
         } else {
-            qCWarning(PIMKOLAB_LOG) <<"could not find the X-Kolab-Type Header, trying autodetection";
-            //This works only for v2 messages atm.
+            qCWarning(PIMKOLAB_LOG) << "could not find the X-Kolab-Type Header, trying autodetection";
+            // This works only for v2 messages atm.
             objectType = detectType(msg);
         }
     } else {
@@ -448,14 +440,15 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
     if (!mDoOverrideVersion) {
         KMime::Headers::Base *xKolabVersion = msg->headerByType(X_KOLAB_MIME_VERSION_HEADER);
         if (!xKolabVersion) {
-            //For backwards compatibility to development versions, can be removed in future versions
+            // For backwards compatibility to development versions, can be removed in future versions
             xKolabVersion = msg->headerByType(X_KOLAB_MIME_VERSION_HEADER_COMPAT);
         }
         if (!xKolabVersion || xKolabVersion->asUnicodeString() == KOLAB_VERSION_V2) {
             mVersion = KolabV2;
         } else {
-            if (xKolabVersion->asUnicodeString() != KOLAB_VERSION_V3) { //TODO version compatibility check?
-                qCWarning(PIMKOLAB_LOG) <<"Kolab Version Header available but not on the same version as the implementation: " << xKolabVersion->asUnicodeString();
+            if (xKolabVersion->asUnicodeString() != KOLAB_VERSION_V3) { // TODO version compatibility check?
+                qCWarning(PIMKOLAB_LOG) << "Kolab Version Header available but not on the same version as the implementation: "
+                                        << xKolabVersion->asUnicodeString();
             }
             mVersion = KolabV3;
         }
@@ -511,14 +504,13 @@ std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Atta
         attachment.setLabel(a.label());
         const std::string cid = a.uri().empty() ? createCid() : a.uri();
         attachmentCids.push_back(cid);
-        attachment.setUri(cid, a.mimetype()); //Serialize the attachment as attachment with uri, referencing the created mime-part
+        attachment.setUri(cid, a.mimetype()); // Serialize the attachment as attachment with uri, referencing the created mime-part
         attachmentsWithReferences.push_back(attachment);
     }
     return attachmentsWithReferences;
 }
 
-template<class T>
-static T convertAttachmentsToReferences(const T &incidence, std::vector<std::string> &attachmentCids)
+template<class T> static T convertAttachmentsToReferences(const T &incidence, std::vector<std::string> &attachmentCids)
 {
     T removedAttachments = incidence;
     removedAttachments.setAttachments(convertToReferences(incidence.attachments(), attachmentCids));
@@ -531,7 +523,10 @@ static void addAttachments(KMime::Message::Ptr msg, const std::vector<Attachment
     foreach (const Attachment &attachment, attachments) {
         const std::string data = attachment.data();
         const std::string cid = attachmentCids.empty() ? attachment.uri() : attachmentCids.at(index);
-        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(), QByteArray(attachment.mimetype().c_str()), QString::fromStdString(attachment.label()), QByteArray(data.c_str(), data.size())));
+        msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(),
+                                                   QByteArray(attachment.mimetype().c_str()),
+                                                   QString::fromStdString(attachment.label()),
+                                                   QByteArray(data.c_str(), data.size())));
         index++;
     }
 }

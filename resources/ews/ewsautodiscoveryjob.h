@@ -32,6 +32,7 @@ public:
 
 private Q_SLOTS:
     void autodiscoveryRequestFinished(KJob *job);
+
 private:
     void addUrls(const QString &domain);
     void sendNextRequest(bool useCreds);

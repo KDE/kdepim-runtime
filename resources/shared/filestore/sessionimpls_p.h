@@ -9,8 +9,10 @@
 
 #include "session_p.h"
 
-namespace Akonadi {
-namespace FileStore {
+namespace Akonadi
+{
+namespace FileStore
+{
 /**
  */
 class FiFoQueueJobSession : public AbstractJobSession

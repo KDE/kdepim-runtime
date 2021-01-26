@@ -52,14 +52,12 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid namespace.")
-                .arg(elmName);
+            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid namespace.").arg(elmName);
             reader.skipCurrentElement();
             return false;
         }
 
-        if (reader.name() == QLatin1String("FieldURI")
-            || reader.name() == QLatin1String("IndexedFieldURI")
+        if (reader.name() == QLatin1String("FieldURI") || reader.name() == QLatin1String("IndexedFieldURI")
             || reader.name() == QLatin1String("ExtendedFieldURI")) {
             if (!prop.read(reader)) {
                 reader.skipCurrentElement();
@@ -72,8 +70,7 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
             QStringList values;
             while (reader.readNextStartElement()) {
                 if (reader.namespaceUri() != ewsTypeNsUri) {
-                    qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid namespace.")
-                        .arg(elmName);
+                    qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid namespace.").arg(elmName);
                     reader.skipCurrentElement();
                     reader.skipCurrentElement();
                     return false;
@@ -85,8 +82,8 @@ bool EwsItemBasePrivate::extendedPropertyReader(QXmlStreamReader &reader, QVaria
             }
             value = values;
         } else {
-            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unexpected child element %2")
-                .arg(elmName, reader.qualifiedName().toString());
+            qCWarningNC(EWSCLI_LOG)
+                << QStringLiteral("Failed to read %1 element - unexpected child element %2").arg(elmName, reader.qualifiedName().toString());
             reader.skipCurrentElement();
             return false;
         }
@@ -131,8 +128,7 @@ bool EwsItemBasePrivate::operator==(const EwsItemBasePrivate &other) const
 
 QVariant EwsItemBase::operator[](const EwsPropertyField &prop) const
 {
-    EwsItemBasePrivate::PropertyHash propHash
-        = d->mFields[EwsItemFieldExtendedProperties].value<EwsItemBasePrivate::PropertyHash>();
+    EwsItemBasePrivate::PropertyHash propHash = d->mFields[EwsItemFieldExtendedProperties].value<EwsItemBasePrivate::PropertyHash>();
     EwsItemBasePrivate::PropertyHash::iterator it = propHash.find(prop);
     if (it != propHash.end()) {
         return it.value();
@@ -162,8 +158,7 @@ void EwsItemBase::setField(EwsItemFields f, const QVariant &value)
 
 void EwsItemBase::setProperty(const EwsPropertyField &prop, const QVariant &value)
 {
-    EwsItemBasePrivate::PropertyHash propHash
-        = d->mFields[EwsItemFieldExtendedProperties].value<EwsItemBasePrivate::PropertyHash>();
+    EwsItemBasePrivate::PropertyHash propHash = d->mFields[EwsItemFieldExtendedProperties].value<EwsItemBasePrivate::PropertyHash>();
     propHash[prop] = value;
     d->mFields[EwsItemFieldExtendedProperties] = QVariant::fromValue<EwsItemBasePrivate::PropertyHash>(propHash);
 }

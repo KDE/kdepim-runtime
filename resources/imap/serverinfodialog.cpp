@@ -10,16 +10,14 @@
 
 #include <KLocalizedString>
 #include <QDialogButtonBox>
+#include <QPainter>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QPainter>
 
 ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle(
-        i18nc("@title:window Dialog title for dialog showing information about a server",
-              "Server Info"));
+    setWindowTitle(i18nc("@title:window Dialog title for dialog showing information about a server", "Server Info"));
     auto mainLayout = new QVBoxLayout(this);
     setAttribute(Qt::WA_DeleteOnClose);
 

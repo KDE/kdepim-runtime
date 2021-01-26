@@ -6,21 +6,21 @@
 
 #include "ewsfetchfoldersjob.h"
 
-#include <KMime/Message>
+#include <AkonadiCore/CollectionFetchJob>
+#include <AkonadiCore/CollectionFetchScope>
+#include <AkonadiCore/CollectionMoveJob>
+#include <AkonadiCore/CollectionStatistics>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
-#include <AkonadiCore/CollectionStatistics>
-#include <AkonadiCore/CollectionFetchJob>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/CollectionMoveJob>
+#include <KMime/Message>
 
-#include "ewssyncfolderhierarchyrequest.h"
-#include "ewsgetfolderrequest.h"
-#include "ewseffectiverights.h"
 #include "ewsclient.h"
+#include "ewseffectiverights.h"
+#include "ewsgetfolderrequest.h"
 #include "ewsresource_debug.h"
+#include "ewssyncfolderhierarchyrequest.h"
 
 using namespace Akonadi;
 
@@ -43,6 +43,7 @@ public Q_SLOTS:
     void remoteFolderFullFetchDone(KJob *job);
     void remoteFolderIdFullFetchDone(KJob *job);
     void remoteFolderDetailFetchDone(KJob *job);
+
 public:
     EwsClient &mClient;
     int mPendingFetchJobs;
@@ -51,8 +52,8 @@ public:
 
     const Collection &mRootCollection;
 
-    EwsFolder::List mRemoteChangedFolders;  // Contains details of folders that need update
-                                            // (either created or changed)
+    EwsFolder::List mRemoteChangedFolders; // Contains details of folders that need update
+                                           // (either created or changed)
     QHash<QString, Akonadi::Collection> mCollectionMap;
     QMultiHash<QString, QString> mParentMap;
 
@@ -96,8 +97,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
         syncFoldersReq->setFolderId(EwsId(EwsDIdMsgFolderRoot));
         EwsFolderShape shape(EwsShapeIdOnly);
         syncFoldersReq->setFolderShape(shape);
-        connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, this,
-                &EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone);
+        connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, this, &EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone);
         q->addSubjob(syncFoldersReq);
         syncFoldersReq->start();
 
@@ -131,8 +131,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
         shape << EwsPropertyField(QStringLiteral("folder:ParentFolderId"));
         syncFoldersReq->setFolderShape(shape);
         syncFoldersReq->setSyncState(req->syncState());
-        connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, this,
-                &EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone);
+        connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, this, &EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone);
         syncFoldersReq->start();
     }
 }
@@ -174,8 +173,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
             auto req = new EwsGetFolderRequest(mClient, this);
             req->setFolderIds(mRemoteFolderIds.mid(i, fetchBatchSize));
             req->setFolderShape(shape);
-            connect(req, &EwsSyncFolderHierarchyRequest::result, this,
-                    &EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone);
+            connect(req, &EwsSyncFolderHierarchyRequest::result, this, &EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone);
             req->start();
             q->addSubjob(req);
             mPendingFetchJobs++;
@@ -190,8 +188,7 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
         EwsFolderShape shape(EwsShapeIdOnly);
         syncFoldersReq->setFolderShape(shape);
         syncFoldersReq->setSyncState(req->syncState());
-        connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, this,
-                &EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone);
+        connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, this, &EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone);
         q->addSubjob(syncFoldersReq);
         syncFoldersReq->start();
     }
@@ -361,8 +358,7 @@ void EwsFetchFoldersJob::start()
     if (!mSyncState.isNull()) {
         syncFoldersReq->setSyncState(mSyncState);
     }
-    connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, d,
-            &EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone);
+    connect(syncFoldersReq, &EwsSyncFolderHierarchyRequest::result, d, &EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone);
     // Don't add this as a subjob as the error is handled in its own way rather than throwing an
     // error code to the parent.
 

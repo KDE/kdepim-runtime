@@ -6,11 +6,11 @@
  */
 
 #include "dummymigrator.h"
-#include <QTimer>
 #include <QDebug>
+#include <QTimer>
 
 DummyMigrator::DummyMigrator(const QString &identifier)
-    :   MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
+    : MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
 {
 }
 

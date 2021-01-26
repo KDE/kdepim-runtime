@@ -14,11 +14,13 @@
 
 #include <QObject>
 
-namespace KIMAP {
+namespace KIMAP
+{
 class Session;
 }
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Tag;
 }
 

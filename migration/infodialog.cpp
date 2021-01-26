@@ -10,14 +10,14 @@
 #include <QIcon>
 
 #include <QApplication>
+#include <QDialogButtonBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
 #include <QProgressBar>
+#include <QPushButton>
 #include <QScrollBar>
 #include <QVBoxLayout>
-#include <QDialogButtonBox>
-#include <QPushButton>
 
 enum {
     // The max value of the scrollbar. Don't change this without making the kmail
@@ -105,8 +105,7 @@ void InfoDialog::message(KMigratorBase::MessageType type, const QString &msg)
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-warning")));
         qCDebug(MIGRATION_LOG) << msg;
         break;
-    case KMigratorBase::Error:
-    {
+    case KMigratorBase::Error: {
         item->setIcon(QIcon::fromTheme(QStringLiteral("dialog-error")));
         QFont currentFont = font();
         currentFont.setBold(true);

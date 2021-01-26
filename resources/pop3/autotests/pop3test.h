@@ -8,14 +8,14 @@
 #define POP3TEST_H
 
 #include "fakeserver/fakeserver.h"
-#include "pop3settings.h"
 #include "maildirsettings.h"
+#include "pop3settings.h"
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
 
-#include <QObject>
 #include <QList>
+#include <QObject>
 
 class Pop3Test : public QObject
 {
@@ -37,11 +37,11 @@ private Q_SLOTS:
 private:
     void lowerTimeOfSeenMail(const QString &uidOfMail, int secondsToLower);
     void cleanupMaildir(const Akonadi::Item::List &items);
-    void checkMailsInMaildir(const QList< QByteArray > &mails);
+    void checkMailsInMaildir(const QList<QByteArray> &mails);
     Akonadi::Item::List checkMailsOnAkonadiServer(const QList<QByteArray> &mails);
     void syncAndWaitForFinish();
     QString loginSequence() const;
-    QString retrieveSequence(const QList< QByteArray > &mails, const QList<int> &exceptions = QList<int>()) const;
+    QString retrieveSequence(const QList<QByteArray> &mails, const QList<int> &exceptions = QList<int>()) const;
     QString deleteSequence(int numToDelete) const;
     QString quitSequence() const;
     QString listSequence(const QList<QByteArray> &mails) const;

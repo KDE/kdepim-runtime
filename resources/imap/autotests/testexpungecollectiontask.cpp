@@ -17,7 +17,7 @@ private Q_SLOTS:
     void shouldDeleteMailBox_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection collection;
@@ -27,8 +27,7 @@ private Q_SLOTS:
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done";
@@ -41,8 +40,7 @@ private Q_SLOTS:
         // We keep the same collection
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 NO select failed";
 
         callNames.clear();
@@ -53,8 +51,7 @@ private Q_SLOTS:
         // We keep the same collection
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 NO expunge failed";
@@ -67,8 +64,7 @@ private Q_SLOTS:
         // We keep the same collection
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK [READ-ONLY] select done";
 
         callNames.clear();
@@ -91,7 +87,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);

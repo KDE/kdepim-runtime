@@ -13,7 +13,9 @@
 #include <AkonadiCore/TagFetchJob>
 #include <AkonadiCore/TagFetchScope>
 
-KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent)
+KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource,
+                                                   const QSharedPointer<TagConverter> &tagConverter,
+                                                   QObject *parent)
     : KolabRelationResourceTask(resource, parent)
     , mTagConverter(tagConverter)
 {
@@ -23,7 +25,7 @@ void KolabChangeItemsTagsTask::startRelationTask(KIMAP::Session *session)
 {
     mSession = session;
 
-    //It's entirely possible that we don't have an rid yet
+    // It's entirely possible that we don't have an rid yet
 
     // compile a set of changed tags
     Q_FOREACH (const Akonadi::Tag &tag, resourceState()->addedTags()) {
@@ -47,8 +49,8 @@ void KolabChangeItemsTagsTask::processNextTag()
     // "take first"
     const Akonadi::Tag tag = mChangedTags.takeFirst();
 
-    //We have to fetch it again in case it changed since the notification was emitted (which is likely)
-    //Otherwise we get an empty remoteid for new tags that were immediately applied on an item
+    // We have to fetch it again in case it changed since the notification was emitted (which is likely)
+    // Otherwise we get an empty remoteid for new tags that were immediately applied on an item
     auto fetch = new Akonadi::TagFetchJob(tag);
     fetch->fetchScope().setFetchRemoteId(true);
     connect(fetch, &KJob::result, this, &KolabChangeItemsTagsTask::onTagFetchDone);
@@ -91,8 +93,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 
     auto changeHelper = new TagChangeHelper(this);
 
-    connect(changeHelper, &TagChangeHelper::applyCollectionChanges,
-            this, &KolabChangeItemsTagsTask::onApplyCollectionChanged);
+    connect(changeHelper, &TagChangeHelper::applyCollectionChanges, this, &KolabChangeItemsTagsTask::onApplyCollectionChanged);
     connect(changeHelper, &TagChangeHelper::cancelTask, this, &KolabChangeItemsTagsTask::onCancelTask);
     connect(changeHelper, &TagChangeHelper::changeCommitted, this, &KolabChangeItemsTagsTask::onChangeCommitted);
 

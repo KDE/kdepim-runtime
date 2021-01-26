@@ -7,8 +7,8 @@
 
 #ifndef IMIP_H
 #define IMIP_H
-#include <QByteArray>
 #include <KCalendarCore/IncidenceBase>
+#include <QByteArray>
 
 QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence, bool bccMe, const QString &attachment);
 

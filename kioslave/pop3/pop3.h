@@ -9,11 +9,11 @@
 #ifndef _POP3_H
 #define _POP3_H
 
-#include <kio/tcpslavebase.h>
 #include <QUrl>
+#include <kio/tcpslavebase.h>
 
-#include <sys/types.h>
 #include <stdio.h>
+#include <sys/types.h>
 
 #define MAX_PACKET_LEN 4096
 
@@ -31,7 +31,6 @@ public:
     void listDir(const QUrl &url) override;
 
 protected:
-
     ssize_t myRead(void *data, ssize_t len);
     ssize_t myReadLine(char *data, ssize_t len);
 
@@ -49,12 +48,7 @@ protected:
      */
     bool sendCommand(const QByteArray &cmd);
 
-    enum Resp {
-        Err,
-        Ok,
-        Cont,
-        Invalid
-    };
+    enum Resp { Err, Ok, Cont, Invalid };
     /**
      *  Send a command to the server, and wait for the  one-line-status
      *  reply via getResponse.  Similar rules apply.  If no buffer is
@@ -101,7 +95,7 @@ protected:
      */
     bool loginPASS(KIO::AuthInfo &ai);
 
-    //int m_cmd;
+    // int m_cmd;
     unsigned short int m_iOldPort;
     unsigned short int m_iPort;
     QString m_sOldServer, m_sOldPass, m_sOldUser;

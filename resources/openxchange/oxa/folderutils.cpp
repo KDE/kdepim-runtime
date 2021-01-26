@@ -22,18 +22,12 @@ static void createFolderPermissions(const Folder &folder, QDomDocument &document
         const Folder::UserPermissions userPermissions = folder.userPermissions();
         Folder::UserPermissions::ConstIterator it = userPermissions.constBegin();
         while (it != userPermissions.constEnd()) {
-            QDomElement user = DAVUtils::addOxElement(document, permissions, QStringLiteral("user"),
-                                                      OXUtils::writeNumber(it.key()));
-            DAVUtils::setOxAttribute(user, QStringLiteral("folderpermission"),
-                                     OXUtils::writeNumber(it.value().folderPermission()));
-            DAVUtils::setOxAttribute(user, QStringLiteral("objectreadpermission"),
-                                     OXUtils::writeNumber(it.value().objectReadPermission()));
-            DAVUtils::setOxAttribute(user, QStringLiteral("objectwritepermission"),
-                                     OXUtils::writeNumber(it.value().objectWritePermission()));
-            DAVUtils::setOxAttribute(user, QStringLiteral("objectdeletepermission"),
-                                     OXUtils::writeNumber(it.value().objectDeletePermission()));
-            DAVUtils::setOxAttribute(user, QStringLiteral("admin_flag"),
-                                     OXUtils::writeBoolean(it.value().adminFlag()));
+            QDomElement user = DAVUtils::addOxElement(document, permissions, QStringLiteral("user"), OXUtils::writeNumber(it.key()));
+            DAVUtils::setOxAttribute(user, QStringLiteral("folderpermission"), OXUtils::writeNumber(it.value().folderPermission()));
+            DAVUtils::setOxAttribute(user, QStringLiteral("objectreadpermission"), OXUtils::writeNumber(it.value().objectReadPermission()));
+            DAVUtils::setOxAttribute(user, QStringLiteral("objectwritepermission"), OXUtils::writeNumber(it.value().objectWritePermission()));
+            DAVUtils::setOxAttribute(user, QStringLiteral("objectdeletepermission"), OXUtils::writeNumber(it.value().objectDeletePermission()));
+            DAVUtils::setOxAttribute(user, QStringLiteral("admin_flag"), OXUtils::writeBoolean(it.value().adminFlag()));
 
             ++it;
         }
@@ -43,18 +37,12 @@ static void createFolderPermissions(const Folder &folder, QDomDocument &document
         const Folder::GroupPermissions groupPermissions = folder.groupPermissions();
         Folder::GroupPermissions::ConstIterator it = groupPermissions.constBegin();
         while (it != groupPermissions.constEnd()) {
-            QDomElement group = DAVUtils::addOxElement(document, permissions, QStringLiteral("group"),
-                                                       OXUtils::writeNumber(it.key()));
-            DAVUtils::setOxAttribute(group, QStringLiteral("folderpermission"),
-                                     OXUtils::writeNumber(it.value().folderPermission()));
-            DAVUtils::setOxAttribute(group, QStringLiteral("objectreadpermission"),
-                                     OXUtils::writeNumber(it.value().objectReadPermission()));
-            DAVUtils::setOxAttribute(group, QStringLiteral("objectwritepermission"),
-                                     OXUtils::writeNumber(it.value().objectWritePermission()));
-            DAVUtils::setOxAttribute(group, QStringLiteral("objectdeletepermission"),
-                                     OXUtils::writeNumber(it.value().objectDeletePermission()));
-            DAVUtils::setOxAttribute(group, QStringLiteral("admin_flag"),
-                                     OXUtils::writeBoolean(it.value().adminFlag()));
+            QDomElement group = DAVUtils::addOxElement(document, permissions, QStringLiteral("group"), OXUtils::writeNumber(it.key()));
+            DAVUtils::setOxAttribute(group, QStringLiteral("folderpermission"), OXUtils::writeNumber(it.value().folderPermission()));
+            DAVUtils::setOxAttribute(group, QStringLiteral("objectreadpermission"), OXUtils::writeNumber(it.value().objectReadPermission()));
+            DAVUtils::setOxAttribute(group, QStringLiteral("objectwritepermission"), OXUtils::writeNumber(it.value().objectWritePermission()));
+            DAVUtils::setOxAttribute(group, QStringLiteral("objectdeletepermission"), OXUtils::writeNumber(it.value().objectDeletePermission()));
+            DAVUtils::setOxAttribute(group, QStringLiteral("admin_flag"), OXUtils::writeBoolean(it.value().adminFlag()));
 
             ++it;
         }
@@ -70,19 +58,27 @@ static void parseFolderPermissions(const QDomElement &permissions, Folder &folde
     while (!element.isNull()) {
         if (element.tagName() == QLatin1String("user")) {
             Folder::Permissions permissions;
-            permissions.setFolderPermission((Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
-            permissions.setObjectReadPermission((Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectreadpermission"), QStringLiteral("0"))));
-            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectwritepermission"), QStringLiteral("0"))));
-            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectdeletepermission"), QStringLiteral("0"))));
+            permissions.setFolderPermission(
+                (Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
+            permissions.setObjectReadPermission(
+                (Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectreadpermission"), QStringLiteral("0"))));
+            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(
+                element.attribute(QStringLiteral("objectwritepermission"), QStringLiteral("0"))));
+            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(
+                element.attribute(QStringLiteral("objectdeletepermission"), QStringLiteral("0"))));
             permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QStringLiteral("admin_flag"), QStringLiteral("false"))));
 
             userPermissions.insert(OXUtils::readNumber(element.text()), permissions);
         } else if (element.tagName() == QLatin1String("group")) {
             Folder::Permissions permissions;
-            permissions.setFolderPermission((Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
-            permissions.setObjectReadPermission((Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectreadpermission"), QStringLiteral("0"))));
-            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectwritepermission"), QStringLiteral("0"))));
-            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectdeletepermission"), QStringLiteral("0"))));
+            permissions.setFolderPermission(
+                (Folder::Permissions::FolderPermission)OXUtils::readNumber(element.attribute(QStringLiteral("folderpermission"), QStringLiteral("0"))));
+            permissions.setObjectReadPermission(
+                (Folder::Permissions::ObjectReadPermission)OXUtils::readNumber(element.attribute(QStringLiteral("objectreadpermission"), QStringLiteral("0"))));
+            permissions.setObjectWritePermission((Folder::Permissions::ObjectWritePermission)OXUtils::readNumber(
+                element.attribute(QStringLiteral("objectwritepermission"), QStringLiteral("0"))));
+            permissions.setObjectDeletePermission((Folder::Permissions::ObjectDeletePermission)OXUtils::readNumber(
+                element.attribute(QStringLiteral("objectdeletepermission"), QStringLiteral("0"))));
             permissions.setAdminFlag(OXUtils::readBoolean(element.attribute(QStringLiteral("admin_flag"), QStringLiteral("false"))));
 
             groupPermissions.insert(OXUtils::readNumber(element.text()), permissions);

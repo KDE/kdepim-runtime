@@ -11,16 +11,16 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <kio/job.h>
-#include <kio/jobuidelegate.h>
-#include <QDebug>
 #include <KDirWatch>
 #include <KLocalizedString>
+#include <QDebug>
+#include <kio/job.h>
+#include <kio/jobuidelegate.h>
 
 #include <KConfigGroup>
 
-#include <QDir>
 #include <QCryptographicHash>
+#include <QDir>
 #include <QStandardPaths>
 #include <QTimer>
 
@@ -31,8 +31,7 @@ using namespace Akonadi;
 SingleFileResourceBase::SingleFileResourceBase(const QString &id)
     : ResourceBase(id)
 {
-    connect(this, &SingleFileResourceBase::reloadConfiguration,
-            this, [this]() {
+    connect(this, &SingleFileResourceBase::reloadConfiguration, this, [this]() {
         applyConfigurationChanges();
         reloadFile();
         synchronizeCollectionTree();
@@ -224,8 +223,8 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         const QUrl prevUrl = mCurrentUrl;
         int i = 0;
         do {
-            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QLatin1Char('/') + prevUrl.fileName() + QLatin1Char('-')
-                                + QString::number(++i);
+            lostFoundFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + identifier() + QLatin1Char('/')
+                + prevUrl.fileName() + QLatin1Char('-') + QString::number(++i);
         } while (QFileInfo::exists(lostFoundFileName));
 
         // create the directory if it doesn't exist yet
@@ -238,9 +237,11 @@ void SingleFileResourceBase::fileChanged(const QString &fileName)
         writeFile();
         mCurrentUrl = prevUrl;
 
-        const QString message = i18n("The file '%1' was changed on disk. "
-                                     "As a precaution, a backup of its previous contents has been created at '%2'.",
-                                     prevUrl.toDisplayString(), QUrl::fromLocalFile(lostFoundFileName).toDisplayString());
+        const QString message = i18n(
+            "The file '%1' was changed on disk. "
+            "As a precaution, a backup of its previous contents has been created at '%2'.",
+            prevUrl.toDisplayString(),
+            QUrl::fromLocalFile(lostFoundFileName).toDisplayString());
         Q_EMIT warning(message);
     }
 

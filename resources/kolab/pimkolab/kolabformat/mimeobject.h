@@ -10,10 +10,11 @@
 
 #include "kolab_export.h"
 
-#include <kolabformat.h>
 #include "kolabdefinitions.h"
+#include <kolabformat.h>
 
-namespace Kolab {
+namespace Kolab
+{
 class KOLAB_EXPORT MIMEObject
 {
 public:

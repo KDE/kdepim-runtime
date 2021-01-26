@@ -8,10 +8,10 @@
 #ifndef MIGRATORBASE_H
 #define MIGRATORBASE_H
 
-#include <QObject>
-#include <QFile>
 #include <KConfig>
 #include <KConfigGroup>
+#include <QFile>
+#include <QObject>
 
 class QFile;
 
@@ -22,7 +22,8 @@ public:
     {
     }
 
-    NullableConfigGroup(const KConfigGroup &grp) : mConfigGroup(grp)
+    NullableConfigGroup(const KConfigGroup &grp)
+        : mConfigGroup(grp)
     {
     }
 
@@ -31,8 +32,7 @@ public:
         return mConfigGroup;
     }
 
-    template<typename T>
-    inline T readEntry(const QString &key, const T &aDefault) const
+    template<typename T> inline T readEntry(const QString &key, const T &aDefault) const
     {
         if (mConfigGroup.isValid()) {
             return mConfigGroup.readEntry<T>(key, aDefault);
@@ -40,8 +40,7 @@ public:
         return aDefault;
     }
 
-    template<typename T>
-    inline void writeEntry(const QString &key, const T &value)
+    template<typename T> inline void writeEntry(const QString &key, const T &value)
     {
         if (mConfigGroup.isValid()) {
             mConfigGroup.writeEntry<T>(key, value);
@@ -104,23 +103,9 @@ public:
      */
     QString logfile() const;
 
-    enum MigrationState {
-        None,
-        InProgress,
-        Paused,
-        Complete,
-        NeedsUpdate,
-        Aborted,
-        Failed
-    };
+    enum MigrationState { None, InProgress, Paused, Complete, NeedsUpdate, Aborted, Failed };
 
-    enum MessageType {
-        Success,
-        Skip,
-        Info,
-        Warning,
-        Error
-    };
+    enum MessageType { Success, Skip, Info, Warning, Error };
 
     /**
      * Read migration state.
@@ -174,16 +159,16 @@ public:
     QString status() const;
 
 Q_SIGNALS:
-    //Signal for state changes
+    // Signal for state changes
     void stateChanged(MigratorBase::MigrationState);
 
-    //Signal for log window
+    // Signal for log window
     void message(MigratorBase::MessageType type, const QString &msg);
 
-    //Signal for progress bar
+    // Signal for progress bar
     void progress(int progress);
 
-    //Signal for scheduling. The migrator has finished for some reason (success, failure, ...) and we can forget about it and move on.
+    // Signal for scheduling. The migrator has finished for some reason (success, failure, ...) and we can forget about it and move on.
     void stoppedProcessing();
 
 protected:

@@ -32,9 +32,7 @@ void AddCollectionTask::doStart(KIMAP::Session *session)
 {
     if (parentCollection().remoteId().isEmpty()) {
         qCWarning(IMAPRESOURCE_LOG) << "Parent collection has no remote id, aborting." << collection().name() << parentCollection().name();
-        emitError(i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.",
-                       collection().name(),
-                       parentCollection().name()));
+        emitError(i18n("Cannot add IMAP folder '%1' for a non-existing parent folder '%2'.", collection().name(), parentCollection().name()));
         changeProcessed();
         return;
     }
@@ -68,8 +66,7 @@ void AddCollectionTask::onCreateDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to create folder on server: " << job->errorString();
-        emitError(i18n("Failed to create the folder '%1' on the IMAP server. ",
-                       m_collection.name()));
+        emitError(i18n("Failed to create the folder '%1' on the IMAP server. ", m_collection.name()));
         cancelTask(job->errorString());
     } else {
         // Automatically subscribe to newly created mailbox
@@ -88,9 +85,10 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
 {
     if (job->error() && isSubscriptionEnabled()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to subscribe to the new folder: " << job->errorString();
-        emitWarning(i18n("Failed to subscribe to the folder '%1' on the IMAP server. "
-                         "It will disappear on next sync. Use the subscription dialog to overcome that",
-                         m_collection.name()));
+        emitWarning(
+            i18n("Failed to subscribe to the folder '%1' on the IMAP server. "
+                 "It will disappear on next sync. Use the subscription dialog to overcome that",
+                 m_collection.name()));
     }
 
     const Akonadi::CollectionAnnotationsAttribute *attribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>();
@@ -113,7 +111,7 @@ void AddCollectionTask::onSubscribeDone(KJob *job)
         job->setMailBox(mailBoxForCollection(m_collection));
 
         if (!i.key().startsWith("/shared") && !i.key().startsWith("/private")) {
-            //Support for legacy annotations that don't include the prefix
+            // Support for legacy annotations that don't include the prefix
             job->addMetaData(QByteArray("/shared") + i.key(), i.value());
         } else {
             job->addMetaData(i.key(), i.value());
@@ -131,8 +129,7 @@ void AddCollectionTask::onSetMetaDataDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to write annotations: " << job->errorString();
-        emitWarning(i18n("Failed to write some annotations for '%1' on the IMAP server. %2",
-                         collection().name(), job->errorText()));
+        emitWarning(i18n("Failed to write some annotations for '%1' on the IMAP server. %2", collection().name(), job->errorText()));
     }
 
     m_pendingJobs--;

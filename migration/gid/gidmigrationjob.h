@@ -7,11 +7,11 @@
 #ifndef AKONADI_GIDMIGRATIONJOB_H
 #define AKONADI_GIDMIGRATIONJOB_H
 
-#include <AkonadiCore/item.h>
 #include <AkonadiCore/collection.h>
+#include <AkonadiCore/item.h>
 #include <AkonadiCore/job.h>
-#include <QStringList>
 #include <QQueue>
+#include <QStringList>
 
 /**
  * @short Job that updates the gid of all items in the store.
@@ -64,6 +64,7 @@ public:
 
 private Q_SLOTS:
     void itemsReceived(const Akonadi::Item::List &items);
+
 private:
     bool processNext();
 

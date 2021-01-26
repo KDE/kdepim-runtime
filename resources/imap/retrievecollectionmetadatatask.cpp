@@ -7,23 +7,23 @@
 
 #include "retrievecollectionmetadatatask.h"
 
+#include <KLocalizedString>
 #include <kimap/getacljob.h>
 #include <kimap/getmetadatajob.h>
 #include <kimap/getquotarootjob.h>
 #include <kimap/myrightsjob.h>
 #include <kimap/rfccodecs.h>
 #include <kimap/session.h>
-#include <KLocalizedString>
 
 #include "imapresource_debug.h"
 
-#include <collectionquotaattribute.h>
-#include <entitydisplayattribute.h>
 #include "collectionannotationsattribute.h"
+#include "collectionmetadatahelper.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include "collectionmetadatahelper.h"
+#include <collectionquotaattribute.h>
+#include <entitydisplayattribute.h>
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)
@@ -116,8 +116,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
     rawAnnotations.remove("/private/vendor/cmu/cyrus-imapd/lastupdate");
 
     // Store the mailbox metadata
-    auto *annotationsAttribute
-        = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *annotationsAttribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
     if (oldAnnotations != rawAnnotations) {
         annotationsAttribute->setAnnotations(rawAnnotations);
@@ -138,8 +137,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone(KJob *job)
     auto acl = qobject_cast<KIMAP::GetAclJob *>(job);
 
     // Store the mailbox ACLs
-    auto *const aclAttribute
-        = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *const aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
     if (oldRights != acl->allRights()) {
         aclAttribute->setRights(acl->allRights());
@@ -161,18 +159,18 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
 
     const KIMAP::Acl::Rights imapRights = rightsJob->rights();
 
-    //Default value in case we have nothing better available
+    // Default value in case we have nothing better available
     KIMAP::Acl::Rights parentRights = KIMAP::Acl::CreateMailbox | KIMAP::Acl::Create;
 
-    //FIXME I don't think we have the parent's acl's available
+    // FIXME I don't think we have the parent's acl's available
     if (collection().parentCollection().attribute<Akonadi::ImapAclAttribute>()) {
         parentRights = myRights(collection().parentCollection());
     }
 
-//  qCDebug(IMAPRESOURCE_LOG) << collection.remoteId()
-//                 << "imapRights:" << imapRights
-//                 << "newRights:" << newRights
-//                 << "oldRights:" << collection.rights();
+    //  qCDebug(IMAPRESOURCE_LOG) << collection.remoteId()
+    //                 << "imapRights:" << imapRights
+    //                 << "newRights:" << newRights
+    //                 << "oldRights:" << collection.rights();
 
     const bool isNewCollection = !m_collection.hasAttribute<Akonadi::ImapAclAttribute>();
     const bool accessRevoked = CollectionMetadataHelper::applyRights(m_collection, imapRights, parentRights);
@@ -183,18 +181,18 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
         showInformationDialog(i18n("<p>Your access rights to folder <b>%1</b> have been restricted, "
                                    "it will no longer be possible to add messages to this folder.</p>",
                                    collectionName),
-                              i18n("Access rights revoked"), QStringLiteral("ShowRightsRevokedWarning"));
+                              i18n("Access rights revoked"),
+                              QStringLiteral("ShowRightsRevokedWarning"));
     }
 
     // Store the mailbox ACLs
-    auto *aclAttribute
-        = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
     if (oldRights != imapRights) {
         aclAttribute->setMyRights(imapRights);
     }
 
-    //The a right is required to list acl's
+    // The a right is required to list acl's
     if (imapRights & KIMAP::Acl::Admin) {
         auto acl = new KIMAP::GetAclJob(m_session);
         acl->setMailBox(mailBoxForCollection(m_collection));
@@ -220,8 +218,8 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
 
     QList<QByteArray> allRoots = quotaJob->roots();
     QList<QByteArray> newRoots;
-    QList< QMap<QByteArray, qint64> > newLimits;
-    QList< QMap<QByteArray, qint64> > newUsages;
+    QList<QMap<QByteArray, qint64>> newLimits;
+    QList<QMap<QByteArray, qint64>> newUsages;
     qint64 newCurrent = -1;
     qint64 newMax = -1;
     newRoots.reserve(allRoots.count());
@@ -254,26 +252,21 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     }
 
     // Store the mailbox IMAP Quotas
-    auto *imapQuotaAttribute
-        = m_collection.attribute<Akonadi::ImapQuotaAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *imapQuotaAttribute = m_collection.attribute<Akonadi::ImapQuotaAttribute>(Akonadi::Collection::AddIfMissing);
     const QList<QByteArray> oldRoots = imapQuotaAttribute->roots();
-    const QList< QMap<QByteArray, qint64> > oldLimits = imapQuotaAttribute->limits();
-    const QList< QMap<QByteArray, qint64> > oldUsages = imapQuotaAttribute->usages();
+    const QList<QMap<QByteArray, qint64>> oldLimits = imapQuotaAttribute->limits();
+    const QList<QMap<QByteArray, qint64>> oldUsages = imapQuotaAttribute->usages();
 
-    if (oldRoots != newRoots
-        || oldLimits != newLimits
-        || oldUsages != newUsages) {
+    if (oldRoots != newRoots || oldLimits != newLimits || oldUsages != newUsages) {
         imapQuotaAttribute->setQuotas(newRoots, newLimits, newUsages);
     }
 
     // Store the collection Quota
-    auto *quotaAttribute
-        = m_collection.attribute<Akonadi::CollectionQuotaAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *quotaAttribute = m_collection.attribute<Akonadi::CollectionQuotaAttribute>(Akonadi::Collection::AddIfMissing);
     qint64 oldCurrent = quotaAttribute->currentValue();
     qint64 oldMax = quotaAttribute->maximumValue();
 
-    if (oldCurrent != newCurrent
-        || oldMax != newMax) {
+    if (oldCurrent != newCurrent || oldMax != newMax) {
         quotaAttribute->setCurrentValue(newCurrent);
         quotaAttribute->setMaximumValue(newMax);
     }

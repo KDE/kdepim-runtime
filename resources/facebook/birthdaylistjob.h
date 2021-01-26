@@ -15,7 +15,8 @@
 #include <KCalendarCore/Event>
 
 class QUrl;
-namespace KIO {
+namespace KIO
+{
 class StoredTransferJob;
 }
 
@@ -30,6 +31,7 @@ public:
     void start() override;
 
     QVector<Akonadi::Item> items() const;
+
 private:
     KIO::StoredTransferJob *createGetJob(const QUrl &url) const;
     void emitError(const QString &errorText);

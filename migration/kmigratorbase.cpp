@@ -10,21 +10,22 @@
 #include <AkonadiCore/agentmanager.h>
 #include <AkonadiCore/agenttype.h>
 
-#include <KSharedConfig>
+#include "migration_debug.h"
 #include <KConfigGroup>
 #include <KLocalizedString>
-#include "migration_debug.h"
+#include <KSharedConfig>
 #include <QCoreApplication>
-#include <QFile>
-#include <QMetaEnum>
-#include <QTimer>
-#include <QStandardPaths>
-#include <QFileInfo>
 #include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QMetaEnum>
+#include <QStandardPaths>
+#include <QTimer>
 
 using namespace Akonadi;
 
-namespace {
+namespace
+{
 QString messageTypeToString(KMigratorBase::MessageType type)
 {
     switch (type) {
@@ -46,7 +47,8 @@ QString messageTypeToString(KMigratorBase::MessageType type)
 
 KMigratorBase::KMigratorBase()
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1String("/migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName()
+        + QLatin1String("/migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
 
@@ -113,7 +115,7 @@ KJob *KMigratorBase::createAgentInstance(const QString &typeId, QObject *receive
 {
     Q_EMIT message(Info, i18n("Creating instance of type %1", typeId));
     auto job = new AgentInstanceCreateJob(typeId, this);
-    connect(job, SIGNAL(result(KJob*)), receiver, slot);
+    connect(job, SIGNAL(result(KJob *)), receiver, slot);
     job->start();
     return job;
 }
@@ -121,8 +123,9 @@ KJob *KMigratorBase::createAgentInstance(const QString &typeId, QObject *receive
 void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString &msg)
 {
     if (m_logFile) {
-        m_logFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QLatin1String("] ")
-                                 + messageTypeToString(type) + QLatin1String(": ") + msg + QLatin1Char('\n')).toUtf8());
+        m_logFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QLatin1String("] ") + messageTypeToString(type)
+                                 + QLatin1String(": ") + msg + QLatin1Char('\n'))
+                             .toUtf8());
         m_logFile->flush();
     }
 }

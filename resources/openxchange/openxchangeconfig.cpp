@@ -6,8 +6,8 @@
 
 #include <AkonadiCore/AgentConfigurationBase>
 
-#include "settings.h"
 #include "configwidget.h"
+#include "settings.h"
 
 class OpenXChangeConfig : public Akonadi::AgentConfigurationBase
 {

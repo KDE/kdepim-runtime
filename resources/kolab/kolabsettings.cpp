@@ -6,7 +6,8 @@
 
 #include "kolabsettings.h"
 
-KolabSettings::KolabSettings(WId winId) : Settings(winId)
+KolabSettings::KolabSettings(WId winId)
+    : Settings(winId)
 {
     changeDefaults();
     load();

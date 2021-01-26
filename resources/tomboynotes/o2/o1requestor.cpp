@@ -3,14 +3,15 @@
 */
 
 #include <QDateTime>
-#include <QNetworkReply>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 
+#include "o2/o0globals.h"
 #include "o2/o1requestor.h"
 #include "o2/o1timedreply.h"
-#include "o2/o0globals.h"
 
-O1Requestor::O1Requestor(QNetworkAccessManager *manager, O1 *authenticator, QObject *parent) : QObject(parent)
+O1Requestor::O1Requestor(QNetworkAccessManager *manager, O1 *authenticator, QObject *parent)
+    : QObject(parent)
 {
     manager_ = manager;
     authenticator_ = authenticator;

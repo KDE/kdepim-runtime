@@ -8,8 +8,8 @@
 #ifndef RESOURCESTATEINTERFACE_H
 #define RESOURCESTATEINTERFACE_H
 
-#include <QStringList>
 #include <QSharedPointer>
+#include <QStringList>
 
 #include <Collection>
 #include <Item>

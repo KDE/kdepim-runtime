@@ -8,12 +8,12 @@
 
 #include <QDBusConnection>
 
-#include <KMime/Message>
-#include <KLocalizedString>
-#include "ewsresource_debug.h"
 #include "ewsmtaconfigdialog.h"
 #include "ewsmtasettings.h"
+#include "ewsresource_debug.h"
 #include "ewsresourceinterface.h"
+#include <KLocalizedString>
+#include <KMime/Message>
 
 using namespace Akonadi;
 
@@ -31,9 +31,10 @@ bool EwsMtaResource::connectEws()
     if (mEwsResource) {
         return true;
     }
-    mEwsResource = new OrgKdeAkonadiEwsResourceInterface(
-        QStringLiteral("org.freedesktop.Akonadi.Resource.") + EwsMtaSettings::ewsResource(),
-        QStringLiteral("/"), QDBusConnection::sessionBus(), this);
+    mEwsResource = new OrgKdeAkonadiEwsResourceInterface(QStringLiteral("org.freedesktop.Akonadi.Resource.") + EwsMtaSettings::ewsResource(),
+                                                         QStringLiteral("/"),
+                                                         QDBusConnection::sessionBus(),
+                                                         this);
     if (!mEwsResource->isValid()) {
         delete mEwsResource;
         mEwsResource = nullptr;

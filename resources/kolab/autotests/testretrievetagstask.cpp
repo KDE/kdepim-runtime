@@ -7,13 +7,13 @@
 
 #include "kolabretrievetagstask.h"
 
-#include <Akonadi/CollectionQuotaAttribute>
-#include <Akonadi/AttributeFactory>
-#include <akonadi/qtest_akonadi.h>
-#include <Akonadi/ServerManager>
-#include <Akonadi/CollectionCreateJob>
-#include <akonadi/virtualresource.h>
 #include "kolabhelpers.h"
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/CollectionQuotaAttribute>
+#include <Akonadi/ServerManager>
+#include <akonadi/qtest_akonadi.h>
+#include <akonadi/virtualresource.h>
 #include <kolab/kolabobject.h>
 
 typedef QHash<QString, Akonadi::Item::List> Members;
@@ -59,7 +59,7 @@ private slots:
         item.setRemoteId("20");
         item = resource->createItem(item, mailcol);
 
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<Akonadi::Tag::List>("expectedTags");
         QTest::addColumn<Members>("expectedMembers");
@@ -72,19 +72,19 @@ private slots:
         Kolab::KolabObjectWriter writer;
         QStringList members;
         members << QLatin1String(
-            "imap:///user/john.doe%40example.org/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
+            "imap:///user/john.doe%40example.org/INBOX/"
+            "20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200&subject=Re%3A+test");
         KMime::Message::Ptr msg = writer.writeTag(tag, members);
         // qCDebug(KOLABRESOURCE_LOG) << msg->encodedContent();
 
         const QByteArray &content = msg->encodedContent(true);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"configuration\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"configuration\""
                  << "S: A000003 OK select done"
                  << "C: A000004 FETCH 1:* (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {" + QByteArray::number(content.size()) + "}\r\n"
-            + content + " )"
+                    "RFC822.SIZE 75 BODY[] {"
+                + QByteArray::number(content.size()) + "}\r\n" + content + " )"
                  << "S: A000004 OK fetch done";
 
         callNames.clear();
@@ -117,10 +117,11 @@ private slots:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
-        state->setServerCapabilities(QStringList() << "METADATA" << "ACL");
+        state->setServerCapabilities(QStringList() << "METADATA"
+                                                   << "ACL");
         state->setUserName("Hans");
         KolabRetrieveTagTask *task = new KolabRetrieveTagTask(state, KolabRetrieveTagTask::RetrieveTags);
 
@@ -138,7 +139,7 @@ private slots:
             QCOMPARE(command, callNames[i]);
 
             if (command == "tagsRetrieved") {
-                QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List> > pair = parameter.value<TagListAndMembers>();
+                QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>> pair = parameter.value<TagListAndMembers>();
                 Akonadi::Tag::List tags = pair.first;
                 QHash<QString, Akonadi::Item::List> members = pair.second;
                 QCOMPARE(tags.size(), expectedTags.size());

@@ -14,10 +14,10 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <itemfetchscope.h>
+#include <AkonadiCore/ServerManager>
 #include <MailTransportAkonadi/SentActionAttribute>
 #include <MailTransportAkonadi/SentBehaviourAttribute>
-#include <AkonadiCore/ServerManager>
+#include <itemfetchscope.h>
 
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
@@ -25,8 +25,8 @@
 #include <KNotification>
 #include <Kdelibs4ConfigMigrator>
 
-#include <QTimer>
 #include <QDBusConnection>
+#include <QTimer>
 
 #ifdef MAIL_SERIALIZER_PLUGIN_STATIC
 
@@ -75,9 +75,7 @@ void MailDispatcherAgent::dispatch()
             mSentItemsSize = 0;
             Q_EMIT percent(0);
         }
-        Q_EMIT status(AgentBase::Running,
-                      i18np("Sending messages (1 item in queue)...",
-                            "Sending messages (%1 items in queue)...", mQueue->count()));
+        Q_EMIT status(AgentBase::Running, i18np("Sending messages (1 item in queue)...", "Sending messages (%1 items in queue)...", mQueue->count()));
         qCDebug(MAILDISPATCHER_LOG) << "Attempting to dispatch the next message.";
         mSendingInProgress = true;
         mQueue->fetchOne(); // will trigger itemFetched
@@ -128,11 +126,9 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     new SettingsAdaptor(Settings::self());
     new MailDispatcherAgentAdaptor(this);
 
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(), QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), Settings::self(), QDBusConnection::ExportAdaptors);
 
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/MailDispatcherAgent"),
-                                                 this, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/MailDispatcherAgent"), this, QDBusConnection::ExportAdaptors);
     QString service = QStringLiteral("org.freedesktop.Akonadi.MailDispatcherAgent");
     if (Akonadi::ServerManager::hasInstanceIdentifier()) {
         service += QLatin1Char('.') + Akonadi::ServerManager::instanceIdentifier();
@@ -141,16 +137,11 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     QDBusConnection::sessionBus().registerService(service);
 
     mQueue = new OutboxQueue(this);
-    connect(mQueue, &OutboxQueue::newItems,
-            this, &MailDispatcherAgent::dispatch);
-    connect(mQueue, &OutboxQueue::itemReady,
-            this, &MailDispatcherAgent::itemFetched);
-    connect(mQueue, &OutboxQueue::error,
-            this, &MailDispatcherAgent::queueError);
-    connect(this, &MailDispatcherAgent::itemProcessed,
-            mQueue, &OutboxQueue::itemProcessed);
-    connect(this, &MailDispatcherAgent::abortRequested,
-            this, &MailDispatcherAgent::abort);
+    connect(mQueue, &OutboxQueue::newItems, this, &MailDispatcherAgent::dispatch);
+    connect(mQueue, &OutboxQueue::itemReady, this, &MailDispatcherAgent::itemFetched);
+    connect(mQueue, &OutboxQueue::error, this, &MailDispatcherAgent::queueError);
+    connect(this, &MailDispatcherAgent::itemProcessed, mQueue, &OutboxQueue::itemProcessed);
+    connect(this, &MailDispatcherAgent::abortRequested, this, &MailDispatcherAgent::abort);
 
     mSentActionHandler = new SentActionHandler(this);
 
@@ -194,14 +185,12 @@ void MailDispatcherAgent::itemFetched(const Item &item)
         mCurrentJob->setMarkAborted();
     }
 
-    Q_EMIT status(AgentBase::Running, i18nc("Message with given subject is being sent.", "Sending: %1",
-                                            item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
+    Q_EMIT status(AgentBase::Running,
+                  i18nc("Message with given subject is being sent.", "Sending: %1", item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
 
-    connect(mCurrentJob, &KJob::result,
-            this, &MailDispatcherAgent::sendResult);
-    //TODO wait kf6. For the moment we can't convert to new connect api.
-    connect(mCurrentJob, SIGNAL(percent(KJob*,ulong)),
-            this, SLOT(sendPercent(KJob*,ulong)));
+    connect(mCurrentJob, &KJob::result, this, &MailDispatcherAgent::sendResult);
+    // TODO wait kf6. For the moment we can't convert to new connect api.
+    connect(mCurrentJob, SIGNAL(percent(KJob *, ulong)), this, SLOT(sendPercent(KJob *, ulong)));
 
     mCurrentJob->start();
 }
@@ -224,14 +213,13 @@ void MailDispatcherAgent::sendPercent(KJob *job, unsigned long)
     // Give the transport 80% of the weight, and move-to-sendmail 20%.
     const double transportWeight = 0.8;
 
-    const int percentValue = 100 * (mSentItemsSize + job->processedAmount(KJob::Bytes) * transportWeight)
-                             / (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize());
+    const int percentValue =
+        100 * (mSentItemsSize + job->processedAmount(KJob::Bytes) * transportWeight) / (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize());
 
-    qCDebug(MAILDISPATCHER_LOG) << "sentItemsSize" << mSentItemsSize
-                                << "this job processed" << job->processedAmount(KJob::Bytes)
-                                << "queue totalSize" << mQueue->totalSize()
-                                << "total total size (sent+current+queue)" << (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize())
-                                << "new percentage" << percentValue << "old percentage" << progress();
+    qCDebug(MAILDISPATCHER_LOG) << "sentItemsSize" << mSentItemsSize << "this job processed" << job->processedAmount(KJob::Bytes) << "queue totalSize"
+                                << mQueue->totalSize() << "total total size (sent+current+queue)"
+                                << (mSentItemsSize + mCurrentItem.size() + mQueue->totalSize()) << "new percentage" << percentValue << "old percentage"
+                                << progress();
 
     if (percentValue != progress()) {
         // The progress can decrease too, if messages got added to the queue.
@@ -239,9 +227,7 @@ void MailDispatcherAgent::sendPercent(KJob *job, unsigned long)
     }
 
     // It is possible that the number of queued messages has changed.
-    Q_EMIT status(AgentBase::Running,
-                  i18np("Sending messages (1 item in queue)...",
-                        "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
+    Q_EMIT status(AgentBase::Running, i18np("Sending messages (1 item in queue)...", "Sending messages (%1 items in queue)...", 1 + mQueue->count()));
 }
 
 void MailDispatcherAgent::sendResult(KJob *job)

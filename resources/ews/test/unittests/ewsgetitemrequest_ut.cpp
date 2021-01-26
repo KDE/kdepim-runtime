@@ -15,6 +15,7 @@ class UtEwsGetItemRequest : public QObject
     Q_OBJECT
 private Q_SLOTS:
     void twoFailures();
+
 private:
     void verifier(FakeTransferJob *job, const QByteArray &req, const QByteArray &expReq, const QByteArray &resp);
 
@@ -23,49 +24,65 @@ private:
 
 void UtEwsGetItemRequest::twoFailures()
 {
-    static const QByteArray request = "<?xml version=\"1.0\"?>"
-                                      "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                                      "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                                      "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                                      "<soap:Header>"
-                                      "<t:RequestServerVersion Version=\"Exchange2007_SP1\"/></soap:Header>"
-                                      "<soap:Body>"
-                                      "<m:GetItem>"
-                                      "<m:ItemShape><t:BaseShape>IdOnly</t:BaseShape></m:ItemShape>"
-                                      "<m:ItemIds>"
-                                      "<t:ItemId Id=\"DdBTBAvLHI8OyQ3K\" ChangeKey=\"6yDDqXl+\"/>"
-                                      "<t:ItemId Id=\"CgIdfZGT3QJrWZHi\" ChangeKey=\"wPjRsOpg\"/>"
-                                      "<t:ItemId Id=\"Enxw15n4imIERH4w\" ChangeKey=\"82pEQQIj\"/>"
-                                      "<t:ItemId Id=\"yV1OhxPOinZ7mxpK\" ChangeKey=\"B22tdkME\"/>"
-                                      "<t:ItemId Id=\"j1ptydBqXKJLuCiB\" ChangeKey=\"z0u+e6/Z\"/>"
-                                      "<t:ItemId Id=\"ogM0ejAHml/og1tZ\" ChangeKey=\"f2t/ou/g\"/>"
-                                      "<t:ItemId Id=\"ZqDVkG1gIrUkJDGB\" ChangeKey=\"0LOh2uE+\"/>"
-                                      "<t:ItemId Id=\"SFYgXaYm1DK+0TCs\" ChangeKey=\"Zbkp+aB4\"/>"
-                                      "<t:ItemId Id=\"UrNr/v4HynI062u/\" ChangeKey=\"WMjq6rUe\"/>"
-                                      "</m:ItemIds>"
-                                      "</m:GetItem>"
-                                      "</soap:Body>"
-                                      "</soap:Envelope>\n";
-    static const QByteArray response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                                       "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-                                       "<s:Header>"
-                                       "<h:ServerVersionInfo MajorVersion=\"14\" MinorVersion=\"3\" MajorBuildNumber=\"266\" MinorBuildNumber=\"1\" Version=\"Exchange2010_SP2\" xmlns:h=\"http://schemas.microsoft.com/exchange/services/2006/types\" xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"/>"
-                                       "</s:Header>"
-                                       "<s:Body xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
-                                       "<m:GetItemResponse xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                                       "<m:ResponseMessages>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"DdBTBAvLHI8OyQ3K\" ChangeKey=\"6yDDqXl+\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"CgIdfZGT3QJrWZHi\" ChangeKey=\"wPjRsOpg\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"Enxw15n4imIERH4w\" ChangeKey=\"82pEQQIj\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"yV1OhxPOinZ7mxpK\" ChangeKey=\"B22tdkME\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"j1ptydBqXKJLuCiB\" ChangeKey=\"z0u+e6/Z\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"ogM0ejAHml/og1tZ\" ChangeKey=\"f2t/ou/g\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"ZqDVkG1gIrUkJDGB\" ChangeKey=\"0LOh2uE+\"/></t:Message></m:Items></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Error\"><m:MessageText>The specified object was not found in the store.</m:MessageText><m:ResponseCode>ErrorItemNotFound</m:ResponseCode><m:DescriptiveLinkKey>0</m:DescriptiveLinkKey><m:Items/></m:GetItemResponseMessage>"
-                                       "<m:GetItemResponseMessage ResponseClass=\"Error\"><m:MessageText>The specified object was not found in the store.</m:MessageText><m:ResponseCode>ErrorItemNotFound</m:ResponseCode><m:DescriptiveLinkKey>0</m:DescriptiveLinkKey><m:Items/></m:GetItemResponseMessage>"
-                                       "</m:ResponseMessages></m:GetItemResponse></s:Body></s:Envelope>";
+    static const QByteArray request =
+        "<?xml version=\"1.0\"?>"
+        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+        "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+        "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+        "<soap:Header>"
+        "<t:RequestServerVersion Version=\"Exchange2007_SP1\"/></soap:Header>"
+        "<soap:Body>"
+        "<m:GetItem>"
+        "<m:ItemShape><t:BaseShape>IdOnly</t:BaseShape></m:ItemShape>"
+        "<m:ItemIds>"
+        "<t:ItemId Id=\"DdBTBAvLHI8OyQ3K\" ChangeKey=\"6yDDqXl+\"/>"
+        "<t:ItemId Id=\"CgIdfZGT3QJrWZHi\" ChangeKey=\"wPjRsOpg\"/>"
+        "<t:ItemId Id=\"Enxw15n4imIERH4w\" ChangeKey=\"82pEQQIj\"/>"
+        "<t:ItemId Id=\"yV1OhxPOinZ7mxpK\" ChangeKey=\"B22tdkME\"/>"
+        "<t:ItemId Id=\"j1ptydBqXKJLuCiB\" ChangeKey=\"z0u+e6/Z\"/>"
+        "<t:ItemId Id=\"ogM0ejAHml/og1tZ\" ChangeKey=\"f2t/ou/g\"/>"
+        "<t:ItemId Id=\"ZqDVkG1gIrUkJDGB\" ChangeKey=\"0LOh2uE+\"/>"
+        "<t:ItemId Id=\"SFYgXaYm1DK+0TCs\" ChangeKey=\"Zbkp+aB4\"/>"
+        "<t:ItemId Id=\"UrNr/v4HynI062u/\" ChangeKey=\"WMjq6rUe\"/>"
+        "</m:ItemIds>"
+        "</m:GetItem>"
+        "</soap:Body>"
+        "</soap:Envelope>\n";
+    static const QByteArray response =
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+        "<s:Header>"
+        "<h:ServerVersionInfo MajorVersion=\"14\" MinorVersion=\"3\" MajorBuildNumber=\"266\" MinorBuildNumber=\"1\" Version=\"Exchange2010_SP2\" "
+        "xmlns:h=\"http://schemas.microsoft.com/exchange/services/2006/types\" xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\" "
+        "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"/>"
+        "</s:Header>"
+        "<s:Body xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
+        "<m:GetItemResponse xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+        "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+        "<m:ResponseMessages>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"DdBTBAvLHI8OyQ3K\" "
+        "ChangeKey=\"6yDDqXl+\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"CgIdfZGT3QJrWZHi\" "
+        "ChangeKey=\"wPjRsOpg\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"Enxw15n4imIERH4w\" "
+        "ChangeKey=\"82pEQQIj\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"yV1OhxPOinZ7mxpK\" "
+        "ChangeKey=\"B22tdkME\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"j1ptydBqXKJLuCiB\" "
+        "ChangeKey=\"z0u+e6/Z\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"ogM0ejAHml/og1tZ\" "
+        "ChangeKey=\"f2t/ou/g\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Success\"><m:ResponseCode>NoError</m:ResponseCode><m:Items><t:Message><t:ItemId Id=\"ZqDVkG1gIrUkJDGB\" "
+        "ChangeKey=\"0LOh2uE+\"/></t:Message></m:Items></m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Error\"><m:MessageText>The specified object was not found in the "
+        "store.</m:MessageText><m:ResponseCode>ErrorItemNotFound</m:ResponseCode><m:DescriptiveLinkKey>0</m:DescriptiveLinkKey><m:Items/></"
+        "m:GetItemResponseMessage>"
+        "<m:GetItemResponseMessage ResponseClass=\"Error\"><m:MessageText>The specified object was not found in the "
+        "store.</m:MessageText><m:ResponseCode>ErrorItemNotFound</m:ResponseCode><m:DescriptiveLinkKey>0</m:DescriptiveLinkKey><m:Items/></"
+        "m:GetItemResponseMessage>"
+        "</m:ResponseMessages></m:GetItemResponse></s:Body></s:Envelope>";
 
-    FakeTransferJob::addVerifier(this, [this](FakeTransferJob *job, const QByteArray &req){
+    FakeTransferJob::addVerifier(this, [this](FakeTransferJob *job, const QByteArray &req) {
         verifier(job, req, request, response);
     });
     QScopedPointer<EwsGetItemRequest> req(new EwsGetItemRequest(mClient, this));
@@ -88,17 +105,15 @@ void UtEwsGetItemRequest::twoFailures()
     QCOMPARE(req->error(), 0);
     QCOMPARE(req->responses().size(), ids.size());
 
-    static const QList<EwsResponseClass> respClasses = {
-        EwsResponseSuccess,
-        EwsResponseSuccess,
-        EwsResponseSuccess,
-        EwsResponseSuccess,
-        EwsResponseSuccess,
-        EwsResponseSuccess,
-        EwsResponseSuccess,
-        EwsResponseError,
-        EwsResponseError
-    };
+    static const QList<EwsResponseClass> respClasses = {EwsResponseSuccess,
+                                                        EwsResponseSuccess,
+                                                        EwsResponseSuccess,
+                                                        EwsResponseSuccess,
+                                                        EwsResponseSuccess,
+                                                        EwsResponseSuccess,
+                                                        EwsResponseSuccess,
+                                                        EwsResponseError,
+                                                        EwsResponseError};
     QList<EwsResponseClass>::const_iterator respClassesIt = respClasses.begin();
     EwsId::List::const_iterator idsIt = ids.cbegin();
     unsigned i = 0;

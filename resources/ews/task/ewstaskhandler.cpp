@@ -8,9 +8,9 @@
 
 #include <KCalendarCore/Todo>
 
+#include "ewscreatetaskjob.h"
 #include "ewsfetchtaskdetailjob.h"
 #include "ewsmodifytaskjob.h"
-#include "ewscreatetaskjob.h"
 
 using namespace Akonadi;
 
@@ -56,7 +56,8 @@ EwsModifyItemJob *EwsTaskHandler::modifyItemJob(EwsClient &client, const QVector
     return new EwsModifyTaskJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsTaskHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *
+EwsTaskHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
 {
     return new EwsCreateTaskJob(client, item, collection, tagStore, parent);
 }

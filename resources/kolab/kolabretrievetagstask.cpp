@@ -9,10 +9,10 @@
 #include "kolabresource_trace.h"
 #include "tagchangehelper.h"
 
-#include <kimap/selectjob.h>
-#include <kimap/fetchjob.h>
-#include <imapflags.h>
 #include "pimkolab/kolabformat/kolabobject.h"
+#include <imapflags.h>
+#include <kimap/fetchjob.h>
+#include <kimap/selectjob.h>
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)
@@ -27,8 +27,7 @@ void KolabRetrieveTagTask::startRelationTask(KIMAP::Session *session)
 
     auto select = new KIMAP::SelectJob(session);
     select->setMailBox(mailBox);
-    connect(select, &KJob::result,
-            this, &KolabRetrieveTagTask::onFinalSelectDone);
+    connect(select, &KJob::result, this, &KolabRetrieveTagTask::onFinalSelectDone);
     select->start();
 }
 
@@ -57,10 +56,8 @@ void KolabRetrieveTagTask::onFinalSelectDone(KJob *job)
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Full;
     fetch->setScope(scope);
-    connect(fetch, &KIMAP::FetchJob::messagesAvailable,
-            this, &KolabRetrieveTagTask::onMessagesAvailable);
-    connect(fetch, &KJob::result,
-            this, &KolabRetrieveTagTask::onHeadersFetchDone);
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable, this, &KolabRetrieveTagTask::onMessagesAvailable);
+    connect(fetch, &KJob::result, this, &KolabRetrieveTagTask::onHeadersFetchDone);
     fetch->start();
 }
 
@@ -92,13 +89,13 @@ void KolabRetrieveTagTask::onMessagesAvailable(const QMap<qint64, KIMAP::Message
 
 Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &member)
 {
-    //TODO should we create a dummy item if it isn't yet available?
+    // TODO should we create a dummy item if it isn't yet available?
     Akonadi::Item i;
     if (!member.gid.isEmpty()) {
-        //Reference by GID
+        // Reference by GID
         i.setGid(member.gid);
     } else {
-        //Reference by imap uid
+        // Reference by imap uid
         if (member.uid < 0) {
             return Akonadi::Item();
         }
@@ -106,7 +103,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
         qCDebug(KOLABRESOURCE_LOG) << "got member: " << member.uid << member.mailbox;
         Akonadi::Collection parent;
         {
-            //The root collection is not part of the mailbox path
+            // The root collection is not part of the mailbox path
             Akonadi::Collection col;
             col.setRemoteId(rootRemoteId());
             col.setParentCollection(Akonadi::Collection::root());
@@ -136,7 +133,7 @@ void KolabRetrieveTagTask::extractTag(const Kolab::KolabObjectReader &reader, qi
     for (const QString &memberUrl : lstMemberUrl) {
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
         const Akonadi::Item i = extractMember(member);
-        //TODO implement fallback to search if uid is not available
+        // TODO implement fallback to search if uid is not available
         if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
             members << i;
         } else {
@@ -153,7 +150,7 @@ void KolabRetrieveTagTask::extractRelation(const Kolab::KolabObjectReader &reade
     for (const QString &memberUrl : lstMemberUrl) {
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberUrl);
         const Akonadi::Item i = extractMember(member);
-        //TODO implement fallback to search if uid is not available
+        // TODO implement fallback to search if uid is not available
         if (!i.remoteId().isEmpty() || !i.gid().isEmpty()) {
             members << i;
         } else {

@@ -14,13 +14,17 @@
 #include "etebaseadapter.h"
 #include "etesyncclientstate.h"
 
-namespace EteSyncAPI {
+namespace EteSyncAPI
+{
 class EntriesFetchJob : public KJob
 {
     Q_OBJECT
 
 public:
-    explicit EntriesFetchJob(const EteSyncClientState *mClientState, const Akonadi::Collection &collection, EtebaseCollectionPtr etesyncCollection, QObject *parent = nullptr);
+    explicit EntriesFetchJob(const EteSyncClientState *mClientState,
+                             const Akonadi::Collection &collection,
+                             EtebaseCollectionPtr etesyncCollection,
+                             QObject *parent = nullptr);
 
     void start() override;
 
@@ -50,6 +54,6 @@ private:
     Akonadi::Item::List mItems;
     Akonadi::Item::List mRemovedItems;
 };
-}  // namespace EteSyncAPI
+} // namespace EteSyncAPI
 
 #endif

@@ -9,18 +9,20 @@
 #ifndef OXA_DAVUTILS_H
 #define OXA_DAVUTILS_H
 
-#include <QString>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
+#include <QString>
 
-namespace OXA {
+namespace OXA
+{
 /**
  * Namespace that contains methods for creating or modifying DAV XML documents.
  *
  * @author Tobias Koenig <tokoe@kde.org>
  */
-namespace DAVUtils {
+namespace DAVUtils
+{
 /**
  * Adds a new element with the given @p tag inside the DAV namespace under @p parentNode
  * to the @p document.

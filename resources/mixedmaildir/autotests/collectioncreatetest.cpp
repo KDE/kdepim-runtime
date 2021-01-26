@@ -15,9 +15,9 @@
 
 #include <QTemporaryDir>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 
 using namespace Akonadi;
 
@@ -26,7 +26,8 @@ class CollectionCreateTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionCreateTest() : QObject()
+    CollectionCreateTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -87,12 +88,9 @@ void CollectionCreateTest::testCollectionProperties()
 
     QCOMPARE(collection1.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
 
-    QCOMPARE(collection1.rights(), Collection::CanCreateItem
-             |Collection::CanChangeItem
-             |Collection::CanDeleteItem
-             |Collection::CanCreateCollection
-             |Collection::CanChangeCollection
-             |Collection::CanDeleteCollection);
+    QCOMPARE(collection1.rights(),
+             Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem | Collection::CanCreateCollection
+                 | Collection::CanChangeCollection | Collection::CanDeleteCollection);
 }
 
 void CollectionCreateTest::testEmptyDir()
@@ -191,7 +189,7 @@ void CollectionCreateTest::testMaildirTree()
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
     QVERIFY(job != nullptr);
 
-    QVERIFY(job->exec());   // works because it already exists
+    QVERIFY(job->exec()); // works because it already exists
     QCOMPARE(job->error(), 0);
 
     collection1 = job->collection();
@@ -236,7 +234,7 @@ void CollectionCreateTest::testMaildirTree()
     job = mStore->createCollection(collection1_2, collection1);
     QVERIFY(job != nullptr);
 
-    QVERIFY(job->exec());   // works because it already exists
+    QVERIFY(job->exec()); // works because it already exists
     QCOMPARE(job->error(), 0);
 
     collection1_2 = job->collection();
@@ -268,7 +266,7 @@ void CollectionCreateTest::testMixedTree()
     job = mStore->createCollection(collection1, mStore->topLevelCollection());
     QVERIFY(job != nullptr);
 
-    QVERIFY(!job->exec());   // fails, there is an MBox with that name
+    QVERIFY(!job->exec()); // fails, there is an MBox with that name
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
     collection1 = job->collection();

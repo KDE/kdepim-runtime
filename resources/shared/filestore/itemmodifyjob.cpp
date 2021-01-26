@@ -13,7 +13,8 @@ using namespace Akonadi;
 class FileStore::ItemModifyJob::Private
 {
 public:
-    Private() : mIgnorePayload(false)
+    Private()
+        : mIgnorePayload(false)
     {
     }
 

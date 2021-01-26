@@ -7,10 +7,10 @@
 #ifndef REPLACEMESSAGEJOB_H
 #define REPLACEMESSAGEJOB_H
 
+#include <KIMAP/ImapSet>
+#include <KIMAP/Session>
 #include <KJob>
 #include <KMime/Message>
-#include <KIMAP/Session>
-#include <KIMAP/ImapSet>
 
 /**
  * This job appends a message, marks the old one as deleted, and returns the uid of the appended message.
@@ -19,7 +19,12 @@ class ReplaceMessageJob : public KJob
 {
     Q_OBJECT
 public:
-    ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext = -1, const KIMAP::ImapSet &oldUids = KIMAP::ImapSet(), QObject *parent = nullptr);
+    ReplaceMessageJob(const KMime::Message::Ptr &msg,
+                      KIMAP::Session *session,
+                      const QString &mailbox,
+                      qint64 uidNext = -1,
+                      const KIMAP::ImapSet &oldUids = KIMAP::ImapSet(),
+                      QObject *parent = nullptr);
 
     qint64 newUid() const;
 

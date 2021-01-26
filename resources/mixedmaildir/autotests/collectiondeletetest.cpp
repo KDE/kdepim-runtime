@@ -13,9 +13,9 @@
 
 #include <QTemporaryDir>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 
 using namespace Akonadi;
 
@@ -24,7 +24,8 @@ class CollectionDeleteTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionDeleteTest() : QObject()
+    CollectionDeleteTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -212,8 +213,7 @@ void CollectionDeleteTest::testLeaves()
     KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     // simulate second level mbox in maildir parent
-    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                          QStringLiteral("collection1_1"));
+    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()), QStringLiteral("collection1_1"));
     QFile file1_1(fileInfo1_1.absoluteFilePath());
     file1_1.open(QIODevice::WriteOnly);
     file1_1.close();
@@ -242,8 +242,7 @@ void CollectionDeleteTest::testLeaves()
     KPIM::Maildir md4_1(md4.addSubFolder(QStringLiteral("collection4_1")), false);
 
     // simulate second level mbox in mbox parent
-    QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
-                          QStringLiteral("collection4_2"));
+    QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(), QStringLiteral("collection4_2"));
     QFile file4_2(fileInfo4_2.absoluteFilePath());
     file4_2.open(QIODevice::WriteOnly);
     file4_2.close();
@@ -384,8 +383,7 @@ void CollectionDeleteTest::testSubTrees()
     KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     // simulate second level mbox in maildir parent
-    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                          QStringLiteral("collection1_1"));
+    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()), QStringLiteral("collection1_1"));
     QFile file1_1(fileInfo1_1.absoluteFilePath());
     file1_1.open(QIODevice::WriteOnly);
     file1_1.close();
@@ -405,8 +403,7 @@ void CollectionDeleteTest::testSubTrees()
     KPIM::Maildir md2_1(md2.addSubFolder(QStringLiteral("collection2_1")), false);
 
     // simulate second level mbox in mbox parent
-    QFileInfo fileInfo2_2(subDirInfo2.absoluteFilePath(),
-                          QStringLiteral("collection2_2"));
+    QFileInfo fileInfo2_2(subDirInfo2.absoluteFilePath(), QStringLiteral("collection2_2"));
     QFile file2_2(fileInfo2_2.absoluteFilePath());
     file2_2.open(QIODevice::WriteOnly);
     file2_2.close();

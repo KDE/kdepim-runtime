@@ -19,8 +19,15 @@
  *
  */
 
-//From MailClient::send
-KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const QString &cc, const QString &subject, const QString &body, bool hidden, bool bccMe, const QString &attachment /*, const QString &mailTransport */)
+// From MailClient::send
+KMime::Message::Ptr createMessage(const QString &from,
+                                  const QString &_to,
+                                  const QString &cc,
+                                  const QString &subject,
+                                  const QString &body,
+                                  bool hidden,
+                                  bool bccMe,
+                                  const QString &attachment /*, const QString &mailTransport */)
 {
     Q_UNUSED(hidden)
 
@@ -33,11 +40,9 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
     if (to.isEmpty()) {
         to = from;
     }
-    qCDebug(PIMKOLAB_LOG) << "\nFrom:" << from
-                          << "\nTo:" << to
-                          << "\nCC:" << cc
-                          << "\nSubject:" << subject << "\nBody: \n" << body
-                          << "\nAttachment:\n" << attachment
+    qCDebug(PIMKOLAB_LOG) << "\nFrom:" << from << "\nTo:" << to << "\nCC:" << cc << "\nSubject:" << subject << "\nBody: \n"
+                          << body << "\nAttachment:\n"
+                          << attachment
         /*<< "\nmailTransport: " << mailTransport*/;
 
     // Now build the message we like to send. The message KMime::Message::Ptr instance
@@ -52,7 +57,7 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
     message->to()->fromUnicodeString(to, "utf-8");
     message->cc()->fromUnicodeString(cc, "utf-8");
     if (bccMe) {
-        message->bcc()->fromUnicodeString(from, "utf-8"); //from==me, right?
+        message->bcc()->fromUnicodeString(from, "utf-8"); // from==me, right?
     }
     message->date()->setDateTime(QDateTime::currentDateTime());
     message->subject()->fromUnicodeString(subject, "utf-8");
@@ -64,8 +69,7 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
         message->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
 
         if (!attachment.isEmpty()) {
-            auto *disposition
-                = new KMime::Headers::ContentDisposition();
+            auto *disposition = new KMime::Headers::ContentDisposition();
             disposition->setDisposition(KMime::Headers::CDinline);
             message->setHeader(disposition);
             message->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
@@ -83,8 +87,7 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
 
         // Set the first multipart, the body message.
         auto bodyMessage = new KMime::Content;
-        auto *bodyDisposition
-            = new KMime::Headers::ContentDisposition();
+        auto *bodyDisposition = new KMime::Headers::ContentDisposition();
         bodyDisposition->setDisposition(KMime::Headers::CDinline);
         bodyMessage->contentType()->setMimeType("text/plain");
         bodyMessage->contentType()->setCharset("utf-8");
@@ -95,14 +98,12 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
         // Set the sedcond multipart, the attachment.
         if (!attachment.isEmpty()) {
             auto attachMessage = new KMime::Content;
-            auto *attachDisposition
-                = new KMime::Headers::ContentDisposition();
+            auto *attachDisposition = new KMime::Headers::ContentDisposition();
             attachDisposition->setDisposition(KMime::Headers::CDattachment);
             attachMessage->contentType()->setMimeType("text/calendar");
             attachMessage->contentType()->setCharset("utf-8");
             attachMessage->contentType()->setName(QStringLiteral("cal.ics"), "utf-8");
-            attachMessage->contentType()->setParameter(QStringLiteral("method"),
-                                                       QStringLiteral("request"));
+            attachMessage->contentType()->setParameter(QStringLiteral("method"), QStringLiteral("request"));
             attachMessage->setHeader(attachDisposition);
             attachMessage->contentTransferEncoding()->setEncoding(KMime::Headers::CEquPr);
             attachMessage->setBody(KMime::CRLFtoLF(attachment.toUtf8()));
@@ -115,10 +116,11 @@ KMime::Message::Ptr createMessage(const QString &from, const QString &_to, const
     return message;
 }
 
-//From MailClient::mailAttendees
+// From MailClient::mailAttendees
 QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
-//                                 const KPIMIdentities::Identity &identity,
-                         bool bccMe, const QString &attachment
+                         //                                 const KPIMIdentities::Identity &identity,
+                         bool bccMe,
+                         const QString &attachment
                          /*const QString &mailTransport */)
 {
     KCalendarCore::Attendee::List attendees = incidence->attendees();
@@ -157,8 +159,7 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
         tname += QLatin1String(" <") + email + QLatin1Char('>');
 
         // Optional Participants and Non-Participants are copied on the email
-        if (a.role() == KCalendarCore::Attendee::OptParticipant
-            || a.role() == KCalendarCore::Attendee::NonParticipant) {
+        if (a.role() == KCalendarCore::Attendee::OptParticipant || a.role() == KCalendarCore::Attendee::NonParticipant) {
             ccList << tname;
         } else {
             toList << tname;
@@ -186,16 +187,17 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
         subject = QStringLiteral("Free Busy Object");
     }
 
-    const QString body
-        = KCalUtils::IncidenceFormatter::mailBodyStr(incidence);
+    const QString body = KCalUtils::IncidenceFormatter::mailBodyStr(incidence);
 
-    return createMessage(/* identity, */ from, to, cc, subject, body, false,
-                         bccMe, attachment /*, mailTransport */)->encodedContent();
+    return createMessage(/* identity, */ from, to, cc, subject, body, false, bccMe, attachment /*, mailTransport */)->encodedContent();
 }
 
 QByteArray mailOrganizer(const KCalendarCore::IncidenceBase::Ptr &incidence,
-//                                 const KPIMIdentities::Identity &identity,
-                         const QString &from, bool bccMe, const QString &attachment, const QString &sub /*, const QString &mailTransport*/)
+                         //                                 const KPIMIdentities::Identity &identity,
+                         const QString &from,
+                         bool bccMe,
+                         const QString &attachment,
+                         const QString &sub /*, const QString &mailTransport*/)
 {
     const QString to = incidence->organizer().fullName();
     QString subject = sub;
@@ -211,6 +213,5 @@ QByteArray mailOrganizer(const KCalendarCore::IncidenceBase::Ptr &incidence,
 
     QString body = KCalUtils::IncidenceFormatter::mailBodyStr(incidence);
 
-    return createMessage(/*identity, */ from, to, QString(), subject, body, false,
-                         bccMe, attachment /*, mailTransport */)->encodedContent();
+    return createMessage(/*identity, */ from, to, QString(), subject, body, false, bccMe, attachment /*, mailTransport */)->encodedContent();
 }

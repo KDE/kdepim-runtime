@@ -5,8 +5,8 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include <QDebug>
 #include <QApplication>
+#include <QDebug>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"

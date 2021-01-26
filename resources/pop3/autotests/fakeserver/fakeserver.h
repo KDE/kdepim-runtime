@@ -8,10 +8,10 @@
 #ifndef FAKESERVER_H
 #define FAKESERVER_H
 
-#include <QTcpSocket>
-#include <QTcpServer>
-#include <QThread>
 #include <QMutex>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QThread>
 
 class FakeServer : public QObject
 {
@@ -46,7 +46,6 @@ private Q_SLOTS:
     void slotDisconnected();
 
 private:
-
     QByteArray parseDeleteMark(const QByteArray &expectedData, const QByteArray &dataReceived);
     QByteArray parseRetrMark(const QByteArray &expectedData, const QByteArray &dataReceived);
     QByteArray parseResponse(const QByteArray &expectedData, const QByteArray &dataReceived);
@@ -74,7 +73,6 @@ class FakeServerThread : public QThread
     Q_OBJECT
 
 public:
-
     explicit FakeServerThread(QObject *parent);
     void run() override;
 
@@ -85,7 +83,6 @@ public:
     FakeServer *server() const;
 
 private:
-
     FakeServer *mServer = nullptr;
 };
 

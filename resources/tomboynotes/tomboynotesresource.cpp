@@ -8,16 +8,16 @@
 #include "debug.h"
 #include "settings.h"
 #include "settingsadaptor.h"
-#include "tomboyserverauthenticatejob.h"
 #include "tomboycollectionsdownloadjob.h"
 #include "tomboyitemdownloadjob.h"
 #include "tomboyitemsdownloadjob.h"
 #include "tomboyitemuploadjob.h"
-#include <changerecorder.h>
+#include "tomboyserverauthenticatejob.h"
 #include <ItemFetchScope>
 #include <KLocalizedString>
-#include <QSslCipher>
 #include <QDBusConnection>
+#include <QSslCipher>
+#include <changerecorder.h>
 
 using namespace Akonadi;
 
@@ -26,9 +26,7 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
 {
     Settings::instance(KSharedConfig::openConfig());
     new SettingsAdaptor(Settings::self());
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 Settings::self(),
-                                                 QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), Settings::self(), QDBusConnection::ExportAdaptors);
 
     // Akonadi:Item should always provide the payload
     changeRecorder()->itemFetchScope().fetchFullPayload(true);

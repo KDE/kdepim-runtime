@@ -7,8 +7,8 @@
  */
 
 #include "kalarmresource.h"
-#include "kalarmresourcecommon.h"
 #include "kalarmresource_debug.h"
+#include "kalarmresourcecommon.h"
 
 #include <KAlarmCal/CompatibilityAttribute>
 #include <KAlarmCal/KAEvent>
@@ -18,8 +18,8 @@
 #include <collectionfetchscope.h>
 #include <collectionmodifyjob.h>
 
-#include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/Incidence>
+#include <KCalendarCore/MemoryCalendar>
 
 #include <QRegularExpression>
 
@@ -41,7 +41,7 @@ KAlarmResource::KAlarmResource(const QString &id)
     connect(mSettings, &Settings::configChanged, this, &KAlarmResource::settingsChanged);
 
     // Start a job to fetch the collection attributes
-    fetchCollection(SLOT(collectionFetchResult(KJob*)));
+    fetchCollection(SLOT(collectionFetchResult(KJob *)));
 }
 
 KAlarmResource::~KAlarmResource()
@@ -49,8 +49,8 @@ KAlarmResource::~KAlarmResource()
 }
 
 /******************************************************************************
-* Reimplemented to fetch collection attributes after creating the collection.
-*/
+ * Reimplemented to fetch collection attributes after creating the collection.
+ */
 void KAlarmResource::retrieveCollections()
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "retrieveCollections";
@@ -66,14 +66,14 @@ void KAlarmResource::retrieveCollections()
             setName(mSettings->displayName());
         }
         ICalResourceBase::retrieveCollections();
-        fetchCollection(SLOT(collectionFetchResult(KJob*)));
+        fetchCollection(SLOT(collectionFetchResult(KJob *)));
     }
 }
 
 /******************************************************************************
-* Called when the collection fetch job completes.
-* Check the calendar file's compatibility status if pending.
-*/
+ * Called when the collection fetch job completes.
+ * Check the calendar file's compatibility status if pending.
+ */
 void KAlarmResource::collectionFetchResult(KJob *j)
 {
     if (j->error()) {
@@ -105,7 +105,7 @@ void KAlarmResource::collectionFetchResult(KJob *j)
                 mSettings->setAlarmTypes(c.contentMimeTypes());
                 mSettings->setReadOnly((c.rights() & writableRights) != writableRights);
                 mSettings->save();
-                synchronize();   // tell the server to use the new config
+                synchronize(); // tell the server to use the new config
             }
 
             // Read the file if it already exists. If it's a new file, this will
@@ -120,22 +120,22 @@ void KAlarmResource::collectionFetchResult(KJob *j)
 }
 
 /******************************************************************************
-* Reimplemented to read data from the given file.
-* This is called every time the resource starts up (see SingleFileResourceBase
-* constructor).
-* Find the calendar file's compatibility with the current KAlarm format.
-* The file is always local; loading from the network is done automatically if
-* needed.
-*/
+ * Reimplemented to read data from the given file.
+ * This is called every time the resource starts up (see SingleFileResourceBase
+ * constructor).
+ * Find the calendar file's compatibility with the current KAlarm format.
+ * The file is always local; loading from the network is done automatically if
+ * needed.
+ */
 bool KAlarmResource::readFromFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "readFromFile:" << fileName;
     // Check if we're reading the calendar file after writing a backup file.
     if (mBackupFile == fileName) {
-        mBackupFile.clear();   // the "backup" file was actually the calendar file
+        mBackupFile.clear(); // the "backup" file was actually the calendar file
     }
 
-//TODO Notify user if error occurs on next line
+    // TODO Notify user if error occurs on next line
     if (!ICalResourceBase::readFromFile(fileName)) {
         return false;
     }
@@ -155,27 +155,24 @@ bool KAlarmResource::readFromFile(const QString &fileName)
 }
 
 /******************************************************************************
-* To be called when the collection attributes have been fetched, or if they
-* have changed.
-* Check if the recorded calendar version and compatibility are different from
-* the actual backend file, and if necessary convert the calendar in memory to
-* the current version.
-* If 'createAttribute' is true, the CompatibilityAttribute will be created if
-* it does not already exist.
-*/
+ * To be called when the collection attributes have been fetched, or if they
+ * have changed.
+ * Check if the recorded calendar version and compatibility are different from
+ * the actual backend file, and if necessary convert the calendar in memory to
+ * the current version.
+ * If 'createAttribute' is true, the CompatibilityAttribute will be created if
+ * it does not already exist.
+ */
 void KAlarmResource::checkFileCompatibility(const Collection &collection, bool createAttribute)
 {
-    if (collection.isValid()
-        && collection.hasAttribute<CompatibilityAttribute>()) {
+    if (collection.isValid() && collection.hasAttribute<CompatibilityAttribute>()) {
         // Update our note of the calendar version and compatibility
         const auto *attr = collection.attribute<CompatibilityAttribute>();
         mCompatibility = attr->compatibility();
         mVersion = attr->version();
         createAttribute = false;
     }
-    if (mHaveReadFile
-        && (createAttribute
-            || mFileCompatibility != mCompatibility || mFileVersion != mVersion)) {
+    if (mHaveReadFile && (createAttribute || mFileCompatibility != mCompatibility || mFileVersion != mVersion)) {
         // The actual file's version and compatibility are different from
         // those in the Akonadi database, so update the database attributes.
         mCompatibility = mFileCompatibility;
@@ -184,15 +181,15 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
         if (c.isValid()) {
             KAlarmResourceCommon::setCollectionCompatibility(c, mCompatibility, mVersion);
         } else {
-            fetchCollection(SLOT(setCompatibility(KJob*)));
+            fetchCollection(SLOT(setCompatibility(KJob *)));
         }
     }
 }
 
 /******************************************************************************
-* Called when a collection fetch job completes.
-* Set the compatibility attribute for the collection.
-*/
+ * Called when a collection fetch job completes.
+ * Set the compatibility attribute for the collection.
+ */
 void KAlarmResource::setCompatibility(KJob *j)
 {
     auto job = static_cast<CollectionFetchJob *>(j);
@@ -206,9 +203,9 @@ void KAlarmResource::setCompatibility(KJob *j)
 }
 
 /******************************************************************************
-* Reimplemented to write data to the given file.
-* The file is always local.
-*/
+ * Reimplemented to write data to the given file.
+ * The file is always local.
+ */
 bool KAlarmResource::writeToFile(const QString &fileName)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "writeToFile:" << fileName;
@@ -226,18 +223,18 @@ bool KAlarmResource::writeToFile(const QString &fileName)
     // when an external process changes the calendar file.
     QRegularExpression re(QStringLiteral("-\\d+$"));
     if (re.match(fileName).hasMatch()) {
-        mBackupFile = fileName;   // it looks like a backup file
+        mBackupFile = fileName; // it looks like a backup file
     }
 
     return ICalResourceBase::writeToFile(fileName);
 }
 
 /******************************************************************************
-* Retrieve an event from the calendar, whose uid and Akonadi id are given by
-* 'item' (item.remoteId() and item.id() respectively).
-* Set the event into a new item's payload, and signal its retrieval by calling
-* itemRetrieved(newitem).
-*/
+ * Retrieve an event from the calendar, whose uid and Akonadi id are given by
+ * 'item' (item.remoteId() and item.id() respectively).
+ * Set the event into a new item's payload, and signal its retrieval by calling
+ * itemRetrieved(newitem).
+ */
 bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
@@ -269,10 +266,10 @@ bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteA
 }
 
 /******************************************************************************
-* Called when the resource settings have changed.
-* Update the supported mime types if the AlarmTypes setting has changed.
-* Update the storage format if UpdateStorageFormat setting = true.
-*/
+ * Called when the resource settings have changed.
+ * Update the supported mime types if the AlarmTypes setting has changed.
+ * Update the storage format if UpdateStorageFormat setting = true.
+ */
 void KAlarmResource::settingsChanged()
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "settingsChanged";
@@ -285,14 +282,14 @@ void KAlarmResource::settingsChanged()
         // This is a flag to request that the backend calendar storage format should
         // be updated to the current KAlarm format.
         qCDebug(KALARMRESOURCE_LOG) << identifier() << "Update storage format";
-        fetchCollection(SLOT(updateFormat(KJob*)));
+        fetchCollection(SLOT(updateFormat(KJob *)));
     }
 }
 
 /******************************************************************************
-* Called when a collection fetch job completes.
-* Update the backend calendar storage format to the current KAlarm format.
-*/
+ * Called when a collection fetch job completes.
+ * Update the backend calendar storage format to the current KAlarm format.
+ */
 void KAlarmResource::updateFormat(KJob *j)
 {
     auto job = static_cast<CollectionFetchJob *>(j);
@@ -317,8 +314,7 @@ void KAlarmResource::updateFormat(KJob *j)
             qCWarning(KALARMRESOURCE_LOG) << identifier() << "updateFormat: Incompatible storage format: compat=" << mCompatibility;
             break;
         case KACalendar::Converted:
-        case KACalendar::Convertible:
-        {
+        case KACalendar::Convertible: {
             if (mSettings->readOnly()) {
                 qCWarning(KALARMRESOURCE_LOG) << identifier() << "updateFormat: Cannot update storage format for a read-only resource";
                 break;
@@ -350,10 +346,10 @@ void KAlarmResource::updateFormat(KJob *j)
 }
 
 /******************************************************************************
-* Called when an item has been added to the collection.
-* Store the event in the calendar, and set its Akonadi remote ID to the
-* KAEvent's UID.
-*/
+ * Called when an item has been added to the collection.
+ * Store the event in the calendar, and set its Akonadi remote ID to the
+ * KAEvent's UID.
+ */
 void KAlarmResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &)
 {
     if (!checkItemAddedChanged<KAEvent>(item, CheckForAdded)) {
@@ -380,9 +376,9 @@ void KAlarmResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
 }
 
 /******************************************************************************
-* Called when an item has been changed.
-* Store the changed event in the calendar, and delete the original event.
-*/
+ * Called when an item has been changed.
+ * Store the changed event in the calendar, and delete the original event.
+ */
 void KAlarmResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
@@ -413,7 +409,7 @@ void KAlarmResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArra
             return;
         }
         if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
-            calendar()->deleteIncidence(incidence);   // it's not an Event
+            calendar()->deleteIncidence(incidence); // it's not an Event
             incidence.clear();
         } else {
             KCalendarCore::Event::Ptr ev(incidence.staticCast<KCalendarCore::Event>());
@@ -432,9 +428,9 @@ void KAlarmResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArra
 }
 
 /******************************************************************************
-* Called when a collection has been changed.
-* Determine the calendar file's storage format.
-*/
+ * Called when a collection has been changed.
+ * Determine the calendar file's storage format.
+ */
 void KAlarmResource::collectionChanged(const Akonadi::Collection &collection)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "collectionChanged";
@@ -446,21 +442,21 @@ void KAlarmResource::collectionChanged(const Akonadi::Collection &collection)
 }
 
 /******************************************************************************
-* Return whether the resource is read-only.
-*/
+ * Return whether the resource is read-only.
+ */
 bool KAlarmResource::readOnly() const
 {
     return mFileChangedReadOnly || ICalResourceBase::readOnly();
 }
 
 /******************************************************************************
-* Retrieve all events from the calendar, and set each into a new item's
-* payload. Items are identified by their remote IDs. The Akonadi ID is not
-* used.
-* This overrides ICalResourceBase::retrieveItems(), so that if the calendar
-* file has been changed by another process, reloadFile() will not rewrite the
-* calendar file.
-*/
+ * Retrieve all events from the calendar, and set each into a new item's
+ * payload. Items are identified by their remote IDs. The Akonadi ID is not
+ * used.
+ * This overrides ICalResourceBase::retrieveItems(), so that if the calendar
+ * file has been changed by another process, reloadFile() will not rewrite the
+ * calendar file.
+ */
 void KAlarmResource::retrieveItems(const Akonadi::Collection &col)
 {
     if (!mBackupFile.isEmpty()) {
@@ -478,15 +474,15 @@ void KAlarmResource::retrieveItems(const Akonadi::Collection &col)
 }
 
 /******************************************************************************
-* Retrieve all events from the calendar, and set each into a new item's
-* payload. Items are identified by their remote IDs. The Akonadi ID is not
-* used.
-* Signal the retrieval of the items by calling itemsRetrieved(items), which
-* updates Akonadi with any changes to the items. itemsRetrieved() compares
-* the new and old items, matching them on the remoteId(). If the flags or
-* payload have changed, or the Item has any new Attributes, the Akonadi
-* storage is updated.
-*/
+ * Retrieve all events from the calendar, and set each into a new item's
+ * payload. Items are identified by their remote IDs. The Akonadi ID is not
+ * used.
+ * Signal the retrieval of the items by calling itemsRetrieved(items), which
+ * updates Akonadi with any changes to the items. itemsRetrieved() compares
+ * the new and old items, matching them on the remoteId(). If the flags or
+ * payload have changed, or the Item has any new Attributes, the Akonadi
+ * storage is updated.
+ */
 void KAlarmResource::doRetrieveItems(const Akonadi::Collection &collection)
 {
     qCDebug(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItems";
@@ -500,14 +496,14 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection &collection)
     for (const KCalendarCore::Event::Ptr &kcalEvent : qAsConst(events)) {
         if (kcalEvent->alarms().isEmpty()) {
             qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItems: KCalendarCore::Event has no alarms:" << kcalEvent->uid();
-            continue;    // ignore events without alarms
+            continue; // ignore events without alarms
         }
 
         const KAEvent event(kcalEvent);
         const QString mime = CalEvent::mimeType(event.category());
         if (mime.isEmpty()) {
             qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItems: KAEvent has no alarms:" << event.id();
-            continue;   // event has no usable alarms
+            continue; // event has no usable alarms
         }
 
         Item item(mime);
@@ -519,13 +515,13 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection &collection)
 }
 
 /******************************************************************************
-* Execute a CollectionFetchJob to fetch details of this resource's collection.
-*/
+ * Execute a CollectionFetchJob to fetch details of this resource's collection.
+ */
 CollectionFetchJob *KAlarmResource::fetchCollection(const char *slot)
 {
     CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
-    connect(job, SIGNAL(result(KJob*)), slot);
+    connect(job, SIGNAL(result(KJob *)), slot);
     return job;
 }
 

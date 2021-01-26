@@ -9,38 +9,38 @@
 
 #include "kolabdefinitions.h"
 
-#include "kolabformatV2/kolabbase.h"
-#include "kolabformatV2/journal.h"
-#include "kolabformatV2/task.h"
-#include "kolabformatV2/event.h"
+#include "kolabformat/errorhandler.h"
 #include "kolabformatV2/contact.h"
 #include "kolabformatV2/distributionlist.h"
+#include "kolabformatV2/event.h"
+#include "kolabformatV2/journal.h"
+#include "kolabformatV2/kolabbase.h"
 #include "kolabformatV2/note.h"
+#include "kolabformatV2/task.h"
 #include "mime/mimeutils.h"
-#include "kolabformat/errorhandler.h"
 
-#include <kcontacts/contactgroup.h>
-#include <kcontacts/addressee.h>
 #include <KCalendarCore/Incidence>
 #include <kcalendarcore/event.h>
+#include <kcontacts/addressee.h>
+#include <kcontacts/contactgroup.h>
 #include <kmime/kmime_message.h>
 
-#include <qdom.h>
 #include <akonadi/notes/noteutils.h>
+#include <qdom.h>
 
-namespace Kolab {
+namespace Kolab
+{
 /*
  * Parse XML, create KCalendarCore container and extract attachments
  */
-template<typename KCalPtr, typename Container>
-static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
+template<typename KCalPtr, typename Container> static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
 {
-    const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData));   //TODO extract function from V2 format
+    const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData)); // TODO extract function from V2 format
     if (xmlDoc.isNull()) {
         Critical() << "Failed to read the xml document";
         return KCalPtr();
     }
-    const KCalPtr i = Container::fromXml(xmlDoc, QString());   //For parsing we don't need the timezone, so we don't set one
+    const KCalPtr i = Container::fromXml(xmlDoc, QString()); // For parsing we don't need the timezone, so we don't set one
     Q_ASSERT(i);
     const QDomNodeList nodes = xmlDoc.elementsByTagName(QStringLiteral("inline-attachment"));
     for (int i = 0; i < nodes.size(); i++) {
@@ -63,7 +63,7 @@ static inline IncidencePtr incidenceFromKolabImpl(const KMime::Message::Ptr &dat
     const QByteArray &xmlData = xmlContent->decodedContent();
 
     QStringList attachments;
-    IncidencePtr ptr = fromXML<IncidencePtr, Converter>(xmlData, attachments); //TODO do we care about timezone?
+    IncidencePtr ptr = fromXML<IncidencePtr, Converter>(xmlData, attachments); // TODO do we care about timezone?
     getAttachments(ptr, attachments, data);
 
     return ptr;

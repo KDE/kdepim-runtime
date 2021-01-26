@@ -74,7 +74,7 @@ public:
     void dump() const;
 
 protected:
-    typedef std::function<bool (QXmlStreamReader &reader)> ContentReaderFn;
+    typedef std::function<bool(QXmlStreamReader &reader)> ContentReaderFn;
 
     void doSend();
     void prepare(const QString &body);
@@ -89,6 +89,7 @@ protected:
 protected Q_SLOTS:
     void requestResult(KJob *job);
     virtual void requestData(KIO::Job *job, const QByteArray &data);
+
 private:
     bool readSoapBody(QXmlStreamReader &reader);
     bool readSoapFault(QXmlStreamReader &reader);

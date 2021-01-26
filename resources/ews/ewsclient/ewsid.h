@@ -34,15 +34,12 @@ class QXmlStreamReader;
 class EwsId
 {
 public:
-    enum Type {
-        Distinguished,
-        Real,
-        Unspecified
-    };
+    enum Type { Distinguished, Real, Unspecified };
 
     typedef QList<EwsId> List;
 
-    explicit EwsId(EwsDistinguishedId did) : mType(Distinguished)
+    explicit EwsId(EwsDistinguishedId did)
+        : mType(Distinguished)
         , mDid(did)
     {
     }
@@ -58,7 +55,8 @@ public:
         *this = std::move(id);
     }
 
-    EwsId() : mType(Unspecified)
+    EwsId()
+        : mType(Unspecified)
         , mDid(EwsDIdCalendar)
     {
     }
@@ -95,6 +93,7 @@ public:
     void writeAttributes(QXmlStreamWriter &writer) const;
 
     friend QDebug operator<<(QDebug debug, const EwsId &id);
+
 private:
     Type mType;
     QString mId;

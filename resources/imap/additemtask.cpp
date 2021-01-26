@@ -82,8 +82,7 @@ void AddItemTask::onAppendMessageDone(KJob *job)
             auto select = new KIMAP::SelectJob(session);
             select->setMailBox(mailBox);
 
-            connect(select, &KJob::result,
-                    this, &AddItemTask::onPreSearchSelectDone);
+            connect(select, &KJob::result, this, &AddItemTask::onPreSearchSelectDone);
 
             select->start();
         } else {
@@ -119,15 +118,10 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
             search->deleteLater();
             return;
         }
-        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
-            KIMAP::Term(KIMAP::Term::New),
-            KIMAP::Term(KIMAP::Term::Uid,
-                        KIMAP::ImapSet(uidNext->uidNext(), 0))
-        }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {KIMAP::Term(KIMAP::Term::New), KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(uidNext->uidNext(), 0))}));
     }
 
-    connect(search, &KJob::result,
-            this, &AddItemTask::onSearchDone);
+    connect(search, &KJob::result, this, &AddItemTask::onSearchDone);
 
     search->start();
 }

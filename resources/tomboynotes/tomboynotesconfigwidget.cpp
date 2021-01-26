@@ -6,8 +6,8 @@
 */
 
 #include "tomboynotesconfigwidget.h"
-#include "ui_tomboynotesagentconfigwidget.h"
 #include "settings.h"
+#include "ui_tomboynotesagentconfigwidget.h"
 #include <KConfigDialogManager>
 #include <KLocalizedString>
 

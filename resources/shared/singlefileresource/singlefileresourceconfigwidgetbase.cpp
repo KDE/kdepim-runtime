@@ -11,9 +11,9 @@
 #include <KIO/Job>
 #include <QTimer>
 
+#include <KConfigDialogManager>
 #include <KLocalizedString>
 #include <KSharedConfig>
-#include <KConfigDialogManager>
 
 #include <QPushButton>
 #include <QTabBar>

@@ -7,14 +7,14 @@
 
 #include "removecollectionrecursivetask.h"
 
+#include "imapresource_debug.h"
 #include <Akonadi/KMime/MessageFlags>
+#include <KLocalizedString>
+#include <kimap/closejob.h>
 #include <kimap/deletejob.h>
 #include <kimap/expungejob.h>
 #include <kimap/selectjob.h>
 #include <kimap/storejob.h>
-#include <kimap/closejob.h>
-#include <KLocalizedString>
-#include "imapresource_debug.h"
 
 Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
 
@@ -35,24 +35,23 @@ void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
     auto listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
-            this, &RemoveCollectionRecursiveTask::onMailBoxesReceived);
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &RemoveCollectionRecursiveTask::onMailBoxesReceived);
     connect(listJob, &KIMAP::ListJob::result, this, &RemoveCollectionRecursiveTask::onJobDone);
     listJob->start();
 }
 
-void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList<QByteArray> > &)
+void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &)
 {
     const QString mailBox = mailBoxForCollection(collection());
 
     // We have to delete the deepest-nested folders first, so
     // we use a map here that has the level of nesting as key.
-    QMultiMap<int, KIMAP::MailBoxDescriptor > foldersToDelete;
+    QMultiMap<int, KIMAP::MailBoxDescriptor> foldersToDelete;
 
     for (int i = 0; i < descriptors.size(); ++i) {
-        const KIMAP::MailBoxDescriptor descriptor = descriptors[ i ];
+        const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
 
-        if (descriptor.name == mailBox || descriptor.name.startsWith(mailBox + descriptor.separator)) {     // a sub folder to delete
+        if (descriptor.name == mailBox || descriptor.name.startsWith(mailBox + descriptor.separator)) { // a sub folder to delete
             const QStringList pathParts = descriptor.name.split(descriptor.separator);
             foldersToDelete.insert(pathParts.count(), descriptor);
         }
@@ -65,7 +64,7 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList< KIMAP::Mail
     mFolderFound = true;
 
     // Now start the actual deletion work
-    mFolderIterator.reset(new QMapIterator<int, KIMAP::MailBoxDescriptor >(foldersToDelete));
+    mFolderIterator.reset(new QMapIterator<int, KIMAP::MailBoxDescriptor>(foldersToDelete));
     mFolderIterator->toBack(); // we start with largest nesting value first
 
     deleteNextMailbox();
@@ -91,7 +90,7 @@ void RemoveCollectionRecursiveTask::deleteNextMailbox()
     // mark all items as deleted
     // This step shouldn't be required, but apparently some servers don't allow deleting, non empty mailboxes (although they should).
     KIMAP::ImapSet allItems;
-    allItems.add(KIMAP::ImapInterval(1, 0));     // means 1:*
+    allItems.add(KIMAP::ImapInterval(1, 0)); // means 1:*
     auto storeJob = new KIMAP::StoreJob(mSession);
     storeJob->setSequenceSet(allItems);
     storeJob->setFlags(KIMAP::MessageFlags() << Akonadi::MessageFlags::Deleted);

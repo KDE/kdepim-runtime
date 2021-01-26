@@ -6,13 +6,13 @@
 
 #include "journalsfetchjob.h"
 
-#include <QtConcurrent>
-#include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/CollectionColorAttribute>
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
+#include <AkonadiCore/EntityDisplayAttribute>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
+#include <QtConcurrent>
+#include <kcontacts/addressee.h>
+#include <kcontacts/contactgroup.h>
 
 #include "etesync_debug.h"
 
@@ -66,7 +66,10 @@ void JournalsFetchJob::fetchJournals()
         etebase_fetch_options_set_limit(fetchOptions.get(), COLLECTIONS_FETCH_BATCH_SIZE);
         etebase_fetch_options_set_prefetch(fetchOptions.get(), ETEBASE_PREFETCH_OPTION_MEDIUM);
 
-        EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list_multi(collectionManager.get(), ETESYNC_COLLECTION_TYPES, ETEBASE_UTILS_C_ARRAY_LEN(ETESYNC_COLLECTION_TYPES), fetchOptions.get()));
+        EtebaseCollectionListResponsePtr collectionList(etebase_collection_manager_list_multi(collectionManager.get(),
+                                                                                              ETESYNC_COLLECTION_TYPES,
+                                                                                              ETEBASE_UTILS_C_ARRAY_LEN(ETESYNC_COLLECTION_TYPES),
+                                                                                              fetchOptions.get()));
         if (!collectionList) {
             setError(int(etebase_error_get_code()));
             const char *err = etebase_error_get_message();

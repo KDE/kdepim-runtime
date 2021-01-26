@@ -7,10 +7,11 @@
 #ifndef AKONADI_COLLECTIONFLAGSATTRIBUTE_H
 #define AKONADI_COLLECTIONFLAGSATTRIBUTE_H
 
-#include <attribute.h>
 #include "akonadi-singlefileresource_export.h"
+#include <attribute.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionFlagsAttribute : public Akonadi::Attribute
 {
 public:

@@ -60,13 +60,16 @@ KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransp
     return KIAuth::ClearText; // dummy value, shouldn't get here.
 }
 
-Settings::Settings(WId winId) : SettingsBase()
+Settings::Settings(WId winId)
+    : SettingsBase()
     , m_winId(winId)
 {
     load();
 
     new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this, QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                 this,
+                                                 QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 }
 
 void Settings::setWinId(WId winId)
@@ -92,11 +95,10 @@ void Settings::requestPassword()
         || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         Q_EMIT passwordRequestCompleted(m_password, false);
     } else {
-        //Already async. Just port to ReadPassword
+        // Already async. Just port to ReadPassword
         Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
         if (wallet) {
-            connect(wallet, &KWallet::Wallet::walletOpened,
-                    this, &Settings::onWalletOpened);
+            connect(wallet, &KWallet::Wallet::walletOpened, this, &Settings::onWalletOpened);
         } else {
             QMetaObject::invokeMethod(this, "onWalletOpened", Qt::QueuedConnection, Q_ARG(bool, true));
         }
@@ -134,7 +136,7 @@ QString Settings::password(bool *userRejected) const
         || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         return m_password;
     }
-    //Move as async
+    // Move as async
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QStringLiteral("imap"))) {
@@ -160,7 +162,7 @@ QString Settings::sieveCustomPassword(bool *userRejected) const
         return m_customSievePassword;
     }
 
-    //Move as async
+    // Move as async
     Wallet *wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId);
     if (wallet && wallet->isOpen()) {
         if (wallet->hasFolder(QStringLiteral("imap"))) {
@@ -237,8 +239,8 @@ void Settings::loadAccount(ImapAccount *account) const
         account->setEncryptionMode(KIMAP::LoginJob::Unencrypted);
     }
 
-    //Some SSL Server fail to advertise an ssl version they support (AnySslVersion),
-    //we therefore allow overriding this in the config
+    // Some SSL Server fail to advertise an ssl version they support (AnySslVersion),
+    // we therefore allow overriding this in the config
     //(so we don't have to make the UI unnecessarily complex for properly working servers).
     const QString overrideEncryptionMode = overrideEncryption();
     if (!overrideEncryptionMode.isEmpty()) {
@@ -260,11 +262,7 @@ void Settings::loadAccount(ImapAccount *account) const
         }
     }
 
-    account->setAuthenticationMode(
-        mapTransportAuthToKimap(
-            (MailTransport::TransportBase::EnumAuthenticationType::type)authentication()
-            )
-        );
+    account->setAuthenticationMode(mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()));
 
     account->setTimeout(sessionTimeout());
 }
@@ -278,11 +276,9 @@ void Settings::renameRootCollection(const QString &newName)
 {
     Akonadi::Collection rootCollection;
     rootCollection.setRemoteId(rootRemoteId());
-    auto *fetchJob
-        = new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
+    auto *fetchJob = new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
     fetchJob->setProperty("collectionName", newName);
-    connect(fetchJob, &KJob::result,
-            this, &Settings::onRootCollectionFetched);
+    connect(fetchJob, &KJob::result, this, &Settings::onRootCollectionFetched);
 }
 
 void Settings::onRootCollectionFetched(KJob *job)

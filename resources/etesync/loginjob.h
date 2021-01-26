@@ -12,7 +12,8 @@
 #include "etebaseadapter.h"
 #include "etesyncclientstate.h"
 
-namespace EteSyncAPI {
+namespace EteSyncAPI
+{
 class LoginJob : public KJob
 {
     Q_OBJECT

@@ -9,7 +9,8 @@
 #include <QUrlQuery>
 Q_LOGGING_CATEGORY(EWSCLI_LOG, "org.kde.pim.ews.client", QtInfoMsg)
 
-namespace Mock {
+namespace Mock
+{
 QPointer<QWebEngineView> QWebEngineView::instance;
 QPointer<QOAuth2AuthorizationCodeFlow> QOAuth2AuthorizationCodeFlow::instance;
 
@@ -264,8 +265,7 @@ void QOAuth2AuthorizationCodeFlow::grant()
 
     Q_EMIT logEvent(QStringLiteral("AuthorizeWithBrowser:") + url.toString());
 
-    connect(this, &QAbstractOAuth2::authorizationCallbackReceived, this,
-            &QOAuth2AuthorizationCodeFlow::authCallbackReceived, Qt::UniqueConnection);
+    connect(this, &QAbstractOAuth2::authorizationCallbackReceived, this, &QOAuth2AuthorizationCodeFlow::authCallbackReceived, Qt::UniqueConnection);
 
     Q_EMIT authorizeWithBrowser(url);
 }
@@ -291,10 +291,12 @@ void QOAuth2AuthorizationCodeFlow::doRefreshAccessToken()
         mModifyParamsFunc(Stage::RequestingAccessToken, &map);
     }
 
-    connect(mReplyHandler, &QAbstractOAuthReplyHandler::tokensReceived, this,
-            &QOAuth2AuthorizationCodeFlow::tokenCallbackReceived, Qt::UniqueConnection);
-    connect(mReplyHandler, &QAbstractOAuthReplyHandler::replyDataReceived, this,
-            &QOAuth2AuthorizationCodeFlow::replyDataCallbackReceived, Qt::UniqueConnection);
+    connect(mReplyHandler, &QAbstractOAuthReplyHandler::tokensReceived, this, &QOAuth2AuthorizationCodeFlow::tokenCallbackReceived, Qt::UniqueConnection);
+    connect(mReplyHandler,
+            &QAbstractOAuthReplyHandler::replyDataReceived,
+            this,
+            &QOAuth2AuthorizationCodeFlow::replyDataCallbackReceived,
+            Qt::UniqueConnection);
 
     if (mTokenFunc) {
         QNetworkReply reply(this);
@@ -377,14 +379,21 @@ QString browserDisplayRequestString()
 QString modifyParamsAuthString(const QString &clientId, const QString &returnUri, const QString &state)
 {
     return QStringLiteral("ModifyParams:RequestingAuthorization:client_id=%1&redirect_uri=%2&response_type=code&scope&state=%3")
-           .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(returnUri)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
+        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)),
+             QString::fromLatin1(QUrl::toPercentEncoding(returnUri)),
+             QString::fromLatin1(QUrl::toPercentEncoding(state)));
 }
 
-QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri, const QString &email, const QString &resource, const QString &state)
+QString
+authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri, const QString &email, const QString &resource, const QString &state)
 {
     return QStringLiteral("%1?client_id=%2&login_hint=%3&prompt=login&redirect_uri=%4&resource=%5&response_type=code&scope&state=%6")
-           .arg(authUrl, QString::fromLatin1(QUrl::toPercentEncoding(clientId)), email, QString::fromLatin1(QUrl::toPercentEncoding(returnUri)),
-                QString::fromLatin1(QUrl::toPercentEncoding(resource)), QString::fromLatin1(QUrl::toPercentEncoding(state)));
+        .arg(authUrl,
+             QString::fromLatin1(QUrl::toPercentEncoding(clientId)),
+             email,
+             QString::fromLatin1(QUrl::toPercentEncoding(returnUri)),
+             QString::fromLatin1(QUrl::toPercentEncoding(resource)),
+             QString::fromLatin1(QUrl::toPercentEncoding(state)));
 }
 
 QString authorizeWithBrowserString(const QString &url)
@@ -415,8 +424,9 @@ QString authorizationCallbackReceivedString(const QString &code)
 QString modifyParamsTokenString(const QString &clientId, const QString &returnUri, const QString &code)
 {
     return QStringLiteral("ModifyParams:RequestingAccessToken:client_id=%1&code=%2&grant_type=authorization_code&redirect_uri=%3")
-           .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)), QString::fromLatin1(QUrl::toPercentEncoding(code)),
-                QString::fromLatin1(QUrl::toPercentEncoding(returnUri)));
+        .arg(QString::fromUtf8(QUrl::toPercentEncoding(clientId)),
+             QString::fromLatin1(QUrl::toPercentEncoding(code)),
+             QString::fromLatin1(QUrl::toPercentEncoding(returnUri)));
 }
 
 QString networkReplyFinishedString(const QString &data)
@@ -429,12 +439,25 @@ QString replyDataCallbackString(const QString &data)
     return QStringLiteral("ReplyDataCallback:") + data;
 }
 
-QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime, const QString &resource)
+QString tokenCallbackString(const QString &accessToken,
+                            const QString &refreshToken,
+                            const QString &idToken,
+                            quint64 time,
+                            unsigned int tokenLifetime,
+                            unsigned int extTokenLifetime,
+                            const QString &resource)
 {
     return QStringLiteral(
-        "TokenCallback:access_token=%1&expires_in=%2&expires_on=%3&ext_expires_in=%4&foci=1&id_token=%5&not_before=%6&refresh_token=%7&resource=%8&scope=ReadWrite.All&token_type=Bearer")
-           .arg(accessToken).arg(tokenLifetime).arg(time + tokenLifetime).arg(extTokenLifetime).arg(idToken).arg(time)
-           .arg(refreshToken).arg(resource);
+               "TokenCallback:access_token=%1&expires_in=%2&expires_on=%3&ext_expires_in=%4&foci=1&id_token=%5&not_before=%6&refresh_token=%7&resource=%8&"
+               "scope=ReadWrite.All&token_type=Bearer")
+        .arg(accessToken)
+        .arg(tokenLifetime)
+        .arg(time + tokenLifetime)
+        .arg(extTokenLifetime)
+        .arg(idToken)
+        .arg(time)
+        .arg(refreshToken)
+        .arg(resource);
 }
 
 QString requestWalletMapString()

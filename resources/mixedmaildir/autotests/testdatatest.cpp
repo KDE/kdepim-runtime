@@ -9,8 +9,8 @@
 
 #include <QTemporaryDir>
 
-#include <QTest>
 #include <QDir>
+#include <QTest>
 
 class TestDataTest : public QObject
 {
@@ -28,12 +28,9 @@ private Q_SLOTS:
 void TestDataTest::testResources()
 {
     const QStringList testDataNames = TestDataUtil::testDataNames();
-    QCOMPARE(testDataNames, QStringList() << QStringLiteral("dimap")
-                                          << QStringLiteral("maildir")
-                                          << QStringLiteral("maildir-tagged")
-                                          << QStringLiteral("mbox")
-                                          << QStringLiteral("mbox-tagged")
-                                          << QStringLiteral("mbox-unpurged"));
+    QCOMPARE(testDataNames,
+             QStringList() << QStringLiteral("dimap") << QStringLiteral("maildir") << QStringLiteral("maildir-tagged") << QStringLiteral("mbox")
+                           << QStringLiteral("mbox-tagged") << QStringLiteral("mbox-unpurged"));
 
     Q_FOREACH (const QString testDataName, testDataNames) {
         if (testDataName.startsWith(QLatin1String("mbox"))) {

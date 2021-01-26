@@ -7,14 +7,14 @@
 
 #include "imaptestbase.h"
 
-#include "retrievecollectionstask.h"
 #include "noselectattribute.h"
+#include "retrievecollectionstask.h"
 #include <noinferiorsattribute.h>
 
+#include <QTest>
+#include <akonadi/kmime/messageparts.h>
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
-#include <akonadi/kmime/messageparts.h>
-#include <QTest>
 class TestRetrieveCollectionsTask : public ImapTestBase
 {
     Q_OBJECT
@@ -29,7 +29,7 @@ private Q_SLOTS:
     void shouldListCollections_data()
     {
         QTest::addColumn<Akonadi::Collection::List>("expectedCollections");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<bool>("isSubscriptionEnabled");
         QTest::addColumn<bool>("isDisconnectedModeEnabled");
@@ -46,15 +46,13 @@ private Q_SLOTS:
         int intervalCheckTime;
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection()
-                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+        expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( \\HasChildren ) / INBOX"
                  << "S: * LIST ( \\HasChildren ) / INBOX/Calendar"
                  << "S: * LIST ( ) / INBOX/Calendar/Private"
@@ -68,20 +66,17 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("first listing, connected IMAP") << expectedCollections << scenario << callNames
-                                                       << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                       << '/';
+        QTest::newRow("first listing, connected IMAP")
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection(true, 5)
-                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+        expectedCollections << createRootCollection(true, 5) << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( \\HasChildren ) / INBOX"
                  << "S: * LIST ( \\HasChildren ) / INBOX/Calendar"
                  << "S: * LIST ( ) / INBOX/Calendar/Private"
@@ -95,18 +90,15 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = true;
         intervalCheckTime = 5;
 
-        QTest::newRow("first listing, disconnected IMAP") << expectedCollections << scenario << callNames
-                                                          << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                          << '/';
+        QTest::newRow("first listing, disconnected IMAP")
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection(true, 5)
-                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+        expectedCollections << createRootCollection(true, 5) << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( \\HasChildren ) / INBOX"
                  << "S: * LIST ( \\HasChildren ) / INBOX/"
                  << "S: * LIST ( \\HasChildren ) / INBOX/Archives"
@@ -119,20 +111,17 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = true;
         intervalCheckTime = 5;
 
-        QTest::newRow("first listing, spurious INBOX/ (BR: 25342)") << expectedCollections << scenario << callNames
-                                                                    << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                                    << '/';
+        QTest::newRow("first listing, spurious INBOX/ (BR: 25342)")
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection()
-                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+        expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"), true)
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Archives"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( \\HasChildren ) / INBOX"
                  << "S: * LIST ( ) / INBOX/Calendar/Private"
                  << "S: * LIST ( ) / INBOX/Archives"
@@ -145,13 +134,11 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("auto-insert missing nodes in the tree") << expectedCollections << scenario << callNames
-                                                               << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                               << '/';
+        QTest::newRow("auto-insert missing nodes in the tree")
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( ) / INBOX/Archives"
                  << "S: * LIST ( ) / INBOX/Calendar/Private"
                  << "S: * LIST ( \\HasChildren ) / INBOX"
@@ -165,19 +152,15 @@ private Q_SLOTS:
         intervalCheckTime = -1;
 
         QTest::newRow("auto-insert missing nodes in the tree (reverse order)")
-            << expectedCollections << scenario << callNames
-            << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-            << '/';
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection()
-                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
+        expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar"))
                             << createCollection(QStringLiteral("/"), QStringLiteral("INBOX/Calendar/Private"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( ) / INBOX/Unsubscribed"
                  << "S: * LIST ( ) / INBOX/Calendar"
                  << "S: * LIST ( ) / INBOX/Calendar/Private"
@@ -197,12 +180,10 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("subscription enabled") << expectedCollections << scenario << callNames
-                                              << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                              << '/';
+        QTest::newRow("subscription enabled") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled
+                                              << intervalCheckTime << '/';
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( ) / INBOX/Unsubscribed"
                  << "S: * LIST ( ) / INBOX/Calendar"
                  << "S: * LIST ( ) / INBOX/Calendar/Private"
@@ -222,18 +203,15 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("subscription enabled, case insensitive inbox") << expectedCollections << scenario << callNames
-                                                                      << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                                      << '/';
+        QTest::newRow("subscription enabled, case insensitive inbox")
+            << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime << '/';
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection()
-                            << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"), false, true)
+        expectedCollections << createRootCollection() << createCollection(QStringLiteral("/"), QStringLiteral("INBOX"), false, true)
                             << createCollection(QStringLiteral("/"), QStringLiteral("Archive"));
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( \\Noinferiors ) / INBOX"
                  << "S: * LIST ( ) / Archive"
                  << "S: A000003 OK list done";
@@ -245,13 +223,11 @@ private Q_SLOTS:
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("Noinferiors") << expectedCollections << scenario << callNames
-                                     << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
+        QTest::newRow("Noinferiors") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
                                      << '/';
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 LIST \"\" *"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 LIST \"\" *"
                  << "S: * LIST ( ) . INBOX"
                  << "S: * LIST ( ) . INBOX.Foo"
                  << "S: * LIST ( ) . INBOX.Bar"
@@ -260,17 +236,15 @@ private Q_SLOTS:
         callNames << QStringLiteral("setIdleCollection") << QStringLiteral("collectionsRetrieved");
 
         expectedCollections.clear();
-        expectedCollections << createRootCollection()
-                            << createCollection(QStringLiteral("."), QStringLiteral("INBOX"))
+        expectedCollections << createRootCollection() << createCollection(QStringLiteral("."), QStringLiteral("INBOX"))
                             << createCollection(QStringLiteral("."), QStringLiteral("INBOX.Foo"))
                             << createCollection(QStringLiteral("."), QStringLiteral("INBOX.Bar"));
         isSubscriptionEnabled = false;
         isDisconnectedModeEnabled = false;
         intervalCheckTime = -1;
 
-        QTest::newRow("non-standard separators") << expectedCollections << scenario << callNames
-                                                 << isSubscriptionEnabled << isDisconnectedModeEnabled << intervalCheckTime
-                                                 << '.';
+        QTest::newRow("non-standard separators") << expectedCollections << scenario << callNames << isSubscriptionEnabled << isDisconnectedModeEnabled
+                                                 << intervalCheckTime << '.';
     }
 
     void shouldListCollections()
@@ -291,7 +265,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setResourceName(QStringLiteral("resource"));
@@ -349,13 +323,11 @@ private:
         policy.setSyncOnDemand(true);
 
         if (isDisconnectedImap) {
-            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope)
-                                               << QLatin1String(Akonadi::MessagePart::Header)
+            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header)
                                                << QLatin1String(Akonadi::MessagePart::Body));
             policy.setCacheTimeout(-1);
         } else {
-            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope)
-                                               << QLatin1String(Akonadi::MessagePart::Header));
+            policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header));
             policy.setCacheTimeout(60);
         }
 

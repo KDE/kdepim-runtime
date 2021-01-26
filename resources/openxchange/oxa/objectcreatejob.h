@@ -13,7 +13,8 @@
 
 #include "object.h"
 
-namespace OXA {
+namespace OXA
+{
 class ObjectCreateJob : public KJob
 {
     Q_OBJECT

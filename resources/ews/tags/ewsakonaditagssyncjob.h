@@ -11,7 +11,8 @@
 
 class EwsTagStore;
 class EwsClient;
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 }
 
@@ -27,6 +28,7 @@ public:
 private Q_SLOTS:
     void tagFetchFinished(KJob *job);
     void tagWriteFinished(KJob *job);
+
 private:
     EwsTagStore *mTagStore = nullptr;
     EwsClient &mClient;

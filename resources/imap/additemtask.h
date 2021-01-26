@@ -19,7 +19,6 @@ public:
     ~AddItemTask() override;
 
 protected:
-
     void doStart(KIMAP::Session *session) override;
 
 private:

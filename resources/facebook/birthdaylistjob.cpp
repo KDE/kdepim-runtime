@@ -8,16 +8,16 @@
 #include "settings.h"
 #include "tokenjobs.h"
 
-#include <QNetworkCookie>
 #include <QByteArrayMatcher>
+#include <QNetworkCookie>
 #include <QTimeZone>
 
+#include <KCharsets>
 #include <KIO/Job>
 #include <KLocalizedString>
-#include <KCharsets>
 
-#include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
 
 BirthdayListJob::BirthdayListJob(const QString &identifier, const Akonadi::Collection &collection, QObject *parent)
     : KJob(parent)
@@ -38,10 +38,7 @@ QVector<Akonadi::Item> BirthdayListJob::items() const
 KIO::StoredTransferJob *BirthdayListJob::createGetJob(const QUrl &url) const
 {
     auto job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
-    job->setMetaData({ QMap<QString, QString>{
-                           { QStringLiteral("cookies"), QStringLiteral("manual") },
-                           { QStringLiteral("setcookies"), mCookies }
-                       }});
+    job->setMetaData({QMap<QString, QString>{{QStringLiteral("cookies"), QStringLiteral("manual")}, {QStringLiteral("setcookies"), mCookies}}});
     return job;
 }
 
@@ -55,8 +52,7 @@ void BirthdayListJob::emitError(const QString &errorText)
 void BirthdayListJob::start()
 {
     auto tokenJob = new GetTokenJob(mIdentifier, parent());
-    connect(tokenJob, &GetTokenJob::result,
-            this, [this, tokenJob]() {
+    connect(tokenJob, &GetTokenJob::result, this, [this, tokenJob]() {
         if (tokenJob->error()) {
             emitError(tokenJob->errorText());
             return;
@@ -67,8 +63,7 @@ void BirthdayListJob::start()
         mCookies = QStringLiteral("Cookie: ");
         const auto parsedCookies = QNetworkCookie::parseCookies(tokenJob->cookies());
         for (const auto &cookie : parsedCookies) {
-            mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()),
-                                                      QString::fromUtf8(cookie.value()));
+            mCookies += QStringLiteral("%1=%2; ").arg(QString::fromUtf8(cookie.name()), QString::fromUtf8(cookie.value()));
         }
         fetchFacebookEventsPage();
     });
@@ -78,8 +73,7 @@ void BirthdayListJob::start()
 void BirthdayListJob::fetchFacebookEventsPage()
 {
     auto job = createGetJob(QUrl(QStringLiteral("https://www.facebook.com/events/birthdays")));
-    connect(job, &KJob::result,
-            this, [this, job]() {
+    connect(job, &KJob::result, this, [this, job]() {
         if (job->error()) {
             emitError(i18n("Failed to retrieve birthday calendar"));
             return;
@@ -122,8 +116,7 @@ QUrl BirthdayListJob::findBirthdayIcalLink(const QByteArray &data)
 void BirthdayListJob::fetchBirthdayIcal(const QUrl &url)
 {
     auto job = createGetJob(url);
-    connect(job, &KJob::result,
-            this, [this, job]() {
+    connect(job, &KJob::result, this, [this, job]() {
         if (job->error()) {
             emitError(job->errorText());
             return;
@@ -150,8 +143,7 @@ void BirthdayListJob::processEvent(const KCalendarCore::Event::Ptr &event)
     if (Settings::self()->birthdayReminders()) {
         auto alarm = KCalendarCore::Alarm::Ptr::create(event.data());
         alarm->setDisplayAlarm(event->summary());
-        alarm->setStartOffset({ -Settings::self()->birthdayReminderDays(),
-                                KCalendarCore::Duration::Days });
+        alarm->setStartOffset({-Settings::self()->birthdayReminderDays(), KCalendarCore::Duration::Days});
         alarm->setEnabled(true);
         event->addAlarm(alarm);
     }

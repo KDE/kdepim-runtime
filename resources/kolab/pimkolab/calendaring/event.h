@@ -11,8 +11,10 @@
 #include "kolab_export.h"
 #include <icalendar/icalendar.h>
 
-namespace Kolab {
-namespace Calendaring {
+namespace Kolab
+{
+namespace Calendaring
+{
 class KOLAB_EXPORT Event : public Kolab::Event
 {
 public:
@@ -34,15 +36,15 @@ public:
     std::string toMime() const;
 
     enum ITipMethod {
-        iTIPPublish,           /**< Event, to-do, journal or freebusy posting */
-        iTIPRequest,           /**< Event, to-do or freebusy scheduling request */
-        iTIPReply,             /**< Event, to-do or freebusy reply to request */
-        iTIPAdd,               /**< Event, to-do or journal additional property request */
-        iTIPCancel,            /**< Event, to-do or journal cancellation notice */
-        iTIPRefresh,           /**< Event or to-do description update request */
-        iTIPCounter,           /**< Event or to-do submit counter proposal */
-        iTIPDeclineCounter,    /**< Event or to-do decline a counter proposal */
-        iTIPNoMethod           /**< No method */
+        iTIPPublish, /**< Event, to-do, journal or freebusy posting */
+        iTIPRequest, /**< Event, to-do or freebusy scheduling request */
+        iTIPReply, /**< Event, to-do or freebusy reply to request */
+        iTIPAdd, /**< Event, to-do or journal additional property request */
+        iTIPCancel, /**< Event, to-do or journal cancellation notice */
+        iTIPRefresh, /**< Event or to-do description update request */
+        iTIPCounter, /**< Event or to-do submit counter proposal */
+        iTIPDeclineCounter, /**< Event or to-do decline a counter proposal */
+        iTIPNoMethod /**< No method */
     };
 
     bool fromICal(const std::string &);
@@ -59,9 +61,8 @@ public:
     /**
      * Updates the delegators and delegatees of the event.
      *
-     * Creates a new attendee for each missing delegatee (delegators are expected to be existing), and then updates each delegatee with the delegator (delegatedFrom).
-     * Delegators delegatedTo is updated accordingly.
-     * Existing attendees are tried to be found by uid/email/name (in this order).
+     * Creates a new attendee for each missing delegatee (delegators are expected to be existing), and then updates each delegatee with the delegator
+     * (delegatedFrom). Delegators delegatedTo is updated accordingly. Existing attendees are tried to be found by uid/email/name (in this order).
      *
      */
     void delegate(const std::vector<Kolab::Attendee> &delegators, const std::vector<Kolab::Attendee> &delegatees);

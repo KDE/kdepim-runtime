@@ -55,8 +55,7 @@ QList<QByteArray> ImapTestBase::defaultAuthScenario() const
 {
     QList<QByteArray> scenario;
 
-    scenario << FakeServer::greeting()
-             << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
+    scenario << FakeServer::greeting() << "C: A000001 LOGIN \"test@kdab.com\" \"foobar\""
              << "S: A000001 OK User Logged in";
 
     return scenario;
@@ -71,10 +70,7 @@ QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario(const QList<QByteA
         caps += " " + cap;
     }
 
-    scenario << defaultAuthScenario()
-             << "C: A000002 CAPABILITY"
-             << caps
-             << "S: A000002 OK Completed";
+    scenario << defaultAuthScenario() << "C: A000002 CAPABILITY" << caps << "S: A000002 OK Completed";
 
     return scenario;
 }

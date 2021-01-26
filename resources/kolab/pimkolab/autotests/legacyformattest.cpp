@@ -5,17 +5,17 @@
  */
 
 #include "legacyformattest.h"
-#include "kolabformat/xmlobject.h"
 #include "kolabformat/errorhandler.h"
-#include "testutils.h"
+#include "kolabformat/xmlobject.h"
 #include "pimkolab_debug.h"
+#include "testutils.h"
 #include <QTest>
 #include <fstream>
 #include <sstream>
 
 void V2Test::testReadDistlistUID()
 {
-    std::ifstream t((TESTFILEDIR.toStdString()+"v2/contacts/distlistWithUID.xml").c_str());
+    std::ifstream t((TESTFILEDIR.toStdString() + "v2/contacts/distlistWithUID.xml").c_str());
     std::stringstream buffer;
     buffer << t.rdbuf();
 

@@ -12,11 +12,11 @@
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 
-#include "ewsresource_debug.h"
 #include "ewsgetitemrequest.h"
 #include "ewsitemshape.h"
 #include "ewsmailbox.h"
 #include "ewsoccurrence.h"
+#include "ewsresource_debug.h"
 
 using namespace Akonadi;
 
@@ -24,38 +24,38 @@ EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject 
     : EwsFetchItemDetailJob(client, parent, collection)
 {
     EwsItemShape shape(EwsShapeIdOnly);
-/*    shape << EwsPropertyField(QStringLiteral("calendar:UID"));
-    shape << EwsPropertyField(QStringLiteral("item:Subject"));
-    shape << EwsPropertyField(QStringLiteral("item:Body"));
-    shape << EwsPropertyField(QStringLiteral("calendar:Organizer"));
-    shape << EwsPropertyField(QStringLiteral("calendar:RequiredAttendees"));
-    shape << EwsPropertyField(QStringLiteral("calendar:OptionalAttendees"));
-    shape << EwsPropertyField(QStringLiteral("calendar:Resources"));
-    shape << EwsPropertyField(QStringLiteral("calendar:Start"));
-    shape << EwsPropertyField(QStringLiteral("calendar:End"));
-    shape << EwsPropertyField(QStringLiteral("calendar:IsAllDayEvent"));
-    shape << EwsPropertyField(QStringLiteral("calendar:LegacyFreeBusyStatus"));
-    shape << EwsPropertyField(QStringLiteral("calendar:AppointmentSequenceNumber"));
-    shape << EwsPropertyField(QStringLiteral("calendar:IsRecurring"));
-    shape << EwsPropertyField(QStringLiteral("calendar:Recurrence"));
-    shape << EwsPropertyField(QStringLiteral("calendar:FirstOccurrence"));
-    shape << EwsPropertyField(QStringLiteral("calendar:LastOccurrence"));
-    shape << EwsPropertyField(QStringLiteral("calendar:ModifiedOccurrences"));
-    shape << EwsPropertyField(QStringLiteral("calendar:DeletedOccurrences"));
-    shape << EwsPropertyField(QStringLiteral("calendar:StartTimeZone"));
-    shape << EwsPropertyField(QStringLiteral("calendar:EndTimeZone"));
-    shape << EwsPropertyField(QStringLiteral("calendar:MyResponseType"));
-    shape << EwsPropertyField(QStringLiteral("item:HasAttachments"));
-    shape << EwsPropertyField(QStringLiteral("item:Attachments"));*/
+    /*    shape << EwsPropertyField(QStringLiteral("calendar:UID"));
+        shape << EwsPropertyField(QStringLiteral("item:Subject"));
+        shape << EwsPropertyField(QStringLiteral("item:Body"));
+        shape << EwsPropertyField(QStringLiteral("calendar:Organizer"));
+        shape << EwsPropertyField(QStringLiteral("calendar:RequiredAttendees"));
+        shape << EwsPropertyField(QStringLiteral("calendar:OptionalAttendees"));
+        shape << EwsPropertyField(QStringLiteral("calendar:Resources"));
+        shape << EwsPropertyField(QStringLiteral("calendar:Start"));
+        shape << EwsPropertyField(QStringLiteral("calendar:End"));
+        shape << EwsPropertyField(QStringLiteral("calendar:IsAllDayEvent"));
+        shape << EwsPropertyField(QStringLiteral("calendar:LegacyFreeBusyStatus"));
+        shape << EwsPropertyField(QStringLiteral("calendar:AppointmentSequenceNumber"));
+        shape << EwsPropertyField(QStringLiteral("calendar:IsRecurring"));
+        shape << EwsPropertyField(QStringLiteral("calendar:Recurrence"));
+        shape << EwsPropertyField(QStringLiteral("calendar:FirstOccurrence"));
+        shape << EwsPropertyField(QStringLiteral("calendar:LastOccurrence"));
+        shape << EwsPropertyField(QStringLiteral("calendar:ModifiedOccurrences"));
+        shape << EwsPropertyField(QStringLiteral("calendar:DeletedOccurrences"));
+        shape << EwsPropertyField(QStringLiteral("calendar:StartTimeZone"));
+        shape << EwsPropertyField(QStringLiteral("calendar:EndTimeZone"));
+        shape << EwsPropertyField(QStringLiteral("calendar:MyResponseType"));
+        shape << EwsPropertyField(QStringLiteral("item:HasAttachments"));
+        shape << EwsPropertyField(QStringLiteral("item:Attachments"));*/
 
-//    shape << EwsPropertyField(QStringLiteral("item:Attachments"));
+    //    shape << EwsPropertyField(QStringLiteral("item:Attachments"));
     shape << EwsPropertyField(QStringLiteral("calendar:ModifiedOccurrences"));
     shape << EwsPropertyField(QStringLiteral("calendar:DeletedOccurrences"));
     shape << EwsPropertyField(QStringLiteral("item:Body"));
-//    shape << EwsPropertyField(QStringLiteral("item:Culture"));
+    //    shape << EwsPropertyField(QStringLiteral("item:Culture"));
     shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
     shape << EwsPropertyField(QStringLiteral("item:Subject"));
-//    shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
+    //    shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
     mRequest->setItemShape(shape);
 }
 
@@ -98,7 +98,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
         } else if (memcal->events().count() == 1) {
             incidence = memcal->events()[0];
         }
-        //KCalendarCore::Incidence::Ptr incidence(format.fromString(mimeContent));
+        // KCalendarCore::Incidence::Ptr incidence(format.fromString(mimeContent));
 
         if (incidence) {
             QDateTime dt(incidence->dtStart());
@@ -128,11 +128,11 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
     } else {
         auto req = new EwsGetItemRequest(mClient, this);
         EwsItemShape shape(EwsShapeIdOnly);
-//        shape << EwsPropertyField(QStringLiteral("item:Attachments"));
+        //        shape << EwsPropertyField(QStringLiteral("item:Attachments"));
         shape << EwsPropertyField(QStringLiteral("item:Body"));
         shape << EwsPropertyField(QStringLiteral("item:MimeContent"));
-//        shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
-//        shape << EwsPropertyField(QStringLiteral("item:Culture"));
+        //        shape << EwsPropertyField(QStringLiteral("calendar:TimeZone"));
+        //        shape << EwsPropertyField(QStringLiteral("item:Culture"));
         req->setItemShape(shape);
 
         req->setItemIds(addItems);

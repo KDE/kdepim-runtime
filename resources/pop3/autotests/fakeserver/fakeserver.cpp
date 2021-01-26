@@ -74,8 +74,7 @@ QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData, const QBy
                 return substituted;
             }
         }
-        qWarning() << "Received:" << dataReceived.data()
-                   << "\nExpected:" << expectedData.data();
+        qWarning() << "Received:" << dataReceived.data() << "\nExpected:" << expectedData.data();
         Q_ASSERT_X(false, "FakeServer::parseDeleteMark", "Unable to substitute data!");
         return QByteArray();
     } else {
@@ -98,8 +97,7 @@ QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData, const QByte
                 return substituted;
             }
         }
-        qWarning() << "Received:" << dataReceived.data()
-                   << "\nExpected:" << expectedData.data();
+        qWarning() << "Received:" << dataReceived.data() << "\nExpected:" << expectedData.data();
         Q_ASSERT_X(false, "FakeServer::parseRetrMark", "Unable to substitute data!");
         return QByteArray();
     } else {
@@ -140,16 +138,16 @@ void FakeServer::dataAvailable()
     Q_ASSERT(!mWriteData.isEmpty());
 
     const QByteArray data = mTcpServerConnection->readAll();
-    //qDebug() << "Got data:" << removeCRLF( data );
+    // qDebug() << "Got data:" << removeCRLF( data );
     const QByteArray expected(mReadData.takeFirst());
-    //qDebug() << "Expected data:" << removeCRLF( expected );
+    // qDebug() << "Expected data:" << removeCRLF( expected );
     const QByteArray reallyExpected = parseResponse(expected, data);
-    //qDebug() << "Really expected:" << removeCRLF( reallyExpected );
+    // qDebug() << "Really expected:" << removeCRLF( reallyExpected );
 
     Q_ASSERT(data == reallyExpected);
 
     QByteArray toWrite = mWriteData.takeFirst();
-    //qDebug() << "Going to write data:" << removeCRLF( toWrite );
+    // qDebug() << "Going to write data:" << removeCRLF( toWrite );
     const bool allWritten = mTcpServerConnection->write(toWrite) == toWrite.size();
     Q_ASSERT(allWritten);
     Q_UNUSED(allWritten)
@@ -222,9 +220,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
     QStringList lines = conversation.split(QStringLiteral("\r\n"), Qt::SkipEmptyParts);
     Q_ASSERT(lines.first().startsWith(QLatin1String("C:")));
 
-    enum Mode {
-        Client, Server
-    };
+    enum Mode { Client, Server };
     Mode mode = Client;
 
     const QByteArray mailSizeMarker = QStringLiteral("%MAILSIZE%").toLatin1();
@@ -237,8 +233,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
 
         if (lineData.contains(mailSizeMarker)) {
             Q_ASSERT(mMails.size() > sizeIndex);
-            lineData.replace(mailSizeMarker,
-                             QString::number(mMails[sizeIndex++].size()).toLatin1());
+            lineData.replace(mailSizeMarker, QString::number(mMails[sizeIndex++].size()).toLatin1());
         }
         if (lineData.contains(mailMarker)) {
             while (exceptions.contains(mailIndex + 1)) {

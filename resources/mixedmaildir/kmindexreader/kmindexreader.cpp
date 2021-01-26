@@ -12,13 +12,13 @@
 
 #include "kmindexreader.h"
 
-#include "../mixedmaildirresource_debug.h"
 #include "../mixedmaildir_debug.h"
+#include "../mixedmaildirresource_debug.h"
 #include <akonadi/kmime/messagestatus.h>
 using Akonadi::MessageStatus;
 #include <qplatformdefs.h>
 
-//BEGIN: Magic definitions from old kmail code
+// BEGIN: Magic definitions from old kmail code
 #ifdef HAVE_BYTESWAP_H
 #include <byteswap.h>
 #endif
@@ -36,32 +36,23 @@ static const int MAX_LINE = 4096;
 #ifdef bswap_16
 #define kmail_swap_16(x) bswap_16(x)
 #else
-#define kmail_swap_16(x) \
-    ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8))
+#define kmail_swap_16(x) ((((x) >> 8) & 0xff) | (((x)&0xff) << 8))
 #endif
 
 /* Swap bytes in 32 bit value.  */
 #ifdef bswap_32
 #define kmail_swap_32(x) bswap_32(x)
 #else
-#define kmail_swap_32(x) \
-    ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >>  8)                        \
-     |(((x) & 0x0000ff00) <<  8) | (((x) & 0x000000ff) << 24))
+#define kmail_swap_32(x) ((((x)&0xff000000) >> 24) | (((x)&0x00ff0000) >> 8) | (((x)&0x0000ff00) << 8) | (((x)&0x000000ff) << 24))
 #endif
 
 /* Swap bytes in 64 bit value.  */
 #ifdef bswap_64
 #define kmail_swap_64(x) bswap_64(x)
 #else
-#define kmail_swap_64(x) \
-    ((((x) & 0xff00000000000000ull) >> 56)                      \
-     | (((x) & 0x00ff000000000000ull) >> 40)                                      \
-     | (((x) & 0x0000ff0000000000ull) >> 24)                                      \
-     | (((x) & 0x000000ff00000000ull) >> 8)                                      \
-     | (((x) & 0x00000000ff000000ull) << 8)                                      \
-     | (((x) & 0x0000000000ff0000ull) << 24)                                      \
-     | (((x) & 0x000000000000ff00ull) << 40)                                      \
-     | (((x) & 0x00000000000000ffull) << 56))
+#define kmail_swap_64(x)                                                                                                                                       \
+    ((((x)&0xff00000000000000ull) >> 56) | (((x)&0x00ff000000000000ull) >> 40) | (((x)&0x0000ff0000000000ull) >> 24) | (((x)&0x000000ff00000000ull) >> 8)      \
+     | (((x)&0x00000000ff000000ull) << 8) | (((x)&0x0000000000ff0000ull) << 24) | (((x)&0x000000000000ff00ull) << 40) | (((x)&0x00000000000000ffull) << 56))
 #endif
 
 /** The old status format, only one at a time possible. Needed
@@ -80,15 +71,16 @@ typedef enum {
     KMLegacyMsgStatusFlag = 'G'
 } KMLegacyMsgStatus;
 
-//END: Magic definitions from old kmail code
+// END: Magic definitions from old kmail code
 
-//BEGIN: KMIndexMsg methods
+// BEGIN: KMIndexMsg methods
 
-KMIndexData::KMIndexData() : mPartsCacheBuilt(false)
+KMIndexData::KMIndexData()
+    : mPartsCacheBuilt(false)
 {
     const uint count = sizeof(mCachedLongParts) / sizeof(unsigned long);
     for (uint i = 0; i < count; ++i) {
-        mCachedLongParts[ i ] = 0;
+        mCachedLongParts[i] = 0;
     }
 }
 
@@ -154,7 +146,7 @@ bool KMIndexData::isEmpty() const
     return !mPartsCacheBuilt;
 }
 
-//END: KMIndexMsg methods
+// END: KMIndexMsg methods
 
 KMIndexReader::KMIndexReader(const QString &indexFile)
     : mIndexFileName(indexFile)
@@ -218,7 +210,7 @@ bool KMIndexReader::readHeader(int *version)
 
     int ret = fscanf(mFp, "# KMail-Index V%d\n", &indexVersion);
     if (ret == EOF || ret == 0) {
-        return false;    // index file has invalid header
+        return false; // index file has invalid header
     }
     if (version) {
         *version = indexVersion;
@@ -232,7 +224,7 @@ bool KMIndexReader::readHeader(int *version)
     } else if (indexVersion == 1505) {
     } else if (indexVersion < INDEX_VERSION) {
         qCCritical(MIXEDMAILDIR_LOG) << "Index file" << mIndexFileName << "is out of date. What to do?";
-//       createIndexFromContents();
+        //       createIndexFromContents();
         return false;
     } else if (indexVersion > INDEX_VERSION) {
         qFatal("index file of newer version");
@@ -240,7 +232,7 @@ bool KMIndexReader::readHeader(int *version)
     } else {
         // Header
         quint32 byteOrder = 0;
-        quint32 sizeOfLong = sizeof(long);   // default
+        quint32 sizeOfLong = sizeof(long); // default
 
         quint32 header_length = 0;
         QT_FSEEK(mFp, sizeof(char), SEEK_CUR);
@@ -279,7 +271,7 @@ bool KMIndexReader::readHeader(int *version)
         }
         if (needs_update || mIndexSwapByteOrder || (mIndexSizeOfLong != sizeof(long))) {
             qCDebug(MIXEDMAILDIR_LOG) << "DIRTY!";
-//         setDirty( true );
+            //         setDirty( true );
         }
         // Seek to end of header
         QT_FSEEK(mFp, endOfHeader, SEEK_SET);
@@ -316,12 +308,12 @@ bool KMIndexReader::readIndex()
 
     // loop through the entire index
     while (!feof(mFp)) {
-        //qCDebug(MIXEDMAILDIR_LOG) << "NEW MSG!";
+        // qCDebug(MIXEDMAILDIR_LOG) << "NEW MSG!";
         msg = nullptr;
         // check version (parsed by readHeader)
         // because different versions must be
         // parsed differently
-        //qCDebug(MIXEDMAILDIR_LOG) << "parsing version" << version;
+        // qCDebug(MIXEDMAILDIR_LOG) << "parsing version" << version;
         if (version >= 1505) {
             // parse versions >= 1505
             if (!fread(&len, sizeof(len), 1, mFp)) {
@@ -341,9 +333,9 @@ bool KMIndexReader::readIndex()
             fillPartsCache(msg, offs, len);
         } else {
             //////////////////////
-            //BEGIN UNTESTED CODE
+            // BEGIN UNTESTED CODE
             //////////////////////
-            //parse versions < 1505
+            // parse versions < 1505
             QByteArray line(MAX_LINE, '\0');
             if (fgets(line.data(), MAX_LINE, mFp) == nullptr) {
                 break;
@@ -372,7 +364,7 @@ bool KMIndexReader::readIndex()
 
             fillPartsCache(msg, offs, len);
             //////////////////////
-            //END UNTESTED CODE
+            // END UNTESTED CODE
             //////////////////////
         }
         if (!msg) {
@@ -380,7 +372,7 @@ bool KMIndexReader::readIndex()
         }
 
         if (msg->status().isDeleted()) {
-            delete msg;  // skip messages that are marked as deleted
+            delete msg; // skip messages that are marked as deleted
             continue;
         }
 #ifdef OBSOLETE
@@ -392,12 +384,12 @@ bool KMIndexReader::readIndex()
 #endif
         KMIndexDataPtr msgPtr(msg);
         mMsgList.append(msgPtr);
-        const QString fileName = msg->mCachedStringParts[ MsgFilePart ];
+        const QString fileName = msg->mCachedStringParts[MsgFilePart];
         if (!fileName.isEmpty()) {
             mMsgByFileName.insert(fileName, msgPtr);
         }
 
-        const quint64 offset = msg->mCachedLongParts[ MsgOffsetPart ];
+        const quint64 offset = msg->mCachedLongParts[MsgOffsetPart];
         if (offset > 0) {
             mMsgByOffset.insert(offset, msgPtr);
         }
@@ -410,33 +402,33 @@ bool KMIndexReader::readIndex()
 bool KMIndexReader::fromOldIndexString(KMIndexData *msg, const QByteArray &str, bool toUtf8)
 {
     Q_UNUSED(toUtf8)
-//     const char *start, *offset;
-//   msg->modifiers = KMMsgInfoPrivate::ALL_SET;
-//   msg->xmark   = str.mid(33, 3).trimmed();
-//   msg->folderOffset = str.mid(2,9).toULong();
-//   msg->msgSize = str.mid(12,9).toULong();
-//   msg->date = (time_t)str.mid(22,10).toULong();
-//   mStatus.setStatusFromStr( str );
-//   if (toUtf8) {
-//       msg->subject = str.mid(37, 100).trimmed();
-//       msg->from = str.mid(138, 50).trimmed();
-//       msg->to = str.mid(189, 50).trimmed();
-//   } else {
-//       start = offset = str.data() + 37;
-//       while (*start == ' ' && start - offset < 100) start++;
-//       msg->subject = QString::fromUtf8(str.mid(start - str.data(),
-//           100 - (start - offset)), 100 - (start - offset));
-//       start = offset = str.data() + 138;
-//       while (*start == ' ' && start - offset < 50) start++;
-//       msg->from = QString::fromUtf8(str.mid(start - str.data(),
-//           50 - (start - offset)), 50 - (start - offset));
-//       start = offset = str.data() + 189;
-//       while (*start == ' ' && start - offset < 50) start++;
-//       msg->to = QString::fromUtf8(str.mid(start - str.data(),
-//           50 - (start - offset)), 50 - (start - offset));
-//   }
-//   msg->replyToIdMD5 = str.mid(240, 22).trimmed();
-//   msg->msgIdMD5 = str.mid(263, 22).trimmed();
+    //     const char *start, *offset;
+    //   msg->modifiers = KMMsgInfoPrivate::ALL_SET;
+    //   msg->xmark   = str.mid(33, 3).trimmed();
+    //   msg->folderOffset = str.mid(2,9).toULong();
+    //   msg->msgSize = str.mid(12,9).toULong();
+    //   msg->date = (time_t)str.mid(22,10).toULong();
+    //   mStatus.setStatusFromStr( str );
+    //   if (toUtf8) {
+    //       msg->subject = str.mid(37, 100).trimmed();
+    //       msg->from = str.mid(138, 50).trimmed();
+    //       msg->to = str.mid(189, 50).trimmed();
+    //   } else {
+    //       start = offset = str.data() + 37;
+    //       while (*start == ' ' && start - offset < 100) start++;
+    //       msg->subject = QString::fromUtf8(str.mid(start - str.data(),
+    //           100 - (start - offset)), 100 - (start - offset));
+    //       start = offset = str.data() + 138;
+    //       while (*start == ' ' && start - offset < 50) start++;
+    //       msg->from = QString::fromUtf8(str.mid(start - str.data(),
+    //           50 - (start - offset)), 50 - (start - offset));
+    //       start = offset = str.data() + 189;
+    //       while (*start == ' ' && start - offset < 50) start++;
+    //       msg->to = QString::fromUtf8(str.mid(start - str.data(),
+    //           50 - (start - offset)), 50 - (start - offset));
+    //   }
+    //   msg->replyToIdMD5 = str.mid(240, 22).trimmed();
+    //   msg->msgIdMD5 = str.mid(263, 22).trimmed();
     msg->mStatus.setStatusFromStr(QString::fromUtf8(str));
     return true;
 }
@@ -455,8 +447,9 @@ static void swapEndian(QString &str)
 static int g_chunk_length = 0, g_chunk_offset = 0;
 static uchar *g_chunk = nullptr;
 
-namespace {
-template< typename T > void copy_from_stream(T &x)
+namespace
+{
+template<typename T> void copy_from_stream(T &x)
 {
     if (g_chunk_offset + int(sizeof(T)) > g_chunk_length) {
         g_chunk_offset = g_chunk_length;
@@ -476,7 +469,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
     if (!msg) {
         return false;
     }
-    //qCDebug(MIXEDMAILDIR_LOG);
+    // qCDebug(MIXEDMAILDIR_LOG);
     if (g_chunk_length < indexLen) {
         g_chunk = (uchar *)realloc(g_chunk, g_chunk_length = indexLen);
     }
@@ -502,7 +495,8 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
         }
         type = (MsgPartType)tmp;
         if (g_chunk_offset + len > indexLen) {
-            qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "g_chunk_offset + len > indexLen" << "This should never happen..";
+            qCWarning(MIXEDMAILDIRRESOURCE_LOG) << "g_chunk_offset + len > indexLen"
+                                                << "This should never happen..";
             return false;
         }
         // Only try to create strings if the part is really a string part, see declaration of
@@ -518,16 +512,16 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
             // QStrings in Qt3 expect host ordering.
             // On e.g. Intel host ordering is LSB, on e.g. Sparc it is MSB.
 
-#     if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+#if Q_BYTE_ORDER == Q_LITTLE_ENDIAN
             // Byte order is little endian (swap is true)
             swapEndian(msg->mCachedStringParts[type]);
-#     else
+#else
             // Byte order is big endian (swap is false)
-#     endif
+#endif
         } else if ((type >= 7 && type <= 10) || type == 12 || type == 13 || (type >= 16 && type <= 18)) {
             Q_ASSERT(mIndexSizeOfLong == len);
             if (mIndexSizeOfLong == sizeof(ret)) {
-                //qCDebug(MIXEDMAILDIR_LOG) << "mIndexSizeOfLong == sizeof(ret)";
+                // qCDebug(MIXEDMAILDIR_LOG) << "mIndexSizeOfLong == sizeof(ret)";
                 // this memcpy replaces the original call to copy_from_stream
                 // so that g_chunk_offset is not changed
                 memcpy(&ret, g_chunk + g_chunk_offset, sizeof(ret));
@@ -540,7 +534,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
                 }
             }
             //////////////////////
-            //BEGIN UNTESTED CODE
+            // BEGIN UNTESTED CODE
             //////////////////////
             else if (mIndexSizeOfLong == 4) {
                 // Long is stored as 4 bytes in index file, sizeof(long) = 8
@@ -583,7 +577,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
                 }
             }
             //////////////////////
-            //END UNTESTED CODE
+            // END UNTESTED CODE
             //////////////////////
             msg->mCachedLongParts[type] = ret;
         }
@@ -594,7 +588,7 @@ bool KMIndexReader::fillPartsCache(KMIndexData *msg, off_t indexOff, short int i
 
 //-----------------------------------------------------------------------------
 
-QList< KMIndexDataPtr > KMIndexReader::messages()
+QList<KMIndexDataPtr> KMIndexReader::messages()
 {
     return mMsgList;
 }

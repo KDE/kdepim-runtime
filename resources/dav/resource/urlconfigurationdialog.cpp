@@ -6,12 +6,12 @@
 
 #include "urlconfigurationdialog.h"
 
+#include "settings.h"
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
-#include "settings.h"
 
-#include <KMessageBox>
 #include <KLocalizedString>
+#include <KMessageBox>
 
 #include <QButtonGroup>
 #include <QStandardItem>
@@ -218,7 +218,7 @@ void UrlConfigurationDialog::onCollectionsFetchDone(KJob *job)
         return;
     }
 
-    auto davJob = qobject_cast< KDAV::DavCollectionsFetchJob *>(job);
+    auto davJob = qobject_cast<KDAV::DavCollectionsFetchJob *>(job);
 
     const KDAV::DavCollection::List collections = davJob->collections();
 
@@ -258,7 +258,7 @@ void UrlConfigurationDialog::onChangeDisplayNameFinished(KJob *job)
 void UrlConfigurationDialog::initModel()
 {
     mModel->clear();
-    const QStringList headers = { i18n("Display Name"), i18n("URL") };
+    const QStringList headers = {i18n("Display Name"), i18n("URL")};
     mModel->setHorizontalHeaderLabels(headers);
 }
 

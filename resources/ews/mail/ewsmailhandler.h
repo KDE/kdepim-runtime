@@ -20,7 +20,8 @@ public:
     QString mimeType() override;
     bool setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem) override;
     EwsModifyItemJob *modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent) override;
-    EwsCreateItemJob *createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) override;
+    EwsCreateItemJob *
+    createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) override;
     static EwsItemHandler *factory();
     static QHash<EwsPropertyField, QVariant> writeFlags(const QSet<QByteArray> &flags);
     static QSet<QByteArray> readFlags(const EwsItem &item);

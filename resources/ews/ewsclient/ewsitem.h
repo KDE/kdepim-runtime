@@ -37,6 +37,7 @@ public:
     bool write(QXmlStreamWriter &writer) const;
 
     bool operator==(const EwsItem &other) const;
+
 protected:
     bool readBaseItemElement(QXmlStreamReader &reader);
 };

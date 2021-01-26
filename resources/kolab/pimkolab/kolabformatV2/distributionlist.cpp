@@ -13,11 +13,12 @@
 
 using namespace KolabV2;
 
-namespace {
+namespace
+{
 inline QString unhandledTagAppName()
 {
     return QStringLiteral("KOLABUNHANDLED");
-}                                                                                  // no hyphens in appnames!
+} // no hyphens in appnames!
 }
 // saving (contactgroup->xml)
 DistributionList::DistributionList(const KContacts::ContactGroup *contactGroup)
@@ -133,7 +134,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // Unhandled tag - save for later storage
-                //qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << e.tagName();
+                // qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << e.tagName();
                 Custom c;
                 c.app = unhandledTagAppName();
                 c.name = e.tagName();
@@ -141,7 +142,7 @@ bool DistributionList::loadXML(const QDomDocument &document)
                 mCustomList.append(c);
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 

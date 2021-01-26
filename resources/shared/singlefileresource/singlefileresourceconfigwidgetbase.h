@@ -18,11 +18,13 @@ class KConfigDialogManager;
 class KJob;
 class QPushButton;
 
-namespace KIO {
+namespace KIO
+{
 class StatJob;
 }
 
-namespace Akonadi {
+namespace Akonadi
+{
 class SingleFileValidatingWidget;
 
 /**

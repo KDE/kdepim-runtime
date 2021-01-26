@@ -10,21 +10,24 @@
 #ifndef SETUPSERVER_H
 #define SETUPSERVER_H
 
+#include <KJob>
 #include <QDialog>
 #include <collection.h>
-#include <KJob>
 
 #include <QRegularExpressionValidator>
 class QPushButton;
 class QComboBox;
-namespace Ui {
+namespace Ui
+{
 class SetupServerView;
 }
 
-namespace MailTransport {
+namespace MailTransport
+{
 class ServerTest;
 }
-namespace KIdentityManagement {
+namespace KIdentityManagement
+{
 class IdentityCombo;
 }
 class FolderArchiveSettingPage;
@@ -64,6 +67,7 @@ private Q_SLOTS:
     void slotEncryptionRadioChanged();
     void slotSubcriptionCheckboxChanged();
     void slotShowServerInfo();
+
 private:
     void readSettings();
     void populateDefaultAuthenticationOptions();

@@ -40,8 +40,7 @@ static bool copyFiles(const QDir &sourceDir, const QDir &targetDir)
         const QFileInfo sourceFileInfo(sourceDir, file);
         const QFileInfo targetFileInfo(targetDir, file);
         if (!copyFile(sourceFileInfo.absoluteFilePath(), targetFileInfo.absoluteFilePath())) {
-            qCritical() << "Failed to copy" << sourceFileInfo.absoluteFilePath()
-                        << "to" << targetFileInfo.absoluteFilePath();
+            qCritical() << "Failed to copy" << sourceFileInfo.absoluteFilePath() << "to" << targetFileInfo.absoluteFilePath();
             return false;
         }
     }
@@ -121,8 +120,7 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
     const QDir testDataDir(QStringLiteral(":/data"));
 
     switch (type) {
-    case MaildirFolder:
-    {
+    case MaildirFolder: {
         const QString subPathPattern = QStringLiteral("%1/%2");
         if (!installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("new")))
             || !installDir.mkpath(subPathPattern.arg(folderName, QStringLiteral("cur")))
@@ -164,12 +162,10 @@ bool TestDataUtil::installFolder(const QString &testDataName, const QString &ins
         break;
     }
 
-    case MBoxFolder:
-    {
+    case MBoxFolder: {
         const QFileInfo mboxFileInfo(testDataDir, testDataName);
         if (!copyFile(mboxFileInfo.absoluteFilePath(), installFileInfo.absoluteFilePath())) {
-            qCritical() << "Failed to copy" << mboxFileInfo.absoluteFilePath()
-                        << "to" << installFileInfo.absoluteFilePath();
+            qCritical() << "Failed to copy" << mboxFileInfo.absoluteFilePath() << "to" << installFileInfo.absoluteFilePath();
             return false;
         }
         break;

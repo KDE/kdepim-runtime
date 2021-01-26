@@ -12,16 +12,18 @@
 
 #include "incidence.h"
 
-#include <kcalendarcore/todo.h>
 #include <KCalendarCore/Incidence>
+#include <kcalendarcore/todo.h>
 
 class QDomElement;
 
-namespace KCal {
+namespace KCal
+{
 class ResourceKolab;
 }
 
-namespace KolabV2 {
+namespace KolabV2
+{
 /**
  * This class represents a task, and knows how to load/save it
  * from/to XML, and from/to a KCalendarCore::Todo.
@@ -39,8 +41,9 @@ public:
     /// Use this to get an xml string describing this task entry
     static QString taskToXML(const KCalendarCore::Todo::Ptr &, const QString &tz);
 
-    explicit Task( /*KCalendarCore::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
-        const QString &tz, const KCalendarCore::Todo::Ptr &todo = KCalendarCore::Todo::Ptr());
+    explicit Task(/*KCalendarCore::ResourceKolab *res, const QString& subResource, quint32 sernum,*/
+                  const QString &tz,
+                  const KCalendarCore::Todo::Ptr &todo = KCalendarCore::Todo::Ptr());
     ~Task() override;
 
     QString type() const override

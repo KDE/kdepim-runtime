@@ -6,13 +6,13 @@
  */
 
 #include "mimeobjecttest.h"
-#include <QTest>
-#include "testutils.h"
-#include "kolabformat/mimeobject.h"
 #include "conversion/commonconversion.h"
+#include "kolabformat/mimeobject.h"
+#include "testutils.h"
+#include <QString>
+#include <QTest>
 #include <fstream>
 #include <sstream>
-#include <QString>
 
 static std::string readFile(const QString &path)
 {
@@ -30,8 +30,11 @@ static QString normalizeMimemessage(const std::string &path)
 }
 
 template<class T>
-void testFunction(const QString &filename, Kolab::Version version, Kolab::ObjectType type, T (Kolab::MIMEObject::*readFunction)(const std::string &), std::string (Kolab::MIMEObject::*writeFunction)(
-                      const T &, Kolab::Version, const std::string &))
+void testFunction(const QString &filename,
+                  Kolab::Version version,
+                  Kolab::ObjectType type,
+                  T (Kolab::MIMEObject::*readFunction)(const std::string &),
+                  std::string (Kolab::MIMEObject::*writeFunction)(const T &, Kolab::Version, const std::string &))
 {
     const std::string input = readFile(filename);
     Kolab::MIMEObject mimeobject;
@@ -42,7 +45,8 @@ void testFunction(const QString &filename, Kolab::Version version, Kolab::Object
 }
 
 template<class T>
-void testFunction(T (Kolab::MIMEObject::*readFunction)(const std::string &), std::string (Kolab::MIMEObject::*writeFunction)(const T &, Kolab::Version, const std::string &))
+void testFunction(T (Kolab::MIMEObject::*readFunction)(const std::string &),
+                  std::string (Kolab::MIMEObject::*writeFunction)(const T &, Kolab::Version, const std::string &))
 {
     testFunction<T>(TESTVALUE(QString, mimeFileName), TESTVALUE(Kolab::Version, version), TESTVALUE(Kolab::ObjectType, type), readFunction, writeFunction);
 }
@@ -61,11 +65,11 @@ void MIMEObjectTest::testEvent_data()
     QTest::newRow("v3eventSimple") << Kolab::KolabV3 << Kolab::EventObject << getPath("v3/event/simple.ics.mime");
     QTest::newRow("v3eventComplex") << Kolab::KolabV3 << Kolab::EventObject << getPath("v3/event/complex.ics.mime");
     QTest::newRow("v3utf8quotedPrintable") << Kolab::KolabV3 << Kolab::EventObject << getPath("v3/event/utf8quotedPrintable.ics.mime");
-    //TODO move to read-only
+    // TODO move to read-only
     // QTest::newRow("v2eventHorde") << Kolab::KolabV2 << Kolab::EventObject << getPath("v2/event/horde.ics") << getPath("v2/event/horde.ics.mime");
-    //TODO read-only test, we never write base64
+    // TODO read-only test, we never write base64
     // QTest::newRow("v3utf8base64") << Kolab::KolabV3 << Kolab::EventObject << getPath("v3/event/utf8base64.ics.mime");
-    //TODO read-only test, we never write 8-bit
+    // TODO read-only test, we never write 8-bit
     // QTest::newRow("v3utf88bit") << Kolab::KolabV3 << Kolab::EventObject << getPath("v3/event/utf88bit.ics.mime");
 }
 
@@ -132,7 +136,7 @@ void MIMEObjectTest::testContact_data()
 
     QTest::newRow("v2contactSimple") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/simple.vcf.mime");
     QTest::newRow("v2contactAddress") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/address.vcf.mime");
-    //FIXME Figure out why this is broken
+    // FIXME Figure out why this is broken
     // QTest::newRow("v2contactBug238996") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/bug238996.vcf.mime");
     QTest::newRow("v2contactDisplayname") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/displayname.vcf.mime");
     QTest::newRow("v2contactEmails") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/emails.vcf.mime");
@@ -140,15 +144,15 @@ void MIMEObjectTest::testContact_data()
     QTest::newRow("v3contactSimple") << Kolab::KolabV3 << Kolab::ContactObject << getPath("v3/contacts/simple.vcf.mime");
     QTest::newRow("v3contactComplex") << Kolab::KolabV3 << Kolab::ContactObject << getPath("v3/contacts/complex.vcf.mime");
 
-    //FIXME Tested in read-only mode in formattest, perhaps move to read-only test that compares with ical?
+    // FIXME Tested in read-only mode in formattest, perhaps move to read-only test that compares with ical?
     // QTest::newRow("v3contactPng") << Kolab::KolabV3 << Kolab::ContactObject << getPath("v3/readonly/png.vcf.mime");
 
-    //FIXME Reference files needs to be adjusted due to fix in how pictures are stored
+    // FIXME Reference files needs to be adjusted due to fix in how pictures are stored
     // QTest::newRow("v2contactComplex") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/complex.vcf.mime");
     // FIXME Reference files needs to be adjusted due to fix in how pictures are stored
     // QTest::newRow("v2contactPicture") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/picture.vcf.mime");
-    //FIXME the following test fails because the vcard implementation always writes jpeg (which is lossy).
-    //The reference vcf file is therefore probably also not really useful
+    // FIXME the following test fails because the vcard implementation always writes jpeg (which is lossy).
+    // The reference vcf file is therefore probably also not really useful
     // QTest::newRow("v2pictureJPGHorde") << Kolab::KolabV2 << Kolab::ContactObject << getPath("v2/contacts/pictureJPGHorde.vcf.mime");
 }
 

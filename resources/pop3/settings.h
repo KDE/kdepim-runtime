@@ -20,10 +20,7 @@ class Settings : public SettingsBase
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.POP3.Wallet")
 public:
-    enum class Option {
-        NoOption = 0,
-        ExportToDBus = 1
-    };
+    enum class Option { NoOption = 0, ExportToDBus = 1 };
     Q_DECLARE_FLAGS(Options, Option)
 
     explicit Settings(const KSharedConfigPtr &config, Options options = Option::ExportToDBus);
@@ -33,6 +30,7 @@ public:
 
 public Q_SLOTS:
     Q_SCRIPTABLE void setPassword(const QString &password);
+
 private:
     WId mWinId;
     QString mResourceId;

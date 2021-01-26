@@ -7,10 +7,10 @@
 
 #include "sentactionhandler.h"
 
+#include "maildispatcher_debug.h"
+#include <Akonadi/KMime/MessageFlags>
 #include <itemfetchjob.h>
 #include <itemmodifyjob.h>
-#include <Akonadi/KMime/MessageFlags>
-#include "maildispatcher_debug.h"
 
 using namespace MailTransport;
 
@@ -21,8 +21,7 @@ SentActionHandler::SentActionHandler(QObject *parent)
 
 void SentActionHandler::runAction(const SentActionAttribute::Action &action)
 {
-    if (action.type() == SentActionAttribute::Action::MarkAsReplied
-        || action.type() == SentActionAttribute::Action::MarkAsForwarded) {
+    if (action.type() == SentActionAttribute::Action::MarkAsReplied || action.type() == SentActionAttribute::Action::MarkAsForwarded) {
         const Akonadi::Item item(action.value().toLongLong());
         auto job = new Akonadi::ItemFetchJob(item);
         connect(job, &Akonadi::ItemFetchJob::result, this, &SentActionHandler::itemFetchResult);

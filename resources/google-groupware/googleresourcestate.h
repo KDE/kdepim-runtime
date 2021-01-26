@@ -62,6 +62,7 @@ public:
     // Google-specific stuff
     bool canPerformTask() override;
     bool handleError(KGAPI2::Job *job, bool _cancelTask) override;
+
 private:
     GoogleResource *const m_resource;
 };

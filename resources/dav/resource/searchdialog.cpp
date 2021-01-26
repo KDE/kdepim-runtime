@@ -11,14 +11,14 @@
 #include <KDAV/ProtocolInfo>
 
 #include "davresource_debug.h"
-#include <QIcon>
-#include <KMessageBox>
 #include <KLocalizedString>
+#include <KMessageBox>
+#include <QIcon>
 
-#include <QUrl>
-#include <QStandardItemModel>
-#include <QVBoxLayout>
 #include <QDialogButtonBox>
+#include <QStandardItemModel>
+#include <QUrl>
+#include <QVBoxLayout>
 
 SearchDialog::SearchDialog(QWidget *parent)
     : QDialog(parent)
@@ -83,7 +83,7 @@ QStringList SearchDialog::selection() const
     QStringList ret;
     ret.reserve(indexes.count());
     for (const QModelIndex &index : indexes) {
-        //qCritical() << "SELECTED DATA: " << index.data(Qt::UserRole + 1).toString();
+        // qCritical() << "SELECTED DATA: " << index.data(Qt::UserRole + 1).toString();
         ret << index.data(Qt::UserRole + 1).toString();
     }
     return ret;

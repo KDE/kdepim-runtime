@@ -13,7 +13,8 @@
 
 #include <KJob>
 
-namespace OXA {
+namespace OXA
+{
 class ObjectDeleteJob : public KJob
 {
     Q_OBJECT

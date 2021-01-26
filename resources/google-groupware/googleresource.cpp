@@ -7,10 +7,10 @@
 */
 
 #include "googleresource.h"
+#include "googleresource_debug.h"
 #include "googleresourcestate.h"
 #include "googlesettings.h"
 #include "googlesettingsdialog.h"
-#include "googleresource_debug.h"
 #include "settingsadaptor.h"
 
 #include "contacthandler.h"
@@ -27,14 +27,14 @@
 
 #include <KCalendarCore/Event>
 
-#include <QDialog>
-#include <QIcon>
 #include <KLocalizedString>
 #include <KNotification>
+#include <QDialog>
+#include <QIcon>
 
 #include <KGAPI/Account>
-#include <KGAPI/AccountInfoFetchJob>
 #include <KGAPI/AccountInfo>
+#include <KGAPI/AccountInfoFetchJob>
 #include <KGAPI/AuthJob>
 
 #include <algorithm>
@@ -47,14 +47,12 @@ Q_DECLARE_METATYPE(KGAPI2::Job *)
 using namespace KGAPI2;
 using namespace Akonadi;
 
-namespace {
+namespace
+{
 bool accountIsValid(const KGAPI2::AccountPtr &account)
 {
-    return account
-           && !account->accessToken().isEmpty()
-           && !account->refreshToken().isEmpty()
-           && !account->accountName().isEmpty()
-           && !account->scopes().isEmpty();
+    return account && !account->accessToken().isEmpty() && !account->refreshToken().isEmpty() && !account->accountName().isEmpty()
+        && !account->scopes().isEmpty();
 }
 } // namespace
 
@@ -63,7 +61,7 @@ GoogleResource::GoogleResource(const QString &id)
     , AgentBase::ObserverV3()
     , m_iface(new GoogleResourceState(this))
 {
-    AttributeFactory::registerAttribute< DefaultReminderAttribute >();
+    AttributeFactory::registerAttribute<DefaultReminderAttribute>();
 
     connect(this, &GoogleResource::reloadConfiguration, this, &GoogleResource::reloadConfig);
 
@@ -76,7 +74,7 @@ GoogleResource::GoogleResource(const QString &id)
 
     m_settings = new GoogleSettings();
     m_settings->setWindowId(winIdForDialogs());
-    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready){
+    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
         if (accountId() > 0) {
             return;
         }
@@ -109,8 +107,7 @@ GoogleResource::GoogleResource(const QString &id)
     m_handlers.push_back(GenericHandler::Ptr(new TaskHandler(m_iface, m_settings)));
 
     new SettingsAdaptor(m_settings);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 m_settings, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), m_settings, QDBusConnection::ExportAdaptors);
 }
 
 GoogleResource::~GoogleResource()
@@ -165,8 +162,7 @@ void GoogleResource::configure(WId windowId)
 QList<QUrl> GoogleResource::scopes() const
 {
     // TODO: determine it based on what user wants?
-    const QList< QUrl > scopes = {Account::accountInfoScopeUrl(), Account::calendarScopeUrl(),
-                                  Account::contactsScopeUrl(), Account::tasksScopeUrl()};
+    const QList<QUrl> scopes = {Account::accountInfoScopeUrl(), Account::calendarScopeUrl(), Account::contactsScopeUrl(), Account::tasksScopeUrl()};
     return scopes;
 }
 
@@ -229,14 +225,15 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
     Q_EMIT status(Broken, i18n("Account has been logged out."));
 
     const QString msg = account->accountName().isEmpty()
-                        ? i18n("Google Groupware has been logged out from your account. Please log in to enable Google Contacts and Calendar sync again.")
-                        : i18n("Google Groupware has been logged out from account %1. Please log in to enable Google Contacts and Calendar sync again.", account->accountName());
+        ? i18n("Google Groupware has been logged out from your account. Please log in to enable Google Contacts and Calendar sync again.")
+        : i18n("Google Groupware has been logged out from account %1. Please log in to enable Google Contacts and Calendar sync again.",
+               account->accountName());
 
     auto *ntf = KNotification::event(QStringLiteral("authNeeded"),
                                      i18nc("@title", "%1 needs your attention.", agentName()),
                                      msg,
                                      QStringLiteral("im-google"),
-                                     /*widget=*/ nullptr,
+                                     /*widget=*/nullptr,
                                      KNotification::Persistent | KNotification::SkipGrouping);
     ntf->setActions({i18nc("@action", "Log in")});
     ntf->setComponentName(QStringLiteral("akonadi_google_resource"));
@@ -294,8 +291,7 @@ int GoogleResource::accountId() const
 
 GenericHandler *GoogleResource::fetchHandlerByMimetype(const QString &mimeType)
 {
-    auto it = std::find_if(m_handlers.cbegin(), m_handlers.cend(),
-                           [&mimeType](const GenericHandler::Ptr &handler){
+    auto it = std::find_if(m_handlers.cbegin(), m_handlers.cend(), [&mimeType](const GenericHandler::Ptr &handler) {
         return handler->mimeType() == mimeType;
     });
 
@@ -308,8 +304,7 @@ GenericHandler *GoogleResource::fetchHandlerByMimetype(const QString &mimeType)
 
 GenericHandler *GoogleResource::fetchHandlerForCollection(const Akonadi::Collection &collection)
 {
-    auto it = std::find_if(m_handlers.cbegin(), m_handlers.cend(),
-                           [&collection](const GenericHandler::Ptr &handler){
+    auto it = std::find_if(m_handlers.cbegin(), m_handlers.cend(), [&collection](const GenericHandler::Ptr &handler) {
         return collection.contentMimeTypes().contains(handler->mimeType());
     });
     if (it != m_handlers.cend()) {
@@ -368,7 +363,7 @@ void GoogleResource::retrieveCollections()
 
     // Setting up root collection
     m_rootCollection = Collection();
-    m_rootCollection.setContentMimeTypes({ Collection::mimeType(), Collection::virtualMimeType() });
+    m_rootCollection.setContentMimeTypes({Collection::mimeType(), Collection::virtualMimeType()});
     m_rootCollection.setRemoteId(ROOT_COLLECTION_REMOTEID);
     m_rootCollection.setName(m_settings->accountPtr()->accountName());
     m_rootCollection.setParentCollection(Collection::root());
@@ -379,7 +374,7 @@ void GoogleResource::retrieveCollections()
     attr->setDisplayName(m_settings->accountPtr()->accountName());
     attr->setIconName(QStringLiteral("im-google"));
 
-    collectionsRetrieved({ m_rootCollection });
+    collectionsRetrieved({m_rootCollection});
 
     m_jobs = m_handlers.size();
     for (const auto &handler : m_handlers) {
@@ -394,7 +389,7 @@ void GoogleResource::collectionsRetrievedFromHandler(const Collection::List &col
     if (m_jobs == 0) {
         qCDebug(GOOGLE_LOG) << "All collections retrieved!";
         collectionsRetrievalDone();
-        //taskDone(); // ???
+        // taskDone(); // ???
         emitReadyStatus();
     }
 }
@@ -429,7 +424,7 @@ void GoogleResource::itemAdded(const Item &item, const Collection &collection)
     }
 }
 
-void GoogleResource::itemChanged(const Item &item, const QSet< QByteArray > &partIdentifiers)
+void GoogleResource::itemChanged(const Item &item, const QSet<QByteArray> &partIdentifiers)
 {
     if (!canPerformTask()) {
         return;
@@ -466,7 +461,8 @@ void GoogleResource::itemsMoved(const Item::List &items, const Collection &colle
     if (handler && handler->canPerformTask(items)) {
         handler->itemsMoved(items, collectionSource, collectionDestination);
     } else if (!handler) {
-        qCWarning(GOOGLE_LOG) << "Could not move item" << items.first().mimeType() << "from" << collectionSource.remoteId() << "to" << collectionDestination.remoteId();
+        qCWarning(GOOGLE_LOG) << "Could not move item" << items.first().mimeType() << "from" << collectionSource.remoteId() << "to"
+                              << collectionDestination.remoteId();
         cancelTask(i18n("Invalid payload type"));
     }
 }

@@ -7,21 +7,23 @@
 #ifndef POP3RESOURCE_H
 #define POP3RESOURCE_H
 
-#include <ResourceBase>
-#include <KMime/Message>
 #include <KJob>
+#include <KMime/Message>
 #include <QSet>
+#include <ResourceBase>
 
 #include "settings.h"
 
 class DeleteJob;
 
-namespace Akonadi {
+namespace Akonadi
+{
 class ItemCreateJob;
 }
 class POPSession;
 class QTimer;
-namespace QKeychain {
+namespace QKeychain
+{
 class Job;
 }
 class POP3Resource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
@@ -45,7 +47,6 @@ protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 protected:
-
     void aboutToQuit() override;
     void doSetOnline(bool online) override;
 
@@ -92,7 +93,6 @@ private Q_SLOTS:
     void quitJobResult(KJob *job);
 
 private:
-
     enum State {
         Idle,
         FetchTargetCollection,

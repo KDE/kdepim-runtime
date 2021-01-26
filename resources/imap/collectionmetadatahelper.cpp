@@ -14,8 +14,7 @@ Akonadi::Collection::Rights CollectionMetadataHelper::convertRights(const KIMAP:
     // For renaming, the parent folder needs to have the CreateMailbox or Create permission.
     // We map renaming to CanChangeCollection here, which is not entirely correct, but we have no
     // CanRenameCollection flag.
-    if (parentRights & KIMAP::Acl::CreateMailbox
-        || parentRights & KIMAP::Acl::Create) {
+    if (parentRights & KIMAP::Acl::CreateMailbox || parentRights & KIMAP::Acl::Create) {
         newRights |= Akonadi::Collection::CanChangeCollection;
     }
 
@@ -53,11 +52,10 @@ bool CollectionMetadataHelper::applyRights(Akonadi::Collection &collection, cons
         newRights &= ~Akonadi::Collection::CanChangeCollection;
     }
 
-    //This can result in false positives for new collections with defaults access rights.
-    //The caller needs to handles those.
+    // This can result in false positives for new collections with defaults access rights.
+    // The caller needs to handles those.
     bool accessRevoked = false;
-    if ((collection.rights() & Akonadi::Collection::CanCreateItem)
-        && !(newRights & Akonadi::Collection::CanCreateItem)) {
+    if ((collection.rights() & Akonadi::Collection::CanCreateItem) && !(newRights & Akonadi::Collection::CanCreateItem)) {
         // write access revoked
         accessRevoked = true;
     }

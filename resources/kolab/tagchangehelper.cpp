@@ -6,9 +6,9 @@
 */
 
 #include "tagchangehelper.h"
-#include "kolabresource_debug.h"
-#include "kolabrelationresourcetask.h"
 #include "kolabhelpers.h"
+#include "kolabrelationresourcetask.h"
+#include "kolabresource_debug.h"
 #include "updatemessagejob.h"
 
 #include <imapflags.h>
@@ -16,13 +16,13 @@
 
 #include "pimkolab/kolabformat/kolabobject.h"
 
+#include <AkonadiCore/TagModifyJob>
 #include <kimap/appendjob.h>
 #include <kimap/searchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/storejob.h>
 #include <replacemessagejob.h>
-#include <AkonadiCore/TagModifyJob>
 
 KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)
 {
@@ -81,7 +81,7 @@ void TagChangeHelper::recordNewUid(qint64 newUid, const Akonadi::Tag &tag)
 
     const QByteArray remoteId = QByteArray::number(newUid);
     qCDebug(KOLABRESOURCE_LOG) << "Setting remote ID to " << remoteId << " on tag with local id: " << tag.id();
-    //Make sure we only update the id and send nothing else
+    // Make sure we only update the id and send nothing else
     Akonadi::Tag updateTag;
     updateTag.setId(tag.id());
     updateTag.setRemoteId(remoteId);

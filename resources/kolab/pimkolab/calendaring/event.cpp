@@ -5,16 +5,18 @@
  */
 
 #include "event.h"
-#include <kolabformat/kolabobject.h>
-#include <conversion/kcalconversion.h>
 #include <conversion/commonconversion.h>
+#include <conversion/kcalconversion.h>
+#include <kolabformat/kolabobject.h>
 
 #include <iostream>
-#include <kolabformat.h>
 #include <kolabevent_p.h>
+#include <kolabformat.h>
 
-namespace Kolab {
-namespace Calendaring {
+namespace Kolab
+{
+namespace Calendaring
+{
 Event::Event()
     : Kolab::Event()
 {
@@ -109,7 +111,7 @@ Calendaring::Event::ITipMethod Event::getSchedulingMethod() const
     return static_cast<ITipMethod>(mITipHandler.method());
 }
 
-bool contains(const Kolab::ContactReference &delegatorRef, const std::vector <Kolab::ContactReference > &list)
+bool contains(const Kolab::ContactReference &delegatorRef, const std::vector<Kolab::ContactReference> &list)
 {
     for (const Kolab::ContactReference &ref : list) {
         if (delegatorRef.uid() == ref.uid() || delegatorRef.email() == ref.email() || delegatorRef.name() == ref.name()) {
@@ -119,9 +121,9 @@ bool contains(const Kolab::ContactReference &delegatorRef, const std::vector <Ko
     return false;
 }
 
-void Event::delegate(const std::vector< Attendee > &delegators, const std::vector< Attendee > &delegatees)
+void Event::delegate(const std::vector<Attendee> &delegators, const std::vector<Attendee> &delegatees)
 {
-    //First build a list of attendee references, and insert any missing attendees
+    // First build a list of attendee references, and insert any missing attendees
     std::vector<Kolab::Attendee *> delegateesRef;
     for (const Attendee &a : delegatees) {
         if (Attendee *attendee = getAttendee(a.contact())) {
@@ -142,16 +144,16 @@ void Event::delegate(const std::vector< Attendee > &delegators, const std::vecto
     }
 
     foreach (Attendee *delegatee, delegateesRef) {
-        std::vector <Kolab::ContactReference > delegatedFrom = delegatee->delegatedFrom();
+        std::vector<Kolab::ContactReference> delegatedFrom = delegatee->delegatedFrom();
         foreach (Attendee *delegator, delegatorsRef) {
-            //Set the delegator on each delegatee
+            // Set the delegator on each delegatee
             const ContactReference &delegatorRef = delegator->contact();
             if (!contains(delegatorRef, delegatedFrom)) {
                 delegatedFrom.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, delegatorRef.email(), delegatorRef.name()));
             }
 
-            //Set the delegatee on each delegator
-            std::vector <Kolab::ContactReference > delegatedTo = delegator->delegatedTo();
+            // Set the delegatee on each delegator
+            std::vector<Kolab::ContactReference> delegatedTo = delegator->delegatedTo();
             const ContactReference &delegaeeRef = delegatee->contact();
             if (!contains(delegaeeRef, delegatedTo)) {
                 delegatedTo.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, delegaeeRef.email(), delegaeeRef.name()));
@@ -164,8 +166,7 @@ void Event::delegate(const std::vector< Attendee > &delegators, const std::vecto
 
 Attendee *Event::getAttendee(const ContactReference &ref)
 {
-    for (auto it = d->attendees.begin(), end = d->attendees.end();
-         it != end; ++it) {
+    for (auto it = d->attendees.begin(), end = d->attendees.end(); it != end; ++it) {
         if (it->contact().uid() == ref.uid() || it->contact().email() == ref.email() || it->contact().name() == ref.name()) {
             return &*it;
         }

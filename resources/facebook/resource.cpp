@@ -5,13 +5,13 @@
  */
 
 #include "resource.h"
-#include "resource_debug.h"
-#include "eventslistjob.h"
 #include "birthdaylistjob.h"
+#include "eventslistjob.h"
+#include "resource_debug.h"
 #include "tokenjobs.h"
 
-#include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/CachePolicy>
+#include <AkonadiCore/EntityDisplayAttribute>
 
 #include <KLocalizedString>
 
@@ -47,7 +47,7 @@ Akonadi::Collection FacebookResource::makeCollection(Graph::RSVP rsvp, const QSt
     Akonadi::Collection col;
     col.setName(name);
     col.setRemoteId(Graph::rsvpToString(rsvp));
-    col.setContentMimeTypes({ KCalendarCore::Event::eventMimeType() });
+    col.setContentMimeTypes({KCalendarCore::Event::eventMimeType()});
     col.setRights(Akonadi::Collection::ReadOnly);
     col.setParentCollection(parent);
     auto attr = col.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
@@ -64,20 +64,19 @@ void FacebookResource::retrieveCollections()
     Akonadi::Collection root;
     root.setName(QStringLiteral("facebook_%1").arg(userId));
     root.setRemoteId(QStringLiteral("root"));
-    root.setContentMimeTypes({ Akonadi::Collection::mimeType() });
+    root.setContentMimeTypes({Akonadi::Collection::mimeType()});
     root.setRights(Akonadi::Collection::ReadOnly);
     root.setParentCollection(Akonadi::Collection::root());
     auto attr = root.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
     attr->setDisplayName(i18n("Facebook"));
     attr->setIconName(QStringLiteral("im-facebook"));
 
-    collectionsRetrieved(
-        { root,
-          makeCollection(Graph::Attending, i18n("Events I'm Attending"), root),
-          makeCollection(Graph::Declined, i18n("Events I'm not Attending"), root),
-          makeCollection(Graph::MaybeAttending, i18n("Events I May Be Attending"), root),
-          makeCollection(Graph::NotResponded, i18n("Events I have not Responded To"), root),
-          makeCollection(Graph::Birthday, i18n("Friends' Birthdays"), root)});
+    collectionsRetrieved({root,
+                          makeCollection(Graph::Attending, i18n("Events I'm Attending"), root),
+                          makeCollection(Graph::Declined, i18n("Events I'm not Attending"), root),
+                          makeCollection(Graph::MaybeAttending, i18n("Events I May Be Attending"), root),
+                          makeCollection(Graph::NotResponded, i18n("Events I have not Responded To"), root),
+                          makeCollection(Graph::Birthday, i18n("Friends' Birthdays"), root)});
 }
 
 void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
@@ -89,8 +88,7 @@ void FacebookResource::retrieveItems(const Akonadi::Collection &collection)
         job = new BirthdayListJob(identifier(), collection, this);
     } else {
         job = new EventsListJob(identifier(), collection, this);
-        connect(static_cast<ListJob *>(job), &ListJob::itemsAvailable,
-                this, [this](KJob *, const Akonadi::Item::List &items) {
+        connect(static_cast<ListJob *>(job), &ListJob::itemsAvailable, this, [this](KJob *, const Akonadi::Item::List &items) {
             itemsRetrieved(items);
         });
     }
@@ -128,6 +126,6 @@ void FacebookResource::onListJobDone(KJob *job)
 int main(int argc, char **argv)
 {
     // Enable to debug Facebook authentication
-    //qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
+    // qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "8080");
     return Akonadi::ResourceBase::init<FacebookResource>(argc, argv);
 }

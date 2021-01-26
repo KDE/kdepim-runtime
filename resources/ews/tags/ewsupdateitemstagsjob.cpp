@@ -6,19 +6,19 @@
 
 #include "ewsupdateitemstagsjob.h"
 
+#include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/Tag>
+#include <AkonadiCore/TagAttribute>
 #include <AkonadiCore/TagFetchJob>
 #include <AkonadiCore/TagFetchScope>
-#include <AkonadiCore/TagAttribute>
-#include <AkonadiCore/AttributeFactory>
 
-#include "ewsid.h"
-#include "ewsupdateitemrequest.h"
-#include "ewsitemhandler.h"
 #include "ewsclient.h"
-#include "ewstagstore.h"
-#include "ewsresource.h"
 #include "ewsglobaltagswritejob.h"
+#include "ewsid.h"
+#include "ewsitemhandler.h"
+#include "ewsresource.h"
+#include "ewstagstore.h"
+#include "ewsupdateitemrequest.h"
 
 using namespace Akonadi;
 
@@ -81,10 +81,8 @@ void EwsUpdateItemsTagsJob::itemsTagsChangedTagsFetched(KJob *job)
 
     auto res = qobject_cast<EwsResource *>(parent());
     Q_ASSERT(res);
-    auto writeJob = new EwsGlobalTagsWriteJob(mTagStore, mClient,
-                                                                res->rootCollection(), this);
-    connect(writeJob, &EwsGlobalTagsWriteJob::result, this,
-            &EwsUpdateItemsTagsJob::globalTagsWriteFinished);
+    auto writeJob = new EwsGlobalTagsWriteJob(mTagStore, mClient, res->rootCollection(), this);
+    connect(writeJob, &EwsGlobalTagsWriteJob::result, this, &EwsUpdateItemsTagsJob::globalTagsWriteFinished);
     writeJob->start();
 }
 
@@ -103,8 +101,7 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
 {
     auto req = new EwsUpdateItemRequest(mClient, this);
     Q_FOREACH (const Item &item, mItems) {
-        EwsUpdateItemRequest::ItemChange ic(EwsId(item.remoteId(), item.remoteRevision()),
-                                            EwsItemHandler::mimeToItemType(item.mimeType()));
+        EwsUpdateItemRequest::ItemChange ic(EwsId(item.remoteId(), item.remoteRevision()), EwsItemHandler::mimeToItemType(item.mimeType()));
         if (!item.tags().isEmpty()) {
             QStringList tagList;
             QStringList categoryList;
@@ -117,14 +114,12 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
                     categoryList.append(name);
                 }
             }
-            EwsUpdateItemRequest::Update *upd
-                = new EwsUpdateItemRequest::SetUpdate(EwsResource::tagsProperty, tagList);
+            EwsUpdateItemRequest::Update *upd = new EwsUpdateItemRequest::SetUpdate(EwsResource::tagsProperty, tagList);
             ic.addUpdate(upd);
             upd = new EwsUpdateItemRequest::SetUpdate(EwsPropertyField(QStringLiteral("item:Categories")), categoryList);
             ic.addUpdate(upd);
         } else {
-            EwsUpdateItemRequest::Update *upd
-                = new EwsUpdateItemRequest::DeleteUpdate(EwsResource::tagsProperty);
+            EwsUpdateItemRequest::Update *upd = new EwsUpdateItemRequest::DeleteUpdate(EwsResource::tagsProperty);
             ic.addUpdate(upd);
             upd = new EwsUpdateItemRequest::DeleteUpdate(EwsPropertyField(QStringLiteral("item:Categories")));
             ic.addUpdate(upd);
@@ -132,8 +127,7 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
         req->addItemChange(ic);
     }
 
-    connect(req, &EwsUpdateItemRequest::result, this,
-            &EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished);
+    connect(req, &EwsUpdateItemRequest::result, this, &EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished);
     req->start();
 }
 

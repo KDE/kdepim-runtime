@@ -12,33 +12,33 @@
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
 
-#include <noselectattribute.h>
-#include <noinferiorsattribute.h>
 #include <collectionannotationsattribute.h>
 #include <collectionmetadatahelper.h>
 #include <imapaclattribute.h>
 #include <kimap/getmetadatajob.h>
 #include <kimap/myrightsjob.h>
+#include <noinferiorsattribute.h>
+#include <noselectattribute.h>
 
 #include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/CollectionColorAttribute>
-#include <akonadi/kmime/messageparts.h>
 #include <AkonadiCore/CollectionIdentificationAttribute>
-#include <akonadi/calendar/blockalarmsattribute.h>
-#include <AkonadiCore/vectorhelper.h>
+#include <AkonadiCore/EntityDisplayAttribute>
 #include <AkonadiCore/SpecialCollectionAttribute>
+#include <AkonadiCore/vectorhelper.h>
+#include <akonadi/calendar/blockalarmsattribute.h>
+#include <akonadi/kmime/messageparts.h>
 
-#include <kmime/kmime_message.h>
 #include <KLocalizedString>
+#include <kmime/kmime_message.h>
 
 #include <QColor>
 
 static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDescriptor> &namespaces, bool matchCompletePath = false)
 {
     for (const KIMAP::MailBoxDescriptor &desc : namespaces) {
-        if (path.startsWith(desc.name.left(desc.name.size() - 1))) { //Namespace ends with path separator and path doesn't
-            if (!matchCompletePath || path.size() - desc.name.size() <= 1) {      //We want to match only for the complete path
+        if (path.startsWith(desc.name.left(desc.name.size() - 1))) { // Namespace ends with path separator and path doesn't
+            if (!matchCompletePath || path.size() - desc.name.size() <= 1) { // We want to match only for the complete path
                 return true;
             }
         }
@@ -46,8 +46,14 @@ static bool isNamespaceFolder(const QString &path, const QList<KIMAP::MailBoxDes
     return false;
 }
 
-RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringList &mailboxes, const QStringList &serverCapabilities, const QSet<QByteArray> &requestedMetadata, const QString &separator, const QList<KIMAP::MailBoxDescriptor> &sharedNamespace,
-                                         const QList<KIMAP::MailBoxDescriptor> &userNamespace, QObject *parent)
+RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session,
+                                         const QStringList &mailboxes,
+                                         const QStringList &serverCapabilities,
+                                         const QSet<QByteArray> &requestedMetadata,
+                                         const QString &separator,
+                                         const QList<KIMAP::MailBoxDescriptor> &sharedNamespace,
+                                         const QList<KIMAP::MailBoxDescriptor> &userNamespace,
+                                         QObject *parent)
     : KJob(parent)
     , mRequestedMetadata(requestedMetadata)
     , mServerCapabilities(serverCapabilities)
@@ -62,7 +68,7 @@ RetrieveMetadataJob::RetrieveMetadataJob(KIMAP::Session *session, const QStringL
 void RetrieveMetadataJob::start()
 {
     qCDebug(KOLABRESOURCE_TRACE);
-    //Fill the map with empty entries so we set the mimetype to mail if no metadata is retrieved
+    // Fill the map with empty entries so we set the mimetype to mail if no metadata is retrieved
     for (const QString &mailbox : qAsConst(mMailboxes)) {
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
@@ -83,7 +89,7 @@ void RetrieveMetadataJob::start()
         for (const KIMAP::MailBoxDescriptor &desc : qAsConst(mSharedNamespace)) {
             toplevelMailboxes << desc.name;
         }
-        //TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
+        // TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
         for (const QString &mailbox : qAsConst(toplevelMailboxes)) {
             auto meta = new KIMAP::GetMetaDataJob(mSession);
             meta->setMailBox(mailbox + QLatin1String("*"));
@@ -127,13 +133,13 @@ void RetrieveMetadataJob::onGetMetaDataDone(KJob *job)
         qCDebug(KOLABRESOURCE_LOG) << "No metadata for for mailbox: " << meta->mailBox();
         if (!isNamespaceFolder(meta->mailBox(), mSharedNamespace)) {
             qCWarning(KOLABRESOURCE_LOG) << "Get metadata failed: " << job->errorString();
-            //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
+            // We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
         }
         checkDone();
         return;
     }
 
-    const QHash<QString, QMap<QByteArray, QByteArray> > metadata = meta->allMetaDataForMailboxes();
+    const QHash<QString, QMap<QByteArray, QByteArray>> metadata = meta->allMetaDataForMailboxes();
     const QStringList lstKeys = metadata.keys();
     for (const QString &folder : lstKeys) {
         mMetadata.insert(folder, metadata.value(folder));
@@ -149,7 +155,7 @@ void RetrieveMetadataJob::onRightsReceived(KJob *job)
         qCDebug(KOLABRESOURCE_LOG) << "No rights for mailbox: " << rights->mailBox();
         if (!isNamespaceFolder(rights->mailBox(), mSharedNamespace)) {
             qCWarning(KOLABRESOURCE_LOG) << "MyRights for mailbox" << rights->mailBox() << "failed:" << job->errorString();
-            //We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
+            // We ignore the error to avoid failing the complete sync. We can run into this when trying to retrieve rights for non-existing mailboxes.
         }
         checkDone();
         return;
@@ -181,8 +187,7 @@ KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(const ResourceStateIn
 {
     mRequestedMetadata << "/shared/vendor/kolab/folder-type";
     mRequestedMetadata << "/private/vendor/kolab/folder-type";
-    mRequestedMetadata << "/shared" KOLAB_COLOR_ANNOTATION
-                       << "/private" KOLAB_COLOR_ANNOTATION;
+    mRequestedMetadata << "/shared" KOLAB_COLOR_ANNOTATION << "/private" KOLAB_COLOR_ANNOTATION;
 }
 
 KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
@@ -208,8 +213,7 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     policy.setSyncOnDemand(true);
 
     QStringList localParts;
-    localParts << QLatin1String(Akonadi::MessagePart::Envelope)
-               << QLatin1String(Akonadi::MessagePart::Header);
+    localParts << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header);
     int cacheTimeout = 60;
 
     if (isDisconnectedModeEnabled()) {
@@ -228,13 +232,12 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     mMailCollections.insert(QString(), root);
 
     qCDebug(KOLABRESOURCE_TRACE) << "subscription enabled: " << isSubscriptionEnabled();
-    //jobs are serialized by the session
+    // jobs are serialized by the session
     if (isSubscriptionEnabled()) {
         auto fullListJob = new KIMAP::ListJob(session);
         fullListJob->setOption(KIMAP::ListJob::NoOption);
         fullListJob->setQueriedNamespaces(serverNamespaces());
-        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
-                this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceived);
+        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived, this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceived);
         connect(fullListJob, &KJob::result, this, &KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone);
         mJobs++;
         fullListJob->start();
@@ -243,14 +246,13 @@ void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
     auto listJob = new KIMAP::ListJob(session);
     listJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
-            this, &KolabRetrieveCollectionsTask::onMailBoxesReceived);
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &KolabRetrieveCollectionsTask::onMailBoxesReceived);
     connect(listJob, &KJob::result, this, &KolabRetrieveCollectionsTask::onMailBoxesReceiveDone);
     mJobs++;
     listJob->start();
 }
 
-void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList<QByteArray> > &flags)
+void KolabRetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags)
 {
     const int nbDescriptors = descriptors.size();
     for (int i = 0; i < nbDescriptors; ++i) {
@@ -265,7 +267,7 @@ Akonadi::Collection KolabRetrieveCollectionsTask::getOrCreateParent(const QStrin
     if (mMailCollections.contains(path)) {
         return mMailCollections.value(path);
     }
-    //create a dummy collection
+    // create a dummy collection
     const QString separator = separatorCharacter();
     const QStringList pathParts = path.split(separator);
     const QString pathPart = pathParts.last();
@@ -304,7 +306,7 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
         attr->setIconName(QStringLiteral("x-mail-distribution-list"));
     }
 
-    //Mark user folders for searching
+    // Mark user folders for searching
     if (pathParts.size() >= 2 && isNamespaceFolder(path, resourceState()->userNamespaces())) {
         auto *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         if (pathParts.size() == 2) {
@@ -321,7 +323,7 @@ void KolabRetrieveCollectionsTask::setAttributes(Akonadi::Collection &c, const Q
         attr->setIconName(QStringLiteral("x-mail-distribution-list"));
     }
 
-    //Mark shared folders for searching
+    // Mark shared folders for searching
     if (pathParts.size() >= 2 && isNamespaceFolder(path, resourceState()->sharedNamespaces())) {
         auto *attr = c.attribute<Akonadi::CollectionIdentificationAttribute>(Akonadi::Collection::AddIfMissing);
         attr->setCollectionNamespace("shared");
@@ -332,14 +334,12 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 {
     const QString separator = separatorCharacter();
     Q_ASSERT(separator.size() == 1);
-    const QString boxName = mailbox.endsWith(separator)
-                            ? mailbox.left(mailbox.size() - 1)
-                            : mailbox;
+    const QString boxName = mailbox.endsWith(separator) ? mailbox.left(mailbox.size() - 1) : mailbox;
     const QStringList pathParts = boxName.split(separator);
     const QString pathPart = pathParts.last();
 
     Akonadi::Collection c;
-    //If we had a dummy collection we need to replace it
+    // If we had a dummy collection we need to replace it
     if (mMailCollections.contains(mailbox)) {
         c = mMailCollections.value(mailbox);
     }
@@ -348,12 +348,12 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
     const QStringList parentPath = pathParts.mid(0, pathParts.size() - 1);
     const Akonadi::Collection parentCollection = getOrCreateParent(parentPath.join(separator));
     c.setParentCollection(parentCollection);
-    //TODO get from ResourceState, and add KMime::Message::mimeType() for the normal imap resource by default
-    //We add a dummy mimetype, otherwise the itemsync doesn't even work (action is disabled and resourcebase aborts the operation)
+    // TODO get from ResourceState, and add KMime::Message::mimeType() for the normal imap resource by default
+    // We add a dummy mimetype, otherwise the itemsync doesn't even work (action is disabled and resourcebase aborts the operation)
     c.setContentMimeTypes(cDefaultMimeTypes);
     c.setKeepLocalChanges(cDefaultKeepLocalChanges);
 
-    //assume LRS, until myrights is executed
+    // assume LRS, until myrights is executed
     if (serverCapabilities().contains(QLatin1String("ACL"))) {
         c.setRights(Akonadi::Collection::ReadOnly);
     } else {
@@ -383,7 +383,7 @@ void KolabRetrieveCollectionsTask::createCollection(const QString &mailbox, cons
 
     // If this folder is a noinferiors folder, it is not allowed to create subfolders inside.
     if (currentFlags.contains("\\noinferiors")) {
-        //qCDebug(KOLABRESOURCE_LOG) << "Noinferiors: " << currentPath;
+        // qCDebug(KOLABRESOURCE_LOG) << "Noinferiors: " << currentPath;
         c.addAttribute(new NoInferiorsAttribute(true));
         c.setRights(c.rights() & ~Akonadi::Collection::CanCreateCollection);
     }
@@ -410,11 +410,17 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
             }
         }
 
-        //Only request metadata for subscribed Other Users Folders
+        // Only request metadata for subscribed Other Users Folders
         const QStringList metadataMailboxes = mailboxes.unite(mSubscribedMailboxes.values().toSet()).values();
 
-        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession, metadataMailboxes, serverCapabilities(), mRequestedMetadata, separatorCharacter(),
-                                                                resourceState()->sharedNamespaces(), resourceState()->userNamespaces(), this);
+        RetrieveMetadataJob *metadata = new RetrieveMetadataJob(mSession,
+                                                                metadataMailboxes,
+                                                                serverCapabilities(),
+                                                                mRequestedMetadata,
+                                                                separatorCharacter(),
+                                                                resourceState()->sharedNamespaces(),
+                                                                resourceState()->userNamespaces(),
+                                                                this);
         connect(metadata, &KJob::result, this, &KolabRetrieveCollectionsTask::onMetadataRetrieved);
         mJobs++;
         metadata->start();
@@ -433,7 +439,7 @@ void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::
             QString parentMailbox = parts.join(separatorCharacter());
 
             KIMAP::Acl::Rights parentImapRights;
-            //If the parent folder is not existing we cant rename
+            // If the parent folder is not existing we cant rename
             if (!parentMailbox.isEmpty() && rights.contains(parentMailbox)) {
                 parentImapRights = rights.value(parentMailbox);
             }
@@ -454,7 +460,7 @@ void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::
     }
 }
 
-void KolabRetrieveCollectionsTask::applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray> > &metadataMap)
+void KolabRetrieveCollectionsTask::applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray>> &metadataMap)
 {
     // qCDebug(KOLABRESOURCE_LOG) << metadataMap;
     Q_FOREACH (const QString &mailbox, metadataMap.keys()) {
@@ -496,11 +502,11 @@ void KolabRetrieveCollectionsTask::checkDone()
 {
     if (!mJobs) {
         collectionsRetrieved(Akonadi::valuesToVector(mMailCollections));
-        qCDebug(KOLABRESOURCE_LOG) << "done " <<  mTime.elapsed();
+        qCDebug(KOLABRESOURCE_LOG) << "done " << mTime.elapsed();
     }
 }
 
-void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList< QByteArray > > &flags)
+void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags)
 {
     Q_UNUSED(flags)
     for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {
@@ -510,7 +516,7 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::M
 
 void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
 {
-    qCDebug(KOLABRESOURCE_LOG) << "received subscribed collections " <<  mTime.elapsed();
+    qCDebug(KOLABRESOURCE_LOG) << "received subscribed collections " << mTime.elapsed();
     mJobs--;
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << QStringLiteral("Failed to retrieve subscribed collections: ") + job->errorString();

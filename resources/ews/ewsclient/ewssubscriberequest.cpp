@@ -10,21 +10,17 @@
 
 #include "ewsclient_debug.h"
 
-static const QVector<QString> subscribeTypeNames = {
-    QStringLiteral("PullSubscriptionRequest"),
-    QStringLiteral("PushSubscriptionRequest"),
-    QStringLiteral("StreamingSubscriptionRequest")
-};
+static const QVector<QString> subscribeTypeNames = {QStringLiteral("PullSubscriptionRequest"),
+                                                    QStringLiteral("PushSubscriptionRequest"),
+                                                    QStringLiteral("StreamingSubscriptionRequest")};
 
-static const QVector<QString> eventTypeNames = {
-    QStringLiteral("CopiedEvent"),
-    QStringLiteral("CreatedEvent"),
-    QStringLiteral("DeletedEvent"),
-    QStringLiteral("ModifiedEvent"),
-    QStringLiteral("MovedEvent"),
-    QStringLiteral("NewMailEvent"),
-    QStringLiteral("FreeBusyChangedEvent")
-};
+static const QVector<QString> eventTypeNames = {QStringLiteral("CopiedEvent"),
+                                                QStringLiteral("CreatedEvent"),
+                                                QStringLiteral("DeletedEvent"),
+                                                QStringLiteral("ModifiedEvent"),
+                                                QStringLiteral("MovedEvent"),
+                                                QStringLiteral("NewMailEvent"),
+                                                QStringLiteral("FreeBusyChangedEvent")};
 
 EwsSubscribeRequest::EwsSubscribeRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -43,12 +39,10 @@ void EwsSubscribeRequest::start()
     QString reqString;
     QXmlStreamWriter writer(&reqString);
 
-    if (mType == StreamingSubscription
-        && !serverVersion().supports(EwsServerVersion::StreamingSubscription)) {
+    if (mType == StreamingSubscription && !serverVersion().supports(EwsServerVersion::StreamingSubscription)) {
         setServerVersion(EwsServerVersion::minSupporting(EwsServerVersion::StreamingSubscription));
     }
-    if (mEventTypes.contains(EwsFreeBusyChangedEvent)
-        && !serverVersion().supports(EwsServerVersion::FreeBusyChangedEvent)) {
+    if (mEventTypes.contains(EwsFreeBusyChangedEvent) && !serverVersion().supports(EwsServerVersion::FreeBusyChangedEvent)) {
         setServerVersion(EwsServerVersion::minSupporting(EwsServerVersion::FreeBusyChangedEvent));
     }
 
@@ -72,7 +66,7 @@ void EwsSubscribeRequest::start()
     for (const EwsEventType type : qAsConst(mEventTypes)) {
         writer.writeTextElement(ewsTypeNsUri, QStringLiteral("EventType"), eventTypeNames[type]);
     }
-    writer.writeEndElement();   // EventTypes
+    writer.writeEndElement(); // EventTypes
 
     if (mType == PullSubscription) {
         if (!mWatermark.isNull()) {
@@ -81,9 +75,9 @@ void EwsSubscribeRequest::start()
         writer.writeTextElement(ewsTypeNsUri, QStringLiteral("Timeout"), QString::number(mTimeout));
     }
 
-    writer.writeEndElement();   // XxxSubscriptionRequest
+    writer.writeEndElement(); // XxxSubscriptionRequest
 
-    writer.writeEndElement();   // Subscribe
+    writer.writeEndElement(); // Subscribe
 
     endSoapDocument(writer);
 
@@ -96,8 +90,7 @@ void EwsSubscribeRequest::start()
 
 bool EwsSubscribeRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("Subscribe"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("Subscribe"), [this](QXmlStreamReader &reader) {
         return parseSubscribeResponse(reader);
     });
 }
@@ -122,8 +115,7 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 
@@ -131,16 +123,14 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
             mId = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {
-                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
-                            .arg(QStringLiteral("SubscriptionId")));
+                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("SubscriptionId")));
                 return;
             }
         } else if (reader.name() == QLatin1String("Watermark")) {
             mWatermark = reader.readElementText();
 
             if (reader.error() != QXmlStreamReader::NoError) {
-                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
-                            .arg(QStringLiteral("Watermark")));
+                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("Watermark")));
                 return;
             }
         } else if (!readResponseElement(reader)) {

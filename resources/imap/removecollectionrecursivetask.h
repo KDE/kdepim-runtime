@@ -21,7 +21,7 @@ public:
     ~RemoveCollectionRecursiveTask() override;
 
 private Q_SLOTS:
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags);
     void onCloseJobDone(KJob *job);
     void onDeleteJobDone(KJob *job);
     void onJobDone(KJob *job);
@@ -35,7 +35,7 @@ private:
     KIMAP::Session *mSession = nullptr;
     bool mFolderFound = false;
 
-    QScopedPointer< QMapIterator<int, KIMAP::MailBoxDescriptor > > mFolderIterator;
+    QScopedPointer<QMapIterator<int, KIMAP::MailBoxDescriptor>> mFolderIterator;
 };
 
 #endif

@@ -6,10 +6,10 @@
 
 #include "changeitemsflagstask.h"
 
-#include <kimap/session.h>
-#include <kimap/selectjob.h>
-#include <kimap/storejob.h>
 #include "imapresource_debug.h"
+#include <kimap/selectjob.h>
+#include <kimap/session.h>
+#include <kimap/storejob.h>
 
 ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(ResourceTask::DeferIfNoSession, resource, parent)
@@ -29,8 +29,7 @@ void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
         auto select = new KIMAP::SelectJob(session);
         select->setMailBox(mailBox);
 
-        connect(select, &KJob::result,
-                this, &ChangeItemsFlagsTask::onSelectDone);
+        connect(select, &KJob::result, this, &ChangeItemsFlagsTask::onSelectDone);
 
         select->start();
     } else {

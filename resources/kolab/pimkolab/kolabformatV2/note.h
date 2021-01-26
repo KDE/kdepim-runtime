@@ -16,7 +16,8 @@
 
 class QDomElement;
 
-namespace KolabV2 {
+namespace KolabV2
+{
 /**
  * This class represents a note, and knows how to load/save it
  * from/to XML, and from/to a KCalendarCore::Journal.

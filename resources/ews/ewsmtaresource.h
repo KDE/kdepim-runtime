@@ -29,6 +29,7 @@ protected Q_SLOTS:
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
 private Q_SLOTS:
     void messageSent(const QString &id, const QString &error);
+
 private:
     bool connectEws();
 

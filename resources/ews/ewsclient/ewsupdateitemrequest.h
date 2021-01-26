@@ -22,18 +22,13 @@ class EwsUpdateItemRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-
     class Update
     {
     public:
         bool write(QXmlStreamWriter &writer, EwsItemType itemType) const;
+
     protected:
-        enum Type {
-            Append = 0,
-            Set,
-            Delete,
-            Unknown
-        };
+        enum Type { Append = 0, Set, Delete, Unknown };
 
         Update(const EwsPropertyField &field, const QVariant &val, Type type)
             : mField(field)
@@ -50,7 +45,8 @@ public:
     class AppendUpdate : public Update
     {
     public:
-        AppendUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Append)
+        AppendUpdate(const EwsPropertyField &field, const QVariant &val)
+            : Update(field, val, Append)
         {
         }
     };
@@ -58,7 +54,8 @@ public:
     class SetUpdate : public Update
     {
     public:
-        SetUpdate(const EwsPropertyField &field, const QVariant &val) : Update(field, val, Set)
+        SetUpdate(const EwsPropertyField &field, const QVariant &val)
+            : Update(field, val, Set)
         {
         }
     };
@@ -66,7 +63,8 @@ public:
     class DeleteUpdate : public Update
     {
     public:
-        DeleteUpdate(const EwsPropertyField &field) : Update(field, QVariant(), Delete)
+        DeleteUpdate(const EwsPropertyField &field)
+            : Update(field, QVariant(), Delete)
         {
         }
     };
@@ -74,7 +72,8 @@ public:
     class ItemChange
     {
     public:
-        ItemChange(const EwsId &itemId, EwsItemType type) : mId(itemId)
+        ItemChange(const EwsId &itemId, EwsItemType type)
+            : mId(itemId)
             , mType(type)
         {
         }
@@ -85,10 +84,11 @@ public:
         }
 
         bool write(QXmlStreamWriter &writer) const;
+
     private:
         EwsId mId;
         EwsItemType mType;
-        QList<QSharedPointer<const Update> > mUpdates;
+        QList<QSharedPointer<const Update>> mUpdates;
     };
 
     class Response : public EwsRequest::Response
@@ -151,6 +151,7 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
+
 private:
     QList<ItemChange> mChanges;
     EwsMessageDisposition mMessageDisp;

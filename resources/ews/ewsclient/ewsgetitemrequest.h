@@ -48,6 +48,7 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
+
 private:
     EwsId::List mIds;
     EwsItemShape mShape;

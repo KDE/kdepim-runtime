@@ -11,13 +11,15 @@
 
 #include <QString>
 
-namespace OXA {
+namespace OXA
+{
 /**
  * Namespace that contains methods for handling OX errors.
  *
  * @author Marco Nelles <marco.nelles@credativ.com>
  */
-namespace OXErrors {
+namespace OXErrors
+{
 enum EditErrorID {
     EditErrorUndefined = 0,
     ConcurrentModification,

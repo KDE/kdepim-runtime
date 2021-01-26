@@ -11,8 +11,8 @@
 
 #include <AkonadiCore/Collection>
 
-#include "ewsjob.h"
 #include "ewsfolder.h"
+#include "ewsjob.h"
 
 class EwsClient;
 class EwsFetchFoldersIncrJobPrivate;
@@ -43,6 +43,7 @@ public:
 Q_SIGNALS:
     void status(int status, const QString &message = QString());
     void percent(int progress);
+
 private:
     Akonadi::Collection::List mChangedFolders;
     Akonadi::Collection::List mDeletedFolders;

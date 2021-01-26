@@ -12,11 +12,7 @@
 
 #include "ewsclient_debug.h"
 
-static const QString traversalTypeNames[] = {
-    QStringLiteral("Shallow"),
-    QStringLiteral("Deep"),
-    QStringLiteral("SoftDeleted")
-};
+static const QString traversalTypeNames[] = {QStringLiteral("Shallow"), QStringLiteral("Deep"), QStringLiteral("SoftDeleted")};
 
 class EwsFindFolderResponse : public EwsRequest::Response
 {
@@ -78,8 +74,7 @@ void EwsFindFolderRequest::start()
 
 bool EwsFindFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("FindFolder"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("FindFolder"), [this](QXmlStreamReader &reader) {
         return parseFoldersResponse(reader);
     });
 }
@@ -101,8 +96,7 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 
@@ -120,35 +114,30 @@ EwsFindFolderResponse::EwsFindFolderResponse(QXmlStreamReader &reader)
 bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 {
     if (reader.namespaceUri() != ewsMsgNsUri || reader.name() != QLatin1String("RootFolder")) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
-                           .arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
+        return setErrorMsg(
+            QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("RootFolder"), reader.qualifiedName().toString()));
     }
 
-    if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))
-        || !reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - missing attributes of %1 element.")
-                           .arg(QStringLiteral("RootFolder")));
+    if (!reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView")) || !reader.attributes().hasAttribute(QStringLiteral("TotalItemsInView"))) {
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - missing attributes of %1 element.").arg(QStringLiteral("RootFolder")));
     }
     bool ok;
     unsigned totalItems = reader.attributes().value(QStringLiteral("TotalItemsInView")).toUInt(&ok);
     if (!ok) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.")
-                           .arg(QStringLiteral("TotalItemsInView")));
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - failed to read %1 attribute.").arg(QStringLiteral("TotalItemsInView")));
     }
 
     if (!reader.readNextStartElement()) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.")
-                           .arg(QStringLiteral("RootFolder")));
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(QStringLiteral("RootFolder")));
     }
 
     if (reader.namespaceUri() != ewsTypeNsUri || reader.name() != QLatin1String("Folders")) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element (got %2).")
-                           .arg(QStringLiteral("Folders"), reader.qualifiedName().toString()));
+        return setErrorMsg(
+            QStringLiteral("Failed to read EWS request - expected %1 element (got %2).").arg(QStringLiteral("Folders"), reader.qualifiedName().toString()));
     }
 
     if (!reader.readNextStartElement()) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.")
-                           .arg(QStringLiteral("Folders")));
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(QStringLiteral("Folders")));
     }
 
     if (reader.namespaceUri() != ewsTypeNsUri) {
@@ -187,15 +176,11 @@ EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
     const QStringRef readerName = reader.name();
-    if (readerName == QLatin1String("Folder")
-        || readerName == QLatin1String("CalendarFolder")
-        || readerName == QLatin1String("ContactsFolder")
-        || readerName == QLatin1String("TasksFolder")
-        || readerName == QLatin1String("SearchFolder")) {
+    if (readerName == QLatin1String("Folder") || readerName == QLatin1String("CalendarFolder") || readerName == QLatin1String("ContactsFolder")
+        || readerName == QLatin1String("TasksFolder") || readerName == QLatin1String("SearchFolder")) {
         folder = new EwsFolder(reader);
         if (!folder->isValid()) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.")
-                        .arg(QStringLiteral("Folder")));
+            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid %1 element.").arg(QStringLiteral("Folder")));
             delete folder;
             return nullptr;
         }

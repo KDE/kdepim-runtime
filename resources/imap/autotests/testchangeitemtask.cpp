@@ -10,8 +10,8 @@
 #include "changeitemtask.h"
 #include "uidnextattribute.h"
 
-#include <kmime/kmime_message.h>
 #include <QTest>
+#include <kmime/kmime_message.h>
 
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 
@@ -23,8 +23,8 @@ private Q_SLOTS:
     void shouldAppendMessage_data()
     {
         QTest::addColumn<Akonadi::Item>("item");
-        QTest::addColumn< QSet<QByteArray> >("parts");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QSet<QByteArray>>("parts");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection collection;
@@ -52,8 +52,7 @@ private Q_SLOTS:
         parts << "PLD:RFC822";
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
                  << "S: A000003 OK append done [ APPENDUID 1239890035 65 ]"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
@@ -83,9 +82,7 @@ private Q_SLOTS:
         parts << "PLD:RFC822";
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true)
-                 << "S: A000003 OK append done"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true) << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
                  << "C: A000005 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
@@ -117,9 +114,7 @@ private Q_SLOTS:
         parts << "PLD:RFC822";
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
-                 << "S: A000003 OK append done"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true) << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
                  << "C: A000005 UID SEARCH NEW UID 65:*"
@@ -141,8 +136,7 @@ private Q_SLOTS:
         parts << "FLAGS";
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 UID STORE 5 FLAGS (\\Foo)"
                  << "S: A000004 OK store done";
@@ -168,7 +162,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setParts(parts);

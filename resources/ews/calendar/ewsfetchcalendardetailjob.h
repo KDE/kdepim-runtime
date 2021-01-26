@@ -15,6 +15,7 @@ class EwsFetchCalendarDetailJob : public EwsFetchItemDetailJob
 public:
     EwsFetchCalendarDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection);
     ~EwsFetchCalendarDetailJob() override;
+
 protected:
     void processItems(const QList<EwsGetItemRequest::Response> &responses) override;
 private Q_SLOTS:

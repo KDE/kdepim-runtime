@@ -7,11 +7,11 @@
 #ifndef SPECIALNOTIFIERJOB_H
 #define SPECIALNOTIFIERJOB_H
 
-#include <QObject>
-#include <Item>
-#include <QStringList>
-#include <QPixmap>
 #include <Akonadi/KMime/MarkAsCommand>
+#include <Item>
+#include <QObject>
+#include <QPixmap>
+#include <QStringList>
 
 class KJob;
 

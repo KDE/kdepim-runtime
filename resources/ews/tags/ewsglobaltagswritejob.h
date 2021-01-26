@@ -11,7 +11,8 @@
 
 class EwsTagStore;
 class EwsClient;
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 }
 
@@ -25,6 +26,7 @@ public:
     void start() override;
 private Q_SLOTS:
     void updateFolderRequestFinished(KJob *job);
+
 private:
     EwsTagStore *mTagStore = nullptr;
     EwsClient &mClient;

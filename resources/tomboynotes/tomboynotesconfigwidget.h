@@ -11,7 +11,8 @@
 #include <AkonadiCore/AgentConfigurationBase>
 class KConfigDialogManager;
 
-namespace Ui {
+namespace Ui
+{
 class TomboyNotesAgentConfigWidget;
 }
 

@@ -5,10 +5,10 @@
 #ifndef O2REPLYSERVER_H
 #define O2REPLYSERVER_H
 
-#include <QTcpServer>
-#include <QMap>
 #include <QByteArray>
+#include <QMap>
 #include <QString>
+#include <QTcpServer>
 
 /// HTTP server to process authentication response.
 class O2ReplyServer : public QTcpServer

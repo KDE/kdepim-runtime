@@ -9,21 +9,19 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
+#include "ewsclient_debug.h"
+#include "ewseffectiverights.h"
 #include "ewsitembase_p.h"
 #include "ewsxml.h"
-#include "ewseffectiverights.h"
-#include "ewsclient_debug.h"
 
 #define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate *>(this->d.data());
 #define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate *>(this->d.data());
 
-static const QVector<QString> folderTypeNames = {
-    QStringLiteral("Folder"),
-    QStringLiteral("CalendarFolder"),
-    QStringLiteral("ContactsFolder"),
-    QStringLiteral("SearchFolder"),
-    QStringLiteral("TasksFolder")
-};
+static const QVector<QString> folderTypeNames = {QStringLiteral("Folder"),
+                                                 QStringLiteral("CalendarFolder"),
+                                                 QStringLiteral("ContactsFolder"),
+                                                 QStringLiteral("SearchFolder"),
+                                                 QStringLiteral("TasksFolder")};
 
 class EwsFolderPrivate : public EwsItemBasePrivate
 {
@@ -55,12 +53,13 @@ static const QVector<EwsFolderPrivate::XmlProc::Item> ewsFolderItems = {
     {EwsFolderFieldDisplayName, QStringLiteral("DisplayName"), &ewsXmlTextReader, &ewsXmlTextWriter},
     {EwsFolderFieldTotalCount, QStringLiteral("TotalCount"), &ewsXmlUIntReader, &ewsXmlUIntWriter},
     {EwsFolderFieldChildFolderCount, QStringLiteral("ChildFolderCount"), &ewsXmlUIntReader},
-    {EwsItemFieldExtendedProperties, QStringLiteral("ExtendedProperty"),
-     &EwsItemBasePrivate::extendedPropertyReader, &EwsItemBasePrivate::extendedPropertyWriter},
+    {EwsItemFieldExtendedProperties,
+     QStringLiteral("ExtendedProperty"),
+     &EwsItemBasePrivate::extendedPropertyReader,
+     &EwsItemBasePrivate::extendedPropertyWriter},
     {EwsFolderFieldUnreadCount, QStringLiteral("UnreadCount"), &ewsXmlUIntReader},
     {EwsFolderPrivate::XmlProc::Ignore, QStringLiteral("SearchParameters")},
-    {EwsFolderFieldEffectiveRights, QStringLiteral("EffectiveRights"),
-     &EwsFolderPrivate::effectiveRightsReader},
+    {EwsFolderFieldEffectiveRights, QStringLiteral("EffectiveRights"), &EwsFolderPrivate::effectiveRightsReader},
     {EwsFolderPrivate::XmlProc::Ignore, QStringLiteral("ManagedFolderInformation")},
 };
 
@@ -111,8 +110,7 @@ EwsFolder::EwsFolder(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << "Unexpected namespace in folder element:"
-                                    << reader.namespaceUri();
+            qCWarningNC(EWSCLI_LOG) << "Unexpected namespace in folder element:" << reader.namespaceUri();
             return;
         }
 
@@ -176,8 +174,7 @@ void EwsFolder::addChild(EwsFolder &child)
 
     if (child.parentFolder() != nullptr) {
         qCWarning(EWSCLI_LOG).noquote()
-            << QStringLiteral("Attempt to add child folder which already has a parent (child: %1)").
-            arg(child[EwsFolderFieldFolderId].value<EwsId>().id());
+            << QStringLiteral("Attempt to add child folder which already has a parent (child: %1)").arg(child[EwsFolderFieldFolderId].value<EwsId>().id());
     }
     d->mChildren.append(child);
     child.setParentFolder(this);

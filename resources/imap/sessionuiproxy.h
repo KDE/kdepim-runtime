@@ -8,8 +8,8 @@
 #ifndef SESSIONUIPROXY_H
 #define SESSIONUIPROXY_H
 
-#include <kio/sslui.h>
 #include <kimap/sessionuiproxy.h>
+#include <kio/sslui.h>
 
 class SessionUiProxy : public KIMAP::SessionUiProxy
 {

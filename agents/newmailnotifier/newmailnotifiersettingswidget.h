@@ -7,8 +7,8 @@
 #ifndef NEWMAILNOTIFIERSETTINGSWIDGET_H
 #define NEWMAILNOTIFIERSETTINGSWIDGET_H
 
-#include <AkonadiCore/Collection>
 #include <AkonadiCore/AgentConfigurationBase>
+#include <AkonadiCore/Collection>
 
 class KNotifyConfigWidget;
 class QCheckBox;

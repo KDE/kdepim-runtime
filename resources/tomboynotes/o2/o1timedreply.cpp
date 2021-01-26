@@ -4,7 +4,8 @@
 
 #include "o2/o1timedreply.h"
 
-O1TimedReply::O1TimedReply(QNetworkReply *parent, int pTimeout) : QTimer(parent)
+O1TimedReply::O1TimedReply(QNetworkReply *parent, int pTimeout)
+    : QTimer(parent)
 {
     setSingleShot(true);
     setInterval(pTimeout);

@@ -11,13 +11,15 @@
 #include "kolabbase.h"
 #include <QImage>
 
-namespace KContacts {
+namespace KContacts
+{
 class Addressee;
 class Picture;
 class Sound;
 }
 
-namespace KolabV2 {
+namespace KolabV2
+{
 class Contact : public KolabBase
 {
 public:
@@ -29,12 +31,13 @@ public:
 
     struct Address {
     public:
-        Address() : kdeAddressType(-1)
+        Address()
+            : kdeAddressType(-1)
         {
         }
 
         int kdeAddressType; // KContacts::Address::Type
-        QString type;   // kolab-compliant address type: home, work or other
+        QString type; // kolab-compliant address type: home, work or other
         QString street;
         QString pobox;
         QString locality;

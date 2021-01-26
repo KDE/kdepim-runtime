@@ -9,15 +9,17 @@
 
 #include "kolab_export.h"
 
-#include <kolabnote.h>
 #include <kmime/kmime_message.h>
+#include <kolabnote.h>
 
-namespace Kolab {
+namespace Kolab
+{
 /**
  * Conversion of Kolab-Containers to/from KDE Containers.
  *
  */
-namespace Conversion {
+namespace Conversion
+{
 KOLAB_EXPORT KMime::Message::Ptr toNote(const Kolab::Note &);
 KOLAB_EXPORT Kolab::Note fromNote(const KMime::Message::Ptr &);
 }

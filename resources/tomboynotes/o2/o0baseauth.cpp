@@ -2,8 +2,8 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#include <QDataStream>
 #include "debug.h"
+#include <QDataStream>
 
 #include "o2/o0baseauth.h"
 #include "o2/o0globals.h"
@@ -11,7 +11,8 @@
 
 static const quint16 DefaultLocalPort = 1965;
 
-O0BaseAuth::O0BaseAuth(QObject *parent) : QObject(parent)
+O0BaseAuth::O0BaseAuth(QObject *parent)
+    : QObject(parent)
 {
     localPort_ = DefaultLocalPort;
     store_ = new O0SettingsStore(QString::fromLatin1(O2_ENCRYPTION_KEY), this);

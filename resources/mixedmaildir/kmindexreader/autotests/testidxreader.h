@@ -20,6 +20,7 @@ private Q_SLOTS:
     void testError();
     void testReadHeader();
     void testRead();
+
 private:
 };
 

@@ -13,12 +13,12 @@
 
 #include <KConfigDialogManager>
 
-namespace Akonadi {
+namespace Akonadi
+{
 /**
  * Configuration widget for single file resources.
  */
-template<typename Settings>
-class SingleFileResourceConfigWidget : public SingleFileResourceConfigWidgetBase
+template<typename Settings> class SingleFileResourceConfigWidget : public SingleFileResourceConfigWidgetBase
 {
     Settings *mSettings = nullptr;
 

@@ -7,34 +7,25 @@
 #include "setupwizard.h"
 
 #include <KDAV/DavCollectionsMultiFetchJob>
-#include <KPasswordLineEdit>
-#include <QIcon>
 #include <KLocalizedString>
-#include <QLineEdit>
+#include <KPasswordLineEdit>
 #include <KService>
 #include <KServiceTypeTrader>
+#include <QIcon>
+#include <QLineEdit>
 #include <QTextBrowser>
 
-#include <QUrl>
 #include <QButtonGroup>
-#include <QComboBox>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QRegularExpressionValidator>
+#include <QUrl>
 
-enum GroupwareServers {
-    Citadel,
-    DAVical,
-    eGroupware,
-    OpenGroupware,
-    ScalableOGo,
-    Scalix,
-    Zarafa,
-    Zimbra
-};
+enum GroupwareServers { Citadel, DAVical, eGroupware, OpenGroupware, ScalableOGo, Scalix, Zarafa, Zimbra };
 
 static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 {
@@ -269,9 +260,11 @@ PredefinedProviderPage::PredefinedProviderPage(QWidget *parent)
 
 void PredefinedProviderPage::initializePage()
 {
-    mLabel->setText(i18n("Based on the email address you used as a login, this wizard\n"
-                         "can configure automatically an account for %1 services.\n"
-                         "Do you wish to do so?", wizard()->property("predefinedProviderName").toString()));
+    mLabel->setText(
+        i18n("Based on the email address you used as a login, this wizard\n"
+             "can configure automatically an account for %1 services.\n"
+             "Do you wish to do so?",
+             wizard()->property("predefinedProviderName").toString()));
 
     mUseProvider->setText(i18n("Yes, use %1 as provider", wizard()->property("predefinedProviderName").toString()));
 }
@@ -306,13 +299,13 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mProvidersCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     KServiceTypeTrader *trader = KServiceTypeTrader::self();
     const KService::List providers = trader->query(QStringLiteral("DavGroupwareProvider"));
-    QList< QPair<QString, QString> > offers;
+    QList<QPair<QString, QString>> offers;
     offers.reserve(providers.count());
     for (const KService::Ptr &provider : providers) {
         offers.append(QPair<QString, QString>(provider->name(), provider->entryPath()));
     }
     std::sort(offers.begin(), offers.end(), compareServiceOffers);
-    QListIterator< QPair<QString, QString> > it(offers);
+    QListIterator<QPair<QString, QString>> it(offers);
     while (it.hasNext()) {
         QPair<QString, QString> p = it.next();
         mProvidersCombo->addItem(p.first, p.second);

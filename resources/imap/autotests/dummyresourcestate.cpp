@@ -18,8 +18,8 @@ DummyResourceState::DummyResourceState()
     , m_intervalCheckTime(-1)
     , m_mergeMode(Akonadi::ItemSync::RIDMerge)
 {
-    qRegisterMetaType<QList<qint64> >();
-    qRegisterMetaType<QVector<qint64> >();
+    qRegisterMetaType<QList<qint64>>();
+    qRegisterMetaType<QVector<qint64>>();
     qRegisterMetaType<TagListAndMembers>();
 }
 
@@ -284,12 +284,12 @@ void DummyResourceState::setTotalItems(int)
 {
 }
 
-QSet< QByteArray > DummyResourceState::addedFlags() const
+QSet<QByteArray> DummyResourceState::addedFlags() const
 {
     return QSet<QByteArray>();
 }
 
-QSet< QByteArray > DummyResourceState::removedFlags() const
+QSet<QByteArray> DummyResourceState::removedFlags() const
 {
     return QSet<QByteArray>();
 }
@@ -392,7 +392,7 @@ void DummyResourceState::showInformationDialog(const QString &message, const QSt
     recordCall("showInformationDialog", QVariant::fromValue(message));
 }
 
-QList< QPair<QByteArray, QVariant> > DummyResourceState::calls() const
+QList<QPair<QByteArray, QVariant>> DummyResourceState::calls() const
 {
     return m_calls;
 }

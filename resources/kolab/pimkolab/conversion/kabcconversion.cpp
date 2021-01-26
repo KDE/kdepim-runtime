@@ -11,17 +11,19 @@
 #include <QImageReader>
 
 #include "pimkolab_debug.h"
-namespace Kolab {
-namespace Conversion {
-//The following was copied from kdepim/libkleo/kleo/enum.h,.cpp
+namespace Kolab
+{
+namespace Conversion
+{
+// The following was copied from kdepim/libkleo/kleo/enum.h,.cpp
 enum CryptoMessageFormat {
     InlineOpenPGPFormat = 1,
     OpenPGPMIMEFormat = 2,
     SMIMEFormat = 4,
     SMIMEOpaqueFormat = 8,
-    AnyOpenPGP = InlineOpenPGPFormat|OpenPGPMIMEFormat,
-    AnySMIME = SMIMEOpaqueFormat|SMIMEFormat,
-    AutoFormat = AnyOpenPGP|AnySMIME
+    AnyOpenPGP = InlineOpenPGPFormat | OpenPGPMIMEFormat,
+    AnySMIME = SMIMEOpaqueFormat | SMIMEFormat,
+    AutoFormat = AnyOpenPGP | AnySMIME
 };
 
 enum EncryptionPreference {
@@ -49,21 +51,12 @@ static const struct {
     const char *displayName;
     const char *configName;
 } cryptoMessageFormats[] = {
-    { InlineOpenPGPFormat,
-      ("Inline OpenPGP (deprecated)"),
-      "inline openpgp" },
-    { OpenPGPMIMEFormat,
-      ("OpenPGP/MIME"),
-      "openpgp/mime" },
-    { SMIMEFormat,
-      ("S/MIME"),
-      "s/mime" },
-    { SMIMEOpaqueFormat,
-      ("S/MIME Opaque"),
-      "s/mime opaque" },
+    {InlineOpenPGPFormat, ("Inline OpenPGP (deprecated)"), "inline openpgp"},
+    {OpenPGPMIMEFormat, ("OpenPGP/MIME"), "openpgp/mime"},
+    {SMIMEFormat, ("S/MIME"), "s/mime"},
+    {SMIMEOpaqueFormat, ("S/MIME Opaque"), "s/mime opaque"},
 };
-static const unsigned int numCryptoMessageFormats
-    = sizeof cryptoMessageFormats / sizeof *cryptoMessageFormats;
+static const unsigned int numCryptoMessageFormats = sizeof cryptoMessageFormats / sizeof *cryptoMessageFormats;
 
 const char *cryptoMessageFormatToString(CryptoMessageFormat f)
 {
@@ -128,7 +121,7 @@ const char *encryptionPreferenceToString(EncryptionPreference pref)
     case AskWheneverPossible:
         return "askWhenPossible";
     }
-    return nullptr;         // keep the compiler happy
+    return nullptr; // keep the compiler happy
 }
 
 EncryptionPreference stringToEncryptionPreference(const QString &str)
@@ -163,7 +156,7 @@ const char *signingPreferenceToString(SigningPreference pref)
     case AskSigningWheneverPossible:
         return "askWhenPossible";
     }
-    return nullptr;         // keep the compiler happy
+    return nullptr; // keep the compiler happy
 }
 
 SigningPreference stringToSigningPreference(const QString &str)
@@ -190,19 +183,19 @@ int fromAddressType(int kabcType, bool &pref)
 {
     int type = 0;
     if (kabcType & KContacts::Address::Dom) {
-        qCWarning(PIMKOLAB_LOG) <<"domestic address is not supported";
+        qCWarning(PIMKOLAB_LOG) << "domestic address is not supported";
     }
     if (kabcType & KContacts::Address::Intl) {
-        qCWarning(PIMKOLAB_LOG) <<"international address is not supported";
+        qCWarning(PIMKOLAB_LOG) << "international address is not supported";
     }
     if (kabcType & KContacts::Address::Pref) {
         pref = true;
     }
     if (kabcType & KContacts::Address::Postal) {
-        qCWarning(PIMKOLAB_LOG) <<"postal address is not supported";
+        qCWarning(PIMKOLAB_LOG) << "postal address is not supported";
     }
     if (kabcType & KContacts::Address::Parcel) {
-        qCWarning(PIMKOLAB_LOG) <<"parcel is not supported";
+        qCWarning(PIMKOLAB_LOG) << "parcel is not supported";
     }
     if (kabcType & KContacts::Address::Home) {
         type |= Kolab::Address::Home;
@@ -256,16 +249,16 @@ int fromPhoneType(int kabcType, bool &pref)
         type |= Kolab::Telephone::Video;
     }
     if (kabcType & KContacts::PhoneNumber::Bbs) {
-        qCWarning(PIMKOLAB_LOG) <<"mailbox number is not supported";
+        qCWarning(PIMKOLAB_LOG) << "mailbox number is not supported";
     }
     if (kabcType & KContacts::PhoneNumber::Modem) {
-        qCWarning(PIMKOLAB_LOG) <<"modem is not supported";
+        qCWarning(PIMKOLAB_LOG) << "modem is not supported";
     }
     if (kabcType & KContacts::PhoneNumber::Car) {
         type |= Kolab::Telephone::Car;
     }
     if (kabcType & KContacts::PhoneNumber::Isdn) {
-        qCWarning(PIMKOLAB_LOG) <<"isdn number is not supported";
+        qCWarning(PIMKOLAB_LOG) << "isdn number is not supported";
     }
     if (kabcType & KContacts::PhoneNumber::Pcs) {
         type |= Kolab::Telephone::Text;
@@ -328,11 +321,11 @@ std::string fromPicture(const KContacts::Picture &pic, std::string &mimetype)
         }
     } else if (!pic.url().isEmpty()) {
         qCWarning(PIMKOLAB_LOG) << "external pictures are currently not supported";
-        //FIXME add kio support to libcalendaring or use libcurl
-//         if ( KIO::NetAccess::download( pic.url(), tmpFile, 0 /*no widget known*/ ) ) {
-//             img.load( tmpFile );
-//             KIO::NetAccess::removeTempFile( tmpFile );
-//         }
+        // FIXME add kio support to libcalendaring or use libcurl
+        //         if ( KIO::NetAccess::download( pic.url(), tmpFile, 0 /*no widget known*/ ) ) {
+        //             img.load( tmpFile );
+        //             KIO::NetAccess::removeTempFile( tmpFile );
+        //         }
     }
     if (img.isNull()) {
         qCCritical(PIMKOLAB_LOG) << "invalid picture";
@@ -366,30 +359,28 @@ KContacts::Picture toPicture(const std::string &data, const std::string &mimetyp
         ret = img.loadFromData(QByteArray::fromRawData(data.data(), data.size()));
     }
     if (!ret) {
-        qCWarning(PIMKOLAB_LOG) <<"failed to load picture";
+        qCWarning(PIMKOLAB_LOG) << "failed to load picture";
         return KContacts::Picture();
     }
 
     KContacts::Picture logo(img);
     if (logo.isEmpty()) {
-        qCWarning(PIMKOLAB_LOG) <<"failed to read picture";
+        qCWarning(PIMKOLAB_LOG) << "failed to read picture";
         return KContacts::Picture();
     }
     return logo;
 }
 
-template<typename T>
-void setCustom(const std::string &value, const std::string &id, T &object)
+template<typename T> void setCustom(const std::string &value, const std::string &id, T &object)
 {
-    std::vector <Kolab::CustomProperty > properties = object.customProperties();
+    std::vector<Kolab::CustomProperty> properties = object.customProperties();
     properties.push_back(CustomProperty(id, value));
     object.setCustomProperties(properties);
 }
 
-template<typename T>
-std::string getCustom(const std::string &id, T &object)
+template<typename T> std::string getCustom(const std::string &id, T &object)
 {
-    const std::vector <Kolab::CustomProperty > &properties = object.customProperties();
+    const std::vector<Kolab::CustomProperty> &properties = object.customProperties();
     foreach (const Kolab::CustomProperty &prop, properties) {
         if (prop.identifier == id) {
             return prop.value;
@@ -427,8 +418,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     KContacts::Addressee addressee;
     addressee.setUid(fromStdString(contact.uid()));
     addressee.setCategories(toStringList(contact.categories()));
-    //addressee.setName(fromStdString(contact.name()));//This one is only for compatibility (and results in a non-existing name property)
-    addressee.setFormattedName(fromStdString(contact.name())); //This on corresponds to fn
+    // addressee.setName(fromStdString(contact.name()));//This one is only for compatibility (and results in a non-existing name property)
+    addressee.setFormattedName(fromStdString(contact.name())); // This on corresponds to fn
 
     const Kolab::NameComponents &nc = contact.nameComponents();
     if (!nc.surnames().empty()) {
@@ -449,7 +440,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
 
     addressee.setNote(fromStdString(contact.note()));
 
-    addressee.setSecrecy(KContacts::Secrecy::Public); //We don't have any privacy setting in xCard
+    addressee.setSecrecy(KContacts::Secrecy::Public); // We don't have any privacy setting in xCard
 
     QString preferredEmail;
 
@@ -481,18 +472,18 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     }
 
     if (!contact.nickNames().empty()) {
-        addressee.setNickName(fromStdString(contact.nickNames().at(0))); //TODO support multiple
+        addressee.setNickName(fromStdString(contact.nickNames().at(0))); // TODO support multiple
     }
 
     if (contact.bDay().isValid()) {
         addressee.setBirthday(toDate(contact.bDay()));
     }
     if (!contact.titles().empty()) {
-        addressee.setTitle(fromStdString(contact.titles().at(0))); //TODO support multiple
+        addressee.setTitle(fromStdString(contact.titles().at(0))); // TODO support multiple
     }
     if (!contact.urls().empty()) {
         KContacts::ResourceLocatorUrl url;
-        url.setUrl(QUrl(fromStdString(contact.urls().at(0).url()))); //TODO support multiple
+        url.setUrl(QUrl(fromStdString(contact.urls().at(0).url()))); // TODO support multiple
         addressee.setUrl(url);
         foreach (const Kolab::Url &u, contact.urls()) {
             if (u.type() == Kolab::Url::Blog) {
@@ -502,16 +493,16 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     }
 
     if (!contact.affiliations().empty()) {
-        //Storing only a const reference leads to segfaults. No idea why.
-        const Kolab::Affiliation aff = contact.affiliations().at(0); //TODO support multiple
+        // Storing only a const reference leads to segfaults. No idea why.
+        const Kolab::Affiliation aff = contact.affiliations().at(0); // TODO support multiple
         if (!aff.organisation().empty()) {
             addressee.setOrganization(fromStdString(aff.organisation()));
         }
         if (!aff.organisationalUnits().empty()) {
-            addressee.setDepartment(fromStdString(aff.organisationalUnits().at(0))); //TODO support multiple
+            addressee.setDepartment(fromStdString(aff.organisationalUnits().at(0))); // TODO support multiple
         }
         if (!aff.roles().empty()) {
-            addressee.setRole(fromStdString(aff.roles().at(0))); //TODO support multiple
+            addressee.setRole(fromStdString(aff.roles().at(0))); // TODO support multiple
         }
         if (!aff.logo().empty()) {
             addressee.setLogo(toPicture(aff.logo(), aff.logoMimetype()));
@@ -529,7 +520,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
             }
         }
         foreach (const Kolab::Address &address, aff.addresses()) {
-            addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), fromStdString(address.label())); //TODO support proper addresses
+            addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), fromStdString(address.label())); // TODO support proper addresses
         }
     }
     const std::string &prof = getCustom("X-Profession", contact);
@@ -584,7 +575,7 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     }
 
     if (!contact.imAddresses().empty()) {
-        addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), fromStdString(contact.imAddresses()[0])); //TODO support multiple
+        addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-IMAddress"), fromStdString(contact.imAddresses()[0])); // TODO support multiple
     }
 
     if (!contact.relateds().empty()) {
@@ -594,9 +585,9 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
                 continue;
             }
             if (rel.relationTypes() & Kolab::Related::Spouse) {
-                addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), fromStdString(rel.text())); //TODO support multiple
+                addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), fromStdString(rel.text())); // TODO support multiple
             } else {
-                qCWarning(PIMKOLAB_LOG) <<"relation not supported";
+                qCWarning(PIMKOLAB_LOG) << "relation not supported";
                 continue;
             }
         }
@@ -668,9 +659,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     }
 
     std::vector<Kolab::Url> urls;
-    const QUrl url{
-        addressee.url().url()
-    };
+    const QUrl url{addressee.url().url()};
     if (!url.isEmpty()) {
         urls.push_back(Kolab::Url(toStdString(url.url())));
     }
@@ -710,13 +699,14 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
         c.setRelateds(std::vector<Kolab::Related>() << Kolab::Related(Kolab::Related::Text, toStdString(spouse), Kolab::Related::Spouse));
     }
     c.setBDay(fromDate(addressee.birthday(), true));
-    c.setAnniversary(fromDate(QDateTime(QDate::fromString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary")), Qt::ISODate), {}), true));
+    c.setAnniversary(
+        fromDate(QDateTime(QDate::fromString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary")), Qt::ISODate), {}), true));
     if (!addressee.photo().isEmpty()) {
         std::string mimetype;
         const std::string &photo = fromPicture(addressee.photo(), mimetype);
         c.setPhoto(photo, mimetype);
     }
-    //TODO
+    // TODO
     // c.setGender(addressee.gender());
     std::vector<std::string> languages;
     foreach (const KContacts::Lang &n, addressee.langs()) {
@@ -724,7 +714,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     }
     c.setLanguages(languages);
 
-    std::vector <Kolab::Telephone> phones;
+    std::vector<Kolab::Telephone> phones;
     prefNum = -1;
     prefCounter = -1;
     foreach (const KContacts::PhoneNumber &n, addressee.phoneNumbers()) {
@@ -754,8 +744,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
             prefEmail = count;
         }
         count++;
-        emails.push_back(Kolab::Email(toStdString(e),
-                                      emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e)))));
+        emails.push_back(
+            Kolab::Email(toStdString(e), emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e)))));
     }
     c.setEmailAddresses(emails, prefEmail);
 
@@ -765,7 +755,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
 
     Kolab::Crypto crypto;
 
-    const QStringList protocolPrefs = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(QLatin1Char(','), Qt::SkipEmptyParts);
+    const QStringList protocolPrefs =
+        addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("CRYPTOPROTOPREF")).split(QLatin1Char(','), Qt::SkipEmptyParts);
     const uint cryptoFormats = stringListToCryptoMessageFormats(protocolPrefs);
     int formats = 0;
     if (cryptoFormats & InlineOpenPGPFormat) {
@@ -824,7 +815,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
 
     c.setCrypto(crypto);
 
-    //FIXME the keys are most certainly wrong, look at cryptopageplugin.cpp
+    // FIXME the keys are most certainly wrong, look at cryptopageplugin.cpp
     std::vector<Kolab::Key> keys;
     const std::string &pgpkey = toStdString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("OPENPGPFP")));
     if (!pgpkey.empty()) {
@@ -837,7 +828,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     c.setKeys(keys);
 
     if (!addressee.sound().isEmpty()) {
-        qCWarning(PIMKOLAB_LOG) <<"sound is not supported";
+        qCWarning(PIMKOLAB_LOG) << "sound is not supported";
     }
 
     const std::string &profession = toStdString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Profession")));
@@ -850,7 +841,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
         setCustom(adrBook, "X-AddressBook", c);
     }
 
-    //TODO preserve all custom properties (also such which are unknown to us)
+    // TODO preserve all custom properties (also such which are unknown to us)
 
     return c;
 }
@@ -861,7 +852,7 @@ DistList fromKABC(const KContacts::ContactGroup &cg)
     dl.setName(toStdString(cg.name()));
     dl.setUid(toStdString(cg.id()));
 
-    std::vector <Kolab::ContactReference > members;
+    std::vector<Kolab::ContactReference> members;
     for (int i = 0; i < cg.dataCount(); i++) {
         const KContacts::ContactGroup::Data &data = cg.data(i);
         members.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(data.email()), toStdString(data.name())));
@@ -899,5 +890,5 @@ KContacts::ContactGroup toKABC(const DistList &dl)
 
     return cg;
 }
-}     //Namespace
-} //Namespace
+} // Namespace
+} // Namespace

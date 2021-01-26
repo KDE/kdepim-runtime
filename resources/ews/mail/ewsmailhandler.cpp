@@ -6,13 +6,13 @@
 
 #include "ewsmailhandler.h"
 
-#include <KMime/Message>
 #include <Akonadi/KMime/MessageFlags>
 #include <AkonadiCore/Item>
+#include <KMime/Message>
 
+#include "ewscreatemailjob.h"
 #include "ewsfetchmaildetailjob.h"
 #include "ewsmodifymailjob.h"
-#include "ewscreatemailjob.h"
 #include "ewsresource_debug.h"
 
 using namespace Akonadi;
@@ -80,7 +80,8 @@ EwsModifyItemJob *EwsMailHandler::modifyItemJob(EwsClient &client, const QVector
     return new EwsModifyMailJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsMailHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *
+EwsMailHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
 {
     return new EwsCreateMailJob(client, item, collection, tagStore, parent);
 }
@@ -100,16 +101,15 @@ QHash<EwsPropertyField, QVariant> EwsMailHandler::writeFlags(const QSet<QByteArr
             isRead = true;
         } else if (flag == MessageFlags::Flagged) {
             isFlagged = true;
-        } else if (flag == MessageFlags::HasAttachment || flag == MessageFlags::HasInvitation
-                   || flag == MessageFlags::Signed || flag == MessageFlags::Encrypted) {
+        } else if (flag == MessageFlags::HasAttachment || flag == MessageFlags::HasInvitation || flag == MessageFlags::Signed
+                   || flag == MessageFlags::Encrypted) {
             // These flags are read-only. Remove them from the unknown list but don't do anything with them.
         } else {
             unknownFlags.insert(flag);
         }
     }
 
-    propertyHash.insert(EwsPropertyField(QStringLiteral("message:IsRead")),
-                        isRead ? QStringLiteral("true") : QStringLiteral("false"));
+    propertyHash.insert(EwsPropertyField(QStringLiteral("message:IsRead")), isRead ? QStringLiteral("true") : QStringLiteral("false"));
     if (isFlagged) {
         propertyHash.insert(propPidFlagStatus, QStringLiteral("2"));
     } else {

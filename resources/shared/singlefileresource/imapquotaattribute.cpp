@@ -18,7 +18,9 @@ ImapQuotaAttribute::ImapQuotaAttribute()
 {
 }
 
-Akonadi::ImapQuotaAttribute::ImapQuotaAttribute(const QList<QByteArray> &roots, const QList< QMap<QByteArray, qint64> > &limits, const QList< QMap<QByteArray, qint64> > &usages)
+Akonadi::ImapQuotaAttribute::ImapQuotaAttribute(const QList<QByteArray> &roots,
+                                                const QList<QMap<QByteArray, qint64>> &limits,
+                                                const QList<QMap<QByteArray, qint64>> &usages)
     : mRoots(roots)
     , mLimits(limits)
     , mUsages(usages)
@@ -27,7 +29,9 @@ Akonadi::ImapQuotaAttribute::ImapQuotaAttribute(const QList<QByteArray> &roots, 
     Q_ASSERT(roots.size() == usages.size());
 }
 
-void Akonadi::ImapQuotaAttribute::setQuotas(const QList<QByteArray> &roots, const QList< QMap<QByteArray, qint64> > &limits, const QList< QMap<QByteArray, qint64> > &usages)
+void Akonadi::ImapQuotaAttribute::setQuotas(const QList<QByteArray> &roots,
+                                            const QList<QMap<QByteArray, qint64>> &limits,
+                                            const QList<QMap<QByteArray, qint64>> &usages)
 {
     Q_ASSERT(roots.size() == limits.size());
     Q_ASSERT(roots.size() == usages.size());
@@ -42,12 +46,12 @@ QList<QByteArray> Akonadi::ImapQuotaAttribute::roots() const
     return mRoots;
 }
 
-QList< QMap<QByteArray, qint64> > Akonadi::ImapQuotaAttribute::limits() const
+QList<QMap<QByteArray, qint64>> Akonadi::ImapQuotaAttribute::limits() const
 {
     return mLimits;
 }
 
-QList< QMap<QByteArray, qint64> > Akonadi::ImapQuotaAttribute::usages() const
+QList<QMap<QByteArray, qint64>> Akonadi::ImapQuotaAttribute::usages() const
 {
     return mUsages;
 }

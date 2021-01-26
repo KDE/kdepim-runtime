@@ -14,31 +14,27 @@
 
 #include <QObject>
 
-namespace KCalendarCore {
+namespace KCalendarCore
+{
 class FileStorage;
 }
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 class Item;
 }
 using namespace KAlarmCal;
 
-namespace KAlarmResourceCommon {
-void          initialise(QObject *parent);
+namespace KAlarmResourceCommon
+{
+void initialise(QObject *parent);
 //    void          customizeConfigDialog(SingleFileResourceConfigDialog<Settings>*);
 KACalendar::Compat getCompatibility(const KCalendarCore::FileStorage::Ptr &, int &version);
 Akonadi::Item retrieveItem(const Akonadi::Item &, KAEvent &);
-KAEvent       checkItemChanged(const Akonadi::Item &, QString &errorMsg);
-void          setCollectionCompatibility(const Akonadi::Collection &, KACalendar::Compat, int version);
+KAEvent checkItemChanged(const Akonadi::Item &, QString &errorMsg);
+void setCollectionCompatibility(const Akonadi::Collection &, KACalendar::Compat, int version);
 
-enum ErrorCode {
-    UidNotFound,
-    NotCurrentFormat,
-    EventNotCurrentFormat,
-    EventNoAlarms,
-    EventReadOnly,
-    CalendarAdd
-};
+enum ErrorCode { UidNotFound, NotCurrentFormat, EventNotCurrentFormat, EventNoAlarms, EventReadOnly, CalendarAdd };
 QString errorMessage(ErrorCode, const QString &param = QString());
 }
 

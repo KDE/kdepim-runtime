@@ -8,11 +8,12 @@
 #include <QUrlQuery>
 #endif
 
-#include "o2/o2requestor.h"
-#include "o2/o2.h"
 #include "o2/o0globals.h"
+#include "o2/o2.h"
+#include "o2/o2requestor.h"
 
-O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent) : QObject(parent)
+O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent)
+    : QObject(parent)
     , reply_(nullptr)
     , status_(Idle)
 {
@@ -108,7 +109,8 @@ void O2Requestor::onRequestError(QNetworkReply::NetworkError error)
         return;
     }
     int httpStatus = reply_->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2Requestor::onRequestError: HTTP status" << httpStatus << reply_->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+    qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O2Requestor::onRequestError: HTTP status" << httpStatus
+                                       << reply_->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << reply_->readAll();
     if ((status_ == Requesting) && (httpStatus == 401)) {
         // Call O2::refresh. Note the O2 instance might live in a different thread

@@ -19,11 +19,7 @@ class EwsDeleteItemRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum Type {
-        HardDelete = 0,
-        SoftDelete,
-        MoveToDeletedItems
-    };
+    enum Type { HardDelete = 0, SoftDelete, MoveToDeletedItems };
 
     class Response : public EwsRequest::Response
     {
@@ -57,6 +53,7 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
+
 private:
     EwsId::List mIds;
     Type mType;

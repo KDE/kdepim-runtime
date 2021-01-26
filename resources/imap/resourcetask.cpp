@@ -9,14 +9,14 @@
 
 #include <Akonadi/KMime/MessageFlags>
 
-#include <KLocalizedString>
 #include "imapresource_debug.h"
 #include "imapresource_trace.h"
+#include <KLocalizedString>
 
 #include "collectionflagsattribute.h"
-#include <imapaclattribute.h>
 #include "imapflags.h"
 #include "sessionpool.h"
+#include <imapaclattribute.h>
 
 ResourceTask::ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent)
     : QObject(parent)
@@ -45,8 +45,7 @@ void ResourceTask::start(SessionPool *pool)
 {
     qCDebug(IMAPRESOURCE_TRACE) << metaObject()->className();
     m_pool = pool;
-    connect(m_pool, &SessionPool::sessionRequestDone,
-            this, &ResourceTask::onSessionRequested);
+    connect(m_pool, &SessionPool::sessionRequestDone, this, &ResourceTask::onSessionRequested);
 
     m_sessionRequestId = m_pool->requestSession();
 
@@ -86,8 +85,7 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
         return;
     }
 
-    disconnect(m_pool, &SessionPool::sessionRequestDone,
-               this, &ResourceTask::onSessionRequested);
+    disconnect(m_pool, &SessionPool::sessionRequestDone, this, &ResourceTask::onSessionRequested);
     m_sessionRequestId = 0;
 
     if (errorCode != SessionPool::NoError) {
@@ -97,10 +95,8 @@ void ResourceTask::onSessionRequested(qint64 requestId, KIMAP::Session *session,
 
     m_session = session;
 
-    connect(m_pool, &SessionPool::connectionLost,
-            this, &ResourceTask::onConnectionLost);
-    connect(m_pool, &SessionPool::disconnectDone,
-            this, &ResourceTask::onPoolDisconnect);
+    connect(m_pool, &SessionPool::connectionLost, this, &ResourceTask::onConnectionLost);
+    connect(m_pool, &SessionPool::disconnectDone, this, &ResourceTask::onPoolDisconnect);
 
     qCDebug(IMAPRESOURCE_TRACE) << "starting: " << metaObject()->className();
     doStart(m_session);
@@ -171,9 +167,9 @@ int ResourceTask::intervalCheckTime() const
 
 static Akonadi::Collection detachCollection(const Akonadi::Collection &collection)
 {
-    //HACK: Attributes are accessed via a const function, and the implicitly shared private pointer thus doesn't detach.
-    //We force a detach to avoid surprises. (RetrieveItemsTask used to write back the collection changes, even though the task was canceled)
-    //Once this is fixed this function can go away.
+    // HACK: Attributes are accessed via a const function, and the implicitly shared private pointer thus doesn't detach.
+    // We force a detach to avoid surprises. (RetrieveItemsTask used to write back the collection changes, even though the task was canceled)
+    // Once this is fixed this function can go away.
     Akonadi::Collection col = collection;
     col.setId(col.id());
     return col;
@@ -214,12 +210,12 @@ QSet<QByteArray> ResourceTask::parts() const
     return m_resource->parts();
 }
 
-QSet< QByteArray > ResourceTask::addedFlags() const
+QSet<QByteArray> ResourceTask::addedFlags() const
 {
     return m_resource->addedFlags();
 }
 
-QSet< QByteArray > ResourceTask::removedFlags() const
+QSet<QByteArray> ResourceTask::removedFlags() const
 {
     return m_resource->removedFlags();
 }
@@ -415,7 +411,7 @@ QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags(const QList<QByt
     const auto *flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
     // the server does not support arbitrary flags, so filter out those it can't handle
     if (flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains("\\*")) {
-        for (QList< QByteArray >::iterator it = imapFlags.begin(); it != imapFlags.end();) {
+        for (QList<QByteArray>::iterator it = imapFlags.begin(); it != imapFlags.end();) {
             if (flagAttr->flags().contains(*it)) {
                 ++it;
             } else {
@@ -485,11 +481,11 @@ const QChar ResourceTask::separatorCharacter() const
     if (!separator.isNull()) {
         return separator;
     } else {
-        //If we request the separator before first folder listing, then try to guess
-        //the separator:
-        //If we create a toplevel folder, assume the separator to be '/'. This is not perfect, but detecting the right
-        //IMAP separator is not straightforward for toplevel folders, and fixes bug 292418 and maybe other, where
-        //subfolders end up with remote id's starting with "i" (the first letter of imap:// ...)
+        // If we request the separator before first folder listing, then try to guess
+        // the separator:
+        // If we create a toplevel folder, assume the separator to be '/'. This is not perfect, but detecting the right
+        // IMAP separator is not straightforward for toplevel folders, and fixes bug 292418 and maybe other, where
+        // subfolders end up with remote id's starting with "i" (the first letter of imap:// ...)
 
         QString remoteId;
         // We don't always have parent collection set (for example for CollectionChangeTask),
@@ -511,16 +507,14 @@ void ResourceTask::setSeparatorCharacter(QChar separator)
 
 bool ResourceTask::serverSupportsAnnotations() const
 {
-    return serverCapabilities().contains(QLatin1String("METADATA"))
-           || serverCapabilities().contains(QLatin1String("ANNOTATEMORE"));
+    return serverCapabilities().contains(QLatin1String("METADATA")) || serverCapabilities().contains(QLatin1String("ANNOTATEMORE"));
 }
 
 bool ResourceTask::serverSupportsCondstore() const
 {
     // Don't enable CONDSTORE for GMail (X-GM-EXT-1 is a GMail-specific capability)
     // because it breaks changes synchronization when using labels.
-    return serverCapabilities().contains(QLatin1String("CONDSTORE"))
-           && !serverCapabilities().contains(QLatin1String("X-GM-EXT-1"));
+    return serverCapabilities().contains(QLatin1String("CONDSTORE")) && !serverCapabilities().contains(QLatin1String("X-GM-EXT-1"));
 }
 
 int ResourceTask::batchSize() const
@@ -537,11 +531,11 @@ KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
 {
     const auto *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
     if (aclAttribute) {
-        //HACK, only return myrights if they are available
+        // HACK, only return myrights if they are available
         if (aclAttribute->myRights() != KIMAP::Acl::None) {
             return aclAttribute->myRights();
         } else {
-            //This should be removed after 4.14, and myrights should be always used.
+            // This should be removed after 4.14, and myrights should be always used.
             return aclAttribute->rights().value(userName().toUtf8());
         }
     }

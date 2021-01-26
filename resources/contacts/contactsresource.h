@@ -48,7 +48,9 @@ protected:
     void collectionRemoved(const Akonadi::Collection &collection) override;
 
     void itemMoved(const Akonadi::Item &item, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
-    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void collectionMoved(const Akonadi::Collection &collection,
+                         const Akonadi::Collection &collectionSource,
+                         const Akonadi::Collection &collectionDestination) override;
 
 private:
     void slotReloadConfig();

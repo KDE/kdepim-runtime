@@ -7,47 +7,46 @@
 #ifndef TESTUTILS_H
 #define TESTUTILS_H
 
-#include <QUuid>
 #include <QFile>
 #include <QRegularExpression>
-#include <kolabevent.h>
+#include <QUuid>
 #include <kmime/kmime_message.h>
+#include <kolabevent.h>
 
 #include "kolabformat/kolabobject.h"
 
 Q_DECLARE_METATYPE(Kolab::ObjectType)
 Q_DECLARE_METATYPE(Kolab::Version)
 
-#define KCOMPARE(actual, expected) \
-    do { \
-        if (!(actual == expected)) { \
-            qDebug() << __FILE__ << ':' << __LINE__ << "Actual: " #actual ": " << actual << "\nExpected: " #expected ": " << expected; \
-            return false; \
-        } \
+#define KCOMPARE(actual, expected)                                                                                                                             \
+    do {                                                                                                                                                       \
+        if (!(actual == expected)) {                                                                                                                           \
+            qDebug() << __FILE__ << ':' << __LINE__ << "Actual: " #actual ": " << actual << "\nExpected: " #expected ": " << expected;                         \
+            return false;                                                                                                                                      \
+        }                                                                                                                                                      \
     } while (0)
 
 #endif
 
-#define DIFFCOMPARE(actual, expected) \
-    do { \
-        if (!(actual.simplified() == expected.simplified())) { \
-            qDebug() << "Content not the same."; \
-            qDebug() << "actual." << actual.simplified() << "\n"; \
-            qDebug() << "expected." << expected.simplified(); \
-            showDiff(expected, actual); \
-            QTest::qFail("Compared versions differ.", __FILE__, __LINE__); \
-            return; \
-        } \
+#define DIFFCOMPARE(actual, expected)                                                                                                                          \
+    do {                                                                                                                                                       \
+        if (!(actual.simplified() == expected.simplified())) {                                                                                                 \
+            qDebug() << "Content not the same.";                                                                                                               \
+            qDebug() << "actual." << actual.simplified() << "\n";                                                                                              \
+            qDebug() << "expected." << expected.simplified();                                                                                                  \
+            showDiff(expected, actual);                                                                                                                        \
+            QTest::qFail("Compared versions differ.", __FILE__, __LINE__);                                                                                     \
+            return;                                                                                                                                            \
+        }                                                                                                                                                      \
     } while (0)
 
-#define TESTVALUE(type, name) \
-    *static_cast<type *>(QTest::qData(#name, ::qMetaTypeId<type >()))
+#define TESTVALUE(type, name) *static_cast<type *>(QTest::qData(#name, ::qMetaTypeId<type>()))
 
 const QString TESTFILEDIR = QString::fromLatin1(TEST_DATA_PATH "/testfiles/");
 
 QString getPath(const char *file)
 {
-    return TESTFILEDIR+QString::fromLatin1(file);
+    return TESTFILEDIR + QString::fromLatin1(file);
 }
 
 void showDiff(const QString &expected, const QString &converted)
@@ -102,7 +101,7 @@ void normalizeMimemessage(QString &content)
 
     content.replace(QRegularExpression(QStringLiteral("<last-modification-date>.*</last-modification-date>")),
                     QStringLiteral("<last-modification-date></last-modification-date>"));
-    //We no longer support pobox, so remove pobox lines
+    // We no longer support pobox, so remove pobox lines
     content.remove(QRegularExpression(QStringLiteral("<pobox>.*</pobox>")));
 
     content.replace(QRegularExpression(QStringLiteral("<timestamp>.*</timestamp>")), QStringLiteral("<timestamp></timestamp>"));
@@ -115,42 +114,41 @@ void normalizeMimemessage(QString &content)
     content.replace(QRegularExpression(QStringLiteral("\\bboundary=\"nextPart[^\\n]*")), QStringLiteral("boundary"));
 
     content.replace(QRegularExpression(QStringLiteral("Date[^\\n]*")), QStringLiteral("Date"));
-    //The sort order of the attributes in kolabV2 is unpredictable
+    // The sort order of the attributes in kolabV2 is unpredictable
     content.replace(QRegularExpression(QStringLiteral("<x-custom.*/>")), QStringLiteral("<x-custom/>"));
-    //quoted-printable encoding changes where the linebreaks are every now and then (an all are valid), so we remove the linebreaks
+    // quoted-printable encoding changes where the linebreaks are every now and then (an all are valid), so we remove the linebreaks
     content.remove(QLatin1String("=\n"));
 }
 
 QString normalizeVCardMessage(QString content)
 {
-    //The encoding changes every now and then
+    // The encoding changes every now and then
     content.replace(QRegularExpression(QStringLiteral("ENCODING=b;TYPE=png:.*")), QStringLiteral("ENCODING=b;TYPE=png:picturedata"));
     return content;
 }
 
-//Normalize incidences for comparison
+// Normalize incidences for comparison
 void normalizeIncidence(KCalendarCore::Incidence::Ptr incidence)
 {
-    //The UID is not persistent (it's just the internal pointer), therefore we clear it
-    //TODO make sure that the UID does really not need to be persistent
+    // The UID is not persistent (it's just the internal pointer), therefore we clear it
+    // TODO make sure that the UID does really not need to be persistent
     auto attendees = incidence->attendees();
     for (auto &attendee : attendees) {
         attendee.setUid(attendee.email());
     }
     incidence->setAttendees(attendees);
 
-    //FIXME even if hasDueDate can differ, it shouldn't because it breaks equality. Check why they differ in the first place.
+    // FIXME even if hasDueDate can differ, it shouldn't because it breaks equality. Check why they differ in the first place.
     if (incidence->type() == KCalendarCore::IncidenceBase::TypeTodo) {
         KCalendarCore::Todo::Ptr todo = incidence.dynamicCast<KCalendarCore::Todo>();
         Q_ASSERT(todo.data());
         if (!todo->hasDueDate() && !todo->hasStartDate()) {
-            todo->setAllDay(false);   // all day has no meaning if there are no start and due dates but may differ nevertheless
+            todo->setAllDay(false); // all day has no meaning if there are no start and due dates but may differ nevertheless
         }
     }
 }
 
-template<template<typename> class Op, typename T>
-static bool LexicographicalCompare(const T &_x, const T &_y)
+template<template<typename> class Op, typename T> static bool LexicographicalCompare(const T &_x, const T &_y)
 {
     T x(_x);
     x.setId(QString());
@@ -177,15 +175,15 @@ bool normalizePhoneNumbers(KContacts::Addressee &addressee, KContacts::Addressee
         addressee.removePhoneNumber(phoneNumber);
         phoneNumber.setId(refPhoneNumber.id());
         addressee.insertPhoneNumber(phoneNumber);
-        //Make sure that both have the same sorted order
+        // Make sure that both have the same sorted order
         refAddressee.removePhoneNumber(refPhoneNumber);
         refAddressee.insertPhoneNumber(refPhoneNumber);
     }
-//     for ( int i = 0; i < phoneNumbers.size(); ++i ) {
-//         qDebug() << "--------------------------------------";
-//         qDebug() << addressee.phoneNumbers().at(i).toString();
-//         qDebug() << refAddressee.phoneNumbers().at(i).toString();
-//     }
+    //     for ( int i = 0; i < phoneNumbers.size(); ++i ) {
+    //         qDebug() << "--------------------------------------";
+    //         qDebug() << addressee.phoneNumbers().at(i).toString();
+    //         qDebug() << refAddressee.phoneNumbers().at(i).toString();
+    //     }
 
     return true;
 }
@@ -218,14 +216,14 @@ void normalizeContact(KContacts::Addressee &addressee)
 
     for (KContacts::Address a : addresses) {
         addressee.removeAddress(a);
-        a.setPostOfficeBox(QString()); //Not supported anymore
+        a.setPostOfficeBox(QString()); // Not supported anymore
         addressee.insertAddress(a);
     }
-    addressee.setSound(KContacts::Sound()); //Sound is not supported
+    addressee.setSound(KContacts::Sound()); // Sound is not supported
 
-    addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate")); //The creation date is no longer existing
+    addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate")); // The creation date is no longer existing
 
-    //Attachment names are no longer required because we identify the parts by cid and no longer by name
+    // Attachment names are no longer required because we identify the parts by cid and no longer by name
     addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("LogoAttachmentName"));
     addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("PictureAttachmentName"));
     addressee.removeCustom(QStringLiteral("KOLAB"), QStringLiteral("SoundAttachmentName"));

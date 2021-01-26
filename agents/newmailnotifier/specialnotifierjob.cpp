@@ -5,22 +5,22 @@
 */
 
 #include "specialnotifierjob.h"
-#include "newmailnotifiershowmessagejob.h"
 #include "newmailnotifieragentsettings.h"
+#include "newmailnotifiershowmessagejob.h"
 
 #include <Akonadi/Contact/ContactSearchJob>
+#include <Akonadi/KMime/MessageParts>
+#include <AkonadiCore/ItemDeleteJob>
 #include <ItemFetchJob>
 #include <ItemFetchScope>
-#include <AkonadiCore/ItemDeleteJob>
-#include <Akonadi/KMime/MessageParts>
 
-#include <KNotification>
 #include <KEmailAddress>
+#include <KNotification>
 
 #include <KMime/Message>
 
-#include <KLocalizedString>
 #include "newmailnotifier_debug.h"
+#include <KLocalizedString>
 
 SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
     : QObject(parent)
@@ -105,7 +105,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
         for (const QString &email : qAsConst(mListEmails)) {
             if (mFrom.contains(email)) {
-                //Exclude this notification
+                // Exclude this notification
                 deleteLater();
                 return;
             }
@@ -138,9 +138,10 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification = new KNotification(QStringLiteral("new-email"),
-                                                        NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent
-                                                        | KNotification::SkipGrouping : KNotification::CloseOnTimeout);
+        KNotification *notification =
+            new KNotification(QStringLiteral("new-email"),
+                              NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping
+                                                                                         : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
         if (pixmap.isNull()) {
             notification->setIconName(mDefaultIconName);
@@ -161,7 +162,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 
 void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
 {
-    //Index == 0 => is the default action. We don't have it.
+    // Index == 0 => is the default action. We don't have it.
     switch (index) {
     case 1:
         slotOpenMail();

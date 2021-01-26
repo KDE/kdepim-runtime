@@ -21,8 +21,7 @@ VCardResource::VCardResource(const QString &id)
     setSupportedMimetypes(QStringList() << KContacts::Addressee::mimeType(), QStringLiteral("office-address-book"));
 
     new VCardSettingsAdaptor(mSettings);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 mSettings, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings, QDBusConnection::ExportAdaptors);
 }
 
 VCardResource::~VCardResource()
@@ -140,7 +139,7 @@ bool VCardResource::readFromFile(const QString &fileName)
     const KContacts::Addressee::List list = mConverter.parseVCards(data);
     const int numberOfElementInList = list.count();
     for (int i = 0; i < numberOfElementInList; ++i) {
-        mAddressees.insert(list[ i ].uid(), list[ i ]);
+        mAddressees.insert(list[i].uid(), list[i]);
     }
 
     return true;

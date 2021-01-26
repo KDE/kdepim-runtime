@@ -7,21 +7,21 @@
 #include "ewsconfigdialog.h"
 
 #include <KConfigDialogManager>
-#include <KWindowSystem>
 #include <KMessageBox>
+#include <KWindowSystem>
 
 #include <QDialogButtonBox>
-#include <QVBoxLayout>
 #include <QPushButton>
+#include <QVBoxLayout>
 
+#include "auth/ewsoauth.h"
+#include "auth/ewspasswordauth.h"
 #include "ewsautodiscoveryjob.h"
 #include "ewsgetfolderrequest.h"
+#include "ewsprogressdialog.h"
 #include "ewsresource.h"
 #include "ewssettings.h"
 #include "ewssubscriptionwidget.h"
-#include "ewsprogressdialog.h"
-#include "auth/ewspasswordauth.h"
-#include "auth/ewsoauth.h"
 #include "ui_ewsconfigdialog.h"
 
 typedef QPair<QString, QString> StringPair;
@@ -31,10 +31,12 @@ static const QVector<StringPair> userAgents = {
     {QStringLiteral("Microsoft Outlook 2013"), QStringLiteral("Microsoft Office/15.0 (Windows NT 6.1; Microsoft Outlook 15.0.4420; Pro)")},
     {QStringLiteral("Microsoft Outlook 2010"), QStringLiteral("Microsoft Office/14.0 (Windows NT 6.1; Microsoft Outlook 14.0.5128; Pro)")},
     {QStringLiteral("Microsoft Outlook 2011 for Mac"), QStringLiteral("MacOutlook/14.2.0.101115 (Intel Mac OS X 10.6.7)")},
-    {QStringLiteral("Mozilla Thunderbird 38 for Windows (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
-    {QStringLiteral("Mozilla Thunderbird 38 for Linux (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
-    {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"), QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}
-};
+    {QStringLiteral("Mozilla Thunderbird 38 for Windows (with ExQuilla)"),
+     QStringLiteral("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
+    {QStringLiteral("Mozilla Thunderbird 38 for Linux (with ExQuilla)"),
+     QStringLiteral("Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")},
+    {QStringLiteral("Mozilla Thunderbird 38 for Mac (with ExQuilla)"),
+     QStringLiteral("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:38.0) Gecko/20100101 Thunderbird/38.2.0")}};
 
 static const QString pkeyPasswordMapKey = QStringLiteral("pkey-password");
 
@@ -103,8 +105,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->tryConnectButton->setEnabled(!baseUrlEmpty);
     mTryConnectNeeded = baseUrlEmpty;
 
-    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit,
-            &KPasswordLineEdit::setPassword);
+    connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit, &KPasswordLineEdit::setPassword);
     mSettings->requestPassword(false);
     mUi->authOAuth2RadioButton->setEnabled(true);
     const auto authMode = mSettings->authMode();
@@ -147,7 +148,10 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi->aboutCopyrightLabel->setText(i18nc("@info", "Copyright (c) Krzysztof Nowicki 2015-2020"));
     mUi->aboutVersionLabel->setText(i18nc("@info", "Version %1", QStringLiteral(AKONADI_EWS_VERSION)));
     mUi->aboutLicenseLabel->setText(i18nc("@info", "Distributed under the GNU Library General Public License version 2.0 or later."));
-    mUi->aboutUrlLabel->setText(QStringLiteral("<a href=\"https://invent.kde.org/pim/kdepim-runtime/-/tree/master/resources/ews\">https://invent.kde.org/pim/kdepim-runtime/-/tree/master/resources/ews</a>"));
+    mUi->aboutUrlLabel->setText(
+        QStringLiteral("<a "
+                       "href=\"https://invent.kde.org/pim/kdepim-runtime/-/tree/master/resources/ews\">https://invent.kde.org/pim/kdepim-runtime/-/tree/master/"
+                       "resources/ews</a>"));
 
     mUi->pkeyAuthCert->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
     mUi->pkeyAuthKey->setMode(KFile::File | KFile::ExistingOnly | KFile::LocalOnly);
@@ -164,10 +168,8 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->kcfg_BaseUrl, &QLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
     connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
-    connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource,
-            &EwsResource::clearFolderTreeSyncState);
-    connect(mUi->clearFolderItemSyncStateButton, &QPushButton::clicked, mParentResource,
-            QOverload<>::of(&EwsResource::clearFolderSyncState));
+    connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource, &EwsResource::clearFolderTreeSyncState);
+    connect(mUi->clearFolderItemSyncStateButton, &QPushButton::clicked, mParentResource, QOverload<>::of(&EwsResource::clearFolderSyncState));
 }
 
 EwsConfigDialog::~EwsConfigDialog()
@@ -187,8 +189,7 @@ void EwsConfigDialog::save()
 
     /* Erase the subscription id in case subscription is disabled or its parameters changed. This
      * fill force creation of a new subscription. */
-    if (!mSubWidget->subscriptionEnabled()
-        || (mSubWidget->subscribedList() != mSettings->serverSubscriptionList())) {
+    if (!mSubWidget->subscriptionEnabled() || (mSubWidget->subscribedList() != mSettings->serverSubscriptionList())) {
         mSettings->setEventSubscriptionId(QString());
         mSettings->setEventSubscriptionWatermark(QString());
     }
@@ -210,8 +211,7 @@ void EwsConfigDialog::save()
     if (mUi->authOAuth2RadioButton->isChecked()) {
         mSettings->setAuthMode(QStringLiteral("oauth2"));
     }
-    if (mUi->pkeyAuthGroupBox->isEnabled()
-        && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+    if (mUi->pkeyAuthGroupBox->isEnabled() && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         mSettings->setPKeyCert(mUi->pkeyAuthCert->text());
         mSettings->setPKeyKey(mUi->pkeyAuthKey->text());
         const QMap<QString, QString> map = {{pkeyPasswordMapKey, mUi->pkeyAuthPassword->password()}};
@@ -228,9 +228,11 @@ void EwsConfigDialog::save()
 void EwsConfigDialog::performAutoDiscovery()
 {
     mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
-                                                fullUsername(), mUi->passwordEdit->password(),
+                                                fullUsername(),
+                                                mUi->passwordEdit->password(),
                                                 mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
-                                                mUi->kcfg_EnableNTLMv2->isChecked(), this);
+                                                mUi->kcfg_EnableNTLMv2->isChecked(),
+                                                this);
     connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
@@ -265,9 +267,9 @@ void EwsConfigDialog::tryConnectFinished(KJob *job)
         mUi->serverVersionText->setText(mTryConnectJob->serverVersion().toString());
         mProgressDialog->accept();
     }
-    //mTryConnectJob->deleteLater();
+    // mTryConnectJob->deleteLater();
     mTryConnectJob = nullptr;
-    //mProgressDialog->deleteLater();
+    // mProgressDialog->deleteLater();
     mProgressDialog = nullptr;
 }
 
@@ -319,9 +321,11 @@ void EwsConfigDialog::dialogAccepted()
 {
     if (mUi->kcfg_AutoDiscovery->isChecked() && mAutoDiscoveryNeeded) {
         mAutoDiscoveryJob = new EwsAutodiscoveryJob(mUi->kcfg_Email->text(),
-                                                    fullUsername(), mUi->passwordEdit->password(),
+                                                    fullUsername(),
+                                                    mUi->passwordEdit->password(),
                                                     mUi->userAgentGroupBox->isEnabled() ? mUi->userAgentEdit->text() : QString(),
-                                                    mUi->kcfg_EnableNTLMv2->isChecked(), this);
+                                                    mUi->kcfg_EnableNTLMv2->isChecked(),
+                                                    this);
         connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
         mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
@@ -329,7 +333,8 @@ void EwsConfigDialog::dialogAccepted()
         if (!mProgressDialog->exec()) {
             if (KMessageBox::questionYesNo(this,
                                            i18n("Autodiscovery failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                                           i18n("Exchange server autodiscovery")) == KMessageBox::Yes) {
+                                           i18n("Exchange server autodiscovery"))
+                == KMessageBox::Yes) {
                 accept();
             }
             return;
@@ -354,9 +359,11 @@ void EwsConfigDialog::dialogAccepted()
         mTryConnectJob->start();
         if (!execJob(mTryConnectJob)) {
             if (!mTryConnectJobCancelled) {
-                if (KMessageBox::questionYesNo(this,
-                                               i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                                               i18n("Exchange server connection")) == KMessageBox::Yes) {
+                if (KMessageBox::questionYesNo(
+                        this,
+                        i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
+                        i18n("Exchange server connection"))
+                    == KMessageBox::Yes) {
                     accept();
                 }
             }
@@ -435,13 +442,12 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
     } else if (mUi->authUsernameRadioButton->isChecked()) {
         auth = new EwsPasswordAuth(fullUsername(), this);
     } else {
-        //Be sure that it will not crash.
+        // Be sure that it will not crash.
         return auth;
     }
     auth->setAuthParentWidget(this);
 
-    if (mUi->pkeyAuthGroupBox->isEnabled()
-        && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
+    if (mUi->pkeyAuthGroupBox->isEnabled() && !mUi->pkeyAuthCert->text().isEmpty() && !mUi->pkeyAuthKey->text().isEmpty()) {
         auth->setPKeyAuthCertificateFiles(mUi->pkeyAuthCert->text(), mUi->pkeyAuthKey->text());
         mAuthMap[pkeyPasswordMapKey] = mUi->pkeyAuthPassword->password();
     }

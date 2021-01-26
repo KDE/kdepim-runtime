@@ -7,8 +7,8 @@
 #ifndef FOLDERARCHIVEACCOUNTINFO_H
 #define FOLDERARCHIVEACCOUNTINFO_H
 
-#include <KConfigGroup>
 #include <AkonadiCore/Collection>
+#include <KConfigGroup>
 
 class FolderArchiveAccountInfo
 {
@@ -17,11 +17,7 @@ public:
     explicit FolderArchiveAccountInfo(const KConfigGroup &config);
     ~FolderArchiveAccountInfo();
 
-    enum FolderArchiveType {
-        UniqueFolder,
-        FolderByMonths,
-        FolderByYears
-    };
+    enum FolderArchiveType { UniqueFolder, FolderByMonths, FolderByYears };
 
     bool isValid() const;
 

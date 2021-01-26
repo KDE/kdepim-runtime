@@ -8,8 +8,8 @@
 #ifndef SETTINGSPASSWORDREQUESTER_H
 #define SETTINGSPASSWORDREQUESTER_H
 
-#include <passwordrequesterinterface.h>
 #include <QDialog>
+#include <passwordrequesterinterface.h>
 
 class ImapResourceBase;
 

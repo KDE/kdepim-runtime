@@ -13,7 +13,8 @@
 
 #include "user.h"
 
-namespace OXA {
+namespace OXA
+{
 class UpdateUsersJob : public KJob
 {
     Q_OBJECT

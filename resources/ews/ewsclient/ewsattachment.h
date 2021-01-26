@@ -26,7 +26,7 @@ public:
         UnknownAttachment,
         ItemAttachment,
         FileAttachment,
-        ReferenceAttachment     // Occurs in 2016 XSD, but not documented on MSDN
+        ReferenceAttachment // Occurs in 2016 XSD, but not documented on MSDN
     };
 
     typedef QVector<EwsAttachment> List;
@@ -100,6 +100,7 @@ public:
     bool hasItem() const;
 
     void write(QXmlStreamWriter &writer) const;
+
 protected:
     QSharedDataPointer<EwsAttachmentPrivate> d;
 };

@@ -15,7 +15,8 @@
 #include <qt5keychain/keychain.h>
 class Settings;
 
-namespace MailTransport {
+namespace MailTransport
+{
 class ServerTest;
 }
 
@@ -55,6 +56,7 @@ private Q_SLOTS:
     void walletOpenedForLoading(QKeychain::Job *baseJob);
     void walletOpenedForSaving();
     void slotAccepted();
+
 private:
     void setupWidgets();
     void checkHighest(QButtonGroup *);

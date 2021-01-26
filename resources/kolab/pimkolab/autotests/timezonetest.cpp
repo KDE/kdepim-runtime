@@ -5,15 +5,15 @@
  */
 
 #include "timezonetest.h"
-#include <conversion/timezoneconverter.h>
-#include <conversion/commonconversion.h>
-#include <kolabformat/kolabobject.h>
-#include <kolabformat/errorhandler.h>
 #include "testutils.h"
+#include <conversion/commonconversion.h>
+#include <conversion/timezoneconverter.h>
+#include <kolabformat/errorhandler.h>
+#include <kolabformat/kolabobject.h>
 
+#include <KCalendarCore/ICalFormat>
 #include <QTest>
 #include <kcalendarcore/event.h>
-#include <KCalendarCore/ICalFormat>
 
 void TimezoneTest::initTestCase()
 {
@@ -36,18 +36,18 @@ void TimezoneTest::testFromHardcodedList_data()
     QTest::newRow("4") << QStringLiteral("(GMT-01:00) Cape Verde Islands");
     QTest::newRow("5") << QStringLiteral("(GMT-06:00) Central America");
     QTest::newRow("6") << QStringLiteral("(GMT-06:00) Central Time (US and Canada)");
-//     QTest::newRow( "7" ) << QString::fromLatin1("(GMT-12:00) International Date Line West"); //Not mappable
+    //     QTest::newRow( "7" ) << QString::fromLatin1("(GMT-12:00) International Date Line West"); //Not mappable
     QTest::newRow("8") << QStringLiteral("(GMT-05:00) Eastern Time (US and Canada)");
-//     QTest::newRow( "9" ) << QString::fromLatin1("(GMT-02:00) Mid-Atlantic"); //Not mappable
+    //     QTest::newRow( "9" ) << QString::fromLatin1("(GMT-02:00) Mid-Atlantic"); //Not mappable
     QTest::newRow("10") << QStringLiteral("(GMT-07:00) Mountain Time (US and Canada)");
     QTest::newRow("11") << QStringLiteral("(GMT-03:30) Newfoundland and Labrador");
     QTest::newRow("12") << QStringLiteral("(GMT-08:00) Pacific Time (US and Canada); Tijuana");
     QTest::newRow("13") << QStringLiteral("(GMT-11:00) Midway Island, Samoa");
     QTest::newRow("14") << QStringLiteral("W. Europe Standard Time");
     QTest::newRow("15") << QStringLiteral("(GMT+1.00) Sarajevo/Warsaw/Zagreb");
-    //Lotus notes uses it's own set of specifiers
-//     QTest::newRow( "Lotus Notes" ) << QString::fromLatin1("W. Europe");
-//     QTest::newRow( "Google UTC offset" ) << QString::fromLatin1("2013-10-23T04:00:00+02:00");
+    // Lotus notes uses it's own set of specifiers
+    //     QTest::newRow( "Lotus Notes" ) << QString::fromLatin1("W. Europe");
+    //     QTest::newRow( "Google UTC offset" ) << QString::fromLatin1("2013-10-23T04:00:00+02:00");
 }
 
 void TimezoneTest::testFromHardcodedList()

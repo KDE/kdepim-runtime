@@ -7,12 +7,13 @@
 #ifndef NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H
 #define NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H
 
-#include <QWidget>
 #include <Collection>
-#include <QModelIndex>
 #include <QIdentityProxyModel>
+#include <QModelIndex>
+#include <QWidget>
 class QSortFilterProxyModel;
-namespace Akonadi {
+namespace Akonadi
+{
 class EntityTreeModel;
 class ChangeRecorder;
 }

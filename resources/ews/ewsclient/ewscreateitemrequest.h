@@ -69,6 +69,7 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
+
 private:
     EwsItem::List mItems;
     EwsId mSavedFolderId;

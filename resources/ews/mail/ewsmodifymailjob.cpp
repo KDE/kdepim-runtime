@@ -8,8 +8,8 @@
 
 #include <Akonadi/KMime/MessageFlags>
 
-#include "ewsupdateitemrequest.h"
 #include "ewsmailhandler.h"
+#include "ewsupdateitemrequest.h"
 
 #include "ewsresource_debug.h"
 

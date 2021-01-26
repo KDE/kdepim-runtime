@@ -24,7 +24,8 @@
 
 #include <chrono>
 
-namespace {
+namespace
+{
 // RFC2177 says clients should restart IDLE every 29 minutes, as
 // servers MAY consider clients inactive after 30 minutes.
 // TODO: Make configurable to support less RF-conformant servers
@@ -168,8 +169,8 @@ void ImapIdleManager::onIdleStopped()
 void ImapIdleManager::onStatsReceived(KIMAP::IdleJob *job, const QString &mailBox, int messageCount, int recentCount)
 {
     qCDebug(IMAPRESOURCE_LOG) << "IDLE stats received:" << job << mailBox << messageCount << recentCount;
-    qCDebug(IMAPRESOURCE_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id()
-                              << m_lastMessageCount << m_lastRecentCount;
+    qCDebug(IMAPRESOURCE_LOG) << "Cached information:" << m_state->collection().remoteId() << m_state->collection().id() << m_lastMessageCount
+                              << m_lastRecentCount;
 
     // It seems we're not in sync with the cache, resync is needed
     if (messageCount != m_lastMessageCount || recentCount != m_lastRecentCount) {

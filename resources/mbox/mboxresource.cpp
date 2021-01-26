@@ -7,16 +7,16 @@
 #include "mboxresource.h"
 #include "mboxresource_debug.h"
 
+#include <Akonadi/KMime/MessageFlags>
+#include <AkonadiCore/SpecialCollectionAttribute>
+#include <QDBusConnection>
 #include <attributefactory.h>
 #include <changerecorder.h>
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
-#include <QDBusConnection>
 #include <itemfetchscope.h>
-#include <Akonadi/KMime/MessageFlags>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
-#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include "compactpage.h"
 #include "deleteditemsattribute.h"
@@ -53,8 +53,7 @@ MboxResource::MboxResource(const QString &id)
     : SingleFileResource<Settings>(id)
 {
     new SettingsAdaptor(mSettings);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 mSettings, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings, QDBusConnection::ExportAdaptors);
 
     const QStringList mimeTypes{QStringLiteral("message/rfc822")};
     setSupportedMimetypes(mimeTypes, QStringLiteral("message-rfc822"));
@@ -193,8 +192,8 @@ void MboxResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
     }
 
     scheduleWrite();
-    const QString rid = QString::number(collection.id()) + QLatin1String("::")
-                        + collection.remoteId() + QLatin1String("::") + QString::number(entry.messageOffset());
+    const QString rid =
+        QString::number(collection.id()) + QLatin1String("::") + collection.remoteId() + QLatin1String("::") + QString::number(entry.messageOffset());
 
     Item i(item);
     i.setRemoteId(rid);
@@ -209,9 +208,7 @@ void MboxResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
         // Only complete messages can be stored in a MBox file. Because all messages
         // are stored in one single file we do an ItemDelete and an ItemCreate to
         // prevent that whole file must been rewritten.
-        CollectionFetchJob *fetchJob
-            = new CollectionFetchJob(Collection(collectionId(item.remoteId())),
-                                     CollectionFetchJob::Base);
+        CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection(collectionId(item.remoteId())), CollectionFetchJob::Base);
 
         connect(fetchJob, &CollectionFetchJob::result, this, &MboxResource::onCollectionFetch);
 
@@ -226,9 +223,7 @@ void MboxResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
 
 void MboxResource::itemRemoved(const Akonadi::Item &item)
 {
-    CollectionFetchJob *fetchJob
-        = new CollectionFetchJob(Collection(collectionId(item.remoteId())),
-                                 CollectionFetchJob::Base);
+    CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection(collectionId(item.remoteId())), CollectionFetchJob::Base);
 
     if (!fetchJob->exec()) {
         cancelTask(i18n("Could not fetch the collection: %1", fetchJob->errorString()));
@@ -237,11 +232,9 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
 
     Q_ASSERT(fetchJob->collections().size() == 1);
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr
-        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
-    if (mSettings->compactFrequency() == Settings::per_x_messages
-        && mSettings->messageCount() == static_cast<uint>(attr->offsetCount() + 1)) {
+    if (mSettings->compactFrequency() == Settings::per_x_messages && mSettings->messageCount() == static_cast<uint>(attr->offsetCount() + 1)) {
         qCDebug(MBOXRESOURCE_LOG) << "Compacting mbox file";
         mMBox->purge(attr->deletedItemEntries() << KMBox::MBoxEntry(itemOffset(item.remoteId())));
         scheduleWrite();
@@ -261,11 +254,12 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
 
 void MboxResource::handleHashChange()
 {
-    Q_EMIT warning(i18n("The MBox file was changed by another program. "
-                        "A copy of the new file was made and pending changes "
-                        "are appended to that copy. To prevent this from happening "
-                        "use locking and make sure that all programs accessing the mbox "
-                        "use the same locking method."));
+    Q_EMIT warning(
+        i18n("The MBox file was changed by another program. "
+             "A copy of the new file was made and pending changes "
+             "are appended to that copy. To prevent this from happening "
+             "use locking and make sure that all programs accessing the mbox "
+             "use the same locking method."));
 }
 
 bool MboxResource::readFromFile(const QString &fileName)
@@ -332,8 +326,7 @@ void MboxResource::onCollectionFetch(KJob *job)
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr
-        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
     attr->addDeletedItemOffset(itemOffset(item.remoteId()));
 
     auto modifyJob = new CollectionModifyJob(mboxCollection);
@@ -351,8 +344,10 @@ void MboxResource::onCollectionModify(KJob *job)
         // Failed to store the offset of a deleted item in the DeletedItemsAttribute
         // of the collection. In this case we shouldn't try to store the modified
         // item.
-        cancelTask(i18n("Failed to update the changed item because the old item "
-                        "could not be deleted Reason: %1", job->errorString()));
+        cancelTask(
+            i18n("Failed to update the changed item because the old item "
+                 "could not be deleted Reason: %1",
+                 job->errorString()));
         return;
     }
 

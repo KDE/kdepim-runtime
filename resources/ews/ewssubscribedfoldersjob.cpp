@@ -7,9 +7,9 @@
 #include "ewssubscribedfoldersjob.h"
 
 #include "ewsclient.h"
-#include "ewssettings.h"
 #include "ewsgetfolderrequest.h"
 #include "ewsresource_debug.h"
+#include "ewssettings.h"
 
 EwsSubscribedFoldersJob::EwsSubscribedFoldersJob(EwsClient &client, EwsSettings *settings, QObject *parent)
     : EwsJob(parent)
@@ -83,8 +83,7 @@ void EwsSubscribedFoldersJob::verifySubFoldersRequestFinished(KJob *job)
 
 const EwsId::List &EwsSubscribedFoldersJob::defaultSubscriptionFolders()
 {
-    static const EwsId::List list = {EwsId(EwsDIdInbox), EwsId(EwsDIdCalendar), EwsId(EwsDIdTasks),
-                                     EwsId(EwsDIdContacts)};
+    static const EwsId::List list = {EwsId(EwsDIdInbox), EwsId(EwsDIdCalendar), EwsId(EwsDIdTasks), EwsId(EwsDIdContacts)};
 
     return list;
 }

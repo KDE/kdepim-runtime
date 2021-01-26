@@ -37,6 +37,7 @@ public:
     void setParentFolder(EwsFolder *parent);
 
     bool write(QXmlStreamWriter &writer) const;
+
 protected:
     bool readBaseFolderElement(QXmlStreamReader &reader);
 };

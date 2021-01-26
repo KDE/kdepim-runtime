@@ -5,9 +5,9 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "singlefileresourceconfigbase.h"
-#include "settings.h"
 #include "alarmtyperadiowidget.h"
+#include "settings.h"
+#include "singlefileresourceconfigbase.h"
 
 class KAlarmConfigBase : public SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>
 {

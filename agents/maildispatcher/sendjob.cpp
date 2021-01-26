@@ -8,32 +8,32 @@
 
 #include "storeresultjob.h"
 
+#include "maildispatcher_debug.h"
+#include <Akonadi/KMime/AddressAttribute>
+#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/KMime/SpecialMailCollections>
+#include <AkonadiCore/ServerManager>
+#include <KLocalizedString>
+#include <MailTransport/Transport>
+#include <MailTransport/TransportJob>
+#include <MailTransport/TransportManager>
+#include <MailTransportAkonadi/SentBehaviourAttribute>
+#include <MailTransportAkonadi/TransportAttribute>
+#include <QDBusConnection>
 #include <agentinstance.h>
 #include <agentmanager.h>
 #include <collection.h>
-#include <QDBusConnection>
+#include <collectionfetchjob.h>
 #include <item.h>
 #include <itemdeletejob.h>
 #include <itemmodifyjob.h>
 #include <itemmovejob.h>
-#include <collectionfetchjob.h>
-#include <Akonadi/KMime/AddressAttribute>
-#include <Akonadi/KMime/MessageParts>
-#include <Akonadi/KMime/SpecialMailCollections>
-#include <transportresourcebase.h>
-#include "maildispatcher_debug.h"
-#include <KLocalizedString>
 #include <kmime/kmime_message.h>
-#include <MailTransportAkonadi/SentBehaviourAttribute>
-#include <MailTransport/Transport>
-#include <MailTransportAkonadi/TransportAttribute>
-#include <MailTransport/TransportJob>
-#include <MailTransport/TransportManager>
-#include <AkonadiCore/ServerManager>
+#include <transportresourcebase.h>
 
-#include <QTimer>
 #include <QDBusInterface>
 #include <QDBusReply>
+#include <QTimer>
 
 using namespace Akonadi;
 using namespace KMime;
@@ -65,7 +65,7 @@ void SendJob::doTransport()
         return;
     }
 
-    if (!filterItem(8)) {   //BeforeOutbound
+    if (!filterItem(8)) { // BeforeOutbound
         return;
     }
 
@@ -84,13 +84,13 @@ void SendJob::doAkonadiTransport()
     Q_ASSERT(!mResourceId.isEmpty());
     Q_ASSERT(mInterface == nullptr);
 
-    const auto service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource,
-                                                                  mResourceId);
+    const auto service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mResourceId);
 
     mInterface = new QDBusInterface(service,
                                     QStringLiteral("/Transport"),
                                     QStringLiteral("org.freedesktop.Akonadi.Resource.Transport"),
-                                    QDBusConnection::sessionBus(), this);
+                                    QDBusConnection::sessionBus(),
+                                    this);
 
     if (!mInterface->isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of resource %1.", mResourceId));
@@ -100,10 +100,8 @@ void SendJob::doAkonadiTransport()
     }
 
     // Signals.
-    QObject::connect(AgentManager::self(), &AgentManager::instanceProgressChanged,
-                     this, &SendJob::resourceProgress);
-    QObject::connect(mInterface, SIGNAL(transportResult(qlonglong,int,QString)),
-                     this, SLOT(resourceResult(qlonglong,int,QString)));
+    QObject::connect(AgentManager::self(), &AgentManager::instanceProgressChanged, this, &SendJob::resourceProgress);
+    QObject::connect(mInterface, SIGNAL(transportResult(qlonglong, int, QString)), this, SLOT(resourceResult(qlonglong, int, QString)));
 
     // Start sending.
     const QDBusReply<void> reply = mInterface->call(QStringLiteral("send"), mItem.id());
@@ -167,20 +165,18 @@ void SendJob::doTraditionalTransport()
 
     // Signals.
     connect(job, &TransportJob::result, this, &SendJob::transportResult);
-    //Wait kf6 We have a private signal
-    //connect(job, thisOverload<KJob*, ulong>::of(&TransportJob::percent), this, [this](KJob *job,ulong val) {transportPercent(job, val); });
-    connect(job, SIGNAL(percent(KJob*,ulong)),
-            this, SLOT(transportPercent(KJob*,ulong)));
+    // Wait kf6 We have a private signal
+    // connect(job, thisOverload<KJob*, ulong>::of(&TransportJob::percent), this, [this](KJob *job,ulong val) {transportPercent(job, val); });
+    connect(job, SIGNAL(percent(KJob *, ulong)), this, SLOT(transportPercent(KJob *, ulong)));
     job->start();
 }
 
 void SendJob::transportPercent(KJob *job, unsigned long)
 {
     Q_ASSERT(mCurrentJob == job);
-    qCDebug(MAILDISPATCHER_LOG) << "Processed amount" << job->processedAmount(KJob::Bytes)
-                                << "total amount" << job->totalAmount(KJob::Bytes);
+    qCDebug(MAILDISPATCHER_LOG) << "Processed amount" << job->processedAmount(KJob::Bytes) << "total amount" << job->totalAmount(KJob::Bytes);
 
-    setTotalAmount(KJob::Bytes, job->totalAmount(KJob::Bytes));     // Is not set at the time of start().
+    setTotalAmount(KJob::Bytes, job->totalAmount(KJob::Bytes)); // Is not set at the time of start().
     setProcessedAmount(KJob::Bytes, job->processedAmount(KJob::Bytes));
 }
 
@@ -213,8 +209,7 @@ void SendJob::resourceResult(qlonglong itemId, int result, const QString &messag
     delete mInterface; // So that abort() knows the transport job is over.
     mInterface = nullptr;
 
-    const auto transportResult
-        = static_cast<TransportResourceBase::TransportResult>(result);
+    const auto transportResult = static_cast<TransportResourceBase::TransportResult>(result);
 
     const bool success = (transportResult == TransportResourceBase::TransportSucceeded);
 
@@ -240,8 +235,7 @@ void SendJob::doPostJob(bool transportSuccess, const QString &transportMessage)
         qCDebug(MAILDISPATCHER_LOG) << "Error transporting.";
         setError(UserDefinedError);
 
-        const QString error = mAborting ? i18n("Message transport aborted.")
-                              : i18n("Failed to transport message.");
+        const QString error = mAborting ? i18n("Message transport aborted.") : i18n("Failed to transport message.");
 
         setErrorText(error + QLatin1Char(' ') + transportMessage);
         storeResult(false, errorString());
@@ -275,19 +269,19 @@ void SendJob::doPostJob(bool transportSuccess, const QString &transportMessage)
 
 bool SendJob::filterItem(int filterset)
 {
-    const auto service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Agent,
-                                                                  QStringLiteral("akonadi_mailfilter_agent"));
+    const auto service = Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Agent, QStringLiteral("akonadi_mailfilter_agent"));
 
     QDBusInterface iface(service,
                          QStringLiteral("/MailFilterAgent"),
                          QStringLiteral("org.freedesktop.Akonadi.MailFilterAgent"),
-                         QDBusConnection::sessionBus(), this);
+                         QDBusConnection::sessionBus(),
+                         this);
     if (!iface.isValid()) {
         storeResult(false, i18n("Failed to get D-Bus interface of mailfilteragent."));
         return false;
     }
 
-    //Outbound = 0x2
+    // Outbound = 0x2
     const QDBusReply<void> reply = iface.call(QStringLiteral("filterItem"), mItem.id(), filterset, QString());
     if (!reply.isValid()) {
         storeResult(false, i18n("Invalid D-Bus reply from mailfilteragent"));
@@ -332,12 +326,10 @@ void SendJob::postJobResult(KJob *job)
         QString errorStr;
         switch (attribute->sentBehaviour()) {
         case SentBehaviourAttribute::Delete:
-            errorStr
-                = i18n("Sending succeeded, but failed to remove the message from the outbox.");
+            errorStr = i18n("Sending succeeded, but failed to remove the message from the outbox.");
             break;
         default:
-            errorStr
-                = i18n("Sending succeeded, but failed to move the message to the sent-mail folder.");
+            errorStr = i18n("Sending succeeded, but failed to move the message to the sent-mail folder.");
             break;
         }
         setError(UserDefinedError);
@@ -345,7 +337,7 @@ void SendJob::postJobResult(KJob *job)
         storeResult(false, errorString());
     } else {
         qCDebug(MAILDISPATCHER_LOG) << "Success deleting or moving to sent-mail.";
-        if (!filterItem(2)) {   //Outbound
+        if (!filterItem(2)) { // Outbound
             return;
         }
         if (attribute->sentBehaviour() == SentBehaviourAttribute::Delete) {

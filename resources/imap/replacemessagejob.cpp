@@ -6,15 +6,20 @@
 
 #include "replacemessagejob.h"
 
+#include "imapresource_debug.h"
 #include <KIMAP/AppendJob>
 #include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>
 #include <KIMAP/StoreJob>
-#include "imapresource_debug.h"
 
 #include "imapflags.h"
 
-ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QString &mailbox, qint64 uidNext, const KIMAP::ImapSet &oldUids, QObject *parent)
+ReplaceMessageJob::ReplaceMessageJob(const KMime::Message::Ptr &msg,
+                                     KIMAP::Session *session,
+                                     const QString &mailbox,
+                                     qint64 uidNext,
+                                     const KIMAP::ImapSet &oldUids,
+                                     QObject *parent)
     : KJob(parent)
     , mSession(session)
     , mMessage(msg)
@@ -50,13 +55,13 @@ void ReplaceMessageJob::onAppendMessageDone(KJob *job)
     mNewUid = append->uid();
 
     if (mNewUid > 0 && mOldUids.isEmpty()) {
-        //We have the uid an no message to delete, we're done
+        // We have the uid an no message to delete, we're done
         emitResult();
         return;
     }
 
     if (mSession->selectedMailBox() != mMailbox) {
-        //For search and delete we need to select the right mailbox first
+        // For search and delete we need to select the right mailbox first
         auto select = new KIMAP::SelectJob(mSession);
         select->setMailBox(mMailbox);
         connect(select, &KJob::result, this, &ReplaceMessageJob::onSelectDone);
@@ -101,15 +106,10 @@ void ReplaceMessageJob::triggerSearchJob()
             emitResult();
             return;
         }
-        search->setTerm(KIMAP::Term(KIMAP::Term::And, {
-            KIMAP::Term(KIMAP::Term::New),
-            KIMAP::Term(KIMAP::Term::Uid,
-                        KIMAP::ImapSet(mUidNext, 0))
-        }));
+        search->setTerm(KIMAP::Term(KIMAP::Term::And, {KIMAP::Term(KIMAP::Term::New), KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(mUidNext, 0))}));
     }
 
-    connect(search, &KJob::result,
-            this, &ReplaceMessageJob::onSearchDone);
+    connect(search, &KJob::result, this, &ReplaceMessageJob::onSearchDone);
 
     search->start();
 }
@@ -139,7 +139,7 @@ void ReplaceMessageJob::onSearchDone(KJob *job)
 void ReplaceMessageJob::triggerDeleteJobIfNecessary()
 {
     if (mOldUids.isEmpty()) {
-        //Nothing to do, we're done
+        // Nothing to do, we're done
         emitResult();
     } else {
         auto store = new KIMAP::StoreJob(mSession);

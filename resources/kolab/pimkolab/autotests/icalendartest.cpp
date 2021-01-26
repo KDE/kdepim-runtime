@@ -57,7 +57,7 @@ void ICalendarTest::testToIMip()
     ev1.setLastModified(Kolab::cDateTime(2011, 10, 11, 12, 1, 2, true));
     ev1.setCreated(Kolab::cDateTime(2011, 10, 11, 12, 1, 3, true));
 
-    std::vector <Kolab::Attendee > attendees;
+    std::vector<Kolab::Attendee> attendees;
     attendees.push_back(Kolab::Attendee(Kolab::ContactReference("email1@test.org", "name1", "uid1")));
     attendees.push_back(Kolab::Attendee(Kolab::ContactReference("email2@test.org", "name2", "uid2")));
     ev1.setAttendees(attendees);
@@ -71,7 +71,7 @@ void ICalendarTest::testToIMip()
 
     const std::vector<Kolab::Event> &eventResult = handler.fromIMip(mimeResult);
 
-//     qDebug() << QString::fromStdString(Kolab::toICal(eventResult));
+    //     qDebug() << QString::fromStdString(Kolab::toICal(eventResult));
 
     QCOMPARE((int)eventResult.size(), 1);
     QEXPECT_FAIL("", "to imip converts dates to utc", Continue);

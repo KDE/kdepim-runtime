@@ -24,12 +24,14 @@
 #include <QtWebEngineWidgetsVersion>
 Q_DECLARE_LOGGING_CATEGORY(EWSCLI_LOG)
 
-namespace Mock {
+namespace Mock
+{
 class QWebEngineUrlRequestJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit QWebEngineUrlRequestJob(const QUrl &url, QObject *parent) : QObject(parent)
+    explicit QWebEngineUrlRequestJob(const QUrl &url, QObject *parent)
+        : QObject(parent)
         , mUrl(url)
     {
     }
@@ -45,7 +47,8 @@ class QWebEngineUrlRequestInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent) : QObject(parent)
+    explicit QWebEngineUrlRequestInfo(const QUrl &url, QObject *parent)
+        : QObject(parent)
         , mBlocked(false)
         , mUrl(url)
     {
@@ -92,6 +95,7 @@ public:
     void installUrlSchemeHandler(QByteArray const &scheme, QWebEngineUrlSchemeHandler *handler);
 Q_SIGNALS:
     void logEvent(const QString &event);
+
 public:
     QString mUserAgent;
     QWebEngineUrlRequestInterceptor *mInterceptor;
@@ -107,6 +111,7 @@ public:
     ~QWebEnginePage() override;
 Q_SIGNALS:
     void logEvent(const QString &event);
+
 public:
     QWebEngineProfile *mProfile;
 };
@@ -115,7 +120,7 @@ class QWebEngineView : public QWidget
 {
     Q_OBJECT
 public:
-    typedef std::function<void (const QUrl &, QVariantMap &)> AuthFunc;
+    typedef std::function<void(const QUrl &, QVariantMap &)> AuthFunc;
 
     explicit QWebEngineView(QWidget *parent);
     ~QWebEngineView() override;
@@ -130,6 +135,7 @@ public:
     static QPointer<QWebEngineView> instance;
 Q_SIGNALS:
     void logEvent(const QString &event);
+
 protected:
     void simulatePageLoad(const QUrl &url);
 
@@ -141,9 +147,7 @@ protected:
 class QNetworkRequest
 {
 public:
-    enum KnownHeaders {
-        ContentTypeHeader
-    };
+    enum KnownHeaders { ContentTypeHeader };
 };
 
 class QNetworkReply : public QBuffer
@@ -155,7 +159,8 @@ public:
     };
     Q_ENUM(NetworkError)
 
-    explicit QNetworkReply(QObject *parent) : QBuffer(parent)
+    explicit QNetworkReply(QObject *parent)
+        : QBuffer(parent)
     {
     }
 
@@ -187,20 +192,10 @@ class QAbstractOAuth : public QObject
     Q_OBJECT
 public:
     Q_ENUMS(Stage)
-    enum class Stage {
-        RequestingTemporaryCredentials,
-        RequestingAuthorization,
-        RequestingAccessToken,
-        RefreshingAccessToken
-    };
+    enum class Stage { RequestingTemporaryCredentials, RequestingAuthorization, RequestingAccessToken, RefreshingAccessToken };
 
     Q_ENUMS(Status)
-    enum class Status {
-        NotAuthenticated,
-        TemporaryCredentialsReceived,
-        Granted,
-        RefreshingToken
-    };
+    enum class Status { NotAuthenticated, TemporaryCredentialsReceived, Granted, RefreshingToken };
 
     explicit QAbstractOAuth(QObject *parent);
     ~QAbstractOAuth() override = default;
@@ -216,6 +211,7 @@ Q_SIGNALS:
     void authorizeWithBrowser(const QUrl &url);
     void granted();
     void logEvent(const QString &event);
+
 protected:
     QAbstractOAuthReplyHandler *mReplyHandler;
     QUrl mAuthUrl;
@@ -263,6 +259,7 @@ public:
     static QUrlQuery mapToSortedQuery(QMap<QString, QVariant> const &map);
 
     static QPointer<QOAuth2AuthorizationCodeFlow> instance;
+
 protected:
     void authCallbackReceived(QMap<QString, QVariant> const &params);
     void replyDataCallbackReceived(const QByteArray &data);
@@ -308,7 +305,8 @@ public:
 
 QString browserDisplayRequestString();
 QString modifyParamsAuthString(const QString &clientId, const QString &returnUri, const QString &state);
-QString authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri, const QString &email, const QString &resource, const QString &state);
+QString
+authUrlString(const QString &authUrl, const QString &clientId, const QString &returnUri, const QString &email, const QString &resource, const QString &state);
 QString authorizeWithBrowserString(const QString &url);
 QString loadWebPageString(const QString &url);
 QString interceptRequestString(const QString &url);
@@ -317,7 +315,13 @@ QString authorizationCallbackReceivedString(const QString &code);
 QString modifyParamsTokenString(const QString &clientId, const QString &returnUri, const QString &code);
 QString networkReplyFinishedString(const QString &data);
 QString replyDataCallbackString(const QString &data);
-QString tokenCallbackString(const QString &accessToken, const QString &refreshToken, const QString &idToken, quint64 time, unsigned int tokenLifetime, unsigned int extTokenLifetime, const QString &resource);
+QString tokenCallbackString(const QString &accessToken,
+                            const QString &refreshToken,
+                            const QString &idToken,
+                            quint64 time,
+                            unsigned int tokenLifetime,
+                            unsigned int extTokenLifetime,
+                            const QString &resource);
 QString requestWalletMapString();
 }
 

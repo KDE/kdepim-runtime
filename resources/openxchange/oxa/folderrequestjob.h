@@ -13,7 +13,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 /**
  * @short A job that requests a folder from the OX server.
  *

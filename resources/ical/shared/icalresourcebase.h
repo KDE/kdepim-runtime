@@ -8,11 +8,11 @@
 #ifndef ICALRESOURCEBASE_H
 #define ICALRESOURCEBASE_H
 
-#include "singlefileresource.h"
 #include "settings.h"
+#include "singlefileresource.h"
 
-#include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/FileStorage>
+#include <KCalendarCore/MemoryCalendar>
 
 class ICalResourceBase : public Akonadi::SingleFileResource<SETTINGS_NAMESPACE::Settings>
 {
@@ -30,9 +30,7 @@ protected Q_SLOTS:
     void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
-    enum CheckType {
-        CheckForAdded, CheckForChanged
-    };
+    enum CheckType { CheckForAdded, CheckForChanged };
 
     void initialise(const QStringList &mimeTypes, const QString &icon);
     bool readFromFile(const QString &fileName) override;
@@ -77,17 +75,14 @@ private:
     KCalendarCore::FileStorage::Ptr mFileStorage;
 };
 
-template<typename PayloadPtr>
-bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckType type)
+template<typename PayloadPtr> bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckType type)
 {
     if (!mCalendar) {
         cancelTask(i18n("Calendar not loaded."));
         return false;
     }
     if (!item.hasPayload<PayloadPtr>()) {
-        QString msg = (type == CheckForAdded)
-                      ? i18n("Unable to retrieve added item %1.", item.id())
-                      : i18n("Unable to retrieve modified item %1.", item.id());
+        QString msg = (type == CheckForAdded) ? i18n("Unable to retrieve added item %1.", item.id()) : i18n("Unable to retrieve modified item %1.", item.id());
         cancelTask(msg);
         return false;
     }

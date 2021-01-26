@@ -15,12 +15,12 @@
 #include <KSharedConfig>
 
 #include <QCheckBox>
-#include <QVBoxLayout>
+#include <QDBusConnectionInterface>
+#include <QDBusInterface>
+#include <QDBusReply>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QDBusReply>
-#include <QDBusInterface>
-#include <QDBusConnectionInterface>
+#include <QVBoxLayout>
 
 FolderArchiveComboBox::FolderArchiveComboBox(QWidget *parent)
     : QComboBox(parent)
@@ -34,12 +34,9 @@ FolderArchiveComboBox::~FolderArchiveComboBox()
 
 void FolderArchiveComboBox::initialize()
 {
-    addItem(i18nc("@item:inlistbox for option \"Archive folder name\"", "Unique"),
-            FolderArchiveAccountInfo::UniqueFolder);
-    addItem(i18nc("@item:inlistbox for option \"Archive folder name\"", "Month and year"),
-            FolderArchiveAccountInfo::FolderByMonths);
-    addItem(i18nc("@item:inlistbox for option \"Archive folder name\"", "Year"),
-            FolderArchiveAccountInfo::FolderByYears);
+    addItem(i18nc("@item:inlistbox for option \"Archive folder name\"", "Unique"), FolderArchiveAccountInfo::UniqueFolder);
+    addItem(i18nc("@item:inlistbox for option \"Archive folder name\"", "Month and year"), FolderArchiveAccountInfo::FolderByMonths);
+    addItem(i18nc("@item:inlistbox for option \"Archive folder name\"", "Year"), FolderArchiveAccountInfo::FolderByYears);
 }
 
 void FolderArchiveComboBox::setType(FolderArchiveAccountInfo::FolderArchiveType type)
@@ -67,9 +64,7 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
     lay->addWidget(mEnabled);
 
     auto hbox = new QHBoxLayout;
-    QLabel *lab = new QLabel(i18nc(
-                                 "@label:chooser for the folder that messages will be archived under",
-                                 "Archive into:"));
+    QLabel *lab = new QLabel(i18nc("@label:chooser for the folder that messages will be archived under", "Archive into:"));
     hbox->addWidget(lab);
     mArchiveFolder = new Akonadi::CollectionRequester(this);
     mArchiveFolder->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
@@ -131,7 +126,7 @@ void FolderArchiveSettingPage::writeSettings()
     mInfo->setFolderArchiveType(mArchiveNamed->type());
     mInfo->writeConfig(grp);
 
-    //Update cache from KMail
+    // Update cache from KMail
     const QString kmailInterface = QStringLiteral("org.kde.kmail");
     QDBusReply<bool> reply = QDBusConnection::sessionBus().interface()->isServiceRegistered(kmailInterface);
     if (!reply.isValid() || !reply.value()) {

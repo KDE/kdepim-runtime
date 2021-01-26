@@ -9,15 +9,15 @@
 
 #include "imapaccount.h"
 #include "imapresource.h"
+#include "noselectattribute.h"
 #include "sessionpool.h"
 #include "settings.h"
-#include "noselectattribute.h"
 
-#include <collectionmodifyjob.h>
-#include <agentsearchinterface.h>
-#include <KMessageBox>
-#include <KLocalizedString>
 #include "imapresource_debug.h"
+#include <KLocalizedString>
+#include <KMessageBox>
+#include <agentsearchinterface.h>
+#include <collectionmodifyjob.h>
 
 ResourceState::ResourceState(ImapResourceBase *resource, const TaskArguments &args)
     : m_resource(resource)
@@ -89,7 +89,7 @@ int ResourceState::intervalCheckTime() const
     if (m_resource->settings()->intervalCheckEnabled()) {
         return m_resource->settings()->intervalCheckTime();
     } else {
-        return -1;    // -1 for never
+        return -1; // -1 for never
     }
 }
 
@@ -255,8 +255,7 @@ void ResourceState::changeProcessed()
 
 void ResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
 {
-    m_resource->searchFinished(result, isRid ? Akonadi::AgentSearchInterface::Rid
-                               : Akonadi::AgentSearchInterface::Uid);
+    m_resource->searchFinished(result, isRid ? Akonadi::AgentSearchInterface::Rid : Akonadi::AgentSearchInterface::Uid);
 }
 
 void ResourceState::cancelTask(const QString &errorString)
@@ -271,9 +270,9 @@ void ResourceState::deferTask()
 
 void ResourceState::restartItemRetrieval(Akonadi::Collection::Id col)
 {
-    //This ensures the collection fetch job is rerun (it isn't when using deferTask)
-    //The task will be appended
-    //TODO: deferTask should rerun the collectionfetchjob
+    // This ensures the collection fetch job is rerun (it isn't when using deferTask)
+    // The task will be appended
+    // TODO: deferTask should rerun the collectionfetchjob
     m_resource->synchronizeCollection(col);
     cancelTask(i18n("Restarting item retrieval."));
 }

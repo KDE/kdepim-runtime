@@ -16,8 +16,10 @@
 
 class QTimeZone;
 
-namespace Kolab {
-namespace Conversion {
+namespace Kolab
+{
+namespace Conversion
+{
 KOLAB_EXPORT QDateTime toDate(const Kolab::cDateTime &dt);
 KOLAB_EXPORT cDateTime fromDate(const QDateTime &dt, bool isAllDay);
 QStringList toStringList(const std::vector<std::string> &l);

@@ -4,9 +4,9 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QXmlStreamReader>
 #include <QTest>
 #include <QTimeZone>
+#include <QXmlStreamReader>
 
 #include "ewsattachment.h"
 #include "fakehttppost.h"
@@ -178,473 +178,149 @@ void UtEwsAttachment::read_data()
     QTest::addColumn<bool>("hasItem");
     QTest::addColumn<EwsItem>("item");
 
-    QTest::newRow("invalid namespace")
-        << xmlDocHead + QLatin1String("<FileAttachment xmlns=\"") + xmlMsgNsUri + QLatin1String("\" />") + xmlDocTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid namespace") << xmlDocHead + QLatin1String("<FileAttachment xmlns=\"") + xmlMsgNsUri + QLatin1String("\" />") + xmlDocTail << false
+                                       << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
+                                       << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false
+                                       << QByteArray() << false << EwsItem();
 
-    QTest::newRow("invalid type")
-        << xmlDocHead + QStringLiteral("<TestAttachment />") + xmlDocTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid type") << xmlDocHead + QStringLiteral("<TestAttachment />") + xmlDocTail << false << EwsAttachment::UnknownAttachment << false
+                                  << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false
+                                  << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("empty file attachment")
-        << xmlDocHead + QStringLiteral("<FileAttachment />") + xmlDocTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("empty file attachment") << xmlDocHead + QStringLiteral("<FileAttachment />") + xmlDocTail << true << EwsAttachment::FileAttachment << false
+                                           << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l
+                                           << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("empty item attachment")
-        << xmlDocHead + QStringLiteral("<ItemAttachment />") + xmlDocTail
-        << true
-        << EwsAttachment::ItemAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("empty item attachment") << xmlDocHead + QStringLiteral("<ItemAttachment />") + xmlDocTail << true << EwsAttachment::ItemAttachment << false
+                                           << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l
+                                           << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("empty reference attachment")
-        << xmlDocHead + QStringLiteral("<ReferenceAttachment />") + xmlDocTail
-        << true
-        << EwsAttachment::ReferenceAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("empty reference attachment") << xmlDocHead + QStringLiteral("<ReferenceAttachment />") + xmlDocTail << true
+                                                << EwsAttachment::ReferenceAttachment << false << QString() << false << QString() << false << QString() << false
+                                                << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                                << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid attachment id - bad namespace")
-        << xmlFileAttHead + QStringLiteral("<AttachmentId xmlns=\"") + xmlMsgNsUri
-        + QStringLiteral("\" Id=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<AttachmentId xmlns=\"") + xmlMsgNsUri + QStringLiteral("\" Id=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail
+        << false << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false << QString() << false
+        << QString() << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid attachment id - bad attribute")
-        << xmlFileAttHead + QStringLiteral("<AttachmentId TestId=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<AttachmentId TestId=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail << false << EwsAttachment::UnknownAttachment
+        << false << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false << QDateTime()
+        << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid attachment id")
-        << xmlFileAttHead + QStringLiteral("<AttachmentId Id=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << true << QStringLiteral("JCPhyc4Kg73tIuurR3c0Pw==")
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid attachment id") << xmlFileAttHead + QStringLiteral("<AttachmentId Id=\"JCPhyc4Kg73tIuurR3c0Pw==\" />") + xmlFileAttTail << true
+                                         << EwsAttachment::FileAttachment << true << QStringLiteral("JCPhyc4Kg73tIuurR3c0Pw==") << false << QString() << false
+                                         << QString() << false << QString() << false << QString() << false << 0l << false << QDateTime() << false << false
+                                         << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("invalid name")
-        << xmlFileAttHead + QStringLiteral("<Name>Test <b>name</b></Name>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid name") << xmlFileAttHead + QStringLiteral("<Name>Test <b>name</b></Name>") + xmlFileAttTail << false
+                                  << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false << QString()
+                                  << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray()
+                                  << false << EwsItem();
 
-    QTest::newRow("valid name")
-        << xmlFileAttHead + QStringLiteral("<Name>Test name</Name>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << true << QStringLiteral("Test name")
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid name") << xmlFileAttHead + QStringLiteral("<Name>Test name</Name>") + xmlFileAttTail << true << EwsAttachment::FileAttachment << false
+                                << QString() << true << QStringLiteral("Test name") << false << QString() << false << QString() << false << QString() << false
+                                << 0l << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid content type")
-        << xmlFileAttHead + QStringLiteral("<ContentType>application/x-test</ContentType>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << true << QStringLiteral("application/x-test")
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid content type") << xmlFileAttHead + QStringLiteral("<ContentType>application/x-test</ContentType>") + xmlFileAttTail << true
+                                        << EwsAttachment::FileAttachment << false << QString() << false << QString() << true
+                                        << QStringLiteral("application/x-test") << false << QString() << false << QString() << false << 0l << false
+                                        << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid content id")
-        << xmlFileAttHead + QStringLiteral("<ContentId>FE938BD618330B9DA0C965A6077BB3FF20415531@1</ContentId>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << true << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid content id") << xmlFileAttHead + QStringLiteral("<ContentId>FE938BD618330B9DA0C965A6077BB3FF20415531@1</ContentId>") + xmlFileAttTail
+                                      << true << EwsAttachment::FileAttachment << false << QString() << false << QString() << false << QString() << true
+                                      << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1") << false << QString() << false << 0l << false
+                                      << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid content location")
-        << xmlFileAttHead + QStringLiteral("<ContentLocation>file:///foo/bar.txt</ContentLocation>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << true << QStringLiteral("file:///foo/bar.txt")
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid content location") << xmlFileAttHead + QStringLiteral("<ContentLocation>file:///foo/bar.txt</ContentLocation>") + xmlFileAttTail
+                                            << true << EwsAttachment::FileAttachment << false << QString() << false << QString() << false << QString() << false
+                                            << QString() << true << QStringLiteral("file:///foo/bar.txt") << false << 0l << false << QDateTime() << false
+                                            << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("invalid size - not a number")
-        << xmlFileAttHead + QStringLiteral("<Size>foo</Size>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid size - not a number") << xmlFileAttHead + QStringLiteral("<Size>foo</Size>") + xmlFileAttTail << false
+                                                 << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
+                                                 << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                                 << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid size")
-        << xmlFileAttHead + QStringLiteral("<Size>123</Size>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << true << 123l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid size") << xmlFileAttHead + QStringLiteral("<Size>123</Size>") + xmlFileAttTail << true << EwsAttachment::FileAttachment << false
+                                << QString() << false << QString() << false << QString() << false << QString() << false << QString() << true << 123l << false
+                                << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid last modified time - bad time")
-        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-01-03T09:74:39</LastModifiedTime>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-01-03T09:74:39</LastModifiedTime>") + xmlFileAttTail << false
+        << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false << QString() << false << QString()
+        << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid last modified time - nested XML element")
-        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-<b>01</b>-03T09:74:39</LastModifiedTime>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-<b>01</b>-03T09:74:39</LastModifiedTime>") + xmlFileAttTail << false
+        << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false << QString() << false << QString()
+        << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid last modified time")
-        << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-01-03T08:24:39Z</LastModifiedTime>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << true << QDateTime::fromSecsSinceEpoch(1483431879, QTimeZone::utc())
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid last modified time") << xmlFileAttHead + QStringLiteral("<LastModifiedTime>2017-01-03T08:24:39Z</LastModifiedTime>") + xmlFileAttTail
+                                              << true << EwsAttachment::FileAttachment << false << QString() << false << QString() << false << QString()
+                                              << false << QString() << false << QString() << false << 0l << true
+                                              << QDateTime::fromSecsSinceEpoch(1483431879, QTimeZone::utc()) << false << false << false << false << false
+                                              << QByteArray() << false << EwsItem();
 
-    QTest::newRow("invalid is inline - bad value")
-        << xmlFileAttHead + QStringLiteral("<IsInline>fake</IsInline>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid is inline - bad value") << xmlFileAttHead + QStringLiteral("<IsInline>fake</IsInline>") + xmlFileAttTail << false
+                                                   << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString()
+                                                   << false << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false
+                                                   << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid is inline")
-        << xmlFileAttHead + QStringLiteral("<IsInline>true</IsInline>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << true << true
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid is inline") << xmlFileAttHead + QStringLiteral("<IsInline>true</IsInline>") + xmlFileAttTail << true << EwsAttachment::FileAttachment
+                                     << false << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false
+                                     << 0l << false << QDateTime() << true << true << false << false << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid is contact photo - bad value")
-        << xmlFileAttHead + QStringLiteral("<IsContactPhoto>fake</IsContactPhoto>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<IsContactPhoto>fake</IsContactPhoto>") + xmlFileAttTail << false << EwsAttachment::UnknownAttachment << false
+        << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false << QDateTime() << false
+        << false << false << false << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid is contact photo - inside ItemAttachment")
-        << xmlItemAttHead + QStringLiteral("<IsContactPhoto>true</IsContactPhoto>") + xmlItemAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlItemAttHead + QStringLiteral("<IsContactPhoto>true</IsContactPhoto>") + xmlItemAttTail << false << EwsAttachment::UnknownAttachment << false
+        << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false << QDateTime() << false
+        << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid is contact photo")
-        << xmlFileAttHead + QStringLiteral("<IsContactPhoto>true</IsContactPhoto>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << true << true
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("valid is contact photo") << xmlFileAttHead + QStringLiteral("<IsContactPhoto>true</IsContactPhoto>") + xmlFileAttTail << true
+                                            << EwsAttachment::FileAttachment << false << QString() << false << QString() << false << QString() << false
+                                            << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << true << true << false
+                                            << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid content - nested XML element")
-        << xmlFileAttHead + QStringLiteral("<Content>djsaoij<b>sa</b></Content>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<Content>djsaoij<b>sa</b></Content>") + xmlFileAttTail << false << EwsAttachment::UnknownAttachment << false
+        << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false << QDateTime() << false
+        << false << false << false << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid content - inside ItemAttachment")
-        << xmlItemAttHead + QStringLiteral("<Content>VGhpcyBpcyBhIHRlc3Q=</Content>") + xmlItemAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlItemAttHead + QStringLiteral("<Content>VGhpcyBpcyBhIHRlc3Q=</Content>") + xmlItemAttTail << false << EwsAttachment::UnknownAttachment << false
+        << QString() << false << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false << QDateTime() << false
+        << false << false << false << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("valid content")
-        << xmlFileAttHead + QStringLiteral("<Content>VGhpcyBpcyBhIHRlc3Q=</Content>") + xmlFileAttTail
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << true << QByteArray("This is a test")
-        << false << EwsItem();
+    QTest::newRow("valid content") << xmlFileAttHead + QStringLiteral("<Content>VGhpcyBpcyBhIHRlc3Q=</Content>") + xmlFileAttTail << true
+                                   << EwsAttachment::FileAttachment << false << QString() << false << QString() << false << QString() << false << QString()
+                                   << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << true
+                                   << QByteArray("This is a test") << false << EwsItem();
 
-    QTest::newRow("invalid item - bad data")
-        << xmlItemAttHead + QStringLiteral("<Item><foo></foo></Item>") + xmlItemAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid item - bad data") << xmlItemAttHead + QStringLiteral("<Item><foo></foo></Item>") + xmlItemAttTail << false
+                                             << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
+                                             << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                             << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid item - inside FileAttachment")
-        << xmlFileAttHead + QStringLiteral("<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>") + xmlFileAttTail
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+        << xmlFileAttHead + QStringLiteral("<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>") + xmlFileAttTail << false
+        << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false << QString() << false << QString()
+        << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
     EwsItem item1;
     item1.setType(EwsItemTypeItem);
     item1.setField(EwsItemFieldItemId, QVariant::fromValue<EwsId>(EwsId(QStringLiteral("VGhpcyBpcyBhIHRlc3Q="), QStringLiteral("muKls0n8pUM="))));
-    QTest::newRow("valid item")
-        << xmlItemAttHead + QStringLiteral("<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>") + xmlItemAttTail
-        << true
-        << EwsAttachment::ItemAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << true << item1;
+    QTest::newRow("valid item") << xmlItemAttHead + QStringLiteral("<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>")
+            + xmlItemAttTail << true
+                                << EwsAttachment::ItemAttachment << false << QString() << false << QString() << false << QString() << false << QString()
+                                << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray()
+                                << true << item1;
 }
 
 void UtEwsAttachment::write()
@@ -781,101 +457,33 @@ void UtEwsAttachment::write_data()
     QTest::addColumn<bool>("hasItem");
     QTest::addColumn<EwsItem>("item");
 
-    QTest::newRow("invalid")
-        << xmlHead
-        << false
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("invalid") << xmlHead << false << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
+                             << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false
+                             << QByteArray() << false << EwsItem();
 
-    QTest::newRow("unknown type")
-        << xmlHead
-        << true
-        << EwsAttachment::UnknownAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("unknown type") << xmlHead << true << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString()
+                                  << false << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                  << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("empty file attachment")
-        << xmlHead + QStringLiteral("<FileAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>")
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("empty file attachment") << xmlHead + QStringLiteral("<FileAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>") << true
+                                           << EwsAttachment::FileAttachment << false << QString() << false << QString() << false << QString() << false
+                                           << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                           << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("empty item attachment")
-        << xmlHead + QStringLiteral("<ItemAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>")
-        << true
-        << EwsAttachment::ItemAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("empty item attachment") << xmlHead + QStringLiteral("<ItemAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>") << true
+                                           << EwsAttachment::ItemAttachment << false << QString() << false << QString() << false << QString() << false
+                                           << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                           << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("empty reference attachment")
-        << xmlHead + QStringLiteral("<ReferenceAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>")
-        << true
-        << EwsAttachment::ReferenceAttachment
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("empty reference attachment") << xmlHead + QStringLiteral("<ReferenceAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>") << true
+                                                << EwsAttachment::ReferenceAttachment << false << QString() << false << QString() << false << QString() << false
+                                                << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
+                                                << false << QByteArray() << false << EwsItem();
 
-    QTest::newRow("non-empty reference attachment")
-        << xmlHead + QStringLiteral("<ReferenceAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>")
-        << true
-        << EwsAttachment::ReferenceAttachment
-        << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==")
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << QString()
-        << false << 0l
-        << false << QDateTime()
-        << false << false
-        << false << false
-        << false << QByteArray()
-        << false << EwsItem();
+    QTest::newRow("non-empty reference attachment") << xmlHead + QStringLiteral("<ReferenceAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\"/>") << true
+                                                    << EwsAttachment::ReferenceAttachment << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==") << false
+                                                    << QString() << false << QString() << false << QString() << false << QString() << false << 0l << false
+                                                    << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
     EwsItem item1;
     item1.setType(EwsItemTypeItem);
@@ -883,50 +491,36 @@ void UtEwsAttachment::write_data()
 
     QDateTime testDt(QDateTime::fromSecsSinceEpoch(1483621243, QTimeZone::utc()));
 
-    QTest::newRow("non-empty item attachment")
-        << xmlHead + QStringLiteral("<ItemAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\">"
-                                                                                                "<AttachmentId Id=\"5IaIqJVsJzamf2105wg4wQ==\"/>"
-                                                                                                "<ContentType>application/x-test</ContentType>"
-                                                                                                "<ContentLocation>file:///foo/bar</ContentLocation>"
-                                                                                                "<LastModifiedTime>%1</LastModifiedTime>"
-                                                                                                "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
-                                                                                                "</ItemAttachment>").arg(testDt.toString(Qt::ISODate))
-        << true
-        << EwsAttachment::ItemAttachment
-        << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==")
-        << false << QStringLiteral("Test attachment")
-        << true << QStringLiteral("application/x-test")
-        << false << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
-        << true << QStringLiteral("file:///foo/bar")
-        << false << 123l
-        << true << testDt
-        << false << true
-        << true << true
-        << true << QByteArray("This is another test")
-        << true << item1;
+    QTest::newRow("non-empty item attachment") << xmlHead + QStringLiteral("<ItemAttachment xmlns=\"") + xmlTypeNsUri
+            + QStringLiteral(
+                  "\">"
+                  "<AttachmentId Id=\"5IaIqJVsJzamf2105wg4wQ==\"/>"
+                  "<ContentType>application/x-test</ContentType>"
+                  "<ContentLocation>file:///foo/bar</ContentLocation>"
+                  "<LastModifiedTime>%1</LastModifiedTime>"
+                  "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
+                  "</ItemAttachment>")
+                  .arg(testDt.toString(Qt::ISODate))
+                                               << true << EwsAttachment::ItemAttachment << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==") << false
+                                               << QStringLiteral("Test attachment") << true << QStringLiteral("application/x-test") << false
+                                               << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1") << true << QStringLiteral("file:///foo/bar")
+                                               << false << 123l << true << testDt << false << true << true << true << true << QByteArray("This is another test")
+                                               << true << item1;
 
-    QTest::newRow("non-empty file attachment")
-        << xmlHead + QStringLiteral("<FileAttachment xmlns=\"") + xmlTypeNsUri + QStringLiteral("\">"
-                                                                                                "<Name>Test attachment</Name>"
-                                                                                                "<ContentId>FE938BD618330B9DA0C965A6077BB3FF20415531@1</ContentId>"
-                                                                                                "<Size>123</Size>"
-                                                                                                "<IsInline>true</IsInline>"
-                                                                                                "<IsContactPhoto>true</IsContactPhoto>"
-                                                                                                "<Content>VGhpcyBpcyBhbm90aGVyIHRlc3Q=</Content>"
-                                                                                                "</FileAttachment>")
-        << true
-        << EwsAttachment::FileAttachment
-        << false << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==")
-        << true << QStringLiteral("Test attachment")
-        << false << QStringLiteral("application/x-test")
-        << true << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1")
-        << false << QStringLiteral("file:///foo/bar")
-        << true << 123l
-        << false << testDt
-        << true << true
-        << true << true
-        << true << QByteArray("This is another test")
-        << true << item1;
+    QTest::newRow("non-empty file attachment") << xmlHead + QStringLiteral("<FileAttachment xmlns=\"") + xmlTypeNsUri
+            + QStringLiteral("\">"
+                             "<Name>Test attachment</Name>"
+                             "<ContentId>FE938BD618330B9DA0C965A6077BB3FF20415531@1</ContentId>"
+                             "<Size>123</Size>"
+                             "<IsInline>true</IsInline>"
+                             "<IsContactPhoto>true</IsContactPhoto>"
+                             "<Content>VGhpcyBpcyBhbm90aGVyIHRlc3Q=</Content>"
+                             "</FileAttachment>")
+                                               << true << EwsAttachment::FileAttachment << false << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==") << true
+                                               << QStringLiteral("Test attachment") << false << QStringLiteral("application/x-test") << true
+                                               << QStringLiteral("FE938BD618330B9DA0C965A6077BB3FF20415531@1") << false << QStringLiteral("file:///foo/bar")
+                                               << true << 123l << false << testDt << true << true << true << true << true << QByteArray("This is another test")
+                                               << true << item1;
 }
 
 QTEST_MAIN(UtEwsAttachment)

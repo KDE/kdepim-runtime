@@ -5,10 +5,10 @@
  *
  */
 
-#include <QTest>
-#include <QSignalSpy>
-#include <QDebug>
 #include <KJobTrackerInterface>
+#include <QDebug>
+#include <QSignalSpy>
+#include <QTest>
 
 #include "../migrationscheduler.h"
 #include <migration/migratorbase.h>
@@ -65,7 +65,8 @@ public:
 class TestJobTracker : public KJobTrackerInterface
 {
 public:
-    TestJobTracker() : mPercent(0)
+    TestJobTracker()
+        : mPercent(0)
     {
     }
 
@@ -224,7 +225,7 @@ private Q_SLOTS:
 
         m1->complete();
 
-        //Give the job some time to delete itself
+        // Give the job some time to delete itself
         QTest::qWait(500);
 
         QCOMPARE(jobTracker.mJobs.size(), 0);

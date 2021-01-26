@@ -2,21 +2,23 @@
  * SPDX-FileCopyrightText: 2011 Christian Mollekopf <mollekopf@kolabsys.com>
  *
  * SPDX-License-Identifier: LGPL-3.0-or-later
-*/
+ */
 
 #include "kcalconversion.h"
 
 #include <KCalendarCore/Recurrence>
-#include <QVector>
-#include <QUrl>
 #include <QDate>
+#include <QUrl>
+#include <QVector>
 #include <vector>
 
 #include "commonconversion.h"
 #include "pimkolab_debug.h"
-namespace Kolab {
-namespace Conversion {
-//The uid of a contact which refers to the uuid of a contact in the addressbook
+namespace Kolab
+{
+namespace Conversion
+{
+// The uid of a contact which refers to the uuid of a contact in the addressbook
 #define CUSTOM_KOLAB_CONTACT_UUID "X_KOLAB_CONTACT_UUID"
 #define CUSTOM_KOLAB_CONTACT_CUTYPE "X_KOLAB_CONTACT_CUTYPE"
 #define CUSTOM_KOLAB_URL "X-KOLAB-URL"
@@ -46,16 +48,16 @@ Kolab::Duration fromDuration(const KCalendarCore::Duration &d)
         isNegative = true;
         value = -value;
     }
-    //We don't know how the seconds/days were distributed before, so no point in distributing them (probably)
+    // We don't know how the seconds/days were distributed before, so no point in distributing them (probably)
     if (d.isDaily()) {
         int days = value;
         return Kolab::Duration(days, 0, 0, 0, isNegative);
     }
     int seconds = value;
-//         int minutes = seconds / 60;
-//         seconds = seconds % 60;
-//         int hours = minutes / 60;
-//         minutes = minutes % 60;
+    //         int minutes = seconds / 60;
+    //         seconds = seconds % 60;
+    //         int hours = minutes / 60;
+    //         minutes = minutes % 60;
     return Kolab::Duration(0, 0, 0, seconds, isNegative);
 }
 
@@ -93,13 +95,13 @@ Kolab::Classification fromSecrecy(KCalendarCore::Incidence::Secrecy c)
 
 int toPriority(int priority)
 {
-    //Same mapping
+    // Same mapping
     return priority;
 }
 
 int fromPriority(int priority)
 {
-    //Same mapping
+    // Same mapping
     return priority;
 }
 
@@ -235,8 +237,7 @@ Kolab::Role fromRole(KCalendarCore::Attendee::Role r)
     return Kolab::Required;
 }
 
-template<typename T>
-QString getCustomProperty(const QString &id, const T &e)
+template<typename T> QString getCustomProperty(const QString &id, const T &e)
 {
     std::vector<Kolab::CustomProperty> &props = e.customProperties();
     foreach (const Kolab::CustomProperty &p, props) {
@@ -246,8 +247,7 @@ QString getCustomProperty(const QString &id, const T &e)
     }
 }
 
-template<typename T>
-void setIncidence(KCalendarCore::Incidence &i, const T &e)
+template<typename T> void setIncidence(KCalendarCore::Incidence &i, const T &e)
 {
     if (!e.uid().empty()) {
         i.setUid(fromStdString(e.uid()));
@@ -264,8 +264,8 @@ void setIncidence(KCalendarCore::Incidence &i, const T &e)
         i.setAllDay(e.start().isDateOnly());
     }
 
-    i.setSummary(fromStdString(e.summary())); //TODO detect richtext
-    i.setDescription(fromStdString(e.description())); //TODO detect richtext
+    i.setSummary(fromStdString(e.summary())); // TODO detect richtext
+    i.setDescription(fromStdString(e.description())); // TODO detect richtext
     i.setStatus(toStatus(e.status()));
     foreach (const Kolab::Attendee &a, e.attendees()) {
         /*
@@ -277,7 +277,7 @@ void setIncidence(KCalendarCore::Incidence &i, const T &e)
                                          a.rsvp(),
                                          toPartStat(a.partStat()),
                                          toRole(a.role()));
-        if (!a.contact().uid().empty()) { //TODO Identify contact from addressbook based on uid
+        if (!a.contact().uid().empty()) { // TODO Identify contact from addressbook based on uid
             attendee.customProperties().setNonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID, fromStdString(a.contact().uid()));
         }
         if (!a.delegatedTo().empty()) {
@@ -318,13 +318,12 @@ void setIncidence(KCalendarCore::Incidence &i, const T &e)
         }
         key.append(fromStdString(prop.identifier));
         props.insert(key.toLatin1(), fromStdString(prop.value));
-//         i.setCustomProperty("KOLAB", fromStdString(prop.identifier).toLatin1(), fromStdString(prop.value));
+        //         i.setCustomProperty("KOLAB", fromStdString(prop.identifier).toLatin1(), fromStdString(prop.value));
     }
     i.setCustomProperties(props);
 }
 
-template<typename T, typename I>
-void getIncidence(T &i, const I &e)
+template<typename T, typename I> void getIncidence(T &i, const I &e)
 {
     i.setUid(toStdString(e.uid()));
     i.setCreated(fromDate(e.created(), false));
@@ -439,7 +438,7 @@ KCalendarCore::RecurrenceRule::PeriodType toRecurrenceType(Kolab::RecurrenceRule
 {
     switch (freq) {
     case Kolab::RecurrenceRule::FreqNone:
-        qCWarning(PIMKOLAB_LOG) <<"no recurrence?";
+        qCWarning(PIMKOLAB_LOG) << "no recurrence?";
         break;
     case Kolab::RecurrenceRule::Yearly:
         return KCalendarCore::RecurrenceRule::rYearly;
@@ -466,7 +465,7 @@ Kolab::RecurrenceRule::Frequency fromRecurrenceType(KCalendarCore::RecurrenceRul
 {
     switch (freq) {
     case KCalendarCore::RecurrenceRule::rNone:
-        qCWarning(PIMKOLAB_LOG) <<"no recurrence?";
+        qCWarning(PIMKOLAB_LOG) << "no recurrence?";
         break;
     case KCalendarCore::RecurrenceRule::rYearly:
         return Kolab::RecurrenceRule::Yearly;
@@ -499,8 +498,7 @@ Kolab::DayPos fromWeekDayPos(KCalendarCore::RecurrenceRule::WDayPos dp)
     return Kolab::DayPos(dp.pos(), fromWeekDay(dp.day()));
 }
 
-template<typename T>
-void setRecurrence(KCalendarCore::Incidence &e, const T &event)
+template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &event)
 {
     const Kolab::RecurrenceRule &rrule = event.recurrenceRule();
     if (rrule.isValid()) {
@@ -514,7 +512,7 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
         defaultRR->setFrequency(rrule.interval());
 
         if (rrule.end().isValid()) {
-            rec->setEndDateTime(toDate(rrule.end())); //TODO date/datetime setEndDate(). With date-only the start date has to be taken into account.
+            rec->setEndDateTime(toDate(rrule.end())); // TODO date/datetime setEndDate(). With date-only the start date has to be taken into account.
         } else {
             rec->setDuration(rrule.count());
         }
@@ -608,8 +606,7 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
     }
 }
 
-template<typename T, typename I>
-void getRecurrence(T &i, const I &e)
+template<typename T, typename I> void getRecurrence(T &i, const I &e)
 {
     if (!e.recurs()) {
         return;
@@ -617,7 +614,7 @@ void getRecurrence(T &i, const I &e)
     KCalendarCore::Recurrence *rec = e.recurrence();
     KCalendarCore::RecurrenceRule *defaultRR = rec->defaultRRule(false);
     if (!defaultRR) {
-        qCWarning(PIMKOLAB_LOG) <<"no recurrence";
+        qCWarning(PIMKOLAB_LOG) << "no recurrence";
         return;
     }
     Q_ASSERT(defaultRR);
@@ -627,7 +624,7 @@ void getRecurrence(T &i, const I &e)
     rrule.setFrequency(fromRecurrenceType(defaultRR->recurrenceType()));
     rrule.setInterval(defaultRR->frequency());
 
-    if (defaultRR->duration() != 0) { //Inidcates if end date is set or not
+    if (defaultRR->duration() != 0) { // Inidcates if end date is set or not
         if (defaultRR->duration() > 0) {
             rrule.setCount(defaultRR->duration());
         }
@@ -691,32 +688,30 @@ void getRecurrence(T &i, const I &e)
     i.setExceptionDates(exdates);
 
     if (!rec->exRules().empty()) {
-        qCWarning(PIMKOLAB_LOG) <<"exrules are not supported";
+        qCWarning(PIMKOLAB_LOG) << "exrules are not supported";
     }
 }
 
-template<typename T>
-void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
+template<typename T> void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
 {
     i.setPriority(toPriority(e.priority()));
     if (!e.location().empty()) {
-        i.setLocation(fromStdString(e.location())); //TODO detect richtext
+        i.setLocation(fromStdString(e.location())); // TODO detect richtext
     }
     if (e.organizer().isValid()) {
-        i.setOrganizer(KCalendarCore::Person(fromStdString(e.organizer().name()), fromStdString(e.organizer().email()))); //TODO handle uid too
+        i.setOrganizer(KCalendarCore::Person(fromStdString(e.organizer().name()), fromStdString(e.organizer().email()))); // TODO handle uid too
     }
     if (!e.url().empty()) {
         i.setNonKDECustomProperty(CUSTOM_KOLAB_URL, fromStdString(e.url()));
     }
     if (e.recurrenceID().isValid()) {
-        i.setRecurrenceId(toDate(e.recurrenceID())); //TODO THISANDFUTURE
+        i.setRecurrenceId(toDate(e.recurrenceID())); // TODO THISANDFUTURE
     }
     setRecurrence(i, e);
     foreach (const Kolab::Alarm &a, e.alarms()) {
         KCalendarCore::Alarm::Ptr alarm = KCalendarCore::Alarm::Ptr(new KCalendarCore::Alarm(&i));
         switch (a.type()) {
-        case Kolab::Alarm::EMailAlarm:
-        {
+        case Kolab::Alarm::EMailAlarm: {
             KCalendarCore::Person::List receipents;
             foreach (Kolab::ContactReference c, a.attendees()) {
                 KCalendarCore::Person person(fromStdString(c.name()), fromStdString(c.email()));
@@ -752,32 +747,33 @@ void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
     }
 }
 
-template<typename T, typename I>
-void getTodoEvent(T &i, const I &e)
+template<typename T, typename I> void getTodoEvent(T &i, const I &e)
 {
     i.setPriority(fromPriority(e.priority()));
     i.setLocation(toStdString(e.location()));
     if (!e.organizer().email().isEmpty()) {
-        i.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(e.organizer().email()), toStdString(e.organizer().name()))); //TODO handle uid too
+        i.setOrganizer(Kolab::ContactReference(Kolab::ContactReference::EmailReference,
+                                               toStdString(e.organizer().email()),
+                                               toStdString(e.organizer().name()))); // TODO handle uid too
     }
     i.setUrl(toStdString(e.nonKDECustomProperty(CUSTOM_KOLAB_URL)));
-    i.setRecurrenceID(fromDate(e.recurrenceId(), e.allDay()), false); //TODO THISANDFUTURE
+    i.setRecurrenceID(fromDate(e.recurrenceId(), e.allDay()), false); // TODO THISANDFUTURE
     getRecurrence(i, e);
-    std::vector <Kolab::Alarm> alarms;
+    std::vector<Kolab::Alarm> alarms;
     foreach (const KCalendarCore::Alarm::Ptr &a, e.alarms()) {
         Kolab::Alarm alarm;
-        //TODO KCalendarCore disables alarms using KCalendarCore::Alarm::enabled() (X-KDE-KCALCORE-ENABLED) We should either delete the alarm, or store the attribute .
-        //Ideally we would store the alarm somewhere and temporarily delete it, so we can restore it when parsing. For now we just remove disabled alarms.
+        // TODO KCalendarCore disables alarms using KCalendarCore::Alarm::enabled() (X-KDE-KCALCORE-ENABLED) We should either delete the alarm, or store the
+        // attribute . Ideally we would store the alarm somewhere and temporarily delete it, so we can restore it when parsing. For now we just remove disabled
+        // alarms.
         if (!a->enabled()) {
-            qCWarning(PIMKOLAB_LOG) <<"skipping disabled alarm";
+            qCWarning(PIMKOLAB_LOG) << "skipping disabled alarm";
             continue;
         }
         switch (a->type()) {
         case KCalendarCore::Alarm::Display:
             alarm = Kolab::Alarm(toStdString(a->text()));
             break;
-        case KCalendarCore::Alarm::Email:
-        {
+        case KCalendarCore::Alarm::Email: {
             std::vector<Kolab::ContactReference> receipents;
             foreach (const KCalendarCore::Person &p, a->mailAddresses()) {
                 receipents.push_back(Kolab::ContactReference(toStdString(p.email()), toStdString(p.name())));
@@ -785,8 +781,7 @@ void getTodoEvent(T &i, const I &e)
             alarm = Kolab::Alarm(toStdString(a->mailSubject()), toStdString(a->mailText()), receipents);
             break;
         }
-        case KCalendarCore::Alarm::Audio:
-        {
+        case KCalendarCore::Alarm::Audio: {
             Kolab::Attachment audioFile;
             audioFile.setUri(toStdString(a->audioFile()), std::string());
             alarm = Kolab::Alarm(audioFile);
@@ -889,7 +884,7 @@ KCalendarCore::Journal::Ptr toKCalendarCore(const Kolab::Journal &journal)
 {
     KCalendarCore::Journal::Ptr e(new KCalendarCore::Journal);
     setIncidence(*e, journal);
-    //TODO contacts
+    // TODO contacts
     return e;
 }
 
@@ -897,7 +892,7 @@ Kolab::Journal fromKCalendarCore(const KCalendarCore::Journal &journal)
 {
     Kolab::Journal j;
     getIncidence(j, journal);
-    //TODO contacts
+    // TODO contacts
     return j;
 }
 }

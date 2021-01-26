@@ -11,11 +11,13 @@
 
 #include <AkonadiCore/Item>
 
-namespace KDAV {
+namespace KDAV
+{
 class DavItem;
 }
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 class Item;
 }
@@ -23,7 +25,8 @@ class Item;
 /**
  * @short A namespace that contains helper methods for DAV functionality.
  */
-namespace Utils {
+namespace Utils
+{
 /**
  * Returns the i18n'ed name of the given DAV @p protocol dialect.
  */
@@ -41,7 +44,8 @@ KDAV::Protocol protocolByTranslatedName(const QString &name);
  * The returned item will have no payload (DavItem::data() will return an empty
  * QByteArray) if the @p item payload is not recognized.
  */
-KDAV::DavItem createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
+KDAV::DavItem
+createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
 
 /**
  * Parses the DAV data contained in @p source and puts it in @p target and @extraItems.

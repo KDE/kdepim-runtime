@@ -13,7 +13,7 @@
 
 #include "resourcestateinterface.h"
 
-typedef QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List> > TagListAndMembers;
+typedef QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>> TagListAndMembers;
 
 class DummyResourceState : public ResourceStateInterface
 {
@@ -93,8 +93,8 @@ public:
 
     void setTotalItems(int) override;
 
-    QSet< QByteArray > addedFlags() const override;
-    QSet< QByteArray > removedFlags() const override;
+    QSet<QByteArray> addedFlags() const override;
+    QSet<QByteArray> removedFlags() const override;
 
     void itemChangeCommitted(const Akonadi::Item &item) override;
     void itemsChangesCommitted(const Akonadi::Item::List &items) override;
@@ -133,7 +133,7 @@ public:
 
     MessageHelper::Ptr messageHelper() const override;
 
-    QList< QPair<QByteArray, QVariant> > calls() const;
+    QList<QPair<QByteArray, QVariant>> calls() const;
 
 private:
     void recordCall(const QByteArray &callName, const QVariant &parameter = QVariant());
@@ -166,7 +166,7 @@ private:
     QSet<Akonadi::Tag> m_addedTags;
     QSet<Akonadi::Tag> m_removedTags;
 
-    QList< QPair<QByteArray, QVariant> > m_calls;
+    QList<QPair<QByteArray, QVariant>> m_calls;
 };
 
 #endif

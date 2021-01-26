@@ -18,6 +18,7 @@ public:
     explicit EwsRecurrence(QXmlStreamReader &reader);
     EwsRecurrence(const EwsRecurrence &other);
     EwsRecurrence &operator=(const EwsRecurrence &other) = delete;
+
 private:
     bool readRelativeYearlyRecurrence(QXmlStreamReader &reader);
     bool readAbsoluteYearlyRecurrence(QXmlStreamReader &reader);

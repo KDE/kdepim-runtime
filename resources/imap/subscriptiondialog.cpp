@@ -7,25 +7,25 @@
 
 #include "subscriptiondialog.h"
 
-#include <QStandardItemModel>
 #include <QCheckBox>
+#include <QStandardItemModel>
 
 #include "imapresource_debug.h"
-#include <QLineEdit>
 #include <KSharedConfig>
+#include <QLineEdit>
 
 #include <KLocalizedString>
 
-#include <kimap/session.h>
 #include <kimap/loginjob.h>
-#include <kimap/unsubscribejob.h>
+#include <kimap/session.h>
 #include <kimap/subscribejob.h>
+#include <kimap/unsubscribejob.h>
 
 #include "imapaccount.h"
 #include "sessionuiproxy.h"
-#include <QPushButton>
-#include <QDialogButtonBox>
 #include <KConfigGroup>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 #include <QHeaderView>
 #include <QLabel>
@@ -59,15 +59,13 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     topLayout->addWidget(mainWidget);
     topLayout->addWidget(buttonBox);
 
-    m_enableSubscription = new QCheckBox(i18nc("@option:check",
-                                               "Enable server-side subscriptions"));
+    m_enableSubscription = new QCheckBox(i18nc("@option:check", "Enable server-side subscriptions"));
     mainLayout->addWidget(m_enableSubscription);
 
     auto filterBarLayout = new QHBoxLayout;
     mainLayout->addLayout(filterBarLayout);
 
-    filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription",
-                                                "Search:")));
+    filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription", "Search:")));
 
     m_lineEdit = new QLineEdit(mainWidget);
     m_lineEdit->setClearButtonEnabled(true);
@@ -76,8 +74,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     m_lineEdit->setFocus();
 
     QCheckBox *checkBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), mainWidget);
-    connect(checkBox, &QCheckBox::stateChanged,
-            m_filter, QOverload<int>::of(&SubscriptionFilterProxyModel::setIncludeCheckedOnly));
+    connect(checkBox, &QCheckBox::stateChanged, m_filter, QOverload<int>::of(&SubscriptionFilterProxyModel::setIncludeCheckedOnly));
 
     filterBarLayout->addWidget(checkBox);
 
@@ -172,8 +169,7 @@ void SubscriptionDialog::onReloadRequested()
     m_model->clear();
 
     // we need a connection
-    if (!m_session
-        || m_session->state() != KIMAP::Session::Authenticated) {
+    if (!m_session || m_session->state() != KIMAP::Session::Authenticated) {
         qCWarning(IMAPRESOURCE_LOG) << "SubscriptionDialog - got no connection";
         mUser1Button->setEnabled(true);
         return;
@@ -186,7 +182,7 @@ void SubscriptionDialog::onReloadRequested()
     list->start();
 }
 
-void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags)
+void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList<QList<QByteArray>> &flags)
 {
     const int numberOfMailBoxes(mailBoxes.size());
     for (int i = 0; i < numberOfMailBoxes; i++) {
@@ -194,7 +190,7 @@ void SubscriptionDialog::onMailBoxesReceived(const QList<KIMAP::MailBoxDescripto
 
         const QStringList pathParts = mailBox.name.split(mailBox.separator);
         const QString separator = mailBox.separator;
-        Q_ASSERT(separator.size() == 1);   // that's what the spec says
+        Q_ASSERT(separator.size() == 1); // that's what the spec says
 
         QString parentPath;
         QString currentPath;
@@ -250,7 +246,7 @@ void SubscriptionDialog::onFullListingDone(KJob *job)
     list->start();
 }
 
-void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags)
+void SubscriptionDialog::onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList<QList<QByteArray>> &flags)
 {
     Q_UNUSED(flags)
     const int numberOfMailBoxes(mailBoxes.size());

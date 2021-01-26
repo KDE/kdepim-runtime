@@ -20,11 +20,7 @@ public:
     typedef std::unique_ptr<EteSyncClientState> Ptr;
     explicit EteSyncClientState(const QString &agentId, WId winId);
 
-    enum AccountStatus {
-        OK,
-        NEW_ACCOUNT,
-        ERROR
-    };
+    enum AccountStatus { OK, NEW_ACCOUNT, ERROR };
 
     void init();
     void saveSettings();

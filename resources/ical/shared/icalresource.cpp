@@ -7,11 +7,11 @@
 
 #include "icalresource.h"
 
-#include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/FreeBusy>
+#include <KCalendarCore/MemoryCalendar>
 
-#include <QDebug>
 #include <KLocalizedString>
+#include <QDebug>
 
 using namespace Akonadi;
 using namespace KCalendarCore;
@@ -41,8 +41,7 @@ bool ICalResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArr
     const QString rid = item.remoteId();
     Incidence::Ptr incidence = calendar()->instance(rid);
     if (!incidence) {
-        qCritical() << "akonadi_ical_resource: Can't find incidence with uid "
-                    << rid << "; item.id() = " << item.id();
+        qCritical() << "akonadi_ical_resource: Can't find incidence with uid " << rid << "; item.id() = " << item.id();
         Q_EMIT error(i18n("Incidence with uid '%1' not found.", rid));
         return false;
     }
@@ -64,7 +63,7 @@ void ICalResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
 
     Incidence::Ptr i = item.payload<Incidence::Ptr>();
     if (!calendar()->addIncidence(Incidence::Ptr(i->clone()))) {
-        //qCritical() << "akonadi_ical_resource: Error adding incidence with uid "
+        // qCritical() << "akonadi_ical_resource: Error adding incidence with uid "
         //         << i->uid() << "; item.id() " << item.id() << i->recurrenceId();
         cancelTask();
         return;
@@ -127,9 +126,7 @@ void ICalResource::doRetrieveItems(const Akonadi::Collection &col)
 
 QStringList ICalResource::allMimeTypes() const
 {
-    return QStringList() << KCalendarCore::Event::eventMimeType()
-                         << KCalendarCore::Todo::todoMimeType()
-                         << KCalendarCore::Journal::journalMimeType()
+    return QStringList() << KCalendarCore::Event::eventMimeType() << KCalendarCore::Todo::todoMimeType() << KCalendarCore::Journal::journalMimeType()
                          << KCalendarCore::FreeBusy::freeBusyMimeType();
 }
 

@@ -4,9 +4,9 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <functional>
-#include <QTest>
 #include <KWallet/KWallet>
+#include <QTest>
+#include <functional>
 
 #include "ewssettings.h"
 #include "ewssettings_ut_mock.h"
@@ -33,7 +33,8 @@ private Q_SLOTS:
     void writeValidMap();
 };
 
-namespace KWallet {
+namespace KWallet
+{
 class MyWallet : public Wallet
 {
     Q_OBJECT
@@ -200,19 +201,19 @@ void UtEwsSettings::readNoPassword()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     QString password;
@@ -229,12 +230,12 @@ void UtEwsSettings::readNoPassword()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return false;
-                                    };
+            hasFolderCalled = true;
+            return false;
+        };
         wallet->createFolderCallback = [](const QString &) {
-                                           return false;
-                                       };
+            return false;
+        };
         wallet->doOpen(true);
     });
     QTimer timeoutTimer;
@@ -256,18 +257,18 @@ void UtEwsSettings::readNoPassword()
 void UtEwsSettings::readNullWallet()
 {
     KWallet::openWalletCallback = [](KWallet::MyWallet *) {
-                                      return nullptr;
-                                  };
+        return nullptr;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     QString password;
     EwsSettings settings(0);
@@ -297,19 +298,19 @@ void UtEwsSettings::readTimeout()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     QString password;
@@ -326,12 +327,12 @@ void UtEwsSettings::readTimeout()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return false;
-                                    };
+            hasFolderCalled = true;
+            return false;
+        };
         wallet->createFolderCallback = [](const QString &) {
-                                           return false;
-                                       };
+            return false;
+        };
     });
     QTimer timeoutTimer;
     connect(&timeoutTimer, &QTimer::timeout, this, [&]() {
@@ -353,19 +354,19 @@ void UtEwsSettings::readTimeoutInterrupted()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     QString password;
@@ -387,12 +388,12 @@ void UtEwsSettings::readTimeoutInterrupted()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return false;
-                                    };
+            hasFolderCalled = true;
+            return false;
+        };
         wallet->createFolderCallback = [](const QString &) {
-                                           return false;
-                                       };
+            return false;
+        };
     });
     QTimer::singleShot(1000, [&]() {
         settings.setTestPassword(QStringLiteral("foo"));
@@ -420,19 +421,19 @@ void UtEwsSettings::readValidPassword()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     bool setFolderCalled = false;
@@ -450,20 +451,20 @@ void UtEwsSettings::readValidPassword()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return true;
-                                    };
+            hasFolderCalled = true;
+            return true;
+        };
         wallet->createFolderCallback = [](const QString &) {
-                                           return false;
-                                       };
+            return false;
+        };
         wallet->setFolderCallback = [&setFolderCalled](const QString &) {
-                                        setFolderCalled = true;
-                                        return true;
-                                    };
+            setFolderCalled = true;
+            return true;
+        };
         wallet->readPasswordCallback = [](const QString &, QString &password) {
-                                           password = QStringLiteral("foo");
-                                           return true;
-                                       };
+            password = QStringLiteral("foo");
+            return true;
+        };
         wallet->doOpen(true);
     });
     QTimer timeoutTimer;
@@ -487,19 +488,19 @@ void UtEwsSettings::writeNullPassword()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     EwsSettings settings(0);
     QTimer::singleShot(100, [&]() {
@@ -528,18 +529,18 @@ void UtEwsSettings::writeNullWallet()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [](KWallet::MyWallet *) {
-                                      return nullptr;
-                                  };
+        return nullptr;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     EwsSettings settings(0);
     QTimer::singleShot(100, [&]() {
@@ -568,19 +569,19 @@ void UtEwsSettings::writeTimeout()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     bool createFolderCalled = false;
@@ -595,22 +596,22 @@ void UtEwsSettings::writeTimeout()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return false;
-                                    };
+            hasFolderCalled = true;
+            return false;
+        };
         wallet->createFolderCallback = [&createFolderCalled](const QString &) {
-                                           createFolderCalled = true;
-                                           return true;
-                                       };
+            createFolderCalled = true;
+            return true;
+        };
         wallet->setFolderCallback = [&setFolderCalled](const QString &) {
-                                        setFolderCalled = true;
-                                        return false;
-                                    };
+            setFolderCalled = true;
+            return false;
+        };
         wallet->writePasswordCallback = [&](const QString &, const QString &p) {
-                                            password = p;
-                                            loop.exit(0);
-                                            return true;
-                                        };
+            password = p;
+            loop.exit(0);
+            return true;
+        };
     });
     QTimer timeoutTimer;
     connect(&timeoutTimer, &QTimer::timeout, this, [&]() {
@@ -634,19 +635,19 @@ void UtEwsSettings::writeValidPassword()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     bool createFolderCalled = false;
@@ -661,22 +662,22 @@ void UtEwsSettings::writeValidPassword()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return false;
-                                    };
+            hasFolderCalled = true;
+            return false;
+        };
         wallet->createFolderCallback = [&createFolderCalled](const QString &) {
-                                           createFolderCalled = true;
-                                           return true;
-                                       };
+            createFolderCalled = true;
+            return true;
+        };
         wallet->setFolderCallback = [&setFolderCalled](const QString &) {
-                                        setFolderCalled = true;
-                                        return false;
-                                    };
+            setFolderCalled = true;
+            return false;
+        };
         wallet->writePasswordCallback = [&](const QString &, const QString &p) {
-                                            password = p;
-                                            loop.exit(0);
-                                            return true;
-                                        };
+            password = p;
+            loop.exit(0);
+            return true;
+        };
         wallet->doOpen(true);
     });
     QTimer timeoutTimer;
@@ -701,27 +702,24 @@ void UtEwsSettings::readValidMap()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     bool setFolderCalled = false;
     QMap<QString, QString> map;
-    const QMap<QString, QString> expectedMap = {
-        {accessTokenMapKey, QStringLiteral("afoo")},
-        {refreshTokenMapKey, QStringLiteral("rfoo")}
-    };
+    const QMap<QString, QString> expectedMap = {{accessTokenMapKey, QStringLiteral("afoo")}, {refreshTokenMapKey, QStringLiteral("rfoo")}};
     EwsSettings settings(0);
     connect(&settings, &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &m) {
         map = m;
@@ -735,21 +733,21 @@ void UtEwsSettings::readValidMap()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return true;
-                                    };
+            hasFolderCalled = true;
+            return true;
+        };
         wallet->createFolderCallback = [](const QString &) {
-                                           return false;
-                                       };
+            return false;
+        };
         wallet->setFolderCallback = [&setFolderCalled](const QString &) {
-                                        setFolderCalled = true;
-                                        return true;
-                                    };
+            setFolderCalled = true;
+            return true;
+        };
         wallet->readMapCallback = [](const QString &, QMap<QString, QString> &map) {
-                                      map[accessTokenMapKey] = QStringLiteral("afoo");
-                                      map[refreshTokenMapKey] = QStringLiteral("rfoo");
-                                      return true;
-                                  };
+            map[accessTokenMapKey] = QStringLiteral("afoo");
+            map[refreshTokenMapKey] = QStringLiteral("rfoo");
+            return true;
+        };
         wallet->doOpen(true);
     });
     QTimer timeoutTimer;
@@ -773,27 +771,24 @@ void UtEwsSettings::writeValidMap()
 {
     KWallet::MyWallet *wallet = nullptr;
     KWallet::openWalletCallback = [&wallet](KWallet::MyWallet *w) {
-                                      wallet = w;
-                                      return w;
-                                  };
+        wallet = w;
+        return w;
+    };
 
     QEventLoop loop;
     bool error = false;
     KWallet::errorCallback = [&]() {
-                                 if (loop.isRunning()) {
-                                     loop.exit(1);
-                                 } else {
-                                     error = true;
-                                 }
-                             };
+        if (loop.isRunning()) {
+            loop.exit(1);
+        } else {
+            error = true;
+        }
+    };
 
     bool hasFolderCalled = false;
     bool createFolderCalled = false;
     bool setFolderCalled = false;
-    const QMap<QString, QString> expectedMap = {
-        {accessTokenMapKey, QStringLiteral("afoo")},
-        {refreshTokenMapKey, QStringLiteral("rfoo")}
-    };
+    const QMap<QString, QString> expectedMap = {{accessTokenMapKey, QStringLiteral("afoo")}, {refreshTokenMapKey, QStringLiteral("rfoo")}};
     QMap<QString, QString> map;
     EwsSettings settings(0);
     QTimer::singleShot(100, [&]() {
@@ -804,22 +799,22 @@ void UtEwsSettings::writeValidMap()
             return;
         }
         wallet->hasFolderCallback = [&hasFolderCalled](const QString &) {
-                                        hasFolderCalled = true;
-                                        return false;
-                                    };
+            hasFolderCalled = true;
+            return false;
+        };
         wallet->createFolderCallback = [&createFolderCalled](const QString &) {
-                                           createFolderCalled = true;
-                                           return true;
-                                       };
+            createFolderCalled = true;
+            return true;
+        };
         wallet->setFolderCallback = [&setFolderCalled](const QString &) {
-                                        setFolderCalled = true;
-                                        return false;
-                                    };
+            setFolderCalled = true;
+            return false;
+        };
         wallet->writeMapCallback = [&](const QString &, const QMap<QString, QString> &m) {
-                                       map = m;
-                                       loop.exit(0);
-                                       return true;
-                                   };
+            map = m;
+            loop.exit(0);
+            return true;
+        };
         wallet->doOpen(true);
     });
     QTimer timeoutTimer;

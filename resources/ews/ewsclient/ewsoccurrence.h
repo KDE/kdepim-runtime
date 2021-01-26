@@ -36,6 +36,7 @@ public:
     QDateTime start() const;
     QDateTime end() const;
     QDateTime originalStart() const;
+
 protected:
     QSharedDataPointer<EwsOccurrencePrivate> d;
 };

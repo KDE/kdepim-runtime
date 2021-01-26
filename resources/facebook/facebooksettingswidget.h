@@ -8,8 +8,8 @@
 #ifndef FACEBOOKSETTINGSWIDGET_H_
 #define FACEBOOKSETTINGSWIDGET_H_
 
-#include <QScopedPointer>
 #include <AkonadiCore/AgentConfigurationBase>
+#include <QScopedPointer>
 
 class Ui_FacebookAgentSettingsWidget;
 class FacebookSettingsWidget : public Akonadi::AgentConfigurationBase
@@ -22,8 +22,8 @@ public:
     void load() override;
     bool save() const override;
 
-    private Q_SLOT:
-    void checkToken();
+private
+    Q_SLOT : void checkToken();
     void login();
     void logout();
 

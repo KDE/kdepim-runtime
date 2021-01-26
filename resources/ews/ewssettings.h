@@ -13,10 +13,11 @@
 #include "ewssettingsbase.h"
 #endif
 
-#include <QTimer>
 #include <QPointer>
+#include <QTimer>
 
-namespace KWallet {
+namespace KWallet
+{
 class Wallet;
 }
 class KPasswordDialog;
@@ -44,6 +45,7 @@ Q_SIGNALS:
     void mapRequestFinished(const QMap<QString, QString> &map);
 private Q_SLOTS:
     void onWalletOpened(bool success);
+
 private:
     QString readPassword() const;
     QMap<QString, QString> readMap() const;

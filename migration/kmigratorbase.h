@@ -21,19 +21,9 @@ class KMigratorBase : public QObject
 {
     Q_OBJECT
 public:
-    enum MigrationState {
-        None,
-        Bridged,
-        Complete
-    };
+    enum MigrationState { None, Bridged, Complete };
 
-    enum MessageType {
-        Success,
-        Skip,
-        Info,
-        Warning,
-        Error
-    };
+    enum MessageType { Success, Skip, Info, Warning, Error };
 
     Q_ENUM(MigrationState)
 
@@ -59,8 +49,7 @@ public:
 
 protected:
     KJob *createAgentInstance(const QString &typeId, QObject *receiver, const char *slot);
-    virtual void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance
-                                 = Akonadi::AgentInstance()) = 0;
+    virtual void migrationFailed(const QString &errorMsg, const Akonadi::AgentInstance &instance = Akonadi::AgentInstance()) = 0;
 
 Q_SIGNALS:
     void message(KMigratorBase::MessageType type, const QString &msg);

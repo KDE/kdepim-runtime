@@ -8,8 +8,10 @@
 #include "commonconversion.h"
 #include <akonadi/notes/noteutils.h>
 
-namespace Kolab {
-namespace Conversion {
+namespace Kolab
+{
+namespace Conversion
+{
 Note fromNote(const KMime::Message::Ptr &m)
 {
     Akonadi::NoteUtils::NoteMessageWrapper note(m);
@@ -38,7 +40,7 @@ Note fromNote(const KMime::Message::Ptr &m)
 
     std::vector<Kolab::CustomProperty> customs;
     QMap<QString, QString> &customsMap = note.custom();
-    for (QMap <QString, QString >::const_iterator it = customsMap.constBegin(), end = customsMap.constEnd(); it != end; ++it) {
+    for (QMap<QString, QString>::const_iterator it = customsMap.constBegin(), end = customsMap.constEnd(); it != end; ++it) {
         customs.push_back(Kolab::CustomProperty(toStdString(it.key()), toStdString(it.value())));
     }
     n.setCustomProperties(customs);

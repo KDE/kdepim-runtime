@@ -2,11 +2,11 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#include <QCryptographicHash>
-#include <QNetworkRequest>
-#include <QDateTime>
-#include <QByteArray>
 #include "debug.h"
+#include <QByteArray>
+#include <QCryptographicHash>
+#include <QDateTime>
+#include <QNetworkRequest>
 
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -16,12 +16,13 @@
 #include <QMessageAuthenticationCode>
 #endif
 
-#include "o2/o1.h"
-#include "o2/o2replyserver.h"
 #include "o2/o0globals.h"
 #include "o2/o0settingsstore.h"
+#include "o2/o1.h"
+#include "o2/o2replyserver.h"
 
-O1::O1(QObject *parent) : O0BaseAuth(parent)
+O1::O1(QObject *parent)
+    : O0BaseAuth(parent)
 {
     setSignatureMethod(QLatin1String(O2_SIGNATURE_TYPE_HMAC_SHA1));
     manager_ = new QNetworkAccessManager(this);
@@ -155,7 +156,10 @@ QByteArray O1::encodeHeaders(const QList<O0RequestParameter> &headers)
 }
 
 /// Build a base string for signing.
-QByteArray O1::getRequestBase(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op)
+QByteArray O1::getRequestBase(const QList<O0RequestParameter> &oauthParams,
+                              const QList<O0RequestParameter> &otherParams,
+                              const QUrl &url,
+                              QNetworkAccessManager::Operation op)
 {
     QByteArray base;
 
@@ -172,7 +176,12 @@ QByteArray O1::getRequestBase(const QList<O0RequestParameter> &oauthParams, cons
     return base;
 }
 
-QByteArray O1::sign(const QList<O0RequestParameter> &oauthParams, const QList<O0RequestParameter> &otherParams, const QUrl &url, QNetworkAccessManager::Operation op, const QString &consumerSecret, const QString &tokenSecret)
+QByteArray O1::sign(const QList<O0RequestParameter> &oauthParams,
+                    const QList<O0RequestParameter> &otherParams,
+                    const QUrl &url,
+                    QNetworkAccessManager::Operation op,
+                    const QString &consumerSecret,
+                    const QString &tokenSecret)
 {
     QByteArray baseString = getRequestBase(oauthParams, otherParams, url, op);
     QByteArray secret = QUrl::toPercentEncoding(consumerSecret) + "&" + QUrl::toPercentEncoding(tokenSecret);
@@ -203,7 +212,10 @@ QByteArray O1::buildAuthorizationHeader(const QList<O0RequestParameter> &oauthPa
     return ret;
 }
 
-QByteArray O1::generateSignature(const QList<O0RequestParameter> &headers, const QNetworkRequest &req, const QList<O0RequestParameter> &signingParameters, QNetworkAccessManager::Operation operation)
+QByteArray O1::generateSignature(const QList<O0RequestParameter> &headers,
+                                 const QNetworkRequest &req,
+                                 const QList<O0RequestParameter> &signingParameters,
+                                 QNetworkAccessManager::Operation operation)
 {
     QByteArray signature;
     if (signatureMethod() == QLatin1String(O2_SIGNATURE_TYPE_HMAC_SHA1)) {
@@ -299,7 +311,8 @@ void O1::onTokenRequestFinished()
     // Checking for "oauth_callback_confirmed" is present and set to true
     QString oAuthCbConfirmed = response.value(QLatin1String(O2_OAUTH_CALLBACK_CONFIRMED), QStringLiteral("false"));
     if (requestToken_.isEmpty() || requestTokenSecret_.isEmpty() || (oAuthCbConfirmed == QLatin1String("false"))) {
-        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished: No oauth_token, oauth_token_secret or oauth_callback_confirmed in response :" << data;
+        qCWarning(TOMBOYNOTESRESOURCE_LOG) << "O1::onTokenRequestFinished: No oauth_token, oauth_token_secret or oauth_callback_confirmed in response :"
+                                           << data;
         Q_EMIT linkingFailed();
         return;
     }
@@ -346,7 +359,8 @@ void O1::exchangeToken()
     oauthParams.append(O0RequestParameter(O2_OAUTH_TOKEN, requestToken_.toLatin1()));
     oauthParams.append(O0RequestParameter(O2_OAUTH_VERFIER, verifier_.toLatin1()));
     oauthParams.append(O0RequestParameter(O2_OAUTH_SIGNATURE_METHOD, signatureMethod().toLatin1()));
-    oauthParams.append(O0RequestParameter(O2_OAUTH_SIGNATURE, generateSignature(oauthParams, request, QList<O0RequestParameter>(), QNetworkAccessManager::PostOperation)));
+    oauthParams.append(
+        O0RequestParameter(O2_OAUTH_SIGNATURE, generateSignature(oauthParams, request, QList<O0RequestParameter>(), QNetworkAccessManager::PostOperation)));
 
     // Post request
     request.setRawHeader(O2_HTTP_AUTHORIZATION_HEADER, buildAuthorizationHeader(oauthParams));

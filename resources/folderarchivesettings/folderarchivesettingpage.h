@@ -9,11 +9,12 @@
 
 #include "folderarchiveaccountinfo.h"
 #include "folderarchivesettings_export.h"
-#include <QWidget>
 #include <QComboBox>
+#include <QWidget>
 
 class QCheckBox;
-namespace Akonadi {
+namespace Akonadi
+{
 class CollectionRequester;
 }
 

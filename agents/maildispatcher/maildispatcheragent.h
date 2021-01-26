@@ -43,6 +43,7 @@ protected:
 
 private Q_SLOTS:
     void sendPercent(KJob *job, unsigned long percent);
+
 private:
     // Q_SLOTS:
     void abort();

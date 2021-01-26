@@ -17,12 +17,7 @@ class EwsSubscribeRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-
-    enum Type {
-        PullSubscription = 0,
-        PushSubscription,
-        StreamingSubscription
-    };
+    enum Type { PullSubscription = 0, PushSubscription, StreamingSubscription };
 
     class Response : public EwsRequest::Response
     {
@@ -85,11 +80,13 @@ public:
     }
 
     void start() override;
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseSubscribeResponse(QXmlStreamReader &reader);
+
 private:
-    //QSharedPointer<EwsSubscription> mSubscription;
+    // QSharedPointer<EwsSubscription> mSubscription;
     Type mType;
     EwsId::List mFolderIds;
     QList<EwsEventType> mEventTypes;

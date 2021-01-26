@@ -6,8 +6,8 @@
 #define O2TIMEDREPLYLIST_H
 
 #include <QList>
-#include <QTimer>
 #include <QNetworkReply>
+#include <QTimer>
 
 /// A network request/reply pair that can time out.
 class O2Reply : public QTimer

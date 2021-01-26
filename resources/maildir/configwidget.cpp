@@ -5,8 +5,8 @@
 */
 
 #include "configwidget.h"
-#include "settings.h"
 #include "resources/folderarchivesettings/folderarchivesettingpage.h"
+#include "settings.h"
 
 #include <maildir.h>
 

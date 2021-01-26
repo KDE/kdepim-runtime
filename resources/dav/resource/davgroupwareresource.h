@@ -12,14 +12,15 @@
 
 #include <memory>
 
-#include <resourcebase.h>
 #include <akonadi/calendar/freebusyproviderbase.h>
+#include <resourcebase.h>
 
 class DavFreeBusyHandler;
 
 #include <QSet>
 
-namespace KDAV {
+namespace KDAV
+{
 class DavItem;
 }
 
@@ -62,11 +63,7 @@ protected:
     void doSetOnline(bool online) override;
 
 private:
-    enum ItemFetchUpdateType {
-        ItemUpdateNone,
-        ItemUpdateAdd,
-        ItemUpdateChange
-    };
+    enum ItemFetchUpdateType { ItemUpdateNone, ItemUpdateAdd, ItemUpdateChange };
 
     KJob *createRetrieveCollectionsJob();
     void onReloadConfig();
@@ -81,12 +78,12 @@ private:
     void onMultigetFinished(KJob *);
     void onRetrieveItemFinished(KJob *);
     /**
-      * Called when a new item has been fetched from the backend.
-      *
-      * @param job The job that fetched the item
-      * @param updateType The type of update that triggered this call. The task notification sent
-      *        sent to Akonadi will depend on this flag.
-      */
+     * Called when a new item has been fetched from the backend.
+     *
+     * @param job The job that fetched the item
+     * @param updateType The type of update that triggered this call. The task notification sent
+     *        sent to Akonadi will depend on this flag.
+     */
     void onItemFetched(KJob *job, ItemFetchUpdateType updateType);
     void onItemRefreshed(KJob *job);
 
@@ -102,7 +99,11 @@ private:
 
     void doItemChange(const Akonadi::Item &item, const Akonadi::Item::List &dependentItems = Akonadi::Item::List());
     void doItemRemoval(const Akonadi::Item &item);
-    void handleConflict(const Akonadi::Item &localItem, const Akonadi::Item::List &localDependentItems, const KDAV::DavItem &remoteItem, bool isLocalRemoval, int responseCode);
+    void handleConflict(const Akonadi::Item &localItem,
+                        const Akonadi::Item::List &localDependentItems,
+                        const KDAV::DavItem &remoteItem,
+                        bool isLocalRemoval,
+                        int responseCode);
 
     bool configurationIsValid();
     void retryAfterFailure(const QString &errorMessage);
@@ -113,7 +114,7 @@ private:
     static void setCollectionIcon(Akonadi::Collection &collection);
 
     Akonadi::Collection mDavCollectionRoot;
-    QMap<QString, std::shared_ptr<KDAV::EtagCache> > mEtagCaches;
+    QMap<QString, std::shared_ptr<KDAV::EtagCache>> mEtagCaches;
     QMap<QString, QString> mCTagCache;
     DavFreeBusyHandler *mFreeBusyHandler = nullptr;
     bool mSyncErrorNotified = false;

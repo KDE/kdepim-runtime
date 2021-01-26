@@ -11,8 +11,8 @@
  *  It is used to find if a file is in cur or new
  */
 
-#include <QSet>
 #include <QHash>
+#include <QSet>
 
 class KeyCache
 {
@@ -55,8 +55,8 @@ private:
 
     QSet<QString> listCurrent(const QString &dir) const;
 
-    QHash< QString, QSet<QString> > mNewKeys;
-    QHash< QString, QSet<QString> > mCurKeys;
+    QHash<QString, QSet<QString>> mNewKeys;
+    QHash<QString, QSet<QString>> mCurKeys;
 
     static KeyCache *mSelf;
 };

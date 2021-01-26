@@ -29,7 +29,7 @@ static const char *testStringHeaders = "From: theDukeOfMonmouth@uk.gov\n \nTo: t
 
 void MaildirTest::init()
 {
-    QString tmpPath(QDir::tempPath() + QLatin1Char('/') +  QLatin1String(testDir));
+    QString tmpPath(QDir::tempPath() + QLatin1Char('/') + QLatin1String(testDir));
     QDir().mkpath(tmpPath);
     m_temp = new QTemporaryDir(tmpPath);
 
@@ -185,7 +185,7 @@ void MaildirTest::testMaildirAppend()
 void MaildirTest::testMaildirCreation()
 {
     QString p(QStringLiteral("CREATETEST"));
-    QString tmpPath(QDir::tempPath() + QLatin1Char('/') +  p);
+    QString tmpPath(QDir::tempPath() + QLatin1Char('/') + p);
     QDir().mkpath(tmpPath);
     std::unique_ptr<QTemporaryDir> temp(new QTemporaryDir(tmpPath));
     Maildir d(temp->path() + p);
@@ -324,7 +324,8 @@ void MaildirTest::testMaildirMoveTo()
 void MaildirTest::testMaildirFlagsReading()
 {
     QFile file;
-    const QStringList markers = QStringList() << QStringLiteral("P") << QStringLiteral("R") << QStringLiteral("S") << QStringLiteral("F") << QStringLiteral("FPRS");
+    const QStringList markers = QStringList() << QStringLiteral("P") << QStringLiteral("R") << QStringLiteral("S") << QStringLiteral("F")
+                                              << QStringLiteral("FPRS");
     QDir::setCurrent(m_temp->path() + QStringLiteral("/cur"));
     for (int i = 0; i < 6; i++) {
         QString fileName = QLatin1String("testmail-") + QString::number(i);
@@ -383,10 +384,14 @@ void MaildirTest::testMaildirFlagsWriting_data()
 {
     QTest::addColumn<QString>("origDir");
     QTest::addColumn<QString>("origFileName");
-    QTest::newRow("cur/") << "cur" << "testmail";
-    QTest::newRow("cur/S") << "cur" << "testmail:2,S";   // wrongly marked as "seen" on disk (#289428)
-    QTest::newRow("new/") << "new" << "testmail";
-    QTest::newRow("new/S") << "new" << "testmail:2,S";
+    QTest::newRow("cur/") << "cur"
+                          << "testmail";
+    QTest::newRow("cur/S") << "cur"
+                           << "testmail:2,S"; // wrongly marked as "seen" on disk (#289428)
+    QTest::newRow("new/") << "new"
+                          << "testmail";
+    QTest::newRow("new/S") << "new"
+                           << "testmail:2,S";
 }
 
 void MaildirTest::testMaildirFlagsWriting()

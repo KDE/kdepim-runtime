@@ -11,10 +11,12 @@
 
 #include <string>
 
-namespace Kolab {
-namespace DateTimeUtils {
+namespace Kolab
+{
+namespace DateTimeUtils
+{
 KOLAB_EXPORT std::string getLocalTimezone();
-}     //Namespace
-} //Namespace
+} // Namespace
+} // Namespace
 
 #endif

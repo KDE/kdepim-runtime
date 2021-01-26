@@ -6,10 +6,10 @@
 */
 
 #include "googlesettingsdialog.h"
-#include "ui_googlesettingsdialog.h"
-#include "googlesettings.h"
 #include "googleresource.h"
 #include "googleresource_debug.h"
+#include "googlesettings.h"
+#include "ui_googlesettingsdialog.h"
 
 #include <QDialogButtonBox>
 
@@ -54,8 +54,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
 
     m_ui->eventsLimitCombo->setMaximumDate(QDate::currentDate());
     m_ui->eventsLimitCombo->setMinimumDate(QDate::fromString(QStringLiteral("2000-01-01"), Qt::ISODate));
-    m_ui->eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate
-                                       |KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
+    m_ui->eventsLimitCombo->setOptions(KDateComboBox::EditDate | KDateComboBox::SelectDate | KDateComboBox::DatePicker | KDateComboBox::WarnOnInvalid);
     if (m_settings->eventsSince().isEmpty()) {
         const QString ds = QStringLiteral("%1-01-01").arg(QString::number(QDate::currentDate().year() - 3));
         m_ui->eventsLimitCombo->setDate(QDate::fromString(ds, Qt::ISODate));
@@ -71,7 +70,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
     if (m_settings->isReady()) {
         m_account = m_settings->accountPtr();
     }
-    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready){
+    connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
         if (ready) {
             m_account = m_settings->accountPtr();
             accountChanged();
@@ -100,8 +99,7 @@ bool GoogleSettingsDialog::handleError(Job *job)
             }
         }
 
-        AuthJob *authJob = new AuthJob(m_account, m_settings->clientId(),
-                                       m_settings->clientSecret(), this);
+        AuthJob *authJob = new AuthJob(m_account, m_settings->clientId(), m_settings->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
         connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 
@@ -129,9 +127,7 @@ void GoogleSettingsDialog::accountChanged()
 
 void GoogleSettingsDialog::slotConfigure()
 {
-    const QString username = m_account && !m_account->accountName().isEmpty()
-        ? m_account->accountName()
-        : QString();
+    const QString username = m_account && !m_account->accountName().isEmpty() ? m_account->accountName() : QString();
     m_account = AccountPtr(new Account());
     const QList<QUrl> resourceScopes = m_resource->scopes();
     for (const QUrl &scope : resourceScopes) {
@@ -139,9 +135,7 @@ void GoogleSettingsDialog::slotConfigure()
             m_account->addScope(scope);
         }
     }
-    AuthJob *authJob = new AuthJob(m_account,
-                                   m_settings->clientId(),
-                                   m_settings->clientSecret());
+    AuthJob *authJob = new AuthJob(m_account, m_settings->clientId(), m_settings->clientSecret());
     authJob->setUsername(username);
     connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 }
@@ -217,7 +211,7 @@ void GoogleSettingsDialog::slotReloadCalendars()
     }
 
     auto fetchJob = new CalendarFetchJob(m_account, this);
-    connect(fetchJob, &CalendarFetchJob::finished, this, [this](Job *job){
+    connect(fetchJob, &CalendarFetchJob::finished, this, [this](Job *job) {
         if (!handleError(job) || !m_account) {
             m_ui->calendarsBox->setEnabled(false);
             return;
@@ -254,7 +248,7 @@ void GoogleSettingsDialog::slotReloadTaskLists()
     m_ui->taskListsList->clear();
 
     auto job = new TaskListFetchJob(m_account, this);
-    connect(job, &TaskListFetchJob::finished, this, [this](KGAPI2::Job *job){
+    connect(job, &TaskListFetchJob::finished, this, [this](KGAPI2::Job *job) {
         if (!handleError(job) || !m_account) {
             m_ui->taskListsBox->setDisabled(true);
             return;

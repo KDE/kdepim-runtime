@@ -14,20 +14,19 @@
 #include "settingsadaptor.h"
 
 // KDEPIMLIBS includes
-#include <Collection>
-#include <CollectionFetchJob>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Collection>
+#include <CollectionFetchJob>
 #include <Libkdepim/LineEditCatchReturnKey>
-#include <resourcesettings.h>
 #include <MailTransport/ServerTest>
-
+#include <resourcesettings.h>
 
 // KDELIBS includes
+#include "pop3resource_debug.h"
 #include <KEMailSettings>
 #include <KMessageBox>
 #include <KUser>
-#include "pop3resource_debug.h"
 
 #include <QButtonGroup>
 #include <QPushButton>
@@ -36,7 +35,8 @@
 using namespace MailTransport;
 using namespace Akonadi;
 using namespace QKeychain;
-namespace {
+namespace
+{
 class BusyCursorHelper : public QObject
 {
 public:
@@ -107,20 +107,16 @@ void AccountWidget::setupWidgets()
 
     connect(checkCapabilities, &QPushButton::clicked, this, &AccountWidget::slotCheckPopCapabilities);
     encryptionButtonGroup = new QButtonGroup(page);
-    encryptionButtonGroup->addButton(encryptionNone,
-                                     Transport::EnumEncryption::None);
-    encryptionButtonGroup->addButton(encryptionSSL,
-                                     Transport::EnumEncryption::SSL);
-    encryptionButtonGroup->addButton(encryptionTLS,
-                                     Transport::EnumEncryption::TLS);
+    encryptionButtonGroup->addButton(encryptionNone, Transport::EnumEncryption::None);
+    encryptionButtonGroup->addButton(encryptionSSL, Transport::EnumEncryption::SSL);
+    encryptionButtonGroup->addButton(encryptionTLS, Transport::EnumEncryption::TLS);
 
     connect(encryptionButtonGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
     connect(intervalCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnablePopInterval);
 
     populateDefaultAuthenticationOptions();
 
-    folderRequester->setMimeTypeFilter(
-        QStringList() << QStringLiteral("message/rfc822"));
+    folderRequester->setMimeTypeFilter(QStringList() << QStringLiteral("message/rfc822"));
     folderRequester->setAccessRightsFilter(Akonadi::Collection::CanCreateItem);
     folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
 
@@ -140,12 +136,9 @@ void AccountWidget::loadSettings()
     }
 
     nameEdit->setFocus();
-    loginEdit->setText(!mSettings.login().isEmpty() ? mSettings.login()
-                       : KUser().loginName());
+    loginEdit->setText(!mSettings.login().isEmpty() ? mSettings.login() : KUser().loginName());
 
-    hostEdit->setText(
-        !mSettings.host().isEmpty() ? mSettings.host()
-        : KEMailSettings().getSetting(KEMailSettings::InServer));
+    hostEdit->setText(!mSettings.host().isEmpty() ? mSettings.host() : KEMailSettings().getSetting(KEMailSettings::InServer));
     hostEdit->setText(mSettings.host());
     portEdit->setValue(mSettings.port());
     precommand->setText(mSettings.precommand());
@@ -153,16 +146,13 @@ void AccountWidget::loadSettings()
     leaveOnServerCheck->setChecked(mSettings.leaveOnServer());
     leaveOnServerDaysCheck->setEnabled(mSettings.leaveOnServer());
     leaveOnServerDaysCheck->setChecked(mSettings.leaveOnServerDays() >= 1);
-    leaveOnServerDaysSpin->setValue(mSettings.leaveOnServerDays() >= 1
-                                    ? mSettings.leaveOnServerDays() : 7);
+    leaveOnServerDaysSpin->setValue(mSettings.leaveOnServerDays() >= 1 ? mSettings.leaveOnServerDays() : 7);
     leaveOnServerCountCheck->setEnabled(mSettings.leaveOnServer());
     leaveOnServerCountCheck->setChecked(mSettings.leaveOnServerCount() >= 1);
-    leaveOnServerCountSpin->setValue(mSettings.leaveOnServerCount() >= 1
-                                     ? mSettings.leaveOnServerCount() : 100);
+    leaveOnServerCountSpin->setValue(mSettings.leaveOnServerCount() >= 1 ? mSettings.leaveOnServerCount() : 100);
     leaveOnServerSizeCheck->setEnabled(mSettings.leaveOnServer());
     leaveOnServerSizeCheck->setChecked(mSettings.leaveOnServerSize() >= 1);
-    leaveOnServerSizeSpin->setValue(mSettings.leaveOnServerSize() >= 1
-                                    ? mSettings.leaveOnServerSize() : 10);
+    leaveOnServerSizeSpin->setValue(mSettings.leaveOnServerSize() >= 1 ? mSettings.leaveOnServerSize() : 10);
     filterOnServerCheck->setChecked(mSettings.filterOnServer());
     filterOnServerSizeSpin->setValue(mSettings.filterCheckSize());
     intervalCheck->setChecked(mSettings.intervalCheckEnabled());
@@ -176,20 +166,15 @@ void AccountWidget::loadSettings()
     encryptionTLS->setChecked(mSettings.useTLS());
     proxyCheck->setChecked(mSettings.useProxy());
 
-    slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled()
-                                ? mSettings.leaveOnServerDays() >= 1 : false);
-    slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled()
-                                 ? mSettings.leaveOnServerCount() >= 1 : false);
-    slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled()
-                                ? mSettings.leaveOnServerSize() >= 1 : false);
+    slotEnableLeaveOnServerDays(leaveOnServerDaysCheck->isEnabled() ? mSettings.leaveOnServerDays() >= 1 : false);
+    slotEnableLeaveOnServerCount(leaveOnServerCountCheck->isEnabled() ? mSettings.leaveOnServerCount() >= 1 : false);
+    slotEnableLeaveOnServerSize(leaveOnServerSizeCheck->isEnabled() ? mSettings.leaveOnServerSize() >= 1 : false);
 
     // We need to fetch the collection, as the CollectionRequester needs the name
     // of it to work correctly
     Collection targetCollection(mSettings.targetCollection());
     if (targetCollection.isValid()) {
-        auto fetchJob = new CollectionFetchJob(targetCollection,
-                                                              CollectionFetchJob::Base,
-                                                              this);
+        auto fetchJob = new CollectionFetchJob(targetCollection, CollectionFetchJob::Base, this);
         connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &AccountWidget::targetCollectionReceived);
     } else {
         // FIXME: This is a bit duplicated from POP3Resource...
@@ -263,8 +248,7 @@ void AccountWidget::slotLeaveOnServerClicked()
         slotEnableLeaveOnServerCount(state);
         slotEnableLeaveOnServerSize(state);
     }
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL)
-        && leaveOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL) && leaveOnServerCheck->isChecked()) {
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support unique "
                                       "message numbers, but this is a "
@@ -279,8 +263,7 @@ void AccountWidget::slotLeaveOnServerClicked()
 
 void AccountWidget::slotFilterOnServerClicked()
 {
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top)
-        && filterOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top) && filterOnServerCheck->isChecked()) {
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support "
                                       "fetching message headers, but this is a "
@@ -305,7 +288,8 @@ void AccountWidget::slotPipeliningClicked()
                                       " button at the bottom of the dialog;\n"
                                       "if your server does not announce it, but you want more speed, then\n"
                                       "you should do some testing first by sending yourself a batch\n"
-                                      "of mail and downloading it."), QString(),
+                                      "of mail and downloading it."),
+                                 QString(),
                                  QStringLiteral("pipelining"));
     }
 }
@@ -328,8 +312,9 @@ void AccountWidget::slotPopEncryptionChanged(QAbstractButton *button)
 void AccountWidget::slotCheckPopCapabilities()
 {
     if (hostEdit->text().isEmpty()) {
-        KMessageBox::sorry(this, i18n("Please specify a server and port on "
-                                      "the General tab first."));
+        KMessageBox::sorry(this,
+                           i18n("Please specify a server and port on "
+                                "the General tab first."));
         return;
     }
     delete mServerTest;
@@ -402,8 +387,7 @@ void AccountWidget::enablePopFeatures()
         authCombo->addItem(Transport::authenticationTypeString(prot), prot);
     }
 
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Pipelining)
-        && usePipeliningCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Pipelining) && usePipeliningCheck->isChecked()) {
         usePipeliningCheck->setChecked(false);
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support "
@@ -423,8 +407,7 @@ void AccountWidget::enablePopFeatures()
                                       "server."));
     }
 
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL)
-        && leaveOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::UIDL) && leaveOnServerCheck->isChecked()) {
         leaveOnServerCheck->setChecked(false);
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support unique "
@@ -438,8 +421,7 @@ void AccountWidget::enablePopFeatures()
                                       "fetched messages on the server on."));
     }
 
-    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top)
-        && filterOnServerCheck->isChecked()) {
+    if (mServerTest && !mServerTest->capabilities().contains(ServerTest::Top) && filterOnServerCheck->isChecked()) {
         filterOnServerCheck->setChecked(false);
         KMessageBox::information(topLevelWidget(),
                                  i18n("The server does not seem to support "
@@ -456,8 +438,7 @@ void AccountWidget::enablePopFeatures()
 
 static void addAuthenticationItem(QComboBox *combo, int authenticationType)
 {
-    combo->addItem(Transport::authenticationTypeString(authenticationType),
-                   QVariant(authenticationType));
+    combo->addItem(Transport::authenticationTypeString(authenticationType), QVariant(authenticationType));
 }
 
 void AccountWidget::populateDefaultAuthenticationOptions()
@@ -523,15 +504,9 @@ void AccountWidget::saveSettings()
     mSettings.setUseProxy(proxyCheck->isChecked());
     mSettings.setPipelining(usePipeliningCheck->isChecked());
     mSettings.setLeaveOnServer(leaveOnServerCheck->isChecked());
-    mSettings.setLeaveOnServerDays(leaveOnServerCheck->isChecked()
-                                   ? (leaveOnServerDaysCheck->isChecked()
-                                      ? leaveOnServerDaysSpin->value() : -1) : 0);
-    mSettings.setLeaveOnServerCount(leaveOnServerCheck->isChecked()
-                                    ? (leaveOnServerCountCheck->isChecked()
-                                       ? leaveOnServerCountSpin->value() : -1) : 0);
-    mSettings.setLeaveOnServerSize(leaveOnServerCheck->isChecked()
-                                   ? (leaveOnServerSizeCheck->isChecked()
-                                      ? leaveOnServerSizeSpin->value() : -1) : 0);
+    mSettings.setLeaveOnServerDays(leaveOnServerCheck->isChecked() ? (leaveOnServerDaysCheck->isChecked() ? leaveOnServerDaysSpin->value() : -1) : 0);
+    mSettings.setLeaveOnServerCount(leaveOnServerCheck->isChecked() ? (leaveOnServerCountCheck->isChecked() ? leaveOnServerCountSpin->value() : -1) : 0);
+    mSettings.setLeaveOnServerSize(leaveOnServerCheck->isChecked() ? (leaveOnServerSizeCheck->isChecked() ? leaveOnServerSizeSpin->value() : -1) : 0);
     mSettings.setFilterOnServer(filterOnServerCheck->isChecked());
     mSettings.setFilterCheckSize(filterOnServerSizeSpin->value());
     mSettings.setTargetCollection(folderRequester->collection().id());
@@ -540,11 +515,9 @@ void AccountWidget::saveSettings()
     // Now, either save the password or delete it from the wallet. For both, we need
     // to open it.
     const bool userChangedPassword = mInitalPassword != passwordEdit->password();
-    const bool userWantsToDeletePassword
-        = passwordEdit->password().isEmpty() && userChangedPassword;
-    //Move to async
-    if ((!passwordEdit->password().isEmpty() && userChangedPassword)
-        || userWantsToDeletePassword) {
+    const bool userWantsToDeletePassword = passwordEdit->password().isEmpty() && userChangedPassword;
+    // Move to async
+    if ((!passwordEdit->password().isEmpty() && userChangedPassword) || userWantsToDeletePassword) {
         walletOpenedForSaving();
     }
 }

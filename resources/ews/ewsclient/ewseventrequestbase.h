@@ -75,6 +75,7 @@ public:
         }
 
         bool operator==(const Event &other) const;
+
     protected:
         Event(QXmlStreamReader &reader);
         bool isValid() const
@@ -121,6 +122,7 @@ public:
         }
 
         bool operator==(const Notification &other) const;
+
     protected:
         Notification(QXmlStreamReader &reader);
 
@@ -148,6 +150,7 @@ public:
         }
 
         bool operator==(const Response &other) const;
+
     protected:
         Response(QXmlStreamReader &reader);
 

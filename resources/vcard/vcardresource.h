@@ -7,8 +7,8 @@
 #ifndef VCARDRESOURCE_H
 #define VCARDRESOURCE_H
 
-#include "singlefileresource.h"
 #include "settings.h"
+#include "singlefileresource.h"
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>

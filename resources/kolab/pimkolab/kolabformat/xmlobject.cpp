@@ -5,20 +5,21 @@
  */
 
 #include "xmlobject.h"
-#include "v2helpers.h"
-#include "kolabformatV2/event.h"
-#include "conversion/kcalconversion.h"
-#include "conversion/kolabconversion.h"
 #include "conversion/commonconversion.h"
 #include "conversion/kabcconversion.h"
-#include <QUuid>
+#include "conversion/kcalconversion.h"
+#include "conversion/kolabconversion.h"
+#include "kolabformatV2/event.h"
 #include "pimkolab_debug.h"
+#include "v2helpers.h"
+#include <QUuid>
 
-namespace Kolab {
+namespace Kolab
+{
 static QString createUuid()
 {
     const QString uuid = QUuid::createUuid().toString();
-    return uuid.mid(1, uuid.size()-2);
+    return uuid.mid(1, uuid.size() - 2);
 }
 
 XMLObject::XMLObject()
@@ -48,7 +49,7 @@ std::string XMLObject::writeEvent(const Event &event, Version version, const std
             i->setUid(createUuid());
         }
         mWrittenUID = Conversion::toStdString(i->uid());
-        //The timezone is used for created and last modified dates
+        // The timezone is used for created and last modified dates
         const QString &xml = KolabV2::Event::eventToXML(i, QStringLiteral("UTC"));
         return Conversion::toStdString(xml);
     }
@@ -92,7 +93,7 @@ std::string XMLObject::writeTodo(const Todo &event, Version version, const std::
             i->setUid(createUuid());
         }
         mWrittenUID = Conversion::toStdString(i->uid());
-        //The timezone is used for created and last modified dates
+        // The timezone is used for created and last modified dates
         const QString &xml = KolabV2::Task::taskToXML(i, QStringLiteral("UTC"));
         return Conversion::toStdString(xml);
     }
@@ -136,7 +137,7 @@ std::string XMLObject::writeJournal(const Journal &event, Version version, const
             i->setUid(createUuid());
         }
         mWrittenUID = Conversion::toStdString(i->uid());
-        //The timezone is used for created and last modified dates
+        // The timezone is used for created and last modified dates
         const QString &xml = KolabV2::Journal::journalToXML(i, QStringLiteral("UTC"));
         return Conversion::toStdString(xml);
     }
@@ -149,7 +150,8 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         QStringList attachments;
-        const KCalendarCore::Journal::Ptr event = Kolab::fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
+        const KCalendarCore::Journal::Ptr event =
+            Kolab::fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
             return Journal();
@@ -224,7 +226,7 @@ std::string XMLObject::writeContact(const Contact &contact, Version version, con
 {
     mWrittenUID.clear();
     if (version == KolabV2) {
-        //FIXME attachment names are hardcoded for now
+        // FIXME attachment names are hardcoded for now
         KContacts::Addressee addressee = Conversion::toKABC(contact);
         if (addressee.uid().isEmpty()) {
             addressee.setUid(createUuid());

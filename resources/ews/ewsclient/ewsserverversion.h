@@ -20,7 +20,8 @@ public:
         FreeBusyChangedEvent,
     };
 
-    EwsServerVersion() : mMajor(0)
+    EwsServerVersion()
+        : mMajor(0)
         , mMinor(0)
         , mMajorBuild(0)
         , mMinorBuild(0)

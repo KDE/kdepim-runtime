@@ -9,9 +9,9 @@
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
 
+#include "ewscreatecontactjob.h"
 #include "ewsfetchcontactdetailjob.h"
 #include "ewsmodifycontactjob.h"
-#include "ewscreatecontactjob.h"
 
 using namespace Akonadi;
 
@@ -57,7 +57,11 @@ EwsModifyItemJob *EwsContactHandler::modifyItemJob(EwsClient &client, const QVec
     return new EwsModifyContactJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsContactHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *EwsContactHandler::createItemJob(EwsClient &client,
+                                                   const Akonadi::Item &item,
+                                                   const Akonadi::Collection &collection,
+                                                   EwsTagStore *tagStore,
+                                                   EwsResource *parent)
 {
     return new EwsCreateContactJob(client, item, collection, tagStore, parent);
 }

@@ -3,7 +3,8 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Tag;
 }
 
@@ -13,11 +14,11 @@ unsigned int qHash(const Akonadi::Tag &tag);
 
 #include <AkonadiCore/Tag>
 
-#include <AkonadiCore/collectionquotaattribute.h>
 #include <AkonadiCore/attributefactory.h>
+#include <AkonadiCore/collectioncreatejob.h>
+#include <AkonadiCore/collectionquotaattribute.h>
 #include <AkonadiCore/qtest_akonadi.h>
 #include <AkonadiCore/servermanager.h>
-#include <AkonadiCore/collectioncreatejob.h>
 //#include <AkonadiCore/virtualresource.h>
 #include <AkonadiCore/tagcreatejob.h>
 #include <kolabobject.h>
@@ -85,7 +86,7 @@ private slots:
         item.setTag(tag);
         item = resource->createItem(item, mailcol);
 
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
         QTest::addColumn<Akonadi::Tag::List>("expectedTags");
         QTest::addColumn<Members>("expectedMembers");
@@ -101,7 +102,8 @@ private slots:
             QHash<QString, Akonadi::Item::List> expectedMembers;
 
             DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
-            state->setServerCapabilities(QStringList() << "METADATA" << "ACL");
+            state->setServerCapabilities(QStringList() << "METADATA"
+                                                       << "ACL");
             state->setUserName("Hans");
 
             QTest::newRow("nothing changed") << scenario << callNames << Akonadi::Tag::List() << expectedMembers << state;
@@ -111,8 +113,7 @@ private slots:
 
             const QByteArray &content = msg->encodedContent(true);
             QList<QByteArray> scenario;
-            scenario << defaultPoolConnectionScenario()
-                     << "C: A000003 APPEND \"configuration\"  {" + QByteArray::number(content.size()) + "}"
+            scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"configuration\"  {" + QByteArray::number(content.size()) + "}"
                      << "S: A000003 OK append done [ APPENDUID 1239890035 65 ]";
 
             QStringList callNames;
@@ -128,7 +129,8 @@ private slots:
             expectedMembers.insert(expectedTag.remoteId(), (Akonadi::Item::List() << member));
 
             DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
-            state->setServerCapabilities(QStringList() << "METADATA" << "ACL");
+            state->setServerCapabilities(QStringList() << "METADATA"
+                                                       << "ACL");
             state->setUserName("Hans");
             state->setAddedTags(QSet<Akonadi::Tag>() << tag);
 
@@ -152,7 +154,7 @@ private slots:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         KolabChangeItemsTagsTask *task = new KolabChangeItemsTagsTask(resourceState, QSharedPointer<TestTagConverter>(new TestTagConverter));
 
@@ -170,7 +172,7 @@ private slots:
             QCOMPARE(command, callNames[i]);
 
             if (command == "tagsRetrieved") {
-                QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List> > pair = parameter.value<TagListAndMembers>();
+                QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>> pair = parameter.value<TagListAndMembers>();
                 Akonadi::Tag::List tags = pair.first;
                 QHash<QString, Akonadi::Item::List> members = pair.second;
                 QCOMPARE(tags.size(), expectedTags.size());
@@ -213,7 +215,8 @@ private slots:
         item.setParentCollection(createCollectionChain("/INBOX"));
         const QString member = KolabHelpers::createMemberUrl(item, QLatin1String("localuser@localhost"));
         const QString expected = QLatin1String(
-            "imap:///user/localuser%40localhost/INBOX/20?message-id=%3Cmessageid%40example.com%3E&subject=subject&date=Wed%2C%2010%20Dec%202014%2009%3A08%3A07%20%2B0000");
+            "imap:///user/localuser%40localhost/INBOX/"
+            "20?message-id=%3Cmessageid%40example.com%3E&subject=subject&date=Wed%2C%2010%20Dec%202014%2009%3A08%3A07%20%2B0000");
         QCOMPARE(member, expected);
     }
 };

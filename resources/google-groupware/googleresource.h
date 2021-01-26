@@ -7,9 +7,9 @@
 #ifndef GOOGLERESOURCE_H
 #define GOOGLERESOURCE_H
 
-#include <AkonadiAgentBase/ResourceBase>
-#include <AkonadiAgentBase/AgentBase>
 #include <Akonadi/Calendar/FreeBusyProviderBase>
+#include <AkonadiAgentBase/AgentBase>
+#include <AkonadiAgentBase/ResourceBase>
 
 #include <qwindowdefs.h>
 
@@ -18,7 +18,8 @@
 
 #define JOB_PROPERTY "_KGAPI2Job"
 
-namespace KGAPI2 {
+namespace KGAPI2
+{
 class Job;
 }
 
@@ -39,6 +40,7 @@ public:
 public Q_SLOTS:
     void configure(WId windowId) override;
     void reloadConfig();
+
 protected:
     int runConfigurationDialog(WId windowId);
     void updateResourceName();
@@ -66,7 +68,7 @@ protected Q_SLOTS:
     void retrieveItems(const Akonadi::Collection &collection) override;
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
-    void itemChanged(const Akonadi::Item &item, const QSet< QByteArray > &partIdentifiers) override;
+    void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override;
     void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
     void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
@@ -79,6 +81,7 @@ protected Q_SLOTS:
     bool handleError(KGAPI2::Job *job, bool cancelTask = true);
 
     void slotAuthJobFinished(KGAPI2::Job *job);
+
 private:
     bool m_isConfiguring = false;
     GoogleSettings *m_settings = nullptr;

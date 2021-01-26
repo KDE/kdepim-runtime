@@ -19,7 +19,8 @@
 #include <QObject>
 #include <QPointer>
 
-namespace KIMAP {
+namespace KIMAP
+{
 class IdleJob;
 class Session;
 }
@@ -53,6 +54,7 @@ private Q_SLOTS:
     void onFlagsChanged(KIMAP::IdleJob *job);
     void reconnect();
     void restartIdle();
+
 private:
     void startIdle();
 

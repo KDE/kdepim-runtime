@@ -12,7 +12,8 @@
 
 #include <kolabevent.h>
 
-namespace Kolab {
+namespace Kolab
+{
 /**
  * Takes a list of events and writes them to an iCal object.
  *
@@ -28,15 +29,15 @@ class KOLAB_EXPORT ITipHandler
 public:
     ITipHandler();
     enum ITipMethod {
-        iTIPPublish,           /**< Event, to-do, journal or freebusy posting */
-        iTIPRequest,           /**< Event, to-do or freebusy scheduling request */
-        iTIPReply,             /**< Event, to-do or freebusy reply to request */
-        iTIPAdd,               /**< Event, to-do or journal additional property request */
-        iTIPCancel,            /**< Event, to-do or journal cancellation notice */
-        iTIPRefresh,           /**< Event or to-do description update request */
-        iTIPCounter,           /**< Event or to-do submit counter proposal */
-        iTIPDeclineCounter,    /**< Event or to-do decline a counter proposal */
-        iTIPNoMethod           /**< No method */
+        iTIPPublish, /**< Event, to-do, journal or freebusy posting */
+        iTIPRequest, /**< Event, to-do or freebusy scheduling request */
+        iTIPReply, /**< Event, to-do or freebusy reply to request */
+        iTIPAdd, /**< Event, to-do or journal additional property request */
+        iTIPCancel, /**< Event, to-do or journal cancellation notice */
+        iTIPRefresh, /**< Event or to-do description update request */
+        iTIPCounter, /**< Event or to-do submit counter proposal */
+        iTIPDeclineCounter, /**< Event or to-do decline a counter proposal */
+        iTIPNoMethod /**< No method */
     };
 
     std::string toIMip(const Kolab::Event &, ITipMethod, const std::string &from, bool bbcMe = false) const;
@@ -52,6 +53,7 @@ public:
      */
     std::vector<Kolab::Event> fromITip(const std::string &);
     ITipMethod method() const;
+
 private:
     ITipMethod mMethod;
 };

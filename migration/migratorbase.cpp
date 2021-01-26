@@ -7,13 +7,13 @@
 
 #include "migratorbase.h"
 #include "migration_debug.h"
-#include <KLocalizedString>
 #include <AkonadiCore/servermanager.h>
-#include <QDateTime>
-#include <QStandardPaths>
-#include <QFileInfo>
-#include <QDir>
+#include <KLocalizedString>
 #include <QCoreApplication>
+#include <QDateTime>
+#include <QDir>
+#include <QFileInfo>
+#include <QStandardPaths>
 
 static QString messageTypeToString(MigratorBase::MessageType type)
 {
@@ -62,8 +62,8 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
     , mIdentifier(identifier)
     , mConfig(new KConfig(Akonadi::ServerManager::addNamespace(QStringLiteral("akonadi-migrationrc"))))
 {
-    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName() + QLatin1Char('/') + identifier
-                                + QStringLiteral("migration.log");
+    const QString logFileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QLatin1Char('/') + QCoreApplication::applicationName()
+        + QLatin1Char('/') + identifier + QStringLiteral("migration.log");
     QFileInfo fileInfo(logFileName);
     QDir().mkpath(fileInfo.absolutePath());
     setLogfile(logFileName);
@@ -72,7 +72,7 @@ MigratorBase::MigratorBase(const QString &identifier, QObject *parent)
 }
 
 MigratorBase::MigratorBase(const QString &identifier, const QString &configFile, const QString &logFile, QObject *parent)
-    :   QObject(parent)
+    : QObject(parent)
     , mIdentifier(identifier)
     , mMigrationState(None)
 {
@@ -144,7 +144,7 @@ void MigratorBase::start()
         Q_EMIT stoppedProcessing();
         return;
     }
-    //TODO acquire dbus lock
+    // TODO acquire dbus lock
     logMessage(Info, displayName());
     Q_EMIT message(Info, i18n("Starting migration..."));
     setMigrationState(InProgress);
@@ -170,8 +170,9 @@ void MigratorBase::abort()
 void MigratorBase::logMessage(MigratorBase::MessageType type, const QString &msg)
 {
     if (mLogFile) {
-        mLogFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QStringLiteral("] ")
-                                + messageTypeToString(type) + QStringLiteral(": ") + msg + QLatin1Char('\n')).toUtf8());
+        mLogFile->write(QString(QLatin1Char('[') + QDateTime::currentDateTime().toString() + QStringLiteral("] ") + messageTypeToString(type)
+                                + QStringLiteral(": ") + msg + QLatin1Char('\n'))
+                            .toUtf8());
         mLogFile->flush();
     }
 }

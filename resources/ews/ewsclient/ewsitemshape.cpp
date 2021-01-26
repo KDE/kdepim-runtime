@@ -30,7 +30,7 @@ void EwsItemShape::write(QXmlStreamWriter &writer) const
             bodyTypeText = QStringLiteral("Text");
             break;
         default:
-            //case BodyBest:
+            // case BodyBest:
             bodyTypeText = QStringLiteral("Best");
             break;
         }

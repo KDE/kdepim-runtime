@@ -8,23 +8,27 @@
 
 #include <KLocalizedString>
 
-#include <KMime/Message>
+#include <Akonadi/KMime/SpecialMailCollections>
+#include <AkonadiCore/AgentManager>
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
-#include <AkonadiCore/AgentManager>
-#include <Akonadi/KMime/SpecialMailCollections>
+#include <KMime/Message>
 
 #include "ewscreateitemrequest.h"
+#include "ewsmailhandler.h"
 #include "ewsmoveitemrequest.h"
 #include "ewspropertyfield.h"
-#include "ewsmailhandler.h"
 #include "ewsresource_debug.h"
 
 using namespace Akonadi;
 
 static const EwsPropertyField propPidMessageFlags(0x0e07, EwsPropTypeInteger);
 
-EwsCreateMailJob::EwsCreateMailJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateMailJob::EwsCreateMailJob(EwsClient &client,
+                                   const Akonadi::Item &item,
+                                   const Akonadi::Collection &collection,
+                                   EwsTagStore *tagStore,
+                                   EwsResource *parent)
     : EwsCreateItemJob(client, item, collection, tagStore, parent)
 {
 }
@@ -106,7 +110,9 @@ void EwsCreateMailJob::doStart()
 
     req->setItems(EwsItem::List() << item);
     req->setMessageDisposition(mSend ? EwsDispSendOnly : EwsDispSaveOnly);
-    connect(req, &EwsCreateItemRequest::finished, this,
+    connect(req,
+            &EwsCreateItemRequest::finished,
+            this,
             sentItemsCreateWorkaround ? &EwsCreateMailJob::mailCreateWorkaroundFinished : &EwsCreateMailJob::mailCreateFinished);
     addSubjob(req);
     req->start();

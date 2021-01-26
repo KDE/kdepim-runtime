@@ -47,14 +47,8 @@ class SubscriptionDialog : public QDialog
 {
     Q_OBJECT
 public:
-    enum Roles {
-        InitialStateRole = Qt::UserRole + 1,
-        PathRole
-    };
-    enum SubscriptionDialogOption {
-        None = 0,
-        AllowToEnableSubscription = 1
-    };
+    enum Roles { InitialStateRole = Qt::UserRole + 1, PathRole };
+    enum SubscriptionDialogOption { None = 0, AllowToEnableSubscription = 1 };
     Q_DECLARE_FLAGS(SubscriptionDialogOptions, SubscriptionDialogOption)
 
     explicit SubscriptionDialog(QWidget *parent = nullptr, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None);
@@ -68,9 +62,9 @@ public:
 private Q_SLOTS:
     void onLoginDone(KJob *job);
     void onReloadRequested();
-    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags);
+    void onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList<QList<QByteArray>> &flags);
     void onFullListingDone(KJob *job);
-    void onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList< QList<QByteArray> > &flags);
+    void onSubscribedMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &mailBoxes, const QList<QList<QByteArray>> &flags);
     void onReloadDone(KJob *job);
     void onItemChanged(QStandardItem *item);
 
@@ -78,6 +72,7 @@ private Q_SLOTS:
 
 protected Q_SLOTS:
     void slotAccepted();
+
 private:
     void readConfig();
     void writeConfig();

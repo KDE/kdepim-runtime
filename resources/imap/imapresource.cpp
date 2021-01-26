@@ -11,10 +11,10 @@
 
 #include "imapresource.h"
 
-#include "setupserver.h"
-#include "settings.h"
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
+#include "settings.h"
+#include "setupserver.h"
 #include "utils.h"
 #include <config-imap.h>
 
@@ -26,8 +26,8 @@
 
 #include <QIcon>
 
-#include <KWindowSystem>
 #include <KLocalizedString>
+#include <KWindowSystem>
 
 ImapResource::ImapResource(const QString &id)
     : ImapResourceBase(id)

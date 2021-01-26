@@ -5,32 +5,33 @@
  */
 
 #include "tokenjobs.h"
-#include "resource_debug.h"
 #include "graph.h"
+#include "resource_debug.h"
 
-#include <QDialog>
-#include <QVBoxLayout>
-#include <QTimer>
 #include <QContextMenuEvent>
-#include <QToolButton>
-#include <QMessageBox>
+#include <QDialog>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QProgressBar>
+#include <QTimer>
+#include <QToolButton>
+#include <QVBoxLayout>
 
-#include <QUrlQuery>
 #include <QJsonDocument>
+#include <QUrlQuery>
 
-#include <QWebEngineView>
-#include <QWebEnginePage>
-#include <QWebEngineProfile>
 #include <QWebEngineCertificateError>
 #include <QWebEngineCookieStore>
+#include <QWebEnginePage>
+#include <QWebEngineProfile>
+#include <QWebEngineView>
 
 #include <KWallet>
 
 #include <KLocalizedString>
 
-namespace {
+namespace
+{
 static const auto KWalletFolder = QStringLiteral("Facebook");
 static const auto KWalletKeyToken = QStringLiteral("token");
 static const auto KWalletKeyName = QStringLiteral("name");
@@ -117,17 +118,16 @@ public:
         auto h = new QHBoxLayout(this);
         h->setSpacing(0);
         mSslIndicator = new QToolButton(this);
-        connect(mSslIndicator, &QToolButton::clicked,
-                this, [this]() {
-                auto page = qobject_cast<WebPage *>(mView->page());
-                if (auto err = page->lastCeritificateError()) {
-                    QMessageBox msg;
-                    msg.setIconPixmap(QIcon::fromTheme(QStringLiteral("security-low")).pixmap(64));
-                    msg.setText(err->errorDescription());
-                    msg.addButton(QMessageBox::Ok);
-                    msg.exec();
-                }
-            });
+        connect(mSslIndicator, &QToolButton::clicked, this, [this]() {
+            auto page = qobject_cast<WebPage *>(mView->page());
+            if (auto err = page->lastCeritificateError()) {
+                QMessageBox msg;
+                msg.setIconPixmap(QIcon::fromTheme(QStringLiteral("security-low")).pixmap(64));
+                msg.setText(err->errorDescription());
+                msg.addButton(QMessageBox::Ok);
+                msg.exec();
+            }
+        });
         h->addWidget(mSslIndicator);
 
         mUrlEdit = new QLineEdit(this);
@@ -151,23 +151,20 @@ public:
             cookieStore->setCookie(parsedCookie, QUrl(QStringLiteral("https://www.facebook.com")));
             mCookies.insert(parsedCookie.name(), parsedCookie.toRawForm());
         }
-        connect(cookieStore, &QWebEngineCookieStore::cookieAdded,
-                this, [this](const QNetworkCookie &cookie) {
-                if (cookie.domain() == QLatin1String(".facebook.com")) {
-                    mCookies.insert(cookie.name(), cookie.toRawForm());
-                }
-            });
-        connect(cookieStore, &QWebEngineCookieStore::cookieRemoved,
-                this, [this](const QNetworkCookie &cookie) {
-                mCookies.remove(cookie.name());
-            });
+        connect(cookieStore, &QWebEngineCookieStore::cookieAdded, this, [this](const QNetworkCookie &cookie) {
+            if (cookie.domain() == QLatin1String(".facebook.com")) {
+                mCookies.insert(cookie.name(), cookie.toRawForm());
+            }
+        });
+        connect(cookieStore, &QWebEngineCookieStore::cookieRemoved, this, [this](const QNetworkCookie &cookie) {
+            mCookies.remove(cookie.name());
+        });
 
         mView = new WebView(this);
         auto webpage = new WebPage(profile, mView);
-        connect(webpage, &WebPage::sslError,
-                this, [this]() {
-                setSslIcon(QStringLiteral("security-low"));
-            });
+        connect(webpage, &WebPage::sslError, this, [this]() {
+            setSslIcon(QStringLiteral("security-low"));
+        });
         mView->setPage(webpage);
         v->addWidget(mView);
 
@@ -285,8 +282,7 @@ TokenJob::~TokenJob()
 void TokenJob::start()
 {
     if (!d->wallet) {
-        d->wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), 0,
-                                                KWallet::Wallet::Asynchronous);
+        d->wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), 0, KWallet::Wallet::Asynchronous);
         if (!d->wallet) {
             emitError(i18n("Failed to open KWallet"));
             return;
@@ -296,8 +292,7 @@ void TokenJob::start()
     if (d->wallet->isOpen()) {
         doStart();
     } else {
-        connect(d->wallet, &KWallet::Wallet::walletOpened,
-                this, [this]() {
+        connect(d->wallet, &KWallet::Wallet::walletOpened, this, [this]() {
             if (!d->wallet->isOpen()) {
                 delete d->wallet;
                 d->wallet = nullptr;
@@ -340,8 +335,7 @@ QString LoginJob::token() const
 void LoginJob::doStart()
 {
     auto dlg = new AuthDialog(d->cookies, mIdentifier);
-    connect(dlg, &AuthDialog::authDone,
-            this, [this, dlg]() {
+    connect(dlg, &AuthDialog::authDone, this, [this, dlg]() {
         dlg->deleteLater();
         d->token = dlg->token();
         d->cookies = dlg->cookies();
@@ -358,9 +352,8 @@ void LoginJob::doStart()
 
 void LoginJob::fetchUserInfo()
 {
-    auto job = Graph::job(QStringLiteral("me"), d->token, { QStringLiteral("id"), QStringLiteral("name") });
-    connect(job, &KJob::result,
-            this, [this, job]() {
+    auto job = Graph::job(QStringLiteral("me"), d->token, {QStringLiteral("id"), QStringLiteral("name")});
+    connect(job, &KJob::result, this, [this, job]() {
         if (job->error()) {
             emitError(job->errorText());
             return;
@@ -371,11 +364,9 @@ void LoginJob::fetchUserInfo()
 
         d->userName = me.value(QStringLiteral("name")).toString();
         d->id = me.value(QStringLiteral("id")).toString();
-        d->wallet->writeMap(mIdentifier,
-                            { { KWalletKeyToken, d->token },
-                                { KWalletKeyName, d->userName },
-                                { KWalletKeyId, d->id },
-                                { KWalletKeyCookies, QString::fromUtf8(d->cookies) }});
+        d->wallet->writeMap(
+            mIdentifier,
+            {{KWalletKeyToken, d->token}, {KWalletKeyName, d->userName}, {KWalletKeyId, d->id}, {KWalletKeyCookies, QString::fromUtf8(d->cookies)}});
         emitResult();
     });
     job->start();

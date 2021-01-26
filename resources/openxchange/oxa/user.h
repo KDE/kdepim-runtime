@@ -9,10 +9,11 @@
 #ifndef OXA_USER_H
 #define OXA_USER_H
 
-#include <QVector>
 #include <QString>
+#include <QVector>
 
-namespace OXA {
+namespace OXA
+{
 class User
 {
 public:

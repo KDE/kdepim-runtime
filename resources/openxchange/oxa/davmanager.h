@@ -11,13 +11,15 @@
 
 #include <QUrl>
 
-namespace KIO {
+namespace KIO
+{
 class DavJob;
 }
 
 class QDomDocument;
 
-namespace OXA {
+namespace OXA
+{
 /**
  * @short A class that manages DAV specific information.
  *

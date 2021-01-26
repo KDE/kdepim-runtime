@@ -93,7 +93,7 @@ LoginPage::LoginPage(QWidget *parent)
     mProgressBar->setRange(0, 0);
     layout->addWidget(mProgressBar);
 
-    layout->addItem(new QSpacerItem(0,10, QSizePolicy::Expanding, QSizePolicy::Expanding));
+    layout->addItem(new QSpacerItem(0, 10, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     mPasswordInfo = new QLabel;
     mPasswordInfo->setText(i18n("🛈 The password field is empty because EteSync does not store it for security reasons."));

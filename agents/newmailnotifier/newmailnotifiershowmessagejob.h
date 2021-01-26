@@ -7,8 +7,8 @@
 #ifndef NEWMAILNOTIFIERSHOWMESSAGEJOB_H
 #define NEWMAILNOTIFIERSHOWMESSAGEJOB_H
 
-#include <KJob>
 #include <AkonadiCore/Item>
+#include <KJob>
 
 class NewMailNotifierShowMessageJob : public KJob
 {

@@ -7,11 +7,12 @@
 #ifndef AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
 #define AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
 
-#include <attribute.h>
 #include "akonadi-singlefileresource_export.h"
 #include <QMap>
+#include <attribute.h>
 
-namespace Akonadi {
+namespace Akonadi
+{
 class AKONADI_SINGLEFILERESOURCE_EXPORT CollectionAnnotationsAttribute : public Akonadi::Attribute
 {
 public:

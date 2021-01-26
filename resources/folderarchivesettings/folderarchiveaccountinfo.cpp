@@ -99,9 +99,6 @@ void FolderArchiveAccountInfo::writeConfig(KConfigGroup &config)
 
 bool FolderArchiveAccountInfo::operator==(const FolderArchiveAccountInfo &other) const
 {
-    return (mInstanceName == other.instanceName())
-           && (mArchiveTopLevelCollectionId == other.archiveTopLevel())
-           && (mArchiveType == other.folderArchiveType())
-           && (mEnabled == other.enabled())
-           && (mKeepExistingStructure == other.keepExistingStructure());
+    return (mInstanceName == other.instanceName()) && (mArchiveTopLevelCollectionId == other.archiveTopLevel()) && (mArchiveType == other.folderArchiveType())
+        && (mEnabled == other.enabled()) && (mKeepExistingStructure == other.keepExistingStructure());
 }

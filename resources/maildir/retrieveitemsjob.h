@@ -7,14 +7,15 @@
 #ifndef MAILDIR_RETRIEVEITEMSJOB_H
 #define MAILDIR_RETRIEVEITEMSJOB_H
 
+#include <collection.h>
 #include <item.h>
 #include <job.h>
-#include <collection.h>
 
 #include "maildir.h"
 
 class QDirIterator;
-namespace Akonadi {
+namespace Akonadi
+{
 class TransactionSequence;
 }
 

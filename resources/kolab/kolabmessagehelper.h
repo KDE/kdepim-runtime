@@ -7,15 +7,21 @@
 #ifndef KOLABMESSAGEHELPER_H
 #define KOLABMESSAGEHELPER_H
 
-#include <messagehelper.h>
 #include <AkonadiCore/Collection>
+#include <messagehelper.h>
 
 class KolabMessageHelper : public MessageHelper
 {
 public:
     explicit KolabMessageHelper(const Akonadi::Collection &collection);
     ~KolabMessageHelper() override;
-    Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message, const qint64 uid, const qint64 size, const QMap<QByteArray, QVariant> &attrs, const QList<QByteArray> &flags, const KIMAP::FetchJob::FetchScope &scope, bool &ok) const override;
+    Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message,
+                                        const qint64 uid,
+                                        const qint64 size,
+                                        const QMap<QByteArray, QVariant> &attrs,
+                                        const QList<QByteArray> &flags,
+                                        const KIMAP::FetchJob::FetchScope &scope,
+                                        bool &ok) const override;
 
 private:
     const Akonadi::Collection mCollection;

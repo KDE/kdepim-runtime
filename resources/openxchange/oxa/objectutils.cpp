@@ -9,8 +9,8 @@
 #include "objectutils.h"
 
 #include "contactutils.h"
-#include "incidenceutils.h"
 #include "davutils.h"
+#include "incidenceutils.h"
 #include "oxutils.h"
 
 #include <QDomElement>

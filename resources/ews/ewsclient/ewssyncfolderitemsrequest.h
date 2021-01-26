@@ -8,21 +8,15 @@
 #define EWSSYNCFOLDERITEMSREQUEST_H
 
 #include "ewsitem.h"
+#include "ewsitemshape.h"
 #include "ewsrequest.h"
 #include "ewstypes.h"
-#include "ewsitemshape.h"
 
 class EwsSyncFolderItemsRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum ChangeType {
-        Create,
-        Update,
-        Delete,
-        ReadFlagChange,
-        Unknown
-    };
+    enum ChangeType { Create, Update, Delete, ReadFlagChange, Unknown };
 
     class Response;
 
@@ -94,8 +88,8 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
-private:
 
+private:
     EwsId mFolderId;
     EwsItemShape mShape;
     QString mSyncState;

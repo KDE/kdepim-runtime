@@ -11,21 +11,21 @@
 // #include <kdemacros.h>
 
 #ifndef KOLAB_EXPORT
-# if defined(KOLAB_STATIC_LIBS)
+#if defined(KOLAB_STATIC_LIBS)
 /* No export/import for static libraries */
-#  define KOLAB_EXPORT
-# elif defined(MAKE_KOLAB_LIB)
+#define KOLAB_EXPORT
+#elif defined(MAKE_KOLAB_LIB)
 /* We are building this library */
-#  define KOLAB_EXPORT __attribute__ ((visibility("default")))
-# else
+#define KOLAB_EXPORT __attribute__((visibility("default")))
+#else
 /* We are using this library */
-#  define KOLAB_EXPORT __attribute__ ((visibility("default")))
-# endif
+#define KOLAB_EXPORT __attribute__((visibility("default")))
+#endif
 #endif
 
-# ifndef KOLAB_EXPORT_DEPRECATED
-#  define KOLAB_EXPORT_DEPRECATED KDE_DEPRECATED __attribute__ ((visibility("default")))
-# endif
+#ifndef KOLAB_EXPORT_DEPRECATED
+#define KOLAB_EXPORT_DEPRECATED KDE_DEPRECATED __attribute__((visibility("default")))
+#endif
 
 /**
  *  @namespace Kolab

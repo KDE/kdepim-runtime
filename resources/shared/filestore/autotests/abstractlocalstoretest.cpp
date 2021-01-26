@@ -33,7 +33,8 @@ class TestStore : public AbstractLocalStore
     Q_OBJECT
 
 public:
-    TestStore() : mLastCheckedJob(nullptr)
+    TestStore()
+        : mLastCheckedJob(nullptr)
         , mLastProcessedJob(nullptr)
         , mErrorCode(0)
     {
@@ -157,7 +158,8 @@ class AbstractLocalStoreTest : public QObject
     Q_OBJECT
 
 public:
-    AbstractLocalStoreTest() : QObject()
+    AbstractLocalStoreTest()
+        : QObject()
         , mStore(nullptr)
     {
     }
@@ -422,9 +424,9 @@ void AbstractLocalStoreTest::testFetchCollection()
     QVERIFY(job->errorText().isEmpty());
 
     QVERIFY(job->exec());
-    QVERIFY(mStore->mLastProcessedJob == nullptr);   // job not handed to subclass because it is full processed in base class
+    QVERIFY(mStore->mLastProcessedJob == nullptr); // job not handed to subclass because it is full processed in base class
     QCOMPARE(job->collections().count(), 1);
-    QCOMPARE(job->collections()[ 0 ], mStore->topLevelCollection());
+    QCOMPARE(job->collections()[0], mStore->topLevelCollection());
 }
 
 void AbstractLocalStoreTest::testModifyCollection()

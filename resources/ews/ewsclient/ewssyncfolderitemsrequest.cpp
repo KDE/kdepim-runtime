@@ -13,17 +13,9 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
-enum SyncFolderItemsResponseElementType {
-    SyncState,
-    IncludesLastItemInRange,
-    Changes
-};
+enum SyncFolderItemsResponseElementType { SyncState, IncludesLastItemInRange, Changes };
 
-enum SyncFolderItemsChangeElementType {
-    Item,
-    ItemId,
-    IsRead
-};
+enum SyncFolderItemsChangeElementType { Item, ItemId, IsRead };
 
 class EwsSyncFolderItemsRequest::Response : public EwsRequest::Response
 {
@@ -89,8 +81,7 @@ void EwsSyncFolderItemsRequest::start()
         writer.writeTextElement(ewsMsgNsUri, QStringLiteral("SyncState"), mSyncState);
     }
 
-    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("MaxChangesReturned"),
-                            QString::number(mMaxChanges));
+    writer.writeTextElement(ewsMsgNsUri, QStringLiteral("MaxChangesReturned"), QString::number(mMaxChanges));
 
     writer.writeEndElement();
 
@@ -100,8 +91,7 @@ void EwsSyncFolderItemsRequest::start()
 
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         QString st = mSyncState.isNull() ? QStringLiteral("none") : ewsHash(mSyncState);
-        qCDebugNCS(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting SyncFolderItems request (folder: ")
-                                       << mFolderId << QStringLiteral(", state: %1").arg(st);
+        qCDebugNCS(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting SyncFolderItems request (folder: ") << mFolderId << QStringLiteral(", state: %1").arg(st);
     }
 
     prepare(reqString);
@@ -111,8 +101,7 @@ void EwsSyncFolderItemsRequest::start()
 
 bool EwsSyncFolderItemsRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("SyncFolderItems"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("SyncFolderItems"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -131,11 +120,11 @@ bool EwsSyncFolderItemsRequest::parseItemsResponse(QXmlStreamReader &reader)
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp->isSuccess()) {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderItems response (%1 changes, last included: %2, state: %3)")
-                .arg(mChanges.size()).arg(mIncludesLastItem ? QStringLiteral("true") : QStringLiteral("false"))
-                .arg(qHash(mSyncState), 0, 36);
+                                                 .arg(mChanges.size())
+                                                 .arg(mIncludesLastItem ? QStringLiteral("true") : QStringLiteral("false"))
+                                                 .arg(qHash(mSyncState), 0, 36);
         } else {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderItems response - %1")
-                .arg(resp->responseMessage());
+            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got SyncFolderItems response - %1").arg(resp->responseMessage());
         }
     }
 
@@ -158,14 +147,13 @@ EwsSyncFolderItemsRequest::Response::Response(QXmlStreamReader &reader)
 
     EwsXml<SyncFolderItemsResponseElementType> ewsReader(staticReader);
 
-    if (!ewsReader.readItems(reader, ewsMsgNsUri,
-                             [this](QXmlStreamReader &reader, const QString &) {
-        if (!readResponseElement(reader)) {
-            setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
-            return false;
-        }
-        return true;
-    })) {
+    if (!ewsReader.readItems(reader, ewsMsgNsUri, [this](QXmlStreamReader &reader, const QString &) {
+            if (!readResponseElement(reader)) {
+                setErrorMsg(QStringLiteral("Failed to read EWS request - invalid response element."));
+                return false;
+            }
+            return true;
+        })) {
         mClass = EwsResponseParseError;
         return;
     }
@@ -197,20 +185,18 @@ bool EwsSyncFolderItemsRequest::Response::changeReader(QXmlStreamReader &reader,
 
 EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
 {
-    static const QVector<EwsXml<SyncFolderItemsChangeElementType>::Item> items = {
-        {Item, QStringLiteral("Item"), &ewsXmlItemReader},
-        {Item, QStringLiteral("Message"), &ewsXmlItemReader},
-        {Item, QStringLiteral("CalendarItem"), &ewsXmlItemReader},
-        {Item, QStringLiteral("Contact"), &ewsXmlItemReader},
-        {Item, QStringLiteral("DistributionList"), &ewsXmlItemReader},
-        {Item, QStringLiteral("MeetingMessage"), &ewsXmlItemReader},
-        {Item, QStringLiteral("MeetingRequest"), &ewsXmlItemReader},
-        {Item, QStringLiteral("MeetingResponse"), &ewsXmlItemReader},
-        {Item, QStringLiteral("MeetingCancellation"), &ewsXmlItemReader},
-        {Item, QStringLiteral("Task"), &ewsXmlItemReader},
-        {ItemId, QStringLiteral("ItemId"), &ewsXmlIdReader},
-        {IsRead, QStringLiteral("IsRead"), &ewsXmlBoolReader}
-    };
+    static const QVector<EwsXml<SyncFolderItemsChangeElementType>::Item> items = {{Item, QStringLiteral("Item"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("Message"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("CalendarItem"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("Contact"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("DistributionList"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("MeetingMessage"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("MeetingRequest"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("MeetingResponse"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("MeetingCancellation"), &ewsXmlItemReader},
+                                                                                  {Item, QStringLiteral("Task"), &ewsXmlItemReader},
+                                                                                  {ItemId, QStringLiteral("ItemId"), &ewsXmlIdReader},
+                                                                                  {IsRead, QStringLiteral("IsRead"), &ewsXmlBoolReader}};
     static const EwsXml<SyncFolderItemsChangeElementType> staticReader(items);
 
     EwsXml<SyncFolderItemsChangeElementType> ewsReader(staticReader);

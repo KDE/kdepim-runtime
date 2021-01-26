@@ -4,12 +4,12 @@
     SPDX-License-Identifier: BSD-3-Clause
 */
 
-#include "o2/o0simplecrypt.h"
 #include "debug.h"
+#include "o2/o0simplecrypt.h"
 #include <QByteArray>
-#include <QDateTime>
 #include <QCryptographicHash>
 #include <QDataStream>
+#include <QDateTime>
 O0SimpleCrypt::O0SimpleCrypt()
     : m_key(0)
     , m_compressionMode(CompressionAuto)
@@ -67,7 +67,7 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
 
     CryptoFlags flags = CryptoFlagNone;
     if (m_compressionMode == CompressionAlways) {
-        ba = qCompress(ba, 9); //maximum compression
+        ba = qCompress(ba, 9); // maximum compression
         flags |= CryptoFlagCompression;
     } else if (m_compressionMode == CompressionAuto) {
         QByteArray compressed = qCompress(ba, 9);
@@ -90,7 +90,7 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
         integrityProtection += hash.result();
     }
 
-    //prepend a random char to the string
+    // prepend a random char to the string
     char randomChar = char(qrand() & 0xFF);
     ba = randomChar + integrityProtection + ba;
 
@@ -106,8 +106,8 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
     }
 
     QByteArray resultArray;
-    resultArray.append(char(0x03));  //version for future updates to algorithm
-    resultArray.append(char(flags)); //encryption flags
+    resultArray.append(char(0x03)); // version for future updates to algorithm
+    resultArray.append(char(flags)); // encryption flags
     resultArray.append(ba);
 
     m_lastError = ErrorNoError;
@@ -171,7 +171,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
 
     char version = ba.at(0);
 
-    if (version != 3) { //we only work with version 3
+    if (version != 3) { // we only work with version 3
         m_lastError = ErrorUnknownVersion;
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "Invalid version or not a cyphertext.";
         return QByteArray();
@@ -191,7 +191,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
         ++pos;
     }
 
-    ba.remove(0, 1); //chop off the random number at the start
+    ba.remove(0, 1); // chop off the random number at the start
 
     bool integrityOk(true);
     if (flags.testFlag(CryptoFlagChecksum)) {

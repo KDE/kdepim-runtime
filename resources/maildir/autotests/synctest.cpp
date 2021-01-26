@@ -12,13 +12,13 @@
 
 #include <QDebug>
 
+#include <AgentInstanceCreateJob>
 #include <AkonadiCore/AgentInstance>
 #include <AkonadiCore/AgentManager>
-#include <AkonadiCore/ServerManager>
 #include <AkonadiCore/Control>
-#include <qtest_akonadi.h>
+#include <AkonadiCore/ServerManager>
 #include <QSignalSpy>
-#include <AgentInstanceCreateJob>
+#include <qtest_akonadi.h>
 
 #define TIMES 100 // How many times to sync.
 #define TIMEOUT 10 // How many seconds to wait before declaring the resource dead.
@@ -52,9 +52,11 @@ void SyncTest::testSync()
     QVERIFY(instance.isValid());
 
     for (int i = 0; i < TIMES; ++i) {
-        QDBusInterface interface(
-            Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mMaildirIdentifier),
-            QStringLiteral("/"), QStringLiteral("org.freedesktop.Akonadi.Resource"), QDBusConnection::sessionBus(), this);
+        QDBusInterface interface(Akonadi::ServerManager::agentServiceName(Akonadi::ServerManager::Resource, mMaildirIdentifier),
+                                 QStringLiteral("/"),
+                                 QStringLiteral("org.freedesktop.Akonadi.Resource"),
+                                 QDBusConnection::sessionBus(),
+                                 this);
         QVERIFY(interface.isValid());
         QElapsedTimer t;
         t.start();

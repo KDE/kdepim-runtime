@@ -37,8 +37,7 @@ OXErrors::EditErrorID OXErrors::getEditErrorID(const QString &errorText)
         return OXErrors::AppointmentConflicts;
     case 1500:
         return OXErrors::InternalServerError;
-    default:
-        ;
+    default:;
     }
 
     return OXErrors::EditErrorUndefined;

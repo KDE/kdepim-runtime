@@ -9,13 +9,15 @@
 
 #include "kolab_export.h"
 
-#include <kcalendarcore/event.h>
 #include <KCalendarCore/MemoryCalendar>
+#include <kcalendarcore/event.h>
 #include <kolabevent.h>
 #include <memory>
 
-namespace Kolab {
-namespace Calendaring {
+namespace Kolab
+{
+namespace Calendaring
+{
 /**
  * Returns true if the events conflict (overlap)
  * Start and end date/time is inclusive.
@@ -35,7 +37,8 @@ KOLAB_EXPORT bool conflicts(const Kolab::Event &, const Kolab::Event &);
  *
  * The checked event from the first list comes always first in the returned set.
  */
-KOLAB_EXPORT std::vector< std::vector<Kolab::Event> > getConflictingSets(const std::vector<Kolab::Event> &, const std::vector<Kolab::Event> & = std::vector<Kolab::Event>());
+KOLAB_EXPORT std::vector<std::vector<Kolab::Event>> getConflictingSets(const std::vector<Kolab::Event> &,
+                                                                       const std::vector<Kolab::Event> & = std::vector<Kolab::Event>());
 
 /**
  * Returns the dates in which the event recurs within the specified timespan.
@@ -59,12 +62,13 @@ public:
      * @param sort controls if the resulting event set is sorted in ascending order according to the start date
      */
     std::vector<Kolab::Event> getEvents(const Kolab::cDateTime &start, const Kolab::cDateTime &end, bool sort);
+
 private:
     Calendar(const Calendar &);
     void operator=(const Calendar &);
     std::unique_ptr<KCalendarCore::MemoryCalendar> mCalendar;
 };
-}     //Namespace
-} //Namespace
+} // Namespace
+} // Namespace
 
 #endif

@@ -76,7 +76,7 @@ void Incidence::setStartDate(const QDateTime &startDate)
 {
     mStartDate = startDate;
     if (mFloatingStatus == AllDay) {
-        qCDebug(PIMKOLAB_LOG) <<"ERROR: Time on start date but no time on the event";
+        qCDebug(PIMKOLAB_LOG) << "ERROR: Time on start date but no time on the event";
     }
     mFloatingStatus = HasTime;
 }
@@ -85,7 +85,7 @@ void Incidence::setStartDate(const QDate &startDate)
 {
     mStartDate = QDateTime(startDate, QTime());
     if (mFloatingStatus == HasTime) {
-        qCDebug(PIMKOLAB_LOG) <<"ERROR: No time on start date but time on the event";
+        qCDebug(PIMKOLAB_LOG) << "ERROR: No time on start date but time on the event";
     }
     mFloatingStatus = AllDay;
 }
@@ -178,10 +178,10 @@ bool Incidence::loadAttendeeAttribute(QDomElement &element, Attendee &attendee)
                 attendee.delegator = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -195,10 +195,8 @@ void Incidence::saveAttendeeAttribute(QDomElement &element, const Attendee &atte
     writeString(e, QStringLiteral("display-name"), attendee.displayName);
     writeString(e, QStringLiteral("smtp-address"), attendee.smtpAddress);
     writeString(e, QStringLiteral("status"), attendee.status);
-    writeString(e, QStringLiteral("request-response"),
-                (attendee.requestResponse ? QStringLiteral("true") : QStringLiteral("false")));
-    writeString(e, QStringLiteral("invitation-sent"),
-                (attendee.invitationSent ? QStringLiteral("true") : QStringLiteral("false")));
+    writeString(e, QStringLiteral("request-response"), (attendee.requestResponse ? QStringLiteral("true") : QStringLiteral("false")));
+    writeString(e, QStringLiteral("invitation-sent"), (attendee.invitationSent ? QStringLiteral("true") : QStringLiteral("false")));
     writeString(e, QStringLiteral("role"), attendee.role);
     writeString(e, QStringLiteral("delegated-to"), attendee.delegate);
     writeString(e, QStringLiteral("delegated-from"), attendee.delegator);
@@ -236,10 +234,10 @@ void Incidence::saveAlarms(QDomElement &element) const
 
         writeString(e, QStringLiteral("enabled"), a->enabled() ? QStringLiteral("1") : QStringLiteral("0"));
         if (a->hasStartOffset()) {
-            writeString(e, QStringLiteral("start-offset"), QString::number(a->startOffset().asSeconds()/60));
+            writeString(e, QStringLiteral("start-offset"), QString::number(a->startOffset().asSeconds() / 60));
         }
         if (a->hasEndOffset()) {
-            writeString(e, QStringLiteral("end-offset"), QString::number(a->endOffset().asSeconds()/60));
+            writeString(e, QStringLiteral("end-offset"), QString::number(a->endOffset().asSeconds() / 60));
         }
         if (a->repeatCount()) {
             writeString(e, QStringLiteral("repeat-count"), QString::number(a->repeatCount()));
@@ -258,8 +256,7 @@ void Incidence::saveAlarms(QDomElement &element) const
             writeString(e, QStringLiteral("program"), a->programFile());
             writeString(e, QStringLiteral("arguments"), a->programArguments());
             break;
-        case KCalendarCore::Alarm::Email:
-        {
+        case KCalendarCore::Alarm::Email: {
             e.setAttribute(QStringLiteral("type"), QStringLiteral("email"));
             QDomElement addresses = e.ownerDocument().createElement(QStringLiteral("addresses"));
             e.appendChild(addresses);
@@ -329,7 +326,7 @@ void Incidence::loadRecurrence(const QDomElement &element)
             QDomElement e = n.toElement();
             QString tagName = e.tagName();
             if (tagName == QLatin1String("interval")) {
-                //kolab/issue4229, sometimes  the interval value can be empty
+                // kolab/issue4229, sometimes  the interval value can be empty
                 if (e.text().isEmpty() || e.text().toInt() <= 0) {
                     mRecurrence.interval = 1;
                 } else {
@@ -348,7 +345,7 @@ void Incidence::loadRecurrence(const QDomElement &element)
                 mRecurrence.exclusions.append(stringToDate(e.text()));
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         }
     }
@@ -403,9 +400,9 @@ static void loadAlarmHelper(const QDomElement &element, const KCalendarCore::Ala
             QString tagName = e.tagName();
 
             if (tagName == QLatin1String("start-offset")) {
-                a->setStartOffset(e.text().toInt()*60);
+                a->setStartOffset(e.text().toInt() * 60);
             } else if (tagName == QLatin1String("end-offset")) {
-                a->setEndOffset(e.text().toInt()*60);
+                a->setEndOffset(e.text().toInt() * 60);
             } else if (tagName == QLatin1String("repeat-count")) {
                 a->setRepeatCount(e.text().toInt());
             } else if (tagName == QLatin1String("repeat-interval")) {
@@ -482,7 +479,7 @@ bool Incidence::loadAttribute(QDomElement &element)
         } else {
             setPriority(p);
         }
-    } else if (tagName == QLatin1String("x-kcal-priority")) { //for backwards compat
+    } else if (tagName == QLatin1String("x-kcal-priority")) { // for backwards compat
         bool ok;
         int p = element.text().toInt(&ok);
         if (!ok || p < 0 || p > 9) {
@@ -533,7 +530,7 @@ bool Incidence::loadAttribute(QDomElement &element)
         bool ok = KolabBase::loadAttribute(element);
         if (!ok) {
             // Unhandled tag - save for later storage
-            qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << element.tagName();
+            qCDebug(PIMKOLAB_LOG) << "Saving unhandled tag" << element.tagName();
             Custom c;
             c.key = QByteArray("X-KDE-KolabUnhandled-") + element.tagName().toLatin1();
             c.value = element.text();
@@ -675,14 +672,9 @@ static QString attendeeRoleToString(KCalendarCore::Attendee::Role role)
     return QStringLiteral("required");
 }
 
-static const char *s_weekDayName[] = {
-    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
-};
+static const char *s_weekDayName[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
 
-static const char *s_monthName[] = {
-    "january", "february", "march", "april", "may", "june", "july",
-    "august", "september", "october", "november", "december"
-};
+static const char *s_monthName[] = {"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
 
 void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
 {
@@ -708,8 +700,7 @@ void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
             }
         }
         break;
-    case KCalendarCore::Recurrence::rMonthlyPos:
-    {
+    case KCalendarCore::Recurrence::rMonthlyPos: {
         mRecurrence.cycle = QStringLiteral("monthly");
         mRecurrence.type = QStringLiteral("weekday");
         QList<KCalendarCore::RecurrenceRule::WDayPos> monthPositions = recur->monthPositions();
@@ -717,13 +708,12 @@ void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
             KCalendarCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
             // TODO: Handle multiple days in the same week
             mRecurrence.dayNumber = QString::number(monthPos.pos());
-            mRecurrence.days.append(QString::fromUtf8(s_weekDayName[ monthPos.day()-1 ]));
+            mRecurrence.days.append(QString::fromUtf8(s_weekDayName[monthPos.day() - 1]));
             // Not (properly) handled(?): monthPos.negative (nth days before end of month)
         }
         break;
     }
-    case KCalendarCore::Recurrence::rMonthlyDay:
-    {
+    case KCalendarCore::Recurrence::rMonthlyDay: {
         mRecurrence.cycle = QStringLiteral("monthly");
         mRecurrence.type = QStringLiteral("daynumber");
         QList<int> monthDays = recur->monthDays();
@@ -742,7 +732,7 @@ void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
         mRecurrence.dayNumber = QString::number(day);
         QList<int> months = recur->yearMonths();
         if (!months.isEmpty()) {
-            mRecurrence.month = QString::fromUtf8(s_monthName[ months.first() - 1 ]); // #### Kolab XML limitation: only one month specified
+            mRecurrence.month = QString::fromUtf8(s_monthName[months.first() - 1]); // #### Kolab XML limitation: only one month specified
         }
         break;
     }
@@ -756,16 +746,16 @@ void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
         mRecurrence.type = QStringLiteral("weekday");
         QList<int> months = recur->yearMonths();
         if (!months.isEmpty()) {
-            mRecurrence.month = QString::fromUtf8(s_monthName[ months.first() - 1 ]); // #### Kolab XML limitation: only one month specified
+            mRecurrence.month = QString::fromUtf8(s_monthName[months.first() - 1]); // #### Kolab XML limitation: only one month specified
         }
         QList<KCalendarCore::RecurrenceRule::WDayPos> monthPositions = recur->yearPositions();
         if (!monthPositions.isEmpty()) {
             KCalendarCore::RecurrenceRule::WDayPos monthPos = monthPositions.first();
             // TODO: Handle multiple days in the same week
             mRecurrence.dayNumber = QString::number(monthPos.pos());
-            mRecurrence.days.append(QString::fromUtf8(s_weekDayName[ monthPos.day()-1 ]));
+            mRecurrence.days.append(QString::fromUtf8(s_weekDayName[monthPos.day() - 1]));
 
-            //mRecurrence.dayNumber = QString::number( *recur->yearNums().getFirst() );
+            // mRecurrence.dayNumber = QString::number( *recur->yearNums().getFirst() );
             // Not handled: monthPos.negative (nth days before end of month)
         }
         break;
@@ -862,7 +852,7 @@ void Incidence::setFields(const KCalendarCore::Incidence::Ptr &incidence)
     // Handle the scheduling ID
     if (incidence->schedulingID() == incidence->uid()) {
         // There is no scheduling ID
-        setInternalUID(QString());  //krazy:exclude=nullstrassign for old broken gcc
+        setInternalUID(QString()); // krazy:exclude=nullstrassign for old broken gcc
     } else {
         // We've internally been using a different uid, so save that as the
         // temporary (internal) uid and restore the original uid, the one that
@@ -929,18 +919,14 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
     if (organizer().displayName.isEmpty()) {
         incidence->setOrganizer(organizer().smtpAddress);
     } else {
-        incidence->setOrganizer(organizer().displayName + QLatin1Char('<')
-                                + organizer().smtpAddress + QLatin1Char('>'));
+        incidence->setOrganizer(organizer().displayName + QLatin1Char('<') + organizer().smtpAddress + QLatin1Char('>'));
     }
 
     incidence->clearAttendees();
     foreach (const Attendee &attendee, mAttendees) {
         KCalendarCore::Attendee::PartStat status = attendeeStringToStatus(attendee.status);
         KCalendarCore::Attendee::Role role = attendeeStringToRole(attendee.role);
-        KCalendarCore::Attendee a(attendee.displayName,
-                                  attendee.smtpAddress,
-                                  attendee.requestResponse,
-                                  status, role);
+        KCalendarCore::Attendee a(attendee.displayName, attendee.smtpAddress, attendee.requestResponse, status, role);
         a.setDelegate(attendee.delegate);
         a.setDelegator(attendee.delegator);
         incidence->addAttendee(a);
@@ -970,31 +956,31 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
             } else if (mRecurrence.type == QLatin1String("daynumber")) {
                 recur->addMonthlyDate(mRecurrence.dayNumber.toInt());
             } else {
-                qCWarning(PIMKOLAB_LOG) <<"Unhandled monthly recurrence type" << mRecurrence.type;
+                qCWarning(PIMKOLAB_LOG) << "Unhandled monthly recurrence type" << mRecurrence.type;
             }
         } else if (mRecurrence.cycle == QLatin1String("yearly")) {
             recur->setYearly(mRecurrence.interval);
             if (mRecurrence.type == QLatin1String("monthday")) {
                 recur->addYearlyDate(mRecurrence.dayNumber.toInt());
                 for (int i = 0; i < 12; ++i) {
-                    if (QLatin1String(s_monthName[ i ]) == mRecurrence.month) {
-                        recur->addYearlyMonth(i+1);
+                    if (QLatin1String(s_monthName[i]) == mRecurrence.month) {
+                        recur->addYearlyMonth(i + 1);
                     }
                 }
             } else if (mRecurrence.type == QLatin1String("yearday")) {
                 recur->addYearlyDay(mRecurrence.dayNumber.toInt());
             } else if (mRecurrence.type == QLatin1String("weekday")) {
                 for (int i = 0; i < 12; ++i) {
-                    if (QLatin1String(s_monthName[ i ]) == mRecurrence.month) {
-                        recur->addYearlyMonth(i+1);
+                    if (QLatin1String(s_monthName[i]) == mRecurrence.month) {
+                        recur->addYearlyMonth(i + 1);
                     }
                 }
                 recur->addYearlyPos(mRecurrence.dayNumber.toInt(), daysListToBitArray(mRecurrence.days));
             } else {
-                qCWarning(PIMKOLAB_LOG) <<"Unhandled yearly recurrence type" << mRecurrence.type;
+                qCWarning(PIMKOLAB_LOG) << "Unhandled yearly recurrence type" << mRecurrence.type;
             }
         } else {
-            qCWarning(PIMKOLAB_LOG) <<"Unhandled recurrence cycle" << mRecurrence.cycle;
+            qCWarning(PIMKOLAB_LOG) << "Unhandled recurrence cycle" << mRecurrence.cycle;
         }
 
         if (mRecurrence.rangeType == QLatin1String("number")) {

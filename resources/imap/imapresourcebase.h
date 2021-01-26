@@ -12,16 +12,17 @@
 #ifndef RESOURCES_IMAP_IMAPRESOURCEBASE_H
 #define RESOURCES_IMAP_IMAPRESOURCEBASE_H
 
-#include <AkonadiAgentBase/resourcebase.h>
-#include <AkonadiAgentBase/agentsearchinterface.h>
-#include <QDialog>
-#include "resourcestateinterface.h"
 #include "resourcestate.h"
+#include "resourcestateinterface.h"
+#include <AkonadiAgentBase/agentsearchinterface.h>
+#include <AkonadiAgentBase/resourcebase.h>
+#include <QDialog>
 
 class QTimer;
 
 class ResourceTask;
-namespace KIMAP {
+namespace KIMAP
+{
 class Session;
 }
 
@@ -110,7 +111,7 @@ private Q_SLOTS:
     void reconnect();
 
     void scheduleConnectionAttempt();
-    void startConnect(const QVariant &);   // the parameter is necessary, since this method is used by the task scheduler
+    void startConnect(const QVariant &); // the parameter is necessary, since this method is used by the task scheduler
     void onConnectDone(int errorCode, const QString &errorMessage);
     void onConnectionLost(KIMAP::Session *session);
 
@@ -129,7 +130,7 @@ private Q_SLOTS:
     void onCollectionModifyDone(KJob *job);
 
 protected:
-    //Starts and queues a task
+    // Starts and queues a task
     void startTask(ResourceTask *task);
     void queueTask(ResourceTask *task);
     SessionPool *m_pool = nullptr;
@@ -143,7 +144,7 @@ private:
 
     friend class ImapIdleManager;
 
-    QList<ResourceTask *> m_taskList; //used to be able to kill tasks
+    QList<ResourceTask *> m_taskList; // used to be able to kill tasks
     QScopedPointer<SubscriptionDialog, QScopedPointerDeleteLater> mSubscriptions;
     ImapIdleManager *m_idle = nullptr;
     QTimer *m_statusMessageTimer = nullptr;

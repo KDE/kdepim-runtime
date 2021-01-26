@@ -8,32 +8,34 @@
 #include "pimkolab_debug.h"
 #include "timezoneconverter.h"
 
-#include <iostream>
 #include <QTimeZone>
+#include <iostream>
 
-namespace Kolab {
-namespace Conversion {
+namespace Kolab
+{
+namespace Conversion
+{
 QTimeZone getTimeZone(const std::string &timezone)
 {
-    //Convert non-olson timezones if necessary
+    // Convert non-olson timezones if necessary
     const QString normalizedTz = TimezoneConverter::normalizeTimezone(QString::fromStdString(timezone));
     if (!QTimeZone::isTimeZoneIdAvailable(normalizedTz.toLatin1())) {
         return QTimeZone::systemTimeZone();
     }
-    //FIXME convert this to a proper KTimeZone
+    // FIXME convert this to a proper KTimeZone
     return QTimeZone(normalizedTz.toLatin1());
 }
 
 QTimeZone getTimeSpec(bool isUtc, const std::string &timezone)
 {
-    if (isUtc) { //UTC
+    if (isUtc) { // UTC
         return QTimeZone::utc();
     }
-    if (timezone.empty()) { //Floating
+    if (timezone.empty()) { // Floating
         return QTimeZone::systemTimeZone();
     }
 
-    //Convert non-olson timezones if necessary
+    // Convert non-olson timezones if necessary
     QTimeZone tz = getTimeZone(timezone);
     if (!tz.isValid()) {
         return QTimeZone::systemTimeZone();
@@ -130,7 +132,7 @@ QUrl toMailto(const std::string &email, const std::string &name)
     mailto.append("<");
     mailto.append(email);
     mailto.append(">");
-    return QUrl(QString::fromStdString(std::string("mailto:")+mailto));
+    return QUrl(QString::fromStdString(std::string("mailto:") + mailto));
 }
 
 std::string fromMailto(const QUrl &mailtoUri, std::string &name)
@@ -160,8 +162,8 @@ QPair<std::string, std::string> fromMailto(const std::string &mailto)
         std::cout << decoded << std::endl;
         return qMakePair(decoded, std::string());
     }
-    const std::string name = decoded.substr(7, begin-7);
-    const std::string email = decoded.substr(begin+1, end-begin-1);
+    const std::string name = decoded.substr(7, begin - 7);
+    const std::string email = decoded.substr(begin + 1, end - begin - 1);
     return qMakePair(email, name);
 }
 }

@@ -5,29 +5,30 @@
  */
 
 #include "kolabobject.h"
-#include "v2helpers.h"
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
+#include "v2helpers.h"
 
 #include "kolabbase.h"
-#include <kolabformatV2/journal.h>
-#include <kolabformatV2/task.h>
-#include <kolabformatV2/event.h>
+#include <akonadi/notes/noteutils.h>
+#include <conversion/commonconversion.h>
+#include <conversion/kabcconversion.h>
+#include <conversion/kcalconversion.h>
+#include <conversion/kolabconversion.h>
+#include <kolabformat.h>
+#include <kolabformat/mimeobject.h>
 #include <kolabformatV2/contact.h>
 #include <kolabformatV2/distributionlist.h>
+#include <kolabformatV2/event.h>
+#include <kolabformatV2/journal.h>
 #include <kolabformatV2/note.h>
+#include <kolabformatV2/task.h>
 #include <mime/mimeutils.h>
-#include <conversion/kcalconversion.h>
-#include <conversion/kabcconversion.h>
-#include <conversion/kolabconversion.h>
-#include <conversion/commonconversion.h>
-#include <akonadi/notes/noteutils.h>
-#include <kolabformat/mimeobject.h>
-#include <kolabformat.h>
 
 #include <QUrlQuery>
 
-namespace Kolab {
+namespace Kolab
+{
 static inline QString eventKolabType()
 {
     return QStringLiteral(KOLAB_TYPE_EVENT);
@@ -131,12 +132,12 @@ RelationMember parseMemberUrl(const QString &string)
         isShared = true;
     }
     if (start < 0) {
-        qCWarning(PIMKOLAB_LOG) <<R"(Couldn't find "user" or "shared" in path: )" << path;
+        qCWarning(PIMKOLAB_LOG) << R"(Couldn't find "user" or "shared" in path: )" << path;
         return RelationMember();
     }
     path = path.mid(start + 1);
     if (path.size() < 2) {
-        qCWarning(PIMKOLAB_LOG) <<"Incomplete path: " << path;
+        qCWarning(PIMKOLAB_LOG) << "Incomplete path: " << path;
         return RelationMember();
     }
     RelationMember member;
@@ -252,10 +253,10 @@ void KolabObjectReader::setVersion(Version version)
 
 void printMessageDebugInfo(const KMime::Message::Ptr &msg)
 {
-    //TODO replace by Debug stream for Mimemessage
+    // TODO replace by Debug stream for Mimemessage
     qCDebug(PIMKOLAB_LOG) << "MessageId: " << msg->messageID()->asUnicodeString();
     qCDebug(PIMKOLAB_LOG) << "Subject: " << msg->subject()->asUnicodeString();
-//     Debug() << msg->encodedContent();
+    //     Debug() << msg->encodedContent();
 }
 
 ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
@@ -276,44 +277,37 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
     d->mObjectType = mimeObject.parseMessage(message);
     d->mVersion = mimeObject.getVersion();
     switch (mimeObject.getType()) {
-    case EventObject:
-    {
+    case EventObject: {
         const Kolab::Event &event = mimeObject.getEvent();
         d->mIncidence = Kolab::Conversion::toKCalendarCore(event);
         break;
     }
-    case TodoObject:
-    {
+    case TodoObject: {
         const Kolab::Todo &event = mimeObject.getTodo();
         d->mIncidence = Kolab::Conversion::toKCalendarCore(event);
         break;
     }
-    case JournalObject:
-    {
+    case JournalObject: {
         const Kolab::Journal &event = mimeObject.getJournal();
         d->mIncidence = Kolab::Conversion::toKCalendarCore(event);
         break;
     }
-    case ContactObject:
-    {
+    case ContactObject: {
         const Kolab::Contact &contact = mimeObject.getContact();
-        d->mAddressee = Kolab::Conversion::toKABC(contact);     //TODO extract attachments
+        d->mAddressee = Kolab::Conversion::toKABC(contact); // TODO extract attachments
         break;
     }
-    case DistlistObject:
-    {
+    case DistlistObject: {
         const Kolab::DistList &distlist = mimeObject.getDistlist();
         d->mContactGroup = Kolab::Conversion::toKABC(distlist);
         break;
     }
-    case NoteObject:
-    {
+    case NoteObject: {
         const Kolab::Note &note = mimeObject.getNote();
         d->mNote = Kolab::Conversion::toNote(note);
         break;
     }
-    case DictionaryConfigurationObject:
-    {
+    case DictionaryConfigurationObject: {
         const Kolab::Configuration &configuration = mimeObject.getConfiguration();
         const Kolab::Dictionary &dictionary = configuration.dictionary();
         d->mDictionary.clear();
@@ -325,14 +319,12 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
         d->mDictionaryLanguage = Conversion::fromStdString(dictionary.language());
         break;
     }
-    case FreebusyObject:
-    {
+    case FreebusyObject: {
         const Kolab::Freebusy &fb = mimeObject.getFreebusy();
         d->mFreebusy = fb;
         break;
     }
-    case RelationConfigurationObject:
-    {
+    case RelationConfigurationObject: {
         const Kolab::Configuration &configuration = mimeObject.getConfiguration();
         const Kolab::Relation &relation = configuration.relation();
 
@@ -557,13 +549,13 @@ KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entrie
     ErrorHandler::clearErrors();
 
     Kolab::Dictionary dictionary(Conversion::toStdString(lang));
-    std::vector <std::string> ent;
+    std::vector<std::string> ent;
     ent.reserve(entries.count());
     foreach (const QString &e, entries) {
         ent.push_back(Conversion::toStdString(e));
     }
     dictionary.setEntries(ent);
-    Kolab::Configuration configuration(dictionary); //TODO preserve creation/lastModified date
+    Kolab::Configuration configuration(dictionary); // TODO preserve creation/lastModified date
     Kolab::MIMEObject mimeObject;
     const std::string mimeMessage = mimeObject.writeConfiguration(configuration, v, productId.toStdString());
     return createMimeMessage(mimeMessage);
@@ -582,7 +574,7 @@ KMime::Message::Ptr writeRelationHelper(const Kolab::Relation &relation, const Q
     ErrorHandler::clearErrors();
     Kolab::MIMEObject mimeObject;
 
-    Kolab::Configuration configuration(relation); //TODO preserve creation/lastModified date
+    Kolab::Configuration configuration(relation); // TODO preserve creation/lastModified date
     configuration.setUid(uid.constData());
     const std::string mimeMessage = mimeObject.writeConfiguration(configuration, Kolab::KolabV3, Conversion::toStdString(productId));
     return createMimeMessage(mimeMessage);
@@ -627,4 +619,4 @@ KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &re
 
     return writeRelationHelper(kolabRelation, relation.remoteId(), productId);
 }
-} //Namespace
+} // Namespace

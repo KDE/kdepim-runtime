@@ -9,7 +9,7 @@
 EwsFetchItemDetailJob::EwsFetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
     : KCompositeJob(parent)
     , mClient(client)
-    , mCollection(collection) //never used
+    , mCollection(collection) // never used
 {
     mRequest = new EwsGetItemRequest(client, this);
     connect(mRequest.data(), &KJob::result, this, &EwsFetchItemDetailJob::itemDetailFetched);

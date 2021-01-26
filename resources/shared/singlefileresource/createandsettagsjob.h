@@ -6,10 +6,10 @@
 #ifndef CREATEANDSETTAGSJOB_H
 #define CREATEANDSETTAGSJOB_H
 
+#include "akonadi-singlefileresource_export.h"
 #include <KJob>
 #include <item.h>
 #include <tag.h>
-#include "akonadi-singlefileresource_export.h"
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT CreateAndSetTagsJob : public KJob
 {

@@ -41,8 +41,7 @@ void RetrieveItemTask::doStart(KIMAP::Session *session)
     if (session->selectedMailBox() != mailBox) {
         auto select = new KIMAP::SelectJob(m_session);
         select->setMailBox(mailBox);
-        connect(select, &KJob::result,
-                this, &RetrieveItemTask::onSelectDone);
+        connect(select, &KJob::result, this, &RetrieveItemTask::onSelectDone);
         select->start();
     } else {
         triggerFetchJob();
@@ -64,13 +63,11 @@ void RetrieveItemTask::triggerFetchJob()
     KIMAP::FetchJob::FetchScope scope;
     fetch->setUidBased(true);
     fetch->setSequenceSet(KIMAP::ImapSet(m_uid));
-    scope.parts.clear();// = parts.toList();
+    scope.parts.clear(); // = parts.toList();
     scope.mode = KIMAP::FetchJob::FetchScope::Content;
     fetch->setScope(scope);
-    connect(fetch, &KIMAP::FetchJob::messagesAvailable,
-            this, &RetrieveItemTask::onMessagesReceived);
-    connect(fetch, &KJob::result,
-            this, &RetrieveItemTask::onContentFetchDone);
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable, this, &RetrieveItemTask::onMessagesReceived);
+    connect(fetch, &KJob::result, this, &RetrieveItemTask::onContentFetchDone);
     fetch->start();
 }
 
@@ -92,8 +89,8 @@ void RetrieveItemTask::onMessagesReceived(const QMap<qint64, KIMAP::Message> &me
     const auto message = messages.cbegin();
     const qint64 number = message->uid;
     bool ok;
-    const Akonadi::Item remoteItem = resourceState()->messageHelper()->createItemFromMessage(
-        message->message, number, 0, message->attributes, {}, fetch->scope(), ok);
+    const Akonadi::Item remoteItem =
+        resourceState()->messageHelper()->createItemFromMessage(message->message, number, 0, message->attributes, {}, fetch->scope(), ok);
     if (!ok) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to retrieve message " << number;
         cancelTask(i18n("No message retrieved, failed to read the message."));

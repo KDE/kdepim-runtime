@@ -18,6 +18,7 @@ class ServerInfoTextBrowser : public QTextBrowser
 public:
     explicit ServerInfoTextBrowser(QWidget *parent = nullptr);
     ~ServerInfoTextBrowser() override;
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 };
@@ -28,6 +29,7 @@ class ServerInfoDialog : public QDialog
 public:
     explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
     ~ServerInfoDialog();
+
 private:
     ServerInfoTextBrowser *mTextBrowser = nullptr;
 };

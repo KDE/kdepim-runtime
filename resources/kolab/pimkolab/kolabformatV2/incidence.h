@@ -16,7 +16,8 @@
 
 class QDomElement;
 
-namespace KolabV2 {
+namespace KolabV2
+{
 /**
  * This abstract class represents an incidence which has the shared
  * fields, of events and tasks and knows how to load/save these
@@ -38,7 +39,8 @@ public:
     };
 
     struct Attendee : Email {
-        Attendee() : requestResponse(true)
+        Attendee()
+            : requestResponse(true)
             , invitationSent(false)
         {
         }
@@ -91,11 +93,11 @@ public:
     }
 
     /**
-      * The internal uid is used as the uid inside KOrganizer whenever
-      * two or more events with the same uid appear, which KOrganizer
-      * can't handle. To avoid keep that internal uid from changing all the
-      * time, it is persisted in the XML between a save and the next load.
-      */
+     * The internal uid is used as the uid inside KOrganizer whenever
+     * two or more events with the same uid appear, which KOrganizer
+     * can't handle. To avoid keep that internal uid from changing all the
+     * time, it is persisted in the XML between a save and the next load.
+     */
     void setInternalUID(const QString &iuid);
     QString internalUID() const;
 
@@ -106,9 +108,7 @@ public:
     bool saveAttributes(QDomElement &) const override;
 
 protected:
-    enum FloatingStatus {
-        Unset, AllDay, HasTime
-    };
+    enum FloatingStatus { Unset, AllDay, HasTime };
 
     // Read all known fields from this ical incidence
     void setFields(const KCalendarCore::Incidence::Ptr &);

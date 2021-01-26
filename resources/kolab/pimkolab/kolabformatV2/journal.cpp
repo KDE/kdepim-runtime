@@ -121,7 +121,7 @@ bool Journal::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // Unhandled tag - save for later storage
-                //qDebug( "Unhandled tag: %s", e.toCString().data() );
+                // qDebug( "Unhandled tag: %s", e.toCString().data() );
             }
         } else {
             qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";

@@ -11,6 +11,7 @@
 #include "ewsoauth_ut_mock.h"
 using namespace Mock;
 #else
+#include "ewspkeyauthjob.h"
 #include <QAbstractOAuthReplyHandler>
 #include <QDialog>
 #include <QHBoxLayout>
@@ -25,7 +26,6 @@ using namespace Mock;
 #include <QWebEngineUrlRequestJob>
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
-#include "ewspkeyauthjob.h"
 #endif
 #include "ewsclient_debug.h"
 #include <KLocalizedString>
@@ -33,7 +33,8 @@ using namespace Mock;
 
 static const auto o365AuthorizationUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/authorize"));
 static const auto o365AccessTokenUrl = QUrl(QStringLiteral("https://login.microsoftonline.com/common/oauth2/token"));
-static const auto o365FakeUserAgent = QStringLiteral("Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
+static const auto o365FakeUserAgent =
+    QStringLiteral("Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36");
 static const auto o365Resource = QStringLiteral("https%3A%2F%2Foutlook.office365.com%2F");
 
 static const auto pkeyAuthSuffix = QStringLiteral(" PKeyAuth/1.0");
@@ -47,7 +48,8 @@ class EwsOAuthUrlSchemeHandler final : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    EwsOAuthUrlSchemeHandler(QObject *parent = nullptr) : QWebEngineUrlSchemeHandler(parent)
+    EwsOAuthUrlSchemeHandler(QObject *parent = nullptr)
+        : QWebEngineUrlSchemeHandler(parent)
     {
     }
 
@@ -77,6 +79,7 @@ public:
     void networkReplyFinished(QNetworkReply *reply) override;
 Q_SIGNALS:
     void replyError(const QString &error);
+
 private:
     const QString mReturnUri;
 };
@@ -96,6 +99,7 @@ public:
     void interceptRequest(QWebEngineUrlRequestInfo &info) override;
 Q_SIGNALS:
     void redirectUriIntercepted(const QUrl &url);
+
 private:
     const QString mRedirectUri;
 };
@@ -158,15 +162,13 @@ void EwsOAuthReplyHandler::networkReplyFinished(QNetworkReply *reply)
     }
     Q_EMIT replyDataReceived(data);
     QVariantMap tokens;
-    if (ct.startsWith(QLatin1String("text/html"))
-        || ct.startsWith(QLatin1String("application/x-www-form-urlencoded"))) {
+    if (ct.startsWith(QLatin1String("text/html")) || ct.startsWith(QLatin1String("application/x-www-form-urlencoded"))) {
         QUrlQuery q(QString::fromUtf8(data));
         const auto items = q.queryItems(QUrl::FullyDecoded);
         for (const auto &it : items) {
             tokens.insert(it.first, it.second);
         }
-    } else if (ct.startsWith(QLatin1String("application/json"))
-               || ct.startsWith(QLatin1String("text/javascript"))) {
+    } else if (ct.startsWith(QLatin1String("application/json")) || ct.startsWith(QLatin1String("text/javascript"))) {
         const auto document = QJsonDocument::fromJson(data);
         if (!document.isObject()) {
             Q_EMIT replyError(QStringLiteral("Invalid JSON data received"));
@@ -203,9 +205,7 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
 
     qCDebugNC(EWSCLI_LOG) << QStringLiteral("Intercepted browser navigation to ") << url;
 
-    if ((url.toString(QUrl::RemoveQuery) == mRedirectUri)
-        || (url.toString(QUrl::RemoveQuery) == pkeyRedirectUri)
-        ) {
+    if ((url.toString(QUrl::RemoveQuery) == mRedirectUri) || (url.toString(QUrl::RemoveQuery) == pkeyRedirectUri)) {
         qCDebug(EWSCLI_LOG) << QStringLiteral("Found redirect URI - blocking request");
 
         Q_EMIT redirectUriIntercepted(url);
@@ -240,8 +240,7 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, &EwsOAuthPrivate::authorizeWithBrowser);
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::granted, this, &EwsOAuthPrivate::granted);
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::error, this, &EwsOAuthPrivate::error);
-    connect(&mRequestInterceptor, &EwsOAuthRequestInterceptor::redirectUriIntercepted, this,
-            &EwsOAuthPrivate::redirectUriIntercepted, Qt::QueuedConnection);
+    connect(&mRequestInterceptor, &EwsOAuthRequestInterceptor::redirectUriIntercepted, this, &EwsOAuthPrivate::redirectUriIntercepted, Qt::QueuedConnection);
     connect(&mReplyHandler, &EwsOAuthReplyHandler::replyError, this, [this](const QString &err) {
         error(QStringLiteral("Network reply error"), err, QUrl());
     });
@@ -249,7 +248,7 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
 
 bool EwsOAuthPrivate::authenticate(bool interactive)
 {
-    //Q_Q(EwsOAuth);
+    // Q_Q(EwsOAuth);
 
     qCInfoNC(EWSCLI_LOG) << QStringLiteral("Starting OAuth2 authentication");
 
@@ -444,13 +443,15 @@ bool EwsOAuth::authenticate(bool interactive)
 
 const QString &EwsOAuth::reauthPrompt() const
 {
-    static const QString prompt = i18nc("@info", "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.");
+    static const QString prompt =
+        i18nc("@info", "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.");
     return prompt;
 }
 
 const QString &EwsOAuth::authFailedPrompt() const
 {
-    static const QString prompt = i18nc("@info", "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. Please update it in the account settings page.");
+    static const QString prompt =
+        i18nc("@info", "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. Please update it in the account settings page.");
     return prompt;
 }
 

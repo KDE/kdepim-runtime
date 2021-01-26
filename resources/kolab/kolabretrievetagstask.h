@@ -10,7 +10,8 @@
 #include "kolabrelationresourcetask.h"
 #include <tag.h>
 
-namespace Kolab {
+namespace Kolab
+{
 class KolabObjectReader;
 struct RelationMember;
 } // namespace Kolab
@@ -19,10 +20,7 @@ class KolabRetrieveTagTask : public KolabRelationResourceTask
 {
     Q_OBJECT
 public:
-    enum RetrieveType {
-        RetrieveTags,
-        RetrieveRelations
-    };
+    enum RetrieveType { RetrieveTags, RetrieveRelations };
 
     explicit KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent = nullptr);
 

@@ -13,12 +13,12 @@ void KeyCache::addKeys(const QString &dir)
 {
     if (!mNewKeys.contains(dir)) {
         mNewKeys.insert(dir, listNew(dir));
-        //qCDebug(LIBMAILDIR_LOG) << "Added new keys for: " << dir;
+        // qCDebug(LIBMAILDIR_LOG) << "Added new keys for: " << dir;
     }
 
     if (!mCurKeys.contains(dir)) {
         mCurKeys.insert(dir, listCurrent(dir));
-        //qCDebug(LIBMAILDIR_LOG) << "Added cur keys for: " << dir;
+        // qCDebug(LIBMAILDIR_LOG) << "Added cur keys for: " << dir;
     }
 }
 
@@ -43,7 +43,7 @@ void KeyCache::addCurKey(const QString &dir, const QString &key)
 
 void KeyCache::removeKey(const QString &dir, const QString &key)
 {
-    //qCDebug(LIBMAILDIR_LOG) << "Removed new and cur key for: " << dir << " key:" << key;
+    // qCDebug(LIBMAILDIR_LOG) << "Removed new and cur key for: " << dir << " key:" << key;
     mNewKeys[dir].remove(key);
     mCurKeys[dir].remove(key);
 }

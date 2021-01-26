@@ -7,9 +7,13 @@
 
 #include "batchfetcher.h"
 
-#include <KIMAP/Session>
 #include "imapresource_debug.h"
-BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session)
+#include <KIMAP/Session>
+BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
+                           const KIMAP::ImapSet &set,
+                           const KIMAP::FetchJob::FetchScope &scope,
+                           int batchSize,
+                           KIMAP::Session *session)
     : KJob(session)
     , m_currentSet(set)
     , m_scope(scope)
@@ -32,10 +36,10 @@ void BatchFetcher::setSearchUids(const KIMAP::ImapInterval &interval)
 {
     m_searchUidInterval = interval;
 
-    //We look up the UIDs ourselves
+    // We look up the UIDs ourselves
     m_currentSet = KIMAP::ImapSet();
 
-    //MS Exchange can't handle big results so we have to split the search into small chunks
+    // MS Exchange can't handle big results so we have to split the search into small chunks
     m_searchInChunks = m_session->serverGreeting().contains("Microsoft Exchange");
 }
 
@@ -49,22 +53,21 @@ static const int maxAmountOfUidToSearchInOneTime = 2000;
 void BatchFetcher::start()
 {
     if (m_searchUidInterval.size()) {
-        //Search in chunks also Exchange can handle
+        // Search in chunks also Exchange can handle
         const KIMAP::ImapInterval::Id firstUidToSearch = m_searchUidInterval.begin();
-        const KIMAP::ImapInterval::Id lastUidToSearch = m_searchInChunks
-                                                        ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end())
-                                                        : m_searchUidInterval.end();
+        const KIMAP::ImapInterval::Id lastUidToSearch =
+            m_searchInChunks ? qMin(firstUidToSearch + maxAmountOfUidToSearchInOneTime - 1, m_searchUidInterval.end()) : m_searchUidInterval.end();
 
-        //Prepare next chunk
+        // Prepare next chunk
         const KIMAP::ImapInterval::Id intervalBegin = lastUidToSearch + 1;
-        //Or are we already done?
+        // Or are we already done?
         if (intervalBegin > m_searchUidInterval.end()) {
             m_searchUidInterval = KIMAP::ImapInterval();
         } else {
             m_searchUidInterval.setBegin(intervalBegin);
         }
 
-        //Resolve the uid to sequence numbers
+        // Resolve the uid to sequence numbers
         auto search = new KIMAP::SearchJob(m_session);
         search->setUidBased(true);
         search->setTerm(KIMAP::Term(KIMAP::Term::Uid, KIMAP::ImapSet(firstUidToSearch, lastUidToSearch)));
@@ -88,7 +91,7 @@ void BatchFetcher::onUidSearchDone(KJob *job)
     m_uidBased = search->isUidBased();
     m_currentSet.add(search->results());
 
-    //More to search?
+    // More to search?
     start();
 }
 
@@ -116,10 +119,10 @@ void BatchFetcher::fetchNextBatch()
         qint64 counter = 0;
         KIMAP::ImapSet newSet;
 
-        //Take a chunk from the set
+        // Take a chunk from the set
         Q_FOREACH (const KIMAP::ImapInterval &interval, m_currentSet.intervals()) {
             if (!interval.hasDefinedEnd()) {
-                //If we get an interval without a defined end we simply fetch everything
+                // If we get an interval without a defined end we simply fetch everything
                 qCDebug(IMAPRESOURCE_LOG) << "Received interval without defined end, fetching everything in one batch";
                 toFetch.add(interval);
                 newSet = KIMAP::ImapSet();
@@ -147,10 +150,8 @@ void BatchFetcher::fetchNextBatch()
     fetch->setUidBased(m_uidBased);
     fetch->setScope(m_scope);
     fetch->setGmailExtensionsEnabled(m_gmailEnabled);
-    connect(fetch, &KIMAP::FetchJob::messagesAvailable,
-            this, &BatchFetcher::onMessagesAvailable);
-    connect(fetch, &KJob::result,
-            this, &BatchFetcher::onHeadersFetchDone);
+    connect(fetch, &KIMAP::FetchJob::messagesAvailable, this, &BatchFetcher::onMessagesAvailable);
+    connect(fetch, &KJob::result, this, &BatchFetcher::onHeadersFetchDone);
     m_fetchInProgress = true;
     fetch->start();
 }
@@ -161,17 +162,15 @@ void BatchFetcher::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messa
 
     Akonadi::Item::List addedItems;
     for (auto msg = messages.cbegin(), end = messages.cend(); msg != end; ++msg) {
-        //qDebug( 5327 ) << "Flags: " << i.flags();
+        // qDebug( 5327 ) << "Flags: " << i.flags();
         bool ok;
-        const auto item = m_messageHelper->createItemFromMessage(
-            msg->message, msg->uid, msg->size, msg->attributes,
-            msg->flags, fetch->scope(), ok);
+        const auto item = m_messageHelper->createItemFromMessage(msg->message, msg->uid, msg->size, msg->attributes, msg->flags, fetch->scope(), ok);
         if (ok) {
             m_fetchedItemsInCurrentBatch++;
             addedItems << item;
         }
     }
-//     qCDebug(IMAPRESOURCE_LOG) << addedItems.size();
+    //     qCDebug(IMAPRESOURCE_LOG) << addedItems.size();
     if (!addedItems.isEmpty()) {
         Q_EMIT itemsRetrieved(addedItems);
     }
@@ -190,15 +189,15 @@ void BatchFetcher::onHeadersFetchDone(KJob *job)
         emitResult();
         return;
     }
-    //Fetch more if we didn't deliver enough yet.
-    //This can happen because no message is in the fetched uid range, or if the translation failed
+    // Fetch more if we didn't deliver enough yet.
+    // This can happen because no message is in the fetched uid range, or if the translation failed
     if (m_fetchedItemsInCurrentBatch < m_batchSize) {
         fetchNextBatch();
     } else {
         m_fetchedItemsInCurrentBatch = 0;
-        //Also fetch more if we already got a continuation request during the fetch.
-        //This can happen if we deliver too many items during a previous batch (after using )
-        //Note that m_fetchedItemsInCurrentBatch will be off by the items that we delivered already.
+        // Also fetch more if we already got a continuation request during the fetch.
+        // This can happen if we deliver too many items during a previous batch (after using )
+        // Note that m_fetchedItemsInCurrentBatch will be off by the items that we delivered already.
         if (m_continuationRequested) {
             fetchNextBatch();
         }

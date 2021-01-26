@@ -14,7 +14,8 @@
 
 #include <AkonadiCore/Collection>
 
-namespace EteSyncAPI {
+namespace EteSyncAPI
+{
 class JournalsFetchJob : public KJob
 {
     Q_OBJECT
@@ -42,6 +43,7 @@ public:
 protected:
     void fetchJournals();
     void setupCollection(const EtebaseCollection *etesyncCollection);
+
 private:
     const EteSyncClientState *mClientState = nullptr;
     Akonadi::Collection::List mCollections;

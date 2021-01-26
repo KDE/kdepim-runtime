@@ -13,13 +13,14 @@
 
 #include <KIO/SpecialJob>
 
-namespace KIO {
+namespace KIO
+{
 class Job;
 }
 
-template<typename F>
-struct Finally {
-    Finally(F f) : cleanupf{f}
+template<typename F> struct Finally {
+    Finally(F f)
+        : cleanupf{f}
     {
     }
 
@@ -31,8 +32,7 @@ struct Finally {
     F cleanupf;
 };
 
-template<typename F>
-Finally<F> finally(F f)
+template<typename F> Finally<F> finally(F f)
 {
     return Finally<F>(f);
 }
@@ -41,7 +41,7 @@ class FakeTransferJob : public KIO::SpecialJob
 {
     Q_OBJECT
 public:
-    typedef std::function<void (FakeTransferJob *, const QByteArray &)> VerifierFn;
+    typedef std::function<void(FakeTransferJob *, const QByteArray &)> VerifierFn;
 
     struct Verifier {
         QObject *object;
@@ -61,6 +61,7 @@ private Q_SLOTS:
     void doData(const QByteArray &resp);
 Q_SIGNALS:
     void requestReceived(FakeTransferJob *job, const QByteArray &req);
+
 private:
     QByteArray mPostData;
     QByteArray mResponse;

@@ -8,13 +8,13 @@
 #include <AkonadiCore/AgentManager>
 #include <AkonadiCore/CollectionFetchScope>
 #include <AkonadiCore/Control>
-#include <AkonadiCore/SpecialCollectionAttribute>
 #include <AkonadiCore/Monitor>
+#include <AkonadiCore/SpecialCollectionAttribute>
 #include <qtest_akonadi.h>
 
-#include "fakeewsserverthread.h"
 #include "ewssettings.h"
 #include "ewswallet.h"
+#include "fakeewsserverthread.h"
 #include "isolatedtestbase.h"
 #include "statemonitor.h"
 
@@ -62,54 +62,42 @@ void BasicTest::testBasic()
 
     static const auto rootId = QStringLiteral("cm9vdA==");
     static const auto inboxId = QStringLiteral("aW5ib3g=");
-    FolderList folderList = {
-        {rootId, instance.identifier(), Folder::Root, QString()},
-        {inboxId, QStringLiteral("Inbox"), Folder::Inbox, rootId},
-        {QStringLiteral("Y2FsZW5kYXI="), QStringLiteral("Calendar"), Folder::Calendar, rootId},
-        {QStringLiteral("dGFza3M="), QStringLiteral("Tasks"), Folder::Tasks, rootId},
-        {QStringLiteral("Y29udGFjdHM="), QStringLiteral("Contacts"), Folder::Contacts, rootId},
-        {QStringLiteral("b3V0Ym94"), QStringLiteral("Outbox"), Folder::Outbox, rootId},
-        {QStringLiteral("c2VudCBpdGVtcw=="), QStringLiteral("Sent Items"), Folder::Sent, rootId},
-        {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), QStringLiteral("Deleted Items"), Folder::Trash, rootId},
-        {QStringLiteral("ZHJhZnRz"), QStringLiteral("Drafts"), Folder::Drafts, rootId}
-    };
+    FolderList folderList = {{rootId, instance.identifier(), Folder::Root, QString()},
+                             {inboxId, QStringLiteral("Inbox"), Folder::Inbox, rootId},
+                             {QStringLiteral("Y2FsZW5kYXI="), QStringLiteral("Calendar"), Folder::Calendar, rootId},
+                             {QStringLiteral("dGFza3M="), QStringLiteral("Tasks"), Folder::Tasks, rootId},
+                             {QStringLiteral("Y29udGFjdHM="), QStringLiteral("Contacts"), Folder::Contacts, rootId},
+                             {QStringLiteral("b3V0Ym94"), QStringLiteral("Outbox"), Folder::Outbox, rootId},
+                             {QStringLiteral("c2VudCBpdGVtcw=="), QStringLiteral("Sent Items"), Folder::Sent, rootId},
+                             {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), QStringLiteral("Deleted Items"), Folder::Trash, rootId},
+                             {QStringLiteral("ZHJhZnRz"), QStringLiteral("Drafts"), Folder::Drafts, rootId}};
 
     struct DesiredState {
         QString parentId;
         QByteArray specialType;
     };
-    QHash<QString, DesiredState> desiredStates = {
-        {rootId, {QString(), QByteArray()}},
-        {inboxId, {rootId, "inbox"}},
-        {QStringLiteral("Y2FsZW5kYXI="), {rootId, QByteArray()}},
-        {QStringLiteral("dGFza3M="), {rootId, QByteArray()}},
-        {QStringLiteral("Y29udGFjdHM="), {rootId, QByteArray()}},
-        {QStringLiteral("b3V0Ym94"), {rootId, "outbox"}},
-        {QStringLiteral("c2VudCBpdGVtcw=="), {rootId, "sent-mail"}},
-        {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), {rootId, "trash"}},
-        {QStringLiteral("ZHJhZnRz"), {rootId, "drafts"}}
-    };
+    QHash<QString, DesiredState> desiredStates = {{rootId, {QString(), QByteArray()}},
+                                                  {inboxId, {rootId, "inbox"}},
+                                                  {QStringLiteral("Y2FsZW5kYXI="), {rootId, QByteArray()}},
+                                                  {QStringLiteral("dGFza3M="), {rootId, QByteArray()}},
+                                                  {QStringLiteral("Y29udGFjdHM="), {rootId, QByteArray()}},
+                                                  {QStringLiteral("b3V0Ym94"), {rootId, "outbox"}},
+                                                  {QStringLiteral("c2VudCBpdGVtcw=="), {rootId, "sent-mail"}},
+                                                  {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), {rootId, "trash"}},
+                                                  {QStringLiteral("ZHJhZnRz"), {rootId, "drafts"}}};
 
     FakeEwsServer::DialogEntry::List dialog = {
-        MsgRootInboxDialogEntry(rootId, inboxId,
-                                QStringLiteral("GetFolder request for inbox and msgroot")),
-        SubscribedFoldersDialogEntry(folderList,
-                                     QStringLiteral("GetFolder request for subscribed folders")),
-        ValidateFolderIdsDialogEntry(QStringList()
-                                     << inboxId
-                                     << QStringLiteral("Y2FsZW5kYXI=")
-                                     << QStringLiteral("dGFza3M=")
-                                     << QStringLiteral("Y29udGFjdHM="),
+        MsgRootInboxDialogEntry(rootId, inboxId, QStringLiteral("GetFolder request for inbox and msgroot")),
+        SubscribedFoldersDialogEntry(folderList, QStringLiteral("GetFolder request for subscribed folders")),
+        ValidateFolderIdsDialogEntry(QStringList() << inboxId << QStringLiteral("Y2FsZW5kYXI=") << QStringLiteral("dGFza3M=") << QStringLiteral("Y29udGFjdHM="),
                                      QStringLiteral("GetFolder request for subscribed folder ids")),
-        SpecialFoldersDialogEntry(folderList,
-                                  QStringLiteral("GetFolder request for special folders")),
-        GetTagsEmptyDialogEntry(rootId,
-                                QStringLiteral("GetFolder request for tags")),
+        SpecialFoldersDialogEntry(folderList, QStringLiteral("GetFolder request for special folders")),
+        GetTagsEmptyDialogEntry(rootId, QStringLiteral("GetFolder request for tags")),
         SubscribeStreamingDialogEntry(QStringLiteral("Subscribe request for streaming events")),
-        SyncFolderHierInitialDialogEntry(folderList, QStringLiteral("bNUUPDWHTvuG9p57NGZdhjREdZXDt48a0E1F22yThko="),
+        SyncFolderHierInitialDialogEntry(folderList,
+                                         QStringLiteral("bNUUPDWHTvuG9p57NGZdhjREdZXDt48a0E1F22yThko="),
                                          QStringLiteral("SyncFolderHierarchy request with empty state")),
-        UnsubscribeDialogEntry(QStringLiteral("Unsubscribe request"))
-    };
+        UnsubscribeDialogEntry(QStringLiteral("Unsubscribe request"))};
 
     bool unknownRequestEncountered = false;
     mFakeServerThread->setDialog(dialog);
@@ -121,15 +109,19 @@ void BasicTest::testBasic()
 
     QEventLoop loop;
 
-    CollectionStateMonitor<DesiredState> stateMonitor(this, desiredStates, inboxId,
-                                                      [](const Collection &col, const DesiredState &state) {
-                                                      auto attr = col.attribute<SpecialCollectionAttribute>();
-                                                      QByteArray specialType;
-                                                      if (attr) {
-                                                          specialType = attr->collectionType();
-                                                      }
-                                                      return col.parentCollection().remoteId() == state.parentId && specialType == state.specialType;
-        }, 1000);
+    CollectionStateMonitor<DesiredState> stateMonitor(
+        this,
+        desiredStates,
+        inboxId,
+        [](const Collection &col, const DesiredState &state) {
+            auto attr = col.attribute<SpecialCollectionAttribute>();
+            QByteArray specialType;
+            if (attr) {
+                specialType = attr->collectionType();
+            }
+            return col.parentCollection().remoteId() == state.parentId && specialType == state.specialType;
+        },
+        1000);
 
     stateMonitor.monitor().fetchCollection(true);
     stateMonitor.monitor().collectionFetchScope().fetchAttribute<SpecialCollectionAttribute>();

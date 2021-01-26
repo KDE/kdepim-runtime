@@ -14,7 +14,8 @@
 #include "ewspropertyfield.h"
 #include "ewstypes.h"
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 class Item;
 }
@@ -36,7 +37,8 @@ public:
     virtual QString mimeType() = 0;
     virtual bool setItemPayload(Akonadi::Item &item, const EwsItem &ewsItem) = 0;
     virtual EwsModifyItemJob *modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent) = 0;
-    virtual EwsCreateItemJob *createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) = 0;
+    virtual EwsCreateItemJob *
+    createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) = 0;
 
     typedef std::function<EwsItemHandler *()> ItemHandlerFactory;
     static void registerItemHandler(EwsItemType type, const ItemHandlerFactory &factory);
@@ -46,6 +48,7 @@ public:
     static QSet<QByteArray> readFlags(const EwsItem &item);
     static QList<EwsPropertyField> flagsProperties();
     static QList<EwsPropertyField> tagsProperties();
+
 private:
     struct HandlerFactory {
         EwsItemType type;
@@ -53,14 +56,15 @@ private:
     };
 };
 
-#define EWS_DECLARE_ITEM_HANDLER(clsname, type) \
-    class type ## _itemhandler_registrar { \
-    public: \
-        type ## _itemhandler_registrar()  \
-        { \
-            EwsItemHandler::registerItemHandler(type, &clsname::factory); \
-        } \
-    }; \
-    const type ## _itemhandler_registrar type ## _itemhandler_registrar_object;
+#define EWS_DECLARE_ITEM_HANDLER(clsname, type)                                                                                                                \
+    class type##_itemhandler_registrar                                                                                                                         \
+    {                                                                                                                                                          \
+    public:                                                                                                                                                    \
+        type##_itemhandler_registrar()                                                                                                                         \
+        {                                                                                                                                                      \
+            EwsItemHandler::registerItemHandler(type, &clsname::factory);                                                                                      \
+        }                                                                                                                                                      \
+    };                                                                                                                                                         \
+    const type##_itemhandler_registrar type##_itemhandler_registrar_object;
 
 #endif

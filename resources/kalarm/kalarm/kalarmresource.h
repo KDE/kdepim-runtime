@@ -16,7 +16,8 @@
 using namespace KAlarmCal;
 
 class KJob;
-namespace Akonadi {
+namespace Akonadi
+{
 class CollectionFetchJob;
 }
 
@@ -51,14 +52,14 @@ private:
     Akonadi::CollectionFetchJob *fetchCollection(const char *slot);
 
     KACalendar::Compat mCompatibility;
-    KACalendar::Compat mFileCompatibility;  // calendar file compatibility found by readFromFile()
-    int mVersion;                           // calendar format version
-    int mFileVersion;                       // calendar format version found by readFromFile()
-    bool mHaveReadFile {false};             // the calendar file has been read
-    bool mFetchedAttributes {false};        // attributes have been fetched after initialisation
-    bool mUpdatingFormat {false};           // writeToFile() can ignore mCompatibility
-    bool mFileChangedReadOnly {false};      // make readOnly() return true
-    QString mBackupFile;                    // backup file name, if another process has changed the calendar file
+    KACalendar::Compat mFileCompatibility; // calendar file compatibility found by readFromFile()
+    int mVersion; // calendar format version
+    int mFileVersion; // calendar format version found by readFromFile()
+    bool mHaveReadFile{false}; // the calendar file has been read
+    bool mFetchedAttributes{false}; // attributes have been fetched after initialisation
+    bool mUpdatingFormat{false}; // writeToFile() can ignore mCompatibility
+    bool mFileChangedReadOnly{false}; // make readOnly() return true
+    QString mBackupFile; // backup file name, if another process has changed the calendar file
 };
 
 #endif

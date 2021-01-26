@@ -10,12 +10,13 @@
 
 #include <KConfigDialogManager>
 
-#include <QTimer>
 #include <KSharedConfig>
-#include <QUrl>
 #include <QPushButton>
+#include <QTimer>
+#include <QUrl>
 
-namespace {
+namespace
+{
 static const char myConfigGroupName[] = "ContactsSettingsDialog";
 }
 

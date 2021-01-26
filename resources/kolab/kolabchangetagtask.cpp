@@ -41,8 +41,7 @@ void KolabChangeTagTask::onItemsFetchDone(KJob *job)
 
     auto changeHelper = new TagChangeHelper(this);
 
-    connect(changeHelper, &TagChangeHelper::applyCollectionChanges,
-            this, &KolabChangeTagTask::onApplyCollectionChanged);
+    connect(changeHelper, &TagChangeHelper::applyCollectionChanges, this, &KolabChangeTagTask::onApplyCollectionChanged);
     connect(changeHelper, &TagChangeHelper::cancelTask, this, &KolabChangeTagTask::onCancelTask);
     connect(changeHelper, &TagChangeHelper::changeCommitted, this, &KolabChangeTagTask::onChangeCommitted);
 

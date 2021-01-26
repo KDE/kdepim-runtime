@@ -67,7 +67,7 @@ void TomboyCollectionsDownloadJob::onRequestFinished()
     cachePolicy.setLocalParts(QStringList() << QStringLiteral("ALL"));
     c.setCachePolicy(cachePolicy);
 
-    c.setContentMimeTypes({ Akonadi::NoteUtils::noteMimeType() });
+    c.setContentMimeTypes({Akonadi::NoteUtils::noteMimeType()});
 
     mResultCollections << c;
 

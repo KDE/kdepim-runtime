@@ -16,7 +16,8 @@
 class EwsFolderShape
 {
 public:
-    explicit EwsFolderShape(EwsBaseShape shape = EwsShapeDefault) : mBaseShape(shape)
+    explicit EwsFolderShape(EwsBaseShape shape = EwsShapeDefault)
+        : mBaseShape(shape)
     {
     }
 
@@ -53,6 +54,7 @@ public:
     void write(QXmlStreamWriter &writer) const;
 
     friend EwsFolderShape &operator<<(EwsFolderShape &shape, const EwsPropertyField &prop);
+
 protected:
     void writeBaseShape(QXmlStreamWriter &writer) const;
     void writeProperties(QXmlStreamWriter &writer) const;

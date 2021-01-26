@@ -40,8 +40,7 @@ void DAVUtils::setOxAttribute(QDomElement &element, const QString &name, const Q
 bool DAVUtils::davErrorOccurred(const QDomDocument &document, QString &errorText, QString &errorStatus)
 {
     const QDomElement documentElement = document.documentElement();
-    const QDomNodeList propStats = documentElement.elementsByTagNameNS(QStringLiteral("DAV:"),
-                                                                       QStringLiteral("propstat"));
+    const QDomNodeList propStats = documentElement.elementsByTagNameNS(QStringLiteral("DAV:"), QStringLiteral("propstat"));
 
     for (int i = 0; i < propStats.count(); ++i) {
         const QDomElement propStat = propStats.at(i).toElement();

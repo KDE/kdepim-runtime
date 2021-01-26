@@ -13,15 +13,13 @@
 
 #include <QtCrypto>
 
-static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoType = {
-    {QStringLiteral("CN"), QCA::CommonName},
-    {QStringLiteral("L"), QCA::Locality},
-    {QStringLiteral("ST"), QCA::State},
-    {QStringLiteral("O"), QCA::Organization},
-    {QStringLiteral("OU"), QCA::OrganizationalUnit},
-    {QStringLiteral("C"), QCA::Country},
-    {QStringLiteral("emailAddress"), QCA::EmailLegacy}
-};
+static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoType = {{QStringLiteral("CN"), QCA::CommonName},
+                                                                                       {QStringLiteral("L"), QCA::Locality},
+                                                                                       {QStringLiteral("ST"), QCA::State},
+                                                                                       {QStringLiteral("O"), QCA::Organization},
+                                                                                       {QStringLiteral("OU"), QCA::OrganizationalUnit},
+                                                                                       {QStringLiteral("C"), QCA::Country},
+                                                                                       {QStringLiteral("emailAddress"), QCA::EmailLegacy}};
 
 static QMultiMap<QCA::CertificateInfoType, QString> parseCertSubjectInfo(const QString &info)
 {
@@ -66,9 +64,8 @@ void EwsPKeyAuthJob::start()
         params[it.first.toLower()] = QUrl::fromPercentEncoding(it.second.toLatin1());
     }
 
-    if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce"))
-        && params.contains(QStringLiteral("certauthorities")) && params.contains(QStringLiteral("context"))
-        && params.contains(QStringLiteral("version"))) {
+    if (params.contains(QStringLiteral("submiturl")) && params.contains(QStringLiteral("nonce")) && params.contains(QStringLiteral("certauthorities"))
+        && params.contains(QStringLiteral("context")) && params.contains(QStringLiteral("version"))) {
         const auto respToken = buildAuthResponse(params);
 
         if (!respToken.isEmpty()) {
@@ -86,9 +83,8 @@ void EwsPKeyAuthJob::sendAuthRequest(const QByteArray &respToken, const QUrl &su
 {
     QNetworkRequest req(submitUrl);
 
-    req.setRawHeader(
-        "Authorization",
-        QStringLiteral("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"").arg(QString::fromLatin1(respToken), context).toLatin1());
+    req.setRawHeader("Authorization",
+                     QStringLiteral("PKeyAuth AuthToken=\"%1\",Context=\"%2\",Version=\"1.0\"").arg(QString::fromLatin1(respToken), context).toLatin1());
 
     mAuthReply.reset(mNetworkAccessManager->get(req));
 
@@ -156,8 +152,9 @@ QByteArray EwsPKeyAuthJob::buildAuthResponse(const QMap<QString, QString> &param
     const QString header = QStringLiteral("{\"x5c\":[\"%1\"],\"typ\":\"JWT\",\"alg\":\"RS256\"}").arg(certStr);
 
     const QString payload = QStringLiteral("{\"nonce\":\"%1\",\"iat\":\"%2\",\"aud\":\"%3\"}")
-                            .arg(params[QStringLiteral("nonce")]).arg(QDateTime::currentSecsSinceEpoch())
-                            .arg(escapeSlashes(params[QStringLiteral("submiturl")]));
+                                .arg(params[QStringLiteral("nonce")])
+                                .arg(QDateTime::currentSecsSinceEpoch())
+                                .arg(escapeSlashes(params[QStringLiteral("submiturl")]));
 
     const auto headerB64 = header.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     const auto payloadB64 = payload.toUtf8().toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);

@@ -26,6 +26,7 @@ public:
     void walletMapRequestFinished(const QMap<QString, QString> &map) override;
 
     void setUsername(const QString &username);
+
 protected:
     QString mUsername;
     QString mPassword;

@@ -19,12 +19,12 @@ void KolabObjectTest::preserveLatin1()
     const QString summary(QLatin1String("äöü%@$£é¤¼²°"));
     event->setSummary(summary);
     QCOMPARE(event->summary(), summary);
-    //std::cout << event->summary().toStdString() << std::endl;
+    // std::cout << event->summary().toStdString() << std::endl;
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
-//     qDebug() << msg->encodedContent();
+    //     qDebug() << msg->encodedContent();
     KCalendarCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
     QVERIFY(readEvent);
-//     std::cout << readEvent->summary().toStdString() << std::endl;
+    //     std::cout << readEvent->summary().toStdString() << std::endl;
     QCOMPARE(readEvent->summary(), summary);
 }
 
@@ -36,12 +36,12 @@ void KolabObjectTest::preserveUnicode()
     QString summary(QStringLiteral("€Š�ـأبـ☺"));
     event->setSummary(summary);
     QCOMPARE(event->summary(), summary);
-//     std::cout << event->summary().toStdString() << std::endl;
+    //     std::cout << event->summary().toStdString() << std::endl;
     KMime::Message::Ptr msg = Kolab::KolabObjectWriter::writeEvent(event);
-//     qDebug() << msg->encodedContent();
+    //     qDebug() << msg->encodedContent();
     KCalendarCore::Event::Ptr readEvent = Kolab::KolabObjectReader(msg).getEvent();
     QVERIFY(readEvent);
-//     std::cout << readEvent->summary().toStdString() << std::endl;
+    //     std::cout << readEvent->summary().toStdString() << std::endl;
     QCOMPARE(readEvent->summary(), summary);
 }
 
@@ -74,9 +74,9 @@ void KolabObjectTest::dontCrashWithEmptyIncidence()
 void KolabObjectTest::parseRelationMembers()
 {
     {
-        QString memberString(
-            QStringLiteral(
-                "imap:/user/jan.aachen%40lhm.klab.cc/INBOX/20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200"));
+        QString memberString(QStringLiteral(
+            "imap:/user/jan.aachen%40lhm.klab.cc/INBOX/"
+            "20?message-id=%3Cf06aa3345a25005380b47547ad161d36%40lhm.klab.cc%3E&subject=Re%3A+test&date=Tue%2C+12+Aug+2014+20%3A42%3A59+%2B0200"));
         Kolab::RelationMember member = Kolab::parseMemberUrl(memberString);
 
         QString result = Kolab::generateMemberUrl(member);
@@ -86,7 +86,7 @@ void KolabObjectTest::parseRelationMembers()
         QCOMPARE(result, memberString);
     }
 
-    //user namespace by uid
+    // user namespace by uid
     {
         Kolab::RelationMember member;
         member.uid = 20;
@@ -107,11 +107,12 @@ void KolabObjectTest::parseRelationMembers()
         QCOMPARE(result.subject, member.subject);
     }
 
-    //shared namespace by uid
+    // shared namespace by uid
     {
         Kolab::RelationMember member;
         member.uid = 20;
-        member.mailbox = QList<QByteArray>() << "foo" << "bar";
+        member.mailbox = QList<QByteArray>() << "foo"
+                                             << "bar";
         member.messageId = QStringLiteral("messageid");
         member.date = QStringLiteral("date");
         member.subject = QStringLiteral("subject");
@@ -126,7 +127,7 @@ void KolabObjectTest::parseRelationMembers()
         QCOMPARE(result.subject, member.subject);
     }
 
-    //by uuid/gid
+    // by uuid/gid
     {
         Kolab::RelationMember member;
         member.gid = QStringLiteral("fooobar");
@@ -140,7 +141,8 @@ void KolabObjectTest::parseRelationMembers()
     {
         Kolab::RelationMember member;
         member.uid = 20;
-        member.mailbox = QList<QByteArray>() << "spaces in folders" << "+^,:@";
+        member.mailbox = QList<QByteArray>() << "spaces in folders"
+                                             << "+^,:@";
         member.user = QStringLiteral("john.doe:^@example.org");
         member.messageId = QStringLiteral("messageid+^,:@");
         member.date = QStringLiteral("date+^,:@");

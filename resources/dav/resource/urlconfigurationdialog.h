@@ -11,8 +11,8 @@
 
 #include <KDAV/Enums>
 
-#include <QString>
 #include <QDialog>
+#include <QString>
 
 class KJob;
 class QButtonGroup;

@@ -10,15 +10,17 @@
 #include "akonadi-singlefileresource_export.h"
 #include <resourcebase.h>
 
-#include <QUrl>
 #include <QStringList>
+#include <QUrl>
 
-namespace KIO {
+namespace KIO
+{
 class FileCopyJob;
 class Job;
 }
 
-namespace Akonadi {
+namespace Akonadi
+{
 /**
  * Base class for single file based resources.
  * @see SingleFileResource

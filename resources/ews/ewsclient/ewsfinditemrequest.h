@@ -8,9 +8,9 @@
 #define EWSFINDITEMREQUEST_H
 
 #include "ewsitem.h"
+#include "ewsitemshape.h"
 #include "ewsrequest.h"
 #include "ewstypes.h"
-#include "ewsitemshape.h"
 
 class EwsFindItemRequest : public EwsRequest
 {
@@ -74,6 +74,7 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
+
 private:
     EwsId mFolderId;
     EwsItemShape mShape;

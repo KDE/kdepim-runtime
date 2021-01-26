@@ -7,8 +7,8 @@
 #ifndef GIDMIGRATOR_H
 #define GIDMIGRATOR_H
 
-#include <migratorbase.h>
 #include <KJob>
+#include <migratorbase.h>
 
 class GidMigrator : public MigratorBase
 {
@@ -28,6 +28,7 @@ protected:
     void startWork() override;
 private Q_SLOTS:
     void migrationFinished(KJob *);
+
 private:
     const QString mMimeType;
 };

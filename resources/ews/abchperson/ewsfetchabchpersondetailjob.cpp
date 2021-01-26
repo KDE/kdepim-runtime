@@ -6,8 +6,8 @@
 
 #include "ewsfetchabchpersondetailjob.h"
 
-#include "ewsitemshape.h"
 #include "ewsgetitemrequest.h"
+#include "ewsitemshape.h"
 #include "ewsmailbox.h"
 #include "ewsresource_debug.h"
 
@@ -36,7 +36,7 @@ void EwsFetchAbchContactDetailsJob::processItems(const QList<EwsGetItemRequest::
             continue;
         }
 
-        //const EwsItem &ewsItem = resp.item();
+        // const EwsItem &ewsItem = resp.item();
 
         // TODO: Implement
 

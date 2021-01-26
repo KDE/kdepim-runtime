@@ -16,9 +16,9 @@
 
 #include <QTemporaryDir>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 
 using namespace Akonadi;
 
@@ -27,7 +27,8 @@ class CollectionMoveTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionMoveTest() : QObject()
+    CollectionMoveTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -74,9 +75,9 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     // top level dir
     QVERIFY(TestDataUtil::installFolder(QStringLiteral("maildir"), topDir.path(), QStringLiteral("collection1")));
-    //QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
+    // QFileInfo fileInfo1(topDir, QStringLiteral("collection1"));
     QVERIFY(TestDataUtil::installFolder(QStringLiteral("mbox"), topDir.path(), QStringLiteral("collection2")));
-    //QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
+    // QFileInfo fileInfo2(topDir, QStringLiteral("collection2"));
 
     // first level maildir parent
     QDir subDir1 = topDir;
@@ -155,13 +156,13 @@ void CollectionMoveTest::testMoveToTopLevel()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test moving mbox from maildir parent
@@ -202,13 +203,13 @@ void CollectionMoveTest::testMoveToTopLevel()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test moving mbox from mbox parent
@@ -254,13 +255,13 @@ void CollectionMoveTest::testMoveToTopLevel()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test moving maildir from mbox parent
@@ -301,13 +302,13 @@ void CollectionMoveTest::testMoveToTopLevel()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 }
 
@@ -405,13 +406,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move leaf mbox into sibling
@@ -452,13 +453,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move maildir with subtree into sibling
@@ -519,13 +520,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // check for children cache path updates
@@ -541,13 +542,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     itemFetch = mStore->fetchItems(collection1_2);
@@ -558,13 +559,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move mbox with subtree into sibling
@@ -605,9 +606,8 @@ void CollectionMoveTest::testMoveToMaildir()
     subDir4 = subDirTarget;
     QVERIFY(subDir4.cd(QStringLiteral(".collection4.directory")));
     QCOMPARE(subDir4.entryList(QStringList() << QStringLiteral("collection*")),
-             QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2")
-                           << QStringLiteral("collection4_3") << QStringLiteral("collection4_4")
-             );
+             QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2") << QStringLiteral("collection4_3")
+                           << QStringLiteral("collection4_4"));
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -627,13 +627,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // check for children cache path updates
@@ -649,13 +649,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     itemFetch = mStore->fetchItems(collection4_2);
@@ -666,13 +666,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to parent's sibling
@@ -713,13 +713,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to parent's sibling
@@ -755,13 +755,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to parent's sibling
@@ -797,13 +797,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to parent's sibling
@@ -839,13 +839,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to grandparent
@@ -883,13 +883,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to grandparent
@@ -926,13 +926,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to grandparent
@@ -973,13 +973,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to grandparent
@@ -1020,13 +1020,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from maildir to grandchild
@@ -1064,13 +1064,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from maildir to grandchild
@@ -1108,13 +1108,13 @@ void CollectionMoveTest::testMoveToMaildir()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 }
 
@@ -1218,13 +1218,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move leaf mbox into sibling
@@ -1265,13 +1265,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move leaf mbox into sibling without subtree
@@ -1319,13 +1319,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move maildir with subtree into sibling
@@ -1366,9 +1366,8 @@ void CollectionMoveTest::testMoveToMBox()
     subDir1 = subDirTarget;
     QVERIFY(subDir1.cd(QStringLiteral(".collection1.directory")));
     QCOMPARE(subDir1.entryList(QStringList() << QStringLiteral("collection*")),
-             QStringList() << QStringLiteral("collection1_1") << QStringLiteral("collection1_2")
-                           << QStringLiteral("collection1_3") << QStringLiteral("collection1_4")
-             );
+             QStringList() << QStringLiteral("collection1_1") << QStringLiteral("collection1_2") << QStringLiteral("collection1_3")
+                           << QStringLiteral("collection1_4"));
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -1388,13 +1387,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // check for children cache path updates
@@ -1410,13 +1409,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     itemFetch = mStore->fetchItems(collection1_2);
@@ -1427,13 +1426,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test move mbox with subtree into sibling
@@ -1474,8 +1473,7 @@ void CollectionMoveTest::testMoveToMBox()
     subDir4 = subDirTarget;
     QVERIFY(subDir4.cd(QStringLiteral(".collection4.directory")));
     QCOMPARE(subDir4.entryList(QStringList() << QStringLiteral("collection*")),
-             QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2")
-             );
+             QStringList() << QStringLiteral("collection4_1") << QStringLiteral("collection4_2"));
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -1495,13 +1493,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // check for children cache path updates
@@ -1517,13 +1515,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     itemFetch = mStore->fetchItems(collection4_2);
@@ -1534,13 +1532,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to parent's sibling
@@ -1581,13 +1579,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to parent's sibling
@@ -1623,13 +1621,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to parent's sibling
@@ -1665,13 +1663,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to parent's sibling
@@ -1707,13 +1705,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to grandparent
@@ -1751,13 +1749,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent mbox to grandparent
@@ -1794,13 +1792,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to grandparent
@@ -1841,13 +1839,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from parent maildir to grandparent
@@ -1888,13 +1886,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from mbox to grandchild
@@ -1932,13 +1930,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // move from maildir to grandchild
@@ -1976,13 +1974,13 @@ void CollectionMoveTest::testMoveToMBox()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 }
 

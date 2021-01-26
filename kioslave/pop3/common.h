@@ -7,9 +7,9 @@
 #ifndef _KIOSLAVE_COMMON_H
 #define _KIOSLAVE_COMMON_H
 
-#include <stdio.h>
-#include <QFile>
 #include <QDir>
+#include <QFile>
+#include <stdio.h>
 
 extern "C" {
 #include <sasl/sasl.h>
@@ -17,7 +17,7 @@ extern "C" {
 
 inline bool initSASL()
 {
-#ifdef Q_OS_WIN32  //krazy:exclude=cpp
+#ifdef Q_OS_WIN32 // krazy:exclude=cpp
 #if 0
     QByteArray libInstallPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("lib") + QLatin1String("sasl2"))));
     QByteArray configPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("config") + QLatin1String("sasl2"))));

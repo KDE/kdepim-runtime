@@ -7,9 +7,9 @@
 #ifndef EWSCREATEITEMJOB_H
 #define EWSCREATEITEMJOB_H
 
-#include <AkonadiCore/Item>
-#include <AkonadiCore/Collection>
 #include "ewsjob.h"
+#include <AkonadiCore/Collection>
+#include <AkonadiCore/Item>
 
 class EwsClient;
 class EwsItem;
@@ -30,6 +30,7 @@ public:
     void start() override;
 private Q_SLOTS:
     void tagSyncFinished(KJob *job);
+
 protected:
     void populateCommonProperties(EwsItem &item);
     virtual void doStart() = 0;

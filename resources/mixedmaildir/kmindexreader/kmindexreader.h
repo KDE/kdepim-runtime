@@ -14,11 +14,11 @@
 #include <Akonadi/KMime/MessageStatus>
 using Akonadi::MessageStatus;
 
-#include <QString>
-#include <QStringList>
 #include <QFile>
 #include <QList>
 #include <QSharedPointer>
+#include <QString>
+#include <QStringList>
 
 class KMINDEXREADER_EXPORT KMIndexData
 {
@@ -27,7 +27,7 @@ public:
     KMIndexData();
     /** Status object of the message. */
     MessageStatus &status();
-    QStringList  tagList() const;
+    QStringList tagList() const;
     quint64 uid() const;
     bool isEmpty() const;
 
@@ -65,14 +65,14 @@ public:
 
     enum MsgPartType {
         MsgNoPart = 0,
-        //unicode strings
+        // unicode strings
         MsgFromPart = 1,
         MsgSubjectPart = 2,
         MsgToPart = 3,
         MsgReplyToIdMD5Part = 4,
         MsgIdMD5Part = 5,
         MsgXMarkPart = 6,
-        //unsigned long
+        // unsigned long
         MsgOffsetPart = 7,
         MsgLegacyStatusPart = 8,
         MsgSizePart = 9,
@@ -82,7 +82,7 @@ public:
         // unsigned long
         MsgCryptoStatePart = 12,
         MsgMDNSentPart = 13,
-        //another two unicode strings
+        // another two unicode strings
         MsgReplyToAuxIdMD5Part = 14,
         MsgStrippedSubjectMD5Part = 15,
         // and another unsigned long
@@ -98,7 +98,6 @@ public:
     KMIndexDataPtr dataByFileName(const QString &fileName) const;
 
 private:
-
     /**
      * Reads the header of an index
      */

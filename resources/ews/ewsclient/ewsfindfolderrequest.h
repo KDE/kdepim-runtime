@@ -8,9 +8,9 @@
 #define EWSFINDFOLDERREQUEST_H
 
 #include "ewsfolder.h"
+#include "ewsfoldershape.h"
 #include "ewsrequest.h"
 #include "ewstypes.h"
-#include "ewsfoldershape.h"
 
 class EwsFindFolderRequest : public EwsRequest
 {
@@ -36,6 +36,7 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseFoldersResponse(QXmlStreamReader &reader);
+
 private:
     EwsId mParentId;
     EwsFolderShape mShape;

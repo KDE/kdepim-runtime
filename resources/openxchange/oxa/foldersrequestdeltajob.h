@@ -13,7 +13,8 @@
 
 #include "folder.h"
 
-namespace OXA {
+namespace OXA
+{
 /**
  * @short A job that requests the delta for folders changes from the OX server.
  *

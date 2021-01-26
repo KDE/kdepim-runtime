@@ -7,8 +7,8 @@
 #ifndef ETEBASEADAPTER_H
 #define ETEBASEADAPTER_H
 
-#include <etebase.h>
 #include <QString>
+#include <etebase.h>
 #include <memory>
 #include <vector>
 
@@ -20,11 +20,10 @@
 
 #define ETESYNC_DEFAULT_COLLECTION_COLOR QStringLiteral("#8BC34A")
 
-static const char *ETESYNC_COLLECTION_TYPES[] = { "etebase.vevent", "etebase.vcard", "etebase.vtodo" };
+static const char *ETESYNC_COLLECTION_TYPES[] = {"etebase.vevent", "etebase.vcard", "etebase.vtodo"};
 static const int ETESYNC_COLLECTION_TYPES_SIZE = ETEBASE_UTILS_C_ARRAY_LEN(ETESYNC_COLLECTION_TYPES);
 
-struct EtebaseDeleter
-{
+struct EtebaseDeleter {
     void operator()(EtebaseClient *ptr)
     {
         etebase_client_destroy(ptr);
@@ -114,7 +113,11 @@ void etebase_item_metadata_set_color(EtebaseItemMetadata *meta_data, const QStri
 
 void etebase_item_metadata_set_name(EtebaseItemMetadata *meta_data, const QString &name);
 
-EtebaseCollectionPtr etebase_collection_manager_create(const EtebaseCollectionManager *col_mgr, const QString &collection_type, const EtebaseItemMetadata *meta, const void *content, uintptr_t content_size);
+EtebaseCollectionPtr etebase_collection_manager_create(const EtebaseCollectionManager *col_mgr,
+                                                       const QString &collection_type,
+                                                       const EtebaseItemMetadata *meta,
+                                                       const void *content,
+                                                       uintptr_t content_size);
 
 EtebaseFileSystemCachePtr etebase_fs_cache_new(const QString &path, const QString &username);
 
@@ -122,10 +125,12 @@ int32_t etebase_fs_cache_item_set(const EtebaseFileSystemCache *fs_cache, const 
 
 EtebaseCollectionPtr etebase_fs_cache_collection_get(const EtebaseFileSystemCache *fs_cache, const EtebaseCollectionManager *col_mgr, const QString &col_uid);
 
-EtebaseItemPtr etebase_fs_cache_item_get(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
+EtebaseItemPtr
+etebase_fs_cache_item_get(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
 
 int32_t etebase_fs_cache_collection_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseCollectionManager *col_mgr, const QString &col_uid);
 
-int32_t etebase_fs_cache_item_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
+int32_t
+etebase_fs_cache_item_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
 
 #endif

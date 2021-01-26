@@ -8,16 +8,16 @@
 #include "googlesettingsinterface.h"
 #include "migration_debug.h"
 
+#include <AkonadiCore/AgentInstanceCreateJob>
 #include <AkonadiCore/AgentManager>
 #include <AkonadiCore/ServerManager>
-#include <AkonadiCore/AgentInstanceCreateJob>
 
 #include <KLocalizedString>
 #include <KWallet/KWallet>
 
-#include <QSettings>
-#include <QDBusServiceWatcher>
 #include <QDBusConnection>
+#include <QDBusServiceWatcher>
+#include <QSettings>
 
 #include <memory>
 
@@ -33,8 +33,7 @@ QString GoogleResourceMigrator::displayName() const
 
 QString GoogleResourceMigrator::description() const
 {
-    return i18nc("Description of the migrator",
-                 "Migrates the old Google Calendar and Google Contacts resources to the new unified Google Groupware Resource");
+    return i18nc("Description of the migrator", "Migrates the old Google Calendar and Google Contacts resources to the new unified Google Groupware Resource");
 }
 
 bool GoogleResourceMigrator::shouldAutostart() const
@@ -42,15 +41,15 @@ bool GoogleResourceMigrator::shouldAutostart() const
     return true;
 }
 
-namespace {
+namespace
+{
 static const QStringView akonadiGoogleCalendarResource = {u"akonadi_googlecalendar_resource"};
 static const QStringView akonadiGoogleContactsResource = {u"akonadi_googlecontacts_resource"};
 static const QStringView akonadiGoogleGroupwareResource = {u"akonadi_google_resource"};
 
 bool isLegacyGoogleResource(const Akonadi::AgentInstance &instance)
 {
-    return instance.type().identifier() == akonadiGoogleCalendarResource
-           || instance.type().identifier() == akonadiGoogleContactsResource;
+    return instance.type().identifier() == akonadiGoogleCalendarResource || instance.type().identifier() == akonadiGoogleContactsResource;
 }
 
 bool isGoogleGroupwareResource(const Akonadi::AgentInstance &instance)
@@ -149,15 +148,14 @@ void removeInstanceAndWait(const Akonadi::AgentInstance &instance)
                                     QDBusConnection::sessionBus(),
                                     QDBusServiceWatcher::WatchForUnregistration);
         QEventLoop loop;
-        QObject::connect(&watcher, &QDBusServiceWatcher::serviceUnregistered,
-                         &loop, [&loop, &instance]() {
-                qCDebug(MIGRATION_LOG) << "GoogleResourceMigrator: resource" << instance.identifier() << "has disappeared from DBus";
-                loop.quit();
-            });
+        QObject::connect(&watcher, &QDBusServiceWatcher::serviceUnregistered, &loop, [&loop, &instance]() {
+            qCDebug(MIGRATION_LOG) << "GoogleResourceMigrator: resource" << instance.identifier() << "has disappeared from DBus";
+            loop.quit();
+        });
         QTimer::singleShot(std::chrono::seconds(20), &loop, [&loop, &instance]() {
-                qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: timeout while waiting for resource" << instance.identifier() << "to be removed";
-                loop.quit();
-            });
+            qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: timeout while waiting for resource" << instance.identifier() << "to be removed";
+            loop.quit();
+        });
 
         Akonadi::AgentManager::self()->removeInstance(instance);
         qCDebug(MIGRATION_LOG) << "GoogleResourceMigrator: waiting for" << instance.identifier() << "to disappear from DBus";
@@ -180,8 +178,7 @@ void GoogleResourceMigrator::startWork()
                 Akonadi::AgentManager::self()->removeInstance(instance);
                 continue;
             }
-            qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: discovered resource" << instance.identifier()
-                                  << "for account" << account;
+            qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: discovered resource" << instance.identifier() << "for account" << account;
             if (instance.type().identifier() == akonadiGoogleCalendarResource) {
                 mMigrations[account].calendarResource = instance;
             } else if (instance.type().identifier() == akonadiGoogleContactsResource) {
@@ -241,8 +238,7 @@ void GoogleResourceMigrator::migrateNextAccount()
     qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: creating new" << akonadiGoogleGroupwareResource;
     Q_EMIT message(Info, i18n("Creating new instance of Google Gropware Resource"));
     auto job = new Akonadi::AgentInstanceCreateJob(akonadiGoogleGroupwareResource.toString(), this);
-    connect(job, &Akonadi::AgentInstanceCreateJob::finished,
-            this, [this, job, account, instances](KJob *) {
+    connect(job, &Akonadi::AgentInstanceCreateJob::finished, this, [this, job, account, instances](KJob *) {
         if (job->error()) {
             qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: Failed to create new Google Groupware Resource:" << job->errorString();
             Q_EMIT message(Error, i18n("Failed to create a new Google Groupware Resource: %1", job->errorString()));
@@ -265,16 +261,11 @@ void GoogleResourceMigrator::migrateNextAccount()
         newInstance.restart();
 
         if (instances.calendarResource.isValid() ^ instances.contactResource.isValid()) {
-            const auto res = instances.calendarResource.isValid()
-                             ? instances.calendarResource.identifier()
-                             : instances.contactResource.identifier();
-            qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: migrated configuration from" << res
-                                  << "to" << newInstance.identifier();
+            const auto res = instances.calendarResource.isValid() ? instances.calendarResource.identifier() : instances.contactResource.identifier();
+            qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: migrated configuration from" << res << "to" << newInstance.identifier();
         } else {
-            qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: migrated configuration from"
-                                  << instances.calendarResource.identifier() << "and"
-                                  << instances.contactResource.identifier() << "to"
-                                  << newInstance.identifier();
+            qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: migrated configuration from" << instances.calendarResource.identifier() << "and"
+                                  << instances.contactResource.identifier() << "to" << newInstance.identifier();
         }
         Q_EMIT message(Success, i18n("Migrated account %1 to new Google Groupware Resource", account));
 
@@ -290,9 +281,9 @@ QString GoogleResourceMigrator::mergeAccountNames(const ResourceValues<QString> 
         if (accountName.calendar == accountName.contacts) {
             return accountName.calendar;
         } else {
-            qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: account name mismatch:"
-                                     << oldInstances.calendarResource.identifier() << "=" << accountName.calendar << ","
-                                     << oldInstances.contactResource.identifier() << "=" << accountName.contacts << ". Ignoring both.";
+            qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: account name mismatch:" << oldInstances.calendarResource.identifier() << "="
+                                     << accountName.calendar << "," << oldInstances.contactResource.identifier() << "=" << accountName.contacts
+                                     << ". Ignoring both.";
         }
     } else if (!accountName.calendar.isEmpty()) {
         return accountName.calendar;
@@ -309,9 +300,9 @@ int GoogleResourceMigrator::mergeAccountIds(const ResourceValues<int> &accountId
         if (accountId.calendar == accountId.contacts) {
             return accountId.calendar;
         } else {
-            qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: account id mismatch:"
-                                     << oldInstances.calendarResource.identifier() << "=" << accountId.calendar << ","
-                                     << oldInstances.contactResource.identifier() << "=" << accountId.contacts << ". Ignoring both.";
+            qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: account id mismatch:" << oldInstances.calendarResource.identifier() << "="
+                                     << accountId.calendar << "," << oldInstances.contactResource.identifier() << "=" << accountId.contacts
+                                     << ". Ignoring both.";
         }
         return 0;
     }
@@ -324,7 +315,8 @@ bool GoogleResourceMigrator::migrateAccount(const QString &account, const Instan
 {
     org::kde::Akonadi::Google::Settings resourceSettings{
         Akonadi::ServerManager::self()->agentServiceName(Akonadi::ServerManager::Resource, newInstance.identifier()),
-        QStringLiteral("/Settings"), QDBusConnection::sessionBus()};
+        QStringLiteral("/Settings"),
+        QDBusConnection::sessionBus()};
     if (!resourceSettings.isValid()) {
         qCWarning(MIGRATION_LOG) << "GoogleResourceMigrator: failed to obtain settings DBus interface of " << newInstance.identifier();
         return false;

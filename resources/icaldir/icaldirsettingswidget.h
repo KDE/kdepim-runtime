@@ -21,6 +21,7 @@ public:
 
     void load() override;
     bool save() const override;
+
 private:
     void validate();
     Ui::IcalDirsAgentSettingsWidget ui;

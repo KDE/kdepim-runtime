@@ -19,7 +19,7 @@ private Q_SLOTS:
         QTest::addColumn<Akonadi::Collection>("collection");
         QTest::addColumn<Akonadi::Collection>("source");
         QTest::addColumn<Akonadi::Collection>("target");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection root;
@@ -46,8 +46,7 @@ private Q_SLOTS:
         target.setParentCollection(inbox);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 RENAME "INBOX/Foo/Baz" "INBOX/Bar/Baz")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "INBOX/Foo/Baz" "INBOX/Bar/Baz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Bar/Baz\""
                  << "S: A000004 OK subscribe done";
@@ -61,8 +60,7 @@ private Q_SLOTS:
             const Akonadi::Collection toplevel = createCollectionChain(QStringLiteral("/Bar"));
 
             scenario.clear();
-            scenario << defaultPoolConnectionScenario()
-                     << R"(C: A000003 RENAME "Bar" "INBOX/Bar")"
+            scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "Bar" "INBOX/Bar")"
                      << "S: A000003 OK rename done"
                      << "C: A000004 SUBSCRIBE \"INBOX/Bar\""
                      << "S: A000004 OK subscribe done";
@@ -77,8 +75,7 @@ private Q_SLOTS:
             const Akonadi::Collection toplevel = createCollectionChain(QStringLiteral("/INBOX/Bar"));
 
             scenario.clear();
-            scenario << defaultPoolConnectionScenario()
-                     << R"(C: A000003 RENAME "INBOX/Bar" "Bar")"
+            scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "INBOX/Bar" "Bar")"
                      << "S: A000003 OK rename done"
                      << "C: A000004 SUBSCRIBE \"Bar\""
                      << "S: A000004 OK subscribe done";
@@ -93,8 +90,7 @@ private Q_SLOTS:
         // The scenario changes though
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 RENAME "INBOX/Foo/Baz" "INBOX/Bar/Baz")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "INBOX/Foo/Baz" "INBOX/Bar/Baz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX/Bar/Baz\""
                  << "S: A000004 NO subscribe failed";
@@ -119,8 +115,7 @@ private Q_SLOTS:
         target.setParentCollection(inbox);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << R"(C: A000003 RENAME "INBOX.Foo.Baz" "INBOX.Bar.Baz")"
+        scenario << defaultPoolConnectionScenario() << R"(C: A000003 RENAME "INBOX.Foo.Baz" "INBOX.Bar.Baz")"
                  << "S: A000003 OK rename done"
                  << "C: A000004 SUBSCRIBE \"INBOX.Bar.Baz\""
                  << "S: A000004 OK subscribe done";
@@ -147,7 +142,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);

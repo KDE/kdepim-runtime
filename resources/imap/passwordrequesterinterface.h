@@ -16,17 +16,9 @@ class PasswordRequesterInterface : public QObject
     Q_ENUMS(ResultType RequestType)
 
 public:
-    enum ResultType {
-        PasswordRetrieved,
-        ReconnectNeeded,
-        UserRejected,
-        EmptyPasswordEntered
-    };
+    enum ResultType { PasswordRetrieved, ReconnectNeeded, UserRejected, EmptyPasswordEntered };
 
-    enum RequestType {
-        StandardRequest,
-        WrongPasswordRequest
-    };
+    enum RequestType { StandardRequest, WrongPasswordRequest };
 
 protected:
     explicit PasswordRequesterInterface(QObject *parent = nullptr);

@@ -35,8 +35,7 @@ PasswordRequesterInterface *PasswordRequester::requesterImpl()
         } else {
             mImpl = new SettingsPasswordRequester(mResource, this);
         }
-        connect(mImpl, &PasswordRequesterInterface::done,
-                this, &PasswordRequesterInterface::done);
+        connect(mImpl, &PasswordRequesterInterface::done, this, &PasswordRequesterInterface::done);
     }
 
     return mImpl;

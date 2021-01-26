@@ -34,18 +34,20 @@ protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemsMoved(const Akonadi::Item::List &item, const Akonadi::Collection &source, const Akonadi::Collection &destination) override;
-    //itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
+    // itemsRemoved and itemsFlags changed do not require translation, because they don't use the payload
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &parts) override;
-    //collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
+    // collectionRemoved & collectionMoved do not require adjustments since they don't change the annotations
 
     void tagAdded(const Akonadi::Tag &tag) override;
     void tagChanged(const Akonadi::Tag &tag) override;
     void tagRemoved(const Akonadi::Tag &tag) override;
     void itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags) override;
 
-    void itemsRelationsChanged(const Akonadi::Item::List &items, const Akonadi::Relation::List &addedRelations, const Akonadi::Relation::List &removedRelations) override;
+    void itemsRelationsChanged(const Akonadi::Item::List &items,
+                               const Akonadi::Relation::List &addedRelations,
+                               const Akonadi::Relation::List &removedRelations) override;
 
     QString defaultName() const override;
     QByteArray clientId() const override;

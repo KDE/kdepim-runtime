@@ -16,9 +16,9 @@
 
 #include <QTemporaryDir>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 
 using namespace Akonadi;
 
@@ -27,7 +27,8 @@ class CollectionModifyTest : public QObject
     Q_OBJECT
 
 public:
-    CollectionModifyTest() : QObject()
+    CollectionModifyTest()
+        : QObject()
         , mStore(nullptr)
         , mDir(nullptr)
     {
@@ -81,8 +82,7 @@ void CollectionModifyTest::testRename()
     KPIM::Maildir md1_2(md1.addSubFolder(QStringLiteral("collection1_2")), false);
 
     // simulate second level mbox in maildir parent
-    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                          QStringLiteral("collection1_1"));
+    QFileInfo fileInfo1_1(KPIM::Maildir::subDirPathForFolderPath(md1.path()), QStringLiteral("collection1_1"));
     QFile file1_1(fileInfo1_1.absoluteFilePath());
     file1_1.open(QIODevice::WriteOnly);
     file1_1.close();
@@ -111,8 +111,7 @@ void CollectionModifyTest::testRename()
     KPIM::Maildir md4_1(md4.addSubFolder(QStringLiteral("collection4_1")), false);
 
     // simulate second level mbox in mbox parent
-    QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(),
-                          QStringLiteral("collection4_2"));
+    QFileInfo fileInfo4_2(subDirInfo4.absoluteFilePath(), QStringLiteral("collection4_2"));
     QFile file4_2(fileInfo4_2.absoluteFilePath());
     file4_2.open(QIODevice::WriteOnly);
     file4_2.close();
@@ -158,8 +157,7 @@ void CollectionModifyTest::testRename()
     QVERIFY(md1.isValid(false));
     md1_2 = md1.subFolder(QStringLiteral("collection1_2"));
 
-    fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                            QStringLiteral("collection1_1"));
+    fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()), QStringLiteral("collection1_1"));
     QVERIFY(fileInfo1_1.exists());
 
     md2 = topLevelMd.subFolder(QStringLiteral("collection2"));
@@ -177,8 +175,7 @@ void CollectionModifyTest::testRename()
     QVERIFY(md4.isValid(false));
     md4_1 = md4.subFolder(QStringLiteral("collection4_1"));
 
-    fileInfo4_2 = QFileInfo(subDirInfo4.absoluteFilePath(),
-                            QStringLiteral("collection4_2"));
+    fileInfo4_2 = QFileInfo(subDirInfo4.absoluteFilePath(), QStringLiteral("collection4_2"));
     QVERIFY(fileInfo4_2.exists());
 
     QCOMPARE(topLevelMd.subFolderList(), QStringList() << QStringLiteral("collection1") << QStringLiteral("collection2"));
@@ -310,8 +307,7 @@ void CollectionModifyTest::testRename()
     fileInfo1_1.refresh();
     QVERIFY(!fileInfo1_1.exists());
     QVERIFY(!md1_2.isValid(false));
-    fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()),
-                            QStringLiteral("collection1_1"));
+    fileInfo1_1 = QFileInfo(KPIM::Maildir::subDirPathForFolderPath(md1.path()), QStringLiteral("collection1_1"));
     QVERIFY(fileInfo1_1.exists());
     md1_2 = md1.subFolder(QStringLiteral("collection1_2"));
     QVERIFY(md1_2.isValid(false));
@@ -403,13 +399,13 @@ void CollectionModifyTest::testIndexPreservation()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
 
     // test renaming maildir
     Collection collection2;
@@ -443,13 +439,13 @@ void CollectionModifyTest::testIndexPreservation()
     flagCounts.clear();
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
 }
 
 void CollectionModifyTest::testIndexCacheUpdate()
@@ -542,13 +538,13 @@ void CollectionModifyTest::testIndexCacheUpdate()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     collection1_2.setParentCollection(collection);
@@ -560,13 +556,13 @@ void CollectionModifyTest::testIndexCacheUpdate()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     // test renaming the mbox parent
@@ -588,13 +584,13 @@ void CollectionModifyTest::testIndexCacheUpdate()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     collection2_2.setParentCollection(collection);
@@ -606,13 +602,13 @@ void CollectionModifyTest::testIndexCacheUpdate()
     QCOMPARE((int)items.count(), 4);
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 }
 

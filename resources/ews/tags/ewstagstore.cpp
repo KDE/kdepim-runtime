@@ -11,9 +11,9 @@
 #include <AkonadiCore/AttributeFactory>
 #include <AkonadiCore/TagAttribute>
 
-#include "ewsresource_debug.h"
 #include "ewsitem.h"
 #include "ewsresource.h"
+#include "ewsresource_debug.h"
 
 using namespace Akonadi;
 
@@ -100,8 +100,7 @@ bool EwsTagStore::unserializeTag(const QByteArray &data, Akonadi::Tag &tag) cons
 bool EwsTagStore::readTags(const QStringList &taglist, int version)
 {
     if (version < mVersion) {
-        qCWarningNC(EWSRES_LOG) << QStringLiteral("Reading tags from older version (have %1, got %2)")
-            .arg(mVersion).arg(version);
+        qCWarningNC(EWSRES_LOG) << QStringLiteral("Reading tags from older version (have %1, got %2)").arg(mVersion).arg(version);
         return false;
     } else if (version == mVersion) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Both tag lists in version %1 - not syncing").arg(version);

@@ -10,9 +10,11 @@
 #include <QDialog>
 
 class QDialogButtonBox;
-namespace Akonadi {
+namespace Akonadi
+{
 }
-namespace Ui {
+namespace Ui
+{
 class SetupServerView;
 }
 class EwsMtaResource;
@@ -25,6 +27,7 @@ public:
     ~EwsMtaConfigDialog() override;
 private Q_SLOTS:
     void save();
+
 private:
     QDialogButtonBox *mButtonBox = nullptr;
     EwsMtaResource *const mParentResource;

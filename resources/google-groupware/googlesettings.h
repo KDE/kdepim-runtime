@@ -10,12 +10,13 @@
 
 #include "settingsbase.h"
 
-#include <qwindowdefs.h>
 #include <QPointer>
+#include <qwindowdefs.h>
 
 #include <KGAPI/Types>
 
-namespace KWallet {
+namespace KWallet
+{
 class Wallet;
 }
 
@@ -53,6 +54,7 @@ Q_SIGNALS:
     void accountChanged();
 private Q_SLOTS:
     void slotWalletOpened(bool success);
+
 private:
     WId m_winId;
     QString m_resourceId;

@@ -5,12 +5,12 @@
 #ifndef O2REQUESTOR_H
 #define O2REQUESTOR_H
 
-#include <QObject>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QNetworkAccessManager>
-#include <QUrl>
 #include <QByteArray>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QObject>
+#include <QUrl>
 
 #include "o2/o2reply.h"
 
@@ -67,9 +67,7 @@ protected Q_SLOTS:
 protected:
     int setup(const QNetworkRequest &request, QNetworkAccessManager::Operation operation);
 
-    enum Status {
-        Idle, Requesting, ReRequesting
-    };
+    enum Status { Idle, Requesting, ReRequesting };
 
     QNetworkAccessManager *manager_ = nullptr;
     O2 *authenticator_ = nullptr;

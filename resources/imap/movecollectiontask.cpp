@@ -11,9 +11,9 @@
 #include <KLocalizedString>
 
 #include <kimap/renamejob.h>
+#include <kimap/selectjob.h>
 #include <kimap/session.h>
 #include <kimap/subscribejob.h>
-#include <kimap/selectjob.h>
 
 #include <QUuid>
 
@@ -29,24 +29,19 @@ MoveCollectionTask::~MoveCollectionTask()
 void MoveCollectionTask::doStart(KIMAP::Session *session)
 {
     if (collection().remoteId().isEmpty()) {
-        emitError(i18n("Cannot move IMAP folder '%1', it does not exist on the server.",
-                       collection().name()));
+        emitError(i18n("Cannot move IMAP folder '%1', it does not exist on the server.", collection().name()));
         changeProcessed();
         return;
     }
 
     if (sourceCollection().remoteId().isEmpty()) {
-        emitError(i18n("Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server.",
-                       collection().name(),
-                       sourceCollection().name()));
+        emitError(i18n("Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server.", collection().name(), sourceCollection().name()));
         changeProcessed();
         return;
     }
 
     if (targetCollection().remoteId().isEmpty()) {
-        emitError(i18n("Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server.",
-                       collection().name(),
-                       sourceCollection().name()));
+        emitError(i18n("Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server.", collection().name(), sourceCollection().name()));
         changeProcessed();
         return;
     }
@@ -60,7 +55,7 @@ void MoveCollectionTask::doStart(KIMAP::Session *session)
     // it's not opened (https://bugs.kde.org/show_bug.cgi?id=324932) by examining
     // a non-existent mailbox. We don't use CLOSE in order not to trigger EXPUNGE
     auto examine = new KIMAP::SelectJob(session);
-    examine->setOpenReadOnly(true);   // use EXAMINE instead of SELECT
+    examine->setOpenReadOnly(true); // use EXAMINE instead of SELECT
     examine->setMailBox(QStringLiteral("IMAP Resource non existing folder %1").arg(QUuid::createUuid().toString()));
     connect(examine, &KIMAP::SelectJob::result, this, &MoveCollectionTask::onExamineDone);
     examine->start();
@@ -79,7 +74,7 @@ QString MoveCollectionTask::mailBoxForCollections(const Akonadi::Collection &par
 {
     const QString parentMailbox = mailBoxForCollection(parent);
     if (parentMailbox.isEmpty()) {
-        return child.remoteId().mid(1); //Strip separator on toplevel mailboxes
+        return child.remoteId().mid(1); // Strip separator on toplevel mailboxes
     }
     return parentMailbox + child.remoteId();
 }
@@ -123,9 +118,10 @@ void MoveCollectionTask::onRenameDone(KJob *job)
 void MoveCollectionTask::onSubscribeDone(KJob *job)
 {
     if (job->error()) {
-        emitWarning(i18n("Failed to subscribe to the folder '%1' on the IMAP server. "
-                         "It will disappear on next sync. Use the subscription dialog to overcome that",
-                         collection().name()));
+        emitWarning(
+            i18n("Failed to subscribe to the folder '%1' on the IMAP server. "
+                 "It will disappear on next sync. Use the subscription dialog to overcome that",
+                 collection().name()));
     }
 
     changeCommitted(collection());

@@ -26,20 +26,18 @@
 #include <KRandom>
 #include <QTemporaryDir>
 
-#include <QTest>
-#include <QRandomGenerator>
-#include <QFileInfo>
-#include <QDir>
 #include <QCryptographicHash>
+#include <QDir>
+#include <QFileInfo>
+#include <QRandomGenerator>
+#include <QTest>
 
 using namespace Akonadi;
 using namespace KMBox;
 
 static bool fullEntryCompare(const MBoxEntry &a, const MBoxEntry &b)
 {
-    return a.messageOffset() == b.messageOffset()
-           && a.separatorSize() == b.separatorSize()
-           && a.messageSize() == b.messageSize();
+    return a.messageOffset() == b.messageOffset() && a.separatorSize() == b.separatorSize() && a.messageSize() == b.messageSize();
 }
 
 class ItemModifyTest : public QObject
@@ -306,8 +304,7 @@ void ItemModifyTest::testModifyPayload()
 
     QCOMPARE(md1.entryList(), entryList1);
 
-    QCOMPARE(md1.readEntry(entryList1.first()).size(),
-             msgPtr->encodedContent().size());
+    QCOMPARE(md1.readEntry(entryList1.first()).size(), msgPtr->encodedContent().size());
     QCOMPARE(md1.readEntry(entryList1.first()), msgPtr->encodedContent());
 
     // check for index preservation
@@ -348,7 +345,7 @@ void ItemModifyTest::testModifyPayload()
 
     QVERIFY(mbox2.load(mbox2.fileName()));
     MBoxEntry::List entryList = mbox2.entries();
-    QCOMPARE((int)entryList.count(), 5);   // mbox file not purged yet
+    QCOMPARE((int)entryList.count(), 5); // mbox file not purged yet
     QCOMPARE(entryList.last().messageOffset(), item.remoteId().toULongLong());
 
     var = job->property("compactStore");
@@ -366,7 +363,7 @@ void ItemModifyTest::testModifyPayload()
     QCOMPARE(collections.first(), collection2);
 
     FileStore::ItemFetchJob *itemFetch = mStore->fetchItem(item2);
-    QVERIFY(!itemFetch->exec());   // item at old offset gone
+    QVERIFY(!itemFetch->exec()); // item at old offset gone
 
     FileStore::StoreCompactJob *storeCompact = mStore->compactStore();
     QVERIFY(storeCompact->exec());
@@ -488,7 +485,7 @@ void ItemModifyTest::testModifyFlags()
 
     QCOMPARE(itemFetch->items().count(), 1);
     QEXPECT_FAIL("", "ItemFetch handling needs to be fixed to also fetch flags", Continue);
-    QVERIFY(itemFetch->items()[ 0 ].flags().contains("\\SEEN"));
+    QVERIFY(itemFetch->items()[0].flags().contains("\\SEEN"));
 
     // test modifying flags of an mbox item "succeeds" (no error) but does not change
     // anything in store or on disk
@@ -598,8 +595,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     job = mStore->modifyItem(item1);
     // setting \SEEN so indicate a flags change and
     // setting new subject so indicate a payload change
-    job->setParts(QSet<QByteArray>() << "FLAGS"
-                                     << QByteArray("PLD:") + QByteArray(MessagePart::Header));
+    job->setParts(QSet<QByteArray>() << "FLAGS" << QByteArray("PLD:") + QByteArray(MessagePart::Header));
 
     QVERIFY(job->exec());
     QCOMPARE(job->error(), 0);

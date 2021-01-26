@@ -11,15 +11,15 @@
 #include <AkonadiAgentBase/AgentBase>
 #include <AkonadiCore/ItemFetchScope>
 
-#include "ewssyncfolderitemsrequest.h"
 #include "ewsclient.h"
-#include "ewsmailbox.h"
-#include "ewsitemhandler.h"
 #include "ewsfetchitemdetailjob.h"
-#include "tags/ewstagstore.h"
-#include "tags/ewsakonaditagssyncjob.h"
+#include "ewsitemhandler.h"
+#include "ewsmailbox.h"
 #include "ewsresource.h"
 #include "ewsresource_debug.h"
+#include "ewssyncfolderitemsrequest.h"
+#include "tags/ewsakonaditagssyncjob.h"
+#include "tags/ewstagstore.h"
 
 using namespace Akonadi;
 
@@ -71,7 +71,12 @@ static Q_CONSTEXPR int fetchBatchSize = 50;
  * to be safely ignored.
  */
 
-EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection, EwsClient &client, const QString &syncState, const EwsId::List &itemsToCheck, EwsTagStore *tagStore, EwsResource *parent)
+EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection,
+                                   EwsClient &client,
+                                   const QString &syncState,
+                                   const EwsId::List &itemsToCheck,
+                                   EwsTagStore *tagStore,
+                                   EwsResource *parent)
     : EwsJob(parent)
     , mCollection(collection)
     , mClient(client)
@@ -204,10 +209,8 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
                 compareItemLists();
             }
         }
-        const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size()
-                                +mRemoteFlagChangedIds.size();
-        Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(),
-                                                totalItems));
+        const auto totalItems = mRemoteAddedItems.size() + mRemoteChangedItems.size() + mRemoteDeletedIds.size() + mRemoteFlagChangedIds.size();
+        Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(), totalItems));
     }
 }
 
@@ -245,14 +248,15 @@ void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
     }
 }
 
-bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &items, QHash<QString, Item> &itemHash, QHash<EwsItemType, Item::List> &toFetchItems)
+bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &items,
+                                                           QHash<QString, Item> &itemHash,
+                                                           QHash<EwsItemType, Item::List> &toFetchItems)
 {
     Q_FOREACH (const EwsItem &ewsItem, items) {
         EwsId id(ewsItem[EwsItemFieldItemId].value<EwsId>());
         auto it = itemHash.find(id.id());
         if (it == itemHash.end()) {
-            setErrorMsg(QStringLiteral("Got update for item %1, but item not found in local store.")
-                        .arg(ewsHash(id.id())));
+            setErrorMsg(QStringLiteral("Got update for item %1, but item not found in local store.").arg(ewsHash(id.id())));
             emitResult();
             return false;
         }
@@ -347,8 +351,7 @@ void EwsFetchItemsJob::compareItemLists()
                     qCDebugNC(EWSRES_LOG) << QStringLiteral("Match for queued deletion of item %1").arg(ewsHash(id.id()));
                 }
                 if (!mItemsToCheck.contains(id) && qit == mQueuedUpdates[EwsDeletedEvent].end()) {
-                    setErrorMsg(QStringLiteral("Got delete for item %1, but item not found in local store.")
-                                .arg(ewsHash(id.id())));
+                    setErrorMsg(QStringLiteral("Got delete for item %1, but item not found in local store.").arg(ewsHash(id.id())));
                     emitResult();
                     return;
                 }
@@ -362,8 +365,7 @@ void EwsFetchItemsJob::compareItemLists()
         for (it = mRemoteFlagChangedIds.cbegin(); it != mRemoteFlagChangedIds.cend(); ++it) {
             QHash<QString, Item>::iterator iit = itemHash.find(it.key().id());
             if (iit == itemHash.end()) {
-                setErrorMsg(QStringLiteral("Got read flag change for item %1, but item not found in local store.")
-                            .arg(it.key().id()));
+                setErrorMsg(QStringLiteral("Got read flag change for item %1, but item not found in local store.").arg(it.key().id()));
                 emitResult();
                 return;
             }
@@ -374,9 +376,8 @@ void EwsFetchItemsJob::compareItemLists()
         }
     }
 
-    qCDebugNC(EWSRES_LOG) << QStringLiteral("Changed %2, deleted %3, new %4")
-        .arg(mRemoteChangedItems.size())
-        .arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
+    qCDebugNC(EWSRES_LOG)
+        << QStringLiteral("Changed %2, deleted %3, new %4").arg(mRemoteChangedItems.size()).arg(mDeletedItems.size()).arg(mRemoteAddedItems.size());
 
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
 
@@ -386,8 +387,7 @@ void EwsFetchItemsJob::compareItemLists()
             EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(iType));
             if (!handler) {
                 // TODO: Temporarily ignore unsupported item types.
-                qCWarning(EWSRES_LOG) << QStringLiteral("Unable to initialize fetch for item type %1")
-                    .arg(iType);
+                qCWarning(EWSRES_LOG) << QStringLiteral("Unable to initialize fetch for item type %1").arg(iType);
                 /*setErrorMsg(QStringLiteral("Unable to initialize fetch for item type %1").arg(iType));
                 emitResult();
                 return;*/
@@ -445,8 +445,7 @@ void EwsFetchItemsJob::syncTags()
         setErrorMsg(QStringLiteral("Missing tags encountered despite previous sync."));
         emitResult();
     } else {
-        auto job = new EwsAkonadiTagsSyncJob(mTagStore, mClient,
-                                                               qobject_cast<EwsResource *>(parent())->rootCollection(), this);
+        auto job = new EwsAkonadiTagsSyncJob(mTagStore, mClient, qobject_cast<EwsResource *>(parent())->rootCollection(), this);
         connect(job, &EwsAkonadiTagsSyncJob::result, this, &EwsFetchItemsJob::tagSyncFinished);
         job->start();
         mTagsSynced = true;

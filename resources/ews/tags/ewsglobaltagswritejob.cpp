@@ -8,11 +8,11 @@
 
 #include <AkonadiCore/Collection>
 
-#include "ewsupdatefolderrequest.h"
 #include "ewsid.h"
 #include "ewsitemhandler.h"
-#include "ewstagstore.h"
 #include "ewsresource.h"
+#include "ewstagstore.h"
+#include "ewsupdatefolderrequest.h"
 
 using namespace Akonadi;
 
@@ -33,13 +33,10 @@ void EwsGlobalTagsWriteJob::start()
     QStringList tagList = mTagStore->serialize();
 
     auto req = new EwsUpdateFolderRequest(mClient, this);
-    EwsUpdateFolderRequest::FolderChange fc(EwsId(mRootCollection.remoteId(), mRootCollection.remoteRevision()),
-                                            EwsFolderTypeMail);
-    EwsUpdateFolderRequest::Update *upd
-        = new EwsUpdateFolderRequest::SetUpdate(EwsResource::globalTagsProperty, tagList);
+    EwsUpdateFolderRequest::FolderChange fc(EwsId(mRootCollection.remoteId(), mRootCollection.remoteRevision()), EwsFolderTypeMail);
+    EwsUpdateFolderRequest::Update *upd = new EwsUpdateFolderRequest::SetUpdate(EwsResource::globalTagsProperty, tagList);
     fc.addUpdate(upd);
-    upd = new EwsUpdateFolderRequest::SetUpdate(EwsResource::globalTagsVersionProperty,
-                                                QString::number(mTagStore->version()));
+    upd = new EwsUpdateFolderRequest::SetUpdate(EwsResource::globalTagsVersionProperty, QString::number(mTagStore->version()));
     fc.addUpdate(upd);
     req->addFolderChange(fc);
     connect(req, &EwsUpdateFolderRequest::result, this, &EwsGlobalTagsWriteJob::updateFolderRequestFinished);

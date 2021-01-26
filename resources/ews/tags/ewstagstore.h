@@ -7,8 +7,8 @@
 #ifndef EWSTAGSTORE_H
 #define EWSTAGSTORE_H
 
-#include <AkonadiCore/Tag>
 #include <AkonadiCore/Item>
+#include <AkonadiCore/Tag>
 
 #include "ewspropertyfield.h"
 

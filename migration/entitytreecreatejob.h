@@ -7,9 +7,9 @@
 #ifndef ENTITYTREECREATEJOB_H
 #define ENTITYTREECREATEJOB_H
 
-#include <AkonadiCore/Job>
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
+#include <AkonadiCore/Job>
 #include <AkonadiCore/TransactionSequence>
 
 class EntityTreeCreateJob : public Akonadi::TransactionSequence

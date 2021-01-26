@@ -14,7 +14,8 @@
 #include "folder.h"
 #include "object.h"
 
-namespace OXA {
+namespace OXA
+{
 class ObjectsRequestJob : public KJob
 {
     Q_OBJECT
@@ -24,8 +25,8 @@ public:
      * Describes the mode of the request job.
      */
     enum Mode {
-        Modified,  ///< Fetches all new and modified objects
-        Deleted    ///< Fetches all deleted objects
+        Modified, ///< Fetches all new and modified objects
+        Deleted ///< Fetches all deleted objects
     };
 
     /**

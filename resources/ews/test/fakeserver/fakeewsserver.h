@@ -48,6 +48,7 @@ public:
 private Q_SLOTS:
     void newConnectionReceived();
     void streamingConnectionStarted(FakeEwsConnection *conn);
+
 private:
     void dataAvailable(QTcpSocket *sock);
     void sendError(QTcpSocket *sock, const QString &msg, ushort code = 500);

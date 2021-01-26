@@ -11,14 +11,15 @@
 
 #include "folder.h"
 
+#include <KCalendarCore/Incidence>
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <KCalendarCore/Incidence>
 
-#include <QVector>
 #include <QString>
+#include <QVector>
 
-namespace OXA {
+namespace OXA
+{
 class Object
 {
 public:
@@ -32,7 +33,7 @@ public:
      */
     enum ObjectStatus {
         Created, ///< The object has been created or modified.
-        Deleted  ///< The object has been deleted.
+        Deleted ///< The object has been deleted.
     };
 
     Object();

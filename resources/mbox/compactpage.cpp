@@ -6,11 +6,11 @@
 
 #include "compactpage.h"
 
+#include <KLocalizedString>
+#include <QUrl>
 #include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
-#include <KLocalizedString>
-#include <QUrl>
 
 #include "deleteditemsattribute.h"
 
@@ -34,8 +34,7 @@ void CompactPage::checkCollectionId()
     if (!mCollectionId.isEmpty()) {
         Collection collection;
         collection.setRemoteId(mCollectionId);
-        auto *fetchJob
-            = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+        auto *fetchJob = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
         connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
     }
@@ -47,8 +46,7 @@ void CompactPage::compact()
 
     Collection collection;
     collection.setRemoteId(mCollectionId);
-    auto *fetchJob
-        = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+    auto *fetchJob = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
     connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
 }
@@ -66,13 +64,11 @@ void CompactPage::onCollectionFetchCheck(KJob *job)
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr
-        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     if (!attr->deletedItemOffsets().isEmpty()) {
         ui.compactButton->setEnabled(true);
-        ui.messageLabel->setText(i18np("(1 message marked for deletion)",
-                                       "(%1 messages marked for deletion)", attr->deletedItemOffsets().size()));
+        ui.messageLabel->setText(i18np("(1 message marked for deletion)", "(%1 messages marked for deletion)", attr->deletedItemOffsets().size()));
     }
 }
 
@@ -89,8 +85,7 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr
-        = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     KMBox::MBox mbox;
     // TODO: Set lock method.
@@ -98,11 +93,9 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
     if (!mbox.load(fileName)) {
         ui.messageLabel->setText(i18n("Failed to load the mbox file"));
     } else {
-        ui.messageLabel->setText(i18np("(Deleting 1 message)",
-                                       "(Deleting %1 messages)", attr->offsetCount()));
+        ui.messageLabel->setText(i18np("(Deleting 1 message)", "(Deleting %1 messages)", attr->offsetCount()));
         // TODO: implement and connect to messageProcessed signal.
-        if (mbox.purge(attr->deletedItemEntries())
-            || (QFileInfo(fileName).size() == 0)) {
+        if (mbox.purge(attr->deletedItemEntries()) || (QFileInfo(fileName).size() == 0)) {
             // even if purge() failed but the file is now empty.
             // it was probably deleted/emptied by an external prog. For whatever reason
             // doesn't matter here. We know the file is empty so we can get rid

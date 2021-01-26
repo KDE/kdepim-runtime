@@ -9,8 +9,8 @@
 #define MIGRATIONSTATUSWIDGET_H
 
 #include "migrationscheduler.h"
-#include <QWidget>
 #include <QItemSelectionModel>
+#include <QWidget>
 
 class MigrationStatusWidget : public QWidget
 {

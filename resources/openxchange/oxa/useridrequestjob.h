@@ -11,7 +11,8 @@
 
 #include <KJob>
 
-namespace OXA {
+namespace OXA
+{
 class UserIdRequestJob : public KJob
 {
     Q_OBJECT

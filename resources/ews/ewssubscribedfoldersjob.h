@@ -7,8 +7,8 @@
 #ifndef EWSSUBSCRIBEDFOLDERSJOB_H
 #define EWSSUBSCRIBEDFOLDERSJOB_H
 
-#include "ewsjob.h"
 #include "ewsid.h"
+#include "ewsjob.h"
 
 class EwsClient;
 class EwsSettings;
@@ -30,6 +30,7 @@ public:
     static const EwsId::List &defaultSubscriptionFolders();
 private Q_SLOTS:
     void verifySubFoldersRequestFinished(KJob *job);
+
 private:
     EwsId::List mFolders;
     EwsClient &mClient;

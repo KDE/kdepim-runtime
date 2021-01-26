@@ -9,8 +9,8 @@
 
 #include <TransactionSequence>
 
-#include <QString>
 #include <AkonadiCore/Item>
+#include <QString>
 /**
  * This class stores the result of a StoreResultJob in an item.
  * First, it removes the 'queued' flag.

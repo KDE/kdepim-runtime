@@ -39,8 +39,7 @@ void EwsMoveFolderRequest::start()
 
     endSoapDocument(writer);
 
-    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting MoveFolder request (%1 folders, to %2)")
-        .arg(mIds.size()).arg(mDestFolderId.id());
+    qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Starting MoveFolder request (%1 folders, to %2)").arg(mIds.size()).arg(mDestFolderId.id());
 
     qCDebug(EWSCLI_PROTO_LOG) << reqString;
 
@@ -51,8 +50,7 @@ void EwsMoveFolderRequest::start()
 
 bool EwsMoveFolderRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("MoveFolder"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("MoveFolder"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -68,8 +66,7 @@ bool EwsMoveFolderRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - OK");
         } else {
-            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - %1")
-                .arg(resp.responseMessage());
+            qCDebug(EWSCLI_REQUEST_LOG) << QStringLiteral("Got MoveFolder response - %1").arg(resp.responseMessage());
         }
     }
     mResponses.append(resp);
@@ -85,8 +82,7 @@ EwsMoveFolderRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

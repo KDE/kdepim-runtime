@@ -10,7 +10,8 @@
 
 #include <QBuffer>
 
-namespace Kolab {
+namespace Kolab
+{
 void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &attachments, const KMime::Message::Ptr &mimeData)
 {
     if (!incidence) {
@@ -21,7 +22,7 @@ void getAttachments(KCalendarCore::Incidence::Ptr incidence, const QStringList &
         QByteArray type;
         KMime::Content *content = Mime::findContentByName(mimeData, name, type);
         if (!content) { // guard against malformed events with non-existent attachments
-            qCWarning(PIMKOLAB_LOG) <<"could not find attachment: "<< name.toUtf8() << type;
+            qCWarning(PIMKOLAB_LOG) << "could not find attachment: " << name.toUtf8() << type;
             continue;
         }
         const QByteArray c = content->decodedContent().toBase64();
@@ -40,7 +41,7 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
     }
     KMime::Content *imgContent = Mime::findContentByName(data, pictureAttachmentName /*"kolab-picture.png"*/, type);
     if (!imgContent) {
-        qCWarning(PIMKOLAB_LOG) <<"could not find picture: " << pictureAttachmentName;
+        qCWarning(PIMKOLAB_LOG) << "could not find picture: " << pictureAttachmentName;
         return QImage();
     }
     QByteArray imgData = imgContent->decodedContent();
@@ -50,27 +51,27 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
     bool success = false;
     if (type == "image/jpeg") {
         success = image.load(&buffer, "JPEG");
-        //FIXME I tried getting the code to interpret the picture as PNG, but the VCard implementation writes it as JPEG anyways...
-//         if (success) {
-//             QByteArray pic;
-//             QBuffer b(&pic);
-//             b.open(QIODevice::ReadWrite);
-//             Q_ASSERT(image.save(&b, "PNG"));
-//             b.close();
-//             Debug() << pic.toBase64();
-//             QBuffer b2(&pic);
-//             b2.open(QIODevice::ReadOnly);
-//             success = image.load(&b2, "PNG");
-//             b2.close();
-//             Q_ASSERT(success);
-//         }
+        // FIXME I tried getting the code to interpret the picture as PNG, but the VCard implementation writes it as JPEG anyways...
+        //         if (success) {
+        //             QByteArray pic;
+        //             QBuffer b(&pic);
+        //             b.open(QIODevice::ReadWrite);
+        //             Q_ASSERT(image.save(&b, "PNG"));
+        //             b.close();
+        //             Debug() << pic.toBase64();
+        //             QBuffer b2(&pic);
+        //             b2.open(QIODevice::ReadOnly);
+        //             success = image.load(&b2, "PNG");
+        //             b2.close();
+        //             Q_ASSERT(success);
+        //         }
     } else {
         type = "image/png";
         success = image.load(&buffer, "PNG");
     }
     buffer.close();
     if (!success) {
-        qCWarning(PIMKOLAB_LOG) <<"failed to load picture";
+        qCWarning(PIMKOLAB_LOG) << "failed to load picture";
     }
     return image;
 }
@@ -82,7 +83,7 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::
         return KContacts::Addressee();
     }
     KContacts::Addressee addressee;
-//     qCDebug(PIMKOLAB_LOG) << "xmlData " << xmlData;
+    //     qCDebug(PIMKOLAB_LOG) << "xmlData " << xmlData;
     KolabV2::Contact contact(QString::fromUtf8(xmlData));
     QByteArray type;
     const QString &pictureAttachmentName = contact.pictureAttachmentName();
@@ -104,7 +105,7 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::
             const QByteArray &sData = content->decodedContent();
             contact.setSound(sData);
         } else {
-            qCWarning(PIMKOLAB_LOG) <<"could not find sound: " << soundAttachmentName;
+            qCWarning(PIMKOLAB_LOG) << "could not find sound: " << soundAttachmentName;
         }
     }
     contact.saveTo(&addressee);
@@ -128,13 +129,13 @@ static QByteArray createPicture(const QImage &img, const QString & /*format*/, Q
     QBuffer buffer(&pic);
     buffer.open(QIODevice::WriteOnly);
     type = "image/png";
-    //FIXME it's not possible to save jpegs lossless, so we always use png. otherwise we would compress the image on every write.
-//     if (format == "image/jpeg") {
-//         type = "image/jpeg";
-//         img.save(&buffer, "JPEG");
-//     } else {
+    // FIXME it's not possible to save jpegs lossless, so we always use png. otherwise we would compress the image on every write.
+    //     if (format == "image/jpeg") {
+    //         type = "image/jpeg";
+    //         img.save(&buffer, "JPEG");
+    //     } else {
     img.save(&buffer, "PNG");
-//     }
+    //     }
     buffer.close();
     return pic;
 }
@@ -205,7 +206,7 @@ KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const QDateTime &cr
 {
     KolabV2::Note j;
     if (!j.load(QString::fromUtf8(xmlData))) {
-        qCWarning(PIMKOLAB_LOG) <<"failed to read note";
+        qCWarning(PIMKOLAB_LOG) << "failed to read note";
         return KMime::Message::Ptr();
     }
 
@@ -243,7 +244,7 @@ QByteArray noteToKolabXML(const KMime::Message::Ptr &msg)
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language)
 {
     QStringList dictionary;
-    const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData));   //TODO extract function from V2 format
+    const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData)); // TODO extract function from V2 format
     if (xmlDoc.isNull()) {
         qCCritical(PIMKOLAB_LOG) << "Failed to read the xml document";
         return QStringList();

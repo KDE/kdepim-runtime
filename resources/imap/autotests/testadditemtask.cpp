@@ -11,8 +11,8 @@
 
 #include "uidnextattribute.h"
 
-#include <kmime/kmime_message.h>
 #include <QTest>
+#include <kmime/kmime_message.h>
 
 class TestAddItemTask : public ImapTestBase
 {
@@ -23,7 +23,7 @@ private Q_SLOTS:
     {
         QTest::addColumn<Akonadi::Item>("item");
         QTest::addColumn<Akonadi::Collection>("collection");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection collection;
@@ -49,8 +49,7 @@ private Q_SLOTS:
         item.setPayload(message);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
                  << "S: A000003 OK append done [ APPENDUID 1239890035 66 ]";
 
         callNames.clear();
@@ -67,9 +66,7 @@ private Q_SLOTS:
         item.setPayload(message);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true)
-                 << "S: A000003 OK append done"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true) << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
                  << "C: A000005 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
@@ -82,9 +79,7 @@ private Q_SLOTS:
         QTest::newRow("no APPENDUID, message contained Message-ID") << item << collection << scenario << callNames;
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true)
-                 << "S: A000003 OK append done"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {90}\r\n" + message->encodedContent(true) << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
                  << "C: A000005 UID SEARCH HEADER Message-ID \"<42.4242.foo@bar.org>\""
@@ -103,9 +98,7 @@ private Q_SLOTS:
         item.setPayload(message);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true)
-                 << "S: A000003 OK append done"
+        scenario << defaultPoolConnectionScenario() << "C: A000003 APPEND \"INBOX/Foo\" {55}\r\n" + message->encodedContent(true) << "S: A000003 OK append done"
                  << "C: A000004 SELECT \"INBOX/Foo\""
                  << "S: A000004 OK select done"
                  << "C: A000005 UID SEARCH NEW UID 63:*"
@@ -133,7 +126,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);

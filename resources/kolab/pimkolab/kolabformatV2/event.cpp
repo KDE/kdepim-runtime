@@ -56,7 +56,7 @@ void Event::setEndDate(const QDateTime &date)
     mEndDate = date;
     mHasEndDate = true;
     if (mFloatingStatus == AllDay) {
-        qCDebug(PIMKOLAB_LOG) <<"ERROR: Time on end date but no time on the event";
+        qCDebug(PIMKOLAB_LOG) << "ERROR: Time on end date but no time on the event";
     }
     mFloatingStatus = HasTime;
 }
@@ -66,7 +66,7 @@ void Event::setEndDate(const QDate &date)
     mEndDate = QDateTime(date, QTime());
     mHasEndDate = true;
     if (mFloatingStatus == HasTime) {
-        qCDebug(PIMKOLAB_LOG) <<"ERROR: No time on end date but time on the event";
+        qCDebug(PIMKOLAB_LOG) << "ERROR: No time on end date but time on the event";
     }
     mFloatingStatus = AllDay;
 }
@@ -148,7 +148,7 @@ bool Event::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             loadAttribute(e);
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -190,7 +190,7 @@ void Event::saveTo(const KCalendarCore::Event::Ptr &event)
 {
     Incidence::saveTo(event);
 
-    //PORT KF5 ? method removed event->setHasEndDate( mHasEndDate );
+    // PORT KF5 ? method removed event->setHasEndDate( mHasEndDate );
     if (mHasEndDate) {
         if (mFloatingStatus == AllDay) {
             // This is an all-day event. Don't timezone move this one

@@ -13,12 +13,13 @@
 #include <Collection>
 #include <Item>
 
-#include <kimap/listjob.h>
 #include <kimap/acl.h>
+#include <kimap/listjob.h>
 
 #include "resourcestateinterface.h"
 
-namespace KIMAP {
+namespace KIMAP
+{
 class Session;
 }
 
@@ -29,10 +30,7 @@ class ResourceTask : public QObject
     Q_OBJECT
 
 public:
-    enum ActionIfNoSession {
-        CancelIfNoSession,
-        DeferIfNoSession
-    };
+    enum ActionIfNoSession { CancelIfNoSession, DeferIfNoSession };
     Q_ENUM(ActionIfNoSession)
 
     explicit ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = nullptr);

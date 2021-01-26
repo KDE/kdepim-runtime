@@ -10,12 +10,12 @@
 
 #include <imapresource.h>
 
-#include <collectionannotationsattribute.h>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/CachePolicy>
-#include <noselectattribute.h>
-#include <Akonadi/KMime/MessageParts>
 #include "kolabresource_debug.h"
+#include <Akonadi/KMime/MessageParts>
+#include <AkonadiCore/CachePolicy>
+#include <AkonadiCore/EntityDisplayAttribute>
+#include <collectionannotationsattribute.h>
+#include <noselectattribute.h>
 
 KolabResourceState::KolabResourceState(ImapResourceBase *resource, const TaskArguments &arguments)
     : ResourceState(resource, arguments)
@@ -38,7 +38,7 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
             attr->setIconName(icon);
         }
         if (folderType != Kolab::MailType) {
-            //Groupware data always requires the full message, because it cannot translate without the body
+            // Groupware data always requires the full message, because it cannot translate without the body
             Akonadi::CachePolicy cachePolicy = col.cachePolicy();
             QStringList localParts = cachePolicy.localParts();
             if (!localParts.contains(QLatin1String(Akonadi::MessagePart::Body))) {
@@ -51,12 +51,12 @@ static Akonadi::Collection processAnnotations(const Akonadi::Collection &collect
             }
         }
         if (folderType == Kolab::ConfigurationType) {
-            //we want to hide this folder from indexing and display, but still have the data available locally.
+            // we want to hide this folder from indexing and display, but still have the data available locally.
             col.setEnabled(false);
             col.setShouldList(Akonadi::Collection::ListSync, true);
         }
         if (!KolabHelpers::isHandledType(folderType)) {
-            //If we don't handle the folder, make sure we don't download the messages
+            // If we don't handle the folder, make sure we don't download the messages
             col.attribute<NoSelectAttribute>(Akonadi::Collection::AddIfMissing);
         }
         return col;

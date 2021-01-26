@@ -12,10 +12,10 @@
 #include <highestmodseqattribute.h>
 #include <uidvalidityattribute.h>
 
+#include <QTest>
+#include <akonadi/kmime/messageparts.h>
 #include <cachepolicy.h>
 #include <collectionstatistics.h>
-#include <akonadi/kmime/messageparts.h>
-#include <QTest>
 class TestRetrieveItemsTask : public ImapTestBase
 {
     Q_OBJECT
@@ -24,7 +24,7 @@ private Q_SLOTS:
     void shouldIntrospectCollection_data()
     {
         QTest::addColumn<Akonadi::Collection>("collection");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QStringList>("callNames");
 
         Akonadi::Collection collection;
@@ -35,8 +35,7 @@ private Q_SLOTS:
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -52,15 +51,15 @@ private Q_SLOTS:
                  << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
-            "BODY.PEEK[HEADER] "
-            "FLAGS UID)"
+                    "BODY.PEEK[HEADER] "
+                    "FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    " )"
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
@@ -69,8 +68,7 @@ private Q_SLOTS:
         QTest::newRow("first listing, connected IMAP") << collection << scenario << callNames;
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << R"(S: * FLAGS (\Answered \Flagged \Draft \Deleted \Seen))"
                  << R"(S: * OK [ PERMANENTFLAGS (\Answered \Flagged \Draft \Deleted \Seen) ])"
                  << "S: * 1 EXISTS"
@@ -82,15 +80,15 @@ private Q_SLOTS:
                  << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
                  << "S: A000004 OK search done"
                  << "C: A000005 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE "
-            "BODY.PEEK[HEADER] "
-            "FLAGS UID)"
+                    "BODY.PEEK[HEADER] "
+                    "FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[HEADER] {69}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    " )"
                  << "S: A000005 OK fetch done";
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
@@ -98,8 +96,7 @@ private Q_SLOTS:
         QTest::newRow("retrieval from read-only mailbox (no expunge)") << collection << scenario << callNames;
 
         Akonadi::CachePolicy policy;
-        policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope)
-                                           << QLatin1String(Akonadi::MessagePart::Header)
+        policy.setLocalParts(QStringList() << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header)
                                            << QLatin1String(Akonadi::MessagePart::Body));
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -107,8 +104,7 @@ private Q_SLOTS:
         collection.setCachePolicy(policy);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -125,13 +121,13 @@ private Q_SLOTS:
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 7 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
@@ -149,8 +145,7 @@ private Q_SLOTS:
         collection.setStatistics(stats);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -170,10 +165,11 @@ private Q_SLOTS:
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
 
-        //Disabled test since the flag sync is disabled if CONDSTORE is not supported
-//     QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
+        // Disabled test since the flag sync is disabled if CONDSTORE is not supported
+        //     QTest::newRow( "second listing, checking for flag changes" ) << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
         collection.attribute<UidValidityAttribute>(Akonadi::Collection::AddIfMissing)->setUidValidity(1149151135);
@@ -181,8 +177,7 @@ private Q_SLOTS:
         stats.setCount(1);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -205,8 +200,7 @@ private Q_SLOTS:
         collection.setStatistics(stats);
         collection.attribute<HighestModSeqAttribute>(Akonadi::Collection::AddIfMissing)->setHighestModSeq(123456788);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -224,13 +218,13 @@ private Q_SLOTS:
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
                  << "S: A000007 OK fetch done"
                  << "C: A000008 UID SEARCH UID 1:7"
                  << "S: * SEARCH 1 2 3 4 5 6 7"
@@ -243,17 +237,17 @@ private Q_SLOTS:
                  << "S: A000009 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
 
-        //We know no messages have been removed, so we can do an incremental update
+        // We know no messages have been removed, so we can do an incremental update
         QTest::newRow("uidnext changed, fetch new messages incrementally") << collection << scenario << callNames;
 
         collection.attribute<UidNextAttribute>(Akonadi::Collection::AddIfMissing)->setUidNext(8);
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -271,21 +265,21 @@ private Q_SLOTS:
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 8:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 4 FETCH ( FLAGS (\\Seen) UID 8 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
                  << "S: * 5 FETCH ( FLAGS (\\Seen) UID 9 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
                  << "S: A000007 OK fetch done"
                  << "C: A000008 UID SEARCH UID 1:7"
                  << "S: * SEARCH 1 2 3 4 5 6 7"
@@ -299,7 +293,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
-        //A new message has been added and an old one removed, we can't do an incremental update
+        // A new message has been added and an old one removed, we can't do an incremental update
         QTest::newRow("uidnext changed, fetch new messages and list flags") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -310,8 +304,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE")
-                 << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -327,7 +320,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
-        //No flags have changed
+        // No flags have changed
         QTest::newRow("highestmodseq test") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -338,8 +331,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE")
-                 << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -356,9 +348,10 @@ private Q_SLOTS:
                  << "S: * 5 FETCH ( UID 8 FLAGS () )"
                  << "S: A000006 OK fetch done";
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
 
-        //fetch only changed flags
+        // fetch only changed flags
         QTest::newRow("changedsince test") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -369,8 +362,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "XYMHIGHESTMODSEQ")
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "XYMHIGHESTMODSEQ") << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -383,19 +375,20 @@ private Q_SLOTS:
                  << "S: * OK [ UIDNEXT 9 ]"
                  << "S: * OK [ HIGHESTMODSEQ 123456789 ]"
                  << "S: A000005 OK select done";
-        //Disabled since the flag sync is disabled if CONDSTORE is not supported
-//              << "C: A000006 UID SEARCH UID 1:9"
-//              << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
-//              << "S: A000006 OK search done"
-//              << "C: A000007 UID FETCH 1:9 (FLAGS UID)"
-//              << "S: * 5 FETCH ( UID 8 FLAGS () )"
-//              << "S: A000007 OK fetch done";
+        // Disabled since the flag sync is disabled if CONDSTORE is not supported
+        //              << "C: A000006 UID SEARCH UID 1:9"
+        //              << "S: * SEARCH 1 2 3 4 5 6 7 8 9"
+        //              << "S: A000006 OK search done"
+        //              << "C: A000007 UID FETCH 1:9 (FLAGS UID)"
+        //              << "S: * 5 FETCH ( UID 8 FLAGS () )"
+        //              << "S: A000007 OK fetch done";
         callNames.clear();
 
-        //Disabled since the flag sync is disabled if CONDSTORE is not supported
-        callNames << /*"itemsRetrievedIncremental" << */ QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        // Disabled since the flag sync is disabled if CONDSTORE is not supported
+        callNames << /*"itemsRetrievedIncremental" << */ QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("itemsRetrievalDone");
 
-        //Don't rely on yahoos highestmodseq implementation
+        // Don't rely on yahoos highestmodseq implementation
         QTest::newRow("yahoo highestmodseq test") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -406,8 +399,7 @@ private Q_SLOTS:
         collection.setStatistics(stats);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -424,13 +416,13 @@ private Q_SLOTS:
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
                  << "S: A000007 OK fetch done";
 
         callNames.clear();
@@ -446,8 +438,7 @@ private Q_SLOTS:
         collection.setStatistics(stats);
 
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -460,42 +451,42 @@ private Q_SLOTS:
                  << "S: * OK [ UIDNEXT 120  ]"
                  << "S: A000005 OK select done"
                  << "C: A000006 UID SEARCH UID 105:120"
-            //We asked for until 120 but only 119 is available (120 is uidnext)
+                 // We asked for until 120 but only 119 is available (120 is uidnext)
                  << "S: * SEARCH 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119"
                  << "S: A000006 OK search done"
                  << "C: A000007 UID FETCH 105:114 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 105 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
-            //9 more would follow but are excluded for clarity
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
+                 // 9 more would follow but are excluded for clarity
                  << "S: A000007 OK fetch done"
                  << "C: A000008 UID FETCH 115:119 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 115 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
-            //4 more would follow but are excluded for clarity
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
+                 // 4 more would follow but are excluded for clarity
                  << "S: A000008 OK fetch done"
                  << "C: A000009 UID SEARCH UID 1:104"
                  << "S: * SEARCH 1 2 99 100"
                  << "S: A000009 OK search done"
                  << "C: A000010 UID FETCH 1:2,99:100 (FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 1 )"
-            //3 more would follow but are excluded for clarity
+                 // 3 more would follow but are excluded for clarity
                  << "S: A000010 OK fetch done";
 
         callNames.clear();
-        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral(
-            "applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
+        callNames << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievedIncremental")
+                  << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievedIncremental") << QStringLiteral("itemsRetrievalDone");
 
         QTest::newRow("test batch processing") << collection << scenario << callNames;
 
@@ -507,8 +498,7 @@ private Q_SLOTS:
         stats.setCount(5);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE")
-                 << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
+        scenario << defaultPoolConnectionScenario(QList<QByteArray>() << "CONDSTORE") << "C: A000003 SELECT \"INBOX/Foo\" (CONDSTORE)"
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge DONE"
@@ -533,7 +523,7 @@ private Q_SLOTS:
         callNames.clear();
         callNames << QStringLiteral("itemsRetrieved") << QStringLiteral("applyCollectionChanges") << QStringLiteral("itemsRetrievalDone");
 
-        //fetch only changed flags
+        // fetch only changed flags
         QTest::newRow("remote message deleted") << collection << scenario << callNames;
 
         collection = createCollectionChain(QStringLiteral("/INBOX/Foo"));
@@ -544,8 +534,7 @@ private Q_SLOTS:
         stats.setCount(0);
         collection.setStatistics(stats);
         scenario.clear();
-        scenario << defaultPoolConnectionScenario()
-                 << "C: A000003 SELECT \"INBOX/Foo\""
+        scenario << defaultPoolConnectionScenario() << "C: A000003 SELECT \"INBOX/Foo\""
                  << "S: A000003 OK select done"
                  << "C: A000004 EXPUNGE"
                  << "S: A000004 OK expunge done"
@@ -564,13 +553,13 @@ private Q_SLOTS:
                  << "S: A000007 OK search done"
                  << "C: A000008 UID FETCH 1:9 (RFC822.SIZE INTERNALDATE BODY.PEEK[] FLAGS UID)"
                  << "S: * 1 FETCH ( FLAGS (\\Seen) UID 2321 INTERNALDATE \"29-Jun-2010 15:26:42 +0200\" "
-            "RFC822.SIZE 75 BODY[] {75}\r\n"
-            "From: Foo <foo@kde.org>\r\n"
-            "To: Bar <bar@kde.org>\r\n"
-            "Subject: Test Mail\r\n"
-            "\r\n"
-            "Test\r\n"
-            " )"
+                    "RFC822.SIZE 75 BODY[] {75}\r\n"
+                    "From: Foo <foo@kde.org>\r\n"
+                    "To: Bar <bar@kde.org>\r\n"
+                    "Subject: Test Mail\r\n"
+                    "\r\n"
+                    "Test\r\n"
+                    " )"
                  << "S: A000008 OK fetch done";
 
         callNames.clear();
@@ -593,7 +582,7 @@ private Q_SLOTS:
 
         pool.setPasswordRequester(createDefaultRequester());
         QVERIFY(pool.connect(createDefaultAccount()));
-        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int,QString))));
+        QVERIFY(waitForSignal(&pool, SIGNAL(connectDone(int, QString))));
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setServerCapabilities(pool.serverCapabilities());

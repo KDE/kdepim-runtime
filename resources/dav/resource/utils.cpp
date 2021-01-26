@@ -12,18 +12,18 @@
 #include <KDAV/ProtocolInfo>
 
 #include <AkonadiCore/Collection>
-#include <KContacts/Addressee>
-#include <KContacts/VCardConverter>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/Incidence>
 #include <KCalendarCore/MemoryCalendar>
+#include <KContacts/Addressee>
+#include <KContacts/VCardConverter>
 
 #include <KLocalizedString>
 
 #include <QByteArray>
+#include <QRandomGenerator>
 #include <QString>
 #include <QTimeZone>
-#include <QRandomGenerator>
 
 #include "davresource_debug.h"
 

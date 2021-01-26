@@ -7,15 +7,15 @@
 
 #include "settingspasswordrequester.h"
 
-#include <KMessageBox>
 #include <KLocalizedString>
+#include <KMessageBox>
 
-#include <mailtransport/transportbase.h>
-#include <kwindowsystem.h>
 #include "imapresource_debug.h"
+#include <KPasswordDialog>
 #include <QDialogButtonBox>
 #include <QPushButton>
-#include <KPasswordDialog>
+#include <kwindowsystem.h>
+#include <mailtransport/transportbase.h>
 
 #include "imapresourcebase.h"
 #include "settings.h"
@@ -36,8 +36,7 @@ void SettingsPasswordRequester::requestPassword(RequestType request, const QStri
     if (request == WrongPasswordRequest) {
         QMetaObject::invokeMethod(this, "askUserInput", Qt::QueuedConnection, Q_ARG(QString, serverError));
     } else {
-        connect(m_resource->settings(), &Settings::passwordRequestCompleted,
-                this, &SettingsPasswordRequester::onPasswordRequestCompleted);
+        connect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
         m_resource->settings()->requestPassword();
     }
 }
@@ -50,10 +49,13 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
         return;
     }
     QWidget *parent = QWidget::find(m_resource->winIdForDialogs());
-    QString text = i18n("The server for account \"%2\" refused the supplied username and password.\n"
-                        "Do you want to go to the settings, have another attempt "
-                        "at logging in, or do nothing?\n\n"
-                        "%1", serverError, m_resource->name());
+    QString text = i18n(
+        "The server for account \"%2\" refused the supplied username and password.\n"
+        "Do you want to go to the settings, have another attempt "
+        "at logging in, or do nothing?\n\n"
+        "%1",
+        serverError,
+        m_resource->name());
     QDialog *dialog = new QDialog(parent, Qt::Dialog);
     dialog->setWindowTitle(i18nc("@title:window", "Could Not Authenticate"));
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel | QDialogButtonBox::No | QDialogButtonBox::Yes, dialog);
@@ -71,10 +73,7 @@ void SettingsPasswordRequester::askUserInput(const QString &serverError)
     dialog->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dialog->windowHandle(), m_resource->winIdForDialogs());
     bool checkboxResult = false;
-    KMessageBox::createKMessageBox(dialog, buttonBox, QMessageBox::Information,
-                                   text, QStringList(),
-                                   QString(),
-                                   &checkboxResult, KMessageBox::NoExec);
+    KMessageBox::createKMessageBox(dialog, buttonBox, QMessageBox::Information, text, QStringList(), QString(), &checkboxResult, KMessageBox::NoExec);
     dialog->show();
 }
 
@@ -85,8 +84,7 @@ void SettingsPasswordRequester::onDialogDestroyed()
 
 void SettingsPasswordRequester::slotNoClicked()
 {
-    connect(m_resource->settings(), &Settings::passwordRequestCompleted,
-            this, &SettingsPasswordRequester::onPasswordRequestCompleted);
+    connect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
     requestManualAuth(nullptr);
     m_requestDialog = nullptr;
 }
@@ -129,8 +127,7 @@ void SettingsPasswordRequester::cancelPasswordRequests()
 
 void SettingsPasswordRequester::onPasswordRequestCompleted(const QString &password, bool userRejected)
 {
-    disconnect(m_resource->settings(), &Settings::passwordRequestCompleted,
-               this, &SettingsPasswordRequester::onPasswordRequestCompleted);
+    disconnect(m_resource->settings(), &Settings::passwordRequestCompleted, this, &SettingsPasswordRequester::onPasswordRequestCompleted);
 
     QString pwd = password;
     if (userRejected || pwd.isEmpty()) {
@@ -150,8 +147,7 @@ QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
 {
     QScopedPointer<KPasswordDialog> dlg(new KPasswordDialog(nullptr));
     dlg->setModal(true);
-    dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.",
-                        m_resource->settings()->userName(), m_resource->settings()->imapServer()));
+    dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.", m_resource->settings()->userName(), m_resource->settings()->imapServer()));
     dlg->setPassword(m_resource->settings()->password());
     if (dlg->exec()) {
         if (userRejected) {

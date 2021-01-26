@@ -19,8 +19,7 @@ static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 GoogleSettings::GoogleSettings()
     : m_winId(0)
 {
-    m_wallet = Wallet::openWallet(Wallet::NetworkWallet(),
-                                  m_winId, Wallet::Asynchronous);
+    m_wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
     if (m_wallet) {
         connect(m_wallet.data(), &Wallet::walletOpened, this, &GoogleSettings::slotWalletOpened);
     } else {
@@ -36,8 +35,7 @@ void GoogleSettings::slotWalletOpened(bool success)
         return;
     }
 
-    if (!m_wallet->hasFolder(googleWalletFolder)
-        && !m_wallet->createFolder(googleWalletFolder)) {
+    if (!m_wallet->hasFolder(googleWalletFolder) && !m_wallet->createFolder(googleWalletFolder)) {
         qCWarning(GOOGLE_LOG) << "Failed to create wallet folder" << googleWalletFolder;
         Q_EMIT accountReady(false);
         return;
@@ -72,10 +70,7 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromWallet(const QString &account
     for (const QString &scope : scopes) {
         scopeUrls << QUrl(scope);
     }
-    AccountPtr account(new Account(accountName,
-                                   map[QStringLiteral("accessToken")],
-                                   map[QStringLiteral("refreshToken")],
-                                   scopeUrls));
+    AccountPtr account(new Account(accountName, map[QStringLiteral("accessToken")], map[QStringLiteral("refreshToken")], scopeUrls));
     return account;
 }
 

@@ -9,10 +9,11 @@
 
 #include <AkonadiCore/ItemFetchJob>
 
-#include "ewsjob.h"
 #include "ewsfinditemrequest.h"
+#include "ewsjob.h"
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 }
 class EwsClient;
@@ -31,7 +32,12 @@ public:
 
     typedef QList<QueuedUpdate> QueuedUpdateList;
 
-    EwsFetchItemsJob(const Akonadi::Collection &collection, EwsClient &client, const QString &syncState, const EwsId::List &itemsToCheck, EwsTagStore *tagStore, EwsResource *parent);
+    EwsFetchItemsJob(const Akonadi::Collection &collection,
+                     EwsClient &client,
+                     const QString &syncState,
+                     const EwsId::List &itemsToCheck,
+                     EwsTagStore *tagStore,
+                     EwsResource *parent);
     ~EwsFetchItemsJob() override;
 
     Akonadi::Item::List changedItems() const
@@ -66,16 +72,19 @@ private Q_SLOTS:
 Q_SIGNALS:
     void status(int status, const QString &message = QString());
     void percent(int progress);
+
 private:
     void compareItemLists();
     void syncTags();
-    bool processIncrementalRemoteItemUpdates(const EwsItem::List &items, QHash<QString, Akonadi::Item> &itemHash, QHash<EwsItemType, Akonadi::Item::List> &toFetchItems);
+    bool processIncrementalRemoteItemUpdates(const EwsItem::List &items,
+                                             QHash<QString, Akonadi::Item> &itemHash,
+                                             QHash<EwsItemType, Akonadi::Item::List> &toFetchItems);
 
     /*struct QueuedUpdateInt {
         QString changeKey;
         EwsEventType type;
     };*/
-    typedef QHash<EwsEventType, QHash<QString, QString> > QueuedUpdateHash;
+    typedef QHash<EwsEventType, QHash<QString, QString>> QueuedUpdateHash;
 
     const Akonadi::Collection mCollection;
     EwsClient &mClient;

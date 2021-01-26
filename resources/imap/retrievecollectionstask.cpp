@@ -7,14 +7,14 @@
 
 #include "retrievecollectionstask.h"
 
-#include "noselectattribute.h"
 #include "noinferiorsattribute.h"
+#include "noselectattribute.h"
 
+#include <Akonadi/KMime/MessageParts>
+#include <AkonadiCore/SpecialCollectionAttribute>
+#include <AkonadiCore/VectorHelper>
 #include <cachepolicy.h>
 #include <entitydisplayattribute.h>
-#include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/VectorHelper>
-#include <AkonadiCore/SpecialCollectionAttribute>
 
 #include <kmime/kmime_message.h>
 
@@ -51,8 +51,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     }
 
     QStringList localParts;
-    localParts << QLatin1String(Akonadi::MessagePart::Envelope)
-               << QLatin1String(Akonadi::MessagePart::Header);
+    localParts << QLatin1String(Akonadi::MessagePart::Envelope) << QLatin1String(Akonadi::MessagePart::Header);
     int cacheTimeout = 60;
 
     if (isDisconnectedModeEnabled()) {
@@ -77,8 +76,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
         auto fullListJob = new KIMAP::ListJob(session);
         fullListJob->setIncludeUnsubscribed(true);
         fullListJob->setQueriedNamespaces(serverNamespaces());
-        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived,
-                this, &RetrieveCollectionsTask::onFullMailBoxesReceived);
+        connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived, this, &RetrieveCollectionsTask::onFullMailBoxesReceived);
         connect(fullListJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onFullMailBoxesReceiveDone);
         fullListJob->start();
     }
@@ -86,15 +84,14 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     auto listJob = new KIMAP::ListJob(session);
     listJob->setIncludeUnsubscribed(!isSubscriptionEnabled());
     listJob->setQueriedNamespaces(serverNamespaces());
-    connect(listJob, &KIMAP::ListJob::mailBoxesReceived,
-            this, &RetrieveCollectionsTask::onMailBoxesReceived);
+    connect(listJob, &KIMAP::ListJob::mailBoxesReceived, this, &RetrieveCollectionsTask::onMailBoxesReceived);
     connect(listJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onMailBoxesReceiveDone);
     listJob->start();
 }
 
-void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList<QByteArray> > &flags)
+void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags)
 {
-    const QStringList contentTypes = { KMime::Message::mimeType(), Akonadi::Collection::mimeType()};
+    const QStringList contentTypes = {KMime::Message::mimeType(), Akonadi::Collection::mimeType()};
 
     if (!descriptors.isEmpty()) {
         // This is still not optimal way of getting the separator, but it's better
@@ -112,11 +109,9 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
         }
 
         const QString separator = descriptor.separator;
-        Q_ASSERT(separator.size() == 1);   // that's what the spec says
+        Q_ASSERT(separator.size() == 1); // that's what the spec says
 
-        const QString boxName = descriptor.name.endsWith(separator)
-                                ? descriptor.name.left(descriptor.name.size() - 1)
-                                : descriptor.name;
+        const QString boxName = descriptor.name.endsWith(separator) ? descriptor.name.left(descriptor.name.size() - 1) : descriptor.name;
 
         const QStringList pathParts = boxName.split(separator);
 
@@ -133,7 +128,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
                 if (m_dummyCollections.contains(currentPath) && !isDummy) {
                     qCDebug(IMAPRESOURCE_LOG) << "Received the real collection for a dummy one : " << currentPath;
 
-                    //set the correct attributes for the collection, eg. noselect needs to be removed
+                    // set the correct attributes for the collection, eg. noselect needs to be removed
                     Akonadi::Collection c = m_reportedCollections.value(currentPath);
                     c.setContentMimeTypes(contentTypes);
                     c.setRights(Akonadi::Collection::AllRights);
@@ -185,7 +180,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList< KIMAP::MailBoxDes
 
             // If this folder is a noinferiors folder, it is not allowed to create subfolders inside.
             if (currentFlags.contains("\\noinferiors")) {
-                //qCDebug(IMAPRESOURCE_LOG) << "Noinferiors: " << currentPath;
+                // qCDebug(IMAPRESOURCE_LOG) << "Noinferiors: " << currentPath;
                 c.addAttribute(new NoInferiorsAttribute(true));
                 c.setRights(c.rights() & ~Akonadi::Collection::CanCreateCollection);
             }
@@ -210,7 +205,7 @@ void RetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
     }
 }
 
-void RetrieveCollectionsTask::onFullMailBoxesReceived(const QList< KIMAP::MailBoxDescriptor > &descriptors, const QList< QList< QByteArray > > &flags)
+void RetrieveCollectionsTask::onFullMailBoxesReceived(const QList<KIMAP::MailBoxDescriptor> &descriptors, const QList<QList<QByteArray>> &flags)
 {
     Q_UNUSED(flags)
     for (const KIMAP::MailBoxDescriptor &descriptor : descriptors) {

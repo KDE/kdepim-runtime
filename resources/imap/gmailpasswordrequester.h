@@ -13,7 +13,8 @@
 
 class ImapResourceBase;
 
-namespace KGAPI2 {
+namespace KGAPI2
+{
 class AccountPromise;
 }
 

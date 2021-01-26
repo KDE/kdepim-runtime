@@ -17,12 +17,7 @@ class EwsUnsubscribeRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-
-    enum Type {
-        PullSubscription = 0,
-        PushSubscription,
-        StreamingSubscription
-    };
+    enum Type { PullSubscription = 0, PushSubscription, StreamingSubscription };
 
     class Response : public EwsRequest::Response
     {
@@ -46,9 +41,11 @@ public:
     }
 
     void start() override;
+
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseUnsubscribeResponse(QXmlStreamReader &reader);
+
 private:
     QString mSubscriptionId;
 

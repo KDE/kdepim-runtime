@@ -8,13 +8,15 @@
 #ifndef GOOGLESETTINGSDIALOG_H
 #define GOOGLESETTINGSDIALOG_H
 
-#include <QDialog>
 #include <KGAPI/Types>
+#include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class GoogleSettingsDialog;
 }
-namespace KGAPI2 {
+namespace KGAPI2
+{
 class Job;
 }
 class GoogleResource;
@@ -26,9 +28,11 @@ class GoogleSettingsDialog : public QDialog
 public:
     explicit GoogleSettingsDialog(GoogleResource *resource, GoogleSettings *settings, WId wId);
     ~GoogleSettingsDialog();
+
 protected:
     bool handleError(KGAPI2::Job *job);
     void accountChanged();
+
 private:
     GoogleResource *const m_resource;
     GoogleSettings *const m_settings;

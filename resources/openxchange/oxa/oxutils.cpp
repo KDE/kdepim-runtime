@@ -36,7 +36,7 @@ QString OXUtils::writeString(const QString &value)
 
 QString OXUtils::writeName(const QString &value)
 {
-    //TODO: assert on invalid names
+    // TODO: assert on invalid names
     return value;
 }
 
@@ -44,7 +44,7 @@ QString OXUtils::writeDateTime(const QDateTime &value)
 {
     QString result;
 
-    //workaround, as QDateTime does not support negative time_t values
+    // workaround, as QDateTime does not support negative time_t values
     QDateTime Time_t_S(QDate(1970, 1, 1), QTime(0, 0, 0), Qt::UTC);
 
     if (value < Time_t_S) {
@@ -97,7 +97,7 @@ QDateTime OXUtils::readDateTime(const QString &text)
     // remove the trailing '000', they exceed the integer dimension
     const int ticks = text.mid(0, text.length() - 3).toLongLong();
 
-    //workaround, as QDateTime does not support negative time_t values
+    // workaround, as QDateTime does not support negative time_t values
     QDateTime value;
     if (ticks < 0) {
         value = QDateTime::fromSecsSinceEpoch(0);

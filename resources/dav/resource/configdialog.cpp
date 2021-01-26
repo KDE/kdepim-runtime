@@ -7,8 +7,8 @@
 #include "configdialog.h"
 #include "searchdialog.h"
 #include "settings.h"
-#include "utils.h"
 #include "urlconfigurationdialog.h"
+#include "utils.h"
 
 #include <KDAV/ProtocolInfo>
 
@@ -16,12 +16,12 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
+#include <QDialogButtonBox>
 #include <QPointer>
-#include <QStringList>
 #include <QStandardItem>
 #include <QStandardItemModel>
+#include <QStringList>
 #include <QVBoxLayout>
-#include <QDialogButtonBox>
 
 ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
@@ -40,7 +40,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     mainLayout->addWidget(buttonBox);
 
     mModel = new QStandardItemModel();
-    const QStringList headers = { i18n("Protocol"), i18n("URL") };
+    const QStringList headers = {i18n("Protocol"), i18n("URL")};
     mModel->setHorizontalHeaderLabels(headers);
 
     mUi.configuredUrls->setModel(mModel);
@@ -130,8 +130,9 @@ void ConfigDialog::onAddButtonClicked()
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
         if (Settings::self()->urlConfiguration(KDAV::Protocol(dlg->protocol()), dlg->remoteUrl())) {
-            KMessageBox::error(this, i18n("Another configuration entry already uses the same URL/protocol couple.\n"
-                                          "Please use a different URL"));
+            KMessageBox::error(this,
+                               i18n("Another configuration entry already uses the same URL/protocol couple.\n"
+                                    "Please use a different URL"));
         } else {
             auto urlConfig = new Settings::UrlConfiguration();
 

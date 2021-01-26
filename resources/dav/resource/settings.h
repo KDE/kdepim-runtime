@@ -92,7 +92,7 @@ public:
     void removeUrlConfiguration(KDAV::Protocol protocol, const QString &url);
     UrlConfiguration *urlConfiguration(KDAV::Protocol protocol, const QString &url);
 
-    //KDAV::Protocol protocol( const QString &url ) const;
+    // KDAV::Protocol protocol( const QString &url ) const;
     QString username(KDAV::Protocol protocol, const QString &url) const;
     QString password(KDAV::Protocol protocol, const QString &url);
     QDateTime getSyncRangeStart() const;

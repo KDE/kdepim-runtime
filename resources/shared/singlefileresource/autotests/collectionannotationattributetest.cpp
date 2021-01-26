@@ -4,9 +4,8 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QTest>
-#include <QTest>
 #include "../collectionannotationsattribute.h"
+#include <QTest>
 
 typedef QMap<QByteArray, QByteArray> Annotation;
 Q_DECLARE_METATYPE(Annotation)

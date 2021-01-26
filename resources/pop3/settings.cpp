@@ -15,7 +15,8 @@ Settings::Settings(const KSharedConfigPtr &config, Options options)
 {
     if (options & Option::ExportToDBus) {
         new SettingsAdaptor(this);
-        QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
+        QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                     this,
                                                      QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
     }
 }

@@ -13,8 +13,8 @@
 #include <KLocalizedString>
 #include <QUrl>
 
-#include <QTimer>
 #include <QPushButton>
+#include <QTimer>
 
 VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)

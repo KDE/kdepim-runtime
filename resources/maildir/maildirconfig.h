@@ -9,8 +9,8 @@
 
 #include <AkonadiCore/AgentConfigurationBase>
 
-#include "settings.h"
 #include "configwidget.h"
+#include "settings.h"
 
 #include <QScopedPointer>
 

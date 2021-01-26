@@ -14,15 +14,17 @@
 
 #include <QColor>
 #include <QDateTime>
-#include <qdom.h>
 #include <QTimeZone>
+#include <qdom.h>
 
-namespace KContacts {
+namespace KContacts
+{
 class Addressee;
 class ContactGroup;
 }
 
-namespace KolabV2 {
+namespace KolabV2
+{
 class KolabBase
 {
 public:
@@ -38,9 +40,7 @@ public:
         QString smtpAddress;
     };
 
-    enum Sensitivity {
-        Public = 0, Private = 1, Confidential = 2
-    };
+    enum Sensitivity { Public = 0, Private = 1, Confidential = 2 };
 
     explicit KolabBase(const QString &time_zone = QString());
     virtual ~KolabBase();

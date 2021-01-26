@@ -6,22 +6,21 @@
 
 #include "akonadislave.h"
 
+#include <collection.h>
+#include <collectiondeletejob.h>
+#include <collectionfetchjob.h>
+#include <entitydisplayattribute.h>
+#include <itemdeletejob.h>
 #include <itemfetchjob.h>
 #include <itemfetchscope.h>
-#include <itemdeletejob.h>
-#include <collection.h>
-#include <collectionfetchjob.h>
-#include <collectiondeletejob.h>
-#include <entitydisplayattribute.h>
 
 #include "akonadislave_debug.h"
 
-#include <QApplication>
 #include <KAboutData>
 #include <KLocalizedString>
-#include <QCommandLineParser>
+#include <QApplication>
 #include <QCommandLineOption>
-
+#include <QCommandLineParser>
 
 #ifdef Q_OS_WIN
 // see kio/core/src/kioglobal_p.h
@@ -40,9 +39,9 @@ int kdemain(int argc, char **argv)
     KAboutData aboutData(QStringLiteral("kio_akonadi"), QString(), QStringLiteral("0"));
     QCommandLineParser parser;
     KAboutData::setApplicationData(aboutData);
-    parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+protocol"), i18n("Protocol name")));
-    parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+pool"), i18n("Socket name")));
-    parser.addOption(QCommandLineOption(QStringList() <<  QStringLiteral("+app"), i18n("Socket name")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("+protocol"), i18n("Protocol name")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("+pool"), i18n("Socket name")));
+    parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("+app"), i18n("Socket name")));
 
     aboutData.setupCommandLine(&parser);
     parser.process(app);
@@ -140,7 +139,7 @@ void AkonadiSlave::del(const QUrl &url, bool isFile)
 {
     qCDebug(AKONADISLAVE_LOG) << url;
 
-    if (!isFile) {                   // It's a directory
+    if (!isFile) { // It's a directory
         Collection collection = Collection::fromUrl(url);
         auto job = new CollectionDeleteJob(collection);
         if (!job->exec()) {
@@ -148,7 +147,7 @@ void AkonadiSlave::del(const QUrl &url, bool isFile)
             return;
         }
         finished();
-    } else {                         // It's a file
+    } else { // It's a file
         ItemDeleteJob *job = new ItemDeleteJob(Item::fromUrl(url));
         if (!job->exec()) {
             error(KIO::ERR_INTERNAL, job->errorString());

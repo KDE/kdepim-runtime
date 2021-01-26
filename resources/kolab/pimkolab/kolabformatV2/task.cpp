@@ -246,10 +246,10 @@ bool Task::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -314,8 +314,8 @@ void Task::saveTo(const KCalendarCore::Todo::Ptr &task)
 
     task->setPercentComplete(percentCompleted());
     task->setStatus(status());
-    //PORT KF5 task->setHasStartDate( hasStartDate() );
-    //PORT KF5 task->setHasDueDate( hasDueDate() );
+    // PORT KF5 task->setHasStartDate( hasStartDate() );
+    // PORT KF5 task->setHasDueDate( hasDueDate() );
     if (hasDueDate()) {
         task->setDtDue(utcToLocal(dueDate()));
     }

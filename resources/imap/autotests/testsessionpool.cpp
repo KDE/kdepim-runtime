@@ -7,8 +7,8 @@
 
 #include "imaptestbase.h"
 #include <QSignalSpy>
-#include <kimap/capabilitiesjob.h>
 #include <QTest>
+#include <kimap/capabilitiesjob.h>
 class TestSessionPool : public ImapTestBase
 {
     Q_OBJECT
@@ -18,7 +18,7 @@ private Q_SLOTS:
     {
         QTest::addColumn<ImapAccount *>("account");
         QTest::addColumn<DummyPasswordRequester *>("requester");
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<QString>("password");
         QTest::addColumn<int>("errorCode");
         QTest::addColumn<QStringList>("capabilities");
@@ -32,8 +32,7 @@ private Q_SLOTS:
         account = createDefaultAccount();
         requester = createDefaultRequester();
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
@@ -44,15 +43,14 @@ private Q_SLOTS:
         password = QStringLiteral("foobar");
         int errorCode = SessionPool::NoError;
         capabilities.clear();
-        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("NAMESPACE") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
-        QTest::newRow("normal case") << account << requester << scenario
-                                     << password << errorCode << capabilities;
+        capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("NAMESPACE") << QStringLiteral("UIDPLUS")
+                     << QStringLiteral("IDLE");
+        QTest::newRow("normal case") << account << requester << scenario << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -61,14 +59,12 @@ private Q_SLOTS:
         errorCode = SessionPool::NoError;
         capabilities.clear();
         capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
-        QTest::newRow("no NAMESPACE support") << account << requester << scenario
-                                              << password << errorCode << capabilities;
+        QTest::newRow("no NAMESPACE support") << account << requester << scenario << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IDLE"
@@ -77,8 +73,7 @@ private Q_SLOTS:
         password = QStringLiteral("foobar");
         errorCode = SessionPool::IncompatibleServerError;
         capabilities.clear();
-        QTest::newRow("incompatible server") << account << requester << scenario
-                                             << password << errorCode << capabilities;
+        QTest::newRow("incompatible server") << account << requester << scenario << password << errorCode << capabilities;
 
         QList<DummyPasswordRequester::RequestType> requests;
         QList<DummyPasswordRequester::ResultType> results;
@@ -91,15 +86,13 @@ private Q_SLOTS:
         results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::UserRejected;
         requester->setScenario(requests, results);
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 NO Login failed"
                  << "C: A000002 LOGOUT";
         password = QStringLiteral("foobar");
         errorCode = SessionPool::LoginFailError;
         capabilities.clear();
-        QTest::newRow("login fail, user reject password entry") << account << requester << scenario
-                                                                << password << errorCode << capabilities;
+        QTest::newRow("login fail, user reject password entry") << account << requester << scenario << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -109,8 +102,7 @@ private Q_SLOTS:
         results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::PasswordRetrieved;
         requester->setScenario(requests, results);
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 NO Login failed"
                  << R"(C: A000002 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000002 OK Login succeeded"
@@ -121,8 +113,7 @@ private Q_SLOTS:
         errorCode = SessionPool::NoError;
         capabilities.clear();
         capabilities << QStringLiteral("IMAP4") << QStringLiteral("IMAP4REV1") << QStringLiteral("UIDPLUS") << QStringLiteral("IDLE");
-        QTest::newRow("login fail, user provide new password") << account << requester << scenario
-                                                               << password << errorCode << capabilities;
+        QTest::newRow("login fail, user provide new password") << account << requester << scenario << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -132,15 +123,13 @@ private Q_SLOTS:
         results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::EmptyPasswordEntered;
         requester->setScenario(requests, results);
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 NO Login failed"
                  << "C: A000002 LOGOUT";
         password = QStringLiteral("foobar");
         errorCode = SessionPool::LoginFailError;
         capabilities.clear();
-        QTest::newRow("login fail, user provided empty password") << account << requester << scenario
-                                                                  << password << errorCode << capabilities;
+        QTest::newRow("login fail, user provided empty password") << account << requester << scenario << password << errorCode << capabilities;
 
         account = createDefaultAccount();
         requester = createDefaultRequester();
@@ -150,15 +139,13 @@ private Q_SLOTS:
         results << DummyPasswordRequester::PasswordRetrieved << DummyPasswordRequester::ReconnectNeeded;
         requester->setScenario(requests, results);
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 NO Login failed"
                  << "C: A000002 LOGOUT";
         password = QStringLiteral("foobar");
         errorCode = SessionPool::ReconnectNeededError;
         capabilities.clear();
-        QTest::newRow("login fail, user change the settings") << account << requester << scenario
-                                                              << password << errorCode << capabilities;
+        QTest::newRow("login fail, user change the settings") << account << requester << scenario << password << errorCode << capabilities;
     }
 
     void shouldPrepareFirstSessionOnConnect()
@@ -211,23 +198,17 @@ private Q_SLOTS:
     void shouldManageSeveralSessions()
     {
         FakeServer server;
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
-                           << "S: A000002 OK Completed"
-                           << "C: A000003 NAMESPACE"
-                           << R"(S: * NAMESPACE ( ("INBOX/" "/") ) ( ("user/" "/") ) ( ("" "/") ))"
-                           << "S: A000003 OK Completed"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
+                                               << "S: A000002 OK Completed"
+                                               << "C: A000003 NAMESPACE"
+                                               << R"(S: * NAMESPACE ( ("INBOX/" "/") ) ( ("user/" "/") ) ( ("" "/") ))"
+                                               << "S: A000003 OK Completed");
 
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in");
 
         server.startAndWait();
 
@@ -322,17 +303,14 @@ private Q_SLOTS:
     void shouldNotifyConnectionLost()
     {
         FakeServer server;
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "S: A000002 OK Completed"
-                           << "C: A000003 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "X"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "S: A000002 OK Completed"
+                                               << "C: A000003 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "X");
 
         server.startAndWait();
 
@@ -373,14 +351,13 @@ private Q_SLOTS:
 
     void shouldNotifyOnDisconnect_data()
     {
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
         QTest::addColumn<int>("termination");
 
         QList<QByteArray> scenario;
 
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -390,8 +367,7 @@ private Q_SLOTS:
         QTest::newRow("logout session") << scenario << (int)SessionPool::LogoutSession;
 
         scenario.clear();
-        scenario << FakeServer::greeting()
-                 << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+        scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                  << "S: A000001 OK User Logged in"
                  << "C: A000002 CAPABILITY"
                  << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
@@ -434,19 +410,17 @@ private Q_SLOTS:
 
     void shouldCleanupOnClosingDuringLogin_data()
     {
-        QTest::addColumn< QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
 
         {
             QList<QByteArray> scenario;
-            scenario << FakeServer::greeting()
-                     << R"(C: A000001 LOGIN "test@kdab.com" "foobar")";
+            scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")";
 
             QTest::newRow("during login") << scenario;
         }
         {
             QList<QByteArray> scenario;
-            scenario << FakeServer::greeting()
-                     << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+            scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                      << "S: A000001 OK User Logged in"
                      << "C: A000002 CAPABILITY";
 
@@ -454,8 +428,7 @@ private Q_SLOTS:
         }
         {
             QList<QByteArray> scenario;
-            scenario << FakeServer::greeting()
-                     << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+            scenario << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
                      << "S: A000001 OK User Logged in"
                      << "C: A000002 CAPABILITY"
                      << "S: * CAPABILITY IMAP4 IMAP4rev1 NAMESPACE UIDPLUS IDLE"
@@ -487,7 +460,7 @@ private Q_SLOTS:
         // Initial connect should trigger only a password request and a connect
         QVERIFY(pool.connect(account));
         QTest::qWait(100);
-        QCOMPARE(connectSpy.count(), 0);   // Login not done yet
+        QCOMPARE(connectSpy.count(), 0); // Login not done yet
         QPointer<KIMAP::Session> session = pool.findChild<KIMAP::Session *>();
         QVERIFY(session.data());
         QCOMPARE(sessionSpy.count(), 0);
@@ -495,9 +468,9 @@ private Q_SLOTS:
         pool.disconnect(SessionPool::CloseSession);
 
         QTest::qWait(100);
-        QCOMPARE(connectSpy.count(), 1);   // We're informed that connect failed
+        QCOMPARE(connectSpy.count(), 1); // We're informed that connect failed
         QCOMPARE(connectSpy.at(0).at(0).toInt(), int(SessionPool::CancelledError));
-        QCOMPARE(lostSpy.count(), 0);   // We're not supposed to know the session pointer, so no connectionLost emitted
+        QCOMPARE(lostSpy.count(), 0); // We're not supposed to know the session pointer, so no connectionLost emitted
 
         // Make the session->deleteLater work, it can't happen in qWait (nested event loop)
         QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
@@ -512,17 +485,14 @@ private Q_SLOTS:
     void shouldHonorCancelRequest()
     {
         FakeServer server;
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "S: A000002 OK Completed"
-                           << "C: A000003 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "X"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "S: A000002 OK Completed"
+                                               << "C: A000003 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "X");
 
         server.startAndWait();
 
@@ -555,26 +525,20 @@ private Q_SLOTS:
     void shouldBeDisconnectedOnAllSessionLost()
     {
         FakeServer server;
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
-                           << "S: A000002 OK Completed"
-                           << "C: A000003 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "X"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+                                               << "S: A000002 OK Completed"
+                                               << "C: A000003 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "X");
 
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "X"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "X");
 
         server.startAndWait();
 
@@ -655,17 +619,14 @@ private Q_SLOTS:
 
         FakeServer server;
 
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
-                           << "S: A000002 OK Completed"
-                           << "C: A000003 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
-                           << "X"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+                                               << "S: A000002 OK Completed"
+                                               << "C: A000003 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE"
+                                               << "X");
 
         server.startAndWait();
 
@@ -706,7 +667,7 @@ private Q_SLOTS:
         // we set the reply timeout to 1000 earlier in this test)
         pool.requestSession();
         QTest::qWait(100);
-        QCOMPARE(requesterSpy.count(), 1);    // Requester didn't reply yet
+        QCOMPARE(requesterSpy.count(), 1); // Requester didn't reply yet
         QCOMPARE(sessionSpy.count(), 1);
 
         // Make the first (and only) session drop while we wait for the requester
@@ -735,11 +696,11 @@ private Q_SLOTS:
 
     void shouldHandleDisconnectionDuringSecondLogin_data()
     {
-        QTest::addColumn<QList<QByteArray> >("scenario");
+        QTest::addColumn<QList<QByteArray>>("scenario");
 
-        QTest::newRow("immediate_disconnect") << QList<QByteArray> {};
-        QTest::newRow("disconnect_after_greeting") << QList<QByteArray> {FakeServer::greeting()};
-        QTest::newRow("disconnect_after_login_command") << QList<QByteArray> {FakeServer::greeting(), R"(C: A000001 LOGIN "test@kdab.com" "foobar")"};
+        QTest::newRow("immediate_disconnect") << QList<QByteArray>{};
+        QTest::newRow("disconnect_after_greeting") << QList<QByteArray>{FakeServer::greeting()};
+        QTest::newRow("disconnect_after_login_command") << QList<QByteArray>{FakeServer::greeting(), R"(C: A000001 LOGIN "test@kdab.com" "foobar")"};
     }
 
     void shouldHandleDisconnectionDuringSecondLogin()
@@ -747,18 +708,13 @@ private Q_SLOTS:
         QFETCH(QList<QByteArray>, scenario);
 
         FakeServer server;
-        server.addScenario(QList<QByteArray>()
-                           << FakeServer::greeting()
-                           << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
-                           << "S: A000001 OK User Logged in"
-                           << "C: A000002 CAPABILITY"
-                           << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
-                           << "S: A000002 OK Completed"
-                           );
+        server.addScenario(QList<QByteArray>() << FakeServer::greeting() << R"(C: A000001 LOGIN "test@kdab.com" "foobar")"
+                                               << "S: A000001 OK User Logged in"
+                                               << "C: A000002 CAPABILITY"
+                                               << "S: * CAPABILITY IMAP4 IMAP4rev1 IDLE"
+                                               << "S: A000002 OK Completed");
 
-        server.addScenario(scenario
-                           << "X"
-                           );
+        server.addScenario(scenario << "X");
 
         server.startAndWait();
 
@@ -802,7 +758,7 @@ private Q_SLOTS:
         // This tests what happens when we can't connect to the server, e.g. due to being offline.
         // In this test we just use 0.0.0.0 as an invalid server IP, instead.
         ImapAccount *account = createDefaultAccount();
-        account->setServer(QStringLiteral("0.0.0.0"));   // so that the connexion fails
+        account->setServer(QStringLiteral("0.0.0.0")); // so that the connexion fails
         DummyPasswordRequester *requester = createDefaultRequester();
         QList<DummyPasswordRequester::RequestType> requests;
         QList<DummyPasswordRequester::ResultType> results;
@@ -822,7 +778,7 @@ private Q_SLOTS:
         QTRY_COMPARE(requesterSpy.count(), requests.count());
         QTRY_COMPARE(connectDoneSpy.count(), 1);
         QCOMPARE(connectDoneSpy.at(0).at(0).toInt(), (int)SessionPool::CouldNotConnectError);
-        QCOMPARE(lostSpy.count(), 0);   // don't want this, it makes the resource reconnect immediately (and fail, and reconnect, and so on...)
+        QCOMPARE(lostSpy.count(), 0); // don't want this, it makes the resource reconnect immediately (and fail, and reconnect, and so on...)
     }
 };
 

@@ -13,8 +13,10 @@
 
 #include <KJob>
 
-namespace Akonadi {
-namespace FileStore {
+namespace Akonadi
+{
+namespace FileStore
+{
 class AbstractJobSession;
 class CollectionCreateJob;
 class CollectionDeleteJob;
@@ -69,10 +71,7 @@ public:
         virtual bool visit(StoreCompactJob *job) = 0;
     };
 
-    enum ErrorCodes {
-        InvalidStoreState = KJob::UserDefinedError + 1,
-        InvalidJobContext
-    };
+    enum ErrorCodes { InvalidStoreState = KJob::UserDefinedError + 1, InvalidJobContext };
 
     explicit Job(AbstractJobSession *session = nullptr);
 

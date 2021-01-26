@@ -42,7 +42,11 @@ void etebase_item_metadata_set_name(EtebaseItemMetadata *meta_data, const QStrin
     etebase_item_metadata_set_name(meta_data, charArrFromQString(name));
 }
 
-EtebaseCollectionPtr etebase_collection_manager_create(const EtebaseCollectionManager *col_mgr, const QString &collection_type, const EtebaseItemMetadata *meta, const void *content, uintptr_t content_size)
+EtebaseCollectionPtr etebase_collection_manager_create(const EtebaseCollectionManager *col_mgr,
+                                                       const QString &collection_type,
+                                                       const EtebaseItemMetadata *meta,
+                                                       const void *content,
+                                                       uintptr_t content_size)
 {
     return EtebaseCollectionPtr(etebase_collection_manager_create(col_mgr, charArrFromQString(collection_type), meta, content, content_size));
 }
@@ -62,7 +66,8 @@ EtebaseCollectionPtr etebase_fs_cache_collection_get(const EtebaseFileSystemCach
     return EtebaseCollectionPtr(etebase_fs_cache_collection_get(fs_cache, col_mgr, charArrFromQString(col_uid)));
 }
 
-EtebaseItemPtr etebase_fs_cache_item_get(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid)
+EtebaseItemPtr
+etebase_fs_cache_item_get(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid)
 {
     return EtebaseItemPtr(etebase_fs_cache_item_get(fs_cache, item_mgr, charArrFromQString(col_uid), charArrFromQString(item_uid)));
 }

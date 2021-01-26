@@ -7,16 +7,16 @@
 #include "kolabhelpers.h"
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
-#include <KMime/KMimeMessage>
-#include <KCalendarCore/Incidence>
+#include "pimkolab/kolabformat/errorhandler.h"
+#include "pimkolab/kolabformat/kolabobject.h"
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
-#include <akonadi/notes/noteutils.h>
-#include "pimkolab/kolabformat/kolabobject.h"
-#include "pimkolab/kolabformat/errorhandler.h"
+#include <KCalendarCore/Incidence>
 #include <KLocalizedString>
+#include <KMime/KMimeMessage>
 #include <QColor>
+#include <akonadi/notes/noteutils.h>
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {
@@ -38,25 +38,24 @@ bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 
 Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId)
 {
-    //TODO set title, text and icon
+    // TODO set title, text and icon
     Akonadi::Item item;
     item.setRemoteId(remoteId);
     switch (folderType) {
-    case Kolab::EventType:
-    {
+    case Kolab::EventType: {
         KCalendarCore::Event::Ptr event(new KCalendarCore::Event);
-        //FIXME Use message creation date time
+        // FIXME Use message creation date time
         event->setDtStart(QDateTime::currentDateTimeUtc());
         event->setSummary(i18n("Corrupt Event"));
-        event->setDescription(i18n("Event could not be read. Delete this event to remove it from the server. Technical information: remote identifier %1", remoteId));
+        event->setDescription(
+            i18n("Event could not be read. Delete this event to remove it from the server. Technical information: remote identifier %1", remoteId));
         item.setMimeType(KCalendarCore::Event::eventMimeType());
         item.setPayload(event);
         break;
     }
-    case Kolab::TaskType:
-    {
+    case Kolab::TaskType: {
         KCalendarCore::Todo::Ptr task(new KCalendarCore::Todo);
-        //FIXME Use message creation date time
+        // FIXME Use message creation date time
         task->setDtStart(QDateTime::currentDateTimeUtc());
         task->setSummary(i18n("Corrupt Task"));
         task->setDescription(i18n("Task could not be read. Delete this task to remove it from the server."));
@@ -64,10 +63,9 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         item.setPayload(task);
         break;
     }
-    case Kolab::JournalType:
-    {
+    case Kolab::JournalType: {
         KCalendarCore::Journal::Ptr journal(new KCalendarCore::Journal);
-        //FIXME Use message creation date time
+        // FIXME Use message creation date time
         journal->setDtStart(QDateTime::currentDateTimeUtc());
         journal->setSummary(i18n("Corrupt journal"));
         journal->setDescription(i18n("Journal could not be read. Delete this journal to remove it from the server."));
@@ -75,8 +73,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         item.setPayload(journal);
         break;
     }
-    case Kolab::ContactType:
-    {
+    case Kolab::ContactType: {
         KContacts::Addressee addressee;
         addressee.setName(i18n("Corrupt Contact"));
         addressee.setNote(i18n("Contact could not be read. Delete this contact to remove it from the server."));
@@ -84,8 +81,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         item.setPayload(addressee);
         break;
     }
-    case Kolab::NoteType:
-    {
+    case Kolab::NoteType: {
         Akonadi::NoteUtils::NoteMessageWrapper note;
         note.setTitle(i18n("Corrupt Note"));
         note.setText(i18n("Note could not be read. Delete this note to remove it from the server."));
@@ -94,7 +90,7 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
         break;
     }
     case Kolab::MailType:
-    //We don't convert mails, so that should never fail.
+    // We don't convert mails, so that should never fail.
     default:
         qCWarning(KOLABRESOURCE_LOG) << "unhandled folder type: " << folderType;
     }
@@ -103,12 +99,12 @@ Akonadi::Item getErrorItem(Kolab::FolderType folderType, const QString &remoteId
 
 Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, const Akonadi::Item &imapItem, bool &ok)
 {
-    //Avoid trying to convert imap messages
+    // Avoid trying to convert imap messages
     if (folderType == Kolab::MailType) {
         return imapItem;
     }
 
-    //No payload, probably a flag change or alike, we just pass it through
+    // No payload, probably a flag change or alike, we just pass it through
     if (!imapItem.hasPayload()) {
         return imapItem;
     }
@@ -123,14 +119,13 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
     const Kolab::KolabObjectReader reader(payload);
     if (checkForErrors(imapItem)) {
         ok = true;
-        //We return an error object so the sync keeps working, and we can clean up the mess by simply deleting the object in the application.
+        // We return an error object so the sync keeps working, and we can clean up the mess by simply deleting the object in the application.
         return getErrorItem(folderType, imapItem.remoteId());
     }
     switch (reader.getType()) {
     case Kolab::EventObject:
     case Kolab::TodoObject:
-    case Kolab::JournalObject:
-    {
+    case Kolab::JournalObject: {
         const KCalendarCore::Incidence::Ptr incidencePtr = reader.getIncidence();
         if (!incidencePtr) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read incidence.";
@@ -144,8 +139,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return newItem;
         break;
     }
-    case Kolab::NoteObject:
-    {
+    case Kolab::NoteObject: {
         const KMime::Message::Ptr note = reader.getNote();
         if (!note) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read note.";
@@ -160,8 +154,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return newItem;
         break;
     }
-    case Kolab::ContactObject:
-    {
+    case Kolab::ContactObject: {
         Akonadi::Item newItem(KContacts::Addressee::mimeType());
         newItem.setPayload(reader.getContact());
         newItem.setRemoteId(imapItem.remoteId());
@@ -169,15 +162,14 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return newItem;
         break;
     }
-    case Kolab::DistlistObject:
-    {
+    case Kolab::DistlistObject: {
         KContacts::ContactGroup contactGroup = reader.getDistlist();
 
         QList<KContacts::ContactGroup::ContactReference> toAdd;
         for (int index = 0; index < contactGroup.contactReferenceCount(); ++index) {
             const KContacts::ContactGroup::ContactReference &reference = contactGroup.contactReference(index);
             KContacts::ContactGroup::ContactReference ref;
-            ref.setGid(reference.uid()); //libkolab set a gid with setUid()
+            ref.setGid(reference.uid()); // libkolab set a gid with setUid()
             toAdd << ref;
         }
         contactGroup.removeAllContactReferences();
@@ -247,7 +239,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
             gid = addressee.uid();
         }
         KContacts::ContactGroup::ContactReference ref;
-        ref.setUid(gid); //libkolab expects a gid for uid()
+        ref.setUid(gid); // libkolab expects a gid for uid()
         toAdd << ref;
     }
     KContacts::ContactGroup gidOnlyContactGroup = contactGroup;
@@ -261,50 +253,42 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
 Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
 {
     ok = true;
-    //imap messages don't need to be translated
+    // imap messages don't need to be translated
     if (item.mimeType() == KMime::Message::mimeType()) {
         Q_ASSERT(item.hasPayload<KMime::Message::Ptr>());
         return item;
     }
     const QLatin1String productId("Akonadi-Kolab-Resource");
-    //Everthing stays the same, except mime type and payload
+    // Everthing stays the same, except mime type and payload
     Akonadi::Item imapItem = item;
     imapItem.setMimeType(QStringLiteral("message/rfc822"));
     try {
         switch (getKolabTypeFromMimeType(item.mimeType())) {
         case Kolab::EventObject:
         case Kolab::TodoObject:
-        case Kolab::JournalObject:
-        {
+        case Kolab::JournalObject: {
             qCDebug(KOLABRESOURCE_LOG) << "converted event";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeIncidence(
-                item.payload<KCalendarCore::Incidence::Ptr>(),
-                Kolab::KolabV3, productId, QStringLiteral("UTC"));
+            const KMime::Message::Ptr message =
+                Kolab::KolabObjectWriter::writeIncidence(item.payload<KCalendarCore::Incidence::Ptr>(), Kolab::KolabV3, productId, QStringLiteral("UTC"));
             imapItem.setPayload(message);
             break;
         }
-        case Kolab::NoteObject:
-        {
+        case Kolab::NoteObject: {
             qCDebug(KOLABRESOURCE_LOG) << "converted note";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(
-                item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
+            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeNote(item.payload<KMime::Message::Ptr>(), Kolab::KolabV3, productId);
             imapItem.setPayload(message);
             break;
         }
-        case Kolab::ContactObject:
-        {
+        case Kolab::ContactObject: {
             qCDebug(KOLABRESOURCE_LOG) << "converted contact";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(
-                item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
+            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeContact(item.payload<KContacts::Addressee>(), Kolab::KolabV3, productId);
             imapItem.setPayload(message);
             break;
         }
-        case Kolab::DistlistObject:
-        {
+        case Kolab::DistlistObject: {
             const KContacts::ContactGroup contactGroup = convertToGidOnly(item.payload<KContacts::ContactGroup>());
             qCDebug(KOLABRESOURCE_LOG) << "converted distlist";
-            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(
-                contactGroup, Kolab::KolabV3, productId);
+            const KMime::Message::Ptr message = Kolab::KolabObjectWriter::writeDistlist(contactGroup, Kolab::KolabV3, productId);
             imapItem.setPayload(message);
             break;
         }
@@ -356,8 +340,7 @@ Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
         return Kolab::ContactObject;
     } else if (type == KContacts::ContactGroup::mimeType()) {
         return Kolab::DistlistObject;
-    } else if (type == QLatin1String("text/x-vnd.akonadi.note")
-               || type == QLatin1String("application/x-vnd.akonadi.note")) {
+    } else if (type == QLatin1String("text/x-vnd.akonadi.note") || type == QLatin1String("application/x-vnd.akonadi.note")) {
         return Kolab::NoteObject;
     }
     return Kolab::InvalidObject;
@@ -382,13 +365,13 @@ QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
     contentTypes << Akonadi::Collection::mimeType();
     switch (type) {
     case Kolab::EventType:
-        contentTypes <<  KCalendarCore::Event().mimeType();
+        contentTypes << KCalendarCore::Event().mimeType();
         break;
     case Kolab::TaskType:
-        contentTypes <<  KCalendarCore::Todo().mimeType();
+        contentTypes << KCalendarCore::Todo().mimeType();
         break;
     case Kolab::JournalType:
-        contentTypes <<  KCalendarCore::Journal().mimeType();
+        contentTypes << KCalendarCore::Journal().mimeType();
         break;
     case Kolab::ContactType:
         contentTypes << KContacts::Addressee::mimeType() << KContacts::ContactGroup::mimeType();
@@ -414,19 +397,17 @@ Kolab::FolderType KolabHelpers::folderTypeFromString(const QByteArray &folderTyp
     return Kolab::folderTypeFromString(std::string(stripped.data(), stripped.size()));
 }
 
-QByteArray KolabHelpers::getFolderTypeAnnotation(const QMap< QByteArray, QByteArray > &annotations)
+QByteArray KolabHelpers::getFolderTypeAnnotation(const QMap<QByteArray, QByteArray> &annotations)
 {
-    if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION)
-        && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
+    if (annotations.contains("/shared" KOLAB_FOLDER_TYPE_ANNOTATION) && !annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
         return annotations.value("/shared" KOLAB_FOLDER_TYPE_ANNOTATION);
-    } else if (annotations.contains("/private" KOLAB_FOLDER_TYPE_ANNOTATION)
-               && !annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
+    } else if (annotations.contains("/private" KOLAB_FOLDER_TYPE_ANNOTATION) && !annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION).isEmpty()) {
         return annotations.value("/private" KOLAB_FOLDER_TYPE_ANNOTATION);
     }
     return annotations.value(KOLAB_FOLDER_TYPE_ANNOTATION);
 }
 
-void KolabHelpers::setFolderTypeAnnotation(QMap< QByteArray, QByteArray > &annotations, const QByteArray &value)
+void KolabHelpers::setFolderTypeAnnotation(QMap<QByteArray, QByteArray> &annotations, const QByteArray &value)
 {
     annotations["/shared" KOLAB_FOLDER_TYPE_ANNOTATION] = value;
 }
@@ -496,7 +477,7 @@ QList<QByteArray> KolabHelpers::ancestorChain(const Akonadi::Collection &col)
     }
     QList<QByteArray> ancestors = ancestorChain(col.parentCollection());
     Q_ASSERT(!col.remoteId().isEmpty());
-    ancestors << col.remoteId().toLatin1().mid(1); //We strip the first character which is always the separator
+    ancestors << col.remoteId().toLatin1().mid(1); // We strip the first character which is always the separator
     return ancestors;
 }
 

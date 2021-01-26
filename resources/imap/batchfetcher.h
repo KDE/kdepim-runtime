@@ -8,9 +8,9 @@
 #ifndef BATCHFETCHER_H
 #define BATCHFETCHER_H
 
-#include <KJob>
 #include <KIMAP/FetchJob>
 #include <KIMAP/SearchJob>
+#include <KJob>
 
 #include "messagehelper.h"
 
@@ -39,7 +39,7 @@ private Q_SLOTS:
     void onUidSearchDone(KJob *job);
 
 private:
-    //Batch fetching
+    // Batch fetching
     KIMAP::ImapSet m_currentSet;
     const KIMAP::FetchJob::FetchScope m_scope;
     KIMAP::Session *const m_session;

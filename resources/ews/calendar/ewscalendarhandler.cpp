@@ -8,9 +8,9 @@
 
 #include <KCalendarCore/Event>
 
+#include "ewscreatecalendarjob.h"
 #include "ewsfetchcalendardetailjob.h"
 #include "ewsmodifycalendarjob.h"
-#include "ewscreatecalendarjob.h"
 
 using namespace Akonadi;
 
@@ -56,7 +56,11 @@ EwsModifyItemJob *EwsCalendarHandler::modifyItemJob(EwsClient &client, const QVe
     return new EwsModifyCalendarJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsCalendarHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *EwsCalendarHandler::createItemJob(EwsClient &client,
+                                                    const Akonadi::Item &item,
+                                                    const Akonadi::Collection &collection,
+                                                    EwsTagStore *tagStore,
+                                                    EwsResource *parent)
 {
     return new EwsCreateCalendarJob(client, item, collection, tagStore, parent);
 }

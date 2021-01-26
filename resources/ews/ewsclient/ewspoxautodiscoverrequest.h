@@ -15,7 +15,8 @@
 #include "ewsserverversion.h"
 #include "ewstypes.h"
 
-namespace KIO {
+namespace KIO
+{
 class Job;
 }
 
@@ -29,17 +30,13 @@ public:
         Settings,
     };
 
-    enum ProtocolType {
-        ExchangeProto,
-        ExchangeProxyProto,
-        ExchangeWebProto,
-        UnknownProto
-    };
+    enum ProtocolType { ExchangeProto, ExchangeProxyProto, ExchangeWebProto, UnknownProto };
 
     class Protocol
     {
     public:
-        Protocol() : mType(UnknownProto)
+        Protocol()
+            : mType(UnknownProto)
         {
         }
 
@@ -116,6 +113,7 @@ protected Q_SLOTS:
     void requestResult(KJob *job);
     void requestData(KIO::Job *job, const QByteArray &data);
     void requestRedirect(KIO::Job *job, const QUrl &url);
+
 private:
     bool readAccount(QXmlStreamReader &reader);
     bool readProtocol(QXmlStreamReader &reader);

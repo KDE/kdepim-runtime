@@ -45,7 +45,9 @@ public:
     void tagRemoved(const Akonadi::Tag &tag) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
+    void collectionMoved(const Akonadi::Collection &collection,
+                         const Akonadi::Collection &collectionSource,
+                         const Akonadi::Collection &collectionDestination) override;
     void collectionChanged(const Akonadi::Collection &collection, const QSet<QByteArray> &changedAttributes) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;

@@ -8,8 +8,8 @@
 
 #include <QTemporaryFile>
 
-#include "ewsclient_debug.h"
 #include "auth/ewsabstractauth.h"
+#include "ewsclient_debug.h"
 
 EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
     : EwsJob(parent)
@@ -78,8 +78,7 @@ void EwsRequest::prepare(const QString &body)
     url.setUserName(username);
     url.setPassword(password);
 
-    KIO::TransferJob *job = KIO::http_post(url, body.toUtf8(),
-                                           KIO::HideProgressInfo);
+    KIO::TransferJob *job = KIO::http_post(url, body.toUtf8(), KIO::HideProgressInfo);
     job->addMetaData(QStringLiteral("content-type"), QStringLiteral("text/xml"));
     if (!mClient.userAgent().isEmpty()) {
         job->addMetaData(QStringLiteral("UserAgent"), mClient.userAgent());
@@ -180,8 +179,7 @@ bool EwsRequest::readResponse(QXmlStreamReader &reader)
 bool EwsRequest::readSoapBody(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
-        if ((reader.name() == QLatin1String("Fault"))
-            && (reader.namespaceUri() == soapEnvNsUri)) {
+        if ((reader.name() == QLatin1String("Fault")) && (reader.namespaceUri() == soapEnvNsUri)) {
             return readSoapFault(reader);
         }
 
@@ -226,28 +224,21 @@ void EwsRequest::requestData(KIO::Job *job, const QByteArray &data)
 
 bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &reqName, ContentReaderFn contentReader)
 {
-    if (reader.name() != reqName + QStringLiteral("Response")
-        || reader.namespaceUri() != ewsMsgNsUri) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.")
-                           .arg(reqName + QStringLiteral("Response")));
+    if (reader.name() != reqName + QStringLiteral("Response") || reader.namespaceUri() != ewsMsgNsUri) {
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.").arg(reqName + QStringLiteral("Response")));
     }
 
     if (!reader.readNextStartElement()) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.")
-                           .arg(reqName + QStringLiteral("Response")));
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(reqName + QStringLiteral("Response")));
     }
 
-    if (reader.name() != QLatin1String("ResponseMessages")
-        || reader.namespaceUri() != ewsMsgNsUri) {
-        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.")
-                           .arg(QStringLiteral("ResponseMessages")));
+    if (reader.name() != QLatin1String("ResponseMessages") || reader.namespaceUri() != ewsMsgNsUri) {
+        return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.").arg(QStringLiteral("ResponseMessages")));
     }
 
     while (reader.readNextStartElement()) {
-        if (reader.name() != reqName + QStringLiteral("ResponseMessage")
-            || reader.namespaceUri() != ewsMsgNsUri) {
-            return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.")
-                               .arg(reqName + QStringLiteral("ResponseMessage")));
+        if (reader.name() != reqName + QStringLiteral("ResponseMessage") || reader.namespaceUri() != ewsMsgNsUri) {
+            return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.").arg(reqName + QStringLiteral("ResponseMessage")));
         }
 
         if (!contentReader(reader)) {
@@ -265,11 +256,7 @@ void EwsRequest::setServerVersion(const EwsServerVersion &version)
 
 EwsRequest::Response::Response(QXmlStreamReader &reader)
 {
-    static const QString respClasses[] = {
-        QStringLiteral("Success"),
-        QStringLiteral("Warning"),
-        QStringLiteral("Error")
-    };
+    static const QString respClasses[] = {QStringLiteral("Success"), QStringLiteral("Warning"), QStringLiteral("Error")};
 
     QStringRef respClassRef = reader.attributes().value(QStringLiteral("ResponseClass"));
     if (respClassRef.isNull()) {

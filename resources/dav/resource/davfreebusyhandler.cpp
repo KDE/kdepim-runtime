@@ -11,11 +11,11 @@
 #include <KDAV/DavCollectionsFetchJob>
 #include <KDAV/DavPrincipalSearchJob>
 
+#include "davresource_debug.h"
 #include <KCalendarCore/ICalFormat>
 #include <KLocalizedString>
 #include <kio/davjob.h>
 #include <kio/job.h>
-#include "davresource_debug.h"
 
 static QDomElement firstChildElementNS(const QDomElement &parent, const QString &namespaceUri, const QString &tagName)
 {
@@ -55,8 +55,7 @@ void DavFreeBusyHandler::canHandleFreeBusy(const QString &email)
 void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime &start, const QDateTime &end)
 {
     if (!mPrincipalScheduleOutbox.contains(email)) {
-        Q_EMIT freeBusyRetrieved(email, QString(), false,
-                                 i18n("No schedule-outbox found for %1", email));
+        Q_EMIT freeBusyRetrieved(email, QString(), false, i18n("No schedule-outbox found for %1", email));
         return;
     }
 
@@ -215,7 +214,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     // We're safe now
     mRequestsTracker[email].retrievalJobSuccessful = true;
 
-//   fb->clearAttendees();
+    //   fb->clearAttendees();
     if (mRequestsTracker[email].resultingFreeBusy[requestId].isNull()) {
         mRequestsTracker[email].resultingFreeBusy[requestId] = fb;
     } else {
@@ -223,8 +222,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     }
 
     if (retrievalJobCount == 0) {
-        QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId],
-                                                     KCalendarCore::iTIPRequest);
+        QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId], KCalendarCore::iTIPRequest);
         Q_EMIT freeBusyRetrieved(email, fbStr, true, QString());
     }
 }

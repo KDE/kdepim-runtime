@@ -6,16 +6,16 @@
 
 #include "retrieveitemsjob.h"
 #include "maildirresource_debug.h"
-#include <itemfetchjob.h>
-#include <itemmodifyjob.h>
-#include <itemdeletejob.h>
-#include <itemcreatejob.h>
-#include <collectionmodifyjob.h>
-#include <transactionsequence.h>
 #include <Akonadi/KMime/MessageFlags>
 #include <AkonadiCore/vectorhelper.h>
-#include <QDirIterator>
 #include <KMime/Message>
+#include <QDirIterator>
+#include <collectionmodifyjob.h>
+#include <itemcreatejob.h>
+#include <itemdeletejob.h>
+#include <itemfetchjob.h>
+#include <itemmodifyjob.h>
+#include <transactionsequence.h>
 
 RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject *parent)
     : Job(parent)
@@ -48,7 +48,7 @@ void RetrieveItemsJob::localListDone(KJob *job)
 {
     if (job->error()) {
         qCDebug(MAILDIRRESOURCE_LOG) << "Error during RetrieveItemsJob::localListDone " << job->errorString();
-        return;    // handled by base class
+        return; // handled by base class
     }
 
     const Akonadi::Item::List items = qobject_cast<Akonadi::ItemFetchJob *>(job)->items();
@@ -88,7 +88,7 @@ void RetrieveItemsJob::processEntry()
         m_highestMtime = qMax(m_highestMtime, currentMtime);
         if (currentMtime <= m_previousMtime) {
             auto localItemIter = m_localItems.find(fileName);
-            if (localItemIter != m_localItems.end()) {  // old, we got this one already
+            if (localItemIter != m_localItems.end()) { // old, we got this one already
                 m_localItems.erase(localItemIter);
                 continue;
             }
@@ -130,7 +130,7 @@ void RetrieveItemsJob::processEntry()
     }
 
     entriesProcessed();
-    //connect(job, &Akonadi::ItemCreateJob::result, this, &RetrieveItemsJob::processEntryDone);
+    // connect(job, &Akonadi::ItemCreateJob::result, this, &RetrieveItemsJob::processEntryDone);
 }
 
 void RetrieveItemsJob::processEntryDone(KJob *)
@@ -162,8 +162,7 @@ void RetrieveItemsJob::entriesProcessed()
     if (!m_transaction) { // no jobs created here -> done
         emitResult();
     } else {
-        connect(m_transaction, &Akonadi::TransactionSequence::result,
-                this, &RetrieveItemsJob::transactionDone);
+        connect(m_transaction, &Akonadi::TransactionSequence::result, this, &RetrieveItemsJob::transactionDone);
         m_transaction->commit();
     }
 }
@@ -192,7 +191,7 @@ void RetrieveItemsJob::transactionDone(KJob *job)
 {
     if (job->error()) {
         qCDebug(MAILDIRRESOURCE_LOG) << "Error during transaction " << job->errorString();
-        return;    // handled by base class
+        return; // handled by base class
     }
     emitResult();
 }

@@ -7,11 +7,7 @@
 #include "ewsdeleteitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> deleteTypes = {
-    QStringLiteral("HardDelete"),
-    QStringLiteral("SoftDelete"),
-    QStringLiteral("MoveToDeletedItems")
-};
+static const QVector<QString> deleteTypes = {QStringLiteral("HardDelete"), QStringLiteral("SoftDelete"), QStringLiteral("MoveToDeletedItems")};
 
 EwsDeleteItemRequest::EwsDeleteItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)
@@ -55,8 +51,7 @@ void EwsDeleteItemRequest::start()
 
 bool EwsDeleteItemRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("DeleteItem"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("DeleteItem"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
 }
@@ -72,8 +67,7 @@ bool EwsDeleteItemRequest::parseItemsResponse(QXmlStreamReader &reader)
         if (resp.isSuccess()) {
             qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteItem response - OK, deleted items") << mIds;
         } else {
-            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteItem response - %1")
-                .arg(resp.responseMessage());
+            qCDebugNC(EWSCLI_REQUEST_LOG) << QStringLiteral("Got DeleteItem response - %1").arg(resp.responseMessage());
         }
     }
 
@@ -90,8 +84,7 @@ EwsDeleteItemRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

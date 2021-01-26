@@ -9,8 +9,8 @@
 #ifndef KALARMDIR_SETTINGSDIALOG_H
 #define KALARMDIR_SETTINGSDIALOG_H
 
-#include "ui_settingsdialog.h"
 #include "ui_alarmtypewidget.h"
+#include "ui_settingsdialog.h"
 
 #include <kalarmcal/kacalendar.h>
 
@@ -21,7 +21,8 @@ using namespace KAlarmCal;
 class KConfigDialogManager;
 class AlarmTypeWidget;
 
-namespace Akonadi_KAlarm_Dir_Resource {
+namespace Akonadi_KAlarm_Dir_Resource
+{
 class Settings;
 
 class SettingsDialog : public QDialog
@@ -44,7 +45,7 @@ private:
     QPushButton *mOkButton = nullptr;
     KConfigDialogManager *mManager = nullptr;
     Akonadi_KAlarm_Dir_Resource::Settings *mSettings = nullptr;
-    bool mReadOnlySelected = false;                    // read-only was set by user (not by validate())
+    bool mReadOnlySelected = false; // read-only was set by user (not by validate())
 };
 }
 

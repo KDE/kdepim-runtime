@@ -14,7 +14,8 @@
 #include "resourcetask.h"
 #include <QElapsedTimer>
 class BatchFetcher;
-namespace Akonadi {
+namespace Akonadi
+{
 class Session;
 }
 
@@ -44,7 +45,11 @@ private Q_SLOTS:
 protected:
     void doStart(KIMAP::Session *session) override;
 
-    virtual BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper, const KIMAP::ImapSet &set, const KIMAP::FetchJob::FetchScope &scope, int batchSize, KIMAP::Session *session);
+    virtual BatchFetcher *createBatchFetcher(MessageHelper::Ptr messageHelper,
+                                             const KIMAP::ImapSet &set,
+                                             const KIMAP::FetchJob::FetchScope &scope,
+                                             int batchSize,
+                                             KIMAP::Session *session);
 
 private:
     void prepareRetrieval();

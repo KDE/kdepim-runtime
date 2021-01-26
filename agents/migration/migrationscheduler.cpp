@@ -7,46 +7,41 @@
 
 #include "migrationscheduler.h"
 
+#include <KJobTrackerInterface>
 #include <KLocalizedString>
 #include <QDebug>
 #include <QIcon>
-#include <KJobTrackerInterface>
 
 #include "migrationexecutor.h"
 
 void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
     switch (type) {
-    case MigratorBase::Success:
-    {
+    case MigratorBase::Success: {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Skip:
-    {
+    case MigratorBase::Skip: {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Info:
-    {
+    case MigratorBase::Info: {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-information")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Warning:
-    {
+    case MigratorBase::Warning: {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-warning")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
-    case MigratorBase::Error:
-    {
+    case MigratorBase::Error: {
         QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-error")), msg);
         item->setEditable(false);
         appendRow(item);
@@ -202,9 +197,9 @@ QSharedPointer<MigratorBase> MigratorModel::migrator(const QString &identifier) 
     return QSharedPointer<MigratorBase>();
 }
 
-QList< QSharedPointer<MigratorBase> > MigratorModel::migrators() const
+QList<QSharedPointer<MigratorBase>> MigratorModel::migrators() const
 {
-    QList< QSharedPointer<MigratorBase> > migrators;
+    QList<QSharedPointer<MigratorBase>> migrators;
     migrators.reserve(mMigrators.count());
     for (const QSharedPointer<Row> &row : qAsConst(mMigrators)) {
         migrators << row->mMigrator;
@@ -265,7 +260,7 @@ void MigrationScheduler::checkForAutostart(const QSharedPointer<MigratorBase> &m
 
 void MigrationScheduler::start(const QString &identifier)
 {
-    //TODO create separate executor?
+    // TODO create separate executor?
     const QSharedPointer<MigratorBase> m = mModel->migrator(identifier);
     if (m) {
         m->start();

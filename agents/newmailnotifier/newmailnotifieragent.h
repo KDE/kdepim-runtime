@@ -9,19 +9,21 @@
 #ifndef NEWMAILNOTIFIERAGENT_H
 #define NEWMAILNOTIFIERAGENT_H
 
-#include <collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
 #include <agentbase.h>
+#include <collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
 
-#include <QTimer>
-#include <QStringList>
 #include <QPixmap>
+#include <QStringList>
+#include <QTimer>
 class QTextToSpeech;
 
-namespace Akonadi {
+namespace Akonadi
+{
 class AgentInstance;
 }
 
-namespace KIdentityManagement {
+namespace KIdentityManagement
+{
 class IdentityManager;
 }
 
@@ -61,7 +63,7 @@ private:
     void slotReloadConfiguration();
     QString mDefaultIconName;
     QStringList mListEmails;
-    QHash<Akonadi::Collection, QList<Akonadi::Item::Id> > mNewMails;
+    QHash<Akonadi::Collection, QList<Akonadi::Item::Id>> mNewMails;
     QHash<QString, QString> mCacheResourceName;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;

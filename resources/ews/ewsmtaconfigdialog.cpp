@@ -18,8 +18,8 @@
 #include <AkonadiWidgets/AgentInstanceWidget>
 
 #include "ewsmtaresource.h"
-#include "ewsres_mta_debug.h"
 #include "ewsmtasettings.h"
+#include "ewsres_mta_debug.h"
 #include "ui_ewsmtaconfigdialog.h"
 
 EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)

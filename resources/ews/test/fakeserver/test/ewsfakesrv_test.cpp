@@ -9,10 +9,10 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QTest>
 #include <QXmlItem>
 #include <QXmlNamePool>
 #include <QXmlResultItems>
-#include <QTest>
 
 #include "fakeewsserver.h"
 #include "fakeewsserverthread.h"
@@ -38,6 +38,7 @@ private Q_SLOTS:
     void notAuthenticated();
     void badAuthentication();
     void xqueryResultsInCallback();
+
 private:
     QPair<QString, ushort> synchronousHttpReq(const QString &content, ushort port, std::function<bool(const QString &)> chunkFn = nullptr);
 };
@@ -153,12 +154,7 @@ void UtEwsFakeSrvTest::defaultCallback()
 void UtEwsFakeSrvTest::simpleResponse()
 {
     const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-            FakeEwsServer::DialogEntry::ReplyCallback(),
-            QStringLiteral("Sample request 1")
-        }
-    };
+        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
@@ -172,16 +168,11 @@ void UtEwsFakeSrvTest::simpleResponse()
 
 void UtEwsFakeSrvTest::callbackResponse()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-            [](const QString &, QXmlResultItems &, const QXmlNamePool &)
-            {
-                return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<a/>"), 200);
-            },
-            QStringLiteral("Sample request 1")
-        }
-    };
+    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
+                                                      [](const QString &, QXmlResultItems &, const QXmlNamePool &) {
+                                                          return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<a/>"), 200);
+                                                      },
+                                                      QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
@@ -195,18 +186,12 @@ void UtEwsFakeSrvTest::callbackResponse()
 
 void UtEwsFakeSrvTest::multipleResponses()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a /> or //test1/b = <b />) then (<aresult/>) else ()"),
-            FakeEwsServer::DialogEntry::ReplyCallback(),
-            QStringLiteral("Sample request 1")
-        },
-        {
-            QStringLiteral("if (//test1/b = <b /> or //test1/c = <c />) then (<bresult/>) else ()"),
-            FakeEwsServer::DialogEntry::ReplyCallback(),
-            QStringLiteral("Sample request 2")
-        }
-    };
+    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a /> or //test1/b = <b />) then (<aresult/>) else ()"),
+                                                      FakeEwsServer::DialogEntry::ReplyCallback(),
+                                                      QStringLiteral("Sample request 1")},
+                                                     {QStringLiteral("if (//test1/b = <b /> or //test1/c = <c />) then (<bresult/>) else ()"),
+                                                      FakeEwsServer::DialogEntry::ReplyCallback(),
+                                                      QStringLiteral("Sample request 2")}};
 
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
@@ -232,17 +217,12 @@ void UtEwsFakeSrvTest::multipleResponses()
 void UtEwsFakeSrvTest::emptyResponse()
 {
     bool callbackCalled = false;
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-            [&callbackCalled](const QString &, QXmlResultItems &, const QXmlNamePool &)
-            {
-                callbackCalled = true;
-                return FakeEwsServer::EmptyResponse;
-            },
-            QStringLiteral("Sample request 1")
-        }
-    };
+    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
+                                                      [&callbackCalled](const QString &, QXmlResultItems &, const QXmlNamePool &) {
+                                                          callbackCalled = true;
+                                                          return FakeEwsServer::EmptyResponse;
+                                                      },
+                                                      QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
@@ -282,256 +262,258 @@ void UtEwsFakeSrvTest::getEventsRequest_data()
     QTest::addColumn<ushort>("responseCode");
     QTest::addColumn<QString>("response");
 
-    QTest::newRow("valid request (MSDN)")
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                          "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                          "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                          "<soap:Body>"
-                          "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
-                          "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId>"
-                          "<Watermark>AAAAAMAGAAAAAAAAAQ==</Watermark>"
-                          "</GetEvents>"
-                          "</soap:Body>"
-                          "</soap:Envelope>")
-        << (QStringList()
-        << QStringLiteral("<NewMailEvent><Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
-                          "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
-                          "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
-                          "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                          "</NewMailEvent>")
-        << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
-                          "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                          "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                          "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                          "</NewMailEvent>"))
-        << static_cast<ushort>(200)
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                      "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                      "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                      "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                      "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<soap:Header>"
-                      "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                      "</soap:Header>"
-                      "<soap:Body>"
-                      "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<m:ResponseMessages>"
-                      "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
-                      "<m:ResponseCode>NoError</m:ResponseCode><m:Notification>"
-                      "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>"
-                      "<PreviousWatermark>AAAAAMAGAAAAAAAAAQ==<PreviousWatermark>"
-                      "<MoreEvents>false<MoreEvents>"
-                      "<NewMailEvent>"
-                      "<Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
-                      "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
-                      "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
-                      "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                      "</NewMailEvent>"
-                      "<NewMailEvent>"
-                      "<Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
-                      "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                      "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                      "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                      "</NewMailEvent>"
-                      "</m:Notification>"
-                      "</m:GetEventsResponseMessage>"
-                      "</m:ResponseMessages>"
-                      "</m:GetEventsResponse>"
-                      "</soap:Body>"
-                      "</soap:Envelope>");
+    QTest::newRow("valid request (MSDN)") << QStringLiteral(
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+        "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+        "<soap:Body>"
+        "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
+        "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId>"
+        "<Watermark>AAAAAMAGAAAAAAAAAQ==</Watermark>"
+        "</GetEvents>"
+        "</soap:Body>"
+        "</soap:Envelope>")
+                                          << (QStringList() << QStringLiteral("<NewMailEvent><Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
+                                                                              "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
+                                                                              "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
+                                                                              "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                                                              "</NewMailEvent>")
+                                                            << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
+                                                                              "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+                                                                              "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+                                                                              "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                                                              "</NewMailEvent>"))
+                                          << static_cast<ushort>(200)
+                                          << QStringLiteral(
+                                                 "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+                                                 "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+                                                 "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                                                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+                                                 "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+                                                 "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                                 "<soap:Header>"
+                                                 "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+                                                 "</soap:Header>"
+                                                 "<soap:Body>"
+                                                 "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+                                                 "<m:ResponseMessages>"
+                                                 "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
+                                                 "<m:ResponseCode>NoError</m:ResponseCode><m:Notification>"
+                                                 "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>"
+                                                 "<PreviousWatermark>AAAAAMAGAAAAAAAAAQ==<PreviousWatermark>"
+                                                 "<MoreEvents>false<MoreEvents>"
+                                                 "<NewMailEvent>"
+                                                 "<Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
+                                                 "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
+                                                 "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
+                                                 "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                                 "</NewMailEvent>"
+                                                 "<NewMailEvent>"
+                                                 "<Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
+                                                 "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+                                                 "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+                                                 "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                                 "</NewMailEvent>"
+                                                 "</m:Notification>"
+                                                 "</m:GetEventsResponseMessage>"
+                                                 "</m:ResponseMessages>"
+                                                 "</m:GetEventsResponse>"
+                                                 "</soap:Body>"
+                                                 "</soap:Envelope>");
 
     QTest::newRow("valid request (namespaced)")
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                          "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                          "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\" "
-                          "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
-                          "<soap:Body>"
-                          "<m:GetEvents>"
-                          "<m:SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</m:SubscriptionId>"
-                          "<m:Watermark>AAAAAMAGAAAAAAAAAQ==</m:Watermark>"
-                          "</m:GetEvents>"
-                          "</soap:Body>"
-                          "</soap:Envelope>")
-        << (QStringList()
-        << QStringLiteral("<NewMailEvent><Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
-                          "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
-                          "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
-                          "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                          "</NewMailEvent>")
-        << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
-                          "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                          "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                          "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                          "</NewMailEvent>"))
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\" "
+               "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
+               "<soap:Body>"
+               "<m:GetEvents>"
+               "<m:SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</m:SubscriptionId>"
+               "<m:Watermark>AAAAAMAGAAAAAAAAAQ==</m:Watermark>"
+               "</m:GetEvents>"
+               "</soap:Body>"
+               "</soap:Envelope>")
+        << (QStringList() << QStringLiteral("<NewMailEvent><Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
+                                            "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
+                                            "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
+                                            "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                            "</NewMailEvent>")
+                          << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
+                                            "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+                                            "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+                                            "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                            "</NewMailEvent>"))
         << static_cast<ushort>(200)
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                      "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                      "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                      "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                      "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<soap:Header>"
-                      "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                      "</soap:Header>"
-                      "<soap:Body>"
-                      "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<m:ResponseMessages>"
-                      "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
-                      "<m:ResponseCode>NoError</m:ResponseCode><m:Notification>"
-                      "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>"
-                      "<PreviousWatermark>AAAAAMAGAAAAAAAAAQ==<PreviousWatermark>"
-                      "<MoreEvents>false<MoreEvents>"
-                      "<NewMailEvent>"
-                      "<Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
-                      "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
-                      "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
-                      "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                      "</NewMailEvent>"
-                      "<NewMailEvent>"
-                      "<Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
-                      "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                      "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                      "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                      "</NewMailEvent>"
-                      "</m:Notification>"
-                      "</m:GetEventsResponseMessage>"
-                      "</m:ResponseMessages>"
-                      "</m:GetEventsResponse>"
-                      "</soap:Body>"
-                      "</soap:Envelope>");
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+               "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+               "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Header>"
+               "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+               "</soap:Header>"
+               "<soap:Body>"
+               "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<m:ResponseMessages>"
+               "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
+               "<m:ResponseCode>NoError</m:ResponseCode><m:Notification>"
+               "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>"
+               "<PreviousWatermark>AAAAAMAGAAAAAAAAAQ==<PreviousWatermark>"
+               "<MoreEvents>false<MoreEvents>"
+               "<NewMailEvent>"
+               "<Watermark>AAAAAM4GAAAAAAAAAQ==</Watermark>"
+               "<TimeStamp>2006-08-22T00:36:29Z</TimeStamp>"
+               "<ItemId Id=\"AQApAHR\" ChangeKey=\"CQAAAA==\" />"
+               "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+               "</NewMailEvent>"
+               "<NewMailEvent>"
+               "<Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
+               "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+               "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+               "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+               "</NewMailEvent>"
+               "</m:Notification>"
+               "</m:GetEventsResponseMessage>"
+               "</m:ResponseMessages>"
+               "</m:GetEventsResponse>"
+               "</soap:Body>"
+               "</soap:Envelope>");
 
     QTest::newRow("invalid request (missing subscription id)")
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                          "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                          "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                          "<soap:Body>"
-                          "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
-                          "<SubscriptionId></SubscriptionId>"
-                          "<Watermark>AAAAAMAGAAAAAAAAAQ==</Watermark>"
-                          "</GetEvents>"
-                          "</soap:Body>"
-                          "</soap:Envelope>")
-        << (QStringList()
-        << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
-                          "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                          "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                          "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                          "</NewMailEvent>"))
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Body>"
+               "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
+               "<SubscriptionId></SubscriptionId>"
+               "<Watermark>AAAAAMAGAAAAAAAAAQ==</Watermark>"
+               "</GetEvents>"
+               "</soap:Body>"
+               "</soap:Envelope>")
+        << (QStringList() << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
+                                            "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+                                            "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+                                            "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                            "</NewMailEvent>"))
         << static_cast<ushort>(200)
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                      "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                      "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                      "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                      "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<soap:Header>"
-                      "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                      "</soap:Header>"
-                      "<soap:Body>"
-                      "<m:GetEventsResponse>"
-                      "<m:ResponseMessages>"
-                      "<m:GetEventsResponseMessage ResponseClass=\"Error\">"
-                      "<m:MessageText>Missing subscription id or watermark.</m:MessageText>"
-                      "<m:ResponseCode>ErrorInvalidPullSubscriptionId</m:ResponseCode>"
-                      "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
-                      "</m:GetEventsResponseMessage>"
-                      "</m:ResponseMessages>"
-                      "</m:GetEventsResponse>"
-                      "</soap:Body>"
-                      "</soap:Envelope>");
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+               "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+               "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Header>"
+               "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+               "</soap:Header>"
+               "<soap:Body>"
+               "<m:GetEventsResponse>"
+               "<m:ResponseMessages>"
+               "<m:GetEventsResponseMessage ResponseClass=\"Error\">"
+               "<m:MessageText>Missing subscription id or watermark.</m:MessageText>"
+               "<m:ResponseCode>ErrorInvalidPullSubscriptionId</m:ResponseCode>"
+               "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
+               "</m:GetEventsResponseMessage>"
+               "</m:ResponseMessages>"
+               "</m:GetEventsResponse>"
+               "</soap:Body>"
+               "</soap:Envelope>");
 
     QTest::newRow("invalid request (missing watermark)")
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                          "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                          "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                          "<soap:Body>"
-                          "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
-                          "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId>"
-                          "<Watermark></Watermark>"
-                          "</GetEvents>"
-                          "</soap:Body>"
-                          "</soap:Envelope>")
-        << (QStringList()
-        << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
-                          "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                          "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                          "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                          "</NewMailEvent>"))
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Body>"
+               "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
+               "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId>"
+               "<Watermark></Watermark>"
+               "</GetEvents>"
+               "</soap:Body>"
+               "</soap:Envelope>")
+        << (QStringList() << QStringLiteral("<NewMailEvent><Watermark>AAAAAOQGAAAAAAAAAQ==</Watermark>"
+                                            "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+                                            "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+                                            "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+                                            "</NewMailEvent>"))
         << static_cast<ushort>(200)
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                      "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                      "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                      "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                      "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<soap:Header>"
-                      "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                      "</soap:Header>"
-                      "<soap:Body>"
-                      "<m:GetEventsResponse>"
-                      "<m:ResponseMessages>"
-                      "<m:GetEventsResponseMessage ResponseClass=\"Error\">"
-                      "<m:MessageText>Missing subscription id or watermark.</m:MessageText>"
-                      "<m:ResponseCode>ErrorInvalidPullSubscriptionId</m:ResponseCode>"
-                      "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
-                      "</m:GetEventsResponseMessage>"
-                      "</m:ResponseMessages>"
-                      "</m:GetEventsResponse>"
-                      "</soap:Body>"
-                      "</soap:Envelope>");
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+               "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+               "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Header>"
+               "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+               "</soap:Header>"
+               "<soap:Body>"
+               "<m:GetEventsResponse>"
+               "<m:ResponseMessages>"
+               "<m:GetEventsResponseMessage ResponseClass=\"Error\">"
+               "<m:MessageText>Missing subscription id or watermark.</m:MessageText>"
+               "<m:ResponseCode>ErrorInvalidPullSubscriptionId</m:ResponseCode>"
+               "<m:DescriptiveLinkKey>0</m:DescriptiveLinkKey>"
+               "</m:GetEventsResponseMessage>"
+               "</m:ResponseMessages>"
+               "</m:GetEventsResponse>"
+               "</soap:Body>"
+               "</soap:Envelope>");
 
     QTest::newRow("valid request (no events)")
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                          "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                          "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                          "<soap:Body>"
-                          "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
-                          "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId>"
-                          "<Watermark>AAAAAMAGAAAAAAAAAQ==</Watermark>"
-                          "</GetEvents>"
-                          "</soap:Body>"
-                          "</soap:Envelope>")
-        << QStringList()
-        << static_cast<ushort>(200)
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                      "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                      "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                      "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                      "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                      "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<soap:Header>"
-                      "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                      "</soap:Header>"
-                      "<soap:Body>"
-                      "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                      "<m:ResponseMessages>"
-                      "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
-                      "<m:ResponseCode>NoError</m:ResponseCode><m:Notification>"
-                      "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>"
-                      "<PreviousWatermark>AAAAAMAGAAAAAAAAAQ==<PreviousWatermark>"
-                      "<MoreEvents>false<MoreEvents>"
-                      "</m:Notification>"
-                      "</m:GetEventsResponseMessage>"
-                      "</m:ResponseMessages>"
-                      "</m:GetEventsResponse>"
-                      "</soap:Body>"
-                      "</soap:Envelope>");
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Body>"
+               "<GetEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
+               "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId>"
+               "<Watermark>AAAAAMAGAAAAAAAAAQ==</Watermark>"
+               "</GetEvents>"
+               "</soap:Body>"
+               "</soap:Envelope>")
+        << QStringList() << static_cast<ushort>(200)
+        << QStringLiteral(
+               "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+               "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+               "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+               "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+               "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+               "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<soap:Header>"
+               "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+               "</soap:Header>"
+               "<soap:Body>"
+               "<m:GetEventsResponse xmlns=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+               "<m:ResponseMessages>"
+               "<m:GetEventsResponseMessage ResponseClass=\"Success\">"
+               "<m:ResponseCode>NoError</m:ResponseCode><m:Notification>"
+               "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>"
+               "<PreviousWatermark>AAAAAMAGAAAAAAAAAQ==<PreviousWatermark>"
+               "<MoreEvents>false<MoreEvents>"
+               "</m:Notification>"
+               "</m:GetEventsResponseMessage>"
+               "</m:ResponseMessages>"
+               "</m:GetEventsResponse>"
+               "</soap:Body>"
+               "</soap:Envelope>");
 
-    QTest::newRow("invalid request (not a GetEvents request)")
-        << QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                          "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                          "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                          "<soap:Body>"
-                          "<m:GetStreamingEvents>"
-                          "<m:SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</m:SubscriptionId>"
-                          "<m:ConnectionTimeout>30</m:ConnectionTimeout>"
-                          "</m:GetStreamingEvents>"
-                          "</soap:Body>"
-                          "</soap:Envelope>")
-        << QStringList()
-        << static_cast<ushort>(500)
-        << QString();
+    QTest::newRow("invalid request (not a GetEvents request)") << QStringLiteral(
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+        "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+        "<soap:Body>"
+        "<m:GetStreamingEvents>"
+        "<m:SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</m:SubscriptionId>"
+        "<m:ConnectionTimeout>30</m:ConnectionTimeout>"
+        "</m:GetStreamingEvents>"
+        "</soap:Body>"
+        "</soap:Envelope>") << QStringList() << static_cast<ushort>(500)
+                                                               << QString();
 }
 
 void UtEwsFakeSrvTest::getStreamingEventsRequest()
@@ -544,21 +526,23 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
     QVERIFY(srv->start());
     QDateTime startTime = QDateTime::currentDateTime();
 
-    const QString event = QStringLiteral("<NewMailEvent>"
-                                         "<TimeStamp>2006-08-22T01:00:10Z</TimeStamp>"
-                                         "<ItemId Id=\"AQApAHRx\" ChangeKey=\"CQAAAA==\" />"
-                                         "<ParentFolderId Id=\"AQApAc\" ChangeKey=\"AQAAAA==\" />"
-                                         "</NewMailEvent>");
-    const QString content = QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                                           "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                                           "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                                           "<soap:Body>"
-                                           "<GetStreamingEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
-                                           "<SubscriptionIds><SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId></SubscriptionIds>"
-                                           "<ConnectionTimeout>1</ConnectionTimeout>"
-                                           "</GetStreamingEvents>"
-                                           "</soap:Body>"
-                                           "</soap:Envelope>");
+    const QString event = QStringLiteral(
+        "<NewMailEvent>"
+        "<TimeStamp>2006-08-22T01:00:10Z</TimeStamp>"
+        "<ItemId Id=\"AQApAHRx\" ChangeKey=\"CQAAAA==\" />"
+        "<ParentFolderId Id=\"AQApAc\" ChangeKey=\"AQAAAA==\" />"
+        "</NewMailEvent>");
+    const QString content = QStringLiteral(
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+        "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+        "<soap:Body>"
+        "<GetStreamingEvents xmlns=\"http://schemas.microsoft.com/exchange/services/2006/messages\">"
+        "<SubscriptionIds><SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d</SubscriptionId></SubscriptionIds>"
+        "<ConnectionTimeout>1</ConnectionTimeout>"
+        "</GetStreamingEvents>"
+        "</soap:Body>"
+        "</soap:Envelope>");
 
     srv->queueEventsXml(QStringList() << event);
 
@@ -573,35 +557,39 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
     int responseNo = 0;
     QDateTime pushEventTime;
     auto resp = synchronousHttpReq(content, srv->portNumber(), [&](const QString &chunk) {
-        const QString respHead = QStringLiteral("<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
-                                                "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
-                                                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-                                                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-                                                "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
-                                                "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
-                                                "<soap:Header>"
-                                                "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
-                                                "</soap:Header>"
-                                                "<soap:Body>"
-                                                "<m:GetStreamingEventsResponse>"
-                                                "<m:ResponseMessages>"
-                                                "<m:GetStreamingEventsResponseMessage ResponseClass=\"Success\">"
-                                                "<m:ResponseCode>NoError</m:ResponseCode>"
-                                                "<m:ConnectionStatus>OK</m:ConnectionStatus>");
-        const QString respTail = QStringLiteral("</m:GetStreamingEventsResponseMessage>"
-                                                "</m:ResponseMessages>"
-                                                "</m:GetStreamingEventsResponse>"
-                                                "</soap:Body>"
-                                                "</soap:Envelope>");
-        const QString eventHead = QStringLiteral("<m:Notifications>"
-                                                 "<m:Notification>"
-                                                 "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>");
+        const QString respHead = QStringLiteral(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
+            "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" "
+            "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+            "xmlns:m=\"http://schemas.microsoft.com/exchange/services/2006/messages\" "
+            "xmlns:t=\"http://schemas.microsoft.com/exchange/services/2006/types\">"
+            "<soap:Header>"
+            "<t:ServerVersionInfo MajorVersion=\"8\" MinorVersion=\"0\" MajorBuildNumber=\"628\" MinorBuildNumber=\"0\" />"
+            "</soap:Header>"
+            "<soap:Body>"
+            "<m:GetStreamingEventsResponse>"
+            "<m:ResponseMessages>"
+            "<m:GetStreamingEventsResponseMessage ResponseClass=\"Success\">"
+            "<m:ResponseCode>NoError</m:ResponseCode>"
+            "<m:ConnectionStatus>OK</m:ConnectionStatus>");
+        const QString respTail = QStringLiteral(
+            "</m:GetStreamingEventsResponseMessage>"
+            "</m:ResponseMessages>"
+            "</m:GetStreamingEventsResponse>"
+            "</soap:Body>"
+            "</soap:Envelope>");
+        const QString eventHead = QStringLiteral(
+            "<m:Notifications>"
+            "<m:Notification>"
+            "<SubscriptionId>f6bc657d-dde1-4f94-952d-143b95d6483d<SubscriptionId>");
         const QString eventTail = QStringLiteral("</m:Notification></m:Notifications>");
-        const QString event2 = QStringLiteral("<NewMailEvent>"
-                                              "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
-                                              "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
-                                              "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
-                                              "</NewMailEvent>");
+        const QString event2 = QStringLiteral(
+            "<NewMailEvent>"
+            "<TimeStamp>2006-08-22T01:00:50Z</TimeStamp>"
+            "<ItemId Id=\"AQApAHRw\" ChangeKey=\"CQAAAA==\" />"
+            "<ParentFolderId Id=\"AQApAH\" ChangeKey=\"AQAAAA==\" />"
+            "</NewMailEvent>");
         callbackCalled = true;
 
         QString expResp = respHead;
@@ -651,12 +639,7 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
 void UtEwsFakeSrvTest::serverThread()
 {
     const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-            FakeEwsServer::DialogEntry::ReplyCallback(),
-            QStringLiteral("Sample request 1")
-        }
-    };
+        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     FakeEwsServerThread thread;
@@ -681,12 +664,7 @@ void UtEwsFakeSrvTest::delayedContentSize()
      */
 
     const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"),
-            FakeEwsServer::DialogEntry::ReplyCallback(),
-            QStringLiteral("Sample request 1")
-        }
-    };
+        {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     FakeEwsServerThread thread;
@@ -707,7 +685,9 @@ void UtEwsFakeSrvTest::delayedContentSize()
                               "Accept-Charset: utf-8,*;q=0.5\r\n"
                               "Accept-Language: pl-PL,en;q=0.9\r\n"
                               "Authorization: Basic dGVzdDp0ZXN0\r\n"
-                              "Content-Type: text/xml\r\n").arg(thread.portNumber()).toLatin1());
+                              "Content-Type: text/xml\r\n")
+                   .arg(thread.portNumber())
+                   .toLatin1());
     sock.waitForBytesWritten(100);
     QThread::msleep(100);
     sock.write("Content-Length: 20\r\n\r\n");
@@ -781,38 +761,33 @@ void UtEwsFakeSrvTest::badAuthentication()
 
 void UtEwsFakeSrvTest::xqueryResultsInCallback()
 {
-    const FakeEwsServer::DialogEntry::List dialog = {
-        {
-            QStringLiteral("if (//test1/a = <a />) then (<b>test</b>) else ()"),
-            [](const QString &, QXmlResultItems &ri, const QXmlNamePool &)
-            {
-                if (ri.hasError()) {
-                    qDebug() << "XQuery result has errors.";
-                    return FakeEwsServer::EmptyResponse;
-                }
-                QXmlItem item = ri.next();
-                if (item.isNull()) {
-                    qDebug() << "XQuery result has no items.";
-                    return FakeEwsServer::EmptyResponse;
-                }
-                if (!item.isNode()) {
-                    qDebug() << "XQuery result is not a XML node.";
-                    return FakeEwsServer::EmptyResponse;
-                }
-                QXmlNodeModelIndex index = item.toNodeModelIndex();
-                if (index.isNull()) {
-                    qDebug() << "XQuery XML node is NULL.";
-                    return FakeEwsServer::EmptyResponse;
-                }
-                if (index.model()->stringValue(index) != QLatin1String("test")) {
-                    qDebug() << "Unexpected item value:" << index.model()->stringValue(index);
-                    return FakeEwsServer::EmptyResponse;
-                }
-                return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<b/>"), 200);
-            },
-            QStringLiteral("Sample request 1")
-        }
-    };
+    const FakeEwsServer::DialogEntry::List dialog = {{QStringLiteral("if (//test1/a = <a />) then (<b>test</b>) else ()"),
+                                                      [](const QString &, QXmlResultItems &ri, const QXmlNamePool &) {
+                                                          if (ri.hasError()) {
+                                                              qDebug() << "XQuery result has errors.";
+                                                              return FakeEwsServer::EmptyResponse;
+                                                          }
+                                                          QXmlItem item = ri.next();
+                                                          if (item.isNull()) {
+                                                              qDebug() << "XQuery result has no items.";
+                                                              return FakeEwsServer::EmptyResponse;
+                                                          }
+                                                          if (!item.isNode()) {
+                                                              qDebug() << "XQuery result is not a XML node.";
+                                                              return FakeEwsServer::EmptyResponse;
+                                                          }
+                                                          QXmlNodeModelIndex index = item.toNodeModelIndex();
+                                                          if (index.isNull()) {
+                                                              qDebug() << "XQuery XML node is NULL.";
+                                                              return FakeEwsServer::EmptyResponse;
+                                                          }
+                                                          if (index.model()->stringValue(index) != QLatin1String("test")) {
+                                                              qDebug() << "Unexpected item value:" << index.model()->stringValue(index);
+                                                              return FakeEwsServer::EmptyResponse;
+                                                          }
+                                                          return FakeEwsServer::DialogEntry::HttpResponse(QStringLiteral("<b/>"), 200);
+                                                      },
+                                                      QStringLiteral("Sample request 1")}};
 
     QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));

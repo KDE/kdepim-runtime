@@ -8,9 +8,9 @@
 
 #include <KCalendarCore/Todo>
 
+#include "ewscreateabchpersonjob.h"
 #include "ewsfetchabchpersondetailjob.h"
 #include "ewsmodifyabchpersonjob.h"
-#include "ewscreateabchpersonjob.h"
 
 using namespace Akonadi;
 
@@ -56,7 +56,11 @@ EwsModifyItemJob *EwsAbchPersonHandler::modifyItemJob(EwsClient &client, const Q
     return new EwsModifyAbchPersonJob(client, items, parts, parent);
 }
 
-EwsCreateItemJob *EwsAbchPersonHandler::createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent)
+EwsCreateItemJob *EwsAbchPersonHandler::createItemJob(EwsClient &client,
+                                                      const Akonadi::Item &item,
+                                                      const Akonadi::Collection &collection,
+                                                      EwsTagStore *tagStore,
+                                                      EwsResource *parent)
 {
     return new EwsCreateAbchPersonJob(client, item, collection, tagStore, parent);
 }

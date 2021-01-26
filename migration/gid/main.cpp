@@ -11,11 +11,11 @@
 #include <KLocalizedString>
 
 #include "migration_debug.h"
-#include <QIcon>
 #include <QApplication>
-#include <infodialog.h>
-#include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QCommandLineParser>
+#include <QIcon>
+#include <infodialog.h>
 
 #include "gidmigrator.h"
 
@@ -64,8 +64,7 @@ int main(int argc, char **argv)
     auto migrator = new GidMigrator(mimeType);
     if (infoDialog && migrator) {
         infoDialog->migratorAdded();
-        QObject::connect(migrator, &MigratorBase::message,
-                         infoDialog, QOverload<MigratorBase::MessageType, const QString &>::of(&InfoDialog::message));
+        QObject::connect(migrator, &MigratorBase::message, infoDialog, QOverload<MigratorBase::MessageType, const QString &>::of(&InfoDialog::message));
         QObject::connect(migrator, &QObject::destroyed, infoDialog, &InfoDialog::migratorDone);
         QObject::connect(migrator, QOverload<int>::of(&MigratorBase::progress), infoDialog, QOverload<int>::of(&InfoDialog::progress));
     }

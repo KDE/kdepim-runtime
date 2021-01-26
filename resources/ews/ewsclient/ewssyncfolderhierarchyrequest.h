@@ -8,20 +8,15 @@
 #define EWSSYNCFOLDERHIERARCHYREQUEST_H
 
 #include "ewsfolder.h"
+#include "ewsfoldershape.h"
 #include "ewsrequest.h"
 #include "ewstypes.h"
-#include "ewsfoldershape.h"
 
 class EwsSyncFolderHierarchyRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum ChangeType {
-        Create,
-        Update,
-        Delete,
-        Unknown
-    };
+    enum ChangeType { Create, Update, Delete, Unknown };
 
     class Response;
 
@@ -86,8 +81,8 @@ public:
 protected:
     bool parseResult(QXmlStreamReader &reader) override;
     bool parseItemsResponse(QXmlStreamReader &reader);
-private:
 
+private:
     EwsId mFolderId;
     EwsFolderShape mShape;
     QString mSyncState;

@@ -7,16 +7,16 @@
 
 #include "sessionpool.h"
 
-#include <QTimer>
 #include <QSslSocket>
+#include <QTimer>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <kimap/capabilitiesjob.h>
+#include <kimap/idjob.h>
 #include <kimap/logoutjob.h>
 #include <kimap/namespacejob.h>
-#include <kimap/idjob.h>
 
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"
@@ -45,8 +45,7 @@ void SessionPool::setPasswordRequester(PasswordRequesterInterface *requester)
 
     m_passwordRequester = requester;
     m_passwordRequester->setParent(this);
-    QObject::connect(m_passwordRequester, &PasswordRequesterInterface::done,
-                     this, &SessionPool::onPasswordRequestDone);
+    QObject::connect(m_passwordRequester, &PasswordRequesterInterface::done, this, &SessionPool::onPasswordRequestDone);
 }
 
 void SessionPool::cancelPasswordRequests()
@@ -73,7 +72,9 @@ void SessionPool::requestPassword()
 {
     if (m_account->authenticationMode() == KIMAP::LoginJob::GSSAPI) {
         // for GSSAPI we don't have to ask for username/password, because it uses session wide tickets
-        QMetaObject::invokeMethod(this, "onPasswordRequestDone", Qt::QueuedConnection,
+        QMetaObject::invokeMethod(this,
+                                  "onPasswordRequestDone",
+                                  Qt::QueuedConnection,
                                   Q_ARG(int, PasswordRequesterInterface::PasswordRetrieved),
                                   Q_ARG(QString, QString()));
     } else {
@@ -189,16 +190,14 @@ void SessionPool::killSession(KIMAP::Session *session, SessionTermination termin
         Q_ASSERT(false);
         return;
     }
-    QObject::disconnect(session, &KIMAP::Session::connectionLost,
-                        this, &SessionPool::onConnectionLost);
+    QObject::disconnect(session, &KIMAP::Session::connectionLost, this, &SessionPool::onConnectionLost);
     m_unusedPool.removeAll(session);
     m_reservedPool.removeAll(session);
     m_connectingPool.removeAll(session);
 
     if (session->state() != KIMAP::Session::Disconnected && termination == LogoutSession) {
         auto logout = new KIMAP::LogoutJob(session);
-        QObject::connect(logout, &KJob::result,
-                         session, &QObject::deleteLater);
+        QObject::connect(logout, &KJob::result, session, &QObject::deleteLater);
         logout->start();
     } else {
         session->close();
@@ -208,8 +207,8 @@ void SessionPool::killSession(KIMAP::Session *session, SessionTermination termin
 
 void SessionPool::declareSessionReady(KIMAP::Session *session)
 {
-    //This can happen if we happen to disconnect while capabilities and namespace are being retrieved,
-    //resulting in us keeping a dangling pointer to a deleted session
+    // This can happen if we happen to disconnect while capabilities and namespace are being retrieved,
+    // resulting in us keeping a dangling pointer to a deleted session
     if (!m_connectingPool.contains(session)) {
         qCWarning(IMAPRESOURCE_LOG) << "Tried to declare a removed session ready";
         return;
@@ -276,8 +275,7 @@ void SessionPool::processPendingRequests()
     if (!m_account) {
         // The connection to the server is lost; no point processing pending requests
         for (int request : qAsConst(m_pendingRequests)) {
-            Q_EMIT sessionRequestDone(request, nullptr,
-                                      LoginFailError, i18n("Disconnected from server during login."));
+            Q_EMIT sessionRequestDone(request, nullptr, LoginFailError, i18n("Disconnected from server during login."));
         }
         return;
     }
@@ -298,10 +296,10 @@ void SessionPool::processPendingRequests()
     } else {
         // No session available, and max pool size reached
         if (!m_pendingRequests.isEmpty()) {
-            Q_EMIT sessionRequestDone(
-                m_pendingRequests.takeFirst(), nullptr, NoAvailableSessionError,
-                i18n("Could not create another extra connection to the IMAP-server %1.",
-                     m_account->server()));
+            Q_EMIT sessionRequestDone(m_pendingRequests.takeFirst(),
+                                      nullptr,
+                                      NoAvailableSessionError,
+                                      i18n("Could not create another extra connection to the IMAP-server %1.", m_account->server()));
             if (!m_pendingRequests.isEmpty()) {
                 QTimer::singleShot(0, this, &SessionPool::processPendingRequests);
             }
@@ -317,8 +315,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         // it looks like the connection was lost while we were waiting
         // for the password, we should fail all the pending requests and stop there
         for (int request : qAsConst(m_pendingRequests)) {
-            Q_EMIT sessionRequestDone(request, nullptr,
-                                      LoginFailError, i18n("Disconnected from server during login."));
+            Q_EMIT sessionRequestDone(request, nullptr, LoginFailError, i18n("Disconnected from server during login."));
         }
         return;
     }
@@ -352,7 +349,8 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         qCWarning(IMAPRESOURCE_LOG) << "Crypto not supported!";
         Q_EMIT connectDone(EncryptionError,
                            i18n("You requested TLS/SSL to connect to %1, but your "
-                                "system does not seem to be set up for that.", m_account->server()));
+                                "system does not seem to be set up for that.",
+                                m_account->server()));
         disconnect();
         return;
     }
@@ -369,8 +367,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
         m_connectingPool << session;
     }
 
-    QObject::connect(session, &KIMAP::Session::connectionLost,
-                     this, &SessionPool::onConnectionLost);
+    QObject::connect(session, &KIMAP::Session::connectionLost, this, &SessionPool::onConnectionLost);
 
     auto loginJob = new KIMAP::LoginJob(session);
     loginJob->setUserName(m_account->userName());
@@ -378,8 +375,7 @@ void SessionPool::onPasswordRequestDone(int resultType, const QString &password)
     loginJob->setEncryptionMode(m_account->encryptionMode());
     loginJob->setAuthenticationMode(m_account->authenticationMode());
 
-    QObject::connect(loginJob, &KJob::result,
-                     this, &SessionPool::onLoginDone);
+    QObject::connect(loginJob, &KJob::result, this, &SessionPool::onLoginDone);
     loginJob->start();
 }
 
@@ -406,20 +402,15 @@ void SessionPool::onLoginDone(KJob *job)
             if (m_account) {
                 cancelSessionCreation(login->session(),
                                       CouldNotConnectError,
-                                      i18n("Could not connect to the IMAP-server %1.\n%2",
-                                           m_account->server(), job->errorString()));
+                                      i18n("Could not connect to the IMAP-server %1.\n%2", m_account->server(), job->errorString()));
             } else {
                 // Can happen when we lose all ready connections while trying to login.
-                cancelSessionCreation(login->session(),
-                                      CouldNotConnectError,
-                                      i18n("Could not connect to the IMAP-server.\n%1",
-                                           job->errorString()));
+                cancelSessionCreation(login->session(), CouldNotConnectError, i18n("Could not connect to the IMAP-server.\n%1", job->errorString()));
             }
         } else {
             // Connection worked, but login failed -> ask for a different password or ssl settings.
             m_pendingInitialSession = login->session();
-            m_passwordRequester->requestPassword(PasswordRequesterInterface::WrongPasswordRequest,
-                                                 job->errorString());
+            m_passwordRequester->requestPassword(PasswordRequesterInterface::WrongPasswordRequest, job->errorString());
         }
     }
 }
@@ -439,13 +430,15 @@ void SessionPool::onCapabilitiesTestDone(KJob *job)
                                   CapabilitiesTestError,
                                   i18n("Could not test the capabilities supported by the "
                                        "IMAP server %1.\n%2",
-                                       m_account->server(), job->errorString()));
+                                       m_account->server(),
+                                       job->errorString()));
         } else {
             // Can happen when we lose all ready connections while trying to check capabilities.
             cancelSessionCreation(capJob->session(),
                                   CapabilitiesTestError,
                                   i18n("Could not test the capabilities supported by the "
-                                       "IMAP server.\n%1", job->errorString()));
+                                       "IMAP server.\n%1",
+                                       job->errorString()));
         }
         return;
     }
@@ -516,9 +509,7 @@ void SessionPool::onNamespacesTestDone(KJob *job)
         // ... otherwise we assume that we have to list explicitly each
         // namespace
 
-        m_namespaces = nsJob->personalNamespaces()
-                       +nsJob->userNamespaces()
-                       +nsJob->sharedNamespaces();
+        m_namespaces = nsJob->personalNamespaces() + nsJob->userNamespaces() + nsJob->sharedNamespaces();
     }
 
     if (m_capabilities.contains(QLatin1String("ID"))) {
@@ -575,7 +566,7 @@ void SessionPool::onConnectionLost()
 
 void SessionPool::onSessionDestroyed(QObject *object)
 {
-    //Safety net for bugs that cause dangling session pointers
+    // Safety net for bugs that cause dangling session pointers
     auto session = static_cast<KIMAP::Session *>(object);
     bool sessionInPool = false;
     if (m_unusedPool.contains(session)) {

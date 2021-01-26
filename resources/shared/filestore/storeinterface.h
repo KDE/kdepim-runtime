@@ -14,11 +14,13 @@
 // TODO not nice, collection fetch type should probably be in its own header
 #include "collectionfetchjob.h"
 
-namespace Akonadi {
+namespace Akonadi
+{
 class Collection;
 class Item;
 
-namespace FileStore {
+namespace FileStore
+{
 class CollectionCreateJob;
 class CollectionDeleteJob;
 class CollectionFetchJob;

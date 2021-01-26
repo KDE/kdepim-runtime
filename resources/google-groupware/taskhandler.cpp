@@ -10,24 +10,24 @@
 #include "googlesettings.h"
 #include "googletasks_debug.h"
 
+#include <Akonadi/Calendar/BlockAlarmsAttribute>
 #include <AkonadiCore/CollectionColorAttribute>
 #include <AkonadiCore/CollectionModifyJob>
 #include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemModifyJob>
 #include <AkonadiCore/ItemFetchJob>
 #include <AkonadiCore/ItemFetchScope>
-#include <Akonadi/Calendar/BlockAlarmsAttribute>
+#include <AkonadiCore/ItemModifyJob>
 
 #include <KGAPI/Account>
+#include <KGAPI/Tasks/Task>
+#include <KGAPI/Tasks/TaskCreateJob>
+#include <KGAPI/Tasks/TaskDeleteJob>
+#include <KGAPI/Tasks/TaskFetchJob>
 #include <KGAPI/Tasks/TaskList>
 #include <KGAPI/Tasks/TaskListCreateJob>
 #include <KGAPI/Tasks/TaskListDeleteJob>
 #include <KGAPI/Tasks/TaskListFetchJob>
 #include <KGAPI/Tasks/TaskListModifyJob>
-#include <KGAPI/Tasks/Task>
-#include <KGAPI/Tasks/TaskCreateJob>
-#include <KGAPI/Tasks/TaskDeleteJob>
-#include <KGAPI/Tasks/TaskFetchJob>
 #include <KGAPI/Tasks/TaskModifyJob>
 #include <KGAPI/Tasks/TaskMoveJob>
 
@@ -55,13 +55,10 @@ bool TaskHandler::canPerformTask(const Item::List &items)
 
 void TaskHandler::setupCollection(Collection &collection, const TaskListPtr &taskList)
 {
-    collection.setContentMimeTypes({ mimeType() });
+    collection.setContentMimeTypes({mimeType()});
     collection.setName(taskList->uid());
     collection.setRemoteId(taskList->uid());
-    collection.setRights(Collection::CanChangeCollection
-                         |Collection::CanCreateItem
-                         |Collection::CanChangeItem
-                         |Collection::CanDeleteItem);
+    collection.setRights(Collection::CanChangeCollection | Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem);
 
     auto *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(taskList->title());
@@ -73,7 +70,7 @@ void TaskHandler::retrieveCollections(const Collection &rootCollection)
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Retrieving task lists"));
     qCDebug(GOOGLE_TASKS_LOG) << "Retrieving tasks...";
     auto job = new TaskListFetchJob(m_settings->accountPtr(), this);
-    connect(job, &TaskListFetchJob::finished, this, [this, rootCollection](KGAPI2::Job *job){
+    connect(job, &TaskListFetchJob::finished, this, [this, rootCollection](KGAPI2::Job *job) {
         if (!m_iface->handleError(job)) {
             return;
         }
@@ -176,7 +173,7 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     qCDebug(GOOGLE_TASKS_LOG) << "Task added to list" << collection.remoteId() << "with parent" << parentRemoteId;
     auto job = new TaskCreateJob(task, item.parentCollection().remoteId(), m_settings->accountPtr(), this);
     job->setParentItem(parentRemoteId);
-    connect(job, &TaskCreateJob::finished, this, [this, item](KGAPI2::Job *job){
+    connect(job, &TaskCreateJob::finished, this, [this, item](KGAPI2::Job *job) {
         if (!m_iface->handleError(job)) {
             return;
         }
@@ -193,7 +190,7 @@ void TaskHandler::itemAdded(const Item &item, const Collection &collection)
     });
 }
 
-void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > & /*partIdentifiers*/)
+void TaskHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*partIdentifiers*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing task in list '%1'", item.parentCollection().displayName()));
     qCDebug(GOOGLE_TASKS_LOG) << "Changing task" << item.remoteId();
@@ -202,7 +199,7 @@ void TaskHandler::itemChanged(const Item &item, const QSet< QByteArray > & /*par
     const QString parentUid = todo->relatedTo(KCalendarCore::Incidence::RelTypeParent);
     // First we move it to a new parent, if there is
     auto job = new TaskMoveJob(item.remoteId(), item.parentCollection().remoteId(), parentUid, m_settings->accountPtr(), this);
-    connect(job, &TaskMoveJob::finished, this, [this, todo, item](KGAPI2::Job *job){
+    connect(job, &TaskMoveJob::finished, this, [this, todo, item](KGAPI2::Job *job) {
         if (!m_iface->handleError(job)) {
             return;
         }
@@ -223,7 +220,7 @@ void TaskHandler::itemsRemoved(const Item::List &items)
      * from the task. Only then the task can be safely removed. */
     auto job = new ItemFetchJob(items.first().parentCollection());
     job->fetchScope().fetchFullPayload(true);
-    connect(job, &ItemFetchJob::finished, this, [this, items](KJob *job){
+    connect(job, &ItemFetchJob::finished, this, [this, items](KJob *job) {
         if (job->error()) {
             m_iface->cancelTask(i18n("Failed to delete task: %1", job->errorString()));
             return;
@@ -239,7 +236,7 @@ void TaskHandler::itemsRemoved(const Item::List &items)
                 continue;
             }
 
-            auto it = std::find_if(items.cbegin(), items.cend(), [&parentId](const Item &item){
+            auto it = std::find_if(items.cbegin(), items.cend(), [&parentId](const Item &item) {
                 return item.remoteId() == parentId;
             });
             if (it != items.cend()) {
@@ -258,9 +255,8 @@ void TaskHandler::itemsRemoved(const Item::List &items)
         }
 
         qCDebug(GOOGLE_TASKS_LOG) << "Reparenting" << detachItems.count() << "children...";
-        auto moveJob = new TaskMoveJob(detachTasks, items.first().parentCollection().remoteId(),
-                                       QString(), m_settings->accountPtr(), this);
-        connect(moveJob, &TaskMoveJob::finished, this, [this, items, detachItems](KGAPI2::Job *job){
+        auto moveJob = new TaskMoveJob(detachTasks, items.first().parentCollection().remoteId(), QString(), m_settings->accountPtr(), this);
+        connect(moveJob, &TaskMoveJob::finished, this, [this, items, detachItems](KGAPI2::Job *job) {
             if (job->error()) {
                 m_iface->cancelTask(i18n("Failed to reparent subtasks: %1", job->errorString()));
                 return;
@@ -281,8 +277,7 @@ void TaskHandler::doRemoveTasks(const Item::List &items)
     }
     QStringList taskIds;
     taskIds.reserve(items.count());
-    std::transform(items.cbegin(), items.cend(), std::back_inserter(taskIds),
-                   [](const Item &item){
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(taskIds), [](const Item &item) {
         return item.remoteId();
     });
 
@@ -305,7 +300,7 @@ void TaskHandler::collectionAdded(const Collection &collection, const Collection
     taskList->setTitle(collection.displayName());
 
     auto job = new TaskListCreateJob(taskList, m_settings->accountPtr(), this);
-    connect(job, &TaskListCreateJob::finished, this, [this, collection](KGAPI2::Job *job){
+    connect(job, &TaskListCreateJob::finished, this, [this, collection](KGAPI2::Job *job) {
         if (!m_iface->handleError(job)) {
             return;
         }

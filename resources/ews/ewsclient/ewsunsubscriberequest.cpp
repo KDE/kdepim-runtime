@@ -30,7 +30,7 @@ void EwsUnsubscribeRequest::start()
 
     writer.writeTextElement(ewsMsgNsUri, QStringLiteral("SubscriptionId"), mSubscriptionId);
 
-    writer.writeEndElement();   // Unsubscribe
+    writer.writeEndElement(); // Unsubscribe
 
     endSoapDocument(writer);
 
@@ -43,8 +43,7 @@ void EwsUnsubscribeRequest::start()
 
 bool EwsUnsubscribeRequest::parseResult(QXmlStreamReader &reader)
 {
-    return parseResponseMessage(reader, QStringLiteral("Unsubscribe"),
-                                [this](QXmlStreamReader &reader) {
+    return parseResponseMessage(reader, QStringLiteral("Unsubscribe"), [this](QXmlStreamReader &reader) {
         return parseUnsubscribeResponse(reader);
     });
 }
@@ -69,8 +68,7 @@ EwsUnsubscribeRequest::Response::Response(QXmlStreamReader &reader)
 
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsMsgNsUri && reader.namespaceUri() != ewsTypeNsUri) {
-            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2")
-                        .arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
+            setErrorMsg(QStringLiteral("Unexpected namespace in %1 element: %2").arg(QStringLiteral("ResponseMessage"), reader.namespaceUri().toString()));
             return;
         }
 

@@ -28,8 +28,7 @@ VCardDirResource::VCardDirResource(const QString &id)
     VcardDirResourceSettings::instance(KSharedConfig::openConfig());
     // setup the resource
     new SettingsAdaptor(VcardDirResourceSettings::self());
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 VcardDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), VcardDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     connect(this, &VCardDirResource::reloadConfiguration, this, &VCardDirResource::slotReloadConfig);
@@ -253,8 +252,9 @@ void VCardDirResource::initializeVCardDirectory() const
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);
-        file.write("Important Warning!!!\n\n"
-                   "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
+        file.write(
+            "Important Warning!!!\n\n"
+            "Don't create or copy vCards inside this folder manually, they are managed by the Akonadi framework!\n");
         file.close();
     }
 }

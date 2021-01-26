@@ -14,9 +14,9 @@
 #include <entitydisplayattribute.h>
 #include <itemfetchscope.h>
 
-#include <KCalendarCore/MemoryCalendar>
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/MemoryCalendar>
 #include <KLocalizedString>
 #include <QDebug>
 
@@ -72,8 +72,7 @@ ICalDirResource::ICalDirResource(const QString &id)
     IcalDirResourceSettings::instance(KSharedConfig::openConfig());
     // setup the resource
     new SettingsAdaptor(IcalDirResourceSettings::self());
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 IcalDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), IcalDirResourceSettings::self(), QDBusConnection::ExportAdaptors);
 
     changeRecorder()->itemFetchScope().fetchFullPayload();
     connect(this, &ICalDirResource::reloadConfiguration, this, &ICalDirResource::slotReloadConfig);
@@ -232,7 +231,8 @@ void ICalDirResource::retrieveCollections()
     c.setName(name());
 
     QStringList mimetypes;
-    mimetypes << KCalendarCore::Event::eventMimeType() << KCalendarCore::Todo::todoMimeType() << KCalendarCore::Journal::journalMimeType() << QStringLiteral("text/calendar");
+    mimetypes << KCalendarCore::Event::eventMimeType() << KCalendarCore::Todo::todoMimeType() << KCalendarCore::Journal::journalMimeType()
+              << QStringLiteral("text/calendar");
     c.setContentMimeTypes(mimetypes);
 
     if (IcalDirResourceSettings::self()->readOnly()) {
@@ -295,8 +295,9 @@ void ICalDirResource::initializeICalDirectory() const
     if (!file.exists()) {
         // ... if not, create it
         file.open(QIODevice::WriteOnly);
-        file.write("Important Warning!!!\n\n"
-                   "Don't create or copy files inside this folder manually, they are managed by the Akonadi framework!\n");
+        file.write(
+            "Important Warning!!!\n\n"
+            "Don't create or copy files inside this folder manually, they are managed by the Akonadi framework!\n");
         file.close();
     }
 }

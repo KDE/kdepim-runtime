@@ -6,25 +6,25 @@
 
 #include "newmailnotifierselectcollectionwidget.h"
 
-#include <CollectionModifyJob>
-#include <CollectionFilterProxyModel>
-#include <QSortFilterProxyModel>
-#include <AkonadiCore/AttributeFactory>
 #include <Akonadi/KMime/NewMailNotifierAttribute>
+#include <AkonadiCore/AttributeFactory>
+#include <CollectionFilterProxyModel>
+#include <CollectionModifyJob>
+#include <QSortFilterProxyModel>
 
 #include <ChangeRecorder>
 #include <EntityTreeModel>
 #include <KMime/Message>
 
+#include "newmailnotifier_debug.h"
+#include <KLineEdit>
 #include <KLocalizedString>
 #include <QPushButton>
-#include <KLineEdit>
-#include "newmailnotifier_debug.h"
 
-#include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QTreeView>
 #include <QLabel>
+#include <QTreeView>
+#include <QVBoxLayout>
 
 NewMailNotifierCollectionProxyModel::NewMailNotifierCollectionProxyModel(QObject *parent)
     : QIdentityProxyModel(parent)
@@ -35,8 +35,7 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
 {
     if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
-            const Akonadi::Collection collection
-                = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            const Akonadi::Collection collection = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             // Make top-level collections uncheckable
             if (collection.parentCollection() == Akonadi::Collection::root()) {
                 return {};
@@ -59,8 +58,7 @@ bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, cons
 {
     if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
-            const Akonadi::Collection collection
-                = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            const Akonadi::Collection collection = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             mNotificationCollection[collection] = (value == Qt::Checked);
             Q_EMIT dataChanged(index, index);
             return true;
@@ -125,8 +123,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     auto searchLine = new KLineEdit(this);
     searchLine->setPlaceholderText(i18n("Search..."));
     searchLine->setClearButtonEnabled(true);
-    connect(searchLine, &QLineEdit::textChanged,
-            this, &NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter);
+    connect(searchLine, &QLineEdit::textChanged, this, &NewMailNotifierSelectCollectionWidget::slotSetCollectionFilter);
 
     vbox->addWidget(searchLine);
 
@@ -217,12 +214,10 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
     auto modifyJob = qobject_cast<Akonadi::CollectionModifyJob *>(job);
     if (modifyJob && job->error()) {
         if (job->property("AttributeAdded").toBool()) {
-            qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to append NewMailNotifierAttribute to collection"
-                                           << modifyJob->collection().id() << ":"
+            qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to append NewMailNotifierAttribute to collection" << modifyJob->collection().id() << ":"
                                            << job->errorString();
         } else {
-            qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to remove NewMailNotifierAttribute from collection"
-                                           << modifyJob->collection().id() << ":"
+            qCWarning(NEWMAILNOTIFIER_LOG) << "Failed to remove NewMailNotifierAttribute from collection" << modifyJob->collection().id() << ":"
                                            << job->errorString();
         }
     }

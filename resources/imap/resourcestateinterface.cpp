@@ -14,7 +14,7 @@ ResourceStateInterface::~ResourceStateInterface()
 
 QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &collection, bool showWarnings)
 {
-    if (collection.remoteId().isEmpty()) {   //This should never happen, investigate why a collection without remoteId made it this far
+    if (collection.remoteId().isEmpty()) { // This should never happen, investigate why a collection without remoteId made it this far
         if (showWarnings) {
             qCWarning(IMAPRESOURCE_LOG) << "Got incomplete ancestor chain due to empty remoteId:" << collection;
         }
@@ -25,7 +25,7 @@ QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &
         /*if ( showWarnings  && collection.remoteId() != rootRemoteId())
           qCWarning(IMAPRESOURCE_LOG) << "RID mismatch, is " << collection.remoteId() << " expected " << rootRemoteId();
         */
-        return QLatin1String("");   // see below, this intentionally not just QString()!
+        return QLatin1String(""); // see below, this intentionally not just QString()!
     }
     const QString parentMailbox = mailBoxForCollection(collection.parentCollection());
     if (parentMailbox.isNull()) { // invalid, != isEmpty() here!
@@ -34,7 +34,7 @@ QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &
 
     const QString mailbox = parentMailbox + collection.remoteId();
     if (parentMailbox.isEmpty()) {
-        return mailbox.mid(1);    // strip of the separator on top-level mailboxes
+        return mailbox.mid(1); // strip of the separator on top-level mailboxes
     }
     return mailbox;
 }

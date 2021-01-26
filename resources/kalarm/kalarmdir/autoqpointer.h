@@ -16,19 +16,21 @@
  *
  *  @author David Jarvie <djarvie@kde.org>
  */
-template<class T>
-class AutoQPointer : public QPointer<T>
+template<class T> class AutoQPointer : public QPointer<T>
 {
 public:
-    AutoQPointer() : QPointer<T>()
+    AutoQPointer()
+        : QPointer<T>()
     {
     }
 
-    AutoQPointer(T *p) : QPointer<T>(p)
+    AutoQPointer(T *p)
+        : QPointer<T>(p)
     {
     }
 
-    AutoQPointer(const QPointer<T> &p) : QPointer<T>(p)
+    AutoQPointer(const QPointer<T> &p)
+        : QPointer<T>(p)
     {
     }
 

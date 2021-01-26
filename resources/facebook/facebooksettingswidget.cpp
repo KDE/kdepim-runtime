@@ -6,10 +6,10 @@
  */
 
 #include "facebooksettingswidget.h"
-#include "ui_facebookagentsettingswidget.h"
-#include "settings.h"
 #include "resource.h"
+#include "settings.h"
 #include "tokenjobs.h"
+#include "ui_facebookagentsettingswidget.h"
 
 #include <KLocalizedString>
 
@@ -48,8 +48,7 @@ void FacebookSettingsWidget::checkToken()
     ui->loginStatusLbl->setText(i18n("Checking login status..."));
 
     auto job = new GetTokenJob(identifier(), this);
-    connect(job, &GetTokenJob::result,
-            this, [this, job]() {
+    connect(job, &GetTokenJob::result, this, [this, job]() {
         if (job->error()) {
             ui->loginStatusLbl->setText(job->errorText());
         } else {
@@ -72,8 +71,7 @@ void FacebookSettingsWidget::login()
 {
     ui->loginBtn->setEnabled(false);
     auto job = new LoginJob(identifier(), this);
-    connect(job, &LoginJob::result,
-            this, [this](KJob *job) {
+    connect(job, &LoginJob::result, this, [this](KJob *job) {
         if (job->error()) {
             ui->loginStatusLbl->setText(job->errorText());
         } else {
@@ -87,8 +85,7 @@ void FacebookSettingsWidget::logout()
 {
     ui->logoutBtn->setEnabled(false);
     auto job = new LogoutJob(identifier(), this);
-    connect(job, &LogoutJob::result,
-            this, [this](KJob *job) {
+    connect(job, &LogoutJob::result, this, [this](KJob *job) {
         if (job->error()) {
             ui->loginStatusLbl->setText(job->errorText());
         } else {
@@ -107,12 +104,11 @@ bool FacebookSettingsWidget::save() const
 {
     auto settings = Settings::self();
     const bool changed = ui->attendingReminderChkBox->isChecked() != settings->attendingReminders()
-                         || ui->maybeAttendingReminderChkBox->isChecked() != settings->maybeAttendingReminders()
-                         || ui->notAttendingReminderChkBox->isChecked() != settings->notAttendingReminders()
-                         || ui->notRespondedReminderChkBox->isChecked() != settings->notRespondedToReminders()
-                         || ui->birthdayReminderChkBox->isChecked() != settings->birthdayReminders()
-                         || ui->eventReminderHoursSpinBox->value() != settings->eventReminderHours()
-                         || ui->birthdayReminderDaysSpinBox->value() != settings->birthdayReminderDays();
+        || ui->maybeAttendingReminderChkBox->isChecked() != settings->maybeAttendingReminders()
+        || ui->notAttendingReminderChkBox->isChecked() != settings->notAttendingReminders()
+        || ui->notRespondedReminderChkBox->isChecked() != settings->notRespondedToReminders()
+        || ui->birthdayReminderChkBox->isChecked() != settings->birthdayReminders() || ui->eventReminderHoursSpinBox->value() != settings->eventReminderHours()
+        || ui->birthdayReminderDaysSpinBox->value() != settings->birthdayReminderDays();
     if (changed) {
         settings->setAttendingReminders(ui->attendingReminderChkBox->isChecked());
         settings->setMaybeAttendingReminders(ui->maybeAttendingReminderChkBox->isChecked());

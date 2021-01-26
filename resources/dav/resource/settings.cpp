@@ -9,9 +9,9 @@
 
 #include "settings.h"
 
+#include "davresource_debug.h"
 #include "settingsadaptor.h"
 #include "utils.h"
-#include "davresource_debug.h"
 
 #include <KLocalizedString>
 
@@ -19,22 +19,22 @@
 
 #include <KDAV/ProtocolInfo>
 
-#include <QCoreApplication>
+#include <KPasswordLineEdit>
 #include <QByteArray>
+#include <QCoreApplication>
+#include <QDBusConnection>
 #include <QDataStream>
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QFile>
 #include <QFileInfo>
-#include <QPointer>
-#include <QRegularExpression>
-#include <QUrl>
-#include <QDBusConnection>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QVBoxLayout>
-#include <QDialogButtonBox>
-#include <QDialog>
+#include <QPointer>
 #include <QPushButton>
-#include <KPasswordLineEdit>
+#include <QRegularExpression>
+#include <QUrl>
+#include <QVBoxLayout>
 
 class SettingsHelper
 {
@@ -94,7 +94,8 @@ Settings::Settings()
     s_globalSettings->q = this;
 
     new SettingsAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), this,
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
+                                                 this,
                                                  QDBusConnection::ExportAdaptors | QDBusConnection::ExportScriptableContents);
 
     if (settingsVersion() == 1) {
@@ -221,7 +222,7 @@ void Settings::addCollectionUrlMapping(KDAV::Protocol proto, const QString &coll
     mCollectionsUrlsMapping.insert(collectionUrl, value);
 
     // Update the cache now
-    //QMap<QString, QString> tmp( mCollectionsUrlsMapping );
+    // QMap<QString, QString> tmp( mCollectionsUrlsMapping );
     QFileInfo cacheFileInfo = QFileInfo(mCollectionsUrlsMappingCache);
     if (!cacheFileInfo.dir().exists()) {
         QDir::root().mkpath(cacheFileInfo.dir().absolutePath());
@@ -261,7 +262,7 @@ void Settings::newUrlConfiguration(Settings::UrlConfiguration *urlConfig)
         removeUrlConfiguration(KDAV::Protocol(urlConfig->mProtocol), urlConfig->mUrl);
     }
 
-    mUrls[ key ] = urlConfig;
+    mUrls[key] = urlConfig;
     if (urlConfig->mUser != QLatin1String("$default$")) {
         savePassword(key, urlConfig->mUser, urlConfig->mPassword);
     }
@@ -276,7 +277,7 @@ void Settings::removeUrlConfiguration(KDAV::Protocol proto, const QString &url)
         return;
     }
 
-    delete mUrls[ key ];
+    delete mUrls[key];
     mUrls.remove(key);
     updateRemoteUrls();
 }
@@ -287,7 +288,7 @@ Settings::UrlConfiguration *Settings::urlConfiguration(KDAV::Protocol proto, con
 
     UrlConfiguration *ret = nullptr;
     if (mUrls.contains(key)) {
-        ret = mUrls[ key ];
+        ret = mUrls[key];
     }
 
     return ret;
@@ -306,10 +307,10 @@ QString Settings::username(KDAV::Protocol proto, const QString &url) const
     const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
-        if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
+        if (mUrls[key]->mUser == QLatin1String("$default$")) {
             return defaultUsername();
         } else {
-            return mUrls[ key ]->mUser;
+            return mUrls[key]->mUser;
         }
     } else {
         return QString();
@@ -321,10 +322,10 @@ QString Settings::password(KDAV::Protocol proto, const QString &url)
     const QString key = url + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(proto);
 
     if (mUrls.contains(key)) {
-        if (mUrls[ key ]->mUser == QLatin1String("$default$")) {
+        if (mUrls[key]->mUser == QLatin1String("$default$")) {
             return defaultPassword();
         } else {
-            return mUrls[ key ]->mPassword;
+            return mUrls[key]->mPassword;
         }
     } else {
         return QString();
@@ -358,7 +359,7 @@ void Settings::buildUrlsList()
         const QString pass = loadPassword(key, urlConfig->mUser);
         if (!pass.isNull()) {
             urlConfig->mPassword = pass;
-            mUrls[ key ] = urlConfig;
+            mUrls[key] = urlConfig;
         } else {
             delete urlConfig;
         }
@@ -480,10 +481,7 @@ QString Settings::promptForPassword(const QString &user)
     mainLayout->addWidget(buttonBox);
     auto vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
-    QLabel *label = new QLabel(i18n("A password is required for user %1",
-                                    (user == QLatin1String("$default$") ? defaultUsername() : user)),
-                               mainWidget
-                               );
+    QLabel *label = new QLabel(i18n("A password is required for user %1", (user == QLatin1String("$default$") ? defaultUsername() : user)), mainWidget);
     vLayout->addWidget(label);
     auto hLayout = new QHBoxLayout();
     label = new QLabel(i18n("Password: "), mainWidget);

@@ -35,6 +35,7 @@ private Q_SLOTS:
     void testMaildirFlagsWriting_data();
     void testMaildirFlagsWriting();
     void cleanup();
+
 private:
     void fillDirectory(const QString &name, int limit);
     void fillNewDirectory();

@@ -10,8 +10,8 @@
 
 #include <QDBusConnection>
 
-#include <KCalendarCore/Incidence>
 #include <KCalendarCore/ICalFormat>
+#include <KCalendarCore/Incidence>
 
 #include <KLocalizedString>
 #include <QDebug>
@@ -30,8 +30,7 @@ void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &i
 {
     setSupportedMimetypes(mimeTypes, icon);
     new ICalSettingsAdaptor(mSettings);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"),
-                                                 mSettings, QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings, QDBusConnection::ExportAdaptors);
 }
 
 ICalResourceBase::~ICalResourceBase()
@@ -62,8 +61,7 @@ void ICalResourceBase::aboutToQuit()
 bool ICalResourceBase::readFromFile(const QString &fileName)
 {
     mCalendar = KCalendarCore::MemoryCalendar::Ptr(new KCalendarCore::MemoryCalendar(QTimeZone::utc()));
-    mFileStorage = KCalendarCore::FileStorage::Ptr(new KCalendarCore::FileStorage(mCalendar, fileName,
-                                                                                  new KCalendarCore::ICalFormat()));
+    mFileStorage = KCalendarCore::FileStorage::Ptr(new KCalendarCore::FileStorage(mCalendar, fileName, new KCalendarCore::ICalFormat()));
     const bool result = mFileStorage->load();
     if (!result) {
         qCritical() << "akonadi_ical_resource: Error loading file " << fileName;
@@ -83,14 +81,13 @@ void ICalResourceBase::itemRemoved(const Akonadi::Item &item)
     const Incidence::Ptr i = mCalendar->instance(item.remoteId());
     if (i) {
         if (!mCalendar->deleteIncidence(i)) {
-            qCritical() << "akonadi_ical_resource: Can't delete incidence with instance identifier "
-                        << item.remoteId() << "; item.id() = " << item.id();
+            qCritical() << "akonadi_ical_resource: Can't delete incidence with instance identifier " << item.remoteId() << "; item.id() = " << item.id();
             cancelTask();
             return;
         }
     } else {
-        qCritical() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with instance identifier "
-                    << item.remoteId() << "; item.id() = " << item.id();
+        qCritical() << "akonadi_ical_resource: itemRemoved(): Can't find incidence with instance identifier " << item.remoteId()
+                    << "; item.id() = " << item.id();
     }
     scheduleWrite();
     changeProcessed();
@@ -115,9 +112,7 @@ bool ICalResourceBase::writeToFile(const QString &fileName)
 
     KCalendarCore::FileStorage *fileStorage = mFileStorage.data();
     if (fileName != mFileStorage->fileName()) {
-        fileStorage = new KCalendarCore::FileStorage(mCalendar,
-                                                     fileName,
-                                                     new KCalendarCore::ICalFormat());
+        fileStorage = new KCalendarCore::FileStorage(mCalendar, fileName, new KCalendarCore::ICalFormat());
     }
 
     bool success = true;

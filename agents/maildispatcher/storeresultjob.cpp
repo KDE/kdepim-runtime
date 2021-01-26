@@ -6,14 +6,14 @@
 
 #include "storeresultjob.h"
 
+#include "maildispatcher_debug.h"
+#include <Akonadi/KMime/MessageFlags>
 #include <Item>
 #include <ItemFetchJob>
 #include <ItemModifyJob>
-#include <Akonadi/KMime/MessageFlags>
-#include "maildispatcher_debug.h"
 #include <KLocalizedString>
-#include <MailTransportAkonadi/ErrorAttribute>
 #include <MailTransportAkonadi/DispatchModeAttribute>
+#include <MailTransportAkonadi/ErrorAttribute>
 
 using namespace Akonadi;
 using namespace MailTransport;

@@ -16,13 +16,15 @@ class KJob;
 class QDomDocument;
 class QDomElement;
 
-namespace OXA {
+namespace OXA
+{
 /**
  * Namespace that contains helper methods for handling contacts.
  *
  * @author Tobias Koenig <tokoe@kde.org>
  */
-namespace ContactUtils {
+namespace ContactUtils
+{
 /**
  * Parses the XML tree under @p propElement and fills the contact data of @p object.
  */

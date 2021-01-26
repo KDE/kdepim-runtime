@@ -12,8 +12,10 @@
 
 #include <QObject>
 
-namespace Akonadi {
-namespace FileStore {
+namespace Akonadi
+{
+namespace FileStore
+{
 class Job;
 
 /**

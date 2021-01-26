@@ -7,8 +7,8 @@
 #ifndef EWSSETTINGS_UT_MOCK_H
 #define EWSSETTINGS_UT_MOCK_H
 
-#include <QWidget>
 #include <QLoggingCategory>
+#include <QWidget>
 #include <functional>
 
 Q_DECLARE_LOGGING_CATEGORY(EWSRES_LOG)

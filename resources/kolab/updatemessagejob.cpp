@@ -6,20 +6,27 @@
 
 #include "updatemessagejob.h"
 
+#include "kolabresource_debug.h"
 #include <KIMAP/AppendJob>
+#include <KIMAP/ImapSet>
 #include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>
 #include <KIMAP/StoreJob>
-#include <KIMAP/ImapSet>
-#include "kolabresource_debug.h"
 #include <replacemessagejob.h>
 
 #include "imapflags.h"
 
-//Check if the expected uid message is still there => no modification, replace message.
-//otherwise search for uptodate message by subject containing UID, merge contents, and replace message
+// Check if the expected uid message is still there => no modification, replace message.
+// otherwise search for uptodate message by subject containing UID, merge contents, and replace message
 
-UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg, KIMAP::Session *session, const QByteArray &kolabUid, const QSharedPointer<Merger> &merger, const QString &mailbox, qint64 uidNext, qint64 oldUid, QObject *parent)
+UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg,
+                                   KIMAP::Session *session,
+                                   const QByteArray &kolabUid,
+                                   const QSharedPointer<Merger> &merger,
+                                   const QString &mailbox,
+                                   qint64 uidNext,
+                                   qint64 oldUid,
+                                   QObject *parent)
     : KJob(parent)
     , mSession(session)
     , mMessage(msg)
@@ -69,16 +76,14 @@ void UpdateMessageJob::fetchHeaders()
     scope.parts.clear();
     scope.mode = KIMAP::FetchJob::FetchScope::Headers;
     fetchJob->setScope(scope);
-    connect(fetchJob, &KIMAP::FetchJob::messagesAvailable,
-            this, &UpdateMessageJob::onMessagesAvailable);
-    connect(fetchJob, &KJob::result,
-            this, &UpdateMessageJob::onHeadersFetchDone);
+    connect(fetchJob, &KIMAP::FetchJob::messagesAvailable, this, &UpdateMessageJob::onMessagesAvailable);
+    connect(fetchJob, &KJob::result, this, &UpdateMessageJob::onHeadersFetchDone);
     fetchJob->start();
 }
 
 void UpdateMessageJob::onMessagesAvailable(const QMap<qint64, KIMAP::Message> &messages)
 {
-    //Filter deleted messages
+    // Filter deleted messages
     for (auto it = messages.cbegin(), end = messages.cend(); it != end; ++it) {
         // const KMime::Message::Ptr msg = messages[number];
         if (!it->flags.contains(ImapFlags::Deleted)) {
@@ -105,8 +110,7 @@ void UpdateMessageJob::searchForLatestVersion()
     auto search = new KIMAP::SearchJob(mSession);
     search->setUidBased(true);
     search->setTerm(KIMAP::Term(KIMAP::Term::Subject, QString::fromLatin1(mKolabUid)));
-    connect(search, &KJob::result,
-            this, &UpdateMessageJob::onSearchDone);
+    connect(search, &KJob::result, this, &UpdateMessageJob::onSearchDone);
     search->start();
 }
 
@@ -135,10 +139,8 @@ void UpdateMessageJob::onSearchDone(KJob *job)
         scope.parts.clear();
         scope.mode = KIMAP::FetchJob::FetchScope::Full;
         fetchJob->setScope(scope);
-        connect(fetchJob, &KIMAP::FetchJob::messagesAvailable,
-                this, &UpdateMessageJob::onConflictingMessagesReceived);
-        connect(fetchJob, &KJob::result,
-                this, &UpdateMessageJob::onConflictingMessageFetchDone);
+        connect(fetchJob, &KIMAP::FetchJob::messagesAvailable, this, &UpdateMessageJob::onConflictingMessagesReceived);
+        connect(fetchJob, &KJob::result, this, &UpdateMessageJob::onConflictingMessageFetchDone);
         fetchJob->start();
     } else {
         qCWarning(KOLABRESOURCE_LOG) << "failed to find latest version of object";

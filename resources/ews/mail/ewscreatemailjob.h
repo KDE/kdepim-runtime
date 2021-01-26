@@ -16,12 +16,14 @@ public:
     EwsCreateMailJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent);
     ~EwsCreateMailJob() override;
     bool setSend(bool send = true) override;
+
 protected:
     void doStart() override;
 private Q_SLOTS:
     void mailCreateFinished(KJob *job);
     void mailCreateWorkaroundFinished(KJob *job);
     void mailMoveWorkaroundFinished(KJob *job);
+
 private:
     bool mSend = false;
 };

@@ -11,7 +11,12 @@
 
 #include <KLocalizedString>
 
-EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email, const QString &username, const QString &password, const QString &userAgent, bool enableNTLMv2, QObject *parent)
+EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email,
+                                         const QString &username,
+                                         const QString &password,
+                                         const QString &userAgent,
+                                         bool enableNTLMv2,
+                                         QObject *parent)
     : EwsJob(parent)
     , mEmail(email)
     , mUsername(username)
@@ -69,10 +74,8 @@ void EwsAutodiscoveryJob::sendNextRequest(bool useCreds)
         url.setPassword(mPassword);
     }
     mUsedCreds = useCreds;
-    auto req = new EwsPoxAutodiscoverRequest(url, mEmail, mUserAgent,
-                                                                   mEnableNTLMv2, this);
-    connect(req, &EwsPoxAutodiscoverRequest::result, this,
-            &EwsAutodiscoveryJob::autodiscoveryRequestFinished);
+    auto req = new EwsPoxAutodiscoverRequest(url, mEmail, mUserAgent, mEnableNTLMv2, this);
+    connect(req, &EwsPoxAutodiscoverRequest::result, this, &EwsAutodiscoveryJob::autodiscoveryRequestFinished);
     req->start();
 }
 
@@ -86,8 +89,7 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
     }
 
     if (req->error()) {
-        if (req->error() == 401 && !mUsedCreds
-            && req->lastHttpUrl().scheme() != QLatin1String("http")) { // Don't try authentication over HTTP
+        if (req->error() == 401 && !mUsedCreds && req->lastHttpUrl().scheme() != QLatin1String("http")) { // Don't try authentication over HTTP
             /* The 401 error may have come from an URL different to the original one (due to
              * redirections). When the original URL is retried with credentials KIO HTTP will issue
              * a warning that an authenticated request is made to a host that never asked for it.
@@ -108,8 +110,7 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
         }
     } else {
         switch (req->action()) {
-        case EwsPoxAutodiscoverRequest::Settings:
-        {
+        case EwsPoxAutodiscoverRequest::Settings: {
             EwsPoxAutodiscoverRequest::Protocol proto = req->protocol(EwsPoxAutodiscoverRequest::ExchangeProto);
             if (!proto.isValid()) {
                 setErrorMsg(i18n("Exchange protocol information not found"));

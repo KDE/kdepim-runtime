@@ -13,7 +13,8 @@
 
 #include <KJob>
 
-namespace OXA {
+namespace OXA
+{
 /**
  * @short A job that deletes a folder on the OX server.
  *

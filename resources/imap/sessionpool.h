@@ -15,7 +15,8 @@
 #include <kimap/session.h>
 #include <kimap/sessionuiproxy.h>
 
-namespace KIMAP {
+namespace KIMAP
+{
 struct MailBoxDescriptor;
 }
 
@@ -41,10 +42,7 @@ public:
         CancelledError
     };
 
-    enum SessionTermination {
-        LogoutSession,
-        CloseSession
-    };
+    enum SessionTermination { LogoutSession, CloseSession };
 
     explicit SessionPool(int maxPoolSize, QObject *parent = nullptr);
     ~SessionPool();
@@ -69,11 +67,7 @@ public:
     ImapAccount *account() const;
     QStringList serverCapabilities() const;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
-    enum Namespace {
-        Personal,
-        User,
-        Shared
-    };
+    enum Namespace { Personal, User, Shared };
     QList<KIMAP::MailBoxDescriptor> serverNamespaces(Namespace) const;
 
 Q_SIGNALS:
@@ -113,8 +107,8 @@ private:
 
     QList<qint64> m_pendingRequests;
     QList<KIMAP::Session *> m_connectingPool; // in preparation
-    QList<KIMAP::Session *> m_unusedPool;    // ready to be used
-    QList<KIMAP::Session *> m_reservedPool;  // currently used
+    QList<KIMAP::Session *> m_unusedPool; // ready to be used
+    QList<KIMAP::Session *> m_reservedPool; // currently used
 
     QStringList m_capabilities;
     QList<KIMAP::MailBoxDescriptor> m_namespaces;

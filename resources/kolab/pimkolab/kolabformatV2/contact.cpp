@@ -7,13 +7,14 @@
 
 #include "contact.h"
 #include "pimkolab_debug.h"
-#include <kcontacts/addressee.h>
 #include <QFile>
 #include <float.h>
+#include <kcontacts/addressee.h>
 
 using namespace KolabV2;
 
-namespace {
+namespace
+{
 inline QString defaultPictureAttachmentName()
 {
     return QStringLiteral("kolab-picture.png");
@@ -32,7 +33,7 @@ inline QString defaultSoundAttachmentName()
 inline QString unhandledTagAppName()
 {
     return QStringLiteral("KOLABUNHANDLED");
-}                                                                                 // no hyphens in appnames!
+} // no hyphens in appnames!
 }
 
 // saving (addressee->xml)
@@ -389,10 +390,10 @@ bool Contact::loadNameAttribute(QDomElement &element)
                 setSuffix(e.text());
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -430,10 +431,10 @@ bool Contact::loadPhoneAttribute(QDomElement &element)
                 number.number = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -521,10 +522,10 @@ bool Contact::loadAddressAttribute(QDomElement &element)
                 address.country = e.text();
             } else {
                 // TODO: Unhandled tag - save for later storage
-                qCDebug(PIMKOLAB_LOG) <<"Warning: Unhandled tag" << e.tagName();
+                qCDebug(PIMKOLAB_LOG) << "Warning: Unhandled tag" << e.tagName();
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -799,7 +800,7 @@ bool Contact::loadXML(const QDomDocument &document)
             QDomElement e = n.toElement();
             if (!loadAttribute(e)) {
                 // Unhandled tag - save for later storage
-                //qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << e.tagName();
+                // qCDebug(PIMKOLAB_LOG) <<"Saving unhandled tag" << e.tagName();
                 Custom c;
                 c.app = unhandledTagAppName();
                 c.name = e.tagName();
@@ -807,7 +808,7 @@ bool Contact::loadXML(const QDomDocument &document)
                 mCustomList.append(c);
             }
         } else {
-            qCDebug(PIMKOLAB_LOG) <<"Node is not a comment or an element???";
+            qCDebug(PIMKOLAB_LOG) << "Node is not a comment or an element???";
         }
     }
 
@@ -864,13 +865,13 @@ static QStringList phoneTypeToString(KContacts::PhoneNumber::Type type)
     }
 
     // To support both "home1" and "home2", map Home+Pref to home1
-    if ((type &KContacts::PhoneNumber::Home) && (type & KContacts::PhoneNumber::Pref)) {
+    if ((type & KContacts::PhoneNumber::Home) && (type & KContacts::PhoneNumber::Pref)) {
         types << QStringLiteral("home1");
         type = type & ~KContacts::PhoneNumber::Home;
         type = type & ~KContacts::PhoneNumber::Pref;
     }
     // To support both "business1" and "business2", map Work+Pref to business1
-    if ((type &KContacts::PhoneNumber::Work) && (type & KContacts::PhoneNumber::Pref)) {
+    if ((type & KContacts::PhoneNumber::Work) && (type & KContacts::PhoneNumber::Pref)) {
         types << QStringLiteral("business1");
         type = type & ~KContacts::PhoneNumber::Work;
         type = type & ~KContacts::PhoneNumber::Pref;
@@ -974,17 +975,8 @@ static KContacts::PhoneNumber::Type phoneTypeFromString(const QString &type)
     return KContacts::PhoneNumber::Home; // whatever
 }
 
-static const char *s_knownCustomFields[] = {
-    "X-IMAddress",
-    "X-Office",
-    "X-Profession",
-    "X-ManagersName",
-    "X-AssistantsName",
-    "X-SpousesName",
-    "X-Anniversary",
-    "DistributionList",
-    nullptr
-};
+static const char *s_knownCustomFields[] =
+    {"X-IMAddress", "X-Office", "X-Profession", "X-ManagersName", "X-AssistantsName", "X-SpousesName", "X-Anniversary", "DistributionList", nullptr};
 
 // The saving is addressee -> Contact -> xml, this is the first part
 void Contact::setFields(const KContacts::Addressee *addressee)
@@ -1115,7 +1107,7 @@ void Contact::setFields(const KContacts::Addressee *addressee)
         QString value = name.mid(pos + 1);
         name.truncate(pos);
         if (!knownCustoms.contains(name)) {
-            //qCDebug(PIMKOLAB_LOG) <<"app=" << app <<" name=" << name <<" value=" << value;
+            // qCDebug(PIMKOLAB_LOG) <<"app=" << app <<" name=" << name <<" value=" << value;
             Custom c;
             if (app != QLatin1String("KADDRESSBOOK")) { // that's the default
                 c.app = app;
@@ -1176,8 +1168,7 @@ void Contact::saveTo(KContacts::Addressee *addressee)
     }
 
     if (anniversary().isValid()) {
-        addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"),
-                                dateToString(anniversary()));
+        addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"), dateToString(anniversary()));
     } else {
         addressee->removeCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"));
     }
@@ -1244,7 +1235,7 @@ void Contact::saveTo(KContacts::Addressee *addressee)
         QString app = (*it).app.isEmpty() ? QStringLiteral("KADDRESSBOOK") : (*it).app;
         addressee->insertCustom(app, (*it).name, (*it).value);
     }
-    //qCDebug(PIMKOLAB_LOG) << addressee->customs();
+    // qCDebug(PIMKOLAB_LOG) << addressee->customs();
 }
 
 QImage Contact::loadPictureFromAddressee(const KContacts::Picture &picture)
@@ -1252,11 +1243,11 @@ QImage Contact::loadPictureFromAddressee(const KContacts::Picture &picture)
     QImage img;
     if (!picture.isIntern() && !picture.url().isEmpty()) {
         qCWarning(PIMKOLAB_LOG) << "external pictures are currently not supported";
-        //FIXME add kio support to libcalendaring or use libcurl
-//     if ( KIO::NetAccess::download( picture.url(), tmpFile, 0 /*no widget known*/ ) ) {
-//       img.load( tmpFile );
-//       KIO::NetAccess::removeTempFile( tmpFile );
-//     }
+        // FIXME add kio support to libcalendaring or use libcurl
+        //     if ( KIO::NetAccess::download( picture.url(), tmpFile, 0 /*no widget known*/ ) ) {
+        //       img.load( tmpFile );
+        //       KIO::NetAccess::removeTempFile( tmpFile );
+        //     }
     } else {
         img = picture.data();
     }
@@ -1267,14 +1258,14 @@ QByteArray KolabV2::Contact::loadSoundFromAddressee(const KContacts::Sound &soun
 {
     QByteArray data;
     if (!sound.isIntern() && !sound.url().isEmpty()) {
-//     if ( KIO::NetAccess::download( sound.url(), tmpFile, 0 /*no widget known*/ ) ) {
-//       QFile f( tmpFile );
-//       if ( f.open( QIODevice::ReadOnly ) ) {
-//         data = f.readAll();
-//         f.close();
-//       }
-//       KIO::NetAccess::removeTempFile( tmpFile );
-//     }
+        //     if ( KIO::NetAccess::download( sound.url(), tmpFile, 0 /*no widget known*/ ) ) {
+        //       QFile f( tmpFile );
+        //       if ( f.open( QIODevice::ReadOnly ) ) {
+        //         data = f.readAll();
+        //         f.close();
+        //       }
+        //       KIO::NetAccess::removeTempFile( tmpFile );
+        //     }
     } else {
         data = sound.data();
     }

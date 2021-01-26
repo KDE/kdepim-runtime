@@ -5,8 +5,8 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "mixedmaildirstore.h"
 #include "mixedmaildirresource_debug.h"
+#include "mixedmaildirstore.h"
 #include "testdatautil.h"
 
 #include "filestore/itemcreatejob.h"
@@ -14,8 +14,8 @@
 
 #include "libmaildir/maildir.h"
 
-#include <kmbox/mbox.h>
 #include <KMime/kmime/kmime_message.h>
+#include <kmbox/mbox.h>
 
 #include <akonadi/kmime/messageparts.h>
 #include <itemfetchscope.h>
@@ -26,9 +26,9 @@
 
 #include <QSignalSpy>
 
-#include <QTest>
-#include <QFileInfo>
 #include <QDir>
+#include <QFileInfo>
+#include <QTest>
 using namespace Akonadi;
 using namespace KMBox;
 
@@ -36,7 +36,7 @@ static Item::List itemsFromSpy(QSignalSpy *spy)
 {
     Item::List items;
 
-    QListIterator<QList<QVariant> > it(*spy);
+    QListIterator<QList<QVariant>> it(*spy);
     while (it.hasNext()) {
         const QList<QVariant> invocation = it.next();
         Q_ASSERT(invocation.count() == 1);
@@ -97,8 +97,7 @@ public:
 
     QString indexFile(const QFileInfo &folderFileInfo) const
     {
-        return QFileInfo(folderFileInfo.absolutePath(),
-                         mIndexFilePattern.arg(folderFileInfo.fileName())).absoluteFilePath();
+        return QFileInfo(folderFileInfo.absolutePath(), mIndexFilePattern.arg(folderFileInfo.fileName())).absoluteFilePath();
     }
 
 private:
@@ -177,9 +176,9 @@ void ItemFetchTest::testListingMaildir()
     Item::List items;
 
     QHash<QString, QVariant> uidHash;
-    const QVariant varUidHash = QVariant::fromValue< QHash<QString, QVariant> >(uidHash);
+    const QVariant varUidHash = QVariant::fromValue<QHash<QString, QVariant>>(uidHash);
     QHash<QString, QVariant> tagListHash;
-    const QVariant varTagListHash = QVariant::fromValue< QHash<QString, QVariant> >(tagListHash);
+    const QVariant varTagListHash = QVariant::fromValue<QHash<QString, QVariant>>(tagListHash);
     QVariant var;
 
     QSet<QString> entrySet;
@@ -203,32 +202,32 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(itemsFromSpy(spy), items);
 
     entrySet = entrySet1;
-    QVERIFY(entrySet.remove(items[ 0 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 1 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 2 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 3 ].remoteId()));
+    QVERIFY(entrySet.remove(items[0].remoteId()));
+    QVERIFY(entrySet.remove(items[1].remoteId()));
+    QVERIFY(entrySet.remove(items[2].remoteId()));
+    QVERIFY(entrySet.remove(items[3].remoteId()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection1);
-    QCOMPARE(items[ 1 ].parentCollection(), collection1);
-    QCOMPARE(items[ 2 ].parentCollection(), collection1);
-    QCOMPARE(items[ 3 ].parentCollection(), collection1);
+    QCOMPARE(items[0].parentCollection(), collection1);
+    QCOMPARE(items[1].parentCollection(), collection1);
+    QCOMPARE(items[2].parentCollection(), collection1);
+    QCOMPARE(items[3].parentCollection(), collection1);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
     // no flags from maildir file name, no advanced flags without index
     QCOMPARE(flagCounts.count(), 0);
-    QCOMPARE(flagCounts[ "\\SEEN" ], 0);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 0);
-    QCOMPARE(flagCounts[ "$TODO" ], 0);
+    QCOMPARE(flagCounts["\\SEEN"], 0);
+    QCOMPARE(flagCounts["\\FLAGGED"], 0);
+    QCOMPARE(flagCounts["$TODO"], 0);
     flagCounts.clear();
 
     var = job->property("remoteIdToTagList");
@@ -272,30 +271,30 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(itemsFromSpy(spy), items);
 
     entrySet = entrySet2;
-    QVERIFY(entrySet.remove(items[ 0 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 1 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 2 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 3 ].remoteId()));
+    QVERIFY(entrySet.remove(items[0].remoteId()));
+    QVERIFY(entrySet.remove(items[1].remoteId()));
+    QVERIFY(entrySet.remove(items[2].remoteId()));
+    QVERIFY(entrySet.remove(items[3].remoteId()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection2);
-    QCOMPARE(items[ 1 ].parentCollection(), collection2);
-    QCOMPARE(items[ 2 ].parentCollection(), collection2);
-    QCOMPARE(items[ 3 ].parentCollection(), collection2);
+    QCOMPARE(items[0].parentCollection(), collection2);
+    QCOMPARE(items[1].parentCollection(), collection2);
+    QCOMPARE(items[2].parentCollection(), collection2);
+    QCOMPARE(items[3].parentCollection(), collection2);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     var = job->property("remoteIdToTagList");
@@ -339,32 +338,32 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(itemsFromSpy(spy), items);
 
     entrySet = entrySet3;
-    QVERIFY(entrySet.remove(items[ 0 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 1 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 2 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 3 ].remoteId()));
+    QVERIFY(entrySet.remove(items[0].remoteId()));
+    QVERIFY(entrySet.remove(items[1].remoteId()));
+    QVERIFY(entrySet.remove(items[2].remoteId()));
+    QVERIFY(entrySet.remove(items[3].remoteId()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection3);
-    QCOMPARE(items[ 1 ].parentCollection(), collection3);
-    QCOMPARE(items[ 2 ].parentCollection(), collection3);
-    QCOMPARE(items[ 3 ].parentCollection(), collection3);
+    QCOMPARE(items[0].parentCollection(), collection3);
+    QCOMPARE(items[1].parentCollection(), collection3);
+    QCOMPARE(items[2].parentCollection(), collection3);
+    QCOMPARE(items[3].parentCollection(), collection3);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
 
     // 2x \SEEN flags: 2x from index, none from file name
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     var = job->property("remoteIdToTagList");
@@ -375,12 +374,12 @@ void ItemFetchTest::testListingMaildir()
     // TODO: Check should not depend on any specific ordering.
     qSort(items.begin(), items.end(), itemLessThanByRemoteId);
 
-    tagListHash = var.value< QHash<QString, QVariant> >();
+    tagListHash = var.value<QHash<QString, QVariant>>();
     QCOMPARE((int)tagListHash.count(), 3);
-    QVERIFY(!tagListHash.contains(items[ 0 ].remoteId()));
-    QVERIFY(!tagListHash.value(items[ 1 ].remoteId()).toString().isEmpty());
-    QVERIFY(!tagListHash.value(items[ 2 ].remoteId()).toString().isEmpty());
-    QVERIFY(!tagListHash.value(items[ 3 ].remoteId()).toString().isEmpty());
+    QVERIFY(!tagListHash.contains(items[0].remoteId()));
+    QVERIFY(!tagListHash.value(items[1].remoteId()).toString().isEmpty());
+    QVERIFY(!tagListHash.value(items[2].remoteId()).toString().isEmpty());
+    QVERIFY(!tagListHash.value(items[3].remoteId()).toString().isEmpty());
 
     // test listing maildir with index which contains IMAP UIDs (dimap cache directory)
     Collection collection4;
@@ -400,30 +399,30 @@ void ItemFetchTest::testListingMaildir()
     QCOMPARE(itemsFromSpy(spy), items);
 
     entrySet = entrySet4;
-    QVERIFY(entrySet.remove(items[ 0 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 1 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 2 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 3 ].remoteId()));
+    QVERIFY(entrySet.remove(items[0].remoteId()));
+    QVERIFY(entrySet.remove(items[1].remoteId()));
+    QVERIFY(entrySet.remove(items[2].remoteId()));
+    QVERIFY(entrySet.remove(items[3].remoteId()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection4);
-    QCOMPARE(items[ 1 ].parentCollection(), collection4);
-    QCOMPARE(items[ 2 ].parentCollection(), collection4);
-    QCOMPARE(items[ 3 ].parentCollection(), collection4);
+    QCOMPARE(items[0].parentCollection(), collection4);
+    QCOMPARE(items[1].parentCollection(), collection4);
+    QCOMPARE(items[2].parentCollection(), collection4);
+    QCOMPARE(items[3].parentCollection(), collection4);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
     Q_FOREACH (const Item &item, items) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
-            ++flagCounts[ flag ];
+            ++flagCounts[flag];
         }
     }
-    QCOMPARE(flagCounts[ "\\SEEN" ], 2);
-    QCOMPARE(flagCounts[ "\\FLAGGED" ], 1);
-    QCOMPARE(flagCounts[ "$TODO" ], 1);
+    QCOMPARE(flagCounts["\\SEEN"], 2);
+    QCOMPARE(flagCounts["\\FLAGGED"], 1);
+    QCOMPARE(flagCounts["$TODO"], 1);
     flagCounts.clear();
 
     var = job->property("remoteIdToTagList");
@@ -432,13 +431,13 @@ void ItemFetchTest::testListingMaildir()
     var = job->property("remoteIdToIndexUid");
     QVERIFY(var.isValid());
 
-    uidHash = var.value< QHash<QString, QVariant> >();
+    uidHash = var.value<QHash<QString, QVariant>>();
     QCOMPARE((int)uidHash.count(), 4);
     bool ok = false;
-    QVERIFY(!uidHash.value(items[ 0 ].remoteId()).toString().toInt(&ok) >= 0 && ok);
-    QVERIFY(!uidHash.value(items[ 1 ].remoteId()).toString().toInt(&ok) >= 0 && ok);
-    QVERIFY(!uidHash.value(items[ 2 ].remoteId()).toString().toInt(&ok) >= 0 && ok);
-    QVERIFY(!uidHash.value(items[ 3 ].remoteId()).toString().toInt(&ok) >= 0 && ok);
+    QVERIFY(!uidHash.value(items[0].remoteId()).toString().toInt(&ok) >= 0 && ok);
+    QVERIFY(!uidHash.value(items[1].remoteId()).toString().toInt(&ok) >= 0 && ok);
+    QVERIFY(!uidHash.value(items[2].remoteId()).toString().toInt(&ok) >= 0 && ok);
+    QVERIFY(!uidHash.value(items[3].remoteId()).toString().toInt(&ok) >= 0 && ok);
 
     // test listing maildir with index but newer modification date than index's one
     const QByteArray data5 = md5.readEntry(*entrySet5.cbegin());
@@ -474,30 +473,30 @@ void ItemFetchTest::testListingMaildir()
 
     entrySet = entrySet5;
     entrySet << newRemoteId;
-    QVERIFY(entrySet.remove(items[ 0 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 1 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 2 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 3 ].remoteId()));
-    QVERIFY(entrySet.remove(items[ 4 ].remoteId()));
+    QVERIFY(entrySet.remove(items[0].remoteId()));
+    QVERIFY(entrySet.remove(items[1].remoteId()));
+    QVERIFY(entrySet.remove(items[2].remoteId()));
+    QVERIFY(entrySet.remove(items[3].remoteId()));
+    QVERIFY(entrySet.remove(items[4].remoteId()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection5);
-    QCOMPARE(items[ 1 ].parentCollection(), collection5);
-    QCOMPARE(items[ 2 ].parentCollection(), collection5);
-    QCOMPARE(items[ 3 ].parentCollection(), collection5);
-    QCOMPARE(items[ 4 ].parentCollection(), collection5);
+    QCOMPARE(items[0].parentCollection(), collection5);
+    QCOMPARE(items[1].parentCollection(), collection5);
+    QCOMPARE(items[2].parentCollection(), collection5);
+    QCOMPARE(items[3].parentCollection(), collection5);
+    QCOMPARE(items[4].parentCollection(), collection5);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 4 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[4].hasPayload<KMime::Message::Ptr>());
 
     // not flags from index, no flags from file names
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 4 ].flags(), QSet<QByteArray>());
+    QCOMPARE(items[0].flags(), QSet<QByteArray>());
+    QCOMPARE(items[1].flags(), QSet<QByteArray>());
+    QCOMPARE(items[2].flags(), QSet<QByteArray>());
+    QCOMPARE(items[3].flags(), QSet<QByteArray>());
+    QCOMPARE(items[4].flags(), QSet<QByteArray>());
 
     var = job->property("remoteIdToTagList");
     QVERIFY(!var.isValid());
@@ -555,7 +554,7 @@ void ItemFetchTest::testListingMBox()
     Item::List items;
 
     QHash<QString, QVariant> tagListHash;
-    const QVariant varTagListHash = QVariant::fromValue< QHash<QString, QVariant> >(tagListHash);
+    const QVariant varTagListHash = QVariant::fromValue<QHash<QString, QVariant>>(tagListHash);
     QVariant var;
 
     // test listing mbox without index
@@ -575,25 +574,25 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE((int)items.count(), 4);
     QCOMPARE(itemsFromSpy(spy), items);
 
-    QCOMPARE(items[ 0 ].remoteId(), QString::number(entryList1[ 0 ].messageOffset()));
-    QCOMPARE(items[ 1 ].remoteId(), QString::number(entryList1[ 1 ].messageOffset()));
-    QCOMPARE(items[ 2 ].remoteId(), QString::number(entryList1[ 2 ].messageOffset()));
-    QCOMPARE(items[ 3 ].remoteId(), QString::number(entryList1[ 3 ].messageOffset()));
+    QCOMPARE(items[0].remoteId(), QString::number(entryList1[0].messageOffset()));
+    QCOMPARE(items[1].remoteId(), QString::number(entryList1[1].messageOffset()));
+    QCOMPARE(items[2].remoteId(), QString::number(entryList1[2].messageOffset()));
+    QCOMPARE(items[3].remoteId(), QString::number(entryList1[3].messageOffset()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection1);
-    QCOMPARE(items[ 1 ].parentCollection(), collection1);
-    QCOMPARE(items[ 2 ].parentCollection(), collection1);
-    QCOMPARE(items[ 3 ].parentCollection(), collection1);
+    QCOMPARE(items[0].parentCollection(), collection1);
+    QCOMPARE(items[1].parentCollection(), collection1);
+    QCOMPARE(items[2].parentCollection(), collection1);
+    QCOMPARE(items[3].parentCollection(), collection1);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>());
+    QCOMPARE(items[0].flags(), QSet<QByteArray>());
+    QCOMPARE(items[1].flags(), QSet<QByteArray>());
+    QCOMPARE(items[2].flags(), QSet<QByteArray>());
+    QCOMPARE(items[3].flags(), QSet<QByteArray>());
 
     var = job->property("remoteIdToTagList");
     QVERIFY(!var.isValid());
@@ -635,26 +634,30 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE((int)items.count(), 4);
     QCOMPARE(itemsFromSpy(spy), items);
 
-    QCOMPARE(items[ 0 ].remoteId(), QString::number(entryList2[ 0 ].messageOffset()));
-    QCOMPARE(items[ 1 ].remoteId(), QString::number(entryList2[ 1 ].messageOffset()));
-    QCOMPARE(items[ 2 ].remoteId(), QString::number(entryList2[ 2 ].messageOffset()));
-    QCOMPARE(items[ 3 ].remoteId(), QString::number(entryList2[ 3 ].messageOffset()));
+    QCOMPARE(items[0].remoteId(), QString::number(entryList2[0].messageOffset()));
+    QCOMPARE(items[1].remoteId(), QString::number(entryList2[1].messageOffset()));
+    QCOMPARE(items[2].remoteId(), QString::number(entryList2[2].messageOffset()));
+    QCOMPARE(items[3].remoteId(), QString::number(entryList2[3].messageOffset()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection2);
-    QCOMPARE(items[ 1 ].parentCollection(), collection2);
-    QCOMPARE(items[ 2 ].parentCollection(), collection2);
-    QCOMPARE(items[ 3 ].parentCollection(), collection2);
+    QCOMPARE(items[0].parentCollection(), collection2);
+    QCOMPARE(items[1].parentCollection(), collection2);
+    QCOMPARE(items[2].parentCollection(), collection2);
+    QCOMPARE(items[3].parentCollection(), collection2);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO");
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>() << "\\SEEN" << "\\FLAGGED");
+    QCOMPARE(items[0].flags(), QSet<QByteArray>());
+    QCOMPARE(items[1].flags(),
+             QSet<QByteArray>() << "\\SEEN"
+                                << "$TODO");
+    QCOMPARE(items[2].flags(), QSet<QByteArray>());
+    QCOMPARE(items[3].flags(),
+             QSet<QByteArray>() << "\\SEEN"
+                                << "\\FLAGGED");
 
     var = job->property("remoteIdToTagList");
     QVERIFY(!var.isValid());
@@ -696,36 +699,40 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE((int)items.count(), 4);
     QCOMPARE(itemsFromSpy(spy), items);
 
-    QCOMPARE(items[ 0 ].remoteId(), QString::number(entryList3[ 0 ].messageOffset()));
-    QCOMPARE(items[ 1 ].remoteId(), QString::number(entryList3[ 1 ].messageOffset()));
-    QCOMPARE(items[ 2 ].remoteId(), QString::number(entryList3[ 2 ].messageOffset()));
-    QCOMPARE(items[ 3 ].remoteId(), QString::number(entryList3[ 3 ].messageOffset()));
+    QCOMPARE(items[0].remoteId(), QString::number(entryList3[0].messageOffset()));
+    QCOMPARE(items[1].remoteId(), QString::number(entryList3[1].messageOffset()));
+    QCOMPARE(items[2].remoteId(), QString::number(entryList3[2].messageOffset()));
+    QCOMPARE(items[3].remoteId(), QString::number(entryList3[3].messageOffset()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection3);
-    QCOMPARE(items[ 1 ].parentCollection(), collection3);
-    QCOMPARE(items[ 2 ].parentCollection(), collection3);
-    QCOMPARE(items[ 3 ].parentCollection(), collection3);
+    QCOMPARE(items[0].parentCollection(), collection3);
+    QCOMPARE(items[1].parentCollection(), collection3);
+    QCOMPARE(items[2].parentCollection(), collection3);
+    QCOMPARE(items[3].parentCollection(), collection3);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO");
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>() << "\\SEEN" << "\\FLAGGED");
+    QCOMPARE(items[0].flags(), QSet<QByteArray>());
+    QCOMPARE(items[1].flags(),
+             QSet<QByteArray>() << "\\SEEN"
+                                << "$TODO");
+    QCOMPARE(items[2].flags(), QSet<QByteArray>());
+    QCOMPARE(items[3].flags(),
+             QSet<QByteArray>() << "\\SEEN"
+                                << "\\FLAGGED");
 
     var = job->property("remoteIdToTagList");
     QVERIFY(var.isValid());
 
-    tagListHash = var.value< QHash<QString, QVariant> >();
+    tagListHash = var.value<QHash<QString, QVariant>>();
     QCOMPARE((int)tagListHash.count(), 3);
-    QVERIFY(!tagListHash.value(items[ 0 ].remoteId()).toString().isEmpty());
-    QVERIFY(!tagListHash.contains(items[ 1 ].remoteId()));
-    QVERIFY(!tagListHash.value(items[ 2 ].remoteId()).toString().isEmpty());
-    QVERIFY(!tagListHash.value(items[ 3 ].remoteId()).toString().isEmpty());
+    QVERIFY(!tagListHash.value(items[0].remoteId()).toString().isEmpty());
+    QVERIFY(!tagListHash.contains(items[1].remoteId()));
+    QVERIFY(!tagListHash.value(items[2].remoteId()).toString().isEmpty());
+    QVERIFY(!tagListHash.value(items[3].remoteId()).toString().isEmpty());
 
     // test listing mbox with index and unpurged messages (in mbox but not in index)
     Collection collection4;
@@ -744,26 +751,26 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE((int)items.count(), 4);
     QCOMPARE(itemsFromSpy(spy), items);
 
-    QCOMPARE(items[ 0 ].remoteId(), QString::number(entryList4[ 0 ].messageOffset()));
-    QCOMPARE(items[ 1 ].remoteId(), QString::number(entryList4[ 1 ].messageOffset()));
-    QCOMPARE(items[ 2 ].remoteId(), QString::number(entryList4[ 2 ].messageOffset()));
-    QCOMPARE(items[ 3 ].remoteId(), QString::number(entryList4[ 3 ].messageOffset()));
+    QCOMPARE(items[0].remoteId(), QString::number(entryList4[0].messageOffset()));
+    QCOMPARE(items[1].remoteId(), QString::number(entryList4[1].messageOffset()));
+    QCOMPARE(items[2].remoteId(), QString::number(entryList4[2].messageOffset()));
+    QCOMPARE(items[3].remoteId(), QString::number(entryList4[3].messageOffset()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection4);
-    QCOMPARE(items[ 1 ].parentCollection(), collection4);
-    QCOMPARE(items[ 2 ].parentCollection(), collection4);
-    QCOMPARE(items[ 3 ].parentCollection(), collection4);
+    QCOMPARE(items[0].parentCollection(), collection4);
+    QCOMPARE(items[1].parentCollection(), collection4);
+    QCOMPARE(items[2].parentCollection(), collection4);
+    QCOMPARE(items[3].parentCollection(), collection4);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>() << "\\SEEN");
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>() << "\\DELETED");
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>() << "\\DELETED");
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>() << "\\SEEN");
+    QCOMPARE(items[0].flags(), QSet<QByteArray>() << "\\SEEN");
+    QCOMPARE(items[1].flags(), QSet<QByteArray>() << "\\DELETED");
+    QCOMPARE(items[2].flags(), QSet<QByteArray>() << "\\DELETED");
+    QCOMPARE(items[3].flags(), QSet<QByteArray>() << "\\SEEN");
 
     var = job->property("remoteIdToTagList");
     QVERIFY(!var.isValid());
@@ -801,25 +808,25 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE((int)items.count(), 4);
     QCOMPARE(itemsFromSpy(spy), items);
 
-    QCOMPARE(items[ 0 ].remoteId(), QString::number(entryList5[ 0 ].messageOffset()));
-    QCOMPARE(items[ 1 ].remoteId(), QString::number(entryList5[ 1 ].messageOffset()));
-    QCOMPARE(items[ 2 ].remoteId(), QString::number(entryList5[ 2 ].messageOffset()));
-    QCOMPARE(items[ 3 ].remoteId(), QString::number(entryList5[ 3 ].messageOffset()));
+    QCOMPARE(items[0].remoteId(), QString::number(entryList5[0].messageOffset()));
+    QCOMPARE(items[1].remoteId(), QString::number(entryList5[1].messageOffset()));
+    QCOMPARE(items[2].remoteId(), QString::number(entryList5[2].messageOffset()));
+    QCOMPARE(items[3].remoteId(), QString::number(entryList5[3].messageOffset()));
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection5);
-    QCOMPARE(items[ 1 ].parentCollection(), collection5);
-    QCOMPARE(items[ 2 ].parentCollection(), collection5);
-    QCOMPARE(items[ 3 ].parentCollection(), collection5);
+    QCOMPARE(items[0].parentCollection(), collection5);
+    QCOMPARE(items[1].parentCollection(), collection5);
+    QCOMPARE(items[2].parentCollection(), collection5);
+    QCOMPARE(items[3].parentCollection(), collection5);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>());
+    QCOMPARE(items[0].flags(), QSet<QByteArray>());
+    QCOMPARE(items[1].flags(), QSet<QByteArray>());
+    QCOMPARE(items[2].flags(), QSet<QByteArray>());
+    QCOMPARE(items[3].flags(), QSet<QByteArray>());
 
     var = job->property("remoteIdToTagList");
     QVERIFY(!var.isValid());
@@ -851,30 +858,34 @@ void ItemFetchTest::testListingMBox()
     QCOMPARE((int)items.count(), 5);
     QCOMPARE(itemsFromSpy(spy), items);
 
-    QCOMPARE(items[ 0 ].remoteId(), QString::number(entryList3[ 0 ].messageOffset()));
-    QCOMPARE(items[ 1 ].remoteId(), QString::number(entryList3[ 1 ].messageOffset()));
-    QCOMPARE(items[ 2 ].remoteId(), QString::number(entryList3[ 2 ].messageOffset()));
-    QCOMPARE(items[ 3 ].remoteId(), QString::number(entryList3[ 3 ].messageOffset()));
-    QCOMPARE(items[ 4 ].remoteId(), item3_5.remoteId());
+    QCOMPARE(items[0].remoteId(), QString::number(entryList3[0].messageOffset()));
+    QCOMPARE(items[1].remoteId(), QString::number(entryList3[1].messageOffset()));
+    QCOMPARE(items[2].remoteId(), QString::number(entryList3[2].messageOffset()));
+    QCOMPARE(items[3].remoteId(), QString::number(entryList3[3].messageOffset()));
+    QCOMPARE(items[4].remoteId(), item3_5.remoteId());
 
-    QCOMPARE(items[ 0 ].parentCollection(), collection3);
-    QCOMPARE(items[ 1 ].parentCollection(), collection3);
-    QCOMPARE(items[ 2 ].parentCollection(), collection3);
-    QCOMPARE(items[ 3 ].parentCollection(), collection3);
-    QCOMPARE(items[ 4 ].parentCollection(), collection3);
+    QCOMPARE(items[0].parentCollection(), collection3);
+    QCOMPARE(items[1].parentCollection(), collection3);
+    QCOMPARE(items[2].parentCollection(), collection3);
+    QCOMPARE(items[3].parentCollection(), collection3);
+    QCOMPARE(items[4].parentCollection(), collection3);
 
-    QVERIFY(!items[ 0 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 1 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 2 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 3 ].hasPayload<KMime::Message::Ptr>());
-    QVERIFY(!items[ 4 ].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[0].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[1].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
+    QVERIFY(!items[4].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    QCOMPARE(items[ 0 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 1 ].flags(), QSet<QByteArray>() << "\\SEEN" << "$TODO");
-    QCOMPARE(items[ 2 ].flags(), QSet<QByteArray>());
-    QCOMPARE(items[ 3 ].flags(), QSet<QByteArray>() << "\\SEEN" << "\\FLAGGED");
-    QCOMPARE(items[ 4 ].flags(), QSet<QByteArray>());
+    QCOMPARE(items[0].flags(), QSet<QByteArray>());
+    QCOMPARE(items[1].flags(),
+             QSet<QByteArray>() << "\\SEEN"
+                                << "$TODO");
+    QCOMPARE(items[2].flags(), QSet<QByteArray>());
+    QCOMPARE(items[3].flags(),
+             QSet<QByteArray>() << "\\SEEN"
+                                << "\\FLAGGED");
+    QCOMPARE(items[4].flags(), QSet<QByteArray>());
 
     var = job->property("remoteIdToTagList");
     QVERIFY(var.isValid());

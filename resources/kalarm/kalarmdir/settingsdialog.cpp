@@ -7,19 +7,20 @@
  */
 
 #include "settingsdialog.h"
-#include "settings.h"
 #include "alarmtypewidget.h"
+#include "settings.h"
 
 #include <KConfigDialogManager>
 #include <KWindowSystem>
 
-#include <QUrl>
-#include <QTimer>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QTimer>
+#include <QUrl>
 #include <QVBoxLayout>
 
-namespace Akonadi_KAlarm_Dir_Resource {
+namespace Akonadi_KAlarm_Dir_Resource
+{
 SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     : QDialog()
     , mSettings(settings)
@@ -102,17 +103,17 @@ void SettingsDialog::validate()
             // directory, and it must not be an existing file.
             if (file.exists()) {
                 if (file.isDir()) {
-                    enableOk = true;    // it's an existing directory
+                    enableOk = true; // it's an existing directory
                 }
             } else {
                 // Specified directory doesn't already exist.
                 // Find the first level of parent directory which exists,
                 // and check that it is writable.
                 for (;;) {
-                    file.setFile(file.dir().absolutePath());   // get parent dir's file info
+                    file.setFile(file.dir().absolutePath()); // get parent dir's file info
                     if (file.exists()) {
                         if (file.isDir() && file.isWritable()) {
-                            enableOk = true;    // it's possible to create the directory
+                            enableOk = true; // it's possible to create the directory
                         }
                         break;
                     }

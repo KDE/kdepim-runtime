@@ -20,7 +20,7 @@ public:
     explicit FakeEwsServerThread(QObject *parent = nullptr);
     ~FakeEwsServerThread() override;
 
-//    FakeEwsServer *server() const;
+    //    FakeEwsServer *server() const;
     ushort portNumber() const
     {
         return mPortNumber;
@@ -37,10 +37,12 @@ public:
     bool waitServerStarted() const;
 Q_SIGNALS:
     void serverStarted(bool ok);
+
 protected:
     void run() override;
 private Q_SLOTS:
     void doQueueEventsXml(const QStringList &events);
+
 private:
     QScopedPointer<FakeEwsServer> mServer;
     ushort mPortNumber;

@@ -15,15 +15,7 @@
 class EwsEffectiveRightsPrivate : public QSharedData
 {
 public:
-    enum Right {
-        CreateAssociated = 0,
-        CreateContents,
-        CreateHierarchy,
-        Delete,
-        Modify,
-        Read,
-        ViewPrivateItems
-    };
+    enum Right { CreateAssociated = 0, CreateContents, CreateHierarchy, Delete, Modify, Read, ViewPrivateItems };
 
     EwsEffectiveRightsPrivate();
     virtual ~EwsEffectiveRightsPrivate();
@@ -49,8 +41,7 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
 {
     QString elm = reader.name().toString();
     if (reader.error() != QXmlStreamReader::NoError) {
-        qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.")
-            .arg(QStringLiteral("EffectiveRights"), elm);
+        qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.").arg(QStringLiteral("EffectiveRights"), elm);
         return false;
     }
 
@@ -60,8 +51,7 @@ bool EwsEffectiveRightsPrivate::readRight(QXmlStreamReader &reader, Right right)
     } else if (text == QLatin1String("false")) {
         mRights.clearBit(right);
     } else {
-        qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element value: %3.")
-            .arg(QStringLiteral("EffectiveRights"), elm, text);
+        qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element value: %3.").arg(QStringLiteral("EffectiveRights"), elm, text);
         return false;
     }
 
@@ -78,8 +68,7 @@ EwsEffectiveRights::EwsEffectiveRights(QXmlStreamReader &reader)
 {
     while (reader.readNextStartElement()) {
         if (reader.namespaceUri() != ewsTypeNsUri) {
-            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected namespace in mailbox element:")
-                                    << reader.namespaceUri();
+            qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unexpected namespace in mailbox element:") << reader.namespaceUri();
             return;
         }
         const QStringRef readerName = reader.name();
@@ -112,8 +101,8 @@ EwsEffectiveRights::EwsEffectiveRights(QXmlStreamReader &reader)
                 return;
             }
         } else {
-            qCWarning(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - unknown element: %2.")
-                .arg(QStringLiteral("EffectiveRights"), readerName.toString());
+            qCWarning(EWSCLI_LOG)
+                << QStringLiteral("Failed to read %1 element - unknown element: %2.").arg(QStringLiteral("EffectiveRights"), readerName.toString());
             return;
         }
     }

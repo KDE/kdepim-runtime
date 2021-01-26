@@ -5,9 +5,9 @@
 #ifndef O1REQUESTOR_H
 #define O1REQUESTOR_H
 
-#include <QObject>
-#include <QNetworkRequest>
 #include <QByteArray>
+#include <QNetworkRequest>
+#include <QObject>
 
 #include "o2/o1.h"
 

@@ -31,11 +31,7 @@ public:
     void setAuth(EwsAbstractAuth *auth);
     EwsAbstractAuth *auth() const;
 
-    enum RequestedConfiguration {
-        MailTips = 0,
-        UnifiedMessagingConfiguration,
-        ProtectionRules
-    };
+    enum RequestedConfiguration { MailTips = 0, UnifiedMessagingConfiguration, ProtectionRules };
 
     QUrl url() const;
 

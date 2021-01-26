@@ -31,8 +31,11 @@ QString translateErrorString(const Error &error)
         } else {
             err = i18n("HTTP error");
         }
-        result = i18n("There was a problem with the request.\n"
-                      "%1 (%2).", err, responseCode);
+        result = i18n(
+            "There was a problem with the request.\n"
+            "%1 (%2).",
+            err,
+            responseCode);
         break;
     case ERR_NO_MULTIGET:
         result = i18n("Protocol for the collection does not support MULTIGET");
@@ -41,8 +44,11 @@ QString translateErrorString(const Error &error)
         result = i18n("The server encountered an error that prevented it from completing your request: %1 (%2)", err, responseCode);
         break;
     case ERR_COLLECTIONDELETE:
-        result = i18n("There was a problem with the request. The collection has not been deleted from the server.\n"
-                      "%1 (%2).", err, responseCode);
+        result = i18n(
+            "There was a problem with the request. The collection has not been deleted from the server.\n"
+            "%1 (%2).",
+            err,
+            responseCode);
         break;
     case ERR_COLLECTIONFETCH:
         result = i18n("Invalid responses from backend");
@@ -54,8 +60,11 @@ QString translateErrorString(const Error &error)
         result = i18n("Invalid XQuery submitted by DAV implementation");
         break;
     case ERR_COLLECTIONMODIFY:
-        result = i18n("There was a problem with the request. The collection has not been modified on the server.\n"
-                      "%1 (%2).", err, responseCode);
+        result = i18n(
+            "There was a problem with the request. The collection has not been modified on the server.\n"
+            "%1 (%2).",
+            err,
+            responseCode);
         break;
     case ERR_COLLECTIONMODIFY_NO_PROPERITES:
         result = i18n("No properties to change or remove");
@@ -67,19 +76,27 @@ QString translateErrorString(const Error &error)
         }
         break;
     case ERR_ITEMCREATE:
-        result = i18n("There was a problem with the request. The item has not been created on the server.\n"
-                      "%1 (%2).", err, responseCode);
+        result = i18n(
+            "There was a problem with the request. The item has not been created on the server.\n"
+            "%1 (%2).",
+            err,
+            responseCode);
         break;
     case ERR_ITEMDELETE:
-        result = i18n("There was a problem with the request. The item has not been deleted from the server.\n"
-                      "%1 (%2).", err, responseCode);
+        result = i18n(
+            "There was a problem with the request. The item has not been deleted from the server.\n"
+            "%1 (%2).",
+            err,
+            responseCode);
         break;
     case ERR_ITEMMODIFY:
-        result = i18n("There was a problem with the request. The item was not modified on the server.\n"
-                      "%1 (%2).", err, responseCode);
+        result = i18n(
+            "There was a problem with the request. The item was not modified on the server.\n"
+            "%1 (%2).",
+            err,
+            responseCode);
         break;
-    case ERR_ITEMLIST:
-    {
+    case ERR_ITEMLIST: {
         result = i18n("There was a problem with the request.");
         break;
     };

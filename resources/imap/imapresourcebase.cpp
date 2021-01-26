@@ -14,37 +14,37 @@
 #include <QHostInfo>
 #include <QSettings>
 
-#include <QIcon>
 #include "imapresource_debug.h"
 #include <KLocalizedString>
+#include <QIcon>
 
-#include <kwindowsystem.h>
 #include <AkonadiCore/CollectionModifyJob>
+#include <kwindowsystem.h>
 
 #include <AkonadiCore/agentmanager.h>
 #include <AkonadiCore/attributefactory.h>
+#include <AkonadiCore/changerecorder.h>
 #include <AkonadiCore/collectionfetchjob.h>
 #include <AkonadiCore/collectionfetchscope.h>
-#include <AkonadiCore/changerecorder.h>
-#include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/specialcollections.h>
+#include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/session.h>
-#include <akonadi/kmime/messageparts.h>
+#include <AkonadiCore/specialcollections.h>
 #include <QStandardPaths>
+#include <akonadi/kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
+#include "highestmodseqattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include "uidvalidityattribute.h"
 #include "uidnextattribute.h"
-#include "highestmodseqattribute.h"
+#include "uidvalidityattribute.h"
 
-#include "settings.h"
 #include "imapaccount.h"
 #include "imapidlemanager.h"
+#include "settings.h"
 #include "subscriptiondialog.h"
 
 #include "addcollectiontask.h"
@@ -58,14 +58,14 @@
 #include "removecollectionrecursivetask.h"
 #include "retrievecollectionmetadatatask.h"
 #include "retrievecollectionstask.h"
-#include "retrieveitemtask.h"
 #include "retrieveitemstask.h"
+#include "retrieveitemtask.h"
 #include "searchtask.h"
 
-#include "settingspasswordrequester.h"
+#include "imapflags.h"
 #include "sessionpool.h"
 #include "sessionuiproxy.h"
-#include "imapflags.h"
+#include "settingspasswordrequester.h"
 
 #include "resourceadaptor.h"
 
@@ -87,10 +87,8 @@ ImapResourceBase::ImapResourceBase(const QString &id)
 {
     QTimer::singleShot(0, this, &ImapResourceBase::updateResourceName);
 
-    connect(m_pool, &SessionPool::connectDone,
-            this, &ImapResourceBase::onConnectDone);
-    connect(m_pool, &SessionPool::connectionLost,
-            this, &ImapResourceBase::onConnectionLost);
+    connect(m_pool, &SessionPool::connectDone, this, &ImapResourceBase::onConnectDone);
+    connect(m_pool, &SessionPool::connectionLost, this, &ImapResourceBase::onConnectionLost);
 
     Akonadi::AttributeFactory::registerAttribute<UidValidityAttribute>();
     Akonadi::AttributeFactory::registerAttribute<UidNextAttribute>();
@@ -104,7 +102,7 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     Akonadi::AttributeFactory::registerAttribute<ImapQuotaAttribute>();
 
     // For QMetaObject::invokeMethod()
-    qRegisterMetaType<QList<qint64> >();
+    qRegisterMetaType<QList<qint64>>();
 
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
@@ -113,10 +111,10 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
     changeRecorder()->itemFetchScope().setFetchModificationTime(false);
-//(Andras) disable now, as tokoe reported problems with it and the mail filter: changeRecorder()->fetchChangedOnly( true );
+    //(Andras) disable now, as tokoe reported problems with it and the mail filter: changeRecorder()->fetchChangedOnly( true );
 
     setHierarchicalRemoteIdentifiersEnabled(true);
-    setItemTransactionMode(ItemSync::MultipleTransactions);   // we can recover from incomplete syncs, so we can use a faster mode
+    setItemTransactionMode(ItemSync::MultipleTransactions); // we can recover from incomplete syncs, so we can use a faster mode
     ItemFetchScope scope(changeRecorder()->itemFetchScope());
     scope.fetchFullPayload(false);
     scope.setAncestorRetrieval(ItemFetchScope::None);
@@ -153,7 +151,7 @@ void ImapResourceBase::delayedInit()
 
 ImapResourceBase::~ImapResourceBase()
 {
-    //Destroy everything that could cause callbacks immediately, otherwise the callbacks can result in a crash.
+    // Destroy everything that could cause callbacks immediately, otherwise the callbacks can result in a crash.
 
     delete m_idle;
     m_idle = nullptr;
@@ -169,7 +167,7 @@ ImapResourceBase::~ImapResourceBase()
 
 void ImapResourceBase::aboutToQuit()
 {
-    //TODO the resource would ideally have to signal when it's done with logging out etc, before the destructor gets called
+    // TODO the resource would ideally have to signal when it's done with logging out etc, before the destructor gets called
     if (m_idle) {
         m_idle->stop();
     }
@@ -185,12 +183,11 @@ void ImapResourceBase::updateResourceName()
 {
     if (name() == identifier()) {
         const QString agentType = AgentManager::self()->instance(identifier()).type().identifier();
-        const QString agentsrcFile = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1Char('/') + QLatin1String("akonadi/agentsrc");
+        const QString agentsrcFile =
+            QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QLatin1Char('/') + QLatin1String("akonadi/agentsrc");
 
         const QSettings agentsrc(agentsrcFile, QSettings::IniFormat);
-        const int instanceCounter = agentsrc.value(
-            QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType),
-            -1).toInt();
+        const int instanceCounter = agentsrc.value(QStringLiteral("InstanceCounters/%1/InstanceCounter").arg(agentType), -1).toInt();
 
         if (instanceCounter > 0) {
             setName(QStringLiteral("%1 %2").arg(defaultName()).arg(instanceCounter));
@@ -255,15 +252,13 @@ int ImapResourceBase::configureSubscription(qlonglong windowId)
     mSubscriptions->setWindowIcon(QIcon::fromTheme(QStringLiteral("network-server")));
     mSubscriptions->connectAccount(*m_pool->account(), password);
     mSubscriptions->setSubscriptionEnabled(settings()->subscriptionEnabled());
-    connect(mSubscriptions.get(), &SubscriptionDialog::accepted,
-            this, [this]() {
+    connect(mSubscriptions.get(), &SubscriptionDialog::accepted, this, [this]() {
         settings()->setSubscriptionEnabled(mSubscriptions->subscriptionEnabled());
         settings()->save();
         Q_EMIT configurationDialogAccepted();
         reconnect();
     });
-    connect(mSubscriptions.get(), &SubscriptionDialog::finished,
-            this, [this]() {
+    connect(mSubscriptions.get(), &SubscriptionDialog::finished, this, [this]() {
         mSubscriptions.reset();
     });
     mSubscriptions->show();
@@ -309,7 +304,7 @@ void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)
     }
 }
 
-void ImapResourceBase::onConnectionLost(KIMAP::Session */*session*/)
+void ImapResourceBase::onConnectionLost(KIMAP::Session * /*session*/)
 {
     if (!m_pool->isConnected()) {
         reconnect();
@@ -335,7 +330,7 @@ Settings *ImapResourceBase::settings() const
 bool ImapResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     // The collection name is empty here...
-    //Q_EMIT status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
+    // Q_EMIT status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
 
     RetrieveItemTask *task = new RetrieveItemTask(createResourceState(TaskArguments(item, parts)), this);
     task->start(m_pool);
@@ -357,7 +352,7 @@ void ImapResourceBase::itemChanged(const Item &item, const QSet<QByteArray> &par
     startTask(new ChangeItemTask(createResourceState(TaskArguments(item, parts)), this));
 }
 
-void ImapResourceBase::itemsFlagsChanged(const Item::List &items, const QSet< QByteArray > &addedFlags, const QSet< QByteArray > &removedFlags)
+void ImapResourceBase::itemsFlagsChanged(const Item::List &items, const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
 {
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating items"));
 
@@ -380,12 +375,11 @@ void ImapResourceBase::itemsRemoved(const Akonadi::Item::List &items)
 
 void ImapResourceBase::itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &source, const Akonadi::Collection &destination)
 {
-    if (items.first().parentCollection() != destination) {   // should have been set by the server
-        qCWarning(IMAPRESOURCE_LOG) << "Collections don't match: destination=" << destination.id()
-                                    << "; items parent=" << items.first().parentCollection().id()
+    if (items.first().parentCollection() != destination) { // should have been set by the server
+        qCWarning(IMAPRESOURCE_LOG) << "Collections don't match: destination=" << destination.id() << "; items parent=" << items.first().parentCollection().id()
                                     << "; source collection=" << source.id();
-        //Q_ASSERT( false );
-        //TODO: Find out why this happens
+        // Q_ASSERT( false );
+        // TODO: Find out why this happens
         cancelTask();
         return;
     }
@@ -417,7 +411,7 @@ void ImapResourceBase::retrieveItems(const Collection &col)
     setItemStreamingEnabled(true);
 
     RetrieveItemsTask *task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
-    connect(task, SIGNAL(status(int,QString)), SIGNAL(status(int,QString)));
+    connect(task, SIGNAL(status(int, QString)), SIGNAL(status(int, QString)));
     connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
 }
@@ -436,7 +430,7 @@ void ImapResourceBase::collectionChanged(const Collection &collection, const QSe
 
 void ImapResourceBase::collectionRemoved(const Collection &collection)
 {
-    //TODO Move this to the task
+    // TODO Move this to the task
     const QString mailBox = ResourceStateInterface::mailBoxForCollection(collection, false);
     if (mailBox.isEmpty()) {
         // this collection will be removed soon by its parent collection
@@ -450,8 +444,7 @@ void ImapResourceBase::collectionRemoved(const Collection &collection)
 
 void ImapResourceBase::collectionMoved(const Akonadi::Collection &collection, const Akonadi::Collection &source, const Akonadi::Collection &destination)
 {
-    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving folder '%1' from '%2' to '%3'",
-                                            collection.name(), source.name(), destination.name()));
+    Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Moving folder '%1' from '%2' to '%3'", collection.name(), source.name(), destination.name()));
     startTask(new MoveCollectionTask(createResourceState(TaskArguments(collection, source, destination)), this));
 }
 
@@ -532,9 +525,7 @@ bool ImapResourceBase::needsNetwork() const
 {
     const QString hostName = settings()->imapServer().section(QLatin1Char(':'), 0, 0);
     // ### is there a better way to do this?
-    if (hostName == QLatin1String("127.0.0.1")
-        || hostName == QLatin1String("localhost")
-        || hostName == QHostInfo::localHostName()) {
+    if (hostName == QLatin1String("127.0.0.1") || hostName == QLatin1String("localhost") || hostName == QHostInfo::localHostName()) {
         return false;
     }
     return true;
@@ -543,7 +534,7 @@ bool ImapResourceBase::needsNetwork() const
 void ImapResourceBase::reconnect()
 {
     setNeedsNetwork(needsNetwork());
-    setOnline(false);   // we are not connected initially
+    setOnline(false); // we are not connected initially
     setOnline(true);
 }
 
@@ -565,9 +556,8 @@ void ImapResourceBase::startIdle()
         return;
     }
 
-    //Without password we don't even have to try
-    if (m_pool->account()->authenticationMode() != KIMAP::LoginJob::GSSAPI
-        && settings()->password().isEmpty()) {
+    // Without password we don't even have to try
+    if (m_pool->account()->authenticationMode() != KIMAP::LoginJob::GSSAPI && settings()->password().isEmpty()) {
         return;
     }
 
@@ -589,24 +579,21 @@ void ImapResourceBase::startIdle()
     scope.setResource(identifier());
     scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
 
-    auto *fetch
-        = new Akonadi::CollectionFetchJob(c, Akonadi::CollectionFetchJob::Base, this);
+    auto *fetch = new Akonadi::CollectionFetchJob(c, Akonadi::CollectionFetchJob::Base, this);
     fetch->setFetchScope(scope);
 
-    connect(fetch, &KJob::result,
-            this, &ImapResourceBase::onIdleCollectionFetchDone);
+    connect(fetch, &KJob::result, this, &ImapResourceBase::onIdleCollectionFetchDone);
 }
 
 void ImapResourceBase::onIdleCollectionFetchDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "CollectionFetch for idling failed."
-                                    << "error=" << job->error()
-                                    << ", errorString=" << job->errorString();
+                                    << "error=" << job->error() << ", errorString=" << job->errorString();
         return;
     }
     auto fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
-    //Can be empty if collection is not subscribed locally
+    // Can be empty if collection is not subscribed locally
     if (!fetch->collections().isEmpty()) {
         delete m_idle;
         m_idle = new ImapIdleManager(createResourceState(TaskArguments(fetch->collections().at(0))), m_pool, this);
@@ -627,14 +614,10 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
         scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
         scope.setListFilter(CollectionFetchScope::NoFilter);
 
-        auto *fetch
-            = new Akonadi::CollectionFetchJob(collection,
-                                              Akonadi::CollectionFetchJob::Base,
-                                              this);
+        auto *fetch = new Akonadi::CollectionFetchJob(collection, Akonadi::CollectionFetchJob::Base, this);
         fetch->setFetchScope(scope);
 
-        connect(fetch, &KJob::result,
-                this, &ImapResourceBase::onExpungeCollectionFetchDone);
+        connect(fetch, &KJob::result, this, &ImapResourceBase::onExpungeCollectionFetchDone);
     }
 }
 
@@ -644,12 +627,10 @@ void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
         auto fetch = static_cast<Akonadi::CollectionFetchJob *>(job);
         Akonadi::Collection collection = fetch->collections().at(0);
 
-        scheduleCustomTask(this, "triggerCollectionExpunge",
-                           QVariant::fromValue(collection));
+        scheduleCustomTask(this, "triggerCollectionExpunge", QVariant::fromValue(collection));
     } else {
         qCWarning(IMAPRESOURCE_LOG) << "CollectionFetch for expunge failed."
-                                    << "error=" << job->error()
-                                    << ", errorString=" << job->errorString();
+                                    << "error=" << job->error() << ", errorString=" << job->errorString();
     }
 }
 
@@ -674,8 +655,7 @@ void ImapResourceBase::abortActivity()
 
 void ImapResourceBase::queueTask(ResourceTask *task)
 {
-    connect(task, &QObject::destroyed,
-            this, &ImapResourceBase::taskDestroyed);
+    connect(task, &QObject::destroyed, this, &ImapResourceBase::taskDestroyed);
     m_taskList << task;
 }
 

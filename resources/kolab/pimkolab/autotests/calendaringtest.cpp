@@ -7,11 +7,11 @@
 #include "calendaringtest.h"
 
 #include <QTest>
-#include <kolabevent.h>
-#include <iostream>
 #include <calendaring/calendaring.h>
-#include <calendaring/event.h>
 #include <calendaring/datetimeutils.h>
+#include <calendaring/event.h>
+#include <iostream>
+#include <kolabevent.h>
 
 #include "testhelpers.h"
 #include "testutils.h"
@@ -22,8 +22,8 @@ void compareEvents(const std::vector<Kolab::Event> &list1, const std::vector<Kol
     for (std::size_t i = 0; i < list1.size(); i++) {
         const Kolab::Event &e1 = list1.at(i);
         const Kolab::Event &e2 = list2.at(i);
-//         qDebug() << i;
-//         QCOMPARE(e1.uid(), e2.uid());
+        //         qDebug() << i;
+        //         QCOMPARE(e1.uid(), e2.uid());
         QCOMPARE(e1.start(), e2.start());
         QCOMPARE(e1.end(), e2.end());
     }
@@ -130,9 +130,9 @@ void CalendaringTest::testEventConflictSet()
     events.push_back(createEvent(Kolab::cDateTime(2011, 10, 6, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 8, 12, 1, 1, true)));
     events.push_back(createEvent(Kolab::cDateTime(2011, 10, 7, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 10, 12, 1, 1, true)));
     events.push_back(createEvent(Kolab::cDateTime(2011, 10, 9, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 11, 12, 1, 1, true)));
-    const std::vector< std::vector<Kolab::Event> > &result = Kolab::Calendaring::getConflictingSets(events);
+    const std::vector<std::vector<Kolab::Event>> &result = Kolab::Calendaring::getConflictingSets(events);
 
-    std::vector< std::vector<Kolab::Event> > expectedResult;
+    std::vector<std::vector<Kolab::Event>> expectedResult;
     std::vector<Kolab::Event> r1;
     r1.push_back(createEvent(Kolab::cDateTime(2011, 10, 6, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 8, 12, 1, 1, true)));
     r1.push_back(createEvent(Kolab::cDateTime(2011, 10, 7, 12, 1, 1, true), Kolab::cDateTime(2011, 10, 10, 12, 1, 1, true)));
@@ -158,7 +158,7 @@ void CalendaringTest::testTimesInInterval_data()
     QTest::addColumn<Kolab::Event>("event");
     QTest::addColumn<Kolab::cDateTime>("start");
     QTest::addColumn<Kolab::cDateTime>("end");
-    QTest::addColumn< std::vector<Kolab::cDateTime> >("result");
+    QTest::addColumn<std::vector<Kolab::cDateTime>>("result");
     {
         {
             Kolab::Event event;
@@ -204,83 +204,90 @@ void CalendaringTest::testTimesInIntervalBenchmark()
     QBENCHMARK {
         Kolab::Calendaring::timeInInterval(event, Kolab::cDateTime(2011, 1, 1, 1, 1, 1), Kolab::cDateTime(2013, 1, 1, 1, 1, 1));
     }
-    const std::vector<Kolab::cDateTime> &result = Kolab::Calendaring::timeInInterval(event, Kolab::cDateTime(2011, 1, 1, 1, 1, 1), Kolab::cDateTime(2013, 1, 1, 1, 1, 1));
+    const std::vector<Kolab::cDateTime> &result =
+        Kolab::Calendaring::timeInInterval(event, Kolab::cDateTime(2011, 1, 1, 1, 1, 1), Kolab::cDateTime(2013, 1, 1, 1, 1, 1));
     QVERIFY(result.size() == 500);
-//     qDebug() << QTest::toString(result);
+    //     qDebug() << QTest::toString(result);
 }
 
 void CalendaringTest::testCalendar_data()
 {
-    QTest::addColumn< std::vector<Kolab::Event> >("inputevents");
+    QTest::addColumn<std::vector<Kolab::Event>>("inputevents");
     QTest::addColumn<Kolab::cDateTime>("start");
     QTest::addColumn<Kolab::cDateTime>("end");
-    QTest::addColumn< std::vector<Kolab::Event> >("expectedResult");
+    QTest::addColumn<std::vector<Kolab::Event>>("expectedResult");
 
     {
         std::vector<Kolab::Event> inputevents;
         for (int day = 1; day < 28; day++) {
             for (int hour = 1; hour < 20; hour += 2) {
-                inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, day, hour, 4, 4, true), Kolab::cDateTime(2012, 5, day, hour+1, 4, 4, true)));
+                inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, day, hour, 4, 4, true), Kolab::cDateTime(2012, 5, day, hour + 1, 4, 4, true)));
             }
         }
         std::vector<Kolab::Event> expectedResult;
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 3+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 5+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 7+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 9, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 9+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 11, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 11+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 13, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 13+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 15, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 15+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 17, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 17+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 19, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 19+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 6, 1, 4, 4, true), Kolab::cDateTime(2012, 5, 6, 1+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 6, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 6, 3+1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 3 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 5 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 7 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 9, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 9 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 11, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 11 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 13, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 13 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 15, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 15 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 17, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 17 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 19, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 19 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 6, 1, 4, 4, true), Kolab::cDateTime(2012, 5, 6, 1 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 6, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 6, 3 + 1, 4, 4, true)));
         QTest::newRow("simple") << inputevents << Kolab::cDateTime(2012, 5, 5, 4, 4, 4, true) << Kolab::cDateTime(2012, 5, 6, 4, 4, 4, true) << expectedResult;
     }
 
-    { //Start and end time inclusive
+    { // Start and end time inclusive
         std::vector<Kolab::Event> inputevents;
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 1, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 1+1, 4, 4, true)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 3+1, 4, 4, true)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 5+1, 4, 4, true)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 7+1, 4, 4, true)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 9, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 9+1, 4, 4, true)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 1, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 1 + 1, 4, 4, true)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 3 + 1, 4, 4, true)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 5 + 1, 4, 4, true)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 7 + 1, 4, 4, true)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 9, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 9 + 1, 4, 4, true)));
 
         std::vector<Kolab::Event> expectedResult;
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 3+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 5+1, 4, 4, true)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 7+1, 4, 4, true)));
-        QTest::newRow("startEndTimeInclusive") << inputevents << Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true) << Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true) << expectedResult;
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 3 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 5 + 1, 4, 4, true)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true), Kolab::cDateTime(2012, 5, 5, 7 + 1, 4, 4, true)));
+        QTest::newRow("startEndTimeInclusive") << inputevents << Kolab::cDateTime(2012, 5, 5, 3, 4, 4, true) << Kolab::cDateTime(2012, 5, 5, 7, 4, 4, true)
+                                               << expectedResult;
     }
 
-    { //Start and end time inclusive (floating time)
+    { // Start and end time inclusive (floating time)
         std::vector<Kolab::Event> inputevents;
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 1, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 1+1, 4, 4, false)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 3+1, 4, 4, false)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 5+1, 4, 4, false)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 7+1, 4, 4, false)));
-        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 9, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 9+1, 4, 4, false)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 1, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 1 + 1, 4, 4, false)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 3 + 1, 4, 4, false)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 5 + 1, 4, 4, false)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 7 + 1, 4, 4, false)));
+        inputevents.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 9, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 9 + 1, 4, 4, false)));
 
         std::vector<Kolab::Event> expectedResult;
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 3+1, 4, 4, false)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 5+1, 4, 4, false)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 7+1, 4, 4, false)));
-        QTest::newRow("startEndTimeInclusive") << inputevents << Kolab::cDateTime(2012, 5, 5, 3, 4, 4, false) << Kolab::cDateTime(2012, 5, 5, 7, 4, 4, false) << expectedResult;
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 3, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 3 + 1, 4, 4, false)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 5, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 5 + 1, 4, 4, false)));
+        expectedResult.push_back(createEvent(Kolab::cDateTime(2012, 5, 5, 7, 4, 4, false), Kolab::cDateTime(2012, 5, 5, 7 + 1, 4, 4, false)));
+        QTest::newRow("startEndTimeInclusive") << inputevents << Kolab::cDateTime(2012, 5, 5, 3, 4, 4, false) << Kolab::cDateTime(2012, 5, 5, 7, 4, 4, false)
+                                               << expectedResult;
     }
 
-    { //Start and end time inclusive (timezone)
+    { // Start and end time inclusive (timezone)
         std::vector<Kolab::Event> inputevents;
-        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 1, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 1+1, 4, 4)));
-        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3+1, 4, 4)));
-        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5+1, 4, 4)));
-        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7+1, 4, 4)));
-        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 9, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 9+1, 4, 4)));
+        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 1, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 1 + 1, 4, 4)));
+        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3 + 1, 4, 4)));
+        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5 + 1, 4, 4)));
+        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7 + 1, 4, 4)));
+        inputevents.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 9, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 9 + 1, 4, 4)));
 
         std::vector<Kolab::Event> expectedResult;
-        expectedResult.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3+1, 4, 4)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5+1, 4, 4)));
-        expectedResult.push_back(createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7+1, 4, 4)));
-        QTest::newRow("startEndTimeInclusive") << inputevents << Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4) << Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7, 4, 4) << expectedResult;
+        expectedResult.push_back(
+            createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3 + 1, 4, 4)));
+        expectedResult.push_back(
+            createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 5 + 1, 4, 4)));
+        expectedResult.push_back(
+            createEvent(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7, 4, 4), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7 + 1, 4, 4)));
+        QTest::newRow("startEndTimeInclusive") << inputevents << Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4)
+                                               << Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 7, 4, 4) << expectedResult;
     }
 }
 
@@ -313,24 +320,24 @@ void CalendaringTest::delegationTest()
     Kolab::Attendee att3(Kolab::ContactReference("email3", "name3", "uid3"));
     Kolab::Attendee att4(Kolab::ContactReference("email4", "name4", "uid4"));
 
-    std::vector <Kolab::Attendee > attendees;
+    std::vector<Kolab::Attendee> attendees;
     attendees.push_back(att1);
     attendees.push_back(att2);
     attendees.push_back(att3);
     event.setAttendees(attendees);
 
-    std::vector <Kolab::Attendee > delegators;
+    std::vector<Kolab::Attendee> delegators;
     delegators.push_back(att1);
     delegators.push_back(att2);
 
-    std::vector <Kolab::Attendee > delegatees;
+    std::vector<Kolab::Attendee> delegatees;
     delegatees.push_back(att3);
     delegatees.push_back(att4);
 
     event.delegate(delegators, delegatees);
 
     std::cout << event.write();
-    //TODO write an actual test
+    // TODO write an actual test
 }
 
 void CalendaringTest::testICal()
@@ -338,7 +345,7 @@ void CalendaringTest::testICal()
     Kolab::Calendaring::Event event;
     event.setStart(Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4));
     const std::string &result = event.toICal();
-    //TODO write an actual test
+    // TODO write an actual test
     event.setStart(Kolab::cDateTime(1, 1, 1));
     event.fromICal(result);
     QCOMPARE(event.start(), Kolab::cDateTime("Europe/Zurich", 2012, 5, 5, 3, 4, 4));
@@ -360,7 +367,7 @@ void CalendaringTest::testIMip()
     Kolab::Calendaring::Event event;
     Kolab::Attendee att1(Kolab::ContactReference("email1", "name1", "uid1"));
 
-    std::vector <Kolab::Attendee > attendees;
+    std::vector<Kolab::Attendee> attendees;
     attendees.push_back(att1);
     event.setAttendees(attendees);
     event.setOrganizer(Kolab::ContactReference("organizer@test.org", "organizer", "uid3"));
@@ -388,10 +395,16 @@ void CalendaringTest::testRecurrence()
     Kolab::cDateTime previousDate = event.start();
     for (int i = 0; i < 9; i++) {
         const Kolab::cDateTime nextDate = event.getNextOccurence(previousDate);
-//         qDebug() << QTest::toString(nextDate);
-        QCOMPARE(nextDate, Kolab::cDateTime(previousDate.year(), previousDate.month(), previousDate.day()+1, previousDate.hour(), previousDate.minute(), previousDate.second()));
+        //         qDebug() << QTest::toString(nextDate);
+        QCOMPARE(nextDate,
+                 Kolab::cDateTime(previousDate.year(),
+                                  previousDate.month(),
+                                  previousDate.day() + 1,
+                                  previousDate.hour(),
+                                  previousDate.minute(),
+                                  previousDate.second()));
         const Kolab::cDateTime endDate = event.getOccurenceEndDate(nextDate);
-//         qDebug() << QTest::toString(endDate);
+        //         qDebug() << QTest::toString(endDate);
         QCOMPARE(endDate, Kolab::cDateTime(nextDate.year(), nextDate.month(), nextDate.day(), event.end().hour(), event.end().minute(), event.end().second()));
         previousDate = nextDate;
     }

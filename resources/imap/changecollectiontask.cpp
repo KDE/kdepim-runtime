@@ -8,9 +8,9 @@
 #include "changecollectiontask.h"
 
 #include <kimap/renamejob.h>
+#include <kimap/session.h>
 #include <kimap/setacljob.h>
 #include <kimap/setmetadatajob.h>
-#include <kimap/session.h>
 #include <kimap/subscribejob.h>
 #include <kimap/unsubscribejob.h>
 
@@ -38,8 +38,7 @@ void ChangeCollectionTask::syncEnabledState(bool enable)
 void ChangeCollectionTask::doStart(KIMAP::Session *session)
 {
     if (collection().remoteId().isEmpty()) {
-        emitError(i18n("Cannot modify IMAP folder '%1', it does not exist on the server.",
-                       collection().name()));
+        emitError(i18n("Cannot modify IMAP folder '%1', it does not exist on the server.", collection().name()));
         changeProcessed();
         return;
     }
@@ -51,8 +50,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
         auto *aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>();
 
         if (aclAttribute == nullptr) {
-            emitWarning(i18n("ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change",
-                             collection().name()));
+            emitWarning(i18n("ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL change", collection().name()));
         } else {
             KIMAP::Acl::Rights imapRights = aclAttribute->rights().value(userName().toUtf8());
             Akonadi::Collection::Rights newRights = collection().rights();
@@ -89,15 +87,13 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
                 imapRights &= ~KIMAP::Acl::DeleteMailbox;
             }
 
-            if ((newRights &Akonadi::Collection::CanDeleteItem)
-                && (newRights & Akonadi::Collection::CanDeleteCollection)) {
+            if ((newRights & Akonadi::Collection::CanDeleteItem) && (newRights & Akonadi::Collection::CanDeleteCollection)) {
                 imapRights |= KIMAP::Acl::Delete;
             } else {
                 imapRights &= ~KIMAP::Acl::Delete;
             }
 
-            qCDebug(IMAPRESOURCE_LOG) << "imapRights:" << imapRights
-                                      << "newRights:" << newRights;
+            qCDebug(IMAPRESOURCE_LOG) << "imapRights:" << imapRights << "newRights:" << newRights;
 
             auto job = new KIMAP::SetAclJob(session);
             job->setMailBox(mailBoxForCollection(collection()));
@@ -114,14 +110,13 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
 
     if (parts().contains("collectionannotations") && serverSupportsAnnotations()) {
         Akonadi::Collection c = collection();
-        auto *annotationsAttribute
-            = c.attribute<Akonadi::CollectionAnnotationsAttribute>();
+        auto *annotationsAttribute = c.attribute<Akonadi::CollectionAnnotationsAttribute>();
 
-        if (annotationsAttribute) {   // No annotations it seems... server is lieing to us?
+        if (annotationsAttribute) { // No annotations it seems... server is lieing to us?
             QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
             qCDebug(IMAPRESOURCE_LOG) << "All annotations: " << annotations;
 
-            foreach (const QByteArray &entry, annotations.keys()) {   //krazy:exclude=foreach
+            foreach (const QByteArray &entry, annotations.keys()) { // krazy:exclude=foreach
                 auto job = new KIMAP::SetMetaDataJob(session);
                 if (serverCapabilities().contains(QLatin1String("METADATA"))) {
                     job->setServerCapability(KIMAP::MetaDataJobBase::Metadata);
@@ -131,7 +126,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
                 job->setMailBox(mailBoxForCollection(collection()));
 
                 if (!entry.startsWith("/shared") && !entry.startsWith("/private")) {
-                    //Support for legacy annotations that don't include the prefix
+                    // Support for legacy annotations that don't include the prefix
                     job->addMetaData(QByteArray("/shared") + entry, annotations[entry]);
                 } else {
                     job->addMetaData(entry, annotations[entry]);
@@ -258,9 +253,10 @@ void ChangeCollectionTask::onRenameDone(KJob *job)
 void ChangeCollectionTask::onSubscribeDone(KJob *job)
 {
     if (job->error() && isSubscriptionEnabled()) {
-        emitWarning(i18n("Failed to subscribe to the renamed folder '%1' on the IMAP server. "
-                         "It will disappear on next sync. Use the subscription dialog to overcome that",
-                         m_collection.name()));
+        emitWarning(
+            i18n("Failed to subscribe to the renamed folder '%1' on the IMAP server. "
+                 "It will disappear on next sync. Use the subscription dialog to overcome that",
+                 m_collection.name()));
     }
 
     endTaskIfNeeded();
@@ -269,8 +265,7 @@ void ChangeCollectionTask::onSubscribeDone(KJob *job)
 void ChangeCollectionTask::onSetAclDone(KJob *job)
 {
     if (job->error()) {
-        emitWarning(i18n("Failed to write some ACLs for '%1' on the IMAP server. %2",
-                         collection().name(), job->errorText()));
+        emitWarning(i18n("Failed to write some ACLs for '%1' on the IMAP server. %2", collection().name(), job->errorText()));
     }
 
     endTaskIfNeeded();
@@ -279,8 +274,7 @@ void ChangeCollectionTask::onSetAclDone(KJob *job)
 void ChangeCollectionTask::onSetMetaDataDone(KJob *job)
 {
     if (job->error()) {
-        emitWarning(i18n("Failed to write some annotations for '%1' on the IMAP server. %2",
-                         collection().name(), job->errorText()));
+        emitWarning(i18n("Failed to write some annotations for '%1' on the IMAP server. %2", collection().name(), job->errorText()));
     }
 
     endTaskIfNeeded();

@@ -7,8 +7,8 @@
 #ifndef DELETEDITEMSATTRIBUTE_H
 #define DELETEDITEMSATTRIBUTE_H
 
-#include <attribute.h>
 #include <KMbox/MBoxEntry>
+#include <attribute.h>
 
 #include <QSet>
 
@@ -43,7 +43,8 @@ public:
 
     QByteArray type() const override;
 
-    bool operator ==(const DeletedItemsAttribute &other) const;
+    bool operator==(const DeletedItemsAttribute &other) const;
+
 private:
     QSet<quint64> mDeletedItemOffsets;
 };

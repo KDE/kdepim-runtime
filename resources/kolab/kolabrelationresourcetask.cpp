@@ -6,12 +6,12 @@
 */
 
 #include "kolabrelationresourcetask.h"
-#include "kolabresource_debug.h"
 #include "kolabhelpers.h"
+#include "kolabresource_debug.h"
 
+#include <AkonadiCore/CollectionCreateJob>
 #include <AkonadiCore/CollectionFetchJob>
 #include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/CollectionCreateJob>
 #include <kimap/createjob.h>
 #include <kimap/setmetadatajob.h>
 
@@ -76,8 +76,7 @@ void KolabRelationResourceTask::onCollectionFetchResult(KJob *job)
     const QString newMailBox = QStringLiteral("Configuration");
     auto imapCreateJob = new KIMAP::CreateJob(mImapSession);
     imapCreateJob->setMailBox(newMailBox);
-    connect(imapCreateJob, &KJob::result,
-            this, &KolabRelationResourceTask::onCreateDone);
+    connect(imapCreateJob, &KJob::result, this, &KolabRelationResourceTask::onCreateDone);
     imapCreateJob->start();
 }
 
@@ -97,8 +96,7 @@ void KolabRelationResourceTask::onCreateDone(KJob *job)
     }
     setMetadataJob->setMailBox(QStringLiteral("Configuration"));
     setMetadataJob->addMetaData(QByteArrayLiteral("/shared/vendor/kolab/folder-type"), QByteArrayLiteral("configuration.default"));
-    connect(setMetadataJob, &KJob::result,
-            this, &KolabRelationResourceTask::onSetMetaDataDone);
+    connect(setMetadataJob, &KJob::result, this, &KolabRelationResourceTask::onSetMetaDataDone);
     setMetadataJob->start();
 }
 
@@ -106,8 +104,7 @@ void KolabRelationResourceTask::onSetMetaDataDone(KJob *job)
 {
     if (job->error()) {
         qCWarning(KOLABRESOURCE_LOG) << "Failed to write annotations: " << job->errorString();
-        cancelTask(i18n("Failed to write some annotations for '%1' on the IMAP server. %2",
-                        collection().name(), job->errorText()));
+        cancelTask(i18n("Failed to write some annotations for '%1' on the IMAP server. %2", collection().name(), job->errorText()));
         return;
     }
 
