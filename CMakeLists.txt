@@ -56,6 +56,9 @@ set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
 
 include(ECMSetupVersion)
 include(FeatureSummary)
+if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
+   include(KDEGitCommitHooks)
+endif()
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
@@ -187,6 +190,9 @@ ecm_qt_install_logging_categories(
         DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
         )
 
+if(ECM_VERSION VERSION_GREATER_EQUAL 5.79)
+    kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+endif()
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
                 FATAL_ON_MISSING_REQUIRED_PACKAGES
