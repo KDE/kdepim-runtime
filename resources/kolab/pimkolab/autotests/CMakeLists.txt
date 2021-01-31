@@ -5,7 +5,7 @@ add_definitions(-DTEST_DATA_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
 
 macro(addTest TEST_NAME)
     add_executable(${TEST_NAME} ${TEST_NAME}.cpp)
-    target_link_libraries(${TEST_NAME} Qt5::Test kolab_static)
+    target_link_libraries(${TEST_NAME} Qt::Test kolab_static)
     add_test(${TEST_NAME} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${TEST_NAME})
 endmacro()
 

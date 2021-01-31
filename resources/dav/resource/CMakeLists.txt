@@ -77,7 +77,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF5::ConfigWidgets
     KF5::WindowSystem
     KF5::DAV
-    Qt5::Xml
+    Qt::Xml
     )
 
 install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

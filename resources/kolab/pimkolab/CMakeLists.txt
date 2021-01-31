@@ -67,17 +67,17 @@ set(KOLAB_LINK_LIBRARIES
     KF5::Codecs
     KF5::I18n
     ${Libkolabxml_LIBRARIES}
-    Qt5::Core
-    Qt5::Xml
-    Qt5::Gui
-    Qt5::Widgets
+    Qt::Core
+    Qt::Xml
+    Qt::Gui
+    Qt::Widgets
     )
 
 if(BUILD_TESTING)
     #for tests only
     enable_testing()
     add_library(kolab_static STATIC ${KOLAB_SRCS})
-    target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES} Qt5::Test)
+    target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES} Qt::Test)
     add_subdirectory(autotests)
 endif()
 

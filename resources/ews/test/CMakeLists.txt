@@ -22,9 +22,9 @@ qt5_add_resources(isolatestestcommon_RSRCS isolatedtestcommon.qrc)
 add_library(isolatedtestcommon STATIC ${isolatestestcommon_SRCS})
 target_link_libraries(isolatedtestcommon
   KF5::AkonadiCore
-  Qt5::Core
-  Qt5::Network
-  Qt5::Test
+  Qt::Core
+  Qt::Network
+  Qt::Test
   fakeewsserver
 )
 

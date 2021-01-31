@@ -6,7 +6,7 @@ set(newmailnotifieragent_common_SRCS)
 set(newmailnotifierselectcollectionwidget_SRCS newmailnotifierselectcollectionwidget_test.cpp ../newmailnotifierselectcollectionwidget.cpp ${newmailnotifieragent_common_SRCS})
 add_executable(newmailnotifierselectcollectionwidgettest ${newmailnotifierselectcollectionwidget_SRCS})
 target_link_libraries(newmailnotifierselectcollectionwidgettest
-    Qt5::Widgets
+    Qt::Widgets
     KF5::I18n
     KF5::AkonadiCore
     KF5::Mime

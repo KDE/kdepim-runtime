@@ -13,7 +13,7 @@ ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIE
 add_library(kio_pop3 MODULE ${kio_pop3_PART_SRCS})
 
 
-target_link_libraries(kio_pop3 KF5::KIOCore KF5::I18n Qt5::Network Sasl2::Sasl2)
+target_link_libraries(kio_pop3 KF5::KIOCore KF5::I18n Qt::Network Sasl2::Sasl2)
 set_target_properties(kio_pop3 PROPERTIES OUTPUT_NAME "pop3")
 
 install(TARGETS kio_pop3  DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf5/kio/ )

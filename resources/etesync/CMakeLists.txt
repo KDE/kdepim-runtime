@@ -49,7 +49,7 @@ target_include_directories(akonadi_etesync_resource PRIVATE ${ETEBASE_INCLUDE_DI
 
 target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
-    Qt5::DBus
+    Qt::DBus
     KF5::AkonadiAgentBase
     KF5::ConfigCore
     KF5::Contacts

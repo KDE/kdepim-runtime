@@ -11,5 +11,5 @@ set(testsubscriptiondialog_SRCS
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR}/..)
 add_executable(testsubscriptiondialog ${testsubscriptiondialog_SRCS})
 
-target_link_libraries(testsubscriptiondialog KF5::KIOCore KF5::IMAP KF5::Mime KF5::ItemModels Qt5::Widgets KF5::I18n KF5::KIOWidgets KF5::AkonadiCore KF5::MailTransport)
+target_link_libraries(testsubscriptiondialog KF5::KIOCore KF5::IMAP KF5::Mime KF5::ItemModels Qt::Widgets KF5::I18n KF5::KIOWidgets KF5::AkonadiCore KF5::MailTransport)
 
