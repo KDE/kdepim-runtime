@@ -41,7 +41,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::Notifications
   KF5::Service
   KF5::I18n
-  Qt::TextToSpeech
+  Qt5::TextToSpeech
 )
 
 if( APPLE )
@@ -70,7 +70,7 @@ kcoreaddons_add_plugin(newmailnotifierconfig
 target_link_libraries(newmailnotifierconfig
     KF5::AkonadiCore
     KF5::AkonadiMime
-    Qt::Widgets
+    Qt5::Widgets
     KF5::NotifyConfig
     KF5::ConfigGui
     KF5::I18n

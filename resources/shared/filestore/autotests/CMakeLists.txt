@@ -25,5 +25,5 @@ target_link_libraries(
   abstractlocalstoretest
   akonadi-filestore
   KF5::AkonadiCore
-  Qt::Test
+  Qt5::Test
 )

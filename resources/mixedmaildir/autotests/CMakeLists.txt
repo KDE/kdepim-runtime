@@ -33,7 +33,7 @@ ecm_mark_as_test(mixedmaildir-testdatatest)
 
 target_link_libraries(
   testdatatest
-  Qt::Test
+  Qt5::Test
 )
 
 # put the libraries all tests link against into a variable and use it
@@ -46,7 +46,7 @@ set( common_link_libraries
   KF5::AkonadiCore
   KF5::Mbox
   KF5::Mime
-  Qt::Test
+  Qt5::Test
   KF5::I18n
 )
 

@@ -94,7 +94,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
 
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
 target_link_libraries(ewsclient
-    Qt::Network
+    Qt5::Network
     KF5::KIOCore
     KF5::KIOFileWidgets
     KF5::KIOWidgets
@@ -106,8 +106,8 @@ target_link_libraries(ewsclient
 
 if (Qt5NetworkAuth_FOUND)
     target_link_libraries(ewsclient
-        Qt::NetworkAuth
-        Qt::WebEngineWidgets)
+        Qt5::NetworkAuth
+        Qt5::WebEngineWidgets)
 endif ()
 
 if (Qca-qt5_FOUND)

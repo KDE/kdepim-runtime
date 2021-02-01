@@ -15,5 +15,5 @@ add_executable( testmaildir ${testmaildir_SRCS} )
 add_test(NAME testmaildir COMMAND testmaildir )
 ecm_mark_as_test(maildir-testmaildir)
 
-target_link_libraries(testmaildir  Qt::Test  KF5::AkonadiMime maildir)
+target_link_libraries(testmaildir  Qt5::Test  KF5::AkonadiMime maildir)
 

@@ -27,7 +27,7 @@ target_link_libraries(migrationshared
     KF5::AkonadiCore
     KF5::ConfigCore
     KF5::I18n
-    Qt::Widgets
+    Qt5::Widgets
 )
 
 

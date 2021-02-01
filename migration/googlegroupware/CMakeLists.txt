@@ -24,6 +24,6 @@ target_link_libraries(googlegroupwaremigration
     KF5::ConfigGui
     KF5::I18n
     KF5::Wallet
-    Qt::DBus
+    Qt5::DBus
     migrationshared
 )
