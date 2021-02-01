@@ -23,7 +23,8 @@ KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteAr
         return nullptr;
     }
     Q_ASSERT(!data->contents().isEmpty());
-    Q_FOREACH (KMime::Content *c, data->contents()) {
+    const auto contents = data->contents();
+    for (KMime::Content *c : contents) {
         //         qCDebug(PIMKOLAB_LOG) << c->contentType()->mimeType() << type;
         if (c->contentType()->mimeType() == type) {
             return c;
@@ -35,7 +36,8 @@ KMime::Content *findContentByType(const KMime::Message::Ptr &data, const QByteAr
 KMime::Content *findContentByName(const KMime::Message::Ptr &data, const QString &name, QByteArray &type)
 {
     Q_ASSERT(!data->contents().isEmpty());
-    Q_FOREACH (KMime::Content *c, data->contents()) {
+    const auto contents = data->contents();
+    for (KMime::Content *c : contents) {
         //         qCDebug(PIMKOLAB_LOG) << "searching: " << c->contentType()->name().toUtf8();
         if (c->contentType()->name() == name) {
             type = c->contentType()->mimeType();
@@ -52,7 +54,8 @@ KMime::Content *findContentById(const KMime::Message::Ptr &data, const QByteArra
         return nullptr;
     }
     Q_ASSERT(!data->contents().isEmpty());
-    Q_FOREACH (KMime::Content *c, data->contents()) {
+    const auto contents = data->contents();
+    for (KMime::Content *c : contents) {
         //         qCDebug(PIMKOLAB_LOG) << "searching: " << c->contentID()->identifier();
         if (c->contentID()->identifier() == id) {
             type = c->contentType()->mimeType();
@@ -68,7 +71,8 @@ QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data)
     QList<QByteArray> typeList;
     Q_ASSERT(!data->contents().isEmpty());
     typeList.reserve(data->contents().count());
-    Q_FOREACH (KMime::Content *c, data->contents()) {
+    const auto contents = data->contents();
+    for (KMime::Content *c : contents) {
         typeList.append(c->contentType()->mimeType());
     }
     return typeList;

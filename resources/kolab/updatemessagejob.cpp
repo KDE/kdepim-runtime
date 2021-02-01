@@ -127,7 +127,8 @@ void UpdateMessageJob::onSearchDone(KJob *job)
 
     if (search->results().count() >= 1) {
         mOldUids = KIMAP::ImapSet();
-        foreach (qint64 id, search->results()) {
+        const auto results = search->results();
+        for (qint64 id : results) {
             mOldUids.add(id);
         }
 

@@ -282,7 +282,7 @@ void POP3Resource::doStateStep()
         // remember which UIDs we have downloaded in the settings)
         QList<int> idsToDownload = mIdsToSizeMap.keys();
         const QStringList alreadyDownloadedUIDs = mSettings.seenUidList();
-        foreach (const QString &uidOnServer, mIdsToUidsMap) {
+        for (const QString &uidOnServer : qAsConst(mIdsToUidsMap)) {
             if (alreadyDownloadedUIDs.contains(uidOnServer)) {
                 const int idOfUIDOnServer = mUidsToIdsMap.value(uidOnServer, -1);
                 Q_ASSERT(idOfUIDOnServer != -1);
@@ -296,7 +296,7 @@ void POP3Resource::doStateStep()
         // put them into a list here
         QList<int> sizesOfMessagesToDownload;
         sizesOfMessagesToDownload.reserve(idsToDownload.count());
-        foreach (int id, idsToDownload) {
+        for (int id : qAsConst(idsToDownload)) {
             sizesOfMessagesToDownload.append(mIdsToSizeMap.value(id));
         }
 
@@ -637,7 +637,7 @@ int POP3Resource::idOfOldestMessage(const QSet<int> &idList) const
 {
     int timeOfOldestMessage = time(nullptr) + 999;
     int idOfOldestMessage = -1;
-    foreach (int id, idList) {
+    for (int id : idList) {
         const int idTime = idToTime(id);
         if (idTime < timeOfOldestMessage) {
             timeOfOldestMessage = idTime;
@@ -666,7 +666,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
             if (mSettings.leaveOnServerDays() > 0) {
                 const int secondsPerDay = 86400;
                 time_t timeLimit = time(nullptr) - (secondsPerDay * mSettings.leaveOnServerDays());
-                foreach (int idToDelete, idsOnServer) {
+                for (int idToDelete : idsOnServer) {
                     const int msgTime = idToTime(idToDelete);
                     if (msgTime >= timeLimit) {
                         mIdsToSave << idToDelete;
@@ -841,7 +841,7 @@ void POP3Resource::saveSeenUIDList()
         }
     }
     Q_ASSERT(seenUIDs.size() == timeOfSeenUIDs.size());
-    foreach (const QString &uid, uidsOfMessagesDownloadedButNotDeleted) {
+    for (const QString &uid : qAsConst(uidsOfMessagesDownloadedButNotDeleted)) {
         if (!seenUIDs.contains(uid)) {
             seenUIDs.append(uid);
             timeOfSeenUIDs.append(time(nullptr));

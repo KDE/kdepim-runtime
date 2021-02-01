@@ -105,11 +105,11 @@ void ItemModifyTest::testExpectedFail()
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
-    MBoxEntry::List entryList2 = mbox2.entries();
+    const MBoxEntry::List entryList2 = mbox2.entries();
     QCOMPARE((int)entryList2.count(), 4);
 
     QSet<qint64> entrySet2;
-    Q_FOREACH (const MBoxEntry &entry, entryList2) {
+    for (const MBoxEntry &entry : entryList2) {
         entrySet2 << entry.messageOffset();
     }
 
@@ -385,7 +385,7 @@ void ItemModifyTest::testModifyFlags()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
-    QStringList entryList1 = md1.entryList();
+    const QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
@@ -456,7 +456,7 @@ void ItemModifyTest::testModifyFlags()
     // no change in number of entries, one difference
     QStringList entryList3 = md1.entryList();
     QCOMPARE(entryList3.count(), entryList1.count());
-    Q_FOREACH (const QString &oldEntry, entryList1) {
+    for (const QString &oldEntry : entryList1) {
         entryList3.removeAll(oldEntry);
     }
     QCOMPARE(entryList3.count(), 1);
@@ -550,7 +550,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
-    QStringList entryList1 = md1.entryList();
+    const QStringList entryList1 = md1.entryList();
     QCOMPARE((int)entryList1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
@@ -612,7 +612,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     // no change in number of entries, one difference
     QStringList entryList3 = md1.entryList();
     QCOMPARE(entryList3.count(), entryList1.count());
-    Q_FOREACH (const QString &oldEntry, entryList1) {
+    for (const QString &oldEntry : entryList1) {
         entryList3.removeAll(oldEntry);
     }
     QCOMPARE(entryList3.count(), 1);

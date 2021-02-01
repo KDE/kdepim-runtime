@@ -73,7 +73,8 @@ void EwsMtaResource::sendItem(const Akonadi::Item &item)
         msg->changeEncoding(KMime::Headers::CEbase64);
         msg->contentTransferEncoding(true)->setEncoding(KMime::Headers::CEbase64);
     } else {
-        Q_FOREACH (KMime::Content *content, msg->contents()) {
+        const auto contents = msg->contents();
+        for (KMime::Content *content : contents) {
             content->changeEncoding(KMime::Headers::CEbase64);
             content->contentTransferEncoding(true)->setEncoding(KMime::Headers::CEbase64);
         }

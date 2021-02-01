@@ -87,8 +87,8 @@ void Pop3Test::initTestCase()
     while (!found) {
         CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
         QVERIFY(job->exec());
-        Collection::List collections = job->collections();
-        foreach (const Collection &col, collections) {
+        const Collection::List collections = job->collections();
+        for (const Collection &col : collections) {
             if (col.resource() == AgentManager::self()->instance(mMaildirIdentifier).identifier() && col.remoteId() == maildirRootPath) {
                 mMaildirCollection = col;
                 found = true;
@@ -273,13 +273,13 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
     auto job = new ItemFetchJob(mMaildirCollection);
     job->fetchScope().fetchFullPayload();
     Q_ASSERT(job->exec());
-    Item::List items = job->items();
+    const Item::List items = job->items();
     Q_ASSERT(mails.size() == items.size());
 
     QSet<QByteArray> ourMailBodies;
     QSet<QByteArray> itemMailBodies;
 
-    foreach (const Item &item, items) {
+    for (const Item &item : items) {
         KMime::Message::Ptr itemMail = item.payload<KMime::Message::Ptr>();
         QByteArray itemMailBody = itemMail->body();
 

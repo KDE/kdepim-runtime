@@ -32,7 +32,7 @@ void TestDataTest::testResources()
              QStringList() << QStringLiteral("dimap") << QStringLiteral("maildir") << QStringLiteral("maildir-tagged") << QStringLiteral("mbox")
                            << QStringLiteral("mbox-tagged") << QStringLiteral("mbox-unpurged"));
 
-    Q_FOREACH (const QString testDataName, testDataNames) {
+    for (const QString &testDataName : testDataNames) {
         if (testDataName.startsWith(QLatin1String("mbox"))) {
             QVERIFY(TestDataUtil::folderType(testDataName) == TestDataUtil::MBoxFolder);
         } else {

@@ -111,11 +111,11 @@ void ItemMoveTest::testExpectedFail()
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
     MBox mbox2;
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
-    MBoxEntry::List entryList2 = mbox2.entries();
+    const MBoxEntry::List entryList2 = mbox2.entries();
     QCOMPARE((int)entryList2.count(), 4);
 
     QSet<qint64> entrySet2;
-    Q_FOREACH (const MBoxEntry &entry, entryList2) {
+    for (const MBoxEntry &entry : entryList2) {
         entrySet2 << entry.messageOffset();
     }
 

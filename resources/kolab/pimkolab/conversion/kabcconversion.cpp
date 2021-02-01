@@ -381,7 +381,7 @@ template<typename T> void setCustom(const std::string &value, const std::string 
 template<typename T> std::string getCustom(const std::string &id, T &object)
 {
     const std::vector<Kolab::CustomProperty> &properties = object.customProperties();
-    foreach (const Kolab::CustomProperty &prop, properties) {
+    for (const Kolab::CustomProperty &prop : properties) {
         if (prop.identifier == id) {
             return prop.value;
         }

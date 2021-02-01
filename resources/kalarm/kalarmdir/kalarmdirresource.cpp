@@ -1090,7 +1090,7 @@ void KAlarmDirResource::setCompatibility(bool writeAttr)
         mCompatibility = KACalendar::Current;
     } else {
         mCompatibility = KACalendar::Unknown;
-        foreach (const EventFile &data, mEvents) {
+        for (const EventFile &data : qAsConst(mEvents)) {
             const KAEvent &event = data.event;
             mCompatibility |= event.compatibility();
             if ((mCompatibility & AllCompat) == AllCompat) {

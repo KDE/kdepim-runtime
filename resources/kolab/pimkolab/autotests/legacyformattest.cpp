@@ -21,7 +21,8 @@ void V2Test::testReadDistlistUID()
 
     Kolab::XMLObject xo;
     const Kolab::DistList distlist = xo.readDistlist(buffer.str(), Kolab::KolabV2);
-    foreach (const Kolab::ContactReference &contact, distlist.members()) {
+    const auto members = distlist.members();
+    for (const Kolab::ContactReference &contact : members) {
         QVERIFY(!contact.uid().empty());
     }
     QVERIFY(!Kolab::ErrorHandler::errorOccured());

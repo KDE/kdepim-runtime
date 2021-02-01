@@ -244,7 +244,7 @@ void EwsSubscriptionWidgetPrivate::populateFolderTree()
         mFolderItemHash.insert(id.id(), item);
     }
 
-    Q_FOREACH (QStandardItem *item, mFolderItemHash) {
+    for (QStandardItem *item : qAsConst(mFolderItemHash)) {
         if (!item->parent()) {
             mFolderTreeModel->appendRow(item);
         }
