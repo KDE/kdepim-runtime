@@ -18,12 +18,11 @@ include_directories(
 )
 
 # test data
-qt5_add_resources( testdata_generated_SRCS testdata.qrc )
-
 set( testdata_SRCS
   ${testdata_generated_SRCS}
   testdatautil.cpp
   ../mixedmaildir_debug.cpp
+  testdata.qrc
 )
 
 
