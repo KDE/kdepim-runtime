@@ -7,7 +7,7 @@ include_directories(../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/fakeserver)
 
-set(isolatestestcommon_SRCS isolatedtestbase.cpp statemonitor.cpp)
+set(isolatestestcommon_SRCS isolatedtestbase.cpp statemonitor.cpp isolatedtestcommon.qrc)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../ewsresource.kcfg org.kde.Akonadi.Ews.Settings)
 set(ewssettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml)
@@ -16,8 +16,6 @@ set(ewswalletinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Walle
 
 qt5_add_dbus_interface(isolatestestcommon_SRCS ${ewssettingsinterface_xml} ewssettings)
 qt5_add_dbus_interface(isolatestestcommon_SRCS ${ewswalletinterface_xml} ewswallet)
-
-qt5_add_resources(isolatestestcommon_RSRCS isolatedtestcommon.qrc)
 
 add_library(isolatedtestcommon STATIC ${isolatestestcommon_SRCS})
 target_link_libraries(isolatedtestcommon
