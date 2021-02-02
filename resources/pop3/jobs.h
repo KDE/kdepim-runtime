@@ -31,7 +31,7 @@ class POPSession : public QObject
     Q_OBJECT
 public:
     explicit POPSession(Settings &settings, const QString &password);
-    ~POPSession();
+    ~POPSession() override;
     bool connectSlave();
 
     void abortCurrentJob();

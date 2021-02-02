@@ -37,7 +37,7 @@ public:
     typedef std::unique_ptr<GenericHandler> Ptr;
 
     GenericHandler(GoogleResourceStateInterface *iface, GoogleSettings *settings);
-    virtual ~GenericHandler();
+    ~GenericHandler() override;
 
     virtual QString mimeType() = 0;
 

@@ -16,12 +16,12 @@
 
 ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
     : QDialog(parent)
+    , mTextBrowser(new ServerInfoTextBrowser(this))
 {
     setWindowTitle(i18nc("@title:window Dialog title for dialog showing information about a server", "Server Info"));
     auto mainLayout = new QVBoxLayout(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    mTextBrowser = new ServerInfoTextBrowser(this);
     mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QLatin1Char('\n')));
     mainLayout->addWidget(mTextBrowser);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);

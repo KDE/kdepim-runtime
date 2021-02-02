@@ -23,7 +23,7 @@ class FolderArchiveComboBox : public QComboBox
     Q_OBJECT
 public:
     explicit FolderArchiveComboBox(QWidget *parent = nullptr);
-    ~FolderArchiveComboBox();
+    ~FolderArchiveComboBox() override;
 
     void setType(FolderArchiveAccountInfo::FolderArchiveType type);
     FolderArchiveAccountInfo::FolderArchiveType type() const;

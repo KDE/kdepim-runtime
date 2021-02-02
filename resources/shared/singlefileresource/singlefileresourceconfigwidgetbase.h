@@ -36,7 +36,7 @@ class AKONADI_SINGLEFILERESOURCE_EXPORT SingleFileResourceConfigWidgetBase : pub
     Q_OBJECT
 public:
     explicit SingleFileResourceConfigWidgetBase(QWidget *parent);
-    ~SingleFileResourceConfigWidgetBase();
+    ~SingleFileResourceConfigWidgetBase() override;
 
     /**
      * Adds @param page to the tabwidget. This can be used to add custom

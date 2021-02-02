@@ -400,11 +400,11 @@ void SetupServer::readSettings()
 
     populateDefaultAuthenticationOptions();
     i = m_parentResource->settings()->authentication();
-    qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type)i);
+    qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString(static_cast<MailTransport::Transport::EnumAuthenticationType::type>(i));
     setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)i);
 
     i = m_parentResource->settings()->alternateAuthentication();
-    setCurrentAuthMode(m_ui->authenticationAlternateCombo, (MailTransport::Transport::EnumAuthenticationType::type)i);
+    setCurrentAuthMode(m_ui->authenticationAlternateCombo, static_cast<MailTransport::Transport::EnumAuthenticationType::type>(i));
 
     bool rejected = false;
     const QString password = m_parentResource->settings()->password(&rejected);

@@ -28,10 +28,10 @@ class ServerInfoDialog : public QDialog
     Q_OBJECT
 public:
     explicit ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent);
-    ~ServerInfoDialog();
+    ~ServerInfoDialog() override;
 
 private:
-    ServerInfoTextBrowser *mTextBrowser = nullptr;
+    ServerInfoTextBrowser *const mTextBrowser;
 };
 
 #endif // SERVERINFODIALOG_H

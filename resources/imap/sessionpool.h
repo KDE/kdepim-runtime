@@ -45,7 +45,7 @@ public:
     enum SessionTermination { LogoutSession, CloseSession };
 
     explicit SessionPool(int maxPoolSize, QObject *parent = nullptr);
-    ~SessionPool();
+    ~SessionPool() override;
 
     PasswordRequesterInterface *passwordRequester() const;
     void setPasswordRequester(PasswordRequesterInterface *requester);

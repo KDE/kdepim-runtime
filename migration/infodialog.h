@@ -22,7 +22,7 @@ class InfoDialog : public QDialog
     Q_OBJECT
 public:
     InfoDialog(bool closeWhenDone = true);
-    ~InfoDialog();
+    ~InfoDialog() override;
 
     static bool hasError()
     {

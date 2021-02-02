@@ -27,7 +27,7 @@ class GoogleSettingsDialog : public QDialog
     Q_OBJECT
 public:
     explicit GoogleSettingsDialog(GoogleResource *resource, GoogleSettings *settings, WId wId);
-    ~GoogleSettingsDialog();
+    ~GoogleSettingsDialog() override;
 
 protected:
     bool handleError(KGAPI2::Job *job);
