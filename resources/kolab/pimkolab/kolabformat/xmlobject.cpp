@@ -70,7 +70,7 @@ Event XMLObject::readEvent(const std::string &s, Version version)
         }
         mAttachments.clear();
         mAttachments.reserve(attachments.count());
-        foreach (const QString &attachment, attachments) {
+        for (const QString &attachment : qAsConst(attachments)) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
         return Conversion::fromKCalendarCore(*event);
@@ -114,7 +114,7 @@ Todo XMLObject::readTodo(const std::string &s, Version version)
         }
         mAttachments.clear();
         mAttachments.reserve(attachments.count());
-        foreach (const QString &attachment, attachments) {
+        for (const QString &attachment : qAsConst(attachments)) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
         return Conversion::fromKCalendarCore(*event);
@@ -158,7 +158,7 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
         }
         mAttachments.clear();
         mAttachments.reserve(attachments.count());
-        foreach (const QString &attachment, attachments) {
+        for (const QString &attachment : qAsConst(attachments)) {
             mAttachments.push_back(Conversion::toStdString(attachment));
         }
         return Conversion::fromKCalendarCore(*event);
@@ -316,7 +316,7 @@ Configuration XMLObject::readConfiguration(const std::string &s, Version version
         }
         std::vector<std::string> entries;
         entries.reserve(dict.size());
-        foreach (const QString &e, dict) {
+        for (const QString &e : qAsConst(dict)) {
             entries.push_back(Conversion::toStdString(e));
         }
         Kolab::Dictionary dictionary(Conversion::toStdString(lang));

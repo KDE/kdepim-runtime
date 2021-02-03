@@ -353,7 +353,8 @@ QDateTime Settings::getSyncRangeStart() const
 
 void Settings::buildUrlsList()
 {
-    foreach (const QString &serializedUrl, remoteUrls()) {
+    const auto remoteUrlsLst = remoteUrls();
+    for (const QString &serializedUrl : remoteUrlsLst) {
         auto urlConfig = new UrlConfiguration(serializedUrl);
         const QString key = urlConfig->mUrl + QLatin1Char(',') + KDAV::ProtocolInfo::protocolName(KDAV::Protocol(urlConfig->mProtocol));
         const QString pass = loadPassword(key, urlConfig->mUser);
@@ -536,7 +537,8 @@ void Settings::updateToV3()
 {
     QStringList updatedUrls;
 
-    foreach (const QString &url, remoteUrls()) {
+    const auto remoteUrlsLst = remoteUrls();
+    for (const QString &url : remoteUrlsLst) {
         QStringList splitUrl = url.split(QLatin1Char('|'));
 
         if (splitUrl.size() == 3) {

@@ -35,10 +35,12 @@ EwsFetchMailDetailJob::EwsFetchMailDetailJob(EwsClient &client, QObject *parent,
     shape << EwsPropertyField(QStringLiteral("message:ReplyTo"));
     shape << EwsPropertyField(QStringLiteral("message:InternetMessageId"));
     shape << EwsPropertyField(QStringLiteral("item:Size"));
-    Q_FOREACH (const EwsPropertyField &field, EwsMailHandler::flagsProperties()) {
+    const auto flagsProperties = EwsMailHandler::flagsProperties();
+    for (const EwsPropertyField &field : flagsProperties) {
         shape << field;
     }
-    Q_FOREACH (const EwsPropertyField &field, EwsItemHandler::tagsProperties()) {
+    const auto tagsProperties = EwsItemHandler::tagsProperties();
+    for (const EwsPropertyField &field : tagsProperties) {
         shape << field;
     }
     mRequest->setItemShape(shape);

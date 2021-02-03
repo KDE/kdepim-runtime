@@ -183,7 +183,7 @@ Freebusy generateFreeBusy(const QVector<KCalendarCore::Event::Ptr> &events,
 
     // TODO try to merge that with KCalendarCore::Freebusy
     std::vector<Kolab::FreebusyPeriod> freebusyPeriods;
-    Q_FOREACH (const KCalendarCore::Event::Ptr &event, events) {
+    for (const KCalendarCore::Event::Ptr &event : events) {
         // If this event is transparent it shouldn't be in the freebusy list.
         if (event->transparency() == KCalendarCore::Event::Transparent) {
             continue;

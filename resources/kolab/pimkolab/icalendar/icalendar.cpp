@@ -44,7 +44,8 @@ std::vector<Event> fromICalEvents(const std::string &input)
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
     format.fromString(calendar, Conversion::fromStdString(input));
     std::vector<Event> events;
-    foreach (const KCalendarCore::Event::Ptr &event, calendar->events()) {
+    const auto eventsList = calendar->events();
+    for (const KCalendarCore::Event::Ptr &event : eventsList) {
         events.push_back(Conversion::fromKCalendarCore(*event));
     }
     return events;

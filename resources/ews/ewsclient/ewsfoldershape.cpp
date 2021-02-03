@@ -31,7 +31,7 @@ void EwsFolderShape::writeProperties(QXmlStreamWriter &writer) const
     if (!mProps.isEmpty()) {
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("AdditionalProperties"));
 
-        foreach (const EwsPropertyField &prop, mProps) {
+        for (const EwsPropertyField &prop : qAsConst(mProps)) {
             prop.write(writer);
         }
 

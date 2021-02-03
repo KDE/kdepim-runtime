@@ -397,7 +397,7 @@ void CollectionModifyTest::testIndexPreservation()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : qAsConst(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -437,8 +437,9 @@ void CollectionModifyTest::testIndexPreservation()
     QCOMPARE((int)items.count(), 4);
 
     flagCounts.clear();
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -536,8 +537,9 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -554,8 +556,9 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -582,8 +585,9 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -600,8 +604,9 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }

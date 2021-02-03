@@ -154,8 +154,9 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -201,8 +202,9 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -253,8 +255,9 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -300,8 +303,9 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -451,8 +455,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -540,8 +545,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -625,8 +631,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -664,8 +671,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -711,8 +719,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -753,8 +762,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -795,8 +805,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -837,8 +848,9 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    Q_FOREACH (const Item &item, items) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+    for (const Item &item : qAsConst(items)) {
+        const auto flags = item.flags();
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }

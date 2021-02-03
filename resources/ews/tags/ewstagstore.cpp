@@ -90,7 +90,7 @@ bool EwsTagStore::unserializeTag(const QByteArray &data, Akonadi::Tag &tag) cons
     tag.setName(name);
     tag.setGid(gid);
 
-    Q_FOREACH (Attribute *attr, attributes) {
+    for (Attribute *attr : qAsConst(attributes)) {
         tag.addAttribute(attr);
     }
 

@@ -225,7 +225,7 @@ void EwsSubscriptionWidgetPrivate::populateFolderTree()
     mFolderTreeModel->clear();
     mFolderItemHash.clear();
 
-    Q_FOREACH (const EwsFolder &folder, mFolders) {
+    for (const EwsFolder &folder : qAsConst(mFolders)) {
         QStandardItem *item = new QStandardItem(folder[EwsFolderFieldDisplayName].toString());
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         item->setCheckable(true);

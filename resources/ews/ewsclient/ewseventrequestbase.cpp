@@ -42,7 +42,8 @@ bool EwsEventRequestBase::parseNotificationsResponse(QXmlStreamReader &reader)
     if (EWSCLI_REQUEST_LOG().isDebugEnabled()) {
         if (resp.isSuccess()) {
             int numEv = 0;
-            Q_FOREACH (const Notification &nfy, resp.notifications()) {
+            const auto notifications = resp.notifications();
+            for (const Notification &nfy : notifications) {
                 numEv += nfy.events().size();
             }
             qCDebugNC(EWSCLI_REQUEST_LOG)

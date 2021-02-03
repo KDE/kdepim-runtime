@@ -715,7 +715,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
         }
         // Now save the messages from deletion
         //
-        foreach (int idToSave, mIdsToSave) {
+        for (int idToSave : qAsConst(mIdsToSave)) {
             idsToDeleteFromServer.removeAll(idToSave);
         }
         if (downloadedId != -1 && !mIdsToSave.contains(downloadedId)) {

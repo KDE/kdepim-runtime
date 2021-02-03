@@ -239,8 +239,8 @@ Kolab::Role fromRole(KCalendarCore::Attendee::Role r)
 
 template<typename T> QString getCustomProperty(const QString &id, const T &e)
 {
-    std::vector<Kolab::CustomProperty> &props = e.customProperties();
-    foreach (const Kolab::CustomProperty &p, props) {
+    const std::vector<Kolab::CustomProperty> &props = e.customProperties();
+    for (const Kolab::CustomProperty &p : props) {
         if (fromStdString(p.identifier) == id) {
             return fromStdString(p.value);
         }
@@ -682,7 +682,8 @@ template<typename T, typename I> void getRecurrence(T &i, const I &e)
     foreach (const QDateTime &dt, rec->exDateTimes()) {
         exdates.push_back(fromDate(dt, e.allDay()));
     }
-    foreach (const QDate &dt, rec->exDates()) {
+    const auto exDates = rec->exDates();
+    for (const QDate &dt : exDates) {
         exdates.push_back(fromDate(QDateTime(dt, {}), true));
     }
     i.setExceptionDates(exdates);
@@ -775,7 +776,8 @@ template<typename T, typename I> void getTodoEvent(T &i, const I &e)
             break;
         case KCalendarCore::Alarm::Email: {
             std::vector<Kolab::ContactReference> receipents;
-            foreach (const KCalendarCore::Person &p, a->mailAddresses()) {
+            const auto mailAddresses = a->mailAddresses();
+            for (const KCalendarCore::Person &p : mailAddresses) {
                 receipents.push_back(Kolab::ContactReference(toStdString(p.email()), toStdString(p.name())));
             }
             alarm = Kolab::Alarm(toStdString(a->mailSubject()), toStdString(a->mailText()), receipents);
