@@ -276,7 +276,7 @@ void Settings::renameRootCollection(const QString &newName)
 {
     Akonadi::Collection rootCollection;
     rootCollection.setRemoteId(rootRemoteId());
-    auto *fetchJob = new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
+    auto fetchJob = new Akonadi::CollectionFetchJob(rootCollection, Akonadi::CollectionFetchJob::Base);
     fetchJob->setProperty("collectionName", newName);
     connect(fetchJob, &KJob::result, this, &Settings::onRootCollectionFetched);
 }

@@ -579,7 +579,7 @@ void ImapResourceBase::startIdle()
     scope.setResource(identifier());
     scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
 
-    auto *fetch = new Akonadi::CollectionFetchJob(c, Akonadi::CollectionFetchJob::Base, this);
+    auto fetch = new Akonadi::CollectionFetchJob(c, Akonadi::CollectionFetchJob::Base, this);
     fetch->setFetchScope(scope);
 
     connect(fetch, &KJob::result, this, &ImapResourceBase::onIdleCollectionFetchDone);
@@ -614,7 +614,7 @@ void ImapResourceBase::requestManualExpunge(qint64 collectionId)
         scope.setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
         scope.setListFilter(CollectionFetchScope::NoFilter);
 
-        auto *fetch = new Akonadi::CollectionFetchJob(collection, Akonadi::CollectionFetchJob::Base, this);
+        auto fetch = new Akonadi::CollectionFetchJob(collection, Akonadi::CollectionFetchJob::Base, this);
         fetch->setFetchScope(scope);
 
         connect(fetch, &KJob::result, this, &ImapResourceBase::onExpungeCollectionFetchDone);

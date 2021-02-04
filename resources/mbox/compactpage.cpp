@@ -34,7 +34,7 @@ void CompactPage::checkCollectionId()
     if (!mCollectionId.isEmpty()) {
         Collection collection;
         collection.setRemoteId(mCollectionId);
-        auto *fetchJob = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+        auto fetchJob = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
         connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCheck);
     }
@@ -46,7 +46,7 @@ void CompactPage::compact()
 
     Collection collection;
     collection.setRemoteId(mCollectionId);
-    auto *fetchJob = new CollectionFetchJob(collection, CollectionFetchJob::Base);
+    auto fetchJob = new CollectionFetchJob(collection, CollectionFetchJob::Base);
 
     connect(fetchJob, &CollectionFetchJob::result, this, &CompactPage::onCollectionFetchCompact);
 }

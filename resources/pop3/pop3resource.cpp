@@ -414,7 +414,7 @@ void POP3Resource::targetCollectionFetchJobFinished(KJob *job)
         }
     }
     mTestLocalInbox = false;
-    auto *fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
+    auto fetchJob = qobject_cast<Akonadi::CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() <= 1);
 
