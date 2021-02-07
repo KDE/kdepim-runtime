@@ -90,5 +90,5 @@ install(
 
 install(
   FILES akonadi_google_resource.notifyrc
-  DESTINATION ${KNOTIFYRC_INSTALL_DIR}
+  DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR}
 )

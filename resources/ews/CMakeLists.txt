@@ -184,4 +184,4 @@ ecm_install_icons(
     )
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/akonadi_ews_resource.notifyrc
-    DESTINATION "${KNOTIFYRC_INSTALL_DIR}")
+    DESTINATION "${KDE_INSTALL_KNOTIFY5RCDIR}")
