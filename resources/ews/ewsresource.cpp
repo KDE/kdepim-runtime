@@ -352,10 +352,11 @@ void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, std::functi
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Enqueuing sync for collection ") << col;
 
     const auto queueEmpty = mFetchItemsJobQueue.empty();
-    if (!queueEmpty) {
-        for (const auto &item : std::as_const(mFetchItemsJobQueue)) {
-            // Don't enqueue the same collection twice, unless it's for the currently synced collection.
-            if (item.col != mFetchItemsJobQueue.head().col && item.col == col) {
+    if (mFetchItemsJobQueue.count() > 1) {
+        // Don't enqueue the same collection id, type pair twice, except for the first element,
+        // which belongs to the collection being synced right now.
+        for (const auto &item : std::as_const(mFetchItemsJobQueue).mid(1)) {
+            if ((item.col == col) && (item.type == type)) {
                 qCDebugNC(EWSRES_LOG) << QStringLiteral("Sync already queued - skipping");
                 return;
             }
