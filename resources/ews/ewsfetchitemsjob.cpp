@@ -214,6 +214,9 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
             Q_EMIT reportPercent(qMin(totalItems * 50 / mLocalItems.size(), 50));
         }
         Q_EMIT reportStatus(AgentBase::Running, i18nc("@info:status", "Retrieving %1 item list (%2 items)", mCollection.name(), totalItems));
+    } else {
+        setEwsResponseCode(itemReq->ewsResponseCode());
+        qCWarningNC(EWSRES_LOG) << QStringLiteral("EwsFetchItemsJob: Failed remote item sync");
     }
 }
 
@@ -423,9 +426,10 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
 {
     removeSubjob(job);
 
-    if (!job->error()) {
-        auto detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
-        if (detailJob) {
+    const auto detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
+    if (detailJob) {
+        qCWarningNC(EWSRES_LOG) << QStringLiteral("itemDetailFetchDone: ") << detailJob->error();
+        if (!detailJob->error()) {
             const auto changedItems = detailJob->changedItems();
             for (const auto &item : changedItems) {
                 if (item.isValid()) {
@@ -434,15 +438,17 @@ void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
                     mNewItems.append(item);
                 }
             }
-        }
 
-        mTotalItemsFetched = mChangedItems.size();
-        Q_EMIT reportPercent(50 + (mTotalItemsFetched * 50) / mTotalItemsToFetch);
+            mTotalItemsFetched = mChangedItems.size();
+            Q_EMIT reportPercent(50 + (mTotalItemsFetched * 50) / mTotalItemsToFetch);
 
-        if (subjobs().isEmpty()) {
-            emitResult();
+            if (subjobs().isEmpty()) {
+                emitResult();
+            } else {
+                subjobs().first()->start();
+            }
         } else {
-            subjobs().first()->start();
+            setEwsResponseCode(detailJob->ewsResponseCode());
         }
     }
 }

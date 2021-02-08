@@ -7,7 +7,8 @@
 #include "ewsfetchitemdetailjob.h"
 
 EwsFetchItemDetailJob::EwsFetchItemDetailJob(EwsClient &client, QObject *parent, const Akonadi::Collection &collection)
-    : KCompositeJob(parent)
+    : EwsJob(parent)
+    , mDeletedItems(nullptr)
     , mClient(client)
     , mCollection(collection) // never used
 {

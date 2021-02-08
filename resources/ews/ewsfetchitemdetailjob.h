@@ -15,9 +15,10 @@
 #include "ewsgetitemrequest.h"
 #include "ewsid.h"
 #include "ewsitem.h"
+#include "ewsjob.h"
 #include "ewstypes.h"
 
-class EwsFetchItemDetailJob : public KCompositeJob
+class EwsFetchItemDetailJob : public EwsJob
 {
     Q_OBJECT
 public:

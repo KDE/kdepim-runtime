@@ -324,17 +324,24 @@ void EwsResource::retrieveItems(const Collection &collection)
     queueFetchItemsJob(collection, [this](EwsFetchItemsJob *fetchJob) {
         auto col = fetchJob->collection();
         if (fetchJob->error()) {
-            qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error();
-            const auto syncState = getCollectionSyncState(fetchJob->collection());
-            if (!syncState.isEmpty()) {
-                qCDebugNC(EWSRES_LOG) << QStringLiteral("Retrying with empty state.");
-                // Retry with a clear sync state.
-                saveCollectionSyncState(col, QString());
-                retrieveItems(col);
+            qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error() << fetchJob->ewsResponseCode();
+            if (!isEwsResponseCodeTemporaryError(fetchJob->ewsResponseCode())) {
+                const auto syncState = getCollectionSyncState(fetchJob->collection());
+                if (!syncState.isEmpty()) {
+                    qCDebugNC(EWSRES_LOG) << QStringLiteral("Retrying with empty state.");
+                    // Retry with a clear sync state.
+                    saveCollectionSyncState(col, QString());
+                    retrieveItems(col);
+                } else {
+                    qCDebugNC(EWSRES_LOG) << QStringLiteral("Clean sync failed.");
+                    // No more hope
+                    cancelTask(i18nc("@info:status", "Failed to retrieve items"));
+                    return;
+                }
             } else {
-                qCDebugNC(EWSRES_LOG) << QStringLiteral("Clean sync failed.");
-                // No more hope
+                qCDebugNC(EWSRES_LOG) << QStringLiteral("Sync failed due to temporary error - not clearing state");
                 cancelTask(i18nc("@info:status", "Failed to retrieve items"));
+                setTemporaryOffline(reconnectTimeout());
                 return;
             }
         } else {

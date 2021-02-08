@@ -455,8 +455,9 @@ typedef enum {
 } EwsEventType;
 
 typedef enum {
-    EwsResponseCodeNoError,
+    EwsResponseCodeNoError = 0,
     EwsResponseCodeErrorServerBusy,
+    EwsResponseCodeUnauthorized,
     EwsResponseCodeUnknown,
 } EwsResponseCode;
 
@@ -482,3 +483,4 @@ inline bool isEwsMessageItemType(EwsItemType type)
 extern const QVector<QString> ewsItemTypeNames;
 
 EwsResponseCode decodeEwsResponseCode(const QString &code);
+bool isEwsResponseCodeTemporaryError(EwsResponseCode code);

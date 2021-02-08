@@ -36,3 +36,16 @@ EwsResponseCode decodeEwsResponseCode(const QString &code)
         return EwsResponseCodeUnknown;
     }
 }
+
+bool isEwsResponseCodeTemporaryError(EwsResponseCode code)
+{
+    switch (code) {
+    case EwsResponseCodeErrorServerBusy:
+        /* fall through */
+    case EwsResponseCodeUnauthorized:
+        return true;
+    default:
+        return false;
+    }
+    return false;
+}

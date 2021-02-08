@@ -130,6 +130,7 @@ void EwsRequest::requestResult(KJob *job)
 
     if (resp == 401 && mClient.auth()) {
         mClient.auth()->notifyRequestAuthFailed();
+        setEwsResponseCode(EwsResponseCodeUnauthorized);
     }
 
     if (job->error() != 0) {
