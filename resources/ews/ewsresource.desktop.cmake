@@ -47,6 +47,7 @@ Comment[ia]=Provide accesso a messages de e-posta, cargas de appunctamentos e co
 Comment[it]=Consente l'accesso a messaggi di posta, appuntamenti, attività e contatti di un server Microsoft Exchange tramite EWS
 Comment[ko]=EWS를 사용하여 Microsoft Exchange 서버의 약속, 할 일, 연락처 정보를 가져옵니다
 Comment[nl]=Geeft toegang tot e-mail, taken bij afspraken en contactpersonen op een Microsoft Exchange server met EWS.
+Comment[nn]=Gjev tilgang til e-post, avtalar og kontakt på ein Microsoft-Exchange-tenar via EWS
 Comment[pl]=Zapewnia dostęp do poczty, spotkań, zadań i kontaktów serwera Microsoft Exchange przy użyciu EWS
 Comment[pt]=Oferece o acesso ao correio, compromissos, tarefas e contactos guardados num servidor Microsoft Exchange, usando o EWS
 Comment[pt_BR]=Fornece acesso aos e-mails, compromissos, tarefas e contatos de um servidor Microsoft Exchange usando o EWS
