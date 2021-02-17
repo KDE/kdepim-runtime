@@ -84,7 +84,7 @@ GoogleSettingsDialog::~GoogleSettingsDialog()
     delete m_ui;
 }
 
-bool GoogleSettingsDialog::handleError(Job *job)
+bool GoogleSettingsDialog::handleError(KGAPI2::Job *job)
 {
     if ((job->error() == KGAPI2::NoError) || (job->error() == KGAPI2::OK)) {
         return true;
@@ -140,7 +140,7 @@ void GoogleSettingsDialog::slotConfigure()
     connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 }
 
-void GoogleSettingsDialog::slotAuthJobFinished(Job *job)
+void GoogleSettingsDialog::slotAuthJobFinished(KGAPI2::Job *job)
 {
     auto authJob = qobject_cast<AuthJob *>(job);
     m_account = authJob->account();
@@ -211,7 +211,7 @@ void GoogleSettingsDialog::slotReloadCalendars()
     }
 
     auto fetchJob = new CalendarFetchJob(m_account, this);
-    connect(fetchJob, &CalendarFetchJob::finished, this, [this](Job *job) {
+    connect(fetchJob, &CalendarFetchJob::finished, this, [this](KGAPI2::Job *job) {
         if (!handleError(job) || !m_account) {
             m_ui->calendarsBox->setEnabled(false);
             return;

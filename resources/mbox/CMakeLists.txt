@@ -42,6 +42,9 @@ qt5_add_dbus_adaptor(mboxresource_SRCS
     )
 
 add_executable(akonadi_mbox_resource ${mboxresource_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_mbox_resource PROPERTIES UNITY_BUILD ON)
+endif()
 add_dependencies(akonadi_mbox_resource generated_headers)
 
 if( APPLE )

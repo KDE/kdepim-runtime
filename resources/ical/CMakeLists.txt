@@ -45,7 +45,9 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_ical_resource PROPERTIES UNITY_BUILD ON)
+endif()
 install(TARGETS akonadi_ical_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ################################ Config plugin ###############################

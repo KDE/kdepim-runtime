@@ -51,6 +51,9 @@ qt5_add_dbus_adaptor(googleresource_SRCS
 )
 
 add_executable(akonadi_google_resource ${googleresource_SRCS})
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_google_resource PROPERTIES UNITY_BUILD ON)
+endif()
 
 if( APPLE )
   set_target_properties(akonadi_google_resource PROPERTIES

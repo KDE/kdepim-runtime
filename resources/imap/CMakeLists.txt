@@ -110,7 +110,9 @@ ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 
 
 add_executable(akonadi_imap_resource ${akonadi_imap_resource_SRCS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_imap_resource PROPERTIES UNITY_BUILD ON)
+endif()
 if( APPLE )
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
   set_target_properties(akonadi_imap_resource PROPERTIES MACOSX_BUNDLE_GUI_IDENTIFIER "org.kde.Akonadi.Imap")

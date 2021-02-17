@@ -32,7 +32,9 @@ ecm_qt_declare_logging_category(contactsresource_SRCS HEADER contacts_resources_
 install( FILES contactsresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 add_executable(akonadi_contacts_resource ${contactsresource_SRCS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_contacts_resource PROPERTIES UNITY_BUILD ON)
+endif()
 target_link_libraries(akonadi_contacts_resource
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
