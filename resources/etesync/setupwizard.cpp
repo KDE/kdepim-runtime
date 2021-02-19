@@ -95,7 +95,7 @@ LoginPage::LoginPage(QWidget *parent)
 
     layout->addItem(new QSpacerItem(0, 10, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
-    mPasswordInfo = new QLabel;
+    mPasswordInfo = new QLabel(this);
     mPasswordInfo->setText(i18n("🛈 The password field is empty because EteSync does not store it for security reasons."));
     mPasswordInfo->setWordWrap(true);
     layout->addRow(mPasswordInfo);
