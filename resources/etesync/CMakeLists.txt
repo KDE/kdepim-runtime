@@ -46,7 +46,9 @@ qt5_add_dbus_adaptor(etesyncresource_SRCS
 add_executable(akonadi_etesync_resource ${etesyncresource_SRCS})
 set_target_properties(akonadi_etesync_resource PROPERTIES MACOSX_BUNDLE FALSE)
 target_include_directories(akonadi_etesync_resource PRIVATE ${ETEBASE_INCLUDE_DIRS})
-
+if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
+    set_target_properties(akonadi_etesync_resource PROPERTIES UNITY_BUILD ON)
+endif()
 target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
     Qt5::DBus
