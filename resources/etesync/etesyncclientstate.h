@@ -45,17 +45,17 @@ public:
         return mAccount.get();
     }
 
-    QString username() const
+    Q_REQUIRED_RESULT QString username() const
     {
         return mUsername;
     }
 
-    QString serverUrl() const
+    Q_REQUIRED_RESULT QString serverUrl() const
     {
         return mServerUrl;
     }
 
-    bool isInitialized()
+    Q_REQUIRED_RESULT bool isInitialized() const
     {
         return !mServerUrl.isEmpty();
     }

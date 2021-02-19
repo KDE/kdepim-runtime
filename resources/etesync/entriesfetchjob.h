@@ -28,17 +28,17 @@ public:
 
     void start() override;
 
-    Akonadi::Item::List items() const
+    Q_REQUIRED_RESULT Akonadi::Item::List items() const
     {
         return mItems;
     }
 
-    Akonadi::Item::List removedItems() const
+    Q_REQUIRED_RESULT Akonadi::Item::List removedItems() const
     {
         return mRemovedItems;
     }
 
-    Akonadi::Collection collection() const
+    Q_REQUIRED_RESULT Akonadi::Collection collection() const
     {
         return mCollection;
     }
@@ -48,7 +48,7 @@ protected:
     void setupItem(const EtebaseItem *etesyncItem, const QString &type);
 
 private:
-    const EteSyncClientState *mClientState = nullptr;
+    const EteSyncClientState *const mClientState;
     Akonadi::Collection mCollection;
     const EtebaseCollectionPtr mEtesyncCollection;
     Akonadi::Item::List mItems;

@@ -66,29 +66,29 @@ LoginPage::LoginPage(QWidget *parent)
 
     QFormLayout *layout = new QFormLayout(this);
 
-    mLoginLabel = new QLabel;
+    mLoginLabel = new QLabel(this);
     mLoginLabel->setWordWrap(true);
     layout->addWidget(mLoginLabel);
 
-    mUserName = new QLineEdit;
+    mUserName = new QLineEdit(this);
     layout->addRow(i18n("Username:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
-    mPassword = new KPasswordLineEdit;
+    mPassword = new KPasswordLineEdit(this);
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
 
     mAdvancedSettings = new QCheckBox(i18n("Advanced settings"), this);
     layout->addWidget(mAdvancedSettings);
 
-    mServerUrl = new QLineEdit;
+    mServerUrl = new QLineEdit(this);
     mServerUrl->setVisible(false);
     layout->addRow(i18n("Server:"), mServerUrl);
     registerField(QStringLiteral("credentialsServerUrl"), mServerUrl);
 
     layout->labelForField(mServerUrl)->setVisible(false);
 
-    mProgressBar = new QProgressBar;
+    mProgressBar = new QProgressBar(this);
     mProgressBar->setVisible(false);
     mProgressBar->setRange(0, 0);
     layout->addWidget(mProgressBar);
@@ -112,7 +112,7 @@ void LoginPage::initializePage()
     if (mIsInitialized) {
         mAdvancedSettings->setVisible(false);
         setField(QStringLiteral("credentialsServerUrl"), static_cast<SetupWizard *>(wizard())->mClientState->serverUrl());
-        QString username = static_cast<SetupWizard *>(wizard())->mClientState->username();
+        const QString username = static_cast<SetupWizard *>(wizard())->mClientState->username();
         mUserName->setText(username);
         mPasswordInfo->setVisible(true);
     }

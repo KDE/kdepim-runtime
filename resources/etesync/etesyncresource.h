@@ -45,10 +45,10 @@ protected:
 
     void initialise();
 
-    Akonadi::Collection createRootCollection();
+    Q_REQUIRED_RESULT Akonadi::Collection createRootCollection();
 
     void initialiseDirectory(const QString &path) const;
-    QString baseDirectoryPath() const;
+    Q_REQUIRED_RESULT QString baseDirectoryPath() const;
 
     bool handleError();
     bool handleError(const int errorCode, const QString &errorMessage);
