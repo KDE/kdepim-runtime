@@ -12,7 +12,7 @@ import org.kde.pim.accountwizard 1.0
 
 Kirigami.ScrollablePage {
     id: root
-    property bool valid: incommingAddressField.text.trim().length !== 0
+    property bool valid: incomingAddressField.text.trim().length !== 0
     property int stage: 1;
     property var identity;
     
@@ -22,7 +22,7 @@ Kirigami.ScrollablePage {
         const pos = emailAddr.indexOf("@");
         if (pos >= 0 && (pos + 1) < emailAddr.length) {
             const server = emailAddr.slice( pos + 1, emailAddr.length );
-            incommingAddressField.text = server;
+            incomingAddressField.text = server;
             outgoingAddressField.text = server;
             // We must not strip the server from the user identifier.
             // Otherwise the 'user' will be kdabtest1 instead of kdabtest1@demo.kolab.org
@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
             identity.setEmail(SetupManager.email);
             identity.setRealName(SetupManager.name);
 
-            ServerTest.test(incommingAddressField.text.trim(), "imap");
+            ServerTest.test(incomingAddressField.text.trim(), "imap");
         } else {
             ServerTest.test(outgoingAddressField.text.trim(), "smtp");
         }
@@ -59,7 +59,7 @@ Kirigami.ScrollablePage {
         if (stage == 1) {
             SetupManager.openWallet();
             var imapRes = SetupManager.createResource("akonadi_imap_resource");
-            var server = incommingAddressField.text.trim();
+            var server = incomingAddressField.text.trim();
             imapRes.setOption("ImapServer", server);
             imapRes.setOption("UserName", nameField.text);
             imapRes.setOption("Password", SetupManager.password);
