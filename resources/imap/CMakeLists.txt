@@ -173,6 +173,7 @@ target_link_libraries(akonadi_imap_resource
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::IdentityManagement
     KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::Package
     imapresource
     KF${KF_MAJOR_VERSION}::TextWidgets
     KF${KF_MAJOR_VERSION}::ConfigGui
@@ -188,7 +189,7 @@ install(
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-add_subdirectory( wizard )
+kpackage_install_package(wizard org.kde.pim.account.imap packages wizard)
 
 if(BUILD_TESTING)
     add_subdirectory( autotests )

@@ -137,7 +137,7 @@ set_package_properties(KF${KF_MAJOR_VERSION}DocTools PROPERTIES DESCRIPTION
     TYPE OPTIONAL
 )
 
-
+find_package(KF${KF_MAJOR_VERSION}Package ${KF5_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KPim${KF_MAJOR_VERSION}Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
