@@ -133,7 +133,7 @@ Kirigami.ScrollablePage {
         }
         QQC2.TextField {
             id: incomingAddressField
-            Kirigami.FormData.label: i18n("Incomming Address:")
+            Kirigami.FormData.label: i18n("Incoming Address:")
         }
         QQC2.TextField {
             id: outgoingAddressField
