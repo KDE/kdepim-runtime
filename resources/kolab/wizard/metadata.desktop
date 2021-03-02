@@ -100,6 +100,17 @@ Comment[x-test]=xxKolab Groupware Serverxx
 Comment[zh_CN]=Kolab 群件服务器
 Comment[zh_TW]=Kolab 群組伺服器
 
+
+Type=Service
+X-KDE-ServiceTypes=AccountWizard/Wizard
+X-KDE-ParentApp=org.kde.accountwizard
+X-KDE-PluginInfo-Author=Sandro Knauß
+X-KDE-PluginInfo-Email=knauss@kolabsys.com
+X-KDE-PluginInfo-License=LGPL-2.0-or-later
+X-KDE-PluginInfo-Name=org.kde.pim.account.kolab
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://kontact.kde.org
+
 [Wizard]
 Type=message/rfc822,text/directory,text/calendar,text/x-vnd.akonadi.note
 Script=kolabwizard.es

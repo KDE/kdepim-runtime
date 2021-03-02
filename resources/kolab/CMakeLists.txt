@@ -8,7 +8,6 @@ include_directories(
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_imap_resource\")
 
-
 ########### next target ###############
 
 set(kolabresource_SRCS
@@ -98,4 +97,5 @@ install( FILES org.kde.akonadi_kolab_resource.desktop DESTINATION ${KDE_INSTALL_
 if (BUILD_TESTING)
     #add_subdirectory(autotests)
 endif()
-add_subdirectory(wizard)
+
+kpackage_install_package(wizard org.kde.pim.account.kolab packages wizard)
