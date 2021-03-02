@@ -209,6 +209,8 @@ if (BUILD_TESTING)
     endif()
 endif ()
 
+# not enabled yet
+# kpackage_install_package(wizard org.kde.pim.account.ews packages wizard)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop
     DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
