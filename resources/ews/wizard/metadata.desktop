@@ -83,6 +83,17 @@ Comment[x-test]=xxExchange accountxx
 Comment[zh_CN]=Exchange 帐户
 Comment[zh_TW]=Exchange 帳號
 
+
+Type=Service
+X-KDE-ServiceTypes=AccountWizard/Wizard
+X-KDE-ParentApp=org.kde.accountwizard
+X-KDE-PluginInfo-Author=Montel Laurent
+X-KDE-PluginInfo-Email=montel@kde.org
+X-KDE-PluginInfo-License=LGPL-2.0-or-later
+X-KDE-PluginInfo-Name=org.kde.pim.account.ews
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://kontact.kde.org
+
 [Wizard]
 Type=message/rfc822
 Script=maildirwizard.es
