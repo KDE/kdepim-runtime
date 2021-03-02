@@ -8,7 +8,7 @@ include_directories(
 if (BUILD_TESTING)
    add_subdirectory( autotests )
 endif()
-add_subdirectory( wizard )
+kpackage_install_package(wizard org.kde.pim.account.maildir packages wizard)
 
 # maildir access library
 add_subdirectory(libmaildir)
