@@ -122,6 +122,7 @@ find_package(KF5DocTools ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3
 find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5KCMUtils ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5DAV ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5Package ${KF5_MIN_VERSION} CONFIG REQUIRED)
 
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)

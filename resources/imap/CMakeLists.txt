@@ -130,6 +130,7 @@ target_link_libraries(akonadi_imap_resource
     KF5::AkonadiMime
     KF5::IdentityManagement
     KF5::I18n
+    KF5::Package
     imapresource
     KF5::TextWidgets
     folderarchivesettings
@@ -138,7 +139,7 @@ target_link_libraries(akonadi_imap_resource
 
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-add_subdirectory( wizard )
+kpackage_install_package(wizard org.kde.pim.account.imap packages wizard)
 
 if(BUILD_TESTING)
     add_subdirectory( autotests )
