@@ -90,6 +90,17 @@ Comment[x-test]=xxLoads data from an iCal filexx
 Comment[zh_CN]=从 iCal 文件加载数据
 Comment[zh_TW]=從 iCal 檔載入資料
 
+
+Type=Service
+X-KDE-ServiceTypes=AccountWizard/Wizard
+X-KDE-ParentApp=org.kde.accountwizard
+X-KDE-PluginInfo-Author=Till Adam
+X-KDE-PluginInfo-Email=adam@kde.org
+X-KDE-PluginInfo-License=LGPL-2.0-or-later
+X-KDE-PluginInfo-Name=org.kde.pim.account.ical
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://kontact.kde.org
+
 [Wizard]
 Type=text/calendar
 Script=icalwizard.es

@@ -6,7 +6,8 @@ include_directories(
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_ical_resource\")
 
-add_subdirectory( wizard )
+kpackage_install_package(wizard org.kde.pim.account.ical packages wizard)
+
 add_subdirectory( notes )
 
 if(BUILD_TESTING)
