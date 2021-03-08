@@ -156,7 +156,6 @@ void UtEwsFakeSrvTest::simpleResponse()
     const FakeEwsServer::DialogEntry::List dialog = {
         {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
 
-    QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
     QVERIFY(srv->start());
@@ -174,7 +173,6 @@ void UtEwsFakeSrvTest::callbackResponse()
                                                       },
                                                       QStringLiteral("Sample request 1")}};
 
-    QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
     QVERIFY(srv->start());
@@ -193,7 +191,6 @@ void UtEwsFakeSrvTest::multipleResponses()
                                                       FakeEwsServer::DialogEntry::ReplyCallback(),
                                                       QStringLiteral("Sample request 2")}};
 
-    QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
     QVERIFY(srv->start());
@@ -224,7 +221,6 @@ void UtEwsFakeSrvTest::emptyResponse()
                                                       },
                                                       QStringLiteral("Sample request 1")}};
 
-    QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
     QVERIFY(srv->start());
@@ -521,7 +517,6 @@ void UtEwsFakeSrvTest::getStreamingEventsRequest()
     bool callbackCalled = false;
     const FakeEwsServer::DialogEntry::List emptyDialog;
 
-    QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     QVERIFY(srv->start());
     QDateTime startTime = QDateTime::currentDateTime();
@@ -641,7 +636,6 @@ void UtEwsFakeSrvTest::serverThread()
     const FakeEwsServer::DialogEntry::List dialog = {
         {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
 
-    QString receivedReq;
     FakeEwsServerThread thread;
     thread.start();
     QVERIFY(thread.waitServerStarted());
@@ -666,7 +660,6 @@ void UtEwsFakeSrvTest::delayedContentSize()
     const FakeEwsServer::DialogEntry::List dialog = {
         {QStringLiteral("if (//test1/a = <a />) then (<b/>) else ()"), FakeEwsServer::DialogEntry::ReplyCallback(), QStringLiteral("Sample request 1")}};
 
-    QString receivedReq;
     FakeEwsServerThread thread;
     thread.start();
     QVERIFY(thread.waitServerStarted());
@@ -789,7 +782,6 @@ void UtEwsFakeSrvTest::xqueryResultsInCallback()
                                                       },
                                                       QStringLiteral("Sample request 1")}};
 
-    QString receivedReq;
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     srv->setDialog(dialog);
     QVERIFY(srv->start());

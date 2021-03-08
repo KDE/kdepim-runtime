@@ -52,7 +52,7 @@ private:
     Q_REQUIRED_RESULT bool migrateAccount(const QString &account, const Instances &oldInstances, const Akonadi::AgentInstance &newInstance);
     void removeLegacyInstances(const QString &account, const Instances &instances);
     Q_REQUIRED_RESULT QString mergeAccountNames(const ResourceValues<QString> &accountName, const Instances &oldInstances) const;
-    Q_REQUIRED_RESULT int mergeAccountIds(const ResourceValues<int> &accountId, const Instances &oldInstances) const;
+    Q_REQUIRED_RESULT int mergeAccountIds(ResourceValues<int> accountId, const Instances &oldInstances) const;
 
     QMap<QString, Instances> mMigrations;
     int mMigrationCount = 0;

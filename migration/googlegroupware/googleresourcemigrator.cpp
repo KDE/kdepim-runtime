@@ -22,7 +22,7 @@
 #include <memory>
 
 GoogleResourceMigrator::GoogleResourceMigrator()
-    : MigratorBase(QLatin1String("googleresourcemigrator"))
+    : MigratorBase(QStringLiteral("googleresourcemigrator"))
 {
 }
 
@@ -294,7 +294,7 @@ QString GoogleResourceMigrator::mergeAccountNames(const ResourceValues<QString> 
     return {};
 }
 
-int GoogleResourceMigrator::mergeAccountIds(const ResourceValues<int> &accountId, const Instances &oldInstances) const
+int GoogleResourceMigrator::mergeAccountIds(ResourceValues<int> accountId, const Instances &oldInstances) const
 {
     if (accountId.calendar > 0 && accountId.contacts > 0) {
         if (accountId.calendar == accountId.contacts) {
