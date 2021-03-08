@@ -30,6 +30,7 @@ int main(int argc, char **argv)
                          KAboutLicense::LGPL,
                          i18n("(c) 2013-2020 the Akonadi developers"),
                          QStringLiteral("https://community.kde.org/KDE_PIM/Akonadi"));
+    aboutData.setProductName(QByteArrayLiteral("Akonadi/Migration"));
     aboutData.addAuthor(i18n("Christian Mollekopf"), i18n("Author"), QStringLiteral("mollekopf@kolabsys.com"));
 
     QCommandLineParser parser;
