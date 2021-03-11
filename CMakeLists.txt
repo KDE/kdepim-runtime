@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-set(PIM_VERSION "5.16.40")
+set(PIM_VERSION "5.16.80")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
@@ -36,7 +36,7 @@ endif()
 #    3.2 pre
 #    3.2 
 
-set(KDEPIM_DEV_VERSION alpha)
+set(KDEPIM_DEV_VERSION beta)
 set(RELEASE_SERVICE_VERSION "21.03.80")
 
 # add an extra space
