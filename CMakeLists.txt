@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-set(PIM_VERSION "5.16.80")
+set(PIM_VERSION "5.17.40")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
@@ -36,8 +36,8 @@ endif()
 #    3.2 pre
 #    3.2 
 
-set(KDEPIM_DEV_VERSION beta)
-set(RELEASE_SERVICE_VERSION "21.03.80")
+set(KDEPIM_DEV_VERSION alpha)
+set(RELEASE_SERVICE_VERSION "21.07.40")
 
 # add an extra space
 if(DEFINED KDEPIM_DEV_VERSION)
@@ -48,7 +48,7 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_MIN_VERSION "5.79.0")
+set(KF5_MIN_VERSION "5.80.0")
 
 find_package(ECM ${KF5_MIN_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
@@ -155,7 +155,7 @@ set_package_properties(Qt5Keychain PROPERTIES
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
-add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055000)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055100)
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 add_definitions(-DQT_NO_EMIT)
