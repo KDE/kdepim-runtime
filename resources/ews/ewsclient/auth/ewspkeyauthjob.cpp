@@ -13,13 +13,15 @@
 
 #include <QtCrypto>
 
-static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoType = {{QStringLiteral("CN"), QCA::CommonName},
-                                                                                       {QStringLiteral("L"), QCA::Locality},
-                                                                                       {QStringLiteral("ST"), QCA::State},
-                                                                                       {QStringLiteral("O"), QCA::Organization},
-                                                                                       {QStringLiteral("OU"), QCA::OrganizationalUnit},
-                                                                                       {QStringLiteral("C"), QCA::Country},
-                                                                                       {QStringLiteral("emailAddress"), QCA::EmailLegacy}};
+static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoType = {
+    {QStringLiteral("CN"), QCA::CommonName},
+    {QStringLiteral("L"), QCA::Locality},
+    {QStringLiteral("ST"), QCA::State},
+    {QStringLiteral("O"), QCA::Organization},
+    {QStringLiteral("OU"), QCA::OrganizationalUnit},
+    {QStringLiteral("C"), QCA::Country},
+    {QStringLiteral("emailAddress"), QCA::EmailLegacy},
+};
 
 static QMultiMap<QCA::CertificateInfoType, QString> parseCertSubjectInfo(const QString &info)
 {

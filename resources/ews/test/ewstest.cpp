@@ -62,29 +62,33 @@ void BasicTest::testBasic()
 
     static const auto rootId = QStringLiteral("cm9vdA==");
     static const auto inboxId = QStringLiteral("aW5ib3g=");
-    FolderList folderList = {{rootId, instance.identifier(), Folder::Root, QString()},
-                             {inboxId, QStringLiteral("Inbox"), Folder::Inbox, rootId},
-                             {QStringLiteral("Y2FsZW5kYXI="), QStringLiteral("Calendar"), Folder::Calendar, rootId},
-                             {QStringLiteral("dGFza3M="), QStringLiteral("Tasks"), Folder::Tasks, rootId},
-                             {QStringLiteral("Y29udGFjdHM="), QStringLiteral("Contacts"), Folder::Contacts, rootId},
-                             {QStringLiteral("b3V0Ym94"), QStringLiteral("Outbox"), Folder::Outbox, rootId},
-                             {QStringLiteral("c2VudCBpdGVtcw=="), QStringLiteral("Sent Items"), Folder::Sent, rootId},
-                             {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), QStringLiteral("Deleted Items"), Folder::Trash, rootId},
-                             {QStringLiteral("ZHJhZnRz"), QStringLiteral("Drafts"), Folder::Drafts, rootId}};
+    FolderList folderList = {
+        {rootId, instance.identifier(), Folder::Root, QString()},
+        {inboxId, QStringLiteral("Inbox"), Folder::Inbox, rootId},
+        {QStringLiteral("Y2FsZW5kYXI="), QStringLiteral("Calendar"), Folder::Calendar, rootId},
+        {QStringLiteral("dGFza3M="), QStringLiteral("Tasks"), Folder::Tasks, rootId},
+        {QStringLiteral("Y29udGFjdHM="), QStringLiteral("Contacts"), Folder::Contacts, rootId},
+        {QStringLiteral("b3V0Ym94"), QStringLiteral("Outbox"), Folder::Outbox, rootId},
+        {QStringLiteral("c2VudCBpdGVtcw=="), QStringLiteral("Sent Items"), Folder::Sent, rootId},
+        {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), QStringLiteral("Deleted Items"), Folder::Trash, rootId},
+        {QStringLiteral("ZHJhZnRz"), QStringLiteral("Drafts"), Folder::Drafts, rootId},
+    };
 
     struct DesiredState {
         QString parentId;
         QByteArray specialType;
     };
-    QHash<QString, DesiredState> desiredStates = {{rootId, {QString(), QByteArray()}},
-                                                  {inboxId, {rootId, "inbox"}},
-                                                  {QStringLiteral("Y2FsZW5kYXI="), {rootId, QByteArray()}},
-                                                  {QStringLiteral("dGFza3M="), {rootId, QByteArray()}},
-                                                  {QStringLiteral("Y29udGFjdHM="), {rootId, QByteArray()}},
-                                                  {QStringLiteral("b3V0Ym94"), {rootId, "outbox"}},
-                                                  {QStringLiteral("c2VudCBpdGVtcw=="), {rootId, "sent-mail"}},
-                                                  {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), {rootId, "trash"}},
-                                                  {QStringLiteral("ZHJhZnRz"), {rootId, "drafts"}}};
+    QHash<QString, DesiredState> desiredStates = {
+        {rootId, {QString(), QByteArray()}},
+        {inboxId, {rootId, "inbox"}},
+        {QStringLiteral("Y2FsZW5kYXI="), {rootId, QByteArray()}},
+        {QStringLiteral("dGFza3M="), {rootId, QByteArray()}},
+        {QStringLiteral("Y29udGFjdHM="), {rootId, QByteArray()}},
+        {QStringLiteral("b3V0Ym94"), {rootId, "outbox"}},
+        {QStringLiteral("c2VudCBpdGVtcw=="), {rootId, "sent-mail"}},
+        {QStringLiteral("ZGVsZXRlZCBpdGVtcw=="), {rootId, "trash"}},
+        {QStringLiteral("ZHJhZnRz"), {rootId, "drafts"}},
+    };
 
     FakeEwsServer::DialogEntry::List dialog = {
         MsgRootInboxDialogEntry(rootId, inboxId, QStringLiteral("GetFolder request for inbox and msgroot")),

@@ -162,7 +162,12 @@ void GoogleResource::configure(WId windowId)
 QList<QUrl> GoogleResource::scopes() const
 {
     // TODO: determine it based on what user wants?
-    const QList<QUrl> scopes = {Account::accountInfoScopeUrl(), Account::calendarScopeUrl(), Account::contactsScopeUrl(), Account::tasksScopeUrl()};
+    const QList<QUrl> scopes = {
+        Account::accountInfoScopeUrl(),
+        Account::calendarScopeUrl(),
+        Account::contactsScopeUrl(),
+        Account::tasksScopeUrl(),
+    };
     return scopes;
 }
 

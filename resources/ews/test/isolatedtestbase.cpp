@@ -188,10 +188,12 @@ MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QS
 SubscribedFoldersDialogEntry::SubscribedFoldersDialogEntry(const IsolatedTestBase::FolderList &list, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {IsolatedTestBase::Folder::Inbox,
-                                                                                        IsolatedTestBase::Folder::Calendar,
-                                                                                        IsolatedTestBase::Folder::Tasks,
-                                                                                        IsolatedTestBase::Folder::Contacts};
+    static const QVector<IsolatedTestBase::Folder::DistinguishedType> specialFolders = {
+        IsolatedTestBase::Folder::Inbox,
+        IsolatedTestBase::Folder::Calendar,
+        IsolatedTestBase::Folder::Tasks,
+        IsolatedTestBase::Folder::Contacts,
+    };
     QHash<IsolatedTestBase::Folder::DistinguishedType, const IsolatedTestBase::Folder *> folderHash;
     for (const auto &folder : list) {
         if (specialFolders.contains(folder.type)) {

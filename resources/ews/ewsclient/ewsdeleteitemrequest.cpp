@@ -7,7 +7,11 @@
 #include "ewsdeleteitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> deleteTypes = {QStringLiteral("HardDelete"), QStringLiteral("SoftDelete"), QStringLiteral("MoveToDeletedItems")};
+static const QVector<QString> deleteTypes = {
+    QStringLiteral("HardDelete"),
+    QStringLiteral("SoftDelete"),
+    QStringLiteral("MoveToDeletedItems"),
+};
 
 EwsDeleteItemRequest::EwsDeleteItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

@@ -16,13 +16,15 @@
 
 #include "fakeewsserver_debug.h"
 
-static const QHash<uint, QString> responseCodes = {{200, QStringLiteral("OK")},
-                                                   {400, QStringLiteral("Bad Request")},
-                                                   {401, QStringLiteral("Unauthorized")},
-                                                   {403, QStringLiteral("Forbidden")},
-                                                   {404, QStringLiteral("Not Found")},
-                                                   {405, QStringLiteral("Method Not Allowed")},
-                                                   {500, QStringLiteral("Internal Server Error")}};
+static const QHash<uint, QString> responseCodes = {
+    {200, QStringLiteral("OK")},
+    {400, QStringLiteral("Bad Request")},
+    {401, QStringLiteral("Unauthorized")},
+    {403, QStringLiteral("Forbidden")},
+    {404, QStringLiteral("Not Found")},
+    {405, QStringLiteral("Method Not Allowed")},
+    {500, QStringLiteral("Internal Server Error")},
+};
 
 static Q_CONSTEXPR int streamingEventsHeartbeatIntervalSeconds = 5;
 

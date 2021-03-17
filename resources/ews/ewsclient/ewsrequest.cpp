@@ -256,7 +256,11 @@ void EwsRequest::setServerVersion(const EwsServerVersion &version)
 
 EwsRequest::Response::Response(QXmlStreamReader &reader)
 {
-    static const QString respClasses[] = {QStringLiteral("Success"), QStringLiteral("Warning"), QStringLiteral("Error")};
+    static const QString respClasses[] = {
+        QStringLiteral("Success"),
+        QStringLiteral("Warning"),
+        QStringLiteral("Error"),
+    };
 
     QStringRef respClassRef = reader.attributes().value(QStringLiteral("ResponseClass"));
     if (respClassRef.isNull()) {

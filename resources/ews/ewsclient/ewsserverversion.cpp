@@ -93,16 +93,18 @@ const EwsServerVersion &EwsServerVersion::minSupporting(ServerFeature feature)
 
 QString EwsServerVersion::toString() const
 {
-    static const QVector<EwsServerVersion> knownVersions = {ewsVersion2007,
-                                                            ewsVersion2007Sp1,
-                                                            ewsVersion2007Sp2,
-                                                            ewsVersion2007Sp3,
-                                                            ewsVersion2010,
-                                                            ewsVersion2010Sp1,
-                                                            ewsVersion2010Sp2,
-                                                            ewsVersion2010Sp3,
-                                                            ewsVersion2013,
-                                                            ewsVersion2016};
+    static const QVector<EwsServerVersion> knownVersions = {
+        ewsVersion2007,
+        ewsVersion2007Sp1,
+        ewsVersion2007Sp2,
+        ewsVersion2007Sp3,
+        ewsVersion2010,
+        ewsVersion2010Sp1,
+        ewsVersion2010Sp2,
+        ewsVersion2010Sp3,
+        ewsVersion2013,
+        ewsVersion2016,
+    };
 
     QString version(QStringLiteral("%1.%2").arg(mMajor).arg(mMinor));
 

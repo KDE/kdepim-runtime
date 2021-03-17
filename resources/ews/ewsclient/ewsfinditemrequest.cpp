@@ -12,7 +12,12 @@
 
 #include "ewsclient_debug.h"
 
-static const QString traversalTypeNames[] = {QStringLiteral("Shallow"), QStringLiteral("Deep"), QStringLiteral("SoftDeleted"), QStringLiteral("Associated")};
+static const QString traversalTypeNames[] = {
+    QStringLiteral("Shallow"),
+    QStringLiteral("Deep"),
+    QStringLiteral("SoftDeleted"),
+    QStringLiteral("Associated"),
+};
 
 class EwsFindItemResponse : public EwsRequest::Response
 {

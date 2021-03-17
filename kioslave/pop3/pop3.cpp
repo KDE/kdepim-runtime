@@ -51,14 +51,16 @@ int Q_DECL_EXPORT kdemain(int argc, char **argv);
 
 using namespace KIO;
 
-static const sasl_callback_t callbacks[] = {{SASL_CB_ECHOPROMPT, nullptr, nullptr},
-                                            {SASL_CB_NOECHOPROMPT, nullptr, nullptr},
-                                            {SASL_CB_GETREALM, nullptr, nullptr},
-                                            {SASL_CB_USER, nullptr, nullptr},
-                                            {SASL_CB_AUTHNAME, nullptr, nullptr},
-                                            {SASL_CB_PASS, nullptr, nullptr},
-                                            {SASL_CB_CANON_USER, nullptr, nullptr},
-                                            {SASL_CB_LIST_END, nullptr, nullptr}};
+static const sasl_callback_t callbacks[] = {
+    {SASL_CB_ECHOPROMPT, nullptr, nullptr},
+    {SASL_CB_NOECHOPROMPT, nullptr, nullptr},
+    {SASL_CB_GETREALM, nullptr, nullptr},
+    {SASL_CB_USER, nullptr, nullptr},
+    {SASL_CB_AUTHNAME, nullptr, nullptr},
+    {SASL_CB_PASS, nullptr, nullptr},
+    {SASL_CB_CANON_USER, nullptr, nullptr},
+    {SASL_CB_LIST_END, nullptr, nullptr},
+};
 
 int kdemain(int argc, char **argv)
 {

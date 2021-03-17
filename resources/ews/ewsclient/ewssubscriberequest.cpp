@@ -10,17 +10,21 @@
 
 #include "ewsclient_debug.h"
 
-static const QVector<QString> subscribeTypeNames = {QStringLiteral("PullSubscriptionRequest"),
-                                                    QStringLiteral("PushSubscriptionRequest"),
-                                                    QStringLiteral("StreamingSubscriptionRequest")};
+static const QVector<QString> subscribeTypeNames = {
+    QStringLiteral("PullSubscriptionRequest"),
+    QStringLiteral("PushSubscriptionRequest"),
+    QStringLiteral("StreamingSubscriptionRequest"),
+};
 
-static const QVector<QString> eventTypeNames = {QStringLiteral("CopiedEvent"),
-                                                QStringLiteral("CreatedEvent"),
-                                                QStringLiteral("DeletedEvent"),
-                                                QStringLiteral("ModifiedEvent"),
-                                                QStringLiteral("MovedEvent"),
-                                                QStringLiteral("NewMailEvent"),
-                                                QStringLiteral("FreeBusyChangedEvent")};
+static const QVector<QString> eventTypeNames = {
+    QStringLiteral("CopiedEvent"),
+    QStringLiteral("CreatedEvent"),
+    QStringLiteral("DeletedEvent"),
+    QStringLiteral("ModifiedEvent"),
+    QStringLiteral("MovedEvent"),
+    QStringLiteral("NewMailEvent"),
+    QStringLiteral("FreeBusyChangedEvent"),
+};
 
 EwsSubscribeRequest::EwsSubscribeRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

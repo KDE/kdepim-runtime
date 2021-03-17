@@ -719,7 +719,10 @@ void UtEwsSettings::readValidMap()
     bool hasFolderCalled = false;
     bool setFolderCalled = false;
     QMap<QString, QString> map;
-    const QMap<QString, QString> expectedMap = {{accessTokenMapKey, QStringLiteral("afoo")}, {refreshTokenMapKey, QStringLiteral("rfoo")}};
+    const QMap<QString, QString> expectedMap = {
+        {accessTokenMapKey, QStringLiteral("afoo")},
+        {refreshTokenMapKey, QStringLiteral("rfoo")},
+    };
     EwsSettings settings(0);
     connect(&settings, &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &m) {
         map = m;

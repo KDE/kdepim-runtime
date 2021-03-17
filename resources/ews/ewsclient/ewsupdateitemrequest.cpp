@@ -7,17 +7,31 @@
 #include "ewsupdateitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> conflictResolutionNames = {QStringLiteral("NeverOverwrite"), QStringLiteral("AutoResolve"), QStringLiteral("AlwaysOverwrite")};
+static const QVector<QString> conflictResolutionNames = {
+    QStringLiteral("NeverOverwrite"),
+    QStringLiteral("AutoResolve"),
+    QStringLiteral("AlwaysOverwrite"),
+};
 
-static const QVector<QString> messageDispositionNames = {QStringLiteral("SaveOnly"), QStringLiteral("SendOnly"), QStringLiteral("SendAndSaveCopy")};
+static const QVector<QString> messageDispositionNames = {
+    QStringLiteral("SaveOnly"),
+    QStringLiteral("SendOnly"),
+    QStringLiteral("SendAndSaveCopy"),
+};
 
-static const QVector<QString> meetingDispositionNames = {QStringLiteral("SendToNone"),
-                                                         QStringLiteral("SendOnlyToAll"),
-                                                         QStringLiteral("SendOnlyToChanged"),
-                                                         QStringLiteral("SendToAllAndSaveCopy"),
-                                                         QStringLiteral("SendToChangedAndSaveCopy")};
+static const QVector<QString> meetingDispositionNames = {
+    QStringLiteral("SendToNone"),
+    QStringLiteral("SendOnlyToAll"),
+    QStringLiteral("SendOnlyToChanged"),
+    QStringLiteral("SendToAllAndSaveCopy"),
+    QStringLiteral("SendToChangedAndSaveCopy"),
+};
 
-static const QVector<QString> updateTypeElementNames = {QStringLiteral("AppendToItemField"), QStringLiteral("SetItemField"), QStringLiteral("DeleteItemField")};
+static const QVector<QString> updateTypeElementNames = {
+    QStringLiteral("AppendToItemField"),
+    QStringLiteral("SetItemField"),
+    QStringLiteral("DeleteItemField"),
+};
 
 EwsUpdateItemRequest::EwsUpdateItemRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

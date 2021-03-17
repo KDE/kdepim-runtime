@@ -193,18 +193,20 @@ bool EwsSyncFolderItemsRequest::Response::changeReader(QXmlStreamReader &reader,
 
 EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
 {
-    static const QVector<EwsXml<SyncFolderItemsChangeElementType>::Item> items = {{Item, QStringLiteral("Item"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("Message"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("CalendarItem"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("Contact"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("DistributionList"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("MeetingMessage"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("MeetingRequest"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("MeetingResponse"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("MeetingCancellation"), &ewsXmlItemReader},
-                                                                                  {Item, QStringLiteral("Task"), &ewsXmlItemReader},
-                                                                                  {ItemId, QStringLiteral("ItemId"), &ewsXmlIdReader},
-                                                                                  {IsRead, QStringLiteral("IsRead"), &ewsXmlBoolReader}};
+    static const QVector<EwsXml<SyncFolderItemsChangeElementType>::Item> items = {
+        {Item, QStringLiteral("Item"), &ewsXmlItemReader},
+        {Item, QStringLiteral("Message"), &ewsXmlItemReader},
+        {Item, QStringLiteral("CalendarItem"), &ewsXmlItemReader},
+        {Item, QStringLiteral("Contact"), &ewsXmlItemReader},
+        {Item, QStringLiteral("DistributionList"), &ewsXmlItemReader},
+        {Item, QStringLiteral("MeetingMessage"), &ewsXmlItemReader},
+        {Item, QStringLiteral("MeetingRequest"), &ewsXmlItemReader},
+        {Item, QStringLiteral("MeetingResponse"), &ewsXmlItemReader},
+        {Item, QStringLiteral("MeetingCancellation"), &ewsXmlItemReader},
+        {Item, QStringLiteral("Task"), &ewsXmlItemReader},
+        {ItemId, QStringLiteral("ItemId"), &ewsXmlIdReader},
+        {IsRead, QStringLiteral("IsRead"), &ewsXmlBoolReader},
+    };
     static const EwsXml<SyncFolderItemsChangeElementType> staticReader(items);
 
     EwsXml<SyncFolderItemsChangeElementType> ewsReader(staticReader);

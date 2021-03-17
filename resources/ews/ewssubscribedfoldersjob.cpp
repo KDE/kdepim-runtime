@@ -83,7 +83,12 @@ void EwsSubscribedFoldersJob::verifySubFoldersRequestFinished(KJob *job)
 
 const EwsId::List &EwsSubscribedFoldersJob::defaultSubscriptionFolders()
 {
-    static const EwsId::List list = {EwsId(EwsDIdInbox), EwsId(EwsDIdCalendar), EwsId(EwsDIdTasks), EwsId(EwsDIdContacts)};
+    static const EwsId::List list = {
+        EwsId(EwsDIdInbox),
+        EwsId(EwsDIdCalendar),
+        EwsId(EwsDIdTasks),
+        EwsId(EwsDIdContacts),
+    };
 
     return list;
 }

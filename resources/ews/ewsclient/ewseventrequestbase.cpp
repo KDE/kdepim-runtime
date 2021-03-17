@@ -118,17 +118,19 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
 
 EwsEventRequestBase::Notification::Notification(QXmlStreamReader &reader)
 {
-    static const QVector<NotificationReader::Item> items = {{SubscriptionId, QStringLiteral("SubscriptionId"), &ewsXmlTextReader},
-                                                            {PreviousWatermark, QStringLiteral("PreviousWatermark"), &ewsXmlTextReader},
-                                                            {MoreEvents, QStringLiteral("MoreEvents"), &ewsXmlBoolReader},
-                                                            {Events, QStringLiteral("CopiedEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("CreatedEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("DeletedEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("ModifiedEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("MovedEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("NewMailEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("FreeBusyChangeEvent"), &eventsReader},
-                                                            {Events, QStringLiteral("StatusEvent"), &eventsReader}};
+    static const QVector<NotificationReader::Item> items = {
+        {SubscriptionId, QStringLiteral("SubscriptionId"), &ewsXmlTextReader},
+        {PreviousWatermark, QStringLiteral("PreviousWatermark"), &ewsXmlTextReader},
+        {MoreEvents, QStringLiteral("MoreEvents"), &ewsXmlBoolReader},
+        {Events, QStringLiteral("CopiedEvent"), &eventsReader},
+        {Events, QStringLiteral("CreatedEvent"), &eventsReader},
+        {Events, QStringLiteral("DeletedEvent"), &eventsReader},
+        {Events, QStringLiteral("ModifiedEvent"), &eventsReader},
+        {Events, QStringLiteral("MovedEvent"), &eventsReader},
+        {Events, QStringLiteral("NewMailEvent"), &eventsReader},
+        {Events, QStringLiteral("FreeBusyChangeEvent"), &eventsReader},
+        {Events, QStringLiteral("StatusEvent"), &eventsReader},
+    };
     static const NotificationReader staticReader(items);
 
     NotificationReader ewsreader(staticReader);

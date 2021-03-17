@@ -7,15 +7,19 @@
 #include "ewsupdatefolderrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> updateTypeElementNames = {QStringLiteral("AppendToFolderField"),
-                                                        QStringLiteral("SetFolderField"),
-                                                        QStringLiteral("DeleteFolderField")};
+static const QVector<QString> updateTypeElementNames = {
+    QStringLiteral("AppendToFolderField"),
+    QStringLiteral("SetFolderField"),
+    QStringLiteral("DeleteFolderField"),
+};
 
-static const QVector<QString> folderTypeNames = {QStringLiteral("Folder"),
-                                                 QStringLiteral("CalendarFolder"),
-                                                 QStringLiteral("ContactsFolder"),
-                                                 QStringLiteral("SearchFolder"),
-                                                 QStringLiteral("TasksFolder")};
+static const QVector<QString> folderTypeNames = {
+    QStringLiteral("Folder"),
+    QStringLiteral("CalendarFolder"),
+    QStringLiteral("ContactsFolder"),
+    QStringLiteral("SearchFolder"),
+    QStringLiteral("TasksFolder"),
+};
 
 EwsUpdateFolderRequest::EwsUpdateFolderRequest(EwsClient &client, QObject *parent)
     : EwsRequest(client, parent)

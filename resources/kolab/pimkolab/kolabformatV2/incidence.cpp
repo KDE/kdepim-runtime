@@ -672,9 +672,30 @@ static QString attendeeRoleToString(KCalendarCore::Attendee::Role role)
     return QStringLiteral("required");
 }
 
-static const char *s_weekDayName[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+static const char *s_weekDayName[] = {
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+};
 
-static const char *s_monthName[] = {"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"};
+static const char *s_monthName[] = {
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+};
 
 void Incidence::setRecurrence(KCalendarCore::Recurrence *recur)
 {

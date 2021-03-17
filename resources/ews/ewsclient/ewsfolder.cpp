@@ -17,11 +17,13 @@
 #define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate *>(this->d.data());
 #define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate *>(this->d.data());
 
-static const QVector<QString> folderTypeNames = {QStringLiteral("Folder"),
-                                                 QStringLiteral("CalendarFolder"),
-                                                 QStringLiteral("ContactsFolder"),
-                                                 QStringLiteral("SearchFolder"),
-                                                 QStringLiteral("TasksFolder")};
+static const QVector<QString> folderTypeNames = {
+    QStringLiteral("Folder"),
+    QStringLiteral("CalendarFolder"),
+    QStringLiteral("ContactsFolder"),
+    QStringLiteral("SearchFolder"),
+    QStringLiteral("TasksFolder"),
+};
 
 class EwsFolderPrivate : public EwsItemBasePrivate
 {
