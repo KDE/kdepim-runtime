@@ -17,7 +17,20 @@ public:
     EwsAttachmentPrivate();
     ~EwsAttachmentPrivate();
 
-    enum Field { Id = 0, Name, ContentType, ContentId, ContentLocation, Size, LastModifiedTime, IsInline, IsContactPhoto, Content, Item, NumFields };
+    enum Field {
+        Id = 0,
+        Name,
+        ContentType,
+        ContentId,
+        ContentLocation,
+        Size,
+        LastModifiedTime,
+        IsInline,
+        IsContactPhoto,
+        Content,
+        Item,
+        NumFields,
+    };
 
     EwsAttachment::Type mType;
     QString mId;

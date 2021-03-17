@@ -29,7 +29,10 @@ protected Q_SLOTS:
     void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
-    enum CheckType { CheckForAdded, CheckForChanged };
+    enum CheckType {
+        CheckForAdded,
+        CheckForChanged,
+    };
 
     void initialise(const QStringList &mimeTypes, const QString &icon);
     bool readFromFile(const QString &fileName) override;

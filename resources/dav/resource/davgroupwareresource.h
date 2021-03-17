@@ -62,7 +62,11 @@ protected:
     void doSetOnline(bool online) override;
 
 private:
-    enum ItemFetchUpdateType { ItemUpdateNone, ItemUpdateAdd, ItemUpdateChange };
+    enum ItemFetchUpdateType {
+        ItemUpdateNone,
+        ItemUpdateAdd,
+        ItemUpdateChange,
+    };
 
     KJob *createRetrieveCollectionsJob();
     void onReloadConfig();

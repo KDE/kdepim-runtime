@@ -12,7 +12,11 @@
 #include <KIO/AccessManager>
 #include <QString>
 
-enum TomboyJobError { NoError, TemporaryError, PermanentError };
+enum TomboyJobError {
+    NoError,
+    TemporaryError,
+    PermanentError,
+};
 
 class TomboyJobBase : public KCompositeJob
 {

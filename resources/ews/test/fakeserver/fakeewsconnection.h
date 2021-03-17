@@ -37,7 +37,11 @@ private:
     FakeEwsServer::DialogEntry::HttpResponse handleGetStreamingEventsRequest(const QString &content);
     QString prepareEventsResponse(const QStringList &events);
 
-    enum HttpConnectionState { Initial, RequestReceived, HeadersReceived };
+    enum HttpConnectionState {
+        Initial,
+        RequestReceived,
+        HeadersReceived,
+    };
 
     QPointer<QTcpSocket> mSock;
     uint mContentLength;

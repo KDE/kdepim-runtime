@@ -28,7 +28,19 @@ public:
     class Folder
     {
     public:
-        enum DistinguishedType { None, Root, Inbox, Outbox, Sent, Trash, Drafts, Templates, Calendar, Tasks, Contacts };
+        enum DistinguishedType {
+            None,
+            Root,
+            Inbox,
+            Outbox,
+            Sent,
+            Trash,
+            Drafts,
+            Templates,
+            Calendar,
+            Tasks,
+            Contacts,
+        };
 
         QString id;
         QString name;

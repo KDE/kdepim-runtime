@@ -10,7 +10,11 @@
 #include <AkonadiCore/Item>
 #include <KMime/Message>
 
-enum class JobType { AddItem, ModifyItem, DeleteItem };
+enum class JobType {
+    AddItem,
+    ModifyItem,
+    DeleteItem,
+};
 
 class TomboyItemUploadJob : public TomboyJobBase
 {

@@ -11,8 +11,17 @@
 class EwsItemShape : public EwsFolderShape
 {
 public:
-    enum Flag { IncludeMimeContent = 0x01, FilterHtmlContent = 0x02, ConvertHtmlToUtf8 = 0x04 };
-    enum BodyType { BodyNone, BodyBest, BodyHtml, BodyText };
+    enum Flag {
+        IncludeMimeContent = 0x01,
+        FilterHtmlContent = 0x02,
+        ConvertHtmlToUtf8 = 0x04,
+    };
+    enum BodyType {
+        BodyNone,
+        BodyBest,
+        BodyHtml,
+        BodyText,
+    };
 
     Q_DECLARE_FLAGS(Flags, Flag)
 

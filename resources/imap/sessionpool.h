@@ -41,7 +41,10 @@ public:
         CancelledError
     };
 
-    enum SessionTermination { LogoutSession, CloseSession };
+    enum SessionTermination {
+        LogoutSession,
+        CloseSession,
+    };
 
     explicit SessionPool(int maxPoolSize, QObject *parent = nullptr);
     ~SessionPool() override;
@@ -66,7 +69,11 @@ public:
     ImapAccount *account() const;
     QStringList serverCapabilities() const;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
-    enum Namespace { Personal, User, Shared };
+    enum Namespace {
+        Personal,
+        User,
+        Shared,
+    };
     QList<KIMAP::MailBoxDescriptor> serverNamespaces(Namespace) const;
 
 Q_SIGNALS:

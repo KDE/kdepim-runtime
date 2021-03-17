@@ -70,7 +70,10 @@ public:
         virtual bool visit(StoreCompactJob *job) = 0;
     };
 
-    enum ErrorCodes { InvalidStoreState = KJob::UserDefinedError + 1, InvalidJobContext };
+    enum ErrorCodes {
+        InvalidStoreState = KJob::UserDefinedError + 1,
+        InvalidJobContext,
+    };
 
     explicit Job(AbstractJobSession *session = nullptr);
 

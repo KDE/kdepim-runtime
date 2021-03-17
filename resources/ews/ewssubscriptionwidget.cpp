@@ -47,7 +47,9 @@ public:
     EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings, QObject *parent);
     ~EwsSubscriptionWidgetPrivate();
 
-    enum TreeModelRoles { ItemIdRole = Qt::UserRole + 1 };
+    enum TreeModelRoles {
+        ItemIdRole = Qt::UserRole + 1,
+    };
 
     void populateFolderTree();
 

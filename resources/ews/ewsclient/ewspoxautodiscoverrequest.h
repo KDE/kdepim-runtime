@@ -29,7 +29,12 @@ public:
         Settings,
     };
 
-    enum ProtocolType { ExchangeProto, ExchangeProxyProto, ExchangeWebProto, UnknownProto };
+    enum ProtocolType {
+        ExchangeProto,
+        ExchangeProxyProto,
+        ExchangeWebProto,
+        UnknownProto,
+    };
 
     class Protocol
     {

@@ -145,7 +145,9 @@ protected:
 class QNetworkRequest
 {
 public:
-    enum KnownHeaders { ContentTypeHeader };
+    enum KnownHeaders {
+        ContentTypeHeader,
+    };
 };
 
 class QNetworkReply : public QBuffer
@@ -190,10 +192,20 @@ class QAbstractOAuth : public QObject
     Q_OBJECT
 public:
     Q_ENUMS(Stage)
-    enum class Stage { RequestingTemporaryCredentials, RequestingAuthorization, RequestingAccessToken, RefreshingAccessToken };
+    enum class Stage {
+        RequestingTemporaryCredentials,
+        RequestingAuthorization,
+        RequestingAccessToken,
+        RefreshingAccessToken,
+    };
 
     Q_ENUMS(Status)
-    enum class Status { NotAuthenticated, TemporaryCredentialsReceived, Granted, RefreshingToken };
+    enum class Status {
+        NotAuthenticated,
+        TemporaryCredentialsReceived,
+        Granted,
+        RefreshingToken,
+    };
 
     explicit QAbstractOAuth(QObject *parent);
     ~QAbstractOAuth() override = default;

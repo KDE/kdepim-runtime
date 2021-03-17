@@ -13,9 +13,17 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
-enum SyncFolderItemsResponseElementType { SyncState, IncludesLastItemInRange, Changes };
+enum SyncFolderItemsResponseElementType {
+    SyncState,
+    IncludesLastItemInRange,
+    Changes,
+};
 
-enum SyncFolderItemsChangeElementType { Item, ItemId, IsRead };
+enum SyncFolderItemsChangeElementType {
+    Item,
+    ItemId,
+    IsRead,
+};
 
 class EwsSyncFolderItemsRequest::Response : public EwsRequest::Response
 {

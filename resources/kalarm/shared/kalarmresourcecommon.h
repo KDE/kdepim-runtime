@@ -33,7 +33,14 @@ Akonadi::Item retrieveItem(const Akonadi::Item &, KAEvent &);
 KAEvent checkItemChanged(const Akonadi::Item &, QString &errorMsg);
 void setCollectionCompatibility(const Akonadi::Collection &, KACalendar::Compat, int version);
 
-enum ErrorCode { UidNotFound, NotCurrentFormat, EventNotCurrentFormat, EventNoAlarms, EventReadOnly, CalendarAdd };
+enum ErrorCode {
+    UidNotFound,
+    NotCurrentFormat,
+    EventNotCurrentFormat,
+    EventNoAlarms,
+    EventReadOnly,
+    CalendarAdd,
+};
 QString errorMessage(ErrorCode, const QString &param = QString());
 }
 

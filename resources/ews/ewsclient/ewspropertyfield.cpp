@@ -64,9 +64,15 @@ public:
     {
     }
 
-    enum PropSetIdType { DistinguishedPropSet, RealPropSet };
+    enum PropSetIdType {
+        DistinguishedPropSet,
+        RealPropSet,
+    };
 
-    enum PropIdType { PropName, PropId };
+    enum PropIdType {
+        PropName,
+        PropId,
+    };
 
     EwsPropertyField::Type mPropType;
 

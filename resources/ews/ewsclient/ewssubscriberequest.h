@@ -16,7 +16,11 @@ class EwsSubscribeRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum Type { PullSubscription = 0, PushSubscription, StreamingSubscription };
+    enum Type {
+        PullSubscription = 0,
+        PushSubscription,
+        StreamingSubscription,
+    };
 
     class Response : public EwsRequest::Response
     {

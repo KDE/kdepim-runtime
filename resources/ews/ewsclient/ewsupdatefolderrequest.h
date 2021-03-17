@@ -27,7 +27,12 @@ public:
         bool write(QXmlStreamWriter &writer, EwsFolderType folderType) const;
 
     protected:
-        enum Type { Append = 0, Set, Delete, Unknown };
+        enum Type {
+            Append = 0,
+            Set,
+            Delete,
+            Unknown,
+        };
 
         Update(const EwsPropertyField &field, const QVariant &val, Type type)
             : mField(field)

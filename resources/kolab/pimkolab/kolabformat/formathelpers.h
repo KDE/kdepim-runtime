@@ -11,7 +11,18 @@
 
 namespace Kolab
 {
-enum FolderType { MailType = 0, ContactType, EventType, TaskType, JournalType, NoteType, ConfigurationType, FreebusyType, FileType, LastType };
+enum FolderType {
+    MailType = 0,
+    ContactType,
+    EventType,
+    TaskType,
+    JournalType,
+    NoteType,
+    ConfigurationType,
+    FreebusyType,
+    FileType,
+    LastType,
+};
 
 /**
  * Returns the FolderType from a KOLAB_FOLDER_TYPE_* folder type string

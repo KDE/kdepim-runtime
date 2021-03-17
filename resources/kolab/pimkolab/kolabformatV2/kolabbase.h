@@ -39,7 +39,11 @@ public:
         QString smtpAddress;
     };
 
-    enum Sensitivity { Public = 0, Private = 1, Confidential = 2 };
+    enum Sensitivity {
+        Public = 0,
+        Private = 1,
+        Confidential = 2,
+    };
 
     explicit KolabBase(const QString &time_zone = QString());
     virtual ~KolabBase();

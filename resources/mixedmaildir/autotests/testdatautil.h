@@ -12,7 +12,11 @@ class QString;
 
 namespace TestDataUtil
 {
-enum FolderType { InvalidFolder, MaildirFolder, MBoxFolder };
+enum FolderType {
+    InvalidFolder,
+    MaildirFolder,
+    MBoxFolder,
+};
 
 FolderType folderType(const QString &testDataName);
 

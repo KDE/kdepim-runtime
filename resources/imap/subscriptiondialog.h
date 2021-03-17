@@ -46,8 +46,14 @@ class SubscriptionDialog : public QDialog
 {
     Q_OBJECT
 public:
-    enum Roles { InitialStateRole = Qt::UserRole + 1, PathRole };
-    enum SubscriptionDialogOption { None = 0, AllowToEnableSubscription = 1 };
+    enum Roles {
+        InitialStateRole = Qt::UserRole + 1,
+        PathRole,
+    };
+    enum SubscriptionDialogOption {
+        None = 0,
+        AllowToEnableSubscription = 1,
+    };
     Q_DECLARE_FLAGS(SubscriptionDialogOptions, SubscriptionDialogOption)
 
     explicit SubscriptionDialog(QWidget *parent = nullptr, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None);

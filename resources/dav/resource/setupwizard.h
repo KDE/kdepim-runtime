@@ -30,7 +30,13 @@ class SetupWizard : public QWizard
 public:
     explicit SetupWizard(QWidget *parent = nullptr);
 
-    enum { W_CredentialsPage, W_PredefinedProviderPage, W_ServerTypePage, W_ConnectionPage, W_CheckPage };
+    enum {
+        W_CredentialsPage,
+        W_PredefinedProviderPage,
+        W_ServerTypePage,
+        W_ConnectionPage,
+        W_CheckPage,
+    };
 
     class Url
     {

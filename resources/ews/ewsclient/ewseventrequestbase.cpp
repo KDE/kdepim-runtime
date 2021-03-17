@@ -8,10 +8,25 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
-enum NotificationElementType { SubscriptionId, PreviousWatermark, MoreEvents, Events };
+enum NotificationElementType {
+    SubscriptionId,
+    PreviousWatermark,
+    MoreEvents,
+    Events,
+};
 typedef EwsXml<NotificationElementType> NotificationReader;
 
-enum EventElementType { Watermark, Timestamp, ItemId, FolderId, ParentFolderId, OldItemId, OldFolderId, OldParentFolderId, UnreadCount };
+enum EventElementType {
+    Watermark,
+    Timestamp,
+    ItemId,
+    FolderId,
+    ParentFolderId,
+    OldItemId,
+    OldFolderId,
+    OldParentFolderId,
+    UnreadCount,
+};
 typedef EwsXml<EventElementType> EventReader;
 
 EwsEventRequestBase::EwsEventRequestBase(EwsClient &client, const QString &reqName, QObject *parent)

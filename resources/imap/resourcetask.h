@@ -29,7 +29,10 @@ class ResourceTask : public QObject
     Q_OBJECT
 
 public:
-    enum ActionIfNoSession { CancelIfNoSession, DeferIfNoSession };
+    enum ActionIfNoSession {
+        CancelIfNoSession,
+        DeferIfNoSession,
+    };
     Q_ENUM(ActionIfNoSession)
 
     explicit ResourceTask(ActionIfNoSession action, ResourceStateInterface::Ptr resource, QObject *parent = nullptr);

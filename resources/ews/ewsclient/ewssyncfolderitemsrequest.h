@@ -15,7 +15,13 @@ class EwsSyncFolderItemsRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum ChangeType { Create, Update, Delete, ReadFlagChange, Unknown };
+    enum ChangeType {
+        Create,
+        Update,
+        Delete,
+        ReadFlagChange,
+        Unknown,
+    };
 
     class Response;
 

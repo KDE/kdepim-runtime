@@ -15,7 +15,12 @@ class EwsSyncFolderHierarchyRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum ChangeType { Create, Update, Delete, Unknown };
+    enum ChangeType {
+        Create,
+        Update,
+        Delete,
+        Unknown,
+    };
 
     class Response;
 

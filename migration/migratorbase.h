@@ -101,9 +101,23 @@ public:
      */
     QString logfile() const;
 
-    enum MigrationState { None, InProgress, Paused, Complete, NeedsUpdate, Aborted, Failed };
+    enum MigrationState {
+        None,
+        InProgress,
+        Paused,
+        Complete,
+        NeedsUpdate,
+        Aborted,
+        Failed,
+    };
 
-    enum MessageType { Success, Skip, Info, Warning, Error };
+    enum MessageType {
+        Success,
+        Skip,
+        Info,
+        Warning,
+        Error,
+    };
 
     /**
      * Read migration state.

@@ -13,9 +13,17 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
-enum SyncFolderHierarchyResponseElementType { SyncState, IncludesLastFolderInRange, Changes };
+enum SyncFolderHierarchyResponseElementType {
+    SyncState,
+    IncludesLastFolderInRange,
+    Changes,
+};
 
-enum SyncFolderHierarchyChangeElementType { Folder, FolderId, IsRead };
+enum SyncFolderHierarchyChangeElementType {
+    Folder,
+    FolderId,
+    IsRead,
+};
 
 class EwsSyncFolderHierarchyRequest::Response : public EwsRequest::Response
 {

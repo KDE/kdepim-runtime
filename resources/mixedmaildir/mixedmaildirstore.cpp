@@ -494,7 +494,12 @@ class MixedMaildirStore::Private : public FileStore::Job::Visitor
     MixedMaildirStore *const q;
 
 public:
-    enum FolderType { InvalidFolder, TopLevelFolder, MaildirFolder, MBoxFolder };
+    enum FolderType {
+        InvalidFolder,
+        TopLevelFolder,
+        MaildirFolder,
+        MBoxFolder,
+    };
 
     Private(MixedMaildirStore *parent)
         : q(parent)

@@ -33,7 +33,11 @@ class QXmlStreamReader;
 class EwsId
 {
 public:
-    enum Type { Distinguished, Real, Unspecified };
+    enum Type {
+        Distinguished,
+        Real,
+        Unspecified,
+    };
 
     typedef QList<EwsId> List;
 

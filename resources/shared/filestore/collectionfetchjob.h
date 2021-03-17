@@ -27,7 +27,11 @@ class AKONADI_FILESTORE_EXPORT CollectionFetchJob : public Job
     Q_OBJECT
 
 public:
-    enum Type { Base, FirstLevel, Recursive };
+    enum Type {
+        Base,
+        FirstLevel,
+        Recursive,
+    };
 
     explicit CollectionFetchJob(const Collection &collection, Type type = FirstLevel, AbstractJobSession *session = nullptr);
 

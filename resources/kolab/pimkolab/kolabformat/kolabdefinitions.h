@@ -53,7 +53,10 @@ namespace Kolab
 #define KOLAB_TYPE_FILE "application/x-vnd.kolab.file"
 #define KOLAB_TYPE_RELATION "application/x-vnd.kolab.configuration.relation"
 
-enum Version { KolabV2, KolabV3 };
+enum Version {
+    KolabV2,
+    KolabV3,
+};
 
 enum ObjectType {
     InvalidObject,

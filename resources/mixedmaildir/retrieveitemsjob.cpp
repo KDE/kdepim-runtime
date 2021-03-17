@@ -33,7 +33,10 @@
 
 using namespace Akonadi;
 
-enum { MaxItemCreateJobs = 100, MaxItemModifyJobs = 100 };
+enum {
+    MaxItemCreateJobs = 100,
+    MaxItemModifyJobs = 100,
+};
 
 class RetrieveItemsJob::Private
 {

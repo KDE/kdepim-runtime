@@ -20,9 +20,19 @@ class KMigratorBase : public QObject
 {
     Q_OBJECT
 public:
-    enum MigrationState { None, Bridged, Complete };
+    enum MigrationState {
+        None,
+        Bridged,
+        Complete,
+    };
 
-    enum MessageType { Success, Skip, Info, Warning, Error };
+    enum MessageType {
+        Success,
+        Skip,
+        Info,
+        Warning,
+        Error,
+    };
 
     Q_ENUM(MigrationState)
 

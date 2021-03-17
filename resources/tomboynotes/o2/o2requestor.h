@@ -66,7 +66,11 @@ protected Q_SLOTS:
 protected:
     int setup(const QNetworkRequest &request, QNetworkAccessManager::Operation operation);
 
-    enum Status { Idle, Requesting, ReRequesting };
+    enum Status {
+        Idle,
+        Requesting,
+        ReRequesting,
+    };
 
     QNetworkAccessManager *manager_ = nullptr;
     O2 *authenticator_ = nullptr;

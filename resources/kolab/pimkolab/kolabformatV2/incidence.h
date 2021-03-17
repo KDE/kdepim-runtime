@@ -107,7 +107,11 @@ public:
     bool saveAttributes(QDomElement &) const override;
 
 protected:
-    enum FloatingStatus { Unset, AllDay, HasTime };
+    enum FloatingStatus {
+        Unset,
+        AllDay,
+        HasTime,
+    };
 
     // Read all known fields from this ical incidence
     void setFields(const KCalendarCore::Incidence::Ptr &);

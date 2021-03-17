@@ -50,7 +50,10 @@ class MigratorModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    enum Roles { IdentifierRole = Qt::UserRole + 1, LogfileRole };
+    enum Roles {
+        IdentifierRole = Qt::UserRole + 1,
+        LogfileRole,
+    };
     bool addMigrator(const QSharedPointer<MigratorBase> &migrator);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -64,7 +67,12 @@ public:
     QList<QSharedPointer<MigratorBase>> migrators() const;
 
 private:
-    enum Columns { Name = 0, Progress = 1, State = 2, ColumnCount };
+    enum Columns {
+        Name = 0,
+        Progress = 1,
+        State = 2,
+        ColumnCount,
+    };
     friend class Row;
     int positionOf(const Row &);
     void columnChanged(const Row &, int column);

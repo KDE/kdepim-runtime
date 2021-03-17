@@ -15,7 +15,15 @@
 class EwsEffectiveRightsPrivate : public QSharedData
 {
 public:
-    enum Right { CreateAssociated = 0, CreateContents, CreateHierarchy, Delete, Modify, Read, ViewPrivateItems };
+    enum Right {
+        CreateAssociated = 0,
+        CreateContents,
+        CreateHierarchy,
+        Delete,
+        Modify,
+        Read,
+        ViewPrivateItems,
+    };
 
     EwsEffectiveRightsPrivate();
     virtual ~EwsEffectiveRightsPrivate();

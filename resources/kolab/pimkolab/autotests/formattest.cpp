@@ -153,7 +153,10 @@ void FormatTest::testIncidence()
     QCOMPARE(Kolab::ErrorHandler::instance().error(), Kolab::ErrorHandler::Debug);
 }
 
-enum TestMode { ReadOnly, ReadWrite };
+enum TestMode {
+    ReadOnly,
+    ReadWrite,
+};
 Q_DECLARE_METATYPE(TestMode)
 
 void FormatTest::testContact_data()

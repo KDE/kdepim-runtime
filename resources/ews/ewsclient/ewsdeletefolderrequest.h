@@ -18,7 +18,11 @@ class EwsDeleteFolderRequest : public EwsRequest
 {
     Q_OBJECT
 public:
-    enum Type { HardDelete = 0, SoftDelete, MoveToDeletedItems };
+    enum Type {
+        HardDelete = 0,
+        SoftDelete,
+        MoveToDeletedItems,
+    };
 
     class Response : public EwsRequest::Response
     {

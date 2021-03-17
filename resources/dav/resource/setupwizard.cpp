@@ -26,7 +26,16 @@
 #include <QRegularExpressionValidator>
 #include <QUrl>
 
-enum GroupwareServers { Citadel, DAVical, eGroupware, OpenGroupware, ScalableOGo, Scalix, Zarafa, Zimbra };
+enum GroupwareServers {
+    Citadel,
+    DAVical,
+    eGroupware,
+    OpenGroupware,
+    ScalableOGo,
+    Scalix,
+    Zarafa,
+    Zimbra,
+};
 
 static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 {

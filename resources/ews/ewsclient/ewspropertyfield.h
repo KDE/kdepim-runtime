@@ -16,7 +16,12 @@ class EwsPropertyFieldPrivate;
 class EwsPropertyField
 {
 public:
-    enum Type { Field, ExtendedField, IndexedField, UnknownField };
+    enum Type {
+        Field,
+        ExtendedField,
+        IndexedField,
+        UnknownField,
+    };
 
     EwsPropertyField();
     explicit EwsPropertyField(const QString &uri); // FieldURI
