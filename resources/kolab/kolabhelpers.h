@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABHELPERS_H
-#define KOLABHELPERS_H
+#pragma once
 
 #include "pimkolab/kolabformat/formathelpers.h" //libkolab
 #include "pimkolab/kolabformat/kolabdefinitions.h" //libkolab
@@ -38,4 +37,3 @@ public:
     static QString createMemberUrl(const Akonadi::Item &item, const QString &user);
 };
 
-#endif

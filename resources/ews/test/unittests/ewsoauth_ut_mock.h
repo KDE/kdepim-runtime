@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSOAUTH_UT_MOCK_H
-#define EWSOAUTH_UT_MOCK_H
+#pragma once
 
 #include <functional>
 
@@ -325,4 +324,3 @@ QString tokenCallbackString(const QString &accessToken,
 QString requestWalletMapString();
 }
 
-#endif /* EWSOAUTH_UT_MOCK_H */

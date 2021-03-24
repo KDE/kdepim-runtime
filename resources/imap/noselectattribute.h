@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef NOSELECTATTRIBUTE_H
-#define NOSELECTATTRIBUTE_H
+#pragma once
 
 #include <attribute.h>
 
@@ -24,4 +23,3 @@ private:
     bool mNoSelect;
 };
 
-#endif

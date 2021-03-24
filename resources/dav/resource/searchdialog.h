@@ -4,8 +4,7 @@
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef SEARCHDIALOG_H
-#define SEARCHDIALOG_H
+#pragma once
 
 #include "ui_searchdialog.h"
 
@@ -43,4 +42,3 @@ private:
     int mSubJobCount = 0;
 };
 
-#endif // SEARCHDIALOG_H

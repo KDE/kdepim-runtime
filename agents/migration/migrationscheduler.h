@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef MIGRATIONSCHEDULER_H
-#define MIGRATIONSCHEDULER_H
+#pragma once
 
 #include "migratorbase.h"
 #include <QAbstractItemModel>
@@ -109,4 +108,3 @@ private:
     KJobTrackerInterface *mJobTracker = nullptr;
 };
 
-#endif // MIGRATIONSCHEDULER_H

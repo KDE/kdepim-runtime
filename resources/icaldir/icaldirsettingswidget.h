@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ICALDIRSETTINGSWIDGET_H
-#define ICALDIRSETTINGSWIDGET_H
+#pragma once
 
 #include "ui_icaldirsagentsettingswidget.h"
 #include <AkonadiCore/AgentConfigurationBase>
@@ -29,4 +28,3 @@ private:
 };
 
 AKONADI_AGENTCONFIG_FACTORY(IcalDirSettingsWidgetFactory, "icaldirconfig.json", IcalDirSettingsWidget)
-#endif

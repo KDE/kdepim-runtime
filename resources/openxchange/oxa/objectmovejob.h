@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_OBJECTMOVEJOB_H
-#define OXA_OBJECTMOVEJOB_H
+#pragma once
 
 #include <KJob>
 
@@ -36,4 +35,3 @@ private:
 };
 }
 
-#endif

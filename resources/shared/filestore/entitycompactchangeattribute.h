@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_FILESTORE_ENTITYCOMPACTCHANGEATTRIBUTE_H
-#define AKONADI_FILESTORE_ENTITYCOMPACTCHANGEATTRIBUTE_H
+#pragma once
 
 #include "akonadi-filestore_export.h"
 
@@ -49,4 +48,3 @@ private:
 }
 }
 
-#endif

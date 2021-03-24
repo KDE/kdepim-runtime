@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TOMBOYITEMDOWNLOADJOB_H
-#define TOMBOYITEMDOWNLOADJOB_H
+#pragma once
 
 #include "tomboyjobbase.h"
 #include <AkonadiCore/Item>
@@ -27,4 +26,3 @@ private:
     Akonadi::Item mResultItem;
 };
 
-#endif // TOMBOYITEMDOWNLOADJOB_H

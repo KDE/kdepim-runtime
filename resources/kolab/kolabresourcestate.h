@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABRESOURCESTATE_H
-#define KOLABRESOURCESTATE_H
+#pragma once
 
 #include <resourcestate.h>
 
@@ -22,4 +21,3 @@ private:
     MessageHelper::Ptr messageHelper() const override;
 };
 
-#endif

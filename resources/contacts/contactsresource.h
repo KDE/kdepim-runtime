@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef CONTACTSRESOURCE_H
-#define CONTACTSRESOURCE_H
+#pragma once
 
 #include <resourcebase.h>
 
@@ -64,4 +63,3 @@ private:
     QStringList mSupportedMimeTypes;
 };
 
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef ERRORHANDLER_H
-#define ERRORHANDLER_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -144,4 +143,3 @@ private:
 
 QDebug operator<<(QDebug dbg, const std::string &s);
 
-#endif // ERRORHANDLER_H

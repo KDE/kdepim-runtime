@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef UPDATEMESSAGEJOB_H
-#define UPDATEMESSAGEJOB_H
+#pragma once
 
 #include <KIMAP/FetchJob>
 #include <KJob>
@@ -68,4 +67,3 @@ private:
     QSharedPointer<Merger> mMerger;
 };
 
-#endif

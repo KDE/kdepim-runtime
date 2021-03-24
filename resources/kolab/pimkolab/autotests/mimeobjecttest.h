@@ -5,8 +5,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef MIMEOBJECTTEST_H
-#define MIMEOBJECTTEST_H
+#pragma once
 #include <QObject>
 
 /**
@@ -32,4 +31,3 @@ private Q_SLOTS:
     void testDistlist_data();
     void testDistlist();
 };
-#endif // MIMEOBJECTTEST_H

@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef VCARDDIRSETTINGSWIDGET_H
-#define VCARDDIRSETTINGSWIDGET_H
+#pragma once
 
 #include "ui_vcarddiragentsettingswidget.h"
 #include <AkonadiCore/AgentConfigurationBase>
@@ -30,4 +29,3 @@ private:
 
 AKONADI_AGENTCONFIG_FACTORY(VcardDirSettingsWidgetFactory, "vcarddirconfig.json", VcardDirSettingsWidget)
 
-#endif

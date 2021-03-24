@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O2REQUESTOR_H
-#define O2REQUESTOR_H
+#pragma once
 
 #include <QByteArray>
 #include <QNetworkAccessManager>
@@ -82,4 +81,3 @@ protected:
     QNetworkReply::NetworkError error_;
 };
 
-#endif // O2REQUESTOR_H

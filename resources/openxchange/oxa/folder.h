@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_FOLDER_H
-#define OXA_FOLDER_H
+#pragma once
 
 #include <QMap>
 #include <QString>
@@ -181,4 +180,3 @@ private:
 }
 Q_DECLARE_TYPEINFO(OXA::Folder, Q_MOVABLE_TYPE);
 
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef ICALENDARTEST_H
-#define ICALENDARTEST_H
+#pragma once
 #include <QObject>
 
 class ICalendarTest : public QObject
@@ -21,4 +20,3 @@ private Q_SLOTS:
     void testToIMip();
 };
 
-#endif // ICALENDARTEST_H

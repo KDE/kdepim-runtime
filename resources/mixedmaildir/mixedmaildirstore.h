@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MIXEDMAILDIRSTORE_H
-#define MIXEDMAILDIRSTORE_H
+#pragma once
 
 #include "abstractlocalstore.h"
 
@@ -36,4 +35,3 @@ private:
     Private *const d;
 };
 
-#endif

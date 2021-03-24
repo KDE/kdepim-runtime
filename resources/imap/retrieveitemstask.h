@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RETRIEVEITEMSTASK_H
-#define RETRIEVEITEMSTASK_H
+#pragma once
 
 #include <kimap/fetchjob.h>
 
@@ -82,4 +81,3 @@ private:
     QList<QByteArray> m_flags;
 };
 
-#endif

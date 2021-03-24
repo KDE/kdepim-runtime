@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_USER_H
-#define OXA_USER_H
+#pragma once
 
 #include <QString>
 #include <QVector>
@@ -40,4 +39,3 @@ private:
 }
 
 Q_DECLARE_TYPEINFO(OXA::User, Q_MOVABLE_TYPE);
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSITEM_H
-#define EWSITEM_H
+#pragma once
 
 #include <QList>
 
@@ -46,4 +45,3 @@ Q_DECLARE_METATYPE(EwsItem)
 Q_DECLARE_METATYPE(EwsItem::List)
 Q_DECLARE_METATYPE(EwsItem::HeaderMap)
 
-#endif

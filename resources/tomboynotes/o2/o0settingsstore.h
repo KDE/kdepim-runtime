@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O0SETTINGSSTORE_H
-#define O0SETTINGSSTORE_H
+#pragma once
 
 #include <QSettings>
 #include <QString>
@@ -44,4 +43,3 @@ protected:
     O0SimpleCrypt crypt_;
 };
 
-#endif // O0SETTINGSSTORE_H

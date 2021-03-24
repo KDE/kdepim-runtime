@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSREQUEST_H
-#define EWSREQUEST_H
+#pragma once
 
 #include <functional>
 
@@ -103,4 +102,3 @@ private:
     QWidget *mParentWindow;
 };
 
-#endif

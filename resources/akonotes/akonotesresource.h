@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONOTES_RESOURCE_H
-#define AKONOTES_RESOURCE_H
+#pragma once
 
 #include "maildirresource.h"
 
@@ -21,4 +20,3 @@ public:
 protected:
     QString itemMimeType() const override;
 };
-#endif

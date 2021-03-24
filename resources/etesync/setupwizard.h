@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef SETUPWIZARD_H
-#define SETUPWIZARD_H
+#pragma once
 
 #include <QLabel>
 #include <QProgressBar>
@@ -87,4 +86,3 @@ private:
     QString mErrorMessage;
 };
 
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABOBJECT_H
-#define KOLABOBJECT_H
+#pragma once
 
 #include <kolab_export.h>
 
@@ -131,4 +130,3 @@ public:
 };
 } // Namespace
 
-#endif // KOLABOBJECT_H

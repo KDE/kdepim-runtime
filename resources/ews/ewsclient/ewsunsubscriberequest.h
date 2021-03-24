@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSUNSUBSCRIBEREQUEST_H
-#define EWSUNSUBSCRIBEREQUEST_H
+#pragma once
 
 #include <QSharedPointer>
 
@@ -52,4 +51,3 @@ private:
     QSharedPointer<Response> mResponse;
 };
 
-#endif

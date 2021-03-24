@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SYNCTEST_H
-#define SYNCTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -27,4 +26,3 @@ private:
     QString mMaildirIdentifier;
 };
 
-#endif

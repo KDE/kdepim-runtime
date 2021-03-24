@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSPOXAUTODISCOVERREQUEST_H
-#define EWSPOXAUTODISCOVERREQUEST_H
+#pragma once
 
 #include <QHash>
 #include <QString>
@@ -132,4 +131,3 @@ private:
     QUrl mLastUrl;
 };
 
-#endif

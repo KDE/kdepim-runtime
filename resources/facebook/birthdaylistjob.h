@@ -4,8 +4,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef FACEBOOK_BIRTHDAYLISTJOB_H_
-#define FACEBOOK_BIRTHDAYLISTJOB_H_
+#pragma once
 
 #include <KJob>
 
@@ -47,4 +46,3 @@ private:
     QString mIdentifier;
 };
 
-#endif

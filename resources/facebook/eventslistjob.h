@@ -4,8 +4,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef FACEBOOK_EVENTSLISTJOB_H_
-#define FACEBOOK_EVENTSLISTJOB_H_
+#pragma once
 
 #include "listjob.h"
 
@@ -28,4 +27,3 @@ private:
     KCalendarCore::Incidence::Status parseStatus(const QJsonObject &data) const;
 };
 
-#endif

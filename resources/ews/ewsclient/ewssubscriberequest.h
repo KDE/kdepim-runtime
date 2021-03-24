@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSUBSCRIBEREQUEST_H
-#define EWSSUBSCRIBEREQUEST_H
+#pragma once
 
 #include <QSharedPointer>
 
@@ -97,4 +96,3 @@ private:
     QSharedPointer<Response> mResponse;
 };
 
-#endif

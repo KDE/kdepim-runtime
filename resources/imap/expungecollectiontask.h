@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EXPUNGECOLLECTIONTASK_H
-#define EXPUNGECOLLECTIONTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -29,4 +28,3 @@ private:
     void triggerExpungeJob(KIMAP::Session *session);
 };
 
-#endif

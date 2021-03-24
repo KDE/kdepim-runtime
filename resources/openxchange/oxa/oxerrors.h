@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_OXERRORS_H
-#define OXA_OXERRORS_H
+#pragma once
 
 #include <QString>
 
@@ -38,4 +37,3 @@ EditErrorID getEditErrorID(const QString &errorText);
 }
 }
 
-#endif

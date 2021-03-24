@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFOLDERSHAPE_H
-#define EWSFOLDERSHAPE_H
+#pragma once
 
 #include <QVector>
 #include <QXmlStreamWriter>
@@ -69,4 +68,3 @@ inline EwsFolderShape &operator<<(EwsFolderShape &shape, const EwsPropertyField 
     return shape;
 }
 
-#endif

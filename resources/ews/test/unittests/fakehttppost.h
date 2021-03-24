@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FAKEHTTPPOST_H
-#define FAKEHTTPPOST_H
+#pragma once
 
 #include <KIO/TransferJob>
 
@@ -24,4 +23,3 @@ inline TransferJob *http_post(const QUrl &url, const QByteArray &postData, JobFl
 }
 }
 
-#endif

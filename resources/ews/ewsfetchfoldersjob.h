@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFETCHFOLDERSJOB_H
-#define EWSFETCHFOLDERSJOB_H
+#pragma once
 
 #include <QScopedPointer>
 
@@ -48,4 +47,3 @@ private:
     Q_DECLARE_PRIVATE(EwsFetchFoldersJob)
 };
 
-#endif

@@ -3,8 +3,7 @@
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
-#ifndef EWSABSTRACTAUTH_H
-#define EWSABSTRACTAUTH_H
+#pragma once
 
 #include <QObject>
 
@@ -83,4 +82,3 @@ protected:
     QString mPKeyKeyFile;
 };
 
-#endif /* EWSABSTRACTAUTH_H */

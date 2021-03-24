@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.1-or-later
 */
 
-#ifndef ICALENDAR_H
-#define ICALENDAR_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -59,4 +58,3 @@ private:
 };
 }
 
-#endif // ICALENDAR_H

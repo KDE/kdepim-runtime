@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_OBJECTUTILS_H
-#define OXA_OBJECTUTILS_H
+#pragma once
 
 #include "folder.h"
 #include "object.h"
@@ -52,4 +51,3 @@ void *preloadData(const Object &object, KJob *job);
 }
 }
 
-#endif

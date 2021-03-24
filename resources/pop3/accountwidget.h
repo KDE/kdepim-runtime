@@ -8,8 +8,7 @@
  *
  */
 
-#ifndef ACCOUNT_WIDGET_H
-#define ACCOUNT_WIDGET_H
+#pragma once
 
 #include "ui_popsettings.h"
 #include <qt5keychain/keychain.h>
@@ -73,4 +72,3 @@ private:
     Settings &mSettings;
 };
 
-#endif

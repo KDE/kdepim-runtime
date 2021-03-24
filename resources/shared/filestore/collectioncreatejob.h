@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_FILESTORE_COLLECTIONCREATEJOB_H
-#define AKONADI_FILESTORE_COLLECTIONCREATEJOB_H
+#pragma once
 
 #include "job.h"
 
@@ -47,4 +46,3 @@ private:
 }
 }
 
-#endif

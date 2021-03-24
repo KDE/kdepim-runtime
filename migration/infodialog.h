@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef INFODIALOG_H
-#define INFODIALOG_H
+#pragma once
 
 #include "kmigratorbase.h"
 #include "migratorbase.h"
@@ -60,4 +59,3 @@ private:
     bool mAutoScrollList = true;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#pragma once
 
 #include "ui_configdialog.h"
 
@@ -55,4 +54,3 @@ private:
     QPushButton *mOkButton = nullptr;
 };
 
-#endif

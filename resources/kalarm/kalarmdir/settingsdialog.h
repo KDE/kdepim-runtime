@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef KALARMDIR_SETTINGSDIALOG_H
-#define KALARMDIR_SETTINGSDIALOG_H
+#pragma once
 
 #include "ui_alarmtypewidget.h"
 #include "ui_settingsdialog.h"
@@ -49,4 +48,3 @@ private:
 };
 }
 
-#endif // KALARMDIR_SETTINGSDIALOG_H

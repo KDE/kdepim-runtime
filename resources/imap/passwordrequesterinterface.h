@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef PASSWORDREQUESTERINTERFACE_H
-#define PASSWORDREQUESTERINTERFACE_H
+#pragma once
 
 #include <QObject>
 
@@ -31,4 +30,3 @@ Q_SIGNALS:
     void done(int resultType, const QString &password = QString());
 };
 
-#endif

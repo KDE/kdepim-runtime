@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FAKEEWSCONNECTION_H
-#define FAKEEWSCONNECTION_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -52,4 +51,3 @@ private:
     bool mAuthenticated;
 };
 
-#endif

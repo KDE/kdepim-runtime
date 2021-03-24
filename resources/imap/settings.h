@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#pragma once
 
 #include "settingsbase.h"
 
@@ -58,4 +57,3 @@ protected:
     mutable QString m_customSievePassword;
 };
 
-#endif

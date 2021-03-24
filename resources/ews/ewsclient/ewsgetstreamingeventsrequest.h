@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSGETSTREAMINGEVENTSREQUEST_H
-#define EWSGETSTREAMINGEVENTSREQUEST_H
+#pragma once
 
 #include <QSharedPointer>
 #include <QTimer>
@@ -40,4 +39,3 @@ protected:
     QTimer mRespTimer;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.1-or-later
 */
 
-#ifndef NOINFERIORSATTRIBUTE_H
-#define NOINFERIORSATTRIBUTE_H
+#pragma once
 
 #include <attribute.h>
 
@@ -24,4 +23,3 @@ private:
     bool mNoInferiors;
 };
 
-#endif // NOINFERIORSATTRIBUTE_H

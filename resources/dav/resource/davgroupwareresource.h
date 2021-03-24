@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef DAVGROUPWARERESOURCE_H
-#define DAVGROUPWARERESOURCE_H
+#pragma once
 
 #include <KDAV/Enums>
 #include <KDAV/EtagCache>
@@ -120,4 +119,3 @@ private:
     bool mSyncErrorNotified = false;
 };
 
-#endif

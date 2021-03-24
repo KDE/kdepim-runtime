@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef KALARMRESOURCECOMMON_H
-#define KALARMRESOURCECOMMON_H
+#pragma once
 
 #include <kalarmcal/kacalendar.h>
 #include <kalarmcal/kaevent.h>
@@ -38,4 +37,3 @@ enum ErrorCode { UidNotFound, NotCurrentFormat, EventNotCurrentFormat, EventNoAl
 QString errorMessage(ErrorCode, const QString &param = QString());
 }
 
-#endif // KALARMRESOURCECOMMON_H

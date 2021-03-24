@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef ETEBASEADAPTER_H
-#define ETEBASEADAPTER_H
+#pragma once
 
 #include <QString>
 #include <etebase.h>
@@ -133,4 +132,3 @@ int32_t etebase_fs_cache_collection_unset(const EtebaseFileSystemCache *fs_cache
 int32_t
 etebase_fs_cache_item_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
 
-#endif

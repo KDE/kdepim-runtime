@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABCONVERSION_H
-#define KOLABCONVERSION_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -25,4 +24,3 @@ KOLAB_EXPORT Kolab::Note fromNote(const KMime::Message::Ptr &);
 }
 }
 
-#endif

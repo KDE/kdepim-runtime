@@ -5,8 +5,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef IMAPTESTBASE_H
-#define IMAPTESTBASE_H
+#pragma once
 
 #include <qtest_kde.h>
 
@@ -47,4 +46,3 @@ private slots:
     void setupTestCase();
 };
 
-#endif

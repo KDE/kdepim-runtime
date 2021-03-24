@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ADDCOLLECTIONTASK_H
-#define ADDCOLLECTIONTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -35,4 +34,3 @@ private:
     KIMAP::Session *m_session = nullptr;
 };
 
-#endif

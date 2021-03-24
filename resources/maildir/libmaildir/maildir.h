@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MAILDIR_H
-#define MAILDIR_H
+#pragma once
 
 #include "maildir_export.h"
 
@@ -240,4 +239,3 @@ private:
     Private *d;
 };
 }
-#endif // __MAILDIR_H__

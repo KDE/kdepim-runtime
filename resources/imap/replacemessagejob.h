@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef REPLACEMESSAGEJOB_H
-#define REPLACEMESSAGEJOB_H
+#pragma once
 
 #include <KIMAP/ImapSet>
 #include <KIMAP/Session>
@@ -50,4 +49,3 @@ private:
     const QByteArray mMessageId;
 };
 
-#endif

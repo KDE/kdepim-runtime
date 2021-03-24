@@ -5,8 +5,7 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef IMAP_RESOURCE_IMAPFLAGS_H
-#define IMAP_RESOURCE_IMAPFLAGS_H
+#pragma once
 
 /**
  * Contains constants for IMAP flags from KIMAP.
@@ -34,4 +33,3 @@ extern const char *Answered;
 extern const char *Flagged;
 }
 
-#endif

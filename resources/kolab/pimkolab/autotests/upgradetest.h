@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef UPGRADETEST_H
-#define UPGRADETEST_H
+#pragma once
 
 #include <QObject>
 
@@ -33,4 +32,3 @@ private Q_SLOTS:
     void testContact();
 };
 
-#endif // UPGRADETEST_H

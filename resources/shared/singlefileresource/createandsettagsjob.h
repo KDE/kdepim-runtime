@@ -3,8 +3,7 @@
  *
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
-#ifndef CREATEANDSETTAGSJOB_H
-#define CREATEANDSETTAGSJOB_H
+#pragma once
 
 #include "akonadi-singlefileresource_export.h"
 #include <KJob>
@@ -30,4 +29,3 @@ private:
     int mCount;
 };
 
-#endif

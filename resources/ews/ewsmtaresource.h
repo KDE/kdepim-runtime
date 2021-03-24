@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSMTARESOURCE_H
-#define EWSMTARESOURCE_H
+#pragma once
 
 #include <AkonadiAgentBase/ResourceBase>
 #include <AkonadiAgentBase/TransportResourceBase>
@@ -37,4 +36,3 @@ private:
     QHash<QString, Akonadi::Item> mItemHash;
 };
 
-#endif

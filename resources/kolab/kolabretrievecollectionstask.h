@@ -7,8 +7,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABRETRIEVECOLLECTIONSTASK_H
-#define KOLABRETRIEVECOLLECTIONSTASK_H
+#pragma once
 
 #include <resourcetask.h>
 
@@ -91,4 +90,3 @@ private Q_SLOTS:
     void onRightsReceived(KJob *job);
 };
 
-#endif

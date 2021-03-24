@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef GMAILPASSWORDREQUESTER_H_
-#define GMAILPASSWORDREQUESTER_H_
+#pragma once
 
 #include "passwordrequesterinterface.h"
 
@@ -36,4 +35,3 @@ private:
     QPointer<KGAPI2::AccountPromise> mPendingPromise;
 };
 
-#endif

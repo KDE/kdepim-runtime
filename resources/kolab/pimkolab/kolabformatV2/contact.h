@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABV2CONTACT_H
-#define KOLABV2CONTACT_H
+#pragma once
 
 #include "kolabbase.h"
 #include <QImage>
@@ -313,4 +312,3 @@ private:
 };
 }
 
-#endif // KOLABCONTACT_H

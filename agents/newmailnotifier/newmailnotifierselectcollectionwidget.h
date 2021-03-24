@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H
-#define NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H
+#pragma once
 
 #include <Collection>
 #include <QIdentityProxyModel>
@@ -61,4 +60,3 @@ private:
     NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel = nullptr;
 };
 
-#endif // NEWMAILNOTIFIERSELECTCOLLECTIONWIDGET_H

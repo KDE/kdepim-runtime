@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSXMLREADER_H
-#define EWSXMLREADER_H
+#pragma once
 
 #include <functional>
 
@@ -178,4 +177,3 @@ extern bool ewsXmlCalendarItemTypeReader(QXmlStreamReader &reader, QVariant &val
 extern bool ewsXmlLegacyFreeBusyStatusReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlResponseTypeReader(QXmlStreamReader &reader, QVariant &val);
 
-#endif

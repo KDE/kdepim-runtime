@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSAKONADITAGSSYNCJOB_H
-#define EWSAKONADITAGSSYNCJOB_H
+#pragma once
 
 #include "ewsjob.h"
 
@@ -35,4 +34,3 @@ private:
     const Akonadi::Collection &mRootCollection;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSUPDATEITEMSTAGSJOB_H
-#define EWSUPDATEITEMSTAGSJOB_H
+#pragma once
 
 #include "ewsjob.h"
 #include <AkonadiCore/Item>
@@ -52,4 +51,3 @@ private:
     EwsClient &mClient;
 };
 
-#endif

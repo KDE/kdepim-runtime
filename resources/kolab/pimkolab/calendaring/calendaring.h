@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABCALENDARING_H
-#define KOLABCALENDARING_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -71,4 +70,3 @@ private:
 } // Namespace
 } // Namespace
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef DAVFREEBUSYHANDLER_H
-#define DAVFREEBUSYHANDLER_H
+#pragma once
 
 #include <KCalendarCore/FreeBusy>
 
@@ -80,4 +79,3 @@ private:
     uint mNextRequestId = 0;
 };
 
-#endif // DAVFREEBUSYHANDLER_H

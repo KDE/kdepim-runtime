@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef ALARMTYPERADIOWIDGET_H
-#define ALARMTYPERADIOWIDGET_H
+#pragma once
 
 #include "singlefileresourceconfigwidget.h"
 #include "ui_alarmtyperadiowidget.h"
@@ -32,4 +31,3 @@ private:
     QButtonGroup *mButtonGroup = nullptr;
 };
 
-#endif // ALARMTYPERADIOWIDGET_H

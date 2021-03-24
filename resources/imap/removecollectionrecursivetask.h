@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef REMOVECOLLECTIONRECURSIVETASK_H
-#define REMOVECOLLECTIONRECURSIVETASK_H
+#pragma once
 
 #include <kimap/listjob.h>
 
@@ -38,4 +37,3 @@ private:
     QScopedPointer<QMapIterator<int, KIMAP::MailBoxDescriptor>> mFolderIterator;
 };
 
-#endif

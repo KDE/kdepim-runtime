@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSTASKHANDLER_H
-#define EWSTASKHANDLER_H
+#pragma once
 
 #include "ewsitemhandler.h"
 
@@ -25,4 +24,3 @@ public:
     static EwsItemHandler *factory();
 };
 
-#endif

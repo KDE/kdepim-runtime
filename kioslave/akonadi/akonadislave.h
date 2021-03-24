@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_SLAVE_H
-#define AKONADI_SLAVE_H
+#pragma once
 
 #include <kio/slavebase.h>
 
@@ -46,4 +45,3 @@ private:
     static KIO::UDSEntry entryForCollection(const Akonadi::Collection &collection);
 };
 
-#endif

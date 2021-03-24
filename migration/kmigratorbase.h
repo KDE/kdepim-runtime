@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KMIGRATORBASE_H
-#define KMIGRATORBASE_H
+#pragma once
 
 #include <AkonadiCore/agentinstance.h>
 #include <QEventLoopLocker>
@@ -65,4 +64,3 @@ private:
     QEventLoopLocker eventLoopLocker;
 };
 
-#endif

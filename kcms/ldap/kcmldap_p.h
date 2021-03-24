@@ -7,8 +7,7 @@
   SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KCMLDAP_H
-#define KCMLDAP_H
+#pragma once
 
 #include <KCModule>
 
@@ -32,4 +31,3 @@ private:
     KLDAP::LdapConfigureWidget *mLdapConfigureWidget = nullptr;
 };
 
-#endif

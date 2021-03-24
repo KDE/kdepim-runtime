@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef AKONADI_ETAGCACHE_H
-#define AKONADI_ETAGCACHE_H
+#pragma once
 
 #include <KDAV/EtagCache>
 
@@ -39,4 +38,3 @@ private Q_SLOTS:
     void onItemFetchJobFinished(KJob *job);
 };
 
-#endif

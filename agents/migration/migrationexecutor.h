@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef MIGRATIONEXECUTOR_H
-#define MIGRATIONEXECUTOR_H
+#pragma once
 
 #include <KJob>
 #include <QQueue>
@@ -44,4 +43,3 @@ private:
     int mAlreadyProcessed = 0;
 };
 
-#endif

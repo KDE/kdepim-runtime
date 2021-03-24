@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef COMPACTPAGE_H
-#define COMPACTPAGE_H
+#pragma once
 
 #include <QWidget>
 
@@ -34,4 +33,3 @@ private: // Members
     Ui::CompactPage ui;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSATTACHMENT_H
-#define EWSATTACHMENT_H
+#pragma once
 
 #include <QDateTime>
 #include <QSharedDataPointer>
@@ -108,4 +107,3 @@ protected:
 Q_DECLARE_METATYPE(EwsAttachment)
 Q_DECLARE_METATYPE(EwsAttachment::List)
 
-#endif

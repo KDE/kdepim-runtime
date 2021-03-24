@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SINGLEFILERESOURCECONFIGBASE_H_
-#define SINGLEFILERESOURCECONFIGBASE_H_
+#pragma once
 
 #include <AkonadiCore/AgentConfigurationBase>
 
@@ -45,4 +44,3 @@ protected:
     QScopedPointer<Akonadi::SingleFileResourceConfigWidget<Settings>> mWidget;
 };
 
-#endif

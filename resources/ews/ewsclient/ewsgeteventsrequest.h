@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSGETEVENTSREQUEST_H
-#define EWSGETEVENTSREQUEST_H
+#pragma once
 
 #include <QSharedPointer>
 
@@ -31,4 +30,3 @@ protected:
     QString mWatermark;
 };
 
-#endif

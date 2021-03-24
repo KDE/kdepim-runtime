@@ -5,8 +5,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef FACEBOOKSETTINGSWIDGET_H_
-#define FACEBOOKSETTINGSWIDGET_H_
+#pragma once
 
 #include <AkonadiCore/AgentConfigurationBase>
 #include <QScopedPointer>
@@ -31,4 +30,3 @@ private:
     QScopedPointer<Ui_FacebookAgentSettingsWidget> ui;
 };
 AKONADI_AGENTCONFIG_FACTORY(FacebookSettingsWidgetFactory, "facebookconfig.json", FacebookSettingsWidget)
-#endif

@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ICALDIRRESOURCE_H
-#define ICALDIRRESOURCE_H
+#pragma once
 
 #include <resourcebase.h>
 
@@ -51,4 +50,3 @@ private:
     QHash<QString, KCalendarCore::Incidence::Ptr> mIncidences;
 };
 
-#endif

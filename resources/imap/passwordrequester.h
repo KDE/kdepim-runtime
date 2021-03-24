@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef PASSWORDREQUESTER_H_
-#define PASSWORDREQUESTER_H_
+#pragma once
 
 #include "passwordrequesterinterface.h"
 
@@ -28,4 +27,3 @@ private:
     ImapResourceBase *mResource = nullptr;
 };
 
-#endif

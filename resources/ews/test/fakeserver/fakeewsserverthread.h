@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FAKEEWSSERVERTHREAD_H
-#define FAKEEWSSERVERTHREAD_H
+#pragma once
 
 #include <QMutex>
 #include <QThread>
@@ -50,4 +49,3 @@ private:
     mutable QMutex mMutex;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MAILDISPATCHERCONFIG_H_
-#define MAILDISPATCHERCONFIG_H_
+#pragma once
 
 #include <AkonadiCore/AgentConfigurationBase>
 
@@ -24,4 +23,3 @@ private:
 
 AKONADI_AGENTCONFIG_FACTORY(MailDispatcherConfigFactory, "maildispatcherconfig.json", MailDispatcherConfig)
 
-#endif

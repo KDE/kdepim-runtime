@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABV2DISTRIBUTIONLIST_H
-#define KOLABV2DISTRIBUTIONLIST_H
+#pragma once
 
 #include "kolabbase.h"
 
@@ -70,5 +69,4 @@ private:
 };
 }
 
-#endif // KOLABDISTRIBUTIONLIST_H
 // kate: space-indent on; indent-width 2; replace-tabs on;

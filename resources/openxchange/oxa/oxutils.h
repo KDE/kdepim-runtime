@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_OXUTILS_H
-#define OXA_OXUTILS_H
+#pragma once
 
 #include <QDateTime>
 #include <QString>
@@ -32,4 +31,3 @@ QDate readDate(const QString &text);
 }
 }
 
-#endif

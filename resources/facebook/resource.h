@@ -4,8 +4,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef FACEBOOK_RESOURCE_H_
-#define FACEBOOK_RESOURCE_H_
+#pragma once
 
 #include <AkonadiAgentBase/ResourceBase>
 
@@ -38,4 +37,3 @@ private:
     KJob *mCurrentJob = nullptr;
 };
 
-#endif

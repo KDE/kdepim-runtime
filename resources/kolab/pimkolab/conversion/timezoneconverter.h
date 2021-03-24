@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef TIMEZONECONVERTER_H
-#define TIMEZONECONVERTER_H
+#pragma once
 
 #include <QString>
 
@@ -20,4 +19,3 @@ private:
     static QString fromGMTOffsetTimezone(const QString &tz);
 };
 
-#endif // TIMEZONECONVERTER_H

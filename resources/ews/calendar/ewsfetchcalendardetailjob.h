@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFETCHCALENDARDETAILJOB_H
-#define EWSFETCHCALENDARDETAILJOB_H
+#pragma once
 
 #include "ewsfetchitemdetailjob.h"
 
@@ -22,4 +21,3 @@ private Q_SLOTS:
     void exceptionItemsFetched(KJob *job);
 };
 
-#endif

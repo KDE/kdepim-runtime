@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef GENERICHANDLER_H
-#define GENERICHANDLER_H
+#pragma once
 
 #include <KGAPI/Types>
 
@@ -91,4 +90,3 @@ protected:
     GoogleSettings *const m_settings;
 };
 
-#endif // GENERICHANDLER_H

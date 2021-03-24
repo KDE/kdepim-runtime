@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RETRIEVEITEMTASK_H
-#define RETRIEVEITEMTASK_H
+#pragma once
 
 #include <kimap/fetchjob.h>
 
@@ -36,4 +35,3 @@ private:
     bool m_messageReceived = false;
 };
 
-#endif

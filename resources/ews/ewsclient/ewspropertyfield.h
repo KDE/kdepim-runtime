@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSPROPERTYFIELD_H
-#define EWSPROPERTYFIELD_H
+#pragma once
 
 #include <QSharedDataPointer>
 #include <QXmlStreamWriter>
@@ -57,4 +56,3 @@ uint qHash(const EwsPropertyField &prop, uint seed);
 
 QDebug operator<<(QDebug debug, const EwsPropertyField &prop);
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ISOLATEDTESTBASE_H
-#define ISOLATEDTESTBASE_H
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -141,4 +140,3 @@ public:
                                           const ReplyCallback &callback = ReplyCallback());
 };
 
-#endif

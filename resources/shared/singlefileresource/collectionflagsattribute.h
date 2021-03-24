@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_COLLECTIONFLAGSATTRIBUTE_H
-#define AKONADI_COLLECTIONFLAGSATTRIBUTE_H
+#pragma once
 
 #include "akonadi-singlefileresource_export.h"
 #include <attribute.h>
@@ -28,4 +27,3 @@ private:
 };
 }
 
-#endif

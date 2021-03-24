@@ -9,8 +9,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RESOURCES_IMAP_IMAPRESOURCEBASE_H
-#define RESOURCES_IMAP_IMAPRESOURCEBASE_H
+#pragma once
 
 #include "resourcestate.h"
 #include "resourcestateinterface.h"
@@ -151,4 +150,3 @@ private:
     QChar m_separatorCharacter;
 };
 
-#endif

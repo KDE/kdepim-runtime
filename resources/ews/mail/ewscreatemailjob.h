@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSCREATEMAILJOB_H
-#define EWSCREATEMAILJOB_H
+#pragma once
 
 #include "ewscreateitemjob.h"
 
@@ -28,4 +27,3 @@ private:
     bool mSend = false;
 };
 
-#endif

@@ -6,8 +6,7 @@
  *
  */
 
-#ifndef _POP3_H
-#define _POP3_H
+#pragma once
 
 #include <QUrl>
 #include <kio/tcpslavebase.h>
@@ -106,4 +105,3 @@ protected:
     ssize_t readBufferLen;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef VCARDRESOURCE_H
-#define VCARDRESOURCE_H
+#pragma once
 
 #include "settings.h"
 #include "singlefileresource.h"
@@ -42,4 +41,3 @@ private:
     KContacts::VCardConverter mConverter;
 };
 
-#endif

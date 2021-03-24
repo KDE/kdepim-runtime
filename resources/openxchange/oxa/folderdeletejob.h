@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_FOLDERDELETEJOB_H
-#define OXA_FOLDERDELETEJOB_H
+#pragma once
 
 #include "folder.h"
 
@@ -48,4 +47,3 @@ private:
 };
 }
 
-#endif

@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O0REQUESTPARAMETER_H
-#define O0REQUESTPARAMETER_H
+#pragma once
 
 /// Request parameter (name-value pair) participating in authentication.
 struct O0RequestParameter {
@@ -22,4 +21,3 @@ struct O0RequestParameter {
     QByteArray value;
 };
 
-#endif // O0REQUESTPARAMETER_H

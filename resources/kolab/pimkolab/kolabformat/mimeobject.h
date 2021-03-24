@@ -5,8 +5,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef MIMEOBJECT_H
-#define MIMEOBJECT_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -85,4 +84,3 @@ private:
     //@endcond
 };
 }
-#endif

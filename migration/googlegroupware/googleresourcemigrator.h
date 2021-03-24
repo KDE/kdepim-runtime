@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef GOOGLERESOURCEMIGRATOR_H
-#define GOOGLERESOURCEMIGRATOR_H
+#pragma once
 
 #include <agentmanager.h>
 #include <migratorbase.h>
@@ -59,4 +58,3 @@ private:
     int mMigrationsDone = 0;
 };
 
-#endif

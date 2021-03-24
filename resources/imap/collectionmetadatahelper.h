@@ -3,8 +3,7 @@
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
-#ifndef COLLECTIONMETADATAHELPER_H
-#define COLLECTIONMETADATAHELPER_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <kimap/acl.h>
@@ -16,4 +15,3 @@ public:
     static bool applyRights(Akonadi::Collection &collection, const KIMAP::Acl::Rights imapRights, KIMAP::Acl::Rights parentRights);
 };
 
-#endif

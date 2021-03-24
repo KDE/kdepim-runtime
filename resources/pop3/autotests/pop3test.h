@@ -4,8 +4,7 @@
    SPDX-License-Identifier: LGPL-2.0-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
 
-#ifndef POP3TEST_H
-#define POP3TEST_H
+#pragma once
 
 #include "fakeserver/fakeserver.h"
 #include "maildirsettings.h"
@@ -57,4 +56,3 @@ private:
     QString mMaildirPath;
 };
 
-#endif

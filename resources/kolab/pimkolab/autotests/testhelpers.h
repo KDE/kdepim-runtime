@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef TESTHELPERS_H
-#define TESTHELPERS_H
+#pragma once
 
 #include <contact.h>
 
@@ -277,4 +276,3 @@ template<> char *toString(const Kolab::Duration &p)
 }
 }
 
-#endif

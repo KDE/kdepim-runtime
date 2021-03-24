@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSOCCURRENCE_H
-#define EWSOCCURRENCE_H
+#pragma once
 
 #include <QDateTime>
 #include <QMetaType>
@@ -44,4 +43,3 @@ protected:
 Q_DECLARE_METATYPE(EwsOccurrence)
 Q_DECLARE_METATYPE(EwsOccurrence::List)
 
-#endif

@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_FOLDERUTILS_H
-#define OXA_FOLDERUTILS_H
+#pragma once
 
 class QDomDocument;
 class QDomElement;
@@ -35,4 +34,3 @@ void addFolderElements(QDomDocument &document, QDomElement &propElement, const F
 }
 }
 
-#endif

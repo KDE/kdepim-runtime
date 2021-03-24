@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SENTACTIONHANDLER_H
-#define SENTACTIONHANDLER_H
+#pragma once
 
 #include <MailTransportAkonadi/SentActionAttribute>
 
@@ -27,4 +26,3 @@ private Q_SLOTS:
     void itemFetchResult(KJob *job);
 };
 
-#endif

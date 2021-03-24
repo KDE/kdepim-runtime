@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O0ABSTRACTSTORE_H
-#define O0ABSTRACTSTORE_H
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -26,4 +25,3 @@ public:
     virtual void setValue(const QString &key, const QString &value) = 0;
 };
 
-#endif // O0ABSTRACTSTORE_H

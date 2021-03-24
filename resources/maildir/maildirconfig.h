@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MAILDIRCONFIG_H
-#define MAILDIRCONFIG_H
+#pragma once
 
 #include <AkonadiCore/AgentConfigurationBase>
 
@@ -29,4 +28,3 @@ private:
     QScopedPointer<ConfigWidget> mWidget;
 };
 
-#endif

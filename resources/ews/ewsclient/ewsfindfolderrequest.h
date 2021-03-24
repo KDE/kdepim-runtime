@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFINDFOLDERREQUEST_H
-#define EWSFINDFOLDERREQUEST_H
+#pragma once
 
 #include "ewsfolder.h"
 #include "ewsfoldershape.h"
@@ -44,4 +43,3 @@ private:
     QList<EwsFolder> mFolders;
 };
 
-#endif

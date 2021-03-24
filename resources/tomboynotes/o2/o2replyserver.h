@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O2REPLYSERVER_H
-#define O2REPLYSERVER_H
+#pragma once
 
 #include <QByteArray>
 #include <QMap>
@@ -35,4 +34,3 @@ protected:
     QByteArray replyContent_;
 };
 
-#endif // O2REPLYSERVER_H

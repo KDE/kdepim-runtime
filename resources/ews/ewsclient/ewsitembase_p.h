@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSITEMBASE_P_H
-#define EWSITEMBASE_P_H
+#pragma once
 
 #include "ewsid.h"
 #include <QHash>
@@ -41,4 +40,3 @@ template<> Q_INLINE_TEMPLATE EwsItemBasePrivate *QSharedDataPointer<EwsItemBaseP
 
 Q_DECLARE_METATYPE(EwsItemBasePrivate::PropertyHash)
 
-#endif

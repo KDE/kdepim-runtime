@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSERVERVERSION_H
-#define EWSSERVERVERSION_H
+#pragma once
 
 #include <QString>
 
@@ -140,4 +139,3 @@ private:
 
 QDebug operator<<(const QDebug dbg, const EwsServerVersion &version);
 
-#endif

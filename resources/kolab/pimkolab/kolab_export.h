@@ -5,8 +5,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef KOLAB_EXPORT_H
-#define KOLAB_EXPORT_H
+#pragma once
 
 // #include <kdemacros.h>
 
@@ -34,4 +33,3 @@
  *  Contains all the KOLAB library global classes, objects, and functions.
  */
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TOMBOYCOLLECTIONSDOWNLOADJOB_H
-#define TOMBOYCOLLECTIONSDOWNLOADJOB_H
+#pragma once
 
 #include "tomboyjobbase.h"
 #include <AkonadiCore/Collection>
@@ -30,4 +29,3 @@ private:
     const int mRefreshInterval;
 };
 
-#endif // TOMBOYCOLLECTIONSDOWNLOADJOB_H

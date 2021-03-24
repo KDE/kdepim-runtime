@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef ETESYNCCLIENTSTATE_H
-#define ETESYNCCLIENTSTATE_H
+#pragma once
 
 #include "etebaseadapter.h"
 #include "settings.h"
@@ -79,4 +78,3 @@ private:
     QPointer<KWallet::Wallet> mWallet;
 };
 
-#endif // ETESYNCSETTINGS_H

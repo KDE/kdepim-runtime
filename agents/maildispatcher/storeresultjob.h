@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef STORERESULTJOB_H
-#define STORERESULTJOB_H
+#pragma once
 
 #include <TransactionSequence>
 
@@ -54,4 +53,3 @@ private:
     QString mMessage;
 };
 
-#endif

@@ -4,8 +4,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef FACEBOOK_LISTJOB_H_
-#define FACEBOOK_LISTJOB_H_
+#pragma once
 
 #include <KCompositeJob>
 
@@ -51,4 +50,3 @@ private:
     QMap<QString, QString> mQueries;
 };
 
-#endif

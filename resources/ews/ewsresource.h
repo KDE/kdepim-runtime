@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSRESOURCE_H
-#define EWSRESOURCE_H
+#pragma once
 
 #include <QScopedPointer>
 
@@ -157,4 +156,3 @@ private:
     QScopedPointer<EwsSettings> mSettings;
 };
 
-#endif

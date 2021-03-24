@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef DUMMYRESOURCESTATE_H
-#define DUMMYRESOURCESTATE_H
+#pragma once
 
 #include <QPair>
 #include <QVariant>
@@ -169,4 +168,3 @@ private:
     QList<QPair<QByteArray, QVariant>> m_calls;
 };
 
-#endif

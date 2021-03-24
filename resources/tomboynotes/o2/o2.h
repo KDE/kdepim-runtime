@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O2_H
-#define O2_H
+#pragma once
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -170,4 +169,3 @@ protected:
     GrantFlow grantFlow_;
 };
 
-#endif // O2_H

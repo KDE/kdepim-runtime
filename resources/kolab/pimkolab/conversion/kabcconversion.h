@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABKABCCONVERSION_H
-#define KOLABKABCCONVERSION_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -29,4 +28,3 @@ KOLAB_EXPORT Kolab::DistList fromKABC(const KContacts::ContactGroup &);
 }
 }
 
-#endif

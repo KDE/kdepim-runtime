@@ -4,8 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
 */
 
-#ifndef SIMPLECRYPT_H
-#define SIMPLECRYPT_H
+#pragma once
 #include <QString>
 #include <QVector>
 
@@ -215,4 +214,3 @@ private:
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(O0SimpleCrypt::CryptoFlags)
 
-#endif // SimpleCrypt_H

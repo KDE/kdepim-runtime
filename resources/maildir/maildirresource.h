@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MAILDIR_RESOURCE_H
-#define MAILDIR_RESOURCE_H
+#pragma once
 
 #include <collection.h>
 #include <resourcebase.h>
@@ -88,4 +87,3 @@ private:
     QTimer *mChangedCleanerTimer = nullptr;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef NEWMAILNOTIFIERSETTINGSWIDGET_H
-#define NEWMAILNOTIFIERSETTINGSWIDGET_H
+#pragma once
 
 #include <AkonadiCore/AgentConfigurationBase>
 #include <AkonadiCore/Collection>
@@ -41,4 +40,3 @@ private:
 
 AKONADI_AGENTCONFIG_FACTORY(NewMailNotifierSettingsFactory, "newmailnotifierconfig.json", NewMailNotifierSettingsWidget)
 
-#endif // NEWMAILNOTIFIERSETTINGSWIDGET_H

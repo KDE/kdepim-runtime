@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MESSAGEHELPER_H
-#define MESSAGEHELPER_H
+#pragma once
 
 #include <AkonadiCore/Item>
 #include <KMime/Message>
@@ -26,4 +25,3 @@ public:
                                                 bool &ok) const;
 };
 
-#endif

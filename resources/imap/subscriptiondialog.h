@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SUBSCRIPTIONDIALOG_H
-#define SUBSCRIPTIONDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QSortFilterProxyModel>
@@ -91,4 +90,3 @@ private:
     QPushButton *mUser1Button = nullptr;
 };
 
-#endif

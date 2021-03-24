@@ -5,8 +5,7 @@
     SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef TASKHANDLER_H
-#define TASKHANDLER_H
+#pragma once
 
 #include "generichandler.h"
 
@@ -38,4 +37,3 @@ private:
     void doRemoveTasks(const Akonadi::Item::List &items);
 };
 
-#endif // TASKHANDLER_H

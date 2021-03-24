@@ -9,8 +9,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RESOURCES_IMAP_IMAPIDLEMANAGER_H
-#define RESOURCES_IMAP_IMAPIDLEMANAGER_H
+#pragma once
 
 #include "resourcestateinterface.h"
 
@@ -69,4 +68,3 @@ private:
     qint64 m_lastRecentCount = -1;
 };
 
-#endif

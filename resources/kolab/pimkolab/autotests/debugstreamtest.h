@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef DEBUGSTREAMTEST_H
-#define DEBUGSTREAMTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -18,4 +17,3 @@ private Q_SLOTS:
     void testHasError();
 };
 
-#endif // DEBUGSTREAMTEST_H

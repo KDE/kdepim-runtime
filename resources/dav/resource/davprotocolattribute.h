@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef DAVPROTOCOLATTRIBUTE_H
-#define DAVPROTOCOLATTRIBUTE_H
+#pragma once
 
 #include <attribute.h>
 
@@ -26,4 +25,3 @@ private:
     int mDavProtocol = 0;
 };
 
-#endif

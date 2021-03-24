@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSATTENDEE_H
-#define EWSATTENDEE_H
+#pragma once
 
 #include <QDateTime>
 #include <QMetaType>
@@ -43,4 +42,3 @@ protected:
 Q_DECLARE_METATYPE(EwsAttendee)
 Q_DECLARE_METATYPE(EwsAttendee::List)
 
-#endif

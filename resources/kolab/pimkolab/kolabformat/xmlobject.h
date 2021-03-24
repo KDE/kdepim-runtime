@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-#ifndef KOLABXMLOBJECT_H
-#define KOLABXMLOBJECT_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -82,4 +81,3 @@ private:
     std::string mWrittenUID;
 };
 }
-#endif // KOLABXMLOBJECT_H

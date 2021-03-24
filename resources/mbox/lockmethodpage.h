@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef LOCKMETHODPAGE_H
-#define LOCKMETHODPAGE_H
+#pragma once
 
 #include <QWidget>
 
@@ -24,4 +23,3 @@ private:
     Ui::LockFilePage ui;
 };
 
-#endif

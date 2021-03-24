@@ -5,8 +5,7 @@
     SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef CALENDARHANDLER_H
-#define CALENDARHANDLER_H
+#pragma once
 
 #include "generichandler.h"
 #include <QObject>
@@ -57,4 +56,3 @@ private:
     GoogleSettings *m_settings = nullptr;
 };
 
-#endif // CALENDARHANDLER_H

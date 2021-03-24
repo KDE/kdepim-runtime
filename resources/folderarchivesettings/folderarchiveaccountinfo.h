@@ -4,8 +4,7 @@
    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FOLDERARCHIVEACCOUNTINFO_H
-#define FOLDERARCHIVEACCOUNTINFO_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <KConfigGroup>
@@ -49,4 +48,3 @@ private:
     bool mKeepExistingStructure = false;
 };
 
-#endif // FOLDERARCHIVEACCOUNTINFO_H

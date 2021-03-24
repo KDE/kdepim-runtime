@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef HIGHESTMODSEQATTRIBUTE_H
-#define HIGHESTMODSEQATTRIBUTE_H
+#pragma once
 
 #include <Attribute>
 
@@ -26,4 +25,3 @@ private:
     qint64 m_highestModSeq;
 };
 
-#endif // HIGHESTMODSEQATTRIBUTE_H

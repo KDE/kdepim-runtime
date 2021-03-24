@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef TIMEZONETEST_H
-#define TIMEZONETEST_H
+#pragma once
 #include <QObject>
 
 class TimezoneTest : public QObject
@@ -28,4 +27,3 @@ private Q_SLOTS:
     void localTimezone();
 };
 
-#endif // TIMEZONETEST_H

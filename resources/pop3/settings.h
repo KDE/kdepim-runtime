@@ -4,8 +4,7 @@
    SPDX-License-Identifier: LGPL-2.0-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#pragma once
 
 #include "settingsbase.h"
 
@@ -38,4 +37,3 @@ private:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Settings::Options)
 
-#endif

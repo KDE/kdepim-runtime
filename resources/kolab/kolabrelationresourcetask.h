@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABRELATIONRESOURCETASK_H
-#define KOLABRELATIONRESOURCETASK_H
+#pragma once
 
 #include <resourcetask.h>
 
@@ -39,4 +38,3 @@ private Q_SLOTS:
     void onLocalCreateDone(KJob *job);
 };
 
-#endif // KOLABRELATIONRESOURCETASK_H

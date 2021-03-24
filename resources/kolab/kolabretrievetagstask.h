@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABRETRIEVETAGSTASK_H
-#define KOLABRETRIEVETAGSTASK_H
+#pragma once
 
 #include "kolabrelationresourcetask.h"
 #include <tag.h>
@@ -46,4 +45,3 @@ private:
     void taskComplete();
 };
 
-#endif // KOLABCHANGETAGTASK_H

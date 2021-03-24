@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef FORMATHELPERS_H
-#define FORMATHELPERS_H
+#pragma once
 
 #include <kolab_export.h>
 #include <string>
@@ -33,4 +32,3 @@ KOLAB_EXPORT FolderType guessFolderTypeFromName(const std::string &name);
 KOLAB_EXPORT std::string nameForFolderType(FolderType type);
 }
 
-#endif

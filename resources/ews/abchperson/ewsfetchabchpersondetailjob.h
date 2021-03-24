@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFETCHABCHPERSONDETAILJOB_H
-#define EWSFETCHABCHPERSONDETAILJOB_H
+#pragma once
 
 #include "ewsfetchitemdetailjob.h"
 
@@ -20,4 +19,3 @@ protected:
     void processItems(const QList<EwsGetItemRequest::Response> &responses) override;
 };
 
-#endif

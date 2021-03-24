@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O0BASEAUTH_H
-#define O0BASEAUTH_H
+#pragma once
 
 #include <QByteArray>
 #include <QObject>
@@ -121,4 +120,3 @@ protected:
     QVariantMap extraTokens_;
 };
 
-#endif // O0BASEAUTH

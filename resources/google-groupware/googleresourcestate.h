@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef GOOGLERESOURCESTATE_H
-#define GOOGLERESOURCESTATE_H
+#pragma once
 
 #include "googleresourcestateinterface.h"
 
@@ -67,4 +66,3 @@ private:
     GoogleResource *const m_resource;
 };
 
-#endif // GOOGLERESOURCESTATE_H

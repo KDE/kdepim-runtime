@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_SINGLEFILERESOURCECONFIGWIDGETBASE_H
-#define AKONADI_SINGLEFILERESOURCECONFIGWIDGETBASE_H
+#pragma once
 
 #include "akonadi-singlefileresource_export.h"
 
@@ -125,4 +124,3 @@ Q_SIGNALS:
 };
 }
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFINDITEMREQUEST_H
-#define EWSFINDITEMREQUEST_H
+#pragma once
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"
@@ -94,4 +93,3 @@ private:
     bool mIncludesLastItem;
 };
 
-#endif

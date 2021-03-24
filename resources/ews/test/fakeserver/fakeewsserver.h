@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FAKEEWSSERVER_H
-#define FAKEEWSSERVER_H
+#pragma once
 
 #include <functional>
 
@@ -66,4 +65,3 @@ private:
     friend class FakeEwsConnection;
 };
 
-#endif

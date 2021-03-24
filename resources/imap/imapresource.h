@@ -9,8 +9,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef IMAPRESOURCE_H
-#define IMAPRESOURCE_H
+#pragma once
 
 #include <imapresourcebase.h>
 
@@ -33,4 +32,3 @@ private Q_SLOTS:
     void onConfigurationDone(int result);
 };
 
-#endif // IMAPRESOURCE_H

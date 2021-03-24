@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSGETITEMREQUEST_H
-#define EWSGETITEMREQUEST_H
+#pragma once
 
 #include <QList>
 
@@ -55,4 +54,3 @@ private:
     QList<Response> mResponses;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSMODIFYITEMFLAGSJOB_H
-#define EWSMODIFYITEMFLAGSJOB_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
@@ -42,4 +41,3 @@ private Q_SLOTS:
     void itemModifyFinished(KJob *job);
 };
 
-#endif

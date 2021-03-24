@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSITEMBASE_H
-#define EWSITEMBASE_H
+#pragma once
 
 #include <QSharedDataPointer>
 
@@ -41,4 +40,3 @@ protected:
     QSharedDataPointer<EwsItemBasePrivate> d;
 };
 
-#endif

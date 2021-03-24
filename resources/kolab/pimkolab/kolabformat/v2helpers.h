@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef V2HELPERS_H
-#define V2HELPERS_H
+#pragma once
 
 #include "kolabdefinitions.h"
 
@@ -85,4 +84,3 @@ QByteArray noteToKolabXML(const KMime::Message::Ptr &msg);
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language);
 }
 
-#endif

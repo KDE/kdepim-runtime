@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSDELETEITEMREQUEST_H
-#define EWSDELETEITEMREQUEST_H
+#pragma once
 
 #include <QList>
 
@@ -60,4 +59,3 @@ private:
     QList<Response> mResponses;
 };
 
-#endif

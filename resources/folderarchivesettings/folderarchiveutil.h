@@ -4,8 +4,7 @@
    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FOLDERARCHIVEUTIL_H
-#define FOLDERARCHIVEUTIL_H
+#pragma once
 
 #include <QString>
 namespace FolderArchive
@@ -17,4 +16,3 @@ QString configFileName();
 }
 }
 
-#endif // FOLDERARCHIVEUTIL_H

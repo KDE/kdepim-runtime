@@ -7,8 +7,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABV2_NOTE_H
-#define KOLABV2_NOTE_H
+#pragma once
 
 #include <kcalendarcore/journal.h>
 
@@ -85,4 +84,3 @@ protected:
 };
 }
 
-#endif // KOLAB_NOTE_H

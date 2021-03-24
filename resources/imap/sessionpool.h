@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SESSIONPOOL_H
-#define SESSIONPOOL_H
+#pragma once
 
 #include <QObject>
 #include <QStringList>
@@ -118,4 +117,3 @@ private:
     QByteArray m_clientId;
 };
 
-#endif

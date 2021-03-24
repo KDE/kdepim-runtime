@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef CTAGATTRIBUTE_H
-#define CTAGATTRIBUTE_H
+#pragma once
 
 #include <AkonadiCore/attribute.h>
 
@@ -28,4 +27,3 @@ private:
     QString mCTag;
 };
 
-#endif

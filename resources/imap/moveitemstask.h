@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MOVEITEMSTASK_H
-#define MOVEITEMSTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -44,4 +43,3 @@ private:
     QMap<Akonadi::Item::Id /* original ID */, QByteArray> m_messageIds;
 };
 
-#endif

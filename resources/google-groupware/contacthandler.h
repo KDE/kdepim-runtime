@@ -5,8 +5,7 @@
     SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef CONTACTHANDLER_H
-#define CONTACTHANDLER_H
+#pragma once
 
 #include "generichandler.h"
 #include <KGAPI/Types>
@@ -45,4 +44,3 @@ private:
     QMap<QString, Akonadi::Collection> m_collections;
 };
 
-#endif // CONTACTHANDLER_H

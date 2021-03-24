@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSGLOBALTAGSREADJOB_H
-#define EWSGLOBALTAGSREADJOB_H
+#pragma once
 
 #include "ewsjob.h"
 
@@ -42,4 +41,3 @@ private:
     Akonadi::Tag::List mTags;
 };
 
-#endif

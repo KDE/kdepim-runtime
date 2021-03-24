@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
-#define GOOGLE_CALENDAR_DEFAULTREMINDERATTRIBUTE_H
+#pragma once
 
 #include <AkonadiCore/Attribute>
 
@@ -31,4 +30,3 @@ private:
     KGAPI2::RemindersList m_reminders;
 };
 
-#endif // DEFAULTREMINDERATTRIBUTE_H

@@ -7,8 +7,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABV2_TASK_H
-#define KOLABV2_TASK_H
+#pragma once
 
 #include "incidence.h"
 
@@ -105,4 +104,3 @@ protected:
 };
 }
 
-#endif // KOLAB_TASK_H

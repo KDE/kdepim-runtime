@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SESSIONUIPROXY_H
-#define SESSIONUIPROXY_H
+#pragma once
 
 #include <kimap/sessionuiproxy.h>
 #include <kio/sslui.h>
@@ -24,4 +23,3 @@ public:
     }
 };
 
-#endif

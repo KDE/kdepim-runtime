@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef XMLOBJECTTEST_H
-#define XMLOBJECTTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -17,4 +16,3 @@ private Q_SLOTS:
     void testDontCrash();
 };
 
-#endif // XMLOBJECTTEST_H

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSETTINGS_UT_MOCK_H
-#define EWSSETTINGS_UT_MOCK_H
+#pragma once
 
 #include <QLoggingCategory>
 #include <QWidget>
@@ -49,4 +48,3 @@ public:
     Config mConfig;
 };
 
-#endif /* EWSSETTINGSBASE_H */

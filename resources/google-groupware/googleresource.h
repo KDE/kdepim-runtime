@@ -4,8 +4,7 @@
    SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef GOOGLERESOURCE_H
-#define GOOGLERESOURCE_H
+#pragma once
 
 #include <Akonadi/Calendar/FreeBusyProviderBase>
 #include <AkonadiAgentBase/AgentBase>
@@ -100,4 +99,3 @@ private:
     GenericHandler *fetchHandlerForCollection(const Akonadi::Collection &collection);
 };
 
-#endif // GOOGLERESOURCE_H

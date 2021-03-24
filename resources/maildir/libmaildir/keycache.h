@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.1-or-later
 */
 
-#ifndef KEYCACHE_H
-#define KEYCACHE_H
+#pragma once
 
 /** @brief a cache for the maildir keys (file names in cur/new folders).
  *  It is used to find if a file is in cur or new
@@ -61,4 +60,3 @@ private:
     static KeyCache *mSelf;
 };
 
-#endif // KEYCACHE_H

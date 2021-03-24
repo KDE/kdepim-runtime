@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABSETTINGS_H
-#define KOLABSETTINGS_H
+#pragma once
 
 #include "settings.h"
 
@@ -19,4 +18,3 @@ protected:
     virtual void changeDefaults();
 };
 
-#endif

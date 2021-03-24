@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABCHANGEITEMSRELATIONSTASK_H
-#define KOLABCHANGEITEMSRELATIONSTASK_H
+#pragma once
 
 #include "kolabrelationresourcetask.h"
 
@@ -39,4 +38,3 @@ private:
     bool mAdding = false;
 };
 
-#endif

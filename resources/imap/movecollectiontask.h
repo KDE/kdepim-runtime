@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MOVECOLLECTIONTASK_H
-#define MOVECOLLECTIONTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -33,4 +32,3 @@ private:
     Akonadi::Collection m_collection;
 };
 
-#endif

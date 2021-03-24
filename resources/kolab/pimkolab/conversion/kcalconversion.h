@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABKCALCONVERSION_H
-#define KOLABKCALCONVERSION_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -35,4 +34,3 @@ KOLAB_EXPORT Kolab::Journal fromKCalendarCore(const KCalendarCore::Journal &);
 }
 }
 
-#endif

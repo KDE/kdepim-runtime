@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef CHANGEITEMTASK_H
-#define CHANGEITEMTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -44,4 +43,3 @@ private:
     qint64 m_newUid = 0;
 };
 
-#endif

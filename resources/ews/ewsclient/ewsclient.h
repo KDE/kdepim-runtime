@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSCLIENT_H
-#define EWSCLIENT_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -84,4 +83,3 @@ private:
     friend class EwsRequest;
 };
 
-#endif

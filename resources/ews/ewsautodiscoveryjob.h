@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSAUTODISCOVERYJOB_H
-#define EWSAUTODISCOVERYJOB_H
+#pragma once
 
 #include <QQueue>
 
@@ -52,4 +51,3 @@ private:
     bool mUsedCreds = false;
 };
 
-#endif

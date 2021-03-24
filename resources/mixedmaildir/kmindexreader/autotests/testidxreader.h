@@ -6,8 +6,7 @@
  *
  */
 
-#ifndef TESTIDXREADER_H
-#define TESTIDXREADER_H
+#pragma once
 
 #include <QObject>
 
@@ -24,4 +23,3 @@ private Q_SLOTS:
 private:
 };
 
-#endif // TESTIDXREADER_H

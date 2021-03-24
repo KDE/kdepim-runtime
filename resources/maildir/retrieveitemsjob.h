@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MAILDIR_RETRIEVEITEMSJOB_H
-#define MAILDIR_RETRIEVEITEMSJOB_H
+#pragma once
 
 #include <collection.h>
 #include <item.h>
@@ -56,4 +55,3 @@ private:
     QString m_listingPath;
 };
 
-#endif

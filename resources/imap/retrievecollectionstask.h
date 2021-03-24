@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RETRIEVECOLLECTIONSTASK_H
-#define RETRIEVECOLLECTIONSTASK_H
+#pragma once
 
 #include <collection.h>
 
@@ -37,4 +36,3 @@ protected:
     QSet<QString> m_fullReportedCollections;
 };
 
-#endif

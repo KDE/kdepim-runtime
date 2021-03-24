@@ -4,8 +4,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef GRAPH_H_
-#define GRAPH_H_
+#pragma once
 
 #include <kio/storedtransferjob.h>
 
@@ -25,4 +24,3 @@ RSVP rsvpFromString(const QString &rsvp);
 QString rsvpToString(RSVP rsvp);
 }
 
-#endif // GRAPH_H_

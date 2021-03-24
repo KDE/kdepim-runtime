@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSRECURRENCE_H
-#define EWSRECURRENCE_H
+#pragma once
 
 #include <KCalendarCore/Recurrence>
 
@@ -34,4 +33,3 @@ private:
 
 Q_DECLARE_METATYPE(EwsRecurrence)
 
-#endif

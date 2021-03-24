@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef LOGINJOB_H
-#define LOGINJOB_H
+#pragma once
 
 #include <KJob>
 
@@ -47,4 +46,3 @@ private:
 };
 } // namespace EteSyncAPI
 
-#endif

@@ -7,8 +7,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#pragma once
 
 #include "settingsbase.h"
 
@@ -117,4 +116,3 @@ private:
     QList<UrlConfiguration *> mToDeleteUrlConfigs;
 };
 
-#endif

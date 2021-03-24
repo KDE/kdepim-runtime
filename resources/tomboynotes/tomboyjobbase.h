@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TOMBOYJOBBASE_H
-#define TOMBOYJOBBASE_H
+#pragma once
 
 #include "o1tomboy.h"
 #include "o2/o1requestor.h"
@@ -36,4 +35,3 @@ protected:
     void checkReplyError();
 };
 
-#endif // TOMBOYJOBBASE_H

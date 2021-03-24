@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef KALARMDIRRESOURCE_H
-#define KALARMDIRRESOURCE_H
+#pragma once
 
 #include <kalarmcal/kaevent.h>
 
@@ -105,4 +104,3 @@ private:
     bool mWaitingToRetrieve = false; // retrieveCollections() needs to be called
 };
 
-#endif

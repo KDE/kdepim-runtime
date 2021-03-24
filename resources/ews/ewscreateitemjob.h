@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSCREATEITEMJOB_H
-#define EWSCREATEITEMJOB_H
+#pragma once
 
 #include "ewsjob.h"
 #include <AkonadiCore/Collection>
@@ -41,4 +40,3 @@ protected:
     EwsTagStore *const mTagStore;
 };
 
-#endif

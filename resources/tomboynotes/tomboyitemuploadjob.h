@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TOMBOYITEMUPLOADJOB_H
-#define TOMBOYITEMUPLOADJOB_H
+#pragma once
 
 #include "tomboyjobbase.h"
 #include <AkonadiCore/Item>
@@ -41,4 +40,3 @@ private:
     int mRemoteRevision;
 };
 
-#endif // TOMBOYITEMUPLOADJOB_H

@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ICALRESOURCEBASE_H
-#define ICALRESOURCEBASE_H
+#pragma once
 
 #include "settings.h"
 #include "singlefileresource.h"
@@ -89,4 +88,3 @@ template<typename PayloadPtr> bool ICalResourceBase::checkItemAddedChanged(const
     return true;
 }
 
-#endif

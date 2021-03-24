@@ -4,8 +4,7 @@
  *    SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#ifndef TOKENJOBS_H_
-#define TOKENJOBS_H_
+#pragma once
 
 #include <KJob>
 
@@ -68,4 +67,3 @@ protected:
     void doStart() override;
 };
 
-#endif

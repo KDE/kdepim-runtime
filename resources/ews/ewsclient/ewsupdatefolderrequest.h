@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSUPDATEFOLDERREQUEST_H
-#define EWSUPDATEFOLDERREQUEST_H
+#pragma once
 
 #include <QList>
 #include <QSharedPointer>
@@ -131,4 +130,3 @@ private:
     QList<Response> mResponses;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TOMBOYNOTESRESOURCE_H
-#define TOMBOYNOTESRESOURCE_H
+#pragma once
 
 #include <AkonadiAgentBase/ResourceBase>
 #include <KIO/AccessManager>
@@ -61,4 +60,3 @@ private:
     KIO::AccessManager *mManager = nullptr;
 };
 
-#endif

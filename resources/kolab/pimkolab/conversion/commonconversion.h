@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABCOMMONCONVERSION_H
-#define KOLABCOMMONCONVERSION_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -46,4 +45,3 @@ inline QString fromStdString(const std::string &s)
 }
 }
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TOMBOYSERVERAUTHENTICATEJOB_H
-#define TOMBOYSERVERAUTHENTICATEJOB_H
+#pragma once
 
 #include "tomboyjobbase.h"
 #include <QString>
@@ -38,4 +37,3 @@ private:
     QWebEngineView *const mWebView;
 };
 
-#endif // TOMBOYSERVERAUTHENTICATEJOB_H

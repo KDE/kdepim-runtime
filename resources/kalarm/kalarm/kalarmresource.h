@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef KALARMRESOURCE_H
-#define KALARMRESOURCE_H
+#pragma once
 
 #include "icalresourcebase.h"
 
@@ -62,4 +61,3 @@ private:
     QString mBackupFile; // backup file name, if another process has changed the calendar file
 };
 
-#endif

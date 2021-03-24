@@ -5,8 +5,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef IMAPTESTBASE_H
-#define IMAPTESTBASE_H
+#pragma once
 
 #include <kimaptest/fakeserver.h>
 
@@ -45,4 +44,3 @@ private Q_SLOTS:
     void setupTestCase();
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSETTINGS_H
-#define EWSSETTINGS_H
+#pragma once
 
 #ifdef EWSSETTINGS_UNITTEST
 #include "ewssettings_ut_mock.h"
@@ -69,4 +68,3 @@ private:
     QPointer<KPasswordDialog> mPasswordDlg;
 };
 
-#endif

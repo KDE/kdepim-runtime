@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef O1TOMBOY_H
-#define O1TOMBOY_H
+#pragma once
 
 #include "o2/o1.h"
 
@@ -23,4 +22,3 @@ public:
     void restoreAuthData(const QString &token, const QString &secret);
 };
 
-#endif // O1TOMBOY_H

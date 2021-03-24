@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MBOX_RESOURCE_H
-#define MBOX_RESOURCE_H
+#pragma once
 
 #include "settings.h"
 #include "singlefileresource.h"
@@ -50,4 +49,3 @@ private:
     KMBox::MBox *mMBox = nullptr;
 };
 
-#endif

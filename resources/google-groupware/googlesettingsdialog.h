@@ -5,8 +5,7 @@
     SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef GOOGLESETTINGSDIALOG_H
-#define GOOGLESETTINGSDIALOG_H
+#pragma once
 
 #include <KGAPI/Types>
 #include <QDialog>
@@ -46,4 +45,3 @@ private Q_SLOTS:
     void slotReloadTaskLists();
 };
 
-#endif // GOOGLESETTINGSDIALOG_H

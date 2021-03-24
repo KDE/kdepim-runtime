@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef BIRTHDAYSRESOURCE_H
-#define BIRTHDAYSRESOURCE_H
+#pragma once
 
 #include <KCalendarCore/Event>
 
@@ -56,4 +55,3 @@ private:
     QHash<QString, Akonadi::Item> mDeletedItems;
 };
 
-#endif

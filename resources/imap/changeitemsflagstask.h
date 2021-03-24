@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef CHANGEITEMSFLAGSTASK_H
-#define CHANGEITEMSFLAGSTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -39,4 +38,3 @@ protected:
     int m_processedItems = 0;
 };
 
-#endif

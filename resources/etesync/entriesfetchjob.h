@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef ETESYNCENTRIESFETCHJOB_H
-#define ETESYNCENTRIESFETCHJOB_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
@@ -56,4 +55,3 @@ private:
 };
 } // namespace EteSyncAPI
 
-#endif

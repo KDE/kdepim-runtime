@@ -6,8 +6,7 @@
  *
  */
 
-#ifndef KMINDEXREADER_H
-#define KMINDEXREADER_H
+#pragma once
 
 #include "kmindexreader_export.h"
 
@@ -130,4 +129,3 @@ private:
     friend class TestIdxReader;
 };
 
-#endif // KMINDEXREADER_H

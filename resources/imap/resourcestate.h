@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RESOURCESTATE_H
-#define RESOURCESTATE_H
+#pragma once
 
 #include "messagehelper.h"
 #include "resourcestateinterface.h"
@@ -215,4 +214,3 @@ private:
     const TaskArguments m_arguments;
 };
 
-#endif

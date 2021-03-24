@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSJOB_H
-#define EWSJOB_H
+#pragma once
 
 #include <KCompositeJob>
 
@@ -21,4 +20,3 @@ protected:
     bool setErrorMsg(const QString &msg, int code = KJob::UserDefinedError);
 };
 
-#endif

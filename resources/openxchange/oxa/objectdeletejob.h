@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_OBJECTDELETEJOB_H
-#define OXA_OBJECTDELETEJOB_H
+#pragma once
 
 #include "object.h"
 
@@ -32,4 +31,3 @@ private:
 };
 }
 
-#endif

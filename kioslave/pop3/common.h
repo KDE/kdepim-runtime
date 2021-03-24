@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef _KIOSLAVE_COMMON_H
-#define _KIOSLAVE_COMMON_H
+#pragma once
 
 #include <QDir>
 #include <QFile>
@@ -36,4 +35,3 @@ inline bool initSASL()
     return true;
 }
 
-#endif

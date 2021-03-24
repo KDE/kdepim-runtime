@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef BENCHMARK_TEST_H
-#define BENCHMARK_TEST_H
+#pragma once
 
 #include <QObject>
 
@@ -18,4 +17,3 @@ private Q_SLOTS:
     void parsingBenchmarkComparison();
 };
 
-#endif

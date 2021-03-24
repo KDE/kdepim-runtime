@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSID_H
-#define EWSID_H
+#pragma once
 
 #include <QList>
 #include <QMetaType>
@@ -108,4 +107,3 @@ QDebug operator<<(QDebug debug, const EwsId &id);
 Q_DECLARE_METATYPE(EwsId)
 Q_DECLARE_METATYPE(EwsId::List)
 
-#endif

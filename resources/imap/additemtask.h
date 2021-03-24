@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ADDITEMTASK_H
-#define ADDITEMTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -31,4 +30,3 @@ private:
     QByteArray m_messageId;
 };
 
-#endif

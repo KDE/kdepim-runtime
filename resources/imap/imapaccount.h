@@ -9,8 +9,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef IMAPACCOUNT_H
-#define IMAPACCOUNT_H
+#pragma once
 
 #include <kimap/loginjob.h>
 
@@ -56,4 +55,3 @@ private:
     bool m_subscriptionEnabled = false;
 };
 
-#endif

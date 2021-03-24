@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MIXEDMAILDIR_RETRIEVEITEMSJOB_H
-#define MIXEDMAILDIR_RETRIEVEITEMSJOB_H
+#pragma once
 
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Job>
@@ -46,4 +45,3 @@ private:
     Q_PRIVATE_SLOT(d, void processChangedItem())
 };
 
-#endif

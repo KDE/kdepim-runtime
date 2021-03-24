@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TEST_STATEMONITOR_H
-#define TEST_STATEMONITOR_H
+#pragma once
 
 #include <functional>
 
@@ -120,4 +119,3 @@ template<typename T> void CollectionStateMonitor<T>::forceRecheck()
     }
 }
 
-#endif

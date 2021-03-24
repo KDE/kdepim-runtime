@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFETCHITEMSJOB_H
-#define EWSFETCHITEMSJOB_H
+#pragma once
 
 #include <AkonadiCore/ItemFetchJob>
 
@@ -107,4 +106,3 @@ private:
     Akonadi::Item::List mDeletedItems;
 };
 
-#endif

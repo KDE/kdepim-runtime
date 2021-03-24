@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSUBSCRIPTIONWIDGET_H
-#define EWSSUBSCRIPTIONWIDGET_H
+#pragma once
 
 #include <QScopedPointer>
 #include <QWidget>
@@ -32,4 +31,3 @@ private:
     Q_DECLARE_PRIVATE(EwsSubscriptionWidget)
 };
 
-#endif

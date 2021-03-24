@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KCALCONVERSIONTEST_H
-#define KCALCONVERSIONTEST_H
+#pragma once
 
 #include <QObject>
 
@@ -37,4 +36,3 @@ private Q_SLOTS:
     void testDateTZ();
 };
 
-#endif

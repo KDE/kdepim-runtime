@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef BIRTHDAYSCONFIGAGENTWIDGET_H
-#define BIRTHDAYSCONFIGAGENTWIDGET_H
+#pragma once
 
 #include "ui_birthdaysconfigwidget.h"
 #include <AkonadiCore/AgentConfigurationBase>
@@ -32,4 +31,3 @@ private:
 };
 AKONADI_AGENTCONFIG_FACTORY(BirthdaysConfigAgentWidgetFactory, "birthdaysconfig.json", BirthdaysConfigAgentWidget)
 
-#endif

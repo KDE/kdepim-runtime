@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_GIDMIGRATIONJOB_H
-#define AKONADI_GIDMIGRATIONJOB_H
+#pragma once
 
 #include <AkonadiCore/collection.h>
 #include <AkonadiCore/item.h>
@@ -73,4 +72,3 @@ private:
     bool mModJobRunning;
 };
 
-#endif

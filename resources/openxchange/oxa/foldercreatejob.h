@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_FOLDERCREATEJOB_H
-#define OXA_FOLDERCREATEJOB_H
+#pragma once
 
 #include <KJob>
 
@@ -51,4 +50,3 @@ private:
 };
 }
 
-#endif

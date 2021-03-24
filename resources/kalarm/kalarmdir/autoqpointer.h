@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef AUTOQPOINTER_H
-#define AUTOQPOINTER_H
+#pragma once
 
 #include <QPointer>
 
@@ -52,4 +51,3 @@ public:
     }
 };
 
-#endif // AUTOQPOINTER_H

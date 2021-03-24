@@ -6,8 +6,7 @@
  *
  */
 
-#ifndef TESTIDXREADER_DATA
-#define TESTIDXREADER_DATA
+#pragma once
 
 /* contains one maildir with one  email inside*/
 static const char mailDirOneEmail[] =
@@ -40,4 +39,3 @@ static const char mailDirTwoEmailOneTagFlags[] =
     "ACwAAE0AbgB0AHYAQgAwAE4AWQBFAFMATwBiAHgASAA0AFYAUgBEAFUAeQBjAHcQAAAACAACAgAA"
     "AAAAABEAAAAIAAAAAAAAAAAAEgAAAAgAAAAAAAAAAAA=";
 
-#endif

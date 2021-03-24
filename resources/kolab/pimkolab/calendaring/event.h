@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef EVENT_H
-#define EVENT_H
+#pragma once
 #include <kolabevent.h>
 
 #include "kolab_export.h"
@@ -99,4 +98,3 @@ private:
 }
 }
 
-#endif // EVENT_H

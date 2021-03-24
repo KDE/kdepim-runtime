@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ENTITYTREECREATEJOB_H
-#define ENTITYTREECREATEJOB_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
@@ -33,4 +32,3 @@ private:
     int m_pendingJobs = 0;
 };
 
-#endif

@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TAGCHANGEHELPER_H
-#define TAGCHANGEHELPER_H
+#pragma once
 
 #include <collection.h>
 #include <item.h>
@@ -54,4 +53,3 @@ private Q_SLOTS:
     void onModifyDone(KJob *job);
 };
 
-#endif // TAGCHANGEHELPER_H

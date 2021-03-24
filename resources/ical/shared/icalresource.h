@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef ICALRESOURCE_H
-#define ICALRESOURCE_H
+#pragma once
 
 #include "icalresourcebase.h"
 
@@ -45,4 +44,3 @@ protected:
     virtual QStringList allMimeTypes() const;
 };
 
-#endif

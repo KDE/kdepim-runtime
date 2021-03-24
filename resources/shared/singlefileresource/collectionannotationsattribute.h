@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
-#define AKONADI_COLLECTIONANNOTATIONSATTRIBUTE_H
+#pragma once
 
 #include "akonadi-singlefileresource_export.h"
 #include <QMap>
@@ -30,4 +29,3 @@ private:
 };
 }
 
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef ETESYNCRESOURCE_H
-#define ETESYNCRESOURCE_H
+#pragma once
 
 #include <AkonadiAgentBase/ResourceBase>
 #include <KLocalizedString>
@@ -69,4 +68,3 @@ private:
     Akonadi::Collection mRootCollection;
 };
 
-#endif

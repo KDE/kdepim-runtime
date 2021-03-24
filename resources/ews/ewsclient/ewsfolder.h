@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFOLDER_H
-#define EWSFOLDER_H
+#pragma once
 
 #include "ewsitembase.h"
 #include "ewstypes.h"
@@ -44,4 +43,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsFolder)
 
-#endif

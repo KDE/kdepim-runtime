@@ -5,8 +5,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef DUMMYPASSWORDREQUESTER_H
-#define DUMMYPASSWORDREQUESTER_H
+#pragma once
 
 #include "passwordrequesterinterface.h"
 
@@ -35,4 +34,3 @@ private:
     QList<int> m_delays;
 };
 
-#endif

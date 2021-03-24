@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABDATETIMEUTILS_H
-#define KOLABDATETIMEUTILS_H
+#pragma once
 
 #include "kolab_export.h"
 
@@ -19,4 +18,3 @@ KOLAB_EXPORT std::string getLocalTimezone();
 } // Namespace
 } // Namespace
 
-#endif

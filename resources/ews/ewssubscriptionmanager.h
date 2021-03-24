@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSUBSCRIPTIONMANAGER_H
-#define EWSSUBSCRIPTIONMANAGER_H
+#pragma once
 
 #include <QSet>
 #include <QString>
@@ -100,4 +99,3 @@ private:
     EwsSettings *mSettings = nullptr;
 };
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_FILESTORE_SESSIONIMPLS_P_H
-#define AKONADI_FILESTORE_SESSIONIMPLS_P_H
+#pragma once
 
 #include "session_p.h"
 
@@ -38,4 +37,3 @@ private:
 }
 }
 
-#endif

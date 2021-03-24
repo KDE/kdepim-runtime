@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef KDAV_DAVUTILS_AKONADI_H
-#define KDAV_DAVUTILS_AKONADI_H
+#pragma once
 
 #include <KDAV/Enums>
 
@@ -53,4 +52,3 @@ createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, 
 bool parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems);
 }
 
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABOBJECTTEST_H
-#define KOLABOBJECTTEST_H
+#pragma once
 #include <QObject>
 
 class KolabObjectTest : public QObject
@@ -19,4 +18,3 @@ private Q_SLOTS:
     void parseRelationMembers();
 };
 
-#endif // KOLABOBJECTTEST_H

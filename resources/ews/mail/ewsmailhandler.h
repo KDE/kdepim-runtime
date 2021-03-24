@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSMAILHANDLER_H
-#define EWSMAILHANDLER_H
+#pragma once
 
 #include "ewsitemhandler.h"
 
@@ -28,4 +27,3 @@ public:
     static QList<EwsPropertyField> flagsProperties();
 };
 
-#endif

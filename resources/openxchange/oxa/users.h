@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_USERS_H
-#define OXA_USERS_H
+#pragma once
 
 #include "user.h"
 
@@ -52,4 +51,3 @@ private:
 };
 }
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef GOOGLERESOURCESTATEINTERFACE_H
-#define GOOGLERESOURCESTATEINTERFACE_H
+#pragma once
 
 #include "resourcestateinterface.h"
 
@@ -45,4 +44,3 @@ public:
     virtual void scheduleCustomTask(QObject *receiver, const char *method, const QVariant &argument) = 0;
 };
 
-#endif // GOOGLERESOURCESTATEINTERFACE_H

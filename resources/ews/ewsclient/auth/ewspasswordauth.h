@@ -3,8 +3,7 @@
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
-#ifndef EWSPASSWORDAUTH_H
-#define EWSPASSWORDAUTH_H
+#pragma once
 
 #include "ewsabstractauth.h"
 
@@ -32,4 +31,3 @@ protected:
     QString mPassword;
 };
 
-#endif /* EWSPASSWORDAUTH_H */

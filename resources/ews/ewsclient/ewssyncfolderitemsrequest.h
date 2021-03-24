@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSYNCFOLDERITEMSREQUEST_H
-#define EWSSYNCFOLDERITEMSREQUEST_H
+#pragma once
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"
@@ -100,4 +99,3 @@ private:
 
 Q_DECLARE_METATYPE(EwsSyncFolderItemsRequest::Change::List)
 
-#endif

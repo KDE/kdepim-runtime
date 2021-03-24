@@ -7,8 +7,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABV2_INCIDENCE_H
-#define KOLABV2_INCIDENCE_H
+#pragma once
 
 #include <KCalendarCore/Incidence>
 
@@ -153,4 +152,3 @@ protected:
 };
 }
 
-#endif // KOLAB_INCIDENCE_H

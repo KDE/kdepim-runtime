@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef CONFIGWIDGET_H
-#define CONFIGWIDGET_H
+#pragma once
 
 #include "ui_settings.h"
 class QPushButton;
@@ -33,4 +32,3 @@ private:
     bool mToplevelIsContainer = false;
 };
 
-#endif

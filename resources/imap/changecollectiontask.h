@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef CHANGECOLLECTIONTASK_H
-#define CHANGECOLLECTIONTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -37,4 +36,3 @@ private:
     bool m_syncEnabledState = true;
 };
 
-#endif

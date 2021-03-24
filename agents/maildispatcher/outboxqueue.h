@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OUTBOXQUEUE_H
-#define OUTBOXQUEUE_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
@@ -106,4 +105,3 @@ private:
     QSet<Akonadi::Item::Id> mIgnore;
 };
 
-#endif

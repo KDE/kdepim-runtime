@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef NEWMAILNOTIFIERAGENT_H
-#define NEWMAILNOTIFIERAGENT_H
+#pragma once
 
 #include <agentbase.h>
 #include <collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
@@ -71,4 +70,3 @@ private:
     QTextToSpeech *mTextToSpeech = nullptr;
 };
 
-#endif

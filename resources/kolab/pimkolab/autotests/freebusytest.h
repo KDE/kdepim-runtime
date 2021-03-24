@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef FREEBUSYTEST_H
-#define FREEBUSYTEST_H
+#pragma once
 #include <QObject>
 
 class FreebusyTest : public QObject
@@ -17,4 +16,3 @@ private Q_SLOTS:
     void testFB();
 };
 
-#endif // FREEBUSYTEST_H

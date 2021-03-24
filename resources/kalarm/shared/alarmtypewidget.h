@@ -6,8 +6,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef ALARMTYPEWIDGET_H
-#define ALARMTYPEWIDGET_H
+#pragma once
 
 #include "ui_alarmtypewidget.h"
 
@@ -30,4 +29,3 @@ private:
     Ui::AlarmTypeWidget ui;
 };
 
-#endif // ALARMTYPEWIDGET_H

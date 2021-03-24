@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSEFFECTIVERIGHTS_H
-#define EWSEFFECTIVERIGHTS_H
+#pragma once
 
 #include <QMetaType>
 #include <QSharedDataPointer>
@@ -44,4 +43,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsEffectiveRights)
 
-#endif

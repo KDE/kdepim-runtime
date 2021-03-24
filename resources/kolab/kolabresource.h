@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABRESOURCE_H
-#define KOLABRESOURCE_H
+#pragma once
 
 #include "imapresourcebase.h"
 #include <resourcestate.h>
@@ -58,4 +57,3 @@ private Q_SLOTS:
     void onConfigurationDone(int result);
 };
 
-#endif

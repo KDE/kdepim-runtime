@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TomboyNotesConfigWidget_H
-#define TomboyNotesConfigWidget_H
+#pragma once
 
 #include <AkonadiCore/AgentConfigurationBase>
 class KConfigDialogManager;
@@ -34,4 +33,3 @@ private:
     KConfigDialogManager *mManager = nullptr;
 };
 AKONADI_AGENTCONFIG_FACTORY(TomboyNotesConfigWidgetFactory, "tomboynotesconfig.json", TomboyNotesConfigWidget)
-#endif // TomboyNotesConfigWidget_H

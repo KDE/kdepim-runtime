@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSTYPES_H
-#define EWSTYPES_H
+#pragma once
 
 #include <QString>
 #include <QVector>
@@ -476,4 +475,3 @@ inline bool isEwsMessageItemType(EwsItemType type)
 
 extern const QVector<QString> ewsItemTypeNames;
 
-#endif

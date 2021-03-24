@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O2TIMEDREPLYLIST_H
-#define O2TIMEDREPLYLIST_H
+#pragma once
 
 #include <QList>
 #include <QNetworkReply>
@@ -62,4 +61,3 @@ protected:
     bool ignoreSslErrors_;
 };
 
-#endif // O2TIMEDREPLYLIST_H

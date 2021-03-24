@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef SEARCHTASK_H
-#define SEARCHTASK_H
+#pragma once
 
 #include "resourcetask.h"
 
@@ -30,4 +29,3 @@ private:
     const QString m_query;
 };
 
-#endif // SEARCHTASK_H

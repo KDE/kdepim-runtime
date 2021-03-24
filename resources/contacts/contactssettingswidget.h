@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef CONTACTS_SETTINGSWIDGET_H
-#define CONTACTS_SETTINGSWIDGET_H
+#pragma once
 
 #include "ui_contactsagentsettingswidget.h"
 #include <AkonadiCore/AgentConfigurationBase>
@@ -32,4 +31,3 @@ private:
 };
 AKONADI_AGENTCONFIG_FACTORY(ContactsSettingsWidgetFactory, "contactsconfig.json", ContactsSettingsWidget)
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSITEMSHAPE_H
-#define EWSITEMSHAPE_H
+#pragma once
 
 #include "ewsfoldershape.h"
 
@@ -72,4 +71,3 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EwsItemShape::Flags)
 
-#endif

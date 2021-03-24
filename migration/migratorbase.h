@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef MIGRATORBASE_H
-#define MIGRATORBASE_H
+#pragma once
 
 #include <KConfig>
 #include <KConfigGroup>
@@ -204,4 +203,3 @@ private:
 
 Q_DECLARE_METATYPE(MigratorBase::MigrationState)
 
-#endif // MIGRATORBASE_H

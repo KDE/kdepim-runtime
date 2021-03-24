@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_DAVUTILS_H
-#define OXA_DAVUTILS_H
+#pragma once
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -52,4 +51,3 @@ bool davErrorOccurred(const QDomDocument &document, QString &errorText, QString 
 }
 }
 
-#endif

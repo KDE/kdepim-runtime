@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef MIGRATIONAGENT_H
-#define MIGRATIONAGENT_H
+#pragma once
 
 #include "migrationscheduler.h"
 #include <agentbase.h>
@@ -25,4 +24,3 @@ private:
 };
 }
 
-#endif

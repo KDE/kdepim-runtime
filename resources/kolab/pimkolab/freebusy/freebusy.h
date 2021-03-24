@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef FREEBUSY_H
-#define FREEBUSY_H
+#pragma once
 
 #include "kolab_export.h"
 #include <kcalendarcore/event.h>
@@ -29,4 +28,3 @@ aggregateFreeBusy(const std::vector<Kolab::Freebusy> &fbs, const std::string &or
 }
 }
 
-#endif // FREEBUSY_H

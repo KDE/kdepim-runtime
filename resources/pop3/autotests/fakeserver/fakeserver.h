@@ -5,8 +5,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef FAKESERVER_H
-#define FAKESERVER_H
+#pragma once
 
 #include <QMutex>
 #include <QTcpServer>
@@ -86,4 +85,3 @@ private:
     FakeServer *mServer = nullptr;
 };
 
-#endif

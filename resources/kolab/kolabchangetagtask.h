@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABCHANGETAGTASK_H
-#define KOLABCHANGETAGTASK_H
+#pragma once
 
 #include "kolabrelationresourcetask.h"
 #include "tagchangehelper.h"
@@ -32,4 +31,3 @@ private Q_SLOTS:
     void onChangeCommitted();
 };
 
-#endif // KOLABCHANGETAGTASK_H

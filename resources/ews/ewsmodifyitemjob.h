@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSMODIFYITEMJOB_H
-#define EWSMODIFYITEMJOB_H
+#pragma once
 
 #include "ewsjob.h"
 #include <AkonadiCore/Item>
@@ -31,4 +30,3 @@ protected:
     QSet<QByteArray> mRemovedFlags;
 };
 
-#endif

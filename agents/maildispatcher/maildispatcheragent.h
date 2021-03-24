@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MAILDISPATCHERAGENT_H
-#define MAILDISPATCHERAGENT_H
+#pragma once
 
 #include <AgentBase>
 #include <AkonadiCore/Item>
@@ -65,4 +64,3 @@ private:
     SentActionHandler *mSentActionHandler = nullptr;
 };
 
-#endif // MAILDISPATCHERAGENT_H

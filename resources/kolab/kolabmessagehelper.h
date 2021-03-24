@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABMESSAGEHELPER_H
-#define KOLABMESSAGEHELPER_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <messagehelper.h>
@@ -27,4 +26,3 @@ private:
     const Akonadi::Collection mCollection;
 };
 
-#endif

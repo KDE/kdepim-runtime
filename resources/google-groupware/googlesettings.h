@@ -5,8 +5,7 @@
    SPDX-License-Identifier: GPL-3.0-or-later
 */
 
-#ifndef GOOGLESETTINGS_H
-#define GOOGLESETTINGS_H
+#pragma once
 
 #include "settingsbase.h"
 
@@ -65,4 +64,3 @@ private:
     KGAPI2::AccountPtr fetchAccountFromWallet(const QString &accountName);
 };
 
-#endif // GOOGLESETTINGS_H

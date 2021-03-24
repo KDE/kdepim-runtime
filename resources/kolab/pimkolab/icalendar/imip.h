@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.1-or-later
 */
 
-#ifndef IMIP_H
-#define IMIP_H
+#pragma once
 #include <KCalendarCore/IncidenceBase>
 #include <QByteArray>
 
@@ -14,4 +13,3 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence, boo
 
 QByteArray mailOrganizer(const KCalendarCore::IncidenceBase::Ptr &incidence, const QString &from, bool bccMe, const QString &attachment, const QString &sub);
 
-#endif // IMIP_H

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSCONFIGDIALOG_H
-#define EWSCONFIGDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QMap>
@@ -65,4 +64,3 @@ private:
     QMap<QString, QString> mAuthMap;
 };
 
-#endif

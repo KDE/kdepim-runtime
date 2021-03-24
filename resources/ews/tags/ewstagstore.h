@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSTAGSTORE_H
-#define EWSTAGSTORE_H
+#pragma once
 
 #include <AkonadiCore/Item>
 #include <AkonadiCore/Tag>
@@ -210,4 +209,3 @@ private:
     int mVersion;
 };
 
-#endif

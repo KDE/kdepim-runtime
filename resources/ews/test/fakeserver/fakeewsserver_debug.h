@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FAKEEWSSERVER_DEBUG_H
-#define FAKEEWSSERVER_DEBUG_H
+#pragma once
 
 #include <QLoggingCategory>
 
@@ -16,4 +15,3 @@ Q_DECLARE_LOGGING_CATEGORY(EWSFAKE_LOG)
 #define qCWarningNC(cat) qCWarning(cat).noquote()
 #define qCCriticalNC(cat) qCCritical(cat).noquote()
 
-#endif

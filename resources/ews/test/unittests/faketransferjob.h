@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FAKETRANSFERJOB_H
-#define FAKETRANSFERJOB_H
+#pragma once
 
 #include <functional>
 
@@ -69,4 +68,3 @@ private:
     static QQueue<Verifier> mVerifierQueue;
 };
 
-#endif

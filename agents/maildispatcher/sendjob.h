@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef SENDJOB_H
-#define SENDJOB_H
+#pragma once
 
 #include <AkonadiCore/Item>
 #include <KJob>
@@ -87,4 +86,3 @@ private:
     bool mAborting = false;
 };
 
-#endif

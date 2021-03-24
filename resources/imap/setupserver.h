@@ -7,8 +7,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef SETUPSERVER_H
-#define SETUPSERVER_H
+#pragma once
 
 #include <KJob>
 #include <QDialog>
@@ -101,4 +100,3 @@ private Q_SLOTS:
     void populateDefaultAuthenticationOptions(QComboBox *combo);
 };
 
-#endif

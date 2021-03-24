@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSFETCHITEMDETAILJOB_H
-#define EWSFETCHITEMDETAILJOB_H
+#pragma once
 
 #include <QPointer>
 
@@ -46,4 +45,3 @@ private Q_SLOTS:
     void itemDetailFetched(KJob *job);
 };
 
-#endif

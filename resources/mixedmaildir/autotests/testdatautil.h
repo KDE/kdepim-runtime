@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TESTDATAUTIL_H
-#define TESTDATAUTIL_H
+#pragma once
 
 class QString;
 #include <QStringList>
@@ -22,4 +21,3 @@ QStringList testDataNames();
 bool installFolder(const QString &testDataName, const QString &installPath, const QString &folderName);
 }
 
-#endif

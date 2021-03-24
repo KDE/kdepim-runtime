@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef RESOURCETASK_H
-#define RESOURCETASK_H
+#pragma once
 
 #include <QObject>
 
@@ -148,4 +147,3 @@ private:
     bool mCancelled = false;
 };
 
-#endif

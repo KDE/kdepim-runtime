@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef NOTESRESOURCE_H
-#define NOTESRESOURCE_H
+#pragma once
 
 #include "icalresource.h"
 
@@ -29,4 +28,3 @@ protected:
     QStringList allMimeTypes() const override;
 };
 
-#endif

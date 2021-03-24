@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSSUBSCRIBEDFOLDERSJOB_H
-#define EWSSUBSCRIBEDFOLDERSJOB_H
+#pragma once
 
 #include "ewsid.h"
 #include "ewsjob.h"
@@ -37,4 +36,3 @@ private:
     EwsSettings *mSettings = nullptr;
 };
 
-#endif

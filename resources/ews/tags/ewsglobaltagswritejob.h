@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSGLOBALTAGSWRITEJOB_H
-#define EWSGLOBALTAGSWRITEJOB_H
+#pragma once
 
 #include "ewsjob.h"
 
@@ -33,4 +32,3 @@ private:
     const Akonadi::Collection &mRootCollection;
 };
 
-#endif

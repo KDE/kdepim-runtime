@@ -4,8 +4,7 @@
   SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef DELETEITEMSATTRIBUTETEST_H
-#define DELETEITEMSATTRIBUTETEST_H
+#pragma once
 
 #include <QObject>
 
@@ -24,4 +23,3 @@ private Q_SLOTS:
     void shouldHaveTypeName();
 };
 
-#endif // DELETEITEMSATTRIBUTETEST_H

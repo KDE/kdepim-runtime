@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSITEMHANDLER_H
-#define EWSITEMHANDLER_H
+#pragma once
 
 #include <functional>
 
@@ -67,4 +66,3 @@ private:
     };                                                                                                                                                         \
     const type##_itemhandler_registrar type##_itemhandler_registrar_object;
 
-#endif

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSPROGRESSDIALOG_H
-#define EWSPROGRESSDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -19,4 +18,3 @@ public:
     ~EwsProgressDialog() override;
 };
 
-#endif

@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OXA_INCIDENCEUTILS_H
-#define OXA_INCIDENCEUTILS_H
+#pragma once
 
 #include "object.h"
 
@@ -43,4 +42,3 @@ void addTaskElements(QDomDocument &document, QDomElement &propElement, const Obj
 }
 }
 
-#endif

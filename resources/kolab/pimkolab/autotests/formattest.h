@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef FORMATTEST_H
-#define FORMATTEST_H
+#pragma once
 #include <QObject>
 
 /**
@@ -58,4 +57,3 @@ private Q_SLOTS:
     void proveJPGisLossy();
 };
 
-#endif // FORMATTEST_H

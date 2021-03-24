@@ -4,8 +4,7 @@
    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef FOLDERARCHIVESETTINGPAGE_H
-#define FOLDERARCHIVESETTINGPAGE_H
+#pragma once
 
 #include "folderarchiveaccountinfo.h"
 #include "folderarchivesettings_export.h"
@@ -52,4 +51,3 @@ private:
     FolderArchiveAccountInfo *mInfo = nullptr;
 };
 
-#endif // FOLDERARCHIVESETTINGPAGE_H

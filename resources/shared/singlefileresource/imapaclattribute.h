@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_IMAPACLATTRIBUTE_H
-#define AKONADI_IMAPACLATTRIBUTE_H
+#pragma once
 
 #include "akonadi-singlefileresource_export.h"
 #include <attribute.h>
@@ -40,4 +39,3 @@ private:
 };
 }
 
-#endif

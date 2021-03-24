@@ -5,8 +5,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef KOLABADDTAGTASK_H
-#define KOLABADDTAGTASK_H
+#pragma once
 
 #include "kolabrelationresourcetask.h"
 
@@ -32,4 +31,3 @@ private Q_SLOTS:
     void onSearchDone(KJob *job);
 };
 
-#endif // KOLABADDTAGTASK_H

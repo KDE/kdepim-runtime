@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSRESOURCE_DEBUG_H
-#define EWSRESOURCE_DEBUG_H
+#pragma once
 
 #include <AkonadiCore/Collection>
 #include <AkonadiCore/Item>
@@ -65,4 +64,3 @@ inline QDebug operator<<(QDebug debug, const QSet<QByteArray> &items)
     return debug.maybeSpace();
 }
 
-#endif

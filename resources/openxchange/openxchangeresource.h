@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef OPENXCHANGERESOURCE_H
-#define OPENXCHANGERESOURCE_H
+#pragma once
 
 #include <resourcebase.h>
 
@@ -77,4 +76,3 @@ private:
     bool mUseIncrementalUpdates = false;
 };
 
-#endif

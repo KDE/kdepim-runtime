@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O1REQUESTOR_H
-#define O1REQUESTOR_H
+#pragma once
 
 #include <QByteArray>
 #include <QNetworkRequest>
@@ -62,4 +61,3 @@ protected:
     O1 *authenticator_ = nullptr;
 };
 
-#endif // O1REQUESTOR_H

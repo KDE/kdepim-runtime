@@ -6,8 +6,7 @@
   SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef TESTMAILDIR_H
-#define TESTMAILDIR_H
+#pragma once
 
 #include <QObject>
 
@@ -44,4 +43,3 @@ private:
     QTemporaryDir *m_temp = nullptr;
 };
 
-#endif

@@ -4,8 +4,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef NEWMAILNOTIFIERSHOWMESSAGEJOB_H
-#define NEWMAILNOTIFIERSHOWMESSAGEJOB_H
+#pragma once
 
 #include <AkonadiCore/Item>
 #include <KJob>
@@ -23,4 +22,3 @@ private:
     const Akonadi::Item::Id mId;
 };
 
-#endif // NEWMAILNOTIFIERSHOWMESSAGEJOB_H

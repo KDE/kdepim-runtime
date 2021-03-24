@@ -2,8 +2,7 @@
     SPDX-License-Identifier: BSD-2-Clause
 */
 
-#ifndef O1_H
-#define O1_H
+#pragma once
 
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -137,4 +136,3 @@ protected:
     O2ReplyServer *replyServer_ = nullptr;
 };
 
-#endif // O1_H

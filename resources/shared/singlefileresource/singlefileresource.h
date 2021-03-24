@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef AKONADI_SINGLEFILERESOURCE_H
-#define AKONADI_SINGLEFILERESOURCE_H
+#pragma once
 
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourcebase.h"
@@ -315,4 +314,3 @@ protected:
 };
 }
 
-#endif

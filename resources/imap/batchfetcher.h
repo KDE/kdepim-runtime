@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef BATCHFETCHER_H
-#define BATCHFETCHER_H
+#pragma once
 
 #include <KIMAP/FetchJob>
 #include <KIMAP/SearchJob>
@@ -54,4 +53,3 @@ private:
     bool m_searchInChunks = false;
 };
 
-#endif // BATCHFETCHER_H

@@ -6,8 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef MIXEDMAILDIR_RESOURCE_H
-#define MIXEDMAILDIR_RESOURCE_H
+#pragma once
 
 #include <resourcebase.h>
 
@@ -93,4 +92,3 @@ private:
     CompactChangeHelper *mCompactHelper = nullptr;
 };
 
-#endif

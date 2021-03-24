@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSMAILBOX_H
-#define EWSMAILBOX_H
+#pragma once
 
 #include <QSharedDataPointer>
 #include <QXmlStreamReader>
@@ -49,4 +48,3 @@ protected:
 Q_DECLARE_METATYPE(EwsMailbox)
 Q_DECLARE_METATYPE(EwsMailbox::List)
 
-#endif

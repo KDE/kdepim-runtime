@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSEVENTREQUESTBASE_H
-#define EWSEVENTREQUESTBASE_H
+#pragma once
 
 #include <QDateTime>
 #include <QList>
@@ -183,4 +182,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsEventRequestBase::Event::List)
 
-#endif

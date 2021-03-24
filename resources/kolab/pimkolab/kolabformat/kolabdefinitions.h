@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef KOLABDEFINITIONS_H
-#define KOLABDEFINITIONS_H
+#pragma once
 
 namespace Kolab
 {
@@ -70,4 +69,3 @@ enum ObjectType {
 };
 }
 
-#endif

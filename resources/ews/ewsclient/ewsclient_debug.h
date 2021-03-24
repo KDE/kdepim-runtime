@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSCLIENT_DEBUG_H
-#define EWSCLIENT_DEBUG_H
+#pragma once
 
 #include <QTemporaryDir>
 #include <ewscli_debug.h>
@@ -35,4 +34,3 @@ inline QString ewsHash(const QString &val)
 
 extern QTemporaryDir ewsLogDir;
 
-#endif

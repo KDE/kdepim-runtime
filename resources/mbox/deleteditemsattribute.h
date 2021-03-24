@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef DELETEDITEMSATTRIBUTE_H
-#define DELETEDITEMSATTRIBUTE_H
+#pragma once
 
 #include <KMbox/MBoxEntry>
 #include <attribute.h>
@@ -49,4 +48,3 @@ private:
     QSet<quint64> mDeletedItemOffsets;
 };
 
-#endif

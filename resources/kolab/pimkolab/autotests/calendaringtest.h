@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: LGPL-3.0-or-later
  */
 
-#ifndef CALENDARINGTEST_H
-#define CALENDARINGTEST_H
+#pragma once
 #include <QObject>
 
 class CalendaringTest : public QObject
@@ -39,4 +38,3 @@ private Q_SLOTS:
     void testDateTimeUtils();
 };
 
-#endif // CALENDARINGTEST_H

@@ -4,8 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef URLCONFIGURATIONDIALOG_H
-#define URLCONFIGURATIONDIALOG_H
+#pragma once
 
 #include "ui_urlconfigurationdialog.h"
 
@@ -66,4 +65,3 @@ private:
     QButtonGroup *const mRemoteProtocolGroup;
 };
 
-#endif

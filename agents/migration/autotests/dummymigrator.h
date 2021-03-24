@@ -5,8 +5,7 @@
  *
  */
 
-#ifndef DUMMYMIGRATOR_H
-#define DUMMYMIGRATOR_H
+#pragma once
 
 #include <migration/migratorbase.h>
 
@@ -32,4 +31,3 @@ private Q_SLOTS:
     void onTimerElapsed();
 };
 
-#endif

@@ -4,8 +4,7 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#ifndef SPECIALNOTIFIERJOB_H
-#define SPECIALNOTIFIERJOB_H
+#pragma once
 
 #include <Akonadi/KMime/MarkAsCommand>
 #include <Item>
@@ -47,4 +46,3 @@ private:
     const Akonadi::Item::Id mItemId;
 };
 
-#endif // SPECIALNOTIFIERJOB_H

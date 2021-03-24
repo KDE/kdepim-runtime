@@ -4,8 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#ifndef EWSPKEYAUTHJOB_H
-#define EWSPKEYAUTHJOB_H
+#pragma once
 
 #include "ewsjob.h"
 
@@ -41,4 +40,3 @@ private:
     QUrl mResultUri;
 };
 
-#endif /* EWSPKEYAUTHJOB_H */
