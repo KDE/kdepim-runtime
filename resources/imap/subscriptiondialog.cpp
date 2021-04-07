@@ -107,7 +107,7 @@ void SubscriptionDialog::slotSearchPattern(const QString &pattern)
 
 void SubscriptionDialog::readConfig()
 {
-    KConfigGroup group(KSharedConfig::openConfig(), "SubscriptionDialog");
+    KConfigGroup group(KSharedConfig::openStateConfig(), "SubscriptionDialog");
 
     const QSize size = group.readEntry("Size", QSize());
     if (size.isValid()) {
@@ -119,7 +119,7 @@ void SubscriptionDialog::readConfig()
 
 void SubscriptionDialog::writeConfig()
 {
-    KConfigGroup group(KSharedConfig::openConfig(), "SubscriptionDialog");
+    KConfigGroup group(KSharedConfig::openStateConfig(), "SubscriptionDialog");
     group.writeEntry("Size", size());
     group.sync();
 }
