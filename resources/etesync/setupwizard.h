@@ -15,7 +15,6 @@
 
 class QLineEdit;
 class QCheckBox;
-class QLabel;
 class KPasswordLineEdit;
 
 class SetupWizard : public QWizard

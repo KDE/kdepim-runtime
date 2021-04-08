@@ -12,7 +12,6 @@
 #include <QFile>
 #include <QObject>
 
-class QFile;
 
 class NullableConfigGroup
 {
