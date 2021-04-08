@@ -518,31 +518,19 @@ template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &ev
         }
 
         if (!rrule.bysecond().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setBySeconds(QVector<int>::fromStdVector(rrule.bysecond()).toList());
-#else
             const std::vector<int> bySecond = rrule.bysecond();
             const QVector<int> stdVector = QVector<int>(bySecond.begin(), bySecond.end());
             defaultRR->setBySeconds(stdVector.toList());
-#endif
         }
         if (!rrule.byminute().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setByMinutes(QVector<int>::fromStdVector(rrule.byminute()).toList());
-#else
             const std::vector<int> byMinutes = rrule.byminute();
             const QVector<int> stdVector = QVector<int>(byMinutes.begin(), byMinutes.end());
             defaultRR->setByMinutes(stdVector.toList());
-#endif
         }
         if (!rrule.byhour().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setByHours(QVector<int>::fromStdVector(rrule.byhour()).toList());
-#else
             const std::vector<int> byHours = rrule.byhour();
             const QVector<int> stdVector = QVector<int>(byHours.begin(), byHours.end());
             defaultRR->setByHours(stdVector.toList());
-#endif
         }
         if (!rrule.byday().empty()) {
             QList<KCalendarCore::RecurrenceRule::WDayPos> daypos;
@@ -552,40 +540,24 @@ template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &ev
             defaultRR->setByDays(daypos);
         }
         if (!rrule.bymonthday().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setByMonthDays(QVector<int>::fromStdVector(rrule.bymonthday()).toList());
-#else
             const std::vector<int> byMonthDays = rrule.bymonthday();
             const QVector<int> stdVector = QVector<int>(byMonthDays.begin(), byMonthDays.end());
             defaultRR->setByMonthDays(stdVector.toList());
-#endif
         }
         if (!rrule.byyearday().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setByYearDays(QVector<int>::fromStdVector(rrule.byyearday()).toList());
-#else
             const std::vector<int> byYearDays = rrule.byyearday();
             const QVector<int> stdVector = QVector<int>(byYearDays.begin(), byYearDays.end());
             defaultRR->setByYearDays(stdVector.toList());
-#endif
         }
         if (!rrule.byweekno().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setByWeekNumbers(QVector<int>::fromStdVector(rrule.byweekno()).toList());
-#else
             const std::vector<int> byWeekNumbers = rrule.byweekno();
             const QVector<int> stdVector = QVector<int>(byWeekNumbers.begin(), byWeekNumbers.end());
             defaultRR->setByWeekNumbers(stdVector.toList());
-#endif
         }
         if (!rrule.bymonth().empty()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            defaultRR->setByMonths(QVector<int>::fromStdVector(rrule.bymonth()).toList());
-#else
             const std::vector<int> byMonths = rrule.bymonth();
             const QVector<int> stdVector = QVector<int>(byMonths.begin(), byMonths.end());
             defaultRR->setByMonths(stdVector.toList());
-#endif
         }
     }
     foreach (const Kolab::cDateTime &dt, event.recurrenceDates()) {

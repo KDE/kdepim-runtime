@@ -47,7 +47,7 @@ target_link_libraries( akonadi_pop3_resource
     KF5::AkonadiAgentBase
     KF5::I18n
     KF5::Notifications
-    Qt5::DBus
+    Qt::DBus
     KF5::PimCommon
     qt5keychain
     )

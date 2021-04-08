@@ -131,11 +131,7 @@ void CalendarHandler::retrieveItems(const Collection &collection)
         job->setFetchDeleted(false);
         if (!m_settings->eventsSince().isEmpty()) {
             const QDate date = QDate::fromString(m_settings->eventsSince(), Qt::ISODate);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-            job->setTimeMin(QDateTime(date).toSecsSinceEpoch());
-#else
             job->setTimeMin(QDateTime(date.startOfDay()).toSecsSinceEpoch());
-#endif
         }
     }
 

@@ -1160,11 +1160,7 @@ void Contact::saveTo(KContacts::Addressee *addressee)
     addressee->setNickName(nickName());
     addressee->insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-SpousesName"), spouseName());
     if (birthday().isValid()) {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-        addressee->setBirthday(QDateTime(birthday()));
-#else
         addressee->setBirthday(QDateTime(birthday().startOfDay()));
-#endif
     }
 
     if (anniversary().isValid()) {

@@ -7,6 +7,6 @@ add_executable(schedulertest schedulertest.cpp ../migrationscheduler.cpp ../migr
 target_link_libraries(schedulertest
     gidmigration
     KF5::AkonadiCore
-    Qt5::Test
+    Qt::Test
 )
 add_test(NAME schedulertest COMMAND schedulertest)

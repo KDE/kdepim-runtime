@@ -73,8 +73,8 @@ qt5_add_dbus_adaptor( imapresource_LIB_SRCS
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
 target_link_libraries(imapresource
-    Qt5::DBus
-    Qt5::Network
+    Qt::DBus
+    Qt::Network
     KF5::AkonadiCore
     KF5::IMAP
     KF5::MailTransport
@@ -120,7 +120,7 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_imap_resource
-    Qt5::DBus
+    Qt::DBus
     KF5::AkonadiCore
     KF5::IMAP
     akonadi-singlefileresource
