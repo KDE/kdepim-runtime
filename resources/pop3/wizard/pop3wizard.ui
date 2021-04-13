@@ -47,13 +47,13 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="KLineEdit" name="userName"/>
+        <widget class="QLineEdit" name="userName"/>
        </item>
        <item>
-        <widget class="KLineEdit" name="incommingAddress"/>
+        <widget class="QLineEdit" name="incommingAddress"/>
        </item>
        <item>
-        <widget class="KLineEdit" name="outgoingAddress">
+        <widget class="QLineEdit" name="outgoingAddress">
          <property name="text">
           <string/>
          </property>
