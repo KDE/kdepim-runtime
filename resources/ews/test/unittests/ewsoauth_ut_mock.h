@@ -20,7 +20,6 @@
 #include <QWidget>
 
 #include <KLocalizedString>
-#include <QtWebEngineWidgetsVersion>
 Q_DECLARE_LOGGING_CATEGORY(EWSCLI_LOG)
 
 namespace Mock
