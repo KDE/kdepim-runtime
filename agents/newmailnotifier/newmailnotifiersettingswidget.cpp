@@ -125,7 +125,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
                                       QStringLiteral(KDEPIM_RUNTIME_VERSION),
                                       i18n("Notify about new mails."),
                                       KAboutLicense::GPL_V2,
-                                      i18n("Copyright (C) 2013-2020 Laurent Montel"));
+                                      i18n("Copyright (C) 2013-2021 Laurent Montel"));
 
     aboutData.setProductName(QByteArrayLiteral("Akonadi/New Mail Notifier"));
     aboutData.addAuthor(i18n("Laurent Montel"), i18n("Maintainer"), QStringLiteral("montel@kde.org"));
