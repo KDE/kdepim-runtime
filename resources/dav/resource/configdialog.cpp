@@ -86,7 +86,7 @@ ConfigDialog::~ConfigDialog()
 
 void ConfigDialog::readConfig()
 {
-    KConfigGroup grp(KSharedConfig::openConfig(), "ConfigDialog");
+    KConfigGroup grp(KSharedConfig::openStateConfig(), "ConfigDialog");
     const QSize size = grp.readEntry("Size", QSize(300, 200));
     if (size.isValid()) {
         resize(size);
@@ -95,7 +95,7 @@ void ConfigDialog::readConfig()
 
 void ConfigDialog::writeConfig()
 {
-    KConfigGroup grp(KSharedConfig::openConfig(), "ConfigDialog");
+    KConfigGroup grp(KSharedConfig::openStateConfig(), "ConfigDialog");
     grp.writeEntry("Size", size());
     grp.sync();
 }

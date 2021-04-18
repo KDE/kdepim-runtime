@@ -67,7 +67,7 @@ UrlConfigurationDialog::~UrlConfigurationDialog()
 
 void UrlConfigurationDialog::readConfig()
 {
-    KConfigGroup grp(KSharedConfig::openConfig(), "UrlConfigurationDialog");
+    KConfigGroup grp(KSharedConfig::openStateConfig(), "UrlConfigurationDialog");
     const QSize size = grp.readEntry("Size", QSize(300, 200));
     if (size.isValid()) {
         resize(size);
@@ -76,7 +76,7 @@ void UrlConfigurationDialog::readConfig()
 
 void UrlConfigurationDialog::writeConfig()
 {
-    KConfigGroup grp(KSharedConfig::openConfig(), "UrlConfigurationDialog");
+    KConfigGroup grp(KSharedConfig::openStateConfig(), "UrlConfigurationDialog");
     grp.writeEntry("Size", size());
     grp.sync();
 }
