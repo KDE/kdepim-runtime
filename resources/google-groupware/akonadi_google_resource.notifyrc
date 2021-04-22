@@ -50,6 +50,7 @@ Comment[x-test]=xxAccess your Google Calendars, Contacts and Tasks from KDExx
 Name=Google Groupware needs to authenticate
 Name[ca]=Google Groupware s'ha d'autenticar
 Name[ca@valencia]=Google Groupware s'ha d'autenticar
+Name[cs]=Google Groupware vyžaduje ověření totožnosti
 Name[en_GB]=Google Groupware needs to authenticate
 Name[es]=Google Groupware necesita autenticación
 Name[fi]=Google Groupware vaatii todennuksen
