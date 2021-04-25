@@ -118,10 +118,16 @@ find_package(KF5Codecs ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5WindowSystem ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5TextWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
 find_package(KF5Notifications ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
-find_package(KF5DocTools ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3
 find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5KCMUtils ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5DAV ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5DocTools ${KF5_MIN_VERSION})
+set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
+    "Tools to generate documentation"
+    TYPE OPTIONAL
+)
+
+
 
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
@@ -178,7 +184,6 @@ add_subdirectory(defaultsetup)
 add_subdirectory(kioslave)
 add_subdirectory(migration)
 add_subdirectory(kcms)
-add_subdirectory(doc)
 
 ## install the MIME type spec file for KDEPIM specific MIME types
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
@@ -191,7 +196,11 @@ ecm_qt_install_logging_categories(
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 ki18n_install(po)
-kdoctools_install(po)
+if(KF5DocTools_FOUND)
+    kdoctools_install(po)
+    add_subdirectory(doc)
+endif()
+
 feature_summary(WHAT ALL
                 INCLUDE_QUIET_PACKAGES
                 FATAL_ON_MISSING_REQUIRED_PACKAGES
