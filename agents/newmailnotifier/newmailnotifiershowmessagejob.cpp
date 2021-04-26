@@ -8,7 +8,6 @@
 #include "newmailnotifier_debug.h"
 #include <KLocalizedString>
 
-#include <KToolInvocation>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
