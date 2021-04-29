@@ -8,10 +8,10 @@
 #pragma once
 
 #include <QMutex>
-#include <QTcpServer>
-#include <QTcpSocket>
 #include <QThread>
 
+class QTcpServer;
+class QTcpSocket;
 class FakeServer : public QObject
 {
     Q_OBJECT

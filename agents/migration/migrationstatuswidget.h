@@ -8,7 +8,7 @@
 #pragma once
 
 #include "migrationscheduler.h"
-#include <QItemSelectionModel>
+class QItemSelectionModel;
 #include <QWidget>
 
 class MigrationStatusWidget : public QWidget

@@ -10,6 +10,8 @@
 
 // Qt
 #include <QDebug>
+#include <QTcpServer>
+#include <QTcpSocket>
 
 FakeServerThread::FakeServerThread(QObject *parent)
     : QThread(parent)

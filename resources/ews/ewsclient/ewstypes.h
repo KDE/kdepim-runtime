@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <QString>
+class QString;
 #include <QVector>
 
 extern const QString soapEnvNsUri;

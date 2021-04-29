@@ -8,7 +8,6 @@
 
 #include <KDAV/Enums>
 
-#include <QLabel>
 #include <QWizard>
 #include <QWizardPage>
 
@@ -16,6 +15,7 @@ class KJob;
 class QLineEdit;
 class QTextBrowser;
 
+class QLabel;
 class QButtonGroup;
 class QCheckBox;
 class QComboBox;

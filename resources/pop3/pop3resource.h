@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <KJob>
+class KJob;
 #include <KMime/Message>
 #include <QSet>
 #include <ResourceBase>

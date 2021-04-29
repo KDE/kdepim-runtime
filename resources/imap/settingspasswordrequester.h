@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <QDialog>
+class QDialog;
 #include <passwordrequesterinterface.h>
 
 class ImapResourceBase;

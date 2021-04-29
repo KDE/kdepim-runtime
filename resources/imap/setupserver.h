@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <KJob>
+class KJob;
 #include <QDialog>
 #include <collection.h>
 

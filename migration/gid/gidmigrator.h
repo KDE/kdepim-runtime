@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <KJob>
+class KJob;
 #include <migratorbase.h>
 
 class GidMigrator : public MigratorBase

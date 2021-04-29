@@ -13,7 +13,7 @@
 #include <QMutex>
 #include <QPointer>
 #include <QTcpServer>
-#include <QTcpSocket>
+class QTcpSocket;
 
 class FakeEwsConnection;
 class QXmlResultItems;

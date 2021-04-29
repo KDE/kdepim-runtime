@@ -11,7 +11,7 @@
 #include <kalarmcal/kacalendar.h>
 #include <kalarmcal/kaevent.h>
 
-#include <QObject>
+class QObject;
 
 namespace KCalendarCore
 {
