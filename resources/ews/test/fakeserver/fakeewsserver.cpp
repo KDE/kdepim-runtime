@@ -30,7 +30,7 @@ bool FakeEwsServer::start()
 
     int retries = 3;
     bool ok;
-    auto *generator = QRandomGenerator::global();
+    auto generator = QRandomGenerator::global();
     do {
         mPortNumber = (generator->bounded(10000)) + 10000;
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Starting fake EWS server at 127.0.0.1:%1").arg(mPortNumber);

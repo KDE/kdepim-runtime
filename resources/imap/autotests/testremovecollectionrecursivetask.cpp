@@ -198,7 +198,7 @@ class TestRemoveCollectionRecursiveTask : public ImapTestBase
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);
-        RemoveCollectionRecursiveTask *task = new RemoveCollectionRecursiveTask(state);
+        auto task = new RemoveCollectionRecursiveTask(state);
         task->start(&pool);
         QEventLoop loop;
         connect(task, &RemoveCollectionRecursiveTask::destroyed, &loop, &QEventLoop::quit);

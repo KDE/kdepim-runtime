@@ -22,7 +22,7 @@ MigrationStatusWidget::MigrationStatusWidget(MigrationScheduler &scheduler, QWid
     , mScheduler(scheduler)
 {
     auto vboxLayout = new QVBoxLayout(this);
-    QToolBar *toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
+    auto toolbar = new QToolBar(QStringLiteral("MigrationControlToolbar"), this);
 
     QAction *start = toolbar->addAction(QStringLiteral("Start"));
     start->setIcon(QIcon::fromTheme(QStringLiteral("media-playback-start")));
@@ -74,12 +74,12 @@ void MigrationStatusWidget::abortSelected()
 
 void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
 {
-    QDialog *dlg = new QDialog(this);
+    auto dlg = new QDialog(this);
     auto topLayout = new QVBoxLayout(dlg);
     dlg->setLayout(topLayout);
-    QWidget *widget = new QWidget(dlg);
+    auto widget = new QWidget(dlg);
     topLayout->addWidget(widget);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
     connect(buttonBox, &QDialogButtonBox::accepted, dlg, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);
@@ -94,7 +94,7 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     }
     {
         auto hboxLayout = new QHBoxLayout;
-        QLabel *label =
+        auto label =
             new QLabel(QStringLiteral("<a href=\"%1\">%2</a>").arg(index.data(MigratorModel::LogfileRole).toString()).arg(ki18n("Logfile").toString()), widget);
         label->setOpenExternalLinks(true);
         hboxLayout->addWidget(label);

@@ -29,7 +29,7 @@ public:
         EwsEventType type;
     };
 
-    typedef QList<QueuedUpdate> QueuedUpdateList;
+    using QueuedUpdateList = QList<QueuedUpdate>;
 
     EwsFetchItemsJob(const Akonadi::Collection &collection,
                      EwsClient &client,
@@ -83,7 +83,7 @@ private:
         QString changeKey;
         EwsEventType type;
     };*/
-    typedef QHash<EwsEventType, QHash<QString, QString>> QueuedUpdateHash;
+    using QueuedUpdateHash = QHash<EwsEventType, QHash<QString, QString>>;
 
     const Akonadi::Collection mCollection;
     EwsClient &mClient;

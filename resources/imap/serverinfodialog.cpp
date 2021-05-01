@@ -24,7 +24,7 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
 
     mTextBrowser->setPlainText(parentResource->serverCapabilities().join(QLatin1Char('\n')));
     mainLayout->addWidget(mTextBrowser);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ServerInfoDialog::reject);
     mainLayout->addWidget(buttonBox);

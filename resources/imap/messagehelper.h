@@ -13,7 +13,7 @@
 class MessageHelper
 {
 public:
-    typedef QSharedPointer<MessageHelper> Ptr;
+    using Ptr = QSharedPointer<MessageHelper>;
 
     virtual ~MessageHelper();
     virtual Akonadi::Item createItemFromMessage(const KMime::Message::Ptr &message,

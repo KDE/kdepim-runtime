@@ -18,31 +18,31 @@ void LogModel::message(MigratorBase::MessageType type, const QString &msg)
 {
     switch (type) {
     case MigratorBase::Success: {
-        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")), msg);
+        auto item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Skip: {
-        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok")), msg);
+        auto item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-ok")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Info: {
-        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-information")), msg);
+        auto item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-information")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Warning: {
-        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-warning")), msg);
+        auto item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-warning")), msg);
         item->setEditable(false);
         appendRow(item);
         break;
     }
     case MigratorBase::Error: {
-        QStandardItem *item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-error")), msg);
+        auto item = new QStandardItem(QIcon::fromTheme(QStringLiteral("dialog-error")), msg);
         item->setEditable(false);
         appendRow(item);
         break;

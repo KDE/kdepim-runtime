@@ -32,13 +32,13 @@ MigrationAgent::MigrationAgent(const QString &id)
 
 void MigrationAgent::configure(WId windowId)
 {
-    QDialog *dlg = new QDialog();
+    auto dlg = new QDialog();
     auto topLayout = new QVBoxLayout(dlg);
 
     auto widget = new MigrationStatusWidget(mScheduler, dlg);
     topLayout->addWidget(widget);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, dlg);
     connect(buttonBox, &QDialogButtonBox::accepted, dlg, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &QDialog::reject);
     topLayout->addWidget(buttonBox);

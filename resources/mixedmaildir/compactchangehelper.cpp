@@ -21,9 +21,9 @@
 
 using namespace Akonadi;
 
-typedef QMap<QString, Item> OldIdItemMap;
-typedef QMap<qint64, OldIdItemMap> RevisionChangeMap;
-typedef QMap<Collection::Id, RevisionChangeMap> CollectionRevisionMap;
+using OldIdItemMap = QMap<QString, Item>;
+using RevisionChangeMap = QMap<qint64, OldIdItemMap>;
+using CollectionRevisionMap = QMap<Collection::Id, RevisionChangeMap>;
 
 struct UpdateBatch {
     QQueue<Item> items;

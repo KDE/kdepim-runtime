@@ -384,7 +384,7 @@ void MixedMaildirResource::checkForInvalidatedIndexCollections(KJob *job)
     // data has been transferred into Akonadi by synchronizing the collections
     const QVariant var = job->property("onDiskIndexInvalidated");
     if (var.isValid()) {
-        const Collection::List collections = var.value<Collection::List>();
+        const auto collections = var.value<Collection::List>();
         qCDebug(MIXEDMAILDIR_LOG) << "On disk index of" << collections.count() << "collections invalidated after" << job->metaObject()->className();
 
         for (const Collection &collection : collections) {
@@ -472,7 +472,7 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
     const Item::List items = retrieveJob->availableItems();
     const QVariant var = retrieveJob->property("remoteIdToTagList");
     if (var.isValid()) {
-        const QHash<QString, QVariant> tagListHash = var.value<QHash<QString, QVariant>>();
+        const auto tagListHash = var.value<QHash<QString, QVariant>>();
         if (!tagListHash.isEmpty()) {
             qCDebug(MIXEDMAILDIRRESOURCE_LOG) << tagListHash.count() << "of" << items.count() << "items in collection" << retrieveJob->collection().remoteId()
                                               << "have tags";
@@ -720,7 +720,7 @@ void MixedMaildirResource::restoreTags(const QVariant &arg)
         return;
     }
 
-    const Collection collection = arg.value<Collection>();
+    const auto collection = arg.value<Collection>();
     if (!collection.isValid()) {
         qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Given variant is not valid";
         cancelTask();

@@ -332,7 +332,7 @@ bool ImapResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
     // The collection name is empty here...
     // Q_EMIT status( AgentBase::Running, i18nc( "@info:status", "Retrieving item in '%1'", item.parentCollection().name() ) );
 
-    RetrieveItemTask *task = new RetrieveItemTask(createResourceState(TaskArguments(item, parts)), this);
+    auto task = new RetrieveItemTask(createResourceState(TaskArguments(item, parts)), this);
     task->start(m_pool);
     queueTask(task);
     return true;
@@ -410,7 +410,7 @@ void ImapResourceBase::retrieveItems(const Collection &col)
 
     setItemStreamingEnabled(true);
 
-    RetrieveItemsTask *task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
+    auto task = new RetrieveItemsTask(createResourceState(TaskArguments(col)), this);
     connect(task, SIGNAL(status(int, QString)), SIGNAL(status(int, QString)));
     connect(this, &ResourceBase::retrieveNextItemSyncBatch, task, &RetrieveItemsTask::onReadyForNextBatch);
     startTask(task);
@@ -472,7 +472,7 @@ void ImapResourceBase::doSearch(const QVariant &arg)
 {
     const QVariantMap map = arg.toMap();
     const QString query = map[QStringLiteral("query")].toString();
-    const Collection collection = map[QStringLiteral("collection")].value<Collection>();
+    const auto collection = map[QStringLiteral("collection")].value<Collection>();
 
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Searching..."));
     startTask(new SearchTask(createResourceState(TaskArguments(collection)), query, this));
@@ -636,9 +636,9 @@ void ImapResourceBase::onExpungeCollectionFetchDone(KJob *job)
 
 void ImapResourceBase::triggerCollectionExpunge(const QVariant &collectionVariant)
 {
-    const Collection collection = collectionVariant.value<Collection>();
+    const auto collection = collectionVariant.value<Collection>();
 
-    ExpungeCollectionTask *task = new ExpungeCollectionTask(createResourceState(TaskArguments(collection)), this);
+    auto task = new ExpungeCollectionTask(createResourceState(TaskArguments(collection)), this);
     task->start(m_pool);
     queueTask(task);
 }

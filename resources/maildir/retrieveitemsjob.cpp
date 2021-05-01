@@ -143,7 +143,7 @@ void RetrieveItemsJob::entriesProcessed()
     delete m_entryIterator;
     m_entryIterator = nullptr;
     if (!m_localItems.isEmpty()) {
-        Akonadi::ItemDeleteJob *job = new Akonadi::ItemDeleteJob(Akonadi::valuesToVector(m_localItems), transaction());
+        auto job = new Akonadi::ItemDeleteJob(Akonadi::valuesToVector(m_localItems), transaction());
         m_maildir.removeCachedKeys(m_localItems.keys());
         // We ensure m_transaction is valid by calling transaction() above,
         // however calling it again here could cause it to give us another transaction

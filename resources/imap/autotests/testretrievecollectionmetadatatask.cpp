@@ -17,8 +17,8 @@
 #include <attributefactory.h>
 #include <collectionquotaattribute.h>
 #include <noinferiorsattribute.h>
-typedef QMap<QByteArray, QByteArray> QBYTEARRAYMAP;
-typedef QMap<QByteArray, qint64> QBYTEARRAYINT64MAP;
+using QBYTEARRAYMAP = QMap<QByteArray, QByteArray>;
+using QBYTEARRAYINT64MAP = QMap<QByteArray, qint64>;
 
 Q_DECLARE_METATYPE(Akonadi::Collection::Rights)
 Q_DECLARE_METATYPE(QBYTEARRAYMAP)
@@ -341,7 +341,7 @@ private Q_SLOTS:
         state->setCollection(collection);
         state->setServerCapabilities(capabilities);
         state->setUserName(QStringLiteral("Hans"));
-        RetrieveCollectionMetadataTask *task = new RetrieveCollectionMetadataTask(state);
+        auto task = new RetrieveCollectionMetadataTask(state);
 
         task->start(&pool);
 
@@ -361,7 +361,7 @@ private Q_SLOTS:
             }
 
             if (command == QLatin1String("collectionAttributesRetrieved")) {
-                Akonadi::Collection collection = parameter.value<Akonadi::Collection>();
+                auto collection = parameter.value<Akonadi::Collection>();
                 QCOMPARE(collection.rights(), expectedRights);
 
                 if (!expectedAnnotations.isEmpty()) {

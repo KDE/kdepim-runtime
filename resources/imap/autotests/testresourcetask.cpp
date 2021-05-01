@@ -113,7 +113,7 @@ private Q_SLOTS:
         }
 
         QSignalSpy sessionSpy(&pool, &SessionPool::sessionRequestDone);
-        DummyResourceTask *task = new DummyResourceTask(actionIfNoSession, state);
+        auto task = new DummyResourceTask(actionIfNoSession, state);
         task->start(&pool);
 
         if (shouldConnect) {

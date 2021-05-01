@@ -43,7 +43,7 @@ class FreeBusyHandler : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::unique_ptr<FreeBusyHandler> Ptr;
+    using Ptr = std::unique_ptr<FreeBusyHandler>;
 
     FreeBusyHandler(GoogleResourceStateInterface *iface, GoogleSettings *settings);
 

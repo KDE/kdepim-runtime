@@ -25,7 +25,7 @@ public:
     /**
      * Describes a list of objects.
      */
-    typedef QVector<Object> List;
+    using List = QVector<Object>;
 
     /**
      * Describes the status of the object.

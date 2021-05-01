@@ -280,7 +280,7 @@ private Q_SLOTS:
 
         // OTOH, if we release one now, and then request another one
         // it should succeed without even creating a new session
-        auto *session = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
+        auto session = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
         pool.releaseSession(session);
         requestId = pool.requestSession();
         QCOMPARE(requestId, qint64(4));
@@ -335,7 +335,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.count(), 1);
 
         QCOMPARE(sessionSpy.at(0).at(0).toLongLong(), requestId);
-        auto *s = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
+        auto s = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
 
         auto job = new KIMAP::CapabilitiesJob(s);
         job->start();
@@ -575,8 +575,8 @@ private Q_SLOTS:
         // Still connected of course
         QVERIFY(pool.isConnected());
 
-        auto *session1 = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
-        auto *session2 = sessionSpy.at(1).at(1).value<KIMAP::Session *>();
+        auto session1 = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
+        auto session2 = sessionSpy.at(1).at(1).value<KIMAP::Session *>();
 
         // Prepare for session disconnects
         QSignalSpy lostSpy(&pool, &SessionPool::connectionLost);
@@ -655,7 +655,7 @@ private Q_SLOTS:
         QCOMPARE(sessionSpy.count(), 1);
         QVERIFY(sessionSpy.at(0).at(1).value<KIMAP::Session *>() != nullptr);
 
-        auto *session = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
+        auto session = sessionSpy.at(0).at(1).value<KIMAP::Session *>();
 
         // Ask for the second session, the password requested will never reply
         // and we'll get a disconnect in parallel (by triggering the capability

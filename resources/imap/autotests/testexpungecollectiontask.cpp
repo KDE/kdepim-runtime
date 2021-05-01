@@ -91,7 +91,7 @@ private Q_SLOTS:
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setCollection(collection);
-        ExpungeCollectionTask *task = new ExpungeCollectionTask(state);
+        auto task = new ExpungeCollectionTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());

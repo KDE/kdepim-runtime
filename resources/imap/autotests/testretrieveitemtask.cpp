@@ -73,7 +73,7 @@ private Q_SLOTS:
 
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setItem(item);
-        RetrieveItemTask *task = new RetrieveItemTask(state);
+        auto task = new RetrieveItemTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), 1);

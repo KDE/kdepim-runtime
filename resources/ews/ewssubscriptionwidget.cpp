@@ -228,15 +228,15 @@ void EwsSubscriptionWidgetPrivate::populateFolderTree()
     mFolderItemHash.clear();
 
     for (const EwsFolder &folder : qAsConst(mFolders)) {
-        QStandardItem *item = new QStandardItem(folder[EwsFolderFieldDisplayName].toString());
+        auto item = new QStandardItem(folder[EwsFolderFieldDisplayName].toString());
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         item->setCheckable(true);
-        EwsId id = folder[EwsFolderFieldFolderId].value<EwsId>();
+        auto id = folder[EwsFolderFieldFolderId].value<EwsId>();
         item->setData(id.id(), ItemIdRole);
         if (mSubscribedIds.contains(EwsId(id.id()))) {
             item->setCheckState(Qt::Checked);
         }
-        EwsId parentId = folder[EwsFolderFieldParentFolderId].value<EwsId>();
+        auto parentId = folder[EwsFolderFieldParentFolderId].value<EwsId>();
         if (parentId.type() != EwsId::Unspecified) {
             QStandardItem *parentItem = mFolderItemHash.value(parentId.id());
             if (parentItem) {
@@ -297,7 +297,7 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
     auto filterLineEdit = new QLineEdit(this);
     filterLineEdit->setPlaceholderText(i18nc("@label:textbox", "Filter folders"));
 
-    QWidget *treeContainer = new QWidget(this);
+    auto treeContainer = new QWidget(this);
     auto treeContainerLayout = new QHBoxLayout(treeContainer);
     treeContainerLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -310,7 +310,7 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
     d->mFolderTreeView->setModel(d->mFilterModel);
     d->mFolderTreeView->header()->hide();
 
-    QWidget *buttonContainer = new QWidget(this);
+    auto buttonContainer = new QWidget(this);
     auto buttonContainerLayout = new QVBoxLayout(buttonContainer);
     buttonContainerLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -327,7 +327,7 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
     treeContainerLayout->addWidget(d->mFolderTreeView);
     treeContainerLayout->addWidget(buttonContainer);
 
-    QCheckBox *subOnlyCheckBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), this);
+    auto subOnlyCheckBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), this);
 
     subContainerLayout->addWidget(filterLineEdit);
     subContainerLayout->addWidget(treeContainer);

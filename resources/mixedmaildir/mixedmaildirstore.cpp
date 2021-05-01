@@ -256,13 +256,13 @@ private:
     MBox mMBox;
     QDateTime mModificationTime;
 
-    typedef QHash<quint64, KMIndexDataPtr> IndexDataHash;
+    using IndexDataHash = QHash<quint64, KMIndexDataPtr>;
     IndexDataHash mIndexData;
     bool mIndexDataLoaded;
     bool mHasIndexData;
 };
 
-typedef QSharedPointer<MBoxContext> MBoxPtr;
+using MBoxPtr = QSharedPointer<MBoxContext>;
 
 void MBoxContext::readIndexData()
 {
@@ -433,7 +433,7 @@ public:
 private:
     Maildir mMaildir;
 
-    typedef QHash<QString, KMIndexDataPtr> IndexDataHash;
+    using IndexDataHash = QHash<QString, KMIndexDataPtr>;
     IndexDataHash mIndexData;
     bool mIndexDataLoaded;
     bool mHasIndexData;
@@ -487,7 +487,7 @@ void MaildirContext::readIndexData()
     qCDebug(MIXEDMAILDIR_LOG) << "Read" << mIndexData.count() << "index entries from" << indexFileInfo.absoluteFilePath();
 }
 
-typedef QSharedPointer<MaildirContext> MaildirPtr;
+using MaildirPtr = QSharedPointer<MaildirContext>;
 
 class MixedMaildirStore::Private : public FileStore::Job::Visitor
 {
@@ -535,10 +535,10 @@ public: // visitor interface implementation
     bool visit(FileStore::StoreCompactJob *job) override;
 
 public:
-    typedef QHash<QString, MBoxPtr> MBoxHash;
+    using MBoxHash = QHash<QString, MBoxPtr>;
     MBoxHash mMBoxes;
 
-    typedef QHash<QString, MaildirPtr> MaildirHash;
+    using MaildirHash = QHash<QString, MaildirPtr>;
     MaildirHash mMaildirs;
 };
 

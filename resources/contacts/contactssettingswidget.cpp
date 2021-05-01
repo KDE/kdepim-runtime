@@ -25,7 +25,7 @@ ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, Q
 {
     ContactsResourceSettings::instance(config);
 
-    QWidget *mainWidget = new QWidget(parent);
+    auto mainWidget = new QWidget(parent);
 
     ui.setupUi(mainWidget);
     parent->layout()->addWidget(mainWidget);

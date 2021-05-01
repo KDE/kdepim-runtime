@@ -153,7 +153,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDesc
 
             // If the folder is the Inbox, make some special settings.
             if (currentPath.compare(separator + QLatin1String("INBOX"), Qt::CaseInsensitive) == 0) {
-                auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+                auto attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Inbox"));
                 attr->setIconName(QStringLiteral("mail-folder-inbox"));
                 c.attribute<Akonadi::SpecialCollectionAttribute>(Akonadi::Collection::AddIfMissing)->setCollectionType("inbox");
@@ -162,7 +162,7 @@ void RetrieveCollectionsTask::onMailBoxesReceived(const QList<KIMAP::MailBoxDesc
 
             // If the folder is the user top-level folder, mark it as well, even although it is not officially noted in the RFC
             if (currentPath == (separator + QLatin1String("user")) && currentFlags.contains("\\noselect")) {
-                auto *attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+                auto attr = c.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
                 attr->setDisplayName(i18n("Shared Folders"));
                 attr->setIconName(QStringLiteral("x-mail-distribution-list"));
             }

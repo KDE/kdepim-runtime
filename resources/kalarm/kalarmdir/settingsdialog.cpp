@@ -25,13 +25,13 @@ SettingsDialog::SettingsDialog(WId windowId, Settings *settings)
     : QDialog()
     , mSettings(settings)
 {
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);
     mTypeSelector = new AlarmTypeWidget(ui.tab, ui.tabLayout);
     ui.kcfg_Path->setMode(KFile::LocalOnly | KFile::Directory);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);

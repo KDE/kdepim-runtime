@@ -21,7 +21,7 @@ IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWi
 {
     IcalDirResourceSettings::instance(config);
 
-    QWidget *mainWidget = new QWidget(parent);
+    auto mainWidget = new QWidget(parent);
 
     ui.setupUi(mainWidget);
     parent->layout()->addWidget(mainWidget);

@@ -91,7 +91,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
                     incidence = event;
                 }
             }
-            const EwsOccurrence::List excList = ewsItem[EwsItemFieldModifiedOccurrences].value<EwsOccurrence::List>();
+            const auto excList = ewsItem[EwsItemFieldModifiedOccurrences].value<EwsOccurrence::List>();
             for (const EwsOccurrence &exc : excList) {
                 addItems.append(exc.itemId());
             }
@@ -106,7 +106,7 @@ void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Resp
                 incidence->setDtStart(dt);
             }
             if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
-                auto *event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
+                auto event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
                 dt = event->dtEnd();
                 if (dt.isValid()) {
                     event->setDtEnd(dt);
@@ -169,7 +169,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
 
         Item item(KCalendarCore::Event::eventMimeType());
         item.setParentCollection(mCollection);
-        EwsId id = ewsItem[EwsItemFieldItemId].value<EwsId>();
+        auto id = ewsItem[EwsItemFieldItemId].value<EwsId>();
         item.setRemoteId(id.id());
         item.setRemoteRevision(id.changeKey());
 
@@ -184,7 +184,7 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
             incidence->setDtStart(dt);
         }
         if (incidence->type() == KCalendarCore::Incidence::TypeEvent) {
-            auto *event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
+            auto event = reinterpret_cast<KCalendarCore::Event *>(incidence.data());
             dt = event->dtEnd();
             if (dt.isValid()) {
                 event->setDtEnd(dt);

@@ -64,7 +64,7 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
     lay->addWidget(mEnabled);
 
     auto hbox = new QHBoxLayout;
-    QLabel *lab = new QLabel(i18nc("@label:chooser for the folder that messages will be archived under", "Archive into:"));
+    auto lab = new QLabel(i18nc("@label:chooser for the folder that messages will be archived under", "Archive into:"));
     hbox->addWidget(lab);
     mArchiveFolder = new Akonadi::CollectionRequester(this);
     mArchiveFolder->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());

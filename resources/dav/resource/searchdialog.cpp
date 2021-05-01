@@ -25,14 +25,14 @@ SearchDialog::SearchDialog(QWidget *parent)
     , mModel(new QStandardItemModel(this))
 {
     setWindowTitle(i18nc("@title:window", "Search"));
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
     mUi.searchResults->setModel(mModel);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -115,7 +115,7 @@ void SearchDialog::search()
     KDAV::DavUrl davUrl;
     davUrl.setUrl(url);
 
-    KDAV::DavPrincipalSearchJob *job = new KDAV::DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text(), this);
+    auto job = new KDAV::DavPrincipalSearchJob(davUrl, filter, mUi.searchParam->text(), this);
     job->fetchProperty(KDAV::ProtocolInfo::principalHomeSet(KDAV::CalDav), KDAV::ProtocolInfo::principalHomeSetNS(KDAV::CalDav));
     job->fetchProperty(KDAV::ProtocolInfo::principalHomeSet(KDAV::CardDav), KDAV::ProtocolInfo::principalHomeSetNS(KDAV::CardDav));
 
@@ -178,7 +178,7 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
     const KDAV::DavCollection::List collections = davJob->collections();
 
     for (const KDAV::DavCollection &collection : collections) {
-        QStandardItem *item = new QStandardItem(collection.displayName());
+        auto item = new QStandardItem(collection.displayName());
         QString data(KDAV::ProtocolInfo::protocolName(collection.url().protocol()) + QLatin1Char('|') + collection.url().toDisplayString());
         item->setData(data, Qt::UserRole + 1);
         item->setToolTip(collection.url().toDisplayString());

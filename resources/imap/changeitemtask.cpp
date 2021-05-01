@@ -47,7 +47,7 @@ void ChangeItemTask::doStart(KIMAP::Session *session)
         }
 
         // save message to the server.
-        KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+        auto msg = item().payload<KMime::Message::Ptr>();
         m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
         auto job = new KIMAP::AppendJob(session);
@@ -177,7 +177,7 @@ void ChangeItemTask::triggerSearchJob()
         search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
         const auto parent = item().parentCollection();
-        const auto *uidNext = parent.attribute<UidNextAttribute>();
+        const auto uidNext = parent.attribute<UidNextAttribute>();
         if (!uidNext) {
             qCWarning(IMAPRESOURCE_LOG) << "Failed to determine new uid.";
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));

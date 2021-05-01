@@ -26,13 +26,13 @@ public:
     class FAKEEWSSERVER_EXPORT DialogEntry
     {
     public:
-        typedef QPair<QString, ushort> HttpResponse;
-        typedef std::function<HttpResponse(const QString &, QXmlResultItems &, const QXmlNamePool &)> ReplyCallback;
+        using HttpResponse = QPair<QString, ushort>;
+        using ReplyCallback = std::function<HttpResponse(const QString &, QXmlResultItems &, const QXmlNamePool &)>;
         QString xQuery;
         ReplyCallback replyCallback;
         QString description;
 
-        typedef QVector<DialogEntry> List;
+        using List = QVector<DialogEntry>;
     };
 
     static const DialogEntry::HttpResponse EmptyResponse;

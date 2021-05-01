@@ -13,7 +13,7 @@
 MailDispatcherConfig::MailDispatcherConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &cfg)
     : Akonadi::AgentConfigurationBase(config, parent, cfg)
 {
-    QWidget *w = new QWidget(parent);
+    auto w = new QWidget(parent);
 
     mWidget = new KNotifyConfigWidget(parent);
     mWidget->setApplication(QStringLiteral("akonadi_maildispatcher_agent"));

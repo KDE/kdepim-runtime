@@ -35,10 +35,10 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
     }
     auto mainLayout = new QVBoxLayout(this);
 
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -99,7 +99,7 @@ bool GoogleSettingsDialog::handleError(KGAPI2::Job *job)
             }
         }
 
-        AuthJob *authJob = new AuthJob(m_account, m_settings->clientId(), m_settings->clientSecret(), this);
+        auto authJob = new AuthJob(m_account, m_settings->clientId(), m_settings->clientSecret(), this);
         authJob->setProperty(JOB_PROPERTY, QVariant::fromValue(job));
         connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 
@@ -135,7 +135,7 @@ void GoogleSettingsDialog::slotConfigure()
             m_account->addScope(scope);
         }
     }
-    AuthJob *authJob = new AuthJob(m_account, m_settings->clientId(), m_settings->clientSecret());
+    auto authJob = new AuthJob(m_account, m_settings->clientId(), m_settings->clientSecret());
     authJob->setUsername(username);
     connect(authJob, &AuthJob::finished, this, &GoogleSettingsDialog::slotAuthJobFinished);
 }
@@ -227,7 +227,7 @@ void GoogleSettingsDialog::slotReloadCalendars()
         for (const ObjectPtr &object : objects) {
             const CalendarPtr calendar = object.dynamicCast<Calendar>();
 
-            QListWidgetItem *item = new QListWidgetItem(calendar->title());
+            auto item = new QListWidgetItem(calendar->title());
             item->setData(Qt::UserRole, calendar->uid());
             item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
             item->setCheckState((activeCalendars.isEmpty() || activeCalendars.contains(calendar->uid())) ? Qt::Checked : Qt::Unchecked);
@@ -264,7 +264,7 @@ void GoogleSettingsDialog::slotReloadTaskLists()
         for (const ObjectPtr &object : objects) {
             const TaskListPtr taskList = object.dynamicCast<TaskList>();
 
-            QListWidgetItem *item = new QListWidgetItem(taskList->title());
+            auto item = new QListWidgetItem(taskList->title());
             item->setData(Qt::UserRole, taskList->uid());
             item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
             item->setCheckState((activeTaskLists.isEmpty() || activeTaskLists.contains(taskList->uid())) ? Qt::Checked : Qt::Unchecked);

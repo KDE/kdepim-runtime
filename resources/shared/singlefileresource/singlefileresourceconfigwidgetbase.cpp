@@ -24,7 +24,7 @@ using namespace Akonadi;
 SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *parent)
     : QWidget(parent)
 {
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     mainLayout->setContentsMargins(0, 0, 0, 0);

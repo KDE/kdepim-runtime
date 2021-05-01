@@ -81,21 +81,21 @@ void OutboxQueue::addIfComplete(const Item &item)
         return;
     }
 
-    const auto *dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
+    const auto dispatchModeAttribute = item.attribute<DispatchModeAttribute>();
     Q_ASSERT(dispatchModeAttribute);
     if (dispatchModeAttribute->dispatchMode() == DispatchModeAttribute::Manual) {
         qCDebug(MAILDISPATCHER_LOG) << "Item " << item.id() << "is queued to be sent manually.";
         return;
     }
 
-    const auto *transportAttribute = item.attribute<TransportAttribute>();
+    const auto transportAttribute = item.attribute<TransportAttribute>();
     Q_ASSERT(transportAttribute);
     if (transportAttribute->transport() == nullptr) {
         qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid transport.";
         return;
     }
 
-    const auto *sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
+    const auto sentBehaviourAttribute = item.attribute<SentBehaviourAttribute>();
     Q_ASSERT(sentBehaviourAttribute);
     if (sentBehaviourAttribute->sentBehaviour() == SentBehaviourAttribute::MoveToCollection && !sentBehaviourAttribute->moveToCollection().isValid()) {
         qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid sent-mail collection.";

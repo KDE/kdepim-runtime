@@ -205,7 +205,7 @@ void RetrieveItemsJob::Private::storeListResult(KJob *job)
     // all items remaining in mServerItemsByRemoteId are no longer in the store
 
     if (!mServerItemsByRemoteId.isEmpty()) {
-        ItemDeleteJob *deleteJob = new ItemDeleteJob(Akonadi::valuesToVector(mServerItemsByRemoteId), transaction());
+        auto deleteJob = new ItemDeleteJob(Akonadi::valuesToVector(mServerItemsByRemoteId), transaction());
         transaction()->setIgnoreJobFailure(deleteJob);
     }
 

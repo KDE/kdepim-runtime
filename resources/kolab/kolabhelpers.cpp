@@ -115,7 +115,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         return imapItem;
     }
 
-    const KMime::Message::Ptr payload = imapItem.payload<KMime::Message::Ptr>();
+    const auto payload = imapItem.payload<KMime::Message::Ptr>();
     const Kolab::KolabObjectReader reader(payload);
     if (checkForErrors(imapItem)) {
         ok = true;
@@ -235,7 +235,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
             if (items.count() != 1) {
                 continue;
             }
-            const KContacts::Addressee addressee = job->items().at(0).payload<KContacts::Addressee>();
+            const auto addressee = job->items().at(0).payload<KContacts::Addressee>();
             gid = addressee.uid();
         }
         KContacts::ContactGroup::ContactReference ref;
@@ -490,7 +490,7 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
             qCWarning(KOLABRESOURCE_LOG) << "Email without payload, failed to add to tag: " << item.id() << item.remoteId();
             return QString();
         }
-        KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+        auto msg = item.payload<KMime::Message::Ptr>();
         member.uid = item.remoteId().toLong();
         member.user = user;
         member.subject = msg->subject()->asUnicodeString();

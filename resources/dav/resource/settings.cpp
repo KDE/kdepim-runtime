@@ -469,7 +469,7 @@ QString Settings::promptForPassword(const QString &user)
     QPointer<QDialog> dlg = new QDialog();
     QString password;
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dlg);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, dlg);
     auto mainLayout = new QVBoxLayout(dlg);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
@@ -477,12 +477,12 @@ QString Settings::promptForPassword(const QString &user)
     connect(buttonBox, &QDialogButtonBox::accepted, dlg.data(), &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, dlg.data(), &QDialog::reject);
 
-    QWidget *mainWidget = new QWidget(dlg);
+    auto mainWidget = new QWidget(dlg);
     mainLayout->addWidget(mainWidget);
     mainLayout->addWidget(buttonBox);
     auto vLayout = new QVBoxLayout();
     mainWidget->setLayout(vLayout);
-    QLabel *label = new QLabel(i18n("A password is required for user %1", (user == QLatin1String("$default$") ? defaultUsername() : user)), mainWidget);
+    auto label = new QLabel(i18n("A password is required for user %1", (user == QLatin1String("$default$") ? defaultUsername() : user)), mainWidget);
     vLayout->addWidget(label);
     auto hLayout = new QHBoxLayout();
     label = new QLabel(i18n("Password: "), mainWidget);

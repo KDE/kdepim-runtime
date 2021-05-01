@@ -33,7 +33,7 @@ class GenericHandler : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::unique_ptr<GenericHandler> Ptr;
+    using Ptr = std::unique_ptr<GenericHandler>;
 
     GenericHandler(GoogleResourceStateInterface *iface, GoogleSettings *settings);
     ~GenericHandler() override;

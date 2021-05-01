@@ -87,7 +87,7 @@ void KolabChangeItemsRelationsTask::onRelationFetchDone(KJob *job)
 
 void KolabChangeItemsRelationsTask::addRelation(const Akonadi::Relation &relation)
 {
-    Akonadi::ItemFetchJob *fetchJob = new Akonadi::ItemFetchJob(Akonadi::Item::List() << relation.left() << relation.right());
+    auto fetchJob = new Akonadi::ItemFetchJob(Akonadi::Item::List() << relation.left() << relation.right());
     fetchJob->fetchScope().setCacheOnly(true);
     fetchJob->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::All);
     fetchJob->fetchScope().setFetchGid(true);
@@ -111,7 +111,7 @@ void KolabChangeItemsRelationsTask::onItemsFetched(KJob *job)
     }
 
     const Akonadi::Item::List items = fetchJob->items();
-    const Akonadi::Relation relation = job->property("relation").value<Akonadi::Relation>();
+    const auto relation = job->property("relation").value<Akonadi::Relation>();
     Akonadi::Item leftItem = items[0] == relation.left() ? items[0] : items[1];
     Akonadi::Item rightItem = items[0] == relation.right() ? items[0] : items[1];
     const QString left = KolabHelpers::createMemberUrl(leftItem, resourceState()->userName());

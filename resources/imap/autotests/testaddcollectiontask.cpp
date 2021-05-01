@@ -83,7 +83,7 @@ private Q_SLOTS:
         collection = Akonadi::Collection(4);
         collection.setName(QStringLiteral("Bar"));
         collection.setParentCollection(parentCollection);
-        auto *attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+        auto attr = collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
         QMap<QByteArray, QByteArray> annotations;
         annotations.insert("/shared/vendor/foobar/foo", "value");
         attr->setAnnotations(annotations);
@@ -127,7 +127,7 @@ private Q_SLOTS:
         if (collection.hasAttribute<Akonadi::CollectionAnnotationsAttribute>()) {
             state->setServerCapabilities(QStringList() << QStringLiteral("METADATA"));
         }
-        AddCollectionTask *task = new AddCollectionTask(state);
+        auto task = new AddCollectionTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());

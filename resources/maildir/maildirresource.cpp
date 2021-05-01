@@ -95,7 +95,7 @@ MaildirResource::MaildirResource(const QString &id)
     // if not present, create it
     if (configFile.isEmpty()) {
         // check if the resource was used before
-        CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), Akonadi::CollectionFetchJob::FirstLevel, this);
+        auto job = new CollectionFetchJob(Collection::root(), Akonadi::CollectionFetchJob::FirstLevel, this);
         job->fetchScope().setResource(id);
         connect(job, &CollectionFetchJob::result, this, &MaildirResource::attemptConfigRestoring);
         job->start();
@@ -271,7 +271,7 @@ void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collec
         cancelTask(i18n("Error: Unsupported type."));
         return;
     }
-    const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+    const auto mail = item.payload<KMime::Message::Ptr>();
 
     stopMaildirScan(dir);
 
@@ -343,7 +343,7 @@ void MaildirResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArr
         if (bodyChanged || headChanged) { // head or body changed
             // we can only deal with mail
             if (item.hasPayload<KMime::Message::Ptr>()) {
-                const KMime::Message::Ptr mail = item.payload<KMime::Message::Ptr>();
+                const auto mail = item.payload<KMime::Message::Ptr>();
                 QByteArray data = mail->encodedContent();
                 if (headChanged && !bodyChanged) {
                     // only the head has changed, get the current version of the mail

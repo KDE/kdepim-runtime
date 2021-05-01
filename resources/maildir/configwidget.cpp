@@ -22,7 +22,7 @@ ConfigWidget::ConfigWidget(MaildirSettings *settings, const QString &identifier,
     , mSettings(settings)
     , mToplevelIsContainer(false)
 {
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
     ui.setupUi(mainWidget);

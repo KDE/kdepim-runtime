@@ -258,7 +258,7 @@ public:
     {
         QString newName;
         if (collection.hasAttribute<EntityDisplayAttribute>()) {
-            const auto *attr = collection.attribute<EntityDisplayAttribute>();
+            const auto attr = collection.attribute<EntityDisplayAttribute>();
             newName = attr->displayName();
         }
         const QString oldName = mSettings->displayName();
@@ -287,7 +287,7 @@ public:
             rights |= Collection::CanChangeCollection;
             c.setRights(rights);
         }
-        auto *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        auto attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         if (name() != attr->displayName()) {
             attr->setDisplayName(name());
             new CollectionModifyJob(c);

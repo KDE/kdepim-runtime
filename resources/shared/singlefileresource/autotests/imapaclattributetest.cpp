@@ -9,7 +9,7 @@
 
 using namespace Akonadi;
 
-typedef QMap<QByteArray, KIMAP::Acl::Rights> ImapAcl;
+using ImapAcl = QMap<QByteArray, KIMAP::Acl::Rights>;
 
 Q_DECLARE_METATYPE(ImapAcl)
 Q_DECLARE_METATYPE(KIMAP::Acl::Rights)

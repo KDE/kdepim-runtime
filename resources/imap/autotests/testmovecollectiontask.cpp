@@ -148,7 +148,7 @@ private Q_SLOTS:
         state->setCollection(collection);
         state->setSourceCollection(source);
         state->setTargetCollection(target);
-        MoveCollectionTask *task = new MoveCollectionTask(state);
+        auto task = new MoveCollectionTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());

@@ -292,7 +292,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     switch (objectType) {
     case EventObject: {
         QStringList attachments;
-        KCalendarCore::Event::Ptr kEvent = fromXML<KCalendarCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
+        auto kEvent = fromXML<KCalendarCore::Event::Ptr, KolabV2::Event>(xmlData, attachments);
         if (kEvent) {
             Kolab::Event event = Kolab::Conversion::fromKCalendarCore(*kEvent);
             event.setAttachments(getAttachments(attachments, msg));
@@ -302,7 +302,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     }
     case TodoObject: {
         QStringList attachments;
-        KCalendarCore::Todo::Ptr kTodo = fromXML<KCalendarCore::Todo::Ptr, KolabV2::Task>(xmlData, attachments);
+        auto kTodo = fromXML<KCalendarCore::Todo::Ptr, KolabV2::Task>(xmlData, attachments);
         if (kTodo) {
             Kolab::Todo todo = Kolab::Conversion::fromKCalendarCore(*kTodo);
             todo.setAttachments(getAttachments(attachments, msg));
@@ -312,7 +312,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     }
     case JournalObject: {
         QStringList attachments;
-        KCalendarCore::Journal::Ptr kJournal = fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(xmlData, attachments);
+        auto kJournal = fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(xmlData, attachments);
         if (kJournal) {
             Kolab::Journal journal = Kolab::Conversion::fromKCalendarCore(*kJournal);
             journal.setAttachments(getAttachments(attachments, msg));

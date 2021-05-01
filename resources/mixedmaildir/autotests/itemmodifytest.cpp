@@ -646,7 +646,7 @@ void ItemModifyTest::testModifyFlagsAndPayload()
     QVERIFY(fetchedItem.flags().contains("\\SEEN"));
 
     QVERIFY(fetchedItem.hasPayload<KMime::Message::Ptr>());
-    KMime::Message::Ptr fetchedMsgPtr = fetchedItem.payload<KMime::Message::Ptr>();
+    auto fetchedMsgPtr = fetchedItem.payload<KMime::Message::Ptr>();
     QCOMPARE(msgPtr->encodedContent(), fetchedMsgPtr->encodedContent());
 
     // TODO test for mbox.

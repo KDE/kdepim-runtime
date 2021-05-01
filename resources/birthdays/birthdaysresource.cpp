@@ -67,7 +67,7 @@ void BirthdaysResource::retrieveCollections()
     c.setContentMimeTypes(QStringList() << QStringLiteral("application/x-vnd.akonadi.calendar.event"));
     c.setRights(Collection::ReadOnly);
 
-    auto *attribute = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto attribute = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("view-calendar-birthday"));
 
     Collection::List list;
@@ -87,7 +87,7 @@ bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet<QByte
 {
     Q_UNUSED(parts)
     qint64 contactId = item.remoteId().mid(1).toLongLong();
-    ItemFetchJob *job = new ItemFetchJob(Item(contactId), this);
+    auto job = new ItemFetchJob(Item(contactId), this);
     job->fetchScope().fetchFullPayload();
     connect(job, &ItemFetchJob::result, this, &BirthdaysResource::contactRetrieved);
     return true;
@@ -124,7 +124,7 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
         return;
     }
 
-    KContacts::Addressee contact = item.payload<KContacts::Addressee>();
+    auto contact = item.payload<KContacts::Addressee>();
 
     if (Settings::self()->filterOnCategories()) {
         bool hasCategory = false;
@@ -183,7 +183,7 @@ void BirthdaysResource::contactRemoved(const Akonadi::Item &item)
 
 void BirthdaysResource::doFullSearch()
 {
-    CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive, this);
+    auto job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive, this);
     connect(job, &CollectionFetchJob::collectionsReceived, this, &BirthdaysResource::listContacts);
 }
 
@@ -213,7 +213,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createBirthday(const Akonadi::Item 
     if (!contactItem.hasPayload<KContacts::Addressee>()) {
         return KCalendarCore::Event::Ptr();
     }
-    KContacts::Addressee contact = contactItem.payload<KContacts::Addressee>();
+    auto contact = contactItem.payload<KContacts::Addressee>();
 
     const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
     if (name.isEmpty()) {
@@ -245,7 +245,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const Akonadi::It
     if (!contactItem.hasPayload<KContacts::Addressee>()) {
         return KCalendarCore::Event::Ptr();
     }
-    KContacts::Addressee contact = contactItem.payload<KContacts::Addressee>();
+    auto contact = contactItem.payload<KContacts::Addressee>();
 
     const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
     if (name.isEmpty()) {
@@ -330,7 +330,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createEvent(QDate date)
 
 void BirthdaysResource::checkForUnknownCategories(const QString &categoryToCheck, Event::Ptr &event)
 {
-    Akonadi::TagCreateJob *tagCreateJob = new Akonadi::TagCreateJob(Akonadi::Tag(categoryToCheck), this);
+    auto tagCreateJob = new Akonadi::TagCreateJob(Akonadi::Tag(categoryToCheck), this);
     tagCreateJob->setMergeIfExisting(true);
     event->setCategories(categoryToCheck);
 }

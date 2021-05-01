@@ -273,7 +273,7 @@ private Q_SLOTS:
         state->setDisconnectedModeEnabled(isDisconnectedModeEnabled);
         state->setIntervalCheckTime(intervalCheckTime);
 
-        RetrieveCollectionsTask *task = new RetrieveCollectionsTask(state);
+        auto task = new RetrieveCollectionsTask(state);
         task->start(&pool);
 
         Akonadi::Collection::List collections;

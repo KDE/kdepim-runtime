@@ -588,7 +588,7 @@ private Q_SLOTS:
         state->setServerCapabilities(pool.serverCapabilities());
         state->setCollection(collection);
 
-        RetrieveItemsTask *task = new RetrieveItemsTask(state);
+        auto task = new RetrieveItemsTask(state);
         task->setFetchMissingItemBodies(false);
         task->start(&pool);
 

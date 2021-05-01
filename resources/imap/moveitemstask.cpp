@@ -102,7 +102,7 @@ void MoveItemsTask::startMove(KIMAP::Session *session)
     const Akonadi::Item::List lstItems = items();
     for (const Akonadi::Item &item : lstItems) {
         try {
-            KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+            auto msg = item.payload<KMime::Message::Ptr>();
             const QByteArray messageId = msg->messageID()->asUnicodeString().toUtf8();
             if (!messageId.isEmpty()) {
                 m_messageIds.insert(item.id(), messageId);
@@ -252,7 +252,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         search->setProperty("IsLastSearchJob", true);
 
         Akonadi::Collection c = targetCollection();
-        auto *uidNext = c.attribute<UidNextAttribute>();
+        auto uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
             search->deleteLater();

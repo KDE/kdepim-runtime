@@ -123,7 +123,7 @@ void SendJob::doTraditionalTransport()
 
     // Message.
     Q_ASSERT(mItem.hasPayload<Message::Ptr>());
-    const Message::Ptr message = mItem.payload<Message::Ptr>();
+    const auto message = mItem.payload<Message::Ptr>();
     bool needAssemble = false;
     if (message->removeHeader("Bcc")) {
         needAssemble = true;

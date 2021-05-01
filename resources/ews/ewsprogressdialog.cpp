@@ -18,7 +18,7 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
     : QDialog(parent)
 {
     setModal(true);
-    QLabel *statusLabel = new QLabel(this);
+    auto statusLabel = new QLabel(this);
 
     auto progress = new QProgressBar(this);
     progress->setMaximum(0);
@@ -33,7 +33,7 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
     auto cancelButton = new QPushButton(this);
     cancelButton->setText(i18n("Cancel"));
 
-    QWidget *progressContainer = new QWidget(this);
+    auto progressContainer = new QWidget(this);
     progressContainer->setLayout(vLayout);
 
     auto hLayout = new QHBoxLayout(this);

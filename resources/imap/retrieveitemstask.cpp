@@ -79,7 +79,7 @@ void RetrieveItemsTask::doStart(KIMAP::Session *session)
 
     if (m_fetchMissingBodies
         && col.cachePolicy().localParts().contains(QLatin1String(Akonadi::MessagePart::Body))) { // disconnected mode, make sure we really have the body cached
-        Akonadi::Session *session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
+        auto session = new Akonadi::Session(resourceName().toLatin1() + "_body_checker", this);
         auto fetchJob = new Akonadi::ItemFetchJob(col, session);
         fetchJob->fetchScope().setCheckForCachedPayloadPartsOnly();
         fetchJob->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Body);
@@ -296,7 +296,7 @@ void RetrieveItemsTask::prepareRetrieval()
     // Get the current uid next value and store it
     int oldNextUid = 0;
     if (m_nextUid > 0) { // this can fail with faulty servers that don't deliver uidnext
-        if (auto *currentNextUid = col.attribute<UidNextAttribute>()) {
+        if (auto currentNextUid = col.attribute<UidNextAttribute>()) {
             oldNextUid = currentNextUid->uidNext();
             if (oldNextUid != m_nextUid) {
                 currentNextUid->setUidNext(m_nextUid);
@@ -329,7 +329,7 @@ void RetrieveItemsTask::prepareRetrieval()
             col.addAttribute(attr);
             modifyNeeded = true;
         } else {
-            auto *attr = col.attribute<HighestModSeqAttribute>();
+            auto attr = col.attribute<HighestModSeqAttribute>();
             if (attr->highestModSequence() < m_highestModSeq) {
                 oldHighestModSeq = attr->highestModSequence();
                 attr->setHighestModSeq(m_highestModSeq);

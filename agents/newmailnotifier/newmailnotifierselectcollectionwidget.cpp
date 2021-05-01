@@ -35,7 +35,7 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
 {
     if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
-            const Akonadi::Collection collection = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            const auto collection = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             // Make top-level collections uncheckable
             if (collection.parentCollection() == Akonadi::Collection::root()) {
                 return {};
@@ -43,7 +43,7 @@ QVariant NewMailNotifierCollectionProxyModel::data(const QModelIndex &index, int
             if (mNotificationCollection.contains(collection)) {
                 return mNotificationCollection.value(collection) ? Qt::Checked : Qt::Unchecked;
             } else {
-                const auto *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+                const auto attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
                 if (!attr || !attr->ignoreNewMail()) {
                     return Qt::Checked;
                 }
@@ -58,7 +58,7 @@ bool NewMailNotifierCollectionProxyModel::setData(const QModelIndex &index, cons
 {
     if (role == Qt::CheckStateRole) {
         if (index.isValid()) {
-            const Akonadi::Collection collection = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
+            const auto collection = data(index, Akonadi::EntityTreeModel::CollectionRole).value<Akonadi::Collection>();
             mNotificationCollection[collection] = (value == Qt::Checked);
             Q_EMIT dataChanged(index, index);
             return true;
@@ -88,7 +88,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     auto vbox = new QVBoxLayout(this);
 
-    QLabel *label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
+    auto label = new QLabel(i18n("Select which folders to monitor for new message notifications:"));
     vbox->addWidget(label);
 
     // Create a new change recorder.
@@ -137,7 +137,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     auto hbox = new QHBoxLayout;
     vbox->addLayout(hbox);
 
-    QPushButton *button = new QPushButton(i18n("&Select All"), this);
+    auto button = new QPushButton(i18n("&Select All"), this);
     connect(button, &QPushButton::clicked, this, &NewMailNotifierSelectCollectionWidget::slotSelectAllCollections);
     hbox->addWidget(button);
 
@@ -189,7 +189,7 @@ void NewMailNotifierSelectCollectionWidget::updateCollectionsRecursive()
     while (i.hasNext()) {
         i.next();
         Akonadi::Collection collection = i.key();
-        auto *attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
+        auto attr = collection.attribute<Akonadi::NewMailNotifierAttribute>();
         Akonadi::CollectionModifyJob *modifyJob = nullptr;
         const bool selected = i.value();
         if (selected && attr && attr->ignoreNewMail()) {

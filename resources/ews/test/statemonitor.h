@@ -33,7 +33,7 @@ Q_SIGNALS:
 template<typename T> class CollectionStateMonitor : public StateMonitorBase
 {
 public:
-    typedef std::function<bool(const Akonadi::Collection &col, const T &state)> StateComparisonFunc;
+    using StateComparisonFunc = std::function<bool(const Akonadi::Collection &, const T &)>;
     CollectionStateMonitor(QObject *parent,
                            const QHash<QString, T> &stateHash,
                            const QString &inboxId,

@@ -21,7 +21,7 @@
 class ResourceStateInterface
 {
 public:
-    typedef QSharedPointer<ResourceStateInterface> Ptr;
+    using Ptr = QSharedPointer<ResourceStateInterface>;
 
     virtual ~ResourceStateInterface();
 

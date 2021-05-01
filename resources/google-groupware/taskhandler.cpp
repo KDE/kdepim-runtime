@@ -60,7 +60,7 @@ void TaskHandler::setupCollection(Collection &collection, const TaskListPtr &tas
     collection.setRemoteId(taskList->uid());
     collection.setRights(Collection::CanChangeCollection | Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem);
 
-    auto *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(taskList->title());
     attr->setIconName(QStringLiteral("view-pim-tasks"));
 }
@@ -129,7 +129,7 @@ void TaskHandler::slotItemsRetrieved(KGAPI2::Job *job)
     Item::List changedItems, removedItems;
 
     const ObjectsList &objects = qobject_cast<FetchJob *>(job)->items();
-    Collection collection = job->property(COLLECTION_PROPERTY).value<Collection>();
+    auto collection = job->property(COLLECTION_PROPERTY).value<Collection>();
     bool isIncremental = (qobject_cast<TaskFetchJob *>(job)->fetchOnlyUpdated() > 0);
     qCDebug(GOOGLE_TASKS_LOG) << "Retrieved" << objects.count() << "tasks for list" << collection.remoteId();
     for (const auto &object : objects) {

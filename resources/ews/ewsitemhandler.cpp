@@ -14,8 +14,8 @@ struct HandlerFactory {
     EwsItemHandler::ItemHandlerFactory factory;
 };
 
-typedef QList<HandlerFactory> HandlerList;
-typedef QHash<EwsItemType, QSharedPointer<EwsItemHandler>> HandlerHash;
+using HandlerList = QList<HandlerFactory>;
+using HandlerHash = QHash<EwsItemType, QSharedPointer<EwsItemHandler>>;
 
 Q_GLOBAL_STATIC(HandlerList, handlerFactories)
 Q_GLOBAL_STATIC(HandlerHash, handlers)

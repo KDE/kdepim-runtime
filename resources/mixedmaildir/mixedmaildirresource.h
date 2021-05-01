@@ -82,7 +82,7 @@ private:
         QStringList mTagList;
     };
 
-    typedef QVector<TagContext> TagContextList;
+    using TagContextList = QVector<TagContext>;
     QHash<Akonadi::Collection::Id, TagContextList> mTagContextByColId;
     TagContextList mPendingTagContexts;
 

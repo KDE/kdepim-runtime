@@ -68,7 +68,7 @@ void TagChangeHelper::start(const Akonadi::Tag &tag, const KMime::Message::Ptr &
 
     const qint64 uidNext = -1;
 
-    UpdateMessageJob *append = new UpdateMessageJob(message, session, tag.gid(), QSharedPointer<TagMerger>(new TagMerger), mailBox, uidNext, oldUid, this);
+    auto append = new UpdateMessageJob(message, session, tag.gid(), QSharedPointer<TagMerger>(new TagMerger), mailBox, uidNext, oldUid, this);
     connect(append, &KJob::result, this, &TagChangeHelper::onReplaceDone);
     append->setProperty("tag", QVariant::fromValue(tag));
     append->start();
@@ -96,7 +96,7 @@ void TagChangeHelper::onReplaceDone(KJob *job)
     }
     auto replaceJob = static_cast<UpdateMessageJob *>(job);
     const qint64 newUid = replaceJob->newUid();
-    const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
+    const auto tag = job->property("tag").value<Akonadi::Tag>();
     if (newUid > 0) {
         recordNewUid(newUid, tag);
     } else {

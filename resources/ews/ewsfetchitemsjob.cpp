@@ -253,7 +253,7 @@ bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &
                                                            QHash<EwsItemType, Item::List> &toFetchItems)
 {
     Q_FOREACH (const EwsItem &ewsItem, items) {
-        EwsId id(ewsItem[EwsItemFieldItemId].value<EwsId>());
+        auto id(ewsItem[EwsItemFieldItemId].value<EwsId>());
         auto it = itemHash.find(id.id());
         if (it == itemHash.end()) {
             setErrorMsg(QStringLiteral("Got update for item %1, but item not found in local store.").arg(ewsHash(id.id())));
@@ -290,7 +290,7 @@ void EwsFetchItemsJob::compareItemLists()
     Q_FOREACH (const EwsItem &ewsItem, mRemoteAddedItems) {
         /* In case of a full sync all existing items appear as added on the remote side. Therefore
          * look for the item in the local list before creating a new copy. */
-        EwsId id(ewsItem[EwsItemFieldItemId].value<EwsId>());
+        auto id(ewsItem[EwsItemFieldItemId].value<EwsId>());
         QHash<QString, Item>::iterator it = itemHash.find(id.id());
         EwsItemType type = ewsItem.internalType();
         if (type == EwsItemTypeUnknown) {
@@ -301,7 +301,7 @@ void EwsFetchItemsJob::compareItemLists()
         if (it == itemHash.end()) {
             Item item(mimeType);
             item.setParentCollection(mCollection);
-            EwsId id = ewsItem[EwsItemFieldItemId].value<EwsId>();
+            auto id = ewsItem[EwsItemFieldItemId].value<EwsId>();
             item.setRemoteId(id.id());
             item.setRemoteRevision(id.changeKey());
             if (!mTagStore->readEwsProperties(item, ewsItem, mTagsSynced)) {

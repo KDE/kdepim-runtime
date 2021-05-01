@@ -39,7 +39,7 @@ public:
     virtual EwsCreateItemJob *
     createItemJob(EwsClient &client, const Akonadi::Item &item, const Akonadi::Collection &collection, EwsTagStore *tagStore, EwsResource *parent) = 0;
 
-    typedef std::function<EwsItemHandler *()> ItemHandlerFactory;
+    using ItemHandlerFactory = std::function<EwsItemHandler *()>;
     static void registerItemHandler(EwsItemType type, const ItemHandlerFactory &factory);
     static EwsItemHandler *itemHandler(EwsItemType type);
     static EwsItemType mimeToItemType(const QString &mimeType);

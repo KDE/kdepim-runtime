@@ -120,10 +120,10 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     auto networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
 
     m_parentResource->settings()->setWinId(parent);
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -324,7 +324,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setTrashCollection(m_ui->folderRequester->collection().id());
     Akonadi::Collection trash = m_ui->folderRequester->collection();
     Akonadi::SpecialMailCollections::self()->registerCollection(Akonadi::SpecialMailCollections::Trash, trash);
-    auto *attribute = trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+    auto attribute = trash.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("user-trash"));
     new Akonadi::CollectionModifyJob(trash);
     if (mOldTrash != trash) {

@@ -141,7 +141,7 @@ void setCollectionCompatibility(const Collection &collection, KACalendar::Compat
         col.setParentCollection(collection.parentCollection());
         col.setRemoteId(collection.remoteId());
     }
-    auto *attr = col.attribute<CompatibilityAttribute>(Collection::AddIfMissing);
+    auto attr = col.attribute<CompatibilityAttribute>(Collection::AddIfMissing);
     attr->setCompatibility(compatibility);
     attr->setVersion(version);
     Q_ASSERT(Private::mInstance);

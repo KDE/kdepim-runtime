@@ -121,7 +121,7 @@ void UtEwsGetItemRequest::twoFailures()
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
         if (resp.isSuccess()) {
-            EwsId id = resp.item()[EwsItemFieldItemId].value<EwsId>();
+            auto id = resp.item()[EwsItemFieldItemId].value<EwsId>();
             QCOMPARE(id, *idsIt);
         }
         idsIt++;

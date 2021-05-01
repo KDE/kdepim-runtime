@@ -178,7 +178,7 @@ void EwsResource::rootFolderFetchFinished(KJob *job)
     }
 
     EwsFolder folder = req->responses()[1].folder();
-    EwsId id = folder[EwsFolderFieldFolderId].value<EwsId>();
+    auto id = folder[EwsFolderFieldFolderId].value<EwsId>();
     if (id.type() == EwsId::Real) {
         /* Since KDE PIM is heavily based on IMAP philosophy it would only consider for filtering
          * folders with the remote identifier set to "INBOX". While this is true for IMAP/POP3, Exchange
@@ -313,7 +313,7 @@ void EwsResource::connectionError()
 void EwsResource::retrieveItems(const Collection &collection)
 {
     QString rid = collection.remoteId();
-    EwsFetchItemsJob *job = new EwsFetchItemsJob(collection, mEwsClient, mSyncState.value(rid), mItemsToCheck.value(rid), mTagStore, this);
+    auto job = new EwsFetchItemsJob(collection, mEwsClient, mSyncState.value(rid), mItemsToCheck.value(rid), mTagStore, this);
     job->setQueuedUpdates(mQueuedUpdates.value(collection.remoteId()));
     mQueuedUpdates.remove(collection.remoteId());
     connect(job, &EwsFetchItemsJob::result, this, &EwsResource::itemFetchJobFinished);
@@ -361,7 +361,7 @@ void EwsResource::getItemsRequestFinished(KJob *job)
         return;
     }
 
-    const Item::List items = req->property("items").value<Item::List>();
+    const auto items = req->property("items").value<Item::List>();
 
     QHash<QString, Item> itemHash;
     itemHash.reserve(items.count());
@@ -384,7 +384,7 @@ void EwsResource::getItemsRequestFinished(KJob *job)
 
     Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
         const EwsItem &ewsItem = resp.item();
-        EwsId id = ewsItem[EwsItemFieldItemId].value<EwsId>();
+        auto id = ewsItem[EwsItemFieldItemId].value<EwsId>();
         auto it = itemHash.find(id.id());
         if (it == itemHash.end()) {
             qCWarningNC(EWSRES_AGENTIF_LOG) << QStringLiteral("retrieveItems: Akonadi item not found for item %1.").arg(id.id());
@@ -610,7 +610,7 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to move item - internal error"));
         return;
     }
-    Item::List items = job->property("items").value<Item::List>();
+    auto items = job->property("items").value<Item::List>();
 
     if (items.count() != req->responses().count()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemsMoved: Invalid number of responses received from server";
@@ -628,8 +628,8 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
     Item::List movedItems;
     EwsId::List failedIds;
 
-    Collection srcCol = req->property("sourceCollection").value<Collection>();
-    Collection dstCol = req->property("destinationCollection").value<Collection>();
+    auto srcCol = req->property("sourceCollection").value<Collection>();
+    auto dstCol = req->property("destinationCollection").value<Collection>();
     Item::List::iterator it = items.begin();
     Q_FOREACH (const EwsMoveItemRequest::Response &resp, req->responses()) {
         Item &item = *it;
@@ -700,7 +700,7 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to delete item - internal error"));
         return;
     }
-    Item::List items = job->property("items").value<Item::List>();
+    auto items = job->property("items").value<Item::List>();
 
     if (items.count() != req->responses().count()) {
         qCWarningNC(EWSRES_AGENTIF_LOG) << "itemsRemoved: Invalid number of responses received from server";
@@ -817,7 +817,7 @@ void EwsResource::folderCreateRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to create folder - internal error"));
         return;
     }
-    Collection col = job->property("collection").value<Collection>();
+    auto col = job->property("collection").value<Collection>();
 
     EwsCreateFolderRequest::Response resp = req->responses().first();
     if (resp.isSuccess()) {
@@ -858,7 +858,7 @@ void EwsResource::folderMoveRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to move folder - internal error"));
         return;
     }
-    Collection col = job->property("collection").value<Collection>();
+    auto col = job->property("collection").value<Collection>();
 
     if (req->responses().count() != 1) {
         cancelTask(i18nc("@info:status", "Failed to move folder - invalid number of responses received from server"));
@@ -909,7 +909,7 @@ void EwsResource::folderUpdateRequestFinished(KJob *job)
         cancelTask(i18nc("@info:status", "Failed to update folder - internal error"));
         return;
     }
-    Collection col = job->property("collection").value<Collection>();
+    auto col = job->property("collection").value<Collection>();
 
     if (req->responses().count() != 1) {
         cancelTask(i18nc("@info:status", "Failed to update folder - invalid number of responses received from server"));
@@ -1133,7 +1133,7 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
         return;
     }
 
-    const Collection::List collections = req->property("collections").value<Collection::List>();
+    const auto collections = req->property("collections").value<Collection::List>();
 
     if (req->responses().size() != specialFolderList.size()) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("Special collection fetch failed:") << QStringLiteral("Invalid number of responses received");
@@ -1148,14 +1148,14 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
     auto it = specialFolderList.cbegin();
     Q_FOREACH (const EwsGetFolderRequest::Response &resp, req->responses()) {
         if (resp.isSuccess()) {
-            EwsId fid = resp.folder()[EwsFolderFieldFolderId].value<EwsId>();
+            auto fid = resp.folder()[EwsFolderFieldFolderId].value<EwsId>();
             QMap<QString, Collection>::iterator mapIt = map.find(fid.id());
             if (mapIt != map.end()) {
                 qCDebugNC(EWSRES_LOG)
                     << QStringLiteral("Registering folder %1(%2) as special collection %3").arg(ewsHash(mapIt->remoteId())).arg(mapIt->id()).arg(it->type);
                 SpecialMailCollections::self()->registerCollection(it->type, *mapIt);
                 if (!mapIt->hasAttribute<EntityDisplayAttribute>()) {
-                    auto *attr = mapIt->attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+                    auto attr = mapIt->attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
                     attr->setIconName(it->iconName);
                     auto modJob = new CollectionModifyJob(*mapIt, this);
                     modJob->start();
@@ -1374,7 +1374,7 @@ void EwsResource::emitReadyStatus()
 void EwsResource::adjustRootCollectionName(const QString &newName)
 {
     if (mRootCollection.isValid()) {
-        auto *attr = mRootCollection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
+        auto attr = mRootCollection.attribute<Akonadi::EntityDisplayAttribute>(Akonadi::Collection::AddIfMissing);
         if (attr->displayName() != newName) {
             attr->setDisplayName(newName);
             new CollectionModifyJob(mRootCollection);

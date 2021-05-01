@@ -21,7 +21,7 @@ VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, Q
 {
     VcardDirResourceSettings::instance(config);
 
-    QWidget *mainWidget = new QWidget(parent);
+    auto mainWidget = new QWidget(parent);
 
     ui.setupUi(mainWidget);
     parent->layout()->addWidget(mainWidget);

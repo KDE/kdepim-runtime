@@ -48,7 +48,7 @@ public:
         QString parentId;
     };
 
-    typedef QVector<Folder> FolderList;
+    using FolderList = QVector<Folder>;
 
     explicit IsolatedTestBase(QObject *parent = nullptr);
     ~IsolatedTestBase() override;

@@ -100,7 +100,7 @@ static const EwsPropertyField propPidTagContainerClass(0x3613, EwsPropTypeString
 class FolderDescr
 {
 public:
-    typedef enum { RemoteCreated = 0x0001, RemoteUpdated = 0x0002, RemoteDeleted = 0x0004, Processed = 0x0008 } Flag;
+    using Flag = enum { RemoteCreated = 0x0001, RemoteUpdated = 0x0002, RemoteDeleted = 0x0004, Processed = 0x0008 };
     Q_DECLARE_FLAGS(Flags, Flag)
 
     FolderDescr()
@@ -217,7 +217,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
         case EwsSyncFolderHierarchyRequest::Update: {
             fd.ewsFolder = ch.folder();
             fd.flags |= FolderDescr::RemoteUpdated;
-            EwsId id = fd.ewsFolder[EwsFolderFieldFolderId].value<EwsId>();
+            auto id = fd.ewsFolder[EwsFolderFieldFolderId].value<EwsId>();
             mFolderHash.insert(id.id(), fd);
 
             /* For updated folders fetch the collection corresponding to that folder and its parent
@@ -233,7 +233,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
         case EwsSyncFolderHierarchyRequest::Create: {
             fd.ewsFolder = ch.folder();
             fd.flags |= FolderDescr::RemoteCreated;
-            EwsId id = fd.ewsFolder[EwsFolderFieldFolderId].value<EwsId>();
+            auto id = fd.ewsFolder[EwsFolderFieldFolderId].value<EwsId>();
             mFolderHash.insert(id.id(), fd);
 
             c.setRemoteId(fd.parent());
@@ -266,7 +266,7 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
 
     q->mSyncState = req->syncState();
 
-    CollectionFetchJob *fetchJob = new CollectionFetchJob(localFetchHash.values().toVector(), CollectionFetchJob::Base);
+    auto fetchJob = new CollectionFetchJob(localFetchHash.values().toVector(), CollectionFetchJob::Base);
     CollectionFetchScope scope;
     scope.setAncestorRetrieval(CollectionFetchScope::All);
     fetchJob->setFetchScope(scope);
@@ -450,7 +450,7 @@ void EwsFetchFoldersIncrJobPrivate::moveCollection(const FolderDescr &fd)
 {
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Moving collection") << fd.collection.remoteId() << QStringLiteral("from")
                           << fd.collection.parentCollection().remoteId() << QStringLiteral("to") << fd.parent();
-    CollectionMoveJob *job = new CollectionMoveJob(fd.collection, mFolderHash[fd.parent()].collection);
+    auto job = new CollectionMoveJob(fd.collection, mFolderHash[fd.parent()].collection);
     connect(job, &CollectionMoveJob::result, this, &EwsFetchFoldersIncrJobPrivate::localFolderMoveDone);
     mPendingMoveJobs++;
     job->start();
@@ -498,7 +498,7 @@ void EwsFetchFoldersIncrJobPrivate::updateFolderCollection(Collection &collectio
     }
     collection.setContentMimeTypes(mimeTypes);
     Collection::Rights colRights;
-    EwsEffectiveRights ewsRights = folder[EwsFolderFieldEffectiveRights].value<EwsEffectiveRights>();
+    auto ewsRights = folder[EwsFolderFieldEffectiveRights].value<EwsEffectiveRights>();
     // FIXME: For now full read/write support is only implemented for e-mail. In order to avoid
     // potential problems block write access to all other folder types.
     if (folder.type() == EwsFolderTypeMail) {
@@ -516,7 +516,7 @@ void EwsFetchFoldersIncrJobPrivate::updateFolderCollection(Collection &collectio
         }
     }
     collection.setRights(colRights);
-    EwsId id = folder[EwsFolderFieldFolderId].value<EwsId>();
+    auto id = folder[EwsFolderFieldFolderId].value<EwsId>();
     collection.setRemoteRevision(id.changeKey());
 }
 

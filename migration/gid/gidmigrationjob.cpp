@@ -93,7 +93,7 @@ GidMigrationJob::~GidMigrationJob()
 
 void GidMigrationJob::doStart()
 {
-    CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive, this);
+    auto fetchJob = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive, this);
     fetchJob->fetchScope().setContentMimeTypes(mMimeTypeFilter);
     connect(fetchJob, &CollectionFetchJob::collectionsReceived, this, &GidMigrationJob::collectionsReceived);
     connect(fetchJob, &CollectionFetchJob::result, this, &GidMigrationJob::collectionsFetched);

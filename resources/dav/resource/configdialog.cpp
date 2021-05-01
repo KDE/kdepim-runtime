@@ -28,11 +28,11 @@ ConfigDialog::ConfigDialog(QWidget *parent)
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
     auto mainLayout = new QVBoxLayout(this);
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);
     mOkButton->setDefault(true);
     mOkButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -263,7 +263,7 @@ void ConfigDialog::onEditButtonClicked()
 
 void ConfigDialog::onOkClicked()
 {
-    typedef QPair<QString, KDAV::Protocol> UrlPair;
+    using UrlPair = QPair<QString, KDAV::Protocol>;
     for (const UrlPair &url : qAsConst(mRemovedUrls)) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }
@@ -277,7 +277,7 @@ void ConfigDialog::onCancelClicked()
 {
     mRemovedUrls.clear();
 
-    typedef QPair<QString, KDAV::Protocol> UrlPair;
+    using UrlPair = QPair<QString, KDAV::Protocol>;
     for (const UrlPair &url : qAsConst(mAddedUrls)) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }

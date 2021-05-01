@@ -203,7 +203,7 @@ void POP3Resource::doStateStep()
     case Precommand:
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Precommand =====================";
         if (!mSettings.precommand().isEmpty()) {
-            PrecommandJob *precommandJob = new PrecommandJob(mSettings.precommand(), this);
+            auto precommandJob = new PrecommandJob(mSettings.precommand(), this);
             connect(precommandJob, &PrecommandJob::result, this, &POP3Resource::precommandResult);
             precommandJob->start();
             Q_EMIT status(Running, i18n("Executing precommand."));
@@ -525,7 +525,7 @@ void POP3Resource::messageFinished(int messageId, KMime::Message::Ptr message)
     item.setMimeType(QStringLiteral("message/rfc822"));
     item.setPayload<KMime::Message::Ptr>(message);
 
-    auto *attr = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Item::AddIfMissing);
+    auto attr = item.attribute<Akonadi::Pop3ResourceAttribute>(Akonadi::Item::AddIfMissing);
     attr->setPop3AccountName(identifier());
     Akonadi::MessageFlags::copyMessageFlags(*message, item);
     auto itemCreateJob = new ItemCreateJob(item, mTargetCollection);

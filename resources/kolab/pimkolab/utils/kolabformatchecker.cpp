@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     cout << endl;
 
-    for (vector<string>::const_iterator it = inputFiles.begin(); it != inputFiles.end(); ++it) {
+    for (auto it = inputFiles.begin(); it != inputFiles.end(); ++it) {
         cout << "File: " << *it << endl;
 
         bool ok;

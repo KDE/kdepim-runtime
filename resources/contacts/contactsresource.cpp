@@ -212,7 +212,7 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
     Item newItem(item);
 
     if (item.hasPayload<KContacts::Addressee>()) {
-        const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
+        const auto contact = item.payload<KContacts::Addressee>();
 
         const QString fileName = directoryPath + QLatin1Char('/') + contact.uid() + QStringLiteral(".vcf");
 
@@ -230,7 +230,7 @@ void ContactsResource::itemAdded(const Akonadi::Item &item, const Akonadi::Colle
 
         newItem.setRemoteId(contact.uid() + QStringLiteral(".vcf"));
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
-        const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
+        const auto group = item.payload<KContacts::ContactGroup>();
 
         const QString fileName = directoryPath + QLatin1Char('/') + group.id() + QStringLiteral(".ctg");
 
@@ -264,7 +264,7 @@ void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
     const QString fileName = directoryForCollection(item.parentCollection()) + QLatin1Char('/') + item.remoteId();
 
     if (item.hasPayload<KContacts::Addressee>()) {
-        const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
+        const auto contact = item.payload<KContacts::Addressee>();
 
         KContacts::VCardConverter converter;
         const QByteArray content = converter.createVCard(contact);
@@ -279,7 +279,7 @@ void ContactsResource::itemChanged(const Akonadi::Item &item, const QSet<QByteAr
 
         newItem.setRemoteId(item.remoteId());
     } else if (item.hasPayload<KContacts::ContactGroup>()) {
-        const KContacts::ContactGroup group = item.payload<KContacts::ContactGroup>();
+        const auto group = item.payload<KContacts::ContactGroup>();
 
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly)) {

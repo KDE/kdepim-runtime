@@ -328,7 +328,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mServerGroup->setExclusive(true);
 
     auto hLayout = new QHBoxLayout;
-    QRadioButton *button = new QRadioButton(i18n("Use one of those servers:"));
+    auto button = new QRadioButton(i18n("Use one of those servers:"));
     registerField(QStringLiteral("templateConfiguration"), button);
     mServerGroup->addButton(button);
     mServerGroup->setId(button, 0);
@@ -496,7 +496,7 @@ CheckPage::CheckPage(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
 
-    QPushButton *button = new QPushButton(i18n("Test Connection"));
+    auto button = new QPushButton(i18n("Test Connection"));
     layout->addWidget(button);
 
     mStatusLabel = new QTextBrowser;

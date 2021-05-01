@@ -40,7 +40,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     auto topLayout = new QVBoxLayout(this);
     setModal(true);
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
@@ -52,7 +52,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     mUser1Button->setEnabled(false);
     connect(mUser1Button, &QPushButton::clicked, this, &SubscriptionDialog::onReloadRequested);
 
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout;
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainWidget->setLayout(mainLayout);
@@ -73,7 +73,7 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     filterBarLayout->addWidget(m_lineEdit);
     m_lineEdit->setFocus();
 
-    QCheckBox *checkBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), mainWidget);
+    auto checkBox = new QCheckBox(i18nc("@option:check", "Subscribed only"), mainWidget);
     connect(checkBox, &QCheckBox::stateChanged, m_filter, QOverload<int>::of(&SubscriptionFilterProxyModel::setIncludeCheckedOnly));
 
     filterBarLayout->addWidget(checkBox);

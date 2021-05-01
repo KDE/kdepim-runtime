@@ -99,7 +99,7 @@ void KolabChangeItemsTagsTask::onItemsFetchDone(KJob *job)
 
     const Akonadi::Item::List items = static_cast<Akonadi::ItemFetchJob *>(job)->items();
     qCDebug(KOLABRESOURCE_LOG) << items.size();
-    const Akonadi::Tag tag = job->property("tag").value<Akonadi::Tag>();
+    const auto tag = job->property("tag").value<Akonadi::Tag>();
     {
         qCDebug(KOLABRESOURCE_LOG) << "Writing " << tag.name() << " with " << items.size() << " members to the server: ";
         for (const Akonadi::Item &item : items) {

@@ -57,7 +57,7 @@
 
 using namespace Akonadi;
 
-typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
+using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)
@@ -76,7 +76,7 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     mDavCollectionRoot.setContentMimeTypes(QStringList() << Collection::mimeType());
     mDavCollectionRoot.setRights(Collection::CanCreateCollection | Collection::CanDeleteCollection | Collection::CanChangeCollection);
 
-    auto *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attribute->setIconName(QStringLiteral("folder-remote"));
 
     int refreshInterval = Settings::self()->refreshInterval();
@@ -244,7 +244,7 @@ KJob *DavGroupwareResource::createRetrieveCollectionsJob()
 
     Q_EMIT status(Running, i18n("Fetching collections"));
 
-    KDAV::DavCollectionsMultiFetchJob *job = new KDAV::DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
+    auto job = new KDAV::DavCollectionsMultiFetchJob(Settings::self()->configuredDavUrls());
     connect(job, &KDAV::DavCollectionsMultiFetchJob::result, this, &DavGroupwareResource::onRetrieveCollectionsFinished);
     connect(job, &KDAV::DavCollectionsMultiFetchJob::collectionDiscovered, this, &DavGroupwareResource::onCollectionDiscovered);
     return job;
@@ -299,7 +299,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
 
     // Only continue if the collection has changed or if
     // it's the first time we see it
-    const auto *CTagAttr = collection.attribute<CTagAttribute>();
+    const auto CTagAttr = collection.attribute<CTagAttribute>();
     if (CTagAttr && mCTagCache.contains(collection.remoteId()) && mCTagCache.value(collection.remoteId()) == CTagAttr->CTag()) {
         qCDebug(DAVRESOURCE_LOG) << "CTag for collection" << collection.remoteId() << "didn't change: " << CTagAttr->CTag();
         itemsRetrievalDone();
@@ -315,7 +315,7 @@ void DavGroupwareResource::retrieveItems(const Akonadi::Collection &collection)
         return;
     }
 
-    KDAV::DavItemsListJob *job = new KDAV::DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
+    auto job = new KDAV::DavItemsListJob(davUrl, mEtagCaches.value(collection.remoteId()));
     if (Settings::self()->limitSyncRange()) {
         QDateTime start = Settings::self()->getSyncRangeStart();
         qCDebug(DAVRESOURCE_LOG) << "Start time for list job:" << start;
@@ -435,7 +435,7 @@ void DavGroupwareResource::itemChanged(const Akonadi::Item &item, const QSet<QBy
 void DavGroupwareResource::onItemChangePrepared(KJob *job)
 {
     auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
-    Akonadi::Item item = job->property("item").value<Akonadi::Item>();
+    auto item = job->property("item").value<Akonadi::Item>();
     doItemChange(item, fetchJob->items());
 }
 
@@ -519,7 +519,7 @@ void DavGroupwareResource::itemRemoved(const Akonadi::Item &item)
 void DavGroupwareResource::onItemRemovalPrepared(KJob *job)
 {
     auto fetchJob = qobject_cast<Akonadi::ItemFetchJob *>(job);
-    Akonadi::Item item = job->property("item").value<Akonadi::Item>();
+    auto item = job->property("item").value<Akonadi::Item>();
     const Akonadi::Item::List keptItems = fetchJob->items();
 
     if (keptItems.isEmpty()) {
@@ -583,7 +583,7 @@ void DavGroupwareResource::collectionChanged(const Collection &collection)
 
     QColor color;
     if (collection.hasAttribute<Akonadi::CollectionColorAttribute>()) {
-        const auto *colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
+        const auto colorAttr = collection.attribute<Akonadi::CollectionColorAttribute>();
         if (colorAttr) {
             color = colorAttr->color();
         }
@@ -624,7 +624,7 @@ void DavGroupwareResource::doSetOnline(bool online)
 void DavGroupwareResource::createInitialCache()
 {
     // Get all the items fetched by this resource
-    Akonadi::RecursiveItemFetchJob *job = new Akonadi::RecursiveItemFetchJob(mDavCollectionRoot, QStringList());
+    auto job = new Akonadi::RecursiveItemFetchJob(mDavCollectionRoot, QStringList());
     job->fetchScope().setAncestorRetrieval(Akonadi::ItemFetchScope::Parent);
     connect(job, &Akonadi::RecursiveItemFetchJob::result, this, &DavGroupwareResource::onCreateInitialCacheReady);
     job->start();
@@ -677,7 +677,7 @@ void DavGroupwareResource::onCollectionRemovedFinished(KJob *job)
         return;
     }
 
-    Akonadi::Collection collection = job->property("collection").value<Akonadi::Collection>();
+    auto collection = job->property("collection").value<Akonadi::Collection>();
 
     if (mEtagCaches.contains(collection.remoteId())) {
         mEtagCaches[collection.remoteId()]->deleteLater();
@@ -720,12 +720,12 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         collection.setName(collection.remoteId());
 
         if (davCollection.color().isValid()) {
-            auto *colorAttr = collection.attribute<CollectionColorAttribute>(Akonadi::Collection::AddIfMissing);
+            auto colorAttr = collection.attribute<CollectionColorAttribute>(Akonadi::Collection::AddIfMissing);
             colorAttr->setColor(davCollection.color());
         }
 
         if (!davCollection.displayName().isEmpty()) {
-            auto *attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+            auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
             attr->setDisplayName(davCollection.displayName());
         }
 
@@ -760,7 +760,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         collection.setContentMimeTypes(mimeTypes);
         setCollectionIcon(collection /*by-ref*/);
 
-        auto *protoAttr = collection.attribute<DavProtocolAttribute>(Collection::AddIfMissing);
+        auto protoAttr = collection.attribute<DavProtocolAttribute>(Collection::AddIfMissing);
         protoAttr->setDavProtocol(davCollection.url().protocol());
 
         /*
@@ -832,7 +832,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         return;
     }
 
-    Collection collection = job->property("collection").value<Collection>();
+    auto collection = job->property("collection").value<Collection>();
     const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId());
     const bool protocolSupportsMultiget = KDAV::ProtocolInfo::useMultiget(davUrl.protocol());
 
@@ -906,7 +906,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     } else {
         // Update the collection CTag attribute now as sync is done.
         if (mCTagCache.contains(collection.remoteId())) {
-            auto *CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
+            auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
             qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
             CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
             auto job = new Akonadi::CollectionModifyJob(collection);
@@ -929,7 +929,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         return;
     }
 
-    Akonadi::Collection collection = job->property("collection").value<Akonadi::Collection>();
+    auto collection = job->property("collection").value<Akonadi::Collection>();
     auto cache = mEtagCaches.value(collection.remoteId());
     if (!cache) {
         qCDebug(DAVRESOURCE_LOG) << "Collection has disappeared during item fetch!";
@@ -937,7 +937,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         return;
     }
 
-    const Akonadi::Item::List origItems = job->property("items").value<Akonadi::Item::List>();
+    const auto origItems = job->property("items").value<Akonadi::Item::List>();
     const KDAV::DavItemsFetchJob *davJob = qobject_cast<KDAV::DavItemsFetchJob *>(job);
 
     Akonadi::Item::List items;
@@ -972,7 +972,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
 
     // Update the collection CTag attribute now as sync is done.
     if (mCTagCache.contains(collection.remoteId())) {
-        auto *CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
+        auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
         qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
         CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
         auto job = new Akonadi::CollectionModifyJob(collection);
@@ -1011,8 +1011,8 @@ void DavGroupwareResource::onItemFetched(KJob *job, ItemFetchUpdateType updateTy
 
     const KDAV::DavItemFetchJob *fetchJob = qobject_cast<KDAV::DavItemFetchJob *>(job);
     const KDAV::DavItem davItem = fetchJob->item();
-    Akonadi::Item item = fetchJob->property("item").value<Akonadi::Item>();
-    Akonadi::Collection collection = fetchJob->property("collection").value<Akonadi::Collection>();
+    auto item = fetchJob->property("item").value<Akonadi::Item>();
+    auto collection = fetchJob->property("collection").value<Akonadi::Collection>();
 
     Akonadi::Item::List extraItems;
     if (!Utils::parseDavData(davItem, item, extraItems)) {
@@ -1052,7 +1052,7 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
 {
     const KDAV::DavItemCreateJob *createJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
     KDAV::DavItem davItem = createJob->item();
-    Akonadi::Item item = createJob->property("item").value<Akonadi::Item>();
+    auto item = createJob->property("item").value<Akonadi::Item>();
     item.setRemoteId(davItem.url().toDisplayString());
 
     if (createJob->error()) {
@@ -1065,7 +1065,7 @@ void DavGroupwareResource::onItemAddedFinished(KJob *job)
         return;
     }
 
-    Akonadi::Collection collection = createJob->property("collection").value<Akonadi::Collection>();
+    auto collection = createJob->property("collection").value<Akonadi::Collection>();
 
     if (davItem.etag().isEmpty()) {
         const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(collection.remoteId(), item.remoteId());
@@ -1086,9 +1086,9 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
 {
     const KDAV::DavItemModifyJob *modifyJob = qobject_cast<KDAV::DavItemModifyJob *>(job);
     KDAV::DavItem davItem = modifyJob->item();
-    Akonadi::Collection collection = modifyJob->property("collection").value<Akonadi::Collection>();
-    Akonadi::Item item = modifyJob->property("item").value<Akonadi::Item>();
-    Akonadi::Item::List dependentItems = modifyJob->property("dependentItems").value<Akonadi::Item::List>();
+    auto collection = modifyJob->property("collection").value<Akonadi::Collection>();
+    auto item = modifyJob->property("item").value<Akonadi::Item>();
+    auto dependentItems = modifyJob->property("dependentItems").value<Akonadi::Item::List>();
     bool isRemoval = modifyJob->property("isRemoval").isValid() && modifyJob->property("isRemoval").toBool();
     auto cache = mEtagCaches.value(collection.remoteId());
     if (!cache) {
@@ -1110,7 +1110,7 @@ void DavGroupwareResource::onItemChangedFinished(KJob *job)
     }
 
     if (isRemoval) {
-        Akonadi::Item removedItem = job->property("removedItem").value<Akonadi::Item>();
+        auto removedItem = job->property("removedItem").value<Akonadi::Item>();
         if (removedItem.isValid()) {
             cache->removeEtag(removedItem.remoteId());
             changeProcessed();
@@ -1150,9 +1150,9 @@ void DavGroupwareResource::onDeletedItemRecreated(KJob *job)
 {
     const KDAV::DavItemCreateJob *createJob = qobject_cast<KDAV::DavItemCreateJob *>(job);
     KDAV::DavItem davItem = createJob->item();
-    Akonadi::Item item = createJob->property("item").value<Akonadi::Item>();
+    auto item = createJob->property("item").value<Akonadi::Item>();
     Akonadi::Collection collection = item.parentCollection();
-    Akonadi::Item::List dependentItems = createJob->property("dependentItems").value<Akonadi::Item::List>();
+    auto dependentItems = createJob->property("dependentItems").value<Akonadi::Item::List>();
 
     if (davItem.etag().isEmpty()) {
         const KDAV::DavUrl davUrl = Settings::self()->davUrlFromCollectionUrl(item.parentCollection().remoteId(), item.remoteId());
@@ -1194,8 +1194,8 @@ void DavGroupwareResource::onItemRemovedFinished(KJob *job)
             cancelTask(i18n("Unable to remove item: %1", job->errorString()));
         }
     } else {
-        Akonadi::Item item = job->property("item").value<Akonadi::Item>();
-        Akonadi::Collection collection = job->property("collection").value<Akonadi::Collection>();
+        auto item = job->property("item").value<Akonadi::Item>();
+        auto collection = job->property("collection").value<Akonadi::Collection>();
         mEtagCaches[collection.remoteId()]->removeEtag(item.remoteId());
         changeProcessed();
     }
@@ -1353,7 +1353,7 @@ bool DavGroupwareResource::configurationIsValid()
     }
 
     if (!Settings::self()->displayName().isEmpty()) {
-        auto *attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+        auto attribute = mDavCollectionRoot.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
         attribute->setDisplayName(Settings::self()->displayName());
         setName(Settings::self()->displayName());
     }
@@ -1381,7 +1381,7 @@ void DavGroupwareResource::setCollectionIcon(Akonadi::Collection &collection)
 
         const QString mimetypeFirst = mimeTypes.first();
         if (!mimetypeFirst.isEmpty()) {
-            auto *attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+            auto attribute = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
             attribute->setIconName(mimetypeFirst);
         }
     }

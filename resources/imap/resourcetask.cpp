@@ -408,7 +408,7 @@ QList<QByteArray> ResourceTask::fromAkonadiToSupportedImapFlags(const QList<QByt
 {
     QList<QByteArray> imapFlags = fromAkonadiFlags(flags);
 
-    const auto *flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
+    const auto flagAttr = collection.attribute<Akonadi::CollectionFlagsAttribute>();
     // the server does not support arbitrary flags, so filter out those it can't handle
     if (flagAttr && !flagAttr->flags().isEmpty() && !flagAttr->flags().contains("\\*")) {
         for (QList<QByteArray>::iterator it = imapFlags.begin(); it != imapFlags.end();) {
@@ -529,7 +529,7 @@ ResourceStateInterface::Ptr ResourceTask::resourceState()
 
 KIMAP::Acl::Rights ResourceTask::myRights(const Akonadi::Collection &col)
 {
-    const auto *aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
+    const auto aclAttribute = col.attribute<Akonadi::ImapAclAttribute>();
     if (aclAttribute) {
         // HACK, only return myrights if they are available
         if (aclAttribute->myRights() != KIMAP::Acl::None) {

@@ -57,7 +57,7 @@ static const int MAX_LINE = 4096;
 
 /** The old status format, only one at a time possible. Needed
     for upgrade path purposes. */
-typedef enum {
+using KMLegacyMsgStatus = enum {
     KMLegacyMsgStatusUnknown = ' ',
     KMLegacyMsgStatusNew = 'N',
     KMLegacyMsgStatusUnread = 'U',
@@ -69,7 +69,7 @@ typedef enum {
     KMLegacyMsgStatusQueued = 'Q',
     KMLegacyMsgStatusSent = 'S',
     KMLegacyMsgStatusFlag = 'G'
-} KMLegacyMsgStatus;
+};
 
 // END: Magic definitions from old kmail code
 

@@ -22,12 +22,12 @@ KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
     : KCModule(parent)
 {
     setButtons(KCModule::Apply);
-    KAboutData *about = new KAboutData(QStringLiteral("kcmldap"),
-                                       i18n("kcmldap"),
-                                       QString(),
-                                       i18n("LDAP Server Settings"),
-                                       KAboutLicense::LGPL,
-                                       i18n("(c) 2009 - 2010 Tobias Koenig"));
+    auto about = new KAboutData(QStringLiteral("kcmldap"),
+                                i18n("kcmldap"),
+                                QString(),
+                                i18n("LDAP Server Settings"),
+                                KAboutLicense::LGPL,
+                                i18n("(c) 2009 - 2010 Tobias Koenig"));
     about->addAuthor(i18n("Tobias Koenig"), QString(), QStringLiteral("tokoe@kde.org"));
     setAboutData(about);
     auto layout = new QVBoxLayout(this);

@@ -27,7 +27,7 @@
 
 #include "davresource_debug.h"
 
-typedef QSharedPointer<KCalendarCore::Incidence> IncidencePtr;
+using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 
 static QString createUniqueId()
 {
@@ -81,12 +81,12 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
     const QString basePath = collection.remoteId();
 
     if (item.hasPayload<KContacts::Addressee>()) {
-        const KContacts::Addressee contact = item.payload<KContacts::Addressee>();
+        const auto contact = item.payload<KContacts::Addressee>();
         const QString fileName = createUniqueId();
 
         url = QUrl::fromUserInput(basePath + fileName + QLatin1String(".vcf"));
 
-        const auto *protoAttr = collection.attribute<DavProtocolAttribute>();
+        const auto protoAttr = collection.attribute<DavProtocolAttribute>();
         if (protoAttr) {
             mimeType = KDAV::ProtocolInfo::contactsMimeType(KDAV::Protocol(protoAttr->davProtocol()));
         } else {

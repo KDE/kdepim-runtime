@@ -85,7 +85,7 @@ void Pop3Test::initTestCase()
     QElapsedTimer time;
     time.start();
     while (!found) {
-        CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
+        auto job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::Recursive);
         QVERIFY(job->exec());
         const Collection::List collections = job->collections();
         for (const Collection &col : collections) {
@@ -280,7 +280,7 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
     QSet<QByteArray> itemMailBodies;
 
     for (const Item &item : items) {
-        KMime::Message::Ptr itemMail = item.payload<KMime::Message::Ptr>();
+        auto itemMail = item.payload<KMime::Message::Ptr>();
         QByteArray itemMailBody = itemMail->body();
 
         // For some reason, the body in the maildir has one additional newline.

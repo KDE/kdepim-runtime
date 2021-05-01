@@ -77,7 +77,7 @@ void AccountWidget::setupWidgets()
 {
     auto mainLayout = new QVBoxLayout(this);
 
-    QWidget *page = new QWidget(this);
+    auto page = new QWidget(this);
     mainLayout->addWidget(page);
 
     setupUi(page);

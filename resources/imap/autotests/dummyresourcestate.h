@@ -12,12 +12,12 @@
 
 #include "resourcestateinterface.h"
 
-typedef QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>> TagListAndMembers;
+using TagListAndMembers = QPair<Akonadi::Tag::List, QHash<QString, Akonadi::Item::List>>;
 
 class DummyResourceState : public ResourceStateInterface
 {
 public:
-    typedef QSharedPointer<DummyResourceState> Ptr;
+    using Ptr = QSharedPointer<DummyResourceState>;
 
     explicit DummyResourceState();
     ~DummyResourceState() override;

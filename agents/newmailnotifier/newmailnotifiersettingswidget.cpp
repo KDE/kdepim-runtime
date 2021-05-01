@@ -43,10 +43,10 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     auto tab = new QTabWidget(parent);
     parent->layout()->addWidget(tab);
 
-    QWidget *settings = new QWidget;
+    auto settings = new QWidget;
     auto vbox = new QVBoxLayout(settings);
 
-    QGroupBox *grp = new QGroupBox(i18n("Choose which fields to show:"), parent);
+    auto grp = new QGroupBox(i18n("Choose which fields to show:"), parent);
     vbox->addWidget(grp);
     auto groupboxLayout = new QVBoxLayout;
     grp->setLayout(groupboxLayout);
@@ -82,14 +82,14 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
 
-    QWidget *textSpeakWidget = new QWidget;
+    auto textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
     mTextToSpeak = new QCheckBox(i18n("Enabled"), parent);
     mTextToSpeak->setObjectName(QStringLiteral("mTextToSpeak"));
     vbox->addWidget(mTextToSpeak);
 
-    QLabel *howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"), parent);
+    auto howIsItWork = new QLabel(i18n("<a href=\"whatsthis\">How does this work?</a>"), parent);
     howIsItWork->setObjectName(QStringLiteral("howIsItWork"));
     howIsItWork->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
     howIsItWork->setContextMenuPolicy(Qt::NoContextMenu);
@@ -98,7 +98,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
 
     auto textToSpeakLayout = new QHBoxLayout;
     textToSpeakLayout->setContentsMargins(0, 0, 0, 0);
-    QLabel *lab = new QLabel(i18n("Message:"), parent);
+    auto lab = new QLabel(i18n("Message:"), parent);
     lab->setObjectName(QStringLiteral("labmessage"));
     textToSpeakLayout->addWidget(lab);
     mTextToSpeakSetting = new QLineEdit;

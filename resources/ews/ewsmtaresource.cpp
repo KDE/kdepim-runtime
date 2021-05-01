@@ -63,7 +63,7 @@ void EwsMtaResource::sendItem(const Akonadi::Item &item)
 
     mItemHash.insert(item.remoteId(), item);
 
-    KMime::Message::Ptr msg = item.payload<KMime::Message::Ptr>();
+    auto msg = item.payload<KMime::Message::Ptr>();
     /* Exchange doesn't just store whatever MIME content that was sent to it - it will parse it and send
      * further the version assembled back from the parsed parts. It seems that this parsing doesn't work well
      * with the quoted-printable encoding, which KMail prefers. This results in malformed encoding, which the

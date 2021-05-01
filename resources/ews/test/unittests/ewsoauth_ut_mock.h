@@ -118,7 +118,7 @@ class QWebEngineView : public QWidget
 {
     Q_OBJECT
 public:
-    typedef std::function<void(const QUrl &, QVariantMap &)> AuthFunc;
+    using AuthFunc = std::function<void(const QUrl &, QVariantMap &)>;
 
     explicit QWebEngineView(QWidget *parent);
     ~QWebEngineView() override;
@@ -253,7 +253,7 @@ class QOAuth2AuthorizationCodeFlow : public QAbstractOAuth2
 {
     Q_OBJECT
 public:
-    typedef std::function<QNetworkReply::NetworkError(QString &, QMap<QNetworkRequest::KnownHeaders, QVariant> &)> TokenFunc;
+    using TokenFunc = std::function<QNetworkReply::NetworkError(QString &, QMap<QNetworkRequest::KnownHeaders, QVariant> &)>;
 
     explicit QOAuth2AuthorizationCodeFlow(QObject *parent = nullptr);
     ~QOAuth2AuthorizationCodeFlow() override;

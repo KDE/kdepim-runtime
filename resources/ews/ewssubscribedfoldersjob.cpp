@@ -53,7 +53,7 @@ void EwsSubscribedFoldersJob::verifySubFoldersRequestFinished(KJob *job)
         Q_ASSERT(req);
 
         mFolders.clear();
-        EwsId::List sourceIds = req->property("ids").value<EwsId::List>();
+        auto sourceIds = req->property("ids").value<EwsId::List>();
         QStringList idList;
 
         Q_ASSERT(req->responses().size() == sourceIds.size());

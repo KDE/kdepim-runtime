@@ -374,7 +374,7 @@ void FileStore::AbstractLocalStore::setPath(const QString &path)
     collection.setRemoteId(d->mPathFileInfo.absoluteFilePath());
     collection.setName(d->mPathFileInfo.fileName());
 
-    auto *attribute = collection.attribute<EntityDisplayAttribute>();
+    auto attribute = collection.attribute<EntityDisplayAttribute>();
     if (attribute) {
         attribute->setDisplayName(d->mPathFileInfo.fileName());
     }

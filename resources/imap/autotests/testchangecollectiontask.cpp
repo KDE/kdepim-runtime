@@ -196,7 +196,7 @@ private Q_SLOTS:
         state->setServerCapabilities(caps);
         state->setCollection(collection);
         state->setParts(parts);
-        ChangeCollectionTask *task = new ChangeCollectionTask(state);
+        auto task = new ChangeCollectionTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());

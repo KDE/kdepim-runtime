@@ -381,7 +381,7 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
     qRegisterMetaType<EwsOccurrence>();
     qRegisterMetaType<EwsOccurrence::List>();
 
-    auto *d = reinterpret_cast<EwsItemPrivate *>(this->d.data());
+    auto d = reinterpret_cast<EwsItemPrivate *>(this->d.data());
 
     // Check what item type are we
     const QStringRef elmName = reader.name();
@@ -459,7 +459,7 @@ EwsItem &EwsItem::operator=(EwsItem &&other)
 
 EwsItemType EwsItem::type() const
 {
-    const auto *d = reinterpret_cast<const EwsItemPrivate *>(this->d.data());
+    const auto d = reinterpret_cast<const EwsItemPrivate *>(this->d.data());
     return d->mType;
 }
 

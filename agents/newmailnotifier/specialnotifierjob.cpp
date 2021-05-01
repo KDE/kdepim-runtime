@@ -60,7 +60,7 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
             return;
         }
 
-        const KMime::Message::Ptr mb = mItem.payload<KMime::Message::Ptr>();
+        const auto mb = mItem.payload<KMime::Message::Ptr>();
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
         if (NewMailNotifierAgentSettings::showPhoto()) {
@@ -138,7 +138,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
     }
 
     if (NewMailNotifierAgentSettings::showButtonToDisplayMail()) {
-        KNotification *notification =
+        auto notification =
             new KNotification(QStringLiteral("new-email"),
                               NewMailNotifierAgentSettings::keepPersistentNotification() ? KNotification::Persistent | KNotification::SkipGrouping
                                                                                          : KNotification::CloseOnTimeout);
@@ -195,7 +195,7 @@ void SpecialNotifierJob::slotMarkAsRead()
 {
     Akonadi::MessageStatus messageStatus;
     messageStatus.setRead(true);
-    Akonadi::MarkAsCommand *markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << mItem);
+    auto markAsReadAllJob = new Akonadi::MarkAsCommand(messageStatus, Akonadi::Item::List() << mItem);
     connect(markAsReadAllJob, &Akonadi::MarkAsCommand::result, this, &SpecialNotifierJob::slotMarkAsResult);
     markAsReadAllJob->execute();
 }

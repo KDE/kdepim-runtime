@@ -61,7 +61,7 @@ void ICalResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collectio
         return;
     }
 
-    Incidence::Ptr i = item.payload<Incidence::Ptr>();
+    auto i = item.payload<Incidence::Ptr>();
     if (!calendar()->addIncidence(Incidence::Ptr(i->clone()))) {
         // qCritical() << "akonadi_ical_resource: Error adding incidence with uid "
         //         << i->uid() << "; item.id() " << item.id() << i->recurrenceId();
@@ -83,7 +83,7 @@ void ICalResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
         return;
     }
 
-    Incidence::Ptr payload = item.payload<Incidence::Ptr>();
+    auto payload = item.payload<Incidence::Ptr>();
     Incidence::Ptr incidence = calendar()->instance(item.remoteId());
     if (!incidence) {
         // not in the calendar yet, should not happen -> add it

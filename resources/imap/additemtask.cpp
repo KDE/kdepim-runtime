@@ -46,7 +46,7 @@ void AddItemTask::doStart(KIMAP::Session *session)
     qCDebug(IMAPRESOURCE_LOG) << "Got notification about item added for local id " << item().id() << " and remote id " << item().remoteId();
 
     // save message to the server.
-    KMime::Message::Ptr msg = item().payload<KMime::Message::Ptr>();
+    auto msg = item().payload<KMime::Message::Ptr>();
     m_messageId = msg->messageID()->asUnicodeString().toUtf8();
 
     auto job = new KIMAP::AppendJob(session);
@@ -112,7 +112,7 @@ void AddItemTask::triggerSearchJob(KIMAP::Session *session)
         search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(m_messageId)));
     } else {
         Akonadi::Collection c = collection();
-        auto *uidNext = c.attribute<UidNextAttribute>();
+        auto uidNext = c.attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
             search->deleteLater();

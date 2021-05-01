@@ -246,7 +246,7 @@ void ICalDirResource::retrieveCollections()
         c.setRights(rights);
     }
 
-    auto *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(name() == identifier() ? i18n("Calendar Folder") : name());
     attr->setIconName(QStringLiteral("office-calendar"));
 

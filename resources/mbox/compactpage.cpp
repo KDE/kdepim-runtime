@@ -64,7 +64,7 @@ void CompactPage::onCollectionFetchCheck(KJob *job)
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     if (!attr->deletedItemOffsets().isEmpty()) {
         ui.compactButton->setEnabled(true);
@@ -85,7 +85,7 @@ void CompactPage::onCollectionFetchCompact(KJob *job)
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     KMBox::MBox mbox;
     // TODO: Set lock method.

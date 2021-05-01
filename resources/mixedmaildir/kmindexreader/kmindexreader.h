@@ -40,7 +40,7 @@ private:
     friend class TestIdxReader;
 };
 
-typedef QSharedPointer<KMIndexData> KMIndexDataPtr;
+using KMIndexDataPtr = QSharedPointer<KMIndexData>;
 
 /**
  * @short A class to read legacy kmail (< 4.5) index files

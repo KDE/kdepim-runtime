@@ -116,7 +116,7 @@ void RetrieveCollectionMetadataTask::onGetMetaDataDone(KJob *job)
     rawAnnotations.remove("/private/vendor/cmu/cyrus-imapd/lastupdate");
 
     // Store the mailbox metadata
-    auto *annotationsAttribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto annotationsAttribute = m_collection.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, QByteArray> oldAnnotations = annotationsAttribute->annotations();
     if (oldAnnotations != rawAnnotations) {
         annotationsAttribute->setAnnotations(rawAnnotations);
@@ -137,7 +137,7 @@ void RetrieveCollectionMetadataTask::onGetAclDone(KJob *job)
     auto acl = qobject_cast<KIMAP::GetAclJob *>(job);
 
     // Store the mailbox ACLs
-    auto *const aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    auto const aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const QMap<QByteArray, KIMAP::Acl::Rights> oldRights = aclAttribute->rights();
     if (oldRights != acl->allRights()) {
         aclAttribute->setRights(acl->allRights());
@@ -186,7 +186,7 @@ void RetrieveCollectionMetadataTask::onRightsReceived(KJob *job)
     }
 
     // Store the mailbox ACLs
-    auto *aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
+    auto aclAttribute = m_collection.attribute<Akonadi::ImapAclAttribute>(Akonadi::Collection::AddIfMissing);
     const KIMAP::Acl::Rights oldRights = aclAttribute->myRights();
     if (oldRights != imapRights) {
         aclAttribute->setMyRights(imapRights);
@@ -252,7 +252,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     }
 
     // Store the mailbox IMAP Quotas
-    auto *imapQuotaAttribute = m_collection.attribute<Akonadi::ImapQuotaAttribute>(Akonadi::Collection::AddIfMissing);
+    auto imapQuotaAttribute = m_collection.attribute<Akonadi::ImapQuotaAttribute>(Akonadi::Collection::AddIfMissing);
     const QList<QByteArray> oldRoots = imapQuotaAttribute->roots();
     const QList<QMap<QByteArray, qint64>> oldLimits = imapQuotaAttribute->limits();
     const QList<QMap<QByteArray, qint64>> oldUsages = imapQuotaAttribute->usages();
@@ -262,7 +262,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     }
 
     // Store the collection Quota
-    auto *quotaAttribute = m_collection.attribute<Akonadi::CollectionQuotaAttribute>(Akonadi::Collection::AddIfMissing);
+    auto quotaAttribute = m_collection.attribute<Akonadi::CollectionQuotaAttribute>(Akonadi::Collection::AddIfMissing);
     qint64 oldCurrent = quotaAttribute->currentValue();
     qint64 oldMax = quotaAttribute->maximumValue();
 

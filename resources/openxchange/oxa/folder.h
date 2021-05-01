@@ -25,7 +25,7 @@ public:
     /**
      * Describes a list of folders.
      */
-    typedef QVector<Folder> List;
+    using List = QVector<Folder>;
 
     /**
      * Describes the status of the folder.
@@ -126,8 +126,8 @@ public:
         bool mAdminFlag = false;
     };
 
-    typedef QMap<qlonglong, Permissions> UserPermissions;
-    typedef QMap<qlonglong, Permissions> GroupPermissions;
+    using UserPermissions = QMap<qlonglong, Permissions>;
+    using GroupPermissions = QMap<qlonglong, Permissions>;
 
     Folder();
 

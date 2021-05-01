@@ -167,7 +167,7 @@ private Q_SLOTS:
         DummyResourceState::Ptr state = DummyResourceState::Ptr(new DummyResourceState);
         state->setParts(parts);
         state->setItem(item);
-        ChangeItemTask *task = new ChangeItemTask(state);
+        auto task = new ChangeItemTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());

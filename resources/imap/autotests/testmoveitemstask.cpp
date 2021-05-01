@@ -208,7 +208,7 @@ private Q_SLOTS:
         state->setItem(item);
         state->setSourceCollection(source);
         state->setTargetCollection(target);
-        MoveItemsTask *task = new MoveItemsTask(state);
+        auto task = new MoveItemsTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());
@@ -398,7 +398,7 @@ private Q_SLOTS:
         state->setSourceCollection(source);
         state->setTargetCollection(target);
         state->setServerCapabilities({QStringLiteral("MOVE")});
-        MoveItemsTask *task = new MoveItemsTask(state);
+        auto task = new MoveItemsTask(state);
         task->start(&pool);
 
         QTRY_COMPARE(state->calls().count(), callNames.size());

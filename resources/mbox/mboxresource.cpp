@@ -90,7 +90,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     reloadFile();
 
     KMBox::MBoxEntry::List entryList;
-    if (const auto *attr = col.attribute<DeletedItemsAttribute>()) {
+    if (const auto attr = col.attribute<DeletedItemsAttribute>()) {
         entryList = mMBox->entries(attr->deletedItemEntries());
     } else { // No deleted items (yet)
         entryList = mMBox->entries();
@@ -208,7 +208,7 @@ void MboxResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
         // Only complete messages can be stored in a MBox file. Because all messages
         // are stored in one single file we do an ItemDelete and an ItemCreate to
         // prevent that whole file must been rewritten.
-        CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection(collectionId(item.remoteId())), CollectionFetchJob::Base);
+        auto fetchJob = new CollectionFetchJob(Collection(collectionId(item.remoteId())), CollectionFetchJob::Base);
 
         connect(fetchJob, &CollectionFetchJob::result, this, &MboxResource::onCollectionFetch);
 
@@ -223,7 +223,7 @@ void MboxResource::itemChanged(const Akonadi::Item &item, const QSet<QByteArray>
 
 void MboxResource::itemRemoved(const Akonadi::Item &item)
 {
-    CollectionFetchJob *fetchJob = new CollectionFetchJob(Collection(collectionId(item.remoteId())), CollectionFetchJob::Base);
+    auto fetchJob = new CollectionFetchJob(Collection(collectionId(item.remoteId())), CollectionFetchJob::Base);
 
     if (!fetchJob->exec()) {
         cancelTask(i18n("Could not fetch the collection: %1", fetchJob->errorString()));
@@ -232,7 +232,7 @@ void MboxResource::itemRemoved(const Akonadi::Item &item)
 
     Q_ASSERT(fetchJob->collections().size() == 1);
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
 
     if (mSettings->compactFrequency() == Settings::per_x_messages && mSettings->messageCount() == static_cast<uint>(attr->offsetCount() + 1)) {
         qCDebug(MBOXRESOURCE_LOG) << "Compacting mbox file";
@@ -321,12 +321,12 @@ void MboxResource::onCollectionFetch(KJob *job)
         return;
     }
 
-    auto *fetchJob = dynamic_cast<CollectionFetchJob *>(job);
+    auto fetchJob = dynamic_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
     Q_ASSERT(fetchJob->collections().size() == 1);
 
     Collection mboxCollection = fetchJob->collections().at(0);
-    auto *attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto attr = mboxCollection.attribute<DeletedItemsAttribute>(Akonadi::Collection::AddIfMissing);
     attr->addDeletedItemOffset(itemOffset(item.remoteId()));
 
     auto modifyJob = new CollectionModifyJob(mboxCollection);

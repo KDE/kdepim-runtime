@@ -24,7 +24,7 @@
 #include "ewssubscriptionwidget.h"
 #include "ui_ewsconfigdialog.h"
 
-typedef QPair<QString, QString> StringPair;
+using StringPair = QPair<QString, QString>;
 
 static const QVector<StringPair> userAgents = {
     {QStringLiteral("Microsoft Outlook 2016"), QStringLiteral("Microsoft Office/16.0 (Windows NT 10.0; Microsoft Outlook 16.0.6326; Pro)")},
@@ -61,7 +61,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     }
 
     auto mainLayout = new QVBoxLayout(this);
-    QWidget *mainWidget = new QWidget(this);
+    auto mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
 
     mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);

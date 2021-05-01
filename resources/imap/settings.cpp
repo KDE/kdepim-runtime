@@ -33,8 +33,8 @@ using KWallet::Wallet;
 KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType::type authType)
 {
     // typedef these for readability
-    typedef MailTransport::Transport::EnumAuthenticationType MTAuth;
-    typedef KIMAP::LoginJob KIAuth;
+    using MTAuth = MailTransport::Transport::EnumAuthenticationType;
+    using KIAuth = KIMAP::LoginJob;
     switch (authType) {
     case MTAuth::ANONYMOUS:
         return KIAuth::Anonymous;

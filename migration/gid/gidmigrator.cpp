@@ -41,7 +41,7 @@ bool GidMigrator::shouldAutostart() const
 
 void GidMigrator::startWork()
 {
-    GidMigrationJob *job = new GidMigrationJob(QStringList() << mMimeType, this);
+    auto job = new GidMigrationJob(QStringList() << mMimeType, this);
     connect(job, &GidMigrationJob::result, this, &GidMigrator::migrationFinished);
 }
 

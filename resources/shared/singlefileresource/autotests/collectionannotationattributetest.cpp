@@ -7,7 +7,7 @@
 #include "../collectionannotationsattribute.h"
 #include <QTest>
 
-typedef QMap<QByteArray, QByteArray> Annotation;
+using Annotation = QMap<QByteArray, QByteArray>;
 Q_DECLARE_METATYPE(Annotation)
 
 using namespace Akonadi;

@@ -455,7 +455,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
 
 KJob *OXA::ContactUtils::preloadJob(const Object &object)
 {
-    Akonadi::ContactGroupExpandJob *job = new Akonadi::ContactGroupExpandJob(object.contactGroup());
+    auto job = new Akonadi::ContactGroupExpandJob(object.contactGroup());
     return job;
 }
 

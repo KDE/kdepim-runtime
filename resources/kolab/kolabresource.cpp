@@ -163,11 +163,11 @@ static Akonadi::Collection updateAnnotations(const Akonadi::Collection &collecti
     // Set the annotations on new folders
     const QByteArray kolabType = KolabHelpers::kolabTypeForMimeType(collection.contentMimeTypes());
     Akonadi::Collection col = collection;
-    auto *attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
+    auto attr = col.attribute<Akonadi::CollectionAnnotationsAttribute>(Akonadi::Collection::AddIfMissing);
     QMap<QByteArray, QByteArray> annotations = attr->annotations();
 
     bool changed = false;
-    auto *colorAttribute = col.attribute<Akonadi::CollectionColorAttribute>();
+    auto colorAttribute = col.attribute<Akonadi::CollectionColorAttribute>();
     if (colorAttribute) {
         const QColor color = colorAttribute->color();
         if (color.isValid()) {
@@ -211,7 +211,7 @@ void KolabResource::collectionChanged(const Akonadi::Collection &collection, con
 
     // TODO we need to save the collections as well if the annotations have changed
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Updating folder '%1'", collection.name()));
-    ChangeCollectionTask *task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, p)), this);
+    auto task = new ChangeCollectionTask(createResourceState(TaskArguments(collection, p)), this);
     task->syncEnabledState(true);
     startTask(task);
 }
@@ -219,28 +219,28 @@ void KolabResource::collectionChanged(const Akonadi::Collection &collection, con
 void KolabResource::tagAdded(const Akonadi::Tag &tag)
 {
     qCDebug(KOLABRESOURCE_TRACE) << tag.id();
-    KolabAddTagTask *task = new KolabAddTagTask(createResourceState(TaskArguments(tag)), this);
+    auto task = new KolabAddTagTask(createResourceState(TaskArguments(tag)), this);
     startTask(task);
 }
 
 void KolabResource::tagChanged(const Akonadi::Tag &tag)
 {
     qCDebug(KOLABRESOURCE_TRACE) << tag.id();
-    KolabChangeTagTask *task = new KolabChangeTagTask(createResourceState(TaskArguments(tag)), QSharedPointer<TagConverter>(new TagConverter), this);
+    auto task = new KolabChangeTagTask(createResourceState(TaskArguments(tag)), QSharedPointer<TagConverter>(new TagConverter), this);
     startTask(task);
 }
 
 void KolabResource::tagRemoved(const Akonadi::Tag &tag)
 {
     qCDebug(KOLABRESOURCE_TRACE) << tag.id();
-    KolabRemoveTagTask *task = new KolabRemoveTagTask(createResourceState(TaskArguments(tag)), this);
+    auto task = new KolabRemoveTagTask(createResourceState(TaskArguments(tag)), this);
     startTask(task);
 }
 
 void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSet<Akonadi::Tag> &addedTags, const QSet<Akonadi::Tag> &removedTags)
 {
     qCDebug(KOLABRESOURCE_TRACE) << items.size() << addedTags.size() << removedTags.size();
-    KolabChangeItemsTagsTask *task =
+    auto task =
         new KolabChangeItemsTagsTask(createResourceState(TaskArguments(items, addedTags, removedTags)), QSharedPointer<TagConverter>(new TagConverter), this);
     startTask(task);
 }
@@ -248,14 +248,14 @@ void KolabResource::itemsTagsChanged(const Akonadi::Item::List &items, const QSe
 void KolabResource::retrieveTags()
 {
     qCDebug(KOLABRESOURCE_TRACE);
-    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
+    auto task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveTags, this);
     startTask(task);
 }
 
 void KolabResource::retrieveRelations()
 {
     qCDebug(KOLABRESOURCE_TRACE);
-    KolabRetrieveTagTask *task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveRelations, this);
+    auto task = new KolabRetrieveTagTask(createResourceState(TaskArguments()), KolabRetrieveTagTask::RetrieveRelations, this);
     startTask(task);
 }
 
@@ -264,7 +264,7 @@ void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
                                           const Akonadi::Relation::List &removedRelations)
 {
     qCDebug(KOLABRESOURCE_TRACE) << items.size() << addedRelations.size() << removedRelations.size();
-    KolabChangeItemsRelationsTask *task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
+    auto task = new KolabChangeItemsRelationsTask(createResourceState(TaskArguments(items, addedRelations, removedRelations)));
     startTask(task);
 }
 

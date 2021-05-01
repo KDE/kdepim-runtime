@@ -98,7 +98,7 @@ void MailDispatcherAgent::dispatch()
                 Q_EMIT status(AgentBase::Idle, i18n("Finished sending messages."));
 
                 if (!mErrorOccurred && mShowSentNotification) {
-                    KNotification *notify = new KNotification(QStringLiteral("emailsent"));
+                    auto notify = new KNotification(QStringLiteral("emailsent"));
                     notify->setIconName(QStringLiteral("kmail"));
                     notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
                     notify->setTitle(i18nc("Notification title when email was sent", "E-Mail Successfully Sent"));
@@ -253,7 +253,7 @@ void MailDispatcherAgent::sendResult(KJob *job)
         // do anything.
         qCDebug(MAILDISPATCHER_LOG) << "Sending failed. error:" << job->errorString();
 
-        KNotification *notify = new KNotification(QStringLiteral("sendingfailed"));
+        auto notify = new KNotification(QStringLiteral("sendingfailed"));
         notify->setComponentName(QStringLiteral("akonadi_maildispatcher_agent"));
         notify->setIconName(QStringLiteral("kmail"));
         notify->setTitle(i18nc("Notification title when email sending failed", "E-Mail Sending Failed"));
@@ -265,7 +265,7 @@ void MailDispatcherAgent::sendResult(KJob *job)
         qCDebug(MAILDISPATCHER_LOG) << "Sending succeeded.";
 
         // handle possible sent actions
-        const auto *attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
+        const auto attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
         if (attribute) {
             const MailTransport::SentActionAttribute::Action::List lstAct = attribute->actions();
             for (const MailTransport::SentActionAttribute::Action &action : lstAct) {

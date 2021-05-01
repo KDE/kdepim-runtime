@@ -79,7 +79,7 @@ KAlarmDirResource::KAlarmDirResource(const QString &id)
     connect(KDirWatch::self(), &KDirWatch::deleted, this, &KAlarmDirResource::fileDeleted);
 
     // Find the collection which this resource manages
-    CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
+    auto job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
     connect(job, &CollectionFetchJob::result, this, &KAlarmDirResource::collectionFetchResult);
 
@@ -730,7 +730,7 @@ void KAlarmDirResource::setNameRights(Collection &c)
     qCDebug(KALARMDIRRESOURCE_LOG) << "setNameRights";
     const QString display = mSettings->displayName();
     c.setName(display.isEmpty() ? name() : display);
-    auto *attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    auto attr = c.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
     attr->setDisplayName(name());
     attr->setIconName(QStringLiteral("kalarm"));
     if (mSettings->readOnly()) {

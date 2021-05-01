@@ -87,7 +87,7 @@ void KolabAddTagTask::triggerSearchJob(KIMAP::Session *session)
     if (!mMessageId.isEmpty()) {
         search->setTerm(KIMAP::Term(QStringLiteral("Message-ID"), QString::fromLatin1(mMessageId)));
     } else {
-        auto *uidNext = relationCollection().attribute<UidNextAttribute>();
+        auto uidNext = relationCollection().attribute<UidNextAttribute>();
         if (!uidNext) {
             cancelTask(i18n("Could not determine the UID for the newly created message on the server"));
             search->deleteLater();

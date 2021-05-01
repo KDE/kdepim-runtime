@@ -16,7 +16,7 @@ namespace Akonadi
 class Collection;
 class Item;
 
-typedef QVector<Item> ItemList;
+using ItemList = QVector<Item>;
 }
 
 class CompactChangeHelper : public QObject

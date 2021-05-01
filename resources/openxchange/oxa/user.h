@@ -16,7 +16,7 @@ namespace OXA
 class User
 {
 public:
-    typedef QVector<User> List;
+    using List = QVector<User>;
 
     User();
 

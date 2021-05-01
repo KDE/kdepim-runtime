@@ -40,7 +40,7 @@ class FakeTransferJob : public KIO::SpecialJob
 {
     Q_OBJECT
 public:
-    typedef std::function<void(FakeTransferJob *, const QByteArray &)> VerifierFn;
+    using VerifierFn = std::function<void(FakeTransferJob *, const QByteArray &)>;
 
     struct Verifier {
         QObject *object;

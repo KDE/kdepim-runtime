@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     account.setPort(port);
     account.setUserName(user);
 
-    SubscriptionDialog *dialog = new SubscriptionDialog();
+    auto dialog = new SubscriptionDialog();
     dialog->connectAccount(account, password);
 
     dialog->show();

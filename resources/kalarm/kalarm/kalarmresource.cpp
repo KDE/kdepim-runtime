@@ -167,7 +167,7 @@ void KAlarmResource::checkFileCompatibility(const Collection &collection, bool c
 {
     if (collection.isValid() && collection.hasAttribute<CompatibilityAttribute>()) {
         // Update our note of the calendar version and compatibility
-        const auto *attr = collection.attribute<CompatibilityAttribute>();
+        const auto attr = collection.attribute<CompatibilityAttribute>();
         mCompatibility = attr->compatibility();
         mVersion = attr->version();
         createAttribute = false;
@@ -300,7 +300,7 @@ void KAlarmResource::updateFormat(KJob *j)
     } else {
         const Collection c(job->collections().at(0));
         if (c.hasAttribute<CompatibilityAttribute>()) {
-            const auto *attr = c.attribute<CompatibilityAttribute>();
+            const auto attr = c.attribute<CompatibilityAttribute>();
             if (attr->compatibility() != mCompatibility) {
                 qCDebug(KALARMRESOURCE_LOG) << identifier() << "updateFormat: Compatibility changed:" << mCompatibility << "->" << attr->compatibility();
             }
@@ -360,7 +360,7 @@ void KAlarmResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collect
         cancelTask(errorMessage(KAlarmResourceCommon::NotCurrentFormat));
         return;
     }
-    const KAEvent event = item.payload<KAEvent>();
+    const auto event = item.payload<KAEvent>();
     KCalendarCore::Event::Ptr kcalEvent(new KCalendarCore::Event);
     event.updateKCalEvent(kcalEvent, KAEvent::UID_SET);
     if (!calendar()->addIncidence(kcalEvent)) {
@@ -519,7 +519,7 @@ void KAlarmResource::doRetrieveItems(const Akonadi::Collection &collection)
  */
 CollectionFetchJob *KAlarmResource::fetchCollection(const char *slot)
 {
-    CollectionFetchJob *job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
+    auto job = new CollectionFetchJob(Collection::root(), CollectionFetchJob::FirstLevel);
     job->fetchScope().setResource(identifier());
     connect(job, SIGNAL(result(KJob *)), slot);
     return job;

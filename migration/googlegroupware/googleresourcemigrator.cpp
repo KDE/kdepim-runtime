@@ -66,7 +66,7 @@ std::unique_ptr<QSettings> settingsForResource(const Akonadi::AgentInstance &ins
 
     const auto configFile = Akonadi::ServerManager::self()->addNamespace(instance.identifier()) + QStringLiteral("rc");
     const auto configPath = QStandardPaths::locate(QStandardPaths::ConfigLocation, configFile);
-    return std::unique_ptr<QSettings>{new QSettings{configPath, QSettings::IniFormat}};
+    return std::make_unique<QSettings>(configPath, QSettings::IniFormat);
 }
 
 QString getAccountNameFromResourceSettings(const Akonadi::AgentInstance &instance)

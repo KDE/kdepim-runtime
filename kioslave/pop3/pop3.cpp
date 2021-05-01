@@ -367,7 +367,7 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
 bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
 {
     qCDebug(POP3_LOG);
-    auto *interact = (sasl_interact_t *)in;
+    auto interact = (sasl_interact_t *)in;
 
     // some mechanisms do not require username && pass, so don't need a popup
     // window for getting this info
