@@ -11,11 +11,11 @@ set(isolatestestcommon_SRCS isolatedtestbase.cpp statemonitor.cpp isolatedtestco
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../ewsresource.kcfg org.kde.Akonadi.Ews.Settings)
 set(ewssettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml)
-qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/../ewssettings.h org.kde.Akonadi.Ews.Wallet.xml OPTIONS -a )
+qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/../ewssettings.h org.kde.Akonadi.Ews.Wallet.xml OPTIONS -a )
 set(ewswalletinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Wallet.xml)
 
-qt5_add_dbus_interface(isolatestestcommon_SRCS ${ewssettingsinterface_xml} ewssettings)
-qt5_add_dbus_interface(isolatestestcommon_SRCS ${ewswalletinterface_xml} ewswallet)
+qt_add_dbus_interface(isolatestestcommon_SRCS ${ewssettingsinterface_xml} ewssettings)
+qt_add_dbus_interface(isolatestestcommon_SRCS ${ewswalletinterface_xml} ewswallet)
 
 add_library(isolatedtestcommon STATIC ${isolatestestcommon_SRCS})
 target_link_libraries(isolatedtestcommon

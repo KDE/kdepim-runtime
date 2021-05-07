@@ -45,7 +45,7 @@ set( openxchangeresource_SRCS
 install( FILES openxchangeresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/openxchangeresource.kcfg org.kde.Akonadi.OpenXchange.Settings)
-qt5_add_dbus_adaptor(openxchangeresource_SRCS
+qt_add_dbus_adaptor(openxchangeresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.OpenXchange.Settings.xml settings.h Settings
 )
 

@@ -10,7 +10,7 @@ kcfg_generate_dbus_interface(
     org.kde.Akonadi.Google.Settings
 )
 
-qt5_add_dbus_interface(googlegroupwaremigration_SRCS
+qt_add_dbus_interface(googlegroupwaremigration_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Google.Settings.xml
   googlesettingsinterface
 )

@@ -19,7 +19,7 @@ install(FILES kalarmdirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/
 ki18n_wrap_ui(kalarmdirresource_SRCS settingsdialog.ui ../shared/alarmtypewidget.ui)
 kconfig_add_kcfg_files(kalarmdirresource_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmdirresource.kcfg org.kde.Akonadi.KAlarmDir.Settings)
-qt5_add_dbus_adaptor(kalarmdirresource_SRCS
+qt_add_dbus_adaptor(kalarmdirresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarmDir.Settings.xml settings.h Akonadi_KAlarm_Dir_Resource::Settings kalarmdirsettingsadaptor KAlarmDirSettingsAdaptor)
 
 ecm_qt_declare_logging_category(kalarmdirresource_SRCS HEADER kalarmdirresource_debug.h IDENTIFIER KALARMDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.kalarmdirresource

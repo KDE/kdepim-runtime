@@ -21,7 +21,7 @@ set( vcardresource_SRCS
 install( FILES vcardresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcardresource.kcfg org.kde.Akonadi.VCard.Settings)
-qt5_add_dbus_adaptor(vcardresource_SRCS
+qt_add_dbus_adaptor(vcardresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCard.Settings.xml settings.h Akonadi_VCard_Resource::Settings vcardsettingsadaptor VCardSettingsAdaptor
 )
 

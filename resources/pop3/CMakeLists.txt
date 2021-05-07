@@ -12,7 +12,7 @@ ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3resource_debug.h IDE
     )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
-qt5_add_dbus_adaptor(pop3_common_SRCS
+qt_add_dbus_adaptor(pop3_common_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.POP3.Settings.xml settings.h Settings
     )
 

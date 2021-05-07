@@ -37,7 +37,7 @@ kcfg_generate_dbus_interface(
     org.kde.Akonadi.etesync.Settings
 )
 
-qt5_add_dbus_adaptor(etesyncresource_SRCS
+qt_add_dbus_adaptor(etesyncresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.etesync.Settings.xml
     ${CMAKE_CURRENT_BINARY_DIR}/settings.h
     Settings

@@ -35,7 +35,7 @@ ecm_qt_declare_logging_category(maildirresource_SRCS HEADER maildirresource_debu
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
 
-qt5_add_dbus_adaptor(maildirresource_SRCS
+qt_add_dbus_adaptor(maildirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml settings.h Akonadi_Maildir_Resource::MaildirSettings maildirsettingsadaptor MaildirSettingsAdaptor
 )
 

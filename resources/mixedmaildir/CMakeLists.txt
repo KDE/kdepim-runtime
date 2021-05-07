@@ -39,7 +39,7 @@ install( FILES mixedmaildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTD
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mixedmaildirresource.kcfg org.kde.Akonadi.MixedMaildir.Settings)
 
-qt5_add_dbus_adaptor(mixedmaildirresource_SRCS
+qt_add_dbus_adaptor(mixedmaildirresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MixedMaildir.Settings.xml settings.h Settings
     )
 

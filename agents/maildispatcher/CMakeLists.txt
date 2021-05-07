@@ -17,10 +17,10 @@ ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_d
 
 kconfig_add_kcfg_files(maildispatcheragent_SRCS settings.kcfgc)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/maildispatcheragent.kcfg org.kde.Akonadi.MailDispatcher.Settings)
-qt5_add_dbus_adaptor(maildispatcheragent_SRCS
+qt_add_dbus_adaptor(maildispatcheragent_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.MailDispatcher.Settings.xml settings.h Settings
 )
-qt5_add_dbus_adaptor( maildispatcheragent_SRCS
+qt_add_dbus_adaptor( maildispatcheragent_SRCS
   org.freedesktop.Akonadi.MailDispatcherAgent.xml maildispatcheragent.h MailDispatcherAgent
 )
 

@@ -7,7 +7,7 @@ if (KDEPIM_RUN_AKONADI_TEST)
 	set(KDEPIMLIBS_RUN_SQLITE_ISOLATED_TESTS TRUE)
 
 	kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../maildirresource.kcfg org.kde.Akonadi.Maildir.Settings)
-	qt5_add_dbus_interface(extra_SRC ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
+	qt_add_dbus_interface(extra_SRC ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
 	    maildirsettings Akonadi_Maildir_Resource::MaildirSettings maildirsettingsinterface MaildirSettingsInterface
 	)
 

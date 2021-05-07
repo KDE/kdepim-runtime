@@ -60,12 +60,12 @@ ecm_qt_declare_logging_category(imapresource_LIB_SRCS HEADER imapresource_trace.
 kcfg_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresource.kcfg org.kde.Akonadi.Imap.Settings )
 kconfig_add_kcfg_files(imapresource_LIB_SRCS settingsbase.kcfgc)
 
-qt5_add_dbus_adaptor( imapresource_LIB_SRCS
+qt_add_dbus_adaptor( imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Settings.xml settings.h Settings
      )
 
-qt5_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
-qt5_add_dbus_adaptor( imapresource_LIB_SRCS
+qt_generate_dbus_interface( ${CMAKE_CURRENT_SOURCE_DIR}/imapresourcebase.h org.kde.Akonadi.Imap.Resource.xml OPTIONS -a )
+qt_add_dbus_adaptor( imapresource_LIB_SRCS
      ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Imap.Resource.xml
         imapresourcebase.h ImapResourceBase
      )

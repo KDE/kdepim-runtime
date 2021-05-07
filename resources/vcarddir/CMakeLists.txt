@@ -20,7 +20,7 @@ ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_de
 
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/vcarddirresource.kcfg org.kde.Akonadi.VCardDirectory.Settings)
-qt5_add_dbus_adaptor(vcarddirresource_SRCS
+qt_add_dbus_adaptor(vcarddirresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.VCardDirectory.Settings.xml settings.h VcardDirResourceSettings
 )
 

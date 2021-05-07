@@ -45,7 +45,7 @@ kcfg_generate_dbus_interface(
   org.kde.Akonadi.Google.Settings
 )
 
-qt5_add_dbus_adaptor(googleresource_SRCS
+qt_add_dbus_adaptor(googleresource_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Google.Settings.xml
   ${CMAKE_CURRENT_SOURCE_DIR}/googlesettings.h GoogleSettings
 )

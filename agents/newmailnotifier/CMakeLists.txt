@@ -23,7 +23,7 @@ set(newmailnotifieragent_SRCS
   ${newmailnotifier_common_SRCS}
 )
 
-qt5_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
+qt_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
 
 add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)

@@ -29,7 +29,7 @@ install(FILES kalarmresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/ako
 
 ki18n_wrap_ui(kalarmresource_SRCS ../shared/alarmtyperadiowidget.ui)
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/kalarmresource.kcfg org.kde.Akonadi.KAlarm.Settings)
-qt5_add_dbus_adaptor(kalarmresource_SRCS
+qt_add_dbus_adaptor(kalarmresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.KAlarm.Settings.xml settings.h Akonadi_KAlarm_Resource::Settings icalsettingsadaptor ICalSettingsAdaptor)
 
 ecm_qt_declare_logging_category(kalarmresource_SRCS HEADER kalarmresource_debug.h IDENTIFIER KALARMRESOURCE_LOG CATEGORY_NAME org.kde.pim.kalarmresource

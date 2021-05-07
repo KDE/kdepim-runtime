@@ -53,7 +53,7 @@ kcfg_generate_dbus_interface(
     org.kde.Akonadi.TomboyNotes.Settings
     )
 
-qt5_add_dbus_adaptor(tomboynotesresource_SRCS
+qt_add_dbus_adaptor(tomboynotesresource_SRCS
     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.TomboyNotes.Settings.xml
     ${CMAKE_CURRENT_BINARY_DIR}/settings.h
     Settings
