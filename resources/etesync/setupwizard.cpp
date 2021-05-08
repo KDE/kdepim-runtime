@@ -11,6 +11,7 @@
 #include <QCheckBox>
 #include <QFormLayout>
 #include <QIcon>
+#include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 
