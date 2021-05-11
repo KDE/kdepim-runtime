@@ -6,12 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>669</width>
-    <height>746</height>
+    <width>900</width>
+    <height>700</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>0</height>
+   </size>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item row="0" column="0">
@@ -59,16 +74,12 @@
                </widget>
               </item>
               <item>
-               <widget class="QTextEdit" name="textEdit">
-                <property name="readOnly">
-                 <bool>true</bool>
+               <widget class="QLabel" name="textEdit">
+                <property name="text">
+                 <string>Select the file whose contents should be represented by this resource. If the file does not exist, it will be created. A URL of a remote file can also be specified, but note that monitoring for file changes will not work in this case.</string>
                 </property>
-                <property name="html">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select the file whose contents should be represented by this resource. If the file does not exist, it will be created. A URL of a remote file can also be specified, but note that monitoring for file changes will not work in this case.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -103,16 +114,12 @@ p, li { white-space: pre-wrap; }
            </layout>
           </item>
           <item>
-           <widget class="QTextEdit" name="textEdit_2">
-            <property name="readOnly">
-             <bool>true</bool>
+           <widget class="QLabel" name="textEdit_2">
+            <property name="text">
+             <string>Enter the name used to identify this resource in displays. If not specified, the filename will be used.</string>
             </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Enter the name used to identify this resource in displays. If not specified, the filename will be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -126,16 +133,12 @@ p, li { white-space: pre-wrap; }
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="1" column="0">
-           <widget class="QTextEdit" name="textEdit_3">
-            <property name="readOnly">
-             <bool>true</bool>
+           <widget class="QLabel" name="textEdit_3">
+            <property name="text">
+             <string>If read-only mode is enabled, no changes will be written to the file selected above. Read-only mode will be automatically enabled if you do not have write access to the file or the file is on a remote server that does not support write access.</string>
             </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If read-only mode is enabled, no changes will be written to the file selected above. Read-only mode will be automatically enabled if you do not have write access to the file or the file is on a remote server that does not support write access.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -163,16 +166,12 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QTextEdit" name="textEdit_4">
-            <property name="readOnly">
-             <bool>true</bool>
+           <widget class="QLabel" name="textEdit_4">
+            <property name="text">
+             <string>If file monitoring is enabled the resource will reload the file when changes are made by other programs. It also tries to create a backup in case of conflicts whenever possible.</string>
             </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If file monitoring is enabled the resource will reload the file when changes are made by other programs. It also tries to create a backup in case of conflicts whenever possible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
