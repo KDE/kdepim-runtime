@@ -40,7 +40,7 @@ private Q_SLOTS:
     void xqueryResultsInCallback();
 
 private:
-    QPair<QString, ushort> synchronousHttpReq(const QString &content, ushort port, std::function<bool(const QString &)> chunkFn = nullptr);
+    QPair<QString, ushort> synchronousHttpReq(const QString &content, ushort port, const std::function<bool(const QString &)> &chunkFn = nullptr);
 };
 
 void UtEwsFakeSrvTest::emptyDialog()
@@ -232,7 +232,7 @@ void UtEwsFakeSrvTest::emptyResponse()
 
 void UtEwsFakeSrvTest::getEventsRequest()
 {
-    const FakeEwsServer::DialogEntry::List emptyDialog;
+    // const FakeEwsServer::DialogEntry::List emptyDialog;
 
     const QFETCH(QString, request);
     const QFETCH(QStringList, events);
@@ -515,7 +515,7 @@ void UtEwsFakeSrvTest::getEventsRequest_data()
 void UtEwsFakeSrvTest::getStreamingEventsRequest()
 {
     bool callbackCalled = false;
-    const FakeEwsServer::DialogEntry::List emptyDialog;
+    // const FakeEwsServer::DialogEntry::List emptyDialog;
 
     QScopedPointer<FakeEwsServer> srv(new FakeEwsServer(this));
     QVERIFY(srv->start());
@@ -791,7 +791,7 @@ void UtEwsFakeSrvTest::xqueryResultsInCallback()
     QCOMPARE(resp.second, static_cast<ushort>(200));
 }
 
-QPair<QString, ushort> UtEwsFakeSrvTest::synchronousHttpReq(const QString &content, ushort port, std::function<bool(const QString &)> chunkFn)
+QPair<QString, ushort> UtEwsFakeSrvTest::synchronousHttpReq(const QString &content, ushort port, const std::function<bool(const QString &)> &chunkFn)
 {
     QNetworkAccessManager nam(this);
     QUrl url(QStringLiteral("http://127.0.0.1:%1/EWS/Exchange.asmx").arg(port));

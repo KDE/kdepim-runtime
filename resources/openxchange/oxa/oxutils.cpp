@@ -56,7 +56,7 @@ QString OXUtils::writeDateTime(const QDateTime &value)
     return QString(result + QLatin1String("000"));
 }
 
-QString OXUtils::writeDate(const QDate &value)
+QString OXUtils::writeDate(QDate value)
 {
     return writeDateTime(QDateTime(value, QTime(0, 0, 0), Qt::UTC));
 }

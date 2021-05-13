@@ -95,7 +95,7 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     {
         auto hboxLayout = new QHBoxLayout;
         auto label =
-            new QLabel(QStringLiteral("<a href=\"%1\">%2</a>").arg(index.data(MigratorModel::LogfileRole).toString()).arg(ki18n("Logfile").toString()), widget);
+            new QLabel(QStringLiteral("<a href=\"%1\">%2</a>").arg(index.data(MigratorModel::LogfileRole).toString(), ki18n("Logfile").toString()), widget);
         label->setOpenExternalLinks(true);
         hboxLayout->addWidget(label);
         hboxLayout->addStretch();

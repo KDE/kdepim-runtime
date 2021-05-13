@@ -20,7 +20,7 @@ QString writeNumber(qlonglong value);
 QString writeString(const QString &value);
 QString writeName(const QString &value);
 QString writeDateTime(const QDateTime &value);
-QString writeDate(const QDate &value);
+QString writeDate(QDate value);
 
 bool readBoolean(const QString &text);
 qlonglong readNumber(const QString &text);

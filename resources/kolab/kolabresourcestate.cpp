@@ -77,6 +77,7 @@ void KolabResourceState::collectionAttributesRetrieved(const Akonadi::Collection
 void KolabResourceState::collectionsRetrieved(const Akonadi::Collection::List &collections)
 {
     Akonadi::Collection::List modifiedCollections;
+    modifiedCollections.reserve(collections.count());
     for (const Akonadi::Collection &col : collections) {
         modifiedCollections << processAnnotations(col);
     }

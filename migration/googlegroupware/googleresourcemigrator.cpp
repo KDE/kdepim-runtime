@@ -64,7 +64,7 @@ std::unique_ptr<QSettings> settingsForResource(const Akonadi::AgentInstance &ins
         return {};
     }
 
-    const auto configFile = Akonadi::ServerManager::self()->addNamespace(instance.identifier()) + QStringLiteral("rc");
+    const QString configFile = Akonadi::ServerManager::self()->addNamespace(instance.identifier()) + QStringLiteral("rc");
     const auto configPath = QStandardPaths::locate(QStandardPaths::ConfigLocation, configFile);
     return std::make_unique<QSettings>(configPath, QSettings::IniFormat);
 }
