@@ -25,7 +25,7 @@ akonadi_ews_add_ut(ewsgetitemrequest_ut)
 akonadi_ews_add_ut(ewsunsubscriberequest_ut)
 akonadi_ews_add_ut(ewsattachment_ut)
 
-qt5_wrap_cpp(ewssettings_ut_SRCS ewssettings_ut_mock.h)
+qt_wrap_cpp(ewssettings_ut_SRCS ewssettings_ut_mock.h)
 akonadi_ews_add_ut_advanced(ewssettings_ut "${CMAKE_CURRENT_SOURCE_DIR}/../../ewssettings.cpp;${ewssettings_ut_SRCS}")
 target_link_libraries(ewssettings_ut
   KF5::AkonadiCore
