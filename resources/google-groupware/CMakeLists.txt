@@ -82,6 +82,7 @@ target_link_libraries(akonadi_google_resource
   KPim::GAPIContacts
   KPim::GAPICore
   KPim::GAPITasks
+  qt5keychain
 )
 
 install(TARGETS akonadi_google_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
