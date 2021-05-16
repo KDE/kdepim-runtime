@@ -24,6 +24,7 @@ extern "C" {
 
 #include <QSslSocket>
 
+#include "kio_version.h"
 #include <KTcpSocket>
 
 #include <kio/slaveinterface.h>
@@ -607,7 +608,11 @@ bool POP3Protocol::pop3_open()
         // use QSslSocket internally
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::NoProxy);
+#if KIO_VERSION < QT_VERSION_CHECK(5, 83, 0)
         if (auto sock = qobject_cast<QSslSocket *>(socket())) {
+#else
+        if (auto sock = qobject_cast<QSslSocket *>(tcpSocket())) {
+#endif
             sock->setProxy(proxy);
         } else {
             qCWarning(POP3_LOG) << "no socket, cannot set no proxy";
