@@ -3,10 +3,6 @@ set(PIM_VERSION "5.17.40")
 set(KDEPIM_RUNTIME_VERSION_NUMBER ${PIM_VERSION})
 project(kdepim-runtime VERSION ${KDEPIM_RUNTIME_VERSION_NUMBER})
 
-if (POLICY CMP0053)
-    cmake_policy(SET CMP0053 NEW)
-endif()
-
 ############### KDEPIM-Runtime version ################
 # KDEPIM_RUNTIME_VERSION
 # Version scheme: "x.y.z build".
