@@ -1,13 +1,12 @@
-set(kio_akonadi_SRCS akonadislave.cpp)
-ecm_qt_declare_logging_category(kio_akonadi_SRCS HEADER akonadislave_debug.h IDENTIFIER AKONADISLAVE_LOG CATEGORY_NAME org.kde.pim.akonadislave
+
+
+add_library(kio_akonadi MODULE akonadislave.cpp)
+
+ecm_qt_declare_logging_category(kio_akonadi HEADER akonadislave_debug.h IDENTIFIER AKONADISLAVE_LOG CATEGORY_NAME org.kde.pim.akonadislave
     DESCRIPTION "kioslave (akonadi)"
     OLD_CATEGORY_NAMES log_akonadislave
     EXPORT KDEPIMRUNTIME
     )
-
-
-add_library(kio_akonadi MODULE ${kio_akonadi_SRCS})
-
 
 
 target_link_libraries(kio_akonadi  

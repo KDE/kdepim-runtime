@@ -1,9 +1,9 @@
-set(gid_SRCS
+add_library(gidmigration STATIC)
+target_sources(gidmigration PRIVATE
     gidmigrator.cpp
     gidmigrationjob.cpp
 )
 
-add_library(gidmigration STATIC ${gid_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(gidmigration PROPERTIES UNITY_BUILD ON)
 endif()

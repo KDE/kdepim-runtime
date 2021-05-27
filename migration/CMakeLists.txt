@@ -3,15 +3,16 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+add_library(migrationshared STATIC )
 
-set(migrationshared_SRCS
+target_sources(migrationshared PRIVATE
   kmigratorbase.cpp
   infodialog.cpp
   entitytreecreatejob.cpp
   migratorbase.cpp
 )
 
-ecm_qt_declare_logging_category(migrationshared_SRCS
+ecm_qt_declare_logging_category(migrationshared
     HEADER migration_debug.h
     IDENTIFIER MIGRATION_LOG
     CATEGORY_NAME org.kde.pim.migration
@@ -19,7 +20,6 @@ ecm_qt_declare_logging_category(migrationshared_SRCS
     EXPORT KDEPIMRUNTIME
 )
 
-add_library(migrationshared STATIC ${migrationshared_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(migrationshared PROPERTIES UNITY_BUILD ON)
 endif()

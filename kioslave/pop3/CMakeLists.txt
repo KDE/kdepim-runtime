@@ -1,8 +1,9 @@
 ########### next target ###############
 
-set(kio_pop3_PART_SRCS pop3.cpp pop3_debug.cpp )
+add_library(kio_pop3 MODULE)
+target_sources(kio_pop3 PRIVATE pop3.cpp )
 
-ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3
+ecm_qt_declare_logging_category(kio_pop3 HEADER pop3_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3
     DESCRIPTION "kioslave (kdepim-runtime)"
     OLD_CATEGORY_NAMES log_pop3resource
     EXPORT KDEPIMRUNTIME
@@ -10,7 +11,6 @@ ecm_qt_declare_logging_category(kio_pop3_PART_SRCS HEADER pop3_debug.h IDENTIFIE
 
 
 
-add_library(kio_pop3 MODULE ${kio_pop3_PART_SRCS})
 
 
 target_link_libraries(kio_pop3 KF5::KIOCore KF5::I18n Qt::Network Sasl2::Sasl2)
