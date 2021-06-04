@@ -46,6 +46,13 @@ extern "C" {
 #define MAX_RESPONSE_LEN 512
 #define MAX_COMMANDS 10
 
+// Pseudo plugin class to embed meta data
+class KIOPluginForMetaData : public QObject
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.kio.slave.pop3" FILE "pop3.json")
+};
+
 extern "C" {
 int Q_DECL_EXPORT kdemain(int argc, char **argv);
 }
@@ -1158,3 +1165,5 @@ void POP3Protocol::del(const QUrl &url, bool /*isfile */)
     qCDebug(POP3_LOG) << "Path:" << _path;
     finished();
 }
+
+#include "pop3.moc"

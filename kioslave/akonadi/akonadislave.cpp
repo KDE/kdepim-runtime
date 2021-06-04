@@ -29,6 +29,13 @@
 #define S_IROTH 0004
 #endif
 
+// Pseudo plugin class to embed meta data
+class KIOPluginForMetaData : public QObject
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.kde.kio.slave.akonadi" FILE "akonadi.json")
+};
+
 extern "C" {
 int Q_DECL_EXPORT kdemain(int argc, char **argv);
 }
@@ -231,3 +238,5 @@ KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection &collec
     }
     return entry;
 }
+
+#include "akonadislave.moc"
