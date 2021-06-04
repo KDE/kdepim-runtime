@@ -20,9 +20,3 @@ target_link_libraries(kio_akonadi
 set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
 
 install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf5/kio )
-
-
-########### install files ###############
-
-install( FILES akonadi.protocol  DESTINATION  ${KDE_INSTALL_KSERVICES5DIR} )
-
