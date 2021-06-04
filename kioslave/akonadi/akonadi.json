@@ -1,0 +1,18 @@
+{
+    "KDE-KIO-Protocols": {
+        "akonadi": {
+            "deleting": true,
+            "exec": "kf5/kio/akonadi",
+            "fileNameUsedForCopying": "Name",
+            "input": "none",
+            "listing": [
+                "Name",
+                "Type"
+            ],
+            "output": "filesystem",
+            "protocol": "akonadi",
+            "reading": true,
+            "writing": false
+        }
+    }
+}
