@@ -1,13 +1,13 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"libfolderarchivesettings\")
 
 
-set(folderarchivesettings_SRCS
+add_library(folderarchivesettings)
+target_sources(folderarchivesettings PRIVATE
    folderarchivesettingpage.cpp
    folderarchiveutil.cpp
    folderarchiveaccountinfo.cpp 
 )
 
-add_library(folderarchivesettings  ${folderarchivesettings_SRCS} )
 generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(folderarchivesettings PROPERTIES UNITY_BUILD ON)
