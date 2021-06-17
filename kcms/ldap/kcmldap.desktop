@@ -3,7 +3,7 @@ Icon=kontact
 Type=Service
 X-KDE-ServiceTypes=KCModule
 
-X-KDE-Library=kcm_ldap
+X-KDE-Library=pim/kcms/kaddressbook/kcm_ldap
 X-KDE-ParentApp=kaddressbook
 X-KDE-ParentComponents=kaddressbook,kontact_kaddressbookplugin
 X-KDE-CfgDlgHierarchy=KAddressBook
