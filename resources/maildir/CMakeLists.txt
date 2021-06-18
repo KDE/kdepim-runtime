@@ -60,22 +60,21 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Maildir.Settings.xml
 install( FILES maildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 ############################# Config plugin ###############################
+kcoreaddons_add_plugin(maildirconfig
+    JSON "maildirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
 
-set(maildirconfig_SRCS
+target_sources(maildirconfig PRIVATE
     maildirconfigmain.cpp
     maildirconfig.cpp
     configwidget.cpp
     ${maildir_common_SRCS}
 )
 
-ki18n_wrap_ui(maildirconfig_SRCS settings.ui)
+ki18n_wrap_ui(maildirconfig settings.ui)
 
 
-kcoreaddons_add_plugin(maildirconfig
-    SOURCES ${maildirconfig_SRCS}
-    JSON "maildirconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-)
 target_link_libraries(maildirconfig
     KF5::AkonadiCore
     KF5::ConfigWidgets

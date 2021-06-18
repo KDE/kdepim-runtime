@@ -48,18 +48,18 @@ install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################### Config plugin #################################
 
-set(akonotesconfig_SRCS
+
+kcoreaddons_add_plugin(akonotesconfig
+    JSON "akonotesconfig.json"
+    INSTALL_NAMESPACE akonadi/config
+)
+
+ki18n_wrap_ui(akonotesconfig ../maildir/settings.ui)
+target_sources(akonotesconfig PRIVATE
     ../maildir/configwidget.cpp
     ../maildir/maildirconfig.cpp
     akonotesconfig.cpp
     ${akonotes_common_SRCS}
-)
-ki18n_wrap_ui(akonotesconfig_SRCS ../maildir/settings.ui)
-
-kcoreaddons_add_plugin(akonotesconfig
-    SOURCES ${akonotesconfig_SRCS}
-    JSON "akonotesconfig.json"
-    INSTALL_NAMESPACE akonadi/config
 )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonotesconfig PROPERTIES UNITY_BUILD ON)

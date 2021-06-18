@@ -47,21 +47,18 @@ target_link_libraries(akonadi_contacts_resource
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
-set(contactsconfig_ui_SRCS)
-ki18n_wrap_ui(contactsconfig_ui_SRCS contactsagentsettingswidget.ui)
+kcoreaddons_add_plugin(contactsconfig
+    JSON "contactsconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+ki18n_wrap_ui(contactsconfig contactsagentsettingswidget.ui)
 
-set(contactsconfig_SRCS
+target_sources(contactsconfig PRIVATE
     contactssettingswidget.cpp
-    ${contactsconfig_ui_SRCS}
     ${contactsresource_common_SRCS}
     )
 
 
-kcoreaddons_add_plugin(contactsconfig
-    SOURCES ${contactsconfig_SRCS}
-    JSON "contactsconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
 target_link_libraries(contactsconfig
     KF5::AkonadiCore
     KF5::CalendarCore

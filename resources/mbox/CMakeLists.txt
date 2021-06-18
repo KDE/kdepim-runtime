@@ -71,24 +71,23 @@ if (BUILD_TESTING)
 endif()
 
 ############################# Config plugin ################################
+kcoreaddons_add_plugin(mboxconfig
+    JSON "mboxconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
 
-set(mboxconfig_SRCS
+target_sources(mboxconfig PRIVATE
     mboxconfig.cpp
     lockmethodpage.cpp
     compactpage.cpp
     ${mboxresource_common_SRCS}
     )
 
-ki18n_wrap_ui(mboxconfig_SRCS
+ki18n_wrap_ui(mboxconfig
     compactpage.ui
     lockfilepage.ui
     )
 
-kcoreaddons_add_plugin(mboxconfig
-    SOURCES ${mboxconfig_SRCS}
-    JSON "mboxconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
 target_link_libraries(mboxconfig
     KF5::AkonadiCore
     KF5::ConfigWidgets

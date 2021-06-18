@@ -51,20 +51,16 @@ install( FILES birthdaysresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}
 
 
 ############################# Config plugin ################################
-set(birthdaysconfig_ui_SRCS)
-ki18n_wrap_ui(birthdaysconfig_ui_SRCS birthdaysconfigwidget.ui)
-set(birthdaysconfig_SRCS
-    birthdaysconfigagentwidget.cpp
-    ${birthdaysconfig_ui_SRCS}
-    ${birthdayresource_common_SRCS}
-    )
-
-
 kcoreaddons_add_plugin(birthdaysconfig
-    SOURCES ${birthdaysconfig_SRCS}
     JSON "birthdaysconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
+ki18n_wrap_ui(birthdaysconfig birthdaysconfigwidget.ui)
+target_sources(birthdaysconfig PRIVATE
+    birthdaysconfigagentwidget.cpp
+    ${birthdayresource_common_SRCS}
+    )
+
 target_link_libraries(birthdaysconfig
     KF5::AkonadiCore
     KF5::CalendarCore

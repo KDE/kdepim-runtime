@@ -54,21 +54,19 @@ add_subdirectory(wizard)
 install(TARGETS akonadi_vcarddir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
-set(vcarddirconfig_ui_SRCS)
-ki18n_wrap_ui(vcarddirconfig_ui_SRCS vcarddiragentsettingswidget.ui)
+kcoreaddons_add_plugin(vcarddirconfig
+    JSON "vcarddirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+ki18n_wrap_ui(vcarddirconfig vcarddiragentsettingswidget.ui)
 
-set(vcarddirconfig_SRCS
+target_sources(vcarddirconfig PRIVATE
     vcarddirsettingswidget.cpp
     ${vcarddirconfig_ui_SRCS}
     ${vcarddirresource_common_SRCS}
     )
 
 
-kcoreaddons_add_plugin(vcarddirconfig
-    SOURCES ${vcarddirconfig_SRCS}
-    JSON "vcarddirconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
 target_link_libraries(vcarddirconfig
     KF5::AkonadiCore
     KF5::CalendarCore

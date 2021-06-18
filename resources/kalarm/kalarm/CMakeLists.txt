@@ -64,18 +64,17 @@ install(TARGETS akonadi_kalarm_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 ############################## Config plugin #################################
+kcoreaddons_add_plugin(kalarmconfig
+    JSON "kalarmconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
 
-set(kalarmconfig_SRCS
+target_sources(kalarmconfig PRIVATE
     kalarmconfig.cpp
     ../shared/alarmtyperadiowidget.cpp
     ${kalarmresource_common_SRCS}
     )
 
-kcoreaddons_add_plugin(kalarmconfig
-    SOURCES ${kalarmconfig_SRCS}
-    JSON "kalarmconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
 
 target_link_libraries(kalarmconfig
     KF5::AkonadiCore

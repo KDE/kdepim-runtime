@@ -88,20 +88,17 @@ install(FILES tomboynotesresource.desktop
     )
 
 ############################# Config plugin ################################
-set(tomboynotesconfig_ui_SRCS)
-ki18n_wrap_ui(tomboynotesconfig_ui_SRCS tomboynotesagentconfigwidget.ui)
-set(tomboynotesconfig_SRCS
+kcoreaddons_add_plugin(tomboynotesconfig
+    JSON "tomboynotesconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+ki18n_wrap_ui(tomboynotesconfig tomboynotesagentconfigwidget.ui)
+target_sources(tomboynotesconfig PRIVATE
     tomboynotesconfigwidget.cpp
-    ${tomboynotesconfig_ui_SRCS}
     ${tomboynotesresource_common_SRCS}
     )
 
 
-kcoreaddons_add_plugin(tomboynotesconfig
-    SOURCES ${tomboynotesconfig_SRCS}
-    JSON "tomboynotesconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
 target_link_libraries(tomboynotesconfig
     KF5::AkonadiCore
     KF5::CalendarCore

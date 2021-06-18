@@ -1,7 +1,8 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi-filestore\")
+add_library(akonadi-filestore)
 
-set(akonadi-filestore_SRCS
+target_sources(akonadi-filestore PRIVATE
     abstractlocalstore.cpp
     collectioncreatejob.cpp
     collectiondeletejob.cpp
@@ -20,13 +21,12 @@ set(akonadi-filestore_SRCS
     storecompactjob.cpp
     )
 
-ecm_qt_declare_logging_category(akonadi-filestore_SRCS HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore
+ecm_qt_declare_logging_category(akonadi-filestore HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore
     DESCRIPTION "resource filestore lib (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME
     )
 
 
-add_library(akonadi-filestore  ${akonadi-filestore_SRCS} )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi-filestore PROPERTIES UNITY_BUILD ON)
 endif()

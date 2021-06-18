@@ -46,21 +46,18 @@ target_link_libraries(akonadi_icaldir_resource
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
-set(icaldirconfig_ui_SRCS)
-ki18n_wrap_ui(icaldirconfig_ui_SRCS icaldirsagentsettingswidget.ui)
+kcoreaddons_add_plugin(icaldirconfig
+    JSON "icaldirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+ki18n_wrap_ui(icaldirconfig icaldirsagentsettingswidget.ui)
 
-set(icaldirconfig_SRCS
+target_sources(icaldirconfig PRIVATE
     icaldirsettingswidget.cpp
-    ${icaldirconfig_ui_SRCS}
     ${icaldirresource_common_SRCS}
     )
 
 
-kcoreaddons_add_plugin(icaldirconfig
-    SOURCES ${icaldirconfig_SRCS}
-    JSON "icaldirconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
 target_link_libraries(icaldirconfig
     KF5::AkonadiCore
     KF5::CalendarCore
