@@ -1,7 +1,5 @@
 include(ECMAddTests)
 
-find_package(Qt5Test CONFIG REQUIRED)
-
 macro(_add_test _source)
   set(_test ${_source})
   get_filename_component(_name ${_source} NAME_WE)
