@@ -23,6 +23,10 @@
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
+#include <chrono>
+
+using namespace std::chrono_literals;
+
 #include <kcoreaddons_version.h>
 #if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>
@@ -89,7 +93,7 @@ void MailDispatcherAgent::dispatch()
             mAborting = false;
             mSentAnything = false;
             Q_EMIT status(AgentBase::Idle, i18n("Sending canceled."));
-            QTimer::singleShot(3000, this, &MailDispatcherAgent::emitStatusReady);
+            QTimer::singleShot(3s, this, &MailDispatcherAgent::emitStatusReady);
         } else {
             if (mSentAnything) {
                 // Finished sending messages in queue.
@@ -110,7 +114,7 @@ void MailDispatcherAgent::dispatch()
                 // Empty queue.
                 Q_EMIT status(AgentBase::Idle, i18n("No items in queue."));
             }
-            QTimer::singleShot(3000, this, &MailDispatcherAgent::emitStatusReady);
+            QTimer::singleShot(3s, this, &MailDispatcherAgent::emitStatusReady);
         }
 
         mErrorOccurred = false;

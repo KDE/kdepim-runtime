@@ -11,6 +11,9 @@
 #include "o2/o0globals.h"
 #include "o2/o2.h"
 #include "o2/o2requestor.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent)
     : QObject(parent)
@@ -77,10 +80,10 @@ void O2Requestor::onRefreshFinished(QNetworkReply::NetworkError error)
         return;
     }
     if (QNetworkReply::NoError == error) {
-        QTimer::singleShot(100, this, &O2Requestor::retry);
+        QTimer::singleShot(100ms, this, &O2Requestor::retry);
     } else {
         error_ = error;
-        QTimer::singleShot(10, this, &O2Requestor::finish);
+        QTimer::singleShot(10ms, this, &O2Requestor::finish);
     }
 }
 
@@ -95,7 +98,7 @@ void O2Requestor::onRequestFinished()
         return;
     }
     if (error == QNetworkReply::NoError) {
-        QTimer::singleShot(10, this, &O2Requestor::finish);
+        QTimer::singleShot(10ms, this, &O2Requestor::finish);
     }
 }
 
@@ -120,7 +123,7 @@ void O2Requestor::onRequestError(QNetworkReply::NetworkError error)
         qCCritical(TOMBOYNOTESRESOURCE_LOG) << "O2Requestor::onRequestError: Invoking remote refresh failed";
     }
     error_ = error;
-    QTimer::singleShot(10, this, &O2Requestor::finish);
+    QTimer::singleShot(10ms, this, &O2Requestor::finish);
 }
 
 void O2Requestor::onUploadProgress(qint64 uploaded, qint64 total)

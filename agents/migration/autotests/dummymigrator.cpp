@@ -8,6 +8,9 @@
 #include "dummymigrator.h"
 #include <QDebug>
 #include <QTimer>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 DummyMigrator::DummyMigrator(const QString &identifier)
     : MigratorBase(QLatin1String("dummymigrator") + identifier, QString(), QString())
@@ -22,7 +25,7 @@ QString DummyMigrator::displayName() const
 void DummyMigrator::startWork()
 {
     qDebug();
-    QTimer::singleShot(10000, this, &DummyMigrator::onTimerElapsed);
+    QTimer::singleShot(10s, this, &DummyMigrator::onTimerElapsed);
 }
 
 void DummyMigrator::onTimerElapsed()
