@@ -81,18 +81,18 @@ endif ()
 
 ###################################### Config Plugin #########################
 
-set(mixedmaildirconfig_SRCS
+kcoreaddons_add_plugin(mixedmaildirconfig
+    JSON "mixedmaildirconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+    )
+target_sources(mixedmaildirconfig PRIVATE
     mixedmaildirconfig.cpp
     configwidget.cpp
     ${mixedmaildir_common_SRCS}
     )
-ki18n_wrap_ui(mixedmaildirconfig_SRCS settings.ui)
+ki18n_wrap_ui(mixedmaildirconfig settings.ui)
 
-kcoreaddons_add_plugin(mixedmaildirconfig
-    SOURCES ${mixedmaildirconfig_SRCS}
-    JSON "mixedmaildirconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-    )
+
 target_link_libraries(mixedmaildirconfig
     KF5::AkonadiCore
     KF5::I18n

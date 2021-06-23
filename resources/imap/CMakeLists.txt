@@ -93,7 +93,9 @@ target_link_libraries(imapresource
 
 ########### next target ###############
 
-set( akonadi_imap_resource_SRCS
+add_executable(akonadi_imap_resource)
+ki18n_wrap_ui(akonadi_imap_resource setupserverview_desktop.ui)
+target_sources( akonadi_imap_resource PRIVATE
   main.cpp
   imapresource.cpp
   resourcestate.cpp
@@ -106,10 +108,8 @@ set( akonadi_imap_resource_SRCS
 
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
-ki18n_wrap_ui(akonadi_imap_resource_SRCS setupserverview_desktop.ui)
 
 
-add_executable(akonadi_imap_resource ${akonadi_imap_resource_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_imap_resource PROPERTIES UNITY_BUILD ON)
 endif()

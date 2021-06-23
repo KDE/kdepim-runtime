@@ -77,21 +77,20 @@ install(TARGETS akonadi_openxchange_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
 add_subdirectory(icons)
 
 ################################### Config plugin ############################
+kcoreaddons_add_plugin(openxchangeconfig
+    JSON "openxchangeconfig.json"
+    INSTALL_NAMESPACE "akonadi/config"
+)
 
-set(openxchangeconfig_SRCS
+target_sources(openxchangeconfig PRIVATE
   configwidget.cpp
   openxchangeconfig.cpp
   oxa/connectiontestjob.cpp
   ${openxchange_common_SRCS}
 )
 
-ki18n_wrap_ui(openxchangeconfig_SRCS configwidget.ui)
+ki18n_wrap_ui(openxchangeconfig configwidget.ui)
 
-kcoreaddons_add_plugin(openxchangeconfig
-    SOURCES ${openxchangeconfig_SRCS}
-    JSON "openxchangeconfig.json"
-    INSTALL_NAMESPACE "akonadi/config"
-)
 
 target_link_libraries(openxchangeconfig
     KF5::AkonadiCore
