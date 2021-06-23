@@ -1,15 +1,9 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildispatcher_agent\")
+add_executable(akonadi_maildispatcher_agent)
 
-set( maildispatcheragent_SRCS
-  maildispatcheragent.cpp
-  outboxqueue.cpp
-  sendjob.cpp
-  sentactionhandler.cpp
-  storeresultjob.cpp
-)
 
-ecm_qt_declare_logging_category(maildispatcheragent_SRCS HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME org.kde.pim.maildispatcher
+ecm_qt_declare_logging_category(akonadi_maildispatcher_agent HEADER maildispatcher_debug.h IDENTIFIER MAILDISPATCHER_LOG CATEGORY_NAME org.kde.pim.maildispatcher
         DESCRIPTION "maildispacher agent (kdepim-runtime)"
         OLD_CATEGORY_NAMES log_maildispatcher
         EXPORT KDEPIMRUNTIME
@@ -23,8 +17,15 @@ qt_add_dbus_adaptor(maildispatcheragent_SRCS
 qt_add_dbus_adaptor( maildispatcheragent_SRCS
   org.freedesktop.Akonadi.MailDispatcherAgent.xml maildispatcheragent.h MailDispatcherAgent
 )
+target_sources( akonadi_maildispatcher_agent PRIVATE
+  maildispatcheragent.cpp
+  outboxqueue.cpp
+  sendjob.cpp
+  sentactionhandler.cpp
+  storeresultjob.cpp
+  ${maildispatcheragent_SRCS}
+)
 
-add_executable(akonadi_maildispatcher_agent ${maildispatcheragent_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_maildispatcher_agent PROPERTIES UNITY_BUILD ON)
 endif()

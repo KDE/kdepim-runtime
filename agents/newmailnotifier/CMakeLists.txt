@@ -3,8 +3,8 @@ include_directories(${kdepim-runtime_BINARY_DIR})
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_newmailnotifier_agent\")
 
 
+add_executable( akonadi_newmailnotifier_agent)
 set(newmailnotifier_common_SRCS)
-
 kconfig_add_kcfg_files(newmailnotifier_common_SRCS
     newmailnotifieragentsettings.kcfgc
   )
@@ -16,16 +16,16 @@ ecm_qt_declare_logging_category(newmailnotifier_common_SRCS HEADER newmailnotifi
     )
 
 
-set(newmailnotifieragent_SRCS
+
+qt_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
+target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailnotifieragent.cpp
   specialnotifierjob.cpp
   newmailnotifiershowmessagejob.cpp
   ${newmailnotifier_common_SRCS}
+  ${newmailnotifieragent_SRCS}
 )
 
-qt_add_dbus_adaptor(newmailnotifieragent_SRCS org.freedesktop.Akonadi.NewMailNotifier.xml newmailnotifieragent.h NewMailNotifierAgent)
-
-add_executable( akonadi_newmailnotifier_agent ${newmailnotifieragent_SRCS})
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_newmailnotifier_agent PROPERTIES UNITY_BUILD ON)
 endif()
@@ -62,11 +62,15 @@ install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_K
 ########################## Config plugin #################################
 
 kcoreaddons_add_plugin(newmailnotifierconfig
-    SOURCES newmailnotifiersettingswidget.cpp
-            newmailnotifierselectcollectionwidget.cpp
-            ${newmailnotifier_common_SRCS}
     JSON "newmailnotifierconfig.json"
     INSTALL_NAMESPACE "akonadi/config")
+
+target_sources(newmailnotifierconfig PRIVATE
+    newmailnotifiersettingswidget.cpp
+    newmailnotifierselectcollectionwidget.cpp
+    ${newmailnotifier_common_SRCS}
+    )
+
 target_link_libraries(newmailnotifierconfig
     KF5::AkonadiCore
     KF5::AkonadiMime
