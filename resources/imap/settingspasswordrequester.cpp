@@ -11,14 +11,15 @@
 #include <KMessageBox>
 
 #include "imapresource_debug.h"
+#include "imapresourcebase.h"
+#include "settings.h"
+#include <KAuthorized>
 #include <KPasswordDialog>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <kwidgetsaddons_version.h>
 #include <kwindowsystem.h>
 #include <mailtransport/transportbase.h>
-
-#include "imapresourcebase.h"
-#include "settings.h"
 
 SettingsPasswordRequester::SettingsPasswordRequester(ImapResourceBase *resource, QObject *parent)
     : PasswordRequesterInterface(parent)
@@ -149,6 +150,9 @@ QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
     dlg->setModal(true);
     dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.", m_resource->settings()->userName(), m_resource->settings()->imapServer()));
     dlg->setPassword(m_resource->settings()->password());
+#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 84, 0)
+    dlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+#endif
     if (dlg->exec()) {
         if (userRejected) {
             *userRejected = false;

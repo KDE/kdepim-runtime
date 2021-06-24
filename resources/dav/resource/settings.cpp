@@ -13,6 +13,7 @@
 #include "settingsadaptor.h"
 #include "utils.h"
 
+#include <KAuthorized>
 #include <KLocalizedString>
 
 #include <KWallet>
@@ -488,6 +489,7 @@ QString Settings::promptForPassword(const QString &user)
     label = new QLabel(i18n("Password: "), mainWidget);
     hLayout->addWidget(label);
     auto lineEdit = new KPasswordLineEdit();
+    lineEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     hLayout->addWidget(lineEdit);
     vLayout->addLayout(hLayout);
     lineEdit->setFocus();

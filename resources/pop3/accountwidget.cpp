@@ -13,7 +13,6 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-// KDEPIMLIBS includes
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <Collection>
@@ -22,8 +21,8 @@
 #include <MailTransport/ServerTest>
 #include <resourcesettings.h>
 
-// KDELIBS includes
 #include "pop3resource_debug.h"
+#include <KAuthorized>
 #include <KEMailSettings>
 #include <KMessageBox>
 #include <KUser>
@@ -81,6 +80,8 @@ void AccountWidget::setupWidgets()
     mainLayout->addWidget(page);
 
     setupUi(page);
+
+    passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 
     // only letters, digits, '-', '.', ':' (IPv6) and '_' (for Windows
     // compatibility) are allowed

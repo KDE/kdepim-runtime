@@ -10,6 +10,7 @@
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
 
+#include <KAuthorized>
 #include <KLocalizedString>
 #include <KMessageBox>
 
@@ -27,6 +28,7 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     mainLayout->addWidget(mainWidget);
     mUi.setupUi(mainWidget);
     mUi.credentialsGroup->setVisible(false);
+    mUi.password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mOkButton = buttonBox->button(QDialogButtonBox::Ok);

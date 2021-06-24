@@ -33,6 +33,7 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <CollectionModifyJob>
+#include <KAuthorized>
 #include <KEMailSettings>
 #include <KLocalizedString>
 #include <KMessageBox>
@@ -119,6 +120,8 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 {
     auto networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
 
+    m_ui->password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    m_ui->customPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     m_parentResource->settings()->setWinId(parent);
     auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);

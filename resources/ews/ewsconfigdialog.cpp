@@ -6,6 +6,7 @@
 
 #include "ewsconfigdialog.h"
 
+#include <KAuthorized>
 #include <KConfigDialogManager>
 #include <KMessageBox>
 #include <KWindowSystem>
@@ -77,6 +78,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mUi = new Ui::SetupServerView;
     mUi->setupUi(mainWidget);
     mUi->accountName->setText(parentResource->name());
+    mUi->passwordEdit->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
 
     mSubWidget = new EwsSubscriptionWidget(client, mSettings.data(), this);
     mUi->subscriptionTabLayout->addWidget(mSubWidget);
