@@ -92,6 +92,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     mReplyMailTypeComboBox = new QComboBox(parent);
     mReplyMailTypeComboBox->setObjectName(QStringLiteral("mReplyMailTypeComboBox"));
     mReplyMailTypeComboBox->setEnabled(false);
+    mReplyMailTypeComboBox->addItems({i18n("Reply to Author"), i18n("Reply to All")});
     hboxLayout->addWidget(mReplyMailTypeComboBox);
     hboxLayout->addStretch(1);
 
@@ -182,6 +183,8 @@ void NewMailNotifierSettingsWidget::load()
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     mTextToSpeakSetting->setText(settings->textToSpeak());
     mReplyMail->setChecked(settings->replyMail());
+    mReplyMailTypeComboBox->setCurrentIndex(settings->replyMailType());
+
     updateReplyMail(mAllowToShowMail->isChecked());
 }
 
@@ -199,7 +202,7 @@ bool NewMailNotifierSettingsWidget::save() const
     settings->setTextToSpeakEnabled(mTextToSpeak->isChecked());
     settings->setTextToSpeak(mTextToSpeakSetting->text());
     settings->setReplyMail(mReplyMail->isChecked());
-
+    settings->setReplyMailType(mReplyMailTypeComboBox->currentIndex());
     settings->save();
     mNotify->save();
 

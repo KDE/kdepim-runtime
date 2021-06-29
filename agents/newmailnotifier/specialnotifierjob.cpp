@@ -151,7 +151,18 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         }
         QStringList lstActions{i18n("Show mail..."), i18n("Mark As Read"), i18n("Delete")};
         if (NewMailNotifierAgentSettings::replyMail()) {
-            lstActions << i18n("Reply mail...");
+            switch (NewMailNotifierAgentSettings::replyMailType()) {
+            case 0:
+                lstActions << i18n("Reply to Author");
+                break;
+            case 1:
+                lstActions << i18n("Reply to All");
+                break;
+            default:
+                qCWarning(NEWMAILNOTIFIER_LOG) << " Problem with NewMailNotifierAgentSettings::replyMailType() value: "
+                                               << NewMailNotifierAgentSettings::replyMailType();
+                break;
+            }
         }
         notification->setActions(lstActions);
 
@@ -188,7 +199,7 @@ void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
 void SpecialNotifierJob::slotReplyMessage()
 {
     auto job = new NewMailNotifierReplyMessageJob(mItem.id());
-    job->setReplyToAll(false); // TODO add support
+    job->setReplyToAll(NewMailNotifierAgentSettings::replyMailType() == 0 ? false : true);
     job->start();
     deleteLater();
 }
