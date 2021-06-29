@@ -22,6 +22,7 @@ target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailnotifieragent.cpp
   specialnotifierjob.cpp
   newmailnotifiershowmessagejob.cpp
+  newmailnotifierreplymessagejob.cpp
   ${newmailnotifier_common_SRCS}
   ${newmailnotifieragent_SRCS}
 )
