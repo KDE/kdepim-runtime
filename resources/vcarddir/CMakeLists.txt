@@ -55,7 +55,6 @@ install(TARGETS akonadi_vcarddir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(vcarddirconfig
-    JSON "vcarddirconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 ki18n_wrap_ui(vcarddirconfig vcarddiragentsettingswidget.ui)

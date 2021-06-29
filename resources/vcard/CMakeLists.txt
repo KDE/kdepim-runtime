@@ -44,7 +44,6 @@ install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 kcoreaddons_add_plugin(vcardconfig
     SOURCES vcardconfig.cpp ${vcardresource_common_SRCS}
-    JSON "vcardconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
 )
 

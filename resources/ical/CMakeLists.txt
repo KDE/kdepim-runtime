@@ -54,7 +54,6 @@ install(TARGETS akonadi_ical_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 ################################ Config plugin ###############################
 
 kcoreaddons_add_plugin(icalconfig
-    JSON "icalconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
 )
 target_sources(icalconfig PRIVATE icalconfig.cpp ${icalresource_common_SRCS})

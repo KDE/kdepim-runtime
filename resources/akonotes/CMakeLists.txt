@@ -50,7 +50,6 @@ install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 kcoreaddons_add_plugin(akonotesconfig
-    JSON "akonotesconfig.json"
     INSTALL_NAMESPACE akonadi/config
 )
 

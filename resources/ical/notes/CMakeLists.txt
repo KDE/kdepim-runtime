@@ -35,7 +35,6 @@ install(TARGETS akonadi_notes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 ############################ Config plugin ##################################
 
 kcoreaddons_add_plugin(notesconfig
-    JSON "notesconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
 )
 target_sources(notesconfig PRIVATE notesconfig.cpp ${notesresource_common_SRCS})

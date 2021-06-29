@@ -65,7 +65,6 @@ install(TARGETS akonadi_kalarm_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin #################################
 kcoreaddons_add_plugin(kalarmconfig
-    JSON "kalarmconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 

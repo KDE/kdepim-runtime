@@ -65,7 +65,6 @@ set(facebookconfig_SRCS
 
 kcoreaddons_add_plugin(facebookconfig
     SOURCES ${facebookconfig_SRCS}
-    JSON "facebookconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 target_link_libraries(facebookconfig

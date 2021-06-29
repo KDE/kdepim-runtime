@@ -89,7 +89,6 @@ install(FILES tomboynotesresource.desktop
 
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(tomboynotesconfig
-    JSON "tomboynotesconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 ki18n_wrap_ui(tomboynotesconfig tomboynotesagentconfigwidget.ui)

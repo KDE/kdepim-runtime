@@ -82,7 +82,6 @@ endif ()
 ###################################### Config Plugin #########################
 
 kcoreaddons_add_plugin(mixedmaildirconfig
-    JSON "mixedmaildirconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 target_sources(mixedmaildirconfig PRIVATE

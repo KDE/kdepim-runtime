@@ -72,7 +72,6 @@ endif()
 
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(mboxconfig
-    JSON "mboxconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 

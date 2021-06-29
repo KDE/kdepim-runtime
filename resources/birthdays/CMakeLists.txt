@@ -52,7 +52,6 @@ install( FILES birthdaysresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}
 
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(birthdaysconfig
-    JSON "birthdaysconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 ki18n_wrap_ui(birthdaysconfig birthdaysconfigwidget.ui)

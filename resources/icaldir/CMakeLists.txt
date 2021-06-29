@@ -47,7 +47,6 @@ install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(icaldirconfig
-    JSON "icaldirconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
     )
 ki18n_wrap_ui(icaldirconfig icaldirsagentsettingswidget.ui)

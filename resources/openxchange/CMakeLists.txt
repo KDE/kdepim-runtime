@@ -78,7 +78,6 @@ add_subdirectory(icons)
 
 ################################### Config plugin ############################
 kcoreaddons_add_plugin(openxchangeconfig
-    JSON "openxchangeconfig.json"
     INSTALL_NAMESPACE "akonadi/config"
 )
 
