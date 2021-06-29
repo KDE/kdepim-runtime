@@ -148,7 +148,11 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         } else {
             notification->setPixmap(pixmap);
         }
-        notification->setActions(QStringList() << i18n("Show mail...") << i18n("Mark As Read") << i18n("Delete"));
+        QStringList lstActions{i18n("Show mail..."), i18n("Mark As Read"), i18n("Delete")};
+        if (NewMailNotifierAgentSettings::replyMail()) {
+            lstActions << i18n("Reply mail...");
+        }
+        notification->setActions(lstActions);
 
         connect(notification, QOverload<unsigned int>::of(&KNotification::activated), this, &SpecialNotifierJob::slotActivateNotificationAction);
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
@@ -173,8 +177,17 @@ void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
     case 3:
         slotDeleteMessage();
         return;
+    case 4:
+        slotReplyMessage();
+        return;
     }
     qCWarning(NEWMAILNOTIFIER_LOG) << " SpecialNotifierJob::slotActivateNotificationAction unknown index " << index;
+}
+
+void SpecialNotifierJob::slotReplyMessage()
+{
+    // TODO
+    deleteLater();
 }
 
 void SpecialNotifierJob::slotDeleteMessage()

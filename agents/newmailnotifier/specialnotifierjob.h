@@ -37,6 +37,7 @@ private:
     void slotActivateNotificationAction(unsigned int index);
     void emitNotification(const QPixmap &pixmap = QPixmap());
     void deleteItemDone(KJob *job);
+    void slotReplyMessage();
     const QStringList mListEmails;
     QString mDefaultIconName;
     QString mSubject;

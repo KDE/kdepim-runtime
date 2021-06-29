@@ -17,6 +17,7 @@
 #include <QPushButton>
 
 #include <QCheckBox>
+#include <QComboBox>
 #include <QGroupBox>
 #include <QLabel>
 #include <QTabWidget>
@@ -71,13 +72,32 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     mExcludeMySelf->setObjectName(QStringLiteral("mExcludeMySelf"));
     vbox->addWidget(mExcludeMySelf);
 
+    mKeepPersistentNotification = new QCheckBox(i18n("Keep Persistent Notification"), parent);
+    mKeepPersistentNotification->setObjectName(QStringLiteral("mKeepPersistentNotification"));
+    vbox->addWidget(mKeepPersistentNotification);
+
     mAllowToShowMail = new QCheckBox(i18n("Show Action Buttons"), parent);
     mAllowToShowMail->setObjectName(QStringLiteral("mAllowToShowMail"));
     vbox->addWidget(mAllowToShowMail);
 
-    mKeepPersistentNotification = new QCheckBox(i18n("Keep Persistent Notification"), parent);
-    mKeepPersistentNotification->setObjectName(QStringLiteral("mKeepPersistentNotification"));
-    vbox->addWidget(mKeepPersistentNotification);
+    auto hboxLayout = new QHBoxLayout;
+    hboxLayout->setObjectName(QStringLiteral("hboxLayout"));
+    vbox->addLayout(hboxLayout);
+
+    mReplyMail = new QCheckBox(i18n("Reply Mail"), parent);
+    mReplyMail->setObjectName(QStringLiteral("mReplyMail"));
+    hboxLayout->addWidget(mReplyMail);
+    mReplyMail->setEnabled(false);
+
+    mReplyMailTypeComboBox = new QComboBox(parent);
+    mReplyMailTypeComboBox->setObjectName(QStringLiteral("mReplyMailTypeComboBox"));
+    mReplyMailTypeComboBox->setEnabled(false);
+    hboxLayout->addWidget(mReplyMailTypeComboBox);
+    hboxLayout->addStretch(1);
+
+    connect(mAllowToShowMail, &QCheckBox::clicked, this, [this](bool enabled) {
+        updateReplyMail(enabled);
+    });
 
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
@@ -138,6 +158,12 @@ NewMailNotifierSettingsWidget::~NewMailNotifierSettingsWidget()
     delete NewMailNotifierAgentSettings::self();
 }
 
+void NewMailNotifierSettingsWidget::updateReplyMail(bool enabled)
+{
+    mReplyMail->setEnabled(enabled);
+    mReplyMailTypeComboBox->setEnabled(enabled);
+}
+
 void NewMailNotifierSettingsWidget::load()
 {
     Akonadi::AgentConfigurationBase::load();
@@ -155,6 +181,8 @@ void NewMailNotifierSettingsWidget::load()
     mTextToSpeak->setChecked(settings->textToSpeakEnabled());
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     mTextToSpeakSetting->setText(settings->textToSpeak());
+    mReplyMail->setChecked(settings->replyMail());
+    updateReplyMail(mAllowToShowMail->isChecked());
 }
 
 bool NewMailNotifierSettingsWidget::save() const
@@ -170,6 +198,8 @@ bool NewMailNotifierSettingsWidget::save() const
     settings->setKeepPersistentNotification(mKeepPersistentNotification->isChecked());
     settings->setTextToSpeakEnabled(mTextToSpeak->isChecked());
     settings->setTextToSpeak(mTextToSpeakSetting->text());
+    settings->setReplyMail(mReplyMail->isChecked());
+
     settings->save();
     mNotify->save();
 
