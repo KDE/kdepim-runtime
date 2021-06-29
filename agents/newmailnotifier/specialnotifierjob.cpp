@@ -6,6 +6,7 @@
 
 #include "specialnotifierjob.h"
 #include "newmailnotifieragentsettings.h"
+#include "newmailnotifierreplymessagejob.h"
 #include "newmailnotifiershowmessagejob.h"
 
 #include <Akonadi/Contact/ContactSearchJob>
@@ -186,7 +187,9 @@ void SpecialNotifierJob::slotActivateNotificationAction(unsigned int index)
 
 void SpecialNotifierJob::slotReplyMessage()
 {
-    // TODO
+    auto job = new NewMailNotifierReplyMessageJob(mItem.id());
+    job->setReplyToAll(false); // TODO add support
+    job->start();
     deleteLater();
 }
 
