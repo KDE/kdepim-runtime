@@ -79,7 +79,7 @@ void Row::progress(int /*prog*/)
 int MigratorModel::positionOf(const Row &row)
 {
     int pos = 0;
-    for (const QSharedPointer<Row> &r : qAsConst(mMigrators)) {
+    for (const QSharedPointer<Row> &r : std::as_const(mMigrators)) {
         if (row == *r) {
             return pos;
         }
@@ -189,7 +189,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
 
 QSharedPointer<MigratorBase> MigratorModel::migrator(const QString &identifier) const
 {
-    for (const QSharedPointer<Row> &row : qAsConst(mMigrators)) {
+    for (const QSharedPointer<Row> &row : std::as_const(mMigrators)) {
         if (row->mMigrator->identifier() == identifier) {
             return row->mMigrator;
         }
@@ -201,7 +201,7 @@ QList<QSharedPointer<MigratorBase>> MigratorModel::migrators() const
 {
     QList<QSharedPointer<MigratorBase>> migrators;
     migrators.reserve(mMigrators.count());
-    for (const QSharedPointer<Row> &row : qAsConst(mMigrators)) {
+    for (const QSharedPointer<Row> &row : std::as_const(mMigrators)) {
         migrators << row->mMigrator;
     }
     return migrators;

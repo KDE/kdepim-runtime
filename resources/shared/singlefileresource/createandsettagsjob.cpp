@@ -25,7 +25,7 @@ void CreateAndSetTagsJob::start()
     if (mTags.isEmpty()) {
         emitResult();
     }
-    for (const Akonadi::Tag &tag : qAsConst(mTags)) {
+    for (const Akonadi::Tag &tag : std::as_const(mTags)) {
         auto createJob = new Akonadi::TagCreateJob(tag, this);
         createJob->setMergeIfExisting(true);
         connect(createJob, &Akonadi::TagCreateJob::result, this, &CreateAndSetTagsJob::onCreateDone);
@@ -42,7 +42,7 @@ void CreateAndSetTagsJob::onCreateDone(KJob *job)
         mCreatedTags << createJob->tag();
     }
     if (mCount == mTags.size()) {
-        for (const Akonadi::Tag &tag : qAsConst(mCreatedTags)) {
+        for (const Akonadi::Tag &tag : std::as_const(mCreatedTags)) {
             mItem.setTag(tag);
         }
         auto modJob = new Akonadi::ItemModifyJob(mItem, this);

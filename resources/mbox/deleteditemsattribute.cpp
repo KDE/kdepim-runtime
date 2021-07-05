@@ -43,7 +43,7 @@ KMBox::MBoxEntry::List DeletedItemsAttribute::deletedItemEntries() const
 {
     KMBox::MBoxEntry::List entries;
     entries.reserve(mDeletedItemOffsets.count());
-    for (quint64 offset : qAsConst(mDeletedItemOffsets)) {
+    for (quint64 offset : std::as_const(mDeletedItemOffsets)) {
         entries << KMBox::MBoxEntry(offset);
     }
 
@@ -64,7 +64,7 @@ QByteArray DeletedItemsAttribute::serialized() const
 {
     QByteArray serialized;
 
-    for (quint64 offset : qAsConst(mDeletedItemOffsets)) {
+    for (quint64 offset : std::as_const(mDeletedItemOffsets)) {
         serialized += QByteArray::number(offset) + ',';
     }
 

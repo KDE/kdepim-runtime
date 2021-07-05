@@ -173,7 +173,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
             toAdd << ref;
         }
         contactGroup.removeAllContactReferences();
-        for (const KContacts::ContactGroup::ContactReference &ref : qAsConst(toAdd)) {
+        for (const KContacts::ContactGroup::ContactReference &ref : std::as_const(toAdd)) {
             contactGroup.append(ref);
         }
 
@@ -244,7 +244,7 @@ static KContacts::ContactGroup convertToGidOnly(const KContacts::ContactGroup &c
     }
     KContacts::ContactGroup gidOnlyContactGroup = contactGroup;
     gidOnlyContactGroup.removeAllContactReferences();
-    for (const KContacts::ContactGroup::ContactReference &ref : qAsConst(toAdd)) {
+    for (const KContacts::ContactGroup::ContactReference &ref : std::as_const(toAdd)) {
         gidOnlyContactGroup.append(ref);
     }
     return gidOnlyContactGroup;

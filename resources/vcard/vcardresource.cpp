@@ -112,7 +112,7 @@ void VCardResource::retrieveItems(const Akonadi::Collection &col)
     // items, otherwise set a bool and in the result slot of the job send the
     // items if the bool is set.
 
-    for (const KContacts::Addressee &addressee : qAsConst(mAddressees)) {
+    for (const KContacts::Addressee &addressee : std::as_const(mAddressees)) {
         Item item;
         item.setRemoteId(addressee.uid());
         item.setMimeType(KContacts::Addressee::mimeType());
@@ -155,7 +155,7 @@ bool VCardResource::writeToFile(const QString &fileName)
 
     QVector<KContacts::Addressee> v;
     v.reserve(mAddressees.size());
-    for (const KContacts::Addressee &addressee : qAsConst(mAddressees)) {
+    for (const KContacts::Addressee &addressee : std::as_const(mAddressees)) {
         v.push_back(addressee);
     }
 

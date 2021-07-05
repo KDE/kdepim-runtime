@@ -35,7 +35,7 @@ void EwsDeleteFolderRequest::start()
     writer.writeAttribute(QStringLiteral("DeleteType"), deleteTypes[mType]);
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("FolderIds"));
-    for (const EwsId &id : qAsConst(mIds)) {
+    for (const EwsId &id : std::as_const(mIds)) {
         id.writeFolderIds(writer);
     }
     writer.writeEndElement();

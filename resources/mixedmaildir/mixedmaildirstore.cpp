@@ -171,7 +171,7 @@ public:
 
         KMBox::MBoxEntry::List deletedEntries;
         deletedEntries.reserve(deleteCount);
-        for (quint64 offset : qAsConst(mDeletedOffsets)) {
+        for (quint64 offset : std::as_const(mDeletedOffsets)) {
             deletedEntries << KMBox::MBoxEntry(offset);
         }
 
@@ -1268,7 +1268,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
     }
 
     // update collections in MBox contexts so they stay usable for purge
-    for (const MBoxPtr &mbox : qAsConst(mMBoxes)) {
+    for (const MBoxPtr &mbox : std::as_const(mMBoxes)) {
         if (mbox->mCollection.isValid()) {
             MBoxPtr updatedMBox = mbox;
             updatedMBox->mCollection = updateMBoxCollectionTree(mbox->mCollection, collection, renamedCollection);
@@ -1438,7 +1438,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
     movedCollection.setParentCollection(targetCollection);
 
     // update collections in MBox contexts so they stay usable for purge
-    for (const MBoxPtr &mbox : qAsConst(mMBoxes)) {
+    for (const MBoxPtr &mbox : std::as_const(mMBoxes)) {
         if (mbox->mCollection.isValid()) {
             MBoxPtr updatedMBox = mbox;
             updatedMBox->mCollection = updateMBoxCollectionTree(mbox->mCollection, moveCollection, movedCollection);

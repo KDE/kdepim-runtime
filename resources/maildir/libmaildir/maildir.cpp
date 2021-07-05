@@ -209,7 +209,7 @@ bool Maildir::Private::accessIsPossible(bool createMissingFolders)
 
     paths.prepend(path);
 
-    for (const QString &p : qAsConst(paths)) {
+    for (const QString &p : std::as_const(paths)) {
         if (!QFileInfo::exists(p)) {
             if (!createMissingFolders) {
                 lastError = i18n("Error opening %1; this folder is missing.", p);

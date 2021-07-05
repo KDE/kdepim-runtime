@@ -335,7 +335,7 @@ void StoreCompactTest::testCompact()
     QCOMPARE(itemsFromSpy(itemSpy), items);
 
     QHash<QString, Collection> compactedCollections;
-    for (const Collection &col : qAsConst(collections)) {
+    for (const Collection &col : std::as_const(collections)) {
         compactedCollections.insert(col.remoteId(), col);
     }
     QCOMPARE(compactedCollections.count(), 2);

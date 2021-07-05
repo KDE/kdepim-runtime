@@ -72,7 +72,7 @@ QByteArray ImapQuotaAttribute::serialized() const
     QByteArray result = "";
 
     // First the roots list
-    for (const QByteArray &root : qAsConst(mRoots)) {
+    for (const QByteArray &root : std::as_const(mRoots)) {
         result += root + " % ";
     }
     result.chop(3);
@@ -134,13 +134,13 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
     }
 
     QStringList roots = members[0].trimmed().split(QStringLiteral(" % "));
-    for (const QString &root : qAsConst(roots)) {
+    for (const QString &root : std::as_const(roots)) {
         mRoots << root.trimmed().toUtf8();
     }
 
     const QStringList allLimits = members[1].trimmed().split(QStringLiteral("%%%"));
 
-    for (const QString &limits : qAsConst(allLimits)) {
+    for (const QString &limits : std::as_const(allLimits)) {
         QMap<QByteArray, qint64> limitsMap;
         const QStringList strLines = limits.split(QStringLiteral("%%"));
         QList<QByteArray> lines;
@@ -149,7 +149,7 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
             lines << strLine.trimmed().toUtf8();
         }
 
-        for (const QByteArray &line : qAsConst(lines)) {
+        for (const QByteArray &line : std::as_const(lines)) {
             QByteArray trimmed = line.trimmed();
             int wsIndex = trimmed.indexOf('%');
             const QByteArray key = trimmed.mid(0, wsIndex).trimmed();
@@ -163,16 +163,16 @@ void ImapQuotaAttribute::deserialize(const QByteArray &data)
     const QStringList allUsages = members[2].trimmed().split(QStringLiteral("%%%"));
     mUsages.reserve(allUsages.count());
 
-    for (const QString &usages : qAsConst(allUsages)) {
+    for (const QString &usages : std::as_const(allUsages)) {
         QMap<QByteArray, qint64> usagesMap;
         const QStringList strLines = usages.split(QStringLiteral("%%"));
         QList<QByteArray> lines;
         lines.reserve(strLines.count());
-        for (const QString &strLine : qAsConst(strLines)) {
+        for (const QString &strLine : std::as_const(strLines)) {
             lines << strLine.trimmed().toUtf8();
         }
 
-        for (const QByteArray &line : qAsConst(lines)) {
+        for (const QByteArray &line : std::as_const(lines)) {
             QByteArray trimmed = line.trimmed();
             int wsIndex = trimmed.indexOf('%');
             const QByteArray key = trimmed.mid(0, wsIndex).trimmed();

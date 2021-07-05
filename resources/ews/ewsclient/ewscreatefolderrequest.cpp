@@ -31,7 +31,7 @@ void EwsCreateFolderRequest::start()
     writer.writeEndElement();
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Folders"));
-    for (const EwsFolder &folder : qAsConst(mFolders)) {
+    for (const EwsFolder &folder : std::as_const(mFolders)) {
         folder.write(writer);
     }
     writer.writeEndElement();

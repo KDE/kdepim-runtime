@@ -283,7 +283,7 @@ void EwsFetchItemsJob::compareItemLists()
     QHash<EwsItemType, Item::List> toFetchItems;
 
     QHash<QString, Item> itemHash;
-    for (const Item &item : qAsConst(mLocalItems)) {
+    for (const Item &item : std::as_const(mLocalItems)) {
         itemHash.insert(item.remoteId(), item);
     }
 

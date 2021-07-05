@@ -128,7 +128,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
 
     int selectedIndex = -1;
     int i = 0;
-    for (const StringPair &item : qAsConst(userAgents)) {
+    for (const StringPair &item : std::as_const(userAgents)) {
         mUi->userAgentCombo->addItem(item.first, item.second);
         if (mSettings->userAgent() == item.second) {
             selectedIndex = i;

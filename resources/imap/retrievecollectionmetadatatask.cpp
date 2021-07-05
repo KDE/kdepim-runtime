@@ -226,7 +226,7 @@ void RetrieveCollectionMetadataTask::onQuotasReceived(KJob *job)
     newLimits.reserve(allRoots.count());
     newUsages.reserve(allRoots.count());
 
-    for (const QByteArray &root : qAsConst(allRoots)) {
+    for (const QByteArray &root : std::as_const(allRoots)) {
         const QMap<QByteArray, qint64> limit = quotaJob->allLimits(root);
         const QMap<QByteArray, qint64> usage = quotaJob->allUsages(root);
 

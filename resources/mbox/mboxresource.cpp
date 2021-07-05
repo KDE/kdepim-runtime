@@ -104,7 +104,7 @@ void MboxResource::retrieveItems(const Akonadi::Collection &col)
     double count = 1;
     const int entryListSize(entryList.size());
     items.reserve(entryListSize);
-    for (const KMBox::MBoxEntry &entry : qAsConst(entryList)) {
+    for (const KMBox::MBoxEntry &entry : std::as_const(entryList)) {
         // TODO: Use cache policy to see what actually has to been set as payload.
         //       Currently most views need a minimal amount of information so the
         //       Items get Envelopes as payload.

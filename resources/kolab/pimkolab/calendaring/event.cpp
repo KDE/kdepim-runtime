@@ -143,9 +143,9 @@ void Event::delegate(const std::vector<Attendee> &delegators, const std::vector<
         }
     }
 
-    for (Attendee *delegatee : qAsConst(delegateesRef)) {
+    for (Attendee *delegatee : std::as_const(delegateesRef)) {
         std::vector<Kolab::ContactReference> delegatedFrom = delegatee->delegatedFrom();
-        for (Attendee *delegator : qAsConst(delegatorsRef)) {
+        for (Attendee *delegator : std::as_const(delegatorsRef)) {
             // Set the delegator on each delegatee
             const ContactReference &delegatorRef = delegator->contact();
             if (!contains(delegatorRef, delegatedFrom)) {

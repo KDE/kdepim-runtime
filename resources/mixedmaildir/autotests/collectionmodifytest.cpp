@@ -397,7 +397,7 @@ void CollectionModifyTest::testIndexPreservation()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -437,7 +437,7 @@ void CollectionModifyTest::testIndexPreservation()
     QCOMPARE((int)items.count(), 4);
 
     flagCounts.clear();
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -537,7 +537,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -556,7 +556,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -585,7 +585,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -604,7 +604,7 @@ void CollectionModifyTest::testIndexCacheUpdate()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];

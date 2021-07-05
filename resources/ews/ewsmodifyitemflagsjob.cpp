@@ -56,7 +56,7 @@ void EwsModifyItemFlagsJob::start()
 {
     Item::List items[EwsItemTypeUnknown];
 
-    for (const Item &item : qAsConst(mItems)) {
+    for (const Item &item : std::as_const(mItems)) {
         EwsItemType type = EwsItemHandler::mimeToItemType(item.mimeType());
         if (type == EwsItemTypeUnknown) {
             setErrorText(QStringLiteral("Unknown item type %1 for item %2").arg(item.mimeType(), item.remoteId()));

@@ -44,7 +44,7 @@ void EwsUpdateItemsTagsJob::start()
      * as the uid. If the EWS resource hasn't seen these tags yet it is necessary to fetch them
      * first before any further processing.
      */
-    for (const Item &item : qAsConst(mItems)) {
+    for (const Item &item : std::as_const(mItems)) {
         Q_FOREACH (const Tag &tag, item.tags()) {
             if (!mTagStore->containsId(tag.id())) {
                 unknownTags.append(tag);

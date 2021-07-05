@@ -384,7 +384,7 @@ void AccountWidget::enablePopFeatures()
     }
 
     authCombo->clear();
-    for (int prot : qAsConst(supportedAuths)) {
+    for (int prot : std::as_const(supportedAuths)) {
         authCombo->addItem(Transport::authenticationTypeString(prot), prot);
     }
 

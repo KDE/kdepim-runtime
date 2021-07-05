@@ -407,7 +407,7 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
 
     if (reparentPassNeeded) {
         qCDebugNC(EWSRES_LOG) << QStringLiteral("Executing reparent pass") << topLevelList;
-        for (const QString &id : qAsConst(topLevelList)) {
+        for (const QString &id : std::as_const(topLevelList)) {
             reparentRemoteFolder(id);
         }
     }

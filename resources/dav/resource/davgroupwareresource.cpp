@@ -941,7 +941,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
     const KDAV::DavItemsFetchJob *davJob = qobject_cast<KDAV::DavItemsFetchJob *>(job);
 
     Akonadi::Item::List items;
-    for (Akonadi::Item item : qAsConst(origItems)) { // krazy:exclude=foreach non-const is intended here
+    for (Akonadi::Item item : std::as_const(origItems)) { // krazy:exclude=foreach non-const is intended here
         const KDAV::DavItem davItem = davJob->item(item.remoteId());
 
         // No data was retrieved for this item, maybe because it is not out of date
@@ -964,7 +964,7 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         item.setRemoteRevision(davItem.etag());
         cache->setEtag(item.remoteId(), davItem.etag());
         items << item;
-        for (const Akonadi::Item &extraItem : qAsConst(extraItems)) {
+        for (const Akonadi::Item &extraItem : std::as_const(extraItems)) {
             cache->setEtag(extraItem.remoteId(), davItem.etag());
             items << extraItem;
         }

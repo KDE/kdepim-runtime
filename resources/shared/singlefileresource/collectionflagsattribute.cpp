@@ -40,7 +40,7 @@ QByteArray CollectionFlagsAttribute::serialized() const
 {
     QByteArray result;
 
-    for (const QByteArray &flag : qAsConst(mFlags)) {
+    for (const QByteArray &flag : std::as_const(mFlags)) {
         result += flag + ' ';
     }
     result.chop(1);

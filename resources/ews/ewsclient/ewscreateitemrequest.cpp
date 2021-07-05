@@ -54,7 +54,7 @@ void EwsCreateItemRequest::start()
     }
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("Items"));
-    for (const EwsItem &item : qAsConst(mItems)) {
+    for (const EwsItem &item : std::as_const(mItems)) {
         item.write(writer);
     }
     writer.writeEndElement();

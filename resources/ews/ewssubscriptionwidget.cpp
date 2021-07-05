@@ -227,7 +227,7 @@ void EwsSubscriptionWidgetPrivate::populateFolderTree()
     mFolderTreeModel->clear();
     mFolderItemHash.clear();
 
-    for (const EwsFolder &folder : qAsConst(mFolders)) {
+    for (const EwsFolder &folder : std::as_const(mFolders)) {
         auto item = new QStandardItem(folder[EwsFolderFieldDisplayName].toString());
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
         item->setCheckable(true);
@@ -246,7 +246,7 @@ void EwsSubscriptionWidgetPrivate::populateFolderTree()
         mFolderItemHash.insert(id.id(), item);
     }
 
-    for (QStandardItem *item : qAsConst(mFolderItemHash)) {
+    for (QStandardItem *item : std::as_const(mFolderItemHash)) {
         if (!item->parent()) {
             mFolderTreeModel->appendRow(item);
         }
@@ -358,7 +358,7 @@ QStringList EwsSubscriptionWidget::subscribedList() const
 
     QStringList list;
     list.reserve(d->mSubscribedIds.count());
-    for (const EwsId &id : qAsConst(d->mSubscribedIds)) {
+    for (const EwsId &id : std::as_const(d->mSubscribedIds)) {
         list.append(id.id());
     }
 

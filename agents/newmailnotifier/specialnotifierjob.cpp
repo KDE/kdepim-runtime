@@ -104,7 +104,7 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
-        for (const QString &email : qAsConst(mListEmails)) {
+        for (const QString &email : std::as_const(mListEmails)) {
             if (mFrom.contains(email)) {
                 // Exclude this notification
                 deleteLater();

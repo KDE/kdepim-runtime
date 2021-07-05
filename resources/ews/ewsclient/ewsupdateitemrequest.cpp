@@ -69,7 +69,7 @@ void EwsUpdateItemRequest::start()
     }
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemChanges"));
-    for (const ItemChange &ch : qAsConst(mChanges)) {
+    for (const ItemChange &ch : std::as_const(mChanges)) {
         ch.write(writer);
     }
     writer.writeEndElement();

@@ -198,7 +198,7 @@ QByteArray O1::buildAuthorizationHeader(const QList<O0RequestParameter> &oauthPa
     QByteArray ret("OAuth ");
     QList<O0RequestParameter> headers(oauthParams);
     std::sort(headers.begin(), headers.end());
-    for (const O0RequestParameter &h : qAsConst(headers)) {
+    for (const O0RequestParameter &h : std::as_const(headers)) {
         if (first) {
             first = false;
         } else {
@@ -393,7 +393,7 @@ void O1::onTokenExchangeFinished()
         // Set extra tokens if any
         if (!response.isEmpty()) {
             QVariantMap extraTokens;
-            for (const QString &key : qAsConst(response)) {
+            for (const QString &key : std::as_const(response)) {
                 extraTokens.insert(key, response.value(key));
             }
             setExtraTokens(extraTokens);

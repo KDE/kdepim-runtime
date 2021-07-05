@@ -421,7 +421,7 @@ void ItemDeleteTest::testCachePreservation()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 3);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -482,7 +482,7 @@ void ItemDeleteTest::testCachePreservation()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 3);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];

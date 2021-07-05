@@ -109,7 +109,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
             col.setParentCollection(Akonadi::Collection::root());
             parent = col;
         }
-        for (const QByteArray &part : qAsConst(member.mailbox)) {
+        for (const QByteArray &part : std::as_const(member.mailbox)) {
             Akonadi::Collection col;
             col.setRemoteId(separatorCharacter() + QString::fromLatin1(part));
             col.setParentCollection(parent);

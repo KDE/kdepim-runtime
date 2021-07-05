@@ -91,7 +91,7 @@ std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime &start, con
         list = mCalendar->sortEvents(list, KCalendarCore::EventSortStartDate, KCalendarCore::SortDirectionAscending);
     }
     std::vector<Kolab::Event> eventlist;
-    for (const KCalendarCore::Event::Ptr &event : qAsConst(list)) {
+    for (const KCalendarCore::Event::Ptr &event : std::as_const(list)) {
         // We have to filter the list by time
         if (event->dtEnd() >= s && e >= event->dtStart()) {
             eventlist.push_back(Kolab::Conversion::fromKCalendarCore(*event));

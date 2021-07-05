@@ -769,7 +769,7 @@ void KAlarmDirResource::retrieveItems(const Akonadi::Collection &collection)
 
     // Retrieve events
     Item::List items;
-    for (const EventFile &data : qAsConst(mEvents)) {
+    for (const EventFile &data : std::as_const(mEvents)) {
         const KAEvent &event = data.event;
         const QString mime = CalEvent::mimeType(event.category());
         if (mime.isEmpty()) {
@@ -820,7 +820,7 @@ void KAlarmDirResource::fileCreated(const QString &path)
         // The directory has been created. Load all files in it, and
         // tell the Akonadi server to create an Item for each event.
         loadFiles(true);
-        for (const EventFile &data : qAsConst(mEvents)) {
+        for (const EventFile &data : std::as_const(mEvents)) {
             createItem(data.event);
         }
     } else {
@@ -1090,7 +1090,7 @@ void KAlarmDirResource::setCompatibility(bool writeAttr)
         mCompatibility = KACalendar::Current;
     } else {
         mCompatibility = KACalendar::Unknown;
-        for (const EventFile &data : qAsConst(mEvents)) {
+        for (const EventFile &data : std::as_const(mEvents)) {
             const KAEvent &event = data.event;
             mCompatibility |= event.compatibility();
             if ((mCompatibility & AllCompat) == AllCompat) {

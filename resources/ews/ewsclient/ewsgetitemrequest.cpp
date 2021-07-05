@@ -38,7 +38,7 @@ void EwsGetItemRequest::start()
     mShape.write(writer);
 
     writer.writeStartElement(ewsMsgNsUri, QStringLiteral("ItemIds"));
-    for (const EwsId &id : qAsConst(mIds)) {
+    for (const EwsId &id : std::as_const(mIds)) {
         id.writeItemIds(writer);
     }
     writer.writeEndElement();

@@ -69,13 +69,13 @@ void RetrieveMetadataJob::start()
 {
     qCDebug(KOLABRESOURCE_TRACE);
     // Fill the map with empty entries so we set the mimetype to mail if no metadata is retrieved
-    for (const QString &mailbox : qAsConst(mMailboxes)) {
+    for (const QString &mailbox : std::as_const(mMailboxes)) {
         mMetadata.insert(mailbox, QMap<QByteArray, QByteArray>());
     }
 
     if (mServerCapabilities.contains(QLatin1String("METADATA")) || mServerCapabilities.contains(QLatin1String("ANNOTATEMORE"))) {
         QSet<QString> toplevelMailboxes;
-        for (const QString &mailbox : qAsConst(mMailboxes)) {
+        for (const QString &mailbox : std::as_const(mMailboxes)) {
             const QStringList parts = mailbox.split(mSeparator);
             if (!parts.isEmpty()) {
                 if (isNamespaceFolder(mailbox, mUserNamespace) && parts.length() >= 2) {
@@ -86,11 +86,11 @@ void RetrieveMetadataJob::start()
                 }
             }
         }
-        for (const KIMAP::MailBoxDescriptor &desc : qAsConst(mSharedNamespace)) {
+        for (const KIMAP::MailBoxDescriptor &desc : std::as_const(mSharedNamespace)) {
             toplevelMailboxes << desc.name;
         }
         // TODO perhaps exclude the shared and other users namespaces by listing only toplevel (with %), and then only getting metadata of the toplevel folders.
-        for (const QString &mailbox : qAsConst(toplevelMailboxes)) {
+        for (const QString &mailbox : std::as_const(toplevelMailboxes)) {
             auto meta = new KIMAP::GetMetaDataJob(mSession);
             meta->setMailBox(mailbox + QLatin1String("*"));
             if (mServerCapabilities.contains(QLatin1String("METADATA"))) {
@@ -99,7 +99,7 @@ void RetrieveMetadataJob::start()
                 meta->setServerCapability(KIMAP::MetaDataJobBase::Annotatemore);
             }
             meta->setDepth(KIMAP::GetMetaDataJob::AllLevels);
-            for (const QByteArray &requestedEntry : qAsConst(mRequestedMetadata)) {
+            for (const QByteArray &requestedEntry : std::as_const(mRequestedMetadata)) {
                 meta->addRequestedEntry(requestedEntry);
             }
             connect(meta, &KJob::result, this, &RetrieveMetadataJob::onGetMetaDataDone);
@@ -110,7 +110,7 @@ void RetrieveMetadataJob::start()
 
     // Get the ACLs from the mailbox if it's supported
     if (mServerCapabilities.contains(QLatin1String("ACL"))) {
-        for (const QString &mailbox : qAsConst(mMailboxes)) {
+        for (const QString &mailbox : std::as_const(mMailboxes)) {
             // "Shared Folders" is not a valid mailbox, so we have to skip the ACL request for this folder
             if (isNamespaceFolder(mailbox, mSharedNamespace, true)) {
                 continue;

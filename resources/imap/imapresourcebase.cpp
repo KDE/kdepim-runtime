@@ -156,7 +156,7 @@ ImapResourceBase::~ImapResourceBase()
     delete m_idle;
     m_idle = nullptr;
 
-    for (ResourceTask *task : qAsConst(m_taskList)) {
+    for (ResourceTask *task : std::as_const(m_taskList)) {
         delete task;
     }
     m_taskList.clear();
@@ -172,7 +172,7 @@ void ImapResourceBase::aboutToQuit()
         m_idle->stop();
     }
 
-    for (ResourceTask *task : qAsConst(m_taskList)) {
+    for (ResourceTask *task : std::as_const(m_taskList)) {
         task->kill();
     }
 
@@ -490,7 +490,7 @@ void ImapResourceBase::doSetOnline(bool online)
 {
     qCDebug(IMAPRESOURCE_LOG) << "online=" << online;
     if (!online) {
-        for (ResourceTask *task : qAsConst(m_taskList)) {
+        for (ResourceTask *task : std::as_const(m_taskList)) {
             task->kill();
             delete task;
         }
@@ -685,7 +685,7 @@ void ImapResourceBase::cleanup()
 QString ImapResourceBase::dumpResourceToString() const
 {
     QString ret;
-    for (ResourceTask *task : qAsConst(m_taskList)) {
+    for (ResourceTask *task : std::as_const(m_taskList)) {
         if (!ret.isEmpty()) {
             ret += QLatin1String(", ");
         }

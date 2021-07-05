@@ -105,7 +105,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 
     mRequestsTracker[email].handlingJobSuccessful = true;
 
-    for (const KDAV::DavPrincipalSearchJob::Result &result : qAsConst(results)) {
+    for (const KDAV::DavPrincipalSearchJob::Result &result : std::as_const(results)) {
         qCDebug(DAVRESOURCE_LOG) << result.value;
         QUrl url(davJob->property("url").toString());
         if (result.value.startsWith(QLatin1Char('/'))) {

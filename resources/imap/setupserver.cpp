@@ -630,7 +630,7 @@ void SetupServer::slotSafetyChanged()
 
     m_ui->authenticationCombo->clear();
     addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR);
-    for (int prot : qAsConst(protocols)) {
+    for (int prot : std::as_const(protocols)) {
         addAuthenticationItem(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)prot);
     }
     if (protocols.isEmpty()) {

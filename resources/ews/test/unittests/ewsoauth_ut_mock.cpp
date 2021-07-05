@@ -320,7 +320,7 @@ QUrlQuery QOAuth2AuthorizationCodeFlow::mapToSortedQuery(QMap<QString, QVariant>
     QUrlQuery query;
     QStringList keys = map.keys();
     keys.sort();
-    for (const auto &key : qAsConst(keys)) {
+    for (const auto &key : std::as_const(keys)) {
         query.addQueryItem(key, map[key].toString());
     }
     return query;

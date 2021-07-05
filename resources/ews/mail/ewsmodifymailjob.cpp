@@ -30,7 +30,7 @@ void EwsModifyMailJob::start()
     auto req = new EwsUpdateItemRequest(mClient, this);
     EwsId itemId;
 
-    for (const Item &item : qAsConst(mItems)) {
+    for (const Item &item : std::as_const(mItems)) {
         itemId = EwsId(item.remoteId(), item.remoteRevision());
 
         if (mParts.contains("FLAGS")) {

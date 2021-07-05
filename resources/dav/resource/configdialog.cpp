@@ -264,7 +264,7 @@ void ConfigDialog::onEditButtonClicked()
 void ConfigDialog::onOkClicked()
 {
     using UrlPair = QPair<QString, KDAV::Protocol>;
-    for (const UrlPair &url : qAsConst(mRemovedUrls)) {
+    for (const UrlPair &url : std::as_const(mRemovedUrls)) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }
 
@@ -278,7 +278,7 @@ void ConfigDialog::onCancelClicked()
     mRemovedUrls.clear();
 
     using UrlPair = QPair<QString, KDAV::Protocol>;
-    for (const UrlPair &url : qAsConst(mAddedUrls)) {
+    for (const UrlPair &url : std::as_const(mAddedUrls)) {
         Settings::self()->removeUrlConfiguration(url.second, url.first);
     }
     reject();

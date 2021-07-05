@@ -1106,7 +1106,7 @@ void EwsResource::specialFoldersCollectionsRetrieved(const Collection::List &fol
     EwsId::List queryItems;
 
     queryItems.reserve(specialFolderList.count());
-    for (const SpecialFolders &sf : qAsConst(specialFolderList)) {
+    for (const SpecialFolders &sf : std::as_const(specialFolderList)) {
         queryItems.append(EwsId(sf.did));
     }
 

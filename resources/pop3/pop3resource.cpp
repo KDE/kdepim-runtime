@@ -287,7 +287,7 @@ void POP3Resource::doStateStep()
         // remember which UIDs we have downloaded in the settings)
         QList<int> idsToDownload = mIdsToSizeMap.keys();
         const QStringList alreadyDownloadedUIDs = mSettings.seenUidList();
-        for (const QString &uidOnServer : qAsConst(mIdsToUidsMap)) {
+        for (const QString &uidOnServer : std::as_const(mIdsToUidsMap)) {
             if (alreadyDownloadedUIDs.contains(uidOnServer)) {
                 const int idOfUIDOnServer = mUidsToIdsMap.value(uidOnServer, -1);
                 Q_ASSERT(idOfUIDOnServer != -1);
@@ -301,7 +301,7 @@ void POP3Resource::doStateStep()
         // put them into a list here
         QList<int> sizesOfMessagesToDownload;
         sizesOfMessagesToDownload.reserve(idsToDownload.count());
-        for (int id : qAsConst(idsToDownload)) {
+        for (int id : std::as_const(idsToDownload)) {
             sizesOfMessagesToDownload.append(mIdsToSizeMap.value(id));
         }
 
@@ -708,7 +708,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
             if (mSettings.leaveOnServerSize() > 0) {
                 const qint64 limitInBytes = mSettings.leaveOnServerSize() * (1024 * 1024);
                 qint64 sizeOnServerAfterDeletion = 0;
-                for (int id : qAsConst(mIdsToSave)) {
+                for (int id : std::as_const(mIdsToSave)) {
                     sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
                 }
                 while (sizeOnServerAfterDeletion > limitInBytes) {
@@ -720,7 +720,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
         }
         // Now save the messages from deletion
         //
-        for (int idToSave : qAsConst(mIdsToSave)) {
+        for (int idToSave : std::as_const(mIdsToSave)) {
             idsToDeleteFromServer.removeAll(idToSave);
         }
         if (downloadedId != -1 && !mIdsToSave.contains(downloadedId)) {
@@ -846,7 +846,7 @@ void POP3Resource::saveSeenUIDList()
         }
     }
     Q_ASSERT(seenUIDs.size() == timeOfSeenUIDs.size());
-    for (const QString &uid : qAsConst(uidsOfMessagesDownloadedButNotDeleted)) {
+    for (const QString &uid : std::as_const(uidsOfMessagesDownloadedButNotDeleted)) {
         if (!seenUIDs.contains(uid)) {
             seenUIDs.append(uid);
             timeOfSeenUIDs.append(time(nullptr));

@@ -154,7 +154,7 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -202,7 +202,7 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -255,7 +255,7 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -303,7 +303,7 @@ void CollectionMoveTest::testMoveToTopLevel()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -455,7 +455,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -545,7 +545,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -631,7 +631,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -671,7 +671,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -719,7 +719,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -762,7 +762,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -805,7 +805,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
@@ -848,7 +848,7 @@ void CollectionMoveTest::testMoveToMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
-    for (const Item &item : qAsConst(items)) {
+    for (const Item &item : std::as_const(items)) {
         const auto flags = item.flags();
         for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
