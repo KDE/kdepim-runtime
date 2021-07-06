@@ -15,6 +15,7 @@
 #include <KLocalizedString>
 #include <KSharedConfig>
 
+#include <QFontDatabase>
 #include <QPushButton>
 #include <QTabBar>
 #include <QVBoxLayout>
@@ -30,7 +31,7 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     mainLayout->setContentsMargins(0, 0, 0, 0);
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
-    ui.statusLabel->setText(QString());
+    ui.statusLabel->setVisible(false);
 
     ui.tabWidget->tabBar()->hide();
 
@@ -38,6 +39,10 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     connect(ui.kcfg_MonitorFile, &QCheckBox::toggled, this, &SingleFileResourceConfigWidgetBase::validate);
     ui.kcfg_Path->setFocus();
     QTimer::singleShot(0, this, &SingleFileResourceConfigWidgetBase::validate);
+
+    ui.readOnlyLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
+    ui.monitoringLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
+    ui.pathLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
 }
 
 SingleFileResourceConfigWidgetBase::~SingleFileResourceConfigWidgetBase()
@@ -60,7 +65,7 @@ void SingleFileResourceConfigWidgetBase::setFilter(const QString &filter)
 void SingleFileResourceConfigWidgetBase::setMonitorEnabled(bool enable)
 {
     mMonitorEnabled = enable;
-    ui.groupBox_MonitorFile->setVisible(mMonitorEnabled);
+    ui.kcfg_MonitorFile->setEnabled(mMonitorEnabled);
 }
 
 void SingleFileResourceConfigWidgetBase::setUrl(const QUrl &url)
@@ -104,7 +109,7 @@ void SingleFileResourceConfigWidgetBase::validate()
         if (mMonitorEnabled) {
             ui.kcfg_MonitorFile->setEnabled(true);
         }
-        ui.statusLabel->setText(QString());
+        ui.statusLabel->setVisible(false);
 
         // The read-only checkbox used to be disabled if the file is read-only,
         // but it is then impossible to know at a later date if the file
@@ -121,6 +126,7 @@ void SingleFileResourceConfigWidgetBase::validate()
             ui.kcfg_MonitorFile->setEnabled(false);
         }
         ui.statusLabel->setText(i18nc("@info:status", "Checking file information..."));
+        ui.statusLabel->setVisible(true);
 
         if (mStatJob) {
             mStatJob->kill();
@@ -153,14 +159,14 @@ void SingleFileResourceConfigWidgetBase::slotStatJobResult(KJob *job)
     } else if (job->error()) {
         // It doesn't seem possible to read nor write from the location so leave the
         // ok button disabled
-        ui.statusLabel->setText(QString());
+        ui.statusLabel->setVisible(false);
         Q_EMIT okEnabled(false);
         mDirUrlChecked = false;
         mStatJob = nullptr;
         return;
     }
 
-    ui.statusLabel->setText(QString());
+    ui.statusLabel->setVisible(false);
     Q_EMIT okEnabled(true);
 
     mDirUrlChecked = false;
