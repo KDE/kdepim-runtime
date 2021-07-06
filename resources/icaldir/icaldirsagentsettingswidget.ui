@@ -81,7 +81,7 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>If read-only mode is enabled, no changes will be written to the directory selected above. Read-only mode will be automatically enabled if you do not have write access to the directory.</string>
+          <string>When read-only mode is enabled, no changes will be written. Read-only mode is automatically enabled when the selected file does not support write access.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -108,7 +108,7 @@
        <string>Tuning</string>
       </attribute>
       <layout class="QFormLayout" name="verticalLayout_5">
-       <item row="0" columnspan="2">
+       <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="runingLabel">
          <property name="text">
           <string>The options on this page allow you to change parameters that balance data safety and consistency against performance. In general you should be careful with changing anything here, the defaults are good enough in most cases.</string>
@@ -128,7 +128,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="KPluralHandlingSpinBox" name="kcfg_AutosaveInterval">
          <property name="minimum">
           <number>0</number>
