@@ -39,7 +39,7 @@ public:
         Unspecified,
     };
 
-    typedef QList<EwsId> List;
+    typedef QVector<EwsId> List;
 
     explicit EwsId(EwsDistinguishedId did)
         : mType(Distinguished)
