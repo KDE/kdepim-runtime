@@ -297,7 +297,8 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
         }
         if (!mUpdatedFolderIds.isEmpty()) {
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Found %1 modified folders").arg(mUpdatedFolderIds.size());
-            Q_EMIT foldersModified(mUpdatedFolderIds.values());
+            const auto updated = mUpdatedFolderIds.values();
+            Q_EMIT foldersModified(EwsId::List(updated.cbegin(), updated.cend()));
             mUpdatedFolderIds.clear();
         }
     }

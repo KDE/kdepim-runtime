@@ -276,7 +276,7 @@ void EwsResource::rootCollectionFetched(KJob *job)
     } else {
         auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
         if (fetchJob && !fetchJob->collections().isEmpty()) {
-            mRootCollection = fetchJob->collections().first();
+            mRootCollection = fetchJob->collections().at(0);
             adjustRootCollectionName(name());
             qCDebugNC(EWSRES_LOG) << QStringLiteral("Root collection fetched: ") << mRootCollection;
         }
@@ -1058,7 +1058,7 @@ void EwsResource::foldersModifiedCollectionSyncFinished(KJob *job)
     }
 
     auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
-    synchronizeCollection(fetchJob->collections()[0].id());
+    synchronizeCollection(fetchJob->collections().at(0).id());
 }
 
 void EwsResource::folderTreeModifiedEvent()
@@ -1356,7 +1356,7 @@ void EwsResource::requestAuthFailed()
     qCWarningNC(EWSRES_LOG) << "requestAuthFailed - going offline";
 
     if (mAuthStage == 0) {
-        QTimer::singleShot(0, [&]() {
+        QTimer::singleShot(0, this, [&]() {
             setTemporaryOffline(reconnectTimeout());
         });
         Q_EMIT status(Broken, i18nc("@info:status", "Authentication failed"));
