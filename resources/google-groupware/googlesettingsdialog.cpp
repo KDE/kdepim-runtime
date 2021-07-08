@@ -114,9 +114,11 @@ void GoogleSettingsDialog::accountChanged()
 {
     if (!m_account) {
         m_ui->accountLabel->setText(i18n("<b>not configured</b>"));
-        m_ui->calendarsBox->setDisabled(true);
+        m_ui->calendarsList->setDisabled(true);
+        m_ui->reloadCalendarsBtn->setDisabled(true);
         m_ui->calendarsList->clear();
-        m_ui->taskListsBox->setDisabled(true);
+        m_ui->taskListsList->setDisabled(true);
+        m_ui->reloadTaskListsBtn->setDisabled(true);
         m_ui->taskListsList->clear();
         return;
     }
@@ -203,7 +205,8 @@ void GoogleSettingsDialog::slotSaveSettings()
 
 void GoogleSettingsDialog::slotReloadCalendars()
 {
-    m_ui->calendarsBox->setDisabled(true);
+    m_ui->calendarsList->setDisabled(true);
+    m_ui->reloadCalendarsBtn->setDisabled(true);
     m_ui->calendarsList->clear();
 
     if (!m_account) {
@@ -213,7 +216,8 @@ void GoogleSettingsDialog::slotReloadCalendars()
     auto fetchJob = new CalendarFetchJob(m_account, this);
     connect(fetchJob, &CalendarFetchJob::finished, this, [this](KGAPI2::Job *job) {
         if (!handleError(job) || !m_account) {
-            m_ui->calendarsBox->setEnabled(false);
+            m_ui->calendarsList->setEnabled(false);
+            m_ui->reloadCalendarsBtn->setEnabled(false);
             return;
         }
 
@@ -234,7 +238,8 @@ void GoogleSettingsDialog::slotReloadCalendars()
             m_ui->calendarsList->addItem(item);
         }
 
-        m_ui->calendarsBox->setEnabled(true);
+        m_ui->calendarsList->setEnabled(true);
+        m_ui->reloadCalendarsBtn->setEnabled(true);
     });
 }
 
@@ -244,13 +249,15 @@ void GoogleSettingsDialog::slotReloadTaskLists()
         return;
     }
 
-    m_ui->taskListsBox->setDisabled(true);
+    m_ui->taskListsList->setDisabled(true);
+    m_ui->reloadTaskListsBtn->setDisabled(true);
     m_ui->taskListsList->clear();
 
     auto job = new TaskListFetchJob(m_account, this);
     connect(job, &TaskListFetchJob::finished, this, [this](KGAPI2::Job *job) {
         if (!handleError(job) || !m_account) {
-            m_ui->taskListsBox->setDisabled(true);
+            m_ui->taskListsList->setDisabled(true);
+            m_ui->reloadTaskListsBtn->setDisabled(true);
             return;
         }
 
@@ -271,6 +278,7 @@ void GoogleSettingsDialog::slotReloadTaskLists()
             m_ui->taskListsList->addItem(item);
         }
 
-        m_ui->taskListsBox->setEnabled(true);
+        m_ui->taskListsList->setEnabled(true);
+        m_ui->reloadTaskListsBtn->setEnabled(true);
     });
 }
