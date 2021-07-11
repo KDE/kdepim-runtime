@@ -18,9 +18,8 @@
 #include <QDBusConnectionInterface>
 #include <QDBusInterface>
 #include <QDBusReply>
-#include <QHBoxLayout>
+#include <QFormLayout>
 #include <QLabel>
-#include <QVBoxLayout>
 
 FolderArchiveComboBox::FolderArchiveComboBox(QWidget *parent)
     : QComboBox(parent)
@@ -58,28 +57,17 @@ FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, 
     : QWidget(parent)
     , mInstanceName(instanceName)
 {
-    auto lay = new QVBoxLayout(this);
-    mEnabled = new QCheckBox(i18n("Enable"));
+    auto lay = new QFormLayout(this);
+    mEnabled = new QCheckBox(i18n("Enable"), this);
     connect(mEnabled, &QCheckBox::toggled, this, &FolderArchiveSettingPage::slotEnableChanged);
-    lay->addWidget(mEnabled);
+    lay->addRow(QString(), mEnabled);
 
-    auto hbox = new QHBoxLayout;
-    auto lab = new QLabel(i18nc("@label:chooser for the folder that messages will be archived under", "Archive into:"));
-    hbox->addWidget(lab);
     mArchiveFolder = new Akonadi::CollectionRequester(this);
     mArchiveFolder->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
-    hbox->addWidget(mArchiveFolder);
-    lay->addLayout(hbox);
+    lay->addRow(i18nc("@label:chooser for the folder that messages will be archived under", "Archive into:"), mArchiveFolder);
 
-    hbox = new QHBoxLayout;
-    lab = new QLabel(i18nc("@label:listbox", "Archive folder name:"));
-    hbox->addWidget(lab);
-    mArchiveNamed = new FolderArchiveComboBox;
-    hbox->addWidget(mArchiveNamed);
-
-    lay->addLayout(hbox);
-
-    lay->addStretch();
+    mArchiveNamed = new FolderArchiveComboBox(this);
+    lay->addRow(i18nc("@label:listbox", "Archive folder name:"), mArchiveNamed);
 }
 
 FolderArchiveSettingPage::~FolderArchiveSettingPage()
