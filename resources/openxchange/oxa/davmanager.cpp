@@ -48,7 +48,7 @@ KIO::DavJob *DavManager::createFindJob(const QString &path, const QDomDocument &
     QUrl url(mBaseUrl);
     url.setPath(path);
 
-    return KIO::davPropFind(url, document, QStringLiteral("0"), KIO::HideProgressInfo);
+    return KIO::davPropFind(url, document.toString(), QStringLiteral("0"), KIO::HideProgressInfo);
 }
 
 KIO::DavJob *DavManager::createPatchJob(const QString &path, const QDomDocument &document) const
@@ -56,5 +56,5 @@ KIO::DavJob *DavManager::createPatchJob(const QString &path, const QDomDocument 
     QUrl url(mBaseUrl);
     url.setPath(path);
 
-    return KIO::davPropPatch(url, document, KIO::HideProgressInfo);
+    return KIO::davPropPatch(url, document.toString(), KIO::HideProgressInfo);
 }
