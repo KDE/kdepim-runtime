@@ -40,7 +40,7 @@ public:
     QUrl getUrl() const;
 
     // Sets the current SlaveBaseJob that is using the POPSession.
-    // If there is a job, all slave errors will be forwared to that job
+    // If there is a job, all slave errors will be forwarded to that job
     void setCurrentJob(SlaveBaseJob *job);
 
 private Q_SLOTS:

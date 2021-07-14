@@ -117,7 +117,7 @@ protected:
     /// Read all known fields from this contact group
     void setFields(const KContacts::ContactGroup *);
 
-    /// Save all known fields into this contact groupd
+    /// Save all known fields into this contact group
     void saveTo(KContacts::ContactGroup *) const;
 
     // This just makes the initial dom tree with version and doctype

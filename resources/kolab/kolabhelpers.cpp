@@ -259,7 +259,7 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         return item;
     }
     const QLatin1String productId("Akonadi-Kolab-Resource");
-    // Everthing stays the same, except mime type and payload
+    // Everything stays the same, except mime type and payload
     Akonadi::Item imapItem = item;
     imapItem.setMimeType(QStringLiteral("message/rfc822"));
     try {

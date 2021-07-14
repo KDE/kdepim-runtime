@@ -369,7 +369,7 @@ void RetrieveItemsTask::prepareRetrieval()
     /*
      * A synchronization has 3 mandatory steps:
      * * If uidvalidity changed the local cache must be invalidated
-     * * New messages can be fetched usin uidNext and the last known fetched uid
+     * * New messages can be fetched using uidNext and the last known fetched uid
      * * flag changes and removals can be detected by listing all messages that weren't part of the previous step
      *
      * Everything else is optimizations.

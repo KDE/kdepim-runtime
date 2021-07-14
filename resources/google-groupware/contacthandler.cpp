@@ -148,7 +148,7 @@ void ContactHandler::retrieveItems(const Collection &collection)
         return;
     }
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Retrieving contacts for group '%1'", collection.displayName()));
-    qCDebug(GOOGLE_CONTACTS_LOG) << "Retreiving contacts for group" << collection.remoteId() << "...";
+    qCDebug(GOOGLE_CONTACTS_LOG) << "Retrieving contacts for group" << collection.remoteId() << "...";
 
     auto job = new ContactFetchJob(m_settings->accountPtr(), this);
     if (!collection.remoteRevision().isEmpty()) {

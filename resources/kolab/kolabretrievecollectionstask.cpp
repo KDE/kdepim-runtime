@@ -439,7 +439,7 @@ void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::
             QString parentMailbox = parts.join(separatorCharacter());
 
             KIMAP::Acl::Rights parentImapRights;
-            // If the parent folder is not existing we cant rename
+            // If the parent folder is not existing we can't rename
             if (!parentMailbox.isEmpty() && rights.contains(parentMailbox)) {
                 parentImapRights = rights.value(parentMailbox);
             }

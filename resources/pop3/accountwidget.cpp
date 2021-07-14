@@ -350,7 +350,7 @@ void AccountWidget::slotPopCapabilities(const QVector<int> &encryptionTypes)
         KMessageBox::sorry(this, i18n("Unable to connect to the server, please verify the server address."));
     }
 
-    // If the servertest did not find any useable authentication modes, assume the
+    // If the servertest did not find any usable authentication modes, assume the
     // connection failed and don't disable any of the radioboxes.
     if (encryptionTypes.isEmpty()) {
         mServerTestFailed = true;

@@ -117,8 +117,8 @@ private Q_SLOTS:
         auto noSelectAttribute = new NoSelectAttribute();
         parentCollection.addAttribute(noSelectAttribute);
         collection.setParentCollection(parentCollection);
-        QTest::newRow("parent wit noselect") << collection << capabilities << scenario << callNames << rights << expectedAnnotations << expectedRoots
-                                             << expectedLimits << expectedUsages;
+        QTest::newRow("parent with noselect") << collection << capabilities << scenario << callNames << rights << expectedAnnotations << expectedRoots
+                                              << expectedLimits << expectedUsages;
         parentCollection.removeAttribute<NoSelectAttribute>();
 
         //

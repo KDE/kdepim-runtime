@@ -508,7 +508,7 @@
        <item>
         <widget class="QGroupBox" name="userAgentGroupBox">
          <property name="whatsThis">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some organizations restrict access to mail only to approved clients, such as Microsoft Outlook. On the server-side this is implemented by analyzing the User-Agent string and only allowing a list of approved clients.&lt;/p&gt;&lt;p&gt;This setting allows to emulate some well known clients as well as providing a custom User-Agent string.&lt;/p&gt;&lt;p&gt;Please be advised that bypasing company policies may result in personal consequences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Some organizations restrict access to mail only to approved clients, such as Microsoft Outlook. On the server-side this is implemented by analyzing the User-Agent string and only allowing a list of approved clients.&lt;/p&gt;&lt;p&gt;This setting allows to emulate some well known clients as well as providing a custom User-Agent string.&lt;/p&gt;&lt;p&gt;Please be advised that bypassing company policies may result in personal consequences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Use custo&amp;m User Agent</string>

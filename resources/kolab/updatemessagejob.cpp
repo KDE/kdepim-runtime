@@ -17,7 +17,7 @@
 #include "imapflags.h"
 
 // Check if the expected uid message is still there => no modification, replace message.
-// otherwise search for uptodate message by subject containing UID, merge contents, and replace message
+// otherwise search for up-to-date message by subject containing UID, merge contents, and replace message
 
 UpdateMessageJob::UpdateMessageJob(const KMime::Message::Ptr &msg,
                                    KIMAP::Session *session,

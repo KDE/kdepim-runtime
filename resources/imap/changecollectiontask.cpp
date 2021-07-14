@@ -112,7 +112,7 @@ void ChangeCollectionTask::doStart(KIMAP::Session *session)
         Akonadi::Collection c = collection();
         auto annotationsAttribute = c.attribute<Akonadi::CollectionAnnotationsAttribute>();
 
-        if (annotationsAttribute) { // No annotations it seems... server is lieing to us?
+        if (annotationsAttribute) { // No annotations it seems... server is lying to us?
             QMap<QByteArray, QByteArray> annotations = annotationsAttribute->annotations();
             qCDebug(IMAPRESOURCE_LOG) << "All annotations: " << annotations;
 

@@ -178,7 +178,7 @@ ning contacts).
     <UML:Class comment=" A job queue. All jobs you put in here are executed sequentially. JobQueue can
   be used as a parent for jobs to share the same connection to the Akonadi backend. Do not start enqueued jobs manually!
 " isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="221" isRoot="false" isAbstract="false" name="JobQueue" />
-    <UML:Class comment="f  Extended modell for message collections.
+    <UML:Class comment="f  Extended model for message collections.
   Supports columns for message unread/total counts.
 " isSpecification="false" isLeaf="false" visibility="public" namespace="m1" xmi.id="225" isRoot="false" isAbstract="false" name="MessageCollectionModel" >
      <UML:GeneralizableElement.generalization>
@@ -201,11 +201,8 @@ ning contacts).
       <UML:Generalization xmi.idref="244" />
      </UML:GeneralizableElement.generalization>
     </UML:Class>
-    <UML:Class comment="Monitors an Item or Collection for changes and emits signals if som
-e
-  of these objects are changed or removed or new ones are added to th
-e storage
-  backend.
+    <UML:Class comment="Monitors an Item or Collection for changes and emits signals if some
+  of these objects are changed or removed or new ones are added to the storage backend.
 
   @todo: support un-monitoring
   @todo: distinguish between monitoring collection properties and col
@@ -8382,7 +8379,7 @@ lection content.
         </codeblockwithcomments>
         <cppheaderclassdeclarationblock parent_id="225" tag="classDeclarationBlock" canDelete="false" >
          <header>
-          <cppcodedocumentation tag="" text="Class MessageCollectionModel&amp;#010;f  Extended modell for message collections.&amp;#010;  Supports columns for message unread/total counts.&amp;#010;" />
+          <cppcodedocumentation tag="" text="Class MessageCollectionModel&amp;#010;f  Extended model for message collections.&amp;#010;  Supports columns for message unread/total counts.&amp;#010;" />
          </header>
          <textblocks>
           <hierarchicalcodeblock tag="publicBlock" canDelete="false" >

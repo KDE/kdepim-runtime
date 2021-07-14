@@ -70,7 +70,7 @@ void ResourceTask::abortTask(const QString &errorString)
             break;
 
         case DeferIfNoSession:
-            qCDebug(IMAPRESOURCE_LOG) << "Defering this request.";
+            qCDebug(IMAPRESOURCE_LOG) << "Deferring this request.";
             m_resource->deferTask();
             break;
         }

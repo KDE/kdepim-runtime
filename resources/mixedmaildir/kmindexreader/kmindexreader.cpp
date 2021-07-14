@@ -162,7 +162,7 @@ KMIndexReader::KMIndexReader(const QString &indexFile)
     }
 
     if (!mIndexFile.open(QIODevice::ReadOnly)) {
-        qCDebug(MIXEDMAILDIR_LOG) << "file cant be open";
+        qCDebug(MIXEDMAILDIR_LOG) << "file can't be open";
         mError = true;
     }
 

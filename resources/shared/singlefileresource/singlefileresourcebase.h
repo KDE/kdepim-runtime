@@ -80,7 +80,7 @@ protected:
      * and notifies implementing resources to handle a hash change if the
      * previous known hash was not empty. Finally this method clears the cache
      * and calls synchronize.
-     * Returns true on succes, false otherwise.
+     * Returns true on success, false otherwise.
      */
     bool readLocalFile(const QString &fileName);
 

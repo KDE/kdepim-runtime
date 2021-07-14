@@ -17,7 +17,7 @@ set(maildirsettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Mai
 set_source_files_properties(${pop3settingsinterface_xml} PROPERTIES INCLUDE "../metatype.h")
 qt_add_dbus_interface(_srcList ${pop3settingsinterface_xml} pop3settings)
 qt_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
-# add the dbus interace to every test (easier than adding to particular tests only)
+# add the dbus interface to every test (easier than adding to particular tests only)
 #qt_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
 if (KDEPIM_RUN_AKONADI_TEST)

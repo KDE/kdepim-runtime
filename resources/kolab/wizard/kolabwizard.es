@@ -98,7 +98,7 @@ function testOk( arg )
     }
 }
 
-var identity; // global so it can be accesed in setup and testOk
+var identity; // global so it can be accessed in setup and testOk
 
 var kolabRes;
 var smtp;

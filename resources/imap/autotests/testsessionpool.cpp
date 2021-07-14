@@ -758,7 +758,7 @@ private Q_SLOTS:
         // This tests what happens when we can't connect to the server, e.g. due to being offline.
         // In this test we just use 0.0.0.0 as an invalid server IP, instead.
         ImapAccount *account = createDefaultAccount();
-        account->setServer(QStringLiteral("0.0.0.0")); // so that the connexion fails
+        account->setServer(QStringLiteral("0.0.0.0")); // so that the connection fails
         DummyPasswordRequester *requester = createDefaultRequester();
         QList<DummyPasswordRequester::RequestType> requests;
         QList<DummyPasswordRequester::ResultType> results;

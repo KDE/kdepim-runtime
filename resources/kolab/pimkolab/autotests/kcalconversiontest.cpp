@@ -255,7 +255,7 @@ void KCalConversionTest::testConversion_data()
         //     Kolab::Alarm alarm2("summary", "description", receipents);
         //     kolab.setAlarms(std::vector<Kolab::Alarm>() << alarm2);
 
-        // The sorting is random, just sort them here how we think they should arrive so we don't have to sort during compare (due to lazyness).
+        // The sorting is random, just sort them here how we think they should arrive so we don't have to sort during compare (due to laziness).
         std::vector<Kolab::CustomProperty> customproperties;
         customproperties.push_back(Kolab::CustomProperty("X-KDE-SOMEOTHERAPP-key2", "value2"));
         customproperties.push_back(Kolab::CustomProperty("key1", "value1"));

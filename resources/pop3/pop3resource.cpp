@@ -283,7 +283,7 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Download =======================";
 
         // Determine which mails we want to download. Those are all mails which are
-        // currently on ther server, minus the ones we have already downloaded (we
+        // currently on their server, minus the ones we have already downloaded (we
         // remember which UIDs we have downloaded in the settings)
         QList<int> idsToDownload = mIdsToSizeMap.keys();
         const QStringList alreadyDownloadedUIDs = mSettings.seenUidList();

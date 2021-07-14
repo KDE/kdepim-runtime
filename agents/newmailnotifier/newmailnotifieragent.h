@@ -9,7 +9,7 @@
 #pragma once
 
 #include <agentbase.h>
-#include <collection.h> // make sure this is included before QHash, otherwise it wont find the correct qHash implementation for some reason
+#include <collection.h> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 
 #include <QPixmap>
 #include <QStringList>

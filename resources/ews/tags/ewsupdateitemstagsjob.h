@@ -14,7 +14,7 @@ class EwsClient;
 class EwsResource;
 
 /**
- *  @brief  Job used to update Exchange items wit tag information from Akonadi
+ *  @brief  Job used to update Exchange items with tag information from Akonadi
  *
  *  This job cycles through all items and updates the Exchange database with tag information from
  *  the items.

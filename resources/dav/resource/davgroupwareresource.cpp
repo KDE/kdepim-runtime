@@ -861,7 +861,7 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         changedRids << item.remoteId();
         changedItems << item;
 
-        // Only clear the payload (and therefor trigger a refetch from the backend) if we
+        // Only clear the payload (and therefore trigger a refetch from the backend) if we
         // do not use multiget, because in this case we fetch the complete payload
         // some lines below already.
         if (!protocolSupportsMultiget) {

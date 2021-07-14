@@ -574,7 +574,7 @@ QString Maildir::addEntry(const QByteArray &data)
     QString finalKey;
     QString curKey;
 
-    // QUuid doesn't return globally unique identifiers, therefor we query until we
+    // QUuid doesn't return globally unique identifiers, therefore we query until we
     // get one that doesn't exists yet
     do {
         uniqueKey = createUniqueFileName() + d->hostName;

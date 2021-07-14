@@ -187,13 +187,13 @@ public:
             }
 
             // delete index data for changed entries
-            // readded below in an extra loop to handled cases where a new index is equal to an
+            // re-added below in an extra loop to handled cases where a new index is equal to an
             // old index of a different entry
             Q_FOREACH (const KMBox::MBoxEntry::Pair &entry, movedEntries) {
                 mIndexData.remove(entry.first.messageOffset());
             }
 
-            // readd index data for changed entries at their new position
+            // re-add index data for changed entries at their new position
             Q_FOREACH (const KMBox::MBoxEntry::Pair &entry, movedEntries) {
                 const KMIndexDataPtr data = indexData.value(entry.first.messageOffset());
                 mIndexData.insert(entry.second.messageOffset(), data);

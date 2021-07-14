@@ -32,7 +32,7 @@
  *
  *  In case the request fails due to a 401 Unauthorized error or is aborted due
  *  to abobe conditions the request calls the requestAuthFailed() method, signals
- *  the main resource class tha authentication has failed and aborts the request.
+ *  the main resource class that authentication has failed and aborts the request.
  *
  *  The main resource class in response to an authentication failure sets the
  *  resource offline and attempts to reauthenticate (if the resource supports it)

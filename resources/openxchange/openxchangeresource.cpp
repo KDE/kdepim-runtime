@@ -257,7 +257,7 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     // Create the standard collections.
     //
     // There exists special OX folders (e.g. private, public, shared) that are not
-    // returned by a normal webdav listing, therefor we create them manually here.
+    // returned by a normal webdav listing, therefore we create them manually here.
     // This is possible because the remote ids of these folders are fixed values from 1
     // till 4.
     mResourceCollection.setParentCollection(Collection::root());
@@ -1134,7 +1134,7 @@ void OpenXchangeResource::onFolderDeleteJobFinished(KJob *job)
  * so that we can find out the right parent collection in
  * onFoldersRequestDeltaJob().
  *
- * Therefor we trigger this method when the resource is started and
+ * Therefore we trigger this method when the resource is started and
  * configured to use incremental sync.
  */
 void OpenXchangeResource::syncCollectionsRemoteIdCache()

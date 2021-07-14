@@ -63,7 +63,7 @@ bool SingleFileResourceBase::readLocalFile(const QString &fileName)
     const QByteArray newHash = calculateHash(fileName);
     if (mCurrentHash != newHash) {
         if (!mCurrentHash.isEmpty()) {
-            // There was a hash stored in the config file or a chached one from
+            // There was a hash stored in the config file or a cached one from
             // a previous read and it is different from the hash we just read.
             handleHashChange();
         }

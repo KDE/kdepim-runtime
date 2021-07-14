@@ -71,7 +71,7 @@ Each Akonadi resource has a unique identifier. It is composed automatically out
 of the resource name and a number, which starts from 0 and is incremented with
 every new resource of that type. Removing a resource and adding it again will
 not reset the counter. For example the first instance of the EWS resource would
-use the identidier `akonadi_ews_resource_0`. The actual resource identifier is
+use the identifier `akonadi_ews_resource_0`. The actual resource identifier is
 visible in the command line of the resource process after executing the `ps`
 command above.
 

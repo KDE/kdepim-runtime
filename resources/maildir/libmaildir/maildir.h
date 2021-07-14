@@ -229,7 +229,7 @@ public:
     void refreshKeyCache();
 
     /** Return the last error message string. The error might not come from the last performed operation,
-     if that was sucessful. The caller should always check the return value of the methods before
+     if that was successful. The caller should always check the return value of the methods before
      querying the last error string. */
     QString lastError() const;
 

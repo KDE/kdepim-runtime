@@ -125,7 +125,7 @@ void FormatTest::testIncidence()
     KCalendarCore::ICalFormat format;
     KCalendarCore::Incidence::Ptr realIncidence(format.fromString(QString::fromUtf8(icalFile.readAll())));
 
-    // fix up the converted incidence for comparisson
+    // fix up the converted incidence for comparison
     normalizeIncidence(convertedIncidence);
     normalizeIncidence(realIncidence);
 
@@ -252,7 +252,7 @@ void FormatTest::testContact()
     const QByteArray &c = vcardFile.readAll();
     KContacts::Addressee realAddressee = converter.parseVCard(c);
 
-    // fix up the converted addressee for comparisson
+    // fix up the converted addressee for comparison
     convertedAddressee.setName(realAddressee.name()); // name() apparently is something strange
     if (version == Kolab::KolabV2) { // No creation date in xcal
         QVERIFY(!convertedAddressee.custom(QStringLiteral("KOLAB"), QStringLiteral("CreationDate")).isEmpty());

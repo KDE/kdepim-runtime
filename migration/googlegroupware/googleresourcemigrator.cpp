@@ -174,7 +174,7 @@ void GoogleResourceMigrator::startWork()
         if (isLegacyGoogleResource(instance)) {
             const auto account = getAccountNameFromResourceSettings(instance);
             if (account.isEmpty()) {
-                qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: resource" << instance.identifier() << "is not configued, removing";
+                qCInfo(MIGRATION_LOG) << "GoogleResourceMigrator: resource" << instance.identifier() << "is not configured, removing";
                 Akonadi::AgentManager::self()->removeInstance(instance);
                 continue;
             }

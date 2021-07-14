@@ -278,7 +278,7 @@ void LoginJob::slaveConnected(KIO::Slave *slave)
         return;
     }
 
-    // Yeah it connected, so login was sucessful!
+    // Yeah it connected, so login was successful!
     emitResult();
 }
 
