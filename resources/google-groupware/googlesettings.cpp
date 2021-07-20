@@ -10,8 +10,6 @@
 
 #include <KGAPI/Account>
 #include <KWallet>
-#include <qt5keychain/keychain.h>
-using namespace QKeychain;
 
 using namespace KWallet;
 using namespace KGAPI2;
@@ -109,9 +107,9 @@ bool GoogleSettings::storeAccount(AccountPtr account)
 
 void GoogleSettings::cleanup()
 {
-    auto deleteJob = new DeletePasswordJob(googleWalletFolder);
-    deleteJob->setKey(m_account->accountName());
-    deleteJob->start();
+    if (m_account && m_wallet) {
+        m_wallet->removeEntry(m_account->accountName());
+    }
 }
 
 void GoogleSettings::addCalendar(const QString &calendar)
