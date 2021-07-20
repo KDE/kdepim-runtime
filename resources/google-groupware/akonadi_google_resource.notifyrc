@@ -22,6 +22,7 @@ Name[sl]=Google Groupware
 Name[sv]=Google grupprogram
 Name[uk]=Групова робота у Google
 Name[x-test]=xxGoogle Groupwarexx
+Name[zh_CN]=Google 协作套件
 Comment=Access your Google Calendars, Contacts and Tasks from KDE
 Comment[ca]=Accediu als calendaris, contactes i tasques de Google des del KDE
 Comment[ca@valencia]=Accediu als calendaris, contactes i tasques de Google des del KDE
@@ -45,6 +46,7 @@ Comment[sl]=Dostopajte do svojih Googlovih koledarjev, stikov in opravil iz okol
 Comment[sv]=Kom åt Google kalendrar, kontakter och uppgifter från KDE
 Comment[uk]=Доступ до ваших календарів, записів контактів і завдань Google з KDE
 Comment[x-test]=xxAccess your Google Calendars, Contacts and Tasks from KDExx
+Comment[zh_CN]=在 KDE 中访问 Google 日历、联系人和任务列表
 
 [Event/authNeeded]
 Name=Google Groupware needs to authenticate
@@ -66,6 +68,7 @@ Name[sl]=Google Groupware se mora overiti
 Name[sv]=Google grupprogram behöver behörighetskontroll
 Name[uk]=Потрібне розпізнавання на Google Groupware
 Name[x-test]=xxGoogle Groupware needs to authenticatexx
+Name[zh_CN]=Google 协作套件需要授权
 Comment=Google Groupware has been logged off and needs to be reauthenticated
 Comment[ca]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
 Comment[ca@valencia]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
@@ -84,6 +87,7 @@ Comment[sl]=Google Groupware je bil odjavljen se mora ponovno overiti
 Comment[sv]=Google grupprogram har loggats ut och behöver ny behörighetskontroll
 Comment[uk]=Було здійснено вихід із Google Groupware — потрібне повторне розпізнавання
 Comment[x-test]=xxGoogle Groupware has been logged off and needs to be reauthenticatedxx
+Comment[zh_CN]=Google 协作套件已退出，需要重新授权
 Urgency=Normal
 Action=Popup
 
