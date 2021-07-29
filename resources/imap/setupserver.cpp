@@ -120,8 +120,6 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
 {
     auto networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
 
-    m_ui->password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-    m_ui->customPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     m_parentResource->settings()->setWinId(parent);
     auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
@@ -135,6 +133,8 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     mainLayout->addWidget(buttonBox);
 
     m_ui->setupUi(mainWidget);
+    m_ui->password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
+    m_ui->customPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     new KPIM::LineEditCatchReturnKey(m_ui->accountName, this);
     new KPIM::LineEditCatchReturnKey(m_ui->imapServer, this);
     new KPIM::LineEditCatchReturnKey(m_ui->userName, this);
