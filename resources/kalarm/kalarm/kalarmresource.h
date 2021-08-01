@@ -31,7 +31,7 @@ protected:
     using ResourceBase::retrieveItems; // Suppress -Woverload-virtual
     void retrieveItems(const Akonadi::Collection &) override;
     void doRetrieveItems(const Akonadi::Collection &) override;
-    bool doRetrieveItem(const Akonadi::Item &, const QSet<QByteArray> &parts) override;
+    bool doRetrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     bool readFromFile(const QString &fileName) override;
     bool writeToFile(const QString &fileName) override;
     void itemAdded(const Akonadi::Item &, const Akonadi::Collection &) override;

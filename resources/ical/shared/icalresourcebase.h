@@ -26,8 +26,8 @@ protected:
 
 protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     void retrieveItems(const Akonadi::Collection &col) override;
-
 protected:
     enum CheckType {
         CheckForAdded,
@@ -41,12 +41,14 @@ protected:
     void aboutToQuit() override;
 
     /**
+     * Add the requested payload parts and call itemsRetrieved() when done.
+     * It is guaranteed that all items in the list belong to the same Collection.
      * Retrieve an incidence from the calendar, and set it into a new item's payload.
-     * Retrieval of the item should be signalled by calling @p itemRetrieved().
-     * @param item the incidence ID to retrieve is provided by @c item.remoteId()
-     * @return true if item retrieved, false if not.
+     * Retrieval of items should be signalled by calling @p itemsRetrieved().
+     * @param items the incidence ID to retrieve is provided by @c item.remoteId() for each item
+     * @return true if all items are retrieved, false if not.
      */
-    virtual bool doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) = 0;
+    virtual bool doRetrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) = 0;
 
     /**
      * Retrieve all incidences from the calendar, and set each into a new item's payload.

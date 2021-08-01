@@ -27,7 +27,7 @@ protected:
      */
     ICalResource(const QString &id, const QStringList &mimeTypes, const QString &icon);
 
-    bool doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    bool doRetrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     void doRetrieveItems(const Akonadi::Collection &col) override;
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &) override;

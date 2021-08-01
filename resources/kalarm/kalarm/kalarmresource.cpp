@@ -235,33 +235,42 @@ bool KAlarmResource::writeToFile(const QString &fileName)
  * Set the event into a new item's payload, and signal its retrieval by calling
  * itemRetrieved(newitem).
  */
-bool KAlarmResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
+bool KAlarmResource::doRetrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
-    const QString rid = item.remoteId();
-    const KCalendarCore::Event::Ptr kcalEvent = calendar()->event(rid);
-    if (!kcalEvent) {
-        qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: Event not found:" << rid;
-        Q_EMIT error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
-        return false;
+
+    Akonadi::Item::List resultItems;
+    resultItems.reserve(items.size());
+
+    for (const Akonadi::Item &item : items) {
+        const QString rid = item.remoteId();
+        const KCalendarCore::Event::Ptr kcalEvent = calendar()->event(rid);
+        if (!kcalEvent) {
+            qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: Event not found:" << rid;
+            Q_EMIT error(errorMessage(KAlarmResourceCommon::UidNotFound, rid));
+            return false;
+        }
+
+        if (kcalEvent->alarms().isEmpty()) {
+            qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: KCalendarCore::Event has no alarms:" << rid;
+            Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
+            return false;
+        }
+
+        KAEvent event(kcalEvent);
+        const QString mime = CalEvent::mimeType(event.category());
+        if (mime.isEmpty()) {
+            qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: KAEvent has no alarms:" << rid;
+            Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
+            return false;
+        }
+        event.setCompatibility(mCompatibility);
+        const Item newItem = KAlarmResourceCommon::retrieveItem(item, event);
+        resultItems.append(newItem);
     }
 
-    if (kcalEvent->alarms().isEmpty()) {
-        qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: KCalendarCore::Event has no alarms:" << rid;
-        Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
-        return false;
-    }
+    itemsRetrieved(resultItems);
 
-    KAEvent event(kcalEvent);
-    const QString mime = CalEvent::mimeType(event.category());
-    if (mime.isEmpty()) {
-        qCWarning(KALARMRESOURCE_LOG) << identifier() << "doRetrieveItem: KAEvent has no alarms:" << rid;
-        Q_EMIT error(errorMessage(KAlarmResourceCommon::EventNoAlarms, rid));
-        return false;
-    }
-    event.setCompatibility(mCompatibility);
-    const Item newItem = KAlarmResourceCommon::retrieveItem(item, event);
-    itemRetrieved(newItem);
     return true;
 }
 

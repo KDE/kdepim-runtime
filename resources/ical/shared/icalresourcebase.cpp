@@ -37,6 +37,21 @@ ICalResourceBase::~ICalResourceBase()
 {
 }
 
+bool ICalResourceBase::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
+{
+    for (const Akonadi::Item &item : items) {
+        qDebug() << "Item:" << item.url();
+    }
+
+    if (!mCalendar) {
+        qCritical() << "akonadi_ical_resource: Calendar not loaded";
+        Q_EMIT error(i18n("Calendar not loaded."));
+        return false;
+    }
+
+    return doRetrieveItems(items, parts);
+}
+
 bool ICalResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     qDebug() << "Item:" << item.url();
@@ -47,7 +62,7 @@ bool ICalResourceBase::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
         return false;
     }
 
-    return doRetrieveItem(item, parts);
+    return doRetrieveItems({item}, parts);
 }
 
 void ICalResourceBase::aboutToQuit()

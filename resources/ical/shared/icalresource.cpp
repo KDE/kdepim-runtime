@@ -35,23 +35,33 @@ ICalResource::~ICalResource()
 {
 }
 
-bool ICalResource::doRetrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
+bool ICalResource::doRetrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
-    const QString rid = item.remoteId();
-    Incidence::Ptr incidence = calendar()->instance(rid);
-    if (!incidence) {
-        qCritical() << "akonadi_ical_resource: Can't find incidence with uid " << rid << "; item.id() = " << item.id();
-        Q_EMIT error(i18n("Incidence with uid '%1' not found.", rid));
-        return false;
+
+    Akonadi::Item::List resultItems;
+    resultItems.reserve(items.size());
+
+    for (const Akonadi::Item &item : items) {
+        const QString rid = item.remoteId();
+        Incidence::Ptr incidence = calendar()->instance(rid);
+        if (!incidence) {
+            qCritical() << "akonadi_ical_resource: Can't find incidence with uid " << rid << "; item.id() = " << item.id();
+            Q_EMIT error(i18n("Incidence with uid '%1' not found.", rid));
+            return false;
+            ;
+        }
+
+        Incidence::Ptr incidencePtr(incidence->clone());
+
+        Item i = item;
+        i.setMimeType(incidencePtr->mimeType());
+        i.setPayload<Incidence::Ptr>(incidencePtr);
+        resultItems.append(i);
     }
 
-    Incidence::Ptr incidencePtr(incidence->clone());
+    itemsRetrieved(resultItems);
 
-    Item i = item;
-    i.setMimeType(incidencePtr->mimeType());
-    i.setPayload<Incidence::Ptr>(incidencePtr);
-    itemRetrieved(i);
     return true;
 }
 
