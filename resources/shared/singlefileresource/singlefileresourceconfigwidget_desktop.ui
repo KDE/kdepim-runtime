@@ -74,7 +74,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="filenameLabel">
+          <widget class="QLabel" name="displayNameLabel">
            <property name="text">
             <string>Display Name:</string>
            </property>
