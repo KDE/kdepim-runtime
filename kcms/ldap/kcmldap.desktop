@@ -6,7 +6,6 @@ X-KDE-ServiceTypes=KCModule
 X-KDE-Library=pim/kcms/kaddressbook/kcm_ldap
 
 X-KDE-ParentComponents=kaddressbook,kontact_kaddressbookplugin
-X-KDE-CfgDlgHierarchy=KAddressBook
 X-KDE-Weight=200
 
 Name=LDAP Server Settings
