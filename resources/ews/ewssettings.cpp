@@ -88,9 +88,7 @@ void EwsSettings::requestPassword(bool ask)
         } else {
             qCDebug(EWSRES_LOG) << "requestPassword: Requesting interactively";
             mPasswordDlg = new KPasswordDialog(nullptr);
-#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 84, 0)
             mPasswordDlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-#endif
             mPasswordDlg->setModal(true);
             mPasswordDlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.", username(), email()));
             if (mPasswordDlg->exec() == QDialog::Accepted) {

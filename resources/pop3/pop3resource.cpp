@@ -146,9 +146,7 @@ void POP3Resource::walletOpenedForLoading(QKeychain::Job *baseJob)
 void POP3Resource::showPasswordDialog(const QString &queryText)
 {
     QPointer<KPasswordDialog> dlg = new KPasswordDialog(nullptr, KPasswordDialog::ShowUsernameLine);
-#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 84, 0)
     dlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-#endif
     dlg->setModal(true);
     dlg->setUsername(mSettings.login());
     dlg->setPassword(mPassword);

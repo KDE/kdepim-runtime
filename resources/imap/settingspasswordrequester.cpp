@@ -150,9 +150,7 @@ QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
     dlg->setModal(true);
     dlg->setPrompt(i18n("Please enter password for user '%1' on IMAP server '%2'.", m_resource->settings()->userName(), m_resource->settings()->imapServer()));
     dlg->setPassword(m_resource->settings()->password());
-#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 84, 0)
     dlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-#endif
     if (dlg->exec()) {
         if (userRejected) {
             *userRejected = false;
