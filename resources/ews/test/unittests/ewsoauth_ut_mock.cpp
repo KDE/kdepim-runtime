@@ -456,8 +456,7 @@ QString tokenCallbackString(const QString &accessToken,
         .arg(extTokenLifetime)
         .arg(idToken)
         .arg(time)
-        .arg(refreshToken)
-        .arg(resource);
+        .arg(refreshToken, resource);
 }
 
 QString requestWalletMapString()

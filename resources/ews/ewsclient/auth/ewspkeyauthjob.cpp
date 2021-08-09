@@ -26,7 +26,8 @@ static const QMap<QString, QCA::CertificateInfoTypeKnown> stringToKnownCertInfoT
 static QMultiMap<QCA::CertificateInfoType, QString> parseCertSubjectInfo(const QString &info)
 {
     QMultiMap<QCA::CertificateInfoType, QString> map;
-    for (const auto &token : info.split(QLatin1Char(','), Qt::SkipEmptyParts)) {
+    const auto infos{info.split(QLatin1Char(','), Qt::SkipEmptyParts)};
+    for (const auto &token : infos) {
         const auto keyval = token.trimmed().split(QLatin1Char('='));
         if (keyval.count() == 2) {
             if (stringToKnownCertInfoType.contains(keyval[0])) {

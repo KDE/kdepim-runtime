@@ -382,7 +382,7 @@ void EwsFetchItemsJob::compareItemLists()
     Q_EMIT status(AgentBase::Running, i18nc("@info:status", "Retrieving %1 items", mCollection.name()));
 
     bool fetch = false;
-    for (const auto iType : toFetchItems.keys()) {
+    for (const auto &iType : toFetchItems.keys()) {
         for (int i = 0; i < toFetchItems[iType].size(); i += fetchBatchSize) {
             EwsItemHandler *handler = EwsItemHandler::itemHandler(static_cast<EwsItemType>(iType));
             if (!handler) {

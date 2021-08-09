@@ -181,7 +181,7 @@ bool TestAgentInstance::setOnline(bool online, bool wait)
 MsgRootInboxDialogEntry::MsgRootInboxDialogEntry(const QString &rootId, const QString &inboxId, const QString &descr, const ReplyCallback &callback)
     : DialogEntryBase(descr, callback)
 {
-    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-inbox-msgroot")).arg(rootId).arg(inboxId);
+    xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-inbox-msgroot")).arg(rootId, inboxId);
     description = QStringLiteral("GetFolder request for inbox and msgroot");
 }
 
@@ -332,6 +332,5 @@ ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &id
 
     xQuery = IsolatedTestBase::loadResourceAsString(QStringLiteral(":/xquery/getfolder-validateids"))
                  .arg(folderIndex)
-                 .arg(xQueryFolderIds.join(QStringLiteral(" and ")))
-                 .arg(responseXml);
+                 .arg(xQueryFolderIds.join(QStringLiteral(" and ")), responseXml);
 }

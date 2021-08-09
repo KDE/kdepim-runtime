@@ -79,7 +79,8 @@ void EwsModifyMailJob::updateItemFinished(KJob *job)
     Q_ASSERT(req->responses().size() == mItems.size());
 
     Item::List::iterator it = mItems.begin();
-    Q_FOREACH (const EwsUpdateItemRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsUpdateItemRequest::Response &resp : responses) {
         if (!resp.isSuccess()) {
             setErrorText(QStringLiteral("Item update failed: ") + resp.responseMessage());
             emitResult();

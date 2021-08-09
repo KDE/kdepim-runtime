@@ -413,7 +413,7 @@ bool EwsFetchFoldersIncrJobPrivate::processRemoteFolders()
     }
 
     /* Build the resulting collection list. */
-    for (auto it = mFolderHash.begin(), end = mFolderHash.end(); it != end; ++it) {
+    for (auto it = mFolderHash.cbegin(), end = mFolderHash.cend(); it != end; ++it) {
         if (it->isRemoved()) {
             q->mDeletedFolders.append(it->collection);
         } else if (it->isProcessed()) {
