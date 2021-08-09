@@ -160,7 +160,7 @@ KDAV::DavUrl::List Settings::configuredDavUrls()
     QMap<QString, UrlConfiguration *>::const_iterator it = mUrls.cbegin();
     const QMap<QString, UrlConfiguration *>::const_iterator itEnd = mUrls.cend();
     for (; it != itEnd; ++it) {
-        QStringList split = it.key().split(QLatin1Char(','));
+        const QStringList split = it.key().split(QLatin1Char(','));
         davUrls << configuredDavUrl(KDAV::ProtocolInfo::protocolByName(split.at(1)), split.at(0));
     }
 
