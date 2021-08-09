@@ -252,7 +252,7 @@ void EwsSettings::setMap(const QMap<QString, QString> &map)
     }
 
     for (auto it = map.begin(); it != map.end(); ++it) {
-        qDebug() << "setMap:" << it.key();
+        qCDebug(EWSRES_LOG) << "setMap:" << it.key();
         if (!it.value().isNull()) {
             mMap[it.key()] = it.value();
         } else {
