@@ -376,7 +376,7 @@ template<typename T, typename I> void getIncidence(T &i, const I &e)
 
     std::vector<Kolab::CustomProperty> customProperties;
     const QMap<QByteArray, QString> &props = e.customProperties();
-    for (QMap<QByteArray, QString>::const_iterator it = props.begin(), end(props.end()); it != end; ++it) {
+    for (QMap<QByteArray, QString>::const_iterator it = props.cbegin(), end(props.cend()); it != end; ++it) {
         QString key(QString::fromUtf8(it.key()));
         if (key == QLatin1String(CUSTOM_KOLAB_URL)) {
             continue;

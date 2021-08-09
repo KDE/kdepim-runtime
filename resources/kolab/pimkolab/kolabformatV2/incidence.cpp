@@ -884,8 +884,8 @@ void Incidence::setFields(const KCalendarCore::Incidence::Ptr &incidence)
 
     // Unhandled tags and other custom properties (see libkcal/customproperties.h)
     const QMap<QByteArray, QString> map = incidence->customProperties();
-    QMap<QByteArray, QString>::ConstIterator cit = map.begin();
-    QMap<QByteArray, QString>::ConstIterator cend = map.end();
+    QMap<QByteArray, QString>::ConstIterator cit = map.cbegin();
+    QMap<QByteArray, QString>::ConstIterator cend = map.cend();
     for (; cit != cend; ++cit) {
         Custom c;
         c.key = cit.key();
