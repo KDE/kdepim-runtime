@@ -424,12 +424,12 @@ void EwsFetchItemsJob::compareItemLists()
 
 void EwsFetchItemsJob::itemDetailFetchDone(KJob *job)
 {
-    removeSubjob(job);
-
     const auto detailJob = qobject_cast<EwsFetchItemDetailJob *>(job);
     if (detailJob) {
         qCWarningNC(EWSRES_LOG) << QStringLiteral("itemDetailFetchDone: ") << detailJob->error();
         if (!detailJob->error()) {
+            removeSubjob(job);
+
             const auto changedItems = detailJob->changedItems();
             for (const auto &item : changedItems) {
                 if (item.isValid()) {
