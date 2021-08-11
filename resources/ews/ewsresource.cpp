@@ -1339,6 +1339,10 @@ void EwsResource::setUpAuth()
 
 void EwsResource::authSucceeded()
 {
+    if (mAuthStage != AuthIdle) {
+        setOnline(true);
+    }
+
     mAuthStage = AuthIdle;
 
     resetUrl();
