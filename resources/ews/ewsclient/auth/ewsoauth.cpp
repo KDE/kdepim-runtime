@@ -511,14 +511,18 @@ bool EwsOAuth::authenticate(bool interactive)
 const QString &EwsOAuth::reauthPrompt() const
 {
     static const QString prompt =
-        i18nc("@info", "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.");
+        xi18nc("@info",
+               "Microsoft Exchange credentials for the account <b>%1</b> are no longer valid. You need to authenticate in order to continue using it.",
+               QStringLiteral("%1"));
     return prompt;
 }
 
 const QString &EwsOAuth::authFailedPrompt() const
 {
     static const QString prompt =
-        i18nc("@info", "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. Please update it in the account settings page.");
+        xi18nc("@info",
+               "Failed to obtain credentials for Microsoft Exchange account <b>%1</b>. Please update it in the account settings page.",
+               QStringLiteral("%1"));
     return prompt;
 }
 
