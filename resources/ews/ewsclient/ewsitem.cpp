@@ -415,6 +415,8 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
         d->mType = EwsItemTypePostItem;
     } else if (elmName == QLatin1String("Task")) {
         d->mType = EwsItemTypeTask;
+    } else {
+        qCWarningNC(EWSCLI_LOG) << QStringLiteral("Unknown item type: %1").arg(elmName);
     }
 
     while (reader.readNextStartElement()) {
