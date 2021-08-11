@@ -128,6 +128,8 @@ private Q_SLOTS:
 private:
     enum AuthStage { AuthIdle, AuthRefreshToken, AuthAccessToken, AuthFailure };
 
+    enum QueuedFetchItemsJobType { RetrieveItems, SubscriptionSync };
+
     void finishItemsFetch(FetchItemState *state);
     void fetchSpecialFolders();
     void specialFoldersCollectionsRetrieved(const Akonadi::Collection::List &folders);
@@ -145,7 +147,7 @@ private:
     static QString getCollectionSyncState(const Akonadi::Collection &col);
     static void saveCollectionSyncState(Akonadi::Collection &col, const QString &state);
 
-    void queueFetchItemsJob(const Akonadi::Collection &col, std::function<void(EwsFetchItemsJob *)> startFn);
+    void queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetchItemsJobType type, std::function<void(EwsFetchItemsJob *)> startFn);
     void startFetchItemsJob(const Akonadi::Collection &col, std::function<void(EwsFetchItemsJob *)> startFn);
     void dequeueFetchItemsJob();
 
@@ -170,6 +172,7 @@ private:
 
     struct QueuedFetchItemsJob {
         Akonadi::Collection col;
+        QueuedFetchItemsJobType type;
         std::function<void(EwsFetchItemsJob *)> startFn;
     };
     QQueue<QueuedFetchItemsJob> mFetchItemsJobQueue;

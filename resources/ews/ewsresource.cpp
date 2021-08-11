@@ -321,7 +321,7 @@ void EwsResource::connectionError()
 
 void EwsResource::retrieveItems(const Collection &collection)
 {
-    queueFetchItemsJob(collection, [this](EwsFetchItemsJob *fetchJob) {
+    queueFetchItemsJob(collection, RetrieveItems, [this](EwsFetchItemsJob *fetchJob) {
         auto col = fetchJob->collection();
         if (fetchJob->error()) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error() << fetchJob->ewsResponseCode();
@@ -354,9 +354,9 @@ void EwsResource::retrieveItems(const Collection &collection)
     });
 }
 
-void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, std::function<void(EwsFetchItemsJob *)> startFn)
+void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetchItemsJobType type, std::function<void(EwsFetchItemsJob *)> startFn)
 {
-    qCDebugNC(EWSRES_LOG) << QStringLiteral("Enqueuing sync for collection ") << col;
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Enqueuing sync for collection ") << col << col.id();
 
     const auto queueEmpty = mFetchItemsJobQueue.empty();
     if (mFetchItemsJobQueue.count() > 1) {
@@ -370,7 +370,9 @@ void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, std::functi
         }
     }
 
-    mFetchItemsJobQueue.enqueue({col, startFn});
+    mFetchItemsJobQueue.enqueue({col, type, startFn});
+
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Sync queue state: ") << dumpResourceToString().replace(QLatin1Char('\n'), QLatin1Char(' '));
 
     if (queueEmpty) {
         startFetchItemsJob(col, startFn);
@@ -379,7 +381,7 @@ void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, std::functi
 
 void EwsResource::dequeueFetchItemsJob()
 {
-    qCDebugNC(EWSRES_LOG) << QStringLiteral("Finished queued sync");
+    qCDebugNC(EWSRES_LOG) << QStringLiteral("Finished queued sync ") << mFetchItemsJobQueue.head().col << mFetchItemsJobQueue.head().col.id();
 
     mFetchItemsJobQueue.dequeue();
 
@@ -1084,7 +1086,7 @@ void EwsResource::foldersModifiedCollectionSyncFinished(KJob *job)
 
     auto fetchColJob = qobject_cast<CollectionFetchJob *>(job);
     const auto collection = fetchColJob->collections().at(0);
-    queueFetchItemsJob(collection, [this](EwsFetchItemsJob *fetchJob) {
+    queueFetchItemsJob(collection, SubscriptionSync, [this](EwsFetchItemsJob *fetchJob) {
         auto collection = fetchJob->collection();
         if (fetchJob->error()) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Item fetch error:") << fetchJob->errorString() << fetchJob->error();
@@ -1464,7 +1466,7 @@ QString EwsResource::dumpResourceToString() const
 {
     QString dump = QStringLiteral("item sync queue (%1):\n").arg(mFetchItemsJobQueue.count());
 
-    for (const auto &item : std::as_const(mFetchItemsJobQueue)) {
+    for (const auto &item : qAsConst(mFetchItemsJobQueue)) {
         dump += QStringLiteral(" %1:%2\n").arg(item.col.id()).arg(item.type);
     }
 
