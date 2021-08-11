@@ -63,7 +63,7 @@ EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob()
 {
 }
 
-void EwsFetchCalendarDetailJob::processItems(const QList<EwsGetItemRequest::Response> &responses)
+void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {
     Item::List::iterator it = mChangedItems.begin();
     KCalendarCore::ICalFormat format;

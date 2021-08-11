@@ -34,7 +34,7 @@ public:
     void start() override;
 
 protected:
-    virtual void processItems(const QList<EwsGetItemRequest::Response> &responses) = 0;
+    virtual void processItems(const EwsGetItemRequest::Response::List &responses) = 0;
 
     QPointer<EwsGetItemRequest> mRequest;
     Akonadi::Item::List mChangedItems;

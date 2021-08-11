@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <QList>
+#include <QVector>
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"
@@ -20,6 +20,8 @@ public:
     class Response : public EwsRequest::Response
     {
     public:
+        typedef QVector<Response> List;
+
         explicit Response(QXmlStreamReader &reader);
         bool parseItems(QXmlStreamReader &reader);
         const EwsItem &item() const
@@ -39,7 +41,7 @@ public:
 
     void start() override;
 
-    const QList<Response> &responses() const
+    const Response::List &responses() const
     {
         return mResponses;
     }
@@ -51,6 +53,6 @@ protected:
 private:
     EwsId::List mIds;
     EwsItemShape mShape;
-    QList<Response> mResponses;
+    Response::List mResponses;
 };
 

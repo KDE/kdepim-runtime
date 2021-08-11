@@ -24,7 +24,7 @@ EwsFetchAbchContactDetailsJob::~EwsFetchAbchContactDetailsJob()
 {
 }
 
-void EwsFetchAbchContactDetailsJob::processItems(const QList<EwsGetItemRequest::Response> &responses)
+void EwsFetchAbchContactDetailsJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {
     Item::List::iterator it = mChangedItems.begin();
 

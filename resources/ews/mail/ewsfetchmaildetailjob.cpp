@@ -50,7 +50,7 @@ EwsFetchMailDetailJob::~EwsFetchMailDetailJob()
 {
 }
 
-void EwsFetchMailDetailJob::processItems(const QList<EwsGetItemRequest::Response> &responses)
+void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {
     Item::List::iterator it = mChangedItems.begin();
 

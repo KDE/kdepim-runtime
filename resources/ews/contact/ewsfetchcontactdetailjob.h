@@ -16,6 +16,6 @@ public:
     ~EwsFetchContactDetailJob() override;
 
 protected:
-    void processItems(const QList<EwsGetItemRequest::Response> &responses) override;
+    void processItems(const EwsGetItemRequest::Response::List &responses) override;
 };
 

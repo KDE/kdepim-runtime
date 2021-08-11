@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <QList>
 #include <QSharedPointer>
+#include <QVector>
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"
@@ -76,6 +76,8 @@ public:
     class ItemChange
     {
     public:
+        typedef QVector<ItemChange> List;
+
         ItemChange(const EwsId &itemId, EwsItemType type)
             : mId(itemId)
             , mType(type)
@@ -92,12 +94,14 @@ public:
     private:
         EwsId mId;
         EwsItemType mType;
-        QList<QSharedPointer<const Update>> mUpdates;
+        QVector<QSharedPointer<const Update>> mUpdates;
     };
 
     class Response : public EwsRequest::Response
     {
     public:
+        typedef QVector<Response> List;
+
         const EwsId &itemId() const
         {
             return mId;
@@ -147,7 +151,7 @@ public:
 
     void start() override;
 
-    const QList<Response> &responses() const
+    const Response::List &responses() const
     {
         return mResponses;
     }
@@ -157,11 +161,11 @@ protected:
     bool parseItemsResponse(QXmlStreamReader &reader);
 
 private:
-    QList<ItemChange> mChanges;
+    ItemChange::List mChanges;
     EwsMessageDisposition mMessageDisp;
     EwsConflictResolution mConflictResol;
     EwsMeetingDisposition mMeetingDisp;
     EwsId mSavedFolderId;
-    QList<Response> mResponses;
+    Response::List mResponses;
 };
 

@@ -58,6 +58,7 @@ void EwsGetItemRequest::start()
 
 bool EwsGetItemRequest::parseResult(QXmlStreamReader &reader)
 {
+    mResponses.reserve(mIds.size());
     return parseResponseMessage(reader, QStringLiteral("GetItem"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });

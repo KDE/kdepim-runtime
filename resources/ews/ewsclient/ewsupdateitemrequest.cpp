@@ -89,6 +89,7 @@ void EwsUpdateItemRequest::start()
 
 bool EwsUpdateItemRequest::parseResult(QXmlStreamReader &reader)
 {
+    mResponses.reserve(mChanges.size());
     return parseResponseMessage(reader, QStringLiteral("UpdateItem"), [this](QXmlStreamReader &reader) {
         return parseItemsResponse(reader);
     });
