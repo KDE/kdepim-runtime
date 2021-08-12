@@ -129,6 +129,14 @@ public:
         mChanges.append(change);
     }
 
+    void addItemChanges(ItemChange::List::const_iterator firstChange, ItemChange::List::const_iterator lastChange)
+    {
+        mChanges.reserve(mChanges.size() + lastChange - firstChange);
+        for (auto it = firstChange; it != lastChange; ++it) {
+            mChanges.append(*it);
+        }
+    }
+
     void setMessageDisposition(EwsMessageDisposition disp)
     {
         mMessageDisp = disp;

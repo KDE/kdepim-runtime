@@ -63,9 +63,7 @@ void EwsModifyMailJob::start()
         mChunkedJob.start(
             [this](EwsUpdateItemRequest::ItemChange::List::const_iterator firstChange, EwsUpdateItemRequest::ItemChange::List::const_iterator lastChange) {
                 auto req = new EwsUpdateItemRequest(mClient, this);
-                for (auto it = firstChange; it != lastChange; ++it) {
-                    req->addItemChange(*it);
-                }
+                req->addItemChanges(firstChange, lastChange);
                 return req;
             },
             [](EwsUpdateItemRequest *req) {
