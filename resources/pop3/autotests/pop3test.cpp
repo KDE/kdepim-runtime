@@ -49,12 +49,20 @@ void Pop3Test::initTestCase()
     //
     AgentType maildirType = AgentManager::self()->type(QStringLiteral("akonadi_maildir_resource"));
     auto agentCreateJob = new AgentInstanceCreateJob(maildirType);
-    QVERIFY(agentCreateJob->exec());
+    const bool maildirCreateSuccess = agentCreateJob->exec();
+    if (!maildirCreateSuccess) {
+        qWarning() << "Failed to create maildir resource:" << agentCreateJob->errorString();
+    }
+    QVERIFY(maildirCreateSuccess);
     mMaildirIdentifier = agentCreateJob->instance().identifier();
 
     AgentType popType = AgentManager::self()->type(QStringLiteral("akonadi_pop3_resource"));
     agentCreateJob = new AgentInstanceCreateJob(popType);
-    QVERIFY(agentCreateJob->exec());
+    const bool pop3CreateSuccess = agentCreateJob->exec();
+    if (!pop3CreateSuccess) {
+        qWarning() << "Failed to create pop3 resource:" << agentCreateJob->errorString();
+    }
+    QVERIFY(pop3CreateSuccess);
     mPop3Identifier = agentCreateJob->instance().identifier();
 
     //
