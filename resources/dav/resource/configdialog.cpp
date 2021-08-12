@@ -27,6 +27,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
+    setWindowTitle(i18nc("@title:window", "Dav resource configuration dialog"));
     auto mainLayout = new QVBoxLayout(this);
     auto mainWidget = new QWidget(this);
     mainLayout->addWidget(mainWidget);
