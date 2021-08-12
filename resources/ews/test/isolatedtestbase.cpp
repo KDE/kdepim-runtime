@@ -126,7 +126,6 @@ TestAgentInstance::TestAgentInstance(const QString &url)
     QVERIFY(usernameReply.value() == username);
 
     mEwsWalletInterface->setTestPassword(QStringLiteral("test"));
-    mEwsWalletInterface->save();
     AgentManager::self()->instance(mIdentifier).reconfigure();
 }
 
