@@ -157,9 +157,12 @@ void Pop3Test::initTestCase()
 
 void Pop3Test::cleanupTestCase()
 {
-    mFakeServerThread->quit();
-    if (!mFakeServerThread->wait(10000)) {
-        qWarning() << "The fake server thread has not yet finished, what is wrong!?";
+    // test might have failed before thread got created
+    if (mFakeServerThread) {
+        mFakeServerThread->quit();
+        if (!mFakeServerThread->wait(10000)) {
+            qWarning() << "The fake server thread has not yet finished, what is wrong!?";
+        }
     }
 }
 
