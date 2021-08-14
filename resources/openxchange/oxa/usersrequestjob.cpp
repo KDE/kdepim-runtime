@@ -14,6 +14,8 @@
 
 #include <kio/davjob.h>
 
+#include <QDomDocument>
+
 using namespace OXA;
 
 UsersRequestJob::UsersRequestJob(QObject *parent)
@@ -52,7 +54,10 @@ void UsersRequestJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
-    const QDomDocument document = davJob->response();
+    const QByteArray ba = davJob->responseData();
+
+    QDomDocument document;
+    document.setContent(ba);
 
     QDomElement multistatus = document.documentElement();
     QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));

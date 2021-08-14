@@ -15,6 +15,9 @@
 
 #include <kio/davjob.h>
 
+#include <QDomDocument>
+#include <QDomElement>
+
 using namespace OXA;
 
 ObjectDeleteJob::ObjectDeleteJob(const Object &object, QObject *parent)
@@ -51,7 +54,10 @@ void ObjectDeleteJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
-    const QDomDocument document = davJob->response();
+    const QByteArray ba = davJob->responseData();
+
+    QDomDocument document;
+    document.setContent(ba);
 
     QString errorText, errorStatus;
     if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {

@@ -14,6 +14,8 @@
 
 #include <kio/davjob.h>
 
+#include <QDomDocument>
+
 using namespace OXA;
 
 FolderModifyJob::FolderModifyJob(const Folder &folder, QObject *parent)
@@ -55,8 +57,10 @@ void FolderModifyJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
-    const QDomDocument document = davJob->response();
+    const QByteArray ba = davJob->responseData();
 
+    QDomDocument document;
+    document.setContent(ba);
     QString errorText, errorStatus;
     if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
         setError(UserDefinedError);

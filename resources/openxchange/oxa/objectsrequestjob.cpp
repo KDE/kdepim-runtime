@@ -15,6 +15,8 @@
 
 #include <kio/davjob.h>
 
+#include <QDomDocument>
+
 using namespace OXA;
 
 ObjectsRequestJob::ObjectsRequestJob(const Folder &folder, qulonglong lastSync, Mode mode, QObject *parent)
@@ -60,7 +62,10 @@ void ObjectsRequestJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
-    const QDomDocument document = davJob->response();
+    const QByteArray ba = davJob->responseData();
+
+    QDomDocument document;
+    document.setContent(ba);
 
     QString errorText, errorStatus;
     if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
