@@ -49,21 +49,16 @@ set(KF5_MIN_VERSION "5.85.0")
 find_package(ECM ${KF5_MIN_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
 
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
 
 include(ECMSetupVersion)
 include(FeatureSummary)
 include(KDEGitCommitHooks)
-include(KDEInstallDirs)
-include(KDECMakeSettings)
-set(KDE_COMPILERSETTINGS_LEVEL 5.85.0)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(ECMInstallIcons)
 include(ECMQtDeclareLoggingCategory)
 include(GenerateExportHeader)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 
 set(QT_REQUIRED_VERSION "5.15.0")
 
@@ -161,9 +156,12 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055600)
 find_package(Xsltproc)
 set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
-add_definitions(-DQT_NO_EMIT)
+
+# added by KDE_COMPILERSETTINGS_LEVEL 5.85
 remove_definitions(-DQT_NO_FOREACH)
 remove_definitions(-DQT_NO_KEYWORDS)
+# add instead
+add_definitions(-DQT_NO_EMIT)
 add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS)
 
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
