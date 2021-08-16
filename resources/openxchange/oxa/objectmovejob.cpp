@@ -13,9 +13,9 @@
 #include "objectutils.h"
 #include "oxutils.h"
 
-#include <kio/davjob.h>
-
 #include <QDomDocument>
+#include <kdav_version.h>
+#include <kio/davjob.h>
 
 using namespace OXA;
 
@@ -59,10 +59,13 @@ void ObjectMoveJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
+#if KDAV_VERSION > QT_VERSION_CHECK(5, 85, 0)
     const QByteArray ba = davJob->responseData();
-
     QDomDocument document;
     document.setContent(ba);
+#else
+    const QDomDocument document = davJob->response();
+#endif
 
     QString errorText, errorStatus;
     if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {

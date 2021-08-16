@@ -12,6 +12,7 @@
 #include "davutils.h"
 #include "folderutils.h"
 #include "oxutils.h"
+#include <kdav_version.h>
 
 #include <kio/davjob.h>
 
@@ -53,10 +54,13 @@ void FolderCreateJob::davJobFinished(KJob *job)
     }
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
-
+#if KDAV_VERSION > QT_VERSION_CHECK(5, 85, 0)
     const QByteArray ba = davJob->responseData();
     QDomDocument document;
     document.setContent(ba);
+#else
+    const QDomDocument document = davJob->response();
+#endif
 
     QString errorText, errorStatus;
     if (DAVUtils::davErrorOccurred(document, errorText, errorStatus)) {
