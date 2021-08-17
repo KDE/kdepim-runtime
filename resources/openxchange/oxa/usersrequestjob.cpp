@@ -12,8 +12,8 @@
 #include "davutils.h"
 #include "oxutils.h"
 
-#include <kdav_version.h>
 #include <kio/davjob.h>
+#include <kio_version.h>
 
 #include <QDomDocument>
 
@@ -55,7 +55,7 @@ void UsersRequestJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
-#if KDAV_VERSION > QT_VERSION_CHECK(5, 85, 0)
+#if KIO_VERSION > QT_VERSION_CHECK(5, 85, 0)
     const QByteArray ba = davJob->responseData();
     QDomDocument document;
     document.setContent(ba);
