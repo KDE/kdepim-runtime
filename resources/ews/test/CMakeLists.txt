@@ -7,7 +7,7 @@ include_directories(../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/fakeserver)
 
-set(isolatestestcommon_SRCS isolatedtestbase.cpp statemonitor.cpp isolatedtestcommon.qrc)
+set(isolatestestcommon_SRCS isolatedtestbase.cpp statemonitor.cpp)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../ewsresource.kcfg org.kde.Akonadi.Ews.Settings)
 set(ewssettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml)
@@ -32,6 +32,6 @@ target_link_libraries(isolatedtestcommon
 add_subdirectory(unittests)
 add_subdirectory(fakeserver)
 if (KDEPIM_RUN_AKONADI_TEST)
-	add_akonadi_isolated_test_advanced(ewstest.cpp "${isolatestestcommon_RSRCS}" "isolatedtestcommon")
-	add_akonadi_isolated_test_advanced(serverbusytest.cpp "${isolatestestcommon_RSRCS}" "isolatedtestcommon")
+	add_akonadi_isolated_test_advanced(ewstest.cpp isolatedtestcommon.qrc "isolatedtestcommon")
+	add_akonadi_isolated_test_advanced(serverbusytest.cpp isolatedtestcommon.qrc "isolatedtestcommon")
 endif()
