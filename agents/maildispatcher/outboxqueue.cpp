@@ -25,6 +25,9 @@
 #include <MailTransportAkonadi/DispatchModeAttribute>
 #include <MailTransportAkonadi/SentBehaviourAttribute>
 #include <MailTransportAkonadi/TransportAttribute>
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 using namespace Akonadi;
 using namespace MailTransport;
@@ -327,7 +330,7 @@ OutboxQueue::OutboxQueue(QObject *parent)
 
     mFutureTimer = new QTimer(this);
     connect(mFutureTimer, &QTimer::timeout, this, &OutboxQueue::checkFuture);
-    mFutureTimer->start(60 * 60 * 1000); // 1 hour
+    mFutureTimer->start(1h); // 1 hour
 }
 
 OutboxQueue::~OutboxQueue()
