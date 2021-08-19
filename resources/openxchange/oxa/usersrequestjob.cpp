@@ -13,6 +13,9 @@
 #include "oxutils.h"
 
 #include <kio/davjob.h>
+#include <kio_version.h>
+
+#include <QDomDocument>
 
 using namespace OXA;
 
@@ -52,7 +55,13 @@ void UsersRequestJob::davJobFinished(KJob *job)
 
     auto davJob = qobject_cast<KIO::DavJob *>(job);
 
+#if KIO_VERSION > QT_VERSION_CHECK(5, 85, 0)
+    const QByteArray ba = davJob->responseData();
+    QDomDocument document;
+    document.setContent(ba);
+#else
     const QDomDocument document = davJob->response();
+#endif
 
     QDomElement multistatus = document.documentElement();
     QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));

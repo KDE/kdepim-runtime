@@ -71,7 +71,7 @@
     <widget class="QLineEdit" name="remoteUrl"/>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel">
+    <widget class="QLabel" name="label">
      <property name="text">
       <string>Access:</string>
      </property>

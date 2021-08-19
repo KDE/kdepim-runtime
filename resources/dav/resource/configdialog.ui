@@ -185,7 +185,7 @@
     </layout>
    </item>
    <item row="6" column="0" colspan="2">
-    <widget class="QLabel">
+    <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Server Configuration:</string>
      </property>
