@@ -30,6 +30,8 @@ public:
     ~ServerInfoDialog() override;
 
 private:
+    void writeConfig();
+    void readConfig();
     ServerInfoTextBrowser *const mTextBrowser;
 };
 

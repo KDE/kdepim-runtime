@@ -8,12 +8,18 @@
 #include "serverinfodialog.h"
 #include "imapresource.h"
 
+#include <KConfigGroup>
 #include <KLocalizedString>
+#include <KSharedConfig>
 #include <QDialogButtonBox>
 #include <QPainter>
 #include <QPushButton>
 #include <QVBoxLayout>
 
+namespace
+{
+static const char myServerInfoDialogConfigGroupName[] = "ServerInfoDialog";
+}
 ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *parent)
     : QDialog(parent)
     , mTextBrowser(new ServerInfoTextBrowser(this))
@@ -28,10 +34,27 @@ ServerInfoDialog::ServerInfoDialog(ImapResourceBase *parentResource, QWidget *pa
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ServerInfoDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ServerInfoDialog::reject);
     mainLayout->addWidget(buttonBox);
+    readConfig();
 }
 
 ServerInfoDialog::~ServerInfoDialog()
 {
+    writeConfig();
+}
+
+void ServerInfoDialog::writeConfig()
+{
+    KConfigGroup group(KSharedConfig::openStateConfig(), myServerInfoDialogConfigGroupName);
+    group.writeEntry("Size", size());
+}
+
+void ServerInfoDialog::readConfig()
+{
+    KConfigGroup group(KSharedConfig::openStateConfig(), myServerInfoDialogConfigGroupName);
+    const QSize sizeDialog = group.readEntry("Size", QSize(500, 300));
+    if (sizeDialog.isValid()) {
+        resize(sizeDialog);
+    }
 }
 
 ServerInfoTextBrowser::ServerInfoTextBrowser(QWidget *parent)
