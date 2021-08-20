@@ -169,7 +169,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->folderRequester->setAccessRightsFilter(Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem);
     m_ui->folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
     m_identityCombobox = new KIdentityManagement::IdentityCombo(KIdentityManagement::IdentityManager::self(), this);
-    m_identityCombobox->showDefault(true);
+    m_identityCombobox->setShowDefault(true);
     m_ui->formLayoutAdvanced->insertRow(3, i18n("Identity:"), m_identityCombobox);
 
     connect(m_ui->testButton, &QPushButton::pressed, this, &SetupServer::slotTest);
