@@ -714,7 +714,7 @@ Akonadi::Item::Flags Maildir::readEntryFlags(const QString &key) const
     const QRegularExpression rx = statusSeparatorRx();
     const int index = key.indexOf(rx);
     if (index != -1) {
-        const QStringRef mailDirFlags = key.midRef(index + 3); // after "(:|!)2,"
+        const QStringView mailDirFlags = QStringView(key).mid(index + 3); // after "(:|!)2,"
         const int flagSize(mailDirFlags.size());
         for (int i = 0; i < flagSize; ++i) {
             const QChar flag = mailDirFlags.at(i);
