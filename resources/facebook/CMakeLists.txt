@@ -1,10 +1,14 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_facebook_resource\")
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 
+add_library(facebookresourcelib STATIC)
+ecm_qt_declare_logging_category(facebookresourcelib HEADER resource_debug.h IDENTIFIER FBRESOURCE_LOG CATEGORY_NAME org.kde.pim.fbresource)
+
 set(fbresource_common_SRCS)
 kconfig_add_kcfg_files(fbresource_common_SRCS settings.kcfgc)
+kcfg_generate_dbus_interface(settings.kcfg org.kde.Akonadi.Facebook.Settings )
 
-set(fbresource_SRCS
+target_sources(facebookresourcelib PRIVATE
     listjob.cpp
     eventslistjob.cpp
     birthdaylistjob.cpp
@@ -13,11 +17,6 @@ set(fbresource_SRCS
     ${fbresource_common_SRCS}
 )
 
-ecm_qt_declare_logging_category(fbresource_SRCS HEADER resource_debug.h IDENTIFIER FBRESOURCE_LOG CATEGORY_NAME org.kde.pim.fbresource)
-
-kcfg_generate_dbus_interface(settings.kcfg org.kde.Akonadi.Facebook.Settings )
-
-add_library(facebookresourcelib STATIC ${fbresource_SRCS})
 
 target_link_libraries(facebookresourcelib
     KF5::KIOWidgets
@@ -31,9 +30,7 @@ target_link_libraries(facebookresourcelib
 
 #####
 
-set(akonadi_facebook_resource_SRCS resource.cpp)
-
-add_executable(akonadi_facebook_resource ${akonadi_facebook_resource_SRCS})
+add_executable(akonadi_facebook_resource resource.cpp)
 target_link_libraries(akonadi_facebook_resource
     facebookresourcelib
     KF5::AkonadiAgentBase
