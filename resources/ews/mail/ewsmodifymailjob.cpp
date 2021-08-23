@@ -1,5 +1,5 @@
 /*
-    SPDX-FileCopyrightText: 2015-2020 Krzysztof Nowicki <krissn@op.pl>
+    SPDX-FileCopyrightText: 2015-2021 Krzysztof Nowicki <krissn@op.pl>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
@@ -91,7 +91,7 @@ void EwsModifyMailJob::updateItemsFinished(bool success, const QString &error)
     Item::List::iterator it = mItems.begin();
     for (const auto &resp : mChunkedJob.responses()) {
         if (!resp.isSuccess()) {
-            setErrorText(QStringLiteral("Item update failed: ") + resp.responseMessage());
+            setErrorText(i18nc("@info:status", "Item update failed: ") + resp.responseMessage());
             emitResult();
             return;
         }
