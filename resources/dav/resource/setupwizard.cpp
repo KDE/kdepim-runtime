@@ -8,10 +8,11 @@
 
 #include <KAuthorized>
 #include <KDAV/DavCollectionsMultiFetchJob>
+#include <KDesktopFile>
+#include <KFileUtils>
 #include <KLocalizedString>
 #include <KPasswordLineEdit>
 #include <KService>
-#include <KServiceTypeTrader>
 #include <QIcon>
 #include <QLineEdit>
 #include <QTextBrowser>
@@ -25,6 +26,7 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QRegularExpressionValidator>
+#include <QStandardPaths>
 #include <QUrl>
 
 enum GroupwareServers {
@@ -227,15 +229,18 @@ int CredentialsPage::nextId() const
 {
     QString userName = field(QStringLiteral("credentialsUserName")).toString();
     if (userName.endsWith(QLatin1String("@yahoo.com"))) {
-        KService::List offers;
-        offers = KServiceTypeTrader::self()->query(QStringLiteral("DavGroupwareProvider"), QStringLiteral("Name == 'Yahoo!'"));
-        if (offers.isEmpty()) {
+        const QString maybeYahooFile =
+            QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("kservices5/akonadi/davgroupware-providers/yahoo.desktop"));
+
+        if (maybeYahooFile.isEmpty()) {
             return SetupWizard::W_ServerTypePage;
         }
 
+        const KDesktopFile yahooProvider(maybeYahooFile);
+
         wizard()->setProperty("usePredefinedProvider", true);
-        wizard()->setProperty("predefinedProviderName", offers.at(0)->name());
-        wizard()->setProperty("providerDesktopFilePath", offers.at(0)->entryPath());
+        wizard()->setProperty("predefinedProviderName", yahooProvider.readName());
+        wizard()->setProperty("providerDesktopFilePath", maybeYahooFile);
         return SetupWizard::W_PredefinedProviderPage;
     } else {
         return SetupWizard::W_ServerTypePage;
@@ -309,12 +314,17 @@ ServerTypePage::ServerTypePage(QWidget *parent)
 
     mProvidersCombo = new QComboBox(this);
     mProvidersCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-    KServiceTypeTrader *trader = KServiceTypeTrader::self();
-    const KService::List providers = trader->query(QStringLiteral("DavGroupwareProvider"));
+
+    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation,
+                                                       QStringLiteral("kservices5/akonadi/davgroupware-providers"),
+                                                       QStandardPaths::LocateDirectory);
+    const QStringList providers = KFileUtils::findAllUniqueFiles(dirs, QStringList{QStringLiteral("*.desktop")});
+
     QList<QPair<QString, QString>> offers;
     offers.reserve(providers.count());
-    for (const KService::Ptr &provider : providers) {
-        offers.append(QPair<QString, QString>(provider->name(), provider->entryPath()));
+    for (const QString &fileName : providers) {
+        const KDesktopFile provider(fileName);
+        offers.append(QPair<QString, QString>(provider.readName(), fileName));
     }
     std::sort(offers.begin(), offers.end(), compareServiceOffers);
     QListIterator<QPair<QString, QString>> it(offers);
