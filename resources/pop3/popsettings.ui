@@ -6,11 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>451</width>
-    <height>636</height>
+    <width>753</width>
+    <height>725</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -23,7 +23,7 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
+   <item row="0" column="0">
     <widget class="QLabel" name="titleLabel">
      <property name="font">
       <font>
@@ -36,11 +36,14 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="KSeparator" name="kseparator"/>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QTabWidget" name="tabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -48,7 +51,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -57,499 +60,542 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="2" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupBox_4">
-         <property name="title">
-          <string>Mail Checking Options</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <item>
-           <widget class="QCheckBox" name="intervalCheck">
-            <property name="toolTip">
-             <string>If active, the POP3 account will be checked for new mail every x minutes</string>
-            </property>
-            <property name="text">
-             <string>Enable &amp;interval mail checking</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="intervalLabel">
-              <property name="text">
-               <string>Check mail interval:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="KPluralHandlingSpinBox" name="intervalSpin">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>10000000</number>
-              </property>
-              <property name="value">
-               <number>5</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="title">
-          <string>Account Information</string>
-         </property>
-         <layout class="QFormLayout" name="formLayout">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::ExpandingFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="whatsThis">
-             <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
-            </property>
-            <property name="text">
-             <string>Account &amp;name:</string>
-            </property>
-            <property name="buddy">
-             <cstring>nameEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="nameEdit">
-            <property name="toolTip">
-             <string>Name displayed in the list of accounts</string>
-            </property>
-            <property name="whatsThis">
-             <string>Account name: This defines the name displayed in the account list.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Incoming &amp;mail server:</string>
-            </property>
-            <property name="buddy">
-             <cstring>hostEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="hostEdit">
-            <property name="toolTip">
-             <string>Address of the mail POP3 server</string>
-            </property>
-            <property name="whatsThis">
-             <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Use&amp;rname:</string>
-            </property>
-            <property name="buddy">
-             <cstring>loginEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="loginEdit">
-            <property name="toolTip">
-             <string>The username that identifies you against the mail server</string>
-            </property>
-            <property name="whatsThis">
-             <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="passwordLabel">
-            <property name="text">
-             <string>P&amp;assword:</string>
-            </property>
-            <property name="buddy">
-             <cstring>passwordEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="KPasswordLineEdit" name="passwordEdit">
-            <property name="toolTip">
-             <string>Password for access to the mail server</string>
-            </property>
-            <property name="whatsThis">
-             <string>Password: The password given to you by your mail provider.</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
+      <widget class="KTitleWidget" name="ktitlewidget_3">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>493</y>
+         <width>733</width>
+         <height>156</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="KTitleWidget" name="ktitlewidget_4">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>6</y>
+         <width>195</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Account Information</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>40</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="whatsThis">
+        <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
+       </property>
+       <property name="text">
+        <string>Account &amp;name:</string>
+       </property>
+       <property name="buddy">
+        <cstring>nameEdit</cstring>
+       </property>
+      </widget>
+      <widget class="KPasswordLineEdit" name="passwordEdit">
+       <property name="geometry">
+        <rect>
+         <x>157</x>
+         <y>154</y>
+         <width>581</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Password for access to the mail server</string>
+       </property>
+       <property name="whatsThis">
+        <string>Password: The password given to you by your mail provider.</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="nameEdit">
+       <property name="geometry">
+        <rect>
+         <x>157</x>
+         <y>40</y>
+         <width>581</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Name displayed in the list of accounts</string>
+       </property>
+       <property name="whatsThis">
+        <string>Account name: This defines the name displayed in the account list.</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>80</y>
+         <width>133</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Incoming &amp;mail server:</string>
+       </property>
+       <property name="buddy">
+        <cstring>hostEdit</cstring>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="hostEdit">
+       <property name="geometry">
+        <rect>
+         <x>157</x>
+         <y>78</y>
+         <width>581</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>Address of the mail POP3 server</string>
+       </property>
+       <property name="whatsThis">
+        <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="loginEdit">
+       <property name="geometry">
+        <rect>
+         <x>157</x>
+         <y>116</y>
+         <width>581</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>The username that identifies you against the mail server</string>
+       </property>
+       <property name="whatsThis">
+        <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="passwordLabel">
+       <property name="geometry">
+        <rect>
+         <x>88</x>
+         <y>150</y>
+         <width>63</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>P&amp;assword:</string>
+       </property>
+       <property name="buddy">
+        <cstring>passwordEdit</cstring>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>84</x>
+         <y>120</y>
+         <width>67</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Use&amp;rname:</string>
+       </property>
+       <property name="buddy">
+        <cstring>loginEdit</cstring>
+       </property>
+      </widget>
+      <widget class="KTitleWidget" name="ktitlewidget_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>200</y>
+         <width>631</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Mail Checking Options</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="intervalCheck">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>250</y>
+         <width>321</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>If active, the POP3 account will be checked for new mail every x minutes</string>
+       </property>
+       <property name="text">
+        <string>Enable &amp;interval mail checking</string>
+       </property>
+      </widget>
+      <widget class="KPluralHandlingSpinBox" name="intervalSpin">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>290</y>
+         <width>101</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10000000</number>
+       </property>
+       <property name="value">
+        <number>5</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="intervalLabel">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>290</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Check mail interval:</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="page2">
       <attribute name="title">
        <string>Advanced</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <widget class="QGroupBox" name="groupBox_5">
-         <property name="title">
-          <string>POP Settings</string>
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0" colspan="2">
+        <widget class="KTitleWidget" name="ktitlewidget">
+         <property name="text">
+          <string>Pop Settings</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="leaveOnServerCheck">
-            <property name="toolTip">
-             <string>If checked the message is not deleted from the mail server</string>
-            </property>
-            <property name="whatsThis">
-             <string>Check this option if you want to fetch only copies of the mails and leave the original mails on the server.</string>
-            </property>
-            <property name="text">
-             <string>Lea&amp;ve fetched messages on the server</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="leaveOnServerDaysCheck">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>The original message is deleted from the server after x days</string>
-            </property>
-            <property name="text">
-             <string>Days to leave messages on the server:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="leaveOnServerDaysSpin">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>365</number>
-            </property>
-            <property name="value">
-             <number>1</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="leaveOnServerCountCheck">
-            <property name="toolTip">
-             <string>Only the x most recent messages are kept on the server</string>
-            </property>
-            <property name="whatsThis">
-             <string>Check this option if you want to only keep the x most recent messages on the server and delete all older.</string>
-            </property>
-            <property name="text">
-             <string>Number of messages to keep:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="leaveOnServerCountSpin">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimum">
-             <number>0</number>
-            </property>
-            <property name="maximum">
-             <number>999999</number>
-            </property>
-            <property name="value">
-             <number>99</number>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="leaveOnServerSizeCheck">
-            <property name="toolTip">
-             <string>Keep most recent messages within the quota and delete oldest</string>
-            </property>
-            <property name="whatsThis">
-             <string>If active, most recent messages are kept until the quota is reached and oldest messages are deleted.</string>
-            </property>
-            <property name="text">
-             <string>Maximum megabytes to keep:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QSpinBox" name="leaveOnServerSizeSpin">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="suffix">
-             <string> MB</string>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>999999</number>
-            </property>
-            <property name="value">
-             <number>10</number>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="filterOnServerCheck">
-            <property name="whatsThis">
-             <string>If you select this option, POP Filters will be used to decide what to do with messages. You can then select to download, delete or keep them on the server.</string>
-            </property>
-            <property name="text">
-             <string>&amp;Filter messages larger than:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QSpinBox" name="filterOnServerSizeSpin">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="whatsThis">
-             <string>If you select this option, POP Filters will be used to decide what to do with messages. You can then select to download, delete or keep them on the server.</string>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>10000000</number>
-            </property>
-            <property name="value">
-             <number>99</number>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QCheckBox" name="usePipeliningCheck">
-            <property name="text">
-             <string>&amp;Use pipelining for faster mail download</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0" colspan="2">
-           <layout class="QGridLayout" name="gridLayout">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetMinimumSize</enum>
-            </property>
-            <property name="spacing">
-             <number>4</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_8">
-              <property name="text">
-               <string>Destination folder:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="preCommandLabel">
-              <property name="text">
-               <string>Pre-com&amp;mand:</string>
-              </property>
-              <property name="buddy">
-               <cstring>precommand</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="precommand">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="toolTip">
-               <string>Command that is executed before checking mail</string>
-              </property>
-              <property name="showClearButton" stdset="0">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="Akonadi::CollectionRequester" name="folderRequester"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
         </widget>
        </item>
-       <item>
-        <widget class="QGroupBox" name="safeImap">
-         <property name="whatsThis">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+       <item row="1" column="1">
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="leaveOnServerCheck">
+           <property name="toolTip">
+            <string>If checked the message is not deleted from the mail server</string>
+           </property>
+           <property name="whatsThis">
+            <string>Check this option if you want to fetch only copies of the mails and leave the original mails on the server.</string>
+           </property>
+           <property name="text">
+            <string>Lea&amp;ve fetched messages on the server</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="leaveOnServerDaysCheck">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>The original message is deleted from the server after x days</string>
+           </property>
+           <property name="text">
+            <string>Days to leave messages on the server:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QSpinBox" name="leaveOnServerDaysSpin">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>365</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="leaveOnServerCountCheck">
+           <property name="toolTip">
+            <string>Only the x most recent messages are kept on the server</string>
+           </property>
+           <property name="whatsThis">
+            <string>Check this option if you want to only keep the x most recent messages on the server and delete all older.</string>
+           </property>
+           <property name="text">
+            <string>Number of messages to keep:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QSpinBox" name="leaveOnServerCountSpin">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="minimum">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <number>999999</number>
+           </property>
+           <property name="value">
+            <number>99</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QCheckBox" name="leaveOnServerSizeCheck">
+           <property name="toolTip">
+            <string>Keep most recent messages within the quota and delete oldest</string>
+           </property>
+           <property name="whatsThis">
+            <string>If active, most recent messages are kept until the quota is reached and oldest messages are deleted.</string>
+           </property>
+           <property name="text">
+            <string>Maximum megabytes to keep:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="leaveOnServerSizeSpin">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="suffix">
+            <string> MB</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>999999</number>
+           </property>
+           <property name="value">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="usePipeliningCheck">
+           <property name="text">
+            <string>&amp;Use pipelining for faster mail download</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
+         </property>
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Destination folder:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="preCommandLabel">
+           <property name="text">
+            <string>Pre-com&amp;mand:</string>
+           </property>
+           <property name="buddy">
+            <cstring>precommand</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="precommand">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Command that is executed before checking mail</string>
+           </property>
+           <property name="showClearButton" stdset="0">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Akonadi::CollectionRequester" name="folderRequester"/>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="KTitleWidget" name="ktitlewidget_2">
+         <property name="text">
+          <string>Connection Settings</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="QStackedWidget" name="checkCapabilitiesStack">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="page">
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="1">
+            <widget class="QPushButton" name="checkCapabilities">
+             <property name="text">
+              <string>Auto Detect</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Encryption:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QRadioButton" name="encryptionNone">
+               <property name="text">
+                <string>None</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="encryptionSSL">
+               <property name="text">
+                <string>SSL/TLS</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="encryptionTLS">
+               <property name="text">
+                <string>STA&amp;RTTLS</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="imapInfo">
+             <property name="text">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'HandelGotDLig'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-weight:600;&quot;&gt;SSL/TLS&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt; is safe IMAP over port 993;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-weight:600;&quot;&gt;STARTTLS&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt; will operate on port 143 and switch to a secure connection directly after connecting;&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-weight:600;&quot;&gt;None&lt;/span&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt; will connect to port 143 but not switch to a secure connection. This setting is not recommended.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="title">
-          <string>Connection Settings</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
-          <item>
-           <widget class="QStackedWidget" name="checkCapabilitiesStack">
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <widget class="QWidget" name="page">
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QPushButton" name="checkCapabilities">
-                <property name="text">
-                 <string>Auto Detect</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             </property>
             </widget>
-            <widget class="QWidget" name="page_2">
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <widget class="QProgressBar" name="checkCapabilitiesProgress">
-                <property name="value">
-                 <number>0</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Port:</string>
+             </property>
             </widget>
-           </widget>
-          </item>
-          <item>
-           <layout class="QFormLayout" name="formLayout_3">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::ExpandingFieldsGrow</enum>
-            </property>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>Encryption:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-               <widget class="QRadioButton" name="encryptionNone">
-                <property name="text">
-                 <string>None</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="encryptionSSL">
-                <property name="text">
-                 <string>SSL/TLS</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="encryptionTLS">
-                <property name="text">
-                 <string>STA&amp;RTTLS</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_12">
-              <property name="text">
-               <string>Authentication:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QComboBox" name="authCombo"/>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_13">
-              <property name="text">
-               <string>Port:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QSpinBox" name="portEdit">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>65534</number>
-              </property>
-              <property name="value">
-               <number>110</number>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0" colspan="2">
-             <widget class="QCheckBox" name="proxyCheck">
-              <property name="text">
-               <string>Connect using the system proxy settings</string>
-              </property>
-              <property name="toolTip">
-               <string>If checked, the system proxy settings will be used to connect to the mail server.</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
+           </item>
+           <item row="3" column="1">
+            <widget class="QSpinBox" name="portEdit">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>65534</number>
+             </property>
+             <property name="value">
+              <number>110</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Authentication:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="authCombo"/>
+           </item>
+           <item row="5" column="1">
+            <widget class="QCheckBox" name="proxyCheck">
+             <property name="toolTip">
+              <string>If checked, the system proxy settings will be used to connect to the mail server.</string>
+             </property>
+             <property name="text">
+              <string>Connect using the system proxy settings</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>78</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_2">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QProgressBar" name="checkCapabilitiesProgress">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
-       <item>
-        <spacer name="verticalSpacer_3">
+       <item row="1" column="0">
+        <spacer name="horizontalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
+           <width>101</width>
            <height>20</height>
           </size>
          </property>
@@ -563,26 +609,31 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
+   <class>KPluralHandlingSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>kpluralhandlingspinbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KPasswordLineEdit</class>
+   <extends>QWidget</extends>
+   <header>kpasswordlineedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>KSeparator</class>
    <extends>QFrame</extends>
    <header>kseparator.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>KPluralHandlingSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>kpluralhandlingspinbox.h</header>
+   <class>KTitleWidget</class>
+   <extends>QWidget</extends>
+   <header>ktitlewidget.h</header>
   </customwidget>
   <customwidget>
    <class>Akonadi::CollectionRequester</class>
    <extends>QFrame</extends>
    <header>CollectionRequester</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>KPasswordLineEdit</class>
-   <extends>QWidget</extends>
-   <header>kpasswordlineedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -591,8 +642,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>hostEdit</tabstop>
   <tabstop>loginEdit</tabstop>
   <tabstop>passwordEdit</tabstop>
-  <tabstop>intervalCheck</tabstop>
-  <tabstop>intervalSpin</tabstop>
   <tabstop>leaveOnServerCheck</tabstop>
   <tabstop>leaveOnServerDaysCheck</tabstop>
   <tabstop>leaveOnServerDaysSpin</tabstop>
@@ -600,8 +649,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>leaveOnServerCountSpin</tabstop>
   <tabstop>leaveOnServerSizeCheck</tabstop>
   <tabstop>leaveOnServerSizeSpin</tabstop>
-  <tabstop>filterOnServerCheck</tabstop>
-  <tabstop>filterOnServerSizeSpin</tabstop>
   <tabstop>usePipeliningCheck</tabstop>
   <tabstop>precommand</tabstop>
   <tabstop>checkCapabilities</tabstop>
