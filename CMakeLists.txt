@@ -154,8 +154,6 @@ option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055600)
-find_package(Xsltproc)
-set_package_properties(Xsltproc PROPERTIES DESCRIPTION "XSLT processor from libxslt" TYPE REQUIRED PURPOSE "Required to generate D-Bus interfaces for all Akonadi resources.")
 
 # added by KDE_COMPILERSETTINGS_LEVEL 5.85
 remove_definitions(-DQT_NO_FOREACH)
