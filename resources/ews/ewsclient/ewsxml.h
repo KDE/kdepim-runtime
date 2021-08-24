@@ -22,7 +22,7 @@ public:
 
     typedef QHash<T, QVariant> ValueHash;
 
-    static Q_CONSTEXPR T Ignore = static_cast<T>(-1);
+    static constexpr T Ignore = static_cast<T>(-1);
 
     struct Item {
         Item()

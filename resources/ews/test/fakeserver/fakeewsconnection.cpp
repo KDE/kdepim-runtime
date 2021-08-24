@@ -26,7 +26,7 @@ static const QHash<uint, QString> responseCodes = {
     {500, QStringLiteral("Internal Server Error")},
 };
 
-static Q_CONSTEXPR int streamingEventsHeartbeatIntervalSeconds = 5;
+static constexpr int streamingEventsHeartbeatIntervalSeconds = 5;
 
 FakeEwsConnection::FakeEwsConnection(QTcpSocket *sock, FakeEwsServer *parent)
     : QObject(parent)

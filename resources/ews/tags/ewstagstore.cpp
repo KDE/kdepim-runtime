@@ -17,8 +17,8 @@
 
 using namespace Akonadi;
 
-static Q_CONSTEXPR quint32 TagDataVer1 = 1;
-static Q_CONSTEXPR QDataStream::Version TagDataVer1StreamVer = QDataStream::Qt_5_4;
+static constexpr quint32 TagDataVer1 = 1;
+static constexpr QDataStream::Version TagDataVer1StreamVer = QDataStream::Qt_5_4;
 
 EwsTagStore::EwsTagStore(QObject *parent)
     : QObject(parent)

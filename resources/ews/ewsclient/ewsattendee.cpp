@@ -31,7 +31,7 @@ static const QString responseTypeNames[] = {QStringLiteral("Unknown"),
                                             QStringLiteral("Accept"),
                                             QStringLiteral("Decline"),
                                             QStringLiteral("NoResponseReceived")};
-Q_CONSTEXPR unsigned responseTypeNameCount = sizeof(responseTypeNames) / sizeof(responseTypeNames[0]);
+constexpr unsigned responseTypeNameCount = sizeof(responseTypeNames) / sizeof(responseTypeNames[0]);
 
 EwsAttendeePrivate::EwsAttendeePrivate()
     : mValid(false)

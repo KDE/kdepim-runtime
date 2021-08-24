@@ -27,7 +27,7 @@ static const QString dayOfWeekNames[] = {
     QStringLiteral("Weekday"),
     QStringLiteral("WeekendDay"),
 };
-Q_CONSTEXPR unsigned dayOfWeekNameCount = sizeof(dayOfWeekNames) / sizeof(dayOfWeekNames[0]);
+constexpr unsigned dayOfWeekNameCount = sizeof(dayOfWeekNames) / sizeof(dayOfWeekNames[0]);
 
 static const QString dayOfWeekIndexNames[] = {
     QStringLiteral("First"),
@@ -36,7 +36,7 @@ static const QString dayOfWeekIndexNames[] = {
     QStringLiteral("Fourth"),
     QStringLiteral("Last"),
 };
-Q_CONSTEXPR unsigned dayOfWeekIndexNameCount = sizeof(dayOfWeekIndexNames) / sizeof(dayOfWeekIndexNames[0]);
+constexpr unsigned dayOfWeekIndexNameCount = sizeof(dayOfWeekIndexNames) / sizeof(dayOfWeekIndexNames[0]);
 
 static const QString monthNames[] = {
     QStringLiteral("January"),
@@ -52,7 +52,7 @@ static const QString monthNames[] = {
     QStringLiteral("November"),
     QStringLiteral("December"),
 };
-Q_CONSTEXPR unsigned monthNameCount = sizeof(monthNames) / sizeof(monthNames[0]);
+constexpr unsigned monthNameCount = sizeof(monthNames) / sizeof(monthNames[0]);
 
 EwsRecurrence::EwsRecurrence()
     : Recurrence()

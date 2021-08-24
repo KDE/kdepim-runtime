@@ -1470,7 +1470,7 @@ QString EwsResource::dumpResourceToString() const
 {
     QString dump = QStringLiteral("item sync queue (%1):\n").arg(mFetchItemsJobQueue.count());
 
-    for (const auto &item : qAsConst(mFetchItemsJobQueue)) {
+    for (const auto &item : std::as_const(mFetchItemsJobQueue)) {
         dump += QStringLiteral(" %1:%2\n").arg(item.col.id()).arg(item.type);
     }
 

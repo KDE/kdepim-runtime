@@ -26,7 +26,7 @@ using namespace Akonadi;
 
 static const EwsPropertyField propPidTagContainerClass(0x3613, EwsPropTypeString);
 
-static Q_CONSTEXPR int fetchBatchSize = 50;
+static constexpr int fetchBatchSize = 50;
 
 class EwsFetchFoldersJobPrivate : public QObject
 {

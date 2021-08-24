@@ -17,11 +17,11 @@
 #include <QPointer>
 
 // TODO: Allow customization
-static Q_CONSTEXPR uint pollInterval = 10; /* seconds */
+static constexpr uint pollInterval = 10; /* seconds */
 
-static Q_CONSTEXPR uint streamingTimeout = 30; /* minutes */
+static constexpr uint streamingTimeout = 30; /* minutes */
 
-static Q_CONSTEXPR uint streamingConnTimeout = 60; /* seconds */
+static constexpr uint streamingConnTimeout = 60; /* seconds */
 
 EwsSubscriptionManager::EwsSubscriptionManager(EwsClient &client, const EwsId &rootId, EwsSettings *settings, QObject *parent)
     : QObject(parent)

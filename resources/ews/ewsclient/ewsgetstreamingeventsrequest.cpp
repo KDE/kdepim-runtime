@@ -11,7 +11,7 @@
 #include "ewsclient_debug.h"
 #include "ewsxml.h"
 
-static Q_CONSTEXPR uint respChunkTimeout = 250; /* ms */
+static constexpr uint respChunkTimeout = 250; /* ms */
 
 EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QObject *parent)
     : EwsEventRequestBase(client, QStringLiteral("GetStreamingEvents"), parent)
