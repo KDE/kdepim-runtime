@@ -51,7 +51,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="movable">
       <bool>false</bool>
@@ -60,221 +60,151 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <widget class="KTitleWidget" name="ktitlewidget_3">
-       <property name="geometry">
-        <rect>
-         <x>6</x>
-         <y>493</y>
-         <width>733</width>
-         <height>156</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="KTitleWidget" name="ktitlewidget_4">
-       <property name="geometry">
-        <rect>
-         <x>6</x>
-         <y>6</y>
-         <width>195</width>
-         <height>28</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Account Information</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_2">
-       <property name="geometry">
-        <rect>
-         <x>60</x>
-         <y>40</y>
-         <width>91</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="whatsThis">
-        <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
-       </property>
-       <property name="text">
-        <string>Account &amp;name:</string>
-       </property>
-       <property name="buddy">
-        <cstring>nameEdit</cstring>
-       </property>
-      </widget>
-      <widget class="KPasswordLineEdit" name="passwordEdit">
-       <property name="geometry">
-        <rect>
-         <x>157</x>
-         <y>154</y>
-         <width>581</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>Password for access to the mail server</string>
-       </property>
-       <property name="whatsThis">
-        <string>Password: The password given to you by your mail provider.</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="nameEdit">
-       <property name="geometry">
-        <rect>
-         <x>157</x>
-         <y>40</y>
-         <width>581</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>Name displayed in the list of accounts</string>
-       </property>
-       <property name="whatsThis">
-        <string>Account name: This defines the name displayed in the account list.</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_5">
-       <property name="geometry">
-        <rect>
-         <x>18</x>
-         <y>80</y>
-         <width>133</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Incoming &amp;mail server:</string>
-       </property>
-       <property name="buddy">
-        <cstring>hostEdit</cstring>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="hostEdit">
-       <property name="geometry">
-        <rect>
-         <x>157</x>
-         <y>78</y>
-         <width>581</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>Address of the mail POP3 server</string>
-       </property>
-       <property name="whatsThis">
-        <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="loginEdit">
-       <property name="geometry">
-        <rect>
-         <x>157</x>
-         <y>116</y>
-         <width>581</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>The username that identifies you against the mail server</string>
-       </property>
-       <property name="whatsThis">
-        <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="passwordLabel">
-       <property name="geometry">
-        <rect>
-         <x>88</x>
-         <y>150</y>
-         <width>63</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>P&amp;assword:</string>
-       </property>
-       <property name="buddy">
-        <cstring>passwordEdit</cstring>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_3">
-       <property name="geometry">
-        <rect>
-         <x>84</x>
-         <y>120</y>
-         <width>67</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Use&amp;rname:</string>
-       </property>
-       <property name="buddy">
-        <cstring>loginEdit</cstring>
-       </property>
-      </widget>
-      <widget class="KTitleWidget" name="ktitlewidget_5">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>200</y>
-         <width>631</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Mail Checking Options</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="intervalCheck">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>250</y>
-         <width>321</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>If active, the POP3 account will be checked for new mail every x minutes</string>
-       </property>
-       <property name="text">
-        <string>Enable &amp;interval mail checking</string>
-       </property>
-      </widget>
-      <widget class="KPluralHandlingSpinBox" name="intervalSpin">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>290</y>
-         <width>101</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>10000000</number>
-       </property>
-       <property name="value">
-        <number>5</number>
-       </property>
-      </widget>
-      <widget class="QLabel" name="intervalLabel">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>290</y>
-         <width>131</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Check mail interval:</string>
-       </property>
-      </widget>
+      <layout class="QFormLayout" name="formLayout_3">
+       <item row="0" column="0" colspan="2">
+        <widget class="KTitleWidget" name="ktitlewidget_4">
+         <property name="text">
+          <string>Account Information</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="whatsThis">
+          <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
+         </property>
+         <property name="text">
+          <string>Account &amp;name:</string>
+         </property>
+         <property name="buddy">
+          <cstring>nameEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="nameEdit">
+         <property name="toolTip">
+          <string>Name displayed in the list of accounts</string>
+         </property>
+         <property name="whatsThis">
+          <string>Account name: This defines the name displayed in the account list.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Incoming &amp;mail server:</string>
+         </property>
+         <property name="buddy">
+          <cstring>hostEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="hostEdit">
+         <property name="toolTip">
+          <string>Address of the mail POP3 server</string>
+         </property>
+         <property name="whatsThis">
+          <string>The address of the POP3 server, e.g. pop3.yourprovider.org. You should get this address from your mail provider.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Use&amp;rname:</string>
+         </property>
+         <property name="buddy">
+          <cstring>loginEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="loginEdit">
+         <property name="toolTip">
+          <string>The username that identifies you against the mail server</string>
+         </property>
+         <property name="whatsThis">
+          <string>Your Internet Service Provider gave you a &lt;em&gt;user name&lt;/em&gt; which is used to authenticate you with their servers. It usually is the first part of your email address (the part before &lt;em&gt;@&lt;/em&gt;).</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="passwordLabel">
+         <property name="text">
+          <string>P&amp;assword:</string>
+         </property>
+         <property name="buddy">
+          <cstring>passwordEdit</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="KPasswordLineEdit" name="passwordEdit">
+         <property name="toolTip">
+          <string>Password for access to the mail server</string>
+         </property>
+         <property name="whatsThis">
+          <string>Password: The password given to you by your mail provider.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="KTitleWidget" name="ktitlewidget_5">
+         <property name="text">
+          <string>Mail Checking Options</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QCheckBox" name="intervalCheck">
+         <property name="toolTip">
+          <string>If active, the POP3 account will be checked for new mail every x minutes</string>
+         </property>
+         <property name="text">
+          <string>Enable &amp;interval mail checking</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="intervalLabel">
+         <property name="text">
+          <string>Check mail interval:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="KPluralHandlingSpinBox" name="intervalSpin">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>10000000</number>
+         </property>
+         <property name="value">
+          <number>5</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0" colspan="2">
+        <widget class="KTitleWidget" name="ktitlewidget_3"/>
+       </item>
+       <item row="9" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="page2">
       <attribute name="title">
@@ -287,6 +217,19 @@
           <string>Pop Settings</string>
          </property>
         </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>101</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item row="1" column="1">
         <layout class="QGridLayout" name="gridLayout_3">
@@ -587,19 +530,6 @@ p, li { white-space: pre-wrap; }
           </layout>
          </widget>
         </widget>
-       </item>
-       <item row="1" column="0">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>101</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
