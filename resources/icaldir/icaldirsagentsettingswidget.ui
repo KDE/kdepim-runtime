@@ -88,7 +88,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="4" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -138,7 +138,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="2" column="1">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -160,14 +160,14 @@
  <customwidgets>
   <customwidget>
    <class>KUrlRequester</class>
-   <extends>QFrame</extends>
+   <extends>QWidget</extends>
    <header>kurlrequester.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>KPluralHandlingSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>KPluralHandlingSpinBox</header>
+   <header>kpluralhandlingspinbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
