@@ -58,7 +58,7 @@ Row::Row(const QSharedPointer<MigratorBase> &migrator, MigratorModel &model)
     , mModel(model)
 {
     connect(migrator.data(), &MigratorBase::stateChanged, this, &Row::stateChanged);
-    connect(migrator.data(), QOverload<int>::of(&MigratorBase::progress), this, &Row::progress);
+    connect(migrator.data(), qOverload<int>(&MigratorBase::progress), this, &Row::progress);
 }
 
 bool Row::operator==(const Row &other) const

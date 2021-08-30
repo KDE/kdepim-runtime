@@ -169,7 +169,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     connect(mUi->authOAuth2RadioButton, &QRadioButton::toggled, this, &EwsConfigDialog::setAutoDiscoveryNeeded);
     connect(mUi->kcfg_BaseUrl, &QLineEdit::textChanged, this, &EwsConfigDialog::enableTryConnect);
     connect(mUi->tryConnectButton, &QPushButton::clicked, this, &EwsConfigDialog::tryConnect);
-    connect(mUi->userAgentCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
+    connect(mUi->userAgentCombo, qOverload<int>(&QComboBox::currentIndexChanged), this, &EwsConfigDialog::userAgentChanged);
     connect(mUi->clearFolderTreeSyncStateButton, &QPushButton::clicked, mParentResource, &EwsResource::clearFolderTreeSyncState);
 }
 

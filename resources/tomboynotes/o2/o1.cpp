@@ -275,7 +275,7 @@ void O1::link()
     request.setRawHeader(O2_HTTP_AUTHORIZATION_HEADER, buildAuthorizationHeader(headers));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String(O2_MIME_TYPE_XFORM));
     QNetworkReply *reply = manager_->post(request, QByteArray());
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred), this, &O1::onTokenRequestError);
+    connect(reply, qOverload<QNetworkReply::NetworkError>(&QNetworkReply::errorOccurred), this, &O1::onTokenRequestError);
     connect(reply, &QNetworkReply::finished, this, &O1::onTokenRequestFinished);
 }
 
@@ -362,7 +362,7 @@ void O1::exchangeToken()
     request.setRawHeader(O2_HTTP_AUTHORIZATION_HEADER, buildAuthorizationHeader(oauthParams));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String(O2_MIME_TYPE_XFORM));
     QNetworkReply *reply = manager_->post(request, QByteArray());
-    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred), this, &O1::onTokenExchangeError);
+    connect(reply, qOverload<QNetworkReply::NetworkError>(&QNetworkReply::errorOccurred), this, &O1::onTokenExchangeError);
     connect(reply, &QNetworkReply::finished, this, &O1::onTokenExchangeFinished);
 }
 

@@ -97,9 +97,9 @@ void AccountWidget::setupWidgets()
 
     connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotLeaveOnServerClicked);
     connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerDays);
-    connect(leaveOnServerDaysSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerDaysChanged);
+    connect(leaveOnServerDaysSpin, qOverload<int>(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerDaysChanged);
     connect(leaveOnServerCountCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerCount);
-    connect(leaveOnServerCountSpin, QOverload<int>::of(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerCountChanged);
+    connect(leaveOnServerCountSpin, qOverload<int>(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerCountChanged);
     connect(leaveOnServerSizeCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerSize);
 
     connect(checkCapabilities, &QPushButton::clicked, this, &AccountWidget::slotCheckPopCapabilities);
@@ -108,7 +108,7 @@ void AccountWidget::setupWidgets()
     encryptionButtonGroup->addButton(encryptionSSL, Transport::EnumEncryption::SSL);
     encryptionButtonGroup->addButton(encryptionTLS, Transport::EnumEncryption::TLS);
 
-    connect(encryptionButtonGroup, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
+    connect(encryptionButtonGroup, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
     connect(intervalCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnablePopInterval);
 
     populateDefaultAuthenticationOptions();

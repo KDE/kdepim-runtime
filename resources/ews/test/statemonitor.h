@@ -75,7 +75,7 @@ CollectionStateMonitor<T>::CollectionStateMonitor(QObject *parent,
     connect(&mMonitor, &Akonadi::Monitor::collectionAdded, this, [this](const Akonadi::Collection &col, const Akonadi::Collection &) {
         stateChanged(col);
     });
-    connect(&mMonitor, QOverload<const Akonadi::Collection &>::of(&Akonadi::Monitor::collectionChanged), this, [this](const Akonadi::Collection &col) {
+    connect(&mMonitor, qOverload<const Akonadi::Collection &>(&Akonadi::Monitor::collectionChanged), this, [this](const Akonadi::Collection &col) {
         stateChanged(col);
     });
     if (recheckInterval > 0) {

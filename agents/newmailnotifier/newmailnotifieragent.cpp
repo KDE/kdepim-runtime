@@ -55,7 +55,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
 
     NewMailNotifierAgentSettings::instance(KSharedConfig::openConfig());
     mIdentityManager = KIdentityManagement::IdentityManager::self();
-    connect(mIdentityManager, QOverload<>::of(&KIdentityManagement::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
+    connect(mIdentityManager, qOverload<>(&KIdentityManagement::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
     slotIdentitiesChanged();
     mDefaultIconName = QStringLiteral("kmail");
 
