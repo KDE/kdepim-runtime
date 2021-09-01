@@ -1080,6 +1080,7 @@ void POP3Protocol::listDir(const QUrl &url)
     UDSEntry entry;
     QString fname;
     for (int i = 0; i < num_messages; i++) {
+        entry.reserve(6);
         fname = QStringLiteral("Message %1");
 
         entry.fastInsert(KIO::UDSEntry::UDS_NAME, fname.arg(i + 1));
@@ -1118,6 +1119,7 @@ void POP3Protocol::stat(const QUrl &url)
     }
 
     UDSEntry entry;
+    entry.reserve(3);
     entry.fastInsert(KIO::UDSEntry::UDS_NAME, _path);
     entry.fastInsert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG);
     entry.fastInsert(KIO::UDSEntry::UDS_MIME_TYPE, QStringLiteral("message/rfc822"));

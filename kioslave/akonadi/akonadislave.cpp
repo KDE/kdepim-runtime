@@ -210,6 +210,7 @@ void AkonadiSlave::listDir(const QUrl &url)
 KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item &item)
 {
     KIO::UDSEntry entry;
+    entry.reserve(7);
     entry.fastInsert(KIO::UDSEntry::UDS_NAME, QString::number(item.id()));
     entry.fastInsert(KIO::UDSEntry::UDS_MIME_TYPE, item.mimeType());
     entry.fastInsert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFREG);
@@ -223,6 +224,7 @@ KIO::UDSEntry AkonadiSlave::entryForItem(const Akonadi::Item &item)
 KIO::UDSEntry AkonadiSlave::entryForCollection(const Akonadi::Collection &collection)
 {
     KIO::UDSEntry entry;
+    entry.reserve(7);
     entry.fastInsert(KIO::UDSEntry::UDS_NAME, collection.name());
     entry.fastInsert(KIO::UDSEntry::UDS_MIME_TYPE, Collection::mimeType());
     entry.fastInsert(KIO::UDSEntry::UDS_FILE_TYPE, S_IFDIR);
