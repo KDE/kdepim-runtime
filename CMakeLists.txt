@@ -97,7 +97,15 @@ set_package_properties(Qca-qt5 PROPERTIES DESCRIPTION "Qt Cryptographic Architec
                    PURPOSE "Needed for ews resource.")
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT5 package
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED TextToSpeech Network Widgets Test XmlPatterns DBus WebEngineWidgets NetworkAuth)
+find_package(Qt5TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
+set_package_properties(Qt5TextToSpeech PROPERTIES DESCRIPTION
+    "Add support for texttospeed"
+    TYPE OPTIONAL
+)
+if(Qt5TextToSpeech_FOUND)
+set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
+endif()
+find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus WebEngineWidgets NetworkAuth)
 
 
 # KF5 package

@@ -1,7 +1,7 @@
 
 include_directories(${kdepim-runtime_BINARY_DIR})
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_newmailnotifier_agent\")
-
+configure_file(config-newmailnotifier.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-newmailnotifier.h)
 
 add_executable( akonadi_newmailnotifier_agent)
 set(newmailnotifier_common_SRCS)
@@ -44,6 +44,12 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::I18n
   Qt::TextToSpeech
 )
+
+if(Qt5TextToSpeech_FOUND)
+    target_link_libraries( akonadi_newmailnotifier_agent
+      Qt::TextToSpeech
+    )
+endif()
 
 if( APPLE )
   set_target_properties( akonadi_newmailnotifier_agent PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist.template)

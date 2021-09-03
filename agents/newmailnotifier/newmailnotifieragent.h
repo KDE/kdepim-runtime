@@ -7,7 +7,7 @@
 */
 
 #pragma once
-
+#include "config-newmailnotifier.h"
 #include <agentbase.h>
 #include <collection.h> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 
@@ -67,6 +67,8 @@ private:
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
     KIdentityManagement::IdentityManager *mIdentityManager = nullptr;
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
     QTextToSpeech *mTextToSpeech = nullptr;
+#endif
 };
 

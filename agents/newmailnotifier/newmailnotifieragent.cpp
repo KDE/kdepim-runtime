@@ -36,7 +36,9 @@
 #if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>
 #endif
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
 #include <QTextToSpeech>
+#endif
 
 using namespace Akonadi;
 
@@ -344,7 +346,9 @@ void NewMailNotifierAgent::slotShowNotifications()
             auto job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
             job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);
+#endif
             mNewMails.clear();
             return;
         } else {
@@ -463,6 +467,7 @@ bool NewMailNotifierAgent::isActive() const
 
 void NewMailNotifierAgent::slotSay(const QString &message)
 {
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
     if (!mTextToSpeech) {
         mTextToSpeech = new QTextToSpeech(this);
     }
@@ -471,6 +476,7 @@ void NewMailNotifierAgent::slotSay(const QString &message)
     } else {
         mTextToSpeech->say(message);
     }
+#endif
 }
 
 AKONADI_AGENT_MAIN(NewMailNotifierAgent)

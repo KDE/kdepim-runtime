@@ -102,7 +102,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
 
     vbox->addStretch();
     tab->addTab(settings, i18n("Display"));
-
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
     auto textSpeakWidget = new QWidget;
     vbox = new QVBoxLayout;
     textSpeakWidget->setLayout(vbox);
@@ -131,7 +131,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     vbox->addStretch();
     tab->addTab(textSpeakWidget, i18n("Text to Speak"));
     connect(mTextToSpeak, &QCheckBox::toggled, mTextToSpeakSetting, &QLineEdit::setEnabled);
-
+#endif
     mNotify = new KNotifyConfigWidget(parent);
     mNotify->setObjectName(QStringLiteral("mNotify"));
     mNotify->setApplication(QStringLiteral("akonadi_newmailnotifier_agent"));
@@ -180,8 +180,10 @@ void NewMailNotifierSettingsWidget::load()
     mAllowToShowMail->setChecked(settings->showButtonToDisplayMail());
     mKeepPersistentNotification->setChecked(settings->keepPersistentNotification());
     mTextToSpeak->setChecked(settings->textToSpeakEnabled());
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     mTextToSpeakSetting->setText(settings->textToSpeak());
+#endif
     mReplyMail->setChecked(settings->replyMail());
     mReplyMailTypeComboBox->setCurrentIndex(settings->replyMailType());
 
@@ -199,8 +201,10 @@ bool NewMailNotifierSettingsWidget::save() const
     settings->setExcludeEmailsFromMe(mExcludeMySelf->isChecked());
     settings->setShowButtonToDisplayMail(mAllowToShowMail->isChecked());
     settings->setKeepPersistentNotification(mKeepPersistentNotification->isChecked());
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
     settings->setTextToSpeakEnabled(mTextToSpeak->isChecked());
     settings->setTextToSpeak(mTextToSpeakSetting->text());
+#endif
     settings->setReplyMail(mReplyMail->isChecked());
     settings->setReplyMailType(mReplyMailTypeComboBox->currentIndex());
     settings->save();

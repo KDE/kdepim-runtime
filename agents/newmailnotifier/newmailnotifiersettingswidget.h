@@ -5,7 +5,7 @@
 */
 
 #pragma once
-
+#include "config-newmailnotifier.h"
 #include <AkonadiCore/AgentConfigurationBase>
 #include <AkonadiCore/Collection>
 
@@ -35,8 +35,10 @@ private:
     QCheckBox *mAllowToShowMail = nullptr;
     QCheckBox *mKeepPersistentNotification = nullptr;
     KNotifyConfigWidget *mNotify = nullptr;
+#if HAVE_TEXT_TO_SPEECH_SUPPORT
     QCheckBox *mTextToSpeak = nullptr;
     QLineEdit *mTextToSpeakSetting = nullptr;
+#endif
     QCheckBox *mReplyMail = nullptr;
     QComboBox *mReplyMailTypeComboBox = nullptr;
     NewMailNotifierSelectCollectionWidget *mSelectCollection = nullptr;
