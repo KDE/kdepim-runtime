@@ -83,7 +83,7 @@ template<> char *toString(const QList<KCalendarCore::RecurrenceRule::WDayPos> &l
 template<> char *toString(const KCalendarCore::DateList &l)
 {
     QByteArray ba = "KCalendarCore::DateList(";
-    foreach (const QDate &i, l) {
+    for (const QDate &i : l) {
         ba += i.toString().toLatin1();
     }
     ba += ")";
