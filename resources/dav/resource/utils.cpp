@@ -160,7 +160,10 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
         }
 
         if (!mainIncidence) {
-            return false;
+            // Some broken events have only one incidence, with a recurrence ID - like a detached exception.
+            // Rather than skipping those, make them appear: pick first incidence as the main one
+            mainIncidence = incidences.at(0);
+            exceptions.removeFirst();
         }
 
         for (const IncidencePtr &exception : std::as_const(exceptions)) {
