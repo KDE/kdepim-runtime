@@ -115,7 +115,9 @@ KJob *KMigratorBase::createAgentInstance(const QString &typeId, QObject *receive
 {
     Q_EMIT message(Info, i18n("Creating instance of type %1", typeId));
     auto job = new AgentInstanceCreateJob(typeId, this);
-    connect(job, SIGNAL(result(KJob *)), receiver, slot);
+    // clang-format off
+    connect(job, SIGNAL(result(KJob*)), receiver, slot);
+    // clang-format on
     job->start();
     return job;
 }

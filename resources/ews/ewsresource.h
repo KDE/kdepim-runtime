@@ -147,7 +147,7 @@ private:
     static QString getCollectionSyncState(const Akonadi::Collection &col);
     static void saveCollectionSyncState(Akonadi::Collection &col, const QString &state);
 
-    void queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetchItemsJobType type, std::function<void(EwsFetchItemsJob *)> startFn);
+    void queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetchItemsJobType type, const std::function<void(EwsFetchItemsJob *)> &startFn);
     void startFetchItemsJob(const Akonadi::Collection &col, std::function<void(EwsFetchItemsJob *)> startFn);
     void dequeueFetchItemsJob();
 

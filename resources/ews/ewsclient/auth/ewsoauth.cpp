@@ -243,8 +243,8 @@ void EwsOAuthRequestInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info
         auto pkeyAuthJob = new EwsPKeyAuthJob(url, mPKeyCertFile, mPKeyKeyFile, mPKeyPassword, this);
         mPKeyAuthResponse = pkeyAuthJob->getAuthHeader();
         QUrlQuery query(url.query());
-        if (!mPKeyAuthResponse.isEmpty() && query.hasQueryItem(QLatin1String("SubmitUrl"))) {
-            mPKeyAuthSubmitUrl = query.queryItemValue(QLatin1String("SubmitUrl"), QUrl::FullyDecoded);
+        if (!mPKeyAuthResponse.isEmpty() && query.hasQueryItem(QStringLiteral("SubmitUrl"))) {
+            mPKeyAuthSubmitUrl = query.queryItemValue(QStringLiteral("SubmitUrl"), QUrl::FullyDecoded);
             /* Workaround for QTBUG-88861
              * When the PKey authentication starts, the server issues a request for a "special" PKey URL
              * containing the challenge arguments and expects that a response is composed and the browser

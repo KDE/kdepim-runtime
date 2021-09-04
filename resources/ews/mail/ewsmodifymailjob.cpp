@@ -61,7 +61,8 @@ void EwsModifyMailJob::start()
     if (doSubmit) {
         mChunkedJob.setItems(itemChanges);
         mChunkedJob.start(
-            [this](EwsUpdateItemRequest::ItemChange::List::const_iterator firstChange, EwsUpdateItemRequest::ItemChange::List::const_iterator lastChange) {
+            [this](const EwsUpdateItemRequest::ItemChange::List::const_iterator &firstChange,
+                   const EwsUpdateItemRequest::ItemChange::List::const_iterator &lastChange) {
                 auto req = new EwsUpdateItemRequest(mClient, this);
                 req->addItemChanges(firstChange, lastChange);
                 return req;

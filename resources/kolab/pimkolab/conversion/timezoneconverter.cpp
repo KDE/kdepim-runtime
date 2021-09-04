@@ -46,7 +46,7 @@ QString TimezoneConverter::fromCityName(const QString &tz)
         countryMap.insert(cityName, QString::fromUtf8(zone));
     }
 
-    const QRegularExpression locationFinder(QStringLiteral("\\b([a-zA-Z])+\\b"));
+    static const QRegularExpression locationFinder(QStringLiteral("\\b([a-zA-Z])+\\b"));
     QRegularExpressionMatchIterator iter = locationFinder.globalMatch(tz);
     while (iter.hasNext()) {
         QRegularExpressionMatch match = iter.next();

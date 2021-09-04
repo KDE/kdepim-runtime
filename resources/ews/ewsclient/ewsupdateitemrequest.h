@@ -129,7 +129,7 @@ public:
         mChanges.append(change);
     }
 
-    void addItemChanges(ItemChange::List::const_iterator firstChange, ItemChange::List::const_iterator lastChange)
+    void addItemChanges(const ItemChange::List::const_iterator &firstChange, const ItemChange::List::const_iterator &lastChange)
     {
         mChanges.reserve(mChanges.size() + lastChange - firstChange);
         for (auto it = firstChange; it != lastChange; ++it) {

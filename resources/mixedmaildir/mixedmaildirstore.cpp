@@ -2204,7 +2204,7 @@ bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
 
             Item::List items;
             items.reserve(movedEntries.count());
-            Q_FOREACH (const KMBox::MBoxEntry::Pair &offsetPair, movedEntries) {
+            for (const KMBox::MBoxEntry::Pair &offsetPair : std::as_const(movedEntries)) {
                 const QString oldRemoteId(QString::number(offsetPair.first.messageOffset()));
                 const QString newRemoteId(QString::number(offsetPair.second.messageOffset()));
 

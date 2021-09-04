@@ -35,7 +35,7 @@ void EwsFetchItemPayloadJob::start()
 
     mChunkedJob.setItems(ids);
     mChunkedJob.start(
-        [this](EwsId::List::const_iterator firstId, EwsId::List::const_iterator lastId) {
+        [this](const EwsId::List::const_iterator &firstId, const EwsId::List::const_iterator &lastId) {
             auto req = new EwsGetItemRequest(mClient, this);
             EwsId::List ids;
             for (auto it = firstId; it != lastId; ++it) {

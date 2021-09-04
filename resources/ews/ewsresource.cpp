@@ -354,7 +354,7 @@ void EwsResource::retrieveItems(const Collection &collection)
     });
 }
 
-void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetchItemsJobType type, std::function<void(EwsFetchItemsJob *)> startFn)
+void EwsResource::queueFetchItemsJob(const Akonadi::Collection &col, QueuedFetchItemsJobType type, const std::function<void(EwsFetchItemsJob *)> &startFn)
 {
     qCDebugNC(EWSRES_LOG) << QStringLiteral("Enqueuing sync for collection ") << col << col.id();
 
