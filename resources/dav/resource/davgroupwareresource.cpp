@@ -43,14 +43,14 @@
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/RecursiveItemFetchJob>
 #include <KLocalizedString>
+#include <akonadi/attributefactory.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
-#include <attributefactory.h>
 #include <collectioncolorattribute.h>
-#include <itemfetchjob.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>

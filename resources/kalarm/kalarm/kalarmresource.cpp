@@ -15,8 +15,8 @@
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
-#include <attributefactory.h>
-#include <collectionmodifyjob.h>
+#include <Akonadi/CollectionModifyJob>
+#include <akonadi/attributefactory.h>
 
 #include <KCalendarCore/Incidence>
 #include <KCalendarCore/MemoryCalendar>

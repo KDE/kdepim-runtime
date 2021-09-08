@@ -14,7 +14,7 @@
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include <QTest>
-#include <attributefactory.h>
+#include <akonadi/attributefactory.h>
 #include <collectionquotaattribute.h>
 #include <noinferiorsattribute.h>
 using QBYTEARRAYMAP = QMap<QByteArray, QByteArray>;

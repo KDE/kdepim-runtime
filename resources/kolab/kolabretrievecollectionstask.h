@@ -11,7 +11,7 @@
 
 #include <resourcetask.h>
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 
 #include <QElapsedTimer>
 #include <kimap/listjob.h>

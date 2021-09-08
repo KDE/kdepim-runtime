@@ -11,7 +11,7 @@
 #include <KDAV/DavUrl>
 #include <KDAV/ProtocolInfo>
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/Incidence>
 #include <KCalendarCore/MemoryCalendar>

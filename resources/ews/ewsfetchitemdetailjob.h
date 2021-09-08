@@ -8,8 +8,8 @@
 
 #include <QPointer>
 
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <AkonadiCore/Collection>
 
 #include "ewsclient.h"
 #include "ewsgetitemrequest.h"

@@ -17,12 +17,12 @@
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/MessageParts>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <akonadi/itemfetchscope.h>
-#include <itemfetchjob.h>
-#include <itemmodifyjob.h>
 #include <kmime/kmime_message.h>
 
 #include "maildirresource_debug.h"

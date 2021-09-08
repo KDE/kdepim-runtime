@@ -8,9 +8,9 @@
 #include "sentactionhandler.h"
 
 #include "maildispatcher_debug.h"
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
-#include <itemfetchjob.h>
-#include <itemmodifyjob.h>
 
 using namespace MailTransport;
 

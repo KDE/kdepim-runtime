@@ -12,6 +12,9 @@
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Item>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemModifyJob>
+#include <Akonadi/ItemMoveJob>
 #include <Akonadi/KMime/AddressAttribute>
 #include <Akonadi/KMime/MessageParts>
 #include <Akonadi/KMime/SpecialMailCollections>
@@ -25,9 +28,6 @@
 #include <QDBusConnection>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
-#include <itemdeletejob.h>
-#include <itemmodifyjob.h>
-#include <itemmovejob.h>
 #include <kmime/kmime_message.h>
 #include <transportresourcebase.h>
 

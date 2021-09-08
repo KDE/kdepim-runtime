@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 #include <messagehelper.h>
 
 class KolabMessageHelper : public MessageHelper

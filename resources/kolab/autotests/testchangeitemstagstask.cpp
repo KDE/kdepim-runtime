@@ -18,7 +18,7 @@ unsigned int qHash(const Akonadi::Tag &tag);
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionQuotaAttribute>
 #include <Akonadi/ServerManager>
-#include <AkonadiCore/qtest_akonadi.h>
+#include <akonadi/qtest_akonadi.h>
 //#include <AkonadiCore/virtualresource.h>
 #include <Akonadi/TagCreateJob>
 #include <kolabobject.h>

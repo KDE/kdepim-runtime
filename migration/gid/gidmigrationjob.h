@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <AkonadiCore/collection.h>
-#include <AkonadiCore/item.h>
-#include <AkonadiCore/job.h>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
+#include <Akonadi/Job>
 #include <QQueue>
 #include <QStringList>
 

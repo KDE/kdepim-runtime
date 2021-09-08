@@ -9,12 +9,12 @@
 #include "filestore/entitycompactchangeattribute.h"
 #include "mixedmaildirresource_debug.h"
 
+#include <Akonadi/Collection>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/Item>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
-#include <AkonadiCore/collection.h>
-#include <AkonadiCore/item.h>
-#include <AkonadiCore/session.h>
+#include <Akonadi/Session>
 
 #include <QMap>
 #include <QQueue>

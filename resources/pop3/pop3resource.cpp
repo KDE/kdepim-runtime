@@ -7,13 +7,13 @@
 #include "pop3resource.h"
 #include "jobs.h"
 
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/ItemCreateJob>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/Pop3ResourceAttribute>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
-#include <AttributeFactory>
-#include <CollectionFetchJob>
-#include <ItemCreateJob>
 #include <MailTransport/PrecommandJob>
 #include <MailTransport/Transport>
 #include <kmime/kmime_util.h>

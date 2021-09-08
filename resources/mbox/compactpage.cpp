@@ -7,9 +7,9 @@
 #include "compactpage.h"
 
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionModifyJob>
 #include <KLocalizedString>
 #include <QUrl>
-#include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
 
 #include "deleteditemsattribute.h"

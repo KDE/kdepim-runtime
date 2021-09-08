@@ -7,8 +7,8 @@
 #pragma once
 
 #include "ewsjob.h"
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <AkonadiCore/Collection>
 
 class EwsClient;
 class EwsItem;

@@ -7,13 +7,13 @@
 #include "newmailnotifierselectcollectionwidget.h"
 
 #include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionFilterProxyModel>
 #include <Akonadi/KMime/NewMailNotifierAttribute>
-#include <CollectionFilterProxyModel>
 #include <CollectionModifyJob>
 #include <QSortFilterProxyModel>
 
 #include <Akonadi/ChangeRecorder>
-#include <EntityTreeModel>
+#include <Akonadi/EntityTreeModel>
 #include <KMime/Message>
 
 #include "newmailnotifier_debug.h"

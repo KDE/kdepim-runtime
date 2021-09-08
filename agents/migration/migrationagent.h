@@ -8,7 +8,7 @@
 #pragma once
 
 #include "migrationscheduler.h"
-#include <agentbase.h>
+#include <Akonadi/AgentBase>
 
 namespace Akonadi
 {

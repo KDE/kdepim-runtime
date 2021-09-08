@@ -6,15 +6,15 @@
 
 #include "retrieveitemsjob.h"
 #include "maildirresource_debug.h"
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemCreateJob>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/VectorHelper>
 #include <KMime/Message>
 #include <QDirIterator>
-#include <collectionmodifyjob.h>
-#include <itemdeletejob.h>
-#include <itemfetchjob.h>
-#include <itemmodifyjob.h>
 #include <transactionsequence.h>
 
 RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject *parent)

@@ -9,9 +9,9 @@
 #include "kolabresource_trace.h"
 #include "pimkolab/kolabformat/errorhandler.h"
 #include "pimkolab/kolabformat/kolabobject.h"
+#include <Akonadi/Collection>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <AkonadiCore/Collection>
 #include <KCalendarCore/Incidence>
 #include <KLocalizedString>
 #include <KMime/KMimeMessage>

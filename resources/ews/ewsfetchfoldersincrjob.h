@@ -8,7 +8,7 @@
 
 #include <QScopedPointer>
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 
 #include "ewsfolder.h"
 #include "ewsjob.h"

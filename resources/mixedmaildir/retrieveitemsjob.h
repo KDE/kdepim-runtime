@@ -7,7 +7,7 @@
 #pragma once
 
 #include <Akonadi/Item>
-#include <AkonadiCore/Job>
+#include <Akonadi/Job>
 
 namespace Akonadi
 {

@@ -11,9 +11,9 @@
 #include <QObject>
 #include <QTimer>
 
+#include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/Monitor>
-#include <AkonadiCore/Collection>
 
 class StateMonitorBase : public QObject
 {

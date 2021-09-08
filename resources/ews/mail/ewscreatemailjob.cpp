@@ -9,9 +9,9 @@
 #include <KLocalizedString>
 
 #include <Akonadi/AgentManager>
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
 #include <Akonadi/KMime/SpecialMailCollections>
-#include <AkonadiCore/Collection>
 #include <KMime/Message>
 
 #include "ewscreateitemrequest.h"

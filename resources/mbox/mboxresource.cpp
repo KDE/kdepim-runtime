@@ -9,12 +9,12 @@
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <QDBusConnection>
+#include <akonadi/attributefactory.h>
 #include <akonadi/itemfetchscope.h>
-#include <attributefactory.h>
-#include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 

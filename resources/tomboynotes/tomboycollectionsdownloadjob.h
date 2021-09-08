@@ -7,7 +7,7 @@
 #pragma once
 
 #include "tomboyjobbase.h"
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 
 class TomboyCollectionsDownloadJob : public TomboyJobBase
 {

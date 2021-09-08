@@ -6,10 +6,10 @@
 
 #pragma once
 
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
+#include <Akonadi/Job>
 #include <Akonadi/TransactionSequence>
-#include <AkonadiCore/Collection>
-#include <AkonadiCore/Job>
 
 class EntityTreeCreateJob : public Akonadi::TransactionSequence
 {

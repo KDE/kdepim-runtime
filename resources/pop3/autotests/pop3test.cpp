@@ -17,7 +17,7 @@
 #include <Akonadi/ServerManager>
 #include <KMime/Message>
 #include <QElapsedTimer>
-#include <qtest_akonadi.h>
+#include <akonadi/qtest_akonadi.h>
 
 #include <QStandardPaths>
 

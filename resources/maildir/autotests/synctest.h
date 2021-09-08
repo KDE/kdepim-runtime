@@ -8,7 +8,7 @@
 
 #include <QObject>
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 
 /**
   This syncs the resource again and again, watching out for "lost"

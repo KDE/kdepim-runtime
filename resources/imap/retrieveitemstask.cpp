@@ -22,7 +22,7 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/session.h>
+#include <Akonadi/Session>
 
 #include "imapresource_debug.h"
 

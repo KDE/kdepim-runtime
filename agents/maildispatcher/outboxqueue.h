@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <AkonadiCore/Collection>
 
 #include <QObject>
 

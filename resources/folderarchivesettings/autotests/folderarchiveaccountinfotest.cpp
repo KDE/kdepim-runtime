@@ -6,7 +6,7 @@
 
 #include "folderarchiveaccountinfotest.h"
 #include "../folderarchiveaccountinfo.h"
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 #include <KSharedConfig>
 #include <QTest>
 

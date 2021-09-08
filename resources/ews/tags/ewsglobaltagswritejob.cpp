@@ -6,7 +6,7 @@
 
 #include "ewsglobaltagswritejob.h"
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 
 #include "ewsid.h"
 #include "ewsitemhandler.h"

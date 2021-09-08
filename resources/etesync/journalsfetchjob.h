@@ -11,7 +11,7 @@
 #include "etebaseadapter.h"
 #include "etesyncclientstate.h"
 
-#include <AkonadiCore/Collection>
+#include <Akonadi/Collection>
 
 namespace EteSyncAPI
 {

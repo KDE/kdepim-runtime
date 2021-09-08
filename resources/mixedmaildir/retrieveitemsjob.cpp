@@ -14,7 +14,9 @@
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/messagestatus.h>
 
+#include <Akonadi/Collection>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/Item>
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
@@ -22,8 +24,6 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/TransactionSequence>
 #include <Akonadi/VectorHelper>
-#include <AkonadiCore/collection.h>
-#include <AkonadiCore/item.h>
 
 #include "mixedmaildirresource_debug.h"
 

@@ -12,13 +12,13 @@
 
 #include <QDebug>
 
-#include <AgentInstanceCreateJob>
 #include <Akonadi/AgentInstance>
+#include <Akonadi/AgentInstanceCreateJob>
 #include <Akonadi/AgentManager>
 #include <Akonadi/Control>
 #include <Akonadi/ServerManager>
 #include <QSignalSpy>
-#include <qtest_akonadi.h>
+#include <akonadi/qtest_akonadi.h>
 
 #define TIMES 100 // How many times to sync.
 #define TIMEOUT 10 // How many seconds to wait before declaring the resource dead.

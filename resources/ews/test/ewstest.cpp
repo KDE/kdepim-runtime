@@ -10,7 +10,7 @@
 #include <Akonadi/Control>
 #include <Akonadi/Monitor>
 #include <Akonadi/SpecialCollectionAttribute>
-#include <qtest_akonadi.h>
+#include <akonadi/qtest_akonadi.h>
 
 #include "ewssettings.h"
 #include "ewswallet.h"
