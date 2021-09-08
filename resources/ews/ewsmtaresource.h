@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <AkonadiAgentBase/ResourceBase>
-#include <AkonadiAgentBase/TransportResourceBase>
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
+#include <Akonadi/ResourceBase>
+#include <Akonadi/TransportResourceBase>
 
 class OrgKdeAkonadiEwsResourceInterface;
 

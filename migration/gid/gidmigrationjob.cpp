@@ -5,11 +5,11 @@
 */
 
 #include "gidmigrationjob.h"
-#include <AkonadiCore/collectionfetchjob.h>
-#include <AkonadiCore/collectionfetchscope.h>
-#include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/itemfetchscope.h>
-#include <AkonadiCore/itemmodifyjob.h>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
 
 using namespace Akonadi;
 

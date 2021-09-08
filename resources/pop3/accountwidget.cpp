@@ -13,9 +13,9 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include <Akonadi/Collection>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
-#include <Collection>
 #include <CollectionFetchJob>
 #include <Libkdepim/LineEditCatchReturnKey>
 #include <MailTransport/ServerTest>

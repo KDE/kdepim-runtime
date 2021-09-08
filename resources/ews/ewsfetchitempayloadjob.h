@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 
 #include "ewsabstractchunkedjob.h"
 #include "ewsclient.h"

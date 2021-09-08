@@ -8,9 +8,9 @@
 
 #include <QTest>
 
-#include <AkonadiCore/AgentInstanceCreateJob>
-#include <AkonadiCore/AgentManager>
-#include <AkonadiCore/Control>
+#include <Akonadi/AgentInstanceCreateJob>
+#include <Akonadi/AgentManager>
+#include <Akonadi/Control>
 
 #include "ewsresourceinterface.h"
 #include "ewssettings.h"

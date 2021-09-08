@@ -8,10 +8,10 @@
 
 #include <KLocalizedString>
 
+#include <Akonadi/AgentManager>
+#include <Akonadi/Item>
 #include <Akonadi/KMime/SpecialMailCollections>
-#include <AkonadiCore/AgentManager>
 #include <AkonadiCore/Collection>
-#include <AkonadiCore/Item>
 #include <KMime/Message>
 
 #include "ewscreateitemrequest.h"

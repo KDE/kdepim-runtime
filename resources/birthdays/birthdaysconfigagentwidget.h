@@ -9,7 +9,7 @@
 #pragma once
 
 #include "ui_birthdaysconfigwidget.h"
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 
 class KConfigDialogManager;
 

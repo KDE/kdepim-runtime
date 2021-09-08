@@ -6,12 +6,12 @@
 
 #include "retrieveitemsjob.h"
 #include "maildirresource_debug.h"
+#include <Akonadi/ItemCreateJob>
 #include <Akonadi/KMime/MessageFlags>
-#include <AkonadiCore/vectorhelper.h>
+#include <Akonadi/VectorHelper>
 #include <KMime/Message>
 #include <QDirIterator>
 #include <collectionmodifyjob.h>
-#include <itemcreatejob.h>
 #include <itemdeletejob.h>
 #include <itemfetchjob.h>
 #include <itemmodifyjob.h>

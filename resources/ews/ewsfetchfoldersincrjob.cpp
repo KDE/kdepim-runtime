@@ -6,10 +6,10 @@
 
 #include "ewsfetchfoldersincrjob.h"
 
-#include <AkonadiCore/CollectionFetchJob>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/CollectionMoveJob>
-#include <AkonadiCore/CollectionStatistics>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/CollectionMoveJob>
+#include <Akonadi/CollectionStatistics>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KContacts/Addressee>

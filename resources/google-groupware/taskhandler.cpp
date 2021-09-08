@@ -11,12 +11,12 @@
 #include "googletasks_debug.h"
 
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
-#include <AkonadiCore/CollectionColorAttribute>
-#include <AkonadiCore/CollectionModifyJob>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemFetchJob>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/ItemModifyJob>
+#include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
 
 #include <KGAPI/Account>
 #include <KGAPI/Tasks/Task>

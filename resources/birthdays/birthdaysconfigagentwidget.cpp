@@ -7,7 +7,7 @@
 
 #include "birthdaysconfigagentwidget.h"
 #include "settings.h"
-#include <AkonadiCore/Tag>
+#include <Akonadi/Tag>
 #include <KConfigDialogManager>
 #include <KLocalizedString>
 #include <KSharedConfig>

@@ -28,11 +28,11 @@
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/SpecialCollectionAttribute>
-#include <AkonadiCore/cachepolicy.h>
-#include <AkonadiCore/itemfetchscope.h>
+#include <Akonadi/SpecialCollectionAttribute>
 
 #include <KLocalizedString>
 

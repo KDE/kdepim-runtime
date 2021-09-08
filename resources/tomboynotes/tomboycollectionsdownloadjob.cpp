@@ -6,8 +6,8 @@
 
 #include "tomboycollectionsdownloadjob.h"
 #include "debug.h"
+#include <Akonadi/CachePolicy>
 #include <Akonadi/Notes/NoteUtils>
-#include <AkonadiCore/CachePolicy>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>

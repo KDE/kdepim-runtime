@@ -3,7 +3,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 
 #include "configwidget.h"
 #include "settings.h"

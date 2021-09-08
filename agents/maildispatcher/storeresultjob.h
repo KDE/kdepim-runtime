@@ -8,7 +8,7 @@
 
 #include <TransactionSequence>
 
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 #include <QString>
 /**
  * This class stores the result of a StoreResultJob in an item.

@@ -8,7 +8,7 @@
 
 #include <KCompositeJob>
 
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 
 class QJsonObject;
 

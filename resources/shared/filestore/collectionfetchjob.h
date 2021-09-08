@@ -8,7 +8,7 @@
 
 #include "job.h"
 
-#include <collection.h>
+#include <Akonadi/Collection>
 
 namespace Akonadi
 {

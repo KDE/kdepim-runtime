@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiAgentBase/ResourceBase>
+#include <Akonadi/ResourceBase>
 #include <KIO/AccessManager>
 
 class TomboyNotesResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer

@@ -10,8 +10,8 @@
 #include "resource_debug.h"
 #include "tokenjobs.h"
 
-#include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/EntityDisplayAttribute>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/EntityDisplayAttribute>
 
 #include <KLocalizedString>
 

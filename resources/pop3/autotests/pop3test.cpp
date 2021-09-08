@@ -6,15 +6,15 @@
 
 #include "pop3test.h"
 
-#include <AkonadiCore/AgentInstanceCreateJob>
-#include <AkonadiCore/AgentManager>
-#include <AkonadiCore/CollectionFetchJob>
-#include <AkonadiCore/Control>
-#include <AkonadiCore/ItemDeleteJob>
-#include <AkonadiCore/ItemFetchJob>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/Monitor>
-#include <AkonadiCore/ServerManager>
+#include <Akonadi/AgentInstanceCreateJob>
+#include <Akonadi/AgentManager>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Control>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/Monitor>
+#include <Akonadi/ServerManager>
 #include <KMime/Message>
 #include <QElapsedTimer>
 #include <qtest_akonadi.h>

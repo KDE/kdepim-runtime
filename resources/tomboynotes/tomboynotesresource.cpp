@@ -13,11 +13,11 @@
 #include "tomboyitemsdownloadjob.h"
 #include "tomboyitemuploadjob.h"
 #include "tomboyserverauthenticatejob.h"
-#include <ItemFetchScope>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/ItemFetchScope>
 #include <KLocalizedString>
 #include <QDBusConnection>
 #include <QSslCipher>
-#include <changerecorder.h>
 
 using namespace Akonadi;
 

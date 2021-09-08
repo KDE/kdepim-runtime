@@ -16,7 +16,7 @@
 
 #include "pimkolab/kolabformat/kolabobject.h"
 
-#include <AkonadiCore/TagModifyJob>
+#include <Akonadi/TagModifyJob>
 #include <kimap/appendjob.h>
 #include <kimap/searchjob.h>
 #include <kimap/selectjob.h>

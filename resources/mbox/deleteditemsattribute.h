@@ -7,7 +7,7 @@
 #pragma once
 
 #include <KMbox/MBoxEntry>
-#include <attribute.h>
+#include <akonadi/attribute.h>
 
 #include <QSet>
 

@@ -8,10 +8,10 @@
 #include "kolabchangeitemstagstask.h"
 #include "kolabresource_debug.h"
 
-#include <AkonadiCore/ItemFetchJob>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/TagFetchJob>
-#include <AkonadiCore/TagFetchScope>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/TagFetchJob>
+#include <Akonadi/TagFetchScope>
 
 KolabChangeItemsTagsTask::KolabChangeItemsTagsTask(const ResourceStateInterface::Ptr &resource,
                                                    const QSharedPointer<TagConverter> &tagConverter,

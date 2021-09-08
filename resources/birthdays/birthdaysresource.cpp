@@ -9,13 +9,13 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
-#include <AkonadiCore/vectorhelper.h>
-#include <collectionfetchjob.h>
-#include <entitydisplayattribute.h>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Monitor>
+#include <Akonadi/VectorHelper>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 #include <itemfetchjob.h>
-#include <itemfetchscope.h>
 #include <mimetypechecker.h>
-#include <monitor.h>
 
 #include <kcontacts/addressee.h>
 
@@ -24,7 +24,7 @@
 #include "birthdays_debug.h"
 #include <KLocalizedString>
 
-#include <AkonadiCore/TagCreateJob>
+#include <Akonadi/TagCreateJob>
 
 using namespace Akonadi;
 using namespace KContacts;

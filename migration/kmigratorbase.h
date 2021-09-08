@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/agentinstance.h>
+#include <Akonadi/AgentInstance>
 #include <QEventLoopLocker>
 #include <QObject>
 

@@ -12,8 +12,8 @@
 #include "sessionuiproxy.h"
 #include "settingspasswordrequester.h"
 #include "setupserver.h"
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/CollectionColorAttribute>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionColorAttribute>
 #include <akonadi/calendar/blockalarmsattribute.h>
 #include <changecollectiontask.h>
 #include <collectionannotationsattribute.h>

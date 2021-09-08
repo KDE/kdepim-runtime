@@ -6,10 +6,10 @@
 
 #pragma once
 
-#include <agentmanager.h>
+#include <akonadi/agentmanager.h>
 #include <migratorbase.h>
 
-#include <AkonadiCore/AgentInstance>
+#include <Akonadi/AgentInstance>
 
 #include <QMap>
 

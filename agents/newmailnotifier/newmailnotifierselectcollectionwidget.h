@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <Collection>
+#include <Akonadi/Collection>
 #include <QIdentityProxyModel>
 #include <QModelIndex>
 #include <QWidget>

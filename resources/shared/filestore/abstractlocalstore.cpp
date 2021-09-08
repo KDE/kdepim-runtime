@@ -21,8 +21,8 @@
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
-#include <collection.h>
-#include <entitydisplayattribute.h>
+#include <Akonadi/Collection>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <KLocalizedString>
 #include <QFileInfo>

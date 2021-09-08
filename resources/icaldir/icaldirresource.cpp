@@ -10,9 +10,9 @@
 
 #include "settingsadaptor.h"
 
-#include <changerecorder.h>
-#include <entitydisplayattribute.h>
-#include <itemfetchscope.h>
+#include <Akonadi/ChangeRecorder>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/ICalFormat>

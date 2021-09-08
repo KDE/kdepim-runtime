@@ -5,8 +5,8 @@
  */
 #include "createandsettagsjob.h"
 
-#include <AkonadiCore/itemmodifyjob.h>
-#include <AkonadiCore/tagcreatejob.h>
+#include <Akonadi/ItemModifyJob>
+#include <Akonadi/TagCreateJob>
 
 #include <QDebug>
 

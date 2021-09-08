@@ -10,8 +10,8 @@
 #include "maildirsettings.h"
 #include "pop3settings.h"
 
+#include <Akonadi/Item>
 #include <AkonadiCore/Collection>
-#include <AkonadiCore/Item>
 
 #include <QList>
 #include <QObject>

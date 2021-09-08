@@ -17,9 +17,9 @@
 #include <kimap/session.h>
 #include <kimap/storejob.h>
 
-#include <AkonadiCore/ItemFetchJob>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/RelationFetchJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/RelationFetchJob>
 
 #include "kolabhelpers.h"
 

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 
 #include "configwidget.h"
 #include "settings.h"

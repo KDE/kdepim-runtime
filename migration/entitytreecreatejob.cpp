@@ -6,8 +6,8 @@
 
 #include "entitytreecreatejob.h"
 
-#include <AkonadiCore/CollectionCreateJob>
-#include <AkonadiCore/ItemCreateJob>
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/ItemCreateJob>
 
 #include "migration_debug.h"
 

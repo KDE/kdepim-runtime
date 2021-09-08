@@ -13,8 +13,8 @@
 
 #include "resourcestate.h"
 #include "resourcestateinterface.h"
-#include <AkonadiAgentBase/agentsearchinterface.h>
-#include <AkonadiAgentBase/resourcebase.h>
+#include <Akonadi/AgentSearchInterface>
+#include <Akonadi/ResourceBase>
 class QDialog;
 
 class QTimer;

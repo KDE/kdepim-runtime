@@ -17,8 +17,8 @@
 #include <KMime/kmime/kmime_message.h>
 #include <kmbox/mbox.h>
 
+#include <akonadi/itemfetchscope.h>
 #include <akonadi/kmime/messageparts.h>
-#include <itemfetchscope.h>
 
 #include <KRandom>
 #include <KRandomSequence>

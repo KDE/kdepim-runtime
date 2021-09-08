@@ -6,9 +6,9 @@
 #pragma once
 
 #include "akonadi-singlefileresource_export.h"
+#include <Akonadi/Item>
+#include <Akonadi/Tag>
 #include <KJob>
-#include <item.h>
-#include <tag.h>
 
 class AKONADI_SINGLEFILERESOURCE_EXPORT CreateAndSetTagsJob : public KJob
 {

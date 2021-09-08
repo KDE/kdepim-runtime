@@ -10,10 +10,10 @@
 #include "newmailnotifiershowmessagejob.h"
 
 #include <Akonadi/Contact/ContactSearchJob>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/ItemDeleteJob>
-#include <ItemFetchJob>
-#include <ItemFetchScope>
 
 #include <KEmailAddress>
 #include <KNotification>

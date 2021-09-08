@@ -10,14 +10,14 @@
 #include <kcontacts/contactgroup.h>
 #include <kwindowsystem.h>
 
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/ChangeRecorder>
-#include <AkonadiCore/CollectionColorAttribute>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/CollectionModifyJob>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemFetchScope>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchScope>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <KMessageBox>

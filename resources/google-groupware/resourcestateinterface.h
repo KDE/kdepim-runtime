@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <Collection>
-#include <Item>
-#include <ItemSync>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
+#include <Akonadi/ItemSync>
 
 /**
  * This is a generic interface for ResourceBase class

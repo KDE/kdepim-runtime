@@ -6,13 +6,13 @@
 
 #include "akonadislave.h"
 
-#include <collection.h>
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 #include <collectiondeletejob.h>
-#include <collectionfetchjob.h>
-#include <entitydisplayattribute.h>
 #include <itemdeletejob.h>
 #include <itemfetchjob.h>
-#include <itemfetchscope.h>
 
 #include "akonadislave_debug.h"
 

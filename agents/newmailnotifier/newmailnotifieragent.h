@@ -8,8 +8,8 @@
 
 #pragma once
 #include "config-newmailnotifier.h"
+#include <Akonadi/Collection> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 #include <agentbase.h>
-#include <collection.h> // make sure this is included before QHash, otherwise it won't find the correct qHash implementation for some reason
 
 #include <QPixmap>
 #include <QStringList>

@@ -11,14 +11,14 @@
 
 #include "googlecontacts_debug.h"
 
-#include <AkonadiCore/CollectionModifyJob>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/EntityHiddenAttribute>
-#include <AkonadiCore/ItemFetchJob>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/ItemModifyJob>
-#include <AkonadiCore/LinkJob>
-#include <AkonadiCore/VectorHelper>
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/EntityHiddenAttribute>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
+#include <Akonadi/LinkJob>
+#include <Akonadi/VectorHelper>
 
 #include <KContacts/Addressee>
 #include <KContacts/Picture>

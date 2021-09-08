@@ -9,8 +9,8 @@
 
 #include <QObject>
 
-#include <Collection>
-#include <Item>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
 
 #include <kimap/acl.h>
 #include <kimap/listjob.h>

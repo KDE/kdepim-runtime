@@ -8,13 +8,13 @@
 
 #include "settingsadaptor.h"
 
-#include <AkonadiCore/vectorhelper.h>
-#include <cachepolicy.h>
-#include <changerecorder.h>
-#include <collectionfetchjob.h>
-#include <collectionfetchscope.h>
-#include <entitydisplayattribute.h>
-#include <itemfetchscope.h>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/VectorHelper>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>

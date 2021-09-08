@@ -6,10 +6,10 @@
 
 #include "akonadietagcache.h"
 
-#include <collection.h>
-#include <item.h>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
+#include <akonadi/itemfetchscope.h>
 #include <itemfetchjob.h>
-#include <itemfetchscope.h>
 
 using namespace KDAV;
 

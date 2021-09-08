@@ -8,7 +8,7 @@
 
 #include <KDAV/Enums>
 
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 
 namespace KDAV
 {

@@ -8,7 +8,7 @@
 
 #include "akonadi-singlefileresource_export.h"
 #include <QMap>
-#include <attribute.h>
+#include <akonadi/attribute.h>
 
 namespace Akonadi
 {

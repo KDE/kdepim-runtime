@@ -8,9 +8,9 @@
 
 #include <kolab_export.h>
 
-#include <AkonadiCore/Item>
-#include <AkonadiCore/Relation>
-#include <AkonadiCore/Tag>
+#include <Akonadi/Item>
+#include <Akonadi/Relation>
+#include <Akonadi/Tag>
 #include <KCalendarCore/Incidence>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/journal.h>

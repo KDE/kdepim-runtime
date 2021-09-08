@@ -10,7 +10,7 @@
 #include "ewsjob.h"
 #include "ewsupdateitemrequest.h"
 
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 
 class EwsTagStore;
 class EwsClient;

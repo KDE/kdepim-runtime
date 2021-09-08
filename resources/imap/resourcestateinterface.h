@@ -10,9 +10,9 @@
 #include <QSharedPointer>
 #include <QStringList>
 
-#include <Collection>
-#include <Item>
-#include <ItemSync>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
+#include <Akonadi/ItemSync>
 
 #include <kimap/listjob.h>
 

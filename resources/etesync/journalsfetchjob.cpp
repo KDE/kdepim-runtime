@@ -6,8 +6,8 @@
 
 #include "journalsfetchjob.h"
 
-#include <AkonadiCore/CollectionColorAttribute>
-#include <AkonadiCore/EntityDisplayAttribute>
+#include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/EntityDisplayAttribute>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <QtConcurrent>

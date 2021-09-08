@@ -33,11 +33,11 @@
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/messagestatus.h>
 
-#include <AkonadiCore/changerecorder.h>
-#include <AkonadiCore/collectionfetchscope.h>
-#include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/itemfetchscope.h>
-#include <AkonadiCore/itemmodifyjob.h>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
 
 #include <kmime/kmime_message.h>
 
@@ -47,7 +47,7 @@
 #include <QDBusConnection>
 #include <QDir>
 
-#include <AkonadiCore/Tag>
+#include <Akonadi/Tag>
 
 using namespace Akonadi;
 

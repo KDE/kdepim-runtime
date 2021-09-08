@@ -6,11 +6,11 @@
 
 #include "ewsupdateitemstagsjob.h"
 
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/Tag>
-#include <AkonadiCore/TagAttribute>
-#include <AkonadiCore/TagFetchJob>
-#include <AkonadiCore/TagFetchScope>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/Tag>
+#include <Akonadi/TagAttribute>
+#include <Akonadi/TagFetchJob>
+#include <Akonadi/TagFetchScope>
 
 #include "ewsclient.h"
 #include "ewsglobaltagswritejob.h"

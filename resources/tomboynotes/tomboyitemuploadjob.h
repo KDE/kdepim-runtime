@@ -7,7 +7,7 @@
 #pragma once
 
 #include "tomboyjobbase.h"
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 #include <KMime/Message>
 
 enum class JobType {

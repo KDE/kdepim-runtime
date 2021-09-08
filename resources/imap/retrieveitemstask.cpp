@@ -16,12 +16,12 @@
 #include "uidnextattribute.h"
 #include "uidvalidityattribute.h"
 
+#include <Akonadi/AgentBase>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/CollectionStatistics>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiAgentBase/agentbase.h>
-#include <AkonadiCore/cachepolicy.h>
-#include <AkonadiCore/collectionstatistics.h>
-#include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/itemfetchscope.h>
 #include <AkonadiCore/session.h>
 
 #include "imapresource_debug.h"

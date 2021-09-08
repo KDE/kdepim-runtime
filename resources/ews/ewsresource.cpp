@@ -8,17 +8,17 @@
 
 #include <QDebug>
 
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemCreateJob>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
 #include <Akonadi/KMime/SpecialMailCollections>
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/ChangeRecorder>
-#include <AkonadiCore/CollectionFetchJob>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/CollectionModifyJob>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemCreateJob>
-#include <AkonadiCore/ItemDeleteJob>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/ItemModifyJob>
 #include <KMime/Message>
 #include <KNotification>
 #include <KWallet/KWallet>

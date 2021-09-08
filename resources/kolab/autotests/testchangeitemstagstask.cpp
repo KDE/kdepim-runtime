@@ -12,15 +12,15 @@ unsigned int qHash(const Akonadi::Tag &tag);
 
 #include "imaptestbase.h"
 
-#include <AkonadiCore/Tag>
+#include <Akonadi/Tag>
 
-#include <AkonadiCore/attributefactory.h>
-#include <AkonadiCore/collectioncreatejob.h>
-#include <AkonadiCore/collectionquotaattribute.h>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/CollectionQuotaAttribute>
+#include <Akonadi/ServerManager>
 #include <AkonadiCore/qtest_akonadi.h>
-#include <AkonadiCore/servermanager.h>
 //#include <AkonadiCore/virtualresource.h>
-#include <AkonadiCore/tagcreatejob.h>
+#include <Akonadi/TagCreateJob>
 #include <kolabobject.h>
 
 #include "kolabchangeitemstagstask.h"

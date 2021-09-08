@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <collection.h>
+#include <Akonadi/Collection>
 
 #include <kimap/listjob.h>
 

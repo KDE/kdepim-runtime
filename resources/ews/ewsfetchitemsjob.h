@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/ItemFetchJob>
+#include <Akonadi/ItemFetchJob>
 
 #include "ewsfinditemrequest.h"
 #include "ewsjob.h"

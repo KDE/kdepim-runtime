@@ -13,11 +13,11 @@
 #include <QFile>
 
 #include "contacts_resources_debug.h"
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchScope>
 #include <QDBusConnection>
-#include <changerecorder.h>
-#include <collectionfetchscope.h>
-#include <entitydisplayattribute.h>
-#include <itemfetchscope.h>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <KLocalizedString>
 

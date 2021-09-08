@@ -30,6 +30,7 @@
 #include <kmime/kmime_message.h>
 
 #include "imapresource_debug.h"
+#include <Akonadi/CollectionFetchJob>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <CollectionModifyJob>
@@ -40,8 +41,7 @@
 #include <KUser>
 #include <QNetworkConfigurationManager>
 #include <QPushButton>
-#include <collectionfetchjob.h>
-#include <entitydisplayattribute.h>
+#include <akonadi/entitydisplayattribute.h>
 #include <resourcesettings.h>
 
 #include <QFontDatabase>

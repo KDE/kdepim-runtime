@@ -12,10 +12,10 @@
 #include "googlesettings.h"
 
 #include <Akonadi/Calendar/BlockAlarmsAttribute>
-#include <AkonadiCore/CollectionColorAttribute>
-#include <AkonadiCore/CollectionModifyJob>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemModifyJob>
+#include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemModifyJob>
 
 #include <KGAPI/Account>
 #include <KGAPI/Calendar/Calendar>

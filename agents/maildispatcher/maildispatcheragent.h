@@ -8,7 +8,7 @@
 #pragma once
 
 #include <AgentBase>
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 
 class OutboxQueue;
 class SendJob;

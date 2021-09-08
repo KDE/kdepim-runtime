@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 #include <QScopedPointer>
 
 class Ui_FacebookAgentSettingsWidget;

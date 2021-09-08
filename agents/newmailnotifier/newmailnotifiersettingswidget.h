@@ -6,7 +6,7 @@
 
 #pragma once
 #include "config-newmailnotifier.h"
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 #include <AkonadiCore/Collection>
 
 class KNotifyConfigWidget;

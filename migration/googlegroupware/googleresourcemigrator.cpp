@@ -8,9 +8,9 @@
 #include "googlesettingsinterface.h"
 #include "migration_debug.h"
 
-#include <AkonadiCore/AgentInstanceCreateJob>
-#include <AkonadiCore/AgentManager>
-#include <AkonadiCore/ServerManager>
+#include <Akonadi/AgentInstanceCreateJob>
+#include <Akonadi/AgentManager>
+#include <Akonadi/ServerManager>
 
 #include <KLocalizedString>
 #include <KWallet/KWallet>

@@ -13,10 +13,10 @@
 #include <QDebug>
 
 #include <AgentInstanceCreateJob>
-#include <AkonadiCore/AgentInstance>
-#include <AkonadiCore/AgentManager>
-#include <AkonadiCore/Control>
-#include <AkonadiCore/ServerManager>
+#include <Akonadi/AgentInstance>
+#include <Akonadi/AgentManager>
+#include <Akonadi/Control>
+#include <Akonadi/ServerManager>
 #include <QSignalSpy>
 #include <qtest_akonadi.h>
 

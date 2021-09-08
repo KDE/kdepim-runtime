@@ -11,9 +11,9 @@
 #include <imapresource.h>
 
 #include "kolabresource_debug.h"
+#include <Akonadi/CachePolicy>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/EntityDisplayAttribute>
 #include <collectionannotationsattribute.h>
 #include <noselectattribute.h>
 

@@ -8,8 +8,8 @@
 
 #include "ewsglobaltagswritejob.h"
 #include "ewstagstore.h"
-#include <AkonadiCore/TagFetchJob>
-#include <AkonadiCore/TagFetchScope>
+#include <Akonadi/TagFetchJob>
+#include <Akonadi/TagFetchScope>
 
 using namespace Akonadi;
 

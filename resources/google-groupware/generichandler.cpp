@@ -7,7 +7,7 @@
 #include "generichandler.h"
 #include "googleresource_debug.h"
 
-#include <AkonadiAgentBase/AgentBase>
+#include <Akonadi/AgentBase>
 
 #include <KGAPI/Job>
 

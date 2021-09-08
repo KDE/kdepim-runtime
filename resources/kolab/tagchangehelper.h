@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <collection.h>
-#include <item.h>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
 #include <kmime/kmime_message.h>
 
 #include <QObject>

@@ -13,15 +13,15 @@
 #include <QDBusConnection>
 #include <QDir>
 
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/MessageParts>
-#include <AkonadiCore/SpecialCollectionAttribute>
-#include <cachepolicy.h>
-#include <changerecorder.h>
-#include <collectionfetchjob.h>
-#include <collectionfetchscope.h>
+#include <Akonadi/SpecialCollectionAttribute>
+#include <akonadi/itemfetchscope.h>
 #include <itemfetchjob.h>
-#include <itemfetchscope.h>
 #include <itemmodifyjob.h>
 #include <kmime/kmime_message.h>
 

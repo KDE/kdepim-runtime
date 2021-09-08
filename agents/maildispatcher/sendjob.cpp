@@ -9,10 +9,13 @@
 #include "storeresultjob.h"
 
 #include "maildispatcher_debug.h"
+#include <Akonadi/Collection>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/Item>
 #include <Akonadi/KMime/AddressAttribute>
 #include <Akonadi/KMime/MessageParts>
 #include <Akonadi/KMime/SpecialMailCollections>
-#include <AkonadiCore/ServerManager>
+#include <Akonadi/ServerManager>
 #include <KLocalizedString>
 #include <MailTransport/Transport>
 #include <MailTransport/TransportJob>
@@ -20,11 +23,8 @@
 #include <MailTransportAkonadi/SentBehaviourAttribute>
 #include <MailTransportAkonadi/TransportAttribute>
 #include <QDBusConnection>
-#include <agentinstance.h>
-#include <agentmanager.h>
-#include <collection.h>
-#include <collectionfetchjob.h>
-#include <item.h>
+#include <akonadi/agentinstance.h>
+#include <akonadi/agentmanager.h>
 #include <itemdeletejob.h>
 #include <itemmodifyjob.h>
 #include <itemmovejob.h>

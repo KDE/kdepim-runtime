@@ -8,7 +8,7 @@
 
 #include "pimkolab/kolabformat/formathelpers.h" //libkolab
 #include "pimkolab/kolabformat/kolabdefinitions.h" //libkolab
-#include <AkonadiCore/Item>
+#include <Akonadi/Item>
 
 #define KOLAB_COLOR_ANNOTATION "/vendor/kolab/color"
 

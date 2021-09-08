@@ -7,7 +7,7 @@
 #pragma once
 
 #include "kolabrelationresourcetask.h"
-#include <tag.h>
+#include <Akonadi/Tag>
 
 namespace Kolab
 {

@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include <AkonadiCore/Item>
-#include <AkonadiCore/Tag>
+#include <Akonadi/Item>
+#include <Akonadi/Tag>
 
 #include "ewspropertyfield.h"
 

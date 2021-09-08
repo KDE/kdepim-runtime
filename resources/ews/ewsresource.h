@@ -9,8 +9,8 @@
 #include <QQueue>
 #include <QScopedPointer>
 
-#include <AkonadiAgentBase/ResourceBase>
-#include <AkonadiAgentBase/TransportResourceBase>
+#include <Akonadi/ResourceBase>
+#include <Akonadi/TransportResourceBase>
 
 #include "ewsclient.h"
 #include "ewsfetchitemsjob.h"

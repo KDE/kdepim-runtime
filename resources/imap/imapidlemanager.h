@@ -13,7 +13,7 @@
 
 #include "resourcestateinterface.h"
 
-#include <collection.h>
+#include <Akonadi/Collection>
 
 #include <QObject>
 #include <QPointer>

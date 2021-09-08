@@ -8,7 +8,7 @@
 
 #include "ewsjob.h"
 
-#include <AkonadiCore/Tag>
+#include <Akonadi/Tag>
 
 class EwsTagStore;
 class EwsClient;

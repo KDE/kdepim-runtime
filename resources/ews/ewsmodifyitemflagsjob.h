@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <Akonadi/Item>
 #include <AkonadiCore/Collection>
-#include <AkonadiCore/Item>
 
 #include "ewsclient.h"
 #include "ewsjob.h"

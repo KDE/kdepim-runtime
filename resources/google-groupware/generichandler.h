@@ -11,8 +11,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include <Akonadi/Item>
 #include <AkonadiCore/Collection>
-#include <AkonadiCore/Item>
 
 #include <KI18n/KLocalizedString>
 

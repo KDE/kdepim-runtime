@@ -19,7 +19,7 @@ using KWallet::Wallet;
 
 #include <QDBusConnection>
 
-#include <Collection>
+#include <Akonadi/Collection>
 #include <CollectionFetchJob>
 #include <CollectionModifyJob>
 

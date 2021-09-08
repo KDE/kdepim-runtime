@@ -8,8 +8,8 @@
 
 #include <KLocalizedString>
 
-#include <AkonadiAgentBase/AgentBase>
-#include <AkonadiCore/ItemFetchScope>
+#include <Akonadi/AgentBase>
+#include <Akonadi/ItemFetchScope>
 
 #include "ewsclient.h"
 #include "ewsfetchitemdetailjob.h"

@@ -9,9 +9,9 @@
 #include "kolabhelpers.h"
 #include "kolabresource_debug.h"
 
-#include <AkonadiCore/CollectionCreateJob>
-#include <AkonadiCore/CollectionFetchJob>
-#include <AkonadiCore/CollectionFetchScope>
+#include <Akonadi/CollectionCreateJob>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
 #include <kimap/createjob.h>
 #include <kimap/setmetadatajob.h>
 

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <collection.h>
+#include <Akonadi/Collection>
 #include <resourcebase.h>
 
 class QTimer;

@@ -8,7 +8,7 @@
 #pragma once
 
 #include "ui_contactsagentsettingswidget.h"
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 
 class KConfigDialogManager;
 

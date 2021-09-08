@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiAgentBase/ResourceBase>
+#include <Akonadi/ResourceBase>
 
 #include "graph.h"
 

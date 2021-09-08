@@ -12,10 +12,10 @@
 
 #include <KWindowSystem>
 
-#include <AkonadiCore/AgentFilterProxyModel>
-#include <AkonadiCore/AgentInstance>
-#include <AkonadiCore/AgentInstanceModel>
-#include <AkonadiWidgets/AgentInstanceWidget>
+#include <Akonadi/AgentFilterProxyModel>
+#include <Akonadi/AgentInstance>
+#include <Akonadi/AgentInstanceModel>
+#include <Akonadi/AgentInstanceWidget>
 
 #include "ewsmtaresource.h"
 #include "ewsmtasettings.h"

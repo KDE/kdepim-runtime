@@ -303,20 +303,20 @@ void UtEwsAttachment::read_data()
                                    << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << true
                                    << QByteArray("This is a test") << false << EwsItem();
 
-    QTest::newRow("invalid item - bad data") << xmlItemAttHead + QStringLiteral("<Item><foo></foo></Item>") + xmlItemAttTail << false
+    QTest::newRow("invalid item - bad data") << xmlItemAttHead + QStringLiteral("<Akonadi/Item><foo></foo></Item>") + xmlItemAttTail << false
                                              << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false
                                              << QString() << false << QString() << false << 0l << false << QDateTime() << false << false << false << false
                                              << false << QByteArray() << false << EwsItem();
 
     QTest::newRow("invalid item - inside FileAttachment")
-        << xmlFileAttHead + QStringLiteral("<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>") + xmlFileAttTail << false
+        << xmlFileAttHead + QStringLiteral("<Akonadi/Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>") + xmlFileAttTail << false
         << EwsAttachment::UnknownAttachment << false << QString() << false << QString() << false << QString() << false << QString() << false << QString()
         << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray() << false << EwsItem();
 
     EwsItem item1;
     item1.setType(EwsItemTypeItem);
     item1.setField(EwsItemFieldItemId, QVariant::fromValue<EwsId>(EwsId(QStringLiteral("VGhpcyBpcyBhIHRlc3Q="), QStringLiteral("muKls0n8pUM="))));
-    QTest::newRow("valid item") << xmlItemAttHead + QStringLiteral("<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>")
+    QTest::newRow("valid item") << xmlItemAttHead + QStringLiteral("<Akonadi/Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\" /></Item>")
             + xmlItemAttTail << true
                                 << EwsAttachment::ItemAttachment << false << QString() << false << QString() << false << QString() << false << QString()
                                 << false << QString() << false << 0l << false << QDateTime() << false << false << false << false << false << QByteArray()
@@ -498,7 +498,7 @@ void UtEwsAttachment::write_data()
                   "<ContentType>application/x-test</ContentType>"
                   "<ContentLocation>file:///foo/bar</ContentLocation>"
                   "<LastModifiedTime>%1</LastModifiedTime>"
-                  "<Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
+                  "<Akonadi/Item><ItemId Id=\"VGhpcyBpcyBhIHRlc3Q=\" ChangeKey=\"muKls0n8pUM=\"/></Item>"
                   "</ItemAttachment>")
                   .arg(testDt.toString(Qt::ISODate))
                                                << true << EwsAttachment::ItemAttachment << true << QStringLiteral("5IaIqJVsJzamf2105wg4wQ==") << false

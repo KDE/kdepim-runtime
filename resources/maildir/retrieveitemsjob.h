@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include <collection.h>
-#include <item.h>
-#include <job.h>
+#include <Akonadi/Collection>
+#include <Akonadi/Item>
+#include <Akonadi/Job>
 
 #include "maildir.h"
 

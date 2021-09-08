@@ -12,10 +12,10 @@
 #include <highestmodseqattribute.h>
 #include <uidvalidityattribute.h>
 
+#include <Akonadi/CachePolicy>
+#include <Akonadi/CollectionStatistics>
 #include <QTest>
 #include <akonadi/kmime/messageparts.h>
-#include <cachepolicy.h>
-#include <collectionstatistics.h>
 class TestRetrieveItemsTask : public ImapTestBase
 {
     Q_OBJECT

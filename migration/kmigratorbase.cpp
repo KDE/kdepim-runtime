@@ -6,9 +6,9 @@
 
 #include "kmigratorbase.h"
 
-#include <AkonadiCore/agentinstancecreatejob.h>
-#include <AkonadiCore/agentmanager.h>
-#include <AkonadiCore/agenttype.h>
+#include <Akonadi/AgentInstanceCreateJob>
+#include <Akonadi/AgentManager>
+#include <Akonadi/AgentType>
 
 #include "migration_debug.h"
 #include <KConfigGroup>

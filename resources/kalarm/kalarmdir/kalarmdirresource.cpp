@@ -17,18 +17,18 @@
 #include <kalarmcal/akonadi.h>
 #include <kalarmcal/kacalendar.h>
 
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/ItemCreateJob>
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 #include <QDBusConnection>
-#include <changerecorder.h>
-#include <collectionfetchjob.h>
-#include <collectionfetchscope.h>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 #include <collectionmodifyjob.h>
-#include <entitydisplayattribute.h>
-#include <itemcreatejob.h>
 #include <itemdeletejob.h>
-#include <itemfetchscope.h>
 #include <itemmodifyjob.h>
 
 #include <KDirWatch>

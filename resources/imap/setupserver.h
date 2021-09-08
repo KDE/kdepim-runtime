@@ -10,8 +10,8 @@
 #pragma once
 
 class KJob;
+#include <Akonadi/Collection>
 #include <QDialog>
-#include <collection.h>
 
 #include <QRegularExpressionValidator>
 class QPushButton;

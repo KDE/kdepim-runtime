@@ -17,21 +17,21 @@
 #include <QDBusConnection>
 
 #include "newmailnotifier_debug.h"
+#include <Akonadi/AgentManager>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/EntityHiddenAttribute>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageStatus>
 #include <Akonadi/KMime/NewMailNotifierAttribute>
 #include <Akonadi/KMime/SpecialMailCollections>
-#include <AkonadiCore/AgentManager>
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/ChangeRecorder>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/EntityHiddenAttribute>
-#include <AkonadiCore/ItemFetchScope>
-#include <AkonadiCore/ServerManager>
-#include <AkonadiCore/Session>
+#include <Akonadi/ServerManager>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
+#include <akonadi/session.h>
 #include <kcoreaddons_version.h>
 #if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>

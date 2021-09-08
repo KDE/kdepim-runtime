@@ -8,8 +8,8 @@
 
 #include <KJob>
 
+#include <Akonadi/Item>
 #include <AkonadiCore/Collection>
-#include <AkonadiCore/Item>
 
 #include <KCalendarCore/Event>
 

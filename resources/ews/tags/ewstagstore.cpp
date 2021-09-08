@@ -8,8 +8,8 @@
 
 #include <QDataStream>
 
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/TagAttribute>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/TagAttribute>
 
 #include "ewsitem.h"
 #include "ewsresource.h"

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourceconfigwidget.h"

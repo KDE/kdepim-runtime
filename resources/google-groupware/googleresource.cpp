@@ -18,12 +18,12 @@
 
 #include "defaultreminderattribute.h"
 
-#include <AkonadiCore/AttributeFactory>
-#include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/ChangeRecorder>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/ItemFetchScope>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchScope>
 
 #include <KCalendarCore/Event>
 

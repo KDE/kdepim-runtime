@@ -7,9 +7,9 @@
 
 #include "singlefileresourcebase.h"
 
-#include <changerecorder.h>
-#include <entitydisplayattribute.h>
-#include <itemfetchscope.h>
+#include <Akonadi/ChangeRecorder>
+#include <akonadi/entitydisplayattribute.h>
+#include <akonadi/itemfetchscope.h>
 
 #include <KDirWatch>
 #include <KLocalizedString>

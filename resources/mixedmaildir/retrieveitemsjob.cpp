@@ -14,16 +14,16 @@
 #include <akonadi/kmime/messageparts.h>
 #include <akonadi/kmime/messagestatus.h>
 
+#include <Akonadi/CollectionModifyJob>
+#include <Akonadi/ItemCreateJob>
+#include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/ItemModifyJob>
+#include <Akonadi/TransactionSequence>
+#include <Akonadi/VectorHelper>
 #include <AkonadiCore/collection.h>
-#include <AkonadiCore/collectionmodifyjob.h>
 #include <AkonadiCore/item.h>
-#include <AkonadiCore/itemcreatejob.h>
-#include <AkonadiCore/itemdeletejob.h>
-#include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/itemfetchscope.h>
-#include <AkonadiCore/itemmodifyjob.h>
-#include <AkonadiCore/transactionsequence.h>
-#include <AkonadiCore/vectorhelper.h>
 
 #include "mixedmaildirresource_debug.h"
 

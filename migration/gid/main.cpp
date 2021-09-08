@@ -4,7 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <AkonadiWidgets/ControlGui>
+#include <Akonadi/ControlGui>
 #include <KAboutData>
 
 #include <KConfig>

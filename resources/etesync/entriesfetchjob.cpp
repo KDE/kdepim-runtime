@@ -6,7 +6,7 @@
 
 #include "entriesfetchjob.h"
 
-#include <AkonadiCore/CollectionModifyJob>
+#include <Akonadi/CollectionModifyJob>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
 #include <QtConcurrent>

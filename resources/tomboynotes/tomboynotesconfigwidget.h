@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 class KConfigDialogManager;
 
 namespace Ui

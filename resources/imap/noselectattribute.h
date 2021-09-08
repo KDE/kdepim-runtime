@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <attribute.h>
+#include <akonadi/attribute.h>
 
 class NoSelectAttribute : public Akonadi::Attribute
 {

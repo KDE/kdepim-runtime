@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <Akonadi/AgentBase>
 #include <Akonadi/Calendar/FreeBusyProviderBase>
-#include <AkonadiAgentBase/AgentBase>
-#include <AkonadiAgentBase/ResourceBase>
+#include <Akonadi/ResourceBase>
 
 #include <qwindowdefs.h>
 

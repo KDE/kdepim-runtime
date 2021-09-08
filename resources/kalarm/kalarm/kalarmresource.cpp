@@ -13,9 +13,9 @@
 #include <KAlarmCal/CompatibilityAttribute>
 #include <KAlarmCal/KAEvent>
 
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
 #include <attributefactory.h>
-#include <collectionfetchjob.h>
-#include <collectionfetchscope.h>
 #include <collectionmodifyjob.h>
 
 #include <KCalendarCore/Incidence>

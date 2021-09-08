@@ -18,18 +18,18 @@
 #include <KLocalizedString>
 #include <QIcon>
 
-#include <AkonadiCore/CollectionModifyJob>
+#include <Akonadi/CollectionModifyJob>
 #include <kwindowsystem.h>
 
-#include <AkonadiCore/agentmanager.h>
-#include <AkonadiCore/attributefactory.h>
-#include <AkonadiCore/changerecorder.h>
-#include <AkonadiCore/collectionfetchjob.h>
-#include <AkonadiCore/collectionfetchscope.h>
-#include <AkonadiCore/itemfetchjob.h>
-#include <AkonadiCore/itemfetchscope.h>
+#include <Akonadi/AgentManager>
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
+#include <Akonadi/SpecialCollections>
 #include <AkonadiCore/session.h>
-#include <AkonadiCore/specialcollections.h>
 #include <QStandardPaths>
 #include <akonadi/kmime/messageparts.h>
 

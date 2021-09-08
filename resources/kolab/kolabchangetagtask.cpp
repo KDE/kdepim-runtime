@@ -8,8 +8,8 @@
 #include "kolabchangetagtask.h"
 #include "kolabresource_debug.h"
 
-#include <AkonadiCore/ItemFetchJob>
-#include <AkonadiCore/ItemFetchScope>
+#include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 
 KolabChangeTagTask::KolabChangeTagTask(const ResourceStateInterface::Ptr &resource, const QSharedPointer<TagConverter> &tagConverter, QObject *parent)
     : KolabRelationResourceTask(resource, parent)

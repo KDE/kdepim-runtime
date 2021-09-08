@@ -4,12 +4,12 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <AkonadiCore/AgentInstanceCreateJob>
-#include <AkonadiCore/AgentManager>
-#include <AkonadiCore/CollectionFetchScope>
-#include <AkonadiCore/Control>
-#include <AkonadiCore/Monitor>
-#include <AkonadiCore/SpecialCollectionAttribute>
+#include <Akonadi/AgentInstanceCreateJob>
+#include <Akonadi/AgentManager>
+#include <Akonadi/CollectionFetchScope>
+#include <Akonadi/Control>
+#include <Akonadi/Monitor>
+#include <Akonadi/SpecialCollectionAttribute>
 #include <qtest_akonadi.h>
 
 #include "ewssettings.h"

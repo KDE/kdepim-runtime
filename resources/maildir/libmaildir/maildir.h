@@ -8,9 +8,9 @@
 
 #include "maildir_export.h"
 
+#include <Akonadi/Item>
 #include <QString>
 #include <QStringList>
-#include <item.h>
 
 class QDateTime;
 

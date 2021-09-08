@@ -7,7 +7,7 @@
 #pragma once
 
 #include "akonadi-singlefileresource_export.h"
-#include <attribute.h>
+#include <akonadi/attribute.h>
 
 namespace Akonadi
 {

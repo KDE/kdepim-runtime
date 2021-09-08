@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/AgentConfigurationBase>
+#include <Akonadi/AgentConfigurationBase>
 
 class KNotifyConfigWidget;
 class MailDispatcherConfig : public Akonadi::AgentConfigurationBase

@@ -7,7 +7,7 @@
 
 #include "migratorbase.h"
 #include "migration_debug.h"
-#include <AkonadiCore/servermanager.h>
+#include <Akonadi/ServerManager>
 #include <KLocalizedString>
 #include <QCoreApplication>
 #include <QDateTime>

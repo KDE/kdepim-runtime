@@ -6,9 +6,9 @@
 
 #include "compactpage.h"
 
+#include <Akonadi/CollectionFetchJob>
 #include <KLocalizedString>
 #include <QUrl>
-#include <collectionfetchjob.h>
 #include <collectionmodifyjob.h>
 #include <kmbox/mbox.h>
 

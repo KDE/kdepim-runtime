@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <AkonadiCore/Attribute>
+#include <akonadi/attribute.h>
 
 #include <KGAPI/Types>
 

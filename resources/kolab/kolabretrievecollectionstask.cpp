@@ -20,12 +20,12 @@
 #include <noinferiorsattribute.h>
 #include <noselectattribute.h>
 
-#include <AkonadiCore/CachePolicy>
-#include <AkonadiCore/CollectionColorAttribute>
-#include <AkonadiCore/CollectionIdentificationAttribute>
-#include <AkonadiCore/EntityDisplayAttribute>
-#include <AkonadiCore/SpecialCollectionAttribute>
-#include <AkonadiCore/vectorhelper.h>
+#include <Akonadi/CachePolicy>
+#include <Akonadi/CollectionColorAttribute>
+#include <Akonadi/CollectionIdentificationAttribute>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/SpecialCollectionAttribute>
+#include <Akonadi/VectorHelper>
 #include <akonadi/calendar/blockalarmsattribute.h>
 #include <akonadi/kmime/messageparts.h>
 

@@ -11,7 +11,7 @@
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourcebase.h"
 
-#include <entitydisplayattribute.h>
+#include <akonadi/entitydisplayattribute.h>
 
 #include <KDirWatch>
 #include <KLocalizedString>
