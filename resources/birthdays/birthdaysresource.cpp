@@ -11,11 +11,11 @@
 
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemFetchJob>
+#include <Akonadi/MimeTypeChecker>
 #include <Akonadi/Monitor>
 #include <Akonadi/VectorHelper>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
-#include <mimetypechecker.h>
 
 #include <kcontacts/addressee.h>
 

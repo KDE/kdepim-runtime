@@ -12,10 +12,10 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/TransactionSequence>
 #include <Akonadi/VectorHelper>
 #include <KMime/Message>
 #include <QDirIterator>
-#include <transactionsequence.h>
 
 RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const KPIM::Maildir &md, QObject *parent)
     : Job(parent)
