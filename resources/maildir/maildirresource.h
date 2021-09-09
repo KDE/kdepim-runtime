@@ -7,7 +7,7 @@
 #pragma once
 
 #include <Akonadi/Collection>
-#include <resourcebase.h>
+#include <Akonadi/ResourceBase>
 
 class QTimer;
 class QFileInfo;

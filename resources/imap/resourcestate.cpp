@@ -14,10 +14,10 @@
 #include "settings.h"
 
 #include "imapresource_debug.h"
+#include <Akonadi/AgentSearchInterface>
 #include <Akonadi/CollectionModifyJob>
 #include <KLocalizedString>
 #include <KMessageBox>
-#include <agentsearchinterface.h>
 
 ResourceState::ResourceState(ImapResourceBase *resource, const TaskArguments &args)
     : m_resource(resource)

@@ -10,8 +10,8 @@
 
 #include <kalarmcal/kaevent.h>
 
+#include <Akonadi/ResourceBase>
 #include <QHash>
-#include <resourcebase.h>
 
 namespace Akonadi_KAlarm_Dir_Resource
 {

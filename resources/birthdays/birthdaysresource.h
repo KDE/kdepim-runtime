@@ -9,7 +9,7 @@
 
 #include <KCalendarCore/Event>
 
-#include <resourcebase.h>
+#include <Akonadi/ResourceBase>
 
 #include <QHash>
 

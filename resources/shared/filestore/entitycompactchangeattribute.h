@@ -9,7 +9,7 @@
 
 #include "akonadi-filestore_export.h"
 
-#include <Attribute>
+#include <Akonadi/Attribute>
 
 namespace Akonadi
 {

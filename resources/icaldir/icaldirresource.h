@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <resourcebase.h>
+#include <Akonadi/ResourceBase>
 
 #include <KCalendarCore/Incidence>
 

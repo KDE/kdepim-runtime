@@ -21,7 +21,7 @@ using KWallet::Wallet;
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
-#include <CollectionModifyJob>
+#include <Akonadi/CollectionModifyJob>
 
 /**
  * Maps the enum used to represent authentication in MailTransport (kdepimlibs)

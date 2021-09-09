@@ -7,7 +7,7 @@
 #pragma once
 
 #include "akonadi-singlefileresource_export.h"
-#include <resourcebase.h>
+#include <Akonadi/ResourceBase>
 
 #include <QStringList>
 #include <QUrl>

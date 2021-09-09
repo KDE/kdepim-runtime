@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <resourcebase.h>
+#include <Akonadi/ResourceBase>
 
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>

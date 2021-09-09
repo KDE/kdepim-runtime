@@ -11,6 +11,7 @@
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
 
+#include <Akonadi/Attribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/AddressAttribute>
@@ -18,7 +19,6 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <Akonadi/Monitor>
-#include <Attribute>
 
 #include <kmime/kmime_message.h>
 

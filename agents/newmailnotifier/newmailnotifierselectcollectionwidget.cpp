@@ -8,8 +8,8 @@
 
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFilterProxyModel>
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/KMime/NewMailNotifierAttribute>
-#include <CollectionModifyJob>
 #include <QSortFilterProxyModel>
 
 #include <Akonadi/ChangeRecorder>

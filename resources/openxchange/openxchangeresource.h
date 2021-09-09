@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <resourcebase.h>
+#include <Akonadi/ResourceBase>
 
 class OpenXchangeResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::ObserverV2
 {

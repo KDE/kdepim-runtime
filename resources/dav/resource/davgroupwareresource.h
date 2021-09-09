@@ -11,8 +11,8 @@
 
 #include <memory>
 
+#include <Akonadi/ResourceBase>
 #include <akonadi/calendar/freebusyproviderbase.h>
-#include <resourcebase.h>
 
 class DavFreeBusyHandler;
 

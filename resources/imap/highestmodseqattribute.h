@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <Attribute>
+#include <Akonadi/Attribute>
 
 class HighestModSeqAttribute : public Akonadi::Attribute
 {

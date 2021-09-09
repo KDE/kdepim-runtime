@@ -17,7 +17,7 @@
 #include <KLocalizedString>
 #include <kio/job.h>
 
-#include <CollectionModifyJob>
+#include <Akonadi/CollectionModifyJob>
 #include <QDebug>
 #include <QDir>
 #include <QEventLoopLocker>

@@ -31,9 +31,9 @@
 
 #include "imapresource_debug.h"
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
-#include <CollectionModifyJob>
 #include <KAuthorized>
 #include <KEMailSettings>
 #include <KLocalizedString>
