@@ -40,6 +40,7 @@
 #include "davresource_debug.h"
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemDeleteJob>
@@ -50,7 +51,6 @@
 #include <akonadi/attributefactory.h>
 #include <akonadi/entitydisplayattribute.h>
 #include <akonadi/itemfetchscope.h>
-#include <collectioncolorattribute.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <TransactionSequence>
+#include <Akonadi/TransactionSequence>
 
 #include <Akonadi/Item>
 #include <QString>

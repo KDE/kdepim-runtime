@@ -110,7 +110,7 @@
   <customwidget>
    <class>Akonadi::TagSelectWidget</class>
    <extends>QWidget</extends>
-   <header>tagselectwidget.h</header>
+   <header>Akonadi/TagSelectWidget</header>
   </customwidget>
   <customwidget>
    <class>KPluralHandlingSpinBox</class>

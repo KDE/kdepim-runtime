@@ -28,8 +28,8 @@
 #include <QDBusConnection>
 #include <akonadi/agentinstance.h>
 #include <akonadi/agentmanager.h>
+#include <akonadi/transportresourcebase.h>
 #include <kmime/kmime_message.h>
-#include <transportresourcebase.h>
 
 #include <QDBusInterface>
 #include <QDBusReply>

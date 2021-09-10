@@ -7,7 +7,7 @@
 #include "folderarchivesettingpage.h"
 #include "folderarchiveutil.h"
 
-#include <CollectionRequester>
+#include <Akonadi/CollectionRequester>
 
 #include <kmime/kmime_message.h>
 

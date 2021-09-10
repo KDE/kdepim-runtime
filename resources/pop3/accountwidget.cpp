@@ -17,9 +17,9 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Akonadi/ResourceSettings>
 #include <Libkdepim/LineEditCatchReturnKey>
 #include <MailTransport/ServerTest>
-#include <resourcesettings.h>
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>

@@ -7,9 +7,9 @@
 #pragma once
 
 class KJob;
+#include <Akonadi/ResourceBase>
 #include <KMime/Message>
 #include <QSet>
-#include <ResourceBase>
 
 #include "settings.h"
 

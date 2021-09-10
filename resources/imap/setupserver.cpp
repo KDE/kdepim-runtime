@@ -42,7 +42,7 @@
 #include <QNetworkConfigurationManager>
 #include <QPushButton>
 #include <akonadi/entitydisplayattribute.h>
-#include <resourcesettings.h>
+#include <akonadi/resourcesettings.h>
 
 #include <QFontDatabase>
 #include <QPointer>
