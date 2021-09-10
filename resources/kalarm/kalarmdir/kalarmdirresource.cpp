@@ -21,15 +21,15 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
 #include <QDBusConnection>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
 
 #include <KDirWatch>
 #include <KLocalizedString>

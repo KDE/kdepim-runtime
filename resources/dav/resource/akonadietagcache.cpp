@@ -9,7 +9,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 #include <Akonadi/ItemFetchJob>
-#include <akonadi/itemfetchscope.h>
+#include <Akonadi/ItemFetchScope>
 
 using namespace KDAV;
 

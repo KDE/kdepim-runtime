@@ -15,8 +15,8 @@
 #include <QFile>
 
 #include <Akonadi/ChangeRecorder>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchScope>
 
 #include <KLocalizedString>
 

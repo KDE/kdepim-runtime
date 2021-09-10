@@ -9,10 +9,10 @@
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionDeleteJob>
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <Akonadi/ItemFetchScope>
 
 #include "akonadislave_debug.h"
 

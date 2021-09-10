@@ -11,8 +11,8 @@
 #include <kalarmcal/compatibilityattribute.h>
 #include <kalarmcal/eventattribute.h>
 
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionModifyJob>
-#include <akonadi/attributefactory.h>
 
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/MemoryCalendar>

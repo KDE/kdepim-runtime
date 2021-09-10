@@ -10,12 +10,12 @@
 #include "settingsadaptor.h"
 
 #include <Akonadi/CollectionFetchJob>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/MimeTypeChecker>
 #include <Akonadi/Monitor>
 #include <Akonadi/VectorHelper>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
 
 #include <kcontacts/addressee.h>
 

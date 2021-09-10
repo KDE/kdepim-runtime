@@ -14,10 +14,10 @@
 #include "settings.h"
 #include "settingsadaptor.h"
 
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/ServerManager>
 #include <MailTransportAkonadi/SentActionAttribute>
 #include <MailTransportAkonadi/SentBehaviourAttribute>
-#include <akonadi/itemfetchscope.h>
 
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>

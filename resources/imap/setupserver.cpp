@@ -32,8 +32,10 @@
 #include "imapresource_debug.h"
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Akonadi/ResourceSettings>
 #include <KAuthorized>
 #include <KEMailSettings>
 #include <KLocalizedString>
@@ -41,8 +43,6 @@
 #include <KUser>
 #include <QNetworkConfigurationManager>
 #include <QPushButton>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/resourcesettings.h>
 
 #include <QFontDatabase>
 #include <QPointer>

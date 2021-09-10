@@ -22,7 +22,7 @@
 #include "storecompactjob.h"
 
 #include <Akonadi/Collection>
-#include <akonadi/entitydisplayattribute.h>
+#include <Akonadi/EntityDisplayAttribute>
 
 #include <KLocalizedString>
 #include <QFileInfo>

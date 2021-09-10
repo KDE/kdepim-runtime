@@ -13,10 +13,10 @@
 #include <KAlarmCal/CompatibilityAttribute>
 #include <KAlarmCal/KAEvent>
 
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
-#include <akonadi/attributefactory.h>
 
 #include <KCalendarCore/Incidence>
 #include <KCalendarCore/MemoryCalendar>

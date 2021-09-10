@@ -11,10 +11,10 @@
 #include "noselectattribute.h"
 
 #include <Akonadi/CachePolicy>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/KMime/MessageParts>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <Akonadi/VectorHelper>
-#include <akonadi/entitydisplayattribute.h>
 
 #include <kmime/kmime_message.h>
 

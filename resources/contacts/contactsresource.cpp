@@ -15,9 +15,9 @@
 #include "contacts_resources_debug.h"
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchScope>
 #include <QDBusConnection>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
 
 #include <KLocalizedString>
 

@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <Akonadi/Attribute>
 #include <KMbox/MBoxEntry>
-#include <akonadi/attribute.h>
 
 #include <QSet>
 

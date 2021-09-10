@@ -11,8 +11,8 @@
 #include "settingsadaptor.h"
 
 #include <Akonadi/ChangeRecorder>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchScope>
 
 #include <KCalendarCore/FileStorage>
 #include <KCalendarCore/ICalFormat>

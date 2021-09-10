@@ -8,7 +8,7 @@
 
 #include "session_p.h"
 
-#include <akonadi/itemfetchscope.h>
+#include <Akonadi/ItemFetchScope>
 
 using namespace Akonadi;
 

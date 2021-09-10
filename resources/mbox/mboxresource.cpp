@@ -7,14 +7,14 @@
 #include "mboxresource.h"
 #include "mboxresource_debug.h"
 
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <QDBusConnection>
-#include <akonadi/attributefactory.h>
-#include <akonadi/itemfetchscope.h>
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>
 

@@ -22,8 +22,8 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
-#include <akonadi/collectionquotaattribute.h>
-#include <akonadi/entitydisplayattribute.h>
+#include <Akonadi/CollectionQuotaAttribute>
+#include <Akonadi/EntityDisplayAttribute>
 
 RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)

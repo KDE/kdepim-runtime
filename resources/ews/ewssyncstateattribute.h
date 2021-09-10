@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <akonadi/attribute.h>
+#include <Akonadi/Attribute>
 
 /**
  *  @brief  Custom attribute to keep the EWS sync state with the collection.

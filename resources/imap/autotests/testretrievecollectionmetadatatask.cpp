@@ -13,9 +13,9 @@
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
+#include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionQuotaAttribute>
 #include <QTest>
-#include <akonadi/attributefactory.h>
-#include <collectionquotaattribute.h>
 #include <noinferiorsattribute.h>
 using QBYTEARRAYMAP = QMap<QByteArray, QByteArray>;
 using QBYTEARRAYINT64MAP = QMap<QByteArray, qint64>;

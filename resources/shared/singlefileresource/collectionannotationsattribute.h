@@ -7,8 +7,8 @@
 #pragma once
 
 #include "akonadi-singlefileresource_export.h"
+#include <Akonadi/Attribute>
 #include <QMap>
-#include <akonadi/attribute.h>
 
 namespace Akonadi
 {

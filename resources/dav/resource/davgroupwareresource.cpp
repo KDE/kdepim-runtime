@@ -38,19 +38,19 @@
 #include <KJob>
 
 #include "davresource_debug.h"
+#include <Akonadi/AttributeFactory>
 #include <Akonadi/CachePolicy>
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
+#include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/RecursiveItemFetchJob>
 #include <KLocalizedString>
-#include <akonadi/attributefactory.h>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>

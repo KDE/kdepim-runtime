@@ -28,10 +28,10 @@
 #include <Akonadi/KMime/NewMailNotifierAttribute>
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <Akonadi/ServerManager>
+#include <Akonadi/Session>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#include <akonadi/session.h>
 #include <kcoreaddons_version.h>
 #if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>

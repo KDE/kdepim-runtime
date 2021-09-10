@@ -12,9 +12,9 @@
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/EntityDisplayAttribute>
+#include <Akonadi/ItemFetchScope>
 #include <Akonadi/VectorHelper>
-#include <akonadi/entitydisplayattribute.h>
-#include <akonadi/itemfetchscope.h>
 
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>

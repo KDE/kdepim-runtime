@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <akonadi/attribute.h>
+#include <Akonadi/Attribute>
 
 class NoInferiorsAttribute : public Akonadi::Attribute
 {
