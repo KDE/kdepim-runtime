@@ -12,8 +12,8 @@
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
-#include <kimap/createjob.h>
-#include <kimap/setmetadatajob.h>
+#include <KIMAP/CreateJob>
+#include <KIMAP/SetMetaDataJob>
 
 #include <KLocalizedString>
 

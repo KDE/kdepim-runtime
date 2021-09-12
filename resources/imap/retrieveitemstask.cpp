@@ -28,11 +28,11 @@
 
 #include <KLocalizedString>
 
-#include <kimap/expungejob.h>
-#include <kimap/searchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/statusjob.h>
+#include <KIMAP/ExpungeJob>
+#include <KIMAP/SearchJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/StatusJob>
 
 RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)

@@ -11,11 +11,11 @@
 #include "pimkolab/kolabformat/kolabobject.h"
 #include <imapflags.h>
 
-#include <kimap/appendjob.h>
-#include <kimap/imapset.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/storejob.h>
+#include <KIMAP/AppendJob>
+#include <KIMAP/ImapSet>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/StoreJob>
 
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>

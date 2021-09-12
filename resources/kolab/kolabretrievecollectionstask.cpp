@@ -12,11 +12,11 @@
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
 
+#include <KIMAP/GetMetaDataJob>
+#include <KIMAP/MyRightsJob>
 #include <collectionannotationsattribute.h>
 #include <collectionmetadatahelper.h>
 #include <imapaclattribute.h>
-#include <kimap/getmetadatajob.h>
-#include <kimap/myrightsjob.h>
 #include <noinferiorsattribute.h>
 #include <noselectattribute.h>
 

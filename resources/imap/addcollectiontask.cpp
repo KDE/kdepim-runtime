@@ -12,10 +12,10 @@
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
-#include <kimap/createjob.h>
-#include <kimap/session.h>
-#include <kimap/setmetadatajob.h>
-#include <kimap/subscribejob.h>
+#include <KIMAP/CreateJob>
+#include <KIMAP/Session>
+#include <KIMAP/SetMetaDataJob>
+#include <KIMAP/SubscribeJob>
 
 #include <Akonadi/CollectionDeleteJob>
 

@@ -9,10 +9,10 @@
 #include "imapresource_debug.h"
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/SearchQuery>
+#include <KIMAP/SearchJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
 #include <KLocalizedString>
-#include <kimap/searchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
 Q_DECLARE_METATYPE(KIMAP::Session *)
 
 SearchTask::SearchTask(const ResourceStateInterface::Ptr &state, const QString &query, QObject *parent)

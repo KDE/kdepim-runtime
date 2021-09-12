@@ -6,7 +6,7 @@
 #pragma once
 
 #include <Akonadi/Collection>
-#include <kimap/acl.h>
+#include <KIMAP/Acl>
 
 class CollectionMetadataHelper
 {

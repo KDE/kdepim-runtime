@@ -9,9 +9,9 @@
 
 #include "imapresource_debug.h"
 
-#include <kimap/expungejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KIMAP/ExpungeJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
 
 #include "noselectattribute.h"
 

@@ -6,9 +6,9 @@
 */
 
 #include "imaptestbase.h"
+#include <KIMAP/CapabilitiesJob>
 #include <QSignalSpy>
 #include <QTest>
-#include <kimap/capabilitiesjob.h>
 class TestSessionPool : public ImapTestBase
 {
     Q_OBJECT

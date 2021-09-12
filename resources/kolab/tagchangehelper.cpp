@@ -17,11 +17,11 @@
 #include "pimkolab/kolabformat/kolabobject.h"
 
 #include <Akonadi/TagModifyJob>
-#include <kimap/appendjob.h>
-#include <kimap/searchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/storejob.h>
+#include <KIMAP/AppendJob>
+#include <KIMAP/SearchJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/StoreJob>
 #include <replacemessagejob.h>
 
 KMime::Message::Ptr TagConverter::createMessage(const Akonadi::Tag &tag, const Akonadi::Item::List &items, const QString &username)

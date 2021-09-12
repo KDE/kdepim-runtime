@@ -16,10 +16,10 @@
 
 #include <KLocalizedString>
 
+#include <KIMAP/Session>
+#include <KIMAP/SubscribeJob>
+#include <KIMAP/UnsubscribeJob>
 #include <kimap/loginjob.h>
-#include <kimap/session.h>
-#include <kimap/subscribejob.h>
-#include <kimap/unsubscribejob.h>
 
 #include "imapaccount.h"
 #include "sessionuiproxy.h"

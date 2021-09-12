@@ -13,10 +13,10 @@
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
-#include <kimap/capabilitiesjob.h>
-#include <kimap/idjob.h>
-#include <kimap/logoutjob.h>
-#include <kimap/namespacejob.h>
+#include <KIMAP/CapabilitiesJob>
+#include <KIMAP/IdJob>
+#include <KIMAP/LogoutJob>
+#include <KIMAP/NamespaceJob>
 
 #include "imapaccount.h"
 #include "passwordrequesterinterface.h"

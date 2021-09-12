@@ -7,13 +7,13 @@
 
 #include "retrievecollectionmetadatatask.h"
 
+#include <KIMAP/GetAclJob>
+#include <KIMAP/GetMetaDataJob>
+#include <KIMAP/GetQuotaRootJob>
+#include <KIMAP/MyRightsJob>
+#include <KIMAP/RFCCodecs>
+#include <KIMAP/Session>
 #include <KLocalizedString>
-#include <kimap/getacljob.h>
-#include <kimap/getmetadatajob.h>
-#include <kimap/getquotarootjob.h>
-#include <kimap/myrightsjob.h>
-#include <kimap/rfccodecs.h>
-#include <kimap/session.h>
 
 #include "imapresource_debug.h"
 

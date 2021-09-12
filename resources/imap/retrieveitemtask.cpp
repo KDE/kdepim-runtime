@@ -13,8 +13,8 @@
 #include <KLocalizedString>
 
 #include <Akonadi/KMime/MessageFlags>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
 
 RetrieveItemTask::RetrieveItemTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(CancelIfNoSession, resource, parent)

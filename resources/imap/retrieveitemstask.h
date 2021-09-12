@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <kimap/fetchjob.h>
+#include <KIMAP/FetchJob>
 
 #include "resourcetask.h"
 #include <QElapsedTimer>

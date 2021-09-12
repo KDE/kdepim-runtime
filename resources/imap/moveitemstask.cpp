@@ -12,12 +12,12 @@
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
-#include <kimap/copyjob.h>
-#include <kimap/movejob.h>
-#include <kimap/searchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/storejob.h>
+#include <KIMAP/CopyJob>
+#include <KIMAP/MoveJob>
+#include <KIMAP/SearchJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/StoreJob>
 
 #include <kmime/kmime_message.h>
 

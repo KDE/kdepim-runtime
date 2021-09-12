@@ -9,12 +9,12 @@
 
 #include "imapresource_debug.h"
 #include <Akonadi/KMime/MessageFlags>
+#include <KIMAP/CloseJob>
+#include <KIMAP/DeleteJob>
+#include <KIMAP/ExpungeJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/StoreJob>
 #include <KLocalizedString>
-#include <kimap/closejob.h>
-#include <kimap/deletejob.h>
-#include <kimap/expungejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/storejob.h>
 
 Q_DECLARE_METATYPE(KIMAP::DeleteJob *)
 

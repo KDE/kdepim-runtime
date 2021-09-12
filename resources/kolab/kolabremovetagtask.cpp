@@ -10,9 +10,9 @@
 #include "kolabresource_trace.h"
 #include <imapflags.h>
 
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/storejob.h>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/StoreJob>
 
 KolabRemoveTagTask::KolabRemoveTagTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : KolabRelationResourceTask(resource, parent)

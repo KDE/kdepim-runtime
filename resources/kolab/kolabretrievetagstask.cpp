@@ -10,9 +10,9 @@
 #include "tagchangehelper.h"
 
 #include "pimkolab/kolabformat/kolabobject.h"
+#include <KIMAP/FetchJob>
+#include <KIMAP/SelectJob>
 #include <imapflags.h>
-#include <kimap/fetchjob.h>
-#include <kimap/selectjob.h>
 
 KolabRetrieveTagTask::KolabRetrieveTagTask(const ResourceStateInterface::Ptr &resource, RetrieveType type, QObject *parent)
     : KolabRelationResourceTask(resource, parent)

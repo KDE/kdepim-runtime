@@ -7,12 +7,12 @@
 
 #include "changecollectiontask.h"
 
-#include <kimap/renamejob.h>
-#include <kimap/session.h>
-#include <kimap/setacljob.h>
-#include <kimap/setmetadatajob.h>
-#include <kimap/subscribejob.h>
-#include <kimap/unsubscribejob.h>
+#include <KIMAP/RenameJob>
+#include <KIMAP/Session>
+#include <KIMAP/SetAclJob>
+#include <KIMAP/SetMetaDataJob>
+#include <KIMAP/SubscribeJob>
+#include <KIMAP/UnsubscribeJob>
 
 #include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"

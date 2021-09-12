@@ -13,9 +13,9 @@
 
 #include "imapresource_debug.h"
 
-#include <kimap/idlejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KIMAP/IdleJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
 
 #include <QTimer>
 

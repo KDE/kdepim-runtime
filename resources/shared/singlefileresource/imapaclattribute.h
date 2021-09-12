@@ -11,7 +11,7 @@
 
 #include <QMap>
 
-#include <kimap/acl.h>
+#include <KIMAP/Acl>
 
 namespace Akonadi
 {

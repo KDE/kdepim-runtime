@@ -10,10 +10,10 @@
 #include "imapresource_debug.h"
 #include <KLocalizedString>
 
-#include <kimap/renamejob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/subscribejob.h>
+#include <KIMAP/RenameJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/SubscribeJob>
 
 #include <QUuid>
 

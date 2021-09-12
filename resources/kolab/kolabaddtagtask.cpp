@@ -11,11 +11,11 @@
 
 #include "pimkolab/kolabformat/kolabobject.h"
 
-#include <kimap/appendjob.h>
-#include <kimap/imapset.h>
-#include <kimap/searchjob.h>
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
+#include <KIMAP/AppendJob>
+#include <KIMAP/ImapSet>
+#include <KIMAP/SearchJob>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
 
 #include <KLocalizedString>
 

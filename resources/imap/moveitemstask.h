@@ -9,7 +9,7 @@
 
 #include "resourcetask.h"
 
-#include <kimap/imapset.h>
+#include <KIMAP/ImapSet>
 
 class MoveItemsTask : public ResourceTask
 {

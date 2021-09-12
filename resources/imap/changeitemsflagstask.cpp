@@ -7,9 +7,9 @@
 #include "changeitemsflagstask.h"
 
 #include "imapresource_debug.h"
-#include <kimap/selectjob.h>
-#include <kimap/session.h>
-#include <kimap/storejob.h>
+#include <KIMAP/SelectJob>
+#include <KIMAP/Session>
+#include <KIMAP/StoreJob>
 
 ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &resource, QObject *parent)
     : ResourceTask(ResourceTask::DeferIfNoSession, resource, parent)
