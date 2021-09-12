@@ -8,8 +8,8 @@
 #include "searchtask.h"
 #include "imapresource_debug.h"
 #include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/SearchQuery>
 #include <KLocalizedString>
-#include <SearchQuery>
 #include <kimap/searchjob.h>
 #include <kimap/selectjob.h>
 #include <kimap/session.h>
