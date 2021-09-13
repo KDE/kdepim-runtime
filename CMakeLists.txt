@@ -44,7 +44,7 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_MIN_VERSION "5.85.0")
+set(KF5_MIN_VERSION "5.86.0")
 
 find_package(ECM ${KF5_MIN_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
@@ -161,7 +161,7 @@ set_package_properties(Qt5Keychain PROPERTIES
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
 
 #add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
-add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055600)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055700)
 
 # added by KDE_COMPILERSETTINGS_LEVEL 5.85
 remove_definitions(-DQT_NO_FOREACH)
