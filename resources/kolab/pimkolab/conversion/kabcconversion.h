@@ -8,8 +8,8 @@
 
 #include "kolab_export.h"
 
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
 #include <kolabcontact.h>
 
 namespace Kolab

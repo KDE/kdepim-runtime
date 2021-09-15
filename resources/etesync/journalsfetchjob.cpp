@@ -10,9 +10,9 @@
 #include <Akonadi/EntityDisplayAttribute>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
 #include <QtConcurrent>
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
 
 #include "etesync_debug.h"
 

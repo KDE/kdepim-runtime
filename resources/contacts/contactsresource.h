@@ -8,10 +8,10 @@
 
 #include <Akonadi/ResourceBase>
 
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
-#include <kcontacts/contactgrouptool.h>
-#include <kcontacts/vcardconverter.h>
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
+#include <KContacts/ContactGroupTool>
+#include <KContacts/VCardConverter>
 
 class QDir;
 

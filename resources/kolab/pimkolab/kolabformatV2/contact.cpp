@@ -7,9 +7,9 @@
 
 #include "contact.h"
 #include "pimkolab_debug.h"
+#include <KContacts/Addressee>
 #include <QFile>
 #include <float.h>
-#include <kcontacts/addressee.h>
 
 using namespace KolabV2;
 

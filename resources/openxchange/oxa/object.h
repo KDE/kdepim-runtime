@@ -11,8 +11,8 @@
 #include "folder.h"
 
 #include <KCalendarCore/Incidence>
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
 
 #include <QString>
 #include <QVector>

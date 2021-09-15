@@ -12,12 +12,12 @@
 #include <Akonadi/Relation>
 #include <Akonadi/Tag>
 #include <KCalendarCore/Incidence>
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
 #include <KMime/Message>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/journal.h>
 #include <kcalendarcore/todo.h>
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
 
 #include "kolabdefinitions.h"
 

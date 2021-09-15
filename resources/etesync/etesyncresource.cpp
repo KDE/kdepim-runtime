@@ -6,8 +6,8 @@
 
 #include "etesyncresource.h"
 
-#include <kcontacts/addressee.h>
-#include <kcontacts/contactgroup.h>
+#include <KContacts/Addressee>
+#include <KContacts/ContactGroup>
 #include <kwindowsystem.h>
 
 #include <Akonadi/AttributeFactory>

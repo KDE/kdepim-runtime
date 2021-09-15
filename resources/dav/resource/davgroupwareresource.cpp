@@ -50,9 +50,10 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/RecursiveItemFetchJob>
+#include <KContacts/Addressee>
+#include <KContacts/VCardConverter>
+
 #include <KLocalizedString>
-#include <kcontacts/addressee.h>
-#include <kcontacts/vcardconverter.h>
 #include <kwindowsystem.h>
 
 using namespace Akonadi;

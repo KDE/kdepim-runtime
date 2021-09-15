@@ -17,7 +17,7 @@
 #include <Akonadi/Monitor>
 #include <Akonadi/VectorHelper>
 
-#include <kcontacts/addressee.h>
+#include <KContacts/Addressee>
 
 #include <KCodecs/KEmailAddress>
 

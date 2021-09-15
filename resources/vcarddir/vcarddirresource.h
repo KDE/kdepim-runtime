@@ -8,8 +8,8 @@
 
 #include <Akonadi/ResourceBase>
 
-#include <kcontacts/addressee.h>
-#include <kcontacts/vcardconverter.h>
+#include <KContacts/Addressee>
+#include <KContacts/VCardConverter>
 
 class VCardDirResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {

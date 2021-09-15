@@ -9,11 +9,11 @@
 #include <contact.h>
 
 #include <KCalendarCore/Recurrence>
+#include <KContacts/Addressee>
 #include <QTest>
 #include <kcalendarcore/event.h>
 #include <kcalendarcore/journal.h>
 #include <kcalendarcore/todo.h>
-#include <kcontacts/addressee.h>
 
 #include <kolabformat.h>
 

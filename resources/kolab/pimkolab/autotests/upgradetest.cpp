@@ -14,8 +14,8 @@
 #include "kolabformat/kolabobject.h"
 #include "testutils.h"
 #include <KCalendarCore/ICalFormat>
+#include <KContacts/VCardConverter>
 #include <conversion/commonconversion.h>
-#include <kcontacts/vcardconverter.h>
 
 void UpgradeTest::testIncidence_data()
 {

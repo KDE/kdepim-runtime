@@ -9,8 +9,8 @@
 #include "settings.h"
 #include "singlefileresource.h"
 
-#include <kcontacts/addressee.h>
-#include <kcontacts/vcardconverter.h>
+#include <KContacts/Addressee>
+#include <KContacts/VCardConverter>
 
 class VCardResource : public Akonadi::SingleFileResource<Akonadi_VCard_Resource::Settings>
 {

@@ -18,8 +18,8 @@
 
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
+#include <KContacts/Addressee>
 #include <KLocalizedString>
-#include <kcontacts/addressee.h>
 
 #include <QStandardPaths>
 #include <oxa/davmanager.h>

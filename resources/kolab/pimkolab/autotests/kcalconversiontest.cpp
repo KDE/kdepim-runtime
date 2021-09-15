@@ -8,8 +8,8 @@
 #include <contact.h>
 
 #include <KCalendarCore/Recurrence>
+#include <KContacts/Addressee>
 #include <QTest>
-#include <kcontacts/addressee.h>
 #include <kolabcontact.h>
 
 #include "conversion/kabcconversion.h"

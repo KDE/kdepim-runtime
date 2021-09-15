@@ -9,8 +9,8 @@
 #include <Akonadi/CollectionModifyJob>
 #include <KCalendarCore/Event>
 #include <KCalendarCore/Todo>
+#include <KContacts/Addressee>
 #include <QtConcurrent>
-#include <kcontacts/addressee.h>
 
 #include "etesync_debug.h"
 #include "settings.h"
