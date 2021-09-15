@@ -7,13 +7,15 @@
 #ifndef TESTUTILS_H
 #define TESTUTILS_H
 
-#include <QFile>
-#include <QRegularExpression>
-#include <QUuid>
-#include <kmime/kmime_message.h>
 #include <kolabevent.h>
 
 #include "kolabformat/kolabobject.h"
+
+#include <KMime/Message>
+
+#include <QFile>
+#include <QRegularExpression>
+#include <QUuid>
 
 Q_DECLARE_METATYPE(Kolab::ObjectType)
 Q_DECLARE_METATYPE(Kolab::Version)

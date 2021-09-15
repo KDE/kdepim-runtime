@@ -16,7 +16,8 @@
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <MailTransport/PrecommandJob>
 #include <MailTransport/Transport>
-#include <kmime/kmime_util.h>
+
+#include <KMime/Util>
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>

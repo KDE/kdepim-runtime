@@ -22,15 +22,16 @@
 #include <Akonadi/ItemFetchScope>
 
 #include <kmbox/mbox.h>
-#include <kmime/kmime_message.h>
+
+#include <KMime/Message>
 
 #include <KRandom>
-#include <QTemporaryDir>
 
 #include <QCryptographicHash>
 #include <QDir>
 #include <QFileInfo>
 #include <QRandomGenerator>
+#include <QTemporaryDir>
 #include <QTest>
 
 using namespace Akonadi;

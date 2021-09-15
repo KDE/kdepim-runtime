@@ -9,7 +9,7 @@
 
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include <QObject>
 

@@ -27,7 +27,7 @@
 #include <MailTransport/ServerTest>
 #include <MailTransport/Transport>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include "imapresource_debug.h"
 #include <Akonadi/CollectionFetchJob>

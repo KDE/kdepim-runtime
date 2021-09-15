@@ -20,7 +20,7 @@
 #include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <Akonadi/Monitor>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include <MailTransportAkonadi/DispatchModeAttribute>
 #include <MailTransportAkonadi/SentBehaviourAttribute>

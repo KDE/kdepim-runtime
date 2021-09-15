@@ -8,7 +8,7 @@
 
 #include "kolab_export.h"
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 #include <kolabnote.h>
 
 namespace Kolab

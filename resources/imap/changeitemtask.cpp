@@ -17,7 +17,7 @@
 #include <KIMAP/Session>
 #include <KIMAP/StoreJob>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include "imapflags.h"
 #include "uidnextattribute.h"

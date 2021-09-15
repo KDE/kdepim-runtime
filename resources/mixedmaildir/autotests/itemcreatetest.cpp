@@ -15,7 +15,8 @@
 #include "libmaildir/maildir.h"
 
 #include <kmbox/mbox.h>
-#include <kmime/kmime_message.h>
+
+#include <KMime/Message>
 
 #include <QRandomGenerator>
 #include <QTemporaryDir>

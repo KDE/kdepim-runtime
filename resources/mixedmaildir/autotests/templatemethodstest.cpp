@@ -24,7 +24,7 @@
 
 #include <Akonadi/CachePolicy>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include <KRandom>
 #include <QRandomGenerator>

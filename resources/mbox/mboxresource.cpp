@@ -14,14 +14,17 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/SpecialCollectionAttribute>
-#include <QDBusConnection>
+
 #include <kmbox/mbox.h>
-#include <kmime/kmime_message.h>
+
+#include <KMime/Message>
 
 #include "compactpage.h"
 #include "deleteditemsattribute.h"
 #include "lockmethodpage.h"
 #include "settingsadaptor.h"
+
+#include <QDBusConnection>
 
 using namespace Akonadi;
 

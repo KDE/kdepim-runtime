@@ -19,10 +19,10 @@
 #include "mime/mimeutils.h"
 
 #include <KCalendarCore/Incidence>
+#include <KMime/Message>
 #include <kcalendarcore/event.h>
 #include <kcontacts/addressee.h>
 #include <kcontacts/contactgroup.h>
-#include <kmime/kmime_message.h>
 
 #include <Akonadi/Notes/NoteUtils>
 

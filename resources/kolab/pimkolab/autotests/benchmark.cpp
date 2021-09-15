@@ -8,9 +8,12 @@
 #include "conversion/kcalconversion.h"
 #include "kolabformatV2/event.h"
 #include "testutils.h"
-#include <QTest>
-#include <kmime/kmime_message.h>
 #include <kolabformat.h>
+
+#include <KMime/Message>
+
+#include <QTest>
+
 KMime::Message::Ptr readMimeFile(const QString &fileName)
 {
     QFile file(fileName);

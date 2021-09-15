@@ -30,8 +30,9 @@
 #include <Akonadi/SpecialCollectionAttribute>
 #include <Akonadi/VectorHelper>
 
+#include <KMime/Message>
+
 #include <KLocalizedString>
-#include <kmime/kmime_message.h>
 
 #include <QColor>
 

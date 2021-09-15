@@ -16,7 +16,7 @@
 #include <Akonadi/SpecialCollectionAttribute>
 #include <Akonadi/VectorHelper>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>

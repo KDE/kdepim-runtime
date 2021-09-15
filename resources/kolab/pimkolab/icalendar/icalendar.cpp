@@ -9,16 +9,21 @@
 #include "imip.h"
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
+
+#include <KMime/Message>
+
 #include <KCalendarCore/ICalFormat>
 #include <KCalendarCore/MemoryCalendar>
-#include <KLocalizedString>
-#include <QTimeZone>
 #include <conversion/commonconversion.h>
 #include <conversion/kcalconversion.h>
-#include <iostream>
 #include <kcalendarcore/event.h>
-#include <kmime/kmime_message.h>
 #include <mime/mimeutils.h>
+
+#include <KLocalizedString>
+
+#include <QTimeZone>
+
+#include <iostream>
 
 namespace Kolab
 {

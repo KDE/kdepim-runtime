@@ -23,7 +23,7 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/KMime/MessageParts>
 #include <Akonadi/SpecialCollectionAttribute>
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include "maildirresource_debug.h"
 #include <KDirWatch>

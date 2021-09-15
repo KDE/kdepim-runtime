@@ -39,7 +39,7 @@
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include "mixedmaildirresource_debug.h"
 #include <KLocalizedString>

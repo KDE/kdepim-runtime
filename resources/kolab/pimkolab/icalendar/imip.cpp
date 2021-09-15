@@ -10,7 +10,8 @@
 
 #include <KCalUtils/IncidenceFormatter>
 #include <KEmailAddress>
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
+
 /*
  * The code in here is copy paste work from kdepim/calendarsupport.
  *

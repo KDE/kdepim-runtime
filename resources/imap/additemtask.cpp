@@ -18,7 +18,7 @@
 #include <KIMAP/SelectJob>
 #include <KIMAP/Session>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include "uidnextattribute.h"
 

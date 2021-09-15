@@ -10,8 +10,9 @@
 #include "changeitemtask.h"
 #include "uidnextattribute.h"
 
+#include <KMime/Message>
+
 #include <QTest>
-#include <kmime/kmime_message.h>
 
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 

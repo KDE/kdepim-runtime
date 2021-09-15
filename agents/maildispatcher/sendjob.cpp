@@ -28,9 +28,10 @@
 #include <MailTransport/TransportManager>
 #include <MailTransportAkonadi/SentBehaviourAttribute>
 #include <MailTransportAkonadi/TransportAttribute>
-#include <QDBusConnection>
-#include <kmime/kmime_message.h>
 
+#include <KMime/Message>
+
+#include <QDBusConnection>
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QTimer>

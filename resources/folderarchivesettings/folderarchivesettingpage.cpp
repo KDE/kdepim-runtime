@@ -9,7 +9,7 @@
 
 #include <Akonadi/CollectionRequester>
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include <KLocalizedString>
 #include <KSharedConfig>

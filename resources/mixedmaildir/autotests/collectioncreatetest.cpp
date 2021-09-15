@@ -11,7 +11,7 @@
 
 #include "libmaildir/maildir.h"
 
-#include <kmime/kmime_message.h>
+#include <KMime/Message>
 
 #include <QTemporaryDir>
 
