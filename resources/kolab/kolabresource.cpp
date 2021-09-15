@@ -12,9 +12,12 @@
 #include "sessionuiproxy.h"
 #include "settingspasswordrequester.h"
 #include "setupserver.h"
+
+#include <Akonadi/Calendar/BlockAlarmsAttribute>
+
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionColorAttribute>
-#include <akonadi/calendar/blockalarmsattribute.h>
+
 #include <changecollectiontask.h>
 #include <collectionannotationsattribute.h>
 #include <resourcestateinterface.h>

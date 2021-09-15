@@ -14,8 +14,10 @@
 
 #include "../mixedmaildir_debug.h"
 #include "../mixedmaildirresource_debug.h"
-#include <akonadi/kmime/messagestatus.h>
+
+#include <Akonadi/KMime/MessageStatus>
 using Akonadi::MessageStatus;
+
 #include <qplatformdefs.h>
 
 // BEGIN: Magic definitions from old kmail code

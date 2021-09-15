@@ -18,20 +18,22 @@
 #include <KLocalizedString>
 #include <QIcon>
 
-#include <Akonadi/CollectionModifyJob>
 #include <kwindowsystem.h>
+
+#include <Akonadi/KMime/MessageParts>
 
 #include <Akonadi/AgentManager>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
+#include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/Session>
 #include <Akonadi/SpecialCollections>
+
 #include <QStandardPaths>
-#include <akonadi/kmime/messageparts.h>
 
 #include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"

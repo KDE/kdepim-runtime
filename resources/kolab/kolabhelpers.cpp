@@ -9,14 +9,17 @@
 #include "kolabresource_trace.h"
 #include "pimkolab/kolabformat/errorhandler.h"
 #include "pimkolab/kolabformat/kolabobject.h"
+
+#include <Akonadi/Notes/NoteUtils>
+
 #include <Akonadi/Collection>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
+
 #include <KCalendarCore/Incidence>
 #include <KLocalizedString>
 #include <KMime/KMimeMessage>
 #include <QColor>
-#include <akonadi/notes/noteutils.h>
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
 {

@@ -10,13 +10,12 @@
 
 #include <memory>
 
+#include <Akonadi/KMime/MessageFlags>
+
 #include <QDir>
 #include <QFile>
-
 #include <QTest>
-
 #include <QTemporaryDir>
-#include <akonadi/kmime/messageflags.h>
 
 QTEST_MAIN(MaildirTest)
 

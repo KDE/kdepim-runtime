@@ -24,7 +24,8 @@
 #include <kcontacts/contactgroup.h>
 #include <kmime/kmime_message.h>
 
-#include <akonadi/notes/noteutils.h>
+#include <Akonadi/Notes/NoteUtils>
+
 #include <qdom.h>
 
 namespace Kolab

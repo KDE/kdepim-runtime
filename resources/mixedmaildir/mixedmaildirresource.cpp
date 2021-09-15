@@ -30,8 +30,8 @@
 #include "filestore/itemmovejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <akonadi/kmime/messageparts.h>
-#include <akonadi/kmime/messagestatus.h>
+#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/KMime/MessageStatus>
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchScope>

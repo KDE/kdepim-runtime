@@ -11,10 +11,13 @@
 #include "retrievecollectionstask.h"
 #include <noinferiorsattribute.h>
 
+#include <Akonadi/KMime/MessageParts>
+
 #include <Akonadi/CachePolicy>
 #include <Akonadi/EntityDisplayAttribute>
+
 #include <QTest>
-#include <akonadi/kmime/messageparts.h>
+
 class TestRetrieveCollectionsTask : public ImapTestBase
 {
     Q_OBJECT

@@ -10,7 +10,9 @@
 #include "v2helpers.h"
 
 #include "kolabbase.h"
-#include <akonadi/notes/noteutils.h>
+
+#include <Akonadi/Notes/NoteUtils>
+
 #include <conversion/commonconversion.h>
 #include <conversion/kabcconversion.h>
 #include <conversion/kcalconversion.h>

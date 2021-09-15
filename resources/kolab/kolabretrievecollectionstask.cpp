@@ -20,14 +20,15 @@
 #include <noinferiorsattribute.h>
 #include <noselectattribute.h>
 
+#include <Akonadi/KMime/MessageParts>
+
 #include <Akonadi/CachePolicy>
+#include <Akonadi/Calendar/BlockAlarmsAttribute>
 #include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionIdentificationAttribute>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <Akonadi/VectorHelper>
-#include <akonadi/calendar/blockalarmsattribute.h>
-#include <akonadi/kmime/messageparts.h>
 
 #include <KLocalizedString>
 #include <kmime/kmime_message.h>

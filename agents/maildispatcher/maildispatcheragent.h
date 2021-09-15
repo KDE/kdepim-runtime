@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <AgentBase>
+#include <Akonadi/AgentBase>
 #include <Akonadi/Item>
 
 class OutboxQueue;

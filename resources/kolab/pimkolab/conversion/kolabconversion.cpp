@@ -6,7 +6,8 @@
 
 #include "kolabconversion.h"
 #include "commonconversion.h"
-#include <akonadi/notes/noteutils.h>
+
+#include <Akonadi/Notes/NoteUtils>
 
 namespace Kolab
 {

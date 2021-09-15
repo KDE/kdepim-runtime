@@ -17,8 +17,9 @@
 
 #include "libmaildir/maildir.h"
 
+#include <Akonadi/KMime/MessageParts>
+
 #include <Akonadi/ItemFetchScope>
-#include <akonadi/kmime/messageparts.h>
 
 #include <kmbox/mbox.h>
 #include <kmime/kmime_message.h>

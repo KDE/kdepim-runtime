@@ -12,8 +12,9 @@
 
 #include "TestIdxReader_data.h"
 
-#include <akonadi/kmime/messagestatus.h>
+#include <Akonadi/KMime/MessageStatus>
 using Akonadi::MessageStatus;
+
 #include <QTemporaryFile>
 
 #include <QDebug>
