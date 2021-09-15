@@ -32,6 +32,7 @@ protected:
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 protected:
@@ -58,6 +59,7 @@ private:
     void initializeDirectory(const QString &path) const;
     Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
     QString directoryForCollection(const Akonadi::Collection &collection) const;
+    bool doRetrieveItem(Akonadi::Item &item);
 
 private:
     QStringList mSupportedMimeTypes;

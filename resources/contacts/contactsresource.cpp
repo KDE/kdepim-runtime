@@ -155,11 +155,42 @@ void ContactsResource::retrieveItems(const Akonadi::Collection &collection)
     itemsRetrieved(items);
 }
 
+bool ContactsResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
+{
+    Q_UNUSED(parts);
+
+    Akonadi::Item::List resultItems;
+    resultItems.reserve(items.size());
+
+    for (const Akonadi::Item &item : items) {
+        Item newItem(item);
+        if (!doRetrieveItem(newItem)) {
+            return false;
+        }
+        resultItems.append(newItem);
+    }
+
+    itemsRetrieved(resultItems);
+
+    return true;
+}
+
 bool ContactsResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    const QString filePath = directoryForCollection(item.parentCollection()) + QLatin1Char('/') + item.remoteId();
-
     Item newItem(item);
+
+    if (!doRetrieveItem(newItem)) {
+        return false;
+    }
+
+    itemRetrieved(newItem);
+
+    return true;
+}
+
+bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
+{
+    const QString filePath = directoryForCollection(item.parentCollection()) + QLatin1Char('/') + item.remoteId();
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -177,7 +208,7 @@ bool ContactsResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
             return false;
         }
 
-        newItem.setPayload<KContacts::Addressee>(contact);
+        item.setPayload<KContacts::Addressee>(contact);
     } else if (filePath.endsWith(QLatin1String(".ctg"))) {
         KContacts::ContactGroup group;
         QString errorMessage;
@@ -187,15 +218,11 @@ bool ContactsResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteA
             return false;
         }
 
-        newItem.setPayload<KContacts::ContactGroup>(group);
+        item.setPayload<KContacts::ContactGroup>(group);
     } else {
         cancelTask(i18n("Found file of unknown format: '%1'", filePath));
         return false;
     }
-
-    file.close();
-
-    itemRetrieved(newItem);
 
     return true;
 }
