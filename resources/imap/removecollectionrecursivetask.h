@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <kimap/listjob.h>
+#include <KIMAP/ListJob>
 
 #include "resourcetask.h"
 

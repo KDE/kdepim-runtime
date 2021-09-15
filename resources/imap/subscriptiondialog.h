@@ -10,7 +10,7 @@
 #include <QDialog>
 #include <QSortFilterProxyModel>
 
-#include <kimap/listjob.h>
+#include <KIMAP/ListJob>
 
 #include <QMap>
 

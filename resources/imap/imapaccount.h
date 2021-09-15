@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <kimap/loginjob.h>
+#include <KIMAP/LoginJob>
 
 class ImapAccount
 {

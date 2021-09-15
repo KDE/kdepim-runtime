@@ -14,7 +14,7 @@
 #include <Akonadi/Item>
 #include <Akonadi/ItemSync>
 
-#include <kimap/listjob.h>
+#include <KIMAP/ListJob>
 
 #include "messagehelper.h"
 

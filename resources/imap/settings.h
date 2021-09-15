@@ -9,7 +9,7 @@
 
 #include "settingsbase.h"
 
-#include <kimap/loginjob.h>
+#include <KIMAP/LoginJob>
 
 #include <MailTransport/Transport>
 

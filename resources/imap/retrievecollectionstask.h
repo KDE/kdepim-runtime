@@ -9,7 +9,7 @@
 
 #include <Akonadi/Collection>
 
-#include <kimap/listjob.h>
+#include <KIMAP/ListJob>
 
 #include "resourcetask.h"
 

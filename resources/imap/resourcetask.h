@@ -13,7 +13,7 @@
 #include <Akonadi/Item>
 
 #include <KIMAP/Acl>
-#include <kimap/listjob.h>
+#include <KIMAP/ListJob>
 
 #include "resourcestateinterface.h"
 
