@@ -43,6 +43,7 @@ protected:
 protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &col) override;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 protected:

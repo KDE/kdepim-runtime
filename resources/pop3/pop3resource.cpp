@@ -110,6 +110,14 @@ void POP3Resource::retrieveItems(const Akonadi::Collection &collection)
     qCWarning(POP3RESOURCE_LOG) << "This should never be called, we don't have a collection!";
 }
 
+bool POP3Resource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
+{
+    Q_UNUSED(items)
+    Q_UNUSED(parts)
+    qCWarning(POP3RESOURCE_LOG) << "This should never be called, we don't have any item!";
+    return false;
+}
+
 bool POP3Resource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(item)
