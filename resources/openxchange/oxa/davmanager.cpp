@@ -8,7 +8,7 @@
 
 #include "davmanager.h"
 
-#include <kio/davjob.h>
+#include <KIO/DavJob>
 
 #include <QDomDocument>
 

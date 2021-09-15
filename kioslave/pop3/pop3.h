@@ -8,8 +8,9 @@
 
 #pragma once
 
+#include <KIO/TCPSlaveBase>
+
 #include <QUrl>
-#include <kio/tcpslavebase.h>
 
 #include <stdio.h>
 #include <sys/types.h>

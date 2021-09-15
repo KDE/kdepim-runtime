@@ -12,10 +12,10 @@
 #include <Akonadi/ItemFetchScope>
 
 #include <KDirWatch>
+#include <KIO/Job>
+#include <KIO/JobUiDelegate>
 #include <KLocalizedString>
 #include <QDebug>
-#include <kio/job.h>
-#include <kio/jobuidelegate.h>
 
 #include <KConfigGroup>
 

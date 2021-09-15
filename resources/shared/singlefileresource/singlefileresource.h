@@ -14,8 +14,8 @@
 #include <Akonadi/EntityDisplayAttribute>
 
 #include <KDirWatch>
+#include <KIO/Job>
 #include <KLocalizedString>
-#include <kio/job.h>
 
 #include <Akonadi/CollectionModifyJob>
 #include <QDebug>

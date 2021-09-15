@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <kio/slavebase.h>
+#include <KIO/SlaveBase>
 
 namespace Akonadi
 {

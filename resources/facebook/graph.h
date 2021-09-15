@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <kio/storedtransferjob.h>
+#include <KIO/StoredTransferJob>
 
 namespace Graph
 {

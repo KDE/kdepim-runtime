@@ -12,8 +12,8 @@
 #include "davutils.h"
 #include "oxutils.h"
 
+#include <KIO/DavJob>
 #include <QDomDocument>
-#include <kio/davjob.h>
 
 using namespace OXA;
 

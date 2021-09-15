@@ -12,7 +12,7 @@
 #include "davutils.h"
 #include "oxutils.h"
 
-#include <kio/davjob.h>
+#include <KIO/DavJob>
 
 #include <QDomDocument>
 

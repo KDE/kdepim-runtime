@@ -13,7 +13,7 @@
 #include "folderutils.h"
 #include "oxutils.h"
 
-#include <kio/davjob.h>
+#include <KIO/DavJob>
 
 using namespace OXA;
 

@@ -8,7 +8,8 @@
 #pragma once
 
 #include <kimap/sessionuiproxy.h>
-#include <kio/sslui.h>
+
+#include <KIO/SslUi>
 
 class SessionUiProxy : public KIMAP::SessionUiProxy
 {

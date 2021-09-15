@@ -21,11 +21,11 @@
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>
+#include <KIO/Global>
+#include <KIO/Job>
 #include <KMessageBox>
 #include <KNotification>
 #include <KPasswordDialog>
-#include <kio/global.h>
-#include <kio/job.h>
 #include <kwidgetsaddons_version.h>
 
 #include <QTimer>
