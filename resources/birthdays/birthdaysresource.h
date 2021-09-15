@@ -13,6 +13,11 @@
 
 #include <QHash>
 
+namespace KContacts
+{
+class Addressee;
+}
+
 class QDate;
 
 class BirthdaysResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
@@ -29,14 +34,15 @@ protected:
 protected:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
 
 private:
     void addPendingEvent(const KCalendarCore::Event::Ptr &event, const QString &remoteId);
     void checkForUnknownCategories(const QString &categoryToCheck, KCalendarCore::Event::Ptr &event);
 
-    KCalendarCore::Event::Ptr createBirthday(const Akonadi::Item &contactItem);
-    KCalendarCore::Event::Ptr createAnniversary(const Akonadi::Item &contactItem);
+    KCalendarCore::Event::Ptr createBirthday(const KContacts::Addressee &contact, Akonadi::Item::Id itemId);
+    KCalendarCore::Event::Ptr createAnniversary(const KContacts::Addressee &contact, Akonadi::Item::Id itemId);
     KCalendarCore::Event::Ptr createEvent(QDate date);
 
 private Q_SLOTS:
@@ -48,6 +54,7 @@ private Q_SLOTS:
     void contactRemoved(const Akonadi::Item &item);
 
     void contactRetrieved(KJob *job);
+    void contactsRetrieved(KJob *job);
 
 private:
     void slotReloadConfig();
