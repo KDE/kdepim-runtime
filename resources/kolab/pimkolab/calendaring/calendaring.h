@@ -8,8 +8,8 @@
 
 #include "kolab_export.h"
 
+#include <KCalendarCore/Event>
 #include <KCalendarCore/MemoryCalendar>
-#include <kcalendarcore/event.h>
 #include <kolabevent.h>
 #include <memory>
 

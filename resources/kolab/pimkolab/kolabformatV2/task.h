@@ -12,7 +12,7 @@
 #include "incidence.h"
 
 #include <KCalendarCore/Incidence>
-#include <kcalendarcore/todo.h>
+#include <KCalendarCore/Todo>
 
 class QDomElement;
 

@@ -11,9 +11,9 @@
 #include <kolabformat/errorhandler.h>
 #include <kolabformat/kolabobject.h>
 
+#include <KCalendarCore/Event>
 #include <KCalendarCore/ICalFormat>
 #include <QTest>
-#include <kcalendarcore/event.h>
 
 void TimezoneTest::initTestCase()
 {

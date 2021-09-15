@@ -7,9 +7,9 @@
 #include "calendaring.h"
 #include "pimkolab_debug.h"
 
+#include <KCalendarCore/Todo>
 #include <QDate>
 #include <QTimeZone>
-#include <kcalendarcore/todo.h>
 
 #include "conversion/commonconversion.h"
 #include "conversion/kcalconversion.h"

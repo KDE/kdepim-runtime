@@ -8,9 +8,9 @@
 
 #include "kolab_export.h"
 
-#include <kcalendarcore/event.h>
-#include <kcalendarcore/journal.h>
-#include <kcalendarcore/todo.h>
+#include <KCalendarCore/Event>
+#include <KCalendarCore/Journal>
+#include <KCalendarCore/Todo>
 #include <kolabevent.h>
 #include <kolabjournal.h>
 #include <kolabtodo.h>

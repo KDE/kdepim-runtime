@@ -11,7 +11,7 @@
 
 #include "incidence.h"
 
-#include <kcalendarcore/event.h>
+#include <KCalendarCore/Event>
 
 class QDomElement;
 

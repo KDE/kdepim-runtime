@@ -10,9 +10,9 @@
 #include "kolabbase.h"
 #include "pimkolab_debug.h"
 
+#include <KCalendarCore/Journal>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
-#include <kcalendarcore/journal.h>
 
 using namespace KolabV2;
 

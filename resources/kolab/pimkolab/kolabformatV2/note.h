@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <kcalendarcore/journal.h>
+#include <KCalendarCore/Journal>
 
 #include "kolabbase.h"
 

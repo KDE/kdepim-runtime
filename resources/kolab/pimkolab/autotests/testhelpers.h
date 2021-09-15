@@ -8,12 +8,12 @@
 
 #include <contact.h>
 
+#include <KCalendarCore/Event>
+#include <KCalendarCore/Journal>
 #include <KCalendarCore/Recurrence>
+#include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
 #include <QTest>
-#include <kcalendarcore/event.h>
-#include <kcalendarcore/journal.h>
-#include <kcalendarcore/todo.h>
 
 #include <kolabformat.h>
 

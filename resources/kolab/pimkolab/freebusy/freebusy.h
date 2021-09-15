@@ -7,7 +7,7 @@
 #pragma once
 
 #include "kolab_export.h"
-#include <kcalendarcore/event.h>
+#include <KCalendarCore/Event>
 #include <kolabevent.h>
 #include <kolabfreebusy.h>
 

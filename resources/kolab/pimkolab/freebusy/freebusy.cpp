@@ -9,10 +9,10 @@
 #include "conversion/kcalconversion.h"
 #include "libkolab-version.h"
 #include "pimkolab_debug.h"
+#include <KCalendarCore/FreeBusy>
 #include <KCalendarCore/ICalFormat>
 #include <QTime>
 #include <QUuid>
-#include <kcalendarcore/freebusy.h>
 
 // namespace KCalendarCore {
 //     struct KCalFreebusy

@@ -13,7 +13,7 @@
 
 #include <QList>
 
-#include <kcalendarcore/journal.h>
+#include <KCalendarCore/Journal>
 
 #include <QBitArray>
 

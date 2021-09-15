@@ -11,13 +11,13 @@
 #include <Akonadi/Item>
 #include <Akonadi/Relation>
 #include <Akonadi/Tag>
+#include <KCalendarCore/Event>
 #include <KCalendarCore/Incidence>
+#include <KCalendarCore/Journal>
+#include <KCalendarCore/Todo>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
 #include <KMime/Message>
-#include <kcalendarcore/event.h>
-#include <kcalendarcore/journal.h>
-#include <kcalendarcore/todo.h>
 
 #include "kolabdefinitions.h"
 
