@@ -15,7 +15,7 @@
 #include <Akonadi/KMime/MessageFlags>
 #include <Akonadi/SpecialCollectionAttribute>
 
-#include <kmbox/mbox.h>
+#include <KMbox/MBox>
 
 #include <KMime/Message>
 

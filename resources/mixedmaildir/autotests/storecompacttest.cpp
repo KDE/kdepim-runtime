@@ -13,7 +13,7 @@
 #include "filestore/itemdeletejob.h"
 #include "filestore/storecompactjob.h"
 
-#include <kmbox/mbox.h>
+#include <KMbox/MBox>
 
 #include <QTemporaryDir>
 

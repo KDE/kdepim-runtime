@@ -9,8 +9,8 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
 #include <KLocalizedString>
+#include <KMbox/MBox>
 #include <QUrl>
-#include <kmbox/mbox.h>
 
 #include "deleteditemsattribute.h"
 

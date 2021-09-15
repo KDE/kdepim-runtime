@@ -14,8 +14,8 @@
 
 #include "libmaildir/maildir.h"
 
+#include <KMbox/MBox>
 #include <KMime/kmime/kmime_message.h>
-#include <kmbox/mbox.h>
 
 #include <Akonadi/KMime/MessageParts>
 

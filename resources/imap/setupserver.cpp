@@ -44,11 +44,11 @@
 #include <QNetworkConfigurationManager>
 #include <QPushButton>
 
+#include <KIdentityManagement/IdentityCombo>
+#include <KIdentityManagement/IdentityManager>
 #include <QFontDatabase>
 #include <QPointer>
 #include <QVBoxLayout>
-#include <kidentitymanagement/identitycombo.h>
-#include <kidentitymanagement/identitymanager.h>
 
 #include "imapaccount.h"
 #include "subscriptiondialog.h"
