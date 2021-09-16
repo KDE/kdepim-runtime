@@ -82,17 +82,48 @@ bool VCardDirResource::loadAddressees()
     return true;
 }
 
+bool VCardDirResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
+{
+    Q_UNUSED(parts);
+
+    Akonadi::Item::List resultItems;
+    resultItems.reserve(items.size());
+
+    for (const Akonadi::Item &item : items) {
+        Item newItem(item);
+        if (!doRetrieveItem(newItem)) {
+            return false;
+        }
+        resultItems.append(newItem);
+    }
+
+    itemsRetrieved(resultItems);
+
+    return true;
+}
+
 bool VCardDirResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &)
 {
-    const QString remoteId = item.remoteId();
-    if (!mAddressees.contains(remoteId)) {
-        Q_EMIT error(i18n("Contact with uid '%1' not found.", remoteId));
+    Item newItem(item);
+
+    if (!doRetrieveItem(newItem)) {
         return false;
     }
 
-    Item newItem(item);
-    newItem.setPayload<KContacts::Addressee>(mAddressees.value(remoteId));
     itemRetrieved(newItem);
+
+    return true;
+}
+
+bool VCardDirResource::doRetrieveItem(Akonadi::Item &item)
+{
+    const QString remoteId = item.remoteId();
+    if (!mAddressees.contains(remoteId)) {
+        cancelTask(i18n("Contact with uid '%1' not found.", remoteId));
+        return false;
+    }
+
+    item.setPayload<KContacts::Addressee>(mAddressees.value(remoteId));
 
     return true;
 }
