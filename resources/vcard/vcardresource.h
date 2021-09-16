@@ -25,6 +25,7 @@ protected:
 
 protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
+    bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     void retrieveItems(const Akonadi::Collection &col) override;
 
 protected:
@@ -35,6 +36,9 @@ protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     void itemRemoved(const Akonadi::Item &item) override;
+
+private:
+    bool doRetrieveItem(Akonadi::Item &item);
 
 private:
     QMap<QString, KContacts::Addressee> mAddressees;
