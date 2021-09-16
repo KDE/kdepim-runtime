@@ -8,8 +8,8 @@
 
 #include "kalarmresourcecommon.h"
 
-#include <kalarmcal/compatibilityattribute.h>
-#include <kalarmcal/eventattribute.h>
+#include <KAlarmCal/CompatibilityAttribute>
+#include <KAlarmCal/EventAttribute>
 
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionModifyJob>

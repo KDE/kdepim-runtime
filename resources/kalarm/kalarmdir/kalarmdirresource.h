@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <kalarmcal/kaevent.h>
+#include <KAlarmCal/KAEvent>
 
 #include <Akonadi/ResourceBase>
 #include <QHash>

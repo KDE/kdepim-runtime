@@ -10,7 +10,7 @@
 
 #include "ui_alarmtypewidget.h"
 
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/KACalendar>
 
 using namespace KAlarmCal;
 

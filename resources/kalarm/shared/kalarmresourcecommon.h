@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <kalarmcal/kacalendar.h>
-#include <kalarmcal/kaevent.h>
+#include <KAlarmCal/KACalendar>
+#include <KAlarmCal/KAEvent>
 
 class QObject;
 

@@ -11,7 +11,7 @@
 #include "ui_alarmtypewidget.h"
 #include "ui_settingsdialog.h"
 
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/KACalendar>
 
 #include <QDialog>
 class QPushButton;

@@ -14,8 +14,8 @@
 #include "kalarmresourcecommon.h"
 #include "settingsdialog.h"
 
-#include <kalarmcal/akonadi.h>
-#include <kalarmcal/kacalendar.h>
+#include <KAlarmCal/Akonadi>
+#include <KAlarmCal/KACalendar>
 
 #include <Akonadi/ChangeRecorder>
 #include <Akonadi/CollectionFetchJob>
