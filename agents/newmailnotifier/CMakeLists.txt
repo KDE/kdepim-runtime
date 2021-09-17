@@ -42,7 +42,6 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::Notifications
   KF5::Service
   KF5::I18n
-  Qt::TextToSpeech
 )
 
 if(Qt5TextToSpeech_FOUND)

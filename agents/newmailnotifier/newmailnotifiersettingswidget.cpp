@@ -179,8 +179,8 @@ void NewMailNotifierSettingsWidget::load()
     mExcludeMySelf->setChecked(settings->excludeEmailsFromMe());
     mAllowToShowMail->setChecked(settings->showButtonToDisplayMail());
     mKeepPersistentNotification->setChecked(settings->keepPersistentNotification());
-    mTextToSpeak->setChecked(settings->textToSpeakEnabled());
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
+    mTextToSpeak->setChecked(settings->textToSpeakEnabled());
     mTextToSpeakSetting->setEnabled(mTextToSpeak->isChecked());
     mTextToSpeakSetting->setText(settings->textToSpeak());
 #endif
