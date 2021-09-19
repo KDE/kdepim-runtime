@@ -74,7 +74,7 @@ Comment[sv]=Laddar kontakter från en vCard-katalog
 Comment[tr]=vCard Dizininden kişiyi yükler
 Comment[uk]=Завантажує дані запису контакту із каталогу vCard
 Comment[x-test]=xxLoads contact from vCard Directoryxx
-Comment[zh_CN]=从 vCard 目录载入联系人
+Comment[zh_CN]=从 vCard 目录加载联系人
 Comment[zh_TW]=從 vCard 目錄載入聯絡人
 
 [Wizard]
