@@ -79,7 +79,7 @@ Comment[sv]=Laddar kontakt från en vCard-fil
 Comment[tr]=VCard dosyasından bağlantı yükler
 Comment[uk]=Завантажує дані запису контакту із файла vCard
 Comment[x-test]=xxLoads contact from vCard Filexx
-Comment[zh_CN]=从 vCard 文件载入联系人
+Comment[zh_CN]=从 vCard 文件加载联系人
 Comment[zh_TW]=從 vCard 檔載入聯絡人
 
 [Wizard]
