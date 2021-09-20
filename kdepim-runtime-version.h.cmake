@@ -15,10 +15,5 @@
   build against older kdelibs releases.
 */
 
-#ifndef KDEPIM_RUNTIME_VERSION_H
-#define KDEPIM_RUNTIME_VERSION_H
-
-
+#pragma once
 #define KDEPIM_RUNTIME_VERSION "@KDEPIM_RUNTIME_VERSION@"
-
-#endif
