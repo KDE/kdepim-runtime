@@ -48,8 +48,8 @@ Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &me
         i.setSize(size);
 
         Akonadi::MessageFlags::copyMessageFlags(*message, i);
-
-        foreach (const QByteArray &flag, ResourceTask::toAkonadiFlags(flags)) {
+        const auto flagsLst = ResourceTask::toAkonadiFlags(flags);
+        for (const QByteArray &flag : flagsLst) {
             i.setFlag(flag);
         }
     }

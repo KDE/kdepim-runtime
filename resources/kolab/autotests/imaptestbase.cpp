@@ -66,7 +66,7 @@ QList<QByteArray> ImapTestBase::defaultPoolConnectionScenario(const QList<QByteA
     QList<QByteArray> scenario;
 
     QByteArray caps = "S: * CAPABILITY IMAP4 IMAP4rev1 UIDPLUS IDLE";
-    Q_FOREACH (const QByteArray &cap, customCapabilities) {
+    for (const QByteArray &cap : customCapabilities) {
         caps += " " + cap;
     }
 
@@ -105,7 +105,7 @@ Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId)
     Akonadi::Collection collection = parent;
 
     const QStringList collections = remoteId.split(separator, Qt::SkipEmptyParts);
-    Q_FOREACH (const QString &colId, collections) {
+    for (const QString &colId : collections) {
         collection = Akonadi::Collection(id);
         collection.setRemoteId(separator + colId);
         collection.setParentCollection(parent);

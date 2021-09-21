@@ -299,11 +299,11 @@ void CalendaringTest::testCalendar()
     QFETCH(std::vector<Kolab::Event>, expectedResult);
 
     Kolab::Calendaring::Calendar cal;
-    foreach (const Kolab::Event &event, inputevents) {
+    for (const Kolab::Event &event : std::as_const(inputevents)) {
         cal.addEvent(event);
     }
     const std::vector<Kolab::Event> result = cal.getEvents(start, end, true);
-    foreach (const Kolab::Event &event, result) {
+    for (const Kolab::Event &event : result) {
         qDebug() << QTest::toString(event.start()) << QTest::toString(event.end());
     }
     compareEvents(result, expectedResult);

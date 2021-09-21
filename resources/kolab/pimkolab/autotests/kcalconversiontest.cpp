@@ -559,7 +559,8 @@ void KCalConversionTest::testContactConversion()
     QCOMPARE(e.formattedName(), kcal.formattedName());
     QCOMPARE(e.emails(), kcal.emails());
     QCOMPARE(e.preferredEmail(), kcal.preferredEmail());
-    foreach (const QString &mail, e.emails()) {
+    const auto mails{e.emails()};
+    for (const QString &mail : mails) {
         QCOMPARE(e.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)),
                  kcal.custom(QLatin1String("KOLAB"), QString::fromLatin1("EmailTypes%1").arg(mail)));
     }

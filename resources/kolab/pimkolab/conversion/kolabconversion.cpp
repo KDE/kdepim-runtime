@@ -84,7 +84,8 @@ KMime::Message::Ptr toNote(const Note &n)
         note.setClassification(Akonadi::NoteUtils::NoteMessageWrapper::Public);
     }
 
-    foreach (const Kolab::Attachment &a, n.attachments()) {
+    const auto attachments{n.attachments()};
+    for (const Kolab::Attachment &a : attachments) {
         if (!a.uri().empty()) {
             Akonadi::NoteUtils::Attachment attachment(QUrl(fromStdString(a.uri())), fromStdString(a.mimetype()));
             attachment.setLabel(fromStdString(a.label()));
