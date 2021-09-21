@@ -230,7 +230,7 @@ void Pop3Test::cleanupMaildir(const Akonadi::Item::List &items)
     QElapsedTimer time;
     time.start();
     int lastCount = -1;
-    forever {
+    for (;;) {
         qApp->processEvents();
         QTest::qWait(500);
         QDir maildir(mMaildirPath);
@@ -259,7 +259,7 @@ void Pop3Test::checkMailsInMaildir(const QList<QByteArray> &mails)
     QElapsedTimer time;
     time.start();
     int lastCount = -1;
-    forever {
+    for (;;) {
         qApp->processEvents();
         QTest::qWait(500);
         QDir maildir(mMaildirPath);
@@ -330,7 +330,7 @@ void Pop3Test::syncAndWaitForFinish()
     QElapsedTimer time;
     time.start();
     int lastProgress = -1;
-    forever {
+    for (;;) {
         qApp->processEvents();
 
         // Finish correctly when the connection got closed
