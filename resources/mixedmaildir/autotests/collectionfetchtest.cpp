@@ -281,7 +281,7 @@ void CollectionFetchTest::testMixedTree()
     QCOMPARE(collections.count(), firstLevelNames.count());
     QCOMPARE(job->collections(), collections);
 
-    Q_FOREACH (const Collection &collection, collections) {
+    for (const Collection &collection : std::as_const(collections)) {
         QVERIFY(!collection.remoteId().isEmpty());
         QCOMPARE(collection.remoteId(), collection.name());
         QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
@@ -307,7 +307,7 @@ void CollectionFetchTest::testMixedTree()
     QCOMPARE(collections.count(), firstLevelNames.count() + secondLevelNames.count() + thirdLevelNames.count());
     QCOMPARE(job->collections(), collections);
 
-    Q_FOREACH (const Collection &collection, collections) {
+    for (const Collection &collection : std::as_const(collections)) {
         QVERIFY(!collection.remoteId().isEmpty());
         QCOMPARE(collection.remoteId(), collection.name());
         QCOMPARE(collection.contentMimeTypes(), QStringList() << Collection::mimeType() << KMime::Message::mimeType());
@@ -328,7 +328,7 @@ void CollectionFetchTest::testMixedTree()
     }
 
     // test base fetching all collections
-    Q_FOREACH (const Collection &collection, collections) {
+    for (const Collection &collection : std::as_const(collections)) {
         job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::Base);
 
         spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
@@ -353,7 +353,7 @@ void CollectionFetchTest::testMixedTree()
     }
 
     // test first level fetching all collections
-    Q_FOREACH (const Collection &collection, collections) {
+    for (const Collection &collection : std::as_const(collections)) {
         job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::FirstLevel);
 
         spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
@@ -364,7 +364,7 @@ void CollectionFetchTest::testMixedTree()
         const Collection::List list = collectionsFromSpy(spy);
         QCOMPARE(job->collections(), list);
 
-        Q_FOREACH (const Collection &childCollection, list) {
+        for (const Collection &childCollection : list) {
             QCOMPARE(childCollection.parentCollection(), collection);
 
             QVERIFY(!childCollection.remoteId().isEmpty());
@@ -377,11 +377,11 @@ void CollectionFetchTest::testMixedTree()
         }
 
         if (firstLevelNames.contains(collection.name())) {
-            Q_FOREACH (const Collection &childCollection, list) {
+            for (const Collection &childCollection : list) {
                 QVERIFY(secondLevelNames.contains(childCollection.name()));
             }
         } else if (secondLevelNames.contains(collection.name())) {
-            Q_FOREACH (const Collection &childCollection, list) {
+            for (const Collection &childCollection : list) {
                 QVERIFY(thirdLevelNames.contains(childCollection.name()));
             }
             if (collection.name() == md1_2.name()) {
@@ -396,7 +396,7 @@ void CollectionFetchTest::testMixedTree()
     }
 
     // test recursive fetching all collections
-    Q_FOREACH (const Collection &collection, collections) {
+    for (const Collection &collection : std::as_const(collections)) {
         job = mStore->fetchCollections(collection, FileStore::CollectionFetchJob::Recursive);
 
         spy = new QSignalSpy(job, &FileStore::CollectionFetchJob::collectionsReceived);
@@ -407,7 +407,7 @@ void CollectionFetchTest::testMixedTree()
         const Collection::List list = collectionsFromSpy(spy);
         QCOMPARE(job->collections(), list);
 
-        Q_FOREACH (const Collection &childCollection, list) {
+        for (const Collection &childCollection : list) {
             QVERIFY(childCollection.parentCollection() == collection || childCollection.parentCollection().parentCollection() == collection);
             QVERIFY(!childCollection.remoteId().isEmpty());
             QCOMPARE(childCollection.remoteId(), childCollection.name());
@@ -419,11 +419,11 @@ void CollectionFetchTest::testMixedTree()
         }
 
         if (firstLevelNames.contains(collection.name())) {
-            Q_FOREACH (const Collection &childCollection, list) {
+            for (const Collection &childCollection : list) {
                 QVERIFY(secondLevelNames.contains(childCollection.name()) || thirdLevelNames.contains(childCollection.name()));
             }
         } else if (secondLevelNames.contains(collection.name())) {
-            Q_FOREACH (const Collection &childCollection, list) {
+            for (const Collection &childCollection : list) {
                 QVERIFY(thirdLevelNames.contains(childCollection.name()));
             }
             if (collection.name() == md1_2.name()) {

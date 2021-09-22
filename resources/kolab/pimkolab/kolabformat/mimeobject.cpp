@@ -228,7 +228,7 @@ public:
 static std::vector<Kolab::Attachment> getAttachments(const std::vector<Kolab::Attachment> &attachments, const KMime::Message::Ptr &msg)
 {
     std::vector<Kolab::Attachment> allAttachments;
-    foreach (const Kolab::Attachment &attachment, attachments) {
+    for (const Kolab::Attachment &attachment : attachments) {
         if (!attachment.uri().empty()) {
             const Kolab::Attachment extracted = Mime::getAttachment(attachment.uri(), msg);
             if (extracted.isValid()) {
@@ -244,7 +244,7 @@ static std::vector<Kolab::Attachment> getAttachments(const std::vector<Kolab::At
 static std::vector<Kolab::Attachment> getAttachments(const QStringList &attachmentNames, const KMime::Message::Ptr &msg)
 {
     std::vector<Kolab::Attachment> allAttachments;
-    foreach (const QString &name, attachmentNames) {
+    for (const QString &name : attachmentNames) {
         const Kolab::Attachment extracted = Mime::getAttachmentByName(name, msg);
         if (extracted.isValid()) {
             allAttachments.push_back(extracted);
@@ -499,7 +499,7 @@ static std::string createCid()
 std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Attachment> &attachments, std::vector<std::string> &attachmentCids)
 {
     std::vector<Kolab::Attachment> attachmentsWithReferences;
-    Q_FOREACH (const Kolab::Attachment &a, attachments) {
+    for (const Kolab::Attachment &a : attachments) {
         Kolab::Attachment attachment;
         attachment.setLabel(a.label());
         const std::string cid = a.uri().empty() ? createCid() : a.uri();
@@ -520,7 +520,7 @@ template<class T> static T convertAttachmentsToReferences(const T &incidence, st
 static void addAttachments(KMime::Message::Ptr msg, const std::vector<Attachment> &attachments, std::vector<std::string> &attachmentCids)
 {
     int index = 0;
-    foreach (const Attachment &attachment, attachments) {
+    for (const Attachment &attachment : attachments) {
         const std::string data = attachment.data();
         const std::string cid = attachmentCids.empty() ? attachment.uri() : attachmentCids.at(index);
         msg->addContent(Mime::createAttachmentPart(Mime::fromCid(QString::fromStdString(cid.c_str())).toLatin1(),

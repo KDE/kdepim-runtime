@@ -315,7 +315,7 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
         d->mDictionary.clear();
         const std::vector<std::string> entries = dictionary.entries();
         d->mDictionary.reserve(entries.size());
-        foreach (const std::string &entry, entries) {
+        for (const std::string &entry : entries) {
             d->mDictionary.append(Conversion::fromStdString(entry));
         }
         d->mDictionaryLanguage = Conversion::fromStdString(dictionary.language());
@@ -553,7 +553,7 @@ KMime::Message::Ptr KolabObjectWriter::writeDictionary(const QStringList &entrie
     Kolab::Dictionary dictionary(Conversion::toStdString(lang));
     std::vector<std::string> ent;
     ent.reserve(entries.count());
-    foreach (const QString &e, entries) {
+    for (const QString &e : entries) {
         ent.push_back(Conversion::toStdString(e));
     }
     dictionary.setEntries(ent);
@@ -592,7 +592,7 @@ KMime::Message::Ptr KolabObjectWriter::writeTag(const Akonadi::Tag &tag, const Q
     Kolab::Relation relation(Conversion::toStdString(tag.name()), "tag");
     std::vector<std::string> m;
     m.reserve(members.count());
-    foreach (const QString &member, members) {
+    for (const QString &member : members) {
         m.push_back(Conversion::toStdString(member));
     }
     relation.setMembers(m);

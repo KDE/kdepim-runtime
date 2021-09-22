@@ -62,7 +62,7 @@ template<> char *toString(const KCalendarCore::Attendee &at)
 template<> char *toString(const QList<int> &l)
 {
     QByteArray ba = "QList<int>(";
-    foreach (int i, l) {
+    for (int i : l) {
         ba += QByteArray::number(i) + ", ";
     }
     ba += ")";
@@ -72,7 +72,7 @@ template<> char *toString(const QList<int> &l)
 template<> char *toString(const QList<KCalendarCore::RecurrenceRule::WDayPos> &l)
 {
     QByteArray ba = "QList<int>(";
-    foreach (const KCalendarCore::RecurrenceRule::WDayPos &i, l) {
+    for (const KCalendarCore::RecurrenceRule::WDayPos &i : l) {
         ba += QByteArray::number(i.pos()) + " ";
         ba += QByteArray::number(i.day()) + ", ";
     }
@@ -93,7 +93,7 @@ template<> char *toString(const KCalendarCore::DateList &l)
 template<> char *toString(const KCalendarCore::DateTimeList &l)
 {
     QByteArray ba = "KCalendarCore::DateTimeList(";
-    foreach (const QDateTime &i, l) {
+    for (const QDateTime &i : l) {
         ba += toString(i);
     }
     ba += ")";

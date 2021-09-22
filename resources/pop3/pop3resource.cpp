@@ -760,7 +760,7 @@ void POP3Resource::deleteJobResult(KJob *job)
     QList<QString> seenUIDs = mSettings.seenUidList();
     QList<int> timeOfSeenUids = mSettings.seenUidTimeList();
     Q_ASSERT(seenUIDs.size() == timeOfSeenUids.size());
-    foreach (int deletedId, mDeletedIDs) {
+    for (int deletedId : std::as_const(mDeletedIDs)) {
         const QString deletedUID = mIdsToUidsMap.value(deletedId);
         if (!deletedUID.isEmpty()) {
             int index = seenUIDs.indexOf(deletedUID);
@@ -842,11 +842,11 @@ void POP3Resource::saveSeenUIDList()
     // Those messages, we have to remember, so we don't download them again.
     //
     QList<int> idsOfMessagesDownloadedButNotDeleted = mIDsStored;
-    foreach (int deletedId, mDeletedIDs) {
+    for (int deletedId : std::as_const(mDeletedIDs)) {
         idsOfMessagesDownloadedButNotDeleted.removeAll(deletedId);
     }
     QList<QString> uidsOfMessagesDownloadedButNotDeleted;
-    foreach (int id, idsOfMessagesDownloadedButNotDeleted) {
+    for (int id : std::as_const(idsOfMessagesDownloadedButNotDeleted)) {
         const QString uid = mIdsToUidsMap.value(id);
         if (!uid.isEmpty()) {
             uidsOfMessagesDownloadedButNotDeleted.append(uid);

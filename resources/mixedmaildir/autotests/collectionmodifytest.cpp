@@ -398,7 +398,8 @@ void CollectionModifyTest::testIndexPreservation()
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 4);
     for (const Item &item : std::as_const(items)) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+        const auto flags{item.flags()};
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
