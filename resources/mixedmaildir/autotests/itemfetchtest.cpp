@@ -955,7 +955,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
     // test fetching from maildir, including body
     randomSequence.randomize(randomList1);
-    Q_FOREACH (const QString &entry, randomList1) {
+    for (const QString &entry : std::as_const(randomList1)) {
         Item item1;
         item1.setId(KRandom::random());
         item1.setRemoteId(entry);

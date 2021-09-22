@@ -486,7 +486,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
         KContacts::ResourceLocatorUrl url;
         url.setUrl(QUrl(fromStdString(contact.urls().at(0).url()))); // TODO support multiple
         addressee.setUrl(url);
-        foreach (const Kolab::Url &u, contact.urls()) {
+        const auto urls{contact.urls()};
+        for (const Kolab::Url &u : urls) {
             if (u.type() == Kolab::Url::Blog) {
                 addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("BlogFeed"), fromStdString(u.url()));
             }
@@ -520,7 +521,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
                 addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"), fromStdString(related.text()));
             }
         }
-        foreach (const Kolab::Address &address, aff.addresses()) {
+        const auto addresses{aff.addresses()};
+        for (const Kolab::Address &address : addresses) {
             addressee.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), fromStdString(address.label())); // TODO support proper addresses
         }
     }
@@ -580,7 +582,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
     }
 
     if (!contact.relateds().empty()) {
-        foreach (const Kolab::Related &rel, contact.relateds()) {
+        const auto relateds{contact.relateds()};
+        for (const Kolab::Related &rel : relateds) {
             if (rel.type() != Kolab::Related::Text) {
                 qCCritical(PIMKOLAB_LOG) << "relation type not supported";
                 continue;

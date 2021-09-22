@@ -234,9 +234,12 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
 {
     bool moreEvents = false;
 
-    Q_FOREACH (const EwsGetEventsRequest::Response &resp, req->responses()) {
-        Q_FOREACH (const EwsGetEventsRequest::Notification &nfy, resp.notifications()) {
-            Q_FOREACH (const EwsGetEventsRequest::Event &event, nfy.events()) {
+    const auto responses{req->responses()};
+    for (const EwsGetEventsRequest::Response &resp : responses) {
+        const auto notifications{resp.notifications()};
+        for (const EwsGetEventsRequest::Notification &nfy : notifications) {
+            const auto nfyEvents{nfy.events()};
+            for (const EwsGetEventsRequest::Event &event : nfyEvents) {
                 bool skip = false;
                 mSettings->setEventSubscriptionWatermark(event.watermark());
                 if (!skip) {

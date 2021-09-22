@@ -455,8 +455,9 @@ void MixedMaildirResource::retrieveItemsResult(KJob *job)
     // messages marked as deleted have been deleted from mbox files but never got purged
     // TODO FileStore could provide deleteItems() to deleted all filtered items in one go
     KJob *deleteJob = nullptr;
-    qCDebug(MIXEDMAILDIR_LOG) << retrieveJob->itemsMarkedAsDeleted().count() << "items marked as Deleted";
-    Q_FOREACH (const Item &item, retrieveJob->itemsMarkedAsDeleted()) {
+    const auto itemsMarkedAsDeleted{retrieveJob->itemsMarkedAsDeleted()};
+    qCDebug(MIXEDMAILDIR_LOG) << itemsMarkedAsDeleted.count() << "items marked as Deleted";
+    for (const Item &item : itemsMarkedAsDeleted) {
         deleteJob = mStore->deleteItem(item);
     }
 

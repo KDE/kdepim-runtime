@@ -873,7 +873,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
         }
     }
 
-    foreach (const QString &rmd, listJob->deletedItems()) {
+    const auto listJobDeleteItems{listJob->deletedItems()};
+    for (const QString &rmd : listJobDeleteItems) {
         // We don't want to delete dependent items if the main item was seen
         if (rmd.contains(QLatin1Char('#'))) {
             const QString base = rmd.left(rmd.indexOf(QLatin1Char('#')));

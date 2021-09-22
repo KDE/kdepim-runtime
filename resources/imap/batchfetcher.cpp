@@ -120,7 +120,8 @@ void BatchFetcher::fetchNextBatch()
         KIMAP::ImapSet newSet;
 
         // Take a chunk from the set
-        Q_FOREACH (const KIMAP::ImapInterval &interval, m_currentSet.intervals()) {
+        const auto intervals{m_currentSet.intervals()};
+        for (const KIMAP::ImapInterval &interval : intervals) {
             if (!interval.hasDefinedEnd()) {
                 // If we get an interval without a defined end we simply fetch everything
                 qCDebug(IMAPRESOURCE_LOG) << "Received interval without defined end, fetching everything in one batch";
