@@ -181,7 +181,8 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
     } else {
         path << "shared";
     }
-    Q_FOREACH (const QByteArray &mb, member.mailbox) {
+    const auto memberMailbox{member.mailbox};
+    for (const QByteArray &mb : memberMailbox) {
         path << QUrl::toPercentEncoding(QString::fromUtf8(mb));
     }
     path << QByteArray::number(member.uid);

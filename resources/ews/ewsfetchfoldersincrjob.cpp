@@ -287,7 +287,8 @@ void EwsFetchFoldersIncrJobPrivate::localFolderFetchDone(KJob *job)
     auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
     Q_ASSERT(fetchJob);
 
-    Q_FOREACH (const Collection &col, fetchJob->collections()) {
+    const auto collections{fetchJob->collections()};
+    for (const Collection &col : collections) {
         /* Retrieve the folder descriptor for this collection. Note that a new descriptor will be
          * created if it does not yet exist. */
         FolderDescr &fd = mFolderHash[col.remoteId()];

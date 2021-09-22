@@ -260,7 +260,8 @@ Freebusy aggregateFreeBusy(const std::vector<Freebusy> &fbList, const std::strin
             allDay |= fb.start().isDateOnly();
         }
 
-        Q_FOREACH (const Kolab::FreebusyPeriod &period, fb.periods()) {
+        const auto fbPeriods{fb.periods()};
+        for (const Kolab::FreebusyPeriod &period : fbPeriods) {
             Kolab::FreebusyPeriod simplifiedPeriod;
             simplifiedPeriod.setPeriods(period.periods());
             simplifiedPeriod.setType(period.type());
@@ -286,7 +287,8 @@ std::string toIFB(const Kolab::Freebusy &freebusy)
 {
     KCalendarCore::FreeBusy::Ptr fb(new KCalendarCore::FreeBusy(Kolab::Conversion::toDate(freebusy.start()), Kolab::Conversion::toDate(freebusy.end())));
     KCalendarCore::FreeBusyPeriod::List list;
-    Q_FOREACH (const Kolab::FreebusyPeriod &fbPeriod, freebusy.periods()) {
+    const auto freePeriods{freebusy.periods()};
+    for (const Kolab::FreebusyPeriod &fbPeriod : freePeriods) {
         Q_FOREACH (const Kolab::Period &p, fbPeriod.periods()) {
             KCalendarCore::FreeBusyPeriod period(Kolab::Conversion::toDate(p.start), Kolab::Conversion::toDate(p.end));
             //             period.setSummary("summary"); Doesn't even work. X-SUMMARY is read though (just not written out)s

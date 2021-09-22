@@ -297,7 +297,8 @@ template<typename T> void setIncidence(KCalendarCore::Incidence &i, const T &e)
         }
         i.addAttendee(attendee);
     }
-    foreach (const Kolab::Attachment &a, e.attachments()) {
+    const auto attachments{e.attachments()};
+    for (const Kolab::Attachment &a : attachments) {
         KCalendarCore::Attachment att;
         if (!a.uri().empty()) {
             att = KCalendarCore::Attachment(fromStdString(a.uri()), fromStdString(a.mimetype()));
@@ -534,7 +535,8 @@ template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &ev
         }
         if (!rrule.byday().empty()) {
             QList<KCalendarCore::RecurrenceRule::WDayPos> daypos;
-            foreach (const Kolab::DayPos &dp, rrule.byday()) {
+            const auto bydays{rrule.byday()};
+            for (const Kolab::DayPos &dp : bydays) {
                 daypos.append(toWeekDayPos(dp));
             }
             defaultRR->setByDays(daypos);

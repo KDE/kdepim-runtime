@@ -131,7 +131,8 @@ void UtEwsDeleteItemRequest::twoItems()
 
     QCOMPARE(req->error(), 0);
     QCOMPARE(req->responses().size(), 2);
-    Q_FOREACH (const EwsDeleteItemRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsDeleteItemRequest::Response &resp : responses) {
         QCOMPARE(resp.responseClass(), EwsResponseSuccess);
     }
 }
@@ -195,7 +196,8 @@ void UtEwsDeleteItemRequest::twoItemsOneFailed()
     static const QList<EwsResponseClass> respClasses = {EwsResponseError, EwsResponseSuccess};
     QList<EwsResponseClass>::const_iterator respClassesIt = respClasses.begin();
     unsigned i = 0;
-    Q_FOREACH (const EwsDeleteItemRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsDeleteItemRequest::Response &resp : responses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
         respClassesIt++;
@@ -261,7 +263,8 @@ void UtEwsDeleteItemRequest::twoItemsSecondFailed()
     static const QList<EwsResponseClass> respClasses = {EwsResponseError, EwsResponseSuccess};
     QList<EwsResponseClass>::const_iterator respClassesIt = respClasses.begin();
     unsigned i = 0;
-    Q_FOREACH (const EwsDeleteItemRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsDeleteItemRequest::Response &resp : responses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
         respClassesIt++;

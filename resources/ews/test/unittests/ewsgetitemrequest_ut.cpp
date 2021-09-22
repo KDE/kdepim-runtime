@@ -117,7 +117,8 @@ void UtEwsGetItemRequest::twoFailures()
     QList<EwsResponseClass>::const_iterator respClassesIt = respClasses.begin();
     EwsId::List::const_iterator idsIt = ids.cbegin();
     unsigned i = 0;
-    Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsGetItemRequest::Response &resp : responses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
         if (resp.isSuccess()) {

@@ -48,7 +48,8 @@ void EwsUpdateItemsTagsJob::start()
      * first before any further processing.
      */
     for (const Item &item : std::as_const(mItems)) {
-        Q_FOREACH (const Tag &tag, item.tags()) {
+        const auto tags{item.tags()};
+        for (const Tag &tag : tags) {
             if (!mTagStore->containsId(tag.id())) {
                 unknownTags.append(tag);
             }
@@ -111,7 +112,8 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
             QStringList tagList;
             QStringList categoryList;
             tagList.reserve(item.tags().count());
-            Q_FOREACH (const Tag &tag, item.tags()) {
+            const auto tags{item.tags()};
+            for (const Tag &tag : tags) {
                 Q_ASSERT(mTagStore->containsId(tag.id()));
                 tagList.append(QString::fromLatin1(mTagStore->tagRemoteId(tag.id())));
                 QString name = mTagStore->tagName(tag.id());
