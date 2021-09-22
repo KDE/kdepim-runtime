@@ -409,8 +409,9 @@ void O1::onTokenExchangeFinished()
 QMap<QString, QString> O1::parseResponse(const QByteArray &response)
 {
     QMap<QString, QString> ret;
-    foreach (const QByteArray &param, response.split('&')) {
-        QList<QByteArray> kv = param.split('=');
+    const auto responses{response.split('&')};
+    for (const QByteArray &param : responses) {
+        const QList<QByteArray> kv = param.split('=');
         if (kv.length() == 2) {
             ret.insert(QUrl::fromPercentEncoding(kv[0]), QUrl::fromPercentEncoding(kv[1]));
         }

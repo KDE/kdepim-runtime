@@ -105,7 +105,7 @@ void EwsUpdateItemsTagsJob::doUpdateItemsTags()
     QVector<EwsUpdateItemRequest::ItemChange> itemChanges;
     itemChanges.reserve(mItems.size());
 
-    Q_FOREACH (const Item &item, mItems) {
+    for (const Item &item : std::as_const(mItems)) {
         EwsUpdateItemRequest::ItemChange ic(EwsId(item.remoteId(), item.remoteRevision()), EwsItemHandler::mimeToItemType(item.mimeType()));
         if (!item.tags().isEmpty()) {
             QStringList tagList;

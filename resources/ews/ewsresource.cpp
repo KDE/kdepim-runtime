@@ -749,6 +749,7 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
     EwsId::List foldersToSync;
 
     Item::List::iterator it = items.begin();
+
     Q_FOREACH (const EwsDeleteItemRequest::Response &resp, req->responses()) {
         Item &item = *it;
         if (resp.isSuccess()) {
@@ -1190,7 +1191,8 @@ void EwsResource::specialFoldersFetchFinished(KJob *job)
     }
 
     auto it = specialFolderList.cbegin();
-    Q_FOREACH (const EwsGetFolderRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsGetFolderRequest::Response &resp : responses) {
         if (resp.isSuccess()) {
             auto fid = resp.folder()[EwsFolderFieldFolderId].value<EwsId>();
             QMap<QString, Collection>::iterator mapIt = map.find(fid.id());

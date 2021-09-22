@@ -238,7 +238,7 @@ void EwsFetchFoldersJobPrivate::processRemoteFolders()
     /* mParentMap contains the parent->child map for each collection. */
 
     /* Iterate over all changed folders. */
-    Q_FOREACH (const EwsFolder &folder, mRemoteChangedFolders) {
+    for (const EwsFolder &folder : std::as_const(mRemoteChangedFolders)) {
         /* Create a collection for each folder. */
         Collection c = createFolderCollection(folder);
 

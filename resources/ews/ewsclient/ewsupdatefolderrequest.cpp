@@ -144,7 +144,7 @@ bool EwsUpdateFolderRequest::FolderChange::write(QXmlStreamWriter &writer) const
 
     writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Updates"));
 
-    Q_FOREACH (const QSharedPointer<const Update> &upd, mUpdates) {
+    for (const QSharedPointer<const Update> &upd : std::as_const(mUpdates)) {
         if (!upd->write(writer, mType)) {
             retVal = false;
             break;

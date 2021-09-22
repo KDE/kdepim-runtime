@@ -183,7 +183,7 @@ public:
             const IndexDataHash indexData = mIndexData;
 
             // delete index data for removed entries
-            Q_FOREACH (quint64 offset, mDeletedOffsets) {
+            for (quint64 offset : std::as_const(mDeletedOffsets)) {
                 mIndexData.remove(offset);
             }
 

@@ -431,7 +431,7 @@ void ItemDeleteTest::testCachePreservation()
 
     // TODO since we don't know which message we've deleted, we can only check if some flags are present
     int flagCountTotal = 0;
-    Q_FOREACH (int count, flagCounts) {
+    for (int count : std::as_const(flagCounts)) {
         flagCountTotal += count;
     }
     QVERIFY(flagCountTotal > 0);

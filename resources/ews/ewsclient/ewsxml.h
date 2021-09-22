@@ -109,7 +109,7 @@ public:
                     const QList<T> &keysToWrite = QList<T>()) const
     {
         bool hasKeysToWrite = !keysToWrite.isEmpty();
-        Q_FOREACH (const Item &item, mItems) {
+        for (const Item &item : std::as_const(mItems)) {
             if (!hasKeysToWrite || keysToWrite.contains(item.key)) {
                 typename ValueHash::const_iterator it = values.find(item.key);
                 if (it != values.end()) {
@@ -148,7 +148,7 @@ private:
 
     void rebuildItemHash()
     {
-        Q_FOREACH (const Item &item, mItems) {
+        for (const Item &item : std::as_const(mItems)) {
             mItemHash.insert(item.elmName, item);
         }
     }

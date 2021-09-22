@@ -24,7 +24,8 @@ EwsRequest::~EwsRequest()
 
 void EwsRequest::doSend()
 {
-    Q_FOREACH (KJob *job, subjobs()) {
+    const auto jobs{subjobs()};
+    for (KJob *job : jobs) {
         job->start();
     }
 }

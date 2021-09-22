@@ -60,11 +60,12 @@ void EwsSubscribedFoldersJob::verifySubFoldersRequestFinished(KJob *job)
 
         auto it = sourceIds.cbegin();
 
-        Q_FOREACH (const EwsGetFolderRequest::Response &resp, req->responses()) {
+        const auto responses{req->responses()};
+        for (const EwsGetFolderRequest::Response &resp : responses) {
             if (resp.isSuccess()) {
                 // Take just the id without the change key as the actual folder version is irrelevant
                 // here
-                QString id = resp.folder()[EwsFolderFieldFolderId].value<EwsId>().id();
+                const QString id = resp.folder()[EwsFolderFieldFolderId].value<EwsId>().id();
                 mFolders << EwsId(id);
                 idList << id;
             } else {

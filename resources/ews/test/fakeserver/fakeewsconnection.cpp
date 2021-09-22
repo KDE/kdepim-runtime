@@ -356,7 +356,7 @@ QString FakeEwsConnection::prepareEventsResponse(const QStringList &events)
         resp += QLatin1String("<m:Notifications><m:Notification><SubscriptionId>") + mStreamingSubId + QLatin1String("<SubscriptionId>");
 
         qCInfoNC(EWSFAKE_LOG) << QStringLiteral("Returning %1 events.").arg(events.size());
-        Q_FOREACH (const QString &eventXml, events) {
+        for (const QString &eventXml : std::as_const(events)) {
             resp += eventXml;
         }
 

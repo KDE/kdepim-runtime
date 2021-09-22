@@ -360,7 +360,7 @@ void EwsFetchItemsJob::compareItemLists()
         }
 
         // In case of an incremental sync deleted items will be given explicitly. */
-        Q_FOREACH (const EwsId &id, mRemoteDeletedIds) {
+        for (const EwsId &id : std::as_const(mRemoteDeletedIds)) {
             QHash<QString, Item>::iterator it = itemHash.find(id.id());
             if (it == itemHash.end()) {
                 /* If an item is not found locally, it can mean two things:

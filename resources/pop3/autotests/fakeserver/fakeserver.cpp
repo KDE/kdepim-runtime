@@ -219,7 +219,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
     Q_ASSERT(!conversation.isEmpty());
 
     mGotDisconnected = false;
-    QStringList lines = conversation.split(QStringLiteral("\r\n"), Qt::SkipEmptyParts);
+    const QStringList lines = conversation.split(QStringLiteral("\r\n"), Qt::SkipEmptyParts);
     Q_ASSERT(lines.first().startsWith(QLatin1String("C:")));
 
     enum Mode {
@@ -233,7 +233,7 @@ void FakeServer::setNextConversation(const QString &conversation, const QList<in
     int sizeIndex = 0;
     int mailIndex = 0;
 
-    foreach (const QString &line, lines) {
+    for (const QString &line : lines) {
         QByteArray lineData(line.toUtf8());
 
         if (lineData.contains(mailSizeMarker)) {

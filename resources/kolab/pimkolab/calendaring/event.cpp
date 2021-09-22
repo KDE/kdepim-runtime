@@ -176,7 +176,8 @@ Attendee *Event::getAttendee(const ContactReference &ref)
 
 Attendee Event::getAttendee(const std::string &s)
 {
-    foreach (const Attendee &a, attendees()) {
+    const auto atts{attendees()};
+    for (const Attendee &a : atts) {
         if (a.contact().uid() == s || a.contact().email() == s || a.contact().name() == s) {
             return a;
         }

@@ -36,7 +36,8 @@ void EwsCreateItemJob::start()
 {
     /* Before starting check if all Akonadi tags are known to the tag store */
     bool syncNeeded = false;
-    Q_FOREACH (const Akonadi::Tag &tag, mItem.tags()) {
+    const auto tags{mItem.tags()};
+    for (const Akonadi::Tag &tag : tags) {
         if (!mTagStore->containsId(tag.id())) {
             syncNeeded = true;
             break;

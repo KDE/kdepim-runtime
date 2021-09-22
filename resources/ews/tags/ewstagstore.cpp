@@ -285,7 +285,8 @@ bool EwsTagStore::writeEwsProperties(const Akonadi::Item &item, EwsItem &ewsItem
     if (!item.tags().isEmpty()) {
         QStringList tagList;
         QStringList categoryList;
-        Q_FOREACH (const Tag &tag, item.tags()) {
+        const auto tags{item.tags()};
+        for (const Tag &tag : tags) {
             if (!containsId(tag.id())) {
                 return false;
             }

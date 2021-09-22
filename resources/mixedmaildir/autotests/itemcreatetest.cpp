@@ -256,7 +256,7 @@ void ItemCreateTest::testMBox()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 5);
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -300,7 +300,7 @@ void ItemCreateTest::testMBox()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 6);
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -465,7 +465,7 @@ void ItemCreateTest::testMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 5);
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -513,7 +513,7 @@ void ItemCreateTest::testMaildir()
 
     items = itemFetch->items();
     QCOMPARE((int)items.count(), 6);
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }

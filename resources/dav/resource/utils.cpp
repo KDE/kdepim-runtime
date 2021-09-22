@@ -190,7 +190,7 @@ bool Utils::parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Ako
         target.setMimeType(mainIncidence->mimeType());
 
         /*
-        foreach ( const IncidencePtr &incidence, incidences ) {
+        for ( const IncidencePtr &incidence : incidences ) {
           QString rid = item.remoteId() + QLatin1String( "#" ) + incidence->instanceIdentifier();
           Akonadi::Item extraItem = item;
           extraItem.setRemoteId( rid );

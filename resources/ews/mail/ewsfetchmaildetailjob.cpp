@@ -141,7 +141,8 @@ void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List
         // records flags added and removed. In the latter it sets a flag indicating that flags were
         // reset.
         // For some strange reason Akonadi is not seeing the flags in the latter case.
-        Q_FOREACH (const QByteArray &flag, EwsMailHandler::readFlags(ewsItem)) {
+        const auto flags{EwsMailHandler::readFlags(ewsItem)};
+        for (const QByteArray &flag : flags) {
             item.setFlag(flag);
         }
         qCDebugNC(EWSRES_LOG) << "EwsFetchMailDetailJob::processItems:" << ewsHash(item.remoteId()) << item.flags();

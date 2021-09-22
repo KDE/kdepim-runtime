@@ -218,7 +218,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!items[2].hasPayload<KMime::Message::Ptr>());
     QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -288,7 +288,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -355,7 +355,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
@@ -416,7 +416,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     // see data/README
-    Q_FOREACH (const Item &item, items) {
+    for (const Item &item : std::as_const(items)) {
         Q_FOREACH (const QByteArray &flag, item.flags()) {
             ++flagCounts[flag];
         }
