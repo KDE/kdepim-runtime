@@ -104,7 +104,8 @@ void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
         return;
     }
 
-    Q_FOREACH (const EwsSyncFolderHierarchyRequest::Change &ch, req->changes()) {
+    const auto reqChanges{req->changes()};
+    for (const EwsSyncFolderHierarchyRequest::Change &ch : reqChanges) {
         if (ch.type() == EwsSyncFolderHierarchyRequest::Create) {
             mRemoteChangedFolders.append(ch.folder());
         } else {
@@ -152,7 +153,8 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
         return;
     }
 
-    Q_FOREACH (const EwsSyncFolderHierarchyRequest::Change &ch, req->changes()) {
+    const auto reqChanges{req->changes()};
+    for (const EwsSyncFolderHierarchyRequest::Change &ch : reqChanges) {
         if (ch.type() == EwsSyncFolderHierarchyRequest::Create) {
             mRemoteFolderIds.append(ch.folder()[EwsFolderFieldFolderId].value<EwsId>());
         } else {
@@ -210,7 +212,8 @@ void EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone(KJob *job)
         return;
     }
 
-    Q_FOREACH (const EwsGetFolderRequest::Response &resp, req->responses()) {
+    const auto reqResponses{req->responses()};
+    for (const EwsGetFolderRequest::Response &resp : reqResponses) {
         if (resp.isSuccess()) {
             mRemoteChangedFolders.append(resp.folder());
         } else {

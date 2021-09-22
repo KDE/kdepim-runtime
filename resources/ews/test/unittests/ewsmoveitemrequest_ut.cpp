@@ -153,7 +153,8 @@ void UtEwsMoveItemRequest::twoItems()
     static const EwsId::List newIds = {EwsId(QStringLiteral("Xnn2DwwaXQUhbn7U"), QStringLiteral("JoFvRwDP")),
                                        EwsId(QStringLiteral("ntTNOncESwiyAXog"), QStringLiteral("4qbAwd3y"))};
     EwsId::List::const_iterator newIdsIt = newIds.begin();
-    Q_FOREACH (const EwsMoveItemRequest::Response &resp, req->responses()) {
+    const auto reqResponses{req->responses()};
+    for (const EwsMoveItemRequest::Response &resp : reqResponses) {
         QCOMPARE(resp.responseClass(), EwsResponseSuccess);
         QCOMPARE(resp.itemId(), *newIdsIt);
         newIdsIt++;
@@ -230,7 +231,8 @@ void UtEwsMoveItemRequest::twoItemsOneFailed()
     EwsId::List::const_iterator newIdsIt = newIds.begin();
     QList<EwsResponseClass>::const_iterator respClassesIt = respClasses.begin();
     unsigned i = 0;
-    Q_FOREACH (const EwsMoveItemRequest::Response &resp, req->responses()) {
+    const auto reqResponses{req->responses()};
+    for (const EwsMoveItemRequest::Response &resp : reqResponses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
         if (resp.isSuccess()) {
@@ -313,7 +315,8 @@ void UtEwsMoveItemRequest::twoItemsSecondFailed()
     EwsId::List::const_iterator newIdsIt = newIds.begin();
     QList<EwsResponseClass>::const_iterator respClassesIt = respClasses.begin();
     unsigned i = 0;
-    Q_FOREACH (const EwsMoveItemRequest::Response &resp, req->responses()) {
+    const auto reqResponses{req->responses()};
+    for (const EwsMoveItemRequest::Response &resp : reqResponses) {
         qDebug() << "Verifying response" << i++;
         QCOMPARE(resp.responseClass(), *respClassesIt);
         if (resp.isSuccess()) {

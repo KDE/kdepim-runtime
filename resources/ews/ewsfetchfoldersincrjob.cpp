@@ -209,7 +209,8 @@ void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
      * Use a hash to auto-eliminate duplicates. */
     QHash<QString, Collection> localFetchHash;
 
-    Q_FOREACH (const EwsSyncFolderHierarchyRequest::Change &ch, req->changes()) {
+    const auto reqChanges{req->changes()};
+    for (const EwsSyncFolderHierarchyRequest::Change &ch : reqChanges) {
         FolderDescr fd;
         Collection c;
 

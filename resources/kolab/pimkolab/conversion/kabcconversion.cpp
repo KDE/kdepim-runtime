@@ -446,8 +446,9 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
 
     if (!contact.emailAddresses().empty()) {
         QStringList emails;
-        emails.reserve(contact.emailAddresses().size());
-        foreach (const Kolab::Email &email, contact.emailAddresses()) {
+        const auto contactEmailAddresses{contact.emailAddresses()};
+        emails.reserve(contactEmailAddresses.size());
+        for (const Kolab::Email &email : contactEmailAddresses) {
             emails << fromStdString(email.address());
             const QString types = emailTypesToStringList(email.types());
             if (!types.isEmpty()) {

@@ -28,10 +28,12 @@ void KolabChangeItemsTagsTask::startRelationTask(KIMAP::Session *session)
     // It's entirely possible that we don't have an rid yet
 
     // compile a set of changed tags
-    Q_FOREACH (const Akonadi::Tag &tag, resourceState()->addedTags()) {
+    const auto addedTags{resourceState()->addedTags()};
+    for (const Akonadi::Tag &tag : addedTags) {
         mChangedTags.append(tag);
     }
-    Q_FOREACH (const Akonadi::Tag &tag, resourceState()->removedTags()) {
+    const auto removedTags{resourceState()->removedTags()};
+    for (const Akonadi::Tag &tag : removedTags) {
         mChangedTags.append(tag);
     }
     qCDebug(KOLABRESOURCE_LOG) << mChangedTags;

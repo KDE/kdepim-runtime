@@ -338,7 +338,8 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
             d->mTag.setType(Akonadi::Tag::GENERIC);
 
             d->mTagMembers.reserve(relation.members().size());
-            foreach (const std::string &member, relation.members()) {
+            const auto members{relation.members()};
+            for (const std::string &member : members) {
                 d->mTagMembers << Conversion::fromStdString(member);
             }
         } else if (relation.type() == "generic") {
@@ -348,7 +349,8 @@ ObjectType KolabObjectReader::parseMimeMessage(const KMime::Message::Ptr &msg)
                 d->mRelation.setType(Akonadi::Relation::GENERIC);
 
                 d->mTagMembers.reserve(relation.members().size());
-                foreach (const std::string &member, relation.members()) {
+                const auto members{relation.members()};
+                for (const std::string &member : members) {
                     d->mTagMembers << Conversion::fromStdString(member);
                 }
             } else {

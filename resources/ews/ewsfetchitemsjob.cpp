@@ -172,7 +172,8 @@ void EwsFetchItemsJob::remoteItemFetchDone(KJob *job)
 
     if (!itemReq->error()) {
         removeSubjob(job);
-        Q_FOREACH (const EwsSyncFolderItemsRequest::Change &change, itemReq->changes()) {
+        const auto reqChanges{itemReq->changes()};
+        for (const EwsSyncFolderItemsRequest::Change &change : reqChanges) {
             switch (change.type()) {
             case EwsSyncFolderItemsRequest::Create:
                 mRemoteAddedItems.append(change.item());
@@ -237,7 +238,8 @@ void EwsFetchItemsJob::checkedItemsFetchFinished(KJob *job)
         Q_ASSERT(mItemsToCheck.size() == req->responses().size());
 
         EwsId::List::const_iterator it = mItemsToCheck.cbegin();
-        Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
+        const auto reqResponses{req->responses()};
+        for (const EwsGetItemRequest::Response &resp : reqResponses) {
             if (resp.isSuccess()) {
                 qCDebugNC(EWSRES_LOG) << QStringLiteral("Checked item %1 found - readding").arg(ewsHash(it->id()));
                 mRemoteAddedItems.append(resp.item());
@@ -258,7 +260,7 @@ bool EwsFetchItemsJob::processIncrementalRemoteItemUpdates(const EwsItem::List &
                                                            QHash<QString, Item> &itemHash,
                                                            QHash<EwsItemType, Item::List> &toFetchItems)
 {
-    Q_FOREACH (const EwsItem &ewsItem, items) {
+    for (const EwsItem &ewsItem : items) {
         auto id(ewsItem[EwsItemFieldItemId].value<EwsId>());
         auto it = itemHash.find(id.id());
         if (it == itemHash.end()) {
@@ -302,7 +304,7 @@ void EwsFetchItemsJob::compareItemLists()
         itemHash.insert(item.remoteId(), item);
     }
 
-    Q_FOREACH (const EwsItem &ewsItem, mRemoteAddedItems) {
+    for (const EwsItem &ewsItem : std::as_const(mRemoteAddedItems)) {
         /* In case of a full sync all existing items appear as added on the remote side. Therefore
          * look for the item in the local list before creating a new copy. */
         auto id(ewsItem[EwsItemFieldItemId].value<EwsId>());

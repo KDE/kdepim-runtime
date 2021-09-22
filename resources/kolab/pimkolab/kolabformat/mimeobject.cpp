@@ -186,7 +186,8 @@ static QByteArray getMimeType(Kolab::ObjectType type)
 
 static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
 {
-    Q_FOREACH (const QByteArray &type, Mime::getContentMimeTypeList(msg)) {
+    const auto mimetypes{Mime::getContentMimeTypeList(msg)};
+    for (const QByteArray &type : mimetypes) {
         Kolab::ObjectType t = getObjectType(type.toStdString()); // works for v2 types
         if (t != InvalidObject) {
             return t;

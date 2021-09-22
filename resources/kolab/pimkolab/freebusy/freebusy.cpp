@@ -289,7 +289,8 @@ std::string toIFB(const Kolab::Freebusy &freebusy)
     KCalendarCore::FreeBusyPeriod::List list;
     const auto freePeriods{freebusy.periods()};
     for (const Kolab::FreebusyPeriod &fbPeriod : freePeriods) {
-        Q_FOREACH (const Kolab::Period &p, fbPeriod.periods()) {
+        const auto fbPeriodPeriods{fbPeriod.periods()};
+        for (const Kolab::Period &p : fbPeriodPeriods) {
             KCalendarCore::FreeBusyPeriod period(Kolab::Conversion::toDate(p.start), Kolab::Conversion::toDate(p.end));
             //             period.setSummary("summary"); Doesn't even work. X-SUMMARY is read though (just not written out)s
             // TODO

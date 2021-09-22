@@ -29,7 +29,8 @@ bool KolabHelpers::checkForErrors(const Akonadi::Item &item)
     }
 
     QString errorMsg;
-    foreach (const Kolab::ErrorHandler::Err &error, Kolab::ErrorHandler::instance().getErrors()) {
+    const auto errors{Kolab::ErrorHandler::instance().getErrors()};
+    for (const Kolab::ErrorHandler::Err &error : errors) {
         errorMsg.append(error.message);
         errorMsg.append(QLatin1Char('\n'));
     }

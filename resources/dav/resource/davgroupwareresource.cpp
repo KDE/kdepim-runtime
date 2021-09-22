@@ -806,7 +806,8 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
         }
     }
 
-    foreach (const QString &rid, mEtagCaches.keys()) {
+    const auto keys{mEtagCaches.keys()};
+    for (const QString &rid : keys) {
         if (!seenCollectionsUrls.contains(rid)) {
             qCDebug(DAVRESOURCE_LOG) << "DavGroupwareResource::onRetrieveCollectionsFinished: Collection disappeared. " << rid;
             mEtagCaches[rid]->deleteLater();
@@ -849,7 +850,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
     QSet<QString> seenRids;
     QStringList changedRids;
     changedItems.reserve(listJob->changedItems().count());
-    foreach (const KDAV::DavItem &davItem, listJob->changedItems()) {
+    const auto listJobChangedItems{listJob->changedItems()};
+    for (const KDAV::DavItem &davItem : listJobChangedItems) {
         seenRids.insert(davItem.url().toDisplayString());
 
         Akonadi::Item item;

@@ -669,7 +669,8 @@ void EwsResource::itemMoveRequestFinished(KJob *job)
     auto srcCol = req->property("sourceCollection").value<Collection>();
     auto dstCol = req->property("destinationCollection").value<Collection>();
     Item::List::iterator it = items.begin();
-    Q_FOREACH (const EwsMoveItemRequest::Response &resp, req->responses()) {
+    const auto reqResponses{req->responses()};
+    for (const EwsMoveItemRequest::Response &resp : reqResponses) {
         Item &item = *it;
         if (resp.isSuccess()) {
             qCDebugNC(EWSRES_AGENTIF_LOG)
@@ -750,7 +751,8 @@ void EwsResource::itemDeleteRequestFinished(KJob *job)
 
     Item::List::iterator it = items.begin();
 
-    Q_FOREACH (const EwsDeleteItemRequest::Response &resp, req->responses()) {
+    const auto reqResponses{req->responses()};
+    for (const EwsDeleteItemRequest::Response &resp : reqResponses) {
         Item &item = *it;
         if (resp.isSuccess()) {
             qCDebugNC(EWSRES_AGENTIF_LOG) << QStringLiteral("itemsRemoved: succeeded for item %1").arg(ewsHash(item.remoteId()));

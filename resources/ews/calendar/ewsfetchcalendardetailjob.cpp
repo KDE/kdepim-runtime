@@ -161,7 +161,8 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
     }
 
     KCalendarCore::ICalFormat format;
-    Q_FOREACH (const EwsGetItemRequest::Response &resp, req->responses()) {
+    const auto responses{req->responses()};
+    for (const EwsGetItemRequest::Response &resp : responses) {
         if (!resp.isSuccess()) {
             qCWarningNC(EWSRES_LOG) << QStringLiteral("Failed to fetch item.");
             continue;

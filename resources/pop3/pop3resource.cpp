@@ -557,7 +557,8 @@ void POP3Resource::messageDownloadProgress(KJob *job, KJob::Unit unit, qulonglon
     QString statusMessage;
     const int totalMessages = mIdsToDownload.size() + mDownloadedIDs.size();
     int bytesRemainingOnServer = 0;
-    foreach (const QString &alreadyDownloadedUID, mSettings.seenUidList()) {
+    const auto seenUidList{mSettings.seenUidList()};
+    for (const QString &alreadyDownloadedUID : seenUidList) {
         const int alreadyDownloadedID = mUidsToIdsMap.value(alreadyDownloadedUID, -1);
         if (alreadyDownloadedID != -1) {
             bytesRemainingOnServer += mIdsToSizeMap.value(alreadyDownloadedID);

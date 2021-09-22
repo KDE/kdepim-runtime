@@ -204,14 +204,14 @@ void Incidence::saveAttendeeAttribute(QDomElement &element, const Attendee &atte
 
 void Incidence::saveAttendees(QDomElement &element) const
 {
-    foreach (const Attendee &attendee, mAttendees) {
+    for (const Attendee &attendee : std::as_const(mAttendees)) {
         saveAttendeeAttribute(element, attendee);
     }
 }
 
 void Incidence::saveAttachments(QDomElement &element) const
 {
-    foreach (const KCalendarCore::Attachment &a, mAttachments) {
+    for (const KCalendarCore::Attachment &a : std::as_const(mAttachments)) {
         if (a.isUri()) {
             writeString(element, QStringLiteral("link-attachment"), a.uri());
         } else if (a.isBinary()) {
@@ -576,7 +576,7 @@ bool Incidence::saveAttributes(QDomElement &element) const
 
 void Incidence::saveCustomAttributes(QDomElement &element) const
 {
-    foreach (const Custom &custom, mCustomList) {
+    for (const Custom &custom : std::as_const(mCustomList)) {
         QString key(QString::fromUtf8(custom.key));
         Q_ASSERT(!key.isEmpty());
         if (key.startsWith(QLatin1String("X-KDE-KolabUnhandled-"))) {
@@ -830,7 +830,7 @@ void Incidence::setFields(const KCalendarCore::Incidence::Ptr &incidence)
 
     // Attendees:
     const KCalendarCore::Attendee::List attendees = incidence->attendees();
-    foreach (const KCalendarCore::Attendee &kcalAttendee, attendees) {
+    for (const KCalendarCore::Attendee &kcalAttendee : attendees) {
         Attendee attendee;
 
         attendee.displayName = kcalAttendee.name();
@@ -898,7 +898,7 @@ static QBitArray daysListToBitArray(const QStringList &days)
 {
     QBitArray arr(7);
     arr.fill(false);
-    foreach (const QString &day, days) {
+    for (const QString &day : days) {
         for (int i = 0; i < 7; ++i) {
             if (day == QLatin1String(s_weekDayName[i])) {
                 arr.setBit(i, true);
@@ -954,7 +954,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
     }
 
     incidence->clearAttachments();
-    foreach (const KCalendarCore::Attachment &a, mAttachments) {
+    for (const KCalendarCore::Attachment &a : std::as_const(mAttachments)) {
         incidence->addAttachment(a);
     }
 
@@ -1021,7 +1021,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
         incidence->setSchedulingID(uid());
     }
 
-    foreach (const Custom &custom, mCustomList) {
+    for (const Custom &custom : std::as_const(mCustomList)) {
         incidence->setNonKDECustomProperty(custom.key, custom.value);
     }
 }

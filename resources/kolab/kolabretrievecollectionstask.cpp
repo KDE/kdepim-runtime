@@ -465,7 +465,8 @@ void KolabRetrieveCollectionsTask::applyRights(const QHash<QString, KIMAP::Acl::
 void KolabRetrieveCollectionsTask::applyMetadata(const QHash<QString, QMap<QByteArray, QByteArray>> &metadataMap)
 {
     // qCDebug(KOLABRESOURCE_LOG) << metadataMap;
-    Q_FOREACH (const QString &mailbox, metadataMap.keys()) {
+    const auto keys{metadataMap.keys()};
+    for (const QString &mailbox : keys) {
         const QMap<QByteArray, QByteArray> metadata = metadataMap.value(mailbox);
         if (mMailCollections.contains(mailbox)) {
             Akonadi::Collection &collection = mMailCollections[mailbox];
