@@ -117,10 +117,6 @@ ImapResourceBase::ImapResourceBase(const QString &id)
 
     setHierarchicalRemoteIdentifiersEnabled(true);
     setItemTransactionMode(ItemSync::MultipleTransactions); // we can recover from incomplete syncs, so we can use a faster mode
-    ItemFetchScope scope(changeRecorder()->itemFetchScope());
-    scope.fetchFullPayload(false);
-    scope.setAncestorRetrieval(ItemFetchScope::None);
-    setItemSynchronizationFetchScope(scope);
     setDisableAutomaticItemDeliveryDone(true);
     setItemSyncBatchSize(100);
 

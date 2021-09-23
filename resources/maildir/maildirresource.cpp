@@ -116,12 +116,6 @@ MaildirResource::MaildirResource(const QString &id)
 
     setHierarchicalRemoteIdentifiersEnabled(true);
 
-    ItemFetchScope scope(changeRecorder()->itemFetchScope());
-    scope.fetchFullPayload(false);
-    scope.fetchPayloadPart(MessagePart::Header);
-    scope.setAncestorRetrieval(ItemFetchScope::None);
-    setItemSynchronizationFetchScope(scope);
-
     connect(mFsWatcher, &KDirWatch::dirty, this, &MaildirResource::slotDirChanged);
     if (!ensureSaneConfiguration()) {
         Q_EMIT error(i18n("Unusable configuration."));
