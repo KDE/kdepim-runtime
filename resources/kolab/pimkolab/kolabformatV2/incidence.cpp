@@ -228,7 +228,7 @@ void Incidence::saveAlarms(QDomElement &element) const
 
     QDomElement list = element.ownerDocument().createElement(QStringLiteral("advanced-alarms"));
     element.appendChild(list);
-    foreach (KCalendarCore::Alarm::Ptr a, mAlarms) {
+    for (const KCalendarCore::Alarm::Ptr &a : std::as_const(mAlarms)) {
         QDomElement e = list.ownerDocument().createElement(QStringLiteral("alarm"));
         list.appendChild(e);
 
@@ -260,14 +260,16 @@ void Incidence::saveAlarms(QDomElement &element) const
             e.setAttribute(QStringLiteral("type"), QStringLiteral("email"));
             QDomElement addresses = e.ownerDocument().createElement(QStringLiteral("addresses"));
             e.appendChild(addresses);
-            foreach (const KCalendarCore::Person &person, a->mailAddresses()) {
+            const auto mailAddresses{a->mailAddresses()};
+            for (const KCalendarCore::Person &person : mailAddresses) {
                 writeString(addresses, QStringLiteral("address"), person.fullName());
             }
             writeString(e, QStringLiteral("subject"), a->mailSubject());
             writeString(e, QStringLiteral("mail-text"), a->mailText());
             QDomElement attachments = e.ownerDocument().createElement(QStringLiteral("attachments"));
             e.appendChild(attachments);
-            foreach (const QString &attachment, a->mailAttachments()) {
+            const auto mailAttachments{a->mailAttachments()};
+            for (const QString &attachment : mailAttachments) {
                 writeString(attachments, QStringLiteral("attachment"), attachment);
             }
             break;
@@ -292,7 +294,8 @@ void Incidence::saveRecurrence(QDomElement &element) const
         e.setAttribute(QStringLiteral("type"), mRecurrence.type);
     }
     writeString(e, QStringLiteral("interval"), QString::number(mRecurrence.interval));
-    foreach (const QString &recurrence, mRecurrence.days) {
+    const auto days{mRecurrence.days};
+    for (const QString &recurrence : days) {
         writeString(e, QStringLiteral("day"), recurrence);
     }
     if (!mRecurrence.dayNumber.isEmpty()) {
@@ -308,7 +311,8 @@ void Incidence::saveRecurrence(QDomElement &element) const
         QDomText t = element.ownerDocument().createTextNode(mRecurrence.range);
         range.appendChild(t);
     }
-    foreach (const QDate &date, mRecurrence.exclusions) {
+    const auto exclusions{mRecurrence.exclusions};
+    for (const QDate &date : exclusions) {
         writeString(e, QStringLiteral("exclusion"), dateToString(date));
     }
 }
@@ -931,7 +935,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
         alarm->setEnabled(true);
         alarm->setType(KCalendarCore::Alarm::Display);
     } else if (!mAlarms.isEmpty()) {
-        foreach (KCalendarCore::Alarm::Ptr a, mAlarms) {
+        for (const KCalendarCore::Alarm::Ptr &a : std::as_const(mAlarms)) {
             a->setParent(incidence.data());
             incidence->addAlarm(a);
         }
@@ -944,7 +948,7 @@ void Incidence::saveTo(const KCalendarCore::Incidence::Ptr &incidence)
     }
 
     incidence->clearAttendees();
-    foreach (const Attendee &attendee, mAttendees) {
+    for (const Attendee &attendee : std::as_const(mAttendees)) {
         KCalendarCore::Attendee::PartStat status = attendeeStringToStatus(attendee.status);
         KCalendarCore::Attendee::Role role = attendeeStringToRole(attendee.role);
         KCalendarCore::Attendee a(attendee.displayName, attendee.smtpAddress, attendee.requestResponse, status, role);

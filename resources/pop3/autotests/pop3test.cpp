@@ -33,7 +33,8 @@ void Pop3Test::initTestCase()
     QVERIFY(Akonadi::Control::start());
 
     // switch all resources offline to reduce interference from them
-    foreach (Akonadi::AgentInstance agent, Akonadi::AgentManager::self()->instances()) {
+    const auto instances{Akonadi::AgentManager::self()->instances()};
+    for (Akonadi::AgentInstance agent : instances) {
         agent.setIsOnline(false);
     }
 

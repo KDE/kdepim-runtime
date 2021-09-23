@@ -50,11 +50,11 @@ static const char warningFile[] = "WARNING_README.txt";
 
 #define DEBUG_DATA(func)                                                                                                                                       \
     qCDebug(KALARMDIRRESOURCE_LOG) << func << "ID:Files:";                                                                                                     \
-    foreach (const QString &id, mEvents.keys()) {                                                                                                              \
+    for (const QString &id : mEvents.keys()) {                                                                                                                 \
         qCDebug(KALARMDIRRESOURCE_LOG) << id << ":" << mEvents[id].files;                                                                                      \
     }                                                                                                                                                          \
     qCDebug(KALARMDIRRESOURCE_LOG) << "File:IDs:";                                                                                                             \
-    foreach (const QString &f, mFileEventIds.keys()) {                                                                                                         \
+    for (const QString &f : mFileEventIds.keys()) {                                                                                                            \
         qCDebug(KALARMDIRRESOURCE_LOG) << f << ":" << mFileEventIds[f];                                                                                        \
     }
 

@@ -43,7 +43,7 @@
 //     if ( event->recurs() ) {
 //         const KCalendarCore::Duration duration( eventStart, eventEnd );
 //         const KCalendarCore::DateTimeList list = event->recurrence()->timesInInterval(start, end);
-//         foreach (const KDateTime &dt, list) {
+//         for (const KDateTime &dt : list) {
 //             const KDateTime utc = dt.toUtc();
 //             addLocalPeriod(utc, duration.end(utc) );
 //         }

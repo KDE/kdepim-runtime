@@ -219,7 +219,8 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!items[3].hasPayload<KMime::Message::Ptr>());
 
     for (const Item &item : std::as_const(items)) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+        const auto flags{item.flags()};
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -235,7 +236,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!var.isValid());
 
     // test listing empty mbox without index
-    Q_FOREACH (const QString &entry, entrySet1) {
+    for (const QString &entry, std::as_const(entrySet1)) {
         QVERIFY(md1.removeEntry(entry));
     }
     QCOMPARE(md1.entryList().count(), 0);
@@ -289,7 +290,8 @@ void ItemFetchTest::testListingMaildir()
 
     // see data/README
     for (const Item &item : std::as_const(items)) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+        const auto flags{item.flags()};
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -302,7 +304,7 @@ void ItemFetchTest::testListingMaildir()
     QVERIFY(!var.isValid());
 
     // test listing empty maildir with index
-    Q_FOREACH (const QString &entry, entrySet2) {
+    for (const QString &entry : std::as_const(entrySet2)) {
         QVERIFY(md2.removeEntry(entry));
     }
     QCOMPARE(md2.entryList().count(), 0);
@@ -356,7 +358,8 @@ void ItemFetchTest::testListingMaildir()
 
     // see data/README
     for (const Item &item : std::as_const(items)) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+        const auto flags{item.flags()};
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -417,7 +420,8 @@ void ItemFetchTest::testListingMaildir()
 
     // see data/README
     for (const Item &item : std::as_const(items)) {
-        Q_FOREACH (const QByteArray &flag, item.flags()) {
+        const auto flags{item.flags()};
+        for (const QByteArray &flag : flags) {
             ++flagCounts[flag];
         }
     }
@@ -922,7 +926,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
     collection1.setRemoteId(QLatin1String("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
-    Q_FOREACH (const QString &entry, randomList1) {
+    for (const QString &entry : std::as_const(randomList1)) {
         Item item1;
         item1.setId(KRandom::random());
         item1.setRemoteId(entry);
@@ -989,7 +993,7 @@ void ItemFetchTest::testSingleItemFetchMaildir()
 
     // test fetching from maildir, just specifying full payload
     randomSequence.randomize(randomList1);
-    Q_FOREACH (const QString &entry, randomList1) {
+    for (const QString &entry : std::as_const(randomList1)) {
         Item item1;
         item1.setId(KRandom::random());
         item1.setRemoteId(entry);
@@ -1053,7 +1057,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
     collection1.setRemoteId(QLatin1String("collection1"));
     collection1.setParentCollection(mStore->topLevelCollection());
 
-    Q_FOREACH (const MBoxEntry &entry, randomList1) {
+    for (const QString &entry : std::as_const(randomList1)) {
         Item item1;
         item1.setId(KRandom::random());
         item1.setRemoteId(QString::number(entry.messageOffset()));
@@ -1086,7 +1090,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
     // test fetching from mbox, including body
     randomSequence.randomize(randomList1);
-    Q_FOREACH (const MBoxEntry &entry, randomList1) {
+    for (const QString &entry : std::as_const(randomList1)) {
         Item item1;
         item1.setId(KRandom::random());
         item1.setRemoteId(QString::number(entry.messageOffset()));
@@ -1125,7 +1129,7 @@ void ItemFetchTest::testSingleItemFetchMBox()
 
     // test fetching from mbox, just specifying full payload
     randomSequence.randomize(randomList1);
-    Q_FOREACH (const MBoxEntry &entry, randomList1) {
+    for (const QString &entry : std::as_const(randomList1)) {
         Item item1;
         item1.setId(KRandom::random());
         item1.setRemoteId(QString::number(entry.messageOffset()));

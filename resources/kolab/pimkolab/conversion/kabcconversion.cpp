@@ -509,7 +509,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
         if (!aff.logo().empty()) {
             addressee.setLogo(toPicture(aff.logo(), aff.logoMimetype()));
         }
-        foreach (const Kolab::Related &related, aff.relateds()) {
+        const auto affRelateds{aff.relateds()};
+        for (const Kolab::Related &related : affRelateds) {
             if (related.type() != Kolab::Related::Text) {
                 qCCritical(PIMKOLAB_LOG) << "invalid relation type";
                 continue;
@@ -542,7 +543,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
 
     if (!contact.telephones().empty()) {
         int index = 0;
-        foreach (const Kolab::Telephone &tel, contact.telephones()) {
+        const auto contactTelephones{contact.telephones()};
+        for (const Kolab::Telephone &tel : contactTelephones) {
             bool pref = false;
             if (index == contact.telephonesPreferredIndex()) {
                 pref = true;
@@ -555,7 +557,8 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
 
     if (!contact.addresses().empty()) {
         int index = 0;
-        foreach (const Kolab::Address &a, contact.addresses()) {
+        const auto contactAddresses{contact.addresses()};
+        for (const Kolab::Address &a : contactAddresses) {
             bool pref = false;
             if (index == contact.addressPreferredIndex()) {
                 pref = true;
@@ -676,7 +679,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     std::vector<Kolab::Address> addresses;
     prefNum = -1;
     prefCounter = -1;
-    foreach (const KContacts::Address &a, addressee.addresses()) {
+    const auto contactAddresses{addressee.addresses()};
+    for (const KContacts::Address &a : contactAddresses) {
         Kolab::Address adr;
         bool pref = false;
         adr.setTypes(fromAddressType(a.type(), pref));
@@ -713,7 +717,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     // TODO
     // c.setGender(addressee.gender());
     std::vector<std::string> languages;
-    foreach (const KContacts::Lang &n, addressee.langs()) {
+    const auto langs{addressee.langs()};
+    for (const KContacts::Lang &n : langs) {
         languages.push_back(toStdString(n.language()));
     }
     c.setLanguages(languages);
@@ -721,7 +726,8 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     std::vector<Kolab::Telephone> phones;
     prefNum = -1;
     prefCounter = -1;
-    foreach (const KContacts::PhoneNumber &n, addressee.phoneNumbers()) {
+    const auto phoneNumbers{addressee.phoneNumbers()};
+    for (const KContacts::PhoneNumber &n : phoneNumbers) {
         Kolab::Telephone p;
         p.setNumber(toStdString(n.number()));
         bool pref = false;
@@ -742,8 +748,9 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     int prefEmail = -1;
     int count = 0;
     std::vector<Kolab::Email> emails;
-    emails.reserve(addressee.emails().count());
-    foreach (const QString &e, addressee.emails()) {
+    const auto addressesEmails{addressee.emails()};
+    emails.reserve(addressesEmails.count());
+    for (const QString &e : addressesEmails) {
         if ((prefEmail == -1) && (e == addressee.preferredEmail())) {
             prefEmail = count;
         }
@@ -879,7 +886,8 @@ KContacts::ContactGroup toKABC(const DistList &dl)
 {
     KContacts::ContactGroup cg(fromStdString(dl.name()));
     cg.setId(fromStdString(dl.uid()));
-    foreach (const Kolab::ContactReference &m, dl.members()) {
+    const auto members{dl.members()};
+    for (const Kolab::ContactReference &m : members) {
         switch (m.type()) {
         case Kolab::ContactReference::EmailReference:
             cg.append(KContacts::ContactGroup::Data(fromStdString(m.name()), fromStdString(m.email())));
