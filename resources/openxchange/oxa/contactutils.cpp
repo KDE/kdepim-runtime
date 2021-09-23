@@ -428,7 +428,7 @@ void OXA::ContactUtils::addContactElements(QDomDocument &document, QDomElement &
         if (preloadedData) {
             // the contact group contains contact references that has been preloaded
             auto contacts = static_cast<KContacts::Addressee::List *>(preloadedData);
-            foreach (const KContacts::Addressee &contact, *contacts) {
+            for (const KContacts::Addressee &contact : *contacts) {
                 QDomElement email = DAVUtils::addOxElement(document, distributionList, QStringLiteral("email"), OXUtils::writeString(contact.preferredEmail()));
 
                 DAVUtils::setOxAttribute(email, QStringLiteral("folder_id"), OXUtils::writeNumber(0));

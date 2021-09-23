@@ -186,7 +186,7 @@ void FileStore::FiFoQueueJobSession::addJob(FileStore::Job *job)
 void FileStore::FiFoQueueJobSession::cancelAllJobs()
 {
     // KJob::kill() also deletes the job
-    foreach (FileStore::Job *job, d->mJobQueue) {
+    for (FileStore::Job *job : std::as_const(d->mJobQueue)) {
         job->kill(KJob::EmitResult);
     }
 

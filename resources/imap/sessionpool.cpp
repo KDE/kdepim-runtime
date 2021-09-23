@@ -100,7 +100,8 @@ void SessionPool::disconnect(SessionTermination termination)
         return;
     }
 
-    foreach (KIMAP::Session *s, m_unusedPool + m_reservedPool + m_connectingPool) {
+    const auto session{m_unusedPool + m_reservedPool + m_connectingPool};
+    for (KIMAP::Session *s : session) {
         killSession(s, termination);
     }
     m_unusedPool.clear();

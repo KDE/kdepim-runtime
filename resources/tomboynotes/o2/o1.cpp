@@ -245,8 +245,8 @@ void O1::link()
 
     // Get any query parameters for the request
     QUrlQuery requestData;
-    O0RequestParameter param("", "");
-    foreach (param, requestParameters()) {
+    const auto params{requestParameters()};
+    for (const O0RequestParameter &param : params) {
         requestData.addQueryItem(QString::fromLatin1(param.name), QString::fromLatin1(QUrl::toPercentEncoding(QString::fromLatin1(param.value))));
     }
 

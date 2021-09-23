@@ -87,7 +87,8 @@ void EwsGetStreamingEventsRequest::requestDataTimeout()
 
     QXmlStreamReader reader(mResponseData);
     if (!readResponse(reader)) {
-        Q_FOREACH (KJob *job, subjobs()) {
+        const auto jobs{subjobs()};
+        for (KJob *job : jobs) {
             removeSubjob(job);
             job->kill();
         }

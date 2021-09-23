@@ -580,7 +580,8 @@ void Pop3Test::testSimpleLeaveOnServer()
     // The resource should have saved the UIDs of the seen messages
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
-    foreach (int seenTime, mPOP3SettingsInterface->seenUidTimeList().value()) {
+    const auto seenUidTimeListValue{mPOP3SettingsInterface->seenUidTimeList().value()};
+    for (int seenTime : seenUidTimeListValue) {
         // Those message were just downloaded from the fake server, so they are at maximum
         // 10 minutes old (for slooooow running tests)
         QVERIFY(seenTime >= time(nullptr) - 10 * 60);
@@ -672,7 +673,8 @@ void Pop3Test::testTimeBasedLeaveRule()
     uids.removeAll(QStringLiteral("UID2"));
     QVERIFY(sortedEqual(uids, mPOP3SettingsInterface->seenUidList().value()));
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
-    foreach (int seenTime, mPOP3SettingsInterface->seenUidTimeList().value()) {
+    const auto seenUidTimeListValue{mPOP3SettingsInterface->seenUidTimeList().value()};
+    for (int seenTime : seenUidTimeListValue) {
         QVERIFY(seenTime >= time(nullptr) - 10 * 60);
     }
 

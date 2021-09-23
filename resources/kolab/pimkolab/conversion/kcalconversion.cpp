@@ -267,7 +267,8 @@ template<typename T> void setIncidence(KCalendarCore::Incidence &i, const T &e)
     i.setSummary(fromStdString(e.summary())); // TODO detect richtext
     i.setDescription(fromStdString(e.description())); // TODO detect richtext
     i.setStatus(toStatus(e.status()));
-    foreach (const Kolab::Attendee &a, e.attendees()) {
+    const auto attendees{e.attendees()};
+    for (const Kolab::Attendee &a : attendees) {
         /*
          * KCalendarCore always sets a UID if empty, but that's just a pointer, and not the uid of a real contact.
          * Since that means the semantics of the two are different, we have to store the kolab uid as a custom property.
@@ -312,7 +313,8 @@ template<typename T> void setIncidence(KCalendarCore::Incidence &i, const T &e)
     }
 
     QMap<QByteArray, QString> props;
-    foreach (const Kolab::CustomProperty &prop, e.customProperties()) {
+    const auto customProperties{e.customProperties()};
+    for (const Kolab::CustomProperty &prop : customProperties) {
         QString key;
         if (prop.identifier.compare(0, 5, "X-KDE")) {
             key.append(QLatin1String("X-KOLAB-"));
@@ -338,7 +340,8 @@ template<typename T, typename I> void getIncidence(T &i, const I &e)
     i.setDescription(toStdString(e.description()));
     i.setStatus(fromStatus(e.status()));
     std::vector<Kolab::Attendee> attendees;
-    foreach (const KCalendarCore::Attendee &ptr, e.attendees()) {
+    const auto eAttendees{e.attendees()};
+    for (const KCalendarCore::Attendee &ptr : eAttendees) {
         const QString &uid = ptr.customProperties().nonKDECustomProperty(CUSTOM_KOLAB_CONTACT_UUID);
         Kolab::Attendee a(Kolab::ContactReference(toStdString(ptr.email()), toStdString(ptr.name()), toStdString(uid)));
         a.setRSVP(ptr.RSVP());
@@ -363,7 +366,8 @@ template<typename T, typename I> void getIncidence(T &i, const I &e)
     }
     i.setAttendees(attendees);
     std::vector<Kolab::Attachment> attachments;
-    foreach (const KCalendarCore::Attachment &att, e.attachments()) {
+    const auto eAttachments{e.attachments()};
+    for (const KCalendarCore::Attachment &att : eAttachments) {
         Kolab::Attachment a;
         if (att.isUri()) {
             a.setUri(toStdString(att.uri()), toStdString(att.mimeType()));
@@ -562,7 +566,8 @@ template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &ev
             defaultRR->setByMonths(stdVector.toList());
         }
     }
-    foreach (const Kolab::cDateTime &dt, event.recurrenceDates()) {
+    const auto recurrenceDates{event.recurrenceDates()};
+    for (const Kolab::cDateTime &dt : recurrenceDates) {
         const QDateTime &date = toDate(dt);
         if (dt.isDateOnly()) {
             e.recurrence()->addRDate(date.date());
@@ -570,7 +575,8 @@ template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &ev
             e.recurrence()->addRDateTime(date);
         }
     }
-    foreach (const Kolab::cDateTime &dt, event.exceptionDates()) {
+    const auto exceptionDates{event.exceptionDates()};
+    for (const Kolab::cDateTime &dt : exceptionDates) {
         const QDateTime &date = toDate(dt);
         if (dt.isDateOnly()) {
             e.recurrence()->addExDate(date.date());
@@ -619,8 +625,10 @@ template<typename T, typename I> void getRecurrence(T &i, const I &e)
     rrule.setByhour(stdVectorByHours);
 
     std::vector<Kolab::DayPos> daypos;
-    daypos.reserve(defaultRR->byDays().count());
-    foreach (const KCalendarCore::RecurrenceRule::WDayPos &dp, defaultRR->byDays()) {
+    const auto defaultRRByDays{defaultRR->byDays()};
+    daypos.reserve(defaultRRByDays.count());
+
+    for (const KCalendarCore::RecurrenceRule::WDayPos &dp : defaultRRByDays) {
         daypos.push_back(fromWeekDayPos(dp));
     }
     rrule.setByday(daypos);
@@ -644,16 +652,19 @@ template<typename T, typename I> void getRecurrence(T &i, const I &e)
     i.setRecurrenceRule(rrule);
 
     std::vector<Kolab::cDateTime> rdates;
-    foreach (const QDateTime &dt, rec->rDateTimes()) {
+    const auto rDateTimes{rec->rDateTimes()};
+    for (const QDateTime &dt : rDateTimes) {
         rdates.push_back(fromDate(dt, e.allDay()));
     }
-    foreach (const QDate &dt, rec->rDates()) {
+    const auto recRDates{rec->rDates()};
+    for (const QDate &dt : recRDates) {
         rdates.push_back(fromDate(QDateTime(dt, {}), true));
     }
     i.setRecurrenceDates(rdates);
 
     std::vector<Kolab::cDateTime> exdates;
-    foreach (const QDateTime &dt, rec->exDateTimes()) {
+    const auto recExDateTimes{rec->exDateTimes()};
+    for (const QDateTime &dt : recExDateTimes) {
         exdates.push_back(fromDate(dt, e.allDay()));
     }
     const auto exDates = rec->exDates();
@@ -683,12 +694,14 @@ template<typename T> void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
         i.setRecurrenceId(toDate(e.recurrenceID())); // TODO THISANDFUTURE
     }
     setRecurrence(i, e);
-    foreach (const Kolab::Alarm &a, e.alarms()) {
+    const auto alarms{e.alarms()};
+    for (const Kolab::Alarm &a : alarms) {
         KCalendarCore::Alarm::Ptr alarm = KCalendarCore::Alarm::Ptr(new KCalendarCore::Alarm(&i));
         switch (a.type()) {
         case Kolab::Alarm::EMailAlarm: {
             KCalendarCore::Person::List receipents;
-            foreach (Kolab::ContactReference c, a.attendees()) {
+            const auto aAttendees{a.attendees()};
+            for (Kolab::ContactReference c : aAttendees) {
                 KCalendarCore::Person person(fromStdString(c.name()), fromStdString(c.email()));
                 receipents.append(person);
             }
@@ -735,7 +748,8 @@ template<typename T, typename I> void getTodoEvent(T &i, const I &e)
     i.setRecurrenceID(fromDate(e.recurrenceId(), e.allDay()), false); // TODO THISANDFUTURE
     getRecurrence(i, e);
     std::vector<Kolab::Alarm> alarms;
-    foreach (const KCalendarCore::Alarm::Ptr &a, e.alarms()) {
+    const auto eAlarms{e.alarms()};
+    for (const KCalendarCore::Alarm::Ptr &a : eAlarms) {
         Kolab::Alarm alarm;
         // TODO KCalendarCore disables alarms using KCalendarCore::Alarm::enabled() (X-KDE-KCALCORE-ENABLED) We should either delete the alarm, or store the
         // attribute . Ideally we would store the alarm somewhere and temporarily delete it, so we can restore it when parsing. For now we just remove disabled

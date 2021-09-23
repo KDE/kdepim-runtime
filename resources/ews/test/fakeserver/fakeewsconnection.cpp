@@ -216,7 +216,8 @@ FakeEwsServer::DialogEntry::HttpResponse FakeEwsConnection::parseRequest(const Q
 
     auto server = qobject_cast<FakeEwsServer *>(parent());
     FakeEwsServer::DialogEntry::HttpResponse resp = FakeEwsServer::EmptyResponse;
-    Q_FOREACH (const FakeEwsServer::DialogEntry &de, server->dialog()) {
+    const auto dialogs{server->dialog()};
+    for (const FakeEwsServer::DialogEntry &de : dialogs) {
         QXmlResultItems ri;
         QByteArray resultBytes;
         QString result;

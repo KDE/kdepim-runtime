@@ -66,8 +66,7 @@ QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
     tokens = query.queryItems();
 #endif
     QMultiMap<QString, QString> queryParams;
-    QPair<QString, QString> tokenPair;
-    foreach (tokenPair, tokens) {
+    for (const auto &tokenPair : std::as_const(tokens)) {
         // FIXME: We are decoding key and value again. This helps with Google OAuth, but is it mandated by the standard?
         QString key = QUrl::fromPercentEncoding(tokenPair.first.trimmed().toLatin1());
         QString value = QUrl::fromPercentEncoding(tokenPair.second.trimmed().toLatin1());

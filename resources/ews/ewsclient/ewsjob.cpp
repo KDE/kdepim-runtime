@@ -19,7 +19,8 @@ EwsJob::~EwsJob()
 
 bool EwsJob::doKill()
 {
-    Q_FOREACH (KJob *job, subjobs()) {
+    const auto jobs{subjobs()};
+    for (KJob *job : jobs) {
         job->kill(KJob::Quietly);
     }
     clearSubjobs();

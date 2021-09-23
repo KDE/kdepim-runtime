@@ -21,7 +21,7 @@ void O2Reply::onTimeOut()
 
 O2ReplyList::~O2ReplyList()
 {
-    foreach (O2Reply *timedReply, replies_) {
+    for (O2Reply *timedReply : std::as_const(replies_)) {
         delete timedReply;
     }
 }
@@ -50,7 +50,7 @@ void O2ReplyList::remove(QNetworkReply *reply)
 
 O2Reply *O2ReplyList::find(QNetworkReply *reply)
 {
-    foreach (O2Reply *timedReply, replies_) {
+    for (O2Reply *timedReply : std::as_const(replies_)) {
         if (timedReply->reply == reply) {
             return timedReply;
         }
