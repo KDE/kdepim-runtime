@@ -21,7 +21,7 @@
 #include <Akonadi/KMime/SpecialMailCollections>
 #include <KMime/Message>
 #include <KNotification>
-#include <KWallet/KWallet>
+#include <KWallet>
 
 #include <KLocalizedString>
 

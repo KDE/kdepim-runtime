@@ -14,7 +14,7 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
-#include <KI18n/KLocalizedString>
+#include <KLocalizedString>
 
 #include "googleresourcestateinterface.h"
 

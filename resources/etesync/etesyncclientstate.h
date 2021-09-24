@@ -9,7 +9,7 @@
 #include "etebaseadapter.h"
 #include "settings.h"
 
-#include <KWallet/KWallet>
+#include <KWallet>
 #include <QPointer>
 
 class EteSyncClientState : public QObject

@@ -19,7 +19,7 @@
 
 #include <KContacts/Addressee>
 
-#include <KCodecs/KEmailAddress>
+#include <KEmailAddress>
 
 #include "birthdays_debug.h"
 #include <KLocalizedString>

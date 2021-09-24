@@ -8,7 +8,7 @@
 
 #include <KLocalizedString>
 #include <KPasswordDialog>
-#include <KWallet/KWallet>
+#include <KWallet>
 
 #include "auth/ewsoauth.h"
 #include "auth/ewspasswordauth.h"

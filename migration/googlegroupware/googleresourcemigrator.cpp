@@ -13,7 +13,7 @@
 #include <Akonadi/ServerManager>
 
 #include <KLocalizedString>
-#include <KWallet/KWallet>
+#include <KWallet>
 
 #include <QDBusConnection>
 #include <QDBusServiceWatcher>
