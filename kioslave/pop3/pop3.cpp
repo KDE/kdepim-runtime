@@ -24,7 +24,6 @@ extern "C" {
 
 #include <QSslSocket>
 
-#include "kio_version.h"
 #include <KIO/SlaveInterface>
 
 #include <string.h>

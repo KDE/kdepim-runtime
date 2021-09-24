@@ -26,7 +26,6 @@
 #include <KMessageBox>
 #include <KNotification>
 #include <KPasswordDialog>
-#include <kwidgetsaddons_version.h>
 
 #include <QTimer>
 #include <qt5keychain/keychain.h>

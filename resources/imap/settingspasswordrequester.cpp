@@ -17,7 +17,6 @@
 #include <KPasswordDialog>
 #include <QDialogButtonBox>
 #include <QPushButton>
-#include <kwidgetsaddons_version.h>
 #include <kwindowsystem.h>
 #include <mailtransport/transportbase.h>
 

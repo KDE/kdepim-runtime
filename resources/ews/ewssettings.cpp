@@ -15,7 +15,6 @@
 
 #include "ewsresource_debug.h"
 #include <KAuthorized>
-#include <kwidgetsaddons_version.h>
 
 static const QString ewsWalletFolder = QStringLiteral("akonadi-ews");
 
