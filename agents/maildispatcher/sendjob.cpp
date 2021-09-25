@@ -164,7 +164,6 @@ void SendJob::doTraditionalTransport()
     job->setCc(addressAttribute->cc());
     job->setBcc(addressAttribute->bcc());
     job->setDeliveryStatusNotification(addressAttribute->deliveryStatusNotification());
-    qDebug() << " addressAttribute->deliveryStatusNotification()*********************************" << addressAttribute->deliveryStatusNotification();
 
     // Signals.
     connect(job, &TransportJob::result, this, &SendJob::transportResult);
