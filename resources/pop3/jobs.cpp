@@ -20,7 +20,9 @@ POPSession::POPSession(Settings &settings, const QString &password)
     : mPassword(password)
     , mSettings(settings)
 {
-    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave *, int, QString)), this, SLOT(slotSlaveError(KIO::Slave *, int, QString)));
+    // clang-format off
+    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
+    // clang-format on
 }
 
 POPSession::~POPSession()
