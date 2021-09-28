@@ -119,7 +119,7 @@ bool VCardDirResource::doRetrieveItem(Akonadi::Item &item)
 {
     const QString remoteId = item.remoteId();
     if (!mAddressees.contains(remoteId)) {
-        cancelTask(i18n("Contact with uid '%1' not found.", remoteId));
+        Q_EMIT error(i18n("Contact with uid '%1' not found.", remoteId));
         return false;
     }
 

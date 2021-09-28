@@ -68,7 +68,7 @@ bool VCardResource::doRetrieveItem(Akonadi::Item &item)
 {
     const QString rid = item.remoteId();
     if (!mAddressees.contains(rid)) {
-        cancelTask(i18n("Contact with uid '%1' not found.", rid));
+        Q_EMIT error(i18n("Contact with uid '%1' not found.", rid));
         return false;
     }
     item.setPayload<KContacts::Addressee>(mAddressees.value(rid));

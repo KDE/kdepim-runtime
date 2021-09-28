@@ -194,7 +194,7 @@ bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        cancelTask(i18n("Unable to open file '%1'", filePath));
+        Q_EMIT error(i18n("Unable to open file '%1'", filePath));
         return false;
     }
 
@@ -204,7 +204,7 @@ bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
         const QByteArray content = file.readAll();
         const KContacts::Addressee contact = converter.parseVCard(content);
         if (contact.isEmpty()) {
-            cancelTask(i18n("Found invalid contact in file '%1'", filePath));
+            Q_EMIT error(i18n("Found invalid contact in file '%1'", filePath));
             return false;
         }
 
@@ -214,13 +214,13 @@ bool ContactsResource::doRetrieveItem(Akonadi::Item &item)
         QString errorMessage;
 
         if (!KContacts::ContactGroupTool::convertFromXml(&file, group, &errorMessage)) {
-            cancelTask(i18n("Found invalid contact group in file '%1': %2", filePath, errorMessage));
+            Q_EMIT error(i18n("Found invalid contact group in file '%1': %2", filePath, errorMessage));
             return false;
         }
 
         item.setPayload<KContacts::ContactGroup>(group);
     } else {
-        cancelTask(i18n("Found file of unknown format: '%1'", filePath));
+        Q_EMIT error(i18n("Found file of unknown format: '%1'", filePath));
         return false;
     }
 

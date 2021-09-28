@@ -184,7 +184,7 @@ bool MaildirResource::retrieveItems(const Akonadi::Item::List &items, const QSet
 
     const Maildir md = maildirForCollection(items.at(0).parentCollection());
     if (!md.isValid()) {
-        cancelTask(i18n("Unable to fetch item: The maildir folder \"%1\" is not valid.", md.path()));
+        Q_EMIT error(i18n("Unable to fetch item: The maildir folder \"%1\" is not valid.", md.path()));
         return false;
     }
 
