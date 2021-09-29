@@ -304,7 +304,7 @@ void ImapResourceBase::onConnectDone(int errorCode, const QString &errorString)
 
 void ImapResourceBase::onConnectionLost(KIMAP::Session * /*session*/)
 {
-    if (!m_pool->isConnected()) {
+    if (!m_pool->isConnected() && isOnline()) {
         reconnect();
     }
 }
