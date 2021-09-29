@@ -172,12 +172,12 @@ void EwsFetchFoldersJobPrivate::remoteFolderIdFullFetchDone(KJob *job)
         mPendingFetchJobs = 0;
 
         for (int i = 0, total = mRemoteFolderIds.size(); i < total; i += fetchBatchSize) {
-            auto req = new EwsGetFolderRequest(mClient, this);
-            req->setFolderIds(mRemoteFolderIds.mid(i, fetchBatchSize));
-            req->setFolderShape(shape);
-            connect(req, &EwsSyncFolderHierarchyRequest::result, this, &EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone);
-            req->start();
-            q->addSubjob(req);
+            auto folderReq = new EwsGetFolderRequest(mClient, this);
+            folderReq->setFolderIds(mRemoteFolderIds.mid(i, fetchBatchSize));
+            folderReq->setFolderShape(shape);
+            connect(folderReq, &EwsSyncFolderHierarchyRequest::result, this, &EwsFetchFoldersJobPrivate::remoteFolderDetailFetchDone);
+            folderReq->start();
+            q->addSubjob(folderReq);
             mPendingFetchJobs++;
         }
 

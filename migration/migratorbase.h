@@ -20,7 +20,7 @@ public:
     {
     }
 
-    NullableConfigGroup(const KConfigGroup &grp)
+    explicit NullableConfigGroup(const KConfigGroup &grp)
         : mConfigGroup(grp)
     {
     }

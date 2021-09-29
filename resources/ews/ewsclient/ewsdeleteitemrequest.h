@@ -28,7 +28,7 @@ public:
     {
     public:
     protected:
-        Response(QXmlStreamReader &reader);
+        explicit Response(QXmlStreamReader &reader);
 
         friend class EwsDeleteItemRequest;
     };

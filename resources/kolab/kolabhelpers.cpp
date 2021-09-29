@@ -141,7 +141,6 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         newItem.setRemoteId(imapItem.remoteId());
         newItem.setGid(incidencePtr->instanceIdentifier());
         return newItem;
-        break;
     }
     case Kolab::NoteObject: {
         const KMime::Message::Ptr note = reader.getNote();
@@ -156,7 +155,6 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         const Akonadi::NoteUtils::NoteMessageWrapper wrapper(note);
         newItem.setGid(wrapper.uid());
         return newItem;
-        break;
     }
     case Kolab::ContactObject: {
         Akonadi::Item newItem(KContacts::Addressee::mimeType());
@@ -164,7 +162,6 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         newItem.setRemoteId(imapItem.remoteId());
         newItem.setGid(reader.getContact().uid());
         return newItem;
-        break;
     }
     case Kolab::DistlistObject: {
         KContacts::ContactGroup contactGroup = reader.getDistlist();
@@ -186,7 +183,6 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         newItem.setRemoteId(imapItem.remoteId());
         newItem.setGid(contactGroup.id());
         return newItem;
-        break;
     }
     case Kolab::RelationConfigurationObject:
         // Do nothing about tags and relations, this is handled separately in KolabRetrieveTagTask::onMessagesAvailable

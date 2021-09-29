@@ -177,12 +177,12 @@ void EwsCreateMailJob::mailCreateWorkaroundFinished(KJob *job)
     EwsCreateItemRequest::Response resp = req->responses().first();
     if (resp.isSuccess()) {
         EwsId id = resp.itemId();
-        auto req = new EwsMoveItemRequest(mClient, this);
-        req->setItemIds(EwsId::List() << id);
-        req->setDestinationFolderId(EwsId(mCollection.remoteId()));
-        connect(req, &EwsCreateItemRequest::finished, this, &EwsCreateMailJob::mailMoveWorkaroundFinished);
-        addSubjob(req);
-        req->start();
+        auto moveItemReq = new EwsMoveItemRequest(mClient, this);
+        moveItemReq->setItemIds(EwsId::List() << id);
+        moveItemReq->setDestinationFolderId(EwsId(mCollection.remoteId()));
+        connect(moveItemReq, &EwsCreateItemRequest::finished, this, &EwsCreateMailJob::mailMoveWorkaroundFinished);
+        addSubjob(moveItemReq);
+        moveItemReq->start();
     } else {
         setErrorMsg(i18n("Failed to create mail item"));
         emitResult();

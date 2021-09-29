@@ -202,11 +202,11 @@ class KolabObjectReader::Private
 {
 public:
     Private()
-        : mObjectType(InvalidObject)
+        : mAddressee(KContacts::Addressee())
+        , mObjectType(InvalidObject)
         , mVersion(KolabV3)
         , mOverrideObjectType(InvalidObject)
     {
-        mAddressee = KContacts::Addressee();
     }
 
     KCalendarCore::Incidence::Ptr mIncidence;

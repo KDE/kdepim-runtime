@@ -1679,7 +1679,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
         Item::List::iterator endIt = items.end();
         for (; it != endIt; ++it) {
             if (!fillItem(findIt.value(), includeHeaders, includeBody, *it)) {
-                const QString errorText = i18nc("@info:status", "Error while reading mails from folder %1", collection.name());
+                errorText = i18nc("@info:status", "Error while reading mails from folder %1", collection.name());
                 q->notifyError(FileStore::Job::InvalidJobContext, errorText); // TODO should be a different error code
                 qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "Failed to read item" << (*it).remoteId() << "in MBox file" << path;
                 return false;

@@ -67,7 +67,7 @@ public:
     class DeleteUpdate : public Update
     {
     public:
-        DeleteUpdate(const EwsPropertyField &field)
+        explicit DeleteUpdate(const EwsPropertyField &field)
             : Update(field, QVariant(), Delete)
         {
         }

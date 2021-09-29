@@ -157,7 +157,7 @@ void UtEwsMoveItemRequest::twoItems()
     for (const EwsMoveItemRequest::Response &resp : reqResponses) {
         QCOMPARE(resp.responseClass(), EwsResponseSuccess);
         QCOMPARE(resp.itemId(), *newIdsIt);
-        newIdsIt++;
+        ++newIdsIt;
     }
 }
 
@@ -240,8 +240,8 @@ void UtEwsMoveItemRequest::twoItemsOneFailed()
         } else {
             QCOMPARE(resp.itemId(), EwsId());
         }
-        newIdsIt++;
-        respClassesIt++;
+        ++newIdsIt;
+        ++respClassesIt;
     }
 }
 

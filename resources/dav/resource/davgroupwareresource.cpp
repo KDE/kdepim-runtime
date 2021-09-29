@@ -913,8 +913,8 @@ void DavGroupwareResource::onRetrieveItemsFinished(KJob *job)
             auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
             qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
             CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
-            auto job = new Akonadi::CollectionModifyJob(collection);
-            job->start();
+            auto modifyJob = new Akonadi::CollectionModifyJob(collection);
+            modifyJob->start();
         }
 
         itemsRetrievedIncremental(changedItems, Akonadi::Item::List());
@@ -979,8 +979,8 @@ void DavGroupwareResource::onMultigetFinished(KJob *job)
         auto CTagAttr = collection.attribute<CTagAttribute>(Collection::AddIfMissing);
         qCDebug(DAVRESOURCE_LOG) << "Updating collection CTag from" << CTagAttr->CTag() << "to" << mCTagCache.value(collection.remoteId());
         CTagAttr->setCTag(mCTagCache.value(collection.remoteId()));
-        auto job = new Akonadi::CollectionModifyJob(collection);
-        job->start();
+        auto modifyJob = new Akonadi::CollectionModifyJob(collection);
+        modifyJob->start();
     }
 
     itemsRetrievedIncremental(items, Akonadi::Item::List());

@@ -28,7 +28,7 @@ public:
         }
 
     protected:
-        Response(QXmlStreamReader &reader);
+        explicit Response(QXmlStreamReader &reader);
 
         EwsId mId;
 

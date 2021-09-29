@@ -125,8 +125,8 @@ void UtEwsGetItemRequest::twoFailures()
             auto id = resp.item()[EwsItemFieldItemId].value<EwsId>();
             QCOMPARE(id, *idsIt);
         }
-        idsIt++;
-        respClassesIt++;
+        ++idsIt;
+        ++respClassesIt;
     }
 }
 

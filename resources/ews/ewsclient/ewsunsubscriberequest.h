@@ -25,7 +25,7 @@ public:
     class Response : public EwsRequest::Response
     {
     protected:
-        Response(QXmlStreamReader &reader);
+        explicit Response(QXmlStreamReader &reader);
 
         friend class EwsUnsubscribeRequest;
     };

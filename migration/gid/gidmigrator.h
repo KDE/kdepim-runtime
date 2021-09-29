@@ -13,7 +13,7 @@ class GidMigrator : public MigratorBase
 {
     Q_OBJECT
 public:
-    GidMigrator(const QString &mimeType);
+    explicit GidMigrator(const QString &mimeType);
     ~GidMigrator() override;
 
     Q_REQUIRED_RESULT QString displayName() const override;

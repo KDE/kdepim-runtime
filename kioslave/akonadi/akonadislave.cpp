@@ -87,8 +87,8 @@ void AkonadiSlave::get(const QUrl &url)
     if (job->items().count() != 1) {
         error(KIO::ERR_DOES_NOT_EXIST, i18n("No such item."));
     } else {
-        const Item item = job->items().at(0);
-        QByteArray tmp = item.payloadData();
+        const Item itemJob = job->items().at(0);
+        const QByteArray tmp = itemJob.payloadData();
         data(tmp);
         data(QByteArray());
         finished();

@@ -65,10 +65,10 @@ void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
         mFrom = mb->from()->asUnicodeString();
         mSubject = mb->subject()->asUnicodeString();
         if (NewMailNotifierAgentSettings::showPhoto()) {
-            auto job = new Akonadi::ContactSearchJob(this);
-            job->setLimit(1);
-            job->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
-            connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
+            auto searchJob = new Akonadi::ContactSearchJob(this);
+            searchJob->setLimit(1);
+            searchJob->setQuery(Akonadi::ContactSearchJob::Email, KEmailAddress::firstEmailAddress(mFrom).toLower(), Akonadi::ContactSearchJob::ExactMatch);
+            connect(searchJob, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotSearchJobFinished);
         } else {
             emitNotification();
         }
