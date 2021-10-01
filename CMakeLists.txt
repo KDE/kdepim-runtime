@@ -86,7 +86,6 @@ set(PIMCOMMON_LIB_VERSION "5.18.40")
 set(KGAPI_LIB_VERSION "5.18.40")
 set(LIBKDEPIM_LIB_VERSION "5.18.40")
 set(KLDAP_LIB_VERSION "5.18.40")
-set(GRANTLEETHEME_LIB_VERSION "5.18.40")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -151,7 +150,6 @@ find_package(KF5PimCommon ${PIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Libkdepim ${LIBKDEPIM_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5GrantleeTheme ${GRANTLEETHEME_LIB_VERSION} CONFIG REQUIRED)
 
 #it will replace kwallet support
 find_package(Qt5Keychain CONFIG)
