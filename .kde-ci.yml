@@ -21,5 +21,4 @@ Dependencies:
     'kde/pim/kmbox' : '@same'
     'kde/pim/kmime' : '@same'
     'kde/pim/libkgapi' : '@same'
-    'kde/pim/pimcommon' : '@same'
     'third-party/libkolabxml' : '@stable'

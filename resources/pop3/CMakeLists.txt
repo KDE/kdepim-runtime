@@ -48,8 +48,8 @@ target_link_libraries( akonadi_pop3_resource
     KF5::I18n
     KF5::Notifications
     Qt::DBus
-    KF5::PimCommon
     qt5keychain
+    KF5::WidgetsAddons
     )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_pop3_resource PROPERTIES UNITY_BUILD ON)

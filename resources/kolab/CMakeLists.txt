@@ -69,7 +69,6 @@ target_link_libraries(akonadi_kolab_resource
     KF5::Contacts
     KF5::CalendarCore
     akonadi-singlefileresource
-    KF5::PimCommon
     KF5::TextWidgets
     KF5::I18n
     )
