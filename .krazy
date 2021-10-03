@@ -1,6 +1,2 @@
-SKIP /libkdepim-copy/
-EXTRA defines,kdebug,null,qenums,tipsandthis
+EXTRA defines,null,qenums,tipsandthis
 STRICT super
-
-#kresources is pretty much dead
-IGNORESUBS kresources
