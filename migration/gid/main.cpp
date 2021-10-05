@@ -7,7 +7,6 @@
 #include <Akonadi/ControlGui>
 #include <KAboutData>
 
-#include <KConfig>
 #include <KLocalizedString>
 
 #include "migration_debug.h"

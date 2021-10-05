@@ -19,7 +19,6 @@
 #include <QDBusInterface>
 #include <QDBusReply>
 #include <QFormLayout>
-#include <QLabel>
 
 FolderArchiveComboBox::FolderArchiveComboBox(QWidget *parent)
     : QComboBox(parent)

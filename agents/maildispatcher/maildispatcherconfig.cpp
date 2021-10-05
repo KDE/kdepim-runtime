@@ -6,9 +6,8 @@
 
 #include "maildispatcherconfig.h"
 
-#include <QHBoxLayout>
-
 #include <KNotifyConfigWidget>
+#include <QLayout>
 
 MailDispatcherConfig::MailDispatcherConfig(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &cfg)
     : Akonadi::AgentConfigurationBase(config, parent, cfg)

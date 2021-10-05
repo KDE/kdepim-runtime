@@ -22,7 +22,6 @@ extern "C" {
 #include <QCryptographicHash>
 #include <QNetworkProxy>
 
-#include <QSslSocket>
 
 #include <KIO/SlaveInterface>
 
