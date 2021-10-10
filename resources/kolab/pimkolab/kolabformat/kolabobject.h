@@ -21,6 +21,8 @@
 
 #include "kolabdefinitions.h"
 
+#include <memory>
+
 namespace Kolab
 {
 class Freebusy;
@@ -101,7 +103,7 @@ private:
     KolabObjectReader(const KolabObjectReader &other);
     KolabObjectReader &operator=(const KolabObjectReader &rhs);
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
     //@endcond
 };
 

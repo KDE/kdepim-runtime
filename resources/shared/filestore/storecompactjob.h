@@ -11,6 +11,8 @@
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
 
+#include <memory>
+
 namespace Akonadi
 {
 namespace FileStore
@@ -44,7 +46,7 @@ private:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> const d;
 };
 }
 }

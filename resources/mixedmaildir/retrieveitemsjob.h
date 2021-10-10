@@ -9,6 +9,8 @@
 #include <Akonadi/Item>
 #include <Akonadi/Job>
 
+#include <memory>
+
 namespace Akonadi
 {
 class Collection;
@@ -39,7 +41,7 @@ protected:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 
     Q_PRIVATE_SLOT(d, void processNewItem())
     Q_PRIVATE_SLOT(d, void processChangedItem())

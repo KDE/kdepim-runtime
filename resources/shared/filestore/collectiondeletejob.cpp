@@ -28,10 +28,7 @@ FileStore::CollectionDeleteJob::CollectionDeleteJob(const Collection &collection
     session->addJob(this);
 }
 
-FileStore::CollectionDeleteJob::~CollectionDeleteJob()
-{
-    delete d;
-}
+FileStore::CollectionDeleteJob::~CollectionDeleteJob() = default;
 
 Collection FileStore::CollectionDeleteJob::collection() const
 {

@@ -9,6 +9,8 @@
 
 #include "job.h"
 
+#include <memory>
+
 namespace Akonadi
 {
 class Collection;
@@ -41,7 +43,7 @@ private:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 };
 }
 }

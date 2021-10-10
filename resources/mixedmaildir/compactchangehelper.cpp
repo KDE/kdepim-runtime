@@ -131,10 +131,7 @@ CompactChangeHelper::CompactChangeHelper(const QByteArray &sessionId, QObject *p
     d->mSession = new Session(sessionId, this);
 }
 
-CompactChangeHelper::~CompactChangeHelper()
-{
-    delete d;
-}
+CompactChangeHelper::~CompactChangeHelper() = default;
 
 void CompactChangeHelper::addChangedItems(const Item::List &items)
 {

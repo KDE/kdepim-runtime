@@ -9,6 +9,8 @@
 
 #include <QObject>
 
+#include <memory>
+
 template<typename T> class QList;
 
 namespace Akonadi
@@ -36,7 +38,7 @@ public:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 
     Q_PRIVATE_SLOT(d, void processNextBatch())
     Q_PRIVATE_SLOT(d, void processNextItem())

@@ -40,10 +40,7 @@ FileStore::CollectionFetchJob::CollectionFetchJob(const Collection &collection, 
     session->addJob(this);
 }
 
-FileStore::CollectionFetchJob::~CollectionFetchJob()
-{
-    delete d;
-}
+FileStore::CollectionFetchJob::~CollectionFetchJob() = default;
 
 FileStore::CollectionFetchJob::Type FileStore::CollectionFetchJob::type() const
 {

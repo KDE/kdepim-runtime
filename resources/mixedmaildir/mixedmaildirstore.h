@@ -9,6 +9,8 @@
 
 #include "abstractlocalstore.h"
 
+#include <memory>
+
 class MixedMaildirStore : public Akonadi::FileStore::AbstractLocalStore
 {
     Q_OBJECT
@@ -32,6 +34,6 @@ protected:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 };
 

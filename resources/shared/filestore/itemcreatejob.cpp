@@ -27,10 +27,7 @@ FileStore::ItemCreateJob::ItemCreateJob(const Item &item, const Collection &coll
     session->addJob(this);
 }
 
-FileStore::ItemCreateJob::~ItemCreateJob()
-{
-    delete d;
-}
+FileStore::ItemCreateJob::~ItemCreateJob() = default;
 
 Collection FileStore::ItemCreateJob::collection() const
 {

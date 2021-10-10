@@ -335,10 +335,7 @@ RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, MixedM
     Q_ASSERT(d->mStore != nullptr);
 }
 
-RetrieveItemsJob::~RetrieveItemsJob()
-{
-    delete d;
-}
+RetrieveItemsJob::~RetrieveItemsJob() = default;
 
 Collection RetrieveItemsJob::collection() const
 {

@@ -175,12 +175,11 @@ FileStore::FiFoQueueJobSession::FiFoQueueJobSession(QObject *parent)
 FileStore::FiFoQueueJobSession::~FiFoQueueJobSession()
 {
     cancelAllJobs();
-    delete d;
 }
 
 void FileStore::FiFoQueueJobSession::addJob(FileStore::Job *job)
 {
-    job->accept(d);
+    job->accept(d.get());
 }
 
 void FileStore::FiFoQueueJobSession::cancelAllJobs()

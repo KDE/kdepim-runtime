@@ -12,6 +12,8 @@
 
 #include <KJob>
 
+#include <memory>
+
 namespace Akonadi
 {
 namespace FileStore
@@ -85,7 +87,7 @@ public:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> const d;
 };
 }
 }

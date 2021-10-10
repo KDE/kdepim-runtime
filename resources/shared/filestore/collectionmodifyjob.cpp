@@ -28,10 +28,7 @@ FileStore::CollectionModifyJob::CollectionModifyJob(const Collection &collection
     session->addJob(this);
 }
 
-FileStore::CollectionModifyJob::~CollectionModifyJob()
-{
-    delete d;
-}
+FileStore::CollectionModifyJob::~CollectionModifyJob() = default;
 
 Collection FileStore::CollectionModifyJob::collection() const
 {

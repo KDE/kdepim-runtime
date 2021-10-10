@@ -51,10 +51,7 @@ FileStore::ItemFetchJob::ItemFetchJob(const Item::List &items, FileStore::Abstra
     session->addJob(this);
 }
 
-FileStore::ItemFetchJob::~ItemFetchJob()
-{
-    delete d;
-}
+FileStore::ItemFetchJob::~ItemFetchJob() = default;
 
 Collection FileStore::ItemFetchJob::collection() const
 {

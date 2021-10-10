@@ -36,10 +36,7 @@ FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
 {
 }
 
-FileStore::EntityCompactChangeAttribute::~EntityCompactChangeAttribute()
-{
-    delete d;
-}
+FileStore::EntityCompactChangeAttribute::~EntityCompactChangeAttribute() = default;
 
 void FileStore::EntityCompactChangeAttribute::setRemoteId(const QString &remoteId)
 {

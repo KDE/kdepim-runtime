@@ -351,10 +351,7 @@ FileStore::AbstractLocalStore::AbstractLocalStore()
     });
 }
 
-FileStore::AbstractLocalStore::~AbstractLocalStore()
-{
-    delete d;
-}
+FileStore::AbstractLocalStore::~AbstractLocalStore() = default;
 
 void FileStore::AbstractLocalStore::setPath(const QString &path)
 {

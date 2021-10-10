@@ -238,10 +238,7 @@ KolabObjectReader::KolabObjectReader(const KMime::Message::Ptr &msg)
     parseMimeMessage(msg);
 }
 
-KolabObjectReader::~KolabObjectReader()
-{
-    delete d;
-}
+KolabObjectReader::~KolabObjectReader() = default;
 
 void KolabObjectReader::setObjectType(ObjectType type)
 {

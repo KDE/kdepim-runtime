@@ -6,10 +6,11 @@
 
 #pragma once
 
-#include <QScopedPointer>
 #include <QWidget>
 
 #include "ewsid.h"
+
+#include <memory>
 
 class EwsSubscriptionWidgetPrivate;
 class EwsClient;
@@ -27,7 +28,7 @@ public:
     bool subscriptionEnabled() const;
 
 private:
-    QScopedPointer<EwsSubscriptionWidgetPrivate> d_ptr;
+    std::unique_ptr<EwsSubscriptionWidgetPrivate> const d_ptr;
     Q_DECLARE_PRIVATE(EwsSubscriptionWidget)
 };
 

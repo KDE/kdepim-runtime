@@ -32,10 +32,7 @@ FileStore::ItemModifyJob::ItemModifyJob(const Item &item, FileStore::AbstractJob
     session->addJob(this);
 }
 
-FileStore::ItemModifyJob::~ItemModifyJob()
-{
-    delete d;
-}
+FileStore::ItemModifyJob::~ItemModifyJob() = default;
 
 void FileStore::ItemModifyJob::setIgnorePayload(bool ignorePayload)
 {

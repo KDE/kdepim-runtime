@@ -28,10 +28,7 @@ FileStore::ItemMoveJob::ItemMoveJob(const Item &item, const Collection &targetPa
     session->addJob(this);
 }
 
-FileStore::ItemMoveJob::~ItemMoveJob()
-{
-    delete d;
-}
+FileStore::ItemMoveJob::~ItemMoveJob() = default;
 
 Collection FileStore::ItemMoveJob::targetParent() const
 {

@@ -32,10 +32,7 @@ FileStore::StoreCompactJob::StoreCompactJob(FileStore::AbstractJobSession *sessi
     session->addJob(this);
 }
 
-FileStore::StoreCompactJob::~StoreCompactJob()
-{
-    delete d;
-}
+FileStore::StoreCompactJob::~StoreCompactJob() = default;
 
 bool FileStore::StoreCompactJob::accept(FileStore::Job::Visitor *visitor)
 {

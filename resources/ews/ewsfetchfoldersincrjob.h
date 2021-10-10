@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include <QScopedPointer>
-
 #include <Akonadi/Collection>
 
 #include "ewsfolder.h"
 #include "ewsjob.h"
+
+#include <memory>
 
 class EwsClient;
 class EwsFetchFoldersIncrJobPrivate;
@@ -49,7 +49,7 @@ private:
 
     QString mSyncState;
 
-    QScopedPointer<EwsFetchFoldersIncrJobPrivate> d_ptr;
+    std::unique_ptr<EwsFetchFoldersIncrJobPrivate> const d_ptr;
     Q_DECLARE_PRIVATE(EwsFetchFoldersIncrJob)
 };
 

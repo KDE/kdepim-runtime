@@ -14,6 +14,8 @@
 
 #include <QObject>
 
+#include <memory>
+
 template<typename T> class QList;
 
 namespace Akonadi
@@ -99,7 +101,7 @@ protected: // template methods
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 };
 }
 }

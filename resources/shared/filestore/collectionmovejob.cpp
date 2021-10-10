@@ -30,10 +30,7 @@ FileStore::CollectionMoveJob::CollectionMoveJob(const Collection &collection, co
     session->addJob(this);
 }
 
-FileStore::CollectionMoveJob::~CollectionMoveJob()
-{
-    delete d;
-}
+FileStore::CollectionMoveJob::~CollectionMoveJob() = default;
 
 Collection FileStore::CollectionMoveJob::collection() const
 {

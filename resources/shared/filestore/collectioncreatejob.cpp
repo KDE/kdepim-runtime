@@ -30,10 +30,7 @@ FileStore::CollectionCreateJob::CollectionCreateJob(const Collection &collection
     session->addJob(this);
 }
 
-FileStore::CollectionCreateJob::~CollectionCreateJob()
-{
-    delete d;
-}
+FileStore::CollectionCreateJob::~CollectionCreateJob() = default;
 
 Collection FileStore::CollectionCreateJob::collection() const
 {

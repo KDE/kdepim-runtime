@@ -22,10 +22,7 @@ FileStore::Job::Job(FileStore::AbstractJobSession *session)
     setAutoDelete(true);
 }
 
-FileStore::Job::~Job()
-{
-    delete d;
-}
+FileStore::Job::~Job() = default;
 
 void FileStore::Job::start()
 {

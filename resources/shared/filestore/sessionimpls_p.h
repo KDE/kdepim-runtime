@@ -8,6 +8,8 @@
 
 #include "session_p.h"
 
+#include <memory>
+
 namespace Akonadi
 {
 namespace FileStore
@@ -32,7 +34,7 @@ protected:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 };
 }
 }

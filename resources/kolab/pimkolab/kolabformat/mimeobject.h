@@ -12,6 +12,8 @@
 #include "kolabdefinitions.h"
 #include <kolabformat.h>
 
+#include <memory>
+
 namespace Kolab
 {
 class KOLAB_EXPORT MIMEObject
@@ -80,7 +82,7 @@ private:
     MIMEObject(const MIMEObject &other);
     MIMEObject &operator=(const MIMEObject &rhs);
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
     //@endcond
 };
 }

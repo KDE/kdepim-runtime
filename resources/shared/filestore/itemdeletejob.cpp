@@ -25,10 +25,7 @@ FileStore::ItemDeleteJob::ItemDeleteJob(const Item &item, FileStore::AbstractJob
     session->addJob(this);
 }
 
-FileStore::ItemDeleteJob::~ItemDeleteJob()
-{
-    delete d;
-}
+FileStore::ItemDeleteJob::~ItemDeleteJob() = default;
 
 Item FileStore::ItemDeleteJob::item() const
 {

@@ -476,10 +476,7 @@ MIMEObject::MIMEObject()
 {
 }
 
-MIMEObject::~MIMEObject()
-{
-    delete d;
-}
+MIMEObject::~MIMEObject() = default;
 
 void MIMEObject::setObjectType(ObjectType type)
 {

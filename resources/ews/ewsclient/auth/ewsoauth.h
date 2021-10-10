@@ -7,9 +7,9 @@
 #pragma once
 
 class QObject;
-#include <QScopedPointer>
-
 #include "ewsabstractauth.h"
+
+#include <memory>
 
 class EwsOAuthPrivate;
 
@@ -31,7 +31,7 @@ public:
     void walletMapRequestFinished(const QMap<QString, QString> &map) override;
 
 private:
-    QScopedPointer<EwsOAuthPrivate> d_ptr;
+    std::unique_ptr<EwsOAuthPrivate> const d_ptr;
     Q_DECLARE_PRIVATE(EwsOAuth)
 };
 

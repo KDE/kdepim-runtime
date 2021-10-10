@@ -10,6 +10,8 @@
 
 #include <Akonadi/Collection>
 
+#include <memory>
+
 namespace Akonadi
 {
 class CollectionFetchScope;
@@ -57,7 +59,7 @@ private:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 };
 }
 }

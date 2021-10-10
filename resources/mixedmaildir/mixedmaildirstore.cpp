@@ -2244,10 +2244,7 @@ MixedMaildirStore::MixedMaildirStore()
 {
 }
 
-MixedMaildirStore::~MixedMaildirStore()
-{
-    delete d;
-}
+MixedMaildirStore::~MixedMaildirStore() = default;
 
 void MixedMaildirStore::setTopLevelCollection(const Collection &collection)
 {
@@ -2279,7 +2276,7 @@ void MixedMaildirStore::setTopLevelCollection(const Collection &collection)
 
 void MixedMaildirStore::processJob(FileStore::Job *job)
 {
-    if (!job->accept(d)) {
+    if (!job->accept(d.get())) {
         // check that an error has been set
         if (job->error() == 0 || job->errorString().isEmpty()) {
             qCCritical(MIXEDMAILDIRRESOURCE_LOG) << "visitor did not set either error code or error string when returning false";
