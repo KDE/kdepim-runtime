@@ -297,12 +297,12 @@ private:
     Item::List mItems;
 };
 
-class FileStore::AbstractLocalStore::Private
+class FileStore::AbstractLocalStorePrivate
 {
     AbstractLocalStore *const q;
 
 public:
-    explicit Private(FileStore::AbstractLocalStore *parent)
+    explicit AbstractLocalStorePrivate(FileStore::AbstractLocalStore *parent)
         : q(parent)
         , mSession(new FileStore::FiFoQueueJobSession(q))
         , mCurrentJob(nullptr)
@@ -327,7 +327,7 @@ public:
     void processJobs(const QList<FileStore::Job *> &jobs);
 };
 
-void FileStore::AbstractLocalStore::Private::processJobs(const QList<FileStore::Job *> &jobs)
+void FileStore::AbstractLocalStorePrivate::processJobs(const QList<FileStore::Job *> &jobs)
 {
     for (FileStore::Job *job : jobs) {
         mCurrentJob = job;
@@ -344,7 +344,7 @@ void FileStore::AbstractLocalStore::Private::processJobs(const QList<FileStore::
 
 FileStore::AbstractLocalStore::AbstractLocalStore()
     : QObject()
-    , d(new Private(this))
+    , d(new AbstractLocalStorePrivate(this))
 {
     connect(d->mSession, &AbstractJobSession::jobsReady, this, [this](const QList<FileStore::Job *> &jobs) {
         d->processJobs(jobs);

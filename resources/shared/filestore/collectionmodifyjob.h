@@ -18,6 +18,7 @@ class Collection;
 namespace FileStore
 {
 class AbstractJobSession;
+class CollectionModifyJobPrivate;
 
 /**
  */
@@ -40,8 +41,7 @@ private:
     void handleCollectionModified(const Collection &collection);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<CollectionModifyJobPrivate> const d;
 };
 }
 }

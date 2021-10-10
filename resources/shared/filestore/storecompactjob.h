@@ -17,6 +17,8 @@ namespace Akonadi
 {
 namespace FileStore
 {
+class StoreCompactJobPrivate;
+
 /**
  */
 class AKONADI_FILESTORE_EXPORT StoreCompactJob : public Job
@@ -45,8 +47,7 @@ private:
     void handleItemsChanged(const Item::List &items);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<StoreCompactJobPrivate> const d;
 };
 }
 }

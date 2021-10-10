@@ -17,6 +17,7 @@ namespace Akonadi
 namespace FileStore
 {
 class AbstractJobSession;
+class ItemModifyJobPrivate;
 
 /**
  */
@@ -46,8 +47,7 @@ private:
     void handleItemModified(const Akonadi::Item &item);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<ItemModifyJobPrivate> const d;
 };
 }
 }

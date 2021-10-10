@@ -30,6 +30,7 @@ class ItemFetchJob;
 class ItemModifyJob;
 class ItemMoveJob;
 class StoreCompactJob;
+class JobPrivate;
 
 /**
  */
@@ -86,8 +87,7 @@ public:
     virtual bool accept(Visitor *visitor);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<JobPrivate> const d;
 };
 }
 }

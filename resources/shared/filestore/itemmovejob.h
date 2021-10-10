@@ -19,6 +19,7 @@ class Item;
 namespace FileStore
 {
 class AbstractJobSession;
+class ItemMoveJobPrivate;
 
 /**
  */
@@ -43,8 +44,7 @@ private:
     void handleItemMoved(const Item &item);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<ItemMoveJobPrivate> const d;
 };
 }
 }

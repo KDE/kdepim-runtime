@@ -10,7 +10,7 @@
 
 using namespace Akonadi;
 
-class FileStore::Job::Private
+class FileStore::JobPrivate
 {
 public:
 };

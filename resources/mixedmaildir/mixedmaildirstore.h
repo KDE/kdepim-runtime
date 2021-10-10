@@ -11,6 +11,8 @@
 
 #include <memory>
 
+class MixedMaildirStorePrivate;
+
 class MixedMaildirStore : public Akonadi::FileStore::AbstractLocalStore
 {
     Q_OBJECT
@@ -33,7 +35,7 @@ protected:
     void checkItemFetch(Akonadi::FileStore::ItemFetchJob *job, int &errorCode, QString &errorText) const override;
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    friend class MixedMaildirStorePrivate;
+    std::unique_ptr<MixedMaildirStorePrivate> const d;
 };
 

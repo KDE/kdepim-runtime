@@ -11,10 +11,10 @@
 
 using namespace Akonadi;
 
-class FileStore::EntityCompactChangeAttribute::Private
+class FileStore::EntityCompactChangeAttributePrivate
 {
 public:
-    Private &operator=(const Private &other)
+    EntityCompactChangeAttributePrivate &operator=(const EntityCompactChangeAttributePrivate &other)
     {
         if (&other == this) {
             return *this;
@@ -32,7 +32,7 @@ public:
 
 FileStore::EntityCompactChangeAttribute::EntityCompactChangeAttribute()
     : Attribute()
-    , d(new Private())
+    , d(new EntityCompactChangeAttributePrivate())
 {
 }
 

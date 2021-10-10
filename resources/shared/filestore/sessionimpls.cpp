@@ -102,10 +102,10 @@ protected:
     virtual void enqueue(FileStore::Job *job, const char *className) = 0;
 };
 
-class FileStore::FiFoQueueJobSession::Private : public AbstractEnqueueVisitor
+class FileStore::FiFoQueueJobSessionPrivate : public AbstractEnqueueVisitor
 {
 public:
-    explicit Private(FileStore::FiFoQueueJobSession *parent)
+    explicit FiFoQueueJobSessionPrivate(FileStore::FiFoQueueJobSession *parent)
         : mParent(parent)
     {
         QObject::connect(&mJobRunTimer, &QTimer::timeout, mParent, [this]() {
@@ -168,7 +168,7 @@ private:
 
 FileStore::FiFoQueueJobSession::FiFoQueueJobSession(QObject *parent)
     : FileStore::AbstractJobSession(parent)
-    , d(new Private(this))
+    , d(new FiFoQueueJobSessionPrivate(this))
 {
 }
 

@@ -198,10 +198,10 @@ KOLAB_EXPORT QString generateMemberUrl(const RelationMember &member)
 }
 
 //@cond PRIVATE
-class KolabObjectReader::Private
+class KolabObjectReaderPrivate
 {
 public:
-    Private()
+    KolabObjectReaderPrivate()
         : mAddressee(KContacts::Addressee())
         , mObjectType(InvalidObject)
         , mVersion(KolabV3)
@@ -228,12 +228,12 @@ public:
 //@endcond
 
 KolabObjectReader::KolabObjectReader()
-    : d(new KolabObjectReader::Private)
+    : d(new KolabObjectReaderPrivate)
 {
 }
 
 KolabObjectReader::KolabObjectReader(const KMime::Message::Ptr &msg)
-    : d(new KolabObjectReader::Private)
+    : d(new KolabObjectReaderPrivate)
 {
     parseMimeMessage(msg);
 }

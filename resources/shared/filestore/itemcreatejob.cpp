@@ -10,7 +10,7 @@
 
 using namespace Akonadi;
 
-class FileStore::ItemCreateJob::Private
+class FileStore::ItemCreateJobPrivate
 {
 public:
     Item mItem;
@@ -19,7 +19,7 @@ public:
 
 FileStore::ItemCreateJob::ItemCreateJob(const Item &item, const Collection &collection, FileStore::AbstractJobSession *session)
     : FileStore::Job(session)
-    , d(new Private())
+    , d(new ItemCreateJobPrivate())
 {
     d->mItem = item;
     d->mCollection = collection;

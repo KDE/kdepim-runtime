@@ -491,7 +491,7 @@ void MaildirContext::readIndexData()
 
 using MaildirPtr = QSharedPointer<MaildirContext>;
 
-class MixedMaildirStore::Private : public FileStore::Job::Visitor
+class MixedMaildirStorePrivate : public FileStore::Job::Visitor
 {
     MixedMaildirStore *const q;
 
@@ -503,7 +503,7 @@ public:
         MBoxFolder,
     };
 
-    Private(MixedMaildirStore *parent)
+    explicit MixedMaildirStorePrivate(MixedMaildirStore *parent)
         : q(parent)
     {
     }
@@ -544,7 +544,7 @@ public:
     MaildirHash mMaildirs;
 };
 
-MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForCollection(const Collection &col, QString &path, QString &errorText) const
+MixedMaildirStorePrivate::FolderType MixedMaildirStorePrivate::folderForCollection(const Collection &col, QString &path, QString &errorText) const
 {
     path.clear();
     errorText.clear();
@@ -611,7 +611,7 @@ MixedMaildirStore::Private::FolderType MixedMaildirStore::Private::folderForColl
     return InvalidFolder;
 }
 
-MBoxPtr MixedMaildirStore::Private::getOrCreateMBoxPtr(const QString &path)
+MBoxPtr MixedMaildirStorePrivate::getOrCreateMBoxPtr(const QString &path)
 {
     MBoxPtr mbox;
     const MBoxHash::const_iterator it = mMBoxes.constFind(path);
@@ -625,7 +625,7 @@ MBoxPtr MixedMaildirStore::Private::getOrCreateMBoxPtr(const QString &path)
     return mbox;
 }
 
-MaildirPtr MixedMaildirStore::Private::getOrCreateMaildirPtr(const QString &path, bool isTopLevel)
+MaildirPtr MixedMaildirStorePrivate::getOrCreateMaildirPtr(const QString &path, bool isTopLevel)
 {
     MaildirPtr md;
     const MaildirHash::const_iterator it = mMaildirs.constFind(path);
@@ -639,7 +639,7 @@ MaildirPtr MixedMaildirStore::Private::getOrCreateMaildirPtr(const QString &path
     return md;
 }
 
-void MixedMaildirStore::Private::fillMBoxCollectionDetails(const MBoxPtr &mbox, Collection &collection)
+void MixedMaildirStorePrivate::fillMBoxCollectionDetails(const MBoxPtr &mbox, Collection &collection)
 {
     collection.setContentMimeTypes(QStringList() << Collection::mimeType() << KMime::Message::mimeType());
     if (collection.name().compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
@@ -658,7 +658,7 @@ void MixedMaildirStore::Private::fillMBoxCollectionDetails(const MBoxPtr &mbox, 
     }
 }
 
-void MixedMaildirStore::Private::fillMaildirCollectionDetails(const Maildir &md, Collection &collection)
+void MixedMaildirStorePrivate::fillMaildirCollectionDetails(const Maildir &md, Collection &collection)
 {
     collection.setContentMimeTypes(QStringList() << Collection::mimeType() << KMime::Message::mimeType());
     if (collection.name().compare(QLatin1String("inbox"), Qt::CaseInsensitive) == 0) {
@@ -674,7 +674,7 @@ void MixedMaildirStore::Private::fillMaildirCollectionDetails(const Maildir &md,
     }
 }
 
-void MixedMaildirStore::Private::fillMaildirTreeDetails(const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse)
+void MixedMaildirStorePrivate::fillMaildirTreeDetails(const Maildir &md, const Collection &collection, Collection::List &collections, bool recurse)
 {
     if (md.path().isEmpty()) {
         return;
@@ -733,7 +733,7 @@ void MixedMaildirStore::Private::fillMaildirTreeDetails(const Maildir &md, const
     }
 }
 
-void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mbox, const Collection &collection, Item::List &items)
+void MixedMaildirStorePrivate::listCollection(FileStore::Job *job, MBoxPtr &mbox, const Collection &collection, Item::List &items)
 {
     mbox->readIndexData();
 
@@ -790,7 +790,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MBoxPtr &mb
     }
 }
 
-void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MaildirPtr &md, const Collection &collection, Item::List &items)
+void MixedMaildirStorePrivate::listCollection(FileStore::Job *job, MaildirPtr &md, const Collection &collection, Item::List &items)
 {
     md->readIndexData();
 
@@ -845,7 +845,7 @@ void MixedMaildirStore::Private::listCollection(FileStore::Job *job, MaildirPtr 
     }
 }
 
-bool MixedMaildirStore::Private::fillItem(MBoxPtr &mbox, bool includeHeaders, bool includeBody, Item &item) const
+bool MixedMaildirStorePrivate::fillItem(MBoxPtr &mbox, bool includeHeaders, bool includeBody, Item &item) const
 {
     //  qCDebug(MIXEDMAILDIR_LOG) << "Filling item" << item.remoteId() << "from MBox: includeBody=" << includeBody;
     bool ok = false;
@@ -875,7 +875,7 @@ bool MixedMaildirStore::Private::fillItem(MBoxPtr &mbox, bool includeHeaders, bo
     return true;
 }
 
-bool MixedMaildirStore::Private::fillItem(const MaildirPtr &md, bool includeHeaders, bool includeBody, Item &item) const
+bool MixedMaildirStorePrivate::fillItem(const MaildirPtr &md, bool includeHeaders, bool includeBody, Item &item) const
 {
     /*  qCDebug(MIXEDMAILDIR_LOG) << "Filling item" << item.remoteId() << "from Maildir: includeBody=" << includeBody;*/
 
@@ -912,7 +912,7 @@ bool MixedMaildirStore::Private::fillItem(const MaildirPtr &md, bool includeHead
     return true;
 }
 
-void MixedMaildirStore::Private::updateContextHashes(const QString &oldPath, const QString &newPath)
+void MixedMaildirStorePrivate::updateContextHashes(const QString &oldPath, const QString &newPath)
 {
     // qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "oldPath=" << oldPath << "newPath=" << newPath;
     const QString oldSubDirPath = Maildir::subDirPathForFolderPath(oldPath);
@@ -971,7 +971,7 @@ void MixedMaildirStore::Private::updateContextHashes(const QString &oldPath, con
     mMaildirs = maildirs;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::Job *job)
+bool MixedMaildirStorePrivate::visit(FileStore::Job *job)
 {
     const QString message = i18nc("@info:status", "Unhandled operation %1", QLatin1String(job->metaObject()->className()));
     qCCritical(MIXEDMAILDIRRESOURCE_LOG) << message;
@@ -979,7 +979,7 @@ bool MixedMaildirStore::Private::visit(FileStore::Job *job)
     return false;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::CollectionCreateJob *job)
 {
     QString path;
     QString errorText;
@@ -1046,7 +1046,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionCreateJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::CollectionDeleteJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::CollectionDeleteJob *job)
 {
     QString path;
     QString errorText;
@@ -1091,7 +1091,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionDeleteJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::CollectionFetchJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::CollectionFetchJob *job)
 {
     QString path;
     QString errorText;
@@ -1162,7 +1162,7 @@ static Collection updateMBoxCollectionTree(const Collection &collection, const C
     return updatedCollection;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::CollectionModifyJob *job)
 {
     const Collection collection = job->collection();
     const QString collectionName = collection.name().remove(QLatin1Char('/'));
@@ -1286,7 +1286,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionModifyJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::CollectionMoveJob *job)
 {
     QString errorText;
 
@@ -1456,7 +1456,7 @@ bool MixedMaildirStore::Private::visit(FileStore::CollectionMoveJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::ItemCreateJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::ItemCreateJob *job)
 {
     QString path;
     QString errorText;
@@ -1546,7 +1546,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemCreateJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::ItemDeleteJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::ItemDeleteJob *job)
 {
     const Item item = job->item();
     const Collection collection = item.parentCollection();
@@ -1624,7 +1624,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemDeleteJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::ItemFetchJob *job)
 {
     ItemFetchScope scope = job->fetchScope();
     const bool includeBody = scope.fullPayload() || scope.payloadParts().contains(MessagePart::Body);
@@ -1734,7 +1734,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemFetchJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::ItemModifyJob *job)
 {
     const QSet<QByteArray> parts = job->parts();
     bool payloadChanged = false;
@@ -1891,7 +1891,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemModifyJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::ItemMoveJob *job)
 {
     QString errorText;
 
@@ -2165,7 +2165,7 @@ bool MixedMaildirStore::Private::visit(FileStore::ItemMoveJob *job)
     return true;
 }
 
-bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
+bool MixedMaildirStorePrivate::visit(FileStore::StoreCompactJob *job)
 {
     Q_UNUSED(job)
 
@@ -2240,7 +2240,7 @@ bool MixedMaildirStore::Private::visit(FileStore::StoreCompactJob *job)
 
 MixedMaildirStore::MixedMaildirStore()
     : FileStore::AbstractLocalStore()
-    , d(new Private(this))
+    , d(new MixedMaildirStorePrivate(this))
 {
 }
 

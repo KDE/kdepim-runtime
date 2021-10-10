@@ -18,6 +18,7 @@ class Item;
 namespace FileStore
 {
 class AbstractJobSession;
+class ItemCreateJobPrivate;
 
 /**
  */
@@ -42,8 +43,7 @@ private:
     void handleItemCreated(const Akonadi::Item &item);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<ItemCreateJobPrivate> const d;
 };
 }
 }

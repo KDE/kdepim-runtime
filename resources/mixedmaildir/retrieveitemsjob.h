@@ -17,6 +17,7 @@ class Collection;
 }
 
 class MixedMaildirStore;
+class RetrieveItemsJobPrivate;
 
 /**
  * Used to implement ResourceBase::retrieveItems() for MixedMail Resource.
@@ -40,8 +41,8 @@ protected:
     void doStart() override;
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    friend class RetrieveItemsJobPrivate;
+    std::unique_ptr<RetrieveItemsJobPrivate> const d;
 
     Q_PRIVATE_SLOT(d, void processNewItem())
     Q_PRIVATE_SLOT(d, void processChangedItem())

@@ -38,12 +38,12 @@ enum {
     MaxItemModifyJobs = 100,
 };
 
-class RetrieveItemsJob::Private
+class RetrieveItemsJobPrivate
 {
     RetrieveItemsJob *const q;
 
 public:
-    Private(RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store)
+    RetrieveItemsJobPrivate(RetrieveItemsJob *parent, const Collection &collection, MixedMaildirStore *store)
         : q(parent)
         , mCollection(collection)
         , mStore(store)
@@ -59,7 +59,7 @@ public:
         if (!mTransaction) {
             mTransaction = new TransactionSequence(q);
             mTransaction->setAutomaticCommittingEnabled(false);
-            connect(mTransaction, &TransactionSequence::result, q, [this](KJob *job) {
+            QObject::connect(mTransaction, &TransactionSequence::result, q, [this](KJob *job) {
                 transactionResult(job);
             });
         }
@@ -93,7 +93,7 @@ public: // slots
     void itemModifyJobResult(KJob *);
 };
 
-void RetrieveItemsJob::Private::itemCreateJobResult(KJob *job)
+void RetrieveItemsJobPrivate::itemCreateJobResult(KJob *job)
 {
     if (job->error()) {
         qCCritical(MIXEDMAILDIR_LOG) << "Error running ItemCreateJob: " << job->errorText();
@@ -103,7 +103,7 @@ void RetrieveItemsJob::Private::itemCreateJobResult(KJob *job)
     QMetaObject::invokeMethod(q, "processNewItem", Qt::QueuedConnection);
 }
 
-void RetrieveItemsJob::Private::itemModifyJobResult(KJob *job)
+void RetrieveItemsJobPrivate::itemModifyJobResult(KJob *job)
 {
     if (job->error()) {
         qCCritical(MIXEDMAILDIR_LOG) << "Error running ItemModifyJob: " << job->errorText();
@@ -113,7 +113,7 @@ void RetrieveItemsJob::Private::itemModifyJobResult(KJob *job)
     QMetaObject::invokeMethod(q, "processChangedItem", Qt::QueuedConnection);
 }
 
-void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
+void RetrieveItemsJobPrivate::akonadiFetchResult(KJob *job)
 {
     if (job->error() != 0) {
         return; // handled by base class
@@ -142,12 +142,12 @@ void RetrieveItemsJob::Private::akonadiFetchResult(KJob *job)
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItems(mCollection);
     // just basic items, no data
 
-    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
+    QObject::connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
         storeListResult(job);
     });
 }
 
-void RetrieveItemsJob::Private::storeListResult(KJob *job)
+void RetrieveItemsJobPrivate::storeListResult(KJob *job)
 {
     qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "storeList->error=" << job->error();
     auto storeList = qobject_cast<FileStore::ItemFetchJob *>(job);
@@ -212,7 +212,7 @@ void RetrieveItemsJob::Private::storeListResult(KJob *job)
     processNewItem();
 }
 
-void RetrieveItemsJob::Private::processNewItem()
+void RetrieveItemsJobPrivate::processNewItem()
 {
     if (mNewItems.isEmpty()) {
         processChangedItem();
@@ -223,12 +223,12 @@ void RetrieveItemsJob::Private::processNewItem()
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
     storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
+    QObject::connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
         fetchNewResult(job);
     });
 }
 
-void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
+void RetrieveItemsJobPrivate::fetchNewResult(KJob *job)
 {
     auto fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
@@ -250,7 +250,7 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
 
     auto itemCreate = new ItemCreateJob(item, mCollection, transaction());
     mNumItemCreateJobs++;
-    connect(itemCreate, &ItemCreateJob::result, q, [this](KJob *job) {
+    QObject::connect(itemCreate, &ItemCreateJob::result, q, [this](KJob *job) {
         itemCreateJobResult(job);
     });
 
@@ -259,7 +259,7 @@ void RetrieveItemsJob::Private::fetchNewResult(KJob *job)
     }
 }
 
-void RetrieveItemsJob::Private::processChangedItem()
+void RetrieveItemsJobPrivate::processChangedItem()
 {
     if (mChangedItems.isEmpty()) {
         if (!mTransaction) {
@@ -282,12 +282,12 @@ void RetrieveItemsJob::Private::processChangedItem()
     FileStore::ItemFetchJob *storeFetch = mStore->fetchItem(item);
     storeFetch->fetchScope().fetchPayloadPart(MessagePart::Envelope);
 
-    connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
+    QObject::connect(storeFetch, &FileStore::ItemFetchJob::result, q, [this](KJob *job) {
         fetchChangedResult(job);
     });
 }
 
-void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
+void RetrieveItemsJobPrivate::fetchChangedResult(KJob *job)
 {
     auto fetchJob = qobject_cast<FileStore::ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
@@ -308,7 +308,7 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
     }
 
     auto itemModify = new ItemModifyJob(item, transaction());
-    connect(itemModify, &ItemModifyJob::result, q, [this](KJob *job) {
+    QObject::connect(itemModify, &ItemModifyJob::result, q, [this](KJob *job) {
         itemModifyJobResult(job);
     });
     mNumItemModifyJobs++;
@@ -317,7 +317,7 @@ void RetrieveItemsJob::Private::fetchChangedResult(KJob *job)
     }
 }
 
-void RetrieveItemsJob::Private::transactionResult(KJob *job)
+void RetrieveItemsJobPrivate::transactionResult(KJob *job)
 {
     if (job->error() != 0) {
         return; // handled by base class
@@ -328,7 +328,7 @@ void RetrieveItemsJob::Private::transactionResult(KJob *job)
 
 RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, MixedMaildirStore *store, QObject *parent)
     : Job(parent)
-    , d(new Private(this, collection, store))
+    , d(new RetrieveItemsJobPrivate(this, collection, store))
 {
     Q_ASSERT(d->mCollection.isValid());
     Q_ASSERT(!d->mCollection.remoteId().isEmpty());

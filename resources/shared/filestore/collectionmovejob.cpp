@@ -11,7 +11,7 @@
 
 using namespace Akonadi;
 
-class FileStore::CollectionMoveJob::Private
+class FileStore::CollectionMoveJobPrivate
 {
 public:
     Collection mCollection;
@@ -20,7 +20,7 @@ public:
 
 FileStore::CollectionMoveJob::CollectionMoveJob(const Collection &collection, const Collection &targetParent, FileStore::AbstractJobSession *session)
     : FileStore::Job(session)
-    , d(new Private())
+    , d(new CollectionMoveJobPrivate())
 {
     Q_ASSERT(session != nullptr);
 

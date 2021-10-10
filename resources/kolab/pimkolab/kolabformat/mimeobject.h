@@ -16,6 +16,8 @@
 
 namespace Kolab
 {
+class MIMEObjectPrivate;
+
 class KOLAB_EXPORT MIMEObject
 {
 public:
@@ -81,8 +83,9 @@ private:
     //@cond PRIVATE
     MIMEObject(const MIMEObject &other);
     MIMEObject &operator=(const MIMEObject &rhs);
-    class Private;
-    std::unique_ptr<Private> const d;
+
+private:
+    std::unique_ptr<MIMEObjectPrivate> const d;
     //@endcond
 };
 }

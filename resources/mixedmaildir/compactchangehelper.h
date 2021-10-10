@@ -21,6 +21,8 @@ class Item;
 using ItemList = QVector<Item>;
 }
 
+class CompactChangeHelperPrivate;
+
 class CompactChangeHelper : public QObject
 {
     Q_OBJECT
@@ -37,8 +39,7 @@ public:
     void checkCollectionChanged(const Akonadi::Collection &collection);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<CompactChangeHelperPrivate> const d;
 
     Q_PRIVATE_SLOT(d, void processNextBatch())
     Q_PRIVATE_SLOT(d, void processNextItem())

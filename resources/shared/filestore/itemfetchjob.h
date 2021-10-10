@@ -20,6 +20,7 @@ class ItemFetchScope;
 namespace FileStore
 {
 class AbstractJobSession;
+class ItemFetchJobPrivate;
 
 /**
  */
@@ -59,8 +60,7 @@ private:
     void handleItemsReceived(const Akonadi::Item::List &items);
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<ItemFetchJobPrivate> const d;
 };
 }
 }

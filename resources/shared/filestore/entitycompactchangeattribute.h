@@ -17,6 +17,8 @@ namespace Akonadi
 {
 namespace FileStore
 {
+class EntityCompactChangeAttributePrivate;
+
 class AKONADI_FILESTORE_EXPORT EntityCompactChangeAttribute : public Attribute
 {
 public:
@@ -43,8 +45,7 @@ public:
 
 private:
     //@cond PRIVATE
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<EntityCompactChangeAttributePrivate> const d;
     //@endcond
 };
 }

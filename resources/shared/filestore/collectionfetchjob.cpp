@@ -12,10 +12,10 @@
 
 using namespace Akonadi;
 
-class FileStore::CollectionFetchJob::Private
+class FileStore::CollectionFetchJobPrivate
 {
 public:
-    Private()
+    CollectionFetchJobPrivate()
         : mType(FileStore::CollectionFetchJob::Base)
     {
     }
@@ -30,7 +30,7 @@ public:
 
 FileStore::CollectionFetchJob::CollectionFetchJob(const Collection &collection, Type type, FileStore::AbstractJobSession *session)
     : FileStore::Job(session)
-    , d(new Private())
+    , d(new CollectionFetchJobPrivate())
 {
     Q_ASSERT(session != nullptr);
 

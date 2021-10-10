@@ -11,7 +11,7 @@
 
 using namespace Akonadi;
 
-class FileStore::ItemMoveJob::Private
+class FileStore::ItemMoveJobPrivate
 {
 public:
     Item mItem;
@@ -20,7 +20,7 @@ public:
 
 FileStore::ItemMoveJob::ItemMoveJob(const Item &item, const Collection &targetParent, FileStore::AbstractJobSession *session)
     : FileStore::Job(session)
-    , d(new Private())
+    , d(new ItemMoveJobPrivate())
 {
     d->mItem = item;
     d->mTargetParent = targetParent;

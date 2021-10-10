@@ -205,10 +205,10 @@ static void printMessageDebugInfo(const KMime::Message::Ptr &msg)
 }
 
 //@cond PRIVATE
-class MIMEObject::Private
+class MIMEObjectPrivate
 {
 public:
-    Private()
+    MIMEObjectPrivate()
     {
     }
 
@@ -254,7 +254,7 @@ static std::vector<Kolab::Attachment> getAttachments(const QStringList &attachme
     return allAttachments;
 }
 
-QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
+QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
 {
     if (objectType == DictionaryConfigurationObject) {
         KMime::Content *xmlContent = Mime::findContentByType(msg, "application/xml");
@@ -351,7 +351,7 @@ QVariant MIMEObject::Private::readKolabV2(const KMime::Message::Ptr &msg, Kolab:
     return variant;
 }
 
-QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
+QVariant MIMEObjectPrivate::readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType)
 {
     KMime::Content *const xmlContent = Mime::findContentByType(msg, getMimeType(objectType));
     if (!xmlContent) {
@@ -411,7 +411,7 @@ QVariant MIMEObject::Private::readKolabV3(const KMime::Message::Ptr &msg, Kolab:
     return variant;
 }
 
-QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
+QVariant MIMEObjectPrivate::parseMimeMessage(const KMime::Message::Ptr &msg)
 {
     ErrorHandler::clearErrors();
     mObjectType = InvalidObject;
@@ -463,7 +463,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const KMime::Message::Ptr &msg)
     return readKolabV3(msg, objectType);
 }
 
-QVariant MIMEObject::Private::parseMimeMessage(const std::string &s)
+QVariant MIMEObjectPrivate::parseMimeMessage(const std::string &s)
 {
     KMime::Message::Ptr msg(new KMime::Message);
     msg->setContent(QByteArray(s.c_str()));
@@ -472,7 +472,7 @@ QVariant MIMEObject::Private::parseMimeMessage(const std::string &s)
 }
 
 MIMEObject::MIMEObject()
-    : d(new MIMEObject::Private)
+    : d(new MIMEObjectPrivate)
 {
 }
 

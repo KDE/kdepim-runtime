@@ -14,6 +14,8 @@ namespace Akonadi
 {
 namespace FileStore
 {
+class FiFoQueueJobSessionPrivate;
+
 /**
  */
 class FiFoQueueJobSession : public AbstractJobSession
@@ -33,8 +35,7 @@ protected:
     void removeJob(Job *job) override;
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    std::unique_ptr<FiFoQueueJobSessionPrivate> const d;
 };
 }
 }

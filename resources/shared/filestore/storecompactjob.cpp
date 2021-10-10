@@ -10,10 +10,10 @@
 
 using namespace Akonadi;
 
-class FileStore::StoreCompactJob::Private
+class FileStore::StoreCompactJobPrivate
 {
 public:
-    explicit Private(FileStore::StoreCompactJob *parent)
+    explicit StoreCompactJobPrivate(FileStore::StoreCompactJob *parent)
         : mParent(parent)
     {
     }
@@ -27,7 +27,7 @@ public:
 
 FileStore::StoreCompactJob::StoreCompactJob(FileStore::AbstractJobSession *session)
     : FileStore::Job(session)
-    , d(new Private(this))
+    , d(new StoreCompactJobPrivate(this))
 {
     session->addJob(this);
 }

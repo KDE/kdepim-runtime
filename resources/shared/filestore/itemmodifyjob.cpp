@@ -10,10 +10,10 @@
 
 using namespace Akonadi;
 
-class FileStore::ItemModifyJob::Private
+class FileStore::ItemModifyJobPrivate
 {
 public:
-    Private()
+    ItemModifyJobPrivate()
         : mIgnorePayload(false)
     {
     }
@@ -25,7 +25,7 @@ public:
 
 FileStore::ItemModifyJob::ItemModifyJob(const Item &item, FileStore::AbstractJobSession *session)
     : FileStore::Job(session)
-    , d(new Private())
+    , d(new ItemModifyJobPrivate())
 {
     d->mItem = item;
 

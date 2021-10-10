@@ -30,12 +30,12 @@ struct UpdateBatch {
     Collection collection;
 };
 
-class CompactChangeHelper::Private
+class CompactChangeHelperPrivate
 {
     CompactChangeHelper *const q;
 
 public:
-    explicit Private(CompactChangeHelper *parent)
+    explicit CompactChangeHelperPrivate(CompactChangeHelper *parent)
         : q(parent)
     {
     }
@@ -52,7 +52,7 @@ public: // slots
     void itemFetchResult(KJob *job);
 };
 
-void CompactChangeHelper::Private::processNextBatch()
+void CompactChangeHelperPrivate::processNextBatch()
 {
     // qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "pendingUpdates.count=" << mPendingUpdates.count();
     if (mPendingUpdates.isEmpty()) {
@@ -64,7 +64,7 @@ void CompactChangeHelper::Private::processNextBatch()
     processNextItem();
 }
 
-void CompactChangeHelper::Private::processNextItem()
+void CompactChangeHelperPrivate::processNextItem()
 {
     // qCDebug(MIXEDMAILDIRRESOURCE_LOG) << "mCurrentUpdate.items.count=" << mCurrentUpdate.items.count();
     if (mCurrentUpdate.items.isEmpty()) {
@@ -88,7 +88,7 @@ void CompactChangeHelper::Private::processNextItem()
     });
 }
 
-void CompactChangeHelper::Private::itemFetchResult(KJob *job)
+void CompactChangeHelperPrivate::itemFetchResult(KJob *job)
 {
     auto fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob != nullptr);
@@ -126,7 +126,7 @@ void CompactChangeHelper::Private::itemFetchResult(KJob *job)
 
 CompactChangeHelper::CompactChangeHelper(const QByteArray &sessionId, QObject *parent)
     : QObject(parent)
-    , d(new Private(this))
+    , d(new CompactChangeHelperPrivate(this))
 {
     d->mSession = new Session(sessionId, this);
 }

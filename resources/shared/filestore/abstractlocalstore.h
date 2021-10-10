@@ -22,6 +22,8 @@ namespace Akonadi
 {
 namespace FileStore
 {
+class AbstractLocalStorePrivate;
+
 /**
  */
 class AKONADI_FILESTORE_EXPORT AbstractLocalStore : public QObject, public StoreInterface
@@ -100,8 +102,8 @@ protected: // template methods
     virtual void checkStoreCompact(StoreCompactJob *job, int &errorCode, QString &errorText) const;
 
 private:
-    class Private;
-    std::unique_ptr<Private> const d;
+    friend class AbstractLocalStorePrivate;
+    std::unique_ptr<AbstractLocalStorePrivate> const d;
 };
 }
 }

@@ -41,6 +41,8 @@ struct KOLAB_EXPORT RelationMember {
 KOLAB_EXPORT RelationMember parseMemberUrl(const QString &url);
 KOLAB_EXPORT QString generateMemberUrl(const RelationMember &url);
 
+class KolabObjectReaderPrivate;
+
 /**
  * Class to read Kolab Mime files
  *
@@ -102,8 +104,9 @@ private:
     //@cond PRIVATE
     KolabObjectReader(const KolabObjectReader &other);
     KolabObjectReader &operator=(const KolabObjectReader &rhs);
-    class Private;
-    std::unique_ptr<Private> const d;
+
+private:
+    std::unique_ptr<KolabObjectReaderPrivate> const d;
     //@endcond
 };
 
