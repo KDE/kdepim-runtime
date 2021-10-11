@@ -7,6 +7,7 @@
 #include <QCryptographicHash>
 #include <QDateTime>
 #include <QNetworkRequest>
+#include <QRandomGenerator>
 
 #if QT_VERSION >= 0x050000
 #include <QUrlQuery>
@@ -421,12 +422,7 @@ QMap<QString, QString> O1::parseResponse(const QByteArray &response)
 
 QByteArray O1::nonce()
 {
-    static bool firstTime = true;
-    if (firstTime) {
-        firstTime = false;
-        qsrand(QTime::currentTime().msec());
-    }
     QString u = QString::number(QDateTime::currentDateTimeUtc().toSecsSinceEpoch());
-    u.append(QString::number(qrand()));
+    u.append(QString::number(QRandomGenerator::global()->bounded(RAND_MAX)));
     return u.toLatin1();
 }
