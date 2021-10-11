@@ -161,7 +161,7 @@ void KCalConversionTest::testConversion_data()
         kcal.recurrence()->addExDate(toDate(date3).date());
 
         KCalendarCore::RecurrenceRule *rr = kcal.recurrence()->defaultRRule(true);
-        QList<int> intList = QVector<int>::fromStdVector(intVector).toList();
+        QList<int> intList(intVector.cbegin(), intVector.cend());
         rr->setBySeconds(intList);
         rr->setByMinutes(intList);
         rr->setByHours(intList);
