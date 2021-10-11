@@ -101,7 +101,8 @@ void ItemModifyTest::testExpectedFail()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
@@ -144,7 +145,8 @@ void ItemModifyTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QSet<QString> entrySet = QSet<QString>::fromList(md1.entryList());
+    md1EntryList = md1.entryList();
+    QSet<QString> entrySet(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE(entrySet, entrySet1);
 
     // test failure of modifying a non-existent mbox entry

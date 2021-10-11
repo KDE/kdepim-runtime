@@ -127,7 +127,8 @@ void ItemDeleteTest::testMaildir()
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     mStore->setPath(topDir.path());
@@ -158,7 +159,8 @@ void ItemDeleteTest::testMaildir()
     Item item = job->item();
     QCOMPARE(item.id(), item1.id());
 
-    entrySet = QSet<QString>::fromList(md1.entryList());
+    md1EntryList = md1.entryList();
+    entrySet = QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet.count(), 3);
 
     delIdSet = entrySet1.subtract(entrySet);
@@ -365,7 +367,8 @@ void ItemDeleteTest::testCachePreservation()
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    const QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
@@ -507,7 +510,8 @@ void ItemDeleteTest::testExpectedFailure()
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    const QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));

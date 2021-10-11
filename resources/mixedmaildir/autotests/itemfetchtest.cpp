@@ -146,26 +146,31 @@ void ItemFetchTest::testListingMaildir()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md1 = topLevelMd.subFolder(QLatin1String("collection1"));
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    const QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin().md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     QFileInfo indexFileInfo1(indexFile(QFileInfo(md1.path())));
     QVERIFY(QFile::remove(indexFileInfo1.absoluteFilePath()));
 
     KPIM::Maildir md2 = topLevelMd.subFolder(QLatin1String("collection2"));
-    QSet<QString> entrySet2 = QSet<QString>::fromList(md2.entryList());
+    const QStringList md2EntryList = md2.entryList();
+    QSet<QString> entrySet2(md2EntryList.cbegin(), md2EntryList.cend());
     QCOMPARE((int)entrySet2.count(), 4);
 
     KPIM::Maildir md3 = topLevelMd.subFolder(QLatin1String("collection3"));
-    QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
+    const QStringList md3EntryList = md3.entryList();
+    QSet<QString> entrySet3(md3EntryList.cbegin(), md3EntryList.cend());
     QCOMPARE((int)entrySet3.count(), 4);
 
     KPIM::Maildir md4 = topLevelMd.subFolder(QLatin1String("collection4"));
-    QSet<QString> entrySet4 = QSet<QString>::fromList(md4.entryList());
+    const QStringList md4EntryList = md4.entryList();
+    QSet<QString> entrySet4(md4EntryList.cbegin(), md4EntryList.cend());
     QCOMPARE((int)entrySet4.count(), 4);
 
     KPIM::Maildir md5 = topLevelMd.subFolder(QLatin1String("collection5"));
-    QSet<QString> entrySet5 = QSet<QString>::fromList(md5.entryList());
+    const QStringList md5EntryList = md5.entryList();
+    QSet<QString> entrySet5(md5EntryList.cbegin(), md5EntryList.cend());
     QCOMPARE((int)entrySet5.count(), 4);
 
     mStore->setPath(topDir.path());
@@ -453,7 +458,8 @@ void ItemFetchTest::testListingMaildir()
     QString newRemoteId = md5.addEntry(data5);
     QVERIFY(!newRemoteId.isEmpty());
 
-    entrySet = QSet<QString>::fromList(md5.entryList());
+    const QStringList md5EntryList = md5.entryList();
+    entrySet = QSet<QString>(md5EntryList.cbegin(), md5EntryList.cend());
     entrySet.remove(newRemoteId);
     QCOMPARE(entrySet, entrySet5);
     QFileInfo fileInfo5(md5.path(), QLatin1String("new"));

@@ -106,7 +106,8 @@ void ItemMoveTest::testExpectedFail()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
@@ -144,7 +145,8 @@ void ItemMoveTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // test failure of moving from maildir to non-existent collection
     Item item1;
@@ -156,7 +158,8 @@ void ItemMoveTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // test failure of moving from mbox to non-existent collection
     Collection collection2;
@@ -182,7 +185,8 @@ void ItemMoveTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // test failure of moving from mbox to top level collection
     job = mStore->moveItem(item1, mStore->topLevelCollection());
@@ -205,7 +209,8 @@ void ItemMoveTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     tmpEntryList = mbox2.entries();
     QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
@@ -222,7 +227,8 @@ void ItemMoveTest::testExpectedFail()
     QVERIFY(!job->exec());
     QCOMPARE(job->error(), (int)FileStore::Job::InvalidJobContext);
 
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
     QVERIFY(mbox2.load(fileInfo2.absoluteFilePath()));
     tmpEntryList = mbox2.entries();
     QVERIFY(std::equal(tmpEntryList.begin(), tmpEntryList.end(), entryList2.begin(), fullEntryCompare));
@@ -239,7 +245,8 @@ void ItemMoveTest::testMaildirItem()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     QFileInfo fileInfo2(topDir.path(), QStringLiteral("collection2"));
@@ -250,7 +257,8 @@ void ItemMoveTest::testMaildirItem()
 
     KPIM::Maildir md3(topLevelMd.addSubFolder(QStringLiteral("collection3")), false);
     QVERIFY(md3.isValid());
-    QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
+    QStringList md3EntryList = md3.entryList();
+    QSet<QString> entrySet3(md3EntryList.cbegin(), md3EntryList.cend());
     QCOMPARE((int)entrySet3.count(), 0);
 
     QFileInfo fileInfo4(topDir.path(), QStringLiteral("collection4"));
@@ -265,7 +273,8 @@ void ItemMoveTest::testMaildirItem()
     QCOMPARE((int)entryList4.count(), 0);
 
     KPIM::Maildir md5 = topLevelMd.subFolder(QStringLiteral("collection5"));
-    QSet<QString> entrySet5 = QSet<QString>::fromList(md5.entryList());
+    QStringList md5EntryList = md5.entryList();
+    QSet<QString> entrySet5(md5EntryList.cbegin(), md5EntryList.cend());
     QCOMPARE((int)entrySet5.count(), 4);
 
     mStore->setPath(topDir.path());
@@ -305,9 +314,11 @@ void ItemMoveTest::testMaildirItem()
     QCOMPARE(movedItem.parentCollection(), collection3);
 
     entrySet3 << movedItem.remoteId();
-    QCOMPARE(QSet<QString>::fromList(md3.entryList()), entrySet3);
+    md3EntryList = md3.entryList();
+    QCOMPARE(QSet<QString>(md3EntryList.cbegin(), md3EntryList.cend()), entrySet3);
     entrySet1.remove(item1.remoteId());
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -336,9 +347,11 @@ void ItemMoveTest::testMaildirItem()
     QCOMPARE(movedItem.parentCollection(), collection5);
 
     entrySet5 << movedItem.remoteId();
-    QCOMPARE(QSet<QString>::fromList(md5.entryList()), entrySet5);
+    md5EntryList = md5.entryList();
+    QCOMPARE(QSet<QString>(md5EntryList.cbegin(), md5EntryList.cend()), entrySet5);
     entrySet1.remove(item1.remoteId());
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -372,7 +385,8 @@ void ItemMoveTest::testMaildirItem()
 
     QCOMPARE(entryList.last().messageOffset(), movedItem.remoteId().toULongLong());
     entrySet1.remove(item1.remoteId());
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -406,7 +420,8 @@ void ItemMoveTest::testMaildirItem()
 
     QCOMPARE(entryList.last().messageOffset(), movedItem.remoteId().toULongLong());
     entrySet1.remove(item1.remoteId());
-    QCOMPARE(QSet<QString>::fromList(md1.entryList()), entrySet1);
+    md1EntryList = md1.entryList();
+    QCOMPARE(QSet<QString>(md1EntryList.cbegin(), md1EntryList.cend()), entrySet1);
 
     // check for index preservation
     var = job->property("onDiskIndexInvalidated");
@@ -435,12 +450,14 @@ void ItemMoveTest::testMBoxItem()
     KPIM::Maildir topLevelMd(topDir.path(), true);
 
     KPIM::Maildir md2 = topLevelMd.subFolder(QStringLiteral("collection2"));
-    QSet<QString> entrySet2 = QSet<QString>::fromList(md2.entryList());
+    QStringList md2EntryList = md2.entryList();
+    QSet<QString> entrySet2(md2EntryList.cbegin(), md2EntryList.cend());
     QCOMPARE((int)entrySet2.count(), 4);
 
     KPIM::Maildir md3(topLevelMd.addSubFolder(QStringLiteral("collection3")), false);
     QVERIFY(md3.isValid());
-    QSet<QString> entrySet3 = QSet<QString>::fromList(md3.entryList());
+    QStringList md3EntryList = md3.entryList();
+    QSet<QString> entrySet3(md3EntryList.cbegin(), md3EntryList.cend());
     QCOMPARE((int)entrySet3.count(), 0);
 
     QFileInfo fileInfo4(topDir.path(), QStringLiteral("collection4"));
@@ -510,7 +527,8 @@ void ItemMoveTest::testMBoxItem()
     QCOMPARE((int)items.count(), 3);
 
     entrySet3 << movedItem.remoteId();
-    QCOMPARE(QSet<QString>::fromList(md3.entryList()), entrySet3);
+    md3EntryList = md3.entryList();
+    QCOMPARE(QSet<QString>(md3EntryList.cbegin(), md3EntryList.cend()), entrySet3);
 
     entryList1.removeAt(0);
     entryList1[0] = MBoxEntry(changedOffset(items[0]));
@@ -628,7 +646,8 @@ void ItemMoveTest::testMBoxItem()
     QCOMPARE(movedItem.id(), item1.id());
     QCOMPARE(movedItem.parentCollection(), collection2);
 
-    QSet<QString> entrySet = QSet<QString>::fromList(md2.entryList());
+    md2EntryList = md2.entryList();
+    QSet<QString> entrySet(md2EntryList.cbegin(), md2EntryList.cend());
     QCOMPARE((int)entrySet.count(), 5);
 
     QVERIFY(entrySet.contains(movedItem.remoteId()));

@@ -340,14 +340,16 @@ void ItemCreateTest::testMaildir()
     KPIM::Maildir md1 = topLevelMd.subFolder(QStringLiteral("collection1"));
     QVERIFY(md1.isValid());
 
-    QSet<QString> entrySet1 = QSet<QString>::fromList(md1.entryList());
+    const QStringList md1EntryList = md1.entryList();
+    QSet<QString> entrySet1(md1EntryList.cbegin(), md1EntryList.cend());
     QCOMPARE((int)entrySet1.count(), 4);
 
     // simulate empty maildir
     KPIM::Maildir md2(topLevelMd.addSubFolder(QStringLiteral("collection2")), false);
     QVERIFY(md2.isValid());
 
-    QSet<QString> entrySet2 = QSet<QString>::fromList(md2.entryList());
+    const QStringList md2EntryList = md2.entryList();
+    QSet<QString> entrySet2(md2EntryList.cbegin(), md2EntryList.cend());
     QCOMPARE((int)entrySet2.count(), 0);
 
     mStore->setPath(topDir.path());
@@ -359,6 +361,7 @@ void ItemCreateTest::testMaildir()
     Item::List items;
     QMap<QByteArray, int> flagCounts;
 
+    QStringList entryList;
     QSet<QString> entrySet;
     QSet<QString> newIdSet;
     QString newId;
@@ -387,7 +390,8 @@ void ItemCreateTest::testMaildir()
     QVERIFY(!item.remoteId().isEmpty());
     QCOMPARE(item.parentCollection(), collection2);
 
-    entrySet = QSet<QString>::fromList(md2.entryList());
+    entryList = md2.entryList();
+    entrySet = QSet<QString>(entryList.cbegin(), entryList.cend());
     QCOMPARE((int)entrySet.count(), 1);
 
     newIdSet = entrySet.subtract(entrySet2);
@@ -413,7 +417,8 @@ void ItemCreateTest::testMaildir()
     QVERIFY(!item.remoteId().isEmpty());
     QCOMPARE(item.parentCollection(), collection2);
 
-    entrySet = QSet<QString>::fromList(md2.entryList());
+    entryList = md2.entryList();
+    entrySet = QSet<QString>(entryList.cbegin(), entryList.cend());
     QCOMPARE((int)entrySet.count(), 2);
 
     newIdSet = entrySet.subtract(entrySet2);
@@ -440,7 +445,8 @@ void ItemCreateTest::testMaildir()
     QVERIFY(!item.remoteId().isEmpty());
     QCOMPARE(item.parentCollection(), collection1);
 
-    entrySet = QSet<QString>::fromList(md1.entryList());
+    entryList = md1.entryList();
+    entrySet = QSet<QString>(entryList.cbegin(), entryList.cend());
     QCOMPARE((int)entrySet.count(), 5);
 
     newIdSet = entrySet.subtract(entrySet1);
@@ -489,7 +495,8 @@ void ItemCreateTest::testMaildir()
     QVERIFY(!item.remoteId().isEmpty());
     QCOMPARE(item.parentCollection(), collection1);
 
-    entrySet = QSet<QString>::fromList(md1.entryList());
+    entryList = md1.entryList();
+    entrySet = QSet<QString>(entryList.cbegin(), entryList.cend());
     QCOMPARE((int)entrySet.count(), 6);
 
     newIdSet = entrySet.subtract(entrySet1);
