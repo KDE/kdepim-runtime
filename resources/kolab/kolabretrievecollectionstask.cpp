@@ -413,7 +413,7 @@ void KolabRetrieveCollectionsTask::onMailBoxesReceiveDone(KJob *job)
         }
 
         // Only request metadata for subscribed Other Users Folders
-        const QStringList metadataMailboxes = mailboxes.unite(mSubscribedMailboxes.values().toSet()).values();
+        const QStringList metadataMailboxes = mailboxes.unite(mSubscribedMailboxes).values();
 
         auto metadata = new RetrieveMetadataJob(mSession,
                                                 metadataMailboxes,
