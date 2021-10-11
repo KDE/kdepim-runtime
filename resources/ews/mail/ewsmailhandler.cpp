@@ -116,7 +116,7 @@ QHash<EwsPropertyField, QVariant> EwsMailHandler::writeFlags(const QSet<QByteArr
         propertyHash.insert(propPidFlagStatus, QVariant());
     }
 
-    propertyHash.unite(EwsItemHandler::writeFlags(unknownFlags));
+    propertyHash.insert(EwsItemHandler::writeFlags(unknownFlags));
 
     return propertyHash;
 }
