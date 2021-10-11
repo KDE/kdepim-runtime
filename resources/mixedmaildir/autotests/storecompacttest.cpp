@@ -257,7 +257,8 @@ void StoreCompactTest::testCompact()
     QCOMPARE(collection, collection2);
     QVERIFY(collection.hasAttribute<FileStore::EntityCompactChangeAttribute>());
     attribute = collection.attribute<FileStore::EntityCompactChangeAttribute>();
-    QCOMPARE(attribute->remoteRevision().toInt(), collection2.remoteRevision().toInt() + 1);
+    const QString remoteRevision = attribute->remoteRevision();
+    QCOMPARE(remoteRevision.toInt(), collection2.remoteRevision().toInt() + 1);
 
     QVERIFY(mbox2.load(mbox2.fileName()));
     entryList = mbox2.entries();
@@ -285,7 +286,7 @@ void StoreCompactTest::testCompact()
 
     collection = collections.first();
     QCOMPARE(collection, collection2);
-    QCOMPARE(collection.remoteRevision(), attribute->remoteRevision());
+    QCOMPARE(collection.remoteRevision(), remoteRevision);
 
     // test compact after delete from before the end of more than one mbox
     Collection collection3;
