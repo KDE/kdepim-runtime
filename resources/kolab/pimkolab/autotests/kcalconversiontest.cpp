@@ -516,7 +516,7 @@ void KCalConversionTest::testContactConversion_data()
         KContacts::Addressee kcal;
         kcal.setUid(QStringLiteral("uid"));
         kcal.setFormattedName(QStringLiteral("name"));
-        kcal.setBirthday(QDateTime(QDate(2012, 2, 2)));
+        kcal.setBirthday(QDate(2012, 2, 2).startOfDay());
 
         // Because QDateTime doesn't know date-only values we always end up with a date-time
         Kolab::Contact kolab;
