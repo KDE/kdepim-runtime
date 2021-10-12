@@ -31,7 +31,7 @@ KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
     about->addAuthor(i18n("Tobias Koenig"), QString(), QStringLiteral("tokoe@kde.org"));
     setAboutData(about);
     auto layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setContentsMargins({});
 
     mLdapConfigureWidget = new KLDAP::LdapConfigureWidget(this);
     layout->addWidget(mLdapConfigureWidget);

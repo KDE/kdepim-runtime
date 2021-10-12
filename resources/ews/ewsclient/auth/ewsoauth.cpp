@@ -372,7 +372,7 @@ void EwsOAuthPrivate::authorizeWithBrowser(const QUrl &url)
     mWebDialog->setWindowIcon(QIcon(QStringLiteral("akonadi-ews")));
     mWebDialog->resize(400, 500);
     auto layout = new QHBoxLayout(mWebDialog);
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setContentsMargins({});
     layout->addWidget(&mWebView);
     mWebView.show();
 

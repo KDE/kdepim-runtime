@@ -14,7 +14,7 @@ AlarmTypeRadioWidget::AlarmTypeRadioWidget(QWidget *parent)
     : Akonadi::SingleFileValidatingWidget(parent)
 {
     ui.setupUi(this);
-    ui.mainLayout->setContentsMargins(0, 0, 0, 0);
+    ui.mainLayout->setContentsMargins({});
     mButtonGroup = new QButtonGroup(ui.groupBox);
     mButtonGroup->addButton(ui.activeRadio);
     mButtonGroup->addButton(ui.archivedRadio);

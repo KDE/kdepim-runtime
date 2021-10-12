@@ -118,7 +118,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     connect(howIsItWork, &QLabel::linkActivated, this, &NewMailNotifierSettingsWidget::slotHelpLinkClicked);
 
     auto textToSpeakLayout = new QHBoxLayout;
-    textToSpeakLayout->setContentsMargins(0, 0, 0, 0);
+    textToSpeakLayout->setContentsMargins({});
     auto lab = new QLabel(i18n("Message:"), parent);
     lab->setObjectName(QStringLiteral("labmessage"));
     textToSpeakLayout->addWidget(lab);

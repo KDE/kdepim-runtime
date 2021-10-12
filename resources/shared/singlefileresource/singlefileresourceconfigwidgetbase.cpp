@@ -28,7 +28,7 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(mainWidget);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setContentsMargins({});
     ui.setupUi(mainWidget);
     ui.kcfg_Path->setMode(KFile::File);
     ui.statusLabel->setVisible(false);
