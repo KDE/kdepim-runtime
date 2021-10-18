@@ -133,15 +133,15 @@ void BirthdaysResource::contactRetrieved(KJob *job)
         }
         auto contact = contactItem.payload<KContacts::Addressee>();
         KCalendarCore::Incidence::Ptr ev;
-        if (currentItem().remoteId().startsWith(QLatin1Char('b'))) {
+        if (currentItems().at(0).remoteId().startsWith(QLatin1Char('b'))) {
             ev = createBirthday(contact, contactItem.id());
-        } else if (currentItem().remoteId().startsWith(QLatin1Char('a'))) {
+        } else if (currentItems().at(0).remoteId().startsWith(QLatin1Char('a'))) {
             ev = createAnniversary(contact, contactItem.id());
         }
         if (!ev) {
             cancelTask();
         } else {
-            Item i(currentItem());
+            Item i(currentItems().at(0));
             i.setPayload<Incidence::Ptr>(ev);
             itemRetrieved(i);
         }
