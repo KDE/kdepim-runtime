@@ -7,10 +7,10 @@
 #include "kabcconversion.h"
 
 #include "commonconversion.h"
+#include "pimkolab_debug.h"
 #include <QBuffer>
 #include <QImageReader>
-
-#include "pimkolab_debug.h"
+#include <kcontacts_version.h>
 namespace Kolab
 {
 namespace Conversion
@@ -461,7 +461,13 @@ KContacts::Addressee toKABC(const Kolab::Contact &contact)
         } else {
             preferredEmail = fromStdString(contact.emailAddresses().at(0).address());
         }
+#if KContacts_VERSION < QT_VERSION_CHECK(5, 88, 0)
         addressee.insertEmail(preferredEmail, true);
+#else
+        KContacts::Email email(preferredEmail);
+        email.setPreferred(true);
+        addressee.addEmail(email);
+#endif
     }
 
     if (!contact.freeBusyUrl().empty()) {

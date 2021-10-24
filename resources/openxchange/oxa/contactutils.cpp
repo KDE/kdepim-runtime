@@ -18,7 +18,7 @@
 #include <QDomElement>
 #include <QImage>
 #include <QRegularExpression>
-
+#include <kcontacts_version.h>
 using namespace OXA;
 
 void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &object)
@@ -183,9 +183,20 @@ void OXA::ContactUtils::parseContact(const QDomElement &propElement, Object &obj
                 contact.insertCustom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Office"), text);
                 // communication
             } else if (tagName == QLatin1String("email1")) {
+#if KContacts_VERSION < QT_VERSION_CHECK(5, 88, 0)
                 contact.insertEmail(text, true);
+#else
+                KContacts::Email email(text);
+                email.setPreferred(true);
+                contact.addEmail(email);
+#endif
             } else if (tagName == QLatin1String("email2") || tagName == QLatin1String("email3")) {
+#if KContacts_VERSION < QT_VERSION_CHECK(5, 88, 0)
                 contact.insertEmail(text);
+#else
+                KContacts::Email email(text);
+                contact.addEmail(email);
+#endif
             } else if (tagName == QLatin1String("mobile1")) {
                 contact.insertPhoneNumber(KContacts::PhoneNumber(text, KContacts::PhoneNumber::Cell));
             } else if (tagName == QLatin1String("instant_messenger")) {
