@@ -13,7 +13,7 @@ class DeleteItemsAttributeTest : public QObject
     Q_OBJECT
 public:
     explicit DeleteItemsAttributeTest(QObject *parent = nullptr);
-    ~DeleteItemsAttributeTest();
+    ~DeleteItemsAttributeTest() override;
 
 private Q_SLOTS:
     void shouldHaveDefaultValue();

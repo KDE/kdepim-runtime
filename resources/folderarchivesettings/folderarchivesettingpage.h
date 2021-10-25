@@ -37,7 +37,7 @@ class FOLDERARCHIVESETTINGS_EXPORT FolderArchiveSettingPage : public QWidget
     Q_OBJECT
 public:
     explicit FolderArchiveSettingPage(const QString &instanceName, QWidget *parent = nullptr);
-    ~FolderArchiveSettingPage();
+    ~FolderArchiveSettingPage() override;
 
     void loadSettings();
     void writeSettings();

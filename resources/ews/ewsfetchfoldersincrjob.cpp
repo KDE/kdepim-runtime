@@ -143,7 +143,7 @@ class EwsFetchFoldersIncrJobPrivate : public QObject
 {
 public:
     EwsFetchFoldersIncrJobPrivate(EwsFetchFoldersIncrJob *parent, EwsClient &client, const Collection &rootCollection);
-    ~EwsFetchFoldersIncrJobPrivate();
+    ~EwsFetchFoldersIncrJobPrivate() override;
 
     bool processRemoteFolders();
     void updateFolderCollection(Collection &collection, const EwsFolder &folder);

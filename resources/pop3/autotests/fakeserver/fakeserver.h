@@ -18,7 +18,7 @@ class FakeServer : public QObject
 
 public:
     FakeServer(QObject *parent = nullptr);
-    ~FakeServer();
+    ~FakeServer() override;
 
     void setNextConversation(const QString &conversation, const QList<int> &exceptions = QList<int>());
     void setAllowedDeletions(const QString &deleteIds);

@@ -34,7 +34,7 @@ public:
     {
     }
 
-    ~CollectionModifyTest()
+    ~CollectionModifyTest() override
     {
         delete mStore;
         delete mDir;

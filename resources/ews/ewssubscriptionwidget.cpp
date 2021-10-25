@@ -45,7 +45,7 @@ class EwsSubscriptionWidgetPrivate : public QObject
     Q_OBJECT
 public:
     EwsSubscriptionWidgetPrivate(EwsClient &client, EwsSettings *settings, QObject *parent);
-    ~EwsSubscriptionWidgetPrivate();
+    ~EwsSubscriptionWidgetPrivate() override;
 
     enum TreeModelRoles {
         ItemIdRole = Qt::UserRole + 1,

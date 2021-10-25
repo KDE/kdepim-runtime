@@ -164,7 +164,7 @@ public:
     {
     }
 
-    ~AbstractLocalStoreTest()
+    ~AbstractLocalStoreTest() override
     {
         delete mStore;
     }

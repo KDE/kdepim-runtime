@@ -20,7 +20,7 @@ class EwsClient : public QObject
     Q_OBJECT
 public:
     explicit EwsClient(QObject *parent = nullptr);
-    ~EwsClient();
+    ~EwsClient() override;
 
     void setUrl(const QString &url)
     {

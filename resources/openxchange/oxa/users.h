@@ -20,7 +20,7 @@ class Users : public QObject
     Q_OBJECT
 
 public:
-    ~Users();
+    ~Users() override;
 
     static Users *self();
 

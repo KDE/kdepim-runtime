@@ -48,7 +48,7 @@ public:
     };
 
     FakeTransferJob(const QByteArray &postData, const VerifierFn &fn, QObject *parent = nullptr);
-    ~FakeTransferJob();
+    ~FakeTransferJob() override;
 
     static void addVerifier(QObject *obj, const VerifierFn &fn);
     static Verifier getVerifier();

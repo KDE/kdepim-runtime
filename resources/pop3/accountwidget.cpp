@@ -47,7 +47,7 @@ public:
 #endif
     }
 
-    inline ~BusyCursorHelper()
+    inline ~BusyCursorHelper() override
     {
 #ifndef QT_NO_CURSOR
         qApp->restoreOverrideCursor();

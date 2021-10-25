@@ -21,7 +21,7 @@ class ConfigWidget : public QWidget
     Q_OBJECT
 public:
     explicit ConfigWidget(Akonadi_Maildir_Resource::MaildirSettings *settings, const QString &identifier, QWidget *parent = nullptr);
-    ~ConfigWidget();
+    ~ConfigWidget() override;
 
     void load();
     bool save() const;

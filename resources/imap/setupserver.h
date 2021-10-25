@@ -52,7 +52,7 @@ public:
     /**
      * Destructor
      */
-    ~SetupServer();
+    ~SetupServer() override;
 
     bool shouldClearCache() const;
 

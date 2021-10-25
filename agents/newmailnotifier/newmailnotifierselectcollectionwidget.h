@@ -41,7 +41,7 @@ class NewMailNotifierSelectCollectionWidget : public QWidget
     Q_OBJECT
 public:
     explicit NewMailNotifierSelectCollectionWidget(QWidget *parent = nullptr);
-    ~NewMailNotifierSelectCollectionWidget();
+    ~NewMailNotifierSelectCollectionWidget() override;
 
     void updateCollectionsRecursive();
 

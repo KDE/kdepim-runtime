@@ -24,7 +24,7 @@ class UrlConfigurationDialog : public QDialog
 
 public:
     explicit UrlConfigurationDialog(QWidget *parent = nullptr);
-    ~UrlConfigurationDialog();
+    ~UrlConfigurationDialog() override;
 
     KDAV::Protocol protocol() const;
     void setProtocol(KDAV::Protocol protocol);

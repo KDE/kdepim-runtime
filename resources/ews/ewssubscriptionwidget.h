@@ -21,7 +21,7 @@ class EwsSubscriptionWidget : public QWidget
     Q_OBJECT
 public:
     EwsSubscriptionWidget(EwsClient &client, EwsSettings *settings, QWidget *parent);
-    ~EwsSubscriptionWidget();
+    ~EwsSubscriptionWidget() override;
 
     QStringList subscribedList() const;
     bool subscribedListValid() const;

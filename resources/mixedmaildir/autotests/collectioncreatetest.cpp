@@ -33,7 +33,7 @@ public:
     {
     }
 
-    ~CollectionCreateTest()
+    ~CollectionCreateTest() override
     {
         delete mStore;
         delete mDir;

@@ -22,7 +22,7 @@ class O2Requestor : public QObject
 
 public:
     explicit O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObject *parent = nullptr);
-    ~O2Requestor();
+    ~O2Requestor() override;
 
 public Q_SLOTS:
     /// Make a GET request.

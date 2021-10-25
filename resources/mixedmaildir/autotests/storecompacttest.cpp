@@ -89,7 +89,7 @@ public:
         qRegisterMetaType<Akonadi::Item::List>();
     }
 
-    ~StoreCompactTest()
+    ~StoreCompactTest() override
     {
         delete mStore;
         delete mDir;

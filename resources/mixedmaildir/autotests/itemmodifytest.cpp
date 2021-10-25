@@ -54,7 +54,7 @@ public:
     {
     }
 
-    ~ItemModifyTest()
+    ~ItemModifyTest() override
     {
         delete mStore;
         delete mDir;

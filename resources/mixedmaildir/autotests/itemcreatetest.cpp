@@ -39,7 +39,7 @@ public:
     {
     }
 
-    ~ItemCreateTest()
+    ~ItemCreateTest() override
     {
         delete mStore;
         delete mDir;

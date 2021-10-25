@@ -19,7 +19,7 @@ class SpecialNotifierJob : public QObject
     Q_OBJECT
 public:
     explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = nullptr);
-    ~SpecialNotifierJob();
+    ~SpecialNotifierJob() override;
 
     void setDefaultIconName(const QString &iconName);
 

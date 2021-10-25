@@ -30,7 +30,7 @@ class CompactChangeHelper : public QObject
 public:
     explicit CompactChangeHelper(const QByteArray &sessionId, QObject *parent = nullptr);
 
-    ~CompactChangeHelper();
+    ~CompactChangeHelper() override;
 
     void addChangedItems(const Akonadi::ItemList &items);
 

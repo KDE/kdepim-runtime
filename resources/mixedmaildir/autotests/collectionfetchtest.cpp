@@ -52,7 +52,7 @@ public:
         qRegisterMetaType<Akonadi::Collection::List>();
     }
 
-    ~CollectionFetchTest()
+    ~CollectionFetchTest() override
     {
         delete mStore;
         delete mDir;

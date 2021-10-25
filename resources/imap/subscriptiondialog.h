@@ -57,7 +57,7 @@ public:
     Q_DECLARE_FLAGS(SubscriptionDialogOptions, SubscriptionDialogOption)
 
     explicit SubscriptionDialog(QWidget *parent = nullptr, SubscriptionDialog::SubscriptionDialogOptions option = SubscriptionDialog::None);
-    ~SubscriptionDialog();
+    ~SubscriptionDialog() override;
 
     void connectAccount(const ImapAccount &account, const QString &password);
     bool isSubscriptionChanged() const;

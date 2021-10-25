@@ -29,7 +29,7 @@ public:
     {
     }
 
-    virtual ~EwsSettingsBase() = default;
+    ~EwsSettingsBase() override = default;
     QString username() const
     {
         return QStringLiteral("testuser");

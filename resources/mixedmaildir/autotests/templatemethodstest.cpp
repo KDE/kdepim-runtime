@@ -88,7 +88,7 @@ public:
     {
     }
 
-    ~TemplateMethodsTest()
+    ~TemplateMethodsTest() override
     {
         delete mStore;
     }

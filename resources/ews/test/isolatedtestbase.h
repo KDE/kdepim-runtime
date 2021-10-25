@@ -69,7 +69,7 @@ class TestAgentInstance : public QObject
     Q_OBJECT
 public:
     TestAgentInstance(const QString &url);
-    ~TestAgentInstance();
+    ~TestAgentInstance() override;
 
     const QString &identifier() const;
 

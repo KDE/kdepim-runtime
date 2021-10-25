@@ -61,7 +61,7 @@ public:
     {
     }
 
-    ~ItemMoveTest()
+    ~ItemMoveTest() override
     {
         delete mStore;
         delete mDir;
