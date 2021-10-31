@@ -336,7 +336,7 @@ void POP3Protocol::closeConnection()
     opened = false;
 }
 
-int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
+POP3Protocol::AuthResult POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
 {
     char buf[512];
 
@@ -347,7 +347,7 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
         if (errorCode) {
             error(ERR_ABORTED, i18n("No authentication details supplied."));
             closeConnection();
-            return -1;
+            return AuthResult::Abort;
         } else {
             m_sUser = ai.username;
             m_sPass = ai.password;
@@ -373,7 +373,7 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
     apop_string.append(QLatin1String(ctx.result().toHex()));
 
     if (command(apop_string.toLocal8Bit(), buf, sizeof(buf)) == Ok) {
-        return 0;
+        return AuthResult::Success;
     }
 
     qCDebug(POP3_LOG) << "Could not login via APOP. Falling back to USER/PASS";
@@ -383,9 +383,9 @@ int POP3Protocol::loginAPOP(const char *challenge, KIO::AuthInfo &ai)
               i18n("Login via APOP failed. The server %1 may not support APOP, although it claims to support it, or the password may be wrong.\n\n%2",
                    m_sServer,
                    m_sError));
-        return -1;
+        return AuthResult::Abort;
     }
-    return 1;
+    return AuthResult::Failure;
 }
 
 bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
@@ -439,7 +439,7 @@ bool POP3Protocol::saslInteract(void *in, AuthInfo &ai)
     closeConnection();                                                                                                                                         \
     error(ERR_CANNOT_AUTHENTICATE, i18n("An error occurred during authentication: %1", QString::fromUtf8(sasl_errdetail(conn))));
 
-int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
+POP3Protocol::AuthResult POP3Protocol::loginSASL(KIO::AuthInfo &ai)
 {
     char buf[512];
     QString sasl_buffer = QStringLiteral("AUTH");
@@ -457,7 +457,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
     if (result != SASL_OK) {
         qCDebug(POP3_LOG) << "sasl_client_new failed with: " << result;
         SASLERROR
-        return false;
+        return AuthResult::Abort;
     }
 
     // We need to check what methods the server supports...
@@ -489,7 +489,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
                 if (!saslInteract(client_interact, ai)) {
                     closeConnection();
                     sasl_dispose(&conn);
-                    return -1;
+                    return AuthResult::Abort;
                 }
             }
         } while (result == SASL_INTERACT);
@@ -497,7 +497,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
             qCDebug(POP3_LOG) << "sasl_client_start failed with: " << result;
             SASLERROR
             sasl_dispose(&conn);
-            return -1;
+            return AuthResult::Abort;
         }
 
         qCDebug(POP3_LOG) << "Preferred authentication method is " << mechusing << ".";
@@ -523,7 +523,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
                     if (!saslInteract(client_interact, ai)) {
                         closeConnection();
                         sasl_dispose(&conn);
-                        return -1;
+                        return AuthResult::Abort;
                     }
                 }
             } while (result == SASL_INTERACT);
@@ -531,7 +531,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
                 qCDebug(POP3_LOG) << "sasl_client_step failed with: " << result;
                 SASLERROR
                 sasl_dispose(&conn);
-                return -1;
+                return AuthResult::Abort;
             }
 
             msg = QByteArray::fromRawData(out, outlen).toBase64();
@@ -544,7 +544,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
             qCDebug(POP3_LOG) << "SASL authenticated";
             m_sOldUser = m_sUser;
             m_sOldPass = m_sPass;
-            return 0;
+            return AuthResult::Success;
         }
 
         if (metaData(QStringLiteral("auth")) == QLatin1String("SASL")) {
@@ -554,7 +554,7 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
                        QLatin1String(mechusing),
                        QLatin1String(mechusing),
                        m_sError));
-            return -1;
+            return AuthResult::Abort;
         }
     }
 
@@ -564,12 +564,12 @@ int POP3Protocol::loginSASL(KIO::AuthInfo &ai)
               i18n("Your POP3 server (%1) does not support SASL.\n"
                    "Choose a different authentication method.",
                    m_sServer));
-        return -1;
+        return AuthResult::Abort;
     }
-    return 1;
+    return AuthResult::Failure;
 }
 
-bool POP3Protocol::loginPASS(KIO::AuthInfo &ai)
+POP3Protocol::AuthResult POP3Protocol::loginPASS(KIO::AuthInfo &ai)
 {
     char buf[512];
 
@@ -579,7 +579,7 @@ bool POP3Protocol::loginPASS(KIO::AuthInfo &ai)
         if (errorCode) {
             error(ERR_ABORTED, i18n("No authentication details supplied."));
             closeConnection();
-            return false;
+            return AuthResult::Abort;
         } else {
             m_sUser = ai.username;
             m_sPass = ai.password;
@@ -598,7 +598,7 @@ bool POP3Protocol::loginPASS(KIO::AuthInfo &ai)
         error(ERR_CANNOT_LOGIN, m_sError);
         closeConnection();
 
-        return false;
+        return AuthResult::Abort;
     }
 
     one_string = QStringLiteral("PASS ");
@@ -609,10 +609,10 @@ bool POP3Protocol::loginPASS(KIO::AuthInfo &ai)
         m_sError = i18n("Could not login to %1. The password may be wrong.\n\n%2", m_sServer, m_sError);
         error(ERR_CANNOT_LOGIN, m_sError);
         closeConnection();
-        return false;
+        return AuthResult::Abort;
     }
     qCDebug(POP3_LOG) << "USER/PASS login succeeded";
-    return true;
+    return AuthResult::Success;
 }
 
 bool POP3Protocol::pop3_open()
@@ -723,22 +723,22 @@ bool POP3Protocol::pop3_open()
 
         if (supports_apop && m_try_apop) {
             qCDebug(POP3_LOG) << "Trying APOP";
-            int retval = loginAPOP(greeting.toLatin1().data() + apop_pos, authInfo);
+            const AuthResult retval = loginAPOP(greeting.toLatin1().data() + apop_pos, authInfo);
             switch (retval) {
-            case 0:
+            case AuthResult::Success:
                 return true;
-            case -1:
+            case AuthResult::Abort:
                 return false;
             default:
                 m_try_apop = false;
             }
         } else if (m_try_sasl) {
             qCDebug(POP3_LOG) << "Trying SASL";
-            int retval = loginSASL(authInfo);
+            const AuthResult retval = loginSASL(authInfo);
             switch (retval) {
-            case 0:
+            case AuthResult::Success:
                 return true;
-            case -1:
+            case AuthResult::Abort:
                 return false;
             default:
                 m_try_sasl = false;
@@ -746,7 +746,7 @@ bool POP3Protocol::pop3_open()
         } else {
             // Fall back to conventional USER/PASS scheme
             qCDebug(POP3_LOG) << "Trying USER/PASS";
-            return loginPASS(authInfo);
+            return loginPASS(authInfo) == AuthResult::Success;
         }
     } while (true);
 }

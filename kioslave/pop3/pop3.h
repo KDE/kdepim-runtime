@@ -85,20 +85,27 @@ protected:
      * specified, the user is prompted for them.
      */
     bool pop3_open();
+
+    enum class AuthResult {
+        Success,
+        Failure, // try fallbacks
+        Abort
+    };
+
     /**
      * Authenticate via APOP
      */
-    int loginAPOP(const char *challenge, KIO::AuthInfo &ai);
+    AuthResult loginAPOP(const char *challenge, KIO::AuthInfo &ai);
 
     bool saslInteract(void *in, KIO::AuthInfo &ai);
     /**
      * Authenticate via SASL
      */
-    int loginSASL(KIO::AuthInfo &ai);
+    AuthResult loginSASL(KIO::AuthInfo &ai);
     /**
      * Authenticate via traditional USER/PASS
      */
-    bool loginPASS(KIO::AuthInfo &ai);
+    AuthResult loginPASS(KIO::AuthInfo &ai);
 
     // int m_cmd;
     unsigned short int m_iOldPort;
