@@ -53,11 +53,13 @@ void POPSession::slotSlaveError(KIO::Slave *slave, int errorCode, const QString 
         Q_EMIT slaveError(errorCode, errorMessage);
     } else {
         // Let the job deal with the problem
-        mCurrentJob->slaveError(errorCode, errorMessage);
+        auto slaveBaseJob = qobject_cast<SlaveBaseJob *>(mCurrentJob);
+        Q_ASSERT(slaveBaseJob);
+        slaveBaseJob->slaveError(errorCode, errorMessage);
     }
 }
 
-void POPSession::setCurrentJob(SlaveBaseJob *job)
+void POPSession::setCurrentJob(BaseJob *job)
 {
     mCurrentJob = job;
 }
@@ -182,18 +184,26 @@ static QString intListToString(const QList<int> &intList)
     return idList;
 }
 
-SlaveBaseJob::SlaveBaseJob(POPSession *POPSession)
-    : mJob(nullptr)
-    , mPOPSession(POPSession)
+BaseJob::BaseJob(POPSession *POPSession)
+    : mPOPSession(POPSession)
 {
     mPOPSession->setCurrentJob(this);
 }
 
-SlaveBaseJob::~SlaveBaseJob()
+BaseJob::~BaseJob()
 {
     // Don't do that here, the job might be destroyed after another one was started
     // and therefore overwrite the current job
     // mPOPSession->setCurrentJob( 0 );
+}
+
+SlaveBaseJob::SlaveBaseJob(POPSession *POPSession)
+    : BaseJob(POPSession)
+{
+}
+
+SlaveBaseJob::~SlaveBaseJob()
+{
 }
 
 bool SlaveBaseJob::doKill()

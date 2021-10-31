@@ -22,6 +22,7 @@ class Job;
 class TransferJob;
 }
 
+class BaseJob;
 class SlaveBaseJob;
 class Settings;
 
@@ -41,7 +42,7 @@ public:
 
     // Sets the current SlaveBaseJob that is using the POPSession.
     // If there is a job, all slave errors will be forwarded to that job
-    void setCurrentJob(SlaveBaseJob *job);
+    void setCurrentJob(BaseJob *job);
 
 private Q_SLOTS:
     void slotSlaveError(KIO::Slave *slave, int, const QString &);
@@ -57,12 +58,23 @@ private:
     QString authenticationToString(int type) const;
 
     QPointer<KIO::Slave> mSlave;
-    SlaveBaseJob *mCurrentJob = nullptr;
+    BaseJob *mCurrentJob = nullptr;
     const QString mPassword;
     Settings &mSettings;
 };
 
-class SlaveBaseJob : public KJob
+class BaseJob : public KJob
+{
+    Q_OBJECT
+public:
+    explicit BaseJob(POPSession *POPSession);
+    ~BaseJob() override;
+
+protected:
+    POPSession *mPOPSession = nullptr;
+};
+
+class SlaveBaseJob : public BaseJob
 {
     Q_OBJECT
 
@@ -83,7 +95,6 @@ protected:
     virtual void connectJob();
 
     KIO::TransferJob *mJob = nullptr;
-    POPSession *mPOPSession = nullptr;
 };
 
 class LoginJob : public SlaveBaseJob
