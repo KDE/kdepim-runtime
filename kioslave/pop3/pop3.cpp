@@ -7,7 +7,6 @@
  *
  */
 #include "pop3.h"
-#include "common.h"
 
 extern "C" {
 #include <sasl/sasl.h>
@@ -16,12 +15,12 @@ extern "C" {
 #include "pop3_debug.h"
 #include <QByteArray>
 #include <QCoreApplication>
+#include <QCryptographicHash>
+#include <QFile>
+#include <QNetworkProxy>
 #include <QRegularExpression>
 
 #include <KLocalizedString>
-#include <QCryptographicHash>
-#include <QNetworkProxy>
-
 
 #include <KIO/SlaveInterface>
 
@@ -65,6 +64,27 @@ static const sasl_callback_t callbacks[] = {
     {SASL_CB_CANON_USER, nullptr, nullptr},
     {SASL_CB_LIST_END, nullptr, nullptr},
 };
+
+static bool initSASL()
+{
+#ifdef Q_OS_WIN32 // krazy:exclude=cpp
+#if 0
+    QByteArray libInstallPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("lib") + QLatin1String("sasl2"))));
+    QByteArray configPath(QFile::encodeName(QDir::toNativeSeparators(KGlobal::dirs()->installPath("config") + QLatin1String("sasl2"))));
+    if (sasl_set_path(SASL_PATH_TYPE_PLUGIN, libInstallPath.data()) != SASL_OK
+        || sasl_set_path(SASL_PATH_TYPE_CONFIG, configPath.data()) != SASL_OK) {
+        fprintf(stderr, "SASL path initialization failed!\n");
+        return false;
+    }
+#endif
+#endif
+
+    if (sasl_client_init(nullptr) != SASL_OK) {
+        fprintf(stderr, "SASL library initialization failed!\n");
+        return false;
+    }
+    return true;
+}
 
 int kdemain(int argc, char **argv)
 {
