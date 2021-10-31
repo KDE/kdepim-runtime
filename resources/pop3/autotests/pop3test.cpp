@@ -232,11 +232,10 @@ void Pop3Test::cleanupMaildir(const Akonadi::Item::List &items)
     time.start();
     int lastCount = -1;
     for (;;) {
-        qApp->processEvents();
         QTest::qWait(500);
         QDir maildir(mMaildirPath);
         maildir.refresh();
-        int curCount = maildir.entryList(QDir::Files | QDir::NoDotAndDotDot).count();
+        const int curCount = maildir.entryList(QDir::Files | QDir::NoDotAndDotDot).count();
 
         // Restart the timer when a mail arrives, as it shows that the maildir resource is
         // still alive and kicking.
@@ -261,11 +260,14 @@ void Pop3Test::checkMailsInMaildir(const QList<QByteArray> &mails)
     time.start();
     int lastCount = -1;
     for (;;) {
-        qApp->processEvents();
         QTest::qWait(500);
         QDir maildir(mMaildirPath);
         maildir.refresh();
-        int curCount = static_cast<int>(maildir.entryList(QDir::Files | QDir::NoDotAndDotDot).count());
+        const int curCount = maildir.entryList(QDir::Files | QDir::NoDotAndDotDot).count();
+
+        if (curCount == mails.count()) {
+            break; // all done
+        }
 
         // Restart the timer when a mail arrives, as it shows that the maildir resource is
         // still alive and kicking.
@@ -274,10 +276,7 @@ void Pop3Test::checkMailsInMaildir(const QList<QByteArray> &mails)
             lastCount = curCount;
         }
 
-        if (curCount == mails.count()) {
-            break;
-        }
-        QVERIFY(static_cast<int>(maildir.entryList(QDir::NoDotAndDotDot).count()) <= mails.count());
+        QVERIFY(curCount <= mails.count());
         QVERIFY(time.elapsed() < 60000 || time.elapsed() > 80000000);
     }
 
@@ -290,7 +289,11 @@ Akonadi::Item::List Pop3Test::checkMailsOnAkonadiServer(const QList<QByteArray> 
     // stage. That means all messages should be on the server now, so test that.
     auto job = new ItemFetchJob(mMaildirCollection);
     job->fetchScope().fetchFullPayload();
-    Q_ASSERT(job->exec());
+    const bool ok = job->exec();
+    Q_ASSERT(ok);
+    if (!ok) {
+        return {};
+    }
     const Item::List items = job->items();
     Q_ASSERT(mails.size() == items.size());
 
@@ -469,10 +472,8 @@ void Pop3Test::lowerTimeOfSeenMail(const QString &uidOfMail, int secondsToLower)
 
 void Pop3Test::testSimpleDownload()
 {
-    QList<QByteArray> mails;
-    mails << simpleMail1 << simpleMail2 << simpleMail3;
-    QStringList uids;
-    uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
+    const QList<QByteArray> mails = {simpleMail1, simpleMail2, simpleMail3};
+    const QStringList uids = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setMails(mails);
@@ -523,10 +524,8 @@ void Pop3Test::testSeenUIDCleanup()
     // First, fetch 3 normal mails, but leave them on the server.
     //
     mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
-    QList<QByteArray> mails;
-    mails << simpleMail1 << simpleMail2 << simpleMail3;
-    QStringList uids;
-    uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
+    const QList<QByteArray> mails = {simpleMail1, simpleMail2, simpleMail3};
+    const QStringList uids = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     mFakeServerThread->server()->setAllowedDeletions(QString());
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setMails(mails);
@@ -565,10 +564,8 @@ void Pop3Test::testSimpleLeaveOnServer()
 {
     mPOP3SettingsInterface->setLeaveOnServer(true).waitForFinished();
 
-    QList<QByteArray> mails;
-    mails << simpleMail1 << simpleMail2 << simpleMail3;
-    QStringList uids;
-    uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
+    const QList<QByteArray> mails = {simpleMail1, simpleMail2, simpleMail3};
+    const QStringList uids = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(mails) + uidSequence(uids) + retrieveSequence(mails) + quitSequence());
@@ -595,8 +592,7 @@ void Pop3Test::testSimpleLeaveOnServer()
     newMails << simpleMail4;
     QStringList newUids(uids);
     newUids << QStringLiteral("newUID");
-    QList<int> idsToNotDownload;
-    idsToNotDownload << 1 << 2 << 3;
+    const QList<int> idsToNotDownload = {1, 2, 3};
     mFakeServerThread->server()->setMails(newMails);
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("4"));
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(newMails) + uidSequence(newUids)
@@ -638,10 +634,8 @@ void Pop3Test::testTimeBasedLeaveRule()
     //
     // First download 3 mails and leave them on the server
     //
-    QList<QByteArray> mails;
-    mails << simpleMail1 << simpleMail2 << simpleMail3;
-    QStringList uids;
-    uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
+    const QList<QByteArray> mails = {simpleMail1, simpleMail2, simpleMail3};
+    QStringList uids = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(mails) + uidSequence(uids) + retrieveSequence(mails) + quitSequence());
@@ -659,8 +653,7 @@ void Pop3Test::testTimeBasedLeaveRule()
     //
     lowerTimeOfSeenMail(QStringLiteral("UID2"), 60 * 60 * 24 * 3);
 
-    QList<int> idsToNotDownload;
-    idsToNotDownload << 1 << 3;
+    const QList<int> idsToNotDownload = {1, 2, 3};
     mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("2"));
     mFakeServerThread->server()->setAllowedRetrieves(QString());
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(mails) + uidSequence(uids) + deleteSequence(1) + quitSequence(),
@@ -692,10 +685,8 @@ void Pop3Test::testCountBasedLeaveRule()
     //
     // First download 3 mails and leave them on the server
     //
-    QList<QByteArray> mails;
-    mails << simpleMail1 << simpleMail2 << simpleMail3;
-    QStringList uids;
-    uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
+    const QList<QByteArray> mails = {simpleMail1, simpleMail2, simpleMail3};
+    const QStringList uids = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(mails) + uidSequence(uids) + retrieveSequence(mails) + quitSequence());
@@ -713,25 +704,21 @@ void Pop3Test::testCountBasedLeaveRule()
     // Now, download 2 more mails. Since only 3 mails are allowed to be left
     // on the server, the oldest ones, UID1 and UID3, should be deleted
     //
-    QList<QByteArray> moreMails;
-    moreMails << simpleMail4 << simpleMail5;
-    QStringList moreUids;
-    moreUids << QStringLiteral("UID4") << QStringLiteral("UID5");
+    const QList<QByteArray> moreMails = {simpleMail4, simpleMail5};
+    const QStringList moreUids = {QStringLiteral("UID4"), QStringLiteral("UID5")};
     mFakeServerThread->server()->setMails(mails + moreMails);
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("4,5"));
     mFakeServerThread->server()->setAllowedDeletions(QStringLiteral("1,3"));
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(mails + moreMails) + uidSequence(uids + moreUids)
                                                          + retrieveSequence(moreMails) + deleteSequence(2) + quitSequence(),
-                                                     QList<int>() << 1 << 2 << 3);
+                                                     {1, 2, 3});
 
     syncAndWaitForFinish();
     Akonadi::Item::List items = checkMailsOnAkonadiServer(mails + moreMails);
     checkMailsInMaildir(mails + moreMails);
     cleanupMaildir(items);
 
-    QStringList uidsLeft;
-    uidsLeft << QStringLiteral("UID2") << QStringLiteral("UID4") << QStringLiteral("UID5");
-
+    const QStringList uidsLeft = {QStringLiteral("UID2"), QStringLiteral("UID4"), QStringLiteral("UID5")};
     QVERIFY(sortedEqual(uidsLeft, mPOP3SettingsInterface->seenUidList().value()));
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
 
@@ -749,10 +736,8 @@ void Pop3Test::testSizeBasedLeaveRule()
     //
     // First download 3 mails and leave them on the server.
     //
-    QList<QByteArray> mails;
-    mails << simpleMail1 << simpleMail2 << simpleMail3;
-    QStringList uids;
-    uids << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
+    const QList<QByteArray> mails = {simpleMail1, simpleMail2, simpleMail3};
+    const QStringList uids = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     mFakeServerThread->server()->setMails(mails);
     mFakeServerThread->server()->setAllowedRetrieves(QStringLiteral("1,2,3"));
     mFakeServerThread->server()->setNextConversation(loginSequence() + listSequence(mails) + uidSequence(uids) + retrieveSequence(mails) + quitSequence());
@@ -787,9 +772,7 @@ void Pop3Test::testSizeBasedLeaveRule()
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
 
-    QStringList uidsLeft;
-    uidsLeft << QStringLiteral("UID2");
-
+    const QStringList uidsLeft = {QStringLiteral("UID2")};
     QVERIFY(sortedEqual(uidsLeft, mPOP3SettingsInterface->seenUidList().value()));
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
 
@@ -867,9 +850,7 @@ void Pop3Test::testMixedLeaveRules()
     checkMailsInMaildir(mails);
     cleanupMaildir(items);
 
-    QStringList uidsLeft;
-    uidsLeft << QStringLiteral("UID1") << QStringLiteral("UID2") << QStringLiteral("UID3");
-
+    const QStringList uidsLeft = {QStringLiteral("UID1"), QStringLiteral("UID2"), QStringLiteral("UID3")};
     QVERIFY(sortedEqual(uidsLeft, mPOP3SettingsInterface->seenUidList().value()));
     QVERIFY(mPOP3SettingsInterface->seenUidTimeList().value().size() == mPOP3SettingsInterface->seenUidList().value().size());
 
