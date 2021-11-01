@@ -11,7 +11,7 @@ X-KDE-Weight=200
 
 Name=LDAP Server Settings
 Name[ca]=Configuració del servidor LDAP
-Name[ca@valencia]=Arranjament del servidor LDAP
+Name[ca@valencia]=Configuració del servidor LDAP
 Name[cs]=Nastavení serveru LDAP
 Name[da]=Indstillinger for LDAP-server
 Name[de]=LDAP-Server-Einstellungen
