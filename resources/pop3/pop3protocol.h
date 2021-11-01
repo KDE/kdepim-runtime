@@ -17,6 +17,7 @@
 
 #include <sys/types.h>
 
+class KSslErrorUiData;
 class QSslSocket;
 #define MAX_PACKET_LEN 4096
 
@@ -61,7 +62,13 @@ public:
      */
     Q_REQUIRED_RESULT Result get(const QString &command);
 
+    /**
+     * Sets whether to continue or abort after a SSL error
+     */
+    void setContinueAfterSslError(bool b);
+
 Q_SIGNALS:
+    void sslError(const KSslErrorUiData &);
     void data(const QByteArray &data);
     void messageComplete();
 
@@ -127,6 +134,7 @@ private:
     QString m_sServer, m_sPass, m_sUser;
     bool m_try_apop, m_try_sasl, supports_apop;
     bool mConnected = false;
+    bool mContinueAfterSslError = false;
     QString m_sError;
     char readBuffer[MAX_PACKET_LEN];
     ssize_t readBufferLen;

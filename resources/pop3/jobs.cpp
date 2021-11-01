@@ -10,6 +10,7 @@
 #include <MailTransport/Transport>
 
 #include "pop3resource_debug.h"
+#include <KIO/SslUi>
 #include <KLocalizedString>
 
 #include "pop3protocol.h"
@@ -30,9 +31,16 @@ void POPSession::setCurrentJob(BaseJob *job)
     mCurrentJob = job;
 }
 
+void POPSession::handleSslError(const KSslErrorUiData &errorData)
+{
+    const bool cont = KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules);
+    mProtocol->setContinueAfterSslError(cont);
+}
+
 Result POPSession::createProtocol()
 {
     mProtocol.reset(new POP3Protocol(mSettings, mPassword));
+    connect(mProtocol.get(), &POP3Protocol::sslError, this, &POPSession::handleSslError);
     return mProtocol->openConnection();
 }
 

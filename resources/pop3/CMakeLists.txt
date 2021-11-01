@@ -50,6 +50,7 @@ target_link_libraries( akonadi_pop3_resource
     KF5::MailTransport
     KF5::AkonadiAgentBase
     KF5::I18n
+    KF5::KIOWidgets  # SslUi
     KF5::Notifications
     Qt::DBus
     Qt::Network # QNetworkProxy

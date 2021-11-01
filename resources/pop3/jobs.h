@@ -15,6 +15,7 @@
 #include <QMap>
 #include <QObject>
 
+class KSslErrorUiData;
 class BaseJob;
 class POP3Protocol;
 class Settings;
@@ -36,6 +37,8 @@ public:
     void setCurrentJob(BaseJob *job);
 
 private:
+    void handleSslError(const KSslErrorUiData &);
+
     std::unique_ptr<POP3Protocol> mProtocol;
     BaseJob *mCurrentJob = nullptr;
     const QString mPassword;
