@@ -10,6 +10,10 @@ ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3resource_debug.h IDE
     OLD_CATEGORY_NAMES log_pop3resource
     EXPORT KDEPIMRUNTIME
     )
+ecm_qt_declare_logging_category(pop3_common_SRCS HEADER pop3protocol_debug.h IDENTIFIER POP3_LOG CATEGORY_NAME org.kde.pim.pop3protocol
+    DESCRIPTION "pop3 protocol (kdepim-runtime)"
+    EXPORT KDEPIMRUNTIME
+    )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/settings.kcfg org.kde.Akonadi.POP3.Settings)
 qt_add_dbus_adaptor(pop3_common_SRCS
@@ -20,6 +24,7 @@ qt_add_dbus_adaptor(pop3_common_SRCS
 
 set( pop3resource_SRCS
     pop3resource.cpp
+    pop3protocol.cpp
     jobs.cpp
     ${pop3_common_SRCS}
     )
@@ -41,15 +46,16 @@ endif ()
 target_link_libraries( akonadi_pop3_resource
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::KIOCore
     KF5::Mime
     KF5::MailTransport
     KF5::AkonadiAgentBase
     KF5::I18n
     KF5::Notifications
     Qt::DBus
+    Qt::Network # QNetworkProxy
     qt5keychain
     KF5::WidgetsAddons
+    Sasl2::Sasl2
     )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_pop3_resource PROPERTIES UNITY_BUILD ON)

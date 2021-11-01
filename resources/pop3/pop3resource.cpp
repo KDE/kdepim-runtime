@@ -6,6 +6,7 @@
 
 #include "pop3resource.h"
 #include "jobs.h"
+#include "pop3protocol.h"
 
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFetchJob>
@@ -21,12 +22,11 @@
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>
-#include <KIO/Global>
-#include <KIO/Job>
 #include <KMessageBox>
 #include <KNotification>
 #include <KPasswordDialog>
 
+#include <QPointer>
 #include <QTimer>
 #include <qt5keychain/keychain.h>
 using namespace QKeychain;
@@ -259,7 +259,6 @@ void POP3Resource::doStateStep()
         qCDebug(POP3RESOURCE_LOG) << "================ Starting state Connect ========================";
         Q_ASSERT(!mPopSession);
         mPopSession = new POPSession(mSettings, mPassword);
-        connect(mPopSession, &POPSession::slaveError, this, &POP3Resource::slotSessionError);
         advanceState(Login);
         break;
     case Login: {
@@ -452,7 +451,7 @@ void POP3Resource::loginJobResult(KJob *job)
 {
     if (job->error()) {
         qCDebug(POP3RESOURCE_LOG) << job->error() << job->errorText();
-        if (job->error() == KIO::ERR_CANNOT_LOGIN) {
+        if (job->error() == POP3Protocol::ERR_CANNOT_LOGIN) {
             mAskAgain = true;
         }
         cancelSync(i18n("Unable to login to the server \"%1\".", mSettings.host()) + QLatin1Char('\n') + job->errorString());
@@ -825,12 +824,6 @@ void POP3Resource::quitJobResult(KJob *job)
     advanceState(SavePassword);
 }
 
-void POP3Resource::slotSessionError(int errorCode, const QString &errorMessage)
-{
-    qCWarning(POP3RESOURCE_LOG) << "Error in our session, unrelated to a currently running job!";
-    cancelSync(KIO::buildErrorString(errorCode, errorMessage));
-}
-
 void POP3Resource::saveSeenUIDList()
 {
     QList<QString> seenUIDs = mSettings.seenUidList();
@@ -939,10 +932,8 @@ void POP3Resource::resetState()
     updateIntervalTimer();
 
     if (mPopSession) {
-        // Closing the POP session means the KIO slave will get disconnected, which
-        // automatically issues the QUIT command.
-        // Delete the POP session later, otherwise the scheduler makes us crash
-        mPopSession->abortCurrentJob();
+        mPopSession->abortCurrentJob(); // no-op since jobs are sync
+        // Disconnect after sending the QUIT command.
         mPopSession->deleteLater();
         mPopSession = nullptr;
     }

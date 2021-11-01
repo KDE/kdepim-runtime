@@ -8,29 +8,64 @@
 
 #pragma once
 
-#include <KIO/TCPSlaveBase>
+#include "result.h"
 
+#include <KJob>
+
+#include <QObject>
 #include <QUrl>
 
-#include <stdio.h>
 #include <sys/types.h>
 
+class QSslSocket;
 #define MAX_PACKET_LEN 4096
 
-class POP3Protocol : public KIO::TCPSlaveBase
+class Settings;
+
+class POP3Protocol : public QObject
 {
+    Q_OBJECT
 public:
-    POP3Protocol(const QByteArray &pool, const QByteArray &app, bool SSL);
+    POP3Protocol(const Settings &settings, const QString &password);
     ~POP3Protocol() override;
 
-    void setHost(const QString &host, quint16 port, const QString &user, const QString &pass) override;
+    // clang-format off
+    enum {
+        ERR_LOGIN_FAILED_TRY_FALLBACKS = KJob::UserDefinedError + 1,
+        ERR_SASL_FAILURE,
+        ERR_SSL_FAILURE,
+        ERR_CANNOT_LOGIN,
+        ERR_USER_CANCELED,
+        ERR_INTERNAL,
+        ERR_PROTOCOL,
+        ERR_DISCONNECTED,
+    };
+    // clang-format on
 
-    void get(const QUrl &url) override;
-    void stat(const QUrl &url) override;
-    void del(const QUrl &url, bool isfile) override;
-    void listDir(const QUrl &url) override;
+    static bool initSASL();
 
-protected:
+    /**
+     * Attempt to initiate a POP3 connection via a TCP socket.
+     */
+    Q_REQUIRED_RESULT Result openConnection();
+
+    /**
+     *  Attempt to properly shut down the POP3 connection by sending
+     *  "QUIT\r\n" before closing the socket.
+     */
+    void closeConnection();
+
+    /**
+     * Entry point for all features
+     * TODO: this could be split up!
+     */
+    Q_REQUIRED_RESULT Result get(const QString &command);
+
+Q_SIGNALS:
+    void data(const QByteArray &data);
+    void messageComplete();
+
+private:
     ssize_t myRead(void *data, ssize_t len);
     ssize_t myReadLine(char *data, ssize_t len);
 
@@ -54,6 +89,7 @@ protected:
         Cont,
         Invalid,
     };
+
     /**
      *  Send a command to the server, and wait for the  one-line-status
      *  reply via getResponse.  Similar rules apply.  If no buffer is
@@ -70,49 +106,27 @@ protected:
      */
     Resp getResponse(char *buf, unsigned int len);
 
-    /** Call int pop3_open() and report an error, if if fails */
-    void openConnection() override;
-
-    /**
-     *  Attempt to properly shut down the POP3 connection by sending
-     *  "QUIT\r\n" before closing the socket.
-     */
-    void closeConnection() override;
-
-    /**
-     * Attempt to initiate a POP3 connection via a TCP socket.  If no port
-     * is passed, port 110 is assumed, if no user || password is
-     * specified, the user is prompted for them.
-     */
-    bool pop3_open();
-
-    enum class AuthResult {
-        Success,
-        Failure, // try fallbacks
-        Abort
-    };
-
     /**
      * Authenticate via APOP
      */
-    AuthResult loginAPOP(const char *challenge, KIO::AuthInfo &ai);
+    Q_REQUIRED_RESULT Result loginAPOP(const char *challenge);
 
-    bool saslInteract(void *in, KIO::AuthInfo &ai);
+    bool saslInteract(void *in);
     /**
      * Authenticate via SASL
      */
-    AuthResult loginSASL(KIO::AuthInfo &ai);
+    Q_REQUIRED_RESULT Result loginSASL();
     /**
      * Authenticate via traditional USER/PASS
      */
-    AuthResult loginPASS(KIO::AuthInfo &ai);
+    Q_REQUIRED_RESULT Result loginPASS();
 
-    // int m_cmd;
-    unsigned short int m_iOldPort;
+    const Settings &mSettings;
+    QSslSocket *mSocket = nullptr;
     unsigned short int m_iPort;
-    QString m_sOldServer, m_sOldPass, m_sOldUser;
     QString m_sServer, m_sPass, m_sUser;
-    bool m_try_apop, m_try_sasl, opened, supports_apop;
+    bool m_try_apop, m_try_sasl, supports_apop;
+    bool mConnected = false;
     QString m_sError;
     char readBuffer[MAX_PACKET_LEN];
     ssize_t readBufferLen;

@@ -56,9 +56,6 @@ private Q_SLOTS:
     void intervalCheckTriggered();
     void configurationChanged();
 
-    // Error unrelated to a state
-    void slotSessionError(int errorCode, const QString &errorMessage);
-
     // For state FetchTargetCollection
     void targetCollectionFetchJobFinished(KJob *job);
     void localFolderRequestJobFinished(KJob *job);

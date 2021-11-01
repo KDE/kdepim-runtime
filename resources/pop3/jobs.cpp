@@ -10,19 +10,14 @@
 #include <MailTransport/Transport>
 
 #include "pop3resource_debug.h"
-#include <KIO/Job>
-#include <KIO/Scheduler>
-#include <KIO/Slave>
-#include <KIO/TransferJob>
 #include <KLocalizedString>
+
+#include "pop3protocol.h"
 
 POPSession::POPSession(Settings &settings, const QString &password)
     : mPassword(password)
     , mSettings(settings)
 {
-    // clang-format off
-    KIO::Scheduler::connect(SIGNAL(slaveError(KIO::Slave*,int,QString)), this, SLOT(slotSlaveError(KIO::Slave*,int,QString)));
-    // clang-format on
 }
 
 POPSession::~POPSession()
@@ -30,120 +25,25 @@ POPSession::~POPSession()
     closeSession();
 }
 
-void POPSession::slotSlaveError(KIO::Slave *slave, int errorCode, const QString &errorMessage)
-{
-    Q_UNUSED(slave)
-    qCWarning(POP3RESOURCE_LOG) << "Got a slave error:" << errorMessage;
-
-    if (slave != mSlave) {
-        return;
-    }
-
-    if (errorCode == KIO::ERR_SLAVE_DIED) {
-        mSlave = nullptr;
-    }
-
-    // Explicitly disconnect the slave if the connection went down
-    if (errorCode == KIO::ERR_CONNECTION_BROKEN && mSlave) {
-        KIO::Scheduler::disconnectSlave(mSlave);
-        mSlave = nullptr;
-    }
-
-    if (!mCurrentJob) {
-        Q_EMIT slaveError(errorCode, errorMessage);
-    } else {
-        // Let the job deal with the problem
-        auto slaveBaseJob = qobject_cast<SlaveBaseJob *>(mCurrentJob);
-        Q_ASSERT(slaveBaseJob);
-        slaveBaseJob->slaveError(errorCode, errorMessage);
-    }
-}
-
 void POPSession::setCurrentJob(BaseJob *job)
 {
     mCurrentJob = job;
 }
 
-KIO::MetaData POPSession::slaveConfig() const
+Result POPSession::createProtocol()
 {
-    KIO::MetaData m;
-
-    m.insert(QStringLiteral("progress"), QStringLiteral("off"));
-    m.insert(QStringLiteral("tls"), mSettings.useTLS() ? QStringLiteral("on") : QStringLiteral("off"));
-    m.insert(QStringLiteral("pipelining"), (mSettings.pipelining()) ? QStringLiteral("on") : QStringLiteral("off"));
-    m.insert(QStringLiteral("useProxy"), mSettings.useProxy() ? QStringLiteral("on") : QStringLiteral("off"));
-    int type = mSettings.authenticationMethod();
-    switch (type) {
-    case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
-    case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-    case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-    case MailTransport::Transport::EnumAuthenticationType::NTLM:
-    case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-        m.insert(QStringLiteral("auth"), QStringLiteral("SASL"));
-        m.insert(QStringLiteral("sasl"), authenticationToString(type));
-        break;
-    case MailTransport::Transport::EnumAuthenticationType::CLEAR:
-        m.insert(QStringLiteral("auth"), QStringLiteral("USER"));
-        break;
-    default:
-        m.insert(QStringLiteral("auth"), authenticationToString(type));
-        break;
-    }
-
-    return m;
+    mProtocol.reset(new POP3Protocol(mSettings, mPassword));
+    return mProtocol->openConnection();
 }
 
-QString POPSession::authenticationToString(int type) const
+POP3Protocol *POPSession::getProtocol() const
 {
-    switch (type) {
-    case MailTransport::Transport::EnumAuthenticationType::LOGIN:
-        return QStringLiteral("LOGIN");
-    case MailTransport::Transport::EnumAuthenticationType::PLAIN:
-        return QStringLiteral("PLAIN");
-    case MailTransport::Transport::EnumAuthenticationType::CRAM_MD5:
-        return QStringLiteral("CRAM-MD5");
-    case MailTransport::Transport::EnumAuthenticationType::DIGEST_MD5:
-        return QStringLiteral("DIGEST-MD5");
-    case MailTransport::Transport::EnumAuthenticationType::GSSAPI:
-        return QStringLiteral("GSSAPI");
-    case MailTransport::Transport::EnumAuthenticationType::NTLM:
-        return QStringLiteral("NTLM");
-    case MailTransport::Transport::EnumAuthenticationType::CLEAR:
-        return QStringLiteral("USER");
-    case MailTransport::Transport::EnumAuthenticationType::APOP:
-        return QStringLiteral("APOP");
-    default:
-        break;
-    }
-    return QString();
-}
-
-QUrl POPSession::getUrl() const
-{
-    QUrl url;
-
-    if (mSettings.useSSL()) {
-        url.setScheme(QStringLiteral("pop3s"));
-    } else {
-        url.setScheme(QStringLiteral("pop3"));
-    }
-
-    url.setUserName(mSettings.login());
-    url.setPassword(mPassword);
-    url.setHost(mSettings.host());
-    url.setPort(mSettings.port());
-    return url;
-}
-
-bool POPSession::connectSlave()
-{
-    mSlave = KIO::Scheduler::getConnectedSlave(getUrl(), slaveConfig());
-    return mSlave != nullptr;
+    return mProtocol.get();
 }
 
 void POPSession::abortCurrentJob()
 {
+    // This is never the case anymore, since all jobs are sync
     if (mCurrentJob) {
         mCurrentJob->kill(KJob::Quietly);
         mCurrentJob = nullptr;
@@ -152,17 +52,10 @@ void POPSession::abortCurrentJob()
 
 void POPSession::closeSession()
 {
-    if (mSlave) {
-        KIO::Scheduler::disconnectSlave(mSlave);
-    }
+    mProtocol->closeConnection();
 }
 
-KIO::Slave *POPSession::getSlave() const
-{
-    return mSlave;
-}
-
-static QByteArray cleanupListRespone(const QByteArray &response)
+static QByteArray cleanupListResponse(const QByteArray &response)
 {
     QByteArray ret = response.simplified(); // Workaround for Maillennium POP3/UNIBOX
 
@@ -197,118 +90,49 @@ BaseJob::~BaseJob()
     // mPOPSession->setCurrentJob( 0 );
 }
 
-SlaveBaseJob::SlaveBaseJob(POPSession *POPSession)
-    : BaseJob(POPSession)
+void BaseJob::startJob(const QString &path)
 {
-}
+    connect(mPOPSession->getProtocol(), &POP3Protocol::data, this, &BaseJob::slotData);
+    const Result result = mPOPSession->getProtocol()->get(path);
 
-SlaveBaseJob::~SlaveBaseJob()
-{
-}
-
-bool SlaveBaseJob::doKill()
-{
-    if (mJob) {
-        return mJob->kill();
-    } else {
-        return KJob::doKill();
-    }
-}
-
-void SlaveBaseJob::slotSlaveResult(KJob *job)
-{
+    // get() is sync, so we're done
+    disconnect(mPOPSession->getProtocol(), &POP3Protocol::data, this, &BaseJob::slotData);
     mPOPSession->setCurrentJob(nullptr);
-    if (job->error()) {
-        setError(job->error());
-        setErrorText(job->errorText());
+    if (!result.success) {
+        setError(result.error);
+        setErrorText(result.errorString);
     }
     emitResult();
-    mJob = nullptr;
 }
 
-void SlaveBaseJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
+void BaseJob::slotData(const QByteArray &data)
 {
-    Q_UNUSED(job)
-    qCWarning(POP3RESOURCE_LOG) << "Got unexpected slave data:" << data.data();
-}
-
-void SlaveBaseJob::slaveError(int errorCode, const QString &errorMessage)
-{
-    // The slave experienced some problem while running our job.
-    // Just treat this as an error.
-    // Derived jobs can do something more sophisticated here
-    setError(errorCode);
-    setErrorText(errorMessage);
-    emitResult();
-    mJob = nullptr;
-}
-
-void SlaveBaseJob::connectJob()
-{
-    connect(mJob, &KIO::TransferJob::data, this, &SlaveBaseJob::slotSlaveData);
-    connect(mJob, &KIO::TransferJob::result, this, &SlaveBaseJob::slotSlaveResult);
-}
-
-void SlaveBaseJob::startJob(const QString &path)
-{
-    QUrl url = mPOPSession->getUrl();
-    url.setPath(path);
-    mJob = KIO::get(url, KIO::NoReload, KIO::HideProgressInfo);
-    KIO::Scheduler::assignJobToSlave(mPOPSession->getSlave(), mJob);
-    connectJob();
-}
-
-QString SlaveBaseJob::errorString() const
-{
-    if (mJob) {
-        return mJob->errorString();
-    } else {
-        return KJob::errorString();
-    }
+    qCWarning(POP3RESOURCE_LOG) << "Got unexpected job data:" << data.data();
 }
 
 LoginJob::LoginJob(POPSession *popSession)
-    : SlaveBaseJob(popSession)
+    : BaseJob(popSession)
 {
 }
 
 void LoginJob::start()
 {
-    // This will create a connected slave, which means it will also try to login.
-    KIO::Scheduler::connect(SIGNAL(slaveConnected(KIO::Slave *)), this, SLOT(slaveConnected(KIO::Slave *)));
-    if (!mPOPSession->connectSlave()) {
+    if (!POP3Protocol::initSASL()) {
         setError(KJob::UserDefinedError);
-        setErrorText(i18n("Unable to create POP3 slave, aborting mail check."));
+        setErrorText(i18n("Unable to initialize SASL, aborting mail check."));
         emitResult();
     }
-}
 
-void LoginJob::slaveConnected(KIO::Slave *slave)
-{
-    if (slave != mPOPSession->getSlave()) {
-        // Odd, not our slave...
-        return;
+    const Result result = mPOPSession->createProtocol();
+    if (!result.success) {
+        setError(result.error);
+        setErrorText(result.errorString);
     }
-
-    // Yeah it connected, so login was successful!
     emitResult();
-}
-
-void LoginJob::slaveError(int errorCode, const QString &errorMessage)
-{
-    setError(errorCode);
-    setErrorText(errorMessage);
-    mErrorString = KIO::buildErrorString(errorCode, errorMessage);
-    emitResult();
-}
-
-QString LoginJob::errorString() const
-{
-    return mErrorString;
 }
 
 ListJob::ListJob(POPSession *popSession)
-    : SlaveBaseJob(popSession)
+    : BaseJob(popSession)
 {
 }
 
@@ -317,16 +141,11 @@ void ListJob::start()
     startJob(QStringLiteral("/index"));
 }
 
-void ListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
+void ListJob::slotData(const QByteArray &data)
 {
-    Q_UNUSED(job)
+    Q_ASSERT(!data.isEmpty());
 
-    // Silly slave, why are you sending us empty data?
-    if (data.isEmpty()) {
-        return;
-    }
-
-    QByteArray cleanData = cleanupListRespone(data);
+    const QByteArray cleanData = cleanupListResponse(data);
     const int space = cleanData.indexOf(' ');
 
     if (space > 0) {
@@ -357,7 +176,7 @@ QMap<int, int> ListJob::idList() const
 }
 
 UIDListJob::UIDListJob(POPSession *popSession)
-    : SlaveBaseJob(popSession)
+    : BaseJob(popSession)
 {
 }
 
@@ -366,16 +185,11 @@ void UIDListJob::start()
     startJob(QStringLiteral("/uidl"));
 }
 
-void UIDListJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
+void UIDListJob::slotData(const QByteArray &data)
 {
-    Q_UNUSED(job)
+    Q_ASSERT(!data.isEmpty());
 
-    // Silly slave, why are you sending us empty data?
-    if (data.isEmpty()) {
-        return;
-    }
-
-    QByteArray cleanData = cleanupListRespone(data);
+    QByteArray cleanData = cleanupListResponse(data);
     const int space = cleanData.indexOf(' ');
 
     if (space <= 0) {
@@ -413,7 +227,7 @@ QMap<QString, int> UIDListJob::idList() const
 }
 
 DeleteJob::DeleteJob(POPSession *popSession)
-    : SlaveBaseJob(popSession)
+    : BaseJob(popSession)
 {
 }
 
@@ -430,23 +244,23 @@ void DeleteJob::start()
 
 QList<int> DeleteJob::deletedIDs() const
 {
-    // FIXME : The slave doesn't tell us which of the IDs were actually deleted, we
+    // FIXME : The protocol class doesn't tell us which of the IDs were actually deleted, we
     //         just assume all of them here
     return mIdsToDelete;
 }
 
 QuitJob::QuitJob(POPSession *popSession)
-    : SlaveBaseJob(popSession)
+    : BaseJob(popSession)
 {
 }
 
 void QuitJob::start()
 {
-    startJob(QStringLiteral("/commit"));
+    startJob(QStringLiteral("/quit"));
 }
 
 FetchJob::FetchJob(POPSession *session)
-    : SlaveBaseJob(session)
+    : BaseJob(session)
     , mBytesDownloaded(0)
     , mTotalBytesToDownload(0)
     , mDataCounter(0)
@@ -463,19 +277,14 @@ void FetchJob::setFetchIds(const QList<int> &ids, const QList<int> &sizes)
 
 void FetchJob::start()
 {
-    startJob(QLatin1String("/download/") + intListToString(mIdsPendingDownload));
     setTotalAmount(KJob::Bytes, mTotalBytesToDownload);
+    connect(mPOPSession->getProtocol(), &POP3Protocol::messageComplete, this, &FetchJob::slotMessageComplete);
+    startJob(QLatin1String("/download/") + intListToString(mIdsPendingDownload));
+    disconnect(mPOPSession->getProtocol(), &POP3Protocol::messageComplete, this, &FetchJob::slotMessageComplete);
 }
 
-void FetchJob::connectJob()
+void FetchJob::slotData(const QByteArray &data)
 {
-    SlaveBaseJob::connectJob();
-    connect(mJob, &KIO::TransferJob::infoMessage, this, &FetchJob::slotInfoMessage);
-}
-
-void FetchJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
-{
-    Q_UNUSED(job)
     mCurrentMessage += data;
     mBytesDownloaded += data.size();
     mDataCounter++;
@@ -484,13 +293,8 @@ void FetchJob::slotSlaveData(KIO::Job *job, const QByteArray &data)
     }
 }
 
-void FetchJob::slotInfoMessage(KJob *job, const QString &infoMessage, const QString &)
+void FetchJob::slotMessageComplete()
 {
-    Q_UNUSED(job)
-    if (infoMessage != QLatin1String("message complete")) {
-        return;
-    }
-
     KMime::Message::Ptr msg(new KMime::Message);
     msg->setContent(KMime::CRLFtoLF(mCurrentMessage));
     msg->parse();

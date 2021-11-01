@@ -111,8 +111,7 @@ QByteArray FakeServer::parseResponse(const QByteArray &expectedData, const QByte
 {
     // Only called from dataAvailable, which is already thread-safe
 
-    QByteArray result;
-    result = parseDeleteMark(expectedData, dataReceived);
+    const QByteArray result = parseDeleteMark(expectedData, dataReceived);
     if (result != expectedData) {
         return result;
     } else {
@@ -120,15 +119,11 @@ QByteArray FakeServer::parseResponse(const QByteArray &expectedData, const QByte
     }
 }
 
-/*
-// Used only for the debug output in dataAvailable()
-static QByteArray removeCRLF( const QByteArray &ba )
+static QByteArray removeCRLF(const QByteArray &ba)
 {
   QByteArray returnArray = ba;
-  returnArray.replace( "\r\n", QByteArray() );
-  return returnArray;
+  return returnArray.replace(QByteArrayLiteral("\r\n"), QByteArray());
 }
-*/
 
 void FakeServer::dataAvailable()
 {
@@ -140,11 +135,13 @@ void FakeServer::dataAvailable()
     Q_ASSERT(!mWriteData.isEmpty());
 
     const QByteArray data = mTcpServerConnection->readAll();
-    // qDebug() << "Got data:" << removeCRLF( data );
     const QByteArray expected(mReadData.takeFirst());
-    // qDebug() << "Expected data:" << removeCRLF( expected );
     const QByteArray reallyExpected = parseResponse(expected, data);
-    // qDebug() << "Really expected:" << removeCRLF( reallyExpected );
+    if (data != reallyExpected) {
+        qDebug() << "Got data:" << removeCRLF(data);
+        qDebug() << "Expected data:" << removeCRLF(expected);
+        qDebug() << "Really expected:" << removeCRLF(reallyExpected);
+    }
 
     Q_ASSERT(data == reallyExpected);
 
