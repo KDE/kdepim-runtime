@@ -7,7 +7,6 @@
 #include "storeresultjob.h"
 
 #include "maildispatcher_debug.h"
-#include <Akonadi/Item>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/KMime/MessageFlags>

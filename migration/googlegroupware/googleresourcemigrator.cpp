@@ -9,7 +9,6 @@
 #include "migration_debug.h"
 
 #include <Akonadi/AgentInstanceCreateJob>
-#include <Akonadi/AgentManager>
 #include <Akonadi/ServerManager>
 
 #include <KLocalizedString>

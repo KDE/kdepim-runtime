@@ -15,7 +15,6 @@
 #include "../mixedmaildir_debug.h"
 #include "../mixedmaildirresource_debug.h"
 
-#include <Akonadi/KMime/MessageStatus>
 using Akonadi::MessageStatus;
 
 #include <qplatformdefs.h>

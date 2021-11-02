@@ -21,7 +21,6 @@
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
-#include <Akonadi/Collection>
 #include <Akonadi/EntityDisplayAttribute>
 
 #include <KLocalizedString>

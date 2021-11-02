@@ -11,7 +11,6 @@
 #include <KLocalizedString>
 
 #include "ewsmailhandler.h"
-#include "ewsupdateitemrequest.h"
 
 #include "ewsresource_debug.h"
 

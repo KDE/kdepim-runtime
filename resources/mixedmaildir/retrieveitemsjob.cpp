@@ -16,7 +16,6 @@
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionModifyJob>
-#include <Akonadi/Item>
 #include <Akonadi/ItemCreateJob>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>

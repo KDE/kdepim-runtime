@@ -8,7 +8,6 @@
 
 #include <KLocalizedString>
 
-#include "ewsgetitemrequest.h"
 #include "ewsitemhandler.h"
 
 #include "ewsresource_debug.h"

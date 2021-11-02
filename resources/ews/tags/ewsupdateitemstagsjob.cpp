@@ -18,7 +18,6 @@
 #include "ewsitemhandler.h"
 #include "ewsresource.h"
 #include "ewstagstore.h"
-#include "ewsupdateitemrequest.h"
 
 using namespace Akonadi;
 

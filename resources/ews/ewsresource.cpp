@@ -37,7 +37,6 @@
 #include "ewsfetchfoldersincrjob.h"
 #include "ewsfetchfoldersjob.h"
 #include "ewsfetchitempayloadjob.h"
-#include "ewsfetchitemsjob.h"
 #include "ewsgetfolderrequest.h"
 #include "ewsgetitemrequest.h"
 #include "ewsitemhandler.h"

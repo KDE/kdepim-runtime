@@ -13,7 +13,6 @@
 #include <Akonadi/AgentManager>
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
-#include <Akonadi/Item>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
