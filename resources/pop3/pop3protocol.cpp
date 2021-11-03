@@ -329,20 +329,6 @@ void POP3Protocol::closeConnection()
 
 Result POP3Protocol::loginAPOP(const char *challenge)
 {
-#if 0
-    if (m_sUser.isEmpty() || m_sPass.isEmpty()) {
-        // Prompt for usernames
-        const int errorCode = openPasswordDialogV2(ai);
-        if (errorCode) {
-            closeConnection();
-            return Result::fail(ERR_USER_CANCELED, i18n("No authentication details supplied."));
-        } else {
-            m_sUser = ai.username;
-            m_sPass = ai.password;
-        }
-    }
-#endif
-
     char buf[512];
     memset(buf, 0, sizeof(buf));
 
@@ -374,27 +360,6 @@ bool POP3Protocol::saslInteract(void *in)
 {
     qCDebug(POP3_LOG);
     auto interact = (sasl_interact_t *)in;
-
-    // some mechanisms do not require username && pass, so don't need a popup
-    // window for getting this info
-    for (; interact->id != SASL_CB_LIST_END; interact++) {
-        if (interact->id == SASL_CB_AUTHNAME || interact->id == SASL_CB_PASS) {
-#if 0
-            if (m_sUser.isEmpty() || m_sPass.isEmpty()) {
-                const int errorCode = openPasswordDialogV2(ai);
-                if (errorCode) {
-                    error(ERR_USER_CANCELED, i18n("No authentication details supplied."));
-                    return false;
-                }
-                m_sUser = ai.username;
-                m_sPass = ai.password;
-            }
-#endif
-            break;
-        }
-    }
-
-    interact = (sasl_interact_t *)in;
     while (interact->id != SASL_CB_LIST_END) {
         qCDebug(POP3_LOG) << "SASL_INTERACT id: " << interact->id;
         switch (interact->id) {
@@ -551,34 +516,17 @@ Result POP3Protocol::loginPASS()
 {
     char buf[512];
 
-#if 0
-    if (m_sUser.isEmpty() || m_sPass.isEmpty()) {
-        // Prompt for usernames
-        const int errorCode = openPasswordDialogV2(ai);
-        if (errorCode) {
-            closeConnection();
-            return Result::fail(ERR_USER_CANCELED, i18n("No authentication details supplied."));
-        } else {
-            m_sUser = ai.username;
-            m_sPass = ai.password;
-        }
-    }
-#endif
+    const QString userCommand = QStringLiteral("USER ") + m_sUser;
 
-    QString one_string = QStringLiteral("USER ");
-    one_string.append(m_sUser);
-
-    if (command(one_string.toLocal8Bit(), buf, sizeof(buf)) != Ok) {
+    if (command(userCommand.toLocal8Bit(), buf, sizeof(buf)) != Ok) {
         qCDebug(POP3_LOG) << "Could not login. Bad username Sorry";
         closeConnection();
         const QString errorString = i18n("Could not login to %1.\n\n", m_sServer) + m_sError;
         return Result::fail(ERR_CANNOT_LOGIN, errorString);
     }
 
-    one_string = QStringLiteral("PASS ");
-    one_string.append(m_sPass);
-
-    if (command(one_string.toLocal8Bit(), buf, sizeof(buf)) != Ok) {
+    const QString passwordCommand = QStringLiteral("PASS ") + m_sPass;
+    if (command(passwordCommand.toLocal8Bit(), buf, sizeof(buf)) != Ok) {
         qCDebug(POP3_LOG) << "Could not login. Bad password Sorry.";
         closeConnection();
         const QString errorString = i18n("Could not login to %1. The password may be wrong.\n\n%2", m_sServer, m_sError);
