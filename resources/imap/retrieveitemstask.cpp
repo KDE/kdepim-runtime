@@ -443,9 +443,9 @@ void RetrieveItemsTask::prepareRetrieval()
         // New messages are available, but not enough to justify the difference between the local and remote message count.
         // This can be triggered if we i.e. clear the local cache, but the keep the annotations.
         // If we didn't catch this case, we end up inserting flags only for every missing message.
-        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount
+        qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount
                                     << " Local: " << realMessageCount;
-        qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
+        qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": refetching complete mailbox";
         setTotalItems(m_messageCount);
         retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
     } else if (m_nextUid > oldNextUid) {
@@ -474,9 +474,9 @@ void RetrieveItemsTask::prepareRetrieval()
         // Error recovery:
         // We didn't detect any new messages based on the uid, but according to the message count there are new ones.
         // Our local cache is invalid and has to be refetched.
-        qCWarning(IMAPRESOURCE_LOG) << "Detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount
+        qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": detected inconsistency in local cache, we're missing some messages. Server: " << m_messageCount
                                     << " Local: " << realMessageCount;
-        qCWarning(IMAPRESOURCE_LOG) << "Refetching complete mailbox.";
+        qCWarning(IMAPRESOURCE_LOG) << m_mailBox << ": refetching complete mailbox";
         setTotalItems(m_messageCount);
         retrieveItems(KIMAP::ImapSet(1, m_nextUid), scope, false, true);
     } else {
