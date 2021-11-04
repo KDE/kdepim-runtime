@@ -13,7 +13,6 @@
 #include <KJob>
 
 #include <QObject>
-#include <QUrl>
 
 #include <sys/types.h>
 

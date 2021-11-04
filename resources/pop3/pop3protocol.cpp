@@ -15,7 +15,6 @@ extern "C" {
 
 #include "pop3protocol_debug.h"
 #include <QByteArray>
-#include <QCoreApplication>
 #include <QCryptographicHash>
 #include <QFile>
 #include <QNetworkProxy>
