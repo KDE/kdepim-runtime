@@ -22,6 +22,9 @@ set(kalarmresource_SRCS
     kalarmresource.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtyperadiowidget.cpp
+    kalarmresource.h
+    ../shared/kalarmresourcecommon.h
+    ../shared/alarmtyperadiowidget.h
     ${kalarmresource_common_SRCS}
     )
 

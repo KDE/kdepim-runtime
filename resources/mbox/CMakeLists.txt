@@ -3,6 +3,7 @@ add_subdirectory(wizard)
 
 set(mboxresource_common_SRCS
     deleteditemsattribute.cpp
+    deleteditemsattribute.h
     )
 kconfig_add_kcfg_files(mboxresource_common_SRCS settings.kcfgc)
 
@@ -11,6 +12,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_mbox_resource\")
 
 set( mboxresource_SRCS
     mboxresource.cpp
+    mboxresource.h
     ${mboxresource_common_SRCS}
     )
 
@@ -79,6 +81,8 @@ target_sources(mboxconfig PRIVATE
     mboxconfig.cpp
     lockmethodpage.cpp
     compactpage.cpp
+    lockmethodpage.h
+    compactpage.h
     ${mboxresource_common_SRCS}
     )
 

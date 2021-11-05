@@ -15,6 +15,9 @@ set(davgroupwareconfig_SRCS
     configdialog.cpp
     searchdialog.cpp
     setupwizard.cpp
+    configdialog.h
+    searchdialog.h
+    setupwizard.h
 
     )
 ki18n_wrap_ui(davgroupwareconfig_SRCS configdialog.ui urlconfigurationdialog.ui searchdialog.ui)
@@ -33,6 +36,16 @@ set( davgroupwareresource_SRCS
     settings.cpp
     urlconfigurationdialog.cpp
     davgroupwareresource.cpp
+    daverror-kdepim-runtime.h
+    akonadietagcache.h
+    utils.h
+
+    ctagattribute.h
+    davfreebusyhandler.h
+    davprotocolattribute.h
+    settings.h
+    urlconfigurationdialog.h
+    davgroupwareresource.h
     )
 
 ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_debug.h IDENTIFIER DAVRESOURCE_LOG CATEGORY_NAME org.kde.pim.davresource

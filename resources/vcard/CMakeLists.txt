@@ -15,6 +15,7 @@ add_definitions(-DSETTINGS_NAMESPACE=Akonadi_VCard_Resource)
 
 set( vcardresource_SRCS
   vcardresource.cpp
+  vcardresource.h
   ${vcardresource_common_SRCS}
 )
 

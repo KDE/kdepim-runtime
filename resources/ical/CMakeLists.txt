@@ -34,6 +34,8 @@ target_sources( akonadi_ical_resource PRIVATE
   icalresource.cpp
   shared/icalresourcebase.cpp
   shared/icalresource.cpp
+  shared/icalresourcebase.h
+  shared/icalresource.h
   ${icalresource_common_SRCS}
   ${icalresource_SRCS}
 )

@@ -23,6 +23,12 @@ target_sources( akonadi_maildispatcher_agent PRIVATE
   sendjob.cpp
   sentactionhandler.cpp
   storeresultjob.cpp
+
+  maildispatcheragent.h
+  outboxqueue.h
+  sendjob.h
+  sentactionhandler.h
+  storeresultjob.h
   ${maildispatcheragent_SRCS}
 )
 

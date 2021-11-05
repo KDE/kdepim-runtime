@@ -22,6 +22,9 @@ target_sources( akonadi_notes_resource PRIVATE
   ../shared/icalresourcebase.cpp
   ../shared/icalresource.cpp
   notesresource.cpp
+  ../shared/icalresourcebase.h
+  ../shared/icalresource.h
+  notesresource.h
   ${notesresource_common_SRCS}
   ${notesresource_SRCS}
 )

@@ -10,6 +10,10 @@ target_sources(migrationshared PRIVATE
   infodialog.cpp
   entitytreecreatejob.cpp
   migratorbase.cpp
+  kmigratorbase.h
+  infodialog.h
+  entitytreecreatejob.h
+  migratorbase.h
 )
 
 ecm_qt_declare_logging_category(migrationshared

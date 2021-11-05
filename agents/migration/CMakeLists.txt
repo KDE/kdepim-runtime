@@ -14,6 +14,10 @@ target_sources(akonadi_migration_agent PRIVATE
     migrationstatuswidget.cpp
     migrationexecutor.cpp
     migrationscheduler.cpp
+    migrationagent.h
+    migrationstatuswidget.h
+    migrationexecutor.h
+    migrationscheduler.h
     autotests/dummymigrator.cpp
 )
 

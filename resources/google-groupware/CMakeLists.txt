@@ -9,7 +9,17 @@ set(googleresource_SRCS
     generichandler.cpp
     calendarhandler.cpp
     taskhandler.cpp
-    contacthandler.cpp)
+    contacthandler.cpp
+    googleresource.h
+    googlesettings.h
+    googlesettingsdialog.h
+    defaultreminderattribute.h
+    googleresourcestate.h
+    generichandler.h
+    calendarhandler.h
+    taskhandler.h
+    contacthandler.h
+    )
 
 ecm_qt_declare_logging_category(googleresource_SRCS
     HEADER googleresource_debug.h

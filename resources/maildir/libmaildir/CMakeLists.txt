@@ -5,7 +5,7 @@ endif()
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_maildir_resource\")
 
-set(maildir_LIB_SRCS keycache.cpp maildir.cpp)
+set(maildir_LIB_SRCS keycache.cpp maildir.cpp keycache.h maildir.h)
 ecm_qt_declare_logging_category(maildir_LIB_SRCS HEADER libmaildir_debug.h IDENTIFIER LIBMAILDIR_LOG CATEGORY_NAME org.kde.pim.libmaildir
     DESCRIPTION "libmaildir (kdepim-runtime)"
     OLD_CATEGORY_NAMES log_libmaildir

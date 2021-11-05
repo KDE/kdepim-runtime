@@ -47,16 +47,61 @@ set(EWSCLIENT_SRCS
     ewsupdatefolderrequest.cpp
     ewsupdateitemrequest.cpp
     ewsxml.cpp
-    ewsclient_debug.cpp)
+    ewsclient_debug.cpp
+    auth/ewsabstractauth.h
+    auth/ewspasswordauth.h
+    ewsattachment.h
+    ewsattendee.h
+    ewsclient.h
+    ewscreatefolderrequest.h
+    ewscreateitemrequest.h
+    ewsdeletefolderrequest.h
+    ewsdeleteitemrequest.h
+    ewseffectiverights.h
+    ewseventrequestbase.h
+    ewsfindfolderrequest.h
+    ewsfinditemrequest.h
+    ewsfolder.h
+    ewsfoldershape.h
+    ewsgeteventsrequest.h
+    ewsgetstreamingeventsrequest.h
+    ewsgetfolderrequest.h
+    ewsgetitemrequest.h
+    ewsid.h
+    ewsitem.h
+    ewsitembase.h
+    ewsitemshape.h
+    ewsjob.h
+    ewsmailbox.h
+    ewsmovefolderrequest.h
+    ewsmoveitemrequest.h
+    ewsoccurrence.h
+    ewspoxautodiscoverrequest.h
+    ewspropertyfield.h
+    ewsrecurrence.h
+    ewsserverversion.h
+    ewssubscriberequest.h
+    ewssyncfolderhierarchyrequest.h
+    ewssyncfolderitemsrequest.h
+    ewstypes.h
+    ewsunsubscriberequest.h
+    ewsupdatefolderrequest.h
+    ewsupdateitemrequest.h
+    ewsxml.h
+
+
+    )
 
 if (Qt5NetworkAuth_FOUND)
     list(APPEND EWSCLIENT_SRCS
-        auth/ewsoauth.cpp)
+        auth/ewsoauth.cpp
+        auth/ewsoauth.h)
 endif ()
 
 if (Qca-qt5_FOUND)
     list(APPEND EWSCLIENT_SRCS
-        auth/ewspkeyauthjob.cpp)
+        auth/ewspkeyauthjob.cpp
+        auth/ewspkeyauthjob.h)
 endif ()
 
 ecm_qt_declare_logging_category(EWSCLIENT_SRCS

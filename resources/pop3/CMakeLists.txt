@@ -26,6 +26,9 @@ set( pop3resource_SRCS
     pop3resource.cpp
     pop3protocol.cpp
     jobs.cpp
+    pop3resource.h
+    pop3protocol.h
+    jobs.h
     ${pop3_common_SRCS}
     )
 
@@ -80,6 +83,7 @@ kcoreaddons_add_plugin(pop3config
 target_sources(pop3config PRIVATE
     pop3config.cpp
     accountwidget.cpp
+    accountwidget.h
     ${pop3_common_SRCS}
     )
 ki18n_wrap_ui(pop3config popsettings.ui)

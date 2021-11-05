@@ -23,6 +23,8 @@ set( maildirresource_SRCS
   main.cpp
   maildirresource.cpp
   retrieveitemsjob.cpp
+  maildirresource.h
+  retrieveitemsjob.h
   ${maildir_common_SRCS}
 )
 
@@ -68,6 +70,8 @@ target_sources(maildirconfig PRIVATE
     maildirconfigmain.cpp
     maildirconfig.cpp
     configwidget.cpp
+    maildirconfig.h
+    configwidget.h
     ${maildir_common_SRCS}
 )
 

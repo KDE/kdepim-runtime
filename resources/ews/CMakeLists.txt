@@ -61,7 +61,51 @@ set(ewsresource_SRCS
     ewssubscribedfoldersjob.cpp
     ewssubscriptionmanager.cpp
     ewssubscriptionwidget.cpp
-    ewssyncstateattribute.cpp)
+    ewssyncstateattribute.cpp
+
+    abchperson/ewsabchpersonhandler.h
+    abchperson/ewscreateabchpersonjob.h
+    abchperson/ewsfetchabchpersondetailjob.h
+    abchperson/ewsmodifyabchpersonjob.h
+    calendar/ewscalendarhandler.h
+    calendar/ewscreatecalendarjob.h
+    calendar/ewsfetchcalendardetailjob.h
+    calendar/ewsmodifycalendarjob.h
+    contact/ewscontacthandler.h
+    contact/ewscreatecontactjob.h
+    contact/ewsfetchcontactdetailjob.h
+    contact/ewsmodifycontactjob.h
+    mail/ewscreatemailjob.h
+    mail/ewsfetchmaildetailjob.h
+    mail/ewsmailhandler.h
+    mail/ewsmodifymailjob.h
+    tags/ewsakonaditagssyncjob.h
+    tags/ewsglobaltagsreadjob.h
+    tags/ewsglobaltagswritejob.h
+    tags/ewstagstore.h
+    tags/ewsupdateitemstagsjob.h
+    task/ewscreatetaskjob.h
+    task/ewsfetchtaskdetailjob.h
+    task/ewsmodifytaskjob.h
+    task/ewstaskhandler.h
+    ewsautodiscoveryjob.h
+    ewsconfigdialog.h
+    ewscreateitemjob.h
+    ewsfetchfoldersincrjob.h
+    ewsfetchfoldersjob.h
+    ewsfetchitemdetailjob.h
+    ewsfetchitempayloadjob.h
+    ewsfetchitemsjob.h
+    ewsitemhandler.h
+    ewsmodifyitemflagsjob.h
+    ewsmodifyitemjob.h
+    ewsprogressdialog.h
+    ewsresource.h
+    ewssettings.h
+    ewssubscribedfoldersjob.h
+    ewssubscriptionmanager.h
+    ewssubscriptionwidget.h
+    ewssyncstateattribute.h)
 
 ecm_qt_declare_logging_category(ewsresource_SRCS
     HEADER ewsres_debug.h
@@ -120,7 +164,9 @@ target_link_libraries(akonadi_ews_resource
 if (HAVE_SEPARATE_MTA_RESOURCE)
     set(ewsmtaresource_SRCS
         ewsmtaconfigdialog.cpp
-        ewsmtaresource.cpp)
+        ewsmtaresource.cpp
+        ewsmtaconfigdialog.h
+        ewsmtaresource.h)
     ecm_qt_declare_logging_category(ewsmtaresource_SRCS
         HEADER ewsres_mta_debug.h
         IDENTIFIER EWSRES_MTA_LOG

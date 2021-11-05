@@ -8,6 +8,7 @@ kconfig_add_kcfg_files(birthdayresource_common_SRCS
 
 set( birthdayresource_srcs
     birthdaysresource.cpp
+    birthdaysresource.h
     ${birthdayresource_common_SRCS}
     )
 
@@ -57,6 +58,7 @@ kcoreaddons_add_plugin(birthdaysconfig
 ki18n_wrap_ui(birthdaysconfig birthdaysconfigwidget.ui)
 target_sources(birthdaysconfig PRIVATE
     birthdaysconfigagentwidget.cpp
+    birthdaysconfigagentwidget.h
     ${birthdayresource_common_SRCS}
     )
 

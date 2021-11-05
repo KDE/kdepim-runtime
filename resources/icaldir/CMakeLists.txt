@@ -11,6 +11,7 @@ kconfig_add_kcfg_files(icaldirresource_common_SRCS
 
 set( icaldirresource_SRCS
   icaldirresource.cpp
+  icaldirresource.h
   ${icaldirresource_common_SRCS}
 )
 
@@ -53,6 +54,7 @@ ki18n_wrap_ui(icaldirconfig icaldirsagentsettingswidget.ui)
 
 target_sources(icaldirconfig PRIVATE
     icaldirsettingswidget.cpp
+    icaldirsettingswidget.h
     ${icaldirresource_common_SRCS}
     )
 

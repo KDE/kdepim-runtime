@@ -49,6 +49,33 @@ set(KOLAB_SRCS
     kolabformatV2/incidence.cpp
     kolabformatV2/note.cpp
     freebusy/freebusy.cpp
+
+    kolabformat/kolabobject.h
+    kolabformat/xmlobject.h
+    kolabformat/formathelpers.h
+    kolabformat/errorhandler.h
+    kolabformat/v2helpers.h
+    kolabformat/mimeobject.h
+    mime/mimeutils.h
+    conversion/kcalconversion.h
+    conversion/kabcconversion.h
+    conversion/commonconversion.h
+    conversion/kolabconversion.h
+    conversion/timezoneconverter.h
+    calendaring/calendaring.h
+    calendaring/event.h
+    calendaring/datetimeutils.h
+    icalendar/icalendar.h
+    icalendar/imip.h
+    kolabformatV2/kolabbase.h
+    kolabformatV2/contact.h
+    kolabformatV2/distributionlist.h
+    kolabformatV2/event.h
+    kolabformatV2/task.h
+    kolabformatV2/journal.h
+    kolabformatV2/incidence.h
+    kolabformatV2/note.h
+    freebusy/freebusy.h
     )
 
 ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PIMKOLAB_LOG CATEGORY_NAME org.kde.pim.pimkolab

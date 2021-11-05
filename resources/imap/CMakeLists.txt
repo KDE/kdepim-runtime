@@ -41,6 +41,41 @@ set( imapresource_LIB_SRCS
   resourcestate.cpp
   collectionmetadatahelper.cpp
   replacemessagejob.cpp
+
+  addcollectiontask.h
+  additemtask.h
+  batchfetcher.h
+  changecollectiontask.h
+  changeitemsflagstask.h
+  changeitemtask.h
+  expungecollectiontask.h
+  highestmodseqattribute.h
+  imapaccount.h
+  imapflags.h
+  imapresourcebase.h
+  messagehelper.h
+  movecollectiontask.h
+  moveitemstask.h
+  noselectattribute.h
+  noinferiorsattribute.h
+  passwordrequesterinterface.h
+  removecollectionrecursivetask.h
+  resourcestateinterface.h
+  resourcetask.h
+  retrievecollectionmetadatatask.h
+  retrievecollectionstask.h
+  retrieveitemtask.h
+  retrieveitemstask.h
+  searchtask.h
+  sessionpool.h
+  uidvalidityattribute.h
+  uidnextattribute.h
+  settings.h
+  subscriptiondialog.h
+  imapidlemanager.h
+  resourcestate.h
+  collectionmetadatahelper.h
+  replacemessagejob.h
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
 )
@@ -103,7 +138,15 @@ target_sources( akonadi_imap_resource PRIVATE
   serverinfodialog.cpp
   passwordrequester.cpp
   gmailpasswordrequester.cpp
-)
+
+  imapresource.h
+  resourcestate.h
+  settingspasswordrequester.h
+  setupserver.h
+  serverinfodialog.h
+  passwordrequester.h
+  gmailpasswordrequester.h
+  )
 
 install( FILES imapresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 

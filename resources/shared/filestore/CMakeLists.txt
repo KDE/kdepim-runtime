@@ -19,6 +19,21 @@ target_sources(akonadi-filestore PRIVATE
     session.cpp
     sessionimpls.cpp
     storecompactjob.cpp
+
+    abstractlocalstore.h
+    collectioncreatejob.h
+    collectiondeletejob.h
+    collectionfetchjob.h
+    collectionmodifyjob.h
+    collectionmovejob.h
+    entitycompactchangeattribute.h
+    itemcreatejob.h
+    itemdeletejob.h
+    itemfetchjob.h
+    itemmodifyjob.h
+    itemmovejob.h
+    job.h
+    storecompactjob.h
     )
 
 ecm_qt_declare_logging_category(akonadi-filestore HEADER akonadifilestore_debug.h IDENTIFIER AKONADIFILESTORE_LOG CATEGORY_NAME org.kde.pim.filestore

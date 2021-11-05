@@ -12,6 +12,11 @@ set(kalarmdirresource_SRCS
     kalarmdirresource.cpp
     ../shared/kalarmresourcecommon.cpp
     ../shared/alarmtypewidget.cpp
+    kalarmdirresource_debug.h
+    settingsdialog.h
+    kalarmdirresource.h
+    ../shared/kalarmresourcecommon.h
+    ../shared/alarmtypewidget.h
     )
 
 install(FILES kalarmdirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

@@ -2,6 +2,7 @@ include_directories(${CMAKE_BINARY_DIR}/resources/google-groupware)
 
 set(googlegroupwaremigration_SRCS
     googleresourcemigrator.cpp
+    googleresourcemigrator.h
     ${MIGRATION_AKONADI_SHARED_SOURCES}
     )
 

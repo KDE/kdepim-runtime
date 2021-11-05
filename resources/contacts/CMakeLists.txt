@@ -14,6 +14,7 @@ kconfig_add_kcfg_files(contactsresource_common_SRCS
 
 set( contactsresource_SRCS
     contactsresource.cpp
+    contactsresource.h
     ${contactsresource_common_SRCS}
     )
 
@@ -54,6 +55,7 @@ ki18n_wrap_ui(contactsconfig contactsagentsettingswidget.ui)
 
 target_sources(contactsconfig PRIVATE
     contactssettingswidget.cpp
+    contactssettingswidget.h
     ${contactsresource_common_SRCS}
     )
 

@@ -2,6 +2,8 @@ add_library(gidmigration STATIC)
 target_sources(gidmigration PRIVATE
     gidmigrator.cpp
     gidmigrationjob.cpp
+    gidmigrator.h
+    gidmigrationjob.h
 )
 
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)

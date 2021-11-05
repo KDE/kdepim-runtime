@@ -30,6 +30,24 @@ set(kolabresource_SRCS
     kolabchangeitemsrelationstask.cpp
     kolabchangeitemstagstask.cpp
     updatemessagejob.cpp
+    ../imap/settingspasswordrequester.h
+    ../imap/setupserver.h
+    ../imap/serverinfodialog.h
+    kolabretrievecollectionstask.h
+    kolabresource.h
+    kolabresourcestate.h
+    kolabhelpers.h
+    kolabmessagehelper.h
+    kolabaddtagtask.h
+    kolabchangetagtask.h
+    kolabremovetagtask.h
+    kolabretrievetagstask.h
+    kolabsettings.h
+    tagchangehelper.h
+    kolabrelationresourcetask.h
+    kolabchangeitemsrelationstask.h
+    kolabchangeitemstagstask.h
+    updatemessagejob.h
     )
 
 ecm_qt_declare_logging_category(kolabresource_SRCS

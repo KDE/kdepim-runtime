@@ -18,6 +18,10 @@ set( akonotesresource_SRCS
   ../maildir/retrieveitemsjob.cpp
   ../maildir/maildirresource_debug.cpp
   akonotesresource.cpp
+  ../maildir/maildirresource.h
+  ../maildir/retrieveitemsjob.h
+  ../maildir/maildirresource_debug.h
+  akonotesresource.h
   ${akonotes_common_SRCS}
 )
 
@@ -58,6 +62,8 @@ target_sources(akonotesconfig PRIVATE
     ../maildir/configwidget.cpp
     ../maildir/maildirconfig.cpp
     akonotesconfig.cpp
+    ../maildir/configwidget.h
+    ../maildir/maildirconfig.h
     ${akonotes_common_SRCS}
 )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)

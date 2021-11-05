@@ -30,6 +30,26 @@ set(tomboynotesresource_SRCS
     o2/o2replyserver.cpp
     o2/o2requestor.cpp
     o2/o2simplecrypt.cpp
+
+    tomboynotesresource.h
+    tomboycollectionsdownloadjob.h
+    tomboyitemdownloadjob.h
+    tomboyitemuploadjob.h
+    tomboyitemsdownloadjob.h
+    tomboyjobbase.h
+    tomboyserverauthenticatejob.h
+    o1tomboy.h
+    o2/o0settingsstore.h
+    o2/o0baseauth.h
+    o2/o0abstractstore.h
+    o2/o0globals.h
+    o2/o1.h
+    o2/o1requestor.h
+    o2/o1timedreply.h
+    o2/o2.h
+    o2/o2reply.h
+    o2/o2replyserver.h
+    o2/o2requestor.h
     )
 
 ecm_qt_declare_logging_category(tomboynotesresource_SRCS
@@ -94,6 +114,7 @@ kcoreaddons_add_plugin(tomboynotesconfig
 ki18n_wrap_ui(tomboynotesconfig tomboynotesagentconfigwidget.ui)
 target_sources(tomboynotesconfig PRIVATE
     tomboynotesconfigwidget.cpp
+    tomboynotesconfigwidget.h
     ${tomboynotesresource_common_SRCS}
     )
 

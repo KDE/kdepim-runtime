@@ -21,6 +21,10 @@ set( mixedmaildirresource_SRCS
     mixedmaildirresource.cpp
     mixedmaildirstore.cpp
     retrieveitemsjob.cpp
+    compactchangehelper.h
+    mixedmaildirresource.h
+    mixedmaildirstore.h
+    retrieveitemsjob.h
     ${mixedmaildir_common_SRCS}
     )
 ecm_qt_declare_logging_category(mixedmaildirresource_SRCS HEADER mixedmaildirresource_debug.h IDENTIFIER MIXEDMAILDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.mixedmaildirresource
@@ -87,6 +91,7 @@ kcoreaddons_add_plugin(mixedmaildirconfig
 target_sources(mixedmaildirconfig PRIVATE
     mixedmaildirconfig.cpp
     configwidget.cpp
+    configwidget.h
     ${mixedmaildir_common_SRCS}
     )
 ki18n_wrap_ui(mixedmaildirconfig settings.ui)

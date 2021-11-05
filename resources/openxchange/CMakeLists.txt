@@ -39,6 +39,38 @@ set( openxchangeresource_SRCS
 
   openxchangeresource.cpp
 
+  oxa/contactutils.h
+  oxa/davmanager.h
+  oxa/davutils.h
+  oxa/folder.h
+  oxa/foldercreatejob.h
+  oxa/folderdeletejob.h
+  oxa/foldermodifyjob.h
+  oxa/foldermovejob.h
+  oxa/folderrequestjob.h
+  oxa/foldersrequestdeltajob.h
+  oxa/foldersrequestjob.h
+  oxa/folderutils.h
+  oxa/incidenceutils.h
+  oxa/object.h
+  oxa/objectcreatejob.h
+  oxa/objectdeletejob.h
+  oxa/objectmodifyjob.h
+  oxa/objectmovejob.h
+  oxa/objectrequestjob.h
+  oxa/objectsrequestdeltajob.h
+  oxa/objectsrequestjob.h
+  oxa/objectutils.h
+  oxa/oxutils.h
+  oxa/oxerrors.h
+  oxa/updateusersjob.h
+  oxa/user.h
+  oxa/users.h
+  oxa/useridrequestjob.h
+  oxa/usersrequestjob.h
+
+  openxchangeresource.h
+
   ${openxchange_common_SRCS}
 )
 
@@ -85,6 +117,8 @@ target_sources(openxchangeconfig PRIVATE
   configwidget.cpp
   openxchangeconfig.cpp
   oxa/connectiontestjob.cpp
+  configwidget.h
+  oxa/connectiontestjob.h
   ${openxchange_common_SRCS}
 )
 

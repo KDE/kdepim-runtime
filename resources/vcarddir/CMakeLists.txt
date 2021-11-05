@@ -11,6 +11,7 @@ kconfig_add_kcfg_files(vcarddirresource_common_SRCS
 set( vcarddirresource_SRCS
     ${vcarddirresource_common_SRCS}
   vcarddirresource.cpp
+  vcarddirresource.h
 )
 ecm_qt_declare_logging_category(vcarddirresource_SRCS HEADER vcarddirresource_debug.h IDENTIFIER VCARDDIRRESOURCE_LOG CATEGORY_NAME org.kde.pim.vcarddirresource
         DESCRIPTION "vcarddir resource (kdepim-runtime)"
@@ -61,6 +62,7 @@ ki18n_wrap_ui(vcarddirconfig vcarddiragentsettingswidget.ui)
 
 target_sources(vcarddirconfig PRIVATE
     vcarddirsettingswidget.cpp
+    vcarddirsettingswidget.h
     ${vcarddirconfig_ui_SRCS}
     ${vcarddirresource_common_SRCS}
     )
