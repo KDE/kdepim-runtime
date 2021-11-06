@@ -27,7 +27,8 @@ public:
     explicit POPSession(Settings &settings, const QString &password);
     ~POPSession() override;
 
-    Result createProtocol();
+    // Warning: this object lives in a different thread
+    // Do not make direct method calls to it
     POP3Protocol *getProtocol() const;
 
     void abortCurrentJob();
@@ -41,8 +42,7 @@ private:
 
     std::unique_ptr<POP3Protocol> mProtocol;
     BaseJob *mCurrentJob = nullptr;
-    const QString mPassword;
-    Settings &mSettings;
+    std::unique_ptr<QThread> mThread;
 };
 
 class BaseJob : public KJob
@@ -52,9 +52,14 @@ public:
     explicit BaseJob(POPSession *POPSession);
     ~BaseJob() override;
 
+Q_SIGNALS:
+    // internal signal
+    void jobDone(const Result &result);
+
 protected:
-    void startJob(const QString &path);
     virtual void slotData(const QByteArray &data);
+    virtual void handleJobDone(const Result &result);
+    void startJob(const QString &path);
 
     POPSession *const mPOPSession;
 };
@@ -133,6 +138,7 @@ Q_SIGNALS:
 
 private:
     void slotData(const QByteArray &data) override;
+    void handleJobDone(const Result &result) override;
     void slotMessageComplete();
 
     QList<int> mIdsPendingDownload;

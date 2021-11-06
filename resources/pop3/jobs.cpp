@@ -15,15 +15,23 @@
 
 #include "pop3protocol.h"
 
+#include <QThread>
+
 POPSession::POPSession(Settings &settings, const QString &password)
-    : mPassword(password)
-    , mSettings(settings)
+    : mProtocol(std::make_unique<POP3Protocol>(settings, password))
+    , mThread(new QThread)
 {
+    qRegisterMetaType<Result>();
+    connect(mProtocol.get(), &POP3Protocol::sslError, this, &POPSession::handleSslError, Qt::BlockingQueuedConnection);
+    mProtocol->moveToThread(mThread.get());
+    mThread->start();
 }
 
 POPSession::~POPSession()
 {
     closeSession();
+    mThread->quit();
+    mThread->wait();
 }
 
 void POPSession::setCurrentJob(BaseJob *job)
@@ -35,13 +43,6 @@ void POPSession::handleSslError(const KSslErrorUiData &errorData)
 {
     const bool cont = KIO::SslUi::askIgnoreSslErrors(errorData, KIO::SslUi::RecallAndStoreRules);
     mProtocol->setContinueAfterSslError(cont);
-}
-
-Result POPSession::createProtocol()
-{
-    mProtocol.reset(new POP3Protocol(mSettings, mPassword));
-    connect(mProtocol.get(), &POP3Protocol::sslError, this, &POPSession::handleSslError);
-    return mProtocol->openConnection();
 }
 
 POP3Protocol *POPSession::getProtocol() const
@@ -60,7 +61,10 @@ void POPSession::abortCurrentJob()
 
 void POPSession::closeSession()
 {
-    mProtocol->closeConnection();
+    QMetaObject::invokeMethod(mProtocol.get(), [=]() {
+        Q_ASSERT(QThread::currentThread() != qApp->thread());
+        mProtocol->closeConnection();
+    });
 }
 
 static QByteArray cleanupListResponse(const QByteArray &response)
@@ -89,22 +93,33 @@ BaseJob::BaseJob(POPSession *POPSession)
     : mPOPSession(POPSession)
 {
     mPOPSession->setCurrentJob(this);
+    connect(this, &BaseJob::jobDone, this, &BaseJob::handleJobDone);
 }
 
 BaseJob::~BaseJob()
 {
     // Don't do that here, the job might be destroyed after another one was started
     // and therefore overwrite the current job
-    // mPOPSession->setCurrentJob( 0 );
+    // mPOPSession->setCurrentJob(nullptr);
 }
 
 void BaseJob::startJob(const QString &path)
 {
-    connect(mPOPSession->getProtocol(), &POP3Protocol::data, this, &BaseJob::slotData);
-    const Result result = mPOPSession->getProtocol()->get(path);
+    Q_ASSERT(QThread::currentThread() == qApp->thread());
+    POP3Protocol *protocol = mPOPSession->getProtocol();
+    connect(protocol, &POP3Protocol::data, this, &BaseJob::slotData);
+    // Important: copy the arguments into the lambda, it'll crash if you capture by reference
+    QMetaObject::invokeMethod(protocol, [=]() {
+        Q_ASSERT(QThread::currentThread() != qApp->thread());
+        const Result result = protocol->get(path);
+        disconnect(protocol, &POP3Protocol::data, this, &BaseJob::slotData);
+        Q_EMIT jobDone(result);
+    });
+}
 
-    // get() is sync, so we're done
-    disconnect(mPOPSession->getProtocol(), &POP3Protocol::data, this, &BaseJob::slotData);
+void BaseJob::handleJobDone(const Result &result)
+{
+    Q_ASSERT(QThread::currentThread() == qApp->thread());
     mPOPSession->setCurrentJob(nullptr);
     if (!result.success) {
         setError(result.error);
@@ -131,12 +146,13 @@ void LoginJob::start()
         emitResult();
     }
 
-    const Result result = mPOPSession->createProtocol();
-    if (!result.success) {
-        setError(result.error);
-        setErrorText(result.errorString);
-    }
-    emitResult();
+    Q_ASSERT(QThread::currentThread() == qApp->thread());
+    POP3Protocol *protocol = mPOPSession->getProtocol();
+    QMetaObject::invokeMethod(protocol, [=]() {
+        Q_ASSERT(QThread::currentThread() != qApp->thread());
+        const Result result = protocol->openConnection();
+        Q_EMIT jobDone(result);
+    });
 }
 
 ListJob::ListJob(POPSession *popSession)
@@ -288,7 +304,6 @@ void FetchJob::start()
     setTotalAmount(KJob::Bytes, mTotalBytesToDownload);
     connect(mPOPSession->getProtocol(), &POP3Protocol::messageComplete, this, &FetchJob::slotMessageComplete);
     startJob(QLatin1String("/download/") + intListToString(mIdsPendingDownload));
-    disconnect(mPOPSession->getProtocol(), &POP3Protocol::messageComplete, this, &FetchJob::slotMessageComplete);
 }
 
 void FetchJob::slotData(const QByteArray &data)
@@ -299,6 +314,12 @@ void FetchJob::slotData(const QByteArray &data)
     if (mDataCounter % 5 == 0) {
         setProcessedAmount(KJob::Bytes, mBytesDownloaded);
     }
+}
+
+void FetchJob::handleJobDone(const Result &result)
+{
+    disconnect(mPOPSession->getProtocol(), &POP3Protocol::messageComplete, this, &FetchJob::slotMessageComplete);
+    BaseJob::handleJobDone(result);
 }
 
 void FetchJob::slotMessageComplete()

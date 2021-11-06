@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <QMetaType>
 #include <QString>
 
 /**
@@ -32,3 +33,5 @@ struct Result {
         return Result{true, 0, QString()};
     }
 };
+
+Q_DECLARE_METATYPE(Result)

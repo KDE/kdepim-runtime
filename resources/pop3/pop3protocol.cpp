@@ -26,6 +26,7 @@ extern "C" {
 
 #include <QSslCipher>
 #include <QSslSocket>
+#include <QThread>
 #include <string.h>
 
 #include <KIOCore/KSslErrorUiData>
@@ -537,6 +538,8 @@ Result POP3Protocol::loginPASS()
 
 Result POP3Protocol::openConnection()
 {
+    Q_ASSERT(QThread::currentThread() != qApp->thread());
+
     m_try_apop = mSettings.authenticationMethod() == MailTransport::Transport::EnumAuthenticationType::APOP;
     m_try_sasl = useSASL(mSettings);
 
@@ -685,6 +688,8 @@ size_t POP3Protocol::realGetSize(unsigned int msg_num)
 
 Result POP3Protocol::get(const QString &_commandString)
 {
+    Q_ASSERT(QThread::currentThread() != qApp->thread());
+
     qCDebug(POP3_LOG) << _commandString;
     // List of supported commands
     //
@@ -746,7 +751,7 @@ Result POP3Protocol::get(const QString &_commandString)
                 // sanders, changed -2 to -1 below
                 int bufStrLen = strlen(buf);
                 buf[bufStrLen - 2] = '\0';
-                Q_EMIT data(QByteArray::fromRawData(buf, bufStrLen));
+                Q_EMIT data(QByteArray(buf, bufStrLen));
             }
         }
         qCDebug(POP3_LOG) << "Finishing up list";
@@ -846,7 +851,7 @@ Result POP3Protocol::get(const QString &_commandString)
                     }
 
                     if (buf2 > destbuf) {
-                        Q_EMIT data(QByteArray::fromRawData(destbuf, buf2 - destbuf));
+                        Q_EMIT data(QByteArray(destbuf, buf2 - destbuf));
                     }
 
                     if (endOfMail) {
@@ -882,7 +887,7 @@ Result POP3Protocol::get(const QString &_commandString)
         if (command(commandStr.toLatin1(), buf, sizeof(buf) - 1) == Ok) {
             const int len = strlen(buf);
             // totalSize(len);
-            Q_EMIT data(QByteArray::fromRawData(buf, len));
+            Q_EMIT data(QByteArray(buf, len));
             // processedSize(len);
             qCDebug(POP3_LOG) << buf;
             qCDebug(POP3_LOG) << "Finishing up uid";
