@@ -21,7 +21,7 @@ public:
 
     void start() override;
 
-    EwsId::List folders()
+    EwsId::List folders() const
     {
         return mFolders;
     }
