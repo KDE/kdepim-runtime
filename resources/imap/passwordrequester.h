@@ -24,6 +24,6 @@ public:
 private:
     PasswordRequesterInterface *requesterImpl();
     PasswordRequesterInterface *mImpl = nullptr;
-    ImapResourceBase *mResource = nullptr;
+    ImapResourceBase *const mResource;
 };
 

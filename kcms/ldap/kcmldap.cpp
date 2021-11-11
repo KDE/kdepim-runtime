@@ -20,6 +20,7 @@ K_PLUGIN_CLASS_WITH_JSON(KCMLdap, "kcmldap.json")
 
 KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
     : KCModule(parent)
+    , mLdapConfigureWidget(new KLDAP::LdapConfigureWidget(this))
 {
     setButtons(KCModule::Apply);
     auto about = new KAboutData(QStringLiteral("kcmldap"),
@@ -33,7 +34,6 @@ KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
     auto layout = new QVBoxLayout(this);
     layout->setContentsMargins({});
 
-    mLdapConfigureWidget = new KLDAP::LdapConfigureWidget(this);
     layout->addWidget(mLdapConfigureWidget);
 
     connect(mLdapConfigureWidget, &KLDAP::LdapConfigureWidget::changed, this, qOverload<bool>(&KCMLdap::changed));

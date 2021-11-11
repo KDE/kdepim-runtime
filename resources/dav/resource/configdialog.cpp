@@ -40,7 +40,7 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::onCancelClicked);
     mainLayout->addWidget(buttonBox);
 
-    mModel = new QStandardItemModel();
+    mModel = new QStandardItemModel(this);
     const QStringList headers = {i18n("Protocol"), i18n("URL")};
     mModel->setHorizontalHeaderLabels(headers);
 
@@ -202,8 +202,8 @@ void ConfigDialog::onRemoveButtonClicked()
         return;
     }
 
-    QString proto = mModel->index(indexes.at(0).row(), 0).data().toString();
-    QString url = mModel->index(indexes.at(0).row(), 1).data().toString();
+    const QString proto = mModel->index(indexes.at(0).row(), 0).data().toString();
+    const QString url = mModel->index(indexes.at(0).row(), 1).data().toString();
 
     mRemovedUrls << QPair<QString, KDAV::Protocol>(url, Utils::protocolByTranslatedName(proto));
     mModel->removeRow(indexes.at(0).row());

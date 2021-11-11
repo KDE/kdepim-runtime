@@ -83,7 +83,7 @@ void DavFreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime 
 
 void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 {
-    QString email = job->property("email").toString();
+    const QString email = job->property("email").toString();
     int handlingJobCount = --mRequestsTracker[email].handlingJobCount;
 
     if (job->error()) {
@@ -128,7 +128,7 @@ void DavFreeBusyHandler::onPrincipalSearchJobFinished(KJob *job)
 
 void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
 {
-    QString email = job->property("email").toString();
+    const QString email = job->property("email").toString();
     uint requestId = job->property("request-id").toUInt();
     int retrievalJobCount = --mRequestsTracker[email].retrievalJobCount;
 
@@ -200,7 +200,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
         return;
     }
 
-    QString rawData = calendarDataElement.text();
+    const QString rawData = calendarDataElement.text();
 
     KCalendarCore::ICalFormat format;
     KCalendarCore::FreeBusy::Ptr fb = format.parseFreeBusy(rawData);

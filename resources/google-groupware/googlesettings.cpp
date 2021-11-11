@@ -17,7 +17,6 @@ using namespace KGAPI2;
 static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 
 GoogleSettings::GoogleSettings()
-    : m_winId(0)
 {
     m_wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
     if (m_wallet) {

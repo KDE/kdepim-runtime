@@ -28,6 +28,6 @@ public:
     void save() override;
 
 private:
-    KLDAP::LdapConfigureWidget *mLdapConfigureWidget = nullptr;
+    KLDAP::LdapConfigureWidget *const mLdapConfigureWidget;
 };
 
