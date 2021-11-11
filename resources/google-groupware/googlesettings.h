@@ -55,7 +55,7 @@ private Q_SLOTS:
     void slotWalletOpened(bool success);
 
 private:
-    WId m_winId;
+    WId m_winId = 0;
     QString m_resourceId;
     bool m_isReady = false;
     KGAPI2::AccountPtr m_account;

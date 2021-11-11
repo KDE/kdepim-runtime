@@ -38,7 +38,7 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &UrlConfigurationDialog::reject);
     mainLayout->addWidget(buttonBox);
 
-    mModel = new QStandardItemModel();
+    mModel = new QStandardItemModel(this);
     initModel();
 
     mUi.discoveredUrls->setModel(mModel);

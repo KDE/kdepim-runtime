@@ -6,6 +6,9 @@ target_sources(folderarchivesettings PRIVATE
    folderarchivesettingpage.cpp
    folderarchiveutil.cpp
    folderarchiveaccountinfo.cpp 
+   folderarchivesettingpage.h
+   folderarchiveutil.h
+   folderarchiveaccountinfo.h
 )
 
 generate_export_header(folderarchivesettings BASE_NAME folderarchivesettings)

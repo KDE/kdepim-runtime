@@ -57,13 +57,13 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return QString();
     }
 
-    QString pathPattern;
 
     const QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
     if (service->property(pathPropertyName).isNull()) {
         return QString();
     }
 
+    QString pathPattern;
     pathPattern.append(service->property(pathPropertyName).toString() + QLatin1Char('/'));
 
     QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
@@ -167,7 +167,7 @@ SetupWizard::Url::List SetupWizard::urls() const
 {
     Url::List urls;
 
-    QString desktopFilePath = property("providerDesktopFilePath").toString();
+    const QString desktopFilePath = property("providerDesktopFilePath").toString();
     if (desktopFilePath.isEmpty()) {
         return urls;
     }
