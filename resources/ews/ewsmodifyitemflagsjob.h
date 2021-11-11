@@ -36,7 +36,7 @@ Q_SIGNALS:
     void reportPercent(int progress);
 
 protected:
-    Akonadi::Item::List mItems;
+    const Akonadi::Item::List mItems;
     Akonadi::Item::List mResultItems;
     EwsClient &mClient;
     QSet<QByteArray> mAddedFlags;
