@@ -237,8 +237,8 @@ void EwsConfigDialog::performAutoDiscovery()
     connect(mAutoDiscoveryJob, &EwsAutodiscoveryJob::result, this, &EwsConfigDialog::autoDiscoveryFinished);
     mProgressDialog = new EwsProgressDialog(this, EwsProgressDialog::AutoDiscovery);
     connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
-    mAutoDiscoveryJob->start();
     mProgressDialog->show();
+    mAutoDiscoveryJob->start();
 }
 
 void EwsConfigDialog::autoDiscoveryFinished(KJob *job)
