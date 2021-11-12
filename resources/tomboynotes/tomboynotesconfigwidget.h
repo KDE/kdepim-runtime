@@ -28,7 +28,7 @@ public:
     void saveDialogSize(const QSize &size) override;
 
 private:
-    Ui::TomboyNotesAgentConfigWidget *ui = nullptr;
+    Ui::TomboyNotesAgentConfigWidget *const ui;
 
     KConfigDialogManager *mManager = nullptr;
 };
