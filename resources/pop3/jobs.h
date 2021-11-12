@@ -56,7 +56,7 @@ protected:
     void startJob(const QString &path);
     virtual void slotData(const QByteArray &data);
 
-    POPSession *mPOPSession = nullptr;
+    POPSession *const mPOPSession;
 };
 
 class LoginJob : public BaseJob

@@ -128,7 +128,7 @@ private:
     Q_REQUIRED_RESULT Result loginPASS();
 
     const Settings &mSettings;
-    QSslSocket *mSocket = nullptr;
+    QSslSocket *const mSocket;
     unsigned short int m_iPort;
     QString m_sServer, m_sPass, m_sUser;
     bool m_try_apop, m_try_sasl, supports_apop;
