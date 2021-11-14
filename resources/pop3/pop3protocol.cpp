@@ -716,9 +716,6 @@ Result POP3Protocol::get(const QString &_commandString)
     // /uidl          UIDL      List message UIDs
     // /remove/#1     DELE #1   Mark a message for deletion
     // /download/#1   RETR #1   Get message header and body
-    // /list/#1       LIST #1   Get size of a message
-    // /uid/#1        UIDL #1   Get UID of a message
-    // /headers/#1    TOP #1    Get header of message
     //
     // Notes:
     // Sizes are in bytes.
@@ -784,7 +781,7 @@ Result POP3Protocol::get(const QString &_commandString)
             getResponse(buf, sizeof(buf) - 1);
             activeCommands--;
         }
-    } else if (cmd == QLatin1StringView("download") || cmd == QLatin1StringView("headers")) {
+    } else if (cmd == QLatin1StringView("download")) {
         const QStringList waitingCommands = path.split(QLatin1Char(','), Qt::SkipEmptyParts);
         if (waitingCommands.isEmpty()) {
             qCDebug(POP3_LOG) << "tried to request" << cmd << "for" << path << "with no specific item to get";
@@ -797,9 +794,7 @@ Result POP3Protocol::get(const QString &_commandString)
         QStringList::ConstIterator it = waitingCommands.begin();
         while (it != waitingCommands.end() || activeCommands > 0) {
             while (activeCommands < maxCommands && it != waitingCommands.end()) {
-                sendCommand(QString((cmd == QLatin1StringView("headers")) ? QString(QLatin1StringView("TOP ") + *it + QLatin1StringView(" 0"))
-                                                                          : QString(QLatin1StringView("RETR ") + *it))
-                                .toLatin1());
+                sendCommand(QString(QLatin1StringView("RETR ") + *it).toLatin1());
                 activeCommands++;
                 it++;
             }
@@ -885,32 +880,6 @@ Result POP3Protocol::get(const QString &_commandString)
             }
         }
         qCDebug(POP3_LOG) << "Finishing up";
-    } else if ((cmd == QLatin1StringView("uid")) || (cmd == QLatin1StringView("list"))) {
-        bool ok = true;
-        (void)path.toInt(&ok);
-        if (!ok) {
-            return Result::fail(ERR_INTERNAL, i18n("Internal error, number expected: %1", path));
-        }
-
-        QString commandStr;
-        if (cmd == QLatin1StringView("uid")) {
-            commandStr = QLatin1StringView("UIDL ") + path;
-        } else {
-            commandStr = QLatin1StringView("LIST ") + path;
-        }
-
-        memset(buf, 0, sizeof(buf));
-        if (command(commandStr.toLatin1(), buf, sizeof(buf) - 1) == Ok) {
-            const int len = strlen(buf);
-            // totalSize(len);
-            Q_EMIT data(QByteArray(buf, len));
-            // processedSize(len);
-            qCDebug(POP3_LOG) << buf;
-            qCDebug(POP3_LOG) << "Finishing up uid";
-        } else {
-            closeConnection();
-            return Result::fail(ERR_PROTOCOL, i18n("Unexpected response from POP3 server."));
-        }
     }
     return Result::pass();
 }
