@@ -83,7 +83,6 @@ target_link_libraries(akonadi_davgroupware_resource
     KF${KF_MAJOR_VERSION}::KIOCore
     KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::Wallet
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::Completion
     KF${KF_MAJOR_VERSION}::ConfigCore
@@ -92,6 +91,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF${KF_MAJOR_VERSION}::DAV
     KF${KF_MAJOR_VERSION}::Service
     Qt::Xml
+    qt${KF_MAJOR_VERSION}keychain
     )
 
 install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
