@@ -85,7 +85,6 @@ target_link_libraries(akonadi_google_resource
   KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
   KF${KF_MAJOR_VERSION}::CalendarCore
   KF${KF_MAJOR_VERSION}::Contacts
-  KF${KF_MAJOR_VERSION}::Wallet
   KF${KF_MAJOR_VERSION}::I18n
   KF${KF_MAJOR_VERSION}::WindowSystem
   KF${KF_MAJOR_VERSION}::TextWidgets
@@ -94,6 +93,7 @@ target_link_libraries(akonadi_google_resource
   KPim${KF_MAJOR_VERSION}::GAPIPeople
   KPim${KF_MAJOR_VERSION}::GAPICore
   KPim${KF_MAJOR_VERSION}::GAPITasks
+  qt${KF_MAJOR_VERSION}keychain
 )
 
 install(TARGETS akonadi_google_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

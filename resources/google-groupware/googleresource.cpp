@@ -74,7 +74,7 @@ GoogleResource::GoogleResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
-    Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
+    Q_EMIT status(NotConfigured, i18n("Fetching password..."));
 
     m_settings = new GoogleSettings();
     m_settings->setWindowId(winIdForDialogs());
@@ -83,7 +83,7 @@ GoogleResource::GoogleResource(const QString &id)
             return;
         }
         if (!ready) {
-            Q_EMIT status(Broken, i18n("Can't access KWallet"));
+            Q_EMIT status(Broken, i18n("Can't fetch password"));
             return;
         }
 
@@ -283,7 +283,7 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
     auto authJob = qobject_cast<AuthJob *>(job);
     AccountPtr account = authJob->account();
     if (!m_settings->storeAccount(account)) {
-        qCWarning(GOOGLE_LOG) << "Failed to store account in KWallet";
+        qCWarning(GOOGLE_LOG) << "Failed to store account's password in secret storage";
     }
 
     auto otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
