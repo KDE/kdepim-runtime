@@ -25,16 +25,27 @@
 #include <QWhatsThis>
 
 #include <KSharedConfig>
+#include <ki18n_version.h>
+#if KI18N_VERSION >= QT_VERSION_CHECK(5, 89, 0)
+#include <KLazyLocalizedString>
+#undef I18N_NOOP
+#define I18N_NOOP kli18n
+#endif
 
-static const char *textToSpeakMessage = I18N_NOOP(
-    "<qt>"
-    "<p>Here you can define message. "
-    "You can use:</p>"
-    "<ul>"
-    "<li>%s set subject</li>"
-    "<li>%f set from</li>"
-    "</ul>"
-    "</qt>");
+#if KI18N_VERSION < QT_VERSION_CHECK(5, 89, 0)
+static const char *textToSpeakMessage
+#else
+static KLazyLocalizedString textToSpeakMessage
+#endif
+    = I18N_NOOP(
+        "<qt>"
+        "<p>Here you can define message. "
+        "You can use:</p>"
+        "<ul>"
+        "<li>%s set subject</li>"
+        "<li>%f set from</li>"
+        "</ul>"
+        "</qt>");
 
 NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
@@ -125,7 +136,12 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     mTextToSpeakSetting = new QLineEdit;
     mTextToSpeakSetting->setObjectName(QStringLiteral("mTextToSpeakSetting"));
     mTextToSpeakSetting->setClearButtonEnabled(true);
+
+#if KI18N_VERSION < QT_VERSION_CHECK(5, 89, 0)
     mTextToSpeakSetting->setWhatsThis(i18n(textToSpeakMessage));
+#else
+    mTextToSpeakSetting->setWhatsThis(KLocalizedString(textToSpeakMessage).toString());
+#endif
     textToSpeakLayout->addWidget(mTextToSpeakSetting);
     vbox->addLayout(textToSpeakLayout);
     vbox->addStretch();
@@ -215,7 +231,11 @@ bool NewMailNotifierSettingsWidget::save() const
 
 void NewMailNotifierSettingsWidget::slotHelpLinkClicked(const QString &)
 {
+#if KI18N_VERSION < QT_VERSION_CHECK(5, 89, 0)
     const QString help = i18n(textToSpeakMessage);
+#else
+    const QString help = KLocalizedString(textToSpeakMessage).toString();
+#endif
 
     QWhatsThis::showText(QCursor::pos(), help);
 }
