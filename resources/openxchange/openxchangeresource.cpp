@@ -52,17 +52,17 @@ public:
     {
     }
 
-    inline qlonglong objectId() const
+    Q_REQUIRED_RESULT inline qlonglong objectId() const
     {
         return mObjectId;
     }
 
-    inline OXA::Folder::Module module() const
+    Q_REQUIRED_RESULT inline OXA::Folder::Module module() const
     {
         return mModule;
     }
 
-    inline QString lastModified() const
+    Q_REQUIRED_RESULT inline QString lastModified() const
     {
         return mLastModified;
     }
@@ -178,7 +178,7 @@ public:
         Settings::self()->save();
     }
 
-    qulonglong lastSync(qlonglong collectionId) const
+    Q_REQUIRED_RESULT qulonglong lastSync(qlonglong collectionId) const
     {
         return mObjectsMap.value(collectionId, 0);
     }

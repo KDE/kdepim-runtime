@@ -27,7 +27,7 @@ public:
         mWidget.loadSettings();
     }
 
-    bool save() const override
+    Q_REQUIRED_RESULT bool save() const override
     {
         const_cast<Pop3Config *>(this)->mWidget.saveSettings();
         return Akonadi::AgentConfigurationBase::save();

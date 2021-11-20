@@ -26,7 +26,7 @@ public:
         mWidget->setMonitorEnabled(false);
     }
 
-    bool save() const override
+    Q_REQUIRED_RESULT bool save() const override
     {
         mSettings->setAlarmTypes(CalEvent::mimeTypes(mTypeSelector->alarmType()));
         return SingleFileResourceConfigBase<SETTINGS_NAMESPACE::Settings>::save();

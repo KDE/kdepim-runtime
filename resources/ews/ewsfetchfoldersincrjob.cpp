@@ -111,27 +111,27 @@ public:
     Flags flags;
     EwsFolder ewsFolder;
 
-    bool isCreated() const
+    Q_REQUIRED_RESULT bool isCreated() const
     {
         return flags & RemoteCreated;
     }
 
-    bool isModified() const
+    Q_REQUIRED_RESULT bool isModified() const
     {
         return flags & RemoteUpdated;
     }
 
-    bool isRemoved() const
+    Q_REQUIRED_RESULT bool isRemoved() const
     {
         return flags & RemoteDeleted;
     }
 
-    bool isProcessed() const
+    Q_REQUIRED_RESULT bool isProcessed() const
     {
         return flags & Processed;
     }
 
-    QString parent() const
+    Q_REQUIRED_RESULT QString parent() const
     {
         return ewsFolder.isValid() ? ewsFolder[EwsFolderFieldParentFolderId].value<EwsId>().id() : QString();
     }
