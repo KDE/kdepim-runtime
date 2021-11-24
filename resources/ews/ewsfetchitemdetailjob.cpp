@@ -17,9 +17,7 @@ EwsFetchItemDetailJob::EwsFetchItemDetailJob(EwsClient &client, QObject *parent,
     addSubjob(mRequest);
 }
 
-EwsFetchItemDetailJob::~EwsFetchItemDetailJob()
-{
-}
+EwsFetchItemDetailJob::~EwsFetchItemDetailJob() = default;
 
 void EwsFetchItemDetailJob::setItemLists(const Akonadi::Item::List &changedItems, Akonadi::Item::List *deletedItems)
 {

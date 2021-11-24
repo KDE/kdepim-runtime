@@ -179,7 +179,7 @@ QList<KIMAP::MailBoxDescriptor> SessionPool::serverNamespaces(Namespace ns) cons
         break;
     }
     Q_ASSERT(false);
-    return QList<KIMAP::MailBoxDescriptor>();
+    return {};
 }
 
 void SessionPool::killSession(KIMAP::Session *session, SessionTermination termination)

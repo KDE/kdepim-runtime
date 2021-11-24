@@ -20,9 +20,7 @@ using HandlerHash = QHash<EwsItemType, QSharedPointer<EwsItemHandler>>;
 Q_GLOBAL_STATIC(HandlerList, handlerFactories)
 Q_GLOBAL_STATIC(HandlerHash, handlers)
 
-EwsItemHandler::~EwsItemHandler()
-{
-}
+EwsItemHandler::~EwsItemHandler() = default;
 
 void EwsItemHandler::registerItemHandler(EwsItemType type, const ItemHandlerFactory &factory)
 {

@@ -19,13 +19,9 @@ using namespace Akonadi;
 
 static const EwsPropertyField propPidFlagStatus(0x1090, EwsPropTypeInteger);
 
-EwsMailHandler::EwsMailHandler()
-{
-}
+EwsMailHandler::EwsMailHandler() = default;
 
-EwsMailHandler::~EwsMailHandler()
-{
-}
+EwsMailHandler::~EwsMailHandler() = default;
 
 EwsItemHandler *EwsMailHandler::factory()
 {

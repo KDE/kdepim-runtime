@@ -19,9 +19,7 @@ NewMailNotifierReplyMessageJob::NewMailNotifierReplyMessageJob(Akonadi::Item::Id
 {
 }
 
-NewMailNotifierReplyMessageJob::~NewMailNotifierReplyMessageJob()
-{
-}
+NewMailNotifierReplyMessageJob::~NewMailNotifierReplyMessageJob() = default;
 
 void NewMailNotifierReplyMessageJob::start()
 {

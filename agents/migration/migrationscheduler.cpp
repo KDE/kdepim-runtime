@@ -127,14 +127,14 @@ int MigratorModel::rowCount(const QModelIndex &parent) const
 QModelIndex MigratorModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (row >= rowCount(parent) || row < 0) {
-        return QModelIndex();
+        return {};
     }
     return createIndex(row, column, static_cast<void *>(mMigrators.at(row).data()));
 }
 
 QModelIndex MigratorModel::parent(const QModelIndex & /*child*/) const
 {
-    return QModelIndex();
+    return {};
 }
 
 QVariant MigratorModel::headerData(int section, Qt::Orientation /*orientation*/, int role) const
@@ -151,7 +151,7 @@ QVariant MigratorModel::headerData(int section, Qt::Orientation /*orientation*/,
             Q_ASSERT(false);
         }
     }
-    return QVariant();
+    return {};
 }
 
 QVariant MigratorModel::data(const QModelIndex &index, int role) const
@@ -160,7 +160,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
     const QSharedPointer<MigratorBase> migrator(row->mMigrator);
     if (!migrator) {
         qWarning() << "migrator not found";
-        return QVariant();
+        return {};
     }
     switch (role) {
     case Qt::DisplayRole:
@@ -173,7 +173,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
             return migrator->status();
         default:
             Q_ASSERT(false);
-            return QVariant();
+            return {};
         }
     case IdentifierRole:
         return migrator->identifier();
@@ -184,7 +184,7 @@ QVariant MigratorModel::data(const QModelIndex &index, int role) const
     default:
         break;
     }
-    return QVariant();
+    return {};
 }
 
 QSharedPointer<MigratorBase> MigratorModel::migrator(const QString &identifier) const
@@ -194,7 +194,7 @@ QSharedPointer<MigratorBase> MigratorModel::migrator(const QString &identifier) 
             return row->mMigrator;
         }
     }
-    return QSharedPointer<MigratorBase>();
+    return {};
 }
 
 QList<QSharedPointer<MigratorBase>> MigratorModel::migrators() const

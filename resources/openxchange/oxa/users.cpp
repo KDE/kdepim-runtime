@@ -21,9 +21,7 @@ Users::Users()
 {
 }
 
-Users::~Users()
-{
-}
+Users::~Users() = default;
 
 Users *Users::self()
 {
@@ -62,7 +60,7 @@ User Users::lookupEmail(const QString &email) const
         }
     }
 
-    return User();
+    return {};
 }
 
 QString Users::cacheFilePath() const

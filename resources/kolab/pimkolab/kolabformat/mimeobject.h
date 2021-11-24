@@ -81,8 +81,8 @@ public:
 
 private:
     //@cond PRIVATE
-    MIMEObject(const MIMEObject &other);
-    MIMEObject &operator=(const MIMEObject &rhs);
+    MIMEObject(const MIMEObject &other) = delete;
+    MIMEObject &operator=(const MIMEObject &rhs) = delete;
 
 private:
     std::unique_ptr<MIMEObjectPrivate> const d;

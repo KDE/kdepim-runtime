@@ -192,9 +192,7 @@ KolabRetrieveCollectionsTask::KolabRetrieveCollectionsTask(const ResourceStateIn
     mRequestedMetadata << "/shared" KOLAB_COLOR_ANNOTATION << "/private" KOLAB_COLOR_ANNOTATION;
 }
 
-KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask()
-{
-}
+KolabRetrieveCollectionsTask::~KolabRetrieveCollectionsTask() = default;
 
 void KolabRetrieveCollectionsTask::doStart(KIMAP::Session *session)
 {

@@ -14,13 +14,9 @@
 
 using namespace Akonadi;
 
-EwsTaskHandler::EwsTaskHandler()
-{
-}
+EwsTaskHandler::EwsTaskHandler() = default;
 
-EwsTaskHandler::~EwsTaskHandler()
-{
-}
+EwsTaskHandler::~EwsTaskHandler() = default;
 
 EwsItemHandler *EwsTaskHandler::factory()
 {

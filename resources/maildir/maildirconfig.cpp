@@ -14,9 +14,7 @@ MaildirConfig::MaildirConfig(const KSharedConfigPtr &config, QWidget *parent, co
     connect(mWidget.data(), &ConfigWidget::okEnabled, this, &Akonadi::AgentConfigurationBase::enableOkButton);
 }
 
-MaildirConfig::~MaildirConfig()
-{
-}
+MaildirConfig::~MaildirConfig() = default;
 
 void MaildirConfig::load()
 {

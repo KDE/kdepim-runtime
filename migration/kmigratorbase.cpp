@@ -41,7 +41,7 @@ QString messageTypeToString(KMigratorBase::MessageType type)
         return QStringLiteral("ERROR  ");
     }
     Q_ASSERT(false);
-    return QString();
+    return {};
 }
 }
 

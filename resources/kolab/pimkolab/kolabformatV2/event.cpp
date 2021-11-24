@@ -37,9 +37,7 @@ Event::Event(const QString &tz, const KCalendarCore::Event::Ptr &event)
     }
 }
 
-Event::~Event()
-{
-}
+Event::~Event() = default;
 
 void Event::setTransparency(KCalendarCore::Event::Transparency transparency)
 {

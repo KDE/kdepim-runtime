@@ -30,7 +30,7 @@ static QString messageTypeToString(MigratorBase::MessageType type)
         return QStringLiteral("ERROR  ");
     }
     Q_ASSERT(false);
-    return QString();
+    return {};
 }
 
 static QMap<QString, MigratorBase::MigrationState> fillMigrationStateMapping()
@@ -84,9 +84,7 @@ MigratorBase::MigratorBase(const QString &identifier, const QString &configFile,
     loadState();
 }
 
-MigratorBase::~MigratorBase()
-{
-}
+MigratorBase::~MigratorBase() = default;
 
 void MigratorBase::setLogfile(const QString &logfile)
 {
@@ -108,12 +106,12 @@ QString MigratorBase::identifier() const
 
 QString MigratorBase::displayName() const
 {
-    return QString();
+    return {};
 }
 
 QString MigratorBase::description() const
 {
-    return QString();
+    return {};
 }
 
 QString MigratorBase::logfile() const
@@ -121,7 +119,7 @@ QString MigratorBase::logfile() const
     if (mLogFile) {
         return mLogFile->fileName();
     }
-    return QString();
+    return {};
 }
 
 bool MigratorBase::canStart()
@@ -249,7 +247,7 @@ NullableConfigGroup MigratorBase::config()
     if (mConfig) {
         return NullableConfigGroup(mConfig->group(mIdentifier));
     }
-    return NullableConfigGroup();
+    return {};
 }
 
 int MigratorBase::progress() const
@@ -283,5 +281,5 @@ QString MigratorBase::status() const
     case Failed:
         return i18nc("@info:status", "Failed");
     }
-    return QString();
+    return {};
 }

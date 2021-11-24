@@ -21,9 +21,7 @@ SearchTask::SearchTask(const ResourceStateInterface::Ptr &state, const QString &
 {
 }
 
-SearchTask::~SearchTask()
-{
-}
+SearchTask::~SearchTask() = default;
 
 void SearchTask::doStart(KIMAP::Session *session)
 {
@@ -124,10 +122,10 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                 return KIMAP::Term(KIMAP::Term::SentOn, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondContains:
                 qCDebug(IMAPRESOURCE_LOG) << " invalid condition for Date";
-                return KIMAP::Term();
+                return {};
             default:
                 qCWarning(IMAPRESOURCE_LOG) << "unknown term for date" << term.key();
-                return KIMAP::Term();
+                return {};
             }
         }
         case Akonadi::EmailSearchTerm::Subject:
@@ -177,7 +175,7 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
             qCWarning(IMAPRESOURCE_LOG) << "unknown term " << term.key();
         }
     }
-    return KIMAP::Term();
+    return {};
 }
 
 void SearchTask::doSearch(KIMAP::Session *session)

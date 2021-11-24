@@ -73,7 +73,7 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
     ok = file.open(QFile::ReadOnly);
     if (!ok) {
         qWarning() << "failed to open file: " << fileName;
-        return KMime::Message::Ptr();
+        return {};
     }
     const QByteArray data = file.readAll();
 

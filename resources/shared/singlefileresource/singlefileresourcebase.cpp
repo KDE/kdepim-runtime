@@ -119,11 +119,11 @@ QByteArray SingleFileResourceBase::calculateHash(const QString &fileName) const
 {
     QFile file(fileName);
     if (!file.exists()) {
-        return QByteArray();
+        return {};
     }
 
     if (!file.open(QIODevice::ReadOnly)) {
-        return QByteArray();
+        return {};
     }
 
     QCryptographicHash hash(QCryptographicHash::Md5);

@@ -44,23 +44,23 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 {
     const QString desktopFilePath = wizard->property("providerDesktopFilePath").toString();
     if (desktopFilePath.isEmpty()) {
-        return QString();
+        return {};
     }
 
     KService::Ptr service = KService::serviceByStorageId(desktopFilePath);
     if (!service) {
-        return QString();
+        return {};
     }
 
     const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
     if (!supportedProtocols.contains(protocol)) {
-        return QString();
+        return {};
     }
 
 
     const QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
     if (service->property(pathPropertyName).isNull()) {
-        return QString();
+        return {};
     }
 
     QString pathPattern;
@@ -102,7 +102,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 
         QString hostPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Host"));
         if (service->property(hostPropertyName).isNull()) {
-            return QString();
+            return {};
         }
 
         url.setHost(service->property(hostPropertyName).toString());
@@ -116,7 +116,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
 
         const QString host = wizard->field(QStringLiteral("connectionHost")).toString();
         if (host.isEmpty()) {
-            return QString();
+            return {};
         }
         const QStringList hostParts = host.split(QLatin1Char(':'));
         url.setHost(hostParts.at(0));
@@ -152,12 +152,12 @@ QString SetupWizard::displayName() const
 {
     QString desktopFilePath = property("providerDesktopFilePath").toString();
     if (desktopFilePath.isEmpty()) {
-        return QString();
+        return {};
     }
 
     KService::Ptr service = KService::serviceByStorageId(desktopFilePath);
     if (!service) {
-        return QString();
+        return {};
     }
 
     return service->name();

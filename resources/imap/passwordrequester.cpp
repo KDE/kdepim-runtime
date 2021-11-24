@@ -18,9 +18,7 @@ PasswordRequester::PasswordRequester(ImapResourceBase *resource, QObject *parent
 {
 }
 
-PasswordRequester::~PasswordRequester()
-{
-}
+PasswordRequester::~PasswordRequester() = default;
 
 PasswordRequesterInterface *PasswordRequester::requesterImpl()
 {

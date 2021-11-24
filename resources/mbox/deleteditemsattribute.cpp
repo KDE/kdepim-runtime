@@ -6,9 +6,7 @@
 
 #include "deleteditemsattribute.h"
 
-DeletedItemsAttribute::DeletedItemsAttribute()
-{
-}
+DeletedItemsAttribute::DeletedItemsAttribute() = default;
 
 DeletedItemsAttribute::DeletedItemsAttribute(const DeletedItemsAttribute &other)
     : Akonadi::Attribute()
@@ -20,9 +18,7 @@ DeletedItemsAttribute::DeletedItemsAttribute(const DeletedItemsAttribute &other)
     mDeletedItemOffsets = other.mDeletedItemOffsets;
 }
 
-DeletedItemsAttribute::~DeletedItemsAttribute()
-{
-}
+DeletedItemsAttribute::~DeletedItemsAttribute() = default;
 
 void DeletedItemsAttribute::addDeletedItemOffset(quint64 offset)
 {

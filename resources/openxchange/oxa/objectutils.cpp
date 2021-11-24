@@ -133,8 +133,8 @@ QString OXA::ObjectUtils::davPath(Folder::Module module)
         return QStringLiteral("/servlet/webdav.tasks");
     case Folder::Unbound:
         Q_ASSERT(false);
-        return QString();
+        return {};
     }
 
-    return QString();
+    return {};
 }

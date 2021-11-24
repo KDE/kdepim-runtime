@@ -235,7 +235,7 @@ public:
             }
         }
 
-        return KMIndexDataPtr();
+        return {};
     }
 
     Q_REQUIRED_RESULT bool hasIndexData() const
@@ -414,7 +414,7 @@ public:
             }
         }
 
-        return KMIndexDataPtr();
+        return {};
     }
 
     Q_REQUIRED_RESULT bool hasIndexData() const

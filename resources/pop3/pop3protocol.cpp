@@ -27,7 +27,7 @@ extern "C" {
 #include <QSslCipher>
 #include <QSslSocket>
 #include <QThread>
-#include <string.h>
+#include <cstring>
 
 #include <KIOCore/KSslErrorUiData>
 
@@ -304,7 +304,7 @@ static QString saslAuthTypeString(const Settings &settings)
     default:
         break;
     }
-    return QString();
+    return {};
 }
 
 void POP3Protocol::closeConnection()

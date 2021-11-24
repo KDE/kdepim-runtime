@@ -45,9 +45,7 @@ SingleFileResourceConfigWidgetBase::SingleFileResourceConfigWidgetBase(QWidget *
     ui.pathLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
 }
 
-SingleFileResourceConfigWidgetBase::~SingleFileResourceConfigWidgetBase()
-{
-}
+SingleFileResourceConfigWidgetBase::~SingleFileResourceConfigWidgetBase() = default;
 
 void SingleFileResourceConfigWidgetBase::addPage(const QString &title, QWidget *page)
 {

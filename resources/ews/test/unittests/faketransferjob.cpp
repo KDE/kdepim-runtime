@@ -22,9 +22,7 @@ FakeTransferJob::FakeTransferJob(const QByteArray &postData, const VerifierFn &f
     metaObject()->invokeMethod(this, "callVerifier", Qt::QueuedConnection);
 }
 
-FakeTransferJob::~FakeTransferJob()
-{
-}
+FakeTransferJob::~FakeTransferJob() = default;
 
 void FakeTransferJob::callVerifier()
 {

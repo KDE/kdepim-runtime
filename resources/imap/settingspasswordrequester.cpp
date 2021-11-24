@@ -160,6 +160,6 @@ QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
         if (userRejected) {
             *userRejected = true;
         }
-        return QString();
+        return {};
     }
 }

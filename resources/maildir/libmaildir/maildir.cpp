@@ -290,7 +290,7 @@ QString Maildir::name() const
 QString Maildir::addSubFolder(const QString &path)
 {
     if (!isValid()) {
-        return QString();
+        return {};
     }
 
     // make the subdir dir
@@ -308,7 +308,7 @@ QString Maildir::addSubFolder(const QString &path)
     if (subdir.create()) {
         return fullPath;
     }
-    return QString();
+    return {};
 }
 
 bool Maildir::removeSubFolder(const QString &folderName)
@@ -404,7 +404,7 @@ QString Maildir::pathToNew() const
     if (isValid()) {
         return d->path + QLatin1String("/new");
     }
-    return QString();
+    return {};
 }
 
 QString Maildir::pathToCurrent() const
@@ -412,7 +412,7 @@ QString Maildir::pathToCurrent() const
     if (isValid()) {
         return d->path + QLatin1String("/cur");
     }
-    return QString();
+    return {};
 }
 
 QString Maildir::subDirPath() const
@@ -430,7 +430,7 @@ QStringList Maildir::subFolderList() const
     if (!d->isRoot) {
         dir.cdUp();
         if (!dir.exists(d->subDirPath())) {
-            return QStringList();
+            return {};
         }
         dir.cd(d->subDirPath());
     }
@@ -491,12 +491,12 @@ QDateTime Maildir::lastModified(const QString &key) const
     if (realKey.isEmpty()) {
         qCWarning(LIBMAILDIR_LOG) << "Maildir::lastModified unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1.", key);
-        return QDateTime();
+        return {};
     }
 
     const QFileInfo info(realKey);
     if (!info.exists()) {
-        return QDateTime();
+        return {};
     }
 
     return info.lastModified();
@@ -530,7 +530,7 @@ QByteArray Maildir::readEntryHeaders(const QString &key) const
     if (realKey.isEmpty()) {
         qCWarning(LIBMAILDIR_LOG) << "Maildir::readEntryHeaders unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1.", key);
-        return QByteArray();
+        return {};
     }
 
     return readEntryHeadersFromFile(realKey);
@@ -589,7 +589,7 @@ QString Maildir::addEntry(const QByteArray &data)
     f.close();
     if (!result) {
         d->lastError = i18n("Cannot write to mail file %1.", key);
-        return QString();
+        return {};
     }
     /*
      * FIXME:
@@ -603,7 +603,7 @@ QString Maildir::addEntry(const QByteArray &data)
     if (!f.rename(finalKey)) {
         qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to add entry: " << finalKey << "! Error: " << f.errorString();
         d->lastError = i18n("Failed to create mail file %1. The error was: %2", finalKey, f.errorString());
-        return QString();
+        return {};
     }
     KeyCache *keyCache = KeyCache::self();
     keyCache->removeKey(d->path, key); // remove all keys, be it "cur" or "new" first
@@ -629,7 +629,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     if (realKey.isEmpty()) {
         qCWarning(LIBMAILDIR_LOG) << "Maildir::changeEntryFlags unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1.", key);
-        return QString();
+        return {};
     }
 
     const QRegularExpression rx = statusSeparatorRx();
@@ -697,7 +697,7 @@ QString Maildir::changeEntryFlags(const QString &key, const Akonadi::Item::Flags
     if (!f.rename(finalKey)) {
         qCWarning(LIBMAILDIR_LOG) << "Maildir: Failed to rename entry: " << f.fileName() << " to " << finalKey << "! Error: " << f.errorString();
         d->lastError = i18n("Failed to update the file name %1 to %2 on the disk. The error was: %3.", f.fileName(), finalKey, f.errorString());
-        return QString();
+        return {};
     }
 
     KeyCache *keyCache = KeyCache::self();
@@ -779,7 +779,7 @@ QString Maildir::moveEntryTo(const QString &key, const Maildir &destination)
     if (realKey.isEmpty()) {
         qCWarning(LIBMAILDIR_LOG) << "Unable to find: " << key;
         d->lastError = i18n("Cannot locate mail file %1.", key);
-        return QString();
+        return {};
     }
     QFile f(realKey);
     // ### is this safe regarding the maildir locking scheme?
@@ -787,7 +787,7 @@ QString Maildir::moveEntryTo(const QString &key, const Maildir &destination)
     if (!f.rename(targetKey)) {
         qCDebug(LIBMAILDIR_LOG) << "Failed to rename" << realKey << "to" << targetKey << "! Error: " << f.errorString();
         d->lastError = f.errorString();
-        return QString();
+        return {};
     }
 
     KeyCache *keyCache = KeyCache::self();

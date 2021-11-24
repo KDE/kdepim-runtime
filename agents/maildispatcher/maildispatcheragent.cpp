@@ -156,9 +156,7 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     setNeedsNetwork(true);
 }
 
-MailDispatcherAgent::~MailDispatcherAgent()
-{
-}
+MailDispatcherAgent::~MailDispatcherAgent() = default;
 
 void MailDispatcherAgent::doSetOnline(bool online)
 {

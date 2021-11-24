@@ -15,13 +15,9 @@
 
 using namespace Akonadi;
 
-EwsContactHandler::EwsContactHandler()
-{
-}
+EwsContactHandler::EwsContactHandler() = default;
 
-EwsContactHandler::~EwsContactHandler()
-{
-}
+EwsContactHandler::~EwsContactHandler() = default;
 
 EwsItemHandler *EwsContactHandler::factory()
 {

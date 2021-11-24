@@ -21,9 +21,7 @@ public:
     {
     }
 
-    ~SingleFileResourceConfigBase() override
-    {
-    }
+    ~SingleFileResourceConfigBase() override = default;
 
     void load() override
     {

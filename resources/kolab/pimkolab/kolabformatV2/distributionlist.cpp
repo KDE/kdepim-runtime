@@ -32,9 +32,7 @@ DistributionList::DistributionList(const QString &xml)
     load(xml);
 }
 
-DistributionList::~DistributionList()
-{
-}
+DistributionList::~DistributionList() = default;
 
 void DistributionList::setName(const QString &name)
 {

@@ -13,9 +13,7 @@
 
 using namespace KGAPI2;
 
-DefaultReminderAttribute::DefaultReminderAttribute()
-{
-}
+DefaultReminderAttribute::DefaultReminderAttribute() = default;
 
 Akonadi::Attribute *DefaultReminderAttribute::clone() const
 {

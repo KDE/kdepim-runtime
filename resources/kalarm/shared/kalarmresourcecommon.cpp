@@ -113,7 +113,7 @@ KAEvent checkItemChanged(const Akonadi::Item &item, QString &errorMsg)
         if (item.remoteId() != event.id()) {
             qWarning() << "Item ID" << item.remoteId() << "differs from payload ID" << event.id();
             errorMsg = i18nc("@info", "Item ID %1 differs from payload ID %2.", item.remoteId(), event.id());
-            return KAEvent();
+            return {};
         }
     }
 
@@ -168,7 +168,7 @@ QString errorMessage(ErrorCode code, const QString &param)
     case CalendarAdd:
         return i18nc("@info", "Failed to add event with uid '%1' to calendar", param);
     }
-    return QString();
+    return {};
 }
 } // namespace KAlarmResourceCommon
 

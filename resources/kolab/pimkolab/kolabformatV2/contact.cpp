@@ -9,7 +9,7 @@
 #include "pimkolab_debug.h"
 #include <KContacts/Addressee>
 #include <QFile>
-#include <float.h>
+#include <cfloat>
 
 using namespace KolabV2;
 
@@ -50,9 +50,7 @@ Contact::Contact(const QString &xml)
     load(xml);
 }
 
-Contact::~Contact()
-{
-}
+Contact::~Contact() = default;
 
 void Contact::setGivenName(const QString &name)
 {

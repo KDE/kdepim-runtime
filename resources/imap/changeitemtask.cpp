@@ -27,9 +27,7 @@ ChangeItemTask::ChangeItemTask(const ResourceStateInterface::Ptr &resource, QObj
 {
 }
 
-ChangeItemTask::~ChangeItemTask()
-{
-}
+ChangeItemTask::~ChangeItemTask() = default;
 
 void ChangeItemTask::doStart(KIMAP::Session *session)
 {

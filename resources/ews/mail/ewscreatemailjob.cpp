@@ -33,9 +33,7 @@ EwsCreateMailJob::EwsCreateMailJob(EwsClient &client,
 {
 }
 
-EwsCreateMailJob::~EwsCreateMailJob()
-{
-}
+EwsCreateMailJob::~EwsCreateMailJob() = default;
 
 void EwsCreateMailJob::doStart()
 {

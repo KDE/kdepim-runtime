@@ -19,9 +19,7 @@ EwsFetchContactDetailJob::EwsFetchContactDetailJob(EwsClient &client, QObject *p
     mRequest->setItemShape(shape);
 }
 
-EwsFetchContactDetailJob::~EwsFetchContactDetailJob()
-{
-}
+EwsFetchContactDetailJob::~EwsFetchContactDetailJob() = default;
 
 void EwsFetchContactDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {

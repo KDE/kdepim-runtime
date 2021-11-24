@@ -80,9 +80,7 @@ private:
     bool isFileValid(const QString &file) const;
 
     struct EventFile { // data to be indexed by event ID
-        EventFile()
-        {
-        }
+        EventFile() = default;
 
         EventFile(const KAEvent &e, const QStringList &f)
             : event(e)

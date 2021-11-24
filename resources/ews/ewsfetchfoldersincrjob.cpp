@@ -103,9 +103,7 @@ public:
     using Flag = enum { RemoteCreated = 0x0001, RemoteUpdated = 0x0002, RemoteDeleted = 0x0004, Processed = 0x0008 };
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    FolderDescr()
-    {
-    }
+    FolderDescr() = default;
 
     Akonadi::Collection collection;
     Flags flags;
@@ -179,9 +177,7 @@ EwsFetchFoldersIncrJobPrivate::EwsFetchFoldersIncrJobPrivate(EwsFetchFoldersIncr
     mPendingMoveJobs = 0;
 }
 
-EwsFetchFoldersIncrJobPrivate::~EwsFetchFoldersIncrJobPrivate()
-{
-}
+EwsFetchFoldersIncrJobPrivate::~EwsFetchFoldersIncrJobPrivate() = default;
 
 void EwsFetchFoldersIncrJobPrivate::remoteFolderIncrFetchDone(KJob *job)
 {
@@ -530,9 +526,7 @@ EwsFetchFoldersIncrJob::EwsFetchFoldersIncrJob(EwsClient &client, const QString 
     qRegisterMetaType<EwsId::List>();
 }
 
-EwsFetchFoldersIncrJob::~EwsFetchFoldersIncrJob()
-{
-}
+EwsFetchFoldersIncrJob::~EwsFetchFoldersIncrJob() = default;
 
 void EwsFetchFoldersIncrJob::start()
 {

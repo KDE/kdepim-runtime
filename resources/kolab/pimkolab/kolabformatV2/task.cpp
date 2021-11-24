@@ -40,9 +40,7 @@ Task::Task(const QString &tz, const KCalendarCore::Todo::Ptr &task)
     }
 }
 
-Task::~Task()
-{
-}
+Task::~Task() = default;
 
 void Task::setPercentCompleted(int percent)
 {

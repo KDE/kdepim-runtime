@@ -11,9 +11,7 @@
 
 #include "imapresource_debug.h"
 
-MessageHelper::~MessageHelper()
-{
-}
+MessageHelper::~MessageHelper() = default;
 
 Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &message,
                                                    const qint64 uid,
@@ -34,7 +32,7 @@ Akonadi::Item MessageHelper::createItemFromMessage(const KMime::Message::Ptr &me
         if (!message) {
             qCWarning(IMAPRESOURCE_LOG) << "Got empty message: " << uid;
             ok = false;
-            return Akonadi::Item();
+            return {};
         }
         // Sometimes messages might not have a body at all
         if (message->body().isEmpty() && (scope.mode == KIMAP::FetchJob::FetchScope::Full || scope.mode == KIMAP::FetchJob::FetchScope::Content)) {

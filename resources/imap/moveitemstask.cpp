@@ -29,9 +29,7 @@ MoveItemsTask::MoveItemsTask(const ResourceStateInterface::Ptr &resource, QObjec
 {
 }
 
-MoveItemsTask::~MoveItemsTask()
-{
-}
+MoveItemsTask::~MoveItemsTask() = default;
 
 void MoveItemsTask::doStart(KIMAP::Session *session)
 {

@@ -42,18 +42,14 @@ QWebEngineUrlRequestInterceptor::QWebEngineUrlRequestInterceptor(QObject *parent
 {
 }
 
-QWebEngineUrlRequestInterceptor::~QWebEngineUrlRequestInterceptor()
-{
-}
+QWebEngineUrlRequestInterceptor::~QWebEngineUrlRequestInterceptor() = default;
 
 QWebEngineUrlSchemeHandler::QWebEngineUrlSchemeHandler(QObject *parent)
     : QObject(parent)
 {
 }
 
-QWebEngineUrlSchemeHandler::~QWebEngineUrlSchemeHandler()
-{
-}
+QWebEngineUrlSchemeHandler::~QWebEngineUrlSchemeHandler() = default;
 
 QWebEngineProfile::QWebEngineProfile(QObject *parent)
     : QObject(parent)
@@ -62,9 +58,7 @@ QWebEngineProfile::QWebEngineProfile(QObject *parent)
 {
 }
 
-QWebEngineProfile::~QWebEngineProfile()
-{
-}
+QWebEngineProfile::~QWebEngineProfile() = default;
 
 void QWebEngineProfile::setHttpUserAgent(const QString &ua)
 {
@@ -89,9 +83,7 @@ QWebEnginePage::QWebEnginePage(QWebEngineProfile *profile, QObject *parent)
     connect(profile, &QWebEngineProfile::logEvent, this, &QWebEnginePage::logEvent);
 }
 
-QWebEnginePage::~QWebEnginePage()
-{
-}
+QWebEnginePage::~QWebEnginePage() = default;
 
 QWebEngineView::QWebEngineView(QWidget *parent)
     : QWidget(parent)
@@ -104,9 +96,7 @@ QWebEngineView::QWebEngineView(QWidget *parent)
     }
 }
 
-QWebEngineView::~QWebEngineView()
-{
-}
+QWebEngineView::~QWebEngineView() = default;
 
 void QWebEngineView::load(const QUrl &url)
 {
@@ -172,9 +162,7 @@ QAbstractOAuthReplyHandler::QAbstractOAuthReplyHandler(QObject *parent)
 {
 }
 
-QAbstractOAuthReplyHandler::~QAbstractOAuthReplyHandler()
-{
-}
+QAbstractOAuthReplyHandler::~QAbstractOAuthReplyHandler() = default;
 
 QAbstractOAuth::QAbstractOAuth(QObject *parent)
     : QObject(parent)
@@ -242,9 +230,7 @@ QOAuth2AuthorizationCodeFlow::QOAuth2AuthorizationCodeFlow(QObject *parent)
     }
 }
 
-QOAuth2AuthorizationCodeFlow::~QOAuth2AuthorizationCodeFlow()
-{
-}
+QOAuth2AuthorizationCodeFlow::~QOAuth2AuthorizationCodeFlow() = default;
 
 void QOAuth2AuthorizationCodeFlow::setAccessTokenUrl(const QUrl &url)
 {
@@ -495,6 +481,6 @@ const QUrl &EwsPKeyAuthJob::resultUri() const
 
 QString EwsPKeyAuthJob::getAuthHeader()
 {
-    return QString();
+    return {};
 }
 }

@@ -186,7 +186,7 @@ KMIndexDataPtr KMIndexReader::dataByOffset(quint64 offset) const
 {
     QHash<quint64, KMIndexDataPtr>::const_iterator it = mMsgByOffset.constFind(offset);
     if (it == mMsgByOffset.constEnd()) {
-        return KMIndexDataPtr();
+        return {};
     }
 
     return it.value();
@@ -196,7 +196,7 @@ KMIndexDataPtr KMIndexReader::dataByFileName(const QString &fileName) const
 {
     QHash<QString, KMIndexDataPtr>::const_iterator it = mMsgByFileName.constFind(fileName);
     if (it == mMsgByFileName.constEnd()) {
-        return KMIndexDataPtr();
+        return {};
     }
 
     return it.value();

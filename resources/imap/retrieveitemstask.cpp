@@ -40,9 +40,7 @@ RetrieveItemsTask::RetrieveItemsTask(const ResourceStateInterface::Ptr &resource
 {
 }
 
-RetrieveItemsTask::~RetrieveItemsTask()
-{
-}
+RetrieveItemsTask::~RetrieveItemsTask() = default;
 
 void RetrieveItemsTask::setFetchMissingItemBodies(bool enabled)
 {

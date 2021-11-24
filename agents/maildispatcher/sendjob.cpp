@@ -386,9 +386,7 @@ SendJob::SendJob(const Item &item, QObject *parent)
 {
 }
 
-SendJob::~SendJob()
-{
-}
+SendJob::~SendJob() = default;
 
 void SendJob::start()
 {

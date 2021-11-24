@@ -63,9 +63,7 @@ private:
      * Simple struct to track the state of requests
      */
     struct RequestTracker {
-        RequestTracker()
-        {
-        }
+        RequestTracker() = default;
 
         int handlingJobCount = 0;
         bool handlingJobSuccessful = false;

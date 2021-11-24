@@ -34,7 +34,7 @@ void V2Test::testWriteDistlistUID()
     distlist.setUid("uid");
     distlist.setName("name");
     std::vector<Kolab::ContactReference> members;
-    members.push_back(Kolab::ContactReference(Kolab::ContactReference::UidReference, "memberuid", "membername"));
+    members.emplace_back(Kolab::ContactReference::UidReference, "memberuid", "membername");
     distlist.setMembers(members);
 
     Kolab::XMLObject xo;

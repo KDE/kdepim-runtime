@@ -26,9 +26,7 @@ FolderArchiveComboBox::FolderArchiveComboBox(QWidget *parent)
     initialize();
 }
 
-FolderArchiveComboBox::~FolderArchiveComboBox()
-{
-}
+FolderArchiveComboBox::~FolderArchiveComboBox() = default;
 
 void FolderArchiveComboBox::initialize()
 {

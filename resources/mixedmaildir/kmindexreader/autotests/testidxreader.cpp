@@ -22,9 +22,7 @@ using Akonadi::MessageStatus;
 
 QTEST_MAIN(TestIdxReader)
 
-TestIdxReader::TestIdxReader()
-{
-}
+TestIdxReader::TestIdxReader() = default;
 
 void TestIdxReader::testError()
 {

@@ -13,9 +13,7 @@ EwsModifyCalendarJob::EwsModifyCalendarJob(EwsClient &client, const Akonadi::Ite
 {
 }
 
-EwsModifyCalendarJob::~EwsModifyCalendarJob()
-{
-}
+EwsModifyCalendarJob::~EwsModifyCalendarJob() = default;
 
 void EwsModifyCalendarJob::start()
 {

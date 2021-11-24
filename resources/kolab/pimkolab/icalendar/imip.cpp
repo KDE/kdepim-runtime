@@ -127,7 +127,7 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
     KCalendarCore::Attendee::List attendees = incidence->attendees();
     if (attendees.isEmpty()) {
         qCWarning(PIMKOLAB_LOG) << "There are no attendees to e-mail";
-        return QByteArray();
+        return {};
     }
 
     const QString from = incidence->organizer().fullName();
@@ -169,7 +169,7 @@ QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence,
     if (toList.isEmpty() && ccList.isEmpty()) {
         // Not really to be called a groupware meeting, eh
         qCWarning(PIMKOLAB_LOG) << "There are really no attendees to e-mail";
-        return QByteArray();
+        return {};
     }
     QString to;
     if (!toList.isEmpty()) {

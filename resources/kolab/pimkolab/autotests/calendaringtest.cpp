@@ -171,11 +171,11 @@ void CalendaringTest::testTimesInInterval_data()
             event.setRecurrenceRule(rrule);
 
             std::vector<Kolab::cDateTime> result;
-            result.push_back(Kolab::cDateTime(2011, 1, 1, 1, 1, 1, true));
-            result.push_back(Kolab::cDateTime(2011, 1, 2, 1, 1, 1, true));
-            result.push_back(Kolab::cDateTime(2011, 1, 3, 1, 1, 1, true));
-            result.push_back(Kolab::cDateTime(2011, 1, 4, 1, 1, 1, true));
-            result.push_back(Kolab::cDateTime(2011, 1, 5, 1, 1, 1, true));
+            result.emplace_back(2011, 1, 1, 1, 1, 1, true);
+            result.emplace_back(2011, 1, 2, 1, 1, 1, true);
+            result.emplace_back(2011, 1, 3, 1, 1, 1, true);
+            result.emplace_back(2011, 1, 4, 1, 1, 1, true);
+            result.emplace_back(2011, 1, 5, 1, 1, 1, true);
             QTest::newRow("simple") << event << Kolab::cDateTime(2011, 1, 1, 1, 1, 1, true) << Kolab::cDateTime(2011, 1, 5, 1, 1, 1, true) << result;
         }
     }

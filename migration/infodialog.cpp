@@ -56,9 +56,7 @@ InfoDialog::InfoDialog(bool closeWhenDone)
     mainLayout->addWidget(mButtonBox);
 }
 
-InfoDialog::~InfoDialog()
-{
-}
+InfoDialog::~InfoDialog() = default;
 
 static KMigratorBase::MessageType convertType(MigratorBase::MessageType type)
 {

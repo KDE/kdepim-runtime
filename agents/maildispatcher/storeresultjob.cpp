@@ -25,9 +25,7 @@ StoreResultJob::StoreResultJob(const Item &item, bool success, const QString &me
     mMessage = message;
 }
 
-StoreResultJob::~StoreResultJob()
-{
-}
+StoreResultJob::~StoreResultJob() = default;
 
 void StoreResultJob::doStart()
 {

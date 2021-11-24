@@ -28,9 +28,7 @@ Event::Event(const Kolab::Event &e)
 {
 }
 
-Event::~Event()
-{
-}
+Event::~Event() = default;
 
 bool Event::read(const std::string &string)
 {
@@ -149,14 +147,14 @@ void Event::delegate(const std::vector<Attendee> &delegators, const std::vector<
             // Set the delegator on each delegatee
             const ContactReference &delegatorRef = delegator->contact();
             if (!contains(delegatorRef, delegatedFrom)) {
-                delegatedFrom.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, delegatorRef.email(), delegatorRef.name()));
+                delegatedFrom.emplace_back(Kolab::ContactReference::EmailReference, delegatorRef.email(), delegatorRef.name());
             }
 
             // Set the delegatee on each delegator
             std::vector<Kolab::ContactReference> delegatedTo = delegator->delegatedTo();
             const ContactReference &delegaeeRef = delegatee->contact();
             if (!contains(delegaeeRef, delegatedTo)) {
-                delegatedTo.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, delegaeeRef.email(), delegaeeRef.name()));
+                delegatedTo.emplace_back(Kolab::ContactReference::EmailReference, delegaeeRef.email(), delegaeeRef.name());
             }
             delegator->setDelegatedTo(delegatedTo);
         }
@@ -182,14 +180,14 @@ Attendee Event::getAttendee(const std::string &s)
             return a;
         }
     }
-    return Attendee();
+    return {};
 }
 
 cDateTime Calendaring::Event::getNextOccurence(const cDateTime &date)
 {
     KCalendarCore::Event::Ptr event = Kolab::Conversion::toKCalendarCore(*this);
     if (!event->recurs()) {
-        return cDateTime();
+        return {};
     }
     const QDateTime nextDate = event->recurrence()->getNextDateTime(Kolab::Conversion::toDate(date));
     return Kolab::Conversion::fromDate(nextDate, date.isDateOnly());
@@ -206,7 +204,7 @@ cDateTime Calendaring::Event::getLastOccurrence() const
 {
     KCalendarCore::Event::Ptr event = Kolab::Conversion::toKCalendarCore(*this);
     if (!event->recurs()) {
-        return cDateTime();
+        return {};
     }
     const QDateTime endDate = event->recurrence()->endDateTime();
     return Kolab::Conversion::fromDate(endDate, event->allDay());

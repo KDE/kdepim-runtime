@@ -102,8 +102,8 @@ public:
 
 private:
     //@cond PRIVATE
-    KolabObjectReader(const KolabObjectReader &other);
-    KolabObjectReader &operator=(const KolabObjectReader &rhs);
+    KolabObjectReader(const KolabObjectReader &other) = delete;
+    KolabObjectReader &operator=(const KolabObjectReader &rhs) = delete;
 
 private:
     std::unique_ptr<KolabObjectReaderPrivate> const d;

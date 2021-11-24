@@ -24,9 +24,7 @@ AddCollectionTask::AddCollectionTask(const ResourceStateInterface::Ptr &resource
 {
 }
 
-AddCollectionTask::~AddCollectionTask()
-{
-}
+AddCollectionTask::~AddCollectionTask() = default;
 
 void AddCollectionTask::doStart(KIMAP::Session *session)
 {

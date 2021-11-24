@@ -14,13 +14,9 @@
 
 using namespace Akonadi;
 
-EwsAbchPersonHandler::EwsAbchPersonHandler()
-{
-}
+EwsAbchPersonHandler::EwsAbchPersonHandler() = default;
 
-EwsAbchPersonHandler::~EwsAbchPersonHandler()
-{
-}
+EwsAbchPersonHandler::~EwsAbchPersonHandler() = default;
 
 EwsItemHandler *EwsAbchPersonHandler::factory()
 {

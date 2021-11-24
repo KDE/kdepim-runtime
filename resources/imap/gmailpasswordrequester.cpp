@@ -22,9 +22,7 @@ GmailPasswordRequester::GmailPasswordRequester(ImapResourceBase *resource, QObje
 {
 }
 
-GmailPasswordRequester::~GmailPasswordRequester()
-{
-}
+GmailPasswordRequester::~GmailPasswordRequester() = default;
 
 void GmailPasswordRequester::requestPassword(RequestType request, const QString &serverError)
 {

@@ -58,9 +58,7 @@ BasicTest::BasicTest(QObject *parent)
 {
 }
 
-BasicTest::~BasicTest()
-{
-}
+BasicTest::~BasicTest() = default;
 
 void BasicTest::initTestCase()
 {

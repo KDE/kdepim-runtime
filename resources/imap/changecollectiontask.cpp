@@ -26,9 +26,7 @@ ChangeCollectionTask::ChangeCollectionTask(const ResourceStateInterface::Ptr &re
 {
 }
 
-ChangeCollectionTask::~ChangeCollectionTask()
-{
-}
+ChangeCollectionTask::~ChangeCollectionTask() = default;
 
 void ChangeCollectionTask::syncEnabledState(bool enable)
 {

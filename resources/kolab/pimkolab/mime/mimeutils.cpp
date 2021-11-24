@@ -81,7 +81,7 @@ QList<QByteArray> getContentMimeTypeList(const KMime::Message::Ptr &data)
 QString fromCid(const QString &cid)
 {
     if (cid.left(4) != QLatin1String("cid:")) { // Don't set if not a cid, happens when serializing format v2
-        return QString();
+        return {};
     }
     return cid.right(cid.size() - 4);
 }
@@ -206,14 +206,14 @@ Kolab::Attachment getAttachment(const std::string &id, const KMime::Message::Ptr
 {
     if (!QString::fromStdString(id).contains(QLatin1String("cid:"))) {
         qCCritical(PIMKOLAB_LOG) << "not a cid reference";
-        return Kolab::Attachment();
+        return {};
     }
     QByteArray type;
     QString name;
     KMime::Content *content = findContentById(mimeData, fromCid(QString::fromStdString(id)).toLatin1(), type, name);
     if (!content) { // guard against malformed events with non-existent attachments
         qCCritical(PIMKOLAB_LOG) << "could not find attachment: " << name << type;
-        return Kolab::Attachment();
+        return {};
     }
     // Debug() << id << content->decodedContent().toBase64().toStdString();
     Kolab::Attachment attachment;
@@ -228,7 +228,7 @@ Kolab::Attachment getAttachmentByName(const QString &name, const KMime::Message:
     KMime::Content *content = findContentByName(mimeData, name, type);
     if (!content) { // guard against malformed events with non-existent attachments
         qCWarning(PIMKOLAB_LOG) << "could not find attachment: " << name.toUtf8() << type;
-        return Kolab::Attachment();
+        return {};
     }
     Kolab::Attachment attachment;
     attachment.setData(content->decodedContent().toStdString(), type.toStdString());

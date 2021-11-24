@@ -13,9 +13,7 @@ DeleteItemsAttributeTest::DeleteItemsAttributeTest(QObject *parent)
 {
 }
 
-DeleteItemsAttributeTest::~DeleteItemsAttributeTest()
-{
-}
+DeleteItemsAttributeTest::~DeleteItemsAttributeTest() = default;
 
 void DeleteItemsAttributeTest::shouldHaveDefaultValue()
 {

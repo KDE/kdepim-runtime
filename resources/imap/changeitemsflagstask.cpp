@@ -16,9 +16,7 @@ ChangeItemsFlagsTask::ChangeItemsFlagsTask(const ResourceStateInterface::Ptr &re
 {
 }
 
-ChangeItemsFlagsTask::~ChangeItemsFlagsTask()
-{
-}
+ChangeItemsFlagsTask::~ChangeItemsFlagsTask() = default;
 
 void ChangeItemsFlagsTask::doStart(KIMAP::Session *session)
 {

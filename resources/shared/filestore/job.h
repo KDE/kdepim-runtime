@@ -44,9 +44,7 @@ public:
     class Visitor
     {
     public:
-        virtual ~Visitor()
-        {
-        }
+        virtual ~Visitor() = default;
 
         virtual bool visit(Job *job) = 0;
 

@@ -23,9 +23,7 @@ EwsGlobalTagsReadJob::EwsGlobalTagsReadJob(EwsTagStore *tagStore, EwsClient &cli
 {
 }
 
-EwsGlobalTagsReadJob::~EwsGlobalTagsReadJob()
-{
-}
+EwsGlobalTagsReadJob::~EwsGlobalTagsReadJob() = default;
 
 void EwsGlobalTagsReadJob::start()
 {

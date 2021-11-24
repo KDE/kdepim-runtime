@@ -46,9 +46,7 @@ public:
     bool isNewKey(const QString &dir, const QString &key) const;
 
 private:
-    KeyCache()
-    {
-    }
+    KeyCache() = default;
 
     QSet<QString> listNew(const QString &dir) const;
 

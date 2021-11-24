@@ -26,9 +26,7 @@ RetrieveCollectionsTask::RetrieveCollectionsTask(const ResourceStateInterface::P
 {
 }
 
-RetrieveCollectionsTask::~RetrieveCollectionsTask()
-{
-}
+RetrieveCollectionsTask::~RetrieveCollectionsTask() = default;
 
 void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
 {

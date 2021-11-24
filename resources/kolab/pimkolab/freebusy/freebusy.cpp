@@ -126,7 +126,7 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
     // between the start and end of the freebusy dates.
     if (!(((mDtStart <= eventStart) && (eventStart <= mDtEnd)) || ((mDtStart <= eventEnd) && (eventEnd <= mDtEnd)))) {
         qCDebug(PIMKOLAB_LOG) << "event is not within the fb range, skipping";
-        return Kolab::Period();
+        return {};
     }
 
     if (eventStart < mDtStart) { // eventStart is before start

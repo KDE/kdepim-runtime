@@ -17,9 +17,7 @@ KolabMessageHelper::KolabMessageHelper(const Akonadi::Collection &col)
 {
 }
 
-KolabMessageHelper::~KolabMessageHelper()
-{
-}
+KolabMessageHelper::~KolabMessageHelper() = default;
 
 Akonadi::Item KolabMessageHelper::createItemFromMessage(const KMime::Message::Ptr &message,
                                                         const qint64 uid,

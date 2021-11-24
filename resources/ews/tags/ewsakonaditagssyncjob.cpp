@@ -21,9 +21,7 @@ EwsAkonadiTagsSyncJob::EwsAkonadiTagsSyncJob(EwsTagStore *tagStore, EwsClient &c
 {
 }
 
-EwsAkonadiTagsSyncJob::~EwsAkonadiTagsSyncJob()
-{
-}
+EwsAkonadiTagsSyncJob::~EwsAkonadiTagsSyncJob() = default;
 
 void EwsAkonadiTagsSyncJob::start()
 {

@@ -14,9 +14,7 @@
 
 using namespace Akonadi;
 
-ImapQuotaAttribute::ImapQuotaAttribute()
-{
-}
+ImapQuotaAttribute::ImapQuotaAttribute() = default;
 
 Akonadi::ImapQuotaAttribute::ImapQuotaAttribute(const QList<QByteArray> &roots,
                                                 const QList<QMap<QByteArray, qint64>> &limits,

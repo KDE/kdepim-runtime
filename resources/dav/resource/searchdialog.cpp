@@ -48,9 +48,7 @@ SearchDialog::SearchDialog(QWidget *parent)
     checkUserInput();
 }
 
-SearchDialog::~SearchDialog()
-{
-}
+SearchDialog::~SearchDialog() = default;
 
 bool SearchDialog::useDefaultCredentials() const
 {

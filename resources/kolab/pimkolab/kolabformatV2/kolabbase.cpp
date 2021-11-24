@@ -29,9 +29,7 @@ KolabBase::KolabBase(const QString &tz)
     mTimeZone = tz.isEmpty() ? QTimeZone() : QTimeZone(tz.toUtf8());
 }
 
-KolabBase::~KolabBase()
-{
-}
+KolabBase::~KolabBase() = default;
 
 void KolabBase::setFields(const KCalendarCore::Incidence::Ptr &incidence)
 {
@@ -397,7 +395,7 @@ QDomDocument KolabBase::loadDocument(const QString &xmlData)
 
     if (!ok) {
         qWarning("Error loading document: %s, line %d, column %d", qPrintable(errorMsg), errorLine, errorColumn);
-        return QDomDocument();
+        return {};
     }
 
     return document;

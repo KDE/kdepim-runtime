@@ -26,9 +26,7 @@ EwsTagStore::EwsTagStore(QObject *parent)
 {
 }
 
-EwsTagStore::~EwsTagStore()
-{
-}
+EwsTagStore::~EwsTagStore() = default;
 
 QByteArray EwsTagStore::serializeTag(const Akonadi::Tag &tag) const
 {

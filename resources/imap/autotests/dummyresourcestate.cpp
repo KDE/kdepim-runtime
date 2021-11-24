@@ -23,9 +23,7 @@ DummyResourceState::DummyResourceState()
     qRegisterMetaType<TagListAndMembers>();
 }
 
-DummyResourceState::~DummyResourceState()
-{
-}
+DummyResourceState::~DummyResourceState() = default;
 
 void DummyResourceState::setUserName(const QString &name)
 {
@@ -79,17 +77,17 @@ QList<KIMAP::MailBoxDescriptor> DummyResourceState::serverNamespaces() const
 
 QList<KIMAP::MailBoxDescriptor> DummyResourceState::personalNamespaces() const
 {
-    return QList<KIMAP::MailBoxDescriptor>();
+    return {};
 }
 
 QList<KIMAP::MailBoxDescriptor> DummyResourceState::userNamespaces() const
 {
-    return QList<KIMAP::MailBoxDescriptor>();
+    return {};
 }
 
 QList<KIMAP::MailBoxDescriptor> DummyResourceState::sharedNamespaces() const
 {
-    return QList<KIMAP::MailBoxDescriptor>();
+    return {};
 }
 
 void DummyResourceState::setAutomaticExpungeEnagled(bool enabled)
@@ -230,12 +228,12 @@ QSet<Akonadi::Tag> DummyResourceState::removedTags() const
 
 Akonadi::Relation::List DummyResourceState::addedRelations() const
 {
-    return Akonadi::Relation::List();
+    return {};
 }
 
 Akonadi::Relation::List DummyResourceState::removedRelations() const
 {
-    return Akonadi::Relation::List();
+    return {};
 }
 
 QString DummyResourceState::rootRemoteId() const
@@ -286,12 +284,12 @@ void DummyResourceState::setTotalItems(int)
 
 QSet<QByteArray> DummyResourceState::addedFlags() const
 {
-    return QSet<QByteArray>();
+    return {};
 }
 
 QSet<QByteArray> DummyResourceState::removedFlags() const
 {
-    return QSet<QByteArray>();
+    return {};
 }
 
 void DummyResourceState::itemChangeCommitted(const Akonadi::Item &item)

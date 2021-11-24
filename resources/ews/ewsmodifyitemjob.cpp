@@ -14,9 +14,7 @@ EwsModifyItemJob::EwsModifyItemJob(EwsClient &client, const Akonadi::Item::List 
 {
 }
 
-EwsModifyItemJob::~EwsModifyItemJob()
-{
-}
+EwsModifyItemJob::~EwsModifyItemJob() = default;
 
 void EwsModifyItemJob::setModifiedFlags(const QSet<QByteArray> &addedFlags, const QSet<QByteArray> &removedFlags)
 {

@@ -17,9 +17,7 @@ ImapAccount::ImapAccount()
 {
 }
 
-ImapAccount::~ImapAccount()
-{
-}
+ImapAccount::~ImapAccount() = default;
 
 void ImapAccount::setServer(const QString &server)
 {

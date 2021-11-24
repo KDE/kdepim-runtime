@@ -160,7 +160,7 @@ static QByteArray getTypeString(Kolab::ObjectType type)
     default:
         qCCritical(PIMKOLAB_LOG) << "unknown type " << type;
     }
-    return QByteArray();
+    return {};
 }
 
 static QByteArray getMimeType(Kolab::ObjectType type)
@@ -181,7 +181,7 @@ static QByteArray getMimeType(Kolab::ObjectType type)
     default:
         qCCritical(PIMKOLAB_LOG) << "unknown type " << type;
     }
-    return QByteArray();
+    return {};
 }
 
 static Kolab::ObjectType detectType(const KMime::Message::Ptr &msg)
@@ -208,9 +208,7 @@ static void printMessageDebugInfo(const KMime::Message::Ptr &msg)
 class MIMEObjectPrivate
 {
 public:
-    MIMEObjectPrivate()
-    {
-    }
+    MIMEObjectPrivate() = default;
 
     QVariant readKolabV2(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
     QVariant readKolabV3(const KMime::Message::Ptr &msg, Kolab::ObjectType objectType);
@@ -280,13 +278,13 @@ QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::O
     if (!xmlContent) {
         qCCritical(PIMKOLAB_LOG) << "no part with type" << getTypeString(objectType) << " found";
         printMessageDebugInfo(msg);
-        return QVariant();
+        return {};
     }
     const QByteArray &xmlData = xmlContent->decodedContent();
     if (xmlData.isEmpty()) {
         qCCritical(PIMKOLAB_LOG) << "no content in message part with type" << getTypeString(objectType);
         printMessageDebugInfo(msg);
-        return QVariant();
+        return {};
     }
 
     QVariant variant;
@@ -345,7 +343,7 @@ QVariant MIMEObjectPrivate::readKolabV2(const KMime::Message::Ptr &msg, Kolab::O
     }
     if (ErrorHandler::errorOccured()) {
         printMessageDebugInfo(msg);
-        return QVariant();
+        return {};
     }
     mObjectType = objectType;
     return variant;
@@ -405,7 +403,7 @@ QVariant MIMEObjectPrivate::readKolabV3(const KMime::Message::Ptr &msg, Kolab::O
 
     if (ErrorHandler::errorOccured()) {
         printMessageDebugInfo(msg);
-        return QVariant();
+        return {};
     }
     mObjectType = objectType;
     return variant;
@@ -418,7 +416,7 @@ QVariant MIMEObjectPrivate::parseMimeMessage(const KMime::Message::Ptr &msg)
     if (msg->contents().isEmpty()) {
         qCCritical(PIMKOLAB_LOG) << "message has no contents (we likely failed to parse it correctly)";
         printMessageDebugInfo(msg);
-        return QVariant();
+        return {};
     }
     Kolab::ObjectType objectType = InvalidObject;
     if (mOverrideObjectType == InvalidObject) {
@@ -435,7 +433,7 @@ QVariant MIMEObjectPrivate::parseMimeMessage(const KMime::Message::Ptr &msg)
     if (objectType == InvalidObject) {
         qCCritical(PIMKOLAB_LOG) << "unable to detect object type";
         printMessageDebugInfo(msg);
-        return QVariant();
+        return {};
     }
 
     if (!mDoOverrideVersion) {

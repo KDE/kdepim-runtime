@@ -13,9 +13,7 @@ EwsModifyContactJob::EwsModifyContactJob(EwsClient &client, const Akonadi::Item:
 {
 }
 
-EwsModifyContactJob::~EwsModifyContactJob()
-{
-}
+EwsModifyContactJob::~EwsModifyContactJob() = default;
 
 void EwsModifyContactJob::start()
 {

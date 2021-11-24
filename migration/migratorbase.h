@@ -16,9 +16,7 @@
 class NullableConfigGroup
 {
 public:
-    NullableConfigGroup()
-    {
-    }
+    NullableConfigGroup() = default;
 
     explicit NullableConfigGroup(const KConfigGroup &grp)
         : mConfigGroup(grp)

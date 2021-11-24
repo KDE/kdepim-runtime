@@ -59,9 +59,7 @@ EwsFetchCalendarDetailJob::EwsFetchCalendarDetailJob(EwsClient &client, QObject 
     mRequest->setItemShape(shape);
 }
 
-EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob()
-{
-}
+EwsFetchCalendarDetailJob::~EwsFetchCalendarDetailJob() = default;
 
 void EwsFetchCalendarDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {

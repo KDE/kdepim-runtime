@@ -22,9 +22,7 @@ MoveCollectionTask::MoveCollectionTask(const ResourceStateInterface::Ptr &resour
 {
 }
 
-MoveCollectionTask::~MoveCollectionTask()
-{
-}
+MoveCollectionTask::~MoveCollectionTask() = default;
 
 void MoveCollectionTask::doStart(KIMAP::Session *session)
 {

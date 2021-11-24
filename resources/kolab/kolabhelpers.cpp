@@ -134,7 +134,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         if (!incidencePtr) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read incidence.";
             ok = false;
-            return Akonadi::Item();
+            return {};
         }
         Akonadi::Item newItem(incidencePtr->mimeType());
         newItem.setPayload(incidencePtr);
@@ -147,7 +147,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         if (!note) {
             qCWarning(KOLABRESOURCE_LOG) << "Failed to read note.";
             ok = false;
-            return Akonadi::Item();
+            return {};
         }
         Akonadi::Item newItem(QStringLiteral("text/x-vnd.akonadi.note"));
         newItem.setPayload(note);
@@ -193,7 +193,7 @@ Akonadi::Item KolabHelpers::translateFromImap(Kolab::FolderType folderType, cons
         ok = false;
         break;
     }
-    return Akonadi::Item();
+    return {};
 }
 
 Akonadi::Item::List KolabHelpers::translateToImap(const Akonadi::Item::List &items, bool &ok)
@@ -295,18 +295,18 @@ Akonadi::Item KolabHelpers::translateToImap(const Akonadi::Item &item, bool &ok)
         default:
             qCWarning(KOLABRESOURCE_LOG) << "object type not handled: " << item.id() << item.mimeType();
             ok = false;
-            return Akonadi::Item();
+            return {};
         }
     } catch (const Akonadi::PayloadException &e) {
         qCWarning(KOLABRESOURCE_LOG) << "The item contains the wrong or no payload: " << item.id() << item.mimeType();
         qCWarning(KOLABRESOURCE_LOG) << e.what();
-        return Akonadi::Item();
+        return {};
     }
 
     if (checkForErrors(item)) {
         qCWarning(KOLABRESOURCE_LOG) << "an error occurred while trying to translate the item to the kolab format: " << item.id();
         ok = false;
-        return Akonadi::Item();
+        return {};
     }
     return imapItem;
 }
@@ -325,7 +325,7 @@ QByteArray KolabHelpers::kolabTypeForMimeType(const QStringList &contentMimeType
                || contentMimeTypes.contains(QLatin1String("text/x-vnd.akonadi.note"))) {
         return QByteArrayLiteral("note");
     }
-    return QByteArray();
+    return {};
 }
 
 Kolab::ObjectType KolabHelpers::getKolabTypeFromMimeType(const QString &type)
@@ -356,7 +356,7 @@ QString KolabHelpers::getMimeType(Kolab::FolderType type)
     default:
         qCDebug(KOLABRESOURCE_LOG) << "unhandled folder type: " << type;
     }
-    return QString();
+    return {};
 }
 
 QStringList KolabHelpers::getContentMimeTypes(Kolab::FolderType type)
@@ -420,7 +420,7 @@ QColor KolabHelpers::getFolderColor(const QMap<QByteArray, QByteArray> &annotati
     } else if (annotations.contains("/private" KOLAB_COLOR_ANNOTATION) && !annotations.value("/private" KOLAB_COLOR_ANNOTATION).isEmpty()) {
         return QColor(QStringLiteral("#").append(QString::fromUtf8(annotations.value("/private" KOLAB_COLOR_ANNOTATION))));
     }
-    return QColor();
+    return {};
 }
 
 void KolabHelpers::setFolderColor(QMap<QByteArray, QByteArray> &annotations, const QColor &color)
@@ -445,9 +445,9 @@ QString KolabHelpers::getIcon(Kolab::FolderType type)
     case Kolab::FreebusyType:
     case Kolab::FileType:
     case Kolab::LastType:
-        return QString();
+        return {};
     }
-    return QString();
+    return {};
 }
 
 bool KolabHelpers::isHandledType(Kolab::FolderType type)
@@ -473,7 +473,7 @@ QList<QByteArray> KolabHelpers::ancestorChain(const Akonadi::Collection &col)
 {
     Q_ASSERT(col.isValid());
     if (col.parentCollection() == Akonadi::Collection::root() || col == Akonadi::Collection::root() || !col.isValid()) {
-        return QList<QByteArray>();
+        return {};
     }
     QList<QByteArray> ancestors = ancestorChain(col.parentCollection());
     Q_ASSERT(!col.remoteId().isEmpty());
@@ -488,7 +488,7 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
     if (item.mimeType() == KMime::Message::mimeType()) {
         if (!item.hasPayload<KMime::Message::Ptr>()) {
             qCWarning(KOLABRESOURCE_LOG) << "Email without payload, failed to add to tag: " << item.id() << item.remoteId();
-            return QString();
+            return {};
         }
         auto msg = item.payload<KMime::Message::Ptr>();
         member.uid = item.remoteId().toLong();
@@ -500,7 +500,7 @@ QString KolabHelpers::createMemberUrl(const Akonadi::Item &item, const QString &
     } else {
         if (item.gid().isEmpty()) {
             qCWarning(KOLABRESOURCE_LOG) << "Groupware object without GID, failed to add to tag: " << item.id() << item.remoteId();
-            return QString();
+            return {};
         }
         member.gid = item.gid();
     }

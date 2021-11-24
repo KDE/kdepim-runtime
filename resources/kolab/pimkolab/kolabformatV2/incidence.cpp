@@ -28,9 +28,7 @@ Incidence::Incidence(const QString &tz, const KCalendarCore::Incidence::Ptr &inc
     Q_UNUSED(incidence)
 }
 
-Incidence::~Incidence()
-{
-}
+Incidence::~Incidence() = default;
 
 void Incidence::setPriority(int priority)
 {

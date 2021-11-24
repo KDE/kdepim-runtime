@@ -53,9 +53,7 @@ KolabResource::KolabResource(const QString &id)
     settings(); // make sure the D-Bus settings interface is up
 }
 
-KolabResource::~KolabResource()
-{
-}
+KolabResource::~KolabResource() = default;
 
 Settings *KolabResource::settings() const
 {

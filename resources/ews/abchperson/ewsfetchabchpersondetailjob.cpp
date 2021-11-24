@@ -20,9 +20,7 @@ EwsFetchAbchContactDetailsJob::EwsFetchAbchContactDetailsJob(EwsClient &client, 
     mRequest->setItemShape(shape);
 }
 
-EwsFetchAbchContactDetailsJob::~EwsFetchAbchContactDetailsJob()
-{
-}
+EwsFetchAbchContactDetailsJob::~EwsFetchAbchContactDetailsJob() = default;
 
 void EwsFetchAbchContactDetailsJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {

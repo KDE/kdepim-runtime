@@ -60,7 +60,7 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
     if (m_keyParts.isEmpty()) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "No key set.";
         m_lastError = ErrorNoKeySet;
-        return QByteArray();
+        return {};
     }
 
     QByteArray ba = plaintext;
@@ -159,12 +159,12 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
     if (m_keyParts.isEmpty()) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "No key set.";
         m_lastError = ErrorNoKeySet;
-        return QByteArray();
+        return {};
     }
 
     if (cypher.isEmpty()) {
         m_lastError = ErrorUnknownVersion;
-        return QByteArray();
+        return {};
     }
 
     QByteArray ba = cypher;
@@ -174,10 +174,10 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
     if (version != 3) { // we only work with version 3
         m_lastError = ErrorUnknownVersion;
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "Invalid version or not a cyphertext.";
-        return QByteArray();
+        return {};
     }
 
-    CryptoFlags flags = CryptoFlags(ba.at(1));
+    auto flags = CryptoFlags(ba.at(1));
 
     ba.remove(0, 2);
     int pos(0);
@@ -197,7 +197,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
     if (flags.testFlag(CryptoFlagChecksum)) {
         if (ba.length() < 2) {
             m_lastError = ErrorIntegrityFailed;
-            return QByteArray();
+            return {};
         }
         quint16 storedChecksum;
         {
@@ -210,7 +210,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
     } else if (flags.testFlag(CryptoFlagHash)) {
         if (ba.length() < 20) {
             m_lastError = ErrorIntegrityFailed;
-            return QByteArray();
+            return {};
         }
         QByteArray storedHash = ba.left(20);
         ba.remove(0, 20);
@@ -221,7 +221,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
 
     if (!integrityOk) {
         m_lastError = ErrorIntegrityFailed;
-        return QByteArray();
+        return {};
     }
 
     if (flags.testFlag(CryptoFlagCompression)) {

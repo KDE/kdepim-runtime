@@ -329,18 +329,18 @@ std::string fromPicture(const KContacts::Picture &pic, std::string &mimetype)
     }
     if (img.isNull()) {
         qCCritical(PIMKOLAB_LOG) << "invalid picture";
-        return std::string();
+        return {};
     }
     if (!img.hasAlphaChannel()) {
         if (!img.save(&buffer, "JPEG")) {
             qCCritical(PIMKOLAB_LOG) << "error on jpeg save";
-            return std::string();
+            return {};
         }
         mimetype = "image/jpeg";
     } else {
         if (!img.save(&buffer, "PNG")) {
             qCCritical(PIMKOLAB_LOG) << "error on png save";
-            return std::string();
+            return {};
         }
         mimetype = "image/png";
     }
@@ -360,13 +360,13 @@ KContacts::Picture toPicture(const std::string &data, const std::string &mimetyp
     }
     if (!ret) {
         qCWarning(PIMKOLAB_LOG) << "failed to load picture";
-        return KContacts::Picture();
+        return {};
     }
 
     KContacts::Picture logo(img);
     if (logo.isEmpty()) {
         qCWarning(PIMKOLAB_LOG) << "failed to read picture";
-        return KContacts::Picture();
+        return {};
     }
     return logo;
 }
@@ -374,7 +374,7 @@ KContacts::Picture toPicture(const std::string &data, const std::string &mimetyp
 template<typename T> void setCustom(const std::string &value, const std::string &id, T &object)
 {
     std::vector<Kolab::CustomProperty> properties = object.customProperties();
-    properties.push_back(CustomProperty(id, value));
+    properties.emplace_back(id, value);
     object.setCustomProperties(properties);
 }
 
@@ -386,7 +386,7 @@ template<typename T> std::string getCustom(const std::string &id, T &object)
             return prop.value;
         }
     }
-    return std::string();
+    return {};
 }
 
 static QString emailTypesToStringList(int emailTypes)
@@ -658,11 +658,11 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     std::vector<Kolab::Related> relateds;
     const QString &manager = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-ManagersName"));
     if (!manager.isEmpty()) {
-        relateds.push_back(Kolab::Related(Kolab::Related::Text, toStdString(manager), Kolab::Related::Manager));
+        relateds.emplace_back(Kolab::Related::Text, toStdString(manager), Kolab::Related::Manager);
     }
     const QString &assistant = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-AssistantsName"));
     if (!assistant.isEmpty()) {
-        relateds.push_back(Kolab::Related(Kolab::Related::Text, toStdString(assistant), Kolab::Related::Assistant));
+        relateds.emplace_back(Kolab::Related::Text, toStdString(assistant), Kolab::Related::Assistant);
     }
     if (!relateds.empty()) {
         businessAff.setRelateds(relateds);
@@ -674,11 +674,11 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     std::vector<Kolab::Url> urls;
     const QUrl url{addressee.url().url()};
     if (!url.isEmpty()) {
-        urls.push_back(Kolab::Url(toStdString(url.url())));
+        urls.emplace_back(toStdString(url.url()));
     }
     const QString &blogUrl = addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("BlogFeed"));
     if (!blogUrl.isEmpty()) {
-        urls.push_back(Kolab::Url(toStdString(blogUrl), Kolab::Url::Blog));
+        urls.emplace_back(toStdString(blogUrl), Kolab::Url::Blog);
     }
     c.setUrls(urls);
 
@@ -761,8 +761,7 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
             prefEmail = count;
         }
         count++;
-        emails.push_back(
-            Kolab::Email(toStdString(e), emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e)))));
+        emails.emplace_back(toStdString(e), emailTypesFromStringlist(addressee.custom(QStringLiteral("KOLAB"), QStringLiteral("EmailTypes%1").arg(e))));
     }
     c.setEmailAddresses(emails, prefEmail);
 
@@ -836,11 +835,11 @@ Kolab::Contact fromKABC(const KContacts::Addressee &addressee)
     std::vector<Kolab::Key> keys;
     const std::string &pgpkey = toStdString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("OPENPGPFP")));
     if (!pgpkey.empty()) {
-        keys.push_back(Kolab::Key(pgpkey, Kolab::Key::PGP));
+        keys.emplace_back(pgpkey, Kolab::Key::PGP);
     }
     const std::string &smimekey = toStdString(addressee.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("SMIMEFP")));
     if (!smimekey.empty()) {
-        keys.push_back(Kolab::Key(smimekey, Kolab::Key::PKCS7_MIME));
+        keys.emplace_back(smimekey, Kolab::Key::PKCS7_MIME);
     }
     c.setKeys(keys);
 
@@ -872,11 +871,11 @@ DistList fromKABC(const KContacts::ContactGroup &cg)
     std::vector<Kolab::ContactReference> members;
     for (int i = 0; i < cg.dataCount(); i++) {
         const KContacts::ContactGroup::Data &data = cg.data(i);
-        members.push_back(Kolab::ContactReference(Kolab::ContactReference::EmailReference, toStdString(data.email()), toStdString(data.name())));
+        members.emplace_back(Kolab::ContactReference::EmailReference, toStdString(data.email()), toStdString(data.name()));
     }
     for (int i = 0; i < cg.contactReferenceCount(); i++) {
         const KContacts::ContactGroup::ContactReference &ref = cg.contactReference(i);
-        members.push_back(Kolab::ContactReference(Kolab::ContactReference::UidReference, toStdString(ref.uid())));
+        members.emplace_back(Kolab::ContactReference::UidReference, toStdString(ref.uid()));
     }
 
     if (cg.contactGroupReferenceCount() > 0) {

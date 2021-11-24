@@ -92,9 +92,7 @@ EwsFetchItemsJob::EwsFetchItemsJob(const Collection &collection,
     qRegisterMetaType<EwsId::List>();
 }
 
-EwsFetchItemsJob::~EwsFetchItemsJob()
-{
-}
+EwsFetchItemsJob::~EwsFetchItemsJob() = default;
 
 void EwsFetchItemsJob::start()
 {

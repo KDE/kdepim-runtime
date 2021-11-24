@@ -17,7 +17,7 @@ TomboyNotesConfigWidget::TomboyNotesConfigWidget(const KSharedConfigPtr &config,
 {
     Settings::instance(config);
 
-    QWidget *mainWidget = new QWidget(parent);
+    auto *mainWidget = new QWidget(parent);
     ui->setupUi(mainWidget);
     parent->layout()->addWidget(mainWidget);
 

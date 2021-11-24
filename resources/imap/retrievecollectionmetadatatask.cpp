@@ -30,9 +30,7 @@ RetrieveCollectionMetadataTask::RetrieveCollectionMetadataTask(const ResourceSta
 {
 }
 
-RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask()
-{
-}
+RetrieveCollectionMetadataTask::~RetrieveCollectionMetadataTask() = default;
 
 void RetrieveCollectionMetadataTask::doStart(KIMAP::Session *session)
 {

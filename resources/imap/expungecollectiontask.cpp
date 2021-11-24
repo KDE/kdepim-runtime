@@ -20,9 +20,7 @@ ExpungeCollectionTask::ExpungeCollectionTask(const ResourceStateInterface::Ptr &
 {
 }
 
-ExpungeCollectionTask::~ExpungeCollectionTask()
-{
-}
+ExpungeCollectionTask::~ExpungeCollectionTask() = default;
 
 void ExpungeCollectionTask::doStart(KIMAP::Session *session)
 {

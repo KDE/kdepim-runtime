@@ -16,9 +16,7 @@ class TestDataTest : public QObject
 {
     Q_OBJECT
 public:
-    TestDataTest()
-    {
-    }
+    TestDataTest() = default;
 
 private Q_SLOTS:
     void testResources();

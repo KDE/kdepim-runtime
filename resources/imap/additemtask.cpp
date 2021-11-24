@@ -27,9 +27,7 @@ AddItemTask::AddItemTask(const ResourceStateInterface::Ptr &resource, QObject *p
 {
 }
 
-AddItemTask::~AddItemTask()
-{
-}
+AddItemTask::~AddItemTask() = default;
 
 void AddItemTask::doStart(KIMAP::Session *session)
 {

@@ -23,9 +23,7 @@ RemoveCollectionRecursiveTask::RemoveCollectionRecursiveTask(const ResourceState
 {
 }
 
-RemoveCollectionRecursiveTask::~RemoveCollectionRecursiveTask()
-{
-}
+RemoveCollectionRecursiveTask::~RemoveCollectionRecursiveTask() = default;
 
 void RemoveCollectionRecursiveTask::doStart(KIMAP::Session *session)
 {

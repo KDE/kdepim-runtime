@@ -10,9 +10,7 @@
 
 using namespace OXA;
 
-User::User()
-{
-}
+User::User() = default;
 
 bool User::isValid() const
 {

@@ -10,9 +10,7 @@
 
 using namespace Akonadi;
 
-ImapAclAttribute::ImapAclAttribute()
-{
-}
+ImapAclAttribute::ImapAclAttribute() = default;
 
 ImapAclAttribute::ImapAclAttribute(const QMap<QByteArray, KIMAP::Acl::Rights> &rights, const QMap<QByteArray, KIMAP::Acl::Rights> &oldRights)
     : mRights(rights)

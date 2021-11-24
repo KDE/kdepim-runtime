@@ -25,9 +25,7 @@ ResourceState::ResourceState(ImapResourceBase *resource, const TaskArguments &ar
 {
 }
 
-ResourceState::~ResourceState()
-{
-}
+ResourceState::~ResourceState() = default;
 
 QString ResourceState::userName() const
 {

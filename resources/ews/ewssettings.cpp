@@ -40,9 +40,7 @@ EwsSettings::EwsSettings(WId windowId)
     });
 }
 
-EwsSettings::~EwsSettings()
-{
-}
+EwsSettings::~EwsSettings() = default;
 
 bool EwsSettings::requestWalletOpen()
 {

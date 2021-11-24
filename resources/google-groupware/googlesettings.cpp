@@ -57,7 +57,7 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromWallet(const QString &account
 {
     if (!m_wallet->entryList().contains(accountName)) {
         qCDebug(GOOGLE_LOG) << "Account" << accountName << "not found in KWallet";
-        return AccountPtr();
+        return {};
     }
 
     QMap<QString, QString> map;

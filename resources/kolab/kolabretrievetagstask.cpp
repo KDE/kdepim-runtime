@@ -97,7 +97,7 @@ Akonadi::Item KolabRetrieveTagTask::extractMember(const Kolab::RelationMember &m
     } else {
         // Reference by imap uid
         if (member.uid < 0) {
-            return Akonadi::Item();
+            return {};
         }
         i.setRemoteId(QString::number(member.uid));
         qCDebug(KOLABRESOURCE_LOG) << "got member: " << member.uid << member.mailbox;

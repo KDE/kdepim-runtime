@@ -11,9 +11,7 @@ AkonotesResource::AkonotesResource(const QString &id)
 {
 }
 
-AkonotesResource::~AkonotesResource()
-{
-}
+AkonotesResource::~AkonotesResource() = default;
 
 QString AkonotesResource::itemMimeType() const
 {

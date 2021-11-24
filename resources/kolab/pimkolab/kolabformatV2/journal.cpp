@@ -36,9 +36,7 @@ Journal::Journal(const QString &tz, const KCalendarCore::Journal::Ptr &journal)
     }
 }
 
-Journal::~Journal()
-{
-}
+Journal::~Journal() = default;
 
 void Journal::setSummary(const QString &summary)
 {

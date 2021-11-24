@@ -37,12 +37,12 @@ static QImage getPicture(const QString &pictureAttachmentName, const KMime::Mess
 {
     if (!data) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
-        return QImage();
+        return {};
     }
     KMime::Content *imgContent = Mime::findContentByName(data, pictureAttachmentName /*"kolab-picture.png"*/, type);
     if (!imgContent) {
         qCWarning(PIMKOLAB_LOG) << "could not find picture: " << pictureAttachmentName;
-        return QImage();
+        return {};
     }
     QByteArray imgData = imgContent->decodedContent();
     QBuffer buffer(&imgData);
@@ -80,7 +80,7 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::
 {
     if (!data) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
-        return KContacts::Addressee();
+        return {};
     }
     KContacts::Addressee addressee;
     //     qCDebug(PIMKOLAB_LOG) << "xmlData " << xmlData;
@@ -145,7 +145,7 @@ KMime::Message::Ptr contactToKolabFormat(const KolabV2::Contact &contact, const 
     KMime::Message::Ptr message = Mime::createMessage(QByteArray(KOLAB_TYPE_CONTACT), false, productId.toLatin1());
     if (!message) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
-        return KMime::Message::Ptr();
+        return {};
     }
     message->subject()->fromUnicodeString(contact.uid(), "utf-8");
     message->from()->fromUnicodeString(contact.fullEmail(), "utf-8");
@@ -190,7 +190,7 @@ KMime::Message::Ptr distListToKolabFormat(const KolabV2::DistributionList &distL
     KMime::Message::Ptr message = Mime::createMessage(KOLAB_TYPE_DISTLIST_V2, false, productId.toLatin1());
     if (!message) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
-        return KMime::Message::Ptr();
+        return {};
     }
     message->subject()->fromUnicodeString(distList.uid(), "utf-8");
     message->from()->fromUnicodeString(distList.uid(), "utf-8");
@@ -207,7 +207,7 @@ KMime::Message::Ptr noteFromKolab(const QByteArray &xmlData, const QDateTime &cr
     KolabV2::Note j;
     if (!j.load(QString::fromUtf8(xmlData))) {
         qCWarning(PIMKOLAB_LOG) << "failed to read note";
-        return KMime::Message::Ptr();
+        return {};
     }
 
     Akonadi::NoteUtils::NoteMessageWrapper note;
@@ -222,7 +222,7 @@ KMime::Message::Ptr noteToKolab(const KMime::Message::Ptr &msg, const QString &p
 {
     if (!msg) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
-        return KMime::Message::Ptr();
+        return {};
     }
     Akonadi::NoteUtils::NoteMessageWrapper note(msg);
     return Mime::createMessage(note.title(), QStringLiteral(KOLAB_TYPE_NOTE), QStringLiteral(KOLAB_TYPE_NOTE), noteToKolabXML(msg), false, productId);
@@ -232,7 +232,7 @@ QByteArray noteToKolabXML(const KMime::Message::Ptr &msg)
 {
     if (!msg) {
         qCCritical(PIMKOLAB_LOG) << "empty message";
-        return QByteArray();
+        return {};
     }
     Akonadi::NoteUtils::NoteMessageWrapper note(msg);
     KolabV2::Note j;
@@ -247,14 +247,14 @@ QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString
     const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData)); // TODO extract function from V2 format
     if (xmlDoc.isNull()) {
         qCCritical(PIMKOLAB_LOG) << "Failed to read the xml document";
-        return QStringList();
+        return {};
     }
 
     QDomElement top = xmlDoc.documentElement();
 
     if (top.tagName() != QLatin1String("configuration")) {
         qCWarning(PIMKOLAB_LOG) << QStringLiteral("XML error: Top tag was %1 instead of the expected configuration").arg(top.tagName());
-        return QStringList();
+        return {};
     }
 
     for (QDomNode n = top.firstChild(); !n.isNull(); n = n.nextSibling()) {

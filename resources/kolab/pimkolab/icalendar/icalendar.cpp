@@ -81,7 +81,7 @@ std::string ITipHandler::toITip(const Event &event, ITipHandler::ITipMethod meth
     format.setApplication(QStringLiteral("libkolab"), QStringLiteral(LIBKOLAB_LIB_VERSION_STRING));
     KCalendarCore::iTIPMethod m = mapToKCalendarCore(method);
     if (m == KCalendarCore::iTIPNoMethod) {
-        return std::string();
+        return {};
     }
     //     qCDebug(PIMKOLAB_LOG) << event.start().
     /* TODO
@@ -145,7 +145,7 @@ std::vector<Event> ITipHandler::fromIMip(const std::string &input)
     KMime::Content *c = Kolab::Mime::findContentByType(msg, "text/calendar");
     if (!c) {
         qCWarning(PIMKOLAB_LOG) << "could not find text/calendar part";
-        return std::vector<Event>();
+        return {};
     }
     return fromITip(Conversion::toStdString(QString::fromUtf8(c->decodedContent())));
 }

@@ -58,8 +58,8 @@ void ICalendarTest::testToIMip()
     ev1.setCreated(Kolab::cDateTime(2011, 10, 11, 12, 1, 3, true));
 
     std::vector<Kolab::Attendee> attendees;
-    attendees.push_back(Kolab::Attendee(Kolab::ContactReference("email1@test.org", "name1", "uid1")));
-    attendees.push_back(Kolab::Attendee(Kolab::ContactReference("email2@test.org", "name2", "uid2")));
+    attendees.emplace_back(Kolab::ContactReference("email1@test.org", "name1", "uid1"));
+    attendees.emplace_back(Kolab::ContactReference("email2@test.org", "name2", "uid2"));
     ev1.setAttendees(attendees);
 
     ev1.setOrganizer(Kolab::ContactReference("organizer@test.org", "organizer", "uid3"));

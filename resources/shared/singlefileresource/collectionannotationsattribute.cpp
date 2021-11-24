@@ -10,9 +10,7 @@
 
 using namespace Akonadi;
 
-CollectionAnnotationsAttribute::CollectionAnnotationsAttribute()
-{
-}
+CollectionAnnotationsAttribute::CollectionAnnotationsAttribute() = default;
 
 CollectionAnnotationsAttribute::CollectionAnnotationsAttribute(const QMap<QByteArray, QByteArray> &annotations)
     : mAnnotations(annotations)

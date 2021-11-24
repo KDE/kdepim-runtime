@@ -13,9 +13,7 @@ EwsModifyAbchPersonJob::EwsModifyAbchPersonJob(EwsClient &client, const Akonadi:
 {
 }
 
-EwsModifyAbchPersonJob::~EwsModifyAbchPersonJob()
-{
-}
+EwsModifyAbchPersonJob::~EwsModifyAbchPersonJob() = default;
 
 void EwsModifyAbchPersonJob::start()
 {

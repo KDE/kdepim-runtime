@@ -25,9 +25,7 @@ public:
         }
     };
 
-    EwsSettingsBase()
-    {
-    }
+    EwsSettingsBase() = default;
 
     ~EwsSettingsBase() override = default;
     QString username() const

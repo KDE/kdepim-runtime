@@ -63,8 +63,8 @@ public:
     std::vector<Kolab::Event> getEvents(const Kolab::cDateTime &start, const Kolab::cDateTime &end, bool sort);
 
 private:
-    Calendar(const Calendar &);
-    void operator=(const Calendar &);
+    Calendar(const Calendar &) = delete;
+    void operator=(const Calendar &) = delete;
     std::unique_ptr<KCalendarCore::MemoryCalendar> mCalendar;
 };
 } // Namespace

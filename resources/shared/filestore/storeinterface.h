@@ -37,9 +37,7 @@ class StoreCompactJob;
 class AKONADI_FILESTORE_EXPORT StoreInterface
 {
 public:
-    virtual ~StoreInterface()
-    {
-    }
+    virtual ~StoreInterface() = default;
 
     virtual Collection topLevelCollection() const = 0;
 

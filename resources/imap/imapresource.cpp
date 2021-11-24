@@ -43,9 +43,7 @@ ImapResource::ImapResource(const QString &id)
     settings(); // make sure the D-Bus settings interface is up
 }
 
-ImapResource::~ImapResource()
-{
-}
+ImapResource::~ImapResource() = default;
 
 QString ImapResource::defaultName() const
 {

@@ -39,9 +39,7 @@ ContactsSettingsWidget::ContactsSettingsWidget(const KSharedConfigPtr &config, Q
     connect(ui.kcfg_ReadOnly, &QCheckBox::toggled, this, &ContactsSettingsWidget::validate);
 }
 
-ContactsSettingsWidget::~ContactsSettingsWidget()
-{
-}
+ContactsSettingsWidget::~ContactsSettingsWidget() = default;
 
 void ContactsSettingsWidget::validate()
 {

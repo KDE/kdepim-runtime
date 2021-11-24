@@ -11,9 +11,7 @@
 #include <KMime/Message>
 
 struct Merger {
-    virtual ~Merger()
-    {
-    }
+    virtual ~Merger() = default;
 
     virtual KMime::Message::Ptr merge(const KMime::Message::Ptr &newMessage, const QList<KMime::Message::Ptr> &conflictingMessages) const = 0;
 };

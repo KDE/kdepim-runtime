@@ -17,9 +17,7 @@ FakeEwsServerThread::FakeEwsServerThread(QObject *parent)
 {
 }
 
-FakeEwsServerThread::~FakeEwsServerThread()
-{
-}
+FakeEwsServerThread::~FakeEwsServerThread() = default;
 
 void FakeEwsServerThread::run()
 {

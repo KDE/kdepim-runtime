@@ -47,7 +47,7 @@ QDateTime toDate(const Kolab::cDateTime &dt)
 {
     QDateTime date;
     if (!dt.isValid()) {
-        return QDateTime();
+        return {};
     }
     if (dt.isDateOnly()) {
         date.setDate(QDate(dt.year(), dt.month(), dt.day()));
@@ -69,7 +69,7 @@ QDateTime toDate(const Kolab::cDateTime &dt)
 cDateTime fromDate(const QDateTime &dt, bool isAllDay)
 {
     if (!dt.isValid()) {
-        return cDateTime();
+        return {};
     }
     cDateTime date;
     if (isAllDay) {

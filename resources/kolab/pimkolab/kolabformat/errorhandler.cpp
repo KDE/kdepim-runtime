@@ -26,9 +26,7 @@ DebugStream::DebugStream()
     open(WriteOnly);
 }
 
-DebugStream::~DebugStream()
-{
-}
+DebugStream::~DebugStream() = default;
 
 qint64 DebugStream::writeData(const char *data, qint64 len)
 {
@@ -56,7 +54,7 @@ QDebug ErrorHandler::debugStream(ErrorHandler::Severity severity, int line, cons
     QMutexLocker locker(&mutex);
     ErrorHandler::instance().m_debugStream->m_location = QString(QLatin1String(file) + QLatin1Char('(') + QString::number(line) + QLatin1Char(')'));
     ErrorHandler::instance().m_debugStream->m_severity = severity;
-    return QDebug(ErrorHandler::instance().m_debugStream.data());
+    return {ErrorHandler::instance().m_debugStream.data()};
 }
 
 void ErrorHandler::addError(ErrorHandler::Severity s, const QString &message, const QString &location)

@@ -17,9 +17,7 @@ EwsCreateTaskJob::EwsCreateTaskJob(EwsClient &client,
 {
 }
 
-EwsCreateTaskJob::~EwsCreateTaskJob()
-{
-}
+EwsCreateTaskJob::~EwsCreateTaskJob() = default;
 
 void EwsCreateTaskJob::doStart()
 {

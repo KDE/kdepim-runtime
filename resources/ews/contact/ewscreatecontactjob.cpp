@@ -17,9 +17,7 @@ EwsCreateContactJob::EwsCreateContactJob(EwsClient &client,
 {
 }
 
-EwsCreateContactJob::~EwsCreateContactJob()
-{
-}
+EwsCreateContactJob::~EwsCreateContactJob() = default;
 
 void EwsCreateContactJob::doStart()
 {

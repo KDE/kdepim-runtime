@@ -135,12 +135,12 @@ RelationMember parseMemberUrl(const QString &string)
     }
     if (start < 0) {
         qCWarning(PIMKOLAB_LOG) << R"(Couldn't find "user" or "shared" in path: )" << path;
-        return RelationMember();
+        return {};
     }
     path = path.mid(start + 1);
     if (path.size() < 2) {
         qCWarning(PIMKOLAB_LOG) << "Incomplete path: " << path;
-        return RelationMember();
+        return {};
     }
     RelationMember member;
     if (!isShared) {
@@ -462,7 +462,7 @@ KMime::Message::Ptr KolabObjectWriter::writeEvent(const KCalendarCore::Event::Pt
     ErrorHandler::clearErrors();
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
-        return KMime::Message::Ptr();
+        return {};
     }
     const Kolab::Event &event = Kolab::Conversion::fromKCalendarCore(*i);
     Kolab::MIMEObject mimeObject;
@@ -475,7 +475,7 @@ KMime::Message::Ptr KolabObjectWriter::writeTodo(const KCalendarCore::Todo::Ptr 
     ErrorHandler::clearErrors();
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
-        return KMime::Message::Ptr();
+        return {};
     }
     const Kolab::Todo &todo = Kolab::Conversion::fromKCalendarCore(*i);
     Kolab::MIMEObject mimeObject;
@@ -488,7 +488,7 @@ KMime::Message::Ptr KolabObjectWriter::writeJournal(const KCalendarCore::Journal
     ErrorHandler::clearErrors();
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
-        return KMime::Message::Ptr();
+        return {};
     }
     const Kolab::Journal &journal = Kolab::Conversion::fromKCalendarCore(*i);
     Kolab::MIMEObject mimeObject;
@@ -500,7 +500,7 @@ KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalendarCore::Incid
 {
     if (!i) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
-        return KMime::Message::Ptr();
+        return {};
     }
     switch (i->type()) {
     case KCalendarCore::IncidenceBase::TypeEvent:
@@ -512,7 +512,7 @@ KMime::Message::Ptr KolabObjectWriter::writeIncidence(const KCalendarCore::Incid
     default:
         qCCritical(PIMKOLAB_LOG) << "unknown incidence type";
     }
-    return KMime::Message::Ptr();
+    return {};
 }
 
 KMime::Message::Ptr KolabObjectWriter::writeContact(const KContacts::Addressee &addressee, Version v, const QString &productId)
@@ -538,7 +538,7 @@ KMime::Message::Ptr KolabObjectWriter::writeNote(const KMime::Message::Ptr &n, V
     ErrorHandler::clearErrors();
     if (!n) {
         qCCritical(PIMKOLAB_LOG) << "passed a null pointer";
-        return KMime::Message::Ptr();
+        return {};
     }
     const Kolab::Note &note = Kolab::Conversion::fromNote(n);
     Kolab::MIMEObject mimeObject;
@@ -609,7 +609,7 @@ KMime::Message::Ptr KolabObjectWriter::writeRelation(const Akonadi::Relation &re
 
     if (items.size() != 2) {
         qCCritical(PIMKOLAB_LOG) << "Wrong number of members for generic relation.";
-        return KMime::Message::Ptr();
+        return {};
     }
 
     Kolab::Relation kolabRelation(std::string(), "generic");

@@ -32,12 +32,12 @@ static QVariantMap parseTokenResponse(const QByteArray &data)
     QJsonDocument doc = QJsonDocument::fromJson(data, &err);
     if (err.error != QJsonParseError::NoError) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "parseTokenResponse: Failed to parse token response due to err:" << err.errorString();
-        return QVariantMap();
+        return {};
     }
 
     if (!doc.isObject()) {
         qCWarning(TOMBOYNOTESRESOURCE_LOG) << "parseTokenResponse: Token response is not an object";
-        return QVariantMap();
+        return {};
     }
 
     return doc.object().toVariantMap();

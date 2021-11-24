@@ -499,7 +499,7 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
 {
     if (collection.remoteId().isEmpty()) {
         qCWarning(CONTACTSRESOURCES_LOG) << "Got incomplete ancestor chain:" << collection;
-        return QString();
+        return {};
     }
 
     if (collection.parentCollection() == Collection::root()) {
@@ -511,7 +511,7 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
 
     const QString parentDirectory = directoryForCollection(collection.parentCollection());
     if (parentDirectory.isNull()) { // invalid, != isEmpty() here!
-        return QString();
+        return {};
     }
 
     QString directory = parentDirectory;

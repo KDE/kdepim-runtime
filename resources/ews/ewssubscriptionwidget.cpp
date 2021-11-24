@@ -91,9 +91,7 @@ EwsSubscriptionFilterModel::EwsSubscriptionFilterModel(QObject *parent)
     setRecursiveFilteringEnabled(true);
 }
 
-EwsSubscriptionFilterModel::~EwsSubscriptionFilterModel()
-{
-}
+EwsSubscriptionFilterModel::~EwsSubscriptionFilterModel() = default;
 
 bool EwsSubscriptionFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
@@ -143,9 +141,7 @@ EwsSubscriptionWidgetPrivate::EwsSubscriptionWidgetPrivate(EwsClient &client, Ew
 {
 }
 
-EwsSubscriptionWidgetPrivate::~EwsSubscriptionWidgetPrivate()
-{
-}
+EwsSubscriptionWidgetPrivate::~EwsSubscriptionWidgetPrivate() = default;
 
 void EwsSubscriptionWidgetPrivate::enableCheckBoxToggled(bool checked)
 {
@@ -348,9 +344,7 @@ EwsSubscriptionWidget::EwsSubscriptionWidget(EwsClient &client, EwsSettings *set
     d->reloadFolderList(false);
 }
 
-EwsSubscriptionWidget::~EwsSubscriptionWidget()
-{
-}
+EwsSubscriptionWidget::~EwsSubscriptionWidget() = default;
 
 QStringList EwsSubscriptionWidget::subscribedList() const
 {

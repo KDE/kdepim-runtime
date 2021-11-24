@@ -10,9 +10,7 @@
 
 using namespace OXA;
 
-Object::Object()
-{
-}
+Object::Object() = default;
 
 void Object::setObjectStatus(ObjectStatus status)
 {

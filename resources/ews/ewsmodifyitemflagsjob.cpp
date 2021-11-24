@@ -24,9 +24,7 @@ EwsModifyItemFlagsJob::EwsModifyItemFlagsJob(EwsClient &client,
 {
 }
 
-EwsModifyItemFlagsJob::~EwsModifyItemFlagsJob()
-{
-}
+EwsModifyItemFlagsJob::~EwsModifyItemFlagsJob() = default;
 
 void EwsModifyItemFlagsJob::itemModifyFinished(KJob *job)
 {

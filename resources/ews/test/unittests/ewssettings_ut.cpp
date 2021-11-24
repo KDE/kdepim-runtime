@@ -110,9 +110,7 @@ MyWallet::MyWallet()
 {
 }
 
-MyWallet::~MyWallet()
-{
-}
+MyWallet::~MyWallet() = default;
 
 void MyWallet::doOpen(bool success)
 {

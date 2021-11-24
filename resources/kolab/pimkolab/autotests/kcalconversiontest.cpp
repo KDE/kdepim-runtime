@@ -135,9 +135,9 @@ void KCalConversionTest::testConversion_data()
     intVector.push_back(-3);
     intVector.push_back(2);
     std::vector<std::string> stringVector;
-    stringVector.push_back("cat1");
-    stringVector.push_back("cat2");
-    stringVector.push_back("parent/child");
+    stringVector.emplace_back("cat1");
+    stringVector.emplace_back("cat2");
+    stringVector.emplace_back("parent/child");
 
     {
         KCalendarCore::Event kcal;
@@ -257,9 +257,9 @@ void KCalConversionTest::testConversion_data()
 
         // The sorting is random, just sort them here how we think they should arrive so we don't have to sort during compare (due to laziness).
         std::vector<Kolab::CustomProperty> customproperties;
-        customproperties.push_back(Kolab::CustomProperty("X-KDE-SOMEOTHERAPP-key2", "value2"));
-        customproperties.push_back(Kolab::CustomProperty("key1", "value1"));
-        customproperties.push_back(Kolab::CustomProperty("key2", "value2"));
+        customproperties.emplace_back("X-KDE-SOMEOTHERAPP-key2", "value2");
+        customproperties.emplace_back("key1", "value1");
+        customproperties.emplace_back("key2", "value2");
 
         kolab.setCustomProperties(customproperties);
 
@@ -430,7 +430,7 @@ void KCalConversionTest::testTodoConversion_data()
         kolab.setStart(date);
         kolab.setDue(date2);
         std::vector<std::string> relateds;
-        relateds.push_back("uid2");
+        relateds.emplace_back("uid2");
         kolab.setRelatedTo(relateds);
 
         QTest::newRow("todo") << kcal << kolab;

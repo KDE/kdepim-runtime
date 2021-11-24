@@ -67,7 +67,7 @@ Maildir MaildirResource::maildirForCollection(const Collection &col)
 Collection MaildirResource::collectionForMaildir(const Maildir &md) const
 {
     if (!md.isValid()) {
-        return Collection();
+        return {};
     }
 
     Collection col;
@@ -245,7 +245,7 @@ void MaildirResource::aboutToQuit()
 
 QString MaildirResource::defaultResourceType()
 {
-    return QString();
+    return {};
 }
 
 void MaildirResource::itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection)

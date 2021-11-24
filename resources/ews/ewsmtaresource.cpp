@@ -22,9 +22,7 @@ EwsMtaResource::EwsMtaResource(const QString &id)
 {
 }
 
-EwsMtaResource::~EwsMtaResource()
-{
-}
+EwsMtaResource::~EwsMtaResource() = default;
 
 bool EwsMtaResource::connectEws()
 {

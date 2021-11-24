@@ -25,9 +25,7 @@ NotesResource::NotesResource(const QString &id)
     }
 }
 
-NotesResource::~NotesResource()
-{
-}
+NotesResource::~NotesResource() = default;
 
 QStringList NotesResource::allMimeTypes() const
 {

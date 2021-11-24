@@ -28,7 +28,7 @@ static QDomElement firstChildElementNS(const QDomElement &parent, const QString 
         }
     }
 
-    return QDomElement();
+    return {};
 }
 
 DavFreeBusyHandler::DavFreeBusyHandler(QObject *parent)

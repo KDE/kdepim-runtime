@@ -130,9 +130,7 @@ EwsResource::EwsResource(const QString &id)
     connect(this, &ResourceBase::nameChanged, this, &EwsResource::adjustRootCollectionName);
 }
 
-EwsResource::~EwsResource()
-{
-}
+EwsResource::~EwsResource() = default;
 
 void EwsResource::delayedInit()
 {
@@ -426,7 +424,7 @@ void EwsResource::getItemsRequestFinished(KJob *job)
         return;
     }
 
-    EwsFetchItemPayloadJob *fetchJob = qobject_cast<EwsFetchItemPayloadJob *>(job);
+    auto *fetchJob = qobject_cast<EwsFetchItemPayloadJob *>(job);
     if (!fetchJob) {
         qCWarning(EWSRES_LOG) << QStringLiteral("Invalid EwsFetchItemPayloadJob job object");
         cancelTask(i18nc("@info:status", "Failed to retrieve items - internal error"));
@@ -1125,7 +1123,7 @@ void EwsResource::clearCollectionSyncState(int collectionId)
     Collection col(collectionId);
     auto attr = col.attribute<EwsSyncStateAttribute>();
     col.addAttribute(attr);
-    CollectionModifyJob *job = new CollectionModifyJob(col);
+    auto *job = new CollectionModifyJob(col);
     job->start();
 }
 
@@ -1465,7 +1463,7 @@ QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col)
 void EwsResource::saveCollectionSyncState(Akonadi::Collection &col, const QString &state)
 {
     col.addAttribute(new EwsSyncStateAttribute(state));
-    CollectionModifyJob *job = new CollectionModifyJob(col);
+    auto *job = new CollectionModifyJob(col);
     job->start();
 }
 

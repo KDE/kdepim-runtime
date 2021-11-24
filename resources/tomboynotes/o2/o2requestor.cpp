@@ -29,9 +29,7 @@ O2Requestor::O2Requestor(QNetworkAccessManager *manager, O2 *authenticator, QObj
     connect(authenticator, &O2::refreshFinished, this, &O2Requestor::onRefreshFinished, Qt::QueuedConnection);
 }
 
-O2Requestor::~O2Requestor()
-{
-}
+O2Requestor::~O2Requestor() = default;
 
 int O2Requestor::get(const QNetworkRequest &req)
 {

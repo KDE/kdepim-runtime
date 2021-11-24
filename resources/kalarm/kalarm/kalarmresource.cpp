@@ -44,9 +44,7 @@ KAlarmResource::KAlarmResource(const QString &id)
     fetchCollection(SLOT(collectionFetchResult(KJob *)));
 }
 
-KAlarmResource::~KAlarmResource()
-{
-}
+KAlarmResource::~KAlarmResource() = default;
 
 /******************************************************************************
  * Reimplemented to fetch collection attributes after creating the collection.

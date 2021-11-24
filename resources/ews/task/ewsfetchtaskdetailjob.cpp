@@ -20,9 +20,7 @@ EwsFetchTaskDetailJob::EwsFetchTaskDetailJob(EwsClient &client, QObject *parent,
     mRequest->setItemShape(shape);
 }
 
-EwsFetchTaskDetailJob::~EwsFetchTaskDetailJob()
-{
-}
+EwsFetchTaskDetailJob::~EwsFetchTaskDetailJob() = default;
 
 void EwsFetchTaskDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {

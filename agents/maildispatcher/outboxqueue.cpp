@@ -333,9 +333,7 @@ OutboxQueue::OutboxQueue(QObject *parent)
     mFutureTimer->start(1h); // 1 hour
 }
 
-OutboxQueue::~OutboxQueue()
-{
-}
+OutboxQueue::~OutboxQueue() = default;
 
 bool OutboxQueue::isEmpty() const
 {

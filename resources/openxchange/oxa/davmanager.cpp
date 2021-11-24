@@ -16,13 +16,9 @@ using namespace OXA;
 
 DavManager *DavManager::mSelf = nullptr;
 
-DavManager::DavManager()
-{
-}
+DavManager::DavManager() = default;
 
-DavManager::~DavManager()
-{
-}
+DavManager::~DavManager() = default;
 
 DavManager *DavManager::self()
 {

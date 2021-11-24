@@ -17,8 +17,8 @@ public:
     EwsAbstractChunkedJob(unsigned int chunkSize);
     ~EwsAbstractChunkedJob() = default;
 
-    typedef QVector<ReqItem> ReqItemList;
-    typedef QVector<RespItem> RespItemList;
+    using ReqItemList = QVector<ReqItem>;
+    using RespItemList = QVector<RespItem>;
 
     void setItems(const ReqItemList &items);
     const RespItemList &responses() const;

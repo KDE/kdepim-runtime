@@ -57,6 +57,4 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 }
 
-EwsProgressDialog::~EwsProgressDialog()
-{
-}
+EwsProgressDialog::~EwsProgressDialog() = default;

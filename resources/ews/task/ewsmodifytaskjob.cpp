@@ -13,9 +13,7 @@ EwsModifyTaskJob::EwsModifyTaskJob(EwsClient &client, const Akonadi::Item::List 
 {
 }
 
-EwsModifyTaskJob::~EwsModifyTaskJob()
-{
-}
+EwsModifyTaskJob::~EwsModifyTaskJob() = default;
 
 void EwsModifyTaskJob::start()
 {

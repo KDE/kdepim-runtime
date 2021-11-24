@@ -31,13 +31,13 @@ KCalendarCore::Duration toDuration(const Kolab::Duration &d)
         if (d.isNegative()) {
             value = -value;
         }
-        return KCalendarCore::Duration(value);
+        return {value};
     }
     value = d.weeks() * 7 + d.days();
     if (d.isNegative()) {
         value = -value;
     }
-    return KCalendarCore::Duration(value, KCalendarCore::Duration::Days);
+    return {value, KCalendarCore::Duration::Days};
 }
 
 Kolab::Duration fromDuration(const KCalendarCore::Duration &d)
@@ -51,14 +51,14 @@ Kolab::Duration fromDuration(const KCalendarCore::Duration &d)
     // We don't know how the seconds/days were distributed before, so no point in distributing them (probably)
     if (d.isDaily()) {
         int days = value;
-        return Kolab::Duration(days, 0, 0, 0, isNegative);
+        return {days, 0, 0, 0, isNegative};
     }
     int seconds = value;
     //         int minutes = seconds / 60;
     //         seconds = seconds % 60;
     //         int hours = minutes / 60;
     //         minutes = minutes % 60;
-    return Kolab::Duration(0, 0, 0, seconds, isNegative);
+    return {0, 0, 0, seconds, isNegative};
 }
 
 KCalendarCore::Incidence::Secrecy toSecrecy(Kolab::Classification c)
@@ -500,7 +500,7 @@ KCalendarCore::RecurrenceRule::WDayPos toWeekDayPos(Kolab::DayPos dp)
 
 Kolab::DayPos fromWeekDayPos(KCalendarCore::RecurrenceRule::WDayPos dp)
 {
-    return Kolab::DayPos(dp.pos(), fromWeekDay(dp.day()));
+    return {dp.pos(), fromWeekDay(dp.day())};
 }
 
 template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &event)
@@ -766,7 +766,7 @@ template<typename T, typename I> void getTodoEvent(T &i, const I &e)
             std::vector<Kolab::ContactReference> receipents;
             const auto mailAddresses = a->mailAddresses();
             for (const KCalendarCore::Person &p : mailAddresses) {
-                receipents.push_back(Kolab::ContactReference(toStdString(p.email()), toStdString(p.name())));
+                receipents.emplace_back(toStdString(p.email()), toStdString(p.name()));
             }
             alarm = Kolab::Alarm(toStdString(a->mailSubject()), toStdString(a->mailText()), receipents);
             break;

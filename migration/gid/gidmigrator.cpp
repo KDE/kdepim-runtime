@@ -15,9 +15,7 @@ GidMigrator::GidMigrator(const QString &mimeType)
 {
 }
 
-GidMigrator::~GidMigrator()
-{
-}
+GidMigrator::~GidMigrator() = default;
 
 QString GidMigrator::displayName() const
 {

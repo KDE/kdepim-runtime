@@ -78,7 +78,7 @@ QByteArray FakeServer::parseDeleteMark(const QByteArray &expectedData, const QBy
         }
         qWarning() << "Received:" << dataReceived.data() << "\nExpected:" << expectedData.data();
         Q_ASSERT_X(false, "FakeServer::parseDeleteMark", "Unable to substitute data!");
-        return QByteArray();
+        return {};
     } else {
         return expectedData;
     }
@@ -101,7 +101,7 @@ QByteArray FakeServer::parseRetrMark(const QByteArray &expectedData, const QByte
         }
         qWarning() << "Received:" << dataReceived.data() << "\nExpected:" << expectedData.data();
         Q_ASSERT_X(false, "FakeServer::parseRetrMark", "Unable to substitute data!");
-        return QByteArray();
+        return {};
     } else {
         return expectedData;
     }

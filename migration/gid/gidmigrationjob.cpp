@@ -20,9 +20,7 @@ UpdateJob::UpdateJob(const Collection &col, QObject *parent)
 {
 }
 
-UpdateJob::~UpdateJob()
-{
-}
+UpdateJob::~UpdateJob() = default;
 
 void UpdateJob::doStart()
 {
@@ -87,9 +85,7 @@ GidMigrationJob::GidMigrationJob(const QStringList &mimeTypeFilter, QObject *par
 {
 }
 
-GidMigrationJob::~GidMigrationJob()
-{
-}
+GidMigrationJob::~GidMigrationJob() = default;
 
 void GidMigrationJob::doStart()
 {

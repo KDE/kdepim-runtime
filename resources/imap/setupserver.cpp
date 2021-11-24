@@ -80,7 +80,7 @@ static QString authenticationModeString(MailTransport::Transport::EnumAuthentica
     default:
         break;
     }
-    return QString();
+    return {};
 }
 
 static void setCurrentAuthMode(QComboBox *authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype)

@@ -8,9 +8,7 @@
 #include "resourcestateinterface.h"
 #include "imapresource_debug.h"
 
-ResourceStateInterface::~ResourceStateInterface()
-{
-}
+ResourceStateInterface::~ResourceStateInterface() = default;
 
 QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &collection, bool showWarnings)
 {
@@ -18,7 +16,7 @@ QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &
         if (showWarnings) {
             qCWarning(IMAPRESOURCE_LOG) << "Got incomplete ancestor chain due to empty remoteId:" << collection;
         }
-        return QString();
+        return {};
     }
 
     if (collection.parentCollection() == Akonadi::Collection::root()) {
@@ -29,7 +27,7 @@ QString ResourceStateInterface::mailBoxForCollection(const Akonadi::Collection &
     }
     const QString parentMailbox = mailBoxForCollection(collection.parentCollection());
     if (parentMailbox.isNull()) { // invalid, != isEmpty() here!
-        return QString();
+        return {};
     }
 
     const QString mailbox = parentMailbox + collection.remoteId();

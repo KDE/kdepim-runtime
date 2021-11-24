@@ -322,7 +322,7 @@ FreeBusyHandler::FreeBusyHandler(GoogleResourceStateInterface *iface, GoogleSett
 
 QDateTime FreeBusyHandler::lastCacheUpdate() const
 {
-    return QDateTime();
+    return {};
 }
 
 void FreeBusyHandler::canHandleFreeBusy(const QString &email)

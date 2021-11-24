@@ -32,9 +32,7 @@ EwsUpdateItemsTagsJob::EwsUpdateItemsTagsJob(const Akonadi::Item::List &items, E
 {
 }
 
-EwsUpdateItemsTagsJob::~EwsUpdateItemsTagsJob()
-{
-}
+EwsUpdateItemsTagsJob::~EwsUpdateItemsTagsJob() = default;
 
 void EwsUpdateItemsTagsJob::start()
 {

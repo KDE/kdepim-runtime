@@ -33,7 +33,7 @@ QString TimezoneConverter::normalizeTimezone(const QString &tz)
 QString TimezoneConverter::fromGMTOffsetTimezone(const QString &tz)
 {
     Q_UNUSED(tz)
-    return QString();
+    return {};
 }
 
 QString TimezoneConverter::fromCityName(const QString &tz)
@@ -57,7 +57,7 @@ QString TimezoneConverter::fromCityName(const QString &tz)
             return countryMap.value(location);
         }
     }
-    return QString();
+    return {};
 }
 
 // Based on
@@ -387,5 +387,5 @@ QString TimezoneConverter::fromHardcodedList(const QString &tz)
             return QString::fromLatin1(windowsTimezone.olson[0]);
         }
     }
-    return QString();
+    return {};
 }

@@ -90,8 +90,8 @@ public:
 
 private:
     ErrorHandler();
-    ErrorHandler(const ErrorHandler &);
-    ErrorHandler &operator=(const ErrorHandler &);
+    ErrorHandler(const ErrorHandler &) = delete;
+    ErrorHandler &operator=(const ErrorHandler &) = delete;
 
     Severity m_worstError;
     QString m_worstErrorMessage;

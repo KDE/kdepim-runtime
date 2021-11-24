@@ -13,9 +13,7 @@
 class ImapResourceBase;
 
 struct TaskArguments {
-    TaskArguments()
-    {
-    }
+    TaskArguments() = default;
 
     TaskArguments(const Akonadi::Item &_item)
         : items(Akonadi::Item::List() << _item)

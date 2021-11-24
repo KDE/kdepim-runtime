@@ -24,9 +24,7 @@ EwsModifyMailJob::EwsModifyMailJob(EwsClient &client, const Akonadi::Item::List 
 {
 }
 
-EwsModifyMailJob::~EwsModifyMailJob()
-{
-}
+EwsModifyMailJob::~EwsModifyMailJob() = default;
 
 void EwsModifyMailJob::start()
 {

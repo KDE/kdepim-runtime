@@ -27,9 +27,7 @@ IsolatedTestBase::IsolatedTestBase(QObject *parent)
 {
 }
 
-IsolatedTestBase::~IsolatedTestBase()
-{
-}
+IsolatedTestBase::~IsolatedTestBase() = default;
 
 void IsolatedTestBase::init()
 {
@@ -61,7 +59,7 @@ QString IsolatedTestBase::loadResourceAsString(const QString &path)
         return QString::fromUtf8(f.readAll());
     }
     qWarning() << "Resource" << path << "not found";
-    return QString();
+    return {};
 }
 
 template<typename T> QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc, const QString &name)

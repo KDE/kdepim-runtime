@@ -21,9 +21,7 @@ RetrieveItemTask::RetrieveItemTask(const ResourceStateInterface::Ptr &resource, 
 {
 }
 
-RetrieveItemTask::~RetrieveItemTask()
-{
-}
+RetrieveItemTask::~RetrieveItemTask() = default;
 
 void RetrieveItemTask::doStart(KIMAP::Session *session)
 {

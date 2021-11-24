@@ -37,9 +37,7 @@ ConfigWidget::ConfigWidget(MaildirSettings *settings, const QString &identifier,
     checkPath();
 }
 
-ConfigWidget::~ConfigWidget()
-{
-}
+ConfigWidget::~ConfigWidget() = default;
 
 void ConfigWidget::checkPath()
 {

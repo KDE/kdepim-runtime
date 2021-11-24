@@ -39,9 +39,7 @@ KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
     connect(mLdapConfigureWidget, &KLDAP::LdapConfigureWidget::changed, this, qOverload<bool>(&KCMLdap::changed));
 }
 
-KCMLdap::~KCMLdap()
-{
-}
+KCMLdap::~KCMLdap() = default;
 
 void KCMLdap::load()
 {

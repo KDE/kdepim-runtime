@@ -71,9 +71,7 @@ EwsFetchFoldersJobPrivate::EwsFetchFoldersJobPrivate(EwsFetchFoldersJob *parent,
     mPendingMoveJobs = 0;
 }
 
-EwsFetchFoldersJobPrivate::~EwsFetchFoldersJobPrivate()
-{
-}
+EwsFetchFoldersJobPrivate::~EwsFetchFoldersJobPrivate() = default;
 
 void EwsFetchFoldersJobPrivate::remoteFolderFullFetchDone(KJob *job)
 {
@@ -343,9 +341,7 @@ EwsFetchFoldersJob::EwsFetchFoldersJob(EwsClient &client, const Akonadi::Collect
     qRegisterMetaType<EwsId::List>();
 }
 
-EwsFetchFoldersJob::~EwsFetchFoldersJob()
-{
-}
+EwsFetchFoldersJob::~EwsFetchFoldersJob() = default;
 
 void EwsFetchFoldersJob::start()
 {

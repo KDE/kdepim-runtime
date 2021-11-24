@@ -24,9 +24,7 @@ FileStore::AbstractJobSession::AbstractJobSession(QObject *parent)
 {
 }
 
-FileStore::AbstractJobSession::~AbstractJobSession()
-{
-}
+FileStore::AbstractJobSession::~AbstractJobSession() = default;
 
 void FileStore::AbstractJobSession::notifyCollectionsReceived(FileStore::Job *job, const Collection::List &collections)
 {

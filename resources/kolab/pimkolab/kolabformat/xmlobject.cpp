@@ -22,9 +22,7 @@ static QString createUuid()
     return uuid.mid(1, uuid.size() - 2);
 }
 
-XMLObject::XMLObject()
-{
-}
+XMLObject::XMLObject() = default;
 
 std::string XMLObject::getSerializedUID() const
 {
@@ -43,7 +41,7 @@ std::string XMLObject::writeEvent(const Event &event, Version version, const std
         const KCalendarCore::Event::Ptr i = Conversion::toKCalendarCore(event);
         if (!i) {
             qCCritical(PIMKOLAB_LOG) << "invalid incidence";
-            return std::string();
+            return {};
         }
         if (i->uid().isEmpty()) {
             i->setUid(createUuid());
@@ -66,7 +64,7 @@ Event XMLObject::readEvent(const std::string &s, Version version)
         const auto event = Kolab::fromXML<KCalendarCore::Event::Ptr, KolabV2::Event>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
-            return Event();
+            return {};
         }
         mAttachments.clear();
         mAttachments.reserve(attachments.count());
@@ -87,7 +85,7 @@ std::string XMLObject::writeTodo(const Todo &event, Version version, const std::
         const KCalendarCore::Todo::Ptr i = Conversion::toKCalendarCore(event);
         if (!i) {
             qCCritical(PIMKOLAB_LOG) << "invalid incidence";
-            return std::string();
+            return {};
         }
         if (i->uid().isEmpty()) {
             i->setUid(createUuid());
@@ -110,7 +108,7 @@ Todo XMLObject::readTodo(const std::string &s, Version version)
         const auto event = Kolab::fromXML<KCalendarCore::Todo::Ptr, KolabV2::Task>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
-            return Todo();
+            return {};
         }
         mAttachments.clear();
         mAttachments.reserve(attachments.count());
@@ -131,7 +129,7 @@ std::string XMLObject::writeJournal(const Journal &event, Version version, const
         const KCalendarCore::Journal::Ptr i = Conversion::toKCalendarCore(event);
         if (!i) {
             qCCritical(PIMKOLAB_LOG) << "invalid journal";
-            return std::string();
+            return {};
         }
         if (i->uid().isEmpty()) {
             i->setUid(createUuid());
@@ -153,7 +151,7 @@ Journal XMLObject::readJournal(const std::string &s, Version version)
         const auto event = Kolab::fromXML<KCalendarCore::Journal::Ptr, KolabV2::Journal>(QString::fromUtf8(s.c_str()).toUtf8(), attachments);
         if (!event || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
-            return Journal();
+            return {};
         }
         mAttachments.clear();
         mAttachments.reserve(attachments.count());
@@ -172,7 +170,7 @@ std::string XMLObject::writeFreebusy(const Freebusy &event, Version version, con
     mWrittenUID.clear();
     if (version != KolabV3) {
         qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
-        return std::string();
+        return {};
     }
     const std::string result = Kolab::writeFreebusy(event, productId);
     mWrittenUID = Kolab::getSerializedUID();
@@ -183,7 +181,7 @@ Freebusy XMLObject::readFreebusy(const std::string &s, Version version)
 {
     if (version != KolabV3) {
         qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
-        return Freebusy();
+        return {};
     }
     return Kolab::readFreebusy(s, false);
 }
@@ -276,7 +274,7 @@ Note XMLObject::readNote(const std::string &s, Version version)
         const KMime::Message::Ptr msg = noteFromKolab(QByteArray(s.c_str(), s.length()), QDateTime());
         if (!msg || Kolab::ErrorHandler::errorOccured()) {
             qCCritical(PIMKOLAB_LOG) << "failed to read xml";
-            return Note();
+            return {};
         }
         return Conversion::fromNote(msg);
     }
@@ -311,7 +309,7 @@ Configuration XMLObject::readConfiguration(const std::string &s, Version version
         const QStringList dict = readLegacyDictionaryConfiguration(QByteArray(s.c_str(), s.length()), lang);
         if (lang.isEmpty()) {
             qCCritical(PIMKOLAB_LOG) << "not a dictionary or not a v2 configuration object";
-            return Kolab::Configuration();
+            return {};
         }
         std::vector<std::string> entries;
         entries.reserve(dict.size());
@@ -332,7 +330,7 @@ std::string XMLObject::writeConfiguration(const Configuration &configuration, Ve
     mWrittenUID.clear();
     if (version != KolabV3) {
         qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
-        return std::string();
+        return {};
     }
     const std::string result = Kolab::writeConfiguration(configuration, productId);
     mWrittenUID = Kolab::getSerializedUID();
@@ -344,7 +342,7 @@ File XMLObject::readFile(const std::string &s, Version version)
 {
     if (version == KolabV2) {
         qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
-        return File();
+        return {};
     }
     const Kolab::File file = Kolab::readFile(s, false);
     ErrorHandler::handleLibkolabxmlErrors();
@@ -356,7 +354,7 @@ std::string XMLObject::writeFile(const File &file, Version version, const std::s
     mWrittenUID.clear();
     if (version != KolabV3) {
         qCCritical(PIMKOLAB_LOG) << "only v3 implementation available";
-        return std::string();
+        return {};
     }
     const std::string result = Kolab::writeFile(file, productId);
     mWrittenUID = Kolab::getSerializedUID();

@@ -17,9 +17,7 @@ EwsCreateAbchPersonJob::EwsCreateAbchPersonJob(EwsClient &client,
 {
 }
 
-EwsCreateAbchPersonJob::~EwsCreateAbchPersonJob()
-{
-}
+EwsCreateAbchPersonJob::~EwsCreateAbchPersonJob() = default;
 
 void EwsCreateAbchPersonJob::doStart()
 {

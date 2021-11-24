@@ -36,9 +36,7 @@ SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QStr
     connect(job, &Akonadi::ItemFetchJob::result, this, &SpecialNotifierJob::slotItemFetchJobDone);
 }
 
-SpecialNotifierJob::~SpecialNotifierJob()
-{
-}
+SpecialNotifierJob::~SpecialNotifierJob() = default;
 
 void SpecialNotifierJob::setDefaultIconName(const QString &iconName)
 {

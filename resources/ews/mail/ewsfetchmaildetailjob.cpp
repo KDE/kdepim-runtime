@@ -46,9 +46,7 @@ EwsFetchMailDetailJob::EwsFetchMailDetailJob(EwsClient &client, QObject *parent,
     mRequest->setItemShape(shape);
 }
 
-EwsFetchMailDetailJob::~EwsFetchMailDetailJob()
-{
-}
+EwsFetchMailDetailJob::~EwsFetchMailDetailJob() = default;
 
 void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List &responses)
 {

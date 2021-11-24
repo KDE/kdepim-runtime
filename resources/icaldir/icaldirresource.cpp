@@ -78,9 +78,7 @@ ICalDirResource::ICalDirResource(const QString &id)
     connect(this, &ICalDirResource::reloadConfiguration, this, &ICalDirResource::slotReloadConfig);
 }
 
-ICalDirResource::~ICalDirResource()
-{
-}
+ICalDirResource::~ICalDirResource() = default;
 
 void ICalDirResource::slotReloadConfig()
 {

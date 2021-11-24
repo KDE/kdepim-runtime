@@ -24,9 +24,7 @@ EwsGlobalTagsWriteJob::EwsGlobalTagsWriteJob(EwsTagStore *tagStore, EwsClient &c
 {
 }
 
-EwsGlobalTagsWriteJob::~EwsGlobalTagsWriteJob()
-{
-}
+EwsGlobalTagsWriteJob::~EwsGlobalTagsWriteJob() = default;
 
 void EwsGlobalTagsWriteJob::start()
 {

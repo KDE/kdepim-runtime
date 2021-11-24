@@ -35,9 +35,7 @@ BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &c
     ui.kcfg_AlarmDays->setSuffix(ki18np(" day", " days"));
 }
 
-BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget()
-{
-}
+BirthdaysConfigAgentWidget::~BirthdaysConfigAgentWidget() = default;
 
 void BirthdaysConfigAgentWidget::load()
 {

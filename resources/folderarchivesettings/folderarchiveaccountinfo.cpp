@@ -6,18 +6,14 @@
 
 #include "folderarchiveaccountinfo.h"
 
-FolderArchiveAccountInfo::FolderArchiveAccountInfo()
-{
-}
+FolderArchiveAccountInfo::FolderArchiveAccountInfo() = default;
 
 FolderArchiveAccountInfo::FolderArchiveAccountInfo(const KConfigGroup &config)
 {
     readConfig(config);
 }
 
-FolderArchiveAccountInfo::~FolderArchiveAccountInfo()
-{
-}
+FolderArchiveAccountInfo::~FolderArchiveAccountInfo() = default;
 
 bool FolderArchiveAccountInfo::isValid() const
 {

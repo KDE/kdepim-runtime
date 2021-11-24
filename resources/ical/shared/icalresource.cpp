@@ -31,9 +31,7 @@ ICalResource::ICalResource(const QString &id, const QStringList &mimeTypes, cons
     initialise(mimeTypes, icon);
 }
 
-ICalResource::~ICalResource()
-{
-}
+ICalResource::~ICalResource() = default;
 
 bool ICalResource::doRetrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {

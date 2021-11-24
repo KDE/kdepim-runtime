@@ -147,9 +147,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     hbox->addStretch(1);
 }
 
-NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget()
-{
-}
+NewMailNotifierSelectCollectionWidget::~NewMailNotifierSelectCollectionWidget() = default;
 
 void NewMailNotifierSelectCollectionWidget::slotCollectionTreeFetched()
 {

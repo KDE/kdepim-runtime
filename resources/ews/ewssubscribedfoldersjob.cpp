@@ -18,9 +18,7 @@ EwsSubscribedFoldersJob::EwsSubscribedFoldersJob(EwsClient &client, EwsSettings 
 {
 }
 
-EwsSubscribedFoldersJob::~EwsSubscribedFoldersJob()
-{
-}
+EwsSubscribedFoldersJob::~EwsSubscribedFoldersJob() = default;
 
 void EwsSubscribedFoldersJob::start()
 {

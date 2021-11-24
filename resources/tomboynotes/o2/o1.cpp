@@ -146,7 +146,7 @@ static QString getOperationName(QNetworkAccessManager::Operation op)
     case QNetworkAccessManager::DeleteOperation:
         return QStringLiteral("DEL");
     default:
-        return QString();
+        return {};
     }
 }
 

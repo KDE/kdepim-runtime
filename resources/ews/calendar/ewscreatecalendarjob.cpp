@@ -17,9 +17,7 @@ EwsCreateCalendarJob::EwsCreateCalendarJob(EwsClient &client,
 {
 }
 
-EwsCreateCalendarJob::~EwsCreateCalendarJob()
-{
-}
+EwsCreateCalendarJob::~EwsCreateCalendarJob() = default;
 
 void EwsCreateCalendarJob::doStart()
 {

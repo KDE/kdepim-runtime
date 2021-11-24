@@ -329,7 +329,7 @@ QDateTime GoogleResource::lastCacheUpdate() const
     if (m_freeBusyHandler) {
         return m_freeBusyHandler->lastCacheUpdate();
     }
-    return QDateTime();
+    return {};
 }
 
 void GoogleResource::canHandleFreeBusy(const QString &email) const

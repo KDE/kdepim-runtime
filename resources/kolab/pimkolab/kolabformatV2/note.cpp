@@ -36,9 +36,7 @@ Note::Note(const KCalendarCore::Journal::Ptr &journal)
     }
 }
 
-Note::~Note()
-{
-}
+Note::~Note() = default;
 
 void Note::setSummary(const QString &summary)
 {

@@ -324,9 +324,7 @@ OpenXchangeResource::OpenXchangeResource(const QString &id)
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &OpenXchangeResource::onReloadConfiguration);
 }
 
-OpenXchangeResource::~OpenXchangeResource()
-{
-}
+OpenXchangeResource::~OpenXchangeResource() = default;
 
 void OpenXchangeResource::cleanup()
 {

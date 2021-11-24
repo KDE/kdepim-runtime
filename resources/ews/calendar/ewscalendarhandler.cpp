@@ -14,13 +14,9 @@
 
 using namespace Akonadi;
 
-EwsCalendarHandler::EwsCalendarHandler()
-{
-}
+EwsCalendarHandler::EwsCalendarHandler() = default;
 
-EwsCalendarHandler::~EwsCalendarHandler()
-{
-}
+EwsCalendarHandler::~EwsCalendarHandler() = default;
 
 EwsItemHandler *EwsCalendarHandler::factory()
 {

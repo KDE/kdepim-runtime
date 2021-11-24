@@ -23,9 +23,7 @@ BatchFetcher::BatchFetcher(MessageHelper::Ptr messageHelper,
 {
 }
 
-BatchFetcher::~BatchFetcher()
-{
-}
+BatchFetcher::~BatchFetcher() = default;
 
 void BatchFetcher::setUidBased(bool uidBased)
 {

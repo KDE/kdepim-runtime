@@ -19,9 +19,7 @@ NewMailNotifierShowMessageJob::NewMailNotifierShowMessageJob(Akonadi::Item::Id i
 {
 }
 
-NewMailNotifierShowMessageJob::~NewMailNotifierShowMessageJob()
-{
-}
+NewMailNotifierShowMessageJob::~NewMailNotifierShowMessageJob() = default;
 
 void NewMailNotifierShowMessageJob::start()
 {

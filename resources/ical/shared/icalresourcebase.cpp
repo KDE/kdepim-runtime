@@ -33,9 +33,7 @@ void ICalResourceBase::initialise(const QStringList &mimeTypes, const QString &i
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/Settings"), mSettings, QDBusConnection::ExportAdaptors);
 }
 
-ICalResourceBase::~ICalResourceBase()
-{
-}
+ICalResourceBase::~ICalResourceBase() = default;
 
 bool ICalResourceBase::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
 {

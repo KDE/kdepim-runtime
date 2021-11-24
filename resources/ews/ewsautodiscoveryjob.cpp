@@ -26,9 +26,7 @@ EwsAutodiscoveryJob::EwsAutodiscoveryJob(const QString &email,
 {
 }
 
-EwsAutodiscoveryJob::~EwsAutodiscoveryJob()
-{
-}
+EwsAutodiscoveryJob::~EwsAutodiscoveryJob() = default;
 
 void EwsAutodiscoveryJob::start()
 {

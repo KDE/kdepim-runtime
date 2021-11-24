@@ -21,9 +21,7 @@ class ICalConfig : public ICalConfigBase
 {
     Q_OBJECT
 public:
-    ~ICalConfig() override
-    {
-    }
+    ~ICalConfig() override = default;
 
     using ICalConfigBase::ICalConfigBase;
 };

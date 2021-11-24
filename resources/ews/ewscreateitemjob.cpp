@@ -23,9 +23,7 @@ EwsCreateItemJob::EwsCreateItemJob(EwsClient &client,
 {
 }
 
-EwsCreateItemJob::~EwsCreateItemJob()
-{
-}
+EwsCreateItemJob::~EwsCreateItemJob() = default;
 
 const Akonadi::Item &EwsCreateItemJob::item() const
 {

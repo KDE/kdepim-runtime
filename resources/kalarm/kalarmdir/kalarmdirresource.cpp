@@ -438,12 +438,12 @@ KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
         if (QFileInfo::exists(path)) {
             qCWarning(KALARMDIRRESOURCE_LOG) << "Error loading" << path;
         }
-        return KAEvent();
+        return {};
     }
     const Event::List events = calendar->events();
     if (events.isEmpty()) {
         qCDebug(KALARMDIRRESOURCE_LOG) << "Empty calendar in file" << path;
-        return KAEvent();
+        return {};
     }
     if (events.count() > 1) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "Deleting" << events.count() - 1 << "excess events found in file" << path;
@@ -457,7 +457,7 @@ KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
     }
     if (kcalEvent->alarms().isEmpty()) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "File" << path << ": event contains no alarms";
-        return KAEvent();
+        return {};
     }
     // Convert event in memory to current KAlarm format if possible
     int version;
@@ -466,11 +466,11 @@ KAEvent KAlarmDirResource::loadFile(const QString &path, const QString &file)
     const QString mime = CalEvent::mimeType(event.category());
     if (mime.isEmpty()) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "loadFile: KAEvent has no usable alarms:" << event.id();
-        return KAEvent();
+        return {};
     }
     if (!mSettings->alarmTypes().contains(mime)) {
         qCWarning(KALARMDIRRESOURCE_LOG) << "loadFile: KAEvent has wrong alarm type for resource:" << mime;
-        return KAEvent();
+        return {};
     }
     event.setCompatibility(compat);
     return event;
@@ -495,7 +495,7 @@ KAEvent KAlarmDirResource::loadNextFile(const QString &eventId, const QString &f
         mFileEventIds.remove(nextFile);
         nextFile = removeEventFile(eventId, nextFile);
     }
-    return KAEvent();
+    return {};
 }
 
 /******************************************************************************
@@ -1068,7 +1068,7 @@ QString KAlarmDirResource::fileName(const QString &path) const
 {
     const QFileInfo fi(path);
     if (fi.isDir() || fi.isBundle()) {
-        return QString();
+        return {};
     }
     if (fi.path() == mSettings->path()) {
         return fi.fileName();
@@ -1144,7 +1144,7 @@ QString KAlarmDirResource::removeEventFile(const QString &eventId, const QString
     } else if (event) {
         *event = KAEvent();
     }
-    return QString();
+    return {};
 }
 
 /******************************************************************************

@@ -48,9 +48,7 @@ BirthdaysResource::BirthdaysResource(const QString &id)
     connect(this, &BirthdaysResource::reloadConfiguration, this, &BirthdaysResource::slotReloadConfig);
 }
 
-BirthdaysResource::~BirthdaysResource()
-{
-}
+BirthdaysResource::~BirthdaysResource() = default;
 
 void BirthdaysResource::slotReloadConfig()
 {
@@ -302,7 +300,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createBirthday(const KContacts::Add
     const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
     if (name.isEmpty()) {
         qCDebug(BIRTHDAYS_LOG) << "contact " << contact.uid() << itemId << " has no name, skipping.";
-        return KCalendarCore::Event::Ptr();
+        return {};
     }
 
     const QDate birthdate = contact.birthday().date();
@@ -321,7 +319,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createBirthday(const KContacts::Add
         checkForUnknownCategories(i18n("Birthday"), ev);
         return ev;
     }
-    return KCalendarCore::Event::Ptr();
+    return {};
 }
 
 KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const KContacts::Addressee &contact, Akonadi::Item::Id itemId)
@@ -329,12 +327,12 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const KContacts::
     const QString name = contact.realName().isEmpty() ? contact.nickName() : contact.realName();
     if (name.isEmpty()) {
         qCDebug(BIRTHDAYS_LOG) << "contact " << contact.uid() << itemId << " has no name, skipping.";
-        return KCalendarCore::Event::Ptr();
+        return {};
     }
 
     const QString anniversary_string = contact.custom(QStringLiteral("KADDRESSBOOK"), QStringLiteral("X-Anniversary"));
     if (anniversary_string.isEmpty()) {
-        return KCalendarCore::Event::Ptr();
+        return {};
     }
     const QDate anniversary = QDate::fromString(anniversary_string, Qt::ISODate);
     if (anniversary.isValid()) {
@@ -373,7 +371,7 @@ KCalendarCore::Event::Ptr BirthdaysResource::createAnniversary(const KContacts::
         checkForUnknownCategories(i18n("Anniversary"), event);
         return event;
     }
-    return KCalendarCore::Event::Ptr();
+    return {};
 }
 
 KCalendarCore::Event::Ptr BirthdaysResource::createEvent(QDate date)

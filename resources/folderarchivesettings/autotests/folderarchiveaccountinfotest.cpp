@@ -15,9 +15,7 @@ FolderArchiveAccountInfoTest::FolderArchiveAccountInfoTest(QObject *parent)
 {
 }
 
-FolderArchiveAccountInfoTest::~FolderArchiveAccountInfoTest()
-{
-}
+FolderArchiveAccountInfoTest::~FolderArchiveAccountInfoTest() = default;
 
 void FolderArchiveAccountInfoTest::shouldHaveDefaultValue()
 {

@@ -40,9 +40,7 @@
 class SettingsHelper
 {
 public:
-    SettingsHelper()
-    {
-    }
+    SettingsHelper() = default;
 
     ~SettingsHelper()
     {
@@ -54,9 +52,7 @@ public:
 
 Q_GLOBAL_STATIC(SettingsHelper, s_globalSettings)
 
-Settings::UrlConfiguration::UrlConfiguration()
-{
-}
+Settings::UrlConfiguration::UrlConfiguration() = default;
 
 Settings::UrlConfiguration::UrlConfiguration(const QString &serialized)
 {
@@ -314,7 +310,7 @@ QString Settings::username(KDAV::Protocol proto, const QString &url) const
             return mUrls[key]->mUser;
         }
     } else {
-        return QString();
+        return {};
     }
 }
 
@@ -329,7 +325,7 @@ QString Settings::password(KDAV::Protocol proto, const QString &url)
             return mUrls[key]->mPassword;
         }
     } else {
-        return QString();
+        return {};
     }
 }
 

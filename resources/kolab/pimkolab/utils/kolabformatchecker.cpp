@@ -22,7 +22,7 @@ KMime::Message::Ptr readMimeFile(const QString &fileName, bool &ok)
     ok = file.open(QFile::ReadOnly);
     if (!ok) {
         cout << "failed to open file: " << fileName.toStdString() << endl;
-        return KMime::Message::Ptr();
+        return {};
     }
     const QByteArray data = file.readAll();
     KMime::Message::Ptr msg = KMime::Message::Ptr(new KMime::Message);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     vector<string> inputFiles;
     inputFiles.reserve(argc - 1);
     for (int i = 1; i < argc; ++i) {
-        inputFiles.push_back(argv[i]);
+        inputFiles.emplace_back(argv[i]);
     }
     if (inputFiles.empty()) {
         cout << "Specify input-file\n";

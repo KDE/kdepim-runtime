@@ -48,9 +48,7 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
     connect(this, &TomboyNotesResource::reloadConfiguration, this, &TomboyNotesResource::slotReloadConfig);
 }
 
-TomboyNotesResource::~TomboyNotesResource()
-{
-}
+TomboyNotesResource::~TomboyNotesResource() = default;
 
 void TomboyNotesResource::retrieveCollections()
 {
