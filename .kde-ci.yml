@@ -5,6 +5,7 @@ Dependencies:
 - 'on': ['@all']
   'require':
     'frameworks/extra-cmake-modules': '@latest'
+    'frameworks/knotifyconfig': '@latest'
     'frameworks/kcontacts' : '@latest'
     'frameworks/kcalendarcore' : '@latest'
     'frameworks/kdav' : '@latest'
