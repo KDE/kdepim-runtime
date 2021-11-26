@@ -93,7 +93,7 @@ FolderType guessFolderTypeFromName(const std::string &name)
             return static_cast<FolderType>(i);
         }
 #else
-        if (name == KLocalizedString(folderTypeData[i].label).toString().toStdString() || name == folderTypeData[i].label.untranslatedText()) {
+        if (name == folderTypeData[i].label.toString().toStdString() || name == folderTypeData[i].label.untranslatedText()) {
             return static_cast<FolderType>(i);
         }
 #endif
@@ -107,7 +107,7 @@ std::string nameForFolderType(FolderType type)
 #if KI18N_VERSION < QT_VERSION_CHECK(5, 89, 0)
     return i18n(folderTypeData[type].label).toStdString();
 #else
-    return KLocalizedString(folderTypeData[type].label).toString().toStdString();
+    return folderTypeData[type].label.toString().toStdString();
 #endif
 }
 }

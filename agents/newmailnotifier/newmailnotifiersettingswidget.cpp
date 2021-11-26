@@ -140,7 +140,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
 #if KI18N_VERSION < QT_VERSION_CHECK(5, 89, 0)
     mTextToSpeakSetting->setWhatsThis(i18n(textToSpeakMessage));
 #else
-    mTextToSpeakSetting->setWhatsThis(KLocalizedString(textToSpeakMessage).toString());
+    mTextToSpeakSetting->setWhatsThis(textToSpeakMessage.toString());
 #endif
     textToSpeakLayout->addWidget(mTextToSpeakSetting);
     vbox->addLayout(textToSpeakLayout);
@@ -234,7 +234,7 @@ void NewMailNotifierSettingsWidget::slotHelpLinkClicked(const QString &)
 #if KI18N_VERSION < QT_VERSION_CHECK(5, 89, 0)
     const QString help = i18n(textToSpeakMessage);
 #else
-    const QString help = KLocalizedString(textToSpeakMessage).toString();
+    const QString help = textToSpeakMessage.toString();
 #endif
 
     QWhatsThis::showText(QCursor::pos(), help);
