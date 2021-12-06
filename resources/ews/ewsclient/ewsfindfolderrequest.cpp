@@ -153,8 +153,8 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
         EwsFolder *folder = readFolder(reader);
         reader.readNextStartElement();
         if (folder) {
-            bool ok;
-            int childCount = (*folder)[EwsFolderFieldChildFolderCount].toUInt(&ok);
+            bool okInt;
+            int childCount = (*folder)[EwsFolderFieldChildFolderCount].toUInt(&okInt);
             if (childCount > 0) {
                 unsigned readCount = readChildFolders(*folder, childCount, reader);
                 if (readCount == 0) {

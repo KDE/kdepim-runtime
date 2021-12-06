@@ -99,7 +99,6 @@ KContacts::Addressee addresseeFromKolab(const QByteArray &xmlData, const KMime::
 
     const QString &soundAttachmentName = contact.soundAttachmentName();
     if (!soundAttachmentName.isEmpty()) {
-        QByteArray type;
         KMime::Content *content = Mime::findContentByName(data, soundAttachmentName /*"sound"*/, type);
         if (content) {
             const QByteArray &sData = content->decodedContent();

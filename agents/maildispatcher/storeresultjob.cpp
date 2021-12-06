@@ -19,10 +19,10 @@ using namespace MailTransport;
 
 StoreResultJob::StoreResultJob(const Item &item, bool success, const QString &message, QObject *parent)
     : TransactionSequence(parent)
+    , mItem(item)
+    , mSuccess(success)
+    , mMessage(message)
 {
-    mItem = item;
-    mSuccess = success;
-    mMessage = message;
 }
 
 StoreResultJob::~StoreResultJob() = default;

@@ -370,7 +370,7 @@ private Q_SLOTS:
                 }
 
                 if (!expectedRoots.isEmpty()) {
-                    int i = expectedRoots.indexOf("INBOX");
+                    int index = expectedRoots.indexOf("INBOX");
 
                     QVERIFY(collection.hasAttribute<Akonadi::ImapQuotaAttribute>());
                     QCOMPARE(collection.attribute<Akonadi::ImapQuotaAttribute>()->roots(), expectedRoots);
@@ -378,9 +378,9 @@ private Q_SLOTS:
                     QCOMPARE(collection.attribute<Akonadi::ImapQuotaAttribute>()->usages(), expectedUsages);
 
                     QVERIFY(collection.hasAttribute<Akonadi::CollectionQuotaAttribute>());
-                    if (i != -1) {
-                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(), expectedUsages.at(i)["STORAGE"] * 1024);
-                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(), expectedLimits.at(i)["STORAGE"] * 1024);
+                    if (index != -1) {
+                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(), expectedUsages.at(index)["STORAGE"] * 1024);
+                        QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(), expectedLimits.at(index)["STORAGE"] * 1024);
                     } else {
                         QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->currentValue(), expectedUsages.first()["STORAGE"] * 1024);
                         QCOMPARE(collection.attribute<Akonadi::CollectionQuotaAttribute>()->maximumValue(), expectedLimits.first()["STORAGE"] * 1024);

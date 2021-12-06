@@ -168,8 +168,8 @@ void ConfigDialog::onSearchButtonClicked()
 
     if (result == QDialog::Accepted && !dlg.isNull()) {
         const QStringList results = dlg->selection();
-        for (const QString &result : results) {
-            const QStringList split = result.split(QLatin1Char('|'));
+        for (const QString &resultStr : results) {
+            const QStringList split = resultStr.split(QLatin1Char('|'));
             KDAV::Protocol protocol = KDAV::ProtocolInfo::protocolByName(split.at(0));
             if (!Settings::self()->urlConfiguration(protocol, split.at(1))) {
                 auto urlConfig = new Settings::UrlConfiguration();

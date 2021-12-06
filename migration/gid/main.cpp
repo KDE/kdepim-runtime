@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     }
 
     auto migrator = new GidMigrator(mimeType);
-    if (infoDialog && migrator) {
+    if (infoDialog) {
         infoDialog->migratorAdded();
         QObject::connect(migrator, &MigratorBase::message, infoDialog, qOverload<MigratorBase::MessageType, const QString &>(&InfoDialog::message));
         QObject::connect(migrator, &QObject::destroyed, infoDialog, &InfoDialog::migratorDone);
