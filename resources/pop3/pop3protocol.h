@@ -127,6 +127,8 @@ private:
      */
     Q_REQUIRED_RESULT Result loginPASS();
 
+    Q_REQUIRED_RESULT Result startSsl();
+
     const Settings &mSettings;
     QSslSocket *const mSocket;
     unsigned short int m_iPort;

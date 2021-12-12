@@ -536,6 +536,39 @@ Result POP3Protocol::loginPASS()
     return Result::pass();
 }
 
+Result POP3Protocol::startSsl()
+{
+    mSocket->ignoreSslErrors(); // Don't worry, errors are handled manually below
+    mSocket->startClientEncryption();
+    const bool encryptionStarted = mSocket->waitForEncrypted(s_connectTimeout);
+
+    const QSslCipher cipher = mSocket->sessionCipher();
+    const QList<QSslError> errors = mSocket->sslHandshakeErrors();
+    if (!encryptionStarted || !errors.isEmpty() || !mSocket->isEncrypted() || cipher.isNull() || cipher.usedBits() == 0) {
+        QString errorString = std::accumulate(errors.begin(), errors.end(), QString(), [](QString cur, const QSslError &error) {
+            if (!cur.isEmpty())
+                cur += QLatin1Char('\n');
+            cur += error.errorString();
+            return cur;
+        });
+
+        qCDebug(POP3_LOG) << "Initial SSL handshake failed. cipher.isNull() is" << cipher.isNull() << ", cipher.usedBits() is" << cipher.usedBits()
+                          << ", the socket says:" << mSocket->errorString() << "and the SSL errors are:" << errorString;
+        mContinueAfterSslError = false;
+        Q_EMIT sslError(KSslErrorUiData(mSocket));
+        if (!mContinueAfterSslError) {
+            if (errorString.isEmpty())
+                errorString = mSocket->errorString();
+            qCDebug(POP3_LOG) << "TLS setup has failed. Aborting." << errorString;
+            closeConnection();
+            return Result::fail(ERR_SSL_FAILURE, i18n("SSL/TLS error: %1", errorString));
+        }
+    } else {
+        qCDebug(POP3_LOG) << "TLS has been enabled.";
+    }
+    return Result::pass();
+}
+
 Result POP3Protocol::openConnection()
 {
     Q_ASSERT(QThread::currentThread() != qApp->thread());
@@ -561,6 +594,13 @@ Result POP3Protocol::openConnection()
         if (!mSocket->waitForConnected(s_connectTimeout)) {
             const QString errorString = i18n("%1: %2", m_sServer, mSocket->errorString());
             return Result::fail(mSocket->error(), errorString);
+        }
+
+        if (mSettings.useSSL()) {
+            const Result res = startSsl();
+            if (!res.success) {
+                return res;
+            }
         }
 
         mConnected = true;
@@ -611,35 +651,9 @@ Result POP3Protocol::openConnection()
                                          "was unsuccessful.\nYou can "
                                          "disable TLS in the POP account settings dialog."));
             }
-        }
-        if (mSettings.useSSL() || mSettings.useTLS()) {
-            mSocket->ignoreSslErrors(); // Don't worry, errors are handled manually below
-            mSocket->startClientEncryption();
-            const bool encryptionStarted = mSocket->waitForEncrypted(s_connectTimeout);
-
-            const QSslCipher cipher = mSocket->sessionCipher();
-            const QList<QSslError> errors = mSocket->sslHandshakeErrors();
-            if (!encryptionStarted || !errors.isEmpty() || !mSocket->isEncrypted() || cipher.isNull() || cipher.usedBits() == 0) {
-                QString errorString = std::accumulate(errors.begin(), errors.end(), QString(), [](QString cur, const QSslError &error) {
-                    if (!cur.isEmpty())
-                        cur += QLatin1Char('\n');
-                    cur += error.errorString();
-                    return cur;
-                });
-
-                qCDebug(POP3_LOG) << "Initial SSL handshake failed. cipher.isNull() is" << cipher.isNull() << ", cipher.usedBits() is" << cipher.usedBits()
-                                  << ", the socket says:" << mSocket->errorString() << "and the SSL errors are:" << errorString;
-                mContinueAfterSslError = false;
-                Q_EMIT sslError(KSslErrorUiData(mSocket));
-                if (!mContinueAfterSslError) {
-                    if (errorString.isEmpty())
-                        errorString = mSocket->errorString();
-                    qCDebug(POP3_LOG) << "TLS setup has failed. Aborting." << errorString;
-                    closeConnection();
-                    return Result::fail(ERR_SSL_FAILURE, i18n("SSL/TLS error: %1", errorString));
-                }
-            } else {
-                qCDebug(POP3_LOG) << "TLS has been enabled.";
+            const Result res = startSsl();
+            if (!res.success) {
+                return res;
             }
         }
 
