@@ -64,6 +64,7 @@ POP3Resource::~POP3Resource()
 
 void POP3Resource::configurationChanged()
 {
+    mSettings.load();
     updateIntervalTimer();
     mPassword.clear();
 }
