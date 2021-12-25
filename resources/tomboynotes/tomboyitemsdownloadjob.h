@@ -14,7 +14,7 @@ class TomboyItemsDownloadJob : public TomboyJobBase
     Q_OBJECT
 public:
     // ctor
-    explicit TomboyItemsDownloadJob(Akonadi::Collection::Id id, KIO::AccessManager *manager, QObject *parent = nullptr);
+    explicit TomboyItemsDownloadJob(Akonadi::Collection::Id id, KIO::Integration::AccessManager *manager, QObject *parent = nullptr);
     // returns the parsed results wrapped in Akonadi::Item::List, see below
     Akonadi::Item::List items() const;
 

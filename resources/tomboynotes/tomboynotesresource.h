@@ -57,6 +57,6 @@ private:
     // Only one UploadJob should run per time
     bool mUploadJobProcessRunning;
 
-    KIO::AccessManager *mManager = nullptr;
+    KIO::Integration::AccessManager *mManager = nullptr;
 };
 

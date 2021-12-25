@@ -10,7 +10,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-TomboyItemDownloadJob::TomboyItemDownloadJob(const Akonadi::Item &item, KIO::AccessManager *manager, QObject *parent)
+TomboyItemDownloadJob::TomboyItemDownloadJob(const Akonadi::Item &item, KIO::Integration::AccessManager *manager, QObject *parent)
     : TomboyJobBase(manager, parent)
     , mResultItem(item)
 {

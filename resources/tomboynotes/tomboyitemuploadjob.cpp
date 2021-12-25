@@ -12,7 +12,7 @@
 #include <QJsonObject>
 #include <QUuid>
 
-TomboyItemUploadJob::TomboyItemUploadJob(const Akonadi::Item &item, JobType jobType, KIO::AccessManager *manager, QObject *parent)
+TomboyItemUploadJob::TomboyItemUploadJob(const Akonadi::Item &item, JobType jobType, KIO::Integration::AccessManager *manager, QObject *parent)
     : TomboyJobBase(manager, parent)
     , mSourceItem(item)
     , mJobType(jobType)

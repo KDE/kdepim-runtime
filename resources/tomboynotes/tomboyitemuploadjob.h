@@ -20,7 +20,7 @@ class TomboyItemUploadJob : public TomboyJobBase
 {
     Q_OBJECT
 public:
-    TomboyItemUploadJob(const Akonadi::Item &item, JobType jobType, KIO::AccessManager *manager, QObject *parent = nullptr);
+    TomboyItemUploadJob(const Akonadi::Item &item, JobType jobType, KIO::Integration::AccessManager *manager, QObject *parent = nullptr);
 
     // Returns mSourceItem for post-processing purposes
     Akonadi::Item item() const;

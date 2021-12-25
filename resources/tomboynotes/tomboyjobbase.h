@@ -22,7 +22,7 @@ class TomboyJobBase : public KCompositeJob
 {
     Q_OBJECT
 public:
-    explicit TomboyJobBase(KIO::AccessManager *manager, QObject *parent = nullptr);
+    explicit TomboyJobBase(KIO::Integration::AccessManager *manager, QObject *parent = nullptr);
 
     void setServerURL(const QString &apiurl, const QString &contenturl);
     void setAuthentication(const QString &token, const QString &secret);

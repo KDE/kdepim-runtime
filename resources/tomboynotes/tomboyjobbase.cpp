@@ -6,7 +6,7 @@
 
 #include "tomboyjobbase.h"
 
-TomboyJobBase::TomboyJobBase(KIO::AccessManager *manager, QObject *parent)
+TomboyJobBase::TomboyJobBase(KIO::Integration::AccessManager *manager, QObject *parent)
     : KCompositeJob(parent)
     , mManager(manager)
     , mO1(new O1Tomboy(this))

@@ -14,7 +14,7 @@ class TomboyServerAuthenticateJob : public TomboyJobBase
 {
     Q_OBJECT
 public:
-    explicit TomboyServerAuthenticateJob(KIO::AccessManager *manager, QObject *parent = nullptr);
+    explicit TomboyServerAuthenticateJob(KIO::Integration::AccessManager *manager, QObject *parent = nullptr);
 
     ~TomboyServerAuthenticateJob() override;
 
