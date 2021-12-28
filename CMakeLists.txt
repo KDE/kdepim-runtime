@@ -105,8 +105,8 @@ set_package_properties(Qt5TextToSpeech PROPERTIES DESCRIPTION
 if(Qt5TextToSpeech_FOUND)
 set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
 endif()
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus WebEngineWidgets NetworkAuth)
-
+find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus NetworkAuth)
+find_package(Qt5WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
 
 # KF5 package
 find_package(KF5Config ${KF5_MIN_VERSION} CONFIG REQUIRED)
