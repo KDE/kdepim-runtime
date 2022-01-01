@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2016 Stefan Stäglich <sstaeglich@kdemail.net>
-    SPDX-FileCopyrightText: 2018-2021 Laurent Montel <montel@kde.org>
+    SPDX-FileCopyrightText: 2018-2022 Laurent Montel <montel@kde.org>
 
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
