@@ -59,7 +59,7 @@ install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_K
 ############################## Configuration ##############################
 
 kcoreaddons_add_plugin(maildispatcherconfig
-    SOURCES maildispatcherconfig.cpp
+    SOURCES maildispatcherconfig.cpp maildispatcherconfig.h
     INSTALL_NAMESPACE "akonadi/config")
 target_link_libraries(maildispatcherconfig
     KF5::AkonadiCore
