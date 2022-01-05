@@ -1,6 +1,7 @@
 [Global]
 IconName=akonadi
 Comment=Microsoft Exchange Server (EWS)
+Comment[ar]=خادوم «مايكروسوفت إكسچينج» (EWS)
 Comment[ca]=Servidor Microsoft Exchange (EWS)
 Comment[ca@valencia]=Servidor Microsoft Exchange (EWS)
 Comment[cs]=Server Microsoft Exchange (EWS)
@@ -32,6 +33,7 @@ Comment[zh_TW]=Microsoft Exchange 伺服器 (EWS)
 
 [Event/auth-expired]
 Name=Microsoft Exchange authentication expired
+Name[ar]=انتهى استيثاق خادوم «مايكروسوفت إكسچينج»
 Name[ca]=L'autenticació del Microsoft Exchange ha expirat
 Name[ca@valencia]=L'autenticació del Microsoft Exchange ha expirat
 Name[cs]=Ověření Microsoft Exchange vypršelo
@@ -59,6 +61,7 @@ Name[x-test]=xxMicrosoft Exchange authentication expiredxx
 Name[zh_CN]=Microsoft Exchange 身份验证过期
 Name[zh_TW]=Microsoft Exchange 認證方式已過期
 Comment=Credentials used to access Microsoft Exchange are no longer valid
+Comment[ar]=معلومات الصلاحيات المستخدمة للوصول إلى مايكروسوفت إكسشنج لم تعد صالحة
 Comment[ca]=Les credencials que s'usen per a accedir al Microsoft Exchange ja no són vàlides
 Comment[ca@valencia]=Les credencials que s'usen per a accedir al Microsoft Exchange ja no són vàlides
 Comment[de]=Anmeldungsdaten für den Zugriff auf Microsoft Exchange sind nicht mehr gültig

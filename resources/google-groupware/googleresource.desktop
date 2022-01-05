@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Google Groupware
+Name[ar]=البرمجيات التعاونية من غوغل
 Name[ca]=Google Groupware
 Name[ca@valencia]=Google Groupware
 Name[cs]=Google Groupware
@@ -24,6 +25,7 @@ Name[uk]=Групова робота у Google
 Name[x-test]=xxGoogle Groupwarexx
 Name[zh_CN]=Google 协作套件
 Comment=Access your Google Calendars, Contacts and Tasks from KDE
+Comment[ar]=توصّل إلى تقاويم ومهام وجهات اتصال غوغل من كدي
 Comment[ca]=Accediu als calendaris, contactes i tasques de Google des del KDE
 Comment[ca@valencia]=Accediu als calendaris, contactes i tasques de Google des del KDE
 Comment[cs]=Přistupujte ke k kalendářům, kontaktům a úkolům z KDE

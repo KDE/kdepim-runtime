@@ -1,6 +1,7 @@
 [Global]
 IconName=im-google
 Name=Google Groupware
+Name[ar]=البرمجيات التعاونية من غوغل
 Name[ca]=Google Groupware
 Name[ca@valencia]=Google Groupware
 Name[cs]=Google Groupware
@@ -25,6 +26,7 @@ Name[uk]=Групова робота у Google
 Name[x-test]=xxGoogle Groupwarexx
 Name[zh_CN]=Google 协作套件
 Comment=Access your Google Calendars, Contacts and Tasks from KDE
+Comment[ar]=توصّل إلى تقاويم ومهام وجهات اتصال غوغل من كدي
 Comment[ca]=Accediu als calendaris, contactes i tasques de Google des del KDE
 Comment[ca@valencia]=Accediu als calendaris, contactes i tasques de Google des del KDE
 Comment[cs]=Přistupujte ke k kalendářům, kontaktům a úkolům z KDE
@@ -52,6 +54,7 @@ Comment[zh_CN]=在 KDE 中访问 Google 日历、联系人和任务列表
 
 [Event/authNeeded]
 Name=Google Groupware needs to authenticate
+Name[ar]=البرمجيات التعاونية من غوغل تحتاج استيثاق
 Name[ca]=Google Groupware s'ha d'autenticar
 Name[ca@valencia]=Google Groupware s'ha d'autenticar
 Name[cs]=Google Groupware vyžaduje ověření totožnosti
@@ -73,6 +76,7 @@ Name[uk]=Потрібне розпізнавання на Google Groupware
 Name[x-test]=xxGoogle Groupware needs to authenticatexx
 Name[zh_CN]=Google 协作套件需要授权
 Comment=Google Groupware has been logged off and needs to be reauthenticated
+Comment[ar]=خرجت البرمجيات التعاونية من غوغل وتحتاج إلى إعادة استيثاق
 Comment[ca]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
 Comment[ca@valencia]=S'ha tancat la sessió de Google Groupware i cal tornar-se a autenticar
 Comment[en_GB]=Google Groupware has been logged off and needs to be re-authenticated
