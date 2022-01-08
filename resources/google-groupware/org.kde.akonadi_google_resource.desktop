@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Google Groupware
+NoDisplay=true
+Exec=akonadi_google_resource
+Icon=im-google

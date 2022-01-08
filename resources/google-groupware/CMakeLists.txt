@@ -102,6 +102,11 @@ install(
 )
 
 install(
+    FILES org.kde.akonadi_google_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
+
+install(
   FILES akonadi_google_resource.notifyrc
   DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR}
 )
