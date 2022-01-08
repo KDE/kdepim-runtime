@@ -93,6 +93,7 @@ target_link_libraries(akonadi_kolab_resource
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
 install(TARGETS akonadi_kolab_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install( FILES org.kde.akonadi_kolab_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
 
 if (BUILD_TESTING)
     #add_subdirectory(autotests)
