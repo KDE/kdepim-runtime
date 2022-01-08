@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=DAV Groupware
+NoDisplay=true
+Exec=akonadi_davgroupware_resource
+Icon=folder-remote
