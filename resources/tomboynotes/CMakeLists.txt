@@ -96,7 +96,6 @@ target_link_libraries(akonadi_tomboynotes_resource
     KF5::I18n
     KF5::KIOCore
     KF5::KIOFileWidgets
-    KF5::KIONTLM
     KF5::KIOWidgets
     KF5::Mime
     )
