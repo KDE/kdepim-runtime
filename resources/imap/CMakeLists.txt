@@ -108,8 +108,8 @@ qt_add_dbus_adaptor( imapresource_LIB_SRCS
 add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 
 target_link_libraries(imapresource
-    Qt::DBus
-    Qt::Network
+    Qt${QT_MAJOR_VERSION}::DBus
+    Qt${QT_MAJOR_VERSION}::Network
     KF5::AkonadiCore
     KF5::IMAP
     KF5::MailTransport
@@ -122,7 +122,7 @@ target_link_libraries(imapresource
     KF5::WindowSystem
     akonadi-singlefileresource
     KF5::Libkdepim
-    qt5keychain
+    ${kdepim-keychain_lib}
 )
 
 ########### next target ###############
@@ -162,7 +162,7 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_imap_resource
-    Qt::DBus
+    Qt${QT_MAJOR_VERSION}::DBus
     KF5::AkonadiCore
     KF5::IMAP
     akonadi-singlefileresource

@@ -105,8 +105,8 @@ set_package_properties(Qt5TextToSpeech PROPERTIES DESCRIPTION
 if(Qt5TextToSpeech_FOUND)
 set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
 endif()
-find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus NetworkAuth)
-find_package(Qt5WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
+find_package(Qt${QT_MAJOR_VERSION} ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test XmlPatterns DBus NetworkAuth)
+find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
 
 # KF5 package
 find_package(KF5Config ${KF5_MIN_VERSION} CONFIG REQUIRED)
@@ -149,8 +149,8 @@ find_package(KF5Libkdepim ${LIBKDEPIM_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
 
 #it will replace kwallet support
-find_package(Qt5Keychain CONFIG)
-set_package_properties(Qt5Keychain PROPERTIES
+find_package(Qt${QT_MAJOR_VERSION}Keychain CONFIG)
+set_package_properties(Qt${QT_MAJOR_VERSION}Keychain PROPERTIES
                                    DESCRIPTION "Provides support for secure credentials storage"
                                    URL "https://github.com/frankosterfeld/qtkeychain"
                                    TYPE REQUIRED)
@@ -161,6 +161,12 @@ add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055A00)
 
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
+
+if (QT_MAJOR_VERSION STREQUAL "6")
+    set(kdepim-keychain_lib qt6keychain)
+else()
+    set(kdepim-keychain_lib qt5keychain)
+endif()
 
 set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
 if (USE_UNITY_CMAKE_SUPPORT)

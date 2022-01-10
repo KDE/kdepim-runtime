@@ -55,9 +55,9 @@ target_link_libraries( akonadi_pop3_resource
     KF5::I18n
     KF5::KIOWidgets  # SslUi
     KF5::Notifications
-    Qt::DBus
-    Qt::Network # QNetworkProxy
-    qt5keychain
+    Qt${QT_MAJOR_VERSION}::DBus
+    Qt${QT_MAJOR_VERSION}::Network # QNetworkProxy
+    ${kdepim-keychain_lib}
     KF5::WidgetsAddons
     Sasl2::Sasl2
     )
@@ -99,5 +99,5 @@ target_link_libraries(pop3config
     KF5::AkonadiAgentBase
     KF5::AkonadiMime
     KF5::Libkdepim
-    qt5keychain
+    ${kdepim-keychain_lib}
     )

@@ -23,9 +23,9 @@ qt_add_dbus_interface(isolatestestcommon_SRCS ${ewsresourceinterface_xml} ewsres
 add_library(isolatedtestcommon STATIC ${isolatestestcommon_SRCS})
 target_link_libraries(isolatedtestcommon
   KF5::AkonadiCore
-  Qt::Core
-  Qt::Network
-  Qt::Test
+  Qt${QT_MAJOR_VERSION}::Core
+  Qt${QT_MAJOR_VERSION}::Network
+  Qt${QT_MAJOR_VERSION}::Test
   fakeewsserver
 )
 

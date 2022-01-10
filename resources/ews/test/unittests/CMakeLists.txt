@@ -6,11 +6,11 @@
 kde_enable_exceptions()
 
 add_library(uttesthelpers STATIC faketransferjob.cpp)
-target_link_libraries(uttesthelpers Qt::Core KF5::KIOCore)
+target_link_libraries(uttesthelpers Qt${QT_MAJOR_VERSION}::Core KF5::KIOCore)
 
 macro(akonadi_ews_add_ut_advanced utname extra_SRCS)
   add_executable(${utname} ${utname}.cpp ${extra_SRCS})
-  target_link_libraries(${utname} Qt::Test uttesthelpers)
+  target_link_libraries(${utname} Qt${QT_MAJOR_VERSION}::Test uttesthelpers)
   add_test(NAME ${utname} COMMAND ${utname})
 endmacro(akonadi_ews_add_ut_advanced utname)
 
@@ -45,9 +45,9 @@ if (Qt5NetworkAuth_FOUND)
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ewsclient/auth/ewsoauth.cpp)
   akonadi_ews_add_ut_advanced(ewsoauth_ut "${ewsoauth_ut_SRCS}")
   target_link_libraries(ewsoauth_ut
-    Qt::Widgets
+    Qt${QT_MAJOR_VERSION}::Widgets
     KF5::I18n
-    Qt::WebEngineWidgets
+    Qt${QT_MAJOR_VERSION}::WebEngineWidgets
     )
   target_compile_definitions(ewsoauth_ut PUBLIC -DEWSOAUTH_UNITTEST)
 endif ()
