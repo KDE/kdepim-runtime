@@ -27,8 +27,7 @@
 
 using namespace std::chrono_literals;
 
-#include <kcoreaddons_version.h>
-#if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <Kdelibs4ConfigMigrator>
 #endif
 
@@ -124,7 +123,7 @@ void MailDispatcherAgent::dispatch()
 MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     : AgentBase(id)
 {
-#if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     Kdelibs4ConfigMigrator migrate(QStringLiteral("maildispatcheragent"));
     migrate.setConfigFiles(QStringList() << QStringLiteral("maildispatcheragentrc") << QStringLiteral("akonadi_maildispatcher_agent.notifyrc"));
     migrate.migrate();
