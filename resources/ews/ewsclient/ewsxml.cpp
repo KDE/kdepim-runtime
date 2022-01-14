@@ -247,7 +247,11 @@ bool ewsXmlResponseTypeReader(QXmlStreamReader &reader, QVariant &val)
 template<> QString readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
     ok = true;
-    QStringRef elmName = reader.name();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QStringRef elmName = reader.name();
+#else
+    const QStringView elmName = reader.name();
+#endif
     QString val = reader.readElementText();
     if (reader.error() != QXmlStreamReader::NoError) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - invalid %2 element.").arg(parentElement, elmName.toString());
@@ -261,7 +265,11 @@ template<> QString readXmlElementValue(QXmlStreamReader &reader, bool &ok, const
 
 template<> int readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
-    QStringRef elmName = reader.name();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QStringRef elmName = reader.name();
+#else
+    const QStringView elmName = reader.name();
+#endif
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     int val = 0;
     if (ok) {
@@ -276,7 +284,11 @@ template<> int readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QSt
 
 template<> long readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
-    QStringRef elmName = reader.name();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QStringRef elmName = reader.name();
+#else
+    const QStringView elmName = reader.name();
+#endif
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     long val = 0;
     if (ok) {
@@ -291,7 +303,11 @@ template<> long readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QS
 
 template<> QDateTime readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
-    QStringRef elmName = reader.name();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QStringRef elmName = reader.name();
+#else
+    const QStringView elmName = reader.name();
+#endif
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     QDateTime val;
     if (ok) {
@@ -307,7 +323,11 @@ template<> QDateTime readXmlElementValue(QXmlStreamReader &reader, bool &ok, con
 
 template<> bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
-    QStringRef elmName = reader.name();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QStringRef elmName = reader.name();
+#else
+    const QStringView elmName = reader.name();
+#endif
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     bool val = false;
     if (ok) {

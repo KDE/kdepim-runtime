@@ -179,7 +179,11 @@ bool EwsFindFolderResponse::parseRootFolder(QXmlStreamReader &reader)
 EwsFolder *EwsFindFolderResponse::readFolder(QXmlStreamReader &reader)
 {
     EwsFolder *folder = nullptr;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     const QStringRef readerName = reader.name();
+#else
+    const QStringView readerName = reader.name();
+#endif
     if (readerName == QLatin1String("Folder") || readerName == QLatin1String("CalendarFolder") || readerName == QLatin1String("ContactsFolder")
         || readerName == QLatin1String("TasksFolder") || readerName == QLatin1String("SearchFolder")) {
         folder = new EwsFolder(reader);

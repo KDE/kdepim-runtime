@@ -181,8 +181,11 @@ EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     static const EventReader staticReader(items);
 
     EventReader ewsreader(staticReader);
-
-    QStringRef elmName = reader.name();
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QStringRef elmName = reader.name();
+#else
+    const QStringView elmName = reader.name();
+#endif
     if (elmName == QLatin1String("CopiedEvent")) {
         mType = EwsCopiedEvent;
     } else if (elmName == QLatin1String("CreatedEvent")) {
