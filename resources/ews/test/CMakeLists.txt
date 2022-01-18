@@ -30,7 +30,10 @@ target_link_libraries(isolatedtestcommon
 )
 
 add_subdirectory(unittests)
-add_subdirectory(fakeserver)
+# XmlPattern was removed in qt6
+if (QT_MAJOR_VERSION STREQUAL "5")
+    add_subdirectory(fakeserver)
+endif()
 if (KDEPIM_RUN_AKONADI_TEST)
 	add_akonadi_isolated_test_advanced(ewstest.cpp isolatedtestcommon.qrc "isolatedtestcommon")
 	add_akonadi_isolated_test_advanced(serverbusytest.cpp isolatedtestcommon.qrc "isolatedtestcommon")
