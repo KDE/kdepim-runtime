@@ -92,7 +92,7 @@ set(EWSCLIENT_SRCS
 
     )
 
-if (Qt5NetworkAuth_FOUND)
+if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
     list(APPEND EWSCLIENT_SRCS
         auth/ewsoauth.cpp
         auth/ewsoauth.h)
@@ -148,7 +148,7 @@ target_link_libraries(ewsclient
     KF5::Mime
     KF5::CalendarCore)
 
-if (Qt5NetworkAuth_FOUND)
+if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
     target_link_libraries(ewsclient
         Qt${QT_MAJOR_VERSION}::NetworkAuth
         Qt${QT_MAJOR_VERSION}::WebEngineWidgets)

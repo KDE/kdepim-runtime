@@ -38,7 +38,7 @@ target_link_libraries(ewssettings_ut
   )
 target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
 
-if (Qt5NetworkAuth_FOUND)
+if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
   set(ewsoauth_ut_SRCS
     ewsoauth_ut_mock.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ewsclient/auth/ewsabstractauth.cpp
