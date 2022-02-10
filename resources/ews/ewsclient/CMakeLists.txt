@@ -98,7 +98,7 @@ if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
         auth/ewsoauth.h)
 endif ()
 
-if (Qca-qt5_FOUND)
+if (Qca-qt${QT_MAJOR_VERSION}_FOUND)
     list(APPEND EWSCLIENT_SRCS
         auth/ewspkeyauthjob.cpp
         auth/ewspkeyauthjob.h)
@@ -154,7 +154,7 @@ if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
         Qt${QT_MAJOR_VERSION}::WebEngineWidgets)
 endif ()
 
-if (Qca-qt5_FOUND)
+if (Qca-qt${QT_MAJOR_VERSION}_FOUND)
     target_link_libraries(ewsclient
-        qca-qt5)
+        qca-qt${QT_MAJOR_VERSION})
 endif ()
