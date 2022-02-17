@@ -20,7 +20,6 @@
 #include "imapresource.h"
 #include "serverinfodialog.h"
 #include "settings.h"
-#include "utils.h"
 #include <config-imap.h>
 
 #include <Libkdepim/LineEditCatchReturnKey>

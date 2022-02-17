@@ -15,7 +15,6 @@
 #include "sessionuiproxy.h"
 #include "settings.h"
 #include "setupserver.h"
-#include "utils.h"
 #include <config-imap.h>
 
 #ifdef WITH_GMAIL_XOAUTH2
