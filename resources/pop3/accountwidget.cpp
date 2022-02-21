@@ -15,9 +15,9 @@
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionFetchJob>
-#include <Akonadi/KMime/SpecialMailCollections>
-#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <Akonadi/ResourceSettings>
+#include <Akonadi/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <Libkdepim/LineEditCatchReturnKey>
 #include <MailTransport/ServerTest>
 

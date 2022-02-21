@@ -11,14 +11,14 @@
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
 
+#include <Akonadi/AddressAttribute>
 #include <Akonadi/Attribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/KMime/AddressAttribute>
-#include <Akonadi/KMime/MessageFlags>
-#include <Akonadi/KMime/SpecialMailCollections>
-#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Akonadi/MessageFlags>
 #include <Akonadi/Monitor>
+#include <Akonadi/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollectionsRequestJob>
 
 #include <KMime/Message>
 

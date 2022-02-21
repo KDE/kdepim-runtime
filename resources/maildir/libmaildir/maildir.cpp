@@ -16,7 +16,7 @@
 #include <QUuid>
 
 #include "libmaildir_debug.h"
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <KLocalizedString>
 #include <fcntl.h>
 

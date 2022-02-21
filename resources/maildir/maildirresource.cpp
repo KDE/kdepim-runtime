@@ -20,8 +20,8 @@
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/KMime/MessageFlags>
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageFlags>
+#include <Akonadi/MessageParts>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <KMime/Message>
 

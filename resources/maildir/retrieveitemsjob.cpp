@@ -11,7 +11,7 @@
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <Akonadi/TransactionSequence>
 #include <Akonadi/VectorHelper>
 #include <KMime/Message>

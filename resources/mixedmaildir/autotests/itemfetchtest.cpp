@@ -17,7 +17,7 @@
 #include <KMbox/MBox>
 #include <KMime/kmime/kmime_message.h>
 
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 
 #include <Akonadi/ItemFetchScope>
 

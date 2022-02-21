@@ -9,7 +9,7 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFilterProxyModel>
 #include <Akonadi/CollectionModifyJob>
-#include <Akonadi/KMime/NewMailNotifierAttribute>
+#include <Akonadi/NewMailNotifierAttribute>
 #include <QSortFilterProxyModel>
 
 #include <Akonadi/ChangeRecorder>

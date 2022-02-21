@@ -9,6 +9,7 @@
 #include "storeresultjob.h"
 
 #include "maildispatcher_debug.h"
+#include <Akonadi/AddressAttribute>
 #include <Akonadi/AgentInstance>
 #include <Akonadi/AgentManager>
 #include <Akonadi/Collection>
@@ -16,10 +17,9 @@
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
-#include <Akonadi/KMime/AddressAttribute>
-#include <Akonadi/KMime/MessageParts>
-#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/MessageParts>
 #include <Akonadi/ServerManager>
+#include <Akonadi/SpecialMailCollections>
 #include <Akonadi/TransportResourceBase>
 #include <KLocalizedString>
 #include <MailTransport/Transport>

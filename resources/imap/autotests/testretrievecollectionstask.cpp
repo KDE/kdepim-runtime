@@ -11,7 +11,7 @@
 #include "retrievecollectionstask.h"
 #include <noinferiorsattribute.h>
 
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 
 #include <Akonadi/CachePolicy>
 #include <Akonadi/EntityDisplayAttribute>

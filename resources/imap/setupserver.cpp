@@ -32,9 +32,9 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/KMime/SpecialMailCollections>
-#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
 #include <Akonadi/ResourceSettings>
+#include <Akonadi/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
 #include <KEMailSettings>
 #include <KLocalizedString>

@@ -20,7 +20,7 @@
 #include <noinferiorsattribute.h>
 #include <noselectattribute.h>
 
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 
 #include <Akonadi/CachePolicy>
 #include <Akonadi/Calendar/BlockAlarmsAttribute>

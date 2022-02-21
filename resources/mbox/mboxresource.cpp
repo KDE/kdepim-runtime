@@ -12,7 +12,7 @@
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <Akonadi/SpecialCollectionAttribute>
 
 #include <KMbox/MBox>

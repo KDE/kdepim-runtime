@@ -6,7 +6,7 @@
 
 #include "ewsmodifymailjob.h"
 
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 
 #include <KLocalizedString>
 

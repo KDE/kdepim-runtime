@@ -6,7 +6,7 @@
 
 #include "ewsfetchmaildetailjob.h"
 
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <KMime/HeaderParsing>
 #include <KMime/Message>
 

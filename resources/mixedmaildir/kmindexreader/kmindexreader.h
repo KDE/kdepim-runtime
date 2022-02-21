@@ -10,7 +10,7 @@
 
 #include "kmindexreader_export.h"
 
-#include <Akonadi/KMime/MessageStatus>
+#include <Akonadi/MessageStatus>
 using Akonadi::MessageStatus;
 
 #include <QFile>

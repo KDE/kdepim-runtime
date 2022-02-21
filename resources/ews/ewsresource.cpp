@@ -18,7 +18,7 @@
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollections>
 #include <KMime/Message>
 #include <KNotification>
 #include <KWallet>

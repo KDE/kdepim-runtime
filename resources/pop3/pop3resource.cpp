@@ -11,10 +11,10 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/ItemCreateJob>
-#include <Akonadi/KMime/MessageFlags>
-#include <Akonadi/KMime/Pop3ResourceAttribute>
-#include <Akonadi/KMime/SpecialMailCollections>
-#include <Akonadi/KMime/SpecialMailCollectionsRequestJob>
+#include <Akonadi/MessageFlags>
+#include <Akonadi/Pop3ResourceAttribute>
+#include <Akonadi/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <MailTransport/PrecommandJob>
 #include <MailTransport/Transport>
 

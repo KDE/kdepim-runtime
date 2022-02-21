@@ -7,7 +7,7 @@
 
 #include "searchtask.h"
 #include "imapresource_debug.h"
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <Akonadi/SearchQuery>
 #include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>

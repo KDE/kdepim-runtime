@@ -12,7 +12,7 @@
 
 #include <Akonadi/CachePolicy>
 #include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 #include <Akonadi/SpecialCollectionAttribute>
 #include <Akonadi/VectorHelper>
 

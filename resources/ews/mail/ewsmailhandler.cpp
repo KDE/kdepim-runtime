@@ -7,7 +7,7 @@
 #include "ewsmailhandler.h"
 
 #include <Akonadi/Item>
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <KMime/Message>
 
 #include "ewscreatemailjob.h"

@@ -12,7 +12,7 @@
 #include <highestmodseqattribute.h>
 #include <uidvalidityattribute.h>
 
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 
 #include <Akonadi/CachePolicy>
 #include <Akonadi/CollectionStatistics>

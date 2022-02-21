@@ -5,7 +5,7 @@
 */
 #include "messagehelper.h"
 
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 
 #include "resourcetask.h"
 

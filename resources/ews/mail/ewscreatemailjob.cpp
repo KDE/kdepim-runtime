@@ -11,7 +11,7 @@
 #include <Akonadi/AgentManager>
 #include <Akonadi/Collection>
 #include <Akonadi/Item>
-#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollections>
 #include <KMime/Message>
 
 #include "ewscreateitemrequest.h"

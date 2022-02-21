@@ -8,7 +8,7 @@
 #include "removecollectionrecursivetask.h"
 
 #include "imapresource_debug.h"
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <KIMAP/CloseJob>
 #include <KIMAP/DeleteJob>
 #include <KIMAP/ExpungeJob>

@@ -20,7 +20,7 @@
 #include "sessionimpls_p.h"
 #include "storecompactjob.h"
 
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 
 #include <Akonadi/CachePolicy>
 

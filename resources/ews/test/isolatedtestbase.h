@@ -9,7 +9,7 @@
 class QObject;
 #include <QString>
 
-#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/SpecialMailCollections>
 
 #include "fakeewsserver.h"
 

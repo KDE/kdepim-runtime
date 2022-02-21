@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 
 #include <QDir>
 #include <QFile>

@@ -10,7 +10,7 @@
 #include "maildispatcher_debug.h"
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 
 using namespace MailTransport;
 

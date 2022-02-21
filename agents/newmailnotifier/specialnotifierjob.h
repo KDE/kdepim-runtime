@@ -7,7 +7,7 @@
 #pragma once
 
 #include <Akonadi/Item>
-#include <Akonadi/KMime/MarkAsCommand>
+#include <Akonadi/MarkAsCommand>
 #include <QObject>
 #include <QPixmap>
 #include <QStringList>

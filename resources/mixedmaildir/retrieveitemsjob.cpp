@@ -11,8 +11,8 @@
 
 #include "filestore/itemfetchjob.h"
 
-#include <Akonadi/KMime/MessageParts>
-#include <Akonadi/KMime/MessageStatus>
+#include <Akonadi/MessageParts>
+#include <Akonadi/MessageStatus>
 
 #include <Akonadi/Collection>
 #include <Akonadi/CollectionModifyJob>

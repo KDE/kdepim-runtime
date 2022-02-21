@@ -20,7 +20,7 @@
 
 #include <kwindowsystem.h>
 
-#include <Akonadi/KMime/MessageParts>
+#include <Akonadi/MessageParts>
 
 #include <Akonadi/AgentManager>
 #include <Akonadi/AttributeFactory>

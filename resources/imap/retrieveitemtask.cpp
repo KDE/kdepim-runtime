@@ -12,7 +12,7 @@
 
 #include <KLocalizedString>
 
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <KIMAP/SelectJob>
 #include <KIMAP/Session>
 

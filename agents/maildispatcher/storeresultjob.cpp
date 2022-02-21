@@ -9,7 +9,7 @@
 #include "maildispatcher_debug.h"
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 #include <KLocalizedString>
 #include <MailTransportAkonadi/DispatchModeAttribute>
 #include <MailTransportAkonadi/ErrorAttribute>

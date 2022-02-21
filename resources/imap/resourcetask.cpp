@@ -7,7 +7,7 @@
 
 #include "resourcetask.h"
 
-#include <Akonadi/KMime/MessageFlags>
+#include <Akonadi/MessageFlags>
 
 #include "imapresource_debug.h"
 #include "imapresource_trace.h"

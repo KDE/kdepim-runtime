@@ -24,11 +24,11 @@
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/EntityHiddenAttribute>
 #include <Akonadi/ItemFetchScope>
-#include <Akonadi/KMime/MessageStatus>
-#include <Akonadi/KMime/NewMailNotifierAttribute>
-#include <Akonadi/KMime/SpecialMailCollections>
+#include <Akonadi/MessageStatus>
+#include <Akonadi/NewMailNotifierAttribute>
 #include <Akonadi/ServerManager>
 #include <Akonadi/Session>
+#include <Akonadi/SpecialMailCollections>
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
