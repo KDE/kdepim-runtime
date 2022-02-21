@@ -11,7 +11,7 @@
 
 #include "kolabbase.h"
 
-#include <Akonadi/Notes/NoteUtils>
+#include <Akonadi/NoteUtils>
 
 #include <conversion/commonconversion.h>
 #include <conversion/kabcconversion.h>

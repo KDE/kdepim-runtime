@@ -10,7 +10,7 @@
 #include "pimkolab/kolabformat/errorhandler.h"
 #include "pimkolab/kolabformat/kolabobject.h"
 
-#include <Akonadi/Notes/NoteUtils>
+#include <Akonadi/NoteUtils>
 
 #include <Akonadi/Collection>
 #include <Akonadi/ItemFetchJob>

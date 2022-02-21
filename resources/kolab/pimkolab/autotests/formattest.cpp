@@ -13,7 +13,7 @@
 #include <kolabcontainers.h>
 #include <kolabformat.h>
 
-#include <Akonadi/Notes/NoteUtils>
+#include <Akonadi/NoteUtils>
 
 #include <KCalendarCore/ICalFormat>
 #include <KContacts/ContactGroupTool>

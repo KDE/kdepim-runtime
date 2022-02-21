@@ -6,7 +6,7 @@
 
 #include "tomboyitemsdownloadjob.h"
 #include "debug.h"
-#include <Akonadi/Notes/NoteUtils>
+#include <Akonadi/NoteUtils>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>

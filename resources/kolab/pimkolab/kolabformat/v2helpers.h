@@ -24,7 +24,7 @@
 #include <KContacts/ContactGroup>
 #include <KMime/Message>
 
-#include <Akonadi/Notes/NoteUtils>
+#include <Akonadi/NoteUtils>
 
 #include <qdom.h>
 
