@@ -7,7 +7,7 @@
 #pragma once
 
 #include <Akonadi/AgentBase>
-#include <Akonadi/Calendar/FreeBusyProviderBase>
+#include <Akonadi/FreeBusyProviderBase>
 #include <Akonadi/ResourceBase>
 
 #include <qwindowdefs.h>

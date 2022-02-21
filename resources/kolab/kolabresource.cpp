@@ -13,7 +13,7 @@
 #include "settingspasswordrequester.h"
 #include "setupserver.h"
 
-#include <Akonadi/Calendar/BlockAlarmsAttribute>
+#include <Akonadi/BlockAlarmsAttribute>
 
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionColorAttribute>

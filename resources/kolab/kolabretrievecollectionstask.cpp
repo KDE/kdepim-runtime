@@ -22,8 +22,8 @@
 
 #include <Akonadi/MessageParts>
 
+#include <Akonadi/BlockAlarmsAttribute>
 #include <Akonadi/CachePolicy>
-#include <Akonadi/Calendar/BlockAlarmsAttribute>
 #include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionIdentificationAttribute>
 #include <Akonadi/EntityDisplayAttribute>

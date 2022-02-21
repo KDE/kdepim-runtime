@@ -11,7 +11,7 @@
 #include "googleresource.h"
 #include "googlesettings.h"
 
-#include <Akonadi/Calendar/BlockAlarmsAttribute>
+#include <Akonadi/BlockAlarmsAttribute>
 #include <Akonadi/CollectionColorAttribute>
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
