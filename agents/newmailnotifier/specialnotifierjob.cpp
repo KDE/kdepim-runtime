@@ -9,7 +9,7 @@
 #include "newmailnotifierreplymessagejob.h"
 #include "newmailnotifiershowmessagejob.h"
 
-#include <Akonadi/Contact/ContactSearchJob>
+#include <Akonadi/ContactSearchJob>
 #include <Akonadi/ItemDeleteJob>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>

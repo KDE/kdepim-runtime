@@ -12,7 +12,7 @@
 #include "oxutils.h"
 #include "users.h"
 
-#include <Akonadi/Contact/ContactGroupExpandJob>
+#include <Akonadi/ContactGroupExpandJob>
 
 #include <QBuffer>
 #include <QDomElement>
