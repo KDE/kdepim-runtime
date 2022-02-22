@@ -37,9 +37,6 @@ endmacro( akonadi_add_resourcetest )
 
 
 add_subdirectory( akonotes )
-if (TARGET KF5::AlarmCalendar)
-    add_subdirectory( kalarm )
-endif()
 add_subdirectory( contacts )
 add_subdirectory( dav )
 add_subdirectory( ical )

@@ -27,18 +27,18 @@ Notes:
   </mime-type>
   <mime-type type="application/x-vnd.kde.alarm">
     <sub-class-of type="text/calendar"/>
-    <comment>KAlarm Alarm</comment>
+    <comment>Legacy KAlarm Alarm</comment>
   </mime-type>
   <mime-type type="application/x-vnd.kde.alarm.active">
     <sub-class-of type="application/x-vnd.kde.alarm"/>
-    <comment>KAlarm Active Alarm</comment>
+    <comment>Legacy KAlarm Active Alarm</comment>
   </mime-type>
   <mime-type type="application/x-vnd.kde.alarm.archived">
     <sub-class-of type="application/x-vnd.kde.alarm"/>
-    <comment>KAlarm Archived Alarm</comment>
+    <comment>Legacy KAlarm Archived Alarm</comment>
   </mime-type>
   <mime-type type="application/x-vnd.kde.alarm.template">
     <sub-class-of type="application/x-vnd.kde.alarm"/>
-    <comment>KAlarm Alarm Template</comment>
+    <comment>Legacy KAlarm Alarm Template</comment>
   </mime-type>
 </mime-info>
