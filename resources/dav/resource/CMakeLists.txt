@@ -59,7 +59,7 @@ install( FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTD
 install( FILES davgroupwareprovider.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPESDIR} )
 
 file( GLOB providersFiles "../services/*.desktop" )
-install( FILES ${providersFiles} DESTINATION "${KDE_INSTALL_KSERVICES5DIR}/akonadi/davgroupware-providers" )
+install( FILES ${providersFiles} DESTINATION "${KDE_INSTALL_KSERVICESDIR}/akonadi/davgroupware-providers" )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/davgroupwareresource.kcfg org.kde.Akonadi.davGroupware.Settings)
 qt_add_dbus_adaptor(davgroupwareresource_SRCS
