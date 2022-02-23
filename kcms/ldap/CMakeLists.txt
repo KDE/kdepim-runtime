@@ -13,5 +13,5 @@ kcoreaddons_desktop_to_json(kcm_ldap kcmldap.desktop DEFAULT_SERVICE_TYPE)
 
 install(TARGETS kcm_ldap DESTINATION ${KDE_INSTALL_PLUGINDIR}/pim/kcms/kaddressbook)
 
-install(FILES kcmldap.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+install(FILES kcmldap.desktop DESTINATION ${KDE_INSTALL_KSERVICESDIR})
 
