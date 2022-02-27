@@ -22,6 +22,7 @@
 
 #include <KMime/Message>
 
+#include <MailTransport/TransportManager>
 #include <MailTransportAkonadi/DispatchModeAttribute>
 #include <MailTransportAkonadi/SentBehaviourAttribute>
 #include <MailTransportAkonadi/TransportAttribute>
@@ -93,7 +94,7 @@ void OutboxQueue::addIfComplete(const Item &item)
 
     const auto transportAttribute = item.attribute<TransportAttribute>();
     Q_ASSERT(transportAttribute);
-    if (transportAttribute->transport() == nullptr) {
+    if (TransportManager::self()->transportById(transportAttribute->transportId(), false) == nullptr) {
         qCWarning(MAILDISPATCHER_LOG) << "Item " << item.id() << "has invalid transport.";
         return;
     }

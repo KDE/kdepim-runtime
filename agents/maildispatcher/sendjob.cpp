@@ -53,13 +53,14 @@ void SendJob::doTransport()
 
     // Is it an Akonadi transport or a traditional one?
     const TransportAttribute *transportAttribute = mItem.attribute<TransportAttribute>();
+    const auto transport = TransportManager::self()->transportById(transportAttribute->transportId(), false);
     Q_ASSERT(transportAttribute);
-    if (!transportAttribute->transport()) {
+    if (!transport) {
         storeResult(false, i18n("Could not initiate message transport. Possibly invalid transport."));
         return;
     }
 
-    const TransportType type = transportAttribute->transport()->transportType();
+    const TransportType type = transport->transportType();
     if (!type.isValid()) {
         storeResult(false, i18n("Could not send message. Invalid transport."));
         return;
@@ -71,7 +72,7 @@ void SendJob::doTransport()
 
     if (type.isAkonadiResource()) {
         // Send the item directly to the resource that will send it.
-        mResourceId = transportAttribute->transport()->host();
+        mResourceId = transport->host();
         doAkonadiTransport();
     } else {
         // Use a traditional transport job.
