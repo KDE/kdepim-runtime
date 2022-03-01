@@ -164,11 +164,7 @@ ecm_set_disabled_deprecation_versions(QT 5.15.2 KF 5.91.0)
 
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
 
-if (QT_MAJOR_VERSION STREQUAL "6")
-    set(kdepim-keychain_lib qt6keychain)
-else()
-    set(kdepim-keychain_lib qt5keychain)
-endif()
+set(kdepim-keychain_lib qt${QT_MAJOR_VERSION}keychain)
 
 set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
 if (USE_UNITY_CMAKE_SUPPORT)
