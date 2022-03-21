@@ -58,7 +58,10 @@ endif()
 add_subdirectory( maildir )
 
 add_subdirectory( openxchange )
-add_subdirectory( pop3 )
+
+if (NOT WIN32)
+    add_subdirectory( pop3 )
+endif()
 
 add_subdirectory( google-groupware )
 
