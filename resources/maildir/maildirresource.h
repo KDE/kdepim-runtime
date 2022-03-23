@@ -86,4 +86,3 @@ private:
     QSet<QString> mChangedFiles; // files changed by the resource and that should be ignored in slotFileChanged
     QTimer *mChangedCleanerTimer = nullptr;
 };
-

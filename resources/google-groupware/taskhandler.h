@@ -36,4 +36,3 @@ private:
     void setupCollection(Akonadi::Collection &collection, const KGAPI2::TaskListPtr &taskList);
     void doRemoveTasks(const Akonadi::Item::List &items);
 };
-

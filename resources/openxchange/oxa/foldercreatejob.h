@@ -49,4 +49,3 @@ private:
     Folder mFolder;
 };
 }
-

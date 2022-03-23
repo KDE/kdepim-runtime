@@ -61,4 +61,3 @@ private:
     QHash<QString, Akonadi::Item> mPendingItems;
     QHash<QString, Akonadi::Item> mDeletedItems;
 };
-

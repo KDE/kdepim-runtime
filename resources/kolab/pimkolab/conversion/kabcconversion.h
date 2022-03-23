@@ -27,4 +27,3 @@ KOLAB_EXPORT KContacts::ContactGroup toKABC(const Kolab::DistList &);
 KOLAB_EXPORT Kolab::DistList fromKABC(const KContacts::ContactGroup &);
 }
 }
-

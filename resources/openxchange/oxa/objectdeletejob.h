@@ -30,4 +30,3 @@ private:
     Object mObject;
 };
 }
-

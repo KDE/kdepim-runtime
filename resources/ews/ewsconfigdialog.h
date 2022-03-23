@@ -63,4 +63,3 @@ private:
     QPointer<EwsSettings> mSettings;
     QMap<QString, QString> mAuthMap;
 };
-

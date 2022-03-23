@@ -34,4 +34,3 @@ private:
     Akonadi::Collection m_collection;
     KIMAP::Session *m_session = nullptr;
 };
-

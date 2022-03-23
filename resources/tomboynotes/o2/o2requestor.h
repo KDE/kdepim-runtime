@@ -84,4 +84,3 @@ protected:
     O2ReplyList timedReplies_;
     QNetworkReply::NetworkError error_;
 };
-

@@ -31,4 +31,3 @@ private:
 
     Akonadi::Collection m_collection;
 };
-

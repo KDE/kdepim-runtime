@@ -244,7 +244,8 @@ bool ewsXmlResponseTypeReader(QXmlStreamReader &reader, QVariant &val)
     return ewsXmlEnumReader(reader, val, responseTypeNames);
 }
 
-template<> QString readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
+template<>
+QString readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
     ok = true;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -263,7 +264,8 @@ template<> QString readXmlElementValue(QXmlStreamReader &reader, bool &ok, const
     return val;
 }
 
-template<> int readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
+template<>
+int readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     const QStringRef elmName = reader.name();
@@ -282,7 +284,8 @@ template<> int readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QSt
     return val;
 }
 
-template<> long readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
+template<>
+long readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     const QStringRef elmName = reader.name();
@@ -301,7 +304,8 @@ template<> long readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QS
     return val;
 }
 
-template<> QDateTime readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
+template<>
+QDateTime readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     const QStringRef elmName = reader.name();
@@ -321,7 +325,8 @@ template<> QDateTime readXmlElementValue(QXmlStreamReader &reader, bool &ok, con
     return val;
 }
 
-template<> bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
+template<>
+bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     const QStringRef elmName = reader.name();
@@ -344,7 +349,8 @@ template<> bool readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QS
     return val;
 }
 
-template<> QByteArray readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
+template<>
+QByteArray readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement)
 {
     QString valStr = readXmlElementValue<QString>(reader, ok, parentElement);
     QByteArray val;

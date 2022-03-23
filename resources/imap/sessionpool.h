@@ -123,4 +123,3 @@ private:
     QList<KIMAP::MailBoxDescriptor> m_sharedNamespaces;
     QByteArray m_clientId;
 };
-

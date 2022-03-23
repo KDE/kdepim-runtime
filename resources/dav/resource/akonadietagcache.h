@@ -37,4 +37,3 @@ public:
 private Q_SLOTS:
     void onItemFetchJobFinished(KJob *job);
 };
-

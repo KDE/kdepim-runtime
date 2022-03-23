@@ -95,4 +95,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(EwsSyncFolderHierarchyRequest::Change::List)
-

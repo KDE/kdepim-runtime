@@ -22,10 +22,10 @@
 
 #include <KRandom>
 
-#include <QRandomGenerator>
-#include <QTemporaryDir>
 #include <QDir>
 #include <QFileInfo>
+#include <QRandomGenerator>
+#include <QTemporaryDir>
 #include <QTest>
 using namespace Akonadi;
 using namespace KMBox;

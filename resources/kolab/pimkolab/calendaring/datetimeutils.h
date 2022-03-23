@@ -17,4 +17,3 @@ namespace DateTimeUtils
 KOLAB_EXPORT std::string getLocalTimezone();
 } // Namespace
 } // Namespace
-

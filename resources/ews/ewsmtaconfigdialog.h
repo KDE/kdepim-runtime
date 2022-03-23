@@ -32,4 +32,3 @@ private:
     EwsMtaResource *const mParentResource;
     Ui::SetupServerView *mUi = nullptr;
 };
-

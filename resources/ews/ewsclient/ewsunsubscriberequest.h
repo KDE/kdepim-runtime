@@ -54,4 +54,3 @@ private:
 
     QSharedPointer<Response> mResponse;
 };
-

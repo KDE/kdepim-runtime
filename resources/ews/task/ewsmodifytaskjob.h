@@ -16,4 +16,3 @@ public:
     ~EwsModifyTaskJob() override;
     void start() override;
 };
-

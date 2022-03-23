@@ -85,4 +85,3 @@ private:
     QDBusInterface *mInterface = nullptr;
     bool mAborting = false;
 };
-

@@ -59,4 +59,3 @@ private:
     QSortFilterProxyModel *mCollectionFilter = nullptr;
     NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel = nullptr;
 };
-

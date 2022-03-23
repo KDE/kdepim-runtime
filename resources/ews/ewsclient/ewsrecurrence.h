@@ -32,4 +32,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(EwsRecurrence)
-

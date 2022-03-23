@@ -32,4 +32,3 @@ protected:
     QSet<QByteArray> mAddedFlags;
     QSet<QByteArray> mRemovedFlags;
 };
-

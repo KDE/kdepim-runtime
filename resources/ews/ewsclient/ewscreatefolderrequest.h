@@ -64,4 +64,3 @@ private:
     EwsId mParentFolderId;
     QList<Response> mResponses;
 };
-

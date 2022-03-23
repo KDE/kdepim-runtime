@@ -36,4 +36,3 @@ private:
 
     QWebEngineView *const mWebView;
 };
-

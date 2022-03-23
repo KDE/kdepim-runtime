@@ -35,4 +35,3 @@ private:
     Akonadi::Collection m_collection;
     bool m_syncEnabledState = true;
 };
-

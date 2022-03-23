@@ -56,4 +56,3 @@ public:
     virtual void emitWarning(const QString &message) = 0;
     virtual void emitPercent(int percent) = 0;
 };
-

@@ -13,7 +13,8 @@
 
 #include "ewsclient_debug.h"
 
-template<typename T> class EwsXml
+template<typename T>
+class EwsXml
 {
 public:
     typedef std::function<bool(QXmlStreamReader &, QVariant &)> ReadFunction;
@@ -154,7 +155,8 @@ private:
     }
 };
 
-template<typename T> T readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement);
+template<typename T>
+T readXmlElementValue(QXmlStreamReader &reader, bool &ok, const QString &parentElement);
 
 extern bool ewsXmlBoolReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlBoolWriter(QXmlStreamWriter &writer, const QVariant &val);
@@ -176,4 +178,3 @@ extern bool ewsXmlImportanceReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlCalendarItemTypeReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlLegacyFreeBusyStatusReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlResponseTypeReader(QXmlStreamReader &reader, QVariant &val);
-

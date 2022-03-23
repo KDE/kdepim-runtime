@@ -106,4 +106,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsAttachment)
 Q_DECLARE_METATYPE(EwsAttachment::List)
-

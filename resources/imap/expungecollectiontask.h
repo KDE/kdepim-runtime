@@ -27,4 +27,3 @@ protected:
 private:
     void triggerExpungeJob(KIMAP::Session *session);
 };
-

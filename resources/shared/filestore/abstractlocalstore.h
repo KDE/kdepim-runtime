@@ -16,7 +16,8 @@
 
 #include <memory>
 
-template<typename T> class QList;
+template<typename T>
+class QList;
 
 namespace Akonadi
 {
@@ -107,4 +108,3 @@ private:
 };
 }
 }
-

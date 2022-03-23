@@ -28,4 +28,3 @@ private:
     Akonadi::Tag::List mCreatedTags;
     int mCount;
 };
-

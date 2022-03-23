@@ -46,4 +46,3 @@ private:
     Akonadi::Item mItem;
     const Akonadi::Item::Id mItemId;
 };
-

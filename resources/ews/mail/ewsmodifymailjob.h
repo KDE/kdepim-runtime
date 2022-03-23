@@ -23,4 +23,3 @@ private:
 
     EwsAbstractChunkedJob<EwsUpdateItemRequest, EwsUpdateItemRequest::ItemChange, EwsUpdateItemRequest::Response> mChunkedJob;
 };
-

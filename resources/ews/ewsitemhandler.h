@@ -65,4 +65,3 @@ private:
         }                                                                                                                                                      \
     };                                                                                                                                                         \
     const type##_itemhandler_registrar type##_itemhandler_registrar_object;
-

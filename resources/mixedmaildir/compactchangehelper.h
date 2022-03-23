@@ -11,7 +11,8 @@
 
 #include <memory>
 
-template<typename T> class QList;
+template<typename T>
+class QList;
 
 namespace Akonadi
 {
@@ -44,4 +45,3 @@ private:
     Q_PRIVATE_SLOT(d, void processNextBatch())
     Q_PRIVATE_SLOT(d, void processNextItem())
 };
-

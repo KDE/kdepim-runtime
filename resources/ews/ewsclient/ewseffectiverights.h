@@ -42,4 +42,3 @@ protected:
 };
 
 Q_DECLARE_METATYPE(EwsEffectiveRights)
-

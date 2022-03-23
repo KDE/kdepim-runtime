@@ -59,4 +59,3 @@ private:
 
     KIO::Integration::AccessManager *mManager = nullptr;
 };
-

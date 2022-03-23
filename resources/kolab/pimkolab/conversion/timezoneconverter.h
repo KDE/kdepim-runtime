@@ -18,4 +18,3 @@ private:
     static QString fromHardcodedList(const QString &tz);
     static QString fromGMTOffsetTimezone(const QString &tz);
 };
-

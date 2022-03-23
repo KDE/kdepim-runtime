@@ -71,4 +71,3 @@ enum ObjectType {
     RelationConfigurationObject
 };
 }
-

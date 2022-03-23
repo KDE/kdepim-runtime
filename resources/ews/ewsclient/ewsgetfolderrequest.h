@@ -52,4 +52,3 @@ private:
     EwsFolderShape mShape;
     QList<Response> mResponses;
 };
-

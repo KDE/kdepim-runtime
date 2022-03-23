@@ -38,4 +38,3 @@ private:
     friend class MixedMaildirStorePrivate;
     std::unique_ptr<MixedMaildirStorePrivate> const d;
 };
-

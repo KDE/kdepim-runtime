@@ -73,4 +73,3 @@ private:
     QFile *m_logFile = nullptr;
     QEventLoopLocker eventLoopLocker;
 };
-

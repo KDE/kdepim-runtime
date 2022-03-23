@@ -14,4 +14,3 @@ Q_DECLARE_LOGGING_CATEGORY(EWSFAKE_LOG)
 #define qCInfoNC(cat) qCInfo(cat).noquote()
 #define qCWarningNC(cat) qCWarning(cat).noquote()
 #define qCCriticalNC(cat) qCCritical(cat).noquote()
-

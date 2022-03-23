@@ -57,4 +57,3 @@ private:
 
     static KeyCache *mSelf;
 };
-

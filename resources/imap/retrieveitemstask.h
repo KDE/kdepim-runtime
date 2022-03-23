@@ -80,4 +80,3 @@ private:
     qint64 m_highestModSeq = -1;
     QList<QByteArray> m_flags;
 };
-

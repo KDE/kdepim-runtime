@@ -44,4 +44,3 @@ protected:
 Q_DECLARE_METATYPE(EwsItem)
 Q_DECLARE_METATYPE(EwsItem::List)
 Q_DECLARE_METATYPE(EwsItem::HeaderMap)
-

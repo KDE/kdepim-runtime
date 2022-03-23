@@ -103,4 +103,3 @@ private:
     EwsServerVersion mServerVersion;
     QWidget *mParentWindow;
 };
-

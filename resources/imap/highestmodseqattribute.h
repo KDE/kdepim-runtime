@@ -24,4 +24,3 @@ public:
 private:
     qint64 m_highestModSeq;
 };
-

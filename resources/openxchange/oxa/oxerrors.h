@@ -36,4 +36,3 @@ enum EditErrorID {
 EditErrorID getEditErrorID(const QString &errorText);
 }
 }
-

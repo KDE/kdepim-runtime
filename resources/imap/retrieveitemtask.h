@@ -34,4 +34,3 @@ private:
     qint64 m_uid = 0;
     bool m_messageReceived = false;
 };
-

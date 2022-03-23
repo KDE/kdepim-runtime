@@ -27,4 +27,3 @@ private:
     QScopedPointer<Akonadi_Maildir_Resource::MaildirSettings> mSettings;
     QScopedPointer<ConfigWidget> mWidget;
 };
-

@@ -39,4 +39,3 @@ private:
     QDialog *m_requestDialog = nullptr;
     QDialog *m_settingsDialog = nullptr;
 };
-

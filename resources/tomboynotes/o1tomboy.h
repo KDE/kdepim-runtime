@@ -21,4 +21,3 @@ public:
 
     void restoreAuthData(const QString &token, const QString &secret);
 };
-

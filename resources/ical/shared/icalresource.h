@@ -43,4 +43,3 @@ protected:
      */
     virtual QStringList allMimeTypes() const;
 };
-

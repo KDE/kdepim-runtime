@@ -65,4 +65,3 @@ public:
 private:
     GoogleResource *const m_resource;
 };
-

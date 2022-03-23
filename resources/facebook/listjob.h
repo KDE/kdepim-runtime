@@ -49,4 +49,3 @@ private:
     QStringList mFields;
     QMap<QString, QString> mQueries;
 };
-

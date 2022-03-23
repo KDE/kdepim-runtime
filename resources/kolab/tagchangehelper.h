@@ -52,4 +52,3 @@ private Q_SLOTS:
     void onReplaceDone(KJob *job);
     void onModifyDone(KJob *job);
 };
-

@@ -58,4 +58,3 @@ private:
     const bool mCloseWhenDone;
     bool mAutoScrollList = true;
 };
-

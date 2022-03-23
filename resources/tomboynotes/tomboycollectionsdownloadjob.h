@@ -31,4 +31,3 @@ private:
     const QString mCollectionName;
     const int mRefreshInterval;
 };
-

@@ -103,4 +103,3 @@ protected:
     QDateTime mCompletedDate;
 };
 }
-

@@ -104,4 +104,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(EwsSyncFolderItemsRequest::Change::List)
-

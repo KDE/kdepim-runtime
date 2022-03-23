@@ -20,4 +20,3 @@ protected:
 private Q_SLOTS:
     void exceptionItemsFetched(KJob *job);
 };
-

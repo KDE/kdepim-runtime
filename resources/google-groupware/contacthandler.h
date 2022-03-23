@@ -43,4 +43,3 @@ private:
     void setupCollection(Akonadi::Collection &collection, const KGAPI2::ContactsGroupPtr &group);
     QMap<QString, Akonadi::Collection> m_collections;
 };
-

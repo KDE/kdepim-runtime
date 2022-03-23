@@ -76,4 +76,3 @@ private:
     QMap<QString, QStringList> mPrincipalScheduleOutbox;
     uint mNextRequestId = 0;
 };
-

@@ -26,4 +26,3 @@ public:
     static QSet<QByteArray> readFlags(const EwsItem &item);
     static QList<EwsPropertyField> flagsProperties();
 };
-

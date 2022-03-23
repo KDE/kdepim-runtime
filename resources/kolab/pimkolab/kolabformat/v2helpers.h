@@ -33,7 +33,8 @@ namespace Kolab
 /*
  * Parse XML, create KCalendarCore container and extract attachments
  */
-template<typename KCalPtr, typename Container> static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
+template<typename KCalPtr, typename Container>
+static KCalPtr fromXML(const QByteArray &xmlData, QStringList &attachments)
 {
     const QDomDocument xmlDoc = KolabV2::KolabBase::loadDocument(QString::fromUtf8(xmlData)); // TODO extract function from V2 format
     if (xmlDoc.isNull()) {
@@ -84,4 +85,3 @@ QByteArray noteToKolabXML(const KMime::Message::Ptr &msg);
 
 QStringList readLegacyDictionaryConfiguration(const QByteArray &xmlData, QString &language);
 }
-

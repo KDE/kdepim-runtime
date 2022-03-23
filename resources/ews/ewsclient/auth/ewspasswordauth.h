@@ -30,4 +30,3 @@ protected:
     QString mUsername;
     QString mPassword;
 };
-

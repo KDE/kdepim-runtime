@@ -71,4 +71,3 @@ private:
     QTextToSpeech *mTextToSpeech = nullptr;
 #endif
 };
-

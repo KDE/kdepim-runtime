@@ -52,4 +52,3 @@ private:
     bool m_gmailEnabled = false;
     bool m_searchInChunks = false;
 };
-

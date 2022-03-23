@@ -167,4 +167,3 @@ private:
 
     QList<QPair<QByteArray, QVariant>> m_calls;
 };
-

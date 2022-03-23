@@ -24,4 +24,3 @@ QStringList testDataNames();
 
 bool installFolder(const QString &testDataName, const QString &installPath, const QString &folderName);
 }
-

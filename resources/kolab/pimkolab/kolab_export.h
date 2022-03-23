@@ -32,4 +32,3 @@
  *  @brief
  *  Contains all the KOLAB library global classes, objects, and functions.
  */
-

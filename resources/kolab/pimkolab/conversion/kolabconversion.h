@@ -23,4 +23,3 @@ KOLAB_EXPORT KMime::Message::Ptr toNote(const Kolab::Note &);
 KOLAB_EXPORT Kolab::Note fromNote(const KMime::Message::Ptr &);
 }
 }
-

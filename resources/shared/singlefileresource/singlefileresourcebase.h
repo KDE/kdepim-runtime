@@ -172,4 +172,3 @@ protected Q_SLOTS:
     void slotUploadJobResult(KJob *);
 };
 }
-

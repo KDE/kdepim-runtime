@@ -75,4 +75,3 @@ private:
 
     bool mUseIncrementalUpdates = false;
 };
-

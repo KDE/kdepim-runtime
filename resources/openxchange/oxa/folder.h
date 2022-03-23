@@ -179,4 +179,3 @@ private:
 };
 }
 Q_DECLARE_TYPEINFO(OXA::Folder, Q_MOVABLE_TYPE);
-

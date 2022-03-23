@@ -30,4 +30,3 @@ public:
 private Q_SLOTS:
     void onTimerElapsed();
 };
-

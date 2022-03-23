@@ -31,4 +31,3 @@ private:
     Akonadi::Item::List m_items;
     int m_pendingJobs = 0;
 };
-

@@ -22,4 +22,3 @@ private:
 private:
     Ui::LockFilePage ui;
 };
-

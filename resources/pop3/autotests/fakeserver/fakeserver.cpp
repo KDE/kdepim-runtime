@@ -121,8 +121,8 @@ QByteArray FakeServer::parseResponse(const QByteArray &expectedData, const QByte
 
 static QByteArray removeCRLF(const QByteArray &ba)
 {
-  QByteArray returnArray = ba;
-  return returnArray.replace(QByteArrayLiteral("\r\n"), QByteArray());
+    QByteArray returnArray = ba;
+    return returnArray.replace(QByteArrayLiteral("\r\n"), QByteArray());
 }
 
 void FakeServer::dataAvailable()

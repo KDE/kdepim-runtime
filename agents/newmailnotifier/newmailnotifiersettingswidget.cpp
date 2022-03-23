@@ -24,8 +24,8 @@
 #include <QVBoxLayout>
 #include <QWhatsThis>
 
-#include <KSharedConfig>
 #include <KLazyLocalizedString>
+#include <KSharedConfig>
 
 static KLazyLocalizedString textToSpeakMessage = kli18n(
     "<qt>"

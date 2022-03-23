@@ -54,4 +54,3 @@ private:
     HttpConnectionState mState;
     bool mAuthenticated;
 };
-

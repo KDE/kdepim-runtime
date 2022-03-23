@@ -370,14 +370,16 @@ KContacts::Picture toPicture(const std::string &data, const std::string &mimetyp
     return logo;
 }
 
-template<typename T> void setCustom(const std::string &value, const std::string &id, T &object)
+template<typename T>
+void setCustom(const std::string &value, const std::string &id, T &object)
 {
     std::vector<Kolab::CustomProperty> properties = object.customProperties();
     properties.emplace_back(id, value);
     object.setCustomProperties(properties);
 }
 
-template<typename T> std::string getCustom(const std::string &id, T &object)
+template<typename T>
+std::string getCustom(const std::string &id, T &object)
 {
     const std::vector<Kolab::CustomProperty> &properties = object.customProperties();
     for (const Kolab::CustomProperty &prop : properties) {

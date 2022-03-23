@@ -135,4 +135,3 @@ protected:
     QNetworkAccessManager *manager_ = nullptr;
     O2ReplyServer *replyServer_ = nullptr;
 };
-

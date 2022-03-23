@@ -62,7 +62,8 @@ QString IsolatedTestBase::loadResourceAsString(const QString &path)
     return {};
 }
 
-template<typename T> QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc, const QString &name)
+template<typename T>
+QDBusReply<T> dBusSetAndWaitReply(std::function<QDBusReply<T>()> setFunc, std::function<QDBusReply<T>()> getFunc, const QString &name)
 {
     QDBusReply<T> reply;
     int retryCnt = 4;

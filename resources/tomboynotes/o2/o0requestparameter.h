@@ -20,4 +20,3 @@ struct O0RequestParameter {
     QByteArray name;
     QByteArray value;
 };
-

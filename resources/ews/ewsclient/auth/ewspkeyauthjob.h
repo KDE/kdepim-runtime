@@ -41,4 +41,3 @@ private:
 
     QUrl mResultUri;
 };
-

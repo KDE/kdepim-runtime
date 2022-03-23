@@ -63,4 +63,3 @@ private:
     qulonglong mSentItemsSize = 0;
     SentActionHandler *mSentActionHandler = nullptr;
 };
-

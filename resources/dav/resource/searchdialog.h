@@ -41,4 +41,3 @@ private:
     QStandardItemModel *const mModel;
     int mSubJobCount = 0;
 };
-

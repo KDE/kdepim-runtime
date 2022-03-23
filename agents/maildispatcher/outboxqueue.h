@@ -104,4 +104,3 @@ private:
     // TODO debug and figure out why this happens.
     QSet<Akonadi::Item::Id> mIgnore;
 };
-

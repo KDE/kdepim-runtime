@@ -35,4 +35,3 @@ private Q_SLOTS:
     void testDateTZ_data();
     void testDateTZ();
 };
-

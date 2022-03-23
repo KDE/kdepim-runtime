@@ -110,4 +110,3 @@ QDebug operator<<(QDebug debug, const EwsId &id);
 
 Q_DECLARE_METATYPE(EwsId)
 Q_DECLARE_METATYPE(EwsId::List)
-

@@ -26,4 +26,3 @@ private:
     PasswordRequesterInterface *mImpl = nullptr;
     ImapResourceBase *const mResource;
 };
-

@@ -45,4 +45,3 @@ protected:
 private slots:
     void setupTestCase();
 };
-

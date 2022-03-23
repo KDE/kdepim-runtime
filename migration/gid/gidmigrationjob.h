@@ -71,4 +71,3 @@ private:
     QQueue<Akonadi::Item> mItemQueue;
     bool mModJobRunning;
 };
-

@@ -33,10 +33,10 @@ public:
     bool operator==(const EwsItemBasePrivate &other) const;
 };
 
-template<> Q_INLINE_TEMPLATE EwsItemBasePrivate *QSharedDataPointer<EwsItemBasePrivate>::clone()
+template<>
+Q_INLINE_TEMPLATE EwsItemBasePrivate *QSharedDataPointer<EwsItemBasePrivate>::clone()
 {
     return d->clone();
 }
 
 Q_DECLARE_METATYPE(EwsItemBasePrivate::PropertyHash)
-

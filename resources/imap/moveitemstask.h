@@ -42,4 +42,3 @@ private:
     QVector<qint64> m_newUids;
     QMap<Akonadi::Item::Id /* original ID */, QByteArray> m_messageIds;
 };
-

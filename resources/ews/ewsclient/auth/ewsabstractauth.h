@@ -81,4 +81,3 @@ protected:
     QString mPKeyCertFile;
     QString mPKeyKeyFile;
 };
-

@@ -42,4 +42,3 @@ private:
     EwsTraversalType mTraversal;
     QList<EwsFolder> mFolders;
 };
-

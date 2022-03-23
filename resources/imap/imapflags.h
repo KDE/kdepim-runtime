@@ -32,4 +32,3 @@ extern const char *Answered;
  */
 extern const char *Flagged;
 }
-

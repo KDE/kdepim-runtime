@@ -50,4 +50,3 @@ private:
     Akonadi::CollectionRequester *mArchiveFolder = nullptr;
     FolderArchiveAccountInfo *mInfo = nullptr;
 };
-

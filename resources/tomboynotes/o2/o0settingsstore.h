@@ -42,4 +42,3 @@ protected:
     QString groupKey_;
     O0SimpleCrypt crypt_;
 };
-

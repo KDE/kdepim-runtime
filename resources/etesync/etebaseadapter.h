@@ -131,4 +131,3 @@ int32_t etebase_fs_cache_collection_unset(const EtebaseFileSystemCache *fs_cache
 
 int32_t
 etebase_fs_cache_item_unset(const EtebaseFileSystemCache *fs_cache, const EtebaseItemManager *item_mgr, const QString &col_uid, const QString &item_uid);
-

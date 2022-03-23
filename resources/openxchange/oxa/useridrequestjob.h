@@ -30,4 +30,3 @@ private:
     qlonglong mUserId = -1;
 };
 }
-

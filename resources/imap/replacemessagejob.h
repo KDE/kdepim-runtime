@@ -48,4 +48,3 @@ private:
     qint64 mNewUid = -1;
     const QByteArray mMessageId;
 };
-

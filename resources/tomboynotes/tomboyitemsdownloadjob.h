@@ -27,4 +27,3 @@ private:
     void onRequestFinished();
     Akonadi::Item::List mResultItems;
 };
-

@@ -177,4 +177,3 @@ private:
     };
     QQueue<QueuedFetchItemsJob> mFetchItemsJobQueue;
 };
-

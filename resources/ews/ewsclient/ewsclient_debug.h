@@ -33,4 +33,3 @@ inline QString ewsHash(const QString &val)
 }
 
 extern QTemporaryDir ewsLogDir;
-

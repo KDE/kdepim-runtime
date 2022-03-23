@@ -11,7 +11,8 @@
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourceconfigwidget.h"
 
-template<typename Settings> class SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
+template<typename Settings>
+class SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
 {
 public:
     explicit SingleFileResourceConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &list)
@@ -41,4 +42,3 @@ protected:
     QScopedPointer<Settings> mSettings;
     QScopedPointer<Akonadi::SingleFileResourceConfigWidget<Settings>> mWidget;
 };
-

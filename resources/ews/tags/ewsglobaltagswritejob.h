@@ -31,4 +31,3 @@ private:
     EwsClient &mClient;
     const Akonadi::Collection &mRootCollection;
 };
-

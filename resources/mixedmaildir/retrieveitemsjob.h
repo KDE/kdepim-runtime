@@ -47,4 +47,3 @@ private:
     Q_PRIVATE_SLOT(d, void processNewItem())
     Q_PRIVATE_SLOT(d, void processChangedItem())
 };
-

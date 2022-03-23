@@ -39,4 +39,3 @@ protected:
     EwsClient &mClient;
     EwsTagStore *const mTagStore;
 };
-

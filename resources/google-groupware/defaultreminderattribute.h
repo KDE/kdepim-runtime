@@ -29,4 +29,3 @@ public:
 private:
     KGAPI2::RemindersList m_reminders;
 };
-

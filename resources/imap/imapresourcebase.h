@@ -149,4 +149,3 @@ private:
     QTimer *m_statusMessageTimer = nullptr;
     QChar m_separatorCharacter;
 };
-

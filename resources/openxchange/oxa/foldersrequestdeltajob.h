@@ -59,4 +59,3 @@ private:
     int mJobFinishedCount = 0;
 };
 }
-

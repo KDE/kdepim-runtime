@@ -150,7 +150,8 @@ void normalizeIncidence(KCalendarCore::Incidence::Ptr incidence)
     }
 }
 
-template<template<typename> class Op, typename T> static bool LexicographicalCompare(const T &_x, const T &_y)
+template<template<typename> class Op, typename T>
+static bool LexicographicalCompare(const T &_x, const T &_y)
 {
     T x(_x);
     x.setId(QString());

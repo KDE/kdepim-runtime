@@ -115,4 +115,3 @@ private:
     QPointer<MigrationExecutor> mAutostartExecutor;
     KJobTrackerInterface *mJobTracker = nullptr;
 };
-

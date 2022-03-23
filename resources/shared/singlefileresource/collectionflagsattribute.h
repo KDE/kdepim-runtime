@@ -26,4 +26,3 @@ private:
     QList<QByteArray> mFlags;
 };
 }
-

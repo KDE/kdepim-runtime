@@ -67,4 +67,3 @@ private:
 
     friend class FakeEwsConnection;
 };
-

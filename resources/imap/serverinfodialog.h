@@ -34,4 +34,3 @@ private:
     void readConfig();
     ServerInfoTextBrowser *const mTextBrowser;
 };
-

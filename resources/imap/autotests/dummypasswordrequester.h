@@ -33,4 +33,3 @@ private:
     QList<ResultType> m_results;
     QList<int> m_delays;
 };
-

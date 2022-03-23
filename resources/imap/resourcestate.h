@@ -211,4 +211,3 @@ private:
     ImapResourceBase *const m_resource;
     const TaskArguments m_arguments;
 };
-

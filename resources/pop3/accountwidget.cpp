@@ -118,7 +118,6 @@ void AccountWidget::setupWidgets()
     folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
 
     connect(usePipeliningCheck, &QCheckBox::clicked, this, &AccountWidget::slotPipeliningClicked);
-
 }
 
 void AccountWidget::loadSettings()
@@ -397,7 +396,6 @@ void AccountWidget::enablePopFeatures()
                                       "have the possibility to turn leaving "
                                       "fetched messages on the server on."));
     }
-
 }
 
 static void addAuthenticationItem(QComboBox *combo, int authenticationType)

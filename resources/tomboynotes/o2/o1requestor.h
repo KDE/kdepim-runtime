@@ -60,4 +60,3 @@ protected:
     QNetworkAccessManager *manager_ = nullptr;
     O1 *authenticator_ = nullptr;
 };
-

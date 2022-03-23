@@ -64,4 +64,3 @@ private:
     QPushButton *mOkButton = nullptr;
     QButtonGroup *const mRemoteProtocolGroup;
 };
-

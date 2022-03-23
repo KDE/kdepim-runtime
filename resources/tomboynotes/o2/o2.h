@@ -168,4 +168,3 @@ protected:
     O2ReplyList timedReplies_;
     GrantFlow grantFlow_;
 };
-

@@ -51,4 +51,3 @@ private:
     QString mSyncToken;
 };
 } // namespace EteSyncAPI
-

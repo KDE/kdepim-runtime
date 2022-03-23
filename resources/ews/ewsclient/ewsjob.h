@@ -33,4 +33,3 @@ protected:
 private:
     EwsResponseCode m_ewsRespCode;
 };
-

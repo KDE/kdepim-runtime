@@ -98,4 +98,3 @@ private:
     GenericHandler *fetchHandlerByMimetype(const QString &mimeType);
     GenericHandler *fetchHandlerForCollection(const Akonadi::Collection &collection);
 };
-

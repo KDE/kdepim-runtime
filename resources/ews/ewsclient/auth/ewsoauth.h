@@ -34,4 +34,3 @@ private:
     std::unique_ptr<EwsOAuthPrivate> const d_ptr;
     Q_DECLARE_PRIVATE(EwsOAuth)
 };
-

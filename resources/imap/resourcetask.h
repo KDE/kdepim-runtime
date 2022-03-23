@@ -149,4 +149,3 @@ private:
     ResourceStateInterface::Ptr m_resource;
     bool mCancelled = false;
 };
-

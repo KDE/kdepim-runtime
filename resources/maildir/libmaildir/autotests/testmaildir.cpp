@@ -14,8 +14,8 @@
 
 #include <QDir>
 #include <QFile>
-#include <QTest>
 #include <QTemporaryDir>
+#include <QTest>
 
 QTEST_MAIN(MaildirTest)
 

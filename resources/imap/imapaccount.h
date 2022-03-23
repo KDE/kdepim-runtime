@@ -54,4 +54,3 @@ private:
     KIMAP::LoginJob::AuthenticationMode m_authentication;
     bool m_subscriptionEnabled = false;
 };
-

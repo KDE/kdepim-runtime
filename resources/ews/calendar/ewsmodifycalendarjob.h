@@ -16,4 +16,3 @@ public:
     ~EwsModifyCalendarJob() override;
     void start() override;
 };
-

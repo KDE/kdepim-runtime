@@ -35,4 +35,3 @@ private:
     EwsClient &mClient;
     EwsSettings *mSettings = nullptr;
 };
-

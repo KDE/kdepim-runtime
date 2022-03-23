@@ -27,4 +27,3 @@ KOLAB_EXPORT Kolab::Freebusy
 aggregateFreeBusy(const std::vector<Kolab::Freebusy> &fbs, const std::string &organizerEmail, const std::string &organizerName, bool simple = true);
 }
 }
-

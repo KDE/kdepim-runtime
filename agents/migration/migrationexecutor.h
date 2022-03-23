@@ -42,4 +42,3 @@ private:
     int mTotalAmount = 0;
     int mAlreadyProcessed = 0;
 };
-

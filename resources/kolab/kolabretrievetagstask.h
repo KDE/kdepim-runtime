@@ -47,4 +47,3 @@ private:
     Akonadi::Item extractMember(const Kolab::RelationMember &member);
     void taskComplete();
 };
-

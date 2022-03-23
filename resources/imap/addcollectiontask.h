@@ -33,4 +33,3 @@ private:
     uint m_pendingJobs = 0;
     KIMAP::Session *m_session = nullptr;
 };
-

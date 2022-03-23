@@ -42,4 +42,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsOccurrence)
 Q_DECLARE_METATYPE(EwsOccurrence::List)
-

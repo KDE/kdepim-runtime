@@ -42,4 +42,3 @@ private:
     void createSubFolders();
     QTemporaryDir *m_temp = nullptr;
 };
-

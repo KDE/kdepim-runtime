@@ -43,4 +43,3 @@ public:
 
     virtual void scheduleCustomTask(QObject *receiver, const char *method, const QVariant &argument) = 0;
 };
-

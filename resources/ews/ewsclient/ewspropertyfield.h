@@ -60,4 +60,3 @@ private:
 uint qHash(const EwsPropertyField &prop, uint seed);
 
 QDebug operator<<(QDebug debug, const EwsPropertyField &prop);
-

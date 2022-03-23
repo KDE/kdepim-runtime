@@ -87,4 +87,3 @@ private:
     int mErrorCode;
     QString mErrorMessage;
 };
-

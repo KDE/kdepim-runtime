@@ -26,4 +26,3 @@ private:
     bool shouldHaveAlarm(const Akonadi::Collection &collection) const;
     KCalendarCore::Incidence::Status parseStatus(const QJsonObject &data) const;
 };
-

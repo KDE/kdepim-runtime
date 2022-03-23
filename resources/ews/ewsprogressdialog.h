@@ -20,4 +20,3 @@ public:
     explicit EwsProgressDialog(QWidget *parent, Type type);
     ~EwsProgressDialog() override;
 };
-

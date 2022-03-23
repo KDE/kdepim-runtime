@@ -34,7 +34,8 @@ Q_DECLARE_METATYPE(KCalendarCore::Journal)
 
 namespace QTest
 {
-template<> char *toString(const Kolab::cDateTime &dt)
+template<>
+char *toString(const Kolab::cDateTime &dt)
 {
     QByteArray ba = "Kolab::cDateTime(";
     ba += QByteArray::number(dt.year()) + ", " + QByteArray::number(dt.month()) + ", " + QByteArray::number(dt.day()) + ", ";
@@ -44,7 +45,8 @@ template<> char *toString(const Kolab::cDateTime &dt)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const KCalendarCore::Attendee &at)
+template<>
+char *toString(const KCalendarCore::Attendee &at)
 {
     QByteArray ba = "Attendee(";
     ba += at.name().toLatin1() + ", ";
@@ -59,7 +61,8 @@ template<> char *toString(const KCalendarCore::Attendee &at)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const QList<int> &l)
+template<>
+char *toString(const QList<int> &l)
 {
     QByteArray ba = "QList<int>(";
     for (int i : l) {
@@ -69,7 +72,8 @@ template<> char *toString(const QList<int> &l)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const QList<KCalendarCore::RecurrenceRule::WDayPos> &l)
+template<>
+char *toString(const QList<KCalendarCore::RecurrenceRule::WDayPos> &l)
 {
     QByteArray ba = "QList<int>(";
     for (const KCalendarCore::RecurrenceRule::WDayPos &i : l) {
@@ -80,7 +84,8 @@ template<> char *toString(const QList<KCalendarCore::RecurrenceRule::WDayPos> &l
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const KCalendarCore::DateList &l)
+template<>
+char *toString(const KCalendarCore::DateList &l)
 {
     QByteArray ba = "KCalendarCore::DateList(";
     for (const QDate &i : l) {
@@ -90,7 +95,8 @@ template<> char *toString(const KCalendarCore::DateList &l)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const KCalendarCore::DateTimeList &l)
+template<>
+char *toString(const KCalendarCore::DateTimeList &l)
 {
     QByteArray ba = "KCalendarCore::DateTimeList(";
     for (const QDateTime &i : l) {
@@ -100,7 +106,8 @@ template<> char *toString(const KCalendarCore::DateTimeList &l)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const KCalendarCore::Recurrence &at)
+template<>
+char *toString(const KCalendarCore::Recurrence &at)
 {
     // at.dump();
     KCalendarCore::RecurrenceRule *r = at.defaultRRule();
@@ -133,7 +140,8 @@ template<> char *toString(const KCalendarCore::Recurrence &at)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::RecurrenceRule &at)
+template<>
+char *toString(const Kolab::RecurrenceRule &at)
 {
     QByteArray ba;
     ba += "KolabRecurrenceRule(";
@@ -154,7 +162,8 @@ template<> char *toString(const Kolab::RecurrenceRule &at)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const KCalendarCore::Duration &d)
+template<>
+char *toString(const KCalendarCore::Duration &d)
 {
     QByteArray ba;
     ba += "KCalendarCore::Duration(";
@@ -164,7 +173,8 @@ template<> char *toString(const KCalendarCore::Duration &d)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::ContactReference &a)
+template<>
+char *toString(const Kolab::ContactReference &a)
 {
     QByteArray ba = "Kolab::ContactReference(";
     ba += QByteArray::fromStdString(a.email()) + ", ";
@@ -174,7 +184,8 @@ template<> char *toString(const Kolab::ContactReference &a)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const std::vector<Kolab::ContactReference> &v)
+template<>
+char *toString(const std::vector<Kolab::ContactReference> &v)
 {
     QByteArray ba = "vector<Kolab::ContactReference>(";
     for (std::size_t i = 0; i < v.size(); i++) {
@@ -184,7 +195,8 @@ template<> char *toString(const std::vector<Kolab::ContactReference> &v)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::Attendee &a)
+template<>
+char *toString(const Kolab::Attendee &a)
 {
     QByteArray ba = "Kolab::Attendee(";
     ba += QByteArray::fromStdString(a.contact().email()) + "\n";
@@ -200,7 +212,8 @@ template<> char *toString(const Kolab::Attendee &a)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const std::vector<Kolab::Attendee> &v)
+template<>
+char *toString(const std::vector<Kolab::Attendee> &v)
 {
     QByteArray ba = "vector<Kolab::Attendee>(";
     for (std::size_t i = 0; i < v.size(); i++) {
@@ -211,7 +224,8 @@ template<> char *toString(const std::vector<Kolab::Attendee> &v)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::CustomProperty &a)
+template<>
+char *toString(const Kolab::CustomProperty &a)
 {
     QByteArray ba = "Kolab::CustomProperty(";
     ba += QByteArray::fromStdString(a.identifier) + ", ";
@@ -220,7 +234,8 @@ template<> char *toString(const Kolab::CustomProperty &a)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const std::vector<Kolab::CustomProperty> &v)
+template<>
+char *toString(const std::vector<Kolab::CustomProperty> &v)
 {
     QByteArray ba = "vector<Kolab::CustomProperty>(";
     for (std::size_t i = 0; i < v.size(); i++) {
@@ -230,7 +245,8 @@ template<> char *toString(const std::vector<Kolab::CustomProperty> &v)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::Period &p)
+template<>
+char *toString(const Kolab::Period &p)
 {
     QByteArray ba = "Kolab::Period(";
     ba += QByteArray(toString(p.start)) + "\n";
@@ -239,7 +255,8 @@ template<> char *toString(const Kolab::Period &p)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const std::vector<Kolab::Period> &v)
+template<>
+char *toString(const std::vector<Kolab::Period> &v)
 {
     QByteArray ba = "vector<Kolab::Period>(";
     for (std::size_t i = 0; i < v.size(); i++) {
@@ -249,7 +266,8 @@ template<> char *toString(const std::vector<Kolab::Period> &v)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::FreebusyPeriod &p)
+template<>
+char *toString(const Kolab::FreebusyPeriod &p)
 {
     QByteArray ba = "Kolab::FreebusyPeriod(";
     ba += QByteArray::number(p.type()) + "\n";
@@ -261,7 +279,8 @@ template<> char *toString(const Kolab::FreebusyPeriod &p)
     return qstrdup(ba.data());
 }
 
-template<> char *toString(const Kolab::Duration &p)
+template<>
+char *toString(const Kolab::Duration &p)
 {
     QByteArray ba = "Kolab::Duration";
     ba += p.isNegative() ? "-" : "+";
@@ -275,4 +294,3 @@ template<> char *toString(const Kolab::Duration &p)
     return qstrdup(ba.data());
 }
 }
-

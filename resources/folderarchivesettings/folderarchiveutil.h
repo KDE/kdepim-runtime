@@ -15,4 +15,3 @@ QString groupConfigPattern();
 QString configFileName();
 }
 }
-

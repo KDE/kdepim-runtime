@@ -38,4 +38,3 @@ private:
     KIMAP::Acl::Rights mMyRights;
 };
 }
-

@@ -311,4 +311,3 @@ private:
     QList<Custom> mCustomList;
 };
 }
-

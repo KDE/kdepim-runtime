@@ -134,4 +134,3 @@ private:
     QList<FolderChange> mChanges;
     QList<Response> mResponses;
 };
-

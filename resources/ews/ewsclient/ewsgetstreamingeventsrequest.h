@@ -38,4 +38,3 @@ protected:
     uint mTimeout;
     QTimer mRespTimer;
 };
-

@@ -99,4 +99,3 @@ private:
 
     QSharedPointer<Response> mResponse;
 };
-

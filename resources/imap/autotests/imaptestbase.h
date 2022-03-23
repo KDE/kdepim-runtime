@@ -43,4 +43,3 @@ protected:
 private Q_SLOTS:
     void setupTestCase();
 };
-

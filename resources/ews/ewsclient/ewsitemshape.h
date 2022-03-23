@@ -79,4 +79,3 @@ protected:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(EwsItemShape::Flags)
-

@@ -32,4 +32,3 @@ private: // Members
     QString mCollectionId;
     Ui::CompactPage ui;
 };
-

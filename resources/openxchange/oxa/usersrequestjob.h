@@ -32,4 +32,3 @@ private:
     User::List mUsers;
 };
 }
-

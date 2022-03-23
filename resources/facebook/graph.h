@@ -29,4 +29,3 @@ enum RSVP {
 RSVP rsvpFromString(const QString &rsvp);
 QString rsvpToString(RSVP rsvp);
 }
-

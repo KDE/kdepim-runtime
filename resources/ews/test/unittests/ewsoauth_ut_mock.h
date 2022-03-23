@@ -337,4 +337,3 @@ QString tokenCallbackString(const QString &accessToken,
                             const QString &resource);
 QString requestWalletMapString();
 }
-

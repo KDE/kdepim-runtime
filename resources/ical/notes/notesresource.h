@@ -27,4 +27,3 @@ protected:
      */
     QStringList allMimeTypes() const override;
 };
-

@@ -89,4 +89,3 @@ private Q_SLOTS:
     void onGetMetaDataDone(KJob *job);
     void onRightsReceived(KJob *job);
 };
-

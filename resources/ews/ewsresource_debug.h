@@ -63,4 +63,3 @@ inline QDebug operator<<(QDebug debug, const QSet<QByteArray> &items)
     debug.nospace().noquote() << "QSet<QByteArray>(" << itemStrs.join(QLatin1Char(',')) << ")";
     return debug.maybeSpace();
 }
-

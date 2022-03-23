@@ -24,4 +24,3 @@ public:
                                                 const KIMAP::FetchJob::FetchScope &scope,
                                                 bool &ok) const;
 };
-

@@ -35,4 +35,3 @@ private:
     OrgKdeAkonadiEwsResourceInterface *mEwsResource = nullptr;
     QHash<QString, Akonadi::Item> mItemHash;
 };
-

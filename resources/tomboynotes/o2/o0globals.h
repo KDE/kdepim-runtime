@@ -60,4 +60,3 @@ const char O2_AUTHORIZATION_CODE[] = "authorization_code";
 
 // Standard HTTP headers
 const char O2_HTTP_AUTHORIZATION_HEADER[] = "Authorization";
-

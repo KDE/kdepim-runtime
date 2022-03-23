@@ -135,4 +135,3 @@ private:
     QHash<ProtocolType, Protocol> mProtocols;
     QUrl mLastUrl;
 };
-

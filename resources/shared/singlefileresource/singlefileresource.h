@@ -30,7 +30,8 @@ namespace Akonadi
 /**
  * Base class for single file based resources.
  */
-template<typename Settings> class SingleFileResource : public SingleFileResourceBase
+template<typename Settings>
+class SingleFileResource : public SingleFileResourceBase
 {
 public:
     SingleFileResource(const QString &id)
@@ -313,4 +314,3 @@ protected:
     Settings *mSettings = nullptr;
 };
 }
-

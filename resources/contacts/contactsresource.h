@@ -64,4 +64,3 @@ private:
 private:
     QStringList mSupportedMimeTypes;
 };
-

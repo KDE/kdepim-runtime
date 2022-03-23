@@ -49,4 +49,3 @@ private:
 private:
     QHash<QString, KCalendarCore::Incidence::Ptr> mIncidences;
 };
-

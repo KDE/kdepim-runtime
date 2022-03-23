@@ -33,4 +33,3 @@ KOLAB_EXPORT KCalendarCore::Journal::Ptr toKCalendarCore(const Kolab::Journal &)
 KOLAB_EXPORT Kolab::Journal fromKCalendarCore(const KCalendarCore::Journal &);
 }
 }
-

@@ -38,4 +38,3 @@ KJob *preloadJob(const Object &object);
 void *preloadData(const Object &object, KJob *job);
 }
 }
-

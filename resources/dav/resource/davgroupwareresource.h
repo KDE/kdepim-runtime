@@ -122,4 +122,3 @@ private:
     DavFreeBusyHandler *mFreeBusyHandler = nullptr;
     bool mSyncErrorNotified = false;
 };
-

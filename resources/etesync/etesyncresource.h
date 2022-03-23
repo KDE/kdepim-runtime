@@ -67,4 +67,3 @@ private:
     bool mCredentialsRequired = false;
     Akonadi::Collection mRootCollection;
 };
-

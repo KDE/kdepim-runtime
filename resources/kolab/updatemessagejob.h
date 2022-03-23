@@ -64,4 +64,3 @@ private:
     QList<KIMAP::MessagePtr> mMessagesToMerge;
     QSharedPointer<Merger> mMerger;
 };
-

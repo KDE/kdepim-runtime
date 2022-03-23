@@ -32,4 +32,3 @@ private:
     Object mObject;
 };
 }
-

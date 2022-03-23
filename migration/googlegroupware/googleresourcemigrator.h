@@ -35,7 +35,8 @@ private:
         bool alreadyExists = false;
     };
 
-    template<typename T> struct ResourceValues {
+    template<typename T>
+    struct ResourceValues {
         explicit ResourceValues() = default;
         template<typename U, typename V>
         ResourceValues(U &&calendar, V &&contacts)
@@ -57,4 +58,3 @@ private:
     int mMigrationCount = 0;
     int mMigrationsDone = 0;
 };
-

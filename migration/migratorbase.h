@@ -12,7 +12,6 @@
 #include <QFile>
 #include <QObject>
 
-
 class NullableConfigGroup
 {
 public:
@@ -28,7 +27,8 @@ public:
         return mConfigGroup;
     }
 
-    template<typename T> inline T readEntry(const QString &key, const T &aDefault) const
+    template<typename T>
+    inline T readEntry(const QString &key, const T &aDefault) const
     {
         if (mConfigGroup.isValid()) {
             return mConfigGroup.readEntry<T>(key, aDefault);
@@ -36,7 +36,8 @@ public:
         return aDefault;
     }
 
-    template<typename T> inline void writeEntry(const QString &key, const T &value)
+    template<typename T>
+    inline void writeEntry(const QString &key, const T &value)
     {
         if (mConfigGroup.isValid()) {
             mConfigGroup.writeEntry<T>(key, value);
@@ -213,4 +214,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(MigratorBase::MigrationState)
-

@@ -55,4 +55,3 @@ private:
     QString mMaildirIdentifier;
     QString mMaildirPath;
 };
-

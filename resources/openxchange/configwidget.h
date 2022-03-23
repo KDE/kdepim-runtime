@@ -35,4 +35,3 @@ private:
     QLineEdit *mPasswordEdit = nullptr;
     QPushButton *mCheckConnectionButton = nullptr;
 };
-

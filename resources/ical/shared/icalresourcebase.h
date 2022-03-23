@@ -28,6 +28,7 @@ protected Q_SLOTS:
     bool retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts) override;
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
     void retrieveItems(const Akonadi::Collection &col) override;
+
 protected:
     enum CheckType {
         CheckForAdded,
@@ -64,7 +65,8 @@ protected:
      *         false if a check failed, in which case itemAdded() or itemChanged()
      *               should stop processing.
      */
-    template<typename PayloadPtr> bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
+    template<typename PayloadPtr>
+    bool checkItemAddedChanged(const Akonadi::Item &item, CheckType type);
 
     void itemRemoved(const Akonadi::Item &item) override;
 
@@ -79,7 +81,8 @@ private:
     KCalendarCore::FileStorage::Ptr mFileStorage;
 };
 
-template<typename PayloadPtr> bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckType type)
+template<typename PayloadPtr>
+bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckType type)
 {
     if (!mCalendar) {
         cancelTask(i18n("Calendar not loaded."));
@@ -92,4 +95,3 @@ template<typename PayloadPtr> bool ICalResourceBase::checkItemAddedChanged(const
     }
     return true;
 }
-

@@ -134,4 +134,3 @@ public:
     static KMime::Message::Ptr writeRelation(const Akonadi::Relation &, const QStringList &items, Version v = KolabV3, const QString &productId = QString());
 };
 } // Namespace
-

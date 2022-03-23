@@ -49,4 +49,3 @@ private:
     QAtomicInt mIsRunning;
     mutable QMutex mMutex;
 };
-

@@ -62,4 +62,3 @@ private:
     Type mType;
     QList<Response> mResponses;
 };
-

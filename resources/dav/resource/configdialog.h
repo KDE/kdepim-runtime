@@ -53,4 +53,3 @@ private:
     QStandardItemModel *mModel = nullptr;
     QPushButton *mOkButton = nullptr;
 };
-

@@ -44,4 +44,3 @@ private:
     static KIO::UDSEntry entryForItem(const Akonadi::Item &item);
     static KIO::UDSEntry entryForCollection(const Akonadi::Collection &collection);
 };
-

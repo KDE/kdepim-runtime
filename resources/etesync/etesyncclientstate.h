@@ -81,4 +81,3 @@ private:
     WId mWinId;
     QPointer<KWallet::Wallet> mWallet;
 };
-

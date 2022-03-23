@@ -47,4 +47,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsMailbox)
 Q_DECLARE_METATYPE(EwsMailbox::List)
-

@@ -128,4 +128,3 @@ private:
     QHash<quint64, KMIndexDataPtr> mMsgByOffset;
     friend class TestIdxReader;
 };
-

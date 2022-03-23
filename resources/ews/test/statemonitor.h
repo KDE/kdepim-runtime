@@ -30,7 +30,8 @@ Q_SIGNALS:
     void errorOccurred();
 };
 
-template<typename T> class CollectionStateMonitor : public StateMonitorBase
+template<typename T>
+class CollectionStateMonitor : public StateMonitorBase
 {
 public:
     using StateComparisonFunc = std::function<bool(const Akonadi::Collection &, const T &)>;
@@ -85,7 +86,8 @@ CollectionStateMonitor<T>::CollectionStateMonitor(QObject *parent,
     }
 }
 
-template<typename T> void CollectionStateMonitor<T>::stateChanged(const Akonadi::Collection &col)
+template<typename T>
+void CollectionStateMonitor<T>::stateChanged(const Akonadi::Collection &col)
 {
     auto remoteId = col.remoteId();
     auto state = mStateHash.find(remoteId);
@@ -103,7 +105,8 @@ template<typename T> void CollectionStateMonitor<T>::stateChanged(const Akonadi:
     }
 }
 
-template<typename T> void CollectionStateMonitor<T>::forceRecheck()
+template<typename T>
+void CollectionStateMonitor<T>::forceRecheck()
 {
     auto fetchJob = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive, this);
     fetchJob->setFetchScope(mMonitor.collectionFetchScope());
@@ -118,4 +121,3 @@ template<typename T> void CollectionStateMonitor<T>::forceRecheck()
         }
     }
 }
-

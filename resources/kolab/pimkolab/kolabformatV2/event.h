@@ -73,4 +73,3 @@ protected:
     bool mHasEndDate;
 };
 }
-

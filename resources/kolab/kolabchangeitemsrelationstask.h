@@ -37,4 +37,3 @@ private:
     Akonadi::Relation mCurrentRelation;
     bool mAdding = false;
 };
-

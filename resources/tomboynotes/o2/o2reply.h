@@ -60,4 +60,3 @@ protected:
     QList<O2Reply *> replies_;
     bool ignoreSslErrors_;
 };
-

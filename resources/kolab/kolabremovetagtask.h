@@ -25,4 +25,3 @@ private Q_SLOTS:
     void onSelectDone(KJob *job);
     void onStoreFlagsDone(KJob *job);
 };
-

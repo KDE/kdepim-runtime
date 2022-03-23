@@ -20,4 +20,3 @@ private:
     void collectionsRetrieved(const Akonadi::Collection::List &collections) override;
     MessageHelper::Ptr messageHelper() const override;
 };
-

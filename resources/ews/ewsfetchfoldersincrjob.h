@@ -52,4 +52,3 @@ private:
     std::unique_ptr<EwsFetchFoldersIncrJobPrivate> const d_ptr;
     Q_DECLARE_PRIVATE(EwsFetchFoldersIncrJob)
 };
-

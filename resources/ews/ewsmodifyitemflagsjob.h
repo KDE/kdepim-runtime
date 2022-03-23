@@ -44,4 +44,3 @@ protected:
 private Q_SLOTS:
     void itemModifyFinished(KJob *job);
 };
-

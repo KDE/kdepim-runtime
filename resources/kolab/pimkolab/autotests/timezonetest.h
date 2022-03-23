@@ -26,4 +26,3 @@ private Q_SLOTS:
     void testUTCOffset();
     void localTimezone();
 };
-

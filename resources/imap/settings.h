@@ -56,4 +56,3 @@ protected:
     mutable QString m_password;
     mutable QString m_customSievePassword;
 };
-

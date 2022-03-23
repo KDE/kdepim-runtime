@@ -67,4 +67,3 @@ inline EwsFolderShape &operator<<(EwsFolderShape &shape, const EwsPropertyField 
     shape.mProps.append(prop);
     return shape;
 }
-

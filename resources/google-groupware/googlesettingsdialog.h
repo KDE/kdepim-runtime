@@ -44,4 +44,3 @@ private Q_SLOTS:
     void slotReloadCalendars();
     void slotReloadTaskLists();
 };
-

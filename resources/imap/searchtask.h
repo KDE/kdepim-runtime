@@ -28,4 +28,3 @@ private:
 
     const QString m_query;
 };
-

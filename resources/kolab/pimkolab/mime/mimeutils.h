@@ -55,4 +55,3 @@ KMime::Content *createAttachmentPart(const QByteArray &cid, const QByteArray &mi
 QString fromCid(const QString &cid);
 }
 } // Namespace
-

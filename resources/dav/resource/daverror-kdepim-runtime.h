@@ -9,4 +9,3 @@
 #include <KDAV/DavError>
 
 QString translateErrorString(const KDAV::Error &error);
-

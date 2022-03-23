@@ -51,4 +51,3 @@ createDavItem(const Akonadi::Item &item, const Akonadi::Collection &collection, 
  */
 bool parseDavData(const KDAV::DavItem &source, Akonadi::Item &target, Akonadi::Item::List &extraItems);
 }
-

@@ -41,4 +41,3 @@ protected:
 
 Q_DECLARE_METATYPE(EwsAttendee)
 Q_DECLARE_METATYPE(EwsAttendee::List)
-

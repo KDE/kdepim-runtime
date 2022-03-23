@@ -35,4 +35,3 @@ protected:
     QHash<QString, Akonadi::Collection> m_dummyCollections;
     QSet<QString> m_fullReportedCollections;
 };
-

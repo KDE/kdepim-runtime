@@ -26,4 +26,3 @@ public:
 private:
     QString mCTag;
 };
-

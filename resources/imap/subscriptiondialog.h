@@ -95,4 +95,3 @@ private:
     QMap<QString, QStandardItem *> m_itemsMap;
     QPushButton *mUser1Button = nullptr;
 };
-

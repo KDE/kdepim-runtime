@@ -34,4 +34,3 @@ private:
     ImapResourceBase *const mResource;
     QPointer<KGAPI2::AccountPromise> mPendingPromise;
 };
-

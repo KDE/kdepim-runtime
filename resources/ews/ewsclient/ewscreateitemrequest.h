@@ -76,4 +76,3 @@ private:
     EwsMeetingDisposition mMeetingDisp;
     QList<Response> mResponses;
 };
-

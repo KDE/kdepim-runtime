@@ -47,4 +47,3 @@ public:
 private:
     QSet<quint64> mDeletedItemOffsets;
 };
-

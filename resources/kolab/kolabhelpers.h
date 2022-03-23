@@ -36,4 +36,3 @@ public:
     static QList<QByteArray> ancestorChain(const Akonadi::Collection &col);
     static QString createMemberUrl(const Akonadi::Item &item, const QString &user);
 };
-

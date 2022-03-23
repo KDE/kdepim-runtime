@@ -37,4 +37,3 @@ private Q_SLOTS:
     void onSetMetaDataDone(KJob *job);
     void onLocalCreateDone(KJob *job);
 };
-

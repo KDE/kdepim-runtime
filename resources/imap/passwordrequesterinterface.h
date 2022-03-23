@@ -37,4 +37,3 @@ public:
 Q_SIGNALS:
     void done(int resultType, const QString &password = QString());
 };
-

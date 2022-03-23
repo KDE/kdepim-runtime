@@ -218,4 +218,3 @@ private:
     Error m_lastError;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(O0SimpleCrypt::CryptoFlags)
-

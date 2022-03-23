@@ -30,4 +30,3 @@ QDateTime readDateTime(const QString &text);
 QDate readDate(const QString &text);
 }
 }
-

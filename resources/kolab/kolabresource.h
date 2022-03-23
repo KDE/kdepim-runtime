@@ -56,4 +56,3 @@ private Q_SLOTS:
     void retrieveRelations() override;
     void onConfigurationDone(int result);
 };
-

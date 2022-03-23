@@ -16,4 +16,3 @@ public:
     ~EwsModifyContactJob() override;
     void start() override;
 };
-

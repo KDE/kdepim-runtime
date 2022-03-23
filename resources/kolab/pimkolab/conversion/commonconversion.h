@@ -44,4 +44,3 @@ inline QString fromStdString(const std::string &s)
 }
 }
 }
-

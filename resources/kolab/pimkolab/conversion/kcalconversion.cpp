@@ -237,7 +237,8 @@ Kolab::Role fromRole(KCalendarCore::Attendee::Role r)
     return Kolab::Required;
 }
 
-template<typename T> QString getCustomProperty(const QString &id, const T &e)
+template<typename T>
+QString getCustomProperty(const QString &id, const T &e)
 {
     const std::vector<Kolab::CustomProperty> &props = e.customProperties();
     for (const Kolab::CustomProperty &p : props) {
@@ -247,7 +248,8 @@ template<typename T> QString getCustomProperty(const QString &id, const T &e)
     }
 }
 
-template<typename T> void setIncidence(KCalendarCore::Incidence &i, const T &e)
+template<typename T>
+void setIncidence(KCalendarCore::Incidence &i, const T &e)
 {
     if (!e.uid().empty()) {
         i.setUid(fromStdString(e.uid()));
@@ -326,7 +328,8 @@ template<typename T> void setIncidence(KCalendarCore::Incidence &i, const T &e)
     i.setCustomProperties(props);
 }
 
-template<typename T, typename I> void getIncidence(T &i, const I &e)
+template<typename T, typename I>
+void getIncidence(T &i, const I &e)
 {
     i.setUid(toStdString(e.uid()));
     i.setCreated(fromDate(e.created(), false));
@@ -503,7 +506,8 @@ Kolab::DayPos fromWeekDayPos(KCalendarCore::RecurrenceRule::WDayPos dp)
     return {dp.pos(), fromWeekDay(dp.day())};
 }
 
-template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &event)
+template<typename T>
+void setRecurrence(KCalendarCore::Incidence &e, const T &event)
 {
     const Kolab::RecurrenceRule &rrule = event.recurrenceRule();
     if (rrule.isValid()) {
@@ -586,7 +590,8 @@ template<typename T> void setRecurrence(KCalendarCore::Incidence &e, const T &ev
     }
 }
 
-template<typename T, typename I> void getRecurrence(T &i, const I &e)
+template<typename T, typename I>
+void getRecurrence(T &i, const I &e)
 {
     if (!e.recurs()) {
         return;
@@ -678,7 +683,8 @@ template<typename T, typename I> void getRecurrence(T &i, const I &e)
     }
 }
 
-template<typename T> void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
+template<typename T>
+void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
 {
     i.setPriority(toPriority(e.priority()));
     if (!e.location().empty()) {
@@ -735,7 +741,8 @@ template<typename T> void setTodoEvent(KCalendarCore::Incidence &i, const T &e)
     }
 }
 
-template<typename T, typename I> void getTodoEvent(T &i, const I &e)
+template<typename T, typename I>
+void getTodoEvent(T &i, const I &e)
 {
     i.setPriority(fromPriority(e.priority()));
     i.setLocation(toStdString(e.location()));

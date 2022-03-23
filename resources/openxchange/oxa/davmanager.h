@@ -77,4 +77,3 @@ private:
     static DavManager *mSelf;
 };
 }
-

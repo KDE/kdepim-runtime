@@ -61,4 +61,3 @@ private:
     Folder::List mFolders;
 };
 }
-

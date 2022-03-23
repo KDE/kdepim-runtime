@@ -6,8 +6,8 @@
 
 #include "formathelpers.h"
 #include "kolabdefinitions.h"
-#include <KLocalizedString>
 #include <KLazyLocalizedString>
+#include <KLocalizedString>
 namespace Kolab
 {
 static const struct {

@@ -42,4 +42,3 @@ private:
     qint64 m_oldUid = 0;
     qint64 m_newUid = 0;
 };
-

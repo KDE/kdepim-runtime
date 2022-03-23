@@ -14,4 +14,3 @@ public:
     static Akonadi::Collection::Rights convertRights(const KIMAP::Acl::Rights imapRights, KIMAP::Acl::Rights parentRights);
     static bool applyRights(Akonadi::Collection &collection, const KIMAP::Acl::Rights imapRights, KIMAP::Acl::Rights parentRights);
 };
-

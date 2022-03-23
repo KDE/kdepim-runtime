@@ -50,4 +50,3 @@ private:
     QString mOabUrl;
     bool mUsedCreds = false;
 };
-

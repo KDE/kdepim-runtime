@@ -85,4 +85,3 @@ private:
     EwsEventRequestBase *mEventReq = nullptr;
     EwsSettings *mSettings = nullptr;
 };
-

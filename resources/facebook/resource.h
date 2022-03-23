@@ -36,4 +36,3 @@ private:
 private:
     KJob *mCurrentJob = nullptr;
 };
-

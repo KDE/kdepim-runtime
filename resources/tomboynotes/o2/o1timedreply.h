@@ -25,4 +25,3 @@ private Q_SLOTS:
     void onFinished();
     void onTimeout();
 };
-

@@ -36,4 +36,3 @@ private:
     QList<QMap<QByteArray, qint64>> mUsages;
 };
 }
-

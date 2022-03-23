@@ -19,4 +19,3 @@ public:
 protected:
     void doStart() override;
 };
-

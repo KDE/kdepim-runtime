@@ -64,4 +64,3 @@ private:
     EwsId mDestFolderId;
     QList<Response> mResponses;
 };
-

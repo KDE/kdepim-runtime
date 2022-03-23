@@ -12,4 +12,3 @@
 QByteArray mailAttendees(const KCalendarCore::IncidenceBase::Ptr &incidence, bool bccMe, const QString &attachment);
 
 QByteArray mailOrganizer(const KCalendarCore::IncidenceBase::Ptr &incidence, const QString &from, bool bccMe, const QString &attachment, const QString &sub);
-

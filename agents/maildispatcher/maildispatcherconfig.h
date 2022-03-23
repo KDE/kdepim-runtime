@@ -22,4 +22,3 @@ private:
 };
 
 AKONADI_AGENTCONFIG_FACTORY(MailDispatcherConfigFactory, "maildispatcherconfig.json", MailDispatcherConfig)
-

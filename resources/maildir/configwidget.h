@@ -40,4 +40,3 @@ private:
     bool mToplevelIsContainer = false;
     QPushButton *mOkButton = nullptr;
 };
-

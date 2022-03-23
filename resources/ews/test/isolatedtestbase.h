@@ -158,4 +158,3 @@ public:
                                           const QString &descr = QString(),
                                           const ReplyCallback &callback = ReplyCallback());
 };
-

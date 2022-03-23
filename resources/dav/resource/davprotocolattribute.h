@@ -24,4 +24,3 @@ public:
 private:
     int mDavProtocol = 0;
 };
-

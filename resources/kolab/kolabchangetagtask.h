@@ -30,4 +30,3 @@ private Q_SLOTS:
     void onCancelTask(const QString &errorText);
     void onChangeCommitted();
 };
-

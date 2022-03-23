@@ -54,4 +54,3 @@ private:
     qint64 m_highestMtime;
     QString m_listingPath;
 };
-

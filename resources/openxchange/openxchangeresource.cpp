@@ -93,7 +93,8 @@ public:
     }
 
 private:
-    template<typename T> static inline RemoteInformation loadImpl(const T &entity)
+    template<typename T>
+    static inline RemoteInformation loadImpl(const T &entity)
     {
         const QStringList parts = entity.remoteRevision().split(QLatin1Char(':'), Qt::KeepEmptyParts);
 
@@ -119,7 +120,8 @@ private:
         return RemoteInformation(entity.remoteId().toLongLong(), module, lastModified);
     }
 
-    template<typename T> inline void storeImpl(T &entity) const
+    template<typename T>
+    inline void storeImpl(T &entity) const
     {
         QString module;
         switch (mModule) {

@@ -181,4 +181,3 @@ private:
 
     Settings mSettings;
 };
-

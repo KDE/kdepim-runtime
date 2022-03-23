@@ -31,4 +31,3 @@ protected:
 private Q_SLOTS:
     void onConfigurationDone(int result);
 };
-

@@ -21,4 +21,3 @@ public:
 private:
     const Akonadi::Item::Id mId;
 };
-

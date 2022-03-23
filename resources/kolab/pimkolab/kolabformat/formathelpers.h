@@ -42,4 +42,3 @@ KOLAB_EXPORT FolderType guessFolderTypeFromName(const std::string &name);
  */
 KOLAB_EXPORT std::string nameForFolderType(FolderType type);
 }
-

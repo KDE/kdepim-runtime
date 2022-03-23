@@ -91,4 +91,3 @@ private:
 
     CompactChangeHelper *mCompactHelper = nullptr;
 };
-

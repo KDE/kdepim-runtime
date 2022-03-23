@@ -115,4 +115,3 @@ private:
     QMap<QString, QString> mCollectionsUrlsMapping;
     QList<UrlConfiguration *> mToDeleteUrlConfigs;
 };
-

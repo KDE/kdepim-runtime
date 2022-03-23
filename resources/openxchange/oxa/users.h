@@ -50,4 +50,3 @@ private:
     static Users *mSelf;
 };
 }
-

@@ -30,4 +30,3 @@ private Q_SLOTS:
     void onPreSearchSelectDone(KJob *job);
     void onSearchDone(KJob *job);
 };
-

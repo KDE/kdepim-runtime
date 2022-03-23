@@ -48,4 +48,3 @@ private:
     QHash<KJob *, Akonadi::Item> mCurrentItemDeletions;
     KMBox::MBox *mMBox = nullptr;
 };
-

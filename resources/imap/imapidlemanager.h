@@ -67,4 +67,3 @@ private:
     qint64 m_lastMessageCount = -1;
     qint64 m_lastRecentCount = -1;
 };
-

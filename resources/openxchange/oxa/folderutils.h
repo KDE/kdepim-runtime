@@ -33,4 +33,3 @@ Folder parseFolder(const QDomElement &propElement);
 void addFolderElements(QDomDocument &document, QDomElement &propElement, const Folder &folder);
 }
 }
-

@@ -1404,7 +1404,6 @@ void EwsResource::reauthenticate()
     case AuthFailure:
         break;
     }
-
 }
 
 void EwsResource::requestAuthFailed()

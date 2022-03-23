@@ -30,4 +30,3 @@ private:
     KConfigDialogManager *mManager = nullptr;
 };
 AKONADI_AGENTCONFIG_FACTORY(ContactsSettingsWidgetFactory, "contactsconfig.json", ContactsSettingsWidget)
-

@@ -31,4 +31,3 @@ private:
     std::unique_ptr<EwsSubscriptionWidgetPrivate> const d_ptr;
     Q_DECLARE_PRIVATE(EwsSubscriptionWidget)
 };
-

@@ -56,4 +56,3 @@ private Q_SLOTS:
     void generateVCard();
     void proveJPGisLossy();
 };
-

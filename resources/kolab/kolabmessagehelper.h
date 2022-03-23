@@ -25,4 +25,3 @@ public:
 private:
     const Akonadi::Collection mCollection;
 };
-

@@ -17,7 +17,8 @@ namespace KIO
 class Job;
 }
 
-template<typename F> struct Finally {
+template<typename F>
+struct Finally {
     Finally(F f)
         : cleanupf{f}
     {
@@ -31,7 +32,8 @@ template<typename F> struct Finally {
     F cleanupf;
 };
 
-template<typename F> Finally<F> finally(F f)
+template<typename F>
+Finally<F> finally(F f)
 {
     return Finally<F>(f);
 }
@@ -67,4 +69,3 @@ private:
     VerifierFn mVerifier;
     static QQueue<Verifier> mVerifierQueue;
 };
-

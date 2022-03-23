@@ -138,4 +138,3 @@ private:
 };
 
 QDebug operator<<(const QDebug dbg, const EwsServerVersion &version);
-

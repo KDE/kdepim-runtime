@@ -30,4 +30,3 @@ public:
 private:
     KLDAP::LdapConfigureWidget *const mLdapConfigureWidget;
 };
-

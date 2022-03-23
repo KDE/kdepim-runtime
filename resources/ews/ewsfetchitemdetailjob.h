@@ -45,4 +45,3 @@ protected:
 private Q_SLOTS:
     void itemDetailFetched(KJob *job);
 };
-

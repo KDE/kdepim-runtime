@@ -55,4 +55,3 @@ private:
     EwsItemShape mShape;
     Response::List mResponses;
 };
-

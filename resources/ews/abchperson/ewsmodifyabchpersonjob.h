@@ -16,4 +16,3 @@ public:
     ~EwsModifyAbchPersonJob() override;
     void start() override;
 };
-

@@ -28,4 +28,3 @@ private:
 };
 
 AKONADI_AGENTCONFIG_FACTORY(VcardDirSettingsWidgetFactory, "vcarddirconfig.json", VcardDirSettingsWidget)
-

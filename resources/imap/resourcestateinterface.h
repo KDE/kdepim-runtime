@@ -113,4 +113,3 @@ public:
 
     virtual void setItemMergingMode(Akonadi::ItemSync::MergeMode mergeMode) = 0;
 };
-

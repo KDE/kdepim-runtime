@@ -22,4 +22,3 @@ inline TransferJob *http_post(const QUrl &url, const QByteArray &postData, JobFl
     return reinterpret_cast<TransferJob *>(job);
 }
 }
-

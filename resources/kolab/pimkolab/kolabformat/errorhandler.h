@@ -142,4 +142,3 @@ private:
 }
 
 QDebug operator<<(QDebug dbg, const std::string &s);
-

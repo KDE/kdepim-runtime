@@ -37,4 +37,3 @@ protected:
 protected:
     int m_processedItems = 0;
 };
-

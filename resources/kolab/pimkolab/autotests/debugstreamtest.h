@@ -16,4 +16,3 @@ private Q_SLOTS:
     void testDebugNotLogged();
     void testHasError();
 };
-

@@ -34,4 +34,3 @@ private:
     Folder mDestinationFolder;
 };
 }
-

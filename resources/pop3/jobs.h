@@ -147,4 +147,3 @@ private:
     int mTotalBytesToDownload;
     uint mDataCounter;
 };
-

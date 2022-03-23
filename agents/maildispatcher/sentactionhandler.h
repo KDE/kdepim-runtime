@@ -25,4 +25,3 @@ public:
 private Q_SLOTS:
     void itemFetchResult(KJob *job);
 };
-

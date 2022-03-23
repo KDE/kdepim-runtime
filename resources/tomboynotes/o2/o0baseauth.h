@@ -119,4 +119,3 @@ protected:
     O0AbstractStore *store_ = nullptr;
     QVariantMap extraTokens_;
 };
-

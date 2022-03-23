@@ -52,4 +52,3 @@ private:
     bool mSuccess = false;
     QString mMessage;
 };
-

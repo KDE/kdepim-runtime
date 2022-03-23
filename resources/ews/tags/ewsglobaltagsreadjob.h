@@ -40,4 +40,3 @@ private:
     const Akonadi::Collection &mRootCollection;
     Akonadi::Tag::List mTags;
 };
-

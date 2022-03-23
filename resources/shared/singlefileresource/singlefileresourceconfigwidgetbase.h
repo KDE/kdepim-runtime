@@ -123,4 +123,3 @@ Q_SIGNALS:
     void changed();
 };
 }
-

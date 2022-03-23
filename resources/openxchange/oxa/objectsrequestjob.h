@@ -53,4 +53,3 @@ private:
     Object::List mObjects;
 };
 }
-

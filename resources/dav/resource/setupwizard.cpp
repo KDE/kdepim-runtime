@@ -57,7 +57,6 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return {};
     }
 
-
     const QString pathPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Path"));
     if (service->property(pathPropertyName).isNull()) {
         return {};

@@ -28,4 +28,3 @@ private:
     QMap<QByteArray, QByteArray> mAnnotations;
 };
 }
-

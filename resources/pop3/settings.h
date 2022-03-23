@@ -39,4 +39,3 @@ private:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Settings::Options)
-

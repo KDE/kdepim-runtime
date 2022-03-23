@@ -44,4 +44,3 @@ private:
     QMap<QString, KContacts::Addressee> mAddressees;
     KContacts::VCardConverter mConverter;
 };
-

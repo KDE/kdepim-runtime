@@ -506,7 +506,8 @@ std::vector<Kolab::Attachment> convertToReferences(const std::vector<Kolab::Atta
     return attachmentsWithReferences;
 }
 
-template<class T> static T convertAttachmentsToReferences(const T &incidence, std::vector<std::string> &attachmentCids)
+template<class T>
+static T convertAttachmentsToReferences(const T &incidence, std::vector<std::string> &attachmentCids)
 {
     T removedAttachments = incidence;
     removedAttachments.setAttachments(convertToReferences(incidence.attachments(), attachmentCids));

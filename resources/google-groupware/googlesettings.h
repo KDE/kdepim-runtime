@@ -63,4 +63,3 @@ private:
 
     KGAPI2::AccountPtr fetchAccountFromWallet(const QString &accountName);
 };
-

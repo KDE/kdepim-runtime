@@ -29,4 +29,3 @@ private:
     MigrationScheduler &mScheduler;
     QItemSelectionModel *mSelectionModel = nullptr;
 };
-

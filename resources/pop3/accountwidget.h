@@ -73,4 +73,3 @@ private:
     const QString mIdentifier;
     Settings &mSettings;
 };
-

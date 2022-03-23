@@ -36,4 +36,3 @@ private:
 
     QScopedPointer<QMapIterator<int, KIMAP::MailBoxDescriptor>> mFolderIterator;
 };
-

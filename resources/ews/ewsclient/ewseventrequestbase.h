@@ -181,4 +181,3 @@ protected:
 };
 
 Q_DECLARE_METATYPE(EwsEventRequestBase::Event::List)
-

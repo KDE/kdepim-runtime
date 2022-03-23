@@ -18,4 +18,3 @@ public:
 protected:
     void processItems(const EwsGetItemRequest::Response::List &responses) override;
 };
-

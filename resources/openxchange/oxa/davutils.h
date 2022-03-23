@@ -50,4 +50,3 @@ void setOxAttribute(QDomElement &element, const QString &name, const QString &va
 bool davErrorOccurred(const QDomDocument &document, QString &errorText, QString &errorStatus);
 }
 }
-

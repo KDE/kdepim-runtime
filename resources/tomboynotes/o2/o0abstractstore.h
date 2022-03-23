@@ -24,4 +24,3 @@ public:
     /// Set a string value for a key.
     virtual void setValue(const QString &key, const QString &value) = 0;
 };
-

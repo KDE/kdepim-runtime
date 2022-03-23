@@ -67,4 +67,3 @@ private:
     QTimer mWalletTimer;
     QPointer<KPasswordDialog> mPasswordDlg;
 };
-

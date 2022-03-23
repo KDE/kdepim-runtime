@@ -92,4 +92,3 @@ private:
     int mNextDenominator;
     bool mIncludesLastItem;
 };
-

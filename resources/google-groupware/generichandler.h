@@ -58,7 +58,8 @@ public:
     /*
      * Helper function for various handlers
      */
-    template<typename T> bool canPerformTask(const Akonadi::Item &item)
+    template<typename T>
+    bool canPerformTask(const Akonadi::Item &item)
     {
         if (item.isValid() && (!item.hasPayload<T>() || item.mimeType() != mimeType())) {
             m_iface->cancelTask(i18n("Invalid item."));
@@ -67,7 +68,8 @@ public:
         return m_iface->canPerformTask();
     }
 
-    template<typename T> bool canPerformTask(const Akonadi::Item::List &items)
+    template<typename T>
+    bool canPerformTask(const Akonadi::Item::List &items)
     {
         if (std::any_of(items.cbegin(), items.cend(), [this](const Akonadi::Item &item) {
                 return item.isValid() && (!item.hasPayload<T>() || item.mimeType() != mimeType());
@@ -89,4 +91,3 @@ protected:
     GoogleResourceStateInterface *const m_iface;
     GoogleSettings *const m_settings;
 };
-

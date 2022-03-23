@@ -41,4 +41,3 @@ void addEventElements(QDomDocument &document, QDomElement &propElement, const Ob
 void addTaskElements(QDomDocument &document, QDomElement &propElement, const Object &object);
 }
 }
-

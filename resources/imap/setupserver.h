@@ -98,4 +98,3 @@ private Q_SLOTS:
     void localFolderRequestJobFinished(KJob *job);
     void populateDefaultAuthenticationOptions(QComboBox *combo);
 };
-

@@ -450,7 +450,8 @@ static uchar *g_chunk = nullptr;
 
 namespace
 {
-template<typename T> void copy_from_stream(T &x)
+template<typename T>
+void copy_from_stream(T &x)
 {
     if (g_chunk_offset + int(sizeof(T)) > g_chunk_length) {
         g_chunk_offset = g_chunk_length;

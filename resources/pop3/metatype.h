@@ -11,4 +11,3 @@
 #include <QMetaType>
 
 // Q_DECLARE_METATYPE(QList<int>)
-

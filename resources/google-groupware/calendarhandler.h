@@ -55,4 +55,3 @@ private:
     GoogleResourceStateInterface *m_iface = nullptr;
     GoogleSettings *m_settings = nullptr;
 };
-

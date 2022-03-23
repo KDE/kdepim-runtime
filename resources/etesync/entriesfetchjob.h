@@ -54,4 +54,3 @@ private:
     Akonadi::Item::List mRemovedItems;
 };
 } // namespace EteSyncAPI
-

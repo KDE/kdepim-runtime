@@ -31,4 +31,3 @@ private Q_SLOTS:
     void testContact_data();
     void testContact();
 };
-

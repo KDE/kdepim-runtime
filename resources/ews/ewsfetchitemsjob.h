@@ -111,4 +111,3 @@ private:
     Akonadi::Item::List mChangedItems;
     Akonadi::Item::List mDeletedItems;
 };
-

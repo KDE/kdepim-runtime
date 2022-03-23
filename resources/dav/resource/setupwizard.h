@@ -131,4 +131,3 @@ private:
     void onFetchDone(KJob *);
     QTextBrowser *mStatusLabel = nullptr;
 };
-

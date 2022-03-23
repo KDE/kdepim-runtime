@@ -84,4 +84,3 @@ public:
 private:
     FakeServer *mServer = nullptr;
 };
-

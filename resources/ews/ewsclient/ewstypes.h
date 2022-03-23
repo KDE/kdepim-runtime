@@ -461,7 +461,8 @@ typedef enum {
     EwsResponseCodeUnknown,
 } EwsResponseCode;
 
-template<typename T> T decodeEnumString(const QString &str, const QString *table, unsigned count, bool *ok)
+template<typename T>
+T decodeEnumString(const QString &str, const QString *table, unsigned count, bool *ok)
 {
     unsigned i;
     T enumVal = T();
