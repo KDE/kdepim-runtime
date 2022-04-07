@@ -94,10 +94,10 @@ POP3Protocol::~POP3Protocol()
     sasl_done();
 }
 
-ssize_t POP3Protocol::myRead(void *data, ssize_t len)
+qint64 POP3Protocol::myRead(void *data, qint64 len)
 {
     if (readBufferLen) {
-        ssize_t copyLen = (len < readBufferLen) ? len : readBufferLen;
+        qint64 copyLen = (len < readBufferLen) ? len : readBufferLen;
         memcpy(data, readBuffer, copyLen);
         readBufferLen -= copyLen;
         if (readBufferLen) {
@@ -111,9 +111,9 @@ ssize_t POP3Protocol::myRead(void *data, ssize_t len)
     return mSocket->read((char *)data, len);
 }
 
-ssize_t POP3Protocol::myReadLine(char *data, ssize_t len)
+qint64 POP3Protocol::myReadLine(char *data, qint64 len)
 {
-    ssize_t copyLen = 0, readLen = 0;
+    qint64 copyLen = 0, readLen = 0;
     while (true) {
         while (copyLen < readBufferLen && readBuffer[copyLen] != '\n') {
             copyLen++;
@@ -247,7 +247,7 @@ bool POP3Protocol::sendCommand(const QByteArray &cmd)
     // qCDebug(POP3_LOG) << "C:" << debugCommand;
 
     // Now actually write the command to the socket
-    if (mSocket->write(cmdrn.data(), cmdrn.size()) != static_cast<ssize_t>(cmdrn.size())) {
+    if (mSocket->write(cmdrn.data(), cmdrn.size()) != static_cast<qint64>(cmdrn.size())) {
         m_sError = i18n("Could not send to server.\n");
         return false;
     }
@@ -809,7 +809,7 @@ Result POP3Protocol::get(const QString &_commandString)
                 bool endOfMail = false;
                 bool eat = false;
                 while (true /* !AtEOF() */) {
-                    ssize_t readlen = myRead(buf, sizeof(buf) - 1);
+                    qint64 readlen = myRead(buf, sizeof(buf) - 1);
                     if (readlen <= 0) {
                         const bool wasConnected = (mSocket->state() == QAbstractSocket::ConnectedState);
                         closeConnection();
@@ -837,7 +837,7 @@ Result POP3Protocol::get(const QString &_commandString)
                     char *buf1 = buf, *buf2 = destbuf;
                     // ".." at start of a line means only "."
                     // "." means end of data
-                    for (ssize_t i = 0; i < readlen; i++) {
+                    for (qint64 i = 0; i < readlen; i++) {
                         if (*buf1 == '\r' && eat) {
                             endOfMail = true;
                             if (i == readlen - 1 /* && !AtEOF() */) {
