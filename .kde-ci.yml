@@ -21,6 +21,7 @@ Dependencies:
     'pim/kmime' : '@same'
     'pim/libkdepim': '@same'
     'pim/libkgapi' : '@same'
+    'pim/kldap' : '@same'
     'third-party/libkolabxml' : '@stable'
     'frameworks/kconfig': '@latest'
     'frameworks/kconfigwidgets': '@latest'
