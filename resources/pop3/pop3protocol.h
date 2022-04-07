@@ -72,8 +72,8 @@ Q_SIGNALS:
     void messageComplete();
 
 private:
-    ssize_t myRead(void *data, ssize_t len);
-    ssize_t myReadLine(char *data, ssize_t len);
+    qint64 myRead(void *data, qint64 len);
+    qint64 myReadLine(char *data, qint64 len);
 
     /**
      * This returns the size of a message as a long integer.
@@ -138,5 +138,5 @@ private:
     bool mContinueAfterSslError = false;
     QString m_sError;
     char readBuffer[MAX_PACKET_LEN];
-    ssize_t readBufferLen;
+    qint64 readBufferLen;
 };
