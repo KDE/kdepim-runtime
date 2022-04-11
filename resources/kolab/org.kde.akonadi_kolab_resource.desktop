@@ -1,6 +1,12 @@
 [Desktop Entry]
 Type=Application
 Name=Kolab Groupware
+Name[ca]=Treball en grup Kolab
+Name[ca@valencia]=Treball en grup Kolab
+Name[es]=Software colaborativo Kolab
+Name[nl]=Kolab-groupware
+Name[uk]=Групова робота у Kolab
+Name[x-test]=xxKolab Groupwarexx
 NoDisplay=true
 Exec=akonadi_kolab_resource
 Icon=network-server
