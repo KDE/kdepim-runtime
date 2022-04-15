@@ -12,6 +12,7 @@ Name[sv]=Kolab grupprogram
 Name[tr]=Kolab Groupware
 Name[uk]=Групова робота у Kolab
 Name[x-test]=xxKolab Groupwarexx
+Name[zh_CN]=Kolab 群件
 NoDisplay=true
 Exec=akonadi_kolab_resource
 Icon=network-server

@@ -12,6 +12,7 @@ Name[sv]=DAV grupprogram
 Name[tr]=DAV Groupware
 Name[uk]=Групова робота у DAV
 Name[x-test]=xxDAV Groupwarexx
+Name[zh_CN]=DAV 群件
 NoDisplay=true
 Exec=akonadi_davgroupware_resource
 Icon=folder-remote
