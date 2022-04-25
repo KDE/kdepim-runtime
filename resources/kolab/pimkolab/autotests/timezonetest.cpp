@@ -97,7 +97,7 @@ void TimezoneTest::testKolabObjectWriter()
 //     KCalendarCore::ICalFormat format;
 //     KCalendarCore::Incidence::Ptr realIncidence( format.fromString( QString::fromUtf8( icalFile.readAll() ) ) );
 //
-//     // fix up the converted incidence for comparisson
+//     // fix up the converted incidence for comparison
 //     normalizeIncidence(convertedIncidence);
 //     normalizeIncidence(realIncidence);
 //
