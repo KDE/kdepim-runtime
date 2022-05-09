@@ -58,7 +58,7 @@ private:
     void readConfig();
 
     Ui::UrlConfigurationDialog mUi;
-    QStandardItemModel *mModel = nullptr;
+    QStandardItemModel *const mModel;
     QString mDefaultUsername;
     QString mDefaultPassword;
     QPushButton *mOkButton = nullptr;

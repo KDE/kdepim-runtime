@@ -62,10 +62,9 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
         return {};
     }
 
-    QString pathPattern;
-    pathPattern.append(service->property(pathPropertyName).toString() + QLatin1Char('/'));
+    QString pathPattern = service->property(pathPropertyName).toString() + QLatin1Char('/');
 
-    QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
+    const QString username = wizard->field(QStringLiteral("credentialsUserName")).toString();
     QString localPart(username);
     localPart.remove(QRegularExpression(QStringLiteral("@.*$")));
     pathPattern.replace(QLatin1String("$user$"), username);
@@ -149,7 +148,7 @@ SetupWizard::SetupWizard(QWidget *parent)
 
 QString SetupWizard::displayName() const
 {
-    QString desktopFilePath = property("providerDesktopFilePath").toString();
+    const QString desktopFilePath = property("providerDesktopFilePath").toString();
     if (desktopFilePath.isEmpty()) {
         return {};
     }
@@ -214,11 +213,11 @@ CredentialsPage::CredentialsPage(QWidget *parent)
 
     auto layout = new QFormLayout(this);
 
-    mUserName = new QLineEdit;
+    mUserName = new QLineEdit(this);
     layout->addRow(i18n("User:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
-    mPassword = new KPasswordLineEdit;
+    mPassword = new KPasswordLineEdit(this);
     mPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
@@ -258,18 +257,18 @@ PredefinedProviderPage::PredefinedProviderPage(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
 
-    mLabel = new QLabel;
+    mLabel = new QLabel(this);
     layout->addWidget(mLabel);
 
     mProviderGroup = new QButtonGroup(this);
     mProviderGroup->setExclusive(true);
 
-    mUseProvider = new QRadioButton;
+    mUseProvider = new QRadioButton(this);
     mProviderGroup->addButton(mUseProvider);
     mUseProvider->setChecked(true);
     layout->addWidget(mUseProvider);
 
-    mDontUseProvider = new QRadioButton(i18n("No, choose another server"));
+    mDontUseProvider = new QRadioButton(i18n("No, choose another server"), this);
     mProviderGroup->addButton(mDontUseProvider);
     layout->addWidget(mDontUseProvider);
 }
@@ -339,7 +338,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mServerGroup->setExclusive(true);
 
     auto hLayout = new QHBoxLayout;
-    auto button = new QRadioButton(i18n("Use one of those servers:"));
+    auto button = new QRadioButton(i18n("Use one of those servers:"), this);
     registerField(QStringLiteral("templateConfiguration"), button);
     mServerGroup->addButton(button);
     mServerGroup->setId(button, 0);
@@ -348,7 +347,7 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     hLayout->addWidget(mProvidersCombo);
     layout->addLayout(hLayout);
 
-    button = new QRadioButton(i18n("Configure the resource manually"));
+    button = new QRadioButton(i18n("Configure the resource manually"), this);
     connect(button, &QRadioButton::toggled, this, &ServerTypePage::manualConfigToggled);
     registerField(QStringLiteral("manualConfiguration"), button);
     mServerGroup->addButton(button);

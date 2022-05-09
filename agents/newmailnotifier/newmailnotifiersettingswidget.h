@@ -41,7 +41,7 @@ private:
 #endif
     QCheckBox *mReplyMail = nullptr;
     QComboBox *mReplyMailTypeComboBox = nullptr;
-    NewMailNotifierSelectCollectionWidget *mSelectCollection = nullptr;
+    NewMailNotifierSelectCollectionWidget *const mSelectCollection;
 };
 
 AKONADI_AGENTCONFIG_FACTORY(NewMailNotifierSettingsFactory, "newmailnotifierconfig.json", NewMailNotifierSettingsWidget)

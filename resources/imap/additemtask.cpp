@@ -66,7 +66,7 @@ void AddItemTask::onAppendMessageDone(KJob *job)
         return;
     }
 
-    qint64 uid = append->uid();
+    const qint64 uid = append->uid();
 
     if (uid > 0) {
         // We got it directly if UIDPLUS is supported...

@@ -25,6 +25,7 @@
 
 ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
+    , mModel(new QStandardItemModel(this))
 {
     setWindowIcon(QIcon::fromTheme(QStringLiteral("folder-remote")));
     setWindowTitle(i18nc("@title:window", "DAV Resource Configuration"));
@@ -40,7 +41,6 @@ ConfigDialog::ConfigDialog(QWidget *parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigDialog::onCancelClicked);
     mainLayout->addWidget(buttonBox);
 
-    mModel = new QStandardItemModel(this);
     const QStringList headers = {i18n("Protocol"), i18n("URL")};
     mModel->setHorizontalHeaderLabels(headers);
 

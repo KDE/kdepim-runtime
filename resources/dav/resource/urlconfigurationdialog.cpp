@@ -21,6 +21,7 @@
 
 UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     : QDialog(parent)
+    , mModel(new QStandardItemModel(this))
     , mRemoteProtocolGroup(new QButtonGroup(this))
 {
     auto mainWidget = new QWidget(this);
@@ -38,7 +39,6 @@ UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     connect(buttonBox, &QDialogButtonBox::rejected, this, &UrlConfigurationDialog::reject);
     mainLayout->addWidget(buttonBox);
 
-    mModel = new QStandardItemModel(this);
     initModel();
 
     mUi.discoveredUrls->setModel(mModel);

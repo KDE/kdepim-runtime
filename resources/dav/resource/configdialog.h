@@ -50,6 +50,6 @@ private:
     KConfigDialogManager *mManager = nullptr;
     QList<QPair<QString, KDAV::Protocol>> mAddedUrls;
     QList<QPair<QString, KDAV::Protocol>> mRemovedUrls;
-    QStandardItemModel *mModel = nullptr;
+    QStandardItemModel *const mModel;
     QPushButton *mOkButton = nullptr;
 };

@@ -45,8 +45,8 @@ public:
 private:
     void slotEnableChanged(bool enabled);
     const QString mInstanceName;
-    QCheckBox *mEnabled = nullptr;
+    QCheckBox *const mEnabled;
     FolderArchiveComboBox *mArchiveNamed = nullptr;
-    Akonadi::CollectionRequester *mArchiveFolder = nullptr;
+    Akonadi::CollectionRequester *const mArchiveFolder;
     FolderArchiveAccountInfo *mInfo = nullptr;
 };

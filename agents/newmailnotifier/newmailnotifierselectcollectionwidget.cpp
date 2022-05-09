@@ -84,6 +84,9 @@ QHash<Akonadi::Collection, bool> NewMailNotifierCollectionProxyModel::notificati
 
 NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWidget *parent)
     : QWidget(parent)
+    , mFolderView(new QTreeView(this))
+    , mChangeRecorder(new Akonadi::ChangeRecorder(this))
+    , mCollectionFilter(new QSortFilterProxyModel(this))
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     auto vbox = new QVBoxLayout(this);
@@ -92,7 +95,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     vbox->addWidget(label);
 
     // Create a new change recorder.
-    mChangeRecorder = new Akonadi::ChangeRecorder(this);
     mChangeRecorder->setMimeTypeMonitored(KMime::Message::mimeType());
     mChangeRecorder->fetchCollection(true);
     mChangeRecorder->setAllMonitored(true);
@@ -111,7 +113,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mNewMailNotifierProxyModel = new NewMailNotifierCollectionProxyModel(this);
     mNewMailNotifierProxyModel->setSourceModel(mimeTypeProxy);
 
-    mCollectionFilter = new QSortFilterProxyModel(this);
     mCollectionFilter->setRecursiveFilteringEnabled(true);
     mCollectionFilter->setSourceModel(mNewMailNotifierProxyModel);
     mCollectionFilter->setDynamicSortFilter(true);
@@ -127,7 +128,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
 
     vbox->addWidget(searchLine);
 
-    mFolderView = new QTreeView(this);
     mFolderView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mFolderView->setAlternatingRowColors(true);
     vbox->addWidget(mFolderView);

@@ -17,7 +17,7 @@ class Collection;
 class AkonadiSlave : public KIO::SlaveBase
 {
 public:
-    AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket);
+    explicit AkonadiSlave(const QByteArray &pool_socket, const QByteArray &app_socket);
     ~AkonadiSlave() override;
 
     /**

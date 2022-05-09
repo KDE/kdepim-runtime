@@ -53,9 +53,9 @@ private:
 
     void slotCollectionTreeFetched();
     void forceStatus(const QModelIndex &parent, bool status);
-    QTreeView *mFolderView = nullptr;
+    QTreeView *const mFolderView;
     Akonadi::EntityTreeModel *mModel = nullptr;
-    Akonadi::ChangeRecorder *mChangeRecorder = nullptr;
-    QSortFilterProxyModel *mCollectionFilter = nullptr;
+    Akonadi::ChangeRecorder *const mChangeRecorder;
+    QSortFilterProxyModel *const mCollectionFilter;
     NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel = nullptr;
 };

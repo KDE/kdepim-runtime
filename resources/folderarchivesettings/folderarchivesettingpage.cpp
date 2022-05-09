@@ -53,17 +53,17 @@ FolderArchiveAccountInfo::FolderArchiveType FolderArchiveComboBox::type() const
 FolderArchiveSettingPage::FolderArchiveSettingPage(const QString &instanceName, QWidget *parent)
     : QWidget(parent)
     , mInstanceName(instanceName)
+    , mEnabled(new QCheckBox(i18n("Enable"), this))
+    , mArchiveNamed(new FolderArchiveComboBox(this))
+    , mArchiveFolder(new Akonadi::CollectionRequester(this))
 {
     auto lay = new QFormLayout(this);
-    mEnabled = new QCheckBox(i18n("Enable"), this);
     connect(mEnabled, &QCheckBox::toggled, this, &FolderArchiveSettingPage::slotEnableChanged);
     lay->addRow(QString(), mEnabled);
 
-    mArchiveFolder = new Akonadi::CollectionRequester(this);
     mArchiveFolder->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
     lay->addRow(i18nc("@label:chooser for the folder that messages will be archived under", "Archive into:"), mArchiveFolder);
 
-    mArchiveNamed = new FolderArchiveComboBox(this);
     lay->addRow(i18nc("@label:listbox", "Archive folder name:"), mArchiveNamed);
 }
 

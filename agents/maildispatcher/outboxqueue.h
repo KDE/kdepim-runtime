@@ -52,7 +52,7 @@ public:
     /**
      * Returns the size (in bytes) of all items in the queue.
      */
-    qulonglong totalSize() const;
+    Q_REQUIRED_RESULT qulonglong totalSize() const;
 
     /**
      * Fetches an item and emits itemReady() when done.

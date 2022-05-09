@@ -18,7 +18,7 @@ public:
     bool save() const override;
 
 private:
-    KNotifyConfigWidget *mWidget = nullptr;
+    KNotifyConfigWidget *const mWidget;
 };
 
 AKONADI_AGENTCONFIG_FACTORY(MailDispatcherConfigFactory, "maildispatcherconfig.json", MailDispatcherConfig)
