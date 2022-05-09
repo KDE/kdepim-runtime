@@ -3,7 +3,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"kcm_ldap\")
 add_library(kcm_ldap MODULE)
 target_sources( kcm_ldap PRIVATE
     kcmldap.cpp
-    kcmldap_p.h
+    kcmldap.h
     )
 
 

@@ -7,7 +7,7 @@
   SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "kcmldap_p.h"
+#include "kcmldap.h"
 
 #include <QVBoxLayout>
 
@@ -36,7 +36,7 @@ KCMLdap::KCMLdap(QWidget *parent, const QVariantList &)
 
     layout->addWidget(mLdapConfigureWidget);
 
-    connect(mLdapConfigureWidget, &KLDAP::LdapConfigureWidget::changed, this, qOverload<bool>(&KCMLdap::changed));
+    connect(mLdapConfigureWidget, &KLDAP::LdapConfigureWidget::changed, this, &KCMLdap::changed);
 }
 
 KCMLdap::~KCMLdap() = default;
