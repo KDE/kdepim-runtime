@@ -46,10 +46,6 @@ public:
         : q(parent)
         , mCollection(collection)
         , mStore(store)
-        , mTransaction(nullptr)
-        , mHighestModTime(-1)
-        , mNumItemCreateJobs(0)
-        , mNumItemModifyJobs(0)
     {
     }
 
@@ -76,9 +72,9 @@ public:
     QQueue<Item> mChangedItems;
     Item::List mAvailableItems;
     Item::List mItemsMarkedAsDeleted;
-    qint64 mHighestModTime;
-    int mNumItemCreateJobs;
-    int mNumItemModifyJobs;
+    qint64 mHighestModTime = -1;
+    int mNumItemCreateJobs = 0;
+    int mNumItemModifyJobs = 0;
 
 public: // slots
     void akonadiFetchResult(KJob *job);

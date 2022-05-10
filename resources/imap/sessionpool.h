@@ -67,7 +67,7 @@ public:
     void releaseSession(KIMAP::Session *session);
 
     ImapAccount *account() const;
-    QStringList serverCapabilities() const;
+    Q_REQUIRED_RESULT QStringList serverCapabilities() const;
     QList<KIMAP::MailBoxDescriptor> serverNamespaces() const;
     enum Namespace {
         Personal,

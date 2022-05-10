@@ -13,10 +13,10 @@ class NoInferiorsAttribute : public Akonadi::Attribute
 public:
     explicit NoInferiorsAttribute(bool noInferiors = false);
     void setNoInferiors(bool noInferiors);
-    bool noInferiors() const;
+    Q_REQUIRED_RESULT bool noInferiors() const;
     QByteArray type() const override;
     Attribute *clone() const override;
-    QByteArray serialized() const override;
+    Q_REQUIRED_RESULT QByteArray serialized() const override;
     void deserialize(const QByteArray &data) override;
 
 private:

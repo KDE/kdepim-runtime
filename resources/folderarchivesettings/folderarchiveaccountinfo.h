@@ -22,22 +22,22 @@ public:
         FolderByYears,
     };
 
-    bool isValid() const;
+    Q_REQUIRED_RESULT bool isValid() const;
 
-    QString instanceName() const;
+    Q_REQUIRED_RESULT QString instanceName() const;
     void setInstanceName(const QString &instance);
 
     void setArchiveTopLevel(Akonadi::Collection::Id id);
-    Akonadi::Collection::Id archiveTopLevel() const;
+    Q_REQUIRED_RESULT Akonadi::Collection::Id archiveTopLevel() const;
 
     void setFolderArchiveType(FolderArchiveType type);
-    FolderArchiveType folderArchiveType() const;
+    Q_REQUIRED_RESULT FolderArchiveType folderArchiveType() const;
 
     void setEnabled(bool enabled);
-    bool enabled() const;
+    Q_REQUIRED_RESULT bool enabled() const;
 
     void setKeepExistingStructure(bool b);
-    bool keepExistingStructure() const;
+    Q_REQUIRED_RESULT bool keepExistingStructure() const;
 
     void writeConfig(KConfigGroup &config);
     void readConfig(const KConfigGroup &config);

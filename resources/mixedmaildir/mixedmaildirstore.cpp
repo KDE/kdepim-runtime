@@ -68,9 +68,6 @@ class MBoxContext
 {
 public:
     MBoxContext()
-        : mRevision(0)
-        , mIndexDataLoaded(false)
-        , mHasIndexData(false)
     {
     }
 
@@ -251,7 +248,7 @@ public:
 
 public:
     Collection mCollection;
-    qint64 mRevision;
+    qint64 mRevision = 0;
 
 private:
     QSet<quint64> mDeletedOffsets;
@@ -260,8 +257,8 @@ private:
 
     using IndexDataHash = QHash<quint64, KMIndexDataPtr>;
     IndexDataHash mIndexData;
-    bool mIndexDataLoaded;
-    bool mHasIndexData;
+    bool mIndexDataLoaded = false;
+    bool mHasIndexData = false;
 };
 
 using MBoxPtr = QSharedPointer<MBoxContext>;

@@ -28,19 +28,19 @@ public:
 
     DeletedItemsAttribute *clone() const override;
 
-    QSet<quint64> deletedItemOffsets() const;
-    KMBox::MBoxEntry::List deletedItemEntries() const;
+    Q_REQUIRED_RESULT QSet<quint64> deletedItemOffsets() const;
+    Q_REQUIRED_RESULT KMBox::MBoxEntry::List deletedItemEntries() const;
 
     void deserialize(const QByteArray &data) override;
 
     /**
      * Returns the number of offsets stored in this attribute.
      */
-    int offsetCount() const;
+    Q_REQUIRED_RESULT int offsetCount() const;
 
-    QByteArray serialized() const override;
+    Q_REQUIRED_RESULT QByteArray serialized() const override;
 
-    QByteArray type() const override;
+    Q_REQUIRED_RESULT QByteArray type() const override;
 
     bool operator==(const DeletedItemsAttribute &other) const;
 

@@ -30,7 +30,7 @@ public:
 
     virtual void loadAccount(ImapAccount *account) const;
 
-    QString rootRemoteId() const;
+    Q_REQUIRED_RESULT QString rootRemoteId() const;
     virtual void renameRootCollection(const QString &newName);
 
     virtual void clearCachedPassword();

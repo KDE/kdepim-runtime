@@ -47,7 +47,6 @@ bool ICalResource::doRetrieveItems(const Akonadi::Item::List &items, const QSet<
             qCritical() << "akonadi_ical_resource: Can't find incidence with uid " << rid << "; item.id() = " << item.id();
             Q_EMIT error(i18n("Incidence with uid '%1' not found.", rid));
             return false;
-            ;
         }
 
         Incidence::Ptr incidencePtr(incidence->clone());

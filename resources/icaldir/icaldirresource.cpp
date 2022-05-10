@@ -248,8 +248,7 @@ void ICalDirResource::retrieveCollections()
     attr->setDisplayName(name() == identifier() ? i18n("Calendar Folder") : name());
     attr->setIconName(QStringLiteral("office-calendar"));
 
-    Collection::List list;
-    list << c;
+    const Collection::List list{c};
     collectionsRetrieved(list);
 }
 
