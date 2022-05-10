@@ -44,7 +44,7 @@ private Q_SLOTS:
 
 private:
     void processCollection();
-    QStringList mMimeTypeFilter;
+    const QStringList mMimeTypeFilter;
     Akonadi::Collection::List mCollections;
 };
 

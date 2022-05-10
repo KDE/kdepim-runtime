@@ -81,7 +81,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     changeRecorder()->ignoreSession(Akonadi::Session::defaultSession());
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
-    mTimer.setInterval(5 * 1000);
+    mTimer.setInterval(5000); // 5secondes
     connect(&mTimer, &QTimer::timeout, this, &NewMailNotifierAgent::slotShowNotifications);
 
     if (isActive()) {

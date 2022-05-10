@@ -28,28 +28,28 @@ enum {
 bool InfoDialog::mError = false;
 
 InfoDialog::InfoDialog(bool closeWhenDone)
-    : mCloseWhenDone(closeWhenDone)
+    : mButtonBox(new QDialogButtonBox(QDialogButtonBox::Close, this))
+    , mList(new QListWidget(this))
+    , mStatusLabel(new QLabel(this))
+    , mProgressBar(new QProgressBar(this))
+    , mCloseWhenDone(closeWhenDone)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     auto mainLayout = new QVBoxLayout(this);
 
-    mList = new QListWidget(this);
     mList->setMinimumWidth(640);
     mainLayout->addWidget(mList);
 
     auto statusLayout = new QHBoxLayout;
     mainLayout->addLayout(statusLayout);
 
-    mStatusLabel = new QLabel(this);
     mStatusLabel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     statusLayout->addWidget(mStatusLabel);
 
-    mProgressBar = new QProgressBar(this);
     mProgressBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
     mProgressBar->setMinimumWidth(200);
     statusLayout->addWidget(mProgressBar);
 
-    mButtonBox = new QDialogButtonBox(QDialogButtonBox::Close, this);
     connect(mButtonBox, &QDialogButtonBox::accepted, this, &InfoDialog::accept);
     connect(mButtonBox, &QDialogButtonBox::rejected, this, &InfoDialog::reject);
     mButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);

@@ -48,10 +48,10 @@ private:
 
     void scrollBarMoved(int value);
     QEventLoopLocker eventLoopLocker;
-    QDialogButtonBox *mButtonBox = nullptr;
-    QListWidget *mList = nullptr;
-    QLabel *mStatusLabel = nullptr;
-    QProgressBar *mProgressBar = nullptr;
+    QDialogButtonBox *const mButtonBox;
+    QListWidget *const mList;
+    QLabel *const mStatusLabel;
+    QProgressBar *const mProgressBar;
     int mMigratorCount = 0;
     static bool mError;
     bool mChange = false;
