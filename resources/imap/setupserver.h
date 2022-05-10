@@ -47,14 +47,14 @@ public:
      * @param parentResource The resource this dialog belongs to
      * @param parent Parent WId
      */
-    SetupServer(ImapResourceBase *parentResource, WId parent);
+    explicit SetupServer(ImapResourceBase *parentResource, WId parent);
 
     /**
      * Destructor
      */
     ~SetupServer() override;
 
-    bool shouldClearCache() const;
+    Q_REQUIRED_RESULT bool shouldClearCache() const;
 
 private Q_SLOTS:
     /**

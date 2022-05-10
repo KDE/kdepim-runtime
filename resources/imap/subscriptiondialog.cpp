@@ -59,13 +59,13 @@ SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::Subs
     topLayout->addWidget(mainWidget);
     topLayout->addWidget(buttonBox);
 
-    m_enableSubscription = new QCheckBox(i18nc("@option:check", "Enable server-side subscriptions"));
+    m_enableSubscription = new QCheckBox(i18nc("@option:check", "Enable server-side subscriptions"), mainWidget);
     mainLayout->addWidget(m_enableSubscription);
 
     auto filterBarLayout = new QHBoxLayout;
     mainLayout->addLayout(filterBarLayout);
 
-    filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription", "Search:")));
+    filterBarLayout->addWidget(new QLabel(i18nc("@label search for a subscription", "Search:"), mainWidget));
 
     m_lineEdit = new QLineEdit(mainWidget);
     m_lineEdit->setClearButtonEnabled(true);

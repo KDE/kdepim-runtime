@@ -58,11 +58,11 @@ public:
 
     void setClientId(const QByteArray &clientId);
 
-    bool isConnected() const;
+    Q_REQUIRED_RESULT bool isConnected() const;
     bool connect(ImapAccount *account);
     void disconnect(SessionTermination termination = LogoutSession);
 
-    qint64 requestSession();
+    Q_REQUIRED_RESULT qint64 requestSession();
     void cancelSessionRequest(qint64 id);
     void releaseSession(KIMAP::Session *session);
 

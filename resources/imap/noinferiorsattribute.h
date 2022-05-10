@@ -14,7 +14,7 @@ public:
     explicit NoInferiorsAttribute(bool noInferiors = false);
     void setNoInferiors(bool noInferiors);
     Q_REQUIRED_RESULT bool noInferiors() const;
-    QByteArray type() const override;
+    Q_REQUIRED_RESULT QByteArray type() const override;
     Attribute *clone() const override;
     Q_REQUIRED_RESULT QByteArray serialized() const override;
     void deserialize(const QByteArray &data) override;

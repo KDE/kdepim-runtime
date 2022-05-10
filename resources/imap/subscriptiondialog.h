@@ -60,9 +60,9 @@ public:
     ~SubscriptionDialog() override;
 
     void connectAccount(const ImapAccount &account, const QString &password);
-    bool isSubscriptionChanged() const;
+    Q_REQUIRED_RESULT bool isSubscriptionChanged() const;
     void setSubscriptionEnabled(bool enabled);
-    bool subscriptionEnabled() const;
+    Q_REQUIRED_RESULT bool subscriptionEnabled() const;
 
 private Q_SLOTS:
     void onLoginDone(KJob *job);
