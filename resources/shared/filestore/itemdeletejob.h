@@ -32,7 +32,7 @@ public:
 
     ~ItemDeleteJob() override;
 
-    Item item() const;
+    Q_REQUIRED_RESULT Item item() const;
 
     bool accept(Visitor *visitor) override;
 

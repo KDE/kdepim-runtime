@@ -41,7 +41,7 @@ public:
 
     void start() override;
 
-    Object::List objects() const;
+    Q_REQUIRED_RESULT Object::List objects() const;
 
 private Q_SLOTS:
     void davJobFinished(KJob *);

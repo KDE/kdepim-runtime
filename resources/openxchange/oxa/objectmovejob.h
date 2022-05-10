@@ -24,7 +24,7 @@ public:
 
     void start() override;
 
-    Object object() const;
+    Q_REQUIRED_RESULT Object object() const;
 
 private Q_SLOTS:
     void davJobFinished(KJob *);

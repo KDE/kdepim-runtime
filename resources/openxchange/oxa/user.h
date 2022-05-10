@@ -20,16 +20,16 @@ public:
 
     User();
 
-    bool isValid() const;
+    Q_REQUIRED_RESULT bool isValid() const;
 
     void setUid(qlonglong uid);
-    qlonglong uid() const;
+    Q_REQUIRED_RESULT qlonglong uid() const;
 
     void setEmail(const QString &email);
-    QString email() const;
+    Q_REQUIRED_RESULT QString email() const;
 
     void setName(const QString &name);
-    QString name() const;
+    Q_REQUIRED_RESULT QString name() const;
 
 private:
     qlonglong mUid = -1;

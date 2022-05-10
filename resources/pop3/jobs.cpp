@@ -220,8 +220,8 @@ void UIDListJob::slotData(const QByteArray &data)
         qCWarning(POP3RESOURCE_LOG) << "Invalid response to the UIDL command:" << data.data();
         qCWarning(POP3RESOURCE_LOG) << "Ignoring this entry.";
     } else {
-        QByteArray idString = cleanData.left(space);
-        QByteArray uidString = cleanData.mid(space + 1);
+        const QByteArray idString = cleanData.left(space);
+        const QByteArray uidString = cleanData.mid(space + 1);
         bool idIsNumber;
         int id = QString::fromLatin1(idString).toInt(&idIsNumber);
         if (idIsNumber) {

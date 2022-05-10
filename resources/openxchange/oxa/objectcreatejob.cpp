@@ -90,8 +90,8 @@ void ObjectCreateJob::davJobFinished(KJob *job)
         return;
     }
 
-    QDomElement multistatus = document.documentElement();
-    QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
+    const QDomElement multistatus = document.documentElement();
+    const QDomElement response = multistatus.firstChildElement(QStringLiteral("response"));
     const QDomNodeList props = response.elementsByTagName(QStringLiteral("prop"));
     const QDomElement prop = props.at(0).toElement();
 

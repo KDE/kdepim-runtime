@@ -34,9 +34,9 @@ public:
 
     void setIgnorePayload(bool ignorePayload);
 
-    bool ignorePayload() const;
+    Q_REQUIRED_RESULT bool ignorePayload() const;
 
-    Item item() const;
+    Q_REQUIRED_RESULT Item item() const;
 
     const QSet<QByteArray> &parts() const;
     void setParts(const QSet<QByteArray> &parts);

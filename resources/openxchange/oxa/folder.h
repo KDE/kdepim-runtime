@@ -132,37 +132,37 @@ public:
     Folder();
 
     void setObjectStatus(ObjectStatus status);
-    ObjectStatus objectStatus() const;
+    Q_REQUIRED_RESULT ObjectStatus objectStatus() const;
 
     void setTitle(const QString &title);
-    QString title() const;
+    Q_REQUIRED_RESULT QString title() const;
 
     void setType(Type type);
-    Type type() const;
+    Q_REQUIRED_RESULT Type type() const;
 
     void setModule(Module module);
-    Module module() const;
+    Q_REQUIRED_RESULT Module module() const;
 
     void setObjectId(qlonglong id);
-    qlonglong objectId() const;
+    Q_REQUIRED_RESULT qlonglong objectId() const;
 
     void setFolderId(qlonglong id);
-    qlonglong folderId() const;
+    Q_REQUIRED_RESULT qlonglong folderId() const;
 
     void setIsDefaultFolder(bool value);
-    bool isDefaultFolder() const;
+    Q_REQUIRED_RESULT bool isDefaultFolder() const;
 
     void setOwner(qlonglong id);
-    qlonglong owner() const;
+    Q_REQUIRED_RESULT qlonglong owner() const;
 
     void setLastModified(const QString &timeStamp);
-    QString lastModified() const;
+    Q_REQUIRED_RESULT QString lastModified() const;
 
     void setUserPermissions(const UserPermissions &permissions);
-    UserPermissions userPermissions() const;
+    Q_REQUIRED_RESULT UserPermissions userPermissions() const;
 
     void setGroupPermissions(const GroupPermissions &permissions);
-    GroupPermissions groupPermissions() const;
+    Q_REQUIRED_RESULT GroupPermissions groupPermissions() const;
 
 private:
     ObjectStatus mObjectStatus;

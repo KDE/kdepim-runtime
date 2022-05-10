@@ -33,9 +33,9 @@ public:
 
     ~CollectionMoveJob() override;
 
-    Collection collection() const;
+    Q_REQUIRED_RESULT Collection collection() const;
 
-    Collection targetParent() const;
+    Q_REQUIRED_RESULT Collection targetParent() const;
 
     bool accept(Visitor *visitor) override;
 

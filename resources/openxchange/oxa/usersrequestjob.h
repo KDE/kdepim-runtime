@@ -23,7 +23,7 @@ public:
 
     void start() override;
 
-    User::List users() const;
+    Q_REQUIRED_RESULT User::List users() const;
 
 private Q_SLOTS:
     void davJobFinished(KJob *);

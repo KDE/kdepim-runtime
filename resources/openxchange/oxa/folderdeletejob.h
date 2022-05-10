@@ -43,6 +43,6 @@ private Q_SLOTS:
     void davJobFinished(KJob *);
 
 private:
-    Folder mFolder;
+    const Folder mFolder;
 };
 }

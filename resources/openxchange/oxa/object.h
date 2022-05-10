@@ -38,31 +38,31 @@ public:
     Object();
 
     void setObjectStatus(ObjectStatus status);
-    ObjectStatus objectStatus() const;
+    Q_REQUIRED_RESULT ObjectStatus objectStatus() const;
 
     void setObjectId(qlonglong id);
-    qlonglong objectId() const;
+    Q_REQUIRED_RESULT qlonglong objectId() const;
 
     void setFolderId(qlonglong id);
-    qlonglong folderId() const;
+    Q_REQUIRED_RESULT qlonglong folderId() const;
 
     void setLastModified(const QString &timeStamp);
-    QString lastModified() const;
+    Q_REQUIRED_RESULT QString lastModified() const;
 
     void setModule(Folder::Module module);
-    Folder::Module module() const;
+    Q_REQUIRED_RESULT Folder::Module module() const;
 
     void setContact(const KContacts::Addressee &contact);
-    KContacts::Addressee contact() const;
+    Q_REQUIRED_RESULT KContacts::Addressee contact() const;
 
     void setContactGroup(const KContacts::ContactGroup &group);
-    KContacts::ContactGroup contactGroup() const;
+    Q_REQUIRED_RESULT KContacts::ContactGroup contactGroup() const;
 
     void setEvent(const KCalendarCore::Incidence::Ptr &event);
-    KCalendarCore::Incidence::Ptr event() const;
+    Q_REQUIRED_RESULT KCalendarCore::Incidence::Ptr event() const;
 
     void setTask(const KCalendarCore::Incidence::Ptr &task);
-    KCalendarCore::Incidence::Ptr task() const;
+    Q_REQUIRED_RESULT KCalendarCore::Incidence::Ptr task() const;
 
 private:
     ObjectStatus mObjectStatus = Created;
