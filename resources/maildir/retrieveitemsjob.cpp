@@ -22,11 +22,6 @@ RetrieveItemsJob::RetrieveItemsJob(const Akonadi::Collection &collection, const 
     , m_collection(collection)
     , m_maildir(md)
     , m_mimeType(KMime::Message::mimeType())
-    , m_transaction(nullptr)
-    , m_transactionSize(0)
-    , m_entryIterator(nullptr)
-    , m_previousMtime(0)
-    , m_highestMtime(0)
 {
     Q_ASSERT(m_collection.isValid());
     Q_ASSERT(m_maildir.isValid());

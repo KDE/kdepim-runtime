@@ -43,14 +43,14 @@ private Q_SLOTS:
     void processEntryDone(KJob *);
 
 private:
-    Akonadi::Collection m_collection;
+    const Akonadi::Collection m_collection;
     KPIM::Maildir m_maildir;
     QHash<QString, Akonadi::Item> m_localItems;
     QString m_mimeType;
     Akonadi::TransactionSequence *m_transaction = nullptr;
-    int m_transactionSize;
+    int m_transactionSize = 0;
     QDirIterator *m_entryIterator = nullptr;
-    qint64 m_previousMtime;
-    qint64 m_highestMtime;
+    qint64 m_previousMtime = 0;
+    qint64 m_highestMtime = 0;
     QString m_listingPath;
 };
