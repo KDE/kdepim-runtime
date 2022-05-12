@@ -42,7 +42,7 @@ public:
 
     Q_REQUIRED_RESULT QByteArray type() const override;
 
-    bool operator==(const DeletedItemsAttribute &other) const;
+    Q_REQUIRED_RESULT bool operator==(const DeletedItemsAttribute &other) const;
 
 private:
     QSet<quint64> mDeletedItemOffsets;

@@ -29,6 +29,6 @@ private: // Methods
     void checkCollectionId();
 
 private: // Members
-    QString mCollectionId;
+    const QString mCollectionId;
     Ui::CompactPage ui;
 };

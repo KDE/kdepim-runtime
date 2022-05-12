@@ -26,7 +26,7 @@ private Q_SLOTS:
 
 private:
     QString mUrl;
-    QString mUser;
-    QString mPassword;
+    const QString mUser;
+    const QString mPassword;
 };
 }

@@ -158,7 +158,7 @@ void NewMailNotifierAgent::itemsRemoved(const Item::List &items)
         return;
     }
 
-    QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator end(mNewMails.end());
+    const QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator end(mNewMails.end());
     for (QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator it = mNewMails.begin(); it != end; ++it) {
         QList<Akonadi::Item::Id> idList = it.value();
         bool itemFound = false;
@@ -186,7 +186,7 @@ void NewMailNotifierAgent::itemsFlagsChanged(const Akonadi::Item::List &items, c
         return;
     }
     for (const Akonadi::Item &item : items) {
-        QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator end(mNewMails.end());
+        const QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator end(mNewMails.end());
         for (QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::iterator it = mNewMails.begin(); it != end; ++it) {
             QList<Akonadi::Item::Id> idList = it.value();
             if (idList.contains(item.id()) && addedFlags.contains("\\SEEN")) {
@@ -295,7 +295,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             hasUniqMessage = false;
         }
 
-        QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::const_iterator end(mNewMails.constEnd());
+        const QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::const_iterator end(mNewMails.constEnd());
         for (QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::const_iterator it = mNewMails.constBegin(); it != end; ++it) {
             const auto attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
             QString displayName;

@@ -42,7 +42,7 @@ public:
     void writeConfig(KConfigGroup &config);
     void readConfig(const KConfigGroup &config);
 
-    bool operator==(const FolderArchiveAccountInfo &other) const;
+    Q_REQUIRED_RESULT bool operator==(const FolderArchiveAccountInfo &other) const;
 
 private:
     FolderArchiveAccountInfo::FolderArchiveType mArchiveType = UniqueFolder;

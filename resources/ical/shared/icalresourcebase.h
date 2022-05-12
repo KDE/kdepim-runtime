@@ -89,7 +89,8 @@ bool ICalResourceBase::checkItemAddedChanged(const Akonadi::Item &item, CheckTyp
         return false;
     }
     if (!item.hasPayload<PayloadPtr>()) {
-        QString msg = (type == CheckForAdded) ? i18n("Unable to retrieve added item %1.", item.id()) : i18n("Unable to retrieve modified item %1.", item.id());
+        const QString msg =
+            (type == CheckForAdded) ? i18n("Unable to retrieve added item %1.", item.id()) : i18n("Unable to retrieve modified item %1.", item.id());
         cancelTask(msg);
         return false;
     }
