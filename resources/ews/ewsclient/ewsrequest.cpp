@@ -32,8 +32,9 @@ void EwsRequest::doSend()
 
 void EwsRequest::startSoapDocument(QXmlStreamWriter &writer)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     writer.setCodec("UTF-8");
-
+#endif
     writer.writeStartDocument();
 
     writer.writeNamespace(soapEnvNsUri, QStringLiteral("soap"));
