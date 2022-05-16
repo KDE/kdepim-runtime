@@ -49,7 +49,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::KIOGui
 )
 
-if(Qt5TextToSpeech_FOUND)
+if(Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
     target_link_libraries( akonadi_newmailnotifier_agent
       Qt${QT_MAJOR_VERSION}::TextToSpeech
     )
@@ -68,7 +68,7 @@ install(TARGETS akonadi_newmailnotifier_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS
 
 
 install(FILES newmailnotifieragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")
-install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )
+install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR} )
 
 ########################## Config plugin #################################
 

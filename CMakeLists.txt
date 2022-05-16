@@ -102,7 +102,7 @@ set_package_properties(Qt5TextToSpeech PROPERTIES DESCRIPTION
     "Add support for texttospeed"
     TYPE OPTIONAL
 )
-if(Qt5TextToSpeech_FOUND)
+if(Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
 set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
 endif()
 find_package(Qt${QT_MAJOR_VERSION} ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test DBus NetworkAuth)

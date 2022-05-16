@@ -55,7 +55,7 @@ target_link_libraries(akonadi_maildispatcher_agent
 
 install( TARGETS akonadi_maildispatcher_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
 install( FILES maildispatcheragent.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFY5RCDIR} )
+install( FILES akonadi_maildispatcher_agent.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR} )
 
 ############################## Configuration ##############################
 
