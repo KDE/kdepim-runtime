@@ -123,7 +123,7 @@ EwsItemPrivate::EwsItemPrivate()
 bool EwsItemPrivate::bodyReader(QXmlStreamReader &reader, QVariant &val)
 {
     QVariantList vl;
-    QStringRef bodyType = reader.attributes().value(QStringLiteral("BodyType"));
+    auto bodyType = reader.attributes().value(QStringLiteral("BodyType"));
     if (bodyType.isNull()) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Failed to read %1 element - missing %2 attribute").arg(QStringLiteral("Body"), QStringLiteral("BodyType"));
         return false;
@@ -158,7 +158,7 @@ bool EwsItemPrivate::messageHeadersReader(QXmlStreamReader &reader, QVariant &va
         }
 
         if (reader.name() == QLatin1String("InternetMessageHeader")) {
-            QStringRef nameRef = reader.attributes().value(QStringLiteral("HeaderName"));
+            auto nameRef = reader.attributes().value(QStringLiteral("HeaderName"));
             if (nameRef.isNull()) {
                 qCWarningNC(EWSCLI_LOG) << QStringLiteral("Missing HeaderName attribute in InternetMessageHeader element.");
                 return false;
@@ -229,7 +229,7 @@ bool EwsItemPrivate::mailboxReader(QXmlStreamReader &reader, QVariant &val)
 bool EwsItemPrivate::timezoneReader(QXmlStreamReader &reader, QVariant &val)
 {
     // TODO: This only reads the timezone identifier.
-    QStringRef idRef = reader.attributes().value(QStringLiteral("Id"));
+    auto idRef = reader.attributes().value(QStringLiteral("Id"));
     if (idRef.isNull()) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading %1 element - missing %2 attribute").arg(reader.name().toString(), QStringLiteral("Id"));
         reader.skipCurrentElement();
@@ -384,13 +384,13 @@ EwsItem::EwsItem(QXmlStreamReader &reader)
     auto d = reinterpret_cast<EwsItemPrivate *>(this->d.data());
 
     // Check what item type are we
-    const QStringRef elmName = reader.name();
+    const auto elmName = reader.name();
     if (elmName == QLatin1String("Item")) {
         d->mType = EwsItemTypeItem;
-        const QStringRef subtype = reader.attributes().value(QStringLiteral("xsi:type"));
+        const auto subtype = reader.attributes().value(QStringLiteral("xsi:type"));
         if (!subtype.isEmpty()) {
             auto tokens = subtype.split(QLatin1Char(':'));
-            const QStringRef type = tokens.size() == 1 ? tokens[0] : tokens[1];
+            const auto type = tokens.size() == 1 ? tokens[0] : tokens[1];
             if (type == QLatin1String("AbchPersonItemType")) {
                 d->mType = EwsItemTypeAbchPerson;
             }

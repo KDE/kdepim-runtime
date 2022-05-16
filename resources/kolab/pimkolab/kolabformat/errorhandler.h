@@ -9,6 +9,7 @@
 #include "kolab_export.h"
 
 #include <QDebug>
+#include <QIODevice>
 #include <QList>
 #include <QString>
 

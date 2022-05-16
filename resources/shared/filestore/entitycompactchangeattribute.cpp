@@ -8,6 +8,7 @@
 #include "entitycompactchangeattribute.h"
 
 #include <QDataStream>
+#include <QIODevice>
 
 using namespace Akonadi;
 

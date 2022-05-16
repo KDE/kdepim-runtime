@@ -383,7 +383,11 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - malformed %1 attribute.").arg(QStringLiteral("FieldIndex"));
             return false;
         }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         unsigned index = indexStr.midRef(tokens[1].size()).toUInt(&ok, 0);
+#else
+        unsigned index = QStringView(indexStr).mid(tokens[1].size()).toUInt(&ok, 0);
+#endif
         if (!ok) {
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - error reading %1 attribute.").arg(QStringLiteral("FieldIndex"));
             return false;
@@ -396,7 +400,7 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading property field - missing %1 attribute.").arg(QStringLiteral("PropertyType"));
             return false;
         }
-        QStringRef propTypeText = attrs.value(QStringLiteral("PropertyType"));
+        auto propTypeText = attrs.value(QStringLiteral("PropertyType"));
         unsigned i;
         EwsPropertyType propType;
         for (i = 0; i < sizeof(propertyTypeNames) / sizeof(propertyTypeNames[0]); ++i) {
@@ -443,7 +447,7 @@ bool EwsPropertyField::read(QXmlStreamReader &reader)
             }
 
             if (attrs.hasAttribute(QStringLiteral("DistinguishedPropertySetId"))) {
-                QStringRef didText = attrs.value(QStringLiteral("DistinguishedPropertySetId"));
+                auto didText = attrs.value(QStringLiteral("DistinguishedPropertySetId"));
                 unsigned i;
                 for (i = 0; i < sizeof(distinguishedPropSetIdNames) / sizeof(distinguishedPropSetIdNames[0]); ++i) {
                     if (didText == distinguishedPropSetIdNames[i]) {

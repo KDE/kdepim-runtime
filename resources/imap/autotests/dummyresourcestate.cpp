@@ -7,7 +7,9 @@
 
 #include "dummyresourcestate.h"
 Q_DECLARE_METATYPE(QList<qint64>)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 Q_DECLARE_METATYPE(QVector<qint64>)
+#endif
 Q_DECLARE_METATYPE(QString)
 Q_DECLARE_METATYPE(TagListAndMembers)
 

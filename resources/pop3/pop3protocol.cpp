@@ -29,7 +29,7 @@ extern "C" {
 #include <QThread>
 #include <cstring>
 
-#include <KIOCore/KSslErrorUiData>
+#include <KSslErrorUiData>
 
 #define GREETING_BUF_LEN 1024
 #define MAX_RESPONSE_LEN 512

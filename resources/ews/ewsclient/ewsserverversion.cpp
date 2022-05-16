@@ -33,11 +33,11 @@ EwsServerVersion::EwsServerVersion(QXmlStreamReader &reader)
     // MinorBuildNumber=\"2\" Version=\"Exchange2010_SP2\" />
     QXmlStreamAttributes attrs = reader.attributes();
 
-    QStringRef majorRef = attrs.value(QStringLiteral("MajorVersion"));
-    QStringRef minorRef = attrs.value(QStringLiteral("MinorVersion"));
-    QStringRef majorBuildRef = attrs.value(QStringLiteral("MajorBuildNumber"));
-    QStringRef minorBuildRef = attrs.value(QStringLiteral("MinorBuildNumber"));
-    QStringRef nameRef = attrs.value(QStringLiteral("Version"));
+    auto majorRef = attrs.value(QStringLiteral("MajorVersion"));
+    auto minorRef = attrs.value(QStringLiteral("MinorVersion"));
+    auto majorBuildRef = attrs.value(QStringLiteral("MajorBuildNumber"));
+    auto minorBuildRef = attrs.value(QStringLiteral("MinorBuildNumber"));
+    auto nameRef = attrs.value(QStringLiteral("Version"));
 
     if (majorRef.isNull() || minorRef.isNull()) {
         qCWarningNC(EWSCLI_LOG) << QStringLiteral("Error reading server version info - missing attribute.");

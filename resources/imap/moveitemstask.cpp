@@ -222,7 +222,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
         // by the server.
         static const int batchSize = 250;
         for (int batchIdx = 0; batchIdx < m_messageIds.size(); batchIdx += batchSize) {
-            const auto count = std::min(batchSize, m_messageIds.size() - batchIdx);
+            const auto count = std::min<int>(batchSize, m_messageIds.size() - batchIdx);
 
             auto search = new KIMAP::SearchJob(select->session());
             search->setUidBased(true);

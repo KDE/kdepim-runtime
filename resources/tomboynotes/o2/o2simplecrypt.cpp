@@ -10,6 +10,7 @@
 #include <QCryptographicHash>
 #include <QDataStream>
 #include <QDateTime>
+#include <QIODevice>
 #include <QRandomGenerator>
 
 O0SimpleCrypt::O0SimpleCrypt()

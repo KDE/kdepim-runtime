@@ -9,6 +9,8 @@
 #include <Akonadi/CollectionCreateJob>
 #include <Akonadi/ItemCreateJob>
 
+#include <QVariant>
+
 #include "migration_debug.h"
 
 using namespace Akonadi;

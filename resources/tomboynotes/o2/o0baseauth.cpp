@@ -4,6 +4,7 @@
 
 #include "debug.h"
 #include <QDataStream>
+#include <QIODevice>
 
 #include "o2/o0baseauth.h"
 #include "o2/o0globals.h"
