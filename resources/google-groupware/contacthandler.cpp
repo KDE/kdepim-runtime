@@ -13,7 +13,6 @@
 
 #include <Akonadi/CollectionModifyJob>
 #include <Akonadi/EntityDisplayAttribute>
-#include <Akonadi/EntityHiddenAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemFetchScope>
 #include <Akonadi/ItemModifyJob>
