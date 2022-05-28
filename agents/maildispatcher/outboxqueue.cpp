@@ -142,7 +142,7 @@ void OutboxQueue::checkFuture()
 
     // Check items in ascending order of date.
     while (!mFutureMap.isEmpty()) {
-        QMap<QDateTime, Item>::iterator it = mFutureMap.begin();
+        QMultiMap<QDateTime, Item>::iterator it = mFutureMap.begin();
         qCDebug(MAILDISPATCHER_LOG) << "Item with due date" << it.key();
         if (it.key() > QDateTime::currentDateTime()) {
             const int secs = QDateTime::currentDateTime().secsTo(it.key()) + 1;
