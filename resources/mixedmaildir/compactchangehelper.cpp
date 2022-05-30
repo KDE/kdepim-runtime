@@ -18,6 +18,7 @@
 
 #include <QMap>
 #include <QQueue>
+#include <QVariant>
 
 using namespace Akonadi;
 
@@ -81,8 +82,8 @@ void CompactChangeHelperPrivate::processNextItem()
     item.setRemoteId(nextItem.remoteId());
 
     auto job = new ItemFetchJob(item);
-    job->setProperty("oldRemoteId", item.remoteId());
-    job->setProperty("newRemoteId", nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId());
+    job->setProperty("oldRemoteId", QVariant(item.remoteId()));
+    job->setProperty("newRemoteId", QVariant(nextItem.attribute<FileStore::EntityCompactChangeAttribute>()->remoteId()));
     QObject::connect(job, &ItemFetchJob::result, q, [this](KJob *job) {
         itemFetchResult(job);
     });

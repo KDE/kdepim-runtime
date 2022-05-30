@@ -1181,13 +1181,13 @@ bool MixedMaildirStorePrivate::visit(FileStore::CollectionModifyJob *job)
     }
 
     const QFileInfo fileInfo(path);
-    const QFileInfo subDirInfo = Maildir::subDirPathForFolderPath(path);
+    const QFileInfo subDirInfo = QFileInfo(Maildir::subDirPathForFolderPath(path));
 
     QDir parentDir(path);
     parentDir.cdUp();
 
     const QFileInfo targetFileInfo(parentDir, collectionName);
-    const QFileInfo targetSubDirInfo = Maildir::subDirPathForFolderPath(targetFileInfo.absoluteFilePath());
+    const QFileInfo targetSubDirInfo = QFileInfo(Maildir::subDirPathForFolderPath(targetFileInfo.absoluteFilePath()));
 
     if (targetFileInfo.exists() || (subDirInfo.exists() && targetSubDirInfo.exists())) {
         errorText = i18nc("@info:status", "Cannot rename folder %1", collection.name());
