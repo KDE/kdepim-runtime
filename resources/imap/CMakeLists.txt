@@ -178,6 +178,11 @@ target_link_libraries(akonadi_imap_resource
     KPim::GAPICore
 )
 
+install(
+    FILES org.kde.akonadi_imap_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
+
 install(TARGETS akonadi_imap_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 add_subdirectory( wizard )

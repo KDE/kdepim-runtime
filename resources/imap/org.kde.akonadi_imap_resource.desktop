@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Emails
+NoDisplay=true
+Exec=akonadi_imap_resource
+Icon=kmail
