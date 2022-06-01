@@ -11,6 +11,7 @@
  */
 
 #include "kmindexreader.h"
+#include "kmindexreader-config.h"
 
 #include "../mixedmaildir_debug.h"
 #include "../mixedmaildirresource_debug.h"
@@ -20,7 +21,7 @@ using Akonadi::MessageStatus;
 #include <qplatformdefs.h>
 
 // BEGIN: Magic definitions from old kmail code
-#ifdef HAVE_BYTESWAP_H
+#if HAVE_BYTESWAP_H
 #include <byteswap.h>
 #endif
 
