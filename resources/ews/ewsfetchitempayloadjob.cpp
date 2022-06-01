@@ -57,7 +57,7 @@ void EwsFetchItemPayloadJob::start()
         });
 }
 
-void EwsFetchItemPayloadJob::itemFetchFinished(bool success, const QString &error)
+void EwsFetchItemPayloadJob::itemFetchFinished(bool success, const QString & /*error*/)
 {
     if (!success) {
         setErrorText(i18nc("@info:status", "Failed to process items retrieval request"));
