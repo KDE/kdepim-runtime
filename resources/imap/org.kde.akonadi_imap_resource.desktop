@@ -1,6 +1,13 @@
 [Desktop Entry]
 Type=Application
 Name=Emails
+Name[ca]=Correus electrònics
+Name[es]=Correos
+Name[nl]=E-mailberichten
+Name[sv]=E-post
+Name[tr]=E-postalar
+Name[uk]=Електронна пошта
+Name[x-test]=xxEmailsxx
 NoDisplay=true
 Exec=akonadi_imap_resource
 Icon=kmail
