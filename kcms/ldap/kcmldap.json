@@ -1,8 +1,20 @@
 {
     "KPlugin": {
         "Description": "Configure the available LDAP servers",
+        "Description[ca]": "Configura els servidors LDAP disponibles",
+        "Description[nl]": "De beschikbare LDAP-servers configureren",
+        "Description[pl]": "Ustawienia dostępnych serwerów LDAP",
+        "Description[pt]": "Configurar os servidores de LDAP disponíveis",
+        "Description[uk]": "Налаштування доступних серверів LDAP",
+        "Description[x-test]": "xxConfigure the available LDAP serversxx",
         "Icon": "kontact",
         "Name": "LDAP Server Settings",
+        "Name[ca]": "Configuració del servidor LDAP",
+        "Name[nl]": "LDAP-serverinstellingen",
+        "Name[pl]": "Ustawienia serwera LDAP",
+        "Name[pt]": "Configuração do Servidor de LDAP",
+        "Name[uk]": "Параметри серверів LDAP",
+        "Name[x-test]": "xxLDAP Server Settingsxx",
         "ServiceTypes": [
             "KCModule"
         ]
