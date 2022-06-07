@@ -77,7 +77,7 @@ install(FILES akonadi_pop3_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRC
 
 ################################## Config plugin ##############################
 kcoreaddons_add_plugin(pop3config
-    INSTALL_NAMESPACE "akonadi/config"
+    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
     )
 
 target_sources(pop3config PRIVATE

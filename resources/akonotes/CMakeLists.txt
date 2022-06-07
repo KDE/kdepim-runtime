@@ -54,7 +54,7 @@ install(TARGETS akonadi_akonotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 kcoreaddons_add_plugin(akonotesconfig
-    INSTALL_NAMESPACE akonadi/config
+    INSTALL_NAMESPACE pim${QT_MAJOR_VERSION}/akonadi/config
 )
 
 ki18n_wrap_ui(akonotesconfig ../maildir/settings.ui)

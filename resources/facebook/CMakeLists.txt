@@ -62,7 +62,7 @@ set(facebookconfig_SRCS
 
 kcoreaddons_add_plugin(facebookconfig
     SOURCES ${facebookconfig_SRCS}
-    INSTALL_NAMESPACE "akonadi/config"
+    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
     )
 target_link_libraries(facebookconfig
     facebookresourcelib
