@@ -9,6 +9,7 @@
         "Description[pt]": "Configurar os servidores de LDAP disponíveis",
         "Description[sl]": "Konfiguriraj razpoložljive strežnike LDAP",
         "Description[sv]": "Anpassa tillgängliga LDAP-servrar",
+        "Description[tr]": "Kullanılabilir LDAP sunucularını yapılandır",
         "Description[uk]": "Налаштування доступних серверів LDAP",
         "Description[x-test]": "xxConfigure the available LDAP serversxx",
         "Icon": "kontact",
@@ -21,6 +22,7 @@
         "Name[pt]": "Configuração do Servidor de LDAP",
         "Name[sl]": "Nastavitve strežnika LDAP",
         "Name[sv]": "LDAP-serverinställningar",
+        "Name[tr]": "LDAP Sunucu Ayarları",
         "Name[uk]": "Параметри серверів LDAP",
         "Name[x-test]": "xxLDAP Server Settingsxx",
         "ServiceTypes": [
