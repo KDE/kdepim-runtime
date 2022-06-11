@@ -120,7 +120,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE void sendMessage(const QString &id, const QByteArray &content);
 Q_SIGNALS:
     Q_SCRIPTABLE void messageSent(const QString &id, const QString &error);
-#ifdef HAVE_SEPARATE_MTA_RESOURCE
+#if HAVE_SEPARATE_MTA_RESOURCE
 private Q_SLOTS:
     void messageSendRequestFinished(KJob *job);
 #endif

@@ -29,7 +29,7 @@
 #include "ewsconfigdialog.h"
 #include "ewscreatefolderrequest.h"
 #include "ewscreateitemjob.h"
-#ifdef HAVE_SEPARATE_MTA_RESOURCE
+#if HAVE_SEPARATE_MTA_RESOURCE
 #include "ewscreateitemrequest.h"
 #endif
 #include "ewsdeletefolderrequest.h"
@@ -1020,7 +1020,7 @@ void EwsResource::itemSendRequestFinished(KJob *job)
 
 void EwsResource::sendMessage(const QString &id, const QByteArray &content)
 {
-#ifdef HAVE_SEPARATE_MTA_RESOURCE
+#if HAVE_SEPARATE_MTA_RESOURCE
     auto req = new EwsCreateItemRequest(mEwsClient, this);
 
     EwsItem item;
@@ -1034,7 +1034,7 @@ void EwsResource::sendMessage(const QString &id, const QByteArray &content)
 #endif
 }
 
-#ifdef HAVE_SEPARATE_MTA_RESOURCE
+#if HAVE_SEPARATE_MTA_RESOURCE
 void EwsResource::messageSendRequestFinished(KJob *job)
 {
     QString id = job->property("requestId").toString();
