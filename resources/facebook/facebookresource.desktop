@@ -2,7 +2,7 @@
 Name=Facebook Events
 Name[ar]=أحداث «فيسبوك»
 Name[ca]=Esdeveniments de Facebook
-Name[ca@valencia]=Successos de Facebook
+Name[ca@valencia]=Esdeveniments de Facebook
 Name[cs]=Události Facebooku
 Name[de]=Facebook-Termine
 Name[en_GB]=Facebook Events
@@ -35,7 +35,7 @@ Name[zh_TW]=Facebook 行程
 Comment=Access your Facebook events from KDE
 Comment[ar]=توصّل إلى أحداث «فيسبوك» من «كدي»
 Comment[ca]=Accediu als esdeveniments de Facebook des del KDE
-Comment[ca@valencia]=Accediu als successos de Facebook des de KDE
+Comment[ca@valencia]=Accediu als esdeveniments de Facebook des de KDE
 Comment[cs]=Přistupujte k vašim událostem na Facebooku z KDE
 Comment[de]=Greifen Sie in KDE auf Ihre Facebook-Termine zu
 Comment[en_GB]=Access your Facebook events from KDE
