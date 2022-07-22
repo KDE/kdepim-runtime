@@ -49,6 +49,7 @@ Name[zh_CN]=AkoNotes
 Name[zh_TW]=AkoNotes
 Comment=Loads a notes hierarchy from a local maildir folder
 Comment[ar]=يحمّل هرميّة ملاحظات من مجلّد MailDir محليّ
+Comment[bg]=Зарежда йерархията на бележките от локална папка на maildir
 Comment[bs]=Učitava hijerarhiju napomena iz loklnog maildir direktorija
 Comment[ca]=Carrega una jerarquia de notes des d'una carpeta per al directori de correu local
 Comment[ca@valencia]=Carrega una jerarquia de notes des d'una carpeta per al directori de correu local

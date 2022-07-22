@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mail Dispatcher Agent
 Name[ar]=وكيل إرسال البريد
+Name[bg]=Диспечер на поща
 Name[bs]=Dispačer mail agent
 Name[ca]=Agent distribuïdor de correu
 Name[ca@valencia]=Agent distribuïdor de correu
@@ -49,6 +50,7 @@ Name[zh_CN]=邮件签发代理
 Name[zh_TW]=郵件配送代理程式
 Comment=Dispatches email messages
 Comment[ar]=يُرسل رسائل البريد الإلكترونيّ
+Comment[bg]=Изпращане на имейл съобщения
 Comment[bs]=Raspoređuje E-mail poruke
 Comment[ca]=Distribueix missatges de correu electrònic
 Comment[ca@valencia]=Distribuïx missatges de correu electrònic

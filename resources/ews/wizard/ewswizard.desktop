@@ -54,6 +54,7 @@ Name[zh_TW]=Maildir
 Icon=message-rfc822
 Comment=Exchange account
 Comment[ar]=حساب «إكسچينج»
+Comment[bg]=Акаунт в Exchange
 Comment[ca]=Compte Exchange
 Comment[ca@valencia]=Compte Exchange
 Comment[cs]=Účet Exchange

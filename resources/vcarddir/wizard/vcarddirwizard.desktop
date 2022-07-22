@@ -46,6 +46,7 @@ Name[zh_TW]=vCard 目錄
 Icon=text-directory
 Comment=Loads contact from vCard Directory
 Comment[ar]=يحمّل متراسلًا من دليل vCard
+Comment[bg]=Зареждане на контакти от папка с vCard
 Comment[ca]=Carrega els contactes des d'un directori vCard
 Comment[ca@valencia]=Carrega els contactes des d'un directori vCard
 Comment[cs]=Načítá data z adresáře vizitek

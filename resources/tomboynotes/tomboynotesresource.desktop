@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Akonadi TomboyNotes Resource
 Name[ar]=مورد «ملاحظات Tomboy» لِ‍«أكونادي»
+Name[bg]=Ресурс на Akonadi TomboyNotes
 Name[ca]=Recurs TomboyNotes per a l'Akonadi
 Name[ca@valencia]=Recurs TomboyNotes per a Akonadi
 Name[cs]=Zdroj Akonadi TomboyNotes
@@ -36,6 +37,7 @@ Name[zh_CN]=Akonadi Tomboy 笔记资源
 Name[zh_TW]=Akonadi TomboyNotes 資源
 Comment=Resource for Tomboy compatible notes server
 Comment[ar]=مورد لخادوم الملاحظات المتكامل مع Tomboy
+Comment[bg]=Ресурс за съвместим с Tomboy сървър за бележки
 Comment[ca]=Recurs per al Tomboy compatible amb el servidor de notes
 Comment[ca@valencia]=Recurs per al Tomboy compatible amb el servidor de notes
 Comment[da]=Ressource til Tomboy-kompatible noteservere
