@@ -52,6 +52,7 @@ Name[zh_CN]=生日和纪念日
 Name[zh_TW]=生日與紀念日
 Comment=Provides access to birthday and anniversary dates of contacts in your address book as calendar events
 Comment[ar]=يوفّر نفاذًا إلى تواريخ أعياد الميلاد والسّنويّات للمتراسلين في دفتر العناوين لديك كأحداث في التّقويم
+Comment[bg]=Предоставя достъп до рождени дни и юбилейни дати на контакти от адресната ви книга като календарно събитие
 Comment[bs]=Omogućava pristup datumima rođendana i godišnjica u vašem adresaru kao događajima na kalendaru
 Comment[ca]=Proporciona accés a les dates de naixement i els aniversaris dels contactes a la vostra llibreta d'adreces com a esdeveniments de calendari
 Comment[ca@valencia]=Proporciona accés a les dates de naixement i els aniversaris dels contactes a la vostra llibreta d'adreces com a esdeveniments de calendari

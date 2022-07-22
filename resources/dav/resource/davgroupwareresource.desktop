@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=DAV groupware resource
 Name[ar]=مورد برمجيّات DAV التّعاونيّة
+Name[bg]=Ресурс на DAV groupware
 Name[bs]=DAV grupni resurs
 Name[ca]=Recurs de treball en grup DAV
 Name[ca@valencia]=Recurs de treball en grup DAV
@@ -47,6 +48,7 @@ Name[zh_CN]=DAV 群件资源
 Name[zh_TW]=DAV 群組資源
 Comment=Resource to manage DAV calendars and address books (CalDAV, CardDAV)
 Comment[ar]=مورد لإدارة تقاويم ودفاتر عناوين DAV (مثل CalDAV وCardDAV)
+Comment[bg]=Ресурс за управление на календари и адресници на DAV  (CalDAV, CardDAV)
 Comment[ca]=Recurs per a gestionar calendaris i llibretes d'adreces DAV (CalDAV, CardDAV)
 Comment[ca@valencia]=Recurs per a gestionar calendaris i llibretes d'adreces DAV (CalDAV, CardDAV)
 Comment[en_GB]=Resource to manage DAV calendars and address books (CalDAV, CardDAV)

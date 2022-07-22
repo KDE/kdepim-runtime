@@ -1,6 +1,7 @@
 {
     "KPlugin": {
         "Description": "Configure the available LDAP servers",
+        "Description[bg]": "Настройване на налични LDAP сървъри",
         "Description[ca@valencia]": "Configura els servidors LDAP disponibles",
         "Description[ca]": "Configura els servidors LDAP disponibles",
         "Description[cs]": "Nastavit dostupné servery LDAP",
@@ -24,6 +25,7 @@
         "Description[x-test]": "xxConfigure the available LDAP serversxx",
         "Icon": "kontact",
         "Name": "LDAP Server Settings",
+        "Name[bg]": "Настройки на сървър LDAP",
         "Name[ca@valencia]": "Configuració del servidor LDAP",
         "Name[ca]": "Configuració del servidor LDAP",
         "Name[cs]": "Nastavení serveru LDAP",
