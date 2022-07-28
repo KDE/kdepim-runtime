@@ -534,7 +534,7 @@ void SetupServer::slotFinished(const QVector<int> &testResult)
     using namespace MailTransport;
 
     if (!m_serverTest->isNormalPossible() && !m_serverTest->isSecurePossible()) {
-        KMessageBox::sorry(this, i18n("Unable to connect to the server, please verify the server address."));
+        KMessageBox::error(this, i18n("Unable to connect to the server, please verify the server address."));
     }
 
     m_ui->testInfo->show();

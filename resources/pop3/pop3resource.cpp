@@ -494,7 +494,7 @@ void POP3Resource::uidListJobResult(KJob *job)
         mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
         if (mSettings.leaveOnServer() && !mUidListValid) {
             // FIXME: this needs a proper parent window
-            KMessageBox::sorry(nullptr,
+            KMessageBox::error(nullptr,
                                i18n("Your POP3 server (Account: %1) does not support "
                                     "the UIDL command: this command is required to determine, in a reliable way, "
                                     "which of the mails on the server KMail has already seen before;\n"

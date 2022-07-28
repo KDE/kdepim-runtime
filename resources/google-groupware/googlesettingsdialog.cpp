@@ -106,7 +106,7 @@ bool GoogleSettingsDialog::handleError(KGAPI2::Job *job)
         return false;
     }
 
-    KMessageBox::sorry(this, job->errorString());
+    KMessageBox::error(this, job->errorString());
     return false;
 }
 
@@ -147,7 +147,7 @@ void GoogleSettingsDialog::slotAuthJobFinished(KGAPI2::Job *job)
     auto authJob = qobject_cast<AuthJob *>(job);
     m_account = authJob->account();
     if (authJob->error() != KGAPI2::NoError) {
-        KMessageBox::sorry(this, authJob->errorString());
+        KMessageBox::error(this, authJob->errorString());
         return;
     }
     accountChanged();

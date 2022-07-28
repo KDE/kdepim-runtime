@@ -288,7 +288,7 @@ void AccountWidget::slotPopEncryptionChanged(QAbstractButton *button)
 void AccountWidget::slotCheckPopCapabilities()
 {
     if (hostEdit->text().isEmpty()) {
-        KMessageBox::sorry(this,
+        KMessageBox::error(this,
                            i18n("Please specify a server and port on "
                                 "the General tab first."));
         return;
@@ -322,7 +322,7 @@ void AccountWidget::slotPopCapabilities(const QVector<int> &encryptionTypes)
 
     // if both fail, popup a dialog
     if (!mServerTest->isNormalPossible() && !mServerTest->isSecurePossible()) {
-        KMessageBox::sorry(this, i18n("Unable to connect to the server, please verify the server address."));
+        KMessageBox::error(this, i18n("Unable to connect to the server, please verify the server address."));
     }
 
     // If the servertest did not find any usable authentication modes, assume the
