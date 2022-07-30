@@ -47,7 +47,6 @@ Name[x-test]=xxScalableOGoxx
 Name[zh_CN]=ScalableOGo
 Name[zh_TW]=ScalableOGo
 Type=Service
-X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-InstallationPath=/SOGo

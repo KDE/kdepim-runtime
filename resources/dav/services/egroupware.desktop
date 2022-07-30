@@ -48,7 +48,6 @@ Name[x-test]=xxeGroupwarexx
 Name[zh_CN]=eGroupware
 Name[zh_TW]=eGroupware
 Type=Service
-X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-CalDavPath=/groupdav.php

@@ -48,7 +48,6 @@ Name[x-test]=xxZimbraxx
 Name[zh_CN]=Zimbra
 Name[zh_TW]=Zimbra
 Type=Service
-X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-CalDavPath=/principals/users/$user$

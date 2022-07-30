@@ -56,7 +56,6 @@ ecm_qt_declare_logging_category(davgroupwareresource_SRCS HEADER davresource_deb
 
 
 install( FILES davgroupwareresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-install( FILES davgroupwareprovider.desktop DESTINATION ${KDE_INSTALL_KSERVICETYPESDIR} )
 install( FILES org.kde.akonadi_davgroupware_resource.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
 
 file( GLOB providersFiles "../services/*.desktop" )

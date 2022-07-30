@@ -49,7 +49,6 @@ Name[x-test]=xxYahoo!xx
 Name[zh_CN]=Yahoo!
 Name[zh_TW]=Yahoo!
 Type=Service
-X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
 X-DavGroupware-ProviderUsesSSL=1

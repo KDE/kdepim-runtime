@@ -48,7 +48,6 @@ Name[x-test]=xxZarafaxx
 Name[zh_CN]=Zarafa
 Name[zh_TW]=Zarafa
 Type=Service
-X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-SupportedProtocols=CalDav
 X-DavGroupware-CalDavPath=/caldav/$user$

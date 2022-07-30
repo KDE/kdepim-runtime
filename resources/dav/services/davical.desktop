@@ -47,7 +47,6 @@ Name[x-test]=xxDavicalxx
 Name[zh_CN]=Davical
 Name[zh_TW]=Davical
 Type=Service
-X-KDE-ServiceTypes=DavGroupwareProvider
 
 X-DavGroupware-Provider=davical
 X-DavGroupware-SupportedProtocols=CalDav
