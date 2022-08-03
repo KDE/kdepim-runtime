@@ -16,9 +16,6 @@
 
 #include <memory>
 
-template<typename T>
-class QList;
-
 namespace Akonadi
 {
 namespace FileStore
