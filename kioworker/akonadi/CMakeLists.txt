@@ -1,10 +1,10 @@
 
 
-add_library(kio_akonadi MODULE akonadislave.cpp akonadislave.h)
+add_library(kio_akonadi MODULE akonadiworker.cpp akonadiworker.h)
 
-ecm_qt_declare_logging_category(kio_akonadi HEADER akonadislave_debug.h IDENTIFIER AKONADISLAVE_LOG CATEGORY_NAME org.kde.pim.akonadislave
-    DESCRIPTION "kioslave (akonadi)"
-    OLD_CATEGORY_NAMES log_akonadislave
+ecm_qt_declare_logging_category(kio_akonadi HEADER akonadiworker_debug.h IDENTIFIER AKONADIWORKER_LOG CATEGORY_NAME org.kde.pim.akonadiworker
+    DESCRIPTION "kioworker (akonadi)"
+    OLD_CATEGORY_NAMES log_akonadislave org.kde.pim.akonadislave
     EXPORT KDEPIMRUNTIME
     )
 

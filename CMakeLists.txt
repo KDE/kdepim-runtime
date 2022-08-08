@@ -179,7 +179,7 @@ endif()
 add_subdirectory(resources)
 add_subdirectory(agents)
 add_subdirectory(defaultsetup)
-add_subdirectory(kioslave)
+add_subdirectory(kioworker)
 add_subdirectory(migration)
 add_subdirectory(kcms)
 
