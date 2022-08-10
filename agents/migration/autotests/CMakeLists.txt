@@ -3,7 +3,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
-add_executable(schedulertest schedulertest.cpp ../migrationscheduler.cpp ../migrationexecutor.cpp)
+add_executable(schedulertest schedulertest.cpp ../migrationscheduler.cpp ../migrationexecutor.cpp ../migrationscheduler.h ../migrationexecutor.h)
 target_link_libraries(schedulertest
     gidmigration
     KF5::AkonadiCore

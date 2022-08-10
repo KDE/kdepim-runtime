@@ -6,7 +6,7 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/..   )
 
 ########### next target ###############
 
-set(testmaildir_SRCS testmaildir.cpp )
+set(testmaildir_SRCS testmaildir.cpp testmaildir.h)
 
 
 add_executable( testmaildir ${testmaildir_SRCS} )
