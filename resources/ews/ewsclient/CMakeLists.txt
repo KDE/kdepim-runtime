@@ -92,7 +92,7 @@ set(EWSCLIENT_SRCS
 
     )
 
-if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
+if (TARGET Qt::NetworkAuth)
     list(APPEND EWSCLIENT_SRCS
         auth/ewsoauth.cpp
         auth/ewsoauth.h)
@@ -139,7 +139,7 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
 
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
 target_link_libraries(ewsclient
-    Qt${QT_MAJOR_VERSION}::Network
+    Qt::Network
     KF5::KIOCore
     KF5::KIOFileWidgets
     KF5::KIOWidgets
@@ -148,10 +148,10 @@ target_link_libraries(ewsclient
     KF5::Mime
     KF5::CalendarCore)
 
-if (TARGET Qt${QT_MAJOR_VERSION}::NetworkAuth)
+if (TARGET Qt::NetworkAuth)
     target_link_libraries(ewsclient
-        Qt${QT_MAJOR_VERSION}::NetworkAuth
-        Qt${QT_MAJOR_VERSION}::WebEngineWidgets)
+        Qt::NetworkAuth
+        Qt::WebEngineWidgets)
 endif ()
 
 if (Qca-qt${QT_MAJOR_VERSION}_FOUND)

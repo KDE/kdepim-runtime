@@ -51,7 +51,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
 
 if(Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
     target_link_libraries( akonadi_newmailnotifier_agent
-      Qt${QT_MAJOR_VERSION}::TextToSpeech
+      Qt::TextToSpeech
     )
 endif()
 
@@ -84,7 +84,7 @@ target_sources(newmailnotifierconfig PRIVATE
 target_link_libraries(newmailnotifierconfig
     KF5::AkonadiCore
     KF5::AkonadiMime
-    Qt${QT_MAJOR_VERSION}::Widgets
+    Qt::Widgets
     KF5::NotifyConfig
     KF5::ConfigGui
     KF5::I18n

@@ -19,7 +19,7 @@ MACRO(IMAP_RESOURCE_UNIT_TESTS)
     ecm_mark_as_test(imap-${_testname})
 
     target_link_libraries(${_testname}
-      KF5::IMAP KF5::kimaptest Qt${QT_MAJOR_VERSION}::Gui Qt${QT_MAJOR_VERSION}::Core Qt${QT_MAJOR_VERSION}::Test imapresource akonadi-singlefileresource)
+      KF5::IMAP KF5::kimaptest Qt::Gui Qt::Core Qt::Test imapresource akonadi-singlefileresource)
     add_definitions(-DTEST_DATA="\\"${CMAKE_CURRENT_SOURCE_DIR}\\"")
   ENDFOREACH(_testname)
 ENDMACRO(IMAP_RESOURCE_UNIT_TESTS)

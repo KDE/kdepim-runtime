@@ -22,7 +22,7 @@ target_link_libraries(maildir
     KF5::AkonadiMime
     PRIVATE
     KF5::I18n
-    Qt${QT_MAJOR_VERSION}::Network
+    Qt::Network
     )
 
 set_target_properties(maildir PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

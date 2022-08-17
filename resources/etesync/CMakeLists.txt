@@ -51,7 +51,7 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
-    Qt${QT_MAJOR_VERSION}::DBus
+    Qt::DBus
     KF5::AkonadiAgentBase
     KF5::ConfigCore
     KF5::Contacts

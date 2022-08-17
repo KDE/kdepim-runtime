@@ -85,10 +85,10 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_tomboynotes_resource PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(akonadi_tomboynotes_resource
-    Qt${QT_MAJOR_VERSION}::DBus
-    Qt${QT_MAJOR_VERSION}::Gui
-    Qt${QT_MAJOR_VERSION}::Network
-    Qt${QT_MAJOR_VERSION}::WebEngineWidgets
+    Qt::DBus
+    Qt::Gui
+    Qt::Network
+    Qt::WebEngineWidgets
     KF5::AkonadiAgentBase
     KF5::AkonadiNotes
     KF5::ConfigCore

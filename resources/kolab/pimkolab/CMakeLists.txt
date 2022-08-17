@@ -94,17 +94,17 @@ set(KOLAB_LINK_LIBRARIES
     KF5::Codecs
     KF5::I18n
     ${Libkolabxml_LIBRARIES}
-    Qt${QT_MAJOR_VERSION}::Core
-    Qt${QT_MAJOR_VERSION}::Xml
-    Qt${QT_MAJOR_VERSION}::Gui
-    Qt${QT_MAJOR_VERSION}::Widgets
+    Qt::Core
+    Qt::Xml
+    Qt::Gui
+    Qt::Widgets
     )
 
 if(BUILD_TESTING)
     #for tests only
     enable_testing()
     add_library(kolab_static STATIC ${KOLAB_SRCS})
-    target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES} Qt${QT_MAJOR_VERSION}::Test)
+    target_link_libraries(kolab_static ${KOLAB_LINK_LIBRARIES} Qt::Test)
     add_subdirectory(autotests)
 endif()
 

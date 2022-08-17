@@ -13,6 +13,6 @@ set(fakeewsserver_SRCS
 add_library(fakeewsserver ${fakeewsserver_SRCS})
 
 generate_export_header(fakeewsserver BASE_NAME fakeewsserver)
-target_link_libraries(fakeewsserver Qt${QT_MAJOR_VERSION}::Core Qt${QT_MAJOR_VERSION}::Network Qt${QT_MAJOR_VERSION}::XmlPatterns)
+target_link_libraries(fakeewsserver Qt::Core Qt::Network Qt::XmlPatterns)
 
 add_subdirectory(test)

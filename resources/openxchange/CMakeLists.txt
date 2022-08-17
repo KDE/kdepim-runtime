@@ -101,7 +101,7 @@ target_link_libraries(akonadi_openxchange_resource
     KF5::CalendarCore
     KF5::AkonadiContact
     KF5::I18n
-    Qt${QT_MAJOR_VERSION}::Xml
+    Qt::Xml
 )
 
 install(TARGETS akonadi_openxchange_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

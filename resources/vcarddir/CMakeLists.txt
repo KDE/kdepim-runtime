@@ -45,7 +45,7 @@ target_link_libraries(akonadi_vcarddir_resource
   KF5::KIOWidgets
   KF5::ConfigWidgets
   KF5::WindowSystem
-  Qt${QT_MAJOR_VERSION}::DBus
+  Qt::DBus
 )
 
 add_dependencies(akonadi_vcarddir_resource akonadi-singlefileresource)

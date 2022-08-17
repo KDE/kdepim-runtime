@@ -6,7 +6,7 @@ macro(_add_test _source)
   add_executable( ${_name} ${_test} )
   add_test( NAME ${_name} COMMAND ${_name} )
   ecm_mark_as_test(singlefileresource-${_name})
-  target_link_libraries(${_name} Qt${QT_MAJOR_VERSION}::Test   
+  target_link_libraries(${_name} Qt::Test   
                         KF5::AkonadiCore KF5::IMAP akonadi-singlefileresource)
 endmacro()
 

@@ -24,9 +24,9 @@ add_library(isolatedtestcommon STATIC ${isolatestestcommon_SRCS})
 target_link_libraries(isolatedtestcommon
   KF5::AkonadiCore
   KF5::AkonadiMime
-  Qt${QT_MAJOR_VERSION}::Core
-  Qt${QT_MAJOR_VERSION}::Network
-  Qt${QT_MAJOR_VERSION}::Test
+  Qt::Core
+  Qt::Network
+  Qt::Test
   fakeewsserver
 )
 
