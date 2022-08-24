@@ -244,7 +244,7 @@ void EteSyncResource::showErrorDialog(const QString &errorText, const QString &e
     QDialog *dialog = new QDialog(parent, Qt::Dialog);
     dialog->setAttribute(Qt::WA_NativeWindow, true);
     KWindowSystem::setMainWindow(dialog->windowHandle(), winIdForDialogs());
-    KMessageBox::detailedSorry(dialog, errorText, errorDetails, title);
+    KMessageBox::detailedError(dialog, errorText, errorDetails, title);
 }
 
 QString getEtebaseTypeForCollection(const Akonadi::Collection &collection)
