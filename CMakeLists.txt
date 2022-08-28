@@ -97,8 +97,8 @@ set_package_properties(Qca-qt${QT_MAJOR_VERSION} PROPERTIES DESCRIPTION "Qt Cryp
                    PURPOSE "Needed for ews resource.")
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT5 package
-find_package(Qt5TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
-set_package_properties(Qt5TextToSpeech PROPERTIES DESCRIPTION
+find_package(Qt${QT_MAJOR_VERSION}TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
+set_package_properties(Qt${QT_MAJOR_VERSION}TextToSpeech PROPERTIES DESCRIPTION
     "Add support for texttospeed"
     TYPE OPTIONAL
 )
