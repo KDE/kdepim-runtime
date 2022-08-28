@@ -84,6 +84,8 @@ set(AKONADINOTE_LIB_VERSION "5.21.40")
 set(KGAPI_LIB_VERSION "5.21.40")
 set(LIBKDEPIM_LIB_VERSION "5.21.40")
 set(KLDAP_LIB_VERSION "5.21.40")
+set(KMAILCOMMON_LIB_VERSION "5.21.40")
+set(KPIMCOMMON_LIB_VERSION "5.21.40")
 
 set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
@@ -122,6 +124,7 @@ find_package(KF5WindowSystem ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5TextWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
 find_package(KF5Notifications ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
 find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5DBusAddons ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5KCMUtils ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5DAV ${KF5_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5DocTools ${KF5_MIN_VERSION})
@@ -135,6 +138,7 @@ set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
 # KdepimLibs package
 find_package(KF5Akonadi ${AKONADI_VERSION} CONFIG REQUIRED)
 find_package(KF5Mime ${KMIME_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5MailCommon ${KMAILCOMMON_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiMime ${AKONADIMIME_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransportAkonadi ${KMAILTRANSPORT_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5IdentityManagement ${IDENTITYMANAGEMENT_LIB_VERSION} CONFIG REQUIRED)
@@ -149,6 +153,8 @@ find_package(KF5AkonadiCalendar ${AKONADICALENDAR_LIB_VERSION} CONFIG REQUIRED)
 find_package(KPimGAPI ${KGAPI_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Libkdepim ${LIBKDEPIM_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Ldap ${KLDAP_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimCommon ${KPIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
+find_package(KF5PimCommonAkonadi ${KPIMCOMMON_LIB_VERSION} CONFIG REQUIRED)
 
 #it will replace kwallet support
 find_package(Qt${QT_MAJOR_VERSION}Keychain CONFIG)
