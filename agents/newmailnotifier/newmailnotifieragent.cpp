@@ -38,6 +38,8 @@
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
 #include <QTextToSpeech>
 #endif
+using namespace std::chrono_literals;
+#include <chrono>
 
 using namespace Akonadi;
 
@@ -81,7 +83,7 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     changeRecorder()->ignoreSession(Akonadi::Session::defaultSession());
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(Akonadi::CollectionFetchScope::All);
     changeRecorder()->setCollectionMonitored(Collection::root(), true);
-    mTimer.setInterval(5000); // 5secondes
+    mTimer.setInterval(5s); // 5secondes
     connect(&mTimer, &QTimer::timeout, this, &NewMailNotifierAgent::slotShowNotifications);
 
     if (isActive()) {
