@@ -54,11 +54,11 @@ private:
     void slotIdentitiesChanged();
     void slotInstanceNameChanged(const Akonadi::AgentInstance &instance);
     void slotSay(const QString &message);
-    bool excludeAgentType(const Akonadi::AgentInstance &instance);
-    bool ignoreStatusMail(const Akonadi::Item &item);
-    bool isActive() const;
+    Q_REQUIRED_RESULT bool excludeAgentType(const Akonadi::AgentInstance &instance);
+    Q_REQUIRED_RESULT bool ignoreStatusMail(const Akonadi::Item &item);
+    Q_REQUIRED_RESULT bool isActive() const;
     void clearAll();
-    bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
+    Q_REQUIRED_RESULT bool excludeSpecialCollection(const Akonadi::Collection &collection) const;
     void slotReloadConfiguration();
     QString mDefaultIconName;
     QStringList mListEmails;
