@@ -193,8 +193,7 @@ void MailDispatcherAgent::itemFetched(const Item &item)
                   i18nc("Message with given subject is being sent.", "Sending: %1", item.payload<KMime::Message::Ptr>()->subject()->asUnicodeString()));
 
     connect(mCurrentJob, &KJob::result, this, &MailDispatcherAgent::sendResult);
-    // TODO wait kf6. For the moment we can't convert to new connect api.
-    connect(mCurrentJob, SIGNAL(percent(KJob *, ulong)), this, SLOT(sendPercent(KJob *, ulong)));
+    connect(mCurrentJob, &SendJob::percentChanged, this, &MailDispatcherAgent::sendPercent);
 
     mCurrentJob->start();
 }
