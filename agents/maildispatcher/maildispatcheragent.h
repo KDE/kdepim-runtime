@@ -52,7 +52,8 @@ private:
     void sendResult(KJob *job);
     void emitStatusReady();
 
-    OutboxQueue *mQueue = nullptr;
+    OutboxQueue *const mQueue;
+    SentActionHandler *const mSentActionHandler;
     SendJob *mCurrentJob = nullptr;
     Akonadi::Item mCurrentItem;
     bool mAborting = false;
@@ -61,5 +62,4 @@ private:
     bool mErrorOccurred = false;
     bool mShowSentNotification = true;
     qulonglong mSentItemsSize = 0;
-    SentActionHandler *mSentActionHandler = nullptr;
 };

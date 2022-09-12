@@ -122,6 +122,8 @@ void MailDispatcherAgent::dispatch()
 
 MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     : AgentBase(id)
+    , mQueue(new OutboxQueue(this))
+    , mSentActionHandler(new SentActionHandler(this))
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     Kdelibs4ConfigMigrator migrate(QStringLiteral("maildispatcheragent"));
@@ -143,14 +145,11 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
 
     QDBusConnection::sessionBus().registerService(service);
 
-    mQueue = new OutboxQueue(this);
     connect(mQueue, &OutboxQueue::newItems, this, &MailDispatcherAgent::dispatch);
     connect(mQueue, &OutboxQueue::itemReady, this, &MailDispatcherAgent::itemFetched);
     connect(mQueue, &OutboxQueue::error, this, &MailDispatcherAgent::queueError);
     connect(this, &MailDispatcherAgent::itemProcessed, mQueue, &OutboxQueue::itemProcessed);
     connect(this, &MailDispatcherAgent::abortRequested, this, &MailDispatcherAgent::abort);
-
-    mSentActionHandler = new SentActionHandler(this);
 
     setNeedsNetwork(true);
 }
