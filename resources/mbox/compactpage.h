@@ -19,7 +19,7 @@ class CompactPage : public QWidget
 public:
     explicit CompactPage(const QString &collectionId, QWidget *parent = nullptr);
 
-private Q_SLOTS:
+private:
     void compact();
     void onCollectionFetchCheck(KJob *);
     void onCollectionFetchCompact(KJob *);

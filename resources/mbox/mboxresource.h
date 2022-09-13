@@ -40,11 +40,9 @@ protected:
 
     Q_REQUIRED_RESULT Akonadi::Collection rootCollection() const override;
 
-private Q_SLOTS:
+private:
     void onCollectionFetch(KJob *job);
     void onCollectionModify(KJob *job);
-
-private:
     QHash<KJob *, Akonadi::Item> mCurrentItemDeletions;
     KMBox::MBox *mMBox = nullptr;
 };
