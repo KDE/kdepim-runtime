@@ -26,10 +26,8 @@ public:
 
     Q_REQUIRED_RESULT Object object() const;
 
-private Q_SLOTS:
-    void davJobFinished(KJob *);
-
 private:
+    void davJobFinished(KJob *);
     Object mObject;
     Folder mDestinationFolder;
 };

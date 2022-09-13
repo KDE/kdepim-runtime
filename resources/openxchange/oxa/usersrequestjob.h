@@ -25,10 +25,8 @@ public:
 
     Q_REQUIRED_RESULT User::List users() const;
 
-private Q_SLOTS:
-    void davJobFinished(KJob *);
-
 private:
+    void davJobFinished(KJob *);
     User::List mUsers;
 };
 }

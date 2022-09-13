@@ -23,10 +23,8 @@ public:
 
     Q_REQUIRED_RESULT qlonglong userId() const;
 
-private Q_SLOTS:
-    void davJobFinished(KJob *);
-
 private:
+    void davJobFinished(KJob *);
     qlonglong mUserId = -1;
 };
 }

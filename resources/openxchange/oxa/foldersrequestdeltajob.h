@@ -41,18 +41,16 @@ public:
     /**
      * Returns the list of all added and modified folders.
      */
-    Folder::List modifiedFolders() const;
+    Q_REQUIRED_RESULT Folder::List modifiedFolders() const;
 
     /**
      * Returns the list of all deleted folders.
      */
-    Folder::List deletedFolders() const;
-
-private Q_SLOTS:
-    void fetchModifiedJobFinished(KJob *);
-    void fetchDeletedJobFinished(KJob *);
+    Q_REQUIRED_RESULT Folder::List deletedFolders() const;
 
 private:
+    void fetchModifiedJobFinished(KJob *);
+    void fetchDeletedJobFinished(KJob *);
     const qulonglong mLastSync;
     Folder::List mModifiedFolders;
     Folder::List mDeletedFolders;

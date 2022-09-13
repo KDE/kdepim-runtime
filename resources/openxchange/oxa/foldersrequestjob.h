@@ -52,10 +52,8 @@ public:
      */
     Q_REQUIRED_RESULT Folder::List folders() const;
 
-private Q_SLOTS:
-    void davJobFinished(KJob *);
-
 private:
+    void davJobFinished(KJob *);
     const qulonglong mLastSync;
     const Mode mMode;
     Folder::List mFolders;

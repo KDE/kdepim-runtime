@@ -23,11 +23,9 @@ public:
 
     void start() override;
 
-private Q_SLOTS:
+private:
     void userIdRequestJobFinished(KJob *);
     void usersRequestJobFinished(KJob *);
-
-private:
     void finish();
 
     bool mUserIdRequestFinished = false;

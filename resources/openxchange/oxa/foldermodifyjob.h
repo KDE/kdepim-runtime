@@ -42,12 +42,10 @@ public:
     /**
      * Returns the updated folder that has been modified.
      */
-    Folder folder() const;
-
-private Q_SLOTS:
-    void davJobFinished(KJob *);
+    Q_REQUIRED_RESULT Folder folder() const;
 
 private:
+    void davJobFinished(KJob *);
     Folder mFolder;
 };
 }

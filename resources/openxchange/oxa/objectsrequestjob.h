@@ -43,10 +43,8 @@ public:
 
     Q_REQUIRED_RESULT Object::List objects() const;
 
-private Q_SLOTS:
-    void davJobFinished(KJob *);
-
 private:
+    void davJobFinished(KJob *);
     Folder mFolder;
     qulonglong mLastSync;
     const Mode mMode;

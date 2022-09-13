@@ -44,12 +44,10 @@ public:
     /**
      * Returns the updated folder that has been moved.
      */
-    Folder folder() const;
-
-private Q_SLOTS:
-    void davJobFinished(KJob *);
+    Q_REQUIRED_RESULT Folder folder() const;
 
 private:
+    void davJobFinished(KJob *);
     Folder mFolder;
     Folder mDestinationFolder;
 };

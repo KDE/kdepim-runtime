@@ -49,11 +49,9 @@ public:
      */
     Q_REQUIRED_RESULT Object::List deletedObjects() const;
 
-private Q_SLOTS:
+private:
     void fetchModifiedJobFinished(KJob *);
     void fetchDeletedJobFinished(KJob *);
-
-private:
     Folder mFolder;
     qulonglong mLastSync;
     Object::List mModifiedObjects;

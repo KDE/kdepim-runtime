@@ -23,13 +23,11 @@ public:
 
     void start() override;
 
-    Object object() const;
-
-private Q_SLOTS:
-    void preloadingJobFinished(KJob *);
-    void davJobFinished(KJob *);
+    Q_REQUIRED_RESULT Object object() const;
 
 private:
+    void preloadingJobFinished(KJob *);
+    void davJobFinished(KJob *);
     Object mObject;
 };
 }
