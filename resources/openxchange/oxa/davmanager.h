@@ -49,7 +49,7 @@ public:
     /**
      * Returns the base url the DAV manager uses.
      */
-    QUrl baseUrl() const;
+    Q_REQUIRED_RESULT QUrl baseUrl() const;
 
     /**
      * Returns a new DAV find job.

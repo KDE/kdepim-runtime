@@ -39,9 +39,6 @@ FakeServer *FakeServerThread::server() const
 
 FakeServer::FakeServer(QObject *parent)
     : QObject(parent)
-    , mConnections(0)
-    , mProgress(0)
-    , mGotDisconnected(false)
 {
     mTcpServer = new QTcpServer();
     if (!mTcpServer->listen(QHostAddress(QHostAddress::LocalHost), 5989)) {

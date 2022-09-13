@@ -207,17 +207,17 @@ SetupWizard::Url::List SetupWizard::urls() const
 
 CredentialsPage::CredentialsPage(QWidget *parent)
     : QWizardPage(parent)
+    , mUserName(new QLineEdit(this))
+    , mPassword(new KPasswordLineEdit(this))
 {
     setTitle(i18n("Login Credentials"));
     setSubTitle(i18n("Enter your credentials to login to the groupware server"));
 
     auto layout = new QFormLayout(this);
 
-    mUserName = new QLineEdit(this);
     layout->addRow(i18n("User:"), mUserName);
     registerField(QStringLiteral("credentialsUserName*"), mUserName);
 
-    mPassword = new KPasswordLineEdit(this);
     mPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     layout->addRow(i18n("Password:"), mPassword);
     registerField(QStringLiteral("credentialsPassword*"), mPassword, "password", SIGNAL(passwordChanged(QString)));
@@ -251,24 +251,24 @@ int CredentialsPage::nextId() const
 
 PredefinedProviderPage::PredefinedProviderPage(QWidget *parent)
     : QWizardPage(parent)
+    , mLabel(new QLabel(this))
+    , mProviderGroup(new QButtonGroup(this))
+    , mUseProvider(new QRadioButton(this))
+    , mDontUseProvider(new QRadioButton(i18n("No, choose another server"), this))
 {
     setTitle(i18n("Predefined provider found"));
     setSubTitle(i18n("Select if you want to use the auto-detected provider"));
 
     auto layout = new QVBoxLayout(this);
 
-    mLabel = new QLabel(this);
     layout->addWidget(mLabel);
 
-    mProviderGroup = new QButtonGroup(this);
     mProviderGroup->setExclusive(true);
 
-    mUseProvider = new QRadioButton(this);
     mProviderGroup->addButton(mUseProvider);
     mUseProvider->setChecked(true);
     layout->addWidget(mUseProvider);
 
-    mDontUseProvider = new QRadioButton(i18n("No, choose another server"), this);
     mProviderGroup->addButton(mDontUseProvider);
     layout->addWidget(mDontUseProvider);
 }
@@ -499,6 +499,7 @@ void ConnectionPage::urlElementChanged()
 
 CheckPage::CheckPage(QWidget *parent)
     : QWizardPage(parent)
+    , mStatusLabel(new QTextBrowser(this))
 {
     setTitle(i18n("Test Connection"));
     setSubTitle(i18n("You can test now whether the groupware server can be accessed with the current configuration"));
@@ -506,10 +507,9 @@ CheckPage::CheckPage(QWidget *parent)
 
     auto layout = new QVBoxLayout(this);
 
-    auto button = new QPushButton(i18n("Test Connection"));
+    auto button = new QPushButton(i18n("Test Connection"), this);
     layout->addWidget(button);
 
-    mStatusLabel = new QTextBrowser;
     layout->addWidget(mStatusLabel);
 
     connect(button, &QRadioButton::clicked, this, &CheckPage::checkConnection);

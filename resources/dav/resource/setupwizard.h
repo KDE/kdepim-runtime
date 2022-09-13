@@ -62,10 +62,10 @@ public:
     int nextId() const override;
 
 private:
-    QLabel *mLabel = nullptr;
-    QButtonGroup *mProviderGroup = nullptr;
-    QRadioButton *mUseProvider = nullptr;
-    QRadioButton *mDontUseProvider = nullptr;
+    QLabel *const mLabel;
+    QButtonGroup *const mProviderGroup;
+    QRadioButton *const mUseProvider;
+    QRadioButton *const mDontUseProvider;
 };
 
 class CredentialsPage : public QWizardPage
@@ -75,8 +75,8 @@ public:
     int nextId() const override;
 
 private:
-    QLineEdit *mUserName = nullptr;
-    KPasswordLineEdit *mPassword = nullptr;
+    QLineEdit *const mUserName;
+    KPasswordLineEdit *const mPassword;
 };
 
 class ServerTypePage : public QWizardPage
@@ -129,5 +129,5 @@ public:
 private:
     void checkConnection();
     void onFetchDone(KJob *);
-    QTextBrowser *mStatusLabel = nullptr;
+    QTextBrowser *const mStatusLabel;
 };

@@ -17,7 +17,7 @@ class FakeServer : public QObject
     Q_OBJECT
 
 public:
-    FakeServer(QObject *parent = nullptr);
+    explicit FakeServer(QObject *parent = nullptr);
     ~FakeServer() override;
 
     void setNextConversation(const QString &conversation, const QList<int> &exceptions = QList<int>());
@@ -56,8 +56,8 @@ private:
     QList<QByteArray> mMails;
     QTcpServer *mTcpServer = nullptr;
     QTcpSocket *mTcpServerConnection = nullptr;
-    int mConnections;
-    int mProgress;
+    int mConnections = 0;
+    int mProgress = 0;
     bool mGotDisconnected = false;
 
     // We use one big mutex to protect everything
