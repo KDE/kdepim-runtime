@@ -84,5 +84,5 @@ private:
     KDirWatch *const mFsWatcher;
     QHash<QString, KPIM::Maildir> mMaildirsForCollection;
     QSet<QString> mChangedFiles; // files changed by the resource and that should be ignored in slotFileChanged
-    QTimer *mChangedCleanerTimer = nullptr;
+    QTimer *const mChangedCleanerTimer;
 };

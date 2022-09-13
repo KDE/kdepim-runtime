@@ -28,6 +28,7 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
     : QDialog()
     , m_resource(resource)
     , m_settings(settings)
+    , m_ui(new Ui::GoogleSettingsDialog)
 {
     if (wId) {
         setAttribute(Qt::WA_NativeWindow, true);
@@ -44,7 +45,6 @@ GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSetti
     okButton->setShortcut(Qt::CTRL | Qt::Key_Return);
     mainLayout->addWidget(buttonBox);
 
-    m_ui = new Ui::GoogleSettingsDialog;
     m_ui->setupUi(mainWidget);
 
     m_ui->refreshSpinBox->setSuffix(ki18np(" minute", " minutes"));

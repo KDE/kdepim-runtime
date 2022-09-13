@@ -87,6 +87,7 @@ MaildirResource::MaildirResource(const QString &id)
     : ResourceBase(id)
     , mSettings(new MaildirSettings(config()))
     , mFsWatcher(new KDirWatch(this))
+    , mChangedCleanerTimer(new QTimer(this))
 {
     // we cannot be sure that a config file is existing
     // the MaildirResource will always be build
@@ -123,7 +124,6 @@ MaildirResource::MaildirResource(const QString &id)
         synchronizeCollectionTree();
     }
 
-    mChangedCleanerTimer = new QTimer(this);
     connect(mChangedCleanerTimer, &QTimer::timeout, this, &MaildirResource::changedCleaner);
 }
 

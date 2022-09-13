@@ -35,7 +35,7 @@ protected:
 private:
     GoogleResource *const m_resource;
     GoogleSettings *const m_settings;
-    Ui::GoogleSettingsDialog *m_ui = nullptr;
+    Ui::GoogleSettingsDialog *const m_ui;
     KGAPI2::AccountPtr m_account;
 private Q_SLOTS:
     void slotConfigure();
