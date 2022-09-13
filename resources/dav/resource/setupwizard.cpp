@@ -98,7 +98,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
             url.setScheme(QStringLiteral("http"));
         }
 
-        QString hostPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Host"));
+        const QString hostPropertyName(QStringLiteral("X-DavGroupware-") + protocol + QStringLiteral("Host"));
         if (service->property(hostPropertyName).isNull()) {
             return {};
         }

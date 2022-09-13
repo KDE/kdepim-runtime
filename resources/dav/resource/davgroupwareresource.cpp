@@ -63,6 +63,7 @@ using IncidencePtr = QSharedPointer<KCalendarCore::Incidence>;
 DavGroupwareResource::DavGroupwareResource(const QString &id)
     : ResourceBase(id)
     , FreeBusyProviderBase()
+    , mFreeBusyHandler(new DavFreeBusyHandler(this))
 {
     AttributeFactory::registerAttribute<EntityDisplayAttribute>();
     AttributeFactory::registerAttribute<DavProtocolAttribute>();
@@ -101,7 +102,6 @@ DavGroupwareResource::DavGroupwareResource(const QString &id)
     Settings::self()->setWinId(winIdForDialogs());
     Settings::self()->setResourceIdentifier(identifier());
 
-    mFreeBusyHandler = new DavFreeBusyHandler(this);
     connect(mFreeBusyHandler, &DavFreeBusyHandler::handlesFreeBusy, this, &DavGroupwareResource::onHandlesFreeBusy);
     connect(mFreeBusyHandler, &DavFreeBusyHandler::freeBusyRetrieved, this, &DavGroupwareResource::onFreeBusyRetrieved);
 

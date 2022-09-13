@@ -54,11 +54,11 @@ protected:
 
 private:
     void slotReloadConfig();
-    Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory, const Akonadi::Collection &parentCollection) const;
-    QString baseDirectoryPath() const;
+    Q_REQUIRED_RESULT Akonadi::Collection::List createCollectionsForDirectory(const QDir &parentDirectory, const Akonadi::Collection &parentCollection) const;
+    Q_REQUIRED_RESULT QString baseDirectoryPath() const;
     void initializeDirectory(const QString &path) const;
-    Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
-    QString directoryForCollection(const Akonadi::Collection &collection) const;
+    Q_REQUIRED_RESULT Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
+    Q_REQUIRED_RESULT QString directoryForCollection(const Akonadi::Collection &collection) const;
     bool doRetrieveItem(Akonadi::Item &item);
 
 private:

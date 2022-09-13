@@ -15,8 +15,8 @@ public:
     explicit AkonotesResource(const QString &id);
     ~AkonotesResource() override;
 
-    QString defaultResourceType() override;
+    Q_REQUIRED_RESULT QString defaultResourceType() override;
 
 protected:
-    QString itemMimeType() const override;
+    Q_REQUIRED_RESULT QString itemMimeType() const override;
 };

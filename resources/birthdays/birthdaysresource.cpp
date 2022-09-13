@@ -87,7 +87,8 @@ bool BirthdaysResource::retrieveItems(const Akonadi::Item::List &items, const QS
 
     // collect contacts, same contact might be used multiple times, for birthday & anniversary
     QSet<Akonadi::Item::Id> contactIds;
-    for (auto &item : items) {
+    contactIds.reserve(items.count());
+    for (const auto &item : items) {
         const Akonadi::Item::Id contactId = item.remoteId().mid(1).toLongLong();
         contactIds << contactId;
     }

@@ -119,6 +119,6 @@ private:
     Akonadi::Collection mDavCollectionRoot;
     QMap<QString, std::shared_ptr<KDAV::EtagCache>> mEtagCaches;
     QMap<QString, QString> mCTagCache;
-    DavFreeBusyHandler *mFreeBusyHandler = nullptr;
+    DavFreeBusyHandler *const mFreeBusyHandler;
     bool mSyncErrorNotified = false;
 };

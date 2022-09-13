@@ -83,7 +83,7 @@ Collection::List ContactsResource::createCollectionsForDirectory(const QDir &par
     collections.reserve(entries.count() * 2);
 
     for (const QFileInfo &entry : entries) {
-        QDir subdir(entry.absoluteFilePath());
+        const QDir subdir(entry.absoluteFilePath());
 
         Collection collection;
         collection.setParentCollection(parentCollection);
