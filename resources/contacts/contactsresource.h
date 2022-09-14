@@ -59,7 +59,7 @@ private:
     void initializeDirectory(const QString &path) const;
     Q_REQUIRED_RESULT Akonadi::Collection::Rights supportedRights(bool isResourceCollection) const;
     Q_REQUIRED_RESULT QString directoryForCollection(const Akonadi::Collection &collection) const;
-    bool doRetrieveItem(Akonadi::Item &item);
+    Q_REQUIRED_RESULT bool doRetrieveItem(Akonadi::Item &item);
 
 private:
     QStringList mSupportedMimeTypes;
