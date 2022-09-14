@@ -25,6 +25,7 @@
 EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     : QDialog()
     , mParentResource(parentResource)
+    , mButtonBox(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this))
 {
     if (wId) {
         setAttribute(Qt::WA_NativeWindow, true);
@@ -33,7 +34,6 @@ EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
 
     auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout(this);
-    mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     mainLayout->addWidget(mainWidget);
     QPushButton *okButton = mButtonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);

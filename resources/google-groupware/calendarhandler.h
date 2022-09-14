@@ -32,10 +32,9 @@ public:
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
     void collectionRemoved(const Akonadi::Collection &collection) override;
-private Q_SLOTS:
-    void slotItemsRetrieved(KGAPI2::Job *job);
 
 private:
+    void slotItemsRetrieved(KGAPI2::Job *job);
     void setupCollection(Akonadi::Collection &collection, const KGAPI2::CalendarPtr &group);
 };
 

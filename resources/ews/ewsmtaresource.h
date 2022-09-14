@@ -26,11 +26,10 @@ protected Q_SLOTS:
     void retrieveCollections() override;
     void retrieveItems(const Akonadi::Collection &collection) override;
     bool retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts) override;
-private Q_SLOTS:
-    void messageSent(const QString &id, const QString &error);
 
 private:
-    bool connectEws();
+    void messageSent(const QString &id, const QString &error);
+    Q_REQUIRED_RESULT bool connectEws();
 
     OrgKdeAkonadiEwsResourceInterface *mEwsResource = nullptr;
     QHash<QString, Akonadi::Item> mItemHash;

@@ -66,10 +66,8 @@ Q_SIGNALS:
 protected Q_SLOTS:
     virtual void migrate() = 0;
 
-private Q_SLOTS:
-    void logMessage(KMigratorBase::MessageType type, const QString &msg);
-
 private:
+    void logMessage(KMigratorBase::MessageType type, const QString &msg);
     QFile *m_logFile = nullptr;
     QEventLoopLocker eventLoopLocker;
 };

@@ -51,10 +51,9 @@ public:
 Q_SIGNALS:
     void accountReady(bool ready);
     void accountChanged();
-private Q_SLOTS:
-    void slotWalletOpened(bool success);
 
 private:
+    void slotWalletOpened(bool success);
     WId m_winId = 0;
     QString m_resourceId;
     bool m_isReady = false;

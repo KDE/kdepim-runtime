@@ -37,12 +37,10 @@ public:
 
     void doStart() override;
 
-private Q_SLOTS:
+private:
     void collectionsReceived(const Akonadi::Collection::List &);
     void collectionsFetched(KJob *);
     void itemsUpdated(KJob *);
-
-private:
     void processCollection();
     const QStringList mMimeTypeFilter;
     Akonadi::Collection::List mCollections;
@@ -61,10 +59,8 @@ public:
     void doStart() override;
     void slotResult(KJob *job) override;
 
-private Q_SLOTS:
-    void itemsReceived(const Akonadi::Item::List &items);
-
 private:
+    void itemsReceived(const Akonadi::Item::List &items);
     bool processNext();
 
     const Akonadi::Collection mCollection;

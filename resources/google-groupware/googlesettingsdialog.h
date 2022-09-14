@@ -33,14 +33,14 @@ protected:
     void accountChanged();
 
 private:
-    GoogleResource *const m_resource;
-    GoogleSettings *const m_settings;
-    Ui::GoogleSettingsDialog *const m_ui;
-    KGAPI2::AccountPtr m_account;
-private Q_SLOTS:
     void slotConfigure();
     void slotAuthJobFinished(KGAPI2::Job *job);
     void slotSaveSettings();
     void slotReloadCalendars();
     void slotReloadTaskLists();
+
+    GoogleResource *const m_resource;
+    GoogleSettings *const m_settings;
+    Ui::GoogleSettingsDialog *const m_ui;
+    KGAPI2::AccountPtr m_account;
 };

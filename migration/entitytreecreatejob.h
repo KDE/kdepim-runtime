@@ -19,10 +19,8 @@ public:
 
     void doStart() override;
 
-private Q_SLOTS:
-    void collectionCreateJobDone(KJob *);
-
 private:
+    void collectionCreateJobDone(KJob *);
     void createNextLevelOfCollections();
     void createReadyItems();
 

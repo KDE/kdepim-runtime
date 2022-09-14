@@ -28,7 +28,7 @@ private Q_SLOTS:
     void save();
 
 private:
-    QDialogButtonBox *mButtonBox = nullptr;
+    QDialogButtonBox *const mButtonBox;
     EwsMtaResource *const mParentResource;
     Ui::SetupServerView *mUi = nullptr;
 };
