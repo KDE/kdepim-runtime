@@ -700,8 +700,7 @@ void DavGroupwareResource::onRetrieveCollectionsFinished(KJob *job)
     }
 
     bool initialCacheSync = job->property("initialCacheSync").toBool();
-    Akonadi::Collection::List collections;
-    collections << mDavCollectionRoot;
+    Akonadi::Collection::List collections{mDavCollectionRoot};
     QSet<QString> seenCollectionsUrls;
 
     const KDAV::DavCollection::List davCollections = fetchJob->collections();

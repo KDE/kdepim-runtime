@@ -38,11 +38,11 @@ protected:
 
 private:
     void slotReloadConfig();
-    bool loadAddressees();
-    QString vCardDirectoryName() const;
-    QString vCardDirectoryFileName(const QString &file) const;
+    void loadAddressees();
+    Q_REQUIRED_RESULT QString vCardDirectoryName() const;
+    Q_REQUIRED_RESULT QString vCardDirectoryFileName(const QString &file) const;
     void initializeVCardDirectory() const;
-    bool doRetrieveItem(Akonadi::Item &item);
+    Q_REQUIRED_RESULT bool doRetrieveItem(Akonadi::Item &item);
 
 private:
     QMap<QString, KContacts::Addressee> mAddressees;

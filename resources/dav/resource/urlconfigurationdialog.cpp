@@ -240,7 +240,7 @@ void UrlConfigurationDialog::onModelDataChanged(const QModelIndex &topLeft, cons
     QUrl fullUrl(url);
     fullUrl.setUserInfo(QString());
 
-    KDAV::DavUrl davUrl(fullUrl, protocol());
+    const KDAV::DavUrl davUrl(fullUrl, protocol());
     auto job = new KDAV::DavCollectionModifyJob(davUrl);
     job->setProperty(QStringLiteral("displayname"), newName);
     connect(job, &KDAV::DavCollectionModifyJob::result, this, &UrlConfigurationDialog::onChangeDisplayNameFinished);

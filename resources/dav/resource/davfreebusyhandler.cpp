@@ -222,7 +222,7 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
     }
 
     if (retrievalJobCount == 0) {
-        QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId], KCalendarCore::iTIPRequest);
+        const QString fbStr = format.createScheduleMessage(mRequestsTracker[email].resultingFreeBusy[requestId], KCalendarCore::iTIPRequest);
         Q_EMIT freeBusyRetrieved(email, fbStr, true, QString());
     }
 }

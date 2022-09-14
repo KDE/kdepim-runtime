@@ -53,7 +53,7 @@ void VCardDirResource::aboutToQuit()
     VcardDirResourceSettings::self()->save();
 }
 
-bool VCardDirResource::loadAddressees()
+void VCardDirResource::loadAddressees()
 {
     mAddressees.clear();
 
@@ -78,8 +78,6 @@ bool VCardDirResource::loadAddressees()
     }
 
     Q_EMIT status(Idle);
-
-    return true;
 }
 
 bool VCardDirResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)

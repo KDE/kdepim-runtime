@@ -73,7 +73,7 @@ static QString settingsToUrl(const QWizard *wizard, const QString &protocol)
     if (!service->property(QStringLiteral("X-DavGroupware-Provider")).isNull()) {
         providerName = service->property(QStringLiteral("X-DavGroupware-Provider")).toString();
     }
-    QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
+    const QString localPath = wizard->field(QStringLiteral("installationPath")).toString();
     if (!localPath.isEmpty()) {
         if (providerName == QLatin1String("davical")) {
             if (!localPath.endsWith(QLatin1Char('/'))) {
