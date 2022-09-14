@@ -24,8 +24,8 @@
 
 EwsMtaConfigDialog::EwsMtaConfigDialog(EwsMtaResource *parentResource, WId wId)
     : QDialog()
-    , mParentResource(parentResource)
     , mButtonBox(new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this))
+    , mParentResource(parentResource)
 {
     if (wId) {
         setAttribute(Qt::WA_NativeWindow, true);
