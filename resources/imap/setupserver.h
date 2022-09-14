@@ -56,7 +56,7 @@ public:
 
     Q_REQUIRED_RESULT bool shouldClearCache() const;
 
-private Q_SLOTS:
+private:
     /**
      * Call this if you want the settings saved from this page.
      */
@@ -65,8 +65,6 @@ private Q_SLOTS:
     void slotEncryptionRadioChanged();
     void slotSubcriptionCheckboxChanged();
     void slotShowServerInfo();
-
-private:
     void readSettings();
     void populateDefaultAuthenticationOptions();
 

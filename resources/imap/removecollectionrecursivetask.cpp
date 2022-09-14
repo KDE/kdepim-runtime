@@ -46,7 +46,7 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList<KIMAP::MailB
     // we use a map here that has the level of nesting as key.
     QMultiMap<int, KIMAP::MailBoxDescriptor> foldersToDelete;
 
-    for (int i = 0; i < descriptors.size(); ++i) {
+    for (int i = 0, total = descriptors.size(); i < total; ++i) {
         const KIMAP::MailBoxDescriptor descriptor = descriptors[i];
 
         if (descriptor.name == mailBox || descriptor.name.startsWith(mailBox + descriptor.separator)) { // a sub folder to delete

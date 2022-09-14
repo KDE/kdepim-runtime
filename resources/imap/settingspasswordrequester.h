@@ -27,12 +27,12 @@ private Q_SLOTS:
     void askUserInput(const QString &serverError);
     void onPasswordRequestCompleted(const QString &password, bool userRejected);
     void onDialogDestroyed();
-    void slotCancelClicked();
-    void slotYesClicked();
-    void slotNoClicked();
     void onSettingsDialogFinished(int result);
 
 private:
+    void slotCancelClicked();
+    void slotYesClicked();
+    void slotNoClicked();
     QString requestManualAuth(bool *userRejected);
 
     ImapResourceBase *const m_resource;

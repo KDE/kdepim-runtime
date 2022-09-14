@@ -85,7 +85,6 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     : ResourceBase(id)
     , m_pool(new SessionPool(2, this))
     , m_settings(nullptr)
-    , m_idle(nullptr)
 {
     QTimer::singleShot(0, this, &ImapResourceBase::updateResourceName);
 

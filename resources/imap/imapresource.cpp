@@ -51,7 +51,7 @@ QString ImapResource::defaultName() const
 
 QByteArray ImapResource::clientId() const
 {
-    return "Kontact IMAP Resource";
+    return QByteArrayLiteral("Kontact IMAP Resource");
 }
 
 QDialog *ImapResource::createConfigureDialog(WId windowId)

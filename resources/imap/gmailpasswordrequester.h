@@ -27,10 +27,8 @@ public:
     void requestPassword(RequestType request, const QString &serverError) override;
     void cancelPasswordRequests() override;
 
-private Q_SLOTS:
-    void onTokenRequestFinished(KGAPI2::AccountPromise *promise);
-
 private:
+    void onTokenRequestFinished(KGAPI2::AccountPromise *promise);
     ImapResourceBase *const mResource;
     QPointer<KGAPI2::AccountPromise> mPendingPromise;
 };

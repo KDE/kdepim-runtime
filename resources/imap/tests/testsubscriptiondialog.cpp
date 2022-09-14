@@ -20,10 +20,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    QString server = app.arguments().at(1);
-    int port = app.arguments().at(2).toInt();
-    QString user = app.arguments().at(3);
-    QString password = app.arguments().at(4);
+    const QString server = app.arguments().at(1);
+    const int port = app.arguments().at(2).toInt();
+    const QString user = app.arguments().at(3);
+    const QString password = app.arguments().at(4);
 
     qDebug() << "Querying:" << server << port << user << password;
     qDebug();

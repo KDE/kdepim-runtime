@@ -28,6 +28,6 @@ protected:
     QString defaultName() const override;
     QByteArray clientId() const override;
 
-private Q_SLOTS:
+private:
     void onConfigurationDone(int result);
 };
