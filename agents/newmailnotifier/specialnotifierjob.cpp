@@ -164,7 +164,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         }
         notification->setActions(lstActions);
 
-        connect(notification, qOverload<unsigned int>(&KNotification::activated), this, &SpecialNotifierJob::slotActivateNotificationAction);
+        connect(notification, &KNotification::activated, this, &SpecialNotifierJob::slotActivateNotificationAction);
         connect(notification, &KNotification::closed, this, &SpecialNotifierJob::deleteLater);
 
         notification->sendEvent();
