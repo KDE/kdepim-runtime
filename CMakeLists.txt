@@ -85,7 +85,7 @@ set(KGAPI_LIB_VERSION "5.21.40")
 set(LIBKDEPIM_LIB_VERSION "5.21.40")
 set(KLDAP_LIB_VERSION "5.21.40")
 
-set( SharedMimeInfo_MINIMUM_VERSION "2.0" )
+set( SharedMimeInfo_MINIMUM_VERSION "1.3" )
 find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 
 find_package(Sasl2)
