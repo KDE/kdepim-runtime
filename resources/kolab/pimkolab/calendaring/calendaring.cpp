@@ -6,7 +6,6 @@
 
 #include "calendaring.h"
 #include "pimkolab_debug.h"
-#include <kcalendarcore_version.h>
 
 #include <KCalendarCore/Todo>
 #include <QDate>
@@ -89,11 +88,7 @@ std::vector<Kolab::Event> Calendar::getEvents(const Kolab::cDateTime &start, con
     const QTimeZone tz = s.timeZone();
     KCalendarCore::Event::List list = mCalendar->events(s.date(), e.date(), tz, true);
     if (sort) {
-#if KCALENDARCORE_VERSION < QT_VERSION_CHECK(5, 95, 0)
-        list = mCalendar->sortEvents(list, KCalendarCore::EventSortStartDate, KCalendarCore::SortDirectionAscending);
-#else
         list = mCalendar->sortEvents(std::move(list), KCalendarCore::EventSortStartDate, KCalendarCore::SortDirectionAscending);
-#endif
     }
     std::vector<Kolab::Event> eventlist;
     for (const KCalendarCore::Event::Ptr &event : std::as_const(list)) {
