@@ -10,7 +10,6 @@
 #include "conversion/kabcconversion.h"
 #include "conversion/kcalconversion.h"
 #include "conversion/kolabconversion.h"
-#include "kolabformat/kolabobject.h"
 #include "kolabformat/xmlobject.h"
 
 #include "kolabformat/v2helpers.h"

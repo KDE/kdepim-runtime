@@ -7,7 +7,6 @@
 #include "ewsfetchcontactdetailjob.h"
 #include "ewsgetitemrequest.h"
 #include "ewsitemshape.h"
-#include "ewsmailbox.h"
 #include "ewsresource_debug.h"
 
 using namespace Akonadi;

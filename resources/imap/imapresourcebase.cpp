@@ -66,8 +66,6 @@
 
 #include "imapflags.h"
 #include "sessionpool.h"
-#include "sessionuiproxy.h"
-#include "settingspasswordrequester.h"
 
 #include "resourceadaptor.h"
 

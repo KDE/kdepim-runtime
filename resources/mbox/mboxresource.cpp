@@ -19,9 +19,7 @@
 
 #include <KMime/Message>
 
-#include "compactpage.h"
 #include "deleteditemsattribute.h"
-#include "lockmethodpage.h"
 #include "settingsadaptor.h"
 
 #include <QDBusConnection>

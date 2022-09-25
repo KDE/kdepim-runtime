@@ -9,7 +9,6 @@
 #include <Akonadi/Collection>
 
 #include "ewsid.h"
-#include "ewsitemhandler.h"
 #include "ewsresource.h"
 #include "ewstagstore.h"
 #include "ewsupdatefolderrequest.h"

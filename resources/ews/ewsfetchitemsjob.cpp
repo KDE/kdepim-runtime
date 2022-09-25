@@ -14,7 +14,6 @@
 #include "ewsclient.h"
 #include "ewsfetchitemdetailjob.h"
 #include "ewsitemhandler.h"
-#include "ewsmailbox.h"
 #include "ewsresource.h"
 #include "ewsresource_debug.h"
 #include "ewssyncfolderitemsrequest.h"

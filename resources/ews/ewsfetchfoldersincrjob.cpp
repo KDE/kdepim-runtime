@@ -18,7 +18,6 @@
 
 #include "ewsclient.h"
 #include "ewseffectiverights.h"
-#include "ewsgetfolderrequest.h"
 #include "ewsresource_debug.h"
 #include "ewssyncfolderhierarchyrequest.h"
 

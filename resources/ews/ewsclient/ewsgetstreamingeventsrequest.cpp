@@ -9,7 +9,6 @@
 #include <QTemporaryFile>
 
 #include "ewsclient_debug.h"
-#include "ewsxml.h"
 
 static constexpr uint respChunkTimeout = 250; /* ms */
 

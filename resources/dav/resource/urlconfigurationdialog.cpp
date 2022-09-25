@@ -6,13 +6,14 @@
 
 #include "urlconfigurationdialog.h"
 
-#include "settings.h"
 #include <KDAV/DavCollectionModifyJob>
 #include <KDAV/DavCollectionsFetchJob>
 
 #include <KAuthorized>
+#include <KConfigGroup>
 #include <KLocalizedString>
 #include <KMessageBox>
+#include <KSharedConfig>
 
 #include <QButtonGroup>
 #include <QStandardItem>

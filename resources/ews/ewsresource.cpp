@@ -49,7 +49,6 @@
 #include "ewssubscriptionmanager.h"
 #include "ewssyncstateattribute.h"
 #include "ewsupdatefolderrequest.h"
-#include "ewsupdateitemrequest.h"
 #include "tags/ewsglobaltagsreadjob.h"
 #include "tags/ewsglobaltagswritejob.h"
 #include "tags/ewstagstore.h"

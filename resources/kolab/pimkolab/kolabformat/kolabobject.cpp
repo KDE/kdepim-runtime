@@ -9,8 +9,6 @@
 #include "pimkolab_debug.h"
 #include "v2helpers.h"
 
-#include "kolabbase.h"
-
 #include <Akonadi/NoteUtils>
 
 #include <conversion/commonconversion.h>

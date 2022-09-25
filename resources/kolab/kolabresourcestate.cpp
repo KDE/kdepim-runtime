@@ -10,7 +10,6 @@
 
 #include <imapresource.h>
 
-#include "kolabresource_debug.h"
 #include <Akonadi/CachePolicy>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/MessageParts>

@@ -6,7 +6,6 @@
 
 #include "datetimeutils.h"
 
-#include "conversion/commonconversion.h"
 #include <QTimeZone>
 
 namespace Kolab

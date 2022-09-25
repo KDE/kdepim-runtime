@@ -10,7 +10,6 @@
 #include <KDAV/DavPrincipalSearchJob>
 #include <KDAV/ProtocolInfo>
 
-#include "davresource_debug.h"
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <QIcon>

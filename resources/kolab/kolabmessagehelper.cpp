@@ -6,7 +6,6 @@
 
 #include "kolabmessagehelper.h"
 
-#include "pimkolab/kolabformat/kolabdefinitions.h"
 #include <collectionannotationsattribute.h>
 
 #include "kolabhelpers.h"

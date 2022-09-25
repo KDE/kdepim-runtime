@@ -6,7 +6,6 @@
 
 #include "ewsgeteventsrequest.h"
 #include "ewsclient_debug.h"
-#include "ewsxml.h"
 
 EwsGetEventsRequest::EwsGetEventsRequest(EwsClient &client, QObject *parent)
     : EwsEventRequestBase(client, QStringLiteral("GetEvents"), parent)

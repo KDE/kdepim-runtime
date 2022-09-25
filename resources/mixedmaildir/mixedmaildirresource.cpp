@@ -22,7 +22,6 @@
 #include "filestore/collectionfetchjob.h"
 #include "filestore/collectionmodifyjob.h"
 #include "filestore/collectionmovejob.h"
-#include "filestore/entitycompactchangeattribute.h"
 #include "filestore/itemcreatejob.h"
 #include "filestore/itemdeletejob.h"
 #include "filestore/itemfetchjob.h"

@@ -7,7 +7,6 @@
 
 #include "movecollectiontask.h"
 
-#include "imapresource_debug.h"
 #include <KLocalizedString>
 
 #include <KIMAP/RenameJob>

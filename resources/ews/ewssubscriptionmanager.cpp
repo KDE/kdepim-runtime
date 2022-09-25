@@ -7,7 +7,6 @@
 #include "ewssubscriptionmanager.h"
 
 #include "ewsgeteventsrequest.h"
-#include "ewsgetfolderrequest.h"
 #include "ewsgetstreamingeventsrequest.h"
 #include "ewsresource_debug.h"
 #include "ewssettings.h"
