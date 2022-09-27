@@ -16,12 +16,14 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 
+#include <KWindowConfig>
 #include <QDialogButtonBox>
 #include <QPointer>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QStringList>
 #include <QVBoxLayout>
+#include <QWindow>
 
 ConfigDialog::ConfigDialog(QWidget *parent)
     : QDialog(parent)
@@ -87,17 +89,17 @@ ConfigDialog::~ConfigDialog()
 
 void ConfigDialog::readConfig()
 {
-    KConfigGroup grp(KSharedConfig::openStateConfig(), "ConfigDialog");
-    const QSize size = grp.readEntry("Size", QSize(300, 200));
-    if (size.isValid()) {
-        resize(size);
-    }
+    create(); // ensure a window is created
+    windowHandle()->resize(QSize(300, 200));
+    KConfigGroup group(KSharedConfig::openStateConfig(), "ConfigDialog");
+    KWindowConfig::restoreWindowSize(windowHandle(), group);
+    resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
 void ConfigDialog::writeConfig()
 {
     KConfigGroup grp(KSharedConfig::openStateConfig(), "ConfigDialog");
-    grp.writeEntry("Size", size());
+    KWindowConfig::saveWindowSize(windowHandle(), grp);
     grp.sync();
 }
 

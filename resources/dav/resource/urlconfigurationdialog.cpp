@@ -15,10 +15,12 @@
 #include <KMessageBox>
 #include <KSharedConfig>
 
+#include <KWindowConfig>
 #include <QButtonGroup>
 #include <QStandardItem>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
+#include <QWindow>
 
 UrlConfigurationDialog::UrlConfigurationDialog(QWidget *parent)
     : QDialog(parent)
@@ -70,17 +72,17 @@ UrlConfigurationDialog::~UrlConfigurationDialog()
 
 void UrlConfigurationDialog::readConfig()
 {
-    KConfigGroup grp(KSharedConfig::openStateConfig(), "UrlConfigurationDialog");
-    const QSize size = grp.readEntry("Size", QSize(300, 200));
-    if (size.isValid()) {
-        resize(size);
-    }
+    create(); // ensure a window is created
+    windowHandle()->resize(QSize(300, 200));
+    KConfigGroup group(KSharedConfig::openStateConfig(), "UrlConfigurationDialog");
+    KWindowConfig::restoreWindowSize(windowHandle(), group);
+    resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
 void UrlConfigurationDialog::writeConfig()
 {
     KConfigGroup grp(KSharedConfig::openStateConfig(), "UrlConfigurationDialog");
-    grp.writeEntry("Size", size());
+    KWindowConfig::saveWindowSize(windowHandle(), grp);
     grp.sync();
 }
 

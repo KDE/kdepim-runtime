@@ -11,10 +11,12 @@
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KSharedConfig>
+#include <KWindowConfig>
 #include <QDialogButtonBox>
 #include <QPainter>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QWindow>
 
 namespace
 {
@@ -45,16 +47,16 @@ ServerInfoDialog::~ServerInfoDialog()
 void ServerInfoDialog::writeConfig()
 {
     KConfigGroup group(KSharedConfig::openStateConfig(), myServerInfoDialogConfigGroupName);
-    group.writeEntry("Size", size());
+    KWindowConfig::saveWindowSize(windowHandle(), group);
 }
 
 void ServerInfoDialog::readConfig()
 {
+    create(); // ensure a window is created
+    windowHandle()->resize(QSize(500, 300));
     KConfigGroup group(KSharedConfig::openStateConfig(), myServerInfoDialogConfigGroupName);
-    const QSize sizeDialog = group.readEntry("Size", QSize(500, 300));
-    if (sizeDialog.isValid()) {
-        resize(sizeDialog);
-    }
+    KWindowConfig::restoreWindowSize(windowHandle(), group);
+    resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
 ServerInfoTextBrowser::ServerInfoTextBrowser(QWidget *parent)

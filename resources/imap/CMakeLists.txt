@@ -120,6 +120,7 @@ target_link_libraries(imapresource
     KF5::AkonadiAgentBase
     KF5::I18n
     KF5::WindowSystem
+    KF5::ConfigGui
     akonadi-singlefileresource
     KF5::Libkdepim
     ${kdepim-keychain_lib}
@@ -174,6 +175,8 @@ target_link_libraries(akonadi_imap_resource
     KF5::I18n
     imapresource
     KF5::TextWidgets
+    KF5::ConfigGui
+
     folderarchivesettings
     KPim::GAPICore
 )

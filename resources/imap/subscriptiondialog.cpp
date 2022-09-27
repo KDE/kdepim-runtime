@@ -27,10 +27,12 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 
+#include <KWindowConfig>
 #include <QHeaderView>
 #include <QLabel>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <QWindow>
 
 SubscriptionDialog::SubscriptionDialog(QWidget *parent, SubscriptionDialog::SubscriptionDialogOptions option)
     : QDialog(parent)
@@ -107,20 +109,17 @@ void SubscriptionDialog::slotSearchPattern(const QString &pattern)
 
 void SubscriptionDialog::readConfig()
 {
+    create(); // ensure a window is created
+    windowHandle()->resize(QSize(500, 300));
     KConfigGroup group(KSharedConfig::openStateConfig(), "SubscriptionDialog");
-
-    const QSize size = group.readEntry("Size", QSize());
-    if (size.isValid()) {
-        resize(size);
-    } else {
-        resize(500, 300);
-    }
+    KWindowConfig::restoreWindowSize(windowHandle(), group);
+    resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
 void SubscriptionDialog::writeConfig()
 {
     KConfigGroup group(KSharedConfig::openStateConfig(), "SubscriptionDialog");
-    group.writeEntry("Size", size());
+    KWindowConfig::saveWindowSize(windowHandle(), group);
     group.sync();
 }
 
