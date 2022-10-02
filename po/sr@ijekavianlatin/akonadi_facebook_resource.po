@@ -1,0 +1,179 @@
+# Translation of akonadi_facebook_resource.po into Serbian.
+# Chusslove Illich <caslav.ilic@gmx.net>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: akonadi_facebook_resource\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2019-05-20 03:15+0200\n"
+"PO-Revision-Date: 2017-07-16 22:55+0200\n"
+"Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
+"Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
+"Language: sr@ijekavianlatin\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Environment: kde\n"
+
+#: birthdaylistjob.cpp:95 birthdaylistjob.cpp:101
+#, kde-format
+msgid "Failed to retrieve birthday calendar"
+msgstr "Ne mogu da dobavim kalendar rođendana."
+
+#: birthdaylistjob.cpp:146
+#, kde-format
+msgid "Failed to parse birthday calendar"
+msgstr "Ne mogu da raščlanim kalendar rođendana."
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, FacebookAgentSettingsWidget)
+#: facebookagentsettingswidget.ui:14
+#, kde-format
+msgid "Configuration"
+msgstr "Podešavanje"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: facebookagentsettingswidget.ui:26
+#, kde-format
+msgid "Account"
+msgstr "Nalog"
+
+#. i18n: ectx: property (text), widget (QLabel, loginStatusLbl)
+#: facebookagentsettingswidget.ui:32
+#, kde-format
+msgid "Login status: unknown"
+msgstr "Stanje prijave: nepoznato"
+
+#. i18n: ectx: property (text), widget (QPushButton, loginBtn)
+#: facebookagentsettingswidget.ui:39
+#, kde-format
+msgid "Login with Facebook"
+msgstr "Prijava preko Facebooka"
+
+#. i18n: ectx: property (text), widget (QPushButton, logoutBtn)
+#: facebookagentsettingswidget.ui:46
+#, kde-format
+msgid "Logout"
+msgstr "Odjavi me"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: facebookagentsettingswidget.ui:62
+#, kde-format
+msgid "Reminders"
+msgstr "Podsetnici"
+
+#. i18n: ectx: property (text), widget (QCheckBox, attendingReminderChkBox)
+#: facebookagentsettingswidget.ui:68
+#, kde-format
+msgid "Show reminders for events I'm attending"
+msgstr "Podsetnici za događaje kojima prisustvujem"
+
+#. i18n: ectx: property (text), widget (QCheckBox, maybeAttendingReminderChkBox)
+#: facebookagentsettingswidget.ui:78
+#, kde-format
+msgid "Show reminders for events I may be attending"
+msgstr "Podsetnici za događaje kojima možda prisustvujem"
+
+#. i18n: ectx: property (text), widget (QCheckBox, notAttendingReminderChkBox)
+#: facebookagentsettingswidget.ui:88
+#, kde-format
+msgid "Show reminders for events I'm not attending"
+msgstr "Podsetnici za događaje kojima ne prisustvujem"
+
+#. i18n: ectx: property (text), widget (QCheckBox, notRespondedReminderChkBox)
+#: facebookagentsettingswidget.ui:98
+#, kde-format
+msgid "Show reminders for events I have not responded to"
+msgstr "Podsetnici za događaje koji čekaju da odgovorim"
+
+#. i18n: ectx: property (text), widget (QCheckBox, birthdayReminderChkBox)
+#: facebookagentsettingswidget.ui:108
+#, kde-format
+msgid "Show reminders for friends' birthdays"
+msgstr "Podsetnici za rođendane prijatelja"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: facebookagentsettingswidget.ui:138
+#, kde-format
+msgid "Show event reminders"
+msgstr "Prikazuj podsetnike"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: facebookagentsettingswidget.ui:155
+#, kde-format
+msgid "hour(s) before"
+msgstr "sati pre"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: facebookagentsettingswidget.ui:162
+#, kde-format
+msgid "Show birthday reminders"
+msgstr "Prikazuj podsetnike za rođendane"
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: facebookagentsettingswidget.ui:172
+#, kde-format
+msgid "day(s) before"
+msgstr "dana pre"
+
+#: facebooksettingswidget.cpp:59
+#, kde-format
+msgid "Checking login status..."
+msgstr "Proveravam stanje prijave..."
+
+#: facebooksettingswidget.cpp:69
+#, kde-format
+msgid "Not logged in"
+msgstr "Nema prijave"
+
+#: facebooksettingswidget.cpp:73
+#, kde-format
+msgid "Logged in as <b>%1</b>"
+msgstr "Prijava kao <b>%1</b>"
+
+#: listjob.cpp:101
+#, kde-format
+msgid "Invalid response from server: JSON parsing error"
+msgstr "Loš odgovor sa servera: greška u raščlanjivanju JSONa"
+
+#: resource.cpp:35 resource.cpp:82
+#, kde-format
+msgid "Facebook"
+msgstr "Facebook"
+
+#: resource.cpp:87
+#, kde-format
+msgid "Events I'm Attending"
+msgstr "Događaji kojima prisustvujem"
+
+#: resource.cpp:88
+#, kde-format
+msgid "Events I'm not Attending"
+msgstr "Događaji kojima ne prisustvujem"
+
+#: resource.cpp:89
+#, kde-format
+msgid "Events I May Be Attending"
+msgstr "Događaji kojima možda prisustvujem"
+
+#: resource.cpp:90
+#, kde-format
+msgid "Events I have not Responded To"
+msgstr "Događaji koji čekaju da odgovorim"
+
+#: resource.cpp:91
+#, kde-format
+msgid "Friends' Birthdays"
+msgstr "Rođendani prijatelja"
+
+#: tokenjobs.cpp:303 tokenjobs.cpp:316 tokenjobs.cpp:413 tokenjobs.cpp:466
+#, kde-format
+msgid "Failed to open KWallet"
+msgstr "Ne mogu da otvorim K‑novčanik"
+
+#: tokenjobs.cpp:361
+#, kde-format
+msgid "Failed to obtain access token from Facebook"
+msgstr "Ne mogu da dobavim pristupni token sa Facebooka"

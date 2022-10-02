@@ -1,0 +1,181 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Alexander Potashev <aspotashev@gmail.com>, 2017.
+# Alexander Yavorsky <kekcuha@gmail.com>, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-01-27 03:07+0100\n"
+"PO-Revision-Date: 2018-10-04 11:20+0300\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: birthdaylistjob.cpp:78 birthdaylistjob.cpp:84
+#, kde-format
+msgid "Failed to retrieve birthday calendar"
+msgstr "Не удалось получить календарь дней рождения"
+
+#: birthdaylistjob.cpp:128
+#, kde-format
+msgid "Failed to parse birthday calendar"
+msgstr "Не удалось разобрать календарь дней рождения"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, FacebookAgentSettingsWidget)
+#: facebookagentsettingswidget.ui:14
+#, kde-format
+msgid "Configuration"
+msgstr "Настройка"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: facebookagentsettingswidget.ui:26
+#, kde-format
+msgid "Account"
+msgstr "Учётная запись"
+
+#. i18n: ectx: property (text), widget (QLabel, loginStatusLbl)
+#: facebookagentsettingswidget.ui:32
+#, kde-format
+msgid "Login status: unknown"
+msgstr "Состояние входа: неизвестно"
+
+#. i18n: ectx: property (text), widget (QPushButton, loginBtn)
+#: facebookagentsettingswidget.ui:39
+#, kde-format
+msgid "Login with Facebook"
+msgstr "Вход с учётной записью Facebook"
+
+#. i18n: ectx: property (text), widget (QPushButton, logoutBtn)
+#: facebookagentsettingswidget.ui:46
+#, kde-format
+msgid "Logout"
+msgstr "Выход"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: facebookagentsettingswidget.ui:62
+#, kde-format
+msgid "Reminders"
+msgstr "Напоминания"
+
+#. i18n: ectx: property (text), widget (QCheckBox, attendingReminderChkBox)
+#: facebookagentsettingswidget.ui:68
+#, kde-format
+msgid "Show reminders for events I'm attending"
+msgstr "Показывать напоминания о событиях с моим участием"
+
+#. i18n: ectx: property (text), widget (QCheckBox, maybeAttendingReminderChkBox)
+#: facebookagentsettingswidget.ui:78
+#, kde-format
+msgid "Show reminders for events I may be attending"
+msgstr "Показывать напоминания о событиях с моим возможным участием"
+
+#. i18n: ectx: property (text), widget (QCheckBox, notAttendingReminderChkBox)
+#: facebookagentsettingswidget.ui:88
+#, kde-format
+msgid "Show reminders for events I'm not attending"
+msgstr "Показывать напоминания о событиях без моего участия"
+
+#. i18n: ectx: property (text), widget (QCheckBox, notRespondedReminderChkBox)
+#: facebookagentsettingswidget.ui:98
+#, kde-format
+msgid "Show reminders for events I have not responded to"
+msgstr ""
+"Показывать напоминания о событиях, ответ об участии в которых мной ещё не дан"
+
+#. i18n: ectx: property (text), widget (QCheckBox, birthdayReminderChkBox)
+#: facebookagentsettingswidget.ui:108
+#, kde-format
+msgid "Show reminders for friends' birthdays"
+msgstr "Показывать напоминания о днях рождения друзей"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: facebookagentsettingswidget.ui:138
+#, kde-format
+msgid "Show event reminders"
+msgstr "Показывать напоминания о событиях"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: facebookagentsettingswidget.ui:155
+#, kde-format
+msgid "hour(s) before"
+msgstr "за час (часов) до начала"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: facebookagentsettingswidget.ui:162
+#, kde-format
+msgid "Show birthday reminders"
+msgstr "Показывать напоминания о днях рождения"
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: facebookagentsettingswidget.ui:172
+#, kde-format
+msgid "day(s) before"
+msgstr "за дня (дней) до начала"
+
+#: facebooksettingswidget.cpp:48
+#, kde-format
+msgid "Checking login status..."
+msgstr "Проверка состояния входа..."
+
+#: facebooksettingswidget.cpp:57
+#, kde-format
+msgid "Not logged in"
+msgstr "Вход не выполнен"
+
+#: facebooksettingswidget.cpp:61
+#, kde-format
+msgid "Logged in as <b>%1</b>"
+msgstr "Вход выполнен: <b>%1</b>"
+
+#: listjob.cpp:87
+#, kde-format
+msgid "Invalid response from server: JSON parsing error"
+msgstr "Некорректный ответ от сервера: ошибка разбора JSON"
+
+#: resource.cpp:24 resource.cpp:71
+#, kde-format
+msgid "Facebook"
+msgstr "Facebook"
+
+#: resource.cpp:75
+#, kde-format
+msgid "Events I'm Attending"
+msgstr "События с моим участием"
+
+#: resource.cpp:76
+#, kde-format
+msgid "Events I'm not Attending"
+msgstr "События без моего участия"
+
+#: resource.cpp:77
+#, kde-format
+msgid "Events I May Be Attending"
+msgstr "События с моим возможным участием"
+
+#: resource.cpp:78
+#, kde-format
+msgid "Events I have not Responded To"
+msgstr "События, ответ об участии в которых мной ещё не дан"
+
+#: resource.cpp:79
+#, kde-format
+msgid "Friends' Birthdays"
+msgstr "Дни рождения друзей"
+
+#: tokenjobs.cpp:287 tokenjobs.cpp:299 tokenjobs.cpp:392 tokenjobs.cpp:445
+#, kde-format
+msgid "Failed to open KWallet"
+msgstr "Не удалось открыть бумажник KWallet"
+
+#: tokenjobs.cpp:343
+#, kde-format
+msgid "Failed to obtain access token from Facebook"
+msgstr "Не удалось получить токен доступа от Facebook"

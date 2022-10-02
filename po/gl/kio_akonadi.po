@@ -1,0 +1,48 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Xosé <xosecalvo@gmail.com>, 2009.
+# Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: kio_akonadi\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2021-06-06 00:19+0000\n"
+"PO-Revision-Date: 2015-02-21 14:31+0100\n"
+"Last-Translator: Adrián Chaves Fernández <adriyetichaves@gmail.com>\n"
+"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Adrián Chaves Fernández"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "adrian@chaves.io"
+
+#: akonadislave.cpp:49
+#, kde-format
+msgid "Protocol name"
+msgstr "Nome do protocolo"
+
+#: akonadislave.cpp:50 akonadislave.cpp:51
+#, kde-format
+msgid "Socket name"
+msgstr "Nome do socket"
+
+#: akonadislave.cpp:88 akonadislave.cpp:115 akonadislave.cpp:135
+#, kde-format
+msgid "No such item."
+msgstr "Non existe ese elemento."
+
+#: akonadislave.cpp:172 akonadislave.cpp:179
+#, kde-format
+msgid "No such collection."
+msgstr "Non hai tal colección."
