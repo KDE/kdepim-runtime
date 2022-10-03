@@ -5,7 +5,6 @@
 */
 
 #include "gmailpasswordrequester.h"
-#include "imapresource_debug.h"
 #include "imapresourcebase.h"
 #include "settings.h"
 

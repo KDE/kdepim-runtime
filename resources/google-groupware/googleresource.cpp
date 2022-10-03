@@ -13,7 +13,6 @@
 #include "googlesettingsdialog.h"
 #include "settingsadaptor.h"
 
-#include "contacthandler.h"
 #include "taskhandler.h"
 
 #include "defaultreminderattribute.h"

@@ -9,7 +9,6 @@
 
 #include "imapaccount.h"
 #include "imapresource.h"
-#include "noselectattribute.h"
 #include "sessionpool.h"
 #include "settings.h"
 
