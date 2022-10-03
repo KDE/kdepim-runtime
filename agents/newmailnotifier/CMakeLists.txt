@@ -78,6 +78,8 @@ kcoreaddons_add_plugin(newmailnotifierconfig
 target_sources(newmailnotifierconfig PRIVATE
     newmailnotifiersettingswidget.cpp
     newmailnotifierselectcollectionwidget.cpp
+    newmailnotifiersettingswidget.h
+    newmailnotifierselectcollectionwidget.h
     ${newmailnotifier_common_SRCS}
     )
 
