@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2021-11-01 10:38+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -449,7 +449,7 @@ msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
 "De te verwijderen map vinden is mislukt, de mappenlijst wordt hersteld."
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Ophalen van item opnieuw gestart."

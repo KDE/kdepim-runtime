@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2018-07-10 14:33+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
@@ -420,7 +420,7 @@ msgstr "刪除資料夾失敗，將回復資料夾清單。"
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "找不到要刪除的資料夾，將回復資料夾清單。"
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "重新啟動項目擷取。"

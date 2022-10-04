@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2022-10-02 15:49\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -416,7 +416,7 @@ msgstr "删除文件夹失败，还原文件夹列表。"
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "未找到要删除的文件夹，还原文件夹列表。"
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "正在重启项目获取。"

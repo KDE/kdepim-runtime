@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2020-07-31 19:15+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -435,7 +435,7 @@ msgstr "Kunne ikke slette mappen, genskaber mappeliste."
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Kunne ikke finde mappen der skulle slettes, genskaber mappeliste."
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Genstarter hentning af element."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2020-01-08 08:39+0100\n"
 "Last-Translator: Burkhard Lück <lueck@hube-lueck.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -464,7 +464,7 @@ msgstr ""
 "Der zu löschende Ordner kann nicht gefunden werden, die Ordnerliste wird "
 "wiederhergestellt."
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Abholen des Elements wird neu gestartet."

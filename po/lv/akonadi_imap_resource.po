@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2012-07-07 22:46+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -440,7 +440,7 @@ msgstr "Neizdevās nodzēst mapi, atjauno mapju sarakstu."
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Neizdevās atrast dzēšamo mapi, atjauno mapju sarakstu."
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr ""

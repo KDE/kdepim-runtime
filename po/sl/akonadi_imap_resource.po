@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-04 00:45+0000\n"
 "PO-Revision-Date: 2022-06-05 07:15+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -445,7 +445,7 @@ msgstr "Brisanje mape ni uspelo, obnavljanje seznama map."
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Iskanje mape za izbris ni uspelo, obnavljanje seznama map."
 
-#: resourcestate.cpp:275
+#: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
 msgstr "Ponovno zaganjanje pridobivanja predmetov."
