@@ -29,7 +29,6 @@ QString Note::journalToXML(const KCalendarCore::Journal::Ptr &journal)
 }
 
 Note::Note(const KCalendarCore::Journal::Ptr &journal)
-    : mRichText(false)
 {
     if (journal) {
         setFields(journal);
@@ -80,7 +79,7 @@ bool Note::richText() const
 
 bool Note::loadAttribute(QDomElement &element)
 {
-    QString tagName = element.tagName();
+    const QString tagName = element.tagName();
     if (tagName == QLatin1String("summary")) {
         setSummary(element.text());
     } else if (tagName == QLatin1String("foreground-color")) {

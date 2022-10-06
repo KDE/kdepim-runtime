@@ -31,9 +31,6 @@ Task::Task(const QString &tz, const KCalendarCore::Todo::Ptr &task)
     : Incidence(tz, task)
     , mPercentCompleted(0)
     , mStatus(KCalendarCore::Incidence::StatusNone)
-    , mHasStartDate(false)
-    , mHasDueDate(false)
-    , mHasCompletedDate(false)
 {
     if (task) {
         setFields(task);

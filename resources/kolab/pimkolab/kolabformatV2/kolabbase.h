@@ -151,7 +151,8 @@ protected:
     QTimeZone mTimeZone;
 
     // KPilot synchronization stuff
-    bool mHasPilotSyncId, mHasPilotSyncStatus;
+    bool mHasPilotSyncId = false;
+    bool mHasPilotSyncStatus = false;
     unsigned long mPilotSyncId;
     int mPilotSyncStatus;
 };

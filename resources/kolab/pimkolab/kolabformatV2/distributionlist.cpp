@@ -53,7 +53,7 @@ void KolabV2::DistributionList::loadDistrListMember(const QDomElement &element)
         }
         if (n.isElement()) {
             QDomElement e = n.toElement();
-            QString tagName = e.tagName();
+            const QString tagName = e.tagName();
             if (tagName == QLatin1String("display-name")) {
                 member.displayName = e.text();
             } else if (tagName == QLatin1String("smtp-address")) {

@@ -80,6 +80,6 @@ protected:
     QString mSummary;
     QColor mBackgroundColor;
     QColor mForegroundColor;
-    bool mRichText;
+    bool mRichText = false;
 };
 }

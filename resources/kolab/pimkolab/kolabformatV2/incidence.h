@@ -135,9 +135,9 @@ protected:
     QString mLocation;
     Email mOrganizer;
     QDateTime mStartDate;
-    FloatingStatus mFloatingStatus;
+    FloatingStatus mFloatingStatus = Unset;
     float mAlarm = 0.0;
-    bool mHasAlarm;
+    bool mHasAlarm = false;
     Recurrence mRecurrence;
     QList<Attendee> mAttendees;
     QList<KCalendarCore::Alarm::Ptr> mAlarms;
@@ -152,6 +152,6 @@ protected:
 
     // This is the KCal priority, not the Kolab priority.
     // See kcalPriorityToKolab() and kolabPrioritytoKCal().
-    int mPriority;
+    int mPriority = 0;
 };
 }

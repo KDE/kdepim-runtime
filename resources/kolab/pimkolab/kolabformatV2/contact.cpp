@@ -45,7 +45,6 @@ Contact::Contact(const KContacts::Addressee *addr)
 
 // loading (xml->addressee)
 Contact::Contact(const QString &xml)
-    : mHasGeo(false)
 {
     load(xml);
 }

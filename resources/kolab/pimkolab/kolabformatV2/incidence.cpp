@@ -21,9 +21,6 @@ using namespace KolabV2;
 
 Incidence::Incidence(const QString &tz, const KCalendarCore::Incidence::Ptr &incidence)
     : KolabBase(tz)
-    , mFloatingStatus(Unset)
-    , mHasAlarm(false)
-    , mPriority(0)
 {
     Q_UNUSED(incidence)
 }
@@ -153,7 +150,7 @@ bool Incidence::loadAttendeeAttribute(QDomElement &element, Attendee &attendee)
         }
         if (n.isElement()) {
             QDomElement e = n.toElement();
-            QString tagName = e.tagName();
+            const QString tagName = e.tagName();
 
             if (tagName == QLatin1String("display-name")) {
                 attendee.displayName = e.text();

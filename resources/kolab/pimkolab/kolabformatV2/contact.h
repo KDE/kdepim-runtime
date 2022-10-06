@@ -302,7 +302,7 @@ private:
     QString mPreferredAddress;
     float mLatitude;
     float mLongitude;
-    bool mHasGeo;
+    bool mHasGeo = false;
     struct Custom {
         QString app;
         QString name;

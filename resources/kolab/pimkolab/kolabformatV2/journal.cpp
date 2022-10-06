@@ -70,7 +70,7 @@ QDateTime Journal::endDate() const
 
 bool Journal::loadAttribute(QDomElement &element)
 {
-    QString tagName = element.tagName();
+    const QString tagName = element.tagName();
 
     if (tagName == QLatin1String("summary")) {
         setSummary(element.text());

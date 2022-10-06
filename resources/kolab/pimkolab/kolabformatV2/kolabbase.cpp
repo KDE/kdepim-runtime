@@ -20,8 +20,6 @@ KolabBase::KolabBase(const QString &tz)
     : mCreationDate(QDateTime::currentDateTime())
     , mLastModified(QDateTime::currentDateTimeUtc())
     , mSensitivity(Public)
-    , mHasPilotSyncId(false)
-    , mHasPilotSyncStatus(false)
 {
     // unlike the previously used KTimeZone here, QTimeZone defaults to local time zone if tz.isEmpty()
     // we therefore force it to invalid, which however is unsafe to use (unlike KTimeZone)

@@ -94,12 +94,12 @@ protected:
     KCalendarCore::Incidence::Status mStatus;
     QString mParent;
 
-    bool mHasStartDate;
+    bool mHasStartDate = false;
 
-    bool mHasDueDate;
+    bool mHasDueDate = false;
     QDateTime mDueDate;
 
-    bool mHasCompletedDate;
+    bool mHasCompletedDate = false;
     QDateTime mCompletedDate;
 };
 }

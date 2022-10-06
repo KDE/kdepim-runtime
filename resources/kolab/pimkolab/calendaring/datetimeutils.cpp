@@ -12,7 +12,7 @@ namespace Kolab
 {
 namespace DateTimeUtils
 {
-KOLAB_EXPORT std::string getLocalTimezone()
+std::string getLocalTimezone()
 {
     const auto tz = QTimeZone::systemTimeZoneId();
     return tz.toStdString();
