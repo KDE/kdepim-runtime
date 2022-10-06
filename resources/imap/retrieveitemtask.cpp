@@ -30,7 +30,7 @@ void RetrieveItemTask::doStart(KIMAP::Session *session)
     const QString mailBox = mailBoxForCollection(item().parentCollection());
     m_uid = item().remoteId().toLongLong();
 
-    if (m_uid == 0) {
+    if (m_uid <= 0) {
         qCWarning(IMAPRESOURCE_LOG) << "Remote id is " << item().remoteId();
         cancelTask(i18n("Remote id is empty or invalid"));
         return;
