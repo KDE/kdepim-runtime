@@ -7,7 +7,6 @@
 
 #include "kolabformat/errorhandler.h"
 #include "kolabformat/kolabobject.h"
-#include "pimkolab_debug.h"
 #include <QFile>
 #include <QString>
 #include <iostream>
