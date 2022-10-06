@@ -12,9 +12,7 @@ EwsGetEventsRequest::EwsGetEventsRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsGetEventsRequest::~EwsGetEventsRequest()
-{
-}
+EwsGetEventsRequest::~EwsGetEventsRequest() = default;
 
 void EwsGetEventsRequest::start()
 {

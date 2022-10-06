@@ -18,9 +18,7 @@ EwsRequest::EwsRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsRequest::~EwsRequest()
-{
-}
+EwsRequest::~EwsRequest() = default;
 
 void EwsRequest::doSend()
 {

@@ -15,9 +15,7 @@ EwsUnsubscribeRequest::EwsUnsubscribeRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsUnsubscribeRequest::~EwsUnsubscribeRequest()
-{
-}
+EwsUnsubscribeRequest::~EwsUnsubscribeRequest() = default;
 
 void EwsUnsubscribeRequest::start()
 {

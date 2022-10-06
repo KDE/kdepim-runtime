@@ -12,9 +12,7 @@ EwsMoveItemRequest::EwsMoveItemRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsMoveItemRequest::~EwsMoveItemRequest()
-{
-}
+EwsMoveItemRequest::~EwsMoveItemRequest() = default;
 
 void EwsMoveItemRequest::start()
 {

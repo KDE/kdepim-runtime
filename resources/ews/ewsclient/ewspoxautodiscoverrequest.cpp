@@ -29,9 +29,7 @@ EwsPoxAutodiscoverRequest::EwsPoxAutodiscoverRequest(const QUrl &url, const QStr
 {
 }
 
-EwsPoxAutodiscoverRequest::~EwsPoxAutodiscoverRequest()
-{
-}
+EwsPoxAutodiscoverRequest::~EwsPoxAutodiscoverRequest() = default;
 
 void EwsPoxAutodiscoverRequest::doSend()
 {

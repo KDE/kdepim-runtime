@@ -12,9 +12,7 @@ EwsMoveFolderRequest::EwsMoveFolderRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsMoveFolderRequest::~EwsMoveFolderRequest()
-{
-}
+EwsMoveFolderRequest::~EwsMoveFolderRequest() = default;
 
 void EwsMoveFolderRequest::start()
 {

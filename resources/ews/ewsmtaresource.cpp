@@ -10,7 +10,6 @@
 
 #include "ewsmtaconfigdialog.h"
 #include "ewsmtasettings.h"
-#include "ewsresource_debug.h"
 #include "ewsresourceinterface.h"
 #include <KLocalizedString>
 #include <KMime/Message>

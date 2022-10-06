@@ -21,9 +21,7 @@ EwsGetStreamingEventsRequest::EwsGetStreamingEventsRequest(EwsClient &client, QO
     connect(&mRespTimer, &QTimer::timeout, this, &EwsGetStreamingEventsRequest::requestDataTimeout);
 }
 
-EwsGetStreamingEventsRequest::~EwsGetStreamingEventsRequest()
-{
-}
+EwsGetStreamingEventsRequest::~EwsGetStreamingEventsRequest() = default;
 
 void EwsGetStreamingEventsRequest::start()
 {

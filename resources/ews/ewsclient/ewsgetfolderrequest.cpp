@@ -15,9 +15,7 @@ EwsGetFolderRequest::EwsGetFolderRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsGetFolderRequest::~EwsGetFolderRequest()
-{
-}
+EwsGetFolderRequest::~EwsGetFolderRequest() = default;
 
 void EwsGetFolderRequest::setFolderIds(const EwsId::List &ids)
 {

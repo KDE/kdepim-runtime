@@ -15,9 +15,7 @@ EwsItemBasePrivate::EwsItemBasePrivate()
     qRegisterMetaType<EwsItemBasePrivate::PropertyHash>();
 }
 
-EwsItemBasePrivate::~EwsItemBasePrivate()
-{
-}
+EwsItemBasePrivate::~EwsItemBasePrivate() = default;
 
 EwsItemBase::EwsItemBase(const QSharedDataPointer<EwsItemBasePrivate> &priv)
     : d(priv)

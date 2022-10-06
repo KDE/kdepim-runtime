@@ -12,9 +12,7 @@ EwsGetItemRequest::EwsGetItemRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsGetItemRequest::~EwsGetItemRequest()
-{
-}
+EwsGetItemRequest::~EwsGetItemRequest() = default;
 
 void EwsGetItemRequest::setItemIds(const EwsId::List &ids)
 {

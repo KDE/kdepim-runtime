@@ -13,9 +13,7 @@ EwsJob::EwsJob(QObject *parent)
 {
 }
 
-EwsJob::~EwsJob()
-{
-}
+EwsJob::~EwsJob() = default;
 
 bool EwsJob::doKill()
 {

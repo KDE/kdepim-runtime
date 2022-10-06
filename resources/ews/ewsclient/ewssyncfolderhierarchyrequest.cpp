@@ -45,9 +45,7 @@ EwsSyncFolderHierarchyRequest::EwsSyncFolderHierarchyRequest(EwsClient &client, 
     qRegisterMetaType<EwsFolder>();
 }
 
-EwsSyncFolderHierarchyRequest::~EwsSyncFolderHierarchyRequest()
-{
-}
+EwsSyncFolderHierarchyRequest::~EwsSyncFolderHierarchyRequest() = default;
 
 void EwsSyncFolderHierarchyRequest::setFolderId(const EwsId &id)
 {

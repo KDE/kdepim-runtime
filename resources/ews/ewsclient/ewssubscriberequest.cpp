@@ -34,9 +34,7 @@ EwsSubscribeRequest::EwsSubscribeRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsSubscribeRequest::~EwsSubscribeRequest()
-{
-}
+EwsSubscribeRequest::~EwsSubscribeRequest() = default;
 
 void EwsSubscribeRequest::start()
 {

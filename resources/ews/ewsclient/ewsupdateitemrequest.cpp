@@ -41,9 +41,7 @@ EwsUpdateItemRequest::EwsUpdateItemRequest(EwsClient &client, QObject *parent)
 {
 }
 
-EwsUpdateItemRequest::~EwsUpdateItemRequest()
-{
-}
+EwsUpdateItemRequest::~EwsUpdateItemRequest() = default;
 
 void EwsUpdateItemRequest::start()
 {

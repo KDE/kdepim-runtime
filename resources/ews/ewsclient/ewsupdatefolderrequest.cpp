@@ -26,9 +26,7 @@ EwsUpdateFolderRequest::EwsUpdateFolderRequest(EwsClient &client, QObject *paren
 {
 }
 
-EwsUpdateFolderRequest::~EwsUpdateFolderRequest()
-{
-}
+EwsUpdateFolderRequest::~EwsUpdateFolderRequest() = default;
 
 void EwsUpdateFolderRequest::start()
 {

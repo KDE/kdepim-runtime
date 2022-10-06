@@ -46,9 +46,7 @@ EwsSyncFolderItemsRequest::EwsSyncFolderItemsRequest(EwsClient &client, QObject 
     qRegisterMetaType<EwsItem>();
 }
 
-EwsSyncFolderItemsRequest::~EwsSyncFolderItemsRequest()
-{
-}
+EwsSyncFolderItemsRequest::~EwsSyncFolderItemsRequest() = default;
 
 void EwsSyncFolderItemsRequest::setFolderId(const EwsId &id)
 {
