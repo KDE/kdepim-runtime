@@ -9,7 +9,6 @@
 
 #include "settings.h"
 
-#include "davresource_debug.h"
 #include "settingsadaptor.h"
 #include "utils.h"
 
