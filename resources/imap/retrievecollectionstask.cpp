@@ -72,7 +72,7 @@ void RetrieveCollectionsTask::doStart(KIMAP::Session *session)
     // so we need to use both and exclude mailboxes in LSUB but not in LIST
     if (isSubscriptionEnabled()) {
         auto fullListJob = new KIMAP::ListJob(session);
-        fullListJob->setIncludeUnsubscribed(true);
+        fullListJob->setOption(KIMAP::ListJob::IncludeUnsubscribed);
         fullListJob->setQueriedNamespaces(serverNamespaces());
         connect(fullListJob, &KIMAP::ListJob::mailBoxesReceived, this, &RetrieveCollectionsTask::onFullMailBoxesReceived);
         connect(fullListJob, &KIMAP::ListJob::result, this, &RetrieveCollectionsTask::onFullMailBoxesReceiveDone);
