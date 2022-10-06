@@ -525,7 +525,7 @@ msgstr ""
 #: ewsconfigdialog.ui:479
 #, kde-format
 msgid "&Use streaming notifications"
-msgstr "&Utilitza les notificacions de transmissió"
+msgstr "Utilit&za les notificacions de transmissió"
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_EnableNTLMv2)
 #: ewsconfigdialog.ui:498

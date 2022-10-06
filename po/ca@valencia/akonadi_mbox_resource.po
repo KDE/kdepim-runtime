@@ -179,7 +179,7 @@ msgstr ""
 #: lockfilepage.ui:43
 #, kde-format
 msgid "Procmail loc&kfile"
-msgstr "&Fitxer de bloqueig de Procmail"
+msgstr "Fi&txer de bloqueig de Procmail"
 
 #. i18n: ectx: property (text), widget (QRadioButton, mutt_dotlock)
 #: lockfilepage.ui:53
