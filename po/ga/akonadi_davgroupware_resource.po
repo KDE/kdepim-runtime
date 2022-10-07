@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2009-12-24 06:59-0500\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -507,12 +507,12 @@ msgstr "duine darb ainm"
 msgid "a contact with email"
 msgstr "teagmháil le seoladh ríomhphoist"
 
-#: settings.cpp:482
+#: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
 msgstr ""
 
-#: settings.cpp:485
+#: settings.cpp:484
 #, kde-format
 msgid "Password: "
 msgstr "Focal Faire: "

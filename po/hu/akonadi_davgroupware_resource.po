@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2014-09-04 15:56+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -549,12 +549,12 @@ msgstr " nevű személy keresése:"
 msgid "a contact with email"
 msgstr "e-mail című névjegy keresése:"
 
-#: settings.cpp:482
+#: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "Jelszó szükséges a(z) %1 felhasználóhoz"
 
-#: settings.cpp:485
+#: settings.cpp:484
 #, kde-format
 msgid "Password: "
 msgstr "Jelszó: "

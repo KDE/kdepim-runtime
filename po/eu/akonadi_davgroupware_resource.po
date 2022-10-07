@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2022-08-31 21:07+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -534,12 +534,12 @@ msgstr "izen hau duen pertsona bat"
 msgid "a contact with email"
 msgstr "e-posta hau duen kontaktu bat"
 
-#: settings.cpp:482
+#: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "%1 erabiltzailerako pasahitz bat behar da"
 
-#: settings.cpp:485
+#: settings.cpp:484
 #, kde-format
 msgid "Password: "
 msgstr "Pasahitza:"

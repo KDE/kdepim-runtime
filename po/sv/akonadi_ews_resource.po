@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-26 00:46+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2021-08-25 16:52+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -711,7 +711,7 @@ msgstr "Inställning av EWS brevöverföring"
 msgid "Parent Exchange account:"
 msgstr "Överliggande Exchange-konto:"
 
-#: ewsmtaresource.cpp:58
+#: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
 msgstr "Kan inte ansluta till EWS-huvudresurs"

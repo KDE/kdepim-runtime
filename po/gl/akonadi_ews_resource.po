@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-26 00:46+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2019-09-29 09:21+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
@@ -740,7 +740,7 @@ msgstr "Configuración do transporte de correo de EWS"
 msgid "Parent Exchange account:"
 msgstr "Conta superior de Exchange:"
 
-#: ewsmtaresource.cpp:58
+#: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
 msgstr "Non se pode conectar co recurso mestre de EWS"

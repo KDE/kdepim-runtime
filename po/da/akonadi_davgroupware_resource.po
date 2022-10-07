@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2020-07-31 19:07+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -542,12 +542,12 @@ msgstr "en person ved navn"
 msgid "a contact with email"
 msgstr "en kontakt med e-mail"
 
-#: settings.cpp:482
+#: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "En adgangskode er påkrævet for brugeren %1"
 
-#: settings.cpp:485
+#: settings.cpp:484
 #, kde-format
 msgid "Password: "
 msgstr "Adgangskode: "

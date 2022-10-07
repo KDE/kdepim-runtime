@@ -1137,15 +1137,3 @@ msgstr ""
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr ""
-
-#~ msgid "Identity Settings"
-#~ msgstr "個人情報設定"
-
-#~ msgid "Use the default identity for this account"
-#~ msgstr "このアカウントにデフォルトの個人情報を使います"
-
-#~ msgid "Use &default identity"
-#~ msgstr "デフォルトの個人情報を使う(&D)"
-
-#~ msgid "Select the KMail identity used for this account"
-#~ msgstr "このアカウントに使用する KMail の個人情報を選択します"

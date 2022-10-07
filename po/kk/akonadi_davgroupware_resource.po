@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2013-09-19 04:02+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -549,12 +549,12 @@ msgstr "тұлға, атынан"
 msgid "a contact with email"
 msgstr "контакт, эл.поштадан"
 
-#: settings.cpp:482
+#: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "%1 пайдаланушының паролін келтіру керек"
 
-#: settings.cpp:485
+#: settings.cpp:484
 #, kde-format
 msgid "Password: "
 msgstr "Паролі: "

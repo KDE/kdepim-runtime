@@ -304,31 +304,3 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Checking file information..."
 msgstr "ファイルの情報をチェック中..."
-
-#~ msgid "Filename"
-#~ msgstr "ファイル名"
-
-#~ msgid "Status:"
-#~ msgstr "状態:"
-
-#, fuzzy
-#~| msgid ""
-#~| "Select the file whose contents should be represented by this resource. "
-#~| "If the file does not exist, it will be created. A URL of a remote file "
-#~| "can also be specified, but note that monitoring for file changes will "
-#~| "not work in this case."
-#~ msgid ""
-#~ "Select the file whose contents should be represented by this resource. If "
-#~ "the file does not exist, it will be created. A URL of a remote file can "
-#~ "also be specified, but note that monitoring for file changes will not "
-#~ "work in this case."
-#~ msgstr ""
-#~ "その内容をこのリソースによって表すファイルを選択します。ファイルが存在しな"
-#~ "ければ作成されます。リモートファイルの URL も指定できますが、その場合は"
-#~ "ファイルの監視は機能しません。"
-
-#~ msgid "&Name:"
-#~ msgstr "名前(&N):"
-
-#~ msgid "Monitoring"
-#~ msgstr "監視"

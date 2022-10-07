@@ -622,8 +622,7 @@ msgstr "詳細"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "POP Settings"
+#, kde-format
 msgid "POP Settings"
 msgstr "POP 設定"
 
@@ -831,44 +830,3 @@ msgstr ""
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr "使用する認証方法を定義"
-
-#~ msgid ""
-#~ "The server does not seem to support fetching message headers, but this is "
-#~ "a requirement for filtering messages on the server.\n"
-#~ "Since some servers do not correctly announce their capabilities you still "
-#~ "have the possibility to turn filtering messages on the server on."
-#~ msgstr ""
-#~ "<html><p>サーバはメッセージヘッダの取得をサポートしていないようです。この"
-#~ "機能がないとサーバ上のメッセージをフィルタリングできません。</p><p>しか"
-#~ "し、サポートする機能を正しく公表しないサーバもあるので、場合によってはこの"
-#~ "オプションを利用できるかもしれません。</p></html>"
-
-#~ msgid ""
-#~ "The server does not seem to support fetching message headers, but this is "
-#~ "a requirement for filtering messages on the server; therefore, this "
-#~ "option has been disabled.\n"
-#~ "Since some servers do not correctly announce their capabilities you still "
-#~ "have the possibility to turn filtering messages on the server on."
-#~ msgstr ""
-#~ "<html><p>サーバがメッセージヘッダの取得をサポートしていないようです。この"
-#~ "機能がないとサーバ上のメッセージをフィルタリングできないので、このオプショ"
-#~ "ンを無効にしました。</p><p>しかし、サポートする機能を正しく公表しないサー"
-#~ "バもあるので、場合によってはこのオプションを利用できるかもしれません。</"
-#~ "p></html>"
-
-#~ msgid " byte"
-#~ msgid_plural " bytes"
-#~ msgstr[0] " バイト"
-#~ msgstr[1] " バイト"
-
-#~ msgid ""
-#~ "If you select this option, POP Filters will be used to decide what to do "
-#~ "with messages. You can then select to download, delete or keep them on "
-#~ "the server."
-#~ msgstr ""
-#~ "このオプションを有効にすると、POP フィルタを用いてメッセージの処理を決定し"
-#~ "ます。これによって、ダウンロード、削除、サーバに保持のいずれかを選択できる"
-#~ "ようになります。"
-
-#~ msgid "&Filter messages larger than:"
-#~ msgstr "フィルタするメッセージ最小サイズ(&F):"

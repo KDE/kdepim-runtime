@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-26 00:46+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2021-10-11 14:36+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -705,7 +705,7 @@ msgstr "EWS-postinvälityksen asetukset"
 msgid "Parent Exchange account:"
 msgstr "Exchange-emotili:"
 
-#: ewsmtaresource.cpp:58
+#: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
 msgstr "EWS-emoresurssiin yhdistäminen ei onnistu"

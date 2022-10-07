@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-26 00:46+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2021-11-14 19:38+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -698,7 +698,7 @@ msgstr "EWS 메일 전송 설정"
 msgid "Parent Exchange account:"
 msgstr "부모 Exchange 계정:"
 
-#: ewsmtaresource.cpp:58
+#: ewsmtaresource.cpp:57
 #, kde-format
 msgid "Unable to connect to master EWS resource"
 msgstr "주 EWS 자원에 연결할 수 없음"

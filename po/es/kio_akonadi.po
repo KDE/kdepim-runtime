@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kio_akonadi\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-06-06 00:19+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2016-01-25 09:21+0100\n"
 "Last-Translator: Javier Vinal <fjvinal@gmail.com>\n"
 "Language-Team: Spanish <l10n-kde-es@kde.org>\n"
@@ -29,22 +29,22 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "fjvinal@gmail.com"
 
-#: akonadislave.cpp:49
+#: akonadiworker.cpp:49
 #, kde-format
 msgid "Protocol name"
 msgstr "Nombre del protocolo"
 
-#: akonadislave.cpp:50 akonadislave.cpp:51
+#: akonadiworker.cpp:50 akonadiworker.cpp:51
 #, kde-format
 msgid "Socket name"
 msgstr "Nombre del conector"
 
-#: akonadislave.cpp:88 akonadislave.cpp:115 akonadislave.cpp:135
+#: akonadiworker.cpp:87 akonadiworker.cpp:113 akonadiworker.cpp:131
 #, kde-format
 msgid "No such item."
 msgstr "No existe el elemento."
 
-#: akonadislave.cpp:172 akonadislave.cpp:179
+#: akonadiworker.cpp:166 akonadiworker.cpp:172
 #, kde-format
 msgid "No such collection."
 msgstr "No existe la colección."

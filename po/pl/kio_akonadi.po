@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-06-06 00:19+0000\n"
+"POT-Creation-Date: 2022-10-07 00:47+0000\n"
 "PO-Revision-Date: 2016-08-27 09:12+0100\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -29,22 +29,22 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "lukasz.wojnilowicz@gmail.com"
 
-#: akonadislave.cpp:49
+#: akonadiworker.cpp:49
 #, kde-format
 msgid "Protocol name"
 msgstr "Nazwa protokołu"
 
-#: akonadislave.cpp:50 akonadislave.cpp:51
+#: akonadiworker.cpp:50 akonadiworker.cpp:51
 #, kde-format
 msgid "Socket name"
 msgstr "Nazwa gniazda"
 
-#: akonadislave.cpp:88 akonadislave.cpp:115 akonadislave.cpp:135
+#: akonadiworker.cpp:87 akonadiworker.cpp:113 akonadiworker.cpp:131
 #, kde-format
 msgid "No such item."
 msgstr "Brak takiego elementu."
 
-#: akonadislave.cpp:172 akonadislave.cpp:179
+#: akonadiworker.cpp:166 akonadiworker.cpp:172
 #, kde-format
 msgid "No such collection."
 msgstr "Brak takiego zbioru."
