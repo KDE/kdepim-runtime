@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <KIMAP/ListJob>
-
 #include "resourcetask.h"
 
 class RemoveCollectionRecursiveTask : public ResourceTask

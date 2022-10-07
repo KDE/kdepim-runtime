@@ -18,7 +18,6 @@
 
 #include <KCalendarCore/Incidence>
 #include <KLocalizedString>
-#include <KMime/KMimeMessage>
 #include <QColor>
 
 bool KolabHelpers::checkForErrors(const Akonadi::Item &item)

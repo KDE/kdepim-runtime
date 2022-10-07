@@ -18,8 +18,6 @@
 
 #include <KMbox/MBox>
 
-#include <KMime/Message>
-
 #include <KRandom>
 
 #include <QDir>

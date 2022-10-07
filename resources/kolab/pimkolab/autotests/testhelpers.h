@@ -12,7 +12,6 @@
 #include <KCalendarCore/Journal>
 #include <KCalendarCore/Recurrence>
 #include <KCalendarCore/Todo>
-#include <KContacts/Addressee>
 #include <QTest>
 
 #include <kolabformat.h>

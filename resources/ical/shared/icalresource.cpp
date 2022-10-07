@@ -8,7 +8,6 @@
 #include "icalresource.h"
 
 #include <KCalendarCore/FreeBusy>
-#include <KCalendarCore/MemoryCalendar>
 
 #include <KLocalizedString>
 #include <QDebug>

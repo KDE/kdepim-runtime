@@ -7,7 +7,6 @@
 #include "calendaring.h"
 #include "pimkolab_debug.h"
 
-#include <KCalendarCore/Todo>
 #include <QDate>
 #include <QTimeZone>
 

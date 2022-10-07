@@ -13,7 +13,6 @@
 
 #include "davresource_debug.h"
 #include <KCalendarCore/ICalFormat>
-#include <KIO/DavJob>
 #include <KIO/Job>
 #include <KLocalizedString>
 

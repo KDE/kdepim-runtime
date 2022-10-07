@@ -9,8 +9,6 @@
 
 #include <Akonadi/Collection>
 
-#include <KIMAP/ListJob>
-
 #include "resourcetask.h"
 
 class RetrieveCollectionsTask : public ResourceTask

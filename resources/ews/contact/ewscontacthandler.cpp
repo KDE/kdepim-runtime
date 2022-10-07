@@ -7,7 +7,6 @@
 #include "ewscontacthandler.h"
 
 #include <KContacts/Addressee>
-#include <KContacts/ContactGroup>
 
 #include "ewscreatecontactjob.h"
 #include "ewsfetchcontactdetailjob.h"

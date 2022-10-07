@@ -7,11 +7,9 @@
 #include "updatemessagejob.h"
 
 #include "kolabresource_debug.h"
-#include <KIMAP/AppendJob>
 #include <KIMAP/ImapSet>
 #include <KIMAP/SearchJob>
 #include <KIMAP/SelectJob>
-#include <KIMAP/StoreJob>
 #include <replacemessagejob.h>
 
 #include "imapflags.h"

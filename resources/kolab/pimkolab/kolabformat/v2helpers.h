@@ -18,7 +18,6 @@
 #include "kolabformatV2/task.h"
 #include "mime/mimeutils.h"
 
-#include <KCalendarCore/Event>
 #include <KCalendarCore/Incidence>
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>

@@ -8,7 +8,6 @@
 #include "distributionlist.h"
 #include "pimkolab_debug.h"
 
-#include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
 
 using namespace KolabV2;

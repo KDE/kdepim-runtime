@@ -13,8 +13,6 @@
 
 #include <QList>
 
-#include <KCalendarCore/Journal>
-
 #include <QBitArray>
 
 using namespace KolabV2;

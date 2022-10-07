@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <KIO/StoredTransferJob>
-
 namespace Graph
 {
 QString appId();
