@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-04 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2018-07-10 14:33+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
@@ -409,13 +409,13 @@ msgid ""
 msgstr ""
 "在 IMAP 伺服器上標記刪除從 %1 來的信件失敗。下次同步時這些信件會再出現。"
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "刪除資料夾失敗，將回復資料夾清單。"
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "找不到要刪除的資料夾，將回復資料夾清單。"

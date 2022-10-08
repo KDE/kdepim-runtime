@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2022-10-02 15:49\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -136,7 +136,7 @@ msgid "The resource not configured yet"
 msgstr "资源尚未配置"
 
 #: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -187,19 +187,19 @@ msgstr "有一个下载进程还在进行中。"
 msgid "Uploading cached file to remote location."
 msgstr "上传缓存文件到远程地址。"
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr "文件“%1”已在磁盘上修改。以防万一，之前内容的备份创建为“%2”。"
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "无法加载文件“%1”。"
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "无法保存文件“%1”。"

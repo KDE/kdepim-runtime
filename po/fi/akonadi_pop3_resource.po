@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2021-11-23 17:20+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -28,7 +28,7 @@ msgid_plural " minutes"
 msgstr[0] " minuutti"
 msgstr[1] " minuuttia"
 
-#: accountwidget.cpp:126 pop3resource.cpp:51
+#: accountwidget.cpp:126 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3-tili"
@@ -299,80 +299,80 @@ msgstr "Sisäinen virhe, lukua odotettiin: %1"
 msgid "Unexpected response from POP3 server."
 msgstr "Odottamaton vastaus POP3-palvelimelta."
 
-#: pop3resource.cpp:100
+#: pop3resource.cpp:98
 #, kde-format
 msgid "Mail check aborted."
 msgstr "Postin tarkistus keskeytettiin."
 
-#: pop3resource.cpp:107
+#: pop3resource.cpp:105
 #, kde-format
 msgid "Mail check was canceled manually."
 msgstr "Käyttäjä perui postin tarkistuksen."
 
-#: pop3resource.cpp:135
+#: pop3resource.cpp:133
 #, kde-format
 msgid "Please enter the username and password for account '%1'."
 msgstr "Anna tilin ”%1” käyttäjätunnuksesi ja salasanasi."
 
-#: pop3resource.cpp:152
+#: pop3resource.cpp:150
 #, kde-format
 msgid ""
 "You are asked here because the password could not be loaded from the wallet."
 msgstr "Tätä kysytään, koska salasanaa ei saatu ladatuksi lompakosta."
 
-#: pop3resource.cpp:168
+#: pop3resource.cpp:166
 #, kde-format
 msgid "Account:"
 msgstr "Tili:"
 
-#: pop3resource.cpp:185
+#: pop3resource.cpp:183
 #, kde-format
 msgid "No username and password supplied."
 msgstr "Tunnus ja salasana vaaditaan."
 
-#: pop3resource.cpp:204
+#: pop3resource.cpp:202
 #, kde-format
 msgid "Preparing transmission from \"%1\"."
 msgstr "Valmistelen siirtoa kohteesta ”%1”."
 
-#: pop3resource.cpp:225
+#: pop3resource.cpp:223
 #, kde-format
 msgid "Executing precommand."
 msgstr "Suoritetaan esikomentoa."
 
-#: pop3resource.cpp:250
+#: pop3resource.cpp:248
 #, kde-format
 msgid "You are asked here because the previous login was not successful."
 msgstr "Tätä kysytään, koska edellinen kirjautuminen ei onnistunut."
 
-#: pop3resource.cpp:252
+#: pop3resource.cpp:250
 #, kde-format
 msgid "You are asked here because the username you supplied is empty."
 msgstr "Tätä kysytään, koska antamasi käyttäjätunnus on tyhjä."
 
-#: pop3resource.cpp:279
+#: pop3resource.cpp:277
 #, kde-format
 msgid "Fetching mail listing."
 msgstr "Noudetaan viestiluetteloa."
 
-#: pop3resource.cpp:336
+#: pop3resource.cpp:334
 #, kde-format
 msgid "Saving downloaded messages."
 msgstr "Tallennetaan ladattuja viestejä."
 
-#: pop3resource.cpp:354
+#: pop3resource.cpp:352
 #, kde-format
 msgid "Saving password to the wallet."
 msgstr "Tallennetaan salasana lompakkoon."
 
-#: pop3resource.cpp:396
+#: pop3resource.cpp:394
 #, kde-format
 msgid "Error while trying to get the local inbox folder, aborting mail check."
 msgstr ""
 "Virhe etsittäessä paikallista saapuvan postin kansiota, keskeytetään postin "
 "tarkistus."
 
-#: pop3resource.cpp:403
+#: pop3resource.cpp:401
 #, kde-format
 msgid ""
 "<qt>The folder you deleted was associated with the account <b>%1</b> which "
@@ -382,39 +382,39 @@ msgstr ""
 "<qt>Poistamasi kansio oli yhdistetty tiliin <b>%1</b>, joka toimitti siihen "
 "postia. Nyt tuo kansio on asetettu saapuvien postien pääkansioksi.</qt>"
 
-#: pop3resource.cpp:424
+#: pop3resource.cpp:422
 #, kde-format
 msgid ""
 "Error while trying to get the folder for incoming mail, aborting mail check."
 msgstr ""
 "Virhe etsittäessä saapuvan postin kansiota, keskeytetään postin tarkistus."
 
-#: pop3resource.cpp:437
+#: pop3resource.cpp:435
 #, kde-format
 msgid "Could not find folder for incoming mail, aborting mail check."
 msgstr "Saapuvan postin kansiota ei löytynyt, keskeytetään postin tarkistus."
 
-#: pop3resource.cpp:448
+#: pop3resource.cpp:446
 #, kde-format
 msgid "Error while executing precommand."
 msgstr "Virhe suoritettaessa esikomentoa."
 
-#: pop3resource.cpp:462
+#: pop3resource.cpp:460
 #, kde-format
 msgid "Unable to login to the server \"%1\"."
 msgstr "Kirjautuminen palvelimeen ”%1” epäonnistui."
 
-#: pop3resource.cpp:471
+#: pop3resource.cpp:469
 #, kde-format
 msgid "Error while getting the list of messages on the server."
 msgstr "Virhe noudettaessa viestiluetteloa palvelimelta."
 
-#: pop3resource.cpp:485
+#: pop3resource.cpp:483
 #, kde-format
 msgid "Error while getting list of unique mail identifiers from the server."
 msgstr "Sattui virhe noudettaessa viestitunnisteiden luetteloa palvelimelta."
 
-#: pop3resource.cpp:498
+#: pop3resource.cpp:496
 #, kde-format
 msgid ""
 "Your POP3 server (Account: %1) does not support the UIDL command: this "
@@ -427,66 +427,66 @@ msgstr ""
 "tarkistaa luotettavasti, mitkä viestit KMail on jo nähnyt.\n"
 "Viestien jättäminen palvelimelle ei siten toimi oikein."
 
-#: pop3resource.cpp:513
+#: pop3resource.cpp:511
 #, kde-format
 msgid "Error while fetching mails from the server."
 msgstr "Noudettaessa viestejä palvelimelta tapahtui virhe."
 
-#: pop3resource.cpp:573
+#: pop3resource.cpp:571
 #, kde-format
 msgid ""
 "Fetching message %1 of %2 (%3 of %4 KB) for %5 (%6 KB remain on the server)."
 msgstr ""
 "Noudetaan viestiä %1/%2 (%3/%4 kt) tililtä %5 (%6 kt jäljellä palvelimella)."
 
-#: pop3resource.cpp:582
+#: pop3resource.cpp:580
 #, kde-format
 msgid "Fetching message %1 of %2 (%3 of %4 KB) for %5"
 msgstr "Noudetaan viestiä %1/%2 (%3/%4 kt) tililtä %5"
 
-#: pop3resource.cpp:605
+#: pop3resource.cpp:603
 #, kde-format
 msgid "Unable to store downloaded mails."
 msgstr "Ladattuja viestejä ei saatu tallennettua."
 
-#: pop3resource.cpp:753
+#: pop3resource.cpp:751
 #, kde-format
 msgid "Failed to delete the messages from the server."
 msgstr "Viestejä ei saatu poistetuksi palvelimelta."
 
-#: pop3resource.cpp:809
+#: pop3resource.cpp:807
 #, kde-format
 msgid "Finished mail check, no message downloaded."
 msgstr "Posti tarkistettu, viestejä ei ladattu."
 
-#: pop3resource.cpp:811
+#: pop3resource.cpp:809
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
 msgstr[0] "Posti tarkistettu, 1 viesti ladattu."
 msgstr[1] "Posti tarkistettu, %1 viestiä ladattu."
 
-#: pop3resource.cpp:825
+#: pop3resource.cpp:823
 #, kde-format
 msgid "Unable to complete the mail fetch."
 msgstr "Postin noutoa ei saada suoritetuksi loppuun."
 
-#: pop3resource.cpp:960
+#: pop3resource.cpp:958
 #, kde-format
 msgid "Mail check already in progress, unable to start a second check."
 msgstr "Postia tarkistetaan jo, toista tarkistusta ei voi käynnistää."
 
-#: pop3resource.cpp:981
+#: pop3resource.cpp:979
 #, kde-format
 msgid "Ready"
 msgstr "Valmis"
 
-#: pop3resource.cpp:984
+#: pop3resource.cpp:982
 #, kde-format
 msgid "Mail check aborted after going offline."
 msgstr "Postin tarkistus keskeytettiin verkkoyhteyden katkettua."
 
-#: pop3resource.cpp:986
+#: pop3resource.cpp:984
 #, kde-format
 msgid "Offline"
 msgstr "Poissa verkosta"

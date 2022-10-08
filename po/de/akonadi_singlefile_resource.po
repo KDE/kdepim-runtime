@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2022-04-15 04:07+0200\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -147,7 +147,7 @@ msgid "The resource not configured yet"
 msgstr "Die Ressource ist noch nicht eingerichtet"
 
 #: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -200,7 +200,7 @@ msgstr ""
 "Die zwischengespeicherte Datei wird an den entfernten Speicherort "
 "hochgeladen."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -209,12 +209,12 @@ msgstr ""
 "Die Datei „%1“ wurde geändert. Um Datenverlust zu vermeiden, wurde eine "
 "Datensicherung des vorherigen Inhalts unter „%2“ angelegt."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Die Datei „%1“ lässt sich nicht laden."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Die Datei „%1“ lässt sich nicht speichern."

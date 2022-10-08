@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2020-04-22 17:33+0300\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -303,17 +303,17 @@ msgstr ""
 "При выполнении запроса произошла ошибка. Запрошенные типы MIME не "
 "поддерживаются."
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Не найдено исходящее уведомление для %1"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Неверный ответ сервера"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Невозможно разобрать полученные данные о занятом времени"

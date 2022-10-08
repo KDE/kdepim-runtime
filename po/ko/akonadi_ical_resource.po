@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-13 00:46+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2020-04-05 12:55+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -47,7 +47,7 @@ msgstr "파일 변경 사항을 감시합니다."
 msgid "Autosave interval time (in minutes)."
 msgstr "분 단위의 자동 저장 간격입니다."
 
-#: shared/icalresource.cpp:48
+#: shared/icalresource.cpp:47
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "UID '%1'인 일정이 없습니다."

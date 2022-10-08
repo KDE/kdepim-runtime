@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-04 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2020-11-11 12:55+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -434,13 +434,13 @@ msgstr ""
 "Não foi possível marcar a mensagem de '%1' para remoção no servidor IMAP. "
 "Irá aparecer de novo na sincronização seguinte."
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Não foi possível apagar a pasta; a repor a lista de pastas."
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""

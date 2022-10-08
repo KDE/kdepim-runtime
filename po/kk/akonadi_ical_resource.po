@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-13 00:46+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2012-05-02 04:19+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -47,7 +47,7 @@ msgstr "Файл өзгерістерін бақылау."
 msgid "Autosave interval time (in minutes)."
 msgstr "Автосықтау аралығы (минут)."
 
-#: shared/icalresource.cpp:48
+#: shared/icalresource.cpp:47
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "uid '%1' дегенмен ештеңе жоқ.."

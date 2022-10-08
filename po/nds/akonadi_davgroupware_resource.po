@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2014-08-15 15:50+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -316,17 +316,17 @@ msgstr ""
 "opstellt.\n"
 "%1 (%2)."
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Keen Terminplaan-Postutgang för \"%1\" funnen"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Leeg Antwoort vun Server"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Kregen Free-/Bunnen-Daten laat sik nich inlesen"

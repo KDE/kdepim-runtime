@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2021-11-14 19:38+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -631,8 +631,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "항목 가져오기 요청을 처리할 수 없음"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:334 ewsresource.cpp:339
-#: ewsresource.cpp:530
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
+#: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -743,305 +743,305 @@ msgstr "Exchange에 연결 중"
 msgid "Connecting to Microsoft Exchange server..."
 msgstr "Microsoft Exchange 서버에 연결 중..."
 
-#: ewsresource.cpp:144
+#: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Exchange 서버에 연결 중"
 
-#: ewsresource.cpp:162 ewsresource.cpp:169 ewsresource.cpp:176
-#: ewsresource.cpp:314
+#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
+#: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Exchange 서버에 연결할 수 없음"
 
-#: ewsresource.cpp:254
+#: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "루트 폴더 ID를 알 수 없습니다."
 
-#: ewsresource.cpp:258
+#: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "모음집 트리 가져오는 중"
 
-#: ewsresource.cpp:407
+#: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "항목 가져오는 중"
 
-#: ewsresource.cpp:429 ewsresource.cpp:515
+#: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "항목을 가져올 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:463
+#: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "폴더를 가져올 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:469
+#: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "폴더 가져오기 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:486
+#: ewsresource.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "잘못된 증분 폴더 가져오기 요청 작업 객체"
 
-#: ewsresource.cpp:549
+#: ewsresource.cpp:548
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "이 항목 종류는 변경할 수 없음"
 
-#: ewsresource.cpp:562
+#: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "항목 플러그 업데이트 중"
 
-#: ewsresource.cpp:574
+#: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "항목 플래그 업데이트 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:581
+#: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "항목 플래그를 업데이트할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:595
+#: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "항목 업데이트 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:602
+#: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "항목을 업데이트할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:637
+#: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "항목 이동 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:644
+#: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "항목을 이동할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:651
+#: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
 msgstr "항목을 이동할 수 없음 - 서버에서 반환한 응답 개수가 잘못됨"
 
-#: ewsresource.cpp:721
+#: ewsresource.cpp:720
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "항목 삭제 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:728
+#: ewsresource.cpp:727
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "항목을 삭제할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:735
+#: ewsresource.cpp:734
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to delete item - invalid number of responses received from server"
 msgstr "항목을 삭제할 수 없음 - 서버에서 반환한 응답 개수가 잘못됨"
 
-#: ewsresource.cpp:780 ewsresource.cpp:993
+#: ewsresource.cpp:779 ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "이 항목 종류는 만들 수 없음"
 
-#: ewsresource.cpp:791
+#: ewsresource.cpp:790
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "항목 생성 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:797
+#: ewsresource.cpp:796
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "항목을 생성할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:818
+#: ewsresource.cpp:817
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "모음집을 추가할 수 없음 - EWS 폴더 형식을 결정할 수 없음"
 
-#: ewsresource.cpp:837
+#: ewsresource.cpp:836
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "폴더 생성 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:843
+#: ewsresource.cpp:842
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "폴더를 만들 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:855
+#: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "폴더를 만들 수 없음"
 
-#: ewsresource.cpp:878
+#: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "폴더 이동 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:884
+#: ewsresource.cpp:883
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "폴더를 이동할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:890
+#: ewsresource.cpp:889
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to move folder - invalid number of responses received from server"
 msgstr "폴더를 이동할 수 없음 - 서버에서 반환한 응답 개수가 잘못됨"
 
-#: ewsresource.cpp:901
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "폴더를 이동할 수 없음"
 
-#: ewsresource.cpp:929
+#: ewsresource.cpp:928
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "폴더 업데이트 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:935
+#: ewsresource.cpp:934
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "폴더를 업데이트할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:941
+#: ewsresource.cpp:940
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "Failed to update folder - invalid number of responses received from server"
 msgstr "폴더를 업데이트할 수 없음 - 서버에서 반환한 응답 개수가 잘못됨"
 
-#: ewsresource.cpp:952
+#: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "폴더를 업데이트할 수 없음"
 
-#: ewsresource.cpp:969
+#: ewsresource.cpp:968
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "폴더 삭제 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:975
+#: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "폴더를 삭제할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:983
+#: ewsresource.cpp:982
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "폴더를 삭제할 수 없음"
 
-#: ewsresource.cpp:1007 ewsresource.cpp:1041
+#: ewsresource.cpp:1006 ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "항목 전송 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:1013 ewsresource.cpp:1047
+#: ewsresource.cpp:1012 ewsresource.cpp:1046
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "항목을 전송할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:1052
+#: ewsresource.cpp:1051
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "서버에서 반환한 응답 개수가 잘못됨"
 
-#: ewsresource.cpp:1244
+#: ewsresource.cpp:1243
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "항목 태그 업데이트 중"
 
-#: ewsresource.cpp:1257
+#: ewsresource.cpp:1256
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "항목 태그 업데이트 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:1263
+#: ewsresource.cpp:1262
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "항목 태그를 업데이트할 수 없음 - 내부 오류"
 
-#: ewsresource.cpp:1300
+#: ewsresource.cpp:1299
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "전역 태그 업데이트 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:1316
+#: ewsresource.cpp:1315
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "전역 태그 가져오기 요청을 처리할 수 없음"
 
-#: ewsresource.cpp:1387
+#: ewsresource.cpp:1386
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "인증"
 
-#: ewsresource.cpp:1401 ewsresource.cpp:1416
+#: ewsresource.cpp:1400 ewsresource.cpp:1415
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "인증 실패"
 
-#: ewsresource.cpp:1424
+#: ewsresource.cpp:1423
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

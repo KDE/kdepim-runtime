@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-13 00:46+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2015-08-12 19:05+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -52,7 +52,7 @@ msgstr "Controla els canvis al fitxer."
 msgid "Autosave interval time (in minutes)."
 msgstr "Interval de temps d'autodesat (en minuts)."
 
-#: shared/icalresource.cpp:48
+#: shared/icalresource.cpp:47
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "No s'ha trobat la incidència amb l'UID «%1»."

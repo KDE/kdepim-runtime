@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-04 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2022-04-05 13:25+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -427,13 +427,13 @@ msgstr ""
 "IMAP sunucusu üzerinde '%1' konumundan ileti silme için işaretleme işlemi "
 "başarısız. İşaretleme bir sonraki senkronizasyonda yeninden görünecek."
 
-#: removecollectionrecursivetask.cpp:113 removecollectionrecursivetask.cpp:129
-#: removecollectionrecursivetask.cpp:142
+#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
+#: removecollectionrecursivetask.cpp:141
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Klasör silinemedi, klasör listesi geri yükleniyor."
 
-#: removecollectionrecursivetask.cpp:147
+#: removecollectionrecursivetask.cpp:146
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Silinecek klasör bulunamadı, klasör listesi geri yükleniyor."

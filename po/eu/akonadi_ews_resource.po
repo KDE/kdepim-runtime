@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2022-09-04 23:11+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -653,8 +653,8 @@ msgctxt "@info:status"
 msgid "Failed to process items retrieval request"
 msgstr "Elementuak eskuratzeko eskaera prozesatzea huts egin du"
 
-#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:334 ewsresource.cpp:339
-#: ewsresource.cpp:530
+#: ewsfetchitempayloadjob.cpp:71 ewsresource.cpp:333 ewsresource.cpp:338
+#: ewsresource.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items"
@@ -768,110 +768,110 @@ msgstr "Exchange-ra konektatzea"
 msgid "Connecting to Microsoft Exchange server..."
 msgstr "Microsoft Exchange zerbitzariarekin konektatzen..."
 
-#: ewsresource.cpp:144
+#: ewsresource.cpp:143
 #, kde-format
 msgctxt "@info:status"
 msgid "Connecting to Exchange server"
 msgstr "Exchange zerbitzarira konektatzen"
 
-#: ewsresource.cpp:162 ewsresource.cpp:169 ewsresource.cpp:176
-#: ewsresource.cpp:314
+#: ewsresource.cpp:161 ewsresource.cpp:168 ewsresource.cpp:175
+#: ewsresource.cpp:313
 #, kde-format
 msgctxt "@info:status"
 msgid "Unable to connect to Exchange server"
 msgstr "Ez da Exchange zerbitzariarekin konektatzeko gai"
 
-#: ewsresource.cpp:254
+#: ewsresource.cpp:253
 #, kde-format
 msgctxt "@info:status"
 msgid "Root folder id not known."
 msgstr "Erroko karpeta ez da ezagutzen."
 
-#: ewsresource.cpp:258
+#: ewsresource.cpp:257
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
 msgstr "Bilduma-zuhaitza eskuratzen"
 
-#: ewsresource.cpp:407
+#: ewsresource.cpp:406
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving items"
 msgstr "Elementuak eskuratzea"
 
-#: ewsresource.cpp:429 ewsresource.cpp:515
+#: ewsresource.cpp:428 ewsresource.cpp:514
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve items - internal error"
 msgstr "Elementuak eskuratzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:463
+#: ewsresource.cpp:462
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to retrieve folders - internal error"
 msgstr "Karpetak eskuratzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:469
+#: ewsresource.cpp:468
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folders retrieval request"
 msgstr "Karpetak eskuratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:486
+#: ewsresource.cpp:485
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid incremental folders retrieval request job object"
 msgstr "Karpeten eskuratze inkrementaleko eskaera-lan objektu baliogabea"
 
-#: ewsresource.cpp:549
+#: ewsresource.cpp:548
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for changing"
 msgstr "Elementu-mota ez da onartzen aldaketarako"
 
-#: ewsresource.cpp:562
+#: ewsresource.cpp:561
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item flags"
 msgstr "Elementuaren banderak eguneratzen"
 
-#: ewsresource.cpp:574
+#: ewsresource.cpp:573
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item flags update request"
 msgstr "Elementuaren banderak eguneratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:581
+#: ewsresource.cpp:580
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item flags - internal error"
 msgstr "Elementuaren banderak eguneratzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:595
+#: ewsresource.cpp:594
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item update request"
 msgstr "Elementua eguneratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:602
+#: ewsresource.cpp:601
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item - internal error"
 msgstr "Elementua eguneratzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:637
+#: ewsresource.cpp:636
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item move request"
 msgstr "Elementua mugitzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:644
+#: ewsresource.cpp:643
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - internal error"
 msgstr "Elementua mugitzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:651
+#: ewsresource.cpp:650
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move item - invalid number of responses received from server"
@@ -879,19 +879,19 @@ msgstr ""
 "Elementua mugitzea huts egin du - zerbitzaritik erantzun-kopuru baliogabea "
 "jaso da"
 
-#: ewsresource.cpp:721
+#: ewsresource.cpp:720
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item delete request"
 msgstr "Elementua ezabatzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:728
+#: ewsresource.cpp:727
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete item - internal error"
 msgstr "Elementua ezabatzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:735
+#: ewsresource.cpp:734
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -900,61 +900,61 @@ msgstr ""
 "Elementua ezabatzea huts egin du - zerbitzaritik erantzun-kopuru baliogabea "
 "jaso da"
 
-#: ewsresource.cpp:780 ewsresource.cpp:993
+#: ewsresource.cpp:779 ewsresource.cpp:992
 #, kde-format
 msgctxt "@info:status"
 msgid "Item type not supported for creation"
 msgstr "Elementu mota sortzeko euskarririk ez"
 
-#: ewsresource.cpp:791
+#: ewsresource.cpp:790
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item create request"
 msgstr "Elementua sortzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:797
+#: ewsresource.cpp:796
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create item - internal error"
 msgstr "Elementua sortzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:818
+#: ewsresource.cpp:817
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to add collection - cannot determine EWS folder type"
 msgstr "Bilduma gehitzea huts egin du - ezin du zehaztu EWS karpeta-mota"
 
-#: ewsresource.cpp:837
+#: ewsresource.cpp:836
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder create request"
 msgstr "Karpeta sortzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:843
+#: ewsresource.cpp:842
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder - internal error"
 msgstr "Karpeta sortzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:855
+#: ewsresource.cpp:854
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to create folder"
 msgstr "Karpeta sortzea huts egin du"
 
-#: ewsresource.cpp:878
+#: ewsresource.cpp:877
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder move request"
 msgstr "Karpeta mugitzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:884
+#: ewsresource.cpp:883
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder - internal error"
 msgstr "Karpeta mugitzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:890
+#: ewsresource.cpp:889
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -963,25 +963,25 @@ msgstr ""
 "Karpeta mugitzea huts egin du - zerbitzaritik erantzun-kopuru baliogabea "
 "jaso da"
 
-#: ewsresource.cpp:901
+#: ewsresource.cpp:900
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to move folder"
 msgstr "Karpeta mugitzea huts egin du"
 
-#: ewsresource.cpp:929
+#: ewsresource.cpp:928
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder update request"
 msgstr "Karpeta eguneratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:935
+#: ewsresource.cpp:934
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder - internal error"
 msgstr "Karpeta eguneratzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:941
+#: ewsresource.cpp:940
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -990,91 +990,91 @@ msgstr ""
 "Karpeta eguneratzea huts egin du - zerbitzaritik erantzun-kopuru baliogabea "
 "jaso da"
 
-#: ewsresource.cpp:952
+#: ewsresource.cpp:951
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update folder"
 msgstr "Karpeta eguneratzea huts egin du"
 
-#: ewsresource.cpp:969
+#: ewsresource.cpp:968
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process folder delete request"
 msgstr "Karpeta ezabatzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:975
+#: ewsresource.cpp:974
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder - internal error"
 msgstr "Karpeta ezabatzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:983
+#: ewsresource.cpp:982
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to delete folder"
 msgstr "Karpeta ezabatzea huts egin du"
 
-#: ewsresource.cpp:1007 ewsresource.cpp:1041
+#: ewsresource.cpp:1006 ewsresource.cpp:1040
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item send request"
 msgstr "Elementua bidaltzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:1013 ewsresource.cpp:1047
+#: ewsresource.cpp:1012 ewsresource.cpp:1046
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to send item - internal error"
 msgstr "Elementua bidaltzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:1052
+#: ewsresource.cpp:1051
 #, kde-format
 msgctxt "@info:status"
 msgid "Invalid number of responses received from server"
 msgstr "Zerbitzaritik erantzun-kopuru baliogabea jaso da"
 
-#: ewsresource.cpp:1244
+#: ewsresource.cpp:1243
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item tags"
 msgstr "Elementuaren etiketak eguneratzen"
 
-#: ewsresource.cpp:1257
+#: ewsresource.cpp:1256
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process item tags update request"
 msgstr "Elementuaren etiketak eguneratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:1263
+#: ewsresource.cpp:1262
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to update item tags - internal error"
 msgstr "Elementuaren etiketak eguneratzea huts egin du - barneko errorea"
 
-#: ewsresource.cpp:1300
+#: ewsresource.cpp:1299
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tag update request"
 msgstr "Etiketa globala eguneratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:1316
+#: ewsresource.cpp:1315
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed to process global tags retrieval request"
 msgstr "Etiketa globalak eskuratzeko eskaera prozesatzea huts egin du"
 
-#: ewsresource.cpp:1387
+#: ewsresource.cpp:1386
 #, kde-format
 msgctxt "@action:button"
 msgid "Authenticate"
 msgstr "Autentifikatu"
 
-#: ewsresource.cpp:1401 ewsresource.cpp:1416
+#: ewsresource.cpp:1400 ewsresource.cpp:1415
 #, kde-format
 msgctxt "@info:status"
 msgid "Authentication failed"
 msgstr "Autentifikazioak huts egin du"
 
-#: ewsresource.cpp:1424
+#: ewsresource.cpp:1423
 #, kde-format
 msgctxt "@info:status Resource is ready"
 msgid "Ready"

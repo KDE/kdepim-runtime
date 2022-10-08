@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ical_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-05-13 00:46+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2010-12-11 15:02+0800\n"
 "Last-Translator: Franklin Weng <franklin at goodhorse dot idv dot tw>\n"
 "Language-Team: Chinese Traditional <zh-l10n@lists.linux.org.tw>\n"
@@ -48,7 +48,7 @@ msgstr "監控檔案變更。"
 msgid "Autosave interval time (in minutes)."
 msgstr "自動儲存間隔時間（分）。"
 
-#: shared/icalresource.cpp:48
+#: shared/icalresource.cpp:47
 #, kde-format
 msgid "Incidence with uid '%1' not found."
 msgstr "找不到使用者代碼 %1 的事件。"

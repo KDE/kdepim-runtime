@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2020-04-20 11:34+0300\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -289,17 +289,17 @@ msgid ""
 "supported."
 msgstr "Päringuga tekkis probleem. Nõutavad MIME tüübid ei ole toetatud."
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "%1 schedule-outboxi ei leitud"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Serveri vigane vastus"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Saadud vaba/hõivatud andmete parsimine nurjus"

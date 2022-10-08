@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2014-09-04 15:56+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -308,17 +308,17 @@ msgstr ""
 "Hiba történt a kéréssel. Az elem nem lett létrehozva a kiszolgálón.\n"
 "%1 (%2)."
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Nem található ütemezett kimenő mappa ehhez: %1"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Érvénytelen válasz érkezett a kiszolgálótól"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Nem lehet feldolgozni a kapott foglaltsági adatot"

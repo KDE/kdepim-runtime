@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2022-07-19 22:18+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -147,7 +147,7 @@ msgid "The resource not configured yet"
 msgstr "Ресурсът не  е конфигуриран."
 
 #: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -198,7 +198,7 @@ msgstr "Друго изтегляне все още е в процес на из
 msgid "Uploading cached file to remote location."
 msgstr "Качване на кеширан файл на отдалечено местоположение."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -207,12 +207,12 @@ msgstr ""
 "Файлът \"%1\" е променен на диска. Като предпазна мярка, резервно копие на "
 "предишнотосъдържание е създадено на \"%2\"."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Не може да се зареди файл \"%1\"."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Не може да се запази файл \"%1\"."

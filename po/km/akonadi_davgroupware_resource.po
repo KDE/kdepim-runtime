@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-07 00:47+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2011-12-21 11:31+0700\n"
 "Last-Translator: Seng Sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <supprot@khmeros.info>\n"
@@ -312,17 +312,17 @@ msgstr ""
 "មាន​បញ្ហា​ជា​មួយ​នឹង​សំណើ ធាតុ​មិន​ត្រូវ​បាន​បង្កើត​នៅ​លើ​ម៉ាស៊ីន​បម្រើ​ទេ ។ \n"
 "%1 (%2) ។"
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "រក​មិន​ឃើញ​​ការ​កំណត់​​ប្រអប់​ចេញ​សម្រាប់ %1 "
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "ការ​ឆ្លើយតប​មិន​ត្រឹមត្រូវ​ពី​​ម៉ាស៊ីន​បម្រើ"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "មិន​អាច​ញែក​ទិន្នន័យ​​ទំនេរ/​រវល់ ដែល​បាន​ទទួល​ឡើយ"

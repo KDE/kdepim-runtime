@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2009-08-04 10:29+0300\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -153,7 +153,7 @@ msgid "The resource not configured yet"
 msgstr ""
 
 #: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -205,19 +205,19 @@ msgstr "O descărcare este în curs."
 msgid "Uploading cached file to remote location."
 msgstr "se încarcă fișierul prestocat către locația distantă."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Fișierul „%1” nu poate fi încărcat."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Fișierul „%1” nu a putut fi salvat."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2009-11-04 23:36+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Albanian <sq@li.org>\n"
@@ -133,7 +133,7 @@ msgid "The resource not configured yet"
 msgstr ""
 
 #: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -184,19 +184,19 @@ msgstr ""
 msgid "Uploading cached file to remote location."
 msgstr ""
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr ""
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr ""

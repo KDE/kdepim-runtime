@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-03-24 00:45+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2011-10-28 20:35+0300\n"
 "Last-Translator: Remigijus\n"
 "Language-Team: Lithuanian <kde-i18n-doc@kde.org>\n"
@@ -171,7 +171,7 @@ msgid "The resource not configured yet"
 msgstr ""
 
 #: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
-#: singlefileresourcebase.cpp:278 singlefileresourcebase.cpp:295
+#: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
@@ -222,7 +222,7 @@ msgstr "Atsiuntimas vykdomas."
 msgid "Uploading cached file to remote location."
 msgstr "Išsiunčiama failas iš laikinos talpyklos į nutolusią vietą."
 
-#: singlefileresourcebase.cpp:241
+#: singlefileresourcebase.cpp:240
 #, kde-format
 msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
@@ -231,12 +231,12 @@ msgstr ""
 "Failas „%1“ buvo pakeistas diske. Siekiant išvengti duomenų praradimo, buvo "
 "sukurta pokyčių atsarginė kopija „%2“."
 
-#: singlefileresourcebase.cpp:265
+#: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
 msgstr "Nepavyko įkelti failo „%1“."
 
-#: singlefileresourcebase.cpp:284
+#: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
 msgstr "Nepavyko išsaugoti failo „%1“."
