@@ -73,6 +73,8 @@ GoogleResource::GoogleResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
+    Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
+
     m_settings = new GoogleSettings();
     m_settings->setWindowId(winIdForDialogs());
     connect(m_settings, &GoogleSettings::accountReady, this, [this](bool ready) {
@@ -97,8 +99,8 @@ GoogleResource::GoogleResource(const QString &id)
             synchronize();
         }
     });
+    m_settings->init();
 
-    Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
     updateResourceName();
 
     m_freeBusyHandler = std::make_unique<FreeBusyHandler>(m_iface, m_settings);

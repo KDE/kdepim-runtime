@@ -9,6 +9,8 @@
 #include "googleresource_debug.h"
 
 #include <KGAPI/Account>
+#include <KLocalizedString>
+#include <KMessageBox>
 #include <KWallet>
 
 using namespace KWallet;
@@ -19,9 +21,14 @@ static const QString googleWalletFolder = QStringLiteral("Akonadi Google");
 GoogleSettings::GoogleSettings()
 {
     m_wallet = Wallet::openWallet(Wallet::NetworkWallet(), m_winId, Wallet::Asynchronous);
+}
+
+void GoogleSettings::init()
+{
     if (m_wallet) {
         connect(m_wallet.data(), &Wallet::walletOpened, this, &GoogleSettings::slotWalletOpened);
     } else {
+        Q_EMIT accountReady(false);
         qCWarning(GOOGLE_LOG) << "Failed to open wallet!";
     }
 }
