@@ -33,6 +33,7 @@ class GoogleSettings : public SettingsBase
 
 public:
     GoogleSettings();
+    void init();
     void setWindowId(WId id);
     void setResourceId(const QString &resourceIdentifier);
 
