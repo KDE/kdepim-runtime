@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2022-04-05 13:23+0300\n"
+"PO-Revision-Date: 2022-10-08 12:45+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 22.08.1\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: configdialog.cpp:33
@@ -397,7 +397,7 @@ msgstr "Görünen ad"
 #: davgroupwareresource.kcfg:18
 #, kde-format
 msgid "Refresh every"
-msgstr "Tazeleme sıklığı"
+msgstr "Yenileme sıklığı"
 
 #. i18n: ectx: label, entry (remoteUrls), group (General)
 #: davgroupwareresource.kcfg:22

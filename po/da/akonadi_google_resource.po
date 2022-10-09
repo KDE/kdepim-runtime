@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-04 00:45+0000\n"
+"POT-Creation-Date: 2022-10-09 00:48+0000\n"
 "PO-Revision-Date: 2020-07-31 19:09+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -235,33 +235,33 @@ msgstr "Klar"
 msgid "Invalid item."
 msgstr "Ugyldig elementladning."
 
-#: googleresource.cpp:82
-#, kde-format
-msgid "Can't access KWallet"
-msgstr "Kan ikke tilgå KWallet"
-
-#: googleresource.cpp:100
+#: googleresource.cpp:75
 #, kde-format
 msgid "Waiting for KWallet..."
 msgstr "Venter på KWallet..."
 
-#: googleresource.cpp:128
+#: googleresource.cpp:84
+#, kde-format
+msgid "Can't access KWallet"
+msgstr "Kan ikke tilgå KWallet"
+
+#: googleresource.cpp:130
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Klar"
 
-#: googleresource.cpp:148 googleresource.cpp:186
+#: googleresource.cpp:150 googleresource.cpp:188
 #, kde-format
 msgid "Configured account does not exist"
 msgstr "Den konfigurerede konto findes ikke"
 
-#: googleresource.cpp:179
+#: googleresource.cpp:181
 #, kde-format
 msgid "not configured"
 msgstr "ikke konfigureret"
 
-#: googleresource.cpp:179
+#: googleresource.cpp:181
 #, fuzzy, kde-format
 #| msgctxt "%1 is account name (user@gmail.com)"
 #| msgid "Google Contacts (%1)"
@@ -269,56 +269,56 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google-kontakter (%1)"
 
-#: googleresource.cpp:232
+#: googleresource.cpp:234
 #, fuzzy, kde-format
 #| msgid "Configured account has been removed"
 msgid "Account has been logged out."
 msgstr "Den konfigurerede konto er blevet fjernet"
 
-#: googleresource.cpp:235
+#: googleresource.cpp:237
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:236
+#: googleresource.cpp:238
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:240
+#: googleresource.cpp:242
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:245
+#: googleresource.cpp:247
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:259 googleresource.cpp:260
+#: googleresource.cpp:261 googleresource.cpp:262
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Ressourcen er ikke konfigureret"
 
-#: googleresource.cpp:275
+#: googleresource.cpp:277
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Kunne ikke genopfriske poletter"
 
-#: googleresource.cpp:430 googleresource.cpp:444 googleresource.cpp:458
-#: googleresource.cpp:473 googleresource.cpp:487 googleresource.cpp:501
+#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
+#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Ugyldig ladningstype"
 
-#: googleresource.cpp:515 googleresource.cpp:529 googleresource.cpp:543
+#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Ukendt MIME-type for samling"

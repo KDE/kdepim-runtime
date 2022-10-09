@@ -333,7 +333,7 @@ msgid ""
 msgstr ""
 "<html><head/><body><p><span style=\" font-weight:600;\">Nota:</span> El nom "
 "d'usuari i la contrasenya no són necessaris (poden estar buits) quan el "
-"Kerberos estiga ben configurat al vostre sistema.</p></body></html>"
+"Kerberos estiga ben configurat en el vostre sistema.</p></body></html>"
 
 #. i18n: ectx: property (whatsThis), widget (QRadioButton, authOAuth2RadioButton)
 #: ewsconfigdialog.ui:222
