@@ -227,7 +227,7 @@ void O2::unlink()
     Q_EMIT linkingSucceeded();
 }
 
-void O2::onVerificationReceived(const QMap<QString, QString> &response)
+void O2::onVerificationReceived(const QMultiMap<QString, QString> &response)
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived:" << response;
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2::onVerificationReceived: Emitting closeBrowser()";

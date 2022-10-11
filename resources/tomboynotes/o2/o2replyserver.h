@@ -23,12 +23,12 @@ public:
     void setReplyContent(const QByteArray &value);
 
 Q_SIGNALS:
-    void verificationReceived(QMap<QString, QString>);
+    void verificationReceived(const QMultiMap<QString, QString> &);
 
 public Q_SLOTS:
     void onIncomingConnection();
     void onBytesReady();
-    QMap<QString, QString> parseQueryParams(QByteArray *data);
+    QMultiMap<QString, QString> parseQueryParams(QByteArray *data);
 
 protected:
     QByteArray replyContent_;

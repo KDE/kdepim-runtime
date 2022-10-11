@@ -269,7 +269,7 @@ void EwsRequest::requestData(KIO::Job *job, const QByteArray &data)
 
 bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &reqName, ContentReaderFn contentReader)
 {
-    if (reader.name() != reqName + QStringLiteral("Response") || reader.namespaceUri() != ewsMsgNsUri) {
+    if (reader.name().toString() != reqName + QStringLiteral("Response") || reader.namespaceUri() != ewsMsgNsUri) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.").arg(reqName + QStringLiteral("Response")));
     }
 
@@ -277,12 +277,12 @@ bool EwsRequest::parseResponseMessage(QXmlStreamReader &reader, const QString &r
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected a child element in %1 element.").arg(reqName + QStringLiteral("Response")));
     }
 
-    if (reader.name() != QLatin1String("ResponseMessages") || reader.namespaceUri() != ewsMsgNsUri) {
+    if (reader.name().toString() != QLatin1String("ResponseMessages") || reader.namespaceUri() != ewsMsgNsUri) {
         return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.").arg(QStringLiteral("ResponseMessages")));
     }
 
     while (reader.readNextStartElement()) {
-        if (reader.name() != reqName + QStringLiteral("ResponseMessage") || reader.namespaceUri() != ewsMsgNsUri) {
+        if (reader.name().toString() != reqName + QStringLiteral("ResponseMessage") || reader.namespaceUri() != ewsMsgNsUri) {
             return setErrorMsg(QStringLiteral("Failed to read EWS request - expected %1 element.").arg(reqName + QStringLiteral("ResponseMessage")));
         }
 

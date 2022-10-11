@@ -40,7 +40,11 @@
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KUser>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QNetworkInformation>
+#else
 #include <QNetworkConfigurationManager>
+#endif
 #include <QPushButton>
 
 #include <KIdentityManagement/IdentityCombo>
@@ -118,7 +122,9 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     , m_ui(new Ui::SetupServerView)
     , mValidator(this)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     auto networkConfigMgr = new QNetworkConfigurationManager(QCoreApplication::instance());
+#endif
 
     m_parentResource->settings()->setWinId(parent);
     auto mainWidget = new QWidget(this);
@@ -192,7 +198,19 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     slotTestChanged();
     slotComplete();
     slotCustomSieveChanged();
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QT_WARNING_PUSH
+    QT_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
+    QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
     connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged, this, &SetupServer::slotTestChanged);
+    QT_WARNING_POP
+#else
+    QNetworkInformation::instance()->load(QNetworkInformation::Feature::Reachability);
+    connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability newReachability) {
+        slotTestChanged();
+    });
+#endif
 }
 
 SetupServer::~SetupServer()

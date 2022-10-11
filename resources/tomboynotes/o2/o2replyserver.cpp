@@ -41,13 +41,13 @@ void O2ReplyServer::onBytesReady()
     socket->write(reply);
 
     QByteArray data = socket->readAll();
-    QMap<QString, QString> queryParams = parseQueryParams(&data);
+    QMultiMap<QString, QString> queryParams = parseQueryParams(&data);
     socket->disconnectFromHost();
     close();
     Q_EMIT verificationReceived(queryParams);
 }
 
-QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
+QMultiMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data)
 {
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "O2ReplyServer::parseQueryParams";
 

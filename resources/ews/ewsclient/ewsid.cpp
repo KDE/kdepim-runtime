@@ -42,6 +42,7 @@ static const QString distinguishedIdNames[] = {
     QStringLiteral("archiverecoverableitemspurges"),
 };
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 class EwsIdComparatorRegistrar
 {
 public:
@@ -51,7 +52,7 @@ public:
     }
 };
 const EwsIdComparatorRegistrar ewsIdComparatorRegistrar;
-
+#endif
 EwsId::EwsId(QXmlStreamReader &reader)
     : mDid(EwsDIdCalendar)
 {

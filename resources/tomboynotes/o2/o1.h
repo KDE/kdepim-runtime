@@ -107,7 +107,7 @@ Q_SIGNALS:
 
 protected Q_SLOTS:
     /// Handle verification received from the reply server.
-    virtual void onVerificationReceived(const QMap<QString, QString> &params);
+    virtual void onVerificationReceived(const QMultiMap<QString, QString> &params);
 
     /// Handle token request error.
     virtual void onTokenRequestError(QNetworkReply::NetworkError error);
