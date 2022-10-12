@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-12 00:47+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -295,7 +295,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Még egy kiszolgáló sincs beállítva."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:650
+#: imapresourcebase.cpp:246 setupserver.cpp:668
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -679,7 +679,7 @@ msgstr "Adja meg a(z) „%1” felhasználó jelszavát a(z) „%2” IMAP kiszo
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:74 setupserverview_desktop.ui:294
+#: setupserver.cpp:78 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -688,38 +688,38 @@ msgstr "Sima szöveg"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:76 setupserverview_desktop.ui:329
+#: setupserver.cpp:80 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Névtelen"
 
-#: setupserver.cpp:78
+#: setupserver.cpp:82
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr ""
 
-#: setupserver.cpp:145
+#: setupserver.cpp:151
 #, fuzzy, kde-format
 #| msgid "Shared Folders"
 msgid "Archive Folder"
 msgstr "Megosztott mappák"
 
-#: setupserver.cpp:157
+#: setupserver.cpp:163
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " perc"
 msgstr[1] " perc"
 
-#: setupserver.cpp:172
+#: setupserver.cpp:178
 #, kde-format
 msgid "Identity:"
 msgstr "Identitás:"
 
-#: setupserver.cpp:251
+#: setupserver.cpp:269
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -727,12 +727,12 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:254
+#: setupserver.cpp:272
 #, kde-format
 msgid "Server address change"
 msgstr ""
 
-#: setupserver.cpp:261
+#: setupserver.cpp:279
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -740,13 +740,13 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:264
+#: setupserver.cpp:282
 #, fuzzy, kde-format
 #| msgid "Username"
 msgid "User name change"
 msgstr "Felhasználónév"
 
-#: setupserver.cpp:411 setupserver.cpp:467
+#: setupserver.cpp:429 setupserver.cpp:485
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -758,29 +758,29 @@ msgstr ""
 "lenti jelölőnégyzetet, ekkor azonban a program minden alkalommal kérni fogja "
 "a jelszót."
 
-#: setupserver.cpp:416 setupserver.cpp:472
+#: setupserver.cpp:434 setupserver.cpp:490
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Ne használjon KWalletet"
 
-#: setupserver.cpp:537
+#: setupserver.cpp:555
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Nem lehet kapcsolódni a kiszolgálóhoz, ellenőrizze a kiszolgáló címét."
 
-#: setupserver.cpp:549
+#: setupserver.cpp:567
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>A TLS támogatott és ajánlott.</b></qt>"
 
-#: setupserver.cpp:552
+#: setupserver.cpp:570
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>A TLS támogatott és ajánlott.</b></qt>"
 
-#: setupserver.cpp:556
+#: setupserver.cpp:574
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -789,7 +789,7 @@ msgstr ""
 "<qt><b>A biztonság nem támogatott. Nem ajánlott kapcsolódni ehhez a "
 "kiszolgálóhoz.</b></qt>"
 
-#: setupserver.cpp:559
+#: setupserver.cpp:577
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Nem lehet használni ezt a kiszolgálót.</b></qt>"

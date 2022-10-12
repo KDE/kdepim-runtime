@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-12 00:47+0000\n"
 "PO-Revision-Date: 2012-07-07 22:46+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -289,7 +289,7 @@ msgstr "Norāda izmantojamo pieteikšanās veidu"
 msgid "No server configured yet."
 msgstr "Nav konfigurēts neviens serveris."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:650
+#: imapresourcebase.cpp:246 setupserver.cpp:668
 #, fuzzy, kde-format
 #| msgid "Serverside Subscription..."
 msgctxt "@title:window"
@@ -669,7 +669,7 @@ msgstr "Lūdzu, ievadiet paroli lietotājam '%1' IMAP serverī '%2'."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:74 setupserverview_desktop.ui:294
+#: setupserver.cpp:78 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -678,26 +678,26 @@ msgstr "Atklāts teksts"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:76 setupserverview_desktop.ui:329
+#: setupserver.cpp:80 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "Anonīms"
 
-#: setupserver.cpp:78
+#: setupserver.cpp:82
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr ""
 
-#: setupserver.cpp:145
+#: setupserver.cpp:151
 #, fuzzy, kde-format
 #| msgid "Shared Folders"
 msgid "Archive Folder"
 msgstr "Koplietošanas mapes"
 
-#: setupserver.cpp:157
+#: setupserver.cpp:163
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -705,12 +705,12 @@ msgstr[0] " minūte"
 msgstr[1] " minūtes"
 msgstr[2] " minūšu"
 
-#: setupserver.cpp:172
+#: setupserver.cpp:178
 #, kde-format
 msgid "Identity:"
 msgstr "Identitāte:"
 
-#: setupserver.cpp:251
+#: setupserver.cpp:269
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -718,12 +718,12 @@ msgid ""
 "again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:254
+#: setupserver.cpp:272
 #, kde-format
 msgid "Server address change"
 msgstr ""
 
-#: setupserver.cpp:261
+#: setupserver.cpp:279
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -731,13 +731,13 @@ msgid ""
 "account again. Are you sure you want to proceed?"
 msgstr ""
 
-#: setupserver.cpp:264
+#: setupserver.cpp:282
 #, fuzzy, kde-format
 #| msgid "Username"
 msgid "User name change"
 msgstr "Lietotājvārds"
 
-#: setupserver.cpp:411 setupserver.cpp:467
+#: setupserver.cpp:429 setupserver.cpp:485
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -748,29 +748,29 @@ msgstr ""
 "to. Ja nevēlaties izmantot KWallet, atzīmējiet to zemāk, taču tad parole "
 "tiks prasīta ikreiz, kad tā būs vajadzīga."
 
-#: setupserver.cpp:416 setupserver.cpp:472
+#: setupserver.cpp:434 setupserver.cpp:490
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Neizmantot KWallet"
 
-#: setupserver.cpp:537
+#: setupserver.cpp:555
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Neizdevās pieslēgties serverim, lūdzu, pārbaudiet servera adresi."
 
-#: setupserver.cpp:549
+#: setupserver.cpp:567
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS ir atbalstīts un ieteicams.</b></qt>"
 
-#: setupserver.cpp:552
+#: setupserver.cpp:570
 #, fuzzy, kde-format
 #| msgid "<qt><b>TLS is supported and recommended.</b></qt>"
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>TLS ir atbalstīts un ieteicams.</b></qt>"
 
-#: setupserver.cpp:556
+#: setupserver.cpp:574
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -779,7 +779,7 @@ msgstr ""
 "<qt><b>Nav atrasti nekādi drošības līdzekļi, tādēļ nav ieteicams pieslēgties "
 "šim serverim.</b></qt>"
 
-#: setupserver.cpp:559
+#: setupserver.cpp:577
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>Nav iespējams izmantot šo serveri.</b></qt>"

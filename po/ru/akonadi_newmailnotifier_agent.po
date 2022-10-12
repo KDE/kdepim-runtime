@@ -4,21 +4,22 @@
 # Alexander Potashev <aspotashev@gmail.com>, 2011, 2014, 2015, 2016, 2017.
 # Alexander Lakhin <exclusion@gmail.com>, 2013.
 # Alexander Yavorsky <kekcuha@gmail.com>, 2018, 2019, 2020.
+# Olesya Gerasimenko <translation-team@basealt.ru>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-13 00:46+0000\n"
-"PO-Revision-Date: 2020-04-22 16:39+0300\n"
-"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
-"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"PO-Revision-Date: 2022-10-11 10:11+0300\n"
+"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
+"Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 22.04.3\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -125,18 +126,17 @@ msgstr "Показывать кнопки действий"
 #: newmailnotifiersettingswidget.cpp:90
 #, kde-format
 msgid "Reply Mail"
-msgstr ""
+msgstr "Ответное письмо"
 
 #: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to Author"
-msgstr ""
+msgstr "Ответить автору"
 
 #: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:157
-#, fuzzy, kde-format
-#| msgid "&Select All"
+#, kde-format
 msgid "Reply to All"
-msgstr "&Выбрать все"
+msgstr "Ответить всем"
 
 #: newmailnotifiersettingswidget.cpp:107
 #, kde-format
@@ -184,10 +184,9 @@ msgid "Notify about new mails."
 msgstr "Уведомляет при получении новой почты."
 
 #: newmailnotifiersettingswidget.cpp:152
-#, fuzzy, kde-format
-#| msgid "Copyright (C) 2013-2020 Laurent Montel"
+#, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
-msgstr "© Laurent Montel, 2013–2020"
+msgstr "© Laurent Montel, 2013–%1"
 
 #: newmailnotifiersettingswidget.cpp:155
 #, kde-format
