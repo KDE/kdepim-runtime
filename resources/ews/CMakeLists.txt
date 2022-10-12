@@ -202,7 +202,11 @@ endif ()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ewsresource.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/ewsresource.desktop)
 
 if (BUILD_TESTING)
-    add_subdirectory(test)
+    if (QT_MAJOR_VERSION STREQUAL "5")
+        add_subdirectory(test)
+    else()
+        MESSAGE(STATUS "ews test was disable in qt6 XmlPattern was removed in qt6")
+    endif()
 endif ()
 
 
