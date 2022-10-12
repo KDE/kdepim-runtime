@@ -57,7 +57,7 @@ template<typename Req, typename ReqItem, typename RespItem>
 template<typename ReqSetupFn, typename RespGetFn, typename ProgressFn, typename ResultFn>
 void EwsAbstractChunkedJob<Req, ReqItem, RespItem>::start(ReqSetupFn reqSetupFn, RespGetFn respGetFn, ProgressFn progressFn, ResultFn resultFn)
 {
-    int itemsToDo = qMin(mItems.size() - mItemsDone, mChunkSize);
+    int itemsToDo = qMin<int>(mItems.size() - mItemsDone, mChunkSize);
     if (itemsToDo == 0) {
         resultFn(true, QString());
         return;
