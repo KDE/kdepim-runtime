@@ -32,5 +32,9 @@ private:
     KIMAP::Session *mSession = nullptr;
     bool mFolderFound = false;
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QScopedPointer<QMapIterator<int, KIMAP::MailBoxDescriptor>> mFolderIterator;
+#else
+    QScopedPointer<QMultiMapIterator<int, KIMAP::MailBoxDescriptor>> mFolderIterator;
+#endif
 };

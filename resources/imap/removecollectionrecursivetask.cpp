@@ -61,7 +61,11 @@ void RemoveCollectionRecursiveTask::onMailBoxesReceived(const QList<KIMAP::MailB
     mFolderFound = true;
 
     // Now start the actual deletion work
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     mFolderIterator.reset(new QMapIterator<int, KIMAP::MailBoxDescriptor>(foldersToDelete));
+#else
+    mFolderIterator.reset(new QMultiMapIterator<int, KIMAP::MailBoxDescriptor>(foldersToDelete));
+#endif
     mFolderIterator->toBack(); // we start with largest nesting value first
 
     deleteNextMailbox();
