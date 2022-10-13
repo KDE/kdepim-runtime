@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-13 00:47+0000\n"
 "PO-Revision-Date: 2021-08-26 12:54+0200\n"
 "Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -27,7 +27,7 @@ msgstr "Neplatná e-mailová adresa"
 msgid "Exchange protocol information not found"
 msgstr "Informace o protokolu Exchange nenalezena"
 
-#: ewsclient/auth/ewsoauth.cpp:515
+#: ewsclient/auth/ewsoauth.cpp:527
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -35,7 +35,7 @@ msgid ""
 "valid. You need to authenticate in order to continue using it."
 msgstr ""
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:536
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

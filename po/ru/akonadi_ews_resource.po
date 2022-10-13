@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-13 00:47+0000\n"
 "PO-Revision-Date: 2022-10-10 17:13+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -30,7 +30,7 @@ msgstr "Неверный адрес эл. почты"
 msgid "Exchange protocol information not found"
 msgstr "Не найдены сведения о протоколе Exchange"
 
-#: ewsclient/auth/ewsoauth.cpp:515
+#: ewsclient/auth/ewsoauth.cpp:527
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -41,7 +41,7 @@ msgstr ""
 "Exchange <b>%1</b>, более недействительны. Необходимо снова выполнить вход в "
 "систему."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:536
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

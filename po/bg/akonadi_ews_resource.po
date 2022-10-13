@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-13 00:47+0000\n"
 "PO-Revision-Date: 2022-07-20 19:23+0200\n"
 "Last-Translator: mkkDr2010 <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -29,7 +29,7 @@ msgstr "Неправилен адрес на е-поща"
 msgid "Exchange protocol information not found"
 msgstr "Информация за протокола за обмен не е намерена"
 
-#: ewsclient/auth/ewsoauth.cpp:515
+#: ewsclient/auth/ewsoauth.cpp:527
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -39,7 +39,7 @@ msgstr ""
 "Идентификационните данни на Microsoft Exchange за акаунта <b> %1 </b> вече "
 "не са валидни. Трябва да удостоверите, за да продължите да го използвате."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:536
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

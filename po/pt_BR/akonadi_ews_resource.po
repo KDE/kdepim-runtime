@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-13 00:47+0000\n"
 "PO-Revision-Date: 2021-10-26 13:27-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -29,7 +29,7 @@ msgstr "Endereço de e-mail incorreto"
 msgid "Exchange protocol information not found"
 msgstr "Informação do protocolo do Exchange não encontrada"
 
-#: ewsclient/auth/ewsoauth.cpp:515
+#: ewsclient/auth/ewsoauth.cpp:527
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -39,7 +39,7 @@ msgstr ""
 "As credenciais do Microsoft Exchange para a conta <b>%1</b> não são mais "
 "válidas. É necessário se autenticar para continuar a usá-la."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:536
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""

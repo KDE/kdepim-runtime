@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2022-10-13 00:47+0000\n"
 "PO-Revision-Date: 2021-08-26 07:13+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -29,7 +29,7 @@ msgstr "Adresse électronique non valable"
 msgid "Exchange protocol information not found"
 msgstr "Informations de protocole Exchange introuvables"
 
-#: ewsclient/auth/ewsoauth.cpp:515
+#: ewsclient/auth/ewsoauth.cpp:527
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -39,7 +39,7 @@ msgstr ""
 "Les identifiants Microsoft Exchange du compte <b>%1</b> ne sont plus "
 "valables. Vous devez vous authentifier pour continuer à l'utiliser."
 
-#: ewsclient/auth/ewsoauth.cpp:524
+#: ewsclient/auth/ewsoauth.cpp:536
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
