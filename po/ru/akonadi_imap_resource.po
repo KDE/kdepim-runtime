@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-12 00:47+0000\n"
+"POT-Creation-Date: 2022-10-14 00:47+0000\n"
 "PO-Revision-Date: 2020-04-21 09:01+0300\n"
 "Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -437,13 +437,13 @@ msgstr ""
 "Не удалось поставить письмо в очередь на удаление из «%1» на сервере IMAP. "
 "Оно появится при следующей синхронизации."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
+#: removecollectionrecursivetask.cpp:145
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Ошибка удаления папки; восстанавливается список папок."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:150
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Ошибка поиска удаляемой папки; восстанавливается список папок."

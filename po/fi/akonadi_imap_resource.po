@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-12 00:47+0000\n"
+"POT-Creation-Date: 2022-10-14 00:47+0000\n"
 "PO-Revision-Date: 2020-01-01 12:42+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -438,13 +438,13 @@ msgstr ""
 "Kansion ”%1” viestiä ei onnistuttu merkitsemään poistettavaksi IMAP-tilillä. "
 "Se palaa näkyviin seuraavassa synkronoinnissa."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
+#: removecollectionrecursivetask.cpp:145
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Kansion poistaminen epäonnistui, palautetaan kansioluettelo."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:150
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Poistettavaa kansiota ei löytynyt, palautetaan kansioluettelo."

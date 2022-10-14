@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-12 00:47+0000\n"
+"POT-Creation-Date: 2022-10-14 00:47+0000\n"
 "PO-Revision-Date: 2022-07-20 19:28+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -434,14 +434,14 @@ msgstr ""
 "Неуспешно маркиране на съобщението от „%1“ за изтриване на IMAP сървъра. Той "
 "ще се появи отново при следващо синхронизиране."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
+#: removecollectionrecursivetask.cpp:145
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr ""
 "Изтриването на папката не бе успешно, възстановяването на списъка с папки."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:150
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""

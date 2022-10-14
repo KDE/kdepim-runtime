@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-12 00:47+0000\n"
+"POT-Creation-Date: 2022-10-14 00:47+0000\n"
 "PO-Revision-Date: 2021-11-01 10:38+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -437,13 +437,13 @@ msgstr ""
 "Markeren van het bericht uit '%1' op de IMAP-server voor verwijdering is "
 "mislukt. Het zal bij de volgende synchronisatie opnieuw verschijnen."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
+#: removecollectionrecursivetask.cpp:145
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Het verwijderen van de map is mislukt, de mappenlijst wordt hersteld."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:150
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""

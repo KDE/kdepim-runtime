@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-12 00:47+0000\n"
+"POT-Creation-Date: 2022-10-14 00:47+0000\n"
 "PO-Revision-Date: 2014-09-04 16:12+0200\n"
 "Last-Translator: Kristóf Kiszel <ulysses@kubuntu.org>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -441,13 +441,13 @@ msgstr ""
 "Nem sikerült megjelölni törlése az üzenetet innen: „%1” az IMAP kiszolgálón. "
 "A következő szinkronizáláskor újra meg fog jelenni."
 
-#: removecollectionrecursivetask.cpp:112 removecollectionrecursivetask.cpp:128
-#: removecollectionrecursivetask.cpp:141
+#: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
+#: removecollectionrecursivetask.cpp:145
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
 msgstr "Nem sikerült törölni a mappát, a mappalista visszaállítása."
 
-#: removecollectionrecursivetask.cpp:146
+#: removecollectionrecursivetask.cpp:150
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr "Nem sikerült törölni a mappát, a mappalista visszaállítása."
