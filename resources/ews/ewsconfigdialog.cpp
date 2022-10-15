@@ -24,6 +24,7 @@
 #include "ewssettings.h"
 #include "ewssubscriptionwidget.h"
 #include "ui_ewsconfigdialog.h"
+#include <kwidgetsaddons_version.h>
 
 using StringPair = QPair<QString, QString>;
 
@@ -332,10 +333,22 @@ void EwsConfigDialog::dialogAccepted()
         connect(mProgressDialog, &QDialog::rejected, this, &EwsConfigDialog::autoDiscoveryCancelled);
         mAutoDiscoveryJob->start();
         if (!mProgressDialog->exec()) {
+#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 100, 0)
+            if (KMessageBox::questionTwoActions(
+                    this,
+#else
             if (KMessageBox::questionYesNo(this,
-                                           i18n("Autodiscovery failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                                           i18n("Exchange server autodiscovery"))
+
+#endif
+                    i18n("Autodiscovery failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
+                    i18n("Exchange server autodiscovery"),
+                    KStandardGuiItem::save(),
+                    KStandardGuiItem::cancel())
+#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 100, 0)
+                == KMessageBox::ButtonCode::PrimaryAction) {
+#else
                 == KMessageBox::Yes) {
+#endif
                 accept();
             }
             return;
@@ -360,11 +373,22 @@ void EwsConfigDialog::dialogAccepted()
         mTryConnectJob->start();
         if (!execJob(mTryConnectJob)) {
             if (!mTryConnectJobCancelled) {
+#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 100, 0)
+                if (KMessageBox::questionTwoActions(
+#else
                 if (KMessageBox::questionYesNo(
+
+#endif
                         this,
                         i18n("Connecting to Exchange failed. This can be caused by incorrect parameters. Do you still want to save your settings?"),
-                        i18n("Exchange server connection"))
+                        i18n("Exchange server connection"),
+                        KStandardGuiItem::save(),
+                        KStandardGuiItem::cancel())
+#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 100, 0)
+                    == KMessageBox::ButtonCode::PrimaryAction) {
+#else
                     == KMessageBox::Yes) {
+#endif
                     accept();
                 }
             }
