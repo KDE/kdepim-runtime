@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-28 00:50+0000\n"
+"POT-Creation-Date: 2022-10-08 00:48+0000\n"
 "PO-Revision-Date: 2014-09-19 22:47+0200\n"
 "Last-Translator: Bjørn Steensrud <bjornst@skogkatt.homelinux.org>\n"
 "Language-Team: Norwegian Bokmål <l10n-no@lister.huftis.org>\n"
@@ -285,17 +285,17 @@ msgid ""
 "supported."
 msgstr ""
 
-#: davfreebusyhandler.cpp:58
+#: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
 msgstr "Fant ingen plan-utboks for %1"
 
-#: davfreebusyhandler.cpp:187 davfreebusyhandler.cpp:198
+#: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
 msgstr "Ugyldig svar fra tjeneren"
 
-#: davfreebusyhandler.cpp:209
+#: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
 msgstr "Kan ikke tokke mottatte ledig/opptatt data"
@@ -523,12 +523,12 @@ msgstr "en person ved navn"
 msgid "a contact with email"
 msgstr "en kontakt med e-post"
 
-#: settings.cpp:482
+#: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
 msgstr "Det kreves passord for bruker %1"
 
-#: settings.cpp:485
+#: settings.cpp:484
 #, kde-format
 msgid "Password: "
 msgstr "Passord:"
