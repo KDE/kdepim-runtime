@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-13 00:47+0000\n"
+"POT-Creation-Date: 2022-10-16 00:47+0000\n"
 "PO-Revision-Date: 2021-10-11 14:36+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -57,43 +57,43 @@ msgstr ""
 "Microsoft EWS -tilin <b>%1</b> käyttäjätunnus tai salasana ei kelpaa. "
 "Päivitä tiedot tilin asetussivulla."
 
-#: ewsconfigdialog.cpp:76
+#: ewsconfigdialog.cpp:77
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Microsoft Exchange -asetukset"
 
-#: ewsconfigdialog.cpp:101
+#: ewsconfigdialog.cpp:102
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:138
+#: ewsconfigdialog.cpp:139
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Mukautettu"
 
-#: ewsconfigdialog.cpp:149
+#: ewsconfigdialog.cpp:150
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Akonadi-resurssi Microsoft Exchange -verkkopalveluille (EWS)"
 
-#: ewsconfigdialog.cpp:150
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Tekijänoikeudet © Krzysztof Nowicki 2015–2020"
 
-#: ewsconfigdialog.cpp:151
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Versio %1"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:153
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -103,37 +103,37 @@ msgstr ""
 "Levityksessä GNU Library General Public Licensen version 2.0 tai myöhemmän "
 "mukaisesti."
 
-#: ewsconfigdialog.cpp:247
+#: ewsconfigdialog.cpp:248
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Automaattinen tunnistus epäonnistui"
 
-#: ewsconfigdialog.cpp:262
+#: ewsconfigdialog.cpp:263
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Yhteydenotto epäonnistui"
 
-#: ewsconfigdialog.cpp:263 ewsconfigdialog.cpp:416
+#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:440
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Epäonnistui"
 
-#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:417
+#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:441
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:421
+#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:445
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:336
+#: ewsconfigdialog.cpp:343
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -142,12 +142,12 @@ msgstr ""
 "Automaattinen tunnistus epäonnistus, mikä voi johtua virheellisistä "
 "asetuksista. Haluatko silti tallentaa ne?"
 
-#: ewsconfigdialog.cpp:337
+#: ewsconfigdialog.cpp:344
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Exchange-palvelimen automaattinen tunnistus"
 
-#: ewsconfigdialog.cpp:365
+#: ewsconfigdialog.cpp:383
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -156,12 +156,12 @@ msgstr ""
 "Exchange-yhteydenotto epäonnistui, mikä voi johtua virheellisistä "
 "asetuksista. Haluatko silti tallentaa ne?"
 
-#: ewsconfigdialog.cpp:366
+#: ewsconfigdialog.cpp:384
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Exchange-palvelinyhteys"
 
-#: ewsconfigdialog.cpp:418
+#: ewsconfigdialog.cpp:442
 #, kde-format
 msgid "Connection failed"
 msgstr "Yhteydenotto epäonnistui"
