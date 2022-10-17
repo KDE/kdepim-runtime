@@ -139,7 +139,7 @@ msgstr "No s'ha pogut canviar de nom la carpeta «%1»."
 #: contactsresource.cpp:418
 #, kde-format
 msgid "Unknown folder to delete."
-msgstr "Es desconeix la carpeta que s'ha de suprimir."
+msgstr "Es desconeix la carpeta que se suprimirà."
 
 #: contactsresource.cpp:422
 #, kde-format

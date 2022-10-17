@@ -176,4 +176,4 @@ msgstr "Mostra l'informe només si hi ha canvis"
 #: main.cpp:38
 #, kde-format
 msgid "MIME type to migrate"
-msgstr "Tipus MIME que cal migrar"
+msgstr "Tipus MIME que s'ha de migrar"

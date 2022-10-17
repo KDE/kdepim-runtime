@@ -67,7 +67,7 @@ msgstr ""
 #: configdialog.ui:29
 #, kde-format
 msgid "Display name:"
-msgstr "Nom que es mostrarà:"
+msgstr "Nom que s'ha de mostrar:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: configdialog.ui:39
@@ -236,7 +236,7 @@ msgstr ""
 #: daverror-kdepim-runtime.cpp:70
 #, kde-format
 msgid "No properties to change or remove"
-msgstr "No hi ha cap propietat que s'haja de canviar o eliminar"
+msgstr "No hi ha cap propietat que calga canviar o eliminar"
 
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
@@ -403,7 +403,7 @@ msgstr "Versió de la configuració"
 #: davgroupwareresource.kcfg:14
 #, kde-format
 msgid "Display name"
-msgstr "Nom que es mostrarà"
+msgstr "Nom que s'ha de mostrar"
 
 #. i18n: ectx: label, entry (refreshInterval), group (General)
 #: davgroupwareresource.kcfg:18
@@ -698,7 +698,7 @@ msgstr "S'ha connectat satisfactòriament"
 #: urlconfigurationdialog.cpp:266
 #, kde-format
 msgid "Display Name"
-msgstr "Nom que es mostrarà"
+msgstr "Nom que s'ha de mostrar"
 
 #. i18n: ectx: property (text), widget (QLabel, remoteProtocol)
 #: urlconfigurationdialog.ui:35

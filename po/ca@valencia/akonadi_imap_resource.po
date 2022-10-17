@@ -127,7 +127,7 @@ msgstr "Nom d'usuari"
 #: imapresource.kcfg:20
 #, kde-format
 msgid "Defines the encryption type to use"
-msgstr "Establix el tipus d'encriptació que s'utilitzarà"
+msgstr "Establix el tipus d'encriptació que s'ha d'utilitzar"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
 #: imapresource.kcfg:24
@@ -139,7 +139,7 @@ msgstr "Substituïx el mode d'encriptació configurat"
 #: imapresource.kcfg:27
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr "Definiu el tipus d'autenticació que s'utilitzarà"
+msgstr "Definiu el tipus d'autenticació que s'ha d'utilitzar"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
 #: imapresource.kcfg:31
@@ -273,7 +273,7 @@ msgstr "Definix un URL alternatiu"
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
 msgstr ""
-"Establix el tipus d'autenticació que s'utilitzarà per a un servidor "
+"Establix el tipus d'autenticació que s'ha d'utilitzar per a un servidor "
 "alternatiu"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
@@ -454,7 +454,7 @@ msgstr ""
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
-"No s'ha pogut buscar la carpeta que s'ha de suprimir, s'està restaurant la "
+"No s'ha pogut buscar la carpeta que se suprimirà, s'està restaurant la "
 "llista de carpetes."
 
 #: resourcestate.cpp:274

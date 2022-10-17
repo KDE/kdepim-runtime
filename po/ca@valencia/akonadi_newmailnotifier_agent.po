@@ -155,7 +155,7 @@ msgstr "Missatge:"
 #: newmailnotifiersettingswidget.cpp:136
 #, kde-format
 msgid "Text to Speak"
-msgstr "Text que es parlarà"
+msgstr "Text que s'ha de parlar"
 
 #: newmailnotifiersettingswidget.cpp:142
 #, kde-format

@@ -711,7 +711,7 @@ msgstr ""
 #: popsettings.ui:290
 #, kde-format
 msgid "Number of messages to keep:"
-msgstr "Nombre de missatges que cal conservar:"
+msgstr "Nombre de missatges que s'han de conservar:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerSizeCheck)
 #: popsettings.ui:313
@@ -884,4 +884,4 @@ msgstr "Connecta emprant la configuració del servidor intermediari del sistema"
 #: settings.kcfg:30
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr "Definiu el tipus d'autenticació que s'utilitzarà"
+msgstr "Definiu el tipus d'autenticació que s'ha d'utilitzar"

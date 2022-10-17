@@ -249,7 +249,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:79
 #, kde-format
 msgid "Display Name:"
-msgstr "Nom que es mostrarà:"
+msgstr "Nom que s'ha de mostrar:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
