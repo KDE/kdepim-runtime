@@ -3,21 +3,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2013, 2014, 2015, 2016.
-# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020.
+# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: gid-migrator\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-15 00:45+0000\n"
-"PO-Revision-Date: 2020-09-08 11:32-0300\n"
+"PO-Revision-Date: 2022-10-19 15:39-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
-"Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
+"Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 20.04.3\n"
+"X-Generator: Lokalize 21.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -148,10 +148,9 @@ msgid "Migration of Akonadi Items to support GID"
 msgstr "Migração dos itens do Akonadi para ter suporte ao GID"
 
 #: main.cpp:30
-#, fuzzy, kde-format
-#| msgid "(c) 2013-2020 the Akonadi developers"
+#, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "(c) 2013-2020 Os desenvolvedores do Akonadi"
+msgstr "(c) 2013-2022 Os desenvolvedores do Akonadi"
 
 #: main.cpp:33
 #, kde-format
