@@ -49,7 +49,7 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 "El servidor no pareix permetre números de missatge únics, però este és un "
-"requisit per a deixar els missatges al servidor.\n"
+"requisit per a deixar els missatges en el servidor.\n"
 "Ja que alguns servidors no anuncien correctament les seues capacitats, "
 "encara teniu la possibilitat de deixar activada l'opció de deixar els "
 "missatges recuperats al servidor."
@@ -119,8 +119,8 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 "El servidor no pareix permetre números de missatge únics, però este és un "
-"requisit per a deixar els missatges al servidor, per tant, esta opció s'ha "
-"desactivat.\n"
+"requisit per a deixar els missatges en el servidor, per tant, esta opció "
+"s'ha desactivat.\n"
 "Ja que alguns servidors no anuncien correctament les seues capacitats, "
 "encara teniu la possibilitat de deixar activada l'opció de deixar els "
 "missatges recuperats al servidor."
@@ -446,7 +446,7 @@ msgstr ""
 "El vostre servidor POP3 (compte: %1) no permet l'ordre UIDL: esta ordre és "
 "necessària per a saber d'una forma fiable quins missatges del servidor han "
 "sigut vistos anteriorment per KMail,\n"
-"per tant, la característica de deixar els missatges al servidor no "
+"per tant, la característica de deixar els missatges en el servidor no "
 "funcionarà correctament."
 
 #: pop3resource.cpp:511
@@ -689,7 +689,7 @@ msgstr "El missatge original se suprimirà del servidor després de x dies"
 #: popsettings.ui:261
 #, kde-format
 msgid "Days to leave messages on the server:"
-msgstr "Dies a deixar els missatges al servidor:"
+msgstr "Dies que s'han de deixar els missatges en el servidor:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:284

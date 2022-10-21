@@ -590,7 +590,7 @@ msgid ""
 msgstr ""
 "Restaura l'estat de sincronització entre Exchange i Akonadi. Utilitzeu-ho en "
 "el cas que alguns elements o carpetes no es mostren malgrat que existisquen "
-"a Exchange."
+"en Exchange."
 
 #. i18n: ectx: property (text), widget (QPushButton, clearFolderTreeSyncStateButton)
 #: ewsconfigdialog.ui:570

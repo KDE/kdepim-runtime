@@ -192,8 +192,8 @@ msgid ""
 "Could not connect to the server. Please ensure that the server URL is "
 "correct."
 msgstr ""
-"No s'ha pogut connectar al servidor. Assegureu-vos que l'URL del servidor "
-"siga correcte."
+"No s'ha pogut connectar amb el servidor. Assegureu-vos que l'URL del "
+"servidor siga correcte."
 
 #: setupwizard.cpp:138
 #, kde-format
