@@ -441,7 +441,7 @@ static void swapEndian(QString &str)
 {
     QChar *data = str.data();
     while (!data->isNull()) {
-        *data = kmail_swap_16(data->unicode());
+        *data = QChar(kmail_swap_16(data->unicode()));
         data++;
     }
 }
