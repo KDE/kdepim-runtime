@@ -57,7 +57,7 @@ msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
 msgstr ""
-"S'han canviat les vostres credencials d'EteSync. Feu clic a D'acord per "
+"S'han canviat les vostres credencials d'EteSync. Feu clic en D'acord per "
 "tornar a introduir les credencials."
 
 #: etesyncresource.cpp:222
