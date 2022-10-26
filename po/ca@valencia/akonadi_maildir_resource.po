@@ -102,7 +102,7 @@ msgstr ""
 #: maildirresource.cpp:578 maildirresource.cpp:621 maildirresource.cpp:654
 #, kde-format
 msgid "Unusable configuration."
-msgstr "Configuració no usable."
+msgstr "Configuració no utilitzable."
 
 #: maildirresource.cpp:187
 #, kde-format
@@ -189,7 +189,7 @@ msgstr "No s'ha pogut crear el directori de correu «%1»."
 #: maildirresource.cpp:693
 #, kde-format
 msgid "No usable storage location configured."
-msgstr "No s'ha configurat cap ubicació usable per a l'emmagatzematge."
+msgstr "No s'ha configurat cap ubicació utilitzable per a l'emmagatzematge."
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: maildirresource.kcfg:10
