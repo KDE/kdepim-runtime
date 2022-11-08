@@ -440,9 +440,3 @@ msgstr "S'està canviant la llista de tasques «%1»"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "S'està eliminant la llista de tasques «%1»"
-
-#~ msgid "Refresh"
-#~ msgstr "Refresca"
-
-#~ msgid "<b>not confgured</b>"
-#~ msgstr "<b>sense configurar</b>"
