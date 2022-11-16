@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-16 00:47+0000\n"
+"POT-Creation-Date: 2022-11-16 00:47+0000\n"
 "PO-Revision-Date: 2019-12-18 18:35+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -57,31 +57,31 @@ msgstr ""
 "Microsoft Exchange'i konto <b>%1</b> kasutajanimi/parool ei kehti. Palun "
 "uuenda seda konto seadistusteleheküljel."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Microsoft Exchange'i seadistused"
 
-#: ewsconfigdialog.cpp:102
+#: ewsconfigdialog.cpp:101
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:139
+#: ewsconfigdialog.cpp:138
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Kohandatud"
 
-#: ewsconfigdialog.cpp:150
+#: ewsconfigdialog.cpp:149
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Akonadi Microsoft Exchange'i veebiteenuste (EWS) ressurss"
 
-#: ewsconfigdialog.cpp:151
+#: ewsconfigdialog.cpp:150
 #, fuzzy, kde-format
 #| msgctxt "@info"
 #| msgid "Copyright (c) Krzysztof Nowicki 2015-2017"
@@ -89,13 +89,13 @@ msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "Autoriõigus (c) Krzysztof Nowicki 2015-2017"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Versioon %1"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -105,37 +105,37 @@ msgstr ""
 "Levitatakse vastavalt GNU teegi Üldise Avaliku Litsentsi (GPL) versioonile "
 "2.0 või uuem."
 
-#: ewsconfigdialog.cpp:248
+#: ewsconfigdialog.cpp:247
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Automaatne tuvastamine nurjus"
 
-#: ewsconfigdialog.cpp:263
+#: ewsconfigdialog.cpp:262
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Ühendus nurjus"
 
-#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:263 ewsconfigdialog.cpp:421
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Nurjumine"
 
-#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:422
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Teadmata"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:343
+#: ewsconfigdialog.cpp:337
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -144,12 +144,12 @@ msgstr ""
 "Automaatne tuvastamine nurjus. Seda võivad põhjustada valed parameetrid. Kas "
 "siiski seadistused salvestada?"
 
-#: ewsconfigdialog.cpp:344
+#: ewsconfigdialog.cpp:338
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Exchange'i serveri automaatne tuvastamine"
 
-#: ewsconfigdialog.cpp:383
+#: ewsconfigdialog.cpp:368
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -158,12 +158,12 @@ msgstr ""
 "Ühendus Exchange'iga nurjus. Seda võivad põhjustada valed parameetrid. Kas "
 "siiski seadistused salvestada?"
 
-#: ewsconfigdialog.cpp:384
+#: ewsconfigdialog.cpp:369
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Exchange'i serveri ühendus"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:423
 #, kde-format
 msgid "Connection failed"
 msgstr "Ühendus nurjus"

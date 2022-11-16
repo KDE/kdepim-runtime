@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-16 00:47+0000\n"
+"POT-Creation-Date: 2022-11-16 00:47+0000\n"
 "PO-Revision-Date: 2019-09-29 09:21+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
@@ -57,32 +57,32 @@ msgstr ""
 "O usuario ou o contrasinal da conta <b>%1</b> de Microsoft Exchange EWS non "
 "son correctos. Actualíceos na páxina de configuración da conta."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:76
 #, fuzzy, kde-format
 #| msgid "Microsoft Exchange Configuration"
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Configuración de Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:102
+#: ewsconfigdialog.cpp:101
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "Aceptar"
 
-#: ewsconfigdialog.cpp:139
+#: ewsconfigdialog.cpp:138
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Personalizado"
 
-#: ewsconfigdialog.cpp:150
+#: ewsconfigdialog.cpp:149
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Recurso de Akonadi para servizos web de Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:151
+#: ewsconfigdialog.cpp:150
 #, fuzzy, kde-format
 #| msgctxt "@info"
 #| msgid "Copyright (c) Krzysztof Nowicki 2015-2017"
@@ -90,13 +90,13 @@ msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "© 2015-2017 Krzysztof Nowicki"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Versión %1"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -106,37 +106,37 @@ msgstr ""
 "Distribuído baixo a versión 2.0 ou posterior da Licenza Pública Xeral de "
 "Biblioteca de GNU."
 
-#: ewsconfigdialog.cpp:248
+#: ewsconfigdialog.cpp:247
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "O descubrimento automático fallou"
 
-#: ewsconfigdialog.cpp:263
+#: ewsconfigdialog.cpp:262
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Fallou a conexión"
 
-#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:263 ewsconfigdialog.cpp:421
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Fallou"
 
-#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:422
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Descoñecida"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "Aceptar"
 
-#: ewsconfigdialog.cpp:343
+#: ewsconfigdialog.cpp:337
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -145,12 +145,12 @@ msgstr ""
 "O descubrimento automático fallou. Isto pódeo causar o uso de parámetros "
 "incorrectos. Quere aínda así gardar a súa configuración?"
 
-#: ewsconfigdialog.cpp:344
+#: ewsconfigdialog.cpp:338
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Descubrimento automático do servidor de Exchange"
 
-#: ewsconfigdialog.cpp:383
+#: ewsconfigdialog.cpp:368
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -159,12 +159,12 @@ msgstr ""
 "A conexión a Exchange fallou. Isto pódeo causar o uso de parámetros "
 "incorrectos. Quere aínda así gardar a súa configuración?"
 
-#: ewsconfigdialog.cpp:384
+#: ewsconfigdialog.cpp:369
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Conexión ao servidor de Exchange"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:423
 #, kde-format
 msgid "Connection failed"
 msgstr "Fallou a conexión"

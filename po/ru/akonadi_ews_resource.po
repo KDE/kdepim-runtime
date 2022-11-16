@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-16 00:47+0000\n"
+"POT-Creation-Date: 2022-11-16 00:47+0000\n"
 "PO-Revision-Date: 2022-10-10 17:13+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -61,43 +61,43 @@ msgstr ""
 "Недействительные имя пользователя или пароль для учётной записи Microsoft "
 "Exchange EWS <b>%1</b>. Обновите эти данные в параметрах учётной записи."
 
-#: ewsconfigdialog.cpp:77
+#: ewsconfigdialog.cpp:76
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
 msgstr "Конфигурация Microsoft Exchange"
 
-#: ewsconfigdialog.cpp:102
+#: ewsconfigdialog.cpp:101
 #, kde-format
 msgctxt "Server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:139
+#: ewsconfigdialog.cpp:138
 #, kde-format
 msgctxt "User Agent"
 msgid "Custom"
 msgstr "Другой"
 
-#: ewsconfigdialog.cpp:150
+#: ewsconfigdialog.cpp:149
 #, kde-format
 msgctxt "@info"
 msgid "Akonadi Resource for Microsoft Exchange Web Services (EWS)"
 msgstr "Источник данных Akonadi для веб-служб Microsoft Exchange (EWS)"
 
-#: ewsconfigdialog.cpp:151
+#: ewsconfigdialog.cpp:150
 #, kde-format
 msgctxt "@info"
 msgid "Copyright (c) Krzysztof Nowicki 2015-2020"
 msgstr "© Krzysztof Nowicki, 2015–2020"
 
-#: ewsconfigdialog.cpp:152
+#: ewsconfigdialog.cpp:151
 #, kde-format
 msgctxt "@info"
 msgid "Version %1"
 msgstr "Версия %1"
 
-#: ewsconfigdialog.cpp:153
+#: ewsconfigdialog.cpp:152
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -107,37 +107,37 @@ msgstr ""
 "Распространяется на условиях лицензии GNU Library General Public License, "
 "версия 2.0 или выше."
 
-#: ewsconfigdialog.cpp:248
+#: ewsconfigdialog.cpp:247
 #, kde-format
 msgctxt "Exchange server autodiscovery"
 msgid "Autodiscovery failed"
 msgstr "Ошибка автоматического обнаружения"
 
-#: ewsconfigdialog.cpp:263
+#: ewsconfigdialog.cpp:262
 #, kde-format
 msgctxt "Exchange server connection"
 msgid "Connection failed"
 msgstr "Ошибка подключения"
 
-#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:440
+#: ewsconfigdialog.cpp:263 ewsconfigdialog.cpp:421
 #, kde-format
 msgctxt "Exchange server status"
 msgid "Failed"
 msgstr "Ошибка"
 
-#: ewsconfigdialog.cpp:265 ewsconfigdialog.cpp:441
+#: ewsconfigdialog.cpp:264 ewsconfigdialog.cpp:422
 #, kde-format
 msgctxt "Exchange server version"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ewsconfigdialog.cpp:268 ewsconfigdialog.cpp:445
+#: ewsconfigdialog.cpp:267 ewsconfigdialog.cpp:426
 #, kde-format
 msgctxt "Exchange server status"
 msgid "OK"
 msgstr "OK"
 
-#: ewsconfigdialog.cpp:343
+#: ewsconfigdialog.cpp:337
 #, kde-format
 msgid ""
 "Autodiscovery failed. This can be caused by incorrect parameters. Do you "
@@ -146,12 +146,12 @@ msgstr ""
 "Ошибка автоматического обнаружения. Возможно, заданы неверные параметры. "
 "Сохранить?"
 
-#: ewsconfigdialog.cpp:344
+#: ewsconfigdialog.cpp:338
 #, kde-format
 msgid "Exchange server autodiscovery"
 msgstr "Автоматическое обнаружение сервера Exchange"
 
-#: ewsconfigdialog.cpp:383
+#: ewsconfigdialog.cpp:368
 #, kde-format
 msgid ""
 "Connecting to Exchange failed. This can be caused by incorrect parameters. "
@@ -160,12 +160,12 @@ msgstr ""
 "Ошибка подключения к серверу Exchange. Возможно, заданы неверные параметры. "
 "Сохранить?"
 
-#: ewsconfigdialog.cpp:384
+#: ewsconfigdialog.cpp:369
 #, kde-format
 msgid "Exchange server connection"
 msgstr "Подключение к серверу Exchange"
 
-#: ewsconfigdialog.cpp:442
+#: ewsconfigdialog.cpp:423
 #, kde-format
 msgid "Connection failed"
 msgstr "Ошибка подключения"
