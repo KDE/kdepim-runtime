@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-14 00:47+0000\n"
-"PO-Revision-Date: 2022-09-12 09:41+0200\n"
+"PO-Revision-Date: 2022-12-04 11:51+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -715,6 +715,8 @@ msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
+"<qt><b>უსაფრთხოების მექანიზმები მხარდაჭერილი არაა. ამ სერვერთან მიერთება "
+"რეკომენდებული არაა.</b></qt>"
 
 #: setupserver.cpp:577
 #, kde-format
@@ -829,6 +831,9 @@ msgid ""
 "Old server implementations still use port 2000, while newer standard conform "
 "server can only be accessed via port 4190."
 msgstr ""
+"სერვერის პორტი შეიცვალა, როცა ManageSieve სრულ RFC სტანდარტზე გადავიდა. "
+"ძველი სერვერი ჯერ კიდევ იყენებს პორტს ნომრით 2000, როცა ახალი სტანდარტის "
+"სერვერის პოვნა შეგიძლიათ პორტზე 4190."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192
