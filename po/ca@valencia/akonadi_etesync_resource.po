@@ -57,7 +57,7 @@ msgid ""
 "Your EteSync credentials were changed. Please click OK to re-enter your "
 "credentials."
 msgstr ""
-"S'han canviat les vostres credencials d'EteSync. Feu clic en D'acord per "
+"S'han canviat les vostres credencials d'EteSync. Feu clic en D'acord per a "
 "tornar a introduir les credencials."
 
 #: etesyncresource.cpp:222
@@ -124,7 +124,7 @@ msgstr "Nom d'usuari"
 #: etesyncresource.kcfg:16 etesyncresource.kcfg:17
 #, kde-format
 msgid "The username that is used to log into the EteSync server"
-msgstr "El nom d'usuari que s'utilitza per accedir al servidor EteSync"
+msgstr "El nom d'usuari que s'utilitza per a accedir al servidor EteSync"
 
 #. i18n: ectx: label, entry (BasePath), group (General)
 #: etesyncresource.kcfg:20
