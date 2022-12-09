@@ -35,3 +35,4 @@ Dependencies:
     'frameworks/kcmutils': '@latest'
     'frameworks/kdav': '@latest'
     'frameworks/kdoctools': '@latest'
+    'third-party/qtkeychain': '@latest'
