@@ -189,7 +189,7 @@ msgstr ""
 #: daverror-kdepim-runtime.cpp:41
 #, kde-format
 msgid "Protocol for the collection does not support MULTIGET"
-msgstr "Le protocole pour la collection ne prend pas en charge MULTIGET"
+msgstr "Le protocole pour la collection ne prend pas en charge « MULTIGET »."
 
 #: daverror-kdepim-runtime.cpp:44
 #, kde-format
@@ -224,7 +224,7 @@ msgstr "Problème lors de la définition du focus pour « XQuery »"
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
 msgid "Invalid XQuery submitted by DAV implementation"
-msgstr "« XQuery » non valable soumise par l'implémentation de DAV"
+msgstr "« XQuery » non valable soumise par l'implémentation de « DAV »"
 
 #: daverror-kdepim-runtime.cpp:64
 #, kde-format
