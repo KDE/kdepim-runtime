@@ -1,13 +1,16 @@
 # Translation of akonadi_singlefile_resource into esperanto.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2009-11-15 12:06+0100\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-01-07 01:00+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +23,7 @@ msgstr ""
 #: settingsdialog.ui:29
 #, kde-format
 msgid "Directory settings of the resource."
-msgstr ""
+msgstr "Dosierujaj agordoj de la risurco."
 
 #. i18n: ectx: property (whatsThis), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:32
@@ -34,19 +37,19 @@ msgstr ""
 #: settingsdialog.ui:39
 #, kde-format
 msgid "Directory"
-msgstr ""
+msgstr "Dosierujo"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: settingsdialog.ui:45
 #, kde-format
 msgid "Directory Name"
-msgstr ""
+msgstr "Dosieruja Nomo"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settingsdialog.ui:53
 #, kde-format
 msgid "Director&y:"
-msgstr ""
+msgstr "Dosieru&jo:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settingsdialog.ui:68
@@ -60,7 +63,7 @@ msgstr ""
 #: settingsdialog.ui:81
 #, kde-format
 msgid "Access Rights"
-msgstr ""
+msgstr "Aliraj Rajtoj"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:87
@@ -90,7 +93,7 @@ msgstr "Nurlege"
 #: settingsdialog.ui:127
 #, kde-format
 msgid "Tuning"
-msgstr ""
+msgstr "Agordado"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: settingsdialog.ui:133
@@ -105,13 +108,13 @@ msgstr ""
 #: settingsdialog.ui:145
 #, kde-format
 msgid "Autosave delay:"
-msgstr ""
+msgstr "Aŭtokonserva prokrasto:"
 
 #. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:152
 #, kde-format
 msgid "Autosave interval time (in minutes)."
-msgstr ""
+msgstr "Aŭtokonserva intervalo (en minutoj)."
 
 #. i18n: ectx: property (whatsThis), widget (KPluralHandlingSpinBox, kcfg_AutosaveInterval)
 #: settingsdialog.ui:155
@@ -134,12 +137,12 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
-msgstr ""
+msgstr "Preta"
 
 #: singlefileresource.h:95
 #, kde-format
 msgid "Could not create file '%1'."
-msgstr ""
+msgstr "Ne eblis krei dosieron %1."
 
 #: singlefileresource.h:109
 #, kde-format
@@ -206,10 +209,9 @@ msgstr "Dosiero"
 
 #. i18n: ectx: property (text), widget (QLabel, filenameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:47
-#, fuzzy, kde-format
-#| msgid "&Filename:"
+#, kde-format
 msgid "File Name:"
-msgstr "&Dosiernomo:"
+msgstr "Dosiernomo:"
 
 #. i18n: ectx: property (text), widget (QLabel, pathLabel)
 #: singlefileresourceconfigwidget_desktop.ui:66
@@ -221,10 +223,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
-#, fuzzy, kde-format
-#| msgid "&Filename:"
+#, kde-format
 msgid "Display Name:"
-msgstr "&Dosiernomo:"
+msgstr "Montrata Nomo:"
 
 #. i18n: ectx: property (text), widget (QLabel, readOnlyLabel)
 #: singlefileresourceconfigwidget_desktop.ui:108
@@ -239,7 +240,7 @@ msgstr ""
 #: singlefileresourceconfigwidget_desktop.ui:121
 #, kde-format
 msgid "Enable file &monitoring"
-msgstr ""
+msgstr "Ebligi dosieran &monitoradon"
 
 #. i18n: ectx: property (text), widget (QLabel, monitoringLabel)
 #: singlefileresourceconfigwidget_desktop.ui:134
@@ -253,20 +254,4 @@ msgstr ""
 #, kde-format
 msgctxt "@info:status"
 msgid "Checking file information..."
-msgstr ""
-
-#~ msgid "Filename"
-#~ msgstr "Dosiernomo"
-
-#~ msgid "Status:"
-#~ msgstr "Stato:"
-
-#, fuzzy
-#~| msgid "&Filename:"
-#~ msgid "&Name:"
-#~ msgstr "&Dosiernomo:"
-
-#, fuzzy
-#~| msgid "Could not read file '%1'"
-#~ msgid "Could not find credentials"
-#~ msgstr "Ne eblis legi dosieron '%1'"
+msgstr "Kontrolanta dosierinformojn..."

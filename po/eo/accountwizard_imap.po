@@ -1,13 +1,15 @@
 # Translation of accountwizard_imap into esperanto.
+# Copyright (C) 2010 Free Software Foundation, Inc.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2010.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: accountwizard_imap\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2020-08-15 02:21+0200\n"
-"PO-Revision-Date: 2010-06-20 20:01+0200\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-06-01 10:00+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -18,30 +20,28 @@ msgstr ""
 
 #: imapwizard.es:10
 msgid "Personal Settings"
-msgstr ""
+msgstr "Personaj Agordoj"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: imapwizard.ui:20
-#, fuzzy, kde-format
-#| msgctxt "Username for audioscrobbler login"
-#| msgid "Username"
+#, kde-format
 msgid "Username:"
-msgstr "Uzantnomo"
+msgstr "Uzantnomo:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: imapwizard.ui:33
 #, kde-format
 msgid "&Incoming server:"
-msgstr ""
+msgstr "Envena serv&ilo:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: imapwizard.ui:46
 #, kde-format
 msgid "&Outgoing server:"
-msgstr ""
+msgstr "Elira servil&o:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, disconnectedMode)
 #: imapwizard.ui:63
 #, kde-format
 msgid "&Download all messages for offline use"
-msgstr ""
+msgstr "&Elŝuti ĉiujn mesaĝojn por eksterreta uzo"

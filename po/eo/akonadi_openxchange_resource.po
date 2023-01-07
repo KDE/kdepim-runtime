@@ -1,13 +1,16 @@
 # Translation of akonadi_openxchange_resource into esperanto.
+# Copyright (C) 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2010.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_openxchange_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-03-24 00:45+0000\n"
-"PO-Revision-Date: 2010-06-20 20:01+0200\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-01-07 01:00+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -103,10 +106,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, checkConnectionButton)
 #: configwidget.ui:98
-#, fuzzy, kde-format
-#| msgid "Connection"
+#, kde-format
 msgid "Test Connection..."
-msgstr "Konekto"
+msgstr "Provi Konekton..."
 
 #: openxchangeresource.cpp:250
 #, kde-format
@@ -116,27 +118,27 @@ msgstr ""
 #: openxchangeresource.cpp:278
 #, kde-format
 msgid "Private Folder"
-msgstr ""
+msgstr "Privata Dosierujo"
 
 #: openxchangeresource.cpp:286
 #, kde-format
 msgid "Public Folder"
-msgstr ""
+msgstr "Publika Dosierujo"
 
 #: openxchangeresource.cpp:294
 #, kde-format
 msgid "Shared Folder"
-msgstr ""
+msgstr "Komunigita Dosierujo"
 
 #: openxchangeresource.cpp:302
 #, kde-format
 msgid "System Folder"
-msgstr ""
+msgstr "Sistema Dosierujo"
 
 #: openxchangeresource.cpp:617
 #, kde-format
 msgid "Unable to connect to server"
-msgstr ""
+msgstr "Ne eblas konekti al servilo"
 
 #: openxchangeresource.cpp:805
 #, kde-format
@@ -186,12 +188,11 @@ msgstr ""
 #: openxchangeresource.kcfg:10
 #, kde-format
 msgid "Server URL"
-msgstr ""
+msgstr "Servila URLo"
 
 #. i18n: ectx: label, entry (Username), group (General)
 #: openxchangeresource.kcfg:15
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgctxt "the username to login on server"
 msgid "Username"
 msgstr "Uzantnomo:"
@@ -206,7 +207,7 @@ msgstr "Pasvorto"
 #: openxchangeresource.kcfg:26
 #, kde-format
 msgid "Use incremental updates"
-msgstr ""
+msgstr "Uzi alkrementajn ĝisdatigojn"
 
 #. i18n: ectx: tooltip, entry (UseIncrementalUpdates), group (General)
 #. i18n: ectx: whatsthis, entry (UseIncrementalUpdates), group (General)
@@ -216,20 +217,5 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-
-#~ msgid "Connection"
-#~ msgstr "Konekto"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "Axel Rousseau"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "axel@esperanto-jeunes.org"
-
-#~ msgid "Tobias Koenig"
-#~ msgstr "Tobias Koenig"
-
-#~ msgid "Current maintainer"
-#~ msgstr "Nuna zorganto"
+"Uzi alkrementajn ĝisdatigojn anstataŭ reŝargi ĉuijn datumojn el la servilo "
+"ĉiufoje"

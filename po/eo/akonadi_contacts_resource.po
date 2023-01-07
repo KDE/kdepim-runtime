@@ -1,13 +1,16 @@
 # Translation of akonadi_contacts_resource into esperanto.
+# mesaĝoj por "kdepim-runtime"
+# Copyright (C) 2009 Free Software Foundation, Inc.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_contacts_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-09-18 00:17+0000\n"
-"PO-Revision-Date: 2009-11-15 12:06+0100\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-06-01 10:00+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -20,14 +23,13 @@ msgstr ""
 #: contactsagentsettingswidget.ui:29
 #, kde-format
 msgid "Directory Name"
-msgstr ""
+msgstr "Dosieruja Nomo"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: contactsagentsettingswidget.ui:37
-#, fuzzy, kde-format
-#| msgid "Directory:"
+#, kde-format
 msgid "Di&rectory:"
-msgstr "Dosierujo:"
+msgstr "Dosie&rujo:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: contactsagentsettingswidget.ui:52
@@ -41,7 +43,7 @@ msgstr ""
 #: contactsagentsettingswidget.ui:65
 #, kde-format
 msgid "Access Rights"
-msgstr ""
+msgstr "Aliraj Rajtoj"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: contactsagentsettingswidget.ui:71
@@ -62,22 +64,22 @@ msgstr ""
 #: contactsresource.cpp:44
 #, kde-format
 msgid "Personal Contacts"
-msgstr ""
+msgstr "Personaj Kontaktoj"
 
 #: contactsresource.cpp:124
 #, kde-format
 msgid "Directory '%1' does not exists"
-msgstr ""
+msgstr "Dosierujo '%1' ne ekzistas"
 
 #: contactsresource.cpp:148 contactsresource.cpp:223
 #, kde-format
 msgid "Found file of unknown format: '%1'"
-msgstr ""
+msgstr "Trovis dosieron de nekonata formato: '%1'"
 
 #: contactsresource.cpp:197
 #, kde-format
 msgid "Unable to open file '%1'"
-msgstr ""
+msgstr "Ne eblas malfermi dosieron '%1'"
 
 #: contactsresource.cpp:207
 #, kde-format
@@ -150,16 +152,16 @@ msgstr ""
 #: contactsresource.kcfg:10
 #, kde-format
 msgid "Path to contacts directory"
-msgstr ""
+msgstr "Vojo al dosierujo por kontaktoj"
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: contactsresource.kcfg:14
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr ""
+msgstr "Ne ŝangi la faktajn 'backend'-datumojn."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: wizard/contactswizard.ui:19
 #, kde-format
 msgid "Filename:"
-msgstr ""
+msgstr "Dosiernomo:"
