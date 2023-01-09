@@ -1121,7 +1121,7 @@ void EwsResource::clearCollectionSyncState(int collectionId)
     Collection col(collectionId);
     auto attr = col.attribute<EwsSyncStateAttribute>();
     col.addAttribute(attr);
-    auto *job = new CollectionModifyJob(col);
+    auto job = new CollectionModifyJob(col);
     job->start();
 }
 
@@ -1460,7 +1460,7 @@ QString EwsResource::getCollectionSyncState(const Akonadi::Collection &col)
 void EwsResource::saveCollectionSyncState(Akonadi::Collection &col, const QString &state)
 {
     col.addAttribute(new EwsSyncStateAttribute(state));
-    auto *job = new CollectionModifyJob(col);
+    auto job = new CollectionModifyJob(col);
     job->start();
 }
 
