@@ -6,13 +6,13 @@
 # obsoleteman <tulliana@gmail.com>, 2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-13 00:46+0000\n"
-"PO-Revision-Date: 2022-04-05 13:27+0300\n"
+"PO-Revision-Date: 2023-01-10 21:20+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 22.12.0\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: newmailnotifieragent.cpp:339
@@ -47,7 +47,7 @@ msgstr "%f konumundan bir ileti alındı"
 #: newmailnotifierreplymessagejob.cpp:38 newmailnotifiershowmessagejob.cpp:38
 #, kde-format
 msgid "Unable to start KMail application."
-msgstr "KMail uygulaması başlatılamıyor."
+msgstr "K Posta uygulaması başlatılamıyor."
 
 #: newmailnotifierselectcollectionwidget.cpp:94
 #, kde-format
