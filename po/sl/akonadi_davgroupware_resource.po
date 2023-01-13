@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-01-13 00:57+0000\n"
 "PO-Revision-Date: 2021-08-24 08:08+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -569,22 +569,22 @@ msgstr "Vnesite svoje poverilnice za prijavo na strežnik za skupinsko delo"
 msgid "User:"
 msgstr "Uporabnik:"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:258
 #, kde-format
 msgid "No, choose another server"
 msgstr "Ne, izberi drug strežnik"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:260
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Najden je bil vnaprej določen ponudnik"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:261
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Izberite, ali želite uporabiti samodejno zaznanega ponudnika"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:280
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -595,77 +595,77 @@ msgstr ""
 "čarovnik samodejno nastavi račun za storitve %1.\n"
 "Ali želite samodejno nastavitev?"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:285
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Da, za ponudnika uporabi %1"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:311
 #, kde-format
 msgid "Groupware Server"
 msgstr "Strežnik za skupinsko delo"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:312
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Izberite strežnik za skupinsko delo, za katerega bo nastavljen vir"
 
-#: setupwizard.cpp:341
+#: setupwizard.cpp:343
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Uporabi enega izmed teh strežnikov:"
 
-#: setupwizard.cpp:350
+#: setupwizard.cpp:352
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Ročno nastavi vir"
 
-#: setupwizard.cpp:388
+#: setupwizard.cpp:390
 #, kde-format
 msgid "Connection"
 msgstr "Povezava"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Vnesite podrobnosti o povezavi s strežnikom za skupinsko delo"
 
-#: setupwizard.cpp:396
+#: setupwizard.cpp:398
 #, kde-format
 msgid "Host"
 msgstr "Gostitelj"
 
-#: setupwizard.cpp:399
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Installation path"
 msgstr "Namestitvena pot"
 
-#: setupwizard.cpp:402
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Use secure connection"
 msgstr "Uporabi varno povezavo"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Končni URL (CalDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:437
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Končni URL (CardDav)"
 
-#: setupwizard.cpp:440
+#: setupwizard.cpp:442
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Končni URL (GroupDav)"
 
-#: setupwizard.cpp:504 setupwizard.cpp:510
+#: setupwizard.cpp:506 setupwizard.cpp:512
 #, kde-format
 msgid "Test Connection"
 msgstr "Preizkusi povezavo"
 
-#: setupwizard.cpp:505
+#: setupwizard.cpp:507
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -674,12 +674,12 @@ msgstr ""
 "Sedaj lahko preverite, ali je s trenutnimi nastavitvami mogoče dostopati do "
 "strežnika za skupinsko delo"
 
-#: setupwizard.cpp:550
+#: setupwizard.cpp:552
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Prišlo je do napake: %1"
 
-#: setupwizard.cpp:553
+#: setupwizard.cpp:555
 #, kde-format
 msgid "Connected successfully"
 msgstr "Povezava uspešna"

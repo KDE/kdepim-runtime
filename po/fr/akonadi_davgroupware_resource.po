@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-01-13 00:57+0000\n"
 "PO-Revision-Date: 2021-08-24 08:54+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@neuf.fr>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -582,23 +582,23 @@ msgstr ""
 msgid "User:"
 msgstr "Utilisateur :"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:258
 #, kde-format
 msgid "No, choose another server"
 msgstr "Non, choisir un autre serveur"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:260
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Fournisseur prédéfini trouvé"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:261
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr ""
 "Sélectionnez si vous voulez utiliser le fournisseur détecté automatiquement"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:280
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -610,81 +610,81 @@ msgstr ""
 "peut configurer automatiquement un compte pour %1 services.\n"
 "Voulez-vous continuer ?"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:285
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Oui, utiliser %1 comme fournisseur"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:311
 #, kde-format
 msgid "Groupware Server"
 msgstr "Serveur de logiciels de groupe de travail"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:312
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr ""
 "Sélectionnez le serveur de logiciels de groupe de travail pour lequel la "
 "ressource devra être configurée"
 
-#: setupwizard.cpp:341
+#: setupwizard.cpp:343
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Utiliser un de ces serveurs :"
 
-#: setupwizard.cpp:350
+#: setupwizard.cpp:352
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Configurer la ressource manuellement"
 
-#: setupwizard.cpp:388
+#: setupwizard.cpp:390
 #, kde-format
 msgid "Connection"
 msgstr "Connexion"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr ""
 "Saisissez les informations de connexion relatives au serveur de logiciels de "
 "groupe de travail"
 
-#: setupwizard.cpp:396
+#: setupwizard.cpp:398
 #, kde-format
 msgid "Host"
 msgstr "Hôte"
 
-#: setupwizard.cpp:399
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Installation path"
 msgstr "Emplacement d'installation"
 
-#: setupwizard.cpp:402
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Use secure connection"
 msgstr "Utiliser une connexion sécurisée"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "URL finale (CalDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:437
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "URL finale (CardDav)"
 
-#: setupwizard.cpp:440
+#: setupwizard.cpp:442
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "URL finale (GroupDav)"
 
-#: setupwizard.cpp:504 setupwizard.cpp:510
+#: setupwizard.cpp:506 setupwizard.cpp:512
 #, kde-format
 msgid "Test Connection"
 msgstr "Tester une connexion"
 
-#: setupwizard.cpp:505
+#: setupwizard.cpp:507
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
@@ -693,12 +693,12 @@ msgstr ""
 "Vous pouvez tester maintenant s'il est ou non possible d'accéder au serveur "
 "de logiciels de groupe de travail avec la configuration actuelle"
 
-#: setupwizard.cpp:550
+#: setupwizard.cpp:552
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Une erreur est survenue : %1"
 
-#: setupwizard.cpp:553
+#: setupwizard.cpp:555
 #, kde-format
 msgid "Connected successfully"
 msgstr "Connexion réussie"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-01-13 00:57+0000\n"
 "PO-Revision-Date: 2021-10-11 14:33+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -565,22 +565,22 @@ msgstr "Anna tunnistautumistietosi työryhmäpalvelimeen"
 msgid "User:"
 msgstr "Käyttäjä:"
 
-#: setupwizard.cpp:257
+#: setupwizard.cpp:258
 #, kde-format
 msgid "No, choose another server"
 msgstr "Ei, valitse toinen palvelin"
 
-#: setupwizard.cpp:259
+#: setupwizard.cpp:260
 #, kde-format
 msgid "Predefined provider found"
 msgstr "Esimääritetty tarjoaja löytyi"
 
-#: setupwizard.cpp:260
+#: setupwizard.cpp:261
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
 msgstr "Valitse, haluatko käyttää automaattisesti tunnistettua tarjoajaa"
 
-#: setupwizard.cpp:279
+#: setupwizard.cpp:280
 #, kde-format
 msgid ""
 "Based on the email address you used as a login, this wizard\n"
@@ -591,89 +591,89 @@ msgstr ""
 "opastettu toiminto voi määrittää automaattisesti tilin %1-palveluihin.\n"
 "Haluatko tehdä näin?"
 
-#: setupwizard.cpp:284
+#: setupwizard.cpp:285
 #, kde-format
 msgid "Yes, use %1 as provider"
 msgstr "Kyllä, käytä tarjoajaa %1"
 
-#: setupwizard.cpp:310
+#: setupwizard.cpp:311
 #, kde-format
 msgid "Groupware Server"
 msgstr "Työryhmäpalvelin"
 
-#: setupwizard.cpp:311
+#: setupwizard.cpp:312
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
 msgstr "Valitse työryhmäpalvelin, johon resurssi asetetaan"
 
-#: setupwizard.cpp:341
+#: setupwizard.cpp:343
 #, kde-format
 msgid "Use one of those servers:"
 msgstr "Valitse yksi palvelimista:"
 
-#: setupwizard.cpp:350
+#: setupwizard.cpp:352
 #, kde-format
 msgid "Configure the resource manually"
 msgstr "Aseta resurssi käsin"
 
-#: setupwizard.cpp:388
+#: setupwizard.cpp:390
 #, kde-format
 msgid "Connection"
 msgstr "Yhteys"
 
-#: setupwizard.cpp:389
+#: setupwizard.cpp:391
 #, kde-format
 msgid "Enter the connection information for the groupware server"
 msgstr "Anna työryhmäpalvelimen yhteystiedot"
 
-#: setupwizard.cpp:396
+#: setupwizard.cpp:398
 #, kde-format
 msgid "Host"
 msgstr "Palvelin"
 
-#: setupwizard.cpp:399
+#: setupwizard.cpp:401
 #, kde-format
 msgid "Installation path"
 msgstr "Asennuspolku"
 
-#: setupwizard.cpp:402
+#: setupwizard.cpp:404
 #, kde-format
 msgid "Use secure connection"
 msgstr "Käytä salattua yhteyttä"
 
-#: setupwizard.cpp:430
+#: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (CalDav)"
 msgstr "Lopullinen verkko-osoite (CalDav)"
 
-#: setupwizard.cpp:435
+#: setupwizard.cpp:437
 #, kde-format
 msgid "Final URL (CardDav)"
 msgstr "Lopullinen verkko-osoite (CardDav)"
 
-#: setupwizard.cpp:440
+#: setupwizard.cpp:442
 #, kde-format
 msgid "Final URL (GroupDav)"
 msgstr "Lopullinen verkko-osoite (GroupDav)"
 
-#: setupwizard.cpp:504 setupwizard.cpp:510
+#: setupwizard.cpp:506 setupwizard.cpp:512
 #, kde-format
 msgid "Test Connection"
 msgstr "Kokeile yhteyttä"
 
-#: setupwizard.cpp:505
+#: setupwizard.cpp:507
 #, kde-format
 msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr "Voit nyt kokeilla, pääsetkö työryhmäpalvelimeen määritetyin asetuksin"
 
-#: setupwizard.cpp:550
+#: setupwizard.cpp:552
 #, kde-format
 msgid "An error occurred: %1"
 msgstr "Sattui virhe: %1"
 
-#: setupwizard.cpp:553
+#: setupwizard.cpp:555
 #, kde-format
 msgid "Connected successfully"
 msgstr "Yhdistäminen onnistui"
