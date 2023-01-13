@@ -70,7 +70,7 @@ msgstr "Recordatoris"
 #: facebookagentsettingswidget.ui:68
 #, kde-format
 msgid "Show reminders for events I'm attending"
-msgstr "Mostra recordatoris per als esdeveniments en què participo"
+msgstr "Mostra recordatoris per als esdeveniments en què participe"
 
 #. i18n: ectx: property (text), widget (QCheckBox, maybeAttendingReminderChkBox)
 #: facebookagentsettingswidget.ui:78
@@ -82,7 +82,7 @@ msgstr "Mostra recordatoris per als esdeveniments en què puc participar"
 #: facebookagentsettingswidget.ui:88
 #, kde-format
 msgid "Show reminders for events I'm not attending"
-msgstr "Mostra recordatoris per als esdeveniments en què no participo"
+msgstr "Mostra recordatoris per als esdeveniments en què no participe"
 
 #. i18n: ectx: property (text), widget (QCheckBox, notRespondedReminderChkBox)
 #: facebookagentsettingswidget.ui:98
@@ -149,12 +149,12 @@ msgstr "Facebook"
 #: resource.cpp:75
 #, kde-format
 msgid "Events I'm Attending"
-msgstr "Esdeveniments en què participo"
+msgstr "Esdeveniments en què participe"
 
 #: resource.cpp:76
 #, kde-format
 msgid "Events I'm not Attending"
-msgstr "Esdeveniments en què no participo"
+msgstr "Esdeveniments en què no participe"
 
 #: resource.cpp:77
 #, kde-format
