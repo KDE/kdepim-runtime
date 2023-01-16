@@ -7,6 +7,7 @@
 #pragma once
 
 #include <QList>
+#include <QMultiMap>
 
 #include "ewsitembase.h"
 
