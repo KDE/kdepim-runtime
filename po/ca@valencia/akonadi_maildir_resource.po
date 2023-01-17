@@ -216,7 +216,7 @@ msgstr "No es canvien les dades reals del dorsal."
 #: settings.ui:15
 #, kde-format
 msgid "Mail Directory Settings"
-msgstr "Configuració del directori de correu"
+msgstr "Configureu el directori de correu"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settings.ui:37

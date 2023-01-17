@@ -32,7 +32,7 @@ msgstr ""
 #: tomboynotesagentconfigwidget.ui:14
 #, kde-format
 msgid "Tomboy Server Settings"
-msgstr "Configuració del servidor de Tomboy"
+msgstr "Configureu el servidor de Tomboy"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: tomboynotesagentconfigwidget.ui:36

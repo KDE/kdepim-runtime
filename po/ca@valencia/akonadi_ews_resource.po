@@ -65,7 +65,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Configuration"
-msgstr "Configuració de Microsoft Exchange"
+msgstr "Configureu Microsoft Exchange"
 
 #: ewsconfigdialog.cpp:101
 #, kde-format
@@ -174,7 +174,7 @@ msgstr "No s'ha pogut connectar"
 #: ewsconfigdialog.ui:14
 #, kde-format
 msgid "EWS Configuration"
-msgstr "Configuració de l'EWS"
+msgstr "Configureu EWS"
 
 #. i18n: ectx: attribute (title), widget (QWidget, generalTab)
 #: ewsconfigdialog.ui:24
@@ -364,13 +364,13 @@ msgstr "OAuth&2 (Office 365)"
 #: ewsconfigdialog.ui:235
 #, kde-format
 msgid "EWS Settings"
-msgstr "Configuració de l'EWS"
+msgstr "Configureu EWS"
 
 #. i18n: ectx: property (text), widget (QLabel, serverUrlLabel)
 #: ewsconfigdialog.ui:250
 #, kde-format
 msgid "EWS URL:"
-msgstr "URL de l'EWS:"
+msgstr "URL d'EWS:"
 
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, kcfg_BaseUrl)
 #: ewsconfigdialog.ui:263
@@ -378,7 +378,7 @@ msgstr "URL de l'EWS:"
 msgid "The Microsoft Exchange server URL used to send EWS requests."
 msgstr ""
 "L'URL del servidor Microsoft Exchange emprada per a enviar sol·licituds a "
-"l'EWS."
+"EWS."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_AutoDiscovery)
 #: ewsconfigdialog.ui:285
@@ -712,13 +712,13 @@ msgstr "S'estan recuperant %1 elements"
 #, kde-format
 msgctxt "@title:window"
 msgid "Microsoft Exchange Mail Transport Configuration"
-msgstr "Configuració del transport de correu de Microsoft Exchange"
+msgstr "Configureu el transport de correu de Microsoft Exchange"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, SetupServerView)
 #: ewsmtaconfigdialog.ui:14
 #, kde-format
 msgid "EWS Mail Transport Configuration"
-msgstr "Configuració del transport de correu de l'EWS"
+msgstr "Configureu el transport de correu d'EWS"
 
 #. i18n: ectx: property (text), widget (QLabel, recourceLabel)
 #: ewsmtaconfigdialog.ui:42

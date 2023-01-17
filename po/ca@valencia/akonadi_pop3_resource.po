@@ -771,7 +771,7 @@ msgstr "Ordre que s'executa abans de comprovar el correu"
 #: popsettings.ui:403
 #, kde-format
 msgid "Connection Settings"
-msgstr "Configuració de la connexió"
+msgstr "Configureu la connexió"
 
 #. i18n: ectx: property (text), widget (QPushButton, checkCapabilities)
 #: popsettings.ui:417

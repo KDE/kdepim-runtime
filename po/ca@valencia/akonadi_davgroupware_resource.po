@@ -26,7 +26,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
-msgstr "Configuració del recurs DAV"
+msgstr "Configureu el recurs DAV"
 
 #: configdialog.cpp:46
 #, kde-format
@@ -127,7 +127,7 @@ msgstr "Només sincronitza els esdeveniments més recents que"
 #: configdialog.ui:190
 #, kde-format
 msgid "Server Configuration:"
-msgstr "Configuració del servidor:"
+msgstr "Configureu el servidor:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
 #: configdialog.ui:204

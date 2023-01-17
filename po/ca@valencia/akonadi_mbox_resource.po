@@ -133,7 +133,7 @@ msgstr "msg"
 #: lockfilepage.ui:15
 #, kde-format
 msgid "MBox Settings"
-msgstr "Configuració de MBox"
+msgstr "Configureu MBox"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27

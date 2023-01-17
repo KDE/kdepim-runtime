@@ -103,7 +103,7 @@ msgstr "Compte IMAP"
 #, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
-msgstr "Configuració del compte IMAP"
+msgstr "Configureu el compte IMAP"
 
 #. i18n: ectx: label, entry (ImapServer), group (network)
 #: imapresource.kcfg:10
@@ -656,7 +656,7 @@ msgstr "No es pot autenticar"
 #: settingspasswordrequester.cpp:64
 #, kde-format
 msgid "Account Settings"
-msgstr "Configuració del compte"
+msgstr "Configureu el compte"
 
 #: settingspasswordrequester.cpp:65
 #, kde-format
@@ -1042,7 +1042,7 @@ msgstr "Carpeta de la paperera:"
 #: setupserverview_desktop.ui:407
 #, kde-format
 msgid "Connection Settings"
-msgstr "Configuració de la connexió"
+msgstr "Configureu la connexió"
 
 #. i18n: ectx: property (text), widget (QPushButton, testButton)
 #: setupserverview_desktop.ui:416
