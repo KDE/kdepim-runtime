@@ -278,7 +278,7 @@ msgstr ""
 #: settings.ui:15
 #, kde-format
 msgid "Mail Directory Settings"
-msgstr "Configuració del directori de correu"
+msgstr "Configureu el directori de correu"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settings.ui:21

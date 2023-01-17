@@ -27,7 +27,7 @@ msgstr ""
 #: settingsdialog.ui:29
 #, kde-format
 msgid "Directory settings of the resource."
-msgstr "Configuració del directori del recurs."
+msgstr "Configureu el directori del recurs."
 
 #. i18n: ectx: property (whatsThis), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:32
