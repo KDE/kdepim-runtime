@@ -5,10 +5,10 @@
 
 
 set(fakeewsserver_SRCS
-    fakeewsconnection.cpp
-    fakeewsserver_debug.cpp
+    fakeewsconnection.cpp fakeewsconnection.h
+    fakeewsserver_debug.cpp fakeewsserver_debug.h
     fakeewsserver.cpp
-    fakeewsserverthread.cpp)
+    fakeewsserverthread.cpp fakeewsserverthread.h)
 
 add_library(fakeewsserver ${fakeewsserver_SRCS})
 

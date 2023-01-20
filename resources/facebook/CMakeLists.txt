@@ -10,10 +10,10 @@ kcfg_generate_dbus_interface(settings.kcfg org.kde.Akonadi.Facebook.Settings )
 
 target_sources(facebookresourcelib PRIVATE
     listjob.cpp
-    eventslistjob.cpp
-    birthdaylistjob.cpp
-    tokenjobs.cpp
-    graph.cpp
+    eventslistjob.cpp eventslistjob.h
+    birthdaylistjob.cpp birthdaylistjob.h
+    tokenjobs.cpp tokenjobs.h
+    graph.cpp graph.h
     ${fbresource_common_SRCS}
 )
 
@@ -54,7 +54,7 @@ set(facebookconfig_ui_SRCS)
 ki18n_wrap_ui(facebookconfig_ui_SRCS facebookagentsettingswidget.ui)
 
 set(facebookconfig_SRCS
-    facebooksettingswidget.cpp
+    facebooksettingswidget.cpp facebooksettingswidget.h
     ${facebookconfig_ui_SRCS}
     ${fbresource_common_SRCS}
     )

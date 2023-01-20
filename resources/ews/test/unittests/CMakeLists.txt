@@ -5,7 +5,7 @@
 
 kde_enable_exceptions()
 
-add_library(uttesthelpers STATIC faketransferjob.cpp)
+add_library(uttesthelpers STATIC faketransferjob.cpp faketransferjob.h)
 target_link_libraries(uttesthelpers Qt::Core KF5::KIOCore)
 
 macro(akonadi_ews_add_ut_advanced utname extra_SRCS)
@@ -40,7 +40,7 @@ target_compile_definitions(ewssettings_ut PUBLIC -DEWSSETTINGS_UNITTEST)
 
 if (TARGET Qt::NetworkAuth)
   set(ewsoauth_ut_SRCS
-    ewsoauth_ut_mock.cpp
+    ewsoauth_ut_mock.cpp ewsoauth_ut_mock.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ewsclient/auth/ewsabstractauth.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../ewsclient/auth/ewsoauth.cpp)
   akonadi_ews_add_ut_advanced(ewsoauth_ut "${ewsoauth_ut_SRCS}")

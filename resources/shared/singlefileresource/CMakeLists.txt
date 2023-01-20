@@ -2,8 +2,8 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_singlefile_resource\")
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES
-  singlefileresourcebase.cpp
-  singlefileresourceconfigwidgetbase.cpp
+  singlefileresourcebase.cpp singlefileresourcebase.h
+  singlefileresourceconfigwidgetbase.cpp singlefileresourceconfigwidgetbase.h
 )
 
 set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
@@ -30,7 +30,7 @@ set(akonadi-singlefileresource_SRCS
   ${AKONADI_SINGLEFILERESOURCE_SHARED_SOURCES}
   ${AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES}
   ${AKONADI_IMAPATTRIBUTES_SHARED_SOURCES}
-  createandsettagsjob.cpp
+  createandsettagsjob.cpp createandsettagsjob.h
 )
 
 ki18n_wrap_ui(akonadi-singlefileresource_SRCS ${AKONADI_SINGLEFILERESOURCE_SHARED_UI} settingsdialog.ui)

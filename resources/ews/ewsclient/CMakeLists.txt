@@ -37,7 +37,7 @@ set(EWSCLIENT_SRCS
     ewspoxautodiscoverrequest.cpp
     ewspropertyfield.cpp
     ewsrecurrence.cpp
-    ewsrequest.cpp
+    ewsrequest.cpp ewsrequest.h
     ewsserverversion.cpp
     ewssubscriberequest.cpp
     ewssyncfolderhierarchyrequest.cpp
@@ -47,7 +47,7 @@ set(EWSCLIENT_SRCS
     ewsupdatefolderrequest.cpp
     ewsupdateitemrequest.cpp
     ewsxml.cpp
-    ewsclient_debug.cpp
+    ewsclient_debug.cpp ewsclient_debug.h
     auth/ewsabstractauth.h
     auth/ewspasswordauth.h
     ewsattachment.h

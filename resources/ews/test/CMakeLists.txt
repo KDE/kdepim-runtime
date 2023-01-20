@@ -7,7 +7,7 @@ include_directories(../)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/../)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/fakeserver)
 
-set(isolatestestcommon_SRCS isolatedtestbase.cpp statemonitor.cpp)
+set(isolatestestcommon_SRCS isolatedtestbase.cpp isolatedtestbase.h statemonitor.cpp statemonitor.h)
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/../ewsresource.kcfg org.kde.Akonadi.Ews.Settings)
 set(ewssettingsinterface_xml ${CMAKE_CURRENT_BINARY_DIR}/org.kde.Akonadi.Ews.Settings.xml)

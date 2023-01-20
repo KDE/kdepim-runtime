@@ -18,7 +18,7 @@ include_directories(
 # test data
 set( testdata_SRCS
   ${testdata_generated_SRCS}
-  testdatautil.cpp
+  testdatautil.cpp testdatautil.h
   ../mixedmaildir_debug.cpp
   testdata.qrc
 )

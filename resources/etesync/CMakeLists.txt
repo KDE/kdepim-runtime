@@ -1,7 +1,7 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_etesync_resource\")
 
 set(etesyncresource_common_SRCS
-    etebaseadapter.cpp
+    etebaseadapter.cpp etebaseadapter.h
 )
 
 kconfig_add_kcfg_files(etesyncresource_common_SRCS
@@ -14,11 +14,11 @@ set(etesyncconfig_SRCS
 )
 
 set(etesyncresource_SRCS
-    etesyncresource.cpp
-    etesyncclientstate.cpp
-    journalsfetchjob.cpp
-    entriesfetchjob.cpp
-    loginjob.cpp 
+    etesyncresource.cpp etesyncresource.h
+    etesyncclientstate.cpp etesyncclientstate.h
+    journalsfetchjob.cpp journalsfetchjob.h
+    entriesfetchjob.cpp entriesfetchjob.h
+    loginjob.cpp loginjob.h 
     setupwizard.cpp
 
     ${etesyncconfig_SRCS}
