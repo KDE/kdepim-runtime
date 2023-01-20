@@ -44,9 +44,9 @@ set(KDEPIM_RUNTIME_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}${KDEPIM_DEV_VERSION
 
 configure_file(kdepim-runtime-version.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/kdepim-runtime-version.h @ONLY)
 
-set(KF5_MIN_VERSION "5.102.0")
+set(KF_MIN_VERSION "5.102.0")
 
-find_package(ECM ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(ECM ${KF_MIN_VERSION} CONFIG REQUIRED)
 set(CMAKE_MODULE_PATH ${kdepim-runtime_SOURCE_DIR}/cmake/ ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
@@ -115,19 +115,19 @@ endif()
 find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
 
 # KF5 package
-find_package(KF5Config ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5ConfigWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5NotifyConfig ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5KIO ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5ItemModels ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5Codecs ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5WindowSystem ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5TextWidgets ${KF5_MIN_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
-find_package(KF5Notifications ${KF5_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
-find_package(KF5Holidays ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5KCMUtils ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5DAV ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5DocTools ${KF5_MIN_VERSION})
+find_package(KF5Config ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5ConfigWidgets ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5NotifyConfig ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5KIO ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5ItemModels ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5Codecs ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5WindowSystem ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5TextWidgets ${KF_MIN_VERSION} CONFIG REQUIRED) # for KPluralHandlingSpinBox
+find_package(KF5Notifications ${KF_MIN_VERSION} CONFIG REQUIRED) # pop3, ews
+find_package(KF5Holidays ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5KCMUtils ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5DAV ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5DocTools ${KF_MIN_VERSION})
 set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
     "Tools to generate documentation"
     TYPE OPTIONAL
@@ -142,8 +142,8 @@ find_package(KF5AkonadiMime ${AKONADIMIME_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5MailTransportAkonadi ${KMAILTRANSPORT_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5IdentityManagement ${IDENTITYMANAGEMENT_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5AkonadiContact ${AKONADICONTACT_LIB_VERSION} CONFIG REQUIRED)
-find_package(KF5Contacts ${KF5_MIN_VERSION} CONFIG REQUIRED)
-find_package(KF5CalendarCore ${KF5_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5Contacts ${KF_MIN_VERSION} CONFIG REQUIRED)
+find_package(KF5CalendarCore ${KF_MIN_VERSION} CONFIG REQUIRED)
 find_package(KF5CalendarUtils ${CALENDARUTILS_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5Mbox ${KMBOX_LIB_VERSION} CONFIG REQUIRED)
 find_package(KF5IMAP ${KIMAP_LIB_VERSION} CONFIG REQUIRED)
