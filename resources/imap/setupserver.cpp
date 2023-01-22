@@ -206,7 +206,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     connect(networkConfigMgr, &QNetworkConfigurationManager::onlineStateChanged, this, &SetupServer::slotTestChanged);
     QT_WARNING_POP
 #else
-    QNetworkInformation::instance()->load(QNetworkInformation::Feature::Reachability);
+    QNetworkInformation::instance()->loadBackendByFeatures(QNetworkInformation::Feature::Reachability);
     connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged, this, [this](QNetworkInformation::Reachability newReachability) {
         slotTestChanged();
     });
