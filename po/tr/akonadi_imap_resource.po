@@ -5,13 +5,13 @@
 # H. İbrahim Güngör <ibrahim@pardus.org.tr>, 2011.
 # Volkan Gezer <volkangezer@gmail.com>, 2013, 2014, 2015, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# Emir SARI <emir_sari@icloud.com>, 2022.
+# Emir SARI <emir_sari@icloud.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-14 00:47+0000\n"
-"PO-Revision-Date: 2022-12-11 20:05+0300\n"
+"PO-Revision-Date: 2023-01-21 15:26+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,18 +19,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.0\n"
+"X-Generator: Lokalize 22.12.1\n"
 "X-POOTLE-MTIME: 1413102275.000000\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
-msgstr "'%1' IMAP klasörünü oluşmamış üst klasör '%2' için ekleyemez."
+msgstr "'%1' IMAP klasörü var olmayan üst klasör '%2' için eklenemez."
 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr "IMAP Sunucusu üzerinde '%1' klasörünü oluşturma başarısız. "
+msgstr "IMAP sunucusu üzerinde '%1' klasörünü oluşturma başarısız. "
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -39,7 +39,7 @@ msgid ""
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "'%1' klasörüne IMAP sunucusunda abone olma başarısız oldu. Klasör bir "
-"sonraki senkronizasyonda kaybolacak. Bunun üstesinden gelebilmek için abone "
+"sonraki eşzamanlamada kaybolacak. Bunun üstesinden gelebilmek için abone "
 "olma iletişim penceresini kullanın"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
@@ -56,7 +56,7 @@ msgstr "Yeni üretilmiş ileti için kullanıcı kimliği sunucuda belirlenemedi
 #: changecollectiontask.cpp:39
 #, kde-format
 msgid "Cannot modify IMAP folder '%1', it does not exist on the server."
-msgstr "'%1' IMAP klasörü değiştirilemiyor, klasör sunucu üzerinde yok."
+msgstr "'%1' IMAP klasörü değiştirilemiyor, sunucu üzerinde yok."
 
 #: changecollectiontask.cpp:51
 #, kde-format
@@ -79,7 +79,7 @@ msgid ""
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "IMAP sunucusu üzerinde yeniden adlandırılmış dosyaya abone olma başarısız "
-"'%1'. Bir sonraki senkronizasyonda dosya kaybolacak. Bunun üstesinden gelmek "
+"'%1'. Bir sonraki eşzamanlamada dosya kaybolacak. Bunun üstesinden gelmek "
 "için abonelik iletişim penceresini kullan"
 
 #: changecollectiontask.cpp:267
@@ -102,7 +102,7 @@ msgstr "IMAP Hesap Ayarları"
 #: imapresource.kcfg:10
 #, kde-format
 msgid "IMAP server"
-msgstr "IMAP sunucu"
+msgstr "IMAP sunucusu"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
 #: imapresource.kcfg:13
@@ -126,7 +126,7 @@ msgstr "Kullanılacak şifrelemeyi tanımlar"
 #: imapresource.kcfg:24
 #, kde-format
 msgid "Override configured encryption mode"
-msgstr "Yapılandırılmış şifreli mod üzerine yazar"
+msgstr "Yapılandırılmış şifreleme kipini geçersiz kıl"
 
 #. i18n: ectx: label, entry (Authentication), group (network)
 #: imapresource.kcfg:27
@@ -154,7 +154,7 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
-"İmlenmişse posta sunucusuna bağlanmak için sistem vekil ayarları "
+"İşaretlenmişse posta sunucusuna bağlanmak için sistem vekil ayarları "
 "kullanılacaktır."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
@@ -168,7 +168,7 @@ msgstr ""
 #: imapresource.kcfg:49
 #, kde-format
 msgid "Defines if interval checking is enabled."
-msgstr "Zaman aralığı kontrolünün etkin olup olmadığını tanımlar."
+msgstr "Aralıklı denetimin etkin olup olmadığını denetler."
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
 #: imapresource.kcfg:53
@@ -183,9 +183,9 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
-"E-posta kutuları listelediğinde açıklamaların, ACL'lerin ve e-posta "
-"kutularının\n"
-"             kota bilgisininde getirilip getirilmeyeceğini tanımlar."
+"Posta kutuları listelendiğinde, posta kutularının ek açıklamalarının, "
+"ACL'lerinin\n"
+"             ve kota bilgilerinin de alınıp alınmayacağını tanımlar."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
 #: imapresource.kcfg:63
@@ -203,13 +203,13 @@ msgstr ""
 #: imapresource.kcfg:67
 #, kde-format
 msgid "Define which folder is used for trash"
-msgstr "Çöp kutusu olarak hangi klasörün kullanılacağını tanımlayın"
+msgstr "Çöp kutusu olarak hangi klasörün kullanılacağını tanımla"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
 #: imapresource.kcfg:71
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
-msgstr "Çöp derlemesinin özel öznitelik alıp almadığını tanımlayın"
+msgstr "Çöp derlemesinin özel öznitelik alıp almadığını tanımla"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
 #: imapresource.kcfg:75
@@ -247,13 +247,13 @@ msgstr "Sunucunun Sieve destekleyip desteklemediğini belirtir"
 msgid "Define if we reuse host and login configuration"
 msgstr ""
 "İstemci ve oturum açma yapılandırmasını yeniden kullanıp kullanmayacağımızı "
-"tanımlayın"
+"tanımla"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
 #: imapresource.kcfg:100
 #, kde-format
 msgid "Define sieve port"
-msgstr "Sieve portunu tanımlar"
+msgstr "Sieve kapısını tanımla"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
 #: imapresource.kcfg:104
@@ -271,13 +271,13 @@ msgstr "Alternatif sunucu kullanmak için kimlik doğrulama türünü tanımlar"
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Define default sieve vacation filename"
-msgstr "Öntanımlı sieve tatil dosyasının adını tanımlayın"
+msgstr "Öntanımlı sieve tatil dosyasının adını tanımla"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:115
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr "Özel sunucu sieve adresi için kullanıcı adını tanımlayın"
+msgstr "Özel sunucu sieve url'sinden kullanılan kullanıcı adını tanımla"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
@@ -381,42 +381,41 @@ msgstr "Aranıyor..."
 #: movecollectiontask.cpp:29
 #, kde-format
 msgid "Cannot move IMAP folder '%1', it does not exist on the server."
-msgstr "'%1' IMAP klasörünü taşıyamazsın, klasör sunucuda yok."
+msgstr "'%1' IMAP klasörünü taşıyamazsınız, sunucuda yok."
 
 #: movecollectiontask.cpp:35
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server."
 msgstr ""
-"'%1' IMAP klasörünü '%2' dışına taşıyamazsın, '%2' sunucu üzerinde yok."
+"'%1' IMAP klasörünü '%2' dışına taşıyamazsınız, '%2' sunucu üzerinde yok."
 
 #: movecollectiontask.cpp:41
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
 msgstr ""
-"'%1' IMAP klasörünü '%2' dışına taşıyamazsın, '%2' sunucu üzerinde yok."
+"'%1' IMAP klasörünü '%2' dışına taşıyamazsınız, '%2' sunucu üzerinde yok."
 
 #: moveitemstask.cpp:41
 #, kde-format
 msgid "Cannot move message, it does not exist on the server."
-msgstr "İleti hareket ettirilemiyor, ileti sunucu üzerinde yok."
+msgstr "İleti taşınamıyor, sunucuda yok."
 
 #: moveitemstask.cpp:48
 #, kde-format
 msgid "Cannot move message out of '%1', '%1' does not exist on the server."
-msgstr ""
-"İleti '%1' dışına hareket ettirilemiyor,  '%1' ileti sunucu üzerinde yok."
+msgstr "İleti '%1' dışına taşınamıyor, \"%1' sunucuda yok."
 
 #: moveitemstask.cpp:55
 #, kde-format
 msgid "Cannot move message to '%1', '%1' does not exist on the server."
-msgstr "İletiyi '%1' konumuna taşıyamazsın, '%1' sunucu üzerinde oluşmadı."
+msgstr "İletiyi '%1' konumuna taşıyamazsınız, '%1' sunucu üzerinde yok."
 
 #: moveitemstask.cpp:113
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
-msgstr "Ögeyi taşıma başarısız, ögenin ileti yükü yok. Uzak id: %1"
+msgstr "Ögeyi taşıma başarısız, ögenin ileti yükü yok. Uzak kimlik: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -425,7 +424,7 @@ msgid ""
 "will reappear on next sync."
 msgstr ""
 "IMAP sunucusu üzerinde '%1' konumundan ileti silme için işaretleme işlemi "
-"başarısız. İşaretleme bir sonraki senkronizasyonda yeninden görünecek."
+"başarısız. İşaretleme bir sonraki senkronizasyonda yeniden görünecek."
 
 #: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
 #: removecollectionrecursivetask.cpp:145
@@ -441,7 +440,7 @@ msgstr "Silinecek klasör bulunamadı, klasör listesi geri yükleniyor."
 #: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
-msgstr "Öge kurtarma baştan başlatma."
+msgstr "Öge alımı yeniden başlatılıyor."
 
 #: resourcetask.cpp:69
 #, kde-format
@@ -464,13 +463,13 @@ msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
 "longer be possible to add messages to this folder.</p>"
 msgstr ""
-"<p><b>%1</b> klasörüne erişim hakların kısıtlandı, bundan sonra hakların bu "
-"klasöre ileti eklemeye uygun değildir.</p>"
+"<p><b>%1</b> klasörüne erişim haklarınız kısıtlandı, bundan sonra bu klasöre "
+"ileti ekleyemeyeceksiniz.</p>"
 
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
 msgid "Access rights revoked"
-msgstr "Erişim hakları iptal edildi"
+msgstr "Erişim hakları yürürlükten kaldırıldı"
 
 #: retrievecollectionstask.cpp:155
 #, kde-format
@@ -486,7 +485,7 @@ msgstr "Paylaşılan Klasörler"
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr "Eksik e-posta gövdeleri %3 konumundan alınıyor:  %1/%2"
+msgstr "%3 içindeki eksik posta gövdeleri alınıyor: %1/%2"
 
 #: retrieveitemtask.cpp:35
 #, kde-format
@@ -496,12 +495,12 @@ msgstr "Uzak kimlik numarası boş ya da geçersiz"
 #: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
 #, kde-format
 msgid "No message retrieved, failed to read the message."
-msgstr "Hiç ileti alınmadı, iletiyi okuma işlemi başarısız."
+msgstr "Hiçbir ileti alınmadı, iletiyi okuma işlemi başarısız."
 
 #: retrieveitemtask.cpp:115
 #, kde-format
 msgid "No message retrieved, server reply was empty."
-msgstr "Hiç ileti alınmadı, sunucunun yanıtı boş."
+msgstr "Hiçbir ileti alınmadı, sunucunun yanıtı boş."
 
 #: searchtask.cpp:193
 #, kde-format
@@ -552,7 +551,7 @@ msgstr "IMAP-sunucusu %1 üzerinde fazladan başka bir bağlantı oluşturulamad
 #: sessionpool.cpp:332
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
-msgstr "Parola okunamadı: kullanıcı cüzdan erişimini iptal etti"
+msgstr "Parola okunamadı: Kullanıcı cüzdan erişimini reddeti"
 
 #: sessionpool.cpp:340
 #, kde-format
@@ -565,7 +564,7 @@ msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr ""
-"%1 ile TLS/SSL bağlantı istediğinde bulundunuz ama sisteminiz bunun için "
+"%1 ile TLS/SSL bağlantı istediğinde bulundunuz; ancak sisteminiz bunun için "
 "yapılandırılmış görünmüyor."
 
 #: sessionpool.cpp:409
@@ -583,7 +582,7 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
 "%2"
 msgstr ""
-"%1 IMAP sunucusu tarafından desteklenen yetenekler test edilemedi.\n"
+"%1 IMAP sunucusu tarafından desteklenen yetenekler sınanamadı.\n"
 "%2"
 
 #: sessionpool.cpp:440
@@ -619,8 +618,8 @@ msgid ""
 "%1"
 msgstr ""
 "\"%2\" hesabı için olan sunucu sağlanan kullanıcı adı ve parolayı reddetti.\n"
-"Başka bir oturum açma girişimi için ayarlara gitmek mi hiçbir şey yapmamak "
-"mı istersiniz?\n"
+"Başka bir oturum açma girişimi için ayarlara gitmek mi yoksa bir şey "
+"yapmamak mı istersiniz?\n"
 "\n"
 "%1"
 
@@ -639,7 +638,7 @@ msgstr "Hesap Ayarları"
 #, kde-format
 msgctxt "Input username/password manually and not store them"
 msgid "Try Again"
-msgstr "Yeniden Deneyin"
+msgstr "Yeniden Dene"
 
 #: settingspasswordrequester.cpp:150
 #, kde-format
@@ -694,9 +693,9 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
-"Sunucunun adresini değiştirmişsiniz. Önceki ile aynı sunucuyu "
-"kullanıyorsanız hesabınızdan tüm e-postaları yeniden indireceğiz. Sürdürmek "
-"istiyor musunuz?"
+"Sunucunun adresini değiştirdiniz. Bu, öncekiyle aynı sunucu olsa bile, bu "
+"hesaptan tüm e-postalarınızı yeniden indirmemiz gerekecek. Sürdürmek "
+"istediğinizden emin misiniz?"
 
 #: setupserver.cpp:272
 #, kde-format
@@ -710,9 +709,9 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
-"Kullanıcı adını değiştirmişsiniz. Önceki hesap ile aynı kullanıcı adını "
-"kullanıyorsanız hesabınızdan tüm e-postaları yeniden indireceğiz. Sürdürmek "
-"istiyor musunuz?"
+"Kullanıcı adını değiştirdiniz. Bu, öncekiyle aynı hesap için bir kullanıcı "
+"adı olsa bile, bu hesaptan tüm e-postalarınızı yeniden indirmemiz gerekecek. "
+"Sürdürmek istediğinizden emin misiniz?"
 
 #: setupserver.cpp:282
 #, kde-format
@@ -726,14 +725,14 @@ msgid ""
 "you have to activate it. If you do not want to use KWallet, check the box "
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
-"KWallet'a erişemedin. Parolanı kalıcı olarak saklamak istersen, onu "
-"etkinleştirmek zorundasın. KWallet'ı kullanmak istermezsen, aşağıdaki kutuyu "
-"kontrol et, fakat dikkat et parolan gerektiğinde yönlendirilieceksin."
+"K Cüzdan'a erişilemedi. Parolayı kalıcı olarak saklamak istiyorsanız onu "
+"etkinleştirmeniz gerekir. K Cüzdan kullanmak istemiyorsanız aşağıdaki kutuyu "
+"işaretleyin; ancak gerektiğinde şifrenizin isteneceğini unutmayın."
 
 #: setupserver.cpp:434 setupserver.cpp:490
 #, kde-format
 msgid "Do not use KWallet"
-msgstr "KWallet Kullanma"
+msgstr "K Cüzdan'ı Kullanma"
 
 #: setupserver.cpp:555
 #, kde-format
@@ -791,14 +790,14 @@ msgid ""
 "example: \"imap.foo.com:144\"."
 msgstr ""
 "IMAP sunucusunu belirtin. Özel bir şifreleme şeması için standart olmayan "
-"bir kapısına bağlanmak istiyorsanız onu \":kapı\" şeklinde ekleyebilirsiniz. "
+"bir kapıya bağlanmak istiyorsanız onu \":kapı\" şeklinde ekleyebilirsiniz. "
 "Örneğin: \"\"imap.foo.com:144\"."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
 #, kde-format
 msgid "I&MAP Server:"
-msgstr "I&MAP Sunucusu:"
+msgstr "I&MAP sunucusu:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
@@ -829,19 +828,19 @@ msgstr "Parola:"
 #: setupserverview_desktop.ui:108
 #, kde-format
 msgid "Mail Checking Options"
-msgstr "Posta Kontrol Seçenekleri"
+msgstr "Posta Denetim Seçenekleri"
 
 #. i18n: ectx: property (text), widget (QCheckBox, disconnectedModeEnabled)
 #: setupserverview_desktop.ui:115
 #, kde-format
 msgid "&Download all messages for offline use"
-msgstr "Çevrim dışı kullanım için tüm iletileri &indir"
+msgstr "Çevrimdışı kullanım için tüm iletileri &indir"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableMailCheckBox)
 #: setupserverview_desktop.ui:122
 #, kde-format
 msgid "Enable &interval mail checking"
-msgstr "&Aralıklı posta kontrolünü etkinleştir"
+msgstr "&Aralıklı posta denetimini etkinleştir"
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: setupserverview_desktop.ui:129
@@ -883,7 +882,7 @@ msgstr ""
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr "Managesieve portu:"
+msgstr "Managesieve kapısı:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
@@ -998,7 +997,7 @@ msgstr "Sunucu tarafında üyelikleri etkinleştir"
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription..."
-msgstr "Sunucuya Üyelik..."
+msgstr "Sunucu Tarafı Abonelik..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
