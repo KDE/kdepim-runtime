@@ -1,22 +1,21 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Emir SARI <emir_sari@icloud.com>, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_facebook_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-01-27 03:07+0100\n"
-"PO-Revision-Date: 2017-08-17 08:52+0000\n"
-"Last-Translator: Kaan <kaanozdincer@gmail.com>\n"
+"PO-Revision-Date: 2023-01-21 15:25+0300\n"
+"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Pootle 2.5.1.1\n"
+"X-Generator: Lokalize 22.12.1\n"
 "X-POOTLE-MTIME: 1502203652.000000\n"
 
 #: birthdaylistjob.cpp:78 birthdaylistjob.cpp:84
@@ -172,7 +171,7 @@ msgstr "Arkadaşların Doğum Günleri"
 #: tokenjobs.cpp:287 tokenjobs.cpp:299 tokenjobs.cpp:392 tokenjobs.cpp:445
 #, kde-format
 msgid "Failed to open KWallet"
-msgstr "KWallet açma başarısız oldu"
+msgstr "K Cüzdan açılamadı"
 
 #: tokenjobs.cpp:343
 #, kde-format
