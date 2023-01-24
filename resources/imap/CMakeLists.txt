@@ -113,14 +113,14 @@ target_link_libraries(imapresource
     KF5::AkonadiCore
     KF5::IMAP
     KF5::MailTransport
-    KF5::KIOWidgets
+    KF${KF_MAJOR_VERSION}::KIOWidgets
     KF5::Mime
     KF5::AkonadiMime
     KF5::IdentityManagementWidgets
     KF5::AkonadiAgentBase
-    KF5::I18n
-    KF5::WindowSystem
-    KF5::ConfigGui
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::WindowSystem
+    KF${KF_MAJOR_VERSION}::ConfigGui
     akonadi-singlefileresource
     KF5::Libkdepim
     ${kdepim-keychain_lib}
@@ -172,10 +172,10 @@ target_link_libraries(akonadi_imap_resource
     KF5::Mime
     KF5::AkonadiMime
     KF5::IdentityManagement
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
     imapresource
-    KF5::TextWidgets
-    KF5::ConfigGui
+    KF${KF_MAJOR_VERSION}::TextWidgets
+    KF${KF_MAJOR_VERSION}::ConfigGui
 
     folderarchivesettings
     KPim::GAPICore

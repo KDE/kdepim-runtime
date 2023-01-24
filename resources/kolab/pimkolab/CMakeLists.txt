@@ -85,14 +85,14 @@ ecm_qt_declare_logging_category(KOLAB_SRCS HEADER pimkolab_debug.h IDENTIFIER PI
 
 
 set(KOLAB_LINK_LIBRARIES
-    KF5::CalendarCore
+    KF${KF_MAJOR_VERSION}::CalendarCore
     KF5::CalendarUtils
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::Mime
     KF5::AkonadiCore
     KF5::AkonadiNotes
-    KF5::Codecs
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::Codecs
+    KF${KF_MAJOR_VERSION}::I18n
     ${Libkolabxml_LIBRARIES}
     Qt::Core
     Qt::Xml

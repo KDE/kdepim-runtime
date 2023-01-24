@@ -96,11 +96,11 @@ endif ()
 target_link_libraries(akonadi_openxchange_resource
     KF5::AkonadiAgentBase
     KF5::AkonadiCore
-    KF5::Contacts
-    KF5::KIOCore
-    KF5::CalendarCore
+    KF${KF_MAJOR_VERSION}::Contacts
+    KF${KF_MAJOR_VERSION}::KIOCore
+    KF${KF_MAJOR_VERSION}::CalendarCore
     KF5::AkonadiContact
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
     Qt::Xml
 )
 
@@ -127,8 +127,8 @@ ki18n_wrap_ui(openxchangeconfig configwidget.ui)
 
 target_link_libraries(openxchangeconfig
     KF5::AkonadiCore
-    KF5::I18n
-    KF5::Completion
-    KF5::ConfigWidgets
-    KF5::KIOCore
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::Completion
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::KIOCore
 )

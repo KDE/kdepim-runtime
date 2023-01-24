@@ -51,7 +51,7 @@ target_link_libraries(akonadi-filestore
     PUBLIC
     KF5::AkonadiCore
     PRIVATE
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
     )
 
 set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

@@ -22,9 +22,9 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 target_link_libraries(googlegroupwaremigration
     KF5::AkonadiCore
-    KF5::ConfigGui
-    KF5::I18n
-    KF5::Wallet
+    KF${KF_MAJOR_VERSION}::ConfigGui
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::Wallet
     Qt::DBus
     migrationshared
 )

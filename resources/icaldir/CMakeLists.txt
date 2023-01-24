@@ -37,11 +37,11 @@ endif ()
 target_link_libraries(akonadi_icaldir_resource
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
-  KF5::CalendarCore
-  KF5::I18n
-  KF5::TextWidgets
-  KF5::KIOWidgets
-  KF5::ConfigWidgets
+  KF${KF_MAJOR_VERSION}::CalendarCore
+  KF${KF_MAJOR_VERSION}::I18n
+  KF${KF_MAJOR_VERSION}::TextWidgets
+  KF${KF_MAJOR_VERSION}::KIOWidgets
+  KF${KF_MAJOR_VERSION}::ConfigWidgets
 )
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -61,11 +61,11 @@ target_sources(icaldirconfig PRIVATE
 
 target_link_libraries(icaldirconfig
     KF5::AkonadiCore
-    KF5::CalendarCore
+    KF${KF_MAJOR_VERSION}::CalendarCore
     KF5::AkonadiAgentBase
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiWidgets
-    KF5::I18n
-    KF5::KIOWidgets
-    KF5::TextWidgets
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::TextWidgets
     )

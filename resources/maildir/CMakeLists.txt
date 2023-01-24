@@ -52,7 +52,7 @@ target_link_libraries(akonadi_maildir_resource
     KF5::AkonadiMime
     KF5::Mime
     KF5::AkonadiAgentBase
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
 )
 
 install(TARGETS akonadi_maildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -80,9 +80,9 @@ ki18n_wrap_ui(maildirconfig settings.ui)
 
 target_link_libraries(maildirconfig
     KF5::AkonadiCore
-    KF5::ConfigWidgets
-    KF5::KIOWidgets
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::I18n
     folderarchivesettings
     maildir
 )

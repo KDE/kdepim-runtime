@@ -10,9 +10,9 @@ ecm_qt_declare_logging_category(kio_akonadi HEADER akonadiworker_debug.h IDENTIF
 
 
 target_link_libraries(kio_akonadi  
-                      KF5::KIOCore 
+                      KF${KF_MAJOR_VERSION}::KIOCore 
                       KF5::AkonadiCore 
-                      KF5::I18n
+                      KF${KF_MAJOR_VERSION}::I18n
                       Qt::DBus
                       Qt::Widgets
                       Qt::Network

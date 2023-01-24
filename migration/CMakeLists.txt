@@ -29,8 +29,8 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 target_link_libraries(migrationshared
     KF5::AkonadiCore
-    KF5::ConfigCore
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::ConfigCore
+    KF${KF_MAJOR_VERSION}::I18n
     Qt::Widgets
 )
 

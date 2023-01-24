@@ -40,13 +40,13 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::Mime
   KF5::AkonadiMime
   KF5::AkonadiContact
-  KF5::Codecs
+  KF${KF_MAJOR_VERSION}::Codecs
   KF5::IdentityManagement
   KF5::AkonadiAgentBase
-  KF5::Notifications
-  KF5::Service
-  KF5::I18n
-  KF5::KIOGui
+  KF${KF_MAJOR_VERSION}::Notifications
+  KF${KF_MAJOR_VERSION}::Service
+  KF${KF_MAJOR_VERSION}::I18n
+  KF${KF_MAJOR_VERSION}::KIOGui
 )
 
 if(Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
@@ -87,10 +87,10 @@ target_link_libraries(newmailnotifierconfig
     KF5::AkonadiCore
     KF5::AkonadiMime
     Qt::Widgets
-    KF5::NotifyConfig
-    KF5::ConfigGui
-    KF5::I18n
-    KF5::XmlGui
+    KF${KF_MAJOR_VERSION}::NotifyConfig
+    KF${KF_MAJOR_VERSION}::ConfigGui
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::XmlGui
     KF5::Mime
-    KF5::Completion
+    KF${KF_MAJOR_VERSION}::Completion
 )

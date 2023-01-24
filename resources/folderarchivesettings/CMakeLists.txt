@@ -21,8 +21,8 @@ PRIVATE
                       KF5::Mime
                       KF5::AkonadiCore
                       KF5::AkonadiWidgets
-                      KF5::ConfigCore
-                      KF5::I18n
+                      KF${KF_MAJOR_VERSION}::ConfigCore
+                      KF${KF_MAJOR_VERSION}::I18n
                       Qt::DBus
 )
 

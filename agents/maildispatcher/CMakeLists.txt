@@ -49,8 +49,8 @@ target_link_libraries(akonadi_maildispatcher_agent
     KF5::MailTransportAkonadi
     KF5::MailTransport
     KF5::AkonadiAgentBase
-    KF5::I18n
-    KF5::Notifications
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::Notifications
 )
 
 install( TARGETS akonadi_maildispatcher_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
@@ -64,6 +64,6 @@ kcoreaddons_add_plugin(maildispatcherconfig
     INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config")
 target_link_libraries(maildispatcherconfig
     KF5::AkonadiCore
-    KF5::NotifyConfig
-    KF5::ConfigCore
+    KF${KF_MAJOR_VERSION}::NotifyConfig
+    KF${KF_MAJOR_VERSION}::ConfigCore
 )

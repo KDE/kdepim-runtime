@@ -149,16 +149,16 @@ target_link_libraries(akonadi_ews_resource
     KF5::AkonadiAgentBase
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOCore
     KF5::Mime
-    KF5::CalendarCore
-    KF5::Contacts
-    KF5::Wallet
-    KF5::WidgetsAddons
-    KF5::I18n
-    KF5::WindowSystem
-    KF5::Notifications
-    KF5::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::Contacts
+    KF${KF_MAJOR_VERSION}::Wallet
+    KF${KF_MAJOR_VERSION}::WidgetsAddons
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::WindowSystem
+    KF${KF_MAJOR_VERSION}::Notifications
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
     ewsclient)
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
@@ -190,8 +190,8 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
         KF5::AkonadiAgentBase
         KF5::AkonadiCore
         KF5::AkonadiWidgets
-        KF5::I18n
-        KF5::WindowSystem
+        KF${KF_MAJOR_VERSION}::I18n
+        KF${KF_MAJOR_VERSION}::WindowSystem
         KF5::Mime)
 
     set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")

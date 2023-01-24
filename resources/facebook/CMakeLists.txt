@@ -19,13 +19,13 @@ target_sources(facebookresourcelib PRIVATE
 
 
 target_link_libraries(facebookresourcelib
-    KF5::KIOWidgets
-    KF5::I18n
-    KF5::ConfigGui
-    KF5::CalendarCore
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::ConfigGui
+    KF${KF_MAJOR_VERSION}::CalendarCore
     Qt::WebEngineWidgets
     KF5::Wallet
-    KF5::Codecs
+    KF${KF_MAJOR_VERSION}::Codecs
 )
 
 #####
@@ -34,12 +34,12 @@ add_executable(akonadi_facebook_resource resource.cpp)
 target_link_libraries(akonadi_facebook_resource
     facebookresourcelib
     KF5::AkonadiAgentBase
-    KF5::CalendarCore
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::I18n
     KF5::Wallet
-    KF5::Codecs
+    KF${KF_MAJOR_VERSION}::Codecs
     Qt::WebEngineWidgets
-    KF5::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOCore
 )
 
 install(TARGETS akonadi_facebook_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -67,12 +67,12 @@ kcoreaddons_add_plugin(facebookconfig
 target_link_libraries(facebookconfig
     facebookresourcelib
     KF5::AkonadiCore
-    KF5::CalendarCore
-    KF5::Codecs
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::Codecs
     KF5::AkonadiAgentBase
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiWidgets
-    KF5::I18n
-    KF5::KIOWidgets
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::KIOWidgets
     )
 

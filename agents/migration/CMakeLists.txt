@@ -36,9 +36,9 @@ target_link_libraries(akonadi_migration_agent
     googlegroupwaremigration
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
-    KF5::Contacts
-    KF5::WindowSystem
-    KF5::JobWidgets
+    KF${KF_MAJOR_VERSION}::Contacts
+    KF${KF_MAJOR_VERSION}::WindowSystem
+    KF${KF_MAJOR_VERSION}::JobWidgets
 )
 
 install(TARGETS akonadi_migration_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

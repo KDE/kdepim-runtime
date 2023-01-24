@@ -52,13 +52,13 @@ target_link_libraries( akonadi_pop3_resource
     KF5::Mime
     KF5::MailTransport
     KF5::AkonadiAgentBase
-    KF5::I18n
-    KF5::KIOWidgets  # SslUi
-    KF5::Notifications
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::KIOWidgets  # SslUi
+    KF${KF_MAJOR_VERSION}::Notifications
     Qt::DBus
     Qt::Network # QNetworkProxy
     ${kdepim-keychain_lib}
-    KF5::WidgetsAddons
+    KF${KF_MAJOR_VERSION}::WidgetsAddons
     Sasl2::Sasl2
     )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
@@ -90,10 +90,10 @@ ki18n_wrap_ui(pop3config popsettings.ui)
 
 target_link_libraries(pop3config
     KF5::AkonadiCore
-    KF5::TextWidgets
-    KF5::Completion
-    KF5::WidgetsAddons
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::TextWidgets
+    KF${KF_MAJOR_VERSION}::Completion
+    KF${KF_MAJOR_VERSION}::WidgetsAddons
+    KF${KF_MAJOR_VERSION}::I18n
     KF5::MailTransport
     KF5::AkonadiWidgets
     KF5::AkonadiAgentBase

@@ -40,12 +40,12 @@ endif ()
 
 target_link_libraries(akonadi_birthdays_resource
     KF5::AkonadiCore
-    KF5::CalendarCore
+    KF${KF_MAJOR_VERSION}::CalendarCore
     KF5::AkonadiAgentBase
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiWidgets
-    KF5::I18n
-    KF5::Codecs
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::Codecs
     )
 
 install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
@@ -65,9 +65,9 @@ target_sources(birthdaysconfig PRIVATE
 
 target_link_libraries(birthdaysconfig
     KF5::AkonadiCore
-    KF5::CalendarCore
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiWidgets
-    KF5::I18n
-    KF5::TextWidgets
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::TextWidgets
     )

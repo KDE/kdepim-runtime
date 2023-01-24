@@ -44,7 +44,7 @@ set( common_link_libraries
   KF5::Mbox
   KF5::Mime
   Qt::Test
-  KF5::I18n
+  KF${KF_MAJOR_VERSION}::I18n
 )
 
 # test for overwritten methods

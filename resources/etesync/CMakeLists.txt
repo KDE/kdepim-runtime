@@ -53,14 +53,14 @@ target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
     Qt::DBus
     KF5::AkonadiAgentBase
-    KF5::ConfigCore
-    KF5::Contacts
-    KF5::CalendarCore
-    KF5::KIOCore
-    KF5::ConfigWidgets
-    KF5::WindowSystem
+    KF${KF_MAJOR_VERSION}::ConfigCore
+    KF${KF_MAJOR_VERSION}::Contacts
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::KIOCore
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::WindowSystem
     KF5::Wallet
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
 )
 
 ecm_install_icons(

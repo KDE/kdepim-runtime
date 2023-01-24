@@ -56,14 +56,14 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_mbox_resource
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
     KF5::Mbox
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOCore
     KF5::Mime
     KF5::AkonadiAgentBase
-    KF5::Completion
+    KF${KF_MAJOR_VERSION}::Completion
     akonadi-singlefileresource
     )
 
@@ -93,9 +93,9 @@ ki18n_wrap_ui(mboxconfig
 
 target_link_libraries(mboxconfig
     KF5::AkonadiCore
-    KF5::ConfigWidgets
-    KF5::KIOWidgets
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::I18n
     KF5::Mbox
     akonadi-singlefileresource
     )

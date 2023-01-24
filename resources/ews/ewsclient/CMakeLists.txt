@@ -140,13 +140,13 @@ ecm_qt_declare_logging_category(EWSCLIENT_SRCS
 add_library(ewsclient STATIC ${EWSCLIENT_SRCS})
 target_link_libraries(ewsclient
     Qt::Network
-    KF5::KIOCore
-    KF5::KIOFileWidgets
-    KF5::KIOWidgets
-    KF5::Codecs
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOFileWidgets
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::Codecs
+    KF${KF_MAJOR_VERSION}::I18n
     KF5::Mime
-    KF5::CalendarCore)
+    KF${KF_MAJOR_VERSION}::CalendarCore)
 
 if (TARGET Qt::NetworkAuth)
     target_link_libraries(ewsclient

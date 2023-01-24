@@ -91,12 +91,12 @@ target_link_libraries(akonadi_tomboynotes_resource
     Qt::WebEngineWidgets
     KF5::AkonadiAgentBase
     KF5::AkonadiNotes
-    KF5::ConfigCore
-    KF5::ConfigWidgets
-    KF5::I18n
-    KF5::KIOCore
-    KF5::KIOFileWidgets
-    KF5::KIOWidgets
+    KF${KF_MAJOR_VERSION}::ConfigCore
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOFileWidgets
+    KF${KF_MAJOR_VERSION}::KIOWidgets
     KF5::Mime
     )
 
@@ -120,10 +120,10 @@ target_sources(tomboynotesconfig PRIVATE
 
 target_link_libraries(tomboynotesconfig
     KF5::AkonadiCore
-    KF5::CalendarCore
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiWidgets
-    KF5::I18n
-    KF5::ConfigWidgets
-    KF5::Completion
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::Completion
     )

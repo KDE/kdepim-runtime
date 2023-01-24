@@ -78,19 +78,19 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_davgroupware_resource
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiCalendar
-    KF5::KIOCore
+    KF${KF_MAJOR_VERSION}::KIOCore
     KF5::AkonadiAgentBase
     KF5::AkonadiCore
-    KF5::Wallet
-    KF5::CalendarCore
-    KF5::Completion
-    KF5::ConfigCore
-    KF5::ConfigWidgets
-    KF5::WindowSystem
-    KF5::DAV
-    KF5::Service
+    KF${KF_MAJOR_VERSION}::Wallet
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::Completion
+    KF${KF_MAJOR_VERSION}::ConfigCore
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::WindowSystem
+    KF${KF_MAJOR_VERSION}::DAV
+    KF${KF_MAJOR_VERSION}::Service
     Qt::Xml
     )
 

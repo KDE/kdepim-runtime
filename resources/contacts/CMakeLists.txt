@@ -39,10 +39,10 @@ endif()
 target_link_libraries(akonadi_contacts_resource
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
-    KF5::Contacts
-    KF5::I18n
-    KF5::KIOWidgets
-    KF5::ConfigWidgets
+    KF${KF_MAJOR_VERSION}::Contacts
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KF${KF_MAJOR_VERSION}::ConfigWidgets
     )
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -62,11 +62,11 @@ target_sources(contactsconfig PRIVATE
 
 target_link_libraries(contactsconfig
     KF5::AkonadiCore
-    KF5::CalendarCore
-    KF5::Codecs
+    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF${KF_MAJOR_VERSION}::Codecs
     KF5::AkonadiAgentBase
-    KF5::Contacts
+    KF${KF_MAJOR_VERSION}::Contacts
     KF5::AkonadiWidgets
-    KF5::I18n
-    KF5::KIOWidgets
+    KF${KF_MAJOR_VERSION}::I18n
+    KF${KF_MAJOR_VERSION}::KIOWidgets
     )

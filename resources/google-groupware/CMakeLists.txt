@@ -81,13 +81,13 @@ target_link_libraries(akonadi_google_resource
   KF5::AkonadiCalendar
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
-  KF5::CalendarCore
-  KF5::Contacts
-  KF5::Wallet
-  KF5::I18n
-  KF5::WindowSystem
-  KF5::TextWidgets
-  KF5::Notifications
+  KF${KF_MAJOR_VERSION}::CalendarCore
+  KF${KF_MAJOR_VERSION}::Contacts
+  KF${KF_MAJOR_VERSION}::Wallet
+  KF${KF_MAJOR_VERSION}::I18n
+  KF${KF_MAJOR_VERSION}::WindowSystem
+  KF${KF_MAJOR_VERSION}::TextWidgets
+  KF${KF_MAJOR_VERSION}::Notifications
   KPim::GAPICalendar
   KPim::GAPIContacts
   KPim::GAPICore

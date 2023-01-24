@@ -84,11 +84,11 @@ target_link_libraries(akonadi_kolab_resource
     imapresource
     folderarchivesettings
     pimkolab
-    KF5::Contacts
-    KF5::CalendarCore
+    KF${KF_MAJOR_VERSION}::Contacts
+    KF${KF_MAJOR_VERSION}::CalendarCore
     akonadi-singlefileresource
-    KF5::TextWidgets
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::TextWidgets
+    KF${KF_MAJOR_VERSION}::I18n
     )
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

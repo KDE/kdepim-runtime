@@ -30,7 +30,7 @@ target_sources( akonadi_notes_resource PRIVATE
 )
 
 
-target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF5::KIOCore KF5::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
+target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF${KF_MAJOR_VERSION}::KIOCore KF${KF_MAJOR_VERSION}::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
 
 install(TARGETS akonadi_notes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 

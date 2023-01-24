@@ -12,7 +12,7 @@ endif()
 
 target_link_libraries(gidmigration
     migrationshared
-    KF5::I18n
+    KF${KF_MAJOR_VERSION}::I18n
 )
 
 add_executable(gidmigrator main.cpp)
