@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the kdepim-runtime package.
 #
 # Automatically generated, 2022.
-# Mincho Kondarev <mkondarev@yahoo.de>, 2022.
+# Mincho Kondarev <mkondarev@yahoo.de>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2022-07-20 19:22+0200\n"
+"PO-Revision-Date: 2023-01-21 20:10+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
 "Language: bg\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 22.12.1\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -274,7 +274,7 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
-"Имаше проблем със заявката. Артикулът не е модифициран на сървър.\n"
+"Имаше проблем със заявката. Елементът не е модифициран на сървъра.\n"
 "%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
