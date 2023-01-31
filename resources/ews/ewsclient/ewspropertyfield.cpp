@@ -573,15 +573,27 @@ bool EwsPropertyField::writeWithValue(QXmlStreamWriter &writer, const QVariant &
 
 void EwsPropertyField::writeValue(QXmlStreamWriter &writer, const QVariant &value) const
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     switch (value.type()) {
+#else
+    switch (value.userType()) {
+#endif
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case QVariant::StringList: {
+#else
+    case QMetaType::QStringList: {
+#endif
         const QStringList list = value.toStringList();
         for (const QString &str : list) {
             writer.writeTextElement(ewsTypeNsUri, QStringLiteral("String"), str);
         }
         break;
     }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case QVariant::String:
+#else
+    case QMetaType::QString:
+#endif
         writer.writeCharacters(value.toString());
         break;
     default:
@@ -591,8 +603,16 @@ void EwsPropertyField::writeValue(QXmlStreamWriter &writer, const QVariant &valu
 
 void EwsPropertyField::writeExtendedValue(QXmlStreamWriter &writer, const QVariant &value) const
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     switch (value.type()) {
+#else
+    switch (value.userType()) {
+#endif
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case QVariant::StringList: {
+#else
+    case QMetaType::QStringList: {
+#endif
         const QStringList list = value.toStringList();
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Values"));
         for (const QString &str : list) {
@@ -601,7 +621,11 @@ void EwsPropertyField::writeExtendedValue(QXmlStreamWriter &writer, const QVaria
         writer.writeEndElement();
         break;
     }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     case QVariant::String:
+#else
+    case QMetaType::QString:
+#endif
         writer.writeStartElement(ewsTypeNsUri, QStringLiteral("Value"));
         writer.writeCharacters(value.toString());
         writer.writeEndElement();

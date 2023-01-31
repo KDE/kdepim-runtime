@@ -354,7 +354,11 @@ void ItemModifyTest::testModifyPayload()
 
     var = job->property("compactStore");
     QVERIFY(var.isValid());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCOMPARE(var.type(), QVariant::Bool);
+#else
+    QCOMPARE(var.userType(), QMetaType::Bool);
+#endif
     QCOMPARE(var.toBool(), true);
 
     // check for index preservation

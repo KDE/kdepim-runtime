@@ -71,7 +71,7 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
         flags |= CryptoFlagCompression;
     } else if (m_compressionMode == CompressionAuto) {
         QByteArray compressed = qCompress(ba, 9);
-        if (compressed.count() < ba.count()) {
+        if (compressed.size() < ba.size()) {
             ba = compressed;
             flags |= CryptoFlagCompression;
         }
@@ -81,7 +81,11 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
     if (m_protectionMode == ProtectionChecksum) {
         flags |= CryptoFlagChecksum;
         QDataStream s(&integrityProtection, QIODevice::WriteOnly);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         s << qChecksum(ba.constData(), ba.length());
+#else
+        s << qChecksum(QByteArrayView(ba.constData(), ba.length()));
+#endif
     } else if (m_protectionMode == ProtectionHash) {
         flags |= CryptoFlagHash;
         QCryptographicHash hash(QCryptographicHash::Sha1);
@@ -97,7 +101,7 @@ QByteArray O0SimpleCrypt::encryptToByteArray(const QByteArray &plaintext)
     int pos(0);
     char lastChar(0);
 
-    int cnt = ba.count();
+    int cnt = ba.size();
 
     while (pos < cnt) {
         ba[pos] = ba.at(pos) ^ m_keyParts.at(pos % 8) ^ lastChar;
@@ -181,7 +185,7 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
 
     ba.remove(0, 2);
     int pos(0);
-    int cnt(ba.count());
+    int cnt(ba.size());
     char lastChar = 0;
 
     while (pos < cnt) {
@@ -205,7 +209,11 @@ QByteArray O0SimpleCrypt::decryptToByteArray(const QByteArray &cypher)
             s >> storedChecksum;
         }
         ba.remove(0, 2);
-        quint16 checksum = qChecksum(ba.constData(), ba.length());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        quint16 checksum = qChecksum(ba.constData(), ba.size());
+#else
+        quint16 checksum = qChecksum(QByteArrayView(ba.constData(), ba.size()));
+#endif
         integrityOk = (checksum == storedChecksum);
     } else if (flags.testFlag(CryptoFlagHash)) {
         if (ba.length() < 20) {
