@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-02-01 00:57+0000\n"
 "PO-Revision-Date: 2022-06-05 07:14+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -170,7 +170,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr "Ni bilo mogoče poslati strežniku.\n"
 
-#: pop3protocol.cpp:352
+#: pop3protocol.cpp:356
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -183,12 +183,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:402
+#: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "Prišlo je do napake pri avtentikaciji: %1"
 
-#: pop3protocol.cpp:496
+#: pop3protocol.cpp:500
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -201,7 +201,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:507
+#: pop3protocol.cpp:511
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -210,7 +210,7 @@ msgstr ""
 "Vaš strežnik POP3 (%1) ne podpira SASL\n"
 "Izberite drugo metodo avtentikacije."
 
-#: pop3protocol.cpp:524 pop3protocol.cpp:613
+#: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -219,7 +219,7 @@ msgstr ""
 "Ni se bilo mogoče prijaviti na %1.\n"
 "\n"
 
-#: pop3protocol.cpp:532
+#: pop3protocol.cpp:536
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -230,22 +230,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:564
+#: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "SSL/TLS napaka: %1"
 
-#: pop3protocol.cpp:595
+#: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:614
+#: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "Strežnik je takoj prekinil povezavo."
 
-#: pop3protocol.cpp:615
+#: pop3protocol.cpp:619
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -254,7 +254,7 @@ msgstr ""
 "Strežnik se ne odziva pravilno:\n"
 "%1\n"
 
-#: pop3protocol.cpp:639
+#: pop3protocol.cpp:643
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -263,7 +263,7 @@ msgstr ""
 "Vaš strežnik POP3 (%1) ne podpira APOP.\n"
 "Izberite drugo metodo avtentikacije."
 
-#: pop3protocol.cpp:649
+#: pop3protocol.cpp:653
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -272,27 +272,27 @@ msgstr ""
 "Vaš strežnik POP3 trdi, da podpira TLS, a pogajanje je bilo neuspešno.\n"
 "V nastavitvah računa POP lahko onemogočite TLS."
 
-#: pop3protocol.cpp:734
+#: pop3protocol.cpp:738
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "Interna napaka: manjkajoči argument za ukaz %1"
 
-#: pop3protocol.cpp:790
+#: pop3protocol.cpp:794
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "Interna napaka: manjkajoča postavka"
 
-#: pop3protocol.cpp:817
+#: pop3protocol.cpp:821
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "Časovni potek strežnika POP3 %1"
 
-#: pop3protocol.cpp:819
+#: pop3protocol.cpp:823
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "Prekinjena povezava s strežnikom POP3 %1"
 
-#: pop3protocol.cpp:880
+#: pop3protocol.cpp:884
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
@@ -300,12 +300,12 @@ msgid ""
 msgstr ""
 "Napaka pri komunikaciji s strežnikom POP3 ob poskusu prejemanja pošte: %1"
 
-#: pop3protocol.cpp:890
+#: pop3protocol.cpp:894
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr "Interna napaka, pričakovano število: %1"
 
-#: pop3protocol.cpp:910
+#: pop3protocol.cpp:914
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr "Nepričakovan odziv s strežnika POP3."

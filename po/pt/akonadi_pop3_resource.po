@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-02-01 00:57+0000\n"
 "PO-Revision-Date: 2021-11-10 18:53+0000\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr "Não foi possível iniciar para o servidor.\n"
 
-#: pop3protocol.cpp:352
+#: pop3protocol.cpp:356
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -181,12 +181,12 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:402
+#: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr "Ocorreu um erro durante a autenticação: %1"
 
-#: pop3protocol.cpp:496
+#: pop3protocol.cpp:500
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -199,7 +199,7 @@ msgstr ""
 "\n"
 "%3"
 
-#: pop3protocol.cpp:507
+#: pop3protocol.cpp:511
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
@@ -208,7 +208,7 @@ msgstr ""
 "O seu servidor de POP3 (%1) não suporta o SASL.\n"
 "Escolha um método de autenticação diferente."
 
-#: pop3protocol.cpp:524 pop3protocol.cpp:613
+#: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
@@ -217,7 +217,7 @@ msgstr ""
 "Não foi possível autenticar-se em %1.\n"
 "\n"
 
-#: pop3protocol.cpp:532
+#: pop3protocol.cpp:536
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -228,22 +228,22 @@ msgstr ""
 "\n"
 "%2"
 
-#: pop3protocol.cpp:564
+#: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr "Erro de SSL/TLS: %1"
 
-#: pop3protocol.cpp:595
+#: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: pop3protocol.cpp:614
+#: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr "O servidor terminou a ligação de imediato."
 
-#: pop3protocol.cpp:615
+#: pop3protocol.cpp:619
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
@@ -252,7 +252,7 @@ msgstr ""
 "O servidor não respondeu de forma adequada:\n"
 "%1\n"
 
-#: pop3protocol.cpp:639
+#: pop3protocol.cpp:643
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
@@ -261,7 +261,7 @@ msgstr ""
 "O seu servidor de POP3 (%1) não suporta o APOP.\n"
 "Escolha um método de autenticação diferente."
 
-#: pop3protocol.cpp:649
+#: pop3protocol.cpp:653
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
@@ -271,27 +271,27 @@ msgstr ""
 "sucesso.\n"
 "Poderá desactivar o TLS na janela de configuração da conta POP."
 
-#: pop3protocol.cpp:734
+#: pop3protocol.cpp:738
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr "Erro interno: falta um argumento para o comando %1"
 
-#: pop3protocol.cpp:790
+#: pop3protocol.cpp:794
 #, kde-format
 msgid "Internal error: missing item"
 msgstr "Erro interno: falta um item"
 
-#: pop3protocol.cpp:817
+#: pop3protocol.cpp:821
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr "Expirou o tempo-limite do servidor POP3 %1"
 
-#: pop3protocol.cpp:819
+#: pop3protocol.cpp:823
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr "Terminou a ligação do servidor POP3 %1"
 
-#: pop3protocol.cpp:880
+#: pop3protocol.cpp:884
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
@@ -300,12 +300,12 @@ msgstr ""
 "Ocorreu um erro na comunicação com o servidor de POP3 ao tentar obter o "
 "correio: %1"
 
-#: pop3protocol.cpp:890
+#: pop3protocol.cpp:894
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr "Erro interno, é esperado um número: %1"
 
-#: pop3protocol.cpp:910
+#: pop3protocol.cpp:914
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr "Foi recebida uma resposta inesperada do servidor POP3."
