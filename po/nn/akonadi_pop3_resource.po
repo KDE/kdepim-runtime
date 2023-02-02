@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-02-01 00:57+0000\n"
 "PO-Revision-Date: 2019-05-01 11:44+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Could not send to server.\n"
 msgstr ""
 
-#: pop3protocol.cpp:352
+#: pop3protocol.cpp:356
 #, kde-format
 msgid ""
 "Login via APOP failed. The server %1 may not support APOP, although it "
@@ -160,12 +160,12 @@ msgid ""
 "%2"
 msgstr ""
 
-#: pop3protocol.cpp:402
+#: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
 msgstr ""
 
-#: pop3protocol.cpp:496
+#: pop3protocol.cpp:500
 #, kde-format
 msgid ""
 "Login via SASL (%1) failed. The server may not support %2, or the password "
@@ -174,21 +174,21 @@ msgid ""
 "%3"
 msgstr ""
 
-#: pop3protocol.cpp:507
+#: pop3protocol.cpp:511
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
 
-#: pop3protocol.cpp:524 pop3protocol.cpp:613
+#: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
 msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
 
-#: pop3protocol.cpp:532
+#: pop3protocol.cpp:536
 #, kde-format
 msgid ""
 "Could not login to %1. The password may be wrong.\n"
@@ -196,75 +196,75 @@ msgid ""
 "%2"
 msgstr ""
 
-#: pop3protocol.cpp:564
+#: pop3protocol.cpp:568
 #, kde-format
 msgid "SSL/TLS error: %1"
 msgstr ""
 
-#: pop3protocol.cpp:595
+#: pop3protocol.cpp:599
 #, kde-format
 msgid "%1: %2"
 msgstr ""
 
-#: pop3protocol.cpp:614
+#: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
 msgstr ""
 
-#: pop3protocol.cpp:615
+#: pop3protocol.cpp:619
 #, kde-format
 msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
 
-#: pop3protocol.cpp:639
+#: pop3protocol.cpp:643
 #, kde-format
 msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
 
-#: pop3protocol.cpp:649
+#: pop3protocol.cpp:653
 #, kde-format
 msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
 
-#: pop3protocol.cpp:734
+#: pop3protocol.cpp:738
 #, kde-format
 msgid "Internal error: missing argument for command %1"
 msgstr ""
 
-#: pop3protocol.cpp:790
+#: pop3protocol.cpp:794
 #, kde-format
 msgid "Internal error: missing item"
 msgstr ""
 
-#: pop3protocol.cpp:817
+#: pop3protocol.cpp:821
 #, kde-format
 msgid "Timeout from POP3 server %1"
 msgstr ""
 
-#: pop3protocol.cpp:819
+#: pop3protocol.cpp:823
 #, kde-format
 msgid "Connection broken from POP3 server %1"
 msgstr ""
 
-#: pop3protocol.cpp:880
+#: pop3protocol.cpp:884
 #, kde-format
 msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr ""
 
-#: pop3protocol.cpp:890
+#: pop3protocol.cpp:894
 #, kde-format
 msgid "Internal error, number expected: %1"
 msgstr ""
 
-#: pop3protocol.cpp:910
+#: pop3protocol.cpp:914
 #, kde-format
 msgid "Unexpected response from POP3 server."
 msgstr ""
@@ -749,8 +749,8 @@ msgstr ""
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
-"\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
+"css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Noto Sans'; font-size:10pt; font-"
 "weight:400; font-style:normal;\">\n"
