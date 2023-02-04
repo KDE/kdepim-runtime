@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-14 00:47+0000\n"
-"PO-Revision-Date: 2022-12-04 11:51+0100\n"
+"PO-Revision-Date: 2023-02-03 16:37+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -144,6 +144,8 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
+"თუ ჩართულია, ელფოსტის სერვერთან მისაერთებლად სისტემური პროქსის პარამეტრები "
+"იქნება გამოყენებული."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:45
@@ -239,7 +241,7 @@ msgstr "საცრის პორტის აღწერა"
 #: imapresource.kcfg:104
 #, kde-format
 msgid "Define alternate URL"
-msgstr "ალტერნატიული URL_ის აღწერა"
+msgstr "ალტერნატიული URL-ის აღწერა"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
 #: imapresource.kcfg:107
@@ -1008,7 +1010,7 @@ msgstr "SSL/TLS"
 #: setupserverview_desktop.ui:461
 #, kde-format
 msgid "None"
-msgstr "არც_ერთი"
+msgstr "არაფერი"
 
 #. i18n: ectx: property (text), widget (QLabel, imapInfo)
 #: setupserverview_desktop.ui:482
