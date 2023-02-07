@@ -108,7 +108,7 @@ void AccountWidget::setupWidgets()
     encryptionButtonGroup->addButton(encryptionSSL, Transport::EnumEncryption::SSL);
     encryptionButtonGroup->addButton(encryptionTLS, Transport::EnumEncryption::TLS);
 
-    connect(encryptionButtonGroup, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked), this, &AccountWidget::slotPopEncryptionChanged);
+    connect(encryptionButtonGroup, &QButtonGroup::buttonClicked, this, &AccountWidget::slotPopEncryptionChanged);
     connect(intervalCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnablePopInterval);
 
     populateDefaultAuthenticationOptions();
