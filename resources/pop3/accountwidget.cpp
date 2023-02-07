@@ -97,9 +97,9 @@ void AccountWidget::setupWidgets()
 
     connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotLeaveOnServerClicked);
     connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerDays);
-    connect(leaveOnServerDaysSpin, qOverload<int>(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerDaysChanged);
+    connect(leaveOnServerDaysSpin, &QSpinBox::valueChanged, this, &AccountWidget::slotLeaveOnServerDaysChanged);
     connect(leaveOnServerCountCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerCount);
-    connect(leaveOnServerCountSpin, qOverload<int>(&QSpinBox::valueChanged), this, &AccountWidget::slotLeaveOnServerCountChanged);
+    connect(leaveOnServerCountSpin, &QSpinBox::valueChanged, this, &AccountWidget::slotLeaveOnServerCountChanged);
     connect(leaveOnServerSizeCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerSize);
 
     connect(checkCapabilities, &QPushButton::clicked, this, &AccountWidget::slotCheckPopCapabilities);
