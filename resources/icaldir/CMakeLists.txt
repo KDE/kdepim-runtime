@@ -2,8 +2,6 @@
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_icaldir_resource\")
 
 
-set(contactsresource_common_SRCS)
-
 kconfig_add_kcfg_files(icaldirresource_common_SRCS
     settings.kcfgc
   )
