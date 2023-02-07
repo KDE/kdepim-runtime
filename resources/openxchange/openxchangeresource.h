@@ -45,9 +45,8 @@ protected:
                          const Akonadi::Collection &collectionSource,
                          const Akonadi::Collection &collectionDestination) override;
 
-private Q_SLOTS:
+private:
     void onReloadConfiguration();
-
     void onUpdateUsersJobFinished(KJob *);
     void onFoldersRequestJobFinished(KJob *);
     void onFoldersRequestDeltaJobFinished(KJob *);
@@ -55,7 +54,6 @@ private Q_SLOTS:
     void onFolderModifyJobFinished(KJob *);
     void onFolderMoveJobFinished(KJob *);
     void onFolderDeleteJobFinished(KJob *);
-
     void onObjectsRequestJobFinished(KJob *);
     void onObjectsRequestDeltaJobFinished(KJob *);
     void onObjectRequestJobFinished(KJob *);
@@ -63,7 +61,6 @@ private Q_SLOTS:
     void onObjectModifyJobFinished(KJob *);
     void onObjectMoveJobFinished(KJob *);
     void onObjectDeleteJobFinished(KJob *);
-
     void onFetchResourceCollectionsFinished(KJob *);
 
 private:
