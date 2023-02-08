@@ -119,7 +119,7 @@ Kirigami.ScrollablePage {
             Kirigami.FormData.label: i18n("Server Name:")
         }
         QQC2.CheckBox {
-            id: checkBoxSmptEdit
+            id: smptCheckBoxSmptEdit
             text: i18n("Manual Edit")
         }
         Kirigami.Separator {
