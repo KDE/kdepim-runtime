@@ -44,7 +44,7 @@ Kirigami.ScrollablePage {
                 enabled: root.valid
                 onClicked: {
                     const maildirRes = SetupManager.createResource( "akonadi_mbox_resource" );
-                    maildirRes.setOption( "Path", page.widget().mailboxPath.text );
+                    maildirRes.setOption( "Path", mailboxPath.text );
 
                     SetupManager.execute();
                 }
