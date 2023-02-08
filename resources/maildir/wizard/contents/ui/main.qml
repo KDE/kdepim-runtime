@@ -12,12 +12,12 @@ import org.kde.pim.accountwizard 1.0
 
 Kirigami.ScrollablePage {
     id: root
-    property bool valid: pathField.text.length > 0
+    property bool valid: maildirPath.text.length > 0
     Kirigami.FormLayout {
         RowLayout {
             Kirigami.FormData.label: i18n("URL:")
             QQC2.TextField {
-                id: maidirPath
+                id: maildirPath
                 Layout.fillWidth: true
                 text: ""
             }
@@ -31,7 +31,7 @@ Kirigami.ScrollablePage {
                     id: fileDialog
                     title: i18n("Please choose a file")
                     folder: shortcuts.home
-                    onAccepted: pathField = fileDialog.fileUrl
+                    onAccepted: maildirPath.text = fileDialog.fileUrl
                 }   
             }
         }
