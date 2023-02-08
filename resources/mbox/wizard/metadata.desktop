@@ -103,9 +103,18 @@ Comment[x-test]=xxMailbox accountxx
 Comment[zh_CN]=MailBox 账户
 Comment[zh_TW]=Mailbox 帳號
 
+Type=Service
+X-KDE-ServiceTypes=AccountWizard/Wizard
+X-KDE-ParentApp=org.kde.accountwizard
+X-KDE-PluginInfo-Author=Montel Laurent
+X-KDE-PluginInfo-Email=montel@kde.org
+X-KDE-PluginInfo-License=LGPL-2.0-or-later
+X-KDE-PluginInfo-Name=org.kde.pim.account.mbox
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://kontact.kde.org
+
 [Wizard]
 Type=message/rfc822
-Script=mailboxwizard.es
 
 [Translate]
 Filename=accountwizard_mailbox

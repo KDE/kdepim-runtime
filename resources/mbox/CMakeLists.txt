@@ -1,6 +1,4 @@
 
-add_subdirectory(wizard)
-
 set(mboxresource_common_SRCS
     deleteditemsattribute.cpp
     deleteditemsattribute.h
@@ -35,7 +33,7 @@ ecm_qt_declare_logging_category(mboxresource_SRCS HEADER mboxresource_debug.h ID
     EXPORT KDEPIMRUNTIME
     )
 
-
+kpackage_install_package(wizard org.kde.pim.account.mbox packages wizard)
 install( FILES mboxresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
 
 kcfg_generate_dbus_interface(${CMAKE_CURRENT_SOURCE_DIR}/mboxresource.kcfg org.kde.Akonadi.Mbox.Settings)
