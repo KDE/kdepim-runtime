@@ -103,7 +103,6 @@ X-KDE-PluginInfo-Website=https://kontact.kde.org
 
 [Wizard]
 Type=message/rfc822
-Script=maildirwizard.es
 
 [Translate]
 Filename=accountwizard_ews

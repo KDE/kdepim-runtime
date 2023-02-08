@@ -113,7 +113,6 @@ X-KDE-PluginInfo-Website=https://kontact.kde.org
 
 [Wizard]
 Type=message/rfc822,text/directory,text/calendar,text/x-vnd.akonadi.note
-Script=kolabwizard.es
 
 [Translate]
 Filename=accountwizard_kolab
