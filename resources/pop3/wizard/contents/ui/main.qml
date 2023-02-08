@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
             identity.setEmail(SetupManager.email);
             identity.setRealName(SetupManager.name);
 
-            ServerTest.test(incomingAddressField.text.trim(), "imap");
+            ServerTest.test(incomingAddressField.text.trim(), "pop");
         } else {
             ServerTest.test(outgoingAddressField.text.trim(), "smtp");
         }
@@ -58,54 +58,38 @@ Kirigami.ScrollablePage {
     function testOk(arg) {
         if (stage == 1) {
             SetupManager.openWallet();
-            var imapRes = SetupManager.createResource("akonadi_imap_resource");
+            var pop3Res = SetupManager.createResource("akonadi_pop3_resource");
             var server = incomingAddressField.text.trim();
-            imapRes.setOption("ImapServer", server);
-            imapRes.setOption("UserName", nameField.text);
-            imapRes.setOption("Password", SetupManager.password);
-            imapRes.setOption("DisconnectedModeEnabled", disconnectedModeBox.checked);
-            imapRes.setOption("UseDefaultIdentity", false);
-            imapRes.setOption("AccountIdentity", identity.uoid());
-            if ( server == "imap.gmail.com" ) {
-                imapRes.setOption("Authentication", 9); // XOAuth2
-                arg = "ssl";
-            } else {
-                imapRes.setOption("Authentication", 7); // ClearText
-            }
-            if ( arg == "ssl" ) { 
-                // The ENUM used for authentication (in the imap resource only)
-                imapRes.setOption("Safety", "SSL"); // SSL/TLS
-                imapRes.setOption("ImapPort", 993);
+            pop3Res.setOption( "Host", server );
+            pop3Res.setOption( "Login", page.widget().userName.text.trim() );
+            pop3Res.setOption( "Password", SetupManager.password() );
+            if ( arg == "ssl" ) {
+              pop3Res.setOption( "Port", 995 );
+              pop3Res.setOption( "UseTLS", true );
             } else if ( arg == "tls" ) { // tls is really STARTTLS
-                imapRes.setOption("Safety", "STARTTLS");  // STARTTLS
-                imapRes.setOption("ImapPort", 143);
+              pop3Res.setOption( "Port", 110 );
+              pop3Res.setOption( "UseTLS", true );
             } else if ( arg == "none" ) {
-                imapRes.setOption("Safety", "NONE");  // No encryption
-                imapRes.setOption("ImapPort", 143);
+              pop3Res.setOption( "Port", 110 );
             } else {
-                // safe default fallback when servertest failed
-                imapRes.setOption("Safety", "STARTTLS");
-                imapRes.setOption("ImapPort", 143 );
+              pop3Res.setOption( "Port", 110 );
             }
-            imapRes.setOption("IntervalCheckTime", 60);
-            imapRes.setOption("SubscriptionEnabled", true);
 
             stage = 2;
             setup();
         } else {
-            var smtp = SetupManager.createTransport("smtp");
-            smtp.name = outgoingAddressField.text.trim();
-            smtp.host = outgoingAddressField.text.trim();
-            if (arg === "ssl") { 
-                smtp.encryption = "SSL";
-            } else if (arg === "tls") {
-                smtp.encryption = "TLS";
+            var smtp = SetupManager.createTransport( "smtp" );
+            smtp.setName( page.widget().outgoingAddress.text.trim() );
+            smtp.setHost( page.widget().outgoingAddress.text.trim() );
+            if ( arg == "ssl" ) {
+                smtp.setEncryption( "SSL" );
+            } else if ( arg == "tls" ) {
+                smtp.setEncryption( "TLS" );
             } else {
-                smtp.encryption = "None";
+                smtp.setEncryption( "None" );
             }
-            smtp.username = nameField.text;
-            smtp.password = SetupManager.password;
-            identity.setTransport(smtp);
+            smtp.setUsername( page.widget().userName.text );
+            smtp.setPassword( SetupManager.password() );
             SetupManager.execute();
         }
     }
