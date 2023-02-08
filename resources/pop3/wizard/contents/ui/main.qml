@@ -139,10 +139,6 @@ Kirigami.ScrollablePage {
             id: outgoingAddressField
             Kirigami.FormData.label: i18n("Outgoing Address:")
         }
-        QQC2.CheckBox {
-            id: disconnectedModeBox
-            text: i18n("&Download all messages for offline use")
-        }
     }
     
     footer: QQC2.ToolBar {
