@@ -28,7 +28,7 @@ Kirigami.ScrollablePage {
             // Otherwise the 'user' will be kdabtest1 instead of kdabtest1@demo.kolab.org
             // which fails,
             //var user = emailAddr.slice( 0, pos );
-            nameField.text = emailAddr;
+            emailField.text = emailAddr;
         }
 
         try {

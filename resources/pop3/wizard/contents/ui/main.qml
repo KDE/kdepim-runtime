@@ -28,7 +28,7 @@ Kirigami.ScrollablePage {
             // Otherwise the 'user' will be kdabtest1 instead of kdabtest1@demo.kolab.org
             // which fails,
             //var user = emailAddr.slice( 0, pos );
-            nameField.text = emailAddr;
+            emailField.text = emailAddr;
         }
 
         try {
@@ -61,7 +61,7 @@ Kirigami.ScrollablePage {
             var pop3Res = SetupManager.createResource("akonadi_pop3_resource");
             var server = incomingAddressField.text.trim();
             pop3Res.setOption( "Host", server );
-            pop3Res.setOption( "Login", page.widget().userName.text.trim() );
+            pop3Res.setOption( "Login", userName.text.trim() );
             pop3Res.setOption( "Password", SetupManager.password() );
             if ( arg == "ssl" ) {
               pop3Res.setOption( "Port", 995 );
@@ -79,8 +79,8 @@ Kirigami.ScrollablePage {
             setup();
         } else {
             var smtp = SetupManager.createTransport( "smtp" );
-            smtp.setName( page.widget().outgoingAddress.text.trim() );
-            smtp.setHost( page.widget().outgoingAddress.text.trim() );
+            smtp.setName( outgoingAddressField.text.trim() );
+            smtp.setHost( outgoingAddressField.text.trim() );
             if ( arg == "ssl" ) {
                 smtp.setEncryption( "SSL" );
             } else if ( arg == "tls" ) {
@@ -88,7 +88,7 @@ Kirigami.ScrollablePage {
             } else {
                 smtp.setEncryption( "None" );
             }
-            smtp.setUsername( page.widget().userName.text );
+            smtp.setUsername( userName.text );
             smtp.setPassword( SetupManager.password() );
             SetupManager.execute();
         }
@@ -100,14 +100,14 @@ Kirigami.ScrollablePage {
             Kirigami.FormData.label: i18n("Personal Settings")
         }
         QQC2.TextField {
-            id: nameField
+            id: userName
             Kirigami.FormData.label: i18n("Name:")
             text: SetupManager.name
         }
         QQC2.TextField {
             id: emailField
             Kirigami.FormData.label: i18n("Email:")
-            onTextChanged: guessServerName()
+            // TODO onTextChanged: guessServerName()
             text: SetupManager.email
         }
         Kirigami.PasswordField {
