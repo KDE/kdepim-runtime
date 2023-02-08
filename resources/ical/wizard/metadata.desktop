@@ -103,7 +103,6 @@ X-KDE-PluginInfo-Website=https://kontact.kde.org
 
 [Wizard]
 Type=text/calendar
-Script=icalwizard.es
 
 [Translate]
 Filename=accountwizard_ical
