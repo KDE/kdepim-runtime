@@ -174,7 +174,7 @@ Kirigami.ScrollablePage {
             servertestRunning = true;
             servertestMode = 1;
             smtp.name = serverAddress;
-            smtp.host = serverAddress);
+            smtp.host = serverAddress;
             smtp.username = email;
             smtp.authenticationType = "plain";
 
