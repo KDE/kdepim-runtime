@@ -46,7 +46,7 @@ Kirigami.ScrollablePage {
                 enabled: root.valid
                 onClicked: {
                     const vcardRes = SetupManager.createResource( "akonadi_vcarddir_resource" );
-                    vcardRes.name = i18n("Default Contact");
+                    vcardRes.setName( i18n("Default Contact") );
                     vcardRes.setOption( "Path", vcarddirPath.text );
 
                     SetupManager.execute();
