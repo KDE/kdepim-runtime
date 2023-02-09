@@ -47,7 +47,7 @@ Kirigami.ScrollablePage {
                     var contactsResource = SetupManager.createResource( "akonadi_contacts_resource" );
                     contactsResource.setOption( "Path", contactGroupsPath.text );
                     contactsResource.setOption( "IsConfigured", "true" );
-                    contactsResource.name = i18n("Local Contacts");
+                    contactsResource.setName( i18n("Local Contacts") );
 
                     SetupManager.execute();
                 }
