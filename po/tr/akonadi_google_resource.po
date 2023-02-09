@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-09 00:48+0000\n"
-"PO-Revision-Date: 2023-01-21 15:25+0300\n"
+"PO-Revision-Date: 2023-02-08 21:19+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.1\n"
+"X-Generator: Lokalize 22.12.2\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -251,7 +251,7 @@ msgstr "Google Groupware (%1)"
 #: googleresource.cpp:234
 #, kde-format
 msgid "Account has been logged out."
-msgstr "Hesap çıkış yaptı."
+msgstr "Hesap oturumu kapattı."
 
 #: googleresource.cpp:237
 #, kde-format
@@ -259,8 +259,8 @@ msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
-"Google Groupware hesabınızdan çıkış yaptı. Google Kişiler ve Takvim "
-"eşzamanlamasını etkinleştirmek için giriş yapın."
+"Google Groupware hesabınızın oturumunu kapattı. Google Kişiler ve Takvim "
+"eşzamanlamasını etkinleştirmek için oturum açın."
 
 #: googleresource.cpp:238
 #, kde-format
@@ -268,8 +268,8 @@ msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
-"Google Groupware, %1 hesabından çıkış yaptı. Google Kişiler ve Takvim "
-"eşzamanlamasını etkinleştirmek için giriş yapın."
+"Google Groupware, %1 hesabınızın oturumunu kapattı. Google Kişiler ve Takvim "
+"eşzamanlamasını etkinleştirmek için oturum açın."
 
 #: googleresource.cpp:242
 #, kde-format
@@ -281,18 +281,18 @@ msgstr "%1 ögesi size sesleniyor."
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
-msgstr "Giriş Yap"
+msgstr "Oturum Aç"
 
 #: googleresource.cpp:261 googleresource.cpp:262
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
-msgstr "Kaynak yapılandırılmamış"
+msgstr "Özkaynak yapılandırılmamış"
 
 #: googleresource.cpp:277
 #, kde-format
 msgid "Failed to refresh tokens"
-msgstr "Andaç yenileme başarısız"
+msgstr "Jetonlar yenilemedi"
 
 #: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
 #: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503

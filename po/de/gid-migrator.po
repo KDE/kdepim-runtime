@@ -1,11 +1,11 @@
 # Burkhard Lück <lueck@hube-lueck.de>, 2013, 2014, 2015.
-# Frederik Schwarzer <schwarzer@kde.org>, 2016, 2020.
+# Frederik Schwarzer <schwarzer@kde.org>, 2016, 2020, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-15 00:45+0000\n"
-"PO-Revision-Date: 2020-09-06 12:35+0200\n"
+"PO-Revision-Date: 2023-02-09 01:20+0100\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -13,6 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 22.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -144,10 +145,9 @@ msgid "Migration of Akonadi Items to support GID"
 msgstr "Migration von Akonadi-Einträge zur Unterstützung von GID"
 
 #: main.cpp:30
-#, fuzzy, kde-format
-#| msgid "(c) 2013-2020 the Akonadi developers"
+#, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "Copyright 2013-2020 Die Akonadi-Entwickler"
+msgstr "Copyright 2013-2022 Die Akonadi-Entwickler"
 
 #: main.cpp:33
 #, kde-format

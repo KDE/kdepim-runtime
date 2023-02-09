@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: akonadi_facebook_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-01-27 03:07+0100\n"
-"PO-Revision-Date: 2023-01-21 15:25+0300\n"
+"PO-Revision-Date: 2023-02-08 20:54+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.1\n"
+"X-Generator: Lokalize 22.12.2\n"
 "X-POOTLE-MTIME: 1502203652.000000\n"
 
 #: birthdaylistjob.cpp:78 birthdaylistjob.cpp:84
@@ -50,13 +50,13 @@ msgstr "Oturum durumu: bilinmiyor"
 #: facebookagentsettingswidget.ui:39
 #, kde-format
 msgid "Login with Facebook"
-msgstr "Facebook ile Giriş"
+msgstr "Facebook ile Oturum Aç"
 
 #. i18n: ectx: property (text), widget (QPushButton, logoutBtn)
 #: facebookagentsettingswidget.ui:46
 #, kde-format
 msgid "Logout"
-msgstr "Çıkış"
+msgstr "Oturumu Kapat"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
 #: facebookagentsettingswidget.ui:62
@@ -121,7 +121,7 @@ msgstr "gün önce"
 #: facebooksettingswidget.cpp:48
 #, kde-format
 msgid "Checking login status..."
-msgstr "Oturum durumu kontrol ediliyor..."
+msgstr "Oturum açma durumu denetleniyor..."
 
 #: facebooksettingswidget.cpp:57
 #, kde-format

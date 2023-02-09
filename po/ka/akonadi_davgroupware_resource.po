@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-08 00:48+0000\n"
-"PO-Revision-Date: 2022-06-24 18:02+0200\n"
+"PO-Revision-Date: 2023-02-08 11:50+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: configdialog.cpp:33
 #, kde-format
@@ -393,7 +393,7 @@ msgstr "განახლება"
 #: davgroupwareresource.kcfg:22
 #, kde-format
 msgid "Remote URLs"
-msgstr "დაშორებული URL_ები"
+msgstr "დაშორებული URL-ები"
 
 #. i18n: ectx: label, entry (defaultUsername), group (General)
 #: davgroupwareresource.kcfg:26
