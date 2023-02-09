@@ -101,9 +101,19 @@ Comment[zh_CN]=个人联系地址簿
 Comment[zh_TW]=個人聯絡人的通訊錄
 Icon=text-directory
 
+Type=Service
+X-KDE-ServiceTypes=AccountWizard/Wizard
+X-KDE-ParentApp=org.kde.accountwizard
+X-KDE-PluginInfo-Author=Montel Laurent
+X-KDE-PluginInfo-Email=montel@kde.org
+X-KDE-PluginInfo-License=LGPL-2.0-or-later
+X-KDE-PluginInfo-Name=org.kde.pim.account.contacts
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Website=https://kontact.kde.org
+
+
 [Wizard]
 Type=text/directory,application/x-vnd.kde.contactgroup
-Script=contactswizard.es
 
 [Translate]
 Filename=accountwizard_contacts
