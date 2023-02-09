@@ -1,7 +1,5 @@
 
 
-add_subdirectory( wizard )
-
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_contacts_resource\")
 
 
@@ -45,6 +43,7 @@ target_link_libraries(akonadi_contacts_resource
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     )
 
+kpackage_install_package(wizard org.kde.pim.account.contacts packages wizard)
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
