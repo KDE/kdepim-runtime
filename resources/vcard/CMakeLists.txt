@@ -28,7 +28,6 @@ qt_add_dbus_adaptor(vcardresource_SRCS
 
 add_executable(akonadi_vcard_resource ${vcardresource_SRCS})
 
-add_subdirectory( wizard )
 
 if( APPLE )
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/../Info.plist.template)
@@ -38,6 +37,7 @@ endif ()
 
 target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore KF${KF_MAJOR_VERSION}::KIOCore   KF5::AkonadiAgentBase KF${KF_MAJOR_VERSION}::Contacts akonadi-singlefileresource KF${KF_MAJOR_VERSION}::Completion KF${KF_MAJOR_VERSION}::KIOWidgets KF${KF_MAJOR_VERSION}::ConfigWidgets)
 
+kpackage_install_package(wizard org.kde.pim.account.vcard packages wizard)
 install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 
