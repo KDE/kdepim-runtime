@@ -1,5 +1,5 @@
 # Burkhard Lück <lueck@hube-lueck.de>, 2009, 2011, 2013, 2014, 2015, 2017, 2018, 2020, 2021.
-# Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011, 2016, 2020, 2022.
+# Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011, 2016, 2020, 2022, 2023.
 # Panagiotis Papadopoulos <pano_90@gmx.net>, 2010.
 # Peter Rüthemann <peter.ruethemann@gmx.ch>, 2010.
 # Torbjörn Klatt <opensource@torbjoern-klatt.de>, 2011.
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: akonadi_davgroupware_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-01-13 00:57+0000\n"
-"PO-Revision-Date: 2022-04-15 04:26+0200\n"
+"PO-Revision-Date: 2023-02-09 01:15+0100\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -17,15 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 22.12.1\n"
 
 #: configdialog.cpp:33
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "DAV groupware configuration wizard"
+#, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
-msgstr "Einrichtungsassistent für DAV-Groupware"
+msgstr "Einrichtung der DAV-Ressource"
 
 #: configdialog.cpp:46
 #, kde-format
@@ -702,7 +700,7 @@ msgstr "Anzeigename"
 #: urlconfigurationdialog.ui:35
 #, kde-format
 msgid "Access protocol:"
-msgstr ""
+msgstr "Zugriffsprotokoll:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
