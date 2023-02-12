@@ -28,6 +28,7 @@
 #include <KGAPI/Account>
 #include <KGAPI/People/Membership>
 #include <KGAPI/People/Person>
+#include <KGAPI/People/PersonMetadata>
 //#include <KGAPI/People/PersonCreateJob>
 //#include <KGAPI/Contacts/ContactDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
@@ -152,4 +153,25 @@ void PersonHandler::retrieveCollections(const Collection &rootCollection)
         });
         m_iface->collectionsRetrievedFromHandler(collections);
     });
+}
+
+void PersonHandler::retrieveItems(const Collection &collection)
+{
+    // Contacts are stored inside "My Contacts" and "Other Contacts" only
+    if ((collection.remoteId() != QString::fromUtf8(otherContactsResourceName)) &&
+        (collection.remoteId() != QString::fromUtf8(myContactsResourceName))) {
+        m_iface->itemsRetrievalDone();
+        return;
+    }
+
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Retrieving contacts for group '%1'", collection.displayName()));
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Retrieving contacts for group" << collection.remoteId() << "...";
+
+    const auto job = new People::PersonFetchJob(m_settings->accountPtr(), this);
+
+    if (!collection.remoteRevision().isEmpty()) {
+        job->setSyncToken(collection.remoteRevision());
+    }
+
+    connect(job, &People::PersonFetchJob::finished, this, &PersonHandler::slotItemsRetrieved);
 }
