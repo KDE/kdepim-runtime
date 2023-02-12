@@ -13,6 +13,7 @@
 #include "googlesettingsdialog.h"
 #include "settingsadaptor.h"
 
+#include "personhandler.h"
 #include "taskhandler.h"
 
 #include "defaultreminderattribute.h"
@@ -105,9 +106,7 @@ GoogleResource::GoogleResource(const QString &id)
     m_freeBusyHandler = std::make_unique<FreeBusyHandler>(m_iface, m_settings);
     m_handlers.clear();
     m_handlers.push_back(GenericHandler::Ptr(new CalendarHandler(m_iface, m_settings)));
-#ifdef DISABLE_UNTIL_LIBKGAPI_PORTED
-    m_handlers.push_back(GenericHandler::Ptr(new ContactHandler(m_iface, m_settings)));
-#endif
+    m_handlers.push_back(GenericHandler::Ptr(new PersonHandler(m_iface, m_settings)));
     m_handlers.push_back(GenericHandler::Ptr(new TaskHandler(m_iface, m_settings)));
 
     new SettingsAdaptor(m_settings);
@@ -169,7 +168,7 @@ QList<QUrl> GoogleResource::scopes() const
     const QList<QUrl> scopes = {
         Account::accountInfoScopeUrl(),
         Account::calendarScopeUrl(),
-        Account::contactsScopeUrl(),
+        Account::peopleScopeUrl(),
         Account::tasksScopeUrl(),
     };
     return scopes;

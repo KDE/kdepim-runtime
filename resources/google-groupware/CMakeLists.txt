@@ -9,7 +9,7 @@ set(googleresource_SRCS
     generichandler.cpp
     calendarhandler.cpp
     taskhandler.cpp
-    contacthandler.cpp
+    personhandler.cpp
     googleresource.h
     googlesettings.h
     googlesettingsdialog.h
@@ -18,7 +18,7 @@ set(googleresource_SRCS
     generichandler.h
     calendarhandler.h
     taskhandler.h
-    contacthandler.h
+    personhandler.h
     )
 
 ecm_qt_declare_logging_category(googleresource_SRCS
@@ -40,10 +40,10 @@ ecm_qt_declare_logging_category(googleresource_SRCS
     DESCRIPTION "resource google tasks (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME)
 ecm_qt_declare_logging_category(googleresource_SRCS
-    HEADER googlecontacts_debug.h
-    IDENTIFIER GOOGLE_CONTACTS_LOG
-    CATEGORY_NAME org.kde.pim.google.contacts
-    DESCRIPTION "resource google contacts (kdepim-runtime)"
+    HEADER googlepeople_debug.h
+    IDENTIFIER GOOGLE_PEOPLE_LOG
+    CATEGORY_NAME org.kde.pim.google.people
+    DESCRIPTION "resource google people (kdepim-runtime)"
     EXPORT KDEPIMRUNTIME)
 
 ki18n_wrap_ui(googleresource_SRCS googlesettingsdialog.ui)
@@ -89,7 +89,7 @@ target_link_libraries(akonadi_google_resource
   KF${KF_MAJOR_VERSION}::TextWidgets
   KF${KF_MAJOR_VERSION}::Notifications
   KPim${KF_MAJOR_VERSION}::GAPICalendar
-  KPim${KF_MAJOR_VERSION}::GAPIContacts
+  KPim${KF_MAJOR_VERSION}::GAPIPeople
   KPim${KF_MAJOR_VERSION}::GAPICore
   KPim${KF_MAJOR_VERSION}::GAPITasks
 )
