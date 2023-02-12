@@ -36,7 +36,7 @@ public:
     void collectionRemoved(const Akonadi::Collection &collection) override {};
 
 private:
-    void slotItemsRetrieved(KGAPI2::Job *job) {};
+    void slotItemsRetrieved(KGAPI2::Job *job);
 
     static Akonadi::Collection collectionFromContactGroup(const KGAPI2::People::ContactGroupPtr &group);
     static QString addresseeMimeType();

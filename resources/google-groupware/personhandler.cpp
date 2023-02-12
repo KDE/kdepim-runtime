@@ -175,3 +175,67 @@ void PersonHandler::retrieveItems(const Collection &collection)
 
     connect(job, &People::PersonFetchJob::finished, this, &PersonHandler::slotItemsRetrieved);
 }
+
+void PersonHandler::slotItemsRetrieved(KGAPI2::Job *job)
+{
+    if (!m_iface->handleError(job)) {
+        return;
+    }
+
+    auto collection = m_iface->currentCollection();
+
+    Item::List changedItems, removedItems;
+    QHash<QString, Item::List> groupsMap;
+
+    auto fetchJob = qobject_cast<People::PersonFetchJob *>(job);
+    const auto isIncremental = !fetchJob->syncToken().isEmpty();
+    const auto objects = fetchJob->items();
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Retrieved" << objects.count() << "contacts";
+
+    for (const ObjectPtr &object : objects) {
+        const auto person = object.dynamicCast<People::Person>();
+        const auto addressee = person->toKContactsAddressee();
+
+        Item item;
+        item.setMimeType(mimeType());
+        item.setParentCollection(collection);
+        item.setRemoteId(person->resourceName());
+        item.setRemoteRevision(person->etag());
+        item.setPayload<KContacts::Addressee>(addressee);
+
+        if (person->metadata().deleted() ||
+            (collection.remoteId() == QString::fromUtf8(otherContactsResourceName) && !person->memberships().isEmpty()) ||
+            (collection.remoteId() == QString::fromUtf8(myContactsResourceName) && person->memberships().isEmpty())) {
+            qCDebug(GOOGLE_PEOPLE_LOG) << " - removed" << person->resourceName();
+            removedItems << item;
+        } else {
+            qCDebug(GOOGLE_PEOPLE_LOG) << " - changed" << person->resourceName();
+            changedItems << item;
+        }
+
+        const auto memberships = person->memberships();
+        for (const auto &membership : memberships) {
+            // We don't link contacts to "My Contacts"
+            const auto contactGroupResourceName = membership.contactGroupMembership().contactGroupResourceName();
+            if (contactGroupResourceName != QString::fromUtf8(myContactsResourceName)) {
+                groupsMap[contactGroupResourceName] << item;
+            }
+        }
+    }
+
+    if (isIncremental) {
+        m_iface->itemsRetrievedIncremental(changedItems, removedItems);
+    } else {
+        m_iface->itemsRetrieved(changedItems);
+    }
+
+    for (auto iter = groupsMap.constBegin(); iter != groupsMap.constEnd(); ++iter) {
+        new LinkJob(m_collections[iter.key()], iter.value(), this);
+    }
+    // TODO: unlink if the group was removed!
+
+    collection.setRemoteRevision(fetchJob->receivedSyncToken());
+    new CollectionModifyJob(collection, this);
+
+    emitReadyStatus();
+}
