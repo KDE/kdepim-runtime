@@ -40,7 +40,10 @@
 #include <KGAPI/People/ContactGroupFetchJob>
 //#include <KGAPI/Contacts/ContactsGroupModifyJob>
 
-constexpr auto myContactsResourceName = "contactGroups/myContacts";
+namespace {
+    constexpr auto myContactsResourceName = "contactGroups/myContacts";
+    constexpr auto otherContactsResourceName = "otherContacts";
+}
 
 using namespace KGAPI2;
 using namespace Akonadi;
@@ -102,4 +105,51 @@ Collection PersonHandler::collectionFromContactGroup(const People::ContactGroupP
     attr->setIconName(QStringLiteral("view-pim-contacts"));
 
     return collection;
+}
+
+void PersonHandler::retrieveCollections(const Collection &rootCollection)
+{
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Retrieving contacts groups"));
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Retrieving contacts groups...";
+    m_collections.clear();
+
+    // Set up Google's special "Other contacts" contacts group
+    Collection otherCollection;
+    otherCollection.setContentMimeTypes({mimeType()});
+    otherCollection.setName(i18n("Other Contacts"));
+    otherCollection.setParentCollection(rootCollection);
+    otherCollection.setRights(Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem);
+    otherCollection.setRemoteId(QString::fromUtf8(otherContactsResourceName));
+
+    auto attr = otherCollection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    attr->setDisplayName(i18n("Other Contacts"));
+    attr->setIconName(QStringLiteral("view-pim-contacts"));
+
+    m_iface->collectionsRetrieved({otherCollection});
+    m_collections[QString::fromUtf8(otherContactsResourceName)] = otherCollection;
+
+    auto job = new People::ContactGroupFetchJob(m_settings->accountPtr(), this);
+    connect(job, &People::ContactGroupFetchJob::finished, this, [this, rootCollection](KGAPI2::Job *job) {
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+
+        const auto objects = qobject_cast<People::ContactGroupFetchJob *>(job)->items();
+        qCDebug(GOOGLE_PEOPLE_LOG) << objects.count() << "contact groups retrieved";
+
+        Collection::List collections;
+        collections.reserve(objects.count());
+
+        std::transform(objects.cbegin(), objects.cend(), std::back_inserter(collections), [this, &rootCollection](const ObjectPtr &object) {
+            const auto group = object.dynamicCast<People::ContactGroup>();
+            qCDebug(GOOGLE_PEOPLE_LOG) << " -" << group->formattedName() << "(" << group->resourceName() << ")";
+
+            auto collection = collectionFromContactGroup(group);
+            collection.setParentCollection(rootCollection);
+
+            m_collections[collection.remoteId()] = collection;
+            return collection;
+        });
+        m_iface->collectionsRetrievedFromHandler(collections);
+    });
 }

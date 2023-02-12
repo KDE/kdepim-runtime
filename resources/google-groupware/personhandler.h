@@ -21,7 +21,7 @@ public:
     bool canPerformTask(const Akonadi::Item &item) override;
     bool canPerformTask(const Akonadi::Item::List &items) override;
 
-    void retrieveCollections(const Akonadi::Collection &rootCollection) override {};
+    void retrieveCollections(const Akonadi::Collection &rootCollection) override;
     void retrieveItems(const Akonadi::Collection &collection) override {};
 
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override {};
