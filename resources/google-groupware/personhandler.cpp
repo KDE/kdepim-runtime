@@ -64,3 +64,42 @@ bool PersonHandler::canPerformTask(const Item::List &items)
 {
     return GenericHandler::canPerformTask<KContacts::Addressee>(items);
 }
+
+Collection PersonHandler::collectionFromContactGroup(const People::ContactGroupPtr &group)
+{
+    Collection collection;
+    collection.setContentMimeTypes({addresseeMimeType()});
+    collection.setName(group->name());
+    collection.setRemoteId(group->resourceName());
+
+    const auto isSystemGroup = group->groupType() == People::ContactGroup::GroupType::SYSTEM_CONTACT_GROUP;
+    auto realName = group->formattedName();
+    if (isSystemGroup) {
+        if (realName.contains(QLatin1String("Coworkers"))) {
+            realName = i18nc("Name of a group of contacts", "Coworkers");
+        } else if (realName.contains(QLatin1String("Friends"))) {
+            realName = i18nc("Name of a group of contacts", "Friends");
+        } else if (realName.contains(QLatin1String("Family"))) {
+            realName = i18nc("Name of a group of contacts", "Family");
+        } else if (realName.contains(QLatin1String("My Contacts"))) {
+            realName = i18nc("Name of a group of contacts", "My Contacts");
+        }
+    }
+
+    // "My Contacts" is the only one not virtual
+    if (group->resourceName() == QString::fromUtf8(myContactsResourceName)) {
+        collection.setRights(Collection::CanCreateItem | Collection::CanChangeItem | Collection::CanDeleteItem);
+    } else {
+        collection.setRights(Collection::CanLinkItem | Collection::CanUnlinkItem | Collection::CanChangeItem);
+        collection.setVirtual(true);
+        if (!isSystemGroup) {
+            collection.setRights(collection.rights() | Collection::CanChangeCollection | Collection::CanDeleteCollection);
+        }
+    }
+
+    auto attr = collection.attribute<EntityDisplayAttribute>(Collection::AddIfMissing);
+    attr->setDisplayName(realName);
+    attr->setIconName(QStringLiteral("view-pim-contacts"));
+
+    return collection;
+}
