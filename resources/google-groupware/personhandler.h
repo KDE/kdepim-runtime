@@ -24,7 +24,7 @@ public:
     void retrieveCollections(const Akonadi::Collection &rootCollection) override;
     void retrieveItems(const Akonadi::Collection &collection) override;
 
-    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override {};
+    void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override {};
     void itemsRemoved(const Akonadi::Item::List &items) override {};
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override {};

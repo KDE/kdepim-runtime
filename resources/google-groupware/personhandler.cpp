@@ -29,7 +29,7 @@
 #include <KGAPI/People/Membership>
 #include <KGAPI/People/Person>
 #include <KGAPI/People/PersonMetadata>
-//#include <KGAPI/People/PersonCreateJob>
+#include <KGAPI/People/PersonCreateJob>
 //#include <KGAPI/Contacts/ContactDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
 //#include <KGAPI/Contacts/ContactFetchPhotoJob>
@@ -238,4 +238,44 @@ void PersonHandler::slotItemsRetrieved(KGAPI2::Job *job)
     new CollectionModifyJob(collection, this);
 
     emitReadyStatus();
+}
+
+void PersonHandler::itemAdded(const Item &item, const Collection &collection)
+{
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Adding contact to group '%1'", collection.displayName()));
+    const auto addressee = item.payload<KContacts::Addressee>();
+    const auto person = People::Person::fromKContactsAddressee(addressee);
+
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Creating people";
+
+    if (collection.remoteId() == QString::fromUtf8(myContactsResourceName)) {
+        People::ContactGroupMembership contactGroupMembership;
+        contactGroupMembership.setContactGroupResourceName(QString::fromUtf8(myContactsResourceName));
+
+        People::Membership membership;
+        membership.setContactGroupMembership(contactGroupMembership);
+        person->setMemberships({membership});
+    }
+
+    auto job = new People::PersonCreateJob(person, m_settings->accountPtr(), this);
+    connect(job, &People::PersonCreateJob::finished, this, [this, item](KGAPI2::Job *job) {
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+
+        const auto personCreateJob = qobject_cast<People::PersonCreateJob *>(job);
+        const auto createdPeople = personCreateJob->items();
+        const auto person = createdPeople.first().dynamicCast<People::Person>();
+
+        Item newItem = item;
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << person->resourceName() << "created";
+
+        newItem.setRemoteId(person->resourceName());
+        newItem.setRemoteRevision(person->etag());
+        m_iface->itemChangeCommitted(newItem);
+
+        newItem.setPayload<KContacts::Addressee>(person->toKContactsAddressee());
+        new ItemModifyJob(newItem, this);
+        emitReadyStatus();
+    });
 }
