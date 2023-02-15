@@ -18,7 +18,8 @@ target_sources(akonadi_migration_agent PRIVATE
     migrationstatuswidget.h
     migrationexecutor.h
     migrationscheduler.h
-    autotests/dummymigrator.cpp autotests/dummymigrator.h
+    autotests/dummymigrator.cpp
+    autotests/dummymigrator.h
 )
 
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
