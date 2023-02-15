@@ -20,12 +20,10 @@ public:
 public Q_SLOTS:
     void onItemActivated(const QModelIndex &);
 
-private Q_SLOTS:
+private:
     void startSelected();
     void pauseSelected();
     void abortSelected();
-
-private:
     MigrationScheduler &mScheduler;
     QItemSelectionModel *mSelectionModel = nullptr;
 };

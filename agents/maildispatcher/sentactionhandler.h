@@ -22,6 +22,6 @@ public:
 
     void runAction(const MailTransport::SentActionAttribute::Action &action);
 
-private Q_SLOTS:
+private:
     void itemFetchResult(KJob *job);
 };

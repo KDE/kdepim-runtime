@@ -31,11 +31,9 @@ protected:
     bool doResume() override;
     bool doSuspend() override;
 
-private Q_SLOTS:
+private:
     void onStoppedProcessing();
     void executeNext();
-
-private:
     QQueue<QWeakPointer<MigratorBase>> mQueue;
     QWeakPointer<MigratorBase> mCurrentMigrator;
     bool mSuspended = false;

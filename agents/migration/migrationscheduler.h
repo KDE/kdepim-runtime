@@ -36,7 +36,7 @@ public:
 
     bool operator==(const Row &other) const;
 
-private Q_SLOTS:
+private:
     void stateChanged(MigratorBase::MigrationState);
     void progress(int);
 };
