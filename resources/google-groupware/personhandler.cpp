@@ -30,7 +30,7 @@
 #include <KGAPI/People/Person>
 #include <KGAPI/People/PersonMetadata>
 #include <KGAPI/People/PersonCreateJob>
-//#include <KGAPI/Contacts/ContactDeleteJob>
+#include <KGAPI/People/PersonDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
 //#include <KGAPI/Contacts/ContactFetchPhotoJob>
 #include <KGAPI/People/PersonModifyJob>
@@ -339,5 +339,19 @@ void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*par
     auto job = new People::PersonModifyJob(person, m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+}
+
+void PersonHandler::itemsRemoved(const Item::List &items)
+{
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Removing %1 contact", "Removing %1 contacts", items.count()));
+    QStringList peopleResourceNames;
+    peopleResourceNames.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(peopleResourceNames), [](const Item &item) {
+        return item.remoteId();
+    });
+    qCInfo(GOOGLE_PEOPLE_LOG) << "Removing people" << peopleResourceNames;
+    auto job = new People::PersonDeleteJob(peopleResourceNames, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
+    connect(job, &People::PersonDeleteJob::finished, this, &PersonHandler::slotGenericJobFinished);
 }
 
