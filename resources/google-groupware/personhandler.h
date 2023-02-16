@@ -37,6 +37,9 @@ public:
 
 private:
     void slotItemsRetrieved(KGAPI2::Job *job);
+    void slotPersonCreateJobFinished(KGAPI2::Job *job);
+    void slotPersonModifyJobFinished(KGAPI2::Job *job);
+    void processUpdatedPerson(KGAPI2::Job *job, const KGAPI2::People::PersonPtr &person);
 
     static Akonadi::Collection collectionFromContactGroup(const KGAPI2::People::ContactGroupPtr &group);
     static QString addresseeMimeType();

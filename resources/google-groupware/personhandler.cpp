@@ -240,6 +240,58 @@ void PersonHandler::slotItemsRetrieved(KGAPI2::Job *job)
     emitReadyStatus();
 }
 
+void PersonHandler::slotPersonCreateJobFinished(KGAPI2::Job *job)
+{
+    if (!m_iface->handleError(job)) {
+        return;
+    }
+
+    const auto personCreateJob = qobject_cast<People::PersonCreateJob *>(job);
+    const auto createdPeople = personCreateJob->items();
+    const auto person = createdPeople.first().dynamicCast<People::Person>();
+
+    processUpdatedPerson(job, person);
+}
+
+void PersonHandler::slotPersonModifyJobFinished(KGAPI2::Job *job)
+{
+    if (!m_iface->handleError(job)) {
+        return;
+    }
+
+    const auto personModifyJob = qobject_cast<People::PersonModifyJob *>(job);
+    const auto createdPeople = personModifyJob->items();
+    const auto person = createdPeople.first().dynamicCast<People::Person>();
+
+    processUpdatedPerson(job, person);
+}
+
+void PersonHandler::processUpdatedPerson(KGAPI2::Job *job, const People::PersonPtr &person)
+{
+    Q_ASSERT(job);
+    if (person.isNull()) {
+        qCWarning(GOOGLE_PEOPLE_LOG) << "Received null person ptr, can't update";
+        return;
+    }
+
+    const auto originalItem = job->property(ITEM_PROPERTY).value<Akonadi::Item>();
+    if (!originalItem.isValid()) {
+        qCWarning(GOOGLE_PEOPLE_LOG) << "No valid item in received KGAPI job, can't update";
+        return;
+    }
+
+    Item newItem = originalItem;
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << person->resourceName() << "created";
+
+    newItem.setRemoteId(person->resourceName());
+    newItem.setRemoteRevision(person->etag());
+    m_iface->itemChangeCommitted(newItem);
+
+    newItem.setPayload<KContacts::Addressee>(person->toKContactsAddressee());
+    new ItemModifyJob(newItem, this);
+    emitReadyStatus();
+}
+
 void PersonHandler::itemAdded(const Item &item, const Collection &collection)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Adding contact to group '%1'", collection.displayName()));
@@ -258,26 +310,8 @@ void PersonHandler::itemAdded(const Item &item, const Collection &collection)
     }
 
     auto job = new People::PersonCreateJob(person, m_settings->accountPtr(), this);
-    connect(job, &People::PersonCreateJob::finished, this, [this, item](KGAPI2::Job *job) {
-        if (!m_iface->handleError(job)) {
-            return;
-        }
-
-        const auto personCreateJob = qobject_cast<People::PersonCreateJob *>(job);
-        const auto createdPeople = personCreateJob->items();
-        const auto person = createdPeople.first().dynamicCast<People::Person>();
-
-        Item newItem = item;
-        qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << person->resourceName() << "created";
-
-        newItem.setRemoteId(person->resourceName());
-        newItem.setRemoteRevision(person->etag());
-        m_iface->itemChangeCommitted(newItem);
-
-        newItem.setPayload<KContacts::Addressee>(person->toKContactsAddressee());
-        new ItemModifyJob(newItem, this);
-        emitReadyStatus();
-    });
+    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(job, &People::PersonCreateJob::finished, this, &PersonHandler::slotPersonCreateJobFinished);
 }
 
 void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*partIdentifiers*/)
@@ -304,6 +338,6 @@ void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*par
 
     auto job = new People::PersonModifyJob(person, m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotGenericJobFinished);
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
 }
 
