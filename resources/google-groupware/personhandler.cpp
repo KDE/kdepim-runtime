@@ -33,7 +33,7 @@
 //#include <KGAPI/Contacts/ContactDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
 //#include <KGAPI/Contacts/ContactFetchPhotoJob>
-//#include <KGAPI/Contacts/ContactModifyJob>
+#include <KGAPI/People/PersonModifyJob>
 #include <KGAPI/People/ContactGroup>
 #include <KGAPI/People/ContactGroupMembership>
 //#include <KGAPI/Contacts/ContactsGroupCreateJob>
@@ -279,3 +279,31 @@ void PersonHandler::itemAdded(const Item &item, const Collection &collection)
         emitReadyStatus();
     });
 }
+
+void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*partIdentifiers*/)
+{
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing contact"));
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Changing person" << item.remoteId();
+
+    const auto addressee = item.payload<KContacts::Addressee>();
+    auto person = People::Person::fromKContactsAddressee(addressee);
+    person->setResourceName(item.remoteId());
+    person->setEtag(item.remoteRevision());
+
+    // TODO: Domain membership?
+    const auto parentCollectionRemoteId = item.parentCollection().remoteId();
+    if (parentCollectionRemoteId == QString::fromUtf8(myContactsResourceName) ||
+        parentCollectionRemoteId == QString::fromUtf8(otherContactsResourceName)) {
+        People::ContactGroupMembership contactGroupMembership;
+        contactGroupMembership.setContactGroupResourceName(parentCollectionRemoteId);
+
+        People::Membership membership;
+        membership.setContactGroupMembership(contactGroupMembership);
+        person->setMemberships({membership});
+    }
+
+    auto job = new People::PersonModifyJob(person, m_settings->accountPtr(), this);
+    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotGenericJobFinished);
+}
+
