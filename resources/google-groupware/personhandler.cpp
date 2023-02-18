@@ -248,9 +248,8 @@ void PersonHandler::slotPersonCreateJobFinished(KGAPI2::Job *job)
 
     const auto personCreateJob = qobject_cast<People::PersonCreateJob *>(job);
     const auto createdPeople = personCreateJob->items();
-    const auto person = createdPeople.first().dynamicCast<People::Person>();
 
-    processUpdatedPerson(job, person);
+    processUpdatedPeople(job, createdPeople);
 }
 
 void PersonHandler::slotPersonModifyJobFinished(KGAPI2::Job *job)
@@ -260,22 +259,64 @@ void PersonHandler::slotPersonModifyJobFinished(KGAPI2::Job *job)
     }
 
     const auto personModifyJob = qobject_cast<People::PersonModifyJob *>(job);
-    const auto createdPeople = personModifyJob->items();
-    const auto person = createdPeople.first().dynamicCast<People::Person>();
+    const auto modifiedPeople = personModifyJob->items();
 
-    processUpdatedPerson(job, person);
+    processUpdatedPeople(job, modifiedPeople);
 }
 
-void PersonHandler::processUpdatedPerson(KGAPI2::Job *job, const People::PersonPtr &person)
+void PersonHandler::processUpdatedPeople(KGAPI2::Job *job, const ObjectsList &updatedPeople)
 {
     Q_ASSERT(job);
-    if (person.isNull()) {
-        qCWarning(GOOGLE_PEOPLE_LOG) << "Received null person ptr, can't update";
+    if (updatedPeople.isEmpty()) {
         return;
     }
 
-    const auto originalItem = job->property(ITEM_PROPERTY).value<Akonadi::Item>();
-    if (!originalItem.isValid()) {
+    if (job->property(ITEM_PROPERTY).canConvert<Akonadi::Item>()) {
+        const auto originalItem = job->property(ITEM_PROPERTY).value<Akonadi::Item>();
+        if (!originalItem.isValid()) {
+            qCWarning(GOOGLE_PEOPLE_LOG) << "No valid item in received KGAPI job, can't update";
+            return;
+        }
+
+        const auto person = updatedPeople.first().dynamicCast<People::Person>();
+        updatePersonItem(originalItem, person);
+
+    } else if (job->property(ITEMS_PROPERTY).canConvert<Akonadi::Item::List>()) {
+        // Be careful not to send an item list or a multi person create job -- only modify jobs.
+        // At point of creation we do not yet have resource names for the Akonadi items for newly created people.
+        // This means we will not know which Akonadi items correspond to which person.
+        const auto originalItems = job->property(ITEMS_PROPERTY).value<Akonadi::Item::List>();
+        if (originalItems.isEmpty()) {
+            qCWarning(GOOGLE_PEOPLE_LOG) << "No items in items vector in received KGAPI job, can't update";
+            return;
+        }
+
+        for (const auto &personObject : updatedPeople) {
+            const auto person = personObject.dynamicCast<People::Person>();
+            const auto matchingItemIt = std::find_if(originalItems.cbegin(), originalItems.cend(), [&person](const Akonadi::Item &item) {
+                return item.remoteId() == person->resourceName();
+            });
+
+            if (matchingItemIt == originalItems.cend()) {
+                qCWarning(GOOGLE_PEOPLE_LOG) << "Could not find matching item for person:" << person->resourceName()
+                                             << "cannot update them properly right now.";
+                continue;
+            }
+
+            const auto matchingItem = *matchingItemIt;
+            updatePersonItem(matchingItem, person);
+        }
+    } else {
+        qCWarning(GOOGLE_PEOPLE_LOG) << "Finished job not carrying actionable item property, cannot update.";
+    }
+}
+
+void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const People::PersonPtr &person)
+{
+    if (person.isNull()) {
+        qCWarning(GOOGLE_PEOPLE_LOG) << "Received null person ptr, can't update";
+        return;
+    } else if (!originalItem.isValid()) {
         qCWarning(GOOGLE_PEOPLE_LOG) << "No valid item in received KGAPI job, can't update";
         return;
     }
@@ -398,3 +439,45 @@ void PersonHandler::itemsMoved(const Item::List &items, const Collection &collec
     connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotGenericJobFinished);
 }
 
+void PersonHandler::itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
+{
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Linking %1 contact", "Linking %1 contacts", items.count()));
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Linking" << items.count() << "contacts to group" << collection.remoteId();
+
+    People::PersonList people;
+    people.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(people), [&collection](const Item &item) {
+        const auto addressee = item.payload<KContacts::Addressee>();
+        const auto person = People::Person::fromKContactsAddressee(addressee);
+        QVector<People::Membership> memberships;
+
+        person->setResourceName(item.remoteId());
+        person->setEtag(item.remoteRevision());
+
+        People::ContactGroupMembership parentCollectionContactGroupMembership;
+        parentCollectionContactGroupMembership.setContactGroupResourceName(item.parentCollection().remoteId());
+
+        for (const auto &virtualCollection : item.virtualReferences()) {
+            People::ContactGroupMembership existingLinkedContactGroupMembership;
+            existingLinkedContactGroupMembership.setContactGroupResourceName(virtualCollection.remoteId());
+
+            People::Membership existingLinkedMembership;
+            existingLinkedMembership.setContactGroupMembership(existingLinkedContactGroupMembership);
+
+            memberships.append(existingLinkedMembership);
+        }
+
+        People::ContactGroupMembership newLinkedContactGroupMembership;
+        newLinkedContactGroupMembership.setContactGroupResourceName(collection.remoteId());
+
+        People::Membership membership;
+        membership.setContactGroupMembership(newLinkedContactGroupMembership);
+
+        person->setMemberships(memberships);
+        return person;
+    });
+
+    auto job = new People::PersonModifyJob(people, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+}

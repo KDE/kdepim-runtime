@@ -28,7 +28,7 @@ public:
     void itemChanged(const Akonadi::Item &item, const QSet<QByteArray> &partIdentifiers) override;
     void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
-    void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override {};
+    void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
     void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override {};
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override {};
@@ -39,7 +39,8 @@ private:
     void slotItemsRetrieved(KGAPI2::Job *job);
     void slotPersonCreateJobFinished(KGAPI2::Job *job);
     void slotPersonModifyJobFinished(KGAPI2::Job *job);
-    void processUpdatedPerson(KGAPI2::Job *job, const KGAPI2::People::PersonPtr &person);
+    void processUpdatedPeople(KGAPI2::Job *job, const KGAPI2::ObjectsList &updatedPeople);
+    void updatePersonItem(const Akonadi::Item &originalItem, const KGAPI2::People::PersonPtr &person);
 
     static Akonadi::Collection collectionFromContactGroup(const KGAPI2::People::ContactGroupPtr &group);
     static QString addresseeMimeType();
