@@ -453,7 +453,7 @@ void GoogleResource::itemsRemoved(const Item::List &items)
         return;
     }
     auto handler = fetchHandlerByMimetype(items.first().mimeType());
-    if (handler && handler->canPerformTask(items)) {
+    if (handler) {
         handler->itemsRemoved(items);
     } else {
         qCWarning(GOOGLE_LOG) << "Could not remove item" << items.first().mimeType();
