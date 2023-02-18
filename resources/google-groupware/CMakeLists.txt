@@ -9,6 +9,7 @@ set(googleresource_SRCS
     generichandler.cpp
     calendarhandler.cpp
     taskhandler.cpp
+    peopleconversionjob.cpp
     personhandler.cpp
     googleresource.h
     googlesettings.h
@@ -18,6 +19,7 @@ set(googleresource_SRCS
     generichandler.h
     calendarhandler.h
     taskhandler.h
+    peopleconversionjob.h
     personhandler.h
     )
 
