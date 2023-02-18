@@ -69,6 +69,7 @@ GoogleResource::GoogleResource(const QString &id)
     setNeedsNetwork(true);
 
     changeRecorder()->itemFetchScope().fetchFullPayload(true);
+    changeRecorder()->itemFetchScope().setFetchVirtualReferences(true);
     changeRecorder()->itemFetchScope().setAncestorRetrieval(ItemFetchScope::All);
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);

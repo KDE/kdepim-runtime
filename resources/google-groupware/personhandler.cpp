@@ -7,6 +7,7 @@
 */
 
 #include "personhandler.h"
+#include "peopleconversionjob.h"
 #include "googleresource.h"
 #include "googlesettings.h"
 
@@ -41,13 +42,14 @@
 #include <KGAPI/People/ContactGroupFetchJob>
 //#include <KGAPI/Contacts/ContactsGroupModifyJob>
 
+
+using namespace KGAPI2;
+using namespace Akonadi;
+
 namespace {
     constexpr auto myContactsResourceName = "contactGroups/myContacts";
     constexpr auto otherContactsResourceName = "contactGroups/otherContacts";
 }
-
-using namespace KGAPI2;
-using namespace Akonadi;
 
 QString PersonHandler::mimeType()
 {
@@ -75,6 +77,7 @@ Collection PersonHandler::collectionFromContactGroup(const People::ContactGroupP
     collection.setContentMimeTypes({addresseeMimeType()});
     collection.setName(group->name());
     collection.setRemoteId(group->resourceName());
+    collection.setRemoteRevision(group->etag());
 
     const auto isSystemGroup = group->groupType() == People::ContactGroup::GroupType::SYSTEM_CONTACT_GROUP;
     auto realName = group->formattedName();
@@ -341,18 +344,30 @@ void PersonHandler::itemAdded(const Item &item, const Collection &collection)
 
     qCDebug(GOOGLE_PEOPLE_LOG) << "Creating people";
 
-    if (collection.remoteId() == QString::fromUtf8(myContactsResourceName)) {
-        People::ContactGroupMembership contactGroupMembership;
-        contactGroupMembership.setContactGroupResourceName(QString::fromUtf8(myContactsResourceName));
+    People::ContactGroupMembership contactGroupMembership;
+    contactGroupMembership.setContactGroupResourceName(QString::fromUtf8(myContactsResourceName));
 
-        People::Membership membership;
-        membership.setContactGroupMembership(contactGroupMembership);
-        person->setMemberships({membership});
-    }
+    People::Membership membership;
+    membership.setContactGroupMembership(contactGroupMembership);
+    person->setMemberships({membership});
 
     auto job = new People::PersonCreateJob(person, m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
     connect(job, &People::PersonCreateJob::finished, this, &PersonHandler::slotPersonCreateJobFinished);
+}
+
+void PersonHandler::sendModifyJob(const Akonadi::Item::List &items, const People::PersonList &people)
+{
+    auto job = new People::PersonModifyJob(people, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+}
+
+void PersonHandler::sendModifyJob(const Akonadi::Item &item, const People::PersonPtr &person)
+{
+    auto job = new People::PersonModifyJob(person, m_settings->accountPtr(), this);
+    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
 }
 
 void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*partIdentifiers*/)
@@ -360,26 +375,12 @@ void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*par
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Changing contact"));
     qCDebug(GOOGLE_PEOPLE_LOG) << "Changing person" << item.remoteId();
 
-    const auto addressee = item.payload<KContacts::Addressee>();
-    auto person = People::Person::fromKContactsAddressee(addressee);
-    person->setResourceName(item.remoteId());
-    person->setEtag(item.remoteRevision());
-
-    // TODO: Domain membership?
-    const auto parentCollectionRemoteId = item.parentCollection().remoteId();
-    if (parentCollectionRemoteId == QString::fromUtf8(myContactsResourceName) ||
-        parentCollectionRemoteId == QString::fromUtf8(otherContactsResourceName)) {
-        People::ContactGroupMembership contactGroupMembership;
-        contactGroupMembership.setContactGroupResourceName(parentCollectionRemoteId);
-
-        People::Membership membership;
-        membership.setContactGroupMembership(contactGroupMembership);
-        person->setMemberships({membership});
-    }
-
-    auto job = new People::PersonModifyJob(person, m_settings->accountPtr(), this);
-    job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+    const auto job = new PeopleConversionJob({item}, this);
+    connect(job, &PeopleConversionJob::finished, this, [this, item, job] {
+        const auto person = job->people().first();
+        sendModifyJob(item, person);
+    });
+    job->start();
 }
 
 void PersonHandler::itemsRemoved(const Item::List &items)
@@ -416,27 +417,12 @@ void PersonHandler::itemsMoved(const Item::List &items, const Collection &collec
                                sourceRemoteId,
                                destinationRemoteId));
 
-    KGAPI2::People::PersonList people;
-    people.reserve(items.count());
-    std::transform(items.cbegin(), items.cend(), std::back_inserter(people), [&destinationRemoteId](const Item &item) {
-        const auto addressee = item.payload<KContacts::Addressee>();
-        auto person = People::Person::fromKContactsAddressee(addressee);
-        person->setResourceName(item.remoteId());
-        person->setEtag(item.remoteRevision());
-
-        People::ContactGroupMembership contactGroupMembership;
-        contactGroupMembership.setContactGroupResourceName(destinationRemoteId);
-
-        People::Membership membership;
-        membership.setContactGroupMembership(contactGroupMembership);
-        person->setMemberships({membership});
-
-        return person;
+    const auto job = new PeopleConversionJob(items, this);
+    job->setReparentCollectionRemoteId(destinationRemoteId);
+    connect(job, &PeopleConversionJob::finished, this, [this, items, job] {
+        sendModifyJob(items, job->people());
     });
-    qCDebug(GOOGLE_PEOPLE_LOG) << "Moving people from" << sourceRemoteId << "to" << destinationRemoteId;
-    auto job = new People::PersonModifyJob(people, m_settings->accountPtr(), this);
-    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
-    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotGenericJobFinished);
+    job->start();
 }
 
 void PersonHandler::itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
@@ -444,40 +430,10 @@ void PersonHandler::itemsLinked(const Akonadi::Item::List &items, const Akonadi:
     m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Linking %1 contact", "Linking %1 contacts", items.count()));
     qCDebug(GOOGLE_PEOPLE_LOG) << "Linking" << items.count() << "contacts to group" << collection.remoteId();
 
-    People::PersonList people;
-    people.reserve(items.count());
-    std::transform(items.cbegin(), items.cend(), std::back_inserter(people), [&collection](const Item &item) {
-        const auto addressee = item.payload<KContacts::Addressee>();
-        const auto person = People::Person::fromKContactsAddressee(addressee);
-        QVector<People::Membership> memberships;
-
-        person->setResourceName(item.remoteId());
-        person->setEtag(item.remoteRevision());
-
-        People::ContactGroupMembership parentCollectionContactGroupMembership;
-        parentCollectionContactGroupMembership.setContactGroupResourceName(item.parentCollection().remoteId());
-
-        for (const auto &virtualCollection : item.virtualReferences()) {
-            People::ContactGroupMembership existingLinkedContactGroupMembership;
-            existingLinkedContactGroupMembership.setContactGroupResourceName(virtualCollection.remoteId());
-
-            People::Membership existingLinkedMembership;
-            existingLinkedMembership.setContactGroupMembership(existingLinkedContactGroupMembership);
-
-            memberships.append(existingLinkedMembership);
-        }
-
-        People::ContactGroupMembership newLinkedContactGroupMembership;
-        newLinkedContactGroupMembership.setContactGroupResourceName(collection.remoteId());
-
-        People::Membership membership;
-        membership.setContactGroupMembership(newLinkedContactGroupMembership);
-
-        person->setMemberships(memberships);
-        return person;
+    const auto job = new PeopleConversionJob(items, this);
+    job->setNewLinkedCollectionRemoteId(collection.remoteId());
+    connect(job, &PeopleConversionJob::finished, this, [this, items, job] {
+        sendModifyJob(items, job->people());
     });
-
-    auto job = new People::PersonModifyJob(people, m_settings->accountPtr(), this);
-    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
-    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+    job->start();
 }
