@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Freek de Kruijf <freekdekruijf@kde.nl>, 2017, 2018, 2019, 2020, 2021.
+# Freek de Kruijf <freekdekruijf@kde.nl>, 2017, 2018, 2019, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-10-16 00:47+0000\n"
-"PO-Revision-Date: 2021-08-25 13:19+0200\n"
+"PO-Revision-Date: 2023-02-17 10:29+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.08.0\n"
+"X-Generator: Lokalize 22.12.2\n"
 
 #: ewsautodiscoveryjob.cpp:44 ewsautodiscoveryjob.cpp:51
 #, kde-format
@@ -786,7 +786,7 @@ msgstr "Id van hoofdmap is onbekend"
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving collection tree"
-msgstr "Bezig met ophalen van verzamelingboomstructuur"
+msgstr "Bezig met ophalen van verzamelingsboomstructuur"
 
 #: ewsresource.cpp:406
 #, kde-format
