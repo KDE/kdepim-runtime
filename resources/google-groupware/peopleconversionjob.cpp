@@ -29,6 +29,21 @@ People::PersonList PeopleConversionJob::people() const
     return _processedPeople;
 }
 
+QString PeopleConversionJob::reparentCollectionRemoteId() const
+{
+    return _reparentCollectionRemoteId;
+}
+
+void PeopleConversionJob::setReparentCollectionRemoteId(const QString &reparentCollectionRemoteId)
+{
+    if (reparentCollectionRemoteId == _reparentCollectionRemoteId) {
+        return;
+    }
+
+    _reparentCollectionRemoteId = reparentCollectionRemoteId;
+    Q_EMIT reparentCollectionRemoteIdChanged();
+}
+
 void PeopleConversionJob::start()
 {
     if (_items.isEmpty()) {
@@ -93,7 +108,8 @@ void PeopleConversionJob::processItems()
         person->setEtag(item.remoteRevision());
 
         // TODO: Domain membership?
-        const auto parentCollectionRemoteId = item.parentCollection().remoteId();
+        const auto parentCollectionRemoteId = _reparentCollectionRemoteId.isEmpty() ?
+            item.parentCollection().remoteId() : _reparentCollectionRemoteId;
         People::ContactGroupMembership contactGroupMembership;
         contactGroupMembership.setContactGroupResourceName(parentCollectionRemoteId);
 
