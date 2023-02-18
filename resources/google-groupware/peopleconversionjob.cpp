@@ -44,6 +44,21 @@ void PeopleConversionJob::setReparentCollectionRemoteId(const QString &reparentC
     Q_EMIT reparentCollectionRemoteIdChanged();
 }
 
+QString PeopleConversionJob::newLinkedCollectionRemoteId() const
+{
+    return _newLinkedCollectionRemoteId;
+}
+
+void PeopleConversionJob::setNewLinkedCollectionRemoteId(const QString &newLinkedCollectionRemoteId)
+{
+    if (newLinkedCollectionRemoteId == _newLinkedCollectionRemoteId) {
+        return;
+    }
+
+    _newLinkedCollectionRemoteId = newLinkedCollectionRemoteId;
+    Q_EMIT newLinkedCollectionRemoteIdChanged();
+}
+
 void PeopleConversionJob::start()
 {
     if (_items.isEmpty()) {
@@ -97,6 +112,17 @@ void PeopleConversionJob::jobFinished(KJob *job)
     processItems();
 }
 
+People::Membership PeopleConversionJob::resourceNameToMembership(const QString &resourceName)
+{
+    People::ContactGroupMembership contactGroupMembership;
+    contactGroupMembership.setContactGroupResourceName(resourceName);
+
+    People::Membership membership;
+    membership.setContactGroupMembership(contactGroupMembership);
+
+    return membership;
+}
+
 void PeopleConversionJob::processItems()
 {
     for (const auto &item : _items) {
@@ -126,14 +152,13 @@ void PeopleConversionJob::processItems()
             }
 
             const auto retrievedCollectionRemoteId = _localToRemoteIdHash.value(virtualCollectionId);
-
-            People::ContactGroupMembership existingLinkedContactGroupMembership;
-            existingLinkedContactGroupMembership.setContactGroupResourceName(retrievedCollectionRemoteId);
-
-            People::Membership existingLinkedMembership;
-            existingLinkedMembership.setContactGroupMembership(existingLinkedContactGroupMembership);
-
+            const auto existingLinkedMembership = resourceNameToMembership(retrievedCollectionRemoteId);
             memberships.append(existingLinkedMembership);
+        }
+
+        if (!_newLinkedCollectionRemoteId.isEmpty()) {
+            const auto newLinkedMembership = resourceNameToMembership(_newLinkedCollectionRemoteId);
+            memberships.append(newLinkedMembership);
         }
 
         person->setMemberships(memberships);
@@ -145,3 +170,4 @@ void PeopleConversionJob::processItems()
     Q_EMIT peopleChanged();
     Q_EMIT finished();
 }
+
