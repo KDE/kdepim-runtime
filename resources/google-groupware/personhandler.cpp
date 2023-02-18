@@ -43,7 +43,7 @@
 
 namespace {
     constexpr auto myContactsResourceName = "contactGroups/myContacts";
-    constexpr auto otherContactsResourceName = "otherContacts";
+    constexpr auto otherContactsResourceName = "contactGroups/otherContacts";
 }
 
 using namespace KGAPI2;
@@ -353,5 +353,48 @@ void PersonHandler::itemsRemoved(const Item::List &items)
     auto job = new People::PersonDeleteJob(peopleResourceNames, m_settings->accountPtr(), this);
     job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
     connect(job, &People::PersonDeleteJob::finished, this, &PersonHandler::slotGenericJobFinished);
+}
+
+void PersonHandler::itemsMoved(const Item::List &items, const Collection &collectionSource, const Collection &collectionDestination)
+{
+    const auto sourceRemoteId = collectionSource.remoteId();
+    const auto destinationRemoteId = collectionDestination.remoteId();
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Moving people from" << sourceRemoteId << "to" << destinationRemoteId;
+
+    if (!(((sourceRemoteId == QString::fromUtf8(myContactsResourceName)) && (destinationRemoteId == QString::fromUtf8(otherContactsResourceName))) ||
+          ((sourceRemoteId == QString::fromUtf8(otherContactsResourceName)) && (destinationRemoteId == QString::fromUtf8(myContactsResourceName))))) {
+        m_iface->cancelTask(i18n("Invalid source or destination collection"));
+        return;
+    }
+
+    m_iface->emitStatus(AgentBase::Running,
+                        i18ncp("@info:status",
+                               "Moving %1 contact from group '%2' to '%3'",
+                               "Moving %1 contacts from group '%2' to '%3'",
+                               items.count(),
+                               sourceRemoteId,
+                               destinationRemoteId));
+
+    KGAPI2::People::PersonList people;
+    people.reserve(items.count());
+    std::transform(items.cbegin(), items.cend(), std::back_inserter(people), [&destinationRemoteId](const Item &item) {
+        const auto addressee = item.payload<KContacts::Addressee>();
+        auto person = People::Person::fromKContactsAddressee(addressee);
+        person->setResourceName(item.remoteId());
+        person->setEtag(item.remoteRevision());
+
+        People::ContactGroupMembership contactGroupMembership;
+        contactGroupMembership.setContactGroupResourceName(destinationRemoteId);
+
+        People::Membership membership;
+        membership.setContactGroupMembership(contactGroupMembership);
+        person->setMemberships({membership});
+
+        return person;
+    });
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Moving people from" << sourceRemoteId << "to" << destinationRemoteId;
+    auto job = new People::PersonModifyJob(people, m_settings->accountPtr(), this);
+    job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotGenericJobFinished);
 }
 
