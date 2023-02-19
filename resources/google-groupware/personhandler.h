@@ -31,7 +31,7 @@ public:
     void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
     void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
 
-    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override {};
+    void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override {};
     void collectionRemoved(const Akonadi::Collection &collection) override {};
 

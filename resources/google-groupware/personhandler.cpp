@@ -37,7 +37,7 @@
 #include <KGAPI/People/PersonModifyJob>
 #include <KGAPI/People/ContactGroup>
 #include <KGAPI/People/ContactGroupMembership>
-//#include <KGAPI/Contacts/ContactsGroupCreateJob>
+#include <KGAPI/People/ContactGroupCreateJob>
 //#include <KGAPI/Contacts/ContactsGroupDeleteJob>
 #include <KGAPI/People/ContactGroupFetchJob>
 //#include <KGAPI/Contacts/ContactsGroupModifyJob>
@@ -454,3 +454,30 @@ void PersonHandler::itemsUnlinked(const Akonadi::Item::List &items, const Akonad
     });
     job->start();
 }
+
+void PersonHandler::collectionAdded(const Collection &collection, const Collection & /*parent*/)
+{
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Creating new contact group '%1'", collection.displayName()));
+    qCDebug(GOOGLE_PEOPLE_LOG()) << "Adding contact group" << collection.displayName();
+    People::ContactGroupPtr group(new People::ContactGroup);
+    group->setName(collection.name());
+
+    auto job = new People::ContactGroupCreateJob(group, m_settings->accountPtr(), this);
+    connect(job, &People::ContactGroupCreateJob::finished, this, [this, collection](KGAPI2::Job *job) {
+        if (!m_iface->handleError(job)) {
+            return;
+        }
+
+        const auto createJob = qobject_cast<People::ContactGroupCreateJob *>(job);
+        const auto group = createJob->items().first().dynamicCast<People::ContactGroup>();
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Contact group created:" << group->resourceName() << group->name();
+
+        auto newCollection = collectionFromContactGroup(group);
+        newCollection.setId(collection.id());
+
+        m_collections[newCollection.remoteId()] = newCollection;
+        m_iface->collectionChangeCommitted(newCollection);
+        emitReadyStatus();
+    });
+}
+
