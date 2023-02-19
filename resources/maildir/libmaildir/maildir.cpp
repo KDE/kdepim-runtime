@@ -36,20 +36,19 @@ class Maildir::Private
 public:
     Private(const QString &p, bool isRoot)
         : path(p)
+        , hostName(QHostInfo::localHostName())
         , isRoot(isRoot)
     {
-        hostName = QHostInfo::localHostName();
-
         // Cache object is created the first time this runs.
         // It will live throughout the lifetime of the application
         KeyCache::self()->addKeys(path);
     }
 
     Private(const Private &rhs)
+        : path(rhs.path)
+        , hostName(rhs.hostName)
+        , isRoot(rhs.isRoot)
     {
-        path = rhs.path;
-        isRoot = rhs.isRoot;
-        hostName = rhs.hostName;
     }
 
     bool operator==(const Private &rhs) const

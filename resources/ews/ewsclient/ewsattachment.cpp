@@ -178,13 +178,13 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
 }
 
 EwsAttachment::EwsAttachment(const EwsAttachment &other)
+    : d(other.d)
 {
-    d = other.d;
 }
 
 EwsAttachment::EwsAttachment(EwsAttachment &&other)
+    : d(std::move(other.d))
 {
-    d = std::move(other.d);
 }
 
 EwsAttachment &EwsAttachment::operator=(EwsAttachment &&other)
