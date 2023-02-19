@@ -440,3 +440,17 @@ void PersonHandler::itemsLinked(const Akonadi::Item::List &items, const Akonadi:
     });
     job->start();
 }
+
+void PersonHandler::itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection)
+{
+    m_iface->emitStatus(AgentBase::Running, i18ncp("@info:status", "Unlinking %1 contact", "Unlinking %1 contacts", items.count()));
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Unlinking" << items.count() << "contacts to group" << collection.remoteId();
+
+    const auto job = new PeopleConversionJob(items, this);
+    job->setLinkedCollectionToRemoveRemoteId(collection.remoteId());
+    connect(job, &PeopleConversionJob::finished, this, [this, items, job] {
+        sendModifyJob(items, job->people());
+        job->deleteLater();
+    });
+    job->start();
+}

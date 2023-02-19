@@ -29,7 +29,7 @@ public:
     void itemsRemoved(const Akonadi::Item::List &items) override;
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &collectionSource, const Akonadi::Collection &collectionDestination) override;
     void itemsLinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
-    void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override {};
+    void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override {};
     void collectionChanged(const Akonadi::Collection &collection) override {};
