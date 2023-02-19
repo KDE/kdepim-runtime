@@ -59,6 +59,21 @@ void PeopleConversionJob::setNewLinkedCollectionRemoteId(const QString &newLinke
     Q_EMIT newLinkedCollectionRemoteIdChanged();
 }
 
+QString PeopleConversionJob::linkedCollectionToRemoveRemoteId() const
+{
+    return _linkedCollectionToRemoveRemoteId;
+}
+
+void PeopleConversionJob::setLinkedCollectionToRemoveRemoteId(const QString &linkedCollectionToRemoveRemoteId)
+{
+    if (linkedCollectionToRemoveRemoteId == _linkedCollectionToRemoveRemoteId) {
+        return;
+    }
+
+    _linkedCollectionToRemoveRemoteId = linkedCollectionToRemoveRemoteId;
+    Q_EMIT linkedCollectionToRemoveRemoteIdChanged();
+}
+
 void PeopleConversionJob::start()
 {
     if (_items.isEmpty()) {
@@ -152,6 +167,11 @@ void PeopleConversionJob::processItems()
             }
 
             const auto retrievedCollectionRemoteId = _localToRemoteIdHash.value(virtualCollectionId);
+            if (retrievedCollectionRemoteId == _linkedCollectionToRemoveRemoteId) {
+                // Skip adding this membership so it will be removed serverside
+                continue;
+            }
+
             const auto existingLinkedMembership = resourceNameToMembership(retrievedCollectionRemoteId);
             memberships.append(existingLinkedMembership);
         }

@@ -22,6 +22,7 @@ class PeopleConversionJob : public QObject
     Q_PROPERTY(KGAPI2::People::PersonList people READ people NOTIFY peopleChanged)
     Q_PROPERTY(QString reparentCollectionRemoteId READ reparentCollectionRemoteId WRITE setReparentCollectionRemoteId NOTIFY reparentCollectionRemoteIdChanged)
     Q_PROPERTY(QString newLinkedCollectionRemoteId READ newLinkedCollectionRemoteId WRITE setNewLinkedCollectionRemoteId NOTIFY newLinkedCollectionRemoteIdChanged)
+    Q_PROPERTY(QString linkedCollectionToRemoveRemoteId READ linkedCollectionToRemoveRemoteId WRITE setLinkedCollectionToRemoveRemoteId NOTIFY linkedCollectionToRemoveRemoteIdChanged)
 
 public:
     explicit PeopleConversionJob(const Akonadi::Item::List peopleItems, QObject* parent = nullptr);
@@ -29,17 +30,20 @@ public:
     KGAPI2::People::PersonList people() const;
     QString reparentCollectionRemoteId() const;
     QString newLinkedCollectionRemoteId() const;
+    QString linkedCollectionToRemoveRemoteId() const;
 
 Q_SIGNALS:
     void finished();
     void peopleChanged();
     void reparentCollectionRemoteIdChanged();
     void newLinkedCollectionRemoteIdChanged();
+    void linkedCollectionToRemoveRemoteIdChanged();
 
 public Q_SLOTS:
     void start();
     void setReparentCollectionRemoteId(const QString &reparentCollectionRemoteId);
     void setNewLinkedCollectionRemoteId(const QString &newLinkedCollectionRemoteId);
+    void setLinkedCollectionToRemoveRemoteId(const QString &linkedCollectionToRemoveRemoteId);
 
 private Q_SLOTS:
     void jobFinished(KJob *job);
@@ -53,4 +57,5 @@ private:
     KGAPI2::People::PersonList _processedPeople;
     QString _reparentCollectionRemoteId;
     QString _newLinkedCollectionRemoteId;
+    QString _linkedCollectionToRemoveRemoteId;
 };
