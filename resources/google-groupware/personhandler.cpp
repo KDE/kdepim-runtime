@@ -379,6 +379,7 @@ void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*par
     connect(job, &PeopleConversionJob::finished, this, [this, item, job] {
         const auto person = job->people().first();
         sendModifyJob(item, person);
+        job->deleteLater();
     });
     job->start();
 }
@@ -421,6 +422,7 @@ void PersonHandler::itemsMoved(const Item::List &items, const Collection &collec
     job->setReparentCollectionRemoteId(destinationRemoteId);
     connect(job, &PeopleConversionJob::finished, this, [this, items, job] {
         sendModifyJob(items, job->people());
+        job->deleteLater();
     });
     job->start();
 }
@@ -434,6 +436,7 @@ void PersonHandler::itemsLinked(const Akonadi::Item::List &items, const Akonadi:
     job->setNewLinkedCollectionRemoteId(collection.remoteId());
     connect(job, &PeopleConversionJob::finished, this, [this, items, job] {
         sendModifyJob(items, job->people());
+        job->deleteLater();
     });
     job->start();
 }
