@@ -33,7 +33,7 @@ public:
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
     void collectionChanged(const Akonadi::Collection &collection) override;
-    void collectionRemoved(const Akonadi::Collection &collection) override {};
+    void collectionRemoved(const Akonadi::Collection &collection) override;
 
 private Q_SLOTS:
     void sendModifyJob(const Akonadi::Item::List &items, const KGAPI2::People::PersonList &people);

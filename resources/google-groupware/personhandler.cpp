@@ -38,7 +38,7 @@
 #include <KGAPI/People/ContactGroup>
 #include <KGAPI/People/ContactGroupMembership>
 #include <KGAPI/People/ContactGroupCreateJob>
-//#include <KGAPI/Contacts/ContactsGroupDeleteJob>
+#include <KGAPI/People/ContactGroupDeleteJob>
 #include <KGAPI/People/ContactGroupFetchJob>
 #include <KGAPI/People/ContactGroupModifyJob>
 
@@ -520,5 +520,14 @@ void PersonHandler::collectionChanged(const Collection &collection)
         updateContactGroupCollection(collection, group);
         emitReadyStatus();
     });
+}
+
+void PersonHandler::collectionRemoved(const Collection &collection)
+{
+    m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Removing contact group '%1'", collection.displayName()));
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Removing contact group" << collection.remoteId();
+    auto job = new People::ContactGroupDeleteJob(collection.remoteId(), m_settings->accountPtr(), this);
+    job->setProperty(COLLECTION_PROPERTY, QVariant::fromValue(collection));
+    connect(job, &People::ContactGroupDeleteJob::finished, this, &PersonHandler::slotGenericJobFinished);
 }
 
