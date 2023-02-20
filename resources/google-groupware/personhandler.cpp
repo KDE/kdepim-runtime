@@ -283,6 +283,7 @@ void PersonHandler::processUpdatedPeople(KGAPI2::Job *job, const ObjectsList &up
 
         const auto person = updatedPeople.first().dynamicCast<People::Person>();
         updatePersonItem(originalItem, person);
+        emitReadyStatus();
 
     } else if (job->property(ITEMS_PROPERTY).canConvert<Akonadi::Item::List>()) {
         // Be careful not to send an item list or a multi person create job -- only modify jobs.
@@ -309,6 +310,8 @@ void PersonHandler::processUpdatedPeople(KGAPI2::Job *job, const ObjectsList &up
             const auto matchingItem = *matchingItemIt;
             updatePersonItem(matchingItem, person);
         }
+        emitReadyStatus();
+
     } else {
         qCWarning(GOOGLE_PEOPLE_LOG) << "Finished job not carrying actionable item property, cannot update.";
     }
@@ -333,7 +336,6 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
 
     newItem.setPayload<KContacts::Addressee>(person->toKContactsAddressee());
     new ItemModifyJob(newItem, this);
-    emitReadyStatus();
 }
 
 void PersonHandler::itemAdded(const Item &item, const Collection &collection)
