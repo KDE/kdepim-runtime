@@ -32,7 +32,7 @@ public:
     void itemsUnlinked(const Akonadi::Item::List &items, const Akonadi::Collection &collection) override;
 
     void collectionAdded(const Akonadi::Collection &collection, const Akonadi::Collection &parent) override;
-    void collectionChanged(const Akonadi::Collection &collection) override {};
+    void collectionChanged(const Akonadi::Collection &collection) override;
     void collectionRemoved(const Akonadi::Collection &collection) override {};
 
 private Q_SLOTS:
@@ -44,6 +44,8 @@ private Q_SLOTS:
     void slotPersonModifyJobFinished(KGAPI2::Job *job);
     void processUpdatedPeople(KGAPI2::Job *job, const KGAPI2::ObjectsList &updatedPeople);
     void updatePersonItem(const Akonadi::Item &originalItem, const KGAPI2::People::PersonPtr &person);
+
+    void updateContactGroupCollection(const Akonadi::Collection &collection, const KGAPI2::People::ContactGroupPtr &group);
 
 private:
     static Akonadi::Collection collectionFromContactGroup(const KGAPI2::People::ContactGroupPtr &group);
