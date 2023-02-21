@@ -34,6 +34,7 @@
 #include <KGAPI/People/PersonDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
 #include <KGAPI/People/PersonModifyJob>
+#include <KGAPI/People/PersonPhotoDeleteJob>
 #include <KGAPI/People/PersonPhotoUpdateJob>
 #include <KGAPI/People/Photo>
 #include <KGAPI/People/ContactGroup>
@@ -350,6 +351,14 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
         connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
         return;
+    } else if (originalAddressee.photo().isEmpty() && !person->photos().isEmpty()) {
+        qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update needs photo deleted. Sending off photo delete job."
+                                     << personResourceName;
+
+        _pendingPeoplePhotoUpdate.insert(personResourceName);
+        auto job = new People::PersonPhotoDeleteJob(personResourceName, m_settings->accountPtr(), this);
+        job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
+        connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
     }
 
     Item newItem = originalItem;
