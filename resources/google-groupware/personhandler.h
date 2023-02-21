@@ -41,7 +41,7 @@ private Q_SLOTS:
 
     void slotItemsRetrieved(KGAPI2::Job *job);
     void slotPersonCreateJobFinished(KGAPI2::Job *job);
-    void slotPersonModifyJobFinished(KGAPI2::Job *job);
+    void slotKGAPIModifyJobFinished(KGAPI2::Job *job);
     void processUpdatedPeople(KGAPI2::Job *job, const KGAPI2::ObjectsList &updatedPeople);
     void updatePersonItem(const Akonadi::Item &originalItem, const KGAPI2::People::PersonPtr &person);
 
@@ -52,4 +52,5 @@ private:
     static QString addresseeMimeType();
 
     QMap<QString, Akonadi::Collection> m_collections;
+    QSet<QString> _pendingPeoplePhotoUpdate;
 };

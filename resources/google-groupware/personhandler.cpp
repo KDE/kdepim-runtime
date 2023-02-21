@@ -33,8 +33,9 @@
 #include <KGAPI/People/PersonCreateJob>
 #include <KGAPI/People/PersonDeleteJob>
 #include <KGAPI/People/PersonFetchJob>
-//#include <KGAPI/Contacts/ContactFetchPhotoJob>
 #include <KGAPI/People/PersonModifyJob>
+#include <KGAPI/People/PersonPhotoUpdateJob>
+#include <KGAPI/People/Photo>
 #include <KGAPI/People/ContactGroup>
 #include <KGAPI/People/ContactGroupMembership>
 #include <KGAPI/People/ContactGroupCreateJob>
@@ -255,13 +256,13 @@ void PersonHandler::slotPersonCreateJobFinished(KGAPI2::Job *job)
     processUpdatedPeople(job, createdPeople);
 }
 
-void PersonHandler::slotPersonModifyJobFinished(KGAPI2::Job *job)
+void PersonHandler::slotKGAPIModifyJobFinished(KGAPI2::Job *job)
 {
     if (!m_iface->handleError(job)) {
         return;
     }
 
-    const auto personModifyJob = qobject_cast<People::PersonModifyJob *>(job);
+    const auto personModifyJob = qobject_cast<ModifyJob *>(job);
     const auto modifiedPeople = personModifyJob->items();
 
     processUpdatedPeople(job, modifiedPeople);
@@ -322,15 +323,39 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
     if (person.isNull()) {
         qCWarning(GOOGLE_PEOPLE_LOG) << "Received null person ptr, can't update";
         return;
-    } else if (!originalItem.isValid()) {
+    } else if (!originalItem.isValid() || !originalItem.hasPayload<KContacts::Addressee>()) {
         qCWarning(GOOGLE_PEOPLE_LOG) << "No valid item in received KGAPI job, can't update";
         return;
     }
 
-    Item newItem = originalItem;
-    qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << person->resourceName() << "created";
+    const auto personResourceName = person->resourceName();
+    if (personResourceName.isEmpty()) {
+        qCWarning(GOOGLE_PEOPLE_LOG) << "Received person with no resource name, can't update";
+        return;
+    }
 
-    newItem.setRemoteId(person->resourceName());
+    if (_pendingPeoplePhotoUpdate.contains(personResourceName)) {
+        qCDebug(GOOGLE_PEOPLE_LOG()) << "Received updated person response from photo update."
+                                     << personResourceName;
+        _pendingPeoplePhotoUpdate.remove(personResourceName);
+    } else if (const auto originalAddressee = originalItem.payload<KContacts::Addressee>();
+               !originalAddressee.photo().isEmpty()) {
+        qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update requires a photo update. Sending off photo update job."
+                                     << personResourceName;
+
+        _pendingPeoplePhotoUpdate.insert(personResourceName);
+        const auto addresseePicture = originalAddressee.photo();
+        const auto pictureRawData = originalAddressee.photo().rawData();
+        auto job = new People::PersonPhotoUpdateJob(personResourceName, pictureRawData, m_settings->accountPtr(), this);
+        job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
+        connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
+        return;
+    }
+
+    Item newItem = originalItem;
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << personResourceName << "created";
+
+    newItem.setRemoteId(personResourceName);
     newItem.setRemoteRevision(person->etag());
     m_iface->itemChangeCommitted(newItem);
 
@@ -362,14 +387,14 @@ void PersonHandler::sendModifyJob(const Akonadi::Item::List &items, const People
 {
     auto job = new People::PersonModifyJob(people, m_settings->accountPtr(), this);
     job->setProperty(ITEMS_PROPERTY, QVariant::fromValue(items));
-    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
 }
 
 void PersonHandler::sendModifyJob(const Akonadi::Item &item, const People::PersonPtr &person)
 {
     auto job = new People::PersonModifyJob(person, m_settings->accountPtr(), this);
     job->setProperty(ITEM_PROPERTY, QVariant::fromValue(item));
-    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotPersonModifyJobFinished);
+    connect(job, &People::PersonModifyJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
 }
 
 void PersonHandler::itemChanged(const Item &item, const QSet<QByteArray> & /*partIdentifiers*/)
