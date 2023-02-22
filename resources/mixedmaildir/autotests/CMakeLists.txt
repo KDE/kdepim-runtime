@@ -39,7 +39,7 @@ set( common_link_libraries
   kmindexreader
   maildir
   akonadi-filestore
-  KF5::AkonadiMime
+  KPim${KF_MAJOR_VERSION}::AkonadiMime
   KF5::AkonadiCore
   KF5::Mbox
   KPim${KF_MAJOR_VERSION}::Mime

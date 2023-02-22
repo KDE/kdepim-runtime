@@ -148,7 +148,7 @@ add_executable(akonadi_ews_resource ${ewsresource_SRCS})
 target_link_libraries(akonadi_ews_resource
     KF5::AkonadiAgentBase
     KF5::AkonadiCore
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
     KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::CalendarCore

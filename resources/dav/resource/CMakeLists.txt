@@ -79,7 +79,7 @@ endif ()
 
 target_link_libraries(akonadi_davgroupware_resource
     KF${KF_MAJOR_VERSION}::Contacts
-    KF5::AkonadiCalendar
+    KPim${KF_MAJOR_VERSION}::AkonadiCalendar
     KF${KF_MAJOR_VERSION}::KIOCore
     KF5::AkonadiAgentBase
     KF5::AkonadiCore

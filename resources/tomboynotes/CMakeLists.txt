@@ -90,7 +90,7 @@ target_link_libraries(akonadi_tomboynotes_resource
     Qt::Network
     Qt::WebEngineWidgets
     KF5::AkonadiAgentBase
-    KF5::AkonadiNotes
+    KPim${KF_MAJOR_VERSION}::AkonadiNotes
     KF${KF_MAJOR_VERSION}::ConfigCore
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::I18n

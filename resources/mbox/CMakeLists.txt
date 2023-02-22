@@ -59,7 +59,7 @@ target_link_libraries(akonadi_mbox_resource
     KF${KF_MAJOR_VERSION}::I18n
     KF5::Mbox
     KF5::AkonadiCore
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
     KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiAgentBase

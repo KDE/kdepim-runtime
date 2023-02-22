@@ -78,7 +78,7 @@ if( APPLE )
 endif()
 
 target_link_libraries(akonadi_google_resource
-  KF5::AkonadiCalendar
+  KPim${KF_MAJOR_VERSION}::AkonadiCalendar
   KF5::AkonadiCore
   KF5::AkonadiAgentBase
   KF${KF_MAJOR_VERSION}::CalendarCore

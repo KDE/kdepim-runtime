@@ -19,7 +19,7 @@ generate_export_header(maildir BASE_NAME maildir)
 
 target_link_libraries(maildir
     PUBLIC
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     PRIVATE
     KF${KF_MAJOR_VERSION}::I18n
     Qt::Network

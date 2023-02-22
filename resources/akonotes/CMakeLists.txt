@@ -40,7 +40,7 @@ endif()
 
 target_link_libraries(akonadi_akonotes_resource
     KF5::AkonadiCore
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n

@@ -62,7 +62,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
     maildir
     akonadi-filestore
     KF5::AkonadiCore
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
     KF5::Mbox
     KPim${KF_MAJOR_VERSION}::Mime

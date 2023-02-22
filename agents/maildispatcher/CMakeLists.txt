@@ -44,10 +44,10 @@ endif ()
 
 target_link_libraries(akonadi_maildispatcher_agent 
     KF5::AkonadiCore
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::MailTransportAkonadi
-    KF5::MailTransport
+    KPim${KF_MAJOR_VERSION}::MailTransportAkonadi
+    KPim${KF_MAJOR_VERSION}::MailTransport
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::Notifications

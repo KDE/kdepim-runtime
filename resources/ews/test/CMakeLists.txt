@@ -23,7 +23,7 @@ qt_add_dbus_interface(isolatestestcommon_SRCS ${ewsresourceinterface_xml} ewsres
 add_library(isolatedtestcommon STATIC ${isolatestestcommon_SRCS})
 target_link_libraries(isolatedtestcommon
   KF5::AkonadiCore
-  KF5::AkonadiMime
+  KPim${KF_MAJOR_VERSION}::AkonadiMime
   Qt::Core
   Qt::Network
   Qt::Test

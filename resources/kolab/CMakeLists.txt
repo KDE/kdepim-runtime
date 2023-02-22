@@ -75,10 +75,10 @@ add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 target_link_libraries(akonadi_kolab_resource
     KF5::AkonadiCore
     KF5::IMAP
-    KF5::MailTransport
+    KPim${KF_MAJOR_VERSION}::MailTransport
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiMime
-    KF5::AkonadiCalendar
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiCalendar
     KF5::AkonadiWidgets
     KPim${KF_MAJOR_VERSION}::IdentityManagement
     imapresource

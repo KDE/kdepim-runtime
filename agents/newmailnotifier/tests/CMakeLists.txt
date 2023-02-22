@@ -11,4 +11,4 @@ target_link_libraries(newmailnotifierselectcollectionwidgettest
     KF5::AkonadiCore
     KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::Completion
-    KF5::AkonadiMime)
+    KPim${KF_MAJOR_VERSION}::AkonadiMime)

@@ -48,9 +48,9 @@ endif ()
 
 target_link_libraries( akonadi_pop3_resource
     KF5::AkonadiCore
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::MailTransport
+    KPim${KF_MAJOR_VERSION}::MailTransport
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::KIOWidgets  # SslUi
@@ -94,10 +94,10 @@ target_link_libraries(pop3config
     KF${KF_MAJOR_VERSION}::Completion
     KF${KF_MAJOR_VERSION}::WidgetsAddons
     KF${KF_MAJOR_VERSION}::I18n
-    KF5::MailTransport
+    KPim${KF_MAJOR_VERSION}::MailTransport
     KF5::AkonadiWidgets
     KF5::AkonadiAgentBase
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Libkdepim
     ${kdepim-keychain_lib}
     )

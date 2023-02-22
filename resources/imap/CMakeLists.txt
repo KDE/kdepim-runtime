@@ -112,10 +112,10 @@ target_link_libraries(imapresource
     Qt::Network
     KF5::AkonadiCore
     KF5::IMAP
-    KF5::MailTransport
+    KPim${KF_MAJOR_VERSION}::MailTransport
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::IdentityManagementWidgets
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
@@ -168,9 +168,9 @@ target_link_libraries(akonadi_imap_resource
     KF5::IMAP
     akonadi-singlefileresource
     KF5::AkonadiWidgets
-    KF5::MailTransport
+    KPim${KF_MAJOR_VERSION}::MailTransport
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::IdentityManagement
     KF${KF_MAJOR_VERSION}::I18n
     imapresource

@@ -90,7 +90,7 @@ set(KOLAB_LINK_LIBRARIES
     KF${KF_MAJOR_VERSION}::Contacts
     KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiCore
-    KF5::AkonadiNotes
+    KPim${KF_MAJOR_VERSION}::AkonadiNotes
     KF${KF_MAJOR_VERSION}::Codecs
     KF${KF_MAJOR_VERSION}::I18n
     ${Libkolabxml_LIBRARIES}
