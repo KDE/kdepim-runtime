@@ -145,7 +145,7 @@ target_link_libraries(ewsclient
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::Codecs
     KF${KF_MAJOR_VERSION}::I18n
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::CalendarCore)
 
 if (TARGET Qt::NetworkAuth)

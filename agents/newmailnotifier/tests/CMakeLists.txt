@@ -9,6 +9,6 @@ target_link_libraries(newmailnotifierselectcollectionwidgettest
     Qt::Widgets
     KF${KF_MAJOR_VERSION}::I18n
     KF5::AkonadiCore
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::Completion
     KF5::AkonadiMime)

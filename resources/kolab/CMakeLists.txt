@@ -76,11 +76,11 @@ target_link_libraries(akonadi_kolab_resource
     KF5::AkonadiCore
     KF5::IMAP
     KF5::MailTransport
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiMime
     KF5::AkonadiCalendar
     KF5::AkonadiWidgets
-    KF5::IdentityManagement
+    KPim${KF_MAJOR_VERSION}::IdentityManagement
     imapresource
     folderarchivesettings
     pimkolab

@@ -97,7 +97,7 @@ target_link_libraries(akonadi_tomboynotes_resource
     KF${KF_MAJOR_VERSION}::KIOCore
     KF${KF_MAJOR_VERSION}::KIOFileWidgets
     KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     )
 
 install(TARGETS akonadi_tomboynotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

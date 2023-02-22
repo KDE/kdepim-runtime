@@ -65,7 +65,7 @@ target_link_libraries(akonadi_mixedmaildir_resource
     KF5::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
     KF5::Mbox
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
     akonadi-singlefileresource

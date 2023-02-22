@@ -150,7 +150,7 @@ target_link_libraries(akonadi_ews_resource
     KF5::AkonadiCore
     KF5::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::Contacts
     KF${KF_MAJOR_VERSION}::Wallet
@@ -192,7 +192,7 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
         KF5::AkonadiWidgets
         KF${KF_MAJOR_VERSION}::I18n
         KF${KF_MAJOR_VERSION}::WindowSystem
-        KF5::Mime)
+        KPim${KF_MAJOR_VERSION}::Mime)
 
     set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
 else ()

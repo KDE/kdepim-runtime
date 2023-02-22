@@ -49,7 +49,7 @@ endif ()
 target_link_libraries( akonadi_pop3_resource
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::MailTransport
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
@@ -98,6 +98,6 @@ target_link_libraries(pop3config
     KF5::AkonadiWidgets
     KF5::AkonadiAgentBase
     KF5::AkonadiMime
-    KF5::Libkdepim
+    KPim${KF_MAJOR_VERSION}::Libkdepim
     ${kdepim-keychain_lib}
     )

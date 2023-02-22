@@ -114,15 +114,15 @@ target_link_libraries(imapresource
     KF5::IMAP
     KF5::MailTransport
     KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiMime
-    KF5::IdentityManagementWidgets
+    KPim${KF_MAJOR_VERSION}::IdentityManagementWidgets
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::WindowSystem
     KF${KF_MAJOR_VERSION}::ConfigGui
     akonadi-singlefileresource
-    KF5::Libkdepim
+    KPim${KF_MAJOR_VERSION}::Libkdepim
     ${kdepim-keychain_lib}
 )
 
@@ -169,9 +169,9 @@ target_link_libraries(akonadi_imap_resource
     akonadi-singlefileresource
     KF5::AkonadiWidgets
     KF5::MailTransport
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiMime
-    KF5::IdentityManagement
+    KPim${KF_MAJOR_VERSION}::IdentityManagement
     KF${KF_MAJOR_VERSION}::I18n
     imapresource
     KF${KF_MAJOR_VERSION}::TextWidgets

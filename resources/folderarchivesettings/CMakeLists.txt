@@ -18,7 +18,7 @@ endif()
 
 target_link_libraries(folderarchivesettings
 PRIVATE
-                      KF5::Mime
+                      KPim${KF_MAJOR_VERSION}::Mime
                       KF5::AkonadiCore
                       KF5::AkonadiWidgets
                       KF${KF_MAJOR_VERSION}::ConfigCore

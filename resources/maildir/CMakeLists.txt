@@ -50,7 +50,7 @@ target_link_libraries(akonadi_maildir_resource
     folderarchivesettings
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
 )

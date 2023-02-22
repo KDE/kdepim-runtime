@@ -1,2 +1,2 @@
 add_executable(kolabformatchecker kolabformatchecker.cpp)
-target_link_libraries(kolabformatchecker pimkolab Qt::Core KF5::AkonadiCore KF${KF_MAJOR_VERSION}::Contacts KF${KF_MAJOR_VERSION}::CalendarCore KF5::Mime)
+target_link_libraries(kolabformatchecker pimkolab Qt::Core KF5::AkonadiCore KF${KF_MAJOR_VERSION}::Contacts KF${KF_MAJOR_VERSION}::CalendarCore KPim${KF_MAJOR_VERSION}::Mime)

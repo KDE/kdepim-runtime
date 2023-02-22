@@ -45,7 +45,7 @@ endif ()
 target_link_libraries(akonadi_maildispatcher_agent 
     KF5::AkonadiCore
     KF5::AkonadiMime
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF5::MailTransportAkonadi
     KF5::MailTransport
     KF5::AkonadiAgentBase

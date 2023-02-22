@@ -37,11 +37,11 @@ endif()
 
 target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiCore
-  KF5::Mime
+  KPim${KF_MAJOR_VERSION}::Mime
   KF5::AkonadiMime
   KF5::AkonadiContact
   KF${KF_MAJOR_VERSION}::Codecs
-  KF5::IdentityManagement
+  KPim${KF_MAJOR_VERSION}::IdentityManagement
   KF5::AkonadiAgentBase
   KF${KF_MAJOR_VERSION}::Notifications
   KF${KF_MAJOR_VERSION}::Service
@@ -91,6 +91,6 @@ target_link_libraries(newmailnotifierconfig
     KF${KF_MAJOR_VERSION}::ConfigGui
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::XmlGui
-    KF5::Mime
+    KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::Completion
 )

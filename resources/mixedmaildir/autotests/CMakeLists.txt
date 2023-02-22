@@ -42,7 +42,7 @@ set( common_link_libraries
   KF5::AkonadiMime
   KF5::AkonadiCore
   KF5::Mbox
-  KF5::Mime
+  KPim${KF_MAJOR_VERSION}::Mime
   Qt::Test
   KF${KF_MAJOR_VERSION}::I18n
 )

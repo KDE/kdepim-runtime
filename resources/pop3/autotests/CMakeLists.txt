@@ -21,5 +21,5 @@ qt_add_dbus_interface(_srcList ${maildirsettingsinterface_xml} maildirsettings)
 #qt_add_dbus_interface(_srcList ../org.kde.krss.xml krssinterface)
 
 if (KDEPIM_RUN_AKONADI_TEST)
-	add_akonadi_isolated_test_advanced(pop3test.cpp "${_srcList}" "KF5::Mime")
+	add_akonadi_isolated_test_advanced(pop3test.cpp "${_srcList}" "KPim${KF_MAJOR_VERSION}::Mime")
 endif()	
