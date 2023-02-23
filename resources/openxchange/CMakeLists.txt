@@ -99,7 +99,7 @@ target_link_libraries(akonadi_openxchange_resource
     KF${KF_MAJOR_VERSION}::Contacts
     KF${KF_MAJOR_VERSION}::KIOCore
     KF${KF_MAJOR_VERSION}::CalendarCore
-    KF5::AkonadiContact
+    KPim${KF_MAJOR_VERSION}::AkonadiContact
     KF${KF_MAJOR_VERSION}::I18n
     Qt::Xml
 )

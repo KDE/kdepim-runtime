@@ -39,7 +39,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF5::AkonadiCore
   KPim${KF_MAJOR_VERSION}::Mime
   KPim${KF_MAJOR_VERSION}::AkonadiMime
-  KF5::AkonadiContact
+  KPim${KF_MAJOR_VERSION}::AkonadiContact
   KF${KF_MAJOR_VERSION}::Codecs
   KPim${KF_MAJOR_VERSION}::IdentityManagement
   KF5::AkonadiAgentBase
