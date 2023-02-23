@@ -57,7 +57,7 @@ endif ()
 
 target_link_libraries(akonadi_mbox_resource
     KF${KF_MAJOR_VERSION}::I18n
-    KF5::Mbox
+    KPim${KF_MAJOR_VERSION}::Mbox
     KF5::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
@@ -96,6 +96,6 @@ target_link_libraries(mboxconfig
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::I18n
-    KF5::Mbox
+    KPim${KF_MAJOR_VERSION}::Mbox
     akonadi-singlefileresource
     )

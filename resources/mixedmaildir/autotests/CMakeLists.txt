@@ -41,7 +41,7 @@ set( common_link_libraries
   akonadi-filestore
   KPim${KF_MAJOR_VERSION}::AkonadiMime
   KF5::AkonadiCore
-  KF5::Mbox
+  KPim${KF_MAJOR_VERSION}::Mbox
   KPim${KF_MAJOR_VERSION}::Mime
   Qt::Test
   KF${KF_MAJOR_VERSION}::I18n
