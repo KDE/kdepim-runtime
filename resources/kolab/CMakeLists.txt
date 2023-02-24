@@ -74,7 +74,7 @@ add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
     KF5::AkonadiCore
-    KF5::IMAP
+    KPim${KF_MAJOR_VERSION}::IMAP
     KPim${KF_MAJOR_VERSION}::MailTransport
     KPim${KF_MAJOR_VERSION}::Mime
     KPim${KF_MAJOR_VERSION}::AkonadiMime

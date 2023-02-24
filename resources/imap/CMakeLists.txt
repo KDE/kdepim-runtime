@@ -111,7 +111,7 @@ target_link_libraries(imapresource
     Qt::DBus
     Qt::Network
     KF5::AkonadiCore
-    KF5::IMAP
+    KPim${KF_MAJOR_VERSION}::IMAP
     KPim${KF_MAJOR_VERSION}::MailTransport
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KPim${KF_MAJOR_VERSION}::Mime
@@ -165,7 +165,7 @@ endif ()
 target_link_libraries(akonadi_imap_resource
     Qt::DBus
     KF5::AkonadiCore
-    KF5::IMAP
+    KPim${KF_MAJOR_VERSION}::IMAP
     akonadi-singlefileresource
     KF5::AkonadiWidgets
     KPim${KF_MAJOR_VERSION}::MailTransport

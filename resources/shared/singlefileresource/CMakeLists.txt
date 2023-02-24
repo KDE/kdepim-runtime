@@ -51,7 +51,7 @@ PRIVATE
     KF5::AkonadiCore
     KF5::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::KIOCore
-    KF5::IMAP
+    KPim${KF_MAJOR_VERSION}::IMAP
 )
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )
