@@ -350,7 +350,6 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
         auto job = new People::PersonPhotoUpdateJob(personResourceName, pictureRawData, m_settings->accountPtr(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
         connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
-        return;
     } else if (originalAddressee.photo().isEmpty() && !person->photos().isEmpty()) {
         qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update needs photo deleted. Sending off photo delete job."
                                      << personResourceName;
