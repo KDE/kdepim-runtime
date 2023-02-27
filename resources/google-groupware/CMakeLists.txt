@@ -88,10 +88,10 @@ target_link_libraries(akonadi_google_resource
   KF${KF_MAJOR_VERSION}::WindowSystem
   KF${KF_MAJOR_VERSION}::TextWidgets
   KF${KF_MAJOR_VERSION}::Notifications
-  KPim::GAPICalendar
-  KPim::GAPIContacts
-  KPim::GAPICore
-  KPim::GAPITasks
+  KPim${KF_MAJOR_VERSION}::GAPICalendar
+  KPim${KF_MAJOR_VERSION}::GAPIContacts
+  KPim${KF_MAJOR_VERSION}::GAPICore
+  KPim${KF_MAJOR_VERSION}::GAPITasks
 )
 
 install(TARGETS akonadi_google_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

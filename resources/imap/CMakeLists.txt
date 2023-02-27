@@ -178,7 +178,7 @@ target_link_libraries(akonadi_imap_resource
     KF${KF_MAJOR_VERSION}::ConfigGui
 
     folderarchivesettings
-    KPim::GAPICore
+    KPim${KF_MAJOR_VERSION}::GAPICore
 )
 
 install(
