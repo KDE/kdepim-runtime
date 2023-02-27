@@ -33,8 +33,6 @@ protected:
 
 private:
     void startMove(KIMAP::Session *session);
-    void triggerMoveJob(KIMAP::Session *session);
-    void triggerCopyJob(KIMAP::Session *session);
     void recordNewUid();
     QVector<qint64> imapSetToList(const KIMAP::ImapSet &set);
 

@@ -41,7 +41,6 @@ public Q_SLOTS:
     void reloadConfig();
 
 protected:
-    int runConfigurationDialog(WId windowId);
     void updateResourceName();
     // Freebusy
     QDateTime lastCacheUpdate() const override;
