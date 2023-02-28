@@ -85,7 +85,7 @@ void PeopleConversionJob::start()
     m_processedPeople.clear();
 
     QSet<Collection::Id> collectionsToFetch;
-    for (const auto &item : m_items) {
+    for (const auto &item : std::as_const(m_items)) {
         const auto itemVirtualReferences = item.virtualReferences();
         for (const auto &collection : itemVirtualReferences) {
             const auto collectionId = collection.id();
