@@ -77,7 +77,7 @@ void PeopleConversionJob::setLinkedCollectionToRemoveRemoteId(const QString &lin
 void PeopleConversionJob::start()
 {
     if (m_items.isEmpty()) {
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "No person items to process, finishing.";
+        qCDebug(GOOGLE_PEOPLE_LOG) << "No person items to process, finishing.";
         Q_EMIT finished();
         return;
     }
@@ -89,18 +89,18 @@ void PeopleConversionJob::start()
         const auto itemVirtualReferences = item.virtualReferences();
         for (const auto &collection : itemVirtualReferences) {
             const auto collectionId = collection.id();
-            qCDebug(GOOGLE_PEOPLE_LOG()) << "Going to fetch data for virtual collection:" << collectionId;
+            qCDebug(GOOGLE_PEOPLE_LOG) << "Going to fetch data for virtual collection:" << collectionId;
             collectionsToFetch.insert(collectionId);
         };
     }
 
     if (collectionsToFetch.isEmpty()) {
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "No virtual collections to fetch, processing people now.";
+        qCDebug(GOOGLE_PEOPLE_LOG) << "No virtual collections to fetch, processing people now.";
         processItems();
         return;
     }
 
-    qCDebug(GOOGLE_PEOPLE_LOG()) << "Going to fetch data for virtual collections now.";
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Going to fetch data for virtual collections now.";
     const QList<Collection::Id> idList(collectionsToFetch.cbegin(), collectionsToFetch.cend());
     auto collectionRetrievalJob = new CollectionFetchJob(idList);
     connect(collectionRetrievalJob, &CollectionFetchJob::finished, this, &PeopleConversionJob::jobFinished);
@@ -109,18 +109,18 @@ void PeopleConversionJob::start()
 void PeopleConversionJob::jobFinished(KJob *job)
 {
     if (job->error()) {
-        qCWarning(GOOGLE_PEOPLE_LOG()) << "Virtual collections data fetch ended in error.";
+        qCWarning(GOOGLE_PEOPLE_LOG) << "Virtual collections data fetch ended in error.";
         processItems();
         return;
     }
 
-    qCDebug(GOOGLE_PEOPLE_LOG()) << "Processing fetched collections";
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Processing fetched collections";
 
     const auto fetchJob = qobject_cast<CollectionFetchJob *>(job);
     const auto collections = fetchJob->collections();
 
     for (const auto &collection : collections) {
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "Fetched data for virtual collection:" << collection.displayName();
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Fetched data for virtual collection:" << collection.displayName();
         m_localToRemoteIdHash.insert(collection.id(), collection.remoteId());
     }
 
@@ -162,7 +162,7 @@ void PeopleConversionJob::processItems()
 
             const auto virtualCollectionId = virtualCollection.id();
             if (!m_localToRemoteIdHash.contains(virtualCollectionId)) {
-                qCWarning(GOOGLE_PEOPLE_LOG()) << "Fetched virtual collections do not contain collection with ID:" << virtualCollectionId;
+                qCWarning(GOOGLE_PEOPLE_LOG) << "Fetched virtual collections do not contain collection with ID:" << virtualCollectionId;
                 continue;
             }
 
@@ -183,7 +183,7 @@ void PeopleConversionJob::processItems()
 
         person->setMemberships(memberships);
 
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "Processed person:" << person->resourceName();
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Processed person:" << person->resourceName();
         m_processedPeople.append(person);
     }
 

@@ -336,12 +336,12 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
     }
 
     if (m_pendingPeoplePhotoUpdate.contains(personResourceName)) {
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "Received updated person response from photo update."
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Received updated person response from photo update."
                                      << personResourceName;
         m_pendingPeoplePhotoUpdate.remove(personResourceName);
     } else if (const auto originalAddressee = originalItem.payload<KContacts::Addressee>();
                !originalAddressee.photo().isEmpty()) {
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update requires a photo update. Sending off photo update job."
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update requires a photo update. Sending off photo update job."
                                      << personResourceName;
 
         m_pendingPeoplePhotoUpdate.insert(personResourceName);
@@ -351,7 +351,7 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
         connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);
     } else if (originalAddressee.photo().isEmpty() && !person->photos().isEmpty()) {
-        qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update needs photo deleted. Sending off photo delete job."
+        qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update needs photo deleted. Sending off photo delete job."
                                      << personResourceName;
 
         m_pendingPeoplePhotoUpdate.insert(personResourceName);
@@ -512,7 +512,7 @@ void PersonHandler::updateContactGroupCollection(const Collection &collection, c
 void PersonHandler::collectionAdded(const Collection &collection, const Collection & /*parent*/)
 {
     m_iface->emitStatus(AgentBase::Running, i18nc("@info:status", "Creating new contact group '%1'", collection.displayName()));
-    qCDebug(GOOGLE_PEOPLE_LOG()) << "Adding contact group" << collection.displayName();
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Adding contact group" << collection.displayName();
     People::ContactGroupPtr group(new People::ContactGroup);
     group->setName(collection.name());
 
