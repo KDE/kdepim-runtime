@@ -20,72 +20,72 @@ using namespace KGAPI2;
 
 PeopleConversionJob::PeopleConversionJob(const Item::List peopleItems, QObject* parent)
     : QObject(parent)
-    , _items(peopleItems)
+    , m_items(peopleItems)
 {
 }
 
 People::PersonList PeopleConversionJob::people() const
 {
-    return _processedPeople;
+    return m_processedPeople;
 }
 
 QString PeopleConversionJob::reparentCollectionRemoteId() const
 {
-    return _reparentCollectionRemoteId;
+    return m_reparentCollectionRemoteId;
 }
 
 void PeopleConversionJob::setReparentCollectionRemoteId(const QString &reparentCollectionRemoteId)
 {
-    if (reparentCollectionRemoteId == _reparentCollectionRemoteId) {
+    if (reparentCollectionRemoteId == m_reparentCollectionRemoteId) {
         return;
     }
 
-    _reparentCollectionRemoteId = reparentCollectionRemoteId;
+    m_reparentCollectionRemoteId = reparentCollectionRemoteId;
     Q_EMIT reparentCollectionRemoteIdChanged();
 }
 
 QString PeopleConversionJob::newLinkedCollectionRemoteId() const
 {
-    return _newLinkedCollectionRemoteId;
+    return m_newLinkedCollectionRemoteId;
 }
 
 void PeopleConversionJob::setNewLinkedCollectionRemoteId(const QString &newLinkedCollectionRemoteId)
 {
-    if (newLinkedCollectionRemoteId == _newLinkedCollectionRemoteId) {
+    if (newLinkedCollectionRemoteId == m_newLinkedCollectionRemoteId) {
         return;
     }
 
-    _newLinkedCollectionRemoteId = newLinkedCollectionRemoteId;
+    m_newLinkedCollectionRemoteId = newLinkedCollectionRemoteId;
     Q_EMIT newLinkedCollectionRemoteIdChanged();
 }
 
 QString PeopleConversionJob::linkedCollectionToRemoveRemoteId() const
 {
-    return _linkedCollectionToRemoveRemoteId;
+    return m_linkedCollectionToRemoveRemoteId;
 }
 
 void PeopleConversionJob::setLinkedCollectionToRemoveRemoteId(const QString &linkedCollectionToRemoveRemoteId)
 {
-    if (linkedCollectionToRemoveRemoteId == _linkedCollectionToRemoveRemoteId) {
+    if (linkedCollectionToRemoveRemoteId == m_linkedCollectionToRemoveRemoteId) {
         return;
     }
 
-    _linkedCollectionToRemoveRemoteId = linkedCollectionToRemoveRemoteId;
+    m_linkedCollectionToRemoveRemoteId = linkedCollectionToRemoveRemoteId;
     Q_EMIT linkedCollectionToRemoveRemoteIdChanged();
 }
 
 void PeopleConversionJob::start()
 {
-    if (_items.isEmpty()) {
+    if (m_items.isEmpty()) {
         qCDebug(GOOGLE_PEOPLE_LOG()) << "No person items to process, finishing.";
         Q_EMIT finished();
         return;
     }
 
-    _processedPeople.clear();
+    m_processedPeople.clear();
 
     QSet<Collection::Id> collectionsToFetch;
-    for (const auto &item : _items) {
+    for (const auto &item : m_items) {
         const auto itemVirtualReferences = item.virtualReferences();
         for (const auto &collection : itemVirtualReferences) {
             const auto collectionId = collection.id();
@@ -121,7 +121,7 @@ void PeopleConversionJob::jobFinished(KJob *job)
 
     for (const auto &collection : collections) {
         qCDebug(GOOGLE_PEOPLE_LOG()) << "Fetched data for virtual collection:" << collection.displayName();
-        _localToRemoteIdHash.insert(collection.id(), collection.remoteId());
+        m_localToRemoteIdHash.insert(collection.id(), collection.remoteId());
     }
 
     processItems();
@@ -140,7 +140,7 @@ People::Membership PeopleConversionJob::resourceNameToMembership(const QString &
 
 void PeopleConversionJob::processItems()
 {
-    for (const auto &item : _items) {
+    for (const auto &item : m_items) {
         const auto addressee = item.payload<KContacts::Addressee>();
         const auto person = People::Person::fromKContactsAddressee(addressee);
         QVector<People::Membership> memberships;
@@ -149,8 +149,8 @@ void PeopleConversionJob::processItems()
         person->setEtag(item.remoteRevision());
 
         // TODO: Domain membership?
-        const auto parentCollectionRemoteId = _reparentCollectionRemoteId.isEmpty() ?
-            item.parentCollection().remoteId() : _reparentCollectionRemoteId;
+        const auto parentCollectionRemoteId = m_reparentCollectionRemoteId.isEmpty() ?
+            item.parentCollection().remoteId() : m_reparentCollectionRemoteId;
         People::ContactGroupMembership contactGroupMembership;
         contactGroupMembership.setContactGroupResourceName(parentCollectionRemoteId);
 
@@ -161,13 +161,13 @@ void PeopleConversionJob::processItems()
         for (const auto &virtualCollection : item.virtualReferences()) {
 
             const auto virtualCollectionId = virtualCollection.id();
-            if (!_localToRemoteIdHash.contains(virtualCollectionId)) {
+            if (!m_localToRemoteIdHash.contains(virtualCollectionId)) {
                 qCWarning(GOOGLE_PEOPLE_LOG()) << "Fetched virtual collections do not contain collection with ID:" << virtualCollectionId;
                 continue;
             }
 
-            const auto retrievedCollectionRemoteId = _localToRemoteIdHash.value(virtualCollectionId);
-            if (retrievedCollectionRemoteId == _linkedCollectionToRemoveRemoteId) {
+            const auto retrievedCollectionRemoteId = m_localToRemoteIdHash.value(virtualCollectionId);
+            if (retrievedCollectionRemoteId == m_linkedCollectionToRemoveRemoteId) {
                 // Skip adding this membership so it will be removed serverside
                 continue;
             }
@@ -176,15 +176,15 @@ void PeopleConversionJob::processItems()
             memberships.append(existingLinkedMembership);
         }
 
-        if (!_newLinkedCollectionRemoteId.isEmpty()) {
-            const auto newLinkedMembership = resourceNameToMembership(_newLinkedCollectionRemoteId);
+        if (!m_newLinkedCollectionRemoteId.isEmpty()) {
+            const auto newLinkedMembership = resourceNameToMembership(m_newLinkedCollectionRemoteId);
             memberships.append(newLinkedMembership);
         }
 
         person->setMemberships(memberships);
 
         qCDebug(GOOGLE_PEOPLE_LOG()) << "Processed person:" << person->resourceName();
-        _processedPeople.append(person);
+        m_processedPeople.append(person);
     }
 
     Q_EMIT peopleChanged();

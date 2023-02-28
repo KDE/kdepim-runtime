@@ -335,16 +335,16 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
         return;
     }
 
-    if (_pendingPeoplePhotoUpdate.contains(personResourceName)) {
+    if (m_pendingPeoplePhotoUpdate.contains(personResourceName)) {
         qCDebug(GOOGLE_PEOPLE_LOG()) << "Received updated person response from photo update."
                                      << personResourceName;
-        _pendingPeoplePhotoUpdate.remove(personResourceName);
+        m_pendingPeoplePhotoUpdate.remove(personResourceName);
     } else if (const auto originalAddressee = originalItem.payload<KContacts::Addressee>();
                !originalAddressee.photo().isEmpty()) {
         qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update requires a photo update. Sending off photo update job."
                                      << personResourceName;
 
-        _pendingPeoplePhotoUpdate.insert(personResourceName);
+        m_pendingPeoplePhotoUpdate.insert(personResourceName);
         const auto addresseePicture = originalAddressee.photo();
         const auto pictureRawData = originalAddressee.photo().rawData();
         auto job = new People::PersonPhotoUpdateJob(personResourceName, pictureRawData, m_settings->accountPtr(), this);
@@ -354,7 +354,7 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
         qCDebug(GOOGLE_PEOPLE_LOG()) << "Person to update needs photo deleted. Sending off photo delete job."
                                      << personResourceName;
 
-        _pendingPeoplePhotoUpdate.insert(personResourceName);
+        m_pendingPeoplePhotoUpdate.insert(personResourceName);
         auto job = new People::PersonPhotoDeleteJob(personResourceName, m_settings->accountPtr(), this);
         job->setProperty(ITEM_PROPERTY, QVariant::fromValue(originalItem));
         connect(job, &People::PersonPhotoUpdateJob::finished, this, &PersonHandler::slotKGAPIModifyJobFinished);

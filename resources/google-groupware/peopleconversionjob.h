@@ -52,10 +52,10 @@ private Q_SLOTS:
 private:
     KGAPI2::People::Membership resourceNameToMembership(const QString &resourceName);
 
-    Akonadi::Item::List _items;
-    QHash<Akonadi::Collection::Id, QString> _localToRemoteIdHash;
-    KGAPI2::People::PersonList _processedPeople;
-    QString _reparentCollectionRemoteId;
-    QString _newLinkedCollectionRemoteId;
-    QString _linkedCollectionToRemoveRemoteId;
+    Akonadi::Item::List m_items;
+    QHash<Akonadi::Collection::Id, QString> m_localToRemoteIdHash;
+    KGAPI2::People::PersonList m_processedPeople;
+    QString m_reparentCollectionRemoteId;
+    QString m_newLinkedCollectionRemoteId;
+    QString m_linkedCollectionToRemoveRemoteId;
 };

@@ -52,5 +52,5 @@ private:
     static QString addresseeMimeType();
 
     QMap<QString, Akonadi::Collection> m_collections;
-    QSet<QString> _pendingPeoplePhotoUpdate;
+    QSet<QString> m_pendingPeoplePhotoUpdate;
 };
