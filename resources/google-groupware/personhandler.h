@@ -48,8 +48,8 @@ private Q_SLOTS:
     void updateContactGroupCollection(const Akonadi::Collection &collection, const KGAPI2::People::ContactGroupPtr &group);
 
 private:
-    static Akonadi::Collection collectionFromContactGroup(const KGAPI2::People::ContactGroupPtr &group);
-    static QString addresseeMimeType();
+    Q_REQUIRED_RESULT static Akonadi::Collection collectionFromContactGroup(const KGAPI2::People::ContactGroupPtr &group);
+    Q_REQUIRED_RESULT static QString addresseeMimeType();
 
     QMap<QString, Akonadi::Collection> m_collections;
     QSet<QString> m_pendingPeoplePhotoUpdate;

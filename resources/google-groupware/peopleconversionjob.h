@@ -27,10 +27,10 @@ class PeopleConversionJob : public QObject
 public:
     explicit PeopleConversionJob(const Akonadi::Item::List peopleItems, QObject* parent = nullptr);
 
-    KGAPI2::People::PersonList people() const;
-    QString reparentCollectionRemoteId() const;
-    QString newLinkedCollectionRemoteId() const;
-    QString linkedCollectionToRemoveRemoteId() const;
+    Q_REQUIRED_RESULT KGAPI2::People::PersonList people() const;
+    Q_REQUIRED_RESULT QString reparentCollectionRemoteId() const;
+    Q_REQUIRED_RESULT QString newLinkedCollectionRemoteId() const;
+    Q_REQUIRED_RESULT QString linkedCollectionToRemoveRemoteId() const;
 
 Q_SIGNALS:
     void finished();
@@ -50,7 +50,7 @@ private Q_SLOTS:
     void processItems();
 
 private:
-    KGAPI2::People::Membership resourceNameToMembership(const QString &resourceName);
+    Q_REQUIRED_RESULT KGAPI2::People::Membership resourceNameToMembership(const QString &resourceName);
 
     Akonadi::Item::List m_items;
     QHash<Akonadi::Collection::Id, QString> m_localToRemoteIdHash;
