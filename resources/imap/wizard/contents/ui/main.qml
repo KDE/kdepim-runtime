@@ -14,7 +14,7 @@ Kirigami.ScrollablePage {
     id: root
     readonly property bool valid: incomingAddressField.text.trim().length !== 0
     property int stage: 1;
-    property var identity;
+    property var identity: null;
     
     Component.onCompleted: {
         // try to guess some defaults

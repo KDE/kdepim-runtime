@@ -29,7 +29,7 @@ Kirigami.Page {
                 text: i18n("Next")
                 enabled: root.valid
                 onClicked: {
-                    var ewsRes = SetupManager.createResource( "akonadi_ews_resource" );
+                    const ewsRes = SetupManager.createResource( "akonadi_ews_resource" );
                     //maildirRes.setOption( "Path", page.widget().maildirPath.text );
 
                     SetupManager.execute();

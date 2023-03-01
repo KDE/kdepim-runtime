@@ -44,7 +44,7 @@ Kirigami.ScrollablePage {
                 text: i18n("Next")
                 enabled: root.valid
                 onClicked: {
-                    var contactsResource = SetupManager.createResource( "akonadi_contacts_resource" );
+                    const contactsResource = SetupManager.createResource( "akonadi_contacts_resource" );
                     contactsResource.setOption( "Path", contactGroupsPath.text );
                     contactsResource.setOption( "IsConfigured", "true" );
                     contactsResource.setName( i18n("Local Contacts") );
