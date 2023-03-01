@@ -14,7 +14,7 @@ import org.kde.pim.accountwizard 1.0
 
 Kirigami.ScrollablePage {
     id: root
-    property bool valid: pathField.text.length > 0
+    readonly property bool valid: pathField.text.length > 0
     Kirigami.FormLayout {
         RowLayout {
             Kirigami.FormData.label: i18n("File path:")
