@@ -19,8 +19,8 @@ endif()
 target_link_libraries(folderarchivesettings
 PRIVATE
                       KPim${KF_MAJOR_VERSION}::Mime
-                      KF5::AkonadiCore
-                      KF5::AkonadiWidgets
+                      KPim${KF_MAJOR_VERSION}::AkonadiCore
+                      KPim${KF_MAJOR_VERSION}::AkonadiWidgets
                       KF${KF_MAJOR_VERSION}::ConfigCore
                       KF${KF_MAJOR_VERSION}::I18n
                       Qt::DBus

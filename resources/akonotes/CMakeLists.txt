@@ -39,10 +39,10 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 target_link_libraries(akonadi_akonotes_resource
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
     maildir
     folderarchivesettings
@@ -71,7 +71,7 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 target_link_libraries(akonotesconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::I18n

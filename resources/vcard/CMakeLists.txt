@@ -36,7 +36,7 @@ if( APPLE )
   set_target_properties(akonadi_vcard_resource PROPERTIES MACOSX_BUNDLE_BUNDLE_NAME "KDE Akonadi VCard Resource")
 endif ()
 
-target_link_libraries(akonadi_vcard_resource KF5::AkonadiCore KF${KF_MAJOR_VERSION}::KIOCore   KF5::AkonadiAgentBase KF${KF_MAJOR_VERSION}::Contacts akonadi-singlefileresource KF${KF_MAJOR_VERSION}::Completion KF${KF_MAJOR_VERSION}::KIOWidgets KF${KF_MAJOR_VERSION}::ConfigWidgets)
+target_link_libraries(akonadi_vcard_resource KPim${KF_MAJOR_VERSION}::AkonadiCore KF${KF_MAJOR_VERSION}::KIOCore   KPim${KF_MAJOR_VERSION}::AkonadiAgentBase KF${KF_MAJOR_VERSION}::Contacts akonadi-singlefileresource KF${KF_MAJOR_VERSION}::Completion KF${KF_MAJOR_VERSION}::KIOWidgets KF${KF_MAJOR_VERSION}::ConfigWidgets)
 
 install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -49,6 +49,6 @@ kcoreaddons_add_plugin(vcardconfig
 )
 
 target_link_libraries(vcardconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     akonadi-singlefileresource
 )

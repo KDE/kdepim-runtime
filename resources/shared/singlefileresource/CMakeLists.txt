@@ -48,8 +48,8 @@ PUBLIC
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::ConfigWidgets
 PRIVATE
-    KF5::AkonadiCore
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::KIOCore
     KPim${KF_MAJOR_VERSION}::IMAP
 )

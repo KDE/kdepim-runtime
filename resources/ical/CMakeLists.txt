@@ -47,7 +47,7 @@ if( APPLE )
 endif ()
 
 install( FILES icalresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents" )
-target_link_libraries(akonadi_ical_resource KF5::AkonadiCore   KF${KF_MAJOR_VERSION}::KIOCore KF${KF_MAJOR_VERSION}::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
+target_link_libraries(akonadi_ical_resource KPim${KF_MAJOR_VERSION}::AkonadiCore   KF${KF_MAJOR_VERSION}::KIOCore KF${KF_MAJOR_VERSION}::CalendarCore KPim${KF_MAJOR_VERSION}::AkonadiAgentBase akonadi-singlefileresource)
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_ical_resource PROPERTIES UNITY_BUILD ON)
 endif()
@@ -60,6 +60,6 @@ kcoreaddons_add_plugin(icalconfig
 )
 target_sources(icalconfig PRIVATE icalconfig.cpp ${icalresource_common_SRCS})
 target_link_libraries(icalconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     akonadi-singlefileresource
 )

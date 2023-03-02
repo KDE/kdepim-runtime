@@ -36,13 +36,13 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 target_link_libraries( akonadi_newmailnotifier_agent
-  KF5::AkonadiCore
+  KPim${KF_MAJOR_VERSION}::AkonadiCore
   KPim${KF_MAJOR_VERSION}::Mime
   KPim${KF_MAJOR_VERSION}::AkonadiMime
   KPim${KF_MAJOR_VERSION}::AkonadiContact
   KF${KF_MAJOR_VERSION}::Codecs
   KPim${KF_MAJOR_VERSION}::IdentityManagement
-  KF5::AkonadiAgentBase
+  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
   KF${KF_MAJOR_VERSION}::Notifications
   KF${KF_MAJOR_VERSION}::Service
   KF${KF_MAJOR_VERSION}::I18n
@@ -84,7 +84,7 @@ target_sources(newmailnotifierconfig PRIVATE
     )
 
 target_link_libraries(newmailnotifierconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     Qt::Widgets
     KF${KF_MAJOR_VERSION}::NotifyConfig

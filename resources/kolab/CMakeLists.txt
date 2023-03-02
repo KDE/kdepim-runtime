@@ -73,13 +73,13 @@ ki18n_wrap_ui(kolabresource_SRCS ../imap/setupserverview_desktop.ui)
 add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::IMAP
     KPim${KF_MAJOR_VERSION}::MailTransport
     KPim${KF_MAJOR_VERSION}::Mime
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::AkonadiCalendar
-    KF5::AkonadiWidgets
+    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
     KPim${KF_MAJOR_VERSION}::IdentityManagement
     imapresource
     folderarchivesettings

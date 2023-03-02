@@ -40,7 +40,7 @@ set( common_link_libraries
   maildir
   akonadi-filestore
   KPim${KF_MAJOR_VERSION}::AkonadiMime
-  KF5::AkonadiCore
+  KPim${KF_MAJOR_VERSION}::AkonadiCore
   KPim${KF_MAJOR_VERSION}::Mbox
   KPim${KF_MAJOR_VERSION}::Mime
   Qt::Test

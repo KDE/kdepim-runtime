@@ -30,7 +30,7 @@ target_sources( akonadi_notes_resource PRIVATE
 )
 
 
-target_link_libraries(akonadi_notes_resource KF5::AkonadiCore  KF${KF_MAJOR_VERSION}::KIOCore KF${KF_MAJOR_VERSION}::CalendarCore KF5::AkonadiAgentBase akonadi-singlefileresource)
+target_link_libraries(akonadi_notes_resource KPim${KF_MAJOR_VERSION}::AkonadiCore  KF${KF_MAJOR_VERSION}::KIOCore KF${KF_MAJOR_VERSION}::CalendarCore KPim${KF_MAJOR_VERSION}::AkonadiAgentBase akonadi-singlefileresource)
 
 install(TARGETS akonadi_notes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -43,6 +43,6 @@ kcoreaddons_add_plugin(notesconfig
 target_sources(notesconfig PRIVATE notesconfig.cpp ${notesresource_common_SRCS})
 
 target_link_libraries(notesconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     akonadi-singlefileresource
 )

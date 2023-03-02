@@ -37,8 +37,8 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_contacts_resource PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(akonadi_contacts_resource
-    KF5::AkonadiCore
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::Contacts
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::KIOWidgets
@@ -61,12 +61,12 @@ target_sources(contactsconfig PRIVATE
 
 
 target_link_libraries(contactsconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::Codecs
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::Contacts
-    KF5::AkonadiWidgets
+    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::KIOWidgets
     )

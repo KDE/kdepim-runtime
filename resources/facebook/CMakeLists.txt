@@ -33,7 +33,7 @@ target_link_libraries(facebookresourcelib
 add_executable(akonadi_facebook_resource resource.cpp)
 target_link_libraries(akonadi_facebook_resource
     facebookresourcelib
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::I18n
     KF5::Wallet
@@ -66,12 +66,12 @@ kcoreaddons_add_plugin(facebookconfig
     )
 target_link_libraries(facebookconfig
     facebookresourcelib
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::Codecs
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::Contacts
-    KF5::AkonadiWidgets
+    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::KIOWidgets
     )

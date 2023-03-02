@@ -35,8 +35,8 @@ endif ()
 target_link_libraries(akonadi_migration_agent
     gidmigration
     googlegroupwaremigration
-    KF5::AkonadiCore
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::Contacts
     KF${KF_MAJOR_VERSION}::WindowSystem
     KF${KF_MAJOR_VERSION}::JobWidgets

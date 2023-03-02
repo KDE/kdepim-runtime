@@ -52,7 +52,7 @@ endif()
 target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
     Qt::DBus
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::ConfigCore
     KF${KF_MAJOR_VERSION}::Contacts
     KF${KF_MAJOR_VERSION}::CalendarCore

@@ -58,11 +58,11 @@ endif ()
 target_link_libraries(akonadi_mbox_resource
     KF${KF_MAJOR_VERSION}::I18n
     KPim${KF_MAJOR_VERSION}::Mbox
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::Completion
     akonadi-singlefileresource
     )
@@ -92,7 +92,7 @@ ki18n_wrap_ui(mboxconfig
     )
 
 target_link_libraries(mboxconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::I18n

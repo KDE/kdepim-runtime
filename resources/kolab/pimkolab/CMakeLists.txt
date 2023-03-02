@@ -89,7 +89,7 @@ set(KOLAB_LINK_LIBRARIES
     KPim${KF_MAJOR_VERSION}::CalendarUtils
     KF${KF_MAJOR_VERSION}::Contacts
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiNotes
     KF${KF_MAJOR_VERSION}::Codecs
     KF${KF_MAJOR_VERSION}::I18n

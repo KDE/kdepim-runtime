@@ -37,8 +37,8 @@ endif ()
 
 
 target_link_libraries(akonadi_vcarddir_resource
-  KF5::AkonadiCore
-  KF5::AkonadiAgentBase
+  KPim${KF_MAJOR_VERSION}::AkonadiCore
+  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
   KF${KF_MAJOR_VERSION}::Contacts
   KF${KF_MAJOR_VERSION}::I18n
   KF${KF_MAJOR_VERSION}::TextWidgets
@@ -69,10 +69,10 @@ target_sources(vcarddirconfig PRIVATE
 
 
 target_link_libraries(vcarddirconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::CalendarCore
-    KF5::AkonadiAgentBase
-    KF5::AkonadiWidgets
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::TextWidgets

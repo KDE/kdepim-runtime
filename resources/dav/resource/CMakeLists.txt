@@ -81,8 +81,8 @@ target_link_libraries(akonadi_davgroupware_resource
     KF${KF_MAJOR_VERSION}::Contacts
     KPim${KF_MAJOR_VERSION}::AkonadiCalendar
     KF${KF_MAJOR_VERSION}::KIOCore
-    KF5::AkonadiAgentBase
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::Wallet
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::Completion

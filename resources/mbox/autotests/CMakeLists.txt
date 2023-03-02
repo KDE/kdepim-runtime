@@ -3,5 +3,5 @@ set( mbox_deleteitemsattributetest_source deleteitemsattributetest.cpp deleteite
 add_executable( deleteitemsattributetest ${mbox_deleteitemsattributetest_source})
 add_test(NAME deleteitemsattributetest COMMAND deleteitemsattributetest)
 ecm_mark_as_test(deleteitemsattributetest)
-target_link_libraries( deleteitemsattributetest Qt::Test Qt::Gui KF5::AkonadiCore KPim${KF_MAJOR_VERSION}::Mbox)
+target_link_libraries( deleteitemsattributetest Qt::Test Qt::Gui KPim${KF_MAJOR_VERSION}::AkonadiCore KPim${KF_MAJOR_VERSION}::Mbox)
 

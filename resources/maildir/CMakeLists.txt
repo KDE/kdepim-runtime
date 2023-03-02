@@ -48,10 +48,10 @@ endif()
 target_link_libraries(akonadi_maildir_resource
     maildir
     folderarchivesettings
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Mime
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
 )
 
@@ -79,7 +79,7 @@ ki18n_wrap_ui(maildirconfig settings.ui)
 
 
 target_link_libraries(maildirconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::I18n

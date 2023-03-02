@@ -79,8 +79,8 @@ endif()
 
 target_link_libraries(akonadi_google_resource
   KPim${KF_MAJOR_VERSION}::AkonadiCalendar
-  KF5::AkonadiCore
-  KF5::AkonadiAgentBase
+  KPim${KF_MAJOR_VERSION}::AkonadiCore
+  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
   KF${KF_MAJOR_VERSION}::CalendarCore
   KF${KF_MAJOR_VERSION}::Contacts
   KF${KF_MAJOR_VERSION}::Wallet

@@ -43,12 +43,12 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_maildispatcher_agent 
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KPim${KF_MAJOR_VERSION}::Mime
     KPim${KF_MAJOR_VERSION}::MailTransportAkonadi
     KPim${KF_MAJOR_VERSION}::MailTransport
-    KF5::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::Notifications
 )
@@ -63,7 +63,7 @@ kcoreaddons_add_plugin(maildispatcherconfig
     SOURCES maildispatcherconfig.cpp maildispatcherconfig.h
     INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config")
 target_link_libraries(maildispatcherconfig
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KF${KF_MAJOR_VERSION}::NotifyConfig
     KF${KF_MAJOR_VERSION}::ConfigCore
 )

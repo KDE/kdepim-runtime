@@ -146,8 +146,8 @@ qt_add_dbus_adaptor(ewsresource_SRCS
 
 add_executable(akonadi_ews_resource ${ewsresource_SRCS})
 target_link_libraries(akonadi_ews_resource
-    KF5::AkonadiAgentBase
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiMime
     KF${KF_MAJOR_VERSION}::KIOCore
     KPim${KF_MAJOR_VERSION}::Mime
@@ -187,9 +187,9 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
 
     add_executable(akonadi_ewsmta_resource ${ewsmtaresource_SRCS})
     target_link_libraries(akonadi_ewsmta_resource
-        KF5::AkonadiAgentBase
-        KF5::AkonadiCore
-        KF5::AkonadiWidgets
+        KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
+        KPim${KF_MAJOR_VERSION}::AkonadiCore
+        KPim${KF_MAJOR_VERSION}::AkonadiWidgets
         KF${KF_MAJOR_VERSION}::I18n
         KF${KF_MAJOR_VERSION}::WindowSystem
         KPim${KF_MAJOR_VERSION}::Mime)

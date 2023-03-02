@@ -49,7 +49,7 @@ generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 
 target_link_libraries(akonadi-filestore
     PUBLIC
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     PRIVATE
     KF${KF_MAJOR_VERSION}::I18n
     )

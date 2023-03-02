@@ -8,7 +8,7 @@ add_executable(newmailnotifierselectcollectionwidgettest ${newmailnotifierselect
 target_link_libraries(newmailnotifierselectcollectionwidgettest
     Qt::Widgets
     KF${KF_MAJOR_VERSION}::I18n
-    KF5::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::Mime
     KF${KF_MAJOR_VERSION}::Completion
     KPim${KF_MAJOR_VERSION}::AkonadiMime)
