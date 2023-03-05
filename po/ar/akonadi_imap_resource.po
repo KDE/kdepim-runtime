@@ -227,7 +227,7 @@ msgstr "مسار RID لمراقبة تغييرات صندوق البريد"
 #: imapresource.kcfg:92
 #, kde-format
 msgid "Define if server supports sieve"
-msgstr "يحدّد فيما إذا كان يدعم الخادوم «سِڤ»"
+msgstr "يحدّد فيما إذا كان يدعم الخادوم «سِف»"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:96
@@ -239,7 +239,7 @@ msgstr "يحدّد فيما إذا علينا استخدام ضبط المضيف
 #: imapresource.kcfg:100
 #, kde-format
 msgid "Define sieve port"
-msgstr "يحدّد منفذ «سِڤ»"
+msgstr "يحدّد منفذ «سِف»"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
 #: imapresource.kcfg:104
@@ -257,19 +257,19 @@ msgstr "يحدّد نوع الاستيثاق لاستخدامه للخادوم �
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Define default sieve vacation filename"
-msgstr "يحدّد اسم ملفّ «عُطَل سِڤ» المبدئيّ"
+msgstr "يحدّد اسم ملفّ «عُطَل سِف» المبدئيّ"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:115
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr "يحدّد اسم المستخدم المستخدم من مسار خادوم «سِڤ» المخصّص"
+msgstr "يحدّد اسم المستخدم المستخدم من مسار خادوم «سِف» المخصّص"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr "يحدّد نوع التّعريف الذي يستخدمه خادوم «سِڤ» المخصّص"
+msgstr "يحدّد نوع التّعريف الذي يستخدمه خادوم «سِف» المخصّص"
 
 #: imapresourcebase.cpp:213
 #, kde-format
@@ -838,7 +838,7 @@ msgstr "التّرشيح"
 #: setupserverview_desktop.ui:166
 #, kde-format
 msgid "Server supports Sieve"
-msgstr "يدعم الخادوم «سِڤ»"
+msgstr "يدعم الخادوم «سِف»"
 
 #. i18n: ectx: property (text), widget (QCheckBox, sameConfigCheck)
 #: setupserverview_desktop.ui:173
