@@ -1,7 +1,7 @@
 [Global]
 IconName=mail-folder-outbox
 Comment=KDE e-mail client
-Comment[ar]=عميل «كدي» للبريد
+Comment[ar]=عميل «كِيدِي» للبريد
 Comment[bg]=Пощенски клиент за KDE
 Comment[bs]=KDE klijent elektronske pošte
 Comment[ca]=Client de correu electrònic per al KDE
@@ -53,7 +53,7 @@ Comment[x-test]=xxKDE e-mail clientxx
 Comment[zh_CN]=KDE 邮件客户端
 Comment[zh_TW]=KDE 收發信軟體
 Name=KDE Mail
-Name[ar]=بريد كدي
+Name[ar]=بريد كِيدِي
 Name[bg]=KDE поща
 Name[bs]=KDE Mail
 Name[ca]=Correu del KDE
