@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=mailbox.org
+Type=Service
+
+X-DavGroupware-SupportedProtocols=CalDav,CardDav
+X-DavGroupware-ProviderUsesSSL=1
+X-DavGroupware-CalDavHost=dav.mailbox.org
+X-DavGroupware-CalDavPath=/caldav
+X-DavGroupware-CardDavHost=dav.mailbox.org
+X-DavGroupware-CardDavPath=/carddav
