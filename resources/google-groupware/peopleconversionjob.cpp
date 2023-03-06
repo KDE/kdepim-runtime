@@ -18,7 +18,7 @@
 using namespace Akonadi;
 using namespace KGAPI2;
 
-PeopleConversionJob::PeopleConversionJob(const Item::List peopleItems, QObject* parent)
+PeopleConversionJob::PeopleConversionJob(const Item::List &peopleItems, QObject *parent)
     : QObject(parent)
     , m_items(peopleItems)
 {

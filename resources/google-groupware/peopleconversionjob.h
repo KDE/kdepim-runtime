@@ -25,7 +25,7 @@ class PeopleConversionJob : public QObject
     Q_PROPERTY(QString linkedCollectionToRemoveRemoteId READ linkedCollectionToRemoveRemoteId WRITE setLinkedCollectionToRemoveRemoteId NOTIFY linkedCollectionToRemoveRemoteIdChanged)
 
 public:
-    explicit PeopleConversionJob(const Akonadi::Item::List peopleItems, QObject* parent = nullptr);
+    explicit PeopleConversionJob(const Akonadi::Item::List &peopleItems, QObject *parent = nullptr);
 
     Q_REQUIRED_RESULT KGAPI2::People::PersonList people() const;
     Q_REQUIRED_RESULT QString reparentCollectionRemoteId() const;
