@@ -9,6 +9,7 @@
 #pragma once
 
 #include "generichandler.h"
+#include <KGAPI/People/Person>
 #include <KGAPI/Types>
 
 class PersonHandler : public GenericHandler

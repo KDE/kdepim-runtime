@@ -5,8 +5,9 @@
 
 #include <QString>
 
-#include <KGAPI/Types>
 #include <Akonadi/Item>
+#include <KGAPI/People/Person>
+#include <KGAPI/Types>
 
 #pragma once
 
