@@ -140,7 +140,7 @@ People::Membership PeopleConversionJob::resourceNameToMembership(const QString &
 
 void PeopleConversionJob::processItems()
 {
-    for (const auto &item : m_items) {
+    for (const auto &item : std::as_const(m_items)) {
         const auto addressee = item.payload<KContacts::Addressee>();
         const auto person = People::Person::fromKContactsAddressee(addressee);
         QVector<People::Membership> memberships;
