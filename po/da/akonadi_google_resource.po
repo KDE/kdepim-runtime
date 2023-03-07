@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-09 00:48+0000\n"
+"POT-Creation-Date: 2023-03-07 00:48+0000\n"
 "PO-Revision-Date: 2020-07-31 19:09+0200\n"
 "Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -80,139 +80,6 @@ msgctxt "@info:status"
 msgid "Removing calendar '%1'"
 msgstr "Fjern kalender?"
 
-#: contacthandler.cpp:73
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "Coworkers"
-msgstr "Kolleger"
-
-#: contacthandler.cpp:75
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "Friends"
-msgstr "Venner"
-
-#: contacthandler.cpp:77
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "Family"
-msgstr "Familie"
-
-#: contacthandler.cpp:79
-#, fuzzy, kde-format
-#| msgid "My Contacts"
-msgctxt "Name of a group of contacts"
-msgid "My Contacts"
-msgstr "Mine kontakter"
-
-#: contacthandler.cpp:101
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Retrieving photos"
-msgctxt "@info:status"
-msgid "Retrieving contacts groups"
-msgstr "Henter fotos"
-
-#: contacthandler.cpp:107 contacthandler.cpp:113
-#, kde-format
-msgid "Other Contacts"
-msgstr "Andre kontakter"
-
-#: contacthandler.cpp:149
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving contacts for group '%1'"
-msgstr ""
-
-#: contacthandler.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Retrieving photos"
-msgctxt "@info:status"
-msgid "Retrieving %1 contact photo for group '%2'"
-msgid_plural "Retrieving %1 contact photos for group '%2'"
-msgstr[0] "Henter fotos"
-msgstr[1] "Henter fotos"
-
-#: contacthandler.cpp:301
-#, kde-format
-msgctxt "@info:status"
-msgid "Adding contact to group '%1'"
-msgstr ""
-
-#: contacthandler.cpp:328
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
-msgctxt "@info:status"
-msgid "Changing contact"
-msgstr "Fjerner kontakt"
-
-#: contacthandler.cpp:338
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
-msgctxt "@info:status"
-msgid "Removing %1 contact"
-msgid_plural "Removing %1 contacts"
-msgstr[0] "Fjerner kontakt"
-msgstr[1] "Fjerner kontakt"
-
-#: contacthandler.cpp:355
-#, kde-format
-msgid "Invalid source or destination collection"
-msgstr "Ugyldig kilde eller destinationssamling"
-
-#: contacthandler.cpp:360
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
-msgctxt "@info:status"
-msgid "Moving %1 contact from group '%2' to '%3'"
-msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] "Fjerner kontakt"
-msgstr[1] "Fjerner kontakt"
-
-#: contacthandler.cpp:387
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
-msgctxt "@info:status"
-msgid "Linking %1 contact"
-msgid_plural "Linking %1 contacts"
-msgstr[0] "Fjerner kontakt"
-msgstr[1] "Fjerner kontakt"
-
-#: contacthandler.cpp:404
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
-msgctxt "@info:status"
-msgid "Unlinking %1 contact"
-msgid_plural "Unlinking %1 contacts"
-msgstr[0] "Fjerner kontakt"
-msgstr[1] "Fjerner kontakt"
-
-#: contacthandler.cpp:421
-#, kde-format
-msgctxt "@info:status"
-msgid "Creating new contact group '%1'"
-msgstr ""
-
-#: contacthandler.cpp:445
-#, kde-format
-msgctxt "@info:status"
-msgid "Changing contact group '%1'"
-msgstr ""
-
-#: contacthandler.cpp:459
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
-msgctxt "@info:status"
-msgid "Removing contact group '%1'"
-msgstr "Fjerner kontakt"
-
 #: generichandler.cpp:24
 #, kde-format
 msgid "Cannot handle item linking"
@@ -235,12 +102,12 @@ msgstr "Klar"
 msgid "Invalid item."
 msgstr "Ugyldig elementladning."
 
-#: googleresource.cpp:75
+#: googleresource.cpp:77
 #, kde-format
 msgid "Waiting for KWallet..."
 msgstr "Venter på KWallet..."
 
-#: googleresource.cpp:84
+#: googleresource.cpp:86
 #, kde-format
 msgid "Can't access KWallet"
 msgstr "Kan ikke tilgå KWallet"
@@ -389,6 +256,129 @@ msgstr "Genindlæs"
 msgid "Enabled Tasklists:"
 msgstr "Opgavelister"
 
+#: personhandler.cpp:88
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "Coworkers"
+msgstr "Kolleger"
+
+#: personhandler.cpp:90
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "Friends"
+msgstr "Venner"
+
+#: personhandler.cpp:92
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "Family"
+msgstr "Familie"
+
+#: personhandler.cpp:94
+#, fuzzy, kde-format
+#| msgid "My Contacts"
+msgctxt "Name of a group of contacts"
+msgid "My Contacts"
+msgstr "Mine kontakter"
+
+#: personhandler.cpp:118
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Retrieving photos"
+msgctxt "@info:status"
+msgid "Retrieving contacts groups"
+msgstr "Henter fotos"
+
+#: personhandler.cpp:125 personhandler.cpp:131
+#, kde-format
+msgid "Other Contacts"
+msgstr "Andre kontakter"
+
+#: personhandler.cpp:172
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving contacts for group '%1'"
+msgstr ""
+
+#: personhandler.cpp:376
+#, kde-format
+msgctxt "@info:status"
+msgid "Adding contact to group '%1'"
+msgstr ""
+
+#: personhandler.cpp:410
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Changing contact"
+msgstr "Fjerner kontakt"
+
+#: personhandler.cpp:424
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Removing %1 contact"
+msgid_plural "Removing %1 contacts"
+msgstr[0] "Fjerner kontakt"
+msgstr[1] "Fjerner kontakt"
+
+#: personhandler.cpp:444
+#, kde-format
+msgid "Invalid source or destination collection"
+msgstr "Ugyldig kilde eller destinationssamling"
+
+#: personhandler.cpp:450
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Moving %1 contact from group '%2' to '%3'"
+msgid_plural "Moving %1 contacts from group '%2' to '%3'"
+msgstr[0] "Fjerner kontakt"
+msgstr[1] "Fjerner kontakt"
+
+#: personhandler.cpp:467
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Linking %1 contact"
+msgid_plural "Linking %1 contacts"
+msgstr[0] "Fjerner kontakt"
+msgstr[1] "Fjerner kontakt"
+
+#: personhandler.cpp:481
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Unlinking %1 contact"
+msgid_plural "Unlinking %1 contacts"
+msgstr[0] "Fjerner kontakt"
+msgstr[1] "Fjerner kontakt"
+
+#: personhandler.cpp:514
+#, kde-format
+msgctxt "@info:status"
+msgid "Creating new contact group '%1'"
+msgstr ""
+
+#: personhandler.cpp:535
+#, kde-format
+msgctxt "@info:status"
+msgid "Changing contact group '%1'"
+msgstr ""
+
+#: personhandler.cpp:560
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing contact"
+msgctxt "@info:status"
+msgid "Removing contact group '%1'"
+msgstr "Fjerner kontakt"
+
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
 #, kde-format
@@ -465,6 +455,15 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Fjern opgaveliste?"
+
+#, fuzzy
+#~| msgctxt "@info:status"
+#~| msgid "Retrieving photos"
+#~ msgctxt "@info:status"
+#~ msgid "Retrieving %1 contact photo for group '%2'"
+#~ msgid_plural "Retrieving %1 contact photos for group '%2'"
+#~ msgstr[0] "Henter fotos"
+#~ msgstr[1] "Henter fotos"
 
 #~ msgid "Refresh"
 #~ msgstr "Genopfrisk"

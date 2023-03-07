@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-09 00:48+0000\n"
+"POT-Creation-Date: 2023-03-07 00:48+0000\n"
 "PO-Revision-Date: 2020-04-29 13:16+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -89,141 +89,6 @@ msgctxt "@info:status"
 msgid "Removing calendar '%1'"
 msgstr "Šalinamas kalendorius „%1“"
 
-#: contacthandler.cpp:73
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "Coworkers"
-msgstr "Bendradarbiai"
-
-#: contacthandler.cpp:75
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "Friends"
-msgstr "Draugai"
-
-#: contacthandler.cpp:77
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "Family"
-msgstr "Šeima"
-
-#: contacthandler.cpp:79
-#, kde-format
-msgctxt "Name of a group of contacts"
-msgid "My Contacts"
-msgstr "Mano adresatai"
-
-#: contacthandler.cpp:101
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving contacts groups"
-msgstr "Gaunamos adresatų grupės"
-
-#: contacthandler.cpp:107 contacthandler.cpp:113
-#, kde-format
-msgid "Other Contacts"
-msgstr "Kiti adresatai"
-
-#: contacthandler.cpp:149
-#, kde-format
-msgctxt "@info:status"
-msgid "Retrieving contacts for group '%1'"
-msgstr "Gaunami grupės „%1“ adresatai"
-
-#: contacthandler.cpp:245
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Retrieving %1 contacts photos for group '%2'"
-#| msgid_plural "Retrieving %1 contact photo for group '%2'"
-msgctxt "@info:status"
-msgid "Retrieving %1 contact photo for group '%2'"
-msgid_plural "Retrieving %1 contact photos for group '%2'"
-msgstr[0] "Gaunama %1 adresato nuotrauka iš grupės „%2“"
-msgstr[1] "Gaunamos %1 adresatų nuotraukos iš grupės „%2“"
-msgstr[2] "Gaunamos %1 adresatų nuotraukos iš grupės „%2“"
-msgstr[3] "Gaunamos %1 adresato nuotraukos iš grupės „%2“"
-
-#: contacthandler.cpp:301
-#, kde-format
-msgctxt "@info:status"
-msgid "Adding contact to group '%1'"
-msgstr "Pridedamas adresatas į grupę „%1“"
-
-#: contacthandler.cpp:328
-#, kde-format
-msgctxt "@info:status"
-msgid "Changing contact"
-msgstr "Keičiamas adresatas"
-
-#: contacthandler.cpp:338
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing %1 contacts"
-#| msgid_plural "Removing %1 contact"
-msgctxt "@info:status"
-msgid "Removing %1 contact"
-msgid_plural "Removing %1 contacts"
-msgstr[0] "Šalinamas %1 adresatas"
-msgstr[1] "Šalinami %1 adresatai"
-msgstr[2] "Šalinama %1 adresatų"
-msgstr[3] "Šalinamas %1 adresatas"
-
-#: contacthandler.cpp:355
-#, kde-format
-msgid "Invalid source or destination collection"
-msgstr "Neteisinga šaltinio ar paskirties kolekcija"
-
-#: contacthandler.cpp:360
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Moving %1 contacts from group '%2' to '%3'"
-#| msgid_plural "Moving %1 contact from group '%2' to '%3'"
-msgctxt "@info:status"
-msgid "Moving %1 contact from group '%2' to '%3'"
-msgid_plural "Moving %1 contacts from group '%2' to '%3'"
-msgstr[0] "Perkeliamas %1 adresatas iš grupės „%2“ į „%3“"
-msgstr[1] "Perkeliami %1 adresatai iš grupės „%2“ į „%3“"
-msgstr[2] "Perkeliama %1 adresatų iš grupės „%2“ į „%3“"
-msgstr[3] "Perkeliamas %1 adresatas iš grupės „%2“ į „%3“"
-
-#: contacthandler.cpp:387
-#, kde-format
-msgctxt "@info:status"
-msgid "Linking %1 contact"
-msgid_plural "Linking %1 contacts"
-msgstr[0] "Susiejamas %1 adresatas"
-msgstr[1] "Susiejami %1 adresatai"
-msgstr[2] "Susiejama %1 adresatų"
-msgstr[3] "Susiejamas %1 adresatas"
-
-#: contacthandler.cpp:404
-#, kde-format
-msgctxt "@info:status"
-msgid "Unlinking %1 contact"
-msgid_plural "Unlinking %1 contacts"
-msgstr[0] "Atsiejamas %1 adresatas"
-msgstr[1] "Atsiejami %1 adresatai"
-msgstr[2] "Atsiejama %1 adresatų"
-msgstr[3] "Atsiejamas %1 adresatas"
-
-#: contacthandler.cpp:421
-#, kde-format
-msgctxt "@info:status"
-msgid "Creating new contact group '%1'"
-msgstr "Kuriama nauja adresatų grupė „%1“"
-
-#: contacthandler.cpp:445
-#, kde-format
-msgctxt "@info:status"
-msgid "Changing contact group '%1'"
-msgstr "Keičiama adresatų grupė „%1“"
-
-#: contacthandler.cpp:459
-#, kde-format
-msgctxt "@info:status"
-msgid "Removing contact group '%1'"
-msgstr "Šalinama adresatų grupė „%1“"
-
 #: generichandler.cpp:24
 #, kde-format
 msgid "Cannot handle item linking"
@@ -246,12 +111,12 @@ msgstr "Pasiruošę"
 msgid "Invalid item."
 msgstr "Netinkamas naudingosios apkrovos tipas"
 
-#: googleresource.cpp:75
+#: googleresource.cpp:77
 #, kde-format
 msgid "Waiting for KWallet..."
 msgstr "Laukiama KWallet..."
 
-#: googleresource.cpp:84
+#: googleresource.cpp:86
 #, kde-format
 msgid "Can't access KWallet"
 msgstr "Nepavyksta pasiekti KWallet"
@@ -399,6 +264,128 @@ msgstr "Įkelti iš naujo"
 msgid "Enabled Tasklists:"
 msgstr "Užduočių sąrašai"
 
+#: personhandler.cpp:88
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "Coworkers"
+msgstr "Bendradarbiai"
+
+#: personhandler.cpp:90
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "Friends"
+msgstr "Draugai"
+
+#: personhandler.cpp:92
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "Family"
+msgstr "Šeima"
+
+#: personhandler.cpp:94
+#, kde-format
+msgctxt "Name of a group of contacts"
+msgid "My Contacts"
+msgstr "Mano adresatai"
+
+#: personhandler.cpp:118
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving contacts groups"
+msgstr "Gaunamos adresatų grupės"
+
+#: personhandler.cpp:125 personhandler.cpp:131
+#, kde-format
+msgid "Other Contacts"
+msgstr "Kiti adresatai"
+
+#: personhandler.cpp:172
+#, kde-format
+msgctxt "@info:status"
+msgid "Retrieving contacts for group '%1'"
+msgstr "Gaunami grupės „%1“ adresatai"
+
+#: personhandler.cpp:376
+#, kde-format
+msgctxt "@info:status"
+msgid "Adding contact to group '%1'"
+msgstr "Pridedamas adresatas į grupę „%1“"
+
+#: personhandler.cpp:410
+#, kde-format
+msgctxt "@info:status"
+msgid "Changing contact"
+msgstr "Keičiamas adresatas"
+
+#: personhandler.cpp:424
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Removing %1 contacts"
+#| msgid_plural "Removing %1 contact"
+msgctxt "@info:status"
+msgid "Removing %1 contact"
+msgid_plural "Removing %1 contacts"
+msgstr[0] "Šalinamas %1 adresatas"
+msgstr[1] "Šalinami %1 adresatai"
+msgstr[2] "Šalinama %1 adresatų"
+msgstr[3] "Šalinamas %1 adresatas"
+
+#: personhandler.cpp:444
+#, kde-format
+msgid "Invalid source or destination collection"
+msgstr "Neteisinga šaltinio ar paskirties kolekcija"
+
+#: personhandler.cpp:450
+#, fuzzy, kde-format
+#| msgctxt "@info:status"
+#| msgid "Moving %1 contacts from group '%2' to '%3'"
+#| msgid_plural "Moving %1 contact from group '%2' to '%3'"
+msgctxt "@info:status"
+msgid "Moving %1 contact from group '%2' to '%3'"
+msgid_plural "Moving %1 contacts from group '%2' to '%3'"
+msgstr[0] "Perkeliamas %1 adresatas iš grupės „%2“ į „%3“"
+msgstr[1] "Perkeliami %1 adresatai iš grupės „%2“ į „%3“"
+msgstr[2] "Perkeliama %1 adresatų iš grupės „%2“ į „%3“"
+msgstr[3] "Perkeliamas %1 adresatas iš grupės „%2“ į „%3“"
+
+#: personhandler.cpp:467
+#, kde-format
+msgctxt "@info:status"
+msgid "Linking %1 contact"
+msgid_plural "Linking %1 contacts"
+msgstr[0] "Susiejamas %1 adresatas"
+msgstr[1] "Susiejami %1 adresatai"
+msgstr[2] "Susiejama %1 adresatų"
+msgstr[3] "Susiejamas %1 adresatas"
+
+#: personhandler.cpp:481
+#, kde-format
+msgctxt "@info:status"
+msgid "Unlinking %1 contact"
+msgid_plural "Unlinking %1 contacts"
+msgstr[0] "Atsiejamas %1 adresatas"
+msgstr[1] "Atsiejami %1 adresatai"
+msgstr[2] "Atsiejama %1 adresatų"
+msgstr[3] "Atsiejamas %1 adresatas"
+
+#: personhandler.cpp:514
+#, kde-format
+msgctxt "@info:status"
+msgid "Creating new contact group '%1'"
+msgstr "Kuriama nauja adresatų grupė „%1“"
+
+#: personhandler.cpp:535
+#, kde-format
+msgctxt "@info:status"
+msgid "Changing contact group '%1'"
+msgstr "Keičiama adresatų grupė „%1“"
+
+#: personhandler.cpp:560
+#, kde-format
+msgctxt "@info:status"
+msgid "Removing contact group '%1'"
+msgstr "Šalinama adresatų grupė „%1“"
+
 #. i18n: ectx: label, entry (Calendars), group (General)
 #: settingsbase.kcfg:21
 #, kde-format
@@ -471,6 +458,18 @@ msgstr "Keičiamas užduočių sąrašas „%1“"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Šalinamas užduočių sąrašas „%1“"
+
+#, fuzzy
+#~| msgctxt "@info:status"
+#~| msgid "Retrieving %1 contacts photos for group '%2'"
+#~| msgid_plural "Retrieving %1 contact photo for group '%2'"
+#~ msgctxt "@info:status"
+#~ msgid "Retrieving %1 contact photo for group '%2'"
+#~ msgid_plural "Retrieving %1 contact photos for group '%2'"
+#~ msgstr[0] "Gaunama %1 adresato nuotrauka iš grupės „%2“"
+#~ msgstr[1] "Gaunamos %1 adresatų nuotraukos iš grupės „%2“"
+#~ msgstr[2] "Gaunamos %1 adresatų nuotraukos iš grupės „%2“"
+#~ msgstr[3] "Gaunamos %1 adresato nuotraukos iš grupės „%2“"
 
 #~ msgid "Refresh"
 #~ msgstr "Įkelti iš naujo"
