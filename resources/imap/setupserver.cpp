@@ -59,7 +59,7 @@
 #include "ui_setupserverview_desktop.h"
 
 /** static helper functions **/
-static QString authenticationModeString(MailTransport::Transport::EnumAuthenticationType::type mode)
+static QString authenticationModeString(MailTransport::Transport::EnumAuthenticationType mode)
 {
     switch (mode) {
     case MailTransport::Transport::EnumAuthenticationType::LOGIN:
@@ -86,7 +86,7 @@ static QString authenticationModeString(MailTransport::Transport::EnumAuthentica
     return {};
 }
 
-static void setCurrentAuthMode(QComboBox *authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype)
+static void setCurrentAuthMode(QComboBox *authCombo, MailTransport::Transport::EnumAuthenticationType authtype)
 {
     qCDebug(IMAPRESOURCE_LOG) << "setting authcombo: " << authenticationModeString(authtype);
     int index = authCombo->findData(authtype);
@@ -94,23 +94,21 @@ static void setCurrentAuthMode(QComboBox *authCombo, MailTransport::Transport::E
         qCWarning(IMAPRESOURCE_LOG) << "desired authmode not in the combo";
     }
     qCDebug(IMAPRESOURCE_LOG) << "found corresponding index: " << index << "with data"
-                              << authenticationModeString((MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(index).toInt());
+                              << authenticationModeString((MailTransport::Transport::EnumAuthenticationType)authCombo->itemData(index).toInt());
     authCombo->setCurrentIndex(index);
-    MailTransport::Transport::EnumAuthenticationType::type t =
-        (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
+    auto t = static_cast<MailTransport::Transport::EnumAuthenticationType>(authCombo->itemData(authCombo->currentIndex()).toInt());
     qCDebug(IMAPRESOURCE_LOG) << "selected auth mode:" << authenticationModeString(t);
     Q_ASSERT(t == authtype);
 }
 
-static MailTransport::Transport::EnumAuthenticationType::type getCurrentAuthMode(QComboBox *authCombo)
+static MailTransport::Transport::EnumAuthenticationType getCurrentAuthMode(QComboBox *authCombo)
 {
-    MailTransport::Transport::EnumAuthenticationType::type authtype =
-        (MailTransport::Transport::EnumAuthenticationType::type)authCombo->itemData(authCombo->currentIndex()).toInt();
+    auto authtype = static_cast<MailTransport::Transport::EnumAuthenticationType>(authCombo->itemData(authCombo->currentIndex()).toInt());
     qCDebug(IMAPRESOURCE_LOG) << "current auth mode: " << authenticationModeString(authtype);
     return authtype;
 }
 
-static void addAuthenticationItem(QComboBox *authCombo, MailTransport::Transport::EnumAuthenticationType::type authtype)
+static void addAuthenticationItem(QComboBox *authCombo, MailTransport::Transport::EnumAuthenticationType authtype)
 {
     qCDebug(IMAPRESOURCE_LOG) << "adding auth item " << authenticationModeString(authtype);
     authCombo->addItem(authenticationModeString(authtype), QVariant(authtype));
@@ -289,7 +287,7 @@ void SetupServer::applySettings()
     m_shouldClearCache =
         (m_parentResource->settings()->imapServer() != m_ui->imapServer->text()) || (m_parentResource->settings()->userName() != m_ui->userName->text());
 
-    const MailTransport::Transport::EnumAuthenticationType::type authtype = getCurrentAuthMode(m_ui->authenticationCombo);
+    const MailTransport::Transport::EnumAuthenticationType authtype = getCurrentAuthMode(m_ui->authenticationCombo);
     if (!m_ui->userName->text().contains(QLatin1Char('@')) && authtype == MailTransport::Transport::EnumAuthenticationType::XOAUTH2
         && m_ui->imapServer->text().contains(QLatin1String("gmail.com"))) {
         // Normalize gmail username so that it matches the JSON account info returned by GMail authentication.
@@ -327,7 +325,7 @@ void SetupServer::applySettings()
     m_parentResource->settings()->setDisconnectedModeEnabled(m_ui->disconnectedModeEnabled->isChecked());
     m_parentResource->settings()->setUseProxy(m_ui->useProxyCheck->isChecked());
 
-    MailTransport::Transport::EnumAuthenticationType::type alternateAuthtype = getCurrentAuthMode(m_ui->authenticationAlternateCombo);
+    MailTransport::Transport::EnumAuthenticationType alternateAuthtype = getCurrentAuthMode(m_ui->authenticationAlternateCombo);
     qCDebug(IMAPRESOURCE_LOG) << "saving Alternate server sieve auth mode: " << authenticationModeString(alternateAuthtype);
     m_parentResource->settings()->setAlternateAuthentication(alternateAuthtype);
     m_parentResource->settings()->setSieveSupport(m_ui->managesieveCheck->isChecked());
@@ -415,11 +413,11 @@ void SetupServer::readSettings()
 
     populateDefaultAuthenticationOptions();
     i = m_parentResource->settings()->authentication();
-    qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString(static_cast<MailTransport::Transport::EnumAuthenticationType::type>(i));
-    setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)i);
+    qCDebug(IMAPRESOURCE_LOG) << "read IMAP auth mode: " << authenticationModeString(static_cast<MailTransport::Transport::EnumAuthenticationType>(i));
+    setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType)i);
 
     i = m_parentResource->settings()->alternateAuthentication();
-    setCurrentAuthMode(m_ui->authenticationAlternateCombo, static_cast<MailTransport::Transport::EnumAuthenticationType::type>(i));
+    setCurrentAuthMode(m_ui->authenticationAlternateCombo, static_cast<MailTransport::Transport::EnumAuthenticationType>(i));
 
     bool rejected = false;
     const QString password = m_parentResource->settings()->password(&rejected);
@@ -640,12 +638,12 @@ void SetupServer::slotSafetyChanged()
     m_ui->authenticationCombo->clear();
     addAuthenticationItem(m_ui->authenticationCombo, MailTransport::Transport::EnumAuthenticationType::CLEAR);
     for (int prot : std::as_const(protocols)) {
-        addAuthenticationItem(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)prot);
+        addAuthenticationItem(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType)prot);
     }
     if (protocols.isEmpty()) {
         qCDebug(IMAPRESOURCE_LOG) << "no authmodes found";
     } else {
-        setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType::type)protocols.first());
+        setCurrentAuthMode(m_ui->authenticationCombo, (MailTransport::Transport::EnumAuthenticationType)protocols.first());
     }
 }
 

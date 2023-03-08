@@ -34,7 +34,7 @@ using KWallet::Wallet;
  * @return the corresponding KIMAP auth value.
  * @note will cause fatal error if there is no mapping, so be careful not to pass invalid auth options (e.g., APOP) to this function.
  */
-KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType::type authType)
+KIMAP::LoginJob::AuthenticationMode Settings::mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType authType)
 {
     // typedef these for readability
     using MTAuth = MailTransport::Transport::EnumAuthenticationType;
@@ -95,8 +95,7 @@ void Settings::cleanup()
 
 void Settings::requestPassword()
 {
-    if (!m_password.isEmpty()
-        || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
+    if (!m_password.isEmpty() || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         Q_EMIT passwordRequestCompleted(m_password, false);
     } else {
         // Already async. Just port to ReadPassword
@@ -136,8 +135,7 @@ QString Settings::password(bool *userRejected) const
         *userRejected = false;
     }
 
-    if (!m_password.isEmpty()
-        || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI)) {
+    if (!m_password.isEmpty() || (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) == KIMAP::LoginJob::GSSAPI)) {
         return m_password;
     }
     // Move as async
@@ -206,7 +204,7 @@ void Settings::setPassword(const QString &password)
         return;
     }
 
-    if (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()) == KIMAP::LoginJob::GSSAPI) {
+    if (mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType)authentication()) == KIMAP::LoginJob::GSSAPI) {
         return;
     }
 
@@ -266,7 +264,7 @@ void Settings::loadAccount(ImapAccount *account) const
         }
     }
 
-    account->setAuthenticationMode(mapTransportAuthToKimap((MailTransport::TransportBase::EnumAuthenticationType::type)authentication()));
+    account->setAuthenticationMode(mapTransportAuthToKimap(static_cast<MailTransport::TransportBase::EnumAuthenticationType>(authentication())));
 
     account->setTimeout(sessionTimeout());
 }

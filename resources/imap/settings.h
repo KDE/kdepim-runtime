@@ -21,7 +21,7 @@ class Settings : public SettingsBase
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.Akonadi.Imap.Wallet")
 public:
-    static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType::type authType);
+    static KIMAP::LoginJob::AuthenticationMode mapTransportAuthToKimap(MailTransport::Transport::EnumAuthenticationType authType);
 
     explicit Settings(WId = 0);
     void setWinId(WId);

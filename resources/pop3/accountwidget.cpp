@@ -299,7 +299,7 @@ void AccountWidget::slotCheckPopCapabilities()
     mServerTest->setProgressBar(checkCapabilitiesProgress);
     Q_EMIT okEnabled(false);
     checkCapabilitiesStack->setCurrentIndex(1);
-    Transport::EnumEncryption::type encryptionType;
+    Transport::EnumEncryption encryptionType;
     if (encryptionSSL->isChecked()) {
         encryptionType = Transport::EnumEncryption::SSL;
     } else {
