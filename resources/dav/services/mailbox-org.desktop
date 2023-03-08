@@ -1,5 +1,15 @@
 [Desktop Entry]
 Name=mailbox.org
+Name[ca]=mailbox.org
+Name[ca@valencia]=mailbox.org
+Name[es]=mailbox.org
+Name[it]=mailbox.org
+Name[nl]=mailbox.org
+Name[pt]=mailbox.org
+Name[sl]=mailbox.org
+Name[tr]=mailbox.org
+Name[uk]=mailbox.org
+Name[x-test]=xxmailbox.orgxx
 Type=Service
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
