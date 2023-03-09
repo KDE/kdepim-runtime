@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-14 00:47+0000\n"
+"POT-Creation-Date: 2023-03-09 00:47+0000\n"
 "PO-Revision-Date: 2022-07-20 19:28+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "No server configured yet."
 msgstr "Все още няма конфигуриран сървър."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:668
+#: imapresourcebase.cpp:246 setupserver.cpp:666
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -675,24 +675,24 @@ msgctxt "Authentication method"
 msgid "Gmail"
 msgstr "Gmail"
 
-#: setupserver.cpp:151
+#: setupserver.cpp:149
 #, kde-format
 msgid "Archive Folder"
 msgstr "Архивна папка"
 
-#: setupserver.cpp:163
+#: setupserver.cpp:161
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " минута"
 msgstr[1] " минути"
 
-#: setupserver.cpp:178
+#: setupserver.cpp:176
 #, kde-format
 msgid "Identity:"
 msgstr "Самоличност:"
 
-#: setupserver.cpp:269
+#: setupserver.cpp:267
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -703,12 +703,12 @@ msgstr ""
 "трябва да изтеглим отново всичките ви имейли от този акаунт. Наистина ли "
 "искате да продължите?"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:270
 #, kde-format
 msgid "Server address change"
 msgstr "Промяна на адреса на сървъра"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:277
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -719,12 +719,12 @@ msgstr ""
 "акаунт от преди, ще трябва да изтеглим отново всичките ви имейли от този "
 "акаунт. Наистина ли искате да продължите?"
 
-#: setupserver.cpp:282
+#: setupserver.cpp:280
 #, kde-format
 msgid "User name change"
 msgstr "Промяна на потребителското име"
 
-#: setupserver.cpp:429 setupserver.cpp:485
+#: setupserver.cpp:427 setupserver.cpp:483
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -736,29 +736,29 @@ msgstr ""
 "квадратчето по-долу, но имайте предвид, че при необходимост ще бъдете "
 "подканени да въведете паролата си."
 
-#: setupserver.cpp:434 setupserver.cpp:490
+#: setupserver.cpp:432 setupserver.cpp:488
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "Без използване на KWallet"
 
-#: setupserver.cpp:555
+#: setupserver.cpp:553
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Не може да се осъществи връзка със сървъра, моля, проверете адреса на "
 "сървъра."
 
-#: setupserver.cpp:567
+#: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt> <b> STARTTLS се поддържа и препоръчва. </b> </qt>"
 
-#: setupserver.cpp:570
+#: setupserver.cpp:568
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt> <b> SSL/TLS се поддържа и препоръчва. </b> </qt>"
 
-#: setupserver.cpp:574
+#: setupserver.cpp:572
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -767,7 +767,7 @@ msgstr ""
 "<qt> <b> Не се поддържа защита. Не се препоръчва да се свързвате с този "
 "сървър.</b></qt>"
 
-#: setupserver.cpp:577
+#: setupserver.cpp:575
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt> <b> Не е възможно да се използва този сървър.</b></qt>"

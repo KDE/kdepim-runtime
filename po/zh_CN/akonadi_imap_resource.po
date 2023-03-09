@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-14 00:47+0000\n"
+"POT-Creation-Date: 2023-03-09 00:47+0000\n"
 "PO-Revision-Date: 2023-02-24 12:43\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -272,7 +272,7 @@ msgstr "定义自定义筛选服务器的要使用的身份类型"
 msgid "No server configured yet."
 msgstr "尚未配置服务器。"
 
-#: imapresourcebase.cpp:246 setupserver.cpp:668
+#: imapresourcebase.cpp:246 setupserver.cpp:666
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -645,23 +645,23 @@ msgctxt "Authentication method"
 msgid "Gmail"
 msgstr "Gmail"
 
-#: setupserver.cpp:151
+#: setupserver.cpp:149
 #, kde-format
 msgid "Archive Folder"
 msgstr "归档文件夹"
 
-#: setupserver.cpp:163
+#: setupserver.cpp:161
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分钟"
 
-#: setupserver.cpp:178
+#: setupserver.cpp:176
 #, kde-format
 msgid "Identity:"
 msgstr "身份："
 
-#: setupserver.cpp:269
+#: setupserver.cpp:267
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -671,12 +671,12 @@ msgstr ""
 "您修改了服务器地址。即便这仍是与之前相同的服务器，我们必须要重新下载您在此账"
 "户中的所有文件。您确定要执行吗？"
 
-#: setupserver.cpp:272
+#: setupserver.cpp:270
 #, kde-format
 msgid "Server address change"
 msgstr "服务器地址变化"
 
-#: setupserver.cpp:279
+#: setupserver.cpp:277
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -686,12 +686,12 @@ msgstr ""
 "您修改了用户名。即便这仍是与之前相同的用户账户，我们仍不得不重新下载您在此账"
 "户中的所有邮件。您确定要执行吗？"
 
-#: setupserver.cpp:282
+#: setupserver.cpp:280
 #, kde-format
 msgid "User name change"
 msgstr "用户名变化"
 
-#: setupserver.cpp:429 setupserver.cpp:485
+#: setupserver.cpp:427 setupserver.cpp:483
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -702,34 +702,34 @@ msgstr ""
 "果您不想使用 KWallet 管理密码，请选中下面的选框，但是以后程序会在需要时再次提"
 "示您输入密码。"
 
-#: setupserver.cpp:434 setupserver.cpp:490
+#: setupserver.cpp:432 setupserver.cpp:488
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "不使用 KWallet"
 
-#: setupserver.cpp:555
+#: setupserver.cpp:553
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "无法连接到服务器，请检查服务器地址。"
 
-#: setupserver.cpp:567
+#: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>该服务器支持且推荐使用 STARTTLS 。</b></qt>"
 
-#: setupserver.cpp:570
+#: setupserver.cpp:568
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>该服务器支持且推荐使用 SSL/TLS 。</b></qt>"
 
-#: setupserver.cpp:574
+#: setupserver.cpp:572
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr "<qt><b>找不到安全连接方式。不推荐您连接到此服务器。</b></qt>"
 
-#: setupserver.cpp:577
+#: setupserver.cpp:575
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>无法使用此服务器。</b></qt>"
