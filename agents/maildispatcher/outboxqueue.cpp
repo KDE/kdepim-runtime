@@ -138,7 +138,7 @@ void OutboxQueue::checkFuture()
     Q_ASSERT(mFutureTimer);
     mFutureTimer->stop();
     // By default, re-check in one hour.
-    mFutureTimer->setInterval(60 * 60 * 1000);
+    mFutureTimer->setInterval(1h);
 
     // Check items in ascending order of date.
     while (!mFutureMap.isEmpty()) {
