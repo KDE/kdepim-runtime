@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Tommi Nieminen <translator@legisign.org>, 2013, 2020.
+# Tommi Nieminen <translator@legisign.org>, 2013, 2020, 2023.
 # Lasse Liehu <lasse.liehu@gmail.com>, 2013, 2014, 2015, 2016.
 #
 msgid ""
@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-15 00:45+0000\n"
-"PO-Revision-Date: 2020-12-18 16:42+0200\n"
+"PO-Revision-Date: 2023-01-18 12:40+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 20.08.3\n"
+"X-Generator: Lokalize 20.12.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -147,10 +147,9 @@ msgid "Migration of Akonadi Items to support GID"
 msgstr "Akonadi-tietueiden siirto tukemaan GIDiä"
 
 #: main.cpp:30
-#, fuzzy, kde-format
-#| msgid "(c) 2013-2020 the Akonadi developers"
+#, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "© 2013–2020 Akonadi-kehittäjät"
+msgstr "© 2013–2022 Akonadi-kehittäjät"
 
 #: main.cpp:33
 #, kde-format
