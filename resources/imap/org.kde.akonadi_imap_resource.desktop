@@ -26,6 +26,7 @@ Name[sv]=E-post
 Name[tr]=E-postalar
 Name[uk]=Електронна пошта
 Name[x-test]=xxEmailsxx
+Name[zh_CN]=电子邮件
 NoDisplay=true
 Exec=akonadi_imap_resource
 Icon=kmail

@@ -15,6 +15,7 @@ Name[sl]=mailbox.org
 Name[tr]=mailbox.org
 Name[uk]=mailbox.org
 Name[x-test]=xxmailbox.orgxx
+Name[zh_CN]=mailbox.org
 Type=Service
 
 X-DavGroupware-SupportedProtocols=CalDav,CardDav
