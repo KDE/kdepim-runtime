@@ -1,19 +1,20 @@
-# Frederik Schwarzer <schwarzer@kde.org>, 2012, 2023.
+# Frederik Schwarzer <schwarzer@kde.org>, 2012.
 # Burkhard Lück <lueck@hube-lueck.de>, 2012, 2013, 2014, 2017, 2020, 2021.
+# Alois Spitzbart <spitz234@hotmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-07 00:48+0000\n"
-"PO-Revision-Date: 2023-02-09 01:17+0100\n"
-"Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
+"PO-Revision-Date: 2022-11-09 17:13+0100\n"
+"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 22.12.1\n"
+"X-Generator: Lokalize 22.08.2\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -76,12 +77,12 @@ msgstr "Kalender „%1“ wird entfernt"
 #: generichandler.cpp:24
 #, kde-format
 msgid "Cannot handle item linking"
-msgstr ""
+msgstr "Verknüpfung von Elementen nicht möglich"
 
 #: generichandler.cpp:29
 #, kde-format
 msgid "Cannot handle item unlinking"
-msgstr ""
+msgstr "Lösen von Elementen nicht möglich"
 
 #: generichandler.cpp:56
 #, kde-format
@@ -127,10 +128,9 @@ msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
 #: googleresource.cpp:234
-#, fuzzy, kde-format
-#| msgid "Configured account has been removed"
+#, kde-format
 msgid "Account has been logged out."
-msgstr "Der eingerichtete Zugang ist entfernt worden"
+msgstr "Zugang wurde abgemeldet."
 
 #: googleresource.cpp:237
 #, kde-format
@@ -138,6 +138,9 @@ msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"Google Groupware wurde von Ihrem Konto abgemeldet. Bitte melden Sie sich an, "
+"um die Synchronisierung von Google-Kontakten und -Kalender erneut zu "
+"aktivieren."
 
 #: googleresource.cpp:238
 #, kde-format
@@ -145,12 +148,14 @@ msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
+"Google Groupware wurde von Konto %1 abgemeldet. Bitte melden Sie sich an, um "
+"die Synchronisierung von Google-Kontakten und -Kalender erneut zu aktivieren."
 
 #: googleresource.cpp:242
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
-msgstr ""
+msgstr "Aufmerksamkeit für %1 erforderlich."
 
 #: googleresource.cpp:247
 #, kde-format
@@ -219,16 +224,15 @@ msgstr "Aktualisierungsintervall:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
 #: googlesettingsdialog.ui:79
-#, fuzzy, kde-format
-#| msgid "Fetch only events since"
+#, kde-format
 msgid "Fetch only events since:"
-msgstr "Nur Termine abholen seit"
+msgstr "Nur Termine abholen seit:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
 #: googlesettingsdialog.ui:92
 #, kde-format
 msgid "Enabled Calendars:"
-msgstr "Kalender aktivieren:"
+msgstr "Aktivierte Kalender:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
@@ -239,10 +243,9 @@ msgstr "Neuladen"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
 #: googlesettingsdialog.ui:137
-#, fuzzy, kde-format
-#| msgid "Tasklists"
+#, kde-format
 msgid "Enabled Tasklists:"
-msgstr "Aufgabenlisten"
+msgstr "Aktivierte Aufgabenlisten:"
 
 #: personhandler.cpp:88
 #, kde-format
@@ -319,24 +322,20 @@ msgstr[0] "%1 Kontakt wird von Gruppe „%2“ in Gruppe „%3“ verschoben"
 msgstr[1] "%1 Kontakte werden von Gruppe „%2“ in Gruppe „%3“ verschoben"
 
 #: personhandler.cpp:467
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
-msgstr[0] "Kontakt wird entfernt"
-msgstr[1] "Kontakt wird entfernt"
+msgstr[0] "%1 Kontakt wird verknüpft"
+msgstr[1] "%1 Kontakte werden verknüpft"
 
 #: personhandler.cpp:481
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing contact"
+#, kde-format
 msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
-msgstr[0] "Kontakt wird entfernt"
-msgstr[1] "Kontakt wird entfernt"
+msgstr[0] "%1 Kontakt wird gelöst"
+msgstr[1] "%1 Kontakte werden gelöst"
 
 #: personhandler.cpp:514
 #, kde-format
@@ -369,31 +368,29 @@ msgid "IDs of task lists in collection"
 msgstr "Kennungen der Aufgabenlisten in der Sammlung"
 
 #: taskhandler.cpp:70
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Retrieving photos"
+#, kde-format
 msgctxt "@info:status"
 msgid "Retrieving task lists"
-msgstr "Fotos werden bezogen"
+msgstr "Aufgabenlisten werden empfangen"
 
 #: taskhandler.cpp:103
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving tasks for list '%1'"
-msgstr ""
+msgstr "Aufgaben für die Liste „%1“ werden empfangen"
 
 #: taskhandler.cpp:195
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing task in list '%1'"
-msgstr ""
+msgstr "Aufgabe in Liste „%1“ wird geändert"
 
 #: taskhandler.cpp:215
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
-msgstr[0] "Eine Aufgabe wird entfernt"
+msgstr[0] "%1 Aufgabe wird entfernt"
 msgstr[1] "%1 Aufgaben werden entfernt"
 
 #: taskhandler.cpp:225
@@ -402,10 +399,9 @@ msgid "Failed to delete task: %1"
 msgstr "Das Löschen der Aufgabe ist fehlgeschlagen: %1"
 
 #: taskhandler.cpp:261
-#, fuzzy, kde-format
-#| msgid "Failed to create a task: %1"
+#, kde-format
 msgid "Failed to reparent subtasks: %1"
-msgstr "Das Erstellen der Aufgabe ist fehlgeschlagen: %1"
+msgstr "Das erneute Unterordnen von Teilaufgaben ist fehlgeschlagen: %1"
 
 #: taskhandler.cpp:292
 #, kde-format

@@ -1,15 +1,16 @@
 # Burkhard Lück <lueck@hube-lueck.de>, 2009, 2011, 2012, 2013, 2019, 2020, 2021.
 # Thomas Reitelbach <tr@erdfunkstelle.de>, 2009.
-# Frederik Schwarzer <schwarzer@kde.org>, 2010, 2016, 2018, 2023.
+# Frederik Schwarzer <schwarzer@kde.org>, 2010, 2016, 2018.
 # Panagiotis Papadopoulos <pano_90@gmx.net>, 2010.
 # Torbjörn Klatt <opensource@torbjoern-klatt.de>, 2011.
+# Alois Spitzbart <spitz234@hotmail.com>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-02-01 00:57+0000\n"
-"PO-Revision-Date: 2023-02-09 01:20+0100\n"
-"Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
+"PO-Revision-Date: 2023-02-08 21:29+0100\n"
+"Last-Translator: Alois Spitzbart <spitz234@hotmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -142,21 +143,20 @@ msgstr[0] " Nachricht"
 msgstr[1] " Nachrichten"
 
 #: jobs.cpp:145
-#, fuzzy, kde-format
-#| msgid "Unable to create POP3 slave, aborting mail check."
+#, kde-format
 msgid "Unable to initialize SASL, aborting mail check."
 msgstr ""
-"Fehler beim Erstellen eines POP3-Jobs, der Abholvorgang wird abgebrochen."
+"Fehler beim Initialisieren von SASL, der Abholvorgang wird abgebrochen."
 
 #: pop3protocol.cpp:189
 #, kde-format
 msgid "The server said: \"%1\""
-msgstr ""
+msgstr "Servermeldung: „%1“"
 
 #: pop3protocol.cpp:211
 #, kde-format
 msgid "The server terminated the connection."
-msgstr ""
+msgstr "Der Server hat die Verbindung abgebrochen."
 
 #: pop3protocol.cpp:213
 #, kde-format
@@ -164,11 +164,13 @@ msgid ""
 "Invalid response from server:\n"
 "\"%1\""
 msgstr ""
+"Ungültige Antwort vom Server:\n"
+"„%1“"
 
 #: pop3protocol.cpp:251 pop3protocol.cpp:255
 #, kde-format
 msgid "Could not send to server.\n"
-msgstr ""
+msgstr "Übermittlung an Server nicht möglich.\n"
 
 #: pop3protocol.cpp:356
 #, kde-format
@@ -178,11 +180,16 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Die Anmeldung mit APOP ist fehlgeschlagen. Möglicherweise unterstützt der "
+"Server %1 dieses Protokoll nicht (obwohl er eine gegenteilige Information "
+"ausgibt), oder Sie haben ein falsches Passwort eingegeben.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:406
 #, kde-format
 msgid "An error occurred during authentication: %1"
-msgstr ""
+msgstr "Bei der Authentifizierung ist ein Fehler aufgetreten: %1"
 
 #: pop3protocol.cpp:500
 #, kde-format
@@ -192,6 +199,10 @@ msgid ""
 "\n"
 "%3"
 msgstr ""
+"Die Anmeldung mit SASL (%1) ist fehlgeschlagen. Möglicherweise unterstützt "
+"der Server %2 nicht oder Sie haben ein falsches Passwort eingegeben.\n"
+"\n"
+"%3"
 
 #: pop3protocol.cpp:511
 #, kde-format
@@ -199,6 +210,8 @@ msgid ""
 "Your POP3 server (%1) does not support SASL.\n"
 "Choose a different authentication method."
 msgstr ""
+"Ihr POP3-Server (%1) unterstützt kein SASL.\n"
+"Wählen Sie eine andere Methode zur Authentifizierung."
 
 #: pop3protocol.cpp:528 pop3protocol.cpp:617
 #, kde-format
@@ -206,6 +219,8 @@ msgid ""
 "Could not login to %1.\n"
 "\n"
 msgstr ""
+"Anmeldung bei %1 nicht möglich.\n"
+"\n"
 
 #: pop3protocol.cpp:536
 #, kde-format
@@ -214,6 +229,9 @@ msgid ""
 "\n"
 "%2"
 msgstr ""
+"Anmeldung bei %1 nicht möglich. Vielleicht ist das Passwort nicht korrekt.\n"
+"\n"
+"%2"
 
 #: pop3protocol.cpp:568
 #, kde-format
@@ -228,7 +246,7 @@ msgstr "%1: %2"
 #: pop3protocol.cpp:618
 #, kde-format
 msgid "The server terminated the connection immediately."
-msgstr ""
+msgstr "Der Server hat die Verbindung sofort abgebrochen."
 
 #: pop3protocol.cpp:619
 #, kde-format
@@ -236,6 +254,8 @@ msgid ""
 "Server does not respond properly:\n"
 "%1\n"
 msgstr ""
+"Server antwortet nicht korrekt:\n"
+"%1\n"
 
 #: pop3protocol.cpp:643
 #, kde-format
@@ -243,6 +263,8 @@ msgid ""
 "Your POP3 server (%1) does not support APOP.\n"
 "Choose a different authentication method."
 msgstr ""
+"Ihr POP3-Server (%1) unterstützt kein APOP.\n"
+"Wählen Sie eine andere Methode für die Authentifizierung."
 
 #: pop3protocol.cpp:653
 #, kde-format
@@ -250,26 +272,29 @@ msgid ""
 "Your POP3 server claims to support TLS but negotiation was unsuccessful.\n"
 "You can disable TLS in the POP account settings dialog."
 msgstr ""
+"Der POP3-Server signalisiert Unterstützung für TLS, aber eine entsprechende "
+"Verbindungsaufnahme ist fehlgeschlagen. Sie können TLS in den POP-"
+"Zugangseinstellungen abschalten."
 
 #: pop3protocol.cpp:738
 #, kde-format
 msgid "Internal error: missing argument for command %1"
-msgstr ""
+msgstr "Interner Fehler: Fehlendes Argument für Befehl %1"
 
 #: pop3protocol.cpp:794
 #, kde-format
 msgid "Internal error: missing item"
-msgstr ""
+msgstr "Interner Fehler: Fehlendes Element"
 
 #: pop3protocol.cpp:821
 #, kde-format
 msgid "Timeout from POP3 server %1"
-msgstr ""
+msgstr "Zeitüberschreitung zum POP3-Server %1"
 
 #: pop3protocol.cpp:823
 #, kde-format
 msgid "Connection broken from POP3 server %1"
-msgstr ""
+msgstr "Die Verbindung zum POP3-Server %1 ist abgebrochen"
 
 #: pop3protocol.cpp:884
 #, kde-format
@@ -277,17 +302,18 @@ msgid ""
 "Error during communication with the POP3 server while trying to download "
 "mail: %1"
 msgstr ""
+"Fehler bei der Kommunikation mit dem POP3-Server beim Herunterladen von E-"
+"Mails: %1"
 
 #: pop3protocol.cpp:894
 #, kde-format
 msgid "Internal error, number expected: %1"
-msgstr ""
+msgstr "Interner Fehler: Nummer erwartet: %1"
 
 #: pop3protocol.cpp:914
-#, fuzzy, kde-format
-#| msgid "Deleting messages from the server."
+#, kde-format
 msgid "Unexpected response from POP3 server."
-msgstr "Nachrichten werden vom Server gelöscht."
+msgstr "Unerwartete Antwort vom POP3-Server."
 
 #: pop3resource.cpp:98
 #, kde-format
