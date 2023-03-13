@@ -59,7 +59,7 @@ target_link_libraries(akonadi_etesync_resource
     KF${KF_MAJOR_VERSION}::KIOCore
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::WindowSystem
-    KF5::Wallet
+    KF${KF_MAJOR_VERSION}::Wallet
     KF${KF_MAJOR_VERSION}::I18n
 )
 

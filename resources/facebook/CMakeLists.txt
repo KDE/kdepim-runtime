@@ -24,7 +24,7 @@ target_link_libraries(facebookresourcelib
     KF${KF_MAJOR_VERSION}::ConfigGui
     KF${KF_MAJOR_VERSION}::CalendarCore
     Qt::WebEngineWidgets
-    KF5::Wallet
+    KF${KF_MAJOR_VERSION}::Wallet
     KF${KF_MAJOR_VERSION}::Codecs
 )
 
@@ -36,7 +36,7 @@ target_link_libraries(akonadi_facebook_resource
     KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
     KF${KF_MAJOR_VERSION}::CalendarCore
     KF${KF_MAJOR_VERSION}::I18n
-    KF5::Wallet
+    KF${KF_MAJOR_VERSION}::Wallet
     KF${KF_MAJOR_VERSION}::Codecs
     Qt::WebEngineWidgets
     KF${KF_MAJOR_VERSION}::KIOCore
