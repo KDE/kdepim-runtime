@@ -1,5 +1,5 @@
 #if the kimap project wasn't built with tests then we can't build anything in here
-if(NOT TARGET KF5::kimaptest)
+if(NOT TARGET KPim${KF_MAJOR_VERSION}::kimaptest)
   message(STATUS "Warning: Unable to build the imap autotests since the kimap project did not build the kimaptest library. You need to rebuild kimap with the -DBUILD_TESTING=on option")
   return()
 endif()
@@ -19,7 +19,7 @@ MACRO(IMAP_RESOURCE_UNIT_TESTS)
     ecm_mark_as_test(imap-${_testname})
 
     target_link_libraries(${_testname}
-      KPim${KF_MAJOR_VERSION}::IMAP KF5::kimaptest Qt::Gui Qt::Core Qt::Test KF${KF_MAJOR_VERSION}::ConfigGui imapresource akonadi-singlefileresource)
+      KPim${KF_MAJOR_VERSION}::IMAP KPim${KF_MAJOR_VERSION}::kimaptest Qt::Gui Qt::Core Qt::Test KF${KF_MAJOR_VERSION}::ConfigGui imapresource akonadi-singlefileresource)
     add_definitions(-DTEST_DATA="\\"${CMAKE_CURRENT_SOURCE_DIR}\\"")
   ENDFOREACH(_testname)
 ENDMACRO(IMAP_RESOURCE_UNIT_TESTS)
