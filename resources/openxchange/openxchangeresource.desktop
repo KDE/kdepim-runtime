@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Open-Xchange Groupware Server
-Name[ar]=خادوم البرمجيّات التّعاونيّة «أوپن إكس-چينج»
+Name[ar]=خادوم البرمجيّات التّعاونيّة «أوبن إكس-چينج»
 Name[bg]=Сървър Open-Xchange Groupware
 Name[bs]=Open-Xchange grupni server
 Name[ca]=Servidor de treball en grup Open-Xchange
@@ -49,7 +49,7 @@ Name[x-test]=xxOpen-Xchange Groupware Serverxx
 Name[zh_CN]=Open-Xchange 群件服务器
 Name[zh_TW]=Open-Xchange 群組伺服器
 Comment=Provides access to the appointments, tasks, and contacts of an Open-Xchange groupware server.
-Comment[ar]=يوفّر نفاذًا إلى المواعيد والمهام ومتراسلي خادوم البرمجيات التعاونية «أوپن إكس-چينج».
+Comment[ar]=يوفّر نفاذًا إلى المواعيد والمهام ومتراسلي خادوم البرمجيات التعاونية «أوبن إكس-چينج».
 Comment[bg]=Позволява достъп до поща, задачи, контакти и срещи на Open-Xchange groupware.
 Comment[bs]=Obezbjeđuje pristup zakazanim obavezama, zadacima  i kontaktima za Open-Xchange grupni server.
 Comment[ca]=Proporciona accés a les cites, tasques i contactes emmagatzemats en un servidor de treball en grup Open-Xchange.
