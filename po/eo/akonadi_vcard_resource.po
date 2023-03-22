@@ -1,4 +1,6 @@
 # Translation of akonadi_vcard_resource into esperanto.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
 #
 msgid ""
@@ -6,8 +8,8 @@ msgstr ""
 "Project-Id-Version: akonadi_vcard_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2021-09-18 00:17+0000\n"
-"PO-Revision-Date: 2009-11-15 12:06+0100\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-03-20 22:43+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -20,12 +22,12 @@ msgstr ""
 #, kde-format
 msgctxt "Filedialog filter for *.vcf"
 msgid "vCard Address Book File"
-msgstr ""
+msgstr "vCard Adreslibra Dosiero"
 
 #: vcardresource.cpp:71
 #, kde-format
 msgid "Contact with uid '%1' not found."
-msgstr ""
+msgstr "Kontakto kun uid '%1' ne trovita."
 
 #: vcardresource.cpp:164 vcardresource.cpp:184
 #, kde-format
@@ -36,13 +38,13 @@ msgstr ""
 #: vcardresource.kcfg:10
 #, kde-format
 msgid "Path to vCard file."
-msgstr ""
+msgstr "Vojo al vCard-dosiero."
 
 #. i18n: ectx: label, entry (DisplayName), group (General)
 #: vcardresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr ""
+msgstr "Montrata nomo."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: vcardresource.kcfg:18
@@ -54,15 +56,10 @@ msgstr ""
 #: vcardresource.kcfg:22
 #, kde-format
 msgid "Monitor file for changes."
-msgstr ""
+msgstr "Monitori dosieron por ŝanĝoj."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: wizard/vcardwizard.ui:19
 #, kde-format
 msgid "Filename:"
-msgstr ""
-
-#, fuzzy
-#~| msgid "Address Book"
-#~ msgid "Select Address Book"
-#~ msgstr "Adresaro"
+msgstr "Dosiernomo:"

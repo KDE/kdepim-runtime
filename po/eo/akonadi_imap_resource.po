@@ -1,4 +1,6 @@
-# Translation of akonadi_imap_resource into esperanto.
+# Translation of akonadi_imap_resource.pot into esperanto.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
 #
 msgid ""
@@ -6,8 +8,8 @@ msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-09 00:47+0000\n"
-"PO-Revision-Date: 2009-11-15 12:06+0100\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-03-20 22:43+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -79,11 +81,10 @@ msgid "IMAP Account"
 msgstr "IMAP-konto"
 
 #: imapresource.cpp:62
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
-msgstr "Agordo"
+msgstr ""
 
 #. i18n: ectx: label, entry (ImapServer), group (network)
 #: imapresource.kcfg:10
@@ -123,10 +124,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
 #: imapresource.kcfg:31
-#, fuzzy, kde-format
-#| msgid "Subscription..."
+#, kde-format
 msgid "Defines if the server side subscription is enabled"
-msgstr "Subskribaĵo..."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
@@ -198,10 +198,9 @@ msgstr ""
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
 #: imapresource.kcfg:79
-#, fuzzy, kde-format
-#| msgid "&Identity:"
+#, kde-format
 msgid "Identity account"
-msgstr "&Identeco:"
+msgstr ""
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
 #: imapresource.kcfg:82
@@ -269,11 +268,10 @@ msgid "No server configured yet."
 msgstr ""
 
 #: imapresourcebase.cpp:246 setupserver.cpp:666
-#, fuzzy, kde-format
-#| msgid "Subscription..."
+#, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
-msgstr "Subskribaĵo..."
+msgstr ""
 
 #: imapresourcebase.cpp:270
 #, kde-format
@@ -423,10 +421,9 @@ msgid "Unable to connect to the IMAP server."
 msgstr ""
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
-#, fuzzy, kde-format
-#| msgid "%1 Settings"
+#, kde-format
 msgid "Connection lost"
-msgstr "%1 Agordoj"
+msgstr ""
 
 #: resourcetask.cpp:475
 #, kde-format
@@ -524,10 +521,9 @@ msgid "Could not read the password: user rejected wallet access"
 msgstr ""
 
 #: sessionpool.cpp:340
-#, fuzzy, kde-format
-#| msgid "Password:"
+#, kde-format
 msgid "Empty password"
-msgstr "Pasvorto:"
+msgstr ""
 
 #: sessionpool.cpp:352
 #, kde-format
@@ -580,17 +576,15 @@ msgid ""
 msgstr ""
 
 #: settingspasswordrequester.cpp:60
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
-msgstr "Aŭtentigometodo"
+msgstr ""
 
 #: settingspasswordrequester.cpp:64
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "Account Settings"
-msgstr "Agordo"
+msgstr ""
 
 #: settingspasswordrequester.cpp:65
 #, kde-format
@@ -633,18 +627,16 @@ msgid "Archive Folder"
 msgstr ""
 
 #: setupserver.cpp:161
-#, fuzzy, kde-format
-#| msgid " minutes"
+#, kde-format
 msgid " minute"
 msgid_plural " minutes"
-msgstr[0] "minutoj"
-msgstr[1] "minutoj"
+msgstr[0] ""
+msgstr[1] ""
 
 #: setupserver.cpp:176
-#, fuzzy, kde-format
-#| msgid "&Identity:"
+#, kde-format
 msgid "Identity:"
-msgstr "&Identeco:"
+msgstr "Identeco:"
 
 #: setupserver.cpp:267
 #, kde-format
@@ -668,10 +660,9 @@ msgid ""
 msgstr ""
 
 #: setupserver.cpp:280
-#, fuzzy, kde-format
-#| msgid "Username"
+#, kde-format
 msgid "User name change"
-msgstr "Uzantnomo"
+msgstr ""
 
 #: setupserver.cpp:427 setupserver.cpp:483
 #, kde-format
@@ -727,10 +718,9 @@ msgstr "Informoj pri Konto"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: setupserverview_desktop.ui:46
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "Account Name:"
-msgstr "Agordo"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label)
 #: setupserverview_desktop.ui:57
@@ -749,25 +739,21 @@ msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
-#, fuzzy, kde-format
-#| msgctxt "Username for audioscrobbler login"
-#| msgid "Username"
+#, kde-format
 msgid "The username."
-msgstr "Uzantnomo"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:77
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "Uzantnomo:"
+msgstr "Uzan&tnomo:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_3)
 #: setupserverview_desktop.ui:91
-#, fuzzy, kde-format
-#| msgid "Password:"
+#, kde-format
 msgid "The password."
-msgstr "Pasvorto:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -841,17 +827,15 @@ msgstr ""
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgid "Authentication"
-msgstr "Aŭtentigometodo"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, noAuthentification)
 #: setupserverview_desktop.ui:233
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgid "No authentication"
-msgstr "Aŭtentigometodo"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, customUserPassword)
 #: setupserverview_desktop.ui:243
@@ -874,10 +858,9 @@ msgstr "Uzantnomo:"
 #. i18n: ectx: property (text), widget (QLabel, label_15)
 #. i18n: ectx: property (text), widget (QLabel, label_10)
 #: setupserverview_desktop.ui:286 setupserverview_desktop.ui:509
-#, fuzzy, kde-format
-#| msgid "Authentication Method"
+#, kde-format
 msgid "Authentication:"
-msgstr "Aŭtentigometodo"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -935,24 +918,21 @@ msgstr "Plie"
 
 #. i18n: ectx: property (text), widget (KTitleWidget)
 #: setupserverview_desktop.ui:362
-#, fuzzy, kde-format
-#| msgid "Settings"
+#, kde-format
 msgid "IMAP Settings"
-msgstr "Agordo"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, subscriptionEnabled)
 #: setupserverview_desktop.ui:371
-#, fuzzy, kde-format
-#| msgid "Subscription..."
+#, kde-format
 msgid "Enable server-side subscriptions"
-msgstr "Subskribaĵo..."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
-#, fuzzy, kde-format
-#| msgid "Subscription..."
+#, kde-format
 msgid "Serverside Subscription..."
-msgstr "Subskribaĵo..."
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -962,17 +942,15 @@ msgstr "&Aŭtomate kunpremi dosierujojn (forĵeti forigitajn mesaĝojn)"
 
 #. i18n: ectx: property (text), widget (QLabel, label_11)
 #: setupserverview_desktop.ui:397
-#, fuzzy, kde-format
-#| msgid "&Trash folder:"
+#, kde-format
 msgid "Trash folder:"
-msgstr "&Rubujo:"
+msgstr "Rubujo:"
 
 #. i18n: ectx: property (text), widget (KTitleWidget)
 #: setupserverview_desktop.ui:407
-#, fuzzy, kde-format
-#| msgid "%1 Settings"
+#, kde-format
 msgid "Connection Settings"
-msgstr "%1 Agordoj"
+msgstr "Agordo de Konekto"
 
 #. i18n: ectx: property (text), widget (QPushButton, testButton)
 #: setupserverview_desktop.ui:416
@@ -988,10 +966,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: setupserverview_desktop.ui:432
-#, fuzzy, kde-format
-#| msgid "Encryption"
+#, kde-format
 msgid "Encryption:"
-msgstr "Ĉifrado"
+msgstr "Ĉifrado:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, tlsRadio)
 #: setupserverview_desktop.ui:441
@@ -1001,10 +978,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, sslRadio)
 #: setupserverview_desktop.ui:451
-#, fuzzy, kde-format
-#| msgid "SSL"
+#, kde-format
 msgid "SSL/TLS"
-msgstr "SSL"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, noRadio)
 #: setupserverview_desktop.ui:461
@@ -1049,7 +1025,7 @@ msgstr "Pordo:"
 #: setupserverview_desktop.ui:573
 #, kde-format
 msgid "Empty"
-msgstr ""
+msgstr "Malplena"
 
 #: subscriptiondialog.cpp:49
 #, kde-format
@@ -1058,124 +1034,19 @@ msgid "Reload &List"
 msgstr ""
 
 #: subscriptiondialog.cpp:64
-#, fuzzy, kde-format
-#| msgid "Subscription..."
+#, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr "Subskribaĵo..."
+msgstr ""
 
 #: subscriptiondialog.cpp:70
 #, kde-format
 msgctxt "@label search for a subscription"
 msgid "Search:"
-msgstr ""
+msgstr "Serĉi:"
 
 #: subscriptiondialog.cpp:78
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
 msgstr ""
-
-#, fuzzy
-#~| msgid "Settings"
-#~ msgid "Identity Settings"
-#~ msgstr "Agordo"
-
-#, fuzzy
-#~| msgid "Remove Identity"
-#~ msgid "Use the default identity for this account"
-#~ msgstr "Forigu identecon"
-
-#, fuzzy
-#~| msgid "Remove Identity"
-#~ msgid "Use &default identity"
-#~ msgstr "Forigu identecon"
-
-#, fuzzy
-#~| msgid "Remove Identity"
-#~ msgid "Select the KMail identity used for this account"
-#~ msgstr "Forigu identecon"
-
-#, fuzzy
-#~| msgid "Subscription..."
-#~ msgid "Serverside Subscription"
-#~ msgstr "Subskribaĵo..."
-
-#, fuzzy
-#~| msgid "Username:"
-#~ msgid "&Username:"
-#~ msgstr "Uzantnomo:"
-
-#~ msgid "Encryption"
-#~ msgstr "Ĉifrado"
-
-#~ msgid "SSL"
-#~ msgstr "SSL"
-
-#~ msgid "TLS"
-#~ msgstr "TLS"
-
-#~ msgid "Authentication Method"
-#~ msgstr "Aŭtentigometodo"
-
-#, fuzzy
-#~| msgid "Enable &interval mail checking"
-#~ msgid "Enable interval mail checking"
-#~ msgstr "Ŝalti &ripetan kontrolon je nova poŝto"
-
-#, fuzzy
-#~| msgid "Subscription..."
-#~ msgid "Enable Server-Side Subscriptions"
-#~ msgstr "Subskribaĵo..."
-
-#, fuzzy
-#~| msgid "Automaticall&y compact folders (expunges deleted messages)"
-#~ msgid "Automaticall&y expunge deleted messages"
-#~ msgstr "&Aŭtomate kunpremi dosierujojn (forĵeti forigitajn mesaĝojn)"
-
-#~ msgid "Anonymous"
-#~ msgstr "Anonimulo"
-
-#~ msgid " minutes"
-#~ msgstr "minutoj"
-
-#, fuzzy
-#~| msgid "IMAP Account"
-#~ msgid "IMAP Account %1"
-#~ msgstr "IMAP-konto"
-
-#, fuzzy
-#~| msgid "Authentication Method"
-#~ msgid "Authentification"
-#~ msgstr "Aŭtentigometodo"
-
-#~ msgid "Settings"
-#~ msgstr "Agordo"
-
-#, fuzzy
-#~| msgid "Password:"
-#~ msgid "Password"
-#~ msgstr "Pasvorto:"
-
-#~ msgid "Enable Subscriptions?"
-#~ msgstr "Ĉu ŝalti abonojn?"
-
-#~ msgid "Enable"
-#~ msgstr "Ŝaltu"
-
-#~ msgid "Do Not Enable"
-#~ msgstr "Ne ŝalti"
-
-#~ msgctxt "NAME OF TRANSLATORS"
-#~ msgid "Your names"
-#~ msgstr "Axel Rousseau"
-
-#~ msgctxt "EMAIL OF TRANSLATORS"
-#~ msgid "Your emails"
-#~ msgstr "axel@esperanto-jeunes.org"
-
-#~ msgid "Authentication failed."
-#~ msgstr "La aŭtentigo fiaskis."
-
-#~ msgid "Include in man&ual mail check"
-#~ msgstr "En&meti en la kontrolon"

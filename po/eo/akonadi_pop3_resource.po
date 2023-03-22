@@ -1,4 +1,6 @@
 # Translation of akonadi_pop3_resource into esperanto.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
 #
 msgid ""
@@ -6,8 +8,8 @@ msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-02-01 00:57+0000\n"
-"PO-Revision-Date: 2009-11-15 12:06+0100\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-03-20 22:43+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +19,11 @@ msgstr ""
 "X-Generator: pology\n"
 
 #: accountwidget.cpp:89
-#, fuzzy, kde-format
-#| msgid " min"
+#, kde-format
 msgid " minute"
 msgid_plural " minutes"
-msgstr[0] " min"
-msgstr[1] " min"
+msgstr[0] ""
+msgstr[1] ""
 
 #: accountwidget.cpp:126 pop3resource.cpp:49
 #, kde-format
@@ -464,10 +465,9 @@ msgstr "Ĝeneralo"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_4)
 #: popsettings.ui:67
-#, fuzzy, kde-format
-#| msgid "Account &name:"
+#, kde-format
 msgid "Account Information"
-msgstr "Konto&nomo:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #. i18n: ectx: property (whatsThis), widget (QLineEdit, loginEdit)
@@ -522,10 +522,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: popsettings.ui:117
-#, fuzzy, kde-format
-#| msgid "Username:"
+#, kde-format
 msgid "Use&rname:"
-msgstr "Uzantnomo:"
+msgstr "Uzan&tnomo:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, loginEdit)
 #: popsettings.ui:127
@@ -584,17 +583,15 @@ msgstr "Plie"
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget)
 #: popsettings.ui:217
-#, fuzzy, kde-format
-#| msgid "POP Settings"
+#, kde-format
 msgid "POP Settings"
 msgstr "POP Agordoj"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:239
-#, fuzzy, kde-format
-#| msgid "The error message from the server communication is here:"
+#, kde-format
 msgid "If checked the message is not deleted from the mail server"
-msgstr "La erarmesaĝo pro la servilkomuniko estas ĉi tie:"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCheck)
 #: popsettings.ui:242
@@ -612,24 +609,21 @@ msgstr "&Lasi prenitajn poŝtaĵojn en la servilo"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:258
-#, fuzzy, kde-format
-#| msgid "The error message from the server communication is here:"
+#, kde-format
 msgid "The original message is deleted from the server after x days"
-msgstr "La erarmesaĝo pro la servilkomuniko estas ĉi tie:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, leaveOnServerDaysCheck)
 #: popsettings.ui:261
-#, fuzzy, kde-format
-#| msgid "Leave messages on the server for"
+#, kde-format
 msgid "Days to leave messages on the server:"
-msgstr "Lasi prenitajn poŝtaĵojn en la servilo dum"
+msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:284
-#, fuzzy, kde-format
-#| msgid "Lea&ve fetched messages on the server"
+#, kde-format
 msgid "Only the x most recent messages are kept on the server"
-msgstr "&Lasi prenitajn poŝtaĵojn en la servilo"
+msgstr ""
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, leaveOnServerCountCheck)
 #: popsettings.ui:287
@@ -679,10 +673,9 @@ msgstr "&Uzi duktadon por pli rapida poŝtpreno"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
 #: popsettings.ui:365
-#, fuzzy, kde-format
-#| msgid "&Destination folder:"
+#, kde-format
 msgid "Destination folder:"
-msgstr "&Celleterujo:"
+msgstr "Celdosierujo:"
 
 #. i18n: ectx: property (text), widget (QLabel, preCommandLabel)
 #: popsettings.ui:375
@@ -698,10 +691,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (KTitleWidget, ktitlewidget_2)
 #: popsettings.ui:403
-#, fuzzy, kde-format
-#| msgid "%1 Settings"
+#, kde-format
 msgid "Connection Settings"
-msgstr "%1 Agordoj"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, checkCapabilities)
 #: popsettings.ui:417
@@ -774,12 +766,11 @@ msgstr "Aŭtentigo"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:502
-#, fuzzy, kde-format
-#| msgid "The error message from the server communication is here:"
+#, kde-format
 msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
-msgstr "La erarmesaĝo pro la servilkomuniko estas ĉi tie:"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, proxyCheck)
 #: popsettings.ui:505
@@ -792,110 +783,3 @@ msgstr ""
 #, kde-format
 msgid "Defines the authentication type to use"
 msgstr ""
-
-#~ msgid ""
-#~ "The server does not seem to support fetching message headers, but this is "
-#~ "a requirement for filtering messages on the server.\n"
-#~ "Since some servers do not correctly announce their capabilities you still "
-#~ "have the possibility to turn filtering messages on the server on."
-#~ msgstr ""
-#~ "La servilo ne ŝajnas subteni prenon de la mesaĝajn kaplinilojn, sed ĉi "
-#~ "tiu estas postulon por filtri mesaĝojn en la servilo.\n"
-#~ "Ĉar kelkaj serviloj ne korekte publikigi siajn eblecojn, vi ankoraŭ havas "
-#~ "la eblecon ŝalti la \"Filtru mesaĝojn\"."
-
-#~ msgid ""
-#~ "The server does not seem to support fetching message headers, but this is "
-#~ "a requirement for filtering messages on the server; therefore, this "
-#~ "option has been disabled.\n"
-#~ "Since some servers do not correctly announce their capabilities you still "
-#~ "have the possibility to turn filtering messages on the server on."
-#~ msgstr ""
-#~ "La servilo ne ŝajnas subteni prenon de la mesaĝajn kaplinilojn, sed ĉi "
-#~ "tiu estas postulon por filtri mesaĝojn en la servilo. Tial la opcio ne "
-#~ "estas ebligita.\n"
-#~ "Ĉar kelkaj serviloj ne korekte publikigi siajn eblecojn, vi ankoraŭ havas "
-#~ "la eblecon ŝalti la \"Filtru mesaĝojn\"."
-
-#~ msgid ""
-#~ "If you select this option, POP Filters will be used to decide what to do "
-#~ "with messages. You can then select to download, delete or keep them on "
-#~ "the server."
-#~ msgstr ""
-#~ "Se vi elektas tiun opcion, POP-filtriloj estas uzataj por decido pri la "
-#~ "ago de mesaĝoj. Tiam vi povas elekti ricevon, forigon aŭ reteno de ili en "
-#~ "la servilo."
-
-#, fuzzy
-#~| msgid "&Filter messages if they are greater than"
-#~ msgid "&Filter messages larger than:"
-#~ msgstr "&Filtri mesaĝojn, se ili estas pli granda ol"
-
-#, fuzzy
-#~| msgid "%1 Settings"
-#~ msgid "POP3 Account Settings"
-#~ msgstr "%1 Agordoj"
-
-#, fuzzy
-#~| msgid " days"
-#~ msgctxt "Number of days that the message will be left on the server."
-#~ msgid " days"
-#~ msgstr " tago(j)"
-
-#, fuzzy
-#~| msgid "0 messages"
-#~ msgid " messages"
-#~ msgstr "0 mesaĝoj"
-
-#~ msgid " bytes"
-#~ msgstr " bitokoj"
-
-#~ msgid "Include in man&ual mail check"
-#~ msgstr "En&meti en la kontrolon"
-
-#, fuzzy
-#~| msgid "Please specify a server and port on the General tab first."
-#~ msgid "Please verify server address, we can not connect to it."
-#~ msgstr "Bonvolu indiki servilon kaj pordon en la ·ĝenerala tabo antaŭ ĉio."
-
-#~ msgid "&Login:"
-#~ msgstr "&Uzantonomo:"
-
-#~ msgid "Sto&re POP password"
-#~ msgstr "&Konservi POP-pasvorton en la agordodosiero"
-
-#~ msgid "Security"
-#~ msgstr "Sekureco"
-
-#~ msgid "Use &SSL for secure mail download"
-#~ msgstr "Uzi &SSL por sekura poŝtpreno"
-
-#~ msgid "Use &TLS for secure mail download"
-#~ msgstr "Uzi &TLS por sekura poŝtpreno"
-
-#~ msgid "Clear te&xt"
-#~ msgstr "Forigi &tekston"
-
-#~ msgid "&LOGIN"
-#~ msgstr "&LOGIN"
-
-#~ msgid "&PLAIN"
-#~ msgstr "&PLAIN"
-
-#~ msgid "NTL&M"
-#~ msgstr "NTL&M"
-
-#~ msgid "&DIGEST-MD5"
-#~ msgstr "&DIGEST-MD5"
-
-#~ msgid "CRAM-MD&5"
-#~ msgstr "CRAM-MD&5"
-
-#~ msgid "&GSSAPI"
-#~ msgstr "&GSSAPI"
-
-#~ msgid "&APOP"
-#~ msgstr "&APOP"
-
-#~ msgid "Check &What the Server Supports"
-#~ msgstr "Rigardi &kion la servilo subtenas"

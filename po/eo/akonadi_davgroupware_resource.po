@@ -1,4 +1,6 @@
-# Translation of akonadi_davcalendar_resource into esperanto.
+# Translation of akonadi_davgroupware_resource.pot into esperanto.
+# Copyright (C) 2009 Free Software Foundation, Inc.
+# This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
 #
 msgid ""
@@ -6,8 +8,8 @@ msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-01-13 00:57+0000\n"
-"PO-Revision-Date: 2009-11-15 12:06+0100\n"
-"Last-Translator: Axel Rousseau <axel@esperanto-jeunes.org>\n"
+"PO-Revision-Date: 2023-03-20 22:43+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +22,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV Resource Configuration"
-msgstr ""
+msgstr "DAV-Rimeda Agordo"
 
 #: configdialog.cpp:46
 #, kde-format
@@ -35,17 +37,17 @@ msgstr "Retadreso"
 #: configdialog.cpp:59
 #, kde-format
 msgid "Days"
-msgstr ""
+msgstr "Tagoj"
 
 #: configdialog.cpp:60
 #, kde-format
 msgid "Months"
-msgstr ""
+msgstr "Monatoj"
 
 #: configdialog.cpp:61
 #, kde-format
 msgid "Years"
-msgstr ""
+msgstr "Jaroj"
 
 #: configdialog.cpp:137
 #, kde-format
@@ -58,19 +60,19 @@ msgstr ""
 #: configdialog.ui:29
 #, kde-format
 msgid "Display name:"
-msgstr ""
+msgstr "Montri nomon:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: configdialog.ui:39
 #, kde-format
 msgid "Refresh every:"
-msgstr ""
+msgstr "Refreŝigi ĉiujn:"
 
 #. i18n: ectx: property (specialValueText), widget (QSpinBox, kcfg_refreshInterval)
 #: configdialog.ui:48
 #, kde-format
 msgid "Never"
-msgstr ""
+msgstr "Neniam"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: configdialog.ui:58
@@ -81,19 +83,16 @@ msgstr "minutoj"
 #. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: configdialog.ui:80 urlconfigurationdialog.ui:111
-#, fuzzy, kde-format
-#| msgctxt "Username for audioscrobbler login"
-#| msgid "Username"
+#, kde-format
 msgid "Username:"
-msgstr "Uzantnomo"
+msgstr "Uzantnomo:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configdialog.ui:108 setupwizard.cpp:222 urlconfigurationdialog.ui:127
-#, fuzzy, kde-format
-#| msgid "Password"
+#, kde-format
 msgid "Password:"
-msgstr "Pasvorto"
+msgstr "Pasvorto:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_limitSyncRange)
 #: configdialog.ui:136
@@ -383,9 +382,7 @@ msgstr ""
 
 #. i18n: ectx: label, entry (defaultUsername), group (General)
 #: davgroupwareresource.kcfg:26
-#, fuzzy, kde-format
-#| msgctxt "Username for audioscrobbler login"
-#| msgid "Username"
+#, kde-format
 msgid "User name"
 msgstr "Uzantnomo"
 
@@ -495,11 +492,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:116
-#, fuzzy, kde-format
-#| msgctxt "Username for audioscrobbler login"
-#| msgid "Username"
+#, kde-format
 msgid "a person named"
-msgstr "Uzantnomo"
+msgstr ""
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:121
@@ -513,10 +508,9 @@ msgid "A password is required for user %1"
 msgstr ""
 
 #: settings.cpp:484
-#, fuzzy, kde-format
-#| msgid "Password"
+#, kde-format
 msgid "Password: "
-msgstr "Pasvorto"
+msgstr "Pasvorto: "
 
 #: setupwizard.cpp:140
 #, kde-format
@@ -535,11 +529,9 @@ msgid "Enter your credentials to login to the groupware server"
 msgstr ""
 
 #: setupwizard.cpp:218
-#, fuzzy, kde-format
-#| msgctxt "Username for audioscrobbler login"
-#| msgid "Username"
+#, kde-format
 msgid "User:"
-msgstr "Uzantnomo"
+msgstr ""
 
 #: setupwizard.cpp:258
 #, kde-format
@@ -664,17 +656,15 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
-#, fuzzy, kde-format
-#| msgid "CalDAV"
+#, kde-format
 msgid "CalDA&V"
-msgstr "CalDAV"
+msgstr "CalDA&V"
 
 #. i18n: ectx: property (text), widget (QRadioButton, carddav)
 #: urlconfigurationdialog.ui:52
-#, fuzzy, kde-format
-#| msgid "CalDAV"
+#, kde-format
 msgid "CardDAV"
-msgstr "CalDAV"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, groupdav)
 #: urlconfigurationdialog.ui:59
@@ -684,10 +674,9 @@ msgstr "GroupDAV"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: urlconfigurationdialog.ui:66
-#, fuzzy, kde-format
-#| msgid "Remove"
+#, kde-format
 msgid "Remote URL:"
-msgstr "Forigi"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
 #: urlconfigurationdialog.ui:76
@@ -708,27 +697,16 @@ msgid "Fetch"
 msgstr "Elprenu"
 
 #: utils.cpp:47 utils.cpp:64
-#, fuzzy, kde-format
-#| msgid "CalDAV"
+#, kde-format
 msgid "CalDav"
-msgstr "CalDAV"
+msgstr ""
 
 #: utils.cpp:50 utils.cpp:66
-#, fuzzy, kde-format
-#| msgid "CalDAV"
+#, kde-format
 msgid "CardDav"
-msgstr "CalDAV"
+msgstr ""
 
 #: utils.cpp:53 utils.cpp:68
-#, fuzzy, kde-format
-#| msgid "GroupDAV"
+#, kde-format
 msgid "GroupDav"
-msgstr "GroupDAV"
-
-#, fuzzy
-#~| msgid "Password"
-#~ msgid "Store password"
-#~ msgstr "Pasvorto"
-
-#~ msgid "Authentication"
-#~ msgstr "Aŭtentigo"
+msgstr ""
