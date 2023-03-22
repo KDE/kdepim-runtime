@@ -93,7 +93,7 @@ Kirigami.ScrollablePage {
             stage = 2;
             setup();
         } else {
-            var smtp = SetupManager.createTransport("smtp");
+            const smtp = SetupManager.createTransport("smtp");
             smtp.name = outgoingAddressField.text.trim();
             smtp.host = outgoingAddressField.text.trim();
             if (arg === "ssl") { 
