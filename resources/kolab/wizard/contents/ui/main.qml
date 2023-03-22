@@ -13,7 +13,7 @@ Kirigami.ScrollablePage {
     id: root
     
     property bool userChangedServerAddress: false;
-    property bool valid: emailEdit.text.trim().length !== 0 && passwordEdit.text.trim().length !== 0
+    readonly property bool valid: emailEdit.text.trim().length !== 0 && passwordEdit.text.trim().length !== 0
     
     Kirigami.FormLayout {
         QQC2.TextField {

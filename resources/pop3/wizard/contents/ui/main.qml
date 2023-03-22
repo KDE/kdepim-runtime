@@ -12,7 +12,7 @@ import org.kde.pim.accountwizard 1.0
 
 Kirigami.ScrollablePage {
     id: root
-    property bool valid: incomingAddressField.text.trim().length !== 0
+    readonly property bool valid: incomingAddressField.text.trim().length !== 0
     property int stage: 1;
     property var identity;
     
