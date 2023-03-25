@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-03-24 00:49+0000\n"
-"PO-Revision-Date: 2023-01-18 22:31+0300\n"
+"PO-Revision-Date: 2023-03-24 13:56+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.1\n"
+"X-Generator: Lokalize 22.12.3\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: compactpage.cpp:71
@@ -59,29 +59,7 @@ msgstr "MBox dosyası küçültüldü."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: compactpage.ui:23
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">The only way to fully "
-#| "remove a mail from an mbox file is by removing it from the actual file. "
-#| "As this can be a rather expensive operation, the mbox resource keeps a "
-#| "list of deleted messages. Once in a while these messages are really "
-#| "removed from the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note:</span> The downside of this is that if the file is "
-#| "changed by another program, the list of deleted messages cannot be "
-#| "trusted any longer and deleted messages might reappear.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -110,8 +88,8 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Bir mbox dosyasından bir e-"
 "postanın tamamen silinmesinin tek yolu onu dosyadan silmektir. Bu oldukça "
@@ -159,25 +137,7 @@ msgstr "MBox Ayarları"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: lockfilepage.ui:27
-#, fuzzy, kde-format
-#| msgid ""
-#| "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
-#| "REC-html40/strict.dtd\">\n"
-#| "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/"
-#| "css\">\n"
-#| "p, li { white-space: pre-wrap; }\n"
-#| "</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; "
-#| "font-weight:400; font-style:normal;\">\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\">Select a method to lock "
-#| "the mbox file when data is read from or written to the file.</p>\n"
-#| "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; "
-#| "margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-#| "\"></p>\n"
-#| "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
-#| "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
-#| "weight:600;\">Note</span>: For some methods you might need to install "
-#| "additional software before they can be used.</p></body></html>"
+#, kde-format
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -202,8 +162,8 @@ msgstr ""
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
 "\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:10pt; font-"
-"weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-size:10pt; font-weight:400; font-style:"
+"normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\">Kendisinden veri okunurken "
 "veya bir dosyaya yazılırken mbox dosyasının kilitlenmesi için bir yöntem "
@@ -297,7 +257,7 @@ msgstr "'%1' uid ile ileti okuma başarısız."
 #: mboxresource.cpp:185
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
-msgstr "MBox öz kaynağına yalnızca e-posta iletileri eklenebilir."
+msgstr "MBox özkaynağına yalnızca e-posta iletileri eklenebilir."
 
 #: mboxresource.cpp:191
 #, kde-format
@@ -332,7 +292,7 @@ msgstr "Mbox dosyası %1 konumuna kaydedilemedi"
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
-msgstr "Seçili öge, eski öge silinemediği için güncellemedi Sebebi: %1"
+msgstr "Seçili öge, eski öge silinemediği için güncellemedi Gerekçesi: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10
@@ -344,13 +304,13 @@ msgstr "Mbox dosyasının yolu."
 #: mboxresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "İsmi göster."
+msgstr "Adı görüntüleyin."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: mboxresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirme."
+msgstr "Güncel arka uç verilerini değiştirmeyin."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: mboxresource.kcfg:22
