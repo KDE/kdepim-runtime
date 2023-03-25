@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-26 00:46+0000\n"
-"PO-Revision-Date: 2023-01-18 22:31+0300\n"
+"PO-Revision-Date: 2023-03-24 13:56+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.12.1\n"
+"X-Generator: Lokalize 22.12.3\n"
 "X-POOTLE-MTIME: 1413102278.000000\n"
 
 #: compactpage.cpp:71
@@ -257,7 +257,7 @@ msgstr "'%1' uid ile ileti okuma başarısız."
 #: mboxresource.cpp:185
 #, kde-format
 msgid "Only email messages can be added to the MBox resource."
-msgstr "MBox öz kaynağına yalnızca e-posta iletileri eklenebilir."
+msgstr "MBox özkaynağına yalnızca e-posta iletileri eklenebilir."
 
 #: mboxresource.cpp:191
 #, kde-format
@@ -292,7 +292,7 @@ msgstr "Mbox dosyası %1 konumuna kaydedilemedi"
 msgid ""
 "Failed to update the changed item because the old item could not be deleted "
 "Reason: %1"
-msgstr "Seçili öge, eski öge silinemediği için güncellemedi Sebebi: %1"
+msgstr "Seçili öge, eski öge silinemediği için güncellemedi Gerekçesi: %1"
 
 #. i18n: ectx: label, entry (Path), group (General)
 #: mboxresource.kcfg:10
@@ -304,13 +304,13 @@ msgstr "Mbox dosyasının yolu."
 #: mboxresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "İsmi göster."
+msgstr "Adı görüntüleyin."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: mboxresource.kcfg:18
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr "Güncel arka uç verilerini değiştirme."
+msgstr "Güncel arka uç verilerini değiştirmeyin."
 
 #. i18n: ectx: label, entry (MonitorFile), group (General)
 #: mboxresource.kcfg:22
