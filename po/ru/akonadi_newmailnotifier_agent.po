@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-13 00:46+0000\n"
+"POT-Creation-Date: 2023-03-26 02:45+0000\n"
 "PO-Revision-Date: 2022-10-11 10:11+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -48,7 +48,7 @@ msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
 msgstr "Получено письмо из %f"
 
-#: newmailnotifierreplymessagejob.cpp:38 newmailnotifiershowmessagejob.cpp:38
+#: newmailnotifierreplymessagejob.cpp:38 newmailnotifiershowmessagejob.cpp:36
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "Не удалось запустить приложение KMail."

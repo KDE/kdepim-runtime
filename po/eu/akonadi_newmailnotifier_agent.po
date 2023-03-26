@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-13 00:46+0000\n"
+"POT-Creation-Date: 2023-03-26 02:45+0000\n"
 "PO-Revision-Date: 2022-08-29 23:01+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -41,7 +41,7 @@ msgctxt "%f is a variable for agent. Do not change it"
 msgid "A message was received from %f"
 msgstr "%f(r)en mezu bat jaso da"
 
-#: newmailnotifierreplymessagejob.cpp:38 newmailnotifiershowmessagejob.cpp:38
+#: newmailnotifierreplymessagejob.cpp:38 newmailnotifiershowmessagejob.cpp:36
 #, kde-format
 msgid "Unable to start KMail application."
 msgstr "Ez da KMail aplikazioa hasteko gai."
