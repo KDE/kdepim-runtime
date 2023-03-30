@@ -19,17 +19,17 @@ Kirigami.ScrollablePage {
         QQC2.TextField {
             id: nameEdit
             Kirigami.FormData.label: i18n("Name:")
-            text: SetupManager.name
+            text: SetupManager.name()
         }
         QQC2.TextField {
             id: emailEdit
             Kirigami.FormData.label: i18n("Email:")
-            text: SetupManager.email
+            text: SetupManager.email()
         }
         Kirigami.PasswordField {
             id: passwordEdit
             Kirigami.FormData.label: i18n("Password:")
-            text: SetupManager.password
+            text: SetupManager.password()
         }
         QQC2.ComboBox {
             Kirigami.FormData.label: i18n("Kolab Version")

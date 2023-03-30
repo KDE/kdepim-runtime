@@ -42,8 +42,8 @@ Kirigami.ScrollablePage {
     function setup() {
         if (stage === 1) {
             identity = SetupManager.createIdentity();
-            identity.setEmail(SetupManager.email);
-            identity.setRealName(SetupManager.name);
+            identity.setEmail(SetupManager.email());
+            identity.setRealName(SetupManager.name());
 
             ServerTest.test(incomingAddressField.text.trim(), "imap");
         } else {
@@ -62,7 +62,7 @@ Kirigami.ScrollablePage {
             var server = incomingAddressField.text.trim();
             imapRes.setOption("ImapServer", server);
             imapRes.setOption("UserName", nameField.text);
-            imapRes.setOption("Password", SetupManager.password);
+            imapRes.setOption("Password", SetupManager.password());
             imapRes.setOption("DisconnectedModeEnabled", disconnectedModeBox.checked);
             imapRes.setOption("UseDefaultIdentity", false);
             imapRes.setOption("AccountIdentity", identity.uoid());
@@ -104,7 +104,7 @@ Kirigami.ScrollablePage {
                 smtp.encryption = "None";
             }
             smtp.username = nameField.text;
-            smtp.password = SetupManager.password;
+            smtp.password = SetupManager.password();
             identity.setTransport(smtp);
             SetupManager.execute();
         }
@@ -118,18 +118,18 @@ Kirigami.ScrollablePage {
         QQC2.TextField {
             id: nameField
             Kirigami.FormData.label: i18n("Name:")
-            text: SetupManager.name
+            text: SetupManager.name()
         }
         QQC2.TextField {
             id: emailField
             Kirigami.FormData.label: i18n("Email:")
             onTextChanged: guessServerName()
-            text: SetupManager.email
+            text: SetupManager.email()
         }
         Kirigami.PasswordField {
             id: passwordField
             Kirigami.FormData.label: i18n("Password:")
-            text: SetupManager.password
+            text: SetupManager.password()
         }
         QQC2.TextField {
             id: incomingAddressField

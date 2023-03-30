@@ -42,8 +42,8 @@ Kirigami.ScrollablePage {
     function setup() {
         if (stage === 1) {
             identity = SetupManager.createIdentity();
-            identity.setEmail(SetupManager.email);
-            identity.setRealName(SetupManager.name);
+            identity.setEmail(SetupManager.email());
+            identity.setRealName(SetupManager.name());
 
             ServerTest.test(incomingAddressField.text.trim(), "pop");
         } else {
@@ -102,18 +102,18 @@ Kirigami.ScrollablePage {
         QQC2.TextField {
             id: userName
             Kirigami.FormData.label: i18n("Name:")
-            text: SetupManager.name
+            text: SetupManager.name()
         }
         QQC2.TextField {
             id: emailField
             Kirigami.FormData.label: i18n("Email:")
             // TODO onTextChanged: guessServerName()
-            text: SetupManager.email
+            text: SetupManager.email()
         }
         Kirigami.PasswordField {
             id: passwordField
             Kirigami.FormData.label: i18n("Password:")
-            text: SetupManager.password
+            text: SetupManager.password()
         }
         QQC2.TextField {
             id: incomingAddressField
