@@ -186,7 +186,7 @@ add_subdirectory(defaultsetup)
 add_subdirectory(kioworker)
 add_subdirectory(migration)
 add_subdirectory(kcms)
-
+add_subdirectory(kmailtransport)
 ## install the MIME type spec file for KDEPIM specific MIME types
 install(FILES kdepim-mime.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
 update_xdg_mimetypes(${KDE_INSTALL_MIMEDIR})
