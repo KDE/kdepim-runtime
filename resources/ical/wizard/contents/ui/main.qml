@@ -47,7 +47,7 @@ Kirigami.ScrollablePage {
                 enabled: root.valid
                 onClicked: {
                     const icalRes = SetupManager.createResource("akonadi_ical_resource");
-                    icalRes.setOption("Path", pathFiel.text);
+                    icalRes.setOption("Path", pathField.text);
                     icalRes.setName(i18n("Default Calendar"));
                     SetupManager.execute();
                 }
