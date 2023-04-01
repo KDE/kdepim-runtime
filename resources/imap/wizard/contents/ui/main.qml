@@ -111,7 +111,7 @@ Kirigami.ScrollablePage {
     }
 
     function guessServerName() {
-        const email = emailEdit.text;
+        const email = emailField.text;
         const pos = email.indexOf("@");
         if (pos >= 0 && (pos + 1) < email.length) {
             const server = email.slice(pos + 1, email.length);
