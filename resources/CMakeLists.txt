@@ -53,8 +53,6 @@ if (Etebase_FOUND)
     add_subdirectory( etesync )
 endif()
 
-#Disable it as it seems Facebook disabled the login and event API has been crippled
-#add_subdirectory( facebook )
 add_subdirectory( maildir )
 
 add_subdirectory( openxchange )

@@ -1,5 +1,0 @@
-File=settings.kcfg
-ClassName=Settings
-Mutators=true
-Singleton=true
-TranslationSystem=kde
