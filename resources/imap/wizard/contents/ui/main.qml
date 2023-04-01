@@ -110,6 +110,17 @@ Kirigami.ScrollablePage {
         }
     }
 
+    function guessServerName() {
+        const email = emailEdit.text;
+        const pos = email.indexOf("@");
+        if (pos >= 0 && (pos + 1) < email.length) {
+            const server = email.slice(pos + 1, email.length);
+            return server;
+        }
+        return "";
+    }
+
+
     Kirigami.FormLayout {
         Item {
             Kirigami.FormData.isSection: true
