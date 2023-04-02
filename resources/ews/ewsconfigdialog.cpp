@@ -108,7 +108,7 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
     mTryConnectNeeded = baseUrlEmpty;
 
     connect(mSettings.data(), &EwsSettings::passwordRequestFinished, mUi->passwordEdit, &KPasswordLineEdit::setPassword);
-    mSettings->requestPassword(false);
+    mSettings->requestPassword();
     mUi->authOAuth2RadioButton->setEnabled(true);
     const auto authMode = mSettings->authMode();
     if (authMode == QLatin1String("username-password")) {

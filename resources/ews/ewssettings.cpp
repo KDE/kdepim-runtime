@@ -7,7 +7,6 @@
 #include "ewssettings.h"
 
 #include <KLocalizedString>
-#include <KPasswordDialog>
 #include <KWallet>
 
 #include "auth/ewsoauth.h"
@@ -57,7 +56,7 @@ bool EwsSettings::requestWalletOpen()
     return false;
 }
 
-void EwsSettings::requestPassword(bool ask)
+void EwsSettings::requestPassword()
 {
     bool status = false;
 
@@ -80,20 +79,7 @@ void EwsSettings::requestPassword(bool ask)
     }
 
     if (!status) {
-        if (!ask) {
-            qCDebug(EWSRES_LOG) << "requestPassword: Not allowed to ask";
-        } else {
-            qCDebug(EWSRES_LOG) << "requestPassword: Requesting interactively";
-            mPasswordDlg = new KPasswordDialog(nullptr);
-            mPasswordDlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-            mPasswordDlg->setModal(true);
-            mPasswordDlg->setPrompt(i18n("Please enter password for user '%1' and Exchange account '%2'.", username(), email()));
-            if (mPasswordDlg->exec() == QDialog::Accepted) {
-                mPassword = mPasswordDlg->password();
-                setPassword(mPassword);
-            }
-            delete mPasswordDlg;
-        }
+        qCDebug(EWSRES_LOG) << "requestPassword: Failed to read password";
     }
 
     Q_EMIT passwordRequestFinished(mPassword);
@@ -232,9 +218,6 @@ void EwsSettings::setPassword(const QString &password)
     if (mWallet && mPasswordReadPending) {
         satisfyPasswordReadRequest(true);
     }
-    if (mPasswordDlg) {
-        mPasswordDlg->reject();
-    }
 
     if (requestWalletOpen()) {
         mPasswordWritePending = true;
@@ -285,9 +268,6 @@ void EwsSettings::setTestPassword(const QString &password)
     mPassword = password;
     if (mWallet) {
         satisfyPasswordReadRequest(true);
-    }
-    if (mPasswordDlg) {
-        mPasswordDlg->reject();
     }
 }
 

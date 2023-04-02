@@ -19,7 +19,6 @@ namespace KWallet
 {
 class Wallet;
 }
-class KPasswordDialog;
 
 class EwsAbstractAuth;
 
@@ -31,7 +30,7 @@ public:
     explicit EwsSettings(WId windowId);
     ~EwsSettings() override;
 
-    void requestPassword(bool ask);
+    void requestPassword();
     void requestMap();
 
     EwsAbstractAuth *loadAuth(QObject *parent);
@@ -65,5 +64,4 @@ private:
 
     QPointer<KWallet::Wallet> mWallet;
     QTimer mWalletTimer;
-    QPointer<KPasswordDialog> mPasswordDlg;
 };

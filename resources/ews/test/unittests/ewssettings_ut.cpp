@@ -221,7 +221,7 @@ void UtEwsSettings::readNoPassword()
         loop.exit(0);
     });
     QTimer::singleShot(100, this, [&]() {
-        settings.requestPassword(false);
+        settings.requestPassword();
         if (!wallet) {
             qDebug() << "Wallet is null";
             loop.exit(1);
@@ -275,7 +275,7 @@ void UtEwsSettings::readNullWallet()
         loop.exit(0);
     });
     QTimer::singleShot(100, [&]() {
-        settings.requestPassword(false);
+        settings.requestPassword();
     });
     QTimer timeoutTimer;
     connect(&timeoutTimer, &QTimer::timeout, this, [&]() {
@@ -318,7 +318,7 @@ void UtEwsSettings::readTimeout()
         loop.exit(0);
     });
     QTimer::singleShot(100, this, [&]() {
-        settings.requestPassword(false);
+        settings.requestPassword();
         if (!wallet) {
             qDebug() << "Wallet is null";
             loop.exit(1);
@@ -379,7 +379,7 @@ void UtEwsSettings::readTimeoutInterrupted()
         }
     });
     QTimer::singleShot(100, this, [&]() {
-        settings.requestPassword(false);
+        settings.requestPassword();
         if (!wallet) {
             qDebug() << "Wallet is null";
             loop.exit(1);
@@ -442,7 +442,7 @@ void UtEwsSettings::readValidPassword()
         loop.exit(0);
     });
     QTimer::singleShot(100, this, [&]() {
-        settings.requestPassword(false);
+        settings.requestPassword();
         if (!wallet) {
             qDebug() << "Wallet is null";
             loop.exit(1);
