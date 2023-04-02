@@ -6,12 +6,12 @@
 
 #include "resourcesendjob_p.h"
 #include <MailTransport/Transport>
-#include <MailTransportAkonadi/MessageQueueJob>
 
 #include <KMime/KMimeMessage>
 
 #include <Akonadi/AddressAttribute>
 #include <Akonadi/Collection>
+#include <Akonadi/MessageQueueJob>
 
 using namespace Akonadi;
 using namespace KMime;

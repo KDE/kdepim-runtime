@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <MailTransportAkonadi/SentActionAttribute>
+#include <Akonadi/SentActionAttribute>
 
 #include <QObject>
 
@@ -20,7 +20,7 @@ class SentActionHandler : public QObject
 public:
     explicit SentActionHandler(QObject *parent = nullptr);
 
-    void runAction(const MailTransport::SentActionAttribute::Action &action);
+    void runAction(const Akonadi::SentActionAttribute::Action &action);
 
 private:
     void itemFetchResult(KJob *job);

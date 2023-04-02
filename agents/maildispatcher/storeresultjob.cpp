@@ -7,15 +7,14 @@
 #include "storeresultjob.h"
 
 #include "maildispatcher_debug.h"
+#include <Akonadi/DispatchModeAttribute>
+#include <Akonadi/ErrorAttribute>
 #include <Akonadi/ItemFetchJob>
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/MessageFlags>
 #include <KLocalizedString>
-#include <MailTransportAkonadi/DispatchModeAttribute>
-#include <MailTransportAkonadi/ErrorAttribute>
 
 using namespace Akonadi;
-using namespace MailTransport;
 
 StoreResultJob::StoreResultJob(const Item &item, bool success, const QString &message, QObject *parent)
     : TransactionSequence(parent)
@@ -78,9 +77,9 @@ void StoreResultJob::fetchDone(KJob *job)
         // Otherwise, the user will *never* be able to try sending the mail again,
         // as Send Queued Messages will ignore it.
         if (item.hasAttribute<DispatchModeAttribute>()) {
-            item.attribute<DispatchModeAttribute>()->setDispatchMode(MailTransport::DispatchModeAttribute::Manual);
+            item.attribute<DispatchModeAttribute>()->setDispatchMode(Akonadi::DispatchModeAttribute::Manual);
         } else {
-            item.addAttribute(new DispatchModeAttribute(MailTransport::DispatchModeAttribute::Manual));
+            item.addAttribute(new DispatchModeAttribute(Akonadi::DispatchModeAttribute::Manual));
         }
     }
 

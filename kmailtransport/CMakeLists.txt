@@ -16,8 +16,8 @@ ecm_qt_declare_logging_category(mailtransport_akonadiplugin HEADER mailtransport
 
 
 target_link_libraries(mailtransport_akonadiplugin
-	#remove MailTransportAkonadi when all class moved to Akonadi-Mime
-    KPim${KF_MAJOR_VERSION}::MailTransportAkonadi
+    KPim${KF_MAJOR_VERSION}::AkonadiMime
+    KPim${KF_MAJOR_VERSION}::Mime
     KPim${KF_MAJOR_VERSION}::MailTransport
     KF${KF_MAJOR_VERSION}::CoreAddons
     KPim${KF_MAJOR_VERSION}::AkonadiCore

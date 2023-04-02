@@ -15,9 +15,9 @@
 #include "settingsadaptor.h"
 
 #include <Akonadi/ItemFetchScope>
+#include <Akonadi/SentActionAttribute>
+#include <Akonadi/SentBehaviourAttribute>
 #include <Akonadi/ServerManager>
-#include <MailTransportAkonadi/SentActionAttribute>
-#include <MailTransportAkonadi/SentBehaviourAttribute>
 
 #include "maildispatcher_debug.h"
 #include <KLocalizedString>
@@ -264,14 +264,14 @@ void MailDispatcherAgent::sendResult(KJob *job)
         qCDebug(MAILDISPATCHER_LOG) << "Sending succeeded.";
 
         // handle possible sent actions
-        const auto attribute = sentItem.attribute<MailTransport::SentActionAttribute>();
+        const auto attribute = sentItem.attribute<Akonadi::SentActionAttribute>();
         if (attribute) {
-            const MailTransport::SentActionAttribute::Action::List lstAct = attribute->actions();
-            for (const MailTransport::SentActionAttribute::Action &action : lstAct) {
+            const Akonadi::SentActionAttribute::Action::List lstAct = attribute->actions();
+            for (const Akonadi::SentActionAttribute::Action &action : lstAct) {
                 mSentActionHandler->runAction(action);
             }
         }
-        const auto bhAttribute = sentItem.attribute<MailTransport::SentBehaviourAttribute>();
+        const auto bhAttribute = sentItem.attribute<Akonadi::SentBehaviourAttribute>();
         if (bhAttribute) {
             mShowSentNotification = !bhAttribute->sendSilently();
         } else {

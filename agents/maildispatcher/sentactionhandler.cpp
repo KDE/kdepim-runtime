@@ -12,7 +12,7 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/MessageFlags>
 
-using namespace MailTransport;
+using namespace Akonadi;
 
 SentActionHandler::SentActionHandler(QObject *parent)
     : QObject(parent)

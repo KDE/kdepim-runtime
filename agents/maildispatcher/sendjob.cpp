@@ -18,15 +18,15 @@
 #include <Akonadi/ItemModifyJob>
 #include <Akonadi/ItemMoveJob>
 #include <Akonadi/MessageParts>
+#include <Akonadi/SentBehaviourAttribute>
 #include <Akonadi/ServerManager>
 #include <Akonadi/SpecialMailCollections>
+#include <Akonadi/TransportAttribute>
 #include <Akonadi/TransportResourceBase>
 #include <KLocalizedString>
 #include <MailTransport/Transport>
 #include <MailTransport/TransportJob>
 #include <MailTransport/TransportManager>
-#include <MailTransportAkonadi/SentBehaviourAttribute>
-#include <MailTransportAkonadi/TransportAttribute>
 
 #include <KMime/Message>
 

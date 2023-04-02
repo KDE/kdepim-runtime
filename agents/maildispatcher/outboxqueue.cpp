@@ -22,10 +22,10 @@
 
 #include <KMime/Message>
 
+#include <Akonadi/DispatchModeAttribute>
+#include <Akonadi/SentBehaviourAttribute>
+#include <Akonadi/TransportAttribute>
 #include <MailTransport/TransportManager>
-#include <MailTransportAkonadi/DispatchModeAttribute>
-#include <MailTransportAkonadi/SentBehaviourAttribute>
-#include <MailTransportAkonadi/TransportAttribute>
 #include <chrono>
 
 using namespace std::chrono_literals;
