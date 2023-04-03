@@ -121,6 +121,7 @@ target_link_libraries(imapresource
     KF${KF_MAJOR_VERSION}::I18n
     KF${KF_MAJOR_VERSION}::WindowSystem
     KF${KF_MAJOR_VERSION}::ConfigGui
+    KF${KF_MAJOR_VERSION}::Wallet
     akonadi-singlefileresource
     KPim${KF_MAJOR_VERSION}::Libkdepim
     ${kdepim-keychain_lib}
