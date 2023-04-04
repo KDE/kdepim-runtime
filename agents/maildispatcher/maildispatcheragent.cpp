@@ -27,10 +27,6 @@
 
 using namespace std::chrono_literals;
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <Kdelibs4ConfigMigrator>
-#endif
-
 #include <QDBusConnection>
 #include <QTimer>
 
@@ -125,11 +121,6 @@ MailDispatcherAgent::MailDispatcherAgent(const QString &id)
     , mQueue(new OutboxQueue(this))
     , mSentActionHandler(new SentActionHandler(this))
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    Kdelibs4ConfigMigrator migrate(QStringLiteral("maildispatcheragent"));
-    migrate.setConfigFiles(QStringList() << QStringLiteral("maildispatcheragentrc") << QStringLiteral("akonadi_maildispatcher_agent.notifyrc"));
-    migrate.migrate();
-#endif
     qCDebug(MAILDISPATCHER_LOG) << "maildispatcheragent: At your service, sir!";
 
     new SettingsAdaptor(Settings::self());

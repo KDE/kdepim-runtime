@@ -95,13 +95,8 @@ private:
     bool readHeader(QXmlStreamReader &reader);
     bool readResponseAttr(const QXmlStreamAttributes &attrs, EwsResponseClass &responseClass);
     QString getOAuthToken();
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPair<QStringRef, QString> parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces);
-    EwsResponseCode parseEwsResponseCode(const QPair<QStringRef, QString> &code);
-#else
     QPair<QStringView, QString> parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces);
     EwsResponseCode parseEwsResponseCode(const QPair<QStringView, QString> &code);
-#endif
 
     QString mBody;
     EwsClient &mClient;

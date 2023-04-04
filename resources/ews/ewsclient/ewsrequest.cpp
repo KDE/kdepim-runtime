@@ -30,9 +30,6 @@ void EwsRequest::doSend()
 
 void EwsRequest::startSoapDocument(QXmlStreamWriter &writer)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    writer.setCodec("UTF-8");
-#endif
     writer.writeStartDocument();
 
     writer.writeNamespace(soapEnvNsUri, QStringLiteral("soap"));
@@ -193,20 +190,12 @@ bool EwsRequest::readSoapBody(QXmlStreamReader &reader)
     }
     return true;
 }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-QPair<QStringRef, QString> EwsRequest::parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces)
-#else
 QPair<QStringView, QString> EwsRequest::parseNamespacedString(const QString &str, const QXmlStreamNamespaceDeclarations &namespaces)
-#endif
 {
     const auto tokens = str.split(QLatin1Char(':'));
     switch (tokens.count()) {
     case 1:
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return {QStringRef(), str};
-#else
         return {QStringView(), str};
-#endif
     case 2:
         for (const auto &ns : namespaces) {
             if (ns.prefix() == tokens[0]) {
@@ -218,11 +207,8 @@ QPair<QStringView, QString> EwsRequest::parseNamespacedString(const QString &str
         return {};
     }
 }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-EwsResponseCode EwsRequest::parseEwsResponseCode(const QPair<QStringRef, QString> &code)
-#else
 EwsResponseCode EwsRequest::parseEwsResponseCode(const QPair<QStringView, QString> &code)
-#endif
+
 {
     if (code.first == ewsTypeNsUri) {
         return decodeEwsResponseCode(code.second);

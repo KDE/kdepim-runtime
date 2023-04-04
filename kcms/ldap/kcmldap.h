@@ -21,11 +21,7 @@ class KCMLdap : public KCModule
     Q_OBJECT
 
 public:
-#if KCMUTILS_VERSION < QT_VERSION_CHECK(5, 240, 0)
-    explicit KCMLdap(QWidget *parent, const QVariantList &args);
-#else
     explicit KCMLdap(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
-#endif
     ~KCMLdap() override;
 
     void load() override;

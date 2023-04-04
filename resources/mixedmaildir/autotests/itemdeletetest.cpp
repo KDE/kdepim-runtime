@@ -236,11 +236,7 @@ void ItemDeleteTest::testMBox()
 
     var = job->property("compactStore");
     QVERIFY(var.isValid());
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QCOMPARE(var.type(), QVariant::Bool);
-#else
     QCOMPARE(var.userType(), QMetaType::Bool);
-#endif
     QCOMPARE(var.toBool(), true);
 
     itemFetch = mStore->fetchItems(collection1);
@@ -305,11 +301,7 @@ void ItemDeleteTest::testMBox()
 
     var = job->property("compactStore");
     QVERIFY(var.isValid());
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QCOMPARE(var.type(), QVariant::Bool);
-#else
     QCOMPARE(var.userType(), QMetaType::Bool);
-#endif
     QCOMPARE(var.toBool(), true);
 
     itemFetch = mStore->fetchItems(collection1);

@@ -244,11 +244,7 @@ bool EwsFindItemResponse::parseRootFolder(QXmlStreamReader &reader)
 EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 {
     EwsItem *item = nullptr;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    const QStringRef readerName = reader.name();
-#else
     const QStringView readerName = reader.name();
-#endif
     if (readerName == QLatin1String("Item") || readerName == QLatin1String("Message") || readerName == QLatin1String("CalendarItem")
         || readerName == QLatin1String("Contact") || readerName == QLatin1String("DistributionList") || readerName == QLatin1String("MeetingMessage")
         || readerName == QLatin1String("MeetingRequest") || readerName == QLatin1String("MeetingResponse") || readerName == QLatin1String("MeetingCancellation")

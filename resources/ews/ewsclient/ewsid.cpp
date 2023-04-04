@@ -42,17 +42,6 @@ static const QString distinguishedIdNames[] = {
     QStringLiteral("archiverecoverableitemspurges"),
 };
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-class EwsIdComparatorRegistrar
-{
-public:
-    EwsIdComparatorRegistrar()
-    {
-        QMetaType::registerComparators<EwsId>();
-    }
-};
-const EwsIdComparatorRegistrar ewsIdComparatorRegistrar;
-#endif
 EwsId::EwsId(QXmlStreamReader &reader)
     : mDid(EwsDIdCalendar)
 {
@@ -60,13 +49,8 @@ EwsId::EwsId(QXmlStreamReader &reader)
     // such as "FolderId" or "ParentFolderId".
     const QXmlStreamAttributes &attrs = reader.attributes();
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringRef idRef = attrs.value(QStringLiteral("Id"));
-    QStringRef changeKeyRef = attrs.value(QStringLiteral("ChangeKey"));
-#else
     QStringView idRef = attrs.value(QStringLiteral("Id"));
     QStringView changeKeyRef = attrs.value(QStringLiteral("ChangeKey"));
-#endif
 
     if (idRef.isNull()) {
         return;

@@ -77,11 +77,7 @@ EwsAttachment::EwsAttachment(QXmlStreamReader &reader)
         reader.skipCurrentElement();
         return;
     }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    const QStringRef readerName = reader.name();
-#else
     const QStringView readerName = reader.name();
-#endif
     if (readerName == QLatin1String("ItemAttachment")) {
         d->mType = ItemAttachment;
     } else if (readerName == QLatin1String("FileAttachment")) {

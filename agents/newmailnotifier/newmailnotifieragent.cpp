@@ -32,9 +32,6 @@
 #include <KLocalizedString>
 #include <KMime/Message>
 #include <KNotification>
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <Kdelibs4ConfigMigrator>
-#endif
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
 #include <QTextToSpeech>
 #endif
@@ -46,11 +43,6 @@ using namespace Akonadi;
 NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     : AgentBase(id)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    Kdelibs4ConfigMigrator migrate(QStringLiteral("newmailnotifieragent"));
-    migrate.setConfigFiles(QStringList() << QStringLiteral("akonadi_newmailnotifier_agentrc") << QStringLiteral("akonadi_newmailnotifier_agent.notifyrc"));
-    migrate.migrate();
-#endif
     connect(this, &Akonadi::AgentBase::reloadConfiguration, this, &NewMailNotifierAgent::slotReloadConfiguration);
     KLocalizedString::setApplicationDomain("akonadi_newmailnotifier_agent");
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();

@@ -118,11 +118,7 @@ public:
     ~EwsOAuthPrivate() override = default;
 
     bool authenticate(bool interactive);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    void modifyParametersFunction(QAbstractOAuth::Stage stage, QVariantMap *parameters);
-#else
     void modifyParametersFunction(QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant> *parameters);
-#endif
     void authorizeWithBrowser(const QUrl &url);
     void redirectUriIntercepted(const QUrl &url);
     void granted();
@@ -301,15 +297,9 @@ EwsOAuthPrivate::EwsOAuthPrivate(EwsOAuth *parent, const QString &email, const Q
     mWebProfile.installUrlSchemeHandler("urn", &mSchemeHandler);
 
     mWebView.setPage(&mWebPage);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    mOAuth2.setModifyParametersFunction([&](QAbstractOAuth::Stage stage, QVariantMap *parameters) {
-        modifyParametersFunction(stage, parameters);
-    });
-#else
     mOAuth2.setModifyParametersFunction([&](QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant> *parameters) {
         modifyParametersFunction(stage, parameters);
     });
-#endif
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser, this, &EwsOAuthPrivate::authorizeWithBrowser);
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::granted, this, &EwsOAuthPrivate::granted);
     connect(&mOAuth2, &QOAuth2AuthorizationCodeFlow::error, this, &EwsOAuthPrivate::error);
@@ -336,11 +326,7 @@ bool EwsOAuthPrivate::authenticate(bool interactive)
     }
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-void EwsOAuthPrivate::modifyParametersFunction(QAbstractOAuth::Stage stage, QVariantMap *parameters)
-#else
 void EwsOAuthPrivate::modifyParametersFunction(QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant> *parameters)
-#endif
 {
     switch (stage) {
     case QAbstractOAuth::Stage::RequestingAccessToken:

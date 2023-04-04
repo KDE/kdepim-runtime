@@ -335,11 +335,7 @@ Result POP3Protocol::loginAPOP(const char *challenge)
     // Generate digest
     QCryptographicHash ctx(QCryptographicHash::Md5);
     // qCDebug(POP3_LOG) << "APOP challenge: " << challenge;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    ctx.addData(challenge, strlen(challenge));
-#else
     ctx.addData(QByteArray(challenge, strlen(challenge)));
-#endif
     ctx.addData(m_sPass.toLatin1());
 
     // Genenerate APOP command

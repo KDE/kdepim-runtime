@@ -174,11 +174,7 @@ bool EwsPoxAutodiscoverRequest::readAccount(QXmlStreamReader &reader)
         if (reader.namespaceUri() != poxAdOuRespNsUri) {
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        const QStringRef readerName = reader.name();
-#else
         const QStringView readerName = reader.name();
-#endif
         if (readerName == QLatin1String("Action")) {
             QString action = reader.readElementText();
             if (action == QLatin1String("settings")) {
@@ -215,11 +211,7 @@ bool EwsPoxAutodiscoverRequest::readProtocol(QXmlStreamReader &reader)
         if (reader.namespaceUri() != poxAdOuRespNsUri) {
             return setErrorMsg(QStringLiteral("Failed to read POX response - invalid namespace"));
         }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        const QStringRef readerName = reader.name();
-#else
         const QStringView readerName = reader.name();
-#endif
         if (readerName == QLatin1String("Type")) {
             QString type = reader.readElementText();
             if (type == QLatin1String("EXCH")) {
