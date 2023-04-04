@@ -65,13 +65,6 @@ include(ECMDeprecationSettings)
 include(GenerateExportHeader)
 
 set(QT_REQUIRED_VERSION "6.4.0")
-if (QT_MAJOR_VERSION STREQUAL "6")
-    set(QT_REQUIRED_VERSION "6.4.0")
-    set(KF_MIN_VERSION "5.240.0")
-    set(KF_MAJOR_VERSION "6")
-else()
-    set(KF_MAJOR_VERSION "5")
-endif()
 
 set(KDEPIMRUNTIME_LIB_VERSION "${KDEPIM_RUNTIME_VERSION_NUMBER}")
 set(KDEPIMRUNTIME_LIB_SOVERSION "5")
