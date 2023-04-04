@@ -80,20 +80,20 @@ if( APPLE )
 endif()
 
 target_link_libraries(akonadi_google_resource
-  KPim${KF_MAJOR_VERSION}::AkonadiCalendar
-  KPim${KF_MAJOR_VERSION}::AkonadiCore
-  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-  KF${KF_MAJOR_VERSION}::CalendarCore
-  KF${KF_MAJOR_VERSION}::Contacts
-  KF${KF_MAJOR_VERSION}::Wallet
-  KF${KF_MAJOR_VERSION}::I18n
-  KF${KF_MAJOR_VERSION}::WindowSystem
-  KF${KF_MAJOR_VERSION}::TextWidgets
-  KF${KF_MAJOR_VERSION}::Notifications
-  KPim${KF_MAJOR_VERSION}::GAPICalendar
-  KPim${KF_MAJOR_VERSION}::GAPIPeople
-  KPim${KF_MAJOR_VERSION}::GAPICore
-  KPim${KF_MAJOR_VERSION}::GAPITasks
+  KPim6::AkonadiCalendar
+  KPim6::AkonadiCore
+  KPim6::AkonadiAgentBase
+  KF6::CalendarCore
+  KF6::Contacts
+  KF6::Wallet
+  KF6::I18n
+  KF6::WindowSystem
+  KF6::TextWidgets
+  KF6::Notifications
+  KPim6::GAPICalendar
+  KPim6::GAPIPeople
+  KPim6::GAPICore
+  KPim6::GAPITasks
 )
 
 install(TARGETS akonadi_google_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

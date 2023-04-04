@@ -89,15 +89,15 @@ target_link_libraries(akonadi_tomboynotes_resource
     Qt::Gui
     Qt::Network
     Qt::WebEngineWidgets
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KPim${KF_MAJOR_VERSION}::AkonadiNotes
-    KF${KF_MAJOR_VERSION}::ConfigCore
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KF${KF_MAJOR_VERSION}::KIOFileWidgets
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KPim${KF_MAJOR_VERSION}::Mime
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiNotes
+    KF6::ConfigCore
+    KF6::ConfigWidgets
+    KF6::I18n
+    KF6::KIOCore
+    KF6::KIOFileWidgets
+    KF6::KIOWidgets
+    KPim6::Mime
     )
 
 install(TARGETS akonadi_tomboynotes_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -119,11 +119,11 @@ target_sources(tomboynotesconfig PRIVATE
 
 
 target_link_libraries(tomboynotesconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KF${KF_MAJOR_VERSION}::Contacts
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
-    KF${KF_MAJOR_VERSION}::Completion
+    KPim6::AkonadiCore
+    KF6::CalendarCore
+    KF6::Contacts
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::ConfigWidgets
+    KF6::Completion
     )

@@ -48,11 +48,11 @@ endif()
 target_link_libraries(akonadi_maildir_resource
     maildir
     folderarchivesettings
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::I18n
+    KPim6::AkonadiCore
+    KPim6::AkonadiMime
+    KPim6::Mime
+    KPim6::AkonadiAgentBase
+    KF6::I18n
 )
 
 install(TARGETS akonadi_maildir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -79,10 +79,10 @@ ki18n_wrap_ui(maildirconfig settings.ui)
 
 
 target_link_libraries(maildirconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::I18n
+    KPim6::AkonadiCore
+    KF6::ConfigWidgets
+    KF6::KIOWidgets
+    KF6::I18n
     folderarchivesettings
     maildir
 )

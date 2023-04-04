@@ -33,13 +33,13 @@ endif ()
 
 
 target_link_libraries(akonadi_icaldir_resource
-  KPim${KF_MAJOR_VERSION}::AkonadiCore
-  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-  KF${KF_MAJOR_VERSION}::CalendarCore
-  KF${KF_MAJOR_VERSION}::I18n
-  KF${KF_MAJOR_VERSION}::TextWidgets
-  KF${KF_MAJOR_VERSION}::KIOWidgets
-  KF${KF_MAJOR_VERSION}::ConfigWidgets
+  KPim6::AkonadiCore
+  KPim6::AkonadiAgentBase
+  KF6::CalendarCore
+  KF6::I18n
+  KF6::TextWidgets
+  KF6::KIOWidgets
+  KF6::ConfigWidgets
 )
 
 install(TARGETS akonadi_icaldir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -58,12 +58,12 @@ target_sources(icaldirconfig PRIVATE
 
 
 target_link_libraries(icaldirconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::Contacts
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::TextWidgets
+    KPim6::AkonadiCore
+    KF6::CalendarCore
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::KIOWidgets
+    KF6::TextWidgets
     )

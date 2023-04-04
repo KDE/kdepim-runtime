@@ -39,12 +39,12 @@ set( common_link_libraries
   kmindexreader
   maildir
   akonadi-filestore
-  KPim${KF_MAJOR_VERSION}::AkonadiMime
-  KPim${KF_MAJOR_VERSION}::AkonadiCore
-  KPim${KF_MAJOR_VERSION}::Mbox
-  KPim${KF_MAJOR_VERSION}::Mime
+  KPim6::AkonadiMime
+  KPim6::AkonadiCore
+  KPim6::Mbox
+  KPim6::Mime
   Qt::Test
-  KF${KF_MAJOR_VERSION}::I18n
+  KF6::I18n
 )
 
 # test for overwritten methods

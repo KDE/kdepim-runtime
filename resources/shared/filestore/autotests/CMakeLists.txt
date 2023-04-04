@@ -22,6 +22,6 @@ ecm_mark_as_test(abstractlocalstoretest)
 target_link_libraries(
   abstractlocalstoretest
   akonadi-filestore
-  KPim${KF_MAJOR_VERSION}::AkonadiCore
+  KPim6::AkonadiCore
   Qt::Test
 )

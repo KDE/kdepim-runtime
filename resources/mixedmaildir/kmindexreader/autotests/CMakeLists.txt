@@ -8,4 +8,4 @@ add_executable( testidxreader  ${testidxreader_SRCS} )
 add_test(NAME testidxreader COMMAND testidxreader )
 ecm_mark_as_test(testidxreader)
 
-target_link_libraries( testidxreader  Qt::Test kmindexreader KPim${KF_MAJOR_VERSION}::AkonadiMime )
+target_link_libraries( testidxreader  Qt::Test kmindexreader KPim6::AkonadiMime )

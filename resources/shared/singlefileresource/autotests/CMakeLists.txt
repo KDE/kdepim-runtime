@@ -7,7 +7,7 @@ macro(_add_test _source)
   add_test( NAME ${_name} COMMAND ${_name} )
   ecm_mark_as_test(singlefileresource-${_name})
   target_link_libraries(${_name} Qt::Test   
-                        KPim${KF_MAJOR_VERSION}::AkonadiCore KPim${KF_MAJOR_VERSION}::IMAP akonadi-singlefileresource)
+                        KPim6::AkonadiCore KPim6::IMAP akonadi-singlefileresource)
 endmacro()
 
 _add_test( collectionannotationattributetest.cpp )

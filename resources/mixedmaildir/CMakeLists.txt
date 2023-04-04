@@ -61,13 +61,13 @@ target_link_libraries(akonadi_mixedmaildir_resource
     kmindexreader
     maildir
     akonadi-filestore
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KPim${KF_MAJOR_VERSION}::Mbox
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::I18n
+    KPim6::AkonadiCore
+    KPim6::AkonadiMime
+    KF6::KIOCore
+    KPim6::Mbox
+    KPim6::Mime
+    KPim6::AkonadiAgentBase
+    KF6::I18n
     akonadi-singlefileresource
     )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
@@ -98,9 +98,9 @@ ki18n_wrap_ui(mixedmaildirconfig settings.ui)
 
 
 target_link_libraries(mixedmaildirconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KPim6::AkonadiCore
+    KF6::I18n
+    KF6::KIOWidgets
+    KF6::ConfigWidgets
     maildir
     )

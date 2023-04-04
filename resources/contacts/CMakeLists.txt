@@ -37,12 +37,12 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(akonadi_contacts_resource PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(akonadi_contacts_resource
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::Contacts
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KPim6::AkonadiCore
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    KF6::I18n
+    KF6::KIOWidgets
+    KF6::ConfigWidgets
     )
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
@@ -61,12 +61,12 @@ target_sources(contactsconfig PRIVATE
 
 
 target_link_libraries(contactsconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KF${KF_MAJOR_VERSION}::Codecs
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::Contacts
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOWidgets
+    KPim6::AkonadiCore
+    KF6::CalendarCore
+    KF6::Codecs
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::KIOWidgets
     )

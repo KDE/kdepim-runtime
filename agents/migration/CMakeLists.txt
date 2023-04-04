@@ -35,11 +35,11 @@ endif ()
 target_link_libraries(akonadi_migration_agent
     gidmigration
     googlegroupwaremigration
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::Contacts
-    KF${KF_MAJOR_VERSION}::WindowSystem
-    KF${KF_MAJOR_VERSION}::JobWidgets
+    KPim6::AkonadiCore
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    KF6::WindowSystem
+    KF6::JobWidgets
 )
 
 install(TARGETS akonadi_migration_agent ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

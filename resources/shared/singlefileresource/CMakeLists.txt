@@ -43,15 +43,15 @@ endif()
 
 target_link_libraries(akonadi-singlefileresource
 PUBLIC
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::Completion
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KF6::I18n
+    KF6::Completion
+    KF6::KIOWidgets
+    KF6::ConfigWidgets
 PRIVATE
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KPim${KF_MAJOR_VERSION}::IMAP
+    KPim6::AkonadiCore
+    KPim6::AkonadiAgentBase
+    KF6::KIOCore
+    KPim6::IMAP
 )
 
 set_target_properties(akonadi-singlefileresource PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

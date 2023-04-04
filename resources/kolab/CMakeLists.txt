@@ -73,22 +73,22 @@ ki18n_wrap_ui(kolabresource_SRCS ../imap/setupserverview_desktop.ui)
 add_executable(akonadi_kolab_resource ${kolabresource_SRCS})
 
 target_link_libraries(akonadi_kolab_resource
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::IMAP
-    KPim${KF_MAJOR_VERSION}::MailTransport
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::AkonadiCalendar
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KPim${KF_MAJOR_VERSION}::IdentityManagement
+    KPim6::AkonadiCore
+    KPim6::IMAP
+    KPim6::MailTransport
+    KPim6::Mime
+    KPim6::AkonadiMime
+    KPim6::AkonadiCalendar
+    KPim6::AkonadiWidgets
+    KPim6::IdentityManagement
     imapresource
     folderarchivesettings
     pimkolab
-    KF${KF_MAJOR_VERSION}::Contacts
-    KF${KF_MAJOR_VERSION}::CalendarCore
+    KF6::Contacts
+    KF6::CalendarCore
     akonadi-singlefileresource
-    KF${KF_MAJOR_VERSION}::TextWidgets
-    KF${KF_MAJOR_VERSION}::I18n
+    KF6::TextWidgets
+    KF6::I18n
     )
 
 install(FILES kolabresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/akonadi/agents")

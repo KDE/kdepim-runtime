@@ -94,13 +94,13 @@ endif ()
 
 
 target_link_libraries(akonadi_openxchange_resource
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::Contacts
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KPim${KF_MAJOR_VERSION}::AkonadiContact
-    KF${KF_MAJOR_VERSION}::I18n
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiCore
+    KF6::Contacts
+    KF6::KIOCore
+    KF6::CalendarCore
+    KPim6::AkonadiContact
+    KF6::I18n
     Qt::Xml
 )
 
@@ -126,9 +126,9 @@ ki18n_wrap_ui(openxchangeconfig configwidget.ui)
 
 
 target_link_libraries(openxchangeconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::Completion
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
-    KF${KF_MAJOR_VERSION}::KIOCore
+    KPim6::AkonadiCore
+    KF6::I18n
+    KF6::Completion
+    KF6::ConfigWidgets
+    KF6::KIOCore
 )

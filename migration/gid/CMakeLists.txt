@@ -12,13 +12,13 @@ endif()
 
 target_link_libraries(gidmigration
     migrationshared
-    KF${KF_MAJOR_VERSION}::I18n
+    KF6::I18n
 )
 
 add_executable(gidmigrator main.cpp)
 target_link_libraries(gidmigrator
     gidmigration
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KPim${KF_MAJOR_VERSION}::Mime
+    KPim6::AkonadiWidgets
+    KPim6::Mime
     )
 install(TARGETS gidmigrator ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

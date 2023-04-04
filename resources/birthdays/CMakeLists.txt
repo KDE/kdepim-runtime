@@ -39,13 +39,13 @@ if( APPLE )
 endif ()
 
 target_link_libraries(akonadi_birthdays_resource
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::Contacts
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::Codecs
+    KPim6::AkonadiCore
+    KF6::CalendarCore
+    KPim6::AkonadiAgentBase
+    KF6::Contacts
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::Codecs
     )
 
 install( TARGETS akonadi_birthdays_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} )
@@ -64,10 +64,10 @@ target_sources(birthdaysconfig PRIVATE
     )
 
 target_link_libraries(birthdaysconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KF${KF_MAJOR_VERSION}::Contacts
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::TextWidgets
+    KPim6::AkonadiCore
+    KF6::CalendarCore
+    KF6::Contacts
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::TextWidgets
     )

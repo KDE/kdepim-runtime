@@ -21,10 +21,10 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
     set_target_properties(googlegroupwaremigration PROPERTIES UNITY_BUILD ON)
 endif()
 target_link_libraries(googlegroupwaremigration
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::ConfigGui
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::Wallet
+    KPim6::AkonadiCore
+    KF6::ConfigGui
+    KF6::I18n
+    KF6::Wallet
     Qt::DBus
     migrationshared
 )

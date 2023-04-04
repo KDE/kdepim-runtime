@@ -309,8 +309,8 @@ void Task::saveTo(const KCalendarCore::Todo::Ptr &task)
 
     task->setPercentComplete(percentCompleted());
     task->setStatus(status());
-    // PORT KF5 task->setHasStartDate( hasStartDate() );
-    // PORT KF5 task->setHasDueDate( hasDueDate() );
+    // PORT KF6 task->setHasStartDate( hasStartDate() );
+    // PORT KF6 task->setHasDueDate( hasDueDate() );
     if (hasDueDate()) {
         task->setDtDue(utcToLocal(dueDate()));
     }

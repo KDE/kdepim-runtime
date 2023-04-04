@@ -146,19 +146,19 @@ qt_add_dbus_adaptor(ewsresource_SRCS
 
 add_executable(akonadi_ews_resource ${ewsresource_SRCS})
 target_link_libraries(akonadi_ews_resource
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KPim${KF_MAJOR_VERSION}::Mime
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KF${KF_MAJOR_VERSION}::Contacts
-    KF${KF_MAJOR_VERSION}::Wallet
-    KF${KF_MAJOR_VERSION}::WidgetsAddons
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::WindowSystem
-    KF${KF_MAJOR_VERSION}::Notifications
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiCore
+    KPim6::AkonadiMime
+    KF6::KIOCore
+    KPim6::Mime
+    KF6::CalendarCore
+    KF6::Contacts
+    KF6::Wallet
+    KF6::WidgetsAddons
+    KF6::I18n
+    KF6::WindowSystem
+    KF6::Notifications
+    KF6::ConfigWidgets
     ewsclient)
 
 if (HAVE_SEPARATE_MTA_RESOURCE)
@@ -187,12 +187,12 @@ if (HAVE_SEPARATE_MTA_RESOURCE)
 
     add_executable(akonadi_ewsmta_resource ${ewsmtaresource_SRCS})
     target_link_libraries(akonadi_ewsmta_resource
-        KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-        KPim${KF_MAJOR_VERSION}::AkonadiCore
-        KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-        KF${KF_MAJOR_VERSION}::I18n
-        KF${KF_MAJOR_VERSION}::WindowSystem
-        KPim${KF_MAJOR_VERSION}::Mime)
+        KPim6::AkonadiAgentBase
+        KPim6::AkonadiCore
+        KPim6::AkonadiWidgets
+        KF6::I18n
+        KF6::WindowSystem
+        KPim6::Mime)
 
     set(EWS_MTA_CAPABILITIES "X-EwsMailTransport")
 else ()

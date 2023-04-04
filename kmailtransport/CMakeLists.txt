@@ -16,13 +16,13 @@ ecm_qt_declare_logging_category(mailtransport_akonadiplugin HEADER mailtransport
 
 
 target_link_libraries(mailtransport_akonadiplugin
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::MailTransport
-    KF${KF_MAJOR_VERSION}::CoreAddons
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KPim6::AkonadiMime
+    KPim6::Mime
+    KPim6::MailTransport
+    KF6::CoreAddons
+    KPim6::AkonadiCore
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::ConfigWidgets
     Qt::DBus
     )

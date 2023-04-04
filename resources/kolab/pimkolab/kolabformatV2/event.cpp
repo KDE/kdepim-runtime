@@ -188,7 +188,7 @@ void Event::saveTo(const KCalendarCore::Event::Ptr &event)
 {
     Incidence::saveTo(event);
 
-    // PORT KF5 ? method removed event->setHasEndDate( mHasEndDate );
+    // PORT KF6 ? method removed event->setHasEndDate( mHasEndDate );
     if (mHasEndDate) {
         if (mFloatingStatus == AllDay) {
             // This is an all-day event. Don't timezone move this one

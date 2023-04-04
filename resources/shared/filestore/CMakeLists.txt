@@ -49,9 +49,9 @@ generate_export_header(akonadi-filestore BASE_NAME akonadi-filestore)
 
 target_link_libraries(akonadi-filestore
     PUBLIC
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
+    KPim6::AkonadiCore
     PRIVATE
-    KF${KF_MAJOR_VERSION}::I18n
+    KF6::I18n
     )
 
 set_target_properties(akonadi-filestore PROPERTIES VERSION ${KDEPIMRUNTIME_LIB_VERSION} SOVERSION ${KDEPIMRUNTIME_LIB_SOVERSION} )

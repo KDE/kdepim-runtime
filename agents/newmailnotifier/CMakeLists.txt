@@ -36,20 +36,20 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 target_link_libraries( akonadi_newmailnotifier_agent
-  KPim${KF_MAJOR_VERSION}::AkonadiCore
-  KPim${KF_MAJOR_VERSION}::Mime
-  KPim${KF_MAJOR_VERSION}::AkonadiMime
-  KPim${KF_MAJOR_VERSION}::AkonadiContact
-  KF${KF_MAJOR_VERSION}::Codecs
-  KPim${KF_MAJOR_VERSION}::IdentityManagement
-  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-  KF${KF_MAJOR_VERSION}::Notifications
-  KF${KF_MAJOR_VERSION}::Service
-  KF${KF_MAJOR_VERSION}::I18n
-  KF${KF_MAJOR_VERSION}::KIOGui
+  KPim6::AkonadiCore
+  KPim6::Mime
+  KPim6::AkonadiMime
+  KPim6::AkonadiContact
+  KF6::Codecs
+  KPim6::IdentityManagement
+  KPim6::AkonadiAgentBase
+  KF6::Notifications
+  KF6::Service
+  KF6::I18n
+  KF6::KIOGui
 )
 
-if(Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
+if(Qt6TextToSpeech_FOUND)
     target_link_libraries( akonadi_newmailnotifier_agent
       Qt::TextToSpeech
     )
@@ -84,13 +84,13 @@ target_sources(newmailnotifierconfig PRIVATE
     )
 
 target_link_libraries(newmailnotifierconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
+    KPim6::AkonadiCore
+    KPim6::AkonadiMime
     Qt::Widgets
-    KF${KF_MAJOR_VERSION}::NotifyConfig
-    KF${KF_MAJOR_VERSION}::ConfigGui
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::XmlGui
-    KPim${KF_MAJOR_VERSION}::Mime
-    KF${KF_MAJOR_VERSION}::Completion
+    KF6::NotifyConfig
+    KF6::ConfigGui
+    KF6::I18n
+    KF6::XmlGui
+    KPim6::Mime
+    KF6::Completion
 )

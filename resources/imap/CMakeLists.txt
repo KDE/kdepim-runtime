@@ -110,20 +110,20 @@ add_library(imapresource STATIC ${imapresource_LIB_SRCS})
 target_link_libraries(imapresource
     Qt::DBus
     Qt::Network
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::IMAP
-    KPim${KF_MAJOR_VERSION}::MailTransport
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::IdentityManagementWidgets
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::WindowSystem
-    KF${KF_MAJOR_VERSION}::ConfigGui
-    KF${KF_MAJOR_VERSION}::Wallet
+    KPim6::AkonadiCore
+    KPim6::IMAP
+    KPim6::MailTransport
+    KF6::KIOWidgets
+    KPim6::Mime
+    KPim6::AkonadiMime
+    KPim6::IdentityManagementWidgets
+    KPim6::AkonadiAgentBase
+    KF6::I18n
+    KF6::WindowSystem
+    KF6::ConfigGui
+    KF6::Wallet
     akonadi-singlefileresource
-    KPim${KF_MAJOR_VERSION}::Libkdepim
+    KPim6::Libkdepim
     ${kdepim-keychain_lib}
 )
 
@@ -165,21 +165,21 @@ endif ()
 
 target_link_libraries(akonadi_imap_resource
     Qt::DBus
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::IMAP
+    KPim6::AkonadiCore
+    KPim6::IMAP
     akonadi-singlefileresource
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KPim${KF_MAJOR_VERSION}::MailTransport
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::IdentityManagement
-    KF${KF_MAJOR_VERSION}::I18n
+    KPim6::AkonadiWidgets
+    KPim6::MailTransport
+    KPim6::Mime
+    KPim6::AkonadiMime
+    KPim6::IdentityManagement
+    KF6::I18n
     imapresource
-    KF${KF_MAJOR_VERSION}::TextWidgets
-    KF${KF_MAJOR_VERSION}::ConfigGui
+    KF6::TextWidgets
+    KF6::ConfigGui
 
     folderarchivesettings
-    KPim${KF_MAJOR_VERSION}::GAPICore
+    KPim6::GAPICore
 )
 
 install(

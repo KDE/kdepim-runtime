@@ -37,14 +37,14 @@ endif ()
 
 
 target_link_libraries(akonadi_vcarddir_resource
-  KPim${KF_MAJOR_VERSION}::AkonadiCore
-  KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-  KF${KF_MAJOR_VERSION}::Contacts
-  KF${KF_MAJOR_VERSION}::I18n
-  KF${KF_MAJOR_VERSION}::TextWidgets
-  KF${KF_MAJOR_VERSION}::KIOWidgets
-  KF${KF_MAJOR_VERSION}::ConfigWidgets
-  KF${KF_MAJOR_VERSION}::WindowSystem
+  KPim6::AkonadiCore
+  KPim6::AkonadiAgentBase
+  KF6::Contacts
+  KF6::I18n
+  KF6::TextWidgets
+  KF6::KIOWidgets
+  KF6::ConfigWidgets
+  KF6::WindowSystem
   Qt::DBus
 )
 
@@ -69,11 +69,11 @@ target_sources(vcarddirconfig PRIVATE
 
 
 target_link_libraries(vcarddirconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOWidgets
-    KF${KF_MAJOR_VERSION}::TextWidgets
+    KPim6::AkonadiCore
+    KF6::CalendarCore
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiWidgets
+    KF6::I18n
+    KF6::KIOWidgets
+    KF6::TextWidgets
     )

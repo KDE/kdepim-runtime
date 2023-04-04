@@ -47,18 +47,18 @@ endif ()
 
 
 target_link_libraries( akonadi_pop3_resource
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::Mime
-    KPim${KF_MAJOR_VERSION}::MailTransport
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::I18n
-    KF${KF_MAJOR_VERSION}::KIOWidgets  # SslUi
-    KF${KF_MAJOR_VERSION}::Notifications
+    KPim6::AkonadiCore
+    KPim6::AkonadiMime
+    KPim6::Mime
+    KPim6::MailTransport
+    KPim6::AkonadiAgentBase
+    KF6::I18n
+    KF6::KIOWidgets  # SslUi
+    KF6::Notifications
     Qt::DBus
     Qt::Network # QNetworkProxy
     ${kdepim-keychain_lib}
-    KF${KF_MAJOR_VERSION}::WidgetsAddons
+    KF6::WidgetsAddons
     Sasl2::Sasl2
     )
 if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
@@ -89,15 +89,15 @@ target_sources(pop3config PRIVATE
 ki18n_wrap_ui(pop3config popsettings.ui)
 
 target_link_libraries(pop3config
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KF${KF_MAJOR_VERSION}::TextWidgets
-    KF${KF_MAJOR_VERSION}::Completion
-    KF${KF_MAJOR_VERSION}::WidgetsAddons
-    KF${KF_MAJOR_VERSION}::I18n
-    KPim${KF_MAJOR_VERSION}::MailTransport
-    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KPim${KF_MAJOR_VERSION}::AkonadiMime
-    KPim${KF_MAJOR_VERSION}::Libkdepim
+    KPim6::AkonadiCore
+    KF6::TextWidgets
+    KF6::Completion
+    KF6::WidgetsAddons
+    KF6::I18n
+    KPim6::MailTransport
+    KPim6::AkonadiWidgets
+    KPim6::AkonadiAgentBase
+    KPim6::AkonadiMime
+    KPim6::Libkdepim
     ${kdepim-keychain_lib}
     )

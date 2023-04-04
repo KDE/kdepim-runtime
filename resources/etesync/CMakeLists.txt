@@ -52,15 +52,15 @@ endif()
 target_link_libraries(akonadi_etesync_resource
     ${ETEBASE_LIBRARIES}
     Qt::DBus
-    KPim${KF_MAJOR_VERSION}::AkonadiAgentBase
-    KF${KF_MAJOR_VERSION}::ConfigCore
-    KF${KF_MAJOR_VERSION}::Contacts
-    KF${KF_MAJOR_VERSION}::CalendarCore
-    KF${KF_MAJOR_VERSION}::KIOCore
-    KF${KF_MAJOR_VERSION}::ConfigWidgets
-    KF${KF_MAJOR_VERSION}::WindowSystem
-    KF${KF_MAJOR_VERSION}::Wallet
-    KF${KF_MAJOR_VERSION}::I18n
+    KPim6::AkonadiAgentBase
+    KF6::ConfigCore
+    KF6::Contacts
+    KF6::CalendarCore
+    KF6::KIOCore
+    KF6::ConfigWidgets
+    KF6::WindowSystem
+    KF6::Wallet
+    KF6::I18n
 )
 
 ecm_install_icons(

@@ -7,8 +7,8 @@ set(newmailnotifierselectcollectionwidget_SRCS newmailnotifierselectcollectionwi
 add_executable(newmailnotifierselectcollectionwidgettest ${newmailnotifierselectcollectionwidget_SRCS})
 target_link_libraries(newmailnotifierselectcollectionwidgettest
     Qt::Widgets
-    KF${KF_MAJOR_VERSION}::I18n
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
-    KPim${KF_MAJOR_VERSION}::Mime
-    KF${KF_MAJOR_VERSION}::Completion
-    KPim${KF_MAJOR_VERSION}::AkonadiMime)
+    KF6::I18n
+    KPim6::AkonadiCore
+    KPim6::Mime
+    KF6::Completion
+    KPim6::AkonadiMime)

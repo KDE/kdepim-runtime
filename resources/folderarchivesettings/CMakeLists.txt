@@ -18,11 +18,11 @@ endif()
 
 target_link_libraries(folderarchivesettings
 PRIVATE
-                      KPim${KF_MAJOR_VERSION}::Mime
-                      KPim${KF_MAJOR_VERSION}::AkonadiCore
-                      KPim${KF_MAJOR_VERSION}::AkonadiWidgets
-                      KF${KF_MAJOR_VERSION}::ConfigCore
-                      KF${KF_MAJOR_VERSION}::I18n
+                      KPim6::Mime
+                      KPim6::AkonadiCore
+                      KPim6::AkonadiWidgets
+                      KF6::ConfigCore
+                      KF6::I18n
                       Qt::DBus
 )
 
