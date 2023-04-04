@@ -53,7 +53,7 @@ public:
     Reader mEwsXml;
 };
 
-static const QVector<EwsItemPrivate::Reader::Item> ewsItemItems = {
+static const QList<EwsItemPrivate::Reader::Item> ewsItemItems = {
     // Item fields
     {EwsItemFieldMimeContent, QStringLiteral("MimeContent"), &ewsXmlBase64Reader, &ewsXmlBase64Writer},
     {EwsItemFieldItemId, QStringLiteral("ItemId"), &ewsXmlIdReader, &ewsXmlIdWriter},

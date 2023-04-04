@@ -7,19 +7,19 @@
 #include "ewsupdateitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> conflictResolutionNames = {
+static const QList<QString> conflictResolutionNames = {
     QStringLiteral("NeverOverwrite"),
     QStringLiteral("AutoResolve"),
     QStringLiteral("AlwaysOverwrite"),
 };
 
-static const QVector<QString> messageDispositionNames = {
+static const QList<QString> messageDispositionNames = {
     QStringLiteral("SaveOnly"),
     QStringLiteral("SendOnly"),
     QStringLiteral("SendAndSaveCopy"),
 };
 
-static const QVector<QString> meetingDispositionNames = {
+static const QList<QString> meetingDispositionNames = {
     QStringLiteral("SendToNone"),
     QStringLiteral("SendOnlyToAll"),
     QStringLiteral("SendOnlyToChanged"),
@@ -27,7 +27,7 @@ static const QVector<QString> meetingDispositionNames = {
     QStringLiteral("SendToChangedAndSaveCopy"),
 };
 
-static const QVector<QString> updateTypeElementNames = {
+static const QList<QString> updateTypeElementNames = {
     QStringLiteral("AppendToItemField"),
     QStringLiteral("SetItemField"),
     QStringLiteral("DeleteItemField"),

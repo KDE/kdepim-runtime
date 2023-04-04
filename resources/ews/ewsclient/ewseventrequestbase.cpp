@@ -118,7 +118,7 @@ EwsEventRequestBase::Response::Response(QXmlStreamReader &reader)
 
 EwsEventRequestBase::Notification::Notification(QXmlStreamReader &reader)
 {
-    static const QVector<NotificationReader::Item> items = {
+    static const QList<NotificationReader::Item> items = {
         {SubscriptionId, QStringLiteral("SubscriptionId"), &ewsXmlTextReader},
         {PreviousWatermark, QStringLiteral("PreviousWatermark"), &ewsXmlTextReader},
         {MoreEvents, QStringLiteral("MoreEvents"), &ewsXmlBoolReader},
@@ -167,7 +167,7 @@ bool EwsEventRequestBase::Notification::eventsReader(QXmlStreamReader &reader, Q
 EwsEventRequestBase::Event::Event(QXmlStreamReader &reader)
     : mType(EwsUnknownEvent)
 {
-    static const QVector<EventReader::Item> items = {
+    static const QList<EventReader::Item> items = {
         {Watermark, QStringLiteral("Watermark"), &ewsXmlTextReader},
         {Timestamp, QStringLiteral("TimeStamp"), &ewsXmlDateTimeReader},
         {FolderId, QStringLiteral("FolderId"), &ewsXmlIdReader},

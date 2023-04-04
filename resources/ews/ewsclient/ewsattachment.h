@@ -7,8 +7,8 @@
 #pragma once
 
 #include <QDateTime>
+#include <QList>
 #include <QSharedDataPointer>
-#include <QVector>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
@@ -28,7 +28,7 @@ public:
         ReferenceAttachment // Occurs in 2016 XSD, but not documented on MSDN
     };
 
-    typedef QVector<EwsAttachment> List;
+    typedef QList<EwsAttachment> List;
 
     EwsAttachment();
     ~EwsAttachment();

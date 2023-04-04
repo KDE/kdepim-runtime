@@ -135,7 +135,7 @@ EwsSyncFolderHierarchyRequest::Response::Response(QXmlStreamReader &reader)
         return;
     }
 
-    static const QVector<EwsXml<SyncFolderHierarchyResponseElementType>::Item> items = {
+    static const QList<EwsXml<SyncFolderHierarchyResponseElementType>::Item> items = {
         {SyncState, QStringLiteral("SyncState"), &ewsXmlTextReader},
         {IncludesLastFolderInRange, QStringLiteral("IncludesLastFolderInRange"), &ewsXmlBoolReader},
         {Changes, QStringLiteral("Changes"), &EwsSyncFolderHierarchyRequest::Response::changeReader},
@@ -182,7 +182,7 @@ bool EwsSyncFolderHierarchyRequest::Response::changeReader(QXmlStreamReader &rea
 
 EwsSyncFolderHierarchyRequest::Change::Change(QXmlStreamReader &reader)
 {
-    static const QVector<EwsXml<SyncFolderHierarchyChangeElementType>::Item> items = {
+    static const QList<EwsXml<SyncFolderHierarchyChangeElementType>::Item> items = {
         {Folder, QStringLiteral("Folder"), &ewsXmlFolderReader},
         {Folder, QStringLiteral("CalendarFolder"), &ewsXmlFolderReader},
         {Folder, QStringLiteral("ContactsFolder"), &ewsXmlFolderReader},

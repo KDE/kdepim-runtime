@@ -7,13 +7,13 @@
 #include "ewscreateitemrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> messageDispositionNames = {
+static const QList<QString> messageDispositionNames = {
     QStringLiteral("SaveOnly"),
     QStringLiteral("SendOnly"),
     QStringLiteral("SendAndSaveCopy"),
 };
 
-static const QVector<QString> meetingDispositionNames = {
+static const QList<QString> meetingDispositionNames = {
     QStringLiteral("SendToNone"),
     QStringLiteral("SendOnlyToAll"),
     QStringLiteral("SendOnlyToChanged"),

@@ -10,13 +10,13 @@
 
 #include "ewsclient_debug.h"
 
-static const QVector<QString> subscribeTypeNames = {
+static const QList<QString> subscribeTypeNames = {
     QStringLiteral("PullSubscriptionRequest"),
     QStringLiteral("PushSubscriptionRequest"),
     QStringLiteral("StreamingSubscriptionRequest"),
 };
 
-static const QVector<QString> eventTypeNames = {
+static const QList<QString> eventTypeNames = {
     QStringLiteral("CopiedEvent"),
     QStringLiteral("CreatedEvent"),
     QStringLiteral("DeletedEvent"),

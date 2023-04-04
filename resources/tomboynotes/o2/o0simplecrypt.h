@@ -5,8 +5,8 @@
 */
 
 #pragma once
+#include <QList>
 #include <QString>
-#include <QVector>
 
 /**
   @short Simple encryption and decryption of strings and byte arrays
@@ -212,7 +212,7 @@ private:
     void splitKey();
 
     quint64 m_key;
-    QVector<char> m_keyParts;
+    QList<char> m_keyParts;
     CompressionMode m_compressionMode;
     IntegrityProtectionMode m_protectionMode;
     Error m_lastError;

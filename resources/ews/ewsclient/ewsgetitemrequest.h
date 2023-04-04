@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <QVector>
+#include <QList>
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"
@@ -20,7 +20,7 @@ public:
     class Response : public EwsRequest::Response
     {
     public:
-        typedef QVector<Response> List;
+        typedef QList<Response> List;
 
         explicit Response(QXmlStreamReader &reader);
         bool parseItems(QXmlStreamReader &reader);

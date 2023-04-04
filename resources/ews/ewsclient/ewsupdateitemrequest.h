@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include <QList>
 #include <QSharedPointer>
-#include <QVector>
 
 #include "ewsitem.h"
 #include "ewsitemshape.h"
@@ -76,7 +76,7 @@ public:
     class ItemChange
     {
     public:
-        typedef QVector<ItemChange> List;
+        typedef QList<ItemChange> List;
 
         ItemChange(const EwsId &itemId, EwsItemType type)
             : mId(itemId)
@@ -94,13 +94,13 @@ public:
     private:
         EwsId mId;
         EwsItemType mType;
-        QVector<QSharedPointer<const Update>> mUpdates;
+        QList<QSharedPointer<const Update>> mUpdates;
     };
 
     class Response : public EwsRequest::Response
     {
     public:
-        typedef QVector<Response> List;
+        typedef QList<Response> List;
 
         const EwsId &itemId() const
         {

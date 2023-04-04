@@ -30,7 +30,7 @@ public:
     EwsFolderType type() const;
     void setType(EwsFolderType type);
 
-    const QVector<EwsFolder> childFolders() const;
+    const QList<EwsFolder> childFolders() const;
     void addChild(EwsFolder &child);
     EwsFolder *parentFolder() const;
     void setParentFolder(EwsFolder *parent);

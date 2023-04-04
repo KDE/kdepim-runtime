@@ -132,7 +132,7 @@ void SearchDialog::onSearchJobFinished(KJob *job)
     KDAV::DavUrl davUrl = davJob->davUrl();
     QUrl url = davUrl.url();
 
-    const QVector<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
+    const QList<KDAV::DavPrincipalSearchJob::Result> results = davJob->results();
     for (const KDAV::DavPrincipalSearchJob::Result &result : results) {
         if (result.value.startsWith(QLatin1Char('/'))) {
             url.setPath(result.value, QUrl::TolerantMode);

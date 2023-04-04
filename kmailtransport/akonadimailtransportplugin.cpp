@@ -44,9 +44,9 @@ void AkonadiMailTransportPlugin::cleanUp(MailTransport::Transport *t)
     AgentManager::self()->removeInstance(instance);
 }
 
-QVector<MailTransport::TransportAbstractPluginInfo> AkonadiMailTransportPlugin::names() const
+QList<MailTransport::TransportAbstractPluginInfo> AkonadiMailTransportPlugin::names() const
 {
-    QVector<MailTransport::TransportAbstractPluginInfo> lst;
+    QList<MailTransport::TransportAbstractPluginInfo> lst;
 
     const auto types{AgentManager::self()->types()};
     for (const AgentType &atype : types) {

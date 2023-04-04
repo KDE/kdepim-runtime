@@ -230,7 +230,7 @@ void MoveItemsTask::onPreSearchSelectDone(KJob *job)
                 search->setProperty("IsLastSearchJob", true);
             }
 
-            QVector<KIMAP::Term> subterms;
+            QList<KIMAP::Term> subterms;
             subterms.reserve(count);
             auto it = m_messageIds.begin();
             std::advance(it, batchIdx);
@@ -282,7 +282,7 @@ void MoveItemsTask::recordNewUid()
 {
     // Create the item resulting of the operation, since at that point
     // the first part of the move succeeded
-    const QVector<qint64> oldUids = imapSetToList(m_oldSet);
+    const QList<qint64> oldUids = imapSetToList(m_oldSet);
 
     Akonadi::Item::List newItems;
     for (int i = 0; i < oldUids.count(); ++i) {
@@ -336,9 +336,9 @@ void MoveItemsTask::recordNewUid()
     }
 }
 
-QVector<qint64> MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
+QList<qint64> MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
 {
-    QVector<qint64> list;
+    QList<qint64> list;
     const KIMAP::ImapInterval::List lstInterval = set.intervals();
     list.reserve(lstInterval.count());
     for (const KIMAP::ImapInterval &interval : lstInterval) {

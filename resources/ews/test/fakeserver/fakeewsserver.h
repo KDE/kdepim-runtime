@@ -32,7 +32,7 @@ public:
         ReplyCallback replyCallback;
         QString description;
 
-        using List = QVector<DialogEntry>;
+        using List = QList<DialogEntry>;
     };
 
     static const DialogEntry::HttpResponse EmptyResponse;

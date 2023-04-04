@@ -100,7 +100,7 @@ BatchFetcher *RetrieveItemsTask::createBatchFetcher(MessageHelper::Ptr messageHe
 
 void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
 {
-    QVector<qint64> uids;
+    QList<qint64> uids;
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << job->errorString();
         cancelTask(job->errorString());
@@ -123,7 +123,7 @@ void RetrieveItemsTask::fetchItemsWithoutBodiesDone(KJob *job)
     onFetchItemsWithoutBodiesDone(uids);
 }
 
-void RetrieveItemsTask::onFetchItemsWithoutBodiesDone(const QVector<qint64> &items)
+void RetrieveItemsTask::onFetchItemsWithoutBodiesDone(const QList<qint64> &items)
 {
     m_messageUidsMissingBody = items;
     startRetrievalTasks();

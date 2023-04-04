@@ -100,7 +100,7 @@ void EwsUpdateItemsTagsJob::globalTagsWriteFinished(KJob *job)
 
 void EwsUpdateItemsTagsJob::doUpdateItemsTags()
 {
-    QVector<EwsUpdateItemRequest::ItemChange> itemChanges;
+    QList<EwsUpdateItemRequest::ItemChange> itemChanges;
     itemChanges.reserve(mItems.size());
 
     for (const Item &item : std::as_const(mItems)) {

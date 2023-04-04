@@ -12,7 +12,7 @@ const QString soapEnvNsUri = QStringLiteral("http://schemas.xmlsoap.org/soap/env
 const QString ewsMsgNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/services/2006/messages");
 const QString ewsTypeNsUri = QStringLiteral("http://schemas.microsoft.com/exchange/services/2006/types");
 
-const QVector<QString> ewsItemTypeNames = {
+const QList<QString> ewsItemTypeNames = {
     QStringLiteral("Item"),
     QStringLiteral("Message"),
     QStringLiteral("CalendarItem"),

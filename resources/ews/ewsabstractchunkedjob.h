@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <QVector>
+#include <QList>
 
 #include "ewsjob.h"
 
@@ -17,8 +17,8 @@ public:
     EwsAbstractChunkedJob(unsigned int chunkSize);
     ~EwsAbstractChunkedJob() = default;
 
-    using ReqItemList = QVector<ReqItem>;
-    using RespItemList = QVector<RespItem>;
+    using ReqItemList = QList<ReqItem>;
+    using RespItemList = QList<RespItem>;
 
     void setItems(const ReqItemList &items);
     const RespItemList &responses() const;
@@ -48,7 +48,7 @@ void EwsAbstractChunkedJob<Req, ReqItem, RespItem>::setItems(const ReqItemList &
 }
 
 template<typename Req, typename ReqItem, typename RespItem>
-const QVector<RespItem> &EwsAbstractChunkedJob<Req, ReqItem, RespItem>::responses() const
+const QList<RespItem> &EwsAbstractChunkedJob<Req, ReqItem, RespItem>::responses() const
 {
     return mResponses;
 }

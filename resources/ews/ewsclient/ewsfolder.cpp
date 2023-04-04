@@ -17,7 +17,7 @@
 #define D_PTR EwsFolderPrivate *d = reinterpret_cast<EwsFolderPrivate *>(this->d.data());
 #define D_CPTR const EwsFolderPrivate *d = reinterpret_cast<const EwsFolderPrivate *>(this->d.data());
 
-static const QVector<QString> folderTypeNames = {
+static const QList<QString> folderTypeNames = {
     QStringLiteral("Folder"),
     QStringLiteral("CalendarFolder"),
     QStringLiteral("ContactsFolder"),
@@ -41,14 +41,14 @@ public:
 
     EwsFolderType mType;
     EwsFolder *mParent;
-    QVector<EwsFolder> mChildren;
+    QList<EwsFolder> mChildren;
     static const XmlProc mStaticEwsXml;
     XmlProc mEwsXml;
 };
 
 typedef EwsXml<EwsItemFields> ItemFieldsReader;
 
-static const QVector<EwsFolderPrivate::XmlProc::Item> ewsFolderItems = {
+static const QList<EwsFolderPrivate::XmlProc::Item> ewsFolderItems = {
     {EwsFolderFieldFolderId, QStringLiteral("FolderId"), &ewsXmlIdReader, &ewsXmlIdWriter},
     {EwsFolderFieldParentFolderId, QStringLiteral("ParentFolderId"), &ewsXmlIdReader},
     {EwsFolderFieldFolderClass, QStringLiteral("FolderClass"), &ewsXmlTextReader, &ewsXmlTextWriter},
@@ -164,7 +164,7 @@ bool EwsFolder::readBaseFolderElement(QXmlStreamReader &reader)
     return true;
 }
 
-const QVector<EwsFolder> EwsFolder::childFolders() const
+const QList<EwsFolder> EwsFolder::childFolders() const
 {
     D_CPTR
     return d->mChildren;

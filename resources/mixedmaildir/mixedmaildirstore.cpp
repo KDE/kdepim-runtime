@@ -164,7 +164,7 @@ public:
         return ret;
     }
 
-    int purge(QVector<KMBox::MBoxEntry::Pair> &movedEntries)
+    int purge(QList<KMBox::MBoxEntry::Pair> &movedEntries)
     {
         const int deleteCount = mDeletedOffsets.count();
 
@@ -2181,7 +2181,7 @@ bool MixedMaildirStorePrivate::visit(FileStore::StoreCompactJob *job)
         // make the index invalid
         mbox->readIndexData();
 
-        QVector<KMBox::MBoxEntry::Pair> movedEntries;
+        QList<KMBox::MBoxEntry::Pair> movedEntries;
         const int result = mbox->purge(movedEntries);
         if (result > 0) {
             if (!movedEntries.isEmpty()) {

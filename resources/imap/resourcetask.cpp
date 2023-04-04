@@ -298,7 +298,7 @@ void ResourceTask::changesCommitted(const Akonadi::Item::List &items)
     deleteLater();
 }
 
-void ResourceTask::searchFinished(const QVector<qint64> &result, bool isRid)
+void ResourceTask::searchFinished(const QList<qint64> &result, bool isRid)
 {
     if (!mCancelled) {
         m_resource->searchFinished(result, isRid);

@@ -152,7 +152,7 @@ Kolab::Period addLocalPeriod(const QDateTime &eventStart, const QDateTime &event
 
 Freebusy generateFreeBusy(const std::vector<Event> &events, const cDateTime &startDate, const cDateTime &endDate)
 {
-    QVector<KCalendarCore::Event::Ptr> list;
+    QList<KCalendarCore::Event::Ptr> list;
     list.reserve(events.size());
     for (const Kolab::Event &e : events) {
         list.append(Kolab::Conversion::toKCalendarCore(e));
@@ -161,7 +161,7 @@ Freebusy generateFreeBusy(const std::vector<Event> &events, const cDateTime &sta
     return generateFreeBusy(list, Kolab::Conversion::toDate(startDate), Kolab::Conversion::toDate(endDate), person, startDate.isDateOnly());
 }
 
-Freebusy generateFreeBusy(const QVector<KCalendarCore::Event::Ptr> &events,
+Freebusy generateFreeBusy(const QList<KCalendarCore::Event::Ptr> &events,
                           const QDateTime &startDate,
                           const QDateTime &endDate,
                           const KCalendarCore::Person &organizer,

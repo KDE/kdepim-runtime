@@ -8,7 +8,7 @@
 
 #include <functional>
 
-#include <QVector>
+#include <QList>
 #include <QXmlStreamReader>
 
 #include "ewsclient_debug.h"
@@ -49,7 +49,7 @@ public:
     {
     }
 
-    EwsXml(const QVector<Item> &items)
+    EwsXml(const QList<Item> &items)
         : mItems(items)
     {
         rebuildItemHash();
@@ -62,7 +62,7 @@ public:
     {
     }
 
-    void setItems(const QVector<Item> &items)
+    void setItems(const QList<Item> &items)
     {
         mItems = items;
         rebuildItemHash();
@@ -143,7 +143,7 @@ private:
         return false;
     }
 
-    const QVector<Item> mItems;
+    const QList<Item> mItems;
     ValueHash mValues;
     QHash<QString, Item> mItemHash;
 
@@ -172,7 +172,7 @@ extern bool ewsXmlDateTimeReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlItemReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlFolderReader(QXmlStreamReader &reader, QVariant &val);
 
-extern bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QVector<QString> &items);
+extern bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QList<QString> &items);
 extern bool ewsXmlSensitivityReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlImportanceReader(QXmlStreamReader &reader, QVariant &val);
 extern bool ewsXmlCalendarItemTypeReader(QXmlStreamReader &reader, QVariant &val);

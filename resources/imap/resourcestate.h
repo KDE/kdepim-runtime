@@ -180,7 +180,7 @@ public:
 
     void changeProcessed() override;
 
-    void searchFinished(const QVector<qint64> &result, bool isRid = true) override;
+    void searchFinished(const QList<qint64> &result, bool isRid = true) override;
 
     void cancelTask(const QString &errorString) override;
     void deferTask() override;

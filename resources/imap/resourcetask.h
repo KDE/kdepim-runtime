@@ -102,7 +102,7 @@ protected:
 
     void changeProcessed();
 
-    void searchFinished(const QVector<qint64> &result, bool isRid = true);
+    void searchFinished(const QList<qint64> &result, bool isRid = true);
 
     void cancelTask(const QString &errorString);
     void deferTask();

@@ -12,23 +12,23 @@
 #include "ewsid.h"
 #include "ewsitem.h"
 
-static const QVector<QString> messageSensitivityNames = {
+static const QList<QString> messageSensitivityNames = {
     QStringLiteral("Normal"),
     QStringLiteral("Personal"),
     QStringLiteral("Private"),
     QStringLiteral("Confidential"),
 };
 
-static const QVector<QString> messageImportanceNames = {QStringLiteral("Low"), QStringLiteral("Normal"), QStringLiteral("High")};
+static const QList<QString> messageImportanceNames = {QStringLiteral("Low"), QStringLiteral("Normal"), QStringLiteral("High")};
 
-static const QVector<QString> calendarItemTypeNames = {
+static const QList<QString> calendarItemTypeNames = {
     QStringLiteral("Single"),
     QStringLiteral("Occurrence"),
     QStringLiteral("Exception"),
     QStringLiteral("RecurringMaster"),
 };
 
-static const QVector<QString> legacyFreeBusyStatusNames = {
+static const QList<QString> legacyFreeBusyStatusNames = {
     QStringLiteral("Free"),
     QStringLiteral("Tentative"),
     QStringLiteral("Busy"),
@@ -36,7 +36,7 @@ static const QVector<QString> legacyFreeBusyStatusNames = {
     QStringLiteral("NoData"),
 };
 
-static const QVector<QString> responseTypeNames = {
+static const QList<QString> responseTypeNames = {
     QStringLiteral("Unknown"),
     QStringLiteral("Organizer"),
     QStringLiteral("Tentative"),
@@ -194,7 +194,7 @@ bool ewsXmlFolderReader(QXmlStreamReader &reader, QVariant &val)
     return true;
 }
 
-bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QVector<QString> &items)
+bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QList<QString> &items)
 {
     const QString elmName = reader.name().toString();
     QString text = reader.readElementText();
@@ -204,7 +204,7 @@ bool ewsXmlEnumReader(QXmlStreamReader &reader, QVariant &val, const QVector<QSt
         return false;
     }
     int i = 0;
-    QVector<QString>::const_iterator it;
+    QList<QString>::const_iterator it;
     for (it = items.cbegin(); it != items.cend(); ++it, i++) {
         if (text == *it) {
             val = i;

@@ -185,7 +185,7 @@ bool VCardResource::writeToFile(const QString &fileName)
         return false;
     }
 
-    QVector<KContacts::Addressee> v;
+    QList<KContacts::Addressee> v;
     v.reserve(mAddressees.size());
     for (const KContacts::Addressee &addressee : std::as_const(mAddressees)) {
         v.push_back(addressee);

@@ -18,7 +18,7 @@ DummyResourceState::DummyResourceState()
     , m_mergeMode(Akonadi::ItemSync::RIDMerge)
 {
     qRegisterMetaType<QList<qint64>>();
-    qRegisterMetaType<QVector<qint64>>();
+    qRegisterMetaType<QList<qint64>>();
     qRegisterMetaType<TagListAndMembers>();
 }
 
@@ -331,7 +331,7 @@ void DummyResourceState::changeProcessed()
     recordCall("changeProcessed");
 }
 
-void DummyResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
+void DummyResourceState::searchFinished(const QList<qint64> &result, bool isRid)
 {
     Q_UNUSED(isRid)
     recordCall("searchFinished", QVariant::fromValue(result));

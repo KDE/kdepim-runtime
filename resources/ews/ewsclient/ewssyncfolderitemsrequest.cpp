@@ -144,7 +144,7 @@ EwsSyncFolderItemsRequest::Response::Response(QXmlStreamReader &reader)
         return;
     }
 
-    static const QVector<EwsXml<SyncFolderItemsResponseElementType>::Item> items = {
+    static const QList<EwsXml<SyncFolderItemsResponseElementType>::Item> items = {
         {SyncState, QStringLiteral("SyncState"), &ewsXmlTextReader},
         {IncludesLastItemInRange, QStringLiteral("IncludesLastItemInRange"), &ewsXmlBoolReader},
         {Changes, QStringLiteral("Changes"), &EwsSyncFolderItemsRequest::Response::changeReader},
@@ -191,7 +191,7 @@ bool EwsSyncFolderItemsRequest::Response::changeReader(QXmlStreamReader &reader,
 
 EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
 {
-    static const QVector<EwsXml<SyncFolderItemsChangeElementType>::Item> items = {
+    static const QList<EwsXml<SyncFolderItemsChangeElementType>::Item> items = {
         {Item, QStringLiteral("Item"), &ewsXmlItemReader},
         {Item, QStringLiteral("Message"), &ewsXmlItemReader},
         {Item, QStringLiteral("CalendarItem"), &ewsXmlItemReader},

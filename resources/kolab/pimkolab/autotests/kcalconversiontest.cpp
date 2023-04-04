@@ -20,7 +20,7 @@
 using namespace Kolab::Conversion;
 
 template<typename T>
-void comparePointerVectors(const QVector<T> &list, const QVector<T> &other)
+void comparePointerVectors(const QList<T> &list, const QList<T> &other)
 {
     QCOMPARE(list.size(), other.size());
     for (int i = 0; i < list.size(); i++) {

@@ -106,7 +106,7 @@ public:
     void relationsRetrieved(const Akonadi::Relation::List &tags) override;
     void tagChangeCommitted(const Akonadi::Tag &tag) override;
 
-    void searchFinished(const QVector<qint64> &result, bool isRid = true) override;
+    void searchFinished(const QList<qint64> &result, bool isRid = true) override;
 
     void changeProcessed() override;
 

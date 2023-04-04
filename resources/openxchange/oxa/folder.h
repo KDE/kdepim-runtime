@@ -8,9 +8,9 @@
 
 #pragma once
 
+#include <QList>
 #include <QMap>
 #include <QString>
-#include <QVector>
 
 namespace OXA
 {
@@ -25,7 +25,7 @@ public:
     /**
      * Describes a list of folders.
      */
-    using List = QVector<Folder>;
+    using List = QList<Folder>;
 
     /**
      * Describes the status of the folder.

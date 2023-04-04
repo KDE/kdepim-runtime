@@ -8,15 +8,15 @@
 
 #pragma once
 
+#include <QList>
 #include <QString>
-#include <QVector>
 
 namespace OXA
 {
 class User
 {
 public:
-    using List = QVector<User>;
+    using List = QList<User>;
 
     User();
 

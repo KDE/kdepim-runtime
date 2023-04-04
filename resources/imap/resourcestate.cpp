@@ -250,7 +250,7 @@ void ResourceState::changeProcessed()
     m_resource->changeProcessed();
 }
 
-void ResourceState::searchFinished(const QVector<qint64> &result, bool isRid)
+void ResourceState::searchFinished(const QList<qint64> &result, bool isRid)
 {
     m_resource->searchFinished(result, isRid ? Akonadi::AgentSearchInterface::Rid : Akonadi::AgentSearchInterface::Uid);
 }

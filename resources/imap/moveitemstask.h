@@ -34,9 +34,9 @@ protected:
 private:
     void startMove(KIMAP::Session *session);
     void recordNewUid();
-    QVector<qint64> imapSetToList(const KIMAP::ImapSet &set);
+    QList<qint64> imapSetToList(const KIMAP::ImapSet &set);
 
     KIMAP::ImapSet m_oldSet;
-    QVector<qint64> m_newUids;
+    QList<qint64> m_newUids;
     QMap<Akonadi::Item::Id /* original ID */, QByteArray> m_messageIds;
 };

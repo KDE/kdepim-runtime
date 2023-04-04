@@ -41,7 +41,7 @@ public:
     class Url
     {
     public:
-        using List = QVector<Url>;
+        using List = QList<Url>;
 
         KDAV::Protocol protocol;
         QString url;

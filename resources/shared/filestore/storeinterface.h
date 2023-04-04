@@ -8,7 +8,7 @@
 
 #include "akonadi-filestore_export.h"
 
-#include <QVector>
+#include <QList>
 
 // TODO not nice, collection fetch type should probably be in its own header
 #include "collectionfetchjob.h"
@@ -53,7 +53,7 @@ public:
 
     virtual ItemFetchJob *fetchItems(const Collection &collection) const = 0;
 
-    virtual ItemFetchJob *fetchItems(const QVector<Item> &items) const = 0;
+    virtual ItemFetchJob *fetchItems(const QList<Item> &items) const = 0;
 
     virtual ItemFetchJob *fetchItem(const Item &item) const = 0;
 

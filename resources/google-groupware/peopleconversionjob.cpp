@@ -143,7 +143,7 @@ void PeopleConversionJob::processItems()
     for (const auto &item : std::as_const(m_items)) {
         const auto addressee = item.payload<KContacts::Addressee>();
         const auto person = People::Person::fromKContactsAddressee(addressee);
-        QVector<People::Membership> memberships;
+        QList<People::Membership> memberships;
 
         person->setResourceName(item.remoteId());
         person->setEtag(item.remoteRevision());

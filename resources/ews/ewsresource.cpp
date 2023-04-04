@@ -65,11 +65,11 @@ struct SpecialFolders {
     QString iconName;
 };
 
-static const QVector<SpecialFolders> specialFolderList = {{EwsDIdInbox, SpecialMailCollections::Inbox, QStringLiteral("mail-folder-inbox")},
-                                                          {EwsDIdOutbox, SpecialMailCollections::Outbox, QStringLiteral("mail-folder-outbox")},
-                                                          {EwsDIdSentItems, SpecialMailCollections::SentMail, QStringLiteral("mail-folder-sent")},
-                                                          {EwsDIdDeletedItems, SpecialMailCollections::Trash, QStringLiteral("user-trash")},
-                                                          {EwsDIdDrafts, SpecialMailCollections::Drafts, QStringLiteral("document-properties")}};
+static const QList<SpecialFolders> specialFolderList = {{EwsDIdInbox, SpecialMailCollections::Inbox, QStringLiteral("mail-folder-inbox")},
+                                                        {EwsDIdOutbox, SpecialMailCollections::Outbox, QStringLiteral("mail-folder-outbox")},
+                                                        {EwsDIdSentItems, SpecialMailCollections::SentMail, QStringLiteral("mail-folder-sent")},
+                                                        {EwsDIdDeletedItems, SpecialMailCollections::Trash, QStringLiteral("user-trash")},
+                                                        {EwsDIdDrafts, SpecialMailCollections::Drafts, QStringLiteral("document-properties")}};
 
 const QString EwsResource::akonadiEwsPropsetUuid = QStringLiteral("9bf757ae-69b5-4d8a-bf1d-2dd0c0871a28");
 

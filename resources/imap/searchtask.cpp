@@ -42,7 +42,7 @@ void SearchTask::doStart(KIMAP::Session *session)
 void SearchTask::onSelectDone(KJob *job)
 {
     if (job->error()) {
-        searchFinished(QVector<qint64>());
+        searchFinished(QList<qint64>());
         cancelTask(job->errorText());
         return;
     }
@@ -61,7 +61,7 @@ static KIMAP::Term::Relation mapRelation(Akonadi::SearchTerm::Relation relation)
 static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
 {
     if (!term.subTerms().isEmpty()) {
-        QVector<KIMAP::Term> subterms;
+        QList<KIMAP::Term> subterms;
         const QList<Akonadi::SearchTerm> lstSearchTermsList = term.subTerms();
         for (const Akonadi::SearchTerm &subterm : lstSearchTermsList) {
             const KIMAP::Term newTerm = recursiveEmailTermMapping(subterm);
@@ -96,7 +96,7 @@ static KIMAP::Term recursiveEmailTermMapping(const Akonadi::SearchTerm &term)
                 return KIMAP::Term(KIMAP::Term::Smaller, value).setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondEqual:
                 return KIMAP::Term(KIMAP::Term::And,
-                                   QVector<KIMAP::Term>() << KIMAP::Term(KIMAP::Term::Smaller, value + 1) << KIMAP::Term(KIMAP::Term::Larger, value + 1))
+                                   QList<KIMAP::Term>() << KIMAP::Term(KIMAP::Term::Smaller, value + 1) << KIMAP::Term(KIMAP::Term::Larger, value + 1))
                     .setNegated(term.isNegated());
             case Akonadi::SearchTerm::CondContains:
                 qCDebug(IMAPRESOURCE_LOG) << " invalid condition for ByteSize";
@@ -189,7 +189,7 @@ void SearchTask::doSearch(KIMAP::Session *session)
     KIMAP::Term term = recursiveEmailTermMapping(query.term());
     if (term.isNull()) {
         qCWarning(IMAPRESOURCE_LOG) << "failed to translate query " << m_query;
-        searchFinished(QVector<qint64>());
+        searchFinished(QList<qint64>());
         cancelTask(i18n("Invalid search"));
         return;
     }
@@ -204,13 +204,13 @@ void SearchTask::onSearchDone(KJob *job)
     if (job->error()) {
         qCWarning(IMAPRESOURCE_LOG) << "Failed to execute search " << job->errorString();
         qCDebug(IMAPRESOURCE_LOG) << m_query;
-        searchFinished(QVector<qint64>());
+        searchFinished(QList<qint64>());
         cancelTask(job->errorString());
         return;
     }
 
     auto searchJob = qobject_cast<KIMAP::SearchJob *>(job);
-    const QVector<qint64> result = searchJob->results();
+    const QList<qint64> result = searchJob->results();
     qCDebug(IMAPRESOURCE_LOG) << result.count() << "matches";
 
     searchFinished(result);

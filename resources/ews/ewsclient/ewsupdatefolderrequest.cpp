@@ -7,13 +7,13 @@
 #include "ewsupdatefolderrequest.h"
 #include "ewsclient_debug.h"
 
-static const QVector<QString> updateTypeElementNames = {
+static const QList<QString> updateTypeElementNames = {
     QStringLiteral("AppendToFolderField"),
     QStringLiteral("SetFolderField"),
     QStringLiteral("DeleteFolderField"),
 };
 
-static const QVector<QString> folderTypeNames = {
+static const QList<QString> folderTypeNames = {
     QStringLiteral("Folder"),
     QStringLiteral("CalendarFolder"),
     QStringLiteral("ContactsFolder"),

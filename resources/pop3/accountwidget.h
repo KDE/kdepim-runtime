@@ -44,7 +44,7 @@ private Q_SLOTS:
     void slotPipeliningClicked();
     void slotPopEncryptionChanged(QAbstractButton *button);
     void slotCheckPopCapabilities();
-    void slotPopCapabilities(const QVector<int> &);
+    void slotPopCapabilities(const QList<int> &);
     void slotLeaveOnServerDaysChanged(int value);
     void slotLeaveOnServerCountChanged(int value);
 

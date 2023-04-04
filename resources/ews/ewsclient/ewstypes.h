@@ -7,7 +7,7 @@
 #pragma once
 
 class QString;
-#include <QVector>
+#include <QList>
 
 extern const QString soapEnvNsUri;
 extern const QString ewsMsgNsUri;
@@ -481,7 +481,7 @@ inline bool isEwsMessageItemType(EwsItemType type)
     return (type == EwsItemTypeItem) || (type == EwsItemTypePostItem);
 }
 
-extern const QVector<QString> ewsItemTypeNames;
+extern const QList<QString> ewsItemTypeNames;
 
 EwsResponseCode decodeEwsResponseCode(const QString &code);
 bool isEwsResponseCodeTemporaryError(EwsResponseCode code);

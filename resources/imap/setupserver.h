@@ -83,7 +83,7 @@ private:
 
 private Q_SLOTS:
     void slotTest();
-    void slotFinished(const QVector<int> &testResult);
+    void slotFinished(const QList<int> &testResult);
     void slotCustomSieveChanged();
 
     void slotServerChanged();

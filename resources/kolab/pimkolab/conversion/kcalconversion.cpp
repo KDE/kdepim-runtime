@@ -8,8 +8,8 @@
 
 #include <KCalendarCore/Recurrence>
 #include <QDate>
+#include <QList>
 #include <QUrl>
-#include <QVector>
 #include <vector>
 
 #include "commonconversion.h"
@@ -528,17 +528,17 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
 
         if (!rrule.bysecond().empty()) {
             const std::vector<int> bySecond = rrule.bysecond();
-            const QVector<int> stdVector = QVector<int>(bySecond.begin(), bySecond.end());
+            const QList<int> stdVector = QList<int>(bySecond.begin(), bySecond.end());
             defaultRR->setBySeconds(stdVector.toList());
         }
         if (!rrule.byminute().empty()) {
             const std::vector<int> byMinutes = rrule.byminute();
-            const QVector<int> stdVector = QVector<int>(byMinutes.begin(), byMinutes.end());
+            const QList<int> stdVector = QList<int>(byMinutes.begin(), byMinutes.end());
             defaultRR->setByMinutes(stdVector.toList());
         }
         if (!rrule.byhour().empty()) {
             const std::vector<int> byHours = rrule.byhour();
-            const QVector<int> stdVector = QVector<int>(byHours.begin(), byHours.end());
+            const QList<int> stdVector = QList<int>(byHours.begin(), byHours.end());
             defaultRR->setByHours(stdVector.toList());
         }
         if (!rrule.byday().empty()) {
@@ -551,22 +551,22 @@ void setRecurrence(KCalendarCore::Incidence &e, const T &event)
         }
         if (!rrule.bymonthday().empty()) {
             const std::vector<int> byMonthDays = rrule.bymonthday();
-            const QVector<int> stdVector = QVector<int>(byMonthDays.begin(), byMonthDays.end());
+            const QList<int> stdVector = QList<int>(byMonthDays.begin(), byMonthDays.end());
             defaultRR->setByMonthDays(stdVector.toList());
         }
         if (!rrule.byyearday().empty()) {
             const std::vector<int> byYearDays = rrule.byyearday();
-            const QVector<int> stdVector = QVector<int>(byYearDays.begin(), byYearDays.end());
+            const QList<int> stdVector = QList<int>(byYearDays.begin(), byYearDays.end());
             defaultRR->setByYearDays(stdVector.toList());
         }
         if (!rrule.byweekno().empty()) {
             const std::vector<int> byWeekNumbers = rrule.byweekno();
-            const QVector<int> stdVector = QVector<int>(byWeekNumbers.begin(), byWeekNumbers.end());
+            const QList<int> stdVector = QList<int>(byWeekNumbers.begin(), byWeekNumbers.end());
             defaultRR->setByWeekNumbers(stdVector.toList());
         }
         if (!rrule.bymonth().empty()) {
             const std::vector<int> byMonths = rrule.bymonth();
-            const QVector<int> stdVector = QVector<int>(byMonths.begin(), byMonths.end());
+            const QList<int> stdVector = QList<int>(byMonths.begin(), byMonths.end());
             defaultRR->setByMonths(stdVector.toList());
         }
     }
@@ -617,15 +617,15 @@ void getRecurrence(T &i, const I &e)
         rrule.setEnd(fromDate(defaultRR->endDt(), e.allDay()));
     }
 
-    const QVector<int> bySecondsVector = defaultRR->bySeconds().toVector();
+    const QList<int> bySecondsVector = defaultRR->bySeconds().toVector();
     const auto stdVectorBySeconds = std::vector<int>(bySecondsVector.begin(), bySecondsVector.end());
     rrule.setBysecond(stdVectorBySeconds);
 
-    const QVector<int> byMinutesVector = defaultRR->byMinutes().toVector();
+    const QList<int> byMinutesVector = defaultRR->byMinutes().toVector();
     const auto stdVectorByMinutes = std::vector<int>(byMinutesVector.begin(), byMinutesVector.end());
     rrule.setByminute(stdVectorByMinutes);
 
-    const QVector<int> byHoursVector = defaultRR->byHours().toVector();
+    const QList<int> byHoursVector = defaultRR->byHours().toVector();
     const auto stdVectorByHours = std::vector<int>(byHoursVector.begin(), byHoursVector.end());
     rrule.setByhour(stdVectorByHours);
 
@@ -638,19 +638,19 @@ void getRecurrence(T &i, const I &e)
     }
     rrule.setByday(daypos);
 
-    const QVector<int> bymonthdayVector = defaultRR->byMonthDays().toVector();
+    const QList<int> bymonthdayVector = defaultRR->byMonthDays().toVector();
     const auto stdByMonthDayVector = std::vector<int>(bymonthdayVector.begin(), bymonthdayVector.end());
     rrule.setBymonthday(stdByMonthDayVector);
 
-    const QVector<int> byYearDaysVector = defaultRR->byYearDays().toVector();
+    const QList<int> byYearDaysVector = defaultRR->byYearDays().toVector();
     const auto stdByYearDayVector = std::vector<int>(byYearDaysVector.begin(), byYearDaysVector.end());
     rrule.setByyearday(stdByYearDayVector);
 
-    const QVector<int> byWeekNumberVector = defaultRR->byWeekNumbers().toVector();
+    const QList<int> byWeekNumberVector = defaultRR->byWeekNumbers().toVector();
     const auto stdWeekNumberVector = std::vector<int>(byWeekNumberVector.begin(), byWeekNumberVector.end());
     rrule.setByweekno(stdWeekNumberVector);
 
-    const QVector<int> byMonthVector = defaultRR->byMonths().toVector();
+    const QList<int> byMonthVector = defaultRR->byMonths().toVector();
     const auto stdByMonthVector = std::vector<int>(byMonthVector.begin(), byMonthVector.end());
     rrule.setBymonth(stdByMonthVector);
 

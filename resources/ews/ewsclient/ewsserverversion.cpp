@@ -93,7 +93,7 @@ const EwsServerVersion &EwsServerVersion::minSupporting(ServerFeature feature)
 
 QString EwsServerVersion::toString() const
 {
-    static const QVector<EwsServerVersion> knownVersions = {
+    static const QList<EwsServerVersion> knownVersions = {
         ewsVersion2007,
         ewsVersion2007Sp1,
         ewsVersion2007Sp2,

@@ -14,8 +14,8 @@
 #include <KContacts/Addressee>
 #include <KContacts/ContactGroup>
 
+#include <QList>
 #include <QString>
-#include <QVector>
 
 namespace OXA
 {
@@ -25,7 +25,7 @@ public:
     /**
      * Describes a list of objects.
      */
-    using List = QVector<Object>;
+    using List = QList<Object>;
 
     /**
      * Describes the status of the object.

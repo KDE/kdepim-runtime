@@ -47,7 +47,7 @@ bool EwsAbchPersonHandler::setItemPayload(Akonadi::Item &item, const EwsItem &ew
     return true;
 }
 
-EwsModifyItemJob *EwsAbchPersonHandler::modifyItemJob(EwsClient &client, const QVector<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent)
+EwsModifyItemJob *EwsAbchPersonHandler::modifyItemJob(EwsClient &client, const QList<Akonadi::Item> &items, const QSet<QByteArray> &parts, QObject *parent)
 {
     return new EwsModifyAbchPersonJob(client, items, parts, parent);
 }

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <QVector>
+#include <QList>
 #include <QXmlStreamWriter>
 
 #include "ewspropertyfield.h"
@@ -59,7 +59,7 @@ protected:
     void writeProperties(QXmlStreamWriter &writer) const;
 
     EwsBaseShape mBaseShape;
-    QVector<EwsPropertyField> mProps;
+    QList<EwsPropertyField> mProps;
 };
 
 inline EwsFolderShape &operator<<(EwsFolderShape &shape, const EwsPropertyField &prop)
