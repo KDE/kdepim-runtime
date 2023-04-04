@@ -109,7 +109,7 @@ KDAV::DavItem Utils::createDavItem(const Akonadi::Item &item, const Akonadi::Col
         mimeType = QStringLiteral("text/calendar");
 
         KCalendarCore::ICalFormat formatter;
-        rawData = formatter.toString(calendar, QString()).toUtf8();
+        rawData = formatter.toString(calendar).toUtf8();
     }
 
     davItem.setContentType(mimeType);
