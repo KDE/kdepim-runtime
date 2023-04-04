@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2021-08-25 08:50+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -1235,13 +1235,6 @@ msgstr "Шлях до сертифіката розпізнавання PEM дл
 msgid "Path to PKey authentication PEM private key"
 msgstr "Шлях до закритого ключа PEM для PKey"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr ""
-"Будь ласка, вкажіть пароль для користувача «%1» і облікового запису Exchange "
-"«%2»."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1303,6 +1296,11 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Під час обробки відповіді щодо оновлення записів виявлено запис поза "
 "порядком записів."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr ""
+#~ "Будь ласка, вкажіть пароль для користувача «%1» і облікового запису "
+#~ "Exchange «%2»."
 
 #~ msgctxt "@info:status The resource is ready"
 #~ msgid "Ready"

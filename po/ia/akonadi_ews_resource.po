@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2021-12-24 23:35+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -1224,12 +1224,6 @@ msgstr "Percurso a certificato PEM de authentication PKey"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Percurso a clav private PEM de authentication PKey"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr ""
-"Pro favor inserta contrasigno per usator \"%1\" e conto de Exchange '%2'."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1291,3 +1285,7 @@ msgid "Item out of order while processing update item response."
 msgstr ""
 "Elemento in reparation durante que processava responsa de elemento de "
 "actualisar."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr ""
+#~ "Pro favor inserta contrasigno per usator \"%1\" e conto de Exchange '%2'."

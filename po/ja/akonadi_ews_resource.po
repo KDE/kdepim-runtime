@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2017-10-04 13:39-0700\n"
 "Last-Translator: Japanese KDE translation team <kde-jp@kde.org>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -1121,11 +1121,6 @@ msgstr ""
 #: ewsresource.kcfg:75
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
-msgstr ""
-
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
 msgstr ""
 
 #: ewssubscriptionwidget.cpp:171

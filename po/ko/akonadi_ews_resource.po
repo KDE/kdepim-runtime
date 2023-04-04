@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2021-11-14 19:38+0100\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -1192,11 +1192,6 @@ msgstr "PKey 인증 PEM 인증서 경로"
 msgid "Path to PKey authentication PEM private key"
 msgstr "PKey 인증 PEM 비밀 키 경로"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr "사용자 '%1' 및 Exchange 계정 '%2'의 암호를 입력하십시오."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1256,6 +1251,9 @@ msgstr "항목 업데이트 실패:"
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "항목 응답 업데이트를 처리하는 중 항목이 응답하지 않습니다."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr "사용자 '%1' 및 Exchange 계정 '%2'의 암호를 입력하십시오."
 
 #~ msgctxt "@info:status The resource is ready"
 #~ msgid "Ready"

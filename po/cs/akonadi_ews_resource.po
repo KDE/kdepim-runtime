@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2023-02-24 11:09+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -1125,11 +1125,6 @@ msgstr "Cesta k ověření PKey certifikátu PEM"
 #, kde-format
 msgid "Path to PKey authentication PEM private key"
 msgstr "Cesta k ověření PKey soukromého klíče PEM"
-
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr ""
 
 #: ewssubscriptionwidget.cpp:171
 #, kde-format

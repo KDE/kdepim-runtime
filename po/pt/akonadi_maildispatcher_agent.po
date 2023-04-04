@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_maildispatcher_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-09-13 00:46+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2012-10-16 19:57+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
@@ -165,7 +165,7 @@ msgstr ""
 msgid "Failed to store result in item."
 msgstr "Não foi possível guardar o resultado no item."
 
-#: storeresultjob.cpp:60
+#: storeresultjob.cpp:59
 #, kde-format
 msgid "Failed to fetch item."
 msgstr "Não foi possível obter o item."

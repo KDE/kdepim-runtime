@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2022-07-20 19:23+0200\n"
 "Last-Translator: mkkDr2010 <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -1231,11 +1231,6 @@ msgstr "Път към PKey удостоверяване PEM сертификат
 msgid "Path to PKey authentication PEM private key"
 msgstr "Път към частния ключ за удостоверяване на PKey"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr "Моля, въведете парола за потребител ' %1' и акаунт в Exchange ' %2'."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1295,3 +1290,7 @@ msgstr "Актуализирането на елемента е неуспешн
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Елементът е недостъпен, докато се обработва отговор на елемента."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr ""
+#~ "Моля, въведете парола за потребител ' %1' и акаунт в Exchange ' %2'."

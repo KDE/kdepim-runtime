@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2019-12-18 18:35+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -1222,11 +1222,6 @@ msgstr "PKey autentimise PEM-sertifikaadi asukoht"
 msgid "Path to PKey authentication PEM private key"
 msgstr "PKey autentimise PEM-privaatvõtme asukoht"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr "Palun anna kasutaja '%1' ja Exchange'i konto '%2' parool."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1286,3 +1281,6 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr "Palun anna kasutaja '%1' ja Exchange'i konto '%2' parool."

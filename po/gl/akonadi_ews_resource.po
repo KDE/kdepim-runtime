@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2019-09-29 09:21+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
@@ -1255,12 +1255,6 @@ msgstr "Ruta do certificado PEM para a autenticación de chave privada"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Ruta da chave privada para a autenticación de chave privada"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr ""
-"Introduza o contrasinal para o usuario «%1» e a conta de Exchange «%2»."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1320,6 +1314,10 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr ""
+#~ "Introduza o contrasinal para o usuario «%1» e a conta de Exchange «%2»."
 
 #~ msgctxt "@info:status The resource is ready"
 #~ msgid "Ready"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2022-10-10 17:13+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -1235,11 +1235,6 @@ msgstr "Расположение сертификата"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Расположение закрытого ключа"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr "Введите пароль для пользователя «%1» и учётной записи Exchange «%2»."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1300,6 +1295,10 @@ msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr ""
 "При обработке ответа на обновление объекта обнаружен объект вне порядка."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr ""
+#~ "Введите пароль для пользователя «%1» и учётной записи Exchange «%2»."
 
 #~ msgctxt "@info:status The resource is ready"
 #~ msgid "Ready"

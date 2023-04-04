@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2022-09-04 23:11+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -1228,12 +1228,6 @@ msgstr "PKey autentifikaziorako PEM ziurtagirirako bide-izena"
 msgid "Path to PKey authentication PEM private key"
 msgstr "PKey autentifikaziorako PEM gako pribaturako bide-izena"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr ""
-"Mesedez, sartu '%1' erabiltzailea eta '%2' Exchange konturako pasahitza ."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1293,3 +1287,7 @@ msgstr "Elementua eguneratzea:"
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Elementua hondatuta elementua eguneratzeko erantzuna prozesatzean."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr ""
+#~ "Mesedez, sartu '%1' erabiltzailea eta '%2' Exchange konturako pasahitza ."

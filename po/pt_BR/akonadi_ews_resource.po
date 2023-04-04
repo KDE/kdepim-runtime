@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_ews_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-16 00:47+0000\n"
+"POT-Creation-Date: 2023-04-04 00:48+0000\n"
 "PO-Revision-Date: 2021-10-26 13:27-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -1227,11 +1227,6 @@ msgstr "Caminho do certificado PEM de autenticação por PKey"
 msgid "Path to PKey authentication PEM private key"
 msgstr "Caminho da chave privada PEM de autenticação por PKey"
 
-#: ewssettings.cpp:90
-#, kde-format
-msgid "Please enter password for user '%1' and Exchange account '%2'."
-msgstr "Informe a senha do usuário '%1' e da conta Exchange '%2'."
-
 #: ewssubscriptionwidget.cpp:171
 #, kde-format
 msgctxt "@info"
@@ -1291,6 +1286,9 @@ msgstr "Falha ao atualizar item: "
 msgctxt "@info:status"
 msgid "Item out of order while processing update item response."
 msgstr "Item fora de ordem ao processar a resposta da atualização do item."
+
+#~ msgid "Please enter password for user '%1' and Exchange account '%2'."
+#~ msgstr "Informe a senha do usuário '%1' e da conta Exchange '%2'."
 
 #~ msgctxt "@info:status The resource is ready"
 #~ msgid "Ready"
