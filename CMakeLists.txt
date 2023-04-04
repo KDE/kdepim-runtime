@@ -91,8 +91,8 @@ find_package(SharedMimeInfo ${SharedMimeInfo_MINIMUM_VERSION} REQUIRED)
 find_package(Sasl2)
 set_package_properties(Sasl2 PROPERTIES TYPE REQUIRED)
 
-find_package(Qca-qt${QT_MAJOR_VERSION} 2.2.0 CONFIG REQUIRED)
-set_package_properties(Qca-qt${QT_MAJOR_VERSION} PROPERTIES DESCRIPTION "Qt Cryptographic Architecture"
+find_package(Qca-qt6 2.2.0 CONFIG REQUIRED)
+set_package_properties(Qca-qt6 PROPERTIES DESCRIPTION "Qt Cryptographic Architecture"
                    URL "https://invent.kde.org/libraries/qca" TYPE REQUIRED
                    PURPOSE "Needed for ews resource.")
 option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
@@ -165,7 +165,7 @@ ecm_set_disabled_deprecation_versions(QT 6.4  KF 5.105.0)
 
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
 
-set(kdepim-keychain_lib qt${QT_MAJOR_VERSION}keychain)
+set(kdepim-keychain_lib qt6keychain)
 
 set(COMPILE_WITH_UNITY_CMAKE_SUPPORT OFF)
 if (USE_UNITY_CMAKE_SUPPORT)

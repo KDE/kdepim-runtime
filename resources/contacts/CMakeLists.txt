@@ -49,7 +49,7 @@ install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(contactsconfig
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+    INSTALL_NAMESPACE "pim6/akonadi/config"
     )
 ki18n_wrap_ui(contactsconfig contactsagentsettingswidget.ui)
 

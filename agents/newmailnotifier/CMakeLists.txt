@@ -73,7 +73,7 @@ install(FILES akonadi_newmailnotifier_agent.notifyrc DESTINATION ${KDE_INSTALL_K
 ########################## Config plugin #################################
 
 kcoreaddons_add_plugin(newmailnotifierconfig
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config")
+    INSTALL_NAMESPACE "pim6/akonadi/config")
 
 target_sources(newmailnotifierconfig PRIVATE
     newmailnotifiersettingswidget.cpp

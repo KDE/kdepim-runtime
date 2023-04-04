@@ -45,7 +45,7 @@ install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 kcoreaddons_add_plugin(vcardconfig
     SOURCES vcardconfig.cpp ${vcardresource_common_SRCS}
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+    INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 
 target_link_libraries(vcardconfig

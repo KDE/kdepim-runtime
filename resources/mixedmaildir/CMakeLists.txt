@@ -86,7 +86,7 @@ endif ()
 ###################################### Config Plugin #########################
 
 kcoreaddons_add_plugin(mixedmaildirconfig
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+    INSTALL_NAMESPACE "pim6/akonadi/config"
     )
 target_sources(mixedmaildirconfig PRIVATE
     mixedmaildirconfig.cpp

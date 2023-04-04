@@ -1,4 +1,4 @@
-kcoreaddons_add_plugin(mailtransport_akonadiplugin INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/mailtransport")
+kcoreaddons_add_plugin(mailtransport_akonadiplugin INSTALL_NAMESPACE "pim6/mailtransport")
 target_sources(mailtransport_akonadiplugin PRIVATE
     akonadimailtransportplugin.cpp
     resourcesendjob.cpp

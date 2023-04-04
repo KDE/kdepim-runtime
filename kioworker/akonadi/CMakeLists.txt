@@ -19,4 +19,4 @@ target_link_libraries(kio_akonadi
                       )
 set_target_properties(kio_akonadi PROPERTIES OUTPUT_NAME "akonadi")
 
-install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf${QT_MAJOR_VERSION}/kio )
+install(TARGETS kio_akonadi DESTINATION ${KDE_INSTALL_PLUGINDIR}/kf6/kio )

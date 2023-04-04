@@ -63,7 +63,7 @@ install( FILES maildirresource.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/a
 
 ############################# Config plugin ###############################
 kcoreaddons_add_plugin(maildirconfig
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+    INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 
 target_sources(maildirconfig PRIVATE

@@ -108,7 +108,7 @@ install(FILES tomboynotesresource.desktop
 
 ############################# Config plugin ################################
 kcoreaddons_add_plugin(tomboynotesconfig
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+    INSTALL_NAMESPACE "pim6/akonadi/config"
     )
 ki18n_wrap_ui(tomboynotesconfig tomboynotesagentconfigwidget.ui)
 target_sources(tomboynotesconfig PRIVATE
