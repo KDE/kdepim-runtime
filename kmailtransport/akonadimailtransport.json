@@ -1,6 +1,5 @@
 {
     "KPlugin": {
-        "Id": "akonadimailtransport",
         "Name": "Akonadi Mail Transport",
         "Name[ca@valencia]": "Transport de correu d'Akonadi",
         "Name[ca]": "Transport de correu de l'Akonadi",
