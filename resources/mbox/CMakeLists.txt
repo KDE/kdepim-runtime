@@ -1,6 +1,4 @@
 
-add_subdirectory(wizard)
-
 set(mboxresource_common_SRCS
     deleteditemsattribute.cpp
     deleteditemsattribute.h

@@ -69,8 +69,6 @@ if(BUILD_TESTING)
     add_subdirectory( autotests )
 endif()
 
-add_subdirectory( wizard )
-
 install(TARGETS akonadi_pop3_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES akonadi_pop3_resource.notifyrc DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
 

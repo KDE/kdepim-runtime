@@ -98,4 +98,3 @@ install( FILES org.kde.akonadi_kolab_resource.desktop DESTINATION ${KDE_INSTALL_
 if (BUILD_TESTING)
     #add_subdirectory(autotests)
 endif()
-add_subdirectory(wizard)
