@@ -11,7 +11,7 @@
 
 #include "kcmutils_version.h"
 #include <KCModule>
-namespace KLDAP
+namespace KLDAPWidgets
 {
 class LdapConfigureWidget;
 }
@@ -28,5 +28,5 @@ public:
     void save() override;
 
 private:
-    KLDAP::LdapConfigureWidget *const mLdapConfigureWidget;
+    KLDAPWidgets::LdapConfigureWidget *const mLdapConfigureWidget;
 };

@@ -7,7 +7,7 @@ target_sources( kcm_ldap PRIVATE
     )
 
 
-target_link_libraries(kcm_ldap KF6::CoreAddons KF6::KCMUtils KF6::I18n KPim6::Ldap)
+target_link_libraries(kcm_ldap KF6::CoreAddons KF6::KCMUtils KF6::I18n KPim6::LdapWidgets)
 
 install(TARGETS kcm_ldap DESTINATION ${KDE_INSTALL_PLUGINDIR}/pim6/kcms/kaddressbook)
 
