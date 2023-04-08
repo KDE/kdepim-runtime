@@ -1,7 +1,7 @@
 # Burkhard Lück <lueck@hube-lueck.de>, 2009, 2014, 2019.
 # Thomas Reitelbach <tr@erdfunkstelle.de>, 2009.
 # Panagiotis Papadopoulos <pano_90@gmx.net>, 2010.
-# Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011.
+# Frederik Schwarzer <schwarzer@kde.org>, 2010, 2011, 2023.
 # Bjoern Ricks <bjoern.ricks@intevation.de>, 2010.
 # Torbjörn Klatt <torbjoern@torbjoern-klatt.de>, 2011.
 msgid ""
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: compactpage.cpp:71
 #, kde-format
