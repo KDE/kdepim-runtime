@@ -25,7 +25,7 @@ namespace MailTransport
 {
 class ServerTest;
 }
-namespace KIdentityManagement
+namespace KIdentityManagementWidgets
 {
 class IdentityCombo;
 }
@@ -74,7 +74,7 @@ private:
     bool m_subscriptionsChanged = false;
     bool m_shouldClearCache = false;
     QString m_vacationFileName;
-    KIdentityManagement::IdentityCombo *m_identityCombobox = nullptr;
+    KIdentityManagementWidgets::IdentityCombo *m_identityCombobox = nullptr;
     QString m_oldResourceName;
     QRegularExpressionValidator mValidator;
     Akonadi::Collection mOldTrash;
