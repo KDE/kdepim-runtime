@@ -18,7 +18,7 @@
 #include <QTimer>
 
 IcalDirSettingsWidget::IcalDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
-    : Akonadi::AgentConfigurationBase(config, parent, args)
+    : Akonadi::AgentWidgetConfigurationBase(config, parent, args)
 {
     IcalDirResourceSettings::instance(config);
 

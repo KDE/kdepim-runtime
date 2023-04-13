@@ -12,7 +12,7 @@
 #include <KLocalizedString>
 
 TomboyNotesConfigWidget::TomboyNotesConfigWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
-    : Akonadi::AgentConfigurationBase(config, parent, args)
+    : Akonadi::AgentWidgetConfigurationBase(config, parent, args)
     , ui(new Ui::TomboyNotesAgentConfigWidget)
 {
     Settings::instance(config);

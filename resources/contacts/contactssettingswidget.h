@@ -8,11 +8,11 @@
 #pragma once
 
 #include "ui_contactsagentsettingswidget.h"
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 
 class KConfigDialogManager;
 
-class ContactsSettingsWidget : public Akonadi::AgentConfigurationBase
+class ContactsSettingsWidget : public Akonadi::AgentWidgetConfigurationBase
 {
     Q_OBJECT
 public:

@@ -9,11 +9,11 @@
 #pragma once
 
 #include "ui_birthdaysconfigwidget.h"
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 
 class KConfigDialogManager;
 
-class BirthdaysConfigAgentWidget : public Akonadi::AgentConfigurationBase
+class BirthdaysConfigAgentWidget : public Akonadi::AgentWidgetConfigurationBase
 {
     Q_OBJECT
 public:

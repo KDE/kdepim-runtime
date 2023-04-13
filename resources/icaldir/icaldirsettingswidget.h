@@ -8,11 +8,11 @@
 #pragma once
 
 #include "ui_icaldirsagentsettingswidget.h"
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 
 class KConfigDialogManager;
 
-class IcalDirSettingsWidget : public Akonadi::AgentConfigurationBase
+class IcalDirSettingsWidget : public Akonadi::AgentWidgetConfigurationBase
 {
     Q_OBJECT
 public:

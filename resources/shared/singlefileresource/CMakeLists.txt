@@ -47,6 +47,7 @@ PUBLIC
     KF${KF_MAJOR_VERSION}::Completion
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::ConfigWidgets
+    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
 PRIVATE
     KPim${KF_MAJOR_VERSION}::AkonadiCore
     KPim${KF_MAJOR_VERSION}::AkonadiAgentBase

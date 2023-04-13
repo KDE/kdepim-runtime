@@ -79,7 +79,7 @@ ki18n_wrap_ui(maildirconfig settings.ui)
 
 
 target_link_libraries(maildirconfig
-    KPim${KF_MAJOR_VERSION}::AkonadiCore
+    KPim${KF_MAJOR_VERSION}::AkonadiWidgets
     KF${KF_MAJOR_VERSION}::ConfigWidgets
     KF${KF_MAJOR_VERSION}::KIOWidgets
     KF${KF_MAJOR_VERSION}::I18n

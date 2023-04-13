@@ -6,14 +6,14 @@
 
 #pragma once
 
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 
 #include "configwidget.h"
 #include "settings.h"
 
 #include <QScopedPointer>
 
-class MaildirConfig : public Akonadi::AgentConfigurationBase
+class MaildirConfig : public Akonadi::AgentWidgetConfigurationBase
 {
     Q_OBJECT
 public:

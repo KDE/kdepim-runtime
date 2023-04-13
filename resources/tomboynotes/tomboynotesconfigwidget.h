@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 class KConfigDialogManager;
 
 namespace Ui
@@ -15,7 +15,7 @@ namespace Ui
 class TomboyNotesAgentConfigWidget;
 }
 
-class TomboyNotesConfigWidget : public Akonadi::AgentConfigurationBase
+class TomboyNotesConfigWidget : public Akonadi::AgentWidgetConfigurationBase
 {
     Q_OBJECT
 public:

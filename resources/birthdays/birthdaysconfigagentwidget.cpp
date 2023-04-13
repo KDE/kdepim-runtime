@@ -20,7 +20,7 @@ static const char myConfigGroupName[] = "BirthdaysSettingsDialog";
 }
 
 BirthdaysConfigAgentWidget::BirthdaysConfigAgentWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
-    : Akonadi::AgentConfigurationBase(config, parent, args)
+    : Akonadi::AgentWidgetConfigurationBase(config, parent, args)
 {
     // setWindowIcon(QIcon::fromTheme(QStringLiteral("view-calendar-birthday")));
 

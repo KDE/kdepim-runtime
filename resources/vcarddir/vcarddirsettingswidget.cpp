@@ -17,7 +17,7 @@
 #include <QTimer>
 
 VcardDirSettingsWidget::VcardDirSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
-    : Akonadi::AgentConfigurationBase(config, parent, args)
+    : Akonadi::AgentWidgetConfigurationBase(config, parent, args)
 {
     VcardDirResourceSettings::instance(config);
 

@@ -6,17 +6,17 @@
 
 #pragma once
 
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 
 #include "akonadi-singlefileresource_export.h"
 #include "singlefileresourceconfigwidget.h"
 
 template<typename Settings>
-class SingleFileResourceConfigBase : public Akonadi::AgentConfigurationBase
+class SingleFileResourceConfigBase : public Akonadi::AgentWidgetConfigurationBase
 {
 public:
     explicit SingleFileResourceConfigBase(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &list)
-        : Akonadi::AgentConfigurationBase(config, parent, list)
+        : Akonadi::AgentWidgetConfigurationBase(config, parent, list)
         , mSettings(new Settings(config))
         , mWidget(new Akonadi::SingleFileResourceConfigWidget<Settings>(parent, mSettings.data()))
     {
@@ -27,7 +27,7 @@ public:
     void load() override
     {
         mWidget->load();
-        Akonadi::AgentConfigurationBase::load();
+        Akonadi::AgentWidgetConfigurationBase::load();
     }
 
     bool save() const override
@@ -35,7 +35,7 @@ public:
         if (!mWidget->save()) {
             return false;
         }
-        return Akonadi::AgentConfigurationBase::save();
+        return Akonadi::AgentWidgetConfigurationBase::save();
     }
 
 protected:

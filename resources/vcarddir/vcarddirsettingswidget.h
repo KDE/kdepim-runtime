@@ -8,11 +8,11 @@
 #pragma once
 
 #include "ui_vcarddiragentsettingswidget.h"
-#include <Akonadi/AgentConfigurationBase>
+#include <Akonadi/AgentWidgetConfigurationBase>
 
 class KConfigDialogManager;
 
-class VcardDirSettingsWidget : public Akonadi::AgentConfigurationBase
+class VcardDirSettingsWidget : public Akonadi::AgentWidgetConfigurationBase
 {
     Q_OBJECT
 public:
