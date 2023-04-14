@@ -160,7 +160,7 @@ set_package_properties(Qt6Keychain PROPERTIES
 
 
 option(KDEPIM_RUN_ISOLATED_TESTS "Run the isolated tests." FALSE)
-ecm_set_disabled_deprecation_versions(QT 6.4  KF 5.105.0)
+ecm_set_disabled_deprecation_versions(QT 6.4  KF 5.240.0)
 
 
 option(USE_UNITY_CMAKE_SUPPORT "Use UNITY cmake support (speedup compile time)" OFF)
