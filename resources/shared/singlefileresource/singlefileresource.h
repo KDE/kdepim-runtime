@@ -47,6 +47,11 @@ public:
         delete mSettings;
     }
 
+    void applyConfigurationChanges() override
+    {
+        mSettings->load();
+    }
+
     /**
      * Read changes from the backend file.
      */
