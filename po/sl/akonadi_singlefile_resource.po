@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-04-23 04:12+0000\n"
 "PO-Revision-Date: 2021-07-08 08:37+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -140,64 +140,64 @@ msgstr ""
 "Izberite časovni interval samodejnega shranjevanja podatkov o virih (v "
 "minutah)."
 
-#: singlefileresource.h:60
+#: singlefileresource.h:65
 #, kde-format
 msgid "No file selected."
 msgstr "Ni izbranih datotek."
 
-#: singlefileresource.h:62
+#: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "Vir še ni nastavljen"
 
-#: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
+#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: singlefileresource.h:95
+#: singlefileresource.h:100
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "Ni bilo mogoče ustvariti datoteke »%1«."
 
-#: singlefileresource.h:109
+#: singlefileresource.h:114
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "Ni bilo mogoče prebrati datoteke »%1«."
 
-#: singlefileresource.h:125
+#: singlefileresource.h:130
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "Drugo prejemanje še vedno poteka."
 
-#: singlefileresource.h:135 singlefileresource.h:221
+#: singlefileresource.h:140 singlefileresource.h:226
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "Drugo pošiljanje še vedno poteka."
 
-#: singlefileresource.h:151
+#: singlefileresource.h:156
 #, kde-format
 msgid "Downloading remote file."
 msgstr "Prejemanje oddaljene datoteke."
 
-#: singlefileresource.h:171
+#: singlefileresource.h:176
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "Poskus pisanja v datoteko, ki je samo za branje: »%1«."
 
-#: singlefileresource.h:183
+#: singlefileresource.h:188
 #, kde-format
 msgid "No file specified."
 msgstr "Podana ni nobena datoteka."
 
-#: singlefileresource.h:211
+#: singlefileresource.h:216
 #, kde-format
 msgid "A download is still in progress."
 msgstr "Prejemanje še vedno poteka."
 
-#: singlefileresource.h:251
+#: singlefileresource.h:256
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "Pošiljanje predpomnjene datoteke na oddaljeno mesto."

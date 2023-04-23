@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-04-23 04:12+0000\n"
 "PO-Revision-Date: 2023-04-16 12:33\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -125,64 +125,64 @@ msgstr "自动保存的间隔(按分钟计)。"
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr "选择资源数据的自动保存间隔时间 (分钟)。"
 
-#: singlefileresource.h:60
+#: singlefileresource.h:65
 #, kde-format
 msgid "No file selected."
 msgstr "未选择文件。"
 
-#: singlefileresource.h:62
+#: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
 msgstr "资源尚未配置"
 
-#: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
+#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "就绪"
 
-#: singlefileresource.h:95
+#: singlefileresource.h:100
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr "无法创建文件“%1”。"
 
-#: singlefileresource.h:109
+#: singlefileresource.h:114
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "无法读取文件“%1”"
 
-#: singlefileresource.h:125
+#: singlefileresource.h:130
 #, kde-format
 msgid "Another download is still in progress."
 msgstr "另一个下载进程还在进行中。"
 
-#: singlefileresource.h:135 singlefileresource.h:221
+#: singlefileresource.h:140 singlefileresource.h:226
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr "另一个文件上传进程还在进行中。"
 
-#: singlefileresource.h:151
+#: singlefileresource.h:156
 #, kde-format
 msgid "Downloading remote file."
 msgstr "下载远程文件。"
 
-#: singlefileresource.h:171
+#: singlefileresource.h:176
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr "尝试写入只读文件：“%1”。"
 
-#: singlefileresource.h:183
+#: singlefileresource.h:188
 #, kde-format
 msgid "No file specified."
 msgstr "未指派文件。"
 
-#: singlefileresource.h:211
+#: singlefileresource.h:216
 #, kde-format
 msgid "A download is still in progress."
 msgstr "有一个下载进程还在进行中。"
 
-#: singlefileresource.h:251
+#: singlefileresource.h:256
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr "上传缓存文件到远程地址。"
