@@ -239,32 +239,29 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
         for (const EwsGetEventsRequest::Notification &nfy : notifications) {
             const auto nfyEvents{nfy.events()};
             for (const EwsGetEventsRequest::Event &event : nfyEvents) {
-                bool skip = false;
                 mSettings->setEventSubscriptionWatermark(event.watermark());
-                if (!skip) {
-                    switch (event.type()) {
-                    case EwsCopiedEvent:
-                    case EwsMovedEvent:
-                        if (!event.itemIsFolder()) {
-                            mUpdatedFolderIds.insert(event.oldParentFolderId());
-                        }
-                    /* fall through */
-                    case EwsCreatedEvent:
-                    case EwsDeletedEvent:
-                    case EwsModifiedEvent:
-                    case EwsNewMailEvent:
-                        if (event.itemIsFolder()) {
-                            mFolderTreeChanged = true;
-                        } else {
-                            mUpdatedFolderIds.insert(event.parentFolderId());
-                        }
-                        break;
-                    case EwsStatusEvent:
-                        // Do nothing
-                        break;
-                    default:
-                        break;
+                switch (event.type()) {
+                case EwsCopiedEvent:
+                case EwsMovedEvent:
+                    if (!event.itemIsFolder()) {
+                        mUpdatedFolderIds.insert(event.oldParentFolderId());
                     }
+                /* fall through */
+                case EwsCreatedEvent:
+                case EwsDeletedEvent:
+                case EwsModifiedEvent:
+                case EwsNewMailEvent:
+                    if (event.itemIsFolder()) {
+                        mFolderTreeChanged = true;
+                    } else {
+                        mUpdatedFolderIds.insert(event.parentFolderId());
+                    }
+                    break;
+                case EwsStatusEvent:
+                    // Do nothing
+                    break;
+                default:
+                    break;
                 }
             }
             if (nfy.hasMoreEvents()) {
