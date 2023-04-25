@@ -311,7 +311,12 @@ void EwsFetchItemsJob::compareItemLists()
             /* Ignore unknown items. */
             continue;
         }
-        QString mimeType = EwsItemHandler::itemHandler(type)->mimeType();
+        auto handler(EwsItemHandler::itemHandler(type));
+        if (!handler) {
+            /* Ignore items where no handler exists. */
+            continue;
+        }
+        QString mimeType = handler->mimeType();
         if (it == itemHash.end()) {
             Item item(mimeType);
             item.setParentCollection(mCollection);
