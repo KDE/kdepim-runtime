@@ -342,6 +342,10 @@ QVector<qint64> MoveItemsTask::imapSetToList(const KIMAP::ImapSet &set)
     const KIMAP::ImapInterval::List lstInterval = set.intervals();
     list.reserve(lstInterval.count());
     for (const KIMAP::ImapInterval &interval : lstInterval) {
+        if (!interval.hasDefinedEnd()) {
+            qCWarning(IMAPRESOURCE_LOG) << "Trying to convert an infinite imap interval to a finite list";
+            continue;
+        }
         for (qint64 i = interval.begin(), end = interval.end(); i <= end; ++i) {
             list << i;
         }
