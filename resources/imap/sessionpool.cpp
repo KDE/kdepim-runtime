@@ -84,7 +84,7 @@ void SessionPool::requestPassword()
 
 bool SessionPool::connect(ImapAccount *account)
 {
-    if (m_account) {
+    if (!account) {
         return false;
     }
 
