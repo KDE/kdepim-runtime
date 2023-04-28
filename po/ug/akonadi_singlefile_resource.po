@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-10-08 00:48+0000\n"
+"POT-Creation-Date: 2023-04-23 00:50+0000\n"
 "PO-Revision-Date: 2013-09-08 07:05+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -122,64 +122,64 @@ msgstr ""
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
 
-#: singlefileresource.h:60
+#: singlefileresource.h:65
 #, kde-format
 msgid "No file selected."
 msgstr ""
 
-#: singlefileresource.h:62
+#: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
 msgstr ""
 
-#: singlefileresource.h:93 singlefileresource.h:122 singlefileresource.h:207
+#: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "تەييار"
 
-#: singlefileresource.h:95
+#: singlefileresource.h:100
 #, kde-format
 msgid "Could not create file '%1'."
 msgstr ""
 
-#: singlefileresource.h:109
+#: singlefileresource.h:114
 #, kde-format
 msgid "Could not read file '%1'"
 msgstr "ھۆججەت '%1' ئوقۇغىلى بولمىدى"
 
-#: singlefileresource.h:125
+#: singlefileresource.h:130
 #, kde-format
 msgid "Another download is still in progress."
 msgstr ""
 
-#: singlefileresource.h:135 singlefileresource.h:221
+#: singlefileresource.h:140 singlefileresource.h:226
 #, kde-format
 msgid "Another file upload is still in progress."
 msgstr ""
 
-#: singlefileresource.h:151
+#: singlefileresource.h:156
 #, kde-format
 msgid "Downloading remote file."
 msgstr ""
 
-#: singlefileresource.h:171
+#: singlefileresource.h:176
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
 msgstr ""
 
-#: singlefileresource.h:183
+#: singlefileresource.h:188
 #, kde-format
 msgid "No file specified."
 msgstr ""
 
-#: singlefileresource.h:211
+#: singlefileresource.h:216
 #, kde-format
 msgid "A download is still in progress."
 msgstr ""
 
-#: singlefileresource.h:251
+#: singlefileresource.h:256
 #, kde-format
 msgid "Uploading cached file to remote location."
 msgstr ""
