@@ -189,7 +189,7 @@ SetupWizard::Url::List SetupWizard::urls() const
             return urls;
         }
 
-        QString urlStr = settingsToUrl(this, protocol);
+        const QString urlStr = settingsToUrl(this, protocol);
 
         if (!urlStr.isEmpty()) {
             url.url = urlStr;
@@ -380,22 +380,18 @@ bool ServerTypePage::validatePage()
 
 ConnectionPage::ConnectionPage(QWidget *parent)
     : QWizardPage(parent)
-    , mPreviewLayout(nullptr)
-    , mCalDavUrlPreview(nullptr)
-    , mCardDavUrlPreview(nullptr)
-    , mGroupDavUrlPreview(nullptr)
 {
     setTitle(i18n("Connection"));
     setSubTitle(i18n("Enter the connection information for the groupware server"));
 
     mLayout = new QFormLayout(this);
     const QRegularExpression hostnameRegexp(QStringLiteral("^[a-z0-9][.a-z0-9-]*[a-z0-9](?::[0-9]+)?$"));
-    mHost = new QLineEdit;
+    mHost = new QLineEdit(this);
     registerField(QStringLiteral("connectionHost*"), mHost);
     mHost->setValidator(new QRegularExpressionValidator(hostnameRegexp, this));
     mLayout->addRow(i18n("Host"), mHost);
 
-    mPath = new QLineEdit;
+    mPath = new QLineEdit(this);
     mLayout->addRow(i18n("Installation path"), mPath);
     registerField(QStringLiteral("installationPath"), mPath);
 
@@ -416,12 +412,12 @@ void ConnectionPage::initializePage()
         return;
     }
 
-    QString providerInstallationPath = service->property(QStringLiteral("X-DavGroupware-InstallationPath")).toString();
+    const QString providerInstallationPath = service->property(QStringLiteral("X-DavGroupware-InstallationPath")).toString();
     if (!providerInstallationPath.isEmpty()) {
         mPath->setText(providerInstallationPath);
     }
 
-    QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
+    const QStringList supportedProtocols = service->property(QStringLiteral("X-DavGroupware-SupportedProtocols")).toStringList();
 
     mPreviewLayout = new QFormLayout;
     mLayout->addRow(mPreviewLayout);
