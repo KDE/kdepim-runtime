@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kde-l10n-es\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-04 00:48+0000\n"
+"POT-Creation-Date: 2023-04-28 00:49+0000\n"
 "PO-Revision-Date: 2021-08-26 01:15+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
@@ -699,7 +699,7 @@ msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Recuperando %1 listas de elementos (%2 elementos)"
 
-#: ewsfetchitemsjob.cpp:394
+#: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"

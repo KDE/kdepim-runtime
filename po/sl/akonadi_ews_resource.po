@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-04 00:48+0000\n"
+"POT-Creation-Date: 2023-04-28 00:49+0000\n"
 "PO-Revision-Date: 2021-08-28 22:26+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -688,7 +688,7 @@ msgctxt "@info:status"
 msgid "Retrieving %1 item list (%2 items)"
 msgstr "Pridobivanje %1 seznama elementov (%2 elementov)"
 
-#: ewsfetchitemsjob.cpp:394
+#: ewsfetchitemsjob.cpp:399
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving %1 items"
