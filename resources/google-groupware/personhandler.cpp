@@ -340,7 +340,7 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
                                      << personResourceName;
         m_pendingPeoplePhotoUpdate.remove(personResourceName);
     } else if (const auto originalAddressee = originalItem.payload<KContacts::Addressee>();
-               !originalAddressee.photo().isEmpty()) {
+               !originalAddressee.photo().isEmpty() && !originalAddressee.photo().rawData().isEmpty()) {
         qCDebug(GOOGLE_PEOPLE_LOG) << "Person to update requires a photo update. Sending off photo update job."
                                      << personResourceName;
 
@@ -361,7 +361,7 @@ void PersonHandler::updatePersonItem(const Akonadi::Item &originalItem, const Pe
     }
 
     Item newItem = originalItem;
-    qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << personResourceName << "created";
+    qCDebug(GOOGLE_PEOPLE_LOG) << "Person" << personResourceName << "updated";
 
     newItem.setRemoteId(personResourceName);
     newItem.setRemoteRevision(person->etag());
