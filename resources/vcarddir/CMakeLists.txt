@@ -50,8 +50,6 @@ target_link_libraries(akonadi_vcarddir_resource
 
 add_dependencies(akonadi_vcarddir_resource akonadi-singlefileresource)
 
-add_subdirectory(wizard)
-
 install(TARGETS akonadi_vcarddir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ############################## Config plugin ################################

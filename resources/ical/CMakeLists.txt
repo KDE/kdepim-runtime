@@ -6,7 +6,6 @@ include_directories(
 
 add_definitions(-DTRANSLATION_DOMAIN=\"akonadi_ical_resource\")
 
-add_subdirectory( wizard )
 add_subdirectory( notes )
 
 if(BUILD_TESTING)

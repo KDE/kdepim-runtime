@@ -8,7 +8,6 @@ include_directories(
 if (BUILD_TESTING)
    add_subdirectory( autotests )
 endif()
-add_subdirectory( wizard )
 
 # maildir access library
 add_subdirectory(libmaildir)
