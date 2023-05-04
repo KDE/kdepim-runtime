@@ -106,9 +106,6 @@ if(Qt6TextToSpeech_FOUND)
 set(HAVE_TEXT_TO_SPEECH_SUPPORT TRUE)
 endif()
 find_package(Qt6 ${QT_REQUIRED_VERSION} CONFIG REQUIRED Network Widgets Test DBus NetworkAuth)
-if (QT_MAJOR_VERSION STREQUAL "5" AND BUILD_TESTING)
-    find_package(Qt5 ${QT_REQUIRED_VERSION} CONFIG REQUIRED XmlPatterns)
-endif()
 find_package(Qt6WebEngineWidgets ${QT_REQUIRED_VERSION} CONFIG)
 
 # KF6 package
