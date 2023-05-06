@@ -397,11 +397,15 @@ void POP3Resource::localFolderRequestJobFinished(KJob *job)
         return;
     }
     if (mTestLocalInbox) {
-        KMessageBox::information(nullptr,
-                                 i18n("<qt>The folder you deleted was associated with the account "
-                                      "<b>%1</b> which delivered mail into it. The folder the account "
-                                      "delivers new mail into was reset to the main Inbox folder.</qt>",
-                                      name()));
+        KNotification::event(QStringLiteral("update-inbox"),
+                             name(),
+                             i18n("<qt>The folder you deleted was associated with the account "
+                                  "<b>%1</b> which delivered mail into it. The folder the account "
+                                  "delivers new mail into was reset to the main Inbox folder.</qt>"),
+                             QString(),
+                             nullptr,
+                             KNotification::CloseOnTimeout,
+                             QStringLiteral("akonadi_pop3_resource"));
     }
     mTestLocalInbox = false;
 
@@ -491,14 +495,18 @@ void POP3Resource::uidListJobResult(KJob *job)
 
         mUidListValid = !mIdsToUidsMap.isEmpty() || mIdsToSizeMap.isEmpty();
         if (mSettings.leaveOnServer() && !mUidListValid) {
-            // FIXME: this needs a proper parent window
-            KMessageBox::error(nullptr,
-                               i18n("Your POP3 server (Account: %1) does not support "
-                                    "the UIDL command: this command is required to determine, in a reliable way, "
-                                    "which of the mails on the server KMail has already seen before;\n"
-                                    "the feature to leave the mails on the server will therefore not "
-                                    "work properly.",
-                                    name()));
+            KNotification::event(QStringLiteral("mail-check-error"),
+                                 name(),
+                                 i18n("Your POP3 server (Account: %1) does not support "
+                                      "the UIDL command: this command is required to determine, in a reliable way, "
+                                      "which of the mails on the server KMail has already seen before;\n"
+                                      "the feature to leave the mails on the server will therefore not "
+                                      "work properly.",
+                                      name()),
+                                 QString(),
+                                 nullptr,
+                                 KNotification::Persistent,
+                                 QStringLiteral("akonadi_pop3_resource"));
         }
 
         advanceState(Download);
