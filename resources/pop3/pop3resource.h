@@ -106,6 +106,7 @@ private:
         CheckRemovingMessage
     };
 
+    void showAccountError(const QString &text);
     void resetState();
     void doStateStep();
     void advanceState(State nextState);
@@ -116,7 +117,6 @@ private:
     int idOfOldestMessage(const QSet<int> &idList) const;
     void startMailCheck();
     void updateIntervalTimer();
-    void showPasswordDialog(const QString &queryText);
     QString buildLabelForPasswordDialog(const QString &detailedError) const;
     void checkRemovingMessageFromServer();
     void finish();

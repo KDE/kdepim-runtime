@@ -1,5 +1,5 @@
 [Global]
-IconName=akonadi
+IconName=mail-client
 Comment=POP3 Resource
 Comment[ar]=مورد POP3
 Comment[bg]=Ресурс POP3

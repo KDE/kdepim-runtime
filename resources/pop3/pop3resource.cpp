@@ -20,12 +20,11 @@
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>
-#include <KMessageBox>
 #include <KNotification>
-#include <KPasswordDialog>
 
 #include <QPointer>
 #include <QTimer>
+#include <qstringliteral.h>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <qt5keychain/keychain.h>
 #else
@@ -57,6 +56,8 @@ POP3Resource::POP3Resource(const QString &id)
     connect(this, &POP3Resource::abortRequested, this, &POP3Resource::slotAbortRequested);
     connect(mIntervalTimer, &QTimer::timeout, this, &POP3Resource::intervalCheckTriggered);
     connect(this, &POP3Resource::reloadConfiguration, this, &POP3Resource::configurationChanged);
+
+    showAccountError(QStringLiteral("test"));
 }
 
 POP3Resource::~POP3Resource()
@@ -147,40 +148,15 @@ void POP3Resource::walletOpenedForLoading(QKeychain::Job *baseJob)
         qCWarning(POP3RESOURCE_LOG) << "We have an error during reading password " << job->errorString();
     }
     if (!passwordLoaded) {
-        const QString queryText = buildLabelForPasswordDialog(i18n("You are asked here because the password could not be loaded from the wallet."));
-        showPasswordDialog(queryText);
+        auto notification = new KNotification(QStringLiteral("mail-check-error"));
+        notification->setText(i18n("Your password could not be loaded from the system keychain."));
+        notification->setActions({i18n("Configure account")});
+        connect(notification, QOverload<unsigned int>::of(&KNotification::activated), this, []() {
+            qDebug() << "configure";
+        });
+        notification->sendEvent();
     } else {
         advanceState(Connect);
-    }
-}
-
-void POP3Resource::showPasswordDialog(const QString &queryText)
-{
-    QPointer<KPasswordDialog> dlg = new KPasswordDialog(nullptr, KPasswordDialog::ShowUsernameLine);
-    dlg->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-    dlg->setModal(true);
-    dlg->setUsername(mSettings.login());
-    dlg->setPassword(mPassword);
-    dlg->setPrompt(queryText);
-    dlg->setWindowTitle(name());
-    dlg->addCommentLine(i18n("Account:"), name());
-
-    bool gotIt = false;
-    if (dlg->exec()) {
-        mPassword = dlg->password();
-        mSettings.setLogin(dlg->username());
-        mSettings.save();
-        if (!dlg->password().isEmpty()) {
-            mSavePassword = true;
-        }
-
-        mAskAgain = false;
-        advanceState(Connect);
-        gotIt = true;
-    }
-    delete dlg;
-    if (!gotIt) {
-        cancelSync(i18n("No username and password supplied."));
     }
 }
 
@@ -188,6 +164,19 @@ void POP3Resource::advanceState(State nextState)
 {
     mState = nextState;
     doStateStep();
+}
+
+void POP3Resource::showAccountError(const QString &text)
+{
+    auto notification = new KNotification(QStringLiteral("mail-check-error"));
+    notification->setTitle(name());
+    notification->setText(text);
+    notification->setComponentName(QStringLiteral("akonadi_pop3_resource"));
+    notification->setActions({i18n("Configure account")});
+    connect(notification, QOverload<unsigned int>::of(&KNotification::activated), this, [this]() {
+        configureExternal();
+    });
+    notification->sendEvent();
 }
 
 void POP3Resource::doStateStep()
@@ -245,12 +234,12 @@ void POP3Resource::doStateStep()
         } else if (passwordNeeded && (mPassword.isEmpty() || mAskAgain)) {
             QString detail;
             if (mAskAgain) {
-                detail = i18n("You are asked here because the previous login was not successful.");
+                detail = i18n("An authentification error happened.");
             } else if (mSettings.login().isEmpty()) {
-                detail = i18n("You are asked here because the username you supplied is empty.");
+                detail = i18n("You didn't supply a username for you POP3 account.");
             }
 
-            showPasswordDialog(buildLabelForPasswordDialog(detail));
+            showAccountError(detail);
         } else {
             // No password needed or using previous password, go on with Connect
             advanceState(Connect);
