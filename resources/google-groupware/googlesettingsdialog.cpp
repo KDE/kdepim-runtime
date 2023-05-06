@@ -22,6 +22,13 @@
 #include <KMessageBox>
 #include <KWindowSystem>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <qt5keychain/keychain.h>
+#else
+#include <qt6keychain/keychain.h>
+#endif
+
+using namespace QKeychain;
 using namespace KGAPI2;
 
 GoogleSettingsDialog::GoogleSettingsDialog(GoogleResource *resource, GoogleSettings *settings, WId wId)
@@ -161,46 +168,60 @@ void GoogleSettingsDialog::slotAuthJobFinished(KGAPI2::Job *job)
 
 void GoogleSettingsDialog::slotSaveSettings()
 {
-    if (!m_account || !m_settings->storeAccount(m_account)) {
-        m_settings->setAccount(QString());
+    auto reset = [this] {
+        m_settings->setAccount({});
         m_settings->setEnableIntervalCheck(m_ui->enableRefresh->isChecked());
         m_settings->setIntervalCheckTime(m_ui->refreshSpinBox->value());
         m_settings->setCalendars({});
         m_settings->setTaskLists({});
-        m_settings->setEventsSince(QString());
+        m_settings->setEventsSince({});
         m_settings->save();
+    };
+
+    if (!m_account) {
+        reset();
         return;
     }
-    m_settings->setAccount(m_account->accountName());
-    m_settings->setEnableIntervalCheck(m_ui->enableRefresh->isChecked());
-    m_settings->setIntervalCheckTime(m_ui->refreshSpinBox->value());
 
-    QStringList calendars;
-    for (int i = 0; i < m_ui->calendarsList->count(); i++) {
-        QListWidgetItem *item = m_ui->calendarsList->item(i);
-
-        if (item->checkState() == Qt::Checked) {
-            calendars.append(item->data(Qt::UserRole).toString());
+    auto writeJob = m_settings->storeAccount(m_account);
+    connect(writeJob, &WritePasswordJob::finished, this, [this, reset, writeJob]() {
+        if (writeJob->error()) {
+            qCWarning(GOOGLE_LOG) << "Failed to store account's password in secret storage" << writeJob->errorString();
+            reset();
+            return;
         }
-    }
-    m_settings->setCalendars(calendars);
 
-    if (m_ui->eventsLimitCombo->isValid()) {
-        m_settings->setEventsSince(m_ui->eventsLimitCombo->date().toString(Qt::ISODate));
-    }
+        m_settings->setAccount(m_account->accountName());
+        m_settings->setEnableIntervalCheck(m_ui->enableRefresh->isChecked());
+        m_settings->setIntervalCheckTime(m_ui->refreshSpinBox->value());
 
-    QStringList taskLists;
-    for (int i = 0; i < m_ui->taskListsList->count(); i++) {
-        QListWidgetItem *item = m_ui->taskListsList->item(i);
+        QStringList calendars;
+        for (int i = 0; i < m_ui->calendarsList->count(); i++) {
+            QListWidgetItem *item = m_ui->calendarsList->item(i);
 
-        if (item->checkState() == Qt::Checked) {
-            taskLists.append(item->data(Qt::UserRole).toString());
+            if (item->checkState() == Qt::Checked) {
+                calendars.append(item->data(Qt::UserRole).toString());
+            }
         }
-    }
-    m_settings->setTaskLists(taskLists);
-    m_settings->save();
+        m_settings->setCalendars(calendars);
 
-    accept();
+        if (m_ui->eventsLimitCombo->isValid()) {
+            m_settings->setEventsSince(m_ui->eventsLimitCombo->date().toString(Qt::ISODate));
+        }
+
+        QStringList taskLists;
+        for (int i = 0; i < m_ui->taskListsList->count(); i++) {
+            QListWidgetItem *item = m_ui->taskListsList->item(i);
+
+            if (item->checkState() == Qt::Checked) {
+                taskLists.append(item->data(Qt::UserRole).toString());
+            }
+        }
+        m_settings->setTaskLists(taskLists);
+        m_settings->save();
+
+        accept();
+    });
 }
 
 void GoogleSettingsDialog::slotReloadCalendars()

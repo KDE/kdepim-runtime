@@ -72,7 +72,7 @@ KGAPI2::AccountPtr GoogleSettings::fetchAccountFromKeychain(const QString &accou
     return account;
 }
 
-bool GoogleSettings::storeAccount(AccountPtr account)
+WritePasswordJob *GoogleSettings::storeAccount(AccountPtr account)
 {
     // Removing the old one (if present)
     if (m_account && (account->accountName() != m_account->accountName())) {
@@ -101,9 +101,16 @@ bool GoogleSettings::storeAccount(AccountPtr account)
     writeJob->setKey(m_account->accountName());
     writeJob->setBinaryData(mapData);
     writeJob->start();
-    SettingsBase::setAccount(m_account->accountName());
-    m_isReady = true;
-    return true;
+
+    connect(writeJob, &WritePasswordJob::finished, this, [this, writeJob]() {
+        if (writeJob->error()) {
+            return;
+        }
+        SettingsBase::setAccount(m_account->accountName());
+        m_isReady = true;
+    });
+
+    return writeJob;
 }
 
 void GoogleSettings::cleanup()
