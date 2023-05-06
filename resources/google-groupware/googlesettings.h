@@ -17,6 +17,7 @@
 namespace QKeychain
 {
 class ReadPasswordJob;
+class WritePasswordJob;
 }
 
 /**
@@ -47,7 +48,7 @@ public:
     KGAPI2::AccountPtr accountPtr();
     // Wallet
     bool isReady() const;
-    bool storeAccount(KGAPI2::AccountPtr account);
+    QKeychain::WritePasswordJob *storeAccount(KGAPI2::AccountPtr account);
     void cleanup();
 Q_SIGNALS:
     void accountReady(bool ready);
