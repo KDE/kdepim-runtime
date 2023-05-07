@@ -18,7 +18,7 @@
 #include <Akonadi/ResourceSettings>
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
-#include <Libkdepim/LineEditCatchReturnKey>
+#include <KLineEditEventHandler>
 #include <MailTransport/ServerTest>
 
 #include "pop3resource_debug.h"
@@ -90,10 +90,10 @@ void AccountWidget::setupWidgets()
 
     intervalSpin->setRange(ResourceSettings::self()->minimumCheckInterval(), 10000);
     intervalSpin->setSingleStep(1);
-    new KPIM::LineEditCatchReturnKey(nameEdit, this);
-    new KPIM::LineEditCatchReturnKey(hostEdit, this);
-    new KPIM::LineEditCatchReturnKey(loginEdit, this);
-    new KPIM::LineEditCatchReturnKey(precommand, this);
+    KLineEditEventHandler::catchReturnKey(nameEdit);
+    KLineEditEventHandler::catchReturnKey(hostEdit);
+    KLineEditEventHandler::catchReturnKey(loginEdit);
+    KLineEditEventHandler::catchReturnKey(precommand);
 
     connect(leaveOnServerCheck, &QCheckBox::clicked, this, &AccountWidget::slotLeaveOnServerClicked);
     connect(leaveOnServerDaysCheck, &QCheckBox::toggled, this, &AccountWidget::slotEnableLeaveOnServerDays);

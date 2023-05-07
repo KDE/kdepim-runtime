@@ -22,7 +22,7 @@
 #include "settings.h"
 #include <config-imap.h>
 
-#include <Libkdepim/LineEditCatchReturnKey>
+#include <KLineEditEventHandler>
 #include <MailTransport/ServerTest>
 #include <MailTransport/Transport>
 
@@ -131,11 +131,11 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->setupUi(mainWidget);
     m_ui->password->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
     m_ui->customPassword->setRevealPasswordAvailable(KAuthorized::authorize(QStringLiteral("lineedit_reveal_password")));
-    new KPIM::LineEditCatchReturnKey(m_ui->accountName, this);
-    new KPIM::LineEditCatchReturnKey(m_ui->imapServer, this);
-    new KPIM::LineEditCatchReturnKey(m_ui->userName, this);
-    new KPIM::LineEditCatchReturnKey(m_ui->alternateURL, this);
-    new KPIM::LineEditCatchReturnKey(m_ui->customUsername, this);
+    KLineEditEventHandler::catchReturnKey(m_ui->accountName);
+    KLineEditEventHandler::catchReturnKey(m_ui->imapServer);
+    KLineEditEventHandler::catchReturnKey(m_ui->userName);
+    KLineEditEventHandler::catchReturnKey(m_ui->alternateURL);
+    KLineEditEventHandler::catchReturnKey(m_ui->customUsername);
 
     m_folderArchiveSettingPage = new FolderArchiveSettingPage(m_parentResource->identifier());
     m_ui->tabWidget->addTab(m_folderArchiveSettingPage, i18n("Archive Folder"));
