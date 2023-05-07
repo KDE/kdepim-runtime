@@ -40,6 +40,13 @@
 #include <algorithm>
 #include <memory>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <qt5keychain/keychain.h>
+#else
+#include <qt6keychain/keychain.h>
+#endif
+using namespace QKeychain;
+
 #define CALENDARS_PROPERTY "_KGAPI2CalendarPtr"
 #define ROOT_COLLECTION_REMOTEID QStringLiteral("RootCollection")
 
@@ -74,7 +81,7 @@ GoogleResource::GoogleResource(const QString &id)
     changeRecorder()->fetchCollection(true);
     changeRecorder()->collectionFetchScope().setAncestorRetrieval(CollectionFetchScope::All);
 
-    Q_EMIT status(NotConfigured, i18n("Waiting for KWallet..."));
+    Q_EMIT status(NotConfigured, i18n("Fetching password..."));
 
     m_settings = new GoogleSettings();
     m_settings->setWindowId(winIdForDialogs());
@@ -83,7 +90,7 @@ GoogleResource::GoogleResource(const QString &id)
             return;
         }
         if (!ready) {
-            Q_EMIT status(Broken, i18n("Can't access KWallet"));
+            Q_EMIT status(Broken, i18n("Can't fetch password"));
             return;
         }
 
@@ -282,15 +289,18 @@ void GoogleResource::slotAuthJobFinished(KGAPI2::Job *job)
 
     auto authJob = qobject_cast<AuthJob *>(job);
     AccountPtr account = authJob->account();
-    if (!m_settings->storeAccount(account)) {
-        qCWarning(GOOGLE_LOG) << "Failed to store account in KWallet";
-    }
+    auto writeJob = m_settings->storeAccount(account);
+    connect(writeJob, &WritePasswordJob::finished, this, [job, account, writeJob]() {
+        if (writeJob->error()) {
+            qCWarning(GOOGLE_LOG) << "Failed to store account's password in secret storage" << writeJob->errorString();
+        }
 
-    auto otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
-    if (otherJob) {
-        otherJob->setAccount(account);
-        otherJob->restart();
-    }
+        auto otherJob = job->property(JOB_PROPERTY).value<KGAPI2::Job *>();
+        if (otherJob) {
+            otherJob->setAccount(account);
+            otherJob->restart();
+        }
+    });
 }
 
 int GoogleResource::accountId() const

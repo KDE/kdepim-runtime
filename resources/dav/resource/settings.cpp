@@ -9,13 +9,12 @@
 
 #include "settings.h"
 
+#include "davresource_debug.h"
 #include "settingsadaptor.h"
 #include "utils.h"
 
 #include <KAuthorized>
 #include <KLocalizedString>
-
-#include <KWallet>
 
 #include <KDAV/ProtocolInfo>
 
@@ -35,6 +34,13 @@
 #include <QRegularExpression>
 #include <QUrl>
 #include <QVBoxLayout>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <qt5keychain/keychain.h>
+#else
+#include <qt6keychain/keychain.h>
+#endif
+using namespace QKeychain;
 
 class SettingsHelper
 {
@@ -117,15 +123,10 @@ void Settings::setWinId(WId winId)
 
 void Settings::cleanup()
 {
-    KWallet::Wallet *wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), mWinId);
-    if (wallet && wallet->isOpen()) {
-        if (wallet->hasFolder(KWallet::Wallet::PasswordFolder())) {
-            wallet->setFolder(KWallet::Wallet::PasswordFolder());
-            const QString entry = mResourceIdentifier + QLatin1Char(',') + QStringLiteral("$default$");
-            wallet->removeEntry(entry);
-        }
-        delete wallet;
-    }
+    const QString entry = mResourceIdentifier + QLatin1Char(',') + QStringLiteral("$default$");
+    auto deleteJob = new DeletePasswordJob(QStringLiteral("Passwords"));
+    deleteJob->setKey(entry);
+    deleteJob->start();
     QFile cacheFile(mCollectionsUrlsMappingCache);
     cacheFile.remove();
 }
@@ -402,20 +403,15 @@ void Settings::savePassword(const QString &key, const QString &user, const QStri
     const QString entry = key + QLatin1Char(',') + user;
     mPasswordsCache[entry] = password;
 
-    KWallet::Wallet *wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), mWinId);
-    if (!wallet) {
-        return;
-    }
-
-    if (!wallet->hasFolder(KWallet::Wallet::PasswordFolder())) {
-        wallet->createFolder(KWallet::Wallet::PasswordFolder());
-    }
-
-    if (!wallet->setFolder(KWallet::Wallet::PasswordFolder())) {
-        return;
-    }
-
-    wallet->writePassword(entry, password);
+    auto writeJob = new WritePasswordJob(QStringLiteral("Passwords"), this);
+    connect(writeJob, &QKeychain::Job::finished, this, [this](QKeychain::Job *baseJob) {
+        if (baseJob->error()) {
+            qCWarning(DAVRESOURCE_LOG) << "Error writing password using QKeychain:" << baseJob->errorString();
+        }
+    });
+    writeJob->setKey(entry);
+    writeJob->setTextData(password);
+    writeJob->start();
 }
 
 QString Settings::loadPassword(const QString &key, const QString &user)
@@ -433,24 +429,28 @@ QString Settings::loadPassword(const QString &key, const QString &user)
         return mPasswordsCache[entry];
     }
 
-    KWallet::Wallet *wallet = KWallet::Wallet::openWallet(KWallet::Wallet::NetworkWallet(), mWinId);
-    if (wallet) {
-        if (!wallet->hasFolder(KWallet::Wallet::PasswordFolder())) {
-            wallet->createFolder(KWallet::Wallet::PasswordFolder());
-        }
+    QKeychain::ReadPasswordJob job(QStringLiteral("Passwords"));
+    job.setAutoDelete(false);
+    job.setKey(entry);
+    QEventLoop loop; // Ideally we should have an async API
+    QKeychain::ReadPasswordJob::connect(&job, &QKeychain::Job::finished, &loop, &QEventLoop::quit);
+    job.start();
+    loop.exec();
 
-        if (wallet->setFolder(KWallet::Wallet::PasswordFolder())) {
-            if (!wallet->hasEntry(entry)) {
-                pass = promptForPassword(user);
-                wallet->writePassword(entry, pass);
+    if (job.error() == QKeychain::Error::EntryNotFound) {
+        pass = promptForPassword(user);
+        if (!pass.isEmpty()) {
+            if (user == QLatin1String("$default$")) {
+                savePassword(mResourceIdentifier, user, pass);
             } else {
-                wallet->readPassword(entry, pass);
+                savePassword(key, user, pass);
             }
         }
-    }
-
-    if (pass.isNull() && !KWallet::Wallet::isEnabled()) {
+    } else if (job.error() != QKeychain::Error::NoError) {
+        // Other type of errors
         pass = promptForPassword(user);
+    } else {
+        pass = QString::fromLatin1(job.binaryData());
     }
 
     if (!pass.isNull()) {

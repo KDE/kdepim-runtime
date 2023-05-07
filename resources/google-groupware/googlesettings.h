@@ -14,9 +14,10 @@
 
 #include <KGAPI/Types>
 
-namespace KWallet
+namespace QKeychain
 {
-class Wallet;
+class ReadPasswordJob;
+class WritePasswordJob;
 }
 
 /**
@@ -24,7 +25,7 @@ class Wallet;
  *
  * Provides read-only access to application clientId and
  * clientSecret and read-write access to accessToken and
- * refreshToken. Interacts with KWallet.
+ * refreshToken. Interacts with QtKeyChain.
  */
 class GoogleSettings : public SettingsBase
 {
@@ -47,7 +48,7 @@ public:
     KGAPI2::AccountPtr accountPtr();
     // Wallet
     bool isReady() const;
-    bool storeAccount(KGAPI2::AccountPtr account);
+    QKeychain::WritePasswordJob *storeAccount(KGAPI2::AccountPtr account);
     void cleanup();
 Q_SIGNALS:
     void accountReady(bool ready);
@@ -59,7 +60,5 @@ private:
     QString m_resourceId;
     bool m_isReady = false;
     KGAPI2::AccountPtr m_account;
-    QPointer<KWallet::Wallet> m_wallet;
-
-    KGAPI2::AccountPtr fetchAccountFromWallet(const QString &accountName);
+    KGAPI2::AccountPtr fetchAccountFromKeychain(const QString &accountName, QKeychain::ReadPasswordJob *job);
 };

@@ -83,7 +83,6 @@ target_link_libraries(akonadi_davgroupware_resource
     KF6::KIOCore
     KPim6::AkonadiAgentBase
     KPim6::AkonadiCore
-    KF6::Wallet
     KF6::CalendarCore
     KF6::Completion
     KF6::ConfigCore
@@ -92,6 +91,7 @@ target_link_libraries(akonadi_davgroupware_resource
     KF6::DAV
     KF6::Service
     Qt::Xml
+    qt6keychain
     )
 
 install(TARGETS akonadi_davgroupware_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
