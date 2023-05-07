@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-07 00:48+0000\n"
+"POT-Creation-Date: 2023-05-07 00:51+0000\n"
 "PO-Revision-Date: 2022-06-05 07:15+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -104,44 +104,44 @@ msgstr "Pripravljen"
 msgid "Invalid item."
 msgstr "Neveljavni predmet."
 
-#: googleresource.cpp:77
+#: googleresource.cpp:84
 #, kde-format
-msgid "Waiting for KWallet..."
-msgstr "Čakanje na KWallet..."
+msgid "Fetching password..."
+msgstr ""
 
-#: googleresource.cpp:86
+#: googleresource.cpp:93
 #, kde-format
-msgid "Can't access KWallet"
-msgstr "Ni mogoče dostopati do KWallet"
+msgid "Can't fetch password"
+msgstr ""
 
-#: googleresource.cpp:130
+#: googleresource.cpp:137
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Pripravljen"
 
-#: googleresource.cpp:150 googleresource.cpp:188
+#: googleresource.cpp:157 googleresource.cpp:195
 #, kde-format
 msgid "Configured account does not exist"
 msgstr "Nastavljen račun ne obstaja"
 
-#: googleresource.cpp:181
+#: googleresource.cpp:188
 #, kde-format
 msgid "not configured"
 msgstr "ni nastavljen"
 
-#: googleresource.cpp:181
+#: googleresource.cpp:188
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google Groupware (%1)"
 
-#: googleresource.cpp:234
+#: googleresource.cpp:241
 #, kde-format
 msgid "Account has been logged out."
 msgstr "Račun je bil odjavljen."
 
-#: googleresource.cpp:237
+#: googleresource.cpp:244
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
@@ -150,7 +150,7 @@ msgstr ""
 "Google Groupware je bil odjavljen iz vašega računa. Znova se prijavite, da "
 "omogočite ponovno sinhronizacijo Google Contacts in Koledarja."
 
-#: googleresource.cpp:238
+#: googleresource.cpp:245
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
@@ -159,41 +159,41 @@ msgstr ""
 "Google Groupware je bil odjavljen iz računa %1. Znova se prijavite, da "
 "omogočite ponovno sinhronizacijo Google Contacts in Koledarja."
 
-#: googleresource.cpp:242
+#: googleresource.cpp:249
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr "%1 potrebuje vaša pozornost."
 
-#: googleresource.cpp:247
+#: googleresource.cpp:254
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr "Prijavite se"
 
-#: googleresource.cpp:261 googleresource.cpp:262
+#: googleresource.cpp:268 googleresource.cpp:269
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Vir ni nastavljen"
 
-#: googleresource.cpp:277
+#: googleresource.cpp:284
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Žetonov ni bilo mogoče osvežiti"
 
-#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
-#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
+#: googleresource.cpp:442 googleresource.cpp:456 googleresource.cpp:470
+#: googleresource.cpp:485 googleresource.cpp:499 googleresource.cpp:513
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Neveljavna vrsta vsebine"
 
-#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
+#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Neznana vrsta MIME zbirke"
 
-#: googlesettingsdialog.cpp:50
+#: googlesettingsdialog.cpp:57
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -203,7 +203,7 @@ msgstr[2] " minute"
 msgstr[3] " minut"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingsdialog.cpp:116 googlesettingsdialog.ui:30
+#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
 #, kde-format
 msgid "<b>not configured</b>"
 msgstr "<b>ni nastavljen</b>"
@@ -445,6 +445,12 @@ msgstr "Spreminjanje seznama opravil '%1'"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "Odstranjevanje seznama opravil '%1'"
+
+#~ msgid "Waiting for KWallet..."
+#~ msgstr "Čakanje na KWallet..."
+
+#~ msgid "Can't access KWallet"
+#~ msgstr "Ni mogoče dostopati do KWallet"
 
 #~ msgctxt "@info:status"
 #~ msgid "Retrieving %1 contact photo for group '%2'"
