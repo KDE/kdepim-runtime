@@ -36,7 +36,6 @@
 #include <Akonadi/SpecialMailCollections>
 #include <Akonadi/SpecialMailCollectionsRequestJob>
 #include <KAuthorized>
-#include <KEMailSettings>
 #include <KLocalizedString>
 #include <KMessageBox>
 #include <KUser>
@@ -387,10 +386,8 @@ void SetupServer::readSettings()
     m_oldResourceName = m_ui->accountName->text();
 
     auto currentUser = new KUser();
-    KEMailSettings esetting;
 
-    m_ui->imapServer->setText(!m_parentResource->settings()->imapServer().isEmpty() ? m_parentResource->settings()->imapServer()
-                                                                                    : esetting.getSetting(KEMailSettings::InServer));
+    m_ui->imapServer->setText(m_parentResource->settings()->imapServer());
 
     m_ui->portSpin->setValue(m_parentResource->settings()->imapPort());
 

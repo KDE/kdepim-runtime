@@ -23,7 +23,6 @@
 
 #include "pop3resource_debug.h"
 #include <KAuthorized>
-#include <KEMailSettings>
 #include <KMessageBox>
 #include <KUser>
 
@@ -131,7 +130,6 @@ void AccountWidget::loadSettings()
     nameEdit->setFocus();
     loginEdit->setText(!mSettings.login().isEmpty() ? mSettings.login() : KUser().loginName());
 
-    hostEdit->setText(!mSettings.host().isEmpty() ? mSettings.host() : KEMailSettings().getSetting(KEMailSettings::InServer));
     hostEdit->setText(mSettings.host());
     portEdit->setValue(mSettings.port());
     precommand->setText(mSettings.precommand());
