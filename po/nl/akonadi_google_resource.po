@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
 #
-# Freek de Kruijf <freekdekruijf@kde.nl>, 2020, 2021.
+# Freek de Kruijf <freekdekruijf@kde.nl>, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-07 00:51+0000\n"
-"PO-Revision-Date: 2021-07-09 10:41+0200\n"
+"PO-Revision-Date: 2023-05-07 15:22+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.04.2\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -100,12 +100,12 @@ msgstr "Ongeldig item."
 #: googleresource.cpp:84
 #, kde-format
 msgid "Fetching password..."
-msgstr ""
+msgstr "Wachtwoord ophalen..."
 
 #: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
-msgstr ""
+msgstr "Kan wachtwoord niet ophalen"
 
 #: googleresource.cpp:137
 #, kde-format

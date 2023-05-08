@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-07 00:51+0000\n"
-"PO-Revision-Date: 2021-07-12 00:42+0100\n"
+"PO-Revision-Date: 2023-05-07 13:51+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
 "Language: pt\n"
@@ -95,12 +95,12 @@ msgstr "O item é inválido."
 #: googleresource.cpp:84
 #, kde-format
 msgid "Fetching password..."
-msgstr ""
+msgstr "A obter a senha..."
 
 #: googleresource.cpp:93
 #, kde-format
 msgid "Can't fetch password"
-msgstr ""
+msgstr "Não é possível obter a senha"
 
 #: googleresource.cpp:137
 #, kde-format
@@ -422,15 +422,3 @@ msgstr "A modificar a lista de tarefas '%1'"
 msgctxt "@info:status"
 msgid "Removing task list '%1'"
 msgstr "A remover a lista de tarefas '%1'"
-
-#~ msgid "Waiting for KWallet..."
-#~ msgstr "À espera do KWallet..."
-
-#~ msgid "Can't access KWallet"
-#~ msgstr "Não é possível aceder à KWallet"
-
-#~ msgctxt "@info:status"
-#~ msgid "Retrieving %1 contact photo for group '%2'"
-#~ msgid_plural "Retrieving %1 contact photos for group '%2'"
-#~ msgstr[0] "A obter as fotografias de %1 contacto para o grupo '%2'"
-#~ msgstr[1] "A obter as fotografias dos %1 contactos para o grupo '%2'"
