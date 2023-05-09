@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-02-01 00:57+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2013-03-13 11:08+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -17,24 +17,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: accountwidget.cpp:89
+#: accountwidget.cpp:88
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " मिनिट"
 msgstr[1] " मिनिटे"
 
-#: accountwidget.cpp:126 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr ""
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:192
 #, kde-format
 msgid "Unable to open wallet"
 msgstr ""
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:242
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -43,7 +43,7 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:257
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -57,17 +57,17 @@ msgid ""
 "of mail and downloading it."
 msgstr ""
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:290
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr ""
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:323
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:367
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -80,7 +80,7 @@ msgid ""
 "which you all download in one go from the POP server."
 msgstr ""
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:387
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -90,14 +90,14 @@ msgid ""
 "have the possibility to turn leaving fetched messages on the server on."
 msgstr ""
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:419
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " दिवस"
 msgstr[1] " दिवस"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"

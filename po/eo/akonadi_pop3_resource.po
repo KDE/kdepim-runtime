@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-02-01 00:57+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2023-03-21 22:43+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
@@ -18,24 +18,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: pology\n"
 
-#: accountwidget.cpp:89
+#: accountwidget.cpp:88
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: accountwidget.cpp:126 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr ""
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:192
 #, kde-format
 msgid "Unable to open wallet"
 msgstr ""
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:242
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -48,7 +48,7 @@ msgstr ""
 "Ĉar kelkaj serviloj ne korekte publikigi siajn eblecojn, vi ankoraŭ havas la "
 "eblecon ŝalti la \"Lasu la prenitajn mesaĝojn en la servilo\"."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:257
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -62,17 +62,17 @@ msgid ""
 "of mail and downloading it."
 msgstr ""
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:290
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Bonvolu indiki servilon kaj pordon en la ·ĝenerala tabo antaŭ ĉio."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:323
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:367
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -91,7 +91,7 @@ msgstr ""
 "per sendo de granda nombro da mesaĝoj al vi mem, kiujn ĉiujn vi ŝarĝas per "
 "unu prenado, antaŭ vi uzas ĝin por gravaj mesaĝoj."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:387
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -105,14 +105,14 @@ msgstr ""
 "Ĉar kelkaj serviloj ne korekte publikigi sian kapablon, vi ankoraŭ havas la "
 "eblecon ŝalti la \"Lasu la prenitajn mesaĝojn en la servilo\"."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:419
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " tago"
 msgstr[1] " tagoj"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"

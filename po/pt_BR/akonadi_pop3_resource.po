@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_pop3_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-02-01 00:57+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2021-11-09 16:31-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -19,24 +19,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 20.04.2\n"
 
-#: accountwidget.cpp:89
+#: accountwidget.cpp:88
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minuto"
 msgstr[1] " minutos"
 
-#: accountwidget.cpp:126 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr "Conta POP3"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:192
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Não foi possível abrir a carteira"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:242
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -50,7 +50,7 @@ msgstr ""
 "existe ainda a possibilidade de habilitar a opção de deixar as mensagens "
 "baixadas no servidor."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:257
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -74,18 +74,18 @@ msgstr ""
 "alguns testes primeiro, enviando para si mesmo um conjunto de mensagens e\n"
 "depois tente baixá-las."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:290
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Especifique primeiramente um servidor e porta na aba Geral."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:323
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
 "Não foi possível estabelecer conexão com o servidor, verifique o endereço."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:367
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -107,7 +107,7 @@ msgstr ""
 "você mesmo um grande número de mensagens de teste, que você deverá baixar de "
 "uma vez do servidor POP."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:387
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -123,14 +123,14 @@ msgstr ""
 "existe ainda a possibilidade de habilitar a opção de deixar as mensagens "
 "baixadas no servidor."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:419
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " dia"
 msgstr[1] " dias"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"

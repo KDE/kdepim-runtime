@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-02-01 00:57+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2019-12-06 22:08+0200\n"
 "Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
 "Language-Team: Estonian <kde-et@lists.linux.ee>\n"
@@ -17,24 +17,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 19.08.1\n"
 
-#: accountwidget.cpp:89
+#: accountwidget.cpp:88
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " minut"
 msgstr[1] " minutit"
 
-#: accountwidget.cpp:126 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 konto"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:192
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Turvalaeka avamine nurjus"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:242
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -47,7 +47,7 @@ msgstr ""
 "Mõned serverid ei anna siiski oma võimalustest korrektselt teada, mistõttu "
 "võib tegelikult olla tõmmatud kirjade serverisse jätmine ometi võimalik."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:257
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -69,17 +69,17 @@ msgstr ""
 "kiirust, võid ette võtta testi, saates endale trobikonna kirju ja need siis\n"
 "alla laadida."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:290
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Palun määra kõigepealt üldseadistustes server ja port."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:323
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Serveriga ühendumine nurjus, palun kontrolli serveri aadressi."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:367
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -99,7 +99,7 @@ msgstr ""
 "konveiermeetodit, saatma vigaseid kirju. Seepärast võiks eelnevalt ette "
 "võtta testi, saates endale trobikonna kirju ja need siis alla laadida."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:387
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -113,14 +113,14 @@ msgstr ""
 "Mõned serverid ei anna siiski oma võimalustest korrektselt teada, mistõttu "
 "võib tegelikult olla tõmmatud kirjade serverisse jätmine ometi võimalik."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:419
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " päev"
 msgstr[1] " päeva"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"

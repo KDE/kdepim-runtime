@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-02-01 00:57+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2022-10-11 10:27+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
@@ -25,7 +25,7 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: accountwidget.cpp:89
+#: accountwidget.cpp:88
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -34,17 +34,17 @@ msgstr[1] " минуты"
 msgstr[2] " минут"
 msgstr[3] " минута"
 
-#: accountwidget.cpp:126 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr "Учётная запись POP3"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:192
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Невозможно открыть бумажник"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:242
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -57,7 +57,7 @@ msgstr ""
 "Поскольку не все серверы правильно анонсируют свои возможности, можно "
 "попробовать оставлять письма на сервере, несмотря на это."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:257
 #, kde-format
 msgid ""
 "Please note that this feature can cause some POP3 servers that do not "
@@ -80,17 +80,17 @@ msgstr ""
 "Если сервер не объявляет об этой функции, то сначала проведите испытание, "
 "попробовав отправить самому себе серию писем и загрузить их."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:290
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Сначала укажите сервер и порт на вкладке Общие."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:323
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Не удалось подключиться к серверу, проверьте адрес сервера."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:367
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -111,7 +111,7 @@ msgstr ""
 "Поэтому сначала проведите проверку правильности работы этой возможности, "
 "послав самому себе большое количество писем."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:387
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -126,7 +126,7 @@ msgstr ""
 "Поскольку не все серверы правильно анонсируют свои возможности, можно "
 "попробовать оставлять письма на сервере, несмотря на это."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:419
 #, kde-format
 msgid " day"
 msgid_plural " days"
@@ -135,7 +135,7 @@ msgstr[1] " дня"
 msgstr[2] " дней"
 msgstr[3] " день"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"

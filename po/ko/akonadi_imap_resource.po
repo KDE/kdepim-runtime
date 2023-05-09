@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-09 00:47+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2021-07-30 15:28+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -273,7 +273,7 @@ msgstr "사용자 정의 Sieve 서버에 사용되는 인증 종류 정의"
 msgid "No server configured yet."
 msgstr "서버가 설정되지 않았습니다."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:666
+#: imapresourcebase.cpp:246 setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
@@ -630,7 +630,7 @@ msgstr "IMAP 서버 '%2'의 사용자 '%1'의 암호를 입력하십시오."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:78 setupserverview_desktop.ui:294
+#: setupserver.cpp:77 setupserverview_desktop.ui:294
 #: setupserverview_desktop.ui:517
 #, kde-format
 msgctxt "Authentication method"
@@ -639,36 +639,36 @@ msgstr "평문 텍스트"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
-#: setupserver.cpp:80 setupserverview_desktop.ui:329
+#: setupserver.cpp:79 setupserverview_desktop.ui:329
 #: setupserverview_desktop.ui:552
 #, kde-format
 msgctxt "Authentication method"
 msgid "Anonymous"
 msgstr "익명"
 
-#: setupserver.cpp:82
+#: setupserver.cpp:81
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
 msgstr "GMail"
 
-#: setupserver.cpp:149
+#: setupserver.cpp:148
 #, kde-format
 msgid "Archive Folder"
 msgstr "폴더 아카이브"
 
-#: setupserver.cpp:161
+#: setupserver.cpp:160
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] "분"
 
-#: setupserver.cpp:176
+#: setupserver.cpp:175
 #, kde-format
 msgid "Identity:"
 msgstr "프로필:"
 
-#: setupserver.cpp:267
+#: setupserver.cpp:266
 #, kde-format
 msgid ""
 "You have changed the address of the server. Even if this is the same server "
@@ -678,12 +678,12 @@ msgstr ""
 "서버 주소를 변경했습니다. 이전 서버와 같은 서버여도 이 계정의 모든 이메일을 "
 "다시 다운로드해야 합니다. 계속 진행하시겠습니까?"
 
-#: setupserver.cpp:270
+#: setupserver.cpp:269
 #, kde-format
 msgid "Server address change"
 msgstr "서버 주소 변경"
 
-#: setupserver.cpp:277
+#: setupserver.cpp:276
 #, kde-format
 msgid ""
 "You have changed the user name. Even if this is a user name for the same "
@@ -693,12 +693,12 @@ msgstr ""
 "사용자 이름을 변경했습니다. 이전 사용자 이름과 같은 사용자여도 이 계정의 모"
 "든 이메일을 다시 다운로드해야 합니다. 계속 진행하시겠습니까?"
 
-#: setupserver.cpp:280
+#: setupserver.cpp:279
 #, kde-format
 msgid "User name change"
 msgstr "사용자 이름 변경"
 
-#: setupserver.cpp:427 setupserver.cpp:483
+#: setupserver.cpp:424 setupserver.cpp:480
 #, kde-format
 msgid ""
 "Could not access KWallet. If you want to store the password permanently then "
@@ -709,27 +709,27 @@ msgstr ""
 "다. KWallet을 사용하지 않으려면 아래 체크 상자를 해제하면 되지만, 필요할 때마"
 "다 암호를 물어봅니다."
 
-#: setupserver.cpp:432 setupserver.cpp:488
+#: setupserver.cpp:429 setupserver.cpp:485
 #, kde-format
 msgid "Do not use KWallet"
 msgstr "KWallet을 사용하지 않음"
 
-#: setupserver.cpp:553
+#: setupserver.cpp:550
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "서버에 연결할 수 없습니다. 서버 주소를 확인하십시오."
 
-#: setupserver.cpp:565
+#: setupserver.cpp:562
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>STARTTLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:568
+#: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
 msgstr "<qt><b>SSL/TLS가 지원되며 추천합니다.</b></qt>"
 
-#: setupserver.cpp:572
+#: setupserver.cpp:569
 #, kde-format
 msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
@@ -738,7 +738,7 @@ msgstr ""
 "<qt><b>보안 기능이 지원되지 않습니다. 이 서버에 연결하지 않는 것을 추천합니"
 "다.</b></qt>"
 
-#: setupserver.cpp:575
+#: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
 msgstr "<qt><b>이 서버를 사용할 수 없습니다.</b></qt>"
