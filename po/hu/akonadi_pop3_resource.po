@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-02-01 00:57+0000\n"
+"POT-Creation-Date: 2023-05-09 00:49+0000\n"
 "PO-Revision-Date: 2014-06-21 12:44+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -18,24 +18,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: accountwidget.cpp:89
+#: accountwidget.cpp:88
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " perc"
 msgstr[1] " perc"
 
-#: accountwidget.cpp:126 pop3resource.cpp:49
+#: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
 msgid "POP3 Account"
 msgstr "POP3 fiók"
 
-#: accountwidget.cpp:194
+#: accountwidget.cpp:192
 #, kde-format
 msgid "Unable to open wallet"
 msgstr "Nem lehet megnyitni a jelszótárolót"
 
-#: accountwidget.cpp:244
+#: accountwidget.cpp:242
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -48,7 +48,7 @@ msgstr ""
 "Néhány kiszolgálótípus nem jelzi pontosan, milyen képességekkel rendelkezik, "
 "ezért ezzel az opcióval ilyen esetben is a kiszolgálón hagyhatók az üzenetek."
 
-#: accountwidget.cpp:259
+#: accountwidget.cpp:257
 #, fuzzy, kde-format
 #| msgid ""
 #| "Please note that this feature can cause some POP3 servers that do not "
@@ -81,17 +81,17 @@ msgstr ""
 "Ha a kiszolgáló nem jelzi, hogy támogatja a sorkezelést, próbálja bejelölni "
 "az opciót és töltsön le ellenőrzésképpen egy nagyobb adag üzenetet."
 
-#: accountwidget.cpp:292
+#: accountwidget.cpp:290
 #, kde-format
 msgid "Please specify a server and port on the General tab first."
 msgstr "Először adja meg a kiszolgálót és a portot az Általános lapon."
 
-#: accountwidget.cpp:325
+#: accountwidget.cpp:323
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr "Nem lehet kapcsolódni a kiszolgálóhoz, ellenőrizze a kiszolgáló címét."
 
-#: accountwidget.cpp:369
+#: accountwidget.cpp:367
 #, kde-format
 msgid ""
 "The server does not seem to support pipelining; therefore, this option has "
@@ -112,7 +112,7 @@ msgstr ""
 "tesztként küldjön saját magának egy nagyobb üzenetmennyiséget, és azt egy "
 "menetben töltse le."
 
-#: accountwidget.cpp:389
+#: accountwidget.cpp:387
 #, kde-format
 msgid ""
 "The server does not seem to support unique message numbers, but this is a "
@@ -127,14 +127,14 @@ msgstr ""
 "Néhány kiszolgálótípus nem jelzi pontosan, milyen képességekkel rendelkezik, "
 "ezért ezzel az opcióval ilyen esetben is a kiszolgálón hagyhatók az üzenetek."
 
-#: accountwidget.cpp:421
+#: accountwidget.cpp:419
 #, kde-format
 msgid " day"
 msgid_plural " days"
 msgstr[0] " nap"
 msgstr[1] " nap"
 
-#: accountwidget.cpp:426
+#: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"
