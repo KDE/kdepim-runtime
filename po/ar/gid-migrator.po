@@ -147,7 +147,7 @@ msgstr "ترحيل عناصر «أكونادي» لتدعم GID"
 #: main.cpp:30
 #, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "© ٢٠١٣ - ٢٠٢٢ لمطوّري «أكونادي»"
+msgstr "© 2013 - 2022 لمطوّري «أكونادي»"
 
 #: main.cpp:33
 #, kde-format

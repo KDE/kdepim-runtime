@@ -855,8 +855,8 @@ msgid ""
 "server can only be accessed via port 4190."
 msgstr ""
 "تغيّر منفذ الخادوم عندما تحوّل ManageSieve إلى معيار RFC كامل. ما زالت "
-"الخواديم القديمة تستخدم المنفذ ٢٠٠٠، بينما لا يمكن النّفاذ إلى الخواديم التي "
-"تتّبع المعيار الجديد إلّا عبر المنفذ ٤١٩٠."
+"الخواديم القديمة تستخدم المنفذ 2000، بينما لا يمكن النّفاذ إلى الخواديم التي "
+"تتّبع المعيار الجديد إلّا عبر المنفذ 4190."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192
@@ -1059,9 +1059,9 @@ msgid ""
 "family:'Sans Serif';\"> will connect to port 143 but not switch to a secure "
 "connection. This setting is not recommended.</span></p></body></html>"
 msgstr ""
-"‏<emphasis>SSL/TLS</emphasis> هو IMAP آمن عبر المنفذ ٩٩٣،"
-"<nl>‏<emphasis>STARTTLS</emphasis> سيعمل على المنفذ ١٤٣ وسيتحوّل إلى اتّصال آمن "
-"مباشرةً بعد الاتّصال،<nl><emphasis>بلا</emphasis> سيتّصل بالمنفذ ١٤٣ ولكن لن "
+"‏<emphasis>SSL/TLS</emphasis> هو IMAP آمن عبر المنفذ 993،"
+"<nl>‏<emphasis>STARTTLS</emphasis> سيعمل على المنفذ 143 وسيتحوّل إلى اتّصال آمن "
+"مباشرةً بعد الاتّصال،<nl><emphasis>بلا</emphasis> سيتّصل بالمنفذ 143 ولكن لن "
 "يتحوّل إلى اتّصال آمن. هذا الإعداد ليس مستحسنًا."
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
