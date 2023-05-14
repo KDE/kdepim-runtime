@@ -282,12 +282,12 @@ msgstr "خطأ داخلي: عنصر مفقود"
 #: pop3protocol.cpp:821
 #, kde-format
 msgid "Timeout from POP3 server %1"
-msgstr "انتهت مهلة خادم بوب٣ %1"
+msgstr "انتهت مهلة خادم بوب3 %1"
 
 #: pop3protocol.cpp:823
 #, kde-format
 msgid "Connection broken from POP3 server %1"
-msgstr "فقد الاتصال بخادم بوب٣ %1"
+msgstr "فقد الاتصال بخادم بوب3 %1"
 
 #: pop3protocol.cpp:884
 #, kde-format
@@ -818,16 +818,16 @@ msgstr ""
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
-"family:'Sans Serif';\"> بوب آمن عبر منفذ ٩٩٥،</span></p>\n"
+"family:'Sans Serif';\"> بوب آمن عبر منفذ 995،</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
-"family:'Sans Serif';\"> سيعمل عبر منفذ ١١٠ ويبدل إلى اتصال آمن مباشرة بعد "
+"family:'Sans Serif';\"> سيعمل عبر منفذ 110 ويبدل إلى اتصال آمن مباشرة بعد "
 "التوصيل،</span></p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
 "right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
 "family:'Sans Serif'; font-weight:600;\">بدون</span><span style=\" font-"
-"family:'Sans Serif';\"> سيتصل بالمنفذ ١١٠ ولكن لن يبدل إلى اتصال آمن. هذا "
+"family:'Sans Serif';\"> سيتصل بالمنفذ 110 ولكن لن يبدل إلى اتصال آمن. هذا "
 "الإعداد غير موصى به.</span></p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, label_13)
