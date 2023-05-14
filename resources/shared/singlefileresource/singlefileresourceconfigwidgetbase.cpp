@@ -129,7 +129,7 @@ void SingleFileResourceConfigWidgetBase::validate()
         if (mStatJob) {
             mStatJob->kill();
         }
-        mStatJob = KIO::statDetails(currentUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
+        mStatJob = KIO::stat(currentUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
 
         connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
 
@@ -147,7 +147,7 @@ void SingleFileResourceConfigWidgetBase::slotStatJobResult(KJob *job)
         QUrl dirUrl(ui.kcfg_Path->url());
         dirUrl = KIO::upUrl(dirUrl);
 
-        mStatJob = KIO::statDetails(dirUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
+        mStatJob = KIO::stat(dirUrl, KIO::StatJob::SourceSide, KIO::StatDetail::StatDefaultDetails, KIO::DefaultFlags | KIO::HideProgressInfo);
 
         connect(mStatJob, &KIO::StatJob::result, this, &SingleFileResourceConfigWidgetBase::slotStatJobResult);
 
