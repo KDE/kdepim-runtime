@@ -10,5 +10,4 @@ macro(_add_test _source)
                         KPim${KF_MAJOR_VERSION}::AkonadiCore KPim${KF_MAJOR_VERSION}::IMAP akonadi-singlefileresource)
 endmacro()
 
-_add_test( collectionannotationattributetest.cpp )
 _add_test( imapaclattributetest.cpp )

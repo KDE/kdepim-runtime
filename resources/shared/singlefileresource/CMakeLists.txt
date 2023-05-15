@@ -12,9 +12,7 @@ set( AKONADI_SINGLEFILERESOURCE_SHARED_UI
 )
 
 set( AKONADI_COLLECTIONATTRIBUTES_SHARED_SOURCES
-  collectionannotationsattribute.cpp
   collectionflagsattribute.cpp
-  collectionannotationsattribute.h
   collectionflagsattribute.h
 )
 

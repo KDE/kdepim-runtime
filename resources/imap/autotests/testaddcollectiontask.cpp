@@ -8,9 +8,9 @@
 #include "imaptestbase.h"
 
 #include "addcollectiontask.h"
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <QDebug>
 #include <QTest>
-#include <collectionannotationsattribute.h>
 class TestAddCollectionTask : public ImapTestBase
 {
     Q_OBJECT

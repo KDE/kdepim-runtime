@@ -9,11 +9,11 @@
 
 #include "retrievecollectionmetadatatask.h"
 
-#include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
 #include <Akonadi/AttributeFactory>
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionQuotaAttribute>
 #include <QTest>
 #include <noinferiorsattribute.h>

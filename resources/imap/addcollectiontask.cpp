@@ -7,7 +7,7 @@
 
 #include "addcollectiontask.h"
 
-#include "collectionannotationsattribute.h"
+#include <Akonadi/CollectionAnnotationsAttribute>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>

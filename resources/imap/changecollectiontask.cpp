@@ -14,9 +14,9 @@
 #include <KIMAP/SubscribeJob>
 #include <KIMAP/UnsubscribeJob>
 
-#include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
+#include <Akonadi/CollectionAnnotationsAttribute>
 
 #include "imapresource_debug.h"
 #include <KLocalizedString>
