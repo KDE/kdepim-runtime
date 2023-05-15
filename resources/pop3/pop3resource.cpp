@@ -316,8 +316,7 @@ void POP3Resource::doStateStep()
             fetchJob->setFetchIds(idsToDownload, sizesOfMessagesToDownload);
             connect(fetchJob, &FetchJob::result, this, &POP3Resource::fetchJobResult);
             connect(fetchJob, &FetchJob::messageFinished, this, &POP3Resource::messageFinished);
-            // TODO wait kf6. For the moment we can't convert to new connect api.
-            connect(fetchJob, SIGNAL(processedAmount(KJob *, KJob::Unit, qulonglong)), this, SLOT(messageDownloadProgress(KJob *, KJob::Unit, qulonglong)));
+            connect(fetchJob, &FetchJob::processedAmountChanged, this, &POP3Resource::messageDownloadProgress);
 
             fetchJob->start();
         }
