@@ -19,7 +19,6 @@ Dependencies:
     'pim/kmailtransport' : '@latest-kf6'
     'pim/kmbox' : '@latest-kf6'
     'pim/kmime' : '@latest-kf6'
-    'pim/libkdepim': '@latest-kf6'
     'pim/libkgapi' : '@latest-kf6'
     'pim/kldap' : '@latest-kf6'
     'third-party/libkolabxml' : '@latest-kf6'

@@ -96,6 +96,5 @@ target_link_libraries(pop3config
     KPim6::AkonadiWidgets
     KPim6::AkonadiAgentBase
     KPim6::AkonadiMime
-    KPim6::Libkdepim
     ${kdepim-keychain_lib}
     )

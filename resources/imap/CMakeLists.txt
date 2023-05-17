@@ -123,7 +123,6 @@ target_link_libraries(imapresource
     KF6::ConfigGui
     KF6::Wallet
     akonadi-singlefileresource
-    KPim6::Libkdepim
     ${kdepim-keychain_lib}
 )
 
