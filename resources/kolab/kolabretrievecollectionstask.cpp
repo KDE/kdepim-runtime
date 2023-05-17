@@ -12,9 +12,9 @@
 #include "kolabresource_debug.h"
 #include "kolabresource_trace.h"
 
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <KIMAP/GetMetaDataJob>
 #include <KIMAP/MyRightsJob>
-#include <collectionannotationsattribute.h>
 #include <collectionmetadatahelper.h>
 #include <imapaclattribute.h>
 #include <noinferiorsattribute.h>

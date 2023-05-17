@@ -17,11 +17,11 @@
 
 #include "imapresource_debug.h"
 
-#include "collectionannotationsattribute.h"
 #include "collectionmetadatahelper.h"
 #include "imapaclattribute.h"
 #include "imapquotaattribute.h"
 #include "noselectattribute.h"
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionQuotaAttribute>
 #include <Akonadi/EntityDisplayAttribute>
 

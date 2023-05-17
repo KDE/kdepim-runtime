@@ -11,9 +11,9 @@
 #include <imapresource.h>
 
 #include <Akonadi/CachePolicy>
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/EntityDisplayAttribute>
 #include <Akonadi/MessageParts>
-#include <collectionannotationsattribute.h>
 #include <noselectattribute.h>
 
 KolabResourceState::KolabResourceState(ImapResourceBase *resource, const TaskArguments &arguments)

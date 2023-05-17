@@ -9,8 +9,8 @@
 
 #include "changecollectiontask.h"
 
-#include "collectionannotationsattribute.h"
 #include "imapaclattribute.h"
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <QTest>
 Q_DECLARE_METATYPE(QSet<QByteArray>)
 

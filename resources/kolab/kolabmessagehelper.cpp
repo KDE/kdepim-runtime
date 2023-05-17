@@ -6,7 +6,7 @@
 
 #include "kolabmessagehelper.h"
 
-#include <collectionannotationsattribute.h>
+#include <Akonadi/CollectionAnnotationsAttribute>
 
 #include "kolabhelpers.h"
 #include "kolabresource_debug.h"

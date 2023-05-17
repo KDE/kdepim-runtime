@@ -25,6 +25,7 @@
 #include <Akonadi/AgentManager>
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/ChangeRecorder>
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <Akonadi/CollectionFetchJob>
 #include <Akonadi/CollectionFetchScope>
 #include <Akonadi/CollectionModifyJob>
@@ -35,7 +36,6 @@
 
 #include <QStandardPaths>
 
-#include "collectionannotationsattribute.h"
 #include "collectionflagsattribute.h"
 #include "highestmodseqattribute.h"
 #include "imapaclattribute.h"
@@ -94,7 +94,6 @@ ImapResourceBase::ImapResourceBase(const QString &id)
     Akonadi::AttributeFactory::registerAttribute<NoSelectAttribute>();
     Akonadi::AttributeFactory::registerAttribute<HighestModSeqAttribute>();
 
-    Akonadi::AttributeFactory::registerAttribute<CollectionAnnotationsAttribute>();
     Akonadi::AttributeFactory::registerAttribute<CollectionFlagsAttribute>();
 
     Akonadi::AttributeFactory::registerAttribute<ImapAclAttribute>();

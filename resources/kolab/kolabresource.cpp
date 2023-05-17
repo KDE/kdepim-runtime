@@ -18,8 +18,8 @@
 #include <Akonadi/AttributeFactory>
 #include <Akonadi/CollectionColorAttribute>
 
+#include <Akonadi/CollectionAnnotationsAttribute>
 #include <changecollectiontask.h>
-#include <collectionannotationsattribute.h>
 #include <resourcestateinterface.h>
 #include <retrieveitemstask.h>
 
