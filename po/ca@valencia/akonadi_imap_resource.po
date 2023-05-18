@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-09 00:49+0000\n"
+"POT-Creation-Date: 2023-05-18 00:49+0000\n"
 "PO-Revision-Date: 2022-09-23 13:26+0200\n"
 "Last-Translator: Antoni Bella Pérez <antonibella5@yahoo.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -298,94 +298,94 @@ msgstr ""
 "Establix el tipus d'identificació utilitzat pel servidor «sieve» "
 "personalitzat"
 
-#: imapresourcebase.cpp:213
+#: imapresourcebase.cpp:212
 #, kde-format
 msgid "No server configured yet."
 msgstr "Encara no s'ha configurat cap servidor."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:663
+#: imapresourcebase.cpp:245 setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Subscripció de la banda del servidor"
 
-#: imapresourcebase.cpp:270
+#: imapresourcebase.cpp:269
 #, kde-format
 msgid "Connection established."
 msgstr "S'ha establit la connexió."
 
-#: imapresourcebase.cpp:287
+#: imapresourcebase.cpp:286
 #, kde-format
 msgid "Server is not available."
 msgstr "El servidor no està disponible."
 
-#: imapresourcebase.cpp:338
+#: imapresourcebase.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "S'està afegint un element a «%1»"
 
-#: imapresourcebase.cpp:345
+#: imapresourcebase.cpp:344
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "S'està actualitzant un element a «%1»"
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "S'estan actualitzant els elements"
 
-#: imapresourcebase.cpp:366
+#: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "S'estan eliminant els elements"
 
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "S'estan movent els elements des de «%1» a «%2»"
 
-#: imapresourcebase.cpp:391
+#: imapresourcebase.cpp:390
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "S'estan recuperant les carpetes"
 
-#: imapresourcebase.cpp:398
+#: imapresourcebase.cpp:397
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "S'està recuperant informació extra de la carpeta per a «%1»"
 
-#: imapresourcebase.cpp:416
+#: imapresourcebase.cpp:415
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "S'està creant la carpeta «%1»"
 
-#: imapresourcebase.cpp:422
+#: imapresourcebase.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "S'està actualitzant la carpeta «%1»"
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:434
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "S'està eliminant la carpeta «%1»"
 
-#: imapresourcebase.cpp:442
+#: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "S'està movent la carpeta «%1» des de «%2» a «%3»"
 
-#: imapresourcebase.cpp:472
+#: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching..."

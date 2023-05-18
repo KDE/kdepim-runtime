@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-09 00:49+0000\n"
+"POT-Creation-Date: 2023-05-18 00:49+0000\n"
 "PO-Revision-Date: 2020-01-01 12:42+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -286,98 +286,98 @@ msgstr ""
 msgid "Defines the type of identification used by custom sieve server"
 msgstr "Määrittää mukautetun Sieve-palvelimen käyttämän tunnistautumistavan"
 
-#: imapresourcebase.cpp:213
+#: imapresourcebase.cpp:212
 #, kde-format
 msgid "No server configured yet."
 msgstr "Palvelinta ei ole vielä määritetty."
 
-#: imapresourcebase.cpp:246 setupserver.cpp:663
+#: imapresourcebase.cpp:245 setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
 msgstr "Palvelinpuolen tilaus"
 
-#: imapresourcebase.cpp:270
+#: imapresourcebase.cpp:269
 #, kde-format
 msgid "Connection established."
 msgstr "Yhteys muodostettu."
 
-#: imapresourcebase.cpp:287
+#: imapresourcebase.cpp:286
 #, kde-format
 msgid "Server is not available."
 msgstr "Palvelin ei ole käytettävissä."
 
 # %1 on kansio
-#: imapresourcebase.cpp:338
+#: imapresourcebase.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
 msgstr "Lisätään tietue kokoelmaan ”%1”."
 
 # %1 on kansio
-#: imapresourcebase.cpp:345
+#: imapresourcebase.cpp:344
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
 msgstr "Päivitetään tietue kokoelmassa ”%1”."
 
-#: imapresourcebase.cpp:352
+#: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
 msgstr "Päivitetään tietueita"
 
-#: imapresourcebase.cpp:366
+#: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
 msgstr "Poistetaan tietueita"
 
 # %1 ja %2 ovat kansioita
-#: imapresourcebase.cpp:382
+#: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
 msgstr "Siirretään tietueita kokoelmasta ”%1” kokoelmaan ”%2”"
 
-#: imapresourcebase.cpp:391
+#: imapresourcebase.cpp:390
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
 msgstr "Noudetaan kansioita"
 
-#: imapresourcebase.cpp:398
+#: imapresourcebase.cpp:397
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
 msgstr "Noudetaan kansion ”%1” lisätietoja"
 
-#: imapresourcebase.cpp:416
+#: imapresourcebase.cpp:415
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
 msgstr "Luodaan kansio ”%1”"
 
-#: imapresourcebase.cpp:422
+#: imapresourcebase.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
 msgstr "Päivitetään kansio ”%1”"
 
-#: imapresourcebase.cpp:435
+#: imapresourcebase.cpp:434
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
 msgstr "Poistetaan kansio ”%1”"
 
 # %2 ja %3 ovat kansioita
-#: imapresourcebase.cpp:442
+#: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
 msgstr "Siirretään kansio ”%1” kansiosta ”%2” kansioon ”%3”"
 
-#: imapresourcebase.cpp:472
+#: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching..."
