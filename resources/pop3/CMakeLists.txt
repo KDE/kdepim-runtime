@@ -57,7 +57,7 @@ target_link_libraries( akonadi_pop3_resource
     KF6::Notifications
     Qt::DBus
     Qt::Network # QNetworkProxy
-    ${kdepim-keychain_lib}
+    qt6keychain
     KF6::WidgetsAddons
     Sasl2::Sasl2
     )
@@ -96,5 +96,5 @@ target_link_libraries(pop3config
     KPim6::AkonadiWidgets
     KPim6::AkonadiAgentBase
     KPim6::AkonadiMime
-    ${kdepim-keychain_lib}
+    qt6keychain
     )
