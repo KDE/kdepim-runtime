@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Microsoft Exchange Server (EWS)
+NoDisplay=true
+Exec=akonadi_ews_resource
+Icon=akonadi-ews

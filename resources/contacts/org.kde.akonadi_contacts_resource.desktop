@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Personal Contacts
+NoDisplay=true
+Exec=akonadi_contacts_resource
+Icon=text-directory

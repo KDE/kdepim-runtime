@@ -54,6 +54,11 @@ add_subdirectory(wizard)
 
 install(TARGETS akonadi_vcarddir_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+install(
+    FILES org.kde.akonadi_vcarddir_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
+
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(vcarddirconfig
     INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"

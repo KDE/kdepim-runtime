@@ -40,6 +40,10 @@ target_link_libraries(akonadi_vcard_resource KPim${KF_MAJOR_VERSION}::AkonadiCor
 
 install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+install(
+    FILES org.kde.akonadi_vcard_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
 
 ############################# Config plugin #################################
 

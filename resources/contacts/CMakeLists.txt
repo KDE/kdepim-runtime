@@ -47,6 +47,11 @@ target_link_libraries(akonadi_contacts_resource
 
 install(TARGETS akonadi_contacts_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+install(
+    FILES org.kde.akonadi_contacts_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
+
 ############################## Config plugin ################################
 kcoreaddons_add_plugin(contactsconfig
     INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"

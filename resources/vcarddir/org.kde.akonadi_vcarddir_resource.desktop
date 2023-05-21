@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=vCard Directory
+NoDisplay=true
+Exec=akonadi_vcarddir_resource
+Icon=text-x-vcard

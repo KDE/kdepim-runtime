@@ -237,3 +237,8 @@ ecm_install_icons(
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/akonadi_ews_resource.notifyrc
     DESTINATION "${KDE_INSTALL_KNOTIFYRCDIR}")
+
+install(
+    FILES org.kde.akonadi_ews_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
