@@ -14,10 +14,7 @@ class TomboyCollectionsDownloadJob : public TomboyJobBase
     Q_OBJECT
 public:
     // ctor
-    explicit TomboyCollectionsDownloadJob(const QString &collectionName,
-                                          KIO::Integration::AccessManager *manager,
-                                          int refreshInterval,
-                                          QObject *parent = nullptr);
+    explicit TomboyCollectionsDownloadJob(const QString &collectionName, QNetworkAccessManager *manager, int refreshInterval, QObject *parent = nullptr);
     // returns the parsed results wrapped in Akonadi::Collection::List, see below
     Akonadi::Collection::List collections() const;
 

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <Akonadi/ResourceBase>
-#include <KIO/AccessManager>
+#include <QNetworkAccessManager>
 
 class TomboyNotesResource : public Akonadi::ResourceBase, public Akonadi::AgentBase::Observer
 {
@@ -57,5 +57,5 @@ private:
     // Only one UploadJob should run per time
     bool mUploadJobProcessRunning;
 
-    KIO::Integration::AccessManager *mManager = nullptr;
+    QNetworkAccessManager *mManager = nullptr;
 };

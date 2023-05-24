@@ -10,7 +10,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-TomboyServerAuthenticateJob::TomboyServerAuthenticateJob(KIO::Integration::AccessManager *manager, QObject *parent)
+TomboyServerAuthenticateJob::TomboyServerAuthenticateJob(QNetworkAccessManager *manager, QObject *parent)
     : TomboyJobBase(manager, parent)
     , mWebView(new QWebEngineView((QWidget *)nullptr))
 {

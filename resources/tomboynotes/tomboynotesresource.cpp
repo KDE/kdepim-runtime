@@ -41,8 +41,11 @@ TomboyNotesResource::TomboyNotesResource(const QString &id)
 
     mUploadJobProcessRunning = false;
 
-    mManager = new KIO::Integration::AccessManager(this);
-    connect(mManager, &KIO::Integration::AccessManager::sslErrors, this, &TomboyNotesResource::onSslError);
+    mManager = new QNetworkAccessManager(this);
+    mManager->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+    mManager->setStrictTransportSecurityEnabled(true);
+    mManager->enableStrictTransportSecurityStore(true);
+    connect(mManager, &QNetworkAccessManager::sslErrors, this, &TomboyNotesResource::onSslError);
 
     qCDebug(TOMBOYNOTESRESOURCE_LOG) << "Resource started";
     connect(this, &TomboyNotesResource::reloadConfiguration, this, &TomboyNotesResource::slotReloadConfig);

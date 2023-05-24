@@ -9,7 +9,7 @@
 #include "o1tomboy.h"
 #include "o2/o1requestor.h"
 #include <KCompositeJob>
-#include <KIO/AccessManager>
+#include <QNetworkAccessManager>
 #include <QString>
 
 enum TomboyJobError {
@@ -22,13 +22,13 @@ class TomboyJobBase : public KCompositeJob
 {
     Q_OBJECT
 public:
-    explicit TomboyJobBase(KIO::Integration::AccessManager *manager, QObject *parent = nullptr);
+    explicit TomboyJobBase(QNetworkAccessManager *manager, QObject *parent = nullptr);
 
     void setServerURL(const QString &apiurl, const QString &contenturl);
     void setAuthentication(const QString &token, const QString &secret);
 
 protected:
-    KIO::Integration::AccessManager *const mManager;
+    QNetworkAccessManager *const mManager;
     O1Requestor *mRequestor = nullptr;
     O1Tomboy *const mO1;
     QNetworkReply *mReply = nullptr;

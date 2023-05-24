@@ -12,10 +12,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
-TomboyCollectionsDownloadJob::TomboyCollectionsDownloadJob(const QString &collectionName,
-                                                           KIO::Integration::AccessManager *manager,
-                                                           int refreshInterval,
-                                                           QObject *parent)
+TomboyCollectionsDownloadJob::TomboyCollectionsDownloadJob(const QString &collectionName, QNetworkAccessManager *manager, int refreshInterval, QObject *parent)
     : TomboyJobBase(manager, parent)
     , mCollectionName(collectionName)
     , mRefreshInterval(refreshInterval)
