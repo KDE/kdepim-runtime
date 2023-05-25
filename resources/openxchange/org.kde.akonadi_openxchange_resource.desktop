@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Open-Xchange Groupware Server
+NoDisplay=true
+Exec=akonadi_openxchange_resource
+Icon=ox

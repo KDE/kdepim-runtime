@@ -94,9 +94,6 @@ target_link_libraries(akonadi_tomboynotes_resource
     KF6::ConfigCore
     KF6::ConfigWidgets
     KF6::I18n
-    KF6::KIOCore
-    KF6::KIOFileWidgets
-    KF6::KIOWidgets
     KPim6::Mime
     )
 

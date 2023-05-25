@@ -106,6 +106,11 @@ target_link_libraries(akonadi_openxchange_resource
 
 install(TARGETS akonadi_openxchange_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+install(
+    FILES org.kde.akonadi_openxchange_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
+
 add_subdirectory(icons)
 
 ################################### Config plugin ############################

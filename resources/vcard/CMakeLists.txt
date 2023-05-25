@@ -38,6 +38,10 @@ target_link_libraries(akonadi_vcard_resource KPim6::AkonadiCore KF6::KIOCore   K
 
 install(TARGETS akonadi_vcard_resource ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
+install(
+    FILES org.kde.akonadi_vcard_resource.desktop
+    DESTINATION ${KDE_INSTALL_APPDIR}
+)
 
 ############################# Config plugin #################################
 
