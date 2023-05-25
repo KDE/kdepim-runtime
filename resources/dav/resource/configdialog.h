@@ -29,7 +29,7 @@ public:
 
     void setPassword(const QString &password);
 
-private Q_SLOTS:
+private:
     void onSyncRangeStartTypeChanged();
     void checkUserInput();
     void onAddButtonClicked();
@@ -40,7 +40,6 @@ private Q_SLOTS:
     void onOkClicked();
     void onCancelClicked();
 
-private:
     void readConfig();
     void writeConfig();
     void addModelRow(const QString &protocol, const QString &url);

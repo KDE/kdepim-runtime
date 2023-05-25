@@ -34,6 +34,6 @@ public:
      */
     explicit AkonadiEtagCache(const Akonadi::Collection &collection, QObject *parent = nullptr);
 
-private Q_SLOTS:
+private:
     void onItemFetchJobFinished(KJob *job);
 };
