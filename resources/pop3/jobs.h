@@ -143,7 +143,7 @@ private:
 
     QList<int> mIdsPendingDownload;
     QByteArray mCurrentMessage;
-    int mBytesDownloaded;
-    int mTotalBytesToDownload;
-    uint mDataCounter;
+    int mBytesDownloaded = 0;
+    int mTotalBytesToDownload = 0;
+    uint mDataCounter = 0;
 };

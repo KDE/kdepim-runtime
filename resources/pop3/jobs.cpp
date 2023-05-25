@@ -82,7 +82,7 @@ static QByteArray cleanupListResponse(const QByteArray &response)
 static QString intListToString(const QList<int> &intList)
 {
     QString idList;
-    for (int id : intList) {
+    for (const int id : intList) {
         idList += QString::number(id) + QLatin1Char(',');
     }
     idList.chop(1);
@@ -183,7 +183,7 @@ void ListJob::slotData(const QByteArray &data)
         QByteArray idString = cleanData.left(space);
 
         bool idIsNumber;
-        int id = QString::fromLatin1(idString).toInt(&idIsNumber);
+        const int id = QString::fromLatin1(idString).toInt(&idIsNumber);
         if (idIsNumber) {
             mIdList.insert(id, length);
         } else {
@@ -285,9 +285,6 @@ void QuitJob::start()
 
 FetchJob::FetchJob(POPSession *session)
     : BaseJob(session)
-    , mBytesDownloaded(0)
-    , mTotalBytesToDownload(0)
-    , mDataCounter(0)
 {
 }
 
