@@ -109,7 +109,7 @@ bool BirthdaysResource::retrieveItems(const Akonadi::Item::List &items, const QS
 bool BirthdaysResource::retrieveItem(const Akonadi::Item &item, const QSet<QByteArray> &parts)
 {
     Q_UNUSED(parts)
-    qint64 contactId = item.remoteId().mid(1).toLongLong();
+    const qint64 contactId = item.remoteId().mid(1).toLongLong();
     auto job = new ItemFetchJob(Item(contactId), this);
     job->fetchScope().fetchFullPayload();
     connect(job, &ItemFetchJob::result, this, &BirthdaysResource::contactRetrieved);
@@ -211,7 +211,7 @@ void BirthdaysResource::contactChanged(const Akonadi::Item &item)
         return;
     }
 
-    auto contact = item.payload<KContacts::Addressee>();
+    const auto contact = item.payload<KContacts::Addressee>();
 
     if (Settings::self()->filterOnCategories()) {
         bool hasCategory = false;
