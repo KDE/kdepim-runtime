@@ -72,7 +72,7 @@ static QByteArray cleanupListResponse(const QByteArray &response)
     QByteArray ret = response.simplified(); // Workaround for Maillennium POP3/UNIBOX
 
     // Get rid of the null terminating character, if it exists
-    int retSize = ret.size();
+    const int retSize = ret.size();
     if (retSize > 0 && ret.at(retSize - 1) == 0) {
         ret.chop(1);
     }
@@ -223,7 +223,7 @@ void UIDListJob::slotData(const QByteArray &data)
         const QByteArray idString = cleanData.left(space);
         const QByteArray uidString = cleanData.mid(space + 1);
         bool idIsNumber;
-        int id = QString::fromLatin1(idString).toInt(&idIsNumber);
+        const int id = QString::fromLatin1(idString).toInt(&idIsNumber);
         if (idIsNumber) {
             const QString uidQString = QString::fromLatin1(uidString);
             if (!uidQString.isEmpty()) {

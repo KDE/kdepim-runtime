@@ -674,7 +674,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
             // the list of messages to keep
             if (mSettings.leaveOnServerDays() > 0) {
                 const int secondsPerDay = 86400;
-                time_t timeLimit = time(nullptr) - (secondsPerDay * mSettings.leaveOnServerDays());
+                const time_t timeLimit = time(nullptr) - (secondsPerDay * mSettings.leaveOnServerDays());
                 for (int idToDelete : idsOnServer) {
                     const int msgTime = idToTime(idToDelete);
                     if (msgTime >= timeLimit) {
@@ -716,7 +716,7 @@ QList<int> POP3Resource::shouldDeleteId(int downloadedId) const
                     sizeOnServerAfterDeletion += mIdsToSizeMap.value(id);
                 }
                 while (sizeOnServerAfterDeletion > limitInBytes) {
-                    int oldestId = idOfOldestMessage(mIdsToSave);
+                    const int oldestId = idOfOldestMessage(mIdsToSave);
                     mIdsToSave.remove(oldestId);
                     sizeOnServerAfterDeletion -= mIdsToSizeMap.value(oldestId);
                 }
