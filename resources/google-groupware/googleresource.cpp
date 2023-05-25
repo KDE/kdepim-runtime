@@ -428,6 +428,35 @@ void GoogleResource::retrieveItems(const Collection &collection)
     }
 }
 
+bool GoogleResource::retrieveItems(const Akonadi::Item::List &items, const QSet<QByteArray> &parts)
+{
+    Q_UNUSED(parts);
+
+    if (!canPerformTask()) {
+        return false;
+    }
+
+    QSet<Akonadi::Collection> collections;
+
+    for (const auto &item : items) {
+        collections.insert(item.parentCollection());
+    }
+
+    bool ok = true;
+
+    for (const auto &collection : std::as_const(collections)) {
+        auto handler = fetchHandlerForCollection(collection);
+        if (handler) {
+            handler->retrieveItems(collection);
+        } else {
+            qCWarning(GOOGLE_LOG) << "Unknown collection" << collection.name();
+            ok = false;
+        }
+    }
+
+    return ok;
+}
+
 void GoogleResource::itemAdded(const Item &item, const Collection &collection)
 {
     if (!canPerformTask()) {
