@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-05-26 00:47+0000\n"
 "PO-Revision-Date: 2017-11-26 13:44+0000\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -81,14 +81,14 @@ msgstr "Ignore SSL errors"
 msgid "Tomboy Notes %1"
 msgstr "Tomboy Notes %1"
 
-#: tomboynotesresource.cpp:58 tomboynotesresource.cpp:79
-#: tomboynotesresource.cpp:98
+#: tomboynotesresource.cpp:61 tomboynotesresource.cpp:82
+#: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
 msgstr "Resource configuration is not valid"
 
-#: tomboynotesresource.cpp:224 tomboynotesresource.cpp:245
-#: tomboynotesresource.cpp:265
+#: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
+#: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
 msgstr "Resource is read-only"
