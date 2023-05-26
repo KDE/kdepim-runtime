@@ -42,7 +42,7 @@
 #include <QNetworkInformation>
 #include <QPushButton>
 
-#include <KIdentityManagement/IdentityManager>
+#include <KIdentityManagementCore/IdentityManager>
 #include <KIdentityManagementWidgets/IdentityCombo>
 #include <QFontDatabase>
 #include <QPointer>
@@ -162,7 +162,7 @@ SetupServer::SetupServer(ImapResourceBase *parentResource, WId parent)
     m_ui->folderRequester->setMimeTypeFilter(QStringList() << KMime::Message::mimeType());
     m_ui->folderRequester->setAccessRightsFilter(Akonadi::Collection::CanChangeItem | Akonadi::Collection::CanCreateItem | Akonadi::Collection::CanDeleteItem);
     m_ui->folderRequester->changeCollectionDialogOptions(Akonadi::CollectionDialog::AllowToCreateNewChildCollection);
-    m_identityCombobox = new KIdentityManagementWidgets::IdentityCombo(KIdentityManagement::IdentityManager::self(), this);
+    m_identityCombobox = new KIdentityManagementWidgets::IdentityCombo(KIdentityManagementCore::IdentityManager::self(), this);
     m_identityCombobox->setShowDefault(true);
     m_ui->formLayoutAdvanced->insertRow(3, i18n("Identity:"), m_identityCombobox);
 

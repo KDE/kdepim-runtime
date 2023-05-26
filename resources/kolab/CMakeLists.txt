@@ -80,7 +80,7 @@ target_link_libraries(akonadi_kolab_resource
     KPim6::AkonadiMime
     KPim6::AkonadiCalendar
     KPim6::AkonadiWidgets
-    KPim6::IdentityManagement
+    KPim6::IdentityManagementCore
     imapresource
     folderarchivesettings
     pimkolab

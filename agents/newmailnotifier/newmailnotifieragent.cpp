@@ -12,7 +12,7 @@
 #include "newmailnotifieragentsettings.h"
 #include "specialnotifierjob.h"
 
-#include <KIdentityManagement/IdentityManager>
+#include <KIdentityManagementCore/IdentityManager>
 
 #include <QDBusConnection>
 
@@ -49,8 +49,8 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     new NewMailNotifierAdaptor(this);
 
     NewMailNotifierAgentSettings::instance(KSharedConfig::openConfig());
-    mIdentityManager = KIdentityManagement::IdentityManager::self();
-    connect(mIdentityManager, qOverload<>(&KIdentityManagement::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
+    mIdentityManager = KIdentityManagementCore::IdentityManager::self();
+    connect(mIdentityManager, qOverload<>(&KIdentityManagementCore::IdentityManager::changed), this, &NewMailNotifierAgent::slotIdentitiesChanged);
     slotIdentitiesChanged();
     mDefaultIconName = QStringLiteral("kmail");
 

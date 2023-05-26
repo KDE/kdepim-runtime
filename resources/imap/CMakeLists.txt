@@ -171,7 +171,7 @@ target_link_libraries(akonadi_imap_resource
     KPim6::MailTransport
     KPim6::Mime
     KPim6::AkonadiMime
-    KPim6::IdentityManagement
+    KPim6::IdentityManagementCore
     KF6::I18n
     imapresource
     KF6::TextWidgets

@@ -21,7 +21,7 @@ namespace Akonadi
 class AgentInstance;
 }
 
-namespace KIdentityManagement
+namespace KIdentityManagementCore
 {
 class IdentityManager;
 }
@@ -66,7 +66,7 @@ private:
     QHash<QString, QString> mCacheResourceName;
     QTimer mTimer;
     QStringList mInstanceNameInProgress;
-    KIdentityManagement::IdentityManager *mIdentityManager = nullptr;
+    KIdentityManagementCore::IdentityManager *mIdentityManager = nullptr;
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
     QTextToSpeech *mTextToSpeech = nullptr;
 #endif
