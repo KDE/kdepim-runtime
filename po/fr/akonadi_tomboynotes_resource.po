@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_tomboynotes_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-05-26 00:47+0000\n"
 "PO-Revision-Date: 2020-01-31 15:03+0800\n"
 "Last-Translator: Simon Depiets <sdepiets@gmail.com>\n"
 "Language-Team: French <kde-francophone@kde.org>\n"
@@ -82,14 +82,14 @@ msgstr "Ignorer les erreurs SSL"
 msgid "Tomboy Notes %1"
 msgstr "Notes Tomboy %1"
 
-#: tomboynotesresource.cpp:58 tomboynotesresource.cpp:79
-#: tomboynotesresource.cpp:98
+#: tomboynotesresource.cpp:61 tomboynotesresource.cpp:82
+#: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
 msgstr "La configuration de la ressource n'est pas valable"
 
-#: tomboynotesresource.cpp:224 tomboynotesresource.cpp:245
-#: tomboynotesresource.cpp:265
+#: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
+#: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
 msgstr "La ressource est en lecture seule"

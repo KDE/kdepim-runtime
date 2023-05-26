@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_tomboynotes_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-05-26 00:47+0000\n"
 "PO-Revision-Date: 2022-04-05 13:13+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
@@ -81,14 +81,14 @@ msgstr "SSL hatalarını yok say"
 msgid "Tomboy Notes %1"
 msgstr "Tomboy Notları %1"
 
-#: tomboynotesresource.cpp:58 tomboynotesresource.cpp:79
-#: tomboynotesresource.cpp:98
+#: tomboynotesresource.cpp:61 tomboynotesresource.cpp:82
+#: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
 msgstr "Özkaynak yapılandırması geçersiz"
 
-#: tomboynotesresource.cpp:224 tomboynotesresource.cpp:245
-#: tomboynotesresource.cpp:265
+#: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
+#: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
 msgstr "Özaynak saltokunur"

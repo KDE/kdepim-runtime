@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-11-25 00:29+0000\n"
+"POT-Creation-Date: 2023-05-26 00:47+0000\n"
 "PO-Revision-Date: 2022-08-31 20:01+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -84,14 +84,14 @@ msgstr "SSL erroreak ezikusi"
 msgid "Tomboy Notes %1"
 msgstr "Tomboy oharrak %1"
 
-#: tomboynotesresource.cpp:58 tomboynotesresource.cpp:79
-#: tomboynotesresource.cpp:98
+#: tomboynotesresource.cpp:61 tomboynotesresource.cpp:82
+#: tomboynotesresource.cpp:101
 #, kde-format
 msgid "Resource configuration is not valid"
 msgstr "Baliabidearen konfigurazioa ez da baliozkoa"
 
-#: tomboynotesresource.cpp:224 tomboynotesresource.cpp:245
-#: tomboynotesresource.cpp:265
+#: tomboynotesresource.cpp:227 tomboynotesresource.cpp:248
+#: tomboynotesresource.cpp:268
 #, kde-format
 msgid "Resource is read-only"
 msgstr "Baliabidea irakurtzeko soilik da"
