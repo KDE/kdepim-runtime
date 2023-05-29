@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-07 00:51+0000\n"
+"POT-Creation-Date: 2023-05-29 00:48+0000\n"
 "PO-Revision-Date: 2014-03-19 22:25+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -105,33 +105,28 @@ msgstr "Kész"
 msgid "Invalid item."
 msgstr "Érvénytelen elemtartalom."
 
-#: googleresource.cpp:84
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password..."
 msgstr ""
 
-#: googleresource.cpp:93
+#: googleresource.cpp:95
 #, kde-format
 msgid "Can't fetch password"
 msgstr ""
 
-#: googleresource.cpp:137
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr "Kész"
 
-#: googleresource.cpp:157 googleresource.cpp:195
-#, kde-format
-msgid "Configured account does not exist"
-msgstr "A beállított fiók nem létezik"
-
-#: googleresource.cpp:188
+#: googleresource.cpp:148
 #, kde-format
 msgid "not configured"
 msgstr "nincs beállítva"
 
-#: googleresource.cpp:188
+#: googleresource.cpp:148
 #, fuzzy, kde-format
 #| msgctxt "%1 is account name (user@gmail.com)"
 #| msgid "Google Contacts (%1)"
@@ -139,61 +134,66 @@ msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr "Google névjegyek (%1)"
 
-#: googleresource.cpp:241
+#: googleresource.cpp:157
+#, kde-format
+msgid "Configured account does not exist"
+msgstr "A beállított fiók nem létezik"
+
+#: googleresource.cpp:205
 #, fuzzy, kde-format
 #| msgid "Configured account has been removed"
 msgid "Account has been logged out."
 msgstr "A beállított fiók el lett távolítva"
 
-#: googleresource.cpp:244
+#: googleresource.cpp:208
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:245
+#: googleresource.cpp:209
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:249
+#: googleresource.cpp:213
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:254
+#: googleresource.cpp:218
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:268 googleresource.cpp:269
+#: googleresource.cpp:232 googleresource.cpp:233
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr "Az erőforrás nincs beállítva"
 
-#: googleresource.cpp:284
+#: googleresource.cpp:248
 #, kde-format
 msgid "Failed to refresh tokens"
 msgstr "Nem sikerült frissíteni a tokeneket"
 
-#: googleresource.cpp:442 googleresource.cpp:456 googleresource.cpp:470
-#: googleresource.cpp:485 googleresource.cpp:499 googleresource.cpp:513
+#: googleresource.cpp:436 googleresource.cpp:450 googleresource.cpp:464
+#: googleresource.cpp:479 googleresource.cpp:493 googleresource.cpp:507
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Érvénytelen tartalomtípus"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:521 googleresource.cpp:535 googleresource.cpp:549
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Érvénytelen gyűjtemény MIME-típus"
 
-#: googlesettingsdialog.cpp:57
+#: googlesettingswidget.cpp:46
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
@@ -201,40 +201,40 @@ msgstr[0] " perc"
 msgstr[1] " perc"
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
+#: googlesettingswidget.cpp:108 googlesettingswidget.ui:30
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "<b>not configured</b>"
 msgstr "nincs beállítva"
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
-#: googlesettingsdialog.ui:23
+#: googlesettingswidget.ui:23
 #, fuzzy, kde-format
 #| msgid "Accounts"
 msgid "Account:"
 msgstr "Felhasználói fiókok"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
-#: googlesettingsdialog.ui:42
+#: googlesettingswidget.ui:42
 #, fuzzy, kde-format
 #| msgid "not configured"
 msgid "Configure..."
 msgstr "nincs beállítva"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
-#: googlesettingsdialog.ui:49
+#: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
 msgstr "Időközi frissítés engedélyezése"
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
-#: googlesettingsdialog.ui:56
+#: googlesettingswidget.ui:56
 #, kde-format
 msgid "Refresh interval:"
 msgstr "Frissítési időköz:"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
-#: googlesettingsdialog.ui:79
+#: googlesettingswidget.ui:79
 #, fuzzy, kde-format
 #| msgctxt "Followed by a date picker widget"
 #| msgid "&Fetch only new events since"
@@ -242,7 +242,7 @@ msgid "Fetch only events since:"
 msgstr "Csak új események letöltése ettől fogva:"
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
-#: googlesettingsdialog.ui:92
+#: googlesettingswidget.ui:92
 #, fuzzy, kde-format
 #| msgid "Calendars"
 msgid "Enabled Calendars:"
@@ -250,13 +250,13 @@ msgstr "Naptárak"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingsdialog.ui:123 googlesettingsdialog.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
 #, kde-format
 msgid "Reload"
 msgstr "Újratöltés"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingsdialog.ui:137
+#: googlesettingswidget.ui:137
 #, fuzzy, kde-format
 #| msgid "Tasklists"
 msgid "Enabled Tasklists:"

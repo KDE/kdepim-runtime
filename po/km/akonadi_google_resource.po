@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-07 00:51+0000\n"
+"POT-Creation-Date: 2023-05-29 00:48+0000\n"
 "PO-Revision-Date: 2012-06-12 09:59+0700\n"
 "Last-Translator: sutha <sutha@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros>\n"
@@ -100,139 +100,139 @@ msgstr ""
 msgid "Invalid item."
 msgstr "payload មិន​ត្រឹមត្រូវ"
 
-#: googleresource.cpp:84
+#: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password..."
 msgstr ""
 
-#: googleresource.cpp:93
+#: googleresource.cpp:95
 #, kde-format
 msgid "Can't fetch password"
 msgstr ""
 
-#: googleresource.cpp:137
+#: googleresource.cpp:136
 #, kde-format
 msgctxt "@info:status"
 msgid "Ready"
 msgstr ""
 
-#: googleresource.cpp:157 googleresource.cpp:195
-#, kde-format
-msgid "Configured account does not exist"
-msgstr ""
-
-#: googleresource.cpp:188
+#: googleresource.cpp:148
 #, kde-format
 msgid "not configured"
 msgstr ""
 
-#: googleresource.cpp:188
+#: googleresource.cpp:148
 #, kde-format
 msgctxt "%1 is account name (user@gmail.com)"
 msgid "Google Groupware (%1)"
 msgstr ""
 
-#: googleresource.cpp:241
+#: googleresource.cpp:157
+#, kde-format
+msgid "Configured account does not exist"
+msgstr ""
+
+#: googleresource.cpp:205
 #, kde-format
 msgid "Account has been logged out."
 msgstr ""
 
-#: googleresource.cpp:244
+#: googleresource.cpp:208
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from your account. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:245
+#: googleresource.cpp:209
 #, kde-format
 msgid ""
 "Google Groupware has been logged out from account %1. Please log in to "
 "enable Google Contacts and Calendar sync again."
 msgstr ""
 
-#: googleresource.cpp:249
+#: googleresource.cpp:213
 #, kde-format
 msgctxt "@title"
 msgid "%1 needs your attention."
 msgstr ""
 
-#: googleresource.cpp:254
+#: googleresource.cpp:218
 #, kde-format
 msgctxt "@action"
 msgid "Log in"
 msgstr ""
 
-#: googleresource.cpp:268 googleresource.cpp:269
+#: googleresource.cpp:232 googleresource.cpp:233
 #, kde-format
 msgctxt "@info:status"
 msgid "Resource is not configured"
 msgstr ""
 
-#: googleresource.cpp:284
+#: googleresource.cpp:248
 #, fuzzy, kde-format
 #| msgid "Failed to retrieve contacts"
 msgid "Failed to refresh tokens"
 msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ទំនាក់ទំនង"
 
-#: googleresource.cpp:442 googleresource.cpp:456 googleresource.cpp:470
-#: googleresource.cpp:485 googleresource.cpp:499 googleresource.cpp:513
+#: googleresource.cpp:436 googleresource.cpp:450 googleresource.cpp:464
+#: googleresource.cpp:479 googleresource.cpp:493 googleresource.cpp:507
 #, fuzzy, kde-format
 #| msgid "Invalid payload"
 msgid "Invalid payload type"
 msgstr "payload មិន​ត្រឹមត្រូវ"
 
-#: googleresource.cpp:527 googleresource.cpp:541 googleresource.cpp:555
+#: googleresource.cpp:521 googleresource.cpp:535 googleresource.cpp:549
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr ""
 
-#: googlesettingsdialog.cpp:57
+#: googlesettingswidget.cpp:46
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
-#: googlesettingsdialog.cpp:123 googlesettingsdialog.ui:30
+#: googlesettingswidget.cpp:108 googlesettingswidget.ui:30
 #, kde-format
 msgid "<b>not configured</b>"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountTextLabel)
-#: googlesettingsdialog.ui:23
+#: googlesettingswidget.ui:23
 #, fuzzy, kde-format
 #| msgid "Accounts"
 msgid "Account:"
 msgstr "គណនី"
 
 #. i18n: ectx: property (text), widget (QPushButton, configureBtn)
-#: googlesettingsdialog.ui:42
+#: googlesettingswidget.ui:42
 #, kde-format
 msgid "Configure..."
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableRefresh)
-#: googlesettingsdialog.ui:49
+#: googlesettingswidget.ui:49
 #, kde-format
 msgid "Enable interval refresh"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, refreshLabel)
-#: googlesettingsdialog.ui:56
+#: googlesettingswidget.ui:56
 #, fuzzy, kde-format
 #| msgid "Refresh interval in minutes."
 msgid "Refresh interval:"
 msgstr "ធ្វើ​ឲ្យ​ស្រស់​ចន្លោះ​ពេល​គិតជា​នាទី ។"
 
 #. i18n: ectx: property (text), widget (QLabel, eventsLimitLabel)
-#: googlesettingsdialog.ui:79
+#: googlesettingswidget.ui:79
 #, kde-format
 msgid "Fetch only events since:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, calendarsLabel)
-#: googlesettingsdialog.ui:92
+#: googlesettingswidget.ui:92
 #, fuzzy, kde-format
 #| msgid "Calendars"
 msgid "Enabled Calendars:"
@@ -240,7 +240,7 @@ msgstr "ប្រតិទិន"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingsdialog.ui:123 googlesettingsdialog.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
 #, fuzzy, kde-format
 #| msgctxt "reload the calendars"
 #| msgid "Reload"
@@ -248,7 +248,7 @@ msgid "Reload"
 msgstr "ផ្ទុក​ឡើងវិញ"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingsdialog.ui:137
+#: googlesettingswidget.ui:137
 #, fuzzy, kde-format
 #| msgid "Tasks Lists"
 msgid "Enabled Tasklists:"
