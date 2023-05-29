@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bosnianuniversetranslation\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-07 00:48+0000\n"
+"POT-Creation-Date: 2023-05-29 02:34+0000\n"
 "PO-Revision-Date: 2014-02-09 17:00+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: Bosnian <bs@li.org>\n"
@@ -186,13 +186,13 @@ msgstr "Resurs nije konfigurisan"
 msgid "Failed to refresh tokens"
 msgstr "Neuspjelo osvježenje tokena"
 
-#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
-#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
+#: googleresource.cpp:461 googleresource.cpp:475 googleresource.cpp:489
+#: googleresource.cpp:504 googleresource.cpp:518 googleresource.cpp:532
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Nevažećavrsta korisne informacije"
 
-#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
+#: googleresource.cpp:546 googleresource.cpp:560 googleresource.cpp:574
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Nepoznat mime tip kolekcije"

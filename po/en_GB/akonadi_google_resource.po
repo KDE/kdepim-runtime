@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-07 00:48+0000\n"
+"POT-Creation-Date: 2023-05-29 02:34+0000\n"
 "PO-Revision-Date: 2021-07-11 11:13+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -174,13 +174,13 @@ msgstr "Resource is not configured"
 msgid "Failed to refresh tokens"
 msgstr "Failed to refresh tokens"
 
-#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
-#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
+#: googleresource.cpp:461 googleresource.cpp:475 googleresource.cpp:489
+#: googleresource.cpp:504 googleresource.cpp:518 googleresource.cpp:532
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Invalid payload type"
 
-#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
+#: googleresource.cpp:546 googleresource.cpp:560 googleresource.cpp:574
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Unknown collection mimetype"

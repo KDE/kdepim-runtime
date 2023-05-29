@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-07 00:48+0000\n"
+"POT-Creation-Date: 2023-05-29 02:34+0000\n"
 "PO-Revision-Date: 2021-07-18 13:18+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -174,13 +174,13 @@ msgstr "자원이 설정되지 않음"
 msgid "Failed to refresh tokens"
 msgstr "토큰을 새로 고칠 수 없음"
 
-#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
-#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
+#: googleresource.cpp:461 googleresource.cpp:475 googleresource.cpp:489
+#: googleresource.cpp:504 googleresource.cpp:518 googleresource.cpp:532
 #, kde-format
 msgid "Invalid payload type"
 msgstr "잘못된 페이로드 형식"
 
-#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
+#: googleresource.cpp:546 googleresource.cpp:560 googleresource.cpp:574
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "알 수 없는 모음집 MIME 형식"

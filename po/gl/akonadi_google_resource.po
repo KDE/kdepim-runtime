@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-07 00:48+0000\n"
+"POT-Creation-Date: 2023-05-29 02:34+0000\n"
 "PO-Revision-Date: 2017-10-30 06:52+0100\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <kde-i18n-doc@kde.org>\n"
@@ -179,13 +179,13 @@ msgstr "O recurso non está configurado"
 msgid "Failed to refresh tokens"
 msgstr "Non se puideron actualizar os tokens."
 
-#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
-#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
+#: googleresource.cpp:461 googleresource.cpp:475 googleresource.cpp:489
+#: googleresource.cpp:504 googleresource.cpp:518 googleresource.cpp:532
 #, kde-format
 msgid "Invalid payload type"
 msgstr "O tipo de carga é incorrecto"
 
-#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
+#: googleresource.cpp:546 googleresource.cpp:560 googleresource.cpp:574
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Descoñécese o tipo MIME desta colección"

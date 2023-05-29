@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_google_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-07 00:48+0000\n"
+"POT-Creation-Date: 2023-05-29 02:34+0000\n"
 "PO-Revision-Date: 2021-07-11 14:35+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -183,13 +183,13 @@ msgstr "Ресурс не налаштовано"
 msgid "Failed to refresh tokens"
 msgstr "Не вдалося оновити записи"
 
-#: googleresource.cpp:432 googleresource.cpp:446 googleresource.cpp:460
-#: googleresource.cpp:475 googleresource.cpp:489 googleresource.cpp:503
+#: googleresource.cpp:461 googleresource.cpp:475 googleresource.cpp:489
+#: googleresource.cpp:504 googleresource.cpp:518 googleresource.cpp:532
 #, kde-format
 msgid "Invalid payload type"
 msgstr "Некоректний тип вмісту"
 
-#: googleresource.cpp:517 googleresource.cpp:531 googleresource.cpp:545
+#: googleresource.cpp:546 googleresource.cpp:560 googleresource.cpp:574
 #, kde-format
 msgid "Unknown collection mimetype"
 msgstr "Невідомий тип MIME збірки"
