@@ -98,7 +98,7 @@ option(KDEPIM_RUN_AKONADI_TEST "Enable autotest based on Akonadi." TRUE)
 # QT5 package
 find_package(Qt6TextToSpeech ${QT_REQUIRED_VERSION} CONFIG)
 set_package_properties(Qt6TextToSpeech PROPERTIES DESCRIPTION
-    "Add support for texttospeed"
+    "Add support for texttospeech"
     TYPE OPTIONAL
 )
 if(Qt6TextToSpeech_FOUND)

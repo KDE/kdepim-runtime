@@ -2,20 +2,21 @@
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_davcalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-01-13 00:57+0000\n"
-"PO-Revision-Date: 2023-03-21 22:43+0100\n"
+"PO-Revision-Date: 2023-05-29 07:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: pology\n"
+"X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: configdialog.cpp:33
@@ -55,6 +56,8 @@ msgid ""
 "Another configuration entry already uses the same URL/protocol couple.\n"
 "Please use a different URL"
 msgstr ""
+"Alia agorda eniro jam uzas la saman URL/protokola paron.\n"
+"Bonvolu uzi alian URL"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configdialog.ui:29
@@ -101,24 +104,26 @@ msgid ""
 "Select this if your calendars contain a lot of events and the server cannot "
 "fulfill the requests"
 msgstr ""
+"Elektu ĉi tion se viaj kalendaroj enhavas multajn eventojn kaj la servilo ne "
+"povas plenumi la petojn"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_limitSyncRange)
 #: configdialog.ui:139
 #, kde-format
 msgid "Limit CalDav retrieval time range"
-msgstr ""
+msgstr "Limigu CalDav-rehavigtempon"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: configdialog.ui:151
 #, kde-format
 msgid "Only sync events more recent than"
-msgstr ""
+msgstr "Sinkronigi nur eventojn pli freŝajn ol"
 
 #. i18n: ectx: property (text), widget (QLabel, label_41)
 #: configdialog.ui:190
 #, kde-format
 msgid "Server Configuration:"
-msgstr ""
+msgstr "Agordo de Servilo:"
 
 #. i18n: ectx: property (text), widget (QPushButton, addButton)
 #: configdialog.ui:204
@@ -130,7 +135,7 @@ msgstr "Aldoni"
 #: configdialog.ui:211 searchdialog.ui:151
 #, kde-format
 msgid "Search"
-msgstr ""
+msgstr "Serĉu"
 
 #. i18n: ectx: property (text), widget (QPushButton, removeButton)
 #: configdialog.ui:218
@@ -147,22 +152,22 @@ msgstr "Redakti"
 #: daverror-kdepim-runtime.cpp:26
 #, kde-format
 msgid "Invalid username/password"
-msgstr ""
+msgstr "Nevalida uzantnomo/pasvorto"
 
 #: daverror-kdepim-runtime.cpp:28
 #, kde-format
 msgid "Access forbidden"
-msgstr ""
+msgstr "Aliro malpermesita"
 
 #: daverror-kdepim-runtime.cpp:30
 #, kde-format
 msgid "Resource not found"
-msgstr ""
+msgstr "Rimedo ne trovita"
 
 #: daverror-kdepim-runtime.cpp:32
 #, kde-format
 msgid "HTTP error"
-msgstr ""
+msgstr "HTTP-eraro"
 
 #: daverror-kdepim-runtime.cpp:35
 #, kde-format
@@ -170,11 +175,13 @@ msgid ""
 "There was a problem with the request.\n"
 "%1 (%2)."
 msgstr ""
+"Estis problemo kun la peto.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:41
 #, kde-format
 msgid "Protocol for the collection does not support MULTIGET"
-msgstr ""
+msgstr "Protokolo por la kolekto ne subtenas MULTIGET"
 
 #: daverror-kdepim-runtime.cpp:44
 #, kde-format
@@ -182,6 +189,7 @@ msgid ""
 "The server encountered an error that prevented it from completing your "
 "request: %1 (%2)"
 msgstr ""
+"La servilo renkontis eraron, kiu malhelpis ĝin plenumi vian peton: %1 (%2)"
 
 #: daverror-kdepim-runtime.cpp:48
 #, kde-format
@@ -190,21 +198,23 @@ msgid ""
 "from the server.\n"
 "%1 (%2)."
 msgstr ""
+"Estis problemo kun la peto. La kolekto ne estis forigita de la servilo.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:54
 #, kde-format
 msgid "Invalid responses from backend"
-msgstr ""
+msgstr "Nevalidaj respondoj de backend"
 
 #: daverror-kdepim-runtime.cpp:57
 #, kde-format
 msgid "Error setting focus for XQuery"
-msgstr ""
+msgstr "Eraro agordante fokuson por XQuery"
 
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
 msgid "Invalid XQuery submitted by DAV implementation"
-msgstr ""
+msgstr "Nevalida XQuery sendita per DAV-efektivigo"
 
 #: daverror-kdepim-runtime.cpp:64
 #, kde-format
@@ -213,16 +223,18 @@ msgid ""
 "on the server.\n"
 "%1 (%2)."
 msgstr ""
+"Estis problemo kun la peto. La kolekto ne estis modifita sur la servilo.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:70
 #, kde-format
 msgid "No properties to change or remove"
-msgstr ""
+msgstr "Neniuj propraĵoj por ŝanĝi aŭ forigi"
 
 #: daverror-kdepim-runtime.cpp:73
 #, kde-format
 msgid "There was an error when modifying the properties"
-msgstr ""
+msgstr "Okazis eraro dum modifado de la propraĵoj"
 
 #: daverror-kdepim-runtime.cpp:75
 #, kde-format
@@ -231,6 +243,9 @@ msgid ""
 "The server returned more information:\n"
 "%1"
 msgstr ""
+"\n"
+"La servilo resendis pliajn informojn:\n"
+"%1"
 
 #: daverror-kdepim-runtime.cpp:80
 #, kde-format
@@ -239,6 +254,8 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
+"Estis problemo kun la peto. La ero ne estis kreita sur la servilo.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:87
 #, kde-format
@@ -247,6 +264,8 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
+"Estis problemo kun la peto. La ero ne estis forigita de la servilo.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:94
 #, kde-format
@@ -255,78 +274,80 @@ msgid ""
 "server.\n"
 "%1 (%2)."
 msgstr ""
+"Estis problemo kun la peto. La ero ne estis modifita sur la servilo.\n"
+"%1 (%2)."
 
 #: daverror-kdepim-runtime.cpp:100
 #, kde-format
 msgid "There was a problem with the request."
-msgstr ""
+msgstr "Estis problemo kun la peto."
 
 #: daverror-kdepim-runtime.cpp:104
 #, kde-format
 msgid ""
 "There was a problem with the request. The requested MIME types are not "
 "supported."
-msgstr ""
+msgstr "Estis problemo kun la peto. La petitaj MIME-tipoj ne estas subtenataj."
 
 #: davfreebusyhandler.cpp:57
 #, kde-format
 msgid "No schedule-outbox found for %1"
-msgstr ""
+msgstr "Neniu horaro-elirejo trovita por %1"
 
 #: davfreebusyhandler.cpp:186 davfreebusyhandler.cpp:197
 #, kde-format
 msgid "Invalid response from the server"
-msgstr ""
+msgstr "Nevalida respondo de la servilo"
 
 #: davfreebusyhandler.cpp:208
 #, kde-format
 msgid "Unable to parse free-busy data received"
-msgstr ""
+msgstr "Ne eblas analizi liberokupajn datumojn ricevitajn"
 
 #: davgroupwareresource.cpp:163
 #, kde-format
 msgid "Unable to retrieve free-busy info while offline"
-msgstr ""
+msgstr "Ne eblas reakiri informojn pri libera okupata dum eksterrete"
 
 #: davgroupwareresource.cpp:246
 #, kde-format
 msgid "Fetching collections"
-msgstr ""
+msgstr "Alportante kolektojn"
 
 #: davgroupwareresource.cpp:314
 #, kde-format
 msgid "Asked to retrieve items for an unknown collection: %1"
-msgstr ""
+msgstr "Petita por preni erojn por nekonata kolekto: %1"
 
 #: davgroupwareresource.cpp:371
 #, kde-format
 msgid "Invalid collection for item %1."
-msgstr ""
+msgstr "Nevalida kolekto por ero %1."
 
 #: davgroupwareresource.cpp:608
 #, kde-format
 msgid "Unable to modify collection: %1"
-msgstr ""
+msgstr "Ne eblas modifi kolekton: %1"
 
 #: davgroupwareresource.cpp:677
 #, kde-format
 msgid "Unable to remove collection: %1"
-msgstr ""
+msgstr "Ne eblas forigi kolekton: %1"
 
 #: davgroupwareresource.cpp:697
 #, kde-format
 msgid "Unable to retrieve collections: %1"
-msgstr ""
+msgstr "Ne eblas preni kolektojn: %1"
 
 #: davgroupwareresource.cpp:830 davgroupwareresource.cpp:929
 #, kde-format
 msgid "Unable to retrieve items: %1"
-msgstr ""
+msgstr "Ne eblas retrovi erojn: %1"
 
 #: davgroupwareresource.cpp:1009
 #, kde-format
 msgid "Unable to retrieve item: %1"
-msgstr ""
+msgstr "Ne eblas retrovi eron: %1"
 
 #: davgroupwareresource.cpp:1029
 #, kde-format
@@ -334,51 +355,53 @@ msgid ""
 "Unable to retrieve item: failed to parse item data. Maybe it was deleted "
 "already."
 msgstr ""
+"Ne eblas retrovi eron: malsukcesis analizi eron-datenojn. Eble ĝi jam estis "
+"forigita."
 
 #: davgroupwareresource.cpp:1066
 #, kde-format
 msgid "Unable to add item: %1"
-msgstr ""
+msgstr "Ne eblas aldoni eron: %1"
 
 #: davgroupwareresource.cpp:1110 davgroupwareresource.cpp:1223
 #: davgroupwareresource.cpp:1235
 #, kde-format
 msgid "Unable to change item: %1"
-msgstr ""
+msgstr "Ne eblas ŝanĝi eron: %1"
 
 #: davgroupwareresource.cpp:1197 davgroupwareresource.cpp:1254
 #, kde-format
 msgid "Unable to remove item: %1"
-msgstr ""
+msgstr "Ne eblas forigi eron: %1"
 
 #: davgroupwareresource.cpp:1341 davgroupwareresource.cpp:1342
 #, kde-format
 msgid "The resource is not configured yet"
-msgstr ""
+msgstr "La rimedo ankoraŭ ne estas agordita"
 
 #. i18n: ectx: label, entry (settingsVersion), group (General)
 #: davgroupwareresource.kcfg:10
 #, kde-format
 msgid "Settings Version"
-msgstr ""
+msgstr "Agordoj Versio"
 
 #. i18n: ectx: label, entry (displayName), group (General)
 #: davgroupwareresource.kcfg:14
 #, kde-format
 msgid "Display name"
-msgstr ""
+msgstr "Montra nomo"
 
 #. i18n: ectx: label, entry (refreshInterval), group (General)
 #: davgroupwareresource.kcfg:18
 #, kde-format
 msgid "Refresh every"
-msgstr ""
+msgstr "Refreŝigu ĉiun"
 
 #. i18n: ectx: label, entry (remoteUrls), group (General)
 #: davgroupwareresource.kcfg:22
 #, kde-format
 msgid "Remote URLs"
-msgstr ""
+msgstr "Foraj URLoj"
 
 #. i18n: ectx: label, entry (defaultUsername), group (General)
 #: davgroupwareresource.kcfg:26
@@ -390,19 +413,19 @@ msgstr "Uzantnomo"
 #: davgroupwareresource.kcfg:30
 #, kde-format
 msgid "Limit the events retrieval to the specified time range"
-msgstr ""
+msgstr "Limigu la eventon retrovon al la specifita tempogamo"
 
 #. i18n: ectx: label, entry (syncRangeStartNumber), group (General)
 #: davgroupwareresource.kcfg:34
 #, kde-format
 msgid "Period for which to retrieve events, quantity"
-msgstr ""
+msgstr "Periodo por kiu retrovi eventojn, kvanton"
 
 #. i18n: ectx: label, entry (syncRangeStartType), group (General)
 #: davgroupwareresource.kcfg:38
 #, kde-format
 msgid "Period for which to retrieve events, type"
-msgstr ""
+msgstr "Periodo por kiu retrovi eventojn, tajpu"
 
 #. i18n: ectx: label, entry (collectionsUrlsMappings), group (General)
 #: davgroupwareresource.kcfg:42
@@ -411,35 +434,36 @@ msgid ""
 "String representation of the mappings between discovered collections and "
 "configured URLs"
 msgstr ""
+"Ĉenreprezento de la mapadoj inter malkovritaj kolektoj kaj agorditaj URL-oj"
 
 #. i18n: ectx: label, entry (readOnly), group (General)
 #: davgroupwareresource.kcfg:46
 #, kde-format
 msgid "Do not change the actual backend data."
-msgstr ""
+msgstr "Ne ŝanĝi la realajn backend-datumojn."
 
 #. i18n: ectx: label, entry (AccountId), group (General)
 #: davgroupwareresource.kcfg:50
 #, kde-format
 msgid "The account id in WebAccounts framework."
-msgstr ""
+msgstr "La konto-identigilo en WebAccounts-kadro."
 
 #. i18n: ectx: label, entry (AccountServices), group (General)
 #: davgroupwareresource.kcfg:53
 #, kde-format
 msgid "Account enabled services"
-msgstr ""
+msgstr "Konto ebligita servoj"
 
 #: searchdialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Search"
-msgstr ""
+msgstr "Serĉu"
 
 #: searchdialog.cpp:41
 #, kde-format
 msgid "Add Selected Items"
-msgstr ""
+msgstr "Aldonu Elektitajn Erojn"
 
 #: searchdialog.cpp:126 searchdialog.cpp:169
 #, kde-format
@@ -447,24 +471,26 @@ msgid ""
 "An error occurred when executing search:\n"
 "%1"
 msgstr ""
+"Eraro okazis dum ekzekuto de serĉo:\n"
+"%1"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useDefaultCreds)
 #: searchdialog.ui:32 urlconfigurationdialog.ui:85
 #, kde-format
 msgid "Use global creden&tials"
-msgstr ""
+msgstr "Uzi ĉieajn akredi&taĵojn"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
 #: searchdialog.ui:42 urlconfigurationdialog.ui:95
 #, kde-format
 msgid "Use specific credentials"
-msgstr ""
+msgstr "Uzu specifajn akreditaĵojn"
 
 #. i18n: ectx: property (title), widget (QGroupBox, credentialsGroup)
 #: searchdialog.ui:49
 #, kde-format
 msgid "Credentials"
-msgstr ""
+msgstr "Akreditaĵoj"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: searchdialog.ui:61
@@ -482,30 +508,30 @@ msgstr "Pasvorto"
 #: searchdialog.ui:96
 #, kde-format
 msgid "Search URL"
-msgstr ""
+msgstr "Serĉu URL"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: searchdialog.ui:106
 #, kde-format
 msgid "Search for"
-msgstr ""
+msgstr "Serĉi"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:116
 #, kde-format
 msgid "a person named"
-msgstr ""
+msgstr "persono nomata"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, searchType)
 #: searchdialog.ui:121
 #, kde-format
 msgid "a contact with email"
-msgstr ""
+msgstr "kontakto kun retpoŝto"
 
 #: settings.cpp:481
 #, kde-format
 msgid "A password is required for user %1"
-msgstr ""
+msgstr "Pasvorto estas postulata por uzanto %1"
 
 #: settings.cpp:484
 #, kde-format
@@ -516,37 +542,37 @@ msgstr "Pasvorto: "
 #, kde-format
 msgctxt "@title:window"
 msgid "DAV groupware configuration wizard"
-msgstr ""
+msgstr "Agordo de agordo de DAV-grupvaro"
 
 #: setupwizard.cpp:213
 #, kde-format
 msgid "Login Credentials"
-msgstr ""
+msgstr "Ensalutu Akreditaĵojn"
 
 #: setupwizard.cpp:214
 #, kde-format
 msgid "Enter your credentials to login to the groupware server"
-msgstr ""
+msgstr "Enigu viajn akreditaĵojn por ensaluti al la grupvarservilo"
 
 #: setupwizard.cpp:218
 #, kde-format
 msgid "User:"
-msgstr ""
+msgstr "Uzanto:"
 
 #: setupwizard.cpp:258
 #, kde-format
 msgid "No, choose another server"
-msgstr ""
+msgstr "Ne, elekti alian servilon"
 
 #: setupwizard.cpp:260
 #, kde-format
 msgid "Predefined provider found"
-msgstr ""
+msgstr "Trovis antaŭdifinitan provizanton"
 
 #: setupwizard.cpp:261
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
-msgstr ""
+msgstr "Elektu se vi volas uzi la aŭtomate detektita provizanto"
 
 #: setupwizard.cpp:280
 #, kde-format
@@ -555,31 +581,34 @@ msgid ""
 "can configure automatically an account for %1 services.\n"
 "Do you wish to do so?"
 msgstr ""
+"Surbaze de la retadreso, kiun vi uzis kiel ensaluton, ĉi tiu asistanto\n"
+"povas aŭtomate agordi konton por %1 servoj.\n"
+"Ĉu vi volas fari tion?"
 
 #: setupwizard.cpp:285
 #, kde-format
 msgid "Yes, use %1 as provider"
-msgstr ""
+msgstr "Jes, uzi %1 kiel provizanton"
 
 #: setupwizard.cpp:311
 #, kde-format
 msgid "Groupware Server"
-msgstr ""
+msgstr "Grupvaro-Servilo"
 
 #: setupwizard.cpp:312
 #, kde-format
 msgid "Select the groupware server the resource shall be configured for"
-msgstr ""
+msgstr "Elektu la grupvarservilon, por kiu la rimedo estos agordita"
 
 #: setupwizard.cpp:343
 #, kde-format
 msgid "Use one of those servers:"
-msgstr ""
+msgstr "Uzi unu el tiuj serviloj:"
 
 #: setupwizard.cpp:352
 #, kde-format
 msgid "Configure the resource manually"
-msgstr ""
+msgstr "Agordu la rimedon permane"
 
 #: setupwizard.cpp:390
 #, kde-format
@@ -589,7 +618,7 @@ msgstr "Konekto"
 #: setupwizard.cpp:391
 #, kde-format
 msgid "Enter the connection information for the groupware server"
-msgstr ""
+msgstr "Enigu la konekto-informojn por la grupvarservilo"
 
 #: setupwizard.cpp:398
 #, kde-format
@@ -599,32 +628,32 @@ msgstr "Gastiganto"
 #: setupwizard.cpp:401
 #, kde-format
 msgid "Installation path"
-msgstr ""
+msgstr "Vojo de instalado"
 
 #: setupwizard.cpp:404
 #, kde-format
 msgid "Use secure connection"
-msgstr ""
+msgstr "Uzi sekuran konekton"
 
 #: setupwizard.cpp:432
 #, kde-format
 msgid "Final URL (CalDav)"
-msgstr ""
+msgstr "Fina URL (CalDav)"
 
 #: setupwizard.cpp:437
 #, kde-format
 msgid "Final URL (CardDav)"
-msgstr ""
+msgstr "Fina URL (CardDav)"
 
 #: setupwizard.cpp:442
 #, kde-format
 msgid "Final URL (GroupDav)"
-msgstr ""
+msgstr "Fina URL (GroupDav)"
 
 #: setupwizard.cpp:506 setupwizard.cpp:512
 #, kde-format
 msgid "Test Connection"
-msgstr ""
+msgstr "Testa Konekto"
 
 #: setupwizard.cpp:507
 #, kde-format
@@ -632,27 +661,28 @@ msgid ""
 "You can test now whether the groupware server can be accessed with the "
 "current configuration"
 msgstr ""
+"Vi povas testi nun ĉu la grupvarservilo estas alirebla kun la nuna agordo"
 
 #: setupwizard.cpp:552
 #, kde-format
 msgid "An error occurred: %1"
-msgstr ""
+msgstr "Eraro okazis: %1"
 
 #: setupwizard.cpp:555
 #, kde-format
 msgid "Connected successfully"
-msgstr ""
+msgstr "Konektita sukcese"
 
 #: urlconfigurationdialog.cpp:266
 #, kde-format
 msgid "Display Name"
-msgstr ""
+msgstr "Montra Nomo"
 
 #. i18n: ectx: property (text), widget (QLabel, remoteProtocol)
 #: urlconfigurationdialog.ui:35
 #, kde-format
 msgid "Access protocol:"
-msgstr ""
+msgstr "Protokolo de aliro:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, caldav)
 #: urlconfigurationdialog.ui:42
@@ -664,7 +694,7 @@ msgstr "CalDA&V"
 #: urlconfigurationdialog.ui:52
 #, kde-format
 msgid "CardDAV"
-msgstr ""
+msgstr "CardDAV"
 
 #. i18n: ectx: property (text), widget (QRadioButton, groupdav)
 #: urlconfigurationdialog.ui:59
@@ -676,19 +706,19 @@ msgstr "GroupDAV"
 #: urlconfigurationdialog.ui:66
 #, kde-format
 msgid "Remote URL:"
-msgstr ""
+msgstr "Fora URL:"
 
 #. i18n: ectx: property (text), widget (QLabel, label1)
 #: urlconfigurationdialog.ui:76
 #, kde-format
 msgid "Access:"
-msgstr ""
+msgstr "Aliro:"
 
 #. i18n: ectx: property (text), widget (QLabel, collectionsLabel)
 #: urlconfigurationdialog.ui:146
 #, kde-format
 msgid "Discovered collections:"
-msgstr ""
+msgstr "Malkovritaj kolektoj:"
 
 #. i18n: ectx: property (text), widget (QPushButton, fetchButton)
 #: urlconfigurationdialog.ui:174
@@ -699,14 +729,14 @@ msgstr "Elprenu"
 #: utils.cpp:47 utils.cpp:64
 #, kde-format
 msgid "CalDav"
-msgstr ""
+msgstr "CalDav"
 
 #: utils.cpp:50 utils.cpp:66
 #, kde-format
 msgid "CardDav"
-msgstr ""
+msgstr "CardDav"
 
 #: utils.cpp:53 utils.cpp:68
 #, kde-format
 msgid "GroupDav"
-msgstr ""
+msgstr "GroupDav"

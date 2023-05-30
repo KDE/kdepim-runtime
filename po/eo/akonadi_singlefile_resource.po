@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: akonadi_singlefile_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-04-23 00:50+0000\n"
-"PO-Revision-Date: 2023-01-07 01:00+0100\n"
+"PO-Revision-Date: 2023-05-29 07:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: pology\n"
+"X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
@@ -32,6 +32,8 @@ msgid ""
 "Select settings of the directory whose contents should be represented by "
 "this resource."
 msgstr ""
+"Elektu agordojn de la dosierujo, kies enhavo devus esti reprezentita per ĉi "
+"tiu rimedo."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: settingsdialog.ui:39
@@ -58,6 +60,8 @@ msgid ""
 "Select the directory whose contents should be represented by this resource. "
 "If the directory does not exist, it will be created."
 msgstr ""
+"Elektu la dosierujon, kies enhavo devus esti reprezentita per ĉi tiu rimedo. "
+"Se la dosierujo ne ekzistas, ĝi estos kreita."
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox)
 #: settingsdialog.ui:81
@@ -72,6 +76,8 @@ msgid ""
 "If read-only mode is enabled, no changes will be written to the directory "
 "selected above."
 msgstr ""
+"Se nurlegebla reĝimo estas ebligita, neniuj ŝanĝoj estos skribitaj al la "
+"supre elektita dosierujo."
 
 #. i18n: ectx: property (whatsThis), widget (QCheckBox, kcfg_ReadOnly)
 #. i18n: ectx: property (text), widget (QLabel, label_2)
@@ -82,6 +88,9 @@ msgid ""
 "selected above. Read-only mode will be automatically enabled if you do not "
 "have write access to the directory."
 msgstr ""
+"Se nurlegebla reĝimo estas ebligita, neniuj ŝanĝoj estos skribitaj al la "
+"supre elektita dosierujo. Nurlegebla reĝimo estos aŭtomate ebligita se vi ne "
+"havas skriban aliron al la dosierujo."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ReadOnly)
 #: settingsdialog.ui:93 singlefileresourceconfigwidget_desktop.ui:92
@@ -103,6 +112,10 @@ msgid ""
 "safety and consistency against performance. In general you should be careful "
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
+"La opcioj en ĉi tiu paĝo permesas vin ŝanĝi parametrojn, kiuj ekvilibrigas "
+"datumsekurecon kaj konsistencon kontraŭ rendimento. Ĝenerale vi devus esti "
+"singarda kun ŝanĝi ion ĉi tie, la defaŭltoj estas sufiĉe bonaj en la plej "
+"multaj kazoj."
 
 #. i18n: ectx: property (text), widget (QLabel, autosaveLabel)
 #: settingsdialog.ui:145
@@ -121,16 +134,17 @@ msgstr "Aŭtokonserva intervalo (en minutoj)."
 #, kde-format
 msgid "Select autosave interval time for the resource data (in minutes)."
 msgstr ""
+"Elektu aŭtomatan konservan intervaltempon por la rimedatumoj (en minutoj)."
 
 #: singlefileresource.h:65
 #, kde-format
 msgid "No file selected."
-msgstr ""
+msgstr "Neniu dosiero elektita."
 
 #: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
-msgstr ""
+msgstr "La rimedo ankoraŭ ne agordita"
 
 #: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
@@ -152,37 +166,37 @@ msgstr "Ne eblis legi dosieron '%1'"
 #: singlefileresource.h:130
 #, kde-format
 msgid "Another download is still in progress."
-msgstr ""
+msgstr "Alia elŝuto ankoraŭ estas en progreso."
 
 #: singlefileresource.h:140 singlefileresource.h:226
 #, kde-format
 msgid "Another file upload is still in progress."
-msgstr ""
+msgstr "Alia dosiera alŝuto estas ankoraŭ en progreso."
 
 #: singlefileresource.h:156
 #, kde-format
 msgid "Downloading remote file."
-msgstr ""
+msgstr "Elŝutante fora dosiero."
 
 #: singlefileresource.h:176
 #, kde-format
 msgid "Trying to write to a read-only file: '%1'."
-msgstr ""
+msgstr "Provante skribi al nurlegebla dosiero: '%1'."
 
 #: singlefileresource.h:188
 #, kde-format
 msgid "No file specified."
-msgstr ""
+msgstr "Neniu dosiero specifita."
 
 #: singlefileresource.h:216
 #, kde-format
 msgid "A download is still in progress."
-msgstr ""
+msgstr "Elŝuto ankoraŭ estas en progreso."
 
 #: singlefileresource.h:256
 #, kde-format
 msgid "Uploading cached file to remote location."
-msgstr ""
+msgstr "Alŝutas kaŝmemorigitan dosieron al fora loko."
 
 #: singlefileresourcebase.cpp:240
 #, kde-format
@@ -190,16 +204,18 @@ msgid ""
 "The file '%1' was changed on disk. As a precaution, a backup of its previous "
 "contents has been created at '%2'."
 msgstr ""
+"La dosiero '%1' estis ŝanĝita sur disko. Kiel antaŭzorgo, sekurkopio de ĝia "
+"antaŭa enhavo estis kreita ĉe '%2'."
 
 #: singlefileresourcebase.cpp:264
 #, kde-format
 msgid "Could not load file '%1'."
-msgstr ""
+msgstr "Ne eblis ŝargi dosieron '%1'."
 
 #: singlefileresourcebase.cpp:283
 #, kde-format
 msgid "Could not save file '%1'."
-msgstr ""
+msgstr "Ne eblis konservi dosieron '%1'."
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: singlefileresourceconfigwidget_desktop.ui:39
@@ -220,6 +236,8 @@ msgid ""
 "Select a file. A new file will be created if it doesn't exist. You can also "
 "use a URL, but in that case, monitoring for file changes is not possible."
 msgstr ""
+"Elektu dosieron. Nova dosiero estos kreita se ĝi ne ekzistas. Vi ankaŭ povas "
+"uzi URL, sed en tiu kazo, monitorado por dosierŝanĝoj ne eblas."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -235,6 +253,9 @@ msgid ""
 "is automatically enabled when the selected file does not support write "
 "access."
 msgstr ""
+"Kiam nurlegebla reĝimo estas ebligita, neniuj ŝanĝoj estos skribitaj. "
+"Nurlegebla reĝimo estas aŭtomate ebligita kiam la elektita dosiero ne "
+"subtenas skribaliron."
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_MonitorFile)
 #: singlefileresourceconfigwidget_desktop.ui:121
@@ -249,6 +270,8 @@ msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible."
 msgstr ""
+"Ŝanĝoj faritaj de aliaj aplikaĵoj reŝargos la dosieron kiam monitorado estas "
+"ebligita. Sekurkopioj estos kreitaj por eviti konfliktojn kiam eble."
 
 #: singlefileresourceconfigwidgetbase.cpp:126
 #, kde-format
