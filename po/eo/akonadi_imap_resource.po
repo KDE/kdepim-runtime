@@ -2,31 +2,33 @@
 # Copyright (C) 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the kdepim-runtime package.
 # Axel Rousseau <axel@esperanto-jeunes.org>, 2009.
+# Oliver Kellogg <okellogg@users.sourceforge.net>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-18 00:49+0000\n"
-"PO-Revision-Date: 2023-03-21 22:43+0100\n"
+"PO-Revision-Date: 2023-05-29 07:34+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: esperanto <kde-i18n-eo@kde.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: pology\n"
+"X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
 msgid "Cannot add IMAP folder '%1' for a non-existing parent folder '%2'."
 msgstr ""
+"Ne povas aldoni IMAP-dosierujon '%1' por neekzistanta gepatra dosierujo '%2'."
 
 #: addcollectiontask.cpp:67
 #, kde-format
 msgid "Failed to create the folder '%1' on the IMAP server. "
-msgstr ""
+msgstr "Malsukcesis krei la dosierujon '%1' sur la IMAP-servilo."
 
 #: addcollectiontask.cpp:87 movecollectiontask.cpp:119
 #, kde-format
@@ -34,22 +36,24 @@ msgid ""
 "Failed to subscribe to the folder '%1' on the IMAP server. It will disappear "
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
+"Malsukcesis aboni la dosierujon '%1' sur la IMAP-servilo. Ĝi malaperos dum "
+"la sekva sinkronigo. Uzu la abonan dialogon por venki tion"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
 msgid "Failed to write some annotations for '%1' on the IMAP server. %2"
-msgstr ""
+msgstr "Malsukcesis verki kelkajn komentadojn por '%1' sur la IMAP-servilo. %2"
 
 #: additemtask.cpp:115 changeitemtask.cpp:181 changeitemtask.cpp:205
 #: moveitemstask.cpp:255
 #, kde-format
 msgid "Could not determine the UID for the newly created message on the server"
-msgstr ""
+msgstr "Ne eblis determini la UID por la nove kreita mesaĝo sur la servilo"
 
 #: changecollectiontask.cpp:39
 #, kde-format
 msgid "Cannot modify IMAP folder '%1', it does not exist on the server."
-msgstr ""
+msgstr "Ne povas modifi IMAP-dosierujon '%1', ĝi ne ekzistas en la servilo."
 
 #: changecollectiontask.cpp:51
 #, kde-format
@@ -57,11 +61,13 @@ msgid ""
 "ACLs for '%1' need to be retrieved from the IMAP server first. Skipping ACL "
 "change"
 msgstr ""
+"ACL-oj por '%1' unue devas esti prenitaj de la IMAP-servilo. Preterpasi ACL-"
+"ŝanĝon"
 
 #: changecollectiontask.cpp:237
 #, kde-format
 msgid "Failed to rename the folder, restoring folder list."
-msgstr ""
+msgstr "Malsukcesis renomi la dosierujon, restarigante dosierujon."
 
 #: changecollectiontask.cpp:256
 #, kde-format
@@ -69,11 +75,13 @@ msgid ""
 "Failed to subscribe to the renamed folder '%1' on the IMAP server. It will "
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
+"Malsukcesis aboni la renomitan dosierujon '%1' sur la IMAP-servilo. Ĝi "
+"malaperos dum la sekva sinkronigo. Uzu la abonan dialogon por venki tion"
 
 #: changecollectiontask.cpp:267
 #, kde-format
 msgid "Failed to write some ACLs for '%1' on the IMAP server. %2"
-msgstr ""
+msgstr "Malsukcesis verki kelkajn ACL-ojn por '%1' sur la IMAP-servilo. %2"
 
 #: imapresource.cpp:49
 #, kde-format
@@ -84,19 +92,19 @@ msgstr "IMAP-konto"
 #, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
-msgstr ""
+msgstr "Agordoj de IMAP-Konto"
 
 #. i18n: ectx: label, entry (ImapServer), group (network)
 #: imapresource.kcfg:10
 #, kde-format
 msgid "IMAP server"
-msgstr ""
+msgstr "IMAP-servilo"
 
 #. i18n: ectx: label, entry (ImapPort), group (network)
 #: imapresource.kcfg:13
 #, kde-format
 msgid "Defines the port the IMAP service is running on"
-msgstr ""
+msgstr "Difinas la pordon, sur kiu funkcias IMAP-servo"
 
 #. i18n: ectx: label, entry (UserName), group (network)
 #: imapresource.kcfg:17
@@ -108,32 +116,32 @@ msgstr "Uzantnomo"
 #: imapresource.kcfg:20
 #, kde-format
 msgid "Defines the encryption type to use"
-msgstr ""
+msgstr "Difinas la ĉifradan tipon por uzi"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
 #: imapresource.kcfg:24
 #, kde-format
 msgid "Override configured encryption mode"
-msgstr ""
+msgstr "Anstataŭigi agordan ĉifradan reĝimon"
 
 #. i18n: ectx: label, entry (Authentication), group (network)
 #: imapresource.kcfg:27
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr ""
+msgstr "Difinas la aŭtentikigan tipon por uzi"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
 #: imapresource.kcfg:31
 #, kde-format
 msgid "Defines if the server side subscription is enabled"
-msgstr ""
+msgstr "Difinas ĉu la servilflanka abono estas ebligita"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useProxyCheck)
 #. i18n: ectx: label, entry (UseProxy), group (network)
 #: imapresource.kcfg:38 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr ""
+msgstr "Konektu uzante la sistemajn prokurajn agordojn"
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:39
@@ -142,24 +150,26 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
+"Se markite, la sistemaj prokuraj agordoj estos uzataj por konekti al la "
+"poŝtservilo."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:45
 #, kde-format
 msgid "Defines if all the IMAP data should be cached locally all the time"
-msgstr ""
+msgstr "Difinas ĉu ĉiuj IMAP-datumoj estu konservitaj loke la tutan tempon"
 
 #. i18n: ectx: label, entry (IntervalCheckEnabled), group (cache)
 #: imapresource.kcfg:49
 #, kde-format
 msgid "Defines if interval checking is enabled."
-msgstr ""
+msgstr "Difinas ĉu intervalkontrolado estas ebligita."
 
 #. i18n: ectx: label, entry (IntervalCheckTime), group (cache)
 #: imapresource.kcfg:53
 #, kde-format
 msgid "Check interval in minutes"
-msgstr ""
+msgstr "Kontrol-intervalo en minutoj"
 
 #. i18n: ectx: label, entry (RetrieveMetadataOnFolderListing), group (cache)
 #: imapresource.kcfg:58
@@ -168,6 +178,8 @@ msgid ""
 "Defines if the annotations, ACLs and quota information of mailboxes should\n"
 "             also be retrieved when the mailboxes get listed."
 msgstr ""
+"Difinas ĉu la komentarioj, ACL-oj kaj kvotinformoj de leterkestoj ankaŭ\n"
+"             devus esti prenitaj kiam la leterkestoj estas listigitaj."
 
 #. i18n: ectx: label, entry (AutomaticExpungeEnabled), group (cache)
 #: imapresource.kcfg:63
@@ -177,220 +189,225 @@ msgid ""
 "be\n"
 "             triggered manually through the D-Bus interface."
 msgstr ""
+"Difinas ĉu la forigo-komando estas elsendita aŭtomate, alie ĝi devus esti\n"
+"              ekigita permane per la interfaco de D-Bus."
 
 #. i18n: ectx: label, entry (TrashCollection), group (cache)
 #: imapresource.kcfg:67
 #, kde-format
 msgid "Define which folder is used for trash"
-msgstr ""
+msgstr "Difini kiu dosierujo estas uzata por rubujo"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
 #: imapresource.kcfg:71
 #, kde-format
 msgid "Define if the trash collection received the special attribute"
-msgstr ""
+msgstr "Difini ĉu la rubkolekto ricevis la specialan atributon"
 
 #. i18n: ectx: label, entry (UseDefaultIdentity), group (cache)
 #: imapresource.kcfg:75
 #, kde-format
 msgid "Define if account uses the default identity"
-msgstr ""
+msgstr "Difini ĉu konto uzas la defaŭltan identecon"
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
 #: imapresource.kcfg:79
 #, kde-format
 msgid "Identity account"
-msgstr ""
+msgstr "Identeca konto"
 
 #. i18n: ectx: label, entry (KnownMailBoxes), group (cache)
 #: imapresource.kcfg:82
 #, kde-format
 msgid "List of mailbox names reported by the server the last time"
-msgstr ""
+msgstr "Listo de leterkestonomoj raportitaj de la servilo la lastan fojon"
 
 #. i18n: ectx: label, entry (IdleRidPath), group (idle)
 #: imapresource.kcfg:87
 #, kde-format
 msgid "RID path to the mailbox to watch for changes"
-msgstr ""
+msgstr "RID-vojo al la leterkesto por observi ŝanĝojn"
 
 #. i18n: ectx: label, entry (SieveSupport), group (siever)
 #: imapresource.kcfg:92
 #, kde-format
 msgid "Define if server supports sieve"
-msgstr ""
+msgstr "Difini ĉu servilo subtenas kribrilon"
 
 #. i18n: ectx: label, entry (SieveReuseConfig), group (siever)
 #: imapresource.kcfg:96
 #, kde-format
 msgid "Define if we reuse host and login configuration"
-msgstr ""
+msgstr "Difini ĉu ni reuzas gastiganton kaj ensalutan agordon"
 
 #. i18n: ectx: label, entry (SievePort), group (siever)
 #: imapresource.kcfg:100
 #, kde-format
 msgid "Define sieve port"
-msgstr ""
+msgstr "Difini kribrilpordon"
 
 #. i18n: ectx: label, entry (SieveAlternateUrl), group (siever)
 #: imapresource.kcfg:104
 #, kde-format
 msgid "Define alternate URL"
-msgstr ""
+msgstr "Difini alternan URL"
 
 #. i18n: ectx: label, entry (AlternateAuthentication), group (siever)
 #: imapresource.kcfg:107
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
-msgstr ""
+msgstr "Difinas la aŭtentikigtipon por uzi por alterna servilo"
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
 #: imapresource.kcfg:111
 #, kde-format
 msgid "Define default sieve vacation filename"
-msgstr ""
+msgstr "Difinu defaŭltan kribrilon feriaj dosiernomon"
 
 #. i18n: ectx: label, entry (SieveCustomUsername), group (siever)
 #: imapresource.kcfg:115
 #, kde-format
 msgid "Define username used from custom server sieve url"
-msgstr ""
+msgstr "Difinu uzantnomon uzatan de propra servila kribrilo url"
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
-msgstr ""
+msgstr "Difinas la tipon de identigo uzata de propra kribrilservilo"
 
 #: imapresourcebase.cpp:212
 #, kde-format
 msgid "No server configured yet."
-msgstr ""
+msgstr "Ankoraŭ neniu servilo agordita."
 
 #: imapresourcebase.cpp:245 setupserver.cpp:663
 #, kde-format
 msgctxt "@title:window"
 msgid "Serverside Subscription"
-msgstr ""
+msgstr "Servila Abono"
 
 #: imapresourcebase.cpp:269
 #, kde-format
 msgid "Connection established."
-msgstr ""
+msgstr "Konekto establita."
 
 #: imapresourcebase.cpp:286
 #, kde-format
 msgid "Server is not available."
-msgstr ""
+msgstr "Servilo ne disponeblas."
 
 #: imapresourcebase.cpp:337
 #, kde-format
 msgctxt "@info:status"
 msgid "Adding item in '%1'"
-msgstr ""
+msgstr "Aldonante eron en '%1'"
 
 #: imapresourcebase.cpp:344
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating item in '%1'"
-msgstr ""
+msgstr "Ĝisdatigante eron en '%1'"
 
 #: imapresourcebase.cpp:351
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
-msgstr ""
+msgstr "Ĝisdatigante erojn"
 
 #: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
-msgstr ""
+msgstr "Forigante erojn"
 
 #: imapresourcebase.cpp:381
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving items from '%1' to '%2'"
-msgstr ""
+msgstr "Movante erojn de '%1' al '%2'"
 
 #: imapresourcebase.cpp:390
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
-msgstr ""
+msgstr "Reakiro de dosierujoj"
 
 #: imapresourcebase.cpp:397
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving extra folder information for '%1'"
-msgstr ""
+msgstr "Prenante ekstrajn dosierujojn por '%1'"
 
 #: imapresourcebase.cpp:415
 #, kde-format
 msgctxt "@info:status"
 msgid "Creating folder '%1'"
-msgstr ""
+msgstr "Kreante dosierujon '%1'"
 
 #: imapresourcebase.cpp:421
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating folder '%1'"
-msgstr ""
+msgstr "Ĝisdatigante dosierujon '%1'"
 
 #: imapresourcebase.cpp:434
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing folder '%1'"
-msgstr ""
+msgstr "Forigante dosierujon '%1'"
 
 #: imapresourcebase.cpp:441
 #, kde-format
 msgctxt "@info:status"
 msgid "Moving folder '%1' from '%2' to '%3'"
-msgstr ""
+msgstr "Movante dosierujon '%1' de '%2' al '%3'"
 
 #: imapresourcebase.cpp:471
 #, kde-format
 msgctxt "@info:status"
 msgid "Searching..."
-msgstr ""
+msgstr "Serĉante..."
 
 #: movecollectiontask.cpp:29
 #, kde-format
 msgid "Cannot move IMAP folder '%1', it does not exist on the server."
-msgstr ""
+msgstr "Ne povas movi IMAP-dosierujon '%1', ĝi ne ekzistas sur la servilo."
 
 #: movecollectiontask.cpp:35
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' out of '%2', '%2' does not exist on the server."
 msgstr ""
+"Ne povas movi IMAP-dosierujon '%1' el '%2', '%2' ne ekzistas sur la servilo."
 
 #: movecollectiontask.cpp:41
 #, kde-format
 msgid ""
 "Cannot move IMAP folder '%1' to '%2', '%2' does not exist on the server."
 msgstr ""
+"Ne povas movi IMAP-dosierujon '%1' al '%2', '%2' ne ekzistas sur la servilo."
 
 #: moveitemstask.cpp:41
 #, kde-format
 msgid "Cannot move message, it does not exist on the server."
-msgstr ""
+msgstr "Ne povas movi mesaĝon, ĝi ne ekzistas sur la servilo."
 
 #: moveitemstask.cpp:48
 #, kde-format
 msgid "Cannot move message out of '%1', '%1' does not exist on the server."
-msgstr ""
+msgstr "Ne povas movi mesaĝon el '%1', '%1' ne ekzistas sur la servilo."
 
 #: moveitemstask.cpp:55
 #, kde-format
 msgid "Cannot move message to '%1', '%1' does not exist on the server."
-msgstr ""
+msgstr "Ne povas movi mesaĝon al '%1', '%1' ne ekzistas sur la servilo."
 
 #: moveitemstask.cpp:113
 #, kde-format
 msgid "Failed to move item, it has no message payload. Remote id: %1"
 msgstr ""
+"Malsukcesis movi elementon, ĝi ne havas mesaĝan ŝarĝon. Fora identigilo: %1"
 
 #: moveitemstask.cpp:190
 #, kde-format
@@ -398,37 +415,40 @@ msgid ""
 "Failed to mark the message from '%1' for deletion on the IMAP server. It "
 "will reappear on next sync."
 msgstr ""
+"Malsukcesis marki la mesaĝon de '%1' por forigo sur la IMAP-servilo. Ĝi "
+"reaperos en la sekva sinkronigo."
 
 #: removecollectionrecursivetask.cpp:116 removecollectionrecursivetask.cpp:132
 #: removecollectionrecursivetask.cpp:145
 #, kde-format
 msgid "Failed to delete the folder, restoring folder list."
-msgstr ""
+msgstr "Malsukcesis forigi la dosierujon, restarigante dosierujon."
 
 #: removecollectionrecursivetask.cpp:150
 #, kde-format
 msgid "Failed to find the folder to be deleted, restoring folder list."
 msgstr ""
+"Malsukcesis trovi la dosierujon por esti forigita, restarigante dosierujon."
 
 #: resourcestate.cpp:274
 #, kde-format
 msgid "Restarting item retrieval."
-msgstr ""
+msgstr "Rekomencante eron-servon."
 
 #: resourcetask.cpp:69
 #, kde-format
 msgid "Unable to connect to the IMAP server."
-msgstr ""
+msgstr "Ne eblas konektiĝi al la IMAP-servilo."
 
 #: resourcetask.cpp:113 resourcetask.cpp:125
 #, kde-format
 msgid "Connection lost"
-msgstr ""
+msgstr "Konekto Perdita"
 
 #: resourcetask.cpp:475
 #, kde-format
 msgid "killed"
-msgstr ""
+msgstr "mortigita"
 
 #: retrievecollectionmetadatatask.cpp:179
 #, kde-format
@@ -436,59 +456,61 @@ msgid ""
 "<p>Your access rights to folder <b>%1</b> have been restricted, it will no "
 "longer be possible to add messages to this folder.</p>"
 msgstr ""
+"<p>Viaj alirrajtoj al dosierujo <b>%1</b> estas limigitaj, ne plu eblos "
+"aldoni mesaĝojn al ĉi tiu dosierujo.</p>"
 
 #: retrievecollectionmetadatatask.cpp:182
 #, kde-format
 msgid "Access rights revoked"
-msgstr ""
+msgstr "Alirrajtoj nuligitaj"
 
 #: retrievecollectionstask.cpp:155
 #, kde-format
 msgid "Inbox"
-msgstr ""
+msgstr "Enirkesto"
 
 #: retrievecollectionstask.cpp:164
 #, kde-format
 msgid "Shared Folders"
-msgstr ""
+msgstr "Komunaj Dosierujoj"
 
 #: retrieveitemstask.cpp:529
 #, kde-format
 msgctxt "@info:status"
 msgid "Fetching missing mail bodies in %3: %1/%2"
-msgstr ""
+msgstr "Prenante mankantajn poŝtkorpojn en %3: %1/%2"
 
 #: retrieveitemtask.cpp:35
 #, kde-format
 msgid "Remote id is empty or invalid"
-msgstr ""
+msgstr "Fora identigilo estas malplena aŭ nevalida"
 
 #: retrieveitemtask.cpp:78 retrieveitemtask.cpp:94
 #, kde-format
 msgid "No message retrieved, failed to read the message."
-msgstr ""
+msgstr "Neniu mesaĝo retrovita, malsukcesis legi la mesaĝon."
 
 #: retrieveitemtask.cpp:115
 #, kde-format
 msgid "No message retrieved, server reply was empty."
-msgstr ""
+msgstr "Neniu mesaĝo retrovita, servila respondo estis malplena."
 
 #: searchtask.cpp:193
 #, kde-format
 msgid "Invalid search"
-msgstr ""
+msgstr "Nevalida serĉo"
 
 #: serverinfodialog.cpp:29
 #, kde-format
 msgctxt ""
 "@title:window Dialog title for dialog showing information about a server"
 msgid "Server Info"
-msgstr ""
+msgstr "Servilo Informoj"
 
 #: serverinfodialog.cpp:83
 #, kde-format
 msgid "Resource not synchronized yet."
-msgstr ""
+msgstr "Rimedo ankoraŭ ne sinkronigita."
 
 #: sessionpool.cpp:250 sessionpool.cpp:406
 #, kde-format
@@ -496,6 +518,8 @@ msgid ""
 "Could not connect to the IMAP-server %1.\n"
 "%2"
 msgstr ""
+"Ne eblis konekti al la IMAP-servilo %1.\n"
+"%2"
 
 #: sessionpool.cpp:254
 #, kde-format
@@ -503,27 +527,29 @@ msgid ""
 "Could not connect to the IMAP server.\n"
 "%1"
 msgstr ""
+"Ne eblis konektiĝi al la IMAP-servilo.\n"
+"%1"
 
 #: sessionpool.cpp:279 sessionpool.cpp:319 sessionpool.cpp:388
 #: sessionpool.cpp:424 sessionpool.cpp:495
 #, kde-format
 msgid "Disconnected from server during login."
-msgstr ""
+msgstr "Malkonektita de servilo dum ensaluto."
 
 #: sessionpool.cpp:303
 #, kde-format
 msgid "Could not create another extra connection to the IMAP-server %1."
-msgstr ""
+msgstr "Ne eblis krei alian kroman konekton al la IMAP-servilo %1."
 
 #: sessionpool.cpp:332
 #, kde-format
 msgid "Could not read the password: user rejected wallet access"
-msgstr ""
+msgstr "Ne eblis legi la pasvorton: uzanto malakceptis aliron al monujo"
 
 #: sessionpool.cpp:340
 #, kde-format
 msgid "Empty password"
-msgstr ""
+msgstr "Malplena pasvorto"
 
 #: sessionpool.cpp:352
 #, kde-format
@@ -531,6 +557,8 @@ msgid ""
 "You requested TLS/SSL to connect to %1, but your system does not seem to be "
 "set up for that."
 msgstr ""
+"Vi petis TLS/SSL por konekti al %1, sed via sistemo ne ŝajnas esti agordita "
+"por tio."
 
 #: sessionpool.cpp:409
 #, kde-format
@@ -538,6 +566,8 @@ msgid ""
 "Could not connect to the IMAP-server.\n"
 "%1"
 msgstr ""
+"Ne eblis konektiĝi al la IMAP-servilo.\n"
+"%1"
 
 #: sessionpool.cpp:432
 #, kde-format
@@ -545,6 +575,8 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server %1.\n"
 "%2"
 msgstr ""
+"Ne eblis testi la kapablojn subtenatajn de la IMAP-servilo %1.\n"
+"%2"
 
 #: sessionpool.cpp:440
 #, kde-format
@@ -552,6 +584,8 @@ msgid ""
 "Could not test the capabilities supported by the IMAP server.\n"
 "%1"
 msgstr ""
+"Ne eblis testi la kapablojn subtenatajn de la IMAP-servilo.\n"
+"%1"
 
 #: sessionpool.cpp:460
 #, kde-format
@@ -559,11 +593,13 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
+"Ne povas uzi la IMAP-servilon %1, kelkaj devigaj kapabloj mankas: %2. "
+"Bonvolu peti vian administranton ĝisdatigi la servilon."
 
 #: sessionpool.cpp:532
 #, kde-format
 msgid "Disconnected during login."
-msgstr ""
+msgstr "Malkonektita dum ensaluto."
 
 #: settingspasswordrequester.cpp:53
 #, kde-format
@@ -574,28 +610,33 @@ msgid ""
 "\n"
 "%1"
 msgstr ""
+"La servilo por konto \"%2\" rifuzis la provizitajn uzantnomon kaj "
+"pasvorton.\n"
+"Ĉu vi volas iri al la agordoj, havi alian provon ensaluti aŭ fari nenion?\n"
+"\n"
+"%1"
 
 #: settingspasswordrequester.cpp:60
 #, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
-msgstr ""
+msgstr "Ne Povis Aŭtentikigi"
 
 #: settingspasswordrequester.cpp:64
 #, kde-format
 msgid "Account Settings"
-msgstr ""
+msgstr "Kontagordoj"
 
 #: settingspasswordrequester.cpp:65
 #, kde-format
 msgctxt "Input username/password manually and not store them"
 msgid "Try Again"
-msgstr ""
+msgstr "Provu denove"
 
 #: settingspasswordrequester.cpp:150
 #, kde-format
 msgid "Please enter password for user '%1' on IMAP server '%2'."
-msgstr ""
+msgstr "Bonvolu enigi pasvorton por uzanto '%1' sur IMAP-servilo '%2'."
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -604,7 +645,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "Clear text"
-msgstr ""
+msgstr "Klara teksto"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -619,19 +660,19 @@ msgstr "Anonimulo"
 #, kde-format
 msgctxt "Authentication method"
 msgid "Gmail"
-msgstr ""
+msgstr "Gmail"
 
 #: setupserver.cpp:148
 #, kde-format
 msgid "Archive Folder"
-msgstr ""
+msgstr "Arkiva Dosierujo"
 
 #: setupserver.cpp:160
 #, kde-format
 msgid " minute"
 msgid_plural " minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] " minuto"
+msgstr[1] " minutoj"
 
 #: setupserver.cpp:175
 #, kde-format
@@ -645,11 +686,14 @@ msgid ""
 "as before we will have to re-download all your emails from this account "
 "again. Are you sure you want to proceed?"
 msgstr ""
+"Vi ŝanĝis la adreson de la servilo. Eĉ se ĉi tio estas la sama servilo kiel "
+"antaŭe, ni devos reelŝuti ĉiujn viajn retpoŝtojn de ĉi tiu konto denove. Ĉu "
+"vi certas, ke vi volas daŭrigi?"
 
 #: setupserver.cpp:269
 #, kde-format
 msgid "Server address change"
-msgstr ""
+msgstr "Ŝanĝo de servila adreso"
 
 #: setupserver.cpp:276
 #, kde-format
@@ -658,11 +702,14 @@ msgid ""
 "account as before we will have to re-download all your emails from this "
 "account again. Are you sure you want to proceed?"
 msgstr ""
+"Vi ŝanĝis la uzantnomon. Eĉ se ĉi tio estas uzantnomo por la sama konto kiel "
+"antaŭe, ni devos reelŝuti ĉiujn viajn retpoŝtojn de ĉi tiu konto denove. Ĉu "
+"vi certas, ke vi volas daŭrigi?"
 
 #: setupserver.cpp:279
 #, kde-format
 msgid "User name change"
-msgstr ""
+msgstr "Ŝanĝo de uzantnomo"
 
 #: setupserver.cpp:424 setupserver.cpp:480
 #, kde-format
@@ -671,26 +718,30 @@ msgid ""
 "you have to activate it. If you do not want to use KWallet, check the box "
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
+"Ne eblis aliri KWallet. Se vi volas konservi la pasvorton konstante, tiam vi "
+"devas aktivigi ĝin. Se vi ne volas uzi KWallet, kontrolu la skatolon sube, "
+"sed notu, ke oni petos vin por via pasvorto kiam necese."
 
 #: setupserver.cpp:429 setupserver.cpp:485
 #, kde-format
 msgid "Do not use KWallet"
-msgstr ""
+msgstr "Ne uzu KWallet"
 
 #: setupserver.cpp:550
 #, kde-format
 msgid "Unable to connect to the server, please verify the server address."
 msgstr ""
+"Ne eblas konektiĝi al la servilo, bonvolu kontroli la servilan adreson."
 
 #: setupserver.cpp:562
 #, kde-format
 msgid "<qt><b>STARTTLS is supported and recommended.</b></qt>"
-msgstr ""
+msgstr "<qt><b>STARTTLS estas subtenata kaj rekomendita.</b></qt>"
 
 #: setupserver.cpp:565
 #, kde-format
 msgid "<qt><b>SSL/TLS is supported and recommended.</b></qt>"
-msgstr ""
+msgstr "<qt><b>SSL/TLS estas subtenata kaj rekomendita.</b></qt>"
 
 #: setupserver.cpp:569
 #, kde-format
@@ -698,11 +749,13 @@ msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
+"<qt><b>Neniu sekureco estas subtenata. Ne rekomendas konektiĝi al ĉi tiu "
+"servilo.</b></qt>"
 
 #: setupserver.cpp:572
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
-msgstr ""
+msgstr "<qt><b>Ne eblas uzi ĉi tiun servilon.</b></qt>"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -720,7 +773,7 @@ msgstr "Informoj pri Konto"
 #: setupserverview_desktop.ui:46
 #, kde-format
 msgid "Account Name:"
-msgstr ""
+msgstr "Kontonomo:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label)
 #: setupserverview_desktop.ui:57
@@ -730,18 +783,21 @@ msgid ""
 "a specific encryption scheme, you can add \":port\" to indicate that. For "
 "example: \"imap.foo.com:144\"."
 msgstr ""
+"Indiku la IMAP-servilon. Se vi volas konektiĝi al nenorma pordo por specifa "
+"ĉifrada skemo, vi povas aldoni \":port\" por indiki tion. Ekzemple: \"imap."
+"foo.com:144\"."
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: setupserverview_desktop.ui:60
 #, kde-format
 msgid "I&MAP Server:"
-msgstr ""
+msgstr "I&MAP-Servilo:"
 
 #. i18n: ectx: property (whatsThis), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:74
 #, kde-format
 msgid "The username."
-msgstr ""
+msgstr "La uzantnomo."
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: setupserverview_desktop.ui:77
@@ -753,7 +809,7 @@ msgstr "Uzan&tnomo:"
 #: setupserverview_desktop.ui:91
 #, kde-format
 msgid "The password."
-msgstr ""
+msgstr "La pasvorto."
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #. i18n: ectx: property (text), widget (QLabel, label_13)
@@ -766,13 +822,13 @@ msgstr "Pasvorto:"
 #: setupserverview_desktop.ui:108
 #, kde-format
 msgid "Mail Checking Options"
-msgstr ""
+msgstr "Poŝtkontrolaj Opcioj"
 
 #. i18n: ectx: property (text), widget (QCheckBox, disconnectedModeEnabled)
 #: setupserverview_desktop.ui:115
 #, kde-format
 msgid "&Download all messages for offline use"
-msgstr ""
+msgstr "&Elŝutu ĉiujn mesaĝojn por eksterreta uzo"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableMailCheckBox)
 #: setupserverview_desktop.ui:122
@@ -784,7 +840,7 @@ msgstr "Ŝalti &ripetan kontrolon je nova poŝto"
 #: setupserverview_desktop.ui:129
 #, kde-format
 msgid "Check mail interval:"
-msgstr ""
+msgstr "Kontrolu poŝtintervalon:"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #: setupserverview_desktop.ui:160
@@ -796,13 +852,13 @@ msgstr "Filtrado"
 #: setupserverview_desktop.ui:166
 #, kde-format
 msgid "Server supports Sieve"
-msgstr ""
+msgstr "Servilo subtenas Kribrilon"
 
 #. i18n: ectx: property (text), widget (QCheckBox, sameConfigCheck)
 #: setupserverview_desktop.ui:173
 #, kde-format
 msgid "Reuse host and login configuration"
-msgstr ""
+msgstr "Reuzu gastiganton kaj ensalutan agordon"
 
 #. i18n: ectx: property (text), widget (QLabel, label_14)
 #: setupserverview_desktop.ui:180
@@ -812,42 +868,45 @@ msgid ""
 "Old server implementations still use port 2000, while newer standard conform "
 "server can only be accessed via port 4190."
 msgstr ""
+"La servila pordo ŝanĝiĝis kiam ManageSieve fariĝis plena RFC-Normo. Malnovaj "
+"servilaj realigoj daŭre uzas pordon 2000, dum pli nova normkonforma servilo "
+"nur povas esti alirita per pordo 4190."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr ""
+msgstr "Administri pordon:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
 #, kde-format
 msgid "Alternate Server:"
-msgstr ""
+msgstr "Alterna servilo:"
 
 #. i18n: ectx: property (title), widget (QGroupBox, authentication)
 #: setupserverview_desktop.ui:223
 #, kde-format
 msgid "Authentication"
-msgstr ""
+msgstr "Aŭtentikigo"
 
 #. i18n: ectx: property (text), widget (QRadioButton, noAuthentification)
 #: setupserverview_desktop.ui:233
 #, kde-format
 msgid "No authentication"
-msgstr ""
+msgstr "Neniu aŭtentigo"
 
 #. i18n: ectx: property (text), widget (QRadioButton, customUserPassword)
 #: setupserverview_desktop.ui:243
 #, kde-format
 msgid "&Username and Password"
-msgstr ""
+msgstr "&Uzantnomo kaj Pasvorto"
 
 #. i18n: ectx: property (text), widget (QRadioButton, imapUserPassword)
 #: setupserverview_desktop.ui:257
 #, kde-format
 msgid "I&MAP Username and Password"
-msgstr ""
+msgstr "I&MAP Uzantnomo kaj Pasvorto"
 
 #. i18n: ectx: property (text), widget (QLabel, label_12)
 #: setupserverview_desktop.ui:277
@@ -860,7 +919,7 @@ msgstr "Uzantnomo:"
 #: setupserverview_desktop.ui:286 setupserverview_desktop.ui:509
 #, kde-format
 msgid "Authentication:"
-msgstr ""
+msgstr "Aŭtentikigo:"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -868,7 +927,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "LOGIN"
-msgstr ""
+msgstr "ENSALUTI"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -876,7 +935,7 @@ msgstr ""
 #, kde-format
 msgctxt "Authentication method"
 msgid "PLAIN"
-msgstr ""
+msgstr "Ebenaĵo"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationAlternateCombo)
 #. i18n: ectx: property (text), item, widget (QComboBox, authenticationCombo)
@@ -920,19 +979,19 @@ msgstr "Plie"
 #: setupserverview_desktop.ui:362
 #, kde-format
 msgid "IMAP Settings"
-msgstr ""
+msgstr "IMAP-agordoj"
 
 #. i18n: ectx: property (text), widget (QCheckBox, subscriptionEnabled)
 #: setupserverview_desktop.ui:371
 #, kde-format
 msgid "Enable server-side subscriptions"
-msgstr ""
+msgstr "Ebligu servilflankajn abonojn"
 
 #. i18n: ectx: property (text), widget (QPushButton, subscriptionButton)
 #: setupserverview_desktop.ui:381
 #, kde-format
 msgid "Serverside Subscription..."
-msgstr ""
+msgstr "Servila Abono..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, autoExpungeCheck)
 #: setupserverview_desktop.ui:390
@@ -956,13 +1015,13 @@ msgstr "Agordo de Konekto"
 #: setupserverview_desktop.ui:416
 #, kde-format
 msgid "Auto Detect"
-msgstr ""
+msgstr "Aŭtomata Detektado"
 
 #. i18n: ectx: property (text), widget (QPushButton, showServerInfo)
 #: setupserverview_desktop.ui:423
 #, kde-format
 msgid "Server Info"
-msgstr ""
+msgstr "Servilo Informoj"
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: setupserverview_desktop.ui:432
@@ -974,13 +1033,13 @@ msgstr "Ĉifrado:"
 #: setupserverview_desktop.ui:441
 #, kde-format
 msgid "STARTTLS"
-msgstr ""
+msgstr "STARTTLS"
 
 #. i18n: ectx: property (text), widget (QRadioButton, sslRadio)
 #: setupserverview_desktop.ui:451
 #, kde-format
 msgid "SSL/TLS"
-msgstr ""
+msgstr "SSL/TLS"
 
 #. i18n: ectx: property (text), widget (QRadioButton, noRadio)
 #: setupserverview_desktop.ui:461
@@ -1014,6 +1073,27 @@ msgid ""
 "family:'Sans Serif';\"> will connect to port 143 but not switch to a secure "
 "connection. This setting is not recommended.</span></p></body></html>"
 msgstr ""
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
+"REC-html40/strict.dtd\">\n"
+"<html> <head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css"
+"\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'HandelGotDLig'; font-size:10pt; "
+"font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style= \" font-"
+"family:'Sans Serif'; font-weight:600;\">SSL/TLS</span><span style=\" font-"
+"family:'Sans Serif';\"> estas sekura IMAP super pordo 993;</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0 ; text-indent:0px;\"><span style=\" font-"
+"family:'Sans Serif'; font-weight:600;\">STARTTLS</span><span style=\" font-"
+"family:' Sans Serif';\"> funkcios sur pordo 143 kaj ŝanĝos al sekura konekto "
+"rekte post konekto;</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-"
+"right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-"
+"family:'Sans Serif'; tiparo-pezo:600 ;\">Neniu</span><span style=\" font-"
+"family:'Sans Serif';\"> konektos al pordo 143 sed ne ŝanĝas al sekura "
+"konekto. Ĉi tiu agordo ne estas rekomendita.</span></p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: setupserverview_desktop.ui:489
@@ -1031,13 +1111,13 @@ msgstr "Malplena"
 #, kde-format
 msgctxt "@action:button"
 msgid "Reload &List"
-msgstr ""
+msgstr "Reŝargi &Listo"
 
 #: subscriptiondialog.cpp:64
 #, kde-format
 msgctxt "@option:check"
 msgid "Enable server-side subscriptions"
-msgstr ""
+msgstr "Ebligu servilflankajn abonojn"
 
 #: subscriptiondialog.cpp:70
 #, kde-format
@@ -1049,4 +1129,4 @@ msgstr "Serĉi:"
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr ""
+msgstr "Nur abonita"
