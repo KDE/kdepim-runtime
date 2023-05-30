@@ -57,5 +57,5 @@ private:
     Akonadi::EntityTreeModel *mModel = nullptr;
     Akonadi::ChangeRecorder *const mChangeRecorder;
     QSortFilterProxyModel *const mCollectionFilter;
-    NewMailNotifierCollectionProxyModel *mNewMailNotifierProxyModel = nullptr;
+    NewMailNotifierCollectionProxyModel *const mNewMailNotifierProxyModel;
 };

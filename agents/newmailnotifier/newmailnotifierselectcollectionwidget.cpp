@@ -87,6 +87,7 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     , mFolderView(new QTreeView(this))
     , mChangeRecorder(new Akonadi::ChangeRecorder(this))
     , mCollectionFilter(new QSortFilterProxyModel(this))
+    , mNewMailNotifierProxyModel(new NewMailNotifierCollectionProxyModel(this))
 {
     Akonadi::AttributeFactory::registerAttribute<Akonadi::NewMailNotifierAttribute>();
     auto vbox = new QVBoxLayout(this);
@@ -110,7 +111,6 @@ NewMailNotifierSelectCollectionWidget::NewMailNotifierSelectCollectionWidget(QWi
     mimeTypeProxy->addMimeTypeFilters(QStringList() << KMime::Message::mimeType());
     mimeTypeProxy->setSourceModel(mModel);
 
-    mNewMailNotifierProxyModel = new NewMailNotifierCollectionProxyModel(this);
     mNewMailNotifierProxyModel->setSourceModel(mimeTypeProxy);
 
     mCollectionFilter->setRecursiveFilteringEnabled(true);
