@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
@@ -44,7 +44,6 @@ msgctxt "@info:status"
 msgid "Removing %1 event"
 msgid_plural "Removing %1 events"
 msgstr[0] ""
-msgstr[1] ""
 
 #: calendarhandler.cpp:248
 #, kde-format
@@ -52,7 +51,6 @@ msgctxt "@info:status"
 msgid "Moving %1 event from calendar '%2' to calendar '%3'"
 msgid_plural "Moving %1 events from calendar '%2' to calendar '%3'"
 msgstr[0] ""
-msgstr[1] ""
 
 #: calendarhandler.cpp:266
 #, kde-format
@@ -183,7 +181,6 @@ msgstr ""
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] ""
-msgstr[1] ""
 
 #. i18n: ectx: property (text), widget (QLabel, accountLabel)
 #: googlesettingsdialog.cpp:116 googlesettingsdialog.ui:30
@@ -299,7 +296,6 @@ msgctxt "@info:status"
 msgid "Removing %1 contact"
 msgid_plural "Removing %1 contacts"
 msgstr[0] ""
-msgstr[1] ""
 
 #: personhandler.cpp:444
 #, kde-format
@@ -312,7 +308,6 @@ msgctxt "@info:status"
 msgid "Moving %1 contact from group '%2' to '%3'"
 msgid_plural "Moving %1 contacts from group '%2' to '%3'"
 msgstr[0] ""
-msgstr[1] ""
 
 #: personhandler.cpp:467
 #, kde-format
@@ -320,7 +315,6 @@ msgctxt "@info:status"
 msgid "Linking %1 contact"
 msgid_plural "Linking %1 contacts"
 msgstr[0] ""
-msgstr[1] ""
 
 #: personhandler.cpp:481
 #, kde-format
@@ -328,7 +322,6 @@ msgctxt "@info:status"
 msgid "Unlinking %1 contact"
 msgid_plural "Unlinking %1 contacts"
 msgstr[0] ""
-msgstr[1] ""
 
 #: personhandler.cpp:514
 #, kde-format
@@ -384,7 +377,6 @@ msgctxt "@info:status"
 msgid "Removing %1 task"
 msgid_plural "Removing %1 tasks"
 msgstr[0] ""
-msgstr[1] ""
 
 #: taskhandler.cpp:225
 #, kde-format
