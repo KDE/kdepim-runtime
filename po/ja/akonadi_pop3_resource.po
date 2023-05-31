@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
@@ -23,7 +23,6 @@ msgstr ""
 msgid " minute"
 msgid_plural " minutes"
 msgstr[0] " 分"
-msgstr[1] " 分"
 
 #: accountwidget.cpp:125 pop3resource.cpp:49
 #, kde-format
@@ -131,14 +130,12 @@ msgstr ""
 msgid " day"
 msgid_plural " days"
 msgstr[0] " 日"
-msgstr[1] " 日"
 
 #: accountwidget.cpp:424
 #, kde-format
 msgid " message"
 msgid_plural " messages"
 msgstr[0] " 件"
-msgstr[1] " 件"
 
 #: jobs.cpp:145
 #, fuzzy, kde-format
@@ -456,8 +453,7 @@ msgstr "メールチェック終了。ダウンロードしたメッセージは
 #, kde-format
 msgid "Finished mail check, 1 message downloaded."
 msgid_plural "Finished mail check, %1 messages downloaded."
-msgstr[0] "メールチェック終了。1 件のメッセージをダウンロードしました。"
-msgstr[1] "メールチェック終了。%1 件のメッセージをダウンロードしました。"
+msgstr[0] "メールチェック終了。%1 件のメッセージをダウンロードしました。"
 
 #: pop3resource.cpp:823
 #, kde-format
