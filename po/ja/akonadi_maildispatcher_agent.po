@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
@@ -19,8 +19,7 @@ msgstr ""
 #, kde-format
 msgid "Sending messages (1 item in queue)..."
 msgid_plural "Sending messages (%1 items in queue)..."
-msgstr[0] "メッセージを送信中 (残り 1 通)"
-msgstr[1] "メッセージを送信中 (残り %1 通)"
+msgstr[0] "メッセージを送信中 (残り %1 通)"
 
 #: maildispatcheragent.cpp:94
 #, kde-format

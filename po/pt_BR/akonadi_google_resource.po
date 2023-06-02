@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2013, 2014, 2018.
-# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2021.
+# Luiz Fernando Ranghetti <elchevive@opensuse.org>, 2020, 2021, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_googlecalendar_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-29 00:48+0000\n"
-"PO-Revision-Date: 2021-07-14 12:07-0300\n"
+"PO-Revision-Date: 2023-05-31 14:24-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@kde.org>\n"
 "Language: pt_BR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 20.04.2\n"
+"X-Generator: Lokalize 21.12.3\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -101,12 +101,12 @@ msgstr "Item inválido."
 #: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password..."
-msgstr ""
+msgstr "Obtendo senha..."
 
 #: googleresource.cpp:95
 #, kde-format
 msgid "Can't fetch password"
-msgstr ""
+msgstr "Não foi possível obter a senha"
 
 #: googleresource.cpp:136
 #, kde-format
