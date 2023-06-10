@@ -17,8 +17,8 @@
 #include <KPluginFactory>
 
 K_PLUGIN_CLASS_WITH_JSON(KCMLdap, "kcmldap.json")
-KCMLdap::KCMLdap(QObject *parent, const KPluginMetaData &data, const QVariantList &args)
-    : KCModule(parent, data, args)
+KCMLdap::KCMLdap(QObject *parent, const KPluginMetaData &data)
+    : KCModule(parent, data)
     , mLdapConfigureWidget(new KLDAPWidgets::LdapConfigureWidget(widget()))
 {
     setButtons(KCModule::Apply);

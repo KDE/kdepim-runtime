@@ -20,7 +20,7 @@ class KCMLdap : public KCModule
     Q_OBJECT
 
 public:
-    explicit KCMLdap(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+    explicit KCMLdap(QObject *parent, const KPluginMetaData &data);
     ~KCMLdap() override;
 
     void load() override;
