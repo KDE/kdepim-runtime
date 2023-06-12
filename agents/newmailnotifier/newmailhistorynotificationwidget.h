@@ -6,11 +6,14 @@
 #pragma once
 
 #include <QWidget>
-
+class QPlainTextEdit;
 class NewMailHistoryNotificationWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit NewMailHistoryNotificationWidget(QWidget *parent = nullptr);
     ~NewMailHistoryNotificationWidget() override;
+
+private:
+    QPlainTextEdit *const mPlainTextEdit;
 };
