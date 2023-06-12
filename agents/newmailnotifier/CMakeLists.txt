@@ -31,6 +31,8 @@ target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailhistorynotificationwidget.cpp
   newmailhistorynotificationdialog.h
   newmailhistorynotificationdialog.cpp
+  newmailhistorynotificationmanager.h
+  newmailhistorynotificationmanager.cpp
   ${newmailnotifier_common_SRCS}
   ${newmailnotifieragent_SRCS}
 )

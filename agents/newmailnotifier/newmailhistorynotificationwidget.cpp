@@ -17,6 +17,7 @@ NewMailHistoryNotificationWidget::NewMailHistoryNotificationWidget(QWidget *pare
     mainLayout->setContentsMargins({});
 
     mPlainTextEdit->setObjectName(QStringLiteral("mPlainTextEdit"));
+    mPlainTextEdit->setReadOnly(true);
     mainLayout->addWidget(mPlainTextEdit);
 }
 
