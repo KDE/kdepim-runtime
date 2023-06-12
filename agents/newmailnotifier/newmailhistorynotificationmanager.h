@@ -15,4 +15,15 @@ public:
     ~NewMailHistoryNotificationManager() override;
 
     static NewMailHistoryNotificationManager *self();
+
+    Q_REQUIRED_RESULT QStringList history() const;
+    void setHistory(const QStringList &newHistory);
+
+    void clear();
+
+Q_SIGNALS:
+    void HistoryAdded(const QString &str);
+
+private:
+    QStringList mHistory;
 };

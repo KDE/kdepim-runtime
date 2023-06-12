@@ -18,3 +18,18 @@ NewMailHistoryNotificationManager *NewMailHistoryNotificationManager::self()
     static NewMailHistoryNotificationManager s_self;
     return &s_self;
 }
+
+QStringList NewMailHistoryNotificationManager::history() const
+{
+    return mHistory;
+}
+
+void NewMailHistoryNotificationManager::setHistory(const QStringList &newHistory)
+{
+    mHistory = newHistory;
+}
+
+void NewMailHistoryNotificationManager::clear()
+{
+    mHistory.clear();
+}
