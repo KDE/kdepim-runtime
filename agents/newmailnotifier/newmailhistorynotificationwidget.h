@@ -15,5 +15,6 @@ public:
     ~NewMailHistoryNotificationWidget() override;
 
 private:
+    void slotHistoryAdded(const QString &str);
     QPlainTextEdit *const mPlainTextEdit;
 };
