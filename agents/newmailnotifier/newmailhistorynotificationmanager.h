@@ -24,7 +24,7 @@ public:
     void clear();
 
 Q_SIGNALS:
-    void HistoryAdded(const QString &str);
+    void historyAdded(const QString &str);
 
 private:
     QStringList mHistory;

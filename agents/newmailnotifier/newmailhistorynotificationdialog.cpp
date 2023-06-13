@@ -5,10 +5,18 @@
 
 #include "newmailhistorynotificationdialog.h"
 #include "newmailhistorynotificationwidget.h"
+#include <KConfigGroup>
 #include <KLocalizedString>
+#include <KSharedConfig>
+#include <KWindowConfig>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
+#include <QWindow>
 
+namespace
+{
+static const char myConfigNewMailHistoryNotificationDialogGroupName[] = "NewMailHistoryNotificationDialog";
+}
 NewMailHistoryNotificationDialog::NewMailHistoryNotificationDialog(QWidget *parent)
     : QDialog(parent)
     , mNewHistoryNotificationWidget(new NewMailHistoryNotificationWidget(this))
@@ -26,6 +34,25 @@ NewMailHistoryNotificationDialog::NewMailHistoryNotificationDialog(QWidget *pare
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &NewMailHistoryNotificationDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &NewMailHistoryNotificationDialog::reject);
+    readConfig();
 }
 
-NewMailHistoryNotificationDialog::~NewMailHistoryNotificationDialog() = default;
+NewMailHistoryNotificationDialog::~NewMailHistoryNotificationDialog()
+{
+    writeConfig();
+}
+
+void NewMailHistoryNotificationDialog::readConfig()
+{
+    create(); // ensure a window is created
+    windowHandle()->resize(QSize(800, 300));
+    KConfigGroup group(KSharedConfig::openStateConfig(), myConfigNewMailHistoryNotificationDialogGroupName);
+    KWindowConfig::restoreWindowSize(windowHandle(), group);
+    resize(windowHandle()->size()); // workaround for QTBUG-40584
+}
+
+void NewMailHistoryNotificationDialog::writeConfig()
+{
+    KConfigGroup group(KSharedConfig::openStateConfig(), myConfigNewMailHistoryNotificationDialogGroupName);
+    KWindowConfig::saveWindowSize(windowHandle(), group);
+}

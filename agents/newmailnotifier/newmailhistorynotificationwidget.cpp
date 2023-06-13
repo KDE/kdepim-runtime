@@ -4,6 +4,7 @@
 */
 
 #include "newmailhistorynotificationwidget.h"
+#include "newmailhistorynotificationmanager.h"
 #include <KLocalizedString>
 #include <QPlainTextEdit>
 #include <QVBoxLayout>
@@ -19,6 +20,17 @@ NewMailHistoryNotificationWidget::NewMailHistoryNotificationWidget(QWidget *pare
     mPlainTextEdit->setObjectName(QStringLiteral("mPlainTextEdit"));
     mPlainTextEdit->setReadOnly(true);
     mainLayout->addWidget(mPlainTextEdit);
+    connect(NewMailHistoryNotificationManager::self(),
+            &NewMailHistoryNotificationManager::historyAdded,
+            this,
+            &NewMailHistoryNotificationWidget::slotHistoryAdded);
+
+    mPlainTextEdit->setPlainText(NewMailHistoryNotificationManager::self()->history().join(QLatin1Char('\n')));
 }
 
 NewMailHistoryNotificationWidget::~NewMailHistoryNotificationWidget() = default;
+
+void NewMailHistoryNotificationWidget::slotHistoryAdded(const QString &str)
+{
+    mPlainTextEdit->appendPlainText(str);
+}

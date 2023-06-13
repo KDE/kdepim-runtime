@@ -14,5 +14,7 @@ public:
     ~NewMailHistoryNotificationDialog() override;
 
 private:
+    void readConfig();
+    void writeConfig();
     NewMailHistoryNotificationWidget *const mNewHistoryNotificationWidget;
 };
