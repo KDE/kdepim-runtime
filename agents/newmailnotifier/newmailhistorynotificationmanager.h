@@ -19,6 +19,8 @@ public:
     Q_REQUIRED_RESULT QStringList history() const;
     void setHistory(const QStringList &newHistory);
 
+    void addHistory(const QString &str);
+
     void clear();
 
 Q_SIGNALS:

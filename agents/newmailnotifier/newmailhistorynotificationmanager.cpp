@@ -24,6 +24,11 @@ QStringList NewMailHistoryNotificationManager::history() const
     return mHistory;
 }
 
+void NewMailHistoryNotificationManager::addHistory(const QString &str)
+{
+    mHistory += str;
+}
+
 void NewMailHistoryNotificationManager::setHistory(const QStringList &newHistory)
 {
     mHistory = newHistory;
