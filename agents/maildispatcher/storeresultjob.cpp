@@ -49,7 +49,7 @@ void StoreResultJob::fetchDone(KJob *job)
         return;
     }
 
-    qCDebug(MAILDISPATCHER_LOG);
+    qCDebug(MAILDISPATCHER_LOG) << " Fetch done";
 
     const ItemFetchJob *fetchJob = qobject_cast<ItemFetchJob *>(job);
     Q_ASSERT(fetchJob);
