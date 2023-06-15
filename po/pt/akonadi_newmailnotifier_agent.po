@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-06-14 00:48+0000\n"
-"PO-Revision-Date: 2022-03-25 09:54+0000\n"
+"PO-Revision-Date: 2023-06-14 12:14+0100\n"
 "Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
 "Language: pt\n"
@@ -19,11 +19,10 @@ msgstr ""
 "X-POFile-SpellExtra: Jovie Laurent Montel KMail\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "History Notification"
-msgstr "Manter a Notificação Persistente"
+msgstr "Notificação Histórica"
 
 #: newmailnotifieragent.cpp:339
 #, kde-format

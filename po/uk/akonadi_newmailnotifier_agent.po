@@ -3,13 +3,13 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-06-14 00:48+0000\n"
-"PO-Revision-Date: 2022-01-02 09:02+0200\n"
+"PO-Revision-Date: 2023-06-14 08:34+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -21,11 +21,10 @@ msgstr ""
 "X-Generator: Lokalize 20.12.0\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "History Notification"
-msgstr "Зберігати сповіщення постійно"
+msgstr "Сповіщення журналу"
 
 #: newmailnotifieragent.cpp:339
 #, kde-format
