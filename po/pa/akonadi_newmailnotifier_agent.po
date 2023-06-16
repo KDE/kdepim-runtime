@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-26 00:48+0000\n"
+"POT-Creation-Date: 2023-06-14 00:48+0000\n"
 "PO-Revision-Date: 2011-01-14 08:16+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
@@ -16,6 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.1\n"
+
+#: newmailhistorynotificationdialog.cpp:24
+#, kde-format
+msgctxt "@title:window"
+msgid "History Notification"
+msgstr ""
 
 #: newmailnotifieragent.cpp:339
 #, fuzzy, kde-format

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-26 00:48+0000\n"
-"PO-Revision-Date: 2022-06-05 07:15+0200\n"
+"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"PO-Revision-Date: 2023-06-14 12:07+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -19,7 +19,13 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.3.1\n"
+
+#: newmailhistorynotificationdialog.cpp:24
+#, kde-format
+msgctxt "@title:window"
+msgid "History Notification"
+msgstr "Zgodovinsko obvestilo"
 
 #: newmailnotifieragent.cpp:339
 #, kde-format

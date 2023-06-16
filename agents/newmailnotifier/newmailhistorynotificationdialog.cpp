@@ -21,7 +21,7 @@ NewMailHistoryNotificationDialog::NewMailHistoryNotificationDialog(QWidget *pare
     : QDialog(parent)
     , mNewHistoryNotificationWidget(new NewMailHistoryNotificationWidget(this))
 {
-    setWindowTitle(i18nc("@title:window", "History Notification"));
+    setWindowTitle(i18nc("@title:window", "Notification History"));
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->setObjectName(QStringLiteral("mainLayout"));
 

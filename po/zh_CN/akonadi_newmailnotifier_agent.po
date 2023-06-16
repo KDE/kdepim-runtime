@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-26 00:48+0000\n"
+"POT-Creation-Date: 2023-06-14 00:48+0000\n"
 "PO-Revision-Date: 2023-05-22 14:00\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -17,6 +17,13 @@ msgstr ""
 "X-Crowdin-File: /kf5-trunk/messages/kdepim-runtime/"
 "akonadi_newmailnotifier_agent.pot\n"
 "X-Crowdin-File-ID: 4070\n"
+
+#: newmailhistorynotificationdialog.cpp:24
+#, fuzzy, kde-format
+#| msgid "Keep Persistent Notification"
+msgctxt "@title:window"
+msgid "History Notification"
+msgstr "保持持续的通知"
 
 #: newmailnotifieragent.cpp:339
 #, kde-format

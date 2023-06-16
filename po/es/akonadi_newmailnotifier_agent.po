@@ -3,13 +3,13 @@
 #
 # Javier Vinal <fjvinal@gmail.com>, 2011, 2013, 2014, 2015, 2016, 2017, 2018.
 # Javier Viñal <francisco-javie.vinal@seg-social.es>, 2013.
-# Eloy Cuadra <ecuadra@eloihr.net>, 2020, 2021, 2022.
+# Eloy Cuadra <ecuadra@eloihr.net>, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-03-26 00:48+0000\n"
-"PO-Revision-Date: 2022-01-03 00:58+0100\n"
+"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"PO-Revision-Date: 2023-06-14 19:58+0200\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,7 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 21.12.0\n"
+"X-Generator: Lokalize 23.04.2\n"
+
+#: newmailhistorynotificationdialog.cpp:24
+#, kde-format
+msgctxt "@title:window"
+msgid "History Notification"
+msgstr "Notificación del historial"
 
 #: newmailnotifieragent.cpp:339
 #, kde-format
