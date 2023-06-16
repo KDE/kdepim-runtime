@@ -9,5 +9,8 @@
     </method>
 
     <method name="printDebug" />
+    <method name="showNotNotificationHistoryDialog">
+     <arg direction="in" type="x" name="windowId" />
+    </method>    
   </interface>
 </node>

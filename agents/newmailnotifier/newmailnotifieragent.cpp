@@ -8,6 +8,7 @@
 
 #include "newmailnotifieragent.h"
 
+#include "newmailhistorynotificationdialog.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
 #include "specialnotifierjob.h"
@@ -35,6 +36,7 @@
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
 #include <QTextToSpeech>
 #endif
+#include <KWindowSystem>
 using namespace std::chrono_literals;
 #include <chrono>
 
@@ -81,6 +83,11 @@ NewMailNotifierAgent::NewMailNotifierAgent(const QString &id)
     if (isActive()) {
         mTimer.setSingleShot(true);
     }
+}
+
+NewMailNotifierAgent::~NewMailNotifierAgent()
+{
+    delete mHistoryNotificationDialog;
 }
 
 void NewMailNotifierAgent::slotReloadConfiguration()
@@ -260,6 +267,19 @@ void NewMailNotifierAgent::itemAdded(const Akonadi::Item &item, const Akonadi::C
         mTimer.start();
     }
     mNewMails[collection].append(item.id());
+}
+
+void NewMailNotifierAgent::showNotNotificationHistoryDialog(qlonglong windowId)
+{
+    if (!mHistoryNotificationDialog) {
+        mHistoryNotificationDialog = new NewMailHistoryNotificationDialog(nullptr);
+        mHistoryNotificationDialog->setAttribute(Qt::WA_NativeWindow, true);
+    }
+    KWindowSystem::setMainWindow(mHistoryNotificationDialog->windowHandle(), windowId);
+    mHistoryNotificationDialog->show();
+    mHistoryNotificationDialog->raise();
+    mHistoryNotificationDialog->activateWindow();
+    mHistoryNotificationDialog->setModal(false);
 }
 
 void NewMailNotifierAgent::slotShowNotifications()

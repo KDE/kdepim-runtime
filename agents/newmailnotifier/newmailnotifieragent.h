@@ -15,7 +15,7 @@
 #include <QStringList>
 #include <QTimer>
 class QTextToSpeech;
-
+class NewMailHistoryNotificationDialog;
 namespace Akonadi
 {
 class AgentInstance;
@@ -32,11 +32,14 @@ class NewMailNotifierAgent : public Akonadi::AgentBase, public Akonadi::AgentBas
 
 public:
     explicit NewMailNotifierAgent(const QString &id);
+    ~NewMailNotifierAgent() override;
 
     void setEnableAgent(bool b);
     Q_REQUIRED_RESULT bool enabledAgent() const;
 
     void printDebug();
+
+    void showNotNotificationHistoryDialog(qlonglong windowId = 0);
 
 protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
@@ -70,4 +73,5 @@ private:
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
     QTextToSpeech *mTextToSpeech = nullptr;
 #endif
+    NewMailHistoryNotificationDialog *mHistoryNotificationDialog = nullptr;
 };
