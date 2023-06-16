@@ -53,6 +53,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KF${KF_MAJOR_VERSION}::Service
   KF${KF_MAJOR_VERSION}::I18n
   KF${KF_MAJOR_VERSION}::KIOGui
+  KF${KF_MAJOR_VERSION}::WindowSystem
 )
 
 if(Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
