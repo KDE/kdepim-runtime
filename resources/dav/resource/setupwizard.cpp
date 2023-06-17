@@ -228,7 +228,7 @@ int CredentialsPage::nextId() const
     QString userName = field(QStringLiteral("credentialsUserName")).toString();
     if (userName.endsWith(QLatin1String("@yahoo.com"))) {
         const QString maybeYahooFile =
-            QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("kservices6/akonadi/davgroupware-providers/yahoo.desktop"));
+            QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/davgroupware-providers/yahoo.desktop"));
 
         if (maybeYahooFile.isEmpty()) {
             return SetupWizard::W_ServerTypePage;
@@ -313,9 +313,8 @@ ServerTypePage::ServerTypePage(QWidget *parent)
     mProvidersCombo = new QComboBox(this);
     mProvidersCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 
-    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation,
-                                                       QStringLiteral("kservices6/akonadi/davgroupware-providers"),
-                                                       QStandardPaths::LocateDirectory);
+    const QStringList dirs =
+        QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("akonadi/davgroupware-providers"), QStandardPaths::LocateDirectory);
     const QStringList providers = KFileUtils::findAllUniqueFiles(dirs, QStringList{QStringLiteral("*.desktop")});
 
     QList<QPair<QString, QString>> offers;
