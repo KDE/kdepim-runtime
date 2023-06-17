@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"POT-Creation-Date: 2023-06-17 00:49+0000\n"
 "PO-Revision-Date: 2023-06-14 12:28+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -18,12 +18,14 @@ msgstr ""
 "X-Generator: Lokalize 22.12.3\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "History Notification"
 msgctxt "@title:window"
-msgid "History Notification"
+msgid "Notification History"
 msgstr "Notification de Chronologia"
 
-#: newmailnotifieragent.cpp:339
+#: newmailnotifieragent.cpp:360
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -33,7 +35,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Un nove message de e-posta in %2 ex \"%3\""
 msgstr[1] "%1 nove messages de e-postas in %2 ex \"%3\""
 
-#: newmailnotifieragent.cpp:359
+#: newmailnotifieragent.cpp:380
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nove message de e-posta arrivate"

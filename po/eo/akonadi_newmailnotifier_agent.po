@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"POT-Creation-Date: 2023-06-17 00:49+0000\n"
 "PO-Revision-Date: 2023-06-14 20:54+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -22,12 +22,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@title:window"
+#| msgid "History Notification"
 msgctxt "@title:window"
-msgid "History Notification"
+msgid "Notification History"
 msgstr "Sciigo pri Historio"
 
-#: newmailnotifieragent.cpp:339
+#: newmailnotifieragent.cpp:360
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -37,7 +39,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Unu nova retpoŝto en %2 de \"%3\""
 msgstr[1] "%1 novaj retpoŝtoj en %2 de \"%3\""
 
-#: newmailnotifieragent.cpp:359
+#: newmailnotifieragent.cpp:380
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nova poŝto alvenis"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"POT-Creation-Date: 2023-06-17 00:49+0000\n"
 "PO-Revision-Date: 2013-03-20 14:37+0530\n"
 "Last-Translator: Chetan Khona <chetan@kompkin.com>\n"
 "Language-Team: Marathi <kde-i18n-doc@kde.org>\n"
@@ -20,10 +20,10 @@ msgstr ""
 #: newmailhistorynotificationdialog.cpp:24
 #, kde-format
 msgctxt "@title:window"
-msgid "History Notification"
+msgid "Notification History"
 msgstr ""
 
-#: newmailnotifieragent.cpp:339
+#: newmailnotifieragent.cpp:360
 #, fuzzy, kde-format
 #| msgid "One new email in %2"
 #| msgid_plural "%1 new emails in %2"
@@ -35,7 +35,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "%2 यात एक नवीन इमेल"
 msgstr[1] "%2 यात %1 नवीन इमेल्स"
 
-#: newmailnotifieragent.cpp:359
+#: newmailnotifieragent.cpp:380
 #, kde-format
 msgid "New mail arrived"
 msgstr ""

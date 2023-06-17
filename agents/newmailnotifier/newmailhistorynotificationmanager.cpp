@@ -26,6 +26,7 @@ QStringList NewMailHistoryNotificationManager::history() const
 
 void NewMailHistoryNotificationManager::addHistory(const QString &str)
 {
+    // TODO add date ?
     mHistory += str;
     Q_EMIT historyAdded(str);
 }

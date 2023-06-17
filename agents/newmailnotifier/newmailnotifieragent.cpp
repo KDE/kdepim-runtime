@@ -9,6 +9,7 @@
 #include "newmailnotifieragent.h"
 
 #include "newmailhistorynotificationdialog.h"
+#include "newmailhistorynotificationmanager.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
 #include "specialnotifierjob.h"
@@ -374,6 +375,7 @@ void NewMailNotifierAgent::slotShowNotifications()
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
     slotDisplayNotification(QPixmap(), message);
+    NewMailHistoryNotificationManager::self()->addHistory(message);
 
     mNewMails.clear();
 }
