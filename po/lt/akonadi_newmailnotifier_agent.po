@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"POT-Creation-Date: 2023-06-17 00:49+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -25,10 +25,10 @@ msgstr ""
 #: newmailhistorynotificationdialog.cpp:24
 #, kde-format
 msgctxt "@title:window"
-msgid "History Notification"
+msgid "Notification History"
 msgstr ""
 
-#: newmailnotifieragent.cpp:339
+#: newmailnotifieragent.cpp:360
 #, fuzzy, kde-format
 #| msgid "One new email in %2 from \"%3\""
 #| msgid_plural "%1 new emails in %2 from \"%3\""
@@ -42,7 +42,7 @@ msgstr[1] "%1 nauji laiškai į %2 nuo „%3“"
 msgstr[2] "%1 naujų el. laiškų į %2 nuo „%3“"
 msgstr[3] "%1 naujas el. laiškas į %2 nuo „%3“"
 
-#: newmailnotifieragent.cpp:359
+#: newmailnotifieragent.cpp:380
 #, kde-format
 msgid "New mail arrived"
 msgstr "Atėjo naujas paštas"

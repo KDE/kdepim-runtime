@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"POT-Creation-Date: 2023-06-17 00:49+0000\n"
 "PO-Revision-Date: 2014-08-13 00:18+0200\n"
 "Last-Translator: Sönke Dibbern <s_dibbern@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -22,10 +22,10 @@ msgstr ""
 #: newmailhistorynotificationdialog.cpp:24
 #, kde-format
 msgctxt "@title:window"
-msgid "History Notification"
+msgid "Notification History"
 msgstr ""
 
-#: newmailnotifieragent.cpp:339
+#: newmailnotifieragent.cpp:360
 #, fuzzy, kde-format
 #| msgid "One new email in %2 from \"%3\""
 #| msgid_plural "%1 new emails in %2 from \"%3\""
@@ -37,7 +37,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Een nieg Nettbreef binnen %2 vun \"%3\""
 msgstr[1] "%1 nieg Nettbreven binnen %2 vun \"%3\""
 
-#: newmailnotifieragent.cpp:359
+#: newmailnotifieragent.cpp:380
 #, kde-format
 msgid "New mail arrived"
 msgstr "Nieg Nettpost ankamen"

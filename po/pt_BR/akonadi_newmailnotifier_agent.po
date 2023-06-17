@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-14 00:48+0000\n"
+"POT-Creation-Date: 2023-06-17 00:49+0000\n"
 "PO-Revision-Date: 2022-01-04 11:51-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -23,10 +23,10 @@ msgstr ""
 #, fuzzy, kde-format
 #| msgid "Keep Persistent Notification"
 msgctxt "@title:window"
-msgid "History Notification"
+msgid "Notification History"
 msgstr "Manter a notificação persistente"
 
-#: newmailnotifieragent.cpp:339
+#: newmailnotifieragent.cpp:360
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -36,7 +36,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Um novo e-mail em %2 de \"%3\""
 msgstr[1] "%1 novos e-mails em %2 de \"%3\""
 
-#: newmailnotifieragent.cpp:359
+#: newmailnotifieragent.cpp:380
 #, kde-format
 msgid "New mail arrived"
 msgstr "Chegou nova mensagem"
