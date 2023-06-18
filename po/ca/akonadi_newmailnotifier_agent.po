@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-06-17 00:49+0000\n"
-"PO-Revision-Date: 2023-06-14 08:01+0200\n"
+"PO-Revision-Date: 2023-06-17 12:05+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
@@ -22,9 +22,7 @@ msgstr ""
 "X-Generator: Lokalize 22.12.3\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "History Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Historial de notificacions"

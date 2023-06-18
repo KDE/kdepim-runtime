@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Federico Zenith <federico.zenith@member.fsf.org>, 2011, 2013.
-# Luigi Toscano <luigi.toscano@tiscali.it>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022.
+# Luigi Toscano <luigi.toscano@tiscali.it>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-06-17 00:49+0000\n"
-"PO-Revision-Date: 2022-01-03 21:40+0100\n"
+"PO-Revision-Date: 2023-06-17 16:51+0200\n"
 "Last-Translator: Luigi Toscano <luigi.toscano@tiscali.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
@@ -16,14 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 21.08.0\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr "Mantieni le notifiche persistenti"
+msgstr "Cronologia delle notifiche"
 
 #: newmailnotifieragent.cpp:360
 #, kde-format
