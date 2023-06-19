@@ -1,22 +1,23 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Xosé <xosecalvo@gmail.com>, 2013.
 # Adrián Chaves Fernández <adriyetichaves@gmail.com>, 2015, 2016, 2017.
-# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2018.
+# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2018, 2023.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2022-09-15 00:45+0000\n"
-"PO-Revision-Date: 2018-04-28 20:43+0100\n"
-"Last-Translator: Adrian Chaves <adrian@chaves.io>\n"
-"Language-Team: Galician <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2023-06-18 13:44+0200\n"
+"Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
+"Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -148,10 +149,9 @@ msgid "Migration of Akonadi Items to support GID"
 msgstr "Migración de elementos de Akonadi para compatibilidade con GID"
 
 #: main.cpp:30
-#, fuzzy, kde-format
-#| msgid "(c) 2013-2016 the Akonadi developers"
+#, kde-format
 msgid "(c) 2013-2022 the Akonadi developers"
-msgstr "© 2013-2016 Desenvolvedores de Akonadi"
+msgstr "© 2013-2022 Equipo de desenvolvemento de Akonadi"
 
 #: main.cpp:33
 #, kde-format
@@ -166,12 +166,12 @@ msgstr "Autor"
 #: main.cpp:36
 #, kde-format
 msgid "Show reporting dialog"
-msgstr "Mostrar o diálogo informativo"
+msgstr "Amosar o diálogo informativo"
 
 #: main.cpp:37
 #, kde-format
 msgid "Show report only if changes were made"
-msgstr "Mostrar o informe só se se realizan cambios"
+msgstr "Amosar o informe só se se realizan cambios"
 
 #: main.cpp:38
 #, kde-format

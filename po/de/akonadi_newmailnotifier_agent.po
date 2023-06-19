@@ -1,12 +1,12 @@
 # Bjoern Ricks <bjoern.ricks@intevation.de>, 2011.
-# Frederik Schwarzer <schwarzer@kde.org>, 2013, 2016, 2022.
+# Frederik Schwarzer <schwarzer@kde.org>, 2013, 2016, 2022, 2023.
 # Burkhard Lück <lueck@hube-lueck.de>, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-06-17 00:49+0000\n"
-"PO-Revision-Date: 2022-04-15 04:07+0200\n"
+"PO-Revision-Date: 2023-06-18 23:44+0200\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -14,14 +14,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 23.07.70\n"
 
 #: newmailhistorynotificationdialog.cpp:24
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr "Durchgehende Benachrichtigung behalten"
+msgstr "Benachrichtigungsverlauf"
 
 #: newmailnotifieragent.cpp:360
 #, kde-format
