@@ -375,13 +375,13 @@ void NewMailNotifierAgent::slotShowNotifications()
     qCDebug(NEWMAILNOTIFIER_LOG) << message;
 
     slotDisplayNotification(QPixmap(), message);
-    NewMailHistoryNotificationManager::self()->addHistory(message);
 
     mNewMails.clear();
 }
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
+    NewMailHistoryNotificationManager::self()->addHistory(message);
     if (pixmap.isNull()) {
         KNotification::event(QStringLiteral("new-email"),
                              QString(),
