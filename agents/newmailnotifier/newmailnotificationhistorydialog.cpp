@@ -3,8 +3,8 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "newmailhistorynotificationdialog.h"
-#include "newmailhistorynotificationwidget.h"
+#include "newmailnotificationhistorydialog.h"
+#include "newmailnotificationhistorywidget.h"
 #include <KConfigGroup>
 #include <KLocalizedString>
 #include <KSharedConfig>
@@ -17,9 +17,9 @@ namespace
 {
 static const char myConfigNewMailHistoryNotificationDialogGroupName[] = "NewMailHistoryNotificationDialog";
 }
-NewMailHistoryNotificationDialog::NewMailHistoryNotificationDialog(QWidget *parent)
+NewMailNotificationHistoryDialog::NewMailNotificationHistoryDialog(QWidget *parent)
     : QDialog(parent)
-    , mNewHistoryNotificationWidget(new NewMailHistoryNotificationWidget(this))
+    , mNewHistoryNotificationWidget(new NewMailNotificationHistoryWidget(this))
 {
     setWindowTitle(i18nc("@title:window", "Notification History"));
     auto mainLayout = new QVBoxLayout(this);
@@ -32,17 +32,17 @@ NewMailHistoryNotificationDialog::NewMailHistoryNotificationDialog(QWidget *pare
     buttonBox->setObjectName(QStringLiteral("buttonBox"));
     mainLayout->addWidget(buttonBox);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &NewMailHistoryNotificationDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &NewMailHistoryNotificationDialog::reject);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &NewMailNotificationHistoryDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &NewMailNotificationHistoryDialog::reject);
     readConfig();
 }
 
-NewMailHistoryNotificationDialog::~NewMailHistoryNotificationDialog()
+NewMailNotificationHistoryDialog::~NewMailNotificationHistoryDialog()
 {
     writeConfig();
 }
 
-void NewMailHistoryNotificationDialog::readConfig()
+void NewMailNotificationHistoryDialog::readConfig()
 {
     create(); // ensure a window is created
     windowHandle()->resize(QSize(800, 300));
@@ -51,7 +51,7 @@ void NewMailHistoryNotificationDialog::readConfig()
     resize(windowHandle()->size()); // workaround for QTBUG-40584
 }
 
-void NewMailHistoryNotificationDialog::writeConfig()
+void NewMailNotificationHistoryDialog::writeConfig()
 {
     KConfigGroup group(KSharedConfig::openStateConfig(), myConfigNewMailHistoryNotificationDialogGroupName);
     KWindowConfig::saveWindowSize(windowHandle(), group);

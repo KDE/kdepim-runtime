@@ -7,12 +7,12 @@
 
 #include <QWidget>
 class NewMailNotificationHistoryPlainTextEdit;
-class NewMailHistoryNotificationWidget : public QWidget
+class NewMailNotificationHistoryWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NewMailHistoryNotificationWidget(QWidget *parent = nullptr);
-    ~NewMailHistoryNotificationWidget() override;
+    explicit NewMailNotificationHistoryWidget(QWidget *parent = nullptr);
+    ~NewMailNotificationHistoryWidget() override;
 
 private:
     void slotHistoryAdded(const QString &str);

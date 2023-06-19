@@ -4,12 +4,12 @@
 */
 
 #include "newmailhistorynotificationwidget.h"
-#include "newmailhistorynotificationmanager.h"
+#include "newmailnotificationhistorymanager.h"
 #include "newmailnotificationhistoryplaintextedit.h"
 #include <KLocalizedString>
 #include <QVBoxLayout>
 
-NewMailHistoryNotificationWidget::NewMailHistoryNotificationWidget(QWidget *parent)
+NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
     : QWidget{parent}
     , mPlainTextEdit(new NewMailNotificationHistoryPlainTextEdit(this))
 {
@@ -20,17 +20,17 @@ NewMailHistoryNotificationWidget::NewMailHistoryNotificationWidget(QWidget *pare
     mPlainTextEdit->setObjectName(QStringLiteral("mPlainTextEdit"));
     mPlainTextEdit->setReadOnly(true);
     mainLayout->addWidget(mPlainTextEdit);
-    connect(NewMailHistoryNotificationManager::self(),
-            &NewMailHistoryNotificationManager::historyAdded,
+    connect(NewMailNotificationHistoryManager::self(),
+            &NewMailNotificationHistoryManager::historyAdded,
             this,
-            &NewMailHistoryNotificationWidget::slotHistoryAdded);
+            &NewMailNotificationHistoryWidget::slotHistoryAdded);
 
-    mPlainTextEdit->setPlainText(NewMailHistoryNotificationManager::self()->history().join(QLatin1Char('\n')));
+    mPlainTextEdit->setPlainText(NewMailNotificationHistoryManager::self()->history().join(QLatin1Char('\n')));
 }
 
-NewMailHistoryNotificationWidget::~NewMailHistoryNotificationWidget() = default;
+NewMailNotificationHistoryWidget::~NewMailNotificationHistoryWidget() = default;
 
-void NewMailHistoryNotificationWidget::slotHistoryAdded(const QString &str)
+void NewMailNotificationHistoryWidget::slotHistoryAdded(const QString &str)
 {
     mPlainTextEdit->appendPlainText(str);
 }

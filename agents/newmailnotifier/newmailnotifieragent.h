@@ -15,7 +15,7 @@
 #include <QStringList>
 #include <QTimer>
 class QTextToSpeech;
-class NewMailHistoryNotificationDialog;
+class NewMailNotificationHistoryDialog;
 namespace Akonadi
 {
 class AgentInstance;
@@ -73,5 +73,5 @@ private:
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
     QTextToSpeech *mTextToSpeech = nullptr;
 #endif
-    NewMailHistoryNotificationDialog *mHistoryNotificationDialog = nullptr;
+    NewMailNotificationHistoryDialog *mHistoryNotificationDialog = nullptr;
 };

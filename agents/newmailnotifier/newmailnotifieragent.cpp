@@ -8,8 +8,8 @@
 
 #include "newmailnotifieragent.h"
 
-#include "newmailhistorynotificationdialog.h"
-#include "newmailhistorynotificationmanager.h"
+#include "newmailnotificationhistorydialog.h"
+#include "newmailnotificationhistorymanager.h"
 #include "newmailnotifieradaptor.h"
 #include "newmailnotifieragentsettings.h"
 #include "specialnotifierjob.h"
@@ -281,7 +281,7 @@ void NewMailNotifierAgent::itemAdded(const Akonadi::Item &item, const Akonadi::C
 void NewMailNotifierAgent::showNotNotificationHistoryDialog(qlonglong windowId)
 {
     if (!mHistoryNotificationDialog) {
-        mHistoryNotificationDialog = new NewMailHistoryNotificationDialog(nullptr);
+        mHistoryNotificationDialog = new NewMailNotificationHistoryDialog(nullptr);
         mHistoryNotificationDialog->setAttribute(Qt::WA_NativeWindow, true);
     }
     KWindowSystem::setMainWindow(mHistoryNotificationDialog->windowHandle(), windowId);
@@ -389,7 +389,7 @@ void NewMailNotifierAgent::slotShowNotifications()
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    NewMailHistoryNotificationManager::self()->addHistory(message);
+    NewMailNotificationHistoryManager::self()->addHistory(message);
     if (pixmap.isNull()) {
         KNotification::event(QStringLiteral("new-email"),
                              QString(),
