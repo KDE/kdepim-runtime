@@ -5,13 +5,13 @@
 
 #include "newmailhistorynotificationwidget.h"
 #include "newmailhistorynotificationmanager.h"
+#include "newmailnotificationhistoryplaintextedit.h"
 #include <KLocalizedString>
-#include <QPlainTextEdit>
 #include <QVBoxLayout>
 
 NewMailHistoryNotificationWidget::NewMailHistoryNotificationWidget(QWidget *parent)
     : QWidget{parent}
-    , mPlainTextEdit(new QPlainTextEdit(this))
+    , mPlainTextEdit(new NewMailNotificationHistoryPlainTextEdit(this))
 {
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->setObjectName(QStringLiteral("mainLayout"));
