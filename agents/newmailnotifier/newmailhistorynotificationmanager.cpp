@@ -5,6 +5,7 @@
 */
 
 #include "newmailhistorynotificationmanager.h"
+#include <QDateTime>
 
 NewMailHistoryNotificationManager::NewMailHistoryNotificationManager(QObject *parent)
     : QObject{parent}
@@ -24,10 +25,10 @@ QStringList NewMailHistoryNotificationManager::history() const
     return mHistory;
 }
 
-void NewMailHistoryNotificationManager::addHistory(const QString &str)
+void NewMailHistoryNotificationManager::addHistory(QString str)
 {
-    // TODO add date ?
-    mHistory += str;
+    mHistory += QDateTime::currentDateTime().toString() + QLatin1Char('\n');
+    mHistory += str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
     Q_EMIT historyAdded(str);
 }
 
