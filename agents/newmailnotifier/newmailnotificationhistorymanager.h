@@ -7,14 +7,14 @@
 
 #include <QObject>
 
-class NewMailHistoryNotificationManager : public QObject
+class NewMailNotificationHistoryManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit NewMailHistoryNotificationManager(QObject *parent = nullptr);
-    ~NewMailHistoryNotificationManager() override;
+    explicit NewMailNotificationHistoryManager(QObject *parent = nullptr);
+    ~NewMailNotificationHistoryManager() override;
 
-    static NewMailHistoryNotificationManager *self();
+    static NewMailNotificationHistoryManager *self();
 
     Q_REQUIRED_RESULT QStringList history() const;
     void setHistory(const QStringList &newHistory);
