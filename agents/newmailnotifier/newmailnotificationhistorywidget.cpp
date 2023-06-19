@@ -3,7 +3,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "newmailhistorynotificationwidget.h"
+#include "newmailnotificationhistorywidget.h"
 #include "newmailnotificationhistorymanager.h"
 #include "newmailnotificationhistoryplaintextedit.h"
 #include <KLocalizedString>
