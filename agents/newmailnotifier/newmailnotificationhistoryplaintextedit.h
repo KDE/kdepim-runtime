@@ -13,4 +13,10 @@ class NewMailNotificationHistoryPlainTextEdit : public QPlainTextEdit
 public:
     explicit NewMailNotificationHistoryPlainTextEdit(QWidget *parent = nullptr);
     ~NewMailNotificationHistoryPlainTextEdit() override;
+
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override;
+
+Q_SIGNALS:
+    void clearHistory();
 };
