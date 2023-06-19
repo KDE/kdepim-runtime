@@ -5,11 +5,23 @@
 
 #include "newmailnotificationhistoryplaintextedit.h"
 
+#include <KLocalizedString>
+
+#include <QMenu>
+
 NewMailNotificationHistoryPlainTextEdit::NewMailNotificationHistoryPlainTextEdit(QWidget *parent)
     : QPlainTextEdit(parent)
 {
 }
 
-NewMailNotificationHistoryPlainTextEdit::~NewMailNotificationHistoryPlainTextEdit()
+NewMailNotificationHistoryPlainTextEdit::~NewMailNotificationHistoryPlainTextEdit() = default;
+
+void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
+    QMenu *popup = createStandardContextMenu();
+    if (popup) {
+        // TODO
+    }
+    popup->exec(event->globalPos());
+    delete popup;
 }
