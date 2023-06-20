@@ -30,7 +30,7 @@ void NewMailNotificationHistoryManager::addHistory(QString str)
     if (!mHistory.isEmpty()) {
         mHistory += QStringLiteral("\n");
     }
-    mHistory += QDateTime::currentDateTime().toString() + QLatin1Char('\n');
+    mHistory += QStringLiteral("============ %1 ============").arg(QDateTime::currentDateTime().toString()) + QLatin1Char('\n');
     mHistory += str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
     Q_EMIT historyAdded(str);
 }
