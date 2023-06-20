@@ -6,6 +6,7 @@
 #include "newmailnotificationhistoryplaintextedit.h"
 
 #include <KLocalizedString>
+#include <KStandardAction>
 
 #include <QMenu>
 
@@ -20,7 +21,9 @@ void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent
 {
     QMenu *popup = createStandardContextMenu();
     if (popup) {
-        // TODO
+        popup->addSeparator();
+        QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryPlainTextEdit::clear, popup);
+        popup->addAction(clearAllAction);
     }
     popup->exec(event->globalPos());
     delete popup;

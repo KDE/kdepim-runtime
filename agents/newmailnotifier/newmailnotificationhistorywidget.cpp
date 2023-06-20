@@ -7,6 +7,7 @@
 #include "newmailnotificationhistorymanager.h"
 #include "newmailnotificationhistoryplaintextedit.h"
 #include <KLocalizedString>
+#include <QScrollBar>
 #include <QVBoxLayout>
 
 NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
@@ -26,6 +27,10 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
             &NewMailNotificationHistoryWidget::slotHistoryAdded);
 
     mPlainTextEdit->setPlainText(NewMailNotificationHistoryManager::self()->history().join(QLatin1Char('\n')));
+    connect(mPlainTextEdit, &NewMailNotificationHistoryPlainTextEdit::clear, this, [this]() {
+        NewMailNotificationHistoryManager::self()->clear();
+        mPlainTextEdit->clear();
+    });
 }
 
 NewMailNotificationHistoryWidget::~NewMailNotificationHistoryWidget() = default;
@@ -33,4 +38,5 @@ NewMailNotificationHistoryWidget::~NewMailNotificationHistoryWidget() = default;
 void NewMailNotificationHistoryWidget::slotHistoryAdded(const QString &str)
 {
     mPlainTextEdit->appendPlainText(str);
+    mPlainTextEdit->verticalScrollBar()->setValue(mPlainTextEdit->verticalScrollBar()->maximum());
 }
