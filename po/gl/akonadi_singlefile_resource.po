@@ -206,7 +206,7 @@ msgid ""
 "contents has been created at '%2'."
 msgstr ""
 "O ficheiro «%1» cambiouse no disco. Por precaución, creouse unha copia de "
-"seguranza do seu contido anterior en «%2»."
+"seguridade do seu contido anterior en «%2»."
 
 #: singlefileresourcebase.cpp:264
 #, kde-format

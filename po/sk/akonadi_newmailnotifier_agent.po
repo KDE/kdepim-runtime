@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-17 00:49+0000\n"
+"POT-Creation-Date: 2023-06-20 00:53+0000\n"
 "PO-Revision-Date: 2019-07-17 16:24+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Lokalize 19.04.3\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: newmailhistorynotificationdialog.cpp:24
+#: newmailnotificationhistorydialog.cpp:24
 #, fuzzy, kde-format
 #| msgid "Keep Persistent Notification"
 msgctxt "@title:window"

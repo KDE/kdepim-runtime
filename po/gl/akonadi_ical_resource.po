@@ -28,7 +28,7 @@ msgstr "Ruta do ficheiro iCal."
 #: icalresource.kcfg:14 notes/notesresource.kcfg:14
 #, kde-format
 msgid "Display name."
-msgstr "Nome para mostrar."
+msgstr "Nome para amosar."
 
 #. i18n: ectx: label, entry (ReadOnly), group (General)
 #: icalresource.kcfg:18 notes/notesresource.kcfg:18

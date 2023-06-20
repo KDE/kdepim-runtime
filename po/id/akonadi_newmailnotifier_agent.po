@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-17 00:49+0000\n"
+"POT-Creation-Date: 2023-06-20 00:53+0000\n"
 "PO-Revision-Date: 2021-05-01 10:57+0700\n"
 "Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
 "Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: newmailhistorynotificationdialog.cpp:24
+#: newmailnotificationhistorydialog.cpp:24
 #, fuzzy, kde-format
 #| msgid "Keep Persistent Notification"
 msgctxt "@title:window"

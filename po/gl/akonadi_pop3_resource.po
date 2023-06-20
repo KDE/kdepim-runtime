@@ -111,7 +111,7 @@ msgstr ""
 "Aínda que algúns servidores non anuncien axeitadamente as súas capacidades, "
 "aínda ten a posibilidade de activar o paralelismo. Pero, por favor, teña en "
 "conta que esta característica pode causar que algúns servidores que non "
-"permitan o paralelismo envíen mensaxes corruptas. Así que, antes de empregar "
+"permitan o paralelismo envíen mensaxes corruptas. Así que, antes de usar "
 "esta característica con correos importantes, próbea primeiro consigo mesmo "
 "enviándose un número grande de mensaxes de proba para descargalos de vez do "
 "servidor POP."
@@ -884,7 +884,7 @@ msgstr "Conectar usando a configuración de proxy do sistema."
 #: settings.kcfg:30
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr "Define o tipo de autenticación que se quere empregar"
+msgstr "Define o tipo de autenticación que se quere usar"
 
 #~ msgid ""
 #~ "The server does not seem to support fetching message headers, but this is "

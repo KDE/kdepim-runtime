@@ -38,7 +38,7 @@ msgstr "Tomboy"
 #: tomboynotesagentconfigwidget.ui:42
 #, kde-format
 msgid "Display name:"
-msgstr "Nome para mostrar:"
+msgstr "Nome para amosar:"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: tomboynotesagentconfigwidget.ui:56
@@ -97,7 +97,7 @@ msgstr "O recurso só permite lectura."
 #: tomboynotesresource.kcfg:10
 #, kde-format
 msgid "The display name of this resource"
-msgstr "O nome para mostrar deste recurso."
+msgstr "O nome para amosar deste recurso."
 
 #. i18n: ectx: label, entry (ServerURL), group (General)
 #: tomboynotesresource.kcfg:14

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-17 00:49+0000\n"
+"POT-Creation-Date: 2023-06-20 00:53+0000\n"
 "PO-Revision-Date: 2022-05-20 20:46+0200\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <dict@ludost.net>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 22.04.0\n"
 
-#: newmailhistorynotificationdialog.cpp:24
+#: newmailnotificationhistorydialog.cpp:24
 #, fuzzy, kde-format
 #| msgid "Keep Persistent Notification"
 msgctxt "@title:window"
