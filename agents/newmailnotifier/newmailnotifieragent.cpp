@@ -291,6 +291,17 @@ void NewMailNotifierAgent::showNotNotificationHistoryDialog(qlonglong windowId)
     mHistoryNotificationDialog->setModal(false);
 }
 
+void NewMailNotifierAgent::setVerboseMailNotification(bool b)
+{
+    NewMailNotifierAgentSettings::setVerboseNotification(b);
+    NewMailNotifierAgentSettings::self()->save();
+}
+
+bool NewMailNotifierAgent::verboseMailNotification() const
+{
+    return NewMailNotifierAgentSettings::verboseNotification();
+}
+
 void NewMailNotifierAgent::slotShowNotifications()
 {
     if (mNewMails.isEmpty()) {

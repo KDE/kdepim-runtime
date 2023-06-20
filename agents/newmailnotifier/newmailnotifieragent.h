@@ -41,6 +41,9 @@ public:
 
     void showNotNotificationHistoryDialog(qlonglong windowId = 0);
 
+    void setVerboseMailNotification(bool b);
+    Q_REQUIRED_RESULT bool verboseMailNotification() const;
+
 protected:
     void itemAdded(const Akonadi::Item &item, const Akonadi::Collection &collection) override;
     void itemsMoved(const Akonadi::Item::List &items, const Akonadi::Collection &sourceCollection, const Akonadi::Collection &destinationCollection) override;
