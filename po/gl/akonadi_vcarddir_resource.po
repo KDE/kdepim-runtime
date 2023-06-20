@@ -86,7 +86,7 @@ msgid ""
 "with changing anything here, the defaults are good enough in most cases."
 msgstr ""
 "As opcións desta páxina permiten alterar os parámetros que equilibran a "
-"seguranza e a consistencia dos datos fronte ao rendemento do sistema. En "
+"seguridade e a consistencia dos datos fronte ao rendemento do sistema. En "
 "xeral debería ter coidado ao cambiar calquera cousa aquí, na meirande parte "
 "dos casos os valores predeterminados deberían abondar. "
 

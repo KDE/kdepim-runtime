@@ -59,13 +59,13 @@ msgid ""
 msgstr ""
 "Hai outra entrada na configuración que xa usa a mesma parella de protocolo e "
 "URL.\n"
-"Empregue un URL distinto."
+"Use un URL distinto."
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: configdialog.ui:29
 #, kde-format
 msgid "Display name:"
-msgstr "Nome para mostrar:"
+msgstr "Nome para amosar:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: configdialog.ui:39
@@ -396,7 +396,7 @@ msgstr "Versión da configuración"
 #: davgroupwareresource.kcfg:14
 #, kde-format
 msgid "Display name"
-msgstr "Nome para mostrar"
+msgstr "Nome para amosar"
 
 #. i18n: ectx: label, entry (refreshInterval), group (General)
 #: davgroupwareresource.kcfg:18
@@ -487,13 +487,13 @@ msgstr ""
 #: searchdialog.ui:32 urlconfigurationdialog.ui:85
 #, kde-format
 msgid "Use global creden&tials"
-msgstr "Empregar as credenciais &globais"
+msgstr "Usar as credenciais &globais"
 
 #. i18n: ectx: property (text), widget (QRadioButton, useSpecificCreds)
 #: searchdialog.ui:42 urlconfigurationdialog.ui:95
 #, kde-format
 msgid "Use specific credentials"
-msgstr "Empregar unhas credenciais específicas"
+msgstr "Usar unhas credenciais específicas"
 
 #. i18n: ectx: property (title), widget (QGroupBox, credentialsGroup)
 #: searchdialog.ui:49
@@ -583,7 +583,7 @@ msgstr "Atopouse un fornecedor predefinido."
 #: setupwizard.cpp:261
 #, kde-format
 msgid "Select if you want to use the auto-detected provider"
-msgstr "Indique se quere empregar o fornecedor detectado."
+msgstr "Indique se quere usar o fornecedor detectado."
 
 #: setupwizard.cpp:280
 #, kde-format
@@ -646,7 +646,7 @@ msgstr "Ruta de instalación"
 #: setupwizard.cpp:404
 #, kde-format
 msgid "Use secure connection"
-msgstr "Empregar unha conexión segura"
+msgstr "Usar unha conexión segura"
 
 #: setupwizard.cpp:432
 #, kde-format
@@ -690,7 +690,7 @@ msgstr "Conectouse"
 #: urlconfigurationdialog.cpp:266
 #, kde-format
 msgid "Display Name"
-msgstr "Nome para mostrar"
+msgstr "Nome para amosar"
 
 #. i18n: ectx: property (text), widget (QLabel, remoteProtocol)
 #: urlconfigurationdialog.ui:35
