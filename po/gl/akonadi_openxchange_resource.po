@@ -216,7 +216,7 @@ msgstr "Contrasinal"
 #: openxchangeresource.kcfg:26
 #, kde-format
 msgid "Use incremental updates"
-msgstr "Empregar actualizacións incrementais"
+msgstr "Usar actualizacións incrementais"
 
 #. i18n: ectx: tooltip, entry (UseIncrementalUpdates), group (General)
 #. i18n: ectx: whatsthis, entry (UseIncrementalUpdates), group (General)
@@ -226,8 +226,8 @@ msgid ""
 "Use incremental updates instead of reloading all data from the server each "
 "time"
 msgstr ""
-"Empregar actualizacións incrementais no canto de cargar de novo todos os "
-"datos desde o servidor de cada vez"
+"Usar actualizacións incrementais no canto de cargar de novo todos os datos "
+"desde o servidor de cada vez"
 
 #~ msgid "Connection"
 #~ msgstr "Conexión"

@@ -40,8 +40,7 @@ msgid ""
 "on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "Non se puido subscribir ao cartafol «%1» no servidor de IMAP. Ha desaparecer "
-"na vindeira sincronización. Empregue o diálogo de subscrición para "
-"solucionar iso"
+"na vindeira sincronización. Use o diálogo de subscrición para solucionar iso"
 
 #: addcollectiontask.cpp:130 changecollectiontask.cpp:276
 #, kde-format
@@ -84,8 +83,8 @@ msgid ""
 "disappear on next sync. Use the subscription dialog to overcome that"
 msgstr ""
 "Non se puido subscribir ao cartafol renomeado «%1» no servidor de IMAP. "
-"Reaparecerá na vindeira sincronización. Empregue o diálogo de subscrición "
-"para solucionar isto."
+"Reaparecerá na vindeira sincronización. Use o diálogo de subscrición para "
+"solucionar isto."
 
 #: changecollectiontask.cpp:267
 #, kde-format
@@ -127,7 +126,7 @@ msgstr "Nome de usuario"
 #: imapresource.kcfg:20
 #, kde-format
 msgid "Defines the encryption type to use"
-msgstr "Define o tipo de cifrado que se ha de empregar"
+msgstr "Define o tipo de cifrado que se ha de usar"
 
 #. i18n: ectx: label, entry (OverrideEncryption), group (network)
 #: imapresource.kcfg:24
@@ -139,7 +138,7 @@ msgstr "Antepor ao modo de cifrado configurado."
 #: imapresource.kcfg:27
 #, kde-format
 msgid "Defines the authentication type to use"
-msgstr "Define o tipo de autenticación que se ha de empregar"
+msgstr "Define o tipo de autenticación que se ha de usar"
 
 #. i18n: ectx: label, entry (SubscriptionEnabled), group (network)
 #: imapresource.kcfg:31
@@ -208,7 +207,7 @@ msgstr ""
 #: imapresource.kcfg:67
 #, kde-format
 msgid "Define which folder is used for trash"
-msgstr "Defina que cartafol se emprega como lixo"
+msgstr "Defina que cartafol se usa como lixo"
 
 #. i18n: ectx: label, entry (TrashCollectionMigrated), group (cache)
 #: imapresource.kcfg:71
@@ -220,7 +219,7 @@ msgstr "Definir se a colección do lixo recibiu o atributo especial"
 #: imapresource.kcfg:75
 #, kde-format
 msgid "Define if account uses the default identity"
-msgstr "Defina se a conta emprega a identidade predeterminada"
+msgstr "Defina se a conta usa a identidade predeterminada"
 
 #. i18n: ectx: label, entry (AccountIdentity), group (cache)
 #: imapresource.kcfg:79
@@ -271,7 +270,7 @@ msgstr "Defina un URL alternativo"
 #, kde-format
 msgid "Defines the authentication type to use for alternate server"
 msgstr ""
-"Define o tipo de autenticación que se ha de empregar para servidores "
+"Define o tipo de autenticación que se ha de usar para servidores "
 "alternativos."
 
 #. i18n: ectx: label, entry (SieveVacationFilename), group (siever)
@@ -619,9 +618,8 @@ msgid ""
 "Cannot use the IMAP server %1, some mandatory capabilities are missing: %2. "
 "Please ask your sysadmin to upgrade the server."
 msgstr ""
-"Non se pode empregar o servidor de IMAP %1 porque faltan algunhas "
-"capacidades requiridas: %2. Pídalle ao administrador do sistema que anove o "
-"servidor."
+"Non se pode usar o servidor de IMAP %1 porque faltan algunhas capacidades "
+"requiridas: %2. Pídalle ao administrador do sistema que anove o servidor."
 
 #: sessionpool.cpp:532
 #, kde-format
@@ -754,14 +752,14 @@ msgid ""
 "below, but note that you will be prompted for your password when needed."
 msgstr ""
 "Non se puido acceder a KWallet. Se quere almacenar o contrasinal de maneira "
-"permanente haino que activar. Se non quere empregar KWallet, marque a opción "
-"de embaixo, pero lembre que se lle ha pedir o contrasinal sempre que for "
+"permanente haino que activar. Se non quere usar KWallet, marque a opción de "
+"embaixo, pero lembre que se lle ha pedir o contrasinal sempre que for "
 "preciso."
 
 #: setupserver.cpp:432 setupserver.cpp:488
 #, kde-format
 msgid "Do not use KWallet"
-msgstr "Non empregar KWallet"
+msgstr "Non usar KWallet"
 
 #: setupserver.cpp:553
 #, kde-format
@@ -784,13 +782,13 @@ msgid ""
 "<qt><b>No security is supported. It is not recommended to connect to this "
 "server.</b></qt>"
 msgstr ""
-"<qt><b>Non se admite ningún tipo de seguranza. Non se recomenda ligar con "
+"<qt><b>Non se admite ningún tipo de seguridade. Non se recomenda ligar con "
 "este servidor.</b></qt>"
 
 #: setupserver.cpp:575
 #, kde-format
 msgid "<qt><b>It is not possible to use this server.</b></qt>"
-msgstr "<qt><b>Non é posíbel empregar este servidor.</b></qt>"
+msgstr "<qt><b>Non é posíbel usar este servidor.</b></qt>"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: setupserverview_desktop.ui:33
@@ -904,9 +902,9 @@ msgid ""
 "server can only be accessed via port 4190."
 msgstr ""
 "O porto do servidor cambiou cando ManageSieve se tornou nun estándar "
-"completo de RFC. As versións antigas do servidor empregan aínda o porto "
-"2000, mentres que aos servidores que cumpren co novo estándar só se pode "
-"acceder a través do porto 4190."
+"completo de RFC. As versións antigas do servidor usan aínda o porto 2000, "
+"mentres que aos servidores que cumpren co novo estándar só se pode acceder a "
+"través do porto 4190."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192

@@ -66,37 +66,37 @@ msgstr "Lembranzas"
 #: facebookagentsettingswidget.ui:68
 #, kde-format
 msgid "Show reminders for events I'm attending"
-msgstr "Mostrar lembranzas para os eventos aos que vaia asistir."
+msgstr "Amosar lembranzas para os eventos aos que vaia asistir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, maybeAttendingReminderChkBox)
 #: facebookagentsettingswidget.ui:78
 #, kde-format
 msgid "Show reminders for events I may be attending"
-msgstr "Mostrar lembranzas para os eventos aos que pode que asista."
+msgstr "Amosar lembranzas para os eventos aos que pode que asista."
 
 #. i18n: ectx: property (text), widget (QCheckBox, notAttendingReminderChkBox)
 #: facebookagentsettingswidget.ui:88
 #, kde-format
 msgid "Show reminders for events I'm not attending"
-msgstr "Mostrar lembranzas para os eventos aos que non vaia asistir."
+msgstr "Amosar lembranzas para os eventos aos que non vaia asistir."
 
 #. i18n: ectx: property (text), widget (QCheckBox, notRespondedReminderChkBox)
 #: facebookagentsettingswidget.ui:98
 #, kde-format
 msgid "Show reminders for events I have not responded to"
-msgstr "Mostrar lembranzas para os eventos aos que non respondese."
+msgstr "Amosar lembranzas para os eventos aos que non respondese."
 
 #. i18n: ectx: property (text), widget (QCheckBox, birthdayReminderChkBox)
 #: facebookagentsettingswidget.ui:108
 #, kde-format
 msgid "Show reminders for friends' birthdays"
-msgstr "Mostrar lembranzas para os aniversarios de amigos."
+msgstr "Amosar lembranzas para os aniversarios de amigos."
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: facebookagentsettingswidget.ui:138
 #, kde-format
 msgid "Show event reminders"
-msgstr "Mostrar lembranzas de eventos"
+msgstr "Amosar lembranzas de eventos"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: facebookagentsettingswidget.ui:155
@@ -108,7 +108,7 @@ msgstr "horas antes."
 #: facebookagentsettingswidget.ui:162
 #, kde-format
 msgid "Show birthday reminders"
-msgstr "Mostrar lembranzas de aniversarios"
+msgstr "Amosar lembranzas de aniversarios"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: facebookagentsettingswidget.ui:172
