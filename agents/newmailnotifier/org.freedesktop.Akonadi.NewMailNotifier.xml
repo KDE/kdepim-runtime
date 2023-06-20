@@ -8,6 +8,13 @@
       <arg type="b" direction="out"/>
     </method>
 
+    <method name="setVerboseMailNotification" >
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="verboseMailNotification" >
+      <arg type="b" direction="out"/>
+    </method>
+
     <method name="printDebug" />
     <method name="showNotNotificationHistoryDialog">
      <arg direction="in" type="x" name="windowId" />
