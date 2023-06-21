@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-20 00:53+0000\n"
+"POT-Creation-Date: 2023-06-21 00:48+0000\n"
 "PO-Revision-Date: 2012-07-13 23:05+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -24,7 +24,7 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
 
-#: newmailnotifieragent.cpp:360
+#: newmailnotifieragent.cpp:371
 #, fuzzy, kde-format
 #| msgid "One new email in %2"
 #| msgid_plural "%1 new emails in %2"
@@ -37,7 +37,7 @@ msgstr[0] "%2 saņemta %1 jauna vēstule"
 msgstr[1] "%2 saņemtas %1 jaunas vēstules"
 msgstr[2] "%2 saņemts %1 jaunu vēstuļu"
 
-#: newmailnotifieragent.cpp:380
+#: newmailnotifieragent.cpp:391
 #, kde-format
 msgid "New mail arrived"
 msgstr ""
