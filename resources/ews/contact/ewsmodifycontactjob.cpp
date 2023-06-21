@@ -20,3 +20,5 @@ void EwsModifyContactJob::start()
     qCWarning(EWSRES_LOG) << QStringLiteral("Contact item modification not implemented!");
     emitResult();
 }
+
+#include "moc_ewsmodifycontactjob.cpp"

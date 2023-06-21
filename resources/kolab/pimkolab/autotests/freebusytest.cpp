@@ -151,3 +151,5 @@ void FreebusyTest::testFB()
 // }
 
 QTEST_MAIN(FreebusyTest)
+
+#include "moc_freebusytest.cpp"

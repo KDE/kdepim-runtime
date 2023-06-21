@@ -136,3 +136,5 @@ void AddCollectionTask::onSetMetaDataDone(KJob *job)
         changeCommitted(m_collection);
     }
 }
+
+#include "moc_addcollectiontask.cpp"

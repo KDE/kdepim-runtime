@@ -139,3 +139,5 @@ bool EwsGetFolderRequest::Response::parseFolders(QXmlStreamReader &reader)
 
     return true;
 }
+
+#include "moc_ewsgetfolderrequest.cpp"

@@ -526,3 +526,5 @@ void KolabRetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
         checkDone();
     }
 }
+
+#include "moc_kolabretrievecollectionstask.cpp"

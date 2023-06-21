@@ -39,3 +39,5 @@ void EwsGetEventsRequest::start()
 
     doSend();
 }
+
+#include "moc_ewsgeteventsrequest.cpp"

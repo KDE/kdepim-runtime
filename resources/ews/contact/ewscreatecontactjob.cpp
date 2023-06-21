@@ -32,3 +32,5 @@ bool EwsCreateContactJob::setSend(bool send)
     qCWarning(EWSRES_LOG) << QStringLiteral("Sending contact items is not supported!");
     return false;
 }
+
+#include "moc_ewscreatecontactjob.cpp"

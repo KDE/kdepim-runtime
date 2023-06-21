@@ -51,3 +51,5 @@ void FileStore::CollectionMoveJob::handleCollectionMoved(const Collection &colle
 {
     d->mCollection = collection;
 }
+
+#include "moc_collectionmovejob.cpp"

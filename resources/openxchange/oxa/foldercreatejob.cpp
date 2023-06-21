@@ -83,3 +83,5 @@ void FolderCreateJob::davJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_foldercreatejob.cpp"

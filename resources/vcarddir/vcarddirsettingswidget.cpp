@@ -67,3 +67,5 @@ bool VcardDirSettingsWidget::save() const
     VcardDirResourceSettings::self()->save();
     return true;
 }
+
+#include "moc_vcarddirsettingswidget.cpp"

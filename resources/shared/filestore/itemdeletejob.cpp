@@ -41,3 +41,5 @@ void FileStore::ItemDeleteJob::handleItemDeleted(const Item &item)
 {
     d->mItem = item;
 }
+
+#include "moc_itemdeletejob.cpp"

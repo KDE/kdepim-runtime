@@ -559,3 +559,5 @@ QDebug operator<<(QDebug debug, const FolderDescr &fd)
     d << ')';
     return debug;
 }
+
+#include "moc_ewsfetchfoldersincrjob.cpp"

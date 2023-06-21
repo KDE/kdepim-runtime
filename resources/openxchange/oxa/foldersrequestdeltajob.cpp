@@ -78,3 +78,5 @@ void FoldersRequestDeltaJob::fetchDeletedJobFinished(KJob *job)
         emitResult();
     }
 }
+
+#include "moc_foldersrequestdeltajob.cpp"

@@ -155,3 +155,5 @@ bool EwsUpdateFolderRequest::FolderChange::write(QXmlStreamWriter &writer) const
 
     return retVal;
 }
+
+#include "moc_ewsupdatefolderrequest.cpp"

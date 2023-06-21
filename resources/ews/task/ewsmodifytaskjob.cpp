@@ -20,3 +20,5 @@ void EwsModifyTaskJob::start()
     qCWarning(EWSRES_LOG) << QStringLiteral("Task item modification not implemented!");
     emitResult();
 }
+
+#include "moc_ewsmodifytaskjob.cpp"

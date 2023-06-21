@@ -41,3 +41,5 @@ void LockMethodPage::checkAvailableLockMethods()
         }
     }
 }
+
+#include "moc_lockmethodpage.cpp"

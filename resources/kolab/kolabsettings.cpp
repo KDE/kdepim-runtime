@@ -33,3 +33,5 @@ void KolabSettings::changeDefaults()
     KConfigSkeleton::ItemBool *itemSieveReuseConfig = (KConfigSkeleton::ItemBool *)findItem(QStringLiteral("SieveReuseConfig"));
     itemSieveReuseConfig->setDefaultValue(true);
 }
+
+#include "moc_kolabsettings.cpp"

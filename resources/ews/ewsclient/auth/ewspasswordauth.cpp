@@ -78,3 +78,5 @@ void EwsPasswordAuth::setUsername(const QString &username)
 {
     mUsername = username;
 }
+
+#include "moc_ewspasswordauth.cpp"

@@ -57,3 +57,5 @@ FakeTransferJob::Verifier FakeTransferJob::getVerifier()
 {
     return mVerifierQueue.dequeue();
 }
+
+#include "moc_faketransferjob.cpp"

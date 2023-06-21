@@ -53,3 +53,5 @@ void SentActionHandler::itemFetchResult(KJob *job)
     auto modifyJob = new Akonadi::ItemModifyJob(item);
     modifyJob->setIgnorePayload(true);
 }
+
+#include "moc_sentactionhandler.cpp"

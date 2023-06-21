@@ -101,3 +101,5 @@ EwsMoveFolderRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewsmovefolderrequest.cpp"

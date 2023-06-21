@@ -920,3 +920,5 @@ void POP3Protocol::setContinueAfterSslError(bool b)
 {
     mContinueAfterSslError = b;
 }
+
+#include "moc_pop3protocol.cpp"

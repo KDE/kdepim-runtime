@@ -68,3 +68,5 @@ void DummyPasswordRequester::emitResult()
         Q_EMIT done(result);
     }
 }
+
+#include "moc_dummypasswordrequester.cpp"

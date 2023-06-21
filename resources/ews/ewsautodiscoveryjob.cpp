@@ -137,3 +137,5 @@ void EwsAutodiscoveryJob::autodiscoveryRequestFinished(KJob *job)
         }
     }
 }
+
+#include "moc_ewsautodiscoveryjob.cpp"

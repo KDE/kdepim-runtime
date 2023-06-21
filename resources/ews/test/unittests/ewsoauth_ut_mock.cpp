@@ -484,3 +484,5 @@ QString EwsPKeyAuthJob::getAuthHeader()
     return {};
 }
 }
+
+#include "moc_ewsoauth_ut_mock.cpp"

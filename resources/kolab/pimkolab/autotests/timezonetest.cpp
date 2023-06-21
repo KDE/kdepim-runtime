@@ -165,3 +165,5 @@ void TimezoneTest::localTimezone()
 }
 
 QTEST_MAIN(TimezoneTest)
+
+#include "moc_timezonetest.cpp"

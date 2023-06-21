@@ -701,3 +701,5 @@ void SetupServer::slotServerChanged()
 {
     populateDefaultAuthenticationOptions(m_ui->authenticationCombo);
 }
+
+#include "moc_setupserver.cpp"

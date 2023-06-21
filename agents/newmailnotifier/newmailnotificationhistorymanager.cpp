@@ -44,3 +44,5 @@ void NewMailNotificationHistoryManager::clear()
 {
     mHistory.clear();
 }
+
+#include "moc_newmailnotificationhistorymanager.cpp"

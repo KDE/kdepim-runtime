@@ -60,3 +60,5 @@ void FileStore::StoreCompactJob::handleItemsChanged(const Item::List &items)
     d->mItems << items;
     Q_EMIT itemsChanged(items);
 }
+
+#include "moc_storecompactjob.cpp"

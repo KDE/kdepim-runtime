@@ -44,3 +44,5 @@ void FileStore::CollectionDeleteJob::handleCollectionDeleted(const Collection &c
 {
     d->mCollection = collection;
 }
+
+#include "moc_collectiondeletejob.cpp"

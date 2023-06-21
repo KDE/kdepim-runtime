@@ -376,3 +376,5 @@ void FreeBusyHandler::retrieveFreeBusy(const QString &email, const QDateTime &st
         m_iface->freeBusyRetrieved(queryJob->id(), fbStr, true, QString());
     });
 }
+
+#include "moc_calendarhandler.cpp"

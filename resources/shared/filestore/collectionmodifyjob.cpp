@@ -44,3 +44,5 @@ void FileStore::CollectionModifyJob::handleCollectionModified(const Collection &
 {
     d->mCollection = collection;
 }
+
+#include "moc_collectionmodifyjob.cpp"

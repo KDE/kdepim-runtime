@@ -148,3 +148,5 @@ bool LoginPage::validatePage()
     }
     return true;
 }
+
+#include "moc_setupwizard.cpp"

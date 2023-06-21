@@ -147,3 +147,5 @@ void RemoveCollectionRecursiveTask::onJobDone(KJob *job)
         synchronizeCollectionTree();
     }
 }
+
+#include "moc_removecollectionrecursivetask.cpp"

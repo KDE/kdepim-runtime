@@ -43,3 +43,5 @@ void EwsFetchAbchContactDetailsJob::processItems(const EwsGetItemRequest::Respon
 
     emitResult();
 }
+
+#include "moc_ewsfetchabchpersondetailjob.cpp"

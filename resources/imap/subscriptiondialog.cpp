@@ -348,3 +348,5 @@ bool SubscriptionFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelI
         return true;
     }
 }
+
+#include "moc_subscriptiondialog.cpp"

@@ -37,3 +37,5 @@ void AkonadiEtagCache::onItemFetchJobFinished(KJob *job)
         }
     }
 }
+
+#include "moc_akonadietagcache.cpp"

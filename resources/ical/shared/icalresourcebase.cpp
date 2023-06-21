@@ -151,3 +151,5 @@ KCalendarCore::FileStorage::Ptr ICalResourceBase::fileStorage() const
 {
     return mFileStorage;
 }
+
+#include "moc_icalresourcebase.cpp"

@@ -108,3 +108,5 @@ void ObjectCreateJob::davJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_objectcreatejob.cpp"

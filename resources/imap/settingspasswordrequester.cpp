@@ -163,3 +163,5 @@ QString SettingsPasswordRequester::requestManualAuth(bool *userRejected)
         return {};
     }
 }
+
+#include "moc_settingspasswordrequester.cpp"

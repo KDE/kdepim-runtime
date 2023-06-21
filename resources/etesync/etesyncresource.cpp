@@ -729,3 +729,5 @@ void EteSyncResource::collectionRemoved(const Akonadi::Collection &collection)
 }
 
 AKONADI_RESOURCE_MAIN(EteSyncResource)
+
+#include "moc_etesyncresource.cpp"

@@ -27,3 +27,5 @@ bool MaildirConfig::save() const
     mWidget->save();
     return Akonadi::AgentConfigurationBase::save();
 }
+
+#include "moc_maildirconfig.cpp"

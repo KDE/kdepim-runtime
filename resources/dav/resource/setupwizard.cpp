@@ -552,3 +552,5 @@ void CheckPage::onFetchDone(KJob *job)
     mStatusLabel->setHtml(QStringLiteral("<html><body><img src=\"icon\"> %1</body></html>").arg(msg));
     mStatusLabel->document()->addResource(QTextDocument::ImageResource, QUrl(QStringLiteral("icon")), QVariant(icon));
 }
+
+#include "moc_setupwizard.cpp"

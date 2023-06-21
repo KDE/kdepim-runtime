@@ -48,3 +48,5 @@ void PasswordRequester::requestPassword(RequestType request, const QString &serv
 {
     requesterImpl()->requestPassword(request, serverError);
 }
+
+#include "moc_passwordrequester.cpp"

@@ -47,3 +47,5 @@ void NewMailNotifierShowMessageJob::start()
 
     emitResult();
 }
+
+#include "moc_newmailnotifiershowmessagejob.cpp"

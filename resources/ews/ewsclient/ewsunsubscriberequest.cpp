@@ -76,3 +76,5 @@ EwsUnsubscribeRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewsunsubscriberequest.cpp"

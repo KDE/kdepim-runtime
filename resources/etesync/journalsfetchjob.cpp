@@ -189,3 +189,5 @@ void JournalsFetchJob::setupCollection(const EtebaseCollection *etesyncCollectio
 
     mCollections.push_back(collection);
 }
+
+#include "moc_journalsfetchjob.cpp"

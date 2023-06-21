@@ -190,3 +190,5 @@ void RetrieveItemsJob::transactionDone(KJob *job)
     }
     emitResult();
 }
+
+#include "moc_retrieveitemsjob.cpp"

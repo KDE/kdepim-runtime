@@ -76,3 +76,5 @@ void ImapResource::onConfigurationDone(int result)
     }
     dlg->deleteLater();
 }
+
+#include "moc_imapresource.cpp"

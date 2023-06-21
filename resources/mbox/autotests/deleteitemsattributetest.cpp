@@ -67,3 +67,5 @@ void DeleteItemsAttributeTest::shouldHaveTypeName()
 }
 
 QTEST_MAIN(DeleteItemsAttributeTest)
+
+#include "moc_deleteitemsattributetest.cpp"

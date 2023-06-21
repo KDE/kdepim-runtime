@@ -74,3 +74,5 @@ void ConfigWidget::checkConnectionJobFinished(KJob *job)
         KMessageBox::information(this, i18n("Tested connection successfully."), i18n("Connection success"));
     }
 }
+
+#include "moc_configwidget.cpp"

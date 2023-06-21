@@ -77,3 +77,5 @@ void BenchmarkTests::parsingBenchmarkComparison()
 }
 
 QTEST_MAIN(BenchmarkTests)
+
+#include "moc_benchmark.cpp"

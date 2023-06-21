@@ -363,3 +363,5 @@ void EwsFetchFoldersJob::start()
 
     syncFoldersReq->start();
 }
+
+#include "moc_ewsfetchfoldersjob.cpp"

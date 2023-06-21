@@ -339,3 +339,5 @@ void EteSyncClientState::deleteEtebaseUserCache()
         qCDebug(ETESYNC_LOG) << "Could not remove cache for user";
     }
 }
+
+#include "moc_etesyncclientstate.cpp"

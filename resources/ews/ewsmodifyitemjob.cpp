@@ -26,3 +26,5 @@ const Akonadi::Item::List &EwsModifyItemJob::items() const
 {
     return mItems;
 }
+
+#include "moc_ewsmodifyitemjob.cpp"

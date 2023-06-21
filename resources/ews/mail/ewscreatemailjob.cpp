@@ -226,3 +226,5 @@ bool EwsCreateMailJob::setSend(bool send)
     mSend = send;
     return true;
 }
+
+#include "moc_ewscreatemailjob.cpp"

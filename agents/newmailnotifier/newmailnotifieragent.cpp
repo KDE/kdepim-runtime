@@ -506,3 +506,5 @@ void NewMailNotifierAgent::slotSay(const QString &message)
 }
 
 AKONADI_AGENT_MAIN(NewMailNotifierAgent)
+
+#include "moc_newmailnotifieragent.cpp"

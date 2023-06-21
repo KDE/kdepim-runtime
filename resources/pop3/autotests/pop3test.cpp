@@ -860,3 +860,5 @@ void Pop3Test::testMixedLeaveRules()
     mPOP3SettingsInterface->setSeenUidTimeList(QList<int>()).waitForFinished();
     mPOP3SettingsInterface->setSeenUidList(QStringList()).waitForFinished();
 }
+
+#include "moc_pop3test.cpp"

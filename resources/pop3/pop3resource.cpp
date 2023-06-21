@@ -982,3 +982,5 @@ void POP3Resource::doSetOnline(bool online)
 }
 
 AKONADI_RESOURCE_MAIN(POP3Resource)
+
+#include "moc_pop3resource.cpp"

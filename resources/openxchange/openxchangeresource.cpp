@@ -1165,3 +1165,5 @@ void OpenXchangeResource::onFetchResourceCollectionsFinished(KJob *job)
 }
 
 AKONADI_RESOURCE_MAIN(OpenXchangeResource)
+
+#include "moc_openxchangeresource.cpp"

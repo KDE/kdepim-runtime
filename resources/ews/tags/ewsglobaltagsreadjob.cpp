@@ -72,3 +72,5 @@ void EwsGlobalTagsReadJob::getFolderRequestFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_ewsglobaltagsreadjob.cpp"

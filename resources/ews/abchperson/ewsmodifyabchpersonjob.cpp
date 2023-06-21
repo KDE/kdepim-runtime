@@ -20,3 +20,5 @@ void EwsModifyAbchPersonJob::start()
     qCWarning(EWSRES_LOG) << QStringLiteral("Abch person item modification not implemented!");
     emitResult();
 }
+
+#include "moc_ewsmodifyabchpersonjob.cpp"

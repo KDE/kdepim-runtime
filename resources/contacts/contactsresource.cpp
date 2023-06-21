@@ -525,3 +525,5 @@ QString ContactsResource::directoryForCollection(const Collection &collection) c
 }
 
 AKONADI_RESOURCE_MAIN(ContactsResource)
+
+#include "moc_contactsresource.cpp"

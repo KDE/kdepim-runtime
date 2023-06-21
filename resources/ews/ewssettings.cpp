@@ -311,3 +311,5 @@ EwsAbstractAuth *EwsSettings::loadAuth(QObject *parent)
 }
 
 #endif /* EWSSETTINGS_UNITTEST */
+
+#include "moc_ewssettings.cpp"

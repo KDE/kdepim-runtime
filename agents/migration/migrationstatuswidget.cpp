@@ -108,3 +108,5 @@ void MigrationStatusWidget::onItemActivated(const QModelIndex &index)
     dlg->resize(600, 300);
     dlg->show();
 }
+
+#include "moc_migrationstatuswidget.cpp"

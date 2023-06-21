@@ -182,3 +182,5 @@ void AddItemTask::applyFoundUid(qint64 uid)
         applyCollectionChanges(c);
     }
 }
+
+#include "moc_additemtask.cpp"

@@ -98,3 +98,5 @@ EwsDeleteItemRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewsdeleteitemrequest.cpp"

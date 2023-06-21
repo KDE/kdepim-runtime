@@ -88,3 +88,5 @@ bool MigrationExecutor::doResume()
     executeNext();
     return true;
 }
+
+#include "moc_migrationexecutor.cpp"

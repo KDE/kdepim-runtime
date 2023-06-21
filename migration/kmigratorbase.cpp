@@ -131,3 +131,5 @@ void KMigratorBase::logMessage(KMigratorBase::MessageType type, const QString &m
         m_logFile->flush();
     }
 }
+
+#include "moc_kmigratorbase.cpp"

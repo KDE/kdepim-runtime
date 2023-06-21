@@ -490,3 +490,5 @@ EwsAbstractAuth *EwsConfigDialog::prepareAuth()
 
     return auth;
 }
+
+#include "moc_ewsconfigdialog.cpp"

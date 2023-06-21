@@ -54,3 +54,5 @@ void O0SettingsStore::setValue(const QString &key, const QString &value)
     QString fullKey = groupKey_.isEmpty() ? key : (groupKey_ + QLatin1Char('/') + key);
     settings_->setValue(fullKey, crypt_.encryptToString(value));
 }
+
+#include "moc_o0settingsstore.cpp"

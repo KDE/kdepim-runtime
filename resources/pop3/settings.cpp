@@ -43,3 +43,5 @@ void Settings::setPassword(const QString &password)
     writeJob->setTextData(password);
     writeJob->start();
 }
+
+#include "moc_settings.cpp"

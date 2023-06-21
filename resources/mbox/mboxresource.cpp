@@ -359,3 +359,5 @@ void MboxResource::onCollectionModify(KJob *job)
 }
 
 AKONADI_RESOURCE_MAIN(MboxResource)
+
+#include "moc_mboxresource.cpp"

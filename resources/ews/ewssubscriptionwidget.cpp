@@ -374,3 +374,5 @@ bool EwsSubscriptionWidget::subscribedListValid() const
 }
 
 #include "ewssubscriptionwidget.moc"
+
+#include "moc_ewssubscriptionwidget.cpp"

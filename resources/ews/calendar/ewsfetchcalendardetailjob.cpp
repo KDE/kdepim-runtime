@@ -202,3 +202,5 @@ void EwsFetchCalendarDetailJob::exceptionItemsFetched(KJob *job)
 
     emitResult();
 }
+
+#include "moc_ewsfetchcalendardetailjob.cpp"

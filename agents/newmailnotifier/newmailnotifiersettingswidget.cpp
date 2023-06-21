@@ -221,3 +221,5 @@ void NewMailNotifierSettingsWidget::slotHelpLinkClicked(const QString &)
     const QString help = textToSpeakMessage.toString();
     QWhatsThis::showText(QCursor::pos(), help);
 }
+
+#include "moc_newmailnotifiersettingswidget.cpp"

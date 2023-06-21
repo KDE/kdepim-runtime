@@ -78,3 +78,5 @@ void EwsMtaConfigDialog::save()
         qCWarning(EWSRES_MTA_LOG) << "Any agent instance selected";
     }
 }
+
+#include "moc_ewsmtaconfigdialog.cpp"

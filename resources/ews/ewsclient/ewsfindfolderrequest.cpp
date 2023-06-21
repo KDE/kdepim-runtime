@@ -222,3 +222,5 @@ unsigned EwsFindFolderResponse::readChildFolders(EwsFolder &parent, unsigned cou
     }
     return readCount;
 }
+
+#include "moc_ewsfindfolderrequest.cpp"

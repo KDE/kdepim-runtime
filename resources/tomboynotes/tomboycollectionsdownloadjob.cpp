@@ -73,3 +73,5 @@ void TomboyCollectionsDownloadJob::onRequestFinished()
 
     emitResult();
 }
+
+#include "moc_tomboycollectionsdownloadjob.cpp"

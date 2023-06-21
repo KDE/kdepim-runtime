@@ -151,3 +151,5 @@ void EwsFetchMailDetailJob::processItems(const EwsGetItemRequest::Response::List
 
     emitResult();
 }
+
+#include "moc_ewsfetchmaildetailjob.cpp"

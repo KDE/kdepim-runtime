@@ -58,3 +58,5 @@ void NewMailNotifierReplyMessageJob::setReplyToAll(bool newReplyToAll)
 {
     mReplyToAll = newReplyToAll;
 }
+
+#include "moc_newmailnotifierreplymessagejob.cpp"

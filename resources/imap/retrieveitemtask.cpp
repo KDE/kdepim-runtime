@@ -115,3 +115,5 @@ void RetrieveItemTask::onContentFetchDone(KJob *job)
         cancelTask(i18n("No message retrieved, server reply was empty."));
     }
 }
+
+#include "moc_retrieveitemtask.cpp"

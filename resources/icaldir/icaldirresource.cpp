@@ -300,3 +300,5 @@ void ICalDirResource::initializeICalDirectory() const
 }
 
 AKONADI_RESOURCE_MAIN(ICalDirResource)
+
+#include "moc_icaldirresource.cpp"

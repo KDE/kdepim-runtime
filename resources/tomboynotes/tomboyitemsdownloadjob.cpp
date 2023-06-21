@@ -58,3 +58,5 @@ void TomboyItemsDownloadJob::onRequestFinished()
     setError(TomboyJobError::NoError);
     emitResult();
 }
+
+#include "moc_tomboyitemsdownloadjob.cpp"

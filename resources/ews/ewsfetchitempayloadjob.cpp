@@ -110,3 +110,5 @@ void EwsFetchItemPayloadJob::itemFetchFinished(bool success, const QString & /*e
 
     emitResult();
 }
+
+#include "moc_ewsfetchitempayloadjob.cpp"

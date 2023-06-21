@@ -288,3 +288,5 @@ void UrlConfigurationDialog::addModelRow(const QString &displayName, const QStri
 
     rootItem->appendRow(items);
 }
+
+#include "moc_urlconfigurationdialog.cpp"

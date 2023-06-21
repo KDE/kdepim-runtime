@@ -1476,3 +1476,5 @@ QString EwsResource::dumpResourceToString() const
 }
 
 AKONADI_RESOURCE_MAIN(EwsResource)
+
+#include "moc_ewsresource.cpp"

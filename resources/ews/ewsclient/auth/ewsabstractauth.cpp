@@ -30,3 +30,5 @@ void EwsAbstractAuth::setPKeyAuthCertificateFiles(const QString &certFile, const
         mPKeyKeyFile = pkeyFile;
     }
 }
+
+#include "moc_ewsabstractauth.cpp"

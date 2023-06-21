@@ -126,3 +126,5 @@ void FileStore::AbstractJobSession::emitResult(FileStore::Job *job)
 
     job->emitResult();
 }
+
+#include "moc_session_p.cpp"

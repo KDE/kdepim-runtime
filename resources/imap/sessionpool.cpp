@@ -587,3 +587,5 @@ void SessionPool::onSessionDestroyed(QObject *object)
     }
     Q_ASSERT(!sessionInPool);
 }
+
+#include "moc_sessionpool.cpp"

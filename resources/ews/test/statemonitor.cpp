@@ -5,3 +5,5 @@
 */
 
 #include "statemonitor.h"
+
+#include "moc_statemonitor.cpp"

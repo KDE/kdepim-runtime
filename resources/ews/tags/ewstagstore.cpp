@@ -305,3 +305,5 @@ int EwsTagStore::version() const
 {
     return mVersion;
 }
+
+#include "moc_ewstagstore.cpp"

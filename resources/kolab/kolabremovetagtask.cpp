@@ -78,3 +78,5 @@ void KolabRemoveTagTask::onStoreFlagsDone(KJob *job)
         changeProcessed();
     }
 }
+
+#include "moc_kolabremovetagtask.cpp"

@@ -193,3 +193,5 @@ void KolabRetrieveTagTask::taskComplete()
 
     deleteLater();
 }
+
+#include "moc_kolabretrievetagstask.cpp"

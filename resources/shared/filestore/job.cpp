@@ -32,3 +32,5 @@ bool FileStore::Job::accept(FileStore::Job::Visitor *visitor)
 {
     return visitor->visit(this);
 }
+
+#include "moc_job.cpp"

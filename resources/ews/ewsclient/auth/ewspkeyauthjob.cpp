@@ -196,3 +196,5 @@ QString EwsPKeyAuthJob::getAuthHeader()
         return {};
     }
 }
+
+#include "moc_ewspkeyauthjob.cpp"

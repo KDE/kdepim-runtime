@@ -51,3 +51,5 @@ void FileStore::CollectionCreateJob::handleCollectionCreated(const Collection &c
 {
     d->mCollection = collection;
 }
+
+#include "moc_collectioncreatejob.cpp"

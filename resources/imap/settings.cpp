@@ -291,3 +291,5 @@ void Settings::onRootCollectionFetched(KJob *job)
         // We don't care about the result here, nothing we can/should do if the renaming fails
     }
 }
+
+#include "moc_settings.cpp"

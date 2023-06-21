@@ -56,3 +56,5 @@ void NewMailNotificationHistoryDialog::writeConfig()
     KConfigGroup group(KSharedConfig::openStateConfig(), myConfigNewMailHistoryNotificationDialogGroupName);
     KWindowConfig::saveWindowSize(windowHandle(), group);
 }
+
+#include "moc_newmailnotificationhistorydialog.cpp"

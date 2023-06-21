@@ -102,3 +102,5 @@ bool FakeEwsServerThread::waitServerStarted() const
     }
     return loop.exec();
 }
+
+#include "moc_fakeewsserverthread.cpp"

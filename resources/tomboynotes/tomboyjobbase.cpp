@@ -42,3 +42,5 @@ void TomboyJobBase::checkReplyError()
         break;
     }
 }
+
+#include "moc_tomboyjobbase.cpp"

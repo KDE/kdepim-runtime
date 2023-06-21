@@ -129,3 +129,5 @@ QString TomboyItemUploadJob::getCurrentISOTime() const
 
     return local.toString(Qt::ISODate);
 }
+
+#include "moc_tomboyitemuploadjob.cpp"

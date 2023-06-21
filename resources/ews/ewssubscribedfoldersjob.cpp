@@ -91,3 +91,5 @@ const EwsId::List &EwsSubscribedFoldersJob::defaultSubscriptionFolders()
 
     return list;
 }
+
+#include "moc_ewssubscribedfoldersjob.cpp"

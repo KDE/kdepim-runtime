@@ -545,3 +545,5 @@ void Settings::updateToV3()
     setSettingsVersion(3);
     save();
 }
+
+#include "moc_settings.cpp"

@@ -48,3 +48,5 @@ void FileStore::ItemCreateJob::handleItemCreated(const Item &item)
 {
     d->mItem = item;
 }
+
+#include "moc_itemcreatejob.cpp"

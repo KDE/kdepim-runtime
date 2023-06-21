@@ -191,3 +191,4 @@ void PeopleConversionJob::processItems()
     Q_EMIT finished();
 }
 
+#include "moc_peopleconversionjob.cpp"

@@ -286,3 +286,5 @@ void GoogleSettingsWidget::slotReloadTaskLists()
         reloadTaskListsBtn->setEnabled(true);
     });
 }
+
+#include "moc_googlesettingswidget.cpp"

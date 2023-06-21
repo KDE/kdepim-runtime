@@ -140,3 +140,5 @@ QString ICalResource::mimeType(const IncidenceBase::Ptr &incidence) const
 {
     return incidence->mimeType();
 }
+
+#include "moc_icalresource.cpp"

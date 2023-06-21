@@ -286,3 +286,5 @@ void ChangeCollectionTask::endTaskIfNeeded()
         changeCommitted(m_collection);
     }
 }
+
+#include "moc_changecollectiontask.cpp"

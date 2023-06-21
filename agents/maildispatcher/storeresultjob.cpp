@@ -97,3 +97,5 @@ void StoreResultJob::modifyDone(KJob *job)
 
     commit();
 }
+
+#include "moc_storeresultjob.cpp"

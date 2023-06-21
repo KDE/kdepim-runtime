@@ -361,3 +361,5 @@ ValidateFolderIdsDialogEntry::ValidateFolderIdsDialogEntry(const QStringList &id
                  .arg(folderIndex)
                  .arg(xQueryFolderIds.join(QStringLiteral(" and ")), responseXml);
 }
+
+#include "moc_isolatedtestbase.cpp"

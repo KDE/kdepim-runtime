@@ -67,3 +67,5 @@ void EwsCreateItemJob::tagSyncFinished(KJob *job)
         doStart();
     }
 }
+
+#include "moc_ewscreateitemjob.cpp"

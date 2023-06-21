@@ -549,3 +549,5 @@ void EwsOAuth::walletMapRequestFinished(const QMap<QString, QString> &map)
 }
 
 #include "ewsoauth.moc"
+
+#include "moc_ewsoauth.cpp"

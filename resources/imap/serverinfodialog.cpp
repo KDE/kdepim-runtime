@@ -85,3 +85,5 @@ void ServerInfoTextBrowser::paintEvent(QPaintEvent *event)
         QTextBrowser::paintEvent(event);
     }
 }
+
+#include "moc_serverinfodialog.cpp"

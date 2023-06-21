@@ -78,3 +78,5 @@ void UpdateUsersJob::finish()
 
     emitResult();
 }
+
+#include "moc_updateusersjob.cpp"

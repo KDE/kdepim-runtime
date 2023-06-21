@@ -547,3 +547,5 @@ void GoogleResource::collectionRemoved(const Collection &collection)
 }
 
 AKONADI_RESOURCE_MAIN(GoogleResource)
+
+#include "moc_googleresource.cpp"

@@ -68,3 +68,5 @@ void FileStore::ItemModifyJob::handleItemModified(const Item &item)
 {
     d->mItem = item;
 }
+
+#include "moc_itemmodifyjob.cpp"

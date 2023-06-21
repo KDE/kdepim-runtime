@@ -108,3 +108,5 @@ void TagChangeHelper::onModifyDone(KJob *job)
     }
     Q_EMIT changeCommitted();
 }
+
+#include "moc_tagchangehelper.cpp"

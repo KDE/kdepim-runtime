@@ -249,3 +249,5 @@ bool EwsEventRequestBase::Event::operator==(const Event &other) const
         && (mParentFolderId == other.mParentFolderId) && (mUnreadCount == other.mUnreadCount) && (mOldId == other.mOldId)
         && (mOldParentFolderId == other.mOldParentFolderId) && (mIsFolder == other.mIsFolder);
 }
+
+#include "moc_ewseventrequestbase.cpp"

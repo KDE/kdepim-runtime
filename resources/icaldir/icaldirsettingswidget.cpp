@@ -71,3 +71,5 @@ bool IcalDirSettingsWidget::save() const
     IcalDirResourceSettings::self()->save();
     return true;
 }
+
+#include "moc_icaldirsettingswidget.cpp"

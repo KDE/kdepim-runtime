@@ -32,3 +32,5 @@ bool EwsCreateAbchPersonJob::setSend(bool send)
     qCWarning(EWSRES_LOG) << QStringLiteral("Sending abch person items is not supported!");
     return false;
 }
+
+#include "moc_ewscreateabchpersonjob.cpp"

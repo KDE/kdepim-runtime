@@ -85,3 +85,5 @@ void FolderMoveJob::davJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_foldermovejob.cpp"

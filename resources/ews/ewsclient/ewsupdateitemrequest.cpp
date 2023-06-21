@@ -207,3 +207,5 @@ bool EwsUpdateItemRequest::ItemChange::write(QXmlStreamWriter &writer) const
 
     return retVal;
 }
+
+#include "moc_ewsupdateitemrequest.cpp"

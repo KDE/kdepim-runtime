@@ -270,3 +270,5 @@ void KolabResource::itemsRelationsChanged(const Akonadi::Item::List &items,
 }
 
 AKONADI_RESOURCE_MAIN(KolabResource)
+
+#include "moc_kolabresource.cpp"

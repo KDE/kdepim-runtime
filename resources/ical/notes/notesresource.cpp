@@ -38,3 +38,5 @@ QString NotesResource::mimeType(const KCalendarCore::IncidenceBase::Ptr &) const
 }
 
 AKONADI_RESOURCE_MAIN(NotesResource)
+
+#include "moc_notesresource.cpp"

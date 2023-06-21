@@ -177,3 +177,5 @@ void GoogleSettings::setResourceId(const QString &resourceIdentificator)
 {
     m_resourceId = resourceIdentificator;
 }
+
+#include "moc_googlesettings.cpp"

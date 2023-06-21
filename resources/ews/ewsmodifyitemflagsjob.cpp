@@ -89,3 +89,5 @@ void EwsModifyItemFlagsJob::start()
         emitResult();
     }
 }
+
+#include "moc_ewsmodifyitemflagsjob.cpp"

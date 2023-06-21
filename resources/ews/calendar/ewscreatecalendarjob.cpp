@@ -32,3 +32,5 @@ bool EwsCreateCalendarJob::setSend(bool send)
     qCWarning(EWSRES_LOG) << QStringLiteral("Sending calendar items is not supported!");
     return false;
 }
+
+#include "moc_ewscreatecalendarjob.cpp"

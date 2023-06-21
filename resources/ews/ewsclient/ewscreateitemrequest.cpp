@@ -127,3 +127,5 @@ EwsCreateItemRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewscreateitemrequest.cpp"

@@ -55,3 +55,5 @@ void DummyMigrator::abort()
     qDebug();
     MigratorBase::abort();
 }
+
+#include "moc_dummymigrator.cpp"

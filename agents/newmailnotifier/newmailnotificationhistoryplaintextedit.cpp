@@ -28,3 +28,5 @@ void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent
     popup->exec(event->globalPos());
     delete popup;
 }
+
+#include "moc_newmailnotificationhistoryplaintextedit.cpp"

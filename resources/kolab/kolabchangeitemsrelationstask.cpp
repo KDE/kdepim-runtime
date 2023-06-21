@@ -189,3 +189,5 @@ void KolabChangeItemsRelationsTask::onChangeCommitted(KJob *job)
         processNextRelation();
     }
 }
+
+#include "moc_kolabchangeitemsrelationstask.cpp"

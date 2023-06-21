@@ -175,3 +175,5 @@ SingleFileValidatingWidget::SingleFileValidatingWidget(QWidget *parent)
     : QWidget(parent)
 {
 }
+
+#include "moc_singlefileresourceconfigwidgetbase.cpp"

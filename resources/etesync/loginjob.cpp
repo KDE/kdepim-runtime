@@ -101,3 +101,5 @@ void LoginJob::createDefaultCollection(const QString &collectionType, const QStr
         qCDebug(ETESYNC_LOG) << "Uploaded collection addition to server";
     }
 }
+
+#include "moc_loginjob.cpp"

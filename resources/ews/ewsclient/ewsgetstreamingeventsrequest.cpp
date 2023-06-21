@@ -101,3 +101,5 @@ void EwsGetStreamingEventsRequest::eventsProcessed(const Response &resp)
 {
     mResponses.removeOne(resp);
 }
+
+#include "moc_ewsgetstreamingeventsrequest.cpp"

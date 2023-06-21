@@ -120,3 +120,5 @@ void FolderArchiveSettingPage::writeSettings()
     QDBusInterface kmail(kmailInterface, QStringLiteral("/KMail"), QStringLiteral("org.kde.kmail.kmail"));
     kmail.asyncCall(QStringLiteral("reloadFolderArchiveConfig"));
 }
+
+#include "moc_folderarchivesettingpage.cpp"

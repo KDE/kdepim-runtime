@@ -63,3 +63,5 @@ void KolabChangeTagTask::onChangeCommitted()
 {
     changeProcessed();
 }
+
+#include "moc_kolabchangetagtask.cpp"

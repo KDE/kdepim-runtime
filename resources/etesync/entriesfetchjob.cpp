@@ -152,3 +152,5 @@ void EntriesFetchJob::setupItem(const EtebaseItem *etesyncItem, const QString &t
 
     mItems.push_back(item);
 }
+
+#include "moc_entriesfetchjob.cpp"

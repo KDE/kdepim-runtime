@@ -116,3 +116,5 @@ Akonadi::Collection ImapTestBase::createCollectionChain(const QString &remoteId)
 
     return collection;
 }
+
+#include "moc_imaptestbase.cpp"

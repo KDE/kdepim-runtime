@@ -80,3 +80,5 @@ void FoldersRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_foldersrequestjob.cpp"

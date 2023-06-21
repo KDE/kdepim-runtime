@@ -419,3 +419,5 @@ void CalendaringTest::testDateTimeUtils()
 }
 
 QTEST_MAIN(CalendaringTest)
+
+#include "moc_calendaringtest.cpp"

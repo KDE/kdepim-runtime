@@ -612,3 +612,5 @@ void RetrieveItemsTask::taskComplete()
     qCDebug(IMAPRESOURCE_LOG) << "Retrieval complete. Elapsed(ms): " << m_time.elapsed();
     itemsRetrievalDone();
 }
+
+#include "moc_retrieveitemstask.cpp"

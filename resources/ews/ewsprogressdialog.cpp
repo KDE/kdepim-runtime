@@ -58,3 +58,5 @@ EwsProgressDialog::EwsProgressDialog(QWidget *parent, Type type)
 }
 
 EwsProgressDialog::~EwsProgressDialog() = default;
+
+#include "moc_ewsprogressdialog.cpp"

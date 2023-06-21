@@ -141,3 +141,5 @@ EwsSubscribeRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewssubscriberequest.cpp"

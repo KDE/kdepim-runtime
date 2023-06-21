@@ -250,3 +250,5 @@ void SpecialNotifierJob::slotOpenMail()
     job->start();
     deleteLater();
 }
+
+#include "moc_specialnotifierjob.cpp"

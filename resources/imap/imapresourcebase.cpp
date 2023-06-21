@@ -711,3 +711,5 @@ void ImapResourceBase::onCollectionModifyDone(KJob *job)
         qCWarning(IMAPRESOURCE_LOG) << "Failed to modify collection: " << job->errorString();
     }
 }
+
+#include "moc_imapresourcebase.cpp"

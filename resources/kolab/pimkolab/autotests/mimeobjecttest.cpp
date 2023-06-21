@@ -176,3 +176,5 @@ void MIMEObjectTest::testDistlist()
 }
 
 QTEST_MAIN(MIMEObjectTest)
+
+#include "moc_mimeobjecttest.cpp"

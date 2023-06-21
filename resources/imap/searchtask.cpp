@@ -216,3 +216,5 @@ void SearchTask::onSearchDone(KJob *job)
     searchFinished(result);
     taskDone();
 }
+
+#include "moc_searchtask.cpp"

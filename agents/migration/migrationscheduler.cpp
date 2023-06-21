@@ -282,3 +282,5 @@ void MigrationScheduler::abort(const QString &identifier)
         m->abort();
     }
 }
+
+#include "moc_migrationscheduler.cpp"

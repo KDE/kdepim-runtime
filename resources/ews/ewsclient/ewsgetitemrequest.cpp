@@ -131,3 +131,5 @@ bool EwsGetItemRequest::Response::parseItems(QXmlStreamReader &reader)
     }
     return true;
 }
+
+#include "moc_ewsgetitemrequest.cpp"

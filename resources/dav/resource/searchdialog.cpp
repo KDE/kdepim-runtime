@@ -187,3 +187,5 @@ void SearchDialog::onCollectionsFetchJobFinished(KJob *job)
         mModel->appendRow(item);
     }
 }
+
+#include "moc_searchdialog.cpp"

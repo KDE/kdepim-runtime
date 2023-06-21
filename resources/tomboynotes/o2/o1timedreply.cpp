@@ -23,3 +23,5 @@ void O1TimedReply::onTimeout()
 {
     Q_EMIT error(QNetworkReply::TimeoutError);
 }
+
+#include "moc_o1timedreply.cpp"

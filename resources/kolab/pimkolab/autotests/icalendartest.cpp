@@ -81,3 +81,5 @@ void ICalendarTest::testToIMip()
 }
 
 QTEST_MAIN(ICalendarTest)
+
+#include "moc_icalendartest.cpp"

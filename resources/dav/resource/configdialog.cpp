@@ -319,3 +319,5 @@ void ConfigDialog::insertModelRow(int index, const QString &protocol, const QStr
         rootItem->insertRow(index, items);
     }
 }
+
+#include "moc_configdialog.cpp"

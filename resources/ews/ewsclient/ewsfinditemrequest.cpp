@@ -263,3 +263,5 @@ EwsItem *EwsFindItemResponse::readItem(QXmlStreamReader &reader)
 
     return item;
 }
+
+#include "moc_ewsfinditemrequest.cpp"

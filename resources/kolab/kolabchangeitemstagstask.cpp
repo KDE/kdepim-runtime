@@ -128,3 +128,5 @@ void KolabChangeItemsTagsTask::onChangeCommitted()
 {
     processNextTag();
 }
+
+#include "moc_kolabchangeitemstagstask.cpp"

@@ -40,3 +40,5 @@ void NewMailNotificationHistoryWidget::slotHistoryAdded(const QString &str)
     mPlainTextEdit->appendPlainText(str);
     mPlainTextEdit->verticalScrollBar()->setValue(mPlainTextEdit->verticalScrollBar()->maximum());
 }
+
+#include "moc_newmailnotificationhistorywidget.cpp"

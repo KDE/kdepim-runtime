@@ -126,3 +126,5 @@ void GidMigrationJob::itemsUpdated(KJob *job)
         processCollection();
     }
 }
+
+#include "moc_gidmigrationjob.cpp"

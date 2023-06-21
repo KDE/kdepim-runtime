@@ -221,3 +221,5 @@ EwsSyncFolderHierarchyRequest::Change::Change(QXmlStreamReader &reader)
         break;
     }
 }
+
+#include "moc_ewssyncfolderhierarchyrequest.cpp"

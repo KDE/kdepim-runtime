@@ -170,3 +170,5 @@ void EwsUpdateItemsTagsJob::updateItemsTagsRequestFinished(bool success, const Q
 
     emitResult();
 }
+
+#include "moc_ewsupdateitemstagsjob.cpp"

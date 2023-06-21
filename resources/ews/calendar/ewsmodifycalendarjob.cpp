@@ -20,3 +20,5 @@ void EwsModifyCalendarJob::start()
     qCWarning(EWSRES_LOG) << QStringLiteral("Calendar item modification not implemented!");
     emitResult();
 }
+
+#include "moc_ewsmodifycalendarjob.cpp"

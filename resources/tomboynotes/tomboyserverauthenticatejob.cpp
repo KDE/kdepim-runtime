@@ -112,3 +112,5 @@ void TomboyServerAuthenticateJob::onUserRequestFinished()
     setError(TomboyJobError::NoError);
     emitResult();
 }
+
+#include "moc_tomboyserverauthenticatejob.cpp"

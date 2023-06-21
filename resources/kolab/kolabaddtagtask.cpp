@@ -165,3 +165,5 @@ void KolabAddTagTask::onSearchDone(KJob *job)
 
     applyFoundUid(uid);
 }
+
+#include "moc_kolabaddtagtask.cpp"

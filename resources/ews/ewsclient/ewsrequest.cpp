@@ -379,3 +379,5 @@ void EwsRequest::dump() const
         qCWarning(EWSCLI_LOG) << "failed to dump request and response";
     }
 }
+
+#include "moc_ewsrequest.cpp"

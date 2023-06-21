@@ -447,3 +447,5 @@ void FakeEwsConnection::sendEvents(const QStringList &events)
 
     mSock->write(QByteArray::number(resp.size(), 16) + "\r\n" + resp + "\r\n");
 }
+
+#include "moc_fakeewsconnection.cpp"

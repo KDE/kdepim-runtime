@@ -212,3 +212,5 @@ void O2Requestor::retry()
     connect(reply_, &QNetworkReply::finished, this, &O2Requestor::onRequestFinished, Qt::QueuedConnection);
     connect(reply_, &QNetworkReply::uploadProgress, this, &O2Requestor::onUploadProgress);
 }
+
+#include "moc_o2requestor.cpp"

@@ -363,3 +363,5 @@ bool GoogleResourceMigrator::migrateAccount(const QString &account, const Instan
 
     return true;
 }
+
+#include "moc_googleresourcemigrator.cpp"

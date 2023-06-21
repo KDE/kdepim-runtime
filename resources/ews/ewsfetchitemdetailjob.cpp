@@ -48,3 +48,5 @@ void EwsFetchItemDetailJob::start()
 {
     mRequest->start();
 }
+
+#include "moc_ewsfetchitemdetailjob.cpp"

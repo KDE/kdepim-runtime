@@ -65,3 +65,5 @@ void TomboyNotesConfigWidget::saveDialogSize(const QSize &size)
     auto group = config()->group("TomboyNotesConfigWidget");
     group.writeEntry("Size", size);
 }
+
+#include "moc_tomboynotesconfigwidget.cpp"

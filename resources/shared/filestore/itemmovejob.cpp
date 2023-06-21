@@ -49,3 +49,5 @@ void FileStore::ItemMoveJob::handleItemMoved(const Item &item)
 {
     d->mItem = item;
 }
+
+#include "moc_itemmovejob.cpp"

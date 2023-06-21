@@ -101,3 +101,5 @@ EwsMoveItemRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewsmoveitemrequest.cpp"

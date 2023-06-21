@@ -220,3 +220,5 @@ void NewMailNotifierSelectCollectionWidget::slotModifyJobDone(KJob *job)
         }
     }
 }
+
+#include "moc_newmailnotifierselectcollectionwidget.cpp"

@@ -488,3 +488,5 @@ void EwsFetchItemsJob::tagSyncFinished(KJob *job)
         compareItemLists();
     }
 }
+
+#include "moc_ewsfetchitemsjob.cpp"

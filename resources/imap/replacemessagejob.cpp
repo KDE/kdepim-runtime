@@ -164,3 +164,5 @@ qint64 ReplaceMessageJob::newUid() const
 {
     return mNewUid;
 }
+
+#include "moc_replacemessagejob.cpp"

@@ -116,3 +116,5 @@ bool EwsMtaResource::retrieveItems(const Akonadi::Item::List &items, const QSet<
 }
 
 AKONADI_RESOURCE_MAIN(EwsMtaResource)
+
+#include "moc_ewsmtaresource.cpp"

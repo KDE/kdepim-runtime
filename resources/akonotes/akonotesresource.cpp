@@ -24,3 +24,5 @@ QString AkonotesResource::defaultResourceType()
 }
 
 AKONADI_RESOURCE_MAIN(AkonotesResource)
+
+#include "moc_akonotesresource.cpp"

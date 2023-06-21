@@ -104,3 +104,5 @@ EwsCreateFolderRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewscreatefolderrequest.cpp"

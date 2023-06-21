@@ -58,3 +58,5 @@ void EwsAkonadiTagsSyncJob::tagWriteFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_ewsakonaditagssyncjob.cpp"

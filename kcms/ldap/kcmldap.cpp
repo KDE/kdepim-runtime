@@ -42,3 +42,5 @@ void KCMLdap::save()
 }
 
 #include "kcmldap.moc"
+
+#include "moc_kcmldap.cpp"

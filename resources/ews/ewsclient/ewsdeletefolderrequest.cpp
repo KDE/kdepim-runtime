@@ -98,3 +98,5 @@ EwsDeleteFolderRequest::Response::Response(QXmlStreamReader &reader)
         }
     }
 }
+
+#include "moc_ewsdeletefolderrequest.cpp"

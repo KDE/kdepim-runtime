@@ -78,3 +78,5 @@ void FileStore::CollectionFetchJob::handleCollectionsReceived(const Collection::
 
     Q_EMIT collectionsReceived(collections);
 }
+
+#include "moc_collectionfetchjob.cpp"

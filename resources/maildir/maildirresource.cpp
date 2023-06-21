@@ -864,3 +864,5 @@ void MaildirResource::changedCleaner()
 {
     mChangedFiles.clear();
 }
+
+#include "moc_maildirresource.cpp"

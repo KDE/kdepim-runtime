@@ -43,3 +43,5 @@ EwsAbstractAuth *EwsClient::auth() const
 {
     return mAuth.data();
 }
+
+#include "moc_ewsclient.cpp"

@@ -95,3 +95,5 @@ void AkonadiMailTransportPlugin::initializeTransport(MailTransport::Transport *t
 }
 
 #include "akonadimailtransportplugin.moc"
+
+#include "moc_akonadimailtransportplugin.cpp"

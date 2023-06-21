@@ -84,3 +84,5 @@ void ObjectsRequestJob::davJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_objectsrequestjob.cpp"

@@ -103,3 +103,5 @@ bool ConfigWidget::save() const
 
     return true;
 }
+
+#include "moc_configwidget.cpp"

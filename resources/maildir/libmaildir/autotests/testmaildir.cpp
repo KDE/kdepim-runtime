@@ -426,3 +426,5 @@ void MaildirTest::testMaildirFlagsWriting()
     QVERIFY(newKey2.endsWith(QLatin1String("2,RS")));
     QVERIFY(QFile::exists(QStringLiteral("cur/") + newKey2));
 }
+
+#include "moc_testmaildir.cpp"

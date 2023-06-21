@@ -564,3 +564,4 @@ void PersonHandler::collectionRemoved(const Collection &collection)
     connect(job, &People::ContactGroupDeleteJob::finished, this, &PersonHandler::slotGenericJobFinished);
 }
 
+#include "moc_personhandler.cpp"

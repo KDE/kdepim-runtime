@@ -137,3 +137,5 @@ ushort FakeEwsServer::portNumber() const
 
     return mPortNumber;
 }
+
+#include "moc_fakeewsserver.cpp"

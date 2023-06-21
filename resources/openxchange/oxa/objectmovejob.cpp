@@ -86,3 +86,5 @@ void ObjectMoveJob::davJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_objectmovejob.cpp"

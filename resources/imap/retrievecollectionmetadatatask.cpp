@@ -278,3 +278,5 @@ void RetrieveCollectionMetadataTask::endTaskIfNeeded()
         collectionAttributesRetrieved(m_collection);
     }
 }
+
+#include "moc_retrievecollectionmetadatatask.cpp"

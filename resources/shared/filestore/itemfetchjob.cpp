@@ -94,3 +94,5 @@ void FileStore::ItemFetchJob::handleItemsReceived(const Item::List &items)
 
     Q_EMIT itemsReceived(items);
 }
+
+#include "moc_itemfetchjob.cpp"

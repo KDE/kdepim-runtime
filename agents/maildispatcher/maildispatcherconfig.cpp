@@ -24,3 +24,5 @@ bool MailDispatcherConfig::save() const
     mWidget->save();
     return Akonadi::AgentConfigurationBase::save();
 }
+
+#include "moc_maildispatcherconfig.cpp"

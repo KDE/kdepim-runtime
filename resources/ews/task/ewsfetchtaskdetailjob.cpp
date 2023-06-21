@@ -42,3 +42,5 @@ void EwsFetchTaskDetailJob::processItems(const EwsGetItemRequest::Response::List
 
     emitResult();
 }
+
+#include "moc_ewsfetchtaskdetailjob.cpp"

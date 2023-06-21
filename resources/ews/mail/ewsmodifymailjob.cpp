@@ -107,3 +107,5 @@ void EwsModifyMailJob::updateItemsFinished(bool success, const QString &error)
     }
     emitResult();
 }
+
+#include "moc_ewsmodifymailjob.cpp"

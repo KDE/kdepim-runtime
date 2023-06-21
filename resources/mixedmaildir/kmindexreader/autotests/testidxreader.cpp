@@ -89,3 +89,5 @@ void TestIdxReader::testRead()
     QVERIFY(!msg->status().isRead());
     QVERIFY(msg->tagList().size() == 0);
 }
+
+#include "moc_testidxreader.cpp"

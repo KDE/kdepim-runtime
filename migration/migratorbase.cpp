@@ -283,3 +283,5 @@ QString MigratorBase::status() const
     }
     return {};
 }
+
+#include "moc_migratorbase.cpp"

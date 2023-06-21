@@ -74,3 +74,5 @@ void ConfigWidget::save(Settings *settings) const
     settings->setPath(ui.kcfg_Path->url().isLocalFile() ? ui.kcfg_Path->url().toLocalFile() : ui.kcfg_Path->url().path());
     settings->setTopLevelIsContainer(mToplevelIsContainer);
 }
+
+#include "moc_configwidget.cpp"

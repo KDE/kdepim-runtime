@@ -68,3 +68,5 @@ void ConnectionTestJob::httpJobFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_connectiontestjob.cpp"

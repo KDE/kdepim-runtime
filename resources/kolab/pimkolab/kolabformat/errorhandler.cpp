@@ -120,3 +120,5 @@ void ErrorHandler::handleLibkolabxmlErrors()
     }
 }
 }
+
+#include "moc_errorhandler.cpp"

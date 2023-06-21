@@ -2335,3 +2335,5 @@ void MixedMaildirStore::checkItemFetch(FileStore::ItemFetchJob *job, int &errorC
         Q_ASSERT(!job->collection().remoteId().isEmpty());
     }
 }
+
+#include "moc_mixedmaildirstore.cpp"

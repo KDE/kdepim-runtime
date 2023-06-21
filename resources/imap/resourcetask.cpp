@@ -546,3 +546,5 @@ void ResourceTask::setItemMergingMode(Akonadi::ItemSync::MergeMode mode)
 {
     m_resource->setItemMergingMode(mode);
 }
+
+#include "moc_resourcetask.cpp"

@@ -292,3 +292,5 @@ void EwsSubscriptionManager::processEvents(EwsEventRequestBase *req, bool finish
         }
     }
 }
+
+#include "moc_ewssubscriptionmanager.cpp"

@@ -48,3 +48,5 @@ void EwsGlobalTagsWriteJob::updateFolderRequestFinished(KJob *job)
 
     emitResult();
 }
+
+#include "moc_ewsglobaltagswritejob.cpp"

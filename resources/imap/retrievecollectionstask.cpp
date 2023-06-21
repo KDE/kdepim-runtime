@@ -217,3 +217,5 @@ void RetrieveCollectionsTask::onFullMailBoxesReceiveDone(KJob *job)
         cancelTask(job->errorString());
     }
 }
+
+#include "moc_retrievecollectionstask.cpp"

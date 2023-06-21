@@ -84,3 +84,5 @@ void O2ReplyServer::setReplyContent(const QByteArray &value)
 {
     replyContent_ = value;
 }
+
+#include "moc_o2replyserver.cpp"

@@ -80,3 +80,5 @@ void ObjectsRequestDeltaJob::fetchDeletedJobFinished(KJob *job)
         emitResult();
     }
 }
+
+#include "moc_objectsrequestdeltajob.cpp"

@@ -272,3 +272,5 @@ bool FakeServer::gotDisconnected() const
     QMutexLocker locker(&mMutex);
     return mGotDisconnected;
 }
+
+#include "moc_fakeserver.cpp"

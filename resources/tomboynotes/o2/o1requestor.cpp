@@ -66,3 +66,5 @@ QNetworkRequest O1Requestor::setup(const QNetworkRequest &req, const QList<O0Req
     request.setRawHeader(O2_HTTP_AUTHORIZATION_HEADER, O1::buildAuthorizationHeader(oauthParams));
     return request;
 }
+
+#include "moc_o1requestor.cpp"

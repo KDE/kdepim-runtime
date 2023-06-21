@@ -122,3 +122,5 @@ void KolabRelationResourceTask::onLocalCreateDone(KJob *job)
     mRelationCollection = static_cast<Akonadi::CollectionCreateJob *>(job)->collection();
     startRelationTask(mImapSession);
 }
+
+#include "moc_kolabrelationresourcetask.cpp"

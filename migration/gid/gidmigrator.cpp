@@ -52,3 +52,5 @@ void GidMigrator::migrationFinished(KJob *job)
         setMigrationState(Complete);
     }
 }
+
+#include "moc_gidmigrator.cpp"

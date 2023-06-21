@@ -518,3 +518,5 @@ void AccountWidget::localFolderRequestJobFinished(KJob *job)
         folderRequester->setCollection(targetCollection);
     }
 }
+
+#include "moc_accountwidget.cpp"

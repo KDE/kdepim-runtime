@@ -188,3 +188,5 @@ void ImapIdleManager::onFlagsChanged(KIMAP::IdleJob *job)
     qCDebug(IMAPRESOURCE_LOG) << "IDLE flags changed in" << m_session->selectedMailBox();
     m_resource->synchronizeCollection(m_state->collection().id());
 }
+
+#include "moc_imapidlemanager.cpp"

@@ -293,3 +293,5 @@ void SingleFileResourceBase::slotUploadJobResult(KJob *job)
 
     Q_EMIT status(Idle, i18nc("@info:status", "Ready"));
 }
+
+#include "moc_singlefileresourcebase.cpp"

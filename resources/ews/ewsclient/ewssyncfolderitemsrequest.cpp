@@ -241,3 +241,5 @@ EwsSyncFolderItemsRequest::Change::Change(QXmlStreamReader &reader)
         break;
     }
 }
+
+#include "moc_ewssyncfolderitemsrequest.cpp"

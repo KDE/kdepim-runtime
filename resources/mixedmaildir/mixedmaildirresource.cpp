@@ -780,3 +780,5 @@ void MixedMaildirResource::tagFetchJobResult(KJob *job)
 }
 
 AKONADI_RESOURCE_MAIN(MixedMaildirResource)
+
+#include "moc_mixedmaildirresource.cpp"

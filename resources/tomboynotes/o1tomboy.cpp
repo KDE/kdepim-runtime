@@ -36,3 +36,5 @@ void O1Tomboy::restoreAuthData(const QString &token, const QString &secret)
     requestTokenSecret_ = secret;
     setLinked(true);
 }
+
+#include "moc_o1tomboy.cpp"

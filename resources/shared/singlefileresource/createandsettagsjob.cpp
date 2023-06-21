@@ -58,3 +58,5 @@ void CreateAndSetTagsJob::onModifyDone(KJob *job)
     }
     emitResult();
 }
+
+#include "moc_createandsettagsjob.cpp"

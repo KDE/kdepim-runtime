@@ -202,3 +202,5 @@ void BatchFetcher::onHeadersFetchDone(KJob *job)
         }
     }
 }
+
+#include "moc_batchfetcher.cpp"

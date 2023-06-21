@@ -329,3 +329,5 @@ void FetchJob::slotMessageComplete()
     const int idOfCurrentMessage = mIdsPendingDownload.takeFirst();
     Q_EMIT messageFinished(idOfCurrentMessage, msg);
 }
+
+#include "moc_jobs.cpp"

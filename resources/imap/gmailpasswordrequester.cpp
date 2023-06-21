@@ -68,3 +68,5 @@ void GmailPasswordRequester::onTokenRequestFinished(KGAPI2::AccountPromise *prom
         Q_EMIT done(PasswordRetrieved, promise->account()->accessToken());
     }
 }
+
+#include "moc_gmailpasswordrequester.cpp"

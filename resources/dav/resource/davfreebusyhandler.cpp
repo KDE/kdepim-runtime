@@ -225,3 +225,5 @@ void DavFreeBusyHandler::onRetrieveFreeBusyJobFinished(KJob *job)
         Q_EMIT freeBusyRetrieved(email, fbStr, true, QString());
     }
 }
+
+#include "moc_davfreebusyhandler.cpp"
