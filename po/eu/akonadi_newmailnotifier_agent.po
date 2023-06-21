@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-20 00:53+0000\n"
+"POT-Creation-Date: 2023-06-21 00:48+0000\n"
 "PO-Revision-Date: 2022-08-29 23:01+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -27,7 +27,7 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Mantendu jakinarazpen iraunkorra"
 
-#: newmailnotifieragent.cpp:360
+#: newmailnotifieragent.cpp:371
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -37,7 +37,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "\"%3\"(r)en posta berri bat %2(e)an"
 msgstr[1] "\"%3\"(r)en %1 posta berri %2(e)an"
 
-#: newmailnotifieragent.cpp:380
+#: newmailnotifieragent.cpp:391
 #, kde-format
 msgid "New mail arrived"
 msgstr "Posta berria iritsi da"

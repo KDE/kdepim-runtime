@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-20 00:53+0000\n"
+"POT-Creation-Date: 2023-06-21 00:48+0000\n"
 "PO-Revision-Date: 2017-04-20 16:35+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -27,7 +27,7 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
 
-#: newmailnotifieragent.cpp:360
+#: newmailnotifieragent.cpp:371
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -37,7 +37,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Ένα νέο μήνυμα στο «%2» από «%3»"
 msgstr[1] "%1 νέα μηνύματα στο «%2» από «%3»"
 
-#: newmailnotifieragent.cpp:380
+#: newmailnotifieragent.cpp:391
 #, kde-format
 msgid "New mail arrived"
 msgstr "Έφτασε νέα αλληλογραφία"
