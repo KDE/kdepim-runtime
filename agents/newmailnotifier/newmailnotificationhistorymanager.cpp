@@ -28,7 +28,7 @@ QStringList NewMailNotificationHistoryManager::history() const
 void NewMailNotificationHistoryManager::addHistory(QString str)
 {
     if (!mHistory.isEmpty()) {
-        mHistory += QStringLiteral("\n");
+        mHistory += QStringLiteral("\n\n");
     }
     QString newStr = QStringLiteral("============ %1 ============").arg(QDateTime::currentDateTime().toString()) + QLatin1Char('\n');
     newStr += str.replace(QStringLiteral("<br>"), QStringLiteral("\n"));
