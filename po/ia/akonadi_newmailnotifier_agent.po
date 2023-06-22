@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-06-21 00:48+0000\n"
-"PO-Revision-Date: 2023-06-14 12:28+0200\n"
+"PO-Revision-Date: 2023-06-21 16:22+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -18,12 +18,10 @@ msgstr ""
 "X-Generator: Lokalize 22.12.3\n"
 
 #: newmailnotificationhistorydialog.cpp:24
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "History Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr "Notification de Chronologia"
+msgstr "Chronologia de Notification "
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
