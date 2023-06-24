@@ -400,7 +400,9 @@ void NewMailNotifierAgent::slotShowNotifications()
 
 void NewMailNotifierAgent::slotDisplayNotification(const QPixmap &pixmap, const QString &message)
 {
-    NewMailNotificationHistoryManager::self()->addHistory(message);
+    if (NewMailNotifierAgentSettings::enableNotificationHistory()) {
+        NewMailNotificationHistoryManager::self()->addHistory(message);
+    }
     if (pixmap.isNull()) {
         KNotification::event(QStringLiteral("new-email"),
                              QString(),

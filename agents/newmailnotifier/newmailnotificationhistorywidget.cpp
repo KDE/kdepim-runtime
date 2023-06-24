@@ -6,6 +6,7 @@
 #include "newmailnotificationhistorywidget.h"
 #include "newmailnotificationhistorymanager.h"
 #include "newmailnotificationhistoryplaintextedit.h"
+#include "newmailnotifieragentsettings.h"
 #include <KLocalizedString>
 #include <QCheckBox>
 #include <QScrollBar>
@@ -27,6 +28,7 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
     mainLayout->addWidget(mPlainTextEdit);
 
     mainLayout->addWidget(mEnabledHistory);
+    connect(mEnabledHistory, &QCheckBox::clicked, this, &NewMailNotificationHistoryWidget::slotEnableChanged);
 
     connect(NewMailNotificationHistoryManager::self(),
             &NewMailNotificationHistoryManager::historyAdded,
@@ -38,6 +40,7 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
         NewMailNotificationHistoryManager::self()->clear();
         mPlainTextEdit->clear();
     });
+    slotEnableChanged(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
 }
 
 NewMailNotificationHistoryWidget::~NewMailNotificationHistoryWidget() = default;
@@ -46,4 +49,11 @@ void NewMailNotificationHistoryWidget::slotHistoryAdded(const QString &str)
 {
     mPlainTextEdit->appendPlainText(str);
     mPlainTextEdit->verticalScrollBar()->setValue(mPlainTextEdit->verticalScrollBar()->maximum());
+}
+
+void NewMailNotificationHistoryWidget::slotEnableChanged(bool clicked)
+{
+    mPlainTextEdit->setEnabled(clicked);
+    NewMailNotifierAgentSettings::self()->setEnableNotificationHistory(clicked);
+    NewMailNotifierAgentSettings::self()->save();
 }
