@@ -7,20 +7,27 @@
 #include "newmailnotificationhistorymanager.h"
 #include "newmailnotificationhistoryplaintextedit.h"
 #include <KLocalizedString>
+#include <QCheckBox>
 #include <QScrollBar>
 #include <QVBoxLayout>
 
 NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
     : QWidget{parent}
     , mPlainTextEdit(new NewMailNotificationHistoryPlainTextEdit(this))
+    , mEnabledHistory(new QCheckBox(i18n("Enabled"), this))
 {
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->setObjectName(QStringLiteral("mainLayout"));
     mainLayout->setContentsMargins({});
 
+    mEnabledHistory->setObjectName(QStringLiteral("mEnabledHistory"));
+
     mPlainTextEdit->setObjectName(QStringLiteral("mPlainTextEdit"));
     mPlainTextEdit->setReadOnly(true);
     mainLayout->addWidget(mPlainTextEdit);
+
+    mainLayout->addWidget(mEnabledHistory);
+
     connect(NewMailNotificationHistoryManager::self(),
             &NewMailNotificationHistoryManager::historyAdded,
             this,
