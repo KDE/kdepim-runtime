@@ -17,6 +17,7 @@ public:
 
 private:
     void slotHistoryAdded(const QString &str);
+    void slotEnableChanged(bool clicked);
     NewMailNotificationHistoryPlainTextEdit *const mPlainTextEdit;
     QCheckBox *const mEnabledHistory;
 };
