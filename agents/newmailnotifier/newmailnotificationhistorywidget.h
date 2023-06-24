@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QWidget>
+class QCheckBox;
 class NewMailNotificationHistoryPlainTextEdit;
 class NewMailNotificationHistoryWidget : public QWidget
 {
@@ -17,4 +18,5 @@ public:
 private:
     void slotHistoryAdded(const QString &str);
     NewMailNotificationHistoryPlainTextEdit *const mPlainTextEdit;
+    QCheckBox *const mEnabledHistory;
 };

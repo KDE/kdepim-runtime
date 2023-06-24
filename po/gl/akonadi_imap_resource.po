@@ -4,14 +4,14 @@
 # Marce Villarino <mvillarino@gmail.com>, 2009, 2013, 2014.
 # Xosé <xosecalvo@edu.xunta.es>, 2009, 2013.
 # Adrian Chaves Fernandez <adriyetichaves@gmail.com>, 2013, 2015, 2016, 2017.
-# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2018, 2019.
+# Adrián Chaves (Gallaecio) <adrian@chaves.io>, 2017, 2018, 2019, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_imap_resource\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-05-18 00:49+0000\n"
-"PO-Revision-Date: 2019-08-11 16:58+0200\n"
+"PO-Revision-Date: 2023-06-22 08:43+0200\n"
 "Last-Translator: Adrián Chaves (Gallaecio) <adrian@chaves.io>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 19.04.1\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #: addcollectiontask.cpp:33
 #, kde-format
@@ -98,8 +98,7 @@ msgid "IMAP Account"
 msgstr "Conta de IMAP"
 
 #: imapresource.cpp:62
-#, fuzzy, kde-format
-#| msgid "IMAP Account Settings"
+#, kde-format
 msgctxt "@title:window"
 msgid "IMAP Account Settings"
 msgstr "Configuración da conta de IMAP"
@@ -151,7 +150,7 @@ msgstr "Define se está activada a subscrición do lado do servidor"
 #: imapresource.kcfg:38 setupserverview_desktop.ui:560
 #, kde-format
 msgid "Connect using the system proxy settings"
-msgstr "Conectar usando a configuración de proxy do sistema."
+msgstr "Conectar usando a configuración de mandatario do sistema."
 
 #. i18n: ectx: whatsthis, entry (UseProxy), group (network)
 #: imapresource.kcfg:39
@@ -160,8 +159,8 @@ msgid ""
 "If checked, the system proxy settings will be used to connect to the mail "
 "server."
 msgstr ""
-"Se se marca, usarase a configuración de proxy do sistema para conectarse ao "
-"servidor de correo."
+"Se se marca, usarase a configuración de mandatario do sistema para "
+"conectarse ao servidor de correo."
 
 #. i18n: ectx: label, entry (DisconnectedModeEnabled), group (cache)
 #: imapresource.kcfg:45
@@ -284,15 +283,15 @@ msgstr "Defina o nome de ficheiro de vacacións de sieve predeterminado"
 #, kde-format
 msgid "Define username used from custom server sieve url"
 msgstr ""
-"Definir o nome de usuario empregado a partir do o URL de sieve do servidor "
-"personalizado"
+"Definir o nome de persoa usuaria para usar a partir do o URL de sieve do "
+"servidor personalizado."
 
 #. i18n: ectx: label, entry (SieveCustomAuthentification), group (siever)
 #: imapresource.kcfg:119
 #, kde-format
 msgid "Defines the type of identification used by custom sieve server"
 msgstr ""
-"Define o tipo de autenticación empregada polo servidor personalizado de sieve"
+"Define o tipo de autenticación que usa o servidor personalizado de sieve."
 
 #: imapresourcebase.cpp:212
 #, kde-format
@@ -331,13 +330,13 @@ msgstr "Actualizando o elemento en «%1»."
 #, kde-format
 msgctxt "@info:status"
 msgid "Updating items"
-msgstr "Estanse a actualizar os elementos"
+msgstr "Actualizando os elementos."
 
 #: imapresourcebase.cpp:365
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing items"
-msgstr "Estanse a retirar os elementos"
+msgstr "Retirando os elementos."
 
 #: imapresourcebase.cpp:381
 #, kde-format
@@ -349,7 +348,7 @@ msgstr "Estanse a mover os elementos de «%1» para «%2»."
 #, kde-format
 msgctxt "@info:status"
 msgid "Retrieving folders"
-msgstr "Estanse a obter os cartafoles"
+msgstr "Obtendo os cartafoles."
 
 #: imapresourcebase.cpp:397
 #, kde-format
@@ -627,13 +626,7 @@ msgid "Disconnected during login."
 msgstr "Desconectado durante o acceso."
 
 #: settingspasswordrequester.cpp:53
-#, fuzzy, kde-format
-#| msgid ""
-#| "The server for account \"%2\" refused the supplied username and password. "
-#| "Do you want to go to the settings, have another attempt at logging in, or "
-#| "do nothing?\n"
-#| "\n"
-#| "%1"
+#, kde-format
 msgid ""
 "The server for account \"%2\" refused the supplied username and password.\n"
 "Do you want to go to the settings, have another attempt at logging in, or do "
@@ -642,14 +635,13 @@ msgid ""
 "%1"
 msgstr ""
 "O servidor para a conta «%2» rexeitou o nome de usuario e contrasinal "
-"fornecidos. Quere ir á configuración, volver intentar identificarse, ou non "
-"facer nada?\n"
+"fornecidos.\n"
+"Quere ir á configuración, volver intentar identificarse, ou non facer nada?\n"
 "\n"
 "%1"
 
 #: settingspasswordrequester.cpp:60
-#, fuzzy, kde-format
-#| msgid "Could Not Authenticate"
+#, kde-format
 msgctxt "@title:window"
 msgid "Could Not Authenticate"
 msgstr "Non se puido autenticar"
@@ -742,7 +734,7 @@ msgstr ""
 #: setupserver.cpp:279
 #, kde-format
 msgid "User name change"
-msgstr "Cambio de nome de usuario"
+msgstr "Renomeamento de usuario"
 
 #: setupserver.cpp:424 setupserver.cpp:480
 #, kde-format
@@ -906,11 +898,12 @@ msgstr ""
 "mentres que aos servidores que cumpren co novo estándar só se pode acceder a "
 "través do porto 4190."
 
+# well-spelled: ManageSieve
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: setupserverview_desktop.ui:192
 #, kde-format
 msgid "Managesieve port:"
-msgstr "Porto de xestión de sieve:"
+msgstr "Porto de xestión de ManageSieve:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_6)
 #: setupserverview_desktop.ui:210
@@ -1164,7 +1157,7 @@ msgstr "Buscar:"
 #, kde-format
 msgctxt "@option:check"
 msgid "Subscribed only"
-msgstr "Só os subscritos"
+msgstr "Só os subscritos."
 
 #~ msgid "Identity Settings"
 #~ msgstr "Configuración da identidade"

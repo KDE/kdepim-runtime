@@ -2,22 +2,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vít Pelčák <vit@pelcak.org>, 2010, 2011, 2014, 2016, 2017, 2019.
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012.
-# Vit Pelcak <vit@pelcak.org>, 2021.
+# Vit Pelcak <vit@pelcak.org>, 2021, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-04-23 00:50+0000\n"
-"PO-Revision-Date: 2021-07-09 11:00+0200\n"
-"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
+"PO-Revision-Date: 2023-06-22 11:05+0200\n"
+"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 21.04.2\n"
+"X-Generator: Lokalize 23.04.2\n"
 
 #. i18n: ectx: property (toolTip), widget (QTabWidget, tabWidget)
 #: settingsdialog.ui:29
@@ -141,7 +141,7 @@ msgstr "Nebyl vybrán žádný soubor."
 #: singlefileresource.h:67
 #, kde-format
 msgid "The resource not configured yet"
-msgstr ""
+msgstr "Zdroj ještě nebyl nastaven"
 
 #: singlefileresource.h:98 singlefileresource.h:127 singlefileresource.h:212
 #: singlefileresourcebase.cpp:277 singlefileresourcebase.cpp:294
@@ -231,6 +231,8 @@ msgid ""
 "Select a file. A new file will be created if it doesn't exist. You can also "
 "use a URL, but in that case, monitoring for file changes is not possible."
 msgstr ""
+"Vyberte soubor. Pokud neexistuje, bude vytvořen nový soubor. Taky můžete "
+"použít URL, ale v takovém případě není možné monitorovat změny souboru."
 
 #. i18n: ectx: property (text), widget (QLabel, displayNameLabel)
 #: singlefileresourceconfigwidget_desktop.ui:79
@@ -262,6 +264,9 @@ msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible."
 msgstr ""
+"Pokud je monitorování povoleno, povedou změny provedené jinými aplikacemi k "
+"opětovnému načtení. Pro předejití konfliktů budou vytvářeny zálohy pokud to "
+"půjde."
 
 #: singlefileresourceconfigwidgetbase.cpp:126
 #, kde-format
