@@ -734,7 +734,7 @@ msgstr ""
 #: setupserver.cpp:280
 #, kde-format
 msgid "User name change"
-msgstr "Cambio de nome de usuario"
+msgstr "Renomeamento de usuario"
 
 #: setupserver.cpp:427 setupserver.cpp:483
 #, kde-format
