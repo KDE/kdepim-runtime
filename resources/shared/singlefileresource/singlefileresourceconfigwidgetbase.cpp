@@ -57,7 +57,7 @@ void SingleFileResourceConfigWidgetBase::addPage(const QString &title, QWidget *
 
 void SingleFileResourceConfigWidgetBase::setFilter(const QString &filter)
 {
-    ui.kcfg_Path->setFilter(filter);
+    ui.kcfg_Path->setNameFilter(filter);
 }
 
 void SingleFileResourceConfigWidgetBase::setMonitorEnabled(bool enable)
