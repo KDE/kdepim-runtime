@@ -118,7 +118,10 @@ EwsConfigDialog::EwsConfigDialog(EwsResource *parentResource, EwsClient &client,
         mUi->pkeyAuthGroupBox->setEnabled(true);
     }
     mUi->pkeyAuthCert->setText(mSettings->pKeyCert());
+    mUi->pkeyAuthCert->setNameFilter(QStringLiteral("%1 (*.pem)").arg(i18n("PEM file")));
     mUi->pkeyAuthKey->setText(mSettings->pKeyKey());
+    mUi->pkeyAuthKey->setNameFilter(QStringLiteral("%1 (*.pem)").arg(i18n("PEM file")));
+
     connect(mSettings.data(), &EwsSettings::mapRequestFinished, this, [&](const QMap<QString, QString> &map) {
         if (map.contains(pkeyPasswordMapKey)) {
             mUi->pkeyAuthPassword->setPassword(map[pkeyPasswordMapKey]);
