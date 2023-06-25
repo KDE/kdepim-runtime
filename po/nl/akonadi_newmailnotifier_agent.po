@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2023-06-17 10:28+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -22,6 +22,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Geschiedenis van meldingen"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Ingeschakeld"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -138,11 +144,6 @@ msgstr "Aan allen antwoorden"
 #, kde-format
 msgid "Display"
 msgstr "Weergave"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Ingeschakeld"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

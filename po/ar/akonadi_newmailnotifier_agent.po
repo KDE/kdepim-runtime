@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2022-01-04 14:18+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -25,6 +25,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "أبقِ الإخطارات مستمرّة"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "مفعّل"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -144,11 +150,6 @@ msgstr "ردّ على الكل"
 #, kde-format
 msgid "Display"
 msgstr "العرض"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "مفعّل"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

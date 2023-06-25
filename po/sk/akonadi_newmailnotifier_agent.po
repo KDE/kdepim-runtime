@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2019-07-17 16:24+0200\n"
 "Last-Translator: Matej Mrenica <matejm98mthw@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -23,6 +23,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Zobraziť trvalé oznámenie"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Povolené"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -140,11 +146,6 @@ msgstr "Vybrať &všetko"
 #, kde-format
 msgid "Display"
 msgstr "Obrazovka"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Povolené"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

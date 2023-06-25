@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2022-01-02 14:19+0100\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
@@ -23,6 +23,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Behåll permanent underrättelse"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Aktiverad"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -138,11 +144,6 @@ msgstr "Svara till alla"
 #, kde-format
 msgid "Display"
 msgstr "Visning"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Aktiverad"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: kdepim-runtimeReport-Msgid-Bugs-To: https://bugs.kde."
 "org\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2023-06-17 09:31+0100\n"
 "Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -26,6 +26,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Historio de Sciigoj"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Ebligita"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -141,11 +147,6 @@ msgstr "Respondi al Ĉiuj"
 #, kde-format
 msgid "Display"
 msgstr "Montri"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Ebligita"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

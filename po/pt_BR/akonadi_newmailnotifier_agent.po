@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: akonadi_newmailnotifier_agent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2022-01-04 11:51-0300\n"
 "Last-Translator: Luiz Fernando Ranghetti <elchevive@opensuse.org>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -25,6 +25,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Manter a notificação persistente"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Habilitado"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -142,11 +148,6 @@ msgstr "Responder a todos"
 #, kde-format
 msgid "Display"
 msgstr "Visualização"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Habilitado"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format
