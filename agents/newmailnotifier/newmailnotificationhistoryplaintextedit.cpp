@@ -11,14 +11,16 @@
 #include <QMenu>
 
 NewMailNotificationHistoryPlainTextEdit::NewMailNotificationHistoryPlainTextEdit(QWidget *parent)
-    : QPlainTextEdit(parent)
+    : KPIMTextEdit::PlainTextEditorWidget(parent)
 {
 }
 
 NewMailNotificationHistoryPlainTextEdit::~NewMailNotificationHistoryPlainTextEdit() = default;
 
+#if 0
 void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
+    /*
     QMenu *popup = createStandardContextMenu();
     if (popup) {
         popup->addSeparator();
@@ -28,5 +30,6 @@ void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent
     popup->exec(event->globalPos());
     delete popup;
 }
+#endif
 
 #include "moc_newmailnotificationhistoryplaintextedit.cpp"

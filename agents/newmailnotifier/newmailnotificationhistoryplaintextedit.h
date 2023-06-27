@@ -5,17 +5,15 @@
 
 #pragma once
 
+#include <KPIMTextEdit/PlainTextEditorWidget>
 #include <QPlainTextEdit>
 
-class NewMailNotificationHistoryPlainTextEdit : public QPlainTextEdit
+class NewMailNotificationHistoryPlainTextEdit : public KPIMTextEdit::PlainTextEditorWidget
 {
     Q_OBJECT
 public:
     explicit NewMailNotificationHistoryPlainTextEdit(QWidget *parent = nullptr);
     ~NewMailNotificationHistoryPlainTextEdit() override;
-
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override;
 
 Q_SIGNALS:
     void clearHistory();
