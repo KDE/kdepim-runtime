@@ -6,6 +6,7 @@
 #include "newmailnotificationhistorywidget.h"
 #include "newmailnotificationhistorymanager.h"
 #include "newmailnotificationhistoryplaintextedit.h"
+#include "newmailnotificationhistoryplaintexteditor.h"
 #include "newmailnotifieragentsettings.h"
 #include <KLocalizedString>
 
@@ -17,7 +18,7 @@
 
 NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *parent)
     : QWidget{parent}
-    , mPlainTextEdit(new NewMailNotificationHistoryPlainTextEdit(this))
+    , mPlainTextEdit(new NewMailNotificationHistoryPlainTextEdit(new NewMailNotificationHistoryPlainTextEditor(this), this))
     , mEnabledHistory(new QCheckBox(i18n("Enabled"), this))
 {
     auto mainLayout = new QVBoxLayout(this);

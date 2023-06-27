@@ -37,6 +37,9 @@ target_sources(akonadi_newmailnotifier_agent PRIVATE
   newmailnotificationhistoryplaintextedit.h
   newmailnotificationhistoryplaintextedit.cpp
 
+  newmailnotificationhistoryplaintexteditor.h
+  newmailnotificationhistoryplaintexteditor.cpp
+
   ${newmailnotifier_common_SRCS}
   ${newmailnotifieragent_SRCS}
 )

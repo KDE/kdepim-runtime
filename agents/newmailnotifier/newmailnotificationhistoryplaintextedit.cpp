@@ -4,29 +4,12 @@
 */
 
 #include "newmailnotificationhistoryplaintextedit.h"
+#include "newmailnotificationhistoryplaintexteditor.h"
 
-#include <KLocalizedString>
-#include <KStandardAction>
-
-#include <QMenu>
-
-NewMailNotificationHistoryPlainTextEdit::NewMailNotificationHistoryPlainTextEdit(QWidget *parent)
-    : KPIMTextEdit::PlainTextEditorWidget(parent)
+NewMailNotificationHistoryPlainTextEdit::NewMailNotificationHistoryPlainTextEdit(NewMailNotificationHistoryPlainTextEditor *editor, QWidget *parent)
+    : KPIMTextEdit::PlainTextEditorWidget(editor, parent)
 {
+    connect(editor, &NewMailNotificationHistoryPlainTextEditor::clearHistory, this, &NewMailNotificationHistoryPlainTextEdit::clear);
 }
 
 NewMailNotificationHistoryPlainTextEdit::~NewMailNotificationHistoryPlainTextEdit() = default;
-
-#if 0
-void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent *event)
-{
-    QMenu *popup = createStandardContextMenu();
-    if (popup) {
-        popup->addSeparator();
-        QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryPlainTextEdit::clear, popup);
-        popup->addAction(clearAllAction);
-    }
-    popup->exec(event->globalPos());
-    delete popup;
-}
-#endif
