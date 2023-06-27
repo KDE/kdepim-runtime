@@ -213,8 +213,8 @@ msgid ""
 "locking method."
 msgstr ""
 "Ningún, o que se configura de maneira predeterminada, debería ser seguro na "
-"maioría dos casos. Porén, se tamén hai programas que non empreguen Akonadi "
-"que accedan ao ficheiro mbox configurado, haberá que designar un método de "
+"maioría dos casos. Porén, se tamén hai programas que non usen Akonadi que "
+"accedan ao ficheiro mbox configurado, haberá que designar un método de "
 "bloqueo axeitado. Lembre que, de ser o caso, o recurso e os demais programas "
 "teñen que utilizar todos o mesmo método de bloqueo."
 
@@ -275,8 +275,8 @@ msgid ""
 msgstr ""
 "Outro programa cambiou o ficheiro MBox. Fíxose unha copia do ficheiro novo e "
 "os cambios pendentes engadíronse a esa copia. Para evitar que isto ocorra, "
-"use o bloqueo e verifique que os programas que accedan ao mbox empreguen o "
-"mesmo método de bloqueo."
+"use o bloqueo e verifique que os programas que accedan ao mbox usen o mesmo "
+"método de bloqueo."
 
 #: mboxresource.cpp:290
 #, kde-format
