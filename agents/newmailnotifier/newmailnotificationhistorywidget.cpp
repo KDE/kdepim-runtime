@@ -41,6 +41,7 @@ NewMailNotificationHistoryWidget::NewMailNotificationHistoryWidget(QWidget *pare
         mPlainTextEdit->clear();
     });
     slotEnableChanged(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
+    mEnabledHistory->setChecked(NewMailNotifierAgentSettings::self()->enableNotificationHistory());
 }
 
 NewMailNotificationHistoryWidget::~NewMailNotificationHistoryWidget() = default;

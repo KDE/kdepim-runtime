@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2023-06-17 09:18+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
@@ -24,6 +24,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Historia powiadomień"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Włączone"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -140,11 +146,6 @@ msgstr "Odpowiedz wszystkim"
 #, kde-format
 msgid "Display"
 msgstr "Wyświetlanie"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Włączone"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

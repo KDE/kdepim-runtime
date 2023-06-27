@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2023-06-17 12:05+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
@@ -26,6 +26,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Historial de notificacions"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Activada"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -142,11 +148,6 @@ msgstr "Respon a tots"
 #, kde-format
 msgid "Display"
 msgstr "Visualització"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Activada"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

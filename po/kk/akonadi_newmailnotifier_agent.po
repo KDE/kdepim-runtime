@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2013-09-30 03:01+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -22,6 +22,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Рұқсат етілген"
 
 #: newmailnotifieragent.cpp:371
 #, fuzzy, kde-format
@@ -139,11 +145,6 @@ msgstr "&Бүкілін таңдау"
 #, kde-format
 msgid "Display"
 msgstr "Көрсету"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Рұқсат етілген"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

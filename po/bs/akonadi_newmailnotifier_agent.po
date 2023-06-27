@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent.po\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2014-02-09 17:02+0100\n"
 "Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
 "Language-Team: bs <bs@kde.org>\n"
@@ -25,6 +25,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr ""
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Uključeno"
 
 #: newmailnotifieragent.cpp:371
 #, fuzzy, kde-format
@@ -144,11 +150,6 @@ msgstr "&Odaberi sve"
 #, kde-format
 msgid "Display"
 msgstr "Prikaz"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Uključeno"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-21 00:48+0000\n"
+"POT-Creation-Date: 2023-06-25 00:53+0000\n"
 "PO-Revision-Date: 2023-06-18 23:44+0200\n"
 "Last-Translator: Frederik Schwarzer <schwarzer@kde.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -21,6 +21,12 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Benachrichtigungsverlauf"
+
+#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotifiersettingswidget.cpp:112
+#, kde-format
+msgid "Enabled"
+msgstr "Aktiviert"
 
 #: newmailnotifieragent.cpp:371
 #, kde-format
@@ -139,11 +145,6 @@ msgstr "Allen Antworten"
 #, kde-format
 msgid "Display"
 msgstr "Anzeige"
-
-#: newmailnotifiersettingswidget.cpp:112
-#, kde-format
-msgid "Enabled"
-msgstr "Aktiviert"
 
 #: newmailnotifiersettingswidget.cpp:116
 #, kde-format
