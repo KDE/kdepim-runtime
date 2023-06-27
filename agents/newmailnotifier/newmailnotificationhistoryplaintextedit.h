@@ -6,13 +6,12 @@
 #pragma once
 
 #include <KPIMTextEdit/PlainTextEditorWidget>
-#include <QPlainTextEdit>
-
+class NewMailNotificationHistoryPlainTextEditor;
 class NewMailNotificationHistoryPlainTextEdit : public KPIMTextEdit::PlainTextEditorWidget
 {
     Q_OBJECT
 public:
-    explicit NewMailNotificationHistoryPlainTextEdit(QWidget *parent = nullptr);
+    explicit NewMailNotificationHistoryPlainTextEdit(NewMailNotificationHistoryPlainTextEditor *editor, QWidget *parent = nullptr);
     ~NewMailNotificationHistoryPlainTextEdit() override;
 
 Q_SIGNALS:
