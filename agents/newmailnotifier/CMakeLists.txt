@@ -46,7 +46,6 @@ if (COMPILE_WITH_UNITY_CMAKE_SUPPORT)
 endif()
 
 target_link_libraries( akonadi_newmailnotifier_agent
-<<<<<<< HEAD
   KPim6::AkonadiCore
   KPim6::Mime
   KPim6::AkonadiMime

@@ -20,7 +20,6 @@ NewMailNotificationHistoryPlainTextEdit::~NewMailNotificationHistoryPlainTextEdi
 #if 0
 void NewMailNotificationHistoryPlainTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-    /*
     QMenu *popup = createStandardContextMenu();
     if (popup) {
         popup->addSeparator();
