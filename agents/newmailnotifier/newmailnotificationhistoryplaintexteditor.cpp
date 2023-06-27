@@ -16,6 +16,7 @@ void NewMailNotificationHistoryPlainTextEditor::addExtraMenuEntry(QMenu *menu, Q
 {
     Q_UNUSED(pos)
     QAction *clearAllAction = KStandardAction::clear(this, &NewMailNotificationHistoryPlainTextEditor::clearHistory, menu);
+    menu->addSeparator();
     menu->addAction(clearAllAction);
 }
 
