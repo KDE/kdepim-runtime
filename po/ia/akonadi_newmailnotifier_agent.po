@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-25 00:53+0000\n"
+"POT-Creation-Date: 2023-06-28 00:49+0000\n"
 "PO-Revision-Date: 2023-06-21 16:22+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -23,7 +23,7 @@ msgctxt "@title:window"
 msgid "Notification History"
 msgstr "Chronologia de Notification "
 
-#: newmailnotificationhistorywidget.cpp:18
+#: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:112
 #, kde-format
 msgid "Enabled"
