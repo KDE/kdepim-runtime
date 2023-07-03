@@ -124,7 +124,7 @@ NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfig
     auto lab = new QLabel(i18n("Message:"), parent);
     lab->setObjectName(QStringLiteral("labmessage"));
     textToSpeakLayout->addWidget(lab);
-    mTextToSpeakSetting = new QLineEdit;
+    mTextToSpeakSetting = new QLineEdit(parent);
     mTextToSpeakSetting->setObjectName(QStringLiteral("mTextToSpeakSetting"));
     mTextToSpeakSetting->setClearButtonEnabled(true);
 
