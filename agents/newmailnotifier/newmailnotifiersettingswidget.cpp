@@ -40,7 +40,6 @@ static KLazyLocalizedString textToSpeakMessage = kli18n(
 NewMailNotifierSettingsWidget::NewMailNotifierSettingsWidget(const KSharedConfigPtr &config, QWidget *parent, const QVariantList &args)
     : Akonadi::AgentConfigurationBase(config, parent, args)
     , mSelectCollection(new NewMailNotifierSelectCollectionWidget(parent))
-
 {
     NewMailNotifierAgentSettings::instance(config);
     setObjectName(QStringLiteral("NewMailNotifierSettingsWidget"));
