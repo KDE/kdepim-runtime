@@ -12,6 +12,8 @@ NewMailNotificationHistoryPlainTextEditor::NewMailNotificationHistoryPlainTextEd
 {
 }
 
+NewMailNotificationHistoryPlainTextEditor::~NewMailNotificationHistoryPlainTextEditor() = default;
+
 void NewMailNotificationHistoryPlainTextEditor::addExtraMenuEntry(QMenu *menu, QPoint pos)
 {
     Q_UNUSED(pos)
@@ -19,7 +21,5 @@ void NewMailNotificationHistoryPlainTextEditor::addExtraMenuEntry(QMenu *menu, Q
     menu->addSeparator();
     menu->addAction(clearAllAction);
 }
-
-NewMailNotificationHistoryPlainTextEditor::~NewMailNotificationHistoryPlainTextEditor() = default;
 
 #include "moc_newmailnotificationhistoryplaintexteditor.cpp"
