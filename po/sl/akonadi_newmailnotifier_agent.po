@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-28 00:49+0000\n"
+"POT-Creation-Date: 2023-07-04 00:49+0000\n"
 "PO-Revision-Date: 2023-06-17 08:12+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
@@ -28,7 +28,7 @@ msgid "Notification History"
 msgstr "Zgodovina obvestil"
 
 #: newmailnotificationhistorywidget.cpp:22
-#: newmailnotifiersettingswidget.cpp:112
+#: newmailnotifiersettingswidget.cpp:111
 #, kde-format
 msgid "Enabled"
 msgstr "Omogočeno"
@@ -91,123 +91,123 @@ msgstr ""
 "<qt><p>Tu lahko določite sporočilo. Uporabite lahko:</p><ul><li>%s nastavi "
 "zadevo</li><li>%f nastavi pošiljatelja</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:53
+#: newmailnotifiersettingswidget.cpp:52
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Izberite polja, ki bodo prikazana:"
 
-#: newmailnotifiersettingswidget.cpp:58
+#: newmailnotifiersettingswidget.cpp:57
 #, kde-format
 msgid "Show Photo"
 msgstr "Pokaži fotografijo"
 
-#: newmailnotifiersettingswidget.cpp:62
+#: newmailnotifiersettingswidget.cpp:61
 #, kde-format
 msgid "Show From"
 msgstr "Pokaži pošiljatelja"
 
-#: newmailnotifiersettingswidget.cpp:66
+#: newmailnotifiersettingswidget.cpp:65
 #, kde-format
 msgid "Show Subject"
 msgstr "Pokaži zadevo"
 
-#: newmailnotifiersettingswidget.cpp:70
+#: newmailnotifiersettingswidget.cpp:69
 #, kde-format
 msgid "Show Folders"
 msgstr "Pokaži mape"
 
-#: newmailnotifiersettingswidget.cpp:74
+#: newmailnotifiersettingswidget.cpp:73
 #, kde-format
 msgid "Do not notify when email was sent by me"
 msgstr "Ne obveščaj, če sem e-pošto poslal(a) jaz"
 
-#: newmailnotifiersettingswidget.cpp:78
+#: newmailnotifiersettingswidget.cpp:77
 #, kde-format
 msgid "Keep Persistent Notification"
 msgstr "Ohrani trajno obvestilo"
 
-#: newmailnotifiersettingswidget.cpp:82
+#: newmailnotifiersettingswidget.cpp:81
 #, kde-format
 msgid "Show Action Buttons"
 msgstr "Pokaži gumbe za akcijo"
 
-#: newmailnotifiersettingswidget.cpp:90
+#: newmailnotifiersettingswidget.cpp:89
 #, kde-format
 msgid "Reply Mail"
 msgstr "Odgovori na sporočilo"
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to Author"
 msgstr "Odgovori avtorju"
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:157
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:157
 #, kde-format
 msgid "Reply to All"
 msgstr "Odgovori vsem"
 
-#: newmailnotifiersettingswidget.cpp:107
+#: newmailnotifiersettingswidget.cpp:106
 #, kde-format
 msgid "Display"
 msgstr "Prikaži"
 
-#: newmailnotifiersettingswidget.cpp:116
+#: newmailnotifiersettingswidget.cpp:115
 #, kde-format
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Kako to deluje?</a>"
 
-#: newmailnotifiersettingswidget.cpp:125
+#: newmailnotifiersettingswidget.cpp:124
 #, kde-format
 msgid "Message:"
 msgstr "Sporočilo:"
 
-#: newmailnotifiersettingswidget.cpp:136
+#: newmailnotifiersettingswidget.cpp:135
 #, kde-format
 msgid "Text to Speak"
 msgstr "Besedilo za izgovor"
 
-#: newmailnotifiersettingswidget.cpp:142
+#: newmailnotifiersettingswidget.cpp:141
 #, kde-format
 msgid "Notify"
 msgstr "Obvesti"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
 msgstr "Mape"
 
-#: newmailnotifiersettingswidget.cpp:148
+#: newmailnotifiersettingswidget.cpp:147
 #, kde-format
 msgid "New Mail Notifier Agent"
 msgstr "Obvestilnik o novi pošti"
 
-#: newmailnotifiersettingswidget.cpp:150
+#: newmailnotifiersettingswidget.cpp:149
 #, kde-format
 msgid "Notify about new mails."
 msgstr "Obvesti o novi pošti."
 
-#: newmailnotifiersettingswidget.cpp:152
+#: newmailnotifiersettingswidget.cpp:151
 #, kde-format
 msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Copyright (C) 2013-%1 Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:154
 #, kde-format
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:154
 #, kde-format
 msgid "Maintainer"
 msgstr "Vzdrževalec"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Andrej Mernik"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
