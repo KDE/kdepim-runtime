@@ -99,7 +99,7 @@ target_link_libraries(akonadi_openxchange_resource
     KF6::Contacts
     KF6::KIOCore
     KF6::CalendarCore
-    KPim6::AkonadiContact
+    KPim6::AkonadiContactWidgets
     KF6::I18n
     Qt::Xml
 )

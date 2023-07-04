@@ -52,7 +52,7 @@ target_link_libraries( akonadi_newmailnotifier_agent
   KPim6::AkonadiCore
   KPim6::Mime
   KPim6::AkonadiMime
-  KPim6::AkonadiContact
+  KPim6::AkonadiContactWidgets
   KF6::Codecs
   KPim6::IdentityManagementCore
   KPim6::AkonadiAgentBase
