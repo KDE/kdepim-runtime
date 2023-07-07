@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-06-28 00:49+0000\n"
+"POT-Creation-Date: 2023-07-04 00:49+0000\n"
 "PO-Revision-Date: 2015-12-29 20:26+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: lt <kde-i18n-lt@kde.org>\n"
@@ -29,7 +29,7 @@ msgid "Notification History"
 msgstr ""
 
 #: newmailnotificationhistorywidget.cpp:22
-#: newmailnotifiersettingswidget.cpp:112
+#: newmailnotifiersettingswidget.cpp:111
 #, kde-format
 msgid "Enabled"
 msgstr "Įgalinta"
@@ -94,126 +94,126 @@ msgstr ""
 "<qt><p>Čia galite nustatyti pranešimą. Galite naudoti:</p><ul><li>%s "
 "nustatyti temai</li><li>%f nustatyti nuo ko</li></ul></qt>"
 
-#: newmailnotifiersettingswidget.cpp:53
+#: newmailnotifiersettingswidget.cpp:52
 #, kde-format
 msgid "Choose which fields to show:"
 msgstr "Pasirinkti, kuriuos laukus rodyti:"
 
-#: newmailnotifiersettingswidget.cpp:58
+#: newmailnotifiersettingswidget.cpp:57
 #, kde-format
 msgid "Show Photo"
 msgstr "Rodyti nuotrauką"
 
-#: newmailnotifiersettingswidget.cpp:62
+#: newmailnotifiersettingswidget.cpp:61
 #, kde-format
 msgid "Show From"
 msgstr "Rodyti nuo ko"
 
-#: newmailnotifiersettingswidget.cpp:66
+#: newmailnotifiersettingswidget.cpp:65
 #, kde-format
 msgid "Show Subject"
 msgstr "Rodyti temą"
 
-#: newmailnotifiersettingswidget.cpp:70
+#: newmailnotifiersettingswidget.cpp:69
 #, kde-format
 msgid "Show Folders"
 msgstr "Rodyti aplankus"
 
-#: newmailnotifiersettingswidget.cpp:74
+#: newmailnotifiersettingswidget.cpp:73
 #, kde-format
 msgid "Do not notify when email was sent by me"
 msgstr "Neperspėti kai el. laiškas buvo siųstas mano paties"
 
-#: newmailnotifiersettingswidget.cpp:78
+#: newmailnotifiersettingswidget.cpp:77
 #, kde-format
 msgid "Keep Persistent Notification"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:82
+#: newmailnotifiersettingswidget.cpp:81
 #, kde-format
 msgid "Show Action Buttons"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:90
+#: newmailnotifiersettingswidget.cpp:89
 #, kde-format
 msgid "Reply Mail"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:98 specialnotifierjob.cpp:157
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:157
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgid "Reply to All"
 msgstr "&Pažymėti viską"
 
-#: newmailnotifiersettingswidget.cpp:107
+#: newmailnotifiersettingswidget.cpp:106
 #, kde-format
 msgid "Display"
 msgstr "Rodymas"
 
-#: newmailnotifiersettingswidget.cpp:116
+#: newmailnotifiersettingswidget.cpp:115
 #, kde-format
 msgid "<a href=\"whatsthis\">How does this work?</a>"
 msgstr "<a href=\"whatsthis\">Kaip tai veikia?</a>"
 
-#: newmailnotifiersettingswidget.cpp:125
+#: newmailnotifiersettingswidget.cpp:124
 #, kde-format
 msgid "Message:"
 msgstr "Pranešimas:"
 
-#: newmailnotifiersettingswidget.cpp:136
+#: newmailnotifiersettingswidget.cpp:135
 #, kde-format
 msgid "Text to Speak"
 msgstr "Tekstas į kalbą"
 
-#: newmailnotifiersettingswidget.cpp:142
+#: newmailnotifiersettingswidget.cpp:141
 #, kde-format
 msgid "Notify"
 msgstr "Perspėti"
 
-#: newmailnotifiersettingswidget.cpp:145
+#: newmailnotifiersettingswidget.cpp:144
 #, kde-format
 msgid "Folders"
 msgstr "Aplankai"
 
-#: newmailnotifiersettingswidget.cpp:148
+#: newmailnotifiersettingswidget.cpp:147
 #, kde-format
 msgid "New Mail Notifier Agent"
 msgstr "Pranešimų apie naują el. paštą agentas"
 
-#: newmailnotifiersettingswidget.cpp:150
+#: newmailnotifiersettingswidget.cpp:149
 #, fuzzy, kde-format
 #| msgid "Notifies about new mail."
 msgid "Notify about new mails."
 msgstr "Praneša apie naujus el. laiškus."
 
-#: newmailnotifiersettingswidget.cpp:152
+#: newmailnotifiersettingswidget.cpp:151
 #, fuzzy, kde-format
 #| msgid "Copyright (C) 2013 Laurent Montel"
 msgid "Copyright (C) 2013-%1 Laurent Montel"
 msgstr "Copyright (C) 2013 Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:154
 #, kde-format
 msgid "Laurent Montel"
 msgstr "Laurent Montel"
 
-#: newmailnotifiersettingswidget.cpp:155
+#: newmailnotifiersettingswidget.cpp:154
 #, kde-format
 msgid "Maintainer"
 msgstr "Prižiūrėtojas"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Liudas Ališauskas"
 
-#: newmailnotifiersettingswidget.cpp:156
+#: newmailnotifiersettingswidget.cpp:155
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
