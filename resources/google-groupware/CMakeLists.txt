@@ -124,7 +124,7 @@ install(
 ################################ Config plugin ###############################
 
 kcoreaddons_add_plugin(googleconfig
-    INSTALL_NAMESPACE "pim${QT_MAJOR_VERSION}/akonadi/config"
+    INSTALL_NAMESPACE "pim6/akonadi/config"
 )
 target_sources(googleconfig
 PRIVATE
