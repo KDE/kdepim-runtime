@@ -29,6 +29,7 @@
         "Description[tr]": "Kullanılabilir LDAP sunucularını yapılandır",
         "Description[uk]": "Налаштування доступних серверів LDAP",
         "Description[x-test]": "xxConfigure the available LDAP serversxx",
+        "Description[zh_CN]": "配置可用的 LDAP 服务器",
         "Icon": "kontact",
         "Name": "LDAP Server Settings",
         "Name[ar]": "إعدادات خادوم LDAP",
@@ -59,6 +60,7 @@
         "Name[tr]": "LDAP Sunucu Ayarları",
         "Name[uk]": "Параметри серверів LDAP",
         "Name[x-test]": "xxLDAP Server Settingsxx",
+        "Name[zh_CN]": "LDAP 服务器设置",
         "ServiceTypes": [
             "KCModule"
         ]
