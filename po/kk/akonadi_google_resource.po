@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-29 00:48+0000\n"
+"POT-Creation-Date: 2023-07-20 00:49+0000\n"
 "PO-Revision-Date: 2013-06-15 04:42+0600\n"
 "Last-Translator: Sairan Kikkarin <sairan@computer.org>\n"
 "Language-Team: Kazakh <kde-i18n-doc@kde.org>\n"
@@ -247,13 +247,13 @@ msgstr "Күнтізбелер"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:166
 #, kde-format
 msgid "Reload"
 msgstr "Қайта жүктеу"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:137
+#: googlesettingswidget.ui:135
 #, fuzzy, kde-format
 #| msgid "Tasklists"
 msgid "Enabled Tasklists:"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-29 00:48+0000\n"
+"POT-Creation-Date: 2023-07-20 00:49+0000\n"
 "PO-Revision-Date: 2012-07-07 21:01+0300\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
@@ -245,7 +245,7 @@ msgstr "Kalendāri"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:166
 #, fuzzy, kde-format
 #| msgctxt "reload the calendars"
 #| msgid "Reload"
@@ -253,7 +253,7 @@ msgid "Reload"
 msgstr "Pārlādēt"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:137
+#: googlesettingswidget.ui:135
 #, fuzzy, kde-format
 #| msgid "Tasks Lists"
 msgid "Enabled Tasklists:"
