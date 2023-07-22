@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-29 00:48+0000\n"
+"POT-Creation-Date: 2023-07-20 00:49+0000\n"
 "PO-Revision-Date: 2023-05-07 15:22+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
@@ -237,13 +237,13 @@ msgstr "Agenda's inschakelen"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:166
 #, kde-format
 msgid "Reload"
 msgstr "Herladen"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:137
+#: googlesettingswidget.ui:135
 #, kde-format
 msgid "Enabled Tasklists:"
 msgstr "Ingeschakelde lijsten met taken:"

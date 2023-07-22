@@ -1,16 +1,16 @@
 # Translation for akonadi_google_resource.po to Euskara/Basque (eu).
-# Copyright (C) 2022 This file is copyright:
+# Copyright (C) 2022-2023 This file is copyright:
 # This file is distributed under the same license as the kdepim-runtime package.
-# KDE euskaratzeko proiektuko arduraduna <xalba@nie.eus>.
+# KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>.
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdepim-runtime\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-05-29 00:48+0000\n"
-"PO-Revision-Date: 2022-08-29 23:32+0200\n"
+"POT-Creation-Date: 2023-07-20 00:49+0000\n"
+"PO-Revision-Date: 2023-07-21 10:58+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 22.04.3\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: calendarhandler.cpp:90
 #, kde-format
@@ -102,12 +102,12 @@ msgstr "Elementu baliogabea."
 #: googleresource.cpp:88
 #, kde-format
 msgid "Fetching password..."
-msgstr ""
+msgstr "Pasahitza ekartzen..."
 
 #: googleresource.cpp:95
 #, kde-format
 msgid "Can't fetch password"
-msgstr ""
+msgstr "Ezin du pasahitza ekarri"
 
 #: googleresource.cpp:136
 #, kde-format
@@ -239,13 +239,13 @@ msgstr "Gaitutako egutegiak:"
 
 #. i18n: ectx: property (text), widget (QPushButton, reloadCalendarsBtn)
 #. i18n: ectx: property (text), widget (QPushButton, reloadTaskListsBtn)
-#: googlesettingswidget.ui:123 googlesettingswidget.ui:168
+#: googlesettingswidget.ui:123 googlesettingswidget.ui:166
 #, kde-format
 msgid "Reload"
 msgstr "Birzamatu"
 
 #. i18n: ectx: property (text), widget (QLabel, taskListsLabel)
-#: googlesettingswidget.ui:137
+#: googlesettingswidget.ui:135
 #, kde-format
 msgid "Enabled Tasklists:"
 msgstr "Gaitutako zeregin-zerrendak:"
