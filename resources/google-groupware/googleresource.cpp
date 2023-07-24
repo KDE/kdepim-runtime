@@ -219,7 +219,6 @@ void GoogleResource::requestAuthenticationFromUser(const KGAPI2::AccountPtr &acc
     });
     connect(ntf, &KNotification::ignored, ntf, &KNotification::close);
     ntf->sendEvent();
-    qCDebug(GOOGLE_LOG) << "Prompting notification" << ntf->id() << " to ask user to reauthenticate";
 }
 
 bool GoogleResource::canPerformTask()
