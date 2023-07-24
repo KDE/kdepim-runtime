@@ -205,7 +205,7 @@ msgstr "백엔드에서 잘못된 응답이 돌아옴"
 #: daverror-kdepim-runtime.cpp:57
 #, kde-format
 msgid "Error setting focus for XQuery"
-msgstr "XQuery 초점 설정 오류"
+msgstr "XQuery 포커스 설정 오류"
 
 #: daverror-kdepim-runtime.cpp:60
 #, kde-format
