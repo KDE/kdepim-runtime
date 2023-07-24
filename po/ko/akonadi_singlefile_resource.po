@@ -262,8 +262,8 @@ msgid ""
 "Changes made by other applications will reload the file when monitoring is "
 "enabled. Backups will be created to avoid conflicts when possible."
 msgstr ""
-"파일 감시가 활성화되어 있으면 다른 프로그램에서 파일을 변경했을 때 자동으로 "
-"다시 불러옵니다. 충돌을 방지할 수 있도록 사용 가능한 경우 백업을 만듭니다."
+"파일 감시가 활성화되어 있으면 다른 앱에서 파일을 변경했을 때 자동으로 다시 불"
+"러옵니다. 충돌을 방지할 수 있도록 사용 가능한 경우 백업을 만듭니다."
 
 #: singlefileresourceconfigwidgetbase.cpp:126
 #, kde-format

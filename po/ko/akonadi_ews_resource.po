@@ -196,7 +196,7 @@ msgstr "계정 이름:"
 #: ewsconfigdialog.ui:64
 #, kde-format
 msgid "This is the account name that will appear in all Akonadi applications"
-msgstr "Akonadi 프로그램에 표시할 계정 이름입니다"
+msgstr "Akonadi 앱에 표시할 계정 이름입니다"
 
 #. i18n: ectx: property (text), widget (QLabel, emailLabel)
 #: ewsconfigdialog.ui:71
@@ -1172,7 +1172,7 @@ msgstr "사용자 정의 User-Agent 문자열 사용"
 #: ewsresource.kcfg:64
 #, kde-format
 msgid "OAuth2 application identifier"
-msgstr "OAuth2 프로그램 식별자"
+msgstr "OAuth2 앱 식별자"
 
 #. i18n: ectx: label, entry (OAuth2ReturnUri), group (General)
 #: ewsresource.kcfg:68
