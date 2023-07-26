@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Stefan Asserhäll <stefan.asserhall@bredband.net>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022.
+# Stefan Asserhäll <stefan.asserhall@bredband.net>, 2013, 2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-07-04 00:49+0000\n"
-"PO-Revision-Date: 2022-01-02 14:19+0100\n"
+"PO-Revision-Date: 2023-07-25 09:25+0200\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@bredband.net>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -18,11 +18,10 @@ msgstr ""
 "X-Generator: Lokalize 20.08.1\n"
 
 #: newmailnotificationhistorydialog.cpp:24
-#, fuzzy, kde-format
-#| msgid "Keep Persistent Notification"
+#, kde-format
 msgctxt "@title:window"
 msgid "Notification History"
-msgstr "Behåll permanent underrättelse"
+msgstr "Underrättelsehistorik"
 
 #: newmailnotificationhistorywidget.cpp:22
 #: newmailnotifiersettingswidget.cpp:111
