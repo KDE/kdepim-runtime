@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2023-07-20 00:49+0000\n"
-"PO-Revision-Date: 2023-07-23 00:49+0200\n"
+"PO-Revision-Date: 2023-07-26 00:36+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -392,7 +392,7 @@ msgstr[0] "할 일 %1개 삭제 중"
 #: taskhandler.cpp:225
 #, kde-format
 msgid "Failed to delete task: %1"
-msgstr "작업을 삭제할 수 없음: %1"
+msgstr "할 일을 삭제할 수 없음: %1"
 
 #: taskhandler.cpp:261
 #, kde-format
@@ -402,7 +402,7 @@ msgstr "하위 할 일의 부모를 변경할 수 없음: %1"
 #: taskhandler.cpp:292
 #, kde-format
 msgid "Moving tasks between task lists is not supported"
-msgstr "작업 목록간에 작업 이동은 지원되지 않음"
+msgstr "할 일 목록간에 할 일 이동은 지원되지 않음"
 
 #: taskhandler.cpp:297
 #, kde-format
