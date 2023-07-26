@@ -178,4 +178,4 @@ private:
     GroupPermissions mGroupPermissions;
 };
 }
-Q_DECLARE_TYPEINFO(OXA::Folder, Q_MOVABLE_TYPE);
+Q_DECLARE_TYPEINFO(OXA::Folder, Q_RELOCATABLE_TYPE);
