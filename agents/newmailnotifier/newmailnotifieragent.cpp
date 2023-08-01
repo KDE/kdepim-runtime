@@ -376,7 +376,11 @@ void NewMailNotifierAgent::slotShowNotifications()
             }
         }
         if (hasUniqMessage) {
-            auto job = new SpecialNotifierJob(mListEmails, currentPath, item, this);
+            SpecialNotifierJob::SpecialNotificationInfo info;
+            info.mItemId = item;
+            info.mPath = currentPath;
+            info.mListEmails = mListEmails;
+            auto job = new SpecialNotifierJob(info, this);
             job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
 #if HAVE_TEXT_TO_SPEECH_SUPPORT

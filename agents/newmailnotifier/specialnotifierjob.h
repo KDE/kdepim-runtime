@@ -18,7 +18,12 @@ class SpecialNotifierJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent = nullptr);
+    struct SpecialNotificationInfo {
+        QStringList mListEmails;
+        QString mPath;
+        Akonadi::Item::Id mItemId;
+    };
+    explicit SpecialNotifierJob(const SpecialNotificationInfo &info, QObject *parent = nullptr);
     ~SpecialNotifierJob() override;
 
     void setDefaultIconName(const QString &iconName);
@@ -38,11 +43,9 @@ private:
     void emitNotification(const QPixmap &pixmap = QPixmap());
     void deleteItemDone(KJob *job);
     void slotReplyMessage();
-    const QStringList mListEmails;
     QString mDefaultIconName;
     QString mSubject;
     QString mFrom;
-    const QString mPath;
     Akonadi::Item mItem;
-    const Akonadi::Item::Id mItemId;
+    const SpecialNotificationInfo mSpecialNotificationInfo;
 };
