@@ -23,13 +23,11 @@
 #include "newmailnotifier_debug.h"
 #include <KLocalizedString>
 
-SpecialNotifierJob::SpecialNotifierJob(const QStringList &listEmails, const QString &path, Akonadi::Item::Id id, QObject *parent)
+SpecialNotifierJob::SpecialNotifierJob(const SpecialNotificationInfo &info, QObject *parent)
     : QObject(parent)
-    , mListEmails(listEmails)
-    , mPath(path)
-    , mItemId(id)
+    , mSpecialNotificationInfo(info)
 {
-    Akonadi::Item item(mItemId);
+    Akonadi::Item item(mSpecialNotificationInfo.mItemId);
     auto job = new Akonadi::ItemFetchJob(item, this);
     job->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Envelope, true);
 
@@ -102,7 +100,7 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
-        for (const QString &email : std::as_const(mListEmails)) {
+        for (const QString &email : std::as_const(mSpecialNotificationInfo.mListEmails)) {
             if (mFrom.contains(email)) {
                 // Exclude this notification
                 deleteLater();
@@ -124,7 +122,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         result << i18n("Subject: %1", subject.toHtmlEscaped());
     }
     if (NewMailNotifierAgentSettings::showFolder()) {
-        result << i18n("In: %1", mPath);
+        result << i18n("In: %1", mSpecialNotificationInfo.mPath);
     }
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
