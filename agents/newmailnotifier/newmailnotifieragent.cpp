@@ -329,6 +329,7 @@ void NewMailNotifierAgent::slotShowNotifications()
             hasUniqMessage = false;
         }
 
+        QString resourceName;
         const QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::const_iterator end(mNewMails.constEnd());
         for (QHash<Akonadi::Collection, QList<Akonadi::Item::Id>>::const_iterator it = mNewMails.constBegin(); it != end; ++it) {
             const auto attr = it.key().attribute<Akonadi::EntityDisplayAttribute>();
@@ -352,7 +353,6 @@ void NewMailNotifierAgent::slotShowNotifications()
                     hasUniqMessage = false;
                 }
             }
-            QString resourceName;
             if (!mCacheResourceName.contains(it.key().resource())) {
                 const Akonadi::AgentInstance::List lst = Akonadi::AgentManager::self()->instances();
                 for (const Akonadi::AgentInstance &instance : lst) {
@@ -377,10 +377,11 @@ void NewMailNotifierAgent::slotShowNotifications()
         }
         if (hasUniqMessage) {
             SpecialNotifierJob::SpecialNotificationInfo info;
-            info.mItemId = item;
-            info.mPath = currentPath;
-            info.mListEmails = mListEmails;
-            info.mDefaultIconName = mDefaultIconName;
+            info.itemId = item;
+            info.path = currentPath;
+            info.listEmails = mListEmails;
+            info.defaultIconName = mDefaultIconName;
+            info.resourceName = resourceName;
             auto job = new SpecialNotifierJob(info, this);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
 #if HAVE_TEXT_TO_SPEECH_SUPPORT

@@ -19,10 +19,11 @@ class SpecialNotifierJob : public QObject
     Q_OBJECT
 public:
     struct SpecialNotificationInfo {
-        QStringList mListEmails;
-        QString mPath;
-        Akonadi::Item::Id mItemId;
-        QString mDefaultIconName;
+        QStringList listEmails;
+        QString path;
+        Akonadi::Item::Id itemId;
+        QString defaultIconName;
+        QString resourceName;
     };
     explicit SpecialNotifierJob(const SpecialNotificationInfo &info, QObject *parent = nullptr);
     ~SpecialNotifierJob() override;
