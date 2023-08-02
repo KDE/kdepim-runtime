@@ -380,8 +380,8 @@ void NewMailNotifierAgent::slotShowNotifications()
             info.mItemId = item;
             info.mPath = currentPath;
             info.mListEmails = mListEmails;
+            info.mDefaultIconName = mDefaultIconName;
             auto job = new SpecialNotifierJob(info, this);
-            job->setDefaultIconName(mDefaultIconName);
             connect(job, &SpecialNotifierJob::displayNotification, this, &NewMailNotifierAgent::slotDisplayNotification);
 #if HAVE_TEXT_TO_SPEECH_SUPPORT
             connect(job, &SpecialNotifierJob::say, this, &NewMailNotifierAgent::slotSay);

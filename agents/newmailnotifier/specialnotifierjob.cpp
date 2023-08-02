@@ -36,11 +36,6 @@ SpecialNotifierJob::SpecialNotifierJob(const SpecialNotificationInfo &info, QObj
 
 SpecialNotifierJob::~SpecialNotifierJob() = default;
 
-void SpecialNotifierJob::setDefaultIconName(const QString &iconName)
-{
-    mDefaultIconName = iconName;
-}
-
 void SpecialNotifierJob::slotItemFetchJobDone(KJob *job)
 {
     if (job->error()) {
@@ -141,7 +136,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                                                                                          : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
         if (pixmap.isNull()) {
-            notification->setIconName(mDefaultIconName);
+            notification->setIconName(mSpecialNotificationInfo.mDefaultIconName);
         } else {
             notification->setPixmap(pixmap);
         }
