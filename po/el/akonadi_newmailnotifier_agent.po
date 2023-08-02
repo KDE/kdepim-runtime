@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: newmailnotifieragent\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-07-04 00:49+0000\n"
+"POT-Creation-Date: 2023-08-02 00:48+0000\n"
 "PO-Revision-Date: 2017-04-20 16:35+0200\n"
 "Last-Translator: Stelios <sstavra@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
@@ -43,7 +43,7 @@ msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "Ένα νέο μήνυμα στο «%2» από «%3»"
 msgstr[1] "%1 νέα μηνύματα στο «%2» από «%3»"
 
-#: newmailnotifieragent.cpp:391
+#: newmailnotifieragent.cpp:395
 #, kde-format
 msgid "New mail arrived"
 msgstr "Έφτασε νέα αλληλογραφία"
@@ -134,12 +134,12 @@ msgstr ""
 msgid "Reply Mail"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:152
 #, kde-format
 msgid "Reply to Author"
 msgstr ""
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:157
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:155
 #, fuzzy, kde-format
 #| msgid "&Select All"
 msgid "Reply to All"
@@ -213,32 +213,32 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "dglent@free.fr"
 
-#: specialnotifierjob.cpp:116
+#: specialnotifierjob.cpp:114
 #, kde-format
 msgid "From: %1"
 msgstr "Από: %1"
 
-#: specialnotifierjob.cpp:124
+#: specialnotifierjob.cpp:122
 #, kde-format
 msgid "Subject: %1"
 msgstr "Θέμα: %1"
 
-#: specialnotifierjob.cpp:127
+#: specialnotifierjob.cpp:125
 #, kde-format
 msgid "In: %1"
 msgstr "Στο: %1"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Show mail..."
 msgstr "Εμφάνιση αλληλογραφίας..."
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Mark As Read"
 msgstr ""
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Delete"
 msgstr ""
