@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-07-04 00:49+0000\n"
+"POT-Creation-Date: 2023-08-02 00:48+0000\n"
 "PO-Revision-Date: 2023-07-23 00:49+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -38,7 +38,7 @@ msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "\"%3\" 계정의 \"%2\" 폴더에 새 메일 %1개 있음"
 
-#: newmailnotifieragent.cpp:391
+#: newmailnotifieragent.cpp:395
 #, kde-format
 msgid "New mail arrived"
 msgstr "새 메일 도착함"
@@ -128,12 +128,12 @@ msgstr "동작 단추 표시"
 msgid "Reply Mail"
 msgstr "이메일에 답장"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:152
 #, kde-format
 msgid "Reply to Author"
 msgstr "작성자에게 답장"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:157
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:155
 #, kde-format
 msgid "Reply to All"
 msgstr "전체 답장"
@@ -205,32 +205,32 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "kde@peremen.name"
 
-#: specialnotifierjob.cpp:116
+#: specialnotifierjob.cpp:114
 #, kde-format
 msgid "From: %1"
 msgstr "보낸 사람: %1"
 
-#: specialnotifierjob.cpp:124
+#: specialnotifierjob.cpp:122
 #, kde-format
 msgid "Subject: %1"
 msgstr "제목: %1"
 
-#: specialnotifierjob.cpp:127
+#: specialnotifierjob.cpp:125
 #, kde-format
 msgid "In: %1"
 msgstr "위치: %1"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Show mail..."
 msgstr "메일 보기..."
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Mark As Read"
 msgstr "읽은 것으로 표시"
 
-#: specialnotifierjob.cpp:150
+#: specialnotifierjob.cpp:148
 #, kde-format
 msgid "Delete"
 msgstr "삭제"
