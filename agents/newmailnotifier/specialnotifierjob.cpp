@@ -27,7 +27,7 @@ SpecialNotifierJob::SpecialNotifierJob(const SpecialNotificationInfo &info, QObj
     : QObject(parent)
     , mSpecialNotificationInfo(info)
 {
-    Akonadi::Item item(mSpecialNotificationInfo.mItemId);
+    Akonadi::Item item(mSpecialNotificationInfo.itemId);
     auto job = new Akonadi::ItemFetchJob(item, this);
     job->fetchScope().fetchPayloadPart(Akonadi::MessagePart::Envelope, true);
 
@@ -95,7 +95,7 @@ void SpecialNotifierJob::slotSearchJobFinished(KJob *job)
 void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
 {
     if (NewMailNotifierAgentSettings::excludeEmailsFromMe()) {
-        for (const QString &email : std::as_const(mSpecialNotificationInfo.mListEmails)) {
+        for (const QString &email : std::as_const(mSpecialNotificationInfo.listEmails)) {
             if (mFrom.contains(email)) {
                 // Exclude this notification
                 deleteLater();
@@ -117,7 +117,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         result << i18n("Subject: %1", subject.toHtmlEscaped());
     }
     if (NewMailNotifierAgentSettings::showFolder()) {
-        result << i18n("In: %1", mSpecialNotificationInfo.mPath);
+        result << i18n("In: %1 (%2)", mSpecialNotificationInfo.path, mSpecialNotificationInfo.resourceName);
     }
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
@@ -136,7 +136,7 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
                                                                                          : KNotification::CloseOnTimeout);
         notification->setText(result.join(QLatin1Char('\n')));
         if (pixmap.isNull()) {
-            notification->setIconName(mSpecialNotificationInfo.mDefaultIconName);
+            notification->setIconName(mSpecialNotificationInfo.defaultIconName);
         } else {
             notification->setPixmap(pixmap);
         }
