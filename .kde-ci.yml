@@ -30,7 +30,6 @@ Dependencies:
     'frameworks/kwindowsystem': '@latest-kf6'
     'frameworks/ktextwidgets': '@latest-kf6'
     'frameworks/knotifications': '@latest-kf6'
-    'frameworks/kholidays': '@latest-kf6'
     'frameworks/kcmutils': '@latest-kf6'
     'frameworks/kdav': '@latest-kf6'
     'frameworks/kdoctools': '@latest-kf6'
