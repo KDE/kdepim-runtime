@@ -332,6 +332,19 @@ void NewMailNotifierAgent::slotShowNotifications()
                 displayName = it.key().name();
             }
 
+            if (!mCacheResourceName.contains(it.key().resource())) {
+                const Akonadi::AgentInstance::List lst = Akonadi::AgentManager::self()->instances();
+                for (const Akonadi::AgentInstance &instance : lst) {
+                    if (instance.identifier() == it.key().resource()) {
+                        mCacheResourceName.insert(instance.identifier(), instance.name());
+                        resourceName = instance.name();
+                        break;
+                    }
+                }
+            } else {
+                resourceName = mCacheResourceName.value(it.key().resource());
+            }
+
             if (hasUniqMessage) {
                 const int numberOfValue(it.value().count());
                 if (numberOfValue == 0) {
@@ -345,18 +358,7 @@ void NewMailNotifierAgent::slotShowNotifications()
                     hasUniqMessage = false;
                 }
             }
-            if (!mCacheResourceName.contains(it.key().resource())) {
-                const Akonadi::AgentInstance::List lst = Akonadi::AgentManager::self()->instances();
-                for (const Akonadi::AgentInstance &instance : lst) {
-                    if (instance.identifier() == it.key().resource()) {
-                        mCacheResourceName.insert(instance.identifier(), instance.name());
-                        resourceName = instance.name();
-                        break;
-                    }
-                }
-            } else {
-                resourceName = mCacheResourceName.value(it.key().resource());
-            }
+
             const int numberOfEmails(it.value().count());
             if (numberOfEmails > 0) {
                 texts.append(i18ncp("%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as user named it)",

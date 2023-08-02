@@ -117,7 +117,11 @@ void SpecialNotifierJob::emitNotification(const QPixmap &pixmap)
         result << i18n("Subject: %1", subject.toHtmlEscaped());
     }
     if (NewMailNotifierAgentSettings::showFolder()) {
-        result << i18n("In: %1 (%2)", mSpecialNotificationInfo.path, mSpecialNotificationInfo.resourceName);
+        if (mSpecialNotificationInfo.resourceName.isEmpty()) {
+            result << i18n("In: %1", mSpecialNotificationInfo.path);
+        } else {
+            result << i18n("In: %1 (%2)", mSpecialNotificationInfo.path, mSpecialNotificationInfo.resourceName);
+        }
     }
 
     if (NewMailNotifierAgentSettings::textToSpeakEnabled()) {
