@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-08-02 00:48+0000\n"
+"POT-Creation-Date: 2023-08-03 00:47+0000\n"
 "PO-Revision-Date: 2023-07-23 00:49+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -29,7 +29,7 @@ msgstr "알림 과거 기록"
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: newmailnotifieragent.cpp:371
+#: newmailnotifieragent.cpp:373
 #, kde-format
 msgctxt ""
 "%2 = name of mail folder; %3 = name of Akonadi POP3/IMAP/etc resource (as "
@@ -38,7 +38,7 @@ msgid "One new email in %2 from \"%3\""
 msgid_plural "%1 new emails in %2 from \"%3\""
 msgstr[0] "\"%3\" 계정의 \"%2\" 폴더에 새 메일 %1개 있음"
 
-#: newmailnotifieragent.cpp:395
+#: newmailnotifieragent.cpp:398
 #, kde-format
 msgid "New mail arrived"
 msgstr "새 메일 도착함"
@@ -128,12 +128,12 @@ msgstr "동작 단추 표시"
 msgid "Reply Mail"
 msgstr "이메일에 답장"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:152
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:151
 #, kde-format
 msgid "Reply to Author"
 msgstr "작성자에게 답장"
 
-#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:155
+#: newmailnotifiersettingswidget.cpp:97 specialnotifierjob.cpp:154
 #, kde-format
 msgid "Reply to All"
 msgstr "전체 답장"
@@ -205,32 +205,38 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "kde@peremen.name"
 
-#: specialnotifierjob.cpp:114
+#: specialnotifierjob.cpp:109
 #, kde-format
 msgid "From: %1"
 msgstr "보낸 사람: %1"
 
-#: specialnotifierjob.cpp:122
+#: specialnotifierjob.cpp:117
 #, kde-format
 msgid "Subject: %1"
 msgstr "제목: %1"
 
-#: specialnotifierjob.cpp:125
+#: specialnotifierjob.cpp:121
 #, kde-format
 msgid "In: %1"
 msgstr "위치: %1"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:123
+#, fuzzy, kde-format
+#| msgid "In: %1"
+msgid "In: %1 (%2)"
+msgstr "위치: %1"
+
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Show mail..."
 msgstr "메일 보기..."
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Mark As Read"
 msgstr "읽은 것으로 표시"
 
-#: specialnotifierjob.cpp:148
+#: specialnotifierjob.cpp:147
 #, kde-format
 msgid "Delete"
 msgstr "삭제"
